@@ -28,16 +28,12 @@ Definition main : M unit :=
   M.function_body
     (let* path : M.Val (ref std.path.Path.t) :=
       let* α0 : ref str.t := M.read (mk_str "hello.txt") in
-      let* α1 : M.Val str.t := deref α0 in
-      let* α2 : ref str.t := borrow α1 in
-      let* α3 : ref std.path.Path.t := std.path.Path.t::["new"] α2 in
-      M.alloc α3 in
+      let* α1 : ref std.path.Path.t := std.path.Path.t::["new"] α0 in
+      M.alloc α1 in
     let* display : M.Val std.path.Display.t :=
       let* α0 : ref std.path.Path.t := M.read path in
-      let* α1 : M.Val std.path.Path.t := deref α0 in
-      let* α2 : ref std.path.Path.t := borrow α1 in
-      let* α3 : std.path.Display.t := std.path.Path.t::["display"] α2 in
-      M.alloc α3 in
+      let* α1 : std.path.Display.t := std.path.Path.t::["display"] α0 in
+      M.alloc α1 in
     let* file : M.Val std.fs.File.t :=
       let* α0 : ref (ref std.path.Path.t) := borrow path in
       let* α1 : core.result.Result.t std.fs.File.t std.io.error.Error.t :=

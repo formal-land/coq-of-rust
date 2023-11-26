@@ -117,11 +117,9 @@ Definition main : M unit :=
       M.alloc α0 in
     let* chunked_data : M.Val core.str.iter.SplitWhitespace.t :=
       let* α0 : ref str.t := M.read data in
-      let* α1 : M.Val str.t := deref α0 in
-      let* α2 : ref str.t := borrow α1 in
-      let* α3 : core.str.iter.SplitWhitespace.t :=
-        str.t::["split_whitespace"] α2 in
-      M.alloc α3 in
+      let* α1 : core.str.iter.SplitWhitespace.t :=
+        str.t::["split_whitespace"] α0 in
+      M.alloc α1 in
     let* _ : M.Val unit :=
       let* α0 : core.str.iter.SplitWhitespace.t := M.read chunked_data in
       let* α1 :
@@ -220,11 +218,9 @@ Definition main : M unit :=
                     M.read
                       (let* result : M.Val u32.t :=
                         let* α0 : ref str.t := M.read data_segment in
-                        let* α1 : M.Val str.t := deref α0 in
-                        let* α2 : ref str.t := borrow α1 in
-                        let* α3 : core.str.iter.Chars.t :=
-                          str.t::["chars"] α2 in
-                        let* α4 : type not implemented :=
+                        let* α1 : core.str.iter.Chars.t :=
+                          str.t::["chars"] α0 in
+                        let* α2 : type not implemented :=
                           M.read
                             (let* α0 : char.t := M.read c in
                             let* α1 : M.Val u32.t := M.alloc 10 in
@@ -233,29 +229,27 @@ Definition main : M unit :=
                               char.t::["to_digit"] α0 α2 in
                             let* α4 : ref str.t :=
                               M.read (mk_str "should be a digit") in
-                            let* α5 : M.Val str.t := deref α4 in
-                            let* α6 : ref str.t := borrow α5 in
-                            let* α7 : u32.t :=
-                              (core.option.Option.t u32.t)::["expect"] α3 α6 in
-                            M.alloc α7) in
-                        let* α5 :
+                            let* α5 : u32.t :=
+                              (core.option.Option.t u32.t)::["expect"] α3 α4 in
+                            M.alloc α5) in
+                        let* α3 :
                             core.iter.adapters.map.Map.t
                               core.str.iter.Chars.t
                               type not implemented :=
                           (core.iter.traits.iterator.Iterator.map
                               (Self := core.str.iter.Chars.t)
                               (Trait := ltac:(refine _)))
-                            α3
-                            α4 in
-                        let* α6 : u32.t :=
+                            α1
+                            α2 in
+                        let* α4 : u32.t :=
                           (core.iter.traits.iterator.Iterator.sum
                               (Self :=
                                 core.iter.adapters.map.Map.t
                                   core.str.iter.Chars.t
                                   type not implemented)
                               (Trait := ltac:(refine _)))
-                            α5 in
-                        M.alloc α6 in
+                            α3 in
+                        M.alloc α4 in
                       let* _ : M.Val unit :=
                         let* _ : M.Val unit :=
                           let* α0 : M.Val (array (ref str.t)) :=

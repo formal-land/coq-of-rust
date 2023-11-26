@@ -47,11 +47,9 @@ Definition main : M unit :=
               (Self := alloc.vec.Vec.t i32.t alloc.alloc.Global.t)
               (Trait := ltac:(refine _)))
             α0 in
-        let* α2 : M.Val (slice i32.t) := deref α1 in
-        let* α3 : ref (slice i32.t) := borrow α2 in
-        let* α4 : ref i32.t := M.read needle in
-        let* α5 : bool.t := (slice i32.t)::["contains"] α3 α4 in
-        M.alloc α5) in
+        let* α2 : ref i32.t := M.read needle in
+        let* α3 : bool.t := (slice i32.t)::["contains"] α1 α2 in
+        M.alloc α3) in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
         let* α0 : M.Val (array (ref str.t)) :=

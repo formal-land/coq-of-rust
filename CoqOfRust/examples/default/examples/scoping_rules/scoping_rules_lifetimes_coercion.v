@@ -24,10 +24,7 @@ fn choose_first<'a: 'b, 'b>(first: &'a i32, _: &'b i32) -> &'b i32 {
 Definition choose_first (first : ref i32.t) (arg : ref i32.t) : M (ref i32.t) :=
   let* first : M.Val (ref i32.t) := M.alloc first in
   let* arg : M.Val (ref i32.t) := M.alloc arg in
-  M.function_body
-    (let* α0 : ref i32.t := M.read first in
-    let* α1 : M.Val i32.t := deref α0 in
-    borrow α1).
+  M.function_body (M.read first).
 
 (*
 fn main() {

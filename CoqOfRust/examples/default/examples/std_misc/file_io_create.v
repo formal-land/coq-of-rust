@@ -36,16 +36,12 @@ Definition main : M unit :=
   M.function_body
     (let* path : M.Val (ref std.path.Path.t) :=
       let* α0 : ref str.t := M.read (mk_str "lorem_ipsum.txt") in
-      let* α1 : M.Val str.t := deref α0 in
-      let* α2 : ref str.t := borrow α1 in
-      let* α3 : ref std.path.Path.t := std.path.Path.t::["new"] α2 in
-      M.alloc α3 in
+      let* α1 : ref std.path.Path.t := std.path.Path.t::["new"] α0 in
+      M.alloc α1 in
     let* display : M.Val std.path.Display.t :=
       let* α0 : ref std.path.Path.t := M.read path in
-      let* α1 : M.Val std.path.Path.t := deref α0 in
-      let* α2 : ref std.path.Path.t := borrow α1 in
-      let* α3 : std.path.Display.t := std.path.Path.t::["display"] α2 in
-      M.alloc α3 in
+      let* α1 : std.path.Display.t := std.path.Path.t::["display"] α0 in
+      M.alloc α1 in
     let* file : M.Val std.fs.File.t :=
       let* α0 : ref (ref std.path.Path.t) := borrow path in
       let* α1 : core.result.Result.t std.fs.File.t std.io.error.Error.t :=
@@ -95,22 +91,18 @@ Definition main : M unit :=
     let* α1 : ref (ref str.t) := M.read file_io_create.LOREM_IPSUM in
     let* α2 : M.Val (ref str.t) := deref α1 in
     let* α3 : ref str.t := M.read α2 in
-    let* α4 : M.Val str.t := deref α3 in
-    let* α5 : ref str.t := borrow α4 in
-    let* α6 : ref (slice u8.t) := str.t::["as_bytes"] α5 in
-    let* α7 : M.Val (slice u8.t) := deref α6 in
-    let* α8 : ref (slice u8.t) := borrow α7 in
-    let* α9 : core.result.Result.t unit std.io.error.Error.t :=
+    let* α4 : ref (slice u8.t) := str.t::["as_bytes"] α3 in
+    let* α5 : core.result.Result.t unit std.io.error.Error.t :=
       (std.io.Write.write_all
           (Self := std.fs.File.t)
           (Trait := ltac:(refine _)))
         α0
-        α8 in
-    let* α10 : M.Val (core.result.Result.t unit std.io.error.Error.t) :=
-      M.alloc α9 in
-    let* α11 := M.read α10 in
+        α4 in
+    let* α6 : M.Val (core.result.Result.t unit std.io.error.Error.t) :=
+      M.alloc α5 in
+    let* α7 := M.read α6 in
     let* α0 : M.Val unit :=
-      match α11 with
+      match α7 with
       | core.result.Result.Err why =>
         let* why := M.alloc why in
         let* α0 : M.Val (array (ref str.t)) :=

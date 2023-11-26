@@ -323,17 +323,15 @@ Definition main : M unit :=
                     (std.thread.JoinHandle.t unit)::["join"] α0 in
                   let* α2 : ref str.t :=
                     M.read (mk_str "oops! the child thread panicked") in
-                  let* α3 : M.Val str.t := deref α2 in
-                  let* α4 : ref str.t := borrow α3 in
-                  let* α5 : unit :=
+                  let* α3 : unit :=
                     (core.result.Result.t
                           unit
                           (alloc.boxed.Box.t
                             type not implemented
                             alloc.alloc.Global.t))::["expect"]
                       α1
-                      α4 in
-                  M.alloc α5 in
+                      α2 in
+                  M.alloc α3 in
                 M.alloc tt
               end in
             M.alloc tt)

@@ -23,29 +23,21 @@ Section Impl_core_fmt_Debug_for_combinators_map_Food_t.
     let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
     M.function_body
       (let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
-      let* α1 : M.Val core.fmt.Formatter.t := deref α0 in
-      let* α2 : mut_ref core.fmt.Formatter.t := borrow_mut α1 in
-      let* α3 := M.read self in
-      let* α4 : M.Val (ref str.t) :=
-        match α3 with
+      let* α1 := M.read self in
+      let* α2 : M.Val (ref str.t) :=
+        match α1 with
         | combinators_map.Food.Apple  =>
           let* α0 : ref str.t := M.read (mk_str "Apple") in
-          let* α1 : M.Val str.t := deref α0 in
-          let* α2 : ref str.t := borrow α1 in
-          M.alloc α2
+          M.alloc α0
         | combinators_map.Food.Carrot  =>
           let* α0 : ref str.t := M.read (mk_str "Carrot") in
-          let* α1 : M.Val str.t := deref α0 in
-          let* α2 : ref str.t := borrow α1 in
-          M.alloc α2
+          M.alloc α0
         | combinators_map.Food.Potato  =>
           let* α0 : ref str.t := M.read (mk_str "Potato") in
-          let* α1 : M.Val str.t := deref α0 in
-          let* α2 : ref str.t := borrow α1 in
-          M.alloc α2
+          M.alloc α0
         end in
-      let* α5 : ref str.t := M.read α4 in
-      core.fmt.Formatter.t::["write_str"] α2 α5).
+      let* α3 : ref str.t := M.read α2 in
+      core.fmt.Formatter.t::["write_str"] α0 α3).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -85,21 +77,17 @@ Section Impl_core_fmt_Debug_for_combinators_map_Peeled_t.
     let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
     M.function_body
       (let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
-      let* α1 : M.Val core.fmt.Formatter.t := deref α0 in
-      let* α2 : mut_ref core.fmt.Formatter.t := borrow_mut α1 in
-      let* α3 : ref str.t := M.read (mk_str "Peeled") in
-      let* α4 : M.Val str.t := deref α3 in
-      let* α5 : ref str.t := borrow α4 in
-      let* α6 : ref combinators_map.Peeled.t := M.read self in
-      let* α7 : M.Val combinators_map.Peeled.t := deref α6 in
-      let* α8 : ref combinators_map.Food.t := borrow α7.["0"] in
-      let* α9 : M.Val (ref combinators_map.Food.t) := M.alloc α8 in
-      let* α10 : ref (ref combinators_map.Food.t) := borrow α9 in
-      let* α11 : M.Val (ref (ref combinators_map.Food.t)) := M.alloc α10 in
-      let* α12 : M.Val (ref type not implemented) :=
-        pointer_coercion "Unsize" α11 in
-      let* α13 : ref type not implemented := M.read α12 in
-      core.fmt.Formatter.t::["debug_tuple_field1_finish"] α2 α5 α13).
+      let* α1 : ref str.t := M.read (mk_str "Peeled") in
+      let* α2 : ref combinators_map.Peeled.t := M.read self in
+      let* α3 : M.Val combinators_map.Peeled.t := deref α2 in
+      let* α4 : ref combinators_map.Food.t := borrow α3.["0"] in
+      let* α5 : M.Val (ref combinators_map.Food.t) := M.alloc α4 in
+      let* α6 : ref (ref combinators_map.Food.t) := borrow α5 in
+      let* α7 : M.Val (ref (ref combinators_map.Food.t)) := M.alloc α6 in
+      let* α8 : M.Val (ref type not implemented) :=
+        pointer_coercion "Unsize" α7 in
+      let* α9 : ref type not implemented := M.read α8 in
+      core.fmt.Formatter.t::["debug_tuple_field1_finish"] α0 α1 α9).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -139,21 +127,17 @@ Section Impl_core_fmt_Debug_for_combinators_map_Chopped_t.
     let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
     M.function_body
       (let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
-      let* α1 : M.Val core.fmt.Formatter.t := deref α0 in
-      let* α2 : mut_ref core.fmt.Formatter.t := borrow_mut α1 in
-      let* α3 : ref str.t := M.read (mk_str "Chopped") in
-      let* α4 : M.Val str.t := deref α3 in
-      let* α5 : ref str.t := borrow α4 in
-      let* α6 : ref combinators_map.Chopped.t := M.read self in
-      let* α7 : M.Val combinators_map.Chopped.t := deref α6 in
-      let* α8 : ref combinators_map.Food.t := borrow α7.["0"] in
-      let* α9 : M.Val (ref combinators_map.Food.t) := M.alloc α8 in
-      let* α10 : ref (ref combinators_map.Food.t) := borrow α9 in
-      let* α11 : M.Val (ref (ref combinators_map.Food.t)) := M.alloc α10 in
-      let* α12 : M.Val (ref type not implemented) :=
-        pointer_coercion "Unsize" α11 in
-      let* α13 : ref type not implemented := M.read α12 in
-      core.fmt.Formatter.t::["debug_tuple_field1_finish"] α2 α5 α13).
+      let* α1 : ref str.t := M.read (mk_str "Chopped") in
+      let* α2 : ref combinators_map.Chopped.t := M.read self in
+      let* α3 : M.Val combinators_map.Chopped.t := deref α2 in
+      let* α4 : ref combinators_map.Food.t := borrow α3.["0"] in
+      let* α5 : M.Val (ref combinators_map.Food.t) := M.alloc α4 in
+      let* α6 : ref (ref combinators_map.Food.t) := borrow α5 in
+      let* α7 : M.Val (ref (ref combinators_map.Food.t)) := M.alloc α6 in
+      let* α8 : M.Val (ref type not implemented) :=
+        pointer_coercion "Unsize" α7 in
+      let* α9 : ref type not implemented := M.read α8 in
+      core.fmt.Formatter.t::["debug_tuple_field1_finish"] α0 α1 α9).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -193,21 +177,17 @@ Section Impl_core_fmt_Debug_for_combinators_map_Cooked_t.
     let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
     M.function_body
       (let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
-      let* α1 : M.Val core.fmt.Formatter.t := deref α0 in
-      let* α2 : mut_ref core.fmt.Formatter.t := borrow_mut α1 in
-      let* α3 : ref str.t := M.read (mk_str "Cooked") in
-      let* α4 : M.Val str.t := deref α3 in
-      let* α5 : ref str.t := borrow α4 in
-      let* α6 : ref combinators_map.Cooked.t := M.read self in
-      let* α7 : M.Val combinators_map.Cooked.t := deref α6 in
-      let* α8 : ref combinators_map.Food.t := borrow α7.["0"] in
-      let* α9 : M.Val (ref combinators_map.Food.t) := M.alloc α8 in
-      let* α10 : ref (ref combinators_map.Food.t) := borrow α9 in
-      let* α11 : M.Val (ref (ref combinators_map.Food.t)) := M.alloc α10 in
-      let* α12 : M.Val (ref type not implemented) :=
-        pointer_coercion "Unsize" α11 in
-      let* α13 : ref type not implemented := M.read α12 in
-      core.fmt.Formatter.t::["debug_tuple_field1_finish"] α2 α5 α13).
+      let* α1 : ref str.t := M.read (mk_str "Cooked") in
+      let* α2 : ref combinators_map.Cooked.t := M.read self in
+      let* α3 : M.Val combinators_map.Cooked.t := deref α2 in
+      let* α4 : ref combinators_map.Food.t := borrow α3.["0"] in
+      let* α5 : M.Val (ref combinators_map.Food.t) := M.alloc α4 in
+      let* α6 : ref (ref combinators_map.Food.t) := borrow α5 in
+      let* α7 : M.Val (ref (ref combinators_map.Food.t)) := M.alloc α6 in
+      let* α8 : M.Val (ref type not implemented) :=
+        pointer_coercion "Unsize" α7 in
+      let* α9 : ref type not implemented := M.read α8 in
+      core.fmt.Formatter.t::["debug_tuple_field1_finish"] α0 α1 α9).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {

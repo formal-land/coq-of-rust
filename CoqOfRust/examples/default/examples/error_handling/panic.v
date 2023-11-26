@@ -73,15 +73,11 @@ Definition main : M unit :=
   M.function_body
     (let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "water") in
-      let* α1 : M.Val str.t := deref α0 in
-      let* α2 : ref str.t := borrow α1 in
-      let* α3 : unit := panic.drink α2 in
-      M.alloc α3 in
+      let* α1 : unit := panic.drink α0 in
+      M.alloc α1 in
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "lemonade") in
-      let* α1 : M.Val str.t := deref α0 in
-      let* α2 : ref str.t := borrow α1 in
-      let* α3 : unit := panic.drink α2 in
-      M.alloc α3 in
+      let* α1 : unit := panic.drink α0 in
+      M.alloc α1 in
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0).

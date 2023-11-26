@@ -626,11 +626,9 @@ Section Impl_erc20_Erc20_t_2.
       let* α2 : ref (erc20.Mapping.t erc20.AccountId.t u128.t) :=
         borrow α1.["balances"] in
       let* α3 : ref erc20.AccountId.t := M.read owner in
-      let* α4 : M.Val erc20.AccountId.t := deref α3 in
-      let* α5 : ref erc20.AccountId.t := borrow α4 in
-      let* α6 : core.option.Option.t u128.t :=
-        (erc20.Mapping.t erc20.AccountId.t u128.t)::["get"] α2 α5 in
-      (core.option.Option.t u128.t)::["unwrap_or_default"] α6).
+      let* α4 : core.option.Option.t u128.t :=
+        (erc20.Mapping.t erc20.AccountId.t u128.t)::["get"] α2 α3 in
+      (core.option.Option.t u128.t)::["unwrap_or_default"] α4).
   
   Global Instance AssociatedFunction_balance_of_impl :
     Notations.DoubleColon ltac:(Self) "balance_of_impl" := {
@@ -650,10 +648,8 @@ Section Impl_erc20_Erc20_t_2.
     let* owner : M.Val erc20.AccountId.t := M.alloc owner in
     M.function_body
       (let* α0 : ref erc20.Erc20.t := M.read self in
-      let* α1 : M.Val erc20.Erc20.t := deref α0 in
-      let* α2 : ref erc20.Erc20.t := borrow α1 in
-      let* α3 : ref erc20.AccountId.t := borrow owner in
-      erc20.Erc20.t::["balance_of_impl"] α2 α3).
+      let* α1 : ref erc20.AccountId.t := borrow owner in
+      erc20.Erc20.t::["balance_of_impl"] α0 α1).
   
   Global Instance AssociatedFunction_balance_of :
     Notations.DoubleColon ltac:(Self) "balance_of" := {
@@ -717,11 +713,9 @@ Section Impl_erc20_Erc20_t_2.
     let* spender : M.Val erc20.AccountId.t := M.alloc spender in
     M.function_body
       (let* α0 : ref erc20.Erc20.t := M.read self in
-      let* α1 : M.Val erc20.Erc20.t := deref α0 in
-      let* α2 : ref erc20.Erc20.t := borrow α1 in
-      let* α3 : ref erc20.AccountId.t := borrow owner in
-      let* α4 : ref erc20.AccountId.t := borrow spender in
-      erc20.Erc20.t::["allowance_impl"] α2 α3 α4).
+      let* α1 : ref erc20.AccountId.t := borrow owner in
+      let* α2 : ref erc20.AccountId.t := borrow spender in
+      erc20.Erc20.t::["allowance_impl"] α0 α1 α2).
   
   Global Instance AssociatedFunction_allowance :
     Notations.DoubleColon ltac:(Self) "allowance" := {
@@ -763,10 +757,8 @@ Section Impl_erc20_Erc20_t_2.
         let* α1 : M.Val erc20.Erc20.t := deref α0 in
         let* α2 : ref erc20.Erc20.t := borrow α1 in
         let* α3 : ref erc20.AccountId.t := M.read from in
-        let* α4 : M.Val erc20.AccountId.t := deref α3 in
-        let* α5 : ref erc20.AccountId.t := borrow α4 in
-        let* α6 : u128.t := erc20.Erc20.t::["balance_of_impl"] α2 α5 in
-        M.alloc α6 in
+        let* α4 : u128.t := erc20.Erc20.t::["balance_of_impl"] α2 α3 in
+        M.alloc α4 in
       let* _ : M.Val unit :=
         let* α0 : M.Val bool.t := BinOp.lt from_balance value in
         let* α1 : M.Val bool.t := use α0 in
@@ -796,10 +788,8 @@ Section Impl_erc20_Erc20_t_2.
         let* α1 : M.Val erc20.Erc20.t := deref α0 in
         let* α2 : ref erc20.Erc20.t := borrow α1 in
         let* α3 : ref erc20.AccountId.t := M.read to in
-        let* α4 : M.Val erc20.AccountId.t := deref α3 in
-        let* α5 : ref erc20.AccountId.t := borrow α4 in
-        let* α6 : u128.t := erc20.Erc20.t::["balance_of_impl"] α2 α5 in
-        M.alloc α6 in
+        let* α4 : u128.t := erc20.Erc20.t::["balance_of_impl"] α2 α3 in
+        M.alloc α4 in
       let* _ : M.Val unit :=
         let* α0 : mut_ref erc20.Erc20.t := M.read self in
         let* α1 : M.Val erc20.Erc20.t := deref α0 in
@@ -870,14 +860,12 @@ Section Impl_erc20_Erc20_t_2.
         let* α6 : erc20.AccountId.t := erc20.Env.t::["caller"] α5 in
         M.alloc α6 in
       let* α0 : mut_ref erc20.Erc20.t := M.read self in
-      let* α1 : M.Val erc20.Erc20.t := deref α0 in
-      let* α2 : mut_ref erc20.Erc20.t := borrow_mut α1 in
-      let* α3 : ref erc20.AccountId.t := borrow from in
-      let* α4 : ref erc20.AccountId.t := borrow to in
-      let* α5 : u128.t := M.read value in
-      let* α6 : core.result.Result.t unit erc20.Error.t :=
-        erc20.Erc20.t::["transfer_from_to"] α2 α3 α4 α5 in
-      let* α0 : M.Val (core.result.Result.t unit erc20.Error.t) := M.alloc α6 in
+      let* α1 : ref erc20.AccountId.t := borrow from in
+      let* α2 : ref erc20.AccountId.t := borrow to in
+      let* α3 : u128.t := M.read value in
+      let* α4 : core.result.Result.t unit erc20.Error.t :=
+        erc20.Erc20.t::["transfer_from_to"] α0 α1 α2 α3 in
+      let* α0 : M.Val (core.result.Result.t unit erc20.Error.t) := M.alloc α4 in
       M.read α0).
   
   Global Instance AssociatedFunction_transfer :
@@ -1018,29 +1006,27 @@ Section Impl_erc20_Erc20_t_2.
           M.alloc tt in
       let* _ : M.Val unit :=
         let* α0 : mut_ref erc20.Erc20.t := M.read self in
-        let* α1 : M.Val erc20.Erc20.t := deref α0 in
-        let* α2 : mut_ref erc20.Erc20.t := borrow_mut α1 in
-        let* α3 : ref erc20.AccountId.t := borrow from in
-        let* α4 : ref erc20.AccountId.t := borrow to in
-        let* α5 : u128.t := M.read value in
-        let* α6 : core.result.Result.t unit erc20.Error.t :=
-          erc20.Erc20.t::["transfer_from_to"] α2 α3 α4 α5 in
-        let* α7 :
+        let* α1 : ref erc20.AccountId.t := borrow from in
+        let* α2 : ref erc20.AccountId.t := borrow to in
+        let* α3 : u128.t := M.read value in
+        let* α4 : core.result.Result.t unit erc20.Error.t :=
+          erc20.Erc20.t::["transfer_from_to"] α0 α1 α2 α3 in
+        let* α5 :
             core.ops.control_flow.ControlFlow.t
               (core.result.Result.t core.convert.Infallible.t erc20.Error.t)
               unit :=
           (core.ops.try_trait.Try.branch
               (Self := core.result.Result.t unit erc20.Error.t)
               (Trait := ltac:(refine _)))
-            α6 in
-        let* α8 :
+            α4 in
+        let* α6 :
             M.Val
               (core.ops.control_flow.ControlFlow.t
                 (core.result.Result.t core.convert.Infallible.t erc20.Error.t)
                 unit) :=
-          M.alloc α7 in
-        let* α9 := M.read α8 in
-        match α9 with
+          M.alloc α5 in
+        let* α7 := M.read α6 in
+        match α7 with
         | core.ops.control_flow.ControlFlow.Break residual =>
           let* residual := M.alloc residual in
           let* α0 :

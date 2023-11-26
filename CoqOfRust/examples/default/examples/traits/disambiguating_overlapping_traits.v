@@ -125,19 +125,17 @@ Definition main : M unit :=
   M.function_body
     (let* form : M.Val disambiguating_overlapping_traits.Form.t :=
       let* α0 : ref str.t := M.read (mk_str "rustacean") in
-      let* α1 : M.Val str.t := deref α0 in
-      let* α2 : ref str.t := borrow α1 in
-      let* α3 : alloc.string.String.t :=
+      let* α1 : alloc.string.String.t :=
         (alloc.borrow.ToOwned.to_owned
             (Self := str.t)
             (Trait := ltac:(refine _)))
-          α2 in
-      let* α4 : M.Val u8.t := M.alloc 28 in
-      let* α5 : u8.t := M.read α4 in
+          α0 in
+      let* α2 : M.Val u8.t := M.alloc 28 in
+      let* α3 : u8.t := M.read α2 in
       M.alloc
         {|
-          disambiguating_overlapping_traits.Form.username := α3;
-          disambiguating_overlapping_traits.Form.age := α5;
+          disambiguating_overlapping_traits.Form.username := α1;
+          disambiguating_overlapping_traits.Form.age := α3;
         |} in
     let* username : M.Val alloc.string.String.t :=
       let* α0 : ref disambiguating_overlapping_traits.Form.t := borrow form in
@@ -149,54 +147,44 @@ Definition main : M unit :=
       M.alloc α1 in
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "rustacean") in
-      let* α1 : M.Val str.t := deref α0 in
-      let* α2 : ref str.t := borrow α1 in
-      let* α3 : alloc.string.String.t :=
+      let* α1 : alloc.string.String.t :=
         (alloc.string.ToString.to_string
             (Self := str.t)
             (Trait := ltac:(refine _)))
-          α2 in
-      let* α4 : M.Val alloc.string.String.t := M.alloc α3 in
-      let* α5 : ref alloc.string.String.t := borrow α4 in
-      let* α6 : ref alloc.string.String.t := borrow username in
-      let* α7 :
+          α0 in
+      let* α2 : M.Val alloc.string.String.t := M.alloc α1 in
+      let* α3 : ref alloc.string.String.t := borrow α2 in
+      let* α4 : ref alloc.string.String.t := borrow username in
+      let* α5 :
           M.Val ((ref alloc.string.String.t) * (ref alloc.string.String.t)) :=
-        M.alloc (α5, α6) in
-      let* α8 := M.read α7 in
-      match α8 with
+        M.alloc (α3, α4) in
+      let* α6 := M.read α5 in
+      match α6 with
       | (left_val, right_val) =>
         let* right_val := M.alloc right_val in
         let* left_val := M.alloc left_val in
         let* α0 : ref alloc.string.String.t := M.read left_val in
-        let* α1 : M.Val alloc.string.String.t := deref α0 in
-        let* α2 : ref alloc.string.String.t := borrow α1 in
-        let* α3 : ref alloc.string.String.t := M.read right_val in
-        let* α4 : M.Val alloc.string.String.t := deref α3 in
-        let* α5 : ref alloc.string.String.t := borrow α4 in
-        let* α6 : bool.t :=
+        let* α1 : ref alloc.string.String.t := M.read right_val in
+        let* α2 : bool.t :=
           (core.cmp.PartialEq.eq
               (Self := alloc.string.String.t)
               (Trait := ltac:(refine _)))
-            α2
-            α5 in
-        let* α7 : M.Val bool.t := M.alloc α6 in
-        let* α8 : M.Val bool.t := UnOp.not α7 in
-        let* α9 : M.Val bool.t := use α8 in
-        let* α10 : bool.t := M.read α9 in
-        if (α10 : bool) then
+            α0
+            α1 in
+        let* α3 : M.Val bool.t := M.alloc α2 in
+        let* α4 : M.Val bool.t := UnOp.not α3 in
+        let* α5 : M.Val bool.t := use α4 in
+        let* α6 : bool.t := M.read α5 in
+        if (α6 : bool) then
           let* kind : M.Val core.panicking.AssertKind.t :=
             M.alloc core.panicking.AssertKind.Eq in
           let* _ : M.Val never.t :=
             let* α0 : core.panicking.AssertKind.t := M.read kind in
             let* α1 : ref alloc.string.String.t := M.read left_val in
-            let* α2 : M.Val alloc.string.String.t := deref α1 in
-            let* α3 : ref alloc.string.String.t := borrow α2 in
-            let* α4 : ref alloc.string.String.t := M.read right_val in
-            let* α5 : M.Val alloc.string.String.t := deref α4 in
-            let* α6 : ref alloc.string.String.t := borrow α5 in
-            let* α7 : never.t :=
-              core.panicking.assert_failed α0 α3 α6 core.option.Option.None in
-            M.alloc α7 in
+            let* α2 : ref alloc.string.String.t := M.read right_val in
+            let* α3 : never.t :=
+              core.panicking.assert_failed α0 α1 α2 core.option.Option.None in
+            M.alloc α3 in
           let* α0 : M.Val unit := M.alloc tt in
           never_to_any α0
         else
@@ -234,14 +222,10 @@ Definition main : M unit :=
           let* _ : M.Val never.t :=
             let* α0 : core.panicking.AssertKind.t := M.read kind in
             let* α1 : ref u8.t := M.read left_val in
-            let* α2 : M.Val u8.t := deref α1 in
-            let* α3 : ref u8.t := borrow α2 in
-            let* α4 : ref u8.t := M.read right_val in
-            let* α5 : M.Val u8.t := deref α4 in
-            let* α6 : ref u8.t := borrow α5 in
-            let* α7 : never.t :=
-              core.panicking.assert_failed α0 α3 α6 core.option.Option.None in
-            M.alloc α7 in
+            let* α2 : ref u8.t := M.read right_val in
+            let* α3 : never.t :=
+              core.panicking.assert_failed α0 α1 α2 core.option.Option.None in
+            M.alloc α3 in
           let* α0 : M.Val unit := M.alloc tt in
           never_to_any α0
         else

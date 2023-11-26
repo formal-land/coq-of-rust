@@ -57,48 +57,38 @@ Section Impl_core_fmt_Debug_for_tuples_Matrix_t.
     let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
     M.function_body
       (let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
-      let* α1 : M.Val core.fmt.Formatter.t := deref α0 in
-      let* α2 : mut_ref core.fmt.Formatter.t := borrow_mut α1 in
-      let* α3 : ref str.t := M.read (mk_str "Matrix") in
-      let* α4 : M.Val str.t := deref α3 in
-      let* α5 : ref str.t := borrow α4 in
-      let* α6 : ref tuples.Matrix.t := M.read self in
-      let* α7 : M.Val tuples.Matrix.t := deref α6 in
-      let* α8 : ref f32.t := borrow α7.["0"] in
-      let* α9 : M.Val (ref f32.t) := M.alloc α8 in
-      let* α10 : M.Val (ref type not implemented) :=
-        pointer_coercion "Unsize" α9 in
-      let* α11 : ref type not implemented := M.read α10 in
-      let* α12 : ref tuples.Matrix.t := M.read self in
-      let* α13 : M.Val tuples.Matrix.t := deref α12 in
-      let* α14 : ref f32.t := borrow α13.["1"] in
-      let* α15 : M.Val (ref f32.t) := M.alloc α14 in
-      let* α16 : M.Val (ref type not implemented) :=
-        pointer_coercion "Unsize" α15 in
-      let* α17 : ref type not implemented := M.read α16 in
-      let* α18 : ref tuples.Matrix.t := M.read self in
-      let* α19 : M.Val tuples.Matrix.t := deref α18 in
-      let* α20 : ref f32.t := borrow α19.["2"] in
-      let* α21 : M.Val (ref f32.t) := M.alloc α20 in
-      let* α22 : M.Val (ref type not implemented) :=
-        pointer_coercion "Unsize" α21 in
-      let* α23 : ref type not implemented := M.read α22 in
-      let* α24 : ref tuples.Matrix.t := M.read self in
-      let* α25 : M.Val tuples.Matrix.t := deref α24 in
-      let* α26 : ref f32.t := borrow α25.["3"] in
-      let* α27 : M.Val (ref f32.t) := M.alloc α26 in
-      let* α28 : ref (ref f32.t) := borrow α27 in
-      let* α29 : M.Val (ref (ref f32.t)) := M.alloc α28 in
-      let* α30 : M.Val (ref type not implemented) :=
-        pointer_coercion "Unsize" α29 in
-      let* α31 : ref type not implemented := M.read α30 in
-      core.fmt.Formatter.t::["debug_tuple_field4_finish"]
-        α2
-        α5
-        α11
-        α17
-        α23
-        α31).
+      let* α1 : ref str.t := M.read (mk_str "Matrix") in
+      let* α2 : ref tuples.Matrix.t := M.read self in
+      let* α3 : M.Val tuples.Matrix.t := deref α2 in
+      let* α4 : ref f32.t := borrow α3.["0"] in
+      let* α5 : M.Val (ref f32.t) := M.alloc α4 in
+      let* α6 : M.Val (ref type not implemented) :=
+        pointer_coercion "Unsize" α5 in
+      let* α7 : ref type not implemented := M.read α6 in
+      let* α8 : ref tuples.Matrix.t := M.read self in
+      let* α9 : M.Val tuples.Matrix.t := deref α8 in
+      let* α10 : ref f32.t := borrow α9.["1"] in
+      let* α11 : M.Val (ref f32.t) := M.alloc α10 in
+      let* α12 : M.Val (ref type not implemented) :=
+        pointer_coercion "Unsize" α11 in
+      let* α13 : ref type not implemented := M.read α12 in
+      let* α14 : ref tuples.Matrix.t := M.read self in
+      let* α15 : M.Val tuples.Matrix.t := deref α14 in
+      let* α16 : ref f32.t := borrow α15.["2"] in
+      let* α17 : M.Val (ref f32.t) := M.alloc α16 in
+      let* α18 : M.Val (ref type not implemented) :=
+        pointer_coercion "Unsize" α17 in
+      let* α19 : ref type not implemented := M.read α18 in
+      let* α20 : ref tuples.Matrix.t := M.read self in
+      let* α21 : M.Val tuples.Matrix.t := deref α20 in
+      let* α22 : ref f32.t := borrow α21.["3"] in
+      let* α23 : M.Val (ref f32.t) := M.alloc α22 in
+      let* α24 : ref (ref f32.t) := borrow α23 in
+      let* α25 : M.Val (ref (ref f32.t)) := M.alloc α24 in
+      let* α26 : M.Val (ref type not implemented) :=
+        pointer_coercion "Unsize" α25 in
+      let* α27 : ref type not implemented := M.read α26 in
+      core.fmt.Formatter.t::["debug_tuple_field4_finish"] α0 α1 α7 α13 α19 α27).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {

@@ -145,25 +145,21 @@ Definition difference
   let* container : M.Val (ref C) := M.alloc container in
   M.function_body
     (let* α0 : ref C := M.read container in
-    let* α1 : M.Val C := deref α0 in
-    let* α2 : ref C := borrow α1 in
-    let* α3 : i32.t :=
+    let* α1 : i32.t :=
       (generics_associated_types_problem.Contains.last
           (Self := C)
           (Trait := ltac:(refine _)))
-        α2 in
-    let* α4 : M.Val i32.t := M.alloc α3 in
-    let* α5 : ref C := M.read container in
-    let* α6 : M.Val C := deref α5 in
-    let* α7 : ref C := borrow α6 in
-    let* α8 : i32.t :=
+        α0 in
+    let* α2 : M.Val i32.t := M.alloc α1 in
+    let* α3 : ref C := M.read container in
+    let* α4 : i32.t :=
       (generics_associated_types_problem.Contains.first
           (Self := C)
           (Trait := ltac:(refine _)))
-        α7 in
-    let* α9 : M.Val i32.t := M.alloc α8 in
-    let* α10 : M.Val i32.t := BinOp.sub α4 α9 in
-    M.read α10).
+        α3 in
+    let* α5 : M.Val i32.t := M.alloc α4 in
+    let* α6 : M.Val i32.t := BinOp.sub α2 α5 in
+    M.read α6).
 
 (*
 fn main() {

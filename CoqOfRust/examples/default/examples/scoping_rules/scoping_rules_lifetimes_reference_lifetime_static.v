@@ -11,10 +11,7 @@ fn coerce_static<'a>(_: &'a i32) -> &'a i32 {
 Definition coerce_static (arg : ref i32.t) : M (ref i32.t) :=
   let* arg : M.Val (ref i32.t) := M.alloc arg in
   M.function_body
-    (let* α0 : ref i32.t :=
-      M.read scoping_rules_lifetimes_reference_lifetime_static.NUM in
-    let* α1 : M.Val i32.t := deref α0 in
-    borrow α1).
+    (M.read scoping_rules_lifetimes_reference_lifetime_static.NUM).
 
 (*
 fn main() {
@@ -119,21 +116,19 @@ Definition main : M unit :=
         let* α4 : ref (slice (ref str.t)) := M.read α3 in
         let* α5 : ref i32.t :=
           M.read scoping_rules_lifetimes_reference_lifetime_static.NUM in
-        let* α6 : M.Val i32.t := deref α5 in
-        let* α7 : ref i32.t := borrow α6 in
-        let* α8 : core.fmt.rt.Argument.t :=
-          core.fmt.rt.Argument.t::["new_display"] α7 in
-        let* α9 : M.Val core.fmt.rt.Argument.t := M.alloc α8 in
-        let* α10 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α9 ] in
-        let* α11 : ref (array core.fmt.rt.Argument.t) := borrow α10 in
-        let* α12 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α11 in
-        let* α13 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
-          pointer_coercion "Unsize" α12 in
-        let* α14 : ref (slice core.fmt.rt.Argument.t) := M.read α13 in
-        let* α15 : core.fmt.Arguments.t :=
-          core.fmt.Arguments.t::["new_v1"] α4 α14 in
-        let* α16 : unit := std.io.stdio._print α15 in
-        M.alloc α16 in
+        let* α6 : core.fmt.rt.Argument.t :=
+          core.fmt.rt.Argument.t::["new_display"] α5 in
+        let* α7 : M.Val core.fmt.rt.Argument.t := M.alloc α6 in
+        let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
+        let* α9 : ref (array core.fmt.rt.Argument.t) := borrow α8 in
+        let* α10 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α9 in
+        let* α11 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
+          pointer_coercion "Unsize" α10 in
+        let* α12 : ref (slice core.fmt.rt.Argument.t) := M.read α11 in
+        let* α13 : core.fmt.Arguments.t :=
+          core.fmt.Arguments.t::["new_v1"] α4 α12 in
+        let* α14 : unit := std.io.stdio._print α13 in
+        M.alloc α14 in
       M.alloc tt in
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0).

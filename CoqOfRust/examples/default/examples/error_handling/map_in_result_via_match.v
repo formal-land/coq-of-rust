@@ -20,29 +20,25 @@ Definition multiply
   let* second_number_str : M.Val (ref str.t) := M.alloc second_number_str in
   M.function_body
     (let* α0 : ref str.t := M.read first_number_str in
-    let* α1 : M.Val str.t := deref α0 in
-    let* α2 : ref str.t := borrow α1 in
-    let* α3 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
-      str.t::["parse"] α2 in
+    let* α1 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
+      str.t::["parse"] α0 in
+    let* α2 :
+        M.Val (core.result.Result.t i32.t core.num.error.ParseIntError.t) :=
+      M.alloc α1 in
+    let* α3 := M.read α2 in
     let* α4 :
         M.Val (core.result.Result.t i32.t core.num.error.ParseIntError.t) :=
-      M.alloc α3 in
-    let* α5 := M.read α4 in
-    let* α6 :
-        M.Val (core.result.Result.t i32.t core.num.error.ParseIntError.t) :=
-      match α5 with
+      match α3 with
       | core.result.Result.Ok first_number =>
         let* first_number := M.alloc first_number in
         let* α0 : ref str.t := M.read second_number_str in
-        let* α1 : M.Val str.t := deref α0 in
-        let* α2 : ref str.t := borrow α1 in
-        let* α3 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
-          str.t::["parse"] α2 in
-        let* α4 :
+        let* α1 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
+          str.t::["parse"] α0 in
+        let* α2 :
             M.Val (core.result.Result.t i32.t core.num.error.ParseIntError.t) :=
-          M.alloc α3 in
-        let* α5 := M.read α4 in
-        match α5 with
+          M.alloc α1 in
+        let* α3 := M.read α2 in
+        match α3 with
         | core.result.Result.Ok second_number =>
           let* second_number := M.alloc second_number in
           let* α0 : M.Val i32.t := BinOp.mul first_number second_number in
@@ -58,7 +54,7 @@ Definition multiply
         let* α0 : core.num.error.ParseIntError.t := M.read e in
         M.alloc (core.result.Result.Err α0)
       end in
-    M.read α6).
+    M.read α4).
 
 (*
 fn print(result: Result<i32, ParseIntError>) {
@@ -150,14 +146,10 @@ Definition main : M unit :=
     (let* twenty :
         M.Val (core.result.Result.t i32.t core.num.error.ParseIntError.t) :=
       let* α0 : ref str.t := M.read (mk_str "10") in
-      let* α1 : M.Val str.t := deref α0 in
-      let* α2 : ref str.t := borrow α1 in
-      let* α3 : ref str.t := M.read (mk_str "2") in
-      let* α4 : M.Val str.t := deref α3 in
-      let* α5 : ref str.t := borrow α4 in
-      let* α6 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
-        map_in_result_via_match.multiply α2 α5 in
-      M.alloc α6 in
+      let* α1 : ref str.t := M.read (mk_str "2") in
+      let* α2 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
+        map_in_result_via_match.multiply α0 α1 in
+      M.alloc α2 in
     let* _ : M.Val unit :=
       let* α0 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
         M.read twenty in
@@ -166,14 +158,10 @@ Definition main : M unit :=
     let* tt :
         M.Val (core.result.Result.t i32.t core.num.error.ParseIntError.t) :=
       let* α0 : ref str.t := M.read (mk_str "t") in
-      let* α1 : M.Val str.t := deref α0 in
-      let* α2 : ref str.t := borrow α1 in
-      let* α3 : ref str.t := M.read (mk_str "2") in
-      let* α4 : M.Val str.t := deref α3 in
-      let* α5 : ref str.t := borrow α4 in
-      let* α6 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
-        map_in_result_via_match.multiply α2 α5 in
-      M.alloc α6 in
+      let* α1 : ref str.t := M.read (mk_str "2") in
+      let* α2 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
+        map_in_result_via_match.multiply α0 α1 in
+      M.alloc α2 in
     let* _ : M.Val unit :=
       let* α0 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
         M.read tt in

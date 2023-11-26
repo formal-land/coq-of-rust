@@ -20,16 +20,14 @@ Definition main : M unit :=
       let* α4 : ref str.t := M.read (mk_str "5") in
       let* α5 : mut_ref std.process.Command.t :=
         std.process.Command.t::["arg"] α3 α4 in
-      let* α6 : M.Val std.process.Command.t := deref α5 in
-      let* α7 : mut_ref std.process.Command.t := borrow_mut α6 in
-      let* α8 : core.result.Result.t std.process.Child.t std.io.error.Error.t :=
-        std.process.Command.t::["spawn"] α7 in
-      let* α9 : std.process.Child.t :=
+      let* α6 : core.result.Result.t std.process.Child.t std.io.error.Error.t :=
+        std.process.Command.t::["spawn"] α5 in
+      let* α7 : std.process.Child.t :=
         (core.result.Result.t
               std.process.Child.t
               std.io.error.Error.t)::["unwrap"]
-          α8 in
-      M.alloc α9 in
+          α6 in
+      M.alloc α7 in
     let* _result : M.Val std.process.ExitStatus.t :=
       let* α0 : mut_ref std.process.Child.t := borrow_mut child in
       let* α1 :

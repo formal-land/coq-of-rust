@@ -51,23 +51,18 @@ Definition main : M unit :=
       let* α4 : std.process.Stdio.t := std.process.Stdio.t::["piped"] in
       let* α5 : mut_ref std.process.Command.t :=
         std.process.Command.t::["stdin"] α3 α4 in
-      let* α6 : M.Val std.process.Command.t := deref α5 in
-      let* α7 : mut_ref std.process.Command.t := borrow_mut α6 in
-      let* α8 : std.process.Stdio.t := std.process.Stdio.t::["piped"] in
-      let* α9 : mut_ref std.process.Command.t :=
-        std.process.Command.t::["stdout"] α7 α8 in
-      let* α10 : M.Val std.process.Command.t := deref α9 in
-      let* α11 : mut_ref std.process.Command.t := borrow_mut α10 in
-      let* α12 :
-          core.result.Result.t std.process.Child.t std.io.error.Error.t :=
-        std.process.Command.t::["spawn"] α11 in
-      let* α13 :
+      let* α6 : std.process.Stdio.t := std.process.Stdio.t::["piped"] in
+      let* α7 : mut_ref std.process.Command.t :=
+        std.process.Command.t::["stdout"] α5 α6 in
+      let* α8 : core.result.Result.t std.process.Child.t std.io.error.Error.t :=
+        std.process.Command.t::["spawn"] α7 in
+      let* α9 :
           M.Val
             (core.result.Result.t std.process.Child.t std.io.error.Error.t) :=
-        M.alloc α12 in
-      let* α14 := M.read α13 in
-      let* α15 : M.Val std.process.Child.t :=
-        match α14 with
+        M.alloc α8 in
+      let* α10 := M.read α9 in
+      let* α11 : M.Val std.process.Child.t :=
+        match α10 with
         | core.result.Result.Err why =>
           let* why := M.alloc why in
           let* α0 : M.Val (array (ref str.t)) :=
@@ -96,7 +91,7 @@ Definition main : M unit :=
           let* process := M.alloc process in
           M.pure process
         end in
-      M.copy α15 in
+      M.copy α11 in
     let* _ : M.Val unit :=
       let* α0 : core.option.Option.t std.process.ChildStdin.t :=
         M.read process.["stdin"] in
@@ -107,21 +102,17 @@ Definition main : M unit :=
       let* α4 : ref (ref str.t) := M.read child_processes_pipes.PANGRAM in
       let* α5 : M.Val (ref str.t) := deref α4 in
       let* α6 : ref str.t := M.read α5 in
-      let* α7 : M.Val str.t := deref α6 in
-      let* α8 : ref str.t := borrow α7 in
-      let* α9 : ref (slice u8.t) := str.t::["as_bytes"] α8 in
-      let* α10 : M.Val (slice u8.t) := deref α9 in
-      let* α11 : ref (slice u8.t) := borrow α10 in
-      let* α12 : core.result.Result.t unit std.io.error.Error.t :=
+      let* α7 : ref (slice u8.t) := str.t::["as_bytes"] α6 in
+      let* α8 : core.result.Result.t unit std.io.error.Error.t :=
         (std.io.Write.write_all
             (Self := std.process.ChildStdin.t)
             (Trait := ltac:(refine _)))
           α3
-          α11 in
-      let* α13 : M.Val (core.result.Result.t unit std.io.error.Error.t) :=
-        M.alloc α12 in
-      let* α14 := M.read α13 in
-      match α14 with
+          α7 in
+      let* α9 : M.Val (core.result.Result.t unit std.io.error.Error.t) :=
+        M.alloc α8 in
+      let* α10 := M.read α9 in
+      match α10 with
       | core.result.Result.Err why =>
         let* why := M.alloc why in
         let* α0 : M.Val (array (ref str.t)) :=

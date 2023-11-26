@@ -12,14 +12,12 @@ Definition create_fn : M _ (* OpaqueTy *) :=
   M.function_body
     (let* text : M.Val alloc.string.String.t :=
       let* α0 : ref str.t := M.read (mk_str "Fn") in
-      let* α1 : M.Val str.t := deref α0 in
-      let* α2 : ref str.t := borrow α1 in
-      let* α3 : alloc.string.String.t :=
+      let* α1 : alloc.string.String.t :=
         (alloc.borrow.ToOwned.to_owned
             (Self := str.t)
             (Trait := ltac:(refine _)))
-          α2 in
-      M.alloc α3 in
+          α0 in
+      M.alloc α1 in
     M.read
       (let* _ : M.Val unit :=
         let* α0 : M.Val (array (ref str.t)) :=
@@ -59,14 +57,12 @@ Definition create_fnmut : M _ (* OpaqueTy *) :=
   M.function_body
     (let* text : M.Val alloc.string.String.t :=
       let* α0 : ref str.t := M.read (mk_str "FnMut") in
-      let* α1 : M.Val str.t := deref α0 in
-      let* α2 : ref str.t := borrow α1 in
-      let* α3 : alloc.string.String.t :=
+      let* α1 : alloc.string.String.t :=
         (alloc.borrow.ToOwned.to_owned
             (Self := str.t)
             (Trait := ltac:(refine _)))
-          α2 in
-      M.alloc α3 in
+          α0 in
+      M.alloc α1 in
     M.read
       (let* _ : M.Val unit :=
         let* α0 : M.Val (array (ref str.t)) :=
@@ -104,14 +100,12 @@ Definition create_fnonce : M _ (* OpaqueTy *) :=
   M.function_body
     (let* text : M.Val alloc.string.String.t :=
       let* α0 : ref str.t := M.read (mk_str "FnOnce") in
-      let* α1 : M.Val str.t := deref α0 in
-      let* α2 : ref str.t := borrow α1 in
-      let* α3 : alloc.string.String.t :=
+      let* α1 : alloc.string.String.t :=
         (alloc.borrow.ToOwned.to_owned
             (Self := str.t)
             (Trait := ltac:(refine _)))
-          α2 in
-      M.alloc α3 in
+          α0 in
+      M.alloc α1 in
     M.read
       (let* _ : M.Val unit :=
         let* α0 : M.Val (array (ref str.t)) :=

@@ -19,34 +19,26 @@ Definition main : M unit :=
   M.function_body
     (let* strings : M.Val (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t) :=
       let* α0 : ref str.t := M.read (mk_str "tofu") in
-      let* α1 : M.Val str.t := deref α0 in
-      let* α2 : ref str.t := borrow α1 in
+      let* α1 : M.Val (ref str.t) := M.alloc α0 in
+      let* α2 : ref str.t := M.read (mk_str "93") in
       let* α3 : M.Val (ref str.t) := M.alloc α2 in
-      let* α4 : ref str.t := M.read (mk_str "93") in
-      let* α5 : M.Val str.t := deref α4 in
-      let* α6 : ref str.t := borrow α5 in
+      let* α4 : ref str.t := M.read (mk_str "999") in
+      let* α5 : M.Val (ref str.t) := M.alloc α4 in
+      let* α6 : ref str.t := M.read (mk_str "18") in
       let* α7 : M.Val (ref str.t) := M.alloc α6 in
-      let* α8 : ref str.t := M.read (mk_str "999") in
-      let* α9 : M.Val str.t := deref α8 in
-      let* α10 : ref str.t := borrow α9 in
-      let* α11 : M.Val (ref str.t) := M.alloc α10 in
-      let* α12 : ref str.t := M.read (mk_str "18") in
-      let* α13 : M.Val str.t := deref α12 in
-      let* α14 : ref str.t := borrow α13 in
-      let* α15 : M.Val (ref str.t) := M.alloc α14 in
-      let* α16 : M.Val (array (ref str.t)) :=
-        M.alloc [ mk_str "42"; α3; α7; α11; α15 ] in
-      let* α17 :
+      let* α8 : M.Val (array (ref str.t)) :=
+        M.alloc [ mk_str "42"; α1; α3; α5; α7 ] in
+      let* α9 :
           M.Val (alloc.boxed.Box.t (array (ref str.t)) alloc.alloc.Global.t) :=
-        (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α16 in
-      let* α18 :
+        (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α8 in
+      let* α10 :
           M.Val (alloc.boxed.Box.t (slice (ref str.t)) alloc.alloc.Global.t) :=
-        pointer_coercion "Unsize" α17 in
-      let* α19 : alloc.boxed.Box.t (slice (ref str.t)) alloc.alloc.Global.t :=
-        M.read α18 in
-      let* α20 : alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t :=
-        (slice (ref str.t))::["into_vec"] α19 in
-      M.alloc α20 in
+        pointer_coercion "Unsize" α9 in
+      let* α11 : alloc.boxed.Box.t (slice (ref str.t)) alloc.alloc.Global.t :=
+        M.read α10 in
+      let* α12 : alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t :=
+        (slice (ref str.t))::["into_vec"] α11 in
+      M.alloc α12 in
     let* errors :
         M.Val
           (alloc.vec.Vec.t
@@ -70,11 +62,9 @@ Definition main : M unit :=
       let* α2 : type not implemented :=
         M.read
           (let* α0 : ref str.t := M.read s in
-          let* α1 : M.Val str.t := deref α0 in
-          let* α2 : ref str.t := borrow α1 in
-          let* α3 : core.result.Result.t u8.t core.num.error.ParseIntError.t :=
-            str.t::["parse"] α2 in
-          M.alloc α3) in
+          let* α1 : core.result.Result.t u8.t core.num.error.ParseIntError.t :=
+            str.t::["parse"] α0 in
+          M.alloc α1) in
       let* α3 :
           core.iter.adapters.map.Map.t
             (alloc.vec.into_iter.IntoIter.t (ref str.t) alloc.alloc.Global.t)

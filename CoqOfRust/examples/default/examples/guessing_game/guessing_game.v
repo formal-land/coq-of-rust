@@ -97,13 +97,11 @@ Definition main : M unit :=
           let* α4 : core.result.Result.t usize.t std.io.error.Error.t :=
             std.io.stdio.Stdin.t::["read_line"] α2 α3 in
           let* α5 : ref str.t := M.read (mk_str "Failed to read line") in
-          let* α6 : M.Val str.t := deref α5 in
-          let* α7 : ref str.t := borrow α6 in
-          let* α8 : usize.t :=
+          let* α6 : usize.t :=
             (core.result.Result.t usize.t std.io.error.Error.t)::["expect"]
               α4
-              α7 in
-          M.alloc α8 in
+              α5 in
+          M.alloc α6 in
         let* guess : M.Val u32.t :=
           let* α0 : ref alloc.string.String.t := borrow guess in
           let* α1 : ref str.t :=
@@ -111,20 +109,16 @@ Definition main : M unit :=
                 (Self := alloc.string.String.t)
                 (Trait := ltac:(refine _)))
               α0 in
-          let* α2 : M.Val str.t := deref α1 in
-          let* α3 : ref str.t := borrow α2 in
-          let* α4 : ref str.t := str.t::["trim"] α3 in
-          let* α5 : M.Val str.t := deref α4 in
-          let* α6 : ref str.t := borrow α5 in
-          let* α7 : core.result.Result.t u32.t core.num.error.ParseIntError.t :=
-            str.t::["parse"] α6 in
-          let* α8 :
+          let* α2 : ref str.t := str.t::["trim"] α1 in
+          let* α3 : core.result.Result.t u32.t core.num.error.ParseIntError.t :=
+            str.t::["parse"] α2 in
+          let* α4 :
               M.Val
                 (core.result.Result.t u32.t core.num.error.ParseIntError.t) :=
-            M.alloc α7 in
-          let* α9 := M.read α8 in
-          let* α10 : M.Val u32.t :=
-            match α9 with
+            M.alloc α3 in
+          let* α5 := M.read α4 in
+          let* α6 : M.Val u32.t :=
+            match α5 with
             | core.result.Result.Ok num =>
               let* num := M.alloc num in
               M.pure num
@@ -132,7 +126,7 @@ Definition main : M unit :=
               let* α0 : M.Val never.t := Continue in
               never_to_any α0
             end in
-          M.copy α10 in
+          M.copy α6 in
         let* _ : M.Val unit :=
           let* _ : M.Val unit :=
             let* α0 : M.Val (array (ref str.t)) :=

@@ -38,40 +38,26 @@ Section Impl_core_fmt_Debug_for_structures_Person_t.
     let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
     M.function_body
       (let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
-      let* α1 : M.Val core.fmt.Formatter.t := deref α0 in
-      let* α2 : mut_ref core.fmt.Formatter.t := borrow_mut α1 in
-      let* α3 : ref str.t := M.read (mk_str "Person") in
-      let* α4 : M.Val str.t := deref α3 in
-      let* α5 : ref str.t := borrow α4 in
-      let* α6 : ref str.t := M.read (mk_str "name") in
-      let* α7 : M.Val str.t := deref α6 in
-      let* α8 : ref str.t := borrow α7 in
-      let* α9 : ref structures.Person.t := M.read self in
-      let* α10 : M.Val structures.Person.t := deref α9 in
-      let* α11 : ref alloc.string.String.t := borrow α10.["name"] in
-      let* α12 : M.Val (ref alloc.string.String.t) := M.alloc α11 in
-      let* α13 : M.Val (ref type not implemented) :=
-        pointer_coercion "Unsize" α12 in
-      let* α14 : ref type not implemented := M.read α13 in
-      let* α15 : ref str.t := M.read (mk_str "age") in
-      let* α16 : M.Val str.t := deref α15 in
-      let* α17 : ref str.t := borrow α16 in
-      let* α18 : ref structures.Person.t := M.read self in
-      let* α19 : M.Val structures.Person.t := deref α18 in
-      let* α20 : ref u8.t := borrow α19.["age"] in
-      let* α21 : M.Val (ref u8.t) := M.alloc α20 in
-      let* α22 : ref (ref u8.t) := borrow α21 in
-      let* α23 : M.Val (ref (ref u8.t)) := M.alloc α22 in
-      let* α24 : M.Val (ref type not implemented) :=
-        pointer_coercion "Unsize" α23 in
-      let* α25 : ref type not implemented := M.read α24 in
-      core.fmt.Formatter.t::["debug_struct_field2_finish"]
-        α2
-        α5
-        α8
-        α14
-        α17
-        α25).
+      let* α1 : ref str.t := M.read (mk_str "Person") in
+      let* α2 : ref str.t := M.read (mk_str "name") in
+      let* α3 : ref structures.Person.t := M.read self in
+      let* α4 : M.Val structures.Person.t := deref α3 in
+      let* α5 : ref alloc.string.String.t := borrow α4.["name"] in
+      let* α6 : M.Val (ref alloc.string.String.t) := M.alloc α5 in
+      let* α7 : M.Val (ref type not implemented) :=
+        pointer_coercion "Unsize" α6 in
+      let* α8 : ref type not implemented := M.read α7 in
+      let* α9 : ref str.t := M.read (mk_str "age") in
+      let* α10 : ref structures.Person.t := M.read self in
+      let* α11 : M.Val structures.Person.t := deref α10 in
+      let* α12 : ref u8.t := borrow α11.["age"] in
+      let* α13 : M.Val (ref u8.t) := M.alloc α12 in
+      let* α14 : ref (ref u8.t) := borrow α13 in
+      let* α15 : M.Val (ref (ref u8.t)) := M.alloc α14 in
+      let* α16 : M.Val (ref type not implemented) :=
+        pointer_coercion "Unsize" α15 in
+      let* α17 : ref type not implemented := M.read α16 in
+      core.fmt.Formatter.t::["debug_struct_field2_finish"] α0 α1 α2 α8 α9 α17).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {

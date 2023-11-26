@@ -34,12 +34,8 @@ Section Impl_core_fmt_Debug_for_operator_overloading_FooBar_t.
     let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
     M.function_body
       (let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
-      let* α1 : M.Val core.fmt.Formatter.t := deref α0 in
-      let* α2 : mut_ref core.fmt.Formatter.t := borrow_mut α1 in
-      let* α3 : ref str.t := M.read (mk_str "FooBar") in
-      let* α4 : M.Val str.t := deref α3 in
-      let* α5 : ref str.t := borrow α4 in
-      core.fmt.Formatter.t::["write_str"] α2 α5).
+      let* α1 : ref str.t := M.read (mk_str "FooBar") in
+      core.fmt.Formatter.t::["write_str"] α0 α1).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -73,12 +69,8 @@ Section Impl_core_fmt_Debug_for_operator_overloading_BarFoo_t.
     let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
     M.function_body
       (let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
-      let* α1 : M.Val core.fmt.Formatter.t := deref α0 in
-      let* α2 : mut_ref core.fmt.Formatter.t := borrow_mut α1 in
-      let* α3 : ref str.t := M.read (mk_str "BarFoo") in
-      let* α4 : M.Val str.t := deref α3 in
-      let* α5 : ref str.t := borrow α4 in
-      core.fmt.Formatter.t::["write_str"] α2 α5).
+      let* α1 : ref str.t := M.read (mk_str "BarFoo") in
+      core.fmt.Formatter.t::["write_str"] α0 α1).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {

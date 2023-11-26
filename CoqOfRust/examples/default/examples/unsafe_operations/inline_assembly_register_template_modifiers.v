@@ -47,14 +47,10 @@ Definition main : M unit :=
           let* _ : M.Val never.t :=
             let* α0 : core.panicking.AssertKind.t := M.read kind in
             let* α1 : ref u16.t := M.read left_val in
-            let* α2 : M.Val u16.t := deref α1 in
-            let* α3 : ref u16.t := borrow α2 in
-            let* α4 : ref u16.t := M.read right_val in
-            let* α5 : M.Val u16.t := deref α4 in
-            let* α6 : ref u16.t := borrow α5 in
-            let* α7 : never.t :=
-              core.panicking.assert_failed α0 α3 α6 core.option.Option.None in
-            M.alloc α7 in
+            let* α2 : ref u16.t := M.read right_val in
+            let* α3 : never.t :=
+              core.panicking.assert_failed α0 α1 α2 core.option.Option.None in
+            M.alloc α3 in
           let* α0 : M.Val unit := M.alloc tt in
           never_to_any α0
         else

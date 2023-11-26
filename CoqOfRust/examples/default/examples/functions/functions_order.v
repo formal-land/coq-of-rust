@@ -98,12 +98,10 @@ Section Impl_functions_order_SomeTrait_for_functions_order_SomeType_t.
     let* self : M.Val (ref ltac:(Self)) := M.alloc self in
     M.function_body
       (let* α0 : ref functions_order.SomeType.t := M.read self in
-      let* α1 : M.Val functions_order.SomeType.t := deref α0 in
-      let* α2 : ref functions_order.SomeType.t := borrow α1 in
       (functions_order.SomeTrait.some_trait_bar
           (Self := functions_order.SomeType.t)
           (Trait := ltac:(refine _)))
-        α2).
+        α0).
   
   Global Instance AssociatedFunction_some_trait_foo :
     Notations.DoubleColon ltac:(Self) "some_trait_foo" := {

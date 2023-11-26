@@ -234,21 +234,19 @@ Definition main : M unit :=
               (Trait := ltac:(refine _)))
             α5
             α7 in
-        let* α9 : M.Val i32.t := deref α8 in
-        let* α10 : ref i32.t := borrow α9 in
-        let* α11 : core.fmt.rt.Argument.t :=
-          core.fmt.rt.Argument.t::["new_display"] α10 in
-        let* α12 : M.Val core.fmt.rt.Argument.t := M.alloc α11 in
-        let* α13 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α12 ] in
-        let* α14 : ref (array core.fmt.rt.Argument.t) := borrow α13 in
-        let* α15 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α14 in
-        let* α16 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
-          pointer_coercion "Unsize" α15 in
-        let* α17 : ref (slice core.fmt.rt.Argument.t) := M.read α16 in
-        let* α18 : core.fmt.Arguments.t :=
-          core.fmt.Arguments.t::["new_v1"] α4 α17 in
-        let* α19 : unit := std.io.stdio._print α18 in
-        M.alloc α19 in
+        let* α9 : core.fmt.rt.Argument.t :=
+          core.fmt.rt.Argument.t::["new_display"] α8 in
+        let* α10 : M.Val core.fmt.rt.Argument.t := M.alloc α9 in
+        let* α11 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α10 ] in
+        let* α12 : ref (array core.fmt.rt.Argument.t) := borrow α11 in
+        let* α13 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α12 in
+        let* α14 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
+          pointer_coercion "Unsize" α13 in
+        let* α15 : ref (slice core.fmt.rt.Argument.t) := M.read α14 in
+        let* α16 : core.fmt.Arguments.t :=
+          core.fmt.Arguments.t::["new_v1"] α4 α15 in
+        let* α17 : unit := std.io.stdio._print α16 in
+        M.alloc α17 in
       M.alloc tt in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
@@ -302,18 +300,16 @@ Definition main : M unit :=
             (Self := alloc.vec.Vec.t i32.t alloc.alloc.Global.t)
             (Trait := ltac:(refine _)))
           α0 in
-      let* α2 : M.Val (slice i32.t) := deref α1 in
-      let* α3 : ref (slice i32.t) := borrow α2 in
-      let* α4 : core.slice.iter.Iter.t i32.t := (slice i32.t)::["iter"] α3 in
-      let* α5 : core.slice.iter.Iter.t i32.t :=
+      let* α2 : core.slice.iter.Iter.t i32.t := (slice i32.t)::["iter"] α1 in
+      let* α3 : core.slice.iter.Iter.t i32.t :=
         (core.iter.traits.collect.IntoIterator.into_iter
             (Self := core.slice.iter.Iter.t i32.t)
             (Trait := ltac:(refine _)))
-          α4 in
-      let* α6 : M.Val (core.slice.iter.Iter.t i32.t) := M.alloc α5 in
-      let* α7 := M.read α6 in
-      let* α8 : M.Val unit :=
-        match α7 with
+          α2 in
+      let* α4 : M.Val (core.slice.iter.Iter.t i32.t) := M.alloc α3 in
+      let* α5 := M.read α4 in
+      let* α6 : M.Val unit :=
+        match α5 with
         | iter =>
           let* iter := M.alloc iter in
           loop
@@ -366,7 +362,7 @@ Definition main : M unit :=
               end in
             M.alloc tt)
         end in
-      use α8 in
+      use α6 in
     let* _ : M.Val unit :=
       let* α0 : ref (alloc.vec.Vec.t i32.t alloc.alloc.Global.t) := borrow xs in
       let* α1 : ref (slice i32.t) :=
@@ -374,17 +370,15 @@ Definition main : M unit :=
             (Self := alloc.vec.Vec.t i32.t alloc.alloc.Global.t)
             (Trait := ltac:(refine _)))
           α0 in
-      let* α2 : M.Val (slice i32.t) := deref α1 in
-      let* α3 : ref (slice i32.t) := borrow α2 in
-      let* α4 : core.slice.iter.Iter.t i32.t := (slice i32.t)::["iter"] α3 in
-      let* α5 :
+      let* α2 : core.slice.iter.Iter.t i32.t := (slice i32.t)::["iter"] α1 in
+      let* α3 :
           core.iter.adapters.enumerate.Enumerate.t
             (core.slice.iter.Iter.t i32.t) :=
         (core.iter.traits.iterator.Iterator.enumerate
             (Self := core.slice.iter.Iter.t i32.t)
             (Trait := ltac:(refine _)))
-          α4 in
-      let* α6 :
+          α2 in
+      let* α4 :
           core.iter.adapters.enumerate.Enumerate.t
             (core.slice.iter.Iter.t i32.t) :=
         (core.iter.traits.collect.IntoIterator.into_iter
@@ -392,15 +386,15 @@ Definition main : M unit :=
               core.iter.adapters.enumerate.Enumerate.t
                 (core.slice.iter.Iter.t i32.t))
             (Trait := ltac:(refine _)))
-          α5 in
-      let* α7 :
+          α3 in
+      let* α5 :
           M.Val
             (core.iter.adapters.enumerate.Enumerate.t
               (core.slice.iter.Iter.t i32.t)) :=
-        M.alloc α6 in
-      let* α8 := M.read α7 in
-      let* α9 : M.Val unit :=
-        match α8 with
+        M.alloc α4 in
+      let* α6 := M.read α5 in
+      let* α7 : M.Val unit :=
+        match α6 with
         | iter =>
           let* iter := M.alloc iter in
           loop
@@ -469,7 +463,7 @@ Definition main : M unit :=
               end in
             M.alloc tt)
         end in
-      use α9 in
+      use α7 in
     let* _ : M.Val unit :=
       let* α0 : mut_ref (alloc.vec.Vec.t i32.t alloc.alloc.Global.t) :=
         borrow_mut xs in
@@ -478,19 +472,17 @@ Definition main : M unit :=
             (Self := alloc.vec.Vec.t i32.t alloc.alloc.Global.t)
             (Trait := ltac:(refine _)))
           α0 in
-      let* α2 : M.Val (slice i32.t) := deref α1 in
-      let* α3 : mut_ref (slice i32.t) := borrow_mut α2 in
-      let* α4 : core.slice.iter.IterMut.t i32.t :=
-        (slice i32.t)::["iter_mut"] α3 in
-      let* α5 : core.slice.iter.IterMut.t i32.t :=
+      let* α2 : core.slice.iter.IterMut.t i32.t :=
+        (slice i32.t)::["iter_mut"] α1 in
+      let* α3 : core.slice.iter.IterMut.t i32.t :=
         (core.iter.traits.collect.IntoIterator.into_iter
             (Self := core.slice.iter.IterMut.t i32.t)
             (Trait := ltac:(refine _)))
-          α4 in
-      let* α6 : M.Val (core.slice.iter.IterMut.t i32.t) := M.alloc α5 in
-      let* α7 := M.read α6 in
-      let* α8 : M.Val unit :=
-        match α7 with
+          α2 in
+      let* α4 : M.Val (core.slice.iter.IterMut.t i32.t) := M.alloc α3 in
+      let* α5 := M.read α4 in
+      let* α6 : M.Val unit :=
+        match α5 with
         | iter =>
           let* iter := M.alloc iter in
           loop
@@ -520,7 +512,7 @@ Definition main : M unit :=
               end in
             M.alloc tt)
         end in
-      use α8 in
+      use α6 in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
         let* α0 : M.Val (array (ref str.t)) :=

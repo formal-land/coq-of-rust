@@ -24,29 +24,21 @@ Module checked.
       let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
       M.function_body
         (let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
-        let* α1 : M.Val core.fmt.Formatter.t := deref α0 in
-        let* α2 : mut_ref core.fmt.Formatter.t := borrow_mut α1 in
-        let* α3 := M.read self in
-        let* α4 : M.Val (ref str.t) :=
-          match α3 with
+        let* α1 := M.read self in
+        let* α2 : M.Val (ref str.t) :=
+          match α1 with
           | result.checked.MathError.DivisionByZero  =>
             let* α0 : ref str.t := M.read (mk_str "DivisionByZero") in
-            let* α1 : M.Val str.t := deref α0 in
-            let* α2 : ref str.t := borrow α1 in
-            M.alloc α2
+            M.alloc α0
           | result.checked.MathError.NonPositiveLogarithm  =>
             let* α0 : ref str.t := M.read (mk_str "NonPositiveLogarithm") in
-            let* α1 : M.Val str.t := deref α0 in
-            let* α2 : ref str.t := borrow α1 in
-            M.alloc α2
+            M.alloc α0
           | result.checked.MathError.NegativeSquareRoot  =>
             let* α0 : ref str.t := M.read (mk_str "NegativeSquareRoot") in
-            let* α1 : M.Val str.t := deref α0 in
-            let* α2 : ref str.t := borrow α1 in
-            M.alloc α2
+            M.alloc α0
           end in
-        let* α5 : ref str.t := M.read α4 in
-        core.fmt.Formatter.t::["write_str"] α2 α5).
+        let* α3 : ref str.t := M.read α2 in
+        core.fmt.Formatter.t::["write_str"] α0 α3).
     
     Global Instance AssociatedFunction_fmt :
       Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -168,29 +160,21 @@ Section Impl_core_fmt_Debug_for_result_checked_MathError_t.
     let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
     M.function_body
       (let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
-      let* α1 : M.Val core.fmt.Formatter.t := deref α0 in
-      let* α2 : mut_ref core.fmt.Formatter.t := borrow_mut α1 in
-      let* α3 := M.read self in
-      let* α4 : M.Val (ref str.t) :=
-        match α3 with
+      let* α1 := M.read self in
+      let* α2 : M.Val (ref str.t) :=
+        match α1 with
         | result.checked.MathError.DivisionByZero  =>
           let* α0 : ref str.t := M.read (mk_str "DivisionByZero") in
-          let* α1 : M.Val str.t := deref α0 in
-          let* α2 : ref str.t := borrow α1 in
-          M.alloc α2
+          M.alloc α0
         | result.checked.MathError.NonPositiveLogarithm  =>
           let* α0 : ref str.t := M.read (mk_str "NonPositiveLogarithm") in
-          let* α1 : M.Val str.t := deref α0 in
-          let* α2 : ref str.t := borrow α1 in
-          M.alloc α2
+          M.alloc α0
         | result.checked.MathError.NegativeSquareRoot  =>
           let* α0 : ref str.t := M.read (mk_str "NegativeSquareRoot") in
-          let* α1 : M.Val str.t := deref α0 in
-          let* α2 : ref str.t := borrow α1 in
-          M.alloc α2
+          M.alloc α0
         end in
-      let* α5 : ref str.t := M.read α4 in
-      core.fmt.Formatter.t::["write_str"] α2 α5).
+      let* α3 : ref str.t := M.read α2 in
+      core.fmt.Formatter.t::["write_str"] α0 α3).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {

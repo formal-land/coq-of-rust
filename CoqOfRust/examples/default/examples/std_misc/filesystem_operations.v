@@ -155,19 +155,15 @@ Definition echo
       M.copy α5 in
     let* α0 : mut_ref std.fs.File.t := borrow_mut f in
     let* α1 : ref str.t := M.read s in
-    let* α2 : M.Val str.t := deref α1 in
-    let* α3 : ref str.t := borrow α2 in
-    let* α4 : ref (slice u8.t) := str.t::["as_bytes"] α3 in
-    let* α5 : M.Val (slice u8.t) := deref α4 in
-    let* α6 : ref (slice u8.t) := borrow α5 in
-    let* α7 : core.result.Result.t unit std.io.error.Error.t :=
+    let* α2 : ref (slice u8.t) := str.t::["as_bytes"] α1 in
+    let* α3 : core.result.Result.t unit std.io.error.Error.t :=
       (std.io.Write.write_all
           (Self := std.fs.File.t)
           (Trait := ltac:(refine _)))
         α0
-        α6 in
+        α2 in
     let* α0 : M.Val (core.result.Result.t unit std.io.error.Error.t) :=
-      M.alloc α7 in
+      M.alloc α3 in
     M.read α0).
 
 (*
@@ -190,30 +186,28 @@ Definition touch
     let* α4 : bool.t := M.read α3 in
     let* α5 : mut_ref std.fs.OpenOptions.t :=
       std.fs.OpenOptions.t::["create"] α2 α4 in
-    let* α6 : M.Val std.fs.OpenOptions.t := deref α5 in
-    let* α7 : mut_ref std.fs.OpenOptions.t := borrow_mut α6 in
-    let* α8 : M.Val bool.t := M.alloc true in
-    let* α9 : bool.t := M.read α8 in
-    let* α10 : mut_ref std.fs.OpenOptions.t :=
-      std.fs.OpenOptions.t::["write"] α7 α9 in
-    let* α11 : M.Val std.fs.OpenOptions.t := deref α10 in
-    let* α12 : ref std.fs.OpenOptions.t := borrow α11 in
-    let* α13 : ref std.path.Path.t := M.read path in
-    let* α14 : core.result.Result.t std.fs.File.t std.io.error.Error.t :=
-      std.fs.OpenOptions.t::["open"] α12 α13 in
-    let* α15 :
+    let* α6 : M.Val bool.t := M.alloc true in
+    let* α7 : bool.t := M.read α6 in
+    let* α8 : mut_ref std.fs.OpenOptions.t :=
+      std.fs.OpenOptions.t::["write"] α5 α7 in
+    let* α9 : M.Val std.fs.OpenOptions.t := deref α8 in
+    let* α10 : ref std.fs.OpenOptions.t := borrow α9 in
+    let* α11 : ref std.path.Path.t := M.read path in
+    let* α12 : core.result.Result.t std.fs.File.t std.io.error.Error.t :=
+      std.fs.OpenOptions.t::["open"] α10 α11 in
+    let* α13 :
         M.Val (core.result.Result.t std.fs.File.t std.io.error.Error.t) :=
-      M.alloc α14 in
-    let* α16 := M.read α15 in
-    let* α17 : M.Val (core.result.Result.t unit std.io.error.Error.t) :=
-      match α16 with
+      M.alloc α12 in
+    let* α14 := M.read α13 in
+    let* α15 : M.Val (core.result.Result.t unit std.io.error.Error.t) :=
+      match α14 with
       | core.result.Result.Ok _ => M.alloc (core.result.Result.Ok tt)
       | core.result.Result.Err e =>
         let* e := M.alloc e in
         let* α0 : std.io.error.Error.t := M.read e in
         M.alloc (core.result.Result.Err α0)
       end in
-    M.read α17).
+    M.read α15).
 
 (*
 fn main() {
@@ -355,17 +349,11 @@ Definition main : M unit :=
       M.alloc tt in
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "hello") in
-      let* α1 : M.Val str.t := deref α0 in
-      let* α2 : ref str.t := borrow α1 in
-      let* α3 : ref str.t := M.read (mk_str "a/b.txt") in
-      let* α4 : M.Val str.t := deref α3 in
-      let* α5 : ref str.t := borrow α4 in
-      let* α6 : ref std.path.Path.t := std.path.Path.t::["new"] α5 in
-      let* α7 : M.Val std.path.Path.t := deref α6 in
-      let* α8 : ref std.path.Path.t := borrow α7 in
-      let* α9 : core.result.Result.t unit std.io.error.Error.t :=
-        filesystem_operations.echo α2 α8 in
-      let* α10 : type not implemented :=
+      let* α1 : ref str.t := M.read (mk_str "a/b.txt") in
+      let* α2 : ref std.path.Path.t := std.path.Path.t::["new"] α1 in
+      let* α3 : core.result.Result.t unit std.io.error.Error.t :=
+        filesystem_operations.echo α0 α2 in
+      let* α4 : type not implemented :=
         M.read
           (let* _ : M.Val unit :=
             let* _ : M.Val unit :=
@@ -399,11 +387,11 @@ Definition main : M unit :=
               M.alloc α17 in
             M.alloc tt in
           M.alloc tt) in
-      let* α11 : unit :=
+      let* α5 : unit :=
         (core.result.Result.t unit std.io.error.Error.t)::["unwrap_or_else"]
-          α9
-          α10 in
-      M.alloc α11 in
+          α3
+          α4 in
+      M.alloc α5 in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
         let* α0 : M.Val (array (ref str.t)) :=
@@ -479,14 +467,10 @@ Definition main : M unit :=
       M.alloc tt in
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "a/c/e.txt") in
-      let* α1 : M.Val str.t := deref α0 in
-      let* α2 : ref str.t := borrow α1 in
-      let* α3 : ref std.path.Path.t := std.path.Path.t::["new"] α2 in
-      let* α4 : M.Val std.path.Path.t := deref α3 in
-      let* α5 : ref std.path.Path.t := borrow α4 in
-      let* α6 : core.result.Result.t unit std.io.error.Error.t :=
-        filesystem_operations.touch α5 in
-      let* α7 : type not implemented :=
+      let* α1 : ref std.path.Path.t := std.path.Path.t::["new"] α0 in
+      let* α2 : core.result.Result.t unit std.io.error.Error.t :=
+        filesystem_operations.touch α1 in
+      let* α3 : type not implemented :=
         M.read
           (let* _ : M.Val unit :=
             let* _ : M.Val unit :=
@@ -520,11 +504,11 @@ Definition main : M unit :=
               M.alloc α17 in
             M.alloc tt in
           M.alloc tt) in
-      let* α8 : unit :=
+      let* α4 : unit :=
         (core.result.Result.t unit std.io.error.Error.t)::["unwrap_or_else"]
-          α6
-          α7 in
-      M.alloc α8 in
+          α2
+          α3 in
+      M.alloc α4 in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
         let* α0 : M.Val (array (ref str.t)) :=
@@ -609,20 +593,16 @@ Definition main : M unit :=
       M.alloc tt in
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "a/c/b.txt") in
-      let* α1 : M.Val str.t := deref α0 in
-      let* α2 : ref str.t := borrow α1 in
-      let* α3 : ref std.path.Path.t := std.path.Path.t::["new"] α2 in
-      let* α4 : M.Val std.path.Path.t := deref α3 in
-      let* α5 : ref std.path.Path.t := borrow α4 in
-      let* α6 :
+      let* α1 : ref std.path.Path.t := std.path.Path.t::["new"] α0 in
+      let* α2 :
           core.result.Result.t alloc.string.String.t std.io.error.Error.t :=
-        filesystem_operations.cat α5 in
-      let* α7 :
+        filesystem_operations.cat α1 in
+      let* α3 :
           M.Val
             (core.result.Result.t alloc.string.String.t std.io.error.Error.t) :=
-        M.alloc α6 in
-      let* α8 := M.read α7 in
-      match α8 with
+        M.alloc α2 in
+      let* α4 := M.read α3 in
+      match α4 with
       | core.result.Result.Err why =>
         let* why := M.alloc why in
         let* _ : M.Val unit :=

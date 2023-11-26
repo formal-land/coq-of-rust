@@ -48,21 +48,19 @@ Definition main : M unit :=
               (Trait := ltac:(refine _)))
             α5
             α7 in
-        let* α9 : M.Val alloc.string.String.t := deref α8 in
-        let* α10 : ref alloc.string.String.t := borrow α9 in
-        let* α11 : core.fmt.rt.Argument.t :=
-          core.fmt.rt.Argument.t::["new_display"] α10 in
-        let* α12 : M.Val core.fmt.rt.Argument.t := M.alloc α11 in
-        let* α13 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α12 ] in
-        let* α14 : ref (array core.fmt.rt.Argument.t) := borrow α13 in
-        let* α15 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α14 in
-        let* α16 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
-          pointer_coercion "Unsize" α15 in
-        let* α17 : ref (slice core.fmt.rt.Argument.t) := M.read α16 in
-        let* α18 : core.fmt.Arguments.t :=
-          core.fmt.Arguments.t::["new_v1"] α4 α17 in
-        let* α19 : unit := std.io.stdio._print α18 in
-        M.alloc α19 in
+        let* α9 : core.fmt.rt.Argument.t :=
+          core.fmt.rt.Argument.t::["new_display"] α8 in
+        let* α10 : M.Val core.fmt.rt.Argument.t := M.alloc α9 in
+        let* α11 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α10 ] in
+        let* α12 : ref (array core.fmt.rt.Argument.t) := borrow α11 in
+        let* α13 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α12 in
+        let* α14 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
+          pointer_coercion "Unsize" α13 in
+        let* α15 : ref (slice core.fmt.rt.Argument.t) := M.read α14 in
+        let* α16 : core.fmt.Arguments.t :=
+          core.fmt.Arguments.t::["new_v1"] α4 α15 in
+        let* α17 : unit := std.io.stdio._print α16 in
+        M.alloc α17 in
       M.alloc tt in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
@@ -99,24 +97,22 @@ Definition main : M unit :=
               (Trait := ltac:(refine _)))
             α13
             {| core.ops.range.RangeFrom.start := α15; |} in
-        let* α17 : M.Val (slice alloc.string.String.t) := deref α16 in
-        let* α18 : ref (slice alloc.string.String.t) := borrow α17 in
-        let* α19 : M.Val (ref (slice alloc.string.String.t)) := M.alloc α18 in
-        let* α20 : ref (ref (slice alloc.string.String.t)) := borrow α19 in
-        let* α21 : core.fmt.rt.Argument.t :=
-          core.fmt.rt.Argument.t::["new_debug"] α20 in
-        let* α22 : M.Val core.fmt.rt.Argument.t := M.alloc α21 in
-        let* α23 : M.Val (array core.fmt.rt.Argument.t) :=
-          M.alloc [ α12; α22 ] in
-        let* α24 : ref (array core.fmt.rt.Argument.t) := borrow α23 in
-        let* α25 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α24 in
-        let* α26 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
-          pointer_coercion "Unsize" α25 in
-        let* α27 : ref (slice core.fmt.rt.Argument.t) := M.read α26 in
-        let* α28 : core.fmt.Arguments.t :=
-          core.fmt.Arguments.t::["new_v1"] α4 α27 in
-        let* α29 : unit := std.io.stdio._print α28 in
-        M.alloc α29 in
+        let* α17 : M.Val (ref (slice alloc.string.String.t)) := M.alloc α16 in
+        let* α18 : ref (ref (slice alloc.string.String.t)) := borrow α17 in
+        let* α19 : core.fmt.rt.Argument.t :=
+          core.fmt.rt.Argument.t::["new_debug"] α18 in
+        let* α20 : M.Val core.fmt.rt.Argument.t := M.alloc α19 in
+        let* α21 : M.Val (array core.fmt.rt.Argument.t) :=
+          M.alloc [ α12; α20 ] in
+        let* α22 : ref (array core.fmt.rt.Argument.t) := borrow α21 in
+        let* α23 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α22 in
+        let* α24 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
+          pointer_coercion "Unsize" α23 in
+        let* α25 : ref (slice core.fmt.rt.Argument.t) := M.read α24 in
+        let* α26 : core.fmt.Arguments.t :=
+          core.fmt.Arguments.t::["new_v1"] α4 α25 in
+        let* α27 : unit := std.io.stdio._print α26 in
+        M.alloc α27 in
       M.alloc tt in
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0).

@@ -52,38 +52,32 @@ Section Impl_core_hash_Hash_for_hash_Person_t.
         let* α1 : M.Val hash.Person.t := deref α0 in
         let* α2 : ref u32.t := borrow α1.["id"] in
         let* α3 : mut_ref __H := M.read state in
-        let* α4 : M.Val __H := deref α3 in
-        let* α5 : mut_ref __H := borrow_mut α4 in
-        let* α6 : unit :=
+        let* α4 : unit :=
           (core.hash.Hash.hash (Self := u32.t) (Trait := ltac:(refine _)))
             α2
-            α5 in
-        M.alloc α6 in
+            α3 in
+        M.alloc α4 in
       let* _ : M.Val unit :=
         let* α0 : ref hash.Person.t := M.read self in
         let* α1 : M.Val hash.Person.t := deref α0 in
         let* α2 : ref alloc.string.String.t := borrow α1.["name"] in
         let* α3 : mut_ref __H := M.read state in
-        let* α4 : M.Val __H := deref α3 in
-        let* α5 : mut_ref __H := borrow_mut α4 in
-        let* α6 : unit :=
+        let* α4 : unit :=
           (core.hash.Hash.hash
               (Self := alloc.string.String.t)
               (Trait := ltac:(refine _)))
             α2
-            α5 in
-        M.alloc α6 in
+            α3 in
+        M.alloc α4 in
       let* α0 : ref hash.Person.t := M.read self in
       let* α1 : M.Val hash.Person.t := deref α0 in
       let* α2 : ref u64.t := borrow α1.["phone"] in
       let* α3 : mut_ref __H := M.read state in
-      let* α4 : M.Val __H := deref α3 in
-      let* α5 : mut_ref __H := borrow_mut α4 in
-      let* α6 : unit :=
+      let* α4 : unit :=
         (core.hash.Hash.hash (Self := u64.t) (Trait := ltac:(refine _)))
           α2
-          α5 in
-      let* α0 : M.Val unit := M.alloc α6 in
+          α3 in
+      let* α0 : M.Val unit := M.alloc α4 in
       M.read α0).
   
   Global Instance AssociatedFunction_hash
@@ -121,13 +115,11 @@ Definition calculate_hash
       M.alloc α0 in
     let* _ : M.Val unit :=
       let* α0 : ref T := M.read t in
-      let* α1 : M.Val T := deref α0 in
-      let* α2 : ref T := borrow α1 in
-      let* α3 : mut_ref std.collections.hash.map.DefaultHasher.t :=
+      let* α1 : mut_ref std.collections.hash.map.DefaultHasher.t :=
         borrow_mut s in
-      let* α4 : unit :=
-        (core.hash.Hash.hash (Self := T) (Trait := ltac:(refine _))) α2 α3 in
-      M.alloc α4 in
+      let* α2 : unit :=
+        (core.hash.Hash.hash (Self := T) (Trait := ltac:(refine _))) α0 α1 in
+      M.alloc α2 in
     let* α0 : ref std.collections.hash.map.DefaultHasher.t := borrow s in
     let* α1 : u64.t :=
       (core.hash.Hasher.finish
@@ -160,39 +152,35 @@ Definition main : M unit :=
       let* α0 : M.Val u32.t := M.alloc 5 in
       let* α1 : u32.t := M.read α0 in
       let* α2 : ref str.t := M.read (mk_str "Janet") in
-      let* α3 : M.Val str.t := deref α2 in
-      let* α4 : ref str.t := borrow α3 in
-      let* α5 : alloc.string.String.t :=
+      let* α3 : alloc.string.String.t :=
         (alloc.string.ToString.to_string
             (Self := str.t)
             (Trait := ltac:(refine _)))
-          α4 in
-      let* α6 : M.Val u64.t := M.alloc 5556667777 in
-      let* α7 : u64.t := M.read α6 in
+          α2 in
+      let* α4 : M.Val u64.t := M.alloc 5556667777 in
+      let* α5 : u64.t := M.read α4 in
       M.alloc
         {|
           hash.Person.id := α1;
-          hash.Person.name := α5;
-          hash.Person.phone := α7;
+          hash.Person.name := α3;
+          hash.Person.phone := α5;
         |} in
     let* person2 : M.Val hash.Person.t :=
       let* α0 : M.Val u32.t := M.alloc 5 in
       let* α1 : u32.t := M.read α0 in
       let* α2 : ref str.t := M.read (mk_str "Bob") in
-      let* α3 : M.Val str.t := deref α2 in
-      let* α4 : ref str.t := borrow α3 in
-      let* α5 : alloc.string.String.t :=
+      let* α3 : alloc.string.String.t :=
         (alloc.string.ToString.to_string
             (Self := str.t)
             (Trait := ltac:(refine _)))
-          α4 in
-      let* α6 : M.Val u64.t := M.alloc 5556667777 in
-      let* α7 : u64.t := M.read α6 in
+          α2 in
+      let* α4 : M.Val u64.t := M.alloc 5556667777 in
+      let* α5 : u64.t := M.read α4 in
       M.alloc
         {|
           hash.Person.id := α1;
-          hash.Person.name := α5;
-          hash.Person.phone := α7;
+          hash.Person.name := α3;
+          hash.Person.phone := α5;
         |} in
     let* _ : M.Val unit :=
       let* α0 : ref hash.Person.t := borrow person1 in

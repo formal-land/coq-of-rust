@@ -44,9 +44,7 @@ Definition main : M unit :=
       let* α0 : M.Val (ref (array u8.t)) :=
         [116, 104, 105, 115, 32, 105, 115, 32, 97, 32, 98, 121, 116, 101, 32, 115, 116, 114, 105, 110, 103] in
       let* α1 : ref (array u8.t) := M.read α0 in
-      let* α2 : M.Val (array u8.t) := deref α1 in
-      let* α3 : ref (array u8.t) := borrow α2 in
-      M.alloc α3 in
+      M.alloc α1 in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
         let* α0 : M.Val (array (ref str.t)) :=
@@ -132,19 +130,17 @@ Definition main : M unit :=
       M.alloc tt in
     let* _ : M.Val unit :=
       let* α0 : ref (array u8.t) := M.read raw_bytestring in
-      let* α1 : M.Val (array u8.t) := deref α0 in
-      let* α2 : ref (array u8.t) := borrow α1 in
-      let* α3 : M.Val (ref (array u8.t)) := M.alloc α2 in
-      let* α4 : M.Val (ref (slice u8.t)) := pointer_coercion "Unsize" α3 in
-      let* α5 : ref (slice u8.t) := M.read α4 in
-      let* α6 : core.result.Result.t (ref str.t) core.str.error.Utf8Error.t :=
-        core.str.converts.from_utf8 α5 in
-      let* α7 :
+      let* α1 : M.Val (ref (array u8.t)) := M.alloc α0 in
+      let* α2 : M.Val (ref (slice u8.t)) := pointer_coercion "Unsize" α1 in
+      let* α3 : ref (slice u8.t) := M.read α2 in
+      let* α4 : core.result.Result.t (ref str.t) core.str.error.Utf8Error.t :=
+        core.str.converts.from_utf8 α3 in
+      let* α5 :
           M.Val (core.result.Result.t (ref str.t) core.str.error.Utf8Error.t) :=
-        M.alloc α6 in
-      let* α8 : M.Val bool.t := let_if core.result.Result.Ok my_str := α7 in
-      let* α9 : bool.t := M.read α8 in
-      if (α9 : bool) then
+        M.alloc α4 in
+      let* α6 : M.Val bool.t := let_if core.result.Result.Ok my_str := α5 in
+      let* α7 : bool.t := M.read α6 in
+      if (α7 : bool) then
         let* _ : M.Val unit :=
           let* _ : M.Val unit :=
             let* α0 : M.Val (array (ref str.t)) :=
@@ -184,18 +180,16 @@ Definition main : M unit :=
       M.copy α0 in
     let* _ : M.Val unit :=
       let* α0 : ref (array u8.t) := M.read shift_jis in
-      let* α1 : M.Val (array u8.t) := deref α0 in
-      let* α2 : ref (array u8.t) := borrow α1 in
-      let* α3 : M.Val (ref (array u8.t)) := M.alloc α2 in
-      let* α4 : M.Val (ref (slice u8.t)) := pointer_coercion "Unsize" α3 in
-      let* α5 : ref (slice u8.t) := M.read α4 in
-      let* α6 : core.result.Result.t (ref str.t) core.str.error.Utf8Error.t :=
-        core.str.converts.from_utf8 α5 in
-      let* α7 :
+      let* α1 : M.Val (ref (array u8.t)) := M.alloc α0 in
+      let* α2 : M.Val (ref (slice u8.t)) := pointer_coercion "Unsize" α1 in
+      let* α3 : ref (slice u8.t) := M.read α2 in
+      let* α4 : core.result.Result.t (ref str.t) core.str.error.Utf8Error.t :=
+        core.str.converts.from_utf8 α3 in
+      let* α5 :
           M.Val (core.result.Result.t (ref str.t) core.str.error.Utf8Error.t) :=
-        M.alloc α6 in
-      let* α8 := M.read α7 in
-      match α8 with
+        M.alloc α4 in
+      let* α6 := M.read α5 in
+      match α6 with
       | core.result.Result.Ok my_str =>
         let* my_str := M.alloc my_str in
         let* _ : M.Val unit :=

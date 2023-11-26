@@ -30,12 +30,10 @@ Definition main : M unit :=
       let* α4 : ref str.t := M.read (mk_str "--version") in
       let* α5 : mut_ref std.process.Command.t :=
         std.process.Command.t::["arg"] α3 α4 in
-      let* α6 : M.Val std.process.Command.t := deref α5 in
-      let* α7 : mut_ref std.process.Command.t := borrow_mut α6 in
-      let* α8 :
+      let* α6 :
           core.result.Result.t std.process.Output.t std.io.error.Error.t :=
-        std.process.Command.t::["output"] α7 in
-      let* α9 : type not implemented :=
+        std.process.Command.t::["output"] α5 in
+      let* α7 : type not implemented :=
         M.read
           (let* α0 : M.Val (array (ref str.t)) :=
             M.alloc [ mk_str "failed to execute process: " ] in
@@ -59,13 +57,13 @@ Definition main : M unit :=
           let* α14 : never.t := core.panicking.panic_fmt α13 in
           let* α15 : M.Val never.t := M.alloc α14 in
           never_to_any α15) in
-      let* α10 : std.process.Output.t :=
+      let* α8 : std.process.Output.t :=
         (core.result.Result.t
               std.process.Output.t
               std.io.error.Error.t)::["unwrap_or_else"]
-          α8
-          α9 in
-      M.alloc α10 in
+          α6
+          α7 in
+      M.alloc α8 in
     let* α0 : ref std.process.ExitStatus.t := borrow output.["status"] in
     let* α1 : bool.t := std.process.ExitStatus.t::["success"] α0 in
     let* α2 : M.Val bool.t := M.alloc α1 in
@@ -81,11 +79,9 @@ Definition main : M unit :=
                 (Self := alloc.vec.Vec.t u8.t alloc.alloc.Global.t)
                 (Trait := ltac:(refine _)))
               α0 in
-          let* α2 : M.Val (slice u8.t) := deref α1 in
-          let* α3 : ref (slice u8.t) := borrow α2 in
-          let* α4 : alloc.borrow.Cow.t str.t :=
-            alloc.string.String.t::["from_utf8_lossy"] α3 in
-          M.alloc α4 in
+          let* α2 : alloc.borrow.Cow.t str.t :=
+            alloc.string.String.t::["from_utf8_lossy"] α1 in
+          M.alloc α2 in
         let* _ : M.Val unit :=
           let* _ : M.Val unit :=
             let* α0 : M.Val (array (ref str.t)) :=
@@ -122,11 +118,9 @@ Definition main : M unit :=
                 (Self := alloc.vec.Vec.t u8.t alloc.alloc.Global.t)
                 (Trait := ltac:(refine _)))
               α0 in
-          let* α2 : M.Val (slice u8.t) := deref α1 in
-          let* α3 : ref (slice u8.t) := borrow α2 in
-          let* α4 : alloc.borrow.Cow.t str.t :=
-            alloc.string.String.t::["from_utf8_lossy"] α3 in
-          M.alloc α4 in
+          let* α2 : alloc.borrow.Cow.t str.t :=
+            alloc.string.String.t::["from_utf8_lossy"] α1 in
+          M.alloc α2 in
         let* _ : M.Val unit :=
           let* _ : M.Val unit :=
             let* α0 : M.Val (array (ref str.t)) :=

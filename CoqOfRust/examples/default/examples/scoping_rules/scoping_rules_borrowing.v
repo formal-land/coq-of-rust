@@ -138,10 +138,8 @@ Definition main : M unit :=
         M.alloc α2 in
       let* _ : M.Val unit :=
         let* α0 : ref i32.t := M.read _ref_to_i32 in
-        let* α1 : M.Val i32.t := deref α0 in
-        let* α2 : ref i32.t := borrow α1 in
-        let* α3 : unit := scoping_rules_borrowing.borrow_i32 α2 in
-        M.alloc α3 in
+        let* α1 : unit := scoping_rules_borrowing.borrow_i32 α0 in
+        M.alloc α1 in
       M.alloc tt in
     let* _ : M.Val unit :=
       let* α0 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t :=

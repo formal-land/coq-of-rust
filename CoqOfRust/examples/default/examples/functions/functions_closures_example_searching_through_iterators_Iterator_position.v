@@ -44,24 +44,22 @@ Definition main : M unit :=
             (Self := alloc.vec.Vec.t i32.t alloc.alloc.Global.t)
             (Trait := ltac:(refine _)))
           α0 in
-      let* α2 : M.Val (slice i32.t) := deref α1 in
-      let* α3 : ref (slice i32.t) := borrow α2 in
-      let* α4 : core.slice.iter.Iter.t i32.t := (slice i32.t)::["iter"] α3 in
-      let* α5 : M.Val (core.slice.iter.Iter.t i32.t) := M.alloc α4 in
-      let* α6 : mut_ref (core.slice.iter.Iter.t i32.t) := borrow_mut α5 in
-      let* α7 : type not implemented :=
+      let* α2 : core.slice.iter.Iter.t i32.t := (slice i32.t)::["iter"] α1 in
+      let* α3 : M.Val (core.slice.iter.Iter.t i32.t) := M.alloc α2 in
+      let* α4 : mut_ref (core.slice.iter.Iter.t i32.t) := borrow_mut α3 in
+      let* α5 : type not implemented :=
         M.read
           (let* α0 : M.Val i32.t := M.alloc 2 in
           let* α1 : M.Val i32.t := BinOp.rem x α0 in
           let* α2 : M.Val i32.t := M.alloc 0 in
           BinOp.eq α1 α2) in
-      let* α8 : core.option.Option.t usize.t :=
+      let* α6 : core.option.Option.t usize.t :=
         (core.iter.traits.iterator.Iterator.position
             (Self := core.slice.iter.Iter.t i32.t)
             (Trait := ltac:(refine _)))
-          α6
-          α7 in
-      M.alloc α8 in
+          α4
+          α5 in
+      M.alloc α6 in
     let* _ : M.Val unit :=
       let* α0 : ref (core.option.Option.t usize.t) :=
         borrow index_of_first_even_number in
@@ -82,35 +80,27 @@ Definition main : M unit :=
         let* right_val := M.alloc right_val in
         let* left_val := M.alloc left_val in
         let* α0 : ref (core.option.Option.t usize.t) := M.read left_val in
-        let* α1 : M.Val (core.option.Option.t usize.t) := deref α0 in
-        let* α2 : ref (core.option.Option.t usize.t) := borrow α1 in
-        let* α3 : ref (core.option.Option.t usize.t) := M.read right_val in
-        let* α4 : M.Val (core.option.Option.t usize.t) := deref α3 in
-        let* α5 : ref (core.option.Option.t usize.t) := borrow α4 in
-        let* α6 : bool.t :=
+        let* α1 : ref (core.option.Option.t usize.t) := M.read right_val in
+        let* α2 : bool.t :=
           (core.cmp.PartialEq.eq
               (Self := core.option.Option.t usize.t)
               (Trait := ltac:(refine _)))
-            α2
-            α5 in
-        let* α7 : M.Val bool.t := M.alloc α6 in
-        let* α8 : M.Val bool.t := UnOp.not α7 in
-        let* α9 : M.Val bool.t := use α8 in
-        let* α10 : bool.t := M.read α9 in
-        if (α10 : bool) then
+            α0
+            α1 in
+        let* α3 : M.Val bool.t := M.alloc α2 in
+        let* α4 : M.Val bool.t := UnOp.not α3 in
+        let* α5 : M.Val bool.t := use α4 in
+        let* α6 : bool.t := M.read α5 in
+        if (α6 : bool) then
           let* kind : M.Val core.panicking.AssertKind.t :=
             M.alloc core.panicking.AssertKind.Eq in
           let* _ : M.Val never.t :=
             let* α0 : core.panicking.AssertKind.t := M.read kind in
             let* α1 : ref (core.option.Option.t usize.t) := M.read left_val in
-            let* α2 : M.Val (core.option.Option.t usize.t) := deref α1 in
-            let* α3 : ref (core.option.Option.t usize.t) := borrow α2 in
-            let* α4 : ref (core.option.Option.t usize.t) := M.read right_val in
-            let* α5 : M.Val (core.option.Option.t usize.t) := deref α4 in
-            let* α6 : ref (core.option.Option.t usize.t) := borrow α5 in
-            let* α7 : never.t :=
-              core.panicking.assert_failed α0 α3 α6 core.option.Option.None in
-            M.alloc α7 in
+            let* α2 : ref (core.option.Option.t usize.t) := M.read right_val in
+            let* α3 : never.t :=
+              core.panicking.assert_failed α0 α1 α2 core.option.Option.None in
+            M.alloc α3 in
           let* α0 : M.Val unit := M.alloc tt in
           never_to_any α0
         else
@@ -159,35 +149,27 @@ Definition main : M unit :=
         let* right_val := M.alloc right_val in
         let* left_val := M.alloc left_val in
         let* α0 : ref (core.option.Option.t usize.t) := M.read left_val in
-        let* α1 : M.Val (core.option.Option.t usize.t) := deref α0 in
-        let* α2 : ref (core.option.Option.t usize.t) := borrow α1 in
-        let* α3 : ref (core.option.Option.t usize.t) := M.read right_val in
-        let* α4 : M.Val (core.option.Option.t usize.t) := deref α3 in
-        let* α5 : ref (core.option.Option.t usize.t) := borrow α4 in
-        let* α6 : bool.t :=
+        let* α1 : ref (core.option.Option.t usize.t) := M.read right_val in
+        let* α2 : bool.t :=
           (core.cmp.PartialEq.eq
               (Self := core.option.Option.t usize.t)
               (Trait := ltac:(refine _)))
-            α2
-            α5 in
-        let* α7 : M.Val bool.t := M.alloc α6 in
-        let* α8 : M.Val bool.t := UnOp.not α7 in
-        let* α9 : M.Val bool.t := use α8 in
-        let* α10 : bool.t := M.read α9 in
-        if (α10 : bool) then
+            α0
+            α1 in
+        let* α3 : M.Val bool.t := M.alloc α2 in
+        let* α4 : M.Val bool.t := UnOp.not α3 in
+        let* α5 : M.Val bool.t := use α4 in
+        let* α6 : bool.t := M.read α5 in
+        if (α6 : bool) then
           let* kind : M.Val core.panicking.AssertKind.t :=
             M.alloc core.panicking.AssertKind.Eq in
           let* _ : M.Val never.t :=
             let* α0 : core.panicking.AssertKind.t := M.read kind in
             let* α1 : ref (core.option.Option.t usize.t) := M.read left_val in
-            let* α2 : M.Val (core.option.Option.t usize.t) := deref α1 in
-            let* α3 : ref (core.option.Option.t usize.t) := borrow α2 in
-            let* α4 : ref (core.option.Option.t usize.t) := M.read right_val in
-            let* α5 : M.Val (core.option.Option.t usize.t) := deref α4 in
-            let* α6 : ref (core.option.Option.t usize.t) := borrow α5 in
-            let* α7 : never.t :=
-              core.panicking.assert_failed α0 α3 α6 core.option.Option.None in
-            M.alloc α7 in
+            let* α2 : ref (core.option.Option.t usize.t) := M.read right_val in
+            let* α3 : never.t :=
+              core.panicking.assert_failed α0 α1 α2 core.option.Option.None in
+            M.alloc α3 in
           let* α0 : M.Val unit := M.alloc tt in
           never_to_any α0
         else

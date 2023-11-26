@@ -69,10 +69,8 @@ Definition main : M unit :=
             (Self := alloc.vec.Vec.t i32.t alloc.alloc.Global.t)
             (Trait := ltac:(refine _)))
           α0 in
-      let* α2 : M.Val (slice i32.t) := deref α1 in
-      let* α3 : ref (slice i32.t) := borrow α2 in
-      let* α4 : core.slice.iter.Iter.t i32.t := (slice i32.t)::["iter"] α3 in
-      M.alloc α4 in
+      let* α2 : core.slice.iter.Iter.t i32.t := (slice i32.t)::["iter"] α1 in
+      M.alloc α2 in
     let* into_iter :
         M.Val (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t) :=
       let* α0 : alloc.vec.Vec.t i32.t alloc.alloc.Global.t := M.read vec2 in

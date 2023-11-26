@@ -31,24 +31,18 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed_t.
     let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
     M.function_body
       (let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
-      let* α1 : M.Val core.fmt.Formatter.t := deref α0 in
-      let* α2 : mut_ref core.fmt.Formatter.t := borrow_mut α1 in
-      let* α3 : ref str.t := M.read (mk_str "Borrowed") in
-      let* α4 : M.Val str.t := deref α3 in
-      let* α5 : ref str.t := borrow α4 in
-      let* α6 : ref str.t := M.read (mk_str "x") in
-      let* α7 : M.Val str.t := deref α6 in
-      let* α8 : ref str.t := borrow α7 in
-      let* α9 : ref scoping_rules_lifetimes_traits.Borrowed.t := M.read self in
-      let* α10 : M.Val scoping_rules_lifetimes_traits.Borrowed.t := deref α9 in
-      let* α11 : ref (ref i32.t) := borrow α10.["x"] in
-      let* α12 : M.Val (ref (ref i32.t)) := M.alloc α11 in
-      let* α13 : ref (ref (ref i32.t)) := borrow α12 in
-      let* α14 : M.Val (ref (ref (ref i32.t))) := M.alloc α13 in
-      let* α15 : M.Val (ref type not implemented) :=
-        pointer_coercion "Unsize" α14 in
-      let* α16 : ref type not implemented := M.read α15 in
-      core.fmt.Formatter.t::["debug_struct_field1_finish"] α2 α5 α8 α16).
+      let* α1 : ref str.t := M.read (mk_str "Borrowed") in
+      let* α2 : ref str.t := M.read (mk_str "x") in
+      let* α3 : ref scoping_rules_lifetimes_traits.Borrowed.t := M.read self in
+      let* α4 : M.Val scoping_rules_lifetimes_traits.Borrowed.t := deref α3 in
+      let* α5 : ref (ref i32.t) := borrow α4.["x"] in
+      let* α6 : M.Val (ref (ref i32.t)) := M.alloc α5 in
+      let* α7 : ref (ref (ref i32.t)) := borrow α6 in
+      let* α8 : M.Val (ref (ref (ref i32.t))) := M.alloc α7 in
+      let* α9 : M.Val (ref type not implemented) :=
+        pointer_coercion "Unsize" α8 in
+      let* α10 : ref type not implemented := M.read α9 in
+      core.fmt.Formatter.t::["debug_struct_field1_finish"] α0 α1 α2 α10).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {

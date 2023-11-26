@@ -67,18 +67,16 @@ Definition main : M unit :=
           (std.io.Lines.t
             (std.io.buffered.bufreader.BufReader.t std.fs.File.t)) :=
       let* α0 : ref str.t := M.read (mk_str "./hosts") in
-      let* α1 : M.Val str.t := deref α0 in
-      let* α2 : ref str.t := borrow α1 in
-      let* α3 : alloc.string.String.t :=
+      let* α1 : alloc.string.String.t :=
         (alloc.string.ToString.to_string
             (Self := str.t)
             (Trait := ltac:(refine _)))
-          α2 in
-      let* α4 :
+          α0 in
+      let* α2 :
           std.io.Lines.t
             (std.io.buffered.bufreader.BufReader.t std.fs.File.t) :=
-        file_io_read_lines.read_lines α3 in
-      M.alloc α4 in
+        file_io_read_lines.read_lines α1 in
+      M.alloc α2 in
     let* α0 :
         std.io.Lines.t (std.io.buffered.bufreader.BufReader.t std.fs.File.t) :=
       M.read lines in

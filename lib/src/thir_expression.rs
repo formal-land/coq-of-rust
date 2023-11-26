@@ -74,6 +74,10 @@ impl Expr {
         self.match_simple_call(&["borrow", "borrow_mut"])
     }
 
+    fn match_deref(&self) -> Option<Self> {
+        self.match_simple_call(&["deref"])
+    }
+
     pub(crate) fn read(self) -> Self {
         // If we read an allocated expression, we just return the expression.
         if let Some(expr) = self.match_simple_call(&["M.alloc"]) {
@@ -110,6 +114,33 @@ impl Expr {
                 args: vec![self],
             },
         }
+    }
+}
+
+fn compile_borrow(borrow_kind: &BorrowKind, arg: Expr) -> ExprKind {
+    let func = match borrow_kind {
+        BorrowKind::Shared | BorrowKind::Shallow => "borrow".to_string(),
+        BorrowKind::Unique | BorrowKind::Mut { .. } => "borrow_mut".to_string(),
+    };
+
+    if let Some(derefed) = arg.match_deref() {
+        if let Some(ty) = derefed.ty {
+            if let Some((ref_name, _, _)) = ty.match_ref() {
+                if (func == "borrow" && ref_name == "ref")
+                    || (func == "borrow_mut" && ref_name == "mut_ref")
+                {
+                    return derefed.kind;
+                }
+            }
+        }
+    }
+
+    ExprKind::Call {
+        func: Box::new(Expr {
+            kind: ExprKind::LocalVar(func),
+            ty: None,
+        }),
+        args: vec![arg],
     }
 }
 
@@ -368,19 +399,9 @@ fn compile_expr_kind<'a>(
             ExprKind::LocalVar(name)
         }
         thir::ExprKind::Borrow { borrow_kind, arg } => {
-            let func = match borrow_kind {
-                BorrowKind::Shared | BorrowKind::Shallow => "borrow".to_string(),
-                BorrowKind::Unique | BorrowKind::Mut { .. } => "borrow_mut".to_string(),
-            };
             let arg = compile_expr(env, thir, arg);
-            ExprKind::Call {
-                func: Box::new(Expr {
-                    kind: ExprKind::LocalVar(func),
-                    ty: None,
-                }),
-                args: vec![arg],
-            }
-            .alloc(Some(ty))
+
+            compile_borrow(borrow_kind, arg).alloc(Some(ty))
         }
         thir::ExprKind::AddressOf { mutability, arg } => {
             let func = match mutability {

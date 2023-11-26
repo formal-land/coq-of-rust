@@ -216,22 +216,18 @@ Definition main : M unit :=
               (Trait := ltac:(refine _)))
             α0
             α2 in
-        let* α4 : M.Val alloc.string.String.t := deref α3 in
-        let* α5 : ref alloc.string.String.t := borrow α4 in
-        let* α6 : ref str.t :=
+        let* α4 : ref str.t :=
           (core.ops.deref.Deref.deref
               (Self := alloc.string.String.t)
               (Trait := ltac:(refine _)))
-            α5 in
-        let* α7 : M.Val str.t := deref α6 in
-        let* α8 : ref str.t := borrow α7 in
-        let* α9 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
-          str.t::["parse"] α8 in
-        let* α10 :
+            α3 in
+        let* α5 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
+          str.t::["parse"] α4 in
+        let* α6 :
             M.Val (core.result.Result.t i32.t core.num.error.ParseIntError.t) :=
-          M.alloc α9 in
-        let* α11 := M.read α10 in
-        match α11 with
+          M.alloc α5 in
+        let* α7 := M.read α6 in
+        match α7 with
         | core.result.Result.Ok _ =>
           let* _ : M.Val unit :=
             let* α0 : M.Val (array (ref str.t)) :=
@@ -278,9 +274,7 @@ Definition main : M unit :=
                 (Trait := ltac:(refine _)))
               α0
               α2 in
-          let* α4 : M.Val alloc.string.String.t := deref α3 in
-          let* α5 : ref alloc.string.String.t := borrow α4 in
-          M.alloc α5 in
+          M.alloc α3 in
         let* num : M.Val (ref alloc.string.String.t) :=
           let* α0 :
               ref
@@ -295,29 +289,23 @@ Definition main : M unit :=
                 (Trait := ltac:(refine _)))
               α0
               α2 in
-          let* α4 : M.Val alloc.string.String.t := deref α3 in
-          let* α5 : ref alloc.string.String.t := borrow α4 in
-          M.alloc α5 in
+          M.alloc α3 in
         let* number : M.Val i32.t :=
           let* α0 : ref alloc.string.String.t := M.read num in
-          let* α1 : M.Val alloc.string.String.t := deref α0 in
-          let* α2 : ref alloc.string.String.t := borrow α1 in
-          let* α3 : ref str.t :=
+          let* α1 : ref str.t :=
             (core.ops.deref.Deref.deref
                 (Self := alloc.string.String.t)
                 (Trait := ltac:(refine _)))
-              α2 in
-          let* α4 : M.Val str.t := deref α3 in
-          let* α5 : ref str.t := borrow α4 in
-          let* α6 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
-            str.t::["parse"] α5 in
-          let* α7 :
+              α0 in
+          let* α2 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
+            str.t::["parse"] α1 in
+          let* α3 :
               M.Val
                 (core.result.Result.t i32.t core.num.error.ParseIntError.t) :=
-            M.alloc α6 in
-          let* α8 := M.read α7 in
-          let* α9 : M.Val i32.t :=
-            match α8 with
+            M.alloc α2 in
+          let* α4 := M.read α3 in
+          let* α5 : M.Val i32.t :=
+            match α4 with
             | core.result.Result.Ok n =>
               let* n := M.alloc n in
               M.pure n
@@ -347,21 +335,17 @@ Definition main : M unit :=
               let* α0 : M.Val unit := M.alloc tt in
               never_to_any α0
             end in
-          M.copy α9 in
+          M.copy α5 in
         let* α0 : ref alloc.string.String.t := M.read cmd in
-        let* α1 : M.Val alloc.string.String.t := deref α0 in
-        let* α2 : ref alloc.string.String.t := borrow α1 in
-        let* α3 : ref str.t :=
+        let* α1 : ref str.t :=
           (core.ops.index.Index.index
               (Self := alloc.string.String.t)
               (Trait := ltac:(refine _)))
-            α2
+            α0
             core.ops.range.RangeFull.Build_t in
-        let* α4 : M.Val str.t := deref α3 in
-        let* α5 : ref str.t := borrow α4 in
-        let* α6 : M.Val (ref str.t) := M.alloc α5 in
-        let* α7 := M.read α6 in
-        match α7 with
+        let* α2 : M.Val (ref str.t) := M.alloc α1 in
+        let* α3 := M.read α2 in
+        match α3 with
         | _ =>
           let* α0 : i32.t := M.read number in
           let* α1 : unit := program_arguments_parsing.increase α0 in

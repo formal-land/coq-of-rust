@@ -305,35 +305,27 @@ Definition main : M unit :=
         let* right_val := M.alloc right_val in
         let* left_val := M.alloc left_val in
         let* α0 : ref (core.option.Option.t u8.t) := M.read left_val in
-        let* α1 : M.Val (core.option.Option.t u8.t) := deref α0 in
-        let* α2 : ref (core.option.Option.t u8.t) := borrow α1 in
-        let* α3 : ref (core.option.Option.t u8.t) := M.read right_val in
-        let* α4 : M.Val (core.option.Option.t u8.t) := deref α3 in
-        let* α5 : ref (core.option.Option.t u8.t) := borrow α4 in
-        let* α6 : bool.t :=
+        let* α1 : ref (core.option.Option.t u8.t) := M.read right_val in
+        let* α2 : bool.t :=
           (core.cmp.PartialEq.eq
               (Self := core.option.Option.t u8.t)
               (Trait := ltac:(refine _)))
-            α2
-            α5 in
-        let* α7 : M.Val bool.t := M.alloc α6 in
-        let* α8 : M.Val bool.t := UnOp.not α7 in
-        let* α9 : M.Val bool.t := use α8 in
-        let* α10 : bool.t := M.read α9 in
-        if (α10 : bool) then
+            α0
+            α1 in
+        let* α3 : M.Val bool.t := M.alloc α2 in
+        let* α4 : M.Val bool.t := UnOp.not α3 in
+        let* α5 : M.Val bool.t := use α4 in
+        let* α6 : bool.t := M.read α5 in
+        if (α6 : bool) then
           let* kind : M.Val core.panicking.AssertKind.t :=
             M.alloc core.panicking.AssertKind.Eq in
           let* _ : M.Val never.t :=
             let* α0 : core.panicking.AssertKind.t := M.read kind in
             let* α1 : ref (core.option.Option.t u8.t) := M.read left_val in
-            let* α2 : M.Val (core.option.Option.t u8.t) := deref α1 in
-            let* α3 : ref (core.option.Option.t u8.t) := borrow α2 in
-            let* α4 : ref (core.option.Option.t u8.t) := M.read right_val in
-            let* α5 : M.Val (core.option.Option.t u8.t) := deref α4 in
-            let* α6 : ref (core.option.Option.t u8.t) := borrow α5 in
-            let* α7 : never.t :=
-              core.panicking.assert_failed α0 α3 α6 core.option.Option.None in
-            M.alloc α7 in
+            let* α2 : ref (core.option.Option.t u8.t) := M.read right_val in
+            let* α3 : never.t :=
+              core.panicking.assert_failed α0 α1 α2 core.option.Option.None in
+            M.alloc α3 in
           let* α0 : M.Val unit := M.alloc tt in
           never_to_any α0
         else

@@ -93,14 +93,12 @@ Definition main : M unit :=
     (let* greeting : M.Val (ref str.t) := M.copy (mk_str "hello") in
     let* farewell : M.Val alloc.string.String.t :=
       let* α0 : ref str.t := M.read (mk_str "goodbye") in
-      let* α1 : M.Val str.t := deref α0 in
-      let* α2 : ref str.t := borrow α1 in
-      let* α3 : alloc.string.String.t :=
+      let* α1 : alloc.string.String.t :=
         (alloc.borrow.ToOwned.to_owned
             (Self := str.t)
             (Trait := ltac:(refine _)))
-          α2 in
-      M.alloc α3 in
+          α0 in
+      M.alloc α1 in
     let* diary : M.Val type not implemented :=
       M.copy
         (let* _ : M.Val unit :=
@@ -132,10 +130,8 @@ Definition main : M unit :=
         let* _ : M.Val unit :=
           let* α0 : mut_ref alloc.string.String.t := borrow_mut farewell in
           let* α1 : ref str.t := M.read (mk_str "!!!") in
-          let* α2 : M.Val str.t := deref α1 in
-          let* α3 : ref str.t := borrow α2 in
-          let* α4 : unit := alloc.string.String.t::["push_str"] α0 α3 in
-          M.alloc α4 in
+          let* α2 : unit := alloc.string.String.t::["push_str"] α0 α1 in
+          M.alloc α2 in
         let* _ : M.Val unit :=
           let* _ : M.Val unit :=
             let* α0 : M.Val (array (ref str.t)) :=

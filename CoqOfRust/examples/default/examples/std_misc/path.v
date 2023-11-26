@@ -32,34 +32,26 @@ Definition main : M unit :=
   M.function_body
     (let* path : M.Val (ref std.path.Path.t) :=
       let* α0 : ref str.t := M.read (mk_str ".") in
-      let* α1 : M.Val str.t := deref α0 in
-      let* α2 : ref str.t := borrow α1 in
-      let* α3 : ref std.path.Path.t := std.path.Path.t::["new"] α2 in
-      M.alloc α3 in
+      let* α1 : ref std.path.Path.t := std.path.Path.t::["new"] α0 in
+      M.alloc α1 in
     let* _display : M.Val std.path.Display.t :=
       let* α0 : ref std.path.Path.t := M.read path in
-      let* α1 : M.Val std.path.Path.t := deref α0 in
-      let* α2 : ref std.path.Path.t := borrow α1 in
-      let* α3 : std.path.Display.t := std.path.Path.t::["display"] α2 in
-      M.alloc α3 in
+      let* α1 : std.path.Display.t := std.path.Path.t::["display"] α0 in
+      M.alloc α1 in
     let* new_path : M.Val std.path.PathBuf.t :=
       let* α0 : ref std.path.Path.t := M.read path in
-      let* α1 : M.Val std.path.Path.t := deref α0 in
-      let* α2 : ref std.path.Path.t := borrow α1 in
-      let* α3 : ref str.t := M.read (mk_str "a") in
-      let* α4 : std.path.PathBuf.t := std.path.Path.t::["join"] α2 α3 in
-      let* α5 : M.Val std.path.PathBuf.t := M.alloc α4 in
-      let* α6 : ref std.path.PathBuf.t := borrow α5 in
-      let* α7 : ref std.path.Path.t :=
+      let* α1 : ref str.t := M.read (mk_str "a") in
+      let* α2 : std.path.PathBuf.t := std.path.Path.t::["join"] α0 α1 in
+      let* α3 : M.Val std.path.PathBuf.t := M.alloc α2 in
+      let* α4 : ref std.path.PathBuf.t := borrow α3 in
+      let* α5 : ref std.path.Path.t :=
         (core.ops.deref.Deref.deref
             (Self := std.path.PathBuf.t)
             (Trait := ltac:(refine _)))
-          α6 in
-      let* α8 : M.Val std.path.Path.t := deref α7 in
-      let* α9 : ref std.path.Path.t := borrow α8 in
-      let* α10 : ref str.t := M.read (mk_str "b") in
-      let* α11 : std.path.PathBuf.t := std.path.Path.t::["join"] α9 α10 in
-      M.alloc α11 in
+          α4 in
+      let* α6 : ref str.t := M.read (mk_str "b") in
+      let* α7 : std.path.PathBuf.t := std.path.Path.t::["join"] α5 α6 in
+      M.alloc α7 in
     let* _ : M.Val unit :=
       let* α0 : mut_ref std.path.PathBuf.t := borrow_mut new_path in
       let* α1 : ref str.t := M.read (mk_str "c") in
@@ -81,14 +73,12 @@ Definition main : M unit :=
           (Self := std.path.PathBuf.t)
           (Trait := ltac:(refine _)))
         α0 in
-    let* α2 : M.Val std.path.Path.t := deref α1 in
-    let* α3 : ref std.path.Path.t := borrow α2 in
-    let* α4 : core.option.Option.t (ref str.t) :=
-      std.path.Path.t::["to_str"] α3 in
-    let* α5 : M.Val (core.option.Option.t (ref str.t)) := M.alloc α4 in
-    let* α6 := M.read α5 in
+    let* α2 : core.option.Option.t (ref str.t) :=
+      std.path.Path.t::["to_str"] α1 in
+    let* α3 : M.Val (core.option.Option.t (ref str.t)) := M.alloc α2 in
+    let* α4 := M.read α3 in
     let* α0 : M.Val unit :=
-      match α6 with
+      match α4 with
       | core.option.Option.None  =>
         let* α0 : ref str.t :=
           M.read (mk_str "new path is not a valid UTF-8 sequence") in

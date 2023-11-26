@@ -21,16 +21,14 @@ Definition main
     (let* number_str : M.Val (ref str.t) := M.copy (mk_str "10") in
     let* number : M.Val i32.t :=
       let* α0 : ref str.t := M.read number_str in
-      let* α1 : M.Val str.t := deref α0 in
-      let* α2 : ref str.t := borrow α1 in
-      let* α3 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
-        str.t::["parse"] α2 in
-      let* α4 :
+      let* α1 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
+        str.t::["parse"] α0 in
+      let* α2 :
           M.Val (core.result.Result.t i32.t core.num.error.ParseIntError.t) :=
-        M.alloc α3 in
-      let* α5 := M.read α4 in
-      let* α6 : M.Val i32.t :=
-        match α5 with
+        M.alloc α1 in
+      let* α3 := M.read α2 in
+      let* α4 : M.Val i32.t :=
+        match α3 with
         | core.result.Result.Ok number =>
           let* number := M.alloc number in
           M.pure number
@@ -40,7 +38,7 @@ Definition main
           let* α1 : M.Val never.t := return_ (core.result.Result.Err α0) in
           never_to_any α1
         end in
-      M.copy α6 in
+      M.copy α4 in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
         let* α0 : M.Val (array (ref str.t)) :=

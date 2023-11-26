@@ -204,77 +204,73 @@ Section Impl_core_fmt_Debug_for_foreign_function_interface_Complex_t.
       let* α6 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=
         if (α5 : bool) then
           let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
-          let* α1 : M.Val core.fmt.Formatter.t := deref α0 in
-          let* α2 : mut_ref core.fmt.Formatter.t := borrow_mut α1 in
-          let* α3 : M.Val (array (ref str.t)) :=
+          let* α1 : M.Val (array (ref str.t)) :=
             M.alloc [ mk_str ""; mk_str "-"; mk_str "i" ] in
-          let* α4 : ref (array (ref str.t)) := borrow α3 in
-          let* α5 : M.Val (ref (array (ref str.t))) := M.alloc α4 in
-          let* α6 : M.Val (ref (slice (ref str.t))) :=
-            pointer_coercion "Unsize" α5 in
-          let* α7 : ref (slice (ref str.t)) := M.read α6 in
-          let* α8 : ref foreign_function_interface.Complex.t := M.read self in
-          let* α9 : M.Val foreign_function_interface.Complex.t := deref α8 in
-          let* α10 : ref f32.t := borrow α9.["re"] in
-          let* α11 : core.fmt.rt.Argument.t :=
-            core.fmt.rt.Argument.t::["new_display"] α10 in
-          let* α12 : M.Val core.fmt.rt.Argument.t := M.alloc α11 in
-          let* α13 : ref foreign_function_interface.Complex.t := M.read self in
-          let* α14 : M.Val foreign_function_interface.Complex.t := deref α13 in
-          let* α15 : M.Val f32.t := UnOp.neg α14.["im"] in
-          let* α16 : ref f32.t := borrow α15 in
-          let* α17 : core.fmt.rt.Argument.t :=
-            core.fmt.rt.Argument.t::["new_display"] α16 in
-          let* α18 : M.Val core.fmt.rt.Argument.t := M.alloc α17 in
-          let* α19 : M.Val (array core.fmt.rt.Argument.t) :=
-            M.alloc [ α12; α18 ] in
-          let* α20 : ref (array core.fmt.rt.Argument.t) := borrow α19 in
-          let* α21 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-            M.alloc α20 in
-          let* α22 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
-            pointer_coercion "Unsize" α21 in
-          let* α23 : ref (slice core.fmt.rt.Argument.t) := M.read α22 in
-          let* α24 : core.fmt.Arguments.t :=
-            core.fmt.Arguments.t::["new_v1"] α7 α23 in
-          let* α25 : core.result.Result.t unit core.fmt.Error.t :=
-            core.fmt.Formatter.t::["write_fmt"] α2 α24 in
-          M.alloc α25
+          let* α2 : ref (array (ref str.t)) := borrow α1 in
+          let* α3 : M.Val (ref (array (ref str.t))) := M.alloc α2 in
+          let* α4 : M.Val (ref (slice (ref str.t))) :=
+            pointer_coercion "Unsize" α3 in
+          let* α5 : ref (slice (ref str.t)) := M.read α4 in
+          let* α6 : ref foreign_function_interface.Complex.t := M.read self in
+          let* α7 : M.Val foreign_function_interface.Complex.t := deref α6 in
+          let* α8 : ref f32.t := borrow α7.["re"] in
+          let* α9 : core.fmt.rt.Argument.t :=
+            core.fmt.rt.Argument.t::["new_display"] α8 in
+          let* α10 : M.Val core.fmt.rt.Argument.t := M.alloc α9 in
+          let* α11 : ref foreign_function_interface.Complex.t := M.read self in
+          let* α12 : M.Val foreign_function_interface.Complex.t := deref α11 in
+          let* α13 : M.Val f32.t := UnOp.neg α12.["im"] in
+          let* α14 : ref f32.t := borrow α13 in
+          let* α15 : core.fmt.rt.Argument.t :=
+            core.fmt.rt.Argument.t::["new_display"] α14 in
+          let* α16 : M.Val core.fmt.rt.Argument.t := M.alloc α15 in
+          let* α17 : M.Val (array core.fmt.rt.Argument.t) :=
+            M.alloc [ α10; α16 ] in
+          let* α18 : ref (array core.fmt.rt.Argument.t) := borrow α17 in
+          let* α19 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+            M.alloc α18 in
+          let* α20 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
+            pointer_coercion "Unsize" α19 in
+          let* α21 : ref (slice core.fmt.rt.Argument.t) := M.read α20 in
+          let* α22 : core.fmt.Arguments.t :=
+            core.fmt.Arguments.t::["new_v1"] α5 α21 in
+          let* α23 : core.result.Result.t unit core.fmt.Error.t :=
+            core.fmt.Formatter.t::["write_fmt"] α0 α22 in
+          M.alloc α23
         else
           let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
-          let* α1 : M.Val core.fmt.Formatter.t := deref α0 in
-          let* α2 : mut_ref core.fmt.Formatter.t := borrow_mut α1 in
-          let* α3 : M.Val (array (ref str.t)) :=
+          let* α1 : M.Val (array (ref str.t)) :=
             M.alloc [ mk_str ""; mk_str "+"; mk_str "i" ] in
-          let* α4 : ref (array (ref str.t)) := borrow α3 in
-          let* α5 : M.Val (ref (array (ref str.t))) := M.alloc α4 in
-          let* α6 : M.Val (ref (slice (ref str.t))) :=
-            pointer_coercion "Unsize" α5 in
-          let* α7 : ref (slice (ref str.t)) := M.read α6 in
-          let* α8 : ref foreign_function_interface.Complex.t := M.read self in
-          let* α9 : M.Val foreign_function_interface.Complex.t := deref α8 in
-          let* α10 : ref f32.t := borrow α9.["re"] in
-          let* α11 : core.fmt.rt.Argument.t :=
-            core.fmt.rt.Argument.t::["new_display"] α10 in
-          let* α12 : M.Val core.fmt.rt.Argument.t := M.alloc α11 in
-          let* α13 : ref foreign_function_interface.Complex.t := M.read self in
-          let* α14 : M.Val foreign_function_interface.Complex.t := deref α13 in
-          let* α15 : ref f32.t := borrow α14.["im"] in
-          let* α16 : core.fmt.rt.Argument.t :=
-            core.fmt.rt.Argument.t::["new_display"] α15 in
-          let* α17 : M.Val core.fmt.rt.Argument.t := M.alloc α16 in
-          let* α18 : M.Val (array core.fmt.rt.Argument.t) :=
-            M.alloc [ α12; α17 ] in
-          let* α19 : ref (array core.fmt.rt.Argument.t) := borrow α18 in
-          let* α20 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-            M.alloc α19 in
-          let* α21 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
-            pointer_coercion "Unsize" α20 in
-          let* α22 : ref (slice core.fmt.rt.Argument.t) := M.read α21 in
-          let* α23 : core.fmt.Arguments.t :=
-            core.fmt.Arguments.t::["new_v1"] α7 α22 in
-          let* α24 : core.result.Result.t unit core.fmt.Error.t :=
-            core.fmt.Formatter.t::["write_fmt"] α2 α23 in
-          M.alloc α24 in
+          let* α2 : ref (array (ref str.t)) := borrow α1 in
+          let* α3 : M.Val (ref (array (ref str.t))) := M.alloc α2 in
+          let* α4 : M.Val (ref (slice (ref str.t))) :=
+            pointer_coercion "Unsize" α3 in
+          let* α5 : ref (slice (ref str.t)) := M.read α4 in
+          let* α6 : ref foreign_function_interface.Complex.t := M.read self in
+          let* α7 : M.Val foreign_function_interface.Complex.t := deref α6 in
+          let* α8 : ref f32.t := borrow α7.["re"] in
+          let* α9 : core.fmt.rt.Argument.t :=
+            core.fmt.rt.Argument.t::["new_display"] α8 in
+          let* α10 : M.Val core.fmt.rt.Argument.t := M.alloc α9 in
+          let* α11 : ref foreign_function_interface.Complex.t := M.read self in
+          let* α12 : M.Val foreign_function_interface.Complex.t := deref α11 in
+          let* α13 : ref f32.t := borrow α12.["im"] in
+          let* α14 : core.fmt.rt.Argument.t :=
+            core.fmt.rt.Argument.t::["new_display"] α13 in
+          let* α15 : M.Val core.fmt.rt.Argument.t := M.alloc α14 in
+          let* α16 : M.Val (array core.fmt.rt.Argument.t) :=
+            M.alloc [ α10; α15 ] in
+          let* α17 : ref (array core.fmt.rt.Argument.t) := borrow α16 in
+          let* α18 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+            M.alloc α17 in
+          let* α19 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
+            pointer_coercion "Unsize" α18 in
+          let* α20 : ref (slice core.fmt.rt.Argument.t) := M.read α19 in
+          let* α21 : core.fmt.Arguments.t :=
+            core.fmt.Arguments.t::["new_v1"] α5 α20 in
+          let* α22 : core.result.Result.t unit core.fmt.Error.t :=
+            core.fmt.Formatter.t::["write_fmt"] α0 α21 in
+          M.alloc α22 in
       M.read α6).
   
   Global Instance AssociatedFunction_fmt :

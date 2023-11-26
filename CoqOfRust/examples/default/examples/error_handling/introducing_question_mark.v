@@ -21,11 +21,9 @@ Definition multiply
   M.function_body
     (let* first_number : M.Val i32.t :=
       let* α0 : ref str.t := M.read first_number_str in
-      let* α1 : M.Val str.t := deref α0 in
-      let* α2 : ref str.t := borrow α1 in
-      let* α3 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
-        str.t::["parse"] α2 in
-      let* α4 :
+      let* α1 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
+        str.t::["parse"] α0 in
+      let* α2 :
           core.ops.control_flow.ControlFlow.t
             (core.result.Result.t
               core.convert.Infallible.t
@@ -34,18 +32,18 @@ Definition multiply
         (core.ops.try_trait.Try.branch
             (Self := core.result.Result.t i32.t core.num.error.ParseIntError.t)
             (Trait := ltac:(refine _)))
-          α3 in
-      let* α5 :
+          α1 in
+      let* α3 :
           M.Val
             (core.ops.control_flow.ControlFlow.t
               (core.result.Result.t
                 core.convert.Infallible.t
                 core.num.error.ParseIntError.t)
               i32.t) :=
-        M.alloc α4 in
-      let* α6 := M.read α5 in
-      let* α7 : M.Val i32.t :=
-        match α6 with
+        M.alloc α2 in
+      let* α4 := M.read α3 in
+      let* α5 : M.Val i32.t :=
+        match α4 with
         | core.ops.control_flow.ControlFlow.Break residual =>
           let* residual := M.alloc residual in
           let* α0 :
@@ -65,14 +63,12 @@ Definition multiply
           let* val := M.alloc val in
           M.pure val
         end in
-      M.copy α7 in
+      M.copy α5 in
     let* second_number : M.Val i32.t :=
       let* α0 : ref str.t := M.read second_number_str in
-      let* α1 : M.Val str.t := deref α0 in
-      let* α2 : ref str.t := borrow α1 in
-      let* α3 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
-        str.t::["parse"] α2 in
-      let* α4 :
+      let* α1 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
+        str.t::["parse"] α0 in
+      let* α2 :
           core.ops.control_flow.ControlFlow.t
             (core.result.Result.t
               core.convert.Infallible.t
@@ -81,18 +77,18 @@ Definition multiply
         (core.ops.try_trait.Try.branch
             (Self := core.result.Result.t i32.t core.num.error.ParseIntError.t)
             (Trait := ltac:(refine _)))
-          α3 in
-      let* α5 :
+          α1 in
+      let* α3 :
           M.Val
             (core.ops.control_flow.ControlFlow.t
               (core.result.Result.t
                 core.convert.Infallible.t
                 core.num.error.ParseIntError.t)
               i32.t) :=
-        M.alloc α4 in
-      let* α6 := M.read α5 in
-      let* α7 : M.Val i32.t :=
-        match α6 with
+        M.alloc α2 in
+      let* α4 := M.read α3 in
+      let* α5 : M.Val i32.t :=
+        match α4 with
         | core.ops.control_flow.ControlFlow.Break residual =>
           let* residual := M.alloc residual in
           let* α0 :
@@ -112,7 +108,7 @@ Definition multiply
           let* val := M.alloc val in
           M.pure val
         end in
-      M.copy α7 in
+      M.copy α5 in
     let* α0 : M.Val i32.t := BinOp.mul first_number second_number in
     let* α1 : i32.t := M.read α0 in
     let* α0 :
@@ -204,25 +200,17 @@ Definition main : M unit :=
   M.function_body
     (let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "10") in
-      let* α1 : M.Val str.t := deref α0 in
-      let* α2 : ref str.t := borrow α1 in
-      let* α3 : ref str.t := M.read (mk_str "2") in
-      let* α4 : M.Val str.t := deref α3 in
-      let* α5 : ref str.t := borrow α4 in
-      let* α6 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
-        introducing_question_mark.multiply α2 α5 in
-      let* α7 : unit := introducing_question_mark.print α6 in
-      M.alloc α7 in
+      let* α1 : ref str.t := M.read (mk_str "2") in
+      let* α2 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
+        introducing_question_mark.multiply α0 α1 in
+      let* α3 : unit := introducing_question_mark.print α2 in
+      M.alloc α3 in
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "t") in
-      let* α1 : M.Val str.t := deref α0 in
-      let* α2 : ref str.t := borrow α1 in
-      let* α3 : ref str.t := M.read (mk_str "2") in
-      let* α4 : M.Val str.t := deref α3 in
-      let* α5 : ref str.t := borrow α4 in
-      let* α6 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
-        introducing_question_mark.multiply α2 α5 in
-      let* α7 : unit := introducing_question_mark.print α6 in
-      M.alloc α7 in
+      let* α1 : ref str.t := M.read (mk_str "2") in
+      let* α2 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
+        introducing_question_mark.multiply α0 α1 in
+      let* α3 : unit := introducing_question_mark.print α2 in
+      M.alloc α3 in
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0).

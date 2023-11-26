@@ -147,10 +147,8 @@ Definition main : M unit :=
       M.alloc α2 in
     let* _ : M.Val unit :=
       let* α0 : ref i32.t := M.read z in
-      let* α1 : M.Val i32.t := deref α0 in
-      let* α2 : ref i32.t := borrow α1 in
-      let* α3 : unit := scoping_rules_lifetimes_functions.print_one α2 in
-      M.alloc α3 in
+      let* α1 : unit := scoping_rules_lifetimes_functions.print_one α0 in
+      M.alloc α1 in
     let* t : M.Val i32.t :=
       let* α0 : M.Val i32.t := M.alloc 3 in
       M.copy α0 in
