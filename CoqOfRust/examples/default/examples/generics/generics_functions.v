@@ -93,19 +93,19 @@ Definition main : M unit :=
       M.alloc α0 in
     let* _ : M.Val unit :=
       let* α0 : M.Val i32.t := M.alloc 6 in
-      let* α1 := M.read α0 in
+      let* α1 : i32.t := M.read α0 in
       let* α2 : unit :=
         generics_functions.gen_spec_i32 (generics_functions.SGen.Build_t α1) in
       M.alloc α2 in
     let* _ : M.Val unit :=
       let* α0 : M.Val char.t := M.alloc "a"%char in
-      let* α1 := M.read α0 in
+      let* α1 : char.t := M.read α0 in
       let* α2 : unit :=
         generics_functions.generic (generics_functions.SGen.Build_t α1) in
       M.alloc α2 in
     let* _ : M.Val unit :=
       let* α0 : M.Val char.t := M.alloc "c"%char in
-      let* α1 := M.read α0 in
+      let* α1 : char.t := M.read α0 in
       let* α2 : unit :=
         generics_functions.generic (generics_functions.SGen.Build_t α1) in
       M.alloc α2 in

@@ -18,10 +18,10 @@ Definition division (dividend : i32.t) (divisor : i32.t) : M i32.t :=
     (let* α0 : M.Val i32.t := M.alloc 0 in
     let* α1 : M.Val bool.t := BinOp.eq divisor α0 in
     let* α2 : M.Val bool.t := use α1 in
-    let* α3 := M.read α2 in
+    let* α3 : bool.t := M.read α2 in
     if (α3 : bool) then
       let* _ : M.Val unit :=
-        let* α0 := M.read (mk_str "division by zero") in
+        let* α0 : ref str.t := M.read (mk_str "division by zero") in
         let* α1 : never.t := std.panicking.begin_panic α0 in
         let* α2 : M.Val never.t := M.alloc α1 in
         never_to_any α2 in
@@ -48,15 +48,15 @@ Definition main : M unit :=
   M.function_body
     (let* _x : M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t) :=
       let* α0 : M.Val i32.t := M.alloc 0 in
-      let* α1 := M.read α0 in
+      let* α1 : i32.t := M.read α0 in
       let* α2 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t :=
         (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"] α1 in
       M.alloc α2 in
     let* _ : M.Val i32.t :=
       let* α0 : M.Val i32.t := M.alloc 3 in
-      let* α1 := M.read α0 in
+      let* α1 : i32.t := M.read α0 in
       let* α2 : M.Val i32.t := M.alloc 0 in
-      let* α3 := M.read α2 in
+      let* α3 : i32.t := M.read α2 in
       let* α4 : i32.t := panic.division α1 α3 in
       M.alloc α4 in
     let* _ : M.Val unit :=
@@ -70,7 +70,7 @@ Definition main : M unit :=
         let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
         let* α5 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α4 in
-        let* α6 := M.read α5 in
+        let* α6 : ref (slice (ref str.t)) := M.read α5 in
         let* α7 : core.fmt.Arguments.t :=
           core.fmt.Arguments.t::["new_const"] α6 in
         let* α8 : unit := std.io.stdio._print α7 in

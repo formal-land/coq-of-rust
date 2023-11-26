@@ -13,7 +13,7 @@ Definition create_box : M unit :=
   M.function_body
     (let* _box1 : M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t) :=
       let* α0 : M.Val i32.t := M.alloc 3 in
-      let* α1 := M.read α0 in
+      let* α1 : i32.t := M.read α0 in
       let* α2 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t :=
         (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"] α1 in
       M.alloc α2 in
@@ -46,22 +46,22 @@ Definition main : M unit :=
   M.function_body
     (let* _box2 : M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t) :=
       let* α0 : M.Val i32.t := M.alloc 5 in
-      let* α1 := M.read α0 in
+      let* α1 : i32.t := M.read α0 in
       let* α2 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t :=
         (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"] α1 in
       M.alloc α2 in
     let* _ : M.Val unit :=
       let* _box3 : M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t) :=
         let* α0 : M.Val i32.t := M.alloc 4 in
-        let* α1 := M.read α0 in
+        let* α1 : i32.t := M.read α0 in
         let* α2 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t :=
           (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"] α1 in
         M.alloc α2 in
       M.alloc tt in
     let* α0 : M.Val u32.t := M.alloc 0 in
-    let* α1 := M.read α0 in
+    let* α1 : u32.t := M.read α0 in
     let* α2 : M.Val u32.t := M.alloc 1000 in
-    let* α3 := M.read α2 in
+    let* α3 : u32.t := M.read α2 in
     let* α4 : core.ops.range.Range.t u32.t :=
       (core.iter.traits.collect.IntoIterator.into_iter
           (Self := core.ops.range.Range.t u32.t)

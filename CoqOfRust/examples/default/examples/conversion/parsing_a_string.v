@@ -13,7 +13,7 @@ Definition main : M unit :=
   M.function_body
     (let* _ :
         M.Val (core.result.Result.t i32.t core.num.error.ParseIntError.t) :=
-      let* α0 := M.read (mk_str "12") in
+      let* α0 : ref str.t := M.read (mk_str "12") in
       let* α1 : M.Val str.t := deref α0 in
       let* α2 : ref str.t := borrow α1 in
       let* α3 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
@@ -21,7 +21,7 @@ Definition main : M unit :=
       M.alloc α3 in
     let* _ :
         M.Val (core.result.Result.t bool.t core.str.error.ParseBoolError.t) :=
-      let* α0 := M.read (mk_str "true") in
+      let* α0 : ref str.t := M.read (mk_str "true") in
       let* α1 : M.Val str.t := deref α0 in
       let* α2 : ref str.t := borrow α1 in
       let* α3 : core.result.Result.t bool.t core.str.error.ParseBoolError.t :=
@@ -29,7 +29,7 @@ Definition main : M unit :=
       M.alloc α3 in
     let* _ :
         M.Val (core.result.Result.t u32.t core.num.error.ParseIntError.t) :=
-      let* α0 := M.read (mk_str "unparsable") in
+      let* α0 : ref str.t := M.read (mk_str "unparsable") in
       let* α1 : M.Val str.t := deref α0 in
       let* α2 : ref str.t := borrow α1 in
       let* α3 : core.result.Result.t u32.t core.num.error.ParseIntError.t :=

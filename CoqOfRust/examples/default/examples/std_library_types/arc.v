@@ -26,15 +26,15 @@ fn main() {
 Definition main : M unit :=
   M.function_body
     (let* apple : M.Val (alloc.sync.Arc.t (ref str.t)) :=
-      let* α0 := M.read (mk_str "the same apple") in
+      let* α0 : ref str.t := M.read (mk_str "the same apple") in
       let* α1 : alloc.sync.Arc.t (ref str.t) :=
         (alloc.sync.Arc.t (ref str.t))::["new"] α0 in
       M.alloc α1 in
     let* _ : M.Val unit :=
       let* α0 : M.Val i32.t := M.alloc 0 in
-      let* α1 := M.read α0 in
+      let* α1 : i32.t := M.read α0 in
       let* α2 : M.Val i32.t := M.alloc 10 in
-      let* α3 := M.read α2 in
+      let* α3 : i32.t := M.read α2 in
       let* α4 : core.ops.range.Range.t i32.t :=
         (core.iter.traits.collect.IntoIterator.into_iter
             (Self := core.ops.range.Range.t i32.t)
@@ -78,7 +78,7 @@ Definition main : M unit :=
                       α2 in
                   M.alloc α3 in
                 let* _ : M.Val (std.thread.JoinHandle.t unit) :=
-                  let* α0 :=
+                  let* α0 : type not implemented :=
                     M.read
                       (let* _ : M.Val unit :=
                         let* _ : M.Val unit :=
@@ -92,7 +92,7 @@ Definition main : M unit :=
                             M.alloc α3 in
                           let* α5 : M.Val (ref (slice (ref str.t))) :=
                             pointer_coercion "Unsize" α4 in
-                          let* α6 := M.read α5 in
+                          let* α6 : ref (slice (ref str.t)) := M.read α5 in
                           let* α7 : ref (alloc.sync.Arc.t (ref str.t)) :=
                             borrow apple in
                           let* α8 : M.Val (alloc.sync.Arc.t (ref str.t)) :=
@@ -117,7 +117,8 @@ Definition main : M unit :=
                           let* α17 :
                               M.Val (ref (slice core.fmt.rt.Argument.t)) :=
                             pointer_coercion "Unsize" α16 in
-                          let* α18 := M.read α17 in
+                          let* α18 : ref (slice core.fmt.rt.Argument.t) :=
+                            M.read α17 in
                           let* α19 : core.fmt.Arguments.t :=
                             core.fmt.Arguments.t::["new_v1"] α6 α18 in
                           let* α20 : unit := std.io.stdio._print α19 in
@@ -134,7 +135,7 @@ Definition main : M unit :=
       use α7 in
     let* _ : M.Val unit :=
       let* α0 : M.Val u64.t := M.alloc 1 in
-      let* α1 := M.read α0 in
+      let* α1 : u64.t := M.read α0 in
       let* α2 : core.time.Duration.t :=
         core.time.Duration.t::["from_secs"] α1 in
       let* α3 : unit := std.thread.sleep α2 in

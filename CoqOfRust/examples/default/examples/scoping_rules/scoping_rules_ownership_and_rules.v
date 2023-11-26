@@ -25,7 +25,7 @@ Definition destroy_box
         let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
         let* α5 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α4 in
-        let* α6 := M.read α5 in
+        let* α6 : ref (slice (ref str.t)) := M.read α5 in
         let* α7 : ref (alloc.boxed.Box.t i32.t alloc.alloc.Global.t) :=
           borrow c in
         let* α8 : M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t) :=
@@ -42,7 +42,7 @@ Definition destroy_box
         let* α16 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α15 in
         let* α17 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
           pointer_coercion "Unsize" α16 in
-        let* α18 := M.read α17 in
+        let* α18 : ref (slice core.fmt.rt.Argument.t) := M.read α17 in
         let* α19 : core.fmt.Arguments.t :=
           core.fmt.Arguments.t::["new_v1"] α6 α18 in
         let* α20 : unit := std.io.stdio._print α19 in
@@ -105,7 +105,7 @@ Definition main : M unit :=
         let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
         let* α5 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α4 in
-        let* α6 := M.read α5 in
+        let* α6 : ref (slice (ref str.t)) := M.read α5 in
         let* α7 : ref u32.t := borrow x in
         let* α8 : M.Val u32.t := deref α7 in
         let* α9 : ref u32.t := borrow α8 in
@@ -126,7 +126,7 @@ Definition main : M unit :=
         let* α21 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α20 in
         let* α22 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
           pointer_coercion "Unsize" α21 in
-        let* α23 := M.read α22 in
+        let* α23 : ref (slice core.fmt.rt.Argument.t) := M.read α22 in
         let* α24 : core.fmt.Arguments.t :=
           core.fmt.Arguments.t::["new_v1"] α6 α23 in
         let* α25 : unit := std.io.stdio._print α24 in
@@ -134,7 +134,7 @@ Definition main : M unit :=
       M.alloc tt in
     let* a : M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t) :=
       let* α0 : M.Val i32.t := M.alloc 5 in
-      let* α1 := M.read α0 in
+      let* α1 : i32.t := M.read α0 in
       let* α2 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t :=
         (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"] α1 in
       M.alloc α2 in
@@ -149,7 +149,7 @@ Definition main : M unit :=
         let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
         let* α5 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α4 in
-        let* α6 := M.read α5 in
+        let* α6 : ref (slice (ref str.t)) := M.read α5 in
         let* α7 : ref (alloc.boxed.Box.t i32.t alloc.alloc.Global.t) :=
           borrow a in
         let* α8 : M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t) :=
@@ -166,7 +166,7 @@ Definition main : M unit :=
         let* α16 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α15 in
         let* α17 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
           pointer_coercion "Unsize" α16 in
-        let* α18 := M.read α17 in
+        let* α18 : ref (slice core.fmt.rt.Argument.t) := M.read α17 in
         let* α19 : core.fmt.Arguments.t :=
           core.fmt.Arguments.t::["new_v1"] α6 α18 in
         let* α20 : unit := std.io.stdio._print α19 in
@@ -174,7 +174,7 @@ Definition main : M unit :=
       M.alloc tt in
     let* b : M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t) := M.copy a in
     let* _ : M.Val unit :=
-      let* α0 := M.read b in
+      let* α0 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t := M.read b in
       let* α1 : unit := scoping_rules_ownership_and_rules.destroy_box α0 in
       M.alloc α1 in
     M.alloc tt).

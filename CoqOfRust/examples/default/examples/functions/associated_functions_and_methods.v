@@ -35,9 +35,9 @@ Section Impl_associated_functions_and_methods_Point_t.
   Definition origin : M associated_functions_and_methods.Point.t :=
     M.function_body
       (let* α0 : M.Val f64.t := M.alloc 0 (* 0.0 *) in
-      let* α1 := M.read α0 in
+      let* α1 : f64.t := M.read α0 in
       let* α2 : M.Val f64.t := M.alloc 1 (* 1.0 *) in
-      let* α3 := M.read α2 in
+      let* α3 : f64.t := M.read α2 in
       M.alloc
         {|
           associated_functions_and_methods.Point.y := α1;
@@ -61,8 +61,8 @@ Section Impl_associated_functions_and_methods_Point_t.
     let* x : M.Val f64.t := M.alloc x in
     let* y : M.Val f64.t := M.alloc y in
     M.function_body
-      (let* α0 := M.read x in
-      let* α1 := M.read y in
+      (let* α0 : f64.t := M.read x in
+      let* α1 : f64.t := M.read y in
       M.alloc
         {|
           associated_functions_and_methods.Point.x := α0;
@@ -112,7 +112,8 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
       : M associated_functions_and_methods.Point.t :=
     let* self : M.Val (ref ltac:(Self)) := M.alloc self in
     M.function_body
-      (let* α0 := M.read self in
+      (let* α0 : ref associated_functions_and_methods.Rectangle.t :=
+        M.read self in
       let* α1 : M.Val associated_functions_and_methods.Rectangle.t :=
         deref α0 in
       M.pure α1.["p1"]).
@@ -141,7 +142,8 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
             associated_functions_and_methods.Point.y := y1;
           |} :
           M.Val associated_functions_and_methods.Point.t :=
-        let* α0 := M.read self in
+        let* α0 : ref associated_functions_and_methods.Rectangle.t :=
+          M.read self in
         let* α1 : M.Val associated_functions_and_methods.Rectangle.t :=
           deref α0 in
         M.copy α1.["p1"] in
@@ -150,14 +152,15 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
             associated_functions_and_methods.Point.y := y2;
           |} :
           M.Val associated_functions_and_methods.Point.t :=
-        let* α0 := M.read self in
+        let* α0 : ref associated_functions_and_methods.Rectangle.t :=
+          M.read self in
         let* α1 : M.Val associated_functions_and_methods.Rectangle.t :=
           deref α0 in
         M.copy α1.["p2"] in
       let* α0 : M.Val f64.t := BinOp.sub x1 x2 in
       let* α1 : M.Val f64.t := BinOp.sub y1 y2 in
       let* α2 : M.Val f64.t := BinOp.mul α0 α1 in
-      let* α3 := M.read α2 in
+      let* α3 : f64.t := M.read α2 in
       let* α4 : f64.t := f64.t::["abs"] α3 in
       M.alloc α4).
   
@@ -182,7 +185,8 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
             associated_functions_and_methods.Point.y := y1;
           |} :
           M.Val associated_functions_and_methods.Point.t :=
-        let* α0 := M.read self in
+        let* α0 : ref associated_functions_and_methods.Rectangle.t :=
+          M.read self in
         let* α1 : M.Val associated_functions_and_methods.Rectangle.t :=
           deref α0 in
         M.copy α1.["p1"] in
@@ -191,17 +195,18 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
             associated_functions_and_methods.Point.y := y2;
           |} :
           M.Val associated_functions_and_methods.Point.t :=
-        let* α0 := M.read self in
+        let* α0 : ref associated_functions_and_methods.Rectangle.t :=
+          M.read self in
         let* α1 : M.Val associated_functions_and_methods.Rectangle.t :=
           deref α0 in
         M.copy α1.["p2"] in
       let* α0 : M.Val f64.t := M.alloc 2 (* 2.0 *) in
       let* α1 : M.Val f64.t := BinOp.sub x1 x2 in
-      let* α2 := M.read α1 in
+      let* α2 : f64.t := M.read α1 in
       let* α3 : f64.t := f64.t::["abs"] α2 in
       let* α4 : M.Val f64.t := M.alloc α3 in
       let* α5 : M.Val f64.t := BinOp.sub y1 y2 in
-      let* α6 := M.read α5 in
+      let* α6 : f64.t := M.read α5 in
       let* α7 : f64.t := f64.t::["abs"] α6 in
       let* α8 : M.Val f64.t := M.alloc α7 in
       let* α9 : M.Val f64.t := BinOp.add α4 α8 in
@@ -231,22 +236,26 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
     let* y : M.Val f64.t := M.alloc y in
     M.function_body
       (let* _ : M.Val unit :=
-        let* α0 := M.read self in
+        let* α0 : mut_ref associated_functions_and_methods.Rectangle.t :=
+          M.read self in
         let* α1 : M.Val associated_functions_and_methods.Rectangle.t :=
           deref α0 in
         assign_op add α1.["p1"].["x"] x in
       let* _ : M.Val unit :=
-        let* α0 := M.read self in
+        let* α0 : mut_ref associated_functions_and_methods.Rectangle.t :=
+          M.read self in
         let* α1 : M.Val associated_functions_and_methods.Rectangle.t :=
           deref α0 in
         assign_op add α1.["p2"].["x"] x in
       let* _ : M.Val unit :=
-        let* α0 := M.read self in
+        let* α0 : mut_ref associated_functions_and_methods.Rectangle.t :=
+          M.read self in
         let* α1 : M.Val associated_functions_and_methods.Rectangle.t :=
           deref α0 in
         assign_op add α1.["p1"].["y"] y in
       let* _ : M.Val unit :=
-        let* α0 := M.read self in
+        let* α0 : mut_ref associated_functions_and_methods.Rectangle.t :=
+          M.read self in
         let* α1 : M.Val associated_functions_and_methods.Rectangle.t :=
           deref α0 in
         assign_op add α1.["p2"].["y"] y in
@@ -306,7 +315,7 @@ Section Impl_associated_functions_and_methods_Pair_t.
           let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
           let* α5 : M.Val (ref (slice (ref str.t))) :=
             pointer_coercion "Unsize" α4 in
-          let* α6 := M.read α5 in
+          let* α6 : ref (slice (ref str.t)) := M.read α5 in
           let* α7 : ref (alloc.boxed.Box.t i32.t alloc.alloc.Global.t) :=
             borrow first in
           let* α8 : M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t) :=
@@ -334,7 +343,7 @@ Section Impl_associated_functions_and_methods_Pair_t.
             M.alloc α20 in
           let* α22 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
             pointer_coercion "Unsize" α21 in
-          let* α23 := M.read α22 in
+          let* α23 : ref (slice core.fmt.rt.Argument.t) := M.read α22 in
           let* α24 : core.fmt.Arguments.t :=
             core.fmt.Arguments.t::["new_v1"] α6 α23 in
           let* α25 : unit := std.io.stdio._print α24 in
@@ -392,9 +401,9 @@ Definition main : M unit :=
       let* α0 : associated_functions_and_methods.Point.t :=
         associated_functions_and_methods.Point.t::["origin"] in
       let* α1 : M.Val f64.t := M.alloc 3 (* 3.0 *) in
-      let* α2 := M.read α1 in
+      let* α2 : f64.t := M.read α1 in
       let* α3 : M.Val f64.t := M.alloc 4 (* 4.0 *) in
-      let* α4 := M.read α3 in
+      let* α4 : f64.t := M.read α3 in
       let* α5 : associated_functions_and_methods.Point.t :=
         associated_functions_and_methods.Point.t::["new"] α2 α4 in
       M.alloc
@@ -413,7 +422,7 @@ Definition main : M unit :=
         let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
         let* α5 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α4 in
-        let* α6 := M.read α5 in
+        let* α6 : ref (slice (ref str.t)) := M.read α5 in
         let* α7 : ref associated_functions_and_methods.Rectangle.t :=
           borrow rectangle in
         let* α8 : f64.t :=
@@ -432,7 +441,7 @@ Definition main : M unit :=
         let* α19 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α18 in
         let* α20 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
           pointer_coercion "Unsize" α19 in
-        let* α21 := M.read α20 in
+        let* α21 : ref (slice core.fmt.rt.Argument.t) := M.read α20 in
         let* α22 : core.fmt.Arguments.t :=
           core.fmt.Arguments.t::["new_v1"] α6 α21 in
         let* α23 : unit := std.io.stdio._print α22 in
@@ -449,7 +458,7 @@ Definition main : M unit :=
         let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
         let* α5 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α4 in
-        let* α6 := M.read α5 in
+        let* α6 : ref (slice (ref str.t)) := M.read α5 in
         let* α7 : ref associated_functions_and_methods.Rectangle.t :=
           borrow rectangle in
         let* α8 : f64.t :=
@@ -468,7 +477,7 @@ Definition main : M unit :=
         let* α19 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α18 in
         let* α20 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
           pointer_coercion "Unsize" α19 in
-        let* α21 := M.read α20 in
+        let* α21 : ref (slice core.fmt.rt.Argument.t) := M.read α20 in
         let* α22 : core.fmt.Arguments.t :=
           core.fmt.Arguments.t::["new_v1"] α6 α21 in
         let* α23 : unit := std.io.stdio._print α22 in
@@ -478,9 +487,9 @@ Definition main : M unit :=
       let* α0 : associated_functions_and_methods.Point.t :=
         associated_functions_and_methods.Point.t::["origin"] in
       let* α1 : M.Val f64.t := M.alloc 1 (* 1.0 *) in
-      let* α2 := M.read α1 in
+      let* α2 : f64.t := M.read α1 in
       let* α3 : M.Val f64.t := M.alloc 1 (* 1.0 *) in
-      let* α4 := M.read α3 in
+      let* α4 : f64.t := M.read α3 in
       let* α5 : associated_functions_and_methods.Point.t :=
         associated_functions_and_methods.Point.t::["new"] α2 α4 in
       M.alloc
@@ -492,24 +501,24 @@ Definition main : M unit :=
       let* α0 : mut_ref associated_functions_and_methods.Rectangle.t :=
         borrow_mut square in
       let* α1 : M.Val f64.t := M.alloc 1 (* 1.0 *) in
-      let* α2 := M.read α1 in
+      let* α2 : f64.t := M.read α1 in
       let* α3 : M.Val f64.t := M.alloc 1 (* 1.0 *) in
-      let* α4 := M.read α3 in
+      let* α4 : f64.t := M.read α3 in
       let* α5 : unit :=
         associated_functions_and_methods.Rectangle.t::["translate"] α0 α2 α4 in
       M.alloc α5 in
     let* pair : M.Val associated_functions_and_methods.Pair.t :=
       let* α0 : M.Val i32.t := M.alloc 1 in
-      let* α1 := M.read α0 in
+      let* α1 : i32.t := M.read α0 in
       let* α2 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t :=
         (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"] α1 in
       let* α3 : M.Val i32.t := M.alloc 2 in
-      let* α4 := M.read α3 in
+      let* α4 : i32.t := M.read α3 in
       let* α5 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t :=
         (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"] α4 in
       M.alloc (associated_functions_and_methods.Pair.Build_t α2 α5) in
     let* _ : M.Val unit :=
-      let* α0 := M.read pair in
+      let* α0 : associated_functions_and_methods.Pair.t := M.read pair in
       let* α1 : unit :=
         associated_functions_and_methods.Pair.t::["destroy"] α0 in
       M.alloc α1 in

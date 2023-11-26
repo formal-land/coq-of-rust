@@ -31,7 +31,7 @@ Definition apply
   let* f : M.Val F := M.alloc f in
   M.function_body
     (let* _ : M.Val unit :=
-      let* α0 := M.read f in
+      let* α0 : F := M.read f in
       let* α1 : unit :=
         (core.ops.function.FnOnce.call_once
             (Self := F)

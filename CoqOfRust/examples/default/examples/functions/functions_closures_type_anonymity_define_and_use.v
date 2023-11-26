@@ -54,7 +54,7 @@ Definition main : M unit :=
           let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
           let* α5 : M.Val (ref (slice (ref str.t))) :=
             pointer_coercion "Unsize" α4 in
-          let* α6 := M.read α5 in
+          let* α6 : ref (slice (ref str.t)) := M.read α5 in
           let* α7 : ref i32.t := borrow x in
           let* α8 : M.Val i32.t := deref α7 in
           let* α9 : ref i32.t := borrow α8 in
@@ -69,14 +69,14 @@ Definition main : M unit :=
             M.alloc α15 in
           let* α17 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
             pointer_coercion "Unsize" α16 in
-          let* α18 := M.read α17 in
+          let* α18 : ref (slice core.fmt.rt.Argument.t) := M.read α17 in
           let* α19 : core.fmt.Arguments.t :=
             core.fmt.Arguments.t::["new_v1"] α6 α18 in
           let* α20 : unit := std.io.stdio._print α19 in
           M.alloc α20 in
         M.alloc tt) in
     let* _ : M.Val unit :=
-      let* α0 := M.read print in
+      let* α0 : type not implemented := M.read print in
       let* α1 : unit :=
         functions_closures_type_anonymity_define_and_use.apply α0 in
       M.alloc α1 in

@@ -50,7 +50,7 @@ Section Impl_functions_order_SomeType_t.
     let* self : M.Val ltac:(Self) := M.alloc self in
     M.function_body
       (let* _ : M.Val unit :=
-        let* α0 := M.read self in
+        let* α0 : functions_order.SomeType.t := M.read self in
         let* α1 : unit := functions_order.SomeType.t::["meth2"] α0 in
         M.alloc α1 in
       M.alloc tt).
@@ -96,7 +96,7 @@ Section Impl_functions_order_SomeTrait_for_functions_order_SomeType_t.
   Definition some_trait_foo (self : ref ltac:(Self)) : M unit :=
     let* self : M.Val (ref ltac:(Self)) := M.alloc self in
     M.function_body
-      (let* α0 := M.read self in
+      (let* α0 : ref functions_order.SomeType.t := M.read self in
       let* α1 : M.Val functions_order.SomeType.t := deref α0 in
       let* α2 : ref functions_order.SomeType.t := borrow α1 in
       let* α3 : unit :=
@@ -164,7 +164,7 @@ Definition depends_on_trait_impl (u : u32.t) (b : bool.t) : M unit :=
   let* b : M.Val bool.t := M.alloc b in
   M.function_body
     (let* _ : M.Val unit :=
-      let* α0 := M.read b in
+      let* α0 : bool.t := M.read b in
       let* α1 : M.Val functions_order.OtherType.t :=
         M.alloc (functions_order.OtherType.Build_t α0) in
       let* α2 : ref functions_order.OtherType.t := borrow α1 in
@@ -175,7 +175,7 @@ Definition depends_on_trait_impl (u : u32.t) (b : bool.t) : M unit :=
           α2 in
       M.alloc α3 in
     let* _ : M.Val unit :=
-      let* α0 := M.read u in
+      let* α0 : u32.t := M.read u in
       let* α1 : M.Val functions_order.SomeType.t :=
         M.alloc (functions_order.SomeType.Build_t α0) in
       let* α2 : ref functions_order.SomeType.t := borrow α1 in
@@ -304,7 +304,7 @@ Definition main : M unit :=
       M.alloc α0 in
     let* _ : M.Val unit :=
       let* α0 : M.Val u32.t := M.alloc 0 in
-      let* α1 := M.read α0 in
+      let* α1 : u32.t := M.read α0 in
       let* α2 : unit :=
         functions_order.SomeType.t::["meth1"]
           (functions_order.SomeType.Build_t α1) in

@@ -55,7 +55,7 @@ Definition inspect (event : enums.WebEvent.t) : M unit :=
         let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
         let* α5 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α4 in
-        let* α6 := M.read α5 in
+        let* α6 : ref (slice (ref str.t)) := M.read α5 in
         let* α7 : core.fmt.Arguments.t :=
           core.fmt.Arguments.t::["new_const"] α6 in
         let* α8 : unit := std.io.stdio._print α7 in
@@ -72,7 +72,7 @@ Definition inspect (event : enums.WebEvent.t) : M unit :=
         let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
         let* α5 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α4 in
-        let* α6 := M.read α5 in
+        let* α6 : ref (slice (ref str.t)) := M.read α5 in
         let* α7 : core.fmt.Arguments.t :=
           core.fmt.Arguments.t::["new_const"] α6 in
         let* α8 : unit := std.io.stdio._print α7 in
@@ -90,7 +90,7 @@ Definition inspect (event : enums.WebEvent.t) : M unit :=
         let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
         let* α5 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α4 in
-        let* α6 := M.read α5 in
+        let* α6 : ref (slice (ref str.t)) := M.read α5 in
         let* α7 : ref char.t := borrow c in
         let* α8 : M.Val char.t := deref α7 in
         let* α9 : ref char.t := borrow α8 in
@@ -104,7 +104,7 @@ Definition inspect (event : enums.WebEvent.t) : M unit :=
         let* α16 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α15 in
         let* α17 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
           pointer_coercion "Unsize" α16 in
-        let* α18 := M.read α17 in
+        let* α18 : ref (slice core.fmt.rt.Argument.t) := M.read α17 in
         let* α19 : core.fmt.Arguments.t :=
           core.fmt.Arguments.t::["new_v1"] α6 α18 in
         let* α20 : unit := std.io.stdio._print α19 in
@@ -122,7 +122,7 @@ Definition inspect (event : enums.WebEvent.t) : M unit :=
         let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
         let* α5 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α4 in
-        let* α6 := M.read α5 in
+        let* α6 : ref (slice (ref str.t)) := M.read α5 in
         let* α7 : ref alloc.string.String.t := borrow s in
         let* α8 : M.Val alloc.string.String.t := deref α7 in
         let* α9 : ref alloc.string.String.t := borrow α8 in
@@ -136,7 +136,7 @@ Definition inspect (event : enums.WebEvent.t) : M unit :=
         let* α16 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α15 in
         let* α17 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
           pointer_coercion "Unsize" α16 in
-        let* α18 := M.read α17 in
+        let* α18 : ref (slice core.fmt.rt.Argument.t) := M.read α17 in
         let* α19 : core.fmt.Arguments.t :=
           core.fmt.Arguments.t::["new_v1"] α6 α18 in
         let* α20 : unit := std.io.stdio._print α19 in
@@ -160,7 +160,7 @@ Definition inspect (event : enums.WebEvent.t) : M unit :=
           let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
           let* α5 : M.Val (ref (slice (ref str.t))) :=
             pointer_coercion "Unsize" α4 in
-          let* α6 := M.read α5 in
+          let* α6 : ref (slice (ref str.t)) := M.read α5 in
           let* α7 : ref i64.t := borrow x in
           let* α8 : M.Val i64.t := deref α7 in
           let* α9 : ref i64.t := borrow α8 in
@@ -182,7 +182,7 @@ Definition inspect (event : enums.WebEvent.t) : M unit :=
             M.alloc α20 in
           let* α22 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
             pointer_coercion "Unsize" α21 in
-          let* α23 := M.read α22 in
+          let* α23 : ref (slice core.fmt.rt.Argument.t) := M.read α22 in
           let* α24 : core.fmt.Arguments.t :=
             core.fmt.Arguments.t::["new_v1"] α6 α23 in
           let* α25 : unit := std.io.stdio._print α24 in
@@ -212,10 +212,10 @@ Definition main : M unit :=
   M.function_body
     (let* pressed : M.Val enums.WebEvent.t :=
       let* α0 : M.Val char.t := M.alloc "x"%char in
-      let* α1 := M.read α0 in
+      let* α1 : char.t := M.read α0 in
       M.alloc (enums.WebEvent.KeyPress α1) in
     let* pasted : M.Val enums.WebEvent.t :=
-      let* α0 := M.read (mk_str "my text") in
+      let* α0 : ref str.t := M.read (mk_str "my text") in
       let* α1 : M.Val str.t := deref α0 in
       let* α2 : ref str.t := borrow α1 in
       let* α3 : alloc.string.String.t :=
@@ -226,9 +226,9 @@ Definition main : M unit :=
       M.alloc (enums.WebEvent.Paste α3) in
     let* click : M.Val enums.WebEvent.t :=
       let* α0 : M.Val i64.t := M.alloc 20 in
-      let* α1 := M.read α0 in
+      let* α1 : i64.t := M.read α0 in
       let* α2 : M.Val i64.t := M.alloc 80 in
-      let* α3 := M.read α2 in
+      let* α3 : i64.t := M.read α2 in
       M.alloc
         enums.WebEvent.Click
           {|
@@ -238,23 +238,23 @@ Definition main : M unit :=
     let* load : M.Val enums.WebEvent.t := M.alloc enums.WebEvent.PageLoad in
     let* unload : M.Val enums.WebEvent.t := M.alloc enums.WebEvent.PageUnload in
     let* _ : M.Val unit :=
-      let* α0 := M.read pressed in
+      let* α0 : enums.WebEvent.t := M.read pressed in
       let* α1 : unit := enums.inspect α0 in
       M.alloc α1 in
     let* _ : M.Val unit :=
-      let* α0 := M.read pasted in
+      let* α0 : enums.WebEvent.t := M.read pasted in
       let* α1 : unit := enums.inspect α0 in
       M.alloc α1 in
     let* _ : M.Val unit :=
-      let* α0 := M.read click in
+      let* α0 : enums.WebEvent.t := M.read click in
       let* α1 : unit := enums.inspect α0 in
       M.alloc α1 in
     let* _ : M.Val unit :=
-      let* α0 := M.read load in
+      let* α0 : enums.WebEvent.t := M.read load in
       let* α1 : unit := enums.inspect α0 in
       M.alloc α1 in
     let* _ : M.Val unit :=
-      let* α0 := M.read unload in
+      let* α0 : enums.WebEvent.t := M.read unload in
       let* α1 : unit := enums.inspect α0 in
       M.alloc α1 in
     M.alloc tt).

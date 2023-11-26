@@ -46,10 +46,10 @@ Definition main : M unit :=
   M.function_body
     (let* foo : M.Val example05.Foo.t :=
       let* α0 : M.Val u32.t := M.alloc 0 in
-      let* α1 := M.read α0 in
+      let* α1 : u32.t := M.read α0 in
       M.alloc (example05.Foo.Build_t α1) in
     let* _ : M.Val u32.t :=
-      let* α0 := M.read foo in
+      let* α0 : example05.Foo.t := M.read foo in
       let* α1 : u32.t := example05.Foo.t::["plus1"] α0 in
       M.alloc α1 in
     M.alloc tt).

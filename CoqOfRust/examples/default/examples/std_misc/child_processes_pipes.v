@@ -44,7 +44,7 @@ fn main() {
 Definition main : M unit :=
   M.function_body
     (let* process : M.Val std.process.Child.t :=
-      let* α0 := M.read (mk_str "wc") in
+      let* α0 : ref str.t := M.read (mk_str "wc") in
       let* α1 : std.process.Command.t := std.process.Command.t::["new"] α0 in
       let* α2 : M.Val std.process.Command.t := M.alloc α1 in
       let* α3 : mut_ref std.process.Command.t := borrow_mut α2 in
@@ -78,7 +78,7 @@ Definition main : M unit :=
           let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
           let* α5 : M.Val (ref (slice (ref str.t))) :=
             pointer_coercion "Unsize" α4 in
-          let* α6 := M.read α5 in
+          let* α6 : ref (slice (ref str.t)) := M.read α5 in
           let* α7 : ref std.io.error.Error.t := borrow why in
           let* α8 : M.Val std.io.error.Error.t := deref α7 in
           let* α9 : ref std.io.error.Error.t := borrow α8 in
@@ -93,7 +93,7 @@ Definition main : M unit :=
             M.alloc α15 in
           let* α17 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
             pointer_coercion "Unsize" α16 in
-          let* α18 := M.read α17 in
+          let* α18 : ref (slice core.fmt.rt.Argument.t) := M.read α17 in
           let* α19 : core.fmt.Arguments.t :=
             core.fmt.Arguments.t::["new_v1"] α6 α18 in
           let* α20 : never.t := core.panicking.panic_fmt α19 in
@@ -105,14 +105,15 @@ Definition main : M unit :=
         end in
       M.copy α15 in
     let* _ : M.Val unit :=
-      let* α0 := M.read process.["stdin"] in
+      let* α0 : core.option.Option.t std.process.ChildStdin.t :=
+        M.read process.["stdin"] in
       let* α1 : std.process.ChildStdin.t :=
         (core.option.Option.t std.process.ChildStdin.t)::["unwrap"] α0 in
       let* α2 : M.Val std.process.ChildStdin.t := M.alloc α1 in
       let* α3 : mut_ref std.process.ChildStdin.t := borrow_mut α2 in
-      let* α4 := M.read child_processes_pipes.PANGRAM in
+      let* α4 : ref (ref str.t) := M.read child_processes_pipes.PANGRAM in
       let* α5 : M.Val (ref str.t) := deref α4 in
-      let* α6 := M.read α5 in
+      let* α6 : ref str.t := M.read α5 in
       let* α7 : M.Val str.t := deref α6 in
       let* α8 : ref str.t := borrow α7 in
       let* α9 : ref (slice u8.t) := str.t::["as_bytes"] α8 in
@@ -138,7 +139,7 @@ Definition main : M unit :=
         let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
         let* α5 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α4 in
-        let* α6 := M.read α5 in
+        let* α6 : ref (slice (ref str.t)) := M.read α5 in
         let* α7 : ref std.io.error.Error.t := borrow why in
         let* α8 : M.Val std.io.error.Error.t := deref α7 in
         let* α9 : ref std.io.error.Error.t := borrow α8 in
@@ -152,7 +153,7 @@ Definition main : M unit :=
         let* α16 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α15 in
         let* α17 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
           pointer_coercion "Unsize" α16 in
-        let* α18 := M.read α17 in
+        let* α18 : ref (slice core.fmt.rt.Argument.t) := M.read α17 in
         let* α19 : core.fmt.Arguments.t :=
           core.fmt.Arguments.t::["new_v1"] α6 α18 in
         let* α20 : never.t := core.panicking.panic_fmt α19 in
@@ -169,7 +170,7 @@ Definition main : M unit :=
           let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
           let* α5 : M.Val (ref (slice (ref str.t))) :=
             pointer_coercion "Unsize" α4 in
-          let* α6 := M.read α5 in
+          let* α6 : ref (slice (ref str.t)) := M.read α5 in
           let* α7 : core.fmt.Arguments.t :=
             core.fmt.Arguments.t::["new_const"] α6 in
           let* α8 : unit := std.io.stdio._print α7 in
@@ -179,7 +180,8 @@ Definition main : M unit :=
     let* s : M.Val alloc.string.String.t :=
       let* α0 : alloc.string.String.t := alloc.string.String.t::["new"] in
       M.alloc α0 in
-    let* α0 := M.read process.["stdout"] in
+    let* α0 : core.option.Option.t std.process.ChildStdout.t :=
+      M.read process.["stdout"] in
     let* α1 : std.process.ChildStdout.t :=
       (core.option.Option.t std.process.ChildStdout.t)::["unwrap"] α0 in
     let* α2 : M.Val std.process.ChildStdout.t := M.alloc α1 in
@@ -207,7 +209,7 @@ Definition main : M unit :=
       let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
       let* α5 : M.Val (ref (slice (ref str.t))) :=
         pointer_coercion "Unsize" α4 in
-      let* α6 := M.read α5 in
+      let* α6 : ref (slice (ref str.t)) := M.read α5 in
       let* α7 : ref std.io.error.Error.t := borrow why in
       let* α8 : M.Val std.io.error.Error.t := deref α7 in
       let* α9 : ref std.io.error.Error.t := borrow α8 in
@@ -221,7 +223,7 @@ Definition main : M unit :=
       let* α16 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α15 in
       let* α17 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
         pointer_coercion "Unsize" α16 in
-      let* α18 := M.read α17 in
+      let* α18 : ref (slice core.fmt.rt.Argument.t) := M.read α17 in
       let* α19 : core.fmt.Arguments.t :=
         core.fmt.Arguments.t::["new_v1"] α6 α18 in
       let* α20 : never.t := core.panicking.panic_fmt α19 in
@@ -238,7 +240,7 @@ Definition main : M unit :=
         let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
         let* α5 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α4 in
-        let* α6 := M.read α5 in
+        let* α6 : ref (slice (ref str.t)) := M.read α5 in
         let* α7 : ref alloc.string.String.t := borrow s in
         let* α8 : M.Val alloc.string.String.t := deref α7 in
         let* α9 : ref alloc.string.String.t := borrow α8 in
@@ -252,7 +254,7 @@ Definition main : M unit :=
         let* α16 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α15 in
         let* α17 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
           pointer_coercion "Unsize" α16 in
-        let* α18 := M.read α17 in
+        let* α18 : ref (slice core.fmt.rt.Argument.t) := M.read α17 in
         let* α19 : core.fmt.Arguments.t :=
           core.fmt.Arguments.t::["new_v1"] α6 α18 in
         let* α20 : unit := std.io.stdio._print α19 in

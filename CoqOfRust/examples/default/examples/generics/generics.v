@@ -56,16 +56,16 @@ Definition main : M unit :=
       M.alloc (generics.Single.Build_t generics.A.Build_t) in
     let* _char : M.Val (generics.SingleGen.t char.t) :=
       let* α0 : M.Val char.t := M.alloc "a"%char in
-      let* α1 := M.read α0 in
+      let* α1 : char.t := M.read α0 in
       M.alloc (generics.SingleGen.Build_t α1) in
     let* _t : M.Val (generics.SingleGen.t generics.A.t) :=
       M.alloc (generics.SingleGen.Build_t generics.A.Build_t) in
     let* _i32 : M.Val (generics.SingleGen.t i32.t) :=
       let* α0 : M.Val i32.t := M.alloc 6 in
-      let* α1 := M.read α0 in
+      let* α1 : i32.t := M.read α0 in
       M.alloc (generics.SingleGen.Build_t α1) in
     let* _char : M.Val (generics.SingleGen.t char.t) :=
       let* α0 : M.Val char.t := M.alloc "a"%char in
-      let* α1 := M.read α0 in
+      let* α1 : char.t := M.read α0 in
       M.alloc (generics.SingleGen.Build_t α1) in
     M.alloc tt).

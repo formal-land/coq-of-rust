@@ -49,7 +49,7 @@ Section Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book_t.
       (let* _ : M.Val unit := M.alloc tt in
       let* _ : M.Val unit := M.alloc tt in
       let* _ : M.Val unit := M.alloc tt in
-      let* α0 := M.read self in
+      let* α0 : ref scoping_rules_borrowing_mutablity.Book.t := M.read self in
       deref α0).
   
   Global Instance AssociatedFunction_clone :
@@ -100,8 +100,8 @@ Definition borrow_book
         let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
         let* α5 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α4 in
-        let* α6 := M.read α5 in
-        let* α7 := M.read book in
+        let* α6 : ref (slice (ref str.t)) := M.read α5 in
+        let* α7 : ref scoping_rules_borrowing_mutablity.Book.t := M.read book in
         let* α8 : M.Val scoping_rules_borrowing_mutablity.Book.t := deref α7 in
         let* α9 : ref (ref str.t) := borrow α8.["title"] in
         let* α10 : M.Val (ref str.t) := deref α9 in
@@ -109,7 +109,8 @@ Definition borrow_book
         let* α12 : core.fmt.rt.Argument.t :=
           core.fmt.rt.Argument.t::["new_display"] α11 in
         let* α13 : M.Val core.fmt.rt.Argument.t := M.alloc α12 in
-        let* α14 := M.read book in
+        let* α14 : ref scoping_rules_borrowing_mutablity.Book.t :=
+          M.read book in
         let* α15 : M.Val scoping_rules_borrowing_mutablity.Book.t :=
           deref α14 in
         let* α16 : ref u32.t := borrow α15.["year"] in
@@ -126,7 +127,7 @@ Definition borrow_book
         let* α25 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α24 in
         let* α26 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
           pointer_coercion "Unsize" α25 in
-        let* α27 := M.read α26 in
+        let* α27 : ref (slice core.fmt.rt.Argument.t) := M.read α26 in
         let* α28 : core.fmt.Arguments.t :=
           core.fmt.Arguments.t::["new_v1"] α6 α27 in
         let* α29 : unit := std.io.stdio._print α28 in
@@ -147,10 +148,11 @@ Definition new_edition
     M.alloc book in
   M.function_body
     (let* _ : M.Val unit :=
-      let* α0 := M.read book in
+      let* α0 : mut_ref scoping_rules_borrowing_mutablity.Book.t :=
+        M.read book in
       let* α1 : M.Val scoping_rules_borrowing_mutablity.Book.t := deref α0 in
       let* α2 : M.Val u32.t := M.alloc 2014 in
-      let* α3 := M.read α2 in
+      let* α3 : u32.t := M.read α2 in
       assign α1.["year"] α3 in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
@@ -165,8 +167,9 @@ Definition new_edition
         let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
         let* α5 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α4 in
-        let* α6 := M.read α5 in
-        let* α7 := M.read book in
+        let* α6 : ref (slice (ref str.t)) := M.read α5 in
+        let* α7 : mut_ref scoping_rules_borrowing_mutablity.Book.t :=
+          M.read book in
         let* α8 : M.Val scoping_rules_borrowing_mutablity.Book.t := deref α7 in
         let* α9 : ref (ref str.t) := borrow α8.["title"] in
         let* α10 : M.Val (ref str.t) := deref α9 in
@@ -174,7 +177,8 @@ Definition new_edition
         let* α12 : core.fmt.rt.Argument.t :=
           core.fmt.rt.Argument.t::["new_display"] α11 in
         let* α13 : M.Val core.fmt.rt.Argument.t := M.alloc α12 in
-        let* α14 := M.read book in
+        let* α14 : mut_ref scoping_rules_borrowing_mutablity.Book.t :=
+          M.read book in
         let* α15 : M.Val scoping_rules_borrowing_mutablity.Book.t :=
           deref α14 in
         let* α16 : ref u32.t := borrow α15.["year"] in
@@ -191,7 +195,7 @@ Definition new_edition
         let* α25 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α24 in
         let* α26 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
           pointer_coercion "Unsize" α25 in
-        let* α27 := M.read α26 in
+        let* α27 : ref (slice core.fmt.rt.Argument.t) := M.read α26 in
         let* α28 : core.fmt.Arguments.t :=
           core.fmt.Arguments.t::["new_v1"] α6 α27 in
         let* α29 : unit := std.io.stdio._print α28 in
@@ -230,11 +234,11 @@ fn main() {
 Definition main : M unit :=
   M.function_body
     (let* immutabook : M.Val scoping_rules_borrowing_mutablity.Book.t :=
-      let* α0 := M.read (mk_str "Douglas Hofstadter") in
-      let* α1 :=
+      let* α0 : ref str.t := M.read (mk_str "Douglas Hofstadter") in
+      let* α1 : ref str.t :=
         M.read (mk_str ("G" ++ String.String "246" "del, Escher, Bach")) in
       let* α2 : M.Val u32.t := M.alloc 1979 in
-      let* α3 := M.read α2 in
+      let* α3 : u32.t := M.read α2 in
       M.alloc
         {|
           scoping_rules_borrowing_mutablity.Book.author := α0;

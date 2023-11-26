@@ -31,7 +31,8 @@ Definition main : M unit :=
         (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α6 in
       let* α8 : M.Val (alloc.boxed.Box.t (slice i32.t) alloc.alloc.Global.t) :=
         pointer_coercion "Unsize" α7 in
-      let* α9 := M.read α8 in
+      let* α9 : alloc.boxed.Box.t (slice i32.t) alloc.alloc.Global.t :=
+        M.read α8 in
       let* α10 : alloc.vec.Vec.t i32.t alloc.alloc.Global.t :=
         (slice i32.t)::["into_vec"] α9 in
       M.alloc α10 in
@@ -48,7 +49,7 @@ Definition main : M unit :=
       let* α4 : core.slice.iter.Iter.t i32.t := (slice i32.t)::["iter"] α3 in
       let* α5 : M.Val (core.slice.iter.Iter.t i32.t) := M.alloc α4 in
       let* α6 : mut_ref (core.slice.iter.Iter.t i32.t) := borrow_mut α5 in
-      let* α7 :=
+      let* α7 : type not implemented :=
         M.read
           (let* α0 : M.Val i32.t := M.alloc 2 in
           let* α1 : M.Val i32.t := BinOp.rem x α0 in
@@ -65,7 +66,7 @@ Definition main : M unit :=
       let* α0 : ref (core.option.Option.t usize.t) :=
         borrow index_of_first_even_number in
       let* α1 : M.Val usize.t := M.alloc 5 in
-      let* α2 := M.read α1 in
+      let* α2 : usize.t := M.read α1 in
       let* α3 : M.Val (core.option.Option.t usize.t) :=
         M.alloc (core.option.Option.Some α2) in
       let* α4 : ref (core.option.Option.t usize.t) := borrow α3 in
@@ -80,10 +81,10 @@ Definition main : M unit :=
       | (left_val, right_val) =>
         let* right_val := M.alloc right_val in
         let* left_val := M.alloc left_val in
-        let* α0 := M.read left_val in
+        let* α0 : ref (core.option.Option.t usize.t) := M.read left_val in
         let* α1 : M.Val (core.option.Option.t usize.t) := deref α0 in
         let* α2 : ref (core.option.Option.t usize.t) := borrow α1 in
-        let* α3 := M.read right_val in
+        let* α3 : ref (core.option.Option.t usize.t) := M.read right_val in
         let* α4 : M.Val (core.option.Option.t usize.t) := deref α3 in
         let* α5 : ref (core.option.Option.t usize.t) := borrow α4 in
         let* α6 : bool.t :=
@@ -95,18 +96,18 @@ Definition main : M unit :=
         let* α7 : M.Val bool.t := M.alloc α6 in
         let* α8 : M.Val bool.t := UnOp.not α7 in
         let* α9 : M.Val bool.t := use α8 in
-        let* α10 := M.read α9 in
+        let* α10 : bool.t := M.read α9 in
         if (α10 : bool) then
           let* kind : M.Val core.panicking.AssertKind.t :=
             M.alloc core.panicking.AssertKind.Eq in
           let* _ : M.Val never.t :=
-            let* α0 := M.read kind in
-            let* α1 := M.read left_val in
+            let* α0 : core.panicking.AssertKind.t := M.read kind in
+            let* α1 : ref (core.option.Option.t usize.t) := M.read left_val in
             let* α2 : M.Val (core.option.Option.t usize.t) := deref α1 in
             let* α3 : ref (core.option.Option.t usize.t) := borrow α2 in
             let* α4 : M.Val (core.option.Option.t usize.t) := deref α3 in
             let* α5 : ref (core.option.Option.t usize.t) := borrow α4 in
-            let* α6 := M.read right_val in
+            let* α6 : ref (core.option.Option.t usize.t) := M.read right_val in
             let* α7 : M.Val (core.option.Option.t usize.t) := deref α6 in
             let* α8 : ref (core.option.Option.t usize.t) := borrow α7 in
             let* α9 : M.Val (core.option.Option.t usize.t) := deref α8 in
@@ -121,7 +122,7 @@ Definition main : M unit :=
       end in
     let* index_of_first_negative_number :
         M.Val (core.option.Option.t usize.t) :=
-      let* α0 := M.read vec in
+      let* α0 : alloc.vec.Vec.t i32.t alloc.alloc.Global.t := M.read vec in
       let* α1 : alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t :=
         (core.iter.traits.collect.IntoIterator.into_iter
             (Self := alloc.vec.Vec.t i32.t alloc.alloc.Global.t)
@@ -133,7 +134,7 @@ Definition main : M unit :=
       let* α3 :
           mut_ref (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t) :=
         borrow_mut α2 in
-      let* α4 :=
+      let* α4 : type not implemented :=
         M.read
           (let* α0 : M.Val i32.t := M.alloc 0 in
           BinOp.lt x α0) in
@@ -161,10 +162,10 @@ Definition main : M unit :=
       | (left_val, right_val) =>
         let* right_val := M.alloc right_val in
         let* left_val := M.alloc left_val in
-        let* α0 := M.read left_val in
+        let* α0 : ref (core.option.Option.t usize.t) := M.read left_val in
         let* α1 : M.Val (core.option.Option.t usize.t) := deref α0 in
         let* α2 : ref (core.option.Option.t usize.t) := borrow α1 in
-        let* α3 := M.read right_val in
+        let* α3 : ref (core.option.Option.t usize.t) := M.read right_val in
         let* α4 : M.Val (core.option.Option.t usize.t) := deref α3 in
         let* α5 : ref (core.option.Option.t usize.t) := borrow α4 in
         let* α6 : bool.t :=
@@ -176,18 +177,18 @@ Definition main : M unit :=
         let* α7 : M.Val bool.t := M.alloc α6 in
         let* α8 : M.Val bool.t := UnOp.not α7 in
         let* α9 : M.Val bool.t := use α8 in
-        let* α10 := M.read α9 in
+        let* α10 : bool.t := M.read α9 in
         if (α10 : bool) then
           let* kind : M.Val core.panicking.AssertKind.t :=
             M.alloc core.panicking.AssertKind.Eq in
           let* _ : M.Val never.t :=
-            let* α0 := M.read kind in
-            let* α1 := M.read left_val in
+            let* α0 : core.panicking.AssertKind.t := M.read kind in
+            let* α1 : ref (core.option.Option.t usize.t) := M.read left_val in
             let* α2 : M.Val (core.option.Option.t usize.t) := deref α1 in
             let* α3 : ref (core.option.Option.t usize.t) := borrow α2 in
             let* α4 : M.Val (core.option.Option.t usize.t) := deref α3 in
             let* α5 : ref (core.option.Option.t usize.t) := borrow α4 in
-            let* α6 := M.read right_val in
+            let* α6 : ref (core.option.Option.t usize.t) := M.read right_val in
             let* α7 : M.Val (core.option.Option.t usize.t) := deref α6 in
             let* α8 : ref (core.option.Option.t usize.t) := borrow α7 in
             let* α9 : M.Val (core.option.Option.t usize.t) := deref α8 in

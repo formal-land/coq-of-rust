@@ -46,7 +46,7 @@ Section Impl_generics_implementation_Val_t.
   Definition value (self : ref ltac:(Self)) : M (ref f64.t) :=
     let* self : M.Val (ref ltac:(Self)) := M.alloc self in
     M.function_body
-      (let* α0 := M.read self in
+      (let* α0 : ref generics_implementation.Val.t := M.read self in
       let* α1 : M.Val generics_implementation.Val.t := deref α0 in
       let* α2 : ref f64.t := borrow α1.["val"] in
       let* α3 : M.Val f64.t := deref α2 in
@@ -74,7 +74,7 @@ Section Impl_generics_implementation_GenVal_t_T.
   Definition value (self : ref ltac:(Self)) : M (ref T) :=
     let* self : M.Val (ref ltac:(Self)) := M.alloc self in
     M.function_body
-      (let* α0 := M.read self in
+      (let* α0 : ref (generics_implementation.GenVal.t T) := M.read self in
       let* α1 : M.Val (generics_implementation.GenVal.t T) := deref α0 in
       let* α2 : ref T := borrow α1.["gen_val"] in
       let* α3 : M.Val T := deref α2 in
@@ -101,11 +101,11 @@ Definition main : M unit :=
   M.function_body
     (let* x : M.Val generics_implementation.Val.t :=
       let* α0 : M.Val f64.t := M.alloc 3 (* 3.0 *) in
-      let* α1 := M.read α0 in
+      let* α1 : f64.t := M.read α0 in
       M.alloc {| generics_implementation.Val.val := α1; |} in
     let* y : M.Val (generics_implementation.GenVal.t i32.t) :=
       let* α0 : M.Val i32.t := M.alloc 3 in
-      let* α1 := M.read α0 in
+      let* α1 : i32.t := M.read α0 in
       M.alloc {| generics_implementation.GenVal.gen_val := α1; |} in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
@@ -118,7 +118,7 @@ Definition main : M unit :=
         let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
         let* α5 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α4 in
-        let* α6 := M.read α5 in
+        let* α6 : ref (slice (ref str.t)) := M.read α5 in
         let* α7 : ref generics_implementation.Val.t := borrow x in
         let* α8 : ref f64.t := generics_implementation.Val.t::["value"] α7 in
         let* α9 : M.Val (ref f64.t) := M.alloc α8 in
@@ -146,7 +146,7 @@ Definition main : M unit :=
         let* α27 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α26 in
         let* α28 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
           pointer_coercion "Unsize" α27 in
-        let* α29 := M.read α28 in
+        let* α29 : ref (slice core.fmt.rt.Argument.t) := M.read α28 in
         let* α30 : core.fmt.Arguments.t :=
           core.fmt.Arguments.t::["new_v1"] α6 α29 in
         let* α31 : unit := std.io.stdio._print α30 in

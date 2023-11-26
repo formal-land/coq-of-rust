@@ -36,7 +36,7 @@ Definition main : M unit :=
     let* _ : M.Val i32.t :=
       let* α0 : M.Val bool.t := M.alloc true in
       let* α1 : M.Val bool.t := use α0 in
-      let* α2 := M.read α1 in
+      let* α2 : bool.t := M.read α1 in
       if (α2 : bool) then
         M.alloc 0
       else
@@ -44,19 +44,19 @@ Definition main : M unit :=
     let* _ : M.Val i32.t :=
       let* α0 : M.Val bool.t := M.alloc false in
       let* α1 : M.Val bool.t := use α0 in
-      let* α2 := M.read α1 in
+      let* α2 : bool.t := M.read α1 in
       if (α2 : bool) then
         M.alloc 2
       else
         let* α0 : M.Val bool.t := M.alloc false in
         let* α1 : M.Val bool.t := use α0 in
-        let* α2 := M.read α1 in
+        let* α2 : bool.t := M.read α1 in
         if (α2 : bool) then
           M.alloc 3
         else
           let* α0 : M.Val bool.t := M.alloc false in
           let* α1 : M.Val bool.t := use α0 in
-          let* α2 := M.read α1 in
+          let* α2 : bool.t := M.read α1 in
           if (α2 : bool) then
             M.alloc 4
           else

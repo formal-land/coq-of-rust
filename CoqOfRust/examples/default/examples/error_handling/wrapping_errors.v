@@ -26,10 +26,10 @@ Section Impl_core_fmt_Debug_for_wrapping_errors_DoubleError_t.
       (let* α0 := M.read self in
       match α0 with
       | wrapping_errors.DoubleError.EmptyVec  =>
-        let* α0 := M.read f in
+        let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
         let* α1 : M.Val core.fmt.Formatter.t := deref α0 in
         let* α2 : mut_ref core.fmt.Formatter.t := borrow_mut α1 in
-        let* α3 := M.read (mk_str "EmptyVec") in
+        let* α3 : ref str.t := M.read (mk_str "EmptyVec") in
         let* α4 : M.Val str.t := deref α3 in
         let* α5 : ref str.t := borrow α4 in
         let* α6 : core.result.Result.t unit core.fmt.Error.t :=
@@ -37,10 +37,10 @@ Section Impl_core_fmt_Debug_for_wrapping_errors_DoubleError_t.
         M.alloc α6
       | wrapping_errors.DoubleError.Parse __self_0 =>
         let* __self_0 := M.alloc __self_0 in
-        let* α0 := M.read f in
+        let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
         let* α1 : M.Val core.fmt.Formatter.t := deref α0 in
         let* α2 : mut_ref core.fmt.Formatter.t := borrow_mut α1 in
-        let* α3 := M.read (mk_str "Parse") in
+        let* α3 : ref str.t := M.read (mk_str "Parse") in
         let* α4 : M.Val str.t := deref α3 in
         let* α5 : ref str.t := borrow α4 in
         let* α6 : ref (ref core.num.error.ParseIntError.t) := borrow __self_0 in
@@ -50,7 +50,7 @@ Section Impl_core_fmt_Debug_for_wrapping_errors_DoubleError_t.
           M.alloc α8 in
         let* α10 : M.Val (ref type not implemented) :=
           pointer_coercion "Unsize" α9 in
-        let* α11 := M.read α10 in
+        let* α11 : ref type not implemented := M.read α10 in
         let* α12 : core.result.Result.t unit core.fmt.Error.t :=
           core.fmt.Formatter.t::["debug_tuple_field1_finish"] α2 α5 α11 in
         M.alloc α12
@@ -88,12 +88,12 @@ Section Impl_core_fmt_Display_for_wrapping_errors_DoubleError_t.
     let* self : M.Val (ref ltac:(Self)) := M.alloc self in
     let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
     M.function_body
-      (let* α0 := M.read self in
+      (let* α0 : ref wrapping_errors.DoubleError.t := M.read self in
       let* α1 : M.Val wrapping_errors.DoubleError.t := deref α0 in
       let* α2 := M.read α1 in
       match α2 with
       | wrapping_errors.DoubleError.EmptyVec  =>
-        let* α0 := M.read f in
+        let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
         let* α1 : M.Val core.fmt.Formatter.t := deref α0 in
         let* α2 : mut_ref core.fmt.Formatter.t := borrow_mut α1 in
         let* α3 : M.Val (array (ref str.t)) :=
@@ -104,14 +104,14 @@ Section Impl_core_fmt_Display_for_wrapping_errors_DoubleError_t.
         let* α7 : M.Val (ref (array (ref str.t))) := M.alloc α6 in
         let* α8 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α7 in
-        let* α9 := M.read α8 in
+        let* α9 : ref (slice (ref str.t)) := M.read α8 in
         let* α10 : core.fmt.Arguments.t :=
           core.fmt.Arguments.t::["new_const"] α9 in
         let* α11 : core.result.Result.t unit core.fmt.Error.t :=
           core.fmt.Formatter.t::["write_fmt"] α2 α10 in
         M.alloc α11
       | wrapping_errors.DoubleError.Parse  =>
-        let* α0 := M.read f in
+        let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
         let* α1 : M.Val core.fmt.Formatter.t := deref α0 in
         let* α2 : mut_ref core.fmt.Formatter.t := borrow_mut α1 in
         let* α3 : M.Val (array (ref str.t)) :=
@@ -122,7 +122,7 @@ Section Impl_core_fmt_Display_for_wrapping_errors_DoubleError_t.
         let* α7 : M.Val (ref (array (ref str.t))) := M.alloc α6 in
         let* α8 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α7 in
-        let* α9 := M.read α8 in
+        let* α9 : ref (slice (ref str.t)) := M.read α8 in
         let* α10 : core.fmt.Arguments.t :=
           core.fmt.Arguments.t::["new_const"] α9 in
         let* α11 : core.result.Result.t unit core.fmt.Error.t :=
@@ -161,20 +161,20 @@ Section Impl_core_error_Error_for_wrapping_errors_DoubleError_t.
       : M (core.option.Option.t (ref _ (* dyn *))) :=
     let* self : M.Val (ref ltac:(Self)) := M.alloc self in
     M.function_body
-      (let* α0 := M.read self in
+      (let* α0 : ref wrapping_errors.DoubleError.t := M.read self in
       let* α1 : M.Val wrapping_errors.DoubleError.t := deref α0 in
       let* α2 := M.read α1 in
       match α2 with
       | wrapping_errors.DoubleError.EmptyVec  => M.alloc core.option.Option.None
       | wrapping_errors.DoubleError.Parse e =>
         let* e := M.alloc e in
-        let* α0 := M.read e in
+        let* α0 : ref core.num.error.ParseIntError.t := M.read e in
         let* α1 : M.Val core.num.error.ParseIntError.t := deref α0 in
         let* α2 : ref core.num.error.ParseIntError.t := borrow α1 in
         let* α3 : M.Val (ref core.num.error.ParseIntError.t) := M.alloc α2 in
         let* α4 : M.Val (ref type not implemented) :=
           pointer_coercion "Unsize" α3 in
-        let* α5 := M.read α4 in
+        let* α5 : ref type not implemented := M.read α4 in
         M.alloc (core.option.Option.Some α5)
       end).
   
@@ -207,7 +207,7 @@ Section Impl_core_convert_From_core_num_error_ParseIntError_t_for_wrapping_error
       : M wrapping_errors.DoubleError.t :=
     let* err : M.Val core.num.error.ParseIntError.t := M.alloc err in
     M.function_body
-      (let* α0 := M.read err in
+      (let* α0 : core.num.error.ParseIntError.t := M.read err in
       M.alloc (wrapping_errors.DoubleError.Parse α0)).
   
   Global Instance AssociatedFunction_from :
@@ -285,7 +285,11 @@ Definition double_first
         match α8 with
         | core.ops.control_flow.ControlFlow.Break residual =>
           let* residual := M.alloc residual in
-          let* α0 := M.read residual in
+          let* α0 :
+              core.result.Result.t
+                core.convert.Infallible.t
+                wrapping_errors.DoubleError.t :=
+            M.read residual in
           let* α1 : core.result.Result.t i32.t wrapping_errors.DoubleError.t :=
             (core.ops.try_trait.FromResidual.from_residual
                 (Self :=
@@ -300,9 +304,9 @@ Definition double_first
         end in
       M.copy α9 in
     let* parsed : M.Val i32.t :=
-      let* α0 := M.read first in
+      let* α0 : ref (ref str.t) := M.read first in
       let* α1 : M.Val (ref str.t) := deref α0 in
-      let* α2 := M.read α1 in
+      let* α2 : ref str.t := M.read α1 in
       let* α3 : M.Val str.t := deref α2 in
       let* α4 : ref str.t := borrow α3 in
       let* α5 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
@@ -330,7 +334,11 @@ Definition double_first
         match α8 with
         | core.ops.control_flow.ControlFlow.Break residual =>
           let* residual := M.alloc residual in
-          let* α0 := M.read residual in
+          let* α0 :
+              core.result.Result.t
+                core.convert.Infallible.t
+                core.num.error.ParseIntError.t :=
+            M.read residual in
           let* α1 : core.result.Result.t i32.t wrapping_errors.DoubleError.t :=
             (core.ops.try_trait.FromResidual.from_residual
                 (Self :=
@@ -346,7 +354,7 @@ Definition double_first
       M.copy α9 in
     let* α0 : M.Val i32.t := M.alloc 2 in
     let* α1 : M.Val i32.t := BinOp.mul α0 parsed in
-    let* α2 := M.read α1 in
+    let* α2 : i32.t := M.read α1 in
     M.alloc (core.result.Result.Ok α2)).
 
 (*
@@ -379,7 +387,7 @@ Definition print (result : ltac:(wrapping_errors.Result i32.t)) : M unit :=
         let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
         let* α5 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α4 in
-        let* α6 := M.read α5 in
+        let* α6 : ref (slice (ref str.t)) := M.read α5 in
         let* α7 : ref i32.t := borrow n in
         let* α8 : M.Val i32.t := deref α7 in
         let* α9 : ref i32.t := borrow α8 in
@@ -393,7 +401,7 @@ Definition print (result : ltac:(wrapping_errors.Result i32.t)) : M unit :=
         let* α16 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α15 in
         let* α17 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
           pointer_coercion "Unsize" α16 in
-        let* α18 := M.read α17 in
+        let* α18 : ref (slice core.fmt.rt.Argument.t) := M.read α17 in
         let* α19 : core.fmt.Arguments.t :=
           core.fmt.Arguments.t::["new_v1"] α6 α18 in
         let* α20 : unit := std.io.stdio._print α19 in
@@ -412,7 +420,7 @@ Definition print (result : ltac:(wrapping_errors.Result i32.t)) : M unit :=
           let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
           let* α5 : M.Val (ref (slice (ref str.t))) :=
             pointer_coercion "Unsize" α4 in
-          let* α6 := M.read α5 in
+          let* α6 : ref (slice (ref str.t)) := M.read α5 in
           let* α7 : ref wrapping_errors.DoubleError.t := borrow e in
           let* α8 : M.Val wrapping_errors.DoubleError.t := deref α7 in
           let* α9 : ref wrapping_errors.DoubleError.t := borrow α8 in
@@ -427,7 +435,7 @@ Definition print (result : ltac:(wrapping_errors.Result i32.t)) : M unit :=
             M.alloc α15 in
           let* α17 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
             pointer_coercion "Unsize" α16 in
-          let* α18 := M.read α17 in
+          let* α18 : ref (slice core.fmt.rt.Argument.t) := M.read α17 in
           let* α19 : core.fmt.Arguments.t :=
             core.fmt.Arguments.t::["new_v1"] α6 α18 in
           let* α20 : unit := std.io.stdio._print α19 in
@@ -442,7 +450,7 @@ Definition print (result : ltac:(wrapping_errors.Result i32.t)) : M unit :=
       let* α2 : M.Val (core.option.Option.t (ref type not implemented)) :=
         M.alloc α1 in
       let* α3 : M.Val bool.t := let_if core.option.Option.Some source := α2 in
-      let* α4 := M.read α3 in
+      let* α4 : bool.t := M.read α3 in
       if (α4 : bool) then
         let* _ : M.Val unit :=
           let* _ : M.Val unit :=
@@ -455,7 +463,7 @@ Definition print (result : ltac:(wrapping_errors.Result i32.t)) : M unit :=
             let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
             let* α5 : M.Val (ref (slice (ref str.t))) :=
               pointer_coercion "Unsize" α4 in
-            let* α6 := M.read α5 in
+            let* α6 : ref (slice (ref str.t)) := M.read α5 in
             let* α7 : ref (ref type not implemented) := borrow source in
             let* α8 : M.Val (ref type not implemented) := deref α7 in
             let* α9 : ref (ref type not implemented) := borrow α8 in
@@ -471,7 +479,7 @@ Definition print (result : ltac:(wrapping_errors.Result i32.t)) : M unit :=
               M.alloc α15 in
             let* α17 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
               pointer_coercion "Unsize" α16 in
-            let* α18 := M.read α17 in
+            let* α18 : ref (slice core.fmt.rt.Argument.t) := M.read α17 in
             let* α19 : core.fmt.Arguments.t :=
               core.fmt.Arguments.t::["new_v1"] α6 α18 in
             let* α20 : unit := std.io.stdio._print α19 in
@@ -497,11 +505,11 @@ fn main() {
 Definition main : M unit :=
   M.function_body
     (let* numbers : M.Val (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t) :=
-      let* α0 := M.read (mk_str "93") in
+      let* α0 : ref str.t := M.read (mk_str "93") in
       let* α1 : M.Val str.t := deref α0 in
       let* α2 : ref str.t := borrow α1 in
       let* α3 : M.Val (ref str.t) := M.alloc α2 in
-      let* α4 := M.read (mk_str "18") in
+      let* α4 : ref str.t := M.read (mk_str "18") in
       let* α5 : M.Val str.t := deref α4 in
       let* α6 : ref str.t := borrow α5 in
       let* α7 : M.Val (ref str.t) := M.alloc α6 in
@@ -512,7 +520,8 @@ Definition main : M unit :=
       let* α10 :
           M.Val (alloc.boxed.Box.t (slice (ref str.t)) alloc.alloc.Global.t) :=
         pointer_coercion "Unsize" α9 in
-      let* α11 := M.read α10 in
+      let* α11 : alloc.boxed.Box.t (slice (ref str.t)) alloc.alloc.Global.t :=
+        M.read α10 in
       let* α12 : alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t :=
         (slice (ref str.t))::["into_vec"] α11 in
       M.alloc α12 in
@@ -521,11 +530,11 @@ Definition main : M unit :=
         (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t)::["new"] in
       M.alloc α0 in
     let* strings : M.Val (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t) :=
-      let* α0 := M.read (mk_str "93") in
+      let* α0 : ref str.t := M.read (mk_str "93") in
       let* α1 : M.Val str.t := deref α0 in
       let* α2 : ref str.t := borrow α1 in
       let* α3 : M.Val (ref str.t) := M.alloc α2 in
-      let* α4 := M.read (mk_str "18") in
+      let* α4 : ref str.t := M.read (mk_str "18") in
       let* α5 : M.Val str.t := deref α4 in
       let* α6 : ref str.t := borrow α5 in
       let* α7 : M.Val (ref str.t) := M.alloc α6 in
@@ -537,24 +546,28 @@ Definition main : M unit :=
       let* α10 :
           M.Val (alloc.boxed.Box.t (slice (ref str.t)) alloc.alloc.Global.t) :=
         pointer_coercion "Unsize" α9 in
-      let* α11 := M.read α10 in
+      let* α11 : alloc.boxed.Box.t (slice (ref str.t)) alloc.alloc.Global.t :=
+        M.read α10 in
       let* α12 : alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t :=
         (slice (ref str.t))::["into_vec"] α11 in
       M.alloc α12 in
     let* _ : M.Val unit :=
-      let* α0 := M.read numbers in
+      let* α0 : alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t :=
+        M.read numbers in
       let* α1 : core.result.Result.t i32.t wrapping_errors.DoubleError.t :=
         wrapping_errors.double_first α0 in
       let* α2 : unit := wrapping_errors.print α1 in
       M.alloc α2 in
     let* _ : M.Val unit :=
-      let* α0 := M.read empty in
+      let* α0 : alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t :=
+        M.read empty in
       let* α1 : core.result.Result.t i32.t wrapping_errors.DoubleError.t :=
         wrapping_errors.double_first α0 in
       let* α2 : unit := wrapping_errors.print α1 in
       M.alloc α2 in
     let* _ : M.Val unit :=
-      let* α0 := M.read strings in
+      let* α0 : alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t :=
+        M.read strings in
       let* α1 : core.result.Result.t i32.t wrapping_errors.DoubleError.t :=
         wrapping_errors.double_first α0 in
       let* α2 : unit := wrapping_errors.print α1 in

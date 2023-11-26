@@ -52,19 +52,22 @@ Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_t_A_B.
     let* other : M.Val (ref (generics_phantom_type.PhantomTuple.t A B)) :=
       M.alloc other in
     M.function_body
-      (let* α0 := M.read self in
+      (let* α0 : ref (generics_phantom_type.PhantomTuple.t A B) :=
+        M.read self in
       let* α1 : M.Val (generics_phantom_type.PhantomTuple.t A B) := deref α0 in
       let* α2 : ref A := borrow α1.["0"] in
-      let* α3 := M.read other in
+      let* α3 : ref (generics_phantom_type.PhantomTuple.t A B) :=
+        M.read other in
       let* α4 : M.Val (generics_phantom_type.PhantomTuple.t A B) := deref α3 in
       let* α5 : ref A := borrow α4.["0"] in
       let* α6 : bool.t :=
         (core.cmp.PartialEq.eq (Self := A) (Trait := ltac:(refine _))) α2 α5 in
       let* α7 : M.Val bool.t := M.alloc α6 in
-      let* α8 := M.read self in
+      let* α8 : ref (generics_phantom_type.PhantomTuple.t A B) := M.read self in
       let* α9 : M.Val (generics_phantom_type.PhantomTuple.t A B) := deref α8 in
       let* α10 : ref (core.marker.PhantomData.t B) := borrow α9.["1"] in
-      let* α11 := M.read other in
+      let* α11 : ref (generics_phantom_type.PhantomTuple.t A B) :=
+        M.read other in
       let* α12 : M.Val (generics_phantom_type.PhantomTuple.t A B) :=
         deref α11 in
       let* α13 : ref (core.marker.PhantomData.t B) := borrow α12.["1"] in
@@ -150,19 +153,23 @@ Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_t_A_B.
     let* other : M.Val (ref (generics_phantom_type.PhantomStruct.t A B)) :=
       M.alloc other in
     M.function_body
-      (let* α0 := M.read self in
+      (let* α0 : ref (generics_phantom_type.PhantomStruct.t A B) :=
+        M.read self in
       let* α1 : M.Val (generics_phantom_type.PhantomStruct.t A B) := deref α0 in
       let* α2 : ref A := borrow α1.["first"] in
-      let* α3 := M.read other in
+      let* α3 : ref (generics_phantom_type.PhantomStruct.t A B) :=
+        M.read other in
       let* α4 : M.Val (generics_phantom_type.PhantomStruct.t A B) := deref α3 in
       let* α5 : ref A := borrow α4.["first"] in
       let* α6 : bool.t :=
         (core.cmp.PartialEq.eq (Self := A) (Trait := ltac:(refine _))) α2 α5 in
       let* α7 : M.Val bool.t := M.alloc α6 in
-      let* α8 := M.read self in
+      let* α8 : ref (generics_phantom_type.PhantomStruct.t A B) :=
+        M.read self in
       let* α9 : M.Val (generics_phantom_type.PhantomStruct.t A B) := deref α8 in
       let* α10 : ref (core.marker.PhantomData.t B) := borrow α9.["phantom"] in
-      let* α11 := M.read other in
+      let* α11 : ref (generics_phantom_type.PhantomStruct.t A B) :=
+        M.read other in
       let* α12 : M.Val (generics_phantom_type.PhantomStruct.t A B) :=
         deref α11 in
       let* α13 : ref (core.marker.PhantomData.t B) := borrow α12.["phantom"] in
@@ -222,14 +229,14 @@ Definition main : M unit :=
   M.function_body
     (let* _tuple1 : M.Val (generics_phantom_type.PhantomTuple.t char.t f32.t) :=
       let* α0 : M.Val char.t := M.alloc "Q"%char in
-      let* α1 := M.read α0 in
+      let* α1 : char.t := M.read α0 in
       M.alloc
         (generics_phantom_type.PhantomTuple.Build_t
           α1
           core.marker.PhantomData.Build_t) in
     let* _tuple2 : M.Val (generics_phantom_type.PhantomTuple.t char.t f64.t) :=
       let* α0 : M.Val char.t := M.alloc "Q"%char in
-      let* α1 := M.read α0 in
+      let* α1 : char.t := M.read α0 in
       M.alloc
         (generics_phantom_type.PhantomTuple.Build_t
           α1
@@ -237,7 +244,7 @@ Definition main : M unit :=
     let* _struct1 :
         M.Val (generics_phantom_type.PhantomStruct.t char.t f32.t) :=
       let* α0 : M.Val char.t := M.alloc "Q"%char in
-      let* α1 := M.read α0 in
+      let* α1 : char.t := M.read α0 in
       M.alloc
         {|
           generics_phantom_type.PhantomStruct.first := α1;
@@ -247,7 +254,7 @@ Definition main : M unit :=
     let* _struct2 :
         M.Val (generics_phantom_type.PhantomStruct.t char.t f64.t) :=
       let* α0 : M.Val char.t := M.alloc "Q"%char in
-      let* α1 := M.read α0 in
+      let* α1 : char.t := M.read α0 in
       M.alloc
         {|
           generics_phantom_type.PhantomStruct.first := α1;

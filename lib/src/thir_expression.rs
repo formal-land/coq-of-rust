@@ -81,6 +81,10 @@ impl Expr {
         }
 
         Expr {
+            ty: match self.ty.clone() {
+                None => None,
+                Some(ty) => ty.unval(),
+            },
             kind: ExprKind::Call {
                 func: Box::new(Expr {
                     kind: ExprKind::LocalVar("M.read".to_string()),
@@ -88,7 +92,6 @@ impl Expr {
                 }),
                 args: vec![self],
             },
-            ty: None,
         }
     }
 

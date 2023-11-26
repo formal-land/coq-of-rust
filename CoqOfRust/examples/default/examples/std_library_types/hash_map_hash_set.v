@@ -57,7 +57,8 @@ Definition main : M unit :=
         (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α3 in
       let* α5 : M.Val (alloc.boxed.Box.t (slice i32.t) alloc.alloc.Global.t) :=
         pointer_coercion "Unsize" α4 in
-      let* α6 := M.read α5 in
+      let* α6 : alloc.boxed.Box.t (slice i32.t) alloc.alloc.Global.t :=
+        M.read α5 in
       let* α7 : alloc.vec.Vec.t i32.t alloc.alloc.Global.t :=
         (slice i32.t)::["into_vec"] α6 in
       let* α8 : alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t :=
@@ -87,7 +88,8 @@ Definition main : M unit :=
         (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α3 in
       let* α5 : M.Val (alloc.boxed.Box.t (slice i32.t) alloc.alloc.Global.t) :=
         pointer_coercion "Unsize" α4 in
-      let* α6 := M.read α5 in
+      let* α6 : alloc.boxed.Box.t (slice i32.t) alloc.alloc.Global.t :=
+        M.read α5 in
       let* α7 : alloc.vec.Vec.t i32.t alloc.alloc.Global.t :=
         (slice i32.t)::["into_vec"] α6 in
       let* α8 : alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t :=
@@ -112,7 +114,7 @@ Definition main : M unit :=
               std.collections.hash.map.RandomState.t) :=
         borrow_mut a in
       let* α1 : M.Val i32.t := M.alloc 4 in
-      let* α2 := M.read α1 in
+      let* α2 : i32.t := M.read α1 in
       let* α3 : bool.t :=
         (std.collections.hash.set.HashSet.t
               i32.t
@@ -122,9 +124,10 @@ Definition main : M unit :=
       let* α4 : M.Val bool.t := M.alloc α3 in
       let* α5 : M.Val bool.t := UnOp.not α4 in
       let* α6 : M.Val bool.t := use α5 in
-      let* α7 := M.read α6 in
+      let* α7 : bool.t := M.read α6 in
       if (α7 : bool) then
-        let* α0 := M.read (mk_str "assertion failed: a.insert(4)") in
+        let* α0 : ref str.t :=
+          M.read (mk_str "assertion failed: a.insert(4)") in
         let* α1 : never.t := core.panicking.panic α0 in
         let* α2 : M.Val never.t := M.alloc α1 in
         never_to_any α2
@@ -150,9 +153,10 @@ Definition main : M unit :=
       let* α6 : M.Val bool.t := M.alloc α5 in
       let* α7 : M.Val bool.t := UnOp.not α6 in
       let* α8 : M.Val bool.t := use α7 in
-      let* α9 := M.read α8 in
+      let* α9 : bool.t := M.read α8 in
       if (α9 : bool) then
-        let* α0 := M.read (mk_str "assertion failed: a.contains(&4)") in
+        let* α0 : ref str.t :=
+          M.read (mk_str "assertion failed: a.contains(&4)") in
         let* α1 : never.t := core.panicking.panic α0 in
         let* α2 : M.Val never.t := M.alloc α1 in
         never_to_any α2
@@ -166,7 +170,7 @@ Definition main : M unit :=
               std.collections.hash.map.RandomState.t) :=
         borrow_mut b in
       let* α1 : M.Val i32.t := M.alloc 5 in
-      let* α2 := M.read α1 in
+      let* α2 : i32.t := M.read α1 in
       let* α3 : bool.t :=
         (std.collections.hash.set.HashSet.t
               i32.t
@@ -185,7 +189,7 @@ Definition main : M unit :=
         let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
         let* α5 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α4 in
-        let* α6 := M.read α5 in
+        let* α6 : ref (slice (ref str.t)) := M.read α5 in
         let* α7 :
             ref
               (std.collections.hash.set.HashSet.t
@@ -214,7 +218,7 @@ Definition main : M unit :=
         let* α16 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α15 in
         let* α17 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
           pointer_coercion "Unsize" α16 in
-        let* α18 := M.read α17 in
+        let* α18 : ref (slice core.fmt.rt.Argument.t) := M.read α17 in
         let* α19 : core.fmt.Arguments.t :=
           core.fmt.Arguments.t::["new_v1"] α6 α18 in
         let* α20 : unit := std.io.stdio._print α19 in
@@ -231,7 +235,7 @@ Definition main : M unit :=
         let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
         let* α5 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α4 in
-        let* α6 := M.read α5 in
+        let* α6 : ref (slice (ref str.t)) := M.read α5 in
         let* α7 :
             ref
               (std.collections.hash.set.HashSet.t
@@ -260,7 +264,7 @@ Definition main : M unit :=
         let* α16 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α15 in
         let* α17 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
           pointer_coercion "Unsize" α16 in
-        let* α18 := M.read α17 in
+        let* α18 : ref (slice core.fmt.rt.Argument.t) := M.read α17 in
         let* α19 : core.fmt.Arguments.t :=
           core.fmt.Arguments.t::["new_v1"] α6 α18 in
         let* α20 : unit := std.io.stdio._print α19 in
@@ -277,7 +281,7 @@ Definition main : M unit :=
         let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
         let* α5 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α4 in
-        let* α6 := M.read α5 in
+        let* α6 : ref (slice (ref str.t)) := M.read α5 in
         let* α7 :
             ref
               (std.collections.hash.set.HashSet.t
@@ -337,7 +341,7 @@ Definition main : M unit :=
         let* α23 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α22 in
         let* α24 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
           pointer_coercion "Unsize" α23 in
-        let* α25 := M.read α24 in
+        let* α25 : ref (slice core.fmt.rt.Argument.t) := M.read α24 in
         let* α26 : core.fmt.Arguments.t :=
           core.fmt.Arguments.t::["new_v1"] α6 α25 in
         let* α27 : unit := std.io.stdio._print α26 in
@@ -354,7 +358,7 @@ Definition main : M unit :=
         let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
         let* α5 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α4 in
-        let* α6 := M.read α5 in
+        let* α6 : ref (slice (ref str.t)) := M.read α5 in
         let* α7 :
             ref
               (std.collections.hash.set.HashSet.t
@@ -414,7 +418,7 @@ Definition main : M unit :=
         let* α23 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α22 in
         let* α24 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
           pointer_coercion "Unsize" α23 in
-        let* α25 := M.read α24 in
+        let* α25 : ref (slice core.fmt.rt.Argument.t) := M.read α24 in
         let* α26 : core.fmt.Arguments.t :=
           core.fmt.Arguments.t::["new_v1"] α6 α25 in
         let* α27 : unit := std.io.stdio._print α26 in
@@ -431,7 +435,7 @@ Definition main : M unit :=
         let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
         let* α5 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α4 in
-        let* α6 := M.read α5 in
+        let* α6 : ref (slice (ref str.t)) := M.read α5 in
         let* α7 :
             ref
               (std.collections.hash.set.HashSet.t
@@ -491,7 +495,7 @@ Definition main : M unit :=
         let* α23 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α22 in
         let* α24 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
           pointer_coercion "Unsize" α23 in
-        let* α25 := M.read α24 in
+        let* α25 : ref (slice core.fmt.rt.Argument.t) := M.read α24 in
         let* α26 : core.fmt.Arguments.t :=
           core.fmt.Arguments.t::["new_v1"] α6 α25 in
         let* α27 : unit := std.io.stdio._print α26 in
@@ -508,7 +512,7 @@ Definition main : M unit :=
         let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
         let* α5 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α4 in
-        let* α6 := M.read α5 in
+        let* α6 : ref (slice (ref str.t)) := M.read α5 in
         let* α7 :
             ref
               (std.collections.hash.set.HashSet.t
@@ -568,7 +572,7 @@ Definition main : M unit :=
         let* α23 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α22 in
         let* α24 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
           pointer_coercion "Unsize" α23 in
-        let* α25 := M.read α24 in
+        let* α25 : ref (slice core.fmt.rt.Argument.t) := M.read α24 in
         let* α26 : core.fmt.Arguments.t :=
           core.fmt.Arguments.t::["new_v1"] α6 α25 in
         let* α27 : unit := std.io.stdio._print α26 in

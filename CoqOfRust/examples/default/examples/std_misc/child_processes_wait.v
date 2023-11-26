@@ -13,11 +13,11 @@ fn main() {
 Definition main : M unit :=
   M.function_body
     (let* child : M.Val std.process.Child.t :=
-      let* α0 := M.read (mk_str "sleep") in
+      let* α0 : ref str.t := M.read (mk_str "sleep") in
       let* α1 : std.process.Command.t := std.process.Command.t::["new"] α0 in
       let* α2 : M.Val std.process.Command.t := M.alloc α1 in
       let* α3 : mut_ref std.process.Command.t := borrow_mut α2 in
-      let* α4 := M.read (mk_str "5") in
+      let* α4 : ref str.t := M.read (mk_str "5") in
       let* α5 : mut_ref std.process.Command.t :=
         std.process.Command.t::["arg"] α3 α4 in
       let* α6 : M.Val std.process.Command.t := deref α5 in
@@ -52,7 +52,7 @@ Definition main : M unit :=
         let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
         let* α5 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α4 in
-        let* α6 := M.read α5 in
+        let* α6 : ref (slice (ref str.t)) := M.read α5 in
         let* α7 : core.fmt.Arguments.t :=
           core.fmt.Arguments.t::["new_const"] α6 in
         let* α8 : unit := std.io.stdio._print α7 in

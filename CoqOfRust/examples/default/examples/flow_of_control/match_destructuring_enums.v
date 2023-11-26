@@ -41,11 +41,11 @@ Definition main : M unit :=
   M.function_body
     (let* color : M.Val match_destructuring_enums.Color.t :=
       let* α0 : M.Val u32.t := M.alloc 122 in
-      let* α1 := M.read α0 in
+      let* α1 : u32.t := M.read α0 in
       let* α2 : M.Val u32.t := M.alloc 17 in
-      let* α3 := M.read α2 in
+      let* α3 : u32.t := M.read α2 in
       let* α4 : M.Val u32.t := M.alloc 40 in
-      let* α5 := M.read α4 in
+      let* α5 : u32.t := M.read α4 in
       M.alloc (match_destructuring_enums.Color.RGB α1 α3 α5) in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
@@ -58,7 +58,7 @@ Definition main : M unit :=
         let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
         let* α5 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α4 in
-        let* α6 := M.read α5 in
+        let* α6 : ref (slice (ref str.t)) := M.read α5 in
         let* α7 : core.fmt.Arguments.t :=
           core.fmt.Arguments.t::["new_const"] α6 in
         let* α8 : unit := std.io.stdio._print α7 in
@@ -77,7 +77,7 @@ Definition main : M unit :=
         let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
         let* α5 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α4 in
-        let* α6 := M.read α5 in
+        let* α6 : ref (slice (ref str.t)) := M.read α5 in
         let* α7 : core.fmt.Arguments.t :=
           core.fmt.Arguments.t::["new_const"] α6 in
         let* α8 : unit := std.io.stdio._print α7 in
@@ -94,7 +94,7 @@ Definition main : M unit :=
         let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
         let* α5 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α4 in
-        let* α6 := M.read α5 in
+        let* α6 : ref (slice (ref str.t)) := M.read α5 in
         let* α7 : core.fmt.Arguments.t :=
           core.fmt.Arguments.t::["new_const"] α6 in
         let* α8 : unit := std.io.stdio._print α7 in
@@ -111,7 +111,7 @@ Definition main : M unit :=
         let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
         let* α5 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α4 in
-        let* α6 := M.read α5 in
+        let* α6 : ref (slice (ref str.t)) := M.read α5 in
         let* α7 : core.fmt.Arguments.t :=
           core.fmt.Arguments.t::["new_const"] α6 in
         let* α8 : unit := std.io.stdio._print α7 in
@@ -137,7 +137,7 @@ Definition main : M unit :=
         let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
         let* α5 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α4 in
-        let* α6 := M.read α5 in
+        let* α6 : ref (slice (ref str.t)) := M.read α5 in
         let* α7 : ref u32.t := borrow r in
         let* α8 : M.Val u32.t := deref α7 in
         let* α9 : ref u32.t := borrow α8 in
@@ -164,7 +164,7 @@ Definition main : M unit :=
         let* α26 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α25 in
         let* α27 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
           pointer_coercion "Unsize" α26 in
-        let* α28 := M.read α27 in
+        let* α28 : ref (slice core.fmt.rt.Argument.t) := M.read α27 in
         let* α29 : core.fmt.Arguments.t :=
           core.fmt.Arguments.t::["new_v1"] α6 α28 in
         let* α30 : unit := std.io.stdio._print α29 in
@@ -190,7 +190,7 @@ Definition main : M unit :=
         let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
         let* α5 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α4 in
-        let* α6 := M.read α5 in
+        let* α6 : ref (slice (ref str.t)) := M.read α5 in
         let* α7 : ref u32.t := borrow h in
         let* α8 : M.Val u32.t := deref α7 in
         let* α9 : ref u32.t := borrow α8 in
@@ -217,7 +217,7 @@ Definition main : M unit :=
         let* α26 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α25 in
         let* α27 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
           pointer_coercion "Unsize" α26 in
-        let* α28 := M.read α27 in
+        let* α28 : ref (slice core.fmt.rt.Argument.t) := M.read α27 in
         let* α29 : core.fmt.Arguments.t :=
           core.fmt.Arguments.t::["new_v1"] α6 α28 in
         let* α30 : unit := std.io.stdio._print α29 in
@@ -243,7 +243,7 @@ Definition main : M unit :=
         let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
         let* α5 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α4 in
-        let* α6 := M.read α5 in
+        let* α6 : ref (slice (ref str.t)) := M.read α5 in
         let* α7 : ref u32.t := borrow h in
         let* α8 : M.Val u32.t := deref α7 in
         let* α9 : ref u32.t := borrow α8 in
@@ -270,7 +270,7 @@ Definition main : M unit :=
         let* α26 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α25 in
         let* α27 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
           pointer_coercion "Unsize" α26 in
-        let* α28 := M.read α27 in
+        let* α28 : ref (slice core.fmt.rt.Argument.t) := M.read α27 in
         let* α29 : core.fmt.Arguments.t :=
           core.fmt.Arguments.t::["new_v1"] α6 α28 in
         let* α30 : unit := std.io.stdio._print α29 in
@@ -296,7 +296,7 @@ Definition main : M unit :=
         let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
         let* α5 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α4 in
-        let* α6 := M.read α5 in
+        let* α6 : ref (slice (ref str.t)) := M.read α5 in
         let* α7 : ref u32.t := borrow c in
         let* α8 : M.Val u32.t := deref α7 in
         let* α9 : ref u32.t := borrow α8 in
@@ -323,7 +323,7 @@ Definition main : M unit :=
         let* α26 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α25 in
         let* α27 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
           pointer_coercion "Unsize" α26 in
-        let* α28 := M.read α27 in
+        let* α28 : ref (slice core.fmt.rt.Argument.t) := M.read α27 in
         let* α29 : core.fmt.Arguments.t :=
           core.fmt.Arguments.t::["new_v1"] α6 α28 in
         let* α30 : unit := std.io.stdio._print α29 in
@@ -351,7 +351,7 @@ Definition main : M unit :=
         let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
         let* α5 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α4 in
-        let* α6 := M.read α5 in
+        let* α6 : ref (slice (ref str.t)) := M.read α5 in
         let* α7 : ref u32.t := borrow c in
         let* α8 : M.Val u32.t := deref α7 in
         let* α9 : ref u32.t := borrow α8 in
@@ -384,7 +384,7 @@ Definition main : M unit :=
         let* α31 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α30 in
         let* α32 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
           pointer_coercion "Unsize" α31 in
-        let* α33 := M.read α32 in
+        let* α33 : ref (slice core.fmt.rt.Argument.t) := M.read α32 in
         let* α34 : core.fmt.Arguments.t :=
           core.fmt.Arguments.t::["new_v1"] α6 α33 in
         let* α35 : unit := std.io.stdio._print α34 in

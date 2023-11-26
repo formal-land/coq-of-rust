@@ -28,10 +28,10 @@ Definition div (a : i32.t) (b : i32.t) : M i32.t :=
       let* α0 : M.Val i32.t := M.alloc 0 in
       let* α1 : M.Val bool.t := BinOp.eq b α0 in
       let* α2 : M.Val bool.t := use α1 in
-      let* α3 := M.read α2 in
+      let* α3 : bool.t := M.read α2 in
       if (α3 : bool) then
         let* _ : M.Val unit :=
-          let* α0 := M.read (mk_str "Divide-by-zero error") in
+          let* α0 : ref str.t := M.read (mk_str "Divide-by-zero error") in
           let* α1 : never.t := std.panicking.begin_panic α0 in
           let* α2 : M.Val never.t := M.alloc α1 in
           never_to_any α2 in

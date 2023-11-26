@@ -8,7 +8,7 @@ fn gen_range() -> u32 {
 *)
 Definition gen_range : M u32.t :=
   M.function_body
-    (let* α0 := M.read (mk_str "not yet implemented") in
+    (let* α0 : ref str.t := M.read (mk_str "not yet implemented") in
     let* α1 : never.t := core.panicking.panic α0 in
     let* α2 : M.Val never.t := M.alloc α1 in
     never_to_any α2).
@@ -61,7 +61,7 @@ Definition main : M unit :=
         let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
         let* α5 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α4 in
-        let* α6 := M.read α5 in
+        let* α6 : ref (slice (ref str.t)) := M.read α5 in
         let* α7 : core.fmt.Arguments.t :=
           core.fmt.Arguments.t::["new_const"] α6 in
         let* α8 : unit := std.io.stdio._print α7 in
@@ -82,7 +82,7 @@ Definition main : M unit :=
           let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
           let* α5 : M.Val (ref (slice (ref str.t))) :=
             pointer_coercion "Unsize" α4 in
-          let* α6 := M.read α5 in
+          let* α6 : ref (slice (ref str.t)) := M.read α5 in
           let* α7 : core.fmt.Arguments.t :=
             core.fmt.Arguments.t::["new_const"] α6 in
           let* α8 : unit := std.io.stdio._print α7 in
@@ -100,7 +100,7 @@ Definition main : M unit :=
         let* α5 : mut_ref alloc.string.String.t := borrow_mut α4 in
         let* α6 : core.result.Result.t usize.t std.io.error.Error.t :=
           std.io.stdio.Stdin.t::["read_line"] α2 α5 in
-        let* α7 := M.read (mk_str "Failed to read line") in
+        let* α7 : ref str.t := M.read (mk_str "Failed to read line") in
         let* α8 : M.Val str.t := deref α7 in
         let* α9 : ref str.t := borrow α8 in
         let* α10 : usize.t :=
@@ -147,7 +147,7 @@ Definition main : M unit :=
           let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
           let* α5 : M.Val (ref (slice (ref str.t))) :=
             pointer_coercion "Unsize" α4 in
-          let* α6 := M.read α5 in
+          let* α6 : ref (slice (ref str.t)) := M.read α5 in
           let* α7 : ref u32.t := borrow guess in
           let* α8 : M.Val u32.t := deref α7 in
           let* α9 : ref u32.t := borrow α8 in
@@ -162,7 +162,7 @@ Definition main : M unit :=
             M.alloc α15 in
           let* α17 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
             pointer_coercion "Unsize" α16 in
-          let* α18 := M.read α17 in
+          let* α18 : ref (slice core.fmt.rt.Argument.t) := M.read α17 in
           let* α19 : core.fmt.Arguments.t :=
             core.fmt.Arguments.t::["new_v1"] α6 α18 in
           let* α20 : unit := std.io.stdio._print α19 in
@@ -188,7 +188,7 @@ Definition main : M unit :=
           let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
           let* α5 : M.Val (ref (slice (ref str.t))) :=
             pointer_coercion "Unsize" α4 in
-          let* α6 := M.read α5 in
+          let* α6 : ref (slice (ref str.t)) := M.read α5 in
           let* α7 : core.fmt.Arguments.t :=
             core.fmt.Arguments.t::["new_const"] α6 in
           let* α8 : unit := std.io.stdio._print α7 in
@@ -205,7 +205,7 @@ Definition main : M unit :=
           let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
           let* α5 : M.Val (ref (slice (ref str.t))) :=
             pointer_coercion "Unsize" α4 in
-          let* α6 := M.read α5 in
+          let* α6 : ref (slice (ref str.t)) := M.read α5 in
           let* α7 : core.fmt.Arguments.t :=
             core.fmt.Arguments.t::["new_const"] α6 in
           let* α8 : unit := std.io.stdio._print α7 in
@@ -223,7 +223,7 @@ Definition main : M unit :=
             let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
             let* α5 : M.Val (ref (slice (ref str.t))) :=
               pointer_coercion "Unsize" α4 in
-            let* α6 := M.read α5 in
+            let* α6 : ref (slice (ref str.t)) := M.read α5 in
             let* α7 : core.fmt.Arguments.t :=
               core.fmt.Arguments.t::["new_const"] α6 in
             let* α8 : unit := std.io.stdio._print α7 in

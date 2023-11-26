@@ -39,8 +39,8 @@ Section Impl_core_ops_drop_Drop_for_drop_Droppable_t.
           let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
           let* α5 : M.Val (ref (slice (ref str.t))) :=
             pointer_coercion "Unsize" α4 in
-          let* α6 := M.read α5 in
-          let* α7 := M.read self in
+          let* α6 : ref (slice (ref str.t)) := M.read α5 in
+          let* α7 : mut_ref drop.Droppable.t := M.read self in
           let* α8 : M.Val drop.Droppable.t := deref α7 in
           let* α9 : ref (ref str.t) := borrow α8.["name"] in
           let* α10 : M.Val (ref str.t) := deref α9 in
@@ -56,7 +56,7 @@ Section Impl_core_ops_drop_Drop_for_drop_Droppable_t.
             M.alloc α17 in
           let* α19 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
             pointer_coercion "Unsize" α18 in
-          let* α20 := M.read α19 in
+          let* α20 : ref (slice core.fmt.rt.Argument.t) := M.read α19 in
           let* α21 : core.fmt.Arguments.t :=
             core.fmt.Arguments.t::["new_v1"] α6 α20 in
           let* α22 : unit := std.io.stdio._print α21 in
@@ -110,18 +110,18 @@ fn main() {
 Definition main : M unit :=
   M.function_body
     (let* _a : M.Val drop.Droppable.t :=
-      let* α0 := M.read (mk_str "a") in
+      let* α0 : ref str.t := M.read (mk_str "a") in
       M.alloc {| drop.Droppable.name := α0; |} in
     let* _ : M.Val unit :=
       let* _b : M.Val drop.Droppable.t :=
-        let* α0 := M.read (mk_str "b") in
+        let* α0 : ref str.t := M.read (mk_str "b") in
         M.alloc {| drop.Droppable.name := α0; |} in
       let* _ : M.Val unit :=
         let* _c : M.Val drop.Droppable.t :=
-          let* α0 := M.read (mk_str "c") in
+          let* α0 : ref str.t := M.read (mk_str "c") in
           M.alloc {| drop.Droppable.name := α0; |} in
         let* _d : M.Val drop.Droppable.t :=
-          let* α0 := M.read (mk_str "d") in
+          let* α0 : ref str.t := M.read (mk_str "d") in
           M.alloc {| drop.Droppable.name := α0; |} in
         let* _ : M.Val unit :=
           let* _ : M.Val unit :=
@@ -134,7 +134,7 @@ Definition main : M unit :=
             let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
             let* α5 : M.Val (ref (slice (ref str.t))) :=
               pointer_coercion "Unsize" α4 in
-            let* α6 := M.read α5 in
+            let* α6 : ref (slice (ref str.t)) := M.read α5 in
             let* α7 : core.fmt.Arguments.t :=
               core.fmt.Arguments.t::["new_const"] α6 in
             let* α8 : unit := std.io.stdio._print α7 in
@@ -152,7 +152,7 @@ Definition main : M unit :=
           let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
           let* α5 : M.Val (ref (slice (ref str.t))) :=
             pointer_coercion "Unsize" α4 in
-          let* α6 := M.read α5 in
+          let* α6 : ref (slice (ref str.t)) := M.read α5 in
           let* α7 : core.fmt.Arguments.t :=
             core.fmt.Arguments.t::["new_const"] α6 in
           let* α8 : unit := std.io.stdio._print α7 in
@@ -169,7 +169,7 @@ Definition main : M unit :=
           let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
           let* α5 : M.Val (ref (slice (ref str.t))) :=
             pointer_coercion "Unsize" α4 in
-          let* α6 := M.read α5 in
+          let* α6 : ref (slice (ref str.t)) := M.read α5 in
           let* α7 : core.fmt.Arguments.t :=
             core.fmt.Arguments.t::["new_const"] α6 in
           let* α8 : unit := std.io.stdio._print α7 in
@@ -187,14 +187,14 @@ Definition main : M unit :=
         let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
         let* α5 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α4 in
-        let* α6 := M.read α5 in
+        let* α6 : ref (slice (ref str.t)) := M.read α5 in
         let* α7 : core.fmt.Arguments.t :=
           core.fmt.Arguments.t::["new_const"] α6 in
         let* α8 : unit := std.io.stdio._print α7 in
         M.alloc α8 in
       M.alloc tt in
     let* _ : M.Val unit :=
-      let* α0 := M.read _a in
+      let* α0 : drop.Droppable.t := M.read _a in
       let* α1 : unit := core.mem.drop α0 in
       M.alloc α1 in
     let* _ : M.Val unit :=
@@ -208,7 +208,7 @@ Definition main : M unit :=
         let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
         let* α5 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α4 in
-        let* α6 := M.read α5 in
+        let* α6 : ref (slice (ref str.t)) := M.read α5 in
         let* α7 : core.fmt.Arguments.t :=
           core.fmt.Arguments.t::["new_const"] α6 in
         let* α8 : unit := std.io.stdio._print α7 in

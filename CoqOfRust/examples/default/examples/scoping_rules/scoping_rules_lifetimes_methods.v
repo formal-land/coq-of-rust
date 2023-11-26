@@ -26,7 +26,8 @@ Section Impl_scoping_rules_lifetimes_methods_Owner_t.
     let* self : M.Val (mut_ref ltac:(Self)) := M.alloc self in
     M.function_body
       (let* _ : M.Val unit :=
-        let* α0 := M.read self in
+        let* α0 : mut_ref scoping_rules_lifetimes_methods.Owner.t :=
+          M.read self in
         let* α1 : M.Val scoping_rules_lifetimes_methods.Owner.t := deref α0 in
         let* α2 : M.Val i32.t := M.alloc 1 in
         assign_op add α1.["0"] α2 in
@@ -56,8 +57,9 @@ Section Impl_scoping_rules_lifetimes_methods_Owner_t.
           let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
           let* α5 : M.Val (ref (slice (ref str.t))) :=
             pointer_coercion "Unsize" α4 in
-          let* α6 := M.read α5 in
-          let* α7 := M.read self in
+          let* α6 : ref (slice (ref str.t)) := M.read α5 in
+          let* α7 : ref scoping_rules_lifetimes_methods.Owner.t :=
+            M.read self in
           let* α8 : M.Val scoping_rules_lifetimes_methods.Owner.t := deref α7 in
           let* α9 : ref i32.t := borrow α8.["0"] in
           let* α10 : M.Val i32.t := deref α9 in
@@ -73,7 +75,7 @@ Section Impl_scoping_rules_lifetimes_methods_Owner_t.
             M.alloc α17 in
           let* α19 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
             pointer_coercion "Unsize" α18 in
-          let* α20 := M.read α19 in
+          let* α20 : ref (slice core.fmt.rt.Argument.t) := M.read α19 in
           let* α21 : core.fmt.Arguments.t :=
             core.fmt.Arguments.t::["new_v1"] α6 α20 in
           let* α22 : unit := std.io.stdio._print α21 in
@@ -101,7 +103,7 @@ Definition main : M unit :=
   M.function_body
     (let* owner : M.Val scoping_rules_lifetimes_methods.Owner.t :=
       let* α0 : M.Val i32.t := M.alloc 18 in
-      let* α1 := M.read α0 in
+      let* α1 : i32.t := M.read α0 in
       M.alloc (scoping_rules_lifetimes_methods.Owner.Build_t α1) in
     let* _ : M.Val unit :=
       let* α0 : mut_ref scoping_rules_lifetimes_methods.Owner.t :=

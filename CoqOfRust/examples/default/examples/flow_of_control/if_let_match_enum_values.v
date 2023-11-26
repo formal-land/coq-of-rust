@@ -47,11 +47,11 @@ Definition main : M unit :=
       M.alloc if_let_match_enum_values.Foo.Baz in
     let* c : M.Val if_let_match_enum_values.Foo.t :=
       let* α0 : M.Val u32.t := M.alloc 100 in
-      let* α1 := M.read α0 in
+      let* α1 : u32.t := M.read α0 in
       M.alloc (if_let_match_enum_values.Foo.Qux α1) in
     let* _ : M.Val unit :=
       let* α0 : M.Val bool.t := let_if if_let_match_enum_values.Foo.Bar  := a in
-      let* α1 := M.read α0 in
+      let* α1 : bool.t := M.read α0 in
       if (α1 : bool) then
         let* _ : M.Val unit :=
           let* _ : M.Val unit :=
@@ -64,7 +64,7 @@ Definition main : M unit :=
             let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
             let* α5 : M.Val (ref (slice (ref str.t))) :=
               pointer_coercion "Unsize" α4 in
-            let* α6 := M.read α5 in
+            let* α6 : ref (slice (ref str.t)) := M.read α5 in
             let* α7 : core.fmt.Arguments.t :=
               core.fmt.Arguments.t::["new_const"] α6 in
             let* α8 : unit := std.io.stdio._print α7 in
@@ -75,7 +75,7 @@ Definition main : M unit :=
         M.alloc tt in
     let* _ : M.Val unit :=
       let* α0 : M.Val bool.t := let_if if_let_match_enum_values.Foo.Bar  := b in
-      let* α1 := M.read α0 in
+      let* α1 : bool.t := M.read α0 in
       if (α1 : bool) then
         let* _ : M.Val unit :=
           let* _ : M.Val unit :=
@@ -88,7 +88,7 @@ Definition main : M unit :=
             let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
             let* α5 : M.Val (ref (slice (ref str.t))) :=
               pointer_coercion "Unsize" α4 in
-            let* α6 := M.read α5 in
+            let* α6 : ref (slice (ref str.t)) := M.read α5 in
             let* α7 : core.fmt.Arguments.t :=
               core.fmt.Arguments.t::["new_const"] α6 in
             let* α8 : unit := std.io.stdio._print α7 in
@@ -100,7 +100,7 @@ Definition main : M unit :=
     let* _ : M.Val unit :=
       let* α0 : M.Val bool.t :=
         let_if if_let_match_enum_values.Foo.Qux value := c in
-      let* α1 := M.read α0 in
+      let* α1 : bool.t := M.read α0 in
       if (α1 : bool) then
         let* _ : M.Val unit :=
           let* _ : M.Val unit :=
@@ -113,7 +113,7 @@ Definition main : M unit :=
             let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
             let* α5 : M.Val (ref (slice (ref str.t))) :=
               pointer_coercion "Unsize" α4 in
-            let* α6 := M.read α5 in
+            let* α6 : ref (slice (ref str.t)) := M.read α5 in
             let* α7 : ref u32.t := borrow value in
             let* α8 : M.Val u32.t := deref α7 in
             let* α9 : ref u32.t := borrow α8 in
@@ -129,7 +129,7 @@ Definition main : M unit :=
               M.alloc α15 in
             let* α17 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
               pointer_coercion "Unsize" α16 in
-            let* α18 := M.read α17 in
+            let* α18 : ref (slice core.fmt.rt.Argument.t) := M.read α17 in
             let* α19 : core.fmt.Arguments.t :=
               core.fmt.Arguments.t::["new_v1"] α6 α18 in
             let* α20 : unit := std.io.stdio._print α19 in
@@ -140,7 +140,7 @@ Definition main : M unit :=
         M.alloc tt in
     let* α0 : M.Val bool.t :=
       let_if if_let_match_enum_values.Foo.Qux (_ as value) := c in
-    let* α1 := M.read α0 in
+    let* α1 : bool.t := M.read α0 in
     if (α1 : bool) then
       let* _ : M.Val unit :=
         let* _ : M.Val unit :=
@@ -153,7 +153,7 @@ Definition main : M unit :=
           let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
           let* α5 : M.Val (ref (slice (ref str.t))) :=
             pointer_coercion "Unsize" α4 in
-          let* α6 := M.read α5 in
+          let* α6 : ref (slice (ref str.t)) := M.read α5 in
           let* α7 : core.fmt.Arguments.t :=
             core.fmt.Arguments.t::["new_const"] α6 in
           let* α8 : unit := std.io.stdio._print α7 in

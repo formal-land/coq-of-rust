@@ -12,7 +12,7 @@ Definition main : M unit :=
   M.function_body
     (let* _ : M.Val unit :=
       let* α0 : M.Val u32.t := M.alloc 100 in
-      let* α1 := M.read α0 in
+      let* α1 : u32.t := M.read α0 in
       let* α2 : unit := functions.fizzbuzz_to α1 in
       M.alloc α2 in
     M.alloc tt).
@@ -37,11 +37,11 @@ Definition is_divisible_by (lhs : u32.t) (rhs : u32.t) : M bool.t :=
       let* α0 : M.Val u32.t := M.alloc 0 in
       let* α1 : M.Val bool.t := BinOp.eq rhs α0 in
       let* α2 : M.Val bool.t := use α1 in
-      let* α3 := M.read α2 in
+      let* α3 : bool.t := M.read α2 in
       if (α3 : bool) then
         let* _ : M.Val never.t :=
           let* α0 : M.Val bool.t := M.alloc false in
-          let* α1 := M.read α0 in
+          let* α1 : bool.t := M.read α0 in
           return_ α1 in
         let* α0 : M.Val unit := M.alloc tt in
         never_to_any α0
@@ -67,13 +67,13 @@ fn fizzbuzz(n: u32) -> () {
 Definition fizzbuzz (n : u32.t) : M unit :=
   let* n : M.Val u32.t := M.alloc n in
   M.function_body
-    (let* α0 := M.read n in
+    (let* α0 : u32.t := M.read n in
     let* α1 : M.Val u32.t := M.alloc 15 in
-    let* α2 := M.read α1 in
+    let* α2 : u32.t := M.read α1 in
     let* α3 : bool.t := functions.is_divisible_by α0 α2 in
     let* α4 : M.Val bool.t := M.alloc α3 in
     let* α5 : M.Val bool.t := use α4 in
-    let* α6 := M.read α5 in
+    let* α6 : bool.t := M.read α5 in
     if (α6 : bool) then
       let* _ : M.Val unit :=
         let* _ : M.Val unit :=
@@ -86,7 +86,7 @@ Definition fizzbuzz (n : u32.t) : M unit :=
           let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
           let* α5 : M.Val (ref (slice (ref str.t))) :=
             pointer_coercion "Unsize" α4 in
-          let* α6 := M.read α5 in
+          let* α6 : ref (slice (ref str.t)) := M.read α5 in
           let* α7 : core.fmt.Arguments.t :=
             core.fmt.Arguments.t::["new_const"] α6 in
           let* α8 : unit := std.io.stdio._print α7 in
@@ -94,13 +94,13 @@ Definition fizzbuzz (n : u32.t) : M unit :=
         M.alloc tt in
       M.alloc tt
     else
-      let* α0 := M.read n in
+      let* α0 : u32.t := M.read n in
       let* α1 : M.Val u32.t := M.alloc 3 in
-      let* α2 := M.read α1 in
+      let* α2 : u32.t := M.read α1 in
       let* α3 : bool.t := functions.is_divisible_by α0 α2 in
       let* α4 : M.Val bool.t := M.alloc α3 in
       let* α5 : M.Val bool.t := use α4 in
-      let* α6 := M.read α5 in
+      let* α6 : bool.t := M.read α5 in
       if (α6 : bool) then
         let* _ : M.Val unit :=
           let* _ : M.Val unit :=
@@ -112,7 +112,7 @@ Definition fizzbuzz (n : u32.t) : M unit :=
             let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
             let* α5 : M.Val (ref (slice (ref str.t))) :=
               pointer_coercion "Unsize" α4 in
-            let* α6 := M.read α5 in
+            let* α6 : ref (slice (ref str.t)) := M.read α5 in
             let* α7 : core.fmt.Arguments.t :=
               core.fmt.Arguments.t::["new_const"] α6 in
             let* α8 : unit := std.io.stdio._print α7 in
@@ -120,13 +120,13 @@ Definition fizzbuzz (n : u32.t) : M unit :=
           M.alloc tt in
         M.alloc tt
       else
-        let* α0 := M.read n in
+        let* α0 : u32.t := M.read n in
         let* α1 : M.Val u32.t := M.alloc 5 in
-        let* α2 := M.read α1 in
+        let* α2 : u32.t := M.read α1 in
         let* α3 : bool.t := functions.is_divisible_by α0 α2 in
         let* α4 : M.Val bool.t := M.alloc α3 in
         let* α5 : M.Val bool.t := use α4 in
-        let* α6 := M.read α5 in
+        let* α6 : bool.t := M.read α5 in
         if (α6 : bool) then
           let* _ : M.Val unit :=
             let* _ : M.Val unit :=
@@ -139,7 +139,7 @@ Definition fizzbuzz (n : u32.t) : M unit :=
               let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
               let* α5 : M.Val (ref (slice (ref str.t))) :=
                 pointer_coercion "Unsize" α4 in
-              let* α6 := M.read α5 in
+              let* α6 : ref (slice (ref str.t)) := M.read α5 in
               let* α7 : core.fmt.Arguments.t :=
                 core.fmt.Arguments.t::["new_const"] α6 in
               let* α8 : unit := std.io.stdio._print α7 in
@@ -158,7 +158,7 @@ Definition fizzbuzz (n : u32.t) : M unit :=
               let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
               let* α5 : M.Val (ref (slice (ref str.t))) :=
                 pointer_coercion "Unsize" α4 in
-              let* α6 := M.read α5 in
+              let* α6 : ref (slice (ref str.t)) := M.read α5 in
               let* α7 : ref u32.t := borrow n in
               let* α8 : M.Val u32.t := deref α7 in
               let* α9 : ref u32.t := borrow α8 in
@@ -174,7 +174,7 @@ Definition fizzbuzz (n : u32.t) : M unit :=
                 M.alloc α15 in
               let* α17 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
                 pointer_coercion "Unsize" α16 in
-              let* α18 := M.read α17 in
+              let* α18 : ref (slice core.fmt.rt.Argument.t) := M.read α17 in
               let* α19 : core.fmt.Arguments.t :=
                 core.fmt.Arguments.t::["new_v1"] α6 α18 in
               let* α20 : unit := std.io.stdio._print α19 in
@@ -193,8 +193,8 @@ Definition fizzbuzz_to (n : u32.t) : M unit :=
   let* n : M.Val u32.t := M.alloc n in
   M.function_body
     (let* α0 : M.Val u32.t := M.alloc 1 in
-    let* α1 := M.read α0 in
-    let* α2 := M.read n in
+    let* α1 : u32.t := M.read α0 in
+    let* α2 : u32.t := M.read n in
     let* α3 : core.ops.range.RangeInclusive.t u32.t :=
       (core.ops.range.RangeInclusive.t u32.t)::["new"] α1 α2 in
     let* α4 : core.ops.range.RangeInclusive.t u32.t :=
@@ -230,7 +230,7 @@ Definition fizzbuzz_to (n : u32.t) : M unit :=
             | core.option.Option.Some n =>
               let* n := M.alloc n in
               let* _ : M.Val unit :=
-                let* α0 := M.read n in
+                let* α0 : u32.t := M.read n in
                 let* α1 : unit := functions.fizzbuzz α0 in
                 M.alloc α1 in
               M.alloc tt

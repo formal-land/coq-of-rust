@@ -73,8 +73,8 @@ Definition comp_sci_student_greeting
       let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
       let* α5 : M.Val (ref (slice (ref str.t))) :=
         pointer_coercion "Unsize" α4 in
-      let* α6 := M.read α5 in
-      let* α7 := M.read student in
+      let* α6 : ref (slice (ref str.t)) := M.read α5 in
+      let* α7 : ref type not implemented := M.read student in
       let* α8 : M.Val type not implemented := deref α7 in
       let* α9 : ref type not implemented := borrow α8 in
       let* α10 : alloc.string.String.t :=
@@ -89,7 +89,7 @@ Definition comp_sci_student_greeting
       let* α15 : core.fmt.rt.Argument.t :=
         core.fmt.rt.Argument.t::["new_display"] α14 in
       let* α16 : M.Val core.fmt.rt.Argument.t := M.alloc α15 in
-      let* α17 := M.read student in
+      let* α17 : ref type not implemented := M.read student in
       let* α18 : M.Val type not implemented := deref α17 in
       let* α19 : ref type not implemented := borrow α18 in
       let* α20 : alloc.string.String.t :=
@@ -104,7 +104,7 @@ Definition comp_sci_student_greeting
       let* α25 : core.fmt.rt.Argument.t :=
         core.fmt.rt.Argument.t::["new_display"] α24 in
       let* α26 : M.Val core.fmt.rt.Argument.t := M.alloc α25 in
-      let* α27 := M.read student in
+      let* α27 : ref type not implemented := M.read student in
       let* α28 : M.Val type not implemented := deref α27 in
       let* α29 : ref type not implemented := borrow α28 in
       let* α30 : alloc.string.String.t :=
@@ -119,7 +119,7 @@ Definition comp_sci_student_greeting
       let* α35 : core.fmt.rt.Argument.t :=
         core.fmt.rt.Argument.t::["new_display"] α34 in
       let* α36 : M.Val core.fmt.rt.Argument.t := M.alloc α35 in
-      let* α37 := M.read student in
+      let* α37 : ref type not implemented := M.read student in
       let* α38 : M.Val type not implemented := deref α37 in
       let* α39 : ref type not implemented := borrow α38 in
       let* α40 : alloc.string.String.t :=
@@ -142,7 +142,7 @@ Definition comp_sci_student_greeting
       let* α51 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α50 in
       let* α52 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
         pointer_coercion "Unsize" α51 in
-      let* α53 := M.read α52 in
+      let* α53 : ref (slice core.fmt.rt.Argument.t) := M.read α52 in
       let* α54 : core.fmt.Arguments.t :=
         core.fmt.Arguments.t::["new_v1"] α6 α53 in
       let* α55 : alloc.string.String.t := alloc.fmt.format α54 in

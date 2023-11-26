@@ -33,14 +33,14 @@ Definition main : M unit :=
   M.function_body
     (let* person :
         M.Val scoping_rules_ownership_and_rules_partial_moves.main.Person.t :=
-      let* α0 := M.read (mk_str "Alice") in
+      let* α0 : ref str.t := M.read (mk_str "Alice") in
       let* α1 : alloc.string.String.t :=
         (core.convert.From.from
             (Self := alloc.string.String.t)
             (Trait := ltac:(refine _)))
           α0 in
       let* α2 : M.Val u8.t := M.alloc 20 in
-      let* α3 := M.read α2 in
+      let* α3 : u8.t := M.read α2 in
       let* α4 : alloc.boxed.Box.t u8.t alloc.alloc.Global.t :=
         (alloc.boxed.Box.t u8.t alloc.alloc.Global.t)::["new"] α3 in
       M.alloc
@@ -70,7 +70,7 @@ Definition main : M unit :=
         let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
         let* α5 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α4 in
-        let* α6 := M.read α5 in
+        let* α6 : ref (slice (ref str.t)) := M.read α5 in
         let* α7 : ref (ref (alloc.boxed.Box.t u8.t alloc.alloc.Global.t)) :=
           borrow age in
         let* α8 : M.Val (ref (alloc.boxed.Box.t u8.t alloc.alloc.Global.t)) :=
@@ -87,7 +87,7 @@ Definition main : M unit :=
         let* α16 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α15 in
         let* α17 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
           pointer_coercion "Unsize" α16 in
-        let* α18 := M.read α17 in
+        let* α18 : ref (slice core.fmt.rt.Argument.t) := M.read α17 in
         let* α19 : core.fmt.Arguments.t :=
           core.fmt.Arguments.t::["new_v1"] α6 α18 in
         let* α20 : unit := std.io.stdio._print α19 in
@@ -104,7 +104,7 @@ Definition main : M unit :=
         let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
         let* α5 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α4 in
-        let* α6 := M.read α5 in
+        let* α6 : ref (slice (ref str.t)) := M.read α5 in
         let* α7 : ref alloc.string.String.t := borrow name in
         let* α8 : M.Val alloc.string.String.t := deref α7 in
         let* α9 : ref alloc.string.String.t := borrow α8 in
@@ -118,7 +118,7 @@ Definition main : M unit :=
         let* α16 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α15 in
         let* α17 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
           pointer_coercion "Unsize" α16 in
-        let* α18 := M.read α17 in
+        let* α18 : ref (slice core.fmt.rt.Argument.t) := M.read α17 in
         let* α19 : core.fmt.Arguments.t :=
           core.fmt.Arguments.t::["new_v1"] α6 α18 in
         let* α20 : unit := std.io.stdio._print α19 in
@@ -136,7 +136,7 @@ Definition main : M unit :=
         let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
         let* α5 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α4 in
-        let* α6 := M.read α5 in
+        let* α6 : ref (slice (ref str.t)) := M.read α5 in
         let* α7 : ref (alloc.boxed.Box.t u8.t alloc.alloc.Global.t) :=
           borrow person.["age"] in
         let* α8 : M.Val (alloc.boxed.Box.t u8.t alloc.alloc.Global.t) :=
@@ -153,7 +153,7 @@ Definition main : M unit :=
         let* α16 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α15 in
         let* α17 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
           pointer_coercion "Unsize" α16 in
-        let* α18 := M.read α17 in
+        let* α18 : ref (slice core.fmt.rt.Argument.t) := M.read α17 in
         let* α19 : core.fmt.Arguments.t :=
           core.fmt.Arguments.t::["new_v1"] α6 α18 in
         let* α20 : unit := std.io.stdio._print α19 in
@@ -198,16 +198,18 @@ Section Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_
     let* self : M.Val (ref ltac:(Self)) := M.alloc self in
     let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
     M.function_body
-      (let* α0 := M.read f in
+      (let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
       let* α1 : M.Val core.fmt.Formatter.t := deref α0 in
       let* α2 : mut_ref core.fmt.Formatter.t := borrow_mut α1 in
-      let* α3 := M.read (mk_str "Person") in
+      let* α3 : ref str.t := M.read (mk_str "Person") in
       let* α4 : M.Val str.t := deref α3 in
       let* α5 : ref str.t := borrow α4 in
-      let* α6 := M.read (mk_str "name") in
+      let* α6 : ref str.t := M.read (mk_str "name") in
       let* α7 : M.Val str.t := deref α6 in
       let* α8 : ref str.t := borrow α7 in
-      let* α9 := M.read self in
+      let* α9 :
+          ref scoping_rules_ownership_and_rules_partial_moves.main.Person.t :=
+        M.read self in
       let* α10 :
           M.Val scoping_rules_ownership_and_rules_partial_moves.main.Person.t :=
         deref α9 in
@@ -217,11 +219,13 @@ Section Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_
       let* α14 : M.Val (ref alloc.string.String.t) := M.alloc α13 in
       let* α15 : M.Val (ref type not implemented) :=
         pointer_coercion "Unsize" α14 in
-      let* α16 := M.read α15 in
-      let* α17 := M.read (mk_str "age") in
+      let* α16 : ref type not implemented := M.read α15 in
+      let* α17 : ref str.t := M.read (mk_str "age") in
       let* α18 : M.Val str.t := deref α17 in
       let* α19 : ref str.t := borrow α18 in
-      let* α20 := M.read self in
+      let* α20 :
+          ref scoping_rules_ownership_and_rules_partial_moves.main.Person.t :=
+        M.read self in
       let* α21 :
           M.Val scoping_rules_ownership_and_rules_partial_moves.main.Person.t :=
         deref α20 in
@@ -240,7 +244,7 @@ Section Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_
         M.alloc α26 in
       let* α28 : M.Val (ref type not implemented) :=
         pointer_coercion "Unsize" α27 in
-      let* α29 := M.read α28 in
+      let* α29 : ref type not implemented := M.read α28 in
       let* α30 : core.result.Result.t unit core.fmt.Error.t :=
         core.fmt.Formatter.t::["debug_struct_field2_finish"]
           α2

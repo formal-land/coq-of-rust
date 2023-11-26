@@ -22,7 +22,7 @@ Definition read_lines
   let* filename : M.Val alloc.string.String.t := M.alloc filename in
   M.function_body
     (let* file : M.Val std.fs.File.t :=
-      let* α0 := M.read filename in
+      let* α0 : alloc.string.String.t := M.read filename in
       let* α1 : core.result.Result.t std.fs.File.t std.io.error.Error.t :=
         std.fs.File.t::["open"] α0 in
       let* α2 : std.fs.File.t :=
@@ -30,7 +30,7 @@ Definition read_lines
           α1 in
       M.alloc α2 in
     let* _ : M.Val never.t :=
-      let* α0 := M.read file in
+      let* α0 : std.fs.File.t := M.read file in
       let* α1 : std.io.buffered.bufreader.BufReader.t std.fs.File.t :=
         (std.io.buffered.bufreader.BufReader.t std.fs.File.t)::["new"] α0 in
       let* α2 :
@@ -61,7 +61,7 @@ Definition main : M unit :=
         M.Val
           (std.io.Lines.t
             (std.io.buffered.bufreader.BufReader.t std.fs.File.t)) :=
-      let* α0 := M.read (mk_str "./hosts") in
+      let* α0 : ref str.t := M.read (mk_str "./hosts") in
       let* α1 : M.Val str.t := deref α0 in
       let* α2 : ref str.t := borrow α1 in
       let* α3 : alloc.string.String.t :=
@@ -74,7 +74,9 @@ Definition main : M unit :=
             (std.io.buffered.bufreader.BufReader.t std.fs.File.t) :=
         file_io_read_lines.read_lines α3 in
       M.alloc α4 in
-    let* α0 := M.read lines in
+    let* α0 :
+        std.io.Lines.t (std.io.buffered.bufreader.BufReader.t std.fs.File.t) :=
+      M.read lines in
     let* α1 :
         std.io.Lines.t (std.io.buffered.bufreader.BufReader.t std.fs.File.t) :=
       (core.iter.traits.collect.IntoIterator.into_iter
@@ -146,8 +148,12 @@ Definition main : M unit :=
                   let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
                   let* α5 : M.Val (ref (slice (ref str.t))) :=
                     pointer_coercion "Unsize" α4 in
-                  let* α6 := M.read α5 in
-                  let* α7 := M.read line in
+                  let* α6 : ref (slice (ref str.t)) := M.read α5 in
+                  let* α7 :
+                      core.result.Result.t
+                        alloc.string.String.t
+                        std.io.error.Error.t :=
+                    M.read line in
                   let* α8 : alloc.string.String.t :=
                     (core.result.Result.t
                           alloc.string.String.t
@@ -170,7 +176,7 @@ Definition main : M unit :=
                     M.alloc α18 in
                   let* α20 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
                     pointer_coercion "Unsize" α19 in
-                  let* α21 := M.read α20 in
+                  let* α21 : ref (slice core.fmt.rt.Argument.t) := M.read α20 in
                   let* α22 : core.fmt.Arguments.t :=
                     core.fmt.Arguments.t::["new_v1"] α6 α21 in
                   let* α23 : unit := std.io.stdio._print α22 in

@@ -33,7 +33,7 @@ Section Impl_core_fmt_Display_for_converting_to_string_Circle_t.
     let* self : M.Val (ref ltac:(Self)) := M.alloc self in
     let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
     M.function_body
-      (let* α0 := M.read f in
+      (let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
       let* α1 : M.Val core.fmt.Formatter.t := deref α0 in
       let* α2 : mut_ref core.fmt.Formatter.t := borrow_mut α1 in
       let* α3 : M.Val (array (ref str.t)) :=
@@ -44,8 +44,8 @@ Section Impl_core_fmt_Display_for_converting_to_string_Circle_t.
       let* α7 : M.Val (ref (array (ref str.t))) := M.alloc α6 in
       let* α8 : M.Val (ref (slice (ref str.t))) :=
         pointer_coercion "Unsize" α7 in
-      let* α9 := M.read α8 in
-      let* α10 := M.read self in
+      let* α9 : ref (slice (ref str.t)) := M.read α8 in
+      let* α10 : ref converting_to_string.Circle.t := M.read self in
       let* α11 : M.Val converting_to_string.Circle.t := deref α10 in
       let* α12 : ref i32.t := borrow α11.["radius"] in
       let* α13 : M.Val i32.t := deref α12 in
@@ -60,7 +60,7 @@ Section Impl_core_fmt_Display_for_converting_to_string_Circle_t.
       let* α21 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α20 in
       let* α22 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
         pointer_coercion "Unsize" α21 in
-      let* α23 := M.read α22 in
+      let* α23 : ref (slice core.fmt.rt.Argument.t) := M.read α22 in
       let* α24 : core.fmt.Arguments.t :=
         core.fmt.Arguments.t::["new_v1"] α9 α23 in
       let* α25 : core.result.Result.t unit core.fmt.Error.t :=
@@ -89,7 +89,7 @@ Definition main : M unit :=
   M.function_body
     (let* circle : M.Val converting_to_string.Circle.t :=
       let* α0 : M.Val i32.t := M.alloc 6 in
-      let* α1 := M.read α0 in
+      let* α1 : i32.t := M.read α0 in
       M.alloc {| converting_to_string.Circle.radius := α1; |} in
     let* _ : M.Val alloc.string.String.t :=
       let* α0 : ref converting_to_string.Circle.t := borrow circle in

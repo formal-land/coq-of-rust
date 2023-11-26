@@ -10,8 +10,8 @@ Definition multiply (first : ref i32.t) (second : ref i32.t) : M i32.t :=
   let* first : M.Val (ref i32.t) := M.alloc first in
   let* second : M.Val (ref i32.t) := M.alloc second in
   M.function_body
-    (let* α0 := M.read first in
-    let* α1 := M.read second in
+    (let* α0 : ref i32.t := M.read first in
+    let* α1 : ref i32.t := M.read second in
     let* α2 : i32.t :=
       (core.ops.arith.Mul.mul (Self := ref i32.t) (Trait := ltac:(refine _)))
         α0
@@ -27,7 +27,7 @@ Definition choose_first (first : ref i32.t) (arg : ref i32.t) : M (ref i32.t) :=
   let* first : M.Val (ref i32.t) := M.alloc first in
   let* arg : M.Val (ref i32.t) := M.alloc arg in
   M.function_body
-    (let* α0 := M.read first in
+    (let* α0 : ref i32.t := M.read first in
     let* α1 : M.Val i32.t := deref α0 in
     let* α2 : ref i32.t := borrow α1 in
     M.alloc α2).
@@ -65,7 +65,7 @@ Definition main : M unit :=
           let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
           let* α5 : M.Val (ref (slice (ref str.t))) :=
             pointer_coercion "Unsize" α4 in
-          let* α6 := M.read α5 in
+          let* α6 : ref (slice (ref str.t)) := M.read α5 in
           let* α7 : ref i32.t := borrow first in
           let* α8 : M.Val i32.t := deref α7 in
           let* α9 : ref i32.t := borrow α8 in
@@ -89,7 +89,7 @@ Definition main : M unit :=
             M.alloc α23 in
           let* α25 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
             pointer_coercion "Unsize" α24 in
-          let* α26 := M.read α25 in
+          let* α26 : ref (slice core.fmt.rt.Argument.t) := M.read α25 in
           let* α27 : core.fmt.Arguments.t :=
             core.fmt.Arguments.t::["new_v1"] α6 α26 in
           let* α28 : unit := std.io.stdio._print α27 in
@@ -106,7 +106,7 @@ Definition main : M unit :=
           let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
           let* α5 : M.Val (ref (slice (ref str.t))) :=
             pointer_coercion "Unsize" α4 in
-          let* α6 := M.read α5 in
+          let* α6 : ref (slice (ref str.t)) := M.read α5 in
           let* α7 : ref i32.t := borrow first in
           let* α8 : M.Val i32.t := deref α7 in
           let* α9 : ref i32.t := borrow α8 in
@@ -130,7 +130,7 @@ Definition main : M unit :=
             M.alloc α23 in
           let* α25 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
             pointer_coercion "Unsize" α24 in
-          let* α26 := M.read α25 in
+          let* α26 : ref (slice core.fmt.rt.Argument.t) := M.read α25 in
           let* α27 : core.fmt.Arguments.t :=
             core.fmt.Arguments.t::["new_v1"] α6 α26 in
           let* α28 : unit := std.io.stdio._print α27 in

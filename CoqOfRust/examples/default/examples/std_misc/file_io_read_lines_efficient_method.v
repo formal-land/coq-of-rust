@@ -17,7 +17,7 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
   M.function_body
-    (let* α0 := M.read (mk_str "./hosts") in
+    (let* α0 : ref str.t := M.read (mk_str "./hosts") in
     let* α1 :
         core.result.Result.t
           (std.io.Lines.t (std.io.buffered.bufreader.BufReader.t std.fs.File.t))
@@ -31,9 +31,12 @@ Definition main : M unit :=
             std.io.error.Error.t) :=
       M.alloc α1 in
     let* α3 : M.Val bool.t := let_if core.result.Result.Ok lines := α2 in
-    let* α4 := M.read α3 in
+    let* α4 : bool.t := M.read α3 in
     if (α4 : bool) then
-      let* α0 := M.read lines in
+      let* α0 :
+          std.io.Lines.t
+            (std.io.buffered.bufreader.BufReader.t std.fs.File.t) :=
+        M.read lines in
       let* α1 :
           std.io.Lines.t
             (std.io.buffered.bufreader.BufReader.t std.fs.File.t) :=
@@ -97,7 +100,7 @@ Definition main : M unit :=
                 let* line := M.alloc line in
                 let* α0 : M.Val bool.t :=
                   let_if core.result.Result.Ok ip := line in
-                let* α1 := M.read α0 in
+                let* α1 : bool.t := M.read α0 in
                 if (α1 : bool) then
                   let* _ : M.Val unit :=
                     let* _ : M.Val unit :=
@@ -110,7 +113,7 @@ Definition main : M unit :=
                       let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
                       let* α5 : M.Val (ref (slice (ref str.t))) :=
                         pointer_coercion "Unsize" α4 in
-                      let* α6 := M.read α5 in
+                      let* α6 : ref (slice (ref str.t)) := M.read α5 in
                       let* α7 : ref alloc.string.String.t := borrow ip in
                       let* α8 : M.Val alloc.string.String.t := deref α7 in
                       let* α9 : ref alloc.string.String.t := borrow α8 in
@@ -129,7 +132,8 @@ Definition main : M unit :=
                         M.alloc α15 in
                       let* α17 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
                         pointer_coercion "Unsize" α16 in
-                      let* α18 := M.read α17 in
+                      let* α18 : ref (slice core.fmt.rt.Argument.t) :=
+                        M.read α17 in
                       let* α19 : core.fmt.Arguments.t :=
                         core.fmt.Arguments.t::["new_v1"] α6 α18 in
                       let* α20 : unit := std.io.stdio._print α19 in
@@ -172,7 +176,7 @@ Definition read_lines
   let* filename : M.Val P := M.alloc filename in
   M.function_body
     (let* file : M.Val std.fs.File.t :=
-      let* α0 := M.read filename in
+      let* α0 : P := M.read filename in
       let* α1 : core.result.Result.t std.fs.File.t std.io.error.Error.t :=
         std.fs.File.t::["open"] α0 in
       let* α2 :
@@ -198,7 +202,11 @@ Definition read_lines
         match α4 with
         | core.ops.control_flow.ControlFlow.Break residual =>
           let* residual := M.alloc residual in
-          let* α0 := M.read residual in
+          let* α0 :
+              core.result.Result.t
+                core.convert.Infallible.t
+                std.io.error.Error.t :=
+            M.read residual in
           let* α1 :
               core.result.Result.t
                 (std.io.Lines.t
@@ -219,7 +227,7 @@ Definition read_lines
           M.pure val
         end in
       M.copy α5 in
-    let* α0 := M.read file in
+    let* α0 : std.fs.File.t := M.read file in
     let* α1 : std.io.buffered.bufreader.BufReader.t std.fs.File.t :=
       (std.io.buffered.bufreader.BufReader.t std.fs.File.t)::["new"] α0 in
     let* α2 :

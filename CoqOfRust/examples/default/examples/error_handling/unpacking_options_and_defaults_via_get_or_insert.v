@@ -24,39 +24,39 @@ Section Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert
     let* self : M.Val (ref ltac:(Self)) := M.alloc self in
     let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
     M.function_body
-      (let* α0 := M.read f in
+      (let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
       let* α1 : M.Val core.fmt.Formatter.t := deref α0 in
       let* α2 : mut_ref core.fmt.Formatter.t := borrow_mut α1 in
       let* α3 := M.read self in
       let* α4 : M.Val (ref str.t) :=
         match α3 with
         | unpacking_options_and_defaults_via_get_or_insert.Fruit.Apple  =>
-          let* α0 := M.read (mk_str "Apple") in
+          let* α0 : ref str.t := M.read (mk_str "Apple") in
           let* α1 : M.Val str.t := deref α0 in
           let* α2 : ref str.t := borrow α1 in
           M.alloc α2
         | unpacking_options_and_defaults_via_get_or_insert.Fruit.Orange  =>
-          let* α0 := M.read (mk_str "Orange") in
+          let* α0 : ref str.t := M.read (mk_str "Orange") in
           let* α1 : M.Val str.t := deref α0 in
           let* α2 : ref str.t := borrow α1 in
           M.alloc α2
         | unpacking_options_and_defaults_via_get_or_insert.Fruit.Banana  =>
-          let* α0 := M.read (mk_str "Banana") in
+          let* α0 : ref str.t := M.read (mk_str "Banana") in
           let* α1 : M.Val str.t := deref α0 in
           let* α2 : ref str.t := borrow α1 in
           M.alloc α2
         | unpacking_options_and_defaults_via_get_or_insert.Fruit.Kiwi  =>
-          let* α0 := M.read (mk_str "Kiwi") in
+          let* α0 : ref str.t := M.read (mk_str "Kiwi") in
           let* α1 : M.Val str.t := deref α0 in
           let* α2 : ref str.t := borrow α1 in
           M.alloc α2
         | unpacking_options_and_defaults_via_get_or_insert.Fruit.Lemon  =>
-          let* α0 := M.read (mk_str "Lemon") in
+          let* α0 : ref str.t := M.read (mk_str "Lemon") in
           let* α1 : M.Val str.t := deref α0 in
           let* α2 : ref str.t := borrow α1 in
           M.alloc α2
         end in
-      let* α5 := M.read α4 in
+      let* α5 : ref str.t := M.read α4 in
       let* α6 : core.result.Result.t unit core.fmt.Error.t :=
         core.fmt.Formatter.t::["write_str"] α2 α5 in
       M.alloc α6).
@@ -104,7 +104,8 @@ Definition main : M unit :=
             (core.option.Option.t
               unpacking_options_and_defaults_via_get_or_insert.Fruit.t) :=
         borrow_mut my_fruit in
-      let* α1 := M.read apple in
+      let* α1 : unpacking_options_and_defaults_via_get_or_insert.Fruit.t :=
+        M.read apple in
       let* α2 :
           mut_ref unpacking_options_and_defaults_via_get_or_insert.Fruit.t :=
         (core.option.Option.t
@@ -123,7 +124,7 @@ Definition main : M unit :=
         let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
         let* α5 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α4 in
-        let* α6 := M.read α5 in
+        let* α6 : ref (slice (ref str.t)) := M.read α5 in
         let* α7 :
             ref
               (mut_ref
@@ -149,7 +150,7 @@ Definition main : M unit :=
         let* α16 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α15 in
         let* α17 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
           pointer_coercion "Unsize" α16 in
-        let* α18 := M.read α17 in
+        let* α18 : ref (slice core.fmt.rt.Argument.t) := M.read α17 in
         let* α19 : core.fmt.Arguments.t :=
           core.fmt.Arguments.t::["new_v1"] α6 α18 in
         let* α20 : unit := std.io.stdio._print α19 in
@@ -166,7 +167,7 @@ Definition main : M unit :=
         let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
         let* α5 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α4 in
-        let* α6 := M.read α5 in
+        let* α6 : ref (slice (ref str.t)) := M.read α5 in
         let* α7 :
             ref
               (mut_ref
@@ -192,7 +193,7 @@ Definition main : M unit :=
         let* α16 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α15 in
         let* α17 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
           pointer_coercion "Unsize" α16 in
-        let* α18 := M.read α17 in
+        let* α18 : ref (slice core.fmt.rt.Argument.t) := M.read α17 in
         let* α19 : core.fmt.Arguments.t :=
           core.fmt.Arguments.t::["new_v1"] α6 α18 in
         let* α20 : unit := std.io.stdio._print α19 in

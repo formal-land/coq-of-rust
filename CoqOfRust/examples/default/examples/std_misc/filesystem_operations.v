@@ -19,7 +19,7 @@ Definition cat
   let* path : M.Val (ref std.path.Path.t) := M.alloc path in
   M.function_body
     (let* f : M.Val std.fs.File.t :=
-      let* α0 := M.read path in
+      let* α0 : ref std.path.Path.t := M.read path in
       let* α1 : core.result.Result.t std.fs.File.t std.io.error.Error.t :=
         std.fs.File.t::["open"] α0 in
       let* α2 :
@@ -45,7 +45,11 @@ Definition cat
         match α4 with
         | core.ops.control_flow.ControlFlow.Break residual =>
           let* residual := M.alloc residual in
-          let* α0 := M.read residual in
+          let* α0 :
+              core.result.Result.t
+                core.convert.Infallible.t
+                std.io.error.Error.t :=
+            M.read residual in
           let* α1 :
               core.result.Result.t alloc.string.String.t std.io.error.Error.t :=
             (core.ops.try_trait.FromResidual.from_residual
@@ -80,11 +84,11 @@ Definition cat
     let* α6 := M.read α5 in
     match α6 with
     | core.result.Result.Ok _ =>
-      let* α0 := M.read s in
+      let* α0 : alloc.string.String.t := M.read s in
       M.alloc (core.result.Result.Ok α0)
     | core.result.Result.Err e =>
       let* e := M.alloc e in
-      let* α0 := M.read e in
+      let* α0 : std.io.error.Error.t := M.read e in
       M.alloc (core.result.Result.Err α0)
     end).
 
@@ -104,7 +108,7 @@ Definition echo
   let* path : M.Val (ref std.path.Path.t) := M.alloc path in
   M.function_body
     (let* f : M.Val std.fs.File.t :=
-      let* α0 := M.read path in
+      let* α0 : ref std.path.Path.t := M.read path in
       let* α1 : core.result.Result.t std.fs.File.t std.io.error.Error.t :=
         std.fs.File.t::["create"] α0 in
       let* α2 :
@@ -130,7 +134,11 @@ Definition echo
         match α4 with
         | core.ops.control_flow.ControlFlow.Break residual =>
           let* residual := M.alloc residual in
-          let* α0 := M.read residual in
+          let* α0 :
+              core.result.Result.t
+                core.convert.Infallible.t
+                std.io.error.Error.t :=
+            M.read residual in
           let* α1 : core.result.Result.t unit std.io.error.Error.t :=
             (core.ops.try_trait.FromResidual.from_residual
                 (Self := core.result.Result.t unit std.io.error.Error.t)
@@ -144,7 +152,7 @@ Definition echo
         end in
       M.copy α5 in
     let* α0 : mut_ref std.fs.File.t := borrow_mut f in
-    let* α1 := M.read s in
+    let* α1 : ref str.t := M.read s in
     let* α2 : M.Val str.t := deref α1 in
     let* α3 : ref str.t := borrow α2 in
     let* α4 : ref (slice u8.t) := str.t::["as_bytes"] α3 in
@@ -175,18 +183,18 @@ Definition touch
     let* α1 : M.Val std.fs.OpenOptions.t := M.alloc α0 in
     let* α2 : mut_ref std.fs.OpenOptions.t := borrow_mut α1 in
     let* α3 : M.Val bool.t := M.alloc true in
-    let* α4 := M.read α3 in
+    let* α4 : bool.t := M.read α3 in
     let* α5 : mut_ref std.fs.OpenOptions.t :=
       std.fs.OpenOptions.t::["create"] α2 α4 in
     let* α6 : M.Val std.fs.OpenOptions.t := deref α5 in
     let* α7 : mut_ref std.fs.OpenOptions.t := borrow_mut α6 in
     let* α8 : M.Val bool.t := M.alloc true in
-    let* α9 := M.read α8 in
+    let* α9 : bool.t := M.read α8 in
     let* α10 : mut_ref std.fs.OpenOptions.t :=
       std.fs.OpenOptions.t::["write"] α7 α9 in
     let* α11 : M.Val std.fs.OpenOptions.t := deref α10 in
     let* α12 : ref std.fs.OpenOptions.t := borrow α11 in
-    let* α13 := M.read path in
+    let* α13 : ref std.path.Path.t := M.read path in
     let* α14 : core.result.Result.t std.fs.File.t std.io.error.Error.t :=
       std.fs.OpenOptions.t::["open"] α12 α13 in
     let* α15 :
@@ -197,7 +205,7 @@ Definition touch
     | core.result.Result.Ok _ => M.alloc (core.result.Result.Ok tt)
     | core.result.Result.Err e =>
       let* e := M.alloc e in
-      let* α0 := M.read e in
+      let* α0 : std.io.error.Error.t := M.read e in
       M.alloc (core.result.Result.Err α0)
     end).
 
@@ -279,14 +287,14 @@ Definition main : M unit :=
         let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
         let* α5 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α4 in
-        let* α6 := M.read α5 in
+        let* α6 : ref (slice (ref str.t)) := M.read α5 in
         let* α7 : core.fmt.Arguments.t :=
           core.fmt.Arguments.t::["new_const"] α6 in
         let* α8 : unit := std.io.stdio._print α7 in
         M.alloc α8 in
       M.alloc tt in
     let* _ : M.Val unit :=
-      let* α0 := M.read (mk_str "a") in
+      let* α0 : ref str.t := M.read (mk_str "a") in
       let* α1 : core.result.Result.t unit std.io.error.Error.t :=
         std.fs.create_dir α0 in
       let* α2 : M.Val (core.result.Result.t unit std.io.error.Error.t) :=
@@ -305,7 +313,7 @@ Definition main : M unit :=
           let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
           let* α5 : M.Val (ref (slice (ref str.t))) :=
             pointer_coercion "Unsize" α4 in
-          let* α6 := M.read α5 in
+          let* α6 : ref (slice (ref str.t)) := M.read α5 in
           let* α7 : ref std.io.error.Error.t := borrow why in
           let* α8 : std.io.error.ErrorKind.t :=
             std.io.error.Error.t::["kind"] α7 in
@@ -324,7 +332,7 @@ Definition main : M unit :=
             M.alloc α18 in
           let* α20 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
             pointer_coercion "Unsize" α19 in
-          let* α21 := M.read α20 in
+          let* α21 : ref (slice core.fmt.rt.Argument.t) := M.read α20 in
           let* α22 : core.fmt.Arguments.t :=
             core.fmt.Arguments.t::["new_v1"] α6 α21 in
           let* α23 : unit := std.io.stdio._print α22 in
@@ -343,29 +351,29 @@ Definition main : M unit :=
         let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
         let* α5 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α4 in
-        let* α6 := M.read α5 in
+        let* α6 : ref (slice (ref str.t)) := M.read α5 in
         let* α7 : core.fmt.Arguments.t :=
           core.fmt.Arguments.t::["new_const"] α6 in
         let* α8 : unit := std.io.stdio._print α7 in
         M.alloc α8 in
       M.alloc tt in
     let* _ : M.Val unit :=
-      let* α0 := M.read (mk_str "hello") in
+      let* α0 : ref str.t := M.read (mk_str "hello") in
       let* α1 : M.Val str.t := deref α0 in
       let* α2 : ref str.t := borrow α1 in
-      let* α3 := M.read (mk_str "a/b.txt") in
+      let* α3 : ref str.t := M.read (mk_str "a/b.txt") in
       let* α4 : M.Val str.t := deref α3 in
       let* α5 : ref str.t := borrow α4 in
       let* α6 : ref std.path.Path.t := std.path.Path.t::["new"] α5 in
       let* α7 : M.Val (ref std.path.Path.t) := M.alloc α6 in
       let* α8 : ref (ref std.path.Path.t) := borrow α7 in
       let* α9 : M.Val (ref std.path.Path.t) := deref α8 in
-      let* α10 := M.read α9 in
+      let* α10 : ref std.path.Path.t := M.read α9 in
       let* α11 : M.Val std.path.Path.t := deref α10 in
       let* α12 : ref std.path.Path.t := borrow α11 in
       let* α13 : core.result.Result.t unit std.io.error.Error.t :=
         filesystem_operations.echo α2 α12 in
-      let* α14 :=
+      let* α14 : type not implemented :=
         M.read
           (let* _ : M.Val unit :=
             let* _ : M.Val unit :=
@@ -378,7 +386,7 @@ Definition main : M unit :=
               let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
               let* α5 : M.Val (ref (slice (ref str.t))) :=
                 pointer_coercion "Unsize" α4 in
-              let* α6 := M.read α5 in
+              let* α6 : ref (slice (ref str.t)) := M.read α5 in
               let* α7 : ref std.io.error.Error.t := borrow why in
               let* α8 : std.io.error.ErrorKind.t :=
                 std.io.error.Error.t::["kind"] α7 in
@@ -398,7 +406,7 @@ Definition main : M unit :=
                 M.alloc α18 in
               let* α20 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
                 pointer_coercion "Unsize" α19 in
-              let* α21 := M.read α20 in
+              let* α21 : ref (slice core.fmt.rt.Argument.t) := M.read α20 in
               let* α22 : core.fmt.Arguments.t :=
                 core.fmt.Arguments.t::["new_v1"] α6 α21 in
               let* α23 : unit := std.io.stdio._print α22 in
@@ -421,17 +429,17 @@ Definition main : M unit :=
         let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
         let* α5 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α4 in
-        let* α6 := M.read α5 in
+        let* α6 : ref (slice (ref str.t)) := M.read α5 in
         let* α7 : core.fmt.Arguments.t :=
           core.fmt.Arguments.t::["new_const"] α6 in
         let* α8 : unit := std.io.stdio._print α7 in
         M.alloc α8 in
       M.alloc tt in
     let* _ : M.Val unit :=
-      let* α0 := M.read (mk_str "a/c/d") in
+      let* α0 : ref str.t := M.read (mk_str "a/c/d") in
       let* α1 : core.result.Result.t unit std.io.error.Error.t :=
         std.fs.create_dir_all α0 in
-      let* α2 :=
+      let* α2 : type not implemented :=
         M.read
           (let* _ : M.Val unit :=
             let* _ : M.Val unit :=
@@ -444,7 +452,7 @@ Definition main : M unit :=
               let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
               let* α5 : M.Val (ref (slice (ref str.t))) :=
                 pointer_coercion "Unsize" α4 in
-              let* α6 := M.read α5 in
+              let* α6 : ref (slice (ref str.t)) := M.read α5 in
               let* α7 : ref std.io.error.Error.t := borrow why in
               let* α8 : std.io.error.ErrorKind.t :=
                 std.io.error.Error.t::["kind"] α7 in
@@ -464,7 +472,7 @@ Definition main : M unit :=
                 M.alloc α18 in
               let* α20 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
                 pointer_coercion "Unsize" α19 in
-              let* α21 := M.read α20 in
+              let* α21 : ref (slice core.fmt.rt.Argument.t) := M.read α20 in
               let* α22 : core.fmt.Arguments.t :=
                 core.fmt.Arguments.t::["new_v1"] α6 α21 in
               let* α23 : unit := std.io.stdio._print α22 in
@@ -487,26 +495,26 @@ Definition main : M unit :=
         let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
         let* α5 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α4 in
-        let* α6 := M.read α5 in
+        let* α6 : ref (slice (ref str.t)) := M.read α5 in
         let* α7 : core.fmt.Arguments.t :=
           core.fmt.Arguments.t::["new_const"] α6 in
         let* α8 : unit := std.io.stdio._print α7 in
         M.alloc α8 in
       M.alloc tt in
     let* _ : M.Val unit :=
-      let* α0 := M.read (mk_str "a/c/e.txt") in
+      let* α0 : ref str.t := M.read (mk_str "a/c/e.txt") in
       let* α1 : M.Val str.t := deref α0 in
       let* α2 : ref str.t := borrow α1 in
       let* α3 : ref std.path.Path.t := std.path.Path.t::["new"] α2 in
       let* α4 : M.Val (ref std.path.Path.t) := M.alloc α3 in
       let* α5 : ref (ref std.path.Path.t) := borrow α4 in
       let* α6 : M.Val (ref std.path.Path.t) := deref α5 in
-      let* α7 := M.read α6 in
+      let* α7 : ref std.path.Path.t := M.read α6 in
       let* α8 : M.Val std.path.Path.t := deref α7 in
       let* α9 : ref std.path.Path.t := borrow α8 in
       let* α10 : core.result.Result.t unit std.io.error.Error.t :=
         filesystem_operations.touch α9 in
-      let* α11 :=
+      let* α11 : type not implemented :=
         M.read
           (let* _ : M.Val unit :=
             let* _ : M.Val unit :=
@@ -519,7 +527,7 @@ Definition main : M unit :=
               let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
               let* α5 : M.Val (ref (slice (ref str.t))) :=
                 pointer_coercion "Unsize" α4 in
-              let* α6 := M.read α5 in
+              let* α6 : ref (slice (ref str.t)) := M.read α5 in
               let* α7 : ref std.io.error.Error.t := borrow why in
               let* α8 : std.io.error.ErrorKind.t :=
                 std.io.error.Error.t::["kind"] α7 in
@@ -539,7 +547,7 @@ Definition main : M unit :=
                 M.alloc α18 in
               let* α20 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
                 pointer_coercion "Unsize" α19 in
-              let* α21 := M.read α20 in
+              let* α21 : ref (slice core.fmt.rt.Argument.t) := M.read α20 in
               let* α22 : core.fmt.Arguments.t :=
                 core.fmt.Arguments.t::["new_v1"] α6 α21 in
               let* α23 : unit := std.io.stdio._print α22 in
@@ -562,7 +570,7 @@ Definition main : M unit :=
         let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
         let* α5 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α4 in
-        let* α6 := M.read α5 in
+        let* α6 : ref (slice (ref str.t)) := M.read α5 in
         let* α7 : core.fmt.Arguments.t :=
           core.fmt.Arguments.t::["new_const"] α6 in
         let* α8 : unit := std.io.stdio._print α7 in
@@ -571,14 +579,14 @@ Definition main : M unit :=
     let* _ : M.Val unit :=
       let* α0 : M.Val bool.t := M.alloc true in
       let* α1 : M.Val bool.t := use α0 in
-      let* α2 := M.read α1 in
+      let* α2 : bool.t := M.read α1 in
       if (α2 : bool) then
         let* _ : M.Val unit :=
-          let* α0 := M.read (mk_str "../b.txt") in
-          let* α1 := M.read (mk_str "a/c/b.txt") in
+          let* α0 : ref str.t := M.read (mk_str "../b.txt") in
+          let* α1 : ref str.t := M.read (mk_str "a/c/b.txt") in
           let* α2 : core.result.Result.t unit std.io.error.Error.t :=
             std.os.unix.fs.symlink α0 α1 in
-          let* α3 :=
+          let* α3 : type not implemented :=
             M.read
               (let* _ : M.Val unit :=
                 let* _ : M.Val unit :=
@@ -591,7 +599,7 @@ Definition main : M unit :=
                   let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
                   let* α5 : M.Val (ref (slice (ref str.t))) :=
                     pointer_coercion "Unsize" α4 in
-                  let* α6 := M.read α5 in
+                  let* α6 : ref (slice (ref str.t)) := M.read α5 in
                   let* α7 : ref std.io.error.Error.t := borrow why in
                   let* α8 : std.io.error.ErrorKind.t :=
                     std.io.error.Error.t::["kind"] α7 in
@@ -612,7 +620,7 @@ Definition main : M unit :=
                     M.alloc α18 in
                   let* α20 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
                     pointer_coercion "Unsize" α19 in
-                  let* α21 := M.read α20 in
+                  let* α21 : ref (slice core.fmt.rt.Argument.t) := M.read α20 in
                   let* α22 : core.fmt.Arguments.t :=
                     core.fmt.Arguments.t::["new_v1"] α6 α21 in
                   let* α23 : unit := std.io.stdio._print α22 in
@@ -638,21 +646,21 @@ Definition main : M unit :=
         let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
         let* α5 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α4 in
-        let* α6 := M.read α5 in
+        let* α6 : ref (slice (ref str.t)) := M.read α5 in
         let* α7 : core.fmt.Arguments.t :=
           core.fmt.Arguments.t::["new_const"] α6 in
         let* α8 : unit := std.io.stdio._print α7 in
         M.alloc α8 in
       M.alloc tt in
     let* _ : M.Val unit :=
-      let* α0 := M.read (mk_str "a/c/b.txt") in
+      let* α0 : ref str.t := M.read (mk_str "a/c/b.txt") in
       let* α1 : M.Val str.t := deref α0 in
       let* α2 : ref str.t := borrow α1 in
       let* α3 : ref std.path.Path.t := std.path.Path.t::["new"] α2 in
       let* α4 : M.Val (ref std.path.Path.t) := M.alloc α3 in
       let* α5 : ref (ref std.path.Path.t) := borrow α4 in
       let* α6 : M.Val (ref std.path.Path.t) := deref α5 in
-      let* α7 := M.read α6 in
+      let* α7 : ref std.path.Path.t := M.read α6 in
       let* α8 : M.Val std.path.Path.t := deref α7 in
       let* α9 : ref std.path.Path.t := borrow α8 in
       let* α10 :
@@ -676,7 +684,7 @@ Definition main : M unit :=
           let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
           let* α5 : M.Val (ref (slice (ref str.t))) :=
             pointer_coercion "Unsize" α4 in
-          let* α6 := M.read α5 in
+          let* α6 : ref (slice (ref str.t)) := M.read α5 in
           let* α7 : ref std.io.error.Error.t := borrow why in
           let* α8 : std.io.error.ErrorKind.t :=
             std.io.error.Error.t::["kind"] α7 in
@@ -695,7 +703,7 @@ Definition main : M unit :=
             M.alloc α18 in
           let* α20 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
             pointer_coercion "Unsize" α19 in
-          let* α21 := M.read α20 in
+          let* α21 : ref (slice core.fmt.rt.Argument.t) := M.read α20 in
           let* α22 : core.fmt.Arguments.t :=
             core.fmt.Arguments.t::["new_v1"] α6 α21 in
           let* α23 : unit := std.io.stdio._print α22 in
@@ -713,7 +721,7 @@ Definition main : M unit :=
           let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
           let* α5 : M.Val (ref (slice (ref str.t))) :=
             pointer_coercion "Unsize" α4 in
-          let* α6 := M.read α5 in
+          let* α6 : ref (slice (ref str.t)) := M.read α5 in
           let* α7 : ref alloc.string.String.t := borrow s in
           let* α8 : M.Val alloc.string.String.t := deref α7 in
           let* α9 : ref alloc.string.String.t := borrow α8 in
@@ -728,7 +736,7 @@ Definition main : M unit :=
             M.alloc α15 in
           let* α17 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
             pointer_coercion "Unsize" α16 in
-          let* α18 := M.read α17 in
+          let* α18 : ref (slice core.fmt.rt.Argument.t) := M.read α17 in
           let* α19 : core.fmt.Arguments.t :=
             core.fmt.Arguments.t::["new_v1"] α6 α18 in
           let* α20 : unit := std.io.stdio._print α19 in
@@ -745,14 +753,14 @@ Definition main : M unit :=
         let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
         let* α5 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α4 in
-        let* α6 := M.read α5 in
+        let* α6 : ref (slice (ref str.t)) := M.read α5 in
         let* α7 : core.fmt.Arguments.t :=
           core.fmt.Arguments.t::["new_const"] α6 in
         let* α8 : unit := std.io.stdio._print α7 in
         M.alloc α8 in
       M.alloc tt in
     let* _ : M.Val unit :=
-      let* α0 := M.read (mk_str "a") in
+      let* α0 : ref str.t := M.read (mk_str "a") in
       let* α1 : core.result.Result.t std.fs.ReadDir.t std.io.error.Error.t :=
         std.fs.read_dir α0 in
       let* α2 :
@@ -772,7 +780,7 @@ Definition main : M unit :=
           let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
           let* α5 : M.Val (ref (slice (ref str.t))) :=
             pointer_coercion "Unsize" α4 in
-          let* α6 := M.read α5 in
+          let* α6 : ref (slice (ref str.t)) := M.read α5 in
           let* α7 : ref std.io.error.Error.t := borrow why in
           let* α8 : std.io.error.ErrorKind.t :=
             std.io.error.Error.t::["kind"] α7 in
@@ -791,7 +799,7 @@ Definition main : M unit :=
             M.alloc α18 in
           let* α20 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
             pointer_coercion "Unsize" α19 in
-          let* α21 := M.read α20 in
+          let* α21 : ref (slice core.fmt.rt.Argument.t) := M.read α20 in
           let* α22 : core.fmt.Arguments.t :=
             core.fmt.Arguments.t::["new_v1"] α6 α21 in
           let* α23 : unit := std.io.stdio._print α22 in
@@ -799,7 +807,7 @@ Definition main : M unit :=
         M.alloc tt
       | core.result.Result.Ok paths =>
         let* paths := M.alloc paths in
-        let* α0 := M.read paths in
+        let* α0 : std.fs.ReadDir.t := M.read paths in
         let* α1 : std.fs.ReadDir.t :=
           (core.iter.traits.collect.IntoIterator.into_iter
               (Self := std.fs.ReadDir.t)
@@ -850,8 +858,12 @@ Definition main : M unit :=
                       let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
                       let* α5 : M.Val (ref (slice (ref str.t))) :=
                         pointer_coercion "Unsize" α4 in
-                      let* α6 := M.read α5 in
-                      let* α7 := M.read path in
+                      let* α6 : ref (slice (ref str.t)) := M.read α5 in
+                      let* α7 :
+                          core.result.Result.t
+                            std.fs.DirEntry.t
+                            std.io.error.Error.t :=
+                        M.read path in
                       let* α8 : std.fs.DirEntry.t :=
                         (core.result.Result.t
                               std.fs.DirEntry.t
@@ -880,7 +892,8 @@ Definition main : M unit :=
                         M.alloc α21 in
                       let* α23 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
                         pointer_coercion "Unsize" α22 in
-                      let* α24 := M.read α23 in
+                      let* α24 : ref (slice core.fmt.rt.Argument.t) :=
+                        M.read α23 in
                       let* α25 : core.fmt.Arguments.t :=
                         core.fmt.Arguments.t::["new_v1"] α6 α24 in
                       let* α26 : unit := std.io.stdio._print α25 in
@@ -903,17 +916,17 @@ Definition main : M unit :=
         let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
         let* α5 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α4 in
-        let* α6 := M.read α5 in
+        let* α6 : ref (slice (ref str.t)) := M.read α5 in
         let* α7 : core.fmt.Arguments.t :=
           core.fmt.Arguments.t::["new_const"] α6 in
         let* α8 : unit := std.io.stdio._print α7 in
         M.alloc α8 in
       M.alloc tt in
     let* _ : M.Val unit :=
-      let* α0 := M.read (mk_str "a/c/e.txt") in
+      let* α0 : ref str.t := M.read (mk_str "a/c/e.txt") in
       let* α1 : core.result.Result.t unit std.io.error.Error.t :=
         std.fs.remove_file α0 in
-      let* α2 :=
+      let* α2 : type not implemented :=
         M.read
           (let* _ : M.Val unit :=
             let* _ : M.Val unit :=
@@ -926,7 +939,7 @@ Definition main : M unit :=
               let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
               let* α5 : M.Val (ref (slice (ref str.t))) :=
                 pointer_coercion "Unsize" α4 in
-              let* α6 := M.read α5 in
+              let* α6 : ref (slice (ref str.t)) := M.read α5 in
               let* α7 : ref std.io.error.Error.t := borrow why in
               let* α8 : std.io.error.ErrorKind.t :=
                 std.io.error.Error.t::["kind"] α7 in
@@ -946,7 +959,7 @@ Definition main : M unit :=
                 M.alloc α18 in
               let* α20 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
                 pointer_coercion "Unsize" α19 in
-              let* α21 := M.read α20 in
+              let* α21 : ref (slice core.fmt.rt.Argument.t) := M.read α20 in
               let* α22 : core.fmt.Arguments.t :=
                 core.fmt.Arguments.t::["new_v1"] α6 α21 in
               let* α23 : unit := std.io.stdio._print α22 in
@@ -969,17 +982,17 @@ Definition main : M unit :=
         let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
         let* α5 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α4 in
-        let* α6 := M.read α5 in
+        let* α6 : ref (slice (ref str.t)) := M.read α5 in
         let* α7 : core.fmt.Arguments.t :=
           core.fmt.Arguments.t::["new_const"] α6 in
         let* α8 : unit := std.io.stdio._print α7 in
         M.alloc α8 in
       M.alloc tt in
     let* _ : M.Val unit :=
-      let* α0 := M.read (mk_str "a/c/d") in
+      let* α0 : ref str.t := M.read (mk_str "a/c/d") in
       let* α1 : core.result.Result.t unit std.io.error.Error.t :=
         std.fs.remove_dir α0 in
-      let* α2 :=
+      let* α2 : type not implemented :=
         M.read
           (let* _ : M.Val unit :=
             let* _ : M.Val unit :=
@@ -992,7 +1005,7 @@ Definition main : M unit :=
               let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
               let* α5 : M.Val (ref (slice (ref str.t))) :=
                 pointer_coercion "Unsize" α4 in
-              let* α6 := M.read α5 in
+              let* α6 : ref (slice (ref str.t)) := M.read α5 in
               let* α7 : ref std.io.error.Error.t := borrow why in
               let* α8 : std.io.error.ErrorKind.t :=
                 std.io.error.Error.t::["kind"] α7 in
@@ -1012,7 +1025,7 @@ Definition main : M unit :=
                 M.alloc α18 in
               let* α20 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
                 pointer_coercion "Unsize" α19 in
-              let* α21 := M.read α20 in
+              let* α21 : ref (slice core.fmt.rt.Argument.t) := M.read α20 in
               let* α22 : core.fmt.Arguments.t :=
                 core.fmt.Arguments.t::["new_v1"] α6 α21 in
               let* α23 : unit := std.io.stdio._print α22 in

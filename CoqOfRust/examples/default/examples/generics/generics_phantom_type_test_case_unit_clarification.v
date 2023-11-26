@@ -47,7 +47,9 @@ Section Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarifica
       : M generics_phantom_type_test_case_unit_clarification.Inch.t :=
     let* self : M.Val (ref ltac:(Self)) := M.alloc self in
     M.function_body
-      (let* α0 := M.read self in
+      (let* α0 :
+          ref generics_phantom_type_test_case_unit_clarification.Inch.t :=
+        M.read self in
       deref α0).
   
   Global Instance AssociatedFunction_clone :
@@ -117,7 +119,8 @@ Section Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarifica
       : M generics_phantom_type_test_case_unit_clarification.Mm.t :=
     let* self : M.Val (ref ltac:(Self)) := M.alloc self in
     M.function_body
-      (let* α0 := M.read self in
+      (let* α0 : ref generics_phantom_type_test_case_unit_clarification.Mm.t :=
+        M.read self in
       deref α0).
   
   Global Instance AssociatedFunction_clone :
@@ -178,13 +181,17 @@ Section Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificati
     let* self : M.Val (ref ltac:(Self)) := M.alloc self in
     let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
     M.function_body
-      (let* α0 := M.read f in
+      (let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
       let* α1 : M.Val core.fmt.Formatter.t := deref α0 in
       let* α2 : mut_ref core.fmt.Formatter.t := borrow_mut α1 in
-      let* α3 := M.read (mk_str "Length") in
+      let* α3 : ref str.t := M.read (mk_str "Length") in
       let* α4 : M.Val str.t := deref α3 in
       let* α5 : ref str.t := borrow α4 in
-      let* α6 := M.read self in
+      let* α6 :
+          ref
+            (generics_phantom_type_test_case_unit_clarification.Length.t
+              Unit) :=
+        M.read self in
       let* α7 :
           M.Val
             (generics_phantom_type_test_case_unit_clarification.Length.t
@@ -196,8 +203,12 @@ Section Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificati
       let* α11 : M.Val (ref f64.t) := M.alloc α10 in
       let* α12 : M.Val (ref type not implemented) :=
         pointer_coercion "Unsize" α11 in
-      let* α13 := M.read α12 in
-      let* α14 := M.read self in
+      let* α13 : ref type not implemented := M.read α12 in
+      let* α14 :
+          ref
+            (generics_phantom_type_test_case_unit_clarification.Length.t
+              Unit) :=
+        M.read self in
       let* α15 :
           M.Val
             (generics_phantom_type_test_case_unit_clarification.Length.t
@@ -212,7 +223,7 @@ Section Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificati
         M.alloc α20 in
       let* α22 : M.Val (ref type not implemented) :=
         pointer_coercion "Unsize" α21 in
-      let* α23 := M.read α22 in
+      let* α23 : ref type not implemented := M.read α22 in
       let* α24 : core.result.Result.t unit core.fmt.Error.t :=
         core.fmt.Formatter.t::["debug_tuple_field2_finish"] α2 α5 α13 α23 in
       M.alloc α24).
@@ -245,7 +256,11 @@ Section Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarifica
       : M (generics_phantom_type_test_case_unit_clarification.Length.t Unit) :=
     let* self : M.Val (ref ltac:(Self)) := M.alloc self in
     M.function_body
-      (let* α0 := M.read self in
+      (let* α0 :
+          ref
+            (generics_phantom_type_test_case_unit_clarification.Length.t
+              Unit) :=
+        M.read self in
       let* α1 :
           M.Val
             (generics_phantom_type_test_case_unit_clarification.Length.t
@@ -257,7 +272,11 @@ Section Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarifica
       let* α5 : f64.t :=
         (core.clone.Clone.clone (Self := f64.t) (Trait := ltac:(refine _)))
           α4 in
-      let* α6 := M.read self in
+      let* α6 :
+          ref
+            (generics_phantom_type_test_case_unit_clarification.Length.t
+              Unit) :=
+        M.read self in
       let* α7 :
           M.Val
             (generics_phantom_type_test_case_unit_clarification.Length.t
@@ -332,7 +351,7 @@ Section Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarifi
       M.alloc rhs in
     M.function_body
       (let* α0 : M.Val f64.t := BinOp.add self.["0"] rhs.["0"] in
-      let* α1 := M.read α0 in
+      let* α1 : f64.t := M.read α0 in
       M.alloc
         (generics_phantom_type_test_case_unit_clarification.Length.Build_t
           α1
@@ -383,7 +402,7 @@ Definition main : M unit :=
           (generics_phantom_type_test_case_unit_clarification.Length.t
             generics_phantom_type_test_case_unit_clarification.Inch.t) :=
       let* α0 : M.Val f64.t := M.alloc 12 (* 12.0 *) in
-      let* α1 := M.read α0 in
+      let* α1 : f64.t := M.read α0 in
       M.alloc
         (generics_phantom_type_test_case_unit_clarification.Length.Build_t
           α1
@@ -393,7 +412,7 @@ Definition main : M unit :=
           (generics_phantom_type_test_case_unit_clarification.Length.t
             generics_phantom_type_test_case_unit_clarification.Mm.t) :=
       let* α0 : M.Val f64.t := M.alloc 1000 (* 1000.0 *) in
-      let* α1 := M.read α0 in
+      let* α1 : f64.t := M.read α0 in
       M.alloc
         (generics_phantom_type_test_case_unit_clarification.Length.Build_t
           α1
@@ -402,8 +421,14 @@ Definition main : M unit :=
         M.Val
           (generics_phantom_type_test_case_unit_clarification.Length.t
             generics_phantom_type_test_case_unit_clarification.Inch.t) :=
-      let* α0 := M.read one_foot in
-      let* α1 := M.read one_foot in
+      let* α0 :
+          generics_phantom_type_test_case_unit_clarification.Length.t
+            generics_phantom_type_test_case_unit_clarification.Inch.t :=
+        M.read one_foot in
+      let* α1 :
+          generics_phantom_type_test_case_unit_clarification.Length.t
+            generics_phantom_type_test_case_unit_clarification.Inch.t :=
+        M.read one_foot in
       let* α2 :
           generics_phantom_type_test_case_unit_clarification.Length.t
             generics_phantom_type_test_case_unit_clarification.Inch.t :=
@@ -419,8 +444,14 @@ Definition main : M unit :=
         M.Val
           (generics_phantom_type_test_case_unit_clarification.Length.t
             generics_phantom_type_test_case_unit_clarification.Mm.t) :=
-      let* α0 := M.read one_meter in
-      let* α1 := M.read one_meter in
+      let* α0 :
+          generics_phantom_type_test_case_unit_clarification.Length.t
+            generics_phantom_type_test_case_unit_clarification.Mm.t :=
+        M.read one_meter in
+      let* α1 :
+          generics_phantom_type_test_case_unit_clarification.Length.t
+            generics_phantom_type_test_case_unit_clarification.Mm.t :=
+        M.read one_meter in
       let* α2 :
           generics_phantom_type_test_case_unit_clarification.Length.t
             generics_phantom_type_test_case_unit_clarification.Mm.t :=
@@ -443,7 +474,7 @@ Definition main : M unit :=
         let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
         let* α5 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α4 in
-        let* α6 := M.read α5 in
+        let* α6 : ref (slice (ref str.t)) := M.read α5 in
         let* α7 : ref f64.t := borrow two_feet.["0"] in
         let* α8 : M.Val f64.t := deref α7 in
         let* α9 : ref f64.t := borrow α8 in
@@ -457,7 +488,7 @@ Definition main : M unit :=
         let* α16 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α15 in
         let* α17 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
           pointer_coercion "Unsize" α16 in
-        let* α18 := M.read α17 in
+        let* α18 : ref (slice core.fmt.rt.Argument.t) := M.read α17 in
         let* α19 : core.fmt.Arguments.t :=
           core.fmt.Arguments.t::["new_v1"] α6 α18 in
         let* α20 : unit := std.io.stdio._print α19 in
@@ -474,7 +505,7 @@ Definition main : M unit :=
         let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
         let* α5 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α4 in
-        let* α6 := M.read α5 in
+        let* α6 : ref (slice (ref str.t)) := M.read α5 in
         let* α7 : ref f64.t := borrow two_meters.["0"] in
         let* α8 : M.Val f64.t := deref α7 in
         let* α9 : ref f64.t := borrow α8 in
@@ -488,7 +519,7 @@ Definition main : M unit :=
         let* α16 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α15 in
         let* α17 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
           pointer_coercion "Unsize" α16 in
-        let* α18 := M.read α17 in
+        let* α18 : ref (slice core.fmt.rt.Argument.t) := M.read α17 in
         let* α19 : core.fmt.Arguments.t :=
           core.fmt.Arguments.t::["new_v1"] α6 α18 in
         let* α20 : unit := std.io.stdio._print α19 in

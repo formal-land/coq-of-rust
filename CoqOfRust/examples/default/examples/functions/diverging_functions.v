@@ -19,7 +19,7 @@ Definition main : M unit := M.function_body (M.alloc tt).
 Definition foo : M never.t :=
   M.function_body
     (let* _ : M.Val unit :=
-      let* α0 := M.read (mk_str "This call never returns.") in
+      let* α0 : ref str.t := M.read (mk_str "This call never returns.") in
       let* α1 : never.t := std.panicking.begin_panic α0 in
       let* α2 : M.Val never.t := M.alloc α1 in
       never_to_any α2 in

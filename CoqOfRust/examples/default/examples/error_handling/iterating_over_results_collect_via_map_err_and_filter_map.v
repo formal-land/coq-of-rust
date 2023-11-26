@@ -18,19 +18,19 @@ fn main() {
 Definition main : M unit :=
   M.function_body
     (let* strings : M.Val (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t) :=
-      let* α0 := M.read (mk_str "tofu") in
+      let* α0 : ref str.t := M.read (mk_str "tofu") in
       let* α1 : M.Val str.t := deref α0 in
       let* α2 : ref str.t := borrow α1 in
       let* α3 : M.Val (ref str.t) := M.alloc α2 in
-      let* α4 := M.read (mk_str "93") in
+      let* α4 : ref str.t := M.read (mk_str "93") in
       let* α5 : M.Val str.t := deref α4 in
       let* α6 : ref str.t := borrow α5 in
       let* α7 : M.Val (ref str.t) := M.alloc α6 in
-      let* α8 := M.read (mk_str "999") in
+      let* α8 : ref str.t := M.read (mk_str "999") in
       let* α9 : M.Val str.t := deref α8 in
       let* α10 : ref str.t := borrow α9 in
       let* α11 : M.Val (ref str.t) := M.alloc α10 in
-      let* α12 := M.read (mk_str "18") in
+      let* α12 : ref str.t := M.read (mk_str "18") in
       let* α13 : M.Val str.t := deref α12 in
       let* α14 : ref str.t := borrow α13 in
       let* α15 : M.Val (ref str.t) := M.alloc α14 in
@@ -42,7 +42,8 @@ Definition main : M unit :=
       let* α18 :
           M.Val (alloc.boxed.Box.t (slice (ref str.t)) alloc.alloc.Global.t) :=
         pointer_coercion "Unsize" α17 in
-      let* α19 := M.read α18 in
+      let* α19 : alloc.boxed.Box.t (slice (ref str.t)) alloc.alloc.Global.t :=
+        M.read α18 in
       let* α20 : alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t :=
         (slice (ref str.t))::["into_vec"] α19 in
       M.alloc α20 in
@@ -58,16 +59,17 @@ Definition main : M unit :=
             alloc.alloc.Global.t)::["new"] in
       M.alloc α0 in
     let* numbers : M.Val (alloc.vec.Vec.t u8.t alloc.alloc.Global.t) :=
-      let* α0 := M.read strings in
+      let* α0 : alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t :=
+        M.read strings in
       let* α1 :
           alloc.vec.into_iter.IntoIter.t (ref str.t) alloc.alloc.Global.t :=
         (core.iter.traits.collect.IntoIterator.into_iter
             (Self := alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t)
             (Trait := ltac:(refine _)))
           α0 in
-      let* α2 :=
+      let* α2 : type not implemented :=
         M.read
-          (let* α0 := M.read s in
+          (let* α0 : ref str.t := M.read s in
           let* α1 : M.Val str.t := deref α0 in
           let* α2 : ref str.t := borrow α1 in
           let* α3 : core.result.Result.t u8.t core.num.error.ParseIntError.t :=
@@ -83,10 +85,11 @@ Definition main : M unit :=
             (Trait := ltac:(refine _)))
           α1
           α2 in
-      let* α4 :=
+      let* α4 : type not implemented :=
         M.read
-          (let* α0 := M.read r in
-          let* α1 :=
+          (let* α0 : core.result.Result.t u8.t core.num.error.ParseIntError.t :=
+            M.read r in
+          let* α1 : type not implemented :=
             M.read
               (let* α0 :
                   mut_ref
@@ -94,7 +97,7 @@ Definition main : M unit :=
                       core.num.error.ParseIntError.t
                       alloc.alloc.Global.t) :=
                 borrow_mut errors in
-              let* α1 := M.read e in
+              let* α1 : core.num.error.ParseIntError.t := M.read e in
               let* α2 : unit :=
                 (alloc.vec.Vec.t
                       core.num.error.ParseIntError.t
@@ -151,7 +154,7 @@ Definition main : M unit :=
         let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
         let* α5 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α4 in
-        let* α6 := M.read α5 in
+        let* α6 : ref (slice (ref str.t)) := M.read α5 in
         let* α7 : ref (alloc.vec.Vec.t u8.t alloc.alloc.Global.t) :=
           borrow numbers in
         let* α8 : M.Val (alloc.vec.Vec.t u8.t alloc.alloc.Global.t) :=
@@ -168,7 +171,7 @@ Definition main : M unit :=
         let* α16 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α15 in
         let* α17 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
           pointer_coercion "Unsize" α16 in
-        let* α18 := M.read α17 in
+        let* α18 : ref (slice core.fmt.rt.Argument.t) := M.read α17 in
         let* α19 : core.fmt.Arguments.t :=
           core.fmt.Arguments.t::["new_v1"] α6 α18 in
         let* α20 : unit := std.io.stdio._print α19 in
@@ -185,7 +188,7 @@ Definition main : M unit :=
         let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
         let* α5 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α4 in
-        let* α6 := M.read α5 in
+        let* α6 : ref (slice (ref str.t)) := M.read α5 in
         let* α7 :
             ref
               (alloc.vec.Vec.t
@@ -214,7 +217,7 @@ Definition main : M unit :=
         let* α16 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α15 in
         let* α17 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
           pointer_coercion "Unsize" α16 in
-        let* α18 := M.read α17 in
+        let* α18 : ref (slice core.fmt.rt.Argument.t) := M.read α17 in
         let* α19 : core.fmt.Arguments.t :=
           core.fmt.Arguments.t::["new_v1"] α6 α18 in
         let* α20 : unit := std.io.stdio._print α19 in

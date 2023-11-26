@@ -68,8 +68,8 @@ Definition main : M unit :=
     let* null : M.Val generics_traits.Null.t :=
       M.alloc generics_traits.Null.Build_t in
     let* _ : M.Val unit :=
-      let* α0 := M.read empty in
-      let* α1 := M.read null in
+      let* α0 : generics_traits.Empty.t := M.read empty in
+      let* α1 : generics_traits.Null.t := M.read null in
       let* α2 : unit :=
         (generics_traits.DoubleDrop.double_drop
             (Self := generics_traits.Empty.t)

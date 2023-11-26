@@ -69,10 +69,10 @@ Definition main : M unit :=
       M.alloc α0 in
     let* _ : M.Val unit :=
       let* α0 : M.Val i32.t := M.alloc 0 in
-      let* α1 := M.read α0 in
-      let* α2 := M.read channels.NTHREADS in
+      let* α1 : i32.t := M.read α0 in
+      let* α2 : ref i32.t := M.read channels.NTHREADS in
       let* α3 : M.Val i32.t := deref α2 in
-      let* α4 := M.read α3 in
+      let* α4 : i32.t := M.read α3 in
       let* α5 : core.ops.range.Range.t i32.t :=
         (core.iter.traits.collect.IntoIterator.into_iter
             (Self := core.ops.range.Range.t i32.t)
@@ -114,12 +114,12 @@ Definition main : M unit :=
                       α0 in
                   M.alloc α1 in
                 let* child : M.Val (std.thread.JoinHandle.t unit) :=
-                  let* α0 :=
+                  let* α0 : type not implemented :=
                     M.read
                       (let* _ : M.Val unit :=
                         let* α0 : ref (std.sync.mpsc.Sender.t i32.t) :=
                           borrow thread_tx in
-                        let* α1 := M.read id in
+                        let* α1 : i32.t := M.read id in
                         let* α2 :
                             core.result.Result.t
                               unit
@@ -143,7 +143,7 @@ Definition main : M unit :=
                             M.alloc α3 in
                           let* α5 : M.Val (ref (slice (ref str.t))) :=
                             pointer_coercion "Unsize" α4 in
-                          let* α6 := M.read α5 in
+                          let* α6 : ref (slice (ref str.t)) := M.read α5 in
                           let* α7 : ref i32.t := borrow id in
                           let* α8 : M.Val i32.t := deref α7 in
                           let* α9 : ref i32.t := borrow α8 in
@@ -165,7 +165,8 @@ Definition main : M unit :=
                           let* α17 :
                               M.Val (ref (slice core.fmt.rt.Argument.t)) :=
                             pointer_coercion "Unsize" α16 in
-                          let* α18 := M.read α17 in
+                          let* α18 : ref (slice core.fmt.rt.Argument.t) :=
+                            M.read α17 in
                           let* α19 : core.fmt.Arguments.t :=
                             core.fmt.Arguments.t::["new_v1"] α6 α18 in
                           let* α20 : unit := std.io.stdio._print α19 in
@@ -182,7 +183,7 @@ Definition main : M unit :=
                           (std.thread.JoinHandle.t unit)
                           alloc.alloc.Global.t) :=
                     borrow_mut children in
-                  let* α1 := M.read child in
+                  let* α1 : std.thread.JoinHandle.t unit := M.read child in
                   let* α2 : unit :=
                     (alloc.vec.Vec.t
                           (std.thread.JoinHandle.t unit)
@@ -200,10 +201,10 @@ Definition main : M unit :=
           (alloc.vec.Vec.t
             (core.result.Result.t i32.t std.sync.mpsc.RecvError.t)
             alloc.alloc.Global.t) :=
-      let* α0 := M.read channels.NTHREADS in
+      let* α0 : ref i32.t := M.read channels.NTHREADS in
       let* α1 : M.Val i32.t := deref α0 in
       let* α2 : M.Val usize.t := cast α1 in
-      let* α3 := M.read α2 in
+      let* α3 : usize.t := M.read α2 in
       let* α4 :
           alloc.vec.Vec.t
             (core.result.Result.t i32.t std.sync.mpsc.RecvError.t)
@@ -215,10 +216,10 @@ Definition main : M unit :=
       M.alloc α4 in
     let* _ : M.Val unit :=
       let* α0 : M.Val i32.t := M.alloc 0 in
-      let* α1 := M.read α0 in
-      let* α2 := M.read channels.NTHREADS in
+      let* α1 : i32.t := M.read α0 in
+      let* α2 : ref i32.t := M.read channels.NTHREADS in
       let* α3 : M.Val i32.t := deref α2 in
-      let* α4 := M.read α3 in
+      let* α4 : i32.t := M.read α3 in
       let* α5 : core.ops.range.Range.t i32.t :=
         (core.iter.traits.collect.IntoIterator.into_iter
             (Self := core.ops.range.Range.t i32.t)
@@ -274,7 +275,9 @@ Definition main : M unit :=
         end in
       use α8 in
     let* _ : M.Val unit :=
-      let* α0 := M.read children in
+      let* α0 :
+          alloc.vec.Vec.t (std.thread.JoinHandle.t unit) alloc.alloc.Global.t :=
+        M.read children in
       let* α1 :
           alloc.vec.into_iter.IntoIter.t
             (std.thread.JoinHandle.t unit)
@@ -336,7 +339,7 @@ Definition main : M unit :=
               | core.option.Option.Some child =>
                 let* child := M.alloc child in
                 let* _ : M.Val unit :=
-                  let* α0 := M.read child in
+                  let* α0 : std.thread.JoinHandle.t unit := M.read child in
                   let* α1 :
                       core.result.Result.t
                         unit
@@ -344,7 +347,7 @@ Definition main : M unit :=
                           type not implemented
                           alloc.alloc.Global.t) :=
                     (std.thread.JoinHandle.t unit)::["join"] α0 in
-                  let* α2 :=
+                  let* α2 : ref str.t :=
                     M.read (mk_str "oops! the child thread panicked") in
                   let* α3 : M.Val str.t := deref α2 in
                   let* α4 : ref str.t := borrow α3 in
@@ -373,7 +376,7 @@ Definition main : M unit :=
         let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
         let* α5 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α4 in
-        let* α6 := M.read α5 in
+        let* α6 : ref (slice (ref str.t)) := M.read α5 in
         let* α7 :
             ref
               (alloc.vec.Vec.t
@@ -402,7 +405,7 @@ Definition main : M unit :=
         let* α16 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α15 in
         let* α17 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
           pointer_coercion "Unsize" α16 in
-        let* α18 := M.read α17 in
+        let* α18 : ref (slice core.fmt.rt.Argument.t) := M.read α17 in
         let* α19 : core.fmt.Arguments.t :=
           core.fmt.Arguments.t::["new_v1"] α6 α18 in
         let* α20 : unit := std.io.stdio._print α19 in

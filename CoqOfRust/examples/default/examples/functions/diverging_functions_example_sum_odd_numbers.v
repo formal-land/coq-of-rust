@@ -41,9 +41,9 @@ Definition main : M unit :=
         let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
         let* α5 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α4 in
-        let* α6 := M.read α5 in
+        let* α6 : ref (slice (ref str.t)) := M.read α5 in
         let* α7 : M.Val u32.t := M.alloc 9 in
-        let* α8 := M.read α7 in
+        let* α8 : u32.t := M.read α7 in
         let* α9 : u32.t := "unimplemented parent_kind" α8 in
         let* α10 : M.Val u32.t := M.alloc α9 in
         let* α11 : ref u32.t := borrow α10 in
@@ -59,7 +59,7 @@ Definition main : M unit :=
         let* α20 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α19 in
         let* α21 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
           pointer_coercion "Unsize" α20 in
-        let* α22 := M.read α21 in
+        let* α22 : ref (slice core.fmt.rt.Argument.t) := M.read α21 in
         let* α23 : core.fmt.Arguments.t :=
           core.fmt.Arguments.t::["new_v1"] α6 α22 in
         let* α24 : unit := std.io.stdio._print α23 in
@@ -94,8 +94,8 @@ Definition sum_odd_numbers (up_to : u32.t) : M u32.t :=
       M.copy α0 in
     let* _ : M.Val unit :=
       let* α0 : M.Val u32.t := M.alloc 0 in
-      let* α1 := M.read α0 in
-      let* α2 := M.read up_to in
+      let* α1 : u32.t := M.read α0 in
+      let* α2 : u32.t := M.read up_to in
       let* α3 : core.ops.range.Range.t u32.t :=
         (core.iter.traits.collect.IntoIterator.into_iter
             (Self := core.ops.range.Range.t u32.t)

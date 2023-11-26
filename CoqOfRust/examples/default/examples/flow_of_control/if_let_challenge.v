@@ -23,7 +23,7 @@ Definition main : M unit :=
     (let* a : M.Val if_let_challenge.Foo.t :=
       M.alloc if_let_challenge.Foo.Bar in
     let* α0 : M.Val bool.t := let_if if_let_challenge.Foo.Bar  := a in
-    let* α1 := M.read α0 in
+    let* α1 : bool.t := M.read α0 in
     if (α1 : bool) then
       let* _ : M.Val unit :=
         let* _ : M.Val unit :=
@@ -36,7 +36,7 @@ Definition main : M unit :=
           let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
           let* α5 : M.Val (ref (slice (ref str.t))) :=
             pointer_coercion "Unsize" α4 in
-          let* α6 := M.read α5 in
+          let* α6 : ref (slice (ref str.t)) := M.read α5 in
           let* α7 : core.fmt.Arguments.t :=
             core.fmt.Arguments.t::["new_const"] α6 in
           let* α8 : unit := std.io.stdio._print α7 in

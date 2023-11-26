@@ -87,7 +87,7 @@ Definition random_animal
     (let* α0 : M.Val f64.t := M.alloc 1 (* 0.5 *) in
     let* α1 : M.Val bool.t := BinOp.lt random_number α0 in
     let* α2 : M.Val bool.t := use α1 in
-    let* α3 := M.read α2 in
+    let* α3 : bool.t := M.read α2 in
     let* α4 :
         M.Val (alloc.boxed.Box.t type not implemented alloc.alloc.Global.t) :=
       if (α3 : bool) then
@@ -149,7 +149,7 @@ Definition main : M unit :=
       M.copy α0 in
     let* animal :
         M.Val (alloc.boxed.Box.t type not implemented alloc.alloc.Global.t) :=
-      let* α0 := M.read random_number in
+      let* α0 : f64.t := M.read random_number in
       let* α1 : alloc.boxed.Box.t type not implemented alloc.alloc.Global.t :=
         returning_traits_with_dyn.random_animal α0 in
       M.alloc α1 in
@@ -168,8 +168,9 @@ Definition main : M unit :=
         let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
         let* α5 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α4 in
-        let* α6 := M.read α5 in
-        let* α7 := M.read animal in
+        let* α6 : ref (slice (ref str.t)) := M.read α5 in
+        let* α7 : alloc.boxed.Box.t type not implemented alloc.alloc.Global.t :=
+          M.read animal in
         let* α8 : M.Val type not implemented := deref α7 in
         let* α9 : ref type not implemented := borrow α8 in
         let* α10 : ref str.t :=
@@ -191,7 +192,7 @@ Definition main : M unit :=
         let* α21 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α20 in
         let* α22 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
           pointer_coercion "Unsize" α21 in
-        let* α23 := M.read α22 in
+        let* α23 : ref (slice core.fmt.rt.Argument.t) := M.read α22 in
         let* α24 : core.fmt.Arguments.t :=
           core.fmt.Arguments.t::["new_v1"] α6 α23 in
         let* α25 : unit := std.io.stdio._print α24 in

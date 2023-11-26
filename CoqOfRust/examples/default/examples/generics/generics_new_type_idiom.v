@@ -39,11 +39,11 @@ Section Impl_generics_new_type_idiom_Years_t.
       : M generics_new_type_idiom.Days.t :=
     let* self : M.Val (ref ltac:(Self)) := M.alloc self in
     M.function_body
-      (let* α0 := M.read self in
+      (let* α0 : ref generics_new_type_idiom.Years.t := M.read self in
       let* α1 : M.Val generics_new_type_idiom.Years.t := deref α0 in
       let* α2 : M.Val i64.t := M.alloc 365 in
       let* α3 : M.Val i64.t := BinOp.mul α1.["0"] α2 in
-      let* α4 := M.read α3 in
+      let* α4 : i64.t := M.read α3 in
       M.alloc (generics_new_type_idiom.Days.Build_t α4)).
   
   Global Instance AssociatedFunction_to_days :
@@ -67,11 +67,11 @@ Section Impl_generics_new_type_idiom_Days_t.
       : M generics_new_type_idiom.Years.t :=
     let* self : M.Val (ref ltac:(Self)) := M.alloc self in
     M.function_body
-      (let* α0 := M.read self in
+      (let* α0 : ref generics_new_type_idiom.Days.t := M.read self in
       let* α1 : M.Val generics_new_type_idiom.Days.t := deref α0 in
       let* α2 : M.Val i64.t := M.alloc 365 in
       let* α3 : M.Val i64.t := BinOp.div α1.["0"] α2 in
-      let* α4 := M.read α3 in
+      let* α4 : i64.t := M.read α3 in
       M.alloc (generics_new_type_idiom.Years.Build_t α4)).
   
   Global Instance AssociatedFunction_to_years :
@@ -89,7 +89,7 @@ fn old_enough(age: &Years) -> bool {
 Definition old_enough (age : ref generics_new_type_idiom.Years.t) : M bool.t :=
   let* age : M.Val (ref generics_new_type_idiom.Years.t) := M.alloc age in
   M.function_body
-    (let* α0 := M.read age in
+    (let* α0 : ref generics_new_type_idiom.Years.t := M.read age in
     let* α1 : M.Val generics_new_type_idiom.Years.t := deref α0 in
     let* α2 : M.Val i64.t := M.alloc 18 in
     BinOp.ge α1.["0"] α2).
@@ -108,7 +108,7 @@ Definition main : M unit :=
   M.function_body
     (let* age : M.Val generics_new_type_idiom.Years.t :=
       let* α0 : M.Val i64.t := M.alloc 5 in
-      let* α1 := M.read α0 in
+      let* α1 : i64.t := M.read α0 in
       M.alloc (generics_new_type_idiom.Years.Build_t α1) in
     let* age_days : M.Val generics_new_type_idiom.Days.t :=
       let* α0 : ref generics_new_type_idiom.Years.t := borrow age in
@@ -126,7 +126,7 @@ Definition main : M unit :=
         let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
         let* α5 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α4 in
-        let* α6 := M.read α5 in
+        let* α6 : ref (slice (ref str.t)) := M.read α5 in
         let* α7 : ref generics_new_type_idiom.Years.t := borrow age in
         let* α8 : M.Val generics_new_type_idiom.Years.t := deref α7 in
         let* α9 : ref generics_new_type_idiom.Years.t := borrow α8 in
@@ -145,7 +145,7 @@ Definition main : M unit :=
         let* α21 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α20 in
         let* α22 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
           pointer_coercion "Unsize" α21 in
-        let* α23 := M.read α22 in
+        let* α23 : ref (slice core.fmt.rt.Argument.t) := M.read α22 in
         let* α24 : core.fmt.Arguments.t :=
           core.fmt.Arguments.t::["new_v1"] α6 α23 in
         let* α25 : unit := std.io.stdio._print α24 in
@@ -162,7 +162,7 @@ Definition main : M unit :=
         let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
         let* α5 : M.Val (ref (slice (ref str.t))) :=
           pointer_coercion "Unsize" α4 in
-        let* α6 := M.read α5 in
+        let* α6 : ref (slice (ref str.t)) := M.read α5 in
         let* α7 : ref generics_new_type_idiom.Days.t := borrow age_days in
         let* α8 : generics_new_type_idiom.Years.t :=
           generics_new_type_idiom.Days.t::["to_years"] α7 in
@@ -185,7 +185,7 @@ Definition main : M unit :=
         let* α24 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α23 in
         let* α25 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
           pointer_coercion "Unsize" α24 in
-        let* α26 := M.read α25 in
+        let* α26 : ref (slice core.fmt.rt.Argument.t) := M.read α25 in
         let* α27 : core.fmt.Arguments.t :=
           core.fmt.Arguments.t::["new_v1"] α6 α26 in
         let* α28 : unit := std.io.stdio._print α27 in
