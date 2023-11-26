@@ -9,7 +9,10 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit := M.function_body (M.alloc tt).
+Definition main : M unit :=
+  M.function_body
+    (let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 (*
     fn foo() -> ! {
@@ -24,4 +27,5 @@ Definition foo : M never.t :=
       let* α2 : M.Val never.t := M.alloc α1 in
       never_to_any α2 in
     let* α0 : M.Val unit := M.alloc tt in
-    never_to_any α0).
+    let* α1 : M.Val never.t := never_to_any α0 in
+    M.read α1).

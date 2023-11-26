@@ -48,7 +48,9 @@ Module checked.
         let* α5 : ref str.t := M.read α4 in
         let* α6 : core.result.Result.t unit core.fmt.Error.t :=
           core.fmt.Formatter.t::["write_str"] α2 α5 in
-        M.alloc α6).
+        let* α0 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=
+          M.alloc α6 in
+        M.read α0).
     
     Global Instance AssociatedFunction_fmt :
       Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -84,12 +86,15 @@ Module checked.
       let* α1 : M.Val bool.t := BinOp.eq y α0 in
       let* α2 : M.Val bool.t := use α1 in
       let* α3 : bool.t := M.read α2 in
-      if (α3 : bool) then
-        M.alloc (core.result.Result.Err result.checked.MathError.DivisionByZero)
-      else
-        let* α0 : M.Val f64.t := BinOp.div x y in
-        let* α1 : f64.t := M.read α0 in
-        M.alloc (core.result.Result.Ok α1)).
+      let* α0 : M.Val (core.result.Result.t f64.t result.checked.MathError.t) :=
+        if (α3 : bool) then
+          M.alloc
+            (core.result.Result.Err result.checked.MathError.DivisionByZero)
+        else
+          let* α0 : M.Val f64.t := BinOp.div x y in
+          let* α1 : f64.t := M.read α0 in
+          M.alloc (core.result.Result.Ok α1) in
+      M.read α0).
   
   (*
       pub fn sqrt(x: f64) -> MathResult {
@@ -107,13 +112,15 @@ Module checked.
       let* α1 : M.Val bool.t := BinOp.lt x α0 in
       let* α2 : M.Val bool.t := use α1 in
       let* α3 : bool.t := M.read α2 in
-      if (α3 : bool) then
-        M.alloc
-          (core.result.Result.Err result.checked.MathError.NegativeSquareRoot)
-      else
-        let* α0 : f64.t := M.read x in
-        let* α1 : f64.t := f64.t::["sqrt"] α0 in
-        M.alloc (core.result.Result.Ok α1)).
+      let* α0 : M.Val (core.result.Result.t f64.t result.checked.MathError.t) :=
+        if (α3 : bool) then
+          M.alloc
+            (core.result.Result.Err result.checked.MathError.NegativeSquareRoot)
+        else
+          let* α0 : f64.t := M.read x in
+          let* α1 : f64.t := f64.t::["sqrt"] α0 in
+          M.alloc (core.result.Result.Ok α1) in
+      M.read α0).
   
   (*
       pub fn ln(x: f64) -> MathResult {
@@ -131,13 +138,16 @@ Module checked.
       let* α1 : M.Val bool.t := BinOp.le x α0 in
       let* α2 : M.Val bool.t := use α1 in
       let* α3 : bool.t := M.read α2 in
-      if (α3 : bool) then
-        M.alloc
-          (core.result.Result.Err result.checked.MathError.NonPositiveLogarithm)
-      else
-        let* α0 : f64.t := M.read x in
-        let* α1 : f64.t := f64.t::["ln"] α0 in
-        M.alloc (core.result.Result.Ok α1)).
+      let* α0 : M.Val (core.result.Result.t f64.t result.checked.MathError.t) :=
+        if (α3 : bool) then
+          M.alloc
+            (core.result.Result.Err
+              result.checked.MathError.NonPositiveLogarithm)
+        else
+          let* α0 : f64.t := M.read x in
+          let* α1 : f64.t := f64.t::["ln"] α0 in
+          M.alloc (core.result.Result.Ok α1) in
+      M.read α0).
 End checked.
 
 Module MathError.
@@ -186,7 +196,9 @@ Section Impl_core_fmt_Debug_for_result_checked_MathError_t.
       let* α5 : ref str.t := M.read α4 in
       let* α6 : core.result.Result.t unit core.fmt.Error.t :=
         core.fmt.Formatter.t::["write_str"] α2 α5 in
-      M.alloc α6).
+      let* α0 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=
+        M.alloc α6 in
+      M.read α0).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -222,12 +234,14 @@ Definition div (x : f64.t) (y : f64.t) : M ltac:(result.checked.MathResult) :=
     let* α1 : M.Val bool.t := BinOp.eq y α0 in
     let* α2 : M.Val bool.t := use α1 in
     let* α3 : bool.t := M.read α2 in
-    if (α3 : bool) then
-      M.alloc (core.result.Result.Err result.checked.MathError.DivisionByZero)
-    else
-      let* α0 : M.Val f64.t := BinOp.div x y in
-      let* α1 : f64.t := M.read α0 in
-      M.alloc (core.result.Result.Ok α1)).
+    let* α0 : M.Val (core.result.Result.t f64.t result.checked.MathError.t) :=
+      if (α3 : bool) then
+        M.alloc (core.result.Result.Err result.checked.MathError.DivisionByZero)
+      else
+        let* α0 : M.Val f64.t := BinOp.div x y in
+        let* α1 : f64.t := M.read α0 in
+        M.alloc (core.result.Result.Ok α1) in
+    M.read α0).
 
 (*
     pub fn sqrt(x: f64) -> MathResult {
@@ -245,13 +259,15 @@ Definition sqrt (x : f64.t) : M ltac:(result.checked.MathResult) :=
     let* α1 : M.Val bool.t := BinOp.lt x α0 in
     let* α2 : M.Val bool.t := use α1 in
     let* α3 : bool.t := M.read α2 in
-    if (α3 : bool) then
-      M.alloc
-        (core.result.Result.Err result.checked.MathError.NegativeSquareRoot)
-    else
-      let* α0 : f64.t := M.read x in
-      let* α1 : f64.t := f64.t::["sqrt"] α0 in
-      M.alloc (core.result.Result.Ok α1)).
+    let* α0 : M.Val (core.result.Result.t f64.t result.checked.MathError.t) :=
+      if (α3 : bool) then
+        M.alloc
+          (core.result.Result.Err result.checked.MathError.NegativeSquareRoot)
+      else
+        let* α0 : f64.t := M.read x in
+        let* α1 : f64.t := f64.t::["sqrt"] α0 in
+        M.alloc (core.result.Result.Ok α1) in
+    M.read α0).
 
 (*
     pub fn ln(x: f64) -> MathResult {
@@ -269,13 +285,15 @@ Definition ln (x : f64.t) : M ltac:(result.checked.MathResult) :=
     let* α1 : M.Val bool.t := BinOp.le x α0 in
     let* α2 : M.Val bool.t := use α1 in
     let* α3 : bool.t := M.read α2 in
-    if (α3 : bool) then
-      M.alloc
-        (core.result.Result.Err result.checked.MathError.NonPositiveLogarithm)
-    else
-      let* α0 : f64.t := M.read x in
-      let* α1 : f64.t := f64.t::["ln"] α0 in
-      M.alloc (core.result.Result.Ok α1)).
+    let* α0 : M.Val (core.result.Result.t f64.t result.checked.MathError.t) :=
+      if (α3 : bool) then
+        M.alloc
+          (core.result.Result.Err result.checked.MathError.NonPositiveLogarithm)
+      else
+        let* α0 : f64.t := M.read x in
+        let* α1 : f64.t := f64.t::["ln"] α0 in
+        M.alloc (core.result.Result.Ok α1) in
+    M.read α0).
 
 (*
 fn op(x: f64, y: f64) -> f64 {
@@ -303,45 +321,8 @@ Definition op (x : f64.t) (y : f64.t) : M f64.t :=
     let* α3 : M.Val (core.result.Result.t f64.t result.checked.MathError.t) :=
       M.alloc α2 in
     let* α4 := M.read α3 in
-    match α4 with
-    | core.result.Result.Err why =>
-      let* why := M.alloc why in
-      let* α0 : M.Val (array (ref str.t)) := M.alloc [ mk_str "" ] in
-      let* α1 : ref (array (ref str.t)) := borrow α0 in
-      let* α2 : M.Val (array (ref str.t)) := deref α1 in
-      let* α3 : ref (array (ref str.t)) := borrow α2 in
-      let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
-      let* α5 : M.Val (ref (slice (ref str.t))) :=
-        pointer_coercion "Unsize" α4 in
-      let* α6 : ref (slice (ref str.t)) := M.read α5 in
-      let* α7 : ref result.checked.MathError.t := borrow why in
-      let* α8 : M.Val result.checked.MathError.t := deref α7 in
-      let* α9 : ref result.checked.MathError.t := borrow α8 in
-      let* α10 : core.fmt.rt.Argument.t :=
-        core.fmt.rt.Argument.t::["new_debug"] α9 in
-      let* α11 : M.Val core.fmt.rt.Argument.t := M.alloc α10 in
-      let* α12 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α11 ] in
-      let* α13 : ref (array core.fmt.rt.Argument.t) := borrow α12 in
-      let* α14 : M.Val (array core.fmt.rt.Argument.t) := deref α13 in
-      let* α15 : ref (array core.fmt.rt.Argument.t) := borrow α14 in
-      let* α16 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α15 in
-      let* α17 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
-        pointer_coercion "Unsize" α16 in
-      let* α18 : ref (slice core.fmt.rt.Argument.t) := M.read α17 in
-      let* α19 : core.fmt.Arguments.t :=
-        core.fmt.Arguments.t::["new_v1"] α6 α18 in
-      let* α20 : never.t := core.panicking.panic_fmt α19 in
-      let* α21 : M.Val never.t := M.alloc α20 in
-      never_to_any α21
-    | core.result.Result.Ok ratio =>
-      let* ratio := M.alloc ratio in
-      let* α0 : f64.t := M.read ratio in
-      let* α1 : core.result.Result.t f64.t result.checked.MathError.t :=
-        result.checked.ln α0 in
-      let* α2 : M.Val (core.result.Result.t f64.t result.checked.MathError.t) :=
-        M.alloc α1 in
-      let* α3 := M.read α2 in
-      match α3 with
+    let* α0 : M.Val f64.t :=
+      match α4 with
       | core.result.Result.Err why =>
         let* why := M.alloc why in
         let* α0 : M.Val (array (ref str.t)) := M.alloc [ mk_str "" ] in
@@ -371,11 +352,11 @@ Definition op (x : f64.t) (y : f64.t) : M f64.t :=
         let* α20 : never.t := core.panicking.panic_fmt α19 in
         let* α21 : M.Val never.t := M.alloc α20 in
         never_to_any α21
-      | core.result.Result.Ok ln =>
-        let* ln := M.alloc ln in
-        let* α0 : f64.t := M.read ln in
+      | core.result.Result.Ok ratio =>
+        let* ratio := M.alloc ratio in
+        let* α0 : f64.t := M.read ratio in
         let* α1 : core.result.Result.t f64.t result.checked.MathError.t :=
-          result.checked.sqrt α0 in
+          result.checked.ln α0 in
         let* α2 :
             M.Val (core.result.Result.t f64.t result.checked.MathError.t) :=
           M.alloc α1 in
@@ -411,12 +392,54 @@ Definition op (x : f64.t) (y : f64.t) : M f64.t :=
           let* α20 : never.t := core.panicking.panic_fmt α19 in
           let* α21 : M.Val never.t := M.alloc α20 in
           never_to_any α21
-        | core.result.Result.Ok sqrt =>
-          let* sqrt := M.alloc sqrt in
-          M.pure sqrt
+        | core.result.Result.Ok ln =>
+          let* ln := M.alloc ln in
+          let* α0 : f64.t := M.read ln in
+          let* α1 : core.result.Result.t f64.t result.checked.MathError.t :=
+            result.checked.sqrt α0 in
+          let* α2 :
+              M.Val (core.result.Result.t f64.t result.checked.MathError.t) :=
+            M.alloc α1 in
+          let* α3 := M.read α2 in
+          match α3 with
+          | core.result.Result.Err why =>
+            let* why := M.alloc why in
+            let* α0 : M.Val (array (ref str.t)) := M.alloc [ mk_str "" ] in
+            let* α1 : ref (array (ref str.t)) := borrow α0 in
+            let* α2 : M.Val (array (ref str.t)) := deref α1 in
+            let* α3 : ref (array (ref str.t)) := borrow α2 in
+            let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
+            let* α5 : M.Val (ref (slice (ref str.t))) :=
+              pointer_coercion "Unsize" α4 in
+            let* α6 : ref (slice (ref str.t)) := M.read α5 in
+            let* α7 : ref result.checked.MathError.t := borrow why in
+            let* α8 : M.Val result.checked.MathError.t := deref α7 in
+            let* α9 : ref result.checked.MathError.t := borrow α8 in
+            let* α10 : core.fmt.rt.Argument.t :=
+              core.fmt.rt.Argument.t::["new_debug"] α9 in
+            let* α11 : M.Val core.fmt.rt.Argument.t := M.alloc α10 in
+            let* α12 : M.Val (array core.fmt.rt.Argument.t) :=
+              M.alloc [ α11 ] in
+            let* α13 : ref (array core.fmt.rt.Argument.t) := borrow α12 in
+            let* α14 : M.Val (array core.fmt.rt.Argument.t) := deref α13 in
+            let* α15 : ref (array core.fmt.rt.Argument.t) := borrow α14 in
+            let* α16 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+              M.alloc α15 in
+            let* α17 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
+              pointer_coercion "Unsize" α16 in
+            let* α18 : ref (slice core.fmt.rt.Argument.t) := M.read α17 in
+            let* α19 : core.fmt.Arguments.t :=
+              core.fmt.Arguments.t::["new_v1"] α6 α18 in
+            let* α20 : never.t := core.panicking.panic_fmt α19 in
+            let* α21 : M.Val never.t := M.alloc α20 in
+            never_to_any α21
+          | core.result.Result.Ok sqrt =>
+            let* sqrt := M.alloc sqrt in
+            M.pure sqrt
+          end
         end
-      end
-    end).
+      end in
+    M.read α0).
 
 (*
 fn main() {
@@ -464,4 +487,5 @@ Definition main : M unit :=
         let* α26 : unit := std.io.stdio._print α25 in
         M.alloc α26 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

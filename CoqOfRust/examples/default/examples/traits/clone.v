@@ -29,7 +29,9 @@ Section Impl_core_fmt_Debug_for_clone_Unit_t.
       let* α5 : ref str.t := borrow α4 in
       let* α6 : core.result.Result.t unit core.fmt.Error.t :=
         core.fmt.Formatter.t::["write_str"] α2 α5 in
-      M.alloc α6).
+      let* α0 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=
+        M.alloc α6 in
+      M.read α0).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -53,7 +55,8 @@ Section Impl_core_clone_Clone_for_clone_Unit_t.
     let* self : M.Val (ref ltac:(Self)) := M.alloc self in
     M.function_body
       (let* α0 : ref clone.Unit.t := M.read self in
-      deref α0).
+      let* α0 : M.Val clone.Unit.t := deref α0 in
+      M.read α0).
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon ltac:(Self) "clone" := {
@@ -128,7 +131,8 @@ Section Impl_core_clone_Clone_for_clone_Pair_t.
             (Self := alloc.boxed.Box.t i32.t alloc.alloc.Global.t)
             (Trait := ltac:(refine _)))
           α10 in
-      M.alloc (clone.Pair.Build_t α5 α11)).
+      let* α0 : M.Val clone.Pair.t := M.alloc (clone.Pair.Build_t α5 α11) in
+      M.read α0).
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon ltac:(Self) "clone" := {
@@ -195,7 +199,9 @@ Section Impl_core_fmt_Debug_for_clone_Pair_t.
       let* α23 : ref type not implemented := M.read α22 in
       let* α24 : core.result.Result.t unit core.fmt.Error.t :=
         core.fmt.Formatter.t::["debug_tuple_field2_finish"] α2 α5 α13 α23 in
-      M.alloc α24).
+      let* α0 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=
+        M.alloc α24 in
+      M.read α0).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -427,4 +433,5 @@ Definition main : M unit :=
         let* α20 : unit := std.io.stdio._print α19 in
         M.alloc α20 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

@@ -40,7 +40,8 @@ Definition foo : M unit :=
         let* α20 : unit := std.io.stdio._print α19 in
         M.alloc α20 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 (*
         fn $func_name() {
@@ -81,7 +82,8 @@ Definition bar : M unit :=
         let* α20 : unit := std.io.stdio._print α19 in
         M.alloc α20 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 (*
 fn main() {
@@ -196,4 +198,5 @@ Definition main : M unit :=
         let* α26 : unit := std.io.stdio._print α25 in
         M.alloc α26 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

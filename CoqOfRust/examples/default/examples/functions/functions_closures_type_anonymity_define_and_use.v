@@ -23,7 +23,8 @@ Definition apply
           α0
           tt in
       M.alloc α1 in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 (*
 fn main() {
@@ -80,4 +81,5 @@ Definition main : M unit :=
       let* α1 : unit :=
         functions_closures_type_anonymity_define_and_use.apply α0 in
       M.alloc α1 in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

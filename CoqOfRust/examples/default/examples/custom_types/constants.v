@@ -13,7 +13,9 @@ fn is_big(n: i32) -> bool {
 *)
 Definition is_big (n : i32.t) : M bool.t :=
   let* n : M.Val i32.t := M.alloc n in
-  M.function_body (BinOp.gt n constants.THRESHOLD).
+  M.function_body
+    (let* α0 : M.Val bool.t := BinOp.gt n constants.THRESHOLD in
+    M.read α0).
 
 (*
 fn main() {
@@ -150,4 +152,5 @@ Definition main : M unit :=
         let* α31 : unit := std.io.stdio._print α30 in
         M.alloc α31 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

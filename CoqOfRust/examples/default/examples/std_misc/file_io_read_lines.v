@@ -42,7 +42,12 @@ Definition read_lines
           α1 in
       return_ α2 in
     let* α0 : M.Val unit := M.alloc tt in
-    never_to_any α0).
+    let* α1 :
+        M.Val
+          (std.io.Lines.t
+            (std.io.buffered.bufreader.BufReader.t std.fs.File.t)) :=
+      never_to_any α0 in
+    M.read α1).
 
 (*
 fn main() {
@@ -186,4 +191,5 @@ Definition main : M unit :=
             end in
           M.alloc tt)
       end in
-    use α4).
+    let* α0 : M.Val unit := use α4 in
+    M.read α0).

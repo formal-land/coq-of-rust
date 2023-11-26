@@ -46,7 +46,8 @@ Definition eat_box_i32
         let* α20 : unit := std.io.stdio._print α19 in
         M.alloc α20 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 (*
 fn borrow_i32(borrowed_i32: &i32) {
@@ -87,7 +88,8 @@ Definition borrow_i32 (borrowed_i32 : ref i32.t) : M unit :=
         let* α20 : unit := std.io.stdio._print α19 in
         M.alloc α20 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 (*
 fn main() {
@@ -168,4 +170,5 @@ Definition main : M unit :=
         M.read boxed_i32 in
       let* α1 : unit := scoping_rules_borrowing.eat_box_i32 α0 in
       M.alloc α1 in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

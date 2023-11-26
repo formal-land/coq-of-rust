@@ -52,7 +52,9 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_t_T.
       let* α15 : ref type not implemented := M.read α14 in
       let* α16 : core.result.Result.t unit core.fmt.Error.t :=
         core.fmt.Formatter.t::["debug_tuple_field1_finish"] α2 α5 α15 in
-      M.alloc α16).
+      let* α0 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=
+        M.alloc α16 in
+      M.read α0).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -107,7 +109,8 @@ Definition print {T : Set} {ℋ_0 : core.fmt.Debug.Trait T} (t : T) : M unit :=
         let* α20 : unit := std.io.stdio._print α19 in
         M.alloc α20 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 (*
 fn print_ref<'a, T>(t: &'a T)
@@ -155,7 +158,8 @@ Definition print_ref
         let* α20 : unit := std.io.stdio._print α19 in
         M.alloc α20 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 (*
 fn main() {
@@ -189,4 +193,5 @@ Definition main : M unit :=
       let* α0 : scoping_rules_lifetimes_bounds.Ref.t i32.t := M.read ref_x in
       let* α1 : unit := scoping_rules_lifetimes_bounds.print α0 in
       M.alloc α1 in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

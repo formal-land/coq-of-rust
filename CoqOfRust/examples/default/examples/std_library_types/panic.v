@@ -19,16 +19,18 @@ Definition division (dividend : i32.t) (divisor : i32.t) : M i32.t :=
     let* α1 : M.Val bool.t := BinOp.eq divisor α0 in
     let* α2 : M.Val bool.t := use α1 in
     let* α3 : bool.t := M.read α2 in
-    if (α3 : bool) then
-      let* _ : M.Val unit :=
-        let* α0 : ref str.t := M.read (mk_str "division by zero") in
-        let* α1 : never.t := std.panicking.begin_panic α0 in
-        let* α2 : M.Val never.t := M.alloc α1 in
-        never_to_any α2 in
-      let* α0 : M.Val unit := M.alloc tt in
-      never_to_any α0
-    else
-      BinOp.div dividend divisor).
+    let* α0 : M.Val i32.t :=
+      if (α3 : bool) then
+        let* _ : M.Val unit :=
+          let* α0 : ref str.t := M.read (mk_str "division by zero") in
+          let* α1 : never.t := std.panicking.begin_panic α0 in
+          let* α2 : M.Val never.t := M.alloc α1 in
+          never_to_any α2 in
+        let* α0 : M.Val unit := M.alloc tt in
+        never_to_any α0
+      else
+        BinOp.div dividend divisor in
+    M.read α0).
 
 (*
 fn main() {
@@ -76,4 +78,5 @@ Definition main : M unit :=
         let* α8 : unit := std.io.stdio._print α7 in
         M.alloc α8 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

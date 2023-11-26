@@ -20,31 +20,33 @@ Definition call (number : ref str.t) : M (ref str.t) :=
   let* number : M.Val (ref str.t) := M.alloc number in
   M.function_body
     (let* α0 := M.read number in
-    match α0 with
-    | _ =>
-      let* α0 : ref str.t :=
-        M.read
-          (mk_str
-            "We're sorry, the call cannot be completed as dialed. 
+    let* α0 : M.Val (ref str.t) :=
+      match α0 with
+      | _ =>
+        let* α0 : ref str.t :=
+          M.read
+            (mk_str
+              "We're sorry, the call cannot be completed as dialed. 
             Please hang up and try again.") in
-      let* α1 : M.Val str.t := deref α0 in
-      let* α2 : ref str.t := borrow α1 in
-      M.alloc α2
-    | _ =>
-      let* α0 : ref str.t :=
-        M.read
-          (mk_str
-            "Hello, this is Mr. Awesome's Pizza. My name is Fred.
+        let* α1 : M.Val str.t := deref α0 in
+        let* α2 : ref str.t := borrow α1 in
+        M.alloc α2
+      | _ =>
+        let* α0 : ref str.t :=
+          M.read
+            (mk_str
+              "Hello, this is Mr. Awesome's Pizza. My name is Fred.
             What can I get for you today?") in
-      let* α1 : M.Val str.t := deref α0 in
-      let* α2 : ref str.t := borrow α1 in
-      M.alloc α2
-    | _ =>
-      let* α0 : ref str.t := M.read (mk_str "Hi! Who is this again?") in
-      let* α1 : M.Val str.t := deref α0 in
-      let* α2 : ref str.t := borrow α1 in
-      M.alloc α2
-    end).
+        let* α1 : M.Val str.t := deref α0 in
+        let* α2 : ref str.t := borrow α1 in
+        M.alloc α2
+      | _ =>
+        let* α0 : ref str.t := M.read (mk_str "Hi! Who is this again?") in
+        let* α1 : M.Val str.t := deref α0 in
+        let* α2 : ref str.t := borrow α1 in
+        M.alloc α2
+      end in
+    M.read α0).
 
 (*
 fn main() {
@@ -490,4 +492,5 @@ Definition main : M unit :=
             end in
           M.alloc tt)
       end in
-    use α5).
+    let* α0 : M.Val unit := use α5 in
+    M.read α0).

@@ -79,7 +79,9 @@ Section Impl_core_fmt_Debug_for_box_stack_heap_Point_t.
           α16
           α19
           α29 in
-      M.alloc α30).
+      let* α0 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=
+        M.alloc α30 in
+      M.read α0).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -105,7 +107,8 @@ Section Impl_core_clone_Clone_for_box_stack_heap_Point_t.
     M.function_body
       (let* _ : M.Val unit := M.alloc tt in
       let* α0 : ref box_stack_heap.Point.t := M.read self in
-      deref α0).
+      let* α0 : M.Val box_stack_heap.Point.t := deref α0 in
+      M.read α0).
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon ltac:(Self) "clone" := {
@@ -167,7 +170,10 @@ Definition origin : M box_stack_heap.Point.t :=
     let* α1 : f64.t := M.read α0 in
     let* α2 : M.Val f64.t := M.alloc 0 (* 0.0 *) in
     let* α3 : f64.t := M.read α2 in
-    M.alloc {| box_stack_heap.Point.x := α1; box_stack_heap.Point.y := α3; |}).
+    let* α0 : M.Val box_stack_heap.Point.t :=
+      M.alloc
+        {| box_stack_heap.Point.x := α1; box_stack_heap.Point.y := α3; |} in
+    M.read α0).
 
 (*
 fn boxed_origin() -> Box<Point> {
@@ -185,7 +191,10 @@ Definition boxed_origin
     let* α4 : alloc.boxed.Box.t box_stack_heap.Point.t alloc.alloc.Global.t :=
       (alloc.boxed.Box.t box_stack_heap.Point.t alloc.alloc.Global.t)::["new"]
         {| box_stack_heap.Point.x := α1; box_stack_heap.Point.y := α3; |} in
-    M.alloc α4).
+    let* α0 :
+        M.Val (alloc.boxed.Box.t box_stack_heap.Point.t alloc.alloc.Global.t) :=
+      M.alloc α4 in
+    M.read α0).
 
 (*
 fn main() {
@@ -567,4 +576,5 @@ Definition main : M unit :=
         let* α25 : unit := std.io.stdio._print α24 in
         M.alloc α25 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

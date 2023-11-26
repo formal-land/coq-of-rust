@@ -26,7 +26,8 @@ Section Impl_example05_Foo_t.
     let* self : M.Val ltac:(Self) := M.alloc self in
     M.function_body
       (let* α0 : M.Val u32.t := M.alloc 1 in
-      BinOp.add self.["0"] α0).
+      let* α0 : M.Val u32.t := BinOp.add self.["0"] α0 in
+      M.read α0).
   
   Global Instance AssociatedFunction_plus1 :
     Notations.DoubleColon ltac:(Self) "plus1" := {
@@ -52,4 +53,5 @@ Definition main : M unit :=
       let* α0 : example05.Foo.t := M.read foo in
       let* α1 : u32.t := example05.Foo.t::["plus1"] α0 in
       M.alloc α1 in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

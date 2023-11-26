@@ -18,4 +18,5 @@ Definition main : M unit :=
       let* α0 : M.Val i32.t := M.alloc 209 in
       M.copy α0 in
     let _ := InlineAssembly in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

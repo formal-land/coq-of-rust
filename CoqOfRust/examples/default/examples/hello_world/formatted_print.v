@@ -586,7 +586,8 @@ Definition main : M unit :=
         let* α45 : unit := std.io.stdio._print α44 in
         M.alloc α45 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 Module  Structure.
 Section Structure.

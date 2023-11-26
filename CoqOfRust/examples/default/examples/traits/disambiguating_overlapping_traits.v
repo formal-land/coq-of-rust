@@ -62,7 +62,8 @@ Section Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating
             (Self := alloc.string.String.t)
             (Trait := ltac:(refine _)))
           α2 in
-      M.alloc α3).
+      let* α0 : M.Val alloc.string.String.t := M.alloc α3 in
+      M.read α0).
   
   Global Instance AssociatedFunction_get :
     Notations.DoubleColon ltac:(Self) "get" := {
@@ -90,7 +91,7 @@ Section Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_over
     M.function_body
       (let* α0 : ref disambiguating_overlapping_traits.Form.t := M.read self in
       let* α1 : M.Val disambiguating_overlapping_traits.Form.t := deref α0 in
-      M.pure α1.["age"]).
+      M.read α1.["age"]).
   
   Global Instance AssociatedFunction_get :
     Notations.DoubleColon ltac:(Self) "get" := {
@@ -261,4 +262,5 @@ Definition main : M unit :=
         else
           M.alloc tt
       end in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

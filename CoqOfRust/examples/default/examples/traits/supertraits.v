@@ -147,10 +147,13 @@ Definition comp_sci_student_greeting
         core.fmt.Arguments.t::["new_v1"] α6 α53 in
       let* α55 : alloc.string.String.t := alloc.fmt.format α54 in
       M.alloc α55 in
-    M.pure res).
+    M.read res).
 
 (*
 fn main() {}
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit := M.function_body (M.alloc tt).
+Definition main : M unit :=
+  M.function_body
+    (let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

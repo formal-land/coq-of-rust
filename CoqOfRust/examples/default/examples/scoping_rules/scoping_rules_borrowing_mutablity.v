@@ -50,7 +50,8 @@ Section Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book_t.
       let* _ : M.Val unit := M.alloc tt in
       let* _ : M.Val unit := M.alloc tt in
       let* α0 : ref scoping_rules_borrowing_mutablity.Book.t := M.read self in
-      deref α0).
+      let* α0 : M.Val scoping_rules_borrowing_mutablity.Book.t := deref α0 in
+      M.read α0).
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon ltac:(Self) "clone" := {
@@ -133,7 +134,8 @@ Definition borrow_book
         let* α29 : unit := std.io.stdio._print α28 in
         M.alloc α29 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 (*
 fn new_edition(book: &mut Book) {
@@ -201,7 +203,8 @@ Definition new_edition
         let* α29 : unit := std.io.stdio._print α28 in
         M.alloc α29 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 (*
 fn main() {
@@ -269,4 +272,5 @@ Definition main : M unit :=
         borrow_mut α1 in
       let* α3 : unit := scoping_rules_borrowing_mutablity.new_edition α2 in
       M.alloc α3 in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

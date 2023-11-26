@@ -65,7 +65,8 @@ Definition main : M unit :=
         let* α24 : unit := std.io.stdio._print α23 in
         M.alloc α24 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 (*
     fn sum_odd_numbers(up_to: u32) -> u32 {
@@ -148,4 +149,4 @@ Definition sum_odd_numbers (up_to : u32.t) : M u32.t :=
             M.alloc tt)
         end in
       use α6 in
-    M.pure acc).
+    M.read acc).

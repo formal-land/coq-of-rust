@@ -9,7 +9,9 @@ pub fn add(a: i32, b: i32) -> i32 {
 Definition add (a : i32.t) (b : i32.t) : M i32.t :=
   let* a : M.Val i32.t := M.alloc a in
   let* b : M.Val i32.t := M.alloc b in
-  M.function_body (BinOp.add a b).
+  M.function_body
+    (let* α0 : M.Val i32.t := BinOp.add a b in
+    M.read α0).
 
 (*
 fn bad_add(a: i32, b: i32) -> i32 {
@@ -20,7 +22,9 @@ fn bad_add(a: i32, b: i32) -> i32 {
 Definition bad_add (a : i32.t) (b : i32.t) : M i32.t :=
   let* a : M.Val i32.t := M.alloc a in
   let* b : M.Val i32.t := M.alloc b in
-  M.function_body (BinOp.sub a b).
+  M.function_body
+    (let* α0 : M.Val i32.t := BinOp.sub a b in
+    M.read α0).
 
 Module tests.
   (*
@@ -81,7 +85,8 @@ Module tests.
           else
             M.alloc tt
         end in
-      M.alloc tt).
+      let* α0 : M.Val unit := M.alloc tt in
+      M.read α0).
   
   (*
       fn test_bad_add() {
@@ -143,7 +148,8 @@ Module tests.
           else
             M.alloc tt
         end in
-      M.alloc tt).
+      let* α0 : M.Val unit := M.alloc tt in
+      M.read α0).
 End tests.
 
 (*
@@ -200,7 +206,8 @@ Definition test_add : M unit :=
         else
           M.alloc tt
       end in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 (*
     fn test_bad_add() {
@@ -258,4 +265,5 @@ Definition test_bad_add : M unit :=
         else
           M.alloc tt
       end in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

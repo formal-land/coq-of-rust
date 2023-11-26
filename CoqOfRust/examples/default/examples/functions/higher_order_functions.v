@@ -12,7 +12,8 @@ Definition is_odd (n : u32.t) : M bool.t :=
     (let* α0 : M.Val u32.t := M.alloc 2 in
     let* α1 : M.Val u32.t := BinOp.rem n α0 in
     let* α2 : M.Val u32.t := M.alloc 1 in
-    BinOp.eq α1 α2).
+    let* α0 : M.Val bool.t := BinOp.eq α1 α2 in
+    M.read α0).
 
 (*
 fn main() {
@@ -259,4 +260,5 @@ Definition main : M unit :=
         let* α20 : unit := std.io.stdio._print α19 in
         M.alloc α20 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

@@ -20,7 +20,8 @@ Definition call_me
           α0
           tt in
       M.alloc α1 in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 (*
 fn function() {
@@ -46,7 +47,8 @@ Definition function : M unit :=
         let* α8 : unit := std.io.stdio._print α7 in
         M.alloc α8 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 (*
 fn main() {
@@ -86,4 +88,5 @@ Definition main : M unit :=
       let* α0 : _ := M.read functions_closures_input_functions.function in
       let* α1 : unit := functions_closures_input_functions.call_me α0 in
       M.alloc α1 in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

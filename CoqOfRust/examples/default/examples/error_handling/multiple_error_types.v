@@ -40,7 +40,8 @@ Definition double_first
       (core.result.Result.t i32.t core.num.error.ParseIntError.t)::["unwrap"]
         α6 in
     let* α8 : M.Val i32.t := M.alloc α7 in
-    BinOp.mul α0 α8).
+    let* α0 : M.Val i32.t := BinOp.mul α0 α8 in
+    M.read α0).
 
 (*
 fn main() {
@@ -212,4 +213,5 @@ Definition main : M unit :=
         let* α23 : unit := std.io.stdio._print α22 in
         M.alloc α23 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

@@ -31,7 +31,8 @@ Section Impl_scoping_rules_lifetimes_methods_Owner_t.
         let* α1 : M.Val scoping_rules_lifetimes_methods.Owner.t := deref α0 in
         let* α2 : M.Val i32.t := M.alloc 1 in
         assign_op add α1.["0"] α2 in
-      M.alloc tt).
+      let* α0 : M.Val unit := M.alloc tt in
+      M.read α0).
   
   Global Instance AssociatedFunction_add_one :
     Notations.DoubleColon ltac:(Self) "add_one" := {
@@ -81,7 +82,8 @@ Section Impl_scoping_rules_lifetimes_methods_Owner_t.
           let* α22 : unit := std.io.stdio._print α21 in
           M.alloc α22 in
         M.alloc tt in
-      M.alloc tt).
+      let* α0 : M.Val unit := M.alloc tt in
+      M.read α0).
   
   Global Instance AssociatedFunction_print :
     Notations.DoubleColon ltac:(Self) "print" := {
@@ -115,4 +117,5 @@ Definition main : M unit :=
       let* α0 : ref scoping_rules_lifetimes_methods.Owner.t := borrow owner in
       let* α1 : unit := scoping_rules_lifetimes_methods.Owner.t::["print"] α0 in
       M.alloc α1 in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

@@ -133,4 +133,5 @@ Definition main : M unit :=
     let* _noisy_unused_variable : M.Val u32.t :=
       let* α0 : M.Val u32.t := M.alloc 2 in
       M.copy α0 in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

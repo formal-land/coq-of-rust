@@ -51,7 +51,8 @@ Section Impl_generics_implementation_Val_t.
       let* α2 : ref f64.t := borrow α1.["val"] in
       let* α3 : M.Val f64.t := deref α2 in
       let* α4 : ref f64.t := borrow α3 in
-      M.alloc α4).
+      let* α0 : M.Val (ref f64.t) := M.alloc α4 in
+      M.read α0).
   
   Global Instance AssociatedFunction_value :
     Notations.DoubleColon ltac:(Self) "value" := {
@@ -79,7 +80,8 @@ Section Impl_generics_implementation_GenVal_t_T.
       let* α2 : ref T := borrow α1.["gen_val"] in
       let* α3 : M.Val T := deref α2 in
       let* α4 : ref T := borrow α3 in
-      M.alloc α4).
+      let* α0 : M.Val (ref T) := M.alloc α4 in
+      M.read α0).
   
   Global Instance AssociatedFunction_value :
     Notations.DoubleColon ltac:(Self) "value" := {
@@ -152,4 +154,5 @@ Definition main : M unit :=
         let* α31 : unit := std.io.stdio._print α30 in
         M.alloc α31 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

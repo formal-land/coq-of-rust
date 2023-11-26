@@ -72,4 +72,7 @@ Definition main
         let* α20 : unit := std.io.stdio._print α19 in
         M.alloc α20 in
       M.alloc tt in
-    M.alloc (core.result.Result.Ok tt)).
+    let* α0 :
+        M.Val (core.result.Result.t unit core.num.error.ParseIntError.t) :=
+      M.alloc (core.result.Result.Ok tt) in
+    M.read α0).

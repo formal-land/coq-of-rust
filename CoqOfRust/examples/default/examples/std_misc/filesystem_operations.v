@@ -82,15 +82,19 @@ Definition cat
     let* α5 : M.Val (core.result.Result.t usize.t std.io.error.Error.t) :=
       M.alloc α4 in
     let* α6 := M.read α5 in
-    match α6 with
-    | core.result.Result.Ok _ =>
-      let* α0 : alloc.string.String.t := M.read s in
-      M.alloc (core.result.Result.Ok α0)
-    | core.result.Result.Err e =>
-      let* e := M.alloc e in
-      let* α0 : std.io.error.Error.t := M.read e in
-      M.alloc (core.result.Result.Err α0)
-    end).
+    let* α0 :
+        M.Val
+          (core.result.Result.t alloc.string.String.t std.io.error.Error.t) :=
+      match α6 with
+      | core.result.Result.Ok _ =>
+        let* α0 : alloc.string.String.t := M.read s in
+        M.alloc (core.result.Result.Ok α0)
+      | core.result.Result.Err e =>
+        let* e := M.alloc e in
+        let* α0 : std.io.error.Error.t := M.read e in
+        M.alloc (core.result.Result.Err α0)
+      end in
+    M.read α0).
 
 (*
 fn echo(s: &str, path: &Path) -> io::Result<()> {
@@ -164,7 +168,9 @@ Definition echo
           (Trait := ltac:(refine _)))
         α0
         α6 in
-    M.alloc α7).
+    let* α0 : M.Val (core.result.Result.t unit std.io.error.Error.t) :=
+      M.alloc α7 in
+    M.read α0).
 
 (*
 fn touch(path: &Path) -> io::Result<()> {
@@ -201,13 +207,15 @@ Definition touch
         M.Val (core.result.Result.t std.fs.File.t std.io.error.Error.t) :=
       M.alloc α14 in
     let* α16 := M.read α15 in
-    match α16 with
-    | core.result.Result.Ok _ => M.alloc (core.result.Result.Ok tt)
-    | core.result.Result.Err e =>
-      let* e := M.alloc e in
-      let* α0 : std.io.error.Error.t := M.read e in
-      M.alloc (core.result.Result.Err α0)
-    end).
+    let* α0 : M.Val (core.result.Result.t unit std.io.error.Error.t) :=
+      match α16 with
+      | core.result.Result.Ok _ => M.alloc (core.result.Result.Ok tt)
+      | core.result.Result.Err e =>
+        let* e := M.alloc e in
+        let* α0 : std.io.error.Error.t := M.read e in
+        M.alloc (core.result.Result.Err α0)
+      end in
+    M.read α0).
 
 (*
 fn main() {
@@ -1037,4 +1045,5 @@ Definition main : M unit :=
           α1
           α2 in
       M.alloc α3 in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

@@ -159,7 +159,8 @@ Definition main : M unit :=
         let* α20 : unit := std.io.stdio._print α19 in
         M.alloc α20 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 Module  Person.
 Section Person.
@@ -253,7 +254,9 @@ Section Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_
           α16
           α19
           α29 in
-      M.alloc α30).
+      let* α0 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=
+        M.alloc α30 in
+      M.read α0).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {

@@ -89,7 +89,8 @@ Section Impl_core_hash_Hash_for_hash_Person_t.
         (core.hash.Hash.hash (Self := u64.t) (Trait := ltac:(refine _)))
           α4
           α7 in
-      M.alloc α8).
+      let* α0 : M.Val unit := M.alloc α8 in
+      M.read α0).
   
   Global Instance AssociatedFunction_hash
       {__H : Set}
@@ -142,7 +143,8 @@ Definition calculate_hash
           (Self := std.collections.hash.map.DefaultHasher.t)
           (Trait := ltac:(refine _)))
         α0 in
-    M.alloc α1).
+    let* α0 : M.Val u64.t := M.alloc α1 in
+    M.read α0).
 
 (*
 fn main() {
@@ -226,4 +228,5 @@ Definition main : M unit :=
         never_to_any α2
       else
         M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

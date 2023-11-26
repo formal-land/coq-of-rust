@@ -50,7 +50,8 @@ Section Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job_t.
     M.function_body
       (let* _ : M.Val unit := M.alloc tt in
       let* α0 : ref unpacking_options_via_question_mark.Job.t := M.read self in
-      deref α0).
+      let* α0 : M.Val unpacking_options_via_question_mark.Job.t := deref α0 in
+      M.read α0).
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon ltac:(Self) "clone" := {
@@ -113,7 +114,9 @@ Section Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumbe
       let* _ : M.Val unit := M.alloc tt in
       let* α0 : ref unpacking_options_via_question_mark.PhoneNumber.t :=
         M.read self in
-      deref α0).
+      let* α0 : M.Val unpacking_options_via_question_mark.PhoneNumber.t :=
+        deref α0 in
+      M.read α0).
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon ltac:(Self) "clone" := {
@@ -232,7 +235,7 @@ Section Impl_unpacking_options_via_question_mark_Person_t.
           let* val := M.alloc val in
           M.pure val
         end in
-      M.pure α11.["area_code"]).
+      M.read α11.["area_code"]).
   
   Global Instance AssociatedFunction_work_phone_area_code :
     Notations.DoubleColon ltac:(Self) "work_phone_area_code" := {
@@ -340,4 +343,5 @@ Definition main : M unit :=
         else
           M.alloc tt
       end in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

@@ -61,4 +61,5 @@ Definition main : M unit :=
             M.alloc 4
           else
             M.alloc 5 in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

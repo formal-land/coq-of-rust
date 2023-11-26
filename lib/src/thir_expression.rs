@@ -74,7 +74,7 @@ impl Expr {
         self.match_simple_call(&["borrow", "borrow_mut"])
     }
 
-    fn read(self) -> Self {
+    pub(crate) fn read(self) -> Self {
         // If we read an allocated expression, we just return the expression.
         if let Some(expr) = self.match_simple_call(&["M.alloc"]) {
             return expr;

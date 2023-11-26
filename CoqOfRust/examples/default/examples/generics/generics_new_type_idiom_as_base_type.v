@@ -32,4 +32,5 @@ Definition main : M unit :=
           years_as_primitive_2 :
         M.Val generics_new_type_idiom_as_base_type.Years.t :=
       M.copy years in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

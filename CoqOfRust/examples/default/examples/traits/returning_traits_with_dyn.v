@@ -33,7 +33,7 @@ Section Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Shee
   *)
   Definition noise (self : ref ltac:(Self)) : M (ref str.t) :=
     let* self : M.Val (ref ltac:(Self)) := M.alloc self in
-    M.function_body (M.pure (mk_str "baaaaah!")).
+    M.function_body (M.read (mk_str "baaaaah!")).
   
   Global Instance AssociatedFunction_noise :
     Notations.DoubleColon ltac:(Self) "noise" := {
@@ -57,7 +57,7 @@ Section Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow_
   *)
   Definition noise (self : ref ltac:(Self)) : M (ref str.t) :=
     let* self : M.Val (ref ltac:(Self)) := M.alloc self in
-    M.function_body (M.pure (mk_str "moooooo!")).
+    M.function_body (M.read (mk_str "moooooo!")).
   
   Global Instance AssociatedFunction_noise :
     Notations.DoubleColon ltac:(Self) "noise" := {
@@ -129,7 +129,10 @@ Definition random_animal
     let* α0 :
         M.Val (alloc.boxed.Box.t type not implemented alloc.alloc.Global.t) :=
       pointer_coercion "Unsize" α4 in
-    pointer_coercion "Unsize" α0).
+    let* α1 :
+        M.Val (alloc.boxed.Box.t type not implemented alloc.alloc.Global.t) :=
+      pointer_coercion "Unsize" α0 in
+    M.read α1).
 
 (*
 fn main() {
@@ -198,4 +201,5 @@ Definition main : M unit :=
         let* α25 : unit := std.io.stdio._print α24 in
         M.alloc α25 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

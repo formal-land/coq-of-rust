@@ -140,4 +140,5 @@ Definition main : M unit :=
         core.time.Duration.t::["from_secs"] α1 in
       let* α3 : unit := std.thread.sleep α2 in
       M.alloc α3 in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

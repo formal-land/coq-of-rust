@@ -78,7 +78,8 @@ Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_t_A_B.
           α10
           α13 in
       let* α15 : M.Val bool.t := M.alloc α14 in
-      BinOp.and α7 α15).
+      let* α0 : M.Val bool.t := BinOp.and α7 α15 in
+      M.read α0).
   
   Global Instance AssociatedFunction_eq :
     Notations.DoubleColon ltac:(Self) "eq" := {
@@ -180,7 +181,8 @@ Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_t_A_B.
           α10
           α13 in
       let* α15 : M.Val bool.t := M.alloc α14 in
-      BinOp.and α7 α15).
+      let* α0 : M.Val bool.t := BinOp.and α7 α15 in
+      M.read α0).
   
   Global Instance AssociatedFunction_eq :
     Notations.DoubleColon ltac:(Self) "eq" := {
@@ -261,4 +263,5 @@ Definition main : M unit :=
           generics_phantom_type.PhantomStruct.phantom :=
             core.marker.PhantomData.Build_t;
         |} in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

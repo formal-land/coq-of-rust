@@ -28,7 +28,8 @@ Definition apply
           α0
           tt in
       M.alloc α1 in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 (*
 fn apply_to_3<F>(f: F) -> i32
@@ -53,7 +54,8 @@ Definition apply_to_3
       (core.ops.function.Fn.call (Self := F) (Trait := ltac:(refine _)))
         α0
         (α2) in
-    M.alloc α3).
+    let* α0 : M.Val i32.t := M.alloc α3 in
+    M.read α0).
 
 (*
 fn main() {
@@ -244,4 +246,5 @@ Definition main : M unit :=
         let* α23 : unit := std.io.stdio._print α22 in
         M.alloc α23 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

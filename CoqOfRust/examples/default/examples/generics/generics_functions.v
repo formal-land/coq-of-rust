@@ -38,7 +38,9 @@ fn reg_fn(_s: S) {}
 *)
 Definition reg_fn (_s : generics_functions.S.t) : M unit :=
   let* _s : M.Val generics_functions.S.t := M.alloc _s in
-  M.function_body (M.alloc tt).
+  M.function_body
+    (let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 (*
 fn gen_spec_t(_s: SGen<A>) {}
@@ -48,21 +50,27 @@ Definition gen_spec_t
     : M unit :=
   let* _s : M.Val (generics_functions.SGen.t generics_functions.A.t) :=
     M.alloc _s in
-  M.function_body (M.alloc tt).
+  M.function_body
+    (let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 (*
 fn gen_spec_i32(_s: SGen<i32>) {}
 *)
 Definition gen_spec_i32 (_s : generics_functions.SGen.t i32.t) : M unit :=
   let* _s : M.Val (generics_functions.SGen.t i32.t) := M.alloc _s in
-  M.function_body (M.alloc tt).
+  M.function_body
+    (let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 (*
 fn generic<T>(_s: SGen<T>) {}
 *)
 Definition generic {T : Set} (_s : generics_functions.SGen.t T) : M unit :=
   let* _s : M.Val (generics_functions.SGen.t T) := M.alloc _s in
-  M.function_body (M.alloc tt).
+  M.function_body
+    (let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 (*
 fn main() {
@@ -109,4 +117,5 @@ Definition main : M unit :=
       let* α2 : unit :=
         generics_functions.generic (generics_functions.SGen.Build_t α1) in
       M.alloc α2 in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

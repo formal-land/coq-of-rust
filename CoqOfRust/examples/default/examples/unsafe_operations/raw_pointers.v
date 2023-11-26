@@ -35,4 +35,5 @@ Definition main : M unit :=
         never_to_any α2
       else
         M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

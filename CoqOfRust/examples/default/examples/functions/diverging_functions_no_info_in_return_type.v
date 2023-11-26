@@ -6,7 +6,10 @@ fn some_fn() {
     ()
 }
 *)
-Definition some_fn : M unit := M.function_body (M.alloc tt).
+Definition some_fn : M unit :=
+  M.function_body
+    (let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 (*
 fn main() {
@@ -36,4 +39,5 @@ Definition main : M unit :=
         core.fmt.Arguments.t::["new_const"] α6 in
       let* α8 : unit := std.io.stdio._print α7 in
       M.alloc α8 in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

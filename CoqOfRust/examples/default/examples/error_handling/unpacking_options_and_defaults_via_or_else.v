@@ -59,7 +59,9 @@ Section Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_else_Fruit
       let* α5 : ref str.t := M.read α4 in
       let* α6 : core.result.Result.t unit core.fmt.Error.t :=
         core.fmt.Formatter.t::["write_str"] α2 α5 in
-      M.alloc α6).
+      let* α0 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=
+        M.alloc α6 in
+      M.read α0).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -220,4 +222,5 @@ Definition main : M unit :=
         let* α20 : unit := std.io.stdio._print α19 in
         M.alloc α20 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

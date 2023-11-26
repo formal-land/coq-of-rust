@@ -26,7 +26,8 @@ Module my_mod.
           let* α8 : unit := std.io.stdio._print α7 in
           M.alloc α8 in
         M.alloc tt in
-      M.alloc tt).
+      let* α0 : M.Val unit := M.alloc tt in
+      M.read α0).
   
   (*
       pub fn function() {
@@ -52,7 +53,8 @@ Module my_mod.
           let* α8 : unit := std.io.stdio._print α7 in
           M.alloc α8 in
         M.alloc tt in
-      M.alloc tt).
+      let* α0 : M.Val unit := M.alloc tt in
+      M.read α0).
   
   (*
       pub fn indirect_access() {
@@ -82,7 +84,8 @@ Module my_mod.
       let* _ : M.Val unit :=
         let* α0 : unit := visibility.my_mod.private_function in
         M.alloc α0 in
-      M.alloc tt).
+      let* α0 : M.Val unit := M.alloc tt in
+      M.read α0).
   
   Module nested.
     (*
@@ -109,7 +112,8 @@ Module my_mod.
             let* α8 : unit := std.io.stdio._print α7 in
             M.alloc α8 in
           M.alloc tt in
-        M.alloc tt).
+        let* α0 : M.Val unit := M.alloc tt in
+        M.read α0).
     
     (*
             fn private_function() {
@@ -137,7 +141,8 @@ Module my_mod.
             let* α8 : unit := std.io.stdio._print α7 in
             M.alloc α8 in
           M.alloc tt in
-        M.alloc tt).
+        let* α0 : M.Val unit := M.alloc tt in
+        M.read α0).
     
     (*
             pub(in crate::my_mod) fn public_function_in_my_mod() {
@@ -172,7 +177,8 @@ Module my_mod.
           let* α0 : unit :=
             visibility.my_mod.nested.public_function_in_nested in
           M.alloc α0 in
-        M.alloc tt).
+        let* α0 : M.Val unit := M.alloc tt in
+        M.read α0).
     
     (*
             pub(self) fn public_function_in_nested() {
@@ -200,7 +206,8 @@ Module my_mod.
             let* α8 : unit := std.io.stdio._print α7 in
             M.alloc α8 in
           M.alloc tt in
-        M.alloc tt).
+        let* α0 : M.Val unit := M.alloc tt in
+        M.read α0).
     
     (*
             pub(super) fn public_function_in_super_mod() {
@@ -230,7 +237,8 @@ Module my_mod.
             let* α8 : unit := std.io.stdio._print α7 in
             M.alloc α8 in
           M.alloc tt in
-        M.alloc tt).
+        let* α0 : M.Val unit := M.alloc tt in
+        M.read α0).
   End nested.
   
   (*
@@ -286,7 +294,8 @@ Module my_mod.
         let* α0 : unit :=
           visibility.my_mod.nested.public_function_in_super_mod in
         M.alloc α0 in
-      M.alloc tt).
+      let* α0 : M.Val unit := M.alloc tt in
+      M.read α0).
   
   (*
       pub(crate) fn public_function_in_crate() {
@@ -312,7 +321,8 @@ Module my_mod.
           let* α8 : unit := std.io.stdio._print α7 in
           M.alloc α8 in
         M.alloc tt in
-      M.alloc tt).
+      let* α0 : M.Val unit := M.alloc tt in
+      M.read α0).
   
   Module private_nested.
     (*
@@ -341,7 +351,8 @@ Module my_mod.
             let* α8 : unit := std.io.stdio._print α7 in
             M.alloc α8 in
           M.alloc tt in
-        M.alloc tt).
+        let* α0 : M.Val unit := M.alloc tt in
+        M.read α0).
     
     (*
             pub(crate) fn restricted_function() {
@@ -372,7 +383,8 @@ Module my_mod.
             let* α8 : unit := std.io.stdio._print α7 in
             M.alloc α8 in
           M.alloc tt in
-        M.alloc tt).
+        let* α0 : M.Val unit := M.alloc tt in
+        M.read α0).
   End private_nested.
 End my_mod.
 
@@ -400,7 +412,8 @@ Definition private_function : M unit :=
         let* α8 : unit := std.io.stdio._print α7 in
         M.alloc α8 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 (*
     pub fn function() {
@@ -426,7 +439,8 @@ Definition function : M unit :=
         let* α8 : unit := std.io.stdio._print α7 in
         M.alloc α8 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 (*
     pub fn indirect_access() {
@@ -456,7 +470,8 @@ Definition indirect_access : M unit :=
     let* _ : M.Val unit :=
       let* α0 : unit := visibility.my_mod.private_function in
       M.alloc α0 in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 Module nested.
   (*
@@ -483,7 +498,8 @@ Module nested.
           let* α8 : unit := std.io.stdio._print α7 in
           M.alloc α8 in
         M.alloc tt in
-      M.alloc tt).
+      let* α0 : M.Val unit := M.alloc tt in
+      M.read α0).
   
   (*
           fn private_function() {
@@ -510,7 +526,8 @@ Module nested.
           let* α8 : unit := std.io.stdio._print α7 in
           M.alloc α8 in
         M.alloc tt in
-      M.alloc tt).
+      let* α0 : M.Val unit := M.alloc tt in
+      M.read α0).
   
   (*
           pub(in crate::my_mod) fn public_function_in_my_mod() {
@@ -544,7 +561,8 @@ Module nested.
       let* _ : M.Val unit :=
         let* α0 : unit := visibility.my_mod.nested.public_function_in_nested in
         M.alloc α0 in
-      M.alloc tt).
+      let* α0 : M.Val unit := M.alloc tt in
+      M.read α0).
   
   (*
           pub(self) fn public_function_in_nested() {
@@ -572,7 +590,8 @@ Module nested.
           let* α8 : unit := std.io.stdio._print α7 in
           M.alloc α8 in
         M.alloc tt in
-      M.alloc tt).
+      let* α0 : M.Val unit := M.alloc tt in
+      M.read α0).
   
   (*
           pub(super) fn public_function_in_super_mod() {
@@ -602,7 +621,8 @@ Module nested.
           let* α8 : unit := std.io.stdio._print α7 in
           M.alloc α8 in
         M.alloc tt in
-      M.alloc tt).
+      let* α0 : M.Val unit := M.alloc tt in
+      M.read α0).
 End nested.
 
 (*
@@ -629,7 +649,8 @@ Definition function : M unit :=
         let* α8 : unit := std.io.stdio._print α7 in
         M.alloc α8 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 (*
         fn private_function() {
@@ -656,7 +677,8 @@ Definition private_function : M unit :=
         let* α8 : unit := std.io.stdio._print α7 in
         M.alloc α8 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 (*
         pub(in crate::my_mod) fn public_function_in_my_mod() {
@@ -690,7 +712,8 @@ Definition public_function_in_my_mod : M unit :=
     let* _ : M.Val unit :=
       let* α0 : unit := visibility.my_mod.nested.public_function_in_nested in
       M.alloc α0 in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 (*
         pub(self) fn public_function_in_nested() {
@@ -718,7 +741,8 @@ Definition public_function_in_nested : M unit :=
         let* α8 : unit := std.io.stdio._print α7 in
         M.alloc α8 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 (*
         pub(super) fn public_function_in_super_mod() {
@@ -746,7 +770,8 @@ Definition public_function_in_super_mod : M unit :=
         let* α8 : unit := std.io.stdio._print α7 in
         M.alloc α8 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 (*
     pub fn call_public_function_in_my_mod() {
@@ -800,7 +825,8 @@ Definition call_public_function_in_my_mod : M unit :=
     let* _ : M.Val unit :=
       let* α0 : unit := visibility.my_mod.nested.public_function_in_super_mod in
       M.alloc α0 in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 (*
     pub(crate) fn public_function_in_crate() {
@@ -826,7 +852,8 @@ Definition public_function_in_crate : M unit :=
         let* α8 : unit := std.io.stdio._print α7 in
         M.alloc α8 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 Module private_nested.
   (*
@@ -854,7 +881,8 @@ Module private_nested.
           let* α8 : unit := std.io.stdio._print α7 in
           M.alloc α8 in
         M.alloc tt in
-      M.alloc tt).
+      let* α0 : M.Val unit := M.alloc tt in
+      M.read α0).
   
   (*
           pub(crate) fn restricted_function() {
@@ -883,7 +911,8 @@ Module private_nested.
           let* α8 : unit := std.io.stdio._print α7 in
           M.alloc α8 in
         M.alloc tt in
-      M.alloc tt).
+      let* α0 : M.Val unit := M.alloc tt in
+      M.read α0).
 End private_nested.
 
 (*
@@ -911,7 +940,8 @@ Definition function : M unit :=
         let* α8 : unit := std.io.stdio._print α7 in
         M.alloc α8 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 (*
         pub(crate) fn restricted_function() {
@@ -940,7 +970,8 @@ Definition restricted_function : M unit :=
         let* α8 : unit := std.io.stdio._print α7 in
         M.alloc α8 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 (*
 fn function() {
@@ -966,7 +997,8 @@ Definition function : M unit :=
         let* α8 : unit := std.io.stdio._print α7 in
         M.alloc α8 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 (*
 fn main() {
@@ -1029,4 +1061,5 @@ Definition main : M unit :=
     let* _ : M.Val unit :=
       let* α0 : unit := visibility.my_mod.public_function_in_crate in
       M.alloc α0 in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

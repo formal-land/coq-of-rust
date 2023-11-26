@@ -48,7 +48,12 @@ Definition double_first
         core.option.Option.t
           (core.result.Result.t i32.t core.num.error.ParseIntError.t) :=
       (core.option.Option.t (ref (ref str.t)))::["map"] α4 α5 in
-    M.alloc α6).
+    let* α0 :
+        M.Val
+          (core.option.Option.t
+            (core.result.Result.t i32.t core.num.error.ParseIntError.t)) :=
+      M.alloc α6 in
+    M.read α0).
 
 (*
 fn main() {
@@ -277,4 +282,5 @@ Definition main : M unit :=
         let* α23 : unit := std.io.stdio._print α22 in
         M.alloc α23 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

@@ -35,4 +35,5 @@ Definition main : M unit :=
       let* α8 : alloc.vec.Vec.t i32.t alloc.alloc.Global.t :=
         (slice i32.t)::["into_vec"] α7 in
       M.alloc α8 in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

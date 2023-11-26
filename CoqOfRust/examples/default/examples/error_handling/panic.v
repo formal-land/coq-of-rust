@@ -65,7 +65,8 @@ Definition drink (beverage : ref str.t) : M unit :=
         let* α20 : unit := std.io.stdio._print α19 in
         M.alloc α20 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 (*
 fn main() {
@@ -88,4 +89,5 @@ Definition main : M unit :=
       let* α2 : ref str.t := borrow α1 in
       let* α3 : unit := panic.drink α2 in
       M.alloc α3 in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

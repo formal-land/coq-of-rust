@@ -13,7 +13,10 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit := M.function_body (M.alloc tt).
+Definition main : M unit :=
+  M.function_body
+    (let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 (*
     fn apply<F>(f: F)
@@ -39,4 +42,5 @@ Definition apply
           α0
           tt in
       M.alloc α1 in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

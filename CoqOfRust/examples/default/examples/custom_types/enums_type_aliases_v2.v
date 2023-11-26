@@ -26,14 +26,17 @@ Section Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers_t.
     let* y : M.Val i32.t := M.alloc y in
     M.function_body
       (let* α0 := M.read self in
-      match α0 with
-      | enums_type_aliases_v2.VeryVerboseEnumOfThingsToDoWithNumbers.Add  =>
-        BinOp.add x y
-      |
-          enums_type_aliases_v2.VeryVerboseEnumOfThingsToDoWithNumbers.Subtract 
-          =>
-        BinOp.sub x y
-      end).
+      let* α0 : M.Val i32.t :=
+        match α0 with
+        | enums_type_aliases_v2.VeryVerboseEnumOfThingsToDoWithNumbers.Add  =>
+          BinOp.add x y
+        |
+            enums_type_aliases_v2.VeryVerboseEnumOfThingsToDoWithNumbers.Subtract
+              
+            =>
+          BinOp.sub x y
+        end in
+      M.read α0).
   
   Global Instance AssociatedFunction_run :
     Notations.DoubleColon ltac:(Self) "run" := {

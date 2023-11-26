@@ -218,4 +218,5 @@ Definition main : M unit :=
             end in
           M.alloc tt)
       end in
-    use α4).
+    let* α0 : M.Val unit := use α4 in
+    M.read α0).

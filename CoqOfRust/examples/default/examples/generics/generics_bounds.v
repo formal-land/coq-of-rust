@@ -26,7 +26,8 @@ Section Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle_t.
       let* α1 : M.Val generics_bounds.Rectangle.t := deref α0 in
       let* α2 : ref generics_bounds.Rectangle.t := M.read self in
       let* α3 : M.Val generics_bounds.Rectangle.t := deref α2 in
-      BinOp.mul α1.["length"] α3.["height"]).
+      let* α0 : M.Val f64.t := BinOp.mul α1.["length"] α3.["height"] in
+      M.read α0).
   
   Global Instance AssociatedFunction_area :
     Notations.DoubleColon ltac:(Self) "area" := {
@@ -117,7 +118,9 @@ Section Impl_core_fmt_Debug_for_generics_bounds_Rectangle_t.
           α16
           α19
           α29 in
-      M.alloc α30).
+      let* α0 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=
+        M.alloc α30 in
+      M.read α0).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -198,7 +201,8 @@ Definition print_debug
         let* α20 : unit := std.io.stdio._print α19 in
         M.alloc α20 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 (*
 fn area<T: HasArea>(t: &T) -> f64 {
@@ -218,7 +222,8 @@ Definition area
     let* α3 : f64.t :=
       (generics_bounds.HasArea.area (Self := T) (Trait := ltac:(refine _)))
         α2 in
-    M.alloc α3).
+    let* α0 : M.Val f64.t := M.alloc α3 in
+    M.read α0).
 
 (*
 fn main() {
@@ -307,4 +312,5 @@ Definition main : M unit :=
         let* α23 : unit := std.io.stdio._print α22 in
         M.alloc α23 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

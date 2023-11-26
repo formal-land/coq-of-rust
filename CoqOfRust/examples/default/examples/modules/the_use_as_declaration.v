@@ -25,7 +25,8 @@ Definition function : M unit :=
         let* α8 : unit := std.io.stdio._print α7 in
         M.alloc α8 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 Module deeply.
   Module nested.
@@ -53,7 +54,8 @@ Module deeply.
             let* α8 : unit := std.io.stdio._print α7 in
             M.alloc α8 in
           M.alloc tt in
-        M.alloc tt).
+        let* α0 : M.Val unit := M.alloc tt in
+        M.read α0).
   End nested.
 End deeply.
 
@@ -82,7 +84,8 @@ Module nested.
           let* α8 : unit := std.io.stdio._print α7 in
           M.alloc α8 in
         M.alloc tt in
-      M.alloc tt).
+      let* α0 : M.Val unit := M.alloc tt in
+      M.read α0).
 End nested.
 
 (*
@@ -109,7 +112,8 @@ Definition function : M unit :=
         let* α8 : unit := std.io.stdio._print α7 in
         M.alloc α8 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 (*
 fn main() {
@@ -180,4 +184,5 @@ Definition main : M unit :=
     let* _ : M.Val unit :=
       let* α0 : unit := the_use_as_declaration.function in
       M.alloc α0 in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

@@ -48,7 +48,8 @@ Definition destroy_box
         let* α20 : unit := std.io.stdio._print α19 in
         M.alloc α20 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 (*
 fn main() {
@@ -177,4 +178,5 @@ Definition main : M unit :=
       let* α0 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t := M.read b in
       let* α1 : unit := scoping_rules_ownership_and_rules.destroy_box α0 in
       M.alloc α1 in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

@@ -20,7 +20,7 @@ Definition create_fn : M _ (* OpaqueTy *) :=
             (Trait := ltac:(refine _)))
           α2 in
       M.alloc α3 in
-    M.pure
+    M.read
       (let* _ : M.Val unit :=
         let* α0 : M.Val (array (ref str.t)) :=
           M.alloc [ mk_str "This is a: "; mk_str "
@@ -73,7 +73,7 @@ Definition create_fnmut : M _ (* OpaqueTy *) :=
             (Trait := ltac:(refine _)))
           α2 in
       M.alloc α3 in
-    M.pure
+    M.read
       (let* _ : M.Val unit :=
         let* α0 : M.Val (array (ref str.t)) :=
           M.alloc [ mk_str "This is a: "; mk_str "
@@ -124,7 +124,7 @@ Definition create_fnonce : M _ (* OpaqueTy *) :=
             (Trait := ltac:(refine _)))
           α2 in
       M.alloc α3 in
-    M.pure
+    M.read
       (let* _ : M.Val unit :=
         let* α0 : M.Val (array (ref str.t)) :=
           M.alloc [ mk_str "This is a: "; mk_str "
@@ -209,4 +209,5 @@ Definition main : M unit :=
           α0
           tt in
       M.alloc α1 in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

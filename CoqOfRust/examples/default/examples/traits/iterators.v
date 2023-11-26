@@ -69,7 +69,9 @@ Section Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci_t.
         let* α5 : u32.t := M.read α4 in
         assign α1.["next"] α5 in
       let* α0 : u32.t := M.read current in
-      M.alloc (core.option.Option.Some α0)).
+      let* α0 : M.Val (core.option.Option.t u32.t) :=
+        M.alloc (core.option.Option.Some α0) in
+      M.read α0).
   
   Global Instance AssociatedFunction_next :
     Notations.DoubleColon ltac:(Self) "next" := {
@@ -171,8 +173,10 @@ Definition fibonacci : M iterators.Fibonacci.t :=
     let* α1 : u32.t := M.read α0 in
     let* α2 : M.Val u32.t := M.alloc 1 in
     let* α3 : u32.t := M.read α2 in
-    M.alloc
-      {| iterators.Fibonacci.curr := α1; iterators.Fibonacci.next := α3; |}).
+    let* α0 : M.Val iterators.Fibonacci.t :=
+      M.alloc
+        {| iterators.Fibonacci.curr := α1; iterators.Fibonacci.next := α3; |} in
+    M.read α0).
 
 (*
 fn main() {
@@ -847,4 +851,5 @@ Definition main : M unit :=
             end in
           M.alloc tt)
       end in
-    use α8).
+    let* α0 : M.Val unit := use α8 in
+    M.read α0).

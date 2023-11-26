@@ -68,7 +68,7 @@ Definition red
     (arg : ref T)
     : M (ref str.t) :=
   let* arg : M.Val (ref T) := M.alloc arg in
-  M.function_body (M.pure (mk_str "red")).
+  M.function_body (M.read (mk_str "red")).
 
 (*
 fn blue<T: Blue>(_: &T) -> &'static str {
@@ -81,7 +81,7 @@ Definition blue
     (arg : ref T)
     : M (ref str.t) :=
   let* arg : M.Val (ref T) := M.alloc arg in
-  M.function_body (M.pure (mk_str "blue")).
+  M.function_body (M.read (mk_str "blue")).
 
 (*
 fn main() {
@@ -185,4 +185,5 @@ Definition main : M unit :=
         let* α25 : unit := std.io.stdio._print α24 in
         M.alloc α25 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

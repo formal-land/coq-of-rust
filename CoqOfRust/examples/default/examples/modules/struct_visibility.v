@@ -53,7 +53,9 @@ Module my.
       let* contents : M.Val T := M.alloc contents in
       M.function_body
         (let* α0 : T := M.read contents in
-        M.alloc {| struct_visibility.my.ClosedBox.contents := α0; |}).
+        let* α0 : M.Val (struct_visibility.my.ClosedBox.t T) :=
+          M.alloc {| struct_visibility.my.ClosedBox.contents := α0; |} in
+        M.read α0).
     
     Global Instance AssociatedFunction_new :
       Notations.DoubleColon ltac:(Self) "new" := {
@@ -114,7 +116,9 @@ Section Impl_struct_visibility_my_ClosedBox_t_T_2.
     let* contents : M.Val T := M.alloc contents in
     M.function_body
       (let* α0 : T := M.read contents in
-      M.alloc {| struct_visibility.my.ClosedBox.contents := α0; |}).
+      let* α0 : M.Val (struct_visibility.my.ClosedBox.t T) :=
+        M.alloc {| struct_visibility.my.ClosedBox.contents := α0; |} in
+      M.read α0).
   
   Global Instance AssociatedFunction_new :
     Notations.DoubleColon ltac:(Self) "new" := {
@@ -190,4 +194,5 @@ Definition main : M unit :=
       let* α1 : struct_visibility.my.ClosedBox.t (ref str.t) :=
         (struct_visibility.my.ClosedBox.t (ref str.t))::["new"] α0 in
       M.alloc α1 in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

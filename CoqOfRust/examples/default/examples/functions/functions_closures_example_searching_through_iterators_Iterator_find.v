@@ -284,4 +284,5 @@ Definition main : M unit :=
         let* α27 : unit := std.io.stdio._print α26 in
         M.alloc α27 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

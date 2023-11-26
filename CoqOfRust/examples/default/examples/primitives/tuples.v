@@ -15,7 +15,8 @@ Definition reverse (pair : i32.t * bool.t) : M (bool.t * i32.t) :=
     (let* '(int_param, bool_param) : M.Val (i32.t * bool.t) := M.copy pair in
     let* α0 : bool.t := M.read bool_param in
     let* α1 : i32.t := M.read int_param in
-    M.alloc (α0, α1)).
+    let* α0 : M.Val (bool.t * i32.t) := M.alloc (α0, α1) in
+    M.read α0).
 
 Module  Matrix.
 Section Matrix.
@@ -107,7 +108,9 @@ Section Impl_core_fmt_Debug_for_tuples_Matrix_t.
           α21
           α29
           α39 in
-      M.alloc α40).
+      let* α0 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=
+        M.alloc α40 in
+      M.read α0).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -556,4 +559,5 @@ Definition main : M unit :=
         let* α20 : unit := std.io.stdio._print α19 in
         M.alloc α20 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

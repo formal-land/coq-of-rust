@@ -77,7 +77,9 @@ Section Impl_core_fmt_Debug_for_structures_Person_t.
           α16
           α19
           α29 in
-      M.alloc α30).
+      let* α0 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=
+        M.alloc α30 in
+      M.read α0).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -450,4 +452,5 @@ Definition main : M unit :=
         let* α25 : unit := std.io.stdio._print α24 in
         M.alloc α25 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

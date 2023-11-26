@@ -288,4 +288,5 @@ Definition main : M unit :=
           M.alloc α20 in
         M.alloc tt
       end in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

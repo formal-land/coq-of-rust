@@ -31,7 +31,10 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit := M.function_body (M.alloc tt).
+Definition main : M unit :=
+  M.function_body
+    (let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 (*
     extern "C" fn foo(arg: i32) -> i32 {
@@ -74,7 +77,8 @@ Definition foo (arg : i32.t) : M i32.t :=
         M.alloc α20 in
       M.alloc tt in
     let* α0 : M.Val i32.t := M.alloc 2 in
-    BinOp.mul arg α0).
+    let* α0 : M.Val i32.t := BinOp.mul arg α0 in
+    M.read α0).
 
 (*
     fn call_foo(arg: i32) -> i32 {
@@ -101,4 +105,4 @@ Definition call_foo (arg : i32.t) : M i32.t :=
   M.function_body
     (let* result : M.Val unit := M.alloc tt in
     let _ := InlineAssembly in
-    M.pure result).
+    M.read result).

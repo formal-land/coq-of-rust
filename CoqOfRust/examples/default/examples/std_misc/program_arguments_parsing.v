@@ -42,7 +42,8 @@ Definition increase (number : i32.t) : M unit :=
         let* α22 : unit := std.io.stdio._print α21 in
         M.alloc α22 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 (*
 fn decrease(number: i32) {
@@ -85,7 +86,8 @@ Definition decrease (number : i32.t) : M unit :=
         let* α22 : unit := std.io.stdio._print α21 in
         M.alloc α22 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 (*
 fn help() {
@@ -125,7 +127,8 @@ match_args {increase|decrease} <integer>
         let* α8 : unit := std.io.stdio._print α7 in
         M.alloc α8 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 (*
 fn main() {
@@ -193,93 +196,30 @@ Definition main : M unit :=
         α0 in
     let* α2 : M.Val usize.t := M.alloc α1 in
     let* α3 := M.read α2 in
-    match α3 with
-    | _ =>
-      let* _ : M.Val unit :=
-        let* _ : M.Val unit :=
-          let* α0 : M.Val (array (ref str.t)) :=
-            M.alloc
-              [ mk_str "My name is 'match_args'. Try passing some arguments!
-"
-              ] in
-          let* α1 : ref (array (ref str.t)) := borrow α0 in
-          let* α2 : M.Val (array (ref str.t)) := deref α1 in
-          let* α3 : ref (array (ref str.t)) := borrow α2 in
-          let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
-          let* α5 : M.Val (ref (slice (ref str.t))) :=
-            pointer_coercion "Unsize" α4 in
-          let* α6 : ref (slice (ref str.t)) := M.read α5 in
-          let* α7 : core.fmt.Arguments.t :=
-            core.fmt.Arguments.t::["new_const"] α6 in
-          let* α8 : unit := std.io.stdio._print α7 in
-          M.alloc α8 in
-        M.alloc tt in
-      M.alloc tt
-    | _ =>
-      let* α0 :
-          ref (alloc.vec.Vec.t alloc.string.String.t alloc.alloc.Global.t) :=
-        borrow args in
-      let* α1 : M.Val usize.t := M.alloc 1 in
-      let* α2 : usize.t := M.read α1 in
-      let* α3 : ref alloc.string.String.t :=
-        (core.ops.index.Index.index
-            (Self := alloc.vec.Vec.t alloc.string.String.t alloc.alloc.Global.t)
-            (Trait := ltac:(refine _)))
-          α0
-          α2 in
-      let* α4 : M.Val alloc.string.String.t := deref α3 in
-      let* α5 : ref alloc.string.String.t := borrow α4 in
-      let* α6 : ref str.t :=
-        (core.ops.deref.Deref.deref
-            (Self := alloc.string.String.t)
-            (Trait := ltac:(refine _)))
-          α5 in
-      let* α7 : M.Val str.t := deref α6 in
-      let* α8 : ref str.t := borrow α7 in
-      let* α9 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
-        str.t::["parse"] α8 in
-      let* α10 :
-          M.Val (core.result.Result.t i32.t core.num.error.ParseIntError.t) :=
-        M.alloc α9 in
-      let* α11 := M.read α10 in
-      match α11 with
-      | core.result.Result.Ok _ =>
-        let* _ : M.Val unit :=
-          let* α0 : M.Val (array (ref str.t)) :=
-            M.alloc [ mk_str "This is the answer!
-" ] in
-          let* α1 : ref (array (ref str.t)) := borrow α0 in
-          let* α2 : M.Val (array (ref str.t)) := deref α1 in
-          let* α3 : ref (array (ref str.t)) := borrow α2 in
-          let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
-          let* α5 : M.Val (ref (slice (ref str.t))) :=
-            pointer_coercion "Unsize" α4 in
-          let* α6 : ref (slice (ref str.t)) := M.read α5 in
-          let* α7 : core.fmt.Arguments.t :=
-            core.fmt.Arguments.t::["new_const"] α6 in
-          let* α8 : unit := std.io.stdio._print α7 in
-          M.alloc α8 in
-        M.alloc tt
+    let* α0 : M.Val unit :=
+      match α3 with
       | _ =>
         let* _ : M.Val unit :=
-          let* α0 : M.Val (array (ref str.t)) :=
-            M.alloc [ mk_str "This is not the answer.
-" ] in
-          let* α1 : ref (array (ref str.t)) := borrow α0 in
-          let* α2 : M.Val (array (ref str.t)) := deref α1 in
-          let* α3 : ref (array (ref str.t)) := borrow α2 in
-          let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
-          let* α5 : M.Val (ref (slice (ref str.t))) :=
-            pointer_coercion "Unsize" α4 in
-          let* α6 : ref (slice (ref str.t)) := M.read α5 in
-          let* α7 : core.fmt.Arguments.t :=
-            core.fmt.Arguments.t::["new_const"] α6 in
-          let* α8 : unit := std.io.stdio._print α7 in
-          M.alloc α8 in
+          let* _ : M.Val unit :=
+            let* α0 : M.Val (array (ref str.t)) :=
+              M.alloc
+                [ mk_str "My name is 'match_args'. Try passing some arguments!
+"
+                ] in
+            let* α1 : ref (array (ref str.t)) := borrow α0 in
+            let* α2 : M.Val (array (ref str.t)) := deref α1 in
+            let* α3 : ref (array (ref str.t)) := borrow α2 in
+            let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
+            let* α5 : M.Val (ref (slice (ref str.t))) :=
+              pointer_coercion "Unsize" α4 in
+            let* α6 : ref (slice (ref str.t)) := M.read α5 in
+            let* α7 : core.fmt.Arguments.t :=
+              core.fmt.Arguments.t::["new_const"] α6 in
+            let* α8 : unit := std.io.stdio._print α7 in
+            M.alloc α8 in
+          M.alloc tt in
         M.alloc tt
-      end
-    | _ =>
-      let* cmd : M.Val (ref alloc.string.String.t) :=
+      | _ =>
         let* α0 :
             ref (alloc.vec.Vec.t alloc.string.String.t alloc.alloc.Global.t) :=
           borrow args in
@@ -294,100 +234,24 @@ Definition main : M unit :=
             α2 in
         let* α4 : M.Val alloc.string.String.t := deref α3 in
         let* α5 : ref alloc.string.String.t := borrow α4 in
-        M.alloc α5 in
-      let* num : M.Val (ref alloc.string.String.t) :=
-        let* α0 :
-            ref (alloc.vec.Vec.t alloc.string.String.t alloc.alloc.Global.t) :=
-          borrow args in
-        let* α1 : M.Val usize.t := M.alloc 2 in
-        let* α2 : usize.t := M.read α1 in
-        let* α3 : ref alloc.string.String.t :=
-          (core.ops.index.Index.index
-              (Self :=
-                alloc.vec.Vec.t alloc.string.String.t alloc.alloc.Global.t)
-              (Trait := ltac:(refine _)))
-            α0
-            α2 in
-        let* α4 : M.Val alloc.string.String.t := deref α3 in
-        let* α5 : ref alloc.string.String.t := borrow α4 in
-        M.alloc α5 in
-      let* number : M.Val i32.t :=
-        let* α0 : ref alloc.string.String.t := M.read num in
-        let* α1 : M.Val alloc.string.String.t := deref α0 in
-        let* α2 : ref alloc.string.String.t := borrow α1 in
-        let* α3 : ref str.t :=
+        let* α6 : ref str.t :=
           (core.ops.deref.Deref.deref
               (Self := alloc.string.String.t)
               (Trait := ltac:(refine _)))
-            α2 in
-        let* α4 : M.Val str.t := deref α3 in
-        let* α5 : ref str.t := borrow α4 in
-        let* α6 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
-          str.t::["parse"] α5 in
-        let* α7 :
+            α5 in
+        let* α7 : M.Val str.t := deref α6 in
+        let* α8 : ref str.t := borrow α7 in
+        let* α9 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
+          str.t::["parse"] α8 in
+        let* α10 :
             M.Val (core.result.Result.t i32.t core.num.error.ParseIntError.t) :=
-          M.alloc α6 in
-        let* α8 := M.read α7 in
-        let* α9 : M.Val i32.t :=
-          match α8 with
-          | core.result.Result.Ok n =>
-            let* n := M.alloc n in
-            M.pure n
-          | core.result.Result.Err _ =>
-            let* _ : M.Val unit :=
-              let* _ : M.Val unit :=
-                let* α0 : M.Val (array (ref str.t)) :=
-                  M.alloc [ mk_str "error: second argument not an integer
-" ] in
-                let* α1 : ref (array (ref str.t)) := borrow α0 in
-                let* α2 : M.Val (array (ref str.t)) := deref α1 in
-                let* α3 : ref (array (ref str.t)) := borrow α2 in
-                let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
-                let* α5 : M.Val (ref (slice (ref str.t))) :=
-                  pointer_coercion "Unsize" α4 in
-                let* α6 : ref (slice (ref str.t)) := M.read α5 in
-                let* α7 : core.fmt.Arguments.t :=
-                  core.fmt.Arguments.t::["new_const"] α6 in
-                let* α8 : unit := std.io.stdio._eprint α7 in
-                M.alloc α8 in
-              M.alloc tt in
-            let* _ : M.Val unit :=
-              let* α0 : unit := program_arguments_parsing.help in
-              M.alloc α0 in
-            let* _ : M.Val never.t :=
-              let* α0 : M.Val unit := M.alloc tt in
-              return_ α0 in
-            let* α0 : M.Val unit := M.alloc tt in
-            never_to_any α0
-          end in
-        M.copy α9 in
-      let* α0 : ref alloc.string.String.t := M.read cmd in
-      let* α1 : M.Val alloc.string.String.t := deref α0 in
-      let* α2 : ref alloc.string.String.t := borrow α1 in
-      let* α3 : ref str.t :=
-        (core.ops.index.Index.index
-            (Self := alloc.string.String.t)
-            (Trait := ltac:(refine _)))
-          α2
-          core.ops.range.RangeFull.Build_t in
-      let* α4 : M.Val str.t := deref α3 in
-      let* α5 : ref str.t := borrow α4 in
-      let* α6 : M.Val (ref str.t) := M.alloc α5 in
-      let* α7 := M.read α6 in
-      match α7 with
-      | _ =>
-        let* α0 : i32.t := M.read number in
-        let* α1 : unit := program_arguments_parsing.increase α0 in
-        M.alloc α1
-      | _ =>
-        let* α0 : i32.t := M.read number in
-        let* α1 : unit := program_arguments_parsing.decrease α0 in
-        M.alloc α1
-      | _ =>
-        let* _ : M.Val unit :=
+          M.alloc α9 in
+        let* α11 := M.read α10 in
+        match α11 with
+        | core.result.Result.Ok _ =>
           let* _ : M.Val unit :=
             let* α0 : M.Val (array (ref str.t)) :=
-              M.alloc [ mk_str "error: invalid command
+              M.alloc [ mk_str "This is the answer!
 " ] in
             let* α1 : ref (array (ref str.t)) := borrow α0 in
             let* α2 : M.Val (array (ref str.t)) := deref α1 in
@@ -398,17 +262,163 @@ Definition main : M unit :=
             let* α6 : ref (slice (ref str.t)) := M.read α5 in
             let* α7 : core.fmt.Arguments.t :=
               core.fmt.Arguments.t::["new_const"] α6 in
-            let* α8 : unit := std.io.stdio._eprint α7 in
+            let* α8 : unit := std.io.stdio._print α7 in
             M.alloc α8 in
-          M.alloc tt in
+          M.alloc tt
+        | _ =>
+          let* _ : M.Val unit :=
+            let* α0 : M.Val (array (ref str.t)) :=
+              M.alloc [ mk_str "This is not the answer.
+" ] in
+            let* α1 : ref (array (ref str.t)) := borrow α0 in
+            let* α2 : M.Val (array (ref str.t)) := deref α1 in
+            let* α3 : ref (array (ref str.t)) := borrow α2 in
+            let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
+            let* α5 : M.Val (ref (slice (ref str.t))) :=
+              pointer_coercion "Unsize" α4 in
+            let* α6 : ref (slice (ref str.t)) := M.read α5 in
+            let* α7 : core.fmt.Arguments.t :=
+              core.fmt.Arguments.t::["new_const"] α6 in
+            let* α8 : unit := std.io.stdio._print α7 in
+            M.alloc α8 in
+          M.alloc tt
+        end
+      | _ =>
+        let* cmd : M.Val (ref alloc.string.String.t) :=
+          let* α0 :
+              ref
+                (alloc.vec.Vec.t alloc.string.String.t alloc.alloc.Global.t) :=
+            borrow args in
+          let* α1 : M.Val usize.t := M.alloc 1 in
+          let* α2 : usize.t := M.read α1 in
+          let* α3 : ref alloc.string.String.t :=
+            (core.ops.index.Index.index
+                (Self :=
+                  alloc.vec.Vec.t alloc.string.String.t alloc.alloc.Global.t)
+                (Trait := ltac:(refine _)))
+              α0
+              α2 in
+          let* α4 : M.Val alloc.string.String.t := deref α3 in
+          let* α5 : ref alloc.string.String.t := borrow α4 in
+          M.alloc α5 in
+        let* num : M.Val (ref alloc.string.String.t) :=
+          let* α0 :
+              ref
+                (alloc.vec.Vec.t alloc.string.String.t alloc.alloc.Global.t) :=
+            borrow args in
+          let* α1 : M.Val usize.t := M.alloc 2 in
+          let* α2 : usize.t := M.read α1 in
+          let* α3 : ref alloc.string.String.t :=
+            (core.ops.index.Index.index
+                (Self :=
+                  alloc.vec.Vec.t alloc.string.String.t alloc.alloc.Global.t)
+                (Trait := ltac:(refine _)))
+              α0
+              α2 in
+          let* α4 : M.Val alloc.string.String.t := deref α3 in
+          let* α5 : ref alloc.string.String.t := borrow α4 in
+          M.alloc α5 in
+        let* number : M.Val i32.t :=
+          let* α0 : ref alloc.string.String.t := M.read num in
+          let* α1 : M.Val alloc.string.String.t := deref α0 in
+          let* α2 : ref alloc.string.String.t := borrow α1 in
+          let* α3 : ref str.t :=
+            (core.ops.deref.Deref.deref
+                (Self := alloc.string.String.t)
+                (Trait := ltac:(refine _)))
+              α2 in
+          let* α4 : M.Val str.t := deref α3 in
+          let* α5 : ref str.t := borrow α4 in
+          let* α6 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
+            str.t::["parse"] α5 in
+          let* α7 :
+              M.Val
+                (core.result.Result.t i32.t core.num.error.ParseIntError.t) :=
+            M.alloc α6 in
+          let* α8 := M.read α7 in
+          let* α9 : M.Val i32.t :=
+            match α8 with
+            | core.result.Result.Ok n =>
+              let* n := M.alloc n in
+              M.pure n
+            | core.result.Result.Err _ =>
+              let* _ : M.Val unit :=
+                let* _ : M.Val unit :=
+                  let* α0 : M.Val (array (ref str.t)) :=
+                    M.alloc
+                      [ mk_str "error: second argument not an integer
+" ] in
+                  let* α1 : ref (array (ref str.t)) := borrow α0 in
+                  let* α2 : M.Val (array (ref str.t)) := deref α1 in
+                  let* α3 : ref (array (ref str.t)) := borrow α2 in
+                  let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
+                  let* α5 : M.Val (ref (slice (ref str.t))) :=
+                    pointer_coercion "Unsize" α4 in
+                  let* α6 : ref (slice (ref str.t)) := M.read α5 in
+                  let* α7 : core.fmt.Arguments.t :=
+                    core.fmt.Arguments.t::["new_const"] α6 in
+                  let* α8 : unit := std.io.stdio._eprint α7 in
+                  M.alloc α8 in
+                M.alloc tt in
+              let* _ : M.Val unit :=
+                let* α0 : unit := program_arguments_parsing.help in
+                M.alloc α0 in
+              let* _ : M.Val never.t :=
+                let* α0 : M.Val unit := M.alloc tt in
+                return_ α0 in
+              let* α0 : M.Val unit := M.alloc tt in
+              never_to_any α0
+            end in
+          M.copy α9 in
+        let* α0 : ref alloc.string.String.t := M.read cmd in
+        let* α1 : M.Val alloc.string.String.t := deref α0 in
+        let* α2 : ref alloc.string.String.t := borrow α1 in
+        let* α3 : ref str.t :=
+          (core.ops.index.Index.index
+              (Self := alloc.string.String.t)
+              (Trait := ltac:(refine _)))
+            α2
+            core.ops.range.RangeFull.Build_t in
+        let* α4 : M.Val str.t := deref α3 in
+        let* α5 : ref str.t := borrow α4 in
+        let* α6 : M.Val (ref str.t) := M.alloc α5 in
+        let* α7 := M.read α6 in
+        match α7 with
+        | _ =>
+          let* α0 : i32.t := M.read number in
+          let* α1 : unit := program_arguments_parsing.increase α0 in
+          M.alloc α1
+        | _ =>
+          let* α0 : i32.t := M.read number in
+          let* α1 : unit := program_arguments_parsing.decrease α0 in
+          M.alloc α1
+        | _ =>
+          let* _ : M.Val unit :=
+            let* _ : M.Val unit :=
+              let* α0 : M.Val (array (ref str.t)) :=
+                M.alloc [ mk_str "error: invalid command
+" ] in
+              let* α1 : ref (array (ref str.t)) := borrow α0 in
+              let* α2 : M.Val (array (ref str.t)) := deref α1 in
+              let* α3 : ref (array (ref str.t)) := borrow α2 in
+              let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
+              let* α5 : M.Val (ref (slice (ref str.t))) :=
+                pointer_coercion "Unsize" α4 in
+              let* α6 : ref (slice (ref str.t)) := M.read α5 in
+              let* α7 : core.fmt.Arguments.t :=
+                core.fmt.Arguments.t::["new_const"] α6 in
+              let* α8 : unit := std.io.stdio._eprint α7 in
+              M.alloc α8 in
+            M.alloc tt in
+          let* _ : M.Val unit :=
+            let* α0 : unit := program_arguments_parsing.help in
+            M.alloc α0 in
+          M.alloc tt
+        end
+      | _ =>
         let* _ : M.Val unit :=
           let* α0 : unit := program_arguments_parsing.help in
           M.alloc α0 in
         M.alloc tt
-      end
-    | _ =>
-      let* _ : M.Val unit :=
-        let* α0 : unit := program_arguments_parsing.help in
-        M.alloc α0 in
-      M.alloc tt
-    end).
+      end in
+    M.read α0).

@@ -63,4 +63,5 @@ Definition main : M unit :=
     let* mutable : M.Val bool.t :=
       let* α0 : M.Val bool.t := M.alloc true in
       M.copy α0 in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

@@ -61,7 +61,8 @@ Section Impl_generics_where_clauses_PrintInOption_for_T.
           let* α22 : unit := std.io.stdio._print α21 in
           M.alloc α22 in
         M.alloc tt in
-      M.alloc tt).
+      let* α0 : M.Val unit := M.alloc tt in
+      M.read α0).
   
   Global Instance AssociatedFunction_print_in_option :
     Notations.DoubleColon ltac:(Self) "print_in_option" := {
@@ -107,4 +108,5 @@ Definition main : M unit :=
             (Trait := ltac:(refine _)))
           α0 in
       M.alloc α1 in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

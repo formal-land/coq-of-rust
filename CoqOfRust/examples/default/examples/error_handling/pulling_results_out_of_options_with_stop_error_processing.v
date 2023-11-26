@@ -84,7 +84,13 @@ Definition double_first
         α0
         (core.result.Result.Ok core.option.Option.None)
         α1 in
-    M.alloc α2).
+    let* α0 :
+        M.Val
+          (core.result.Result.t
+            (core.option.Option.t i32.t)
+            core.num.error.ParseIntError.t) :=
+      M.alloc α2 in
+    M.read α0).
 
 (*
 fn main() {
@@ -327,4 +333,5 @@ Definition main : M unit :=
         let* α23 : unit := std.io.stdio._print α22 in
         M.alloc α23 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

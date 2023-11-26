@@ -16,7 +16,8 @@ Definition multiply (first : ref i32.t) (second : ref i32.t) : M i32.t :=
       (core.ops.arith.Mul.mul (Self := ref i32.t) (Trait := ltac:(refine _)))
         α0
         α1 in
-    M.alloc α2).
+    let* α0 : M.Val i32.t := M.alloc α2 in
+    M.read α0).
 
 (*
 fn choose_first<'a: 'b, 'b>(first: &'a i32, _: &'b i32) -> &'b i32 {
@@ -30,7 +31,8 @@ Definition choose_first (first : ref i32.t) (arg : ref i32.t) : M (ref i32.t) :=
     (let* α0 : ref i32.t := M.read first in
     let* α1 : M.Val i32.t := deref α0 in
     let* α2 : ref i32.t := borrow α1 in
-    M.alloc α2).
+    let* α0 : M.Val (ref i32.t) := M.alloc α2 in
+    M.read α0).
 
 (*
 fn main() {
@@ -137,4 +139,5 @@ Definition main : M unit :=
           M.alloc α28 in
         M.alloc tt in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

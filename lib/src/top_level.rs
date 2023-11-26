@@ -750,7 +750,7 @@ fn compile_function_body(
     let body: Box<Expr> = Box::new(Expr {
         kind: ExprKind::MonadicOperator {
             name: "M.function_body".to_string(),
-            arg: Box::new(body),
+            arg: Box::new(body.read()),
         },
         ty: None,
     });

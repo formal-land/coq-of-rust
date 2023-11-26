@@ -17,7 +17,8 @@ Definition create_box : M unit :=
       let* α2 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t :=
         (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"] α1 in
       M.alloc α2 in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 (*
 fn main() {
@@ -99,4 +100,5 @@ Definition main : M unit :=
             end in
           M.alloc tt)
       end in
-    use α7).
+    let* α0 : M.Val unit := use α7 in
+    M.read α0).

@@ -9,7 +9,9 @@ pub fn add(a: i32, b: i32) -> i32 {
 Definition add (a : i32.t) (b : i32.t) : M i32.t :=
   let* a : M.Val i32.t := M.alloc a in
   let* b : M.Val i32.t := M.alloc b in
-  M.function_body (BinOp.add a b).
+  M.function_body
+    (let* α0 : M.Val i32.t := BinOp.add a b in
+    M.read α0).
 
 (*
 pub fn div(a: i32, b: i32) -> i32 {
@@ -39,4 +41,5 @@ Definition div (a : i32.t) (b : i32.t) : M i32.t :=
         never_to_any α0
       else
         M.alloc tt in
-    BinOp.div a b).
+    let* α0 : M.Val i32.t := BinOp.div a b in
+    M.read α0).

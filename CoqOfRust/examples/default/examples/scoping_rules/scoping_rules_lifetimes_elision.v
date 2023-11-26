@@ -40,7 +40,8 @@ Definition elided_input (x : ref i32.t) : M unit :=
         let* α20 : unit := std.io.stdio._print α19 in
         M.alloc α20 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 (*
 fn annotated_input<'a>(x: &'a i32) {
@@ -81,7 +82,8 @@ Definition annotated_input (x : ref i32.t) : M unit :=
         let* α20 : unit := std.io.stdio._print α19 in
         M.alloc α20 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 (*
 fn elided_pass(x: &i32) -> &i32 {
@@ -90,7 +92,7 @@ fn elided_pass(x: &i32) -> &i32 {
 *)
 Definition elided_pass (x : ref i32.t) : M (ref i32.t) :=
   let* x : M.Val (ref i32.t) := M.alloc x in
-  M.function_body (M.pure x).
+  M.function_body (M.read x).
 
 (*
 fn annotated_pass<'a>(x: &'a i32) -> &'a i32 {
@@ -99,7 +101,7 @@ fn annotated_pass<'a>(x: &'a i32) -> &'a i32 {
 *)
 Definition annotated_pass (x : ref i32.t) : M (ref i32.t) :=
   let* x : M.Val (ref i32.t) := M.alloc x in
-  M.function_body (M.pure x).
+  M.function_body (M.read x).
 
 (*
 fn main() {
@@ -204,4 +206,5 @@ Definition main : M unit :=
         let* α25 : unit := std.io.stdio._print α24 in
         M.alloc α25 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

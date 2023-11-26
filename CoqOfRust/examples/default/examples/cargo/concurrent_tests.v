@@ -13,41 +13,44 @@ Definition foo {A : Set} (o : core.option.Option.t A) : M unit :=
   let* o : M.Val (core.option.Option.t A) := M.alloc o in
   M.function_body
     (let* α0 := M.read o in
-    match α0 with
-    | core.option.Option.Some _a =>
-      let* _a := M.alloc _a in
-      let* _ : M.Val unit :=
-        let* α0 : M.Val (array (ref str.t)) := M.alloc [ mk_str "some
+    let* α0 : M.Val unit :=
+      match α0 with
+      | core.option.Option.Some _a =>
+        let* _a := M.alloc _a in
+        let* _ : M.Val unit :=
+          let* α0 : M.Val (array (ref str.t)) := M.alloc [ mk_str "some
 " ] in
-        let* α1 : ref (array (ref str.t)) := borrow α0 in
-        let* α2 : M.Val (array (ref str.t)) := deref α1 in
-        let* α3 : ref (array (ref str.t)) := borrow α2 in
-        let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
-        let* α5 : M.Val (ref (slice (ref str.t))) :=
-          pointer_coercion "Unsize" α4 in
-        let* α6 : ref (slice (ref str.t)) := M.read α5 in
-        let* α7 : core.fmt.Arguments.t :=
-          core.fmt.Arguments.t::["new_const"] α6 in
-        let* α8 : unit := std.io.stdio._print α7 in
-        M.alloc α8 in
-      M.alloc tt
-    | core.option.Option.None  =>
-      let* _ : M.Val unit :=
-        let* α0 : M.Val (array (ref str.t)) := M.alloc [ mk_str "nothing
+          let* α1 : ref (array (ref str.t)) := borrow α0 in
+          let* α2 : M.Val (array (ref str.t)) := deref α1 in
+          let* α3 : ref (array (ref str.t)) := borrow α2 in
+          let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
+          let* α5 : M.Val (ref (slice (ref str.t))) :=
+            pointer_coercion "Unsize" α4 in
+          let* α6 : ref (slice (ref str.t)) := M.read α5 in
+          let* α7 : core.fmt.Arguments.t :=
+            core.fmt.Arguments.t::["new_const"] α6 in
+          let* α8 : unit := std.io.stdio._print α7 in
+          M.alloc α8 in
+        M.alloc tt
+      | core.option.Option.None  =>
+        let* _ : M.Val unit :=
+          let* α0 : M.Val (array (ref str.t)) :=
+            M.alloc [ mk_str "nothing
 " ] in
-        let* α1 : ref (array (ref str.t)) := borrow α0 in
-        let* α2 : M.Val (array (ref str.t)) := deref α1 in
-        let* α3 : ref (array (ref str.t)) := borrow α2 in
-        let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
-        let* α5 : M.Val (ref (slice (ref str.t))) :=
-          pointer_coercion "Unsize" α4 in
-        let* α6 : ref (slice (ref str.t)) := M.read α5 in
-        let* α7 : core.fmt.Arguments.t :=
-          core.fmt.Arguments.t::["new_const"] α6 in
-        let* α8 : unit := std.io.stdio._print α7 in
-        M.alloc α8 in
-      M.alloc tt
-    end).
+          let* α1 : ref (array (ref str.t)) := borrow α0 in
+          let* α2 : M.Val (array (ref str.t)) := deref α1 in
+          let* α3 : ref (array (ref str.t)) := borrow α2 in
+          let* α4 : M.Val (ref (array (ref str.t))) := M.alloc α3 in
+          let* α5 : M.Val (ref (slice (ref str.t))) :=
+            pointer_coercion "Unsize" α4 in
+          let* α6 : ref (slice (ref str.t)) := M.read α5 in
+          let* α7 : core.fmt.Arguments.t :=
+            core.fmt.Arguments.t::["new_const"] α6 in
+          let* α8 : unit := std.io.stdio._print α7 in
+          M.alloc α8 in
+        M.alloc tt
+      end in
+    M.read α0).
 
 Module tests.
   (*
@@ -158,7 +161,8 @@ Module tests.
               end in
             M.alloc tt)
         end in
-      use α7).
+      let* α0 : M.Val unit := use α7 in
+      M.read α0).
   
   (*
       fn test_file_also() {
@@ -268,7 +272,8 @@ Module tests.
               end in
             M.alloc tt)
         end in
-      use α7).
+      let* α0 : M.Val unit := use α7 in
+      M.read α0).
 End tests.
 
 (*
@@ -378,7 +383,8 @@ Definition test_file : M unit :=
             end in
           M.alloc tt)
       end in
-    use α7).
+    let* α0 : M.Val unit := use α7 in
+    M.read α0).
 
 (*
     fn test_file_also() {
@@ -487,4 +493,5 @@ Definition test_file_also : M unit :=
             end in
           M.alloc tt)
       end in
-    use α7).
+    let* α0 : M.Val unit := use α7 in
+    M.read α0).

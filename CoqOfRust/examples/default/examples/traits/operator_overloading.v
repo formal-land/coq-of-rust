@@ -41,7 +41,9 @@ Section Impl_core_fmt_Debug_for_operator_overloading_FooBar_t.
       let* α5 : ref str.t := borrow α4 in
       let* α6 : core.result.Result.t unit core.fmt.Error.t :=
         core.fmt.Formatter.t::["write_str"] α2 α5 in
-      M.alloc α6).
+      let* α0 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=
+        M.alloc α6 in
+      M.read α0).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -82,7 +84,9 @@ Section Impl_core_fmt_Debug_for_operator_overloading_BarFoo_t.
       let* α5 : ref str.t := borrow α4 in
       let* α6 : core.result.Result.t unit core.fmt.Error.t :=
         core.fmt.Formatter.t::["write_str"] α2 α5 in
-      M.alloc α6).
+      let* α0 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=
+        M.alloc α6 in
+      M.read α0).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -135,7 +139,9 @@ Section Impl_core_ops_arith_Add_operator_overloading_Bar_t_for_operator_overload
           let* α8 : unit := std.io.stdio._print α7 in
           M.alloc α8 in
         M.alloc tt in
-      M.alloc operator_overloading.FooBar.Build_t).
+      let* α0 : M.Val operator_overloading.FooBar.t :=
+        M.alloc operator_overloading.FooBar.Build_t in
+      M.read α0).
   
   Global Instance AssociatedFunction_add :
     Notations.DoubleColon ltac:(Self) "add" := {
@@ -191,7 +197,9 @@ Section Impl_core_ops_arith_Add_operator_overloading_Foo_t_for_operator_overload
           let* α8 : unit := std.io.stdio._print α7 in
           M.alloc α8 in
         M.alloc tt in
-      M.alloc operator_overloading.BarFoo.Build_t).
+      let* α0 : M.Val operator_overloading.BarFoo.t :=
+        M.alloc operator_overloading.BarFoo.Build_t in
+      M.read α0).
   
   Global Instance AssociatedFunction_add :
     Notations.DoubleColon ltac:(Self) "add" := {
@@ -292,4 +300,5 @@ Definition main : M unit :=
         let* α22 : unit := std.io.stdio._print α21 in
         M.alloc α22 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

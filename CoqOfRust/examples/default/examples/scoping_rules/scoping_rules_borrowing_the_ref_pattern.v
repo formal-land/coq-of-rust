@@ -38,7 +38,9 @@ Section Impl_core_clone_Clone_for_scoping_rules_borrowing_the_ref_pattern_Point_
       (let* _ : M.Val unit := M.alloc tt in
       let* α0 : ref scoping_rules_borrowing_the_ref_pattern.Point.t :=
         M.read self in
-      deref α0).
+      let* α0 : M.Val scoping_rules_borrowing_the_ref_pattern.Point.t :=
+        deref α0 in
+      M.read α0).
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon ltac:(Self) "clone" := {
@@ -334,4 +336,5 @@ Definition main : M unit :=
         let* α20 : unit := std.io.stdio._print α19 in
         M.alloc α20 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

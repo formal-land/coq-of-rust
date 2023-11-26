@@ -79,7 +79,8 @@ Definition analyze_slice (slice : ref (slice i32.t)) : M unit :=
         let* α25 : unit := std.io.stdio._print α24 in
         M.alloc α25 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 (*
 fn main() {
@@ -593,4 +594,5 @@ Definition main : M unit :=
             end in
           M.alloc tt)
       end in
-    use α14).
+    let* α0 : M.Val unit := use α14 in
+    M.read α0).

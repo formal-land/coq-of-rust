@@ -68,4 +68,5 @@ Definition main : M unit :=
       let* α0 : M.Val char.t := M.alloc "a"%char in
       let* α1 : char.t := M.read α0 in
       M.alloc (generics.SingleGen.Build_t α1) in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

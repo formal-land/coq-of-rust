@@ -58,7 +58,14 @@ Definition combine_vecs_explicit_return_type
               (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t))
           (Trait := ltac:(refine _)))
         α4 in
-    M.alloc α5).
+    let* α0 :
+        M.Val
+          (core.iter.adapters.cycle.Cycle.t
+            (core.iter.adapters.chain.Chain.t
+              (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t)
+              (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t))) :=
+      M.alloc α5 in
+    M.read α0).
 
 (*
 fn combine_vecs(v: Vec<i32>, u: Vec<i32>) -> impl Iterator<Item = i32> {
@@ -105,7 +112,14 @@ Definition combine_vecs
               (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t))
           (Trait := ltac:(refine _)))
         α4 in
-    M.alloc α5).
+    let* α0 :
+        M.Val
+          (core.iter.adapters.cycle.Cycle.t
+            (core.iter.adapters.chain.Chain.t
+              (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t)
+              (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t))) :=
+      M.alloc α5 in
+    M.read α0).
 
 Error OpaqueTy.
 
@@ -494,4 +508,5 @@ Definition main : M unit :=
         let* α8 : unit := std.io.stdio._print α7 in
         M.alloc α8 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

@@ -25,7 +25,8 @@ Definition function : M unit :=
         let* α8 : unit := std.io.stdio._print α7 in
         M.alloc α8 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 Module cool.
   (*
@@ -52,7 +53,8 @@ Module cool.
           let* α8 : unit := std.io.stdio._print α7 in
           M.alloc α8 in
         M.alloc tt in
-      M.alloc tt).
+      let* α0 : M.Val unit := M.alloc tt in
+      M.read α0).
 End cool.
 
 (*
@@ -79,7 +81,8 @@ Definition function : M unit :=
         let* α8 : unit := std.io.stdio._print α7 in
         M.alloc α8 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 Module my.
   (*
@@ -106,7 +109,8 @@ Module my.
           let* α8 : unit := std.io.stdio._print α7 in
           M.alloc α8 in
         M.alloc tt in
-      M.alloc tt).
+      let* α0 : M.Val unit := M.alloc tt in
+      M.read α0).
   
   Module cool.
     (*
@@ -133,7 +137,8 @@ Module my.
             let* α8 : unit := std.io.stdio._print α7 in
             M.alloc α8 in
           M.alloc tt in
-        M.alloc tt).
+        let* α0 : M.Val unit := M.alloc tt in
+        M.read α0).
   End cool.
   
   (*
@@ -195,7 +200,8 @@ Module my.
       let* _ : M.Val unit :=
         let* α0 : unit := super_and_self.cool.function in
         M.alloc α0 in
-      M.alloc tt).
+      let* α0 : M.Val unit := M.alloc tt in
+      M.read α0).
 End my.
 
 (*
@@ -222,7 +228,8 @@ Definition function : M unit :=
         let* α8 : unit := std.io.stdio._print α7 in
         M.alloc α8 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 Module Wrap_cool_1.
 Module cool.
@@ -250,7 +257,8 @@ Module cool.
           let* α8 : unit := std.io.stdio._print α7 in
           M.alloc α8 in
         M.alloc tt in
-      M.alloc tt).
+      let* α0 : M.Val unit := M.alloc tt in
+      M.read α0).
 End cool.
 End Wrap_cool_1.
 Import Wrap_cool_1.
@@ -279,7 +287,8 @@ Definition function : M unit :=
         let* α8 : unit := std.io.stdio._print α7 in
         M.alloc α8 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 (*
     pub fn indirect_call() {
@@ -340,7 +349,8 @@ Definition indirect_call : M unit :=
     let* _ : M.Val unit :=
       let* α0 : unit := super_and_self.cool.function in
       M.alloc α0 in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 (*
 fn main() {
@@ -353,4 +363,5 @@ Definition main : M unit :=
     (let* _ : M.Val unit :=
       let* α0 : unit := super_and_self.my.indirect_call in
       M.alloc α0 in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

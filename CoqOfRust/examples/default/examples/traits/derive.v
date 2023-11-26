@@ -40,7 +40,8 @@ Section Impl_core_cmp_PartialEq_for_derive_Centimeters_t.
       let* α1 : M.Val derive.Centimeters.t := deref α0 in
       let* α2 : ref derive.Centimeters.t := M.read other in
       let* α3 : M.Val derive.Centimeters.t := deref α2 in
-      BinOp.eq α1.["0"] α3.["0"]).
+      let* α0 : M.Val bool.t := BinOp.eq α1.["0"] α3.["0"] in
+      M.read α0).
   
   Global Instance AssociatedFunction_eq :
     Notations.DoubleColon ltac:(Self) "eq" := {
@@ -86,7 +87,9 @@ Section Impl_core_cmp_PartialOrd_for_derive_Centimeters_t.
             (Trait := ltac:(refine _)))
           α4
           α9 in
-      M.alloc α10).
+      let* α0 : M.Val (core.option.Option.t core.cmp.Ordering.t) :=
+        M.alloc α10 in
+      M.read α0).
   
   Global Instance AssociatedFunction_partial_cmp :
     Notations.DoubleColon ltac:(Self) "partial_cmp" := {
@@ -150,7 +153,9 @@ Section Impl_core_fmt_Debug_for_derive_Inches_t.
       let* α15 : ref type not implemented := M.read α14 in
       let* α16 : core.result.Result.t unit core.fmt.Error.t :=
         core.fmt.Formatter.t::["debug_tuple_field1_finish"] α2 α5 α15 in
-      M.alloc α16).
+      let* α0 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=
+        M.alloc α16 in
+      M.read α0).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -183,7 +188,9 @@ Section Impl_derive_Inches_t.
       let* α1 : M.Val f64.t := M.alloc 3 (* 2.54 *) in
       let* α2 : M.Val f64.t := BinOp.mul α0 α1 in
       let* α3 : f64.t := M.read α2 in
-      M.alloc (derive.Centimeters.Build_t α3)).
+      let* α0 : M.Val derive.Centimeters.t :=
+        M.alloc (derive.Centimeters.Build_t α3) in
+      M.read α0).
   
   Global Instance AssociatedFunction_to_centimeters :
     Notations.DoubleColon ltac:(Self) "to_centimeters" := {
@@ -333,4 +340,5 @@ Definition main : M unit :=
         let* α20 : unit := std.io.stdio._print α19 in
         M.alloc α20 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

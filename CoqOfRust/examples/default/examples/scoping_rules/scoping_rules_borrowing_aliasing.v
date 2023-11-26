@@ -377,4 +377,5 @@ Definition main : M unit :=
         let* α36 : unit := std.io.stdio._print α35 in
         M.alloc α36 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

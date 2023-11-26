@@ -17,7 +17,8 @@ Definition coerce_static (arg : ref i32.t) : M (ref i32.t) :=
     let* α2 : ref i32.t := borrow α1 in
     let* α3 : M.Val i32.t := deref α2 in
     let* α4 : ref i32.t := borrow α3 in
-    M.alloc α4).
+    let* α0 : M.Val (ref i32.t) := M.alloc α4 in
+    M.read α0).
 
 (*
 fn main() {
@@ -160,4 +161,5 @@ Definition main : M unit :=
         let* α22 : unit := std.io.stdio._print α21 in
         M.alloc α22 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

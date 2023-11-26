@@ -38,11 +38,13 @@ Section Impl_associated_functions_and_methods_Point_t.
       let* α1 : f64.t := M.read α0 in
       let* α2 : M.Val f64.t := M.alloc 1 (* 1.0 *) in
       let* α3 : f64.t := M.read α2 in
-      M.alloc
-        {|
-          associated_functions_and_methods.Point.y := α1;
-          associated_functions_and_methods.Point.x := α3;
-        |}).
+      let* α0 : M.Val associated_functions_and_methods.Point.t :=
+        M.alloc
+          {|
+            associated_functions_and_methods.Point.y := α1;
+            associated_functions_and_methods.Point.x := α3;
+          |} in
+      M.read α0).
   
   Global Instance AssociatedFunction_origin :
     Notations.DoubleColon ltac:(Self) "origin" := {
@@ -63,11 +65,13 @@ Section Impl_associated_functions_and_methods_Point_t.
     M.function_body
       (let* α0 : f64.t := M.read x in
       let* α1 : f64.t := M.read y in
-      M.alloc
-        {|
-          associated_functions_and_methods.Point.x := α0;
-          associated_functions_and_methods.Point.y := α1;
-        |}).
+      let* α0 : M.Val associated_functions_and_methods.Point.t :=
+        M.alloc
+          {|
+            associated_functions_and_methods.Point.x := α0;
+            associated_functions_and_methods.Point.y := α1;
+          |} in
+      M.read α0).
   
   Global Instance AssociatedFunction_new :
     Notations.DoubleColon ltac:(Self) "new" := {
@@ -116,7 +120,7 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
         M.read self in
       let* α1 : M.Val associated_functions_and_methods.Rectangle.t :=
         deref α0 in
-      M.pure α1.["p1"]).
+      M.read α1.["p1"]).
   
   Global Instance AssociatedFunction_get_p1 :
     Notations.DoubleColon ltac:(Self) "get_p1" := {
@@ -162,7 +166,8 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
       let* α2 : M.Val f64.t := BinOp.mul α0 α1 in
       let* α3 : f64.t := M.read α2 in
       let* α4 : f64.t := f64.t::["abs"] α3 in
-      M.alloc α4).
+      let* α0 : M.Val f64.t := M.alloc α4 in
+      M.read α0).
   
   Global Instance AssociatedFunction_area :
     Notations.DoubleColon ltac:(Self) "area" := {
@@ -210,7 +215,8 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
       let* α7 : f64.t := f64.t::["abs"] α6 in
       let* α8 : M.Val f64.t := M.alloc α7 in
       let* α9 : M.Val f64.t := BinOp.add α4 α8 in
-      BinOp.mul α0 α9).
+      let* α0 : M.Val f64.t := BinOp.mul α0 α9 in
+      M.read α0).
   
   Global Instance AssociatedFunction_perimeter :
     Notations.DoubleColon ltac:(Self) "perimeter" := {
@@ -259,7 +265,8 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
         let* α1 : M.Val associated_functions_and_methods.Rectangle.t :=
           deref α0 in
         assign_op add α1.["p2"].["y"] y in
-      M.alloc tt).
+      let* α0 : M.Val unit := M.alloc tt in
+      M.read α0).
   
   Global Instance AssociatedFunction_translate :
     Notations.DoubleColon ltac:(Self) "translate" := {
@@ -349,7 +356,8 @@ Section Impl_associated_functions_and_methods_Pair_t.
           let* α25 : unit := std.io.stdio._print α24 in
           M.alloc α25 in
         M.alloc tt in
-      M.alloc tt).
+      let* α0 : M.Val unit := M.alloc tt in
+      M.read α0).
   
   Global Instance AssociatedFunction_destroy :
     Notations.DoubleColon ltac:(Self) "destroy" := {
@@ -522,4 +530,5 @@ Definition main : M unit :=
       let* α1 : unit :=
         associated_functions_and_methods.Pair.t::["destroy"] α0 in
       M.alloc α1 in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

@@ -36,7 +36,8 @@ Section Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop_t.
           let* α8 : unit := std.io.stdio._print α7 in
           M.alloc α8 in
         M.alloc tt in
-      M.alloc tt).
+      let* α0 : M.Val unit := M.alloc tt in
+      M.read α0).
   
   Global Instance AssociatedFunction_drop :
     Notations.DoubleColon ltac:(Self) "drop" := {
@@ -77,4 +78,5 @@ Definition main : M unit :=
         let* α8 : unit := std.io.stdio._print α7 in
         M.alloc α8 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).

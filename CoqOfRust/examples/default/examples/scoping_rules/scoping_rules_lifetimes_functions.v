@@ -40,7 +40,8 @@ Definition print_one (x : ref i32.t) : M unit :=
         let* α20 : unit := std.io.stdio._print α19 in
         M.alloc α20 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 (*
 fn add_one<'a>(x: &'a mut i32) {
@@ -55,7 +56,8 @@ Definition add_one (x : mut_ref i32.t) : M unit :=
       let* α1 : M.Val i32.t := deref α0 in
       let* α2 : M.Val i32.t := M.alloc 1 in
       assign_op add α1 α2 in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 (*
 fn print_multi<'a, 'b>(x: &'a i32, y: &'b i32) {
@@ -105,7 +107,8 @@ Definition print_multi (x : ref i32.t) (y : ref i32.t) : M unit :=
         let* α25 : unit := std.io.stdio._print α24 in
         M.alloc α25 in
       M.alloc tt in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
 
 (*
 fn pass_x<'a, 'b>(x: &'a i32, _: &'b i32) -> &'a i32 {
@@ -115,7 +118,7 @@ fn pass_x<'a, 'b>(x: &'a i32, _: &'b i32) -> &'a i32 {
 Definition pass_x (x : ref i32.t) (arg : ref i32.t) : M (ref i32.t) :=
   let* x : M.Val (ref i32.t) := M.alloc x in
   let* arg : M.Val (ref i32.t) := M.alloc arg in
-  M.function_body (M.pure x).
+  M.function_body (M.read x).
 
 (*
 fn main() {
@@ -187,4 +190,5 @@ Definition main : M unit :=
       let* α2 : ref i32.t := borrow α1 in
       let* α3 : unit := scoping_rules_lifetimes_functions.print_one α2 in
       M.alloc α3 in
-    M.alloc tt).
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0).
