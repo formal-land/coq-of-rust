@@ -20,7 +20,7 @@ Definition call (number : ref str.t) : M (ref str.t) :=
   let* number : M.Val (ref str.t) := M.alloc number in
   M.function_body
     (let* α0 := M.read number in
-    let* α0 : M.Val (ref str.t) :=
+    let* α1 : M.Val (ref str.t) :=
       match α0 with
       | _ =>
         let* α0 : ref str.t :=
@@ -46,7 +46,7 @@ Definition call (number : ref str.t) : M (ref str.t) :=
         let* α2 : ref str.t := borrow α1 in
         M.alloc α2
       end in
-    M.read α0).
+    M.read α1).
 
 (*
 fn main() {

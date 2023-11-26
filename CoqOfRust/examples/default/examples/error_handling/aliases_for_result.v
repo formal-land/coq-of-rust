@@ -39,14 +39,9 @@ Definition multiply
             α3
             α4 in
         M.alloc α5) in
-    let* α5 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
-      (core.result.Result.t i32.t core.num.error.ParseIntError.t)::["and_then"]
-        α3
-        α4 in
-    let* α0 :
-        M.Val (core.result.Result.t i32.t core.num.error.ParseIntError.t) :=
-      M.alloc α5 in
-    M.read α0).
+    (core.result.Result.t i32.t core.num.error.ParseIntError.t)::["and_then"]
+      α3
+      α4).
 
 (*
 fn print(result: AliasedResult<i32>) {
@@ -63,7 +58,7 @@ Definition print
     M.alloc result in
   M.function_body
     (let* α0 := M.read result in
-    let* α0 : M.Val unit :=
+    let* α1 : M.Val unit :=
       match α0 with
       | core.result.Result.Ok n =>
         let* n := M.alloc n in
@@ -132,7 +127,7 @@ Definition print
           M.alloc α20 in
         M.alloc tt
       end in
-    M.read α0).
+    M.read α1).
 
 (*
 fn main() {

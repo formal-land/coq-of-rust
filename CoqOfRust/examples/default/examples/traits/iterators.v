@@ -173,10 +173,8 @@ Definition fibonacci : M iterators.Fibonacci.t :=
     let* α1 : u32.t := M.read α0 in
     let* α2 : M.Val u32.t := M.alloc 1 in
     let* α3 : u32.t := M.read α2 in
-    let* α0 : M.Val iterators.Fibonacci.t :=
-      M.alloc
-        {| iterators.Fibonacci.curr := α1; iterators.Fibonacci.next := α3; |} in
-    M.read α0).
+    M.pure
+      {| iterators.Fibonacci.curr := α1; iterators.Fibonacci.next := α3; |}).
 
 (*
 fn main() {

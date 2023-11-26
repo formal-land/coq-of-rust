@@ -46,26 +46,13 @@ Definition combine_vecs_explicit_return_type
           (Trait := ltac:(refine _)))
         α1
         α3 in
-    let* α5 :
-        core.iter.adapters.cycle.Cycle.t
-          (core.iter.adapters.chain.Chain.t
+    (core.iter.traits.iterator.Iterator.cycle
+        (Self :=
+          core.iter.adapters.chain.Chain.t
             (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t)
-            (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t)) :=
-      (core.iter.traits.iterator.Iterator.cycle
-          (Self :=
-            core.iter.adapters.chain.Chain.t
-              (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t)
-              (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t))
-          (Trait := ltac:(refine _)))
-        α4 in
-    let* α0 :
-        M.Val
-          (core.iter.adapters.cycle.Cycle.t
-            (core.iter.adapters.chain.Chain.t
-              (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t)
-              (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t))) :=
-      M.alloc α5 in
-    M.read α0).
+            (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t))
+        (Trait := ltac:(refine _)))
+      α4).
 
 (*
 fn combine_vecs(v: Vec<i32>, u: Vec<i32>) -> impl Iterator<Item = i32> {
@@ -100,26 +87,13 @@ Definition combine_vecs
           (Trait := ltac:(refine _)))
         α1
         α3 in
-    let* α5 :
-        core.iter.adapters.cycle.Cycle.t
-          (core.iter.adapters.chain.Chain.t
+    (core.iter.traits.iterator.Iterator.cycle
+        (Self :=
+          core.iter.adapters.chain.Chain.t
             (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t)
-            (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t)) :=
-      (core.iter.traits.iterator.Iterator.cycle
-          (Self :=
-            core.iter.adapters.chain.Chain.t
-              (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t)
-              (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t))
-          (Trait := ltac:(refine _)))
-        α4 in
-    let* α0 :
-        M.Val
-          (core.iter.adapters.cycle.Cycle.t
-            (core.iter.adapters.chain.Chain.t
-              (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t)
-              (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t))) :=
-      M.alloc α5 in
-    M.read α0).
+            (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t))
+        (Trait := ltac:(refine _)))
+      α4).
 
 Error OpaqueTy.
 

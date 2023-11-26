@@ -32,7 +32,7 @@ Definition main : M unit :=
       M.alloc α1 in
     let* α3 : M.Val bool.t := let_if core.result.Result.Ok lines := α2 in
     let* α4 : bool.t := M.read α3 in
-    let* α0 : M.Val unit :=
+    let* α5 : M.Val unit :=
       if (α4 : bool) then
         let* α0 :
             std.io.Lines.t
@@ -154,7 +154,7 @@ Definition main : M unit :=
         use α4
       else
         M.alloc tt in
-    M.read α0).
+    M.read α5).
 
 (*
 fn read_lines<P>(filename: P) -> io::Result<io::Lines<io::BufReader<File>>>

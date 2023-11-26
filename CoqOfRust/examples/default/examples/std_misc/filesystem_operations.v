@@ -207,7 +207,7 @@ Definition touch
         M.Val (core.result.Result.t std.fs.File.t std.io.error.Error.t) :=
       M.alloc α14 in
     let* α16 := M.read α15 in
-    let* α0 : M.Val (core.result.Result.t unit std.io.error.Error.t) :=
+    let* α17 : M.Val (core.result.Result.t unit std.io.error.Error.t) :=
       match α16 with
       | core.result.Result.Ok _ => M.alloc (core.result.Result.Ok tt)
       | core.result.Result.Err e =>
@@ -215,7 +215,7 @@ Definition touch
         let* α0 : std.io.error.Error.t := M.read e in
         M.alloc (core.result.Result.Err α0)
       end in
-    M.read α0).
+    M.read α17).
 
 (*
 fn main() {

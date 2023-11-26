@@ -91,8 +91,8 @@ Section Impl_generics_associated_types_solution_Contains_for_generics_associated
           α12
           α13 in
       let* α15 : M.Val bool.t := M.alloc α14 in
-      let* α0 : M.Val bool.t := BinOp.and α7 α15 in
-      M.read α0).
+      let* α16 : M.Val bool.t := BinOp.and α7 α15 in
+      M.read α16).
   
   Global Instance AssociatedFunction_contains :
     Notations.DoubleColon ltac:(Self) "contains" := {
@@ -198,8 +198,8 @@ Definition difference
           (Trait := ltac:(refine _)))
         α7 in
     let* α9 : M.Val i32.t := M.alloc α8 in
-    let* α0 : M.Val i32.t := BinOp.sub α4 α9 in
-    M.read α0).
+    let* α10 : M.Val i32.t := BinOp.sub α4 α9 in
+    M.read α10).
 
 (*
 fn get_a<C: Contains>(container: &C) -> C::A {
@@ -216,13 +216,10 @@ Definition get_a
     (let* α0 : ref C := M.read container in
     let* α1 : M.Val C := deref α0 in
     let* α2 : ref C := borrow α1 in
-    let* α3 : type not implemented :=
-      (generics_associated_types_solution.Contains.a
-          (Self := C)
-          (Trait := ltac:(refine _)))
-        α2 in
-    let* α0 : M.Val type not implemented := M.alloc α3 in
-    M.read α0).
+    (generics_associated_types_solution.Contains.a
+        (Self := C)
+        (Trait := ltac:(refine _)))
+      α2).
 
 (*
 fn main() {

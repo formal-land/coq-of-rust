@@ -14,10 +14,7 @@ Definition cos
   let* z : M.Val foreign_function_interface.Complex.t := M.alloc z in
   M.function_body
     (let* α0 : foreign_function_interface.Complex.t := M.read z in
-    let* α1 : foreign_function_interface.Complex.t :=
-      "unimplemented parent_kind" α0 in
-    let* α0 : M.Val foreign_function_interface.Complex.t := M.alloc α1 in
-    M.read α0).
+    "unimplemented parent_kind" α0).
 
 (*
 fn main() {
@@ -50,8 +47,7 @@ Definition main : M unit :=
       let* α0 : foreign_function_interface.Complex.t := M.read z in
       let* α1 : foreign_function_interface.Complex.t :=
         "unimplemented parent_kind" α0 in
-      let* α0 : M.Val foreign_function_interface.Complex.t := M.alloc α1 in
-      M.copy α0 in
+      M.alloc α1 in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
         let* α0 : M.Val (array (ref str.t)) :=
@@ -221,7 +217,7 @@ Section Impl_core_fmt_Debug_for_foreign_function_interface_Complex_t.
       let* α3 : M.Val bool.t := BinOp.lt α1.["im"] α2 in
       let* α4 : M.Val bool.t := use α3 in
       let* α5 : bool.t := M.read α4 in
-      let* α0 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=
+      let* α6 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=
         if (α5 : bool) then
           let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
           let* α1 : M.Val core.fmt.Formatter.t := deref α0 in
@@ -311,7 +307,7 @@ Section Impl_core_fmt_Debug_for_foreign_function_interface_Complex_t.
           let* α32 : core.result.Result.t unit core.fmt.Error.t :=
             core.fmt.Formatter.t::["write_fmt"] α2 α31 in
           M.alloc α32 in
-      M.read α0).
+      M.read α6).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {

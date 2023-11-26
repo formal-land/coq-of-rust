@@ -347,13 +347,12 @@ Definition main : M unit :=
         let* α36 : M.Val (ref (slice core.fmt.rt.Placeholder.t)) :=
           pointer_coercion "Unsize" α35 in
         let* α37 : ref (slice core.fmt.rt.Placeholder.t) := M.read α36 in
-        let* α0 : core.fmt.rt.UnsafeArg.t := core.fmt.rt.UnsafeArg.t::["new"] in
-        let* α38 : M.Val core.fmt.rt.UnsafeArg.t := M.alloc α0 in
-        let* α39 : core.fmt.rt.UnsafeArg.t := M.read α38 in
-        let* α40 : core.fmt.Arguments.t :=
-          core.fmt.Arguments.t::["new_v1_formatted"] α6 α19 α37 α39 in
-        let* α41 : unit := std.io.stdio._print α40 in
-        M.alloc α41 in
+        let* α38 : core.fmt.rt.UnsafeArg.t :=
+          core.fmt.rt.UnsafeArg.t::["new"] in
+        let* α39 : core.fmt.Arguments.t :=
+          core.fmt.Arguments.t::["new_v1_formatted"] α6 α19 α37 α38 in
+        let* α40 : unit := std.io.stdio._print α39 in
+        M.alloc α40 in
       M.alloc tt in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
@@ -409,13 +408,12 @@ Definition main : M unit :=
         let* α36 : M.Val (ref (slice core.fmt.rt.Placeholder.t)) :=
           pointer_coercion "Unsize" α35 in
         let* α37 : ref (slice core.fmt.rt.Placeholder.t) := M.read α36 in
-        let* α0 : core.fmt.rt.UnsafeArg.t := core.fmt.rt.UnsafeArg.t::["new"] in
-        let* α38 : M.Val core.fmt.rt.UnsafeArg.t := M.alloc α0 in
-        let* α39 : core.fmt.rt.UnsafeArg.t := M.read α38 in
-        let* α40 : core.fmt.Arguments.t :=
-          core.fmt.Arguments.t::["new_v1_formatted"] α6 α19 α37 α39 in
-        let* α41 : unit := std.io.stdio._print α40 in
-        M.alloc α41 in
+        let* α38 : core.fmt.rt.UnsafeArg.t :=
+          core.fmt.rt.UnsafeArg.t::["new"] in
+        let* α39 : core.fmt.Arguments.t :=
+          core.fmt.Arguments.t::["new_v1_formatted"] α6 α19 α37 α38 in
+        let* α40 : unit := std.io.stdio._print α39 in
+        M.alloc α40 in
       M.alloc tt in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
@@ -479,13 +477,12 @@ Definition main : M unit :=
         let* α42 : M.Val (ref (slice core.fmt.rt.Placeholder.t)) :=
           pointer_coercion "Unsize" α41 in
         let* α43 : ref (slice core.fmt.rt.Placeholder.t) := M.read α42 in
-        let* α0 : core.fmt.rt.UnsafeArg.t := core.fmt.rt.UnsafeArg.t::["new"] in
-        let* α44 : M.Val core.fmt.rt.UnsafeArg.t := M.alloc α0 in
-        let* α45 : core.fmt.rt.UnsafeArg.t := M.read α44 in
-        let* α46 : core.fmt.Arguments.t :=
-          core.fmt.Arguments.t::["new_v1_formatted"] α6 α25 α43 α45 in
-        let* α47 : unit := std.io.stdio._print α46 in
-        M.alloc α47 in
+        let* α44 : core.fmt.rt.UnsafeArg.t :=
+          core.fmt.rt.UnsafeArg.t::["new"] in
+        let* α45 : core.fmt.Arguments.t :=
+          core.fmt.Arguments.t::["new_v1_formatted"] α6 α25 α43 α44 in
+        let* α46 : unit := std.io.stdio._print α45 in
+        M.alloc α46 in
       M.alloc tt in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
@@ -578,13 +575,12 @@ Definition main : M unit :=
         let* α40 : M.Val (ref (slice core.fmt.rt.Placeholder.t)) :=
           pointer_coercion "Unsize" α39 in
         let* α41 : ref (slice core.fmt.rt.Placeholder.t) := M.read α40 in
-        let* α0 : core.fmt.rt.UnsafeArg.t := core.fmt.rt.UnsafeArg.t::["new"] in
-        let* α42 : M.Val core.fmt.rt.UnsafeArg.t := M.alloc α0 in
-        let* α43 : core.fmt.rt.UnsafeArg.t := M.read α42 in
-        let* α44 : core.fmt.Arguments.t :=
-          core.fmt.Arguments.t::["new_v1_formatted"] α6 α23 α41 α43 in
-        let* α45 : unit := std.io.stdio._print α44 in
-        M.alloc α45 in
+        let* α42 : core.fmt.rt.UnsafeArg.t :=
+          core.fmt.rt.UnsafeArg.t::["new"] in
+        let* α43 : core.fmt.Arguments.t :=
+          core.fmt.Arguments.t::["new_v1_formatted"] α6 α23 α41 α42 in
+        let* α44 : unit := std.io.stdio._print α43 in
+        M.alloc α44 in
       M.alloc tt in
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0).

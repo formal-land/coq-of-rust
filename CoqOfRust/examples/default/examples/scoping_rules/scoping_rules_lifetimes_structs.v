@@ -44,11 +44,7 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed_t.
       let* α14 : M.Val (ref type not implemented) :=
         pointer_coercion "Unsize" α13 in
       let* α15 : ref type not implemented := M.read α14 in
-      let* α16 : core.result.Result.t unit core.fmt.Error.t :=
-        core.fmt.Formatter.t::["debug_tuple_field1_finish"] α2 α5 α15 in
-      let* α0 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=
-        M.alloc α16 in
-      M.read α0).
+      core.fmt.Formatter.t::["debug_tuple_field1_finish"] α2 α5 α15).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -133,17 +129,13 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed_t.
       let* α28 : M.Val (ref type not implemented) :=
         pointer_coercion "Unsize" α27 in
       let* α29 : ref type not implemented := M.read α28 in
-      let* α30 : core.result.Result.t unit core.fmt.Error.t :=
-        core.fmt.Formatter.t::["debug_struct_field2_finish"]
-          α2
-          α5
-          α8
-          α16
-          α19
-          α29 in
-      let* α0 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=
-        M.alloc α30 in
-      M.read α0).
+      core.fmt.Formatter.t::["debug_struct_field2_finish"]
+        α2
+        α5
+        α8
+        α16
+        α19
+        α29).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -177,7 +169,7 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either_t.
     let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
     M.function_body
       (let* α0 := M.read self in
-      let* α0 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=
+      let* α1 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=
         match α0 with
         | scoping_rules_lifetimes_structs.Either.Num __self_0 =>
           let* __self_0 := M.alloc __self_0 in
@@ -216,7 +208,7 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either_t.
             core.fmt.Formatter.t::["debug_tuple_field1_finish"] α2 α5 α11 in
           M.alloc α12
         end in
-      M.read α0).
+      M.read α1).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {

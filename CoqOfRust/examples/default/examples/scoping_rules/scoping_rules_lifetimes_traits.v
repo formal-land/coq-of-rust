@@ -50,11 +50,7 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed_t.
       let* α17 : M.Val (ref type not implemented) :=
         pointer_coercion "Unsize" α16 in
       let* α18 : ref type not implemented := M.read α17 in
-      let* α19 : core.result.Result.t unit core.fmt.Error.t :=
-        core.fmt.Formatter.t::["debug_struct_field1_finish"] α2 α5 α8 α18 in
-      let* α0 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=
-        M.alloc α19 in
-      M.read α0).
+      core.fmt.Formatter.t::["debug_struct_field1_finish"] α2 α5 α8 α18).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -82,9 +78,7 @@ Section Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed_t.
       let* α1 : ref i32.t := borrow α0 in
       let* α2 : M.Val i32.t := deref α1 in
       let* α3 : ref i32.t := borrow α2 in
-      let* α0 : M.Val scoping_rules_lifetimes_traits.Borrowed.t :=
-        M.alloc {| scoping_rules_lifetimes_traits.Borrowed.x := α3; |} in
-      M.read α0).
+      M.pure {| scoping_rules_lifetimes_traits.Borrowed.x := α3; |}).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon ltac:(Self) "default" := {

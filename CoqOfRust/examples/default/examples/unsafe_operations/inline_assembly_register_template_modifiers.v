@@ -21,7 +21,7 @@ Definition main : M unit :=
       let* α0 : M.Val u16.t := M.alloc 171 in
       M.copy α0 in
     let* _ : M.Val unit :=
-      let _ := InlineAssembly in
+      let _ : M.Val unit := InlineAssembly in
       M.alloc tt in
     let* _ : M.Val unit :=
       let* α0 : ref u16.t := borrow x in

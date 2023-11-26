@@ -30,8 +30,7 @@ Section Impl_core_convert_From_i32_t_for_into_Number_t.
     let* item : M.Val i32.t := M.alloc item in
     M.function_body
       (let* α0 : i32.t := M.read item in
-      let* α0 : M.Val into.Number.t := M.alloc {| into.Number.value := α0; |} in
-      M.read α0).
+      M.pure {| into.Number.value := α0; |}).
   
   Global Instance AssociatedFunction_from :
     Notations.DoubleColon ltac:(Self) "from" := {

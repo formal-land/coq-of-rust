@@ -17,7 +17,7 @@ Definition main : M unit :=
   M.function_body
     (let* x : M.Val unit := M.alloc tt in
     let* _ : M.Val unit :=
-      let _ := InlineAssembly in
+      let _ : M.Val unit := InlineAssembly in
       M.alloc tt in
     let* _ : M.Val unit :=
       let* α0 : ref u64.t := borrow x in

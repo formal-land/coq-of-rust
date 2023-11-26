@@ -13,7 +13,7 @@ Definition foo {A : Set} (o : core.option.Option.t A) : M unit :=
   let* o : M.Val (core.option.Option.t A) := M.alloc o in
   M.function_body
     (let* α0 := M.read o in
-    let* α0 : M.Val unit :=
+    let* α1 : M.Val unit :=
       match α0 with
       | core.option.Option.Some _a =>
         let* _a := M.alloc _a in
@@ -50,7 +50,7 @@ Definition foo {A : Set} (o : core.option.Option.t A) : M unit :=
           M.alloc α8 in
         M.alloc tt
       end in
-    M.read α0).
+    M.read α1).
 
 Module tests.
   (*

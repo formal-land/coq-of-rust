@@ -38,13 +38,11 @@ Section Impl_associated_functions_and_methods_Point_t.
       let* α1 : f64.t := M.read α0 in
       let* α2 : M.Val f64.t := M.alloc 1 (* 1.0 *) in
       let* α3 : f64.t := M.read α2 in
-      let* α0 : M.Val associated_functions_and_methods.Point.t :=
-        M.alloc
-          {|
-            associated_functions_and_methods.Point.y := α1;
-            associated_functions_and_methods.Point.x := α3;
-          |} in
-      M.read α0).
+      M.pure
+        {|
+          associated_functions_and_methods.Point.y := α1;
+          associated_functions_and_methods.Point.x := α3;
+        |}).
   
   Global Instance AssociatedFunction_origin :
     Notations.DoubleColon ltac:(Self) "origin" := {
@@ -65,13 +63,11 @@ Section Impl_associated_functions_and_methods_Point_t.
     M.function_body
       (let* α0 : f64.t := M.read x in
       let* α1 : f64.t := M.read y in
-      let* α0 : M.Val associated_functions_and_methods.Point.t :=
-        M.alloc
-          {|
-            associated_functions_and_methods.Point.x := α0;
-            associated_functions_and_methods.Point.y := α1;
-          |} in
-      M.read α0).
+      M.pure
+        {|
+          associated_functions_and_methods.Point.x := α0;
+          associated_functions_and_methods.Point.y := α1;
+        |}).
   
   Global Instance AssociatedFunction_new :
     Notations.DoubleColon ltac:(Self) "new" := {

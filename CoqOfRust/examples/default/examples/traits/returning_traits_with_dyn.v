@@ -105,11 +105,11 @@ Definition random_animal
                 returning_traits_with_dyn.Sheep.t
                 alloc.alloc.Global.t) :=
           M.alloc α0 in
-        let* α0 :
+        let* α2 :
             M.Val
               (alloc.boxed.Box.t type not implemented alloc.alloc.Global.t) :=
           pointer_coercion "Unsize" α1 in
-        pointer_coercion "Unsize" α0
+        pointer_coercion "Unsize" α2
       else
         let* α0 :
             alloc.boxed.Box.t
@@ -126,13 +126,13 @@ Definition random_animal
                 alloc.alloc.Global.t) :=
           M.alloc α0 in
         pointer_coercion "Unsize" α1 in
-    let* α0 :
+    let* α5 :
         M.Val (alloc.boxed.Box.t type not implemented alloc.alloc.Global.t) :=
       pointer_coercion "Unsize" α4 in
-    let* α1 :
+    let* α6 :
         M.Val (alloc.boxed.Box.t type not implemented alloc.alloc.Global.t) :=
-      pointer_coercion "Unsize" α0 in
-    M.read α1).
+      pointer_coercion "Unsize" α5 in
+    M.read α6).
 
 (*
 fn main() {

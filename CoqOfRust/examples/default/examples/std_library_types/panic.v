@@ -19,7 +19,7 @@ Definition division (dividend : i32.t) (divisor : i32.t) : M i32.t :=
     let* α1 : M.Val bool.t := BinOp.eq divisor α0 in
     let* α2 : M.Val bool.t := use α1 in
     let* α3 : bool.t := M.read α2 in
-    let* α0 : M.Val i32.t :=
+    let* α4 : M.Val i32.t :=
       if (α3 : bool) then
         let* _ : M.Val unit :=
           let* α0 : ref str.t := M.read (mk_str "division by zero") in
@@ -30,7 +30,7 @@ Definition division (dividend : i32.t) (divisor : i32.t) : M i32.t :=
         never_to_any α0
       else
         BinOp.div dividend divisor in
-    M.read α0).
+    M.read α4).
 
 (*
 fn main() {

@@ -71,17 +71,13 @@ Section Impl_core_fmt_Debug_for_box_stack_heap_Point_t.
       let* α28 : M.Val (ref type not implemented) :=
         pointer_coercion "Unsize" α27 in
       let* α29 : ref type not implemented := M.read α28 in
-      let* α30 : core.result.Result.t unit core.fmt.Error.t :=
-        core.fmt.Formatter.t::["debug_struct_field2_finish"]
-          α2
-          α5
-          α8
-          α16
-          α19
-          α29 in
-      let* α0 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=
-        M.alloc α30 in
-      M.read α0).
+      core.fmt.Formatter.t::["debug_struct_field2_finish"]
+        α2
+        α5
+        α8
+        α16
+        α19
+        α29).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -170,10 +166,7 @@ Definition origin : M box_stack_heap.Point.t :=
     let* α1 : f64.t := M.read α0 in
     let* α2 : M.Val f64.t := M.alloc 0 (* 0.0 *) in
     let* α3 : f64.t := M.read α2 in
-    let* α0 : M.Val box_stack_heap.Point.t :=
-      M.alloc
-        {| box_stack_heap.Point.x := α1; box_stack_heap.Point.y := α3; |} in
-    M.read α0).
+    M.pure {| box_stack_heap.Point.x := α1; box_stack_heap.Point.y := α3; |}).
 
 (*
 fn boxed_origin() -> Box<Point> {
@@ -188,13 +181,8 @@ Definition boxed_origin
     let* α1 : f64.t := M.read α0 in
     let* α2 : M.Val f64.t := M.alloc 0 (* 0.0 *) in
     let* α3 : f64.t := M.read α2 in
-    let* α4 : alloc.boxed.Box.t box_stack_heap.Point.t alloc.alloc.Global.t :=
-      (alloc.boxed.Box.t box_stack_heap.Point.t alloc.alloc.Global.t)::["new"]
-        {| box_stack_heap.Point.x := α1; box_stack_heap.Point.y := α3; |} in
-    let* α0 :
-        M.Val (alloc.boxed.Box.t box_stack_heap.Point.t alloc.alloc.Global.t) :=
-      M.alloc α4 in
-    M.read α0).
+    (alloc.boxed.Box.t box_stack_heap.Point.t alloc.alloc.Global.t)::["new"]
+      {| box_stack_heap.Point.x := α1; box_stack_heap.Point.y := α3; |}).
 
 (*
 fn main() {

@@ -26,8 +26,8 @@ Section Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle_t.
       let* α1 : M.Val generics_bounds.Rectangle.t := deref α0 in
       let* α2 : ref generics_bounds.Rectangle.t := M.read self in
       let* α3 : M.Val generics_bounds.Rectangle.t := deref α2 in
-      let* α0 : M.Val f64.t := BinOp.mul α1.["length"] α3.["height"] in
-      M.read α0).
+      let* α4 : M.Val f64.t := BinOp.mul α1.["length"] α3.["height"] in
+      M.read α4).
   
   Global Instance AssociatedFunction_area :
     Notations.DoubleColon ltac:(Self) "area" := {
@@ -110,17 +110,13 @@ Section Impl_core_fmt_Debug_for_generics_bounds_Rectangle_t.
       let* α28 : M.Val (ref type not implemented) :=
         pointer_coercion "Unsize" α27 in
       let* α29 : ref type not implemented := M.read α28 in
-      let* α30 : core.result.Result.t unit core.fmt.Error.t :=
-        core.fmt.Formatter.t::["debug_struct_field2_finish"]
-          α2
-          α5
-          α8
-          α16
-          α19
-          α29 in
-      let* α0 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=
-        M.alloc α30 in
-      M.read α0).
+      core.fmt.Formatter.t::["debug_struct_field2_finish"]
+        α2
+        α5
+        α8
+        α16
+        α19
+        α29).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -219,11 +215,7 @@ Definition area
     (let* α0 : ref T := M.read t in
     let* α1 : M.Val T := deref α0 in
     let* α2 : ref T := borrow α1 in
-    let* α3 : f64.t :=
-      (generics_bounds.HasArea.area (Self := T) (Trait := ltac:(refine _)))
-        α2 in
-    let* α0 : M.Val f64.t := M.alloc α3 in
-    M.read α0).
+    (generics_bounds.HasArea.area (Self := T) (Trait := ltac:(refine _))) α2).
 
 (*
 fn main() {

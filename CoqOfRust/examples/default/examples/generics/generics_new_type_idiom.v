@@ -44,9 +44,7 @@ Section Impl_generics_new_type_idiom_Years_t.
       let* α2 : M.Val i64.t := M.alloc 365 in
       let* α3 : M.Val i64.t := BinOp.mul α1.["0"] α2 in
       let* α4 : i64.t := M.read α3 in
-      let* α0 : M.Val generics_new_type_idiom.Days.t :=
-        M.alloc (generics_new_type_idiom.Days.Build_t α4) in
-      M.read α0).
+      M.pure (generics_new_type_idiom.Days.Build_t α4)).
   
   Global Instance AssociatedFunction_to_days :
     Notations.DoubleColon ltac:(Self) "to_days" := {
@@ -74,9 +72,7 @@ Section Impl_generics_new_type_idiom_Days_t.
       let* α2 : M.Val i64.t := M.alloc 365 in
       let* α3 : M.Val i64.t := BinOp.div α1.["0"] α2 in
       let* α4 : i64.t := M.read α3 in
-      let* α0 : M.Val generics_new_type_idiom.Years.t :=
-        M.alloc (generics_new_type_idiom.Years.Build_t α4) in
-      M.read α0).
+      M.pure (generics_new_type_idiom.Years.Build_t α4)).
   
   Global Instance AssociatedFunction_to_years :
     Notations.DoubleColon ltac:(Self) "to_years" := {
@@ -96,8 +92,8 @@ Definition old_enough (age : ref generics_new_type_idiom.Years.t) : M bool.t :=
     (let* α0 : ref generics_new_type_idiom.Years.t := M.read age in
     let* α1 : M.Val generics_new_type_idiom.Years.t := deref α0 in
     let* α2 : M.Val i64.t := M.alloc 18 in
-    let* α0 : M.Val bool.t := BinOp.ge α1.["0"] α2 in
-    M.read α0).
+    let* α3 : M.Val bool.t := BinOp.ge α1.["0"] α2 in
+    M.read α3).
 
 (*
 fn main() {

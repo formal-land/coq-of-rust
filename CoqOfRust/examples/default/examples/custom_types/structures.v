@@ -69,17 +69,13 @@ Section Impl_core_fmt_Debug_for_structures_Person_t.
       let* α28 : M.Val (ref type not implemented) :=
         pointer_coercion "Unsize" α27 in
       let* α29 : ref type not implemented := M.read α28 in
-      let* α30 : core.result.Result.t unit core.fmt.Error.t :=
-        core.fmt.Formatter.t::["debug_struct_field2_finish"]
-          α2
-          α5
-          α8
-          α16
-          α19
-          α29 in
-      let* α0 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=
-        M.alloc α30 in
-      M.read α0).
+      core.fmt.Formatter.t::["debug_struct_field2_finish"]
+        α2
+        α5
+        α8
+        α16
+        α19
+        α29).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {

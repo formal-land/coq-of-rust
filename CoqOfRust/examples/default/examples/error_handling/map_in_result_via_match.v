@@ -28,7 +28,7 @@ Definition multiply
         M.Val (core.result.Result.t i32.t core.num.error.ParseIntError.t) :=
       M.alloc α3 in
     let* α5 := M.read α4 in
-    let* α0 :
+    let* α6 :
         M.Val (core.result.Result.t i32.t core.num.error.ParseIntError.t) :=
       match α5 with
       | core.result.Result.Ok first_number =>
@@ -58,7 +58,7 @@ Definition multiply
         let* α0 : core.num.error.ParseIntError.t := M.read e in
         M.alloc (core.result.Result.Err α0)
       end in
-    M.read α0).
+    M.read α6).
 
 (*
 fn print(result: Result<i32, ParseIntError>) {
@@ -76,7 +76,7 @@ Definition print
     M.alloc result in
   M.function_body
     (let* α0 := M.read result in
-    let* α0 : M.Val unit :=
+    let* α1 : M.Val unit :=
       match α0 with
       | core.result.Result.Ok n =>
         let* n := M.alloc n in
@@ -145,7 +145,7 @@ Definition print
           M.alloc α20 in
         M.alloc tt
       end in
-    M.read α0).
+    M.read α1).
 
 (*
 fn main() {

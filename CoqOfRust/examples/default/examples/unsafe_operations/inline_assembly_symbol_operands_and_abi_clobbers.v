@@ -31,10 +31,7 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
-  M.function_body
-    (let* α0 : M.Val unit := M.alloc tt in
-    M.read α0).
+Definition main : M unit := M.function_body (M.pure tt).
 
 (*
     extern "C" fn foo(arg: i32) -> i32 {
@@ -104,5 +101,5 @@ Definition call_foo (arg : i32.t) : M i32.t :=
   let* arg : M.Val i32.t := M.alloc arg in
   M.function_body
     (let* result : M.Val unit := M.alloc tt in
-    let _ := InlineAssembly in
+    let _ : M.Val unit := InlineAssembly in
     M.read result).

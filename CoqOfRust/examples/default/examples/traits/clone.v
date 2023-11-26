@@ -27,11 +27,7 @@ Section Impl_core_fmt_Debug_for_clone_Unit_t.
       let* α3 : ref str.t := M.read (mk_str "Unit") in
       let* α4 : M.Val str.t := deref α3 in
       let* α5 : ref str.t := borrow α4 in
-      let* α6 : core.result.Result.t unit core.fmt.Error.t :=
-        core.fmt.Formatter.t::["write_str"] α2 α5 in
-      let* α0 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=
-        M.alloc α6 in
-      M.read α0).
+      core.fmt.Formatter.t::["write_str"] α2 α5).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -55,8 +51,8 @@ Section Impl_core_clone_Clone_for_clone_Unit_t.
     let* self : M.Val (ref ltac:(Self)) := M.alloc self in
     M.function_body
       (let* α0 : ref clone.Unit.t := M.read self in
-      let* α0 : M.Val clone.Unit.t := deref α0 in
-      M.read α0).
+      let* α1 : M.Val clone.Unit.t := deref α0 in
+      M.read α1).
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon ltac:(Self) "clone" := {
@@ -131,8 +127,7 @@ Section Impl_core_clone_Clone_for_clone_Pair_t.
             (Self := alloc.boxed.Box.t i32.t alloc.alloc.Global.t)
             (Trait := ltac:(refine _)))
           α10 in
-      let* α0 : M.Val clone.Pair.t := M.alloc (clone.Pair.Build_t α5 α11) in
-      M.read α0).
+      M.pure (clone.Pair.Build_t α5 α11)).
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon ltac:(Self) "clone" := {
@@ -197,11 +192,7 @@ Section Impl_core_fmt_Debug_for_clone_Pair_t.
       let* α22 : M.Val (ref type not implemented) :=
         pointer_coercion "Unsize" α21 in
       let* α23 : ref type not implemented := M.read α22 in
-      let* α24 : core.result.Result.t unit core.fmt.Error.t :=
-        core.fmt.Formatter.t::["debug_tuple_field2_finish"] α2 α5 α13 α23 in
-      let* α0 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=
-        M.alloc α24 in
-      M.read α0).
+      core.fmt.Formatter.t::["debug_tuple_field2_finish"] α2 α5 α13 α23).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {

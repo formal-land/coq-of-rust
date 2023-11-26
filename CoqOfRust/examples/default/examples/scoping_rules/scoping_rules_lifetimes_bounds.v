@@ -50,11 +50,7 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_t_T.
       let* α14 : M.Val (ref type not implemented) :=
         pointer_coercion "Unsize" α13 in
       let* α15 : ref type not implemented := M.read α14 in
-      let* α16 : core.result.Result.t unit core.fmt.Error.t :=
-        core.fmt.Formatter.t::["debug_tuple_field1_finish"] α2 α5 α15 in
-      let* α0 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=
-        M.alloc α16 in
-      M.read α0).
+      core.fmt.Formatter.t::["debug_tuple_field1_finish"] α2 α5 α15).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {

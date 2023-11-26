@@ -44,16 +44,7 @@ Definition double_first
             α5
             α6 in
         M.alloc α7) in
-    let* α6 :
-        core.option.Option.t
-          (core.result.Result.t i32.t core.num.error.ParseIntError.t) :=
-      (core.option.Option.t (ref (ref str.t)))::["map"] α4 α5 in
-    let* α0 :
-        M.Val
-          (core.option.Option.t
-            (core.result.Result.t i32.t core.num.error.ParseIntError.t)) :=
-      M.alloc α6 in
-    M.read α0).
+    (core.option.Option.t (ref (ref str.t)))::["map"] α4 α5).
 
 (*
 fn main() {

@@ -33,11 +33,7 @@ Section Impl_core_fmt_Debug_for_boxing_errors_EmptyVec_t.
       let* α3 : ref str.t := M.read (mk_str "EmptyVec") in
       let* α4 : M.Val str.t := deref α3 in
       let* α5 : ref str.t := borrow α4 in
-      let* α6 : core.result.Result.t unit core.fmt.Error.t :=
-        core.fmt.Formatter.t::["write_str"] α2 α5 in
-      let* α0 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=
-        M.alloc α6 in
-      M.read α0).
+      core.fmt.Formatter.t::["write_str"] α2 α5).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -59,10 +55,7 @@ Section Impl_core_clone_Clone_for_boxing_errors_EmptyVec_t.
   *)
   Definition clone (self : ref ltac:(Self)) : M boxing_errors.EmptyVec.t :=
     let* self : M.Val (ref ltac:(Self)) := M.alloc self in
-    M.function_body
-      (let* α0 : M.Val boxing_errors.EmptyVec.t :=
-        M.alloc boxing_errors.EmptyVec.Build_t in
-      M.read α0).
+    M.function_body (M.pure boxing_errors.EmptyVec.Build_t).
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon ltac:(Self) "clone" := {
@@ -106,11 +99,7 @@ Section Impl_core_fmt_Display_for_boxing_errors_EmptyVec_t.
       let* α9 : ref (slice (ref str.t)) := M.read α8 in
       let* α10 : core.fmt.Arguments.t :=
         core.fmt.Arguments.t::["new_const"] α9 in
-      let* α11 : core.result.Result.t unit core.fmt.Error.t :=
-        core.fmt.Formatter.t::["write_fmt"] α2 α10 in
-      let* α0 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=
-        M.alloc α11 in
-      M.read α0).
+      core.fmt.Formatter.t::["write_fmt"] α2 α10).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -223,24 +212,13 @@ Definition double_first
             α7
             α8 in
         M.alloc α9) in
-    let* α8 :
-        core.result.Result.t
-          i32.t
-          (alloc.boxed.Box.t type not implemented alloc.alloc.Global.t) :=
-      (core.result.Result.t
-            (ref (ref str.t))
-            (alloc.boxed.Box.t
-              type not implemented
-              alloc.alloc.Global.t))::["and_then"]
-        α6
-        α7 in
-    let* α0 :
-        M.Val
-          (core.result.Result.t
-            i32.t
-            (alloc.boxed.Box.t type not implemented alloc.alloc.Global.t)) :=
-      M.alloc α8 in
-    M.read α0).
+    (core.result.Result.t
+          (ref (ref str.t))
+          (alloc.boxed.Box.t
+            type not implemented
+            alloc.alloc.Global.t))::["and_then"]
+      α6
+      α7).
 
 (*
 fn print(result: Result<i32>) {
@@ -254,7 +232,7 @@ Definition print (result : ltac:(boxing_errors.Result i32.t)) : M unit :=
   let* result : M.Val ltac:(boxing_errors.Result i32.t) := M.alloc result in
   M.function_body
     (let* α0 := M.read result in
-    let* α0 : M.Val unit :=
+    let* α1 : M.Val unit :=
       match α0 with
       | core.result.Result.Ok n =>
         let* n := M.alloc n in
@@ -332,7 +310,7 @@ Definition print (result : ltac:(boxing_errors.Result i32.t)) : M unit :=
           M.alloc α20 in
         M.alloc tt
       end in
-    M.read α0).
+    M.read α1).
 
 (*
 fn main() {

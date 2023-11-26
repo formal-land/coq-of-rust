@@ -59,7 +59,7 @@ Definition pointer_coercion {T : Set} (cast : string) (x : T) :
   M.pure x.
 
 (** We replace assembly blocks by a value of type unit. *)
-Parameter InlineAssembly : unit.
+Parameter InlineAssembly : M.Val unit.
 
 (** The functions on [Z] should eventually be replaced by functions on the
     corresponding integer types. *)

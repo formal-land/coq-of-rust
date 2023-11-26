@@ -100,17 +100,13 @@ Section Impl_core_fmt_Debug_for_tuples_Matrix_t.
       let* α38 : M.Val (ref type not implemented) :=
         pointer_coercion "Unsize" α37 in
       let* α39 : ref type not implemented := M.read α38 in
-      let* α40 : core.result.Result.t unit core.fmt.Error.t :=
-        core.fmt.Formatter.t::["debug_tuple_field4_finish"]
-          α2
-          α5
-          α13
-          α21
-          α29
-          α39 in
-      let* α0 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=
-        M.alloc α40 in
-      M.read α0).
+      core.fmt.Formatter.t::["debug_tuple_field4_finish"]
+        α2
+        α5
+        α13
+        α21
+        α29
+        α39).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {

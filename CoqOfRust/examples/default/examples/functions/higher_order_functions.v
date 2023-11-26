@@ -12,8 +12,8 @@ Definition is_odd (n : u32.t) : M bool.t :=
     (let* α0 : M.Val u32.t := M.alloc 2 in
     let* α1 : M.Val u32.t := BinOp.rem n α0 in
     let* α2 : M.Val u32.t := M.alloc 1 in
-    let* α0 : M.Val bool.t := BinOp.eq α1 α2 in
-    M.read α0).
+    let* α3 : M.Val bool.t := BinOp.eq α1 α2 in
+    M.read α3).
 
 (*
 fn main() {

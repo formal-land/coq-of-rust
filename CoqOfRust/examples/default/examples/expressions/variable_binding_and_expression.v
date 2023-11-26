@@ -18,7 +18,7 @@ Definition main : M unit :=
     (let* x : M.Val i32.t :=
       let* α0 : M.Val i32.t := M.alloc 5 in
       M.copy α0 in
-    let _ := x in
+    let _ : M.Val i32.t := x in
     let* _ : M.Val i32.t :=
       let* α0 : M.Val i32.t := M.alloc 1 in
       BinOp.add x α0 in

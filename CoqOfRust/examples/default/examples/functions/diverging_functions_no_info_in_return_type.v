@@ -6,10 +6,7 @@ fn some_fn() {
     ()
 }
 *)
-Definition some_fn : M unit :=
-  M.function_body
-    (let* α0 : M.Val unit := M.alloc tt in
-    M.read α0).
+Definition some_fn : M unit := M.function_body (M.pure tt).
 
 (*
 fn main() {

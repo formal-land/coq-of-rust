@@ -58,11 +58,7 @@ Section Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert
           M.alloc α2
         end in
       let* α5 : ref str.t := M.read α4 in
-      let* α6 : core.result.Result.t unit core.fmt.Error.t :=
-        core.fmt.Formatter.t::["write_str"] α2 α5 in
-      let* α0 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=
-        M.alloc α6 in
-      M.read α0).
+      core.fmt.Formatter.t::["write_str"] α2 α5).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {

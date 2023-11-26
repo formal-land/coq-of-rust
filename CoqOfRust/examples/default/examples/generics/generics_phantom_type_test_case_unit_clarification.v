@@ -22,9 +22,9 @@ Section Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificati
     M.function_body
       (let* α0 : never.t := "unimplemented parent_kind" in
       let* α1 : M.Val never.t := M.alloc α0 in
-      let* α0 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=
+      let* α2 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=
         never_to_any α1 in
-      M.read α0).
+      M.read α2).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -52,10 +52,10 @@ Section Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarifica
       (let* α0 :
           ref generics_phantom_type_test_case_unit_clarification.Inch.t :=
         M.read self in
-      let* α0 :
+      let* α1 :
           M.Val generics_phantom_type_test_case_unit_clarification.Inch.t :=
         deref α0 in
-      M.read α0).
+      M.read α1).
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon ltac:(Self) "clone" := {
@@ -99,9 +99,9 @@ Section Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificati
     M.function_body
       (let* α0 : never.t := "unimplemented parent_kind" in
       let* α1 : M.Val never.t := M.alloc α0 in
-      let* α0 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=
+      let* α2 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=
         never_to_any α1 in
-      M.read α0).
+      M.read α2).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -128,9 +128,9 @@ Section Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarifica
     M.function_body
       (let* α0 : ref generics_phantom_type_test_case_unit_clarification.Mm.t :=
         M.read self in
-      let* α0 : M.Val generics_phantom_type_test_case_unit_clarification.Mm.t :=
+      let* α1 : M.Val generics_phantom_type_test_case_unit_clarification.Mm.t :=
         deref α0 in
-      M.read α0).
+      M.read α1).
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon ltac:(Self) "clone" := {
@@ -233,11 +233,7 @@ Section Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificati
       let* α22 : M.Val (ref type not implemented) :=
         pointer_coercion "Unsize" α21 in
       let* α23 : ref type not implemented := M.read α22 in
-      let* α24 : core.result.Result.t unit core.fmt.Error.t :=
-        core.fmt.Formatter.t::["debug_tuple_field2_finish"] α2 α5 α13 α23 in
-      let* α0 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=
-        M.alloc α24 in
-      M.read α0).
+      core.fmt.Formatter.t::["debug_tuple_field2_finish"] α2 α5 α13 α23).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -301,15 +297,10 @@ Section Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarifica
             (Self := core.marker.PhantomData.t Unit)
             (Trait := ltac:(refine _)))
           α10 in
-      let* α0 :
-          M.Val
-            (generics_phantom_type_test_case_unit_clarification.Length.t
-              Unit) :=
-        M.alloc
-          (generics_phantom_type_test_case_unit_clarification.Length.Build_t
-            α5
-            α11) in
-      M.read α0).
+      M.pure
+        (generics_phantom_type_test_case_unit_clarification.Length.Build_t
+          α5
+          α11)).
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon ltac:(Self) "clone" := {
@@ -368,15 +359,10 @@ Section Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarifi
     M.function_body
       (let* α0 : M.Val f64.t := BinOp.add self.["0"] rhs.["0"] in
       let* α1 : f64.t := M.read α0 in
-      let* α0 :
-          M.Val
-            (generics_phantom_type_test_case_unit_clarification.Length.t
-              Unit) :=
-        M.alloc
-          (generics_phantom_type_test_case_unit_clarification.Length.Build_t
-            α1
-            core.marker.PhantomData.Build_t) in
-      M.read α0).
+      M.pure
+        (generics_phantom_type_test_case_unit_clarification.Length.Build_t
+          α1
+          core.marker.PhantomData.Build_t)).
   
   Global Instance AssociatedFunction_add :
     Notations.DoubleColon ltac:(Self) "add" := {

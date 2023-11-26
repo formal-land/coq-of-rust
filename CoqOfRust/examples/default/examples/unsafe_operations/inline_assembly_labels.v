@@ -29,7 +29,7 @@ Definition main : M unit :=
       let* α0 : M.Val i32.t := M.alloc 0 in
       M.copy α0 in
     let* _ : M.Val unit :=
-      let _ := InlineAssembly in
+      let _ : M.Val unit := InlineAssembly in
       M.alloc tt in
     let* _ : M.Val unit :=
       let* α0 : ref i32.t := borrow a in

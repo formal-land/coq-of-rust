@@ -76,7 +76,7 @@ Definition fizzbuzz (n : u32.t) : M unit :=
     let* α4 : M.Val bool.t := M.alloc α3 in
     let* α5 : M.Val bool.t := use α4 in
     let* α6 : bool.t := M.read α5 in
-    let* α0 : M.Val unit :=
+    let* α7 : M.Val unit :=
       if (α6 : bool) then
         let* _ : M.Val unit :=
           let* _ : M.Val unit :=
@@ -185,7 +185,7 @@ Definition fizzbuzz (n : u32.t) : M unit :=
                 M.alloc α20 in
               M.alloc tt in
             M.alloc tt in
-    M.read α0).
+    M.read α7).
 
 (*
 fn fizzbuzz_to(n: u32) {
@@ -242,5 +242,5 @@ Definition fizzbuzz_to (n : u32.t) : M unit :=
             end in
           M.alloc tt)
       end in
-    let* α0 : M.Val unit := use α7 in
-    M.read α0).
+    let* α8 : M.Val unit := use α7 in
+    M.read α8).

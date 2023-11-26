@@ -266,12 +266,7 @@ fn compile_expr_kind<'a>(
             }
         }
         thir::ExprKind::Loop { body, .. } => {
-            let body = compile_expr(env, thir, body);
-            let ty = body.ty.clone();
-            let body = Box::new(Stmt {
-                kind: StmtKind::Expr(Box::new(body)),
-                ty,
-            });
+            let body = Box::new(compile_expr(env, thir, body));
             ExprKind::Loop { body }
         }
         thir::ExprKind::Let { expr, pat } => {
@@ -295,17 +290,13 @@ fn compile_expr_kind<'a>(
                 .map(|arm_id| {
                     let arm = thir.arms.get(*arm_id).unwrap();
                     let pat = crate::thir_pattern::compile_pattern(env, &arm.pattern);
-                    let body = compile_expr(env, thir, &arm.body);
-                    let body = Box::new(Stmt {
-                        ty: body.ty.clone(),
-                        kind: StmtKind::Expr(Box::new(body)),
-                    });
+                    let body = Box::new(compile_expr(env, thir, &arm.body));
                     let bindings = pat.get_bindings();
                     // Allocate all the bindings to [M.Val]
                     let body = bindings.iter().fold(body, |body, binding| {
-                        Box::new(Stmt {
+                        Box::new(Expr {
                             ty: body.ty.clone(),
-                            kind: StmtKind::Let {
+                            kind: ExprKind::Let {
                                 is_monadic: false,
                                 pattern: Box::new(Pattern::Variable(binding.clone())),
                                 init: Box::new(Expr {
@@ -316,20 +307,12 @@ fn compile_expr_kind<'a>(
                             },
                         })
                     });
-                    MatchArm {
-                        pat,
-                        body: Expr {
-                            ty: body.ty.clone(),
-                            kind: ExprKind::Block(body),
-                        },
-                    }
+                    MatchArm { pat, body: *body }
                 })
                 .collect();
             ExprKind::Match { scrutinee, arms }
         }
-        thir::ExprKind::Block { block: block_id } => {
-            ExprKind::Block(Box::new(compile_block(env, thir, block_id)))
-        }
+        thir::ExprKind::Block { block: block_id } => compile_block(env, thir, block_id).kind,
         thir::ExprKind::Assign { lhs, rhs } => {
             let func = Box::new(Expr {
                 kind: ExprKind::LocalVar("assign".to_string()),
@@ -586,17 +569,12 @@ fn compile_stmts<'a>(
     thir: &rustc_middle::thir::Thir<'a>,
     stmt_ids: &[rustc_middle::thir::StmtId],
     expr_id: Option<rustc_middle::thir::ExprId>,
-) -> Stmt {
+) -> Expr {
     stmt_ids.iter().rev().fold(
         {
-            let init = match &expr_id {
+            match &expr_id {
                 Some(expr_id) => compile_expr(env, thir, expr_id),
                 None => Expr::tt(),
-            };
-            let ty = init.ty.clone();
-            Stmt {
-                kind: StmtKind::Expr(Box::new(init)),
-                ty,
             }
         },
         |body, stmt_id| {
@@ -614,8 +592,8 @@ fn compile_stmts<'a>(
                         None => Box::new(Expr::tt()),
                     };
                     let ty = body.ty.clone();
-                    Stmt {
-                        kind: StmtKind::Let {
+                    Expr {
+                        kind: ExprKind::Let {
                             is_monadic: false,
                             pattern,
                             init,
@@ -627,8 +605,8 @@ fn compile_stmts<'a>(
                 thir::StmtKind::Expr { expr: expr_id, .. } => {
                     let init = Box::new(compile_expr(env, thir, expr_id));
                     let ty = body.ty.clone();
-                    Stmt {
-                        kind: StmtKind::Let {
+                    Expr {
+                        kind: ExprKind::Let {
                             is_monadic: false,
                             pattern: Box::new(Pattern::Wild),
                             init,
@@ -646,7 +624,7 @@ fn compile_block<'a>(
     env: &mut Env<'a>,
     thir: &rustc_middle::thir::Thir<'a>,
     block_id: &rustc_middle::thir::BlockId,
-) -> Stmt {
+) -> Expr {
     let block = thir.blocks.get(*block_id).unwrap();
     compile_stmts(env, thir, &block.stmts, block.expr)
 }

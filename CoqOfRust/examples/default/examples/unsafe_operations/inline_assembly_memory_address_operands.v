@@ -13,10 +13,7 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
-  M.function_body
-    (let* α0 : M.Val unit := M.alloc tt in
-    M.read α0).
+Definition main : M unit := M.function_body (M.pure tt).
 
 (*
     fn load_fpu_control_word(control: u16) {
@@ -28,6 +25,6 @@ Definition main : M unit :=
 Definition load_fpu_control_word (control : u16.t) : M unit :=
   let* control : M.Val u16.t := M.alloc control in
   M.function_body
-    (let _ := InlineAssembly in
+    (let _ : M.Val unit := InlineAssembly in
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0).

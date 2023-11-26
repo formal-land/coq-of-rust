@@ -63,11 +63,7 @@ Section Impl_core_fmt_Display_for_converting_to_string_Circle_t.
       let* α23 : ref (slice core.fmt.rt.Argument.t) := M.read α22 in
       let* α24 : core.fmt.Arguments.t :=
         core.fmt.Arguments.t::["new_v1"] α9 α23 in
-      let* α25 : core.result.Result.t unit core.fmt.Error.t :=
-        core.fmt.Formatter.t::["write_fmt"] α2 α24 in
-      let* α0 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=
-        M.alloc α25 in
-      M.read α0).
+      core.fmt.Formatter.t::["write_fmt"] α2 α24).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {

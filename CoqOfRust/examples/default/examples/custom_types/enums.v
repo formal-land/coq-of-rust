@@ -38,7 +38,7 @@ Definition inspect (event : enums.WebEvent.t) : M unit :=
   let* event : M.Val enums.WebEvent.t := M.alloc event in
   M.function_body
     (let* α0 := M.read event in
-    let* α0 : M.Val unit :=
+    let* α1 : M.Val unit :=
       match α0 with
       | enums.WebEvent.PageLoad  =>
         let* _ : M.Val unit :=
@@ -193,7 +193,7 @@ Definition inspect (event : enums.WebEvent.t) : M unit :=
           M.alloc tt in
         M.alloc tt
       end in
-    M.read α0).
+    M.read α1).
 
 (*
 fn main() {

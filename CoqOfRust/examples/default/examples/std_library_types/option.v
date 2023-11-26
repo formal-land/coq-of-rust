@@ -23,14 +23,14 @@ Definition checked_division
     let* α1 : M.Val bool.t := BinOp.eq divisor α0 in
     let* α2 : M.Val bool.t := use α1 in
     let* α3 : bool.t := M.read α2 in
-    let* α0 : M.Val (core.option.Option.t i32.t) :=
+    let* α4 : M.Val (core.option.Option.t i32.t) :=
       if (α3 : bool) then
         M.alloc core.option.Option.None
       else
         let* α0 : M.Val i32.t := BinOp.div dividend divisor in
         let* α1 : i32.t := M.read α0 in
         M.alloc (core.option.Option.Some α1) in
-    M.read α0).
+    M.read α4).
 
 (*
 fn try_division(dividend: i32, divisor: i32) {
@@ -52,7 +52,7 @@ Definition try_division (dividend : i32.t) (divisor : i32.t) : M unit :=
     let* α2 : core.option.Option.t i32.t := option.checked_division α0 α1 in
     let* α3 : M.Val (core.option.Option.t i32.t) := M.alloc α2 in
     let* α4 := M.read α3 in
-    let* α0 : M.Val unit :=
+    let* α5 : M.Val unit :=
       match α4 with
       | core.option.Option.None  =>
         let* _ : M.Val unit :=
@@ -140,7 +140,7 @@ Definition try_division (dividend : i32.t) (divisor : i32.t) : M unit :=
           M.alloc α30 in
         M.alloc tt
       end in
-    M.read α0).
+    M.read α5).
 
 (*
 fn main() {

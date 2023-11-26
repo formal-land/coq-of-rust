@@ -33,11 +33,7 @@ Section Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec_t.
       let* α3 : ref str.t := M.read (mk_str "EmptyVec") in
       let* α4 : M.Val str.t := deref α3 in
       let* α5 : ref str.t := borrow α4 in
-      let* α6 : core.result.Result.t unit core.fmt.Error.t :=
-        core.fmt.Formatter.t::["write_str"] α2 α5 in
-      let* α0 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=
-        M.alloc α6 in
-      M.read α0).
+      core.fmt.Formatter.t::["write_str"] α2 α5).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -80,11 +76,7 @@ Section Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec_t.
       let* α9 : ref (slice (ref str.t)) := M.read α8 in
       let* α10 : core.fmt.Arguments.t :=
         core.fmt.Arguments.t::["new_const"] α9 in
-      let* α11 : core.result.Result.t unit core.fmt.Error.t :=
-        core.fmt.Formatter.t::["write_fmt"] α2 α10 in
-      let* α0 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=
-        M.alloc α11 in
-      M.read α0).
+      core.fmt.Formatter.t::["write_fmt"] α2 α10).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -278,7 +270,7 @@ Definition print
     M.alloc result in
   M.function_body
     (let* α0 := M.read result in
-    let* α0 : M.Val unit :=
+    let* α1 : M.Val unit :=
       match α0 with
       | core.result.Result.Ok n =>
         let* n := M.alloc n in
@@ -356,7 +348,7 @@ Definition print
           M.alloc α20 in
         M.alloc tt
       end in
-    M.read α0).
+    M.read α1).
 
 (*
 fn main() {

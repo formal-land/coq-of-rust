@@ -34,9 +34,7 @@ Section Impl_functions_order_SomeType_t.
   *)
   Definition meth2 (self : ltac:(Self)) : M unit :=
     let* self : M.Val ltac:(Self) := M.alloc self in
-    M.function_body
-      (let* α0 : M.Val unit := M.alloc tt in
-      M.read α0).
+    M.function_body (M.pure tt).
   
   Global Instance AssociatedFunction_meth2 :
     Notations.DoubleColon ltac:(Self) "meth2" := {
@@ -84,9 +82,7 @@ Section Impl_functions_order_SomeTrait_for_functions_order_SomeType_t.
   *)
   Definition some_trait_bar (self : ref ltac:(Self)) : M unit :=
     let* self : M.Val (ref ltac:(Self)) := M.alloc self in
-    M.function_body
-      (let* α0 : M.Val unit := M.alloc tt in
-      M.read α0).
+    M.function_body (M.pure tt).
   
   Global Instance AssociatedFunction_some_trait_bar :
     Notations.DoubleColon ltac:(Self) "some_trait_bar" := {
@@ -104,13 +100,10 @@ Section Impl_functions_order_SomeTrait_for_functions_order_SomeType_t.
       (let* α0 : ref functions_order.SomeType.t := M.read self in
       let* α1 : M.Val functions_order.SomeType.t := deref α0 in
       let* α2 : ref functions_order.SomeType.t := borrow α1 in
-      let* α3 : unit :=
-        (functions_order.SomeTrait.some_trait_bar
-            (Self := functions_order.SomeType.t)
-            (Trait := ltac:(refine _)))
-          α2 in
-      let* α0 : M.Val unit := M.alloc α3 in
-      M.read α0).
+      (functions_order.SomeTrait.some_trait_bar
+          (Self := functions_order.SomeType.t)
+          (Trait := ltac:(refine _)))
+        α2).
   
   Global Instance AssociatedFunction_some_trait_foo :
     Notations.DoubleColon ltac:(Self) "some_trait_foo" := {
@@ -133,9 +126,7 @@ Section Impl_functions_order_SomeTrait_for_functions_order_OtherType_t.
   *)
   Definition some_trait_foo (self : ref ltac:(Self)) : M unit :=
     let* self : M.Val (ref ltac:(Self)) := M.alloc self in
-    M.function_body
-      (let* α0 : M.Val unit := M.alloc tt in
-      M.read α0).
+    M.function_body (M.pure tt).
   
   Global Instance AssociatedFunction_some_trait_foo :
     Notations.DoubleColon ltac:(Self) "some_trait_foo" := {
@@ -147,9 +138,7 @@ Section Impl_functions_order_SomeTrait_for_functions_order_OtherType_t.
   *)
   Definition some_trait_bar (self : ref ltac:(Self)) : M unit :=
     let* self : M.Val (ref ltac:(Self)) := M.alloc self in
-    M.function_body
-      (let* α0 : M.Val unit := M.alloc tt in
-      M.read α0).
+    M.function_body (M.pure tt).
   
   Global Instance AssociatedFunction_some_trait_bar :
     Notations.DoubleColon ltac:(Self) "some_trait_bar" := {
@@ -202,10 +191,7 @@ Module inner_mod.
   (*
       fn tar() {}
   *)
-  Definition tar : M unit :=
-    M.function_body
-      (let* α0 : M.Val unit := M.alloc tt in
-      M.read α0).
+  Definition tar : M unit := M.function_body (M.pure tt).
   
   (*
       pub fn bar() {
@@ -225,10 +211,7 @@ Module inner_mod.
     (*
             fn tack() {}
     *)
-    Definition tack : M unit :=
-      M.function_body
-        (let* α0 : M.Val unit := M.alloc tt in
-        M.read α0).
+    Definition tack : M unit := M.function_body (M.pure tt).
     
     (*
             pub fn tick() {
@@ -262,19 +245,13 @@ Definition bar : M unit :=
 (*
     fn tar() {}
 *)
-Definition tar : M unit :=
-  M.function_body
-    (let* α0 : M.Val unit := M.alloc tt in
-    M.read α0).
+Definition tar : M unit := M.function_body (M.pure tt).
 
 Module nested_mod.
   (*
           fn tack() {}
   *)
-  Definition tack : M unit :=
-    M.function_body
-      (let* α0 : M.Val unit := M.alloc tt in
-      M.read α0).
+  Definition tack : M unit := M.function_body (M.pure tt).
   
   (*
           pub fn tick() {
@@ -306,18 +283,12 @@ Definition tick : M unit :=
 (*
         fn tack() {}
 *)
-Definition tack : M unit :=
-  M.function_body
-    (let* α0 : M.Val unit := M.alloc tt in
-    M.read α0).
+Definition tack : M unit := M.function_body (M.pure tt).
 
 (*
 fn foo() {}
 *)
-Definition foo : M unit :=
-  M.function_body
-    (let* α0 : M.Val unit := M.alloc tt in
-    M.read α0).
+Definition foo : M unit := M.function_body (M.pure tt).
 
 (*
 fn main() {

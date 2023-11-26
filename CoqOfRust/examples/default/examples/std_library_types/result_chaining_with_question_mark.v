@@ -55,11 +55,7 @@ Module checked.
             M.alloc α2
           end in
         let* α5 : ref str.t := M.read α4 in
-        let* α6 : core.result.Result.t unit core.fmt.Error.t :=
-          core.fmt.Formatter.t::["write_str"] α2 α5 in
-        let* α0 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=
-          M.alloc α6 in
-        M.read α0).
+        core.fmt.Formatter.t::["write_str"] α2 α5).
     
     Global Instance AssociatedFunction_fmt :
       Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -98,7 +94,7 @@ Module checked.
       let* α1 : M.Val bool.t := BinOp.eq y α0 in
       let* α2 : M.Val bool.t := use α1 in
       let* α3 : bool.t := M.read α2 in
-      let* α0 :
+      let* α4 :
           M.Val
             (core.result.Result.t
               f64.t
@@ -111,7 +107,7 @@ Module checked.
           let* α0 : M.Val f64.t := BinOp.div x y in
           let* α1 : f64.t := M.read α0 in
           M.alloc (core.result.Result.Ok α1) in
-      M.read α0).
+      M.read α4).
   
   (*
       fn sqrt(x: f64) -> MathResult {
@@ -131,7 +127,7 @@ Module checked.
       let* α1 : M.Val bool.t := BinOp.lt x α0 in
       let* α2 : M.Val bool.t := use α1 in
       let* α3 : bool.t := M.read α2 in
-      let* α0 :
+      let* α4 :
           M.Val
             (core.result.Result.t
               f64.t
@@ -144,7 +140,7 @@ Module checked.
           let* α0 : f64.t := M.read x in
           let* α1 : f64.t := f64.t::["sqrt"] α0 in
           M.alloc (core.result.Result.Ok α1) in
-      M.read α0).
+      M.read α4).
   
   (*
       fn ln(x: f64) -> MathResult {
@@ -164,7 +160,7 @@ Module checked.
       let* α1 : M.Val bool.t := BinOp.le x α0 in
       let* α2 : M.Val bool.t := use α1 in
       let* α3 : bool.t := M.read α2 in
-      let* α0 :
+      let* α4 :
           M.Val
             (core.result.Result.t
               f64.t
@@ -177,7 +173,7 @@ Module checked.
           let* α0 : f64.t := M.read x in
           let* α1 : f64.t := f64.t::["ln"] α0 in
           M.alloc (core.result.Result.Ok α1) in
-      M.read α0).
+      M.read α4).
   
   (*
       fn op_(x: f64, y: f64) -> MathResult {
@@ -360,7 +356,7 @@ Module checked.
               result_chaining_with_question_mark.checked.MathError.t) :=
         M.alloc α2 in
       let* α4 := M.read α3 in
-      let* α0 : M.Val unit :=
+      let* α5 : M.Val unit :=
         match α4 with
         | core.result.Result.Err why =>
           let* why := M.alloc why in
@@ -431,7 +427,7 @@ Module checked.
             M.alloc α20 in
           M.alloc tt
         end in
-      M.read α0).
+      M.read α5).
 End checked.
 
 Module MathError.
@@ -486,11 +482,7 @@ Section Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathE
           M.alloc α2
         end in
       let* α5 : ref str.t := M.read α4 in
-      let* α6 : core.result.Result.t unit core.fmt.Error.t :=
-        core.fmt.Formatter.t::["write_str"] α2 α5 in
-      let* α0 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=
-        M.alloc α6 in
-      M.read α0).
+      core.fmt.Formatter.t::["write_str"] α2 α5).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -529,7 +521,7 @@ Definition div
     let* α1 : M.Val bool.t := BinOp.eq y α0 in
     let* α2 : M.Val bool.t := use α1 in
     let* α3 : bool.t := M.read α2 in
-    let* α0 :
+    let* α4 :
         M.Val
           (core.result.Result.t
             f64.t
@@ -542,7 +534,7 @@ Definition div
         let* α0 : M.Val f64.t := BinOp.div x y in
         let* α1 : f64.t := M.read α0 in
         M.alloc (core.result.Result.Ok α1) in
-    M.read α0).
+    M.read α4).
 
 (*
     fn sqrt(x: f64) -> MathResult {
@@ -562,7 +554,7 @@ Definition sqrt
     let* α1 : M.Val bool.t := BinOp.lt x α0 in
     let* α2 : M.Val bool.t := use α1 in
     let* α3 : bool.t := M.read α2 in
-    let* α0 :
+    let* α4 :
         M.Val
           (core.result.Result.t
             f64.t
@@ -575,7 +567,7 @@ Definition sqrt
         let* α0 : f64.t := M.read x in
         let* α1 : f64.t := f64.t::["sqrt"] α0 in
         M.alloc (core.result.Result.Ok α1) in
-    M.read α0).
+    M.read α4).
 
 (*
     fn ln(x: f64) -> MathResult {
@@ -595,7 +587,7 @@ Definition ln
     let* α1 : M.Val bool.t := BinOp.le x α0 in
     let* α2 : M.Val bool.t := use α1 in
     let* α3 : bool.t := M.read α2 in
-    let* α0 :
+    let* α4 :
         M.Val
           (core.result.Result.t
             f64.t
@@ -608,7 +600,7 @@ Definition ln
         let* α0 : f64.t := M.read x in
         let* α1 : f64.t := f64.t::["ln"] α0 in
         M.alloc (core.result.Result.Ok α1) in
-    M.read α0).
+    M.read α4).
 
 (*
     fn op_(x: f64, y: f64) -> MathResult {
@@ -791,7 +783,7 @@ Definition op (x : f64.t) (y : f64.t) : M unit :=
             result_chaining_with_question_mark.checked.MathError.t) :=
       M.alloc α2 in
     let* α4 := M.read α3 in
-    let* α0 : M.Val unit :=
+    let* α5 : M.Val unit :=
       match α4 with
       | core.result.Result.Err why =>
         let* why := M.alloc why in
@@ -861,7 +853,7 @@ Definition op (x : f64.t) (y : f64.t) : M unit :=
           M.alloc α20 in
         M.alloc tt
       end in
-    M.read α0).
+    M.read α5).
 
 (*
 fn main() {

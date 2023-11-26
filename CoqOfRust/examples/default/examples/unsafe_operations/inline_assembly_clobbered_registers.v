@@ -44,7 +44,7 @@ Definition main : M unit :=
       let* α1 : M.Val (array u8.t) := repeat α0 12 in
       M.copy α1 in
     let* _ : M.Val unit :=
-      let _ := InlineAssembly in
+      let _ : M.Val unit := InlineAssembly in
       M.alloc tt in
     let* name : M.Val (ref str.t) :=
       let* α0 : ref (array u8.t) := borrow name_buf in

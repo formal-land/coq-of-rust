@@ -100,7 +100,7 @@ Definition print
     M.alloc result in
   M.function_body
     (let* α0 := M.read result in
-    let* α0 : M.Val unit :=
+    let* α1 : M.Val unit :=
       match α0 with
       | core.result.Result.Ok n =>
         let* n := M.alloc n in
@@ -169,7 +169,7 @@ Definition print
           M.alloc α20 in
         M.alloc tt
       end in
-    M.read α0).
+    M.read α1).
 
 (*
 fn main() {

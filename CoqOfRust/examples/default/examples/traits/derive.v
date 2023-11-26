@@ -40,8 +40,8 @@ Section Impl_core_cmp_PartialEq_for_derive_Centimeters_t.
       let* α1 : M.Val derive.Centimeters.t := deref α0 in
       let* α2 : ref derive.Centimeters.t := M.read other in
       let* α3 : M.Val derive.Centimeters.t := deref α2 in
-      let* α0 : M.Val bool.t := BinOp.eq α1.["0"] α3.["0"] in
-      M.read α0).
+      let* α4 : M.Val bool.t := BinOp.eq α1.["0"] α3.["0"] in
+      M.read α4).
   
   Global Instance AssociatedFunction_eq :
     Notations.DoubleColon ltac:(Self) "eq" := {
@@ -81,15 +81,11 @@ Section Impl_core_cmp_PartialOrd_for_derive_Centimeters_t.
       let* α7 : ref f64.t := borrow α6.["0"] in
       let* α8 : M.Val f64.t := deref α7 in
       let* α9 : ref f64.t := borrow α8 in
-      let* α10 : core.option.Option.t core.cmp.Ordering.t :=
-        (core.cmp.PartialOrd.partial_cmp
-            (Self := f64.t)
-            (Trait := ltac:(refine _)))
-          α4
-          α9 in
-      let* α0 : M.Val (core.option.Option.t core.cmp.Ordering.t) :=
-        M.alloc α10 in
-      M.read α0).
+      (core.cmp.PartialOrd.partial_cmp
+          (Self := f64.t)
+          (Trait := ltac:(refine _)))
+        α4
+        α9).
   
   Global Instance AssociatedFunction_partial_cmp :
     Notations.DoubleColon ltac:(Self) "partial_cmp" := {
@@ -151,11 +147,7 @@ Section Impl_core_fmt_Debug_for_derive_Inches_t.
       let* α14 : M.Val (ref type not implemented) :=
         pointer_coercion "Unsize" α13 in
       let* α15 : ref type not implemented := M.read α14 in
-      let* α16 : core.result.Result.t unit core.fmt.Error.t :=
-        core.fmt.Formatter.t::["debug_tuple_field1_finish"] α2 α5 α15 in
-      let* α0 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=
-        M.alloc α16 in
-      M.read α0).
+      core.fmt.Formatter.t::["debug_tuple_field1_finish"] α2 α5 α15).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {

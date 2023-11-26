@@ -72,8 +72,8 @@ Section Impl_generics_associated_types_problem_Contains_i32_t_i32_t_for_generics
           α12
           α13 in
       let* α15 : M.Val bool.t := M.alloc α14 in
-      let* α0 : M.Val bool.t := BinOp.and α7 α15 in
-      M.read α0).
+      let* α16 : M.Val bool.t := BinOp.and α7 α15 in
+      M.read α16).
   
   Global Instance AssociatedFunction_contains :
     Notations.DoubleColon ltac:(Self) "contains" := {
@@ -162,8 +162,8 @@ Definition difference
           (Trait := ltac:(refine _)))
         α7 in
     let* α9 : M.Val i32.t := M.alloc α8 in
-    let* α0 : M.Val i32.t := BinOp.sub α4 α9 in
-    M.read α0).
+    let* α10 : M.Val i32.t := BinOp.sub α4 α9 in
+    M.read α10).
 
 (*
 fn main() {

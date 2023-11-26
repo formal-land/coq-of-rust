@@ -24,7 +24,7 @@ Section Impl_core_fmt_Debug_for_wrapping_errors_DoubleError_t.
     let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
     M.function_body
       (let* α0 := M.read self in
-      let* α0 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=
+      let* α1 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=
         match α0 with
         | wrapping_errors.DoubleError.EmptyVec  =>
           let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
@@ -57,7 +57,7 @@ Section Impl_core_fmt_Debug_for_wrapping_errors_DoubleError_t.
             core.fmt.Formatter.t::["debug_tuple_field1_finish"] α2 α5 α11 in
           M.alloc α12
         end in
-      M.read α0).
+      M.read α1).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -94,7 +94,7 @@ Section Impl_core_fmt_Display_for_wrapping_errors_DoubleError_t.
       (let* α0 : ref wrapping_errors.DoubleError.t := M.read self in
       let* α1 : M.Val wrapping_errors.DoubleError.t := deref α0 in
       let* α2 := M.read α1 in
-      let* α0 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=
+      let* α3 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=
         match α2 with
         | wrapping_errors.DoubleError.EmptyVec  =>
           let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
@@ -135,7 +135,7 @@ Section Impl_core_fmt_Display_for_wrapping_errors_DoubleError_t.
             core.fmt.Formatter.t::["write_fmt"] α2 α10 in
           M.alloc α11
         end in
-      M.read α0).
+      M.read α3).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -171,7 +171,7 @@ Section Impl_core_error_Error_for_wrapping_errors_DoubleError_t.
       (let* α0 : ref wrapping_errors.DoubleError.t := M.read self in
       let* α1 : M.Val wrapping_errors.DoubleError.t := deref α0 in
       let* α2 := M.read α1 in
-      let* α0 : M.Val (core.option.Option.t (ref type not implemented)) :=
+      let* α3 : M.Val (core.option.Option.t (ref type not implemented)) :=
         match α2 with
         | wrapping_errors.DoubleError.EmptyVec  =>
           M.alloc core.option.Option.None
@@ -186,7 +186,7 @@ Section Impl_core_error_Error_for_wrapping_errors_DoubleError_t.
           let* α5 : ref type not implemented := M.read α4 in
           M.alloc (core.option.Option.Some α5)
         end in
-      M.read α0).
+      M.read α3).
   
   Global Instance AssociatedFunction_source :
     Notations.DoubleColon ltac:(Self) "source" := {
@@ -218,9 +218,7 @@ Section Impl_core_convert_From_core_num_error_ParseIntError_t_for_wrapping_error
     let* err : M.Val core.num.error.ParseIntError.t := M.alloc err in
     M.function_body
       (let* α0 : core.num.error.ParseIntError.t := M.read err in
-      let* α0 : M.Val wrapping_errors.DoubleError.t :=
-        M.alloc (wrapping_errors.DoubleError.Parse α0) in
-      M.read α0).
+      M.pure (wrapping_errors.DoubleError.Parse α0)).
   
   Global Instance AssociatedFunction_from :
     Notations.DoubleColon ltac:(Self) "from" := {
@@ -389,7 +387,7 @@ Definition print (result : ltac:(wrapping_errors.Result i32.t)) : M unit :=
   let* result : M.Val ltac:(wrapping_errors.Result i32.t) := M.alloc result in
   M.function_body
     (let* α0 := M.read result in
-    let* α0 : M.Val unit :=
+    let* α1 : M.Val unit :=
       match α0 with
       | core.result.Result.Ok n =>
         let* n := M.alloc n in
@@ -507,7 +505,7 @@ Definition print (result : ltac:(wrapping_errors.Result i32.t)) : M unit :=
         else
           M.alloc tt
       end in
-    M.read α0).
+    M.read α1).
 
 (*
 fn main() {

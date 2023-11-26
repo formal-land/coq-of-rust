@@ -44,11 +44,7 @@ Section Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber_t.
       let* α14 : M.Val (ref type not implemented) :=
         pointer_coercion "Unsize" α13 in
       let* α15 : ref type not implemented := M.read α14 in
-      let* α16 : core.result.Result.t unit core.fmt.Error.t :=
-        core.fmt.Formatter.t::["debug_tuple_field1_finish"] α2 α5 α15 in
-      let* α0 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=
-        M.alloc α16 in
-      M.read α0).
+      core.fmt.Formatter.t::["debug_tuple_field1_finish"] α2 α5 α15).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -89,8 +85,8 @@ Section Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber_t.
       let* α1 : M.Val try_from_and_try_into.EvenNumber.t := deref α0 in
       let* α2 : ref try_from_and_try_into.EvenNumber.t := M.read other in
       let* α3 : M.Val try_from_and_try_into.EvenNumber.t := deref α2 in
-      let* α0 : M.Val bool.t := BinOp.eq α1.["0"] α3.["0"] in
-      M.read α0).
+      let* α4 : M.Val bool.t := BinOp.eq α1.["0"] α3.["0"] in
+      M.read α4).
   
   Global Instance AssociatedFunction_eq :
     Notations.DoubleColon ltac:(Self) "eq" := {
@@ -135,7 +131,7 @@ Section Impl_core_convert_TryFrom_i32_t_for_try_from_and_try_into_EvenNumber_t.
       let* α3 : M.Val bool.t := BinOp.eq α1 α2 in
       let* α4 : M.Val bool.t := use α3 in
       let* α5 : bool.t := M.read α4 in
-      let* α0 :
+      let* α6 :
           M.Val
             (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
         if (α5 : bool) then
@@ -145,7 +141,7 @@ Section Impl_core_convert_TryFrom_i32_t_for_try_from_and_try_into_EvenNumber_t.
               (try_from_and_try_into.EvenNumber.Build_t α0))
         else
           M.alloc (core.result.Result.Err tt) in
-      M.read α0).
+      M.read α6).
   
   Global Instance AssociatedFunction_try_from :
     Notations.DoubleColon ltac:(Self) "try_from" := {

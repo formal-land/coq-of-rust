@@ -4,27 +4,18 @@ Require Import CoqOfRust.CoqOfRust.
 (*
 fn used_function() {}
 *)
-Definition used_function : M unit :=
-  M.function_body
-    (let* α0 : M.Val unit := M.alloc tt in
-    M.read α0).
+Definition used_function : M unit := M.function_body (M.pure tt).
 
 (*
 fn unused_function() {}
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition unused_function : M unit :=
-  M.function_body
-    (let* α0 : M.Val unit := M.alloc tt in
-    M.read α0).
+Definition unused_function : M unit := M.function_body (M.pure tt).
 
 (*
 fn noisy_unused_function() {}
 *)
-Definition noisy_unused_function : M unit :=
-  M.function_body
-    (let* α0 : M.Val unit := M.alloc tt in
-    M.read α0).
+Definition noisy_unused_function : M unit := M.function_body (M.pure tt).
 
 (*
 fn main() {

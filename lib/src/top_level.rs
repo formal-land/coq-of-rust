@@ -754,46 +754,41 @@ fn compile_function_body(
         },
         ty: None,
     });
-    let body: Box<Stmt> = args
-        .iter()
-        .rfold(Box::new(body.stmt()), |body, (name, ty)| {
-            Box::new(Stmt {
-                ty: body.ty.clone(),
-                kind: StmtKind::Let {
-                    is_monadic: false,
-                    pattern: Box::new(Pattern::Variable(name.to_string())),
-                    init: Box::new(Expr {
-                        kind: ExprKind::Var(Path::local(name.to_string())).alloc(Some(ty.clone())),
-                        ty: Some(ty.clone().val()),
-                    }),
-                    body,
-                },
-            })
-        });
+    let body: Box<Expr> = args.iter().rfold(body, |body, (name, ty)| {
+        Box::new(Expr {
+            ty: body.ty.clone(),
+            kind: ExprKind::Let {
+                is_monadic: false,
+                pattern: Box::new(Pattern::Variable(name.to_string())),
+                init: Box::new(Expr {
+                    kind: ExprKind::Var(Path::local(name.to_string())).alloc(Some(ty.clone())),
+                    ty: Some(ty.clone().val()),
+                }),
+                body,
+            },
+        })
+    });
 
     if has_return {
-        return Some(Box::new(
-            Stmt {
-                kind: StmtKind::Let {
-                    is_monadic: false,
-                    pattern: Box::new(Pattern::Variable("return_".to_string())),
-                    init: Box::new(Expr {
-                        kind: ExprKind::VarWithTy {
-                            path: Path::local("M.return_".to_string()),
-                            ty_name: "R".to_string(),
-                            ty: ret_ty,
-                        },
-                        ty: None,
-                    }),
-                    body: Box::new(*body),
-                },
-                ty: None,
-            }
-            .expr(),
-        ));
+        return Some(Box::new(Expr {
+            kind: ExprKind::Let {
+                is_monadic: false,
+                pattern: Box::new(Pattern::Variable("return_".to_string())),
+                init: Box::new(Expr {
+                    kind: ExprKind::VarWithTy {
+                        path: Path::local("M.return_".to_string()),
+                        ty_name: "R".to_string(),
+                        ty: ret_ty,
+                    },
+                    ty: None,
+                }),
+                body,
+            },
+            ty: None,
+        }));
     }
 
-    Some(Box::new(body.expr()))
+    Some(body)
 }
 
 /// returns a list of pairs of argument names and their types
@@ -1076,11 +1071,8 @@ fn mt_impl_item(item: ImplItemKind) -> ImplItemKind {
             let body = match body {
                 None => body,
                 Some(body) => {
-                    let stmt = mt_expression(FreshVars::new(), *body).0;
-                    Some(Box::new(Expr {
-                        ty: stmt.ty.clone(),
-                        kind: ExprKind::Block(Box::new(stmt)),
-                    }))
+                    let body = mt_expression(FreshVars::new(), *body).0;
+                    Some(Box::new(body))
                 }
             };
             ImplItemKind::Const {
@@ -1105,10 +1097,7 @@ impl FnSigAndBody {
                 None => self.body,
                 Some(body) => {
                     let (body, _fresh_vars) = mt_expression(FreshVars::new(), *body);
-                    Some(Box::new(Expr {
-                        ty: body.ty.clone(),
-                        kind: ExprKind::Block(Box::new(body)),
-                    }))
+                    Some(Box::new(body))
                 }
             },
         }
@@ -1155,10 +1144,7 @@ fn mt_top_level_item(item: TopLevelItem) -> TopLevelItem {
                 None => value,
                 Some(value) => {
                     let (value, _fresh_vars) = mt_expression(FreshVars::new(), *value);
-                    Some(Box::new(Expr {
-                        ty: value.ty.clone(),
-                        kind: ExprKind::Block(Box::new(value)),
-                    }))
+                    Some(Box::new(value))
                 }
             },
         },

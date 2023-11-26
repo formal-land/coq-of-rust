@@ -80,11 +80,7 @@ Section Impl_core_fmt_Debug_for_subtle_Choice_t.
       let* α14 : M.Val (ref type not implemented) :=
         pointer_coercion "Unsize" α13 in
       let* α15 : ref type not implemented := M.read α14 in
-      let* α16 : core.result.Result.t unit core.fmt.Error.t :=
-        core.fmt.Formatter.t::["debug_tuple_field1_finish"] α2 α5 α15 in
-      let* α0 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=
-        M.alloc α16 in
-      M.read α0).
+      core.fmt.Formatter.t::["debug_tuple_field1_finish"] α2 α5 α15).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -199,10 +195,7 @@ Section Impl_core_ops_bit_BitAnd_for_subtle_Choice_t.
     M.function_body
       (let* α0 : M.Val u8.t := BinOp.bit_and self.["0"] rhs.["0"] in
       let* α1 : u8.t := M.read α0 in
-      let* α2 : subtle.Choice.t :=
-        (core.convert.Into.into (Self := u8.t) (Trait := ltac:(refine _))) α1 in
-      let* α0 : M.Val subtle.Choice.t := M.alloc α2 in
-      M.read α0).
+      (core.convert.Into.into (Self := u8.t) (Trait := ltac:(refine _))) α1).
   
   Global Instance AssociatedFunction_bitand :
     Notations.DoubleColon ltac:(Self) "bitand" := {
@@ -287,10 +280,7 @@ Section Impl_core_ops_bit_BitOr_for_subtle_Choice_t.
     M.function_body
       (let* α0 : M.Val u8.t := BinOp.bit_or self.["0"] rhs.["0"] in
       let* α1 : u8.t := M.read α0 in
-      let* α2 : subtle.Choice.t :=
-        (core.convert.Into.into (Self := u8.t) (Trait := ltac:(refine _))) α1 in
-      let* α0 : M.Val subtle.Choice.t := M.alloc α2 in
-      M.read α0).
+      (core.convert.Into.into (Self := u8.t) (Trait := ltac:(refine _))) α1).
   
   Global Instance AssociatedFunction_bitor :
     Notations.DoubleColon ltac:(Self) "bitor" := {
@@ -375,10 +365,7 @@ Section Impl_core_ops_bit_BitXor_for_subtle_Choice_t.
     M.function_body
       (let* α0 : M.Val u8.t := BinOp.bit_xor self.["0"] rhs.["0"] in
       let* α1 : u8.t := M.read α0 in
-      let* α2 : subtle.Choice.t :=
-        (core.convert.Into.into (Self := u8.t) (Trait := ltac:(refine _))) α1 in
-      let* α0 : M.Val subtle.Choice.t := M.alloc α2 in
-      M.read α0).
+      (core.convert.Into.into (Self := u8.t) (Trait := ltac:(refine _))) α1).
   
   Global Instance AssociatedFunction_bitxor :
     Notations.DoubleColon ltac:(Self) "bitxor" := {
@@ -461,10 +448,7 @@ Section Impl_core_ops_bit_Not_for_subtle_Choice_t.
       let* α1 : M.Val u8.t := UnOp.not self.["0"] in
       let* α2 : M.Val u8.t := BinOp.bit_and α0 α1 in
       let* α3 : u8.t := M.read α2 in
-      let* α4 : subtle.Choice.t :=
-        (core.convert.Into.into (Self := u8.t) (Trait := ltac:(refine _))) α3 in
-      let* α0 : M.Val subtle.Choice.t := M.alloc α4 in
-      M.read α0).
+      (core.convert.Into.into (Self := u8.t) (Trait := ltac:(refine _))) α3).
   
   Global Instance AssociatedFunction_not :
     Notations.DoubleColon ltac:(Self) "not" := {
@@ -549,8 +533,7 @@ Section Impl_core_convert_From_u8_t_for_subtle_Choice_t.
     M.function_body
       (let* α0 : u8.t := M.read input in
       let* α1 : u8.t := subtle.black_box α0 in
-      let* α0 : M.Val subtle.Choice.t := M.alloc (subtle.Choice.Build_t α1) in
-      M.read α0).
+      M.pure (subtle.Choice.Build_t α1)).
   
   Global Instance AssociatedFunction_from :
     Notations.DoubleColon ltac:(Self) "from" := {
@@ -788,13 +771,10 @@ Section Impl_subtle_ConstantTimeEq_for_subtle_Choice_t.
             (Trait := ltac:(refine _)))
           α2
           α5 in
-      let* α7 : subtle.Choice.t :=
-        (core.ops.bit.Not.not
-            (Self := subtle.Choice.t)
-            (Trait := ltac:(refine _)))
-          α6 in
-      let* α0 : M.Val subtle.Choice.t := M.alloc α7 in
-      M.read α0).
+      (core.ops.bit.Not.not
+          (Self := subtle.Choice.t)
+          (Trait := ltac:(refine _)))
+        α6).
   
   Global Instance AssociatedFunction_ct_eq :
     Notations.DoubleColon ltac:(Self) "ct_eq" := {
@@ -901,12 +881,9 @@ Section Impl_subtle_ConstantTimeEq_for_i8_t.
       let* α7 : ref u8.t := borrow α6 in
       let* α8 : M.Val u8.t := deref α7 in
       let* α9 : ref u8.t := borrow α8 in
-      let* α10 : subtle.Choice.t :=
-        (subtle.ConstantTimeEq.ct_eq (Self := u8.t) (Trait := ltac:(refine _)))
-          α3
-          α9 in
-      let* α0 : M.Val subtle.Choice.t := M.alloc α10 in
-      M.read α0).
+      (subtle.ConstantTimeEq.ct_eq (Self := u8.t) (Trait := ltac:(refine _)))
+        α3
+        α9).
   
   Global Instance AssociatedFunction_ct_eq :
     Notations.DoubleColon ltac:(Self) "ct_eq" := {
@@ -1013,12 +990,9 @@ Section Impl_subtle_ConstantTimeEq_for_i16_t.
       let* α7 : ref u16.t := borrow α6 in
       let* α8 : M.Val u16.t := deref α7 in
       let* α9 : ref u16.t := borrow α8 in
-      let* α10 : subtle.Choice.t :=
-        (subtle.ConstantTimeEq.ct_eq (Self := u16.t) (Trait := ltac:(refine _)))
-          α3
-          α9 in
-      let* α0 : M.Val subtle.Choice.t := M.alloc α10 in
-      M.read α0).
+      (subtle.ConstantTimeEq.ct_eq (Self := u16.t) (Trait := ltac:(refine _)))
+        α3
+        α9).
   
   Global Instance AssociatedFunction_ct_eq :
     Notations.DoubleColon ltac:(Self) "ct_eq" := {
@@ -1125,12 +1099,9 @@ Section Impl_subtle_ConstantTimeEq_for_i32_t.
       let* α7 : ref u32.t := borrow α6 in
       let* α8 : M.Val u32.t := deref α7 in
       let* α9 : ref u32.t := borrow α8 in
-      let* α10 : subtle.Choice.t :=
-        (subtle.ConstantTimeEq.ct_eq (Self := u32.t) (Trait := ltac:(refine _)))
-          α3
-          α9 in
-      let* α0 : M.Val subtle.Choice.t := M.alloc α10 in
-      M.read α0).
+      (subtle.ConstantTimeEq.ct_eq (Self := u32.t) (Trait := ltac:(refine _)))
+        α3
+        α9).
   
   Global Instance AssociatedFunction_ct_eq :
     Notations.DoubleColon ltac:(Self) "ct_eq" := {
@@ -1237,12 +1208,9 @@ Section Impl_subtle_ConstantTimeEq_for_i64_t.
       let* α7 : ref u64.t := borrow α6 in
       let* α8 : M.Val u64.t := deref α7 in
       let* α9 : ref u64.t := borrow α8 in
-      let* α10 : subtle.Choice.t :=
-        (subtle.ConstantTimeEq.ct_eq (Self := u64.t) (Trait := ltac:(refine _)))
-          α3
-          α9 in
-      let* α0 : M.Val subtle.Choice.t := M.alloc α10 in
-      M.read α0).
+      (subtle.ConstantTimeEq.ct_eq (Self := u64.t) (Trait := ltac:(refine _)))
+        α3
+        α9).
   
   Global Instance AssociatedFunction_ct_eq :
     Notations.DoubleColon ltac:(Self) "ct_eq" := {
@@ -1352,14 +1320,9 @@ Section Impl_subtle_ConstantTimeEq_for_isize_t.
       let* α7 : ref usize.t := borrow α6 in
       let* α8 : M.Val usize.t := deref α7 in
       let* α9 : ref usize.t := borrow α8 in
-      let* α10 : subtle.Choice.t :=
-        (subtle.ConstantTimeEq.ct_eq
-            (Self := usize.t)
-            (Trait := ltac:(refine _)))
-          α3
-          α9 in
-      let* α0 : M.Val subtle.Choice.t := M.alloc α10 in
-      M.read α0).
+      (subtle.ConstantTimeEq.ct_eq (Self := usize.t) (Trait := ltac:(refine _)))
+        α3
+        α9).
   
   Global Instance AssociatedFunction_ct_eq :
     Notations.DoubleColon ltac:(Self) "ct_eq" := {
@@ -2703,8 +2666,7 @@ Section Impl_subtle_ConditionallySelectable_for_subtle_Choice_t.
           α4
           α9
           α10 in
-      let* α0 : M.Val subtle.Choice.t := M.alloc (subtle.Choice.Build_t α11) in
-      M.read α0).
+      M.pure (subtle.Choice.Build_t α11)).
   
   Global Instance AssociatedFunction_conditional_select :
     Notations.DoubleColon ltac:(Self) "conditional_select" := {
@@ -2851,10 +2813,8 @@ Section Impl_core_clone_Clone_for_subtle_CtOption_t_T.
             (Self := subtle.Choice.t)
             (Trait := ltac:(refine _)))
           α10 in
-      let* α0 : M.Val (subtle.CtOption.t T) :=
-        M.alloc
-          {| subtle.CtOption.value := α5; subtle.CtOption.is_some := α11; |} in
-      M.read α0).
+      M.pure
+        {| subtle.CtOption.value := α5; subtle.CtOption.is_some := α11; |}).
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon ltac:(Self) "clone" := {
@@ -2931,17 +2891,13 @@ Section Impl_core_fmt_Debug_for_subtle_CtOption_t_T.
       let* α28 : M.Val (ref type not implemented) :=
         pointer_coercion "Unsize" α27 in
       let* α29 : ref type not implemented := M.read α28 in
-      let* α30 : core.result.Result.t unit core.fmt.Error.t :=
-        core.fmt.Formatter.t::["debug_struct_field2_finish"]
-          α2
-          α5
-          α8
-          α16
-          α19
-          α29 in
-      let* α0 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=
-        M.alloc α30 in
-      M.read α0).
+      core.fmt.Formatter.t::["debug_struct_field2_finish"]
+        α2
+        α5
+        α8
+        α16
+        α19
+        α29).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -2982,13 +2938,13 @@ Section Impl_core_convert_From_subtle_CtOption_t_T_for_core_option_Option_t_T.
       let* α7 : M.Val bool.t := BinOp.eq α5 α6 in
       let* α8 : M.Val bool.t := use α7 in
       let* α9 : bool.t := M.read α8 in
-      let* α0 : M.Val (core.option.Option.t T) :=
+      let* α10 : M.Val (core.option.Option.t T) :=
         if (α9 : bool) then
           let* α0 : T := M.read source.["value"] in
           M.alloc (core.option.Option.Some α0)
         else
           M.alloc core.option.Option.None in
-      M.read α0).
+      M.read α10).
   
   Global Instance AssociatedFunction_from :
     Notations.DoubleColon ltac:(Self) "from" := {
@@ -3025,10 +2981,7 @@ Section Impl_subtle_CtOption_t_T.
     M.function_body
       (let* α0 : T := M.read value in
       let* α1 : subtle.Choice.t := M.read is_some in
-      let* α0 : M.Val (subtle.CtOption.t T) :=
-        M.alloc
-          {| subtle.CtOption.value := α0; subtle.CtOption.is_some := α1; |} in
-      M.read α0).
+      M.pure {| subtle.CtOption.value := α0; subtle.CtOption.is_some := α1; |}).
   
   Global Instance AssociatedFunction_new :
     Notations.DoubleColon ltac:(Self) "new" := {
@@ -3215,15 +3168,12 @@ Section Impl_subtle_CtOption_t_T.
       let* α4 : M.Val T := deref α3 in
       let* α5 : ref T := borrow α4 in
       let* α6 : subtle.Choice.t := M.read self.["is_some"] in
-      let* α7 : T :=
-        (subtle.ConditionallySelectable.conditional_select
-            (Self := T)
-            (Trait := ltac:(refine _)))
-          α2
-          α5
-          α6 in
-      let* α0 : M.Val T := M.alloc α7 in
-      M.read α0).
+      (subtle.ConditionallySelectable.conditional_select
+          (Self := T)
+          (Trait := ltac:(refine _)))
+        α2
+        α5
+        α6).
   
   Global Instance AssociatedFunction_unwrap_or
       {ℋ_0 : subtle.ConditionallySelectable.Trait T} :
@@ -3265,15 +3215,12 @@ Section Impl_subtle_CtOption_t_T.
       let* α7 : M.Val T := deref α6 in
       let* α8 : ref T := borrow α7 in
       let* α9 : subtle.Choice.t := M.read self.["is_some"] in
-      let* α10 : T :=
-        (subtle.ConditionallySelectable.conditional_select
-            (Self := T)
-            (Trait := ltac:(refine _)))
-          α5
-          α8
-          α9 in
-      let* α0 : M.Val T := M.alloc α10 in
-      M.read α0).
+      (subtle.ConditionallySelectable.conditional_select
+          (Self := T)
+          (Trait := ltac:(refine _)))
+        α5
+        α8
+        α9).
   
   Global Instance AssociatedFunction_unwrap_or_else
       {F : Set}
@@ -3311,13 +3258,10 @@ Section Impl_subtle_CtOption_t_T.
       (let* α0 : ref (subtle.CtOption.t T) := M.read self in
       let* α1 : M.Val (subtle.CtOption.t T) := deref α0 in
       let* α2 : subtle.Choice.t := M.read α1.["is_some"] in
-      let* α3 : subtle.Choice.t :=
-        (core.ops.bit.Not.not
-            (Self := subtle.Choice.t)
-            (Trait := ltac:(refine _)))
-          α2 in
-      let* α0 : M.Val subtle.Choice.t := M.alloc α3 in
-      M.read α0).
+      (core.ops.bit.Not.not
+          (Self := subtle.Choice.t)
+          (Trait := ltac:(refine _)))
+        α2).
   
   Global Instance AssociatedFunction_is_none :
     Notations.DoubleColon ltac:(Self) "is_none" := {
@@ -3376,10 +3320,7 @@ Section Impl_subtle_CtOption_t_T.
           α0
           (α10) in
       let* α12 : subtle.Choice.t := M.read self.["is_some"] in
-      let* α13 : subtle.CtOption.t U :=
-        (subtle.CtOption.t U)::["new"] α11 α12 in
-      let* α0 : M.Val (subtle.CtOption.t U) := M.alloc α13 in
-      M.read α0).
+      (subtle.CtOption.t U)::["new"] α11 α12).
   
   Global Instance AssociatedFunction_map
       {U F : Set}
@@ -3587,10 +3528,7 @@ Section Impl_subtle_ConditionallySelectable_for_subtle_CtOption_t_T.
           α16
           α21
           α22 in
-      let* α24 : subtle.CtOption.t T :=
-        (subtle.CtOption.t T)::["new"] α11 α23 in
-      let* α0 : M.Val (subtle.CtOption.t T) := M.alloc α24 in
-      M.read α0).
+      (subtle.CtOption.t T)::["new"] α11 α23).
   
   Global Instance AssociatedFunction_conditional_select :
     Notations.DoubleColon ltac:(Self) "conditional_select" := {

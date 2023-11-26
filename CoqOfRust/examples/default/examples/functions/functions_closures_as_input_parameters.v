@@ -50,12 +50,7 @@ Definition apply_to_3
     (let* α0 : ref F := borrow f in
     let* α1 : M.Val i32.t := M.alloc 3 in
     let* α2 : i32.t := M.read α1 in
-    let* α3 : i32.t :=
-      (core.ops.function.Fn.call (Self := F) (Trait := ltac:(refine _)))
-        α0
-        (α2) in
-    let* α0 : M.Val i32.t := M.alloc α3 in
-    M.read α0).
+    (core.ops.function.Fn.call (Self := F) (Trait := ltac:(refine _))) α0 (α2)).
 
 (*
 fn main() {

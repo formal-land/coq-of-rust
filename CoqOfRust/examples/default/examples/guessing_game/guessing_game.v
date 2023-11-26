@@ -11,8 +11,8 @@ Definition gen_range : M u32.t :=
     (let* α0 : ref str.t := M.read (mk_str "not yet implemented") in
     let* α1 : never.t := core.panicking.panic α0 in
     let* α2 : M.Val never.t := M.alloc α1 in
-    let* α0 : M.Val u32.t := never_to_any α2 in
-    M.read α0).
+    let* α3 : M.Val u32.t := never_to_any α2 in
+    M.read α3).
 
 (*
 fn main() {

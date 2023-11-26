@@ -16,9 +16,7 @@ Definition coerce_static (arg : ref i32.t) : M (ref i32.t) :=
     let* α1 : M.Val i32.t := deref α0 in
     let* α2 : ref i32.t := borrow α1 in
     let* α3 : M.Val i32.t := deref α2 in
-    let* α4 : ref i32.t := borrow α3 in
-    let* α0 : M.Val (ref i32.t) := M.alloc α4 in
-    M.read α0).
+    borrow α3).
 
 (*
 fn main() {

@@ -177,5 +177,5 @@ Definition main : M unit :=
             end in
           M.alloc tt)
       end in
-    let* α0 : M.Val unit := use α7 in
-    M.read α0).
+    let* α8 : M.Val unit := use α7 in
+    M.read α8).

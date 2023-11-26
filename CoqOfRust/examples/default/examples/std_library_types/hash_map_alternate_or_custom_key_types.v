@@ -79,8 +79,8 @@ Section Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Accou
           α10
           α13 in
       let* α15 : M.Val bool.t := M.alloc α14 in
-      let* α0 : M.Val bool.t := BinOp.and α7 α15 in
-      M.read α0).
+      let* α16 : M.Val bool.t := BinOp.and α7 α15 in
+      M.read α16).
   
   Global Instance AssociatedFunction_eq :
     Notations.DoubleColon ltac:(Self) "eq" := {

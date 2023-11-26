@@ -57,13 +57,10 @@ Section Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating
       (let* α0 : ref disambiguating_overlapping_traits.Form.t := M.read self in
       let* α1 : M.Val disambiguating_overlapping_traits.Form.t := deref α0 in
       let* α2 : ref alloc.string.String.t := borrow α1.["username"] in
-      let* α3 : alloc.string.String.t :=
-        (core.clone.Clone.clone
-            (Self := alloc.string.String.t)
-            (Trait := ltac:(refine _)))
-          α2 in
-      let* α0 : M.Val alloc.string.String.t := M.alloc α3 in
-      M.read α0).
+      (core.clone.Clone.clone
+          (Self := alloc.string.String.t)
+          (Trait := ltac:(refine _)))
+        α2).
   
   Global Instance AssociatedFunction_get :
     Notations.DoubleColon ltac:(Self) "get" := {

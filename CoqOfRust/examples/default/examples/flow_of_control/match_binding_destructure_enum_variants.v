@@ -10,9 +10,7 @@ Definition some_number : M (core.option.Option.t u32.t) :=
   M.function_body
     (let* α0 : M.Val u32.t := M.alloc 42 in
     let* α1 : u32.t := M.read α0 in
-    let* α0 : M.Val (core.option.Option.t u32.t) :=
-      M.alloc (core.option.Option.Some α1) in
-    M.read α0).
+    M.pure (core.option.Option.Some α1)).
 
 (*
 fn main() {
@@ -34,7 +32,7 @@ Definition main : M unit :=
       match_binding_destructure_enum_variants.some_number in
     let* α1 : M.Val (core.option.Option.t u32.t) := M.alloc α0 in
     let* α2 := M.read α1 in
-    let* α0 : M.Val unit :=
+    let* α3 : M.Val unit :=
       match α2 with
       | core.option.Option.Some (_ as n) =>
         let* n := M.alloc n in
@@ -104,4 +102,4 @@ Definition main : M unit :=
         M.alloc tt
       | _ => M.alloc tt
       end in
-    M.read α0).
+    M.read α3).

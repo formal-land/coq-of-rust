@@ -76,9 +76,7 @@ Section Impl_traits_Animal_for_traits_Sheep_t.
       (let* α0 : ref str.t := M.read name in
       let* α1 : M.Val bool.t := M.alloc false in
       let* α2 : bool.t := M.read α1 in
-      let* α0 : M.Val traits.Sheep.t :=
-        M.alloc {| traits.Sheep.name := α0; traits.Sheep.naked := α2; |} in
-      M.read α0).
+      M.pure {| traits.Sheep.name := α0; traits.Sheep.naked := α2; |}).
   
   Global Instance AssociatedFunction_new :
     Notations.DoubleColon ltac:(Self) "new" := {
@@ -121,12 +119,12 @@ Section Impl_traits_Animal_for_traits_Sheep_t.
       let* α4 : M.Val bool.t := M.alloc α3 in
       let* α5 : M.Val bool.t := use α4 in
       let* α6 : bool.t := M.read α5 in
-      let* α0 : M.Val (ref str.t) :=
+      let* α7 : M.Val (ref str.t) :=
         if (α6 : bool) then
           M.pure (mk_str "baaaaah?")
         else
           M.pure (mk_str "baaaaah!") in
-      M.read α0).
+      M.read α7).
   
   Global Instance AssociatedFunction_noise :
     Notations.DoubleColon ltac:(Self) "noise" := {
@@ -235,7 +233,7 @@ Section Impl_traits_Sheep_t_2.
       let* α4 : M.Val bool.t := M.alloc α3 in
       let* α5 : M.Val bool.t := use α4 in
       let* α6 : bool.t := M.read α5 in
-      let* α0 : M.Val unit :=
+      let* α7 : M.Val unit :=
         if (α6 : bool) then
           let* _ : M.Val unit :=
             let* _ : M.Val unit :=
@@ -323,7 +321,7 @@ Section Impl_traits_Sheep_t_2.
             let* α3 : bool.t := M.read α2 in
             assign α1.["naked"] α3 in
           M.alloc tt in
-      M.read α0).
+      M.read α7).
   
   Global Instance AssociatedFunction_shear :
     Notations.DoubleColon ltac:(Self) "shear" := {

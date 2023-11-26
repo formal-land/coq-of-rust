@@ -25,10 +25,7 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
-  M.function_body
-    (let* α0 : M.Val unit := M.alloc tt in
-    M.read α0).
+Definition main : M unit := M.function_body (M.pure tt).
 
 (*
     fn mul(a: u64, b: u64) -> u128 {
@@ -56,7 +53,7 @@ Definition mul (a : u64.t) (b : u64.t) : M u128.t :=
     (let* lo : M.Val unit := M.alloc tt in
     let* hi : M.Val unit := M.alloc tt in
     let* _ : M.Val unit :=
-      let _ := InlineAssembly in
+      let _ : M.Val unit := InlineAssembly in
       M.alloc tt in
     let* α0 : M.Val u128.t := cast hi in
     let* α1 : M.Val i32.t := M.alloc 64 in

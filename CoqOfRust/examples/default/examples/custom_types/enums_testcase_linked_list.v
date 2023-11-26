@@ -25,10 +25,7 @@ Section Impl_enums_testcase_linked_list_List_t.
       }
   *)
   Definition new : M enums_testcase_linked_list.List.t :=
-    M.function_body
-      (let* α0 : M.Val enums_testcase_linked_list.List.t :=
-        M.alloc enums_testcase_linked_list.List.Nil in
-      M.read α0).
+    M.function_body (M.pure enums_testcase_linked_list.List.Nil).
   
   Global Instance AssociatedFunction_new :
     Notations.DoubleColon ltac:(Self) "new" := {
@@ -58,9 +55,7 @@ Section Impl_enums_testcase_linked_list_List_t.
               enums_testcase_linked_list.List.t
               alloc.alloc.Global.t)::["new"]
           α1 in
-      let* α0 : M.Val enums_testcase_linked_list.List.t :=
-        M.alloc (enums_testcase_linked_list.List.Cons α0 α2) in
-      M.read α0).
+      M.pure (enums_testcase_linked_list.List.Cons α0 α2)).
   
   Global Instance AssociatedFunction_prepend :
     Notations.DoubleColon ltac:(Self) "prepend" := {
@@ -91,7 +86,7 @@ Section Impl_enums_testcase_linked_list_List_t.
       (let* α0 : ref enums_testcase_linked_list.List.t := M.read self in
       let* α1 : M.Val enums_testcase_linked_list.List.t := deref α0 in
       let* α2 := M.read α1 in
-      let* α0 : M.Val u32.t :=
+      let* α3 : M.Val u32.t :=
         match α2 with
         | enums_testcase_linked_list.List.Cons _ tail =>
           let* tail := M.alloc tail in
@@ -120,7 +115,7 @@ Section Impl_enums_testcase_linked_list_List_t.
           BinOp.add α0 α7
         | enums_testcase_linked_list.List.Nil  => M.alloc 0
         end in
-      M.read α0).
+      M.read α3).
   
   Global Instance AssociatedFunction_len :
     Notations.DoubleColon ltac:(Self) "len" := {
@@ -147,7 +142,7 @@ Section Impl_enums_testcase_linked_list_List_t.
       (let* α0 : ref enums_testcase_linked_list.List.t := M.read self in
       let* α1 : M.Val enums_testcase_linked_list.List.t := deref α0 in
       let* α2 := M.read α1 in
-      let* α0 : M.Val alloc.string.String.t :=
+      let* α3 : M.Val alloc.string.String.t :=
         match α2 with
         | enums_testcase_linked_list.List.Cons head tail =>
           let* tail := M.alloc tail in
@@ -227,7 +222,7 @@ Section Impl_enums_testcase_linked_list_List_t.
             M.alloc α8 in
           M.pure res
         end in
-      M.read α0).
+      M.read α3).
   
   Global Instance AssociatedFunction_stringify :
     Notations.DoubleColon ltac:(Self) "stringify" := {

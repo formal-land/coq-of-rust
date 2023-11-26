@@ -50,9 +50,7 @@ Section Impl_generics_implementation_Val_t.
       let* α1 : M.Val generics_implementation.Val.t := deref α0 in
       let* α2 : ref f64.t := borrow α1.["val"] in
       let* α3 : M.Val f64.t := deref α2 in
-      let* α4 : ref f64.t := borrow α3 in
-      let* α0 : M.Val (ref f64.t) := M.alloc α4 in
-      M.read α0).
+      borrow α3).
   
   Global Instance AssociatedFunction_value :
     Notations.DoubleColon ltac:(Self) "value" := {
@@ -79,9 +77,7 @@ Section Impl_generics_implementation_GenVal_t_T.
       let* α1 : M.Val (generics_implementation.GenVal.t T) := deref α0 in
       let* α2 : ref T := borrow α1.["gen_val"] in
       let* α3 : M.Val T := deref α2 in
-      let* α4 : ref T := borrow α3 in
-      let* α0 : M.Val (ref T) := M.alloc α4 in
-      M.read α0).
+      borrow α3).
   
   Global Instance AssociatedFunction_value :
     Notations.DoubleColon ltac:(Self) "value" := {

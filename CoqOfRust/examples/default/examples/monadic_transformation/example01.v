@@ -17,9 +17,7 @@ Definition tri (a : u64.t) (b : u64.t) (c : u64.t) : M unit :=
   let* a : M.Val u64.t := M.alloc a in
   let* b : M.Val u64.t := M.alloc b in
   let* c : M.Val u64.t := M.alloc c in
-  M.function_body
-    (let* α0 : M.Val unit := M.alloc tt in
-    M.read α0).
+  M.function_body (M.pure tt).
 
 (*
 fn main() {
