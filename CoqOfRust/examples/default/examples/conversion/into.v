@@ -28,9 +28,8 @@ Section Impl_core_convert_From_i32_t_for_into_Number_t.
   *)
   Definition from (item : i32.t) : M ltac:(Self) :=
     let* item : M.Val i32.t := M.alloc item in
-    M.function_body
-      (let* α0 : i32.t := M.read item in
-      M.pure {| into.Number.value := α0; |}).
+    let* α0 : i32.t := M.read item in
+    M.pure {| into.Number.value := α0; |}.
   
   Global Instance AssociatedFunction_from :
     Notations.DoubleColon ltac:(Self) "from" := {
@@ -50,13 +49,11 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  M.function_body
-    (let* _ : M.Val into.Number.t :=
-      let* α0 : M.Val i32.t := M.alloc 5 in
-      let* α1 : i32.t := M.read α0 in
-      let* α2 : into.Number.t :=
-        (core.convert.Into.into (Self := i32.t) (Trait := ltac:(refine _)))
-          α1 in
-      M.alloc α2 in
-    let* α0 : M.Val unit := M.alloc tt in
-    M.read α0).
+  let* _ : M.Val into.Number.t :=
+    let* α0 : M.Val i32.t := M.alloc 5 in
+    let* α1 : i32.t := M.read α0 in
+    let* α2 : into.Number.t :=
+      (core.convert.Into.into (Self := i32.t) (Trait := ltac:(refine _))) α1 in
+    M.alloc α2 in
+  let* α0 : M.Val unit := M.alloc tt in
+  M.read α0.

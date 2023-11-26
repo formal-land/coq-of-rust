@@ -7,24 +7,23 @@ fn function() {
 }
 *)
 Definition function : M unit :=
-  M.function_body
-    (let* _ : M.Val unit :=
-      let* _ : M.Val unit :=
-        let* α0 : M.Val (array (ref str.t)) :=
-          M.alloc [ mk_str "called `function()`
+  let* _ : M.Val unit :=
+    let* _ : M.Val unit :=
+      let* α0 : M.Val (array (ref str.t)) :=
+        M.alloc [ mk_str "called `function()`
 " ] in
-        let* α1 : ref (array (ref str.t)) := borrow α0 in
-        let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
-        let* α3 : M.Val (ref (slice (ref str.t))) :=
-          pointer_coercion "Unsize" α2 in
-        let* α4 : ref (slice (ref str.t)) := M.read α3 in
-        let* α5 : core.fmt.Arguments.t :=
-          core.fmt.Arguments.t::["new_const"] α4 in
-        let* α6 : unit := std.io.stdio._print α5 in
-        M.alloc α6 in
-      M.alloc tt in
-    let* α0 : M.Val unit := M.alloc tt in
-    M.read α0).
+      let* α1 : ref (array (ref str.t)) := borrow α0 in
+      let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
+      let* α3 : M.Val (ref (slice (ref str.t))) :=
+        pointer_coercion "Unsize" α2 in
+      let* α4 : ref (slice (ref str.t)) := M.read α3 in
+      let* α5 : core.fmt.Arguments.t :=
+        core.fmt.Arguments.t::["new_const"] α4 in
+      let* α6 : unit := std.io.stdio._print α5 in
+      M.alloc α6 in
+    M.alloc tt in
+  let* α0 : M.Val unit := M.alloc tt in
+  M.read α0.
 
 Module deeply.
   Module nested.
@@ -34,36 +33,7 @@ Module deeply.
             }
     *)
     Definition function : M unit :=
-      M.function_body
-        (let* _ : M.Val unit :=
-          let* _ : M.Val unit :=
-            let* α0 : M.Val (array (ref str.t)) :=
-              M.alloc [ mk_str "called `deeply::nested::function()`
-" ] in
-            let* α1 : ref (array (ref str.t)) := borrow α0 in
-            let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
-            let* α3 : M.Val (ref (slice (ref str.t))) :=
-              pointer_coercion "Unsize" α2 in
-            let* α4 : ref (slice (ref str.t)) := M.read α3 in
-            let* α5 : core.fmt.Arguments.t :=
-              core.fmt.Arguments.t::["new_const"] α4 in
-            let* α6 : unit := std.io.stdio._print α5 in
-            M.alloc α6 in
-          M.alloc tt in
-        let* α0 : M.Val unit := M.alloc tt in
-        M.read α0).
-  End nested.
-End deeply.
-
-Module nested.
-  (*
-          pub fn function() {
-              println!("called `deeply::nested::function()`");
-          }
-  *)
-  Definition function : M unit :=
-    M.function_body
-      (let* _ : M.Val unit :=
+      let* _ : M.Val unit :=
         let* _ : M.Val unit :=
           let* α0 : M.Val (array (ref str.t)) :=
             M.alloc [ mk_str "called `deeply::nested::function()`
@@ -79,17 +49,18 @@ Module nested.
           M.alloc α6 in
         M.alloc tt in
       let* α0 : M.Val unit := M.alloc tt in
-      M.read α0).
-End nested.
+      M.read α0.
+  End nested.
+End deeply.
 
-(*
-        pub fn function() {
-            println!("called `deeply::nested::function()`");
-        }
-*)
-Definition function : M unit :=
-  M.function_body
-    (let* _ : M.Val unit :=
+Module nested.
+  (*
+          pub fn function() {
+              println!("called `deeply::nested::function()`");
+          }
+  *)
+  Definition function : M unit :=
+    let* _ : M.Val unit :=
       let* _ : M.Val unit :=
         let* α0 : M.Val (array (ref str.t)) :=
           M.alloc [ mk_str "called `deeply::nested::function()`
@@ -105,7 +76,32 @@ Definition function : M unit :=
         M.alloc α6 in
       M.alloc tt in
     let* α0 : M.Val unit := M.alloc tt in
-    M.read α0).
+    M.read α0.
+End nested.
+
+(*
+        pub fn function() {
+            println!("called `deeply::nested::function()`");
+        }
+*)
+Definition function : M unit :=
+  let* _ : M.Val unit :=
+    let* _ : M.Val unit :=
+      let* α0 : M.Val (array (ref str.t)) :=
+        M.alloc [ mk_str "called `deeply::nested::function()`
+" ] in
+      let* α1 : ref (array (ref str.t)) := borrow α0 in
+      let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
+      let* α3 : M.Val (ref (slice (ref str.t))) :=
+        pointer_coercion "Unsize" α2 in
+      let* α4 : ref (slice (ref str.t)) := M.read α3 in
+      let* α5 : core.fmt.Arguments.t :=
+        core.fmt.Arguments.t::["new_const"] α4 in
+      let* α6 : unit := std.io.stdio._print α5 in
+      M.alloc α6 in
+    M.alloc tt in
+  let* α0 : M.Val unit := M.alloc tt in
+  M.read α0.
 
 (*
 fn main() {
@@ -130,14 +126,32 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  M.function_body
-    (let* _ : M.Val unit :=
+  let* _ : M.Val unit :=
+    let* α0 : unit := the_use_as_declaration.deeply.nested.function in
+    M.alloc α0 in
+  let* _ : M.Val unit :=
+    let* _ : M.Val unit :=
+      let* α0 : M.Val (array (ref str.t)) :=
+        M.alloc [ mk_str "Entering block
+" ] in
+      let* α1 : ref (array (ref str.t)) := borrow α0 in
+      let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
+      let* α3 : M.Val (ref (slice (ref str.t))) :=
+        pointer_coercion "Unsize" α2 in
+      let* α4 : ref (slice (ref str.t)) := M.read α3 in
+      let* α5 : core.fmt.Arguments.t :=
+        core.fmt.Arguments.t::["new_const"] α4 in
+      let* α6 : unit := std.io.stdio._print α5 in
+      M.alloc α6 in
+    M.alloc tt in
+  let* _ : M.Val unit :=
+    let* _ : M.Val unit :=
       let* α0 : unit := the_use_as_declaration.deeply.nested.function in
       M.alloc α0 in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
         let* α0 : M.Val (array (ref str.t)) :=
-          M.alloc [ mk_str "Entering block
+          M.alloc [ mk_str "Leaving block
 " ] in
         let* α1 : ref (array (ref str.t)) := borrow α0 in
         let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
@@ -149,28 +163,9 @@ Definition main : M unit :=
         let* α6 : unit := std.io.stdio._print α5 in
         M.alloc α6 in
       M.alloc tt in
-    let* _ : M.Val unit :=
-      let* _ : M.Val unit :=
-        let* α0 : unit := the_use_as_declaration.deeply.nested.function in
-        M.alloc α0 in
-      let* _ : M.Val unit :=
-        let* _ : M.Val unit :=
-          let* α0 : M.Val (array (ref str.t)) :=
-            M.alloc [ mk_str "Leaving block
-" ] in
-          let* α1 : ref (array (ref str.t)) := borrow α0 in
-          let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
-          let* α3 : M.Val (ref (slice (ref str.t))) :=
-            pointer_coercion "Unsize" α2 in
-          let* α4 : ref (slice (ref str.t)) := M.read α3 in
-          let* α5 : core.fmt.Arguments.t :=
-            core.fmt.Arguments.t::["new_const"] α4 in
-          let* α6 : unit := std.io.stdio._print α5 in
-          M.alloc α6 in
-        M.alloc tt in
-      M.alloc tt in
-    let* _ : M.Val unit :=
-      let* α0 : unit := the_use_as_declaration.function in
-      M.alloc α0 in
-    let* α0 : M.Val unit := M.alloc tt in
-    M.read α0).
+    M.alloc tt in
+  let* _ : M.Val unit :=
+    let* α0 : unit := the_use_as_declaration.function in
+    M.alloc α0 in
+  let* α0 : M.Val unit := M.alloc tt in
+  M.read α0.

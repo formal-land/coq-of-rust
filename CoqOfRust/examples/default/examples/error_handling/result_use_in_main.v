@@ -17,7 +17,7 @@ Definition main
     : M (core.result.Result.t unit core.num.error.ParseIntError.t) :=
   let return_ :=
     M.return_ (R := core.result.Result.t unit core.num.error.ParseIntError.t) in
-  M.function_body
+  M.catch_return
     (let* number_str : M.Val (ref str.t) := M.copy (mk_str "10") in
     let* number : M.Val i32.t :=
       let* α0 : ref str.t := M.read number_str in

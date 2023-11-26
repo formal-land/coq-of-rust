@@ -204,7 +204,7 @@ Definition catch {A : Set} (body : M A) (handler : Exception -> M A) : M A :=
   | inr exception => handler exception fuel
   end.
 
-Definition function_body {A : Set} (body : M A) : M A :=
+Definition catch_return {A : Set} (body : M A) : M A :=
   catch
     body
     (fun exception =>

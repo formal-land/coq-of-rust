@@ -10,15 +10,14 @@ fn create_box() {
 }
 *)
 Definition create_box : M unit :=
-  M.function_body
-    (let* _box1 : M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t) :=
-      let* α0 : M.Val i32.t := M.alloc 3 in
-      let* α1 : i32.t := M.read α0 in
-      let* α2 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t :=
-        (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"] α1 in
-      M.alloc α2 in
-    let* α0 : M.Val unit := M.alloc tt in
-    M.read α0).
+  let* _box1 : M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t) :=
+    let* α0 : M.Val i32.t := M.alloc 3 in
+    let* α1 : i32.t := M.read α0 in
+    let* α2 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t :=
+      (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"] α1 in
+    M.alloc α2 in
+  let* α0 : M.Val unit := M.alloc tt in
+  M.read α0.
 
 (*
 fn main() {
@@ -44,55 +43,52 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  M.function_body
-    (let* _box2 : M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t) :=
-      let* α0 : M.Val i32.t := M.alloc 5 in
+  let* _box2 : M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t) :=
+    let* α0 : M.Val i32.t := M.alloc 5 in
+    let* α1 : i32.t := M.read α0 in
+    let* α2 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t :=
+      (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"] α1 in
+    M.alloc α2 in
+  let* _ : M.Val unit :=
+    let* _box3 : M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t) :=
+      let* α0 : M.Val i32.t := M.alloc 4 in
       let* α1 : i32.t := M.read α0 in
       let* α2 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t :=
         (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"] α1 in
       M.alloc α2 in
-    let* _ : M.Val unit :=
-      let* _box3 : M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t) :=
-        let* α0 : M.Val i32.t := M.alloc 4 in
-        let* α1 : i32.t := M.read α0 in
-        let* α2 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t :=
-          (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"] α1 in
-        M.alloc α2 in
-      M.alloc tt in
-    let* α0 : M.Val u32.t := M.alloc 0 in
-    let* α1 : u32.t := M.read α0 in
-    let* α2 : M.Val u32.t := M.alloc 1000 in
-    let* α3 : u32.t := M.read α2 in
-    let* α4 : core.ops.range.Range.t u32.t :=
-      (core.iter.traits.collect.IntoIterator.into_iter
-          (Self := core.ops.range.Range.t u32.t)
-          (Trait := ltac:(refine _)))
-        {| core.ops.range.Range.start := α1; core.ops.range.Range.end := α3;
-        |} in
-    let* α5 : M.Val unit :=
-      match α4 with
-      | iter =>
-        let* iter := M.alloc iter in
-        loop
-          (let* _ : M.Val unit :=
-            let* α0 : mut_ref (core.ops.range.Range.t u32.t) :=
-              borrow_mut iter in
-            let* α1 : core.option.Option.t u32.t :=
-              (core.iter.traits.iterator.Iterator.next
-                  (Self := core.ops.range.Range.t u32.t)
-                  (Trait := ltac:(refine _)))
-                α0 in
-            match α1 with
-            | core.option.Option.None  =>
-              let* α0 : M.Val never.t := Break in
-              never_to_any α0
-            | core.option.Option.Some _ =>
-              let* _ : M.Val unit :=
-                let* α0 : unit := scoping_rules_raii.create_box in
-                M.alloc α0 in
-              M.alloc tt
-            end in
-          M.alloc tt)
-      end in
-    let* α0 : M.Val unit := use α5 in
-    M.read α0).
+    M.alloc tt in
+  let* α0 : M.Val u32.t := M.alloc 0 in
+  let* α1 : u32.t := M.read α0 in
+  let* α2 : M.Val u32.t := M.alloc 1000 in
+  let* α3 : u32.t := M.read α2 in
+  let* α4 : core.ops.range.Range.t u32.t :=
+    (core.iter.traits.collect.IntoIterator.into_iter
+        (Self := core.ops.range.Range.t u32.t)
+        (Trait := ltac:(refine _)))
+      {| core.ops.range.Range.start := α1; core.ops.range.Range.end := α3; |} in
+  let* α5 : M.Val unit :=
+    match α4 with
+    | iter =>
+      let* iter := M.alloc iter in
+      loop
+        (let* _ : M.Val unit :=
+          let* α0 : mut_ref (core.ops.range.Range.t u32.t) := borrow_mut iter in
+          let* α1 : core.option.Option.t u32.t :=
+            (core.iter.traits.iterator.Iterator.next
+                (Self := core.ops.range.Range.t u32.t)
+                (Trait := ltac:(refine _)))
+              α0 in
+          match α1 with
+          | core.option.Option.None  =>
+            let* α0 : M.Val never.t := Break in
+            never_to_any α0
+          | core.option.Option.Some _ =>
+            let* _ : M.Val unit :=
+              let* α0 : unit := scoping_rules_raii.create_box in
+              M.alloc α0 in
+            M.alloc tt
+          end in
+        M.alloc tt)
+    end in
+  let* α0 : M.Val unit := use α5 in
+  M.read α0.

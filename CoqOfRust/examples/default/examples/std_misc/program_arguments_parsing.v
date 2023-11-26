@@ -8,36 +8,35 @@ fn increase(number: i32) {
 *)
 Definition increase (number : i32.t) : M unit :=
   let* number : M.Val i32.t := M.alloc number in
-  M.function_body
-    (let* _ : M.Val unit :=
-      let* _ : M.Val unit :=
-        let* α0 : M.Val (array (ref str.t)) :=
-          M.alloc [ mk_str ""; mk_str "
+  let* _ : M.Val unit :=
+    let* _ : M.Val unit :=
+      let* α0 : M.Val (array (ref str.t)) :=
+        M.alloc [ mk_str ""; mk_str "
 " ] in
-        let* α1 : ref (array (ref str.t)) := borrow α0 in
-        let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
-        let* α3 : M.Val (ref (slice (ref str.t))) :=
-          pointer_coercion "Unsize" α2 in
-        let* α4 : ref (slice (ref str.t)) := M.read α3 in
-        let* α5 : M.Val i32.t := M.alloc 1 in
-        let* α6 : M.Val i32.t := BinOp.add number α5 in
-        let* α7 : ref i32.t := borrow α6 in
-        let* α8 : core.fmt.rt.Argument.t :=
-          core.fmt.rt.Argument.t::["new_display"] α7 in
-        let* α9 : M.Val core.fmt.rt.Argument.t := M.alloc α8 in
-        let* α10 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α9 ] in
-        let* α11 : ref (array core.fmt.rt.Argument.t) := borrow α10 in
-        let* α12 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α11 in
-        let* α13 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
-          pointer_coercion "Unsize" α12 in
-        let* α14 : ref (slice core.fmt.rt.Argument.t) := M.read α13 in
-        let* α15 : core.fmt.Arguments.t :=
-          core.fmt.Arguments.t::["new_v1"] α4 α14 in
-        let* α16 : unit := std.io.stdio._print α15 in
-        M.alloc α16 in
-      M.alloc tt in
-    let* α0 : M.Val unit := M.alloc tt in
-    M.read α0).
+      let* α1 : ref (array (ref str.t)) := borrow α0 in
+      let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
+      let* α3 : M.Val (ref (slice (ref str.t))) :=
+        pointer_coercion "Unsize" α2 in
+      let* α4 : ref (slice (ref str.t)) := M.read α3 in
+      let* α5 : M.Val i32.t := M.alloc 1 in
+      let* α6 : M.Val i32.t := BinOp.add number α5 in
+      let* α7 : ref i32.t := borrow α6 in
+      let* α8 : core.fmt.rt.Argument.t :=
+        core.fmt.rt.Argument.t::["new_display"] α7 in
+      let* α9 : M.Val core.fmt.rt.Argument.t := M.alloc α8 in
+      let* α10 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α9 ] in
+      let* α11 : ref (array core.fmt.rt.Argument.t) := borrow α10 in
+      let* α12 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α11 in
+      let* α13 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
+        pointer_coercion "Unsize" α12 in
+      let* α14 : ref (slice core.fmt.rt.Argument.t) := M.read α13 in
+      let* α15 : core.fmt.Arguments.t :=
+        core.fmt.Arguments.t::["new_v1"] α4 α14 in
+      let* α16 : unit := std.io.stdio._print α15 in
+      M.alloc α16 in
+    M.alloc tt in
+  let* α0 : M.Val unit := M.alloc tt in
+  M.read α0.
 
 (*
 fn decrease(number: i32) {
@@ -46,36 +45,35 @@ fn decrease(number: i32) {
 *)
 Definition decrease (number : i32.t) : M unit :=
   let* number : M.Val i32.t := M.alloc number in
-  M.function_body
-    (let* _ : M.Val unit :=
-      let* _ : M.Val unit :=
-        let* α0 : M.Val (array (ref str.t)) :=
-          M.alloc [ mk_str ""; mk_str "
+  let* _ : M.Val unit :=
+    let* _ : M.Val unit :=
+      let* α0 : M.Val (array (ref str.t)) :=
+        M.alloc [ mk_str ""; mk_str "
 " ] in
-        let* α1 : ref (array (ref str.t)) := borrow α0 in
-        let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
-        let* α3 : M.Val (ref (slice (ref str.t))) :=
-          pointer_coercion "Unsize" α2 in
-        let* α4 : ref (slice (ref str.t)) := M.read α3 in
-        let* α5 : M.Val i32.t := M.alloc 1 in
-        let* α6 : M.Val i32.t := BinOp.sub number α5 in
-        let* α7 : ref i32.t := borrow α6 in
-        let* α8 : core.fmt.rt.Argument.t :=
-          core.fmt.rt.Argument.t::["new_display"] α7 in
-        let* α9 : M.Val core.fmt.rt.Argument.t := M.alloc α8 in
-        let* α10 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α9 ] in
-        let* α11 : ref (array core.fmt.rt.Argument.t) := borrow α10 in
-        let* α12 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α11 in
-        let* α13 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
-          pointer_coercion "Unsize" α12 in
-        let* α14 : ref (slice core.fmt.rt.Argument.t) := M.read α13 in
-        let* α15 : core.fmt.Arguments.t :=
-          core.fmt.Arguments.t::["new_v1"] α4 α14 in
-        let* α16 : unit := std.io.stdio._print α15 in
-        M.alloc α16 in
-      M.alloc tt in
-    let* α0 : M.Val unit := M.alloc tt in
-    M.read α0).
+      let* α1 : ref (array (ref str.t)) := borrow α0 in
+      let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
+      let* α3 : M.Val (ref (slice (ref str.t))) :=
+        pointer_coercion "Unsize" α2 in
+      let* α4 : ref (slice (ref str.t)) := M.read α3 in
+      let* α5 : M.Val i32.t := M.alloc 1 in
+      let* α6 : M.Val i32.t := BinOp.sub number α5 in
+      let* α7 : ref i32.t := borrow α6 in
+      let* α8 : core.fmt.rt.Argument.t :=
+        core.fmt.rt.Argument.t::["new_display"] α7 in
+      let* α9 : M.Val core.fmt.rt.Argument.t := M.alloc α8 in
+      let* α10 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α9 ] in
+      let* α11 : ref (array core.fmt.rt.Argument.t) := borrow α10 in
+      let* α12 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α11 in
+      let* α13 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
+        pointer_coercion "Unsize" α12 in
+      let* α14 : ref (slice core.fmt.rt.Argument.t) := M.read α13 in
+      let* α15 : core.fmt.Arguments.t :=
+        core.fmt.Arguments.t::["new_v1"] α4 α14 in
+      let* α16 : unit := std.io.stdio._print α15 in
+      M.alloc α16 in
+    M.alloc tt in
+  let* α0 : M.Val unit := M.alloc tt in
+  M.read α0.
 
 (*
 fn help() {
@@ -89,32 +87,31 @@ match_args {{increase|decrease}} <integer>
 }
 *)
 Definition help : M unit :=
-  M.function_body
-    (let* _ : M.Val unit :=
-      let* _ : M.Val unit :=
-        let* α0 : M.Val (array (ref str.t)) :=
-          M.alloc
-            [
-              mk_str
-                "usage:
+  let* _ : M.Val unit :=
+    let* _ : M.Val unit :=
+      let* α0 : M.Val (array (ref str.t)) :=
+        M.alloc
+          [
+            mk_str
+              "usage:
 match_args <string>
     Check whether given string is the answer.
 match_args {increase|decrease} <integer>
     Increase or decrease given integer by one.
 "
-            ] in
-        let* α1 : ref (array (ref str.t)) := borrow α0 in
-        let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
-        let* α3 : M.Val (ref (slice (ref str.t))) :=
-          pointer_coercion "Unsize" α2 in
-        let* α4 : ref (slice (ref str.t)) := M.read α3 in
-        let* α5 : core.fmt.Arguments.t :=
-          core.fmt.Arguments.t::["new_const"] α4 in
-        let* α6 : unit := std.io.stdio._print α5 in
-        M.alloc α6 in
-      M.alloc tt in
-    let* α0 : M.Val unit := M.alloc tt in
-    M.read α0).
+          ] in
+      let* α1 : ref (array (ref str.t)) := borrow α0 in
+      let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
+      let* α3 : M.Val (ref (slice (ref str.t))) :=
+        pointer_coercion "Unsize" α2 in
+      let* α4 : ref (slice (ref str.t)) := M.read α3 in
+      let* α5 : core.fmt.Arguments.t :=
+        core.fmt.Arguments.t::["new_const"] α4 in
+      let* α6 : unit := std.io.stdio._print α5 in
+      M.alloc α6 in
+    M.alloc tt in
+  let* α0 : M.Val unit := M.alloc tt in
+  M.read α0.
 
 (*
 fn main() {
@@ -164,7 +161,7 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
   let return_ := M.return_ (R := unit) in
-  M.function_body
+  M.catch_return
     (let* args :
         M.Val (alloc.vec.Vec.t alloc.string.String.t alloc.alloc.Global.t) :=
       let* α0 : std.env.Args.t := std.env.args in
