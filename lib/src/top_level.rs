@@ -745,15 +745,34 @@ fn compile_function_body(
     if env.axiomatize {
         return None;
     }
-    let body = compile_hir_id(env, body.value.hir_id);
+    let body = compile_hir_id(env, body.value.hir_id).read();
     let has_return = body.has_return();
-    let body: Box<Expr> = Box::new(Expr {
-        kind: ExprKind::MonadicOperator {
-            name: "M.function_body".to_string(),
-            arg: Box::new(body.read()),
-        },
-        ty: None,
-    });
+    let body = if has_return {
+        Box::new(Expr {
+            kind: ExprKind::Let {
+                is_monadic: false,
+                pattern: Box::new(Pattern::Variable("return_".to_string())),
+                init: Box::new(Expr {
+                    kind: ExprKind::VarWithTy {
+                        path: Path::local("M.return_".to_string()),
+                        ty_name: "R".to_string(),
+                        ty: ret_ty,
+                    },
+                    ty: None,
+                }),
+                body: Box::new(Expr {
+                    kind: ExprKind::MonadicOperator {
+                        name: "M.catch_return".to_string(),
+                        arg: Box::new(body),
+                    },
+                    ty: None,
+                }),
+            },
+            ty: None,
+        })
+    } else {
+        Box::new(body)
+    };
     let body: Box<Expr> = args.iter().rfold(body, |body, (name, ty)| {
         Box::new(Expr {
             ty: body.ty.clone(),
@@ -768,25 +787,6 @@ fn compile_function_body(
             },
         })
     });
-
-    if has_return {
-        return Some(Box::new(Expr {
-            kind: ExprKind::Let {
-                is_monadic: false,
-                pattern: Box::new(Pattern::Variable("return_".to_string())),
-                init: Box::new(Expr {
-                    kind: ExprKind::VarWithTy {
-                        path: Path::local("M.return_".to_string()),
-                        ty_name: "R".to_string(),
-                        ty: ret_ty,
-                    },
-                    ty: None,
-                }),
-                body,
-            },
-            ty: None,
-        }));
-    }
 
     Some(body)
 }

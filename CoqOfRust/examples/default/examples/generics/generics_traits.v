@@ -34,7 +34,7 @@ Section Impl_generics_traits_DoubleDrop_T_for_U.
   Definition double_drop (self : ltac:(Self)) (Pattern : T) : M unit :=
     let* self : M.Val ltac:(Self) := M.alloc self in
     let* Pattern : M.Val T := M.alloc Pattern in
-    M.function_body (M.pure tt).
+    M.pure tt.
   
   Global Instance AssociatedFunction_double_drop :
     Notations.DoubleColon ltac:(Self) "double_drop" := {
@@ -62,20 +62,19 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  M.function_body
-    (let* empty : M.Val generics_traits.Empty.t :=
-      M.alloc generics_traits.Empty.Build_t in
-    let* null : M.Val generics_traits.Null.t :=
-      M.alloc generics_traits.Null.Build_t in
-    let* _ : M.Val unit :=
-      let* α0 : generics_traits.Empty.t := M.read empty in
-      let* α1 : generics_traits.Null.t := M.read null in
-      let* α2 : unit :=
-        (generics_traits.DoubleDrop.double_drop
-            (Self := generics_traits.Empty.t)
-            (Trait := ltac:(refine _)))
-          α0
-          α1 in
-      M.alloc α2 in
-    let* α0 : M.Val unit := M.alloc tt in
-    M.read α0).
+  let* empty : M.Val generics_traits.Empty.t :=
+    M.alloc generics_traits.Empty.Build_t in
+  let* null : M.Val generics_traits.Null.t :=
+    M.alloc generics_traits.Null.Build_t in
+  let* _ : M.Val unit :=
+    let* α0 : generics_traits.Empty.t := M.read empty in
+    let* α1 : generics_traits.Null.t := M.read null in
+    let* α2 : unit :=
+      (generics_traits.DoubleDrop.double_drop
+          (Self := generics_traits.Empty.t)
+          (Trait := ltac:(refine _)))
+        α0
+        α1 in
+    M.alloc α2 in
+  let* α0 : M.Val unit := M.alloc tt in
+  M.read α0.

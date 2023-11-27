@@ -8,7 +8,7 @@ fn id(x: u64) -> u64 {
 *)
 Definition id (x : u64.t) : M u64.t :=
   let* x : M.Val u64.t := M.alloc x in
-  M.function_body (M.read x).
+  M.read x.
 
 (*
 fn tri(a: u64, b: u64, c: u64) {}
@@ -17,7 +17,7 @@ Definition tri (a : u64.t) (b : u64.t) (c : u64.t) : M unit :=
   let* a : M.Val u64.t := M.alloc a in
   let* b : M.Val u64.t := M.alloc b in
   let* c : M.Val u64.t := M.alloc c in
-  M.function_body (M.pure tt).
+  M.pure tt.
 
 (*
 fn main() {
@@ -30,43 +30,42 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  M.function_body
-    (let* _ : M.Val u64.t :=
-      let* α0 : M.Val u64.t := M.alloc 0 in
-      let* α1 : u64.t := M.read α0 in
-      let* α2 : u64.t := example01.id α1 in
-      M.alloc α2 in
-    let* _ : M.Val u64.t :=
-      let* α0 : M.Val u64.t := M.alloc 0 in
-      let* α1 : u64.t := M.read α0 in
-      let* α2 : u64.t := example01.id α1 in
-      let* α3 : u64.t := example01.id α2 in
-      M.alloc α3 in
-    let* _ : M.Val u64.t :=
-      let* α0 : M.Val u64.t := M.alloc 0 in
-      let* α1 : u64.t := M.read α0 in
-      let* α2 : u64.t := example01.id α1 in
-      let* α3 : u64.t := example01.id α2 in
-      let* α4 : u64.t := example01.id α3 in
-      M.alloc α4 in
-    let* _ : M.Val u64.t :=
-      let* α0 : M.Val u64.t := M.alloc 0 in
-      let* α1 : u64.t := M.read α0 in
-      let* α2 : u64.t := example01.id α1 in
-      let* α3 : u64.t := example01.id α2 in
-      let* α4 : u64.t := example01.id α3 in
-      let* α5 : u64.t := example01.id α4 in
-      M.alloc α5 in
-    let* _ : M.Val unit :=
-      let* α0 : M.Val u64.t := M.alloc 1 in
-      let* α1 : u64.t := M.read α0 in
-      let* α2 : u64.t := example01.id α1 in
-      let* α3 : M.Val u64.t := M.alloc 2 in
-      let* α4 : u64.t := M.read α3 in
-      let* α5 : u64.t := example01.id α4 in
-      let* α6 : M.Val u64.t := M.alloc 3 in
-      let* α7 : u64.t := M.read α6 in
-      let* α8 : unit := example01.tri α2 α5 α7 in
-      M.alloc α8 in
-    let* α0 : M.Val unit := M.alloc tt in
-    M.read α0).
+  let* _ : M.Val u64.t :=
+    let* α0 : M.Val u64.t := M.alloc 0 in
+    let* α1 : u64.t := M.read α0 in
+    let* α2 : u64.t := example01.id α1 in
+    M.alloc α2 in
+  let* _ : M.Val u64.t :=
+    let* α0 : M.Val u64.t := M.alloc 0 in
+    let* α1 : u64.t := M.read α0 in
+    let* α2 : u64.t := example01.id α1 in
+    let* α3 : u64.t := example01.id α2 in
+    M.alloc α3 in
+  let* _ : M.Val u64.t :=
+    let* α0 : M.Val u64.t := M.alloc 0 in
+    let* α1 : u64.t := M.read α0 in
+    let* α2 : u64.t := example01.id α1 in
+    let* α3 : u64.t := example01.id α2 in
+    let* α4 : u64.t := example01.id α3 in
+    M.alloc α4 in
+  let* _ : M.Val u64.t :=
+    let* α0 : M.Val u64.t := M.alloc 0 in
+    let* α1 : u64.t := M.read α0 in
+    let* α2 : u64.t := example01.id α1 in
+    let* α3 : u64.t := example01.id α2 in
+    let* α4 : u64.t := example01.id α3 in
+    let* α5 : u64.t := example01.id α4 in
+    M.alloc α5 in
+  let* _ : M.Val unit :=
+    let* α0 : M.Val u64.t := M.alloc 1 in
+    let* α1 : u64.t := M.read α0 in
+    let* α2 : u64.t := example01.id α1 in
+    let* α3 : M.Val u64.t := M.alloc 2 in
+    let* α4 : u64.t := M.read α3 in
+    let* α5 : u64.t := example01.id α4 in
+    let* α6 : M.Val u64.t := M.alloc 3 in
+    let* α7 : u64.t := M.read α6 in
+    let* α8 : unit := example01.tri α2 α5 α7 in
+    M.alloc α8 in
+  let* α0 : M.Val unit := M.alloc tt in
+  M.read α0.

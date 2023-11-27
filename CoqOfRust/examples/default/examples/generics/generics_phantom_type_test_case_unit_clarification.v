@@ -19,12 +19,11 @@ Section Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificati
       : M ltac:(core.fmt.Result) :=
     let* self : M.Val (ref ltac:(Self)) := M.alloc self in
     let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
-    M.function_body
-      (let* α0 : never.t := "unimplemented parent_kind" in
-      let* α1 : M.Val never.t := M.alloc α0 in
-      let* α2 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=
-        never_to_any α1 in
-      M.read α2).
+    let* α0 : never.t := "unimplemented parent_kind" in
+    let* α1 : M.Val never.t := M.alloc α0 in
+    let* α2 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=
+      never_to_any α1 in
+    M.read α2.
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -48,14 +47,11 @@ Section Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarifica
       (self : ref ltac:(Self))
       : M generics_phantom_type_test_case_unit_clarification.Inch.t :=
     let* self : M.Val (ref ltac:(Self)) := M.alloc self in
-    M.function_body
-      (let* α0 :
-          ref generics_phantom_type_test_case_unit_clarification.Inch.t :=
-        M.read self in
-      let* α1 :
-          M.Val generics_phantom_type_test_case_unit_clarification.Inch.t :=
-        deref α0 in
-      M.read α1).
+    let* α0 : ref generics_phantom_type_test_case_unit_clarification.Inch.t :=
+      M.read self in
+    let* α1 : M.Val generics_phantom_type_test_case_unit_clarification.Inch.t :=
+      deref α0 in
+    M.read α1.
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon ltac:(Self) "clone" := {
@@ -96,12 +92,11 @@ Section Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificati
       : M ltac:(core.fmt.Result) :=
     let* self : M.Val (ref ltac:(Self)) := M.alloc self in
     let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
-    M.function_body
-      (let* α0 : never.t := "unimplemented parent_kind" in
-      let* α1 : M.Val never.t := M.alloc α0 in
-      let* α2 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=
-        never_to_any α1 in
-      M.read α2).
+    let* α0 : never.t := "unimplemented parent_kind" in
+    let* α1 : M.Val never.t := M.alloc α0 in
+    let* α2 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=
+      never_to_any α1 in
+    M.read α2.
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -125,12 +120,11 @@ Section Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarifica
       (self : ref ltac:(Self))
       : M generics_phantom_type_test_case_unit_clarification.Mm.t :=
     let* self : M.Val (ref ltac:(Self)) := M.alloc self in
-    M.function_body
-      (let* α0 : ref generics_phantom_type_test_case_unit_clarification.Mm.t :=
-        M.read self in
-      let* α1 : M.Val generics_phantom_type_test_case_unit_clarification.Mm.t :=
-        deref α0 in
-      M.read α1).
+    let* α0 : ref generics_phantom_type_test_case_unit_clarification.Mm.t :=
+      M.read self in
+    let* α1 : M.Val generics_phantom_type_test_case_unit_clarification.Mm.t :=
+      deref α0 in
+    M.read α1.
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon ltac:(Self) "clone" := {
@@ -189,43 +183,38 @@ Section Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificati
       : M ltac:(core.fmt.Result) :=
     let* self : M.Val (ref ltac:(Self)) := M.alloc self in
     let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
-    M.function_body
-      (let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
-      let* α1 : ref str.t := M.read (mk_str "Length") in
-      let* α2 :
-          ref
-            (generics_phantom_type_test_case_unit_clarification.Length.t
-              Unit) :=
-        M.read self in
-      let* α3 :
-          M.Val
-            (generics_phantom_type_test_case_unit_clarification.Length.t
-              Unit) :=
-        deref α2 in
-      let* α4 : ref f64.t := borrow α3.["0"] in
-      let* α5 : M.Val (ref f64.t) := M.alloc α4 in
-      let* α6 : M.Val (ref type not implemented) :=
-        pointer_coercion "Unsize" α5 in
-      let* α7 : ref type not implemented := M.read α6 in
-      let* α8 :
-          ref
-            (generics_phantom_type_test_case_unit_clarification.Length.t
-              Unit) :=
-        M.read self in
-      let* α9 :
-          M.Val
-            (generics_phantom_type_test_case_unit_clarification.Length.t
-              Unit) :=
-        deref α8 in
-      let* α10 : ref (core.marker.PhantomData.t Unit) := borrow α9.["1"] in
-      let* α11 : M.Val (ref (core.marker.PhantomData.t Unit)) := M.alloc α10 in
-      let* α12 : ref (ref (core.marker.PhantomData.t Unit)) := borrow α11 in
-      let* α13 : M.Val (ref (ref (core.marker.PhantomData.t Unit))) :=
-        M.alloc α12 in
-      let* α14 : M.Val (ref type not implemented) :=
-        pointer_coercion "Unsize" α13 in
-      let* α15 : ref type not implemented := M.read α14 in
-      core.fmt.Formatter.t::["debug_tuple_field2_finish"] α0 α1 α7 α15).
+    let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
+    let* α1 : ref str.t := M.read (mk_str "Length") in
+    let* α2 :
+        ref
+          (generics_phantom_type_test_case_unit_clarification.Length.t Unit) :=
+      M.read self in
+    let* α3 :
+        M.Val
+          (generics_phantom_type_test_case_unit_clarification.Length.t Unit) :=
+      deref α2 in
+    let* α4 : ref f64.t := borrow α3.["0"] in
+    let* α5 : M.Val (ref f64.t) := M.alloc α4 in
+    let* α6 : M.Val (ref type not implemented) :=
+      pointer_coercion "Unsize" α5 in
+    let* α7 : ref type not implemented := M.read α6 in
+    let* α8 :
+        ref
+          (generics_phantom_type_test_case_unit_clarification.Length.t Unit) :=
+      M.read self in
+    let* α9 :
+        M.Val
+          (generics_phantom_type_test_case_unit_clarification.Length.t Unit) :=
+      deref α8 in
+    let* α10 : ref (core.marker.PhantomData.t Unit) := borrow α9.["1"] in
+    let* α11 : M.Val (ref (core.marker.PhantomData.t Unit)) := M.alloc α10 in
+    let* α12 : ref (ref (core.marker.PhantomData.t Unit)) := borrow α11 in
+    let* α13 : M.Val (ref (ref (core.marker.PhantomData.t Unit))) :=
+      M.alloc α12 in
+    let* α14 : M.Val (ref type not implemented) :=
+      pointer_coercion "Unsize" α13 in
+    let* α15 : ref type not implemented := M.read α14 in
+    core.fmt.Formatter.t::["debug_tuple_field2_finish"] α0 α1 α7 α15.
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -254,41 +243,33 @@ Section Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarifica
       (self : ref ltac:(Self))
       : M (generics_phantom_type_test_case_unit_clarification.Length.t Unit) :=
     let* self : M.Val (ref ltac:(Self)) := M.alloc self in
-    M.function_body
-      (let* α0 :
-          ref
-            (generics_phantom_type_test_case_unit_clarification.Length.t
-              Unit) :=
-        M.read self in
-      let* α1 :
-          M.Val
-            (generics_phantom_type_test_case_unit_clarification.Length.t
-              Unit) :=
-        deref α0 in
-      let* α2 : ref f64.t := borrow α1.["0"] in
-      let* α3 : f64.t :=
-        (core.clone.Clone.clone (Self := f64.t) (Trait := ltac:(refine _)))
-          α2 in
-      let* α4 :
-          ref
-            (generics_phantom_type_test_case_unit_clarification.Length.t
-              Unit) :=
-        M.read self in
-      let* α5 :
-          M.Val
-            (generics_phantom_type_test_case_unit_clarification.Length.t
-              Unit) :=
-        deref α4 in
-      let* α6 : ref (core.marker.PhantomData.t Unit) := borrow α5.["1"] in
-      let* α7 : core.marker.PhantomData.t Unit :=
-        (core.clone.Clone.clone
-            (Self := core.marker.PhantomData.t Unit)
-            (Trait := ltac:(refine _)))
-          α6 in
-      M.pure
-        (generics_phantom_type_test_case_unit_clarification.Length.Build_t
-          α3
-          α7)).
+    let* α0 :
+        ref
+          (generics_phantom_type_test_case_unit_clarification.Length.t Unit) :=
+      M.read self in
+    let* α1 :
+        M.Val
+          (generics_phantom_type_test_case_unit_clarification.Length.t Unit) :=
+      deref α0 in
+    let* α2 : ref f64.t := borrow α1.["0"] in
+    let* α3 : f64.t :=
+      (core.clone.Clone.clone (Self := f64.t) (Trait := ltac:(refine _))) α2 in
+    let* α4 :
+        ref
+          (generics_phantom_type_test_case_unit_clarification.Length.t Unit) :=
+      M.read self in
+    let* α5 :
+        M.Val
+          (generics_phantom_type_test_case_unit_clarification.Length.t Unit) :=
+      deref α4 in
+    let* α6 : ref (core.marker.PhantomData.t Unit) := borrow α5.["1"] in
+    let* α7 : core.marker.PhantomData.t Unit :=
+      (core.clone.Clone.clone
+          (Self := core.marker.PhantomData.t Unit)
+          (Trait := ltac:(refine _)))
+        α6 in
+    M.pure
+      (generics_phantom_type_test_case_unit_clarification.Length.Build_t α3 α7).
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon ltac:(Self) "clone" := {
@@ -344,13 +325,12 @@ Section Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarifi
         M.Val
           (generics_phantom_type_test_case_unit_clarification.Length.t Unit) :=
       M.alloc rhs in
-    M.function_body
-      (let* α0 : M.Val f64.t := BinOp.add self.["0"] rhs.["0"] in
-      let* α1 : f64.t := M.read α0 in
-      M.pure
-        (generics_phantom_type_test_case_unit_clarification.Length.Build_t
-          α1
-          core.marker.PhantomData.Build_t)).
+    let* α0 : M.Val f64.t := BinOp.add self.["0"] rhs.["0"] in
+    let* α1 : f64.t := M.read α0 in
+    M.pure
+      (generics_phantom_type_test_case_unit_clarification.Length.Build_t
+        α1
+        core.marker.PhantomData.Build_t).
   
   Global Instance AssociatedFunction_add :
     Notations.DoubleColon ltac:(Self) "add" := {
@@ -391,122 +371,121 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  M.function_body
-    (let* one_foot :
-        M.Val
-          (generics_phantom_type_test_case_unit_clarification.Length.t
-            generics_phantom_type_test_case_unit_clarification.Inch.t) :=
-      let* α0 : M.Val f64.t := M.alloc 12 (* 12.0 *) in
-      let* α1 : f64.t := M.read α0 in
-      M.alloc
-        (generics_phantom_type_test_case_unit_clarification.Length.Build_t
-          α1
-          core.marker.PhantomData.Build_t) in
-    let* one_meter :
-        M.Val
-          (generics_phantom_type_test_case_unit_clarification.Length.t
-            generics_phantom_type_test_case_unit_clarification.Mm.t) :=
-      let* α0 : M.Val f64.t := M.alloc 1000 (* 1000.0 *) in
-      let* α1 : f64.t := M.read α0 in
-      M.alloc
-        (generics_phantom_type_test_case_unit_clarification.Length.Build_t
-          α1
-          core.marker.PhantomData.Build_t) in
-    let* two_feet :
-        M.Val
-          (generics_phantom_type_test_case_unit_clarification.Length.t
-            generics_phantom_type_test_case_unit_clarification.Inch.t) :=
-      let* α0 :
-          generics_phantom_type_test_case_unit_clarification.Length.t
-            generics_phantom_type_test_case_unit_clarification.Inch.t :=
-        M.read one_foot in
-      let* α1 :
-          generics_phantom_type_test_case_unit_clarification.Length.t
-            generics_phantom_type_test_case_unit_clarification.Inch.t :=
-        M.read one_foot in
-      let* α2 :
-          generics_phantom_type_test_case_unit_clarification.Length.t
-            generics_phantom_type_test_case_unit_clarification.Inch.t :=
-        (core.ops.arith.Add.add
-            (Self :=
-              generics_phantom_type_test_case_unit_clarification.Length.t
-                generics_phantom_type_test_case_unit_clarification.Inch.t)
-            (Trait := ltac:(refine _)))
-          α0
-          α1 in
-      M.alloc α2 in
-    let* two_meters :
-        M.Val
-          (generics_phantom_type_test_case_unit_clarification.Length.t
-            generics_phantom_type_test_case_unit_clarification.Mm.t) :=
-      let* α0 :
-          generics_phantom_type_test_case_unit_clarification.Length.t
-            generics_phantom_type_test_case_unit_clarification.Mm.t :=
-        M.read one_meter in
-      let* α1 :
-          generics_phantom_type_test_case_unit_clarification.Length.t
-            generics_phantom_type_test_case_unit_clarification.Mm.t :=
-        M.read one_meter in
-      let* α2 :
-          generics_phantom_type_test_case_unit_clarification.Length.t
-            generics_phantom_type_test_case_unit_clarification.Mm.t :=
-        (core.ops.arith.Add.add
-            (Self :=
-              generics_phantom_type_test_case_unit_clarification.Length.t
-                generics_phantom_type_test_case_unit_clarification.Mm.t)
-            (Trait := ltac:(refine _)))
-          α0
-          α1 in
-      M.alloc α2 in
+  let* one_foot :
+      M.Val
+        (generics_phantom_type_test_case_unit_clarification.Length.t
+          generics_phantom_type_test_case_unit_clarification.Inch.t) :=
+    let* α0 : M.Val f64.t := M.alloc 12 (* 12.0 *) in
+    let* α1 : f64.t := M.read α0 in
+    M.alloc
+      (generics_phantom_type_test_case_unit_clarification.Length.Build_t
+        α1
+        core.marker.PhantomData.Build_t) in
+  let* one_meter :
+      M.Val
+        (generics_phantom_type_test_case_unit_clarification.Length.t
+          generics_phantom_type_test_case_unit_clarification.Mm.t) :=
+    let* α0 : M.Val f64.t := M.alloc 1000 (* 1000.0 *) in
+    let* α1 : f64.t := M.read α0 in
+    M.alloc
+      (generics_phantom_type_test_case_unit_clarification.Length.Build_t
+        α1
+        core.marker.PhantomData.Build_t) in
+  let* two_feet :
+      M.Val
+        (generics_phantom_type_test_case_unit_clarification.Length.t
+          generics_phantom_type_test_case_unit_clarification.Inch.t) :=
+    let* α0 :
+        generics_phantom_type_test_case_unit_clarification.Length.t
+          generics_phantom_type_test_case_unit_clarification.Inch.t :=
+      M.read one_foot in
+    let* α1 :
+        generics_phantom_type_test_case_unit_clarification.Length.t
+          generics_phantom_type_test_case_unit_clarification.Inch.t :=
+      M.read one_foot in
+    let* α2 :
+        generics_phantom_type_test_case_unit_clarification.Length.t
+          generics_phantom_type_test_case_unit_clarification.Inch.t :=
+      (core.ops.arith.Add.add
+          (Self :=
+            generics_phantom_type_test_case_unit_clarification.Length.t
+              generics_phantom_type_test_case_unit_clarification.Inch.t)
+          (Trait := ltac:(refine _)))
+        α0
+        α1 in
+    M.alloc α2 in
+  let* two_meters :
+      M.Val
+        (generics_phantom_type_test_case_unit_clarification.Length.t
+          generics_phantom_type_test_case_unit_clarification.Mm.t) :=
+    let* α0 :
+        generics_phantom_type_test_case_unit_clarification.Length.t
+          generics_phantom_type_test_case_unit_clarification.Mm.t :=
+      M.read one_meter in
+    let* α1 :
+        generics_phantom_type_test_case_unit_clarification.Length.t
+          generics_phantom_type_test_case_unit_clarification.Mm.t :=
+      M.read one_meter in
+    let* α2 :
+        generics_phantom_type_test_case_unit_clarification.Length.t
+          generics_phantom_type_test_case_unit_clarification.Mm.t :=
+      (core.ops.arith.Add.add
+          (Self :=
+            generics_phantom_type_test_case_unit_clarification.Length.t
+              generics_phantom_type_test_case_unit_clarification.Mm.t)
+          (Trait := ltac:(refine _)))
+        α0
+        α1 in
+    M.alloc α2 in
+  let* _ : M.Val unit :=
     let* _ : M.Val unit :=
-      let* _ : M.Val unit :=
-        let* α0 : M.Val (array (ref str.t)) :=
-          M.alloc [ mk_str "one foot + one_foot = "; mk_str " in
+      let* α0 : M.Val (array (ref str.t)) :=
+        M.alloc [ mk_str "one foot + one_foot = "; mk_str " in
 " ] in
-        let* α1 : ref (array (ref str.t)) := borrow α0 in
-        let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
-        let* α3 : M.Val (ref (slice (ref str.t))) :=
-          pointer_coercion "Unsize" α2 in
-        let* α4 : ref (slice (ref str.t)) := M.read α3 in
-        let* α5 : ref f64.t := borrow two_feet.["0"] in
-        let* α6 : core.fmt.rt.Argument.t :=
-          core.fmt.rt.Argument.t::["new_debug"] α5 in
-        let* α7 : M.Val core.fmt.rt.Argument.t := M.alloc α6 in
-        let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
-        let* α9 : ref (array core.fmt.rt.Argument.t) := borrow α8 in
-        let* α10 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α9 in
-        let* α11 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
-          pointer_coercion "Unsize" α10 in
-        let* α12 : ref (slice core.fmt.rt.Argument.t) := M.read α11 in
-        let* α13 : core.fmt.Arguments.t :=
-          core.fmt.Arguments.t::["new_v1"] α4 α12 in
-        let* α14 : unit := std.io.stdio._print α13 in
-        M.alloc α14 in
-      M.alloc tt in
+      let* α1 : ref (array (ref str.t)) := borrow α0 in
+      let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
+      let* α3 : M.Val (ref (slice (ref str.t))) :=
+        pointer_coercion "Unsize" α2 in
+      let* α4 : ref (slice (ref str.t)) := M.read α3 in
+      let* α5 : ref f64.t := borrow two_feet.["0"] in
+      let* α6 : core.fmt.rt.Argument.t :=
+        core.fmt.rt.Argument.t::["new_debug"] α5 in
+      let* α7 : M.Val core.fmt.rt.Argument.t := M.alloc α6 in
+      let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
+      let* α9 : ref (array core.fmt.rt.Argument.t) := borrow α8 in
+      let* α10 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α9 in
+      let* α11 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
+        pointer_coercion "Unsize" α10 in
+      let* α12 : ref (slice core.fmt.rt.Argument.t) := M.read α11 in
+      let* α13 : core.fmt.Arguments.t :=
+        core.fmt.Arguments.t::["new_v1"] α4 α12 in
+      let* α14 : unit := std.io.stdio._print α13 in
+      M.alloc α14 in
+    M.alloc tt in
+  let* _ : M.Val unit :=
     let* _ : M.Val unit :=
-      let* _ : M.Val unit :=
-        let* α0 : M.Val (array (ref str.t)) :=
-          M.alloc [ mk_str "one meter + one_meter = "; mk_str " mm
+      let* α0 : M.Val (array (ref str.t)) :=
+        M.alloc [ mk_str "one meter + one_meter = "; mk_str " mm
 " ] in
-        let* α1 : ref (array (ref str.t)) := borrow α0 in
-        let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
-        let* α3 : M.Val (ref (slice (ref str.t))) :=
-          pointer_coercion "Unsize" α2 in
-        let* α4 : ref (slice (ref str.t)) := M.read α3 in
-        let* α5 : ref f64.t := borrow two_meters.["0"] in
-        let* α6 : core.fmt.rt.Argument.t :=
-          core.fmt.rt.Argument.t::["new_debug"] α5 in
-        let* α7 : M.Val core.fmt.rt.Argument.t := M.alloc α6 in
-        let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
-        let* α9 : ref (array core.fmt.rt.Argument.t) := borrow α8 in
-        let* α10 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α9 in
-        let* α11 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
-          pointer_coercion "Unsize" α10 in
-        let* α12 : ref (slice core.fmt.rt.Argument.t) := M.read α11 in
-        let* α13 : core.fmt.Arguments.t :=
-          core.fmt.Arguments.t::["new_v1"] α4 α12 in
-        let* α14 : unit := std.io.stdio._print α13 in
-        M.alloc α14 in
-      M.alloc tt in
-    let* α0 : M.Val unit := M.alloc tt in
-    M.read α0).
+      let* α1 : ref (array (ref str.t)) := borrow α0 in
+      let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
+      let* α3 : M.Val (ref (slice (ref str.t))) :=
+        pointer_coercion "Unsize" α2 in
+      let* α4 : ref (slice (ref str.t)) := M.read α3 in
+      let* α5 : ref f64.t := borrow two_meters.["0"] in
+      let* α6 : core.fmt.rt.Argument.t :=
+        core.fmt.rt.Argument.t::["new_debug"] α5 in
+      let* α7 : M.Val core.fmt.rt.Argument.t := M.alloc α6 in
+      let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
+      let* α9 : ref (array core.fmt.rt.Argument.t) := borrow α8 in
+      let* α10 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α9 in
+      let* α11 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
+        pointer_coercion "Unsize" α10 in
+      let* α12 : ref (slice core.fmt.rt.Argument.t) := M.read α11 in
+      let* α13 : core.fmt.Arguments.t :=
+        core.fmt.Arguments.t::["new_v1"] α4 α12 in
+      let* α14 : unit := std.io.stdio._print α13 in
+      M.alloc α14 in
+    M.alloc tt in
+  let* α0 : M.Val unit := M.alloc tt in
+  M.read α0.

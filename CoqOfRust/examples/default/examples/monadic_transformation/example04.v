@@ -8,10 +8,9 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  M.function_body
-    (let* x : M.Val (ref i32.t) :=
-      let* α0 : M.Val i32.t := M.alloc 1 in
-      let* α1 : ref i32.t := borrow α0 in
-      M.alloc α1 in
-    let* α0 : M.Val unit := M.alloc tt in
-    M.read α0).
+  let* x : M.Val (ref i32.t) :=
+    let* α0 : M.Val i32.t := M.alloc 1 in
+    let* α1 : ref i32.t := borrow α0 in
+    M.alloc α1 in
+  let* α0 : M.Val unit := M.alloc tt in
+  M.read α0.

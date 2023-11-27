@@ -30,38 +30,37 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  M.function_body
-    (let* logical : M.Val bool.t :=
-      let* α0 : M.Val bool.t := M.alloc true in
-      M.copy α0 in
-    let* a_float : M.Val f64.t :=
-      let* α0 : M.Val f64.t := M.alloc 1 (* 1.0 *) in
-      M.copy α0 in
-    let* an_integer : M.Val i32.t :=
-      let* α0 : M.Val i32.t := M.alloc 5 in
-      M.copy α0 in
-    let* default_float : M.Val f64.t :=
-      let* α0 : M.Val f64.t := M.alloc 3 (* 3.0 *) in
-      M.copy α0 in
-    let* default_integer : M.Val i32.t :=
-      let* α0 : M.Val i32.t := M.alloc 7 in
-      M.copy α0 in
-    let* inferred_type : M.Val i64.t :=
-      let* α0 : M.Val i64.t := M.alloc 12 in
-      M.copy α0 in
-    let* _ : M.Val unit :=
-      let* α0 : M.Val i64.t := M.alloc 4294967296 in
-      let* α1 : i64.t := M.read α0 in
-      assign inferred_type α1 in
-    let* mutable : M.Val i32.t :=
-      let* α0 : M.Val i32.t := M.alloc 12 in
-      M.copy α0 in
-    let* _ : M.Val unit :=
-      let* α0 : M.Val i32.t := M.alloc 21 in
-      let* α1 : i32.t := M.read α0 in
-      assign mutable α1 in
-    let* mutable : M.Val bool.t :=
-      let* α0 : M.Val bool.t := M.alloc true in
-      M.copy α0 in
-    let* α0 : M.Val unit := M.alloc tt in
-    M.read α0).
+  let* logical : M.Val bool.t :=
+    let* α0 : M.Val bool.t := M.alloc true in
+    M.copy α0 in
+  let* a_float : M.Val f64.t :=
+    let* α0 : M.Val f64.t := M.alloc 1 (* 1.0 *) in
+    M.copy α0 in
+  let* an_integer : M.Val i32.t :=
+    let* α0 : M.Val i32.t := M.alloc 5 in
+    M.copy α0 in
+  let* default_float : M.Val f64.t :=
+    let* α0 : M.Val f64.t := M.alloc 3 (* 3.0 *) in
+    M.copy α0 in
+  let* default_integer : M.Val i32.t :=
+    let* α0 : M.Val i32.t := M.alloc 7 in
+    M.copy α0 in
+  let* inferred_type : M.Val i64.t :=
+    let* α0 : M.Val i64.t := M.alloc 12 in
+    M.copy α0 in
+  let* _ : M.Val unit :=
+    let* α0 : M.Val i64.t := M.alloc 4294967296 in
+    let* α1 : i64.t := M.read α0 in
+    assign inferred_type α1 in
+  let* mutable : M.Val i32.t :=
+    let* α0 : M.Val i32.t := M.alloc 12 in
+    M.copy α0 in
+  let* _ : M.Val unit :=
+    let* α0 : M.Val i32.t := M.alloc 21 in
+    let* α1 : i32.t := M.read α0 in
+    assign mutable α1 in
+  let* mutable : M.Val bool.t :=
+    let* α0 : M.Val bool.t := M.alloc true in
+    M.copy α0 in
+  let* α0 : M.Val unit := M.alloc tt in
+  M.read α0.

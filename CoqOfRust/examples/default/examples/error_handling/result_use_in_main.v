@@ -17,18 +17,14 @@ Definition main
     : M (core.result.Result.t unit core.num.error.ParseIntError.t) :=
   let return_ :=
     M.return_ (R := core.result.Result.t unit core.num.error.ParseIntError.t) in
-  M.function_body
+  M.catch_return
     (let* number_str : M.Val (ref str.t) := M.copy (mk_str "10") in
     let* number : M.Val i32.t :=
       let* α0 : ref str.t := M.read number_str in
       let* α1 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
         str.t::["parse"] α0 in
-      let* α2 :
-          M.Val (core.result.Result.t i32.t core.num.error.ParseIntError.t) :=
-        M.alloc α1 in
-      let* α3 := M.read α2 in
-      let* α4 : M.Val i32.t :=
-        match α3 with
+      let* α2 : M.Val i32.t :=
+        match α1 with
         | core.result.Result.Ok number =>
           let* number := M.alloc number in
           M.pure number
@@ -38,7 +34,7 @@ Definition main
           let* α1 : M.Val never.t := return_ (core.result.Result.Err α0) in
           never_to_any α1
         end in
-      M.copy α4 in
+      M.copy α2 in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
         let* α0 : M.Val (array (ref str.t)) :=

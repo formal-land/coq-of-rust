@@ -8,12 +8,11 @@ fn is_odd(n: u32) -> bool {
 *)
 Definition is_odd (n : u32.t) : M bool.t :=
   let* n : M.Val u32.t := M.alloc n in
-  M.function_body
-    (let* α0 : M.Val u32.t := M.alloc 2 in
-    let* α1 : M.Val u32.t := BinOp.rem n α0 in
-    let* α2 : M.Val u32.t := M.alloc 1 in
-    let* α3 : M.Val bool.t := BinOp.eq α1 α2 in
-    M.read α3).
+  let* α0 : M.Val u32.t := M.alloc 2 in
+  let* α1 : M.Val u32.t := BinOp.rem n α0 in
+  let* α2 : M.Val u32.t := M.alloc 1 in
+  let* α3 : M.Val bool.t := BinOp.eq α1 α2 in
+  M.read α3.
 
 (*
 fn main() {
@@ -49,199 +48,194 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  M.function_body
-    (let* _ : M.Val unit :=
-      let* _ : M.Val unit :=
-        let* α0 : M.Val (array (ref str.t)) :=
-          M.alloc
-            [ mk_str "Find the sum of all the squared odd numbers under 1000
+  let* _ : M.Val unit :=
+    let* _ : M.Val unit :=
+      let* α0 : M.Val (array (ref str.t)) :=
+        M.alloc
+          [ mk_str "Find the sum of all the squared odd numbers under 1000
 "
-            ] in
-        let* α1 : ref (array (ref str.t)) := borrow α0 in
-        let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
-        let* α3 : M.Val (ref (slice (ref str.t))) :=
-          pointer_coercion "Unsize" α2 in
-        let* α4 : ref (slice (ref str.t)) := M.read α3 in
-        let* α5 : core.fmt.Arguments.t :=
-          core.fmt.Arguments.t::["new_const"] α4 in
-        let* α6 : unit := std.io.stdio._print α5 in
-        M.alloc α6 in
-      M.alloc tt in
-    let* upper : M.Val u32.t :=
-      let* α0 : M.Val u32.t := M.alloc 1000 in
-      M.copy α0 in
-    let* acc : M.Val u32.t :=
-      let* α0 : M.Val u32.t := M.alloc 0 in
-      M.copy α0 in
-    let* _ : M.Val unit :=
-      let* α0 : M.Val u32.t := M.alloc 0 in
-      let* α1 : u32.t := M.read α0 in
-      let* α2 : core.ops.range.RangeFrom.t u32.t :=
-        (core.iter.traits.collect.IntoIterator.into_iter
-            (Self := core.ops.range.RangeFrom.t u32.t)
-            (Trait := ltac:(refine _)))
-          {| core.ops.range.RangeFrom.start := α1; |} in
-      let* α3 : M.Val (core.ops.range.RangeFrom.t u32.t) := M.alloc α2 in
-      let* α4 := M.read α3 in
-      let* α5 : M.Val unit :=
-        match α4 with
-        | iter =>
-          let* iter := M.alloc iter in
-          loop
-            (let* _ : M.Val unit :=
-              let* α0 : mut_ref (core.ops.range.RangeFrom.t u32.t) :=
-                borrow_mut iter in
-              let* α1 : core.option.Option.t u32.t :=
-                (core.iter.traits.iterator.Iterator.next
-                    (Self := core.ops.range.RangeFrom.t u32.t)
-                    (Trait := ltac:(refine _)))
-                  α0 in
-              let* α2 : M.Val (core.option.Option.t u32.t) := M.alloc α1 in
-              let* α3 := M.read α2 in
-              match α3 with
-              | core.option.Option.None  =>
-                let* α0 : M.Val never.t := Break in
+          ] in
+      let* α1 : ref (array (ref str.t)) := borrow α0 in
+      let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
+      let* α3 : M.Val (ref (slice (ref str.t))) :=
+        pointer_coercion "Unsize" α2 in
+      let* α4 : ref (slice (ref str.t)) := M.read α3 in
+      let* α5 : core.fmt.Arguments.t :=
+        core.fmt.Arguments.t::["new_const"] α4 in
+      let* α6 : unit := std.io.stdio._print α5 in
+      M.alloc α6 in
+    M.alloc tt in
+  let* upper : M.Val u32.t :=
+    let* α0 : M.Val u32.t := M.alloc 1000 in
+    M.copy α0 in
+  let* acc : M.Val u32.t :=
+    let* α0 : M.Val u32.t := M.alloc 0 in
+    M.copy α0 in
+  let* _ : M.Val unit :=
+    let* α0 : M.Val u32.t := M.alloc 0 in
+    let* α1 : u32.t := M.read α0 in
+    let* α2 : core.ops.range.RangeFrom.t u32.t :=
+      (core.iter.traits.collect.IntoIterator.into_iter
+          (Self := core.ops.range.RangeFrom.t u32.t)
+          (Trait := ltac:(refine _)))
+        {| core.ops.range.RangeFrom.start := α1; |} in
+    let* α3 : M.Val unit :=
+      match α2 with
+      | iter =>
+        let* iter := M.alloc iter in
+        loop
+          (let* _ : M.Val unit :=
+            let* α0 : mut_ref (core.ops.range.RangeFrom.t u32.t) :=
+              borrow_mut iter in
+            let* α1 : core.option.Option.t u32.t :=
+              (core.iter.traits.iterator.Iterator.next
+                  (Self := core.ops.range.RangeFrom.t u32.t)
+                  (Trait := ltac:(refine _)))
+                α0 in
+            match α1 with
+            | core.option.Option.None  =>
+              let* α0 : M.Val never.t := Break in
+              never_to_any α0
+            | core.option.Option.Some n =>
+              let* n := M.alloc n in
+              let* n_squared : M.Val u32.t :=
+                let* α0 : M.Val u32.t := BinOp.mul n n in
+                M.copy α0 in
+              let* α0 : M.Val bool.t := BinOp.ge n_squared upper in
+              let* α1 : M.Val bool.t := use α0 in
+              let* α2 : bool.t := M.read α1 in
+              if (α2 : bool) then
+                let* _ : M.Val never.t := Break in
+                let* α0 : M.Val unit := M.alloc tt in
                 never_to_any α0
-              | core.option.Option.Some n =>
-                let* n := M.alloc n in
-                let* n_squared : M.Val u32.t :=
-                  let* α0 : M.Val u32.t := BinOp.mul n n in
-                  M.copy α0 in
-                let* α0 : M.Val bool.t := BinOp.ge n_squared upper in
-                let* α1 : M.Val bool.t := use α0 in
-                let* α2 : bool.t := M.read α1 in
-                if (α2 : bool) then
-                  let* _ : M.Val never.t := Break in
-                  let* α0 : M.Val unit := M.alloc tt in
-                  never_to_any α0
+              else
+                let* α0 : u32.t := M.read n_squared in
+                let* α1 : bool.t := higher_order_functions.is_odd α0 in
+                let* α2 : M.Val bool.t := M.alloc α1 in
+                let* α3 : M.Val bool.t := use α2 in
+                let* α4 : bool.t := M.read α3 in
+                if (α4 : bool) then
+                  let* _ : M.Val unit := assign_op add acc n_squared in
+                  M.alloc tt
                 else
-                  let* α0 : u32.t := M.read n_squared in
-                  let* α1 : bool.t := higher_order_functions.is_odd α0 in
-                  let* α2 : M.Val bool.t := M.alloc α1 in
-                  let* α3 : M.Val bool.t := use α2 in
-                  let* α4 : bool.t := M.read α3 in
-                  if (α4 : bool) then
-                    let* _ : M.Val unit := assign_op add acc n_squared in
-                    M.alloc tt
-                  else
-                    M.alloc tt
-              end in
-            M.alloc tt)
-        end in
-      use α5 in
+                  M.alloc tt
+            end in
+          M.alloc tt)
+      end in
+    use α3 in
+  let* _ : M.Val unit :=
     let* _ : M.Val unit :=
-      let* _ : M.Val unit :=
-        let* α0 : M.Val (array (ref str.t)) :=
-          M.alloc [ mk_str "imperative style: "; mk_str "
+      let* α0 : M.Val (array (ref str.t)) :=
+        M.alloc [ mk_str "imperative style: "; mk_str "
 " ] in
-        let* α1 : ref (array (ref str.t)) := borrow α0 in
-        let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
-        let* α3 : M.Val (ref (slice (ref str.t))) :=
-          pointer_coercion "Unsize" α2 in
-        let* α4 : ref (slice (ref str.t)) := M.read α3 in
-        let* α5 : ref u32.t := borrow acc in
-        let* α6 : core.fmt.rt.Argument.t :=
-          core.fmt.rt.Argument.t::["new_display"] α5 in
-        let* α7 : M.Val core.fmt.rt.Argument.t := M.alloc α6 in
-        let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
-        let* α9 : ref (array core.fmt.rt.Argument.t) := borrow α8 in
-        let* α10 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α9 in
-        let* α11 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
-          pointer_coercion "Unsize" α10 in
-        let* α12 : ref (slice core.fmt.rt.Argument.t) := M.read α11 in
-        let* α13 : core.fmt.Arguments.t :=
-          core.fmt.Arguments.t::["new_v1"] α4 α12 in
-        let* α14 : unit := std.io.stdio._print α13 in
-        M.alloc α14 in
-      M.alloc tt in
-    let* sum_of_squared_odd_numbers : M.Val u32.t :=
-      let* α0 : M.Val u32.t := M.alloc 0 in
-      let* α1 : u32.t := M.read α0 in
-      let* α2 : type not implemented := M.read (BinOp.mul n n) in
-      let* α3 :
-          core.iter.adapters.map.Map.t
+      let* α1 : ref (array (ref str.t)) := borrow α0 in
+      let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
+      let* α3 : M.Val (ref (slice (ref str.t))) :=
+        pointer_coercion "Unsize" α2 in
+      let* α4 : ref (slice (ref str.t)) := M.read α3 in
+      let* α5 : ref u32.t := borrow acc in
+      let* α6 : core.fmt.rt.Argument.t :=
+        core.fmt.rt.Argument.t::["new_display"] α5 in
+      let* α7 : M.Val core.fmt.rt.Argument.t := M.alloc α6 in
+      let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
+      let* α9 : ref (array core.fmt.rt.Argument.t) := borrow α8 in
+      let* α10 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α9 in
+      let* α11 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
+        pointer_coercion "Unsize" α10 in
+      let* α12 : ref (slice core.fmt.rt.Argument.t) := M.read α11 in
+      let* α13 : core.fmt.Arguments.t :=
+        core.fmt.Arguments.t::["new_v1"] α4 α12 in
+      let* α14 : unit := std.io.stdio._print α13 in
+      M.alloc α14 in
+    M.alloc tt in
+  let* sum_of_squared_odd_numbers : M.Val u32.t :=
+    let* α0 : M.Val u32.t := M.alloc 0 in
+    let* α1 : u32.t := M.read α0 in
+    let* α2 : type not implemented := M.read (BinOp.mul n n) in
+    let* α3 :
+        core.iter.adapters.map.Map.t
+          (core.ops.range.RangeFrom.t u32.t)
+          type not implemented :=
+      (core.iter.traits.iterator.Iterator.map
+          (Self := core.ops.range.RangeFrom.t u32.t)
+          (Trait := ltac:(refine _)))
+        {| core.ops.range.RangeFrom.start := α1; |}
+        α2 in
+    let* α4 : type not implemented := M.read (BinOp.lt n_squared upper) in
+    let* α5 :
+        core.iter.adapters.take_while.TakeWhile.t
+          (core.iter.adapters.map.Map.t
             (core.ops.range.RangeFrom.t u32.t)
-            type not implemented :=
-        (core.iter.traits.iterator.Iterator.map
-            (Self := core.ops.range.RangeFrom.t u32.t)
-            (Trait := ltac:(refine _)))
-          {| core.ops.range.RangeFrom.start := α1; |}
-          α2 in
-      let* α4 : type not implemented := M.read (BinOp.lt n_squared upper) in
-      let* α5 :
-          core.iter.adapters.take_while.TakeWhile.t
+            type not implemented)
+          type not implemented :=
+      (core.iter.traits.iterator.Iterator.take_while
+          (Self :=
+            core.iter.adapters.map.Map.t
+              (core.ops.range.RangeFrom.t u32.t)
+              type not implemented)
+          (Trait := ltac:(refine _)))
+        α3
+        α4 in
+    let* α6 : type not implemented :=
+      M.read
+        (let* α0 : u32.t := M.read n_squared in
+        let* α1 : bool.t := higher_order_functions.is_odd α0 in
+        M.alloc α1) in
+    let* α7 :
+        core.iter.adapters.filter.Filter.t
+          (core.iter.adapters.take_while.TakeWhile.t
             (core.iter.adapters.map.Map.t
               (core.ops.range.RangeFrom.t u32.t)
               type not implemented)
-            type not implemented :=
-        (core.iter.traits.iterator.Iterator.take_while
-            (Self :=
-              core.iter.adapters.map.Map.t
-                (core.ops.range.RangeFrom.t u32.t)
-                type not implemented)
-            (Trait := ltac:(refine _)))
-          α3
-          α4 in
-      let* α6 : type not implemented :=
-        M.read
-          (let* α0 : u32.t := M.read n_squared in
-          let* α1 : bool.t := higher_order_functions.is_odd α0 in
-          M.alloc α1) in
-      let* α7 :
-          core.iter.adapters.filter.Filter.t
-            (core.iter.adapters.take_while.TakeWhile.t
+            type not implemented)
+          type not implemented :=
+      (core.iter.traits.iterator.Iterator.filter
+          (Self :=
+            core.iter.adapters.take_while.TakeWhile.t
               (core.iter.adapters.map.Map.t
                 (core.ops.range.RangeFrom.t u32.t)
                 type not implemented)
               type not implemented)
-            type not implemented :=
-        (core.iter.traits.iterator.Iterator.filter
-            (Self :=
-              core.iter.adapters.take_while.TakeWhile.t
+          (Trait := ltac:(refine _)))
+        α5
+        α6 in
+    let* α8 : u32.t :=
+      (core.iter.traits.iterator.Iterator.sum
+          (Self :=
+            core.iter.adapters.filter.Filter.t
+              (core.iter.adapters.take_while.TakeWhile.t
                 (core.iter.adapters.map.Map.t
                   (core.ops.range.RangeFrom.t u32.t)
                   type not implemented)
                 type not implemented)
-            (Trait := ltac:(refine _)))
-          α5
-          α6 in
-      let* α8 : u32.t :=
-        (core.iter.traits.iterator.Iterator.sum
-            (Self :=
-              core.iter.adapters.filter.Filter.t
-                (core.iter.adapters.take_while.TakeWhile.t
-                  (core.iter.adapters.map.Map.t
-                    (core.ops.range.RangeFrom.t u32.t)
-                    type not implemented)
-                  type not implemented)
-                type not implemented)
-            (Trait := ltac:(refine _)))
-          α7 in
-      M.alloc α8 in
+              type not implemented)
+          (Trait := ltac:(refine _)))
+        α7 in
+    M.alloc α8 in
+  let* _ : M.Val unit :=
     let* _ : M.Val unit :=
-      let* _ : M.Val unit :=
-        let* α0 : M.Val (array (ref str.t)) :=
-          M.alloc [ mk_str "functional style: "; mk_str "
+      let* α0 : M.Val (array (ref str.t)) :=
+        M.alloc [ mk_str "functional style: "; mk_str "
 " ] in
-        let* α1 : ref (array (ref str.t)) := borrow α0 in
-        let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
-        let* α3 : M.Val (ref (slice (ref str.t))) :=
-          pointer_coercion "Unsize" α2 in
-        let* α4 : ref (slice (ref str.t)) := M.read α3 in
-        let* α5 : ref u32.t := borrow sum_of_squared_odd_numbers in
-        let* α6 : core.fmt.rt.Argument.t :=
-          core.fmt.rt.Argument.t::["new_display"] α5 in
-        let* α7 : M.Val core.fmt.rt.Argument.t := M.alloc α6 in
-        let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
-        let* α9 : ref (array core.fmt.rt.Argument.t) := borrow α8 in
-        let* α10 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α9 in
-        let* α11 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
-          pointer_coercion "Unsize" α10 in
-        let* α12 : ref (slice core.fmt.rt.Argument.t) := M.read α11 in
-        let* α13 : core.fmt.Arguments.t :=
-          core.fmt.Arguments.t::["new_v1"] α4 α12 in
-        let* α14 : unit := std.io.stdio._print α13 in
-        M.alloc α14 in
-      M.alloc tt in
-    let* α0 : M.Val unit := M.alloc tt in
-    M.read α0).
+      let* α1 : ref (array (ref str.t)) := borrow α0 in
+      let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
+      let* α3 : M.Val (ref (slice (ref str.t))) :=
+        pointer_coercion "Unsize" α2 in
+      let* α4 : ref (slice (ref str.t)) := M.read α3 in
+      let* α5 : ref u32.t := borrow sum_of_squared_odd_numbers in
+      let* α6 : core.fmt.rt.Argument.t :=
+        core.fmt.rt.Argument.t::["new_display"] α5 in
+      let* α7 : M.Val core.fmt.rt.Argument.t := M.alloc α6 in
+      let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
+      let* α9 : ref (array core.fmt.rt.Argument.t) := borrow α8 in
+      let* α10 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α9 in
+      let* α11 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
+        pointer_coercion "Unsize" α10 in
+      let* α12 : ref (slice core.fmt.rt.Argument.t) := M.read α11 in
+      let* α13 : core.fmt.Arguments.t :=
+        core.fmt.Arguments.t::["new_v1"] α4 α12 in
+      let* α14 : unit := std.io.stdio._print α13 in
+      M.alloc α14 in
+    M.alloc tt in
+  let* α0 : M.Val unit := M.alloc tt in
+  M.read α0.

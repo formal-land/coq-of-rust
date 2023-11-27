@@ -14,14 +14,13 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  M.function_body
-    (let* x : M.Val i32.t :=
-      let* α0 : M.Val i32.t := M.alloc 5 in
-      M.copy α0 in
-    let _ : M.Val i32.t := x in
-    let* _ : M.Val i32.t :=
-      let* α0 : M.Val i32.t := M.alloc 1 in
-      BinOp.add x α0 in
-    let* _ : M.Val i32.t := M.alloc 15 in
-    let* α0 : M.Val unit := M.alloc tt in
-    M.read α0).
+  let* x : M.Val i32.t :=
+    let* α0 : M.Val i32.t := M.alloc 5 in
+    M.copy α0 in
+  let _ : M.Val i32.t := x in
+  let* _ : M.Val i32.t :=
+    let* α0 : M.Val i32.t := M.alloc 1 in
+    BinOp.add x α0 in
+  let* _ : M.Val i32.t := M.alloc 15 in
+  let* α0 : M.Val unit := M.alloc tt in
+  M.read α0.

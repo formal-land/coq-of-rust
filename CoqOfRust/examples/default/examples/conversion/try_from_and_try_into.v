@@ -26,19 +26,18 @@ Section Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber_t.
       : M ltac:(core.fmt.Result) :=
     let* self : M.Val (ref ltac:(Self)) := M.alloc self in
     let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
-    M.function_body
-      (let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
-      let* α1 : ref str.t := M.read (mk_str "EvenNumber") in
-      let* α2 : ref try_from_and_try_into.EvenNumber.t := M.read self in
-      let* α3 : M.Val try_from_and_try_into.EvenNumber.t := deref α2 in
-      let* α4 : ref i32.t := borrow α3.["0"] in
-      let* α5 : M.Val (ref i32.t) := M.alloc α4 in
-      let* α6 : ref (ref i32.t) := borrow α5 in
-      let* α7 : M.Val (ref (ref i32.t)) := M.alloc α6 in
-      let* α8 : M.Val (ref type not implemented) :=
-        pointer_coercion "Unsize" α7 in
-      let* α9 : ref type not implemented := M.read α8 in
-      core.fmt.Formatter.t::["debug_tuple_field1_finish"] α0 α1 α9).
+    let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
+    let* α1 : ref str.t := M.read (mk_str "EvenNumber") in
+    let* α2 : ref try_from_and_try_into.EvenNumber.t := M.read self in
+    let* α3 : M.Val try_from_and_try_into.EvenNumber.t := deref α2 in
+    let* α4 : ref i32.t := borrow α3.["0"] in
+    let* α5 : M.Val (ref i32.t) := M.alloc α4 in
+    let* α6 : ref (ref i32.t) := borrow α5 in
+    let* α7 : M.Val (ref (ref i32.t)) := M.alloc α6 in
+    let* α8 : M.Val (ref type not implemented) :=
+      pointer_coercion "Unsize" α7 in
+    let* α9 : ref type not implemented := M.read α8 in
+    core.fmt.Formatter.t::["debug_tuple_field1_finish"] α0 α1 α9.
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -74,13 +73,12 @@ Section Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber_t.
     let* self : M.Val (ref ltac:(Self)) := M.alloc self in
     let* other : M.Val (ref try_from_and_try_into.EvenNumber.t) :=
       M.alloc other in
-    M.function_body
-      (let* α0 : ref try_from_and_try_into.EvenNumber.t := M.read self in
-      let* α1 : M.Val try_from_and_try_into.EvenNumber.t := deref α0 in
-      let* α2 : ref try_from_and_try_into.EvenNumber.t := M.read other in
-      let* α3 : M.Val try_from_and_try_into.EvenNumber.t := deref α2 in
-      let* α4 : M.Val bool.t := BinOp.eq α1.["0"] α3.["0"] in
-      M.read α4).
+    let* α0 : ref try_from_and_try_into.EvenNumber.t := M.read self in
+    let* α1 : M.Val try_from_and_try_into.EvenNumber.t := deref α0 in
+    let* α2 : ref try_from_and_try_into.EvenNumber.t := M.read other in
+    let* α3 : M.Val try_from_and_try_into.EvenNumber.t := deref α2 in
+    let* α4 : M.Val bool.t := BinOp.eq α1.["0"] α3.["0"] in
+    M.read α4.
   
   Global Instance AssociatedFunction_eq :
     Notations.DoubleColon ltac:(Self) "eq" := {
@@ -118,24 +116,21 @@ Section Impl_core_convert_TryFrom_i32_t_for_try_from_and_try_into_EvenNumber_t.
       (value : i32.t)
       : M (core.result.Result.t ltac:(Self) Error.t) :=
     let* value : M.Val i32.t := M.alloc value in
-    M.function_body
-      (let* α0 : M.Val i32.t := M.alloc 2 in
-      let* α1 : M.Val i32.t := BinOp.rem value α0 in
-      let* α2 : M.Val i32.t := M.alloc 0 in
-      let* α3 : M.Val bool.t := BinOp.eq α1 α2 in
-      let* α4 : M.Val bool.t := use α3 in
-      let* α5 : bool.t := M.read α4 in
-      let* α6 :
-          M.Val
-            (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
-        if (α5 : bool) then
-          let* α0 : i32.t := M.read value in
-          M.alloc
-            (core.result.Result.Ok
-              (try_from_and_try_into.EvenNumber.Build_t α0))
-        else
-          M.alloc (core.result.Result.Err tt) in
-      M.read α6).
+    let* α0 : M.Val i32.t := M.alloc 2 in
+    let* α1 : M.Val i32.t := BinOp.rem value α0 in
+    let* α2 : M.Val i32.t := M.alloc 0 in
+    let* α3 : M.Val bool.t := BinOp.eq α1 α2 in
+    let* α4 : M.Val bool.t := use α3 in
+    let* α5 : bool.t := M.read α4 in
+    let* α6 :
+        M.Val (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
+      if (α5 : bool) then
+        let* α0 : i32.t := M.read value in
+        M.alloc
+          (core.result.Result.Ok (try_from_and_try_into.EvenNumber.Build_t α0))
+      else
+        M.alloc (core.result.Result.Err tt) in
+    M.read α6.
   
   Global Instance AssociatedFunction_try_from :
     Notations.DoubleColon ltac:(Self) "try_from" := {
@@ -166,336 +161,271 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  M.function_body
-    (let* _ : M.Val unit :=
-      let* α0 : M.Val i32.t := M.alloc 8 in
-      let* α1 : i32.t := M.read α0 in
-      let* α2 : core.result.Result.t try_from_and_try_into.EvenNumber.t unit :=
-        (core.convert.TryFrom.try_from
-            (Self := try_from_and_try_into.EvenNumber.t)
-            (Trait := ltac:(refine _)))
-          α1 in
-      let* α3 :
-          M.Val
-            (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
-        M.alloc α2 in
-      let* α4 :
-          ref (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
-        borrow α3 in
-      let* α5 : M.Val i32.t := M.alloc 8 in
-      let* α6 : i32.t := M.read α5 in
-      let* α7 :
-          M.Val
-            (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
-        M.alloc
-          (core.result.Result.Ok
-            (try_from_and_try_into.EvenNumber.Build_t α6)) in
-      let* α8 :
-          ref (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
-        borrow α7 in
-      let* α9 :
-          M.Val
-            ((ref
-              (core.result.Result.t try_from_and_try_into.EvenNumber.t unit))
-            *
-            (ref
-              (core.result.Result.t
-                try_from_and_try_into.EvenNumber.t
-                unit))) :=
-        M.alloc (α4, α8) in
-      let* α10 := M.read α9 in
-      match α10 with
-      | (left_val, right_val) =>
-        let* right_val := M.alloc right_val in
-        let* left_val := M.alloc left_val in
-        let* α0 :
-            ref
-              (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
-          M.read left_val in
-        let* α1 :
-            ref
-              (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
-          M.read right_val in
-        let* α2 : bool.t :=
-          (core.cmp.PartialEq.eq
-              (Self :=
-                core.result.Result.t try_from_and_try_into.EvenNumber.t unit)
-              (Trait := ltac:(refine _)))
-            α0
-            α1 in
-        let* α3 : M.Val bool.t := M.alloc α2 in
-        let* α4 : M.Val bool.t := UnOp.not α3 in
-        let* α5 : M.Val bool.t := use α4 in
-        let* α6 : bool.t := M.read α5 in
-        if (α6 : bool) then
-          let* kind : M.Val core.panicking.AssertKind.t :=
-            M.alloc core.panicking.AssertKind.Eq in
-          let* _ : M.Val never.t :=
-            let* α0 : core.panicking.AssertKind.t := M.read kind in
-            let* α1 :
-                ref
-                  (core.result.Result.t
-                    try_from_and_try_into.EvenNumber.t
-                    unit) :=
-              M.read left_val in
-            let* α2 :
-                ref
-                  (core.result.Result.t
-                    try_from_and_try_into.EvenNumber.t
-                    unit) :=
-              M.read right_val in
-            let* α3 : never.t :=
-              core.panicking.assert_failed α0 α1 α2 core.option.Option.None in
-            M.alloc α3 in
-          let* α0 : M.Val unit := M.alloc tt in
-          never_to_any α0
-        else
-          M.alloc tt
-      end in
-    let* _ : M.Val unit :=
-      let* α0 : M.Val i32.t := M.alloc 5 in
-      let* α1 : i32.t := M.read α0 in
-      let* α2 : core.result.Result.t try_from_and_try_into.EvenNumber.t unit :=
-        (core.convert.TryFrom.try_from
-            (Self := try_from_and_try_into.EvenNumber.t)
-            (Trait := ltac:(refine _)))
-          α1 in
-      let* α3 :
-          M.Val
-            (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
-        M.alloc α2 in
-      let* α4 :
-          ref (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
-        borrow α3 in
-      let* α5 :
-          M.Val
-            (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
-        M.alloc (core.result.Result.Err tt) in
-      let* α6 :
-          ref (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
-        borrow α5 in
-      let* α7 :
-          M.Val
-            ((ref
-              (core.result.Result.t try_from_and_try_into.EvenNumber.t unit))
-            *
-            (ref
-              (core.result.Result.t
-                try_from_and_try_into.EvenNumber.t
-                unit))) :=
-        M.alloc (α4, α6) in
-      let* α8 := M.read α7 in
-      match α8 with
-      | (left_val, right_val) =>
-        let* right_val := M.alloc right_val in
-        let* left_val := M.alloc left_val in
-        let* α0 :
-            ref
-              (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
-          M.read left_val in
-        let* α1 :
-            ref
-              (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
-          M.read right_val in
-        let* α2 : bool.t :=
-          (core.cmp.PartialEq.eq
-              (Self :=
-                core.result.Result.t try_from_and_try_into.EvenNumber.t unit)
-              (Trait := ltac:(refine _)))
-            α0
-            α1 in
-        let* α3 : M.Val bool.t := M.alloc α2 in
-        let* α4 : M.Val bool.t := UnOp.not α3 in
-        let* α5 : M.Val bool.t := use α4 in
-        let* α6 : bool.t := M.read α5 in
-        if (α6 : bool) then
-          let* kind : M.Val core.panicking.AssertKind.t :=
-            M.alloc core.panicking.AssertKind.Eq in
-          let* _ : M.Val never.t :=
-            let* α0 : core.panicking.AssertKind.t := M.read kind in
-            let* α1 :
-                ref
-                  (core.result.Result.t
-                    try_from_and_try_into.EvenNumber.t
-                    unit) :=
-              M.read left_val in
-            let* α2 :
-                ref
-                  (core.result.Result.t
-                    try_from_and_try_into.EvenNumber.t
-                    unit) :=
-              M.read right_val in
-            let* α3 : never.t :=
-              core.panicking.assert_failed α0 α1 α2 core.option.Option.None in
-            M.alloc α3 in
-          let* α0 : M.Val unit := M.alloc tt in
-          never_to_any α0
-        else
-          M.alloc tt
-      end in
-    let* result :
+  let* _ : M.Val unit :=
+    let* α0 : M.Val i32.t := M.alloc 8 in
+    let* α1 : i32.t := M.read α0 in
+    let* α2 : core.result.Result.t try_from_and_try_into.EvenNumber.t unit :=
+      (core.convert.TryFrom.try_from
+          (Self := try_from_and_try_into.EvenNumber.t)
+          (Trait := ltac:(refine _)))
+        α1 in
+    let* α3 :
         M.Val (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
-      let* α0 : M.Val i32.t := M.alloc 8 in
-      let* α1 : i32.t := M.read α0 in
-      let* α2 : core.result.Result.t try_from_and_try_into.EvenNumber.t unit :=
-        (core.convert.TryInto.try_into
-            (Self := i32.t)
-            (Trait := ltac:(refine _)))
-          α1 in
       M.alloc α2 in
-    let* _ : M.Val unit :=
+    let* α4 :
+        ref (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
+      borrow α3 in
+    let* α5 : M.Val i32.t := M.alloc 8 in
+    let* α6 : i32.t := M.read α5 in
+    let* α7 :
+        M.Val (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
+      M.alloc
+        (core.result.Result.Ok (try_from_and_try_into.EvenNumber.Build_t α6)) in
+    let* α8 :
+        ref (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
+      borrow α7 in
+    match (α4, α8) with
+    | (left_val, right_val) =>
+      let* right_val := M.alloc right_val in
+      let* left_val := M.alloc left_val in
       let* α0 :
           ref (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
-        borrow result in
-      let* α1 : M.Val i32.t := M.alloc 8 in
-      let* α2 : i32.t := M.read α1 in
-      let* α3 :
-          M.Val
-            (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
-        M.alloc
-          (core.result.Result.Ok
-            (try_from_and_try_into.EvenNumber.Build_t α2)) in
-      let* α4 :
-          ref (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
-        borrow α3 in
-      let* α5 :
-          M.Val
-            ((ref
-              (core.result.Result.t try_from_and_try_into.EvenNumber.t unit))
-            *
-            (ref
-              (core.result.Result.t
-                try_from_and_try_into.EvenNumber.t
-                unit))) :=
-        M.alloc (α0, α4) in
-      let* α6 := M.read α5 in
-      match α6 with
-      | (left_val, right_val) =>
-        let* right_val := M.alloc right_val in
-        let* left_val := M.alloc left_val in
-        let* α0 :
-            ref
-              (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
-          M.read left_val in
-        let* α1 :
-            ref
-              (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
-          M.read right_val in
-        let* α2 : bool.t :=
-          (core.cmp.PartialEq.eq
-              (Self :=
-                core.result.Result.t try_from_and_try_into.EvenNumber.t unit)
-              (Trait := ltac:(refine _)))
-            α0
-            α1 in
-        let* α3 : M.Val bool.t := M.alloc α2 in
-        let* α4 : M.Val bool.t := UnOp.not α3 in
-        let* α5 : M.Val bool.t := use α4 in
-        let* α6 : bool.t := M.read α5 in
-        if (α6 : bool) then
-          let* kind : M.Val core.panicking.AssertKind.t :=
-            M.alloc core.panicking.AssertKind.Eq in
-          let* _ : M.Val never.t :=
-            let* α0 : core.panicking.AssertKind.t := M.read kind in
-            let* α1 :
-                ref
-                  (core.result.Result.t
-                    try_from_and_try_into.EvenNumber.t
-                    unit) :=
-              M.read left_val in
-            let* α2 :
-                ref
-                  (core.result.Result.t
-                    try_from_and_try_into.EvenNumber.t
-                    unit) :=
-              M.read right_val in
-            let* α3 : never.t :=
-              core.panicking.assert_failed α0 α1 α2 core.option.Option.None in
-            M.alloc α3 in
-          let* α0 : M.Val unit := M.alloc tt in
-          never_to_any α0
-        else
-          M.alloc tt
-      end in
-    let* result :
-        M.Val (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
-      let* α0 : M.Val i32.t := M.alloc 5 in
-      let* α1 : i32.t := M.read α0 in
-      let* α2 : core.result.Result.t try_from_and_try_into.EvenNumber.t unit :=
-        (core.convert.TryInto.try_into
-            (Self := i32.t)
-            (Trait := ltac:(refine _)))
-          α1 in
-      M.alloc α2 in
-    let* _ : M.Val unit :=
-      let* α0 :
-          ref (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
-        borrow result in
+        M.read left_val in
       let* α1 :
-          M.Val
-            (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
-        M.alloc (core.result.Result.Err tt) in
-      let* α2 :
           ref (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
-        borrow α1 in
-      let* α3 :
-          M.Val
-            ((ref
-              (core.result.Result.t try_from_and_try_into.EvenNumber.t unit))
-            *
-            (ref
-              (core.result.Result.t
-                try_from_and_try_into.EvenNumber.t
-                unit))) :=
-        M.alloc (α0, α2) in
-      let* α4 := M.read α3 in
-      match α4 with
-      | (left_val, right_val) =>
-        let* right_val := M.alloc right_val in
-        let* left_val := M.alloc left_val in
-        let* α0 :
-            ref
-              (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
-          M.read left_val in
-        let* α1 :
-            ref
-              (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
-          M.read right_val in
-        let* α2 : bool.t :=
-          (core.cmp.PartialEq.eq
-              (Self :=
-                core.result.Result.t try_from_and_try_into.EvenNumber.t unit)
-              (Trait := ltac:(refine _)))
-            α0
-            α1 in
-        let* α3 : M.Val bool.t := M.alloc α2 in
-        let* α4 : M.Val bool.t := UnOp.not α3 in
-        let* α5 : M.Val bool.t := use α4 in
-        let* α6 : bool.t := M.read α5 in
-        if (α6 : bool) then
-          let* kind : M.Val core.panicking.AssertKind.t :=
-            M.alloc core.panicking.AssertKind.Eq in
-          let* _ : M.Val never.t :=
-            let* α0 : core.panicking.AssertKind.t := M.read kind in
-            let* α1 :
-                ref
-                  (core.result.Result.t
-                    try_from_and_try_into.EvenNumber.t
-                    unit) :=
-              M.read left_val in
-            let* α2 :
-                ref
-                  (core.result.Result.t
-                    try_from_and_try_into.EvenNumber.t
-                    unit) :=
-              M.read right_val in
-            let* α3 : never.t :=
-              core.panicking.assert_failed α0 α1 α2 core.option.Option.None in
-            M.alloc α3 in
-          let* α0 : M.Val unit := M.alloc tt in
-          never_to_any α0
-        else
-          M.alloc tt
-      end in
-    let* α0 : M.Val unit := M.alloc tt in
-    M.read α0).
+        M.read right_val in
+      let* α2 : bool.t :=
+        (core.cmp.PartialEq.eq
+            (Self :=
+              core.result.Result.t try_from_and_try_into.EvenNumber.t unit)
+            (Trait := ltac:(refine _)))
+          α0
+          α1 in
+      let* α3 : M.Val bool.t := M.alloc α2 in
+      let* α4 : M.Val bool.t := UnOp.not α3 in
+      let* α5 : M.Val bool.t := use α4 in
+      let* α6 : bool.t := M.read α5 in
+      if (α6 : bool) then
+        let* kind : M.Val core.panicking.AssertKind.t :=
+          M.alloc core.panicking.AssertKind.Eq in
+        let* _ : M.Val never.t :=
+          let* α0 : core.panicking.AssertKind.t := M.read kind in
+          let* α1 :
+              ref
+                (core.result.Result.t
+                  try_from_and_try_into.EvenNumber.t
+                  unit) :=
+            M.read left_val in
+          let* α2 :
+              ref
+                (core.result.Result.t
+                  try_from_and_try_into.EvenNumber.t
+                  unit) :=
+            M.read right_val in
+          let* α3 : never.t :=
+            core.panicking.assert_failed α0 α1 α2 core.option.Option.None in
+          M.alloc α3 in
+        let* α0 : M.Val unit := M.alloc tt in
+        never_to_any α0
+      else
+        M.alloc tt
+    end in
+  let* _ : M.Val unit :=
+    let* α0 : M.Val i32.t := M.alloc 5 in
+    let* α1 : i32.t := M.read α0 in
+    let* α2 : core.result.Result.t try_from_and_try_into.EvenNumber.t unit :=
+      (core.convert.TryFrom.try_from
+          (Self := try_from_and_try_into.EvenNumber.t)
+          (Trait := ltac:(refine _)))
+        α1 in
+    let* α3 :
+        M.Val (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
+      M.alloc α2 in
+    let* α4 :
+        ref (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
+      borrow α3 in
+    let* α5 :
+        M.Val (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
+      M.alloc (core.result.Result.Err tt) in
+    let* α6 :
+        ref (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
+      borrow α5 in
+    match (α4, α6) with
+    | (left_val, right_val) =>
+      let* right_val := M.alloc right_val in
+      let* left_val := M.alloc left_val in
+      let* α0 :
+          ref (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
+        M.read left_val in
+      let* α1 :
+          ref (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
+        M.read right_val in
+      let* α2 : bool.t :=
+        (core.cmp.PartialEq.eq
+            (Self :=
+              core.result.Result.t try_from_and_try_into.EvenNumber.t unit)
+            (Trait := ltac:(refine _)))
+          α0
+          α1 in
+      let* α3 : M.Val bool.t := M.alloc α2 in
+      let* α4 : M.Val bool.t := UnOp.not α3 in
+      let* α5 : M.Val bool.t := use α4 in
+      let* α6 : bool.t := M.read α5 in
+      if (α6 : bool) then
+        let* kind : M.Val core.panicking.AssertKind.t :=
+          M.alloc core.panicking.AssertKind.Eq in
+        let* _ : M.Val never.t :=
+          let* α0 : core.panicking.AssertKind.t := M.read kind in
+          let* α1 :
+              ref
+                (core.result.Result.t
+                  try_from_and_try_into.EvenNumber.t
+                  unit) :=
+            M.read left_val in
+          let* α2 :
+              ref
+                (core.result.Result.t
+                  try_from_and_try_into.EvenNumber.t
+                  unit) :=
+            M.read right_val in
+          let* α3 : never.t :=
+            core.panicking.assert_failed α0 α1 α2 core.option.Option.None in
+          M.alloc α3 in
+        let* α0 : M.Val unit := M.alloc tt in
+        never_to_any α0
+      else
+        M.alloc tt
+    end in
+  let* result :
+      M.Val (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
+    let* α0 : M.Val i32.t := M.alloc 8 in
+    let* α1 : i32.t := M.read α0 in
+    let* α2 : core.result.Result.t try_from_and_try_into.EvenNumber.t unit :=
+      (core.convert.TryInto.try_into (Self := i32.t) (Trait := ltac:(refine _)))
+        α1 in
+    M.alloc α2 in
+  let* _ : M.Val unit :=
+    let* α0 :
+        ref (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
+      borrow result in
+    let* α1 : M.Val i32.t := M.alloc 8 in
+    let* α2 : i32.t := M.read α1 in
+    let* α3 :
+        M.Val (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
+      M.alloc
+        (core.result.Result.Ok (try_from_and_try_into.EvenNumber.Build_t α2)) in
+    let* α4 :
+        ref (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
+      borrow α3 in
+    match (α0, α4) with
+    | (left_val, right_val) =>
+      let* right_val := M.alloc right_val in
+      let* left_val := M.alloc left_val in
+      let* α0 :
+          ref (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
+        M.read left_val in
+      let* α1 :
+          ref (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
+        M.read right_val in
+      let* α2 : bool.t :=
+        (core.cmp.PartialEq.eq
+            (Self :=
+              core.result.Result.t try_from_and_try_into.EvenNumber.t unit)
+            (Trait := ltac:(refine _)))
+          α0
+          α1 in
+      let* α3 : M.Val bool.t := M.alloc α2 in
+      let* α4 : M.Val bool.t := UnOp.not α3 in
+      let* α5 : M.Val bool.t := use α4 in
+      let* α6 : bool.t := M.read α5 in
+      if (α6 : bool) then
+        let* kind : M.Val core.panicking.AssertKind.t :=
+          M.alloc core.panicking.AssertKind.Eq in
+        let* _ : M.Val never.t :=
+          let* α0 : core.panicking.AssertKind.t := M.read kind in
+          let* α1 :
+              ref
+                (core.result.Result.t
+                  try_from_and_try_into.EvenNumber.t
+                  unit) :=
+            M.read left_val in
+          let* α2 :
+              ref
+                (core.result.Result.t
+                  try_from_and_try_into.EvenNumber.t
+                  unit) :=
+            M.read right_val in
+          let* α3 : never.t :=
+            core.panicking.assert_failed α0 α1 α2 core.option.Option.None in
+          M.alloc α3 in
+        let* α0 : M.Val unit := M.alloc tt in
+        never_to_any α0
+      else
+        M.alloc tt
+    end in
+  let* result :
+      M.Val (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
+    let* α0 : M.Val i32.t := M.alloc 5 in
+    let* α1 : i32.t := M.read α0 in
+    let* α2 : core.result.Result.t try_from_and_try_into.EvenNumber.t unit :=
+      (core.convert.TryInto.try_into (Self := i32.t) (Trait := ltac:(refine _)))
+        α1 in
+    M.alloc α2 in
+  let* _ : M.Val unit :=
+    let* α0 :
+        ref (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
+      borrow result in
+    let* α1 :
+        M.Val (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
+      M.alloc (core.result.Result.Err tt) in
+    let* α2 :
+        ref (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
+      borrow α1 in
+    match (α0, α2) with
+    | (left_val, right_val) =>
+      let* right_val := M.alloc right_val in
+      let* left_val := M.alloc left_val in
+      let* α0 :
+          ref (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
+        M.read left_val in
+      let* α1 :
+          ref (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
+        M.read right_val in
+      let* α2 : bool.t :=
+        (core.cmp.PartialEq.eq
+            (Self :=
+              core.result.Result.t try_from_and_try_into.EvenNumber.t unit)
+            (Trait := ltac:(refine _)))
+          α0
+          α1 in
+      let* α3 : M.Val bool.t := M.alloc α2 in
+      let* α4 : M.Val bool.t := UnOp.not α3 in
+      let* α5 : M.Val bool.t := use α4 in
+      let* α6 : bool.t := M.read α5 in
+      if (α6 : bool) then
+        let* kind : M.Val core.panicking.AssertKind.t :=
+          M.alloc core.panicking.AssertKind.Eq in
+        let* _ : M.Val never.t :=
+          let* α0 : core.panicking.AssertKind.t := M.read kind in
+          let* α1 :
+              ref
+                (core.result.Result.t
+                  try_from_and_try_into.EvenNumber.t
+                  unit) :=
+            M.read left_val in
+          let* α2 :
+              ref
+                (core.result.Result.t
+                  try_from_and_try_into.EvenNumber.t
+                  unit) :=
+            M.read right_val in
+          let* α3 : never.t :=
+            core.panicking.assert_failed α0 α1 α2 core.option.Option.None in
+          M.alloc α3 in
+        let* α0 : M.Val unit := M.alloc tt in
+        never_to_any α0
+      else
+        M.alloc tt
+    end in
+  let* α0 : M.Val unit := M.alloc tt in
+  M.read α0.
