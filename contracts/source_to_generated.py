@@ -55,7 +55,7 @@ for filename in os.listdir(source_dir):
 
             content = content.replace(
                 'use ink::storage::Mapping;',
-                'use crate::storage::*;',
+                'use crate::storage::*; use crate::storage::Balance;',
             )
 
             content = content.replace(
@@ -84,6 +84,16 @@ for filename in os.listdir(source_dir):
                 'impl_storage!(%s);' % storage_name,
             )
 
+            content = content.replace(
+                'scale::Encode',
+                'Encode'
+            )
+
+            content = content.replace(
+                'scale::Decode',
+                'Decode'
+            )
+
             macros_to_comment = [
                 '#[ink::contract]',
                 '#[ink::scale_derive(Encode, Decode, TypeInfo)]',
@@ -92,6 +102,10 @@ for filename in os.listdir(source_dir):
                 '#[ink(message)]',
                 '#[ink(storage)]',
                 '#[ink(topic)]',
+                '#[ink::trait_definition]',
+                '#[ink(message, selector = 0xF23A6E61)]',
+                '#[ink(message, selector = 0xBC197C81)]',
+                '#[ink(message, selector = 0xBC197C81)]'
             ]
             for macro in macros_to_comment:
                 content = content.replace(macro, '// ' + macro)

@@ -9,8 +9,10 @@ use std::collections::VecDeque;
 use std::rc::Rc;
 use std::sync::Arc;
 
-#[derive(Default, Eq, PartialEq, Clone, Copy)]
+#[derive(Default, Eq, PartialEq, Clone, Copy, Debug)]
 pub struct AccountId([u8; 32]);
+
+pub struct Environment {}
 
 impl From<[u8; 32]> for AccountId {
     fn from(value: [u8; 32]) -> Self {
