@@ -12,8 +12,6 @@ use std::sync::Arc;
 #[derive(Default, Eq, PartialEq, Clone, Copy, Debug)]
 pub struct AccountId([u8; 32]);
 
-pub struct Environment {}
-
 impl From<[u8; 32]> for AccountId {
     fn from(value: [u8; 32]) -> Self {
         Self(value)
@@ -743,4 +741,128 @@ macro_rules! impl_storage {
             }
         }
     };
+}
+
+// scale::Encode
+impl std::fmt::Debug for dyn Encode {
+  fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+      write!(f, "{}", "Encode")
+  }
+}
+
+pub trait Decode {}
+
+// scale::Decode
+impl std::fmt::Debug for dyn Decode {
+  fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+      write!(f, "{}", "Decode")
+  }
+}
+
+// ink::prelude::string
+pub mod string {
+  pub struct String {}
+}
+
+// ink::env::vec
+pub mod vec {
+  pub struct Vec<T> {}
+}
+
+pub struct Args {}
+pub struct Call<E: Environment> {
+  // dest : MultiAddress<E::AccountId, ()>,
+  // value : E::Balance,
+  // gas_limit : Weight,
+  // storage_deposit_limit : Option<E::Balance>,
+  // data : Vec<u8>,
+}
+
+pub struct EmptyArgumentList {}
+pub struct ReturnType<T>(marker::PhantomData<fn() -> T>);
+pub struct Unset<T>(marker::PhantomData<fn() -> T>);
+
+// ink::env::call
+pub mod call {
+  // pub fn build_call<E>() -> CallBuilder<
+  //     E,
+  //     Unset<Call<E>>,
+  //     Unset<ExecutionInput<EmptyArgumentList>>,
+  //     Unset<ReturnType<()>>,
+  // >
+  // where
+  //     E: Environment,
+  // {
+  //     CallBuilder {
+  //         call_type: Default::default(),
+  //         call_flags: Default::default(),
+  //         exec_input: Default::default(),
+  //         return_type: Default::default(),
+  //         _phantom: Default::default(),
+  //     }
+  // }
+  use crate::storage::Environment;
+  pub fn build_call<E>() -> CallBuilder<
+    E,
+    Unset<Call<E>>,
+    Unset<ExecutionInput<EmptyArgumentList>>,
+    Unset<ReturnType<()>>,
+  >
+  where
+    E: Environment
+  { unimplemented!() }
+
+  pub struct Selector {
+    bytes: [u8; 4],
+  }
+  pub struct ExecutionInput<Args> {
+    selector: Selector,
+    args: Args,
+  }
+
+
+}
+
+// ink::env::DefaultEnvironment
+pub enum DefaultEnvironment {}
+
+// ink::env::Environment
+pub trait Environment {
+  type AccountId;
+  type Balance;
+  type Hash;
+  type Timestamp;
+  type BlockNumber;
+  type ChainExtension;
+
+  const MAX_EVENT_TOPICS: usize;
+}
+
+pub struct OffChainError {}
+
+pub struct ScaleError {} // parity_scale_codec::Error
+
+// ink::env::Error
+pub enum Error {
+  Decode(ScaleError),
+  OffChain(OffChainError),
+  CalleeTrapped,
+  CalleeReverted,
+  KeyNotFound,
+  _BelowSubsistenceThreshold,
+  TransferFailed,
+  _EndowmentTooLow,
+  CodeNotFound,
+  NotCallable,
+  Unknown,
+  LoggingDisabled,
+  CallRuntimeFailed,
+  EcdsaRecoveryFailed,
+}
+
+// ink::env::debug_println
+#[macro_export]
+macro_rules! debug_println {
+  () => { unimplemented!() };
+  ($($arg:tt)*) => { unimplemented!() };
 }

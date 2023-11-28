@@ -55,12 +55,28 @@ for filename in os.listdir(source_dir):
 
             content = content.replace(
                 'use ink::storage::Mapping;',
-                'use crate::storage::*; use crate::storage::Balance;',
+                'use crate::storage::*; use crate::storage::Balance; use crate::storage::Error; \
+                use crate::storage::Environment;',
             )
 
             content = content.replace(
                 'Self::env()',
                 'Self::init_env()',
+            )
+
+            content = content.replace(
+                'ink::env::Error',
+                'crate::storage::Error',
+            )
+
+            content = content.replace(
+                'ink::env::',
+                'crate::storage::',
+            )
+
+            content = content.replace(
+                'ink::prelude::string',
+                'crate::storage::string',
             )
 
             storage_name = "DefaultName"
@@ -86,12 +102,27 @@ for filename in os.listdir(source_dir):
 
             content = content.replace(
                 'scale::Encode',
-                'Encode'
+                'crate::storage::Encode'
             )
 
             content = content.replace(
                 'scale::Decode',
-                'Decode'
+                'crate::storage::Decode'
+            )
+
+            content = content.replace(
+              'use ink::{',
+              'use crate::storage::{'
+            )
+
+            content = content.replace(
+              'prelude::',
+              ''
+            )
+
+            content = content.replace(
+              'primitives::',
+              ''
             )
 
             macros_to_comment = [
