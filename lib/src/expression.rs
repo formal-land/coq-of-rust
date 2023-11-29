@@ -7,9 +7,6 @@ use crate::pattern::*;
 use crate::render::*;
 use crate::ty::*;
 
-use rustc_ast::LitKind;
-use rustc_hir::BinOpKind;
-
 /// Struct [FreshVars] represents a set of fresh variables
 #[derive(Debug)]
 pub(crate) struct FreshVars(u64);
@@ -41,6 +38,21 @@ pub(crate) enum LoopControlFlow {
 }
 
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
+pub(crate) enum Purity {
+    Pure,
+    Effectful,
+}
+
+#[derive(Clone, Debug, Eq, Hash, PartialEq)]
+pub(crate) enum Literal {
+    Bool(bool),
+    Integer { value: u128, neg: bool },
+    Char(char),
+    String(String),
+    Error,
+}
+
+#[derive(Clone, Debug, Eq, Hash, PartialEq)]
 pub(crate) struct Expr {
     pub(crate) kind: ExprKind,
     pub(crate) ty: Option<Rc<CoqType>>,
@@ -65,14 +77,12 @@ pub(crate) enum ExprKind {
         ty: Rc<CoqType>,
         func: String,
     },
-    Literal {
-        literal: LitKind,
-        neg: bool,
-    },
+    Literal(Literal),
     NonHirLiteral(rustc_middle::ty::ScalarInt),
     Call {
         func: Box<Expr>,
         args: Vec<Expr>,
+        purity: Purity,
     },
     /// An operator that takes one argument that is supposed to be in monadic
     /// form once the monadic translation is done.
@@ -146,29 +156,6 @@ pub(crate) enum ExprKind {
     Message(String),
 }
 
-pub(crate) fn compile_bin_op_kind(bin_op_kind: BinOpKind) -> String {
-    match bin_op_kind {
-        BinOpKind::Add => "add".to_string(),
-        BinOpKind::Sub => "sub".to_string(),
-        BinOpKind::Mul => "mul".to_string(),
-        BinOpKind::Div => "div".to_string(),
-        BinOpKind::Rem => "rem".to_string(),
-        BinOpKind::And => "andb".to_string(),
-        BinOpKind::Or => "or".to_string(),
-        BinOpKind::BitXor => "bitxor".to_string(),
-        BinOpKind::BitAnd => "bitand".to_string(),
-        BinOpKind::BitOr => "bitor".to_string(),
-        BinOpKind::Shl => "shl".to_string(),
-        BinOpKind::Shr => "shr".to_string(),
-        BinOpKind::Eq => "eq".to_string(),
-        BinOpKind::Lt => "lt".to_string(),
-        BinOpKind::Le => "le".to_string(),
-        BinOpKind::Ne => "ne".to_string(),
-        BinOpKind::Ge => "ge".to_string(),
-        BinOpKind::Gt => "gt".to_string(),
-    }
-}
-
 impl ExprKind {
     pub(crate) fn tt() -> Self {
         ExprKind::LocalVar("tt".to_string()).alloc(Some(CoqType::unit()))
@@ -200,9 +187,13 @@ impl Expr {
                 self_ty: _,
             } => false,
             ExprKind::AssociatedFunction { ty: _, func: _ } => false,
-            ExprKind::Literal { literal: _, neg: _ } => false,
+            ExprKind::Literal(_) => false,
             ExprKind::NonHirLiteral(_) => false,
-            ExprKind::Call { func, args } => func.has_return() || args.iter().any(Self::has_return),
+            ExprKind::Call {
+                func,
+                args,
+                purity: _,
+            } => func.has_return() || args.iter().any(Self::has_return),
             ExprKind::MonadicOperator { name: _, arg } => arg.has_return(),
             ExprKind::Lambda { args: _, body } => body.has_return(),
             ExprKind::Array { elements } => elements.iter().any(Self::has_return),
@@ -351,10 +342,6 @@ fn monadic_lets(
     }
 }
 
-fn is_literal_pure(literal: &LitKind) -> bool {
-    matches!(literal, LitKind::Str(_, _))
-}
-
 /// Monadic translation of an expression
 ///
 /// The convention is to do transformation in a deep first fashion, so
@@ -395,33 +382,35 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Expr) -> (Expr, FreshVa
             fresh_vars,
         ),
         ExprKind::AssociatedFunction { .. } => (pure(expr), fresh_vars),
-        ExprKind::Literal { ref literal, .. } => (
-            if is_literal_pure(literal) {
-                pure(expr)
-            } else {
-                expr
-            },
-            fresh_vars,
-        ),
+        ExprKind::Literal { .. } => (pure(expr), fresh_vars),
         ExprKind::NonHirLiteral { .. } => (pure(expr), fresh_vars),
-        ExprKind::Call { func, args } => monadic_let(fresh_vars, *func, |fresh_vars, func| {
-            monadic_lets(
-                fresh_vars,
-                args,
-                Box::new(|fresh_vars, args| {
-                    (
-                        Expr {
-                            kind: ExprKind::Call {
-                                func: Box::new(func),
-                                args,
+        ExprKind::Call { func, args, purity } => {
+            monadic_let(fresh_vars, *func, |fresh_vars, func| {
+                monadic_lets(
+                    fresh_vars,
+                    args,
+                    Box::new(move |fresh_vars, args| {
+                        (
+                            {
+                                let expr = Expr {
+                                    kind: ExprKind::Call {
+                                        func: Box::new(func),
+                                        args,
+                                        purity: purity.clone(),
+                                    },
+                                    ty,
+                                };
+                                match purity {
+                                    Purity::Pure => pure(expr),
+                                    Purity::Effectful => expr,
+                                }
                             },
-                            ty,
-                        },
-                        fresh_vars,
-                    )
-                }),
-            )
-        }),
+                            fresh_vars,
+                        )
+                    }),
+                )
+            })
+        }
         ExprKind::MonadicOperator { name, arg } => {
             let (arg, fresh_vars) = mt_expression(fresh_vars, *arg);
             (
@@ -751,6 +740,32 @@ impl LoopControlFlow {
     }
 }
 
+impl Literal {
+    fn to_doc(&self, with_paren: bool) -> Doc {
+        match self {
+            Literal::Bool(b) => text(format!("{b}")),
+            Literal::Integer { value, neg } => {
+                paren(
+                    with_paren,
+                    nest([
+                        text("Integer.of_Z"),
+                        line(),
+                        if *neg {
+                            // We always put parenthesis.
+                            text(format!("(-{value})"))
+                        } else {
+                            text(format!("{}", value))
+                        },
+                    ]),
+                )
+            }
+            Literal::Char(c) => text(format!("\"{c}\"%char")),
+            Literal::String(s) => string_to_doc(with_paren, s.as_str()),
+            Literal::Error => text("UnsupportedLiteral"),
+        }
+    }
+}
+
 impl Expr {
     pub(crate) fn to_doc(&self, with_paren: bool) -> Doc {
         self.kind.to_doc(with_paren)
@@ -805,9 +820,13 @@ impl ExprKind {
                 text(format!("\"{func}\"")),
                 text("]"),
             ]),
-            ExprKind::Literal { literal, neg } => literal_to_doc(with_paren, literal, *neg),
+            ExprKind::Literal(literal) => literal.to_doc(with_paren),
             ExprKind::NonHirLiteral(literal) => text(literal.to_string()),
-            ExprKind::Call { func, args } => {
+            ExprKind::Call {
+                func,
+                args,
+                purity: _,
+            } => {
                 if args.is_empty() {
                     func.to_doc(with_paren)
                 } else {

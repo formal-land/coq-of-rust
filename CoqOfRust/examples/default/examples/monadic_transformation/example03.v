@@ -10,29 +10,19 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
   let* _ : M.Val (((i32.t * i32.t) * i32.t) * i32.t) :=
-    let* α0 : M.Val i32.t := M.alloc 1 in
-    let* α1 : i32.t := M.read α0 in
-    let* α2 : M.Val i32.t := M.alloc 2 in
-    let* α3 : i32.t := M.read α2 in
-    let* α4 : M.Val i32.t := M.alloc 3 in
-    let* α5 : i32.t := M.read α4 in
-    let* α6 : M.Val i32.t := M.alloc 4 in
-    let* α7 : i32.t := M.read α6 in
-    M.alloc (α1, α3, α5, α7) in
+    M.alloc (Integer.of_Z 1, Integer.of_Z 2, Integer.of_Z 3, Integer.of_Z 4) in
   let* _ : M.Val (alloc.vec.Vec.t i32.t alloc.alloc.Global.t) :=
-    let* α0 : M.Val i32.t := M.alloc 5 in
-    let* α1 : M.Val i32.t := M.alloc 6 in
-    let* α2 : M.Val i32.t := M.alloc 7 in
-    let* α3 : M.Val i32.t := M.alloc 8 in
+    let* α0 : M.Val i32.t := M.alloc (Integer.of_Z 5) in
+    let* α1 : M.Val i32.t := M.alloc (Integer.of_Z 6) in
+    let* α2 : M.Val i32.t := M.alloc (Integer.of_Z 7) in
+    let* α3 : M.Val i32.t := M.alloc (Integer.of_Z 8) in
     let* α4 : M.Val (array i32.t) := M.alloc [ α0; α1; α2; α3 ] in
     let* α5 : M.Val (alloc.boxed.Box.t (array i32.t) alloc.alloc.Global.t) :=
       (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α4 in
-    let* α6 : M.Val (alloc.boxed.Box.t (slice i32.t) alloc.alloc.Global.t) :=
-      pointer_coercion "Unsize" α5 in
-    let* α7 : alloc.boxed.Box.t (slice i32.t) alloc.alloc.Global.t :=
-      M.read α6 in
-    let* α8 : alloc.vec.Vec.t i32.t alloc.alloc.Global.t :=
-      (slice i32.t)::["into_vec"] α7 in
-    M.alloc α8 in
+    let* α6 : alloc.boxed.Box.t (slice i32.t) alloc.alloc.Global.t :=
+      M.read (pointer_coercion "Unsize" α5) in
+    let* α7 : alloc.vec.Vec.t i32.t alloc.alloc.Global.t :=
+      (slice i32.t)::["into_vec"] α6 in
+    M.alloc α7 in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.

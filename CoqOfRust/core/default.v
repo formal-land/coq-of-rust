@@ -31,50 +31,63 @@ Module Default_instances.
   Global Instance I_char : Default.Trait char.t.
   Admitted.
 
-  Global Instance I_f32 : Default.Trait f32.t.
-  Admitted.
+  Global Instance I_f32 : Default.Trait f32.t:= {
+    default := M.pure (f32.Make 0);
+  }.
 
-  Global Instance I_f64 : Default.Trait f64.t.
-  Admitted.
+  Global Instance I_f64 : Default.Trait f64.t:= {
+    default := M.pure (f64.Make 0);
+  }.
 
-  Global Instance I_i8 : Default.Trait i8.t.
-  Admitted.
+  Global Instance I_i8 : Default.Trait i8.t:= {
+    default := M.pure (i8.Make 0);
+  }.
 
-  Global Instance I_i16 : Default.Trait i16.t.
-  Admitted.
+  Global Instance I_i16 : Default.Trait i16.t:= {
+    default := M.pure (i16.Make 0);
+  }.
 
-  Global Instance I_i32 : Default.Trait i32.t.
-  Admitted.
+  Global Instance I_i32 : Default.Trait i32.t:= {
+    default := M.pure (i32.Make 0);
+  }.
 
-  Global Instance I_i64 : Default.Trait i64.t.
-  Admitted.
+  Global Instance I_i64 : Default.Trait i64.t:= {
+    default := M.pure (i64.Make 0);
+  }.
 
-  Global Instance I_i128 : Default.Trait i128.t.
-  Admitted.
+  Global Instance I_i128 : Default.Trait i128.t:= {
+    default := M.pure (i128.Make 0);
+  }.
 
-  Global Instance I_isize : Default.Trait isize.t.
-  Admitted.
+  Global Instance I_isize : Default.Trait isize.t:= {
+    default := M.pure (isize.Make 0);
+  }.
 
-  Global Instance I_u8 : Default.Trait u8.t.
-  Admitted.
+  Global Instance I_u8 : Default.Trait u8.t:= {
+    default := M.pure (u8.Make 0);
+  }.
 
-  Global Instance I_u16 : Default.Trait u16.t.
-  Admitted.
+  Global Instance I_u16 : Default.Trait u16.t:= {
+    default := M.pure (u16.Make 0);
+  }.
 
-  Global Instance I_u32 : Default.Trait u32.t.
-  Admitted.
+  Global Instance I_u32 : Default.Trait u32.t:= {
+    default := M.pure (u32.Make 0);
+  }.
 
-  Global Instance I_u64 : Default.Trait u64.t.
-  Admitted.
+  Global Instance I_u64 : Default.Trait u64.t:= {
+    default := M.pure (u64.Make 0);
+  }.
 
-  Global Instance I_u128 : Default.Trait u128.t.
-  Admitted.
+  Global Instance I_u128 : Default.Trait u128.t:= {
+    default := M.pure (u128.Make 0);
+  }.
 
   Global Instance I_unit : Default.Trait unit.
   Admitted.
 
   Global Instance I_usize : Default.Trait usize.t := {
-    default := M.pure 0;
+    default := M.pure (usize.Make 0);
   }.
 
   Global Instance I_ref_slice {T : Set} : Default.Trait (ref (slice T)).

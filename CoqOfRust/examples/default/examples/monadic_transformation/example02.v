@@ -26,39 +26,25 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
   let* _ : M.Val bool.t :=
-    let* α0 : M.Val i32.t := M.alloc 1 in
-    let* α1 : i32.t := M.read α0 in
-    match α1 with
+    match Integer.of_Z 1 with
     | _ => M.alloc false
     | _ => M.alloc true
     end in
   let* _ : M.Val i32.t :=
-    let* α0 : M.Val bool.t := M.alloc true in
-    let* α1 : M.Val bool.t := use α0 in
-    let* α2 : bool.t := M.read α1 in
-    if (α2 : bool) then
-      M.alloc 0
+    if (use true : bool) then
+      M.alloc (Integer.of_Z 0)
     else
-      M.alloc 1 in
+      M.alloc (Integer.of_Z 1) in
   let* _ : M.Val i32.t :=
-    let* α0 : M.Val bool.t := M.alloc false in
-    let* α1 : M.Val bool.t := use α0 in
-    let* α2 : bool.t := M.read α1 in
-    if (α2 : bool) then
-      M.alloc 2
+    if (use false : bool) then
+      M.alloc (Integer.of_Z 2)
     else
-      let* α0 : M.Val bool.t := M.alloc false in
-      let* α1 : M.Val bool.t := use α0 in
-      let* α2 : bool.t := M.read α1 in
-      if (α2 : bool) then
-        M.alloc 3
+      if (use false : bool) then
+        M.alloc (Integer.of_Z 3)
       else
-        let* α0 : M.Val bool.t := M.alloc false in
-        let* α1 : M.Val bool.t := use α0 in
-        let* α2 : bool.t := M.read α1 in
-        if (α2 : bool) then
-          M.alloc 4
+        if (use false : bool) then
+          M.alloc (Integer.of_Z 4)
         else
-          M.alloc 5 in
+          M.alloc (Integer.of_Z 5) in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.

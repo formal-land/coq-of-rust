@@ -73,61 +73,64 @@ Module bool.
   Definition t : Set := bool.
 End bool.
 
+(** ** Integer types *)
+(** We distinguish all integer types for the type-class inference. *)
+
 Module u8.
-  Definition t : Set := Z.
+  Inductive t : Set := Make (z : Z) : t.
 End u8.
 
 Module u16.
-  Definition t : Set := Z.
+  Inductive t : Set := Make (z : Z) : t.
 End u16.
 
 Module u32.
-  Definition t : Set := Z.
+  Inductive t : Set := Make (z : Z) : t.
 End u32.
 
 Module u64.
-  Definition t : Set := Z.
+  Inductive t : Set := Make (z : Z) : t.
 End u64.
 
 Module u128.
-  Definition t : Set := Z.
+  Inductive t : Set := Make (z : Z) : t.
 End u128.
 
 Module usize.
-  Definition t : Set := Z.
+  Inductive t : Set := Make (z : Z) : t.
 End usize.
 
 Module i8.
-  Definition t : Set := Z.
+  Inductive t : Set := Make (z : Z) : t.
 End i8.
 
 Module i16.
-  Definition t : Set := Z.
+  Inductive t : Set := Make (z : Z) : t.
 End i16.
 
 Module i32.
-  Definition t : Set := Z.
+  Inductive t : Set := Make (z : Z) : t.
 End i32.
 
 Module i64.
-  Definition t : Set := Z.
+  Inductive t : Set := Make (z : Z) : t.
 End i64.
 
 Module i128.
-  Definition t : Set := Z.
+  Inductive t : Set := Make (z : Z) : t.
 End i128.
 
 Module isize.
-  Definition t : Set := Z.
+  Inductive t : Set := Make (z : Z) : t.
 End isize.
 
 (* We approximate floating point numbers with integers *)
 Module f32.
-  Definition t : Set := Z.
+  Inductive t : Set := Make (z : Z) : t.
 End f32.
 
 Module f64.
-  Definition t : Set := Z.
+  Inductive t : Set := Make (z : Z) : t.
 End f64.
 
 Module str.
@@ -151,48 +154,358 @@ End never.
 Definition never_to_any {A B : Set} (x : A) : M B :=
   M.impossible.
 
-Definition use {A : Set} (x : A) : M A := M.pure x.
+Definition use {A : Set} (x : A) : A := x.
 
 Definition mk_str (s : Coq.Strings.String.string) : M.Val (ref str.t) :=
   M.Ref.Imm (M.Ref.Imm s).
 
+Module Integer.
+  Class C (Self : Set) : Set := {
+    to_Z : Self -> Z;
+    of_Z : Z -> Self;
+    (** Apply the modulo operation in case of overflows. *)
+    normalize_wrap : Z -> Z;
+    min : Z;
+    max : Z;
+  }.
+
+  Definition normalize_option {Self : Set} `{C Self} (z : Z) : option Self :=
+    if z <? min then
+      None
+    else if max <? z then
+      None
+    else
+      Some (of_Z z).
+
+  Definition normalize_panic {Self : Set} `{C Self} (z : Z) : M Self :=
+    match normalize_option z with
+    | None => M.panic "integer over/underflow"
+    | Some x => M.pure x
+    end.
+
+  Global Instance I_u8 : C u8.t := {
+    to_Z '(u8.Make z) := z;
+    of_Z z := u8.Make z;
+    normalize_wrap z := Z.modulo z 2^8;
+    min := 0;
+    max := 2^8 - 1;
+  }.
+
+  Global Instance I_u16 : C u16.t := {
+    to_Z '(u16.Make z) := z;
+    of_Z z := u16.Make z;
+    normalize_wrap z := Z.modulo z 2^16;
+    min := 0;
+    max := 2^16 - 1;
+  }.
+
+  Global Instance I_u32 : C u32.t := {
+    to_Z '(u32.Make z) := z;
+    of_Z z := u32.Make z;
+    normalize_wrap z := Z.modulo z 2^32;
+    min := 0;
+    max := 2^32 - 1;
+  }.
+
+  Global Instance I_u64 : C u64.t := {
+    to_Z '(u64.Make z) := z;
+    of_Z z := u64.Make z;
+    normalize_wrap z := Z.modulo z 2^64;
+    min := 0;
+    max := 2^64 - 1;
+  }.
+
+  Global Instance I_u128 : C u128.t := {
+    to_Z '(u128.Make z) := z;
+    of_Z z := u128.Make z;
+    normalize_wrap z := Z.modulo z 2^128;
+    min := 0;
+    max := 2^128 - 1;
+  }.
+
+  Global Instance I_usize : C usize.t := {
+    to_Z '(usize.Make z) := z;
+    of_Z z := usize.Make z;
+    normalize_wrap z := Z.modulo z 2^64;
+    min := 0;
+    max := 2^64 - 1;
+  }.
+
+  Global Instance I_i8 : C i8.t := {
+    to_Z '(i8.Make z) := z;
+    of_Z z := i8.Make z;
+    normalize_wrap z := Z.modulo (z + 2^7) 2^8 - 2^7;
+    min := -2^7;
+    max := 2^7 - 1;
+  }.
+
+  Global Instance I_i16 : C i16.t := {
+    to_Z '(i16.Make z) := z;
+    of_Z z := i16.Make z;
+    normalize_wrap z := Z.modulo (z + 2^15) 2^16 - 2^15;
+    min := -2^15;
+    max := 2^15 - 1;
+  }.
+
+  Global Instance I_i32 : C i32.t := {
+    to_Z '(i32.Make z) := z;
+    of_Z z := i32.Make z;
+    normalize_wrap z := Z.modulo (z + 2^31) 2^32 - 2^31;
+    min := -2^31;
+    max := 2^31 - 1;
+  }.
+
+  Global Instance I_i64 : C i64.t := {
+    to_Z '(i64.Make z) := z;
+    of_Z z := i64.Make z;
+    normalize_wrap z := Z.modulo (z + 2^63) 2^64 - 2^63;
+    min := -2^63;
+    max := 2^63 - 1;
+  }.
+
+  Global Instance I_i128 : C i128.t := {
+    to_Z '(i128.Make z) := z;
+    of_Z z := i128.Make z;
+    normalize_wrap z := Z.modulo (z + 2^127) 2^128 - 2^127;
+    min := -2^127;
+    max := 2^127 - 1;
+  }.
+
+  Global Instance I_isize : C isize.t := {
+    to_Z '(isize.Make z) := z;
+    of_Z z := isize.Make z;
+    normalize_wrap z := Z.modulo (z + 2^63) 2^64 - 2^63;
+    min := -2^63;
+    max := 2^63 - 1;
+  }.
+End Integer.
+
 Module UnOp.
-  Parameter not : M.Val bool -> M (M.Val bool).
-  Parameter neg : forall {A : Set}, M.Val A -> M (M.Val A).
+  Parameter not : bool -> bool.
+  Parameter neg : forall {A : Set}, A -> M A.
 End UnOp.
 
 Module BinOp.
-  Definition add (z1 z2 : M.Val Z) : M (M.Val Z) :=
-    let* z1 := M.read z1 in
-    let* z2 := M.read z2 in
-    M.alloc (z1 + z2)%Z.
+  Module Pure.
+    Parameter bit_xor : forall {A : Set}, A -> A -> A.
+    Parameter bit_and : forall {A : Set}, A -> A -> A.
+    Parameter bit_or : forall {A : Set}, A -> A -> A.
 
-  Definition sub (z1 z2 : M.Val Z) : M (M.Val Z) :=
-    let* z1 := M.read z1 in
-    let* z2 := M.read z2 in
-    M.alloc (z1 - z2)%Z.
+    Definition make_comparison {A : Set} `{Integer.C A}
+      (bin_op : Z -> Z -> bool)
+      (v1 v2 : A) :
+      bool.t :=
+    let z1 := Integer.to_Z v1 in
+    let z2 := Integer.to_Z v2 in
+    bin_op z1 z2.
 
-  Parameter mul : forall {A : Set}, M.Val A -> M.Val A -> M (M.Val A).
-  Parameter div : forall {A : Set}, M.Val A -> M.Val A -> M (M.Val A).
-  Parameter rem : forall {A : Set}, M.Val A -> M.Val A -> M (M.Val A).
-  Parameter bit_xor : forall {A : Set}, M.Val A -> M.Val A -> M (M.Val A).
-  Parameter bit_and : forall {A : Set}, M.Val A -> M.Val A -> M (M.Val A).
-  Parameter bit_or : forall {A : Set}, M.Val A -> M.Val A -> M (M.Val A).
-  Parameter shl : forall {A : Set}, M.Val A -> M.Val A -> M (M.Val A).
-  Parameter shr : forall {A : Set}, M.Val A -> M.Val A -> M (M.Val A).
+    Definition eq {A : Set} `{Integer.C A} : A -> A -> bool.t :=
+      make_comparison Z.eqb.
 
-  Parameter eq : forall {A : Set}, M.Val A -> M.Val A -> M (M.Val bool.t).
-  Parameter ne : forall {A : Set}, M.Val A -> M.Val A -> M (M.Val bool.t).
+    Definition ne {A : Set} `{Integer.C A} : A -> A -> bool.t :=
+      make_comparison (fun z1 z2 => negb (Z.eqb z1 z2)).
 
-  Definition lt (z1 z2 : M.Val Z) : M (M.Val bool.t) :=
-    let* z1 := M.read z1 in
-    let* z2 := M.read z2 in
-    M.alloc (z1 <? z2).
+    Definition lt {A : Set} `{Integer.C A} : A -> A -> bool.t :=
+      make_comparison Z.ltb.
 
-  Parameter le : forall {A : Set}, M.Val A -> M.Val A -> M (M.Val bool.t).
-  Parameter ge : forall {A : Set}, M.Val A -> M.Val A -> M (M.Val bool.t).
-  Parameter gt : forall {A : Set}, M.Val A -> M.Val A -> M (M.Val bool.t).
+    Definition le {A : Set} `{Integer.C A} : A -> A -> bool.t :=
+      make_comparison Z.leb.
 
-  Parameter and : forall {A : Set}, M.Val A -> M.Val A -> M (M.Val bool.t).
-  Parameter or : forall {A : Set}, M.Val A -> M.Val A -> M (M.Val bool.t).
+    Definition ge {A : Set} `{Integer.C A} : A -> A -> bool.t :=
+      make_comparison Z.geb.
+
+    Definition gt {A : Set} `{Integer.C A} : A -> A -> bool.t :=
+      make_comparison Z.gtb.
+
+    Parameter and : forall {A : Set}, A -> A -> bool.t.
+    Parameter or : forall {A : Set}, A -> A -> bool.t.
+  End Pure.
+
+  Module Option.
+    Definition make_arithmetic {A : Set} `{Integer.C A}
+        (bin_op : Z -> Z -> Z)
+        (v1 v2 : A) :
+        option A :=
+      let z1 := Integer.to_Z v1 in
+      let z2 := Integer.to_Z v2 in
+      Integer.normalize_option (bin_op z1 z2).
+
+    Definition add {A : Set} `{Integer.C A} (v1 v2 : A) : option A :=
+      make_arithmetic Z.add v1 v2.
+
+    Definition sub {A : Set} `{Integer.C A} (v1 v2 : A) : option A :=
+      make_arithmetic Z.sub v1 v2.
+
+    Definition mul {A : Set} `{Integer.C A} (v1 v2 : A) : option A :=
+      make_arithmetic Z.mul v1 v2.
+
+    Parameter div : forall {A : Set}, A -> A -> option A.
+    Parameter rem : forall {A : Set}, A -> A -> option A.
+    
+    Parameter shl : forall {A : Set}, A -> A -> option A.
+    Parameter shr : forall {A : Set}, A -> A -> option A.
+  End Option.
+
+  Module Panic.
+    Definition make_arithmetic {A : Set} `{Integer.C A}
+        (bin_op : Z -> Z -> Z)
+        (v1 v2 : A) :
+        M A :=
+      let z1 := Integer.to_Z v1 in
+      let z2 := Integer.to_Z v2 in
+      Integer.normalize_panic (bin_op z1 z2).
+
+    Definition add {A : Set} `{Integer.C A} (v1 v2 : A) : M A :=
+      make_arithmetic Z.add v1 v2.
+
+    Definition sub {A : Set} `{Integer.C A} (v1 v2 : A) : M A :=
+      make_arithmetic Z.sub v1 v2.
+
+    Definition mul {A : Set} `{Integer.C A} (v1 v2 : A) : M A :=
+      make_arithmetic Z.mul v1 v2.
+
+    Parameter div : forall {A : Set}, A -> A -> M A.
+    Parameter rem : forall {A : Set}, A -> A -> M A.
+    
+    Parameter shl : forall {A : Set}, A -> A -> M A.
+    Parameter shr : forall {A : Set}, A -> A -> M A.
+  End Panic.
+
+  Module Wrap.
+    Definition make_arithmetic {A : Set} `{Integer.C A}
+        (bin_op : Z -> Z -> Z)
+        (v1 v2 : A) :
+        A :=
+      let z1 := Integer.to_Z v1 in
+      let z2 := Integer.to_Z v2 in
+      let z := Integer.normalize_wrap (bin_op z1 z2) in
+      Integer.of_Z z.
+
+    Definition add {A : Set} `{Integer.C A} (v1 v2 : A) : A :=
+      make_arithmetic Z.add v1 v2.
+
+    Definition sub {A : Set} `{Integer.C A} (v1 v2 : A) : A :=
+      make_arithmetic Z.sub v1 v2.
+
+    Definition mul {A : Set} `{Integer.C A} (v1 v2 : A) : A :=
+      make_arithmetic Z.mul v1 v2.
+
+    Parameter div : forall {A : Set}, A -> A -> A.
+    Parameter rem : forall {A : Set}, A -> A -> A.
+    
+    Parameter shl : forall {A : Set}, A -> A -> A.
+    Parameter shr : forall {A : Set}, A -> A -> A.
+  End Wrap.
+
+  Module Optimistic.
+    Definition make_arithmetic {A : Set} `{Integer.C A}
+        (bin_op : Z -> Z -> Z)
+        (v1 v2 : A) :
+        A :=
+      let z1 := Integer.to_Z v1 in
+      let z2 := Integer.to_Z v2 in
+      let z := bin_op z1 z2 in
+      Integer.of_Z z.
+
+    Definition add {A : Set} `{Integer.C A} (v1 v2 : A) : A :=
+      make_arithmetic Z.add v1 v2.
+
+    Definition sub {A : Set} `{Integer.C A} (v1 v2 : A) : A :=
+      make_arithmetic Z.sub v1 v2.
+
+    Definition mul {A : Set} `{Integer.C A} (v1 v2 : A) : A :=
+      make_arithmetic Z.mul v1 v2.
+
+    Parameter div : forall {A : Set}, A -> A -> A.
+    Parameter rem : forall {A : Set}, A -> A -> A.
+    
+    Parameter shl : forall {A : Set}, A -> A -> A.
+    Parameter shr : forall {A : Set}, A -> A -> A.
+  End Optimistic.
 End BinOp.
+
+(** ** Integer notations *)
+
+Infix "==u8" := (BinOp.Pure.eq (A := u8.t)) (at level 60).
+Infix "!=u8" := (BinOp.Pure.ne (A := u8.t)) (at level 60).
+Infix "<u8" := (BinOp.Pure.lt (A := u8.t)) (at level 60).
+Infix "<=u8" := (BinOp.Pure.le (A := u8.t)) (at level 60).
+Infix ">=u8" := (BinOp.Pure.ge (A := u8.t)) (at level 60).
+Infix ">u8" := (BinOp.Pure.gt (A := u8.t)) (at level 60).
+
+Infix "==u16" := (BinOp.Pure.eq (A := u16.t)) (at level 60).
+Infix "!=u16" := (BinOp.Pure.ne (A := u16.t)) (at level 60).
+Infix "<u16" := (BinOp.Pure.lt (A := u16.t)) (at level 60).
+Infix "<=u16" := (BinOp.Pure.le (A := u16.t)) (at level 60).
+Infix ">=u16" := (BinOp.Pure.ge (A := u16.t)) (at level 60).
+Infix ">u16" := (BinOp.Pure.gt (A := u16.t)) (at level 60).
+
+Infix "==u32" := (BinOp.Pure.eq (A := u32.t)) (at level 60).
+Infix "!=u32" := (BinOp.Pure.ne (A := u32.t)) (at level 60).
+Infix "<u32" := (BinOp.Pure.lt (A := u32.t)) (at level 60).
+Infix "<=u32" := (BinOp.Pure.le (A := u32.t)) (at level 60).
+Infix ">=u32" := (BinOp.Pure.ge (A := u32.t)) (at level 60).
+Infix ">u32" := (BinOp.Pure.gt (A := u32.t)) (at level 60).
+
+Infix "==u64" := (BinOp.Pure.eq (A := u64.t)) (at level 60).
+Infix "!=u64" := (BinOp.Pure.ne (A := u64.t)) (at level 60).
+Infix "<u64" := (BinOp.Pure.lt (A := u64.t)) (at level 60).
+Infix "<=u64" := (BinOp.Pure.le (A := u64.t)) (at level 60).
+Infix ">=u64" := (BinOp.Pure.ge (A := u64.t)) (at level 60).
+Infix ">u64" := (BinOp.Pure.gt (A := u64.t)) (at level 60).
+
+Infix "==u128" := (BinOp.Pure.eq (A := u128.t)) (at level 60).
+Infix "!=u128" := (BinOp.Pure.ne (A := u128.t)) (at level 60).
+Infix "<u128" := (BinOp.Pure.lt (A := u128.t)) (at level 60).
+Infix "<=u128" := (BinOp.Pure.le (A := u128.t)) (at level 60).
+Infix ">=u128" := (BinOp.Pure.ge (A := u128.t)) (at level 60).
+Infix ">u128" := (BinOp.Pure.gt (A := u128.t)) (at level 60).
+
+Infix "==usize" := (BinOp.Pure.eq (A := usize.t)) (at level 60).
+Infix "!=usize" := (BinOp.Pure.ne (A := usize.t)) (at level 60).
+Infix "<usize" := (BinOp.Pure.lt (A := usize.t)) (at level 60).
+Infix "<=usize" := (BinOp.Pure.le (A := usize.t)) (at level 60).
+Infix ">=usize" := (BinOp.Pure.ge (A := usize.t)) (at level 60).
+Infix ">usize" := (BinOp.Pure.gt (A := usize.t)) (at level 60).
+
+Infix "==i8" := (BinOp.Pure.eq (A := i8.t)) (at level 60).
+Infix "!=i8" := (BinOp.Pure.ne (A := i8.t)) (at level 60).
+Infix "<i8" := (BinOp.Pure.lt (A := i8.t)) (at level 60).
+Infix "<=i8" := (BinOp.Pure.le (A := i8.t)) (at level 60).
+Infix ">=i8" := (BinOp.Pure.ge (A := i8.t)) (at level 60).
+Infix ">i8" := (BinOp.Pure.gt (A := i8.t)) (at level 60).
+
+Infix "==i16" := (BinOp.Pure.eq (A := i16.t)) (at level 60).
+Infix "!=i16" := (BinOp.Pure.ne (A := i16.t)) (at level 60).
+Infix "<i16" := (BinOp.Pure.lt (A := i16.t)) (at level 60).
+Infix "<=i16" := (BinOp.Pure.le (A := i16.t)) (at level 60).
+Infix ">=i16" := (BinOp.Pure.ge (A := i16.t)) (at level 60).
+Infix ">i16" := (BinOp.Pure.gt (A := i16.t)) (at level 60).
+
+Infix "==i32" := (BinOp.Pure.eq (A := i32.t)) (at level 60).
+Infix "!=i32" := (BinOp.Pure.ne (A := i32.t)) (at level 60).
+Infix "<i32" := (BinOp.Pure.lt (A := i32.t)) (at level 60).
+Infix "<=i32" := (BinOp.Pure.le (A := i32.t)) (at level 60).
+Infix ">=i32" := (BinOp.Pure.ge (A := i32.t)) (at level 60).
+Infix ">i32" := (BinOp.Pure.gt (A := i32.t)) (at level 60).
+
+Infix "==i64" := (BinOp.Pure.eq (A := i64.t)) (at level 60).
+Infix "!=i64" := (BinOp.Pure.ne (A := i64.t)) (at level 60).
+Infix "<i64" := (BinOp.Pure.lt (A := i64.t)) (at level 60).
+Infix "<=i64" := (BinOp.Pure.le (A := i64.t)) (at level 60).
+Infix ">=i64" := (BinOp.Pure.ge (A := i64.t)) (at level 60).
+Infix ">i64" := (BinOp.Pure.gt (A := i64.t)) (at level 60).
+
+Infix "==i128" := (BinOp.Pure.eq (A := i128.t)) (at level 60).
+Infix "!=i128" := (BinOp.Pure.ne (A := i128.t)) (at level 60).
+Infix "<i128" := (BinOp.Pure.lt (A := i128.t)) (at level 60).
+Infix "<=i128" := (BinOp.Pure.le (A := i128.t)) (at level 60).
+Infix ">=i128" := (BinOp.Pure.ge (A := i128.t)) (at level 60).
+Infix ">i128" := (BinOp.Pure.gt (A := i128.t)) (at level 60).
+
+Infix "==isize" := (BinOp.Pure.eq (A := isize.t)) (at level 60).
+Infix "!=isize" := (BinOp.Pure.ne (A := isize.t)) (at level 60).
+Infix "<isize" := (BinOp.Pure.lt (A := isize.t)) (at level 60).
+Infix "<=isize" := (BinOp.Pure.le (A := isize.t)) (at level 60).
+Infix ">=isize" := (BinOp.Pure.ge (A := isize.t)) (at level 60).
+Infix ">isize" := (BinOp.Pure.gt (A := isize.t)) (at level 60).

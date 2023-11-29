@@ -54,9 +54,8 @@ Parameter axiom : forall {A : Set}, A.
 
 Parameter cast : forall {A : Set}, A -> forall (B : Set), B.
 
-Definition pointer_coercion {T : Set} (cast : string) (x : T) :
-    M T :=
-  M.pure x.
+Definition pointer_coercion {T : Set} (cast : string) (x : T) : T :=
+  x.
 
 (** We replace assembly blocks by a value of type unit. *)
 Parameter InlineAssembly : M.Val unit.
@@ -319,6 +318,70 @@ Module str_Instances.
   Admitted.
 End str_Instances.
 
+Module u8_Instances.
+  Global Instance IDisplay : core.fmt.Display.Trait u8.t.
+  Admitted.
+
+  Global Instance IDebug : core.fmt.Debug.Trait u8.t.
+  Admitted.
+End u8_Instances.
+
+Module u16_Instances.
+  Global Instance IDisplay : core.fmt.Display.Trait u16.t.
+  Admitted.
+
+  Global Instance IDebug : core.fmt.Debug.Trait u16.t.
+  Admitted.
+End u16_Instances.
+
+Module u32_Instances.
+  Global Instance IDisplay : core.fmt.Display.Trait u32.t.
+  Admitted.
+
+  Global Instance IDebug : core.fmt.Debug.Trait u32.t.
+  Admitted.
+End u32_Instances.
+
+Module u64_Instances.
+  Global Instance IDisplay : core.fmt.Display.Trait u64.t.
+  Admitted.
+
+  Global Instance IDebug : core.fmt.Debug.Trait u64.t.
+  Admitted.
+End u64_Instances.
+
+Module u128_Instances.
+  Global Instance IDisplay : core.fmt.Display.Trait u128.t.
+  Admitted.
+
+  Global Instance IDebug : core.fmt.Debug.Trait u128.t.
+  Admitted.
+End u128_Instances.
+
+Module usize_Instances.
+  Global Instance IDisplay : core.fmt.Display.Trait usize.t.
+  Admitted.
+
+  Global Instance IDebug : core.fmt.Debug.Trait usize.t.
+  Admitted.
+End usize_Instances.
+
+Module i8_Instances.
+  Global Instance IDisplay : core.fmt.Display.Trait i8.t.
+  Admitted.
+
+  Global Instance IDebug : core.fmt.Debug.Trait i8.t.
+  Admitted.
+End i8_Instances.
+
+Module i16_Instances.
+  Global Instance IDisplay : core.fmt.Display.Trait i16.t.
+  Admitted.
+
+  Global Instance IDebug : core.fmt.Debug.Trait i16.t.
+  Admitted.
+End i16_Instances.
+
 Module i32_Instances.
   Global Instance IDisplay : core.fmt.Display.Trait i32.t.
   Admitted.
@@ -326,6 +389,30 @@ Module i32_Instances.
   Global Instance IDebug : core.fmt.Debug.Trait i32.t.
   Admitted.
 End i32_Instances.
+
+Module i64_Instances.
+  Global Instance IDisplay : core.fmt.Display.Trait i64.t.
+  Admitted.
+
+  Global Instance IDebug : core.fmt.Debug.Trait i64.t.
+  Admitted.
+End i64_Instances.
+
+Module i128_Instances.
+  Global Instance IDisplay : core.fmt.Display.Trait i128.t.
+  Admitted.
+
+  Global Instance IDebug : core.fmt.Debug.Trait i128.t.
+  Admitted.
+End i128_Instances.
+
+Module isize_Instances.
+  Global Instance IDisplay : core.fmt.Display.Trait isize.t.
+  Admitted.
+
+  Global Instance IDebug : core.fmt.Debug.Trait isize.t.
+  Admitted.
+End isize_Instances.
 
 Module ref_Instances.
   Global Instance IDisplay {T : Set} {_ : core.fmt.Display.Trait T} :
@@ -849,11 +936,13 @@ Global Hint Resolve existT : core.
 (* a hint for eauto to automatically solve unit goals *)
 Global Hint Resolve tt : core.
 
-Definition deref {Self : Set} (r : ref Self) : M (M.Val Self) :=
-  M.pure r.
+Definition deref {Self : Set} (r : ref Self) : M.Val Self :=
+  r.
 
-Definition borrow {A : Set} (v : M.Val A) : M (ref A) :=
-  M.pure v.
+Definition borrow {A : Set} (v : M.Val A) : ref A :=
+  v.
 
-Definition borrow_mut {A : Set} (v : M.Val A) : M (mut_ref A) :=
-  M.pure v.
+Definition borrow_mut {A : Set} (v : M.Val A) : mut_ref A :=
+  v.
+
+Parameter UnsupportedLiteral : forall {A : Set}, M.Val A.

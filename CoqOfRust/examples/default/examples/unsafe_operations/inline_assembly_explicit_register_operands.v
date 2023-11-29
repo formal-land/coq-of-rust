@@ -13,9 +13,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* cmd : M.Val i32.t :=
-    let* α0 : M.Val i32.t := M.alloc 209 in
-    M.copy α0 in
+  let* cmd : M.Val i32.t := M.alloc (Integer.of_Z 209) in
   let _ : M.Val unit := InlineAssembly in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.

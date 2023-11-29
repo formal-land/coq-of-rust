@@ -1,4 +1,5 @@
-(** The definition of a Rust monad. *)
+(** * The definition of a Rust monad. *)
+Require Coq.Strings.String.
 
 Inductive sigS {A : Type} (P : A -> Set) : Set :=
 | existS : forall (x : A), P x -> sigS P.
@@ -79,7 +80,7 @@ Module Exception.
   | Continue : t
   (** exceptions for Rust's `break` *)
   | Break : t
-  | Panic {A : Set} : A -> t
+  | Panic : Coq.Strings.String.string -> t
   (** exception for potential non-termination *)
   | NonTermination : t.
 End Exception.
@@ -99,6 +100,14 @@ Definition let_ {A B : Set} (e1 : M A) (e2 : A -> M B) : M B :=
   | inr error => LowM.Pure (inr error)
   end).
 
+Module Option.
+  Definition bind {A B : Set} (x : option A) (f : A -> option B) : option B :=
+    match x with
+    | Some x => f x
+    | None => None
+    end.
+End Option.
+
 Module Notations.
   Notation "'let-' a := b 'in' c" :=
     (LowM.Let b (fun a => c))
@@ -111,6 +120,22 @@ Module Notations.
   Notation "'let*' a : T := b 'in' c" :=
     (let_ b (fun (a : T) => c))
       (at level 200, T constr, b at level 100, a name).
+
+  Notation "'let*' ' a ':=' b 'in' c" :=
+    (let_ b (fun a => c))
+    (at level 200, a pattern, b at level 100, c at level 200).
+
+  Notation "M? X" := (option X) (at level 20).
+
+  Notation "return? X" := (Some X) (at level 20).
+
+  Notation "'let?' x ':=' X 'in' Y" :=
+    (Option.bind X (fun x => Y))
+    (at level 200, x name, X at level 100, Y at level 200).
+
+  Notation "'let?' ' x ':=' X 'in' Y" :=
+    (Option.bind X (fun x => Y))
+    (at level 200, x pattern, X at level 100, Y at level 200).
 End Notations.
 Import Notations.
 
@@ -129,8 +154,8 @@ Definition continue {A : Set} : M A :=
 Definition break {A : Set} : M A :=
   raise Exception.Break.
 
-Definition panic {A B : Set} (v : A) : M B :=
-  raise (Exception.Panic v).
+Definition panic {A : Set} (message : Coq.Strings.String.string) : M A :=
+  raise (Exception.Panic message).
 
 (* TODO: define for every (A : Set) in (M A) *)
 (** the definition of a function representing the loop construction *)

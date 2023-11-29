@@ -30,11 +30,17 @@ Section Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers_t.
     let* α1 : M.Val i32.t :=
       match α0 with
       | enums_type_aliases_v2.VeryVerboseEnumOfThingsToDoWithNumbers.Add  =>
-        BinOp.add x y
+        let* α0 : i32.t := M.read x in
+        let* α1 : i32.t := M.read y in
+        let* α2 : i32.t := BinOp.Panic.add α0 α1 in
+        M.alloc α2
       |
           enums_type_aliases_v2.VeryVerboseEnumOfThingsToDoWithNumbers.Subtract 
           =>
-        BinOp.sub x y
+        let* α0 : i32.t := M.read x in
+        let* α1 : i32.t := M.read y in
+        let* α2 : i32.t := BinOp.Panic.sub α0 α1 in
+        M.alloc α2
       end in
     M.read α1.
   

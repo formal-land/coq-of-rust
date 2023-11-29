@@ -54,18 +54,12 @@ Definition main : M unit :=
   let* _s : M.Val generics.Single.t :=
     M.alloc (generics.Single.Build_t generics.A.Build_t) in
   let* _char : M.Val (generics.SingleGen.t char.t) :=
-    let* α0 : M.Val char.t := M.alloc "a"%char in
-    let* α1 : char.t := M.read α0 in
-    M.alloc (generics.SingleGen.Build_t α1) in
+    M.alloc (generics.SingleGen.Build_t "a"%char) in
   let* _t : M.Val (generics.SingleGen.t generics.A.t) :=
     M.alloc (generics.SingleGen.Build_t generics.A.Build_t) in
   let* _i32 : M.Val (generics.SingleGen.t i32.t) :=
-    let* α0 : M.Val i32.t := M.alloc 6 in
-    let* α1 : i32.t := M.read α0 in
-    M.alloc (generics.SingleGen.Build_t α1) in
+    M.alloc (generics.SingleGen.Build_t (Integer.of_Z 6)) in
   let* _char : M.Val (generics.SingleGen.t char.t) :=
-    let* α0 : M.Val char.t := M.alloc "a"%char in
-    let* α1 : char.t := M.read α0 in
-    M.alloc (generics.SingleGen.Build_t α1) in
+    M.alloc (generics.SingleGen.Build_t "a"%char) in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.

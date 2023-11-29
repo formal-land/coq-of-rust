@@ -22,15 +22,10 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* _mutable_integer : M.Val i32.t :=
-    let* α0 : M.Val i32.t := M.alloc 7 in
-    M.copy α0 in
+  let* _mutable_integer : M.Val i32.t := M.alloc (Integer.of_Z 7) in
   let* _ : M.Val unit :=
     let* _mutable_integer : M.Val i32.t := M.copy _mutable_integer in
     M.alloc tt in
-  let* _ : M.Val unit :=
-    let* α0 : M.Val i32.t := M.alloc 3 in
-    let* α1 : i32.t := M.read α0 in
-    assign _mutable_integer α1 in
+  let* _ : M.Val unit := assign _mutable_integer (Integer.of_Z 3) in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.
