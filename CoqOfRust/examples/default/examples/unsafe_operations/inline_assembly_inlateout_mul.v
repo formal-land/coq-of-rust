@@ -54,9 +54,11 @@ Definition mul (a : u64.t) (b : u64.t) : M u128.t :=
   let* _ : M.Val unit :=
     let _ : M.Val unit := InlineAssembly in
     M.alloc tt in
-  let* α0 : M.Val u128.t := cast hi in
-  let* α1 : M.Val i32.t := M.alloc 64 in
-  let* α2 : M.Val u128.t := BinOp.shl α0 α1 in
-  let* α3 : M.Val u128.t := cast lo in
-  let* α0 : M.Val u128.t := BinOp.add α2 α3 in
+  let* α0 : u64.t := M.read hi in
+  let* α1 : u128.t := cast α0 in
+  let* α2 : u128.t := BinOp.Panic.shl α1 (Integer.of_Z 64) in
+  let* α3 : u64.t := M.read lo in
+  let* α4 : u128.t := cast α3 in
+  let* α5 : u128.t := BinOp.Panic.add α2 α4 in
+  let* α0 : M.Val u128.t := M.alloc α5 in
   M.read α0.

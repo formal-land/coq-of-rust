@@ -161,24 +161,22 @@ Definition depends_on_trait_impl (u : u32.t) (b : bool.t) : M unit :=
     let* α0 : bool.t := M.read b in
     let* α1 : M.Val functions_order.OtherType.t :=
       M.alloc (functions_order.OtherType.Build_t α0) in
-    let* α2 : ref functions_order.OtherType.t := borrow α1 in
-    let* α3 : unit :=
+    let* α2 : unit :=
       (functions_order.SomeTrait.some_trait_foo
           (Self := functions_order.OtherType.t)
           (Trait := ltac:(refine _)))
-        α2 in
-    M.alloc α3 in
+        (borrow α1) in
+    M.alloc α2 in
   let* _ : M.Val unit :=
     let* α0 : u32.t := M.read u in
     let* α1 : M.Val functions_order.SomeType.t :=
       M.alloc (functions_order.SomeType.Build_t α0) in
-    let* α2 : ref functions_order.SomeType.t := borrow α1 in
-    let* α3 : unit :=
+    let* α2 : unit :=
       (functions_order.SomeTrait.some_trait_foo
           (Self := functions_order.SomeType.t)
           (Trait := ltac:(refine _)))
-        α2 in
-    M.alloc α3 in
+        (borrow α1) in
+    M.alloc α2 in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.
 
@@ -297,11 +295,9 @@ Definition main : M unit :=
     let* α0 : unit := functions_order.inner_mod.bar in
     M.alloc α0 in
   let* _ : M.Val unit :=
-    let* α0 : M.Val u32.t := M.alloc 0 in
-    let* α1 : u32.t := M.read α0 in
-    let* α2 : unit :=
+    let* α0 : unit :=
       functions_order.SomeType.t::["meth1"]
-        (functions_order.SomeType.Build_t α1) in
-    M.alloc α2 in
+        (functions_order.SomeType.Build_t (Integer.of_Z 0)) in
+    M.alloc α0 in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.

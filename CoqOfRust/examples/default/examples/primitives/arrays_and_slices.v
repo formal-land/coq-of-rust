@@ -14,55 +14,47 @@ Definition analyze_slice (slice : ref (slice i32.t)) : M unit :=
       let* α0 : M.Val (array (ref str.t)) :=
         M.alloc [ mk_str "first element of the slice: "; mk_str "
 " ] in
-      let* α1 : ref (array (ref str.t)) := borrow α0 in
-      let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
-      let* α3 : M.Val (ref (slice (ref str.t))) :=
-        pointer_coercion "Unsize" α2 in
-      let* α4 : ref (slice (ref str.t)) := M.read α3 in
-      let* α5 : ref (slice i32.t) := M.read slice in
-      let* α6 : M.Val (slice i32.t) := deref α5 in
-      let* α7 : ref i32.t := borrow α6[M.alloc 0] in
-      let* α8 : core.fmt.rt.Argument.t :=
-        core.fmt.rt.Argument.t::["new_display"] α7 in
-      let* α9 : M.Val core.fmt.rt.Argument.t := M.alloc α8 in
-      let* α10 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α9 ] in
-      let* α11 : ref (array core.fmt.rt.Argument.t) := borrow α10 in
-      let* α12 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α11 in
-      let* α13 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
-        pointer_coercion "Unsize" α12 in
-      let* α14 : ref (slice core.fmt.rt.Argument.t) := M.read α13 in
-      let* α15 : core.fmt.Arguments.t :=
-        core.fmt.Arguments.t::["new_v1"] α4 α14 in
-      let* α16 : unit := std.io.stdio._print α15 in
-      M.alloc α16 in
+      let* α1 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α0) in
+      let* α2 : ref (slice (ref str.t)) :=
+        M.read (pointer_coercion "Unsize" α1) in
+      let* α3 : ref (slice i32.t) := M.read slice in
+      let* α4 : core.fmt.rt.Argument.t :=
+        core.fmt.rt.Argument.t::["new_display"]
+          (borrow (deref α3)[M.alloc (Integer.of_Z 0)]) in
+      let* α5 : M.Val core.fmt.rt.Argument.t := M.alloc α4 in
+      let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
+      let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+        M.alloc (borrow α6) in
+      let* α8 : ref (slice core.fmt.rt.Argument.t) :=
+        M.read (pointer_coercion "Unsize" α7) in
+      let* α9 : core.fmt.Arguments.t :=
+        core.fmt.Arguments.t::["new_v1"] α2 α8 in
+      let* α10 : unit := std.io.stdio._print α9 in
+      M.alloc α10 in
     M.alloc tt in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : M.Val (array (ref str.t)) :=
         M.alloc [ mk_str "the slice has "; mk_str " elements
 " ] in
-      let* α1 : ref (array (ref str.t)) := borrow α0 in
-      let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
-      let* α3 : M.Val (ref (slice (ref str.t))) :=
-        pointer_coercion "Unsize" α2 in
-      let* α4 : ref (slice (ref str.t)) := M.read α3 in
-      let* α5 : ref (slice i32.t) := M.read slice in
-      let* α6 : usize.t := (slice i32.t)::["len"] α5 in
-      let* α7 : M.Val usize.t := M.alloc α6 in
-      let* α8 : ref usize.t := borrow α7 in
-      let* α9 : core.fmt.rt.Argument.t :=
-        core.fmt.rt.Argument.t::["new_display"] α8 in
-      let* α10 : M.Val core.fmt.rt.Argument.t := M.alloc α9 in
-      let* α11 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α10 ] in
-      let* α12 : ref (array core.fmt.rt.Argument.t) := borrow α11 in
-      let* α13 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α12 in
-      let* α14 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
-        pointer_coercion "Unsize" α13 in
-      let* α15 : ref (slice core.fmt.rt.Argument.t) := M.read α14 in
-      let* α16 : core.fmt.Arguments.t :=
-        core.fmt.Arguments.t::["new_v1"] α4 α15 in
-      let* α17 : unit := std.io.stdio._print α16 in
-      M.alloc α17 in
+      let* α1 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α0) in
+      let* α2 : ref (slice (ref str.t)) :=
+        M.read (pointer_coercion "Unsize" α1) in
+      let* α3 : ref (slice i32.t) := M.read slice in
+      let* α4 : usize.t := (slice i32.t)::["len"] α3 in
+      let* α5 : M.Val usize.t := M.alloc α4 in
+      let* α6 : core.fmt.rt.Argument.t :=
+        core.fmt.rt.Argument.t::["new_display"] (borrow α5) in
+      let* α7 : M.Val core.fmt.rt.Argument.t := M.alloc α6 in
+      let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
+      let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+        M.alloc (borrow α8) in
+      let* α10 : ref (slice core.fmt.rt.Argument.t) :=
+        M.read (pointer_coercion "Unsize" α9) in
+      let* α11 : core.fmt.Arguments.t :=
+        core.fmt.Arguments.t::["new_v1"] α2 α10 in
+      let* α12 : unit := std.io.stdio._print α11 in
+      M.alloc α12 in
     M.alloc tt in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.
@@ -119,14 +111,14 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
   let* xs : M.Val (array i32.t) :=
-    let* α0 : M.Val i32.t := M.alloc 1 in
-    let* α1 : M.Val i32.t := M.alloc 2 in
-    let* α2 : M.Val i32.t := M.alloc 3 in
-    let* α3 : M.Val i32.t := M.alloc 4 in
-    let* α4 : M.Val i32.t := M.alloc 5 in
+    let* α0 : M.Val i32.t := M.alloc (Integer.of_Z 1) in
+    let* α1 : M.Val i32.t := M.alloc (Integer.of_Z 2) in
+    let* α2 : M.Val i32.t := M.alloc (Integer.of_Z 3) in
+    let* α3 : M.Val i32.t := M.alloc (Integer.of_Z 4) in
+    let* α4 : M.Val i32.t := M.alloc (Integer.of_Z 5) in
     M.alloc [ α0; α1; α2; α3; α4 ] in
   let* ys : M.Val (array i32.t) :=
-    let* α0 : M.Val i32.t := M.alloc 0 in
+    let* α0 : M.Val i32.t := M.alloc (Integer.of_Z 0) in
     let* α1 : M.Val (array i32.t) := repeat α0 500 in
     M.copy α1 in
   let* _ : M.Val unit :=
@@ -134,172 +126,142 @@ Definition main : M unit :=
       let* α0 : M.Val (array (ref str.t)) :=
         M.alloc [ mk_str "first element of the array: "; mk_str "
 " ] in
-      let* α1 : ref (array (ref str.t)) := borrow α0 in
-      let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
-      let* α3 : M.Val (ref (slice (ref str.t))) :=
-        pointer_coercion "Unsize" α2 in
-      let* α4 : ref (slice (ref str.t)) := M.read α3 in
-      let* α5 : ref i32.t := borrow xs[M.alloc 0] in
-      let* α6 : core.fmt.rt.Argument.t :=
-        core.fmt.rt.Argument.t::["new_display"] α5 in
-      let* α7 : M.Val core.fmt.rt.Argument.t := M.alloc α6 in
-      let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
-      let* α9 : ref (array core.fmt.rt.Argument.t) := borrow α8 in
-      let* α10 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α9 in
-      let* α11 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
-        pointer_coercion "Unsize" α10 in
-      let* α12 : ref (slice core.fmt.rt.Argument.t) := M.read α11 in
-      let* α13 : core.fmt.Arguments.t :=
-        core.fmt.Arguments.t::["new_v1"] α4 α12 in
-      let* α14 : unit := std.io.stdio._print α13 in
-      M.alloc α14 in
+      let* α1 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α0) in
+      let* α2 : ref (slice (ref str.t)) :=
+        M.read (pointer_coercion "Unsize" α1) in
+      let* α3 : core.fmt.rt.Argument.t :=
+        core.fmt.rt.Argument.t::["new_display"]
+          (borrow xs[M.alloc (Integer.of_Z 0)]) in
+      let* α4 : M.Val core.fmt.rt.Argument.t := M.alloc α3 in
+      let* α5 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4 ] in
+      let* α6 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+        M.alloc (borrow α5) in
+      let* α7 : ref (slice core.fmt.rt.Argument.t) :=
+        M.read (pointer_coercion "Unsize" α6) in
+      let* α8 : core.fmt.Arguments.t :=
+        core.fmt.Arguments.t::["new_v1"] α2 α7 in
+      let* α9 : unit := std.io.stdio._print α8 in
+      M.alloc α9 in
     M.alloc tt in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : M.Val (array (ref str.t)) :=
         M.alloc [ mk_str "second element of the array: "; mk_str "
 " ] in
-      let* α1 : ref (array (ref str.t)) := borrow α0 in
-      let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
-      let* α3 : M.Val (ref (slice (ref str.t))) :=
-        pointer_coercion "Unsize" α2 in
-      let* α4 : ref (slice (ref str.t)) := M.read α3 in
-      let* α5 : ref i32.t := borrow xs[M.alloc 1] in
-      let* α6 : core.fmt.rt.Argument.t :=
-        core.fmt.rt.Argument.t::["new_display"] α5 in
-      let* α7 : M.Val core.fmt.rt.Argument.t := M.alloc α6 in
-      let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
-      let* α9 : ref (array core.fmt.rt.Argument.t) := borrow α8 in
-      let* α10 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α9 in
-      let* α11 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
-        pointer_coercion "Unsize" α10 in
-      let* α12 : ref (slice core.fmt.rt.Argument.t) := M.read α11 in
-      let* α13 : core.fmt.Arguments.t :=
-        core.fmt.Arguments.t::["new_v1"] α4 α12 in
-      let* α14 : unit := std.io.stdio._print α13 in
-      M.alloc α14 in
+      let* α1 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α0) in
+      let* α2 : ref (slice (ref str.t)) :=
+        M.read (pointer_coercion "Unsize" α1) in
+      let* α3 : core.fmt.rt.Argument.t :=
+        core.fmt.rt.Argument.t::["new_display"]
+          (borrow xs[M.alloc (Integer.of_Z 1)]) in
+      let* α4 : M.Val core.fmt.rt.Argument.t := M.alloc α3 in
+      let* α5 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4 ] in
+      let* α6 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+        M.alloc (borrow α5) in
+      let* α7 : ref (slice core.fmt.rt.Argument.t) :=
+        M.read (pointer_coercion "Unsize" α6) in
+      let* α8 : core.fmt.Arguments.t :=
+        core.fmt.Arguments.t::["new_v1"] α2 α7 in
+      let* α9 : unit := std.io.stdio._print α8 in
+      M.alloc α9 in
     M.alloc tt in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : M.Val (array (ref str.t)) :=
         M.alloc [ mk_str "number of elements in array: "; mk_str "
 " ] in
-      let* α1 : ref (array (ref str.t)) := borrow α0 in
-      let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
-      let* α3 : M.Val (ref (slice (ref str.t))) :=
-        pointer_coercion "Unsize" α2 in
-      let* α4 : ref (slice (ref str.t)) := M.read α3 in
-      let* α5 : ref (array i32.t) := borrow xs in
-      let* α6 : M.Val (ref (array i32.t)) := M.alloc α5 in
-      let* α7 : M.Val (ref (slice i32.t)) := pointer_coercion "Unsize" α6 in
-      let* α8 : ref (slice i32.t) := M.read α7 in
-      let* α9 : usize.t := (slice i32.t)::["len"] α8 in
-      let* α10 : M.Val usize.t := M.alloc α9 in
-      let* α11 : ref usize.t := borrow α10 in
-      let* α12 : core.fmt.rt.Argument.t :=
-        core.fmt.rt.Argument.t::["new_display"] α11 in
-      let* α13 : M.Val core.fmt.rt.Argument.t := M.alloc α12 in
-      let* α14 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α13 ] in
-      let* α15 : ref (array core.fmt.rt.Argument.t) := borrow α14 in
-      let* α16 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α15 in
-      let* α17 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
-        pointer_coercion "Unsize" α16 in
-      let* α18 : ref (slice core.fmt.rt.Argument.t) := M.read α17 in
-      let* α19 : core.fmt.Arguments.t :=
-        core.fmt.Arguments.t::["new_v1"] α4 α18 in
-      let* α20 : unit := std.io.stdio._print α19 in
-      M.alloc α20 in
+      let* α1 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α0) in
+      let* α2 : ref (slice (ref str.t)) :=
+        M.read (pointer_coercion "Unsize" α1) in
+      let* α3 : M.Val (ref (array i32.t)) := M.alloc (borrow xs) in
+      let* α4 : ref (slice i32.t) := M.read (pointer_coercion "Unsize" α3) in
+      let* α5 : usize.t := (slice i32.t)::["len"] α4 in
+      let* α6 : M.Val usize.t := M.alloc α5 in
+      let* α7 : core.fmt.rt.Argument.t :=
+        core.fmt.rt.Argument.t::["new_display"] (borrow α6) in
+      let* α8 : M.Val core.fmt.rt.Argument.t := M.alloc α7 in
+      let* α9 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α8 ] in
+      let* α10 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+        M.alloc (borrow α9) in
+      let* α11 : ref (slice core.fmt.rt.Argument.t) :=
+        M.read (pointer_coercion "Unsize" α10) in
+      let* α12 : core.fmt.Arguments.t :=
+        core.fmt.Arguments.t::["new_v1"] α2 α11 in
+      let* α13 : unit := std.io.stdio._print α12 in
+      M.alloc α13 in
     M.alloc tt in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : M.Val (array (ref str.t)) :=
         M.alloc [ mk_str "array occupies "; mk_str " bytes
 " ] in
-      let* α1 : ref (array (ref str.t)) := borrow α0 in
-      let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
-      let* α3 : M.Val (ref (slice (ref str.t))) :=
-        pointer_coercion "Unsize" α2 in
-      let* α4 : ref (slice (ref str.t)) := M.read α3 in
-      let* α5 : ref (array i32.t) := borrow xs in
-      let* α6 : usize.t := core.mem.size_of_val α5 in
-      let* α7 : M.Val usize.t := M.alloc α6 in
-      let* α8 : ref usize.t := borrow α7 in
-      let* α9 : core.fmt.rt.Argument.t :=
-        core.fmt.rt.Argument.t::["new_display"] α8 in
-      let* α10 : M.Val core.fmt.rt.Argument.t := M.alloc α9 in
-      let* α11 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α10 ] in
-      let* α12 : ref (array core.fmt.rt.Argument.t) := borrow α11 in
-      let* α13 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α12 in
-      let* α14 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
-        pointer_coercion "Unsize" α13 in
-      let* α15 : ref (slice core.fmt.rt.Argument.t) := M.read α14 in
-      let* α16 : core.fmt.Arguments.t :=
-        core.fmt.Arguments.t::["new_v1"] α4 α15 in
-      let* α17 : unit := std.io.stdio._print α16 in
-      M.alloc α17 in
+      let* α1 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α0) in
+      let* α2 : ref (slice (ref str.t)) :=
+        M.read (pointer_coercion "Unsize" α1) in
+      let* α3 : usize.t := core.mem.size_of_val (borrow xs) in
+      let* α4 : M.Val usize.t := M.alloc α3 in
+      let* α5 : core.fmt.rt.Argument.t :=
+        core.fmt.rt.Argument.t::["new_display"] (borrow α4) in
+      let* α6 : M.Val core.fmt.rt.Argument.t := M.alloc α5 in
+      let* α7 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α6 ] in
+      let* α8 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+        M.alloc (borrow α7) in
+      let* α9 : ref (slice core.fmt.rt.Argument.t) :=
+        M.read (pointer_coercion "Unsize" α8) in
+      let* α10 : core.fmt.Arguments.t :=
+        core.fmt.Arguments.t::["new_v1"] α2 α9 in
+      let* α11 : unit := std.io.stdio._print α10 in
+      M.alloc α11 in
     M.alloc tt in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : M.Val (array (ref str.t)) :=
         M.alloc [ mk_str "borrow the whole array as a slice
 " ] in
-      let* α1 : ref (array (ref str.t)) := borrow α0 in
-      let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
-      let* α3 : M.Val (ref (slice (ref str.t))) :=
-        pointer_coercion "Unsize" α2 in
-      let* α4 : ref (slice (ref str.t)) := M.read α3 in
-      let* α5 : core.fmt.Arguments.t :=
-        core.fmt.Arguments.t::["new_const"] α4 in
-      let* α6 : unit := std.io.stdio._print α5 in
-      M.alloc α6 in
+      let* α1 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α0) in
+      let* α2 : ref (slice (ref str.t)) :=
+        M.read (pointer_coercion "Unsize" α1) in
+      let* α3 : core.fmt.Arguments.t :=
+        core.fmt.Arguments.t::["new_const"] α2 in
+      let* α4 : unit := std.io.stdio._print α3 in
+      M.alloc α4 in
     M.alloc tt in
   let* _ : M.Val unit :=
-    let* α0 : ref (array i32.t) := borrow xs in
-    let* α1 : M.Val (ref (array i32.t)) := M.alloc α0 in
-    let* α2 : M.Val (ref (slice i32.t)) := pointer_coercion "Unsize" α1 in
-    let* α3 : ref (slice i32.t) := M.read α2 in
-    let* α4 : unit := arrays_and_slices.analyze_slice α3 in
-    M.alloc α4 in
+    let* α0 : M.Val (ref (array i32.t)) := M.alloc (borrow xs) in
+    let* α1 : ref (slice i32.t) := M.read (pointer_coercion "Unsize" α0) in
+    let* α2 : unit := arrays_and_slices.analyze_slice α1 in
+    M.alloc α2 in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : M.Val (array (ref str.t)) :=
         M.alloc [ mk_str "borrow a section of the array as a slice
 " ] in
-      let* α1 : ref (array (ref str.t)) := borrow α0 in
-      let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
-      let* α3 : M.Val (ref (slice (ref str.t))) :=
-        pointer_coercion "Unsize" α2 in
-      let* α4 : ref (slice (ref str.t)) := M.read α3 in
-      let* α5 : core.fmt.Arguments.t :=
-        core.fmt.Arguments.t::["new_const"] α4 in
-      let* α6 : unit := std.io.stdio._print α5 in
-      M.alloc α6 in
+      let* α1 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α0) in
+      let* α2 : ref (slice (ref str.t)) :=
+        M.read (pointer_coercion "Unsize" α1) in
+      let* α3 : core.fmt.Arguments.t :=
+        core.fmt.Arguments.t::["new_const"] α2 in
+      let* α4 : unit := std.io.stdio._print α3 in
+      M.alloc α4 in
     M.alloc tt in
   let* _ : M.Val unit :=
-    let* α0 : ref (array i32.t) := borrow ys in
-    let* α1 : M.Val usize.t := M.alloc 1 in
-    let* α2 : usize.t := M.read α1 in
-    let* α3 : M.Val usize.t := M.alloc 4 in
-    let* α4 : usize.t := M.read α3 in
-    let* α5 : ref (slice i32.t) :=
+    let* α0 : ref (slice i32.t) :=
       (core.ops.index.Index.index
           (Self := array i32.t)
           (Trait := ltac:(refine _)))
-        α0
-        {| core.ops.range.Range.start := α2; core.ops.range.Range.end := α4;
+        (borrow ys)
+        {|
+          core.ops.range.Range.start := Integer.of_Z 1;
+          core.ops.range.Range.end := Integer.of_Z 4;
         |} in
-    let* α6 : unit := arrays_and_slices.analyze_slice α5 in
-    M.alloc α6 in
+    let* α1 : unit := arrays_and_slices.analyze_slice α0 in
+    M.alloc α1 in
   let* empty_array : M.Val (array u32.t) := M.alloc [ ] in
   let* _ : M.Val unit :=
-    let* α0 : ref (array u32.t) := borrow empty_array in
-    let* α1 : M.Val (ref (array u32.t)) := M.alloc α0 in
-    let* α2 : ref (ref (array u32.t)) := borrow α1 in
-    let* α3 : M.Val (array u32.t) := M.alloc [ ] in
-    let* α4 : ref (array u32.t) := borrow α3 in
-    let* α5 : M.Val (ref (array u32.t)) := M.alloc α4 in
-    let* α6 : ref (ref (array u32.t)) := borrow α5 in
-    match (α2, α6) with
+    let* α0 : M.Val (ref (array u32.t)) := M.alloc (borrow empty_array) in
+    let* α1 : M.Val (array u32.t) := M.alloc [ ] in
+    let* α2 : M.Val (ref (array u32.t)) := M.alloc (borrow α1) in
+    match (borrow α0, borrow α2) with
     | (left_val, right_val) =>
       let* right_val := M.alloc right_val in
       let* left_val := M.alloc left_val in
@@ -311,11 +273,7 @@ Definition main : M unit :=
             (Trait := ltac:(refine _)))
           α0
           α1 in
-      let* α3 : M.Val bool.t := M.alloc α2 in
-      let* α4 : M.Val bool.t := UnOp.not α3 in
-      let* α5 : M.Val bool.t := use α4 in
-      let* α6 : bool.t := M.read α5 in
-      if (α6 : bool) then
+      if (use (UnOp.not α2) : bool) then
         let* kind : M.Val core.panicking.AssertKind.t :=
           M.alloc core.panicking.AssertKind.Eq in
         let* _ : M.Val never.t :=
@@ -326,25 +284,23 @@ Definition main : M unit :=
             core.panicking.assert_failed α0 α1 α2 core.option.Option.None in
           M.alloc α3 in
         let* α0 : M.Val unit := M.alloc tt in
-        never_to_any α0
+        let* α1 := M.read α0 in
+        let* α2 : unit := never_to_any α1 in
+        M.alloc α2
       else
         M.alloc tt
     end in
   let* _ : M.Val unit :=
-    let* α0 : ref (array u32.t) := borrow empty_array in
-    let* α1 : M.Val (ref (array u32.t)) := M.alloc α0 in
-    let* α2 : ref (ref (array u32.t)) := borrow α1 in
-    let* α3 : M.Val (array u32.t) := M.alloc [ ] in
-    let* α4 : ref (array u32.t) := borrow α3 in
-    let* α5 : ref (slice u32.t) :=
+    let* α0 : M.Val (ref (array u32.t)) := M.alloc (borrow empty_array) in
+    let* α1 : M.Val (array u32.t) := M.alloc [ ] in
+    let* α2 : ref (slice u32.t) :=
       (core.ops.index.Index.index
           (Self := array u32.t)
           (Trait := ltac:(refine _)))
-        α4
+        (borrow α1)
         core.ops.range.RangeFull.Build_t in
-    let* α6 : M.Val (ref (slice u32.t)) := M.alloc α5 in
-    let* α7 : ref (ref (slice u32.t)) := borrow α6 in
-    match (α2, α7) with
+    let* α3 : M.Val (ref (slice u32.t)) := M.alloc α2 in
+    match (borrow α0, borrow α3) with
     | (left_val, right_val) =>
       let* right_val := M.alloc right_val in
       let* left_val := M.alloc left_val in
@@ -356,11 +312,7 @@ Definition main : M unit :=
             (Trait := ltac:(refine _)))
           α0
           α1 in
-      let* α3 : M.Val bool.t := M.alloc α2 in
-      let* α4 : M.Val bool.t := UnOp.not α3 in
-      let* α5 : M.Val bool.t := use α4 in
-      let* α6 : bool.t := M.read α5 in
-      if (α6 : bool) then
+      if (use (UnOp.not α2) : bool) then
         let* kind : M.Val core.panicking.AssertKind.t :=
           M.alloc core.panicking.AssertKind.Eq in
         let* _ : M.Val never.t :=
@@ -371,117 +323,104 @@ Definition main : M unit :=
             core.panicking.assert_failed α0 α1 α2 core.option.Option.None in
           M.alloc α3 in
         let* α0 : M.Val unit := M.alloc tt in
-        never_to_any α0
+        let* α1 := M.read α0 in
+        let* α2 : unit := never_to_any α1 in
+        M.alloc α2
       else
         M.alloc tt
     end in
-  let* α0 : M.Val usize.t := M.alloc 0 in
-  let* α1 : usize.t := M.read α0 in
-  let* α2 : ref (array i32.t) := borrow xs in
-  let* α3 : M.Val (ref (array i32.t)) := M.alloc α2 in
-  let* α4 : M.Val (ref (slice i32.t)) := pointer_coercion "Unsize" α3 in
-  let* α5 : ref (slice i32.t) := M.read α4 in
-  let* α6 : usize.t := (slice i32.t)::["len"] α5 in
-  let* α7 : M.Val usize.t := M.alloc α6 in
-  let* α8 : M.Val usize.t := M.alloc 1 in
-  let* α9 : M.Val usize.t := BinOp.add α7 α8 in
-  let* α10 : usize.t := M.read α9 in
-  let* α11 : core.ops.range.Range.t usize.t :=
+  let* α0 : M.Val (ref (array i32.t)) := M.alloc (borrow xs) in
+  let* α1 : ref (slice i32.t) := M.read (pointer_coercion "Unsize" α0) in
+  let* α2 : usize.t := (slice i32.t)::["len"] α1 in
+  let* α3 : usize.t := BinOp.Panic.add α2 (Integer.of_Z 1) in
+  let* α4 : core.ops.range.Range.t usize.t :=
     (core.iter.traits.collect.IntoIterator.into_iter
         (Self := core.ops.range.Range.t usize.t)
         (Trait := ltac:(refine _)))
-      {| core.ops.range.Range.start := α1; core.ops.range.Range.end := α10;
+      {|
+        core.ops.range.Range.start := Integer.of_Z 0;
+        core.ops.range.Range.end := α3;
       |} in
-  let* α12 : M.Val unit :=
-    match α11 with
+  let* α5 : M.Val unit :=
+    match α4 with
     | iter =>
       let* iter := M.alloc iter in
       loop
         (let* _ : M.Val unit :=
-          let* α0 : mut_ref (core.ops.range.Range.t usize.t) :=
-            borrow_mut iter in
-          let* α1 : core.option.Option.t usize.t :=
+          let* α0 : core.option.Option.t usize.t :=
             (core.iter.traits.iterator.Iterator.next
                 (Self := core.ops.range.Range.t usize.t)
                 (Trait := ltac:(refine _)))
-              α0 in
-          match α1 with
+              (borrow_mut iter) in
+          match α0 with
           | core.option.Option.None  =>
             let* α0 : M.Val never.t := Break in
-            never_to_any α0
+            let* α1 := M.read α0 in
+            let* α2 : unit := never_to_any α1 in
+            M.alloc α2
           | core.option.Option.Some i =>
             let* i := M.alloc i in
-            let* α0 : ref (array i32.t) := borrow xs in
-            let* α1 : M.Val (ref (array i32.t)) := M.alloc α0 in
-            let* α2 : M.Val (ref (slice i32.t)) :=
-              pointer_coercion "Unsize" α1 in
-            let* α3 : ref (slice i32.t) := M.read α2 in
-            let* α4 : usize.t := M.read i in
-            let* α5 : core.option.Option.t (ref i32.t) :=
-              (slice i32.t)::["get"] α3 α4 in
-            match α5 with
+            let* α0 : M.Val (ref (array i32.t)) := M.alloc (borrow xs) in
+            let* α1 : ref (slice i32.t) :=
+              M.read (pointer_coercion "Unsize" α0) in
+            let* α2 : usize.t := M.read i in
+            let* α3 : core.option.Option.t (ref i32.t) :=
+              (slice i32.t)::["get"] α1 α2 in
+            match α3 with
             | core.option.Option.Some xval =>
               let* xval := M.alloc xval in
               let* _ : M.Val unit :=
                 let* α0 : M.Val (array (ref str.t)) :=
                   M.alloc [ mk_str ""; mk_str ": "; mk_str "
 " ] in
-                let* α1 : ref (array (ref str.t)) := borrow α0 in
-                let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
-                let* α3 : M.Val (ref (slice (ref str.t))) :=
-                  pointer_coercion "Unsize" α2 in
-                let* α4 : ref (slice (ref str.t)) := M.read α3 in
-                let* α5 : ref usize.t := borrow i in
-                let* α6 : core.fmt.rt.Argument.t :=
-                  core.fmt.rt.Argument.t::["new_display"] α5 in
-                let* α7 : M.Val core.fmt.rt.Argument.t := M.alloc α6 in
-                let* α8 : ref (ref i32.t) := borrow xval in
-                let* α9 : core.fmt.rt.Argument.t :=
-                  core.fmt.rt.Argument.t::["new_display"] α8 in
-                let* α10 : M.Val core.fmt.rt.Argument.t := M.alloc α9 in
-                let* α11 : M.Val (array core.fmt.rt.Argument.t) :=
-                  M.alloc [ α7; α10 ] in
-                let* α12 : ref (array core.fmt.rt.Argument.t) := borrow α11 in
-                let* α13 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-                  M.alloc α12 in
-                let* α14 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
-                  pointer_coercion "Unsize" α13 in
-                let* α15 : ref (slice core.fmt.rt.Argument.t) := M.read α14 in
-                let* α16 : core.fmt.Arguments.t :=
-                  core.fmt.Arguments.t::["new_v1"] α4 α15 in
-                let* α17 : unit := std.io.stdio._print α16 in
-                M.alloc α17 in
+                let* α1 : M.Val (ref (array (ref str.t))) :=
+                  M.alloc (borrow α0) in
+                let* α2 : ref (slice (ref str.t)) :=
+                  M.read (pointer_coercion "Unsize" α1) in
+                let* α3 : core.fmt.rt.Argument.t :=
+                  core.fmt.rt.Argument.t::["new_display"] (borrow i) in
+                let* α4 : M.Val core.fmt.rt.Argument.t := M.alloc α3 in
+                let* α5 : core.fmt.rt.Argument.t :=
+                  core.fmt.rt.Argument.t::["new_display"] (borrow xval) in
+                let* α6 : M.Val core.fmt.rt.Argument.t := M.alloc α5 in
+                let* α7 : M.Val (array core.fmt.rt.Argument.t) :=
+                  M.alloc [ α4; α6 ] in
+                let* α8 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+                  M.alloc (borrow α7) in
+                let* α9 : ref (slice core.fmt.rt.Argument.t) :=
+                  M.read (pointer_coercion "Unsize" α8) in
+                let* α10 : core.fmt.Arguments.t :=
+                  core.fmt.Arguments.t::["new_v1"] α2 α9 in
+                let* α11 : unit := std.io.stdio._print α10 in
+                M.alloc α11 in
               M.alloc tt
             | core.option.Option.None  =>
               let* _ : M.Val unit :=
                 let* α0 : M.Val (array (ref str.t)) :=
                   M.alloc [ mk_str "Slow down! "; mk_str " is too far!
 " ] in
-                let* α1 : ref (array (ref str.t)) := borrow α0 in
-                let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
-                let* α3 : M.Val (ref (slice (ref str.t))) :=
-                  pointer_coercion "Unsize" α2 in
-                let* α4 : ref (slice (ref str.t)) := M.read α3 in
-                let* α5 : ref usize.t := borrow i in
-                let* α6 : core.fmt.rt.Argument.t :=
-                  core.fmt.rt.Argument.t::["new_display"] α5 in
-                let* α7 : M.Val core.fmt.rt.Argument.t := M.alloc α6 in
-                let* α8 : M.Val (array core.fmt.rt.Argument.t) :=
-                  M.alloc [ α7 ] in
-                let* α9 : ref (array core.fmt.rt.Argument.t) := borrow α8 in
-                let* α10 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-                  M.alloc α9 in
-                let* α11 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
-                  pointer_coercion "Unsize" α10 in
-                let* α12 : ref (slice core.fmt.rt.Argument.t) := M.read α11 in
-                let* α13 : core.fmt.Arguments.t :=
-                  core.fmt.Arguments.t::["new_v1"] α4 α12 in
-                let* α14 : unit := std.io.stdio._print α13 in
-                M.alloc α14 in
+                let* α1 : M.Val (ref (array (ref str.t))) :=
+                  M.alloc (borrow α0) in
+                let* α2 : ref (slice (ref str.t)) :=
+                  M.read (pointer_coercion "Unsize" α1) in
+                let* α3 : core.fmt.rt.Argument.t :=
+                  core.fmt.rt.Argument.t::["new_display"] (borrow i) in
+                let* α4 : M.Val core.fmt.rt.Argument.t := M.alloc α3 in
+                let* α5 : M.Val (array core.fmt.rt.Argument.t) :=
+                  M.alloc [ α4 ] in
+                let* α6 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+                  M.alloc (borrow α5) in
+                let* α7 : ref (slice core.fmt.rt.Argument.t) :=
+                  M.read (pointer_coercion "Unsize" α6) in
+                let* α8 : core.fmt.Arguments.t :=
+                  core.fmt.Arguments.t::["new_v1"] α2 α7 in
+                let* α9 : unit := std.io.stdio._print α8 in
+                M.alloc α9 in
               M.alloc tt
             end
           end in
         M.alloc tt)
     end in
-  let* α0 : M.Val unit := use α12 in
+  let* α6 : unit := M.read α5 in
+  let* α0 : M.Val unit := M.alloc (use α6) in
   M.read α0.

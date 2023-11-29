@@ -16,26 +16,21 @@ Definition eat_box_i32
       let* α0 : M.Val (array (ref str.t)) :=
         M.alloc [ mk_str "Destroying box that contains "; mk_str "
 " ] in
-      let* α1 : ref (array (ref str.t)) := borrow α0 in
-      let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
-      let* α3 : M.Val (ref (slice (ref str.t))) :=
-        pointer_coercion "Unsize" α2 in
-      let* α4 : ref (slice (ref str.t)) := M.read α3 in
-      let* α5 : ref (alloc.boxed.Box.t i32.t alloc.alloc.Global.t) :=
-        borrow boxed_i32 in
-      let* α6 : core.fmt.rt.Argument.t :=
-        core.fmt.rt.Argument.t::["new_display"] α5 in
-      let* α7 : M.Val core.fmt.rt.Argument.t := M.alloc α6 in
-      let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
-      let* α9 : ref (array core.fmt.rt.Argument.t) := borrow α8 in
-      let* α10 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α9 in
-      let* α11 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
-        pointer_coercion "Unsize" α10 in
-      let* α12 : ref (slice core.fmt.rt.Argument.t) := M.read α11 in
-      let* α13 : core.fmt.Arguments.t :=
-        core.fmt.Arguments.t::["new_v1"] α4 α12 in
-      let* α14 : unit := std.io.stdio._print α13 in
-      M.alloc α14 in
+      let* α1 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α0) in
+      let* α2 : ref (slice (ref str.t)) :=
+        M.read (pointer_coercion "Unsize" α1) in
+      let* α3 : core.fmt.rt.Argument.t :=
+        core.fmt.rt.Argument.t::["new_display"] (borrow boxed_i32) in
+      let* α4 : M.Val core.fmt.rt.Argument.t := M.alloc α3 in
+      let* α5 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4 ] in
+      let* α6 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+        M.alloc (borrow α5) in
+      let* α7 : ref (slice core.fmt.rt.Argument.t) :=
+        M.read (pointer_coercion "Unsize" α6) in
+      let* α8 : core.fmt.Arguments.t :=
+        core.fmt.Arguments.t::["new_v1"] α2 α7 in
+      let* α9 : unit := std.io.stdio._print α8 in
+      M.alloc α9 in
     M.alloc tt in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.
@@ -52,25 +47,21 @@ Definition borrow_i32 (borrowed_i32 : ref i32.t) : M unit :=
       let* α0 : M.Val (array (ref str.t)) :=
         M.alloc [ mk_str "This int is: "; mk_str "
 " ] in
-      let* α1 : ref (array (ref str.t)) := borrow α0 in
-      let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
-      let* α3 : M.Val (ref (slice (ref str.t))) :=
-        pointer_coercion "Unsize" α2 in
-      let* α4 : ref (slice (ref str.t)) := M.read α3 in
-      let* α5 : ref (ref i32.t) := borrow borrowed_i32 in
-      let* α6 : core.fmt.rt.Argument.t :=
-        core.fmt.rt.Argument.t::["new_display"] α5 in
-      let* α7 : M.Val core.fmt.rt.Argument.t := M.alloc α6 in
-      let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
-      let* α9 : ref (array core.fmt.rt.Argument.t) := borrow α8 in
-      let* α10 : M.Val (ref (array core.fmt.rt.Argument.t)) := M.alloc α9 in
-      let* α11 : M.Val (ref (slice core.fmt.rt.Argument.t)) :=
-        pointer_coercion "Unsize" α10 in
-      let* α12 : ref (slice core.fmt.rt.Argument.t) := M.read α11 in
-      let* α13 : core.fmt.Arguments.t :=
-        core.fmt.Arguments.t::["new_v1"] α4 α12 in
-      let* α14 : unit := std.io.stdio._print α13 in
-      M.alloc α14 in
+      let* α1 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α0) in
+      let* α2 : ref (slice (ref str.t)) :=
+        M.read (pointer_coercion "Unsize" α1) in
+      let* α3 : core.fmt.rt.Argument.t :=
+        core.fmt.rt.Argument.t::["new_display"] (borrow borrowed_i32) in
+      let* α4 : M.Val core.fmt.rt.Argument.t := M.alloc α3 in
+      let* α5 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4 ] in
+      let* α6 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+        M.alloc (borrow α5) in
+      let* α7 : ref (slice core.fmt.rt.Argument.t) :=
+        M.read (pointer_coercion "Unsize" α6) in
+      let* α8 : core.fmt.Arguments.t :=
+        core.fmt.Arguments.t::["new_v1"] α2 α7 in
+      let* α9 : unit := std.io.stdio._print α8 in
+      M.alloc α9 in
     M.alloc tt in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.
@@ -107,32 +98,24 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
   let* boxed_i32 : M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t) :=
-    let* α0 : M.Val i32.t := M.alloc 5 in
-    let* α1 : i32.t := M.read α0 in
-    let* α2 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t :=
-      (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"] α1 in
-    M.alloc α2 in
-  let* stacked_i32 : M.Val i32.t :=
-    let* α0 : M.Val i32.t := M.alloc 6 in
-    M.copy α0 in
+    let* α0 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t :=
+      (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"]
+        (Integer.of_Z 5) in
+    M.alloc α0 in
+  let* stacked_i32 : M.Val i32.t := M.alloc (Integer.of_Z 6) in
   let* _ : M.Val unit :=
     let* α0 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t :=
       M.read boxed_i32 in
-    let* α1 : M.Val i32.t := deref α0 in
-    let* α2 : ref i32.t := borrow α1 in
-    let* α3 : unit := scoping_rules_borrowing.borrow_i32 α2 in
-    M.alloc α3 in
-  let* _ : M.Val unit :=
-    let* α0 : ref i32.t := borrow stacked_i32 in
-    let* α1 : unit := scoping_rules_borrowing.borrow_i32 α0 in
+    let* α1 : unit := scoping_rules_borrowing.borrow_i32 (borrow (deref α0)) in
     M.alloc α1 in
+  let* _ : M.Val unit :=
+    let* α0 : unit := scoping_rules_borrowing.borrow_i32 (borrow stacked_i32) in
+    M.alloc α0 in
   let* _ : M.Val unit :=
     let* _ref_to_i32 : M.Val (ref i32.t) :=
       let* α0 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t :=
         M.read boxed_i32 in
-      let* α1 : M.Val i32.t := deref α0 in
-      let* α2 : ref i32.t := borrow α1 in
-      M.alloc α2 in
+      M.alloc (borrow (deref α0)) in
     let* _ : M.Val unit :=
       let* α0 : ref i32.t := M.read _ref_to_i32 in
       let* α1 : unit := scoping_rules_borrowing.borrow_i32 α0 in

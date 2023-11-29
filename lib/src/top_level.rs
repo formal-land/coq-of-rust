@@ -30,44 +30,44 @@ pub(crate) struct TopLevelOptions {
     pub(crate) generate_reorder: bool,
 }
 
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 struct HirFnSigAndBody<'a> {
     fn_sig: &'a rustc_hir::FnSig<'a>,
     body: &'a rustc_hir::Body<'a>,
 }
 
-#[derive(Clone, Debug, Eq, Hash, PartialEq)]
+#[derive(Debug, Eq, Hash, PartialEq)]
 struct FnSigAndBody {
     args: Vec<(String, Rc<CoqType>)>,
     ret_ty: Rc<CoqType>,
     body: Option<Box<Expr>>,
 }
 
-#[derive(Clone, Debug, Eq, Hash, PartialEq)]
+#[derive(Debug, Eq, Hash, PartialEq)]
 enum TraitItem {
     Definition {
         ty_params: Vec<String>,
-        where_predicates: Vec<WherePredicate>,
+        where_predicates: Vec<Rc<WherePredicate>>,
         ty: Rc<CoqType>,
     },
     DefinitionWithDefault {
         ty_params: Vec<String>,
-        where_predicates: Vec<WherePredicate>,
-        signature_and_body: FnSigAndBody,
+        where_predicates: Vec<Rc<WherePredicate>>,
+        signature_and_body: Rc<FnSigAndBody>,
     },
-    Type(Vec<TraitBound>),
+    Type(Vec<Rc<TraitBound>>),
 }
 
 /// fields common for all function definitions
-#[derive(Clone, Debug, Eq, Hash, PartialEq)]
+#[derive(Debug, Eq, Hash, PartialEq)]
 struct FunDefinition {
     ty_params: Vec<String>,
-    where_predicates: Vec<WherePredicate>,
-    signature_and_body: FnSigAndBody,
+    where_predicates: Vec<Rc<WherePredicate>>,
+    signature_and_body: Rc<FnSigAndBody>,
     is_dead_code: bool,
 }
 
-#[derive(Clone, Debug, Eq, Hash, PartialEq)]
+#[derive(Debug, Eq, Hash, PartialEq)]
 enum ImplItemKind {
     Const {
         ty: Rc<CoqType>,
@@ -75,35 +75,35 @@ enum ImplItemKind {
         is_dead_code: bool,
     },
     Definition {
-        definition: FunDefinition,
+        definition: Rc<FunDefinition>,
     },
     Type {
         ty: Rc<CoqType>,
     },
 }
 
-#[derive(Clone, Debug, Eq, Hash, PartialEq)]
+#[derive(Debug, Eq, Hash, PartialEq)]
 struct WherePredicate {
-    bound: TraitBound,
+    bound: Rc<TraitBound>,
     ty: Rc<CoqType>,
 }
 
-#[derive(Clone, Debug, Eq, Hash, PartialEq)]
+#[derive(Debug, Eq, Hash, PartialEq)]
 struct TraitBound {
     name: Path,
-    ty_params: Vec<(String, TraitTyParamValue)>,
+    ty_params: Vec<(String, Rc<TraitTyParamValue>)>,
 }
 
 type TraitTyParamValue = FieldWithDefault<Rc<CoqType>>;
 
-#[derive(Clone, Debug, Eq, Hash, PartialEq)]
+#[derive(Debug, Eq, Hash, PartialEq)]
 enum VariantItem {
     Struct { fields: Vec<(String, Rc<CoqType>)> },
     Tuple { tys: Vec<Rc<CoqType>> },
 }
 
 /// The value for a field that may have a default value
-#[derive(Clone, Debug, Eq, Hash, PartialEq)]
+#[derive(Debug, Eq, Hash, PartialEq)]
 pub(crate) enum FieldWithDefault<A> {
     /// the value of a field that has no defaults
     RequiredValue(A),
@@ -113,26 +113,26 @@ pub(crate) enum FieldWithDefault<A> {
     Default,
 }
 
-#[derive(Clone, Debug, Eq, Hash, PartialEq)]
+#[derive(Debug, Eq, Hash, PartialEq)]
 struct Snippet(Vec<String>);
 
-#[derive(Clone, Debug, Eq, Hash, PartialEq)]
+#[derive(Debug, Eq, Hash, PartialEq)]
 struct ImplItem {
     name: String,
-    snippet: Snippet,
-    kind: ImplItemKind,
+    snippet: Rc<Snippet>,
+    kind: Rc<ImplItemKind>,
 }
 
-#[derive(Clone, Debug, Eq, Hash, PartialEq)]
+#[derive(Debug, Eq, Hash, PartialEq)]
 struct TraitImplItem {
     name: String,
-    snippet: Snippet,
-    kind: FieldWithDefault<ImplItemKind>,
+    snippet: Rc<Snippet>,
+    kind: Rc<FieldWithDefault<Rc<ImplItemKind>>>,
 }
 
 /// Representation of top-level hir [Item]s in coq-of-rust
 /// See https://doc.rust-lang.org/reference/items.html
-#[derive(Clone, Debug, Eq, Hash, PartialEq)]
+#[derive(Debug, Eq, Hash, PartialEq)]
 enum TopLevelItem {
     Const {
         name: String,
@@ -141,8 +141,8 @@ enum TopLevelItem {
     },
     Definition {
         name: String,
-        snippet: Snippet,
-        definition: FunDefinition,
+        snippet: Rc<Snippet>,
+        definition: Rc<FunDefinition>,
     },
     TypeAlias {
         name: String,
@@ -152,8 +152,8 @@ enum TopLevelItem {
     TypeEnum {
         name: String,
         ty_params: Vec<(String, Option<Rc<CoqType>>)>,
-        predicates: Vec<WherePredicate>,
-        variants: Vec<(String, VariantItem)>,
+        predicates: Vec<Rc<WherePredicate>>,
+        variants: Vec<(String, Rc<VariantItem>)>,
     },
     TypeStructStruct(TypeStructStruct),
     TypeStructTuple {
@@ -167,7 +167,7 @@ enum TopLevelItem {
     },
     Module {
         name: String,
-        body: TopLevel,
+        body: Rc<TopLevel>,
         is_dead_code: bool,
     },
     Impl {
@@ -175,36 +175,36 @@ enum TopLevelItem {
         self_ty: Rc<CoqType>,
         /// We use a counter to disambiguate several impls for the same type
         counter: u64,
-        items: Vec<ImplItem>,
+        items: Vec<Rc<ImplItem>>,
     },
     Trait {
         name: String,
         ty_params: Vec<(String, Option<Rc<CoqType>>)>,
-        predicates: Vec<WherePredicate>,
-        body: Vec<(String, TraitItem)>,
+        predicates: Vec<Rc<WherePredicate>>,
+        body: Vec<(String, Rc<TraitItem>)>,
     },
     TraitImpl {
         generic_tys: Vec<String>,
-        predicates: Vec<WherePredicate>,
+        predicates: Vec<Rc<WherePredicate>>,
         self_ty: Rc<CoqType>,
         of_trait: Path,
-        trait_ty_params: Vec<(String, TraitTyParamValue)>,
-        items: Vec<TraitImplItem>,
+        trait_ty_params: Vec<(String, Rc<TraitTyParamValue>)>,
+        items: Vec<Rc<TraitImplItem>>,
     },
     Error(String),
 }
 
-#[derive(Clone, Debug, Eq, Hash, PartialEq)]
+#[derive(Debug, Eq, Hash, PartialEq)]
 struct TypeStructStruct {
     name: String,
     ty_params: Vec<(String, Option<Rc<CoqType>>)>,
-    predicates: Vec<WherePredicate>,
+    predicates: Vec<Rc<WherePredicate>>,
     fields: Vec<(String, Rc<CoqType>)>,
     is_dead_code: bool,
 }
 
-#[derive(Clone, Debug, Eq, Hash, PartialEq)]
-pub struct TopLevel(Vec<TopLevelItem>);
+#[derive(Debug, Eq, Hash, PartialEq)]
+pub struct TopLevel(Vec<Rc<TopLevelItem>>);
 
 /// emits a warning with the given messages
 fn emit_warning_with_note(env: &Env, span: &rustc_span::Span, warning_msg: &str, note_msg: &str) {
@@ -216,9 +216,9 @@ fn emit_warning_with_note(env: &Env, span: &rustc_span::Span, warning_msg: &str,
 }
 
 impl<A> FieldWithDefault<A> {
-    fn map<B, F>(self, f: F) -> FieldWithDefault<B>
+    fn map<B, F>(&self, f: F) -> FieldWithDefault<B>
     where
-        F: FnOnce(A) -> B,
+        F: FnOnce(&A) -> B,
     {
         match self {
             FieldWithDefault::RequiredValue(a) => FieldWithDefault::RequiredValue(f(a)),
@@ -228,8 +228,8 @@ impl<A> FieldWithDefault<A> {
     }
 }
 
-impl<'a, A> From<&'a FieldWithDefault<A>> for Option<&'a A> {
-    fn from(val: &'a FieldWithDefault<A>) -> Self {
+impl<'a, A> From<&'a FieldWithDefault<Rc<A>>> for Option<&'a A> {
+    fn from(val: &'a FieldWithDefault<Rc<A>>) -> Self {
         match val {
             FieldWithDefault::RequiredValue(a) => Some(a),
             FieldWithDefault::OptionalValue(a) => Some(a),
@@ -243,13 +243,13 @@ fn compile_fn_sig_and_body(
     env: &mut Env,
     fn_sig_and_body: &HirFnSigAndBody,
     default: &str,
-) -> FnSigAndBody {
+) -> Rc<FnSigAndBody> {
     let decl = fn_sig_and_body.fn_sig.decl;
     let args = get_args(env, fn_sig_and_body.body, decl.inputs, default);
     let ret_ty = compile_fn_ret_ty(env, &decl.output);
     let body = compile_function_body(env, &args, fn_sig_and_body.body, ret_ty.clone());
 
-    FnSigAndBody { args, ret_ty, body }
+    Rc::new(FnSigAndBody { args, ret_ty, body })
 }
 
 /// Check if the function body is actually the main test function calling to all
@@ -318,7 +318,7 @@ fn check_dead_code_lint_in_attributes(tcx: &TyCtxt, item: &Item) -> bool {
 
 /// We deduplicate items while keeping there order. Often, items are duplicated
 /// due to module imports or such.
-fn deduplicate_top_level_items(items: Vec<TopLevelItem>) -> Vec<TopLevelItem> {
+fn deduplicate_top_level_items(items: Vec<Rc<TopLevelItem>>) -> Vec<Rc<TopLevelItem>> {
     items.into_iter().unique().collect()
 }
 
@@ -336,8 +336,8 @@ fn is_top_level_item_public(tcx: &TyCtxt, env: &Env, item: &Item) -> bool {
 }
 
 // gy@NOTE: This function might be able to generalize to more empty traits in general
-fn is_sized_trait(segments: Vec<String>) -> bool {
-    let sized_trait = vec![
+fn is_sized_trait(segments: &Vec<String>) -> bool {
+    let sized_trait = &vec![
         "core".to_string(),
         "marker".to_string(),
         "Sized".to_string(),
@@ -346,14 +346,11 @@ fn is_sized_trait(segments: Vec<String>) -> bool {
 }
 
 fn is_not_empty_trait(predicate: &WherePredicate) -> bool {
-    let WherePredicate {
-        bound: TraitBound {
-            name: Path { segments },
-            ..
-        },
+    let TraitBound {
+        name: Path { segments },
         ..
-    } = predicate;
-    !is_sized_trait(segments.to_owned())
+    } = &*predicate.bound;
+    !is_sized_trait(segments)
 }
 
 /// [compile_top_level_item] compiles hir [Item]s into coq-of-rust (optional)
@@ -364,7 +361,7 @@ fn is_not_empty_trait(predicate: &WherePredicate) -> bool {
 /// - Method [body] allows retrievient the body of an identifier [body_id] in an
 ///   hir environment [hir]
 // @TODO: the argument `tcx` is included in `env` and should thus be removed
-fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLevelItem> {
+fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<Rc<TopLevelItem>> {
     let name = to_valid_coq_name(item.ident.name.to_string());
     if env.axiomatize && !env.axiomatize_public {
         let is_public = is_top_level_item_public(tcx, env, item);
@@ -397,20 +394,20 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                 let value = compile_hir_id(env, body_id.hir_id);
                 Some(Box::new(value))
             };
-            vec![TopLevelItem::Const {
+            vec![Rc::new(TopLevelItem::Const {
                 name,
                 ty: compile_type(env, ty),
                 value,
-            }]
+            })]
         }
         ItemKind::Fn(fn_sig, generics, body_id) => {
             if check_if_is_test_main_function(tcx, body_id) {
                 return vec![];
             }
-            let snippet = Snippet::of_span(env, &item.span);
+            let snippet = Rc::new(Snippet::of_span(env, &item.span));
             let is_dead_code = check_dead_code_lint_in_attributes(tcx, item);
             let fn_sig_and_body = get_hir_fn_sig_and_body(tcx, fn_sig, body_id);
-            vec![TopLevelItem::Definition {
+            vec![Rc::new(TopLevelItem::Definition {
                 name,
                 snippet,
                 definition: FunDefinition::compile(
@@ -420,7 +417,7 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                     "arg",
                     is_dead_code,
                 ),
-            }]
+            })]
         }
         ItemKind::Macro(_, _) => vec![],
         ItemKind::Mod(module) => {
@@ -441,26 +438,26 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
             if items.is_empty() {
                 return vec![];
             }
-            vec![TopLevelItem::Module {
+            vec![Rc::new(TopLevelItem::Module {
                 name,
-                body: TopLevel(items),
+                body: Rc::new(TopLevel(items)),
                 is_dead_code,
-            }]
+            })]
         }
         ItemKind::ForeignMod { .. } => {
-            vec![TopLevelItem::Error("ForeignMod".to_string())]
+            vec![Rc::new(TopLevelItem::Error("ForeignMod".to_string()))]
         }
-        ItemKind::GlobalAsm(_) => vec![TopLevelItem::Error("GlobalAsm".to_string())],
-        ItemKind::TyAlias(ty, generics) => vec![TopLevelItem::TypeAlias {
+        ItemKind::GlobalAsm(_) => vec![Rc::new(TopLevelItem::Error("GlobalAsm".to_string()))],
+        ItemKind::TyAlias(ty, generics) => vec![Rc::new(TopLevelItem::TypeAlias {
             name,
             ty: compile_type(env, ty),
             ty_params: get_ty_params_names(env, generics),
-        }],
-        ItemKind::OpaqueTy(_) => vec![TopLevelItem::Error("OpaqueTy".to_string())],
+        })],
+        ItemKind::OpaqueTy(_) => vec![Rc::new(TopLevelItem::Error("OpaqueTy".to_string()))],
         ItemKind::Enum(enum_def, generics) => {
             let ty_params = get_ty_params(env, generics);
             let predicates = get_where_predicates(tcx, env, generics);
-            vec![TopLevelItem::TypeEnum {
+            vec![Rc::new(TopLevelItem::TypeEnum {
                 name,
                 ty_params,
                 predicates,
@@ -488,10 +485,10 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                             }
                             VariantData::Unit(_, _) => VariantItem::Tuple { tys: vec![] },
                         };
-                        (name, fields)
+                        (name, Rc::new(fields))
                     })
                     .collect(),
-            }]
+            })]
         }
         ItemKind::Struct(body, generics) => {
             let is_dead_code = check_dead_code_lint_in_attributes(tcx, item);
@@ -504,44 +501,46 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                         .iter()
                         .map(|field| (field.ident.name.to_string(), compile_type(env, field.ty)))
                         .collect();
-                    vec![TopLevelItem::TypeStructStruct(TypeStructStruct {
+                    vec![Rc::new(TopLevelItem::TypeStructStruct(TypeStructStruct {
                         name,
                         ty_params,
                         predicates,
                         fields,
                         is_dead_code,
-                    })]
+                    }))]
                 }
                 VariantData::Tuple(fields, _, _) => {
-                    vec![TopLevelItem::TypeStructTuple {
+                    vec![Rc::new(TopLevelItem::TypeStructTuple {
                         name,
                         ty_params,
                         fields: fields
                             .iter()
                             .map(|field| compile_type(env, field.ty))
                             .collect(),
-                    }]
+                    })]
                 }
                 VariantData::Unit(_, _) => {
-                    vec![TopLevelItem::TypeStructUnit { name, ty_params }]
+                    vec![Rc::new(TopLevelItem::TypeStructUnit { name, ty_params })]
                 }
             }
         }
-        ItemKind::Union(_, _) => vec![TopLevelItem::Error("Union".to_string())],
+        ItemKind::Union(_, _) => vec![Rc::new(TopLevelItem::Error("Union".to_string()))],
         ItemKind::Trait(_, _, generics, generic_bounds, items) => {
             let predicates = vec![
                 get_where_predicates(tcx, env, generics),
                 compile_generic_bounds(tcx, env, generic_bounds)
                     .into_iter()
-                    .map(|bound| WherePredicate {
-                        bound,
-                        ty: CoqType::var("Self"),
+                    .map(|bound| {
+                        Rc::new(WherePredicate {
+                            bound,
+                            ty: CoqType::var("Self"),
+                        })
                     })
-                    .filter(is_not_empty_trait)
+                    .filter(|predicate| is_not_empty_trait(predicate))
                     .collect(),
             ]
             .concat();
-            vec![TopLevelItem::Trait {
+            vec![Rc::new(TopLevelItem::Trait {
                 name,
                 ty_params: get_ty_params(env, generics),
                 predicates,
@@ -556,10 +555,10 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                         (to_valid_coq_name(item.ident.name.to_string()), body)
                     })
                     .collect(),
-            }]
+            })]
         }
         ItemKind::TraitAlias(_, _) => {
-            vec![TopLevelItem::Error("TraitAlias".to_string())]
+            vec![Rc::new(TopLevelItem::Error("TraitAlias".to_string()))]
         }
         ItemKind::Impl(Impl {
             generics,
@@ -585,46 +584,38 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                         .filter(|item| item.defaultness(*tcx).has_value())
                         .map(|item| to_valid_coq_name(item.name.to_string()))
                         .collect();
-                    let items: Vec<TraitImplItem> = items
+                    let items: Vec<Rc<TraitImplItem>> = items
                         .iter()
-                        .map(
-                            |ImplItem {
-                                 name,
-                                 snippet,
-                                 kind,
-                             }| {
-                                let has_default = rustc_default_item_names
-                                    .iter()
-                                    .any(|default_item_name| name == default_item_name);
-                                let kind = if has_default {
-                                    FieldWithDefault::OptionalValue(kind.clone())
-                                } else {
-                                    FieldWithDefault::RequiredValue(kind.clone())
-                                };
-                                TraitImplItem {
-                                    name: name.clone(),
-                                    snippet: snippet.clone(),
-                                    kind,
-                                }
-                            },
-                        )
+                        .map(|item| {
+                            let has_default = rustc_default_item_names
+                                .iter()
+                                .any(|default_item_name| &item.name == default_item_name);
+                            let kind = Rc::new(if has_default {
+                                FieldWithDefault::OptionalValue(item.kind.clone())
+                            } else {
+                                FieldWithDefault::RequiredValue(item.kind.clone())
+                            });
+                            Rc::new(TraitImplItem {
+                                name: item.name.clone(),
+                                snippet: item.snippet.clone(),
+                                kind,
+                            })
+                        })
                         // We now add the elements that have a default value and are not in the
                         // list of definitions
                         .chain(
                             rustc_default_item_names
                                 .iter()
                                 .filter(|default_item_name| {
-                                    !items
-                                        .iter()
-                                        .any(|ImplItem { name, .. }| name == *default_item_name)
+                                    !items.iter().any(|item| &item.name == *default_item_name)
                                 })
                                 .map(|default_item_name| {
-                                    let kind = FieldWithDefault::Default;
-                                    TraitImplItem {
+                                    let kind = Rc::new(FieldWithDefault::Default);
+                                    Rc::new(TraitImplItem {
                                         name: default_item_name.clone(),
-                                        snippet: Snippet(vec![]),
+                                        snippet: Rc::new(Snippet(vec![])),
                                         kind,
-                                    }
+                                    })
                                 }),
                         )
                         .collect();
@@ -632,7 +623,7 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                     // Get the generics for the trait
                     let trait_generics = tcx.generics_of(trait_ref.trait_def_id().unwrap());
 
-                    vec![TopLevelItem::TraitImpl {
+                    vec![Rc::new(TopLevelItem::TraitImpl {
                         generic_tys,
                         predicates,
                         self_ty,
@@ -643,19 +634,19 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                             trait_ref.path,
                         ),
                         items,
-                    }]
+                    })]
                 }
                 None => {
-                    let counter_entry = env.impl_counter.entry((*self_ty).clone());
+                    let counter_entry = env.impl_counter.entry(self_ty.clone());
                     let counter = *counter_entry
                         .and_modify(|counter| *counter += 1)
                         .or_insert(1);
-                    vec![TopLevelItem::Impl {
+                    vec![Rc::new(TopLevelItem::Impl {
                         generic_tys,
                         self_ty,
                         counter,
                         items,
-                    }]
+                    })]
                 }
             }
         }
@@ -680,7 +671,7 @@ fn compile_impl_item_refs(
     env: &mut Env,
     item_refs: &[ImplItemRef],
     is_dead_code: bool,
-) -> Vec<ImplItem> {
+) -> Vec<Rc<ImplItem>> {
     item_refs
         .iter()
         .map(|item_ref| compile_impl_item(tcx, env, tcx.hir().impl_item(item_ref.id), is_dead_code))
@@ -693,9 +684,9 @@ fn compile_impl_item(
     env: &mut Env,
     item: &rustc_hir::ImplItem,
     is_dead_code: bool,
-) -> ImplItem {
+) -> Rc<ImplItem> {
     let name = to_valid_coq_name(item.ident.name.to_string());
-    let snippet = Snippet::of_span(env, &item.span);
+    let snippet = Rc::new(Snippet::of_span(env, &item.span));
     let kind = match &item.kind {
         rustc_hir::ImplItemKind::Const(ty, body_id) => {
             let ty = compile_type(env, ty);
@@ -704,13 +695,13 @@ fn compile_impl_item(
             } else {
                 Some(Box::new(compile_hir_id(env, body_id.hir_id)))
             };
-            ImplItemKind::Const {
+            Rc::new(ImplItemKind::Const {
                 ty,
                 body,
                 is_dead_code,
-            }
+            })
         }
-        rustc_hir::ImplItemKind::Fn(fn_sig, body_id) => ImplItemKind::Definition {
+        rustc_hir::ImplItemKind::Fn(fn_sig, body_id) => Rc::new(ImplItemKind::Definition {
             definition: FunDefinition::compile(
                 env,
                 item.generics,
@@ -718,16 +709,16 @@ fn compile_impl_item(
                 "Pattern",
                 is_dead_code,
             ),
-        },
-        rustc_hir::ImplItemKind::Type(ty) => ImplItemKind::Type {
+        }),
+        rustc_hir::ImplItemKind::Type(ty) => Rc::new(ImplItemKind::Type {
             ty: compile_type(env, ty),
-        },
+        }),
     };
-    ImplItem {
+    Rc::new(ImplItem {
         name,
         snippet,
         kind,
-    }
+    })
 }
 
 /// returns the body corresponding to the given body_id
@@ -852,7 +843,7 @@ fn get_where_predicates(
     tcx: &TyCtxt,
     env: &Env,
     generics: &rustc_hir::Generics,
-) -> Vec<WherePredicate> {
+) -> Vec<Rc<WherePredicate>> {
     generics
         .predicates
         .iter()
@@ -871,13 +862,13 @@ fn get_where_predicates(
             }
             _ => vec![],
         })
-        .filter(is_not_empty_trait)
+        .filter(|predicate| is_not_empty_trait(predicate))
         .collect()
 }
 
 /// converts a trait bound to a where predicate
-fn trait_bound_to_where_predicate(bound: TraitBound, ty: Rc<CoqType>) -> WherePredicate {
-    WherePredicate { bound, ty }
+fn trait_bound_to_where_predicate(bound: Rc<TraitBound>, ty: Rc<CoqType>) -> Rc<WherePredicate> {
+    Rc::new(WherePredicate { bound, ty })
 }
 
 /// [compile_generic_bounds] compiles generic bounds in [compile_trait_item_body]
@@ -885,7 +876,7 @@ fn compile_generic_bounds(
     tcx: &TyCtxt,
     env: &Env,
     generic_bounds: GenericBounds,
-) -> Vec<TraitBound> {
+) -> Vec<Rc<TraitBound>> {
     generic_bounds
         .iter()
         .filter_map(|generic_bound| match generic_bound {
@@ -908,7 +899,7 @@ fn get_ty_params_with_default_status(
     env: &Env,
     generics: &rustc_middle::ty::Generics,
     path: &rustc_hir::Path,
-) -> Vec<(String, TraitTyParamValue)> {
+) -> Vec<(String, Rc<TraitTyParamValue>)> {
     let mut type_params_name_and_default_status = type_params_name_and_default_status(generics);
     // The first type parameter is always the Self type, that we do not consider as
     // part of the list of type parameters.
@@ -924,7 +915,7 @@ fn get_ty_params_with_default_status(
 fn add_default_status_to_ty_params(
     ty_params: &[Rc<CoqType>],
     names_and_default_status: &[(String, bool)],
-) -> Vec<(String, TraitTyParamValue)> {
+) -> Vec<(String, Rc<TraitTyParamValue>)> {
     ty_params
         .iter()
         .map(Some)
@@ -939,7 +930,7 @@ fn compile_ty_param_value(
     name: &str,
     ty: Option<Rc<CoqType>>,
     has_default: &bool,
-) -> (String, TraitTyParamValue) {
+) -> (String, Rc<TraitTyParamValue>) {
     let name = name.to_string();
     let ty = match ty {
         Some(ty) => {
@@ -951,7 +942,7 @@ fn compile_ty_param_value(
         }
         None => FieldWithDefault::Default,
     };
-    (name, ty)
+    (name, Rc::new(ty))
 }
 
 /// Get the list of type parameters names and default status (true if it has a default)
@@ -975,30 +966,30 @@ fn compile_trait_item_body(
     tcx: &TyCtxt,
     env: &mut Env,
     ty_params: Vec<String>,
-    where_predicates: Vec<WherePredicate>,
+    where_predicates: Vec<Rc<WherePredicate>>,
     item: &rustc_hir::TraitItem,
-) -> TraitItem {
+) -> Rc<TraitItem> {
     match &item.kind {
-        TraitItemKind::Const(ty, _) => TraitItem::Definition {
+        TraitItemKind::Const(ty, _) => Rc::new(TraitItem::Definition {
             ty_params,
             where_predicates,
             ty: compile_type(env, ty),
-        },
+        }),
         TraitItemKind::Fn(fn_sig, trait_fn) => match trait_fn {
-            TraitFn::Required(_) => TraitItem::Definition {
+            TraitFn::Required(_) => Rc::new(TraitItem::Definition {
                 ty_params,
                 where_predicates,
                 ty: compile_fn_decl(env, fn_sig.decl),
-            },
+            }),
             TraitFn::Provided(body_id) => {
                 let env_tcx = env.tcx;
                 let fn_sig_and_body = get_hir_fn_sig_and_body(&env_tcx, fn_sig, body_id);
                 let signature_and_body = compile_fn_sig_and_body(env, &fn_sig_and_body, "arg");
-                TraitItem::DefinitionWithDefault {
+                Rc::new(TraitItem::DefinitionWithDefault {
                     ty_params,
                     where_predicates,
                     signature_and_body,
-                }
+                })
             }
         },
         TraitItemKind::Type(generic_bounds, concrete_type) => {
@@ -1008,13 +999,13 @@ fn compile_trait_item_body(
                 let note_msg = "It may change in future versions.";
                 emit_warning_with_note(env, span, warning_msg, note_msg);
             }
-            let generic_bounds: Vec<TraitBound> = compile_generic_bounds(tcx, env, generic_bounds);
-            TraitItem::Type(generic_bounds)
+            let generic_bounds = compile_generic_bounds(tcx, env, generic_bounds);
+            Rc::new(TraitItem::Type(generic_bounds))
         }
     }
 }
 
-fn compile_top_level(tcx: &TyCtxt, opts: TopLevelOptions) -> TopLevel {
+fn compile_top_level(tcx: &TyCtxt, opts: TopLevelOptions) -> Rc<TopLevel> {
     let mut env = Env {
         impl_counter: HashMap::new(),
         tcx: *tcx,
@@ -1042,7 +1033,7 @@ fn compile_top_level(tcx: &TyCtxt, opts: TopLevelOptions) -> TopLevel {
         let json = serde_json::json!({ "reorder": HashMap::from([(env.file.to_string(), env.reorder_map)])});
         println!("{}", serde_json::to_string_pretty(&json).expect("json"));
     }
-    TopLevel(results)
+    Rc::new(TopLevel(results))
 }
 
 const LINE_WIDTH: usize = 80;
@@ -1061,102 +1052,102 @@ pub(crate) fn top_level_to_coq(tcx: &TyCtxt, opts: TopLevelOptions) -> String {
     top_level.to_pretty(LINE_WIDTH)
 }
 
-fn mt_impl_item(item: ImplItemKind) -> ImplItemKind {
-    match item {
+fn mt_impl_item(item: Rc<ImplItemKind>) -> Rc<ImplItemKind> {
+    match &*item {
         ImplItemKind::Const {
             ty,
             body,
             is_dead_code,
         } => {
             let body = match body {
-                None => body,
+                None => body.clone(),
                 Some(body) => {
-                    let body = mt_expression(FreshVars::new(), *body).0;
+                    let body = mt_expression(FreshVars::new(), *body.clone()).0;
                     Some(Box::new(body))
                 }
             };
-            ImplItemKind::Const {
-                ty: mt_ty(ty),
+            Rc::new(ImplItemKind::Const {
+                ty: mt_ty(ty.clone()),
                 body,
-                is_dead_code,
-            }
+                is_dead_code: *is_dead_code,
+            })
         }
-        ImplItemKind::Definition { definition } => ImplItemKind::Definition {
+        ImplItemKind::Definition { definition } => Rc::new(ImplItemKind::Definition {
             definition: definition.mt(),
-        },
+        }),
         ImplItemKind::Type { .. } => item,
     }
 }
 
 impl FnSigAndBody {
-    fn mt(self) -> Self {
-        FnSigAndBody {
-            args: self.args,
-            ret_ty: Rc::new(CoqType::Monad(mt_ty(self.ret_ty))),
-            body: match self.body {
-                None => self.body,
+    fn mt(&self) -> Rc<Self> {
+        Rc::new(FnSigAndBody {
+            args: self.args.clone(),
+            ret_ty: Rc::new(CoqType::Monad(mt_ty(self.ret_ty.clone()))),
+            body: match &self.body {
+                None => self.body.clone(),
                 Some(body) => {
-                    let (body, _fresh_vars) = mt_expression(FreshVars::new(), *body);
+                    let (body, _fresh_vars) = mt_expression(FreshVars::new(), *body.clone());
                     Some(Box::new(body))
                 }
             },
-        }
+        })
     }
 }
 
-fn mt_trait_item(body: TraitItem) -> TraitItem {
-    match body {
+fn mt_trait_item(body: Rc<TraitItem>) -> Rc<TraitItem> {
+    match &*body {
         TraitItem::Definition {
             ty_params,
             where_predicates,
             ty,
-        } => TraitItem::Definition {
-            ty_params,
-            where_predicates,
-            ty: mt_ty(ty),
-        },
-        TraitItem::Type(x) => TraitItem::Type(x), // @TODO apply MT
+        } => Rc::new(TraitItem::Definition {
+            ty_params: ty_params.clone(),
+            where_predicates: where_predicates.clone(),
+            ty: mt_ty(ty.clone()),
+        }),
+        TraitItem::Type(x) => Rc::new(TraitItem::Type(x.clone())), // TODO: apply monadic transform
         TraitItem::DefinitionWithDefault {
             ty_params,
             where_predicates,
             signature_and_body,
-        } => TraitItem::DefinitionWithDefault {
-            ty_params,
-            where_predicates,
+        } => Rc::new(TraitItem::DefinitionWithDefault {
+            ty_params: ty_params.clone(),
+            where_predicates: where_predicates.clone(),
             signature_and_body: signature_and_body.mt(),
-        },
+        }),
     }
 }
 
-fn mt_trait_items(body: Vec<(String, TraitItem)>) -> Vec<(String, TraitItem)> {
+fn mt_trait_items(body: Vec<(String, Rc<TraitItem>)>) -> Vec<(String, Rc<TraitItem>)> {
     body.into_iter()
         .map(|(s, item)| (s, mt_trait_item(item)))
         .collect()
 }
 
 /// Monad transform for [TopLevelItem]
-fn mt_top_level_item(item: TopLevelItem) -> TopLevelItem {
-    match item {
-        TopLevelItem::Const { name, ty, value } => TopLevelItem::Const {
-            name,
-            ty,
+fn mt_top_level_item(item: Rc<TopLevelItem>) -> Rc<TopLevelItem> {
+    match &*item {
+        TopLevelItem::Const { name, ty, value } => Rc::new(TopLevelItem::Const {
+            name: name.clone(),
+            ty: ty.clone(),
             value: match value {
-                None => value,
+                None => value.clone(),
                 Some(value) => {
-                    let (value, _fresh_vars) = mt_expression(FreshVars::new(), *value);
+                    let (value, _fresh_vars) = mt_expression(FreshVars::new(), *value.clone());
                     Some(Box::new(value))
                 }
             },
-        },
+        }),
         TopLevelItem::Definition {
             name,
             snippet,
             definition,
-        } => TopLevelItem::Definition {
-            name,
-            snippet,
+        } => Rc::new(TopLevelItem::Definition {
+            name: name.clone(),
+            snippet: snippet.clone(),
             definition: definition.mt(),
-        },
+        }),
         TopLevelItem::TypeAlias { .. } => item,
         TopLevelItem::TypeEnum { .. } => item,
         TopLevelItem::TypeStructStruct { .. } => item,
@@ -1166,46 +1157,42 @@ fn mt_top_level_item(item: TopLevelItem) -> TopLevelItem {
             name,
             body,
             is_dead_code,
-        } => TopLevelItem::Module {
-            name,
-            body: mt_top_level(body),
-            is_dead_code,
-        },
+        } => Rc::new(TopLevelItem::Module {
+            name: name.clone(),
+            body: mt_top_level(body.clone()),
+            is_dead_code: *is_dead_code,
+        }),
         TopLevelItem::Impl {
             generic_tys,
             self_ty,
             counter,
             items,
-        } => TopLevelItem::Impl {
-            generic_tys,
-            self_ty,
-            counter,
+        } => Rc::new(TopLevelItem::Impl {
+            generic_tys: generic_tys.clone(),
+            self_ty: self_ty.clone(),
+            counter: *counter,
             items: items
-                .into_iter()
-                .map(
-                    |ImplItem {
-                         name,
-                         snippet,
-                         kind,
-                     }| ImplItem {
-                        name,
-                        snippet,
-                        kind: mt_impl_item(kind),
-                    },
-                )
+                .iter()
+                .map(|item| {
+                    Rc::new(ImplItem {
+                        name: item.name.clone(),
+                        snippet: item.snippet.clone(),
+                        kind: mt_impl_item(item.kind.clone()),
+                    })
+                })
                 .collect(),
-        },
+        }),
         TopLevelItem::Trait {
             name,
             ty_params,
             predicates,
             body,
-        } => TopLevelItem::Trait {
-            name,
-            ty_params,
-            predicates,
-            body: mt_trait_items(body),
-        },
+        } => Rc::new(TopLevelItem::Trait {
+            name: name.clone(),
+            ty_params: ty_params.clone(),
+            predicates: predicates.clone(),
+            body: mt_trait_items(body.clone()),
+        }),
         TopLevelItem::TraitImpl {
             generic_tys,
             predicates,
@@ -1213,33 +1200,36 @@ fn mt_top_level_item(item: TopLevelItem) -> TopLevelItem {
             of_trait,
             trait_ty_params,
             items,
-        } => TopLevelItem::TraitImpl {
-            generic_tys,
-            predicates,
-            self_ty,
-            of_trait,
-            trait_ty_params,
+        } => Rc::new(TopLevelItem::TraitImpl {
+            generic_tys: generic_tys.clone(),
+            predicates: predicates.clone(),
+            self_ty: self_ty.clone(),
+            of_trait: of_trait.clone(),
+            trait_ty_params: trait_ty_params.clone(),
             items: items
-                .into_iter()
-                .map(
-                    |TraitImplItem {
-                         name,
-                         snippet,
-                         kind,
-                     }| TraitImplItem {
-                        name,
-                        snippet,
-                        kind: kind.map(mt_impl_item),
-                    },
-                )
+                .iter()
+                .map(|item| {
+                    Rc::new(TraitImplItem {
+                        name: item.name.clone(),
+                        snippet: item.snippet.clone(),
+                        kind: Rc::new(item.kind.map(|item| mt_impl_item(item.clone()))),
+                    })
+                })
                 .collect(),
-        },
+        }),
         TopLevelItem::Error(_) => item,
     }
 }
 
-fn mt_top_level(top_level: TopLevel) -> TopLevel {
-    TopLevel(top_level.0.into_iter().map(mt_top_level_item).collect())
+fn mt_top_level(top_level: Rc<TopLevel>) -> Rc<TopLevel> {
+    Rc::new(TopLevel(
+        top_level
+            .0
+            .clone()
+            .into_iter()
+            .map(mt_top_level_item)
+            .collect(),
+    ))
 }
 
 #[derive(Debug)]
@@ -1273,15 +1263,17 @@ impl DynNameGen {
         full_name
     }
 
-    fn get_predicates(&self) -> Vec<WherePredicate> {
+    fn get_predicates(&self) -> Vec<Rc<WherePredicate>> {
         self.predicates
             .iter()
-            .map(|(path, dyn_name)| WherePredicate {
-                bound: TraitBound {
-                    name: path.clone(),
-                    ty_params: vec![],
-                },
-                ty: Rc::new(CoqType::Var(dyn_name.clone())),
+            .map(|(path, dyn_name)| {
+                Rc::new(WherePredicate {
+                    bound: Rc::new(TraitBound {
+                        name: path.clone(),
+                        ty_params: vec![],
+                    }),
+                    ty: Rc::new(CoqType::Var(dyn_name.clone())),
+                })
             })
             .collect()
     }
@@ -1324,11 +1316,11 @@ impl FunDefinition {
         fn_sig_and_body: &HirFnSigAndBody,
         default: &str,
         is_dead_code: bool,
-    ) -> Self {
+    ) -> Rc<Self> {
         let tcx = env.tcx;
         let mut dyn_name_gen = DynNameGen::new("T".to_string());
         let FnSigAndBody { args, ret_ty, body } =
-            compile_fn_sig_and_body(env, fn_sig_and_body, default);
+            &*compile_fn_sig_and_body(env, fn_sig_and_body, default);
         let args = args.iter().fold(vec![], |result, (string, ty)| {
             let ty = dyn_name_gen.make_dyn_parm(ty.clone());
             vec![result, vec![(string.to_owned(), ty)]].concat()
@@ -1344,23 +1336,27 @@ impl FunDefinition {
             dyn_name_gen.get_predicates(),
         ]
         .concat();
-        let signature_and_body = FnSigAndBody { args, ret_ty, body };
+        let signature_and_body = Rc::new(FnSigAndBody {
+            args,
+            ret_ty: ret_ty.clone(),
+            body: body.clone(),
+        });
 
-        FunDefinition {
+        Rc::new(FunDefinition {
             ty_params,
             where_predicates,
             signature_and_body,
             is_dead_code,
-        }
+        })
     }
 
-    fn mt(self) -> Self {
-        FunDefinition {
-            ty_params: self.ty_params,
-            where_predicates: self.where_predicates,
+    fn mt(&self) -> Rc<Self> {
+        Rc::new(FunDefinition {
+            ty_params: self.ty_params.clone(),
+            where_predicates: self.where_predicates.clone(),
             signature_and_body: self.signature_and_body.mt(),
             is_dead_code: self.is_dead_code,
-        }
+        })
     }
 
     fn to_coq<'a>(&'a self, name: &'a str, snippet: Option<&'a Snippet>) -> coq::TopLevel<'a> {
@@ -1544,7 +1540,7 @@ impl ImplItemKind {
         instance_prefix: &'a str,
         name: &'a str,
         ty_params: Option<&'a [String]>,
-        where_predicates: Option<&'a [WherePredicate]>,
+        where_predicates: Option<&'a [Rc<WherePredicate>]>,
         class_name: &'a str,
         method_name: &'a str,
     ) -> Doc<'a> {
@@ -1692,7 +1688,7 @@ impl ImplItemKind {
 }
 
 impl WherePredicate {
-    fn vec_to_coq(predicates: &[Self]) -> coq::ArgDecl {
+    fn vec_to_coq(predicates: &[Rc<Self>]) -> coq::ArgDecl {
         coq::ArgDecl::new(
             &coq::ArgDeclVar::Traits {
                 traits: predicates
@@ -1707,15 +1703,15 @@ impl WherePredicate {
 
 impl TraitBound {
     /// Get the generics for the trait
-    fn compile(tcx: &TyCtxt, env: &Env, ptraitref: &rustc_hir::PolyTraitRef) -> TraitBound {
-        TraitBound {
+    fn compile(tcx: &TyCtxt, env: &Env, ptraitref: &rustc_hir::PolyTraitRef) -> Rc<TraitBound> {
+        Rc::new(TraitBound {
             name: compile_path(env, ptraitref.trait_ref.path),
             ty_params: get_ty_params_with_default_status(
                 env,
                 tcx.generics_of(ptraitref.trait_ref.trait_def_id().unwrap()),
                 ptraitref.trait_ref.path,
             ),
-        }
+        })
     }
 
     fn to_coq<'a>(&self, self_ty: coq::Expression<'a>) -> coq::Expression<'a> {
@@ -1730,7 +1726,7 @@ impl TraitBound {
             args: self
                 .ty_params
                 .iter()
-                .map(|(name, ty_param)| match ty_param.to_owned() {
+                .map(|(name, ty_param)| match &**ty_param {
                     FieldWithDefault::RequiredValue(ty) | FieldWithDefault::OptionalValue(ty) => {
                         (Some(name.clone()), ty.to_coq())
                     }
@@ -1870,7 +1866,7 @@ impl TopLevelItem {
                 false,
                 coq::TopLevel::concat(&[coq::TopLevel::new(&[coq::TopLevelItem::Code(group([
                     concat(variants.iter().map(|(name, fields)| {
-                        match fields {
+                        match &**fields {
                             VariantItem::Tuple { .. } => nil(),
                             VariantItem::Struct { fields } => concat([
                                 coq::Module::new(
@@ -1942,7 +1938,7 @@ impl TopLevelItem {
                                 text("|"),
                                 line(),
                                 text(name),
-                                match fields {
+                                match &**fields {
                                     VariantItem::Struct { .. } => concat([
                                         line(),
                                         nest([
@@ -2092,22 +2088,21 @@ impl TopLevelItem {
                             coq::TopLevel::new(
                                 &items
                                     .iter()
-                                    .flat_map(
-                                        |ImplItem {
-                                             name,
-                                             snippet,
-                                             kind,
-                                         }| {
-                                            [
-                                                vec![coq::TopLevelItem::Line],
-                                                snippet.to_coq(),
-                                                vec![coq::TopLevelItem::Code(concat([
-                                                    kind.to_doc(name)
-                                                ]))],
-                                            ]
-                                            .concat()
-                                        },
-                                    )
+                                    .flat_map(|item| {
+                                        let ImplItem {
+                                            name,
+                                            snippet,
+                                            kind,
+                                        } = &**item;
+                                        [
+                                            vec![coq::TopLevelItem::Line],
+                                            snippet.to_coq(),
+                                            vec![coq::TopLevelItem::Code(concat([
+                                                kind.to_doc(name)
+                                            ]))],
+                                        ]
+                                        .concat()
+                                    })
                                     .collect::<Vec<_>>(),
                             ),
                         ]),
@@ -2143,7 +2138,7 @@ impl TopLevelItem {
                         })
                         .collect(),
                     body.iter()
-                        .map(|(name, item)| match item {
+                        .map(|(name, item)| match &**item {
                             TraitItem::Definition {
                                 ty_params,
                                 where_predicates,
@@ -2196,7 +2191,7 @@ impl TopLevelItem {
                 .concat(),
                 &body
                     .iter()
-                    .filter_map(|(name, item)| match item {
+                    .filter_map(|(name, item)| match &**item {
                         TraitItem::Definition { .. } => None,
                         TraitItem::Type { .. } => Some(coq::Instance::new(
                             &format!("Method_{name}"),
@@ -2241,7 +2236,7 @@ impl TopLevelItem {
                     of_trait.to_name(),
                     trait_ty_params
                         .iter()
-                        .filter_map(|(_, trait_ty_param)| match trait_ty_param.to_owned() {
+                        .filter_map(|(_, trait_ty_param)| match &**trait_ty_param {
                             FieldWithDefault::RequiredValue(ty)
                             | FieldWithDefault::OptionalValue(ty) =>
                                 Some(format!("_{}", ty.to_name())),
@@ -2250,10 +2245,9 @@ impl TopLevelItem {
                         .join(""),
                     self_ty.to_name()
                 );
-                let has_some_default_values =
-                    !items.iter().all(|TraitImplItem { kind, .. }| {
-                        matches!(kind, FieldWithDefault::RequiredValue(_))
-                    });
+                let has_some_default_values = !items
+                    .iter()
+                    .all(|item| matches!(&*item.kind, FieldWithDefault::RequiredValue(_)));
 
                 coq::Module::new(
                     &module_name,
@@ -2285,12 +2279,12 @@ impl TopLevelItem {
                                 vec![coq::TopLevelItem::Line],
                                 items
                                     .iter()
-                                    .filter_map(|TraitImplItem{name, snippet, kind}|
-                                        Into::<Option<_>>::into(kind).map(|kind: &ImplItemKind|
+                                    .filter_map(|item|
+                                        Into::<Option<&ImplItemKind>>::into(&*item.kind).map(|kind: &ImplItemKind|
                                             [
-                                                snippet.to_coq(),
+                                                item.snippet.to_coq(),
                                                 vec![
-                                                    coq::TopLevelItem::Code(kind.to_doc(name)),
+                                                    coq::TopLevelItem::Code(kind.to_doc(item.name.as_str())),
                                                     coq::TopLevelItem::Line,
                                                 ]
                                             ].concat())
@@ -2316,7 +2310,7 @@ impl TopLevelItem {
                                         &trait_ty_params
                                             .iter()
                                             .map(|(name, ty_param)| {
-                                                match ty_param {
+                                                match &**ty_param {
                                                     FieldWithDefault::RequiredValue(ty) | FieldWithDefault::OptionalValue(ty) => {
                                                         (Some(name.clone()), ty.to_coq())
                                                     }
@@ -2334,44 +2328,51 @@ impl TopLevelItem {
                                     &coq::Expression::Record {
                                         fields: items
                                             .iter()
-                                            .map(|TraitImplItem{name, kind, ..}| {
-                                                let optional_item = Into::<Option<&_>>::into(kind);
+                                            .map(|item| {
+                                                let TraitImplItem{name, kind, ..} = &**item;
+                                                let optional_item =
+                                                    Into::<Option<&ImplItemKind>>::into(&**kind);
 
                                                 coq::Field::new(
                                                     &Path::concat(&[of_trait.to_owned(), Path::new(&[name])]),
                                                     &match optional_item {
-                                                        Some(ImplItemKind::Definition { definition : FunDefinition {ty_params, where_predicates, ..}, ..}) =>
-                                                                    vec![
-                                                                        if ty_params.is_empty() {
-                                                                            vec![]
-                                                                        } else {
-                                                                            vec![coq::ArgDecl::of_ty_params(ty_params, coq::ArgSpecKind::Implicit)]
-                                                                        },
-                                                                        if where_predicates.is_empty() {
-                                                                            vec![]
-                                                                        } else {
-                                                                            vec![WherePredicate::vec_to_coq(where_predicates)]
-                                                                        },
-                                                                    ].concat(),
+                                                        Some(ImplItemKind::Definition { definition, ..}) => {
+                                                            let FunDefinition {ty_params, where_predicates, ..} = &**definition;
+                                                            vec![
+                                                                if ty_params.is_empty() {
+                                                                    vec![]
+                                                                } else {
+                                                                    vec![coq::ArgDecl::of_ty_params(ty_params, coq::ArgSpecKind::Implicit)]
+                                                                },
+                                                                if where_predicates.is_empty() {
+                                                                    vec![]
+                                                                } else {
+                                                                    vec![WherePredicate::vec_to_coq(where_predicates)]
+                                                                },
+                                                            ].concat()
+                                                        }
                                                         _ => vec![],
                                                     },
                                                     {
                                                         let body = coq::Expression::just_name(name);
                                                         let body =
                                                             match optional_item {
-                                                                Some(ImplItemKind::Definition { definition : FunDefinition {ty_params, ..}, ..}) =>
-                                                                body.apply_many_args(&ty_params
-                                                                    .iter()
-                                                                    .map(|ty_param| {
-                                                                        (
-                                                                            Some(ty_param.to_owned()),
-                                                                            coq::Expression::just_name(ty_param),
-                                                                        )
-                                                                    })
-                                                                    .collect::<Vec<_>>(),),
-                                                                _ => body
+                                                                Some(ImplItemKind::Definition { definition, ..}) => {
+                                                                    let FunDefinition {ty_params, ..} = &**definition;
+                                                                    body.apply_many_args(&ty_params
+                                                                        .iter()
+                                                                        .map(|ty_param| {
+                                                                            (
+                                                                                Some(ty_param.to_owned()),
+                                                                                coq::Expression::just_name(ty_param),
+                                                                            )
+                                                                        })
+                                                                        .collect::<Vec<_>>()
+                                                                    )
+                                                                }
+                                                                _ => body,
                                                             };
-                                                        &match kind {
+                                                        &match &**kind {
                                                             FieldWithDefault::RequiredValue(_) => body,
                                                             FieldWithDefault::OptionalValue(_) =>
                                                                 coq::Expression::just_name("Datatypes.Some")
@@ -2727,7 +2728,7 @@ impl TopLevel {
                     previous_module_names: previous_module_names.clone(),
                 };
                 let doc = item.to_doc(to_doc_context);
-                if let TopLevelItem::Module { name, .. } = item {
+                if let TopLevelItem::Module { name, .. } = &**item {
                     previous_module_names.push(name.to_owned());
                 };
                 doc

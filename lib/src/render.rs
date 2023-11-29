@@ -99,7 +99,7 @@ fn string_pieces_to_doc<'a>(with_paren: bool, pieces: &[StringPiece]) -> RcDoc<'
     }
 }
 
-fn string_to_doc(with_paren: bool, message: &str) -> RcDoc<()> {
+pub(crate) fn string_to_doc(with_paren: bool, message: &str) -> RcDoc<()> {
     let pieces = cut_string_in_pieces_for_coq(message);
     paren(
         with_paren,

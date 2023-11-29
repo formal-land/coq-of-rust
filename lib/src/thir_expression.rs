@@ -19,29 +19,30 @@ impl ExprKind {
                 ty: None,
             }),
             args: vec![Expr { kind: self, ty }],
+            purity: Purity::Effectful,
         }
     }
 }
 
-fn path_of_bin_op(bin_op: &BinOp) -> Path {
+fn path_of_bin_op(bin_op: &BinOp) -> (Path, Purity) {
     match bin_op {
-        BinOp::Add => Path::new(&["BinOp", "add"]),
-        BinOp::Sub => Path::new(&["BinOp", "sub"]),
-        BinOp::Mul => Path::new(&["BinOp", "mul"]),
-        BinOp::Div => Path::new(&["BinOp", "div"]),
-        BinOp::Rem => Path::new(&["BinOp", "rem"]),
-        BinOp::BitXor => Path::new(&["BinOp", "bit_xor"]),
-        BinOp::BitAnd => Path::new(&["BinOp", "bit_and"]),
-        BinOp::BitOr => Path::new(&["BinOp", "bit_or"]),
-        BinOp::Shl => Path::new(&["BinOp", "shl"]),
-        BinOp::Shr => Path::new(&["BinOp", "shr"]),
-        BinOp::Eq => Path::new(&["BinOp", "eq"]),
-        BinOp::Ne => Path::new(&["BinOp", "ne"]),
-        BinOp::Lt => Path::new(&["BinOp", "lt"]),
-        BinOp::Le => Path::new(&["BinOp", "le"]),
-        BinOp::Ge => Path::new(&["BinOp", "ge"]),
-        BinOp::Gt => Path::new(&["BinOp", "gt"]),
-        BinOp::Offset => Path::new(&["BinOp", "offset"]),
+        BinOp::Add => (Path::new(&["BinOp", "Panic", "add"]), Purity::Effectful),
+        BinOp::Sub => (Path::new(&["BinOp", "Panic", "sub"]), Purity::Effectful),
+        BinOp::Mul => (Path::new(&["BinOp", "Panic", "mul"]), Purity::Effectful),
+        BinOp::Div => (Path::new(&["BinOp", "Panic", "div"]), Purity::Effectful),
+        BinOp::Rem => (Path::new(&["BinOp", "Panic", "rem"]), Purity::Effectful),
+        BinOp::BitXor => (Path::new(&["BinOp", "Pure", "bit_xor"]), Purity::Pure),
+        BinOp::BitAnd => (Path::new(&["BinOp", "Pure", "bit_and"]), Purity::Pure),
+        BinOp::BitOr => (Path::new(&["BinOp", "Pure", "bit_or"]), Purity::Pure),
+        BinOp::Shl => (Path::new(&["BinOp", "Panic", "shl"]), Purity::Effectful),
+        BinOp::Shr => (Path::new(&["BinOp", "Panic", "shr"]), Purity::Effectful),
+        BinOp::Eq => (Path::new(&["BinOp", "Pure", "eq"]), Purity::Pure),
+        BinOp::Ne => (Path::new(&["BinOp", "Pure", "ne"]), Purity::Pure),
+        BinOp::Lt => (Path::new(&["BinOp", "Pure", "lt"]), Purity::Pure),
+        BinOp::Le => (Path::new(&["BinOp", "Pure", "le"]), Purity::Pure),
+        BinOp::Ge => (Path::new(&["BinOp", "Pure", "ge"]), Purity::Pure),
+        BinOp::Gt => (Path::new(&["BinOp", "Pure", "gt"]), Purity::Pure),
+        BinOp::Offset => (Path::new(&["BinOp", "Pure", "offset"]), Purity::Pure),
     }
 }
 
@@ -58,7 +59,12 @@ pub(crate) fn compile_expr<'a>(
 
 impl Expr {
     fn match_simple_call(&self, name_in: &[&str]) -> Option<Self> {
-        if let ExprKind::Call { func, args } = &self.kind {
+        if let ExprKind::Call {
+            func,
+            args,
+            purity: _,
+        } = &self.kind
+        {
             if let ExprKind::LocalVar(func) = &func.kind {
                 if name_in.contains(&func.as_str()) && args.len() == 1 {
                     return Some(args.get(0).unwrap().clone());
@@ -87,7 +93,24 @@ impl Expr {
         Expr {
             ty: match self.ty.clone() {
                 None => None,
-                Some(ty) => ty.unval(),
+                Some(ty) => {
+                    let ty = ty.unval();
+                    let is_never = match &ty {
+                        Some(ty) => match &**ty {
+                            CoqType::Path { path } => path.segments == ["never", "t"],
+                            _ => false,
+                        },
+                        None => false,
+                    };
+                    if is_never {
+                        // This is a special case to prevent errors with the never type
+                        // returned by the panic function, that is used as `unit` after.
+                        // Is it a bug from the Rust AST?
+                        None
+                    } else {
+                        ty
+                    }
+                }
             },
             kind: ExprKind::Call {
                 func: Box::new(Expr {
@@ -95,6 +118,7 @@ impl Expr {
                     ty: None,
                 }),
                 args: vec![self],
+                purity: Purity::Effectful,
             },
         }
     }
@@ -112,6 +136,7 @@ impl Expr {
                     ty: None,
                 }),
                 args: vec![self],
+                purity: Purity::Effectful,
             },
         }
     }
@@ -141,6 +166,7 @@ fn compile_borrow(borrow_kind: &BorrowKind, arg: Expr) -> ExprKind {
             ty: None,
         }),
         args: vec![arg],
+        purity: Purity::Pure,
     }
 }
 
@@ -164,6 +190,7 @@ fn compile_expr_kind<'a>(
                     ty: None,
                 }),
                 args: vec![value],
+                purity: Purity::Effectful,
             }
         }
         thir::ExprKind::If {
@@ -190,7 +217,12 @@ fn compile_expr_kind<'a>(
                 .iter()
                 .map(|arg| compile_expr(env, thir, arg).read())
                 .collect();
-            ExprKind::Call { func, args }.alloc(Some(ty))
+            ExprKind::Call {
+                func,
+                args,
+                purity: Purity::Effectful,
+            }
+            .alloc(Some(ty))
         }
         thir::ExprKind::Deref { arg } => {
             let arg = compile_expr(env, thir, arg).read();
@@ -205,10 +237,11 @@ fn compile_expr_kind<'a>(
                     ty: None,
                 }),
                 args: vec![arg],
+                purity: Purity::Pure,
             }
         }
         thir::ExprKind::Binary { op, lhs, rhs } => {
-            let path = path_of_bin_op(op);
+            let (path, purity) = path_of_bin_op(op);
             let lhs = compile_expr(env, thir, lhs);
             let rhs = compile_expr(env, thir, rhs);
             ExprKind::Call {
@@ -216,8 +249,10 @@ fn compile_expr_kind<'a>(
                     kind: ExprKind::Var(path),
                     ty: None,
                 }),
-                args: vec![lhs, rhs],
+                args: vec![lhs.read(), rhs.read()],
+                purity,
             }
+            .alloc(Some(ty))
         }
         thir::ExprKind::LogicalOp { op, lhs, rhs } => {
             let path = match op {
@@ -231,13 +266,15 @@ fn compile_expr_kind<'a>(
                     kind: ExprKind::Var(path),
                     ty: None,
                 }),
-                args: vec![lhs, rhs],
+                args: vec![lhs.read(), rhs.read()],
+                purity: Purity::Pure,
             }
+            .alloc(Some(ty))
         }
         thir::ExprKind::Unary { op, arg } => {
-            let path = match op {
-                UnOp::Not => Path::new(&["UnOp", "not"]),
-                UnOp::Neg => Path::new(&["UnOp", "neg"]),
+            let (path, purity) = match op {
+                UnOp::Not => (Path::new(&["UnOp", "not"]), Purity::Pure),
+                UnOp::Neg => (Path::new(&["UnOp", "neg"]), Purity::Effectful),
             };
             let arg = compile_expr(env, thir, arg);
             ExprKind::Call {
@@ -245,8 +282,10 @@ fn compile_expr_kind<'a>(
                     kind: ExprKind::Var(path),
                     ty: None,
                 }),
-                args: vec![arg],
+                args: vec![arg.read()],
+                purity,
             }
+            .alloc(Some(ty))
         }
         thir::ExprKind::Cast { source } => {
             let func = Box::new(Expr {
@@ -256,8 +295,10 @@ fn compile_expr_kind<'a>(
             let source = compile_expr(env, thir, source);
             ExprKind::Call {
                 func,
-                args: vec![source],
+                args: vec![source.read()],
+                purity: Purity::Effectful,
             }
+            .alloc(Some(ty))
         }
         thir::ExprKind::Use { source } => {
             let func = Box::new(Expr {
@@ -267,8 +308,10 @@ fn compile_expr_kind<'a>(
             let source = compile_expr(env, thir, source);
             ExprKind::Call {
                 func,
-                args: vec![source],
+                args: vec![source.read()],
+                purity: Purity::Pure,
             }
+            .alloc(Some(ty))
         }
         thir::ExprKind::NeverToAny { source } => {
             let func = Box::new(Expr {
@@ -278,8 +321,10 @@ fn compile_expr_kind<'a>(
             let source = compile_expr(env, thir, source);
             ExprKind::Call {
                 func,
-                args: vec![source],
+                args: vec![source.read()],
+                purity: Purity::Effectful,
             }
+            .alloc(Some(ty))
         }
         thir::ExprKind::Pointer { source, cast } => {
             let func = Box::new(Expr {
@@ -294,6 +339,7 @@ fn compile_expr_kind<'a>(
             ExprKind::Call {
                 func,
                 args: vec![cast, source],
+                purity: Purity::Pure,
             }
         }
         thir::ExprKind::Loop { body, .. } => {
@@ -344,22 +390,30 @@ fn compile_expr_kind<'a>(
                 compile_expr(env, thir, lhs),
                 compile_expr(env, thir, rhs).read(),
             ];
-            ExprKind::Call { func, args }
+            ExprKind::Call {
+                func,
+                args,
+                purity: Purity::Effectful,
+            }
         }
-        thir::ExprKind::AssignOp { op, lhs, rhs } => ExprKind::Call {
-            func: Box::new(Expr {
-                kind: ExprKind::LocalVar("assign_op".to_string()),
-                ty: None,
-            }),
-            args: vec![
-                Expr {
-                    kind: ExprKind::LocalVar(compile_bin_op_kind(op.to_hir_binop())),
+        thir::ExprKind::AssignOp { op, lhs, rhs } => {
+            let (path, purity) = path_of_bin_op(op);
+            ExprKind::Call {
+                func: Box::new(Expr {
+                    kind: ExprKind::LocalVar("assign_op".to_string()),
                     ty: None,
-                },
-                compile_expr(env, thir, lhs),
-                compile_expr(env, thir, rhs),
-            ],
-        },
+                }),
+                args: vec![
+                    Expr {
+                        kind: ExprKind::Var(path),
+                        ty: None,
+                    },
+                    compile_expr(env, thir, lhs),
+                    compile_expr(env, thir, rhs),
+                ],
+                purity,
+            }
+        }
         thir::ExprKind::Field {
             lhs,
             variant_index,
@@ -406,6 +460,7 @@ fn compile_expr_kind<'a>(
                     ty: None,
                 }),
                 args: vec![arg],
+                purity: Purity::Pure,
             }
         }
         thir::ExprKind::Break { .. } => ExprKind::ControlFlow(LoopControlFlow::Break),
@@ -430,7 +485,11 @@ fn compile_expr_kind<'a>(
                     ty: None,
                 },
             ];
-            ExprKind::Call { func, args }
+            ExprKind::Call {
+                func,
+                args,
+                purity: Purity::Effectful,
+            }
         }
         thir::ExprKind::Array { fields } => ExprKind::Array {
             elements: fields
@@ -508,9 +567,18 @@ fn compile_expr_kind<'a>(
             let body = Box::new(compile_expr(env, &thir, &expr_id));
             ExprKind::Lambda { args: vec![], body }
         }
-        thir::ExprKind::Literal { lit, neg } => ExprKind::Literal {
-            literal: lit.node.clone(),
-            neg: *neg,
+        thir::ExprKind::Literal { lit, neg } => match lit.node {
+            rustc_ast::LitKind::Str(symbol, _) => {
+                ExprKind::Literal(Literal::String(symbol.to_string()))
+            }
+            rustc_ast::LitKind::Char(c) => ExprKind::Literal(Literal::Char(c)).alloc(Some(ty)),
+            rustc_ast::LitKind::Int(i, _) => ExprKind::Literal(Literal::Integer {
+                value: i,
+                neg: *neg,
+            })
+            .alloc(Some(ty)),
+            rustc_ast::LitKind::Bool(c) => ExprKind::Literal(Literal::Bool(c)).alloc(Some(ty)),
+            _ => ExprKind::Literal(Literal::Error),
         },
         thir::ExprKind::NonHirLiteral { lit, .. } => ExprKind::NonHirLiteral(*lit),
         thir::ExprKind::ZstLiteral { .. } => match &expr.ty.kind() {
@@ -571,7 +639,11 @@ fn compile_expr_kind<'a>(
                 ty: None,
             });
             let args = vec![compile_expr(env, thir, value)];
-            ExprKind::Call { func, args }
+            ExprKind::Call {
+                func,
+                args,
+                purity: Purity::Effectful,
+            }
         }
     }
 }

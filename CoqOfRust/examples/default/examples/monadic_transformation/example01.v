@@ -31,41 +31,27 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
   let* _ : M.Val u64.t :=
-    let* α0 : M.Val u64.t := M.alloc 0 in
-    let* α1 : u64.t := M.read α0 in
+    let* α0 : u64.t := example01.id (Integer.of_Z 0) in
+    M.alloc α0 in
+  let* _ : M.Val u64.t :=
+    let* α0 : u64.t := example01.id (Integer.of_Z 0) in
+    let* α1 : u64.t := example01.id α0 in
+    M.alloc α1 in
+  let* _ : M.Val u64.t :=
+    let* α0 : u64.t := example01.id (Integer.of_Z 0) in
+    let* α1 : u64.t := example01.id α0 in
     let* α2 : u64.t := example01.id α1 in
     M.alloc α2 in
   let* _ : M.Val u64.t :=
-    let* α0 : M.Val u64.t := M.alloc 0 in
-    let* α1 : u64.t := M.read α0 in
+    let* α0 : u64.t := example01.id (Integer.of_Z 0) in
+    let* α1 : u64.t := example01.id α0 in
     let* α2 : u64.t := example01.id α1 in
     let* α3 : u64.t := example01.id α2 in
     M.alloc α3 in
-  let* _ : M.Val u64.t :=
-    let* α0 : M.Val u64.t := M.alloc 0 in
-    let* α1 : u64.t := M.read α0 in
-    let* α2 : u64.t := example01.id α1 in
-    let* α3 : u64.t := example01.id α2 in
-    let* α4 : u64.t := example01.id α3 in
-    M.alloc α4 in
-  let* _ : M.Val u64.t :=
-    let* α0 : M.Val u64.t := M.alloc 0 in
-    let* α1 : u64.t := M.read α0 in
-    let* α2 : u64.t := example01.id α1 in
-    let* α3 : u64.t := example01.id α2 in
-    let* α4 : u64.t := example01.id α3 in
-    let* α5 : u64.t := example01.id α4 in
-    M.alloc α5 in
   let* _ : M.Val unit :=
-    let* α0 : M.Val u64.t := M.alloc 1 in
-    let* α1 : u64.t := M.read α0 in
-    let* α2 : u64.t := example01.id α1 in
-    let* α3 : M.Val u64.t := M.alloc 2 in
-    let* α4 : u64.t := M.read α3 in
-    let* α5 : u64.t := example01.id α4 in
-    let* α6 : M.Val u64.t := M.alloc 3 in
-    let* α7 : u64.t := M.read α6 in
-    let* α8 : unit := example01.tri α2 α5 α7 in
-    M.alloc α8 in
+    let* α0 : u64.t := example01.id (Integer.of_Z 1) in
+    let* α1 : u64.t := example01.id (Integer.of_Z 2) in
+    let* α2 : unit := example01.tri α0 α1 (Integer.of_Z 3) in
+    M.alloc α2 in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.

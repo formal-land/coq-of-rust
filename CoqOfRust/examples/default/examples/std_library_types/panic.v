@@ -14,22 +14,24 @@ fn division(dividend: i32, divisor: i32) -> i32 {
 Definition division (dividend : i32.t) (divisor : i32.t) : M i32.t :=
   let* dividend : M.Val i32.t := M.alloc dividend in
   let* divisor : M.Val i32.t := M.alloc divisor in
-  let* α0 : M.Val i32.t := M.alloc 0 in
-  let* α1 : M.Val bool.t := BinOp.eq divisor α0 in
-  let* α2 : M.Val bool.t := use α1 in
-  let* α3 : bool.t := M.read α2 in
-  let* α4 : M.Val i32.t :=
-    if (α3 : bool) then
+  let* α0 : i32.t := M.read divisor in
+  let* α1 : M.Val i32.t :=
+    if (use (BinOp.Pure.eq α0 (Integer.of_Z 0)) : bool) then
       let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "division by zero") in
         let* α1 : never.t := std.panicking.begin_panic α0 in
-        let* α2 : M.Val never.t := M.alloc α1 in
-        never_to_any α2 in
+        let* α2 : unit := never_to_any α1 in
+        M.alloc α2 in
       let* α0 : M.Val unit := M.alloc tt in
-      never_to_any α0
+      let* α1 := M.read α0 in
+      let* α2 : i32.t := never_to_any α1 in
+      M.alloc α2
     else
-      BinOp.div dividend divisor in
-  M.read α4.
+      let* α0 : i32.t := M.read dividend in
+      let* α1 : i32.t := M.read divisor in
+      let* α2 : i32.t := BinOp.Panic.div α0 α1 in
+      M.alloc α2 in
+  M.read α1.
 
 (*
 fn main() {
@@ -47,32 +49,25 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
   let* _x : M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t) :=
-    let* α0 : M.Val i32.t := M.alloc 0 in
-    let* α1 : i32.t := M.read α0 in
-    let* α2 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t :=
-      (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"] α1 in
-    M.alloc α2 in
+    let* α0 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t :=
+      (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"]
+        (Integer.of_Z 0) in
+    M.alloc α0 in
   let* _ : M.Val i32.t :=
-    let* α0 : M.Val i32.t := M.alloc 3 in
-    let* α1 : i32.t := M.read α0 in
-    let* α2 : M.Val i32.t := M.alloc 0 in
-    let* α3 : i32.t := M.read α2 in
-    let* α4 : i32.t := panic.division α1 α3 in
-    M.alloc α4 in
+    let* α0 : i32.t := panic.division (Integer.of_Z 3) (Integer.of_Z 0) in
+    M.alloc α0 in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : M.Val (array (ref str.t)) :=
         M.alloc [ mk_str "This point won't be reached!
 " ] in
-      let* α1 : ref (array (ref str.t)) := borrow α0 in
-      let* α2 : M.Val (ref (array (ref str.t))) := M.alloc α1 in
-      let* α3 : M.Val (ref (slice (ref str.t))) :=
-        pointer_coercion "Unsize" α2 in
-      let* α4 : ref (slice (ref str.t)) := M.read α3 in
-      let* α5 : core.fmt.Arguments.t :=
-        core.fmt.Arguments.t::["new_const"] α4 in
-      let* α6 : unit := std.io.stdio._print α5 in
-      M.alloc α6 in
+      let* α1 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α0) in
+      let* α2 : ref (slice (ref str.t)) :=
+        M.read (pointer_coercion "Unsize" α1) in
+      let* α3 : core.fmt.Arguments.t :=
+        core.fmt.Arguments.t::["new_const"] α2 in
+      let* α4 : unit := std.io.stdio._print α3 in
+      M.alloc α4 in
     M.alloc tt in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.
