@@ -646,7 +646,7 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<TopLe
                     }]
                 }
                 None => {
-                    let counter_entry = env.impl_counter.entry((*self_ty).clone());
+                    let counter_entry = env.impl_counter.entry(self_ty.clone());
                     let counter = *counter_entry
                         .and_modify(|counter| *counter += 1)
                         .or_insert(1);
