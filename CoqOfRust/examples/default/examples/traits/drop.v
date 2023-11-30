@@ -37,8 +37,9 @@ Section Impl_core_ops_drop_Drop_for_drop_Droppable_t.
           M.read (pointer_coercion "Unsize" α1) in
         let* α3 : mut_ref drop.Droppable.t := M.read self in
         let* α4 : core.fmt.rt.Argument.t :=
-          core.fmt.rt.Argument.t::["new_display"]
-            (borrow (deref α3).["name"]) in
+          M.call
+            (core.fmt.rt.Argument.t::["new_display"]
+              (borrow (deref α3).["name"])) in
         let* α5 : M.Val core.fmt.rt.Argument.t := M.alloc α4 in
         let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
         let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -46,8 +47,8 @@ Section Impl_core_ops_drop_Drop_for_drop_Droppable_t.
         let* α8 : ref (slice core.fmt.rt.Argument.t) :=
           M.read (pointer_coercion "Unsize" α7) in
         let* α9 : core.fmt.Arguments.t :=
-          core.fmt.Arguments.t::["new_v1"] α2 α8 in
-        let* α10 : unit := std.io.stdio._print α9 in
+          M.call (core.fmt.Arguments.t::["new_v1"] α2 α8) in
+        let* α10 : unit := M.call (std.io.stdio._print α9) in
         M.alloc α10 in
       M.alloc tt in
     let* α0 : M.Val unit := M.alloc tt in
@@ -120,8 +121,8 @@ Definition main : M unit :=
           let* α2 : ref (slice (ref str.t)) :=
             M.read (pointer_coercion "Unsize" α1) in
           let* α3 : core.fmt.Arguments.t :=
-            core.fmt.Arguments.t::["new_const"] α2 in
-          let* α4 : unit := std.io.stdio._print α3 in
+            M.call (core.fmt.Arguments.t::["new_const"] α2) in
+          let* α4 : unit := M.call (std.io.stdio._print α3) in
           M.alloc α4 in
         M.alloc tt in
       M.alloc tt in
@@ -134,8 +135,8 @@ Definition main : M unit :=
         let* α2 : ref (slice (ref str.t)) :=
           M.read (pointer_coercion "Unsize" α1) in
         let* α3 : core.fmt.Arguments.t :=
-          core.fmt.Arguments.t::["new_const"] α2 in
-        let* α4 : unit := std.io.stdio._print α3 in
+          M.call (core.fmt.Arguments.t::["new_const"] α2) in
+        let* α4 : unit := M.call (std.io.stdio._print α3) in
         M.alloc α4 in
       M.alloc tt in
     let* _ : M.Val unit :=
@@ -147,8 +148,8 @@ Definition main : M unit :=
         let* α2 : ref (slice (ref str.t)) :=
           M.read (pointer_coercion "Unsize" α1) in
         let* α3 : core.fmt.Arguments.t :=
-          core.fmt.Arguments.t::["new_const"] α2 in
-        let* α4 : unit := std.io.stdio._print α3 in
+          M.call (core.fmt.Arguments.t::["new_const"] α2) in
+        let* α4 : unit := M.call (std.io.stdio._print α3) in
         M.alloc α4 in
       M.alloc tt in
     M.alloc tt in
@@ -161,13 +162,13 @@ Definition main : M unit :=
       let* α2 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α1) in
       let* α3 : core.fmt.Arguments.t :=
-        core.fmt.Arguments.t::["new_const"] α2 in
-      let* α4 : unit := std.io.stdio._print α3 in
+        M.call (core.fmt.Arguments.t::["new_const"] α2) in
+      let* α4 : unit := M.call (std.io.stdio._print α3) in
       M.alloc α4 in
     M.alloc tt in
   let* _ : M.Val unit :=
     let* α0 : drop.Droppable.t := M.read _a in
-    let* α1 : unit := core.mem.drop α0 in
+    let* α1 : unit := M.call (core.mem.drop α0) in
     M.alloc α1 in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
@@ -178,8 +179,8 @@ Definition main : M unit :=
       let* α2 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α1) in
       let* α3 : core.fmt.Arguments.t :=
-        core.fmt.Arguments.t::["new_const"] α2 in
-      let* α4 : unit := std.io.stdio._print α3 in
+        M.call (core.fmt.Arguments.t::["new_const"] α2) in
+      let* α4 : unit := M.call (std.io.stdio._print α3) in
       M.alloc α4 in
     M.alloc tt in
   let* α0 : M.Val unit := M.alloc tt in

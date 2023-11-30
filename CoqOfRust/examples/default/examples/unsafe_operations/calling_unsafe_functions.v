@@ -24,31 +24,35 @@ Definition main : M unit :=
     let* α3 : M.Val u32.t := M.alloc (Integer.of_Z 4) in
     let* α4 : M.Val (array u32.t) := M.alloc [ α0; α1; α2; α3 ] in
     let* α5 : M.Val (alloc.boxed.Box.t (array u32.t) alloc.alloc.Global.t) :=
-      (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α4 in
+      M.call ((alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α4) in
     let* α6 : alloc.boxed.Box.t (slice u32.t) alloc.alloc.Global.t :=
       M.read (pointer_coercion "Unsize" α5) in
     let* α7 : alloc.vec.Vec.t u32.t alloc.alloc.Global.t :=
-      (slice u32.t)::["into_vec"] α6 in
+      M.call ((slice u32.t)::["into_vec"] α6) in
     M.alloc α7 in
   let* pointer : M.Val (ref u32.t) :=
     let* α0 : ref u32.t :=
-      (alloc.vec.Vec.t u32.t alloc.alloc.Global.t)::["as_ptr"]
-        (borrow some_vector) in
+      M.call
+        ((alloc.vec.Vec.t u32.t alloc.alloc.Global.t)::["as_ptr"]
+          (borrow some_vector)) in
     M.alloc α0 in
   let* length : M.Val usize.t :=
     let* α0 : usize.t :=
-      (alloc.vec.Vec.t u32.t alloc.alloc.Global.t)::["len"]
-        (borrow some_vector) in
+      M.call
+        ((alloc.vec.Vec.t u32.t alloc.alloc.Global.t)::["len"]
+          (borrow some_vector)) in
     M.alloc α0 in
   let* my_slice : M.Val (ref (slice u32.t)) :=
     let* α0 : ref u32.t := M.read pointer in
     let* α1 : usize.t := M.read length in
-    let* α2 : ref (slice u32.t) := core.slice.raw.from_raw_parts α0 α1 in
+    let* α2 : ref (slice u32.t) :=
+      M.call (core.slice.raw.from_raw_parts α0 α1) in
     M.alloc α2 in
   let* _ : M.Val unit :=
     let* α0 : ref (slice u32.t) :=
-      (alloc.vec.Vec.t u32.t alloc.alloc.Global.t)::["as_slice"]
-        (borrow some_vector) in
+      M.call
+        ((alloc.vec.Vec.t u32.t alloc.alloc.Global.t)::["as_slice"]
+          (borrow some_vector)) in
     let* α1 : M.Val (ref (slice u32.t)) := M.alloc α0 in
     match (borrow α1, borrow my_slice) with
     | (left_val, right_val) =>
@@ -57,11 +61,12 @@ Definition main : M unit :=
       let* α0 : ref (ref (slice u32.t)) := M.read left_val in
       let* α1 : ref (ref (slice u32.t)) := M.read right_val in
       let* α2 : bool.t :=
-        (core.cmp.PartialEq.eq
-            (Self := ref (slice u32.t))
-            (Trait := ltac:(refine _)))
-          α0
-          α1 in
+        M.call
+          ((core.cmp.PartialEq.eq
+              (Self := ref (slice u32.t))
+              (Trait := ltac:(refine _)))
+            α0
+            α1) in
       if (use (UnOp.not α2) : bool) then
         let* kind : M.Val core.panicking.AssertKind.t :=
           M.alloc core.panicking.AssertKind.Eq in
@@ -70,7 +75,8 @@ Definition main : M unit :=
           let* α1 : ref (ref (slice u32.t)) := M.read left_val in
           let* α2 : ref (ref (slice u32.t)) := M.read right_val in
           let* α3 : never.t :=
-            core.panicking.assert_failed α0 α1 α2 core.option.Option.None in
+            M.call
+              (core.panicking.assert_failed α0 α1 α2 core.option.Option.None) in
           M.alloc α3 in
         let* α0 : M.Val unit := M.alloc tt in
         let* α1 := M.read α0 in

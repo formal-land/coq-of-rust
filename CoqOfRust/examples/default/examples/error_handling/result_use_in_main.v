@@ -22,7 +22,7 @@ Definition main
     let* number : M.Val i32.t :=
       let* α0 : ref str.t := M.read number_str in
       let* α1 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
-        str.t::["parse"] α0 in
+        M.call (str.t::["parse"] α0) in
       let* α2 : M.Val i32.t :=
         match α1 with
         | core.result.Result.Ok number =>
@@ -46,7 +46,7 @@ Definition main
         let* α2 : ref (slice (ref str.t)) :=
           M.read (pointer_coercion "Unsize" α1) in
         let* α3 : core.fmt.rt.Argument.t :=
-          core.fmt.rt.Argument.t::["new_display"] (borrow number) in
+          M.call (core.fmt.rt.Argument.t::["new_display"] (borrow number)) in
         let* α4 : M.Val core.fmt.rt.Argument.t := M.alloc α3 in
         let* α5 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4 ] in
         let* α6 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -54,8 +54,8 @@ Definition main
         let* α7 : ref (slice core.fmt.rt.Argument.t) :=
           M.read (pointer_coercion "Unsize" α6) in
         let* α8 : core.fmt.Arguments.t :=
-          core.fmt.Arguments.t::["new_v1"] α2 α7 in
-        let* α9 : unit := std.io.stdio._print α8 in
+          M.call (core.fmt.Arguments.t::["new_v1"] α2 α7) in
+        let* α9 : unit := M.call (std.io.stdio._print α8) in
         M.alloc α9 in
       M.alloc tt in
     let* α0 :

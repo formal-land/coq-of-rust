@@ -54,10 +54,11 @@ Section Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating
   Definition get (self : ref ltac:(Self)) : M alloc.string.String.t :=
     let* self : M.Val (ref ltac:(Self)) := M.alloc self in
     let* α0 : ref disambiguating_overlapping_traits.Form.t := M.read self in
-    (core.clone.Clone.clone
-        (Self := alloc.string.String.t)
-        (Trait := ltac:(refine _)))
-      (borrow (deref α0).["username"]).
+    M.call
+      ((core.clone.Clone.clone
+          (Self := alloc.string.String.t)
+          (Trait := ltac:(refine _)))
+        (borrow (deref α0).["username"])).
   
   Global Instance AssociatedFunction_get :
     Notations.DoubleColon ltac:(Self) "get" := {
@@ -120,8 +121,11 @@ Definition main : M unit :=
   let* form : M.Val disambiguating_overlapping_traits.Form.t :=
     let* α0 : ref str.t := M.read (mk_str "rustacean") in
     let* α1 : alloc.string.String.t :=
-      (alloc.borrow.ToOwned.to_owned (Self := str.t) (Trait := ltac:(refine _)))
-        α0 in
+      M.call
+        ((alloc.borrow.ToOwned.to_owned
+            (Self := str.t)
+            (Trait := ltac:(refine _)))
+          α0) in
     M.alloc
       {|
         disambiguating_overlapping_traits.Form.username := α1;
@@ -129,18 +133,20 @@ Definition main : M unit :=
       |} in
   let* username : M.Val alloc.string.String.t :=
     let* α0 : alloc.string.String.t :=
-      (disambiguating_overlapping_traits.UsernameWidget.get
-          (Self := disambiguating_overlapping_traits.Form.t)
-          (Trait := ltac:(refine _)))
-        (borrow form) in
+      M.call
+        ((disambiguating_overlapping_traits.UsernameWidget.get
+            (Self := disambiguating_overlapping_traits.Form.t)
+            (Trait := ltac:(refine _)))
+          (borrow form)) in
     M.alloc α0 in
   let* _ : M.Val unit :=
     let* α0 : ref str.t := M.read (mk_str "rustacean") in
     let* α1 : alloc.string.String.t :=
-      (alloc.string.ToString.to_string
-          (Self := str.t)
-          (Trait := ltac:(refine _)))
-        α0 in
+      M.call
+        ((alloc.string.ToString.to_string
+            (Self := str.t)
+            (Trait := ltac:(refine _)))
+          α0) in
     let* α2 : M.Val alloc.string.String.t := M.alloc α1 in
     match (borrow α2, borrow username) with
     | (left_val, right_val) =>
@@ -149,11 +155,12 @@ Definition main : M unit :=
       let* α0 : ref alloc.string.String.t := M.read left_val in
       let* α1 : ref alloc.string.String.t := M.read right_val in
       let* α2 : bool.t :=
-        (core.cmp.PartialEq.eq
-            (Self := alloc.string.String.t)
-            (Trait := ltac:(refine _)))
-          α0
-          α1 in
+        M.call
+          ((core.cmp.PartialEq.eq
+              (Self := alloc.string.String.t)
+              (Trait := ltac:(refine _)))
+            α0
+            α1) in
       if (use (UnOp.not α2) : bool) then
         let* kind : M.Val core.panicking.AssertKind.t :=
           M.alloc core.panicking.AssertKind.Eq in
@@ -162,7 +169,8 @@ Definition main : M unit :=
           let* α1 : ref alloc.string.String.t := M.read left_val in
           let* α2 : ref alloc.string.String.t := M.read right_val in
           let* α3 : never.t :=
-            core.panicking.assert_failed α0 α1 α2 core.option.Option.None in
+            M.call
+              (core.panicking.assert_failed α0 α1 α2 core.option.Option.None) in
           M.alloc α3 in
         let* α0 : M.Val unit := M.alloc tt in
         let* α1 := M.read α0 in
@@ -173,10 +181,11 @@ Definition main : M unit :=
     end in
   let* age : M.Val u8.t :=
     let* α0 : u8.t :=
-      (disambiguating_overlapping_traits.AgeWidget.get
-          (Self := disambiguating_overlapping_traits.Form.t)
-          (Trait := ltac:(refine _)))
-        (borrow form) in
+      M.call
+        ((disambiguating_overlapping_traits.AgeWidget.get
+            (Self := disambiguating_overlapping_traits.Form.t)
+            (Trait := ltac:(refine _)))
+          (borrow form)) in
     M.alloc α0 in
   let* _ : M.Val unit :=
     let* α0 : M.Val u8.t := M.alloc (Integer.of_Z 28) in
@@ -196,7 +205,8 @@ Definition main : M unit :=
           let* α1 : ref u8.t := M.read left_val in
           let* α2 : ref u8.t := M.read right_val in
           let* α3 : never.t :=
-            core.panicking.assert_failed α0 α1 α2 core.option.Option.None in
+            M.call
+              (core.panicking.assert_failed α0 α1 α2 core.option.Option.None) in
           M.alloc α3 in
         let* α0 : M.Val unit := M.alloc tt in
         let* α1 := M.read α0 in

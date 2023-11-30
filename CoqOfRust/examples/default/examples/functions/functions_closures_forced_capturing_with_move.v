@@ -29,21 +29,22 @@ Definition main : M unit :=
     let* α2 : M.Val i32.t := M.alloc (Integer.of_Z 3) in
     let* α3 : M.Val (array i32.t) := M.alloc [ α0; α1; α2 ] in
     let* α4 : M.Val (alloc.boxed.Box.t (array i32.t) alloc.alloc.Global.t) :=
-      (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α3 in
+      M.call ((alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α3) in
     let* α5 : alloc.boxed.Box.t (slice i32.t) alloc.alloc.Global.t :=
       M.read (pointer_coercion "Unsize" α4) in
     let* α6 : alloc.vec.Vec.t i32.t alloc.alloc.Global.t :=
-      (slice i32.t)::["into_vec"] α5 in
+      M.call ((slice i32.t)::["into_vec"] α5) in
     M.alloc α6 in
   let* contains : M.Val type not implemented :=
     M.copy
       (let* α0 : ref (slice i32.t) :=
-        (core.ops.deref.Deref.deref
-            (Self := alloc.vec.Vec.t i32.t alloc.alloc.Global.t)
-            (Trait := ltac:(refine _)))
-          (borrow haystack) in
+        M.call
+          ((core.ops.deref.Deref.deref
+              (Self := alloc.vec.Vec.t i32.t alloc.alloc.Global.t)
+              (Trait := ltac:(refine _)))
+            (borrow haystack)) in
       let* α1 : ref i32.t := M.read needle in
-      let* α2 : bool.t := (slice i32.t)::["contains"] α0 α1 in
+      let* α2 : bool.t := M.call ((slice i32.t)::["contains"] α0 α1) in
       M.alloc α2) in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
@@ -55,14 +56,15 @@ Definition main : M unit :=
         M.read (pointer_coercion "Unsize" α1) in
       let* α3 : M.Val i32.t := M.alloc (Integer.of_Z 1) in
       let* α4 : bool.t :=
-        (core.ops.function.Fn.call
-            (Self := type not implemented)
-            (Trait := ltac:(refine _)))
-          (borrow contains)
-          (borrow α3) in
+        M.call
+          ((core.ops.function.Fn.call
+              (Self := type not implemented)
+              (Trait := ltac:(refine _)))
+            (borrow contains)
+            (borrow α3)) in
       let* α5 : M.Val bool.t := M.alloc α4 in
       let* α6 : core.fmt.rt.Argument.t :=
-        core.fmt.rt.Argument.t::["new_display"] (borrow α5) in
+        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α5)) in
       let* α7 : M.Val core.fmt.rt.Argument.t := M.alloc α6 in
       let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
       let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -70,8 +72,8 @@ Definition main : M unit :=
       let* α10 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α9) in
       let* α11 : core.fmt.Arguments.t :=
-        core.fmt.Arguments.t::["new_v1"] α2 α10 in
-      let* α12 : unit := std.io.stdio._print α11 in
+        M.call (core.fmt.Arguments.t::["new_v1"] α2 α10) in
+      let* α12 : unit := M.call (std.io.stdio._print α11) in
       M.alloc α12 in
     M.alloc tt in
   let* _ : M.Val unit :=
@@ -84,14 +86,15 @@ Definition main : M unit :=
         M.read (pointer_coercion "Unsize" α1) in
       let* α3 : M.Val i32.t := M.alloc (Integer.of_Z 4) in
       let* α4 : bool.t :=
-        (core.ops.function.Fn.call
-            (Self := type not implemented)
-            (Trait := ltac:(refine _)))
-          (borrow contains)
-          (borrow α3) in
+        M.call
+          ((core.ops.function.Fn.call
+              (Self := type not implemented)
+              (Trait := ltac:(refine _)))
+            (borrow contains)
+            (borrow α3)) in
       let* α5 : M.Val bool.t := M.alloc α4 in
       let* α6 : core.fmt.rt.Argument.t :=
-        core.fmt.rt.Argument.t::["new_display"] (borrow α5) in
+        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α5)) in
       let* α7 : M.Val core.fmt.rt.Argument.t := M.alloc α6 in
       let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
       let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -99,8 +102,8 @@ Definition main : M unit :=
       let* α10 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α9) in
       let* α11 : core.fmt.Arguments.t :=
-        core.fmt.Arguments.t::["new_v1"] α2 α10 in
-      let* α12 : unit := std.io.stdio._print α11 in
+        M.call (core.fmt.Arguments.t::["new_v1"] α2 α10) in
+      let* α12 : unit := M.call (std.io.stdio._print α11) in
       M.alloc α12 in
     M.alloc tt in
   let* α0 : M.Val unit := M.alloc tt in

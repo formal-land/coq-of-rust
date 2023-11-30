@@ -28,8 +28,8 @@ Definition main : M unit :=
         let* α2 : ref (slice (ref str.t)) :=
           M.read (pointer_coercion "Unsize" α1) in
         let* α3 : core.fmt.Arguments.t :=
-          core.fmt.Arguments.t::["new_const"] α2 in
-        let* α4 : unit := std.io.stdio._print α3 in
+          M.call (core.fmt.Arguments.t::["new_const"] α2) in
+        let* α4 : unit := M.call (std.io.stdio._print α3) in
         M.alloc α4 in
       M.alloc tt
     | i =>
@@ -42,14 +42,15 @@ Definition main : M unit :=
         let* α2 : ref (slice (ref str.t)) :=
           M.read (pointer_coercion "Unsize" α1) in
         let* α3 : core.fmt.Arguments.t :=
-          core.fmt.Arguments.t::["new_const"] α2 in
-        let* α4 : unit := std.io.stdio._print α3 in
+          M.call (core.fmt.Arguments.t::["new_const"] α2) in
+        let* α4 : unit := M.call (std.io.stdio._print α3) in
         M.alloc α4 in
       M.alloc tt
     | _ =>
       let* α0 : never.t :=
-        core.panicking.unreachable_display
-          (borrow (mk_str "Should never happen.")) in
+        M.call
+          (core.panicking.unreachable_display
+            (borrow (mk_str "Should never happen."))) in
       let* α1 : unit := never_to_any α0 in
       M.alloc α1
     end in

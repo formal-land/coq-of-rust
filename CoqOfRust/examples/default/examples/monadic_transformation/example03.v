@@ -18,11 +18,11 @@ Definition main : M unit :=
     let* α3 : M.Val i32.t := M.alloc (Integer.of_Z 8) in
     let* α4 : M.Val (array i32.t) := M.alloc [ α0; α1; α2; α3 ] in
     let* α5 : M.Val (alloc.boxed.Box.t (array i32.t) alloc.alloc.Global.t) :=
-      (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α4 in
+      M.call ((alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α4) in
     let* α6 : alloc.boxed.Box.t (slice i32.t) alloc.alloc.Global.t :=
       M.read (pointer_coercion "Unsize" α5) in
     let* α7 : alloc.vec.Vec.t i32.t alloc.alloc.Global.t :=
-      (slice i32.t)::["into_vec"] α6 in
+      M.call ((slice i32.t)::["into_vec"] α6) in
     M.alloc α7 in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.

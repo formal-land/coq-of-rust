@@ -54,7 +54,9 @@ Section Impl_scoping_rules_lifetimes_methods_Owner_t.
           M.read (pointer_coercion "Unsize" α1) in
         let* α3 : ref scoping_rules_lifetimes_methods.Owner.t := M.read self in
         let* α4 : core.fmt.rt.Argument.t :=
-          core.fmt.rt.Argument.t::["new_display"] (borrow (deref α3).["0"]) in
+          M.call
+            (core.fmt.rt.Argument.t::["new_display"]
+              (borrow (deref α3).["0"])) in
         let* α5 : M.Val core.fmt.rt.Argument.t := M.alloc α4 in
         let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
         let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -62,8 +64,8 @@ Section Impl_scoping_rules_lifetimes_methods_Owner_t.
         let* α8 : ref (slice core.fmt.rt.Argument.t) :=
           M.read (pointer_coercion "Unsize" α7) in
         let* α9 : core.fmt.Arguments.t :=
-          core.fmt.Arguments.t::["new_v1"] α2 α8 in
-        let* α10 : unit := std.io.stdio._print α9 in
+          M.call (core.fmt.Arguments.t::["new_v1"] α2 α8) in
+        let* α10 : unit := M.call (std.io.stdio._print α9) in
         M.alloc α10 in
       M.alloc tt in
     let* α0 : M.Val unit := M.alloc tt in
@@ -90,11 +92,14 @@ Definition main : M unit :=
     M.alloc (scoping_rules_lifetimes_methods.Owner.Build_t (Integer.of_Z 18)) in
   let* _ : M.Val unit :=
     let* α0 : unit :=
-      scoping_rules_lifetimes_methods.Owner.t::["add_one"] (borrow_mut owner) in
+      M.call
+        (scoping_rules_lifetimes_methods.Owner.t::["add_one"]
+          (borrow_mut owner)) in
     M.alloc α0 in
   let* _ : M.Val unit :=
     let* α0 : unit :=
-      scoping_rules_lifetimes_methods.Owner.t::["print"] (borrow owner) in
+      M.call
+        (scoping_rules_lifetimes_methods.Owner.t::["print"] (borrow owner)) in
     M.alloc α0 in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.

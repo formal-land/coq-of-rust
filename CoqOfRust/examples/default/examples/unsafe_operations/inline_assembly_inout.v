@@ -38,7 +38,8 @@ Definition main : M unit :=
           let* α1 : ref u64.t := M.read left_val in
           let* α2 : ref u64.t := M.read right_val in
           let* α3 : never.t :=
-            core.panicking.assert_failed α0 α1 α2 core.option.Option.None in
+            M.call
+              (core.panicking.assert_failed α0 α1 α2 core.option.Option.None) in
           M.alloc α3 in
         let* α0 : M.Val unit := M.alloc tt in
         let* α1 := M.read α0 in

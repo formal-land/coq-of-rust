@@ -25,25 +25,27 @@ Definition main : M unit :=
     let* α4 : M.Val (array (ref str.t)) := M.alloc [ mk_str "Bob"; α1; α3 ] in
     let* α5 :
         M.Val (alloc.boxed.Box.t (array (ref str.t)) alloc.alloc.Global.t) :=
-      (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α4 in
+      M.call ((alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α4) in
     let* α6 : alloc.boxed.Box.t (slice (ref str.t)) alloc.alloc.Global.t :=
       M.read (pointer_coercion "Unsize" α5) in
     let* α7 : alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t :=
-      (slice (ref str.t))::["into_vec"] α6 in
+      M.call ((slice (ref str.t))::["into_vec"] α6) in
     M.alloc α7 in
   let* _ : M.Val unit :=
     let* α0 : mut_ref (slice (ref str.t)) :=
-      (core.ops.deref.DerefMut.deref_mut
-          (Self := alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t)
-          (Trait := ltac:(refine _)))
-        (borrow_mut names) in
+      M.call
+        ((core.ops.deref.DerefMut.deref_mut
+            (Self := alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t)
+            (Trait := ltac:(refine _)))
+          (borrow_mut names)) in
     let* α1 : core.slice.iter.IterMut.t (ref str.t) :=
-      (slice (ref str.t))::["iter_mut"] α0 in
+      M.call ((slice (ref str.t))::["iter_mut"] α0) in
     let* α2 : core.slice.iter.IterMut.t (ref str.t) :=
-      (core.iter.traits.collect.IntoIterator.into_iter
-          (Self := core.slice.iter.IterMut.t (ref str.t))
-          (Trait := ltac:(refine _)))
-        α1 in
+      M.call
+        ((core.iter.traits.collect.IntoIterator.into_iter
+            (Self := core.slice.iter.IterMut.t (ref str.t))
+            (Trait := ltac:(refine _)))
+          α1) in
     let* α3 : M.Val unit :=
       match α2 with
       | iter =>
@@ -51,10 +53,11 @@ Definition main : M unit :=
         loop
           (let* _ : M.Val unit :=
             let* α0 : core.option.Option.t (mut_ref (ref str.t)) :=
-              (core.iter.traits.iterator.Iterator.next
-                  (Self := core.slice.iter.IterMut.t (ref str.t))
-                  (Trait := ltac:(refine _)))
-                (borrow_mut iter) in
+              M.call
+                ((core.iter.traits.iterator.Iterator.next
+                    (Self := core.slice.iter.IterMut.t (ref str.t))
+                    (Trait := ltac:(refine _)))
+                  (borrow_mut iter)) in
             match α0 with
             | core.option.Option.None  =>
               let* α0 : M.Val never.t := Break in
@@ -91,7 +94,7 @@ Definition main : M unit :=
       let* α2 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α1) in
       let* α3 : core.fmt.rt.Argument.t :=
-        core.fmt.rt.Argument.t::["new_debug"] (borrow names) in
+        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow names)) in
       let* α4 : M.Val core.fmt.rt.Argument.t := M.alloc α3 in
       let* α5 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4 ] in
       let* α6 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -99,8 +102,8 @@ Definition main : M unit :=
       let* α7 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α6) in
       let* α8 : core.fmt.Arguments.t :=
-        core.fmt.Arguments.t::["new_v1"] α2 α7 in
-      let* α9 : unit := std.io.stdio._print α8 in
+        M.call (core.fmt.Arguments.t::["new_v1"] α2 α7) in
+      let* α9 : unit := M.call (std.io.stdio._print α8) in
       M.alloc α9 in
     M.alloc tt in
   let* α0 : M.Val unit := M.alloc tt in

@@ -57,18 +57,19 @@ Definition main : M unit :=
       let* α2 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α1) in
       let* α3 : core.fmt.Arguments.t :=
-        core.fmt.Arguments.t::["new_const"] α2 in
-      let* α4 : unit := std.io.stdio._print α3 in
+        M.call (core.fmt.Arguments.t::["new_const"] α2) in
+      let* α4 : unit := M.call (std.io.stdio._print α3) in
       M.alloc α4 in
     M.alloc tt in
   let* upper : M.Val u32.t := M.alloc (Integer.of_Z 1000) in
   let* acc : M.Val u32.t := M.alloc (Integer.of_Z 0) in
   let* _ : M.Val unit :=
     let* α0 : core.ops.range.RangeFrom.t u32.t :=
-      (core.iter.traits.collect.IntoIterator.into_iter
-          (Self := core.ops.range.RangeFrom.t u32.t)
-          (Trait := ltac:(refine _)))
-        {| core.ops.range.RangeFrom.start := Integer.of_Z 0; |} in
+      M.call
+        ((core.iter.traits.collect.IntoIterator.into_iter
+            (Self := core.ops.range.RangeFrom.t u32.t)
+            (Trait := ltac:(refine _)))
+          {| core.ops.range.RangeFrom.start := Integer.of_Z 0; |}) in
     let* α1 : M.Val unit :=
       match α0 with
       | iter =>
@@ -76,10 +77,11 @@ Definition main : M unit :=
         loop
           (let* _ : M.Val unit :=
             let* α0 : core.option.Option.t u32.t :=
-              (core.iter.traits.iterator.Iterator.next
-                  (Self := core.ops.range.RangeFrom.t u32.t)
-                  (Trait := ltac:(refine _)))
-                (borrow_mut iter) in
+              M.call
+                ((core.iter.traits.iterator.Iterator.next
+                    (Self := core.ops.range.RangeFrom.t u32.t)
+                    (Trait := ltac:(refine _)))
+                  (borrow_mut iter)) in
             match α0 with
             | core.option.Option.None  =>
               let* α0 : M.Val never.t := Break in
@@ -103,7 +105,7 @@ Definition main : M unit :=
                 M.alloc α2
               else
                 let* α0 : u32.t := M.read n_squared in
-                let* α1 : bool.t := higher_order_functions.is_odd α0 in
+                let* α1 : bool.t := M.call (higher_order_functions.is_odd α0) in
                 if (use α1 : bool) then
                   let* _ : M.Val unit :=
                     assign_op BinOp.Panic.add acc n_squared in
@@ -124,7 +126,7 @@ Definition main : M unit :=
       let* α2 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α1) in
       let* α3 : core.fmt.rt.Argument.t :=
-        core.fmt.rt.Argument.t::["new_display"] (borrow acc) in
+        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow acc)) in
       let* α4 : M.Val core.fmt.rt.Argument.t := M.alloc α3 in
       let* α5 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4 ] in
       let* α6 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -132,8 +134,8 @@ Definition main : M unit :=
       let* α7 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α6) in
       let* α8 : core.fmt.Arguments.t :=
-        core.fmt.Arguments.t::["new_v1"] α2 α7 in
-      let* α9 : unit := std.io.stdio._print α8 in
+        M.call (core.fmt.Arguments.t::["new_v1"] α2 α7) in
+      let* α9 : unit := M.call (std.io.stdio._print α8) in
       M.alloc α9 in
     M.alloc tt in
   let* sum_of_squared_odd_numbers : M.Val u32.t :=
@@ -147,11 +149,12 @@ Definition main : M unit :=
         core.iter.adapters.map.Map.t
           (core.ops.range.RangeFrom.t u32.t)
           type not implemented :=
-      (core.iter.traits.iterator.Iterator.map
-          (Self := core.ops.range.RangeFrom.t u32.t)
-          (Trait := ltac:(refine _)))
-        {| core.ops.range.RangeFrom.start := Integer.of_Z 0; |}
-        α0 in
+      M.call
+        ((core.iter.traits.iterator.Iterator.map
+            (Self := core.ops.range.RangeFrom.t u32.t)
+            (Trait := ltac:(refine _)))
+          {| core.ops.range.RangeFrom.start := Integer.of_Z 0; |}
+          α0) in
     let* α2 : type not implemented :=
       M.read
         (let* α0 : u32.t := M.read n_squared in
@@ -163,18 +166,19 @@ Definition main : M unit :=
             (core.ops.range.RangeFrom.t u32.t)
             type not implemented)
           type not implemented :=
-      (core.iter.traits.iterator.Iterator.take_while
-          (Self :=
-            core.iter.adapters.map.Map.t
-              (core.ops.range.RangeFrom.t u32.t)
-              type not implemented)
-          (Trait := ltac:(refine _)))
-        α1
-        α2 in
+      M.call
+        ((core.iter.traits.iterator.Iterator.take_while
+            (Self :=
+              core.iter.adapters.map.Map.t
+                (core.ops.range.RangeFrom.t u32.t)
+                type not implemented)
+            (Trait := ltac:(refine _)))
+          α1
+          α2) in
     let* α4 : type not implemented :=
       M.read
         (let* α0 : u32.t := M.read n_squared in
-        let* α1 : bool.t := higher_order_functions.is_odd α0 in
+        let* α1 : bool.t := M.call (higher_order_functions.is_odd α0) in
         M.alloc α1) in
     let* α5 :
         core.iter.adapters.filter.Filter.t
@@ -184,28 +188,30 @@ Definition main : M unit :=
               type not implemented)
             type not implemented)
           type not implemented :=
-      (core.iter.traits.iterator.Iterator.filter
-          (Self :=
-            core.iter.adapters.take_while.TakeWhile.t
-              (core.iter.adapters.map.Map.t
-                (core.ops.range.RangeFrom.t u32.t)
-                type not implemented)
-              type not implemented)
-          (Trait := ltac:(refine _)))
-        α3
-        α4 in
-    let* α6 : u32.t :=
-      (core.iter.traits.iterator.Iterator.sum
-          (Self :=
-            core.iter.adapters.filter.Filter.t
-              (core.iter.adapters.take_while.TakeWhile.t
+      M.call
+        ((core.iter.traits.iterator.Iterator.filter
+            (Self :=
+              core.iter.adapters.take_while.TakeWhile.t
                 (core.iter.adapters.map.Map.t
                   (core.ops.range.RangeFrom.t u32.t)
                   type not implemented)
                 type not implemented)
-              type not implemented)
-          (Trait := ltac:(refine _)))
-        α5 in
+            (Trait := ltac:(refine _)))
+          α3
+          α4) in
+    let* α6 : u32.t :=
+      M.call
+        ((core.iter.traits.iterator.Iterator.sum
+            (Self :=
+              core.iter.adapters.filter.Filter.t
+                (core.iter.adapters.take_while.TakeWhile.t
+                  (core.iter.adapters.map.Map.t
+                    (core.ops.range.RangeFrom.t u32.t)
+                    type not implemented)
+                  type not implemented)
+                type not implemented)
+            (Trait := ltac:(refine _)))
+          α5) in
     M.alloc α6 in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
@@ -216,8 +222,9 @@ Definition main : M unit :=
       let* α2 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α1) in
       let* α3 : core.fmt.rt.Argument.t :=
-        core.fmt.rt.Argument.t::["new_display"]
-          (borrow sum_of_squared_odd_numbers) in
+        M.call
+          (core.fmt.rt.Argument.t::["new_display"]
+            (borrow sum_of_squared_odd_numbers)) in
       let* α4 : M.Val core.fmt.rt.Argument.t := M.alloc α3 in
       let* α5 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4 ] in
       let* α6 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -225,8 +232,8 @@ Definition main : M unit :=
       let* α7 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α6) in
       let* α8 : core.fmt.Arguments.t :=
-        core.fmt.Arguments.t::["new_v1"] α2 α7 in
-      let* α9 : unit := std.io.stdio._print α8 in
+        M.call (core.fmt.Arguments.t::["new_v1"] α2 α7) in
+      let* α9 : unit := M.call (std.io.stdio._print α8) in
       M.alloc α9 in
     M.alloc tt in
   let* α0 : M.Val unit := M.alloc tt in

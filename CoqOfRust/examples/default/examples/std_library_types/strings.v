@@ -56,7 +56,7 @@ Definition main : M unit :=
       let* α2 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α1) in
       let* α3 : core.fmt.rt.Argument.t :=
-        core.fmt.rt.Argument.t::["new_display"] (borrow pangram) in
+        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow pangram)) in
       let* α4 : M.Val core.fmt.rt.Argument.t := M.alloc α3 in
       let* α5 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4 ] in
       let* α6 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -64,8 +64,8 @@ Definition main : M unit :=
       let* α7 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α6) in
       let* α8 : core.fmt.Arguments.t :=
-        core.fmt.Arguments.t::["new_v1"] α2 α7 in
-      let* α9 : unit := std.io.stdio._print α8 in
+        M.call (core.fmt.Arguments.t::["new_v1"] α2 α7) in
+      let* α9 : unit := M.call (std.io.stdio._print α8) in
       M.alloc α9 in
     M.alloc tt in
   let* _ : M.Val unit :=
@@ -77,24 +77,27 @@ Definition main : M unit :=
       let* α2 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α1) in
       let* α3 : core.fmt.Arguments.t :=
-        core.fmt.Arguments.t::["new_const"] α2 in
-      let* α4 : unit := std.io.stdio._print α3 in
+        M.call (core.fmt.Arguments.t::["new_const"] α2) in
+      let* α4 : unit := M.call (std.io.stdio._print α3) in
       M.alloc α4 in
     M.alloc tt in
   let* _ : M.Val unit :=
     let* α0 : ref str.t := M.read pangram in
     let* α1 : core.str.iter.SplitWhitespace.t :=
-      str.t::["split_whitespace"] α0 in
+      M.call (str.t::["split_whitespace"] α0) in
     let* α2 : core.iter.adapters.rev.Rev.t core.str.iter.SplitWhitespace.t :=
-      (core.iter.traits.iterator.Iterator.rev
-          (Self := core.str.iter.SplitWhitespace.t)
-          (Trait := ltac:(refine _)))
-        α1 in
+      M.call
+        ((core.iter.traits.iterator.Iterator.rev
+            (Self := core.str.iter.SplitWhitespace.t)
+            (Trait := ltac:(refine _)))
+          α1) in
     let* α3 : core.iter.adapters.rev.Rev.t core.str.iter.SplitWhitespace.t :=
-      (core.iter.traits.collect.IntoIterator.into_iter
-          (Self := core.iter.adapters.rev.Rev.t core.str.iter.SplitWhitespace.t)
-          (Trait := ltac:(refine _)))
-        α2 in
+      M.call
+        ((core.iter.traits.collect.IntoIterator.into_iter
+            (Self :=
+              core.iter.adapters.rev.Rev.t core.str.iter.SplitWhitespace.t)
+            (Trait := ltac:(refine _)))
+          α2) in
     let* α4 : M.Val unit :=
       match α3 with
       | iter =>
@@ -102,12 +105,13 @@ Definition main : M unit :=
         loop
           (let* _ : M.Val unit :=
             let* α0 : core.option.Option.t (ref str.t) :=
-              (core.iter.traits.iterator.Iterator.next
-                  (Self :=
-                    core.iter.adapters.rev.Rev.t
-                      core.str.iter.SplitWhitespace.t)
-                  (Trait := ltac:(refine _)))
-                (borrow_mut iter) in
+              M.call
+                ((core.iter.traits.iterator.Iterator.next
+                    (Self :=
+                      core.iter.adapters.rev.Rev.t
+                        core.str.iter.SplitWhitespace.t)
+                    (Trait := ltac:(refine _)))
+                  (borrow_mut iter)) in
             match α0 with
             | core.option.Option.None  =>
               let* α0 : M.Val never.t := Break in
@@ -126,7 +130,8 @@ Definition main : M unit :=
                   let* α2 : ref (slice (ref str.t)) :=
                     M.read (pointer_coercion "Unsize" α1) in
                   let* α3 : core.fmt.rt.Argument.t :=
-                    core.fmt.rt.Argument.t::["new_display"] (borrow word) in
+                    M.call
+                      (core.fmt.rt.Argument.t::["new_display"] (borrow word)) in
                   let* α4 : M.Val core.fmt.rt.Argument.t := M.alloc α3 in
                   let* α5 : M.Val (array core.fmt.rt.Argument.t) :=
                     M.alloc [ α4 ] in
@@ -135,8 +140,8 @@ Definition main : M unit :=
                   let* α7 : ref (slice core.fmt.rt.Argument.t) :=
                     M.read (pointer_coercion "Unsize" α6) in
                   let* α8 : core.fmt.Arguments.t :=
-                    core.fmt.Arguments.t::["new_v1"] α2 α7 in
-                  let* α9 : unit := std.io.stdio._print α8 in
+                    M.call (core.fmt.Arguments.t::["new_v1"] α2 α7) in
+                  let* α9 : unit := M.call (std.io.stdio._print α8) in
                   M.alloc α9 in
                 M.alloc tt in
               M.alloc tt
@@ -147,36 +152,40 @@ Definition main : M unit :=
     M.alloc (use α5) in
   let* chars : M.Val (alloc.vec.Vec.t char.t alloc.alloc.Global.t) :=
     let* α0 : ref str.t := M.read pangram in
-    let* α1 : core.str.iter.Chars.t := str.t::["chars"] α0 in
+    let* α1 : core.str.iter.Chars.t := M.call (str.t::["chars"] α0) in
     let* α2 : alloc.vec.Vec.t char.t alloc.alloc.Global.t :=
-      (core.iter.traits.iterator.Iterator.collect
-          (Self := core.str.iter.Chars.t)
-          (Trait := ltac:(refine _)))
-        α1 in
+      M.call
+        ((core.iter.traits.iterator.Iterator.collect
+            (Self := core.str.iter.Chars.t)
+            (Trait := ltac:(refine _)))
+          α1) in
     M.alloc α2 in
   let* _ : M.Val unit :=
     let* α0 : mut_ref (slice char.t) :=
-      (core.ops.deref.DerefMut.deref_mut
-          (Self := alloc.vec.Vec.t char.t alloc.alloc.Global.t)
-          (Trait := ltac:(refine _)))
-        (borrow_mut chars) in
-    let* α1 : unit := (slice char.t)::["sort"] α0 in
+      M.call
+        ((core.ops.deref.DerefMut.deref_mut
+            (Self := alloc.vec.Vec.t char.t alloc.alloc.Global.t)
+            (Trait := ltac:(refine _)))
+          (borrow_mut chars)) in
+    let* α1 : unit := M.call ((slice char.t)::["sort"] α0) in
     M.alloc α1 in
   let* _ : M.Val unit :=
     let* α0 : unit :=
-      (alloc.vec.Vec.t char.t alloc.alloc.Global.t)::["dedup"]
-        (borrow_mut chars) in
+      M.call
+        ((alloc.vec.Vec.t char.t alloc.alloc.Global.t)::["dedup"]
+          (borrow_mut chars)) in
     M.alloc α0 in
   let* string : M.Val alloc.string.String.t :=
-    let* α0 : alloc.string.String.t := alloc.string.String.t::["new"] in
+    let* α0 : alloc.string.String.t := M.call alloc.string.String.t::["new"] in
     M.alloc α0 in
   let* _ : M.Val unit :=
     let* α0 : alloc.vec.Vec.t char.t alloc.alloc.Global.t := M.read chars in
     let* α1 : alloc.vec.into_iter.IntoIter.t char.t alloc.alloc.Global.t :=
-      (core.iter.traits.collect.IntoIterator.into_iter
-          (Self := alloc.vec.Vec.t char.t alloc.alloc.Global.t)
-          (Trait := ltac:(refine _)))
-        α0 in
+      M.call
+        ((core.iter.traits.collect.IntoIterator.into_iter
+            (Self := alloc.vec.Vec.t char.t alloc.alloc.Global.t)
+            (Trait := ltac:(refine _)))
+          α0) in
     let* α2 : M.Val unit :=
       match α1 with
       | iter =>
@@ -184,11 +193,14 @@ Definition main : M unit :=
         loop
           (let* _ : M.Val unit :=
             let* α0 : core.option.Option.t char.t :=
-              (core.iter.traits.iterator.Iterator.next
-                  (Self :=
-                    alloc.vec.into_iter.IntoIter.t char.t alloc.alloc.Global.t)
-                  (Trait := ltac:(refine _)))
-                (borrow_mut iter) in
+              M.call
+                ((core.iter.traits.iterator.Iterator.next
+                    (Self :=
+                      alloc.vec.into_iter.IntoIter.t
+                        char.t
+                        alloc.alloc.Global.t)
+                    (Trait := ltac:(refine _)))
+                  (borrow_mut iter)) in
             match α0 with
             | core.option.Option.None  =>
               let* α0 : M.Val never.t := Break in
@@ -200,12 +212,16 @@ Definition main : M unit :=
               let* _ : M.Val unit :=
                 let* α0 : char.t := M.read c in
                 let* α1 : unit :=
-                  alloc.string.String.t::["push"] (borrow_mut string) α0 in
+                  M.call
+                    (alloc.string.String.t::["push"] (borrow_mut string) α0) in
                 M.alloc α1 in
               let* _ : M.Val unit :=
                 let* α0 : ref str.t := M.read (mk_str ", ") in
                 let* α1 : unit :=
-                  alloc.string.String.t::["push_str"] (borrow_mut string) α0 in
+                  M.call
+                    (alloc.string.String.t::["push_str"]
+                      (borrow_mut string)
+                      α0) in
                 M.alloc α1 in
               M.alloc tt
             end in
@@ -221,12 +237,13 @@ Definition main : M unit :=
     M.copy (pointer_coercion "Unsize" α3) in
   let* trimmed_str : M.Val (ref str.t) :=
     let* α0 : ref str.t :=
-      (core.ops.deref.Deref.deref
-          (Self := alloc.string.String.t)
-          (Trait := ltac:(refine _)))
-        (borrow string) in
+      M.call
+        ((core.ops.deref.Deref.deref
+            (Self := alloc.string.String.t)
+            (Trait := ltac:(refine _)))
+          (borrow string)) in
     let* α1 : ref (slice char.t) := M.read chars_to_trim in
-    let* α2 : ref str.t := str.t::["trim_matches"] α0 α1 in
+    let* α2 : ref str.t := M.call (str.t::["trim_matches"] α0 α1) in
     M.alloc α2 in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
@@ -237,7 +254,7 @@ Definition main : M unit :=
       let* α2 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α1) in
       let* α3 : core.fmt.rt.Argument.t :=
-        core.fmt.rt.Argument.t::["new_display"] (borrow trimmed_str) in
+        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow trimmed_str)) in
       let* α4 : M.Val core.fmt.rt.Argument.t := M.alloc α3 in
       let* α5 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4 ] in
       let* α6 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -245,27 +262,29 @@ Definition main : M unit :=
       let* α7 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α6) in
       let* α8 : core.fmt.Arguments.t :=
-        core.fmt.Arguments.t::["new_v1"] α2 α7 in
-      let* α9 : unit := std.io.stdio._print α8 in
+        M.call (core.fmt.Arguments.t::["new_v1"] α2 α7) in
+      let* α9 : unit := M.call (std.io.stdio._print α8) in
       M.alloc α9 in
     M.alloc tt in
   let* alice : M.Val alloc.string.String.t :=
     let* α0 : ref str.t := M.read (mk_str "I like dogs") in
     let* α1 : alloc.string.String.t :=
-      (core.convert.From.from
-          (Self := alloc.string.String.t)
-          (Trait := ltac:(refine _)))
-        α0 in
+      M.call
+        ((core.convert.From.from
+            (Self := alloc.string.String.t)
+            (Trait := ltac:(refine _)))
+          α0) in
     M.alloc α1 in
   let* bob : M.Val alloc.string.String.t :=
     let* α0 : ref str.t :=
-      (core.ops.deref.Deref.deref
-          (Self := alloc.string.String.t)
-          (Trait := ltac:(refine _)))
-        (borrow alice) in
+      M.call
+        ((core.ops.deref.Deref.deref
+            (Self := alloc.string.String.t)
+            (Trait := ltac:(refine _)))
+          (borrow alice)) in
     let* α1 : ref str.t := M.read (mk_str "dog") in
     let* α2 : ref str.t := M.read (mk_str "cat") in
-    let* α3 : alloc.string.String.t := str.t::["replace"] α0 α1 α2 in
+    let* α3 : alloc.string.String.t := M.call (str.t::["replace"] α0 α1 α2) in
     M.alloc α3 in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
@@ -276,7 +295,7 @@ Definition main : M unit :=
       let* α2 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α1) in
       let* α3 : core.fmt.rt.Argument.t :=
-        core.fmt.rt.Argument.t::["new_display"] (borrow alice) in
+        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow alice)) in
       let* α4 : M.Val core.fmt.rt.Argument.t := M.alloc α3 in
       let* α5 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4 ] in
       let* α6 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -284,8 +303,8 @@ Definition main : M unit :=
       let* α7 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α6) in
       let* α8 : core.fmt.Arguments.t :=
-        core.fmt.Arguments.t::["new_v1"] α2 α7 in
-      let* α9 : unit := std.io.stdio._print α8 in
+        M.call (core.fmt.Arguments.t::["new_v1"] α2 α7) in
+      let* α9 : unit := M.call (std.io.stdio._print α8) in
       M.alloc α9 in
     M.alloc tt in
   let* _ : M.Val unit :=
@@ -297,7 +316,7 @@ Definition main : M unit :=
       let* α2 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α1) in
       let* α3 : core.fmt.rt.Argument.t :=
-        core.fmt.rt.Argument.t::["new_display"] (borrow bob) in
+        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow bob)) in
       let* α4 : M.Val core.fmt.rt.Argument.t := M.alloc α3 in
       let* α5 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4 ] in
       let* α6 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -305,8 +324,8 @@ Definition main : M unit :=
       let* α7 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α6) in
       let* α8 : core.fmt.Arguments.t :=
-        core.fmt.Arguments.t::["new_v1"] α2 α7 in
-      let* α9 : unit := std.io.stdio._print α8 in
+        M.call (core.fmt.Arguments.t::["new_v1"] α2 α7) in
+      let* α9 : unit := M.call (std.io.stdio._print α8) in
       M.alloc α9 in
     M.alloc tt in
   let* α0 : M.Val unit := M.alloc tt in

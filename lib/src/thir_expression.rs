@@ -20,6 +20,7 @@ impl ExprKind {
             }),
             args: vec![Expr { kind: self, ty }],
             purity: Purity::Effectful,
+            from_user: false,
         }
     }
 }
@@ -63,6 +64,7 @@ impl Expr {
             func,
             args,
             purity: _,
+            from_user: _,
         } = &self.kind
         {
             if let ExprKind::LocalVar(func) = &func.kind {
@@ -119,6 +121,7 @@ impl Expr {
                 }),
                 args: vec![self],
                 purity: Purity::Effectful,
+                from_user: false,
             },
         }
     }
@@ -137,6 +140,7 @@ impl Expr {
                 }),
                 args: vec![self],
                 purity: Purity::Effectful,
+                from_user: false,
             },
         }
     }
@@ -167,6 +171,7 @@ fn compile_borrow(borrow_kind: &BorrowKind, arg: Expr) -> ExprKind {
         }),
         args: vec![arg],
         purity: Purity::Pure,
+        from_user: false,
     }
 }
 
@@ -191,6 +196,7 @@ fn compile_expr_kind<'a>(
                 }),
                 args: vec![value],
                 purity: Purity::Effectful,
+                from_user: true,
             }
         }
         thir::ExprKind::If {
@@ -221,6 +227,7 @@ fn compile_expr_kind<'a>(
                 func,
                 args,
                 purity: Purity::Effectful,
+                from_user: true,
             }
             .alloc(Some(ty))
         }
@@ -238,6 +245,7 @@ fn compile_expr_kind<'a>(
                 }),
                 args: vec![arg],
                 purity: Purity::Pure,
+                from_user: false,
             }
         }
         thir::ExprKind::Binary { op, lhs, rhs } => {
@@ -251,6 +259,7 @@ fn compile_expr_kind<'a>(
                 }),
                 args: vec![lhs.read(), rhs.read()],
                 purity,
+                from_user: false,
             }
             .alloc(Some(ty))
         }
@@ -268,6 +277,7 @@ fn compile_expr_kind<'a>(
                 }),
                 args: vec![lhs.read(), rhs.read()],
                 purity: Purity::Pure,
+                from_user: false,
             }
             .alloc(Some(ty))
         }
@@ -284,6 +294,7 @@ fn compile_expr_kind<'a>(
                 }),
                 args: vec![arg.read()],
                 purity,
+                from_user: false,
             }
             .alloc(Some(ty))
         }
@@ -297,6 +308,7 @@ fn compile_expr_kind<'a>(
                 func,
                 args: vec![source.read()],
                 purity: Purity::Effectful,
+                from_user: false,
             }
             .alloc(Some(ty))
         }
@@ -310,6 +322,7 @@ fn compile_expr_kind<'a>(
                 func,
                 args: vec![source.read()],
                 purity: Purity::Pure,
+                from_user: false,
             }
             .alloc(Some(ty))
         }
@@ -323,6 +336,7 @@ fn compile_expr_kind<'a>(
                 func,
                 args: vec![source.read()],
                 purity: Purity::Effectful,
+                from_user: false,
             }
             .alloc(Some(ty))
         }
@@ -340,6 +354,7 @@ fn compile_expr_kind<'a>(
                 func,
                 args: vec![cast, source],
                 purity: Purity::Pure,
+                from_user: false,
             }
         }
         thir::ExprKind::Loop { body, .. } => {
@@ -394,6 +409,7 @@ fn compile_expr_kind<'a>(
                 func,
                 args,
                 purity: Purity::Effectful,
+                from_user: false,
             }
         }
         thir::ExprKind::AssignOp { op, lhs, rhs } => {
@@ -412,6 +428,7 @@ fn compile_expr_kind<'a>(
                     compile_expr(env, thir, rhs),
                 ],
                 purity,
+                from_user: false,
             }
         }
         thir::ExprKind::Field {
@@ -461,6 +478,7 @@ fn compile_expr_kind<'a>(
                 }),
                 args: vec![arg],
                 purity: Purity::Pure,
+                from_user: false,
             }
         }
         thir::ExprKind::Break { .. } => ExprKind::ControlFlow(LoopControlFlow::Break),
@@ -489,6 +507,7 @@ fn compile_expr_kind<'a>(
                 func,
                 args,
                 purity: Purity::Effectful,
+                from_user: false,
             }
         }
         thir::ExprKind::Array { fields } => ExprKind::Array {
@@ -597,7 +616,7 @@ fn compile_expr_kind<'a>(
                     DefKind::Trait => {
                         let path = Path::concat(&[
                             compile_def_id(env, parent),
-                            Path::local(symbol.unwrap().to_string()),
+                            Path::local(symbol.unwrap().as_str()),
                         ]);
                         let self_ty = generic_args.type_at(0);
                         let self_ty = crate::thir_ty::compile_type(env, &self_ty);
@@ -643,6 +662,7 @@ fn compile_expr_kind<'a>(
                 func,
                 args,
                 purity: Purity::Effectful,
+                from_user: false,
             }
         }
     }

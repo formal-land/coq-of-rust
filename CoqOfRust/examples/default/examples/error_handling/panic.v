@@ -15,13 +15,14 @@ Definition drink (beverage : ref str.t) : M unit :=
   let* beverage : M.Val (ref str.t) := M.alloc beverage in
   let* _ : M.Val unit :=
     let* α0 : bool.t :=
-      (core.cmp.PartialEq.eq (Self := ref str.t) (Trait := ltac:(refine _)))
-        (borrow beverage)
-        (borrow (mk_str "lemonade")) in
+      M.call
+        ((core.cmp.PartialEq.eq (Self := ref str.t) (Trait := ltac:(refine _)))
+          (borrow beverage)
+          (borrow (mk_str "lemonade"))) in
     if (use α0 : bool) then
       let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "AAAaaaaa!!!!") in
-        let* α1 : never.t := std.panicking.begin_panic α0 in
+        let* α1 : never.t := M.call (std.panicking.begin_panic α0) in
         let* α2 : unit := never_to_any α1 in
         M.alloc α2 in
       let* α0 : M.Val unit := M.alloc tt in
@@ -39,7 +40,7 @@ Definition drink (beverage : ref str.t) : M unit :=
       let* α2 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α1) in
       let* α3 : core.fmt.rt.Argument.t :=
-        core.fmt.rt.Argument.t::["new_display"] (borrow beverage) in
+        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow beverage)) in
       let* α4 : M.Val core.fmt.rt.Argument.t := M.alloc α3 in
       let* α5 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4 ] in
       let* α6 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -47,8 +48,8 @@ Definition drink (beverage : ref str.t) : M unit :=
       let* α7 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α6) in
       let* α8 : core.fmt.Arguments.t :=
-        core.fmt.Arguments.t::["new_v1"] α2 α7 in
-      let* α9 : unit := std.io.stdio._print α8 in
+        M.call (core.fmt.Arguments.t::["new_v1"] α2 α7) in
+      let* α9 : unit := M.call (std.io.stdio._print α8) in
       M.alloc α9 in
     M.alloc tt in
   let* α0 : M.Val unit := M.alloc tt in
@@ -64,11 +65,11 @@ fn main() {
 Definition main : M unit :=
   let* _ : M.Val unit :=
     let* α0 : ref str.t := M.read (mk_str "water") in
-    let* α1 : unit := panic.drink α0 in
+    let* α1 : unit := M.call (panic.drink α0) in
     M.alloc α1 in
   let* _ : M.Val unit :=
     let* α0 : ref str.t := M.read (mk_str "lemonade") in
-    let* α1 : unit := panic.drink α0 in
+    let* α1 : unit := M.call (panic.drink α0) in
     M.alloc α1 in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.

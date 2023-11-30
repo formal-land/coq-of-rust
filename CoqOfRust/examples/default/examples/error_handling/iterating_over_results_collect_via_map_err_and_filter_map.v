@@ -29,45 +29,48 @@ Definition main : M unit :=
       M.alloc [ mk_str "42"; α1; α3; α5; α7 ] in
     let* α9 :
         M.Val (alloc.boxed.Box.t (array (ref str.t)) alloc.alloc.Global.t) :=
-      (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α8 in
+      M.call ((alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α8) in
     let* α10 : alloc.boxed.Box.t (slice (ref str.t)) alloc.alloc.Global.t :=
       M.read (pointer_coercion "Unsize" α9) in
     let* α11 : alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t :=
-      (slice (ref str.t))::["into_vec"] α10 in
+      M.call ((slice (ref str.t))::["into_vec"] α10) in
     M.alloc α11 in
   let* errors :
       M.Val
         (alloc.vec.Vec.t core.num.error.ParseIntError.t alloc.alloc.Global.t) :=
     let* α0 :
         alloc.vec.Vec.t core.num.error.ParseIntError.t alloc.alloc.Global.t :=
-      (alloc.vec.Vec.t
-          core.num.error.ParseIntError.t
-          alloc.alloc.Global.t)::["new"] in
+      M.call
+        (alloc.vec.Vec.t
+            core.num.error.ParseIntError.t
+            alloc.alloc.Global.t)::["new"] in
     M.alloc α0 in
   let* numbers : M.Val (alloc.vec.Vec.t u8.t alloc.alloc.Global.t) :=
     let* α0 : alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t :=
       M.read strings in
     let* α1 : alloc.vec.into_iter.IntoIter.t (ref str.t) alloc.alloc.Global.t :=
-      (core.iter.traits.collect.IntoIterator.into_iter
-          (Self := alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t)
-          (Trait := ltac:(refine _)))
-        α0 in
+      M.call
+        ((core.iter.traits.collect.IntoIterator.into_iter
+            (Self := alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t)
+            (Trait := ltac:(refine _)))
+          α0) in
     let* α2 : type not implemented :=
       M.read
         (let* α0 : ref str.t := M.read s in
         let* α1 : core.result.Result.t u8.t core.num.error.ParseIntError.t :=
-          str.t::["parse"] α0 in
+          M.call (str.t::["parse"] α0) in
         M.alloc α1) in
     let* α3 :
         core.iter.adapters.map.Map.t
           (alloc.vec.into_iter.IntoIter.t (ref str.t) alloc.alloc.Global.t)
           type not implemented :=
-      (core.iter.traits.iterator.Iterator.map
-          (Self :=
-            alloc.vec.into_iter.IntoIter.t (ref str.t) alloc.alloc.Global.t)
-          (Trait := ltac:(refine _)))
-        α1
-        α2 in
+      M.call
+        ((core.iter.traits.iterator.Iterator.map
+            (Self :=
+              alloc.vec.into_iter.IntoIter.t (ref str.t) alloc.alloc.Global.t)
+            (Trait := ltac:(refine _)))
+          α1
+          α2) in
     let* α4 : type not implemented :=
       M.read
         (let* α0 : core.result.Result.t u8.t core.num.error.ParseIntError.t :=
@@ -76,20 +79,22 @@ Definition main : M unit :=
           M.read
             (let* α0 : core.num.error.ParseIntError.t := M.read e in
             let* α1 : unit :=
-              (alloc.vec.Vec.t
-                    core.num.error.ParseIntError.t
-                    alloc.alloc.Global.t)::["push"]
-                (borrow_mut errors)
-                α0 in
+              M.call
+                ((alloc.vec.Vec.t
+                      core.num.error.ParseIntError.t
+                      alloc.alloc.Global.t)::["push"]
+                  (borrow_mut errors)
+                  α0) in
             M.alloc α1) in
         let* α2 : core.result.Result.t u8.t unit :=
-          (core.result.Result.t
-                u8.t
-                core.num.error.ParseIntError.t)::["map_err"]
-            α0
-            α1 in
+          M.call
+            ((core.result.Result.t
+                  u8.t
+                  core.num.error.ParseIntError.t)::["map_err"]
+              α0
+              α1) in
         let* α3 : core.option.Option.t u8.t :=
-          (core.result.Result.t u8.t unit)::["ok"] α2 in
+          M.call ((core.result.Result.t u8.t unit)::["ok"] α2) in
         M.alloc α3) in
     let* α5 :
         core.iter.adapters.filter_map.FilterMap.t
@@ -97,26 +102,30 @@ Definition main : M unit :=
             (alloc.vec.into_iter.IntoIter.t (ref str.t) alloc.alloc.Global.t)
             type not implemented)
           type not implemented :=
-      (core.iter.traits.iterator.Iterator.filter_map
-          (Self :=
-            core.iter.adapters.map.Map.t
-              (alloc.vec.into_iter.IntoIter.t (ref str.t) alloc.alloc.Global.t)
-              type not implemented)
-          (Trait := ltac:(refine _)))
-        α3
-        α4 in
-    let* α6 : alloc.vec.Vec.t u8.t alloc.alloc.Global.t :=
-      (core.iter.traits.iterator.Iterator.collect
-          (Self :=
-            core.iter.adapters.filter_map.FilterMap.t
-              (core.iter.adapters.map.Map.t
+      M.call
+        ((core.iter.traits.iterator.Iterator.filter_map
+            (Self :=
+              core.iter.adapters.map.Map.t
                 (alloc.vec.into_iter.IntoIter.t
                   (ref str.t)
                   alloc.alloc.Global.t)
                 type not implemented)
-              type not implemented)
-          (Trait := ltac:(refine _)))
-        α5 in
+            (Trait := ltac:(refine _)))
+          α3
+          α4) in
+    let* α6 : alloc.vec.Vec.t u8.t alloc.alloc.Global.t :=
+      M.call
+        ((core.iter.traits.iterator.Iterator.collect
+            (Self :=
+              core.iter.adapters.filter_map.FilterMap.t
+                (core.iter.adapters.map.Map.t
+                  (alloc.vec.into_iter.IntoIter.t
+                    (ref str.t)
+                    alloc.alloc.Global.t)
+                  type not implemented)
+                type not implemented)
+            (Trait := ltac:(refine _)))
+          α5) in
     M.alloc α6 in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
@@ -127,7 +136,7 @@ Definition main : M unit :=
       let* α2 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α1) in
       let* α3 : core.fmt.rt.Argument.t :=
-        core.fmt.rt.Argument.t::["new_debug"] (borrow numbers) in
+        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow numbers)) in
       let* α4 : M.Val core.fmt.rt.Argument.t := M.alloc α3 in
       let* α5 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4 ] in
       let* α6 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -135,8 +144,8 @@ Definition main : M unit :=
       let* α7 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α6) in
       let* α8 : core.fmt.Arguments.t :=
-        core.fmt.Arguments.t::["new_v1"] α2 α7 in
-      let* α9 : unit := std.io.stdio._print α8 in
+        M.call (core.fmt.Arguments.t::["new_v1"] α2 α7) in
+      let* α9 : unit := M.call (std.io.stdio._print α8) in
       M.alloc α9 in
     M.alloc tt in
   let* _ : M.Val unit :=
@@ -148,7 +157,7 @@ Definition main : M unit :=
       let* α2 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α1) in
       let* α3 : core.fmt.rt.Argument.t :=
-        core.fmt.rt.Argument.t::["new_debug"] (borrow errors) in
+        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow errors)) in
       let* α4 : M.Val core.fmt.rt.Argument.t := M.alloc α3 in
       let* α5 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4 ] in
       let* α6 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -156,8 +165,8 @@ Definition main : M unit :=
       let* α7 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α6) in
       let* α8 : core.fmt.Arguments.t :=
-        core.fmt.Arguments.t::["new_v1"] α2 α7 in
-      let* α9 : unit := std.io.stdio._print α8 in
+        M.call (core.fmt.Arguments.t::["new_v1"] α2 α7) in
+      let* α9 : unit := M.call (std.io.stdio._print α8) in
       M.alloc α9 in
     M.alloc tt in
   let* α0 : M.Val unit := M.alloc tt in

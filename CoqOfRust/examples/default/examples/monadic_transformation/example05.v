@@ -46,7 +46,7 @@ Definition main : M unit :=
     M.alloc (example05.Foo.Build_t (Integer.of_Z 0)) in
   let* _ : M.Val u32.t :=
     let* α0 : example05.Foo.t := M.read foo in
-    let* α1 : u32.t := example05.Foo.t::["plus1"] α0 in
+    let* α1 : u32.t := M.call (example05.Foo.t::["plus1"] α0) in
     M.alloc α1 in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.

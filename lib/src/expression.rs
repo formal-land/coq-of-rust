@@ -31,13 +31,13 @@ pub(crate) struct MatchArm {
 
 /// [LoopControlFlow] represents the expressions responsible for
 /// the flow of control in a loop
-#[derive(Clone, Debug, Eq, Hash, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 pub(crate) enum LoopControlFlow {
     Continue,
     Break,
 }
 
-#[derive(Clone, Debug, Eq, Hash, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 pub(crate) enum Purity {
     Pure,
     Effectful,
@@ -83,6 +83,7 @@ pub(crate) enum ExprKind {
         func: Box<Expr>,
         args: Vec<Expr>,
         purity: Purity,
+        from_user: bool,
     },
     /// An operator that takes one argument that is supposed to be in monadic
     /// form once the monadic translation is done.
@@ -193,6 +194,7 @@ impl Expr {
                 func,
                 args,
                 purity: _,
+                from_user: _,
             } => func.has_return() || args.iter().any(Self::has_return),
             ExprKind::MonadicOperator { name: _, arg } => arg.has_return(),
             ExprKind::Lambda { args: _, body } => body.has_return(),
@@ -384,33 +386,37 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Expr) -> (Expr, FreshVa
         ExprKind::AssociatedFunction { .. } => (pure(expr), fresh_vars),
         ExprKind::Literal { .. } => (pure(expr), fresh_vars),
         ExprKind::NonHirLiteral { .. } => (pure(expr), fresh_vars),
-        ExprKind::Call { func, args, purity } => {
-            monadic_let(fresh_vars, *func, |fresh_vars, func| {
-                monadic_lets(
-                    fresh_vars,
-                    args,
-                    Box::new(move |fresh_vars, args| {
-                        (
-                            {
-                                let expr = Expr {
-                                    kind: ExprKind::Call {
-                                        func: Box::new(func),
-                                        args,
-                                        purity: purity.clone(),
-                                    },
-                                    ty,
-                                };
-                                match purity {
-                                    Purity::Pure => pure(expr),
-                                    Purity::Effectful => expr,
-                                }
-                            },
-                            fresh_vars,
-                        )
-                    }),
-                )
-            })
-        }
+        ExprKind::Call {
+            func,
+            args,
+            purity,
+            from_user,
+        } => monadic_let(fresh_vars, *func, |fresh_vars, func| {
+            monadic_lets(
+                fresh_vars,
+                args,
+                Box::new(move |fresh_vars, args| {
+                    (
+                        {
+                            let expr = Expr {
+                                kind: ExprKind::Call {
+                                    func: Box::new(func),
+                                    args,
+                                    purity,
+                                    from_user,
+                                },
+                                ty,
+                            };
+                            match purity {
+                                Purity::Pure => pure(expr),
+                                Purity::Effectful => expr,
+                            }
+                        },
+                        fresh_vars,
+                    )
+                }),
+            )
+        }),
         ExprKind::MonadicOperator { name, arg } => {
             let (arg, fresh_vars) = mt_expression(fresh_vars, *arg);
             (
@@ -732,7 +738,7 @@ impl MatchArm {
 }
 
 impl LoopControlFlow {
-    pub fn to_doc(&self) -> Doc {
+    pub fn to_doc<'a>(self) -> Doc<'a> {
         match self {
             LoopControlFlow::Break => text("Break"),
             LoopControlFlow::Continue => text("Continue"),
@@ -826,17 +832,27 @@ impl ExprKind {
                 func,
                 args,
                 purity: _,
+                from_user,
             } => {
-                if args.is_empty() {
-                    func.to_doc(with_paren)
+                let inner_with_paren = with_paren || *from_user;
+                let inner_application = if args.is_empty() {
+                    func.to_doc(inner_with_paren)
                 } else {
                     paren(
-                        with_paren,
+                        inner_with_paren,
                         nest([
                             func.to_doc(true),
                             concat(args.iter().map(|arg| concat([line(), arg.to_doc(true)]))),
                         ]),
                     )
+                };
+                if *from_user {
+                    paren(
+                        with_paren,
+                        nest([text("M.call"), line(), inner_application]),
+                    )
+                } else {
+                    inner_application
                 }
             }
             ExprKind::MonadicOperator { name, arg } => {

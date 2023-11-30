@@ -5,6 +5,8 @@ Require Import CoqOfRust.lib.Proofs.lib.
 Require CoqOfRust.examples.default.examples.ink_contracts.Simulations.erc20.
 Require CoqOfRust.examples.default.examples.ink_contracts.erc20.
 
+Import Simulations.M.Notations.
+
 (** ** Definition of state and allocation. *)
 
 Module State.
@@ -55,49 +57,103 @@ End Erc20.
 
 (** ** Verification of the simulations. *)
 
-(** The simulation [total_supply] is equal. *)
-Lemma run_total_supply
+Module Env.
+  (** The simulation [caller] is equal. *)
+  Lemma run_caller (env : erc20.Env.t) (state : State.t) :
+    let ref_env := Ref.Imm env in
+    Run.t
+      env
+      (inl (Simulations.erc20.Env.caller env))
+      state
+      (erc20.Impl_erc20_Env_t.caller ref_env)
+      state.
+  Proof.
+    run_symbolic.
+  Qed.
+  Opaque erc20.Impl_erc20_Env_t.caller.
+
+  (** The simulation [emit_event] is equal. *)
+  Lemma run_emit_event
+    {E : Set}
+    {ℋ_0 : core.convert.Into.Trait E (T := erc20.Event.t)}
     (env : erc20.Env.t)
-    (storage : erc20.Erc20.t)
-    fuel :
+    (event : E)
+    (state : State.t) :
+    let ref_env := Ref.Imm env in
+    Run.t
+      env
+      (inl Simulations.erc20.Env.emit_event)
+      state
+      (erc20.Impl_erc20_Env_t.emit_event (ℋ_0 := ℋ_0) ref_env event)
+      state.
+  Proof.
+    run_symbolic.
+  Qed.
+  Opaque erc20.Impl_erc20_Env_t.emit_event.
+End Env.
+
+(** The simulation [env] is equal. *)
+Lemma run_env (env : erc20.Env.t) (storage : erc20.Erc20.t) :
   let state := Some storage in
   let self := Ref.mut_ref tt in
   Run.t
-    fuel env
-    (erc20.Impl_erc20_Erc20_t_2.total_supply self)
+    env
+    (inl (Simulations.erc20.env env))
     state
-    (Some (Simulations.erc20.total_supply storage, state)).
+    (erc20.Impl_erc20_Erc20_t.env self)
+    state.
 Proof.
-  unfold erc20.Impl_erc20_Erc20_t_2.total_supply; simpl.
+  run_symbolic.
+  eapply Run.Call. {
+    run_symbolic.
+  }
   run_symbolic.
 Qed.
+Opaque erc20.Impl_erc20_Erc20_t.env.
+
+(** The simulation [total_supply] is equal. *)
+Lemma run_total_supply
+    (env : erc20.Env.t)
+    (storage : erc20.Erc20.t) :
+  let state := Some storage in
+  let self := Ref.mut_ref tt in
+  Run.t
+    env
+    (inl (Simulations.erc20.total_supply storage))
+    state
+    (erc20.Impl_erc20_Erc20_t_2.total_supply self)
+    state.
+Proof.
+  unfold erc20.Impl_erc20_Erc20_t_2.total_supply.
+  run_symbolic.
+Qed.
+Opaque erc20.Impl_erc20_Erc20_t_2.total_supply.
 
 (** The simulation [balance_of_impl] is equal. *)
 Lemma run_balance_of_impl
     (env : erc20.Env.t)
     (storage : erc20.Erc20.t)
-    (owner : erc20.AccountId.t)
-    fuel :
+    (owner : erc20.AccountId.t) :
   let state := Some storage in
   let self := Ref.mut_ref tt in
   let ref_owner : ref erc20.AccountId.t := Ref.Imm owner in
   Run.t
-    fuel env
-    (erc20.Impl_erc20_Erc20_t_2.balance_of_impl self ref_owner)
+    env
+    (inl (Simulations.erc20.balance_of_impl storage owner))
     state
-    (Some (Simulations.erc20.balance_of_impl storage owner, state)).
+    (erc20.Impl_erc20_Erc20_t_2.balance_of_impl self ref_owner)
+    state.
 Proof.
   unfold
     erc20.Impl_erc20_Erc20_t_2.balance_of_impl,
-    Simulations.erc20.balance_of_impl;
-    simpl.
-  destruct (Lib.Mapping.get owner storage.(erc20.Erc20.balances)) eqn:H_get;
-    repeat (
-      run_symbolic ||
-      simpl ||
-      rewrite H_get
-    ).
+    Simulations.erc20.balance_of_impl.
+  run_symbolic.
+  eapply Run.Call. {
+    run_symbolic.
+  }
+  destruct Lib.Mapping.get; eapply Run.Call; run_symbolic.
 Qed.
+Opaque erc20.Impl_erc20_Erc20_t_2.balance_of_impl.
 
 (** The simulation [balance_of_impl] is valid. *)
 Lemma balance_of_impl_is_valid
@@ -107,7 +163,7 @@ Lemma balance_of_impl_is_valid
   u128.Valid.t (Simulations.erc20.balance_of_impl storage owner).
 Proof.
   unfold Simulations.erc20.balance_of_impl, u128.Valid.t.
-  destruct Lib.Mapping.get  eqn:H_get; simpl.
+  destruct Lib.Mapping.get eqn:H_get; simpl.
   { lia. }
   { destruct H_storage; hauto q: on. }
 Qed.
@@ -116,53 +172,66 @@ Qed.
 Lemma run_balance_of
     (env : erc20.Env.t)
     (storage : erc20.Erc20.t)
-    (owner : erc20.AccountId.t)
-    fuel :
+    (owner : erc20.AccountId.t) :
   let state := Some storage in
   let self := Ref.mut_ref tt in
   Run.t
-    fuel env
-    (erc20.Impl_erc20_Erc20_t_2.balance_of self owner)
+    env
+    (inl (Simulations.erc20.balance_of storage owner))
     state
-    (Some (Simulations.erc20.balance_of storage owner, state)).
+    (erc20.Impl_erc20_Erc20_t_2.balance_of self owner)
+    state.
 Proof.
   unfold
     erc20.Impl_erc20_Erc20_t_2.balance_of,
-    Simulations.erc20.balance_of;
-    simpl.
-  with_strategy opaque [erc20.Impl_erc20_Erc20_t_2.balance_of_impl]
-    run_symbolic.
-  apply run_balance_of_impl.
+    Simulations.erc20.balance_of.
+  run_symbolic.
+  eapply Run.Call. {
+    apply run_balance_of_impl.
+  }
+  run_symbolic.
 Qed.
+Opaque erc20.Impl_erc20_Erc20_t_2.balance_of.
 
 (** The simulation [allowance_impl] is equal. *)
 Lemma run_allowance_impl
     (env : erc20.Env.t)
     (storage : erc20.Erc20.t)
     (owner : erc20.AccountId.t)
-    (spender : erc20.AccountId.t)
-    fuel :
+    (spender : erc20.AccountId.t) :
   let state := Some storage in
   let self := Ref.mut_ref tt in
   let ref_owner : ref erc20.AccountId.t := Ref.Imm owner in
   let ref_spender : ref erc20.AccountId.t := Ref.Imm spender in
   Run.t
-    fuel env
-    (erc20.Impl_erc20_Erc20_t_2.allowance_impl self ref_owner ref_spender)
+    env
+    (inl (Simulations.erc20.allowance_impl storage owner spender))
     state
-    (Some (Simulations.erc20.allowance_impl storage owner spender, state)).
+    (erc20.Impl_erc20_Erc20_t_2.allowance_impl self ref_owner ref_spender)
+    state.
 Proof.
   unfold
     erc20.Impl_erc20_Erc20_t_2.allowance_impl,
-    Simulations.erc20.allowance_impl;
-    simpl.
-  destruct (Lib.Mapping.get (owner, spender) storage.(erc20.Erc20.allowances))
-    eqn:H_get;
-    repeat (
-      run_symbolic ||
-      simpl ||
-      rewrite H_get
-    ).
+    Simulations.erc20.allowance_impl.
+  run_symbolic.
+  eapply Run.Call. {
+    run_symbolic.
+  }
+  destruct Lib.Mapping.get; eapply Run.Call; run_symbolic.
+Qed.
+Opaque erc20.Impl_erc20_Erc20_t_2.allowance_impl.
+
+Lemma allowance_impl_is_valid
+  (storage : erc20.Erc20.t)
+  (owner : erc20.AccountId.t)
+  (spender : erc20.AccountId.t)
+  (H_storage : Erc20.Valid.t storage) :
+  u128.Valid.t (Simulations.erc20.allowance_impl storage owner spender).
+Proof.
+  unfold Simulations.erc20.allowance_impl, u128.Valid.t.
+  destruct Lib.Mapping.get eqn:H_get; simpl.
+  { lia. }
+  { destruct H_storage; hauto q: on. }
 Qed.
 
 (** The simulation [allowance] is equal. *)
@@ -170,24 +239,26 @@ Lemma run_allowance
     (env : erc20.Env.t)
     (storage : erc20.Erc20.t)
     (owner : erc20.AccountId.t)
-    (spender : erc20.AccountId.t)
-    fuel :
+    (spender : erc20.AccountId.t) :
   let state := Some storage in
   let self := Ref.mut_ref tt in
   Run.t
-    fuel env
-    (erc20.Impl_erc20_Erc20_t_2.allowance self owner spender)
+    env
+    (inl (Simulations.erc20.allowance storage owner spender))
     state
-    (Some (Simulations.erc20.allowance storage owner spender, state)).
+    (erc20.Impl_erc20_Erc20_t_2.allowance self owner spender)
+    state.
 Proof.
   unfold
     erc20.Impl_erc20_Erc20_t_2.allowance,
-    Simulations.erc20.allowance;
-    simpl.
-  with_strategy opaque [erc20.Impl_erc20_Erc20_t_2.allowance_impl]
-    run_symbolic.
-  apply run_allowance_impl.
+    Simulations.erc20.allowance.
+  run_symbolic.
+  eapply Run.Call. {
+    apply run_allowance_impl.
+  }
+  run_symbolic.
 Qed.
+Opaque erc20.Impl_erc20_Erc20_t_2.allowance.
 
 Lemma sub_eq_optimistic (v1 v2 : u128.t) :
     u128.Valid.t v1 ->
@@ -200,8 +271,8 @@ Proof.
   unfold
     BinOp.Panic.sub,
     BinOp.Panic.make_arithmetic,
-    Integer.normalize_panic,
-    Integer.normalize_option.
+    BinOp.Error.make_arithmetic,
+    Integer.normalize_error.
   unfold
     BinOp.Pure.lt,
     BinOp.Pure.make_comparison.
@@ -211,6 +282,18 @@ Proof.
   reflexivity.
 Qed.
 
+Definition lift_simulation {A : Set}
+  (simulation : MS? erc20.Erc20.t A)
+  (state : erc20.Erc20.t) :
+  (A + M.Exception) * State.t :=
+  let '(result, state) := simulation state in
+  let result :=
+    match result with
+    | inl result => inl result
+    | inr error => inr (M.Exception.Panic error)
+    end in
+  (result, Some state).
+
 (** The simulation [transfer_from_to] is equal. *)
 Lemma run_transfer_from_to
     (env : erc20.Env.t)
@@ -218,7 +301,6 @@ Lemma run_transfer_from_to
     (from : erc20.AccountId.t)
     (to : erc20.AccountId.t)
     (value : ltac:(erc20.Balance))
-    fuel
     (H_storage : Erc20.Valid.t storage)
     (H_value : u128.Valid.t value) :
   let state := Some storage in
@@ -226,102 +308,129 @@ Lemma run_transfer_from_to
   let ref_from : ref erc20.AccountId.t := Ref.Imm from in
   let ref_to : ref erc20.AccountId.t := Ref.Imm to in
   let simulation :=
-    let? '(result, storage) :=
-      Simulations.erc20.transfer_from_to storage from to value in
-    return? (result, Some storage) in
+    lift_simulation
+      (Simulations.erc20.transfer_from_to from to value) storage in
   Run.t
-    fuel env
+    env
+    (fst simulation)
+    (snd simulation)
     (erc20.Impl_erc20_Erc20_t_2.transfer_from_to self ref_from ref_to value)
-    state
-    simulation.
+    state.
 Proof.
   unfold
     erc20.Impl_erc20_Erc20_t_2.transfer_from_to,
-    Simulations.erc20.transfer_from_to;
-    simpl.
-  destruct (_ <u128 _) eqn:H_lt; simpl.
-  { repeat (
-      with_strategy opaque [erc20.Impl_erc20_Erc20_t_2.balance_of_impl]
-        run_symbolic ||
-      apply run_balance_of_impl ||
-      rewrite H_lt ||
-      simpl
-    ).
+    Simulations.erc20.transfer_from_to,
+    lift_simulation.
+  run_symbolic.
+  eapply Run.Call. {
+    apply run_balance_of_impl.
   }
-  { destruct BinOp.Option.add eqn:H_add; simpl;
-      repeat eexists;
-      repeat (
-        with_strategy opaque [erc20.Impl_erc20_Erc20_t_2.balance_of_impl]
-          run_symbolic ||
-        apply run_balance_of_impl ||
-        rewrite H_lt ||
-        (rewrite sub_eq_optimistic;
-          try apply balance_of_impl_is_valid;
-          try assumption) ||
-        (unfold
-          BinOp.Panic.add,
-          BinOp.Panic.make_arithmetic,
-          Integer.normalize_panic,
-          BinOp.Option.add,
-          BinOp.Option.make_arithmetic
-          in *;
-          rewrite H_add; clear H_add) ||
-        simpl
-      ).
+  run_symbolic.
+  destruct (_ <u128 _) eqn:H_lt; simpl.
+  { run_symbolic. }
+  { run_symbolic.
+    rewrite sub_eq_optimistic;
+      try apply balance_of_impl_is_valid;
+      try assumption.
+    run_symbolic.
+    eapply Run.Call. {
+      run_symbolic.
+    }
+    run_symbolic.
+    eapply Run.Call. {
+      apply run_balance_of_impl.
+    }
+    run_symbolic.
+    unfold
+      BinOp.Error.add,
+      BinOp.Panic.add,
+      BinOp.Panic.make_arithmetic.
+    destruct BinOp.Error.make_arithmetic; run_symbolic.
+    eapply Run.Call. {
+      run_symbolic.
+    }
+    run_symbolic.
+    eapply Run.Call. {
+      apply run_env.
+    }
+    run_symbolic.
+    eapply Run.Call. {
+      apply Env.run_emit_event.
+    }
+    run_symbolic.
   }
 Qed.
-(*
+Opaque erc20.Impl_erc20_Erc20_t_2.transfer_from_to.
+
 (** The simulation [transfer] is equal. *)
 Lemma run_transfer
     (env : erc20.Env.t)
     (storage : erc20.Erc20.t)
     (to : erc20.AccountId.t)
     (value : ltac:(erc20.Balance))
-    fuel :
+    (H_storage : Erc20.Valid.t storage)
+    (H_value : u128.Valid.t value) :
   let state := Some storage in
   let self := Ref.mut_ref tt in
   let simulation :=
-    let? '(result, storage) :=
-      Simulations.erc20.transfer env storage to value in
-    return? (result, Some storage) in
+    lift_simulation
+      (Simulations.erc20.transfer env to value) storage in
   Run.t
-    fuel env
+    env
+    (fst simulation)
+    (snd simulation)
     (erc20.Impl_erc20_Erc20_t_2.transfer self to value)
-    state
-    simulation.
+    state.
 Proof.
   unfold erc20.Impl_erc20_Erc20_t_2.transfer,
-    Simulations.erc20.transfer.
-  destruct erc20.transfer_from_to as [[result storage']|] eqn:H_from_to; simpl.
-  apply run_transfer_from_to.
-  with_strategy opaque [erc20.Impl_erc20_Erc20_t_2.transfer_from_to]
-    run_symbolic.
-  apply run_transfer_from_to.
-  all: run_symbolic.
+    Simulations.erc20.transfer,
+    lift_simulation.
+  Opaque erc20.transfer_from_to.
+  run_symbolic.
+  eapply Run.Call. {
+    apply run_env.
+  }
+  run_symbolic.
+  eapply Run.Call. {
+    apply Env.run_caller.
+  }
+  run_symbolic.
+  eapply Run.Call. {
+    now apply run_transfer_from_to.
+  }
+  unfold lift_simulation.
+  destruct erc20.transfer_from_to as [[]]; run_symbolic.
+  Transparent erc20.transfer_from_to.
 Qed.
+Opaque erc20.Impl_erc20_Erc20_t_2.transfer.
 
 (** The simulation [approve] is equal. *)
 Lemma run_approve
     (env : erc20.Env.t)
     (storage : erc20.Erc20.t)
     (spender : erc20.AccountId.t)
-    (value : ltac:(erc20.Balance))
-    fuel :
+    (value : ltac:(erc20.Balance)) :
   let state := Some storage in
   let self := Ref.mut_ref tt in
   let simulation :=
-    Simulations.erc20.approve env storage spender value in
+    lift_simulation
+      (Simulations.erc20.approve env spender value) storage in
   Run.t
-    fuel env
+    env
+    (fst simulation)
+    (snd simulation)
     (erc20.Impl_erc20_Erc20_t_2.approve self spender value)
-    state
-    (inl (fst simulation))
-    (Some (snd simulation)).
+    state.
 Proof.
   unfold erc20.Impl_erc20_Erc20_t_2.approve,
     Simulations.erc20.approve.
-  repeat (simpl || run_symbolic).
+  repeat (
+    eapply Run.Call ||
+    run_symbolic ||
+    apply run_env
+  ).
 Qed.
+Opaque erc20.Impl_erc20_Erc20_t_2.approve.
 
 (** The simulation [transfer_from] is equal. *)
 Lemma run_transfer_from
@@ -330,36 +439,61 @@ Lemma run_transfer_from
     (from : erc20.AccountId.t)
     (to : erc20.AccountId.t)
     (value : ltac:(erc20.Balance))
-    fuel :
+    (H_storage : Erc20.Valid.t storage)
+    (H_value : u128.Valid.t value) :
   let state := Some storage in
   let self := Ref.mut_ref tt in
   let simulation :=
-    Simulations.erc20.transfer_from env storage from to value in
+    lift_simulation
+      (Simulations.erc20.transfer_from env from to value) storage in
   Run.t
-    fuel env
+    env
+    (fst simulation)
+    (snd simulation)
     (erc20.Impl_erc20_Erc20_t_2.transfer_from self from to value)
-    state
-    (inl (fst simulation))
-    (Some (snd simulation)).
+    state.
 Proof.
   unfold erc20.Impl_erc20_Erc20_t_2.transfer_from,
-    Simulations.erc20.transfer_from.
-  destruct erc20.transfer_from_to as [result storage'] eqn:H_from_to.
-  destruct result as [[]|] eqn:H_result;
-    destruct (_ <u128 _) eqn:H_lt;
-    repeat (
-      simpl ||
-      with_strategy opaque [
-          erc20.Impl_erc20_Erc20_t_2.allowance_impl
-          erc20.Impl_erc20_Erc20_t_2.transfer_from_to
-        ]
-        run_symbolic ||
-      apply run_allowance_impl ||
-      apply run_transfer_from_to ||
-      rewrite H_lt ||
-      rewrite H_from_to
-    ).
+    Simulations.erc20.transfer_from,
+    lift_simulation.
+  repeat (
+    eapply Run.Call ||
+    run_symbolic ||
+    apply run_env ||
+    apply run_allowance_impl
+  ).
+  unfold use.
+  destruct (_ <u128 _) eqn:H_lt; simpl; run_symbolic.
+  eapply Run.Call. {
+    now apply run_transfer_from_to.
+  }
+  unfold lift_simulation.
+  unfold M.StateError.bind.
+  destruct erc20.transfer_from_to as [[[]|] ?storage]; run_symbolic.
+  { eapply Run.Call. {
+      run_symbolic.
+    }
+    run_symbolic.
+    rewrite sub_eq_optimistic;
+      try apply allowance_impl_is_valid;
+      try assumption.
+    run_symbolic.
+    eapply Run.Call. {
+      run_symbolic.
+    }
+    run_symbolic.
+  }
+  { eapply Run.Call. {
+      run_symbolic.
+    }
+    run_symbolic.
+    eapply Run.Call. {
+      run_symbolic.
+    }
+    run_symbolic.
+  }
 Qed.
+Opaque erc20.Impl_erc20_Erc20_t_2.transfer_from.
 
 (** ** Standalone proofs. *)
 
@@ -369,11 +503,11 @@ Lemma balance_of_impl_read_id
     (env : erc20.Env.t)
     (owner : erc20.AccountId.t)
     (balance : u128.t)
-    fuel :
+    allowances :
   let storage := {|
-    erc20.Erc20.total_supply := u128.Make 0;
+    erc20.Erc20.total_supply := balance;
     erc20.Erc20.balances := Lib.Mapping.insert owner balance Lib.Mapping.empty;
-    erc20.Erc20.allowances := Lib.Mapping.empty;
+    erc20.Erc20.allowances := allowances;
   |} in
   (* An initial state *)
   let state := Some storage in
@@ -382,12 +516,12 @@ Lemma balance_of_impl_read_id
   (* The value [owner] is an immediate value *)
   let ref_owner : ref erc20.AccountId.t := Ref.Imm owner in
   Run.t
-    fuel env
-    (erc20.Impl_erc20_Erc20_t_2.balance_of_impl self ref_owner)
-    state
+    env
     (* expected output *)
     (inl balance)
     (* the state does not change *)
+    state
+    (erc20.Impl_erc20_Erc20_t_2.balance_of_impl self ref_owner)
     state.
 Proof.
   intros.
@@ -445,17 +579,17 @@ Module ReadMessage.
   (** The simulation [simulation_dispatch] is valid. *)
   Lemma run_dispatch
       {A : Set}
-      fuel
       (env : erc20.Env.t)
       (storage : erc20.Erc20.t)
       (message : t A) :
+    let state := Some storage in
     let simulation := simulation_dispatch env storage message in
     Run.t
       env
-      (dispatch message)
-      (Some storage)
       (inl simulation)
-      (Some storage).
+      state
+      (dispatch message)
+      state.
   Proof.
     destruct message; simpl.
     { apply run_total_supply. }
@@ -514,49 +648,51 @@ Module WriteMessage.
 
   Definition simulation_dispatch
       (env : erc20.Env.t)
-      (storage : erc20.Erc20.t)
       (message : t) :
-      ltac:(erc20.Result unit) * erc20.Erc20.t :=
+      MS? erc20.Erc20.t ltac:(erc20.Result unit) :=
     match message with
     | transfer to value =>
-      Simulations.erc20.transfer env storage to value
+      Simulations.erc20.transfer env to value
     | approve spender value =>
-      Simulations.erc20.approve env storage spender value
+      Simulations.erc20.approve env spender value
     | transfer_from from to value =>
-      Simulations.erc20.transfer_from env storage from to value
+      Simulations.erc20.transfer_from env from to value
     end.
 
   (** The simulation [simulation_dispatch] is valid. *)
   Lemma run_dispatch
-      fuel
       (env : erc20.Env.t)
       (storage : erc20.Erc20.t)
-      (message : t) :
-    let simulation := simulation_dispatch env storage message in
+      (message : t)
+      (H_storage : Erc20.Valid.t storage)
+      (H_message : Valid.t message) :
+    let simulation :=
+      lift_simulation
+        (simulation_dispatch env message) storage in
+    let state := Some storage in
     Run.t
       env
+      (fst simulation)
+      (snd simulation)
       (dispatch message)
-      (Some storage)
-      (inl (fst simulation))
-      (Some (snd simulation)).
+      state.
   Proof.
     destruct message; simpl.
-    { apply run_transfer. }
+    { apply run_transfer; scongruence. }
     { apply run_approve. }
-    { apply run_transfer_from. }
+    { apply run_transfer_from; scongruence. }
   Qed.
 End WriteMessage.
-
+(*
 (** There are no panics with read messages. *)
 Lemma read_message_no_panic
     (env : erc20.Env.t)
     (message : ReadMessage.t ltac:(erc20.Balance))
-    (storage : erc20.Erc20.t)
-    fuel :
+    (storage : erc20.Erc20.t) :
   let state := Some storage in
   exists result,
   Run.t
-    fuel env
+    env
     (ReadMessage.dispatch message)
     state
     (* no errors in the result *)

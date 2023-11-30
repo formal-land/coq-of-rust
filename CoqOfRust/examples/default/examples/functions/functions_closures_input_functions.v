@@ -14,9 +14,10 @@ Definition call_me
   let* f : M.Val F := M.alloc f in
   let* _ : M.Val unit :=
     let* α0 : unit :=
-      (core.ops.function.Fn.call (Self := F) (Trait := ltac:(refine _)))
-        (borrow f)
-        tt in
+      M.call
+        ((core.ops.function.Fn.call (Self := F) (Trait := ltac:(refine _)))
+          (borrow f)
+          tt) in
     M.alloc α0 in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.
@@ -36,8 +37,8 @@ Definition function : M unit :=
       let* α2 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α1) in
       let* α3 : core.fmt.Arguments.t :=
-        core.fmt.Arguments.t::["new_const"] α2 in
-      let* α4 : unit := std.io.stdio._print α3 in
+        M.call (core.fmt.Arguments.t::["new_const"] α2) in
+      let* α4 : unit := M.call (std.io.stdio._print α3) in
       M.alloc α4 in
     M.alloc tt in
   let* α0 : M.Val unit := M.alloc tt in
@@ -64,17 +65,17 @@ Definition main : M unit :=
         let* α2 : ref (slice (ref str.t)) :=
           M.read (pointer_coercion "Unsize" α1) in
         let* α3 : core.fmt.Arguments.t :=
-          core.fmt.Arguments.t::["new_const"] α2 in
-        let* α4 : unit := std.io.stdio._print α3 in
+          M.call (core.fmt.Arguments.t::["new_const"] α2) in
+        let* α4 : unit := M.call (std.io.stdio._print α3) in
         M.alloc α4 in
       M.alloc tt) in
   let* _ : M.Val unit :=
     let* α0 : type not implemented := M.read closure in
-    let* α1 : unit := functions_closures_input_functions.call_me α0 in
+    let* α1 : unit := M.call (functions_closures_input_functions.call_me α0) in
     M.alloc α1 in
   let* _ : M.Val unit :=
     let* α0 : _ := M.read functions_closures_input_functions.function in
-    let* α1 : unit := functions_closures_input_functions.call_me α0 in
+    let* α1 : unit := M.call (functions_closures_input_functions.call_me α0) in
     M.alloc α1 in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.

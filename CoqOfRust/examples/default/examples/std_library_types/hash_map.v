@@ -87,67 +87,73 @@ Definition main : M unit :=
           (ref str.t)
           (ref str.t)
           std.collections.hash.map.RandomState.t :=
-      (std.collections.hash.map.HashMap.t
-          (ref str.t)
-          (ref str.t)
-          std.collections.hash.map.RandomState.t)::["new"] in
+      M.call
+        (std.collections.hash.map.HashMap.t
+            (ref str.t)
+            (ref str.t)
+            std.collections.hash.map.RandomState.t)::["new"] in
     M.alloc α0 in
   let* _ : M.Val (core.option.Option.t (ref str.t)) :=
     let* α0 : ref str.t := M.read (mk_str "Daniel") in
     let* α1 : ref str.t := M.read (mk_str "798-1364") in
     let* α2 : core.option.Option.t (ref str.t) :=
-      (std.collections.hash.map.HashMap.t
-            (ref str.t)
-            (ref str.t)
-            std.collections.hash.map.RandomState.t)::["insert"]
-        (borrow_mut contacts)
-        α0
-        α1 in
+      M.call
+        ((std.collections.hash.map.HashMap.t
+              (ref str.t)
+              (ref str.t)
+              std.collections.hash.map.RandomState.t)::["insert"]
+          (borrow_mut contacts)
+          α0
+          α1) in
     M.alloc α2 in
   let* _ : M.Val (core.option.Option.t (ref str.t)) :=
     let* α0 : ref str.t := M.read (mk_str "Ashley") in
     let* α1 : ref str.t := M.read (mk_str "645-7689") in
     let* α2 : core.option.Option.t (ref str.t) :=
-      (std.collections.hash.map.HashMap.t
-            (ref str.t)
-            (ref str.t)
-            std.collections.hash.map.RandomState.t)::["insert"]
-        (borrow_mut contacts)
-        α0
-        α1 in
+      M.call
+        ((std.collections.hash.map.HashMap.t
+              (ref str.t)
+              (ref str.t)
+              std.collections.hash.map.RandomState.t)::["insert"]
+          (borrow_mut contacts)
+          α0
+          α1) in
     M.alloc α2 in
   let* _ : M.Val (core.option.Option.t (ref str.t)) :=
     let* α0 : ref str.t := M.read (mk_str "Katie") in
     let* α1 : ref str.t := M.read (mk_str "435-8291") in
     let* α2 : core.option.Option.t (ref str.t) :=
-      (std.collections.hash.map.HashMap.t
-            (ref str.t)
-            (ref str.t)
-            std.collections.hash.map.RandomState.t)::["insert"]
-        (borrow_mut contacts)
-        α0
-        α1 in
+      M.call
+        ((std.collections.hash.map.HashMap.t
+              (ref str.t)
+              (ref str.t)
+              std.collections.hash.map.RandomState.t)::["insert"]
+          (borrow_mut contacts)
+          α0
+          α1) in
     M.alloc α2 in
   let* _ : M.Val (core.option.Option.t (ref str.t)) :=
     let* α0 : ref str.t := M.read (mk_str "Robert") in
     let* α1 : ref str.t := M.read (mk_str "956-1745") in
     let* α2 : core.option.Option.t (ref str.t) :=
-      (std.collections.hash.map.HashMap.t
-            (ref str.t)
-            (ref str.t)
-            std.collections.hash.map.RandomState.t)::["insert"]
-        (borrow_mut contacts)
-        α0
-        α1 in
+      M.call
+        ((std.collections.hash.map.HashMap.t
+              (ref str.t)
+              (ref str.t)
+              std.collections.hash.map.RandomState.t)::["insert"]
+          (borrow_mut contacts)
+          α0
+          α1) in
     M.alloc α2 in
   let* _ : M.Val unit :=
     let* α0 : core.option.Option.t (ref (ref str.t)) :=
-      (std.collections.hash.map.HashMap.t
-            (ref str.t)
-            (ref str.t)
-            std.collections.hash.map.RandomState.t)::["get"]
-        (borrow contacts)
-        (borrow (mk_str "Daniel")) in
+      M.call
+        ((std.collections.hash.map.HashMap.t
+              (ref str.t)
+              (ref str.t)
+              std.collections.hash.map.RandomState.t)::["get"]
+          (borrow contacts)
+          (borrow (mk_str "Daniel"))) in
     match α0 with
     | core.option.Option.Some number =>
       let* number := M.alloc number in
@@ -159,10 +165,10 @@ Definition main : M unit :=
         let* α2 : ref (slice (ref str.t)) :=
           M.read (pointer_coercion "Unsize" α1) in
         let* α3 : ref str.t := M.read number in
-        let* α4 : ref str.t := hash_map.call α3 in
+        let* α4 : ref str.t := M.call (hash_map.call α3) in
         let* α5 : M.Val (ref str.t) := M.alloc α4 in
         let* α6 : core.fmt.rt.Argument.t :=
-          core.fmt.rt.Argument.t::["new_display"] (borrow α5) in
+          M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α5)) in
         let* α7 : M.Val core.fmt.rt.Argument.t := M.alloc α6 in
         let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
         let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -170,8 +176,8 @@ Definition main : M unit :=
         let* α10 : ref (slice core.fmt.rt.Argument.t) :=
           M.read (pointer_coercion "Unsize" α9) in
         let* α11 : core.fmt.Arguments.t :=
-          core.fmt.Arguments.t::["new_v1"] α2 α10 in
-        let* α12 : unit := std.io.stdio._print α11 in
+          M.call (core.fmt.Arguments.t::["new_v1"] α2 α10) in
+        let* α12 : unit := M.call (std.io.stdio._print α11) in
         M.alloc α12 in
       M.alloc tt
     | _ =>
@@ -183,8 +189,8 @@ Definition main : M unit :=
         let* α2 : ref (slice (ref str.t)) :=
           M.read (pointer_coercion "Unsize" α1) in
         let* α3 : core.fmt.Arguments.t :=
-          core.fmt.Arguments.t::["new_const"] α2 in
-        let* α4 : unit := std.io.stdio._print α3 in
+          M.call (core.fmt.Arguments.t::["new_const"] α2) in
+        let* α4 : unit := M.call (std.io.stdio._print α3) in
         M.alloc α4 in
       M.alloc tt
     end in
@@ -192,22 +198,24 @@ Definition main : M unit :=
     let* α0 : ref str.t := M.read (mk_str "Daniel") in
     let* α1 : ref str.t := M.read (mk_str "164-6743") in
     let* α2 : core.option.Option.t (ref str.t) :=
-      (std.collections.hash.map.HashMap.t
-            (ref str.t)
-            (ref str.t)
-            std.collections.hash.map.RandomState.t)::["insert"]
-        (borrow_mut contacts)
-        α0
-        α1 in
+      M.call
+        ((std.collections.hash.map.HashMap.t
+              (ref str.t)
+              (ref str.t)
+              std.collections.hash.map.RandomState.t)::["insert"]
+          (borrow_mut contacts)
+          α0
+          α1) in
     M.alloc α2 in
   let* _ : M.Val unit :=
     let* α0 : core.option.Option.t (ref (ref str.t)) :=
-      (std.collections.hash.map.HashMap.t
-            (ref str.t)
-            (ref str.t)
-            std.collections.hash.map.RandomState.t)::["get"]
-        (borrow contacts)
-        (borrow (mk_str "Ashley")) in
+      M.call
+        ((std.collections.hash.map.HashMap.t
+              (ref str.t)
+              (ref str.t)
+              std.collections.hash.map.RandomState.t)::["get"]
+          (borrow contacts)
+          (borrow (mk_str "Ashley"))) in
     match α0 with
     | core.option.Option.Some number =>
       let* number := M.alloc number in
@@ -219,10 +227,10 @@ Definition main : M unit :=
         let* α2 : ref (slice (ref str.t)) :=
           M.read (pointer_coercion "Unsize" α1) in
         let* α3 : ref str.t := M.read number in
-        let* α4 : ref str.t := hash_map.call α3 in
+        let* α4 : ref str.t := M.call (hash_map.call α3) in
         let* α5 : M.Val (ref str.t) := M.alloc α4 in
         let* α6 : core.fmt.rt.Argument.t :=
-          core.fmt.rt.Argument.t::["new_display"] (borrow α5) in
+          M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α5)) in
         let* α7 : M.Val core.fmt.rt.Argument.t := M.alloc α6 in
         let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
         let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -230,8 +238,8 @@ Definition main : M unit :=
         let* α10 : ref (slice core.fmt.rt.Argument.t) :=
           M.read (pointer_coercion "Unsize" α9) in
         let* α11 : core.fmt.Arguments.t :=
-          core.fmt.Arguments.t::["new_v1"] α2 α10 in
-        let* α12 : unit := std.io.stdio._print α11 in
+          M.call (core.fmt.Arguments.t::["new_v1"] α2 α10) in
+        let* α12 : unit := M.call (std.io.stdio._print α11) in
         M.alloc α12 in
       M.alloc tt
     | _ =>
@@ -243,31 +251,34 @@ Definition main : M unit :=
         let* α2 : ref (slice (ref str.t)) :=
           M.read (pointer_coercion "Unsize" α1) in
         let* α3 : core.fmt.Arguments.t :=
-          core.fmt.Arguments.t::["new_const"] α2 in
-        let* α4 : unit := std.io.stdio._print α3 in
+          M.call (core.fmt.Arguments.t::["new_const"] α2) in
+        let* α4 : unit := M.call (std.io.stdio._print α3) in
         M.alloc α4 in
       M.alloc tt
     end in
   let* _ : M.Val (core.option.Option.t (ref str.t)) :=
     let* α0 : core.option.Option.t (ref str.t) :=
-      (std.collections.hash.map.HashMap.t
-            (ref str.t)
-            (ref str.t)
-            std.collections.hash.map.RandomState.t)::["remove"]
-        (borrow_mut contacts)
-        (borrow (mk_str "Ashley")) in
+      M.call
+        ((std.collections.hash.map.HashMap.t
+              (ref str.t)
+              (ref str.t)
+              std.collections.hash.map.RandomState.t)::["remove"]
+          (borrow_mut contacts)
+          (borrow (mk_str "Ashley"))) in
     M.alloc α0 in
   let* α0 : std.collections.hash.map.Iter.t (ref str.t) (ref str.t) :=
-    (std.collections.hash.map.HashMap.t
-          (ref str.t)
-          (ref str.t)
-          std.collections.hash.map.RandomState.t)::["iter"]
-      (borrow contacts) in
+    M.call
+      ((std.collections.hash.map.HashMap.t
+            (ref str.t)
+            (ref str.t)
+            std.collections.hash.map.RandomState.t)::["iter"]
+        (borrow contacts)) in
   let* α1 : std.collections.hash.map.Iter.t (ref str.t) (ref str.t) :=
-    (core.iter.traits.collect.IntoIterator.into_iter
-        (Self := std.collections.hash.map.Iter.t (ref str.t) (ref str.t))
-        (Trait := ltac:(refine _)))
-      α0 in
+    M.call
+      ((core.iter.traits.collect.IntoIterator.into_iter
+          (Self := std.collections.hash.map.Iter.t (ref str.t) (ref str.t))
+          (Trait := ltac:(refine _)))
+        α0) in
   let* α2 : M.Val unit :=
     match α1 with
     | iter =>
@@ -276,11 +287,12 @@ Definition main : M unit :=
         (let* _ : M.Val unit :=
           let* α0 :
               core.option.Option.t ((ref (ref str.t)) * (ref (ref str.t))) :=
-            (core.iter.traits.iterator.Iterator.next
-                (Self :=
-                  std.collections.hash.map.Iter.t (ref str.t) (ref str.t))
-                (Trait := ltac:(refine _)))
-              (borrow_mut iter) in
+            M.call
+              ((core.iter.traits.iterator.Iterator.next
+                  (Self :=
+                    std.collections.hash.map.Iter.t (ref str.t) (ref str.t))
+                  (Trait := ltac:(refine _)))
+                (borrow_mut iter)) in
           match α0 with
           | core.option.Option.None  =>
             let* α0 : M.Val never.t := Break in
@@ -300,13 +312,16 @@ Definition main : M unit :=
                 let* α2 : ref (slice (ref str.t)) :=
                   M.read (pointer_coercion "Unsize" α1) in
                 let* α3 : core.fmt.rt.Argument.t :=
-                  core.fmt.rt.Argument.t::["new_display"] (borrow contact) in
+                  M.call
+                    (core.fmt.rt.Argument.t::["new_display"]
+                      (borrow contact)) in
                 let* α4 : M.Val core.fmt.rt.Argument.t := M.alloc α3 in
                 let* α5 : ref str.t := M.read number in
-                let* α6 : ref str.t := hash_map.call α5 in
+                let* α6 : ref str.t := M.call (hash_map.call α5) in
                 let* α7 : M.Val (ref str.t) := M.alloc α6 in
                 let* α8 : core.fmt.rt.Argument.t :=
-                  core.fmt.rt.Argument.t::["new_display"] (borrow α7) in
+                  M.call
+                    (core.fmt.rt.Argument.t::["new_display"] (borrow α7)) in
                 let* α9 : M.Val core.fmt.rt.Argument.t := M.alloc α8 in
                 let* α10 : M.Val (array core.fmt.rt.Argument.t) :=
                   M.alloc [ α4; α9 ] in
@@ -315,8 +330,8 @@ Definition main : M unit :=
                 let* α12 : ref (slice core.fmt.rt.Argument.t) :=
                   M.read (pointer_coercion "Unsize" α11) in
                 let* α13 : core.fmt.Arguments.t :=
-                  core.fmt.Arguments.t::["new_v1"] α2 α12 in
-                let* α14 : unit := std.io.stdio._print α13 in
+                  M.call (core.fmt.Arguments.t::["new_v1"] α2 α12) in
+                let* α14 : unit := M.call (std.io.stdio._print α13) in
                 M.alloc α14 in
               M.alloc tt in
             M.alloc tt

@@ -11,7 +11,10 @@ Definition multiply (first : ref i32.t) (second : ref i32.t) : M i32.t :=
   let* second : M.Val (ref i32.t) := M.alloc second in
   let* α0 : ref i32.t := M.read first in
   let* α1 : ref i32.t := M.read second in
-  (core.ops.arith.Mul.mul (Self := ref i32.t) (Trait := ltac:(refine _))) α0 α1.
+  M.call
+    ((core.ops.arith.Mul.mul (Self := ref i32.t) (Trait := ltac:(refine _)))
+      α0
+      α1).
 
 (*
 fn choose_first<'a: 'b, 'b>(first: &'a i32, _: &'b i32) -> &'b i32 {
@@ -49,12 +52,13 @@ Definition main : M unit :=
         let* α2 : ref (slice (ref str.t)) :=
           M.read (pointer_coercion "Unsize" α1) in
         let* α3 : i32.t :=
-          scoping_rules_lifetimes_coercion.multiply
-            (borrow first)
-            (borrow second) in
+          M.call
+            (scoping_rules_lifetimes_coercion.multiply
+              (borrow first)
+              (borrow second)) in
         let* α4 : M.Val i32.t := M.alloc α3 in
         let* α5 : core.fmt.rt.Argument.t :=
-          core.fmt.rt.Argument.t::["new_display"] (borrow α4) in
+          M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α4)) in
         let* α6 : M.Val core.fmt.rt.Argument.t := M.alloc α5 in
         let* α7 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α6 ] in
         let* α8 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -62,8 +66,8 @@ Definition main : M unit :=
         let* α9 : ref (slice core.fmt.rt.Argument.t) :=
           M.read (pointer_coercion "Unsize" α8) in
         let* α10 : core.fmt.Arguments.t :=
-          core.fmt.Arguments.t::["new_v1"] α2 α9 in
-        let* α11 : unit := std.io.stdio._print α10 in
+          M.call (core.fmt.Arguments.t::["new_v1"] α2 α9) in
+        let* α11 : unit := M.call (std.io.stdio._print α10) in
         M.alloc α11 in
       M.alloc tt in
     let* _ : M.Val unit :=
@@ -75,12 +79,13 @@ Definition main : M unit :=
         let* α2 : ref (slice (ref str.t)) :=
           M.read (pointer_coercion "Unsize" α1) in
         let* α3 : ref i32.t :=
-          scoping_rules_lifetimes_coercion.choose_first
-            (borrow first)
-            (borrow second) in
+          M.call
+            (scoping_rules_lifetimes_coercion.choose_first
+              (borrow first)
+              (borrow second)) in
         let* α4 : M.Val (ref i32.t) := M.alloc α3 in
         let* α5 : core.fmt.rt.Argument.t :=
-          core.fmt.rt.Argument.t::["new_display"] (borrow α4) in
+          M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α4)) in
         let* α6 : M.Val core.fmt.rt.Argument.t := M.alloc α5 in
         let* α7 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α6 ] in
         let* α8 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -88,8 +93,8 @@ Definition main : M unit :=
         let* α9 : ref (slice core.fmt.rt.Argument.t) :=
           M.read (pointer_coercion "Unsize" α8) in
         let* α10 : core.fmt.Arguments.t :=
-          core.fmt.Arguments.t::["new_v1"] α2 α9 in
-        let* α11 : unit := std.io.stdio._print α10 in
+          M.call (core.fmt.Arguments.t::["new_v1"] α2 α9) in
+        let* α11 : unit := M.call (std.io.stdio._print α10) in
         M.alloc α11 in
       M.alloc tt in
     M.alloc tt in

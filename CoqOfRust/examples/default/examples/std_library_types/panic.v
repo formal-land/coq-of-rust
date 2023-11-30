@@ -19,7 +19,7 @@ Definition division (dividend : i32.t) (divisor : i32.t) : M i32.t :=
     if (use (BinOp.Pure.eq α0 (Integer.of_Z 0)) : bool) then
       let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "division by zero") in
-        let* α1 : never.t := std.panicking.begin_panic α0 in
+        let* α1 : never.t := M.call (std.panicking.begin_panic α0) in
         let* α2 : unit := never_to_any α1 in
         M.alloc α2 in
       let* α0 : M.Val unit := M.alloc tt in
@@ -50,11 +50,13 @@ fn main() {
 Definition main : M unit :=
   let* _x : M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t) :=
     let* α0 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t :=
-      (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"]
-        (Integer.of_Z 0) in
+      M.call
+        ((alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"]
+          (Integer.of_Z 0)) in
     M.alloc α0 in
   let* _ : M.Val i32.t :=
-    let* α0 : i32.t := panic.division (Integer.of_Z 3) (Integer.of_Z 0) in
+    let* α0 : i32.t :=
+      M.call (panic.division (Integer.of_Z 3) (Integer.of_Z 0)) in
     M.alloc α0 in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
@@ -65,8 +67,8 @@ Definition main : M unit :=
       let* α2 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α1) in
       let* α3 : core.fmt.Arguments.t :=
-        core.fmt.Arguments.t::["new_const"] α2 in
-      let* α4 : unit := std.io.stdio._print α3 in
+        M.call (core.fmt.Arguments.t::["new_const"] α2) in
+      let* α4 : unit := M.call (std.io.stdio._print α3) in
       M.alloc α4 in
     M.alloc tt in
   let* α0 : M.Val unit := M.alloc tt in

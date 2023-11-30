@@ -92,10 +92,11 @@ Definition random_animal
           alloc.boxed.Box.t
             returning_traits_with_dyn.Sheep.t
             alloc.alloc.Global.t :=
-        (alloc.boxed.Box.t
-              returning_traits_with_dyn.Sheep.t
-              alloc.alloc.Global.t)::["new"]
-          returning_traits_with_dyn.Sheep.Build_t in
+        M.call
+          ((alloc.boxed.Box.t
+                returning_traits_with_dyn.Sheep.t
+                alloc.alloc.Global.t)::["new"]
+            returning_traits_with_dyn.Sheep.Build_t) in
       let* α1 :
           M.Val
             (alloc.boxed.Box.t
@@ -108,10 +109,11 @@ Definition random_animal
           alloc.boxed.Box.t
             returning_traits_with_dyn.Cow.t
             alloc.alloc.Global.t :=
-        (alloc.boxed.Box.t
-              returning_traits_with_dyn.Cow.t
-              alloc.alloc.Global.t)::["new"]
-          returning_traits_with_dyn.Cow.Build_t in
+        M.call
+          ((alloc.boxed.Box.t
+                returning_traits_with_dyn.Cow.t
+                alloc.alloc.Global.t)::["new"]
+            returning_traits_with_dyn.Cow.Build_t) in
       let* α1 :
           M.Val
             (alloc.boxed.Box.t
@@ -138,7 +140,7 @@ Definition main : M unit :=
       M.Val (alloc.boxed.Box.t type not implemented alloc.alloc.Global.t) :=
     let* α0 : f64.t := M.read random_number in
     let* α1 : alloc.boxed.Box.t type not implemented alloc.alloc.Global.t :=
-      returning_traits_with_dyn.random_animal α0 in
+      M.call (returning_traits_with_dyn.random_animal α0) in
     M.alloc α1 in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
@@ -153,13 +155,14 @@ Definition main : M unit :=
       let* α3 : alloc.boxed.Box.t type not implemented alloc.alloc.Global.t :=
         M.read animal in
       let* α4 : ref str.t :=
-        (returning_traits_with_dyn.Animal.noise
-            (Self := type not implemented)
-            (Trait := ltac:(refine _)))
-          (borrow (deref α3)) in
+        M.call
+          ((returning_traits_with_dyn.Animal.noise
+              (Self := type not implemented)
+              (Trait := ltac:(refine _)))
+            (borrow (deref α3))) in
       let* α5 : M.Val (ref str.t) := M.alloc α4 in
       let* α6 : core.fmt.rt.Argument.t :=
-        core.fmt.rt.Argument.t::["new_display"] (borrow α5) in
+        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α5)) in
       let* α7 : M.Val core.fmt.rt.Argument.t := M.alloc α6 in
       let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
       let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -167,8 +170,8 @@ Definition main : M unit :=
       let* α10 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α9) in
       let* α11 : core.fmt.Arguments.t :=
-        core.fmt.Arguments.t::["new_v1"] α2 α10 in
-      let* α12 : unit := std.io.stdio._print α11 in
+        M.call (core.fmt.Arguments.t::["new_v1"] α2 α10) in
+      let* α12 : unit := M.call (std.io.stdio._print α11) in
       M.alloc α12 in
     M.alloc tt in
   let* α0 : M.Val unit := M.alloc tt in

@@ -45,13 +45,15 @@ Section Impl_core_default_Default_for_erc20_Mapping_t_K_V.
   *)
   Definition default : M (erc20.Mapping.t K V) :=
     let* α0 : core.marker.PhantomData.t K :=
-      core.default.Default.default
-        (Self := core.marker.PhantomData.t K)
-        (Trait := ltac:(refine _)) in
+      M.call
+        (core.default.Default.default
+          (Self := core.marker.PhantomData.t K)
+          (Trait := ltac:(refine _))) in
     let* α1 : core.marker.PhantomData.t V :=
-      core.default.Default.default
-        (Self := core.marker.PhantomData.t V)
-        (Trait := ltac:(refine _)) in
+      M.call
+        (core.default.Default.default
+          (Self := core.marker.PhantomData.t V)
+          (Trait := ltac:(refine _))) in
     M.pure {| erc20.Mapping._key := α0; erc20.Mapping._value := α1; |}.
   
   Global Instance AssociatedFunction_default :
@@ -83,7 +85,7 @@ Section Impl_erc20_Mapping_t_K_V.
     let* self : M.Val (ref ltac:(Self)) := M.alloc self in
     let* _key : M.Val (ref K) := M.alloc _key in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
-    let* α1 : never.t := core.panicking.panic α0 in
+    let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
   Global Instance AssociatedFunction_get :
@@ -105,7 +107,7 @@ Section Impl_erc20_Mapping_t_K_V.
     let* _key : M.Val K := M.alloc _key in
     let* _value : M.Val V := M.alloc _value in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
-    let* α1 : never.t := core.panicking.panic α0 in
+    let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
   Global Instance AssociatedFunction_insert :
@@ -136,9 +138,10 @@ Section Impl_core_default_Default_for_erc20_AccountId_t.
   *)
   Definition default : M erc20.AccountId.t :=
     let* α0 : u128.t :=
-      core.default.Default.default
-        (Self := u128.t)
-        (Trait := ltac:(refine _)) in
+      M.call
+        (core.default.Default.default
+          (Self := u128.t)
+          (Trait := ltac:(refine _))) in
     M.pure (erc20.AccountId.Build_t α0).
   
   Global Instance AssociatedFunction_default :
@@ -263,17 +266,21 @@ Section Impl_core_default_Default_for_erc20_Erc20_t.
   *)
   Definition default : M erc20.Erc20.t :=
     let* α0 : u128.t :=
-      core.default.Default.default
-        (Self := u128.t)
-        (Trait := ltac:(refine _)) in
+      M.call
+        (core.default.Default.default
+          (Self := u128.t)
+          (Trait := ltac:(refine _))) in
     let* α1 : erc20.Mapping.t erc20.AccountId.t u128.t :=
-      core.default.Default.default
-        (Self := erc20.Mapping.t erc20.AccountId.t u128.t)
-        (Trait := ltac:(refine _)) in
+      M.call
+        (core.default.Default.default
+          (Self := erc20.Mapping.t erc20.AccountId.t u128.t)
+          (Trait := ltac:(refine _))) in
     let* α2 : erc20.Mapping.t (erc20.AccountId.t * erc20.AccountId.t) u128.t :=
-      core.default.Default.default
-        (Self := erc20.Mapping.t (erc20.AccountId.t * erc20.AccountId.t) u128.t)
-        (Trait := ltac:(refine _)) in
+      M.call
+        (core.default.Default.default
+          (Self :=
+            erc20.Mapping.t (erc20.AccountId.t * erc20.AccountId.t) u128.t)
+          (Trait := ltac:(refine _))) in
     M.pure
       {|
         erc20.Erc20.total_supply := α0;
@@ -334,7 +341,7 @@ Section Impl_core_convert_Into_erc20_Event_t_for_erc20_Transfer_t.
   Definition into (self : ltac:(Self)) : M erc20.Event.t :=
     let* self : M.Val ltac:(Self) := M.alloc self in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
-    let* α1 : never.t := core.panicking.panic α0 in
+    let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
   Global Instance AssociatedFunction_into :
@@ -393,7 +400,7 @@ Section Impl_core_convert_Into_erc20_Event_t_for_erc20_Approval_t.
   Definition into (self : ltac:(Self)) : M erc20.Event.t :=
     let* self : M.Val ltac:(Self) := M.alloc self in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
-    let* α1 : never.t := core.panicking.panic α0 in
+    let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
   Global Instance AssociatedFunction_into :
@@ -481,7 +488,7 @@ Section Impl_erc20_Erc20_t.
   *)
   Definition env (self : ref ltac:(Self)) : M erc20.Env.t :=
     let* self : M.Val (ref ltac:(Self)) := M.alloc self in
-    erc20.Erc20.t::["init_env"].
+    M.call erc20.Erc20.t::["init_env"].
   
   Global Instance AssociatedFunction_env :
     Notations.DoubleColon ltac:(Self) "env" := {
@@ -515,44 +522,50 @@ Section Impl_erc20_Erc20_t_2.
     let* total_supply : M.Val ltac:(erc20.Balance) := M.alloc total_supply in
     let* balances : M.Val (erc20.Mapping.t erc20.AccountId.t u128.t) :=
       let* α0 : erc20.Mapping.t erc20.AccountId.t u128.t :=
-        core.default.Default.default
-          (Self := erc20.Mapping.t erc20.AccountId.t u128.t)
-          (Trait := ltac:(refine _)) in
+        M.call
+          (core.default.Default.default
+            (Self := erc20.Mapping.t erc20.AccountId.t u128.t)
+            (Trait := ltac:(refine _))) in
       M.alloc α0 in
     let* caller : M.Val erc20.AccountId.t :=
-      let* α0 : erc20.Env.t := erc20.Erc20.t::["init_env"] in
+      let* α0 : erc20.Env.t := M.call erc20.Erc20.t::["init_env"] in
       let* α1 : M.Val erc20.Env.t := M.alloc α0 in
-      let* α2 : erc20.AccountId.t := erc20.Env.t::["caller"] (borrow α1) in
+      let* α2 : erc20.AccountId.t :=
+        M.call (erc20.Env.t::["caller"] (borrow α1)) in
       M.alloc α2 in
     let* _ : M.Val unit :=
       let* α0 : erc20.AccountId.t := M.read caller in
       let* α1 : u128.t := M.read total_supply in
       let* α2 : unit :=
-        (erc20.Mapping.t erc20.AccountId.t u128.t)::["insert"]
-          (borrow_mut balances)
-          α0
-          α1 in
+        M.call
+          ((erc20.Mapping.t erc20.AccountId.t u128.t)::["insert"]
+            (borrow_mut balances)
+            α0
+            α1) in
       M.alloc α2 in
     let* _ : M.Val unit :=
-      let* α0 : erc20.Env.t := erc20.Erc20.t::["init_env"] in
+      let* α0 : erc20.Env.t := M.call erc20.Erc20.t::["init_env"] in
       let* α1 : M.Val erc20.Env.t := M.alloc α0 in
       let* α2 : erc20.AccountId.t := M.read caller in
       let* α3 : u128.t := M.read total_supply in
       let* α4 : unit :=
-        erc20.Env.t::["emit_event"]
-          (borrow α1)
-          {|
-            erc20.Transfer.from := core.option.Option.None;
-            erc20.Transfer.to := core.option.Option.Some α2;
-            erc20.Transfer.value := α3;
-          |} in
+        M.call
+          (erc20.Env.t::["emit_event"]
+            (borrow α1)
+            {|
+              erc20.Transfer.from := core.option.Option.None;
+              erc20.Transfer.to := core.option.Option.Some α2;
+              erc20.Transfer.value := α3;
+            |}) in
       M.alloc α4 in
     let* α0 : u128.t := M.read total_supply in
     let* α1 : erc20.Mapping.t erc20.AccountId.t u128.t := M.read balances in
     let* α2 : erc20.Mapping.t (erc20.AccountId.t * erc20.AccountId.t) u128.t :=
-      core.default.Default.default
-        (Self := erc20.Mapping.t (erc20.AccountId.t * erc20.AccountId.t) u128.t)
-        (Trait := ltac:(refine _)) in
+      M.call
+        (core.default.Default.default
+          (Self :=
+            erc20.Mapping.t (erc20.AccountId.t * erc20.AccountId.t) u128.t)
+          (Trait := ltac:(refine _))) in
     let* α0 : M.Val erc20.Erc20.t :=
       M.alloc
         {|
@@ -596,10 +609,11 @@ Section Impl_erc20_Erc20_t_2.
     let* α0 : ref erc20.Erc20.t := M.read self in
     let* α1 : ref erc20.AccountId.t := M.read owner in
     let* α2 : core.option.Option.t u128.t :=
-      (erc20.Mapping.t erc20.AccountId.t u128.t)::["get"]
-        (borrow (deref α0).["balances"])
-        α1 in
-    (core.option.Option.t u128.t)::["unwrap_or_default"] α2.
+      M.call
+        ((erc20.Mapping.t erc20.AccountId.t u128.t)::["get"]
+          (borrow (deref α0).["balances"])
+          α1) in
+    M.call ((core.option.Option.t u128.t)::["unwrap_or_default"] α2).
   
   Global Instance AssociatedFunction_balance_of_impl :
     Notations.DoubleColon ltac:(Self) "balance_of_impl" := {
@@ -618,7 +632,7 @@ Section Impl_erc20_Erc20_t_2.
     let* self : M.Val (ref ltac:(Self)) := M.alloc self in
     let* owner : M.Val erc20.AccountId.t := M.alloc owner in
     let* α0 : ref erc20.Erc20.t := M.read self in
-    erc20.Erc20.t::["balance_of_impl"] α0 (borrow owner).
+    M.call (erc20.Erc20.t::["balance_of_impl"] α0 (borrow owner)).
   
   Global Instance AssociatedFunction_balance_of :
     Notations.DoubleColon ltac:(Self) "balance_of" := {
@@ -646,10 +660,13 @@ Section Impl_erc20_Erc20_t_2.
     let* α5 : M.Val (erc20.AccountId.t * erc20.AccountId.t) :=
       M.alloc (α2, α4) in
     let* α6 : core.option.Option.t u128.t :=
-      (erc20.Mapping.t (erc20.AccountId.t * erc20.AccountId.t) u128.t)::["get"]
-        (borrow (deref α0).["allowances"])
-        (borrow α5) in
-    (core.option.Option.t u128.t)::["unwrap_or_default"] α6.
+      M.call
+        ((erc20.Mapping.t
+              (erc20.AccountId.t * erc20.AccountId.t)
+              u128.t)::["get"]
+          (borrow (deref α0).["allowances"])
+          (borrow α5)) in
+    M.call ((core.option.Option.t u128.t)::["unwrap_or_default"] α6).
   
   Global Instance AssociatedFunction_allowance_impl :
     Notations.DoubleColon ltac:(Self) "allowance_impl" := {
@@ -670,7 +687,8 @@ Section Impl_erc20_Erc20_t_2.
     let* owner : M.Val erc20.AccountId.t := M.alloc owner in
     let* spender : M.Val erc20.AccountId.t := M.alloc spender in
     let* α0 : ref erc20.Erc20.t := M.read self in
-    erc20.Erc20.t::["allowance_impl"] α0 (borrow owner) (borrow spender).
+    M.call
+      (erc20.Erc20.t::["allowance_impl"] α0 (borrow owner) (borrow spender)).
   
   Global Instance AssociatedFunction_allowance :
     Notations.DoubleColon ltac:(Self) "allowance" := {
@@ -711,7 +729,7 @@ Section Impl_erc20_Erc20_t_2.
         let* α0 : mut_ref erc20.Erc20.t := M.read self in
         let* α1 : ref erc20.AccountId.t := M.read from in
         let* α2 : u128.t :=
-          erc20.Erc20.t::["balance_of_impl"] (borrow (deref α0)) α1 in
+          M.call (erc20.Erc20.t::["balance_of_impl"] (borrow (deref α0)) α1) in
         M.alloc α2 in
       let* _ : M.Val unit :=
         let* α0 : u128.t := M.read from_balance in
@@ -733,16 +751,17 @@ Section Impl_erc20_Erc20_t_2.
         let* α4 : u128.t := M.read value in
         let* α5 : u128.t := BinOp.Panic.sub α3 α4 in
         let* α6 : unit :=
-          (erc20.Mapping.t erc20.AccountId.t u128.t)::["insert"]
-            (borrow_mut (deref α0).["balances"])
-            α2
-            α5 in
+          M.call
+            ((erc20.Mapping.t erc20.AccountId.t u128.t)::["insert"]
+              (borrow_mut (deref α0).["balances"])
+              α2
+              α5) in
         M.alloc α6 in
       let* to_balance : M.Val u128.t :=
         let* α0 : mut_ref erc20.Erc20.t := M.read self in
         let* α1 : ref erc20.AccountId.t := M.read to in
         let* α2 : u128.t :=
-          erc20.Erc20.t::["balance_of_impl"] (borrow (deref α0)) α1 in
+          M.call (erc20.Erc20.t::["balance_of_impl"] (borrow (deref α0)) α1) in
         M.alloc α2 in
       let* _ : M.Val unit :=
         let* α0 : mut_ref erc20.Erc20.t := M.read self in
@@ -752,14 +771,16 @@ Section Impl_erc20_Erc20_t_2.
         let* α4 : u128.t := M.read value in
         let* α5 : u128.t := BinOp.Panic.add α3 α4 in
         let* α6 : unit :=
-          (erc20.Mapping.t erc20.AccountId.t u128.t)::["insert"]
-            (borrow_mut (deref α0).["balances"])
-            α2
-            α5 in
+          M.call
+            ((erc20.Mapping.t erc20.AccountId.t u128.t)::["insert"]
+              (borrow_mut (deref α0).["balances"])
+              α2
+              α5) in
         M.alloc α6 in
       let* _ : M.Val unit :=
         let* α0 : mut_ref erc20.Erc20.t := M.read self in
-        let* α1 : erc20.Env.t := erc20.Erc20.t::["env"] (borrow (deref α0)) in
+        let* α1 : erc20.Env.t :=
+          M.call (erc20.Erc20.t::["env"] (borrow (deref α0))) in
         let* α2 : M.Val erc20.Env.t := M.alloc α1 in
         let* α3 : ref erc20.AccountId.t := M.read from in
         let* α4 : erc20.AccountId.t := M.read (deref α3) in
@@ -767,13 +788,14 @@ Section Impl_erc20_Erc20_t_2.
         let* α6 : erc20.AccountId.t := M.read (deref α5) in
         let* α7 : u128.t := M.read value in
         let* α8 : unit :=
-          erc20.Env.t::["emit_event"]
-            (borrow α2)
-            {|
-              erc20.Transfer.from := core.option.Option.Some α4;
-              erc20.Transfer.to := core.option.Option.Some α6;
-              erc20.Transfer.value := α7;
-            |} in
+          M.call
+            (erc20.Env.t::["emit_event"]
+              (borrow α2)
+              {|
+                erc20.Transfer.from := core.option.Option.Some α4;
+                erc20.Transfer.to := core.option.Option.Some α6;
+                erc20.Transfer.value := α7;
+              |}) in
         M.alloc α8 in
       let* α0 : M.Val (core.result.Result.t unit erc20.Error.t) :=
         M.alloc (core.result.Result.Ok tt) in
@@ -800,14 +822,17 @@ Section Impl_erc20_Erc20_t_2.
     let* value : M.Val ltac:(erc20.Balance) := M.alloc value in
     let* from : M.Val erc20.AccountId.t :=
       let* α0 : mut_ref erc20.Erc20.t := M.read self in
-      let* α1 : erc20.Env.t := erc20.Erc20.t::["env"] (borrow (deref α0)) in
+      let* α1 : erc20.Env.t :=
+        M.call (erc20.Erc20.t::["env"] (borrow (deref α0))) in
       let* α2 : M.Val erc20.Env.t := M.alloc α1 in
-      let* α3 : erc20.AccountId.t := erc20.Env.t::["caller"] (borrow α2) in
+      let* α3 : erc20.AccountId.t :=
+        M.call (erc20.Env.t::["caller"] (borrow α2)) in
       M.alloc α3 in
     let* α0 : mut_ref erc20.Erc20.t := M.read self in
     let* α1 : u128.t := M.read value in
     let* α2 : core.result.Result.t unit erc20.Error.t :=
-      erc20.Erc20.t::["transfer_from_to"] α0 (borrow from) (borrow to) α1 in
+      M.call
+        (erc20.Erc20.t::["transfer_from_to"] α0 (borrow from) (borrow to) α1) in
     let* α0 : M.Val (core.result.Result.t unit erc20.Error.t) := M.alloc α2 in
     M.read α0.
   
@@ -838,9 +863,11 @@ Section Impl_erc20_Erc20_t_2.
     let* value : M.Val ltac:(erc20.Balance) := M.alloc value in
     let* owner : M.Val erc20.AccountId.t :=
       let* α0 : mut_ref erc20.Erc20.t := M.read self in
-      let* α1 : erc20.Env.t := erc20.Erc20.t::["env"] (borrow (deref α0)) in
+      let* α1 : erc20.Env.t :=
+        M.call (erc20.Erc20.t::["env"] (borrow (deref α0))) in
       let* α2 : M.Val erc20.Env.t := M.alloc α1 in
-      let* α3 : erc20.AccountId.t := erc20.Env.t::["caller"] (borrow α2) in
+      let* α3 : erc20.AccountId.t :=
+        M.call (erc20.Env.t::["caller"] (borrow α2)) in
       M.alloc α3 in
     let* _ : M.Val unit :=
       let* α0 : mut_ref erc20.Erc20.t := M.read self in
@@ -848,28 +875,31 @@ Section Impl_erc20_Erc20_t_2.
       let* α2 : erc20.AccountId.t := M.read spender in
       let* α3 : u128.t := M.read value in
       let* α4 : unit :=
-        (erc20.Mapping.t
-              (erc20.AccountId.t * erc20.AccountId.t)
-              u128.t)::["insert"]
-          (borrow_mut (deref α0).["allowances"])
-          (α1, α2)
-          α3 in
+        M.call
+          ((erc20.Mapping.t
+                (erc20.AccountId.t * erc20.AccountId.t)
+                u128.t)::["insert"]
+            (borrow_mut (deref α0).["allowances"])
+            (α1, α2)
+            α3) in
       M.alloc α4 in
     let* _ : M.Val unit :=
       let* α0 : mut_ref erc20.Erc20.t := M.read self in
-      let* α1 : erc20.Env.t := erc20.Erc20.t::["env"] (borrow (deref α0)) in
+      let* α1 : erc20.Env.t :=
+        M.call (erc20.Erc20.t::["env"] (borrow (deref α0))) in
       let* α2 : M.Val erc20.Env.t := M.alloc α1 in
       let* α3 : erc20.AccountId.t := M.read owner in
       let* α4 : erc20.AccountId.t := M.read spender in
       let* α5 : u128.t := M.read value in
       let* α6 : unit :=
-        erc20.Env.t::["emit_event"]
-          (borrow α2)
-          {|
-            erc20.Approval.owner := α3;
-            erc20.Approval.spender := α4;
-            erc20.Approval.value := α5;
-          |} in
+        M.call
+          (erc20.Env.t::["emit_event"]
+            (borrow α2)
+            {|
+              erc20.Approval.owner := α3;
+              erc20.Approval.spender := α4;
+              erc20.Approval.value := α5;
+            |}) in
       M.alloc α6 in
     let* α0 : M.Val (core.result.Result.t unit erc20.Error.t) :=
       M.alloc (core.result.Result.Ok tt) in
@@ -906,17 +936,20 @@ Section Impl_erc20_Erc20_t_2.
     M.catch_return
       (let* caller : M.Val erc20.AccountId.t :=
         let* α0 : mut_ref erc20.Erc20.t := M.read self in
-        let* α1 : erc20.Env.t := erc20.Erc20.t::["env"] (borrow (deref α0)) in
+        let* α1 : erc20.Env.t :=
+          M.call (erc20.Erc20.t::["env"] (borrow (deref α0))) in
         let* α2 : M.Val erc20.Env.t := M.alloc α1 in
-        let* α3 : erc20.AccountId.t := erc20.Env.t::["caller"] (borrow α2) in
+        let* α3 : erc20.AccountId.t :=
+          M.call (erc20.Env.t::["caller"] (borrow α2)) in
         M.alloc α3 in
       let* allowance : M.Val u128.t :=
         let* α0 : mut_ref erc20.Erc20.t := M.read self in
         let* α1 : u128.t :=
-          erc20.Erc20.t::["allowance_impl"]
-            (borrow (deref α0))
-            (borrow from)
-            (borrow caller) in
+          M.call
+            (erc20.Erc20.t::["allowance_impl"]
+              (borrow (deref α0))
+              (borrow from)
+              (borrow caller)) in
         M.alloc α1 in
       let* _ : M.Val unit :=
         let* α0 : u128.t := M.read allowance in
@@ -935,15 +968,21 @@ Section Impl_erc20_Erc20_t_2.
         let* α0 : mut_ref erc20.Erc20.t := M.read self in
         let* α1 : u128.t := M.read value in
         let* α2 : core.result.Result.t unit erc20.Error.t :=
-          erc20.Erc20.t::["transfer_from_to"] α0 (borrow from) (borrow to) α1 in
+          M.call
+            (erc20.Erc20.t::["transfer_from_to"]
+              α0
+              (borrow from)
+              (borrow to)
+              α1) in
         let* α3 :
             core.ops.control_flow.ControlFlow.t
               (core.result.Result.t core.convert.Infallible.t erc20.Error.t)
               unit :=
-          (core.ops.try_trait.Try.branch
-              (Self := core.result.Result.t unit erc20.Error.t)
-              (Trait := ltac:(refine _)))
-            α2 in
+          M.call
+            ((core.ops.try_trait.Try.branch
+                (Self := core.result.Result.t unit erc20.Error.t)
+                (Trait := ltac:(refine _)))
+              α2) in
         match α3 with
         | core.ops.control_flow.ControlFlow.Break residual =>
           let* residual := M.alloc residual in
@@ -951,10 +990,11 @@ Section Impl_erc20_Erc20_t_2.
               core.result.Result.t core.convert.Infallible.t erc20.Error.t :=
             M.read residual in
           let* α1 : core.result.Result.t unit erc20.Error.t :=
-            (core.ops.try_trait.FromResidual.from_residual
-                (Self := core.result.Result.t unit erc20.Error.t)
-                (Trait := ltac:(refine _)))
-              α0 in
+            M.call
+              ((core.ops.try_trait.FromResidual.from_residual
+                  (Self := core.result.Result.t unit erc20.Error.t)
+                  (Trait := ltac:(refine _)))
+                α0) in
           let* α2 : M.Val never.t := return_ α1 in
           let* α3 := M.read α2 in
           let* α4 : unit := never_to_any α3 in
@@ -971,12 +1011,13 @@ Section Impl_erc20_Erc20_t_2.
         let* α4 : u128.t := M.read value in
         let* α5 : u128.t := BinOp.Panic.sub α3 α4 in
         let* α6 : unit :=
-          (erc20.Mapping.t
-                (erc20.AccountId.t * erc20.AccountId.t)
-                u128.t)::["insert"]
-            (borrow_mut (deref α0).["allowances"])
-            (α1, α2)
-            α5 in
+          M.call
+            ((erc20.Mapping.t
+                  (erc20.AccountId.t * erc20.AccountId.t)
+                  u128.t)::["insert"]
+              (borrow_mut (deref α0).["allowances"])
+              (α1, α2)
+              α5) in
         M.alloc α6 in
       let* α0 : M.Val (core.result.Result.t unit erc20.Error.t) :=
         M.alloc (core.result.Result.Ok tt) in

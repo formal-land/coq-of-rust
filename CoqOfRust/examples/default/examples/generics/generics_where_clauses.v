@@ -37,7 +37,7 @@ Section Impl_generics_where_clauses_PrintInOption_for_T.
         let* α4 : M.Val (core.option.Option.t T) :=
           M.alloc (core.option.Option.Some α3) in
         let* α5 : core.fmt.rt.Argument.t :=
-          core.fmt.rt.Argument.t::["new_debug"] (borrow α4) in
+          M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow α4)) in
         let* α6 : M.Val core.fmt.rt.Argument.t := M.alloc α5 in
         let* α7 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α6 ] in
         let* α8 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -45,8 +45,8 @@ Section Impl_generics_where_clauses_PrintInOption_for_T.
         let* α9 : ref (slice core.fmt.rt.Argument.t) :=
           M.read (pointer_coercion "Unsize" α8) in
         let* α10 : core.fmt.Arguments.t :=
-          core.fmt.Arguments.t::["new_v1"] α2 α9 in
-        let* α11 : unit := std.io.stdio._print α10 in
+          M.call (core.fmt.Arguments.t::["new_v1"] α2 α9) in
+        let* α11 : unit := M.call (std.io.stdio._print α10) in
         M.alloc α11 in
       M.alloc tt in
     let* α0 : M.Val unit := M.alloc tt in
@@ -79,19 +79,20 @@ Definition main : M unit :=
     let* α2 : M.Val i32.t := M.alloc (Integer.of_Z 3) in
     let* α3 : M.Val (array i32.t) := M.alloc [ α0; α1; α2 ] in
     let* α4 : M.Val (alloc.boxed.Box.t (array i32.t) alloc.alloc.Global.t) :=
-      (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α3 in
+      M.call ((alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α3) in
     let* α5 : alloc.boxed.Box.t (slice i32.t) alloc.alloc.Global.t :=
       M.read (pointer_coercion "Unsize" α4) in
     let* α6 : alloc.vec.Vec.t i32.t alloc.alloc.Global.t :=
-      (slice i32.t)::["into_vec"] α5 in
+      M.call ((slice i32.t)::["into_vec"] α5) in
     M.alloc α6 in
   let* _ : M.Val unit :=
     let* α0 : alloc.vec.Vec.t i32.t alloc.alloc.Global.t := M.read vec in
     let* α1 : unit :=
-      (generics_where_clauses.PrintInOption.print_in_option
-          (Self := alloc.vec.Vec.t i32.t alloc.alloc.Global.t)
-          (Trait := ltac:(refine _)))
-        α0 in
+      M.call
+        ((generics_where_clauses.PrintInOption.print_in_option
+            (Self := alloc.vec.Vec.t i32.t alloc.alloc.Global.t)
+            (Trait := ltac:(refine _)))
+          α0) in
     M.alloc α1 in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.

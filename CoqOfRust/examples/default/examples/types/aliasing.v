@@ -42,17 +42,17 @@ Definition main : M unit :=
       let* α2 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α1) in
       let* α3 : core.fmt.rt.Argument.t :=
-        core.fmt.rt.Argument.t::["new_display"] (borrow nanoseconds) in
+        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow nanoseconds)) in
       let* α4 : M.Val core.fmt.rt.Argument.t := M.alloc α3 in
       let* α5 : core.fmt.rt.Argument.t :=
-        core.fmt.rt.Argument.t::["new_display"] (borrow inches) in
+        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow inches)) in
       let* α6 : M.Val core.fmt.rt.Argument.t := M.alloc α5 in
       let* α7 : u64.t := M.read nanoseconds in
       let* α8 : u64.t := M.read inches in
       let* α9 : u64.t := BinOp.Panic.add α7 α8 in
       let* α10 : M.Val u64.t := M.alloc α9 in
       let* α11 : core.fmt.rt.Argument.t :=
-        core.fmt.rt.Argument.t::["new_display"] (borrow α10) in
+        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α10)) in
       let* α12 : M.Val core.fmt.rt.Argument.t := M.alloc α11 in
       let* α13 : M.Val (array core.fmt.rt.Argument.t) :=
         M.alloc [ α4; α6; α12 ] in
@@ -61,8 +61,8 @@ Definition main : M unit :=
       let* α15 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α14) in
       let* α16 : core.fmt.Arguments.t :=
-        core.fmt.Arguments.t::["new_v1"] α2 α15 in
-      let* α17 : unit := std.io.stdio._print α16 in
+        M.call (core.fmt.Arguments.t::["new_v1"] α2 α15) in
+      let* α17 : unit := M.call (std.io.stdio._print α16) in
       M.alloc α17 in
     M.alloc tt in
   let* α0 : M.Val unit := M.alloc tt in

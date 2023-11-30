@@ -25,7 +25,7 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
   let* _ : M.Val unit :=
-    let* α0 : unit := dead_code.used_function in
+    let* α0 : unit := M.call dead_code.used_function in
     M.alloc α0 in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.

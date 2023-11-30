@@ -51,10 +51,11 @@ fn main() {
 Definition main : M unit :=
   let* _ : M.Val from.Number.t :=
     let* α0 : from.Number.t :=
-      (core.convert.From.from
-          (Self := from.Number.t)
-          (Trait := ltac:(refine _)))
-        (Integer.of_Z 30) in
+      M.call
+        ((core.convert.From.from
+            (Self := from.Number.t)
+            (Trait := ltac:(refine _)))
+          (Integer.of_Z 30)) in
     M.alloc α0 in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.

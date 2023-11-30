@@ -40,15 +40,18 @@ Section Impl_core_fmt_Display_for_converting_to_string_Circle_t.
       M.read (pointer_coercion "Unsize" α2) in
     let* α4 : ref converting_to_string.Circle.t := M.read self in
     let* α5 : core.fmt.rt.Argument.t :=
-      core.fmt.rt.Argument.t::["new_display"] (borrow (deref α4).["radius"]) in
+      M.call
+        (core.fmt.rt.Argument.t::["new_display"]
+          (borrow (deref α4).["radius"])) in
     let* α6 : M.Val core.fmt.rt.Argument.t := M.alloc α5 in
     let* α7 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α6 ] in
     let* α8 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
       M.alloc (borrow α7) in
     let* α9 : ref (slice core.fmt.rt.Argument.t) :=
       M.read (pointer_coercion "Unsize" α8) in
-    let* α10 : core.fmt.Arguments.t := core.fmt.Arguments.t::["new_v1"] α3 α9 in
-    core.fmt.Formatter.t::["write_fmt"] α0 α10.
+    let* α10 : core.fmt.Arguments.t :=
+      M.call (core.fmt.Arguments.t::["new_v1"] α3 α9) in
+    M.call (core.fmt.Formatter.t::["write_fmt"] α0 α10).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -73,10 +76,11 @@ Definition main : M unit :=
     M.alloc {| converting_to_string.Circle.radius := Integer.of_Z 6; |} in
   let* _ : M.Val alloc.string.String.t :=
     let* α0 : alloc.string.String.t :=
-      (alloc.string.ToString.to_string
-          (Self := converting_to_string.Circle.t)
-          (Trait := ltac:(refine _)))
-        (borrow circle) in
+      M.call
+        ((alloc.string.ToString.to_string
+            (Self := converting_to_string.Circle.t)
+            (Trait := ltac:(refine _)))
+          (borrow circle)) in
     M.alloc α0 in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.
