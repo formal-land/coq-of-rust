@@ -83,6 +83,9 @@ Module Run.
     t env result state' (LowM.Call e k) state.
 End Run.
 
+Notation "{{ env , state | e ⇓ result | state' }}" :=
+  (Run.t env result state' e state).
+
 (** Simplify the usual case of read of immediate value. *)
 Lemma read_of_imm {A : Set} (v : A) :
   M.read (Ref.Imm v) =

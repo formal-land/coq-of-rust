@@ -10,26 +10,6 @@ Section Mapping.
   Parameter get : K -> t K V -> option.Option.t V.
   Parameter insert : K -> V -> t K V -> t K V.
   Parameter sum : (V -> Z) -> t K V -> Z.
-
-  Axiom get_empty : forall k,
-    get k empty = option.Option.None.
-
-  Axiom get_insert_eq : forall k v m,
-    get k (insert k v m) = option.Option.Some v.
-  Axiom get_insert_neq : forall k1 k2 v m,
-    k1 <> k2 ->
-    get k1 (insert k2 v m) = get k1 m.
-
-  Axiom sum_empty : forall f,
-    sum f empty = 0.
-  Axiom sum_insert : forall f k v m,
-    sum f (insert k v m) =
-      (f v -
-      match get k m with
-      | option.Option.None => 0
-      | option.Option.Some v' => f v'
-      end +
-      sum f m)%Z.
 End Mapping.
 End Mapping.
 
