@@ -56,7 +56,7 @@ for filename in os.listdir(source_dir):
             content = content.replace(
                 'use ink::storage::Mapping;',
                 'use crate::storage::*; use crate::storage::Balance; use crate::storage::Error; \
-                use crate::storage::Environment;',
+                use crate::storage::Environment; use crate::storage::AccountId; ',
             )
 
             content = content.replace(
@@ -136,7 +136,9 @@ for filename in os.listdir(source_dir):
                 '#[ink::trait_definition]',
                 '#[ink(message, selector = 0xF23A6E61)]',
                 '#[ink(message, selector = 0xBC197C81)]',
-                '#[ink(message, selector = 0xBC197C81)]'
+                '#[ink(message, selector = 0xBC197C81)]',
+                '#[ink(message, payable)]',
+
             ]
             for macro in macros_to_comment:
                 content = content.replace(macro, '// ' + macro)

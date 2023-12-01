@@ -162,6 +162,7 @@ impl<
         R0: EncodeLike<R1>,
         R1: Encode,
     >
+ 
     EncodeLike<(
         A1,
         B1,
@@ -779,8 +780,8 @@ pub struct Call<E: Environment> {
 }
 
 pub struct EmptyArgumentList {}
-pub struct ReturnType<T>(marker::PhantomData<fn() -> T>);
-pub struct Unset<T>(marker::PhantomData<fn() -> T>);
+pub struct ReturnType<T>(PhantomData<fn() -> T>);
+pub struct Unset<T>(PhantomData<fn() -> T>);
 
 // ink::env::call
 pub mod call {
@@ -802,6 +803,12 @@ pub mod call {
   //     }
   // }
   use crate::storage::Environment;
+  use crate::storage::Unset;
+  use crate::storage::EmptyArgumentList;
+  use crate::storage::ExecutionInput;
+  use crate::storage::ReturnType;
+  use crate::storage::Call;
+
   pub fn build_call<E>() -> CallBuilder<
     E,
     Unset<Call<E>>,
@@ -836,6 +843,10 @@ pub trait Environment {
   type ChainExtension;
 
   const MAX_EVENT_TOPICS: usize;
+}
+
+impl Environment for DefaultEnvironment {
+
 }
 
 pub struct OffChainError {}
