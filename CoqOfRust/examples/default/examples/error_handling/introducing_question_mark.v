@@ -22,17 +22,19 @@ Definition multiply
     (let* first_number : M.Val i32.t :=
       let* α0 : ref str.t := M.read first_number_str in
       let* α1 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
-        str.t::["parse"] α0 in
+        M.call (str.t::["parse"] α0) in
       let* α2 :
           core.ops.control_flow.ControlFlow.t
             (core.result.Result.t
               core.convert.Infallible.t
               core.num.error.ParseIntError.t)
             i32.t :=
-        (core.ops.try_trait.Try.branch
-            (Self := core.result.Result.t i32.t core.num.error.ParseIntError.t)
-            (Trait := ltac:(refine _)))
-          α1 in
+        M.call
+          ((core.ops.try_trait.Try.branch
+              (Self :=
+                core.result.Result.t i32.t core.num.error.ParseIntError.t)
+              (Trait := ltac:(refine _)))
+            α1) in
       let* α3 : M.Val i32.t :=
         match α2 with
         | core.ops.control_flow.ControlFlow.Break residual =>
@@ -43,11 +45,12 @@ Definition multiply
                 core.num.error.ParseIntError.t :=
             M.read residual in
           let* α1 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
-            (core.ops.try_trait.FromResidual.from_residual
-                (Self :=
-                  core.result.Result.t i32.t core.num.error.ParseIntError.t)
-                (Trait := ltac:(refine _)))
-              α0 in
+            M.call
+              ((core.ops.try_trait.FromResidual.from_residual
+                  (Self :=
+                    core.result.Result.t i32.t core.num.error.ParseIntError.t)
+                  (Trait := ltac:(refine _)))
+                α0) in
           let* α2 : M.Val never.t := return_ α1 in
           let* α3 := M.read α2 in
           let* α4 : i32.t := never_to_any α3 in
@@ -60,17 +63,19 @@ Definition multiply
     let* second_number : M.Val i32.t :=
       let* α0 : ref str.t := M.read second_number_str in
       let* α1 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
-        str.t::["parse"] α0 in
+        M.call (str.t::["parse"] α0) in
       let* α2 :
           core.ops.control_flow.ControlFlow.t
             (core.result.Result.t
               core.convert.Infallible.t
               core.num.error.ParseIntError.t)
             i32.t :=
-        (core.ops.try_trait.Try.branch
-            (Self := core.result.Result.t i32.t core.num.error.ParseIntError.t)
-            (Trait := ltac:(refine _)))
-          α1 in
+        M.call
+          ((core.ops.try_trait.Try.branch
+              (Self :=
+                core.result.Result.t i32.t core.num.error.ParseIntError.t)
+              (Trait := ltac:(refine _)))
+            α1) in
       let* α3 : M.Val i32.t :=
         match α2 with
         | core.ops.control_flow.ControlFlow.Break residual =>
@@ -81,11 +86,12 @@ Definition multiply
                 core.num.error.ParseIntError.t :=
             M.read residual in
           let* α1 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
-            (core.ops.try_trait.FromResidual.from_residual
-                (Self :=
-                  core.result.Result.t i32.t core.num.error.ParseIntError.t)
-                (Trait := ltac:(refine _)))
-              α0 in
+            M.call
+              ((core.ops.try_trait.FromResidual.from_residual
+                  (Self :=
+                    core.result.Result.t i32.t core.num.error.ParseIntError.t)
+                  (Trait := ltac:(refine _)))
+                α0) in
           let* α2 : M.Val never.t := return_ α1 in
           let* α3 := M.read α2 in
           let* α4 : i32.t := never_to_any α3 in
@@ -131,7 +137,7 @@ Definition print
         let* α2 : ref (slice (ref str.t)) :=
           M.read (pointer_coercion "Unsize" α1) in
         let* α3 : core.fmt.rt.Argument.t :=
-          core.fmt.rt.Argument.t::["new_display"] (borrow n) in
+          M.call (core.fmt.rt.Argument.t::["new_display"] (borrow n)) in
         let* α4 : M.Val core.fmt.rt.Argument.t := M.alloc α3 in
         let* α5 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4 ] in
         let* α6 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -139,8 +145,8 @@ Definition print
         let* α7 : ref (slice core.fmt.rt.Argument.t) :=
           M.read (pointer_coercion "Unsize" α6) in
         let* α8 : core.fmt.Arguments.t :=
-          core.fmt.Arguments.t::["new_v1"] α2 α7 in
-        let* α9 : unit := std.io.stdio._print α8 in
+          M.call (core.fmt.Arguments.t::["new_v1"] α2 α7) in
+        let* α9 : unit := M.call (std.io.stdio._print α8) in
         M.alloc α9 in
       M.alloc tt
     | core.result.Result.Err e =>
@@ -153,7 +159,7 @@ Definition print
         let* α2 : ref (slice (ref str.t)) :=
           M.read (pointer_coercion "Unsize" α1) in
         let* α3 : core.fmt.rt.Argument.t :=
-          core.fmt.rt.Argument.t::["new_display"] (borrow e) in
+          M.call (core.fmt.rt.Argument.t::["new_display"] (borrow e)) in
         let* α4 : M.Val core.fmt.rt.Argument.t := M.alloc α3 in
         let* α5 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4 ] in
         let* α6 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -161,8 +167,8 @@ Definition print
         let* α7 : ref (slice core.fmt.rt.Argument.t) :=
           M.read (pointer_coercion "Unsize" α6) in
         let* α8 : core.fmt.Arguments.t :=
-          core.fmt.Arguments.t::["new_v1"] α2 α7 in
-        let* α9 : unit := std.io.stdio._print α8 in
+          M.call (core.fmt.Arguments.t::["new_v1"] α2 α7) in
+        let* α9 : unit := M.call (std.io.stdio._print α8) in
         M.alloc α9 in
       M.alloc tt
     end in
@@ -180,15 +186,15 @@ Definition main : M unit :=
     let* α0 : ref str.t := M.read (mk_str "10") in
     let* α1 : ref str.t := M.read (mk_str "2") in
     let* α2 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
-      introducing_question_mark.multiply α0 α1 in
-    let* α3 : unit := introducing_question_mark.print α2 in
+      M.call (introducing_question_mark.multiply α0 α1) in
+    let* α3 : unit := M.call (introducing_question_mark.print α2) in
     M.alloc α3 in
   let* _ : M.Val unit :=
     let* α0 : ref str.t := M.read (mk_str "t") in
     let* α1 : ref str.t := M.read (mk_str "2") in
     let* α2 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
-      introducing_question_mark.multiply α0 α1 in
-    let* α3 : unit := introducing_question_mark.print α2 in
+      M.call (introducing_question_mark.multiply α0 α1) in
+    let* α3 : unit := M.call (introducing_question_mark.print α2) in
     M.alloc α3 in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.

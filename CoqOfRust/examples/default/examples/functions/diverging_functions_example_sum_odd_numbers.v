@@ -37,10 +37,11 @@ Definition main : M unit :=
       let* α1 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α0) in
       let* α2 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α1) in
-      let* α3 : u32.t := "unimplemented parent_kind" (Integer.of_Z 9) in
+      let* α3 : u32.t :=
+        M.call ("unimplemented parent_kind" (Integer.of_Z 9)) in
       let* α4 : M.Val u32.t := M.alloc α3 in
       let* α5 : core.fmt.rt.Argument.t :=
-        core.fmt.rt.Argument.t::["new_display"] (borrow α4) in
+        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α4)) in
       let* α6 : M.Val core.fmt.rt.Argument.t := M.alloc α5 in
       let* α7 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α6 ] in
       let* α8 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -48,8 +49,8 @@ Definition main : M unit :=
       let* α9 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α8) in
       let* α10 : core.fmt.Arguments.t :=
-        core.fmt.Arguments.t::["new_v1"] α2 α9 in
-      let* α11 : unit := std.io.stdio._print α10 in
+        M.call (core.fmt.Arguments.t::["new_v1"] α2 α9) in
+      let* α11 : unit := M.call (std.io.stdio._print α10) in
       M.alloc α11 in
     M.alloc tt in
   let* α0 : M.Val unit := M.alloc tt in
@@ -80,13 +81,14 @@ Definition sum_odd_numbers (up_to : u32.t) : M u32.t :=
   let* _ : M.Val unit :=
     let* α0 : u32.t := M.read up_to in
     let* α1 : core.ops.range.Range.t u32.t :=
-      (core.iter.traits.collect.IntoIterator.into_iter
-          (Self := core.ops.range.Range.t u32.t)
-          (Trait := ltac:(refine _)))
-        {|
-          core.ops.range.Range.start := Integer.of_Z 0;
-          core.ops.range.Range.end := α0;
-        |} in
+      M.call
+        ((core.iter.traits.collect.IntoIterator.into_iter
+            (Self := core.ops.range.Range.t u32.t)
+            (Trait := ltac:(refine _)))
+          {|
+            core.ops.range.Range.start := Integer.of_Z 0;
+            core.ops.range.Range.end := α0;
+          |}) in
     let* α2 : M.Val unit :=
       match α1 with
       | iter =>
@@ -94,10 +96,11 @@ Definition sum_odd_numbers (up_to : u32.t) : M u32.t :=
         loop
           (let* _ : M.Val unit :=
             let* α0 : core.option.Option.t u32.t :=
-              (core.iter.traits.iterator.Iterator.next
-                  (Self := core.ops.range.Range.t u32.t)
-                  (Trait := ltac:(refine _)))
-                (borrow_mut iter) in
+              M.call
+                ((core.iter.traits.iterator.Iterator.next
+                    (Self := core.ops.range.Range.t u32.t)
+                    (Trait := ltac:(refine _)))
+                  (borrow_mut iter)) in
             match α0 with
             | core.option.Option.None  =>
               let* α0 : M.Val never.t := Break in

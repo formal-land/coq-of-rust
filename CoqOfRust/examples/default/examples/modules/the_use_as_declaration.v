@@ -16,8 +16,8 @@ Definition function : M unit :=
       let* α2 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α1) in
       let* α3 : core.fmt.Arguments.t :=
-        core.fmt.Arguments.t::["new_const"] α2 in
-      let* α4 : unit := std.io.stdio._print α3 in
+        M.call (core.fmt.Arguments.t::["new_const"] α2) in
+      let* α4 : unit := M.call (std.io.stdio._print α3) in
       M.alloc α4 in
     M.alloc tt in
   let* α0 : M.Val unit := M.alloc tt in
@@ -40,8 +40,8 @@ Module deeply.
           let* α2 : ref (slice (ref str.t)) :=
             M.read (pointer_coercion "Unsize" α1) in
           let* α3 : core.fmt.Arguments.t :=
-            core.fmt.Arguments.t::["new_const"] α2 in
-          let* α4 : unit := std.io.stdio._print α3 in
+            M.call (core.fmt.Arguments.t::["new_const"] α2) in
+          let* α4 : unit := M.call (std.io.stdio._print α3) in
           M.alloc α4 in
         M.alloc tt in
       let* α0 : M.Val unit := M.alloc tt in
@@ -65,8 +65,8 @@ Module nested.
         let* α2 : ref (slice (ref str.t)) :=
           M.read (pointer_coercion "Unsize" α1) in
         let* α3 : core.fmt.Arguments.t :=
-          core.fmt.Arguments.t::["new_const"] α2 in
-        let* α4 : unit := std.io.stdio._print α3 in
+          M.call (core.fmt.Arguments.t::["new_const"] α2) in
+        let* α4 : unit := M.call (std.io.stdio._print α3) in
         M.alloc α4 in
       M.alloc tt in
     let* α0 : M.Val unit := M.alloc tt in
@@ -88,8 +88,8 @@ Definition function : M unit :=
       let* α2 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α1) in
       let* α3 : core.fmt.Arguments.t :=
-        core.fmt.Arguments.t::["new_const"] α2 in
-      let* α4 : unit := std.io.stdio._print α3 in
+        M.call (core.fmt.Arguments.t::["new_const"] α2) in
+      let* α4 : unit := M.call (std.io.stdio._print α3) in
       M.alloc α4 in
     M.alloc tt in
   let* α0 : M.Val unit := M.alloc tt in
@@ -119,7 +119,7 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
   let* _ : M.Val unit :=
-    let* α0 : unit := the_use_as_declaration.deeply.nested.function in
+    let* α0 : unit := M.call the_use_as_declaration.deeply.nested.function in
     M.alloc α0 in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
@@ -130,13 +130,13 @@ Definition main : M unit :=
       let* α2 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α1) in
       let* α3 : core.fmt.Arguments.t :=
-        core.fmt.Arguments.t::["new_const"] α2 in
-      let* α4 : unit := std.io.stdio._print α3 in
+        M.call (core.fmt.Arguments.t::["new_const"] α2) in
+      let* α4 : unit := M.call (std.io.stdio._print α3) in
       M.alloc α4 in
     M.alloc tt in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
-      let* α0 : unit := the_use_as_declaration.deeply.nested.function in
+      let* α0 : unit := M.call the_use_as_declaration.deeply.nested.function in
       M.alloc α0 in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
@@ -147,13 +147,13 @@ Definition main : M unit :=
         let* α2 : ref (slice (ref str.t)) :=
           M.read (pointer_coercion "Unsize" α1) in
         let* α3 : core.fmt.Arguments.t :=
-          core.fmt.Arguments.t::["new_const"] α2 in
-        let* α4 : unit := std.io.stdio._print α3 in
+          M.call (core.fmt.Arguments.t::["new_const"] α2) in
+        let* α4 : unit := M.call (std.io.stdio._print α3) in
         M.alloc α4 in
       M.alloc tt in
     M.alloc tt in
   let* _ : M.Val unit :=
-    let* α0 : unit := the_use_as_declaration.function in
+    let* α0 : unit := M.call the_use_as_declaration.function in
     M.alloc α0 in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.

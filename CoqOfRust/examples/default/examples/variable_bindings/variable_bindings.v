@@ -38,7 +38,8 @@ Definition main : M unit :=
       let* α2 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α1) in
       let* α3 : core.fmt.rt.Argument.t :=
-        core.fmt.rt.Argument.t::["new_debug"] (borrow copied_integer) in
+        M.call
+          (core.fmt.rt.Argument.t::["new_debug"] (borrow copied_integer)) in
       let* α4 : M.Val core.fmt.rt.Argument.t := M.alloc α3 in
       let* α5 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4 ] in
       let* α6 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -46,8 +47,8 @@ Definition main : M unit :=
       let* α7 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α6) in
       let* α8 : core.fmt.Arguments.t :=
-        core.fmt.Arguments.t::["new_v1"] α2 α7 in
-      let* α9 : unit := std.io.stdio._print α8 in
+        M.call (core.fmt.Arguments.t::["new_v1"] α2 α7) in
+      let* α9 : unit := M.call (std.io.stdio._print α8) in
       M.alloc α9 in
     M.alloc tt in
   let* _ : M.Val unit :=
@@ -59,7 +60,7 @@ Definition main : M unit :=
       let* α2 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α1) in
       let* α3 : core.fmt.rt.Argument.t :=
-        core.fmt.rt.Argument.t::["new_debug"] (borrow a_boolean) in
+        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow a_boolean)) in
       let* α4 : M.Val core.fmt.rt.Argument.t := M.alloc α3 in
       let* α5 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4 ] in
       let* α6 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -67,8 +68,8 @@ Definition main : M unit :=
       let* α7 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α6) in
       let* α8 : core.fmt.Arguments.t :=
-        core.fmt.Arguments.t::["new_v1"] α2 α7 in
-      let* α9 : unit := std.io.stdio._print α8 in
+        M.call (core.fmt.Arguments.t::["new_v1"] α2 α7) in
+      let* α9 : unit := M.call (std.io.stdio._print α8) in
       M.alloc α9 in
     M.alloc tt in
   let* _ : M.Val unit :=
@@ -80,7 +81,7 @@ Definition main : M unit :=
       let* α2 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α1) in
       let* α3 : core.fmt.rt.Argument.t :=
-        core.fmt.rt.Argument.t::["new_debug"] (borrow unit_) in
+        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow unit_)) in
       let* α4 : M.Val core.fmt.rt.Argument.t := M.alloc α3 in
       let* α5 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4 ] in
       let* α6 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -88,8 +89,8 @@ Definition main : M unit :=
       let* α7 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α6) in
       let* α8 : core.fmt.Arguments.t :=
-        core.fmt.Arguments.t::["new_v1"] α2 α7 in
-      let* α9 : unit := std.io.stdio._print α8 in
+        M.call (core.fmt.Arguments.t::["new_v1"] α2 α7) in
+      let* α9 : unit := M.call (std.io.stdio._print α8) in
       M.alloc α9 in
     M.alloc tt in
   let* _unused_variable : M.Val u32.t := M.alloc (Integer.of_Z 3) in

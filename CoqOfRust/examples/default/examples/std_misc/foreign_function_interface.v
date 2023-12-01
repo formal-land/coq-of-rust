@@ -13,7 +13,7 @@ Definition cos
     : M foreign_function_interface.Complex.t :=
   let* z : M.Val foreign_function_interface.Complex.t := M.alloc z in
   let* α0 : foreign_function_interface.Complex.t := M.read z in
-  "unimplemented parent_kind" α0.
+  M.call ("unimplemented parent_kind" α0).
 
 (*
 fn main() {
@@ -42,7 +42,7 @@ Definition main : M unit :=
   let* z_sqrt : M.Val foreign_function_interface.Complex.t :=
     let* α0 : foreign_function_interface.Complex.t := M.read z in
     let* α1 : foreign_function_interface.Complex.t :=
-      "unimplemented parent_kind" α0 in
+      M.call ("unimplemented parent_kind" α0) in
     M.alloc α1 in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
@@ -53,10 +53,10 @@ Definition main : M unit :=
       let* α2 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α1) in
       let* α3 : core.fmt.rt.Argument.t :=
-        core.fmt.rt.Argument.t::["new_debug"] (borrow z) in
+        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow z)) in
       let* α4 : M.Val core.fmt.rt.Argument.t := M.alloc α3 in
       let* α5 : core.fmt.rt.Argument.t :=
-        core.fmt.rt.Argument.t::["new_debug"] (borrow z_sqrt) in
+        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow z_sqrt)) in
       let* α6 : M.Val core.fmt.rt.Argument.t := M.alloc α5 in
       let* α7 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4; α6 ] in
       let* α8 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -64,8 +64,8 @@ Definition main : M unit :=
       let* α9 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α8) in
       let* α10 : core.fmt.Arguments.t :=
-        core.fmt.Arguments.t::["new_v1"] α2 α9 in
-      let* α11 : unit := std.io.stdio._print α10 in
+        M.call (core.fmt.Arguments.t::["new_v1"] α2 α9) in
+      let* α11 : unit := M.call (std.io.stdio._print α10) in
       M.alloc α11 in
     M.alloc tt in
   let* _ : M.Val unit :=
@@ -77,14 +77,14 @@ Definition main : M unit :=
       let* α2 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α1) in
       let* α3 : core.fmt.rt.Argument.t :=
-        core.fmt.rt.Argument.t::["new_debug"] (borrow z) in
+        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow z)) in
       let* α4 : M.Val core.fmt.rt.Argument.t := M.alloc α3 in
       let* α5 : foreign_function_interface.Complex.t := M.read z in
       let* α6 : foreign_function_interface.Complex.t :=
-        foreign_function_interface.cos α5 in
+        M.call (foreign_function_interface.cos α5) in
       let* α7 : M.Val foreign_function_interface.Complex.t := M.alloc α6 in
       let* α8 : core.fmt.rt.Argument.t :=
-        core.fmt.rt.Argument.t::["new_debug"] (borrow α7) in
+        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow α7)) in
       let* α9 : M.Val core.fmt.rt.Argument.t := M.alloc α8 in
       let* α10 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4; α9 ] in
       let* α11 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -92,8 +92,8 @@ Definition main : M unit :=
       let* α12 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α11) in
       let* α13 : core.fmt.Arguments.t :=
-        core.fmt.Arguments.t::["new_v1"] α2 α12 in
-      let* α14 : unit := std.io.stdio._print α13 in
+        M.call (core.fmt.Arguments.t::["new_v1"] α2 α12) in
+      let* α14 : unit := M.call (std.io.stdio._print α13) in
       M.alloc α14 in
     M.alloc tt in
   let* α0 : M.Val unit := M.alloc tt in
@@ -189,14 +189,16 @@ Section Impl_core_fmt_Debug_for_foreign_function_interface_Complex_t.
           M.read (pointer_coercion "Unsize" α2) in
         let* α4 : ref foreign_function_interface.Complex.t := M.read self in
         let* α5 : core.fmt.rt.Argument.t :=
-          core.fmt.rt.Argument.t::["new_display"] (borrow (deref α4).["re"]) in
+          M.call
+            (core.fmt.rt.Argument.t::["new_display"]
+              (borrow (deref α4).["re"])) in
         let* α6 : M.Val core.fmt.rt.Argument.t := M.alloc α5 in
         let* α7 : ref foreign_function_interface.Complex.t := M.read self in
         let* α8 : f32.t := M.read (deref α7).["im"] in
         let* α9 : f32.t := UnOp.neg α8 in
         let* α10 : M.Val f32.t := M.alloc α9 in
         let* α11 : core.fmt.rt.Argument.t :=
-          core.fmt.rt.Argument.t::["new_display"] (borrow α10) in
+          M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α10)) in
         let* α12 : M.Val core.fmt.rt.Argument.t := M.alloc α11 in
         let* α13 : M.Val (array core.fmt.rt.Argument.t) :=
           M.alloc [ α6; α12 ] in
@@ -205,9 +207,9 @@ Section Impl_core_fmt_Debug_for_foreign_function_interface_Complex_t.
         let* α15 : ref (slice core.fmt.rt.Argument.t) :=
           M.read (pointer_coercion "Unsize" α14) in
         let* α16 : core.fmt.Arguments.t :=
-          core.fmt.Arguments.t::["new_v1"] α3 α15 in
+          M.call (core.fmt.Arguments.t::["new_v1"] α3 α15) in
         let* α17 : core.result.Result.t unit core.fmt.Error.t :=
-          core.fmt.Formatter.t::["write_fmt"] α0 α16 in
+          M.call (core.fmt.Formatter.t::["write_fmt"] α0 α16) in
         M.alloc α17
       else
         let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
@@ -218,11 +220,15 @@ Section Impl_core_fmt_Debug_for_foreign_function_interface_Complex_t.
           M.read (pointer_coercion "Unsize" α2) in
         let* α4 : ref foreign_function_interface.Complex.t := M.read self in
         let* α5 : core.fmt.rt.Argument.t :=
-          core.fmt.rt.Argument.t::["new_display"] (borrow (deref α4).["re"]) in
+          M.call
+            (core.fmt.rt.Argument.t::["new_display"]
+              (borrow (deref α4).["re"])) in
         let* α6 : M.Val core.fmt.rt.Argument.t := M.alloc α5 in
         let* α7 : ref foreign_function_interface.Complex.t := M.read self in
         let* α8 : core.fmt.rt.Argument.t :=
-          core.fmt.rt.Argument.t::["new_display"] (borrow (deref α7).["im"]) in
+          M.call
+            (core.fmt.rt.Argument.t::["new_display"]
+              (borrow (deref α7).["im"])) in
         let* α9 : M.Val core.fmt.rt.Argument.t := M.alloc α8 in
         let* α10 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α6; α9 ] in
         let* α11 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -230,9 +236,9 @@ Section Impl_core_fmt_Debug_for_foreign_function_interface_Complex_t.
         let* α12 : ref (slice core.fmt.rt.Argument.t) :=
           M.read (pointer_coercion "Unsize" α11) in
         let* α13 : core.fmt.Arguments.t :=
-          core.fmt.Arguments.t::["new_v1"] α3 α12 in
+          M.call (core.fmt.Arguments.t::["new_v1"] α3 α12) in
         let* α14 : core.result.Result.t unit core.fmt.Error.t :=
-          core.fmt.Formatter.t::["write_fmt"] α0 α13 in
+          M.call (core.fmt.Formatter.t::["write_fmt"] α0 α13) in
         M.alloc α14 in
     M.read α3.
   

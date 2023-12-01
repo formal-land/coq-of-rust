@@ -50,7 +50,7 @@ Section Impl_functions_order_SomeType_t.
     let* self : M.Val ltac:(Self) := M.alloc self in
     let* _ : M.Val unit :=
       let* α0 : functions_order.SomeType.t := M.read self in
-      let* α1 : unit := functions_order.SomeType.t::["meth2"] α0 in
+      let* α1 : unit := M.call (functions_order.SomeType.t::["meth2"] α0) in
       M.alloc α1 in
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
@@ -96,10 +96,11 @@ Section Impl_functions_order_SomeTrait_for_functions_order_SomeType_t.
   Definition some_trait_foo (self : ref ltac:(Self)) : M unit :=
     let* self : M.Val (ref ltac:(Self)) := M.alloc self in
     let* α0 : ref functions_order.SomeType.t := M.read self in
-    (functions_order.SomeTrait.some_trait_bar
-        (Self := functions_order.SomeType.t)
-        (Trait := ltac:(refine _)))
-      α0.
+    M.call
+      ((functions_order.SomeTrait.some_trait_bar
+          (Self := functions_order.SomeType.t)
+          (Trait := ltac:(refine _)))
+        α0).
   
   Global Instance AssociatedFunction_some_trait_foo :
     Notations.DoubleColon ltac:(Self) "some_trait_foo" := {
@@ -162,20 +163,22 @@ Definition depends_on_trait_impl (u : u32.t) (b : bool.t) : M unit :=
     let* α1 : M.Val functions_order.OtherType.t :=
       M.alloc (functions_order.OtherType.Build_t α0) in
     let* α2 : unit :=
-      (functions_order.SomeTrait.some_trait_foo
-          (Self := functions_order.OtherType.t)
-          (Trait := ltac:(refine _)))
-        (borrow α1) in
+      M.call
+        ((functions_order.SomeTrait.some_trait_foo
+            (Self := functions_order.OtherType.t)
+            (Trait := ltac:(refine _)))
+          (borrow α1)) in
     M.alloc α2 in
   let* _ : M.Val unit :=
     let* α0 : u32.t := M.read u in
     let* α1 : M.Val functions_order.SomeType.t :=
       M.alloc (functions_order.SomeType.Build_t α0) in
     let* α2 : unit :=
-      (functions_order.SomeTrait.some_trait_foo
-          (Self := functions_order.SomeType.t)
-          (Trait := ltac:(refine _)))
-        (borrow α1) in
+      M.call
+        ((functions_order.SomeTrait.some_trait_foo
+            (Self := functions_order.SomeType.t)
+            (Trait := ltac:(refine _)))
+          (borrow α1)) in
     M.alloc α2 in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.
@@ -194,7 +197,7 @@ Module inner_mod.
   *)
   Definition bar : M unit :=
     let* _ : M.Val unit :=
-      let* α0 : unit := functions_order.inner_mod.tar in
+      let* α0 : unit := M.call functions_order.inner_mod.tar in
       M.alloc α0 in
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
@@ -212,7 +215,7 @@ Module inner_mod.
     *)
     Definition tick : M unit :=
       let* _ : M.Val unit :=
-        let* α0 : unit := functions_order.inner_mod.nested_mod.tack in
+        let* α0 : unit := M.call functions_order.inner_mod.nested_mod.tack in
         M.alloc α0 in
       let* α0 : M.Val unit := M.alloc tt in
       M.read α0.
@@ -227,7 +230,7 @@ End inner_mod.
 *)
 Definition bar : M unit :=
   let* _ : M.Val unit :=
-    let* α0 : unit := functions_order.inner_mod.tar in
+    let* α0 : unit := M.call functions_order.inner_mod.tar in
     M.alloc α0 in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.
@@ -250,7 +253,7 @@ Module nested_mod.
   *)
   Definition tick : M unit :=
     let* _ : M.Val unit :=
-      let* α0 : unit := functions_order.inner_mod.nested_mod.tack in
+      let* α0 : unit := M.call functions_order.inner_mod.nested_mod.tack in
       M.alloc α0 in
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
@@ -263,7 +266,7 @@ End nested_mod.
 *)
 Definition tick : M unit :=
   let* _ : M.Val unit :=
-    let* α0 : unit := functions_order.inner_mod.nested_mod.tack in
+    let* α0 : unit := M.call functions_order.inner_mod.nested_mod.tack in
     M.alloc α0 in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.
@@ -289,15 +292,16 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
   let* _ : M.Val unit :=
-    let* α0 : unit := functions_order.foo in
+    let* α0 : unit := M.call functions_order.foo in
     M.alloc α0 in
   let* _ : M.Val unit :=
-    let* α0 : unit := functions_order.inner_mod.bar in
+    let* α0 : unit := M.call functions_order.inner_mod.bar in
     M.alloc α0 in
   let* _ : M.Val unit :=
     let* α0 : unit :=
-      functions_order.SomeType.t::["meth1"]
-        (functions_order.SomeType.Build_t (Integer.of_Z 0)) in
+      M.call
+        (functions_order.SomeType.t::["meth1"]
+          (functions_order.SomeType.Build_t (Integer.of_Z 0))) in
     M.alloc α0 in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.

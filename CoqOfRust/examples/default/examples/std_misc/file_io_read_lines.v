@@ -24,22 +24,25 @@ Definition read_lines
     (let* file : M.Val std.fs.File.t :=
       let* α0 : alloc.string.String.t := M.read filename in
       let* α1 : core.result.Result.t std.fs.File.t std.io.error.Error.t :=
-        std.fs.File.t::["open"] α0 in
+        M.call (std.fs.File.t::["open"] α0) in
       let* α2 : std.fs.File.t :=
-        (core.result.Result.t std.fs.File.t std.io.error.Error.t)::["unwrap"]
-          α1 in
+        M.call
+          ((core.result.Result.t std.fs.File.t std.io.error.Error.t)::["unwrap"]
+            α1) in
       M.alloc α2 in
     let* _ : M.Val never.t :=
       let* α0 : std.fs.File.t := M.read file in
       let* α1 : std.io.buffered.bufreader.BufReader.t std.fs.File.t :=
-        (std.io.buffered.bufreader.BufReader.t std.fs.File.t)::["new"] α0 in
+        M.call
+          ((std.io.buffered.bufreader.BufReader.t std.fs.File.t)::["new"] α0) in
       let* α2 :
           std.io.Lines.t
             (std.io.buffered.bufreader.BufReader.t std.fs.File.t) :=
-        (std.io.BufRead.lines
-            (Self := std.io.buffered.bufreader.BufReader.t std.fs.File.t)
-            (Trait := ltac:(refine _)))
-          α1 in
+        M.call
+          ((std.io.BufRead.lines
+              (Self := std.io.buffered.bufreader.BufReader.t std.fs.File.t)
+              (Trait := ltac:(refine _)))
+            α1) in
       return_ α2 in
     let* α0 : M.Val unit := M.alloc tt in
     let* α1 := M.read α0 in
@@ -63,24 +66,27 @@ Definition main : M unit :=
           (std.io.buffered.bufreader.BufReader.t std.fs.File.t)) :=
     let* α0 : ref str.t := M.read (mk_str "./hosts") in
     let* α1 : alloc.string.String.t :=
-      (alloc.string.ToString.to_string
-          (Self := str.t)
-          (Trait := ltac:(refine _)))
-        α0 in
+      M.call
+        ((alloc.string.ToString.to_string
+            (Self := str.t)
+            (Trait := ltac:(refine _)))
+          α0) in
     let* α2 :
         std.io.Lines.t (std.io.buffered.bufreader.BufReader.t std.fs.File.t) :=
-      file_io_read_lines.read_lines α1 in
+      M.call (file_io_read_lines.read_lines α1) in
     M.alloc α2 in
   let* α0 :
       std.io.Lines.t (std.io.buffered.bufreader.BufReader.t std.fs.File.t) :=
     M.read lines in
   let* α1 :
       std.io.Lines.t (std.io.buffered.bufreader.BufReader.t std.fs.File.t) :=
-    (core.iter.traits.collect.IntoIterator.into_iter
-        (Self :=
-          std.io.Lines.t (std.io.buffered.bufreader.BufReader.t std.fs.File.t))
-        (Trait := ltac:(refine _)))
-      α0 in
+    M.call
+      ((core.iter.traits.collect.IntoIterator.into_iter
+          (Self :=
+            std.io.Lines.t
+              (std.io.buffered.bufreader.BufReader.t std.fs.File.t))
+          (Trait := ltac:(refine _)))
+        α0) in
   let* α2 : M.Val unit :=
     match α1 with
     | iter =>
@@ -92,12 +98,13 @@ Definition main : M unit :=
                 (core.result.Result.t
                   alloc.string.String.t
                   std.io.error.Error.t) :=
-            (core.iter.traits.iterator.Iterator.next
-                (Self :=
-                  std.io.Lines.t
-                    (std.io.buffered.bufreader.BufReader.t std.fs.File.t))
-                (Trait := ltac:(refine _)))
-              (borrow_mut iter) in
+            M.call
+              ((core.iter.traits.iterator.Iterator.next
+                  (Self :=
+                    std.io.Lines.t
+                      (std.io.buffered.bufreader.BufReader.t std.fs.File.t))
+                  (Trait := ltac:(refine _)))
+                (borrow_mut iter)) in
           match α0 with
           | core.option.Option.None  =>
             let* α0 : M.Val never.t := Break in
@@ -121,13 +128,15 @@ Definition main : M unit :=
                       std.io.error.Error.t :=
                   M.read line in
                 let* α4 : alloc.string.String.t :=
-                  (core.result.Result.t
-                        alloc.string.String.t
-                        std.io.error.Error.t)::["unwrap"]
-                    α3 in
+                  M.call
+                    ((core.result.Result.t
+                          alloc.string.String.t
+                          std.io.error.Error.t)::["unwrap"]
+                      α3) in
                 let* α5 : M.Val alloc.string.String.t := M.alloc α4 in
                 let* α6 : core.fmt.rt.Argument.t :=
-                  core.fmt.rt.Argument.t::["new_display"] (borrow α5) in
+                  M.call
+                    (core.fmt.rt.Argument.t::["new_display"] (borrow α5)) in
                 let* α7 : M.Val core.fmt.rt.Argument.t := M.alloc α6 in
                 let* α8 : M.Val (array core.fmt.rt.Argument.t) :=
                   M.alloc [ α7 ] in
@@ -136,8 +145,8 @@ Definition main : M unit :=
                 let* α10 : ref (slice core.fmt.rt.Argument.t) :=
                   M.read (pointer_coercion "Unsize" α9) in
                 let* α11 : core.fmt.Arguments.t :=
-                  core.fmt.Arguments.t::["new_v1"] α2 α10 in
-                let* α12 : unit := std.io.stdio._print α11 in
+                  M.call (core.fmt.Arguments.t::["new_v1"] α2 α10) in
+                let* α12 : unit := M.call (std.io.stdio._print α11) in
                 M.alloc α12 in
               M.alloc tt in
             M.alloc tt

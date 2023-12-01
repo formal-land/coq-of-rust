@@ -54,17 +54,19 @@ Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_t_A_B.
     let* α0 : ref (generics_phantom_type.PhantomTuple.t A B) := M.read self in
     let* α1 : ref (generics_phantom_type.PhantomTuple.t A B) := M.read other in
     let* α2 : bool.t :=
-      (core.cmp.PartialEq.eq (Self := A) (Trait := ltac:(refine _)))
-        (borrow (deref α0).["0"])
-        (borrow (deref α1).["0"]) in
+      M.call
+        ((core.cmp.PartialEq.eq (Self := A) (Trait := ltac:(refine _)))
+          (borrow (deref α0).["0"])
+          (borrow (deref α1).["0"])) in
     let* α3 : ref (generics_phantom_type.PhantomTuple.t A B) := M.read self in
     let* α4 : ref (generics_phantom_type.PhantomTuple.t A B) := M.read other in
     let* α5 : bool.t :=
-      (core.cmp.PartialEq.eq
-          (Self := core.marker.PhantomData.t B)
-          (Trait := ltac:(refine _)))
-        (borrow (deref α3).["1"])
-        (borrow (deref α4).["1"]) in
+      M.call
+        ((core.cmp.PartialEq.eq
+            (Self := core.marker.PhantomData.t B)
+            (Trait := ltac:(refine _)))
+          (borrow (deref α3).["1"])
+          (borrow (deref α4).["1"])) in
     M.pure (BinOp.and α2 α5).
   
   Global Instance AssociatedFunction_eq :
@@ -142,17 +144,19 @@ Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_t_A_B.
     let* α0 : ref (generics_phantom_type.PhantomStruct.t A B) := M.read self in
     let* α1 : ref (generics_phantom_type.PhantomStruct.t A B) := M.read other in
     let* α2 : bool.t :=
-      (core.cmp.PartialEq.eq (Self := A) (Trait := ltac:(refine _)))
-        (borrow (deref α0).["first"])
-        (borrow (deref α1).["first"]) in
+      M.call
+        ((core.cmp.PartialEq.eq (Self := A) (Trait := ltac:(refine _)))
+          (borrow (deref α0).["first"])
+          (borrow (deref α1).["first"])) in
     let* α3 : ref (generics_phantom_type.PhantomStruct.t A B) := M.read self in
     let* α4 : ref (generics_phantom_type.PhantomStruct.t A B) := M.read other in
     let* α5 : bool.t :=
-      (core.cmp.PartialEq.eq
-          (Self := core.marker.PhantomData.t B)
-          (Trait := ltac:(refine _)))
-        (borrow (deref α3).["phantom"])
-        (borrow (deref α4).["phantom"]) in
+      M.call
+        ((core.cmp.PartialEq.eq
+            (Self := core.marker.PhantomData.t B)
+            (Trait := ltac:(refine _)))
+          (borrow (deref α3).["phantom"])
+          (borrow (deref α4).["phantom"])) in
     M.pure (BinOp.and α2 α5).
   
   Global Instance AssociatedFunction_eq :

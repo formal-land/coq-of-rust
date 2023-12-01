@@ -39,7 +39,7 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_t_T.
     let* α4 : M.Val (ref (ref (ref T))) := M.alloc (borrow α3) in
     let* α5 : ref type not implemented :=
       M.read (pointer_coercion "Unsize" α4) in
-    core.fmt.Formatter.t::["debug_tuple_field1_finish"] α0 α1 α5.
+    M.call (core.fmt.Formatter.t::["debug_tuple_field1_finish"] α0 α1 α5).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -71,7 +71,7 @@ Definition print {T : Set} {ℋ_0 : core.fmt.Debug.Trait T} (t : T) : M unit :=
       let* α2 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α1) in
       let* α3 : core.fmt.rt.Argument.t :=
-        core.fmt.rt.Argument.t::["new_debug"] (borrow t) in
+        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow t)) in
       let* α4 : M.Val core.fmt.rt.Argument.t := M.alloc α3 in
       let* α5 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4 ] in
       let* α6 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -79,8 +79,8 @@ Definition print {T : Set} {ℋ_0 : core.fmt.Debug.Trait T} (t : T) : M unit :=
       let* α7 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α6) in
       let* α8 : core.fmt.Arguments.t :=
-        core.fmt.Arguments.t::["new_v1"] α2 α7 in
-      let* α9 : unit := std.io.stdio._print α8 in
+        M.call (core.fmt.Arguments.t::["new_v1"] α2 α7) in
+      let* α9 : unit := M.call (std.io.stdio._print α8) in
       M.alloc α9 in
     M.alloc tt in
   let* α0 : M.Val unit := M.alloc tt in
@@ -109,7 +109,7 @@ Definition print_ref
       let* α2 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α1) in
       let* α3 : core.fmt.rt.Argument.t :=
-        core.fmt.rt.Argument.t::["new_debug"] (borrow t) in
+        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow t)) in
       let* α4 : M.Val core.fmt.rt.Argument.t := M.alloc α3 in
       let* α5 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4 ] in
       let* α6 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -117,8 +117,8 @@ Definition print_ref
       let* α7 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α6) in
       let* α8 : core.fmt.Arguments.t :=
-        core.fmt.Arguments.t::["new_v1"] α2 α7 in
-      let* α9 : unit := std.io.stdio._print α8 in
+        M.call (core.fmt.Arguments.t::["new_v1"] α2 α7) in
+      let* α9 : unit := M.call (std.io.stdio._print α8) in
       M.alloc α9 in
     M.alloc tt in
   let* α0 : M.Val unit := M.alloc tt in
@@ -139,11 +139,12 @@ Definition main : M unit :=
   let* ref_x : M.Val (scoping_rules_lifetimes_bounds.Ref.t i32.t) :=
     M.alloc (scoping_rules_lifetimes_bounds.Ref.Build_t (borrow x)) in
   let* _ : M.Val unit :=
-    let* α0 : unit := scoping_rules_lifetimes_bounds.print_ref (borrow ref_x) in
+    let* α0 : unit :=
+      M.call (scoping_rules_lifetimes_bounds.print_ref (borrow ref_x)) in
     M.alloc α0 in
   let* _ : M.Val unit :=
     let* α0 : scoping_rules_lifetimes_bounds.Ref.t i32.t := M.read ref_x in
-    let* α1 : unit := scoping_rules_lifetimes_bounds.print α0 in
+    let* α1 : unit := M.call (scoping_rules_lifetimes_bounds.print α0) in
     M.alloc α1 in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.

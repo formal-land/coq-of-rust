@@ -32,11 +32,12 @@ Definition apply
   let* _ : M.Val unit :=
     let* α0 : F := M.read f in
     let* α1 : unit :=
-      (core.ops.function.FnOnce.call_once
-          (Self := F)
-          (Trait := ltac:(refine _)))
-        α0
-        tt in
+      M.call
+        ((core.ops.function.FnOnce.call_once
+            (Self := F)
+            (Trait := ltac:(refine _)))
+          α0
+          tt) in
     M.alloc α1 in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.

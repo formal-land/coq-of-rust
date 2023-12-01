@@ -169,19 +169,13 @@ Module Integer.
     max : Z;
   }.
 
-  Definition normalize_option {Self : Set} `{C Self} (z : Z) : option Self :=
+  Definition normalize_error {Self : Set} `{C Self} (z : Z) : Self + string :=
     if z <? min then
-      None
+      inr "underflow"
     else if max <? z then
-      None
+      inr "overflow"
     else
-      Some (of_Z z).
-
-  Definition normalize_panic {Self : Set} `{C Self} (z : Z) : M Self :=
-    match normalize_option z with
-    | None => M.panic "integer over/underflow"
-    | Some x => M.pure x
-    end.
+      inl (of_Z z).
 
   Global Instance I_u8 : C u8.t := {
     to_Z '(u8.Make z) := z;
@@ -321,39 +315,40 @@ Module BinOp.
     Parameter or : forall {A : Set}, A -> A -> bool.t.
   End Pure.
 
-  Module Option.
+  Module Error.
     Definition make_arithmetic {A : Set} `{Integer.C A}
         (bin_op : Z -> Z -> Z)
         (v1 v2 : A) :
-        option A :=
+        A + string :=
       let z1 := Integer.to_Z v1 in
       let z2 := Integer.to_Z v2 in
-      Integer.normalize_option (bin_op z1 z2).
+      Integer.normalize_error (bin_op z1 z2).
 
-    Definition add {A : Set} `{Integer.C A} (v1 v2 : A) : option A :=
+    Definition add {A : Set} `{Integer.C A} (v1 v2 : A) : A + string :=
       make_arithmetic Z.add v1 v2.
 
-    Definition sub {A : Set} `{Integer.C A} (v1 v2 : A) : option A :=
+    Definition sub {A : Set} `{Integer.C A} (v1 v2 : A) : A + string :=
       make_arithmetic Z.sub v1 v2.
 
-    Definition mul {A : Set} `{Integer.C A} (v1 v2 : A) : option A :=
+    Definition mul {A : Set} `{Integer.C A} (v1 v2 : A) : A + string :=
       make_arithmetic Z.mul v1 v2.
 
-    Parameter div : forall {A : Set}, A -> A -> option A.
-    Parameter rem : forall {A : Set}, A -> A -> option A.
+    Parameter div : forall {A : Set}, A -> A -> A + string.
+    Parameter rem : forall {A : Set}, A -> A -> A + string.
     
-    Parameter shl : forall {A : Set}, A -> A -> option A.
-    Parameter shr : forall {A : Set}, A -> A -> option A.
-  End Option.
+    Parameter shl : forall {A : Set}, A -> A -> A + string.
+    Parameter shr : forall {A : Set}, A -> A -> A + string.
+  End Error.
 
   Module Panic.
     Definition make_arithmetic {A : Set} `{Integer.C A}
         (bin_op : Z -> Z -> Z)
         (v1 v2 : A) :
         M A :=
-      let z1 := Integer.to_Z v1 in
-      let z2 := Integer.to_Z v2 in
-      Integer.normalize_panic (bin_op z1 z2).
+      match Error.make_arithmetic bin_op v1 v2 with
+      | inl v => M.pure v
+      | inr err => M.panic err
+      end.
 
     Definition add {A : Set} `{Integer.C A} (v1 v2 : A) : M A :=
       make_arithmetic Z.add v1 v2.

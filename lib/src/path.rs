@@ -18,9 +18,9 @@ impl fmt::Display for Path {
 }
 
 impl Path {
-    pub fn local(name: String) -> Path {
+    pub fn local(name: &str) -> Path {
         Path {
-            segments: vec![to_valid_coq_name(name)],
+            segments: vec![to_valid_coq_name(name.to_string())],
         }
     }
 
@@ -116,7 +116,7 @@ pub(crate) fn compile_qpath(env: &Env, qpath: &QPath) -> Path {
                         Some((path, false))
                     }
                 },
-                _ => Some((Path::local("ComplexTypePath".to_string()), false)),
+                _ => Some((Path::local("ComplexTypePath"), false)),
             };
             match ty {
                 Some((path, is_param)) => {
@@ -142,7 +142,7 @@ pub(crate) fn compile_qpath(env: &Env, qpath: &QPath) -> Path {
                 },
             }
         }
-        QPath::LangItem(_, _, _) => Path::local("LangItem".to_string()),
+        QPath::LangItem(_, _, _) => Path::local("LangItem"),
     }
 }
 

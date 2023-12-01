@@ -108,33 +108,36 @@ Definition main : M unit :=
           alloc.alloc.Global.t) :=
     let* α0 :
         alloc.vec.Vec.t (std.thread.JoinHandle.t u32.t) alloc.alloc.Global.t :=
-      (alloc.vec.Vec.t
-          (std.thread.JoinHandle.t u32.t)
-          alloc.alloc.Global.t)::["new"] in
+      M.call
+        (alloc.vec.Vec.t
+            (std.thread.JoinHandle.t u32.t)
+            alloc.alloc.Global.t)::["new"] in
     M.alloc α0 in
   let* chunked_data : M.Val core.str.iter.SplitWhitespace.t :=
     let* α0 : ref str.t := M.read data in
     let* α1 : core.str.iter.SplitWhitespace.t :=
-      str.t::["split_whitespace"] α0 in
+      M.call (str.t::["split_whitespace"] α0) in
     M.alloc α1 in
   let* _ : M.Val unit :=
     let* α0 : core.str.iter.SplitWhitespace.t := M.read chunked_data in
     let* α1 :
         core.iter.adapters.enumerate.Enumerate.t
           core.str.iter.SplitWhitespace.t :=
-      (core.iter.traits.iterator.Iterator.enumerate
-          (Self := core.str.iter.SplitWhitespace.t)
-          (Trait := ltac:(refine _)))
-        α0 in
+      M.call
+        ((core.iter.traits.iterator.Iterator.enumerate
+            (Self := core.str.iter.SplitWhitespace.t)
+            (Trait := ltac:(refine _)))
+          α0) in
     let* α2 :
         core.iter.adapters.enumerate.Enumerate.t
           core.str.iter.SplitWhitespace.t :=
-      (core.iter.traits.collect.IntoIterator.into_iter
-          (Self :=
-            core.iter.adapters.enumerate.Enumerate.t
-              core.str.iter.SplitWhitespace.t)
-          (Trait := ltac:(refine _)))
-        α1 in
+      M.call
+        ((core.iter.traits.collect.IntoIterator.into_iter
+            (Self :=
+              core.iter.adapters.enumerate.Enumerate.t
+                core.str.iter.SplitWhitespace.t)
+            (Trait := ltac:(refine _)))
+          α1) in
     let* α3 : M.Val unit :=
       match α2 with
       | iter =>
@@ -142,12 +145,13 @@ Definition main : M unit :=
         loop
           (let* _ : M.Val unit :=
             let* α0 : core.option.Option.t (usize.t * (ref str.t)) :=
-              (core.iter.traits.iterator.Iterator.next
-                  (Self :=
-                    core.iter.adapters.enumerate.Enumerate.t
-                      core.str.iter.SplitWhitespace.t)
-                  (Trait := ltac:(refine _)))
-                (borrow_mut iter) in
+              M.call
+                ((core.iter.traits.iterator.Iterator.next
+                    (Self :=
+                      core.iter.adapters.enumerate.Enumerate.t
+                        core.str.iter.SplitWhitespace.t)
+                    (Trait := ltac:(refine _)))
+                  (borrow_mut iter)) in
             match α0 with
             | core.option.Option.None  =>
               let* α0 : M.Val never.t := Break in
@@ -168,11 +172,13 @@ Definition main : M unit :=
                   let* α2 : ref (slice (ref str.t)) :=
                     M.read (pointer_coercion "Unsize" α1) in
                   let* α3 : core.fmt.rt.Argument.t :=
-                    core.fmt.rt.Argument.t::["new_display"] (borrow i) in
+                    M.call
+                      (core.fmt.rt.Argument.t::["new_display"] (borrow i)) in
                   let* α4 : M.Val core.fmt.rt.Argument.t := M.alloc α3 in
                   let* α5 : core.fmt.rt.Argument.t :=
-                    core.fmt.rt.Argument.t::["new_display"]
-                      (borrow data_segment) in
+                    M.call
+                      (core.fmt.rt.Argument.t::["new_display"]
+                        (borrow data_segment)) in
                   let* α6 : M.Val core.fmt.rt.Argument.t := M.alloc α5 in
                   let* α7 : M.Val (array core.fmt.rt.Argument.t) :=
                     M.alloc [ α4; α6 ] in
@@ -181,8 +187,8 @@ Definition main : M unit :=
                   let* α9 : ref (slice core.fmt.rt.Argument.t) :=
                     M.read (pointer_coercion "Unsize" α8) in
                   let* α10 : core.fmt.Arguments.t :=
-                    core.fmt.Arguments.t::["new_v1"] α2 α9 in
-                  let* α11 : unit := std.io.stdio._print α10 in
+                    M.call (core.fmt.Arguments.t::["new_v1"] α2 α9) in
+                  let* α11 : unit := M.call (std.io.stdio._print α10) in
                   M.alloc α11 in
                 M.alloc tt in
               let* _ : M.Val unit :=
@@ -190,34 +196,41 @@ Definition main : M unit :=
                   M.read
                     (let* result : M.Val u32.t :=
                       let* α0 : ref str.t := M.read data_segment in
-                      let* α1 : core.str.iter.Chars.t := str.t::["chars"] α0 in
+                      let* α1 : core.str.iter.Chars.t :=
+                        M.call (str.t::["chars"] α0) in
                       let* α2 : type not implemented :=
                         M.read
                           (let* α0 : char.t := M.read c in
                           let* α1 : core.option.Option.t u32.t :=
-                            char.t::["to_digit"] α0 (Integer.of_Z 10) in
+                            M.call
+                              (char.t::["to_digit"] α0 (Integer.of_Z 10)) in
                           let* α2 : ref str.t :=
                             M.read (mk_str "should be a digit") in
                           let* α3 : u32.t :=
-                            (core.option.Option.t u32.t)::["expect"] α1 α2 in
+                            M.call
+                              ((core.option.Option.t u32.t)::["expect"]
+                                α1
+                                α2) in
                           M.alloc α3) in
                       let* α3 :
                           core.iter.adapters.map.Map.t
                             core.str.iter.Chars.t
                             type not implemented :=
-                        (core.iter.traits.iterator.Iterator.map
-                            (Self := core.str.iter.Chars.t)
-                            (Trait := ltac:(refine _)))
-                          α1
-                          α2 in
+                        M.call
+                          ((core.iter.traits.iterator.Iterator.map
+                              (Self := core.str.iter.Chars.t)
+                              (Trait := ltac:(refine _)))
+                            α1
+                            α2) in
                       let* α4 : u32.t :=
-                        (core.iter.traits.iterator.Iterator.sum
-                            (Self :=
-                              core.iter.adapters.map.Map.t
-                                core.str.iter.Chars.t
-                                type not implemented)
-                            (Trait := ltac:(refine _)))
-                          α3 in
+                        M.call
+                          ((core.iter.traits.iterator.Iterator.sum
+                              (Self :=
+                                core.iter.adapters.map.Map.t
+                                  core.str.iter.Chars.t
+                                  type not implemented)
+                              (Trait := ltac:(refine _)))
+                            α3) in
                       M.alloc α4 in
                     let* _ : M.Val unit :=
                       let* _ : M.Val unit :=
@@ -234,11 +247,14 @@ Definition main : M unit :=
                         let* α2 : ref (slice (ref str.t)) :=
                           M.read (pointer_coercion "Unsize" α1) in
                         let* α3 : core.fmt.rt.Argument.t :=
-                          core.fmt.rt.Argument.t::["new_display"] (borrow i) in
+                          M.call
+                            (core.fmt.rt.Argument.t::["new_display"]
+                              (borrow i)) in
                         let* α4 : M.Val core.fmt.rt.Argument.t := M.alloc α3 in
                         let* α5 : core.fmt.rt.Argument.t :=
-                          core.fmt.rt.Argument.t::["new_display"]
-                            (borrow result) in
+                          M.call
+                            (core.fmt.rt.Argument.t::["new_display"]
+                              (borrow result)) in
                         let* α6 : M.Val core.fmt.rt.Argument.t := M.alloc α5 in
                         let* α7 : M.Val (array core.fmt.rt.Argument.t) :=
                           M.alloc [ α4; α6 ] in
@@ -247,19 +263,20 @@ Definition main : M unit :=
                         let* α9 : ref (slice core.fmt.rt.Argument.t) :=
                           M.read (pointer_coercion "Unsize" α8) in
                         let* α10 : core.fmt.Arguments.t :=
-                          core.fmt.Arguments.t::["new_v1"] α2 α9 in
-                        let* α11 : unit := std.io.stdio._print α10 in
+                          M.call (core.fmt.Arguments.t::["new_v1"] α2 α9) in
+                        let* α11 : unit := M.call (std.io.stdio._print α10) in
                         M.alloc α11 in
                       M.alloc tt in
                     M.pure result) in
                 let* α1 : std.thread.JoinHandle.t u32.t :=
-                  std.thread.spawn α0 in
+                  M.call (std.thread.spawn α0) in
                 let* α2 : unit :=
-                  (alloc.vec.Vec.t
-                        (std.thread.JoinHandle.t u32.t)
-                        alloc.alloc.Global.t)::["push"]
-                    (borrow_mut children)
-                    α1 in
+                  M.call
+                    ((alloc.vec.Vec.t
+                          (std.thread.JoinHandle.t u32.t)
+                          alloc.alloc.Global.t)::["push"]
+                      (borrow_mut children)
+                      α1) in
                 M.alloc α2 in
               M.alloc tt
             end in
@@ -275,13 +292,14 @@ Definition main : M unit :=
         alloc.vec.into_iter.IntoIter.t
           (std.thread.JoinHandle.t u32.t)
           alloc.alloc.Global.t :=
-      (core.iter.traits.collect.IntoIterator.into_iter
-          (Self :=
-            alloc.vec.Vec.t
-              (std.thread.JoinHandle.t u32.t)
-              alloc.alloc.Global.t)
-          (Trait := ltac:(refine _)))
-        α0 in
+      M.call
+        ((core.iter.traits.collect.IntoIterator.into_iter
+            (Self :=
+              alloc.vec.Vec.t
+                (std.thread.JoinHandle.t u32.t)
+                alloc.alloc.Global.t)
+            (Trait := ltac:(refine _)))
+          α0) in
     let* α2 : type not implemented :=
       M.read
         (let* α0 : std.thread.JoinHandle.t u32.t := M.read c in
@@ -289,14 +307,15 @@ Definition main : M unit :=
             core.result.Result.t
               u32.t
               (alloc.boxed.Box.t type not implemented alloc.alloc.Global.t) :=
-          (std.thread.JoinHandle.t u32.t)::["join"] α0 in
+          M.call ((std.thread.JoinHandle.t u32.t)::["join"] α0) in
         let* α2 : u32.t :=
-          (core.result.Result.t
-                u32.t
-                (alloc.boxed.Box.t
-                  type not implemented
-                  alloc.alloc.Global.t))::["unwrap"]
-            α1 in
+          M.call
+            ((core.result.Result.t
+                  u32.t
+                  (alloc.boxed.Box.t
+                    type not implemented
+                    alloc.alloc.Global.t))::["unwrap"]
+              α1) in
         M.alloc α2) in
     let* α3 :
         core.iter.adapters.map.Map.t
@@ -304,24 +323,26 @@ Definition main : M unit :=
             (std.thread.JoinHandle.t u32.t)
             alloc.alloc.Global.t)
           type not implemented :=
-      (core.iter.traits.iterator.Iterator.map
-          (Self :=
-            alloc.vec.into_iter.IntoIter.t
-              (std.thread.JoinHandle.t u32.t)
-              alloc.alloc.Global.t)
-          (Trait := ltac:(refine _)))
-        α1
-        α2 in
-    let* α4 : u32.t :=
-      (core.iter.traits.iterator.Iterator.sum
-          (Self :=
-            core.iter.adapters.map.Map.t
-              (alloc.vec.into_iter.IntoIter.t
+      M.call
+        ((core.iter.traits.iterator.Iterator.map
+            (Self :=
+              alloc.vec.into_iter.IntoIter.t
                 (std.thread.JoinHandle.t u32.t)
                 alloc.alloc.Global.t)
-              type not implemented)
-          (Trait := ltac:(refine _)))
-        α3 in
+            (Trait := ltac:(refine _)))
+          α1
+          α2) in
+    let* α4 : u32.t :=
+      M.call
+        ((core.iter.traits.iterator.Iterator.sum
+            (Self :=
+              core.iter.adapters.map.Map.t
+                (alloc.vec.into_iter.IntoIter.t
+                  (std.thread.JoinHandle.t u32.t)
+                  alloc.alloc.Global.t)
+                type not implemented)
+            (Trait := ltac:(refine _)))
+          α3) in
     M.alloc α4 in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
@@ -332,7 +353,8 @@ Definition main : M unit :=
       let* α2 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α1) in
       let* α3 : core.fmt.rt.Argument.t :=
-        core.fmt.rt.Argument.t::["new_display"] (borrow final_result) in
+        M.call
+          (core.fmt.rt.Argument.t::["new_display"] (borrow final_result)) in
       let* α4 : M.Val core.fmt.rt.Argument.t := M.alloc α3 in
       let* α5 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4 ] in
       let* α6 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -340,8 +362,8 @@ Definition main : M unit :=
       let* α7 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α6) in
       let* α8 : core.fmt.Arguments.t :=
-        core.fmt.Arguments.t::["new_v1"] α2 α7 in
-      let* α9 : unit := std.io.stdio._print α8 in
+        M.call (core.fmt.Arguments.t::["new_v1"] α2 α7) in
+      let* α9 : unit := M.call (std.io.stdio._print α8) in
       M.alloc α9 in
     M.alloc tt in
   let* α0 : M.Val unit := M.alloc tt in

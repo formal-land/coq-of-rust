@@ -364,7 +364,7 @@ impl CoqType {
     pub(crate) fn to_coq<'a>(&self) -> coq::Expression<'a> {
         match self {
             CoqType::Var(name) => coq::Expression::Variable {
-                ident: Path::local(name.clone()),
+                ident: Path::local(name.as_str()),
                 no_implicit: false,
             },
             CoqType::Path { path } => coq::Expression::Variable {

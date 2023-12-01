@@ -21,7 +21,7 @@ Definition main : M unit :=
       core.result.Result.t
         (std.io.Lines.t (std.io.buffered.bufreader.BufReader.t std.fs.File.t))
         std.io.error.Error.t :=
-    file_io_read_lines_efficient_method.read_lines α0 in
+    M.call (file_io_read_lines_efficient_method.read_lines α0) in
   let* α2 :
       M.Val
         (core.result.Result.t
@@ -39,12 +39,13 @@ Definition main : M unit :=
       let* α1 :
           std.io.Lines.t
             (std.io.buffered.bufreader.BufReader.t std.fs.File.t) :=
-        (core.iter.traits.collect.IntoIterator.into_iter
-            (Self :=
-              std.io.Lines.t
-                (std.io.buffered.bufreader.BufReader.t std.fs.File.t))
-            (Trait := ltac:(refine _)))
-          α0 in
+        M.call
+          ((core.iter.traits.collect.IntoIterator.into_iter
+              (Self :=
+                std.io.Lines.t
+                  (std.io.buffered.bufreader.BufReader.t std.fs.File.t))
+              (Trait := ltac:(refine _)))
+            α0) in
       let* α2 : M.Val unit :=
         match α1 with
         | iter =>
@@ -56,12 +57,13 @@ Definition main : M unit :=
                     (core.result.Result.t
                       alloc.string.String.t
                       std.io.error.Error.t) :=
-                (core.iter.traits.iterator.Iterator.next
-                    (Self :=
-                      std.io.Lines.t
-                        (std.io.buffered.bufreader.BufReader.t std.fs.File.t))
-                    (Trait := ltac:(refine _)))
-                  (borrow_mut iter) in
+                M.call
+                  ((core.iter.traits.iterator.Iterator.next
+                      (Self :=
+                        std.io.Lines.t
+                          (std.io.buffered.bufreader.BufReader.t std.fs.File.t))
+                      (Trait := ltac:(refine _)))
+                    (borrow_mut iter)) in
               match α0 with
               | core.option.Option.None  =>
                 let* α0 : M.Val never.t := Break in
@@ -84,7 +86,9 @@ Definition main : M unit :=
                       let* α2 : ref (slice (ref str.t)) :=
                         M.read (pointer_coercion "Unsize" α1) in
                       let* α3 : core.fmt.rt.Argument.t :=
-                        core.fmt.rt.Argument.t::["new_display"] (borrow ip) in
+                        M.call
+                          (core.fmt.rt.Argument.t::["new_display"]
+                            (borrow ip)) in
                       let* α4 : M.Val core.fmt.rt.Argument.t := M.alloc α3 in
                       let* α5 : M.Val (array core.fmt.rt.Argument.t) :=
                         M.alloc [ α4 ] in
@@ -93,8 +97,8 @@ Definition main : M unit :=
                       let* α7 : ref (slice core.fmt.rt.Argument.t) :=
                         M.read (pointer_coercion "Unsize" α6) in
                       let* α8 : core.fmt.Arguments.t :=
-                        core.fmt.Arguments.t::["new_v1"] α2 α7 in
-                      let* α9 : unit := std.io.stdio._print α8 in
+                        M.call (core.fmt.Arguments.t::["new_v1"] α2 α7) in
+                      let* α9 : unit := M.call (std.io.stdio._print α8) in
                       M.alloc α9 in
                     M.alloc tt in
                   M.alloc tt
@@ -138,17 +142,18 @@ Definition read_lines
     (let* file : M.Val std.fs.File.t :=
       let* α0 : P := M.read filename in
       let* α1 : core.result.Result.t std.fs.File.t std.io.error.Error.t :=
-        std.fs.File.t::["open"] α0 in
+        M.call (std.fs.File.t::["open"] α0) in
       let* α2 :
           core.ops.control_flow.ControlFlow.t
             (core.result.Result.t
               core.convert.Infallible.t
               std.io.error.Error.t)
             std.fs.File.t :=
-        (core.ops.try_trait.Try.branch
-            (Self := core.result.Result.t std.fs.File.t std.io.error.Error.t)
-            (Trait := ltac:(refine _)))
-          α1 in
+        M.call
+          ((core.ops.try_trait.Try.branch
+              (Self := core.result.Result.t std.fs.File.t std.io.error.Error.t)
+              (Trait := ltac:(refine _)))
+            α1) in
       let* α3 : M.Val std.fs.File.t :=
         match α2 with
         | core.ops.control_flow.ControlFlow.Break residual =>
@@ -163,14 +168,15 @@ Definition read_lines
                 (std.io.Lines.t
                   (std.io.buffered.bufreader.BufReader.t std.fs.File.t))
                 std.io.error.Error.t :=
-            (core.ops.try_trait.FromResidual.from_residual
-                (Self :=
-                  core.result.Result.t
-                    (std.io.Lines.t
-                      (std.io.buffered.bufreader.BufReader.t std.fs.File.t))
-                    std.io.error.Error.t)
-                (Trait := ltac:(refine _)))
-              α0 in
+            M.call
+              ((core.ops.try_trait.FromResidual.from_residual
+                  (Self :=
+                    core.result.Result.t
+                      (std.io.Lines.t
+                        (std.io.buffered.bufreader.BufReader.t std.fs.File.t))
+                      std.io.error.Error.t)
+                  (Trait := ltac:(refine _)))
+                α0) in
           let* α2 : M.Val never.t := return_ α1 in
           let* α3 := M.read α2 in
           let* α4 : std.fs.File.t := never_to_any α3 in
@@ -182,13 +188,15 @@ Definition read_lines
       M.copy α3 in
     let* α0 : std.fs.File.t := M.read file in
     let* α1 : std.io.buffered.bufreader.BufReader.t std.fs.File.t :=
-      (std.io.buffered.bufreader.BufReader.t std.fs.File.t)::["new"] α0 in
+      M.call
+        ((std.io.buffered.bufreader.BufReader.t std.fs.File.t)::["new"] α0) in
     let* α2 :
         std.io.Lines.t (std.io.buffered.bufreader.BufReader.t std.fs.File.t) :=
-      (std.io.BufRead.lines
-          (Self := std.io.buffered.bufreader.BufReader.t std.fs.File.t)
-          (Trait := ltac:(refine _)))
-        α1 in
+      M.call
+        ((std.io.BufRead.lines
+            (Self := std.io.buffered.bufreader.BufReader.t std.fs.File.t)
+            (Trait := ltac:(refine _)))
+          α1) in
     let* α0 :
         M.Val
           (core.result.Result.t

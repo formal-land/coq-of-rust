@@ -27,17 +27,18 @@ Definition main : M unit :=
   let* apple : M.Val (alloc.sync.Arc.t (ref str.t)) :=
     let* α0 : ref str.t := M.read (mk_str "the same apple") in
     let* α1 : alloc.sync.Arc.t (ref str.t) :=
-      (alloc.sync.Arc.t (ref str.t))::["new"] α0 in
+      M.call ((alloc.sync.Arc.t (ref str.t))::["new"] α0) in
     M.alloc α1 in
   let* _ : M.Val unit :=
     let* α0 : core.ops.range.Range.t i32.t :=
-      (core.iter.traits.collect.IntoIterator.into_iter
-          (Self := core.ops.range.Range.t i32.t)
-          (Trait := ltac:(refine _)))
-        {|
-          core.ops.range.Range.start := Integer.of_Z 0;
-          core.ops.range.Range.end := Integer.of_Z 10;
-        |} in
+      M.call
+        ((core.iter.traits.collect.IntoIterator.into_iter
+            (Self := core.ops.range.Range.t i32.t)
+            (Trait := ltac:(refine _)))
+          {|
+            core.ops.range.Range.start := Integer.of_Z 0;
+            core.ops.range.Range.end := Integer.of_Z 10;
+          |}) in
     let* α1 : M.Val unit :=
       match α0 with
       | iter =>
@@ -45,10 +46,11 @@ Definition main : M unit :=
         loop
           (let* _ : M.Val unit :=
             let* α0 : core.option.Option.t i32.t :=
-              (core.iter.traits.iterator.Iterator.next
-                  (Self := core.ops.range.Range.t i32.t)
-                  (Trait := ltac:(refine _)))
-                (borrow_mut iter) in
+              M.call
+                ((core.iter.traits.iterator.Iterator.next
+                    (Self := core.ops.range.Range.t i32.t)
+                    (Trait := ltac:(refine _)))
+                  (borrow_mut iter)) in
             match α0 with
             | core.option.Option.None  =>
               let* α0 : M.Val never.t := Break in
@@ -58,10 +60,11 @@ Definition main : M unit :=
             | core.option.Option.Some _ =>
               let* apple : M.Val (alloc.sync.Arc.t (ref str.t)) :=
                 let* α0 : alloc.sync.Arc.t (ref str.t) :=
-                  (core.clone.Clone.clone
-                      (Self := alloc.sync.Arc.t (ref str.t))
-                      (Trait := ltac:(refine _)))
-                    (borrow apple) in
+                  M.call
+                    ((core.clone.Clone.clone
+                        (Self := alloc.sync.Arc.t (ref str.t))
+                        (Trait := ltac:(refine _)))
+                      (borrow apple)) in
                 M.alloc α0 in
               let* _ : M.Val (std.thread.JoinHandle.t unit) :=
                 let* α0 : type not implemented :=
@@ -76,8 +79,9 @@ Definition main : M unit :=
                         let* α2 : ref (slice (ref str.t)) :=
                           M.read (pointer_coercion "Unsize" α1) in
                         let* α3 : core.fmt.rt.Argument.t :=
-                          core.fmt.rt.Argument.t::["new_debug"]
-                            (borrow apple) in
+                          M.call
+                            (core.fmt.rt.Argument.t::["new_debug"]
+                              (borrow apple)) in
                         let* α4 : M.Val core.fmt.rt.Argument.t := M.alloc α3 in
                         let* α5 : M.Val (array core.fmt.rt.Argument.t) :=
                           M.alloc [ α4 ] in
@@ -86,12 +90,13 @@ Definition main : M unit :=
                         let* α7 : ref (slice core.fmt.rt.Argument.t) :=
                           M.read (pointer_coercion "Unsize" α6) in
                         let* α8 : core.fmt.Arguments.t :=
-                          core.fmt.Arguments.t::["new_v1"] α2 α7 in
-                        let* α9 : unit := std.io.stdio._print α8 in
+                          M.call (core.fmt.Arguments.t::["new_v1"] α2 α7) in
+                        let* α9 : unit := M.call (std.io.stdio._print α8) in
                         M.alloc α9 in
                       M.alloc tt in
                     M.alloc tt) in
-                let* α1 : std.thread.JoinHandle.t unit := std.thread.spawn α0 in
+                let* α1 : std.thread.JoinHandle.t unit :=
+                  M.call (std.thread.spawn α0) in
                 M.alloc α1 in
               M.alloc tt
             end in
@@ -101,8 +106,8 @@ Definition main : M unit :=
     M.alloc (use α2) in
   let* _ : M.Val unit :=
     let* α0 : core.time.Duration.t :=
-      core.time.Duration.t::["from_secs"] (Integer.of_Z 1) in
-    let* α1 : unit := std.thread.sleep α0 in
+      M.call (core.time.Duration.t::["from_secs"] (Integer.of_Z 1)) in
+    let* α1 : unit := M.call (std.thread.sleep α0) in
     M.alloc α1 in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.

@@ -20,7 +20,7 @@ Definition increase (number : i32.t) : M unit :=
       let* α4 : i32.t := BinOp.Panic.add α3 (Integer.of_Z 1) in
       let* α5 : M.Val i32.t := M.alloc α4 in
       let* α6 : core.fmt.rt.Argument.t :=
-        core.fmt.rt.Argument.t::["new_display"] (borrow α5) in
+        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α5)) in
       let* α7 : M.Val core.fmt.rt.Argument.t := M.alloc α6 in
       let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
       let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -28,8 +28,8 @@ Definition increase (number : i32.t) : M unit :=
       let* α10 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α9) in
       let* α11 : core.fmt.Arguments.t :=
-        core.fmt.Arguments.t::["new_v1"] α2 α10 in
-      let* α12 : unit := std.io.stdio._print α11 in
+        M.call (core.fmt.Arguments.t::["new_v1"] α2 α10) in
+      let* α12 : unit := M.call (std.io.stdio._print α11) in
       M.alloc α12 in
     M.alloc tt in
   let* α0 : M.Val unit := M.alloc tt in
@@ -54,7 +54,7 @@ Definition decrease (number : i32.t) : M unit :=
       let* α4 : i32.t := BinOp.Panic.sub α3 (Integer.of_Z 1) in
       let* α5 : M.Val i32.t := M.alloc α4 in
       let* α6 : core.fmt.rt.Argument.t :=
-        core.fmt.rt.Argument.t::["new_display"] (borrow α5) in
+        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α5)) in
       let* α7 : M.Val core.fmt.rt.Argument.t := M.alloc α6 in
       let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
       let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -62,8 +62,8 @@ Definition decrease (number : i32.t) : M unit :=
       let* α10 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α9) in
       let* α11 : core.fmt.Arguments.t :=
-        core.fmt.Arguments.t::["new_v1"] α2 α10 in
-      let* α12 : unit := std.io.stdio._print α11 in
+        M.call (core.fmt.Arguments.t::["new_v1"] α2 α10) in
+      let* α12 : unit := M.call (std.io.stdio._print α11) in
       M.alloc α12 in
     M.alloc tt in
   let* α0 : M.Val unit := M.alloc tt in
@@ -98,8 +98,8 @@ match_args {increase|decrease} <integer>
       let* α2 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α1) in
       let* α3 : core.fmt.Arguments.t :=
-        core.fmt.Arguments.t::["new_const"] α2 in
-      let* α4 : unit := std.io.stdio._print α3 in
+        M.call (core.fmt.Arguments.t::["new_const"] α2) in
+      let* α4 : unit := M.call (std.io.stdio._print α3) in
       M.alloc α4 in
     M.alloc tt in
   let* α0 : M.Val unit := M.alloc tt in
@@ -156,16 +156,18 @@ Definition main : M unit :=
   M.catch_return
     (let* args :
         M.Val (alloc.vec.Vec.t alloc.string.String.t alloc.alloc.Global.t) :=
-      let* α0 : std.env.Args.t := std.env.args in
+      let* α0 : std.env.Args.t := M.call std.env.args in
       let* α1 : alloc.vec.Vec.t alloc.string.String.t alloc.alloc.Global.t :=
-        (core.iter.traits.iterator.Iterator.collect
-            (Self := std.env.Args.t)
-            (Trait := ltac:(refine _)))
-          α0 in
+        M.call
+          ((core.iter.traits.iterator.Iterator.collect
+              (Self := std.env.Args.t)
+              (Trait := ltac:(refine _)))
+            α0) in
       M.alloc α1 in
     let* α0 : usize.t :=
-      (alloc.vec.Vec.t alloc.string.String.t alloc.alloc.Global.t)::["len"]
-        (borrow args) in
+      M.call
+        ((alloc.vec.Vec.t alloc.string.String.t alloc.alloc.Global.t)::["len"]
+          (borrow args)) in
     let* α0 : M.Val unit :=
       match α0 with
       | _ =>
@@ -180,26 +182,28 @@ Definition main : M unit :=
             let* α2 : ref (slice (ref str.t)) :=
               M.read (pointer_coercion "Unsize" α1) in
             let* α3 : core.fmt.Arguments.t :=
-              core.fmt.Arguments.t::["new_const"] α2 in
-            let* α4 : unit := std.io.stdio._print α3 in
+              M.call (core.fmt.Arguments.t::["new_const"] α2) in
+            let* α4 : unit := M.call (std.io.stdio._print α3) in
             M.alloc α4 in
           M.alloc tt in
         M.alloc tt
       | _ =>
         let* α0 : ref alloc.string.String.t :=
-          (core.ops.index.Index.index
-              (Self :=
-                alloc.vec.Vec.t alloc.string.String.t alloc.alloc.Global.t)
-              (Trait := ltac:(refine _)))
-            (borrow args)
-            (Integer.of_Z 1) in
+          M.call
+            ((core.ops.index.Index.index
+                (Self :=
+                  alloc.vec.Vec.t alloc.string.String.t alloc.alloc.Global.t)
+                (Trait := ltac:(refine _)))
+              (borrow args)
+              (Integer.of_Z 1)) in
         let* α1 : ref str.t :=
-          (core.ops.deref.Deref.deref
-              (Self := alloc.string.String.t)
-              (Trait := ltac:(refine _)))
-            α0 in
+          M.call
+            ((core.ops.deref.Deref.deref
+                (Self := alloc.string.String.t)
+                (Trait := ltac:(refine _)))
+              α0) in
         let* α2 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
-          str.t::["parse"] α1 in
+          M.call (str.t::["parse"] α1) in
         match α2 with
         | core.result.Result.Ok _ =>
           let* _ : M.Val unit :=
@@ -210,8 +214,8 @@ Definition main : M unit :=
             let* α2 : ref (slice (ref str.t)) :=
               M.read (pointer_coercion "Unsize" α1) in
             let* α3 : core.fmt.Arguments.t :=
-              core.fmt.Arguments.t::["new_const"] α2 in
-            let* α4 : unit := std.io.stdio._print α3 in
+              M.call (core.fmt.Arguments.t::["new_const"] α2) in
+            let* α4 : unit := M.call (std.io.stdio._print α3) in
             M.alloc α4 in
           M.alloc tt
         | _ =>
@@ -223,39 +227,42 @@ Definition main : M unit :=
             let* α2 : ref (slice (ref str.t)) :=
               M.read (pointer_coercion "Unsize" α1) in
             let* α3 : core.fmt.Arguments.t :=
-              core.fmt.Arguments.t::["new_const"] α2 in
-            let* α4 : unit := std.io.stdio._print α3 in
+              M.call (core.fmt.Arguments.t::["new_const"] α2) in
+            let* α4 : unit := M.call (std.io.stdio._print α3) in
             M.alloc α4 in
           M.alloc tt
         end
       | _ =>
         let* cmd : M.Val (ref alloc.string.String.t) :=
           let* α0 : ref alloc.string.String.t :=
-            (core.ops.index.Index.index
-                (Self :=
-                  alloc.vec.Vec.t alloc.string.String.t alloc.alloc.Global.t)
-                (Trait := ltac:(refine _)))
-              (borrow args)
-              (Integer.of_Z 1) in
+            M.call
+              ((core.ops.index.Index.index
+                  (Self :=
+                    alloc.vec.Vec.t alloc.string.String.t alloc.alloc.Global.t)
+                  (Trait := ltac:(refine _)))
+                (borrow args)
+                (Integer.of_Z 1)) in
           M.alloc α0 in
         let* num : M.Val (ref alloc.string.String.t) :=
           let* α0 : ref alloc.string.String.t :=
-            (core.ops.index.Index.index
-                (Self :=
-                  alloc.vec.Vec.t alloc.string.String.t alloc.alloc.Global.t)
-                (Trait := ltac:(refine _)))
-              (borrow args)
-              (Integer.of_Z 2) in
+            M.call
+              ((core.ops.index.Index.index
+                  (Self :=
+                    alloc.vec.Vec.t alloc.string.String.t alloc.alloc.Global.t)
+                  (Trait := ltac:(refine _)))
+                (borrow args)
+                (Integer.of_Z 2)) in
           M.alloc α0 in
         let* number : M.Val i32.t :=
           let* α0 : ref alloc.string.String.t := M.read num in
           let* α1 : ref str.t :=
-            (core.ops.deref.Deref.deref
-                (Self := alloc.string.String.t)
-                (Trait := ltac:(refine _)))
-              α0 in
+            M.call
+              ((core.ops.deref.Deref.deref
+                  (Self := alloc.string.String.t)
+                  (Trait := ltac:(refine _)))
+                α0) in
           let* α2 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
-            str.t::["parse"] α1 in
+            M.call (str.t::["parse"] α1) in
           let* α3 : M.Val i32.t :=
             match α2 with
             | core.result.Result.Ok n =>
@@ -273,12 +280,12 @@ Definition main : M unit :=
                   let* α2 : ref (slice (ref str.t)) :=
                     M.read (pointer_coercion "Unsize" α1) in
                   let* α3 : core.fmt.Arguments.t :=
-                    core.fmt.Arguments.t::["new_const"] α2 in
-                  let* α4 : unit := std.io.stdio._eprint α3 in
+                    M.call (core.fmt.Arguments.t::["new_const"] α2) in
+                  let* α4 : unit := M.call (std.io.stdio._eprint α3) in
                   M.alloc α4 in
                 M.alloc tt in
               let* _ : M.Val unit :=
-                let* α0 : unit := program_arguments_parsing.help in
+                let* α0 : unit := M.call program_arguments_parsing.help in
                 M.alloc α0 in
               let* _ : M.Val never.t :=
                 let* α0 : M.Val unit := M.alloc tt in
@@ -291,19 +298,20 @@ Definition main : M unit :=
           M.copy α3 in
         let* α0 : ref alloc.string.String.t := M.read cmd in
         let* α1 : ref str.t :=
-          (core.ops.index.Index.index
-              (Self := alloc.string.String.t)
-              (Trait := ltac:(refine _)))
-            α0
-            core.ops.range.RangeFull.Build_t in
+          M.call
+            ((core.ops.index.Index.index
+                (Self := alloc.string.String.t)
+                (Trait := ltac:(refine _)))
+              α0
+              core.ops.range.RangeFull.Build_t) in
         match α1 with
         | _ =>
           let* α0 : i32.t := M.read number in
-          let* α1 : unit := program_arguments_parsing.increase α0 in
+          let* α1 : unit := M.call (program_arguments_parsing.increase α0) in
           M.alloc α1
         | _ =>
           let* α0 : i32.t := M.read number in
-          let* α1 : unit := program_arguments_parsing.decrease α0 in
+          let* α1 : unit := M.call (program_arguments_parsing.decrease α0) in
           M.alloc α1
         | _ =>
           let* _ : M.Val unit :=
@@ -316,18 +324,18 @@ Definition main : M unit :=
               let* α2 : ref (slice (ref str.t)) :=
                 M.read (pointer_coercion "Unsize" α1) in
               let* α3 : core.fmt.Arguments.t :=
-                core.fmt.Arguments.t::["new_const"] α2 in
-              let* α4 : unit := std.io.stdio._eprint α3 in
+                M.call (core.fmt.Arguments.t::["new_const"] α2) in
+              let* α4 : unit := M.call (std.io.stdio._eprint α3) in
               M.alloc α4 in
             M.alloc tt in
           let* _ : M.Val unit :=
-            let* α0 : unit := program_arguments_parsing.help in
+            let* α0 : unit := M.call program_arguments_parsing.help in
             M.alloc α0 in
           M.alloc tt
         end
       | _ =>
         let* _ : M.Val unit :=
-          let* α0 : unit := program_arguments_parsing.help in
+          let* α0 : unit := M.call program_arguments_parsing.help in
           M.alloc α0 in
         M.alloc tt
       end in

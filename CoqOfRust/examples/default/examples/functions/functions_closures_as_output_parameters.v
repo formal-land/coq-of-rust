@@ -12,8 +12,11 @@ Definition create_fn : M _ (* OpaqueTy *) :=
   let* text : M.Val alloc.string.String.t :=
     let* α0 : ref str.t := M.read (mk_str "Fn") in
     let* α1 : alloc.string.String.t :=
-      (alloc.borrow.ToOwned.to_owned (Self := str.t) (Trait := ltac:(refine _)))
-        α0 in
+      M.call
+        ((alloc.borrow.ToOwned.to_owned
+            (Self := str.t)
+            (Trait := ltac:(refine _)))
+          α0) in
     M.alloc α1 in
   M.read
     (let* _ : M.Val unit :=
@@ -24,7 +27,7 @@ Definition create_fn : M _ (* OpaqueTy *) :=
       let* α2 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α1) in
       let* α3 : core.fmt.rt.Argument.t :=
-        core.fmt.rt.Argument.t::["new_display"] (borrow text) in
+        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow text)) in
       let* α4 : M.Val core.fmt.rt.Argument.t := M.alloc α3 in
       let* α5 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4 ] in
       let* α6 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -32,8 +35,8 @@ Definition create_fn : M _ (* OpaqueTy *) :=
       let* α7 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α6) in
       let* α8 : core.fmt.Arguments.t :=
-        core.fmt.Arguments.t::["new_v1"] α2 α7 in
-      let* α9 : unit := std.io.stdio._print α8 in
+        M.call (core.fmt.Arguments.t::["new_v1"] α2 α7) in
+      let* α9 : unit := M.call (std.io.stdio._print α8) in
       M.alloc α9 in
     M.alloc tt).
 
@@ -50,8 +53,11 @@ Definition create_fnmut : M _ (* OpaqueTy *) :=
   let* text : M.Val alloc.string.String.t :=
     let* α0 : ref str.t := M.read (mk_str "FnMut") in
     let* α1 : alloc.string.String.t :=
-      (alloc.borrow.ToOwned.to_owned (Self := str.t) (Trait := ltac:(refine _)))
-        α0 in
+      M.call
+        ((alloc.borrow.ToOwned.to_owned
+            (Self := str.t)
+            (Trait := ltac:(refine _)))
+          α0) in
     M.alloc α1 in
   M.read
     (let* _ : M.Val unit :=
@@ -62,7 +68,7 @@ Definition create_fnmut : M _ (* OpaqueTy *) :=
       let* α2 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α1) in
       let* α3 : core.fmt.rt.Argument.t :=
-        core.fmt.rt.Argument.t::["new_display"] (borrow text) in
+        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow text)) in
       let* α4 : M.Val core.fmt.rt.Argument.t := M.alloc α3 in
       let* α5 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4 ] in
       let* α6 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -70,8 +76,8 @@ Definition create_fnmut : M _ (* OpaqueTy *) :=
       let* α7 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α6) in
       let* α8 : core.fmt.Arguments.t :=
-        core.fmt.Arguments.t::["new_v1"] α2 α7 in
-      let* α9 : unit := std.io.stdio._print α8 in
+        M.call (core.fmt.Arguments.t::["new_v1"] α2 α7) in
+      let* α9 : unit := M.call (std.io.stdio._print α8) in
       M.alloc α9 in
     M.alloc tt).
 
@@ -86,8 +92,11 @@ Definition create_fnonce : M _ (* OpaqueTy *) :=
   let* text : M.Val alloc.string.String.t :=
     let* α0 : ref str.t := M.read (mk_str "FnOnce") in
     let* α1 : alloc.string.String.t :=
-      (alloc.borrow.ToOwned.to_owned (Self := str.t) (Trait := ltac:(refine _)))
-        α0 in
+      M.call
+        ((alloc.borrow.ToOwned.to_owned
+            (Self := str.t)
+            (Trait := ltac:(refine _)))
+          α0) in
     M.alloc α1 in
   M.read
     (let* _ : M.Val unit :=
@@ -98,7 +107,7 @@ Definition create_fnonce : M _ (* OpaqueTy *) :=
       let* α2 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α1) in
       let* α3 : core.fmt.rt.Argument.t :=
-        core.fmt.rt.Argument.t::["new_display"] (borrow text) in
+        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow text)) in
       let* α4 : M.Val core.fmt.rt.Argument.t := M.alloc α3 in
       let* α5 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4 ] in
       let* α6 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -106,8 +115,8 @@ Definition create_fnonce : M _ (* OpaqueTy *) :=
       let* α7 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α6) in
       let* α8 : core.fmt.Arguments.t :=
-        core.fmt.Arguments.t::["new_v1"] α2 α7 in
-      let* α9 : unit := std.io.stdio._print α8 in
+        M.call (core.fmt.Arguments.t::["new_v1"] α2 α7) in
+      let* α9 : unit := M.call (std.io.stdio._print α8) in
       M.alloc α9 in
     M.alloc tt).
 
@@ -126,40 +135,43 @@ fn main() {
 Definition main : M unit :=
   let* fn_plain : M.Val type not implemented :=
     let* α0 : type not implemented :=
-      functions_closures_as_output_parameters.create_fn in
+      M.call functions_closures_as_output_parameters.create_fn in
     M.alloc α0 in
   let* fn_mut : M.Val type not implemented :=
     let* α0 : type not implemented :=
-      functions_closures_as_output_parameters.create_fnmut in
+      M.call functions_closures_as_output_parameters.create_fnmut in
     M.alloc α0 in
   let* fn_once : M.Val type not implemented :=
     let* α0 : type not implemented :=
-      functions_closures_as_output_parameters.create_fnonce in
+      M.call functions_closures_as_output_parameters.create_fnonce in
     M.alloc α0 in
   let* _ : M.Val unit :=
     let* α0 : unit :=
-      (core.ops.function.Fn.call
-          (Self := type not implemented)
-          (Trait := ltac:(refine _)))
-        (borrow fn_plain)
-        tt in
+      M.call
+        ((core.ops.function.Fn.call
+            (Self := type not implemented)
+            (Trait := ltac:(refine _)))
+          (borrow fn_plain)
+          tt) in
     M.alloc α0 in
   let* _ : M.Val unit :=
     let* α0 : unit :=
-      (core.ops.function.FnMut.call_mut
-          (Self := type not implemented)
-          (Trait := ltac:(refine _)))
-        (borrow_mut fn_mut)
-        tt in
+      M.call
+        ((core.ops.function.FnMut.call_mut
+            (Self := type not implemented)
+            (Trait := ltac:(refine _)))
+          (borrow_mut fn_mut)
+          tt) in
     M.alloc α0 in
   let* _ : M.Val unit :=
     let* α0 : type not implemented := M.read fn_once in
     let* α1 : unit :=
-      (core.ops.function.FnOnce.call_once
-          (Self := type not implemented)
-          (Trait := ltac:(refine _)))
-        α0
-        tt in
+      M.call
+        ((core.ops.function.FnOnce.call_once
+            (Self := type not implemented)
+            (Trait := ltac:(refine _)))
+          α0
+          tt) in
     M.alloc α1 in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.

@@ -27,19 +27,21 @@ Definition main : M unit :=
     let* α5 : M.Val i32.t := M.alloc (Integer.of_Z 2) in
     let* α6 : M.Val (array i32.t) := M.alloc [ α0; α1; α2; α3; α4; α5 ] in
     let* α7 : M.Val (alloc.boxed.Box.t (array i32.t) alloc.alloc.Global.t) :=
-      (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α6 in
+      M.call ((alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α6) in
     let* α8 : alloc.boxed.Box.t (slice i32.t) alloc.alloc.Global.t :=
       M.read (pointer_coercion "Unsize" α7) in
     let* α9 : alloc.vec.Vec.t i32.t alloc.alloc.Global.t :=
-      (slice i32.t)::["into_vec"] α8 in
+      M.call ((slice i32.t)::["into_vec"] α8) in
     M.alloc α9 in
   let* index_of_first_even_number : M.Val (core.option.Option.t usize.t) :=
     let* α0 : ref (slice i32.t) :=
-      (core.ops.deref.Deref.deref
-          (Self := alloc.vec.Vec.t i32.t alloc.alloc.Global.t)
-          (Trait := ltac:(refine _)))
-        (borrow vec) in
-    let* α1 : core.slice.iter.Iter.t i32.t := (slice i32.t)::["iter"] α0 in
+      M.call
+        ((core.ops.deref.Deref.deref
+            (Self := alloc.vec.Vec.t i32.t alloc.alloc.Global.t)
+            (Trait := ltac:(refine _)))
+          (borrow vec)) in
+    let* α1 : core.slice.iter.Iter.t i32.t :=
+      M.call ((slice i32.t)::["iter"] α0) in
     let* α2 : M.Val (core.slice.iter.Iter.t i32.t) := M.alloc α1 in
     let* α3 : type not implemented :=
       M.read
@@ -47,11 +49,12 @@ Definition main : M unit :=
         let* α1 : i32.t := BinOp.Panic.rem α0 (Integer.of_Z 2) in
         M.alloc (BinOp.Pure.eq α1 (Integer.of_Z 0))) in
     let* α4 : core.option.Option.t usize.t :=
-      (core.iter.traits.iterator.Iterator.position
-          (Self := core.slice.iter.Iter.t i32.t)
-          (Trait := ltac:(refine _)))
-        (borrow_mut α2)
-        α3 in
+      M.call
+        ((core.iter.traits.iterator.Iterator.position
+            (Self := core.slice.iter.Iter.t i32.t)
+            (Trait := ltac:(refine _)))
+          (borrow_mut α2)
+          α3) in
     M.alloc α4 in
   let* _ : M.Val unit :=
     let* α0 : M.Val (core.option.Option.t usize.t) :=
@@ -63,11 +66,12 @@ Definition main : M unit :=
       let* α0 : ref (core.option.Option.t usize.t) := M.read left_val in
       let* α1 : ref (core.option.Option.t usize.t) := M.read right_val in
       let* α2 : bool.t :=
-        (core.cmp.PartialEq.eq
-            (Self := core.option.Option.t usize.t)
-            (Trait := ltac:(refine _)))
-          α0
-          α1 in
+        M.call
+          ((core.cmp.PartialEq.eq
+              (Self := core.option.Option.t usize.t)
+              (Trait := ltac:(refine _)))
+            α0
+            α1) in
       if (use (UnOp.not α2) : bool) then
         let* kind : M.Val core.panicking.AssertKind.t :=
           M.alloc core.panicking.AssertKind.Eq in
@@ -76,7 +80,8 @@ Definition main : M unit :=
           let* α1 : ref (core.option.Option.t usize.t) := M.read left_val in
           let* α2 : ref (core.option.Option.t usize.t) := M.read right_val in
           let* α3 : never.t :=
-            core.panicking.assert_failed α0 α1 α2 core.option.Option.None in
+            M.call
+              (core.panicking.assert_failed α0 α1 α2 core.option.Option.None) in
           M.alloc α3 in
         let* α0 : M.Val unit := M.alloc tt in
         let* α1 := M.read α0 in
@@ -88,10 +93,11 @@ Definition main : M unit :=
   let* index_of_first_negative_number : M.Val (core.option.Option.t usize.t) :=
     let* α0 : alloc.vec.Vec.t i32.t alloc.alloc.Global.t := M.read vec in
     let* α1 : alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t :=
-      (core.iter.traits.collect.IntoIterator.into_iter
-          (Self := alloc.vec.Vec.t i32.t alloc.alloc.Global.t)
-          (Trait := ltac:(refine _)))
-        α0 in
+      M.call
+        ((core.iter.traits.collect.IntoIterator.into_iter
+            (Self := alloc.vec.Vec.t i32.t alloc.alloc.Global.t)
+            (Trait := ltac:(refine _)))
+          α0) in
     let* α2 :
         M.Val (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t) :=
       M.alloc α1 in
@@ -100,11 +106,12 @@ Definition main : M unit :=
         (let* α0 : i32.t := M.read x in
         M.alloc (BinOp.Pure.lt α0 (Integer.of_Z 0))) in
     let* α4 : core.option.Option.t usize.t :=
-      (core.iter.traits.iterator.Iterator.position
-          (Self := alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t)
-          (Trait := ltac:(refine _)))
-        (borrow_mut α2)
-        α3 in
+      M.call
+        ((core.iter.traits.iterator.Iterator.position
+            (Self := alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t)
+            (Trait := ltac:(refine _)))
+          (borrow_mut α2)
+          α3) in
     M.alloc α4 in
   let* _ : M.Val unit :=
     let* α0 : M.Val (core.option.Option.t usize.t) :=
@@ -116,11 +123,12 @@ Definition main : M unit :=
       let* α0 : ref (core.option.Option.t usize.t) := M.read left_val in
       let* α1 : ref (core.option.Option.t usize.t) := M.read right_val in
       let* α2 : bool.t :=
-        (core.cmp.PartialEq.eq
-            (Self := core.option.Option.t usize.t)
-            (Trait := ltac:(refine _)))
-          α0
-          α1 in
+        M.call
+          ((core.cmp.PartialEq.eq
+              (Self := core.option.Option.t usize.t)
+              (Trait := ltac:(refine _)))
+            α0
+            α1) in
       if (use (UnOp.not α2) : bool) then
         let* kind : M.Val core.panicking.AssertKind.t :=
           M.alloc core.panicking.AssertKind.Eq in
@@ -129,7 +137,8 @@ Definition main : M unit :=
           let* α1 : ref (core.option.Option.t usize.t) := M.read left_val in
           let* α2 : ref (core.option.Option.t usize.t) := M.read right_val in
           let* α3 : never.t :=
-            core.panicking.assert_failed α0 α1 α2 core.option.Option.None in
+            M.call
+              (core.panicking.assert_failed α0 α1 α2 core.option.Option.None) in
           M.alloc α3 in
         let* α0 : M.Val unit := M.alloc tt in
         let* α1 := M.read α0 in

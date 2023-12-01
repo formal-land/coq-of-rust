@@ -37,7 +37,7 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed_t.
     let* α5 : M.Val (ref (ref (ref i32.t))) := M.alloc (borrow α4) in
     let* α6 : ref type not implemented :=
       M.read (pointer_coercion "Unsize" α5) in
-    core.fmt.Formatter.t::["debug_struct_field1_finish"] α0 α1 α2 α6.
+    M.call (core.fmt.Formatter.t::["debug_struct_field1_finish"] α0 α1 α2 α6).
   
   Global Instance AssociatedFunction_fmt :
     Notations.DoubleColon ltac:(Self) "fmt" := {
@@ -84,9 +84,10 @@ fn main() {
 Definition main : M unit :=
   let* b : M.Val scoping_rules_lifetimes_traits.Borrowed.t :=
     let* α0 : scoping_rules_lifetimes_traits.Borrowed.t :=
-      core.default.Default.default
-        (Self := scoping_rules_lifetimes_traits.Borrowed.t)
-        (Trait := ltac:(refine _)) in
+      M.call
+        (core.default.Default.default
+          (Self := scoping_rules_lifetimes_traits.Borrowed.t)
+          (Trait := ltac:(refine _))) in
     M.alloc α0 in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
@@ -97,7 +98,7 @@ Definition main : M unit :=
       let* α2 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α1) in
       let* α3 : core.fmt.rt.Argument.t :=
-        core.fmt.rt.Argument.t::["new_debug"] (borrow b) in
+        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow b)) in
       let* α4 : M.Val core.fmt.rt.Argument.t := M.alloc α3 in
       let* α5 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4 ] in
       let* α6 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -105,8 +106,8 @@ Definition main : M unit :=
       let* α7 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α6) in
       let* α8 : core.fmt.Arguments.t :=
-        core.fmt.Arguments.t::["new_v1"] α2 α7 in
-      let* α9 : unit := std.io.stdio._print α8 in
+        M.call (core.fmt.Arguments.t::["new_v1"] α2 α7) in
+      let* α9 : unit := M.call (std.io.stdio._print α8) in
       M.alloc α9 in
     M.alloc tt in
   let* α0 : M.Val unit := M.alloc tt in

@@ -1,5 +1,21 @@
 Require Import CoqOfRust.CoqOfRust.
+Require CoqOfRust.Simulations.M.
 Require CoqOfRust.examples.default.examples.ink_contracts.erc20.
+
+Import Simulations.M.Notations.
+
+(** ** Primitives *)
+
+Module Env.
+  Definition caller (self : erc20.Env.t) : erc20.AccountId.t :=
+    self.(erc20.Env.caller).
+
+  Definition emit_event : unit :=
+    tt.
+End Env.
+
+Definition env (env : erc20.Env.t) : erc20.Env.t :=
+  env.
 
 (** ** Simulations that only read the state. *)
 
@@ -41,68 +57,78 @@ Definition allowance
 (** ** Simulations modifying the state. *)
 
 Definition transfer_from_to
-    (storage : erc20.Erc20.t)
     (from : erc20.AccountId.t)
     (to : erc20.AccountId.t)
     (value : ltac:(erc20.Balance)) :
-    M? (ltac:(erc20.Result unit) * erc20.Erc20.t) :=
+    MS? erc20.Erc20.t ltac:(erc20.Result unit) :=
+  letS? storage := readS? in
   let from_balance := balance_of_impl storage from in
   if from_balance <u128 value then
-    return? (result.Result.Err erc20.Error.InsufficientBalance, storage)
+    returnS? (result.Result.Err erc20.Error.InsufficientBalance)
   else
     let new_from_balance := BinOp.Optimistic.sub from_balance value in
-    let storage := storage <| erc20.Erc20.balances :=
-      Lib.Mapping.insert from new_from_balance
-        storage.(erc20.Erc20.balances)
-    |> in
+    letS? _ := writeS? (
+      storage <| erc20.Erc20.balances :=
+        Lib.Mapping.insert from new_from_balance
+          storage.(erc20.Erc20.balances)
+      |>
+    ) in
+    letS? storage := readS? in
     let to_balance := balance_of_impl storage to in
-    let? new_to_balance := BinOp.Option.add to_balance value in
-    let storage := storage <| erc20.Erc20.balances :=
-      Lib.Mapping.insert to new_to_balance
-        storage.(erc20.Erc20.balances)
-    |> in
-    return? (result.Result.Ok tt, storage).
+    letS? new_to_balance := return?toS? (BinOp.Error.add to_balance value) in
+    letS? _ := writeS? (
+      storage <| erc20.Erc20.balances :=
+        Lib.Mapping.insert to new_to_balance
+          storage.(erc20.Erc20.balances)
+      |>
+    ) in
+    returnS? (result.Result.Ok tt).
 
 Definition transfer
     (env : erc20.Env.t)
-    (storage : erc20.Erc20.t)
     (to : erc20.AccountId.t)
     (value : ltac:(erc20.Balance)) :
-    M? (ltac:(erc20.Result unit) * erc20.Erc20.t) :=
-  transfer_from_to storage env.(erc20.Env.caller) to value.
+    MS? erc20.Erc20.t ltac:(erc20.Result unit) :=
+  transfer_from_to (Env.caller env) to value.
 
 Definition approve
     (env : erc20.Env.t)
-    (storage : erc20.Erc20.t)
     (spender : erc20.AccountId.t)
     (value : ltac:(erc20.Balance)) :
-    ltac:(erc20.Result unit) * erc20.Erc20.t :=
-  let owner := env.(erc20.Env.caller) in
-  let storage := storage <| erc20.Erc20.allowances :=
-    Lib.Mapping.insert (owner, spender) value storage.(erc20.Erc20.allowances)
-  |> in
-  (result.Result.Ok tt, storage).
+    MS? erc20.Erc20.t ltac:(erc20.Result unit) :=
+  let owner := Env.caller env in
+  letS? storage := readS? in
+  letS? _ := writeS? (
+    storage <| erc20.Erc20.allowances :=
+      Lib.Mapping.insert (owner, spender) value
+        storage.(erc20.Erc20.allowances)
+    |>
+  ) in
+  returnS? (result.Result.Ok tt).
 
 Definition transfer_from
     (env : erc20.Env.t)
-    (storage : erc20.Erc20.t)
     (from : erc20.AccountId.t)
     (to : erc20.AccountId.t)
     (value : ltac:(erc20.Balance)) :
-    M? (ltac:(erc20.Result unit) * erc20.Erc20.t) :=
-  let caller := env.(erc20.Env.caller) in
+    MS? erc20.Erc20.t ltac:(erc20.Result unit) :=
+  let caller := Env.caller env in
+  letS? storage := readS? in
   let allowance := allowance_impl storage from caller in
   if allowance <u128 value then
-    return? (result.Result.Err erc20.Error.InsufficientAllowance, storage)
+    returnS? (result.Result.Err erc20.Error.InsufficientAllowance)
   else
-    let? '(result_from_to, storage) := transfer_from_to storage from to value in
+    letS? result_from_to := transfer_from_to from to value in
     match result_from_to with
-    | result.Result.Err _ => return? (result_from_to, storage)
+    | result.Result.Err _ => returnS? (result_from_to)
     | result.Result.Ok _ =>
       let new_allowance := BinOp.Optimistic.sub allowance value in
-      let storage := storage <| erc20.Erc20.allowances :=
-        Lib.Mapping.insert (from, caller) new_allowance
-          storage.(erc20.Erc20.allowances)
-      |> in
-      return? (result.Result.Ok tt, storage)
+      letS? storage := readS? in
+      letS? _ := writeS? (
+        storage <| erc20.Erc20.allowances :=
+          Lib.Mapping.insert (from, caller) new_allowance
+            storage.(erc20.Erc20.allowances)
+        |>
+      ) in
+      returnS? (result.Result.Ok tt)
     end.

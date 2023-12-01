@@ -28,20 +28,22 @@ Definition main : M unit :=
         (alloc.vec.Vec.t (std.thread.JoinHandle.t unit) alloc.alloc.Global.t) :=
     let* α0 :
         alloc.vec.Vec.t (std.thread.JoinHandle.t unit) alloc.alloc.Global.t :=
-      (alloc.vec.Vec.t
-          (std.thread.JoinHandle.t unit)
-          alloc.alloc.Global.t)::["new"] in
+      M.call
+        (alloc.vec.Vec.t
+            (std.thread.JoinHandle.t unit)
+            alloc.alloc.Global.t)::["new"] in
     M.alloc α0 in
   let* _ : M.Val unit :=
     let* α0 : u32.t := M.read threads.NTHREADS in
     let* α1 : core.ops.range.Range.t u32.t :=
-      (core.iter.traits.collect.IntoIterator.into_iter
-          (Self := core.ops.range.Range.t u32.t)
-          (Trait := ltac:(refine _)))
-        {|
-          core.ops.range.Range.start := Integer.of_Z 0;
-          core.ops.range.Range.end := α0;
-        |} in
+      M.call
+        ((core.iter.traits.collect.IntoIterator.into_iter
+            (Self := core.ops.range.Range.t u32.t)
+            (Trait := ltac:(refine _)))
+          {|
+            core.ops.range.Range.start := Integer.of_Z 0;
+            core.ops.range.Range.end := α0;
+          |}) in
     let* α2 : M.Val unit :=
       match α1 with
       | iter =>
@@ -49,10 +51,11 @@ Definition main : M unit :=
         loop
           (let* _ : M.Val unit :=
             let* α0 : core.option.Option.t u32.t :=
-              (core.iter.traits.iterator.Iterator.next
-                  (Self := core.ops.range.Range.t u32.t)
-                  (Trait := ltac:(refine _)))
-                (borrow_mut iter) in
+              M.call
+                ((core.iter.traits.iterator.Iterator.next
+                    (Self := core.ops.range.Range.t u32.t)
+                    (Trait := ltac:(refine _)))
+                  (borrow_mut iter)) in
             match α0 with
             | core.option.Option.None  =>
               let* α0 : M.Val never.t := Break in
@@ -75,7 +78,9 @@ Definition main : M unit :=
                         let* α2 : ref (slice (ref str.t)) :=
                           M.read (pointer_coercion "Unsize" α1) in
                         let* α3 : core.fmt.rt.Argument.t :=
-                          core.fmt.rt.Argument.t::["new_display"] (borrow i) in
+                          M.call
+                            (core.fmt.rt.Argument.t::["new_display"]
+                              (borrow i)) in
                         let* α4 : M.Val core.fmt.rt.Argument.t := M.alloc α3 in
                         let* α5 : M.Val (array core.fmt.rt.Argument.t) :=
                           M.alloc [ α4 ] in
@@ -84,18 +89,20 @@ Definition main : M unit :=
                         let* α7 : ref (slice core.fmt.rt.Argument.t) :=
                           M.read (pointer_coercion "Unsize" α6) in
                         let* α8 : core.fmt.Arguments.t :=
-                          core.fmt.Arguments.t::["new_v1"] α2 α7 in
-                        let* α9 : unit := std.io.stdio._print α8 in
+                          M.call (core.fmt.Arguments.t::["new_v1"] α2 α7) in
+                        let* α9 : unit := M.call (std.io.stdio._print α8) in
                         M.alloc α9 in
                       M.alloc tt in
                     M.alloc tt) in
-                let* α1 : std.thread.JoinHandle.t unit := std.thread.spawn α0 in
+                let* α1 : std.thread.JoinHandle.t unit :=
+                  M.call (std.thread.spawn α0) in
                 let* α2 : unit :=
-                  (alloc.vec.Vec.t
-                        (std.thread.JoinHandle.t unit)
-                        alloc.alloc.Global.t)::["push"]
-                    (borrow_mut children)
-                    α1 in
+                  M.call
+                    ((alloc.vec.Vec.t
+                          (std.thread.JoinHandle.t unit)
+                          alloc.alloc.Global.t)::["push"]
+                      (borrow_mut children)
+                      α1) in
                 M.alloc α2 in
               M.alloc tt
             end in
@@ -110,11 +117,12 @@ Definition main : M unit :=
       alloc.vec.into_iter.IntoIter.t
         (std.thread.JoinHandle.t unit)
         alloc.alloc.Global.t :=
-    (core.iter.traits.collect.IntoIterator.into_iter
-        (Self :=
-          alloc.vec.Vec.t (std.thread.JoinHandle.t unit) alloc.alloc.Global.t)
-        (Trait := ltac:(refine _)))
-      α0 in
+    M.call
+      ((core.iter.traits.collect.IntoIterator.into_iter
+          (Self :=
+            alloc.vec.Vec.t (std.thread.JoinHandle.t unit) alloc.alloc.Global.t)
+          (Trait := ltac:(refine _)))
+        α0) in
   let* α2 : M.Val unit :=
     match α1 with
     | iter =>
@@ -122,13 +130,14 @@ Definition main : M unit :=
       loop
         (let* _ : M.Val unit :=
           let* α0 : core.option.Option.t (std.thread.JoinHandle.t unit) :=
-            (core.iter.traits.iterator.Iterator.next
-                (Self :=
-                  alloc.vec.into_iter.IntoIter.t
-                    (std.thread.JoinHandle.t unit)
-                    alloc.alloc.Global.t)
-                (Trait := ltac:(refine _)))
-              (borrow_mut iter) in
+            M.call
+              ((core.iter.traits.iterator.Iterator.next
+                  (Self :=
+                    alloc.vec.into_iter.IntoIter.t
+                      (std.thread.JoinHandle.t unit)
+                      alloc.alloc.Global.t)
+                  (Trait := ltac:(refine _)))
+                (borrow_mut iter)) in
           match α0 with
           | core.option.Option.None  =>
             let* α0 : M.Val never.t := Break in
@@ -151,7 +160,7 @@ Definition main : M unit :=
                     (alloc.boxed.Box.t
                       type not implemented
                       alloc.alloc.Global.t) :=
-                (std.thread.JoinHandle.t unit)::["join"] α0 in
+                M.call ((std.thread.JoinHandle.t unit)::["join"] α0) in
               M.alloc α1 in
             M.alloc tt
           end in

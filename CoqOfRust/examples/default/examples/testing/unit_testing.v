@@ -34,7 +34,8 @@ Module tests.
   *)
   Definition test_add : M unit :=
     let* _ : M.Val unit :=
-      let* α0 : i32.t := unit_testing.add (Integer.of_Z 1) (Integer.of_Z 2) in
+      let* α0 : i32.t :=
+        M.call (unit_testing.add (Integer.of_Z 1) (Integer.of_Z 2)) in
       let* α1 : M.Val i32.t := M.alloc α0 in
       let* α2 : M.Val i32.t := M.alloc (Integer.of_Z 3) in
       match (borrow α1, borrow α2) with
@@ -53,7 +54,12 @@ Module tests.
             let* α1 : ref i32.t := M.read left_val in
             let* α2 : ref i32.t := M.read right_val in
             let* α3 : never.t :=
-              core.panicking.assert_failed α0 α1 α2 core.option.Option.None in
+              M.call
+                (core.panicking.assert_failed
+                  α0
+                  α1
+                  α2
+                  core.option.Option.None) in
             M.alloc α3 in
           let* α0 : M.Val unit := M.alloc tt in
           let* α1 := M.read α0 in
@@ -75,7 +81,7 @@ Module tests.
   Definition test_bad_add : M unit :=
     let* _ : M.Val unit :=
       let* α0 : i32.t :=
-        unit_testing.bad_add (Integer.of_Z 1) (Integer.of_Z 2) in
+        M.call (unit_testing.bad_add (Integer.of_Z 1) (Integer.of_Z 2)) in
       let* α1 : M.Val i32.t := M.alloc α0 in
       let* α2 : M.Val i32.t := M.alloc (Integer.of_Z 3) in
       match (borrow α1, borrow α2) with
@@ -94,7 +100,12 @@ Module tests.
             let* α1 : ref i32.t := M.read left_val in
             let* α2 : ref i32.t := M.read right_val in
             let* α3 : never.t :=
-              core.panicking.assert_failed α0 α1 α2 core.option.Option.None in
+              M.call
+                (core.panicking.assert_failed
+                  α0
+                  α1
+                  α2
+                  core.option.Option.None) in
             M.alloc α3 in
           let* α0 : M.Val unit := M.alloc tt in
           let* α1 := M.read α0 in
@@ -114,7 +125,8 @@ End tests.
 *)
 Definition test_add : M unit :=
   let* _ : M.Val unit :=
-    let* α0 : i32.t := unit_testing.add (Integer.of_Z 1) (Integer.of_Z 2) in
+    let* α0 : i32.t :=
+      M.call (unit_testing.add (Integer.of_Z 1) (Integer.of_Z 2)) in
     let* α1 : M.Val i32.t := M.alloc α0 in
     let* α2 : M.Val i32.t := M.alloc (Integer.of_Z 3) in
     match (borrow α1, borrow α2) with
@@ -133,7 +145,8 @@ Definition test_add : M unit :=
           let* α1 : ref i32.t := M.read left_val in
           let* α2 : ref i32.t := M.read right_val in
           let* α3 : never.t :=
-            core.panicking.assert_failed α0 α1 α2 core.option.Option.None in
+            M.call
+              (core.panicking.assert_failed α0 α1 α2 core.option.Option.None) in
           M.alloc α3 in
         let* α0 : M.Val unit := M.alloc tt in
         let* α1 := M.read α0 in
@@ -154,7 +167,8 @@ Definition test_add : M unit :=
 *)
 Definition test_bad_add : M unit :=
   let* _ : M.Val unit :=
-    let* α0 : i32.t := unit_testing.bad_add (Integer.of_Z 1) (Integer.of_Z 2) in
+    let* α0 : i32.t :=
+      M.call (unit_testing.bad_add (Integer.of_Z 1) (Integer.of_Z 2)) in
     let* α1 : M.Val i32.t := M.alloc α0 in
     let* α2 : M.Val i32.t := M.alloc (Integer.of_Z 3) in
     match (borrow α1, borrow α2) with
@@ -173,7 +187,8 @@ Definition test_bad_add : M unit :=
           let* α1 : ref i32.t := M.read left_val in
           let* α2 : ref i32.t := M.read right_val in
           let* α3 : never.t :=
-            core.panicking.assert_failed α0 α1 α2 core.option.Option.None in
+            M.call
+              (core.panicking.assert_failed α0 α1 α2 core.option.Option.None) in
           M.alloc α3 in
         let* α0 : M.Val unit := M.alloc tt in
         let* α1 := M.read α0 in

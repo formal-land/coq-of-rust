@@ -8,7 +8,7 @@ fn gen_range() -> u32 {
 *)
 Definition gen_range : M u32.t :=
   let* α0 : ref str.t := M.read (mk_str "not yet implemented") in
-  let* α1 : never.t := core.panicking.panic α0 in
+  let* α1 : never.t := M.call (core.panicking.panic α0) in
   never_to_any α1.
 
 (*
@@ -56,12 +56,12 @@ Definition main : M unit :=
       let* α2 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α1) in
       let* α3 : core.fmt.Arguments.t :=
-        core.fmt.Arguments.t::["new_const"] α2 in
-      let* α4 : unit := std.io.stdio._print α3 in
+        M.call (core.fmt.Arguments.t::["new_const"] α2) in
+      let* α4 : unit := M.call (std.io.stdio._print α3) in
       M.alloc α4 in
     M.alloc tt in
   let* secret_number : M.Val u32.t :=
-    let* α0 : u32.t := guessing_game.gen_range in
+    let* α0 : u32.t := M.call guessing_game.gen_range in
     M.alloc α0 in
   let* α0 : M.Val unit :=
     loop
@@ -74,33 +74,39 @@ Definition main : M unit :=
           let* α2 : ref (slice (ref str.t)) :=
             M.read (pointer_coercion "Unsize" α1) in
           let* α3 : core.fmt.Arguments.t :=
-            core.fmt.Arguments.t::["new_const"] α2 in
-          let* α4 : unit := std.io.stdio._print α3 in
+            M.call (core.fmt.Arguments.t::["new_const"] α2) in
+          let* α4 : unit := M.call (std.io.stdio._print α3) in
           M.alloc α4 in
         M.alloc tt in
       let* guess : M.Val alloc.string.String.t :=
-        let* α0 : alloc.string.String.t := alloc.string.String.t::["new"] in
+        let* α0 : alloc.string.String.t :=
+          M.call alloc.string.String.t::["new"] in
         M.alloc α0 in
       let* _ : M.Val usize.t :=
-        let* α0 : std.io.stdio.Stdin.t := std.io.stdio.stdin in
+        let* α0 : std.io.stdio.Stdin.t := M.call std.io.stdio.stdin in
         let* α1 : M.Val std.io.stdio.Stdin.t := M.alloc α0 in
         let* α2 : core.result.Result.t usize.t std.io.error.Error.t :=
-          std.io.stdio.Stdin.t::["read_line"] (borrow α1) (borrow_mut guess) in
+          M.call
+            (std.io.stdio.Stdin.t::["read_line"]
+              (borrow α1)
+              (borrow_mut guess)) in
         let* α3 : ref str.t := M.read (mk_str "Failed to read line") in
         let* α4 : usize.t :=
-          (core.result.Result.t usize.t std.io.error.Error.t)::["expect"]
-            α2
-            α3 in
+          M.call
+            ((core.result.Result.t usize.t std.io.error.Error.t)::["expect"]
+              α2
+              α3) in
         M.alloc α4 in
       let* guess : M.Val u32.t :=
         let* α0 : ref str.t :=
-          (core.ops.deref.Deref.deref
-              (Self := alloc.string.String.t)
-              (Trait := ltac:(refine _)))
-            (borrow guess) in
-        let* α1 : ref str.t := str.t::["trim"] α0 in
+          M.call
+            ((core.ops.deref.Deref.deref
+                (Self := alloc.string.String.t)
+                (Trait := ltac:(refine _)))
+              (borrow guess)) in
+        let* α1 : ref str.t := M.call (str.t::["trim"] α0) in
         let* α2 : core.result.Result.t u32.t core.num.error.ParseIntError.t :=
-          str.t::["parse"] α1 in
+          M.call (str.t::["parse"] α1) in
         let* α3 : M.Val u32.t :=
           match α2 with
           | core.result.Result.Ok num =>
@@ -122,7 +128,7 @@ Definition main : M unit :=
           let* α2 : ref (slice (ref str.t)) :=
             M.read (pointer_coercion "Unsize" α1) in
           let* α3 : core.fmt.rt.Argument.t :=
-            core.fmt.rt.Argument.t::["new_display"] (borrow guess) in
+            M.call (core.fmt.rt.Argument.t::["new_display"] (borrow guess)) in
           let* α4 : M.Val core.fmt.rt.Argument.t := M.alloc α3 in
           let* α5 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4 ] in
           let* α6 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -130,14 +136,15 @@ Definition main : M unit :=
           let* α7 : ref (slice core.fmt.rt.Argument.t) :=
             M.read (pointer_coercion "Unsize" α6) in
           let* α8 : core.fmt.Arguments.t :=
-            core.fmt.Arguments.t::["new_v1"] α2 α7 in
-          let* α9 : unit := std.io.stdio._print α8 in
+            M.call (core.fmt.Arguments.t::["new_v1"] α2 α7) in
+          let* α9 : unit := M.call (std.io.stdio._print α8) in
           M.alloc α9 in
         M.alloc tt in
       let* α0 : core.cmp.Ordering.t :=
-        (core.cmp.Ord.cmp (Self := u32.t) (Trait := ltac:(refine _)))
-          (borrow guess)
-          (borrow secret_number) in
+        M.call
+          ((core.cmp.Ord.cmp (Self := u32.t) (Trait := ltac:(refine _)))
+            (borrow guess)
+            (borrow secret_number)) in
       match α0 with
       | core.cmp.Ordering.Less  =>
         let* _ : M.Val unit :=
@@ -148,8 +155,8 @@ Definition main : M unit :=
           let* α2 : ref (slice (ref str.t)) :=
             M.read (pointer_coercion "Unsize" α1) in
           let* α3 : core.fmt.Arguments.t :=
-            core.fmt.Arguments.t::["new_const"] α2 in
-          let* α4 : unit := std.io.stdio._print α3 in
+            M.call (core.fmt.Arguments.t::["new_const"] α2) in
+          let* α4 : unit := M.call (std.io.stdio._print α3) in
           M.alloc α4 in
         M.alloc tt
       | core.cmp.Ordering.Greater  =>
@@ -161,8 +168,8 @@ Definition main : M unit :=
           let* α2 : ref (slice (ref str.t)) :=
             M.read (pointer_coercion "Unsize" α1) in
           let* α3 : core.fmt.Arguments.t :=
-            core.fmt.Arguments.t::["new_const"] α2 in
-          let* α4 : unit := std.io.stdio._print α3 in
+            M.call (core.fmt.Arguments.t::["new_const"] α2) in
+          let* α4 : unit := M.call (std.io.stdio._print α3) in
           M.alloc α4 in
         M.alloc tt
       | core.cmp.Ordering.Equal  =>
@@ -175,8 +182,8 @@ Definition main : M unit :=
             let* α2 : ref (slice (ref str.t)) :=
               M.read (pointer_coercion "Unsize" α1) in
             let* α3 : core.fmt.Arguments.t :=
-              core.fmt.Arguments.t::["new_const"] α2 in
-            let* α4 : unit := std.io.stdio._print α3 in
+              M.call (core.fmt.Arguments.t::["new_const"] α2) in
+            let* α4 : unit := M.call (std.io.stdio._print α3) in
             M.alloc α4 in
           M.alloc tt in
         let* _ : M.Val never.t := Break in

@@ -17,7 +17,7 @@ Definition print_one (x : ref i32.t) : M unit :=
       let* α2 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α1) in
       let* α3 : core.fmt.rt.Argument.t :=
-        core.fmt.rt.Argument.t::["new_display"] (borrow x) in
+        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow x)) in
       let* α4 : M.Val core.fmt.rt.Argument.t := M.alloc α3 in
       let* α5 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4 ] in
       let* α6 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -25,8 +25,8 @@ Definition print_one (x : ref i32.t) : M unit :=
       let* α7 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α6) in
       let* α8 : core.fmt.Arguments.t :=
-        core.fmt.Arguments.t::["new_v1"] α2 α7 in
-      let* α9 : unit := std.io.stdio._print α8 in
+        M.call (core.fmt.Arguments.t::["new_v1"] α2 α7) in
+      let* α9 : unit := M.call (std.io.stdio._print α8) in
       M.alloc α9 in
     M.alloc tt in
   let* α0 : M.Val unit := M.alloc tt in
@@ -64,10 +64,10 @@ Definition print_multi (x : ref i32.t) (y : ref i32.t) : M unit :=
       let* α2 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α1) in
       let* α3 : core.fmt.rt.Argument.t :=
-        core.fmt.rt.Argument.t::["new_display"] (borrow x) in
+        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow x)) in
       let* α4 : M.Val core.fmt.rt.Argument.t := M.alloc α3 in
       let* α5 : core.fmt.rt.Argument.t :=
-        core.fmt.rt.Argument.t::["new_display"] (borrow y) in
+        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow y)) in
       let* α6 : M.Val core.fmt.rt.Argument.t := M.alloc α5 in
       let* α7 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4; α6 ] in
       let* α8 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -75,8 +75,8 @@ Definition print_multi (x : ref i32.t) (y : ref i32.t) : M unit :=
       let* α9 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α8) in
       let* α10 : core.fmt.Arguments.t :=
-        core.fmt.Arguments.t::["new_v1"] α2 α9 in
-      let* α11 : unit := std.io.stdio._print α10 in
+        M.call (core.fmt.Arguments.t::["new_v1"] α2 α9) in
+      let* α11 : unit := M.call (std.io.stdio._print α10) in
       M.alloc α11 in
     M.alloc tt in
   let* α0 : M.Val unit := M.alloc tt in
@@ -113,27 +113,30 @@ Definition main : M unit :=
   let* x : M.Val i32.t := M.alloc (Integer.of_Z 7) in
   let* y : M.Val i32.t := M.alloc (Integer.of_Z 9) in
   let* _ : M.Val unit :=
-    let* α0 : unit := scoping_rules_lifetimes_functions.print_one (borrow x) in
+    let* α0 : unit :=
+      M.call (scoping_rules_lifetimes_functions.print_one (borrow x)) in
     M.alloc α0 in
   let* _ : M.Val unit :=
     let* α0 : unit :=
-      scoping_rules_lifetimes_functions.print_multi (borrow x) (borrow y) in
+      M.call
+        (scoping_rules_lifetimes_functions.print_multi (borrow x) (borrow y)) in
     M.alloc α0 in
   let* z : M.Val (ref i32.t) :=
     let* α0 : ref i32.t :=
-      scoping_rules_lifetimes_functions.pass_x (borrow x) (borrow y) in
+      M.call (scoping_rules_lifetimes_functions.pass_x (borrow x) (borrow y)) in
     M.alloc α0 in
   let* _ : M.Val unit :=
     let* α0 : ref i32.t := M.read z in
-    let* α1 : unit := scoping_rules_lifetimes_functions.print_one α0 in
+    let* α1 : unit := M.call (scoping_rules_lifetimes_functions.print_one α0) in
     M.alloc α1 in
   let* t : M.Val i32.t := M.alloc (Integer.of_Z 3) in
   let* _ : M.Val unit :=
     let* α0 : unit :=
-      scoping_rules_lifetimes_functions.add_one (borrow_mut t) in
+      M.call (scoping_rules_lifetimes_functions.add_one (borrow_mut t)) in
     M.alloc α0 in
   let* _ : M.Val unit :=
-    let* α0 : unit := scoping_rules_lifetimes_functions.print_one (borrow t) in
+    let* α0 : unit :=
+      M.call (scoping_rules_lifetimes_functions.print_one (borrow t)) in
     M.alloc α0 in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.

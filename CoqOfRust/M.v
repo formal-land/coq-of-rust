@@ -60,15 +60,26 @@ Definition Primitive : Set -> Set := Primitive.t.
 Module LowM.
   Inductive t (A : Set) : Set :=
   | Pure : A -> t A
-  | Let {B : Set} : t B -> (B -> t A) -> t A
-  | CallPrimitive : Primitive A -> t A
-  | Cast {B : Set} : B -> t A
-  | Impossible : t A.
+  | CallPrimitive {B : Set} : Primitive B -> (B -> t A) -> t A
+  | Cast {B1 B2 : Set} : B1 -> (B2 -> t A) -> t A
+  | Impossible : t A
+  | Call {B : Set} : t B -> (B -> t A) -> t A.
   Arguments Pure {_}.
-  Arguments Let {_ _}.
-  Arguments CallPrimitive {_}.
-  Arguments Cast {_ _}.
+  Arguments CallPrimitive {_ _}.
+  Arguments Cast {_ _ _}.
   Arguments Impossible {_}.
+  Arguments Call {_ _}.
+
+  Fixpoint let_ {A B : Set} (e1 : t A) (f : A -> t B) : t B :=
+    match e1 with
+    | Pure v => f v
+    | CallPrimitive primitive k =>
+      CallPrimitive primitive (fun v => let_ (k v) f)
+    | Cast v k =>
+      Cast v (fun v' => let_ (k v') f)
+    | Impossible => Impossible
+    | Call e k => Call e (fun v => let_ (k v) f)
+    end.
 End LowM.
 Definition LowM : Set -> Set := LowM.t.
 
@@ -87,16 +98,15 @@ End Exception.
 Definition Exception : Set := Exception.t.
 
 Definition M (A : Set) : Set :=
-  nat -> LowM (A + Exception).
+  LowM (A + Exception).
 
 Definition pure {A : Set} (v : A) : M A :=
-  fun fuel => LowM.Pure (inl v).
+  LowM.Pure (inl v).
 
 Definition let_ {A B : Set} (e1 : M A) (e2 : A -> M B) : M B :=
-  fun fuel =>
-  LowM.Let (e1 fuel) (fun v1 =>
+  LowM.let_ e1 (fun v1 =>
   match v1 with
-  | inl v1 => e2 v1 fuel
+  | inl v1 => e2 v1
   | inr error => LowM.Pure (inr error)
   end).
 
@@ -110,7 +120,7 @@ End Option.
 
 Module Notations.
   Notation "'let-' a := b 'in' c" :=
-    (LowM.Let b (fun a => c))
+    (LowM.let_ b (fun a => c))
       (at level 200, b at level 100, a name).
 
   Notation "'let*' a := b 'in' c" :=
@@ -124,26 +134,14 @@ Module Notations.
   Notation "'let*' ' a ':=' b 'in' c" :=
     (let_ b (fun a => c))
     (at level 200, a pattern, b at level 100, c at level 200).
-
-  Notation "M? X" := (option X) (at level 20).
-
-  Notation "return? X" := (Some X) (at level 20).
-
-  Notation "'let?' x ':=' X 'in' Y" :=
-    (Option.bind X (fun x => Y))
-    (at level 200, x name, X at level 100, Y at level 200).
-
-  Notation "'let?' ' x ':=' X 'in' Y" :=
-    (Option.bind X (fun x => Y))
-    (at level 200, x pattern, X at level 100, Y at level 200).
 End Notations.
 Import Notations.
 
 Definition cast {A B : Set} (v : A) : M B :=
-  fun _fuel => LowM.Cast (inl (B := Exception) v).
+  LowM.Cast (inl (B := Exception) v) LowM.Pure.
 
 Definition raise {A : Set} (exception : Exception) : M A :=
-  fun _fuel => LowM.Pure (inr exception).
+  LowM.Pure (inr exception).
 
 Definition return_ {A R : Set} (r : R) : M A :=
   raise (Exception.Return r).
@@ -157,9 +155,12 @@ Definition break {A : Set} : M A :=
 Definition panic {A : Set} (message : Coq.Strings.String.string) : M A :=
   raise (Exception.Panic message).
 
+Definition call {A : Set} (e : M A) : M A :=
+  LowM.Call e LowM.Pure.
+
 (* TODO: define for every (A : Set) in (M A) *)
 (** the definition of a function representing the loop construction *)
-Definition loop (m : M unit) : M unit :=
+(* Definition loop (m : M unit) : M unit :=
   fix F (fuel : nat) {struct fuel} :=
     match fuel with
     | 0 => LowM.Pure (inr Exception.NonTermination)
@@ -175,30 +176,27 @@ Definition loop (m : M unit) : M unit :=
       | inr (Exception.Panic _)
       | inr Exception.NonTermination => LowM.Pure (v)
       end
-    end.
+    end. *)
 
 Definition alloc {A : Set} (v : A) : M (Ref A) :=
-  fun _fuel =>
-  let- ref := LowM.CallPrimitive (Primitive.StateAlloc v) in
+  let- ref := LowM.CallPrimitive (Primitive.StateAlloc v) LowM.Pure in
   LowM.Pure (inl ref).
 
 Definition read {A : Set} (r : Ref A) : M A :=
-  fun _fuel =>
   match r with
   | Ref.Imm v => LowM.Pure (inl v)
   | Ref.MutRef address projection _ =>
-    let- full_v := LowM.CallPrimitive (Primitive.StateRead address) in
+    let- full_v := LowM.CallPrimitive (Primitive.StateRead address) LowM.Pure in
     LowM.Pure (inl (projection full_v))
   end.
 
 Definition write {A : Set} (r : Ref A) (v : A) : M unit :=
-  fun _fuel =>
   match r with
   | Ref.Imm _ => LowM.Impossible
   | Ref.MutRef address _ injection =>
-    let- full_v := LowM.CallPrimitive (Primitive.StateRead address) in
+    let- full_v := LowM.CallPrimitive (Primitive.StateRead address) LowM.Pure in
     let full_v' := injection v full_v in
-    let- _ := LowM.CallPrimitive (Primitive.StateWrite address full_v') in
+    let- _ := LowM.CallPrimitive (Primitive.StateWrite address full_v') LowM.Pure in
     LowM.Pure (inl tt)
   end.
 
@@ -207,12 +205,11 @@ Definition copy {A : Set} (r : Ref A) : M (Ref A) :=
   alloc v.
 
 Definition read_env {Env : Set} : M Env :=
-  fun _fuel =>
-  let- env := LowM.CallPrimitive Primitive.EnvRead in
+  let- env := LowM.CallPrimitive Primitive.EnvRead LowM.Pure in
   LowM.Pure (inl env).
 
 Definition impossible {A : Set} : M A :=
-  fun _fuel => LowM.Impossible.
+  LowM.Impossible.
 
 (** Used for the definitions of "const". *)
 (* @TODO: Give a definition for [run]. There should be an additional parameter
@@ -222,11 +219,10 @@ Parameter run : forall {A : Set}, M A -> A.
 Definition Val (A : Set) : Set := Ref A.
 
 Definition catch {A : Set} (body : M A) (handler : Exception -> M A) : M A :=
-  fun fuel =>
-  let- result := body fuel in
+  let- result := body in
   match result with
   | inl v => LowM.Pure (inl v)
-  | inr exception => handler exception fuel
+  | inr exception => handler exception
   end.
 
 Definition catch_return {A : Set} (body : M A) : M A :=

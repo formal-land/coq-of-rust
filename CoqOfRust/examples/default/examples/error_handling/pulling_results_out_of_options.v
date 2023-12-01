@@ -15,29 +15,31 @@ Definition double_first
   let* vec : M.Val (alloc.vec.Vec.t (ref str.t) alloc.vec.Vec.Default.A) :=
     M.alloc vec in
   let* α0 : ref (slice (ref str.t)) :=
-    (core.ops.deref.Deref.deref
-        (Self := alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t)
-        (Trait := ltac:(refine _)))
-      (borrow vec) in
+    M.call
+      ((core.ops.deref.Deref.deref
+          (Self := alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t)
+          (Trait := ltac:(refine _)))
+        (borrow vec)) in
   let* α1 : core.option.Option.t (ref (ref str.t)) :=
-    (slice (ref str.t))::["first"] α0 in
+    M.call ((slice (ref str.t))::["first"] α0) in
   let* α2 : type not implemented :=
     M.read
       (let* α0 : ref (ref str.t) := M.read first in
       let* α1 : ref str.t := M.read (deref α0) in
       let* α2 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
-        str.t::["parse"] α1 in
+        M.call (str.t::["parse"] α1) in
       let* α3 : type not implemented :=
         M.read
           (let* α0 : i32.t := M.read n in
           let* α1 : i32.t := BinOp.Panic.mul (Integer.of_Z 2) α0 in
           M.alloc α1) in
       let* α4 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
-        (core.result.Result.t i32.t core.num.error.ParseIntError.t)::["map"]
-          α2
-          α3 in
+        M.call
+          ((core.result.Result.t i32.t core.num.error.ParseIntError.t)::["map"]
+            α2
+            α3) in
       M.alloc α4) in
-  (core.option.Option.t (ref (ref str.t)))::["map"] α1 α2.
+  M.call ((core.option.Option.t (ref (ref str.t)))::["map"] α1 α2).
 
 (*
 fn main() {
@@ -64,15 +66,15 @@ Definition main : M unit :=
     let* α4 : M.Val (array (ref str.t)) := M.alloc [ mk_str "42"; α1; α3 ] in
     let* α5 :
         M.Val (alloc.boxed.Box.t (array (ref str.t)) alloc.alloc.Global.t) :=
-      (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α4 in
+      M.call ((alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α4) in
     let* α6 : alloc.boxed.Box.t (slice (ref str.t)) alloc.alloc.Global.t :=
       M.read (pointer_coercion "Unsize" α5) in
     let* α7 : alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t :=
-      (slice (ref str.t))::["into_vec"] α6 in
+      M.call ((slice (ref str.t))::["into_vec"] α6) in
     M.alloc α7 in
   let* empty : M.Val (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t) :=
     let* α0 : alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t :=
-      (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t)::["new"] in
+      M.call (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t)::["new"] in
     M.alloc α0 in
   let* strings : M.Val (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t) :=
     let* α0 : ref str.t := M.read (mk_str "93") in
@@ -82,11 +84,11 @@ Definition main : M unit :=
     let* α4 : M.Val (array (ref str.t)) := M.alloc [ mk_str "tofu"; α1; α3 ] in
     let* α5 :
         M.Val (alloc.boxed.Box.t (array (ref str.t)) alloc.alloc.Global.t) :=
-      (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α4 in
+      M.call ((alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α4) in
     let* α6 : alloc.boxed.Box.t (slice (ref str.t)) alloc.alloc.Global.t :=
       M.read (pointer_coercion "Unsize" α5) in
     let* α7 : alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t :=
-      (slice (ref str.t))::["into_vec"] α6 in
+      M.call ((slice (ref str.t))::["into_vec"] α6) in
     M.alloc α7 in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
@@ -101,14 +103,14 @@ Definition main : M unit :=
       let* α4 :
           core.option.Option.t
             (core.result.Result.t i32.t core.num.error.ParseIntError.t) :=
-        pulling_results_out_of_options.double_first α3 in
+        M.call (pulling_results_out_of_options.double_first α3) in
       let* α5 :
           M.Val
             (core.option.Option.t
               (core.result.Result.t i32.t core.num.error.ParseIntError.t)) :=
         M.alloc α4 in
       let* α6 : core.fmt.rt.Argument.t :=
-        core.fmt.rt.Argument.t::["new_debug"] (borrow α5) in
+        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow α5)) in
       let* α7 : M.Val core.fmt.rt.Argument.t := M.alloc α6 in
       let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
       let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -116,8 +118,8 @@ Definition main : M unit :=
       let* α10 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α9) in
       let* α11 : core.fmt.Arguments.t :=
-        core.fmt.Arguments.t::["new_v1"] α2 α10 in
-      let* α12 : unit := std.io.stdio._print α11 in
+        M.call (core.fmt.Arguments.t::["new_v1"] α2 α10) in
+      let* α12 : unit := M.call (std.io.stdio._print α11) in
       M.alloc α12 in
     M.alloc tt in
   let* _ : M.Val unit :=
@@ -133,14 +135,14 @@ Definition main : M unit :=
       let* α4 :
           core.option.Option.t
             (core.result.Result.t i32.t core.num.error.ParseIntError.t) :=
-        pulling_results_out_of_options.double_first α3 in
+        M.call (pulling_results_out_of_options.double_first α3) in
       let* α5 :
           M.Val
             (core.option.Option.t
               (core.result.Result.t i32.t core.num.error.ParseIntError.t)) :=
         M.alloc α4 in
       let* α6 : core.fmt.rt.Argument.t :=
-        core.fmt.rt.Argument.t::["new_debug"] (borrow α5) in
+        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow α5)) in
       let* α7 : M.Val core.fmt.rt.Argument.t := M.alloc α6 in
       let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
       let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -148,8 +150,8 @@ Definition main : M unit :=
       let* α10 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α9) in
       let* α11 : core.fmt.Arguments.t :=
-        core.fmt.Arguments.t::["new_v1"] α2 α10 in
-      let* α12 : unit := std.io.stdio._print α11 in
+        M.call (core.fmt.Arguments.t::["new_v1"] α2 α10) in
+      let* α12 : unit := M.call (std.io.stdio._print α11) in
       M.alloc α12 in
     M.alloc tt in
   let* _ : M.Val unit :=
@@ -165,14 +167,14 @@ Definition main : M unit :=
       let* α4 :
           core.option.Option.t
             (core.result.Result.t i32.t core.num.error.ParseIntError.t) :=
-        pulling_results_out_of_options.double_first α3 in
+        M.call (pulling_results_out_of_options.double_first α3) in
       let* α5 :
           M.Val
             (core.option.Option.t
               (core.result.Result.t i32.t core.num.error.ParseIntError.t)) :=
         M.alloc α4 in
       let* α6 : core.fmt.rt.Argument.t :=
-        core.fmt.rt.Argument.t::["new_debug"] (borrow α5) in
+        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow α5)) in
       let* α7 : M.Val core.fmt.rt.Argument.t := M.alloc α6 in
       let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
       let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -180,8 +182,8 @@ Definition main : M unit :=
       let* α10 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α9) in
       let* α11 : core.fmt.Arguments.t :=
-        core.fmt.Arguments.t::["new_v1"] α2 α10 in
-      let* α12 : unit := std.io.stdio._print α11 in
+        M.call (core.fmt.Arguments.t::["new_v1"] α2 α10) in
+      let* α12 : unit := M.call (std.io.stdio._print α11) in
       M.alloc α12 in
     M.alloc tt in
   let* α0 : M.Val unit := M.alloc tt in

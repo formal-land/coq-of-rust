@@ -745,7 +745,7 @@ fn compile_function_body(
                 pattern: Box::new(Pattern::Variable("return_".to_string())),
                 init: Box::new(Expr {
                     kind: ExprKind::VarWithTy {
-                        path: Path::local("M.return_".to_string()),
+                        path: Path::local("M.return_"),
                         ty_name: "R".to_string(),
                         ty: ret_ty,
                     },
@@ -771,7 +771,7 @@ fn compile_function_body(
                 is_monadic: false,
                 pattern: Box::new(Pattern::Variable(name.to_string())),
                 init: Box::new(Expr {
-                    kind: ExprKind::Var(Path::local(name.to_string())).alloc(Some(ty.clone())),
+                    kind: ExprKind::Var(Path::local(name)).alloc(Some(ty.clone())),
                     ty: Some(ty.clone().val()),
                 }),
                 body,

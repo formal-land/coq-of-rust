@@ -26,7 +26,6 @@ SOFTWARE.
 Require Export Coq.Strings.Ascii.
 Require Export Coq.Strings.String.
 Require Export Coq.ZArith.ZArith.
-From Hammer Require Export Tactics.
 Require Export CoqOfRust.RecordUpdate.
 
 Export List.ListNotations.

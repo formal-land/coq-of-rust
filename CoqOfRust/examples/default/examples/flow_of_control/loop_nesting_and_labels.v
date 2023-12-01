@@ -35,8 +35,8 @@ Definition main : M unit :=
           let* α2 : ref (slice (ref str.t)) :=
             M.read (pointer_coercion "Unsize" α1) in
           let* α3 : core.fmt.Arguments.t :=
-            core.fmt.Arguments.t::["new_const"] α2 in
-          let* α4 : unit := std.io.stdio._print α3 in
+            M.call (core.fmt.Arguments.t::["new_const"] α2) in
+          let* α4 : unit := M.call (std.io.stdio._print α3) in
           M.alloc α4 in
         M.alloc tt in
       let* _ : M.Val unit :=
@@ -52,8 +52,8 @@ Definition main : M unit :=
                 let* α2 : ref (slice (ref str.t)) :=
                   M.read (pointer_coercion "Unsize" α1) in
                 let* α3 : core.fmt.Arguments.t :=
-                  core.fmt.Arguments.t::["new_const"] α2 in
-                let* α4 : unit := std.io.stdio._print α3 in
+                  M.call (core.fmt.Arguments.t::["new_const"] α2) in
+                let* α4 : unit := M.call (std.io.stdio._print α3) in
                 M.alloc α4 in
               M.alloc tt in
             let* _ : M.Val never.t := Break in
@@ -70,8 +70,8 @@ Definition main : M unit :=
           let* α2 : ref (slice (ref str.t)) :=
             M.read (pointer_coercion "Unsize" α1) in
           let* α3 : core.fmt.Arguments.t :=
-            core.fmt.Arguments.t::["new_const"] α2 in
-          let* α4 : unit := std.io.stdio._print α3 in
+            M.call (core.fmt.Arguments.t::["new_const"] α2) in
+          let* α4 : unit := M.call (std.io.stdio._print α3) in
           M.alloc α4 in
         M.alloc tt in
       M.alloc tt) in
@@ -84,8 +84,8 @@ Definition main : M unit :=
       let* α2 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α1) in
       let* α3 : core.fmt.Arguments.t :=
-        core.fmt.Arguments.t::["new_const"] α2 in
-      let* α4 : unit := std.io.stdio._print α3 in
+        M.call (core.fmt.Arguments.t::["new_const"] α2) in
+      let* α4 : unit := M.call (std.io.stdio._print α3) in
       M.alloc α4 in
     M.alloc tt in
   let* α0 : M.Val unit := M.alloc tt in

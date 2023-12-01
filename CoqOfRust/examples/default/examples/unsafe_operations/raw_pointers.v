@@ -20,7 +20,7 @@ Definition main : M unit :=
     let* α1 : u32.t := M.read (deref α0) in
     if (use (UnOp.not (BinOp.Pure.eq α1 (Integer.of_Z 10))) : bool) then
       let* α0 : ref str.t := M.read (mk_str "assertion failed: *raw_p == 10") in
-      let* α1 : never.t := core.panicking.panic α0 in
+      let* α1 : never.t := M.call (core.panicking.panic α0) in
       let* α2 : unit := never_to_any α1 in
       M.alloc α2
     else

@@ -34,57 +34,57 @@ Module State.
   End Valid.
 End State.
 
-Module LowM.
-  Module Run.
-    Inductive t `{State.Trait} {Env : Set} (env : Env) :
-        forall {A : Set},
-        LowM A -> State -> A -> State -> Prop :=
-    | Pure {A : Set} (state : State) (v : A) :
-      t env (LowM.Pure v) state v state
-    | Let {A B : Set} (e1 : LowM B) (e2 : B -> LowM A)
-        (state state1 state2 : State)
-        (v1 : B) (v2 : A) :
-      t env e1 state v1 state1 ->
-      t env (e2 v1) state1 v2 state2 ->
-      t env (LowM.Let e1 e2) state v2 state2
-    | CallPrimitiveStateAllocNone {A : Set} (state : State) (v : A) :
-      t env (LowM.CallPrimitive (Primitive.StateAlloc v))
-        state
-        (Ref.Imm v)
-        state
-    | CallPrimitiveStateAllocSome
-        (address : Address) (v : State.get_Set address)
-        (state state' : State) :
-      State.read address state = None ->
-      State.alloc_write address state v = Some state' ->
-      t env (LowM.CallPrimitive (Primitive.StateAlloc v))
-        state
-        (Ref.MutRef (A := State.get_Set address) (B := State.get_Set address)
-          address (fun full_v => full_v) (fun v _full_v => v)
-        )
-        state'
-    | CallPrimitiveStateRead
-        (address : Address) (v : State.get_Set address)
-        (state : State) :
-      State.read address state = Some v ->
-      t env (LowM.CallPrimitive (Primitive.StateRead address))
-        state
-        v
-        state
-    | CallPrimitiveStateWrite
-        (address : Address) (v : State.get_Set address)
-        (state state' : State) :
-      State.alloc_write address state v = Some state' ->
-      t env (LowM.CallPrimitive (Primitive.StateWrite address v))
-        state
-        tt
-        state'
-    | CallPrimitiveEnvRead (state : State) :
-      t env (LowM.CallPrimitive Primitive.EnvRead) state env state
-    | Cast {A : Set} (state : State) (v : A) :
-      t env (LowM.Cast v) state v state.
-  End Run.
-End LowM.
+Module Run.
+  Inductive t `{State.Trait} {Env A : Set} (env : Env)
+      (* Be aware of the order of parameters: the result and final state are at
+         the beginning. *)
+      (result : A) (state' : State) :
+      LowM A -> State -> Prop :=
+  | Pure :
+    t env result state' (LowM.Pure result) state'
+  | CallPrimitiveStateAllocNone {B : Set} (state : State) (v : B)
+      (k : Ref B -> LowM A) :
+    t env result state' (k (Ref.Imm v)) state ->
+    t env result state' (LowM.CallPrimitive (Primitive.StateAlloc v) k)
+      state
+  | CallPrimitiveStateAllocSome
+      (address : Address) (v : State.get_Set address) (state : State)
+      (k : Ref (State.get_Set address) -> LowM A) :
+    let r :=
+      Ref.MutRef (A := State.get_Set address) (B := State.get_Set address)
+        address (fun full_v => full_v) (fun v _full_v => v) in
+    State.read address state = None ->
+    State.alloc_write address state v = Some state' ->
+    t env result state' (k r) state ->
+    t env result state' (LowM.CallPrimitive (Primitive.StateAlloc v) k) state
+  | CallPrimitiveStateRead
+      (address : Address) (v : State.get_Set address) (state : State)
+      (k : State.get_Set address -> LowM A) :
+    State.read address state = Some v ->
+    t env result state' (k v) state ->
+    t env result state' (LowM.CallPrimitive (Primitive.StateRead address) k)
+      state
+  | CallPrimitiveStateWrite
+      (address : Address) (v : State.get_Set address)
+      (state state_inter : State) (k : unit -> LowM A) :
+    State.alloc_write address state v = Some state_inter ->
+    t env result state' (k tt) state_inter ->
+    t env result state' (LowM.CallPrimitive (Primitive.StateWrite address v) k)
+      state
+  | CallPrimitiveEnvRead (state : State) (k : Env -> LowM A) :
+    t env result state' (k env) state ->
+    t env result state' (LowM.CallPrimitive Primitive.EnvRead k) state
+  | Cast {B : Set} (v : B) (k : B -> LowM A) :
+    t env result state' (LowM.Cast v k) state'
+  | Call {B : Set} (state state_inter : State) (e : LowM B) (v : B)
+      (k : B -> LowM A) :
+    t env v state_inter e state ->
+    t env result state' (k v) state_inter ->
+    t env result state' (LowM.Call e k) state.
+End Run.
+
+Notation "{{ env , state | e ⇓ result | state' }}" :=
+  (Run.t env result state' e state).
 
 (** Simplify the usual case of read of immediate value. *)
 Lemma read_of_imm {A : Set} (v : A) :
@@ -96,43 +96,40 @@ Qed.
 
 Ltac run_symbolic_state_read :=
   match goal with
-  | |- LowM.Run.t _ (LowM.CallPrimitive (Primitive.StateRead ?address)) _ _ _ =>
+  | |- Run.t _ _ _ (LowM.CallPrimitive (Primitive.StateRead ?address) _) _ =>
     let H := fresh "H" in
-    epose proof (H := LowM.Run.CallPrimitiveStateRead _ address);
-    apply H; reflexivity;
+    epose proof (H := Run.CallPrimitiveStateRead _ _ _ address);
+    eapply H; [reflexivity|];
     clear H
   end.
 
 Ltac run_symbolic_state_write :=
   match goal with
-  | |- LowM.Run.t _ (LowM.CallPrimitive (Primitive.StateWrite ?address ?value))
-      _ _ _ =>
+  | |- Run.t ?env ?result ?state'
+      (LowM.CallPrimitive (Primitive.StateWrite ?address ?value) ?k)
+      ?state =>
     let H := fresh "H" in
-    epose proof (H := LowM.Run.CallPrimitiveStateWrite _ address value);
-    apply H; reflexivity;
+    epose proof (H :=
+      Run.CallPrimitiveStateWrite env result state' address value state _ k);
+    apply H; [reflexivity|];
     clear H
   end.
 
 Ltac run_symbolic_one_step :=
   match goal with
-  | |- LowM.Run.t _ _ _ _ _ =>
-    econstructor ||
+  | |- Run.t _ _ _ _ _ =>
+    (* We do not use [Run.Call] and let the user use existing lemma for this
+       case. *)
+    apply Run.Pure ||
+    apply Run.CallPrimitiveStateAllocNone ||
+    apply Run.CallPrimitiveEnvRead ||
+    apply Run.Cast ||
     run_symbolic_state_read ||
     run_symbolic_state_write
   end.
 
 Ltac run_symbolic :=
-  repeat run_symbolic_one_step.
-
-Module Run.
-  Definition t `{State.Trait} {Env A : Set}
-      (fuel : nat) (env : Env) (e : M A) (state : State)
-      (result : option (A * State)) :
-      Prop :=
-    match result with
-    | Some (v, state') => LowM.Run.t env (e fuel) state (inl v) state'
-    | None =>
-      exists error state',
-      LowM.Run.t env (e fuel) state (inr (Exception.Panic error)) state'
-    end.
-End Run.
+  repeat (
+    cbn ||
+    run_symbolic_one_step
+  ).

@@ -26,32 +26,36 @@ Definition combine_vecs_explicit_return_type
   let* u : M.Val (alloc.vec.Vec.t i32.t alloc.vec.Vec.Default.A) := M.alloc u in
   let* α0 : alloc.vec.Vec.t i32.t alloc.alloc.Global.t := M.read v in
   let* α1 : alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t :=
-    (core.iter.traits.collect.IntoIterator.into_iter
-        (Self := alloc.vec.Vec.t i32.t alloc.alloc.Global.t)
-        (Trait := ltac:(refine _)))
-      α0 in
+    M.call
+      ((core.iter.traits.collect.IntoIterator.into_iter
+          (Self := alloc.vec.Vec.t i32.t alloc.alloc.Global.t)
+          (Trait := ltac:(refine _)))
+        α0) in
   let* α2 : alloc.vec.Vec.t i32.t alloc.alloc.Global.t := M.read u in
   let* α3 : alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t :=
-    (core.iter.traits.collect.IntoIterator.into_iter
-        (Self := alloc.vec.Vec.t i32.t alloc.alloc.Global.t)
-        (Trait := ltac:(refine _)))
-      α2 in
+    M.call
+      ((core.iter.traits.collect.IntoIterator.into_iter
+          (Self := alloc.vec.Vec.t i32.t alloc.alloc.Global.t)
+          (Trait := ltac:(refine _)))
+        α2) in
   let* α4 :
       core.iter.adapters.chain.Chain.t
         (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t)
         (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t) :=
-    (core.iter.traits.iterator.Iterator.chain
-        (Self := alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t)
+    M.call
+      ((core.iter.traits.iterator.Iterator.chain
+          (Self := alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t)
+          (Trait := ltac:(refine _)))
+        α1
+        α3) in
+  M.call
+    ((core.iter.traits.iterator.Iterator.cycle
+        (Self :=
+          core.iter.adapters.chain.Chain.t
+            (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t)
+            (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t))
         (Trait := ltac:(refine _)))
-      α1
-      α3 in
-  (core.iter.traits.iterator.Iterator.cycle
-      (Self :=
-        core.iter.adapters.chain.Chain.t
-          (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t)
-          (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t))
-      (Trait := ltac:(refine _)))
-    α4.
+      α4).
 
 (*
 fn combine_vecs(v: Vec<i32>, u: Vec<i32>) -> impl Iterator<Item = i32> {
@@ -66,32 +70,36 @@ Definition combine_vecs
   let* u : M.Val (alloc.vec.Vec.t i32.t alloc.vec.Vec.Default.A) := M.alloc u in
   let* α0 : alloc.vec.Vec.t i32.t alloc.alloc.Global.t := M.read v in
   let* α1 : alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t :=
-    (core.iter.traits.collect.IntoIterator.into_iter
-        (Self := alloc.vec.Vec.t i32.t alloc.alloc.Global.t)
-        (Trait := ltac:(refine _)))
-      α0 in
+    M.call
+      ((core.iter.traits.collect.IntoIterator.into_iter
+          (Self := alloc.vec.Vec.t i32.t alloc.alloc.Global.t)
+          (Trait := ltac:(refine _)))
+        α0) in
   let* α2 : alloc.vec.Vec.t i32.t alloc.alloc.Global.t := M.read u in
   let* α3 : alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t :=
-    (core.iter.traits.collect.IntoIterator.into_iter
-        (Self := alloc.vec.Vec.t i32.t alloc.alloc.Global.t)
-        (Trait := ltac:(refine _)))
-      α2 in
+    M.call
+      ((core.iter.traits.collect.IntoIterator.into_iter
+          (Self := alloc.vec.Vec.t i32.t alloc.alloc.Global.t)
+          (Trait := ltac:(refine _)))
+        α2) in
   let* α4 :
       core.iter.adapters.chain.Chain.t
         (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t)
         (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t) :=
-    (core.iter.traits.iterator.Iterator.chain
-        (Self := alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t)
+    M.call
+      ((core.iter.traits.iterator.Iterator.chain
+          (Self := alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t)
+          (Trait := ltac:(refine _)))
+        α1
+        α3) in
+  M.call
+    ((core.iter.traits.iterator.Iterator.cycle
+        (Self :=
+          core.iter.adapters.chain.Chain.t
+            (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t)
+            (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t))
         (Trait := ltac:(refine _)))
-      α1
-      α3 in
-  (core.iter.traits.iterator.Iterator.cycle
-      (Self :=
-        core.iter.adapters.chain.Chain.t
-          (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t)
-          (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t))
-      (Trait := ltac:(refine _)))
-    α4.
+      α4).
 
 Error OpaqueTy.
 
@@ -116,37 +124,38 @@ Definition main : M unit :=
     let* α2 : M.Val i32.t := M.alloc (Integer.of_Z 3) in
     let* α3 : M.Val (array i32.t) := M.alloc [ α0; α1; α2 ] in
     let* α4 : M.Val (alloc.boxed.Box.t (array i32.t) alloc.alloc.Global.t) :=
-      (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α3 in
+      M.call ((alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α3) in
     let* α5 : alloc.boxed.Box.t (slice i32.t) alloc.alloc.Global.t :=
       M.read (pointer_coercion "Unsize" α4) in
     let* α6 : alloc.vec.Vec.t i32.t alloc.alloc.Global.t :=
-      (slice i32.t)::["into_vec"] α5 in
+      M.call ((slice i32.t)::["into_vec"] α5) in
     M.alloc α6 in
   let* v2 : M.Val (alloc.vec.Vec.t i32.t alloc.alloc.Global.t) :=
     let* α0 : M.Val i32.t := M.alloc (Integer.of_Z 4) in
     let* α1 : M.Val i32.t := M.alloc (Integer.of_Z 5) in
     let* α2 : M.Val (array i32.t) := M.alloc [ α0; α1 ] in
     let* α3 : M.Val (alloc.boxed.Box.t (array i32.t) alloc.alloc.Global.t) :=
-      (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α2 in
+      M.call ((alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α2) in
     let* α4 : alloc.boxed.Box.t (slice i32.t) alloc.alloc.Global.t :=
       M.read (pointer_coercion "Unsize" α3) in
     let* α5 : alloc.vec.Vec.t i32.t alloc.alloc.Global.t :=
-      (slice i32.t)::["into_vec"] α4 in
+      M.call ((slice i32.t)::["into_vec"] α4) in
     M.alloc α5 in
   let* v3 : M.Val type not implemented :=
     let* α0 : alloc.vec.Vec.t i32.t alloc.alloc.Global.t := M.read v1 in
     let* α1 : alloc.vec.Vec.t i32.t alloc.alloc.Global.t := M.read v2 in
     let* α2 : type not implemented :=
-      impl_trait_as_return_type.combine_vecs α0 α1 in
+      M.call (impl_trait_as_return_type.combine_vecs α0 α1) in
     M.alloc α2 in
   let* _ : M.Val unit :=
     let* α0 : M.Val (core.option.Option.t i32.t) :=
       M.alloc (core.option.Option.Some (Integer.of_Z 1)) in
     let* α1 : core.option.Option.t i32.t :=
-      (core.iter.traits.iterator.Iterator.next
-          (Self := type not implemented)
-          (Trait := ltac:(refine _)))
-        (borrow_mut v3) in
+      M.call
+        ((core.iter.traits.iterator.Iterator.next
+            (Self := type not implemented)
+            (Trait := ltac:(refine _)))
+          (borrow_mut v3)) in
     let* α2 : M.Val (core.option.Option.t i32.t) := M.alloc α1 in
     match (borrow α0, borrow α2) with
     | (left_val, right_val) =>
@@ -155,11 +164,12 @@ Definition main : M unit :=
       let* α0 : ref (core.option.Option.t i32.t) := M.read left_val in
       let* α1 : ref (core.option.Option.t i32.t) := M.read right_val in
       let* α2 : bool.t :=
-        (core.cmp.PartialEq.eq
-            (Self := core.option.Option.t i32.t)
-            (Trait := ltac:(refine _)))
-          α0
-          α1 in
+        M.call
+          ((core.cmp.PartialEq.eq
+              (Self := core.option.Option.t i32.t)
+              (Trait := ltac:(refine _)))
+            α0
+            α1) in
       if (use (UnOp.not α2) : bool) then
         let* kind : M.Val core.panicking.AssertKind.t :=
           M.alloc core.panicking.AssertKind.Eq in
@@ -168,7 +178,8 @@ Definition main : M unit :=
           let* α1 : ref (core.option.Option.t i32.t) := M.read left_val in
           let* α2 : ref (core.option.Option.t i32.t) := M.read right_val in
           let* α3 : never.t :=
-            core.panicking.assert_failed α0 α1 α2 core.option.Option.None in
+            M.call
+              (core.panicking.assert_failed α0 α1 α2 core.option.Option.None) in
           M.alloc α3 in
         let* α0 : M.Val unit := M.alloc tt in
         let* α1 := M.read α0 in
@@ -181,10 +192,11 @@ Definition main : M unit :=
     let* α0 : M.Val (core.option.Option.t i32.t) :=
       M.alloc (core.option.Option.Some (Integer.of_Z 2)) in
     let* α1 : core.option.Option.t i32.t :=
-      (core.iter.traits.iterator.Iterator.next
-          (Self := type not implemented)
-          (Trait := ltac:(refine _)))
-        (borrow_mut v3) in
+      M.call
+        ((core.iter.traits.iterator.Iterator.next
+            (Self := type not implemented)
+            (Trait := ltac:(refine _)))
+          (borrow_mut v3)) in
     let* α2 : M.Val (core.option.Option.t i32.t) := M.alloc α1 in
     match (borrow α0, borrow α2) with
     | (left_val, right_val) =>
@@ -193,11 +205,12 @@ Definition main : M unit :=
       let* α0 : ref (core.option.Option.t i32.t) := M.read left_val in
       let* α1 : ref (core.option.Option.t i32.t) := M.read right_val in
       let* α2 : bool.t :=
-        (core.cmp.PartialEq.eq
-            (Self := core.option.Option.t i32.t)
-            (Trait := ltac:(refine _)))
-          α0
-          α1 in
+        M.call
+          ((core.cmp.PartialEq.eq
+              (Self := core.option.Option.t i32.t)
+              (Trait := ltac:(refine _)))
+            α0
+            α1) in
       if (use (UnOp.not α2) : bool) then
         let* kind : M.Val core.panicking.AssertKind.t :=
           M.alloc core.panicking.AssertKind.Eq in
@@ -206,7 +219,8 @@ Definition main : M unit :=
           let* α1 : ref (core.option.Option.t i32.t) := M.read left_val in
           let* α2 : ref (core.option.Option.t i32.t) := M.read right_val in
           let* α3 : never.t :=
-            core.panicking.assert_failed α0 α1 α2 core.option.Option.None in
+            M.call
+              (core.panicking.assert_failed α0 α1 α2 core.option.Option.None) in
           M.alloc α3 in
         let* α0 : M.Val unit := M.alloc tt in
         let* α1 := M.read α0 in
@@ -219,10 +233,11 @@ Definition main : M unit :=
     let* α0 : M.Val (core.option.Option.t i32.t) :=
       M.alloc (core.option.Option.Some (Integer.of_Z 3)) in
     let* α1 : core.option.Option.t i32.t :=
-      (core.iter.traits.iterator.Iterator.next
-          (Self := type not implemented)
-          (Trait := ltac:(refine _)))
-        (borrow_mut v3) in
+      M.call
+        ((core.iter.traits.iterator.Iterator.next
+            (Self := type not implemented)
+            (Trait := ltac:(refine _)))
+          (borrow_mut v3)) in
     let* α2 : M.Val (core.option.Option.t i32.t) := M.alloc α1 in
     match (borrow α0, borrow α2) with
     | (left_val, right_val) =>
@@ -231,11 +246,12 @@ Definition main : M unit :=
       let* α0 : ref (core.option.Option.t i32.t) := M.read left_val in
       let* α1 : ref (core.option.Option.t i32.t) := M.read right_val in
       let* α2 : bool.t :=
-        (core.cmp.PartialEq.eq
-            (Self := core.option.Option.t i32.t)
-            (Trait := ltac:(refine _)))
-          α0
-          α1 in
+        M.call
+          ((core.cmp.PartialEq.eq
+              (Self := core.option.Option.t i32.t)
+              (Trait := ltac:(refine _)))
+            α0
+            α1) in
       if (use (UnOp.not α2) : bool) then
         let* kind : M.Val core.panicking.AssertKind.t :=
           M.alloc core.panicking.AssertKind.Eq in
@@ -244,7 +260,8 @@ Definition main : M unit :=
           let* α1 : ref (core.option.Option.t i32.t) := M.read left_val in
           let* α2 : ref (core.option.Option.t i32.t) := M.read right_val in
           let* α3 : never.t :=
-            core.panicking.assert_failed α0 α1 α2 core.option.Option.None in
+            M.call
+              (core.panicking.assert_failed α0 α1 α2 core.option.Option.None) in
           M.alloc α3 in
         let* α0 : M.Val unit := M.alloc tt in
         let* α1 := M.read α0 in
@@ -257,10 +274,11 @@ Definition main : M unit :=
     let* α0 : M.Val (core.option.Option.t i32.t) :=
       M.alloc (core.option.Option.Some (Integer.of_Z 4)) in
     let* α1 : core.option.Option.t i32.t :=
-      (core.iter.traits.iterator.Iterator.next
-          (Self := type not implemented)
-          (Trait := ltac:(refine _)))
-        (borrow_mut v3) in
+      M.call
+        ((core.iter.traits.iterator.Iterator.next
+            (Self := type not implemented)
+            (Trait := ltac:(refine _)))
+          (borrow_mut v3)) in
     let* α2 : M.Val (core.option.Option.t i32.t) := M.alloc α1 in
     match (borrow α0, borrow α2) with
     | (left_val, right_val) =>
@@ -269,11 +287,12 @@ Definition main : M unit :=
       let* α0 : ref (core.option.Option.t i32.t) := M.read left_val in
       let* α1 : ref (core.option.Option.t i32.t) := M.read right_val in
       let* α2 : bool.t :=
-        (core.cmp.PartialEq.eq
-            (Self := core.option.Option.t i32.t)
-            (Trait := ltac:(refine _)))
-          α0
-          α1 in
+        M.call
+          ((core.cmp.PartialEq.eq
+              (Self := core.option.Option.t i32.t)
+              (Trait := ltac:(refine _)))
+            α0
+            α1) in
       if (use (UnOp.not α2) : bool) then
         let* kind : M.Val core.panicking.AssertKind.t :=
           M.alloc core.panicking.AssertKind.Eq in
@@ -282,7 +301,8 @@ Definition main : M unit :=
           let* α1 : ref (core.option.Option.t i32.t) := M.read left_val in
           let* α2 : ref (core.option.Option.t i32.t) := M.read right_val in
           let* α3 : never.t :=
-            core.panicking.assert_failed α0 α1 α2 core.option.Option.None in
+            M.call
+              (core.panicking.assert_failed α0 α1 α2 core.option.Option.None) in
           M.alloc α3 in
         let* α0 : M.Val unit := M.alloc tt in
         let* α1 := M.read α0 in
@@ -295,10 +315,11 @@ Definition main : M unit :=
     let* α0 : M.Val (core.option.Option.t i32.t) :=
       M.alloc (core.option.Option.Some (Integer.of_Z 5)) in
     let* α1 : core.option.Option.t i32.t :=
-      (core.iter.traits.iterator.Iterator.next
-          (Self := type not implemented)
-          (Trait := ltac:(refine _)))
-        (borrow_mut v3) in
+      M.call
+        ((core.iter.traits.iterator.Iterator.next
+            (Self := type not implemented)
+            (Trait := ltac:(refine _)))
+          (borrow_mut v3)) in
     let* α2 : M.Val (core.option.Option.t i32.t) := M.alloc α1 in
     match (borrow α0, borrow α2) with
     | (left_val, right_val) =>
@@ -307,11 +328,12 @@ Definition main : M unit :=
       let* α0 : ref (core.option.Option.t i32.t) := M.read left_val in
       let* α1 : ref (core.option.Option.t i32.t) := M.read right_val in
       let* α2 : bool.t :=
-        (core.cmp.PartialEq.eq
-            (Self := core.option.Option.t i32.t)
-            (Trait := ltac:(refine _)))
-          α0
-          α1 in
+        M.call
+          ((core.cmp.PartialEq.eq
+              (Self := core.option.Option.t i32.t)
+              (Trait := ltac:(refine _)))
+            α0
+            α1) in
       if (use (UnOp.not α2) : bool) then
         let* kind : M.Val core.panicking.AssertKind.t :=
           M.alloc core.panicking.AssertKind.Eq in
@@ -320,7 +342,8 @@ Definition main : M unit :=
           let* α1 : ref (core.option.Option.t i32.t) := M.read left_val in
           let* α2 : ref (core.option.Option.t i32.t) := M.read right_val in
           let* α3 : never.t :=
-            core.panicking.assert_failed α0 α1 α2 core.option.Option.None in
+            M.call
+              (core.panicking.assert_failed α0 α1 α2 core.option.Option.None) in
           M.alloc α3 in
         let* α0 : M.Val unit := M.alloc tt in
         let* α1 := M.read α0 in
@@ -337,8 +360,8 @@ Definition main : M unit :=
       let* α2 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α1) in
       let* α3 : core.fmt.Arguments.t :=
-        core.fmt.Arguments.t::["new_const"] α2 in
-      let* α4 : unit := std.io.stdio._print α3 in
+        M.call (core.fmt.Arguments.t::["new_const"] α2) in
+      let* α4 : unit := M.call (std.io.stdio._print α3) in
       M.alloc α4 in
     M.alloc tt in
   let* α0 : M.Val unit := M.alloc tt in

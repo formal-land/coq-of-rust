@@ -82,26 +82,33 @@ fn main() {
 Definition main : M unit :=
   let* _ : M.Val unit :=
     let* α0 : unit :=
-      generics_functions.reg_fn
-        (generics_functions.S.Build_t generics_functions.A.Build_t) in
+      M.call
+        (generics_functions.reg_fn
+          (generics_functions.S.Build_t generics_functions.A.Build_t)) in
     M.alloc α0 in
   let* _ : M.Val unit :=
     let* α0 : unit :=
-      generics_functions.gen_spec_t
-        (generics_functions.SGen.Build_t generics_functions.A.Build_t) in
+      M.call
+        (generics_functions.gen_spec_t
+          (generics_functions.SGen.Build_t generics_functions.A.Build_t)) in
     M.alloc α0 in
   let* _ : M.Val unit :=
     let* α0 : unit :=
-      generics_functions.gen_spec_i32
-        (generics_functions.SGen.Build_t (Integer.of_Z 6)) in
+      M.call
+        (generics_functions.gen_spec_i32
+          (generics_functions.SGen.Build_t (Integer.of_Z 6))) in
     M.alloc α0 in
   let* _ : M.Val unit :=
     let* α0 : unit :=
-      generics_functions.generic (generics_functions.SGen.Build_t "a"%char) in
+      M.call
+        (generics_functions.generic
+          (generics_functions.SGen.Build_t "a"%char)) in
     M.alloc α0 in
   let* _ : M.Val unit :=
     let* α0 : unit :=
-      generics_functions.generic (generics_functions.SGen.Build_t "c"%char) in
+      M.call
+        (generics_functions.generic
+          (generics_functions.SGen.Build_t "c"%char)) in
     M.alloc α0 in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.

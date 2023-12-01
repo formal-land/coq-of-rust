@@ -151,7 +151,7 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
     let* α4 : f64.t := M.read y2 in
     let* α5 : f64.t := BinOp.Panic.sub α3 α4 in
     let* α6 : f64.t := BinOp.Panic.mul α2 α5 in
-    let* α7 : f64.t := f64.t::["abs"] α6 in
+    let* α7 : f64.t := M.call (f64.t::["abs"] α6) in
     let* α0 : M.Val f64.t := M.alloc α7 in
     M.read α0.
   
@@ -190,11 +190,11 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
     let* α1 : f64.t := M.read x1 in
     let* α2 : f64.t := M.read x2 in
     let* α3 : f64.t := BinOp.Panic.sub α1 α2 in
-    let* α4 : f64.t := f64.t::["abs"] α3 in
+    let* α4 : f64.t := M.call (f64.t::["abs"] α3) in
     let* α5 : f64.t := M.read y1 in
     let* α6 : f64.t := M.read y2 in
     let* α7 : f64.t := BinOp.Panic.sub α5 α6 in
-    let* α8 : f64.t := f64.t::["abs"] α7 in
+    let* α8 : f64.t := M.call (f64.t::["abs"] α7) in
     let* α9 : f64.t := BinOp.Panic.add α4 α8 in
     let* α10 : f64.t := BinOp.Panic.mul α0 α9 in
     let* α0 : M.Val f64.t := M.alloc α10 in
@@ -292,10 +292,10 @@ Section Impl_associated_functions_and_methods_Pair_t.
         let* α2 : ref (slice (ref str.t)) :=
           M.read (pointer_coercion "Unsize" α1) in
         let* α3 : core.fmt.rt.Argument.t :=
-          core.fmt.rt.Argument.t::["new_display"] (borrow first) in
+          M.call (core.fmt.rt.Argument.t::["new_display"] (borrow first)) in
         let* α4 : M.Val core.fmt.rt.Argument.t := M.alloc α3 in
         let* α5 : core.fmt.rt.Argument.t :=
-          core.fmt.rt.Argument.t::["new_display"] (borrow second) in
+          M.call (core.fmt.rt.Argument.t::["new_display"] (borrow second)) in
         let* α6 : M.Val core.fmt.rt.Argument.t := M.alloc α5 in
         let* α7 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4; α6 ] in
         let* α8 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -303,8 +303,8 @@ Section Impl_associated_functions_and_methods_Pair_t.
         let* α9 : ref (slice core.fmt.rt.Argument.t) :=
           M.read (pointer_coercion "Unsize" α8) in
         let* α10 : core.fmt.Arguments.t :=
-          core.fmt.Arguments.t::["new_v1"] α2 α9 in
-        let* α11 : unit := std.io.stdio._print α10 in
+          M.call (core.fmt.Arguments.t::["new_v1"] α2 α9) in
+        let* α11 : unit := M.call (std.io.stdio._print α10) in
         M.alloc α11 in
       M.alloc tt in
     let* α0 : M.Val unit := M.alloc tt in
@@ -357,11 +357,11 @@ fn main() {
 Definition main : M unit :=
   let* rectangle : M.Val associated_functions_and_methods.Rectangle.t :=
     let* α0 : associated_functions_and_methods.Point.t :=
-      associated_functions_and_methods.Point.t::["origin"] in
+      M.call associated_functions_and_methods.Point.t::["origin"] in
     let* α1 : f64.t := M.read UnsupportedLiteral in
     let* α2 : f64.t := M.read UnsupportedLiteral in
     let* α3 : associated_functions_and_methods.Point.t :=
-      associated_functions_and_methods.Point.t::["new"] α1 α2 in
+      M.call (associated_functions_and_methods.Point.t::["new"] α1 α2) in
     M.alloc
       {|
         associated_functions_and_methods.Rectangle.p1 := α0;
@@ -376,11 +376,12 @@ Definition main : M unit :=
       let* α2 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α1) in
       let* α3 : f64.t :=
-        associated_functions_and_methods.Rectangle.t::["perimeter"]
-          (borrow rectangle) in
+        M.call
+          (associated_functions_and_methods.Rectangle.t::["perimeter"]
+            (borrow rectangle)) in
       let* α4 : M.Val f64.t := M.alloc α3 in
       let* α5 : core.fmt.rt.Argument.t :=
-        core.fmt.rt.Argument.t::["new_display"] (borrow α4) in
+        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α4)) in
       let* α6 : M.Val core.fmt.rt.Argument.t := M.alloc α5 in
       let* α7 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α6 ] in
       let* α8 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -388,8 +389,8 @@ Definition main : M unit :=
       let* α9 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α8) in
       let* α10 : core.fmt.Arguments.t :=
-        core.fmt.Arguments.t::["new_v1"] α2 α9 in
-      let* α11 : unit := std.io.stdio._print α10 in
+        M.call (core.fmt.Arguments.t::["new_v1"] α2 α9) in
+      let* α11 : unit := M.call (std.io.stdio._print α10) in
       M.alloc α11 in
     M.alloc tt in
   let* _ : M.Val unit :=
@@ -401,11 +402,12 @@ Definition main : M unit :=
       let* α2 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α1) in
       let* α3 : f64.t :=
-        associated_functions_and_methods.Rectangle.t::["area"]
-          (borrow rectangle) in
+        M.call
+          (associated_functions_and_methods.Rectangle.t::["area"]
+            (borrow rectangle)) in
       let* α4 : M.Val f64.t := M.alloc α3 in
       let* α5 : core.fmt.rt.Argument.t :=
-        core.fmt.rt.Argument.t::["new_display"] (borrow α4) in
+        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α4)) in
       let* α6 : M.Val core.fmt.rt.Argument.t := M.alloc α5 in
       let* α7 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α6 ] in
       let* α8 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -413,17 +415,17 @@ Definition main : M unit :=
       let* α9 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α8) in
       let* α10 : core.fmt.Arguments.t :=
-        core.fmt.Arguments.t::["new_v1"] α2 α9 in
-      let* α11 : unit := std.io.stdio._print α10 in
+        M.call (core.fmt.Arguments.t::["new_v1"] α2 α9) in
+      let* α11 : unit := M.call (std.io.stdio._print α10) in
       M.alloc α11 in
     M.alloc tt in
   let* square : M.Val associated_functions_and_methods.Rectangle.t :=
     let* α0 : associated_functions_and_methods.Point.t :=
-      associated_functions_and_methods.Point.t::["origin"] in
+      M.call associated_functions_and_methods.Point.t::["origin"] in
     let* α1 : f64.t := M.read UnsupportedLiteral in
     let* α2 : f64.t := M.read UnsupportedLiteral in
     let* α3 : associated_functions_and_methods.Point.t :=
-      associated_functions_and_methods.Point.t::["new"] α1 α2 in
+      M.call (associated_functions_and_methods.Point.t::["new"] α1 α2) in
     M.alloc
       {|
         associated_functions_and_methods.Rectangle.p1 := α0;
@@ -433,22 +435,26 @@ Definition main : M unit :=
     let* α0 : f64.t := M.read UnsupportedLiteral in
     let* α1 : f64.t := M.read UnsupportedLiteral in
     let* α2 : unit :=
-      associated_functions_and_methods.Rectangle.t::["translate"]
-        (borrow_mut square)
-        α0
-        α1 in
+      M.call
+        (associated_functions_and_methods.Rectangle.t::["translate"]
+          (borrow_mut square)
+          α0
+          α1) in
     M.alloc α2 in
   let* pair : M.Val associated_functions_and_methods.Pair.t :=
     let* α0 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t :=
-      (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"]
-        (Integer.of_Z 1) in
+      M.call
+        ((alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"]
+          (Integer.of_Z 1)) in
     let* α1 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t :=
-      (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"]
-        (Integer.of_Z 2) in
+      M.call
+        ((alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"]
+          (Integer.of_Z 2)) in
     M.alloc (associated_functions_and_methods.Pair.Build_t α0 α1) in
   let* _ : M.Val unit :=
     let* α0 : associated_functions_and_methods.Pair.t := M.read pair in
-    let* α1 : unit := associated_functions_and_methods.Pair.t::["destroy"] α0 in
+    let* α1 : unit :=
+      M.call (associated_functions_and_methods.Pair.t::["destroy"] α0) in
     M.alloc α1 in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.

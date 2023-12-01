@@ -26,24 +26,26 @@ Definition main : M unit :=
     let* α4 : M.Val (array (ref str.t)) := M.alloc [ mk_str "Bob"; α1; α3 ] in
     let* α5 :
         M.Val (alloc.boxed.Box.t (array (ref str.t)) alloc.alloc.Global.t) :=
-      (alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α4 in
+      M.call ((alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α4) in
     let* α6 : alloc.boxed.Box.t (slice (ref str.t)) alloc.alloc.Global.t :=
       M.read (pointer_coercion "Unsize" α5) in
     let* α7 : alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t :=
-      (slice (ref str.t))::["into_vec"] α6 in
+      M.call ((slice (ref str.t))::["into_vec"] α6) in
     M.alloc α7 in
   let* α0 : alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t := M.read names in
   let* α1 : alloc.vec.into_iter.IntoIter.t (ref str.t) alloc.alloc.Global.t :=
-    (core.iter.traits.collect.IntoIterator.into_iter
-        (Self := alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t)
-        (Trait := ltac:(refine _)))
-      α0 in
+    M.call
+      ((core.iter.traits.collect.IntoIterator.into_iter
+          (Self := alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t)
+          (Trait := ltac:(refine _)))
+        α0) in
   let* α2 : alloc.vec.into_iter.IntoIter.t (ref str.t) alloc.alloc.Global.t :=
-    (core.iter.traits.collect.IntoIterator.into_iter
-        (Self :=
-          alloc.vec.into_iter.IntoIter.t (ref str.t) alloc.alloc.Global.t)
-        (Trait := ltac:(refine _)))
-      α1 in
+    M.call
+      ((core.iter.traits.collect.IntoIterator.into_iter
+          (Self :=
+            alloc.vec.into_iter.IntoIter.t (ref str.t) alloc.alloc.Global.t)
+          (Trait := ltac:(refine _)))
+        α1) in
   let* α3 : M.Val unit :=
     match α2 with
     | iter =>
@@ -51,13 +53,14 @@ Definition main : M unit :=
       loop
         (let* _ : M.Val unit :=
           let* α0 : core.option.Option.t (ref str.t) :=
-            (core.iter.traits.iterator.Iterator.next
-                (Self :=
-                  alloc.vec.into_iter.IntoIter.t
-                    (ref str.t)
-                    alloc.alloc.Global.t)
-                (Trait := ltac:(refine _)))
-              (borrow_mut iter) in
+            M.call
+              ((core.iter.traits.iterator.Iterator.next
+                  (Self :=
+                    alloc.vec.into_iter.IntoIter.t
+                      (ref str.t)
+                      alloc.alloc.Global.t)
+                  (Trait := ltac:(refine _)))
+                (borrow_mut iter)) in
           match α0 with
           | core.option.Option.None  =>
             let* α0 : M.Val never.t := Break in
@@ -78,8 +81,8 @@ Definition main : M unit :=
                 let* α2 : ref (slice (ref str.t)) :=
                   M.read (pointer_coercion "Unsize" α1) in
                 let* α3 : core.fmt.Arguments.t :=
-                  core.fmt.Arguments.t::["new_const"] α2 in
-                let* α4 : unit := std.io.stdio._print α3 in
+                  M.call (core.fmt.Arguments.t::["new_const"] α2) in
+                let* α4 : unit := M.call (std.io.stdio._print α3) in
                 M.alloc α4 in
               M.alloc tt
             | _ =>
@@ -92,7 +95,8 @@ Definition main : M unit :=
                 let* α2 : ref (slice (ref str.t)) :=
                   M.read (pointer_coercion "Unsize" α1) in
                 let* α3 : core.fmt.rt.Argument.t :=
-                  core.fmt.rt.Argument.t::["new_display"] (borrow name) in
+                  M.call
+                    (core.fmt.rt.Argument.t::["new_display"] (borrow name)) in
                 let* α4 : M.Val core.fmt.rt.Argument.t := M.alloc α3 in
                 let* α5 : M.Val (array core.fmt.rt.Argument.t) :=
                   M.alloc [ α4 ] in
@@ -101,8 +105,8 @@ Definition main : M unit :=
                 let* α7 : ref (slice core.fmt.rt.Argument.t) :=
                   M.read (pointer_coercion "Unsize" α6) in
                 let* α8 : core.fmt.Arguments.t :=
-                  core.fmt.Arguments.t::["new_v1"] α2 α7 in
-                let* α9 : unit := std.io.stdio._print α8 in
+                  M.call (core.fmt.Arguments.t::["new_v1"] α2 α7) in
+                let* α9 : unit := M.call (std.io.stdio._print α8) in
                 M.alloc α9 in
               M.alloc tt
             end

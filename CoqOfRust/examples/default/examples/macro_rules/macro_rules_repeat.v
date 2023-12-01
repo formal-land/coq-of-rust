@@ -23,8 +23,8 @@ Definition main : M unit :=
       let* α5 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α4) in
       let* α6 : core.fmt.Arguments.t :=
-        core.fmt.Arguments.t::["new_v1"] α2 α5 in
-      let* α7 : unit := std.io.stdio._print α6 in
+        M.call (core.fmt.Arguments.t::["new_v1"] α2 α5) in
+      let* α7 : unit := M.call (std.io.stdio._print α6) in
       M.alloc α7 in
     M.alloc tt in
   let* _ : M.Val unit :=
@@ -36,10 +36,10 @@ Definition main : M unit :=
       let* α2 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α1) in
       let* α3 : i32.t := BinOp.Panic.add (Integer.of_Z 1) (Integer.of_Z 2) in
-      let* α4 : i32.t := core.cmp.min α3 (Integer.of_Z 2) in
+      let* α4 : i32.t := M.call (core.cmp.min α3 (Integer.of_Z 2)) in
       let* α5 : M.Val i32.t := M.alloc α4 in
       let* α6 : core.fmt.rt.Argument.t :=
-        core.fmt.rt.Argument.t::["new_display"] (borrow α5) in
+        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α5)) in
       let* α7 : M.Val core.fmt.rt.Argument.t := M.alloc α6 in
       let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
       let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -47,8 +47,8 @@ Definition main : M unit :=
       let* α10 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α9) in
       let* α11 : core.fmt.Arguments.t :=
-        core.fmt.Arguments.t::["new_v1"] α2 α10 in
-      let* α12 : unit := std.io.stdio._print α11 in
+        M.call (core.fmt.Arguments.t::["new_v1"] α2 α10) in
+      let* α12 : unit := M.call (std.io.stdio._print α11) in
       M.alloc α12 in
     M.alloc tt in
   let* _ : M.Val unit :=
@@ -60,11 +60,11 @@ Definition main : M unit :=
       let* α2 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α1) in
       let* α3 : i32.t := BinOp.Panic.mul (Integer.of_Z 2) (Integer.of_Z 3) in
-      let* α4 : i32.t := core.cmp.min α3 (Integer.of_Z 4) in
-      let* α5 : i32.t := core.cmp.min (Integer.of_Z 5) α4 in
+      let* α4 : i32.t := M.call (core.cmp.min α3 (Integer.of_Z 4)) in
+      let* α5 : i32.t := M.call (core.cmp.min (Integer.of_Z 5) α4) in
       let* α6 : M.Val i32.t := M.alloc α5 in
       let* α7 : core.fmt.rt.Argument.t :=
-        core.fmt.rt.Argument.t::["new_display"] (borrow α6) in
+        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α6)) in
       let* α8 : M.Val core.fmt.rt.Argument.t := M.alloc α7 in
       let* α9 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α8 ] in
       let* α10 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -72,8 +72,8 @@ Definition main : M unit :=
       let* α11 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α10) in
       let* α12 : core.fmt.Arguments.t :=
-        core.fmt.Arguments.t::["new_v1"] α2 α11 in
-      let* α13 : unit := std.io.stdio._print α12 in
+        M.call (core.fmt.Arguments.t::["new_v1"] α2 α11) in
+      let* α13 : unit := M.call (std.io.stdio._print α12) in
       M.alloc α13 in
     M.alloc tt in
   let* α0 : M.Val unit := M.alloc tt in

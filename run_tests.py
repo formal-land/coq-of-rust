@@ -82,7 +82,7 @@ Module Mapping := Mapping.
     content = content.replace(
         """Definition init_env : M erc20.Env.t :=
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
-    let* α1 : never.t := core.panicking.panic α0 in
+    let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.""",
         """Definition init_env : M erc20.Env.t :=
     M.read_env."""
