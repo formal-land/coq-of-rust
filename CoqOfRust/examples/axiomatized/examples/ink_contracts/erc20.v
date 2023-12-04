@@ -284,6 +284,12 @@ Section Approval.
 End Approval.
 End Approval.
 
+Module Event.
+  Inductive t : Set :=
+  | Transfer (_ : erc20.Transfer.t)
+  | Approval (_ : erc20.Approval.t).
+End Event.
+
 Module Error.
   Inductive t : Set :=
   | InsufficientBalance
@@ -309,17 +315,15 @@ Section Impl_erc20_Env_t.
   }.
   
   (*
-      fn emit_event<Event>(&self, _event: Event) {
+      fn emit_event(&self, _event: Event) {
           unimplemented!()
       }
   *)
-  Parameter emit_event :
-      forall {Event : Set},
-      (ref ltac:(Self)) -> Event -> M unit.
+  Parameter emit_event : (ref ltac:(Self)) -> erc20.Event.t -> M unit.
   
-  Global Instance AssociatedFunction_emit_event {Event : Set} :
+  Global Instance AssociatedFunction_emit_event :
     Notations.DoubleColon ltac:(Self) "emit_event" := {
-    Notations.double_colon := emit_event (Event := Event);
+    Notations.double_colon := emit_event;
   }.
 End Impl_erc20_Env_t.
 End Impl_erc20_Env_t.
@@ -363,11 +367,11 @@ Section Impl_erc20_Erc20_t_2.
           let mut balances = Mapping::default();
           let caller = Self::init_env().caller();
           balances.insert(caller, total_supply);
-          Self::init_env().emit_event(Transfer {
+          Self::init_env().emit_event(Event::Transfer(Transfer {
               from: None,
               to: Some(caller),
               value: total_supply,
-          });
+          }));
           Self {
               total_supply,
               balances,
@@ -462,11 +466,11 @@ Section Impl_erc20_Erc20_t_2.
           self.balances.insert( *from, from_balance - value);
           let to_balance = self.balance_of_impl(to);
           self.balances.insert( *to, to_balance + value);
-          self.env().emit_event(Transfer {
+          self.env().emit_event(Event::Transfer(Transfer {
               from: Some( *from),
               to: Some( *to),
               value,
-          });
+          }));
           Ok(())
       }
   *)
@@ -503,11 +507,11 @@ Section Impl_erc20_Erc20_t_2.
       fn approve(&mut self, spender: AccountId, value: Balance) -> Result<()> {
           let owner = self.env().caller();
           self.allowances.insert((owner, spender), value);
-          self.env().emit_event(Approval {
+          self.env().emit_event(Event::Approval(Approval {
               owner,
               spender,
               value,
-          });
+          }));
           Ok(())
       }
   *)

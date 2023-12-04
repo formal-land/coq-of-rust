@@ -349,6 +349,12 @@ Section Approval.
 End Approval.
 End Approval.
 
+Module Event.
+  Inductive t : Set :=
+  | Transfer (_ : erc20.Transfer.t)
+  | Approval (_ : erc20.Approval.t).
+End Event.
+
 Module Error.
   Inductive t : Set :=
   | InsufficientBalance
@@ -377,20 +383,22 @@ Section Impl_erc20_Env_t.
   }.
   
   (*
-      fn emit_event<Event>(&self, _event: Event) {
+      fn emit_event(&self, _event: Event) {
           unimplemented!()
       }
   *)
   Definition emit_event
-      {Event : Set}
       (self : ref ltac:(Self))
-      (event : Event)
+      (event : erc20.Event.t)
       : M unit :=
-    M.log event.
+    let* env : erc20.Env.t * ref (list erc20.Event.t) := M.read_env in
+    let ref_events := snd env in
+    let* events := M.read ref_events in
+    M.write ref_events (event :: events).
   
-  Global Instance AssociatedFunction_emit_event {Event : Set} :
+  Global Instance AssociatedFunction_emit_event :
     Notations.DoubleColon ltac:(Self) "emit_event" := {
-    Notations.double_colon := emit_event (Event := Event);
+    Notations.double_colon := emit_event;
   }.
 End Impl_erc20_Env_t.
 End Impl_erc20_Env_t.
@@ -405,7 +413,8 @@ Section Impl_erc20_Erc20_t.
       }
   *)
   Definition init_env : M erc20.Env.t :=
-    M.read_env.
+    let* env : erc20.Env.t * ref (list erc20.Event.t) := M.read_env in
+    M.pure (fst env).
   
   Global Instance AssociatedFunction_init_env :
     Notations.DoubleColon ltac:(Self) "init_env" := {
@@ -437,11 +446,11 @@ Section Impl_erc20_Erc20_t_2.
           let mut balances = Mapping::default();
           let caller = Self::init_env().caller();
           balances.insert(caller, total_supply);
-          Self::init_env().emit_event(Transfer {
+          Self::init_env().emit_event(Event::Transfer(Transfer {
               from: None,
               to: Some(caller),
               value: total_supply,
-          });
+          }));
           Self {
               total_supply,
               balances,
@@ -483,11 +492,12 @@ Section Impl_erc20_Erc20_t_2.
         M.call
           (erc20.Env.t::["emit_event"]
             (borrow α1)
-            {|
-              erc20.Transfer.from := core.option.Option.None;
-              erc20.Transfer.to := core.option.Option.Some α2;
-              erc20.Transfer.value := α3;
-            |}) in
+            (erc20.Event.Transfer
+              {|
+                erc20.Transfer.from := core.option.Option.None;
+                erc20.Transfer.to := core.option.Option.Some α2;
+                erc20.Transfer.value := α3;
+              |})) in
       M.alloc α4 in
     let* α0 : u128.t := M.read total_supply in
     let* α1 : erc20.Mapping.t erc20.AccountId.t u128.t := M.read balances in
@@ -636,11 +646,11 @@ Section Impl_erc20_Erc20_t_2.
           self.balances.insert( *from, from_balance - value);
           let to_balance = self.balance_of_impl(to);
           self.balances.insert( *to, to_balance + value);
-          self.env().emit_event(Transfer {
+          self.env().emit_event(Event::Transfer(Transfer {
               from: Some( *from),
               to: Some( *to),
               value,
-          });
+          }));
           Ok(())
       }
   *)
@@ -722,11 +732,12 @@ Section Impl_erc20_Erc20_t_2.
           M.call
             (erc20.Env.t::["emit_event"]
               (borrow α2)
-              {|
-                erc20.Transfer.from := core.option.Option.Some α4;
-                erc20.Transfer.to := core.option.Option.Some α6;
-                erc20.Transfer.value := α7;
-              |}) in
+              (erc20.Event.Transfer
+                {|
+                  erc20.Transfer.from := core.option.Option.Some α4;
+                  erc20.Transfer.to := core.option.Option.Some α6;
+                  erc20.Transfer.value := α7;
+                |})) in
         M.alloc α8 in
       let* α0 : M.Val (core.result.Result.t unit erc20.Error.t) :=
         M.alloc (core.result.Result.Ok tt) in
@@ -776,11 +787,11 @@ Section Impl_erc20_Erc20_t_2.
       fn approve(&mut self, spender: AccountId, value: Balance) -> Result<()> {
           let owner = self.env().caller();
           self.allowances.insert((owner, spender), value);
-          self.env().emit_event(Approval {
+          self.env().emit_event(Event::Approval(Approval {
               owner,
               spender,
               value,
-          });
+          }));
           Ok(())
       }
   *)
@@ -826,11 +837,12 @@ Section Impl_erc20_Erc20_t_2.
         M.call
           (erc20.Env.t::["emit_event"]
             (borrow α2)
-            {|
-              erc20.Approval.owner := α3;
-              erc20.Approval.spender := α4;
-              erc20.Approval.value := α5;
-            |}) in
+            (erc20.Event.Approval
+              {|
+                erc20.Approval.owner := α3;
+                erc20.Approval.spender := α4;
+                erc20.Approval.value := α5;
+              |})) in
       M.alloc α6 in
     let* α0 : M.Val (core.result.Result.t unit erc20.Error.t) :=
       M.alloc (core.result.Result.Ok tt) in
