@@ -1,5 +1,8 @@
 (** * Monads that are useful for the definition of simulations. *)
 Require Import Coq.Strings.String.
+Require Import CoqOfRust.M.
+
+Definition Logs : Set := list {A : Set @ A}.
 
 Module Error.
   Definition t (A : Set) : Set := A + string.

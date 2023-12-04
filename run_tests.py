@@ -88,6 +88,25 @@ Module Mapping := Mapping.
     M.read_env."""
     )
 
+    content = content.replace(
+        """Definition emit_event
+      {Event : Set}
+      (self : ref ltac:(Self))
+      (_event : Event)
+      : M unit :=
+    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* _event : M.Val Event := M.alloc _event in
+    let* α0 : ref str.t := M.read (mk_str "not implemented") in
+    let* α1 : never.t := M.call (core.panicking.panic α0) in
+    never_to_any α1.""",
+        """Definition emit_event
+      {Event : Set}
+      (self : ref ltac:(Self))
+      (event : Event)
+      : M unit :=
+    M.log event."""
+    )
+
     with open(file_name, "w") as f:
         f.write(content)
 

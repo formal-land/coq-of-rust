@@ -164,18 +164,6 @@ Section Env.
 End Env.
 End Env.
 
-Module  Event.
-Section Event.
-  Record t : Set := {
-    x0 : alloc.string.String.t;
-  }.
-  
-  Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot := Ref.map (fun x => x.(x0)) (fun v x => x <| x0 := v |>);
-  }.
-End Event.
-End Event.
-
 Module  Erc20.
 Section Erc20.
   Record t : Set := {
@@ -264,29 +252,6 @@ Section Transfer.
 End Transfer.
 End Transfer.
 
-Module  Impl_core_convert_Into_erc20_Event_t_for_erc20_Transfer_t.
-Section Impl_core_convert_Into_erc20_Event_t_for_erc20_Transfer_t.
-  Ltac Self := exact erc20.Transfer.t.
-  
-  (*
-      fn into(self) -> Event {
-          unimplemented!()
-      }
-  *)
-  Parameter into : ltac:(Self) -> M erc20.Event.t.
-  
-  Global Instance AssociatedFunction_into :
-    Notations.DoubleColon ltac:(Self) "into" := {
-    Notations.double_colon := into;
-  }.
-  
-  Global Instance ℐ :
-    core.convert.Into.Trait ltac:(Self) (T := erc20.Event.t) := {
-    core.convert.Into.into := into;
-  }.
-End Impl_core_convert_Into_erc20_Event_t_for_erc20_Transfer_t.
-End Impl_core_convert_Into_erc20_Event_t_for_erc20_Transfer_t.
-
 Module  Approval.
 Section Approval.
   Record t : Set := {
@@ -319,29 +284,6 @@ Section Approval.
 End Approval.
 End Approval.
 
-Module  Impl_core_convert_Into_erc20_Event_t_for_erc20_Approval_t.
-Section Impl_core_convert_Into_erc20_Event_t_for_erc20_Approval_t.
-  Ltac Self := exact erc20.Approval.t.
-  
-  (*
-      fn into(self) -> Event {
-          unimplemented!()
-      }
-  *)
-  Parameter into : ltac:(Self) -> M erc20.Event.t.
-  
-  Global Instance AssociatedFunction_into :
-    Notations.DoubleColon ltac:(Self) "into" := {
-    Notations.double_colon := into;
-  }.
-  
-  Global Instance ℐ :
-    core.convert.Into.Trait ltac:(Self) (T := erc20.Event.t) := {
-    core.convert.Into.into := into;
-  }.
-End Impl_core_convert_Into_erc20_Event_t_for_erc20_Approval_t.
-End Impl_core_convert_Into_erc20_Event_t_for_erc20_Approval_t.
-
 Module Error.
   Inductive t : Set :=
   | InsufficientBalance
@@ -367,17 +309,17 @@ Section Impl_erc20_Env_t.
   }.
   
   (*
-      fn emit_event<E: Into<Event>>(&self, _event: E) {}
+      fn emit_event<Event>(&self, _event: Event) {
+          unimplemented!()
+      }
   *)
   Parameter emit_event :
-      forall {E : Set} {ℋ_0 : core.convert.Into.Trait E (T := erc20.Event.t)},
-      (ref ltac:(Self)) -> E -> M unit.
+      forall {Event : Set},
+      (ref ltac:(Self)) -> Event -> M unit.
   
-  Global Instance AssociatedFunction_emit_event
-      {E : Set}
-      {ℋ_0 : core.convert.Into.Trait E (T := erc20.Event.t)} :
+  Global Instance AssociatedFunction_emit_event {Event : Set} :
     Notations.DoubleColon ltac:(Self) "emit_event" := {
-    Notations.double_colon := emit_event (E := E);
+    Notations.double_colon := emit_event (Event := Event);
   }.
 End Impl_erc20_Env_t.
 End Impl_erc20_Env_t.

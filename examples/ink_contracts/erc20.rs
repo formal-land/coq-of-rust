@@ -23,8 +23,6 @@ struct Env {
     caller: AccountId,
 }
 
-struct Event(String);
-
 /// A simple ERC-20 contract.
 // #[ink(storage)]
 #[derive(Default)]
@@ -48,12 +46,6 @@ struct Transfer {
     value: Balance,
 }
 
-impl Into<Event> for Transfer {
-    fn into(self) -> Event {
-        unimplemented!()
-    }
-}
-
 /// Event emitted when an approval occurs that `spender` is allowed to withdraw
 /// up to the amount of `value` tokens from `owner`.
 // #[ink(event)]
@@ -63,12 +55,6 @@ struct Approval {
     // #[ink(topic)]
     spender: AccountId,
     value: Balance,
-}
-
-impl Into<Event> for Approval {
-    fn into(self) -> Event {
-        unimplemented!()
-    }
 }
 
 /// The ERC-20 error types.
@@ -87,8 +73,9 @@ impl Env {
         self.caller
     }
 
-    /// We ignore events for now.
-    fn emit_event<E: Into<Event>>(&self, _event: E) {}
+    fn emit_event<Event>(&self, _event: Event) {
+        unimplemented!()
+    }
 }
 
 impl Erc20 {

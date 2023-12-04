@@ -3,6 +3,7 @@ Require Coq.Strings.String.
 
 Inductive sigS {A : Type} (P : A -> Set) : Set :=
 | existS : forall (x : A), P x -> sigS P.
+Arguments existS {_ _}.
 
 Reserved Notation "{ x @ P }" (at level 0, x at level 99).
 Reserved Notation "{ x : A @ P }" (at level 0, x at level 99).
@@ -207,6 +208,10 @@ Definition copy {A : Set} (r : Ref A) : M (Ref A) :=
 Definition read_env {Env : Set} : M Env :=
   let- env := LowM.CallPrimitive Primitive.EnvRead LowM.Pure in
   LowM.Pure (inl env).
+
+Definition log {Message : Set} (message : Message) : M unit :=
+  let- _ := LowM.CallPrimitive (Primitive.Log message) LowM.Pure in
+  LowM.Pure (inl tt).
 
 Definition impossible {A : Set} : M A :=
   LowM.Impossible.

@@ -126,14 +126,12 @@ End Mapping.
 
 Module Env.
   (** The simulation [caller] is equal. *)
-  Lemma run_caller (env : erc20.Env.t) (state : State.t) :
+  Lemma run_caller (env : erc20.Env.t) (state : State.t) (logs : M.Logs) :
     let ref_env := Ref.Imm env in
-    Run.t
-      env
-      (inl (Simulations.erc20.Env.caller env))
-      state
-      (erc20.Impl_erc20_Env_t.caller ref_env)
-      state.
+    {{ env, state, logs |
+      erc20.Impl_erc20_Env_t.caller ref_env ⇓
+      inl (Simulations.erc20.Env.caller env)
+    | state, logs }}.
   Proof.
     run_symbolic.
   Qed.
@@ -142,17 +140,15 @@ Module Env.
   (** The simulation [emit_event] is equal. *)
   Lemma run_emit_event
     {E : Set}
-    {ℋ_0 : core.convert.Into.Trait E (T := erc20.Event.t)}
     (env : erc20.Env.t)
     (event : E)
-    (state : State.t) :
+    (state : State.t)
+    (logs : M.Logs) :
     let ref_env := Ref.Imm env in
-    Run.t
-      env
-      (inl Simulations.erc20.Env.emit_event)
-      state
-      (erc20.Impl_erc20_Env_t.emit_event (ℋ_0 := ℋ_0) ref_env event)
-      state.
+    {{ env, state, logs |
+      erc20.Impl_erc20_Env_t.emit_event ref_env event ⇓
+      inl Simulations.erc20.Env.emit_event
+    | state, existS E event :: logs }}.
   Proof.
     run_symbolic.
   Qed.
@@ -160,15 +156,13 @@ Module Env.
 End Env.
 
 (** The simulation [env] is equal. *)
-Lemma run_env (env : erc20.Env.t) (storage : erc20.Erc20.t) :
+Lemma run_env (env : erc20.Env.t) (storage : erc20.Erc20.t) (logs : M.Logs) :
   let state := State.of_storage storage in
   let self := Ref.mut_ref Address.storage in
-  Run.t
-    env
-    (inl (Simulations.erc20.env env))
-    state
-    (erc20.Impl_erc20_Erc20_t.env self)
-    state.
+  {{ env, state, logs |
+    erc20.Impl_erc20_Erc20_t.env self ⇓
+    inl (Simulations.erc20.env env)
+  | state, logs }}.
 Proof.
   run_symbolic.
   eapply Run.Call. {
@@ -181,15 +175,14 @@ Opaque erc20.Impl_erc20_Erc20_t.env.
 (** The simulation [total_supply] is equal. *)
 Lemma run_total_supply
     (env : erc20.Env.t)
-    (storage : erc20.Erc20.t) :
+    (storage : erc20.Erc20.t)
+    (logs : M.Logs) :
   let state := State.of_storage storage in
   let self := Ref.mut_ref Address.storage in
-  Run.t
-    env
-    (inl (Simulations.erc20.total_supply storage))
-    state
-    (erc20.Impl_erc20_Erc20_t_2.total_supply self)
-    state.
+  {{ env, state, logs |
+    erc20.Impl_erc20_Erc20_t_2.total_supply self ⇓
+    inl (Simulations.erc20.total_supply storage)
+  | state, logs }}.
 Proof.
   unfold erc20.Impl_erc20_Erc20_t_2.total_supply.
   run_symbolic.
@@ -200,16 +193,15 @@ Opaque erc20.Impl_erc20_Erc20_t_2.total_supply.
 Lemma run_balance_of_impl
     (env : erc20.Env.t)
     (storage : erc20.Erc20.t)
+    (logs : M.Logs)
     (owner : erc20.AccountId.t) :
   let state := State.of_storage storage in
   let self := Ref.mut_ref Address.storage in
   let ref_owner : ref erc20.AccountId.t := Ref.Imm owner in
-  Run.t
-    env
-    (inl (Simulations.erc20.balance_of_impl storage owner))
-    state
-    (erc20.Impl_erc20_Erc20_t_2.balance_of_impl self ref_owner)
-    state.
+  {{ env, state, logs |
+    erc20.Impl_erc20_Erc20_t_2.balance_of_impl self ref_owner ⇓
+    inl (Simulations.erc20.balance_of_impl storage owner)
+  | state, logs }}.
 Proof.
   unfold
     erc20.Impl_erc20_Erc20_t_2.balance_of_impl,
@@ -239,15 +231,14 @@ Qed.
 Lemma run_balance_of
     (env : erc20.Env.t)
     (storage : erc20.Erc20.t)
+    (logs : M.Logs)
     (owner : erc20.AccountId.t) :
   let state := State.of_storage storage in
   let self := Ref.mut_ref Address.storage in
-  Run.t
-    env
-    (inl (Simulations.erc20.balance_of storage owner))
-    state
-    (erc20.Impl_erc20_Erc20_t_2.balance_of self owner)
-    state.
+  {{ env, state, logs |
+    erc20.Impl_erc20_Erc20_t_2.balance_of self owner ⇓
+    inl (Simulations.erc20.balance_of storage owner)
+  | state, logs }}.
 Proof.
   unfold
     erc20.Impl_erc20_Erc20_t_2.balance_of,
@@ -264,18 +255,17 @@ Opaque erc20.Impl_erc20_Erc20_t_2.balance_of.
 Lemma run_allowance_impl
     (env : erc20.Env.t)
     (storage : erc20.Erc20.t)
+    (logs : M.Logs)
     (owner : erc20.AccountId.t)
     (spender : erc20.AccountId.t) :
   let state := State.of_storage storage in
   let self := Ref.mut_ref Address.storage in
   let ref_owner : ref erc20.AccountId.t := Ref.Imm owner in
   let ref_spender : ref erc20.AccountId.t := Ref.Imm spender in
-  Run.t
-    env
-    (inl (Simulations.erc20.allowance_impl storage owner spender))
-    state
-    (erc20.Impl_erc20_Erc20_t_2.allowance_impl self ref_owner ref_spender)
-    state.
+  {{ env, state, logs |
+    erc20.Impl_erc20_Erc20_t_2.allowance_impl self ref_owner ref_spender ⇓
+    inl (Simulations.erc20.allowance_impl storage owner spender)
+  | state, logs }}.
 Proof.
   unfold
     erc20.Impl_erc20_Erc20_t_2.allowance_impl,
@@ -305,16 +295,15 @@ Qed.
 Lemma run_allowance
     (env : erc20.Env.t)
     (storage : erc20.Erc20.t)
+    (logs : M.Logs)
     (owner : erc20.AccountId.t)
     (spender : erc20.AccountId.t) :
   let state := State.of_storage storage in
   let self := Ref.mut_ref Address.storage in
-  Run.t
-    env
-    (inl (Simulations.erc20.allowance storage owner spender))
-    state
-    (erc20.Impl_erc20_Erc20_t_2.allowance self owner spender)
-    state.
+  {{ env, state, logs |
+    erc20.Impl_erc20_Erc20_t_2.allowance self owner spender ⇓
+    inl (Simulations.erc20.allowance storage owner spender)
+  | state, logs }}.
 Proof.
   unfold
     erc20.Impl_erc20_Erc20_t_2.allowance,
@@ -349,22 +338,37 @@ Proof.
   reflexivity.
 Qed.
 
+Module Output.
+  Record t {A : Set} : Set := {
+    result : A + M.Exception;
+    state : State.t;
+    logs : M.Logs;
+  }.
+  Arguments t : clear implicits.
+End Output.
+
 Definition lift_simulation {A : Set}
-  (simulation : MS? erc20.Erc20.t A)
-  (storage : erc20.Erc20.t) :
-  (A + M.Exception) * State.t :=
-  let '(result, storage) := simulation storage in
+  (simulation : MS? (erc20.Erc20.t * M.Logs) A)
+  (storage : erc20.Erc20.t)
+  (logs : M.Logs) :
+  Output.t A :=
+  let '(result, (storage, logs)) := simulation (storage, logs) in
   let result :=
     match result with
     | inl result => inl result
     | inr error => inr (M.Exception.Panic error)
     end in
-  (result, State.of_storage storage).
+  {|
+    Output.result := result;
+    Output.state := State.of_storage storage;
+    Output.logs := logs;
+  |}.
 
 (** The simulation [transfer_from_to] is equal. *)
 Lemma run_transfer_from_to
     (env : erc20.Env.t)
     (storage : erc20.Erc20.t)
+    (logs : M.Logs)
     (from : erc20.AccountId.t)
     (to : erc20.AccountId.t)
     (value : ltac:(erc20.Balance))
@@ -376,13 +380,11 @@ Lemma run_transfer_from_to
   let ref_to : ref erc20.AccountId.t := Ref.Imm to in
   let simulation :=
     lift_simulation
-      (Simulations.erc20.transfer_from_to from to value) storage in
-  Run.t
-    env
-    (fst simulation)
-    (snd simulation)
-    (erc20.Impl_erc20_Erc20_t_2.transfer_from_to self ref_from ref_to value)
-    state.
+      (Simulations.erc20.transfer_from_to from to value) storage logs in
+  {{ env, state, logs |
+    erc20.Impl_erc20_Erc20_t_2.transfer_from_to self ref_from ref_to value ⇓
+    simulation.(Output.result)
+  | simulation.(Output.state), simulation.(Output.logs) }}.
 Proof.
   unfold
     erc20.Impl_erc20_Erc20_t_2.transfer_from_to,
@@ -433,6 +435,7 @@ Opaque erc20.Impl_erc20_Erc20_t_2.transfer_from_to.
 Lemma run_transfer
     (env : erc20.Env.t)
     (storage : erc20.Erc20.t)
+    (logs : M.Logs)
     (to : erc20.AccountId.t)
     (value : ltac:(erc20.Balance))
     (H_storage : Erc20.Valid.t storage)
@@ -441,13 +444,11 @@ Lemma run_transfer
   let self := Ref.mut_ref Address.storage in
   let simulation :=
     lift_simulation
-      (Simulations.erc20.transfer env to value) storage in
-  Run.t
-    env
-    (fst simulation)
-    (snd simulation)
-    (erc20.Impl_erc20_Erc20_t_2.transfer self to value)
-    state.
+      (Simulations.erc20.transfer env to value) storage logs in
+  {{ env, state, logs |
+    erc20.Impl_erc20_Erc20_t_2.transfer self to value ⇓
+    simulation.(Output.result)
+  | simulation.(Output.state), simulation.(Output.logs) }}.
 Proof.
   unfold erc20.Impl_erc20_Erc20_t_2.transfer,
     Simulations.erc20.transfer,
@@ -466,7 +467,7 @@ Proof.
     now apply run_transfer_from_to.
   }
   unfold lift_simulation.
-  destruct erc20.transfer_from_to as [[]]; run_symbolic.
+  destruct erc20.transfer_from_to as [[] [?storage ?logs]]; run_symbolic.
   Transparent erc20.transfer_from_to.
 Qed.
 Opaque erc20.Impl_erc20_Erc20_t_2.transfer.
@@ -475,19 +476,18 @@ Opaque erc20.Impl_erc20_Erc20_t_2.transfer.
 Lemma run_approve
     (env : erc20.Env.t)
     (storage : erc20.Erc20.t)
+    (logs : M.Logs)
     (spender : erc20.AccountId.t)
     (value : ltac:(erc20.Balance)) :
   let state := State.of_storage storage in
   let self := Ref.mut_ref Address.storage in
   let simulation :=
     lift_simulation
-      (Simulations.erc20.approve env spender value) storage in
-  Run.t
-    env
-    (fst simulation)
-    (snd simulation)
-    (erc20.Impl_erc20_Erc20_t_2.approve self spender value)
-    state.
+      (Simulations.erc20.approve env spender value) storage logs in
+  {{ env, state, logs |
+    erc20.Impl_erc20_Erc20_t_2.approve self spender value ⇓
+    simulation.(Output.result)
+  | simulation.(Output.state), simulation.(Output.logs) }}.
 Proof.
   unfold erc20.Impl_erc20_Erc20_t_2.approve,
     Simulations.erc20.approve.
@@ -503,6 +503,7 @@ Opaque erc20.Impl_erc20_Erc20_t_2.approve.
 Lemma run_transfer_from
     (env : erc20.Env.t)
     (storage : erc20.Erc20.t)
+    (logs : M.Logs)
     (from : erc20.AccountId.t)
     (to : erc20.AccountId.t)
     (value : ltac:(erc20.Balance))
@@ -512,13 +513,11 @@ Lemma run_transfer_from
   let self := Ref.mut_ref Address.storage in
   let simulation :=
     lift_simulation
-      (Simulations.erc20.transfer_from env from to value) storage in
-  Run.t
-    env
-    (fst simulation)
-    (snd simulation)
-    (erc20.Impl_erc20_Erc20_t_2.transfer_from self from to value)
-    state.
+      (Simulations.erc20.transfer_from env from to value) storage logs in
+  {{ env, state, logs |
+    erc20.Impl_erc20_Erc20_t_2.transfer_from self from to value ⇓
+    simulation.(Output.result)
+  | simulation.(Output.state), simulation.(Output.logs) }}.
 Proof.
   unfold erc20.Impl_erc20_Erc20_t_2.transfer_from,
     Simulations.erc20.transfer_from,
@@ -536,7 +535,7 @@ Proof.
   }
   unfold lift_simulation.
   unfold M.StateError.bind.
-  destruct erc20.transfer_from_to as [[[]|] ?storage]; run_symbolic.
+  destruct erc20.transfer_from_to as [[[]|] [?storage ?logs]]; run_symbolic.
   { eapply Run.Call. {
       run_symbolic.
     }
@@ -568,6 +567,7 @@ Opaque erc20.Impl_erc20_Erc20_t_2.transfer_from.
     read that information we get the expected [balance]. *)
 Lemma balance_of_impl_read_id
     (env : erc20.Env.t)
+    (logs : M.Logs)
     (owner : erc20.AccountId.t)
     (balance : u128.t)
     allowances :
@@ -582,14 +582,12 @@ Lemma balance_of_impl_read_id
   let self : ref erc20.Erc20.t := Ref.mut_ref Address.storage in
   (* The value [owner] is an immediate value *)
   let ref_owner : ref erc20.AccountId.t := Ref.Imm owner in
-  Run.t
-    env
+  {{ env, state, logs |
+    erc20.Impl_erc20_Erc20_t_2.balance_of_impl self ref_owner ⇓
     (* expected output *)
-    (inl balance)
-    (* the state does not change *)
-    state
-    (erc20.Impl_erc20_Erc20_t_2.balance_of_impl self ref_owner)
-    state.
+    inl balance
+    (* the state does not change, there are no new logs *)
+  | state, logs }}.
 Proof.
   intros.
   replace balance with (erc20.balance_of_impl storage owner).
@@ -650,15 +648,14 @@ Module ReadMessage.
       {A : Set}
       (env : erc20.Env.t)
       (storage : erc20.Erc20.t)
+      (logs : M.Logs)
       (message : t A) :
     let state := State.of_storage storage in
     let simulation := simulation_dispatch env storage message in
-    Run.t
-      env
-      (inl simulation)
-      state
-      (dispatch message)
-      state.
+    {{ env, state, logs |
+      dispatch message ⇓
+      inl simulation
+    | state, logs }}.
   Proof.
     destruct message; simpl.
     { apply run_total_supply. }
@@ -718,7 +715,7 @@ Module WriteMessage.
   Definition simulation_dispatch
       (env : erc20.Env.t)
       (message : t) :
-      MS? erc20.Erc20.t ltac:(erc20.Result unit) :=
+      MS? (erc20.Erc20.t * M.Logs) ltac:(erc20.Result unit) :=
     match message with
     | transfer to value =>
       Simulations.erc20.transfer env to value
@@ -732,16 +729,18 @@ Module WriteMessage.
   Lemma run_dispatch
       (env : erc20.Env.t)
       (storage : erc20.Erc20.t)
+      (logs : M.Logs)
       (message : t)
       (H_storage : Erc20.Valid.t storage)
       (H_message : Valid.t message) :
     let simulation :=
       lift_simulation
-        (simulation_dispatch env message) storage in
+        (simulation_dispatch env message) storage logs in
     let state := State.of_storage storage in
-    {{ env, state |
-      dispatch message ⇓ fst simulation
-    | snd simulation }}.
+    {{ env, state, logs |
+      dispatch message ⇓
+      simulation.(Output.result)
+    | simulation.(Output.state), simulation.(Output.logs) }}.
   Proof.
     destruct message; simpl.
     { apply run_transfer; scongruence. }
@@ -754,12 +753,13 @@ End WriteMessage.
 Lemma read_message_no_panic
     (env : erc20.Env.t)
     (message : ReadMessage.t ltac:(erc20.Balance))
-    (storage : erc20.Erc20.t) :
+    (storage : erc20.Erc20.t)
+    (logs : M.Logs) :
   let state := State.of_storage storage in
   exists result,
-  {{ env, state |
+  {{ env, state, logs |
     ReadMessage.dispatch message ⇓ inl result
-  | state }}.
+  | state, logs }}.
 Proof.
   destruct message; simpl.
   { eexists.
@@ -775,13 +775,14 @@ Qed.
 
 Lemma transfer_from_to_is_valid
     (storage : erc20.Erc20.t)
+    (logs : M.Logs)
     (from : erc20.AccountId.t)
     (to : erc20.AccountId.t)
     (value : ltac:(erc20.Balance))
     (H_storage : Erc20.Valid.t storage)
     (H_value : Integer.Valid.t value) :
-  let '(result, storage) :=
-    Simulations.erc20.transfer_from_to from to value storage in
+  let '(result, (storage, _)) :=
+    Simulations.erc20.transfer_from_to from to value (storage, logs) in
   match result with
   | inl _ => Erc20.Valid.t storage
   | _ => True
@@ -848,12 +849,13 @@ Qed.
 Lemma transfer_is_valid
     (env : erc20.Env.t)
     (storage : erc20.Erc20.t)
+    (logs : M.Logs)
     (to : erc20.AccountId.t)
     (value : ltac:(erc20.Balance))
     (H_storage : Erc20.Valid.t storage)
     (H_value : Integer.Valid.t value) :
-  let '(result, storage) :=
-    Simulations.erc20.transfer env to value storage in
+  let '(result, (storage, logs)) :=
+    Simulations.erc20.transfer env to value (storage, logs) in
   match result with
   | inl _ => Erc20.Valid.t storage
   | _ => True
@@ -865,12 +867,13 @@ Qed.
 Lemma approve_is_valid
     (env : erc20.Env.t)
     (storage : erc20.Erc20.t)
+    (logs : M.Logs)
     (spender : erc20.AccountId.t)
     (value : ltac:(erc20.Balance))
     (H_storage : Erc20.Valid.t storage)
     (H_value : Integer.Valid.t value) :
-  let '(result, storage) :=
-    Simulations.erc20.approve env spender value storage in
+  let '(result, (storage, _)) :=
+    Simulations.erc20.approve env spender value (storage, logs) in
   Erc20.Valid.t storage.
 Proof.
   cbn.
@@ -882,13 +885,14 @@ Qed.
 Lemma transfer_from_is_valid
     (env : erc20.Env.t)
     (storage : erc20.Erc20.t)
+    (logs : M.Logs)
     (from : erc20.AccountId.t)
     (to : erc20.AccountId.t)
     (value : ltac:(erc20.Balance))
     (H_storage : Erc20.Valid.t storage)
     (H_value : Integer.Valid.t value) :
-  let '(result, storage) :=
-    Simulations.erc20.transfer_from env from to value storage in
+  let '(result, (storage, _)) :=
+    Simulations.erc20.transfer_from env from to value (storage, logs) in
   match result with
   | inl _ => Erc20.Valid.t storage
   | _ => True
@@ -898,10 +902,10 @@ Proof.
   unfold BinOp.Pure.lt, BinOp.Pure.make_comparison; cbn.
   destruct (_ <? _) eqn:H_lt; [trivial|].
   pose proof (H_transfer :=
-    transfer_from_to_is_valid storage from to value H_storage H_value).
+    transfer_from_to_is_valid storage logs from to value H_storage H_value).
   unfold M.StateError.bind.
   destruct Simulations.erc20.transfer_from_to
-    as [[?result|?exception] ?storage];
+    as [[?result|?exception] [?storage ?logs]];
     [|trivial].
   destruct result; cbn; [|trivial].
   apply Mapping.insert_allowances_is_valid; try assumption.
@@ -917,12 +921,13 @@ Qed.
 Lemma write_dispatch_is_valid
     (env : erc20.Env.t)
     (storage : erc20.Erc20.t)
+    (logs : M.Logs)
     (write_message : WriteMessage.t)
     (H_storage : Erc20.Valid.t storage)
     (H_write_message : WriteMessage.Valid.t write_message) :
   let state := State.of_storage storage in
-  let '(result, storage) :=
-    WriteMessage.simulation_dispatch env write_message storage in
+  let '(result, (storage, _)) :=
+    WriteMessage.simulation_dispatch env write_message (storage, logs) in
   match result with
   | inl _ => Erc20.Valid.t storage
   | _ => True
@@ -934,15 +939,16 @@ Proof.
   { now apply transfer_from_is_valid. }
 Qed.
 
-(** * The sum of money is constant. *)
+(** ** The sum of money is constant. *)
 Module Sum_of_money_is_constant.
   Lemma transfer_from_to_constant
       (storage : erc20.Erc20.t)
+      (logs : M.Logs)
       (from : erc20.AccountId.t)
       (to : erc20.AccountId.t)
       (value : ltac:(erc20.Balance)) :
-    let '(result, storage') :=
-      Simulations.erc20.transfer_from_to from to value storage in
+    let '(result, (storage', _)) :=
+      Simulations.erc20.transfer_from_to from to value (storage, logs) in
     match result with
     | inl _ =>
       storage.(erc20.Erc20.total_supply) =
@@ -957,10 +963,11 @@ Module Sum_of_money_is_constant.
   Lemma transfer_is_constant
       (env : erc20.Env.t)
       (storage : erc20.Erc20.t)
+      (logs : M.Logs)
       (to : erc20.AccountId.t)
       (value : ltac:(erc20.Balance)) :
-    let '(result, storage') :=
-      Simulations.erc20.transfer env to value storage in
+    let '(result, (storage', _)) :=
+      Simulations.erc20.transfer env to value (storage, logs) in
     match result with
     | inl _ =>
       storage.(erc20.Erc20.total_supply) =
@@ -974,10 +981,11 @@ Module Sum_of_money_is_constant.
   Lemma approve_is_constant
       (env : erc20.Env.t)
       (storage : erc20.Erc20.t)
+      (logs : M.Logs)
       (spender : erc20.AccountId.t)
       (value : ltac:(erc20.Balance)) :
-    let '(result, storage') :=
-      Simulations.erc20.approve env spender value storage in
+    let '(result, (storage', _)) :=
+      Simulations.erc20.approve env spender value (storage, logs) in
     match result with
     | inl _ =>
       storage.(erc20.Erc20.total_supply) =
@@ -991,11 +999,12 @@ Module Sum_of_money_is_constant.
   Lemma transfer_from_is_constant
       (env : erc20.Env.t)
       (storage : erc20.Erc20.t)
+      (logs : M.Logs)
       (from : erc20.AccountId.t)
       (to : erc20.AccountId.t)
       (value : ltac:(erc20.Balance)) :
-    let '(result, storage') :=
-      Simulations.erc20.transfer_from env from to value storage in
+    let '(result, (storage', _)) :=
+      Simulations.erc20.transfer_from env from to value (storage, logs) in
     match result with
     | inl _ =>
       storage.(erc20.Erc20.total_supply) =
@@ -1005,7 +1014,7 @@ Module Sum_of_money_is_constant.
   Proof.
     cbn.
     step; cbn; trivial.
-    pose proof (transfer_from_to_constant storage from to value).
+    pose proof (transfer_from_to_constant storage logs from to value).
     unfold M.StateError.bind.
     destruct Simulations.erc20.transfer_from_to; cbn.
     repeat (step; cbn; trivial).
@@ -1014,10 +1023,11 @@ Module Sum_of_money_is_constant.
   Lemma write_dispatch_is_constant
       (env : erc20.Env.t)
       (storage : erc20.Erc20.t)
+      (logs : M.Logs)
       (write_message : WriteMessage.t) :
     let state := State.of_storage storage in
-    let '(result, storage') :=
-      WriteMessage.simulation_dispatch env write_message storage in
+    let '(result, (storage', _)) :=
+      WriteMessage.simulation_dispatch env write_message (storage, logs) in
     match result with
     | inl _ =>
       storage.(erc20.Erc20.total_supply) =
