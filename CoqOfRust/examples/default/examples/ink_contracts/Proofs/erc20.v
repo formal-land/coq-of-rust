@@ -173,12 +173,12 @@ End Mapping.
 
 Module Env.
   (** The simulation [caller] is equal. *)
-  Lemma run_caller (env : erc20.Env.t) (state : State.t) (logs : M.Logs) :
+  Lemma run_caller (env : erc20.Env.t) (state : State.t) :
     let ref_env := Ref.Imm env in
-    {{ Environment.of_env env, state, logs |
+    {{ Environment.of_env env, state |
       erc20.Impl_erc20_Env_t.caller ref_env ⇓
       inl (Simulations.erc20.Env.caller env)
-    | state, logs }}.
+    | state }}.
   Proof.
     run_symbolic.
   Qed.
@@ -188,17 +188,15 @@ Module Env.
   Lemma run_emit_event
     (env : erc20.Env.t)
     (event : erc20.Event.t)
-    (state : State.t)
-    (logs : M.Logs) :
+    (state : State.t) :
     let ref_env := Ref.Imm env in
-    {{ Environment.of_env env, state, logs |
+    {{ Environment.of_env env, state |
       erc20.Impl_erc20_Env_t.emit_event ref_env event ⇓
       inl tt
     | state <|
         State.events :=
           Simulations.erc20.Env.emit_event state.(State.events) event
-      |>,
-      logs
+      |>
     }}.
   Proof.
     run_symbolic.
@@ -207,13 +205,13 @@ Module Env.
 End Env.
 
 (** The simulation [env] is equal. *)
-Lemma run_env (env : erc20.Env.t) (storage : erc20.Erc20.t) (logs : M.Logs) :
+Lemma run_env (env : erc20.Env.t) (storage : erc20.Erc20.t) :
   let state := State.of_storage storage in
   let self := Ref.mut_ref Address.storage in
-  {{ Environment.of_env env, state, logs |
+  {{ Environment.of_env env, state |
     erc20.Impl_erc20_Erc20_t.env self ⇓
     inl (Simulations.erc20.env env)
-  | state, logs }}.
+  | state }}.
 Proof.
   run_symbolic.
   eapply Run.Call. {
@@ -226,14 +224,13 @@ Opaque erc20.Impl_erc20_Erc20_t.env.
 (** The simulation [total_supply] is equal. *)
 Lemma run_total_supply
     (env : erc20.Env.t)
-    (storage : erc20.Erc20.t)
-    (logs : M.Logs) :
+    (storage : erc20.Erc20.t) :
   let state := State.of_storage storage in
   let self := Ref.mut_ref Address.storage in
-  {{ Environment.of_env env, state, logs |
+  {{ Environment.of_env env, state |
     erc20.Impl_erc20_Erc20_t_2.total_supply self ⇓
     inl (Simulations.erc20.total_supply storage)
-  | state, logs }}.
+  | state }}.
 Proof.
   unfold erc20.Impl_erc20_Erc20_t_2.total_supply.
   run_symbolic.
@@ -244,15 +241,14 @@ Opaque erc20.Impl_erc20_Erc20_t_2.total_supply.
 Lemma run_balance_of_impl
     (env : erc20.Env.t)
     (storage : erc20.Erc20.t)
-    (logs : M.Logs)
     (owner : erc20.AccountId.t) :
   let state := State.of_storage storage in
   let self := Ref.mut_ref Address.storage in
   let ref_owner : ref erc20.AccountId.t := Ref.Imm owner in
-  {{ Environment.of_env env, state, logs |
+  {{ Environment.of_env env, state |
     erc20.Impl_erc20_Erc20_t_2.balance_of_impl self ref_owner ⇓
     inl (Simulations.erc20.balance_of_impl storage owner)
-  | state, logs }}.
+  | state }}.
 Proof.
   unfold
     erc20.Impl_erc20_Erc20_t_2.balance_of_impl,
@@ -282,14 +278,13 @@ Qed.
 Lemma run_balance_of
     (env : erc20.Env.t)
     (storage : erc20.Erc20.t)
-    (logs : M.Logs)
     (owner : erc20.AccountId.t) :
   let state := State.of_storage storage in
   let self := Ref.mut_ref Address.storage in
-  {{ Environment.of_env env, state, logs |
+  {{ Environment.of_env env, state |
     erc20.Impl_erc20_Erc20_t_2.balance_of self owner ⇓
     inl (Simulations.erc20.balance_of storage owner)
-  | state, logs }}.
+  | state }}.
 Proof.
   unfold
     erc20.Impl_erc20_Erc20_t_2.balance_of,
@@ -306,17 +301,16 @@ Opaque erc20.Impl_erc20_Erc20_t_2.balance_of.
 Lemma run_allowance_impl
     (env : erc20.Env.t)
     (storage : erc20.Erc20.t)
-    (logs : M.Logs)
     (owner : erc20.AccountId.t)
     (spender : erc20.AccountId.t) :
   let state := State.of_storage storage in
   let self := Ref.mut_ref Address.storage in
   let ref_owner : ref erc20.AccountId.t := Ref.Imm owner in
   let ref_spender : ref erc20.AccountId.t := Ref.Imm spender in
-  {{ Environment.of_env env, state, logs |
+  {{ Environment.of_env env, state |
     erc20.Impl_erc20_Erc20_t_2.allowance_impl self ref_owner ref_spender ⇓
     inl (Simulations.erc20.allowance_impl storage owner spender)
-  | state, logs }}.
+  | state }}.
 Proof.
   unfold
     erc20.Impl_erc20_Erc20_t_2.allowance_impl,
@@ -346,15 +340,14 @@ Qed.
 Lemma run_allowance
     (env : erc20.Env.t)
     (storage : erc20.Erc20.t)
-    (logs : M.Logs)
     (owner : erc20.AccountId.t)
     (spender : erc20.AccountId.t) :
   let state := State.of_storage storage in
   let self := Ref.mut_ref Address.storage in
-  {{ Environment.of_env env, state, logs |
+  {{ Environment.of_env env, state |
     erc20.Impl_erc20_Erc20_t_2.allowance self owner spender ⇓
     inl (Simulations.erc20.allowance storage owner spender)
-  | state, logs }}.
+  | state }}.
 Proof.
   unfold
     erc20.Impl_erc20_Erc20_t_2.allowance,
@@ -419,7 +412,6 @@ Definition lift_simulation {A : Set}
 Lemma run_transfer_from_to
     (env : erc20.Env.t)
     (storage : erc20.Erc20.t)
-    (logs : M.Logs)
     (from : erc20.AccountId.t)
     (to : erc20.AccountId.t)
     (value : ltac:(erc20.Balance))
@@ -432,10 +424,10 @@ Lemma run_transfer_from_to
   let simulation :=
     lift_simulation
       (Simulations.erc20.transfer_from_to from to value) storage in
-  {{ Environment.of_env env, state, logs |
+  {{ Environment.of_env env, state |
     erc20.Impl_erc20_Erc20_t_2.transfer_from_to self ref_from ref_to value ⇓
     simulation.(Output.result)
-  | simulation.(Output.state), logs }}.
+  | simulation.(Output.state) }}.
 Proof.
   unfold
     erc20.Impl_erc20_Erc20_t_2.transfer_from_to,
@@ -486,7 +478,6 @@ Opaque erc20.Impl_erc20_Erc20_t_2.transfer_from_to.
 Lemma run_transfer
     (env : erc20.Env.t)
     (storage : erc20.Erc20.t)
-    (logs : M.Logs)
     (to : erc20.AccountId.t)
     (value : ltac:(erc20.Balance))
     (H_storage : Erc20.Valid.t storage)
@@ -496,10 +487,10 @@ Lemma run_transfer
   let simulation :=
     lift_simulation
       (Simulations.erc20.transfer env to value) storage in
-  {{ Environment.of_env env, state, logs |
+  {{ Environment.of_env env, state |
     erc20.Impl_erc20_Erc20_t_2.transfer self to value ⇓
     simulation.(Output.result)
-  | simulation.(Output.state), logs }}.
+  | simulation.(Output.state) }}.
 Proof.
   unfold erc20.Impl_erc20_Erc20_t_2.transfer,
     Simulations.erc20.transfer,
@@ -527,7 +518,6 @@ Opaque erc20.Impl_erc20_Erc20_t_2.transfer.
 Lemma run_approve
     (env : erc20.Env.t)
     (storage : erc20.Erc20.t)
-    (logs : M.Logs)
     (spender : erc20.AccountId.t)
     (value : ltac:(erc20.Balance)) :
   let state := State.of_storage storage in
@@ -535,10 +525,10 @@ Lemma run_approve
   let simulation :=
     lift_simulation
       (Simulations.erc20.approve env spender value) storage in
-  {{ Environment.of_env env, state, logs |
+  {{ Environment.of_env env, state |
     erc20.Impl_erc20_Erc20_t_2.approve self spender value ⇓
     simulation.(Output.result)
-  | simulation.(Output.state), logs }}.
+  | simulation.(Output.state) }}.
 Proof.
   unfold erc20.Impl_erc20_Erc20_t_2.approve,
     Simulations.erc20.approve.
@@ -554,7 +544,6 @@ Opaque erc20.Impl_erc20_Erc20_t_2.approve.
 Lemma run_transfer_from
     (env : erc20.Env.t)
     (storage : erc20.Erc20.t)
-    (logs : M.Logs)
     (from : erc20.AccountId.t)
     (to : erc20.AccountId.t)
     (value : ltac:(erc20.Balance))
@@ -565,10 +554,10 @@ Lemma run_transfer_from
   let simulation :=
     lift_simulation
       (Simulations.erc20.transfer_from env from to value) storage in
-  {{ Environment.of_env env, state, logs |
+  {{ Environment.of_env env, state |
     erc20.Impl_erc20_Erc20_t_2.transfer_from self from to value ⇓
     simulation.(Output.result)
-  | simulation.(Output.state), logs }}.
+  | simulation.(Output.state) }}.
 Proof.
   unfold erc20.Impl_erc20_Erc20_t_2.transfer_from,
     Simulations.erc20.transfer_from,
@@ -618,7 +607,6 @@ Opaque erc20.Impl_erc20_Erc20_t_2.transfer_from.
     read that information we get the expected [balance]. *)
 Lemma balance_of_impl_read_id
     (env : erc20.Env.t)
-    (logs : M.Logs)
     (owner : erc20.AccountId.t)
     (balance : u128.t)
     allowances :
@@ -633,12 +621,12 @@ Lemma balance_of_impl_read_id
   let self : ref erc20.Erc20.t := Ref.mut_ref Address.storage in
   (* The value [owner] is an immediate value *)
   let ref_owner : ref erc20.AccountId.t := Ref.Imm owner in
-  {{ Environment.of_env env, state, logs |
+  {{ Environment.of_env env, state |
     erc20.Impl_erc20_Erc20_t_2.balance_of_impl self ref_owner ⇓
     (* expected output *)
     inl balance
     (* the state does not change, there are no new logs *)
-  | state, logs }}.
+  | state }}.
 Proof.
   intros.
   replace balance with (erc20.balance_of_impl storage owner).
@@ -699,14 +687,13 @@ Module ReadMessage.
       {A : Set}
       (env : erc20.Env.t)
       (storage : erc20.Erc20.t)
-      (logs : M.Logs)
       (message : t A) :
     let state := State.of_storage storage in
     let simulation := simulation_dispatch env storage message in
-    {{ Environment.of_env env, state, logs |
+    {{ Environment.of_env env, state |
       dispatch message ⇓
       inl simulation
-    | state, logs }}.
+    | state }}.
   Proof.
     destruct message; simpl.
     { apply run_total_supply. }
@@ -780,7 +767,6 @@ Module WriteMessage.
   Lemma run_dispatch
       (env : erc20.Env.t)
       (storage : erc20.Erc20.t)
-      (logs : M.Logs)
       (message : t)
       (H_storage : Erc20.Valid.t storage)
       (H_message : Valid.t message) :
@@ -788,10 +774,10 @@ Module WriteMessage.
       lift_simulation
         (simulation_dispatch env message) storage in
     let state := State.of_storage storage in
-    {{ Environment.of_env env, state, logs |
+    {{ Environment.of_env env, state |
       dispatch message ⇓
       simulation.(Output.result)
-    | simulation.(Output.state), logs }}.
+    | simulation.(Output.state) }}.
   Proof.
     destruct message; simpl.
     { apply run_transfer; scongruence. }
@@ -804,13 +790,12 @@ End WriteMessage.
 Lemma read_message_no_panic
     (env : erc20.Env.t)
     (message : ReadMessage.t ltac:(erc20.Balance))
-    (storage : erc20.Erc20.t)
-    (logs : M.Logs) :
+    (storage : erc20.Erc20.t) :
   let state := State.of_storage storage in
   exists result,
-  {{ Environment.of_env env, state, logs |
+  {{ Environment.of_env env, state |
     ReadMessage.dispatch message ⇓ inl result
-  | state, logs }}.
+  | state }}.
 Proof.
   destruct message; simpl.
   { eexists.

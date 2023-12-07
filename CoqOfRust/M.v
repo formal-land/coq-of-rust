@@ -53,7 +53,6 @@ Module Primitive.
   | StateRead {Address A : Set} : Address -> t A
   | StateWrite {Address A : Set} : Address -> A -> t unit
   | EnvRead {A : Set} : t A
-  | Log {A : Set} : A -> t unit
   .
 End Primitive.
 Definition Primitive : Set -> Set := Primitive.t.
@@ -208,10 +207,6 @@ Definition copy {A : Set} (r : Ref A) : M (Ref A) :=
 Definition read_env {Env : Set} : M Env :=
   let- env := LowM.CallPrimitive Primitive.EnvRead LowM.Pure in
   LowM.Pure (inl env).
-
-Definition log {Message : Set} (message : Message) : M unit :=
-  let- _ := LowM.CallPrimitive (Primitive.Log message) LowM.Pure in
-  LowM.Pure (inl tt).
 
 Definition impossible {A : Set} : M A :=
   LowM.Impossible.
