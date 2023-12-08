@@ -133,6 +133,15 @@ Module AccountId.
     destruct x as [[x]], y as [[y]].
     destruct (Z.eq_dec x y); sfirstorder.
   Qed.
+
+  Lemma eq_or_neq_couple (x y : erc20.AccountId.t * erc20.AccountId.t) :
+    x = y \/ x <> y.
+  Proof.
+    destruct x as [x1 x2], y as [y1 y2].
+    destruct (eq_or_neq x1 y1);
+      destruct (eq_or_neq x2 y2);
+      hauto lq: on.
+  Qed.
 End AccountId.
 
 Module Mapping.
@@ -162,10 +171,7 @@ Module Mapping.
     constructor; try apply H_storage.
     constructor; cbn; try apply H_storage.
     eapply Lib.Mapping.Forall_insert; try assumption; try apply H_storage.
-    intros [a1 a2] [b1 b2].
-    destruct (AccountId.eq_or_neq a1 b1);
-      destruct (AccountId.eq_or_neq a2 b2);
-      hauto lq: on.
+    apply AccountId.eq_or_neq_couple.
   Qed.
 End Mapping.
 
@@ -1252,3 +1258,32 @@ Module Action_from_log.
     Transparent Simulations.erc20.transfer_from_to.
   Qed.
 End Action_from_log.
+
+(** One can only change its own allowance using the [approve] method. *)
+Lemma approve_only_changes_owner_allowance
+    (env : erc20.Env.t)
+    (storage : erc20.Erc20.t)
+    (spender : erc20.AccountId.t)
+    (value : ltac:(erc20.Balance)) :
+  let '(result, (storage', _)) :=
+    Simulations.erc20.approve env spender value (storage, []) in
+  match result with
+  | inl (result.Result.Ok tt) =>
+    forall owner spender,
+    Integer.to_Z (Simulations.erc20.allowance storage' owner spender) <>
+      Integer.to_Z (Simulations.erc20.allowance storage owner spender) ->
+    owner = Simulations.erc20.Env.caller env
+  | _ => True
+  end.
+Proof.
+  unfold erc20.allowance, erc20.allowance_impl; cbn.
+  intros.
+  match goal with
+  | _ : context[Lib.Mapping.get ?key1 (Lib.Mapping.insert ?key2 _ _)] |- _ =>
+    destruct (AccountId.eq_or_neq_couple key1 key2) as [H_eq | H_neq]
+  end.
+  { sfirstorder. }
+  { rewrite Lib.Mapping.get_insert_neq in * by assumption.
+    destruct Lib.Mapping.get; lia.
+  }
+Qed.
