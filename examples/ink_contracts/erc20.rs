@@ -23,8 +23,6 @@ struct Env {
     caller: AccountId,
 }
 
-struct Event(String);
-
 /// A simple ERC-20 contract.
 // #[ink(storage)]
 #[derive(Default)]
@@ -48,12 +46,6 @@ struct Transfer {
     value: Balance,
 }
 
-impl Into<Event> for Transfer {
-    fn into(self) -> Event {
-        unimplemented!()
-    }
-}
-
 /// Event emitted when an approval occurs that `spender` is allowed to withdraw
 /// up to the amount of `value` tokens from `owner`.
 // #[ink(event)]
@@ -65,10 +57,9 @@ struct Approval {
     value: Balance,
 }
 
-impl Into<Event> for Approval {
-    fn into(self) -> Event {
-        unimplemented!()
-    }
+enum Event {
+    Transfer(Transfer),
+    Approval(Approval),
 }
 
 /// The ERC-20 error types.
@@ -87,8 +78,9 @@ impl Env {
         self.caller
     }
 
-    /// We ignore events for now.
-    fn emit_event<E: Into<Event>>(&self, _event: E) {}
+    fn emit_event(&self, _event: Event) {
+        unimplemented!()
+    }
 }
 
 impl Erc20 {
@@ -108,11 +100,11 @@ impl Erc20 {
         let mut balances = Mapping::default();
         let caller = Self::init_env().caller();
         balances.insert(caller, total_supply);
-        Self::init_env().emit_event(Transfer {
+        Self::init_env().emit_event(Event::Transfer(Transfer {
             from: None,
             to: Some(caller),
             value: total_supply,
-        });
+        }));
         Self {
             total_supply,
             balances,
@@ -185,11 +177,11 @@ impl Erc20 {
         self.balances.insert(*from, from_balance - value);
         let to_balance = self.balance_of_impl(to);
         self.balances.insert(*to, to_balance + value);
-        self.env().emit_event(Transfer {
+        self.env().emit_event(Event::Transfer(Transfer {
             from: Some(*from),
             to: Some(*to),
             value,
-        });
+        }));
         Ok(())
     }
 
@@ -218,11 +210,11 @@ impl Erc20 {
     fn approve(&mut self, spender: AccountId, value: Balance) -> Result<()> {
         let owner = self.env().caller();
         self.allowances.insert((owner, spender), value);
-        self.env().emit_event(Approval {
+        self.env().emit_event(Event::Approval(Approval {
             owner,
             spender,
             value,
-        });
+        }));
         Ok(())
     }
 

@@ -85,7 +85,28 @@ Module Mapping := Mapping.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.""",
         """Definition init_env : M erc20.Env.t :=
-    M.read_env."""
+    let* env : erc20.Env.t * ref (list erc20.Event.t) := M.read_env in
+    M.pure (fst env)."""
+    )
+
+    content = content.replace(
+        """Definition emit_event
+      (self : ref ltac:(Self))
+      (_event : erc20.Event.t)
+      : M unit :=
+    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* _event : M.Val erc20.Event.t := M.alloc _event in
+    let* α0 : ref str.t := M.read (mk_str "not implemented") in
+    let* α1 : never.t := M.call (core.panicking.panic α0) in
+    never_to_any α1.""",
+        """Definition emit_event
+      (self : ref ltac:(Self))
+      (event : erc20.Event.t)
+      : M unit :=
+    let* env : erc20.Env.t * ref (list erc20.Event.t) := M.read_env in
+    let ref_events := snd env in
+    let* events := M.read ref_events in
+    M.write ref_events (event :: events)."""
     )
 
     with open(file_name, "w") as f:

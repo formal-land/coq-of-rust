@@ -3,6 +3,7 @@ Require Coq.Strings.String.
 
 Inductive sigS {A : Type} (P : A -> Set) : Set :=
 | existS : forall (x : A), P x -> sigS P.
+Arguments existS {_ _}.
 
 Reserved Notation "{ x @ P }" (at level 0, x at level 99).
 Reserved Notation "{ x : A @ P }" (at level 0, x at level 99).
@@ -52,7 +53,6 @@ Module Primitive.
   | StateRead {Address A : Set} : Address -> t A
   | StateWrite {Address A : Set} : Address -> A -> t unit
   | EnvRead {A : Set} : t A
-  | Log {A : Set} : A -> t unit
   .
 End Primitive.
 Definition Primitive : Set -> Set := Primitive.t.

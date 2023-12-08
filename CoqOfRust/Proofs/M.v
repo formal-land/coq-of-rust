@@ -1,4 +1,5 @@
 Require Import CoqOfRust.M.
+Require CoqOfRust.Simulations.M.
 
 Module State.
   Class Trait (State Address : Set) : Type := {
@@ -42,13 +43,14 @@ Module Run.
       LowM A -> State -> Prop :=
   | Pure :
     t env result state' (LowM.Pure result) state'
-  | CallPrimitiveStateAllocNone {B : Set} (state : State) (v : B)
+  | CallPrimitiveStateAllocNone {B : Set}
+      (state : State) (v : B)
       (k : Ref B -> LowM A) :
     t env result state' (k (Ref.Imm v)) state ->
-    t env result state' (LowM.CallPrimitive (Primitive.StateAlloc v) k)
-      state
+    t env result state' (LowM.CallPrimitive (Primitive.StateAlloc v) k) state
   | CallPrimitiveStateAllocSome
-      (address : Address) (v : State.get_Set address) (state : State)
+      (address : Address) (v : State.get_Set address)
+      (state : State)
       (k : Ref (State.get_Set address) -> LowM A) :
     let r :=
       Ref.MutRef (A := State.get_Set address) (B := State.get_Set address)
@@ -58,25 +60,33 @@ Module Run.
     t env result state' (k r) state ->
     t env result state' (LowM.CallPrimitive (Primitive.StateAlloc v) k) state
   | CallPrimitiveStateRead
-      (address : Address) (v : State.get_Set address) (state : State)
+      (address : Address) (v : State.get_Set address)
+      (state : State)
       (k : State.get_Set address -> LowM A) :
     State.read address state = Some v ->
     t env result state' (k v) state ->
-    t env result state' (LowM.CallPrimitive (Primitive.StateRead address) k)
+    t env result state'
+      (LowM.CallPrimitive (Primitive.StateRead address) k)
       state
   | CallPrimitiveStateWrite
       (address : Address) (v : State.get_Set address)
-      (state state_inter : State) (k : unit -> LowM A) :
+      (state state_inter : State)
+      (k : unit -> LowM A) :
     State.alloc_write address state v = Some state_inter ->
     t env result state' (k tt) state_inter ->
-    t env result state' (LowM.CallPrimitive (Primitive.StateWrite address v) k)
-      state
-  | CallPrimitiveEnvRead (state : State) (k : Env -> LowM A) :
+    t env result state'
+      (LowM.CallPrimitive (Primitive.StateWrite address v) k) state
+  | CallPrimitiveEnvRead
+      (state : State) (k : Env -> LowM A) :
     t env result state' (k env) state ->
-    t env result state' (LowM.CallPrimitive Primitive.EnvRead k) state
-  | Cast {B : Set} (v : B) (k : B -> LowM A) :
-    t env result state' (LowM.Cast v k) state'
-  | Call {B : Set} (state state_inter : State) (e : LowM B) (v : B)
+    t env result state' (LowM.CallPrimitive Primitive.EnvRead k)
+      state
+  | Cast {B : Set} (state : State) (v : B) (k : B -> LowM A) :
+    t env result state' (k v) state ->
+    t env result state' (LowM.Cast v k) state
+  | Call {B : Set}
+      (state state_inter : State)
+      (e : LowM B) (v : B)
       (k : B -> LowM A) :
     t env v state_inter e state ->
     t env result state' (k v) state_inter ->
@@ -110,7 +120,8 @@ Ltac run_symbolic_state_write :=
       ?state =>
     let H := fresh "H" in
     epose proof (H :=
-      Run.CallPrimitiveStateWrite env result state' address value state _ k);
+      Run.CallPrimitiveStateWrite
+        env result state' address value state _ k);
     apply H; [reflexivity|];
     clear H
   end.
