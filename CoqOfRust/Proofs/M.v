@@ -36,18 +36,22 @@ Module State.
 End State.
 
 Module Run.
+  Reserved Notation "{{ env , state | e ⇓ result | state' }}".
+
   Inductive t `{State.Trait} {Env A : Set} (env : Env)
       (* Be aware of the order of parameters: the result and final state are at
          the beginning. *)
       (result : A) (state' : State) :
       LowM A -> State -> Prop :=
   | Pure :
-    t env result state' (LowM.Pure result) state'
+    {{ env, state' | LowM.Pure result ⇓ result | state' }}
   | CallPrimitiveStateAllocNone {B : Set}
       (state : State) (v : B)
       (k : Ref B -> LowM A) :
-    t env result state' (k (Ref.Imm v)) state ->
-    t env result state' (LowM.CallPrimitive (Primitive.StateAlloc v) k) state
+    {{ env, state | k (Ref.Imm v) ⇓ result | state' }} ->
+    {{ env, state |
+      LowM.CallPrimitive (Primitive.StateAlloc v) k ⇓ result
+    | state' }}
   | CallPrimitiveStateAllocSome
       (address : Address) (v : State.get_Set address)
       (state : State)
@@ -57,44 +61,48 @@ Module Run.
         address (fun full_v => full_v) (fun v _full_v => v) in
     State.read address state = None ->
     State.alloc_write address state v = Some state' ->
-    t env result state' (k r) state ->
-    t env result state' (LowM.CallPrimitive (Primitive.StateAlloc v) k) state
+    {{ env, state | k r ⇓ result | state' }} ->
+    {{ env, state |
+      LowM.CallPrimitive (Primitive.StateAlloc v) k ⇓ result
+    | state' }}
   | CallPrimitiveStateRead
       (address : Address) (v : State.get_Set address)
       (state : State)
       (k : State.get_Set address -> LowM A) :
     State.read address state = Some v ->
-    t env result state' (k v) state ->
-    t env result state'
-      (LowM.CallPrimitive (Primitive.StateRead address) k)
-      state
+    {{ env, state | k v ⇓ result | state' }} ->
+    {{ env, state |
+      LowM.CallPrimitive (Primitive.StateRead address) k ⇓ result
+    | state' }}
   | CallPrimitiveStateWrite
       (address : Address) (v : State.get_Set address)
       (state state_inter : State)
       (k : unit -> LowM A) :
     State.alloc_write address state v = Some state_inter ->
-    t env result state' (k tt) state_inter ->
-    t env result state'
-      (LowM.CallPrimitive (Primitive.StateWrite address v) k) state
+    {{ env, state_inter | k tt ⇓ result | state' }} ->
+    {{ env, state |
+      LowM.CallPrimitive (Primitive.StateWrite address v) k ⇓ result
+    | state' }}
   | CallPrimitiveEnvRead
       (state : State) (k : Env -> LowM A) :
-    t env result state' (k env) state ->
-    t env result state' (LowM.CallPrimitive Primitive.EnvRead k)
-      state
+    {{ env, state | k env ⇓ result | state' }} ->
+    {{ env, state |
+      LowM.CallPrimitive Primitive.EnvRead k ⇓ result
+    | state' }}
   | Cast {B : Set} (state : State) (v : B) (k : B -> LowM A) :
-    t env result state' (k v) state ->
-    t env result state' (LowM.Cast v k) state
+    {{ env, state | k v ⇓ result | state' }} ->
+    {{ env, state | LowM.Cast v k ⇓ result | state' }}
   | Call {B : Set}
       (state state_inter : State)
       (e : LowM B) (v : B)
       (k : B -> LowM A) :
-    t env v state_inter e state ->
-    t env result state' (k v) state_inter ->
-    t env result state' (LowM.Call e k) state.
-End Run.
+    {{ env, state | e ⇓ v | state_inter }} ->
+    {{ env, state_inter | k v ⇓ result | state' }} ->
+    {{ env, state | LowM.Call e k ⇓ result | state' }}
 
-Notation "{{ env , state | e ⇓ result | state' }}" :=
-  (Run.t env result state' e state).
+  where "{{ env , state | e ⇓ result | state' }}" :=
+      (t env result state' e state).
+End Run.
 
 (** Simplify the usual case of read of immediate value. *)
 Lemma read_of_imm {A : Set} (v : A) :

@@ -6,6 +6,7 @@ Require CoqOfRust.examples.default.examples.ink_contracts.Simulations.erc20.
 Require CoqOfRust.examples.default.examples.ink_contracts.erc20.
 
 Import Simulations.M.Notations.
+Import Run.
 
 (** ** Definition of state and allocation. *)
 

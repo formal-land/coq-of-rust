@@ -91,9 +91,7 @@ Module Exception.
   | Continue : t
   (** exceptions for Rust's `break` *)
   | Break : t
-  | Panic : Coq.Strings.String.string -> t
-  (** exception for potential non-termination *)
-  | NonTermination : t.
+  | Panic : Coq.Strings.String.string -> t.
 End Exception.
 Definition Exception : Set := Exception.t.
 
