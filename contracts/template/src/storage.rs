@@ -9,7 +9,7 @@ use std::collections::VecDeque;
 use std::rc::Rc;
 use std::sync::Arc;
 
-#[derive(Default, Eq, PartialEq, Clone, Copy)]
+#[derive(Default, Eq, PartialEq, Clone, Copy, Debug)]
 pub struct AccountId([u8; 32]);
 
 impl From<[u8; 32]> for AccountId {
@@ -21,6 +21,8 @@ impl From<[u8; 32]> for AccountId {
 pub type Balance = u128;
 
 pub trait Encode {}
+
+pub trait Decode {}
 
 impl<T> Encode for T {}
 
@@ -162,6 +164,7 @@ impl<
         R0: EncodeLike<R1>,
         R1: Encode,
     >
+ 
     EncodeLike<(
         A1,
         B1,
@@ -741,4 +744,147 @@ macro_rules! impl_storage {
             }
         }
     };
+}
+
+// scale::Encode
+impl std::fmt::Debug for dyn Encode {
+  fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+      write!(f, "{}", "Encode")
+  }
+}
+
+// scale::Decode
+impl std::fmt::Debug for dyn Decode {
+  fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+      write!(f, "{}", "Decode")
+  }
+}
+
+// ink::prelude::string
+pub mod string {
+  pub struct String {}
+}
+
+// ink::env::vec
+pub mod vec {
+  pub struct Vec<T> {
+    _marker: core::marker::PhantomData<T>,
+  }
+}
+
+// pub struct Args {}
+// pub struct Call<E: Environment> {
+//   // dest : MultiAddress<E::AccountId, ()>,
+//   // value : E::Balance,
+//   // gas_limit : Weight,
+//   // storage_deposit_limit : Option<E::Balance>,
+//   // data : Vec<u8>,
+// }
+
+// pub struct EmptyArgumentList {}
+// pub struct ReturnType<T>(PhantomData<fn() -> T>);
+// pub struct Unset<T>(PhantomData<fn() -> T>);
+
+// // ink::env::call
+// pub mod call {
+//   // pub fn build_call<E>() -> CallBuilder<
+//   //     E,
+//   //     Unset<Call<E>>,
+//   //     Unset<ExecutionInput<EmptyArgumentList>>,
+//   //     Unset<ReturnType<()>>,
+//   // >
+//   // where
+//   //     E: Environment,
+//   // {
+//   //     CallBuilder {
+//   //         call_type: Default::default(),
+//   //         call_flags: Default::default(),
+//   //         exec_input: Default::default(),
+//   //         return_type: Default::default(),
+//   //         _phantom: Default::default(),
+//   //     }
+//   // }
+//   use crate::storage::Environment;
+//   use crate::storage::Unset;
+//   use crate::storage::EmptyArgumentList;
+//   use crate::storage::ReturnType;
+//   use crate::storage::Call;
+
+//   pub struct Selector {
+//     bytes: [u8; 4],
+//   }
+//   pub struct ExecutionInput<Args> {
+//     selector: Selector,
+//     args: Args,
+//   }
+
+//   pub fn build_call<E>() -> CallBuilder<
+//     E,
+//     Unset<Call<E>>,
+//     Unset<ExecutionInput<EmptyArgumentList>>,
+//     Unset<ReturnType<()>>,
+//   >
+//   where
+//     E: Environment
+//   { unimplemented!() }
+// }
+
+// ink::env::DefaultEnvironment
+pub enum DefaultEnvironment {}
+
+// ink::env::Environment
+pub trait Environment {
+  type AccountId;
+  type Balance;
+  type Hash;
+  type Timestamp;
+  type BlockNumber;
+  type ChainExtension;
+
+  const MAX_EVENT_TOPICS: usize;
+}
+
+pub struct Hash {}
+pub struct Timestamp {}
+pub struct BlockNumber {}
+pub enum NoChainExtension {}
+
+impl Environment for DefaultEnvironment {
+  const MAX_EVENT_TOPICS: usize = 4;
+
+  type AccountId = AccountId;
+  type Balance = Balance;
+  type Hash = Hash;
+  type Timestamp = Timestamp;
+  type BlockNumber = BlockNumber;
+  type ChainExtension = NoChainExtension;
+}
+
+pub struct OffChainError {}
+
+pub struct ScaleError {} // parity_scale_codec::Error
+
+// ink::env::Error
+pub enum Error {
+  Decode(ScaleError),
+  OffChain(OffChainError),
+  CalleeTrapped,
+  CalleeReverted,
+  KeyNotFound,
+  _BelowSubsistenceThreshold,
+  TransferFailed,
+  _EndowmentTooLow,
+  CodeNotFound,
+  NotCallable,
+  Unknown,
+  LoggingDisabled,
+  CallRuntimeFailed,
+  EcdsaRecoveryFailed,
+}
+
+// ink::env::debug_println
+#[macro_export]
+macro_rules! debug_println {
+  () => { unimplemented!() };
+  ($($arg:tt)*) => { unimplemented!() };
 }

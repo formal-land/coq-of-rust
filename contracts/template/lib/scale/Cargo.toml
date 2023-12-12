@@ -1,0 +1,13 @@
+[package]
+name = "scale"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+syn = "0.15"
+quote = "0.6"
+
+[lib]
+proc-macro = true

@@ -43,6 +43,15 @@ for filename in os.listdir(source_dir):
             target_dir, 'src', 'storage.rs'))
         print(f"Copied {storage_file} to {target_dir}")
 
+        # Add crates from lib
+        lib_crate = os.path.join('template', 'lib')
+        dst_lib = os.path.join(
+            target_dir, 'lib')
+        if os.path.exists(dst_lib):
+          shutil.rmtree(dst_lib)
+        shutil.copytree(lib_crate, dst_lib)
+        print(f"Copied {lib_crate} to {target_dir}")
+
         # Make the substitutions to fix the Rust contract's file
         with open(target_file, 'r+') as f:
             content = f.read()
@@ -63,15 +72,40 @@ for filename in os.listdir(source_dir):
                 'Self::init_env()',
             )
 
-            storage_name = \
-                re.search(
+            storage_name = "DefaultName"
+            namesearch = re.search(
                     r"(\[ink\(storage\)]\s*\#\[derive\([^)]*\)]\s*)pub struct (\w+)",
                     content,
-                ).group(2)
-            print(storage_name)
+                )
+            if namesearch:
+              storage_name = namesearch.group(2)
+            else:
+              namesearch = re.search(  # Case for flipper
+                    r"(\[ink\(storage\)]\s*)pub struct (\w+)",
+                    content,
+                )
+              if namesearch: 
+                storage_name = namesearch.group(2)
+
+            print("Storage name: ", storage_name)
             content = content.replace(
                 '#[ink(storage)]',
                 'impl_storage!(%s);' % storage_name,
+            )
+
+            content = content.replace(
+              'use ink::{',
+              'use crate::storage::{'
+            )
+
+            content = content.replace(
+              'prelude::',
+              ''
+            )
+
+            content = content.replace(
+              'primitives::',
+              ''
             )
 
             macros_to_comment = [
@@ -82,6 +116,11 @@ for filename in os.listdir(source_dir):
                 '#[ink(message)]',
                 '#[ink(storage)]',
                 '#[ink(topic)]',
+                '#[ink::trait_definition]',
+                '#[ink(message, selector = 0xF23A6E61)]',
+                '#[ink(message, selector = 0xBC197C81)]',
+                '#[ink(message, selector = 0xBC197C81)]',
+                '#[ink(message, payable)]'
             ]
             for macro in macros_to_comment:
                 content = content.replace(macro, '// ' + macro)
