@@ -98,6 +98,12 @@ for filename in os.listdir(source_dir):
               'use crate::storage::{'
             )
 
+            # For storage::call errors
+            content = content.replace(
+              'ink::env::call',
+              'storage::call'
+            )
+
             content = content.replace(
               'prelude::',
               ''
