@@ -7,3 +7,4 @@ edition = "2021"
 
 [dependencies]
 scale = { path = "lib/scale" }
+derive_more = { version = "0.99", default-features = false, features = ["from", "display"] }

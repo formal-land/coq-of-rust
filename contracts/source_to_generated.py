@@ -56,6 +56,7 @@ for filename in os.listdir(source_dir):
         with open(target_file, 'r+') as f:
             content = f.read()
 
+            # General headers
             first_line = '#![cfg_attr(not(feature = "std"), no_std, no_main)]'
             content = content.replace(
                 first_line,
@@ -69,16 +70,21 @@ for filename in os.listdir(source_dir):
             )
 
             content = content.replace(
-                'mod erc20 {\n    use ink::storage::Mapping;',
-                'mod erc20 {\n    use crate::storage::*;',
+              'mod erc20 {\n    use ink::storage::Mapping;',
+              'mod erc20 {\n    use crate::storage::*;',
             )
 
             content = content.replace(
-                'mod erc721 {\n    use ink::storage::Mapping;',
-                'mod erc721 {\n    use crate::storage::*;',
+              'mod erc721 {\n    use ink::storage::Mapping;',
+              'mod erc721 {\n    use crate::storage::*;',
+            )
+
+            content = content.replace(
+              'mod erc1155 {\n    use super::*;',
+              'mod erc1155 {\n    use super::*;\n    use super::Error;'
             )
             
-            multisig_raw = """    use ink::{
+            multisig_header = """    use ink::{
         env::{
             call::{
                 build_call,
@@ -90,7 +96,7 @@ for filename in os.listdir(source_dir):
         storage::Mapping,
     };
     use scale::Output;"""
-            content = re.sub(multisig_raw, 'use super::*;', content)
+            content = re.sub(multisig_header, '    use super::*;\n    use crate::storage::call::ExecutionInput;', content)
 
             # for erc1155
             content = content.replace(
@@ -111,6 +117,11 @@ for filename in os.listdir(source_dir):
             content = content.replace(
               'ink::env::Error',
               'crate::storage::Error'
+            )
+
+            content = content.replace(
+              '::ink::env::ContractEnv',
+              'ContractEnv'
             )
 
             content = content.replace(
@@ -171,14 +182,25 @@ for filename in os.listdir(source_dir):
             )
 
             content = content.replace(
-              'prelude::',
-              ''
+              'prelude::vec::Vec',
+              'vec::Vec'
             )
 
-            content = content.replace(
-              'primitives::',
-              ''
-            )
+            # content = content.replace(
+            #   'prelude::',
+            #   ''
+            # )
+
+            # content = content.replace(
+            #   'primitives::',
+            #   ''
+            # )
+
+            imports_to_delete = [
+              'use crate::storage::{\n    vec::Vec,\n    primitives::AccountId,\n};\n'
+            ]
+            for imports in imports_to_delete:
+                content = content.replace(imports, '')
 
             macros_to_comment = [
                 '#[ink::contract]',

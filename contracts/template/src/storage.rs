@@ -9,6 +9,9 @@ use std::collections::VecDeque;
 use std::rc::Rc;
 use std::sync::Arc;
 
+extern crate derive_more;
+use derive_more::From;
+
 #[derive(Default, Eq, PartialEq, Clone, Copy, Debug)]
 pub struct AccountId([u8; 32]);
 
@@ -20,7 +23,15 @@ impl From<[u8; 32]> for AccountId {
 
 pub type Balance = u128;
 
-pub trait Encode {}
+pub trait Output {}
+
+// pub trait Encode {
+//   NOTE: compiler cannot make the trait into a object if the following function is added
+//   fn encode_to<T: Output + ?Sized>(&self, dest: &mut T) {
+// 		unimplemented!()
+// 	}
+// }
+pub trait Encode{}
 
 pub trait Decode {}
 
@@ -783,18 +794,60 @@ pub struct Call<E: Environment> {
 pub struct EmptyArgumentList {}
 pub struct ReturnType<T>(PhantomData<fn() -> T>);
 pub struct Unset<T>(PhantomData<fn() -> T>);
+pub struct CallType;
+pub struct RetType;
+pub struct CallFlags {
+  forward_input: bool,
+  clone_input: bool,
+  tail_call: bool,
+  allow_reentry: bool,
+}
 
 // ink::env::call
 pub mod call {
   use super::*;
+
+  pub struct CallBuilder<E, CallType, Args, RetType>
+  where
+      E: Environment,
+  {
+      /// The current parameters that have been built up so far.
+      call_type: CallType,
+      call_flags: CallFlags,
+      exec_input: Args,
+      return_type: RetType,
+      _phantom: PhantomData<fn() -> E>,
+  }
+
+  pub struct Selector {
+    bytes: [u8; 4],
+  }
+  pub struct ExecutionInput<Args> {
+    selector: Selector,
+    args: Args,
+  }
+
+  impl ExecutionInput<Args> {
+    pub fn new(selector: Selector) -> ExecutionInput<Args>{
+      unimplemented!()
+    }
+  }
+
+  impl Selector{
+    pub fn new(arg: [u8; 4]) -> Selector{
+      unimplemented!()
+    }
+  }
+
+  
   // pub fn build_call<E>() -> CallBuilder<
   //     E,
   //     Unset<Call<E>>,
   //     Unset<ExecutionInput<EmptyArgumentList>>,
   //     Unset<ReturnType<()>>,
   // >
-  // where
-  //     E: Environment,
+  // // where
+  // //    E: Environment,
   // {
   //     CallBuilder {
   //         call_type: Default::default(),
@@ -804,19 +857,6 @@ pub mod call {
   //         _phantom: Default::default(),
   //     }
   // }
-  // use crate::storage::Environment;
-  // use crate::storage::Unset;
-  // use crate::storage::EmptyArgumentList;
-  // use crate::storage::ReturnType;
-  // use crate::storage::Call;
-
-  pub struct Selector {
-    bytes: [u8; 4],
-  }
-  pub struct ExecutionInput<Args> {
-    selector: Selector,
-    args: Args,
-  }
 
   // pub fn build_call<E>() -> CallBuilder<
   //   E,
@@ -844,6 +884,10 @@ pub trait Environment {
   const MAX_EVENT_TOPICS: usize;
 }
 
+pub trait ContractEnv {
+  type Env: crate::Environment;
+}
+
 pub struct Hash {}
 pub struct Timestamp {}
 pub struct BlockNumber {}
@@ -860,14 +904,14 @@ impl Environment for DefaultEnvironment {
   type ChainExtension = NoChainExtension;
 }
 
-#[derive(Debug)]
+#[derive(Debug, From, PartialEq, Eq)]
 pub struct OffChainError {}
 
-#[derive(Debug)]
+#[derive(Debug, From, PartialEq, Eq)]
 pub struct ScaleError {} // parity_scale_codec::Error
 
 // ink::env::Error
-#[derive(Debug)]
+#[derive(Debug, From, PartialEq, Eq)]
 pub enum Error {
   Decode(ScaleError),
   OffChain(OffChainError),
@@ -883,13 +927,13 @@ pub enum Error {
   LoggingDisabled,
   CallRuntimeFailed,
   EcdsaRecoveryFailed,
-  // Unchecked
-  ZeroAddressTransfer,
-  BatchTransferMismatch,
-  InsufficientBalance,
-  SelfApproval,
-  UnexistentToken,
-  NotApproved
+  // From ERC1155
+  // ZeroAddressTransfer,
+  // BatchTransferMismatch,
+  // InsufficientBalance,
+  // SelfApproval,
+  // UnexistentToken,
+  // NotApproved
 }
 
 // ink::env::debug_println
