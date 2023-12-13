@@ -89,11 +89,12 @@ mod multisig {
     /// We use this to pass the set of untyped (bytes) parameters to the `CallBuilder`.
     struct CallInput<'a>(&'a [u8]);
 
-    impl<'a> scale::Encode for CallInput<'a> {
-        fn encode_to<T: Output + ?Sized>(&self, dest: &mut T) {
-            dest.write(self.0);
-        }
-    }
+    // NOTE: temporarily removed
+    // impl<'a> scale::Encode for CallInput<'a> {
+    //     fn encode_to<T: Output + ?Sized>(&self, dest: &mut T) {
+    //         dest.write(self.0);
+    //     }
+    // }
 
     /// Indicates whether a transaction is already confirmed or needs further
     /// confirmations.
@@ -122,9 +123,8 @@ mod multisig {
             ink::storage::traits::StorageLayout
         )
     )]
-    // // NOTE: Added temporarily
-    // use crate::storage::AccountId;
 
+    #[derive(Default)]
     pub struct Transaction {
         /// The `AccountId` of the contract that is called in this transaction.
         pub callee: AccountId,

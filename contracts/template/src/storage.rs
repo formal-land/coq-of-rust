@@ -12,7 +12,7 @@ use std::sync::Arc;
 extern crate derive_more;
 use derive_more::From;
 
-#[derive(Default, Eq, PartialEq, Clone, Copy, Debug)]
+#[derive(Default, Eq, PartialEq, Clone, Copy, Debug, Ord, PartialOrd)]
 pub struct AccountId([u8; 32]);
 
 impl From<[u8; 32]> for AccountId {
@@ -791,16 +791,25 @@ pub struct Call<E: Environment> {
   _marker : core::marker::PhantomData<E>
 }
 
-pub struct EmptyArgumentList {}
+pub struct EmptyArgumentList;
 pub struct ReturnType<T>(PhantomData<fn() -> T>);
 pub struct Unset<T>(PhantomData<fn() -> T>);
 pub struct CallType;
 pub struct RetType;
+
+#[derive(Default)]
 pub struct CallFlags {
   forward_input: bool,
   clone_input: bool,
   tail_call: bool,
   allow_reentry: bool,
+}
+
+impl CallFlags {
+  pub const fn set_allow_reentry(mut self, allow_reentry: bool) -> Self {
+    self.allow_reentry = allow_reentry;
+    self
+  }
 }
 
 // ink::env::call
@@ -819,6 +828,7 @@ pub mod call {
       _phantom: PhantomData<fn() -> E>,
   }
 
+  #[derive(From)]
   pub struct Selector {
     bytes: [u8; 4],
   }
@@ -888,9 +898,9 @@ pub trait ContractEnv {
   type Env: crate::Environment;
 }
 
-pub struct Hash {}
-pub struct Timestamp {}
-pub struct BlockNumber {}
+pub struct Hash;
+pub struct Timestamp;
+pub struct BlockNumber;
 pub enum NoChainExtension {}
 
 impl Environment for DefaultEnvironment {
