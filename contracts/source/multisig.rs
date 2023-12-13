@@ -61,9 +61,6 @@ pub use self::multisig::{
     Transaction,
 };
 
-#[macro_use]
-extern crate scale;
-
 #[ink::contract]
 mod multisig {
     use ink::{
