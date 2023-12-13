@@ -767,67 +767,67 @@ pub mod string {
 
 // ink::env::vec
 pub mod vec {
-  pub struct Vec<T> {
-    _marker: core::marker::PhantomData<T>,
-  }
+  pub type Vec<T> = std::vec::Vec<T>;
 }
 
-// pub struct Args {}
-// pub struct Call<E: Environment> {
-//   // dest : MultiAddress<E::AccountId, ()>,
-//   // value : E::Balance,
-//   // gas_limit : Weight,
-//   // storage_deposit_limit : Option<E::Balance>,
-//   // data : Vec<u8>,
-// }
+pub struct Args {}
+pub struct Call<E: Environment> {
+  // dest : MultiAddress<E::AccountId, ()>,
+  // value : E::Balance,
+  // gas_limit : Weight,
+  // storage_deposit_limit : Option<E::Balance>,
+  // data : Vec<u8>,
+  _marker : core::marker::PhantomData<E>
+}
 
-// pub struct EmptyArgumentList {}
-// pub struct ReturnType<T>(PhantomData<fn() -> T>);
-// pub struct Unset<T>(PhantomData<fn() -> T>);
+pub struct EmptyArgumentList {}
+pub struct ReturnType<T>(PhantomData<fn() -> T>);
+pub struct Unset<T>(PhantomData<fn() -> T>);
 
-// // ink::env::call
-// pub mod call {
-//   // pub fn build_call<E>() -> CallBuilder<
-//   //     E,
-//   //     Unset<Call<E>>,
-//   //     Unset<ExecutionInput<EmptyArgumentList>>,
-//   //     Unset<ReturnType<()>>,
-//   // >
-//   // where
-//   //     E: Environment,
-//   // {
-//   //     CallBuilder {
-//   //         call_type: Default::default(),
-//   //         call_flags: Default::default(),
-//   //         exec_input: Default::default(),
-//   //         return_type: Default::default(),
-//   //         _phantom: Default::default(),
-//   //     }
-//   // }
-//   use crate::storage::Environment;
-//   use crate::storage::Unset;
-//   use crate::storage::EmptyArgumentList;
-//   use crate::storage::ReturnType;
-//   use crate::storage::Call;
+// ink::env::call
+pub mod call {
+  use super::*;
+  // pub fn build_call<E>() -> CallBuilder<
+  //     E,
+  //     Unset<Call<E>>,
+  //     Unset<ExecutionInput<EmptyArgumentList>>,
+  //     Unset<ReturnType<()>>,
+  // >
+  // where
+  //     E: Environment,
+  // {
+  //     CallBuilder {
+  //         call_type: Default::default(),
+  //         call_flags: Default::default(),
+  //         exec_input: Default::default(),
+  //         return_type: Default::default(),
+  //         _phantom: Default::default(),
+  //     }
+  // }
+  // use crate::storage::Environment;
+  // use crate::storage::Unset;
+  // use crate::storage::EmptyArgumentList;
+  // use crate::storage::ReturnType;
+  // use crate::storage::Call;
 
-//   pub struct Selector {
-//     bytes: [u8; 4],
-//   }
-//   pub struct ExecutionInput<Args> {
-//     selector: Selector,
-//     args: Args,
-//   }
+  pub struct Selector {
+    bytes: [u8; 4],
+  }
+  pub struct ExecutionInput<Args> {
+    selector: Selector,
+    args: Args,
+  }
 
-//   pub fn build_call<E>() -> CallBuilder<
-//     E,
-//     Unset<Call<E>>,
-//     Unset<ExecutionInput<EmptyArgumentList>>,
-//     Unset<ReturnType<()>>,
-//   >
-//   where
-//     E: Environment
-//   { unimplemented!() }
-// }
+  // pub fn build_call<E>() -> CallBuilder<
+  //   E,
+  //   Unset<Call<E>>,
+  //   Unset<ExecutionInput<EmptyArgumentList>>,
+  //   Unset<ReturnType<()>>,
+  // >
+  // where
+  //   E: Environment
+  // { unimplemented!() }
+}
 
 // ink::env::DefaultEnvironment
 pub enum DefaultEnvironment {}
@@ -860,11 +860,14 @@ impl Environment for DefaultEnvironment {
   type ChainExtension = NoChainExtension;
 }
 
+#[derive(Debug)]
 pub struct OffChainError {}
 
+#[derive(Debug)]
 pub struct ScaleError {} // parity_scale_codec::Error
 
 // ink::env::Error
+#[derive(Debug)]
 pub enum Error {
   Decode(ScaleError),
   OffChain(OffChainError),
@@ -880,6 +883,13 @@ pub enum Error {
   LoggingDisabled,
   CallRuntimeFailed,
   EcdsaRecoveryFailed,
+  // Unchecked
+  ZeroAddressTransfer,
+  BatchTransferMismatch,
+  InsufficientBalance,
+  SelfApproval,
+  UnexistentToken,
+  NotApproved
 }
 
 // ink::env::debug_println

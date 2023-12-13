@@ -47,8 +47,8 @@ for filename in os.listdir(source_dir):
         lib_crate = os.path.join('template', 'lib')
         dst_lib = os.path.join(
             target_dir, 'lib')
-        if os.path.exists(dst_lib):
-          shutil.rmtree(dst_lib)
+        # Delete previous copy to make sure everything is updated(?)
+        shutil.rmtree(dst_lib)
         shutil.copytree(lib_crate, dst_lib)
         print(f"Copied {lib_crate} to {target_dir}")
 
@@ -59,17 +59,79 @@ for filename in os.listdir(source_dir):
             first_line = '#![cfg_attr(not(feature = "std"), no_std, no_main)]'
             content = content.replace(
                 first_line,
-                '#[macro_use]\nmod storage;'
+                '#[macro_use]\nmod storage;\nuse storage::*;\n#[macro_use]\nextern crate scale;'
+            )
+
+            # for erc1155
+            content = content.replace(
+              'value: ink::prelude::string',
+              'value: string'
             )
 
             content = content.replace(
-                'use ink::storage::Mapping;',
-                'use crate::storage::*;',
+                'mod erc20 {\n    use ink::storage::Mapping;',
+                'mod erc20 {\n    use crate::storage::*;',
+            )
+
+            content = content.replace(
+                'mod erc721 {\n    use ink::storage::Mapping;',
+                'mod erc721 {\n    use crate::storage::*;',
+            )
+            
+            multisig_raw = """    use ink::{
+        env::{
+            call::{
+                build_call,
+                ExecutionInput,
+            },
+            CallFlags,
+        },
+        prelude::vec::Vec,
+        storage::Mapping,
+    };
+    use scale::Output;"""
+            content = re.sub(multisig_raw, 'use super::*;', content)
+
+            # for erc1155
+            content = content.replace(
+              'use ink::storage::Mapping;',
+              ''
+            )
+
+            content = content.replace(
+              'ink::env::DefaultEnvironment',
+              'crate::storage::DefaultEnvironment'
+            )
+
+            content = content.replace(
+              'ink::env::Environment',
+              'crate::storage::Environment'
+            )
+
+            content = content.replace(
+              'ink::env::Error',
+              'crate::storage::Error'
             )
 
             content = content.replace(
                 'Self::env()',
                 'Self::init_env()',
+            )
+
+            # content = content.replace(
+            #     'ink::env::',
+            #     'crate::storage::',
+            # )
+
+            # For storage::call errors
+            content = content.replace(
+              'ink::env::call',
+              'crate::storage::call'
+            )
+
+            content = content.replace(
+                'ink::env::debug_println!',
+                'debug_println!',
             )
 
             storage_name = "DefaultName"
@@ -94,14 +156,18 @@ for filename in os.listdir(source_dir):
             )
 
             content = content.replace(
-              'use ink::{',
-              'use crate::storage::{'
+                'scale::Encode',
+                'Encode'
             )
 
-            # For storage::call errors
             content = content.replace(
-              'ink::env::call',
-              'storage::call'
+                'scale::Decode',
+                'Decode'
+            )
+
+            content = content.replace(
+              'use ink::{',
+              'use crate::storage::{'
             )
 
             content = content.replace(
