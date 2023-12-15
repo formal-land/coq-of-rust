@@ -17,6 +17,10 @@ impl<K, V> Mapping<K, V> {
         unimplemented!()
     }
 
+    fn new() -> Mapping<K, V> {
+        unimplemented!()
+    }
+
     fn remove(&self, _key: K) {
         unimplemented!()
     }

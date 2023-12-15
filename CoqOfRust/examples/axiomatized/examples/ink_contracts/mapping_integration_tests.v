@@ -96,6 +96,18 @@ Section Impl_mapping_integration_tests_Mapping_t_K_V.
   }.
   
   (*
+      fn new() -> Mapping<K, V> {
+          unimplemented!()
+      }
+  *)
+  Parameter new : M (mapping_integration_tests.Mapping.t K V).
+  
+  Global Instance AssociatedFunction_new :
+    Notations.DoubleColon ltac:(Self) "new" := {
+    Notations.double_colon := new;
+  }.
+  
+  (*
       fn remove(&self, _key: K) {
           unimplemented!()
       }

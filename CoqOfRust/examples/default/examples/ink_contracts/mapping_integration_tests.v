@@ -133,6 +133,21 @@ Section Impl_mapping_integration_tests_Mapping_t_K_V.
   }.
   
   (*
+      fn new() -> Mapping<K, V> {
+          unimplemented!()
+      }
+  *)
+  Definition new : M (mapping_integration_tests.Mapping.t K V) :=
+    let* α0 : ref str.t := M.read (mk_str "not implemented") in
+    let* α1 : never.t := M.call (core.panicking.panic α0) in
+    never_to_any α1.
+  
+  Global Instance AssociatedFunction_new :
+    Notations.DoubleColon ltac:(Self) "new" := {
+    Notations.double_colon := new;
+  }.
+  
+  (*
       fn remove(&self, _key: K) {
           unimplemented!()
       }
