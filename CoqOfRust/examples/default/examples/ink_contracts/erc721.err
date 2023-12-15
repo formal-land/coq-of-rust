@@ -1,0 +1,72 @@
+type Closure(
+    DefId(0:60 ~ erc721[cf58]::{impl#3}::burn::{closure#0}),
+    [
+        i32,
+        extern "rust-call" fn((u32,)) -> u32,
+        (),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:60 ~ erc721[cf58]::{impl#3}::burn::{closure#0}),
+    [
+        i32,
+        extern "rust-call" fn((u32,)) -> u32,
+        (),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:60 ~ erc721[cf58]::{impl#3}::burn::{closure#0}),
+    [
+        i32,
+        extern "rust-call" fn((u32,)) -> u32,
+        (),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:64 ~ erc721[cf58]::{impl#3}::remove_token_from::{closure#0}),
+    [
+        i32,
+        extern "rust-call" fn((u32,)) -> u32,
+        (),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:64 ~ erc721[cf58]::{impl#3}::remove_token_from::{closure#0}),
+    [
+        i32,
+        extern "rust-call" fn((u32,)) -> u32,
+        (),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:64 ~ erc721[cf58]::{impl#3}::remove_token_from::{closure#0}),
+    [
+        i32,
+        extern "rust-call" fn((u32,)) -> u32,
+        (),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:67 ~ erc721[cf58]::{impl#3}::add_token_to::{closure#0}),
+    [
+        i32,
+        extern "rust-call" fn((u32,)) -> u32,
+        (),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:67 ~ erc721[cf58]::{impl#3}::add_token_to::{closure#0}),
+    [
+        i32,
+        extern "rust-call" fn((u32,)) -> u32,
+        (),
+    ],
+) not yet handled
+type Closure(
+    DefId(0:67 ~ erc721[cf58]::{impl#3}::add_token_to::{closure#0}),
+    [
+        i32,
+        extern "rust-call" fn((u32,)) -> u32,
+        (),
+    ],
+) not yet handled
