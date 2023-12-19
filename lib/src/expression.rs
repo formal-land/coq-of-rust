@@ -908,7 +908,7 @@ impl ExprKind {
                         nest([
                             nest([
                                 text("let"),
-                                optional_insert(*is_monadic, text("*")),
+                                optional_insert(!*is_monadic, text("*")),
                                 line(),
                                 optional_insert(pattern.is_single_binding(), text("'")),
                             ]),
