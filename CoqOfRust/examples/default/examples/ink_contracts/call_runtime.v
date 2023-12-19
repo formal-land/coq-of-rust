@@ -439,13 +439,12 @@ Section Impl_call_runtime_RuntimeCaller_t.
           |})) in
     let* α7 : core.result.Result.t unit call_runtime.EnvError.t :=
       M.call (call_runtime.Env.t::["call_runtime"] (borrow α2) (borrow α6)) in
-    let* α8 : _ :=
-      M.read
+    M.call
+      ((core.result.Result.t unit call_runtime.EnvError.t)::["map_err"]
+        α7
         (core.convert.Into.into
           (Self := call_runtime.EnvError.t)
-          (Trait := ltac:(refine _))) in
-    M.call
-      ((core.result.Result.t unit call_runtime.EnvError.t)::["map_err"] α7 α8).
+          (Trait := ltac:(refine _)))).
   
   Global Instance AssociatedFunction_transfer_through_runtime :
     Notations.DoubleColon ltac:(Self) "transfer_through_runtime" := {
@@ -468,13 +467,12 @@ Section Impl_call_runtime_RuntimeCaller_t.
     let* α3 : M.Val unit := M.alloc tt in
     let* α4 : core.result.Result.t unit call_runtime.EnvError.t :=
       M.call (call_runtime.Env.t::["call_runtime"] (borrow α2) (borrow α3)) in
-    let* α5 : _ :=
-      M.read
+    M.call
+      ((core.result.Result.t unit call_runtime.EnvError.t)::["map_err"]
+        α4
         (core.convert.Into.into
           (Self := call_runtime.EnvError.t)
-          (Trait := ltac:(refine _))) in
-    M.call
-      ((core.result.Result.t unit call_runtime.EnvError.t)::["map_err"] α4 α5).
+          (Trait := ltac:(refine _)))).
   
   Global Instance AssociatedFunction_call_nonexistent_extrinsic :
     Notations.DoubleColon ltac:(Self) "call_nonexistent_extrinsic" := {

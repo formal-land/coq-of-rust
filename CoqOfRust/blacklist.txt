@@ -1,5 +1,4 @@
 # blacklisting ink smart contracts
-examples/axiomatized/examples/ink_contracts/call_runtime.v
 examples/axiomatized/examples/ink_contracts/conditional_compilation.v
 examples/axiomatized/examples/ink_contracts/custom_environment.v
 examples/axiomatized/examples/ink_contracts/dns.v
@@ -11,7 +10,6 @@ examples/axiomatized/examples/ink_contracts/payment_channel.v
 examples/axiomatized/examples/ink_contracts/trait_erc20.v
 examples/axiomatized/examples/ink_contracts/trait_flipper.v
 examples/axiomatized/examples/ink_contracts/trait_incrementer.v
-examples/default/examples/ink_contracts/call_runtime.v
 examples/default/examples/ink_contracts/conditional_compilation.v
 examples/default/examples/ink_contracts/contract_transfer.v
 examples/default/examples/ink_contracts/custom_allocator.v

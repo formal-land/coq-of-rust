@@ -62,12 +62,7 @@ Definition main : M unit :=
             (Trait := ltac:(refine _)))
           α1
           α2) in
-    let* α4 : _ :=
-      M.read
-        (core.result.Result.t
-            i32.t
-            core.num.error.ParseIntError.t)::["is_ok"] in
-    let* α5 :
+    let* α4 :
         (alloc.vec.Vec.t
           (core.result.Result.t i32.t core.num.error.ParseIntError.t)
           alloc.alloc.Global.t)
@@ -85,8 +80,10 @@ Definition main : M unit :=
                 type not implemented)
             (Trait := ltac:(refine _)))
           α3
-          α4) in
-    M.alloc α5 in
+          (core.result.Result.t
+              i32.t
+              core.num.error.ParseIntError.t)::["is_ok"]) in
+    M.alloc α4 in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : M.Val (array (ref str.t)) :=

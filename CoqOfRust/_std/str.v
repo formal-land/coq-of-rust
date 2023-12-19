@@ -384,8 +384,8 @@ Module FromStr.
   Class Trait (Self : Set) : Type := { 
     Err : Set;
     from_str :
-      M.Val (ref str.t) ->
-      M (M.Val (result.Result Self Err));
+      ref str.t ->
+      M (result.Result.t Self Err);
   }.
 End FromStr.
 
@@ -457,8 +457,8 @@ Module Impl_str.
 
   Parameter parse :
     forall {F : Set} {H0 : FromStr.Trait F},
-    M.Val (ref Self) ->
-    M (M.Val (core.result.Result F (FromStr.Err (Trait := H0)))).
+    ref Self ->
+    M (core.result.Result.t F (FromStr.Err (Trait := H0))).
 
   Global Instance AssociatedFunction_parse {F : Set} {H0 : FromStr.Trait F} :
     Notations.DoubleColon Self "parse" := {

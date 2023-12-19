@@ -74,8 +74,10 @@ Definition main : M unit :=
     let* α1 : unit := M.call (functions_closures_input_functions.call_me α0) in
     M.alloc α1 in
   let* _ : M.Val unit :=
-    let* α0 : _ := M.read functions_closures_input_functions.function in
-    let* α1 : unit := M.call (functions_closures_input_functions.call_me α0) in
-    M.alloc α1 in
+    let* α0 : unit :=
+      M.call
+        (functions_closures_input_functions.call_me
+          functions_closures_input_functions.function) in
+    M.alloc α0 in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.

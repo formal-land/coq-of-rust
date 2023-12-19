@@ -584,12 +584,12 @@ Module Impl_Debug_for_Result.
     Context `{core.fmt.Debug.Trait E}.
 
     Parameter fmt :
-      ref (core.result.Result T E) ->
+      ref (core.result.Result.t T E) ->
       mut_ref core.fmt.Formatter.t ->
       M ltac:(core.fmt.Result).
 
     Global Instance I :
-        core.fmt.Debug.Trait (core.result.Result T E) := {
+        core.fmt.Debug.Trait (core.result.Result.t T E) := {
       fmt := fmt;
     }.
   End Impl_Debug_for_Result.

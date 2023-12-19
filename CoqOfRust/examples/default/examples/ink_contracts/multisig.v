@@ -2286,8 +2286,7 @@ Section Impl_multisig_Multisig_t.
                   multisig.Error.t)
               (Trait := ltac:(refine _)))
             (borrow result)) in
-      let* α5 : _ := M.read "unimplemented parent_kind" in
-      let* α6 :
+      let* α5 :
           core.result.Result.t
             (core.option.Option.t (alloc.vec.Vec.t u8.t alloc.alloc.Global.t))
             multisig.Error.t :=
@@ -2296,17 +2295,17 @@ Section Impl_multisig_Multisig_t.
                 (alloc.vec.Vec.t u8.t alloc.alloc.Global.t)
                 multisig.Error.t)::["map"]
             α4
-            α5) in
-      let* α7 : unit :=
+            "unimplemented parent_kind") in
+      let* α6 : unit :=
         M.call
           (multisig.Env.t::["emit_event"]
             (borrow α2)
             (multisig.Event.Execution
               {|
                 multisig.Execution.transaction := α3;
-                multisig.Execution.result := α6;
+                multisig.Execution.result := α5;
               |})) in
-      M.alloc α7 in
+      M.alloc α6 in
     M.read result.
   
   Global Instance AssociatedFunction_eval_transaction :

@@ -57,7 +57,9 @@ pub unsafe trait Allocator {
 Module Allocator.
   Class Trait (Self : Set) : Set := { 
     (* fn allocate(&self, layout: Layout) -> Result<NonNull<[u8]>, AllocError>; *)
-    allocate : ref Self -> layout.Layout -> Result (NonNull (slice u8.t)) AllocError;
+    allocate :
+      ref Self -> layout.Layout ->
+      M (Result.t (NonNull (slice u8.t)) AllocError);
     
     (* unsafe fn deallocate(&self, ptr: NonNull<u8>, layout: Layout); *)
     deallocate : ref Self -> NonNull u8.t -> layout.Layout -> unit;
@@ -68,7 +70,9 @@ Module Allocator.
         layout: Layout
     ) -> Result<NonNull<[u8]>, AllocError> { ... }
     *)
-    allocate_zeroed : ref Self -> layout.Layout -> Result (NonNull (slice u8.t)) AllocError;
+    allocate_zeroed :
+      ref Self -> layout.Layout ->
+      M (Result.t (NonNull (slice u8.t)) AllocError);
 
     (* 
     unsafe fn grow(
@@ -78,8 +82,9 @@ Module Allocator.
         new_layout: Layout
     ) -> Result<NonNull<[u8]>, AllocError> { ... }
     *)
-    grow : ref Self -> NonNull u8.t -> layout.Layout -> layout.Layout
-         -> Result (NonNull (slice u8.t)) AllocError;
+    grow :
+      ref Self -> NonNull u8.t -> layout.Layout -> layout.Layout ->
+      M (Result.t (NonNull (slice u8.t)) AllocError);
 
     (* 
     unsafe fn grow_zeroed(
@@ -89,8 +94,9 @@ Module Allocator.
         new_layout: Layout
     ) -> Result<NonNull<[u8]>, AllocError> { ... }
     *)
-    grow_zeroed : ref Self -> NonNull u8.t -> layout.Layout -> layout.Layout
-                -> Result (NonNull (slice u8.t)) AllocError;
+    grow_zeroed :
+      ref Self -> NonNull u8.t -> layout.Layout -> layout.Layout ->
+      M (Result.t (NonNull (slice u8.t)) AllocError);
 
     (* 
     unsafe fn shrink(
@@ -100,15 +106,15 @@ Module Allocator.
         new_layout: Layout
     ) -> Result<NonNull<[u8]>, AllocError> { ... }
     *)
-    shrink : ref Self -> NonNull u8.t -> layout.Layout -> layout.Layout
-            -> Result (NonNull (slice u8.t)) AllocError;
+    shrink :
+      ref Self -> NonNull u8.t -> layout.Layout -> layout.Layout ->
+      M (Result.t (NonNull (slice u8.t)) AllocError);
 
     (*
     fn by_ref(&self) -> &Self
        where Self: Sized { ... }
     *)
-    by_ref 
-    : ref Self -> ref Self;
+    by_ref : ref Self -> M (ref Self);
   }.
 End Allocator.
 

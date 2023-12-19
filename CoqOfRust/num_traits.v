@@ -140,7 +140,7 @@ Module Num.
     from_str_radix :
       (ref str.t) ->
       u32.t ->
-      (M (core.result.Result Self FromStrRadixErr));
+      (M (core.result.Result.t Self FromStrRadixErr));
   }.
 End Num.
 

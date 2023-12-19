@@ -139,7 +139,7 @@ Module TryFrom.
   Class Trait (Self : Set) {T : Set} : Type := {
     Error : Set;
 
-    try_from : T -> M (Result Self Error);
+    try_from : T -> M (Result.t Self Error);
   }.
 
   Global Instance AssociatedFunction_try_from
@@ -160,7 +160,7 @@ pub trait TryInto<T>: Sized {
 Module TryInto.
   Class Trait (Self : Set) {T : Set} : Type := { 
     Error : Set;
-    try_into : Self -> M (Result T Error);
+    try_into : Self -> M (Result.t T Error);
   }.
 
   Global Instance Method_try_into (Self T : Set) {_ : Trait Self (T := T)} :
@@ -189,7 +189,7 @@ Module Impl_TryInto_for_T.
 
     Definition Self := T.
 
-    Definition try_into : Self -> M (Result U TryFrom.Error) :=
+    Definition try_into : Self -> M (Result.t U TryFrom.Error) :=
       TryFrom.try_from.
 
     Global Instance Method_try_into : Notations.Dot "try_into" := {

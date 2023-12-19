@@ -61,16 +61,15 @@ Definition double_first
     M.read
       (let* α0 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
         M.read r in
-      let* α1 : _ := M.read "unimplemented parent_kind" in
-      let* α2 :
+      let* α1 :
           core.result.Result.t
             (core.option.Option.t i32.t)
             core.num.error.ParseIntError.t :=
         M.call
           ((core.result.Result.t i32.t core.num.error.ParseIntError.t)::["map"]
             α0
-            α1) in
-      M.alloc α2) in
+            "unimplemented parent_kind") in
+      M.alloc α1) in
   let* α2 :
       core.result.Result.t
         (core.option.Option.t i32.t)

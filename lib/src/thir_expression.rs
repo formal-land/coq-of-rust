@@ -218,7 +218,7 @@ fn compile_expr_kind<'a>(
             }
         }
         thir::ExprKind::Call { fun, args, .. } => {
-            let func = Box::new(compile_expr(env, thir, fun));
+            let func = Box::new(compile_expr(env, thir, fun).read());
             let args = args
                 .iter()
                 .map(|arg| compile_expr(env, thir, arg).read())
@@ -636,6 +636,7 @@ fn compile_expr_kind<'a>(
                         ExprKind::Message("unimplemented parent_kind".to_string())
                     }
                 }
+                .alloc(Some(ty))
             }
             _ => {
                 let error_message = "Expected a function name";

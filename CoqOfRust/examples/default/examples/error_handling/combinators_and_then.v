@@ -189,9 +189,10 @@ Definition cookable_v2
   let* α0 : combinators_and_then.Food.t := M.read food in
   let* α1 : core.option.Option.t combinators_and_then.Food.t :=
     M.call (combinators_and_then.have_recipe α0) in
-  let* α2 : _ := M.read combinators_and_then.have_ingredients in
   M.call
-    ((core.option.Option.t combinators_and_then.Food.t)::["and_then"] α1 α2).
+    ((core.option.Option.t combinators_and_then.Food.t)::["and_then"]
+      α1
+      combinators_and_then.have_ingredients).
 
 (*
 fn eat(food: Food, day: Day) {
