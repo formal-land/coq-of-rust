@@ -1,6 +1,7 @@
 Require Import CoqOfRust.lib.lib.
 
 Require Import CoqOfRust.core.alloc.
+Require Import CoqOfRust.core.cmp.
 (* Require Import CoqOfRust._std.iter. *)
 Require Import CoqOfRust._std.ops.
 
@@ -27,10 +28,10 @@ Module DrainFilter.
   Parameter t : forall (T F A : Set), Set.
 End DrainFilter.
 Definition DrainFilter (T F : Set) (A : option Set)
-  `{Allocator.Trait (defaultType A Global)} 
+  `{Allocator.Trait (defaultType A alloc.Global.t)} 
   `{FnMut.Trait F (mut_ref T -> bool)}
   : Set :=
-  DrainFilter.t T F (defaultType A Global).
+  DrainFilter.t T F (defaultType A alloc.Global.t).
   (* 
   let A_type := (defaultType A Global) in
   let traits 
@@ -50,7 +51,7 @@ Module Drain.
   Parameter t : forall (T A : Set), Set.
 End Drain.
 Definition Drain (T : Set) (A : option Set) : Set :=
-  Drain.t T (defaultType A Global).
+  Drain.t T (defaultType A alloc.Global.t).
   (* 
   let A_type := (defaultType A Global) in
   let traits 
@@ -70,7 +71,8 @@ Module into_iter.
   Module IntoIter.
     Parameter t : forall (T A : Set), Set.
   End IntoIter.
-  Definition IntoIter (T : Set) (A : option Set) := IntoIter.t T (defaultType A Global).
+  Definition IntoIter (T : Set) (A : option Set) :=
+    IntoIter.t T (defaultType A alloc.Global.t).
     (* 
     let A_type := (defaultType A Global) in
     let traits 
@@ -92,7 +94,8 @@ where
 Module Splice.
   Parameter t : forall (I A : Set), Set.
 End Splice.
-Definition Splice (I : Set) (A : option Set) := Splice.t I (defaultType A Global).
+Definition Splice (I : Set) (A : option Set) :=
+  Splice.t I (defaultType A alloc.Global.t).
 
 (* BUGGED: same as above *)
 (* 
@@ -105,7 +108,7 @@ Module Vec.
   Parameter t : forall (T A : Set), Set.
 
   Module Default.
-    Definition A : Set := Global.
+    Definition A : Set := alloc.Global.t.
   End Default.
 End Vec.
 Definition Vec := Vec.t.
@@ -121,7 +124,7 @@ Module Impl_Vec.
 Section Impl_Vec.
   Context {T : Set}.
 
-  Definition Self : Set := Vec T Global.
+  Definition Self : Set := Vec T alloc.Global.t.
 
   Parameter new : M Self.
 
@@ -136,5 +139,14 @@ Section Impl_Vec.
     Notations.Dot "push" := {
     Notations.dot := push;
   }.
+
+  Global Instance I_Default {ℋ_0 : default.Default.Trait T} :
+    default.Default.Trait Self.
+  Admitted.
+
+  Global Instance I_PartialEq {U : Set}
+      {ℋ_0 : cmp.PartialEq.Trait T (Rhs := U)} :
+    cmp.PartialEq.Trait Self (Rhs := Vec.t U alloc.Global.t).
+  Admitted.
 End Impl_Vec.
 End Impl_Vec.

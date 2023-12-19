@@ -185,40 +185,6 @@ Section Impl_core_marker_Copy_for_mother_AccountId_t.
 End Impl_core_marker_Copy_for_mother_AccountId_t.
 End Impl_core_marker_Copy_for_mother_AccountId_t.
 
-Module  Impl_core_marker_StructuralEq_for_mother_AccountId_t.
-Section Impl_core_marker_StructuralEq_for_mother_AccountId_t.
-  Ltac Self := exact mother.AccountId.t.
-  
-  Global Instance ℐ : core.marker.StructuralEq.Trait ltac:(Self) := {
-  }.
-End Impl_core_marker_StructuralEq_for_mother_AccountId_t.
-End Impl_core_marker_StructuralEq_for_mother_AccountId_t.
-
-Module  Impl_core_cmp_Eq_for_mother_AccountId_t.
-Section Impl_core_cmp_Eq_for_mother_AccountId_t.
-  Ltac Self := exact mother.AccountId.t.
-  
-  (*
-  Eq
-  *)
-  Definition assert_receiver_is_total_eq (self : ref ltac:(Self)) : M unit :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
-    let* _ : M.Val unit := M.alloc tt in
-    let* α0 : M.Val unit := M.alloc tt in
-    M.read α0.
-  
-  Global Instance AssociatedFunction_assert_receiver_is_total_eq :
-    Notations.DoubleColon ltac:(Self) "assert_receiver_is_total_eq" := {
-    Notations.double_colon := assert_receiver_is_total_eq;
-  }.
-  
-  Global Instance ℐ : core.cmp.Eq.Required.Trait ltac:(Self) := {
-    core.cmp.Eq.assert_receiver_is_total_eq :=
-      Datatypes.Some assert_receiver_is_total_eq;
-  }.
-End Impl_core_cmp_Eq_for_mother_AccountId_t.
-End Impl_core_cmp_Eq_for_mother_AccountId_t.
-
 Module  Impl_core_marker_StructuralPartialEq_for_mother_AccountId_t.
 Section Impl_core_marker_StructuralPartialEq_for_mother_AccountId_t.
   Ltac Self := exact mother.AccountId.t.
@@ -261,38 +227,39 @@ Section Impl_core_cmp_PartialEq_for_mother_AccountId_t.
 End Impl_core_cmp_PartialEq_for_mother_AccountId_t.
 End Impl_core_cmp_PartialEq_for_mother_AccountId_t.
 
-Module  Impl_core_fmt_Debug_for_mother_AccountId_t.
-Section Impl_core_fmt_Debug_for_mother_AccountId_t.
+Module  Impl_core_marker_StructuralEq_for_mother_AccountId_t.
+Section Impl_core_marker_StructuralEq_for_mother_AccountId_t.
+  Ltac Self := exact mother.AccountId.t.
+  
+  Global Instance ℐ : core.marker.StructuralEq.Trait ltac:(Self) := {
+  }.
+End Impl_core_marker_StructuralEq_for_mother_AccountId_t.
+End Impl_core_marker_StructuralEq_for_mother_AccountId_t.
+
+Module  Impl_core_cmp_Eq_for_mother_AccountId_t.
+Section Impl_core_cmp_Eq_for_mother_AccountId_t.
   Ltac Self := exact mother.AccountId.t.
   
   (*
-  Debug
+  Eq
   *)
-  Definition fmt
-      (self : ref ltac:(Self))
-      (f : mut_ref core.fmt.Formatter.t)
-      : M ltac:(core.fmt.Result) :=
+  Definition assert_receiver_is_total_eq (self : ref ltac:(Self)) : M unit :=
     let* self : M.Val (ref ltac:(Self)) := M.alloc self in
-    let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
-    let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
-    let* α1 : ref str.t := M.read (mk_str "AccountId") in
-    let* α2 : ref mother.AccountId.t := M.read self in
-    let* α3 : M.Val (ref u128.t) := M.alloc (borrow (deref α2).["0"]) in
-    let* α4 : M.Val (ref (ref u128.t)) := M.alloc (borrow α3) in
-    let* α5 : ref type not implemented :=
-      M.read (pointer_coercion "Unsize" α4) in
-    M.call (core.fmt.Formatter.t::["debug_tuple_field1_finish"] α0 α1 α5).
+    let* _ : M.Val unit := M.alloc tt in
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0.
   
-  Global Instance AssociatedFunction_fmt :
-    Notations.DoubleColon ltac:(Self) "fmt" := {
-    Notations.double_colon := fmt;
+  Global Instance AssociatedFunction_assert_receiver_is_total_eq :
+    Notations.DoubleColon ltac:(Self) "assert_receiver_is_total_eq" := {
+    Notations.double_colon := assert_receiver_is_total_eq;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
-    core.fmt.Debug.fmt := fmt;
+  Global Instance ℐ : core.cmp.Eq.Required.Trait ltac:(Self) := {
+    core.cmp.Eq.assert_receiver_is_total_eq :=
+      Datatypes.Some assert_receiver_is_total_eq;
   }.
-End Impl_core_fmt_Debug_for_mother_AccountId_t.
-End Impl_core_fmt_Debug_for_mother_AccountId_t.
+End Impl_core_cmp_Eq_for_mother_AccountId_t.
+End Impl_core_cmp_Eq_for_mother_AccountId_t.
 
 Ltac Balance := exact u128.t.
 
@@ -315,47 +282,6 @@ Section Env.
   }.
 End Env.
 End Env.
-
-Module  Impl_mother_Env_t.
-Section Impl_mother_Env_t.
-  Ltac Self := exact mother.Env.t.
-  
-  (*
-      fn caller(&self) -> AccountId {
-          self.caller
-      }
-  *)
-  Definition caller (self : ref ltac:(Self)) : M mother.AccountId.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
-    let* α0 : ref mother.Env.t := M.read self in
-    M.read (deref α0).["caller"].
-  
-  Global Instance AssociatedFunction_caller :
-    Notations.DoubleColon ltac:(Self) "caller" := {
-    Notations.double_colon := caller;
-  }.
-  
-  (*
-      fn emit_event(&self, _event: Event) {
-          unimplemented!()
-      }
-  *)
-  Definition emit_event
-      (self : ref ltac:(Self))
-      (_event : mother.Event.t)
-      : M unit :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
-    let* _event : M.Val mother.Event.t := M.alloc _event in
-    let* α0 : ref str.t := M.read (mk_str "not implemented") in
-    let* α1 : never.t := M.call (core.panicking.panic α0) in
-    never_to_any α1.
-  
-  Global Instance AssociatedFunction_emit_event :
-    Notations.DoubleColon ltac:(Self) "emit_event" := {
-    Notations.double_colon := emit_event;
-  }.
-End Impl_mother_Env_t.
-End Impl_mother_Env_t.
 
 Module  Bids.
 Section Bids.
@@ -494,56 +420,6 @@ Section Impl_core_cmp_Eq_for_mother_Bids_t.
 End Impl_core_cmp_Eq_for_mother_Bids_t.
 End Impl_core_cmp_Eq_for_mother_Bids_t.
 
-Module  Impl_core_fmt_Debug_for_mother_Bids_t.
-Section Impl_core_fmt_Debug_for_mother_Bids_t.
-  Ltac Self := exact mother.Bids.t.
-  
-  (*
-  Debug
-  *)
-  Definition fmt
-      (self : ref ltac:(Self))
-      (f : mut_ref core.fmt.Formatter.t)
-      : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
-    let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
-    let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
-    let* α1 : ref str.t := M.read (mk_str "Bids") in
-    let* α2 : ref mother.Bids.t := M.read self in
-    let* α3 :
-        M.Val
-          (ref
-            (alloc.vec.Vec.t
-              (alloc.vec.Vec.t
-                (core.option.Option.t (mother.AccountId.t * u128.t))
-                alloc.alloc.Global.t)
-              alloc.alloc.Global.t)) :=
-      M.alloc (borrow (deref α2).["0"]) in
-    let* α4 :
-        M.Val
-          (ref
-            (ref
-              (alloc.vec.Vec.t
-                (alloc.vec.Vec.t
-                  (core.option.Option.t (mother.AccountId.t * u128.t))
-                  alloc.alloc.Global.t)
-                alloc.alloc.Global.t))) :=
-      M.alloc (borrow α3) in
-    let* α5 : ref type not implemented :=
-      M.read (pointer_coercion "Unsize" α4) in
-    M.call (core.fmt.Formatter.t::["debug_tuple_field1_finish"] α0 α1 α5).
-  
-  Global Instance AssociatedFunction_fmt :
-    Notations.DoubleColon ltac:(Self) "fmt" := {
-    Notations.double_colon := fmt;
-  }.
-  
-  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
-    core.fmt.Debug.fmt := fmt;
-  }.
-End Impl_core_fmt_Debug_for_mother_Bids_t.
-End Impl_core_fmt_Debug_for_mother_Bids_t.
-
 Module  Impl_core_clone_Clone_for_mother_Bids_t.
 Section Impl_core_clone_Clone_for_mother_Bids_t.
   Ltac Self := exact mother.Bids.t.
@@ -671,47 +547,6 @@ Section Impl_core_cmp_Eq_for_mother_Outline_t.
   }.
 End Impl_core_cmp_Eq_for_mother_Outline_t.
 End Impl_core_cmp_Eq_for_mother_Outline_t.
-
-Module  Impl_core_fmt_Debug_for_mother_Outline_t.
-Section Impl_core_fmt_Debug_for_mother_Outline_t.
-  Ltac Self := exact mother.Outline.t.
-  
-  (*
-  Debug
-  *)
-  Definition fmt
-      (self : ref ltac:(Self))
-      (f : mut_ref core.fmt.Formatter.t)
-      : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
-    let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
-    let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
-    let* α1 : ref mother.Outline.t := M.read self in
-    let* α2 : M.Val (ref str.t) :=
-      match α1 with
-      | mother.Outline.NoWinner  =>
-        let* α0 : ref str.t := M.read (mk_str "NoWinner") in
-        M.alloc α0
-      | mother.Outline.WinnerDetected  =>
-        let* α0 : ref str.t := M.read (mk_str "WinnerDetected") in
-        M.alloc α0
-      | mother.Outline.PayoutCompleted  =>
-        let* α0 : ref str.t := M.read (mk_str "PayoutCompleted") in
-        M.alloc α0
-      end in
-    let* α3 : ref str.t := M.read α2 in
-    M.call (core.fmt.Formatter.t::["write_str"] α0 α3).
-  
-  Global Instance AssociatedFunction_fmt :
-    Notations.DoubleColon ltac:(Self) "fmt" := {
-    Notations.double_colon := fmt;
-  }.
-  
-  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
-    core.fmt.Debug.fmt := fmt;
-  }.
-End Impl_core_fmt_Debug_for_mother_Outline_t.
-End Impl_core_fmt_Debug_for_mother_Outline_t.
 
 Module  Impl_core_clone_Clone_for_mother_Outline_t.
 Section Impl_core_clone_Clone_for_mother_Outline_t.
@@ -876,82 +711,6 @@ Section Impl_core_cmp_Eq_for_mother_Status_t.
 End Impl_core_cmp_Eq_for_mother_Status_t.
 End Impl_core_cmp_Eq_for_mother_Status_t.
 
-Module  Impl_core_fmt_Debug_for_mother_Status_t.
-Section Impl_core_fmt_Debug_for_mother_Status_t.
-  Ltac Self := exact mother.Status.t.
-  
-  (*
-  Debug
-  *)
-  Definition fmt
-      (self : ref ltac:(Self))
-      (f : mut_ref core.fmt.Formatter.t)
-      : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
-    let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
-    let* α0 : ref mother.Status.t := M.read self in
-    let* α1 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=
-      match α0 with
-      | mother.Status.NotStarted  =>
-        let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
-        let* α1 : ref str.t := M.read (mk_str "NotStarted") in
-        let* α2 : core.result.Result.t unit core.fmt.Error.t :=
-          M.call (core.fmt.Formatter.t::["write_str"] α0 α1) in
-        M.alloc α2
-      | mother.Status.OpeningPeriod  =>
-        let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
-        let* α1 : ref str.t := M.read (mk_str "OpeningPeriod") in
-        let* α2 : core.result.Result.t unit core.fmt.Error.t :=
-          M.call (core.fmt.Formatter.t::["write_str"] α0 α1) in
-        M.alloc α2
-      | mother.Status.EndingPeriod __self_0 =>
-        let* __self_0 := M.alloc __self_0 in
-        let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
-        let* α1 : ref str.t := M.read (mk_str "EndingPeriod") in
-        let* α2 : M.Val (ref (ref u32.t)) := M.alloc (borrow __self_0) in
-        let* α3 : ref type not implemented :=
-          M.read (pointer_coercion "Unsize" α2) in
-        let* α4 : core.result.Result.t unit core.fmt.Error.t :=
-          M.call
-            (core.fmt.Formatter.t::["debug_tuple_field1_finish"] α0 α1 α3) in
-        M.alloc α4
-      | mother.Status.Ended __self_0 =>
-        let* __self_0 := M.alloc __self_0 in
-        let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
-        let* α1 : ref str.t := M.read (mk_str "Ended") in
-        let* α2 : M.Val (ref (ref mother.Outline.t)) :=
-          M.alloc (borrow __self_0) in
-        let* α3 : ref type not implemented :=
-          M.read (pointer_coercion "Unsize" α2) in
-        let* α4 : core.result.Result.t unit core.fmt.Error.t :=
-          M.call
-            (core.fmt.Formatter.t::["debug_tuple_field1_finish"] α0 α1 α3) in
-        M.alloc α4
-      | mother.Status.RfDelay __self_0 =>
-        let* __self_0 := M.alloc __self_0 in
-        let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
-        let* α1 : ref str.t := M.read (mk_str "RfDelay") in
-        let* α2 : M.Val (ref (ref u32.t)) := M.alloc (borrow __self_0) in
-        let* α3 : ref type not implemented :=
-          M.read (pointer_coercion "Unsize" α2) in
-        let* α4 : core.result.Result.t unit core.fmt.Error.t :=
-          M.call
-            (core.fmt.Formatter.t::["debug_tuple_field1_finish"] α0 α1 α3) in
-        M.alloc α4
-      end in
-    M.read α1.
-  
-  Global Instance AssociatedFunction_fmt :
-    Notations.DoubleColon ltac:(Self) "fmt" := {
-    Notations.double_colon := fmt;
-  }.
-  
-  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
-    core.fmt.Debug.fmt := fmt;
-  }.
-End Impl_core_fmt_Debug_for_mother_Status_t.
-End Impl_core_fmt_Debug_for_mother_Status_t.
-
 Module  Impl_core_clone_Clone_for_mother_Status_t.
 Section Impl_core_clone_Clone_for_mother_Status_t.
   Ltac Self := exact mother.Status.t.
@@ -1068,99 +827,6 @@ Section Auction.
   }.
 End Auction.
 End Auction.
-
-Module  Impl_core_fmt_Debug_for_mother_Auction_t.
-Section Impl_core_fmt_Debug_for_mother_Auction_t.
-  Ltac Self := exact mother.Auction.t.
-  
-  (*
-  Debug
-  *)
-  Definition fmt
-      (self : ref ltac:(Self))
-      (f : mut_ref core.fmt.Formatter.t)
-      : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
-    let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
-    let* names : M.Val (ref (array (ref str.t))) :=
-      let* α0 : ref str.t := M.read (mk_str "subject") in
-      let* α1 : M.Val (ref str.t) := M.alloc α0 in
-      let* α2 : ref str.t := M.read (mk_str "bids") in
-      let* α3 : M.Val (ref str.t) := M.alloc α2 in
-      let* α4 : ref str.t := M.read (mk_str "terms") in
-      let* α5 : M.Val (ref str.t) := M.alloc α4 in
-      let* α6 : ref str.t := M.read (mk_str "status") in
-      let* α7 : M.Val (ref str.t) := M.alloc α6 in
-      let* α8 : ref str.t := M.read (mk_str "finalized") in
-      let* α9 : M.Val (ref str.t) := M.alloc α8 in
-      let* α10 : ref str.t := M.read (mk_str "vector") in
-      let* α11 : M.Val (ref str.t) := M.alloc α10 in
-      let* α12 : M.Val (array (ref str.t)) :=
-        M.alloc [ mk_str "name"; α1; α3; α5; α7; α9; α11 ] in
-      M.alloc (borrow α12) in
-    let* values : M.Val (ref (slice (ref type not implemented))) :=
-      let* α0 : ref mother.Auction.t := M.read self in
-      let* α1 : M.Val (ref alloc.string.String.t) :=
-        M.alloc (borrow (deref α0).["name"]) in
-      let* α2 : ref mother.Auction.t := M.read self in
-      let* α3 : M.Val (ref (array u8.t)) :=
-        M.alloc (borrow (deref α2).["subject"]) in
-      let* α4 : ref mother.Auction.t := M.read self in
-      let* α5 : M.Val (ref mother.Bids.t) :=
-        M.alloc (borrow (deref α4).["bids"]) in
-      let* α6 : ref mother.Auction.t := M.read self in
-      let* α7 : M.Val (ref (array u32.t)) :=
-        M.alloc (borrow (deref α6).["terms"]) in
-      let* α8 : ref mother.Auction.t := M.read self in
-      let* α9 : M.Val (ref mother.Status.t) :=
-        M.alloc (borrow (deref α8).["status"]) in
-      let* α10 : ref mother.Auction.t := M.read self in
-      let* α11 : M.Val (ref bool.t) :=
-        M.alloc (borrow (deref α10).["finalized"]) in
-      let* α12 : ref mother.Auction.t := M.read self in
-      let* α13 : M.Val (ref (alloc.vec.Vec.t u8.t alloc.alloc.Global.t)) :=
-        M.alloc (borrow (deref α12).["vector"]) in
-      let* α14 :
-          M.Val (ref (ref (alloc.vec.Vec.t u8.t alloc.alloc.Global.t))) :=
-        M.alloc (borrow α13) in
-      let* α15 : M.Val (array (ref type not implemented)) :=
-        M.alloc
-          [
-            pointer_coercion "Unsize" α1;
-            pointer_coercion "Unsize" α3;
-            pointer_coercion "Unsize" α5;
-            pointer_coercion "Unsize" α7;
-            pointer_coercion "Unsize" α9;
-            pointer_coercion "Unsize" α11;
-            pointer_coercion "Unsize" α14
-          ] in
-      let* α16 : M.Val (ref (array (ref type not implemented))) :=
-        M.alloc (borrow α15) in
-      M.copy (pointer_coercion "Unsize" α16) in
-    let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
-    let* α1 : ref str.t := M.read (mk_str "Auction") in
-    let* α2 : ref (array (ref str.t)) := M.read names in
-    let* α3 : M.Val (ref (array (ref str.t))) := M.alloc α2 in
-    let* α4 : ref (slice (ref str.t)) :=
-      M.read (pointer_coercion "Unsize" α3) in
-    let* α5 : ref (slice (ref type not implemented)) := M.read values in
-    let* α6 : core.result.Result.t unit core.fmt.Error.t :=
-      M.call
-        (core.fmt.Formatter.t::["debug_struct_fields_finish"] α0 α1 α4 α5) in
-    let* α0 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=
-      M.alloc α6 in
-    M.read α0.
-  
-  Global Instance AssociatedFunction_fmt :
-    Notations.DoubleColon ltac:(Self) "fmt" := {
-    Notations.double_colon := fmt;
-  }.
-  
-  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
-    core.fmt.Debug.fmt := fmt;
-  }.
-End Impl_core_fmt_Debug_for_mother_Auction_t.
-End Impl_core_fmt_Debug_for_mother_Auction_t.
 
 Module  Impl_core_marker_StructuralPartialEq_for_mother_Auction_t.
 Section Impl_core_marker_StructuralPartialEq_for_mother_Auction_t.
@@ -1451,88 +1117,6 @@ Module Failure.
   | Panic.
 End Failure.
 
-Module  Impl_core_fmt_Debug_for_mother_Failure_t.
-Section Impl_core_fmt_Debug_for_mother_Failure_t.
-  Ltac Self := exact mother.Failure.t.
-  
-  (*
-  Debug
-  *)
-  Definition fmt
-      (self : ref ltac:(Self))
-      (f : mut_ref core.fmt.Formatter.t)
-      : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
-    let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
-    let* α0 : ref mother.Failure.t := M.read self in
-    let* α1 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=
-      match α0 with
-      | mother.Failure.Revert __self_0 =>
-        let* __self_0 := M.alloc __self_0 in
-        let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
-        let* α1 : ref str.t := M.read (mk_str "Revert") in
-        let* α2 : M.Val (ref (ref alloc.string.String.t)) :=
-          M.alloc (borrow __self_0) in
-        let* α3 : ref type not implemented :=
-          M.read (pointer_coercion "Unsize" α2) in
-        let* α4 : core.result.Result.t unit core.fmt.Error.t :=
-          M.call
-            (core.fmt.Formatter.t::["debug_tuple_field1_finish"] α0 α1 α3) in
-        M.alloc α4
-      | mother.Failure.Panic  =>
-        let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
-        let* α1 : ref str.t := M.read (mk_str "Panic") in
-        let* α2 : core.result.Result.t unit core.fmt.Error.t :=
-          M.call (core.fmt.Formatter.t::["write_str"] α0 α1) in
-        M.alloc α2
-      end in
-    M.read α1.
-  
-  Global Instance AssociatedFunction_fmt :
-    Notations.DoubleColon ltac:(Self) "fmt" := {
-    Notations.double_colon := fmt;
-  }.
-  
-  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
-    core.fmt.Debug.fmt := fmt;
-  }.
-End Impl_core_fmt_Debug_for_mother_Failure_t.
-End Impl_core_fmt_Debug_for_mother_Failure_t.
-
-Module  Impl_core_marker_StructuralEq_for_mother_Failure_t.
-Section Impl_core_marker_StructuralEq_for_mother_Failure_t.
-  Ltac Self := exact mother.Failure.t.
-  
-  Global Instance ℐ : core.marker.StructuralEq.Trait ltac:(Self) := {
-  }.
-End Impl_core_marker_StructuralEq_for_mother_Failure_t.
-End Impl_core_marker_StructuralEq_for_mother_Failure_t.
-
-Module  Impl_core_cmp_Eq_for_mother_Failure_t.
-Section Impl_core_cmp_Eq_for_mother_Failure_t.
-  Ltac Self := exact mother.Failure.t.
-  
-  (*
-  Eq
-  *)
-  Definition assert_receiver_is_total_eq (self : ref ltac:(Self)) : M unit :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
-    let* _ : M.Val unit := M.alloc tt in
-    let* α0 : M.Val unit := M.alloc tt in
-    M.read α0.
-  
-  Global Instance AssociatedFunction_assert_receiver_is_total_eq :
-    Notations.DoubleColon ltac:(Self) "assert_receiver_is_total_eq" := {
-    Notations.double_colon := assert_receiver_is_total_eq;
-  }.
-  
-  Global Instance ℐ : core.cmp.Eq.Required.Trait ltac:(Self) := {
-    core.cmp.Eq.assert_receiver_is_total_eq :=
-      Datatypes.Some assert_receiver_is_total_eq;
-  }.
-End Impl_core_cmp_Eq_for_mother_Failure_t.
-End Impl_core_cmp_Eq_for_mother_Failure_t.
-
 Module  Impl_core_marker_StructuralPartialEq_for_mother_Failure_t.
 Section Impl_core_marker_StructuralPartialEq_for_mother_Failure_t.
   Ltac Self := exact mother.Failure.t.
@@ -1602,6 +1186,40 @@ Section Impl_core_cmp_PartialEq_for_mother_Failure_t.
 End Impl_core_cmp_PartialEq_for_mother_Failure_t.
 End Impl_core_cmp_PartialEq_for_mother_Failure_t.
 
+Module  Impl_core_marker_StructuralEq_for_mother_Failure_t.
+Section Impl_core_marker_StructuralEq_for_mother_Failure_t.
+  Ltac Self := exact mother.Failure.t.
+  
+  Global Instance ℐ : core.marker.StructuralEq.Trait ltac:(Self) := {
+  }.
+End Impl_core_marker_StructuralEq_for_mother_Failure_t.
+End Impl_core_marker_StructuralEq_for_mother_Failure_t.
+
+Module  Impl_core_cmp_Eq_for_mother_Failure_t.
+Section Impl_core_cmp_Eq_for_mother_Failure_t.
+  Ltac Self := exact mother.Failure.t.
+  
+  (*
+  Eq
+  *)
+  Definition assert_receiver_is_total_eq (self : ref ltac:(Self)) : M unit :=
+    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* _ : M.Val unit := M.alloc tt in
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0.
+  
+  Global Instance AssociatedFunction_assert_receiver_is_total_eq :
+    Notations.DoubleColon ltac:(Self) "assert_receiver_is_total_eq" := {
+    Notations.double_colon := assert_receiver_is_total_eq;
+  }.
+  
+  Global Instance ℐ : core.cmp.Eq.Required.Trait ltac:(Self) := {
+    core.cmp.Eq.assert_receiver_is_total_eq :=
+      Datatypes.Some assert_receiver_is_total_eq;
+  }.
+End Impl_core_cmp_Eq_for_mother_Failure_t.
+End Impl_core_cmp_Eq_for_mother_Failure_t.
+
 Module  AuctionEchoed.
 Section AuctionEchoed.
   Record t : Set := {
@@ -1622,6 +1240,47 @@ Module Event.
   Inductive t : Set :=
   | AuctionEchoed (_ : mother.AuctionEchoed.t).
 End Event.
+
+Module  Impl_mother_Env_t.
+Section Impl_mother_Env_t.
+  Ltac Self := exact mother.Env.t.
+  
+  (*
+      fn caller(&self) -> AccountId {
+          self.caller
+      }
+  *)
+  Definition caller (self : ref ltac:(Self)) : M mother.AccountId.t :=
+    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* α0 : ref mother.Env.t := M.read self in
+    M.read (deref α0).["caller"].
+  
+  Global Instance AssociatedFunction_caller :
+    Notations.DoubleColon ltac:(Self) "caller" := {
+    Notations.double_colon := caller;
+  }.
+  
+  (*
+      fn emit_event(&self, _event: Event) {
+          unimplemented!()
+      }
+  *)
+  Definition emit_event
+      (self : ref ltac:(Self))
+      (_event : mother.Event.t)
+      : M unit :=
+    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* _event : M.Val mother.Event.t := M.alloc _event in
+    let* α0 : ref str.t := M.read (mk_str "not implemented") in
+    let* α1 : never.t := M.call (core.panicking.panic α0) in
+    never_to_any α1.
+  
+  Global Instance AssociatedFunction_emit_event :
+    Notations.DoubleColon ltac:(Self) "emit_event" := {
+    Notations.double_colon := emit_event;
+  }.
+End Impl_mother_Env_t.
+End Impl_mother_Env_t.
 
 Module  Mother.
 Section Mother.
@@ -1886,24 +1545,24 @@ Section Impl_mother_Mother_t.
     let* _message : M.Val alloc.string.String.t := M.alloc _message in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
-        let* α0 : M.Val (array (ref str.t)) :=
-          M.alloc [ mk_str "debug_log: "; mk_str "
-" ] in
-        let* α1 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α0) in
-        let* α2 : ref (slice (ref str.t)) :=
-          M.read (pointer_coercion "Unsize" α1) in
-        let* α3 : core.fmt.rt.Argument.t :=
+        let* α0 : ref str.t := M.read (mk_str "debug_log: ") in
+        let* α1 : ref str.t := M.read (mk_str "
+") in
+        let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
+        let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
+        let* α4 : ref (slice (ref str.t)) :=
+          M.read (pointer_coercion "Unsize" α3) in
+        let* α5 : core.fmt.rt.Argument.t :=
           M.call (core.fmt.rt.Argument.t::["new_display"] (borrow _message)) in
-        let* α4 : M.Val core.fmt.rt.Argument.t := M.alloc α3 in
-        let* α5 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4 ] in
-        let* α6 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-          M.alloc (borrow α5) in
-        let* α7 : ref (slice core.fmt.rt.Argument.t) :=
-          M.read (pointer_coercion "Unsize" α6) in
-        let* α8 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_v1"] α2 α7) in
-        let* α9 : unit := M.call (std.io.stdio._print α8) in
-        M.alloc α9 in
+        let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
+        let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+          M.alloc (borrow α6) in
+        let* α8 : ref (slice core.fmt.rt.Argument.t) :=
+          M.read (pointer_coercion "Unsize" α7) in
+        let* α9 : core.fmt.Arguments.t :=
+          M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
+        let* α10 : unit := M.call (std.io.stdio._print α9) in
+        M.alloc α10 in
       M.alloc tt in
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.

@@ -30,14 +30,15 @@ Section Impl_custom_allocator_CustomAllocator_t.
   *)
   Definition new (init_value : bool.t) : M ltac:(Self) :=
     let* init_value : M.Val bool.t := M.alloc init_value in
-    let* α0 : M.Val (array bool.t) := M.alloc [ init_value ] in
-    let* α1 : M.Val (alloc.boxed.Box.t (array bool.t) alloc.alloc.Global.t) :=
-      M.call ((alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α0) in
-    let* α2 : alloc.boxed.Box.t (slice bool.t) alloc.alloc.Global.t :=
-      M.read (pointer_coercion "Unsize" α1) in
-    let* α3 : alloc.vec.Vec.t bool.t alloc.alloc.Global.t :=
-      M.call ((slice bool.t)::["into_vec"] α2) in
-    M.pure {| custom_allocator.CustomAllocator.value := α3; |}.
+    let* α0 : bool.t := M.read init_value in
+    let* α1 : M.Val (array bool.t) := M.alloc [ α0 ] in
+    let* α2 : M.Val (alloc.boxed.Box.t (array bool.t) alloc.alloc.Global.t) :=
+      M.call ((alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α1) in
+    let* α3 : alloc.boxed.Box.t (slice bool.t) alloc.alloc.Global.t :=
+      M.read (pointer_coercion "Unsize" α2) in
+    let* α4 : alloc.vec.Vec.t bool.t alloc.alloc.Global.t :=
+      M.call ((slice bool.t)::["into_vec"] α3) in
+    M.pure {| custom_allocator.CustomAllocator.value := α4; |}.
   
   Global Instance AssociatedFunction_new :
     Notations.DoubleColon ltac:(Self) "new" := {

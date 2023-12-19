@@ -1,4 +1,5 @@
 Require Import CoqOfRust.lib.lib.
+
 Require CoqOfRust.core.default.
 
 (* ********STRUCTS******** *)
@@ -71,4 +72,8 @@ Module Impl_Option. Section Impl_Option.
   Global Instance AF_unwrap_or : Notations.DoubleColon Self "unwrap_or" := {
     Notations.double_colon := unwrap_or;
   }.
+
+  Global Instance I_Default {ℋ : default.Default.Trait T} :
+    default.Default.Trait (core.option.Option.t T).
+  Admitted.
 End Impl_Option. End Impl_Option.

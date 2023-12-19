@@ -514,7 +514,7 @@ fn compile_expr_kind<'a>(
         thir::ExprKind::Array { fields } => ExprKind::Array {
             elements: fields
                 .iter()
-                .map(|field| compile_expr(env, thir, field))
+                .map(|field| compile_expr(env, thir, field).read())
                 .collect(),
         }
         .alloc(Some(ty)),

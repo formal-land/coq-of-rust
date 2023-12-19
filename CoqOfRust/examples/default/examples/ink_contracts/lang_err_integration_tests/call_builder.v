@@ -203,26 +203,25 @@ Section Impl_call_builder_CallBuilderTest_t.
         let* α0 : call_builder.LangError.t := M.read e in
         M.alloc (core.option.Option.Some α0)
       | core.result.Result.Err _ =>
-        let* α0 : M.Val (array (ref str.t)) :=
-          M.alloc
-            [
-              mk_str
-                "not implemented: No other `LangError` variants exist at the moment."
-            ] in
-        let* α1 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α0) in
-        let* α2 : ref (slice (ref str.t)) :=
-          M.read (pointer_coercion "Unsize" α1) in
-        let* α3 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ ] in
-        let* α4 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-          M.alloc (borrow α3) in
-        let* α5 : ref (slice core.fmt.rt.Argument.t) :=
-          M.read (pointer_coercion "Unsize" α4) in
-        let* α6 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_v1"] α2 α5) in
-        let* α7 : never.t := M.call (core.panicking.panic_fmt α6) in
-        let* α8 : core.option.Option.t call_builder.LangError.t :=
-          never_to_any α7 in
-        M.alloc α8
+        let* α0 : ref str.t :=
+          M.read
+            (mk_str
+              "not implemented: No other `LangError` variants exist at the moment.") in
+        let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
+        let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
+        let* α3 : ref (slice (ref str.t)) :=
+          M.read (pointer_coercion "Unsize" α2) in
+        let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ ] in
+        let* α5 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+          M.alloc (borrow α4) in
+        let* α6 : ref (slice core.fmt.rt.Argument.t) :=
+          M.read (pointer_coercion "Unsize" α5) in
+        let* α7 : core.fmt.Arguments.t :=
+          M.call (core.fmt.Arguments.t::["new_v1"] α3 α6) in
+        let* α8 : never.t := M.call (core.panicking.panic_fmt α7) in
+        let* α9 : core.option.Option.t call_builder.LangError.t :=
+          never_to_any α8 in
+        M.alloc α9
       end in
     M.read α0.
   

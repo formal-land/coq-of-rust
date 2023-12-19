@@ -146,36 +146,6 @@ Section Impl_core_marker_Copy_for_mother_AccountId_t.
 End Impl_core_marker_Copy_for_mother_AccountId_t.
 End Impl_core_marker_Copy_for_mother_AccountId_t.
 
-Module  Impl_core_marker_StructuralEq_for_mother_AccountId_t.
-Section Impl_core_marker_StructuralEq_for_mother_AccountId_t.
-  Ltac Self := exact mother.AccountId.t.
-  
-  Global Instance ℐ : core.marker.StructuralEq.Trait ltac:(Self) := {
-  }.
-End Impl_core_marker_StructuralEq_for_mother_AccountId_t.
-End Impl_core_marker_StructuralEq_for_mother_AccountId_t.
-
-Module  Impl_core_cmp_Eq_for_mother_AccountId_t.
-Section Impl_core_cmp_Eq_for_mother_AccountId_t.
-  Ltac Self := exact mother.AccountId.t.
-  
-  (*
-  Eq
-  *)
-  Parameter assert_receiver_is_total_eq : (ref ltac:(Self)) -> M unit.
-  
-  Global Instance AssociatedFunction_assert_receiver_is_total_eq :
-    Notations.DoubleColon ltac:(Self) "assert_receiver_is_total_eq" := {
-    Notations.double_colon := assert_receiver_is_total_eq;
-  }.
-  
-  Global Instance ℐ : core.cmp.Eq.Required.Trait ltac:(Self) := {
-    core.cmp.Eq.assert_receiver_is_total_eq :=
-      Datatypes.Some assert_receiver_is_total_eq;
-  }.
-End Impl_core_cmp_Eq_for_mother_AccountId_t.
-End Impl_core_cmp_Eq_for_mother_AccountId_t.
-
 Module  Impl_core_marker_StructuralPartialEq_for_mother_AccountId_t.
 Section Impl_core_marker_StructuralPartialEq_for_mother_AccountId_t.
   Ltac Self := exact mother.AccountId.t.
@@ -208,28 +178,35 @@ Section Impl_core_cmp_PartialEq_for_mother_AccountId_t.
 End Impl_core_cmp_PartialEq_for_mother_AccountId_t.
 End Impl_core_cmp_PartialEq_for_mother_AccountId_t.
 
-Module  Impl_core_fmt_Debug_for_mother_AccountId_t.
-Section Impl_core_fmt_Debug_for_mother_AccountId_t.
+Module  Impl_core_marker_StructuralEq_for_mother_AccountId_t.
+Section Impl_core_marker_StructuralEq_for_mother_AccountId_t.
+  Ltac Self := exact mother.AccountId.t.
+  
+  Global Instance ℐ : core.marker.StructuralEq.Trait ltac:(Self) := {
+  }.
+End Impl_core_marker_StructuralEq_for_mother_AccountId_t.
+End Impl_core_marker_StructuralEq_for_mother_AccountId_t.
+
+Module  Impl_core_cmp_Eq_for_mother_AccountId_t.
+Section Impl_core_cmp_Eq_for_mother_AccountId_t.
   Ltac Self := exact mother.AccountId.t.
   
   (*
-  Debug
+  Eq
   *)
-  Parameter fmt :
-      (ref ltac:(Self)) ->
-        (mut_ref core.fmt.Formatter.t) ->
-        M ltac:(core.fmt.Result).
+  Parameter assert_receiver_is_total_eq : (ref ltac:(Self)) -> M unit.
   
-  Global Instance AssociatedFunction_fmt :
-    Notations.DoubleColon ltac:(Self) "fmt" := {
-    Notations.double_colon := fmt;
+  Global Instance AssociatedFunction_assert_receiver_is_total_eq :
+    Notations.DoubleColon ltac:(Self) "assert_receiver_is_total_eq" := {
+    Notations.double_colon := assert_receiver_is_total_eq;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
-    core.fmt.Debug.fmt := fmt;
+  Global Instance ℐ : core.cmp.Eq.Required.Trait ltac:(Self) := {
+    core.cmp.Eq.assert_receiver_is_total_eq :=
+      Datatypes.Some assert_receiver_is_total_eq;
   }.
-End Impl_core_fmt_Debug_for_mother_AccountId_t.
-End Impl_core_fmt_Debug_for_mother_AccountId_t.
+End Impl_core_cmp_Eq_for_mother_AccountId_t.
+End Impl_core_cmp_Eq_for_mother_AccountId_t.
 
 Ltac Balance := exact u128.t.
 
@@ -252,36 +229,6 @@ Section Env.
   }.
 End Env.
 End Env.
-
-Module  Impl_mother_Env_t.
-Section Impl_mother_Env_t.
-  Ltac Self := exact mother.Env.t.
-  
-  (*
-      fn caller(&self) -> AccountId {
-          self.caller
-      }
-  *)
-  Parameter caller : (ref ltac:(Self)) -> M mother.AccountId.t.
-  
-  Global Instance AssociatedFunction_caller :
-    Notations.DoubleColon ltac:(Self) "caller" := {
-    Notations.double_colon := caller;
-  }.
-  
-  (*
-      fn emit_event(&self, _event: Event) {
-          unimplemented!()
-      }
-  *)
-  Parameter emit_event : (ref ltac:(Self)) -> mother.Event.t -> M unit.
-  
-  Global Instance AssociatedFunction_emit_event :
-    Notations.DoubleColon ltac:(Self) "emit_event" := {
-    Notations.double_colon := emit_event;
-  }.
-End Impl_mother_Env_t.
-End Impl_mother_Env_t.
 
 Module  Bids.
 Section Bids.
@@ -382,29 +329,6 @@ Section Impl_core_cmp_Eq_for_mother_Bids_t.
 End Impl_core_cmp_Eq_for_mother_Bids_t.
 End Impl_core_cmp_Eq_for_mother_Bids_t.
 
-Module  Impl_core_fmt_Debug_for_mother_Bids_t.
-Section Impl_core_fmt_Debug_for_mother_Bids_t.
-  Ltac Self := exact mother.Bids.t.
-  
-  (*
-  Debug
-  *)
-  Parameter fmt :
-      (ref ltac:(Self)) ->
-        (mut_ref core.fmt.Formatter.t) ->
-        M ltac:(core.fmt.Result).
-  
-  Global Instance AssociatedFunction_fmt :
-    Notations.DoubleColon ltac:(Self) "fmt" := {
-    Notations.double_colon := fmt;
-  }.
-  
-  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
-    core.fmt.Debug.fmt := fmt;
-  }.
-End Impl_core_fmt_Debug_for_mother_Bids_t.
-End Impl_core_fmt_Debug_for_mother_Bids_t.
-
 Module  Impl_core_clone_Clone_for_mother_Bids_t.
 Section Impl_core_clone_Clone_for_mother_Bids_t.
   Ltac Self := exact mother.Bids.t.
@@ -494,29 +418,6 @@ Section Impl_core_cmp_Eq_for_mother_Outline_t.
   }.
 End Impl_core_cmp_Eq_for_mother_Outline_t.
 End Impl_core_cmp_Eq_for_mother_Outline_t.
-
-Module  Impl_core_fmt_Debug_for_mother_Outline_t.
-Section Impl_core_fmt_Debug_for_mother_Outline_t.
-  Ltac Self := exact mother.Outline.t.
-  
-  (*
-  Debug
-  *)
-  Parameter fmt :
-      (ref ltac:(Self)) ->
-        (mut_ref core.fmt.Formatter.t) ->
-        M ltac:(core.fmt.Result).
-  
-  Global Instance AssociatedFunction_fmt :
-    Notations.DoubleColon ltac:(Self) "fmt" := {
-    Notations.double_colon := fmt;
-  }.
-  
-  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
-    core.fmt.Debug.fmt := fmt;
-  }.
-End Impl_core_fmt_Debug_for_mother_Outline_t.
-End Impl_core_fmt_Debug_for_mother_Outline_t.
 
 Module  Impl_core_clone_Clone_for_mother_Outline_t.
 Section Impl_core_clone_Clone_for_mother_Outline_t.
@@ -610,29 +511,6 @@ Section Impl_core_cmp_Eq_for_mother_Status_t.
 End Impl_core_cmp_Eq_for_mother_Status_t.
 End Impl_core_cmp_Eq_for_mother_Status_t.
 
-Module  Impl_core_fmt_Debug_for_mother_Status_t.
-Section Impl_core_fmt_Debug_for_mother_Status_t.
-  Ltac Self := exact mother.Status.t.
-  
-  (*
-  Debug
-  *)
-  Parameter fmt :
-      (ref ltac:(Self)) ->
-        (mut_ref core.fmt.Formatter.t) ->
-        M ltac:(core.fmt.Result).
-  
-  Global Instance AssociatedFunction_fmt :
-    Notations.DoubleColon ltac:(Self) "fmt" := {
-    Notations.double_colon := fmt;
-  }.
-  
-  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
-    core.fmt.Debug.fmt := fmt;
-  }.
-End Impl_core_fmt_Debug_for_mother_Status_t.
-End Impl_core_fmt_Debug_for_mother_Status_t.
-
 Module  Impl_core_clone_Clone_for_mother_Status_t.
 Section Impl_core_clone_Clone_for_mother_Status_t.
   Ltac Self := exact mother.Status.t.
@@ -715,29 +593,6 @@ Section Auction.
   }.
 End Auction.
 End Auction.
-
-Module  Impl_core_fmt_Debug_for_mother_Auction_t.
-Section Impl_core_fmt_Debug_for_mother_Auction_t.
-  Ltac Self := exact mother.Auction.t.
-  
-  (*
-  Debug
-  *)
-  Parameter fmt :
-      (ref ltac:(Self)) ->
-        (mut_ref core.fmt.Formatter.t) ->
-        M ltac:(core.fmt.Result).
-  
-  Global Instance AssociatedFunction_fmt :
-    Notations.DoubleColon ltac:(Self) "fmt" := {
-    Notations.double_colon := fmt;
-  }.
-  
-  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
-    core.fmt.Debug.fmt := fmt;
-  }.
-End Impl_core_fmt_Debug_for_mother_Auction_t.
-End Impl_core_fmt_Debug_for_mother_Auction_t.
 
 Module  Impl_core_marker_StructuralPartialEq_for_mother_Auction_t.
 Section Impl_core_marker_StructuralPartialEq_for_mother_Auction_t.
@@ -858,59 +713,6 @@ Module Failure.
   | Panic.
 End Failure.
 
-Module  Impl_core_fmt_Debug_for_mother_Failure_t.
-Section Impl_core_fmt_Debug_for_mother_Failure_t.
-  Ltac Self := exact mother.Failure.t.
-  
-  (*
-  Debug
-  *)
-  Parameter fmt :
-      (ref ltac:(Self)) ->
-        (mut_ref core.fmt.Formatter.t) ->
-        M ltac:(core.fmt.Result).
-  
-  Global Instance AssociatedFunction_fmt :
-    Notations.DoubleColon ltac:(Self) "fmt" := {
-    Notations.double_colon := fmt;
-  }.
-  
-  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
-    core.fmt.Debug.fmt := fmt;
-  }.
-End Impl_core_fmt_Debug_for_mother_Failure_t.
-End Impl_core_fmt_Debug_for_mother_Failure_t.
-
-Module  Impl_core_marker_StructuralEq_for_mother_Failure_t.
-Section Impl_core_marker_StructuralEq_for_mother_Failure_t.
-  Ltac Self := exact mother.Failure.t.
-  
-  Global Instance ℐ : core.marker.StructuralEq.Trait ltac:(Self) := {
-  }.
-End Impl_core_marker_StructuralEq_for_mother_Failure_t.
-End Impl_core_marker_StructuralEq_for_mother_Failure_t.
-
-Module  Impl_core_cmp_Eq_for_mother_Failure_t.
-Section Impl_core_cmp_Eq_for_mother_Failure_t.
-  Ltac Self := exact mother.Failure.t.
-  
-  (*
-  Eq
-  *)
-  Parameter assert_receiver_is_total_eq : (ref ltac:(Self)) -> M unit.
-  
-  Global Instance AssociatedFunction_assert_receiver_is_total_eq :
-    Notations.DoubleColon ltac:(Self) "assert_receiver_is_total_eq" := {
-    Notations.double_colon := assert_receiver_is_total_eq;
-  }.
-  
-  Global Instance ℐ : core.cmp.Eq.Required.Trait ltac:(Self) := {
-    core.cmp.Eq.assert_receiver_is_total_eq :=
-      Datatypes.Some assert_receiver_is_total_eq;
-  }.
-End Impl_core_cmp_Eq_for_mother_Failure_t.
-End Impl_core_cmp_Eq_for_mother_Failure_t.
-
 Module  Impl_core_marker_StructuralPartialEq_for_mother_Failure_t.
 Section Impl_core_marker_StructuralPartialEq_for_mother_Failure_t.
   Ltac Self := exact mother.Failure.t.
@@ -943,6 +745,36 @@ Section Impl_core_cmp_PartialEq_for_mother_Failure_t.
 End Impl_core_cmp_PartialEq_for_mother_Failure_t.
 End Impl_core_cmp_PartialEq_for_mother_Failure_t.
 
+Module  Impl_core_marker_StructuralEq_for_mother_Failure_t.
+Section Impl_core_marker_StructuralEq_for_mother_Failure_t.
+  Ltac Self := exact mother.Failure.t.
+  
+  Global Instance ℐ : core.marker.StructuralEq.Trait ltac:(Self) := {
+  }.
+End Impl_core_marker_StructuralEq_for_mother_Failure_t.
+End Impl_core_marker_StructuralEq_for_mother_Failure_t.
+
+Module  Impl_core_cmp_Eq_for_mother_Failure_t.
+Section Impl_core_cmp_Eq_for_mother_Failure_t.
+  Ltac Self := exact mother.Failure.t.
+  
+  (*
+  Eq
+  *)
+  Parameter assert_receiver_is_total_eq : (ref ltac:(Self)) -> M unit.
+  
+  Global Instance AssociatedFunction_assert_receiver_is_total_eq :
+    Notations.DoubleColon ltac:(Self) "assert_receiver_is_total_eq" := {
+    Notations.double_colon := assert_receiver_is_total_eq;
+  }.
+  
+  Global Instance ℐ : core.cmp.Eq.Required.Trait ltac:(Self) := {
+    core.cmp.Eq.assert_receiver_is_total_eq :=
+      Datatypes.Some assert_receiver_is_total_eq;
+  }.
+End Impl_core_cmp_Eq_for_mother_Failure_t.
+End Impl_core_cmp_Eq_for_mother_Failure_t.
+
 Module  AuctionEchoed.
 Section AuctionEchoed.
   Record t : Set := {
@@ -963,6 +795,36 @@ Module Event.
   Inductive t : Set :=
   | AuctionEchoed (_ : mother.AuctionEchoed.t).
 End Event.
+
+Module  Impl_mother_Env_t.
+Section Impl_mother_Env_t.
+  Ltac Self := exact mother.Env.t.
+  
+  (*
+      fn caller(&self) -> AccountId {
+          self.caller
+      }
+  *)
+  Parameter caller : (ref ltac:(Self)) -> M mother.AccountId.t.
+  
+  Global Instance AssociatedFunction_caller :
+    Notations.DoubleColon ltac:(Self) "caller" := {
+    Notations.double_colon := caller;
+  }.
+  
+  (*
+      fn emit_event(&self, _event: Event) {
+          unimplemented!()
+      }
+  *)
+  Parameter emit_event : (ref ltac:(Self)) -> mother.Event.t -> M unit.
+  
+  Global Instance AssociatedFunction_emit_event :
+    Notations.DoubleColon ltac:(Self) "emit_event" := {
+    Notations.double_colon := emit_event;
+  }.
+End Impl_mother_Env_t.
+End Impl_mother_Env_t.
 
 Module  Mother.
 Section Mother.

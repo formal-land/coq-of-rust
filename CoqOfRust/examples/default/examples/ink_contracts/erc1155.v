@@ -388,19 +388,14 @@ End Impl_erc1155_Env_t.
 
 Definition ON_ERC_1155_RECEIVED_SELECTOR : array u8.t :=
   M.run
-    (let* α0 : M.Val u8.t := M.alloc (Integer.of_Z 242) in
-    let* α1 : M.Val u8.t := M.alloc (Integer.of_Z 58) in
-    let* α2 : M.Val u8.t := M.alloc (Integer.of_Z 110) in
-    let* α3 : M.Val u8.t := M.alloc (Integer.of_Z 97) in
-    M.alloc [ α0; α1; α2; α3 ]).
+    (M.alloc
+      [ Integer.of_Z 242; Integer.of_Z 58; Integer.of_Z 110; Integer.of_Z 97 ]).
 
 Definition _ON_ERC_1155_BATCH_RECEIVED_SELECTOR : array u8.t :=
   M.run
-    (let* α0 : M.Val u8.t := M.alloc (Integer.of_Z 188) in
-    let* α1 : M.Val u8.t := M.alloc (Integer.of_Z 25) in
-    let* α2 : M.Val u8.t := M.alloc (Integer.of_Z 124) in
-    let* α3 : M.Val u8.t := M.alloc (Integer.of_Z 129) in
-    M.alloc [ α0; α1; α2; α3 ]).
+    (M.alloc
+      [ Integer.of_Z 188; Integer.of_Z 25; Integer.of_Z 124; Integer.of_Z 129
+      ]).
 
 Ltac TokenId := exact u128.t.
 
@@ -2255,24 +2250,23 @@ Section Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract_t.
     let* _value : M.Val ltac:(erc1155.Balance) := M.alloc _value in
     let* _data : M.Val (alloc.vec.Vec.t u8.t alloc.vec.Vec.Default.A) :=
       M.alloc _data in
-    let* α0 : M.Val (array (ref str.t)) :=
-      M.alloc
-        [
-          mk_str
-            "not implemented: This smart contract does not accept token transfer."
-        ] in
-    let* α1 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α0) in
-    let* α2 : ref (slice (ref str.t)) :=
-      M.read (pointer_coercion "Unsize" α1) in
-    let* α3 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ ] in
-    let* α4 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-      M.alloc (borrow α3) in
-    let* α5 : ref (slice core.fmt.rt.Argument.t) :=
-      M.read (pointer_coercion "Unsize" α4) in
-    let* α6 : core.fmt.Arguments.t :=
-      M.call (core.fmt.Arguments.t::["new_v1"] α2 α5) in
-    let* α7 : never.t := M.call (core.panicking.panic_fmt α6) in
-    never_to_any α7.
+    let* α0 : ref str.t :=
+      M.read
+        (mk_str
+          "not implemented: This smart contract does not accept token transfer.") in
+    let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
+    let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
+    let* α3 : ref (slice (ref str.t)) :=
+      M.read (pointer_coercion "Unsize" α2) in
+    let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ ] in
+    let* α5 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+      M.alloc (borrow α4) in
+    let* α6 : ref (slice core.fmt.rt.Argument.t) :=
+      M.read (pointer_coercion "Unsize" α5) in
+    let* α7 : core.fmt.Arguments.t :=
+      M.call (core.fmt.Arguments.t::["new_v1"] α3 α6) in
+    let* α8 : never.t := M.call (core.panicking.panic_fmt α7) in
+    never_to_any α8.
   
   Global Instance AssociatedFunction_on_received :
     Notations.DoubleColon ltac:(Self) "on_received" := {
@@ -2325,24 +2319,23 @@ Section Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract_t.
       M.alloc _values in
     let* _data : M.Val (alloc.vec.Vec.t u8.t alloc.vec.Vec.Default.A) :=
       M.alloc _data in
-    let* α0 : M.Val (array (ref str.t)) :=
-      M.alloc
-        [
-          mk_str
-            "not implemented: This smart contract does not accept batch token transfers."
-        ] in
-    let* α1 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α0) in
-    let* α2 : ref (slice (ref str.t)) :=
-      M.read (pointer_coercion "Unsize" α1) in
-    let* α3 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ ] in
-    let* α4 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-      M.alloc (borrow α3) in
-    let* α5 : ref (slice core.fmt.rt.Argument.t) :=
-      M.read (pointer_coercion "Unsize" α4) in
-    let* α6 : core.fmt.Arguments.t :=
-      M.call (core.fmt.Arguments.t::["new_v1"] α2 α5) in
-    let* α7 : never.t := M.call (core.panicking.panic_fmt α6) in
-    never_to_any α7.
+    let* α0 : ref str.t :=
+      M.read
+        (mk_str
+          "not implemented: This smart contract does not accept batch token transfers.") in
+    let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
+    let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
+    let* α3 : ref (slice (ref str.t)) :=
+      M.read (pointer_coercion "Unsize" α2) in
+    let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ ] in
+    let* α5 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+      M.alloc (borrow α4) in
+    let* α6 : ref (slice core.fmt.rt.Argument.t) :=
+      M.read (pointer_coercion "Unsize" α5) in
+    let* α7 : core.fmt.Arguments.t :=
+      M.call (core.fmt.Arguments.t::["new_v1"] α3 α6) in
+    let* α8 : never.t := M.call (core.panicking.panic_fmt α7) in
+    never_to_any α8.
   
   Global Instance AssociatedFunction_on_batch_received :
     Notations.DoubleColon ltac:(Self) "on_batch_received" := {
