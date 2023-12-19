@@ -1611,14 +1611,13 @@ impl ImplItemKind {
                 body,
                 is_dead_code,
             } => concat([
-                if *is_dead_code {
+                optional_insert(
+                    !*is_dead_code,
                     concat([
                         text("(* #[allow(dead_code)] - function was ignored by the compiler *)"),
                         hardline(),
-                    ])
-                } else {
-                    nil()
-                },
+                    ]),
+                ),
                 match body {
                     None => nest([
                         nest([text("Parameter"), line(), text(name), text(" :")]),

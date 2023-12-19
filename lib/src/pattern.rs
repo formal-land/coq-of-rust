@@ -43,15 +43,10 @@ impl Pattern {
             Pattern::StructTuple(_, patterns, _) => {
                 patterns.iter().flat_map(Pattern::get_bindings).collect()
             }
-            Pattern::Or(patterns) => {
-                if patterns.is_empty() {
-                    vec![]
-                } else {
-                    // All patterns should have the exact same list of bindings,
-                    // so we only evaluate the first one
-                    patterns.first().unwrap().get_bindings()
-                }
-            }
+            Pattern::Or(patterns) => optional_insert_vec(
+                patterns.is_empty(),
+                patterns.first().unwrap().get_bindings(),
+            ),
             Pattern::Tuple(patterns) => patterns.iter().flat_map(Pattern::get_bindings).collect(),
             Pattern::Lit(_) => vec![],
             Pattern::Slice {
@@ -88,9 +83,8 @@ impl Pattern {
                     StructOrVariant::Struct => nil(),
                     StructOrVariant::Variant => path.to_doc(),
                 },
-                if fields.is_empty() {
-                    nil()
-                } else {
+                optional_insert(
+                    fields.is_empty(),
                     concat([
                         match struct_or_variant {
                             StructOrVariant::Struct => nil(),
@@ -117,8 +111,8 @@ impl Pattern {
                         ]),
                         line(),
                         text("|}"),
-                    ])
-                },
+                    ]),
+                ),
             ]),
             Pattern::StructTuple(path, fields, struct_or_variant) => {
                 return nest([
