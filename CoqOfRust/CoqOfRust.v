@@ -144,6 +144,7 @@ Require CoqOfRust.core.convert.
 Require CoqOfRust.core.default.
 Require CoqOfRust.core.fmt.
 Require CoqOfRust.core.hash.
+Require CoqOfRust.core.intrinsics.
 Require CoqOfRust.core.iter.
 Require CoqOfRust.core.marker.
 Require CoqOfRust.core.mem.
@@ -168,6 +169,7 @@ Module core.
   Export CoqOfRust.core.default.
   Export CoqOfRust.core.fmt.
   Export CoqOfRust.core.hash.
+  Export CoqOfRust.core.intrinsics.
   Export CoqOfRust.core.iter.
   Export CoqOfRust.core.marker.
   Export CoqOfRust.core.mem.

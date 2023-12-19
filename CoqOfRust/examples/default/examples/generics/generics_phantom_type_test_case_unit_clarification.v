@@ -19,7 +19,7 @@ Section Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificati
       : M ltac:(core.fmt.Result) :=
     let* self : M.Val (ref ltac:(Self)) := M.alloc self in
     let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
-    let* α0 : never.t := M.call "unimplemented parent_kind" in
+    let* α0 : never.t := M.call core.intrinsics.unreachable in
     never_to_any α0.
   
   Global Instance AssociatedFunction_fmt :
@@ -87,7 +87,7 @@ Section Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificati
       : M ltac:(core.fmt.Result) :=
     let* self : M.Val (ref ltac:(Self)) := M.alloc self in
     let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
-    let* α0 : never.t := M.call "unimplemented parent_kind" in
+    let* α0 : never.t := M.call core.intrinsics.unreachable in
     never_to_any α0.
   
   Global Instance AssociatedFunction_fmt :

@@ -1,7 +1,6 @@
 # blacklisting ink smart contracts
 examples/axiomatized/examples/ink_contracts/conditional_compilation.v
 examples/axiomatized/examples/ink_contracts/custom_environment.v
-examples/axiomatized/examples/ink_contracts/dns.v
 examples/axiomatized/examples/ink_contracts/erc1155.v
 examples/axiomatized/examples/ink_contracts/erc721.v
 examples/axiomatized/examples/ink_contracts/mother.v
@@ -14,7 +13,6 @@ examples/default/examples/ink_contracts/conditional_compilation.v
 examples/default/examples/ink_contracts/contract_transfer.v
 examples/default/examples/ink_contracts/custom_allocator.v
 examples/default/examples/ink_contracts/custom_environment.v
-examples/default/examples/ink_contracts/dns.v
 examples/default/examples/ink_contracts/erc1155.v
 examples/default/examples/ink_contracts/erc721.v
 examples/default/examples/ink_contracts/incrementer.v

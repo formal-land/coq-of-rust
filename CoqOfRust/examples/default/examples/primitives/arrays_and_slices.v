@@ -118,10 +118,7 @@ Definition main : M unit :=
     let* α3 : M.Val i32.t := M.alloc (Integer.of_Z 4) in
     let* α4 : M.Val i32.t := M.alloc (Integer.of_Z 5) in
     M.alloc [ α0; α1; α2; α3; α4 ] in
-  let* ys : M.Val (array i32.t) :=
-    let* α0 : M.Val i32.t := M.alloc (Integer.of_Z 0) in
-    let* α1 : M.Val (array i32.t) := repeat α0 500 in
-    M.copy α1 in
+  let* ys : M.Val (array i32.t) := M.alloc (repeat (Integer.of_Z 0) 500) in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : M.Val (array (ref str.t)) :=

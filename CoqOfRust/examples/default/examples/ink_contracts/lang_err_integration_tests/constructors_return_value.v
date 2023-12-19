@@ -279,24 +279,21 @@ Section Impl_constructors_return_value_ConstructorsReturnValue_t.
     let* α0 : constructors_return_value.ReturnFlags.t :=
       M.call
         (constructors_return_value.ReturnFlags.t::["new_with_reverted"] true) in
-    let* α1 : M.Val u8.t := M.alloc (Integer.of_Z 0) in
-    let* α2 : M.Val (array u8.t) := repeat α1 32 in
-    let* α3 : array u8.t := M.read α2 in
-    let* α4 : constructors_return_value.AccountId.t :=
+    let* α1 : constructors_return_value.AccountId.t :=
       M.call
         ((core.convert.From.from
             (Self := constructors_return_value.AccountId.t)
             (Trait := ltac:(refine _)))
-          α3) in
-    let* α5 :
+          (repeat (Integer.of_Z 0) 32)) in
+    let* α2 :
         M.Val
           (core.result.Result.t
             constructors_return_value.AccountId.t
             constructors_return_value.LangError.t) :=
-      M.alloc (core.result.Result.Ok α4) in
-    let* α6 : never.t :=
-      M.call (constructors_return_value.return_value α0 (borrow α5)) in
-    never_to_any α6.
+      M.alloc (core.result.Result.Ok α1) in
+    let* α3 : never.t :=
+      M.call (constructors_return_value.return_value α0 (borrow α2)) in
+    never_to_any α3.
   
   Global Instance AssociatedFunction_revert_new :
     Notations.DoubleColon ltac:(Self) "revert_new" := {
@@ -341,16 +338,13 @@ Section Impl_constructors_return_value_ConstructorsReturnValue_t.
                 constructors_return_value.ConstructorError.t)
               constructors_return_value.LangError.t) :=
         if (use α0 : bool) then
-          let* α0 : M.Val u8.t := M.alloc (Integer.of_Z 0) in
-          let* α1 : M.Val (array u8.t) := repeat α0 32 in
-          let* α2 : array u8.t := M.read α1 in
-          let* α3 : constructors_return_value.AccountId.t :=
+          let* α0 : constructors_return_value.AccountId.t :=
             M.call
               ((core.convert.From.from
                   (Self := constructors_return_value.AccountId.t)
                   (Trait := ltac:(refine _)))
-                α2) in
-          M.alloc (core.result.Result.Ok (core.result.Result.Ok α3))
+                (repeat (Integer.of_Z 0) 32)) in
+          M.alloc (core.result.Result.Ok (core.result.Result.Ok α0))
         else
           M.alloc
             (core.result.Result.Err

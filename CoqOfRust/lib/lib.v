@@ -504,3 +504,13 @@ Infix "<isize" := (BinOp.Pure.lt (A := isize.t)) (at level 60).
 Infix "<=isize" := (BinOp.Pure.le (A := isize.t)) (at level 60).
 Infix ">=isize" := (BinOp.Pure.ge (A := isize.t)) (at level 60).
 Infix ">isize" := (BinOp.Pure.gt (A := isize.t)) (at level 60).
+
+Fixpoint repeat_nat {A : Set} (times : nat) (v : A) : list A :=
+  match times with
+  | Datatypes.O => []
+  | Datatypes.S times => v :: repeat_nat times v
+  end.
+
+(** The repeat operator to create new arrays, like in `[0; 32]`. *)
+Definition repeat {A : Set} (v : A) (times : Z) : list A :=
+  repeat_nat (Z.to_nat times) v.

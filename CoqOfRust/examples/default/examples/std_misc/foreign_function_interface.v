@@ -13,7 +13,7 @@ Definition cos
     : M foreign_function_interface.Complex.t :=
   let* z : M.Val foreign_function_interface.Complex.t := M.alloc z in
   let* α0 : foreign_function_interface.Complex.t := M.read z in
-  M.call ("unimplemented parent_kind" α0).
+  M.call (foreign_function_interface.ccosf α0).
 
 (*
 fn main() {
@@ -42,7 +42,7 @@ Definition main : M unit :=
   let* z_sqrt : M.Val foreign_function_interface.Complex.t :=
     let* α0 : foreign_function_interface.Complex.t := M.read z in
     let* α1 : foreign_function_interface.Complex.t :=
-      M.call ("unimplemented parent_kind" α0) in
+      M.call (foreign_function_interface.csqrtf α0) in
     M.alloc α1 in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=

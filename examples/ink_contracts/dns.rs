@@ -51,16 +51,6 @@ struct Env {
     caller: AccountId,
 }
 
-impl Env {
-    fn caller(&self) -> AccountId {
-        self.caller
-    }
-
-    fn emit_event(&self, _event: Event) {
-        unimplemented!()
-    }
-}
-
 /// Emitted whenever a new name is being registered.
 pub struct Register {
     name: Hash,
@@ -89,6 +79,16 @@ enum Event {
     Transfer(Transfer),
 }
 
+impl Env {
+    fn caller(&self) -> AccountId {
+        self.caller
+    }
+
+    fn emit_event(&self, _event: Event) {
+        unimplemented!()
+    }
+}
+
 /// Domain name service contract inspired by
 /// [this blog post](https://medium.com/@chainx_org/secure-and-decentralized-polkadot-domain-name-system-e06c35c2a48d).
 ///
@@ -113,6 +113,13 @@ pub struct DomainNameService {
     default_address: AccountId,
 }
 
+/// Helper for referencing the zero address (`0x00`). Note that in practice this
+/// address should not be treated in any special way (such as a default
+/// placeholder) since it has a known private key.
+fn zero_address() -> AccountId {
+    [0u8; 32].into()
+}
+
 impl Default for DomainNameService {
     fn default() -> Self {
         let mut name_to_address = Mapping::new();
@@ -129,7 +136,7 @@ impl Default for DomainNameService {
 }
 
 /// Errors that can occur upon calling this contract.
-#[derive(Debug, PartialEq, Eq)]
+#[derive(PartialEq, Eq)]
 pub enum Error {
     /// Returned if the name already exists upon registration.
     NameAlreadyExists,
@@ -166,6 +173,13 @@ impl DomainNameService {
             .emit_event(Event::Register(Register { name, from: caller }));
 
         Ok(())
+    }
+
+    /// Returns the owner given the hash or the default address.
+    fn get_owner_or_default(&self, name: Hash) -> AccountId {
+        self.name_to_owner
+            .get(&name)
+            .unwrap_or(self.default_address)
     }
 
     /// Set address for specific name.
@@ -209,6 +223,13 @@ impl DomainNameService {
         Ok(())
     }
 
+    /// Returns the address given the hash or the default address.
+    fn get_address_or_default(&self, name: Hash) -> AccountId {
+        self.name_to_address
+            .get(&name)
+            .unwrap_or(self.default_address)
+    }
+
     /// Get address for specific name.
     pub fn get_address(&self, name: Hash) -> AccountId {
         self.get_address_or_default(name)
@@ -218,25 +239,4 @@ impl DomainNameService {
     pub fn get_owner(&self, name: Hash) -> AccountId {
         self.get_owner_or_default(name)
     }
-
-    /// Returns the owner given the hash or the default address.
-    fn get_owner_or_default(&self, name: Hash) -> AccountId {
-        self.name_to_owner
-            .get(&name)
-            .unwrap_or(self.default_address)
-    }
-
-    /// Returns the address given the hash or the default address.
-    fn get_address_or_default(&self, name: Hash) -> AccountId {
-        self.name_to_address
-            .get(&name)
-            .unwrap_or(self.default_address)
-    }
-}
-
-/// Helper for referencing the zero address (`0x00`). Note that in practice this
-/// address should not be treated in any special way (such as a default
-/// placeholder) since it has a known private key.
-fn zero_address() -> AccountId {
-    [0u8; 32].into()
 }

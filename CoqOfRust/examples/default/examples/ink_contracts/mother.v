@@ -615,11 +615,11 @@ Section Impl_core_cmp_PartialEq_for_mother_Outline_t.
     let* other : M.Val (ref mother.Outline.t) := M.alloc other in
     let* __self_tag : M.Val isize.t :=
       let* α0 : ref mother.Outline.t := M.read self in
-      let* α1 : isize.t := M.call ("unimplemented parent_kind" α0) in
+      let* α1 : isize.t := M.call (core.intrinsics.discriminant_value α0) in
       M.alloc α1 in
     let* __arg1_tag : M.Val isize.t :=
       let* α0 : ref mother.Outline.t := M.read other in
-      let* α1 : isize.t := M.call ("unimplemented parent_kind" α0) in
+      let* α1 : isize.t := M.call (core.intrinsics.discriminant_value α0) in
       M.alloc α1 in
     let* α0 : isize.t := M.read __self_tag in
     let* α1 : isize.t := M.read __arg1_tag in
@@ -777,11 +777,11 @@ Section Impl_core_cmp_PartialEq_for_mother_Status_t.
     let* other : M.Val (ref mother.Status.t) := M.alloc other in
     let* __self_tag : M.Val isize.t :=
       let* α0 : ref mother.Status.t := M.read self in
-      let* α1 : isize.t := M.call ("unimplemented parent_kind" α0) in
+      let* α1 : isize.t := M.call (core.intrinsics.discriminant_value α0) in
       M.alloc α1 in
     let* __arg1_tag : M.Val isize.t :=
       let* α0 : ref mother.Status.t := M.read other in
-      let* α1 : isize.t := M.call ("unimplemented parent_kind" α0) in
+      let* α1 : isize.t := M.call (core.intrinsics.discriminant_value α0) in
       M.alloc α1 in
     let* α0 : isize.t := M.read __self_tag in
     let* α1 : isize.t := M.read __arg1_tag in
@@ -1557,11 +1557,11 @@ Section Impl_core_cmp_PartialEq_for_mother_Failure_t.
     let* other : M.Val (ref mother.Failure.t) := M.alloc other in
     let* __self_tag : M.Val isize.t :=
       let* α0 : ref mother.Failure.t := M.read self in
-      let* α1 : isize.t := M.call ("unimplemented parent_kind" α0) in
+      let* α1 : isize.t := M.call (core.intrinsics.discriminant_value α0) in
       M.alloc α1 in
     let* __arg1_tag : M.Val isize.t :=
       let* α0 : ref mother.Failure.t := M.read other in
-      let* α1 : isize.t := M.call ("unimplemented parent_kind" α0) in
+      let* α1 : isize.t := M.call (core.intrinsics.discriminant_value α0) in
       M.alloc α1 in
     let* α0 : isize.t := M.read __self_tag in
     let* α1 : isize.t := M.read __arg1_tag in

@@ -9,20 +9,6 @@ struct Env {
     caller: AccountId,
 }
 
-impl Env {
-    fn caller(&self) -> AccountId {
-        self.caller
-    }
-
-    fn emit_event(&self, _event: Event) {
-        unimplemented!()
-    }
-
-    fn block_number(&self) -> BlockNumber {
-        unimplemented!()
-    }
-}
-
 pub trait Flip {
     /// Flips the current value of the Flipper's boolean.
     fn flip(&mut self);
@@ -51,6 +37,20 @@ pub struct ChangesDated {
 enum Event {
     Changes(Changes),
     ChangesDated(ChangesDated),
+}
+
+impl Env {
+    fn caller(&self) -> AccountId {
+        self.caller
+    }
+
+    fn emit_event(&self, _event: Event) {
+        unimplemented!()
+    }
+
+    fn block_number(&self) -> BlockNumber {
+        unimplemented!()
+    }
 }
 
 pub struct ConditionalCompilation {

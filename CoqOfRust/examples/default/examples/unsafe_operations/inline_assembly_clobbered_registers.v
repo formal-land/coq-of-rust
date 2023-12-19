@@ -38,10 +38,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* name_buf : M.Val (array u8.t) :=
-    let* α0 : M.Val u8.t := M.alloc (Integer.of_Z 0) in
-    let* α1 : M.Val (array u8.t) := repeat α0 12 in
-    M.copy α1 in
+  let* name_buf : M.Val (array u8.t) := M.alloc (repeat (Integer.of_Z 0) 12) in
   let* _ : M.Val unit :=
     let _ : M.Val unit := InlineAssembly in
     M.alloc tt in

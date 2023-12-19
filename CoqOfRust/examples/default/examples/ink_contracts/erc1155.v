@@ -488,11 +488,11 @@ Section Impl_core_cmp_PartialEq_for_erc1155_Error_t.
     let* other : M.Val (ref erc1155.Error.t) := M.alloc other in
     let* __self_tag : M.Val isize.t :=
       let* α0 : ref erc1155.Error.t := M.read self in
-      let* α1 : isize.t := M.call ("unimplemented parent_kind" α0) in
+      let* α1 : isize.t := M.call (core.intrinsics.discriminant_value α0) in
       M.alloc α1 in
     let* __arg1_tag : M.Val isize.t :=
       let* α0 : ref erc1155.Error.t := M.read other in
-      let* α1 : isize.t := M.call ("unimplemented parent_kind" α0) in
+      let* α1 : isize.t := M.call (core.intrinsics.discriminant_value α0) in
       M.alloc α1 in
     let* α0 : isize.t := M.read __self_tag in
     let* α1 : isize.t := M.read __arg1_tag in
@@ -2362,9 +2362,6 @@ fn zero_address() -> AccountId {
 }
 *)
 Definition zero_address : M erc1155.AccountId.t :=
-  let* α0 : M.Val u8.t := M.alloc (Integer.of_Z 0) in
-  let* α1 : M.Val (array u8.t) := repeat α0 32 in
-  let* α2 : array u8.t := M.read α1 in
   M.call
     ((core.convert.Into.into (Self := array u8.t) (Trait := ltac:(refine _)))
-      α2).
+      (repeat (Integer.of_Z 0) 32)).

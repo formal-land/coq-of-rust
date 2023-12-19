@@ -61,4 +61,14 @@ Module Impl_Option. Section Impl_Option.
     Notations.DoubleColon Self "unwrap_or_default" := {
     Notations.double_colon := unwrap_or_default;
   }.
+
+  Definition unwrap_or (self : Self) (default : T) : M T :=
+    match self with
+    | Option.None => M.pure default
+    | Option.Some x => M.pure x
+    end.
+
+  Global Instance AF_unwrap_or : Notations.DoubleColon Self "unwrap_or" := {
+    Notations.double_colon := unwrap_or;
+  }.
 End Impl_Option. End Impl_Option.

@@ -83,50 +83,6 @@ Section Env.
 End Env.
 End Env.
 
-Module  Impl_conditional_compilation_Env_t.
-Section Impl_conditional_compilation_Env_t.
-  Ltac Self := exact conditional_compilation.Env.t.
-  
-  (*
-      fn caller(&self) -> AccountId {
-          self.caller
-      }
-  *)
-  Parameter caller : (ref ltac:(Self)) -> M conditional_compilation.AccountId.t.
-  
-  Global Instance AssociatedFunction_caller :
-    Notations.DoubleColon ltac:(Self) "caller" := {
-    Notations.double_colon := caller;
-  }.
-  
-  (*
-      fn emit_event(&self, _event: Event) {
-          unimplemented!()
-      }
-  *)
-  Parameter emit_event :
-      (ref ltac:(Self)) -> conditional_compilation.Event.t -> M unit.
-  
-  Global Instance AssociatedFunction_emit_event :
-    Notations.DoubleColon ltac:(Self) "emit_event" := {
-    Notations.double_colon := emit_event;
-  }.
-  
-  (*
-      fn block_number(&self) -> BlockNumber {
-          unimplemented!()
-      }
-  *)
-  Parameter block_number :
-      (ref ltac:(Self)) -> M ltac:(conditional_compilation.BlockNumber).
-  
-  Global Instance AssociatedFunction_block_number :
-    Notations.DoubleColon ltac:(Self) "block_number" := {
-    Notations.double_colon := block_number;
-  }.
-End Impl_conditional_compilation_Env_t.
-End Impl_conditional_compilation_Env_t.
-
 Module  Flip.
 Section Flip.
   Class Trait (Self : Set) : Type := {
@@ -196,6 +152,50 @@ Module Event.
   | Changes (_ : conditional_compilation.Changes.t)
   | ChangesDated (_ : conditional_compilation.ChangesDated.t).
 End Event.
+
+Module  Impl_conditional_compilation_Env_t.
+Section Impl_conditional_compilation_Env_t.
+  Ltac Self := exact conditional_compilation.Env.t.
+  
+  (*
+      fn caller(&self) -> AccountId {
+          self.caller
+      }
+  *)
+  Parameter caller : (ref ltac:(Self)) -> M conditional_compilation.AccountId.t.
+  
+  Global Instance AssociatedFunction_caller :
+    Notations.DoubleColon ltac:(Self) "caller" := {
+    Notations.double_colon := caller;
+  }.
+  
+  (*
+      fn emit_event(&self, _event: Event) {
+          unimplemented!()
+      }
+  *)
+  Parameter emit_event :
+      (ref ltac:(Self)) -> conditional_compilation.Event.t -> M unit.
+  
+  Global Instance AssociatedFunction_emit_event :
+    Notations.DoubleColon ltac:(Self) "emit_event" := {
+    Notations.double_colon := emit_event;
+  }.
+  
+  (*
+      fn block_number(&self) -> BlockNumber {
+          unimplemented!()
+      }
+  *)
+  Parameter block_number :
+      (ref ltac:(Self)) -> M ltac:(conditional_compilation.BlockNumber).
+  
+  Global Instance AssociatedFunction_block_number :
+    Notations.DoubleColon ltac:(Self) "block_number" := {
+    Notations.double_colon := block_number;
+  }.
+End Impl_conditional_compilation_Env_t.
+End Impl_conditional_compilation_Env_t.
 
 Module  ConditionalCompilation.
 Section ConditionalCompilation.

@@ -497,7 +497,7 @@ fn compile_expr_kind<'a>(
                 ty: None,
             });
             let args = vec![
-                compile_expr(env, thir, value),
+                compile_expr(env, thir, value).read(),
                 Expr {
                     kind: ExprKind::LocalVar(count.to_string()),
                     ty: None,
@@ -506,9 +506,10 @@ fn compile_expr_kind<'a>(
             ExprKind::Call {
                 func,
                 args,
-                purity: Purity::Effectful,
+                purity: Purity::Pure,
                 from_user: false,
             }
+            .alloc(Some(ty))
         }
         thir::ExprKind::Array { fields } => ExprKind::Array {
             elements: fields
@@ -630,9 +631,12 @@ fn compile_expr_kind<'a>(
                         let self_ty = crate::thir_ty::compile_type(env, &self_ty);
                         ExprKind::VarWithSelfTy { path, self_ty }
                     }
-                    DefKind::Mod => ExprKind::Var(compile_def_id(env, *def_id)),
+                    DefKind::Mod | DefKind::ForeignMod => {
+                        ExprKind::Var(compile_def_id(env, *def_id))
+                    }
                     _ => {
                         println!("unimplemented parent_kind: {:#?}", parent_kind);
+                        println!("expression: {:#?}", expr);
                         ExprKind::Message("unimplemented parent_kind".to_string())
                     }
                 }
