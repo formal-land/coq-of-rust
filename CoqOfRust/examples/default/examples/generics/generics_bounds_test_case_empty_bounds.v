@@ -100,11 +100,11 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
   let* cardinal : M.Val generics_bounds_test_case_empty_bounds.Cardinal.t :=
-    M.alloc generics_bounds_test_case_empty_bounds.Cardinal.Build_t in
+    M.alloc generics_bounds_test_case_empty_bounds.Cardinal.Build in
   let* blue_jay : M.Val generics_bounds_test_case_empty_bounds.BlueJay.t :=
-    M.alloc generics_bounds_test_case_empty_bounds.BlueJay.Build_t in
+    M.alloc generics_bounds_test_case_empty_bounds.BlueJay.Build in
   let* _turkey : M.Val generics_bounds_test_case_empty_bounds.Turkey.t :=
-    M.alloc generics_bounds_test_case_empty_bounds.Turkey.Build_t in
+    M.alloc generics_bounds_test_case_empty_bounds.Turkey.Build in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : M.Val (array (ref str.t)) :=

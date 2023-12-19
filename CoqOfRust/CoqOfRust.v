@@ -202,6 +202,7 @@ Require CoqOfRust._std.io.
 Require Import CoqOfRust._std.ops.
 (* Require Import CoqOfRust._std.os. *)
 Require Import CoqOfRust._std.panic.
+Require Import CoqOfRust._std.panicking.
 Require Import CoqOfRust._std.path.
 Require Import CoqOfRust._std.pin.
 Require Import CoqOfRust._std.prelude.
@@ -215,7 +216,6 @@ Require Import CoqOfRust._std.sync.
 Require Import CoqOfRust._std.task.
 Require Import CoqOfRust._std.thread.
 Require Import CoqOfRust._std.time.
-
 
 Module std.
   Module arch := _std.arch.
@@ -239,6 +239,7 @@ Module std.
   Module ops := _std.ops.
   (* Module os := _std.os. *)
   Module panic := _std.panic.
+  Module panicking := _std.panicking.
   Module path := _std.path.
   Module pin := _std.pin.
   Module prelude := _std.prelude.

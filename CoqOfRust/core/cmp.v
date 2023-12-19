@@ -309,7 +309,7 @@ Module Eq.
     Class Trait (Self : Set) : Set := {
       L0 :: PartialEq.Trait Self (Rhs := PartialEq.Default.Rhs Self);
       assert_receiver_is_total_eq :
-        Datatypes.option (M.Val (ref Self) -> M (M.Val unit));
+        Datatypes.option (ref Self -> M unit);
     }.
     Global Set Primitive Projections.
   End Required.
@@ -317,18 +317,18 @@ Module Eq.
   Module Provided.
     Definition assert_receiver_is_total_eq {Self : Set}
         {H0 : Required.Trait Self} :
-        M.Val (ref Self) -> M (M.Val unit) :=
+        ref Self -> M unit :=
       match Required.assert_receiver_is_total_eq with
       | Datatypes.Some assert_receiver_is_total_eq =>
         assert_receiver_is_total_eq
-      | Datatypes.None => fun _ => M.alloc tt
+      | Datatypes.None => fun _ => M.pure tt
       end.
   End Provided.
 
   Unset Primitive Projections.
   Class Trait (Self : Set) : Set := {
     L0 :: PartialEq.Trait Self (Rhs := PartialEq.Default.Rhs Self);
-    assert_receiver_is_total_eq : M.Val (ref Self) -> M (M.Val unit);
+    assert_receiver_is_total_eq : ref Self -> M unit;
   }.
   Global Set Primitive Projections.
 

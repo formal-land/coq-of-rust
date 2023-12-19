@@ -233,7 +233,7 @@ Section Impl_contract_ref_FlipperRef_t.
           M.call (contract_ref.FlipperRef.t::["new"] true) in
         M.alloc (core.result.Result.Ok α0)
       else
-        M.alloc (core.result.Result.Err contract_ref.FlipperError.Build_t) in
+        M.alloc (core.result.Result.Err contract_ref.FlipperError.Build) in
     M.read α1.
   
   Global Instance AssociatedFunction_try_new :

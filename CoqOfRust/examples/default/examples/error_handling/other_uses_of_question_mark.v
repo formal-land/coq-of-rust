@@ -122,7 +122,7 @@ Definition double_first
         M.call
           ((core.option.Option.t (ref (ref str.t)))::["ok_or"]
             α1
-            other_uses_of_question_mark.EmptyVec.Build_t) in
+            other_uses_of_question_mark.EmptyVec.Build) in
       let* α3 :
           core.ops.control_flow.ControlFlow.t
             (core.result.Result.t

@@ -302,7 +302,7 @@ Section Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarifi
     M.pure
       (generics_phantom_type_test_case_unit_clarification.Length.Build_t
         α2
-        core.marker.PhantomData.Build_t).
+        core.marker.PhantomData.Build).
   
   Global Instance AssociatedFunction_add :
     Notations.DoubleColon ltac:(Self) "add" := {
@@ -351,7 +351,7 @@ Definition main : M unit :=
     M.alloc
       (generics_phantom_type_test_case_unit_clarification.Length.Build_t
         α0
-        core.marker.PhantomData.Build_t) in
+        core.marker.PhantomData.Build) in
   let* one_meter :
       M.Val
         (generics_phantom_type_test_case_unit_clarification.Length.t
@@ -360,7 +360,7 @@ Definition main : M unit :=
     M.alloc
       (generics_phantom_type_test_case_unit_clarification.Length.Build_t
         α0
-        core.marker.PhantomData.Build_t) in
+        core.marker.PhantomData.Build) in
   let* two_feet :
       M.Val
         (generics_phantom_type_test_case_unit_clarification.Length.t

@@ -54,7 +54,7 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
   let* x : M.Val scoping_rules_raii_desctructor.ToDrop.t :=
-    M.alloc scoping_rules_raii_desctructor.ToDrop.Build_t in
+    M.alloc scoping_rules_raii_desctructor.ToDrop.Build in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : M.Val (array (ref str.t)) :=

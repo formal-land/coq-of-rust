@@ -546,14 +546,22 @@ fn compile_expr_kind<'a>(
                     )
                 })
                 .collect();
-            let is_a_tuple = fields
-                .iter()
-                .all(|(name, _)| name.starts_with(|c: char| c.is_ascii_digit()));
+            let is_a_tuple = !fields.is_empty()
+                && fields
+                    .iter()
+                    .all(|(name, _)| name.starts_with(|c: char| c.is_ascii_digit()));
             let struct_or_variant = if adt_def.is_enum() {
                 StructOrVariant::Variant
             } else {
                 StructOrVariant::Struct
             };
+            if fields.is_empty() {
+                return ExprKind::StructUnit {
+                    path,
+                    struct_or_variant,
+                }
+                .alloc(Some(ty));
+            }
             if is_a_tuple {
                 let fields = fields.into_iter().map(|(_, pattern)| pattern).collect();
                 ExprKind::StructTuple {

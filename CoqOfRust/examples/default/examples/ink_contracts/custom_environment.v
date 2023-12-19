@@ -150,7 +150,7 @@ Section Impl_core_default_Default_for_custom_environment_Topics_t.
   Default
   *)
   Definition default : M custom_environment.Topics.t :=
-    M.pure custom_environment.Topics.Build_t.
+    M.pure custom_environment.Topics.Build.
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon ltac:(Self) "default" := {

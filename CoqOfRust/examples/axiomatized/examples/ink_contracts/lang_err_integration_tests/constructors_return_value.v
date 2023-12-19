@@ -143,7 +143,7 @@ End Impl_core_fmt_Debug_for_constructors_return_value_ConstructorError_t.
 
 Module  ReturnFlags.
 Section ReturnFlags.
-  Record t : Set := { }.
+  Inductive t : Set := Build.
 End ReturnFlags.
 End ReturnFlags.
 

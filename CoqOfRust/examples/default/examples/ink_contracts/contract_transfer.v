@@ -174,7 +174,7 @@ End Impl_contract_transfer_Env_t.
 
 Module  GiveMe.
 Section GiveMe.
-  Record t : Set := { }.
+  Inductive t : Set := Build.
 End GiveMe.
 End GiveMe.
 
@@ -216,7 +216,7 @@ Section Impl_contract_transfer_GiveMe_t.
           Self {}
       }
   *)
-  Definition new : M ltac:(Self) := M.pure contract_transfer.GiveMe.Build_t.
+  Definition new : M ltac:(Self) := M.pure contract_transfer.GiveMe.Build.
   
   Global Instance AssociatedFunction_new :
     Notations.DoubleColon ltac:(Self) "new" := {

@@ -207,25 +207,25 @@ Definition main : M unit :=
     M.alloc
       (generics_phantom_type.PhantomTuple.Build_t
         "Q"%char
-        core.marker.PhantomData.Build_t) in
+        core.marker.PhantomData.Build) in
   let* _tuple2 : M.Val (generics_phantom_type.PhantomTuple.t char.t f64.t) :=
     M.alloc
       (generics_phantom_type.PhantomTuple.Build_t
         "Q"%char
-        core.marker.PhantomData.Build_t) in
+        core.marker.PhantomData.Build) in
   let* _struct1 : M.Val (generics_phantom_type.PhantomStruct.t char.t f32.t) :=
     M.alloc
       {|
         generics_phantom_type.PhantomStruct.first := "Q"%char;
         generics_phantom_type.PhantomStruct.phantom :=
-          core.marker.PhantomData.Build_t;
+          core.marker.PhantomData.Build;
       |} in
   let* _struct2 : M.Val (generics_phantom_type.PhantomStruct.t char.t f64.t) :=
     M.alloc
       {|
         generics_phantom_type.PhantomStruct.first := "Q"%char;
         generics_phantom_type.PhantomStruct.phantom :=
-          core.marker.PhantomData.Build_t;
+          core.marker.PhantomData.Build;
       |} in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.

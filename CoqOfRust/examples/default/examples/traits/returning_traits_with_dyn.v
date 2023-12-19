@@ -3,13 +3,13 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module  Sheep.
 Section Sheep.
-  Record t : Set := { }.
+  Inductive t : Set := Build.
 End Sheep.
 End Sheep.
 
 Module  Cow.
 Section Cow.
-  Record t : Set := { }.
+  Inductive t : Set := Build.
 End Cow.
 End Cow.
 
@@ -96,7 +96,7 @@ Definition random_animal
           ((alloc.boxed.Box.t
                 returning_traits_with_dyn.Sheep.t
                 alloc.alloc.Global.t)::["new"]
-            returning_traits_with_dyn.Sheep.Build_t) in
+            returning_traits_with_dyn.Sheep.Build) in
       let* α1 :
           M.Val
             (alloc.boxed.Box.t
@@ -113,7 +113,7 @@ Definition random_animal
           ((alloc.boxed.Box.t
                 returning_traits_with_dyn.Cow.t
                 alloc.alloc.Global.t)::["new"]
-            returning_traits_with_dyn.Cow.Build_t) in
+            returning_traits_with_dyn.Cow.Build) in
       let* α1 :
           M.Val
             (alloc.boxed.Box.t

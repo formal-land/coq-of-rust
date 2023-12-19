@@ -305,7 +305,7 @@ Definition main : M unit :=
             (Self := array u32.t)
             (Trait := ltac:(refine _)))
           (borrow α1)
-          core.ops.range.RangeFull.Build_t) in
+          core.ops.range.RangeFull.Build) in
     let* α3 : M.Val (ref (slice u32.t)) := M.alloc α2 in
     match (borrow α0, borrow α3) with
     | (left_val, right_val) =>

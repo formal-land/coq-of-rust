@@ -303,7 +303,7 @@ Definition main : M unit :=
                 (Self := alloc.string.String.t)
                 (Trait := ltac:(refine _)))
               α0
-              core.ops.range.RangeFull.Build_t) in
+              core.ops.range.RangeFull.Build) in
         match α1 with
         | _ =>
           let* α0 : i32.t := M.read number in

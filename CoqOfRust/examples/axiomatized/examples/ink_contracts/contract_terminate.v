@@ -112,7 +112,7 @@ End Impl_contract_terminate_Env_t.
 
 Module  JustTerminate.
 Section JustTerminate.
-  Record t : Set := { }.
+  Inductive t : Set := Build.
 End JustTerminate.
 End JustTerminate.
 

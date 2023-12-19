@@ -46,7 +46,7 @@ Section Impl_core_clone_Clone_for_defining_an_error_type_DoubleError_t.
       (self : ref ltac:(Self))
       : M defining_an_error_type.DoubleError.t :=
     let* self : M.Val (ref ltac:(Self)) := M.alloc self in
-    M.pure defining_an_error_type.DoubleError.Build_t.
+    M.pure defining_an_error_type.DoubleError.Build.
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon ltac:(Self) "clone" := {
@@ -132,7 +132,7 @@ Definition double_first
     M.call
       ((core.option.Option.t (ref (ref str.t)))::["ok_or"]
         α1
-        defining_an_error_type.DoubleError.Build_t) in
+        defining_an_error_type.DoubleError.Build) in
   let* α3 : type not implemented :=
     M.read
       (let* α0 : ref (ref str.t) := M.read s in
@@ -140,7 +140,7 @@ Definition double_first
       let* α2 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
         M.call (str.t::["parse"] α1) in
       let* α3 : type not implemented :=
-        M.read (M.alloc defining_an_error_type.DoubleError.Build_t) in
+        M.read (M.alloc defining_an_error_type.DoubleError.Build) in
       let* α4 :
           core.result.Result.t i32.t defining_an_error_type.DoubleError.t :=
         M.call

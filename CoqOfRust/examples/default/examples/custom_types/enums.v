@@ -181,11 +181,11 @@ Definition main : M unit :=
     M.alloc (enums.WebEvent.Paste α1) in
   let* click : M.Val enums.WebEvent.t :=
     M.alloc
-      enums.WebEvent.Click
+      (enums.WebEvent.Click
         {|
         enums.WebEvent.Click.x := Integer.of_Z 20;
         enums.WebEvent.Click.y := Integer.of_Z 80;
-      |} in
+      |}) in
   let* load : M.Val enums.WebEvent.t := M.alloc enums.WebEvent.PageLoad in
   let* unload : M.Val enums.WebEvent.t := M.alloc enums.WebEvent.PageUnload in
   let* _ : M.Val unit :=

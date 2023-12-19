@@ -50,7 +50,7 @@ Section Impl_core_clone_Clone_for_boxing_errors_EmptyVec_t.
   *)
   Definition clone (self : ref ltac:(Self)) : M boxing_errors.EmptyVec.t :=
     let* self : M.Val (ref ltac:(Self)) := M.alloc self in
-    M.pure boxing_errors.EmptyVec.Build_t.
+    M.pure boxing_errors.EmptyVec.Build.
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon ltac:(Self) "clone" := {
@@ -145,7 +145,7 @@ Definition double_first
           ((core.convert.Into.into
               (Self := boxing_errors.EmptyVec.t)
               (Trait := ltac:(refine _)))
-            boxing_errors.EmptyVec.Build_t) in
+            boxing_errors.EmptyVec.Build) in
       M.alloc α0) in
   let* α3 :
       core.result.Result.t

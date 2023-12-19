@@ -200,7 +200,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* unit : M.Val clone.Unit.t := M.alloc clone.Unit.Build_t in
+  let* unit : M.Val clone.Unit.t := M.alloc clone.Unit.Build in
   let* copied_unit : M.Val clone.Unit.t := M.copy unit in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=

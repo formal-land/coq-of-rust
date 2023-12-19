@@ -74,7 +74,7 @@ End LangError.
 
 Module  Selector.
 Section Selector.
-  Record t : Set := { }.
+  Inductive t : Set := Build.
 End Selector.
 End Selector.
 
@@ -98,7 +98,7 @@ End Impl_call_builder_Selector_t.
 
 Module  CallBuilderTest.
 Section CallBuilderTest.
-  Record t : Set := { }.
+  Inductive t : Set := Build.
 End CallBuilderTest.
 End CallBuilderTest.
 

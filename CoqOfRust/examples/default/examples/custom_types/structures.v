@@ -298,7 +298,7 @@ Definition main : M unit :=
           {| structures.Point.x := α0; structures.Point.y := α1; |};
         structures.Rectangle.bottom_right := α2;
       |} in
-  let* _unit : M.Val structures.Unit.t := M.alloc structures.Unit.Build_t in
+  let* _unit : M.Val structures.Unit.t := M.alloc structures.Unit.Build in
   let* pair : M.Val structures.Pair.t :=
     let* α0 : f32.t := M.read UnsupportedLiteral in
     M.alloc (structures.Pair.Build_t (Integer.of_Z 1) α0) in

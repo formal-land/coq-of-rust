@@ -3,13 +3,13 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module  Sheep.
 Section Sheep.
-  Record t : Set := { }.
+  Inductive t : Set := Build.
 End Sheep.
 End Sheep.
 
 Module  Cow.
 Section Cow.
-  Record t : Set := { }.
+  Inductive t : Set := Build.
 End Cow.
 End Cow.
 

@@ -117,7 +117,7 @@ Section Impl_core_ops_arith_Add_operator_overloading_Bar_t_for_operator_overload
         M.alloc α4 in
       M.alloc tt in
     let* α0 : M.Val operator_overloading.FooBar.t :=
-      M.alloc operator_overloading.FooBar.Build_t in
+      M.alloc operator_overloading.FooBar.Build in
     M.read α0.
   
   Global Instance AssociatedFunction_add :
@@ -170,7 +170,7 @@ Section Impl_core_ops_arith_Add_operator_overloading_Foo_t_for_operator_overload
         M.alloc α4 in
       M.alloc tt in
     let* α0 : M.Val operator_overloading.BarFoo.t :=
-      M.alloc operator_overloading.BarFoo.Build_t in
+      M.alloc operator_overloading.BarFoo.Build in
     M.read α0.
   
   Global Instance AssociatedFunction_add :
@@ -208,8 +208,8 @@ Definition main : M unit :=
           ((core.ops.arith.Add.add
               (Self := operator_overloading.Foo.t)
               (Trait := ltac:(refine _)))
-            operator_overloading.Foo.Build_t
-            operator_overloading.Bar.Build_t) in
+            operator_overloading.Foo.Build
+            operator_overloading.Bar.Build) in
       let* α4 : M.Val operator_overloading.FooBar.t := M.alloc α3 in
       let* α5 : core.fmt.rt.Argument.t :=
         M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow α4)) in
@@ -237,8 +237,8 @@ Definition main : M unit :=
           ((core.ops.arith.Add.add
               (Self := operator_overloading.Bar.t)
               (Trait := ltac:(refine _)))
-            operator_overloading.Bar.Build_t
-            operator_overloading.Foo.Build_t) in
+            operator_overloading.Bar.Build
+            operator_overloading.Foo.Build) in
       let* α4 : M.Val operator_overloading.BarFoo.t := M.alloc α3 in
       let* α5 : core.fmt.rt.Argument.t :=
         M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow α4)) in

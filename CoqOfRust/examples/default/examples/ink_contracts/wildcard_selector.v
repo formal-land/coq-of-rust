@@ -13,7 +13,7 @@ Definition decode_input {T : Set} : M (core.result.Result.t T unit) :=
 
 Module  WildcardSelector.
 Section WildcardSelector.
-  Record t : Set := { }.
+  Inductive t : Set := Build.
 End WildcardSelector.
 End WildcardSelector.
 
@@ -27,7 +27,7 @@ Section Impl_wildcard_selector_WildcardSelector_t.
       }
   *)
   Definition new : M ltac:(Self) :=
-    M.pure wildcard_selector.WildcardSelector.Build_t.
+    M.pure wildcard_selector.WildcardSelector.Build.
   
   Global Instance AssociatedFunction_new :
     Notations.DoubleColon ltac:(Self) "new" := {
