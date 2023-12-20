@@ -40,18 +40,17 @@ Section Impl_wildcard_selector_WildcardSelector_t.
   *)
   Definition wildcard (self : mut_ref Self) : M unit :=
     let* self : M.Val (mut_ref Self) := M.alloc self in
-    let* '(_selector, _message) :
-        M.Val ((array u8.t) * alloc.string.String.t) :=
+    let* '(_selector, _message) : (array u8.t) * alloc.string.String.t :=
       let* α0 :
           core.result.Result.t ((array u8.t) * alloc.string.String.t) unit :=
         M.call wildcard_selector.decode_input in
-      let* α1 : (array u8.t) * alloc.string.String.t :=
-        M.call
-          ((core.result.Result.t
-                ((array u8.t) * alloc.string.String.t)
-                unit)::["unwrap"]
-            α0) in
-      M.alloc α1 in
+      M.call
+        ((core.result.Result.t
+              ((array u8.t) * alloc.string.String.t)
+              unit)::["unwrap"]
+          α0) in
+    let* _message := M.alloc _message in
+    let* _selector := M.alloc _selector in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "Wildcard selector: ") in

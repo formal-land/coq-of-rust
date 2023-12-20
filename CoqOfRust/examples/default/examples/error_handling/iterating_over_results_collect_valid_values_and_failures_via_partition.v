@@ -28,14 +28,13 @@ Definition main : M unit :=
       M.call ((slice (ref str.t))::["into_vec"] α5) in
     M.alloc α6 in
   let* '(numbers, errors) :
-      M.Val
-        ((alloc.vec.Vec.t
-          (core.result.Result.t i32.t core.num.error.ParseIntError.t)
-          alloc.alloc.Global.t)
-        *
-        (alloc.vec.Vec.t
-          (core.result.Result.t i32.t core.num.error.ParseIntError.t)
-          alloc.alloc.Global.t)) :=
+      (alloc.vec.Vec.t
+        (core.result.Result.t i32.t core.num.error.ParseIntError.t)
+        alloc.alloc.Global.t)
+      *
+      (alloc.vec.Vec.t
+        (core.result.Result.t i32.t core.num.error.ParseIntError.t)
+        alloc.alloc.Global.t) :=
     let* α0 : alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t :=
       M.read strings in
     let* α1 : alloc.vec.into_iter.IntoIter.t (ref str.t) alloc.alloc.Global.t :=
@@ -61,28 +60,19 @@ Definition main : M unit :=
             (Trait := ltac:(refine _)))
           α1
           α2) in
-    let* α4 :
-        (alloc.vec.Vec.t
-          (core.result.Result.t i32.t core.num.error.ParseIntError.t)
-          alloc.alloc.Global.t)
-        *
-        (alloc.vec.Vec.t
-          (core.result.Result.t i32.t core.num.error.ParseIntError.t)
-          alloc.alloc.Global.t) :=
-      M.call
-        ((core.iter.traits.iterator.Iterator.partition
-            (Self :=
-              core.iter.adapters.map.Map.t
-                (alloc.vec.into_iter.IntoIter.t
-                  (ref str.t)
-                  alloc.alloc.Global.t)
-                type not implemented)
-            (Trait := ltac:(refine _)))
-          α3
-          (core.result.Result.t
-              i32.t
-              core.num.error.ParseIntError.t)::["is_ok"]) in
-    M.alloc α4 in
+    M.call
+      ((core.iter.traits.iterator.Iterator.partition
+          (Self :=
+            core.iter.adapters.map.Map.t
+              (alloc.vec.into_iter.IntoIter.t (ref str.t) alloc.alloc.Global.t)
+              type not implemented)
+          (Trait := ltac:(refine _)))
+        α3
+        (core.result.Result.t
+            i32.t
+            core.num.error.ParseIntError.t)::["is_ok"]) in
+  let* errors := M.alloc errors in
+  let* numbers := M.alloc numbers in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "Numbers: ") in

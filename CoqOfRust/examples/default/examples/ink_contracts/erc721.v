@@ -230,7 +230,7 @@ Section Impl_core_clone_Clone_for_erc721_AccountId_t.
   *)
   Definition clone (self : ref Self) : M erc721.AccountId.t :=
     let* self : M.Val (ref Self) := M.alloc self in
-    let* _ : M.Val unit := M.alloc tt in
+    let _ : unit := tt in
     let* α0 : ref erc721.AccountId.t := M.read self in
     M.read (deref α0).
   
@@ -1237,8 +1237,10 @@ Section Impl_erc721_Erc721_t.
             erc721.Erc721.token_owner := token_owner;
             erc721.Erc721.owned_tokens_count := owned_tokens_count;
           |} :
-          M.Val (mut_ref erc721.Erc721.t) :=
-        M.copy self in
+          mut_ref erc721.Erc721.t :=
+        M.read self in
+      let* owned_tokens_count := M.alloc owned_tokens_count in
+      let* token_owner := M.alloc token_owner in
       let* owner : M.Val erc721.AccountId.t :=
         let* α0 : mut_ref (erc721.Mapping.t u32.t erc721.AccountId.t) :=
           M.read token_owner in
@@ -1625,8 +1627,10 @@ Section Impl_erc721_Erc721_t.
             erc721.Erc721.token_owner := token_owner;
             erc721.Erc721.owned_tokens_count := owned_tokens_count;
           |} :
-          M.Val (mut_ref erc721.Erc721.t) :=
-        M.copy self in
+          mut_ref erc721.Erc721.t :=
+        M.read self in
+      let* owned_tokens_count := M.alloc owned_tokens_count in
+      let* token_owner := M.alloc token_owner in
       let* _ : M.Val unit :=
         let* α0 : mut_ref (erc721.Mapping.t u32.t erc721.AccountId.t) :=
           M.read token_owner in
@@ -1766,8 +1770,10 @@ Section Impl_erc721_Erc721_t.
             erc721.Erc721.token_owner := token_owner;
             erc721.Erc721.owned_tokens_count := owned_tokens_count;
           |} :
-          M.Val (mut_ref erc721.Erc721.t) :=
-        M.copy self in
+          mut_ref erc721.Erc721.t :=
+        M.read self in
+      let* owned_tokens_count := M.alloc owned_tokens_count in
+      let* token_owner := M.alloc token_owner in
       let* _ : M.Val unit :=
         let* α0 : mut_ref (erc721.Mapping.t u32.t erc721.AccountId.t) :=
           M.read token_owner in

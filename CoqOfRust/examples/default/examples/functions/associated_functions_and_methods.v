@@ -131,18 +131,22 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
           associated_functions_and_methods.Point.x := x1;
           associated_functions_and_methods.Point.y := y1;
         |} :
-        M.Val associated_functions_and_methods.Point.t :=
+        associated_functions_and_methods.Point.t :=
       let* α0 : ref associated_functions_and_methods.Rectangle.t :=
         M.read self in
-      M.copy (deref α0).["p1"] in
+      M.read (deref α0).["p1"] in
+    let* y1 := M.alloc y1 in
+    let* x1 := M.alloc x1 in
     let* '{|
           associated_functions_and_methods.Point.x := x2;
           associated_functions_and_methods.Point.y := y2;
         |} :
-        M.Val associated_functions_and_methods.Point.t :=
+        associated_functions_and_methods.Point.t :=
       let* α0 : ref associated_functions_and_methods.Rectangle.t :=
         M.read self in
-      M.copy (deref α0).["p2"] in
+      M.read (deref α0).["p2"] in
+    let* y2 := M.alloc y2 in
+    let* x2 := M.alloc x2 in
     let* α0 : f64.t := M.read x1 in
     let* α1 : f64.t := M.read x2 in
     let* α2 : f64.t := BinOp.Panic.sub α0 α1 in
@@ -173,18 +177,22 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
           associated_functions_and_methods.Point.x := x1;
           associated_functions_and_methods.Point.y := y1;
         |} :
-        M.Val associated_functions_and_methods.Point.t :=
+        associated_functions_and_methods.Point.t :=
       let* α0 : ref associated_functions_and_methods.Rectangle.t :=
         M.read self in
-      M.copy (deref α0).["p1"] in
+      M.read (deref α0).["p1"] in
+    let* y1 := M.alloc y1 in
+    let* x1 := M.alloc x1 in
     let* '{|
           associated_functions_and_methods.Point.x := x2;
           associated_functions_and_methods.Point.y := y2;
         |} :
-        M.Val associated_functions_and_methods.Point.t :=
+        associated_functions_and_methods.Point.t :=
       let* α0 : ref associated_functions_and_methods.Rectangle.t :=
         M.read self in
-      M.copy (deref α0).["p2"] in
+      M.read (deref α0).["p2"] in
+    let* y2 := M.alloc y2 in
+    let* x2 := M.alloc x2 in
     let* α0 : f64.t := M.read UnsupportedLiteral in
     let* α1 : f64.t := M.read x1 in
     let* α2 : f64.t := M.read x2 in
@@ -276,8 +284,10 @@ Section Impl_associated_functions_and_methods_Pair_t.
   Definition destroy (self : Self) : M unit :=
     let* self : M.Val Self := M.alloc self in
     let* 'associated_functions_and_methods.Pair.Build_t first second :
-        M.Val associated_functions_and_methods.Pair.t :=
-      M.copy self in
+        associated_functions_and_methods.Pair.t :=
+      M.read self in
+    let* second := M.alloc second in
+    let* first := M.alloc first in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "Destroying Pair(") in

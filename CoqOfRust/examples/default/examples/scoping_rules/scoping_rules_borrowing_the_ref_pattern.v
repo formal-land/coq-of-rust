@@ -34,7 +34,7 @@ Section Impl_core_clone_Clone_for_scoping_rules_borrowing_the_ref_pattern_Point_
       (self : ref Self)
       : M scoping_rules_borrowing_the_ref_pattern.Point.t :=
     let* self : M.Val (ref Self) := M.alloc self in
-    let* _ : M.Val unit := M.alloc tt in
+    let _ : unit := tt in
     let* α0 : ref scoping_rules_borrowing_the_ref_pattern.Point.t :=
       M.read self in
     M.read (deref α0).
@@ -159,8 +159,9 @@ Definition main : M unit :=
           scoping_rules_borrowing_the_ref_pattern.Point.x := ref_to_x;
           scoping_rules_borrowing_the_ref_pattern.Point.y := _;
         |} :
-        M.Val scoping_rules_borrowing_the_ref_pattern.Point.t :=
-      M.copy point in
+        scoping_rules_borrowing_the_ref_pattern.Point.t :=
+      M.read point in
+    let* ref_to_x := M.alloc ref_to_x in
     let* α0 : ref i32.t := M.read ref_to_x in
     M.copy (deref α0) in
   let* mutable_point : M.Val scoping_rules_borrowing_the_ref_pattern.Point.t :=
@@ -170,8 +171,9 @@ Definition main : M unit :=
           scoping_rules_borrowing_the_ref_pattern.Point.x := _;
           scoping_rules_borrowing_the_ref_pattern.Point.y := mut_ref_to_y;
         |} :
-        M.Val scoping_rules_borrowing_the_ref_pattern.Point.t :=
-      M.copy mutable_point in
+        scoping_rules_borrowing_the_ref_pattern.Point.t :=
+      M.read mutable_point in
+    let* mut_ref_to_y := M.alloc mut_ref_to_y in
     let* _ : M.Val unit :=
       let* α0 : mut_ref i32.t := M.read mut_ref_to_y in
       assign (deref α0) (Integer.of_Z 1) in
@@ -236,9 +238,9 @@ Definition main : M unit :=
           (Integer.of_Z 5)) in
     M.alloc (α0, Integer.of_Z 3) in
   let* _ : M.Val unit :=
-    let* '(_, last) :
-        M.Val ((alloc.boxed.Box.t u32.t alloc.alloc.Global.t) * u32.t) :=
-      M.copy mutable_tuple in
+    let* '(_, last) : (alloc.boxed.Box.t u32.t alloc.alloc.Global.t) * u32.t :=
+      M.read mutable_tuple in
+    let* last := M.alloc last in
     let* _ : M.Val unit :=
       let* α0 : mut_ref u32.t := M.read last in
       assign (deref α0) (Integer.of_Z 2) in

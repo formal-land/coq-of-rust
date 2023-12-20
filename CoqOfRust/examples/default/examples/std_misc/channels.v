@@ -49,12 +49,10 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
   let* '(tx, rx) :
-      M.Val
-        ((std.sync.mpsc.Sender.t i32.t) * (std.sync.mpsc.Receiver.t i32.t)) :=
-    let* α0 :
-        (std.sync.mpsc.Sender.t i32.t) * (std.sync.mpsc.Receiver.t i32.t) :=
-      M.call std.sync.mpsc.channel in
-    M.alloc α0 in
+      (std.sync.mpsc.Sender.t i32.t) * (std.sync.mpsc.Receiver.t i32.t) :=
+    M.call std.sync.mpsc.channel in
+  let* rx := M.alloc rx in
+  let* tx := M.alloc tx in
   let* children :
       M.Val
         (alloc.vec.Vec.t (std.thread.JoinHandle.t unit) alloc.alloc.Global.t) :=

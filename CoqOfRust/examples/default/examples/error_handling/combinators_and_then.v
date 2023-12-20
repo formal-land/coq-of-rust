@@ -272,15 +272,16 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* '(cordon_bleu, steak, sushi) :
-      M.Val
-        ((combinators_and_then.Food.t * combinators_and_then.Food.t)
-        *
-        combinators_and_then.Food.t) :=
-    M.alloc
-      (combinators_and_then.Food.CordonBleu,
-        combinators_and_then.Food.Steak,
-        combinators_and_then.Food.Sushi) in
+  let '(cordon_bleu, steak, sushi) :
+      (combinators_and_then.Food.t * combinators_and_then.Food.t)
+      *
+      combinators_and_then.Food.t :=
+    (combinators_and_then.Food.CordonBleu,
+      combinators_and_then.Food.Steak,
+      combinators_and_then.Food.Sushi) in
+  let* sushi := M.alloc sushi in
+  let* steak := M.alloc steak in
+  let* cordon_bleu := M.alloc cordon_bleu in
   let* _ : M.Val unit :=
     let* α0 : combinators_and_then.Food.t := M.read cordon_bleu in
     let* α1 : unit :=

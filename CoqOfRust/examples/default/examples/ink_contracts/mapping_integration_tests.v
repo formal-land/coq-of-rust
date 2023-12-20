@@ -250,7 +250,7 @@ Section Impl_core_clone_Clone_for_mapping_integration_tests_AccountId_t.
       (self : ref Self)
       : M mapping_integration_tests.AccountId.t :=
     let* self : M.Val (ref Self) := M.alloc self in
-    let* _ : M.Val unit := M.alloc tt in
+    let _ : unit := tt in
     let* α0 : ref mapping_integration_tests.AccountId.t := M.read self in
     M.read (deref α0).
   

@@ -54,8 +54,10 @@ Definition main : M unit :=
           name;
         scoping_rules_ownership_and_rules_partial_moves.main.Person.age := age;
       |} :
-      M.Val scoping_rules_ownership_and_rules_partial_moves.main.Person.t :=
-    M.copy person in
+      scoping_rules_ownership_and_rules_partial_moves.main.Person.t :=
+    M.read person in
+  let* age := M.alloc age in
+  let* name := M.alloc name in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "The person's age is ") in

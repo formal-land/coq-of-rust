@@ -150,8 +150,8 @@ Section Impl_derive_Inches_t.
   *)
   Definition to_centimeters (self : ref Self) : M derive.Centimeters.t :=
     let* self : M.Val (ref Self) := M.alloc self in
-    let* 'derive.Inches.Build_t inches : M.Val (ref derive.Inches.t) :=
-      M.copy self in
+    let* 'derive.Inches.Build_t inches : ref derive.Inches.t := M.read self in
+    let* inches := M.alloc inches in
     let* α0 : i32.t := M.read inches in
     let* α1 : f64.t := cast α0 in
     let* α2 : f64.t := M.read UnsupportedLiteral in

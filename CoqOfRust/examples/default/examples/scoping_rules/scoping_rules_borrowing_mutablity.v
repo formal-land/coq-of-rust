@@ -45,9 +45,9 @@ Section Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book_t.
       (self : ref Self)
       : M scoping_rules_borrowing_mutablity.Book.t :=
     let* self : M.Val (ref Self) := M.alloc self in
-    let* _ : M.Val unit := M.alloc tt in
-    let* _ : M.Val unit := M.alloc tt in
-    let* _ : M.Val unit := M.alloc tt in
+    let _ : unit := tt in
+    let _ : unit := tt in
+    let _ : unit := tt in
     let* α0 : ref scoping_rules_borrowing_mutablity.Book.t := M.read self in
     M.read (deref α0).
   

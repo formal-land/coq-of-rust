@@ -48,7 +48,7 @@ Section Impl_core_clone_Clone_for_payment_channel_AccountId_t.
   *)
   Definition clone (self : ref Self) : M payment_channel.AccountId.t :=
     let* self : M.Val (ref Self) := M.alloc self in
-    let* _ : M.Val unit := M.alloc tt in
+    let _ : unit := tt in
     let* α0 : ref payment_channel.AccountId.t := M.read self in
     M.read (deref α0).
   
@@ -132,7 +132,7 @@ Section Impl_core_cmp_Eq_for_payment_channel_AccountId_t.
   *)
   Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
     let* self : M.Val (ref Self) := M.alloc self in
-    let* _ : M.Val unit := M.alloc tt in
+    let _ : unit := tt in
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   

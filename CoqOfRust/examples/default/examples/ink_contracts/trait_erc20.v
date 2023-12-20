@@ -156,7 +156,7 @@ Section Impl_core_clone_Clone_for_trait_erc20_AccountId_t.
   *)
   Definition clone (self : ref Self) : M trait_erc20.AccountId.t :=
     let* self : M.Val (ref Self) := M.alloc self in
-    let* _ : M.Val unit := M.alloc tt in
+    let _ : unit := tt in
     let* α0 : ref trait_erc20.AccountId.t := M.read self in
     M.read (deref α0).
   

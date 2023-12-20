@@ -175,6 +175,25 @@ fn compile_borrow(borrow_kind: &BorrowKind, arg: Expr) -> ExprKind {
     }
 }
 
+/// Allocate all the bindings in the [pattern] to some [M.Val]
+fn allocate_bindings(pattern: &Pattern, body: Box<Expr>) -> Box<Expr> {
+    let bindings = pattern.get_bindings();
+    bindings.iter().fold(body, |body, binding| {
+        Box::new(Expr {
+            ty: body.ty.clone(),
+            kind: ExprKind::Let {
+                is_monadic: false,
+                pattern: Box::new(Pattern::Variable(binding.clone())),
+                init: Box::new(Expr {
+                    kind: ExprKind::LocalVar(binding.clone()).alloc(None),
+                    ty: None,
+                }),
+                body,
+            },
+        })
+    })
+}
+
 fn compile_expr_kind<'a>(
     env: &mut Env<'a>,
     thir: &rustc_middle::thir::Thir<'a>,
@@ -372,25 +391,13 @@ fn compile_expr_kind<'a>(
                 .iter()
                 .map(|arm_id| {
                     let arm = thir.arms.get(*arm_id).unwrap();
-                    let pat = crate::thir_pattern::compile_pattern(env, &arm.pattern);
+                    let pattern = crate::thir_pattern::compile_pattern(env, &arm.pattern);
                     let body = Box::new(compile_expr(env, thir, &arm.body));
-                    let bindings = pat.get_bindings();
-                    // Allocate all the bindings to [M.Val]
-                    let body = bindings.iter().fold(body, |body, binding| {
-                        Box::new(Expr {
-                            ty: body.ty.clone(),
-                            kind: ExprKind::Let {
-                                is_monadic: false,
-                                pattern: Box::new(Pattern::Variable(binding.clone())),
-                                init: Box::new(Expr {
-                                    kind: ExprKind::LocalVar(binding.clone()).alloc(None),
-                                    ty: None,
-                                }),
-                                body,
-                            },
-                        })
-                    });
-                    MatchArm { pat, body: *body }
+                    let body = allocate_bindings(&pattern, body);
+                    MatchArm {
+                        pattern,
+                        body: *body,
+                    }
                 })
                 .collect();
             ExprKind::Match { scrutinee, arms }
@@ -705,15 +712,20 @@ fn compile_stmts<'a>(
                 } => {
                     let pattern = Box::new(crate::thir_pattern::compile_pattern(env, pattern));
                     let init = match initializer {
-                        Some(initializer) => Box::new(compile_expr(env, thir, initializer).copy()),
-                        None => Box::new(Expr::tt()),
+                        Some(initializer) => compile_expr(env, thir, initializer),
+                        None => Expr::tt(),
+                    };
+                    let (init, body) = if matches!(pattern.as_ref(), Pattern::Variable(_)) {
+                        (init.copy(), body)
+                    } else {
+                        (init.read(), allocate_bindings(pattern.as_ref(), body))
                     };
                     let ty = body.ty.clone();
                     Expr {
                         kind: ExprKind::Let {
                             is_monadic: false,
                             pattern,
-                            init,
+                            init: Box::new(init),
                             body,
                         },
                         ty,

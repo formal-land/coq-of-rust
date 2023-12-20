@@ -47,7 +47,7 @@ Section Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job_t.
       (self : ref Self)
       : M unpacking_options_via_question_mark.Job.t :=
     let* self : M.Val (ref Self) := M.alloc self in
-    let* _ : M.Val unit := M.alloc tt in
+    let _ : unit := tt in
     let* α0 : ref unpacking_options_via_question_mark.Job.t := M.read self in
     M.read (deref α0).
   
@@ -107,8 +107,8 @@ Section Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumbe
       (self : ref Self)
       : M unpacking_options_via_question_mark.PhoneNumber.t :=
     let* self : M.Val (ref Self) := M.alloc self in
-    let* _ : M.Val unit := M.alloc tt in
-    let* _ : M.Val unit := M.alloc tt in
+    let _ : unit := tt in
+    let _ : unit := tt in
     let* α0 : ref unpacking_options_via_question_mark.PhoneNumber.t :=
       M.read self in
     M.read (deref α0).

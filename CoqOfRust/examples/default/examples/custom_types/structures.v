@@ -285,8 +285,10 @@ Definition main : M unit :=
       M.alloc α12 in
     M.alloc tt in
   let* '{| structures.Point.x := left_edge; structures.Point.y := top_edge; |} :
-      M.Val structures.Point.t :=
-    M.copy point in
+      structures.Point.t :=
+    M.read point in
+  let* top_edge := M.alloc top_edge in
+  let* left_edge := M.alloc left_edge in
   let* _rectangle : M.Val structures.Rectangle.t :=
     let* α0 : f32.t := M.read left_edge in
     let* α1 : f32.t := M.read top_edge in
@@ -325,8 +327,10 @@ Definition main : M unit :=
       let* α12 : unit := M.call (std.io.stdio._print α11) in
       M.alloc α12 in
     M.alloc tt in
-  let* 'structures.Pair.Build_t integer decimal : M.Val structures.Pair.t :=
-    M.copy pair in
+  let* 'structures.Pair.Build_t integer decimal : structures.Pair.t :=
+    M.read pair in
+  let* decimal := M.alloc decimal in
+  let* integer := M.alloc integer in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "pair contains ") in

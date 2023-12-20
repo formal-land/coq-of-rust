@@ -48,7 +48,7 @@ Section Impl_core_clone_Clone_for_custom_environment_AccountId_t.
   *)
   Definition clone (self : ref Self) : M custom_environment.AccountId.t :=
     let* self : M.Val (ref Self) := M.alloc self in
-    let* _ : M.Val unit := M.alloc tt in
+    let _ : unit := tt in
     let* α0 : ref custom_environment.AccountId.t := M.read self in
     M.read (deref α0).
   

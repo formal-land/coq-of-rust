@@ -11,7 +11,9 @@ fn reverse(pair: (i32, bool)) -> (bool, i32) {
 *)
 Definition reverse (pair : i32.t * bool.t) : M (bool.t * i32.t) :=
   let* pair : M.Val (i32.t * bool.t) := M.alloc pair in
-  let* '(int_param, bool_param) : M.Val (i32.t * bool.t) := M.copy pair in
+  let* '(int_param, bool_param) : i32.t * bool.t := M.read pair in
+  let* bool_param := M.alloc bool_param in
+  let* int_param := M.alloc int_param in
   let* α0 : bool.t := M.read bool_param in
   let* α1 : i32.t := M.read int_param in
   let* α0 : M.Val (bool.t * i32.t) := M.alloc (α0, α1) in
@@ -326,8 +328,12 @@ Definition main : M unit :=
     let* α0 : ref str.t := M.read (mk_str "hello") in
     let* α1 : f64.t := M.read UnsupportedLiteral in
     M.alloc (Integer.of_Z 1, α0, α1, true) in
-  let* '(a, b, c, d) : M.Val (((i32.t * (ref str.t)) * f64.t) * bool.t) :=
-    M.copy tuple in
+  let* '(a, b, c, d) : ((i32.t * (ref str.t)) * f64.t) * bool.t :=
+    M.read tuple in
+  let* d := M.alloc d in
+  let* c := M.alloc c in
+  let* b := M.alloc b in
+  let* a := M.alloc a in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "") in
