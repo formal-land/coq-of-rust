@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module  PrintInOption.
 Section PrintInOption.
   Class Trait (Self : Set) : Type := {
-    print_in_option : ltac:(Self) -> M unit;
+    print_in_option : Self -> M unit;
   }.
   
 End PrintInOption.
@@ -16,22 +16,21 @@ Section Impl_generics_where_clauses_PrintInOption_for_T.
   
   Context {ℋ_0 : core.fmt.Debug.Trait (core.option.Option.t T)}.
   
-  Ltac Self := exact T.
+  Definition Self : Set := T.
   
   (*
       fn print_in_option(self) {
           println!("{:?}", Some(self));
       }
   *)
-  Parameter print_in_option : ltac:(Self) -> M unit.
+  Parameter print_in_option : Self -> M unit.
   
   Global Instance AssociatedFunction_print_in_option :
-    Notations.DoubleColon ltac:(Self) "print_in_option" := {
+    Notations.DoubleColon Self "print_in_option" := {
     Notations.double_colon := print_in_option;
   }.
   
-  Global Instance ℐ :
-    generics_where_clauses.PrintInOption.Trait ltac:(Self) := {
+  Global Instance ℐ : generics_where_clauses.PrintInOption.Trait Self := {
     generics_where_clauses.PrintInOption.print_in_option := print_in_option;
   }.
 End Impl_generics_where_clauses_PrintInOption_for_T.

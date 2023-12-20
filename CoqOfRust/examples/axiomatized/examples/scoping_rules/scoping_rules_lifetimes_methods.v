@@ -15,17 +15,17 @@ End Owner.
 
 Module  Impl_scoping_rules_lifetimes_methods_Owner_t.
 Section Impl_scoping_rules_lifetimes_methods_Owner_t.
-  Ltac Self := exact scoping_rules_lifetimes_methods.Owner.t.
+  Definition Self : Set := scoping_rules_lifetimes_methods.Owner.t.
   
   (*
       fn add_one<'a>(&'a mut self) {
           self.0 += 1;
       }
   *)
-  Parameter add_one : (mut_ref ltac:(Self)) -> M unit.
+  Parameter add_one : (mut_ref Self) -> M unit.
   
   Global Instance AssociatedFunction_add_one :
-    Notations.DoubleColon ltac:(Self) "add_one" := {
+    Notations.DoubleColon Self "add_one" := {
     Notations.double_colon := add_one;
   }.
   
@@ -34,10 +34,10 @@ Section Impl_scoping_rules_lifetimes_methods_Owner_t.
           println!("`print`: {}", self.0);
       }
   *)
-  Parameter print : (ref ltac:(Self)) -> M unit.
+  Parameter print : (ref Self) -> M unit.
   
   Global Instance AssociatedFunction_print :
-    Notations.DoubleColon ltac:(Self) "print" := {
+    Notations.DoubleColon Self "print" := {
     Notations.double_colon := print;
   }.
 End Impl_scoping_rules_lifetimes_methods_Owner_t.

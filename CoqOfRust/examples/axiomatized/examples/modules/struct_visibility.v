@@ -42,7 +42,7 @@ Module my.
   Section Impl_struct_visibility_my_ClosedBox_t_T.
     Context {T : Set}.
     
-    Ltac Self := exact (struct_visibility.my.ClosedBox.t T).
+    Definition Self : Set := struct_visibility.my.ClosedBox.t T.
     
     (*
             pub fn new(contents: T) -> ClosedBox<T> {
@@ -52,7 +52,7 @@ Module my.
     Parameter new : T -> M (struct_visibility.my.ClosedBox.t T).
     
     Global Instance AssociatedFunction_new :
-      Notations.DoubleColon ltac:(Self) "new" := {
+      Notations.DoubleColon Self "new" := {
       Notations.double_colon := new;
     }.
   End Impl_struct_visibility_my_ClosedBox_t_T.
@@ -99,7 +99,7 @@ Module  Impl_struct_visibility_my_ClosedBox_t_T_2.
 Section Impl_struct_visibility_my_ClosedBox_t_T_2.
   Context {T : Set}.
   
-  Ltac Self := exact (struct_visibility.my.ClosedBox.t T).
+  Definition Self : Set := struct_visibility.my.ClosedBox.t T.
   
   (*
           pub fn new(contents: T) -> ClosedBox<T> {
@@ -108,8 +108,7 @@ Section Impl_struct_visibility_my_ClosedBox_t_T_2.
   *)
   Parameter new : T -> M (struct_visibility.my.ClosedBox.t T).
   
-  Global Instance AssociatedFunction_new :
-    Notations.DoubleColon ltac:(Self) "new" := {
+  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
   }.
 End Impl_struct_visibility_my_ClosedBox_t_T_2.

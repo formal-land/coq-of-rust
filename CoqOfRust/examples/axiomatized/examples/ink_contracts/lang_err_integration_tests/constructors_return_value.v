@@ -15,7 +15,7 @@ End AccountId.
 
 Module  Impl_core_default_Default_for_constructors_return_value_AccountId_t.
 Section Impl_core_default_Default_for_constructors_return_value_AccountId_t.
-  Ltac Self := exact constructors_return_value.AccountId.t.
+  Definition Self : Set := constructors_return_value.AccountId.t.
   
   (*
   Default
@@ -23,11 +23,11 @@ Section Impl_core_default_Default_for_constructors_return_value_AccountId_t.
   Parameter default : M constructors_return_value.AccountId.t.
   
   Global Instance AssociatedFunction_default :
-    Notations.DoubleColon ltac:(Self) "default" := {
+    Notations.DoubleColon Self "default" := {
     Notations.double_colon := default;
   }.
   
-  Global Instance ℐ : core.default.Default.Trait ltac:(Self) := {
+  Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
   }.
 End Impl_core_default_Default_for_constructors_return_value_AccountId_t.
@@ -35,20 +35,19 @@ End Impl_core_default_Default_for_constructors_return_value_AccountId_t.
 
 Module  Impl_core_clone_Clone_for_constructors_return_value_AccountId_t.
 Section Impl_core_clone_Clone_for_constructors_return_value_AccountId_t.
-  Ltac Self := exact constructors_return_value.AccountId.t.
+  Definition Self : Set := constructors_return_value.AccountId.t.
   
   (*
   Clone
   *)
-  Parameter clone :
-      (ref ltac:(Self)) -> M constructors_return_value.AccountId.t.
+  Parameter clone : (ref Self) -> M constructors_return_value.AccountId.t.
   
   Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon ltac:(Self) "clone" := {
+    Notations.DoubleColon Self "clone" := {
     Notations.double_colon := clone;
   }.
   
-  Global Instance ℐ : core.clone.Clone.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
     core.clone.Clone.clone_from := Datatypes.None;
   }.
@@ -57,30 +56,30 @@ End Impl_core_clone_Clone_for_constructors_return_value_AccountId_t.
 
 Module  Impl_core_marker_Copy_for_constructors_return_value_AccountId_t.
 Section Impl_core_marker_Copy_for_constructors_return_value_AccountId_t.
-  Ltac Self := exact constructors_return_value.AccountId.t.
+  Definition Self : Set := constructors_return_value.AccountId.t.
   
-  Global Instance ℐ : core.marker.Copy.Trait ltac:(Self) := {
+  Global Instance ℐ : core.marker.Copy.Trait Self := {
   }.
 End Impl_core_marker_Copy_for_constructors_return_value_AccountId_t.
 End Impl_core_marker_Copy_for_constructors_return_value_AccountId_t.
 
 Module  Impl_core_convert_From_array_u8_t_for_constructors_return_value_AccountId_t.
 Section Impl_core_convert_From_array_u8_t_for_constructors_return_value_AccountId_t.
-  Ltac Self := exact constructors_return_value.AccountId.t.
+  Definition Self : Set := constructors_return_value.AccountId.t.
   
   (*
       fn from(_value: [u8; 32]) -> Self {
           unimplemented!()
       }
   *)
-  Parameter from : (array u8.t) -> M ltac:(Self).
+  Parameter from : (array u8.t) -> M Self.
   
   Global Instance AssociatedFunction_from :
-    Notations.DoubleColon ltac:(Self) "from" := {
+    Notations.DoubleColon Self "from" := {
     Notations.double_colon := from;
   }.
   
-  Global Instance ℐ : core.convert.From.Trait ltac:(Self) (T := array u8.t) := {
+  Global Instance ℐ : core.convert.From.Trait Self (T := array u8.t) := {
     core.convert.From.from := from;
   }.
 End Impl_core_convert_From_array_u8_t_for_constructors_return_value_AccountId_t.
@@ -120,22 +119,19 @@ End ConstructorError.
 
 Module  Impl_core_fmt_Debug_for_constructors_return_value_ConstructorError_t.
 Section Impl_core_fmt_Debug_for_constructors_return_value_ConstructorError_t.
-  Ltac Self := exact constructors_return_value.ConstructorError.t.
+  Definition Self : Set := constructors_return_value.ConstructorError.t.
   
   (*
   Debug
   *)
   Parameter fmt :
-      (ref ltac:(Self)) ->
-        (mut_ref core.fmt.Formatter.t) ->
-        M ltac:(core.fmt.Result).
+      (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
   
-  Global Instance AssociatedFunction_fmt :
-    Notations.DoubleColon ltac:(Self) "fmt" := {
+  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
+  Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
   }.
 End Impl_core_fmt_Debug_for_constructors_return_value_ConstructorError_t.
@@ -149,17 +145,17 @@ End ReturnFlags.
 
 Module  Impl_constructors_return_value_ReturnFlags_t.
 Section Impl_constructors_return_value_ReturnFlags_t.
-  Ltac Self := exact constructors_return_value.ReturnFlags.t.
+  Definition Self : Set := constructors_return_value.ReturnFlags.t.
   
   (*
       fn new_with_reverted(has_reverted: bool) -> Self {
           unimplemented!()
       }
   *)
-  Parameter new_with_reverted : bool.t -> M ltac:(Self).
+  Parameter new_with_reverted : bool.t -> M Self.
   
   Global Instance AssociatedFunction_new_with_reverted :
-    Notations.DoubleColon ltac:(Self) "new_with_reverted" := {
+    Notations.DoubleColon Self "new_with_reverted" := {
     Notations.double_colon := new_with_reverted;
   }.
 End Impl_constructors_return_value_ReturnFlags_t.
@@ -176,17 +172,16 @@ Parameter return_value :
 
 Module  Impl_constructors_return_value_ConstructorsReturnValue_t.
 Section Impl_constructors_return_value_ConstructorsReturnValue_t.
-  Ltac Self := exact constructors_return_value.ConstructorsReturnValue.t.
+  Definition Self : Set := constructors_return_value.ConstructorsReturnValue.t.
   
   (*
       pub fn new(init_value: bool) -> Self {
           Self { value: init_value }
       }
   *)
-  Parameter new : bool.t -> M ltac:(Self).
+  Parameter new : bool.t -> M Self.
   
-  Global Instance AssociatedFunction_new :
-    Notations.DoubleColon ltac:(Self) "new" := {
+  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
   }.
   
@@ -203,11 +198,11 @@ Section Impl_constructors_return_value_ConstructorsReturnValue_t.
       bool.t ->
         M
           (core.result.Result.t
-            ltac:(Self)
+            Self
             constructors_return_value.ConstructorError.t).
   
   Global Instance AssociatedFunction_try_new :
-    Notations.DoubleColon ltac:(Self) "try_new" := {
+    Notations.DoubleColon Self "try_new" := {
     Notations.double_colon := try_new;
   }.
   
@@ -219,10 +214,10 @@ Section Impl_constructors_return_value_ConstructorsReturnValue_t.
           )
       }
   *)
-  Parameter revert_new : bool.t -> M ltac:(Self).
+  Parameter revert_new : bool.t -> M Self.
   
   Global Instance AssociatedFunction_revert_new :
-    Notations.DoubleColon ltac:(Self) "revert_new" := {
+    Notations.DoubleColon Self "revert_new" := {
     Notations.double_colon := revert_new;
   }.
   
@@ -244,11 +239,11 @@ Section Impl_constructors_return_value_ConstructorsReturnValue_t.
       bool.t ->
         M
           (core.result.Result.t
-            ltac:(Self)
+            Self
             constructors_return_value.ConstructorError.t).
   
   Global Instance AssociatedFunction_try_revert_new :
-    Notations.DoubleColon ltac:(Self) "try_revert_new" := {
+    Notations.DoubleColon Self "try_revert_new" := {
     Notations.double_colon := try_revert_new;
   }.
   
@@ -257,10 +252,10 @@ Section Impl_constructors_return_value_ConstructorsReturnValue_t.
           self.value
       }
   *)
-  Parameter get_value : (ref ltac:(Self)) -> M bool.t.
+  Parameter get_value : (ref Self) -> M bool.t.
   
   Global Instance AssociatedFunction_get_value :
-    Notations.DoubleColon ltac:(Self) "get_value" := {
+    Notations.DoubleColon Self "get_value" := {
     Notations.double_colon := get_value;
   }.
 End Impl_constructors_return_value_ConstructorsReturnValue_t.

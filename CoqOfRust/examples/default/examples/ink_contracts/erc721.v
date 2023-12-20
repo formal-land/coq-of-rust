@@ -34,7 +34,7 @@ Section Impl_core_default_Default_for_erc721_Mapping_t_K_V.
     {ℋ_0 : core.default.Default.Trait K}
     {ℋ_1 : core.default.Default.Trait V}.
   
-  Ltac Self := exact (erc721.Mapping.t K V).
+  Definition Self : Set := erc721.Mapping.t K V.
   
   (*
   Default
@@ -53,11 +53,11 @@ Section Impl_core_default_Default_for_erc721_Mapping_t_K_V.
     M.pure {| erc721.Mapping._key := α0; erc721.Mapping._value := α1; |}.
   
   Global Instance AssociatedFunction_default :
-    Notations.DoubleColon ltac:(Self) "default" := {
+    Notations.DoubleColon Self "default" := {
     Notations.double_colon := default;
   }.
   
-  Global Instance ℐ : core.default.Default.Trait ltac:(Self) := {
+  Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
   }.
 End Impl_core_default_Default_for_erc721_Mapping_t_K_V.
@@ -67,22 +67,22 @@ Module  Impl_erc721_Mapping_t_K_V.
 Section Impl_erc721_Mapping_t_K_V.
   Context {K V : Set}.
   
-  Ltac Self := exact (erc721.Mapping.t K V).
+  Definition Self : Set := erc721.Mapping.t K V.
   
   (*
       fn contains(&self, _key: &K) -> bool {
           unimplemented!()
       }
   *)
-  Definition contains (self : ref ltac:(Self)) (_key : ref K) : M bool.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition contains (self : ref Self) (_key : ref K) : M bool.t :=
+    let* self : M.Val (ref Self) := M.alloc self in
     let* _key : M.Val (ref K) := M.alloc _key in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
   Global Instance AssociatedFunction_contains :
-    Notations.DoubleColon ltac:(Self) "contains" := {
+    Notations.DoubleColon Self "contains" := {
     Notations.double_colon := contains;
   }.
   
@@ -92,17 +92,16 @@ Section Impl_erc721_Mapping_t_K_V.
       }
   *)
   Definition get
-      (self : ref ltac:(Self))
+      (self : ref Self)
       (_key : ref K)
       : M (core.option.Option.t V) :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (ref Self) := M.alloc self in
     let* _key : M.Val (ref K) := M.alloc _key in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_get :
-    Notations.DoubleColon ltac:(Self) "get" := {
+  Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
     Notations.double_colon := get;
   }.
   
@@ -112,11 +111,11 @@ Section Impl_erc721_Mapping_t_K_V.
       }
   *)
   Definition insert
-      (self : mut_ref ltac:(Self))
+      (self : mut_ref Self)
       (_key : K)
       (_value : V)
       : M (core.option.Option.t u32.t) :=
-    let* self : M.Val (mut_ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (mut_ref Self) := M.alloc self in
     let* _key : M.Val K := M.alloc _key in
     let* _value : M.Val V := M.alloc _value in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
@@ -124,7 +123,7 @@ Section Impl_erc721_Mapping_t_K_V.
     never_to_any α1.
   
   Global Instance AssociatedFunction_insert :
-    Notations.DoubleColon ltac:(Self) "insert" := {
+    Notations.DoubleColon Self "insert" := {
     Notations.double_colon := insert;
   }.
   
@@ -133,15 +132,15 @@ Section Impl_erc721_Mapping_t_K_V.
           unimplemented!()
       }
   *)
-  Definition remove (self : ref ltac:(Self)) (_key : K) : M unit :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition remove (self : ref Self) (_key : K) : M unit :=
+    let* self : M.Val (ref Self) := M.alloc self in
     let* _key : M.Val K := M.alloc _key in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
   Global Instance AssociatedFunction_remove :
-    Notations.DoubleColon ltac:(Self) "remove" := {
+    Notations.DoubleColon Self "remove" := {
     Notations.double_colon := remove;
   }.
   
@@ -151,17 +150,17 @@ Section Impl_erc721_Mapping_t_K_V.
       }
   *)
   Definition size
-      (self : ref ltac:(Self))
+      (self : ref Self)
       (_key : K)
       : M (core.option.Option.t u32.t) :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (ref Self) := M.alloc self in
     let* _key : M.Val K := M.alloc _key in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
   Global Instance AssociatedFunction_size :
-    Notations.DoubleColon ltac:(Self) "size" := {
+    Notations.DoubleColon Self "size" := {
     Notations.double_colon := size;
   }.
   
@@ -170,18 +169,15 @@ Section Impl_erc721_Mapping_t_K_V.
           unimplemented!()
       }
   *)
-  Definition take
-      (self : ref ltac:(Self))
-      (_key : K)
-      : M (core.option.Option.t V) :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition take (self : ref Self) (_key : K) : M (core.option.Option.t V) :=
+    let* self : M.Val (ref Self) := M.alloc self in
     let* _key : M.Val K := M.alloc _key in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
   Global Instance AssociatedFunction_take :
-    Notations.DoubleColon ltac:(Self) "take" := {
+    Notations.DoubleColon Self "take" := {
     Notations.double_colon := take;
   }.
 End Impl_erc721_Mapping_t_K_V.
@@ -201,7 +197,7 @@ End AccountId.
 
 Module  Impl_core_default_Default_for_erc721_AccountId_t.
 Section Impl_core_default_Default_for_erc721_AccountId_t.
-  Ltac Self := exact erc721.AccountId.t.
+  Definition Self : Set := erc721.AccountId.t.
   
   (*
   Default
@@ -215,11 +211,11 @@ Section Impl_core_default_Default_for_erc721_AccountId_t.
     M.pure (erc721.AccountId.Build_t α0).
   
   Global Instance AssociatedFunction_default :
-    Notations.DoubleColon ltac:(Self) "default" := {
+    Notations.DoubleColon Self "default" := {
     Notations.double_colon := default;
   }.
   
-  Global Instance ℐ : core.default.Default.Trait ltac:(Self) := {
+  Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
   }.
 End Impl_core_default_Default_for_erc721_AccountId_t.
@@ -227,23 +223,23 @@ End Impl_core_default_Default_for_erc721_AccountId_t.
 
 Module  Impl_core_clone_Clone_for_erc721_AccountId_t.
 Section Impl_core_clone_Clone_for_erc721_AccountId_t.
-  Ltac Self := exact erc721.AccountId.t.
+  Definition Self : Set := erc721.AccountId.t.
   
   (*
   Clone
   *)
-  Definition clone (self : ref ltac:(Self)) : M erc721.AccountId.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition clone (self : ref Self) : M erc721.AccountId.t :=
+    let* self : M.Val (ref Self) := M.alloc self in
     let* _ : M.Val unit := M.alloc tt in
     let* α0 : ref erc721.AccountId.t := M.read self in
     M.read (deref α0).
   
   Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon ltac:(Self) "clone" := {
+    Notations.DoubleColon Self "clone" := {
     Notations.double_colon := clone;
   }.
   
-  Global Instance ℐ : core.clone.Clone.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
     core.clone.Clone.clone_from := Datatypes.None;
   }.
@@ -252,34 +248,31 @@ End Impl_core_clone_Clone_for_erc721_AccountId_t.
 
 Module  Impl_core_marker_Copy_for_erc721_AccountId_t.
 Section Impl_core_marker_Copy_for_erc721_AccountId_t.
-  Ltac Self := exact erc721.AccountId.t.
+  Definition Self : Set := erc721.AccountId.t.
   
-  Global Instance ℐ : core.marker.Copy.Trait ltac:(Self) := {
+  Global Instance ℐ : core.marker.Copy.Trait Self := {
   }.
 End Impl_core_marker_Copy_for_erc721_AccountId_t.
 End Impl_core_marker_Copy_for_erc721_AccountId_t.
 
 Module  Impl_core_marker_StructuralPartialEq_for_erc721_AccountId_t.
 Section Impl_core_marker_StructuralPartialEq_for_erc721_AccountId_t.
-  Ltac Self := exact erc721.AccountId.t.
+  Definition Self : Set := erc721.AccountId.t.
   
-  Global Instance ℐ : core.marker.StructuralPartialEq.Trait ltac:(Self) := {
+  Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
   }.
 End Impl_core_marker_StructuralPartialEq_for_erc721_AccountId_t.
 End Impl_core_marker_StructuralPartialEq_for_erc721_AccountId_t.
 
 Module  Impl_core_cmp_PartialEq_for_erc721_AccountId_t.
 Section Impl_core_cmp_PartialEq_for_erc721_AccountId_t.
-  Ltac Self := exact erc721.AccountId.t.
+  Definition Self : Set := erc721.AccountId.t.
   
   (*
   PartialEq
   *)
-  Definition eq
-      (self : ref ltac:(Self))
-      (other : ref erc721.AccountId.t)
-      : M bool.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition eq (self : ref Self) (other : ref erc721.AccountId.t) : M bool.t :=
+    let* self : M.Val (ref Self) := M.alloc self in
     let* other : M.Val (ref erc721.AccountId.t) := M.alloc other in
     let* α0 : ref erc721.AccountId.t := M.read self in
     let* α1 : u128.t := M.read (deref α0).["0"] in
@@ -287,14 +280,13 @@ Section Impl_core_cmp_PartialEq_for_erc721_AccountId_t.
     let* α3 : u128.t := M.read (deref α2).["0"] in
     M.pure (BinOp.Pure.eq α1 α3).
   
-  Global Instance AssociatedFunction_eq :
-    Notations.DoubleColon ltac:(Self) "eq" := {
+  Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
     Notations.double_colon := eq;
   }.
   
   Global Instance ℐ :
-    core.cmp.PartialEq.Required.Trait ltac:(Self)
-      (Rhs := core.cmp.PartialEq.Default.Rhs ltac:(Self)) := {
+    core.cmp.PartialEq.Required.Trait Self
+      (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
     core.cmp.PartialEq.eq := eq;
     core.cmp.PartialEq.ne := Datatypes.None;
   }.
@@ -303,25 +295,25 @@ End Impl_core_cmp_PartialEq_for_erc721_AccountId_t.
 
 Module  Impl_core_convert_From_array_u8_t_for_erc721_AccountId_t.
 Section Impl_core_convert_From_array_u8_t_for_erc721_AccountId_t.
-  Ltac Self := exact erc721.AccountId.t.
+  Definition Self : Set := erc721.AccountId.t.
   
   (*
       fn from(_value: [u8; 32]) -> Self {
           unimplemented!()
       }
   *)
-  Definition from (_value : array u8.t) : M ltac:(Self) :=
+  Definition from (_value : array u8.t) : M Self :=
     let* _value : M.Val (array u8.t) := M.alloc _value in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
   Global Instance AssociatedFunction_from :
-    Notations.DoubleColon ltac:(Self) "from" := {
+    Notations.DoubleColon Self "from" := {
     Notations.double_colon := from;
   }.
   
-  Global Instance ℐ : core.convert.From.Trait ltac:(Self) (T := array u8.t) := {
+  Global Instance ℐ : core.convert.From.Trait Self (T := array u8.t) := {
     core.convert.From.from := from;
   }.
 End Impl_core_convert_From_array_u8_t_for_erc721_AccountId_t.
@@ -402,7 +394,7 @@ End Erc721.
 
 Module  Impl_core_default_Default_for_erc721_Erc721_t.
 Section Impl_core_default_Default_for_erc721_Erc721_t.
-  Ltac Self := exact erc721.Erc721.t.
+  Definition Self : Set := erc721.Erc721.t.
   
   (*
   Default
@@ -438,11 +430,11 @@ Section Impl_core_default_Default_for_erc721_Erc721_t.
       |}.
   
   Global Instance AssociatedFunction_default :
-    Notations.DoubleColon ltac:(Self) "default" := {
+    Notations.DoubleColon Self "default" := {
     Notations.double_colon := default;
   }.
   
-  Global Instance ℐ : core.default.Default.Trait ltac:(Self) := {
+  Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
   }.
 End Impl_core_default_Default_for_erc721_Erc721_t.
@@ -461,16 +453,16 @@ End Error.
 
 Module  Impl_core_fmt_Debug_for_erc721_Error_t.
 Section Impl_core_fmt_Debug_for_erc721_Error_t.
-  Ltac Self := exact erc721.Error.t.
+  Definition Self : Set := erc721.Error.t.
   
   (*
   Debug
   *)
   Definition fmt
-      (self : ref ltac:(Self))
+      (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (ref Self) := M.alloc self in
     let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref erc721.Error.t := M.read self in
@@ -501,12 +493,11 @@ Section Impl_core_fmt_Debug_for_erc721_Error_t.
     let* α3 : ref str.t := M.read α2 in
     M.call (core.fmt.Formatter.t::["write_str"] α0 α3).
   
-  Global Instance AssociatedFunction_fmt :
-    Notations.DoubleColon ltac:(Self) "fmt" := {
+  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
+  Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
   }.
 End Impl_core_fmt_Debug_for_erc721_Error_t.
@@ -514,25 +505,22 @@ End Impl_core_fmt_Debug_for_erc721_Error_t.
 
 Module  Impl_core_marker_StructuralPartialEq_for_erc721_Error_t.
 Section Impl_core_marker_StructuralPartialEq_for_erc721_Error_t.
-  Ltac Self := exact erc721.Error.t.
+  Definition Self : Set := erc721.Error.t.
   
-  Global Instance ℐ : core.marker.StructuralPartialEq.Trait ltac:(Self) := {
+  Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
   }.
 End Impl_core_marker_StructuralPartialEq_for_erc721_Error_t.
 End Impl_core_marker_StructuralPartialEq_for_erc721_Error_t.
 
 Module  Impl_core_cmp_PartialEq_for_erc721_Error_t.
 Section Impl_core_cmp_PartialEq_for_erc721_Error_t.
-  Ltac Self := exact erc721.Error.t.
+  Definition Self : Set := erc721.Error.t.
   
   (*
   PartialEq
   *)
-  Definition eq
-      (self : ref ltac:(Self))
-      (other : ref erc721.Error.t)
-      : M bool.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition eq (self : ref Self) (other : ref erc721.Error.t) : M bool.t :=
+    let* self : M.Val (ref Self) := M.alloc self in
     let* other : M.Val (ref erc721.Error.t) := M.alloc other in
     let* __self_tag : M.Val isize.t :=
       let* α0 : ref erc721.Error.t := M.read self in
@@ -547,14 +535,13 @@ Section Impl_core_cmp_PartialEq_for_erc721_Error_t.
     let* α0 : M.Val bool.t := M.alloc (BinOp.Pure.eq α0 α1) in
     M.read α0.
   
-  Global Instance AssociatedFunction_eq :
-    Notations.DoubleColon ltac:(Self) "eq" := {
+  Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
     Notations.double_colon := eq;
   }.
   
   Global Instance ℐ :
-    core.cmp.PartialEq.Required.Trait ltac:(Self)
-      (Rhs := core.cmp.PartialEq.Default.Rhs ltac:(Self)) := {
+    core.cmp.PartialEq.Required.Trait Self
+      (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
     core.cmp.PartialEq.eq := eq;
     core.cmp.PartialEq.ne := Datatypes.None;
   }.
@@ -563,30 +550,30 @@ End Impl_core_cmp_PartialEq_for_erc721_Error_t.
 
 Module  Impl_core_marker_StructuralEq_for_erc721_Error_t.
 Section Impl_core_marker_StructuralEq_for_erc721_Error_t.
-  Ltac Self := exact erc721.Error.t.
+  Definition Self : Set := erc721.Error.t.
   
-  Global Instance ℐ : core.marker.StructuralEq.Trait ltac:(Self) := {
+  Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
   }.
 End Impl_core_marker_StructuralEq_for_erc721_Error_t.
 End Impl_core_marker_StructuralEq_for_erc721_Error_t.
 
 Module  Impl_core_cmp_Eq_for_erc721_Error_t.
 Section Impl_core_cmp_Eq_for_erc721_Error_t.
-  Ltac Self := exact erc721.Error.t.
+  Definition Self : Set := erc721.Error.t.
   
   (*
   Eq
   *)
-  Definition assert_receiver_is_total_eq (self : ref ltac:(Self)) : M unit :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
+    let* self : M.Val (ref Self) := M.alloc self in
     M.pure tt.
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
-    Notations.DoubleColon ltac:(Self) "assert_receiver_is_total_eq" := {
+    Notations.DoubleColon Self "assert_receiver_is_total_eq" := {
     Notations.double_colon := assert_receiver_is_total_eq;
   }.
   
-  Global Instance ℐ : core.cmp.Eq.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
     core.cmp.Eq.assert_receiver_is_total_eq :=
       Datatypes.Some assert_receiver_is_total_eq;
   }.
@@ -595,22 +582,22 @@ End Impl_core_cmp_Eq_for_erc721_Error_t.
 
 Module  Impl_core_clone_Clone_for_erc721_Error_t.
 Section Impl_core_clone_Clone_for_erc721_Error_t.
-  Ltac Self := exact erc721.Error.t.
+  Definition Self : Set := erc721.Error.t.
   
   (*
   Clone
   *)
-  Definition clone (self : ref ltac:(Self)) : M erc721.Error.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition clone (self : ref Self) : M erc721.Error.t :=
+    let* self : M.Val (ref Self) := M.alloc self in
     let* α0 : ref erc721.Error.t := M.read self in
     M.read (deref α0).
   
   Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon ltac:(Self) "clone" := {
+    Notations.DoubleColon Self "clone" := {
     Notations.double_colon := clone;
   }.
   
-  Global Instance ℐ : core.clone.Clone.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
     core.clone.Clone.clone_from := Datatypes.None;
   }.
@@ -619,9 +606,9 @@ End Impl_core_clone_Clone_for_erc721_Error_t.
 
 Module  Impl_core_marker_Copy_for_erc721_Error_t.
 Section Impl_core_marker_Copy_for_erc721_Error_t.
-  Ltac Self := exact erc721.Error.t.
+  Definition Self : Set := erc721.Error.t.
   
-  Global Instance ℐ : core.marker.Copy.Trait ltac:(Self) := {
+  Global Instance ℐ : core.marker.Copy.Trait Self := {
   }.
 End Impl_core_marker_Copy_for_erc721_Error_t.
 End Impl_core_marker_Copy_for_erc721_Error_t.
@@ -725,20 +712,20 @@ End Event.
 
 Module  Impl_erc721_Env_t.
 Section Impl_erc721_Env_t.
-  Ltac Self := exact erc721.Env.t.
+  Definition Self : Set := erc721.Env.t.
   
   (*
       fn caller(&self) -> AccountId {
           self.caller
       }
   *)
-  Definition caller (self : ref ltac:(Self)) : M erc721.AccountId.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition caller (self : ref Self) : M erc721.AccountId.t :=
+    let* self : M.Val (ref Self) := M.alloc self in
     let* α0 : ref erc721.Env.t := M.read self in
     M.read (deref α0).["caller"].
   
   Global Instance AssociatedFunction_caller :
-    Notations.DoubleColon ltac:(Self) "caller" := {
+    Notations.DoubleColon Self "caller" := {
     Notations.double_colon := caller;
   }.
   
@@ -747,18 +734,15 @@ Section Impl_erc721_Env_t.
           unimplemented!()
       }
   *)
-  Definition emit_event
-      (self : ref ltac:(Self))
-      (_event : erc721.Event.t)
-      : M unit :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition emit_event (self : ref Self) (_event : erc721.Event.t) : M unit :=
+    let* self : M.Val (ref Self) := M.alloc self in
     let* _event : M.Val erc721.Event.t := M.alloc _event in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
   Global Instance AssociatedFunction_emit_event :
-    Notations.DoubleColon ltac:(Self) "emit_event" := {
+    Notations.DoubleColon Self "emit_event" := {
     Notations.double_colon := emit_event;
   }.
 End Impl_erc721_Env_t.
@@ -766,7 +750,7 @@ End Impl_erc721_Env_t.
 
 Module  Impl_erc721_Erc721_t.
 Section Impl_erc721_Erc721_t.
-  Ltac Self := exact erc721.Erc721.t.
+  Definition Self : Set := erc721.Erc721.t.
   
   (*
       fn init_env() -> Env {
@@ -779,7 +763,7 @@ Section Impl_erc721_Erc721_t.
     never_to_any α1.
   
   Global Instance AssociatedFunction_init_env :
-    Notations.DoubleColon ltac:(Self) "init_env" := {
+    Notations.DoubleColon Self "init_env" := {
     Notations.double_colon := init_env;
   }.
   
@@ -788,12 +772,11 @@ Section Impl_erc721_Erc721_t.
           Self::init_env()
       }
   *)
-  Definition env (self : ref ltac:(Self)) : M erc721.Env.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition env (self : ref Self) : M erc721.Env.t :=
+    let* self : M.Val (ref Self) := M.alloc self in
     M.call erc721.Erc721.t::["init_env"].
   
-  Global Instance AssociatedFunction_env :
-    Notations.DoubleColon ltac:(Self) "env" := {
+  Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
     Notations.double_colon := env;
   }.
   
@@ -802,14 +785,13 @@ Section Impl_erc721_Erc721_t.
           Default::default()
       }
   *)
-  Definition new : M ltac:(Self) :=
+  Definition new : M Self :=
     M.call
       (core.default.Default.default
         (Self := erc721.Erc721.t)
         (Trait := ltac:(refine _))).
   
-  Global Instance AssociatedFunction_new :
-    Notations.DoubleColon ltac:(Self) "new" := {
+  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
   }.
   
@@ -819,16 +801,16 @@ Section Impl_erc721_Erc721_t.
       }
   *)
   Definition balance_of
-      (self : ref ltac:(Self))
+      (self : ref Self)
       (owner : erc721.AccountId.t)
       : M u32.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (ref Self) := M.alloc self in
     let* owner : M.Val erc721.AccountId.t := M.alloc owner in
     let* α0 : ref erc721.Erc721.t := M.read self in
     M.call (erc721.Erc721.t::["balance_of_or_zero"] α0 (borrow owner)).
   
   Global Instance AssociatedFunction_balance_of :
-    Notations.DoubleColon ltac:(Self) "balance_of" := {
+    Notations.DoubleColon Self "balance_of" := {
     Notations.double_colon := balance_of;
   }.
   
@@ -838,10 +820,10 @@ Section Impl_erc721_Erc721_t.
       }
   *)
   Definition owner_of
-      (self : ref ltac:(Self))
+      (self : ref Self)
       (id : ltac:(erc721.TokenId))
       : M (core.option.Option.t erc721.AccountId.t) :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (ref Self) := M.alloc self in
     let* id : M.Val ltac:(erc721.TokenId) := M.alloc id in
     let* α0 : ref erc721.Erc721.t := M.read self in
     M.call
@@ -850,7 +832,7 @@ Section Impl_erc721_Erc721_t.
         (borrow id)).
   
   Global Instance AssociatedFunction_owner_of :
-    Notations.DoubleColon ltac:(Self) "owner_of" := {
+    Notations.DoubleColon Self "owner_of" := {
     Notations.double_colon := owner_of;
   }.
   
@@ -860,10 +842,10 @@ Section Impl_erc721_Erc721_t.
       }
   *)
   Definition get_approved
-      (self : ref ltac:(Self))
+      (self : ref Self)
       (id : ltac:(erc721.TokenId))
       : M (core.option.Option.t erc721.AccountId.t) :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (ref Self) := M.alloc self in
     let* id : M.Val ltac:(erc721.TokenId) := M.alloc id in
     let* α0 : ref erc721.Erc721.t := M.read self in
     M.call
@@ -872,7 +854,7 @@ Section Impl_erc721_Erc721_t.
         (borrow id)).
   
   Global Instance AssociatedFunction_get_approved :
-    Notations.DoubleColon ltac:(Self) "get_approved" := {
+    Notations.DoubleColon Self "get_approved" := {
     Notations.double_colon := get_approved;
   }.
   
@@ -882,11 +864,11 @@ Section Impl_erc721_Erc721_t.
       }
   *)
   Definition is_approved_for_all
-      (self : ref ltac:(Self))
+      (self : ref Self)
       (owner : erc721.AccountId.t)
       (operator : erc721.AccountId.t)
       : M bool.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (ref Self) := M.alloc self in
     let* owner : M.Val erc721.AccountId.t := M.alloc owner in
     let* operator : M.Val erc721.AccountId.t := M.alloc operator in
     let* α0 : ref erc721.Erc721.t := M.read self in
@@ -895,7 +877,7 @@ Section Impl_erc721_Erc721_t.
     M.call (erc721.Erc721.t::["approved_for_all"] α0 α1 α2).
   
   Global Instance AssociatedFunction_is_approved_for_all :
-    Notations.DoubleColon ltac:(Self) "is_approved_for_all" := {
+    Notations.DoubleColon Self "is_approved_for_all" := {
     Notations.double_colon := is_approved_for_all;
   }.
   
@@ -906,11 +888,11 @@ Section Impl_erc721_Erc721_t.
       }
   *)
   Definition set_approval_for_all
-      (self : mut_ref ltac:(Self))
+      (self : mut_ref Self)
       (to : erc721.AccountId.t)
       (approved : bool.t)
       : M (core.result.Result.t unit erc721.Error.t) :=
-    let* self : M.Val (mut_ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (mut_ref Self) := M.alloc self in
     let* to : M.Val erc721.AccountId.t := M.alloc to in
     let* approved : M.Val bool.t := M.alloc approved in
     let return_ := M.return_ (R := core.result.Result.t unit erc721.Error.t) in
@@ -955,7 +937,7 @@ Section Impl_erc721_Erc721_t.
       M.read α0).
   
   Global Instance AssociatedFunction_set_approval_for_all :
-    Notations.DoubleColon ltac:(Self) "set_approval_for_all" := {
+    Notations.DoubleColon Self "set_approval_for_all" := {
     Notations.double_colon := set_approval_for_all;
   }.
   
@@ -966,11 +948,11 @@ Section Impl_erc721_Erc721_t.
       }
   *)
   Definition approve
-      (self : mut_ref ltac:(Self))
+      (self : mut_ref Self)
       (to : erc721.AccountId.t)
       (id : ltac:(erc721.TokenId))
       : M (core.result.Result.t unit erc721.Error.t) :=
-    let* self : M.Val (mut_ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (mut_ref Self) := M.alloc self in
     let* to : M.Val erc721.AccountId.t := M.alloc to in
     let* id : M.Val ltac:(erc721.TokenId) := M.alloc id in
     let return_ := M.return_ (R := core.result.Result.t unit erc721.Error.t) in
@@ -1014,7 +996,7 @@ Section Impl_erc721_Erc721_t.
       M.read α0).
   
   Global Instance AssociatedFunction_approve :
-    Notations.DoubleColon ltac:(Self) "approve" := {
+    Notations.DoubleColon Self "approve" := {
     Notations.double_colon := approve;
   }.
   
@@ -1026,11 +1008,11 @@ Section Impl_erc721_Erc721_t.
       }
   *)
   Definition transfer
-      (self : mut_ref ltac:(Self))
+      (self : mut_ref Self)
       (destination : erc721.AccountId.t)
       (id : ltac:(erc721.TokenId))
       : M (core.result.Result.t unit erc721.Error.t) :=
-    let* self : M.Val (mut_ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (mut_ref Self) := M.alloc self in
     let* destination : M.Val erc721.AccountId.t := M.alloc destination in
     let* id : M.Val ltac:(erc721.TokenId) := M.alloc id in
     let return_ := M.return_ (R := core.result.Result.t unit erc721.Error.t) in
@@ -1087,7 +1069,7 @@ Section Impl_erc721_Erc721_t.
       M.read α0).
   
   Global Instance AssociatedFunction_transfer :
-    Notations.DoubleColon ltac:(Self) "transfer" := {
+    Notations.DoubleColon Self "transfer" := {
     Notations.double_colon := transfer;
   }.
   
@@ -1103,12 +1085,12 @@ Section Impl_erc721_Erc721_t.
       }
   *)
   Definition transfer_from
-      (self : mut_ref ltac:(Self))
+      (self : mut_ref Self)
       (from : erc721.AccountId.t)
       (to : erc721.AccountId.t)
       (id : ltac:(erc721.TokenId))
       : M (core.result.Result.t unit erc721.Error.t) :=
-    let* self : M.Val (mut_ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (mut_ref Self) := M.alloc self in
     let* from : M.Val erc721.AccountId.t := M.alloc from in
     let* to : M.Val erc721.AccountId.t := M.alloc to in
     let* id : M.Val ltac:(erc721.TokenId) := M.alloc id in
@@ -1158,7 +1140,7 @@ Section Impl_erc721_Erc721_t.
       M.read α0).
   
   Global Instance AssociatedFunction_transfer_from :
-    Notations.DoubleColon ltac:(Self) "transfer_from" := {
+    Notations.DoubleColon Self "transfer_from" := {
     Notations.double_colon := transfer_from;
   }.
   
@@ -1175,10 +1157,10 @@ Section Impl_erc721_Erc721_t.
       }
   *)
   Definition mint
-      (self : mut_ref ltac:(Self))
+      (self : mut_ref Self)
       (id : ltac:(erc721.TokenId))
       : M (core.result.Result.t unit erc721.Error.t) :=
-    let* self : M.Val (mut_ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (mut_ref Self) := M.alloc self in
     let* id : M.Val ltac:(erc721.TokenId) := M.alloc id in
     let return_ := M.return_ (R := core.result.Result.t unit erc721.Error.t) in
     M.catch_return
@@ -1253,7 +1235,7 @@ Section Impl_erc721_Erc721_t.
       M.read α0).
   
   Global Instance AssociatedFunction_mint :
-    Notations.DoubleColon ltac:(Self) "mint" := {
+    Notations.DoubleColon Self "mint" := {
     Notations.double_colon := mint;
   }.
   
@@ -1288,10 +1270,10 @@ Section Impl_erc721_Erc721_t.
       }
   *)
   Definition burn
-      (self : mut_ref ltac:(Self))
+      (self : mut_ref Self)
       (id : ltac:(erc721.TokenId))
       : M (core.result.Result.t unit erc721.Error.t) :=
-    let* self : M.Val (mut_ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (mut_ref Self) := M.alloc self in
     let* id : M.Val ltac:(erc721.TokenId) := M.alloc id in
     let return_ := M.return_ (R := core.result.Result.t unit erc721.Error.t) in
     M.catch_return
@@ -1472,7 +1454,7 @@ Section Impl_erc721_Erc721_t.
       M.read α0).
   
   Global Instance AssociatedFunction_burn :
-    Notations.DoubleColon ltac:(Self) "burn" := {
+    Notations.DoubleColon Self "burn" := {
     Notations.double_colon := burn;
   }.
   
@@ -1502,12 +1484,12 @@ Section Impl_erc721_Erc721_t.
       }
   *)
   Definition transfer_token_from
-      (self : mut_ref ltac:(Self))
+      (self : mut_ref Self)
       (from : ref erc721.AccountId.t)
       (to : ref erc721.AccountId.t)
       (id : ltac:(erc721.TokenId))
       : M (core.result.Result.t unit erc721.Error.t) :=
-    let* self : M.Val (mut_ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (mut_ref Self) := M.alloc self in
     let* from : M.Val (ref erc721.AccountId.t) := M.alloc from in
     let* to : M.Val (ref erc721.AccountId.t) := M.alloc to in
     let* id : M.Val ltac:(erc721.TokenId) := M.alloc id in
@@ -1655,7 +1637,7 @@ Section Impl_erc721_Erc721_t.
       M.read α0).
   
   Global Instance AssociatedFunction_transfer_token_from :
-    Notations.DoubleColon ltac:(Self) "transfer_token_from" := {
+    Notations.DoubleColon Self "transfer_token_from" := {
     Notations.double_colon := transfer_token_from;
   }.
   
@@ -1682,11 +1664,11 @@ Section Impl_erc721_Erc721_t.
       }
   *)
   Definition remove_token_from
-      (self : mut_ref ltac:(Self))
+      (self : mut_ref Self)
       (from : ref erc721.AccountId.t)
       (id : ltac:(erc721.TokenId))
       : M (core.result.Result.t unit erc721.Error.t) :=
-    let* self : M.Val (mut_ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (mut_ref Self) := M.alloc self in
     let* from : M.Val (ref erc721.AccountId.t) := M.alloc from in
     let* id : M.Val ltac:(erc721.TokenId) := M.alloc id in
     let return_ := M.return_ (R := core.result.Result.t unit erc721.Error.t) in
@@ -1794,7 +1776,7 @@ Section Impl_erc721_Erc721_t.
       M.read α0).
   
   Global Instance AssociatedFunction_remove_token_from :
-    Notations.DoubleColon ltac:(Self) "remove_token_from" := {
+    Notations.DoubleColon Self "remove_token_from" := {
     Notations.double_colon := remove_token_from;
   }.
   
@@ -1823,11 +1805,11 @@ Section Impl_erc721_Erc721_t.
       }
   *)
   Definition add_token_to
-      (self : mut_ref ltac:(Self))
+      (self : mut_ref Self)
       (to : ref erc721.AccountId.t)
       (id : ltac:(erc721.TokenId))
       : M (core.result.Result.t unit erc721.Error.t) :=
-    let* self : M.Val (mut_ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (mut_ref Self) := M.alloc self in
     let* to : M.Val (ref erc721.AccountId.t) := M.alloc to in
     let* id : M.Val ltac:(erc721.TokenId) := M.alloc id in
     let return_ := M.return_ (R := core.result.Result.t unit erc721.Error.t) in
@@ -1931,7 +1913,7 @@ Section Impl_erc721_Erc721_t.
       M.read α0).
   
   Global Instance AssociatedFunction_add_token_to :
-    Notations.DoubleColon ltac:(Self) "add_token_to" := {
+    Notations.DoubleColon Self "add_token_to" := {
     Notations.double_colon := add_token_to;
   }.
   
@@ -1957,11 +1939,11 @@ Section Impl_erc721_Erc721_t.
       }
   *)
   Definition approve_for_all
-      (self : mut_ref ltac:(Self))
+      (self : mut_ref Self)
       (to : erc721.AccountId.t)
       (approved : bool.t)
       : M (core.result.Result.t unit erc721.Error.t) :=
-    let* self : M.Val (mut_ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (mut_ref Self) := M.alloc self in
     let* to : M.Val erc721.AccountId.t := M.alloc to in
     let* approved : M.Val bool.t := M.alloc approved in
     let return_ := M.return_ (R := core.result.Result.t unit erc721.Error.t) in
@@ -2046,7 +2028,7 @@ Section Impl_erc721_Erc721_t.
       M.read α0).
   
   Global Instance AssociatedFunction_approve_for_all :
-    Notations.DoubleColon ltac:(Self) "approve_for_all" := {
+    Notations.DoubleColon Self "approve_for_all" := {
     Notations.double_colon := approve_for_all;
   }.
   
@@ -2080,11 +2062,11 @@ Section Impl_erc721_Erc721_t.
       }
   *)
   Definition approve_for
-      (self : mut_ref ltac:(Self))
+      (self : mut_ref Self)
       (to : ref erc721.AccountId.t)
       (id : ltac:(erc721.TokenId))
       : M (core.result.Result.t unit erc721.Error.t) :=
-    let* self : M.Val (mut_ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (mut_ref Self) := M.alloc self in
     let* to : M.Val (ref erc721.AccountId.t) := M.alloc to in
     let* id : M.Val ltac:(erc721.TokenId) := M.alloc id in
     let return_ := M.return_ (R := core.result.Result.t unit erc721.Error.t) in
@@ -2211,7 +2193,7 @@ Section Impl_erc721_Erc721_t.
       M.read α0).
   
   Global Instance AssociatedFunction_approve_for :
-    Notations.DoubleColon ltac:(Self) "approve_for" := {
+    Notations.DoubleColon Self "approve_for" := {
     Notations.double_colon := approve_for;
   }.
   
@@ -2221,10 +2203,10 @@ Section Impl_erc721_Erc721_t.
       }
   *)
   Definition clear_approval
-      (self : mut_ref ltac:(Self))
+      (self : mut_ref Self)
       (id : ltac:(erc721.TokenId))
       : M unit :=
-    let* self : M.Val (mut_ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (mut_ref Self) := M.alloc self in
     let* id : M.Val ltac:(erc721.TokenId) := M.alloc id in
     let* _ : M.Val unit :=
       let* α0 : mut_ref erc721.Erc721.t := M.read self in
@@ -2239,7 +2221,7 @@ Section Impl_erc721_Erc721_t.
     M.read α0.
   
   Global Instance AssociatedFunction_clear_approval :
-    Notations.DoubleColon ltac:(Self) "clear_approval" := {
+    Notations.DoubleColon Self "clear_approval" := {
     Notations.double_colon := clear_approval;
   }.
   
@@ -2249,10 +2231,10 @@ Section Impl_erc721_Erc721_t.
       }
   *)
   Definition balance_of_or_zero
-      (self : ref ltac:(Self))
+      (self : ref Self)
       (of : ref erc721.AccountId.t)
       : M u32.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (ref Self) := M.alloc self in
     let* of : M.Val (ref erc721.AccountId.t) := M.alloc of in
     let* α0 : ref erc721.Erc721.t := M.read self in
     let* α1 : ref erc721.AccountId.t := M.read of in
@@ -2264,7 +2246,7 @@ Section Impl_erc721_Erc721_t.
     M.call ((core.option.Option.t u32.t)::["unwrap_or"] α2 (Integer.of_Z 0)).
   
   Global Instance AssociatedFunction_balance_of_or_zero :
-    Notations.DoubleColon ltac:(Self) "balance_of_or_zero" := {
+    Notations.DoubleColon Self "balance_of_or_zero" := {
     Notations.double_colon := balance_of_or_zero;
   }.
   
@@ -2274,11 +2256,11 @@ Section Impl_erc721_Erc721_t.
       }
   *)
   Definition approved_for_all
-      (self : ref ltac:(Self))
+      (self : ref Self)
       (owner : erc721.AccountId.t)
       (operator : erc721.AccountId.t)
       : M bool.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (ref Self) := M.alloc self in
     let* owner : M.Val erc721.AccountId.t := M.alloc owner in
     let* operator : M.Val erc721.AccountId.t := M.alloc operator in
     let* α0 : ref erc721.Erc721.t := M.read self in
@@ -2294,7 +2276,7 @@ Section Impl_erc721_Erc721_t.
         (borrow α3)).
   
   Global Instance AssociatedFunction_approved_for_all :
-    Notations.DoubleColon ltac:(Self) "approved_for_all" := {
+    Notations.DoubleColon Self "approved_for_all" := {
     Notations.double_colon := approved_for_all;
   }.
   
@@ -2311,11 +2293,11 @@ Section Impl_erc721_Erc721_t.
       }
   *)
   Definition approved_or_owner
-      (self : ref ltac:(Self))
+      (self : ref Self)
       (from : core.option.Option.t erc721.AccountId.t)
       (id : ltac:(erc721.TokenId))
       : M bool.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (ref Self) := M.alloc self in
     let* from : M.Val (core.option.Option.t erc721.AccountId.t) :=
       M.alloc from in
     let* id : M.Val ltac:(erc721.TokenId) := M.alloc id in
@@ -2377,7 +2359,7 @@ Section Impl_erc721_Erc721_t.
     M.read α0.
   
   Global Instance AssociatedFunction_approved_or_owner :
-    Notations.DoubleColon ltac:(Self) "approved_or_owner" := {
+    Notations.DoubleColon Self "approved_or_owner" := {
     Notations.double_colon := approved_or_owner;
   }.
   
@@ -2386,11 +2368,8 @@ Section Impl_erc721_Erc721_t.
           self.token_owner.contains(&id)
       }
   *)
-  Definition exists
-      (self : ref ltac:(Self))
-      (id : ltac:(erc721.TokenId))
-      : M bool.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition exists (self : ref Self) (id : ltac:(erc721.TokenId)) : M bool.t :=
+    let* self : M.Val (ref Self) := M.alloc self in
     let* id : M.Val ltac:(erc721.TokenId) := M.alloc id in
     let* α0 : ref erc721.Erc721.t := M.read self in
     M.call
@@ -2399,7 +2378,7 @@ Section Impl_erc721_Erc721_t.
         (borrow id)).
   
   Global Instance AssociatedFunction_exists :
-    Notations.DoubleColon ltac:(Self) "exists" := {
+    Notations.DoubleColon Self "exists" := {
     Notations.double_colon := exists;
   }.
 End Impl_erc721_Erc721_t.

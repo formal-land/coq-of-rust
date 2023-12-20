@@ -25,20 +25,20 @@ End Point.
 
 Module  Impl_core_clone_Clone_for_scoping_rules_borrowing_the_ref_pattern_Point_t.
 Section Impl_core_clone_Clone_for_scoping_rules_borrowing_the_ref_pattern_Point_t.
-  Ltac Self := exact scoping_rules_borrowing_the_ref_pattern.Point.t.
+  Definition Self : Set := scoping_rules_borrowing_the_ref_pattern.Point.t.
   
   (*
   Clone
   *)
   Parameter clone :
-      (ref ltac:(Self)) -> M scoping_rules_borrowing_the_ref_pattern.Point.t.
+      (ref Self) -> M scoping_rules_borrowing_the_ref_pattern.Point.t.
   
   Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon ltac:(Self) "clone" := {
+    Notations.DoubleColon Self "clone" := {
     Notations.double_colon := clone;
   }.
   
-  Global Instance ℐ : core.clone.Clone.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
     core.clone.Clone.clone_from := Datatypes.None;
   }.
@@ -47,9 +47,9 @@ End Impl_core_clone_Clone_for_scoping_rules_borrowing_the_ref_pattern_Point_t.
 
 Module  Impl_core_marker_Copy_for_scoping_rules_borrowing_the_ref_pattern_Point_t.
 Section Impl_core_marker_Copy_for_scoping_rules_borrowing_the_ref_pattern_Point_t.
-  Ltac Self := exact scoping_rules_borrowing_the_ref_pattern.Point.t.
+  Definition Self : Set := scoping_rules_borrowing_the_ref_pattern.Point.t.
   
-  Global Instance ℐ : core.marker.Copy.Trait ltac:(Self) := {
+  Global Instance ℐ : core.marker.Copy.Trait Self := {
   }.
 End Impl_core_marker_Copy_for_scoping_rules_borrowing_the_ref_pattern_Point_t.
 End Impl_core_marker_Copy_for_scoping_rules_borrowing_the_ref_pattern_Point_t.

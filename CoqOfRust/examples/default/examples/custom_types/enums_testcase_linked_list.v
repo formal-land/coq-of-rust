@@ -16,7 +16,7 @@ End List.
 
 Module  Impl_enums_testcase_linked_list_List_t.
 Section Impl_enums_testcase_linked_list_List_t.
-  Ltac Self := exact enums_testcase_linked_list.List.t.
+  Definition Self : Set := enums_testcase_linked_list.List.t.
   
   (*
       fn new() -> List {
@@ -27,8 +27,7 @@ Section Impl_enums_testcase_linked_list_List_t.
   Definition new : M enums_testcase_linked_list.List.t :=
     M.pure enums_testcase_linked_list.List.Nil.
   
-  Global Instance AssociatedFunction_new :
-    Notations.DoubleColon ltac:(Self) "new" := {
+  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
   }.
   
@@ -39,10 +38,10 @@ Section Impl_enums_testcase_linked_list_List_t.
       }
   *)
   Definition prepend
-      (self : ltac:(Self))
+      (self : Self)
       (elem : u32.t)
       : M enums_testcase_linked_list.List.t :=
-    let* self : M.Val ltac:(Self) := M.alloc self in
+    let* self : M.Val Self := M.alloc self in
     let* elem : M.Val u32.t := M.alloc elem in
     let* α0 : u32.t := M.read elem in
     let* α1 : enums_testcase_linked_list.List.t := M.read self in
@@ -58,7 +57,7 @@ Section Impl_enums_testcase_linked_list_List_t.
     M.pure (enums_testcase_linked_list.List.Cons α0 α2).
   
   Global Instance AssociatedFunction_prepend :
-    Notations.DoubleColon ltac:(Self) "prepend" := {
+    Notations.DoubleColon Self "prepend" := {
     Notations.double_colon := prepend;
   }.
   
@@ -80,8 +79,8 @@ Section Impl_enums_testcase_linked_list_List_t.
           }
       }
   *)
-  Definition len (self : ref ltac:(Self)) : M u32.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition len (self : ref Self) : M u32.t :=
+    let* self : M.Val (ref Self) := M.alloc self in
     let* α0 : ref enums_testcase_linked_list.List.t := M.read self in
     let* α1 : enums_testcase_linked_list.List.t := M.read (deref α0) in
     let* α2 : M.Val u32.t :=
@@ -108,8 +107,7 @@ Section Impl_enums_testcase_linked_list_List_t.
       end in
     M.read α2.
   
-  Global Instance AssociatedFunction_len :
-    Notations.DoubleColon ltac:(Self) "len" := {
+  Global Instance AssociatedFunction_len : Notations.DoubleColon Self "len" := {
     Notations.double_colon := len;
   }.
   
@@ -127,8 +125,8 @@ Section Impl_enums_testcase_linked_list_List_t.
           }
       }
   *)
-  Definition stringify (self : ref ltac:(Self)) : M alloc.string.String.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition stringify (self : ref Self) : M alloc.string.String.t :=
+    let* self : M.Val (ref Self) := M.alloc self in
     let* α0 : ref enums_testcase_linked_list.List.t := M.read self in
     let* α1 : enums_testcase_linked_list.List.t := M.read (deref α0) in
     let* α2 : M.Val alloc.string.String.t :=
@@ -190,7 +188,7 @@ Section Impl_enums_testcase_linked_list_List_t.
     M.read α2.
   
   Global Instance AssociatedFunction_stringify :
-    Notations.DoubleColon ltac:(Self) "stringify" := {
+    Notations.DoubleColon Self "stringify" := {
     Notations.double_colon := stringify;
   }.
 End Impl_enums_testcase_linked_list_List_t.

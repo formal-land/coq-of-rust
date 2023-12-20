@@ -9,27 +9,26 @@ End Unit.
 
 Module  Impl_core_fmt_Debug_for_clone_Unit_t.
 Section Impl_core_fmt_Debug_for_clone_Unit_t.
-  Ltac Self := exact clone.Unit.t.
+  Definition Self : Set := clone.Unit.t.
   
   (*
   Debug
   *)
   Definition fmt
-      (self : ref ltac:(Self))
+      (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (ref Self) := M.alloc self in
     let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref str.t := M.read (mk_str "Unit") in
     M.call (core.fmt.Formatter.t::["write_str"] α0 α1).
   
-  Global Instance AssociatedFunction_fmt :
-    Notations.DoubleColon ltac:(Self) "fmt" := {
+  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
+  Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
   }.
 End Impl_core_fmt_Debug_for_clone_Unit_t.
@@ -37,22 +36,22 @@ End Impl_core_fmt_Debug_for_clone_Unit_t.
 
 Module  Impl_core_clone_Clone_for_clone_Unit_t.
 Section Impl_core_clone_Clone_for_clone_Unit_t.
-  Ltac Self := exact clone.Unit.t.
+  Definition Self : Set := clone.Unit.t.
   
   (*
   Clone
   *)
-  Definition clone (self : ref ltac:(Self)) : M clone.Unit.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition clone (self : ref Self) : M clone.Unit.t :=
+    let* self : M.Val (ref Self) := M.alloc self in
     let* α0 : ref clone.Unit.t := M.read self in
     M.read (deref α0).
   
   Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon ltac:(Self) "clone" := {
+    Notations.DoubleColon Self "clone" := {
     Notations.double_colon := clone;
   }.
   
-  Global Instance ℐ : core.clone.Clone.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
     core.clone.Clone.clone_from := Datatypes.None;
   }.
@@ -61,9 +60,9 @@ End Impl_core_clone_Clone_for_clone_Unit_t.
 
 Module  Impl_core_marker_Copy_for_clone_Unit_t.
 Section Impl_core_marker_Copy_for_clone_Unit_t.
-  Ltac Self := exact clone.Unit.t.
+  Definition Self : Set := clone.Unit.t.
   
-  Global Instance ℐ : core.marker.Copy.Trait ltac:(Self) := {
+  Global Instance ℐ : core.marker.Copy.Trait Self := {
   }.
 End Impl_core_marker_Copy_for_clone_Unit_t.
 End Impl_core_marker_Copy_for_clone_Unit_t.
@@ -86,13 +85,13 @@ End Pair.
 
 Module  Impl_core_clone_Clone_for_clone_Pair_t.
 Section Impl_core_clone_Clone_for_clone_Pair_t.
-  Ltac Self := exact clone.Pair.t.
+  Definition Self : Set := clone.Pair.t.
   
   (*
   Clone
   *)
-  Definition clone (self : ref ltac:(Self)) : M clone.Pair.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition clone (self : ref Self) : M clone.Pair.t :=
+    let* self : M.Val (ref Self) := M.alloc self in
     let* α0 : ref clone.Pair.t := M.read self in
     let* α1 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t :=
       M.call
@@ -110,11 +109,11 @@ Section Impl_core_clone_Clone_for_clone_Pair_t.
     M.pure (clone.Pair.Build_t α1 α3).
   
   Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon ltac:(Self) "clone" := {
+    Notations.DoubleColon Self "clone" := {
     Notations.double_colon := clone;
   }.
   
-  Global Instance ℐ : core.clone.Clone.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
     core.clone.Clone.clone_from := Datatypes.None;
   }.
@@ -123,16 +122,16 @@ End Impl_core_clone_Clone_for_clone_Pair_t.
 
 Module  Impl_core_fmt_Debug_for_clone_Pair_t.
 Section Impl_core_fmt_Debug_for_clone_Pair_t.
-  Ltac Self := exact clone.Pair.t.
+  Definition Self : Set := clone.Pair.t.
   
   (*
   Debug
   *)
   Definition fmt
-      (self : ref ltac:(Self))
+      (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (ref Self) := M.alloc self in
     let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref str.t := M.read (mk_str "Pair") in
@@ -151,12 +150,11 @@ Section Impl_core_fmt_Debug_for_clone_Pair_t.
       M.read (pointer_coercion "Unsize" α7) in
     M.call (core.fmt.Formatter.t::["debug_tuple_field2_finish"] α0 α1 α4 α8).
   
-  Global Instance AssociatedFunction_fmt :
-    Notations.DoubleColon ltac:(Self) "fmt" := {
+  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
+  Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
   }.
 End Impl_core_fmt_Debug_for_clone_Pair_t.

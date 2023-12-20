@@ -34,7 +34,7 @@ End Bar.
 Module  BarTrait.
 Section BarTrait.
   Class Trait (Self : Set) : Type := {
-    show : ltac:(Self) -> M alloc.string.String.t;
+    show : Self -> M alloc.string.String.t;
   }.
   
 End BarTrait.
@@ -42,22 +42,21 @@ End BarTrait.
 
 Module  Impl_const_underscore_expression_BarTrait_for_const_underscore_expression_Bar_t.
 Section Impl_const_underscore_expression_BarTrait_for_const_underscore_expression_Bar_t.
-  Ltac Self := exact const_underscore_expression.Bar.t.
+  Definition Self : Set := const_underscore_expression.Bar.t.
   
   (*
           fn show(self: Self) -> String {
               self.test
           }
   *)
-  Parameter show : ltac:(Self) -> M alloc.string.String.t.
+  Parameter show : Self -> M alloc.string.String.t.
   
   Global Instance AssociatedFunction_show :
-    Notations.DoubleColon ltac:(Self) "show" := {
+    Notations.DoubleColon Self "show" := {
     Notations.double_colon := show;
   }.
   
-  Global Instance ℐ :
-    const_underscore_expression.BarTrait.Trait ltac:(Self) := {
+  Global Instance ℐ : const_underscore_expression.BarTrait.Trait Self := {
     const_underscore_expression.BarTrait.show := show;
   }.
 End Impl_const_underscore_expression_BarTrait_for_const_underscore_expression_Bar_t.

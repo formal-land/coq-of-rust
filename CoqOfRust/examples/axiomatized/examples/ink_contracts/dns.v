@@ -34,7 +34,7 @@ Section Impl_core_default_Default_for_dns_Mapping_t_K_V.
     {ℋ_0 : core.default.Default.Trait K}
     {ℋ_1 : core.default.Default.Trait V}.
   
-  Ltac Self := exact (dns.Mapping.t K V).
+  Definition Self : Set := dns.Mapping.t K V.
   
   (*
   Default
@@ -42,11 +42,11 @@ Section Impl_core_default_Default_for_dns_Mapping_t_K_V.
   Parameter default : M (dns.Mapping.t K V).
   
   Global Instance AssociatedFunction_default :
-    Notations.DoubleColon ltac:(Self) "default" := {
+    Notations.DoubleColon Self "default" := {
     Notations.double_colon := default;
   }.
   
-  Global Instance ℐ : core.default.Default.Trait ltac:(Self) := {
+  Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
   }.
 End Impl_core_default_Default_for_dns_Mapping_t_K_V.
@@ -56,17 +56,17 @@ Module  Impl_dns_Mapping_t_K_V.
 Section Impl_dns_Mapping_t_K_V.
   Context {K V : Set}.
   
-  Ltac Self := exact (dns.Mapping.t K V).
+  Definition Self : Set := dns.Mapping.t K V.
   
   (*
       fn contains(&self, _key: &K) -> bool {
           unimplemented!()
       }
   *)
-  Parameter contains : (ref ltac:(Self)) -> (ref K) -> M bool.t.
+  Parameter contains : (ref Self) -> (ref K) -> M bool.t.
   
   Global Instance AssociatedFunction_contains :
-    Notations.DoubleColon ltac:(Self) "contains" := {
+    Notations.DoubleColon Self "contains" := {
     Notations.double_colon := contains;
   }.
   
@@ -75,10 +75,9 @@ Section Impl_dns_Mapping_t_K_V.
           unimplemented!()
       }
   *)
-  Parameter get : (ref ltac:(Self)) -> (ref K) -> M (core.option.Option.t V).
+  Parameter get : (ref Self) -> (ref K) -> M (core.option.Option.t V).
   
-  Global Instance AssociatedFunction_get :
-    Notations.DoubleColon ltac:(Self) "get" := {
+  Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
     Notations.double_colon := get;
   }.
   
@@ -87,11 +86,10 @@ Section Impl_dns_Mapping_t_K_V.
           unimplemented!()
       }
   *)
-  Parameter insert :
-      (mut_ref ltac:(Self)) -> K -> V -> M (core.option.Option.t u32.t).
+  Parameter insert : (mut_ref Self) -> K -> V -> M (core.option.Option.t u32.t).
   
   Global Instance AssociatedFunction_insert :
-    Notations.DoubleColon ltac:(Self) "insert" := {
+    Notations.DoubleColon Self "insert" := {
     Notations.double_colon := insert;
   }.
   
@@ -102,8 +100,7 @@ Section Impl_dns_Mapping_t_K_V.
   *)
   Parameter new : M (dns.Mapping.t K V).
   
-  Global Instance AssociatedFunction_new :
-    Notations.DoubleColon ltac:(Self) "new" := {
+  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
   }.
   
@@ -112,10 +109,10 @@ Section Impl_dns_Mapping_t_K_V.
           unimplemented!()
       }
   *)
-  Parameter remove : (ref ltac:(Self)) -> K -> M unit.
+  Parameter remove : (ref Self) -> K -> M unit.
   
   Global Instance AssociatedFunction_remove :
-    Notations.DoubleColon ltac:(Self) "remove" := {
+    Notations.DoubleColon Self "remove" := {
     Notations.double_colon := remove;
   }.
   
@@ -124,10 +121,10 @@ Section Impl_dns_Mapping_t_K_V.
           unimplemented!()
       }
   *)
-  Parameter size : (ref ltac:(Self)) -> K -> M (core.option.Option.t u32.t).
+  Parameter size : (ref Self) -> K -> M (core.option.Option.t u32.t).
   
   Global Instance AssociatedFunction_size :
-    Notations.DoubleColon ltac:(Self) "size" := {
+    Notations.DoubleColon Self "size" := {
     Notations.double_colon := size;
   }.
   
@@ -136,10 +133,10 @@ Section Impl_dns_Mapping_t_K_V.
           unimplemented!()
       }
   *)
-  Parameter take : (ref ltac:(Self)) -> K -> M (core.option.Option.t V).
+  Parameter take : (ref Self) -> K -> M (core.option.Option.t V).
   
   Global Instance AssociatedFunction_take :
-    Notations.DoubleColon ltac:(Self) "take" := {
+    Notations.DoubleColon Self "take" := {
     Notations.double_colon := take;
   }.
 End Impl_dns_Mapping_t_K_V.
@@ -159,7 +156,7 @@ End AccountId.
 
 Module  Impl_core_default_Default_for_dns_AccountId_t.
 Section Impl_core_default_Default_for_dns_AccountId_t.
-  Ltac Self := exact dns.AccountId.t.
+  Definition Self : Set := dns.AccountId.t.
   
   (*
   Default
@@ -167,11 +164,11 @@ Section Impl_core_default_Default_for_dns_AccountId_t.
   Parameter default : M dns.AccountId.t.
   
   Global Instance AssociatedFunction_default :
-    Notations.DoubleColon ltac:(Self) "default" := {
+    Notations.DoubleColon Self "default" := {
     Notations.double_colon := default;
   }.
   
-  Global Instance ℐ : core.default.Default.Trait ltac:(Self) := {
+  Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
   }.
 End Impl_core_default_Default_for_dns_AccountId_t.
@@ -179,19 +176,19 @@ End Impl_core_default_Default_for_dns_AccountId_t.
 
 Module  Impl_core_clone_Clone_for_dns_AccountId_t.
 Section Impl_core_clone_Clone_for_dns_AccountId_t.
-  Ltac Self := exact dns.AccountId.t.
+  Definition Self : Set := dns.AccountId.t.
   
   (*
   Clone
   *)
-  Parameter clone : (ref ltac:(Self)) -> M dns.AccountId.t.
+  Parameter clone : (ref Self) -> M dns.AccountId.t.
   
   Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon ltac:(Self) "clone" := {
+    Notations.DoubleColon Self "clone" := {
     Notations.double_colon := clone;
   }.
   
-  Global Instance ℐ : core.clone.Clone.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
     core.clone.Clone.clone_from := Datatypes.None;
   }.
@@ -200,39 +197,38 @@ End Impl_core_clone_Clone_for_dns_AccountId_t.
 
 Module  Impl_core_marker_Copy_for_dns_AccountId_t.
 Section Impl_core_marker_Copy_for_dns_AccountId_t.
-  Ltac Self := exact dns.AccountId.t.
+  Definition Self : Set := dns.AccountId.t.
   
-  Global Instance ℐ : core.marker.Copy.Trait ltac:(Self) := {
+  Global Instance ℐ : core.marker.Copy.Trait Self := {
   }.
 End Impl_core_marker_Copy_for_dns_AccountId_t.
 End Impl_core_marker_Copy_for_dns_AccountId_t.
 
 Module  Impl_core_marker_StructuralPartialEq_for_dns_AccountId_t.
 Section Impl_core_marker_StructuralPartialEq_for_dns_AccountId_t.
-  Ltac Self := exact dns.AccountId.t.
+  Definition Self : Set := dns.AccountId.t.
   
-  Global Instance ℐ : core.marker.StructuralPartialEq.Trait ltac:(Self) := {
+  Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
   }.
 End Impl_core_marker_StructuralPartialEq_for_dns_AccountId_t.
 End Impl_core_marker_StructuralPartialEq_for_dns_AccountId_t.
 
 Module  Impl_core_cmp_PartialEq_for_dns_AccountId_t.
 Section Impl_core_cmp_PartialEq_for_dns_AccountId_t.
-  Ltac Self := exact dns.AccountId.t.
+  Definition Self : Set := dns.AccountId.t.
   
   (*
   PartialEq
   *)
-  Parameter eq : (ref ltac:(Self)) -> (ref dns.AccountId.t) -> M bool.t.
+  Parameter eq : (ref Self) -> (ref dns.AccountId.t) -> M bool.t.
   
-  Global Instance AssociatedFunction_eq :
-    Notations.DoubleColon ltac:(Self) "eq" := {
+  Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
     Notations.double_colon := eq;
   }.
   
   Global Instance ℐ :
-    core.cmp.PartialEq.Required.Trait ltac:(Self)
-      (Rhs := core.cmp.PartialEq.Default.Rhs ltac:(Self)) := {
+    core.cmp.PartialEq.Required.Trait Self
+      (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
     core.cmp.PartialEq.eq := eq;
     core.cmp.PartialEq.ne := Datatypes.None;
   }.
@@ -241,21 +237,21 @@ End Impl_core_cmp_PartialEq_for_dns_AccountId_t.
 
 Module  Impl_core_convert_From_array_u8_t_for_dns_AccountId_t.
 Section Impl_core_convert_From_array_u8_t_for_dns_AccountId_t.
-  Ltac Self := exact dns.AccountId.t.
+  Definition Self : Set := dns.AccountId.t.
   
   (*
       fn from(_value: [u8; 32]) -> Self {
           unimplemented!()
       }
   *)
-  Parameter from : (array u8.t) -> M ltac:(Self).
+  Parameter from : (array u8.t) -> M Self.
   
   Global Instance AssociatedFunction_from :
-    Notations.DoubleColon ltac:(Self) "from" := {
+    Notations.DoubleColon Self "from" := {
     Notations.double_colon := from;
   }.
   
-  Global Instance ℐ : core.convert.From.Trait ltac:(Self) (T := array u8.t) := {
+  Global Instance ℐ : core.convert.From.Trait Self (T := array u8.t) := {
     core.convert.From.from := from;
   }.
 End Impl_core_convert_From_array_u8_t_for_dns_AccountId_t.
@@ -390,17 +386,17 @@ End Event.
 
 Module  Impl_dns_Env_t.
 Section Impl_dns_Env_t.
-  Ltac Self := exact dns.Env.t.
+  Definition Self : Set := dns.Env.t.
   
   (*
       fn caller(&self) -> AccountId {
           self.caller
       }
   *)
-  Parameter caller : (ref ltac:(Self)) -> M dns.AccountId.t.
+  Parameter caller : (ref Self) -> M dns.AccountId.t.
   
   Global Instance AssociatedFunction_caller :
-    Notations.DoubleColon ltac:(Self) "caller" := {
+    Notations.DoubleColon Self "caller" := {
     Notations.double_colon := caller;
   }.
   
@@ -409,10 +405,10 @@ Section Impl_dns_Env_t.
           unimplemented!()
       }
   *)
-  Parameter emit_event : (ref ltac:(Self)) -> dns.Event.t -> M unit.
+  Parameter emit_event : (ref Self) -> dns.Event.t -> M unit.
   
   Global Instance AssociatedFunction_emit_event :
-    Notations.DoubleColon ltac:(Self) "emit_event" := {
+    Notations.DoubleColon Self "emit_event" := {
     Notations.double_colon := emit_event;
   }.
 End Impl_dns_Env_t.
@@ -468,7 +464,7 @@ Parameter zero_address : M dns.AccountId.t.
 
 Module  Impl_core_default_Default_for_dns_DomainNameService_t.
 Section Impl_core_default_Default_for_dns_DomainNameService_t.
-  Ltac Self := exact dns.DomainNameService.t.
+  Definition Self : Set := dns.DomainNameService.t.
   
   (*
       fn default() -> Self {
@@ -484,14 +480,14 @@ Section Impl_core_default_Default_for_dns_DomainNameService_t.
           }
       }
   *)
-  Parameter default : M ltac:(Self).
+  Parameter default : M Self.
   
   Global Instance AssociatedFunction_default :
-    Notations.DoubleColon ltac:(Self) "default" := {
+    Notations.DoubleColon Self "default" := {
     Notations.double_colon := default;
   }.
   
-  Global Instance ℐ : core.default.Default.Trait ltac:(Self) := {
+  Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
   }.
 End Impl_core_default_Default_for_dns_DomainNameService_t.
@@ -505,30 +501,29 @@ End Error.
 
 Module  Impl_core_marker_StructuralPartialEq_for_dns_Error_t.
 Section Impl_core_marker_StructuralPartialEq_for_dns_Error_t.
-  Ltac Self := exact dns.Error.t.
+  Definition Self : Set := dns.Error.t.
   
-  Global Instance ℐ : core.marker.StructuralPartialEq.Trait ltac:(Self) := {
+  Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
   }.
 End Impl_core_marker_StructuralPartialEq_for_dns_Error_t.
 End Impl_core_marker_StructuralPartialEq_for_dns_Error_t.
 
 Module  Impl_core_cmp_PartialEq_for_dns_Error_t.
 Section Impl_core_cmp_PartialEq_for_dns_Error_t.
-  Ltac Self := exact dns.Error.t.
+  Definition Self : Set := dns.Error.t.
   
   (*
   PartialEq
   *)
-  Parameter eq : (ref ltac:(Self)) -> (ref dns.Error.t) -> M bool.t.
+  Parameter eq : (ref Self) -> (ref dns.Error.t) -> M bool.t.
   
-  Global Instance AssociatedFunction_eq :
-    Notations.DoubleColon ltac:(Self) "eq" := {
+  Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
     Notations.double_colon := eq;
   }.
   
   Global Instance ℐ :
-    core.cmp.PartialEq.Required.Trait ltac:(Self)
-      (Rhs := core.cmp.PartialEq.Default.Rhs ltac:(Self)) := {
+    core.cmp.PartialEq.Required.Trait Self
+      (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
     core.cmp.PartialEq.eq := eq;
     core.cmp.PartialEq.ne := Datatypes.None;
   }.
@@ -537,28 +532,28 @@ End Impl_core_cmp_PartialEq_for_dns_Error_t.
 
 Module  Impl_core_marker_StructuralEq_for_dns_Error_t.
 Section Impl_core_marker_StructuralEq_for_dns_Error_t.
-  Ltac Self := exact dns.Error.t.
+  Definition Self : Set := dns.Error.t.
   
-  Global Instance ℐ : core.marker.StructuralEq.Trait ltac:(Self) := {
+  Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
   }.
 End Impl_core_marker_StructuralEq_for_dns_Error_t.
 End Impl_core_marker_StructuralEq_for_dns_Error_t.
 
 Module  Impl_core_cmp_Eq_for_dns_Error_t.
 Section Impl_core_cmp_Eq_for_dns_Error_t.
-  Ltac Self := exact dns.Error.t.
+  Definition Self : Set := dns.Error.t.
   
   (*
   Eq
   *)
-  Parameter assert_receiver_is_total_eq : (ref ltac:(Self)) -> M unit.
+  Parameter assert_receiver_is_total_eq : (ref Self) -> M unit.
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
-    Notations.DoubleColon ltac:(Self) "assert_receiver_is_total_eq" := {
+    Notations.DoubleColon Self "assert_receiver_is_total_eq" := {
     Notations.double_colon := assert_receiver_is_total_eq;
   }.
   
-  Global Instance ℐ : core.cmp.Eq.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
     core.cmp.Eq.assert_receiver_is_total_eq :=
       Datatypes.Some assert_receiver_is_total_eq;
   }.
@@ -569,7 +564,7 @@ Ltac Result T := exact (core.result.Result.t T dns.Error.t).
 
 Module  Impl_dns_DomainNameService_t.
 Section Impl_dns_DomainNameService_t.
-  Ltac Self := exact dns.DomainNameService.t.
+  Definition Self : Set := dns.DomainNameService.t.
   
   (*
       fn init_env() -> Env {
@@ -579,7 +574,7 @@ Section Impl_dns_DomainNameService_t.
   Parameter init_env : M dns.Env.t.
   
   Global Instance AssociatedFunction_init_env :
-    Notations.DoubleColon ltac:(Self) "init_env" := {
+    Notations.DoubleColon Self "init_env" := {
     Notations.double_colon := init_env;
   }.
   
@@ -588,10 +583,9 @@ Section Impl_dns_DomainNameService_t.
           Self::init_env()
       }
   *)
-  Parameter env : (ref ltac:(Self)) -> M dns.Env.t.
+  Parameter env : (ref Self) -> M dns.Env.t.
   
-  Global Instance AssociatedFunction_env :
-    Notations.DoubleColon ltac:(Self) "env" := {
+  Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
     Notations.double_colon := env;
   }.
   
@@ -600,10 +594,9 @@ Section Impl_dns_DomainNameService_t.
           Default::default()
       }
   *)
-  Parameter new : M ltac:(Self).
+  Parameter new : M Self.
   
-  Global Instance AssociatedFunction_new :
-    Notations.DoubleColon ltac:(Self) "new" := {
+  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
   }.
   
@@ -622,10 +615,10 @@ Section Impl_dns_DomainNameService_t.
       }
   *)
   Parameter register :
-      (mut_ref ltac:(Self)) -> ltac:(dns.Hash) -> M ltac:(dns.Result unit).
+      (mut_ref Self) -> ltac:(dns.Hash) -> M ltac:(dns.Result unit).
   
   Global Instance AssociatedFunction_register :
-    Notations.DoubleColon ltac:(Self) "register" := {
+    Notations.DoubleColon Self "register" := {
     Notations.double_colon := register;
   }.
   
@@ -637,10 +630,10 @@ Section Impl_dns_DomainNameService_t.
       }
   *)
   Parameter get_owner_or_default :
-      (ref ltac:(Self)) -> ltac:(dns.Hash) -> M dns.AccountId.t.
+      (ref Self) -> ltac:(dns.Hash) -> M dns.AccountId.t.
   
   Global Instance AssociatedFunction_get_owner_or_default :
-    Notations.DoubleColon ltac:(Self) "get_owner_or_default" := {
+    Notations.DoubleColon Self "get_owner_or_default" := {
     Notations.double_colon := get_owner_or_default;
   }.
   
@@ -665,13 +658,13 @@ Section Impl_dns_DomainNameService_t.
       }
   *)
   Parameter set_address :
-      (mut_ref ltac:(Self)) ->
+      (mut_ref Self) ->
         ltac:(dns.Hash) ->
         dns.AccountId.t ->
         M ltac:(dns.Result unit).
   
   Global Instance AssociatedFunction_set_address :
-    Notations.DoubleColon ltac:(Self) "set_address" := {
+    Notations.DoubleColon Self "set_address" := {
     Notations.double_colon := set_address;
   }.
   
@@ -697,13 +690,13 @@ Section Impl_dns_DomainNameService_t.
       }
   *)
   Parameter transfer :
-      (mut_ref ltac:(Self)) ->
+      (mut_ref Self) ->
         ltac:(dns.Hash) ->
         dns.AccountId.t ->
         M ltac:(dns.Result unit).
   
   Global Instance AssociatedFunction_transfer :
-    Notations.DoubleColon ltac:(Self) "transfer" := {
+    Notations.DoubleColon Self "transfer" := {
     Notations.double_colon := transfer;
   }.
   
@@ -715,10 +708,10 @@ Section Impl_dns_DomainNameService_t.
       }
   *)
   Parameter get_address_or_default :
-      (ref ltac:(Self)) -> ltac:(dns.Hash) -> M dns.AccountId.t.
+      (ref Self) -> ltac:(dns.Hash) -> M dns.AccountId.t.
   
   Global Instance AssociatedFunction_get_address_or_default :
-    Notations.DoubleColon ltac:(Self) "get_address_or_default" := {
+    Notations.DoubleColon Self "get_address_or_default" := {
     Notations.double_colon := get_address_or_default;
   }.
   
@@ -727,11 +720,10 @@ Section Impl_dns_DomainNameService_t.
           self.get_address_or_default(name)
       }
   *)
-  Parameter get_address :
-      (ref ltac:(Self)) -> ltac:(dns.Hash) -> M dns.AccountId.t.
+  Parameter get_address : (ref Self) -> ltac:(dns.Hash) -> M dns.AccountId.t.
   
   Global Instance AssociatedFunction_get_address :
-    Notations.DoubleColon ltac:(Self) "get_address" := {
+    Notations.DoubleColon Self "get_address" := {
     Notations.double_colon := get_address;
   }.
   
@@ -740,11 +732,10 @@ Section Impl_dns_DomainNameService_t.
           self.get_owner_or_default(name)
       }
   *)
-  Parameter get_owner :
-      (ref ltac:(Self)) -> ltac:(dns.Hash) -> M dns.AccountId.t.
+  Parameter get_owner : (ref Self) -> ltac:(dns.Hash) -> M dns.AccountId.t.
   
   Global Instance AssociatedFunction_get_owner :
-    Notations.DoubleColon ltac:(Self) "get_owner" := {
+    Notations.DoubleColon Self "get_owner" := {
     Notations.double_colon := get_owner;
   }.
 End Impl_dns_DomainNameService_t.

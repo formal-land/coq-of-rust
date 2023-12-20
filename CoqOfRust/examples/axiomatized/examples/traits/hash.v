@@ -33,23 +33,23 @@ End Person.
 
 Module  Impl_core_hash_Hash_for_hash_Person_t.
 Section Impl_core_hash_Hash_for_hash_Person_t.
-  Ltac Self := exact hash.Person.t.
+  Definition Self : Set := hash.Person.t.
   
   (*
   Hash
   *)
   Parameter hash :
       forall {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H},
-      (ref ltac:(Self)) -> (mut_ref __H) -> M unit.
+      (ref Self) -> (mut_ref __H) -> M unit.
   
   Global Instance AssociatedFunction_hash
       {__H : Set}
       {ℋ_0 : core.hash.Hasher.Trait __H} :
-    Notations.DoubleColon ltac:(Self) "hash" := {
+    Notations.DoubleColon Self "hash" := {
     Notations.double_colon := hash (__H := __H);
   }.
   
-  Global Instance ℐ : core.hash.Hash.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : core.hash.Hash.Required.Trait Self := {
     core.hash.Hash.hash {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H} :=
       hash (__H := __H);
     core.hash.Hash.hash_slice := Datatypes.None;

@@ -16,7 +16,7 @@ End Null.
 Module  DoubleDrop.
 Section DoubleDrop.
   Class Trait (Self : Set) {T : Set} : Type := {
-    double_drop : ltac:(Self) -> T -> M unit;
+    double_drop : Self -> T -> M unit;
   }.
   
 End DoubleDrop.
@@ -26,22 +26,22 @@ Module  Impl_generics_traits_DoubleDrop_T_for_U.
 Section Impl_generics_traits_DoubleDrop_T_for_U.
   Context {T U : Set}.
   
-  Ltac Self := exact U.
+  Definition Self : Set := U.
   
   (*
       fn double_drop(self, _: T) {}
   *)
-  Definition double_drop (self : ltac:(Self)) (Pattern : T) : M unit :=
-    let* self : M.Val ltac:(Self) := M.alloc self in
+  Definition double_drop (self : Self) (Pattern : T) : M unit :=
+    let* self : M.Val Self := M.alloc self in
     let* Pattern : M.Val T := M.alloc Pattern in
     M.pure tt.
   
   Global Instance AssociatedFunction_double_drop :
-    Notations.DoubleColon ltac:(Self) "double_drop" := {
+    Notations.DoubleColon Self "double_drop" := {
     Notations.double_colon := double_drop;
   }.
   
-  Global Instance ℐ : generics_traits.DoubleDrop.Trait ltac:(Self) (T := T) := {
+  Global Instance ℐ : generics_traits.DoubleDrop.Trait Self (T := T) := {
     generics_traits.DoubleDrop.double_drop := double_drop;
   }.
 End Impl_generics_traits_DoubleDrop_T_for_U.

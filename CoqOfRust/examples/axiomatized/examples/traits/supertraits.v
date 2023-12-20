@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module  Person.
 Section Person.
   Class Trait (Self : Set) : Type := {
-    name : (ref ltac:(Self)) -> M alloc.string.String.t;
+    name : (ref Self) -> M alloc.string.String.t;
   }.
   
 End Person.
@@ -14,7 +14,7 @@ Module  Student.
 Section Student.
   Class Trait (Self : Set) : Type := {
     ℒ_0 :: supertraits.Person.Trait Self;
-    university : (ref ltac:(Self)) -> M alloc.string.String.t;
+    university : (ref Self) -> M alloc.string.String.t;
   }.
   
 End Student.
@@ -23,7 +23,7 @@ End Student.
 Module  Programmer.
 Section Programmer.
   Class Trait (Self : Set) : Type := {
-    fav_language : (ref ltac:(Self)) -> M alloc.string.String.t;
+    fav_language : (ref Self) -> M alloc.string.String.t;
   }.
   
 End Programmer.
@@ -34,7 +34,7 @@ Section CompSciStudent.
   Class Trait (Self : Set) : Type := {
     ℒ_0 :: supertraits.Programmer.Trait Self;
     ℒ_1 :: supertraits.Student.Trait Self;
-    git_username : (ref ltac:(Self)) -> M alloc.string.String.t;
+    git_username : (ref Self) -> M alloc.string.String.t;
   }.
   
 End CompSciStudent.

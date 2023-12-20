@@ -15,7 +15,7 @@ End AccountId.
 
 Module  Impl_core_default_Default_for_basic_contract_caller_AccountId_t.
 Section Impl_core_default_Default_for_basic_contract_caller_AccountId_t.
-  Ltac Self := exact basic_contract_caller.AccountId.t.
+  Definition Self : Set := basic_contract_caller.AccountId.t.
   
   (*
   Default
@@ -23,11 +23,11 @@ Section Impl_core_default_Default_for_basic_contract_caller_AccountId_t.
   Parameter default : M basic_contract_caller.AccountId.t.
   
   Global Instance AssociatedFunction_default :
-    Notations.DoubleColon ltac:(Self) "default" := {
+    Notations.DoubleColon Self "default" := {
     Notations.double_colon := default;
   }.
   
-  Global Instance ℐ : core.default.Default.Trait ltac:(Self) := {
+  Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
   }.
 End Impl_core_default_Default_for_basic_contract_caller_AccountId_t.
@@ -35,19 +35,19 @@ End Impl_core_default_Default_for_basic_contract_caller_AccountId_t.
 
 Module  Impl_core_clone_Clone_for_basic_contract_caller_AccountId_t.
 Section Impl_core_clone_Clone_for_basic_contract_caller_AccountId_t.
-  Ltac Self := exact basic_contract_caller.AccountId.t.
+  Definition Self : Set := basic_contract_caller.AccountId.t.
   
   (*
   Clone
   *)
-  Parameter clone : (ref ltac:(Self)) -> M basic_contract_caller.AccountId.t.
+  Parameter clone : (ref Self) -> M basic_contract_caller.AccountId.t.
   
   Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon ltac:(Self) "clone" := {
+    Notations.DoubleColon Self "clone" := {
     Notations.double_colon := clone;
   }.
   
-  Global Instance ℐ : core.clone.Clone.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
     core.clone.Clone.clone_from := Datatypes.None;
   }.
@@ -56,9 +56,9 @@ End Impl_core_clone_Clone_for_basic_contract_caller_AccountId_t.
 
 Module  Impl_core_marker_Copy_for_basic_contract_caller_AccountId_t.
 Section Impl_core_marker_Copy_for_basic_contract_caller_AccountId_t.
-  Ltac Self := exact basic_contract_caller.AccountId.t.
+  Definition Self : Set := basic_contract_caller.AccountId.t.
   
-  Global Instance ℐ : core.marker.Copy.Trait ltac:(Self) := {
+  Global Instance ℐ : core.marker.Copy.Trait Self := {
   }.
 End Impl_core_marker_Copy_for_basic_contract_caller_AccountId_t.
 End Impl_core_marker_Copy_for_basic_contract_caller_AccountId_t.
@@ -88,17 +88,16 @@ End OtherContract.
 
 Module  Impl_basic_contract_caller_OtherContract_t.
 Section Impl_basic_contract_caller_OtherContract_t.
-  Ltac Self := exact basic_contract_caller.OtherContract.t.
+  Definition Self : Set := basic_contract_caller.OtherContract.t.
   
   (*
       pub fn new(init_value: bool) -> Self {
           Self { value: init_value }
       }
   *)
-  Parameter new : bool.t -> M ltac:(Self).
+  Parameter new : bool.t -> M Self.
   
-  Global Instance AssociatedFunction_new :
-    Notations.DoubleColon ltac:(Self) "new" := {
+  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
   }.
   
@@ -107,10 +106,10 @@ Section Impl_basic_contract_caller_OtherContract_t.
           self.value = !self.value;
       }
   *)
-  Parameter flip : (mut_ref ltac:(Self)) -> M unit.
+  Parameter flip : (mut_ref Self) -> M unit.
   
   Global Instance AssociatedFunction_flip :
-    Notations.DoubleColon ltac:(Self) "flip" := {
+    Notations.DoubleColon Self "flip" := {
     Notations.double_colon := flip;
   }.
   
@@ -119,10 +118,9 @@ Section Impl_basic_contract_caller_OtherContract_t.
           self.value
       }
   *)
-  Parameter get : (ref ltac:(Self)) -> M bool.t.
+  Parameter get : (ref Self) -> M bool.t.
   
-  Global Instance AssociatedFunction_get :
-    Notations.DoubleColon ltac:(Self) "get" := {
+  Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
     Notations.double_colon := get;
   }.
 End Impl_basic_contract_caller_OtherContract_t.
@@ -149,7 +147,7 @@ End BasicContractCaller.
 
 Module  Impl_basic_contract_caller_BasicContractCaller_t.
 Section Impl_basic_contract_caller_BasicContractCaller_t.
-  Ltac Self := exact basic_contract_caller.BasicContractCaller.t.
+  Definition Self : Set := basic_contract_caller.BasicContractCaller.t.
   
   (*
       pub fn new(other_contract_code_hash: Hash) -> Self {
@@ -163,10 +161,9 @@ Section Impl_basic_contract_caller_BasicContractCaller_t.
           Self { other_contract }
       }
   *)
-  Parameter new : ltac:(basic_contract_caller.Hash) -> M ltac:(Self).
+  Parameter new : ltac:(basic_contract_caller.Hash) -> M Self.
   
-  Global Instance AssociatedFunction_new :
-    Notations.DoubleColon ltac:(Self) "new" := {
+  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
   }.
   
@@ -176,10 +173,10 @@ Section Impl_basic_contract_caller_BasicContractCaller_t.
           self.other_contract.get()
       }
   *)
-  Parameter flip_and_get : (mut_ref ltac:(Self)) -> M bool.t.
+  Parameter flip_and_get : (mut_ref Self) -> M bool.t.
   
   Global Instance AssociatedFunction_flip_and_get :
-    Notations.DoubleColon ltac:(Self) "flip_and_get" := {
+    Notations.DoubleColon Self "flip_and_get" := {
     Notations.double_colon := flip_and_get;
   }.
 End Impl_basic_contract_caller_BasicContractCaller_t.

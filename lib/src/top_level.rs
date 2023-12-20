@@ -1645,7 +1645,7 @@ impl ImplItemKind {
                     name,
                     None,
                     None,
-                    "Notations.DoubleColon ltac:(Self)",
+                    "Notations.DoubleColon Self",
                     "Notations.double_colon",
                 )),
             ])]),
@@ -1657,7 +1657,7 @@ impl ImplItemKind {
                     name,
                     Some(&definition.ty_params),
                     Some(&definition.where_predicates),
-                    "Notations.DoubleColon ltac:(Self)",
+                    "Notations.DoubleColon Self",
                     "Notations.double_colon",
                 )),
             ]),
@@ -2069,8 +2069,9 @@ impl TopLevelItem {
                             coq::TopLevel::new(&[coq::TopLevelItem::Definition(
                                 coq::Definition::new(
                                     "Self",
-                                    &coq::DefinitionKind::Ltac {
+                                    &coq::DefinitionKind::Alias {
                                         args: vec![],
+                                        ty: Some(coq::Expression::Set),
                                         body: self_ty.to_coq(),
                                     },
                                 ),
@@ -2257,8 +2258,9 @@ impl TopLevelItem {
                                 vec![coq::TopLevelItem::Definition(
                                     coq::Definition::new(
                                         "Self",
-                                        &coq::DefinitionKind::Ltac {
+                                        &coq::DefinitionKind::Alias {
                                             args: vec![],
+                                            ty: Some(coq::Expression::Set),
                                             body: self_ty.to_coq(),
                                         },
                                     ),
@@ -2292,7 +2294,7 @@ impl TopLevelItem {
                                         ]),
                                         no_implicit: false,
                                     }
-                                    .apply(&coq::Expression::self_())
+                                    .apply(&coq::Expression::just_name("Self"))
                                     .apply_many_args(
                                         &trait_ty_params
                                             .iter()
@@ -2305,7 +2307,7 @@ impl TopLevelItem {
                                                         Some(name.clone()),
                                                         coq::Expression::Code(
                                                             concat([of_trait.to_doc(), text(".Default."), text(name)])
-                                                        ).apply(&coq::Expression::self_()
+                                                        ).apply(&coq::Expression::just_name("Self")
                                                         ),
                                                     ),
                                                 }

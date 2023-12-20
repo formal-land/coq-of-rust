@@ -27,25 +27,25 @@ End Account.
 
 Module  Impl_core_marker_StructuralPartialEq_for_hash_map_alternate_or_custom_key_types_Account_t.
 Section Impl_core_marker_StructuralPartialEq_for_hash_map_alternate_or_custom_key_types_Account_t.
-  Ltac Self := exact hash_map_alternate_or_custom_key_types.Account.t.
+  Definition Self : Set := hash_map_alternate_or_custom_key_types.Account.t.
   
-  Global Instance ℐ : core.marker.StructuralPartialEq.Trait ltac:(Self) := {
+  Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
   }.
 End Impl_core_marker_StructuralPartialEq_for_hash_map_alternate_or_custom_key_types_Account_t.
 End Impl_core_marker_StructuralPartialEq_for_hash_map_alternate_or_custom_key_types_Account_t.
 
 Module  Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Account_t.
 Section Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Account_t.
-  Ltac Self := exact hash_map_alternate_or_custom_key_types.Account.t.
+  Definition Self : Set := hash_map_alternate_or_custom_key_types.Account.t.
   
   (*
   PartialEq
   *)
   Definition eq
-      (self : ref ltac:(Self))
+      (self : ref Self)
       (other : ref hash_map_alternate_or_custom_key_types.Account.t)
       : M bool.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (ref Self) := M.alloc self in
     let* other : M.Val (ref hash_map_alternate_or_custom_key_types.Account.t) :=
       M.alloc other in
     let* α0 : ref hash_map_alternate_or_custom_key_types.Account.t :=
@@ -68,14 +68,13 @@ Section Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Accou
           (borrow (deref α4).["password"])) in
     M.pure (BinOp.and α2 α5).
   
-  Global Instance AssociatedFunction_eq :
-    Notations.DoubleColon ltac:(Self) "eq" := {
+  Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
     Notations.double_colon := eq;
   }.
   
   Global Instance ℐ :
-    core.cmp.PartialEq.Required.Trait ltac:(Self)
-      (Rhs := core.cmp.PartialEq.Default.Rhs ltac:(Self)) := {
+    core.cmp.PartialEq.Required.Trait Self
+      (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
     core.cmp.PartialEq.eq := eq;
     core.cmp.PartialEq.ne := Datatypes.None;
   }.
@@ -84,33 +83,33 @@ End Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Account_t
 
 Module  Impl_core_marker_StructuralEq_for_hash_map_alternate_or_custom_key_types_Account_t.
 Section Impl_core_marker_StructuralEq_for_hash_map_alternate_or_custom_key_types_Account_t.
-  Ltac Self := exact hash_map_alternate_or_custom_key_types.Account.t.
+  Definition Self : Set := hash_map_alternate_or_custom_key_types.Account.t.
   
-  Global Instance ℐ : core.marker.StructuralEq.Trait ltac:(Self) := {
+  Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
   }.
 End Impl_core_marker_StructuralEq_for_hash_map_alternate_or_custom_key_types_Account_t.
 End Impl_core_marker_StructuralEq_for_hash_map_alternate_or_custom_key_types_Account_t.
 
 Module  Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account_t.
 Section Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account_t.
-  Ltac Self := exact hash_map_alternate_or_custom_key_types.Account.t.
+  Definition Self : Set := hash_map_alternate_or_custom_key_types.Account.t.
   
   (*
   Eq
   *)
-  Definition assert_receiver_is_total_eq (self : ref ltac:(Self)) : M unit :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
+    let* self : M.Val (ref Self) := M.alloc self in
     let* _ : M.Val unit := M.alloc tt in
     let* _ : M.Val unit := M.alloc tt in
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
-    Notations.DoubleColon ltac:(Self) "assert_receiver_is_total_eq" := {
+    Notations.DoubleColon Self "assert_receiver_is_total_eq" := {
     Notations.double_colon := assert_receiver_is_total_eq;
   }.
   
-  Global Instance ℐ : core.cmp.Eq.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
     core.cmp.Eq.assert_receiver_is_total_eq :=
       Datatypes.Some assert_receiver_is_total_eq;
   }.
@@ -119,7 +118,7 @@ End Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account_t.
 
 Module  Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account_t.
 Section Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account_t.
-  Ltac Self := exact hash_map_alternate_or_custom_key_types.Account.t.
+  Definition Self : Set := hash_map_alternate_or_custom_key_types.Account.t.
   
   (*
   Hash
@@ -127,10 +126,10 @@ Section Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account_t
   Definition hash
       {__H : Set}
       {ℋ_0 : core.hash.Hasher.Trait __H}
-      (self : ref ltac:(Self))
+      (self : ref Self)
       (state : mut_ref __H)
       : M unit :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (ref Self) := M.alloc self in
     let* state : M.Val (mut_ref __H) := M.alloc state in
     let* _ : M.Val unit :=
       let* α0 : ref hash_map_alternate_or_custom_key_types.Account.t :=
@@ -156,11 +155,11 @@ Section Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account_t
   Global Instance AssociatedFunction_hash
       {__H : Set}
       {ℋ_0 : core.hash.Hasher.Trait __H} :
-    Notations.DoubleColon ltac:(Self) "hash" := {
+    Notations.DoubleColon Self "hash" := {
     Notations.double_colon := hash (__H := __H);
   }.
   
-  Global Instance ℐ : core.hash.Hash.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : core.hash.Hash.Required.Trait Self := {
     core.hash.Hash.hash {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H} :=
       hash (__H := __H);
     core.hash.Hash.hash_slice := Datatypes.None;

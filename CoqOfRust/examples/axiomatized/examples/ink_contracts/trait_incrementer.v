@@ -4,8 +4,8 @@ Require Import CoqOfRust.CoqOfRust.
 Module  Increment.
 Section Increment.
   Class Trait (Self : Set) : Type := {
-    inc : (mut_ref ltac:(Self)) -> M unit;
-    get : (ref ltac:(Self)) -> M u64.t;
+    inc : (mut_ref Self) -> M unit;
+    get : (ref Self) -> M u64.t;
   }.
   
 End Increment.
@@ -14,7 +14,7 @@ End Increment.
 Module  Reset.
 Section Reset.
   Class Trait (Self : Set) : Type := {
-    reset : (mut_ref ltac:(Self)) -> M unit;
+    reset : (mut_ref Self) -> M unit;
   }.
   
 End Reset.
@@ -38,17 +38,16 @@ End Incrementer.
 
 Module  Impl_trait_incrementer_Incrementer_t.
 Section Impl_trait_incrementer_Incrementer_t.
-  Ltac Self := exact trait_incrementer.Incrementer.t.
+  Definition Self : Set := trait_incrementer.Incrementer.t.
   
   (*
       pub fn new(init_value: u64) -> Self {
           Self { value: init_value }
       }
   *)
-  Parameter new : u64.t -> M ltac:(Self).
+  Parameter new : u64.t -> M Self.
   
-  Global Instance AssociatedFunction_new :
-    Notations.DoubleColon ltac:(Self) "new" := {
+  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
   }.
   
@@ -57,10 +56,10 @@ Section Impl_trait_incrementer_Incrementer_t.
           self.value += delta;
       }
   *)
-  Parameter inc_by : (mut_ref ltac:(Self)) -> u64.t -> M unit.
+  Parameter inc_by : (mut_ref Self) -> u64.t -> M unit.
   
   Global Instance AssociatedFunction_inc_by :
-    Notations.DoubleColon ltac:(Self) "inc_by" := {
+    Notations.DoubleColon Self "inc_by" := {
     Notations.double_colon := inc_by;
   }.
 End Impl_trait_incrementer_Incrementer_t.
@@ -68,17 +67,16 @@ End Impl_trait_incrementer_Incrementer_t.
 
 Module  Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer_t.
 Section Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer_t.
-  Ltac Self := exact trait_incrementer.Incrementer.t.
+  Definition Self : Set := trait_incrementer.Incrementer.t.
   
   (*
       fn inc(&mut self) {
           self.inc_by(1)
       }
   *)
-  Parameter inc : (mut_ref ltac:(Self)) -> M unit.
+  Parameter inc : (mut_ref Self) -> M unit.
   
-  Global Instance AssociatedFunction_inc :
-    Notations.DoubleColon ltac:(Self) "inc" := {
+  Global Instance AssociatedFunction_inc : Notations.DoubleColon Self "inc" := {
     Notations.double_colon := inc;
   }.
   
@@ -87,14 +85,13 @@ Section Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer_t.
           self.value
       }
   *)
-  Parameter get : (ref ltac:(Self)) -> M u64.t.
+  Parameter get : (ref Self) -> M u64.t.
   
-  Global Instance AssociatedFunction_get :
-    Notations.DoubleColon ltac:(Self) "get" := {
+  Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
     Notations.double_colon := get;
   }.
   
-  Global Instance ℐ : trait_incrementer.Increment.Trait ltac:(Self) := {
+  Global Instance ℐ : trait_incrementer.Increment.Trait Self := {
     trait_incrementer.Increment.inc := inc;
     trait_incrementer.Increment.get := get;
   }.
@@ -103,21 +100,21 @@ End Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer_t.
 
 Module  Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer_t.
 Section Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer_t.
-  Ltac Self := exact trait_incrementer.Incrementer.t.
+  Definition Self : Set := trait_incrementer.Incrementer.t.
   
   (*
       fn reset(&mut self) {
           self.value = 0;
       }
   *)
-  Parameter reset : (mut_ref ltac:(Self)) -> M unit.
+  Parameter reset : (mut_ref Self) -> M unit.
   
   Global Instance AssociatedFunction_reset :
-    Notations.DoubleColon ltac:(Self) "reset" := {
+    Notations.DoubleColon Self "reset" := {
     Notations.double_colon := reset;
   }.
   
-  Global Instance ℐ : trait_incrementer.Reset.Trait ltac:(Self) := {
+  Global Instance ℐ : trait_incrementer.Reset.Trait Self := {
     trait_incrementer.Reset.reset := reset;
   }.
 End Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer_t.

@@ -15,20 +15,20 @@ End Foo.
 
 Module  Impl_example05_Foo_t.
 Section Impl_example05_Foo_t.
-  Ltac Self := exact example05.Foo.t.
+  Definition Self : Set := example05.Foo.t.
   
   (*
       fn plus1(self) -> u32 {
           self.0 + 1
       }
   *)
-  Definition plus1 (self : ltac:(Self)) : M u32.t :=
-    let* self : M.Val ltac:(Self) := M.alloc self in
+  Definition plus1 (self : Self) : M u32.t :=
+    let* self : M.Val Self := M.alloc self in
     let* α0 : u32.t := M.read self.["0"] in
     BinOp.Panic.add α0 (Integer.of_Z 1).
   
   Global Instance AssociatedFunction_plus1 :
-    Notations.DoubleColon ltac:(Self) "plus1" := {
+    Notations.DoubleColon Self "plus1" := {
     Notations.double_colon := plus1;
   }.
 End Impl_example05_Foo_t.

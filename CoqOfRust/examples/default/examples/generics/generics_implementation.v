@@ -36,20 +36,20 @@ End GenVal.
 
 Module  Impl_generics_implementation_Val_t.
 Section Impl_generics_implementation_Val_t.
-  Ltac Self := exact generics_implementation.Val.t.
+  Definition Self : Set := generics_implementation.Val.t.
   
   (*
       fn value(&self) -> &f64 {
           &self.val
       }
   *)
-  Definition value (self : ref ltac:(Self)) : M (ref f64.t) :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition value (self : ref Self) : M (ref f64.t) :=
+    let* self : M.Val (ref Self) := M.alloc self in
     let* α0 : ref generics_implementation.Val.t := M.read self in
     M.pure (borrow (deref α0).["val"]).
   
   Global Instance AssociatedFunction_value :
-    Notations.DoubleColon ltac:(Self) "value" := {
+    Notations.DoubleColon Self "value" := {
     Notations.double_colon := value;
   }.
 End Impl_generics_implementation_Val_t.
@@ -59,20 +59,20 @@ Module  Impl_generics_implementation_GenVal_t_T.
 Section Impl_generics_implementation_GenVal_t_T.
   Context {T : Set}.
   
-  Ltac Self := exact (generics_implementation.GenVal.t T).
+  Definition Self : Set := generics_implementation.GenVal.t T.
   
   (*
       fn value(&self) -> &T {
           &self.gen_val
       }
   *)
-  Definition value (self : ref ltac:(Self)) : M (ref T) :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition value (self : ref Self) : M (ref T) :=
+    let* self : M.Val (ref Self) := M.alloc self in
     let* α0 : ref (generics_implementation.GenVal.t T) := M.read self in
     M.pure (borrow (deref α0).["gen_val"]).
   
   Global Instance AssociatedFunction_value :
-    Notations.DoubleColon ltac:(Self) "value" := {
+    Notations.DoubleColon Self "value" := {
     Notations.double_colon := value;
   }.
 End Impl_generics_implementation_GenVal_t_T.

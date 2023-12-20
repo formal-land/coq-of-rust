@@ -12,17 +12,17 @@ End Fruit.
 
 Module  Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_with_Fruit_t.
 Section Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_with_Fruit_t.
-  Ltac Self :=
-    exact unpacking_options_and_defaults_via_get_or_insert_with.Fruit.t.
+  Definition Self : Set :=
+    unpacking_options_and_defaults_via_get_or_insert_with.Fruit.t.
   
   (*
   Debug
   *)
   Definition fmt
-      (self : ref ltac:(Self))
+      (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (ref Self) := M.alloc self in
     let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 :
@@ -49,12 +49,11 @@ Section Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert
     let* α3 : ref str.t := M.read α2 in
     M.call (core.fmt.Formatter.t::["write_str"] α0 α3).
   
-  Global Instance AssociatedFunction_fmt :
-    Notations.DoubleColon ltac:(Self) "fmt" := {
+  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
+  Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
   }.
 End Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_with_Fruit_t.

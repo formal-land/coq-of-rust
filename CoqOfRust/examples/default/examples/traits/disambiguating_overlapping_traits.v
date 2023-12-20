@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module  UsernameWidget.
 Section UsernameWidget.
   Class Trait (Self : Set) : Type := {
-    get : (ref ltac:(Self)) -> M alloc.string.String.t;
+    get : (ref Self) -> M alloc.string.String.t;
   }.
   
 End UsernameWidget.
@@ -13,7 +13,7 @@ End UsernameWidget.
 Module  AgeWidget.
 Section AgeWidget.
   Class Trait (Self : Set) : Type := {
-    get : (ref ltac:(Self)) -> M u8.t;
+    get : (ref Self) -> M u8.t;
   }.
   
 End AgeWidget.
@@ -44,15 +44,15 @@ End Form.
 
 Module  Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_overlapping_traits_Form_t.
 Section Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_overlapping_traits_Form_t.
-  Ltac Self := exact disambiguating_overlapping_traits.Form.t.
+  Definition Self : Set := disambiguating_overlapping_traits.Form.t.
   
   (*
       fn get(&self) -> String {
           self.username.clone()
       }
   *)
-  Definition get (self : ref ltac:(Self)) : M alloc.string.String.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition get (self : ref Self) : M alloc.string.String.t :=
+    let* self : M.Val (ref Self) := M.alloc self in
     let* α0 : ref disambiguating_overlapping_traits.Form.t := M.read self in
     M.call
       ((core.clone.Clone.clone
@@ -60,13 +60,12 @@ Section Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating
           (Trait := ltac:(refine _)))
         (borrow (deref α0).["username"])).
   
-  Global Instance AssociatedFunction_get :
-    Notations.DoubleColon ltac:(Self) "get" := {
+  Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
     Notations.double_colon := get;
   }.
   
   Global Instance ℐ :
-    disambiguating_overlapping_traits.UsernameWidget.Trait ltac:(Self) := {
+    disambiguating_overlapping_traits.UsernameWidget.Trait Self := {
     disambiguating_overlapping_traits.UsernameWidget.get := get;
   }.
 End Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_overlapping_traits_Form_t.
@@ -74,25 +73,24 @@ End Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_ove
 
 Module  Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form_t.
 Section Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form_t.
-  Ltac Self := exact disambiguating_overlapping_traits.Form.t.
+  Definition Self : Set := disambiguating_overlapping_traits.Form.t.
   
   (*
       fn get(&self) -> u8 {
           self.age
       }
   *)
-  Definition get (self : ref ltac:(Self)) : M u8.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition get (self : ref Self) : M u8.t :=
+    let* self : M.Val (ref Self) := M.alloc self in
     let* α0 : ref disambiguating_overlapping_traits.Form.t := M.read self in
     M.read (deref α0).["age"].
   
-  Global Instance AssociatedFunction_get :
-    Notations.DoubleColon ltac:(Self) "get" := {
+  Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
     Notations.double_colon := get;
   }.
   
   Global Instance ℐ :
-    disambiguating_overlapping_traits.AgeWidget.Trait ltac:(Self) := {
+    disambiguating_overlapping_traits.AgeWidget.Trait Self := {
     disambiguating_overlapping_traits.AgeWidget.get := get;
   }.
 End Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form_t.

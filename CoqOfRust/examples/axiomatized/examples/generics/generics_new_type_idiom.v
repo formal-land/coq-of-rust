@@ -27,17 +27,17 @@ End Days.
 
 Module  Impl_generics_new_type_idiom_Years_t.
 Section Impl_generics_new_type_idiom_Years_t.
-  Ltac Self := exact generics_new_type_idiom.Years.t.
+  Definition Self : Set := generics_new_type_idiom.Years.t.
   
   (*
       pub fn to_days(&self) -> Days {
           Days(self.0 * 365)
       }
   *)
-  Parameter to_days : (ref ltac:(Self)) -> M generics_new_type_idiom.Days.t.
+  Parameter to_days : (ref Self) -> M generics_new_type_idiom.Days.t.
   
   Global Instance AssociatedFunction_to_days :
-    Notations.DoubleColon ltac:(Self) "to_days" := {
+    Notations.DoubleColon Self "to_days" := {
     Notations.double_colon := to_days;
   }.
 End Impl_generics_new_type_idiom_Years_t.
@@ -45,17 +45,17 @@ End Impl_generics_new_type_idiom_Years_t.
 
 Module  Impl_generics_new_type_idiom_Days_t.
 Section Impl_generics_new_type_idiom_Days_t.
-  Ltac Self := exact generics_new_type_idiom.Days.t.
+  Definition Self : Set := generics_new_type_idiom.Days.t.
   
   (*
       pub fn to_years(&self) -> Years {
           Years(self.0 / 365)
       }
   *)
-  Parameter to_years : (ref ltac:(Self)) -> M generics_new_type_idiom.Years.t.
+  Parameter to_years : (ref Self) -> M generics_new_type_idiom.Years.t.
   
   Global Instance AssociatedFunction_to_years :
-    Notations.DoubleColon ltac:(Self) "to_years" := {
+    Notations.DoubleColon Self "to_years" := {
     Notations.double_colon := to_years;
   }.
 End Impl_generics_new_type_idiom_Days_t.

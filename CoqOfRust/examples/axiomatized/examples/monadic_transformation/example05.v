@@ -15,17 +15,17 @@ End Foo.
 
 Module  Impl_example05_Foo_t.
 Section Impl_example05_Foo_t.
-  Ltac Self := exact example05.Foo.t.
+  Definition Self : Set := example05.Foo.t.
   
   (*
       fn plus1(self) -> u32 {
           self.0 + 1
       }
   *)
-  Parameter plus1 : ltac:(Self) -> M u32.t.
+  Parameter plus1 : Self -> M u32.t.
   
   Global Instance AssociatedFunction_plus1 :
-    Notations.DoubleColon ltac:(Self) "plus1" := {
+    Notations.DoubleColon Self "plus1" := {
     Notations.double_colon := plus1;
   }.
 End Impl_example05_Foo_t.

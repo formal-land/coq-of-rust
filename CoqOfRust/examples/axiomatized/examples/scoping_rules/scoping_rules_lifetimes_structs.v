@@ -15,22 +15,19 @@ End Borrowed.
 
 Module  Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed_t.
 Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed_t.
-  Ltac Self := exact scoping_rules_lifetimes_structs.Borrowed.t.
+  Definition Self : Set := scoping_rules_lifetimes_structs.Borrowed.t.
   
   (*
   Debug
   *)
   Parameter fmt :
-      (ref ltac:(Self)) ->
-        (mut_ref core.fmt.Formatter.t) ->
-        M ltac:(core.fmt.Result).
+      (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
   
-  Global Instance AssociatedFunction_fmt :
-    Notations.DoubleColon ltac:(Self) "fmt" := {
+  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
+  Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
   }.
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed_t.
@@ -60,22 +57,19 @@ End NamedBorrowed.
 
 Module  Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed_t.
 Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed_t.
-  Ltac Self := exact scoping_rules_lifetimes_structs.NamedBorrowed.t.
+  Definition Self : Set := scoping_rules_lifetimes_structs.NamedBorrowed.t.
   
   (*
   Debug
   *)
   Parameter fmt :
-      (ref ltac:(Self)) ->
-        (mut_ref core.fmt.Formatter.t) ->
-        M ltac:(core.fmt.Result).
+      (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
   
-  Global Instance AssociatedFunction_fmt :
-    Notations.DoubleColon ltac:(Self) "fmt" := {
+  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
+  Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
   }.
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed_t.
@@ -89,22 +83,19 @@ End Either.
 
 Module  Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either_t.
 Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either_t.
-  Ltac Self := exact scoping_rules_lifetimes_structs.Either.t.
+  Definition Self : Set := scoping_rules_lifetimes_structs.Either.t.
   
   (*
   Debug
   *)
   Parameter fmt :
-      (ref ltac:(Self)) ->
-        (mut_ref core.fmt.Formatter.t) ->
-        M ltac:(core.fmt.Result).
+      (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
   
-  Global Instance AssociatedFunction_fmt :
-    Notations.DoubleColon ltac:(Self) "fmt" := {
+  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
+  Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
   }.
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either_t.

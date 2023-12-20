@@ -25,22 +25,19 @@ End FlipperError.
 
 Module  Impl_core_fmt_Debug_for_integration_flipper_FlipperError_t.
 Section Impl_core_fmt_Debug_for_integration_flipper_FlipperError_t.
-  Ltac Self := exact integration_flipper.FlipperError.t.
+  Definition Self : Set := integration_flipper.FlipperError.t.
   
   (*
   Debug
   *)
   Parameter fmt :
-      (ref ltac:(Self)) ->
-        (mut_ref core.fmt.Formatter.t) ->
-        M ltac:(core.fmt.Result).
+      (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
   
-  Global Instance AssociatedFunction_fmt :
-    Notations.DoubleColon ltac:(Self) "fmt" := {
+  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
+  Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
   }.
 End Impl_core_fmt_Debug_for_integration_flipper_FlipperError_t.
@@ -48,17 +45,16 @@ End Impl_core_fmt_Debug_for_integration_flipper_FlipperError_t.
 
 Module  Impl_integration_flipper_Flipper_t.
 Section Impl_integration_flipper_Flipper_t.
-  Ltac Self := exact integration_flipper.Flipper.t.
+  Definition Self : Set := integration_flipper.Flipper.t.
   
   (*
       pub fn new(init_value: bool) -> Self {
           Self { value: init_value }
       }
   *)
-  Parameter new : bool.t -> M ltac:(Self).
+  Parameter new : bool.t -> M Self.
   
-  Global Instance AssociatedFunction_new :
-    Notations.DoubleColon ltac:(Self) "new" := {
+  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
   }.
   
@@ -67,10 +63,10 @@ Section Impl_integration_flipper_Flipper_t.
           Self::new(Default::default())
       }
   *)
-  Parameter new_default : M ltac:(Self).
+  Parameter new_default : M Self.
   
   Global Instance AssociatedFunction_new_default :
-    Notations.DoubleColon ltac:(Self) "new_default" := {
+    Notations.DoubleColon Self "new_default" := {
     Notations.double_colon := new_default;
   }.
   
@@ -85,10 +81,10 @@ Section Impl_integration_flipper_Flipper_t.
   *)
   Parameter try_new :
       bool.t ->
-        M (core.result.Result.t ltac:(Self) integration_flipper.FlipperError.t).
+        M (core.result.Result.t Self integration_flipper.FlipperError.t).
   
   Global Instance AssociatedFunction_try_new :
-    Notations.DoubleColon ltac:(Self) "try_new" := {
+    Notations.DoubleColon Self "try_new" := {
     Notations.double_colon := try_new;
   }.
   
@@ -97,10 +93,10 @@ Section Impl_integration_flipper_Flipper_t.
           self.value = !self.value;
       }
   *)
-  Parameter flip : (mut_ref ltac:(Self)) -> M unit.
+  Parameter flip : (mut_ref Self) -> M unit.
   
   Global Instance AssociatedFunction_flip :
-    Notations.DoubleColon ltac:(Self) "flip" := {
+    Notations.DoubleColon Self "flip" := {
     Notations.double_colon := flip;
   }.
   
@@ -109,10 +105,9 @@ Section Impl_integration_flipper_Flipper_t.
           self.value
       }
   *)
-  Parameter get : (ref ltac:(Self)) -> M bool.t.
+  Parameter get : (ref Self) -> M bool.t.
   
-  Global Instance AssociatedFunction_get :
-    Notations.DoubleColon ltac:(Self) "get" := {
+  Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
     Notations.double_colon := get;
   }.
   
@@ -122,11 +117,10 @@ Section Impl_integration_flipper_Flipper_t.
           Err(())
       }
   *)
-  Parameter err_flip :
-      (mut_ref ltac:(Self)) -> M (core.result.Result.t unit unit).
+  Parameter err_flip : (mut_ref Self) -> M (core.result.Result.t unit unit).
   
   Global Instance AssociatedFunction_err_flip :
-    Notations.DoubleColon ltac:(Self) "err_flip" := {
+    Notations.DoubleColon Self "err_flip" := {
     Notations.double_colon := err_flip;
   }.
 End Impl_integration_flipper_Flipper_t.

@@ -15,25 +15,25 @@ End Centimeters.
 
 Module  Impl_core_marker_StructuralPartialEq_for_derive_Centimeters_t.
 Section Impl_core_marker_StructuralPartialEq_for_derive_Centimeters_t.
-  Ltac Self := exact derive.Centimeters.t.
+  Definition Self : Set := derive.Centimeters.t.
   
-  Global Instance ℐ : core.marker.StructuralPartialEq.Trait ltac:(Self) := {
+  Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
   }.
 End Impl_core_marker_StructuralPartialEq_for_derive_Centimeters_t.
 End Impl_core_marker_StructuralPartialEq_for_derive_Centimeters_t.
 
 Module  Impl_core_cmp_PartialEq_for_derive_Centimeters_t.
 Section Impl_core_cmp_PartialEq_for_derive_Centimeters_t.
-  Ltac Self := exact derive.Centimeters.t.
+  Definition Self : Set := derive.Centimeters.t.
   
   (*
   PartialEq
   *)
   Definition eq
-      (self : ref ltac:(Self))
+      (self : ref Self)
       (other : ref derive.Centimeters.t)
       : M bool.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (ref Self) := M.alloc self in
     let* other : M.Val (ref derive.Centimeters.t) := M.alloc other in
     let* α0 : ref derive.Centimeters.t := M.read self in
     let* α1 : f64.t := M.read (deref α0).["0"] in
@@ -41,14 +41,13 @@ Section Impl_core_cmp_PartialEq_for_derive_Centimeters_t.
     let* α3 : f64.t := M.read (deref α2).["0"] in
     M.pure (BinOp.Pure.eq α1 α3).
   
-  Global Instance AssociatedFunction_eq :
-    Notations.DoubleColon ltac:(Self) "eq" := {
+  Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
     Notations.double_colon := eq;
   }.
   
   Global Instance ℐ :
-    core.cmp.PartialEq.Required.Trait ltac:(Self)
-      (Rhs := core.cmp.PartialEq.Default.Rhs ltac:(Self)) := {
+    core.cmp.PartialEq.Required.Trait Self
+      (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
     core.cmp.PartialEq.eq := eq;
     core.cmp.PartialEq.ne := Datatypes.None;
   }.
@@ -57,16 +56,16 @@ End Impl_core_cmp_PartialEq_for_derive_Centimeters_t.
 
 Module  Impl_core_cmp_PartialOrd_for_derive_Centimeters_t.
 Section Impl_core_cmp_PartialOrd_for_derive_Centimeters_t.
-  Ltac Self := exact derive.Centimeters.t.
+  Definition Self : Set := derive.Centimeters.t.
   
   (*
   PartialOrd
   *)
   Definition partial_cmp
-      (self : ref ltac:(Self))
+      (self : ref Self)
       (other : ref derive.Centimeters.t)
       : M (core.option.Option.t core.cmp.Ordering.t) :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (ref Self) := M.alloc self in
     let* other : M.Val (ref derive.Centimeters.t) := M.alloc other in
     let* α0 : ref derive.Centimeters.t := M.read self in
     let* α1 : ref derive.Centimeters.t := M.read other in
@@ -78,13 +77,13 @@ Section Impl_core_cmp_PartialOrd_for_derive_Centimeters_t.
         (borrow (deref α1).["0"])).
   
   Global Instance AssociatedFunction_partial_cmp :
-    Notations.DoubleColon ltac:(Self) "partial_cmp" := {
+    Notations.DoubleColon Self "partial_cmp" := {
     Notations.double_colon := partial_cmp;
   }.
   
   Global Instance ℐ :
-    core.cmp.PartialOrd.Required.Trait ltac:(Self)
-      (Rhs := core.cmp.PartialOrd.Default.Rhs ltac:(Self)) := {
+    core.cmp.PartialOrd.Required.Trait Self
+      (Rhs := core.cmp.PartialOrd.Default.Rhs Self) := {
     core.cmp.PartialOrd.partial_cmp := partial_cmp;
     core.cmp.PartialOrd.lt := Datatypes.None;
     core.cmp.PartialOrd.le := Datatypes.None;
@@ -108,16 +107,16 @@ End Inches.
 
 Module  Impl_core_fmt_Debug_for_derive_Inches_t.
 Section Impl_core_fmt_Debug_for_derive_Inches_t.
-  Ltac Self := exact derive.Inches.t.
+  Definition Self : Set := derive.Inches.t.
   
   (*
   Debug
   *)
   Definition fmt
-      (self : ref ltac:(Self))
+      (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (ref Self) := M.alloc self in
     let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref str.t := M.read (mk_str "Inches") in
@@ -128,12 +127,11 @@ Section Impl_core_fmt_Debug_for_derive_Inches_t.
       M.read (pointer_coercion "Unsize" α4) in
     M.call (core.fmt.Formatter.t::["debug_tuple_field1_finish"] α0 α1 α5).
   
-  Global Instance AssociatedFunction_fmt :
-    Notations.DoubleColon ltac:(Self) "fmt" := {
+  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
+  Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
   }.
 End Impl_core_fmt_Debug_for_derive_Inches_t.
@@ -141,7 +139,7 @@ End Impl_core_fmt_Debug_for_derive_Inches_t.
 
 Module  Impl_derive_Inches_t.
 Section Impl_derive_Inches_t.
-  Ltac Self := exact derive.Inches.t.
+  Definition Self : Set := derive.Inches.t.
   
   (*
       fn to_centimeters(&self) -> Centimeters {
@@ -150,8 +148,8 @@ Section Impl_derive_Inches_t.
           Centimeters(inches as f64 * 2.54)
       }
   *)
-  Definition to_centimeters (self : ref ltac:(Self)) : M derive.Centimeters.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition to_centimeters (self : ref Self) : M derive.Centimeters.t :=
+    let* self : M.Val (ref Self) := M.alloc self in
     let* 'derive.Inches.Build_t inches : M.Val (ref derive.Inches.t) :=
       M.copy self in
     let* α0 : i32.t := M.read inches in
@@ -163,7 +161,7 @@ Section Impl_derive_Inches_t.
     M.read α0.
   
   Global Instance AssociatedFunction_to_centimeters :
-    Notations.DoubleColon ltac:(Self) "to_centimeters" := {
+    Notations.DoubleColon Self "to_centimeters" := {
     Notations.double_colon := to_centimeters;
   }.
 End Impl_derive_Inches_t.

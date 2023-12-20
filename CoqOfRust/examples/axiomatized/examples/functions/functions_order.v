@@ -27,15 +27,15 @@ End OtherType.
 
 Module  Impl_functions_order_SomeType_t.
 Section Impl_functions_order_SomeType_t.
-  Ltac Self := exact functions_order.SomeType.t.
+  Definition Self : Set := functions_order.SomeType.t.
   
   (*
       fn meth2(self) {}
   *)
-  Parameter meth2 : ltac:(Self) -> M unit.
+  Parameter meth2 : Self -> M unit.
   
   Global Instance AssociatedFunction_meth2 :
-    Notations.DoubleColon ltac:(Self) "meth2" := {
+    Notations.DoubleColon Self "meth2" := {
     Notations.double_colon := meth2;
   }.
   
@@ -44,10 +44,10 @@ Section Impl_functions_order_SomeType_t.
           self.meth2();
       }
   *)
-  Parameter meth1 : ltac:(Self) -> M unit.
+  Parameter meth1 : Self -> M unit.
   
   Global Instance AssociatedFunction_meth1 :
-    Notations.DoubleColon ltac:(Self) "meth1" := {
+    Notations.DoubleColon Self "meth1" := {
     Notations.double_colon := meth1;
   }.
 End Impl_functions_order_SomeType_t.
@@ -56,8 +56,8 @@ End Impl_functions_order_SomeType_t.
 Module  SomeTrait.
 Section SomeTrait.
   Class Trait (Self : Set) : Type := {
-    some_trait_foo : (ref ltac:(Self)) -> M unit;
-    some_trait_bar : (ref ltac:(Self)) -> M unit;
+    some_trait_foo : (ref Self) -> M unit;
+    some_trait_bar : (ref Self) -> M unit;
   }.
   
 End SomeTrait.
@@ -65,15 +65,15 @@ End SomeTrait.
 
 Module  Impl_functions_order_SomeTrait_for_functions_order_SomeType_t.
 Section Impl_functions_order_SomeTrait_for_functions_order_SomeType_t.
-  Ltac Self := exact functions_order.SomeType.t.
+  Definition Self : Set := functions_order.SomeType.t.
   
   (*
       fn some_trait_bar(&self) {}
   *)
-  Parameter some_trait_bar : (ref ltac:(Self)) -> M unit.
+  Parameter some_trait_bar : (ref Self) -> M unit.
   
   Global Instance AssociatedFunction_some_trait_bar :
-    Notations.DoubleColon ltac:(Self) "some_trait_bar" := {
+    Notations.DoubleColon Self "some_trait_bar" := {
     Notations.double_colon := some_trait_bar;
   }.
   
@@ -82,14 +82,14 @@ Section Impl_functions_order_SomeTrait_for_functions_order_SomeType_t.
           self.some_trait_bar()
       }
   *)
-  Parameter some_trait_foo : (ref ltac:(Self)) -> M unit.
+  Parameter some_trait_foo : (ref Self) -> M unit.
   
   Global Instance AssociatedFunction_some_trait_foo :
-    Notations.DoubleColon ltac:(Self) "some_trait_foo" := {
+    Notations.DoubleColon Self "some_trait_foo" := {
     Notations.double_colon := some_trait_foo;
   }.
   
-  Global Instance ℐ : functions_order.SomeTrait.Trait ltac:(Self) := {
+  Global Instance ℐ : functions_order.SomeTrait.Trait Self := {
     functions_order.SomeTrait.some_trait_bar := some_trait_bar;
     functions_order.SomeTrait.some_trait_foo := some_trait_foo;
   }.
@@ -98,29 +98,29 @@ End Impl_functions_order_SomeTrait_for_functions_order_SomeType_t.
 
 Module  Impl_functions_order_SomeTrait_for_functions_order_OtherType_t.
 Section Impl_functions_order_SomeTrait_for_functions_order_OtherType_t.
-  Ltac Self := exact functions_order.OtherType.t.
+  Definition Self : Set := functions_order.OtherType.t.
   
   (*
       fn some_trait_foo(&self) {}
   *)
-  Parameter some_trait_foo : (ref ltac:(Self)) -> M unit.
+  Parameter some_trait_foo : (ref Self) -> M unit.
   
   Global Instance AssociatedFunction_some_trait_foo :
-    Notations.DoubleColon ltac:(Self) "some_trait_foo" := {
+    Notations.DoubleColon Self "some_trait_foo" := {
     Notations.double_colon := some_trait_foo;
   }.
   
   (*
       fn some_trait_bar(&self) {}
   *)
-  Parameter some_trait_bar : (ref ltac:(Self)) -> M unit.
+  Parameter some_trait_bar : (ref Self) -> M unit.
   
   Global Instance AssociatedFunction_some_trait_bar :
-    Notations.DoubleColon ltac:(Self) "some_trait_bar" := {
+    Notations.DoubleColon Self "some_trait_bar" := {
     Notations.double_colon := some_trait_bar;
   }.
   
-  Global Instance ℐ : functions_order.SomeTrait.Trait ltac:(Self) := {
+  Global Instance ℐ : functions_order.SomeTrait.Trait Self := {
     functions_order.SomeTrait.some_trait_foo := some_trait_foo;
     functions_order.SomeTrait.some_trait_bar := some_trait_bar;
   }.

@@ -35,16 +35,16 @@ End Book.
 
 Module  Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book_t.
 Section Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book_t.
-  Ltac Self := exact scoping_rules_borrowing_mutablity.Book.t.
+  Definition Self : Set := scoping_rules_borrowing_mutablity.Book.t.
   
   (*
   Clone
   *)
   (* #[allow(dead_code)] - function was ignored by the compiler *)
   Definition clone
-      (self : ref ltac:(Self))
+      (self : ref Self)
       : M scoping_rules_borrowing_mutablity.Book.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (ref Self) := M.alloc self in
     let* _ : M.Val unit := M.alloc tt in
     let* _ : M.Val unit := M.alloc tt in
     let* _ : M.Val unit := M.alloc tt in
@@ -52,11 +52,11 @@ Section Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book_t.
     M.read (deref α0).
   
   Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon ltac:(Self) "clone" := {
+    Notations.DoubleColon Self "clone" := {
     Notations.double_colon := clone;
   }.
   
-  Global Instance ℐ : core.clone.Clone.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
     core.clone.Clone.clone_from := Datatypes.None;
   }.
@@ -65,9 +65,9 @@ End Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book_t.
 
 Module  Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book_t.
 Section Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book_t.
-  Ltac Self := exact scoping_rules_borrowing_mutablity.Book.t.
+  Definition Self : Set := scoping_rules_borrowing_mutablity.Book.t.
   
-  Global Instance ℐ : core.marker.Copy.Trait ltac:(Self) := {
+  Global Instance ℐ : core.marker.Copy.Trait Self := {
   }.
 End Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book_t.
 End Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book_t.

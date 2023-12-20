@@ -18,22 +18,19 @@ End Borrowed.
 
 Module  Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed_t.
 Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed_t.
-  Ltac Self := exact scoping_rules_lifetimes_traits.Borrowed.t.
+  Definition Self : Set := scoping_rules_lifetimes_traits.Borrowed.t.
   
   (*
   Debug
   *)
   Parameter fmt :
-      (ref ltac:(Self)) ->
-        (mut_ref core.fmt.Formatter.t) ->
-        M ltac:(core.fmt.Result).
+      (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
   
-  Global Instance AssociatedFunction_fmt :
-    Notations.DoubleColon ltac:(Self) "fmt" := {
+  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
+  Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
   }.
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed_t.
@@ -41,21 +38,21 @@ End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed_t.
 
 Module  Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed_t.
 Section Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed_t.
-  Ltac Self := exact scoping_rules_lifetimes_traits.Borrowed.t.
+  Definition Self : Set := scoping_rules_lifetimes_traits.Borrowed.t.
   
   (*
       fn default() -> Self {
           Self { x: &10 }
       }
   *)
-  Parameter default : M ltac:(Self).
+  Parameter default : M Self.
   
   Global Instance AssociatedFunction_default :
-    Notations.DoubleColon ltac:(Self) "default" := {
+    Notations.DoubleColon Self "default" := {
     Notations.double_colon := default;
   }.
   
-  Global Instance ℐ : core.default.Default.Trait ltac:(Self) := {
+  Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
   }.
 End Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed_t.

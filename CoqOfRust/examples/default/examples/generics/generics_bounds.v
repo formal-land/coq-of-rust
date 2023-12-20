@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module  HasArea.
 Section HasArea.
   Class Trait (Self : Set) : Type := {
-    area : (ref ltac:(Self)) -> M f64.t;
+    area : (ref Self) -> M f64.t;
   }.
   
 End HasArea.
@@ -12,15 +12,15 @@ End HasArea.
 
 Module  Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle_t.
 Section Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle_t.
-  Ltac Self := exact generics_bounds.Rectangle.t.
+  Definition Self : Set := generics_bounds.Rectangle.t.
   
   (*
       fn area(&self) -> f64 {
           self.length * self.height
       }
   *)
-  Definition area (self : ref ltac:(Self)) : M f64.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition area (self : ref Self) : M f64.t :=
+    let* self : M.Val (ref Self) := M.alloc self in
     let* α0 : ref generics_bounds.Rectangle.t := M.read self in
     let* α1 : f64.t := M.read (deref α0).["length"] in
     let* α2 : ref generics_bounds.Rectangle.t := M.read self in
@@ -28,11 +28,11 @@ Section Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle_t.
     BinOp.Panic.mul α1 α3.
   
   Global Instance AssociatedFunction_area :
-    Notations.DoubleColon ltac:(Self) "area" := {
+    Notations.DoubleColon Self "area" := {
     Notations.double_colon := area;
   }.
   
-  Global Instance ℐ : generics_bounds.HasArea.Trait ltac:(Self) := {
+  Global Instance ℐ : generics_bounds.HasArea.Trait Self := {
     generics_bounds.HasArea.area := area;
   }.
 End Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle_t.
@@ -64,16 +64,16 @@ End Rectangle.
 
 Module  Impl_core_fmt_Debug_for_generics_bounds_Rectangle_t.
 Section Impl_core_fmt_Debug_for_generics_bounds_Rectangle_t.
-  Ltac Self := exact generics_bounds.Rectangle.t.
+  Definition Self : Set := generics_bounds.Rectangle.t.
   
   (*
   Debug
   *)
   Definition fmt
-      (self : ref ltac:(Self))
+      (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (ref Self) := M.alloc self in
     let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref str.t := M.read (mk_str "Rectangle") in
@@ -91,12 +91,11 @@ Section Impl_core_fmt_Debug_for_generics_bounds_Rectangle_t.
     M.call
       (core.fmt.Formatter.t::["debug_struct_field2_finish"] α0 α1 α2 α5 α6 α10).
   
-  Global Instance AssociatedFunction_fmt :
-    Notations.DoubleColon ltac:(Self) "fmt" := {
+  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
+  Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
   }.
 End Impl_core_fmt_Debug_for_generics_bounds_Rectangle_t.

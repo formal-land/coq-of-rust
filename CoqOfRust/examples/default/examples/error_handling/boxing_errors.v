@@ -15,27 +15,26 @@ End EmptyVec.
 
 Module  Impl_core_fmt_Debug_for_boxing_errors_EmptyVec_t.
 Section Impl_core_fmt_Debug_for_boxing_errors_EmptyVec_t.
-  Ltac Self := exact boxing_errors.EmptyVec.t.
+  Definition Self : Set := boxing_errors.EmptyVec.t.
   
   (*
   Debug
   *)
   Definition fmt
-      (self : ref ltac:(Self))
+      (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (ref Self) := M.alloc self in
     let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref str.t := M.read (mk_str "EmptyVec") in
     M.call (core.fmt.Formatter.t::["write_str"] α0 α1).
   
-  Global Instance AssociatedFunction_fmt :
-    Notations.DoubleColon ltac:(Self) "fmt" := {
+  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
+  Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
   }.
 End Impl_core_fmt_Debug_for_boxing_errors_EmptyVec_t.
@@ -43,21 +42,21 @@ End Impl_core_fmt_Debug_for_boxing_errors_EmptyVec_t.
 
 Module  Impl_core_clone_Clone_for_boxing_errors_EmptyVec_t.
 Section Impl_core_clone_Clone_for_boxing_errors_EmptyVec_t.
-  Ltac Self := exact boxing_errors.EmptyVec.t.
+  Definition Self : Set := boxing_errors.EmptyVec.t.
   
   (*
   Clone
   *)
-  Definition clone (self : ref ltac:(Self)) : M boxing_errors.EmptyVec.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition clone (self : ref Self) : M boxing_errors.EmptyVec.t :=
+    let* self : M.Val (ref Self) := M.alloc self in
     M.pure boxing_errors.EmptyVec.Build.
   
   Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon ltac:(Self) "clone" := {
+    Notations.DoubleColon Self "clone" := {
     Notations.double_colon := clone;
   }.
   
-  Global Instance ℐ : core.clone.Clone.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
     core.clone.Clone.clone_from := Datatypes.None;
   }.
@@ -66,7 +65,7 @@ End Impl_core_clone_Clone_for_boxing_errors_EmptyVec_t.
 
 Module  Impl_core_fmt_Display_for_boxing_errors_EmptyVec_t.
 Section Impl_core_fmt_Display_for_boxing_errors_EmptyVec_t.
-  Ltac Self := exact boxing_errors.EmptyVec.t.
+  Definition Self : Set := boxing_errors.EmptyVec.t.
   
   (*
       fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
@@ -74,10 +73,10 @@ Section Impl_core_fmt_Display_for_boxing_errors_EmptyVec_t.
       }
   *)
   Definition fmt
-      (self : ref ltac:(Self))
+      (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (ref Self) := M.alloc self in
     let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref str.t := M.read (mk_str "invalid first item to double") in
@@ -89,12 +88,11 @@ Section Impl_core_fmt_Display_for_boxing_errors_EmptyVec_t.
       M.call (core.fmt.Arguments.t::["new_const"] α4) in
     M.call (core.fmt.Formatter.t::["write_fmt"] α0 α5).
   
-  Global Instance AssociatedFunction_fmt :
-    Notations.DoubleColon ltac:(Self) "fmt" := {
+  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Display.Trait ltac:(Self) := {
+  Global Instance ℐ : core.fmt.Display.Trait Self := {
     core.fmt.Display.fmt := fmt;
   }.
 End Impl_core_fmt_Display_for_boxing_errors_EmptyVec_t.
@@ -102,9 +100,9 @@ End Impl_core_fmt_Display_for_boxing_errors_EmptyVec_t.
 
 Module  Impl_core_error_Error_for_boxing_errors_EmptyVec_t.
 Section Impl_core_error_Error_for_boxing_errors_EmptyVec_t.
-  Ltac Self := exact boxing_errors.EmptyVec.t.
+  Definition Self : Set := boxing_errors.EmptyVec.t.
   
-  Global Instance ℐ : core.error.Error.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : core.error.Error.Required.Trait Self := {
     core.error.Error.source := Datatypes.None;
     core.error.Error.type_id := Datatypes.None;
     core.error.Error.description := Datatypes.None;

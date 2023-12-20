@@ -38,25 +38,25 @@ End Job.
 
 Module  Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job_t.
 Section Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job_t.
-  Ltac Self := exact unpacking_options_via_question_mark.Job.t.
+  Definition Self : Set := unpacking_options_via_question_mark.Job.t.
   
   (*
   Clone
   *)
   Definition clone
-      (self : ref ltac:(Self))
+      (self : ref Self)
       : M unpacking_options_via_question_mark.Job.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (ref Self) := M.alloc self in
     let* _ : M.Val unit := M.alloc tt in
     let* α0 : ref unpacking_options_via_question_mark.Job.t := M.read self in
     M.read (deref α0).
   
   Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon ltac:(Self) "clone" := {
+    Notations.DoubleColon Self "clone" := {
     Notations.double_colon := clone;
   }.
   
-  Global Instance ℐ : core.clone.Clone.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
     core.clone.Clone.clone_from := Datatypes.None;
   }.
@@ -65,9 +65,9 @@ End Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job_t.
 
 Module  Impl_core_marker_Copy_for_unpacking_options_via_question_mark_Job_t.
 Section Impl_core_marker_Copy_for_unpacking_options_via_question_mark_Job_t.
-  Ltac Self := exact unpacking_options_via_question_mark.Job.t.
+  Definition Self : Set := unpacking_options_via_question_mark.Job.t.
   
-  Global Instance ℐ : core.marker.Copy.Trait ltac:(Self) := {
+  Global Instance ℐ : core.marker.Copy.Trait Self := {
   }.
 End Impl_core_marker_Copy_for_unpacking_options_via_question_mark_Job_t.
 End Impl_core_marker_Copy_for_unpacking_options_via_question_mark_Job_t.
@@ -98,15 +98,15 @@ End PhoneNumber.
 
 Module  Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber_t.
 Section Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber_t.
-  Ltac Self := exact unpacking_options_via_question_mark.PhoneNumber.t.
+  Definition Self : Set := unpacking_options_via_question_mark.PhoneNumber.t.
   
   (*
   Clone
   *)
   Definition clone
-      (self : ref ltac:(Self))
+      (self : ref Self)
       : M unpacking_options_via_question_mark.PhoneNumber.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (ref Self) := M.alloc self in
     let* _ : M.Val unit := M.alloc tt in
     let* _ : M.Val unit := M.alloc tt in
     let* α0 : ref unpacking_options_via_question_mark.PhoneNumber.t :=
@@ -114,11 +114,11 @@ Section Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumbe
     M.read (deref α0).
   
   Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon ltac:(Self) "clone" := {
+    Notations.DoubleColon Self "clone" := {
     Notations.double_colon := clone;
   }.
   
-  Global Instance ℐ : core.clone.Clone.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
     core.clone.Clone.clone_from := Datatypes.None;
   }.
@@ -127,16 +127,16 @@ End Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber_t.
 
 Module  Impl_core_marker_Copy_for_unpacking_options_via_question_mark_PhoneNumber_t.
 Section Impl_core_marker_Copy_for_unpacking_options_via_question_mark_PhoneNumber_t.
-  Ltac Self := exact unpacking_options_via_question_mark.PhoneNumber.t.
+  Definition Self : Set := unpacking_options_via_question_mark.PhoneNumber.t.
   
-  Global Instance ℐ : core.marker.Copy.Trait ltac:(Self) := {
+  Global Instance ℐ : core.marker.Copy.Trait Self := {
   }.
 End Impl_core_marker_Copy_for_unpacking_options_via_question_mark_PhoneNumber_t.
 End Impl_core_marker_Copy_for_unpacking_options_via_question_mark_PhoneNumber_t.
 
 Module  Impl_unpacking_options_via_question_mark_Person_t.
 Section Impl_unpacking_options_via_question_mark_Person_t.
-  Ltac Self := exact unpacking_options_via_question_mark.Person.t.
+  Definition Self : Set := unpacking_options_via_question_mark.Person.t.
   
   (*
       fn work_phone_area_code(&self) -> Option<u8> {
@@ -147,9 +147,9 @@ Section Impl_unpacking_options_via_question_mark_Person_t.
       }
   *)
   Definition work_phone_area_code
-      (self : ref ltac:(Self))
+      (self : ref Self)
       : M (core.option.Option.t u8.t) :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (ref Self) := M.alloc self in
     let return_ := M.return_ (R := core.option.Option.t u8.t) in
     M.catch_return
       (let* α0 : ref unpacking_options_via_question_mark.Person.t :=
@@ -227,7 +227,7 @@ Section Impl_unpacking_options_via_question_mark_Person_t.
       M.read α6.["area_code"]).
   
   Global Instance AssociatedFunction_work_phone_area_code :
-    Notations.DoubleColon ltac:(Self) "work_phone_area_code" := {
+    Notations.DoubleColon Self "work_phone_area_code" := {
     Notations.double_colon := work_phone_area_code;
   }.
 End Impl_unpacking_options_via_question_mark_Person_t.

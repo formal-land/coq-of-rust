@@ -9,15 +9,15 @@ End ToDrop.
 
 Module  Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop_t.
 Section Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop_t.
-  Ltac Self := exact scoping_rules_raii_desctructor.ToDrop.t.
+  Definition Self : Set := scoping_rules_raii_desctructor.ToDrop.t.
   
   (*
       fn drop(&mut self) {
           println!("ToDrop is being dropped");
       }
   *)
-  Definition drop (self : mut_ref ltac:(Self)) : M unit :=
-    let* self : M.Val (mut_ref ltac:(Self)) := M.alloc self in
+  Definition drop (self : mut_ref Self) : M unit :=
+    let* self : M.Val (mut_ref Self) := M.alloc self in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "ToDrop is being dropped
@@ -35,11 +35,11 @@ Section Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop_t.
     M.read α0.
   
   Global Instance AssociatedFunction_drop :
-    Notations.DoubleColon ltac:(Self) "drop" := {
+    Notations.DoubleColon Self "drop" := {
     Notations.double_colon := drop;
   }.
   
-  Global Instance ℐ : core.ops.drop.Drop.Trait ltac:(Self) := {
+  Global Instance ℐ : core.ops.drop.Drop.Trait Self := {
     core.ops.drop.Drop.drop := drop;
   }.
 End Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop_t.

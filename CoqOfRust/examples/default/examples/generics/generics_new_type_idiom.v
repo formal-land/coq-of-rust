@@ -27,24 +27,22 @@ End Days.
 
 Module  Impl_generics_new_type_idiom_Years_t.
 Section Impl_generics_new_type_idiom_Years_t.
-  Ltac Self := exact generics_new_type_idiom.Years.t.
+  Definition Self : Set := generics_new_type_idiom.Years.t.
   
   (*
       pub fn to_days(&self) -> Days {
           Days(self.0 * 365)
       }
   *)
-  Definition to_days
-      (self : ref ltac:(Self))
-      : M generics_new_type_idiom.Days.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition to_days (self : ref Self) : M generics_new_type_idiom.Days.t :=
+    let* self : M.Val (ref Self) := M.alloc self in
     let* α0 : ref generics_new_type_idiom.Years.t := M.read self in
     let* α1 : i64.t := M.read (deref α0).["0"] in
     let* α2 : i64.t := BinOp.Panic.mul α1 (Integer.of_Z 365) in
     M.pure (generics_new_type_idiom.Days.Build_t α2).
   
   Global Instance AssociatedFunction_to_days :
-    Notations.DoubleColon ltac:(Self) "to_days" := {
+    Notations.DoubleColon Self "to_days" := {
     Notations.double_colon := to_days;
   }.
 End Impl_generics_new_type_idiom_Years_t.
@@ -52,24 +50,22 @@ End Impl_generics_new_type_idiom_Years_t.
 
 Module  Impl_generics_new_type_idiom_Days_t.
 Section Impl_generics_new_type_idiom_Days_t.
-  Ltac Self := exact generics_new_type_idiom.Days.t.
+  Definition Self : Set := generics_new_type_idiom.Days.t.
   
   (*
       pub fn to_years(&self) -> Years {
           Years(self.0 / 365)
       }
   *)
-  Definition to_years
-      (self : ref ltac:(Self))
-      : M generics_new_type_idiom.Years.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition to_years (self : ref Self) : M generics_new_type_idiom.Years.t :=
+    let* self : M.Val (ref Self) := M.alloc self in
     let* α0 : ref generics_new_type_idiom.Days.t := M.read self in
     let* α1 : i64.t := M.read (deref α0).["0"] in
     let* α2 : i64.t := BinOp.Panic.div α1 (Integer.of_Z 365) in
     M.pure (generics_new_type_idiom.Years.Build_t α2).
   
   Global Instance AssociatedFunction_to_years :
-    Notations.DoubleColon ltac:(Self) "to_years" := {
+    Notations.DoubleColon Self "to_years" := {
     Notations.double_colon := to_years;
   }.
 End Impl_generics_new_type_idiom_Days_t.

@@ -4,8 +4,8 @@ Require Import CoqOfRust.CoqOfRust.
 Module  Flip.
 Section Flip.
   Class Trait (Self : Set) : Type := {
-    flip : (mut_ref ltac:(Self)) -> M unit;
-    get : (ref ltac:(Self)) -> M bool.t;
+    flip : (mut_ref Self) -> M unit;
+    get : (ref Self) -> M bool.t;
   }.
   
 End Flip.
@@ -29,7 +29,7 @@ End Flipper.
 
 Module  Impl_trait_flipper_Flipper_t.
 Section Impl_trait_flipper_Flipper_t.
-  Ltac Self := exact trait_flipper.Flipper.t.
+  Definition Self : Set := trait_flipper.Flipper.t.
   
   (*
       pub fn new() -> Self {
@@ -38,7 +38,7 @@ Section Impl_trait_flipper_Flipper_t.
           }
       }
   *)
-  Definition new : M ltac:(Self) :=
+  Definition new : M Self :=
     let* α0 : bool.t :=
       M.call
         (core.default.Default.default
@@ -46,8 +46,7 @@ Section Impl_trait_flipper_Flipper_t.
           (Trait := ltac:(refine _))) in
     M.pure {| trait_flipper.Flipper.value := α0; |}.
   
-  Global Instance AssociatedFunction_new :
-    Notations.DoubleColon ltac:(Self) "new" := {
+  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
   }.
 End Impl_trait_flipper_Flipper_t.
@@ -55,15 +54,15 @@ End Impl_trait_flipper_Flipper_t.
 
 Module  Impl_trait_flipper_Flip_for_trait_flipper_Flipper_t.
 Section Impl_trait_flipper_Flip_for_trait_flipper_Flipper_t.
-  Ltac Self := exact trait_flipper.Flipper.t.
+  Definition Self : Set := trait_flipper.Flipper.t.
   
   (*
       fn flip(&mut self) {
           self.value = !self.value;
       }
   *)
-  Definition flip (self : mut_ref ltac:(Self)) : M unit :=
-    let* self : M.Val (mut_ref ltac:(Self)) := M.alloc self in
+  Definition flip (self : mut_ref Self) : M unit :=
+    let* self : M.Val (mut_ref Self) := M.alloc self in
     let* _ : M.Val unit :=
       let* α0 : mut_ref trait_flipper.Flipper.t := M.read self in
       let* α1 : mut_ref trait_flipper.Flipper.t := M.read self in
@@ -73,7 +72,7 @@ Section Impl_trait_flipper_Flip_for_trait_flipper_Flipper_t.
     M.read α0.
   
   Global Instance AssociatedFunction_flip :
-    Notations.DoubleColon ltac:(Self) "flip" := {
+    Notations.DoubleColon Self "flip" := {
     Notations.double_colon := flip;
   }.
   
@@ -82,17 +81,16 @@ Section Impl_trait_flipper_Flip_for_trait_flipper_Flipper_t.
           self.value
       }
   *)
-  Definition get (self : ref ltac:(Self)) : M bool.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition get (self : ref Self) : M bool.t :=
+    let* self : M.Val (ref Self) := M.alloc self in
     let* α0 : ref trait_flipper.Flipper.t := M.read self in
     M.read (deref α0).["value"].
   
-  Global Instance AssociatedFunction_get :
-    Notations.DoubleColon ltac:(Self) "get" := {
+  Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
     Notations.double_colon := get;
   }.
   
-  Global Instance ℐ : trait_flipper.Flip.Trait ltac:(Self) := {
+  Global Instance ℐ : trait_flipper.Flip.Trait Self := {
     trait_flipper.Flip.flip := flip;
     trait_flipper.Flip.get := get;
   }.

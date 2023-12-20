@@ -25,7 +25,7 @@ End Point.
 
 Module  Impl_associated_functions_and_methods_Point_t.
 Section Impl_associated_functions_and_methods_Point_t.
-  Ltac Self := exact associated_functions_and_methods.Point.t.
+  Definition Self : Set := associated_functions_and_methods.Point.t.
   
   (*
       fn origin() -> Point {
@@ -42,7 +42,7 @@ Section Impl_associated_functions_and_methods_Point_t.
       |}.
   
   Global Instance AssociatedFunction_origin :
-    Notations.DoubleColon ltac:(Self) "origin" := {
+    Notations.DoubleColon Self "origin" := {
     Notations.double_colon := origin;
   }.
   
@@ -65,8 +65,7 @@ Section Impl_associated_functions_and_methods_Point_t.
         associated_functions_and_methods.Point.y := α1;
       |}.
   
-  Global Instance AssociatedFunction_new :
-    Notations.DoubleColon ltac:(Self) "new" := {
+  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
   }.
 End Impl_associated_functions_and_methods_Point_t.
@@ -96,7 +95,7 @@ End Rectangle.
 
 Module  Impl_associated_functions_and_methods_Rectangle_t.
 Section Impl_associated_functions_and_methods_Rectangle_t.
-  Ltac Self := exact associated_functions_and_methods.Rectangle.t.
+  Definition Self : Set := associated_functions_and_methods.Rectangle.t.
   
   (*
       fn get_p1(&self) -> Point {
@@ -104,14 +103,14 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
       }
   *)
   Definition get_p1
-      (self : ref ltac:(Self))
+      (self : ref Self)
       : M associated_functions_and_methods.Point.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (ref Self) := M.alloc self in
     let* α0 : ref associated_functions_and_methods.Rectangle.t := M.read self in
     M.read (deref α0).["p1"].
   
   Global Instance AssociatedFunction_get_p1 :
-    Notations.DoubleColon ltac:(Self) "get_p1" := {
+    Notations.DoubleColon Self "get_p1" := {
     Notations.double_colon := get_p1;
   }.
   
@@ -126,8 +125,8 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
           ((x1 - x2) * (y1 - y2)).abs()
       }
   *)
-  Definition area (self : ref ltac:(Self)) : M f64.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition area (self : ref Self) : M f64.t :=
+    let* self : M.Val (ref Self) := M.alloc self in
     let* '{|
           associated_functions_and_methods.Point.x := x1;
           associated_functions_and_methods.Point.y := y1;
@@ -156,7 +155,7 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
     M.read α0.
   
   Global Instance AssociatedFunction_area :
-    Notations.DoubleColon ltac:(Self) "area" := {
+    Notations.DoubleColon Self "area" := {
     Notations.double_colon := area;
   }.
   
@@ -168,8 +167,8 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
           2.0 * ((x1 - x2).abs() + (y1 - y2).abs())
       }
   *)
-  Definition perimeter (self : ref ltac:(Self)) : M f64.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition perimeter (self : ref Self) : M f64.t :=
+    let* self : M.Val (ref Self) := M.alloc self in
     let* '{|
           associated_functions_and_methods.Point.x := x1;
           associated_functions_and_methods.Point.y := y1;
@@ -201,7 +200,7 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
     M.read α0.
   
   Global Instance AssociatedFunction_perimeter :
-    Notations.DoubleColon ltac:(Self) "perimeter" := {
+    Notations.DoubleColon Self "perimeter" := {
     Notations.double_colon := perimeter;
   }.
   
@@ -214,12 +213,8 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
           self.p2.y += y;
       }
   *)
-  Definition translate
-      (self : mut_ref ltac:(Self))
-      (x : f64.t)
-      (y : f64.t)
-      : M unit :=
-    let* self : M.Val (mut_ref ltac:(Self)) := M.alloc self in
+  Definition translate (self : mut_ref Self) (x : f64.t) (y : f64.t) : M unit :=
+    let* self : M.Val (mut_ref Self) := M.alloc self in
     let* x : M.Val f64.t := M.alloc x in
     let* y : M.Val f64.t := M.alloc y in
     let* _ : M.Val unit :=
@@ -242,7 +237,7 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
     M.read α0.
   
   Global Instance AssociatedFunction_translate :
-    Notations.DoubleColon ltac:(Self) "translate" := {
+    Notations.DoubleColon Self "translate" := {
     Notations.double_colon := translate;
   }.
 End Impl_associated_functions_and_methods_Rectangle_t.
@@ -266,7 +261,7 @@ End Pair.
 
 Module  Impl_associated_functions_and_methods_Pair_t.
 Section Impl_associated_functions_and_methods_Pair_t.
-  Ltac Self := exact associated_functions_and_methods.Pair.t.
+  Definition Self : Set := associated_functions_and_methods.Pair.t.
   
   (*
       fn destroy(self) {
@@ -278,8 +273,8 @@ Section Impl_associated_functions_and_methods_Pair_t.
           // `first` and `second` go out of scope and get freed
       }
   *)
-  Definition destroy (self : ltac:(Self)) : M unit :=
-    let* self : M.Val ltac:(Self) := M.alloc self in
+  Definition destroy (self : Self) : M unit :=
+    let* self : M.Val Self := M.alloc self in
     let* 'associated_functions_and_methods.Pair.Build_t first second :
         M.Val associated_functions_and_methods.Pair.t :=
       M.copy self in
@@ -311,7 +306,7 @@ Section Impl_associated_functions_and_methods_Pair_t.
     M.read α0.
   
   Global Instance AssociatedFunction_destroy :
-    Notations.DoubleColon ltac:(Self) "destroy" := {
+    Notations.DoubleColon Self "destroy" := {
     Notations.double_colon := destroy;
   }.
 End Impl_associated_functions_and_methods_Pair_t.

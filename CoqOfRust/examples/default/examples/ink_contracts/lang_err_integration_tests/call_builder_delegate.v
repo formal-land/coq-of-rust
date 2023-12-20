@@ -26,7 +26,7 @@ End CallBuilderDelegateTest.
 
 Module  Impl_core_default_Default_for_call_builder_delegate_CallBuilderDelegateTest_t.
 Section Impl_core_default_Default_for_call_builder_delegate_CallBuilderDelegateTest_t.
-  Ltac Self := exact call_builder_delegate.CallBuilderDelegateTest.t.
+  Definition Self : Set := call_builder_delegate.CallBuilderDelegateTest.t.
   
   (*
   Default
@@ -40,11 +40,11 @@ Section Impl_core_default_Default_for_call_builder_delegate_CallBuilderDelegateT
     M.pure {| call_builder_delegate.CallBuilderDelegateTest.value := α0; |}.
   
   Global Instance AssociatedFunction_default :
-    Notations.DoubleColon ltac:(Self) "default" := {
+    Notations.DoubleColon Self "default" := {
     Notations.double_colon := default;
   }.
   
-  Global Instance ℐ : core.default.Default.Trait ltac:(Self) := {
+  Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
   }.
 End Impl_core_default_Default_for_call_builder_delegate_CallBuilderDelegateTest_t.
@@ -52,20 +52,19 @@ End Impl_core_default_Default_for_call_builder_delegate_CallBuilderDelegateTest_
 
 Module  Impl_call_builder_delegate_CallBuilderDelegateTest_t.
 Section Impl_call_builder_delegate_CallBuilderDelegateTest_t.
-  Ltac Self := exact call_builder_delegate.CallBuilderDelegateTest.t.
+  Definition Self : Set := call_builder_delegate.CallBuilderDelegateTest.t.
   
   (*
       pub fn new(value: i32) -> Self {
           Self { value }
       }
   *)
-  Definition new (value : i32.t) : M ltac:(Self) :=
+  Definition new (value : i32.t) : M Self :=
     let* value : M.Val i32.t := M.alloc value in
     let* α0 : i32.t := M.read value in
     M.pure {| call_builder_delegate.CallBuilderDelegateTest.value := α0; |}.
   
-  Global Instance AssociatedFunction_new :
-    Notations.DoubleColon ltac:(Self) "new" := {
+  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
   }.
   
@@ -89,18 +88,18 @@ Section Impl_call_builder_delegate_CallBuilderDelegateTest_t.
       }
   *)
   Definition delegate
-      (self : mut_ref ltac:(Self))
+      (self : mut_ref Self)
       (code_hash : ltac:(call_builder_delegate.Hash))
       (selector : array u8.t)
       : M (core.option.Option.t call_builder_delegate.LangError.t) :=
-    let* self : M.Val (mut_ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (mut_ref Self) := M.alloc self in
     let* code_hash : M.Val ltac:(call_builder_delegate.Hash) :=
       M.alloc code_hash in
     let* selector : M.Val (array u8.t) := M.alloc selector in
     M.pure core.option.Option.None.
   
   Global Instance AssociatedFunction_delegate :
-    Notations.DoubleColon ltac:(Self) "delegate" := {
+    Notations.DoubleColon Self "delegate" := {
     Notations.double_colon := delegate;
   }.
   
@@ -117,18 +116,18 @@ Section Impl_call_builder_delegate_CallBuilderDelegateTest_t.
       }
   *)
   Definition invoke
-      (self : mut_ref ltac:(Self))
+      (self : mut_ref Self)
       (code_hash : ltac:(call_builder_delegate.Hash))
       (selector : array u8.t)
       : M i32.t :=
-    let* self : M.Val (mut_ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (mut_ref Self) := M.alloc self in
     let* code_hash : M.Val ltac:(call_builder_delegate.Hash) :=
       M.alloc code_hash in
     let* selector : M.Val (array u8.t) := M.alloc selector in
     M.pure (Integer.of_Z 0).
   
   Global Instance AssociatedFunction_invoke :
-    Notations.DoubleColon ltac:(Self) "invoke" := {
+    Notations.DoubleColon Self "invoke" := {
     Notations.double_colon := invoke;
   }.
 End Impl_call_builder_delegate_CallBuilderDelegateTest_t.

@@ -15,7 +15,7 @@ End AccountId.
 
 Module  Impl_core_default_Default_for_call_runtime_AccountId_t.
 Section Impl_core_default_Default_for_call_runtime_AccountId_t.
-  Ltac Self := exact call_runtime.AccountId.t.
+  Definition Self : Set := call_runtime.AccountId.t.
   
   (*
   Default
@@ -23,11 +23,11 @@ Section Impl_core_default_Default_for_call_runtime_AccountId_t.
   Parameter default : M call_runtime.AccountId.t.
   
   Global Instance AssociatedFunction_default :
-    Notations.DoubleColon ltac:(Self) "default" := {
+    Notations.DoubleColon Self "default" := {
     Notations.double_colon := default;
   }.
   
-  Global Instance ℐ : core.default.Default.Trait ltac:(Self) := {
+  Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
   }.
 End Impl_core_default_Default_for_call_runtime_AccountId_t.
@@ -35,19 +35,19 @@ End Impl_core_default_Default_for_call_runtime_AccountId_t.
 
 Module  Impl_core_clone_Clone_for_call_runtime_AccountId_t.
 Section Impl_core_clone_Clone_for_call_runtime_AccountId_t.
-  Ltac Self := exact call_runtime.AccountId.t.
+  Definition Self : Set := call_runtime.AccountId.t.
   
   (*
   Clone
   *)
-  Parameter clone : (ref ltac:(Self)) -> M call_runtime.AccountId.t.
+  Parameter clone : (ref Self) -> M call_runtime.AccountId.t.
   
   Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon ltac:(Self) "clone" := {
+    Notations.DoubleColon Self "clone" := {
     Notations.double_colon := clone;
   }.
   
-  Global Instance ℐ : core.clone.Clone.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
     core.clone.Clone.clone_from := Datatypes.None;
   }.
@@ -56,9 +56,9 @@ End Impl_core_clone_Clone_for_call_runtime_AccountId_t.
 
 Module  Impl_core_marker_Copy_for_call_runtime_AccountId_t.
 Section Impl_core_marker_Copy_for_call_runtime_AccountId_t.
-  Ltac Self := exact call_runtime.AccountId.t.
+  Definition Self : Set := call_runtime.AccountId.t.
   
-  Global Instance ℐ : core.marker.Copy.Trait ltac:(Self) := {
+  Global Instance ℐ : core.marker.Copy.Trait Self := {
   }.
 End Impl_core_marker_Copy_for_call_runtime_AccountId_t.
 End Impl_core_marker_Copy_for_call_runtime_AccountId_t.
@@ -88,23 +88,23 @@ End MultiAddress.
 
 Module  Impl_core_convert_From_call_runtime_AccountId_t_for_call_runtime_MultiAddress_t_call_runtime_AccountId_t_Tuple_.
 Section Impl_core_convert_From_call_runtime_AccountId_t_for_call_runtime_MultiAddress_t_call_runtime_AccountId_t_Tuple_.
-  Ltac Self :=
-    exact (call_runtime.MultiAddress.t call_runtime.AccountId.t unit).
+  Definition Self : Set :=
+    call_runtime.MultiAddress.t call_runtime.AccountId.t unit.
   
   (*
       fn from(_value: AccountId) -> Self {
           unimplemented!()
       }
   *)
-  Parameter from : call_runtime.AccountId.t -> M ltac:(Self).
+  Parameter from : call_runtime.AccountId.t -> M Self.
   
   Global Instance AssociatedFunction_from :
-    Notations.DoubleColon ltac:(Self) "from" := {
+    Notations.DoubleColon Self "from" := {
     Notations.double_colon := from;
   }.
   
   Global Instance ℐ :
-    core.convert.From.Trait ltac:(Self) (T := call_runtime.AccountId.t) := {
+    core.convert.From.Trait Self (T := call_runtime.AccountId.t) := {
     core.convert.From.from := from;
   }.
 End Impl_core_convert_From_call_runtime_AccountId_t_for_call_runtime_MultiAddress_t_call_runtime_AccountId_t_Tuple_.
@@ -137,7 +137,7 @@ End RuntimeCaller.
 
 Module  Impl_core_default_Default_for_call_runtime_RuntimeCaller_t.
 Section Impl_core_default_Default_for_call_runtime_RuntimeCaller_t.
-  Ltac Self := exact call_runtime.RuntimeCaller.t.
+  Definition Self : Set := call_runtime.RuntimeCaller.t.
   
   (*
   Default
@@ -145,11 +145,11 @@ Section Impl_core_default_Default_for_call_runtime_RuntimeCaller_t.
   Parameter default : M call_runtime.RuntimeCaller.t.
   
   Global Instance AssociatedFunction_default :
-    Notations.DoubleColon ltac:(Self) "default" := {
+    Notations.DoubleColon Self "default" := {
     Notations.double_colon := default;
   }.
   
-  Global Instance ℐ : core.default.Default.Trait ltac:(Self) := {
+  Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
   }.
 End Impl_core_default_Default_for_call_runtime_RuntimeCaller_t.
@@ -162,22 +162,19 @@ End RuntimeError.
 
 Module  Impl_core_fmt_Debug_for_call_runtime_RuntimeError_t.
 Section Impl_core_fmt_Debug_for_call_runtime_RuntimeError_t.
-  Ltac Self := exact call_runtime.RuntimeError.t.
+  Definition Self : Set := call_runtime.RuntimeError.t.
   
   (*
   Debug
   *)
   Parameter fmt :
-      (ref ltac:(Self)) ->
-        (mut_ref core.fmt.Formatter.t) ->
-        M ltac:(core.fmt.Result).
+      (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
   
-  Global Instance AssociatedFunction_fmt :
-    Notations.DoubleColon ltac:(Self) "fmt" := {
+  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
+  Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
   }.
 End Impl_core_fmt_Debug_for_call_runtime_RuntimeError_t.
@@ -185,31 +182,29 @@ End Impl_core_fmt_Debug_for_call_runtime_RuntimeError_t.
 
 Module  Impl_core_marker_StructuralPartialEq_for_call_runtime_RuntimeError_t.
 Section Impl_core_marker_StructuralPartialEq_for_call_runtime_RuntimeError_t.
-  Ltac Self := exact call_runtime.RuntimeError.t.
+  Definition Self : Set := call_runtime.RuntimeError.t.
   
-  Global Instance ℐ : core.marker.StructuralPartialEq.Trait ltac:(Self) := {
+  Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
   }.
 End Impl_core_marker_StructuralPartialEq_for_call_runtime_RuntimeError_t.
 End Impl_core_marker_StructuralPartialEq_for_call_runtime_RuntimeError_t.
 
 Module  Impl_core_cmp_PartialEq_for_call_runtime_RuntimeError_t.
 Section Impl_core_cmp_PartialEq_for_call_runtime_RuntimeError_t.
-  Ltac Self := exact call_runtime.RuntimeError.t.
+  Definition Self : Set := call_runtime.RuntimeError.t.
   
   (*
   PartialEq
   *)
-  Parameter eq :
-      (ref ltac:(Self)) -> (ref call_runtime.RuntimeError.t) -> M bool.t.
+  Parameter eq : (ref Self) -> (ref call_runtime.RuntimeError.t) -> M bool.t.
   
-  Global Instance AssociatedFunction_eq :
-    Notations.DoubleColon ltac:(Self) "eq" := {
+  Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
     Notations.double_colon := eq;
   }.
   
   Global Instance ℐ :
-    core.cmp.PartialEq.Required.Trait ltac:(Self)
-      (Rhs := core.cmp.PartialEq.Default.Rhs ltac:(Self)) := {
+    core.cmp.PartialEq.Required.Trait Self
+      (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
     core.cmp.PartialEq.eq := eq;
     core.cmp.PartialEq.ne := Datatypes.None;
   }.
@@ -218,28 +213,28 @@ End Impl_core_cmp_PartialEq_for_call_runtime_RuntimeError_t.
 
 Module  Impl_core_marker_StructuralEq_for_call_runtime_RuntimeError_t.
 Section Impl_core_marker_StructuralEq_for_call_runtime_RuntimeError_t.
-  Ltac Self := exact call_runtime.RuntimeError.t.
+  Definition Self : Set := call_runtime.RuntimeError.t.
   
-  Global Instance ℐ : core.marker.StructuralEq.Trait ltac:(Self) := {
+  Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
   }.
 End Impl_core_marker_StructuralEq_for_call_runtime_RuntimeError_t.
 End Impl_core_marker_StructuralEq_for_call_runtime_RuntimeError_t.
 
 Module  Impl_core_cmp_Eq_for_call_runtime_RuntimeError_t.
 Section Impl_core_cmp_Eq_for_call_runtime_RuntimeError_t.
-  Ltac Self := exact call_runtime.RuntimeError.t.
+  Definition Self : Set := call_runtime.RuntimeError.t.
   
   (*
   Eq
   *)
-  Parameter assert_receiver_is_total_eq : (ref ltac:(Self)) -> M unit.
+  Parameter assert_receiver_is_total_eq : (ref Self) -> M unit.
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
-    Notations.DoubleColon ltac:(Self) "assert_receiver_is_total_eq" := {
+    Notations.DoubleColon Self "assert_receiver_is_total_eq" := {
     Notations.double_colon := assert_receiver_is_total_eq;
   }.
   
-  Global Instance ℐ : core.cmp.Eq.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
     core.cmp.Eq.assert_receiver_is_total_eq :=
       Datatypes.Some assert_receiver_is_total_eq;
   }.
@@ -254,7 +249,7 @@ End EnvError.
 
 Module  Impl_core_convert_From_call_runtime_EnvError_t_for_call_runtime_RuntimeError_t.
 Section Impl_core_convert_From_call_runtime_EnvError_t_for_call_runtime_RuntimeError_t.
-  Ltac Self := exact call_runtime.RuntimeError.t.
+  Definition Self : Set := call_runtime.RuntimeError.t.
   
   (*
       fn from(e: EnvError) -> Self {
@@ -264,15 +259,15 @@ Section Impl_core_convert_From_call_runtime_EnvError_t_for_call_runtime_RuntimeE
           }
       }
   *)
-  Parameter from : call_runtime.EnvError.t -> M ltac:(Self).
+  Parameter from : call_runtime.EnvError.t -> M Self.
   
   Global Instance AssociatedFunction_from :
-    Notations.DoubleColon ltac:(Self) "from" := {
+    Notations.DoubleColon Self "from" := {
     Notations.double_colon := from;
   }.
   
   Global Instance ℐ :
-    core.convert.From.Trait ltac:(Self) (T := call_runtime.EnvError.t) := {
+    core.convert.From.Trait Self (T := call_runtime.EnvError.t) := {
     core.convert.From.from := from;
   }.
 End Impl_core_convert_From_call_runtime_EnvError_t_for_call_runtime_RuntimeError_t.
@@ -280,7 +275,7 @@ End Impl_core_convert_From_call_runtime_EnvError_t_for_call_runtime_RuntimeError
 
 Module  Impl_call_runtime_Env_t.
 Section Impl_call_runtime_Env_t.
-  Ltac Self := exact call_runtime.Env.t.
+  Definition Self : Set := call_runtime.Env.t.
   
   (*
       fn call_runtime<Call>(&self, _call: &Call) -> Result<(), EnvError> {
@@ -289,12 +284,12 @@ Section Impl_call_runtime_Env_t.
   *)
   Parameter call_runtime :
       forall {Call : Set},
-      (ref ltac:(Self)) ->
+      (ref Self) ->
         (ref Call) ->
         M (core.result.Result.t unit call_runtime.EnvError.t).
   
   Global Instance AssociatedFunction_call_runtime {Call : Set} :
-    Notations.DoubleColon ltac:(Self) "call_runtime" := {
+    Notations.DoubleColon Self "call_runtime" := {
     Notations.double_colon := call_runtime (Call := Call);
   }.
 End Impl_call_runtime_Env_t.
@@ -302,7 +297,7 @@ End Impl_call_runtime_Env_t.
 
 Module  Impl_call_runtime_RuntimeCaller_t.
 Section Impl_call_runtime_RuntimeCaller_t.
-  Ltac Self := exact call_runtime.RuntimeCaller.t.
+  Definition Self : Set := call_runtime.RuntimeCaller.t.
   
   (*
       fn init_env() -> Env {
@@ -312,7 +307,7 @@ Section Impl_call_runtime_RuntimeCaller_t.
   Parameter init_env : M call_runtime.Env.t.
   
   Global Instance AssociatedFunction_init_env :
-    Notations.DoubleColon ltac:(Self) "init_env" := {
+    Notations.DoubleColon Self "init_env" := {
     Notations.double_colon := init_env;
   }.
   
@@ -321,10 +316,9 @@ Section Impl_call_runtime_RuntimeCaller_t.
           Self::init_env()
       }
   *)
-  Parameter env : (ref ltac:(Self)) -> M call_runtime.Env.t.
+  Parameter env : (ref Self) -> M call_runtime.Env.t.
   
-  Global Instance AssociatedFunction_env :
-    Notations.DoubleColon ltac:(Self) "env" := {
+  Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
     Notations.double_colon := env;
   }.
   
@@ -333,10 +327,9 @@ Section Impl_call_runtime_RuntimeCaller_t.
           Default::default()
       }
   *)
-  Parameter new : M ltac:(Self).
+  Parameter new : M Self.
   
-  Global Instance AssociatedFunction_new :
-    Notations.DoubleColon ltac:(Self) "new" := {
+  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
   }.
   
@@ -355,13 +348,13 @@ Section Impl_call_runtime_RuntimeCaller_t.
       }
   *)
   Parameter transfer_through_runtime :
-      (mut_ref ltac:(Self)) ->
+      (mut_ref Self) ->
         call_runtime.AccountId.t ->
         ltac:(call_runtime.Balance) ->
         M (core.result.Result.t unit call_runtime.RuntimeError.t).
   
   Global Instance AssociatedFunction_transfer_through_runtime :
-    Notations.DoubleColon ltac:(Self) "transfer_through_runtime" := {
+    Notations.DoubleColon Self "transfer_through_runtime" := {
     Notations.double_colon := transfer_through_runtime;
   }.
   
@@ -371,11 +364,11 @@ Section Impl_call_runtime_RuntimeCaller_t.
       }
   *)
   Parameter call_nonexistent_extrinsic :
-      (mut_ref ltac:(Self)) ->
+      (mut_ref Self) ->
         M (core.result.Result.t unit call_runtime.RuntimeError.t).
   
   Global Instance AssociatedFunction_call_nonexistent_extrinsic :
-    Notations.DoubleColon ltac:(Self) "call_nonexistent_extrinsic" := {
+    Notations.DoubleColon Self "call_nonexistent_extrinsic" := {
     Notations.double_colon := call_nonexistent_extrinsic;
   }.
 End Impl_call_runtime_RuntimeCaller_t.

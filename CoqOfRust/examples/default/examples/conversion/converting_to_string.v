@@ -19,7 +19,7 @@ End Circle.
 
 Module  Impl_core_fmt_Display_for_converting_to_string_Circle_t.
 Section Impl_core_fmt_Display_for_converting_to_string_Circle_t.
-  Ltac Self := exact converting_to_string.Circle.t.
+  Definition Self : Set := converting_to_string.Circle.t.
   
   (*
       fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
@@ -27,10 +27,10 @@ Section Impl_core_fmt_Display_for_converting_to_string_Circle_t.
       }
   *)
   Definition fmt
-      (self : ref ltac:(Self))
+      (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (ref Self) := M.alloc self in
     let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref str.t := M.read (mk_str "Circle of radius ") in
@@ -52,12 +52,11 @@ Section Impl_core_fmt_Display_for_converting_to_string_Circle_t.
       M.call (core.fmt.Arguments.t::["new_v1"] α4 α9) in
     M.call (core.fmt.Formatter.t::["write_fmt"] α0 α10).
   
-  Global Instance AssociatedFunction_fmt :
-    Notations.DoubleColon ltac:(Self) "fmt" := {
+  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Display.Trait ltac:(Self) := {
+  Global Instance ℐ : core.fmt.Display.Trait Self := {
     core.fmt.Display.fmt := fmt;
   }.
 End Impl_core_fmt_Display_for_converting_to_string_Circle_t.

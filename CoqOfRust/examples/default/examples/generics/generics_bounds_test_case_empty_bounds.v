@@ -39,20 +39,19 @@ End Blue.
 
 Module  Impl_generics_bounds_test_case_empty_bounds_Red_for_generics_bounds_test_case_empty_bounds_Cardinal_t.
 Section Impl_generics_bounds_test_case_empty_bounds_Red_for_generics_bounds_test_case_empty_bounds_Cardinal_t.
-  Ltac Self := exact generics_bounds_test_case_empty_bounds.Cardinal.t.
+  Definition Self : Set := generics_bounds_test_case_empty_bounds.Cardinal.t.
   
-  Global Instance ℐ :
-    generics_bounds_test_case_empty_bounds.Red.Trait ltac:(Self) := {
+  Global Instance ℐ : generics_bounds_test_case_empty_bounds.Red.Trait Self := {
   }.
 End Impl_generics_bounds_test_case_empty_bounds_Red_for_generics_bounds_test_case_empty_bounds_Cardinal_t.
 End Impl_generics_bounds_test_case_empty_bounds_Red_for_generics_bounds_test_case_empty_bounds_Cardinal_t.
 
 Module  Impl_generics_bounds_test_case_empty_bounds_Blue_for_generics_bounds_test_case_empty_bounds_BlueJay_t.
 Section Impl_generics_bounds_test_case_empty_bounds_Blue_for_generics_bounds_test_case_empty_bounds_BlueJay_t.
-  Ltac Self := exact generics_bounds_test_case_empty_bounds.BlueJay.t.
+  Definition Self : Set := generics_bounds_test_case_empty_bounds.BlueJay.t.
   
   Global Instance ℐ :
-    generics_bounds_test_case_empty_bounds.Blue.Trait ltac:(Self) := {
+    generics_bounds_test_case_empty_bounds.Blue.Trait Self := {
   }.
 End Impl_generics_bounds_test_case_empty_bounds_Blue_for_generics_bounds_test_case_empty_bounds_BlueJay_t.
 End Impl_generics_bounds_test_case_empty_bounds_Blue_for_generics_bounds_test_case_empty_bounds_BlueJay_t.

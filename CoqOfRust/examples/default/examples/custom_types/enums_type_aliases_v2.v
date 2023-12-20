@@ -9,8 +9,8 @@ End VeryVerboseEnumOfThingsToDoWithNumbers.
 
 Module  Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers_t.
 Section Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers_t.
-  Ltac Self :=
-    exact enums_type_aliases_v2.VeryVerboseEnumOfThingsToDoWithNumbers.t.
+  Definition Self : Set :=
+    enums_type_aliases_v2.VeryVerboseEnumOfThingsToDoWithNumbers.t.
   
   (*
       fn run(&self, x: i32, y: i32) -> i32 {
@@ -20,8 +20,8 @@ Section Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers_t.
           }
       }
   *)
-  Definition run (self : ref ltac:(Self)) (x : i32.t) (y : i32.t) : M i32.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition run (self : ref Self) (x : i32.t) (y : i32.t) : M i32.t :=
+    let* self : M.Val (ref Self) := M.alloc self in
     let* x : M.Val i32.t := M.alloc x in
     let* y : M.Val i32.t := M.alloc y in
     let* α0 :
@@ -44,8 +44,7 @@ Section Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers_t.
       end in
     M.read α1.
   
-  Global Instance AssociatedFunction_run :
-    Notations.DoubleColon ltac:(Self) "run" := {
+  Global Instance AssociatedFunction_run : Notations.DoubleColon Self "run" := {
     Notations.double_colon := run;
   }.
 End Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers_t.

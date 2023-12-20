@@ -34,7 +34,7 @@ Section Impl_core_default_Default_for_trait_erc20_Mapping_t_K_V.
     {ℋ_0 : core.default.Default.Trait K}
     {ℋ_1 : core.default.Default.Trait V}.
   
-  Ltac Self := exact (trait_erc20.Mapping.t K V).
+  Definition Self : Set := trait_erc20.Mapping.t K V.
   
   (*
   Default
@@ -54,11 +54,11 @@ Section Impl_core_default_Default_for_trait_erc20_Mapping_t_K_V.
       {| trait_erc20.Mapping._key := α0; trait_erc20.Mapping._value := α1; |}.
   
   Global Instance AssociatedFunction_default :
-    Notations.DoubleColon ltac:(Self) "default" := {
+    Notations.DoubleColon Self "default" := {
     Notations.double_colon := default;
   }.
   
-  Global Instance ℐ : core.default.Default.Trait ltac:(Self) := {
+  Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
   }.
 End Impl_core_default_Default_for_trait_erc20_Mapping_t_K_V.
@@ -68,7 +68,7 @@ Module  Impl_trait_erc20_Mapping_t_K_V.
 Section Impl_trait_erc20_Mapping_t_K_V.
   Context {K V : Set}.
   
-  Ltac Self := exact (trait_erc20.Mapping.t K V).
+  Definition Self : Set := trait_erc20.Mapping.t K V.
   
   (*
       fn get(&self, _key: &K) -> Option<V> {
@@ -76,17 +76,16 @@ Section Impl_trait_erc20_Mapping_t_K_V.
       }
   *)
   Definition get
-      (self : ref ltac:(Self))
+      (self : ref Self)
       (_key : ref K)
       : M (core.option.Option.t V) :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (ref Self) := M.alloc self in
     let* _key : M.Val (ref K) := M.alloc _key in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_get :
-    Notations.DoubleColon ltac:(Self) "get" := {
+  Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
     Notations.double_colon := get;
   }.
   
@@ -95,12 +94,8 @@ Section Impl_trait_erc20_Mapping_t_K_V.
           unimplemented!()
       }
   *)
-  Definition insert
-      (self : mut_ref ltac:(Self))
-      (_key : K)
-      (_value : V)
-      : M unit :=
-    let* self : M.Val (mut_ref ltac:(Self)) := M.alloc self in
+  Definition insert (self : mut_ref Self) (_key : K) (_value : V) : M unit :=
+    let* self : M.Val (mut_ref Self) := M.alloc self in
     let* _key : M.Val K := M.alloc _key in
     let* _value : M.Val V := M.alloc _value in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
@@ -108,7 +103,7 @@ Section Impl_trait_erc20_Mapping_t_K_V.
     never_to_any α1.
   
   Global Instance AssociatedFunction_insert :
-    Notations.DoubleColon ltac:(Self) "insert" := {
+    Notations.DoubleColon Self "insert" := {
     Notations.double_colon := insert;
   }.
 End Impl_trait_erc20_Mapping_t_K_V.
@@ -128,7 +123,7 @@ End AccountId.
 
 Module  Impl_core_default_Default_for_trait_erc20_AccountId_t.
 Section Impl_core_default_Default_for_trait_erc20_AccountId_t.
-  Ltac Self := exact trait_erc20.AccountId.t.
+  Definition Self : Set := trait_erc20.AccountId.t.
   
   (*
   Default
@@ -142,11 +137,11 @@ Section Impl_core_default_Default_for_trait_erc20_AccountId_t.
     M.pure (trait_erc20.AccountId.Build_t α0).
   
   Global Instance AssociatedFunction_default :
-    Notations.DoubleColon ltac:(Self) "default" := {
+    Notations.DoubleColon Self "default" := {
     Notations.double_colon := default;
   }.
   
-  Global Instance ℐ : core.default.Default.Trait ltac:(Self) := {
+  Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
   }.
 End Impl_core_default_Default_for_trait_erc20_AccountId_t.
@@ -154,23 +149,23 @@ End Impl_core_default_Default_for_trait_erc20_AccountId_t.
 
 Module  Impl_core_clone_Clone_for_trait_erc20_AccountId_t.
 Section Impl_core_clone_Clone_for_trait_erc20_AccountId_t.
-  Ltac Self := exact trait_erc20.AccountId.t.
+  Definition Self : Set := trait_erc20.AccountId.t.
   
   (*
   Clone
   *)
-  Definition clone (self : ref ltac:(Self)) : M trait_erc20.AccountId.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition clone (self : ref Self) : M trait_erc20.AccountId.t :=
+    let* self : M.Val (ref Self) := M.alloc self in
     let* _ : M.Val unit := M.alloc tt in
     let* α0 : ref trait_erc20.AccountId.t := M.read self in
     M.read (deref α0).
   
   Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon ltac:(Self) "clone" := {
+    Notations.DoubleColon Self "clone" := {
     Notations.double_colon := clone;
   }.
   
-  Global Instance ℐ : core.clone.Clone.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
     core.clone.Clone.clone_from := Datatypes.None;
   }.
@@ -179,9 +174,9 @@ End Impl_core_clone_Clone_for_trait_erc20_AccountId_t.
 
 Module  Impl_core_marker_Copy_for_trait_erc20_AccountId_t.
 Section Impl_core_marker_Copy_for_trait_erc20_AccountId_t.
-  Ltac Self := exact trait_erc20.AccountId.t.
+  Definition Self : Set := trait_erc20.AccountId.t.
   
-  Global Instance ℐ : core.marker.Copy.Trait ltac:(Self) := {
+  Global Instance ℐ : core.marker.Copy.Trait Self := {
   }.
 End Impl_core_marker_Copy_for_trait_erc20_AccountId_t.
 End Impl_core_marker_Copy_for_trait_erc20_AccountId_t.
@@ -212,16 +207,16 @@ End Error.
 
 Module  Impl_core_fmt_Debug_for_trait_erc20_Error_t.
 Section Impl_core_fmt_Debug_for_trait_erc20_Error_t.
-  Ltac Self := exact trait_erc20.Error.t.
+  Definition Self : Set := trait_erc20.Error.t.
   
   (*
   Debug
   *)
   Definition fmt
-      (self : ref ltac:(Self))
+      (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (ref Self) := M.alloc self in
     let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref trait_erc20.Error.t := M.read self in
@@ -237,12 +232,11 @@ Section Impl_core_fmt_Debug_for_trait_erc20_Error_t.
     let* α3 : ref str.t := M.read α2 in
     M.call (core.fmt.Formatter.t::["write_str"] α0 α3).
   
-  Global Instance AssociatedFunction_fmt :
-    Notations.DoubleColon ltac:(Self) "fmt" := {
+  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
+  Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
   }.
 End Impl_core_fmt_Debug_for_trait_erc20_Error_t.
@@ -250,25 +244,25 @@ End Impl_core_fmt_Debug_for_trait_erc20_Error_t.
 
 Module  Impl_core_marker_StructuralPartialEq_for_trait_erc20_Error_t.
 Section Impl_core_marker_StructuralPartialEq_for_trait_erc20_Error_t.
-  Ltac Self := exact trait_erc20.Error.t.
+  Definition Self : Set := trait_erc20.Error.t.
   
-  Global Instance ℐ : core.marker.StructuralPartialEq.Trait ltac:(Self) := {
+  Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
   }.
 End Impl_core_marker_StructuralPartialEq_for_trait_erc20_Error_t.
 End Impl_core_marker_StructuralPartialEq_for_trait_erc20_Error_t.
 
 Module  Impl_core_cmp_PartialEq_for_trait_erc20_Error_t.
 Section Impl_core_cmp_PartialEq_for_trait_erc20_Error_t.
-  Ltac Self := exact trait_erc20.Error.t.
+  Definition Self : Set := trait_erc20.Error.t.
   
   (*
   PartialEq
   *)
   Definition eq
-      (self : ref ltac:(Self))
+      (self : ref Self)
       (other : ref trait_erc20.Error.t)
       : M bool.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (ref Self) := M.alloc self in
     let* other : M.Val (ref trait_erc20.Error.t) := M.alloc other in
     let* __self_tag : M.Val isize.t :=
       let* α0 : ref trait_erc20.Error.t := M.read self in
@@ -283,14 +277,13 @@ Section Impl_core_cmp_PartialEq_for_trait_erc20_Error_t.
     let* α0 : M.Val bool.t := M.alloc (BinOp.Pure.eq α0 α1) in
     M.read α0.
   
-  Global Instance AssociatedFunction_eq :
-    Notations.DoubleColon ltac:(Self) "eq" := {
+  Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
     Notations.double_colon := eq;
   }.
   
   Global Instance ℐ :
-    core.cmp.PartialEq.Required.Trait ltac:(Self)
-      (Rhs := core.cmp.PartialEq.Default.Rhs ltac:(Self)) := {
+    core.cmp.PartialEq.Required.Trait Self
+      (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
     core.cmp.PartialEq.eq := eq;
     core.cmp.PartialEq.ne := Datatypes.None;
   }.
@@ -299,30 +292,30 @@ End Impl_core_cmp_PartialEq_for_trait_erc20_Error_t.
 
 Module  Impl_core_marker_StructuralEq_for_trait_erc20_Error_t.
 Section Impl_core_marker_StructuralEq_for_trait_erc20_Error_t.
-  Ltac Self := exact trait_erc20.Error.t.
+  Definition Self : Set := trait_erc20.Error.t.
   
-  Global Instance ℐ : core.marker.StructuralEq.Trait ltac:(Self) := {
+  Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
   }.
 End Impl_core_marker_StructuralEq_for_trait_erc20_Error_t.
 End Impl_core_marker_StructuralEq_for_trait_erc20_Error_t.
 
 Module  Impl_core_cmp_Eq_for_trait_erc20_Error_t.
 Section Impl_core_cmp_Eq_for_trait_erc20_Error_t.
-  Ltac Self := exact trait_erc20.Error.t.
+  Definition Self : Set := trait_erc20.Error.t.
   
   (*
   Eq
   *)
-  Definition assert_receiver_is_total_eq (self : ref ltac:(Self)) : M unit :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
+    let* self : M.Val (ref Self) := M.alloc self in
     M.pure tt.
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
-    Notations.DoubleColon ltac:(Self) "assert_receiver_is_total_eq" := {
+    Notations.DoubleColon Self "assert_receiver_is_total_eq" := {
     Notations.double_colon := assert_receiver_is_total_eq;
   }.
   
-  Global Instance ℐ : core.cmp.Eq.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
     core.cmp.Eq.assert_receiver_is_total_eq :=
       Datatypes.Some assert_receiver_is_total_eq;
   }.
@@ -334,28 +327,26 @@ Ltac Result T := exact (core.result.Result.t T trait_erc20.Error.t).
 Module  BaseErc20.
 Section BaseErc20.
   Class Trait (Self : Set) : Type := {
-    total_supply : (ref ltac:(Self)) -> M ltac:(trait_erc20.Balance);
+    total_supply : (ref Self) -> M ltac:(trait_erc20.Balance);
     balance_of :
-      (ref ltac:(Self)) ->
-        trait_erc20.AccountId.t ->
-        M ltac:(trait_erc20.Balance);
+      (ref Self) -> trait_erc20.AccountId.t -> M ltac:(trait_erc20.Balance);
     allowance :
-      (ref ltac:(Self)) ->
+      (ref Self) ->
         trait_erc20.AccountId.t ->
         trait_erc20.AccountId.t ->
         M ltac:(trait_erc20.Balance);
     transfer :
-      (mut_ref ltac:(Self)) ->
+      (mut_ref Self) ->
         trait_erc20.AccountId.t ->
         ltac:(trait_erc20.Balance) ->
         M ltac:(trait_erc20.Result unit);
     approve :
-      (mut_ref ltac:(Self)) ->
+      (mut_ref Self) ->
         trait_erc20.AccountId.t ->
         ltac:(trait_erc20.Balance) ->
         M ltac:(trait_erc20.Result unit);
     transfer_from :
-      (mut_ref ltac:(Self)) ->
+      (mut_ref Self) ->
         trait_erc20.AccountId.t ->
         trait_erc20.AccountId.t ->
         ltac:(trait_erc20.Balance) ->
@@ -406,7 +397,7 @@ End Erc20.
 
 Module  Impl_core_default_Default_for_trait_erc20_Erc20_t.
 Section Impl_core_default_Default_for_trait_erc20_Erc20_t.
-  Ltac Self := exact trait_erc20.Erc20.t.
+  Definition Self : Set := trait_erc20.Erc20.t.
   
   (*
   Default
@@ -441,11 +432,11 @@ Section Impl_core_default_Default_for_trait_erc20_Erc20_t.
       |}.
   
   Global Instance AssociatedFunction_default :
-    Notations.DoubleColon ltac:(Self) "default" := {
+    Notations.DoubleColon Self "default" := {
     Notations.double_colon := default;
   }.
   
-  Global Instance ℐ : core.default.Default.Trait ltac:(Self) := {
+  Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
   }.
 End Impl_core_default_Default_for_trait_erc20_Erc20_t.
@@ -521,20 +512,20 @@ End Event.
 
 Module  Impl_trait_erc20_Env_t.
 Section Impl_trait_erc20_Env_t.
-  Ltac Self := exact trait_erc20.Env.t.
+  Definition Self : Set := trait_erc20.Env.t.
   
   (*
       fn caller(&self) -> AccountId {
           self.caller
       }
   *)
-  Definition caller (self : ref ltac:(Self)) : M trait_erc20.AccountId.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition caller (self : ref Self) : M trait_erc20.AccountId.t :=
+    let* self : M.Val (ref Self) := M.alloc self in
     let* α0 : ref trait_erc20.Env.t := M.read self in
     M.read (deref α0).["caller"].
   
   Global Instance AssociatedFunction_caller :
-    Notations.DoubleColon ltac:(Self) "caller" := {
+    Notations.DoubleColon Self "caller" := {
     Notations.double_colon := caller;
   }.
   
@@ -544,17 +535,17 @@ Section Impl_trait_erc20_Env_t.
       }
   *)
   Definition emit_event
-      (self : ref ltac:(Self))
+      (self : ref Self)
       (_event : trait_erc20.Event.t)
       : M unit :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (ref Self) := M.alloc self in
     let* _event : M.Val trait_erc20.Event.t := M.alloc _event in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
   Global Instance AssociatedFunction_emit_event :
-    Notations.DoubleColon ltac:(Self) "emit_event" := {
+    Notations.DoubleColon Self "emit_event" := {
     Notations.double_colon := emit_event;
   }.
 End Impl_trait_erc20_Env_t.
@@ -562,7 +553,7 @@ End Impl_trait_erc20_Env_t.
 
 Module  Impl_trait_erc20_Erc20_t.
 Section Impl_trait_erc20_Erc20_t.
-  Ltac Self := exact trait_erc20.Erc20.t.
+  Definition Self : Set := trait_erc20.Erc20.t.
   
   (*
       pub fn new(total_supply: Balance) -> Self {
@@ -581,7 +572,7 @@ Section Impl_trait_erc20_Erc20_t.
           }
       }
   *)
-  Definition new (total_supply : ltac:(trait_erc20.Balance)) : M ltac:(Self) :=
+  Definition new (total_supply : ltac:(trait_erc20.Balance)) : M Self :=
     let* total_supply : M.Val ltac:(trait_erc20.Balance) :=
       M.alloc total_supply in
     let* balances :
@@ -647,8 +638,7 @@ Section Impl_trait_erc20_Erc20_t.
         |} in
     M.read α0.
   
-  Global Instance AssociatedFunction_new :
-    Notations.DoubleColon ltac:(Self) "new" := {
+  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
   }.
 End Impl_trait_erc20_Erc20_t.
@@ -656,22 +646,20 @@ End Impl_trait_erc20_Erc20_t.
 
 Module  Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20_t.
 Section Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20_t.
-  Ltac Self := exact trait_erc20.Erc20.t.
+  Definition Self : Set := trait_erc20.Erc20.t.
   
   (*
       fn total_supply(&self) -> Balance {
           self.total_supply
       }
   *)
-  Definition total_supply
-      (self : ref ltac:(Self))
-      : M ltac:(trait_erc20.Balance) :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition total_supply (self : ref Self) : M ltac:(trait_erc20.Balance) :=
+    let* self : M.Val (ref Self) := M.alloc self in
     let* α0 : ref trait_erc20.Erc20.t := M.read self in
     M.read (deref α0).["total_supply"].
   
   Global Instance AssociatedFunction_total_supply :
-    Notations.DoubleColon ltac:(Self) "total_supply" := {
+    Notations.DoubleColon Self "total_supply" := {
     Notations.double_colon := total_supply;
   }.
   
@@ -681,16 +669,16 @@ Section Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20_t.
       }
   *)
   Definition balance_of
-      (self : ref ltac:(Self))
+      (self : ref Self)
       (owner : trait_erc20.AccountId.t)
       : M ltac:(trait_erc20.Balance) :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (ref Self) := M.alloc self in
     let* owner : M.Val trait_erc20.AccountId.t := M.alloc owner in
     let* α0 : ref trait_erc20.Erc20.t := M.read self in
     M.call (trait_erc20.Erc20.t::["balance_of_impl"] α0 (borrow owner)).
   
   Global Instance AssociatedFunction_balance_of :
-    Notations.DoubleColon ltac:(Self) "balance_of" := {
+    Notations.DoubleColon Self "balance_of" := {
     Notations.double_colon := balance_of;
   }.
   
@@ -700,11 +688,11 @@ Section Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20_t.
       }
   *)
   Definition allowance
-      (self : ref ltac:(Self))
+      (self : ref Self)
       (owner : trait_erc20.AccountId.t)
       (spender : trait_erc20.AccountId.t)
       : M ltac:(trait_erc20.Balance) :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (ref Self) := M.alloc self in
     let* owner : M.Val trait_erc20.AccountId.t := M.alloc owner in
     let* spender : M.Val trait_erc20.AccountId.t := M.alloc spender in
     let* α0 : ref trait_erc20.Erc20.t := M.read self in
@@ -715,7 +703,7 @@ Section Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20_t.
         (borrow spender)).
   
   Global Instance AssociatedFunction_allowance :
-    Notations.DoubleColon ltac:(Self) "allowance" := {
+    Notations.DoubleColon Self "allowance" := {
     Notations.double_colon := allowance;
   }.
   
@@ -726,11 +714,11 @@ Section Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20_t.
       }
   *)
   Definition transfer
-      (self : mut_ref ltac:(Self))
+      (self : mut_ref Self)
       (to : trait_erc20.AccountId.t)
       (value : ltac:(trait_erc20.Balance))
       : M ltac:(trait_erc20.Result unit) :=
-    let* self : M.Val (mut_ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (mut_ref Self) := M.alloc self in
     let* to : M.Val trait_erc20.AccountId.t := M.alloc to in
     let* value : M.Val ltac:(trait_erc20.Balance) := M.alloc value in
     let* from : M.Val trait_erc20.AccountId.t :=
@@ -755,7 +743,7 @@ Section Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20_t.
     M.read α0.
   
   Global Instance AssociatedFunction_transfer :
-    Notations.DoubleColon ltac:(Self) "transfer" := {
+    Notations.DoubleColon Self "transfer" := {
     Notations.double_colon := transfer;
   }.
   
@@ -772,11 +760,11 @@ Section Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20_t.
       }
   *)
   Definition approve
-      (self : mut_ref ltac:(Self))
+      (self : mut_ref Self)
       (spender : trait_erc20.AccountId.t)
       (value : ltac:(trait_erc20.Balance))
       : M ltac:(trait_erc20.Result unit) :=
-    let* self : M.Val (mut_ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (mut_ref Self) := M.alloc self in
     let* spender : M.Val trait_erc20.AccountId.t := M.alloc spender in
     let* value : M.Val ltac:(trait_erc20.Balance) := M.alloc value in
     let* owner : M.Val trait_erc20.AccountId.t :=
@@ -825,7 +813,7 @@ Section Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20_t.
     M.read α0.
   
   Global Instance AssociatedFunction_approve :
-    Notations.DoubleColon ltac:(Self) "approve" := {
+    Notations.DoubleColon Self "approve" := {
     Notations.double_colon := approve;
   }.
   
@@ -842,12 +830,12 @@ Section Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20_t.
       }
   *)
   Definition transfer_from
-      (self : mut_ref ltac:(Self))
+      (self : mut_ref Self)
       (from : trait_erc20.AccountId.t)
       (to : trait_erc20.AccountId.t)
       (value : ltac:(trait_erc20.Balance))
       : M ltac:(trait_erc20.Result unit) :=
-    let* self : M.Val (mut_ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (mut_ref Self) := M.alloc self in
     let* from : M.Val trait_erc20.AccountId.t := M.alloc from in
     let* to : M.Val trait_erc20.AccountId.t := M.alloc to in
     let* value : M.Val ltac:(trait_erc20.Balance) := M.alloc value in
@@ -948,11 +936,11 @@ Section Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20_t.
       M.read α0).
   
   Global Instance AssociatedFunction_transfer_from :
-    Notations.DoubleColon ltac:(Self) "transfer_from" := {
+    Notations.DoubleColon Self "transfer_from" := {
     Notations.double_colon := transfer_from;
   }.
   
-  Global Instance ℐ : trait_erc20.BaseErc20.Trait ltac:(Self) := {
+  Global Instance ℐ : trait_erc20.BaseErc20.Trait Self := {
     trait_erc20.BaseErc20.total_supply := total_supply;
     trait_erc20.BaseErc20.balance_of := balance_of;
     trait_erc20.BaseErc20.allowance := allowance;
@@ -965,7 +953,7 @@ End Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20_t.
 
 Module  Impl_trait_erc20_Erc20_t_2.
 Section Impl_trait_erc20_Erc20_t_2.
-  Ltac Self := exact trait_erc20.Erc20.t.
+  Definition Self : Set := trait_erc20.Erc20.t.
   
   (*
       fn init_env() -> Env {
@@ -978,7 +966,7 @@ Section Impl_trait_erc20_Erc20_t_2.
     never_to_any α1.
   
   Global Instance AssociatedFunction_init_env :
-    Notations.DoubleColon ltac:(Self) "init_env" := {
+    Notations.DoubleColon Self "init_env" := {
     Notations.double_colon := init_env;
   }.
   
@@ -987,12 +975,11 @@ Section Impl_trait_erc20_Erc20_t_2.
           Self::init_env()
       }
   *)
-  Definition env (self : ref ltac:(Self)) : M trait_erc20.Env.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition env (self : ref Self) : M trait_erc20.Env.t :=
+    let* self : M.Val (ref Self) := M.alloc self in
     M.call trait_erc20.Erc20.t::["init_env"].
   
-  Global Instance AssociatedFunction_env :
-    Notations.DoubleColon ltac:(Self) "env" := {
+  Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
     Notations.double_colon := env;
   }.
   
@@ -1002,10 +989,10 @@ Section Impl_trait_erc20_Erc20_t_2.
       }
   *)
   Definition balance_of_impl
-      (self : ref ltac:(Self))
+      (self : ref Self)
       (owner : ref trait_erc20.AccountId.t)
       : M ltac:(trait_erc20.Balance) :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (ref Self) := M.alloc self in
     let* owner : M.Val (ref trait_erc20.AccountId.t) := M.alloc owner in
     let* α0 : ref trait_erc20.Erc20.t := M.read self in
     let* α1 : ref trait_erc20.AccountId.t := M.read owner in
@@ -1017,7 +1004,7 @@ Section Impl_trait_erc20_Erc20_t_2.
     M.call ((core.option.Option.t u128.t)::["unwrap_or_default"] α2).
   
   Global Instance AssociatedFunction_balance_of_impl :
-    Notations.DoubleColon ltac:(Self) "balance_of_impl" := {
+    Notations.DoubleColon Self "balance_of_impl" := {
     Notations.double_colon := balance_of_impl;
   }.
   
@@ -1027,11 +1014,11 @@ Section Impl_trait_erc20_Erc20_t_2.
       }
   *)
   Definition allowance_impl
-      (self : ref ltac:(Self))
+      (self : ref Self)
       (owner : ref trait_erc20.AccountId.t)
       (spender : ref trait_erc20.AccountId.t)
       : M ltac:(trait_erc20.Balance) :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (ref Self) := M.alloc self in
     let* owner : M.Val (ref trait_erc20.AccountId.t) := M.alloc owner in
     let* spender : M.Val (ref trait_erc20.AccountId.t) := M.alloc spender in
     let* α0 : ref trait_erc20.Erc20.t := M.read self in
@@ -1051,7 +1038,7 @@ Section Impl_trait_erc20_Erc20_t_2.
     M.call ((core.option.Option.t u128.t)::["unwrap_or_default"] α6).
   
   Global Instance AssociatedFunction_allowance_impl :
-    Notations.DoubleColon ltac:(Self) "allowance_impl" := {
+    Notations.DoubleColon Self "allowance_impl" := {
     Notations.double_colon := allowance_impl;
   }.
   
@@ -1074,12 +1061,12 @@ Section Impl_trait_erc20_Erc20_t_2.
       }
   *)
   Definition transfer_from_to
-      (self : mut_ref ltac:(Self))
+      (self : mut_ref Self)
       (from : ref trait_erc20.AccountId.t)
       (to : ref trait_erc20.AccountId.t)
       (value : ltac:(trait_erc20.Balance))
       : M ltac:(trait_erc20.Result unit) :=
-    let* self : M.Val (mut_ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (mut_ref Self) := M.alloc self in
     let* from : M.Val (ref trait_erc20.AccountId.t) := M.alloc from in
     let* to : M.Val (ref trait_erc20.AccountId.t) := M.alloc to in
     let* value : M.Val ltac:(trait_erc20.Balance) := M.alloc value in
@@ -1166,7 +1153,7 @@ Section Impl_trait_erc20_Erc20_t_2.
       M.read α0).
   
   Global Instance AssociatedFunction_transfer_from_to :
-    Notations.DoubleColon ltac:(Self) "transfer_from_to" := {
+    Notations.DoubleColon Self "transfer_from_to" := {
     Notations.double_colon := transfer_from_to;
   }.
 End Impl_trait_erc20_Erc20_t_2.

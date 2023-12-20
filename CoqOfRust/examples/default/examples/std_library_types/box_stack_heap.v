@@ -26,17 +26,17 @@ End Point.
 
 Module  Impl_core_fmt_Debug_for_box_stack_heap_Point_t.
 Section Impl_core_fmt_Debug_for_box_stack_heap_Point_t.
-  Ltac Self := exact box_stack_heap.Point.t.
+  Definition Self : Set := box_stack_heap.Point.t.
   
   (*
   Debug
   *)
   (* #[allow(dead_code)] - function was ignored by the compiler *)
   Definition fmt
-      (self : ref ltac:(Self))
+      (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (ref Self) := M.alloc self in
     let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref str.t := M.read (mk_str "Point") in
@@ -54,12 +54,11 @@ Section Impl_core_fmt_Debug_for_box_stack_heap_Point_t.
     M.call
       (core.fmt.Formatter.t::["debug_struct_field2_finish"] α0 α1 α2 α5 α6 α10).
   
-  Global Instance AssociatedFunction_fmt :
-    Notations.DoubleColon ltac:(Self) "fmt" := {
+  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
+  Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
   }.
 End Impl_core_fmt_Debug_for_box_stack_heap_Point_t.
@@ -67,24 +66,24 @@ End Impl_core_fmt_Debug_for_box_stack_heap_Point_t.
 
 Module  Impl_core_clone_Clone_for_box_stack_heap_Point_t.
 Section Impl_core_clone_Clone_for_box_stack_heap_Point_t.
-  Ltac Self := exact box_stack_heap.Point.t.
+  Definition Self : Set := box_stack_heap.Point.t.
   
   (*
   Clone
   *)
   (* #[allow(dead_code)] - function was ignored by the compiler *)
-  Definition clone (self : ref ltac:(Self)) : M box_stack_heap.Point.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition clone (self : ref Self) : M box_stack_heap.Point.t :=
+    let* self : M.Val (ref Self) := M.alloc self in
     let* _ : M.Val unit := M.alloc tt in
     let* α0 : ref box_stack_heap.Point.t := M.read self in
     M.read (deref α0).
   
   Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon ltac:(Self) "clone" := {
+    Notations.DoubleColon Self "clone" := {
     Notations.double_colon := clone;
   }.
   
-  Global Instance ℐ : core.clone.Clone.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
     core.clone.Clone.clone_from := Datatypes.None;
   }.
@@ -93,9 +92,9 @@ End Impl_core_clone_Clone_for_box_stack_heap_Point_t.
 
 Module  Impl_core_marker_Copy_for_box_stack_heap_Point_t.
 Section Impl_core_marker_Copy_for_box_stack_heap_Point_t.
-  Ltac Self := exact box_stack_heap.Point.t.
+  Definition Self : Set := box_stack_heap.Point.t.
   
-  Global Instance ℐ : core.marker.Copy.Trait ltac:(Self) := {
+  Global Instance ℐ : core.marker.Copy.Trait Self := {
   }.
 End Impl_core_marker_Copy_for_box_stack_heap_Point_t.
 End Impl_core_marker_Copy_for_box_stack_heap_Point_t.
