@@ -1,6 +1,7 @@
 use crate::path::Path;
 use crate::render::{
-    self, concat, group, hardline, intersperse, line, nest, nil, paren, text, Doc,
+    self, concat, curly_brackets, group, hardline, intersperse, line, nest, nil, optional_insert,
+    optional_insert_vec, optional_insert_with, paren, text, Doc,
 };
 
 #[derive(Clone)]
@@ -333,7 +334,8 @@ impl<'a> TopLevel<'a> {
         TopLevel {
             items: [
                 // [ty_params]
-                if !ty_params.is_empty() {
+                optional_insert_vec(
+                    ty_params.is_empty(),
                     vec![
                         TopLevelItem::Context(Context::new(&[ArgDecl::new(
                             &ArgDeclVar::Simple {
@@ -347,10 +349,8 @@ impl<'a> TopLevel<'a> {
                             },
                         )])),
                         TopLevelItem::Line,
-                    ]
-                } else {
-                    vec![]
-                },
+                    ],
+                ),
                 items.items.to_owned(),
             ]
             .concat(),
@@ -396,9 +396,8 @@ impl<'a> TopLevelItem<'a> {
                                 },
                                 ArgSpecKind::Explicit,
                             )],
-                            if ty_params.is_empty() {
-                                vec![]
-                            } else {
+                            optional_insert_vec(
+                                ty_params.is_empty(),
                                 vec![ArgDecl::new(
                                     &ArgDeclVar::Simple {
                                         idents: ty_params
@@ -414,8 +413,8 @@ impl<'a> TopLevelItem<'a> {
                                         ty: Some(Expression::Set),
                                     },
                                     ArgSpecKind::Implicit,
-                                )]
-                            },
+                                )],
+                            ),
                         ]
                         .concat(),
                         items.to_vec(),
@@ -517,14 +516,13 @@ impl<'a> Definition<'a> {
                 nest([
                     group([text("Definition"), line(), text(self.name.to_owned())]),
                     group([
-                        if args.is_empty() {
-                            nil()
-                        } else {
+                        optional_insert(
+                            args.is_empty(),
                             concat([
                                 line(),
                                 intersperse(args.iter().map(|arg| arg.to_doc()), [line()]),
-                            ])
-                        },
+                            ]),
+                        ),
                         match ty {
                             Some(ty) => {
                                 concat([line(), nest([text(":"), line(), ty.to_doc(false)])])
@@ -584,17 +582,17 @@ impl<'a> Record<'a> {
                 line(),
                 text("{"),
             ]),
-            if self.fields.is_empty() {
-                text(" ")
-            } else {
+            optional_insert_with(
+                self.fields.is_empty(),
+                text(" "),
                 concat([
                     nest([
                         hardline(),
                         intersperse(self.fields.iter().map(|field| field.to_doc()), [hardline()]),
                     ]),
                     hardline(),
-                ])
-            },
+                ]),
+            ),
             text("}."),
         ])
     }
@@ -634,24 +632,19 @@ impl<'a> Class<'a> {
                 nest([
                     text("Class "),
                     text(self.name.to_owned()),
-                    if self.params.is_empty() {
-                        nil()
-                    } else {
+                    optional_insert(
+                        self.params.is_empty(),
                         group([
                             line(),
                             intersperse(self.params.iter().map(|param| param.to_doc()), [line()]),
-                        ])
-                    },
+                        ]),
+                    ),
                     text(" :"),
                     line(),
                     Expression::Type.to_doc(false),
                     text(" := {"),
                 ]),
-                if self.items.is_empty() {
-                    nil()
-                } else {
-                    hardline()
-                },
+                optional_insert(self.items.is_empty(), hardline()),
                 intersperse(
                     {
                         let mut anonymous_item_counter = 0;
@@ -700,14 +693,13 @@ impl<'a> Instance<'a> {
                     text("Global Instance"),
                     line(),
                     text(self.name.to_owned()),
-                    if self.parameters.is_empty() {
-                        nil()
-                    } else {
+                    optional_insert(
+                        self.parameters.is_empty(),
                         concat([
                             line(),
                             intersperse(self.parameters.iter().map(|p| p.to_doc()), [line()]),
-                        ])
-                    },
+                        ]),
+                    ),
                 ]),
                 text(" :"),
                 line(),
@@ -716,16 +708,15 @@ impl<'a> Instance<'a> {
             ]),
             self.build_expr.to_doc(false),
             text("."),
-            if self.proof_lines.is_empty() {
-                nil()
-            } else {
+            optional_insert(
+                self.proof_lines.is_empty(),
                 concat([
                     hardline(),
                     intersperse(self.proof_lines.to_owned(), [hardline()]),
                     hardline(),
                     text("Defined."),
-                ])
-            },
+                ]),
+            ),
         ])
     }
 }
@@ -767,14 +758,13 @@ impl<'a> ClassFieldDef<'a> {
                 Some(name) => text(name),
                 None => text(format!("ℒ_{anonymous_counter}")),
             },
-            if self.args.is_empty() {
-                nil()
-            } else {
+            optional_insert(
+                self.args.is_empty(),
                 group([
                     line(),
                     intersperse(self.args.iter().map(|param| param.to_doc()), [line()]),
-                ])
-            },
+                ]),
+            ),
             match self.ident {
                 Some(_) => text(" :"),
                 None => text(" ::"),
@@ -794,7 +784,7 @@ impl<'a> Expression<'a> {
                 with_paren,
                 nest([
                     func.to_doc(false),
-                    if args.is_empty() { nil() } else { line() },
+                    optional_insert(args.is_empty(), line()),
                     intersperse(
                         args.iter().map(|(param, arg)| match param {
                             Some(param) => render::round_brackets(group([
@@ -833,29 +823,27 @@ impl<'a> Expression<'a> {
                             .map(|domain| group([domain.to_doc(true), line(), text("->")])),
                         [line()],
                     ),
-                    if domains.is_empty() { nil() } else { line() },
+                    optional_insert(domains.is_empty(), line()),
                     image.to_doc(false),
                 ]),
             ),
-            Self::PiType { args, image } => {
-                if args.is_empty() {
-                    image.to_doc(with_paren)
-                } else {
-                    paren(
-                        with_paren,
-                        concat([
-                            nest([
-                                text("forall"),
-                                line(),
-                                intersperse(args.iter().map(|arg| arg.to_doc()), [line()]),
-                                text(","),
-                            ]),
+            Self::PiType { args, image } => optional_insert_with(
+                args.is_empty(),
+                image.to_doc(with_paren),
+                paren(
+                    with_paren,
+                    concat([
+                        nest([
+                            text("forall"),
                             line(),
-                            image.to_doc(false),
+                            intersperse(args.iter().map(|arg| arg.to_doc()), [line()]),
+                            text(","),
                         ]),
-                    )
-                }
-            }
+                        line(),
+                        image.to_doc(false),
+                    ]),
+                ),
+            ),
             Self::Product { lhs, rhs } => paren(
                 with_paren,
                 group([
@@ -866,19 +854,16 @@ impl<'a> Expression<'a> {
                     rhs.to_doc(true),
                 ]),
             ),
-            Self::Record { fields } => concat([
-                text("{"),
-                if fields.is_empty() {
-                    nil()
-                } else {
+            Self::Record { fields } => concat([curly_brackets(concat([
+                optional_insert(
+                    fields.is_empty(),
                     nest([
                         hardline(),
                         intersperse(fields.iter().map(|field| field.to_doc()), [hardline()]),
-                    ])
-                },
+                    ]),
+                ),
                 hardline(),
-                text("}"),
-            ]),
+            ]))]),
             Self::RecordField { record, field } => concat([
                 record.to_doc(true),
                 text(".("),
@@ -931,7 +916,7 @@ impl<'a> Expression<'a> {
             Self::Type => text("Type"),
             Self::Unit => text("unit"),
             Self::Variable { ident, no_implicit } => {
-                concat([if *no_implicit { text("@") } else { nil() }, ident.to_doc()])
+                concat([optional_insert(!*no_implicit, text("@")), ident.to_doc()])
             }
             Self::Wild => text("_"),
         }
@@ -1025,14 +1010,13 @@ impl<'a> Field<'a> {
         nest([
             group([
                 self.name.to_doc(),
-                if self.args.is_empty() {
-                    nil()
-                } else {
+                optional_insert(
+                    self.args.is_empty(),
                     group([
                         line(),
                         intersperse(self.args.iter().map(|param| param.to_doc()), [line()]),
-                    ])
-                },
+                    ]),
+                ),
             ]),
             text(" :="),
             line(),
@@ -1074,11 +1058,10 @@ impl<'a> ArgDecl<'a> {
             ArgDeclVar::Generalized { idents, ty } => group([
                 text("`"),
                 brackets(nest([
-                    if idents.is_empty() {
-                        nil()
-                    } else {
-                        concat([intersperse(idents, [line()]), line(), text(":"), line()])
-                    },
+                    optional_insert(
+                        idents.is_empty(),
+                        concat([intersperse(idents, [line()]), line(), text(":"), line()]),
+                    ),
                     ty.to_doc(false),
                 ])),
             ]),

@@ -11,6 +11,37 @@ use rustc_span::symbol::Symbol;
 //     coq::ArgDecl::monadic_typeclass_parameter().to_doc()
 // }
 
+/// Insert a Doc block when the predicate(usually is_empty()) doesn't satisfy.
+pub(crate) fn optional_insert(when_not: bool, insert_doc: RcDoc<()>) -> RcDoc<()> {
+    if when_not {
+        nil()
+    } else {
+        insert_doc
+    }
+}
+
+/// Insert a Vec block when the predicate(usually is_empty()) doesn't satisfy.
+pub(crate) fn optional_insert_vec<T>(when_not: bool, insert_vec: Vec<T>) -> Vec<T> {
+    if when_not {
+        vec![]
+    } else {
+        insert_vec
+    }
+}
+
+/// Insert a Doc block 'insert_doc' if the predicate isn't satisfied. Otherwise, insert the `with_doc` content.
+pub(crate) fn optional_insert_with<'a>(
+    when_not: bool,
+    with_doc: RcDoc<'a>,
+    insert_doc: RcDoc<'a>,
+) -> RcDoc<'a> {
+    if !when_not {
+        insert_doc
+    } else {
+        with_doc
+    }
+}
+
 /// encloses an expression in curly brackets
 pub(crate) fn curly_brackets(doc: RcDoc<()>) -> RcDoc<()> {
     RcDoc::concat([RcDoc::text("{"), doc, RcDoc::text("}")])
@@ -77,11 +108,10 @@ fn string_pieces_to_doc<'a>(with_paren: bool, pieces: &[StringPiece]) -> RcDoc<'
                 text("\""),
                 text(s.clone()),
                 text("\""),
-                if rest.is_empty() {
-                    nil()
-                } else {
-                    concat([text(" ++"), line(), string_pieces_to_doc(false, rest)])
-                },
+                optional_insert(
+                    rest.is_empty(),
+                    concat([text(" ++"), line(), string_pieces_to_doc(false, rest)]),
+                ),
             ]),
         ),
         [StringPiece::UnicodeChar(c), rest @ ..] => paren(

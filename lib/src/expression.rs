@@ -835,17 +835,17 @@ impl ExprKind {
                 from_user,
             } => {
                 let inner_with_paren = with_paren || *from_user;
-                let inner_application = if args.is_empty() {
-                    func.to_doc(inner_with_paren)
-                } else {
+                let inner_application = optional_insert_with(
+                    args.is_empty(),
+                    func.to_doc(inner_with_paren),
                     paren(
                         inner_with_paren,
                         nest([
                             func.to_doc(true),
                             concat(args.iter().map(|arg| concat([line(), arg.to_doc(true)]))),
                         ]),
-                    )
-                };
+                    ),
+                );
                 if *from_user {
                     paren(
                         with_paren,
@@ -880,7 +880,7 @@ impl ExprKind {
             ExprKind::Array { elements } => group([
                 nest([
                     text("["),
-                    if !elements.is_empty() { line() } else { nil() },
+                    optional_insert(elements.is_empty(), line()),
                     intersperse(
                         elements.iter().map(|element| element.to_doc(false)),
                         [text(";"), line()],
@@ -908,13 +908,9 @@ impl ExprKind {
                         nest([
                             nest([
                                 text("let"),
-                                if *is_monadic { text("*") } else { nil() },
+                                optional_insert(!*is_monadic, text("*")),
                                 line(),
-                                (if !pattern.is_single_binding() {
-                                    text("'")
-                                } else {
-                                    nil()
-                                }),
+                                optional_insert(pattern.is_single_binding(), text("'")),
                             ]),
                             pattern.to_doc(),
                             match &init.ty {
@@ -1053,7 +1049,7 @@ impl ExprKind {
                     concat(fields.iter().map(|arg| concat([line(), arg.to_doc(true)]))),
                 ]),
             ),
-            ExprKind::StructUnit { path } => nest([path.to_doc(), text(".Build")]),
+            ExprKind::StructUnit { path } => concat([path.to_doc(), text(".Build")]),
             ExprKind::Return(value) => paren(
                 with_paren,
                 nest([text("return_"), line(), value.to_doc(true)]),

@@ -1366,13 +1366,12 @@ impl FunDefinition {
                     Some(snippet) => snippet.to_coq(),
                     None => vec![],
                 },
-                if self.is_dead_code {
+                optional_insert_vec(
+                    !self.is_dead_code,
                     vec![coq::TopLevelItem::Comment(coq::Comment::new(
                         "#[allow(dead_code)] - function was ignored by the compiler",
-                    ))]
-                } else {
-                    vec![]
-                },
+                    ))],
+                ),
                 match &self.signature_and_body.body {
                     None => {
                         let ret_ty_name = [name, "_", "ret_ty"].concat();
@@ -1447,22 +1446,20 @@ impl FunDefinition {
                                     ty: coq::Expression::PiType {
                                         args: [
                                             // Type parameters a, b, c... compiles to forall {a b c ... : Set},
-                                            if self.ty_params.is_empty() {
-                                                vec![]
-                                            } else {
+                                            optional_insert_vec(
+                                                self.ty_params.is_empty(),
                                                 vec![coq::ArgDecl::of_ty_params(
                                                     &self.ty_params,
                                                     coq::ArgSpecKind::Implicit,
-                                                )]
-                                            },
+                                                )],
+                                            ),
                                             // where predicates types
-                                            if self.where_predicates.is_empty() {
-                                                vec![]
-                                            } else {
+                                            optional_insert_vec(
+                                                self.where_predicates.is_empty(),
                                                 vec![WherePredicate::vec_to_coq(
                                                     &self.where_predicates,
-                                                )]
-                                            },
+                                                )],
+                                            ),
                                         ]
                                         .concat(),
                                         image: Box::new(
@@ -1489,20 +1486,18 @@ impl FunDefinition {
                         &coq::DefinitionKind::Alias {
                             args: [
                                 // Type parameters a, b, c... compiles to forall {a b c ... : Set},
-                                if self.ty_params.is_empty() {
-                                    vec![]
-                                } else {
+                                optional_insert_vec(
+                                    self.ty_params.is_empty(),
                                     vec![coq::ArgDecl::of_ty_params(
                                         &self.ty_params,
                                         coq::ArgSpecKind::Implicit,
-                                    )]
-                                },
+                                    )],
+                                ),
                                 // where predicates types
-                                if self.where_predicates.is_empty() {
-                                    vec![]
-                                } else {
-                                    vec![WherePredicate::vec_to_coq(&self.where_predicates)]
-                                },
+                                optional_insert_vec(
+                                    self.where_predicates.is_empty(),
+                                    vec![WherePredicate::vec_to_coq(&self.where_predicates)],
+                                ),
                                 // argument types
                                 self.signature_and_body
                                     .args
@@ -1616,14 +1611,13 @@ impl ImplItemKind {
                 body,
                 is_dead_code,
             } => concat([
-                if *is_dead_code {
+                optional_insert(
+                    !*is_dead_code,
                     concat([
                         text("(* #[allow(dead_code)] - function was ignored by the compiler *)"),
                         hardline(),
-                    ])
-                } else {
-                    nil()
-                },
+                    ]),
+                ),
                 match body {
                     None => nest([
                         nest([text("Parameter"), line(), text(name), text(" :")]),
@@ -1767,22 +1761,23 @@ impl Snippet {
     }
 
     fn to_coq(&self) -> Vec<coq::TopLevelItem> {
-        if self.0.is_empty() {
-            return vec![];
-        }
-
-        [
-            vec![coq::TopLevelItem::Code(text("(*"))],
-            self.0
-                .iter()
-                // We do this replace to avoid messing up with the Coq comments
-                .map(|line| {
-                    coq::TopLevelItem::Code(text(line.replace("(*", "( *").replace("*)", "* )")))
-                })
-                .collect(),
-            vec![coq::TopLevelItem::Code(text("*)"))],
-        ]
-        .concat()
+        optional_insert_vec(
+            self.0.is_empty(),
+            [
+                vec![coq::TopLevelItem::Code(text("(*"))],
+                self.0
+                    .iter()
+                    // We do this replace to avoid messing up with the Coq comments
+                    .map(|line| {
+                        coq::TopLevelItem::Code(text(
+                            line.replace("(*", "( *").replace("*)", "* )"),
+                        ))
+                    })
+                    .collect(),
+                vec![coq::TopLevelItem::Code(text("*)"))],
+            ]
+            .concat(),
+        )
     }
 }
 
@@ -1828,13 +1823,12 @@ impl TopLevelItem {
                     .count();
                 coq::TopLevel::new(
                     &[
-                        if *is_dead_code {
+                        optional_insert_vec(
+                            !*is_dead_code,
                             vec![coq::TopLevelItem::Comment(coq::Comment::new(
                                 "#[allow(dead_code)] - module was ignored by the compiler",
-                            ))]
-                        } else {
-                            vec![]
-                        },
+                            ))],
+                        ),
                         vec![coq::TopLevelItem::Module(coq::Module::new_with_repeat(
                             name,
                             false,
@@ -1887,9 +1881,9 @@ impl TopLevelItem {
                                                 line(),
                                                 text("{"),
                                             ]),
-                                            if fields.is_empty() {
-                                                text(" ")
-                                            } else {
+                                            optional_insert_with(
+                                                fields.is_empty(),
+                                                text(" "),
                                                 concat([
                                                     nest([
                                                         hardline(),
@@ -1908,8 +1902,8 @@ impl TopLevelItem {
                                                         ),
                                                     ]),
                                                     hardline(),
-                                                ])
-                                            },
+                                                ]),
+                                            ),
                                             text("}."),
                                         ])),
                                     ]),
@@ -2146,22 +2140,20 @@ impl TopLevelItem {
                             } => vec![coq::ClassFieldDef::new(
                                 &Some(name.to_owned()),
                                 &[
-                                    if ty_params.is_empty() {
-                                        vec![]
-                                    } else {
+                                    optional_insert_vec(
+                                        ty_params.is_empty(),
                                         vec![coq::ArgDecl::new(
                                             &coq::ArgDeclVar::Simple {
                                                 idents: ty_params.to_owned(),
                                                 ty: Some(coq::Expression::Set),
                                             },
                                             coq::ArgSpecKind::Implicit,
-                                        )]
-                                    },
-                                    if where_predicates.is_empty() {
-                                        vec![]
-                                    } else {
-                                        vec![WherePredicate::vec_to_coq(where_predicates)]
-                                    },
+                                        )],
+                                    ),
+                                    optional_insert_vec(
+                                        where_predicates.is_empty(),
+                                        vec![WherePredicate::vec_to_coq(where_predicates)],
+                                    ),
                                 ]
                                 .concat(),
                                 &ty.to_coq(),
@@ -2257,16 +2249,15 @@ impl TopLevelItem {
                             generic_tys,
                             false,
                             &coq::TopLevel::new(&[
-                                if predicates.is_empty() {
-                                    vec![]
-                                } else {
-                                    vec![
-                                        coq::TopLevelItem::Context(coq::Context::new(
-                                            &[WherePredicate::vec_to_coq(predicates)]
-                                        )),
-                                        coq::TopLevelItem::Line,
-                                    ]
-                                },
+                              optional_insert_vec(
+                                predicates.is_empty(),
+                                vec![
+                                    coq::TopLevelItem::Context(coq::Context::new(
+                                        &[WherePredicate::vec_to_coq(predicates)]
+                                    )),
+                                    coq::TopLevelItem::Line,
+                                ]
+                              ),
                                 vec![coq::TopLevelItem::Definition(
                                     coq::Definition::new(
                                         "Self",
@@ -2339,16 +2330,14 @@ impl TopLevelItem {
                                                         Some(ImplItemKind::Definition { definition, ..}) => {
                                                             let FunDefinition {ty_params, where_predicates, ..} = &**definition;
                                                             vec![
-                                                                if ty_params.is_empty() {
-                                                                    vec![]
-                                                                } else {
-                                                                    vec![coq::ArgDecl::of_ty_params(ty_params, coq::ArgSpecKind::Implicit)]
-                                                                },
-                                                                if where_predicates.is_empty() {
-                                                                    vec![]
-                                                                } else {
-                                                                    vec![WherePredicate::vec_to_coq(where_predicates)]
-                                                                },
+                                                              optional_insert_vec(
+                                                                ty_params.is_empty(),
+                                                                vec![coq::ArgDecl::of_ty_params(ty_params, coq::ArgSpecKind::Implicit)]
+                                                              ),
+                                                              optional_insert_vec(
+                                                                where_predicates.is_empty(),
+                                                                vec![WherePredicate::vec_to_coq(where_predicates)]
+                                                              )
                                                             ].concat()
                                                         }
                                                         _ => vec![],
@@ -2470,13 +2459,12 @@ impl TypeStructStruct {
             .collect::<Vec<_>>();
         coq::TopLevel::new(
             &[
-                if *is_dead_code {
+                optional_insert_vec(
+                    !*is_dead_code,
                     vec![coq::TopLevelItem::Comment(coq::Comment::new(
                         "#[allow(dead_code)] - struct was ignored by the compiler",
-                    ))]
-                } else {
-                    vec![]
-                },
+                    ))],
+                ),
                 vec![coq::TopLevelItem::Module(coq::Module::new(
                     name,
                     true,
@@ -2488,13 +2476,12 @@ impl TypeStructStruct {
                                 .collect::<Vec<_>>(),
                             true,
                             &coq::TopLevel::concat(&[
-                                coq::TopLevel::new(&if predicates.is_empty() {
-                                    vec![]
-                                } else {
+                                coq::TopLevel::new(&optional_insert_vec(
+                                    predicates.is_empty(),
                                     vec![coq::TopLevelItem::Context(coq::Context::new(&[
                                         WherePredicate::vec_to_coq(predicates),
-                                    ]))]
-                                }),
+                                    ]))],
+                                )),
                                 //   coq::TopLevel::new(&if trait_objects_traits.is_empty() {
                                 //       vec![]
                                 //   } else {
@@ -2618,11 +2605,10 @@ impl TypeStructStruct {
                                         })
                                         .collect::<Vec<_>>(),
                                 ))]),
-                                coq::TopLevel::new(&if fields.is_empty() {
-                                    vec![]
-                                } else {
-                                    vec![coq::TopLevelItem::Line]
-                                }),
+                                coq::TopLevel::new(&optional_insert_vec(
+                                    fields.is_empty(),
+                                    vec![coq::TopLevelItem::Line],
+                                )),
                                 coq::TopLevel::new(
                                     &fields
                                         .iter()
@@ -2692,15 +2678,14 @@ impl TypeStructStruct {
                                 ),
                             ]),
                         ),
-                        coq::TopLevel::new(&if params_with_default.is_empty() {
-                            vec![]
-                        } else {
+                        coq::TopLevel::new(&optional_insert_vec(
+                            params_with_default.is_empty(),
                             vec![coq::TopLevelItem::Module(coq::Module::new(
                                 "Default",
                                 false,
                                 coq::TopLevel::new(&params_with_default),
-                            ))]
-                        }),
+                            ))],
+                        )),
                     ]),
                 ))],
             ]
