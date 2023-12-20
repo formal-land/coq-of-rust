@@ -267,36 +267,6 @@ Section Env.
 End Env.
 End Env.
 
-Module  Impl_erc1155_Env_t.
-Section Impl_erc1155_Env_t.
-  Ltac Self := exact erc1155.Env.t.
-  
-  (*
-      fn caller(&self) -> AccountId {
-          self.caller
-      }
-  *)
-  Parameter caller : (ref ltac:(Self)) -> M erc1155.AccountId.t.
-  
-  Global Instance AssociatedFunction_caller :
-    Notations.DoubleColon ltac:(Self) "caller" := {
-    Notations.double_colon := caller;
-  }.
-  
-  (*
-      fn emit_event(&self, _event: Event) {
-          unimplemented!()
-      }
-  *)
-  Parameter emit_event : (ref ltac:(Self)) -> erc1155.Event.t -> M unit.
-  
-  Global Instance AssociatedFunction_emit_event :
-    Notations.DoubleColon ltac:(Self) "emit_event" := {
-    Notations.double_colon := emit_event;
-  }.
-End Impl_erc1155_Env_t.
-End Impl_erc1155_Env_t.
-
 Parameter ON_ERC_1155_RECEIVED_SELECTOR : array u8.t.
 
 Parameter _ON_ERC_1155_BATCH_RECEIVED_SELECTOR : array u8.t.
@@ -580,6 +550,36 @@ Module Event.
   | ApprovalForAll (_ : erc1155.ApprovalForAll.t)
   | Uri (_ : erc1155.Uri.t).
 End Event.
+
+Module  Impl_erc1155_Env_t.
+Section Impl_erc1155_Env_t.
+  Ltac Self := exact erc1155.Env.t.
+  
+  (*
+      fn caller(&self) -> AccountId {
+          self.caller
+      }
+  *)
+  Parameter caller : (ref ltac:(Self)) -> M erc1155.AccountId.t.
+  
+  Global Instance AssociatedFunction_caller :
+    Notations.DoubleColon ltac:(Self) "caller" := {
+    Notations.double_colon := caller;
+  }.
+  
+  (*
+      fn emit_event(&self, _event: Event) {
+          unimplemented!()
+      }
+  *)
+  Parameter emit_event : (ref ltac:(Self)) -> erc1155.Event.t -> M unit.
+  
+  Global Instance AssociatedFunction_emit_event :
+    Notations.DoubleColon ltac:(Self) "emit_event" := {
+    Notations.double_colon := emit_event;
+  }.
+End Impl_erc1155_Env_t.
+End Impl_erc1155_Env_t.
 
 Module  Contract.
 Section Contract.

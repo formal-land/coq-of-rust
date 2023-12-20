@@ -73,40 +73,6 @@ Section Impl_core_marker_Copy_for_payment_channel_AccountId_t.
 End Impl_core_marker_Copy_for_payment_channel_AccountId_t.
 End Impl_core_marker_Copy_for_payment_channel_AccountId_t.
 
-Module  Impl_core_marker_StructuralEq_for_payment_channel_AccountId_t.
-Section Impl_core_marker_StructuralEq_for_payment_channel_AccountId_t.
-  Ltac Self := exact payment_channel.AccountId.t.
-  
-  Global Instance ℐ : core.marker.StructuralEq.Trait ltac:(Self) := {
-  }.
-End Impl_core_marker_StructuralEq_for_payment_channel_AccountId_t.
-End Impl_core_marker_StructuralEq_for_payment_channel_AccountId_t.
-
-Module  Impl_core_cmp_Eq_for_payment_channel_AccountId_t.
-Section Impl_core_cmp_Eq_for_payment_channel_AccountId_t.
-  Ltac Self := exact payment_channel.AccountId.t.
-  
-  (*
-  Eq
-  *)
-  Definition assert_receiver_is_total_eq (self : ref ltac:(Self)) : M unit :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
-    let* _ : M.Val unit := M.alloc tt in
-    let* α0 : M.Val unit := M.alloc tt in
-    M.read α0.
-  
-  Global Instance AssociatedFunction_assert_receiver_is_total_eq :
-    Notations.DoubleColon ltac:(Self) "assert_receiver_is_total_eq" := {
-    Notations.double_colon := assert_receiver_is_total_eq;
-  }.
-  
-  Global Instance ℐ : core.cmp.Eq.Required.Trait ltac:(Self) := {
-    core.cmp.Eq.assert_receiver_is_total_eq :=
-      Datatypes.Some assert_receiver_is_total_eq;
-  }.
-End Impl_core_cmp_Eq_for_payment_channel_AccountId_t.
-End Impl_core_cmp_Eq_for_payment_channel_AccountId_t.
-
 Module  Impl_core_marker_StructuralPartialEq_for_payment_channel_AccountId_t.
 Section Impl_core_marker_StructuralPartialEq_for_payment_channel_AccountId_t.
   Ltac Self := exact payment_channel.AccountId.t.
@@ -148,6 +114,40 @@ Section Impl_core_cmp_PartialEq_for_payment_channel_AccountId_t.
   }.
 End Impl_core_cmp_PartialEq_for_payment_channel_AccountId_t.
 End Impl_core_cmp_PartialEq_for_payment_channel_AccountId_t.
+
+Module  Impl_core_marker_StructuralEq_for_payment_channel_AccountId_t.
+Section Impl_core_marker_StructuralEq_for_payment_channel_AccountId_t.
+  Ltac Self := exact payment_channel.AccountId.t.
+  
+  Global Instance ℐ : core.marker.StructuralEq.Trait ltac:(Self) := {
+  }.
+End Impl_core_marker_StructuralEq_for_payment_channel_AccountId_t.
+End Impl_core_marker_StructuralEq_for_payment_channel_AccountId_t.
+
+Module  Impl_core_cmp_Eq_for_payment_channel_AccountId_t.
+Section Impl_core_cmp_Eq_for_payment_channel_AccountId_t.
+  Ltac Self := exact payment_channel.AccountId.t.
+  
+  (*
+  Eq
+  *)
+  Definition assert_receiver_is_total_eq (self : ref ltac:(Self)) : M unit :=
+    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* _ : M.Val unit := M.alloc tt in
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0.
+  
+  Global Instance AssociatedFunction_assert_receiver_is_total_eq :
+    Notations.DoubleColon ltac:(Self) "assert_receiver_is_total_eq" := {
+    Notations.double_colon := assert_receiver_is_total_eq;
+  }.
+  
+  Global Instance ℐ : core.cmp.Eq.Required.Trait ltac:(Self) := {
+    core.cmp.Eq.assert_receiver_is_total_eq :=
+      Datatypes.Some assert_receiver_is_total_eq;
+  }.
+End Impl_core_cmp_Eq_for_payment_channel_AccountId_t.
+End Impl_core_cmp_Eq_for_payment_channel_AccountId_t.
 
 Module  Impl_core_convert_From_array_u8_t_for_payment_channel_AccountId_t.
 Section Impl_core_convert_From_array_u8_t_for_payment_channel_AccountId_t.
@@ -255,56 +255,6 @@ Module Error.
   | NotYetExpired
   | InvalidSignature.
 End Error.
-
-Module  Impl_core_fmt_Debug_for_payment_channel_Error_t.
-Section Impl_core_fmt_Debug_for_payment_channel_Error_t.
-  Ltac Self := exact payment_channel.Error.t.
-  
-  (*
-  Debug
-  *)
-  Definition fmt
-      (self : ref ltac:(Self))
-      (f : mut_ref core.fmt.Formatter.t)
-      : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
-    let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
-    let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
-    let* α1 : ref payment_channel.Error.t := M.read self in
-    let* α2 : M.Val (ref str.t) :=
-      match α1 with
-      | payment_channel.Error.CallerIsNotSender  =>
-        let* α0 : ref str.t := M.read (mk_str "CallerIsNotSender") in
-        M.alloc α0
-      | payment_channel.Error.CallerIsNotRecipient  =>
-        let* α0 : ref str.t := M.read (mk_str "CallerIsNotRecipient") in
-        M.alloc α0
-      | payment_channel.Error.AmountIsLessThanWithdrawn  =>
-        let* α0 : ref str.t := M.read (mk_str "AmountIsLessThanWithdrawn") in
-        M.alloc α0
-      | payment_channel.Error.TransferFailed  =>
-        let* α0 : ref str.t := M.read (mk_str "TransferFailed") in
-        M.alloc α0
-      | payment_channel.Error.NotYetExpired  =>
-        let* α0 : ref str.t := M.read (mk_str "NotYetExpired") in
-        M.alloc α0
-      | payment_channel.Error.InvalidSignature  =>
-        let* α0 : ref str.t := M.read (mk_str "InvalidSignature") in
-        M.alloc α0
-      end in
-    let* α3 : ref str.t := M.read α2 in
-    M.call (core.fmt.Formatter.t::["write_str"] α0 α3).
-  
-  Global Instance AssociatedFunction_fmt :
-    Notations.DoubleColon ltac:(Self) "fmt" := {
-    Notations.double_colon := fmt;
-  }.
-  
-  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
-    core.fmt.Debug.fmt := fmt;
-  }.
-End Impl_core_fmt_Debug_for_payment_channel_Error_t.
-End Impl_core_fmt_Debug_for_payment_channel_Error_t.
 
 Module  Impl_core_marker_StructuralPartialEq_for_payment_channel_Error_t.
 Section Impl_core_marker_StructuralPartialEq_for_payment_channel_Error_t.

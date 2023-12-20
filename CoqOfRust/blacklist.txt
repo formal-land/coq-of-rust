@@ -4,7 +4,6 @@ examples/axiomatized/examples/ink_contracts/custom_environment.v
 examples/axiomatized/examples/ink_contracts/erc1155.v
 examples/axiomatized/examples/ink_contracts/erc721.v
 examples/axiomatized/examples/ink_contracts/mother.v
-examples/axiomatized/examples/ink_contracts/multisig.v
 examples/axiomatized/examples/ink_contracts/payment_channel.v
 examples/axiomatized/examples/ink_contracts/trait_erc20.v
 examples/axiomatized/examples/ink_contracts/trait_flipper.v

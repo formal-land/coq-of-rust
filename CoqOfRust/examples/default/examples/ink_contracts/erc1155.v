@@ -345,47 +345,6 @@ Section Env.
 End Env.
 End Env.
 
-Module  Impl_erc1155_Env_t.
-Section Impl_erc1155_Env_t.
-  Ltac Self := exact erc1155.Env.t.
-  
-  (*
-      fn caller(&self) -> AccountId {
-          self.caller
-      }
-  *)
-  Definition caller (self : ref ltac:(Self)) : M erc1155.AccountId.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
-    let* α0 : ref erc1155.Env.t := M.read self in
-    M.read (deref α0).["caller"].
-  
-  Global Instance AssociatedFunction_caller :
-    Notations.DoubleColon ltac:(Self) "caller" := {
-    Notations.double_colon := caller;
-  }.
-  
-  (*
-      fn emit_event(&self, _event: Event) {
-          unimplemented!()
-      }
-  *)
-  Definition emit_event
-      (self : ref ltac:(Self))
-      (_event : erc1155.Event.t)
-      : M unit :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
-    let* _event : M.Val erc1155.Event.t := M.alloc _event in
-    let* α0 : ref str.t := M.read (mk_str "not implemented") in
-    let* α1 : never.t := M.call (core.panicking.panic α0) in
-    never_to_any α1.
-  
-  Global Instance AssociatedFunction_emit_event :
-    Notations.DoubleColon ltac:(Self) "emit_event" := {
-    Notations.double_colon := emit_event;
-  }.
-End Impl_erc1155_Env_t.
-End Impl_erc1155_Env_t.
-
 Definition ON_ERC_1155_RECEIVED_SELECTOR : array u8.t :=
   M.run
     (M.alloc
@@ -722,6 +681,47 @@ Module Event.
   | ApprovalForAll (_ : erc1155.ApprovalForAll.t)
   | Uri (_ : erc1155.Uri.t).
 End Event.
+
+Module  Impl_erc1155_Env_t.
+Section Impl_erc1155_Env_t.
+  Ltac Self := exact erc1155.Env.t.
+  
+  (*
+      fn caller(&self) -> AccountId {
+          self.caller
+      }
+  *)
+  Definition caller (self : ref ltac:(Self)) : M erc1155.AccountId.t :=
+    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* α0 : ref erc1155.Env.t := M.read self in
+    M.read (deref α0).["caller"].
+  
+  Global Instance AssociatedFunction_caller :
+    Notations.DoubleColon ltac:(Self) "caller" := {
+    Notations.double_colon := caller;
+  }.
+  
+  (*
+      fn emit_event(&self, _event: Event) {
+          unimplemented!()
+      }
+  *)
+  Definition emit_event
+      (self : ref ltac:(Self))
+      (_event : erc1155.Event.t)
+      : M unit :=
+    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* _event : M.Val erc1155.Event.t := M.alloc _event in
+    let* α0 : ref str.t := M.read (mk_str "not implemented") in
+    let* α1 : never.t := M.call (core.panicking.panic α0) in
+    never_to_any α1.
+  
+  Global Instance AssociatedFunction_emit_event :
+    Notations.DoubleColon ltac:(Self) "emit_event" := {
+    Notations.double_colon := emit_event;
+  }.
+End Impl_erc1155_Env_t.
+End Impl_erc1155_Env_t.
 
 Module  Contract.
 Section Contract.

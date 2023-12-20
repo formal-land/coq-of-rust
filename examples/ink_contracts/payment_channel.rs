@@ -1,4 +1,4 @@
-#[derive(Default, Clone, Copy, Eq, PartialEq)]
+#[derive(Default, Clone, Copy, PartialEq, Eq)]
 struct AccountId(u128);
 
 impl std::convert::From<[u8; 32]> for AccountId {
@@ -35,7 +35,7 @@ pub struct PaymentChannel {
 }
 
 /// Errors that can occur upon calling this contract.
-#[derive(Debug, PartialEq, Eq)]
+#[derive(PartialEq, Eq)]
 pub enum Error {
     /// Returned if caller is not the `sender` while required to.
     CallerIsNotSender,

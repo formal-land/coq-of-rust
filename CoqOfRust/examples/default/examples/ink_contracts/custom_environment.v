@@ -93,49 +93,6 @@ Section Env.
 End Env.
 End Env.
 
-Module  Impl_custom_environment_Env_t.
-Section Impl_custom_environment_Env_t.
-  Ltac Self := exact custom_environment.Env.t.
-  
-  (*
-      fn caller(&self) -> AccountId {
-          self.caller
-      }
-  *)
-  Definition caller
-      (self : ref ltac:(Self))
-      : M custom_environment.AccountId.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
-    let* α0 : ref custom_environment.Env.t := M.read self in
-    M.read (deref α0).["caller"].
-  
-  Global Instance AssociatedFunction_caller :
-    Notations.DoubleColon ltac:(Self) "caller" := {
-    Notations.double_colon := caller;
-  }.
-  
-  (*
-      fn emit_event(&self, _event: Event) {
-          unimplemented!()
-      }
-  *)
-  Definition emit_event
-      (self : ref ltac:(Self))
-      (_event : custom_environment.Event.t)
-      : M unit :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
-    let* _event : M.Val custom_environment.Event.t := M.alloc _event in
-    let* α0 : ref str.t := M.read (mk_str "not implemented") in
-    let* α1 : never.t := M.call (core.panicking.panic α0) in
-    never_to_any α1.
-  
-  Global Instance AssociatedFunction_emit_event :
-    Notations.DoubleColon ltac:(Self) "emit_event" := {
-    Notations.double_colon := emit_event;
-  }.
-End Impl_custom_environment_Env_t.
-End Impl_custom_environment_Env_t.
-
 Module  Topics.
 Section Topics.
   Inductive t : Set := Build.
@@ -277,6 +234,49 @@ Module Event.
   Inductive t : Set :=
   | EventWithTopics (_ : custom_environment.EventWithTopics.t).
 End Event.
+
+Module  Impl_custom_environment_Env_t.
+Section Impl_custom_environment_Env_t.
+  Ltac Self := exact custom_environment.Env.t.
+  
+  (*
+      fn caller(&self) -> AccountId {
+          self.caller
+      }
+  *)
+  Definition caller
+      (self : ref ltac:(Self))
+      : M custom_environment.AccountId.t :=
+    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* α0 : ref custom_environment.Env.t := M.read self in
+    M.read (deref α0).["caller"].
+  
+  Global Instance AssociatedFunction_caller :
+    Notations.DoubleColon ltac:(Self) "caller" := {
+    Notations.double_colon := caller;
+  }.
+  
+  (*
+      fn emit_event(&self, _event: Event) {
+          unimplemented!()
+      }
+  *)
+  Definition emit_event
+      (self : ref ltac:(Self))
+      (_event : custom_environment.Event.t)
+      : M unit :=
+    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* _event : M.Val custom_environment.Event.t := M.alloc _event in
+    let* α0 : ref str.t := M.read (mk_str "not implemented") in
+    let* α1 : never.t := M.call (core.panicking.panic α0) in
+    never_to_any α1.
+  
+  Global Instance AssociatedFunction_emit_event :
+    Notations.DoubleColon ltac:(Self) "emit_event" := {
+    Notations.double_colon := emit_event;
+  }.
+End Impl_custom_environment_Env_t.
+End Impl_custom_environment_Env_t.
 
 Module  Impl_custom_environment_Topics_t.
 Section Impl_custom_environment_Topics_t.

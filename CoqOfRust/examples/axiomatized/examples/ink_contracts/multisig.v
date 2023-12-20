@@ -195,30 +195,6 @@ Section Impl_core_marker_Copy_for_multisig_AccountId_t.
 End Impl_core_marker_Copy_for_multisig_AccountId_t.
 End Impl_core_marker_Copy_for_multisig_AccountId_t.
 
-Module  Impl_core_cmp_Ord_for_multisig_AccountId_t.
-Section Impl_core_cmp_Ord_for_multisig_AccountId_t.
-  Ltac Self := exact multisig.AccountId.t.
-  
-  (*
-  Ord
-  *)
-  Parameter cmp :
-      (ref ltac:(Self)) -> (ref multisig.AccountId.t) -> M core.cmp.Ordering.t.
-  
-  Global Instance AssociatedFunction_cmp :
-    Notations.DoubleColon ltac:(Self) "cmp" := {
-    Notations.double_colon := cmp;
-  }.
-  
-  Global Instance ℐ : core.cmp.Ord.Required.Trait ltac:(Self) := {
-    core.cmp.Ord.cmp := cmp;
-    core.cmp.Ord.max := Datatypes.None;
-    core.cmp.Ord.min := Datatypes.None;
-    core.cmp.Ord.clamp := Datatypes.None;
-  }.
-End Impl_core_cmp_Ord_for_multisig_AccountId_t.
-End Impl_core_cmp_Ord_for_multisig_AccountId_t.
-
 Module  Impl_core_marker_StructuralPartialEq_for_multisig_AccountId_t.
 Section Impl_core_marker_StructuralPartialEq_for_multisig_AccountId_t.
   Ltac Self := exact multisig.AccountId.t.
@@ -250,6 +226,89 @@ Section Impl_core_cmp_PartialEq_for_multisig_AccountId_t.
   }.
 End Impl_core_cmp_PartialEq_for_multisig_AccountId_t.
 End Impl_core_cmp_PartialEq_for_multisig_AccountId_t.
+
+Module  Impl_core_marker_StructuralEq_for_multisig_AccountId_t.
+Section Impl_core_marker_StructuralEq_for_multisig_AccountId_t.
+  Ltac Self := exact multisig.AccountId.t.
+  
+  Global Instance ℐ : core.marker.StructuralEq.Trait ltac:(Self) := {
+  }.
+End Impl_core_marker_StructuralEq_for_multisig_AccountId_t.
+End Impl_core_marker_StructuralEq_for_multisig_AccountId_t.
+
+Module  Impl_core_cmp_Eq_for_multisig_AccountId_t.
+Section Impl_core_cmp_Eq_for_multisig_AccountId_t.
+  Ltac Self := exact multisig.AccountId.t.
+  
+  (*
+  Eq
+  *)
+  Parameter assert_receiver_is_total_eq : (ref ltac:(Self)) -> M unit.
+  
+  Global Instance AssociatedFunction_assert_receiver_is_total_eq :
+    Notations.DoubleColon ltac:(Self) "assert_receiver_is_total_eq" := {
+    Notations.double_colon := assert_receiver_is_total_eq;
+  }.
+  
+  Global Instance ℐ : core.cmp.Eq.Required.Trait ltac:(Self) := {
+    core.cmp.Eq.assert_receiver_is_total_eq :=
+      Datatypes.Some assert_receiver_is_total_eq;
+  }.
+End Impl_core_cmp_Eq_for_multisig_AccountId_t.
+End Impl_core_cmp_Eq_for_multisig_AccountId_t.
+
+Module  Impl_core_cmp_PartialOrd_for_multisig_AccountId_t.
+Section Impl_core_cmp_PartialOrd_for_multisig_AccountId_t.
+  Ltac Self := exact multisig.AccountId.t.
+  
+  (*
+  PartialOrd
+  *)
+  Parameter partial_cmp :
+      (ref ltac:(Self)) ->
+        (ref multisig.AccountId.t) ->
+        M (core.option.Option.t core.cmp.Ordering.t).
+  
+  Global Instance AssociatedFunction_partial_cmp :
+    Notations.DoubleColon ltac:(Self) "partial_cmp" := {
+    Notations.double_colon := partial_cmp;
+  }.
+  
+  Global Instance ℐ :
+    core.cmp.PartialOrd.Required.Trait ltac:(Self)
+      (Rhs := core.cmp.PartialOrd.Default.Rhs ltac:(Self)) := {
+    core.cmp.PartialOrd.partial_cmp := partial_cmp;
+    core.cmp.PartialOrd.lt := Datatypes.None;
+    core.cmp.PartialOrd.le := Datatypes.None;
+    core.cmp.PartialOrd.gt := Datatypes.None;
+    core.cmp.PartialOrd.ge := Datatypes.None;
+  }.
+End Impl_core_cmp_PartialOrd_for_multisig_AccountId_t.
+End Impl_core_cmp_PartialOrd_for_multisig_AccountId_t.
+
+Module  Impl_core_cmp_Ord_for_multisig_AccountId_t.
+Section Impl_core_cmp_Ord_for_multisig_AccountId_t.
+  Ltac Self := exact multisig.AccountId.t.
+  
+  (*
+  Ord
+  *)
+  Parameter cmp :
+      (ref ltac:(Self)) -> (ref multisig.AccountId.t) -> M core.cmp.Ordering.t.
+  
+  Global Instance AssociatedFunction_cmp :
+    Notations.DoubleColon ltac:(Self) "cmp" := {
+    Notations.double_colon := cmp;
+  }.
+  
+  Global Instance ℐ : core.cmp.Ord.Required.Trait ltac:(Self) := {
+    core.cmp.Ord.cmp := cmp;
+    core.cmp.Ord.max := Datatypes.None;
+    core.cmp.Ord.min := Datatypes.None;
+    core.cmp.Ord.clamp := Datatypes.None;
+  }.
+End Impl_core_cmp_Ord_for_multisig_AccountId_t.
+End Impl_core_cmp_Ord_for_multisig_AccountId_t.
 
 Module  Impl_core_fmt_Debug_for_multisig_AccountId_t.
 Section Impl_core_fmt_Debug_for_multisig_AccountId_t.
@@ -291,60 +350,6 @@ Section Env.
   }.
 End Env.
 End Env.
-
-Module  Impl_multisig_Env_t.
-Section Impl_multisig_Env_t.
-  Ltac Self := exact multisig.Env.t.
-  
-  (*
-      fn caller(&self) -> AccountId {
-          self.caller
-      }
-  *)
-  Parameter caller : (ref ltac:(Self)) -> M multisig.AccountId.t.
-  
-  Global Instance AssociatedFunction_caller :
-    Notations.DoubleColon ltac:(Self) "caller" := {
-    Notations.double_colon := caller;
-  }.
-  
-  (*
-      fn emit_event(&self, _event: Event) {
-          unimplemented!()
-      }
-  *)
-  Parameter emit_event : (ref ltac:(Self)) -> multisig.Event.t -> M unit.
-  
-  Global Instance AssociatedFunction_emit_event :
-    Notations.DoubleColon ltac:(Self) "emit_event" := {
-    Notations.double_colon := emit_event;
-  }.
-  
-  (*
-      fn transferred_value(&self) -> Balance {
-          unimplemented!()
-      }
-  *)
-  Parameter transferred_value : (ref ltac:(Self)) -> M ltac:(multisig.Balance).
-  
-  Global Instance AssociatedFunction_transferred_value :
-    Notations.DoubleColon ltac:(Self) "transferred_value" := {
-    Notations.double_colon := transferred_value;
-  }.
-  
-  (*
-      fn account_id(&self) -> AccountId {
-          unimplemented!()
-      }
-  *)
-  Parameter account_id : (ref ltac:(Self)) -> M multisig.AccountId.t.
-  
-  Global Instance AssociatedFunction_account_id :
-    Notations.DoubleColon ltac:(Self) "account_id" := {
-    Notations.double_colon := account_id;
-  }.
-End Impl_multisig_Env_t.
-End Impl_multisig_Env_t.
 
 Parameter MAX_OWNERS : u32.t.
 
@@ -487,15 +492,6 @@ Module Error.
   | TransactionFailed.
 End Error.
 
-Module  Impl_core_marker_Copy_for_multisig_Error_t.
-Section Impl_core_marker_Copy_for_multisig_Error_t.
-  Ltac Self := exact multisig.Error.t.
-  
-  Global Instance ℐ : core.marker.Copy.Trait ltac:(Self) := {
-  }.
-End Impl_core_marker_Copy_for_multisig_Error_t.
-End Impl_core_marker_Copy_for_multisig_Error_t.
-
 Module  Impl_core_clone_Clone_for_multisig_Error_t.
 Section Impl_core_clone_Clone_for_multisig_Error_t.
   Ltac Self := exact multisig.Error.t.
@@ -516,6 +512,15 @@ Section Impl_core_clone_Clone_for_multisig_Error_t.
   }.
 End Impl_core_clone_Clone_for_multisig_Error_t.
 End Impl_core_clone_Clone_for_multisig_Error_t.
+
+Module  Impl_core_marker_Copy_for_multisig_Error_t.
+Section Impl_core_marker_Copy_for_multisig_Error_t.
+  Ltac Self := exact multisig.Error.t.
+  
+  Global Instance ℐ : core.marker.Copy.Trait ltac:(Self) := {
+  }.
+End Impl_core_marker_Copy_for_multisig_Error_t.
+End Impl_core_marker_Copy_for_multisig_Error_t.
 
 Module  Impl_core_fmt_Debug_for_multisig_Error_t.
 Section Impl_core_fmt_Debug_for_multisig_Error_t.
@@ -830,6 +835,60 @@ Module Event.
   | OwnerRemoval (_ : multisig.OwnerRemoval.t)
   | RequirementChange (_ : multisig.RequirementChange.t).
 End Event.
+
+Module  Impl_multisig_Env_t.
+Section Impl_multisig_Env_t.
+  Ltac Self := exact multisig.Env.t.
+  
+  (*
+      fn caller(&self) -> AccountId {
+          self.caller
+      }
+  *)
+  Parameter caller : (ref ltac:(Self)) -> M multisig.AccountId.t.
+  
+  Global Instance AssociatedFunction_caller :
+    Notations.DoubleColon ltac:(Self) "caller" := {
+    Notations.double_colon := caller;
+  }.
+  
+  (*
+      fn emit_event(&self, _event: Event) {
+          unimplemented!()
+      }
+  *)
+  Parameter emit_event : (ref ltac:(Self)) -> multisig.Event.t -> M unit.
+  
+  Global Instance AssociatedFunction_emit_event :
+    Notations.DoubleColon ltac:(Self) "emit_event" := {
+    Notations.double_colon := emit_event;
+  }.
+  
+  (*
+      fn transferred_value(&self) -> Balance {
+          unimplemented!()
+      }
+  *)
+  Parameter transferred_value : (ref ltac:(Self)) -> M ltac:(multisig.Balance).
+  
+  Global Instance AssociatedFunction_transferred_value :
+    Notations.DoubleColon ltac:(Self) "transferred_value" := {
+    Notations.double_colon := transferred_value;
+  }.
+  
+  (*
+      fn account_id(&self) -> AccountId {
+          unimplemented!()
+      }
+  *)
+  Parameter account_id : (ref ltac:(Self)) -> M multisig.AccountId.t.
+  
+  Global Instance AssociatedFunction_account_id :
+    Notations.DoubleColon ltac:(Self) "account_id" := {
+    Notations.double_colon := account_id;
+  }.
+End Impl_multisig_Env_t.
+End Impl_multisig_Env_t.
 
 Module  Multisig.
 Section Multisig.

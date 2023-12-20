@@ -164,36 +164,6 @@ Section Env.
 End Env.
 End Env.
 
-Module  Impl_trait_erc20_Env_t.
-Section Impl_trait_erc20_Env_t.
-  Ltac Self := exact trait_erc20.Env.t.
-  
-  (*
-      fn caller(&self) -> AccountId {
-          self.caller
-      }
-  *)
-  Parameter caller : (ref ltac:(Self)) -> M trait_erc20.AccountId.t.
-  
-  Global Instance AssociatedFunction_caller :
-    Notations.DoubleColon ltac:(Self) "caller" := {
-    Notations.double_colon := caller;
-  }.
-  
-  (*
-      fn emit_event(&self, _event: Event) {
-          unimplemented!()
-      }
-  *)
-  Parameter emit_event : (ref ltac:(Self)) -> trait_erc20.Event.t -> M unit.
-  
-  Global Instance AssociatedFunction_emit_event :
-    Notations.DoubleColon ltac:(Self) "emit_event" := {
-    Notations.double_colon := emit_event;
-  }.
-End Impl_trait_erc20_Env_t.
-End Impl_trait_erc20_Env_t.
-
 Module Error.
   Inductive t : Set :=
   | InsufficientBalance
@@ -447,6 +417,36 @@ Module Event.
   | Transfer (_ : trait_erc20.Transfer.t)
   | Approval (_ : trait_erc20.Approval.t).
 End Event.
+
+Module  Impl_trait_erc20_Env_t.
+Section Impl_trait_erc20_Env_t.
+  Ltac Self := exact trait_erc20.Env.t.
+  
+  (*
+      fn caller(&self) -> AccountId {
+          self.caller
+      }
+  *)
+  Parameter caller : (ref ltac:(Self)) -> M trait_erc20.AccountId.t.
+  
+  Global Instance AssociatedFunction_caller :
+    Notations.DoubleColon ltac:(Self) "caller" := {
+    Notations.double_colon := caller;
+  }.
+  
+  (*
+      fn emit_event(&self, _event: Event) {
+          unimplemented!()
+      }
+  *)
+  Parameter emit_event : (ref ltac:(Self)) -> trait_erc20.Event.t -> M unit.
+  
+  Global Instance AssociatedFunction_emit_event :
+    Notations.DoubleColon ltac:(Self) "emit_event" := {
+    Notations.double_colon := emit_event;
+  }.
+End Impl_trait_erc20_Env_t.
+End Impl_trait_erc20_Env_t.
 
 Module  Impl_trait_erc20_Erc20_t.
 Section Impl_trait_erc20_Erc20_t.

@@ -267,36 +267,6 @@ Section Env.
 End Env.
 End Env.
 
-Module  Impl_erc721_Env_t.
-Section Impl_erc721_Env_t.
-  Ltac Self := exact erc721.Env.t.
-  
-  (*
-      fn caller(&self) -> AccountId {
-          self.caller
-      }
-  *)
-  Parameter caller : (ref ltac:(Self)) -> M erc721.AccountId.t.
-  
-  Global Instance AssociatedFunction_caller :
-    Notations.DoubleColon ltac:(Self) "caller" := {
-    Notations.double_colon := caller;
-  }.
-  
-  (*
-      fn emit_event(&self, _event: Event) {
-          unimplemented!()
-      }
-  *)
-  Parameter emit_event : (ref ltac:(Self)) -> erc721.Event.t -> M unit.
-  
-  Global Instance AssociatedFunction_emit_event :
-    Notations.DoubleColon ltac:(Self) "emit_event" := {
-    Notations.double_colon := emit_event;
-  }.
-End Impl_erc721_Env_t.
-End Impl_erc721_Env_t.
-
 Ltac TokenId := exact u32.t.
 
 Module  Erc721.
@@ -468,15 +438,6 @@ Section Impl_core_cmp_Eq_for_erc721_Error_t.
 End Impl_core_cmp_Eq_for_erc721_Error_t.
 End Impl_core_cmp_Eq_for_erc721_Error_t.
 
-Module  Impl_core_marker_Copy_for_erc721_Error_t.
-Section Impl_core_marker_Copy_for_erc721_Error_t.
-  Ltac Self := exact erc721.Error.t.
-  
-  Global Instance ℐ : core.marker.Copy.Trait ltac:(Self) := {
-  }.
-End Impl_core_marker_Copy_for_erc721_Error_t.
-End Impl_core_marker_Copy_for_erc721_Error_t.
-
 Module  Impl_core_clone_Clone_for_erc721_Error_t.
 Section Impl_core_clone_Clone_for_erc721_Error_t.
   Ltac Self := exact erc721.Error.t.
@@ -497,6 +458,15 @@ Section Impl_core_clone_Clone_for_erc721_Error_t.
   }.
 End Impl_core_clone_Clone_for_erc721_Error_t.
 End Impl_core_clone_Clone_for_erc721_Error_t.
+
+Module  Impl_core_marker_Copy_for_erc721_Error_t.
+Section Impl_core_marker_Copy_for_erc721_Error_t.
+  Ltac Self := exact erc721.Error.t.
+  
+  Global Instance ℐ : core.marker.Copy.Trait ltac:(Self) := {
+  }.
+End Impl_core_marker_Copy_for_erc721_Error_t.
+End Impl_core_marker_Copy_for_erc721_Error_t.
 
 Module  Transfer.
 Section Transfer.
@@ -594,6 +564,36 @@ Module Event.
   | Approval (_ : erc721.Approval.t)
   | ApprovalForAll (_ : erc721.ApprovalForAll.t).
 End Event.
+
+Module  Impl_erc721_Env_t.
+Section Impl_erc721_Env_t.
+  Ltac Self := exact erc721.Env.t.
+  
+  (*
+      fn caller(&self) -> AccountId {
+          self.caller
+      }
+  *)
+  Parameter caller : (ref ltac:(Self)) -> M erc721.AccountId.t.
+  
+  Global Instance AssociatedFunction_caller :
+    Notations.DoubleColon ltac:(Self) "caller" := {
+    Notations.double_colon := caller;
+  }.
+  
+  (*
+      fn emit_event(&self, _event: Event) {
+          unimplemented!()
+      }
+  *)
+  Parameter emit_event : (ref ltac:(Self)) -> erc721.Event.t -> M unit.
+  
+  Global Instance AssociatedFunction_emit_event :
+    Notations.DoubleColon ltac:(Self) "emit_event" := {
+    Notations.double_colon := emit_event;
+  }.
+End Impl_erc721_Env_t.
+End Impl_erc721_Env_t.
 
 Module  Impl_erc721_Erc721_t.
 Section Impl_erc721_Erc721_t.

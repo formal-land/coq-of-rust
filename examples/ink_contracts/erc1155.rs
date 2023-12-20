@@ -45,16 +45,6 @@ struct Env {
     caller: AccountId,
 }
 
-impl Env {
-    fn caller(&self) -> AccountId {
-        self.caller
-    }
-
-    fn emit_event(&self, _event: Event) {
-        unimplemented!()
-    }
-}
-
 const ON_ERC_1155_RECEIVED_SELECTOR: [u8; 4] = [0xF2, 0x3A, 0x6E, 0x61];
 
 // This is the return value that we expect if a smart contract supports batch receiving
@@ -246,6 +236,16 @@ enum Event {
     TransferSingle(TransferSingle),
     ApprovalForAll(ApprovalForAll),
     Uri(Uri),
+}
+
+impl Env {
+    fn caller(&self) -> AccountId {
+        self.caller
+    }
+
+    fn emit_event(&self, _event: Event) {
+        unimplemented!()
+    }
 }
 
 /// An ERC-1155 contract.

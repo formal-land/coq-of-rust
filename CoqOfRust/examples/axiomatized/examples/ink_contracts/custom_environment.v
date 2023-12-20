@@ -81,37 +81,6 @@ Section Env.
 End Env.
 End Env.
 
-Module  Impl_custom_environment_Env_t.
-Section Impl_custom_environment_Env_t.
-  Ltac Self := exact custom_environment.Env.t.
-  
-  (*
-      fn caller(&self) -> AccountId {
-          self.caller
-      }
-  *)
-  Parameter caller : (ref ltac:(Self)) -> M custom_environment.AccountId.t.
-  
-  Global Instance AssociatedFunction_caller :
-    Notations.DoubleColon ltac:(Self) "caller" := {
-    Notations.double_colon := caller;
-  }.
-  
-  (*
-      fn emit_event(&self, _event: Event) {
-          unimplemented!()
-      }
-  *)
-  Parameter emit_event :
-      (ref ltac:(Self)) -> custom_environment.Event.t -> M unit.
-  
-  Global Instance AssociatedFunction_emit_event :
-    Notations.DoubleColon ltac:(Self) "emit_event" := {
-    Notations.double_colon := emit_event;
-  }.
-End Impl_custom_environment_Env_t.
-End Impl_custom_environment_Env_t.
-
 Module  Topics.
 Section Topics.
   Inductive t : Set := Build.
@@ -219,6 +188,37 @@ Module Event.
   Inductive t : Set :=
   | EventWithTopics (_ : custom_environment.EventWithTopics.t).
 End Event.
+
+Module  Impl_custom_environment_Env_t.
+Section Impl_custom_environment_Env_t.
+  Ltac Self := exact custom_environment.Env.t.
+  
+  (*
+      fn caller(&self) -> AccountId {
+          self.caller
+      }
+  *)
+  Parameter caller : (ref ltac:(Self)) -> M custom_environment.AccountId.t.
+  
+  Global Instance AssociatedFunction_caller :
+    Notations.DoubleColon ltac:(Self) "caller" := {
+    Notations.double_colon := caller;
+  }.
+  
+  (*
+      fn emit_event(&self, _event: Event) {
+          unimplemented!()
+      }
+  *)
+  Parameter emit_event :
+      (ref ltac:(Self)) -> custom_environment.Event.t -> M unit.
+  
+  Global Instance AssociatedFunction_emit_event :
+    Notations.DoubleColon ltac:(Self) "emit_event" := {
+    Notations.double_colon := emit_event;
+  }.
+End Impl_custom_environment_Env_t.
+End Impl_custom_environment_Env_t.
 
 Module  Impl_custom_environment_Topics_t.
 Section Impl_custom_environment_Topics_t.

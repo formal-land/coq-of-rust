@@ -345,47 +345,6 @@ Section Env.
 End Env.
 End Env.
 
-Module  Impl_erc721_Env_t.
-Section Impl_erc721_Env_t.
-  Ltac Self := exact erc721.Env.t.
-  
-  (*
-      fn caller(&self) -> AccountId {
-          self.caller
-      }
-  *)
-  Definition caller (self : ref ltac:(Self)) : M erc721.AccountId.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
-    let* α0 : ref erc721.Env.t := M.read self in
-    M.read (deref α0).["caller"].
-  
-  Global Instance AssociatedFunction_caller :
-    Notations.DoubleColon ltac:(Self) "caller" := {
-    Notations.double_colon := caller;
-  }.
-  
-  (*
-      fn emit_event(&self, _event: Event) {
-          unimplemented!()
-      }
-  *)
-  Definition emit_event
-      (self : ref ltac:(Self))
-      (_event : erc721.Event.t)
-      : M unit :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
-    let* _event : M.Val erc721.Event.t := M.alloc _event in
-    let* α0 : ref str.t := M.read (mk_str "not implemented") in
-    let* α1 : never.t := M.call (core.panicking.panic α0) in
-    never_to_any α1.
-  
-  Global Instance AssociatedFunction_emit_event :
-    Notations.DoubleColon ltac:(Self) "emit_event" := {
-    Notations.double_colon := emit_event;
-  }.
-End Impl_erc721_Env_t.
-End Impl_erc721_Env_t.
-
 Ltac TokenId := exact u32.t.
 
 Module  Erc721.
@@ -634,15 +593,6 @@ Section Impl_core_cmp_Eq_for_erc721_Error_t.
 End Impl_core_cmp_Eq_for_erc721_Error_t.
 End Impl_core_cmp_Eq_for_erc721_Error_t.
 
-Module  Impl_core_marker_Copy_for_erc721_Error_t.
-Section Impl_core_marker_Copy_for_erc721_Error_t.
-  Ltac Self := exact erc721.Error.t.
-  
-  Global Instance ℐ : core.marker.Copy.Trait ltac:(Self) := {
-  }.
-End Impl_core_marker_Copy_for_erc721_Error_t.
-End Impl_core_marker_Copy_for_erc721_Error_t.
-
 Module  Impl_core_clone_Clone_for_erc721_Error_t.
 Section Impl_core_clone_Clone_for_erc721_Error_t.
   Ltac Self := exact erc721.Error.t.
@@ -666,6 +616,15 @@ Section Impl_core_clone_Clone_for_erc721_Error_t.
   }.
 End Impl_core_clone_Clone_for_erc721_Error_t.
 End Impl_core_clone_Clone_for_erc721_Error_t.
+
+Module  Impl_core_marker_Copy_for_erc721_Error_t.
+Section Impl_core_marker_Copy_for_erc721_Error_t.
+  Ltac Self := exact erc721.Error.t.
+  
+  Global Instance ℐ : core.marker.Copy.Trait ltac:(Self) := {
+  }.
+End Impl_core_marker_Copy_for_erc721_Error_t.
+End Impl_core_marker_Copy_for_erc721_Error_t.
 
 Module  Transfer.
 Section Transfer.
@@ -763,6 +722,47 @@ Module Event.
   | Approval (_ : erc721.Approval.t)
   | ApprovalForAll (_ : erc721.ApprovalForAll.t).
 End Event.
+
+Module  Impl_erc721_Env_t.
+Section Impl_erc721_Env_t.
+  Ltac Self := exact erc721.Env.t.
+  
+  (*
+      fn caller(&self) -> AccountId {
+          self.caller
+      }
+  *)
+  Definition caller (self : ref ltac:(Self)) : M erc721.AccountId.t :=
+    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* α0 : ref erc721.Env.t := M.read self in
+    M.read (deref α0).["caller"].
+  
+  Global Instance AssociatedFunction_caller :
+    Notations.DoubleColon ltac:(Self) "caller" := {
+    Notations.double_colon := caller;
+  }.
+  
+  (*
+      fn emit_event(&self, _event: Event) {
+          unimplemented!()
+      }
+  *)
+  Definition emit_event
+      (self : ref ltac:(Self))
+      (_event : erc721.Event.t)
+      : M unit :=
+    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* _event : M.Val erc721.Event.t := M.alloc _event in
+    let* α0 : ref str.t := M.read (mk_str "not implemented") in
+    let* α1 : never.t := M.call (core.panicking.panic α0) in
+    never_to_any α1.
+  
+  Global Instance AssociatedFunction_emit_event :
+    Notations.DoubleColon ltac:(Self) "emit_event" := {
+    Notations.double_colon := emit_event;
+  }.
+End Impl_erc721_Env_t.
+End Impl_erc721_Env_t.
 
 Module  Impl_erc721_Erc721_t.
 Section Impl_erc721_Erc721_t.

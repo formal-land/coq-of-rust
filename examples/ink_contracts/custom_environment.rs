@@ -7,16 +7,6 @@ struct Env {
     caller: AccountId,
 }
 
-impl Env {
-    fn caller(&self) -> AccountId {
-        self.caller
-    }
-
-    fn emit_event(&self, _event: Event) {
-        unimplemented!()
-    }
-}
-
 /// Trivial contract with a single message that emits an event with many topics.
 #[derive(Default)]
 pub struct Topics;
@@ -34,6 +24,16 @@ pub struct EventWithTopics {
 
 enum Event {
     EventWithTopics(EventWithTopics),
+}
+
+impl Env {
+    fn caller(&self) -> AccountId {
+        self.caller
+    }
+
+    fn emit_event(&self, _event: Event) {
+        unimplemented!()
+    }
 }
 
 impl Topics {
