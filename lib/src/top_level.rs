@@ -362,7 +362,7 @@ fn is_not_empty_trait(predicate: &WherePredicate) -> bool {
 ///   hir environment [hir]
 // @TODO: the argument `tcx` is included in `env` and should thus be removed
 fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<Rc<TopLevelItem>> {
-    let name = to_valid_coq_name(item.ident.name.to_string());
+    let name = to_valid_coq_name(item.ident.name.as_str());
     if env.axiomatize && !env.axiomatize_public {
         let is_public = is_top_level_item_public(tcx, env, item);
         if !is_public {
@@ -555,7 +555,7 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<Rc<To
                         let where_predicates = get_where_predicates(tcx, env, item.generics);
                         let body =
                             compile_trait_item_body(tcx, env, ty_params, where_predicates, item);
-                        (to_valid_coq_name(item.ident.name.to_string()), body)
+                        (to_valid_coq_name(item.ident.name.as_str()), body)
                     })
                     .collect(),
             })]
@@ -585,7 +585,7 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<Rc<To
                         .associated_items(trait_ref.trait_def_id().unwrap())
                         .in_definition_order()
                         .filter(|item| item.defaultness(*tcx).has_value())
-                        .map(|item| to_valid_coq_name(item.name.to_string()))
+                        .map(|item| to_valid_coq_name(item.name.as_str()))
                         .collect();
                     let items: Vec<Rc<TraitImplItem>> = items
                         .iter()
@@ -688,7 +688,7 @@ fn compile_impl_item(
     item: &rustc_hir::ImplItem,
     is_dead_code: bool,
 ) -> Rc<ImplItem> {
-    let name = to_valid_coq_name(item.ident.name.to_string());
+    let name = to_valid_coq_name(item.ident.name.as_str());
     let snippet = Rc::new(Snippet::of_span(env, &item.span));
     let kind = match &item.kind {
         rustc_hir::ImplItemKind::Const(ty, body_id) => {
@@ -831,14 +831,14 @@ fn compile_ty_params<T>(
 fn get_ty_params(env: &Env, generics: &rustc_hir::Generics) -> Vec<(String, Option<Rc<CoqType>>)> {
     compile_ty_params(env, generics, |env, name, default| {
         let default = default.map(|default| compile_type(env, default));
-        let name = to_valid_coq_name(name);
+        let name = to_valid_coq_name(&name);
         (name, default)
     })
 }
 
 /// extracts the names of type parameters from the generics
 fn get_ty_params_names(env: &Env, generics: &rustc_hir::Generics) -> Vec<String> {
-    compile_ty_params(env, generics, |_, name, _| to_valid_coq_name(name))
+    compile_ty_params(env, generics, |_, name, _| to_valid_coq_name(&name))
 }
 
 /// extracts where predicates from the generics
