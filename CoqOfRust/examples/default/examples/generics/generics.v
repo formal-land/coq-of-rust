@@ -52,11 +52,11 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
   let* _s : M.Val generics.Single.t :=
-    M.alloc (generics.Single.Build_t generics.A.Build_t) in
+    M.alloc (generics.Single.Build_t generics.A.Build) in
   let* _char : M.Val (generics.SingleGen.t char.t) :=
     M.alloc (generics.SingleGen.Build_t "a"%char) in
   let* _t : M.Val (generics.SingleGen.t generics.A.t) :=
-    M.alloc (generics.SingleGen.Build_t generics.A.Build_t) in
+    M.alloc (generics.SingleGen.Build_t generics.A.Build) in
   let* _i32 : M.Val (generics.SingleGen.t i32.t) :=
     M.alloc (generics.SingleGen.Build_t (Integer.of_Z 6)) in
   let* _char : M.Val (generics.SingleGen.t char.t) :=

@@ -46,7 +46,7 @@ Module CursorMut.
   Parameter t : Set -> Set -> Set -> Set.
 End CursorMut.
 Definition CursorMut (K V : Set) (A : option Set) := 
-  CursorMut.t K V (defaultType A alloc.Global).
+  CursorMut.t K V (defaultType A alloc.Global.t).
 
 (* 
 pub struct DrainFilter<'a, K, V, F, A = Global>
@@ -62,10 +62,10 @@ Module DrainFilter.
     Set.
 End DrainFilter.
 Definition DrainFilter (K V : Set) (A : option Set)
-  `{alloc.Allocator.Trait (defaultType A alloc.Global)}
-  `{core.clone.Clone.Trait (defaultType A alloc.Global)}
+  `{alloc.Allocator.Trait (defaultType A alloc.Global.t)}
+  `{core.clone.Clone.Trait (defaultType A alloc.Global.t)}
   : Set :=
-  DrainFilter.t K V (defaultType A alloc.Global).
+  DrainFilter.t K V (defaultType A alloc.Global.t).
 
 (* 
 pub struct OccupiedEntry<'a, K, V, A = Global>
@@ -80,10 +80,10 @@ Module OccupiedEntry.
     Set.
 End OccupiedEntry.
 Definition OccupiedEntry (K V : Set) (A : option Set)
-  `{alloc.Allocator.Trait (defaultType A alloc.Global)}
-  `{core.clone.Clone.Trait (defaultType A alloc.Global)}
+  `{alloc.Allocator.Trait (defaultType A alloc.Global.t)}
+  `{core.clone.Clone.Trait (defaultType A alloc.Global.t)}
   : Set :=
-  OccupiedEntry.t K V (defaultType A alloc.Global).
+  OccupiedEntry.t K V (defaultType A alloc.Global.t).
 
 (* 
 pub struct OccupiedError<'a, K, V, A = Global>
@@ -106,10 +106,10 @@ Module OccupiedError.
   }.
 End OccupiedError.
 Definition OccupiedError (K V : Set) (A : option Set)
-  `{alloc.Allocator.Trait (defaultType A alloc.Global)}
-  `{core.clone.Clone.Trait (defaultType A alloc.Global)}
+  `{alloc.Allocator.Trait (defaultType A alloc.Global.t)}
+  `{core.clone.Clone.Trait (defaultType A alloc.Global.t)}
   : Set :=
-  OccupiedError.t K V (defaultType A alloc.Global).
+  OccupiedError.t K V (defaultType A alloc.Global.t).
 
 (* 
 pub struct BTreeMap<K, V, A = Global>
@@ -124,7 +124,7 @@ Module BTreeMap.
     Set.
 
   Module Default.
-    Definition A : Set := alloc.Global.
+    Definition A : Set := alloc.Global.t.
   End Default.
 End BTreeMap.
 Definition BTreeMap (K V A : Set)
@@ -146,10 +146,10 @@ Module IntoIter.
     Set.
 End IntoIter.
 Definition IntoIter (K V : Set) (A : option Set)
-  `{alloc.Allocator.Trait (defaultType A alloc.Global)}
-  `{core.clone.Clone.Trait (defaultType A alloc.Global)}
+  `{alloc.Allocator.Trait (defaultType A alloc.Global.t)}
+  `{core.clone.Clone.Trait (defaultType A alloc.Global.t)}
   : Set :=
-  IntoIter.t K V (defaultType A alloc.Global).
+  IntoIter.t K V (defaultType A alloc.Global.t).
 
 (* 
 pub struct IntoKeys<K, V, A = Global>
@@ -164,10 +164,10 @@ Module IntoKeys.
     Set.
 End IntoKeys.
 Definition IntoKeys (K V : Set) (A : option Set)
-  `{alloc.Allocator.Trait (defaultType A alloc.Global)}
-  `{core.clone.Clone.Trait (defaultType A alloc.Global)}
+  `{alloc.Allocator.Trait (defaultType A alloc.Global.t)}
+  `{core.clone.Clone.Trait (defaultType A alloc.Global.t)}
   : Set :=
-  IntoKeys.t K V (defaultType A alloc.Global).
+  IntoKeys.t K V (defaultType A alloc.Global.t).
 
 (* 
 pub struct IntoValues<K, V, A = Global>
@@ -182,10 +182,10 @@ Module IntoValues.
     Set.
 End IntoValues.
 Definition IntoValues (K V : Set) (A : option Set)
-  `{alloc.Allocator.Trait (defaultType A alloc.Global)}
-  `{core.clone.Clone.Trait (defaultType A alloc.Global)}
+  `{alloc.Allocator.Trait (defaultType A alloc.Global.t)}
+  `{core.clone.Clone.Trait (defaultType A alloc.Global.t)}
   : Set :=
-  IntoValues.t K V (defaultType A alloc.Global).
+  IntoValues.t K V (defaultType A alloc.Global.t).
 
 (* 
 pub struct Iter<'a, K, V>
@@ -254,10 +254,10 @@ Module VacantEntry.
     Set.
 End VacantEntry.
 Definition VacantEntry (K V : Set) (A : option Set)
-  `{alloc.Allocator.Trait (defaultType A alloc.Global)}
-  `{core.clone.Clone.Trait (defaultType A alloc.Global)}
+  `{alloc.Allocator.Trait (defaultType A alloc.Global.t)}
+  `{core.clone.Clone.Trait (defaultType A alloc.Global.t)}
   : Set :=
-  VacantEntry.t K V (defaultType A alloc.Global).
+  VacantEntry.t K V (defaultType A alloc.Global.t).
 
 (* pub struct Values<'a, K, V> { /* private fields */ } *)
 Module Values.
@@ -298,7 +298,7 @@ Module Entry.
   .
 End Entry.
 Definition Entry (K V : Set) (A : option Set)
-  `{alloc.Allocator.Trait (defaultType A alloc.Global)}
-  `{core.clone.Clone.Trait (defaultType A alloc.Global)}
+  `{alloc.Allocator.Trait (defaultType A alloc.Global.t)}
+  `{core.clone.Clone.Trait (defaultType A alloc.Global.t)}
   : Set :=
-  Entry.t K V (defaultType A alloc.Global).
+  Entry.t K V (defaultType A alloc.Global.t).

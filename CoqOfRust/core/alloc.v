@@ -1,8 +1,9 @@
 Require Import CoqOfRust.lib.lib.
 
-Require Import CoqOfRust._std.ptr.
+Require CoqOfRust.alloc.alloc.
+Require CoqOfRust.core.marker.
 Require Import CoqOfRust.core.result_types.
-Require Import CoqOfRust.core.marker.
+Require CoqOfRust._std.ptr.
 
 (* *******STRUCTS******** *)
 (* 
@@ -18,12 +19,7 @@ Module AllocError.
 End AllocError.
 Definition AllocError := AllocError.t.
 
-Module Global.
-  Inductive t : Set := Build.
-End Global.
-Definition Global := Global.t.
-
-Global Instance Clone_for_Global : core.clone.Clone.Trait Global.
+Global Instance Clone_for_Global : core.clone.Clone.Trait alloc.Global.t.
 Admitted.
 
 Module layout.
@@ -57,10 +53,12 @@ pub unsafe trait Allocator {
 Module Allocator.
   Class Trait (Self : Set) : Set := { 
     (* fn allocate(&self, layout: Layout) -> Result<NonNull<[u8]>, AllocError>; *)
-    allocate : ref Self -> layout.Layout -> Result (NonNull (slice u8.t)) AllocError;
+    allocate :
+      ref Self -> layout.Layout ->
+      M (Result.t (ptr.NonNull (slice u8.t)) AllocError);
     
     (* unsafe fn deallocate(&self, ptr: NonNull<u8>, layout: Layout); *)
-    deallocate : ref Self -> NonNull u8.t -> layout.Layout -> unit;
+    deallocate : ref Self -> ptr.NonNull u8.t -> layout.Layout -> unit;
 
     (* 
     fn allocate_zeroed(
@@ -68,7 +66,9 @@ Module Allocator.
         layout: Layout
     ) -> Result<NonNull<[u8]>, AllocError> { ... }
     *)
-    allocate_zeroed : ref Self -> layout.Layout -> Result (NonNull (slice u8.t)) AllocError;
+    allocate_zeroed :
+      ref Self -> layout.Layout ->
+      M (Result.t (ptr.NonNull (slice u8.t)) AllocError);
 
     (* 
     unsafe fn grow(
@@ -78,8 +78,9 @@ Module Allocator.
         new_layout: Layout
     ) -> Result<NonNull<[u8]>, AllocError> { ... }
     *)
-    grow : ref Self -> NonNull u8.t -> layout.Layout -> layout.Layout
-         -> Result (NonNull (slice u8.t)) AllocError;
+    grow :
+      ref Self -> ptr.NonNull u8.t -> layout.Layout -> layout.Layout ->
+      M (Result.t (ptr.NonNull (slice u8.t)) AllocError);
 
     (* 
     unsafe fn grow_zeroed(
@@ -89,8 +90,9 @@ Module Allocator.
         new_layout: Layout
     ) -> Result<NonNull<[u8]>, AllocError> { ... }
     *)
-    grow_zeroed : ref Self -> NonNull u8.t -> layout.Layout -> layout.Layout
-                -> Result (NonNull (slice u8.t)) AllocError;
+    grow_zeroed :
+      ref Self -> ptr.NonNull u8.t -> layout.Layout -> layout.Layout ->
+      M (Result.t (ptr.NonNull (slice u8.t)) AllocError);
 
     (* 
     unsafe fn shrink(
@@ -100,19 +102,19 @@ Module Allocator.
         new_layout: Layout
     ) -> Result<NonNull<[u8]>, AllocError> { ... }
     *)
-    shrink : ref Self -> NonNull u8.t -> layout.Layout -> layout.Layout
-            -> Result (NonNull (slice u8.t)) AllocError;
+    shrink :
+      ref Self -> ptr.NonNull u8.t -> layout.Layout -> layout.Layout ->
+      M (Result.t (ptr.NonNull (slice u8.t)) AllocError);
 
     (*
     fn by_ref(&self) -> &Self
        where Self: Sized { ... }
     *)
-    by_ref 
-    : ref Self -> ref Self;
+    by_ref : ref Self -> M (ref Self);
   }.
 End Allocator.
 
-Global Instance Allocator_for_Global : Allocator.Trait Global.
+Global Instance Allocator_for_Global : Allocator.Trait alloc.Global.t.
 Admitted.
 
 Module global.

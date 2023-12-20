@@ -3,13 +3,13 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module  Sheep.
 Section Sheep.
-  Record t : Set := { }.
+  Inductive t : Set := Build.
 End Sheep.
 End Sheep.
 
 Module  Cow.
 Section Cow.
-  Record t : Set := { }.
+  Inductive t : Set := Build.
 End Cow.
 End Cow.
 
@@ -96,7 +96,7 @@ Definition random_animal
           ((alloc.boxed.Box.t
                 returning_traits_with_dyn.Sheep.t
                 alloc.alloc.Global.t)::["new"]
-            returning_traits_with_dyn.Sheep.Build_t) in
+            returning_traits_with_dyn.Sheep.Build) in
       let* α1 :
           M.Val
             (alloc.boxed.Box.t
@@ -113,7 +113,7 @@ Definition random_animal
           ((alloc.boxed.Box.t
                 returning_traits_with_dyn.Cow.t
                 alloc.alloc.Global.t)::["new"]
-            returning_traits_with_dyn.Cow.Build_t) in
+            returning_traits_with_dyn.Cow.Build) in
       let* α1 :
           M.Val
             (alloc.boxed.Box.t
@@ -144,35 +144,34 @@ Definition main : M unit :=
     M.alloc α1 in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
-      let* α0 : M.Val (array (ref str.t)) :=
-        M.alloc
-          [ mk_str "You've randomly chosen an animal, and it says "; mk_str "
-"
-          ] in
-      let* α1 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α0) in
-      let* α2 : ref (slice (ref str.t)) :=
-        M.read (pointer_coercion "Unsize" α1) in
-      let* α3 : alloc.boxed.Box.t type not implemented alloc.alloc.Global.t :=
+      let* α0 : ref str.t :=
+        M.read (mk_str "You've randomly chosen an animal, and it says ") in
+      let* α1 : ref str.t := M.read (mk_str "
+") in
+      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
+      let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
+      let* α4 : ref (slice (ref str.t)) :=
+        M.read (pointer_coercion "Unsize" α3) in
+      let* α5 : alloc.boxed.Box.t type not implemented alloc.alloc.Global.t :=
         M.read animal in
-      let* α4 : ref str.t :=
+      let* α6 : ref str.t :=
         M.call
           ((returning_traits_with_dyn.Animal.noise
               (Self := type not implemented)
               (Trait := ltac:(refine _)))
-            (borrow (deref α3))) in
-      let* α5 : M.Val (ref str.t) := M.alloc α4 in
-      let* α6 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α5)) in
-      let* α7 : M.Val core.fmt.rt.Argument.t := M.alloc α6 in
-      let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
-      let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-        M.alloc (borrow α8) in
-      let* α10 : ref (slice core.fmt.rt.Argument.t) :=
-        M.read (pointer_coercion "Unsize" α9) in
-      let* α11 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_v1"] α2 α10) in
-      let* α12 : unit := M.call (std.io.stdio._print α11) in
-      M.alloc α12 in
+            (borrow (deref α5))) in
+      let* α7 : M.Val (ref str.t) := M.alloc α6 in
+      let* α8 : core.fmt.rt.Argument.t :=
+        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α7)) in
+      let* α9 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α8 ] in
+      let* α10 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+        M.alloc (borrow α9) in
+      let* α11 : ref (slice core.fmt.rt.Argument.t) :=
+        M.read (pointer_coercion "Unsize" α10) in
+      let* α12 : core.fmt.Arguments.t :=
+        M.call (core.fmt.Arguments.t::["new_v1"] α4 α11) in
+      let* α13 : unit := M.call (std.io.stdio._print α12) in
+      M.alloc α13 in
     M.alloc tt in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.

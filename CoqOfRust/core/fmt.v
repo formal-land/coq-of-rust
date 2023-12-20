@@ -18,7 +18,7 @@ End Alignment.
 
 Parameter Error : Set.
 
-Ltac Result := refine (result.Result unit Error).
+Ltac Result := refine (result.Result.t unit Error).
 
 Module Arguments.
   Parameter t : Set.

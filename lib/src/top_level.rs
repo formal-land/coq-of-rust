@@ -497,6 +497,9 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<Rc<To
 
             match body {
                 VariantData::Struct(fields, _) => {
+                    if fields.is_empty() {
+                        return vec![Rc::new(TopLevelItem::TypeStructUnit { name, ty_params })];
+                    }
                     let fields = fields
                         .iter()
                         .map(|field| (field.ident.name.to_string(), compile_type(env, field.ty)))
@@ -1852,7 +1855,7 @@ impl TopLevelItem {
             .to_doc(),
             TopLevelItem::TypeEnum {
                 name,
-                ty_params: _,
+                ty_params,
                 predicates: _,
                 variants,
             } => group([coq::TopLevelItem::Module(coq::Module::new(
@@ -1872,14 +1875,9 @@ impl TopLevelItem {
                                                 text("Record"),
                                                 line(),
                                                 text("t"),
+                                                text(" :"),
                                                 line(),
-                                                text(":"),
-                                                line(),
-                                                text("Set"),
-                                                line(),
-                                                text(":="),
-                                                line(),
-                                                text("{"),
+                                                text("Set := {"),
                                             ]),
                                             optional_insert_with(
                                                 fields.is_empty(),
@@ -1918,12 +1916,15 @@ impl TopLevelItem {
                         text("Inductive"),
                         line(),
                         text("t"),
+                        concat(ty_params.iter().map(|(name, _)| {
+                            concat([
+                                line(),
+                                nest([text("("), text(name), text(" :"), line(), text("Set)")]),
+                            ])
+                        })),
+                        text(" :"),
                         line(),
-                        text(":"),
-                        line(),
-                        text("Set"),
-                        line(),
-                        text(":="),
+                        text("Set :="),
                     ]),
                     hardline(),
                     intersperse(

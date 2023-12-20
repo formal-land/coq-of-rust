@@ -9,16 +9,16 @@ fn function() {
 Definition function : M unit :=
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
-      let* α0 : M.Val (array (ref str.t)) :=
-        M.alloc [ mk_str "called `function()`
-" ] in
-      let* α1 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α0) in
-      let* α2 : ref (slice (ref str.t)) :=
-        M.read (pointer_coercion "Unsize" α1) in
-      let* α3 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_const"] α2) in
-      let* α4 : unit := M.call (std.io.stdio._print α3) in
-      M.alloc α4 in
+      let* α0 : ref str.t := M.read (mk_str "called `function()`
+") in
+      let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
+      let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
+      let* α3 : ref (slice (ref str.t)) :=
+        M.read (pointer_coercion "Unsize" α2) in
+      let* α4 : core.fmt.Arguments.t :=
+        M.call (core.fmt.Arguments.t::["new_const"] α3) in
+      let* α5 : unit := M.call (std.io.stdio._print α4) in
+      M.alloc α5 in
     M.alloc tt in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.
@@ -32,16 +32,16 @@ Module cool.
   Definition function : M unit :=
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
-        let* α0 : M.Val (array (ref str.t)) :=
-          M.alloc [ mk_str "called `cool::function()`
-" ] in
-        let* α1 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α0) in
-        let* α2 : ref (slice (ref str.t)) :=
-          M.read (pointer_coercion "Unsize" α1) in
-        let* α3 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_const"] α2) in
-        let* α4 : unit := M.call (std.io.stdio._print α3) in
-        M.alloc α4 in
+        let* α0 : ref str.t := M.read (mk_str "called `cool::function()`
+") in
+        let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
+        let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
+        let* α3 : ref (slice (ref str.t)) :=
+          M.read (pointer_coercion "Unsize" α2) in
+        let* α4 : core.fmt.Arguments.t :=
+          M.call (core.fmt.Arguments.t::["new_const"] α3) in
+        let* α5 : unit := M.call (std.io.stdio._print α4) in
+        M.alloc α5 in
       M.alloc tt in
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
@@ -55,16 +55,16 @@ End cool.
 Definition function : M unit :=
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
-      let* α0 : M.Val (array (ref str.t)) :=
-        M.alloc [ mk_str "called `cool::function()`
-" ] in
-      let* α1 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α0) in
-      let* α2 : ref (slice (ref str.t)) :=
-        M.read (pointer_coercion "Unsize" α1) in
-      let* α3 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_const"] α2) in
-      let* α4 : unit := M.call (std.io.stdio._print α3) in
-      M.alloc α4 in
+      let* α0 : ref str.t := M.read (mk_str "called `cool::function()`
+") in
+      let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
+      let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
+      let* α3 : ref (slice (ref str.t)) :=
+        M.read (pointer_coercion "Unsize" α2) in
+      let* α4 : core.fmt.Arguments.t :=
+        M.call (core.fmt.Arguments.t::["new_const"] α3) in
+      let* α5 : unit := M.call (std.io.stdio._print α4) in
+      M.alloc α5 in
     M.alloc tt in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.
@@ -78,16 +78,16 @@ Module my.
   Definition function : M unit :=
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
-        let* α0 : M.Val (array (ref str.t)) :=
-          M.alloc [ mk_str "called `my::function()`
-" ] in
-        let* α1 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α0) in
-        let* α2 : ref (slice (ref str.t)) :=
-          M.read (pointer_coercion "Unsize" α1) in
-        let* α3 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_const"] α2) in
-        let* α4 : unit := M.call (std.io.stdio._print α3) in
-        M.alloc α4 in
+        let* α0 : ref str.t := M.read (mk_str "called `my::function()`
+") in
+        let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
+        let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
+        let* α3 : ref (slice (ref str.t)) :=
+          M.read (pointer_coercion "Unsize" α2) in
+        let* α4 : core.fmt.Arguments.t :=
+          M.call (core.fmt.Arguments.t::["new_const"] α3) in
+        let* α5 : unit := M.call (std.io.stdio._print α4) in
+        M.alloc α5 in
       M.alloc tt in
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
@@ -101,16 +101,17 @@ Module my.
     Definition function : M unit :=
       let* _ : M.Val unit :=
         let* _ : M.Val unit :=
-          let* α0 : M.Val (array (ref str.t)) :=
-            M.alloc [ mk_str "called `my::cool::function()`
-" ] in
-          let* α1 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α0) in
-          let* α2 : ref (slice (ref str.t)) :=
-            M.read (pointer_coercion "Unsize" α1) in
-          let* α3 : core.fmt.Arguments.t :=
-            M.call (core.fmt.Arguments.t::["new_const"] α2) in
-          let* α4 : unit := M.call (std.io.stdio._print α3) in
-          M.alloc α4 in
+          let* α0 : ref str.t :=
+            M.read (mk_str "called `my::cool::function()`
+") in
+          let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
+          let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
+          let* α3 : ref (slice (ref str.t)) :=
+            M.read (pointer_coercion "Unsize" α2) in
+          let* α4 : core.fmt.Arguments.t :=
+            M.call (core.fmt.Arguments.t::["new_const"] α3) in
+          let* α5 : unit := M.call (std.io.stdio._print α4) in
+          M.alloc α5 in
         M.alloc tt in
       let* α0 : M.Val unit := M.alloc tt in
       M.read α0.
@@ -144,16 +145,17 @@ Module my.
   Definition indirect_call : M unit :=
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
-        let* α0 : M.Val (array (ref str.t)) :=
-          M.alloc [ mk_str "called `my::indirect_call()`, that
-> " ] in
-        let* α1 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α0) in
-        let* α2 : ref (slice (ref str.t)) :=
-          M.read (pointer_coercion "Unsize" α1) in
-        let* α3 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_const"] α2) in
-        let* α4 : unit := M.call (std.io.stdio._print α3) in
-        M.alloc α4 in
+        let* α0 : ref str.t :=
+          M.read (mk_str "called `my::indirect_call()`, that
+> ") in
+        let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
+        let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
+        let* α3 : ref (slice (ref str.t)) :=
+          M.read (pointer_coercion "Unsize" α2) in
+        let* α4 : core.fmt.Arguments.t :=
+          M.call (core.fmt.Arguments.t::["new_const"] α3) in
+        let* α5 : unit := M.call (std.io.stdio._print α4) in
+        M.alloc α5 in
       M.alloc tt in
     let* _ : M.Val unit :=
       let* α0 : unit := M.call super_and_self.my.function in
@@ -182,16 +184,16 @@ End my.
 Definition function : M unit :=
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
-      let* α0 : M.Val (array (ref str.t)) :=
-        M.alloc [ mk_str "called `my::function()`
-" ] in
-      let* α1 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α0) in
-      let* α2 : ref (slice (ref str.t)) :=
-        M.read (pointer_coercion "Unsize" α1) in
-      let* α3 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_const"] α2) in
-      let* α4 : unit := M.call (std.io.stdio._print α3) in
-      M.alloc α4 in
+      let* α0 : ref str.t := M.read (mk_str "called `my::function()`
+") in
+      let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
+      let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
+      let* α3 : ref (slice (ref str.t)) :=
+        M.read (pointer_coercion "Unsize" α2) in
+      let* α4 : core.fmt.Arguments.t :=
+        M.call (core.fmt.Arguments.t::["new_const"] α3) in
+      let* α5 : unit := M.call (std.io.stdio._print α4) in
+      M.alloc α5 in
     M.alloc tt in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.
@@ -206,16 +208,17 @@ Module cool.
   Definition function : M unit :=
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
-        let* α0 : M.Val (array (ref str.t)) :=
-          M.alloc [ mk_str "called `my::cool::function()`
-" ] in
-        let* α1 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α0) in
-        let* α2 : ref (slice (ref str.t)) :=
-          M.read (pointer_coercion "Unsize" α1) in
-        let* α3 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_const"] α2) in
-        let* α4 : unit := M.call (std.io.stdio._print α3) in
-        M.alloc α4 in
+        let* α0 : ref str.t :=
+          M.read (mk_str "called `my::cool::function()`
+") in
+        let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
+        let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
+        let* α3 : ref (slice (ref str.t)) :=
+          M.read (pointer_coercion "Unsize" α2) in
+        let* α4 : core.fmt.Arguments.t :=
+          M.call (core.fmt.Arguments.t::["new_const"] α3) in
+        let* α5 : unit := M.call (std.io.stdio._print α4) in
+        M.alloc α5 in
       M.alloc tt in
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
@@ -231,16 +234,16 @@ Import Wrap_cool_1.
 Definition function : M unit :=
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
-      let* α0 : M.Val (array (ref str.t)) :=
-        M.alloc [ mk_str "called `my::cool::function()`
-" ] in
-      let* α1 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α0) in
-      let* α2 : ref (slice (ref str.t)) :=
-        M.read (pointer_coercion "Unsize" α1) in
-      let* α3 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_const"] α2) in
-      let* α4 : unit := M.call (std.io.stdio._print α3) in
-      M.alloc α4 in
+      let* α0 : ref str.t := M.read (mk_str "called `my::cool::function()`
+") in
+      let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
+      let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
+      let* α3 : ref (slice (ref str.t)) :=
+        M.read (pointer_coercion "Unsize" α2) in
+      let* α4 : core.fmt.Arguments.t :=
+        M.call (core.fmt.Arguments.t::["new_const"] α3) in
+      let* α5 : unit := M.call (std.io.stdio._print α4) in
+      M.alloc α5 in
     M.alloc tt in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.
@@ -273,16 +276,17 @@ Definition function : M unit :=
 Definition indirect_call : M unit :=
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
-      let* α0 : M.Val (array (ref str.t)) :=
-        M.alloc [ mk_str "called `my::indirect_call()`, that
-> " ] in
-      let* α1 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α0) in
-      let* α2 : ref (slice (ref str.t)) :=
-        M.read (pointer_coercion "Unsize" α1) in
-      let* α3 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_const"] α2) in
-      let* α4 : unit := M.call (std.io.stdio._print α3) in
-      M.alloc α4 in
+      let* α0 : ref str.t :=
+        M.read (mk_str "called `my::indirect_call()`, that
+> ") in
+      let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
+      let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
+      let* α3 : ref (slice (ref str.t)) :=
+        M.read (pointer_coercion "Unsize" α2) in
+      let* α4 : core.fmt.Arguments.t :=
+        M.call (core.fmt.Arguments.t::["new_const"] α3) in
+      let* α5 : unit := M.call (std.io.stdio._print α4) in
+      M.alloc α5 in
     M.alloc tt in
   let* _ : M.Val unit :=
     let* α0 : unit := M.call super_and_self.my.function in

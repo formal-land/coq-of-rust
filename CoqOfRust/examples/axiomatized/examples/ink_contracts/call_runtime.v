@@ -81,30 +81,8 @@ Section Env.
 End Env.
 End Env.
 
-Module  Impl_call_runtime_Env_t.
-Section Impl_call_runtime_Env_t.
-  Ltac Self := exact call_runtime.Env.t.
-  
-  (*
-      fn call_runtime<Call>(&self, _call: &Call) -> Result<(), EnvError> {
-          unimplemented!()
-      }
-  *)
-  Parameter call_runtime :
-      forall {Call : Set},
-      (ref ltac:(Self)) ->
-        (ref Call) ->
-        M (core.result.Result.t unit call_runtime.EnvError.t).
-  
-  Global Instance AssociatedFunction_call_runtime {Call : Set} :
-    Notations.DoubleColon ltac:(Self) "call_runtime" := {
-    Notations.double_colon := call_runtime (Call := Call);
-  }.
-End Impl_call_runtime_Env_t.
-End Impl_call_runtime_Env_t.
-
 Module MultiAddress.
-  Inductive t : Set :=
+  Inductive t (AccountId : Set) (AccountIndex : Set) : Set :=
   .
 End MultiAddress.
 
@@ -132,11 +110,6 @@ Section Impl_core_convert_From_call_runtime_AccountId_t_for_call_runtime_MultiAd
 End Impl_core_convert_From_call_runtime_AccountId_t_for_call_runtime_MultiAddress_t_call_runtime_AccountId_t_Tuple_.
 End Impl_core_convert_From_call_runtime_AccountId_t_for_call_runtime_MultiAddress_t_call_runtime_AccountId_t_Tuple_.
 
-Module RuntimeCall.
-  Inductive t : Set :=
-  | Balances (_ : call_runtime.BalancesCall.t).
-End RuntimeCall.
-
 Module BalancesCall.
   Module Transfer.
     Unset Primitive Projections.
@@ -150,6 +123,11 @@ Module BalancesCall.
   Inductive t : Set :=
   | Transfer (_ : Transfer.t).
 End BalancesCall.
+
+Module RuntimeCall.
+  Inductive t : Set :=
+  | Balances (_ : call_runtime.BalancesCall.t).
+End RuntimeCall.
 
 Module  RuntimeCaller.
 Section RuntimeCaller.
@@ -270,7 +248,8 @@ End Impl_core_cmp_Eq_for_call_runtime_RuntimeError_t.
 
 Module EnvError.
   Inductive t : Set :=
-  | CallRuntimeFailed.
+  | CallRuntimeFailed
+  | AnotherKindOfError.
 End EnvError.
 
 Module  Impl_core_convert_From_call_runtime_EnvError_t_for_call_runtime_RuntimeError_t.
@@ -298,6 +277,28 @@ Section Impl_core_convert_From_call_runtime_EnvError_t_for_call_runtime_RuntimeE
   }.
 End Impl_core_convert_From_call_runtime_EnvError_t_for_call_runtime_RuntimeError_t.
 End Impl_core_convert_From_call_runtime_EnvError_t_for_call_runtime_RuntimeError_t.
+
+Module  Impl_call_runtime_Env_t.
+Section Impl_call_runtime_Env_t.
+  Ltac Self := exact call_runtime.Env.t.
+  
+  (*
+      fn call_runtime<Call>(&self, _call: &Call) -> Result<(), EnvError> {
+          unimplemented!()
+      }
+  *)
+  Parameter call_runtime :
+      forall {Call : Set},
+      (ref ltac:(Self)) ->
+        (ref Call) ->
+        M (core.result.Result.t unit call_runtime.EnvError.t).
+  
+  Global Instance AssociatedFunction_call_runtime {Call : Set} :
+    Notations.DoubleColon ltac:(Self) "call_runtime" := {
+    Notations.double_colon := call_runtime (Call := Call);
+  }.
+End Impl_call_runtime_Env_t.
+End Impl_call_runtime_Env_t.
 
 Module  Impl_call_runtime_RuntimeCaller_t.
 Section Impl_call_runtime_RuntimeCaller_t.

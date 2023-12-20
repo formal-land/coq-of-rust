@@ -49,5 +49,3 @@ Module Result.
   Arguments Ok {T E} _.
   Arguments Err {T E} _.
 End Result.
-Definition Result (T E : Set) : Set :=
-  M.Val (Result.t T E).

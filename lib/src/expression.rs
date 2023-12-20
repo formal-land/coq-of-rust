@@ -148,9 +148,9 @@ pub(crate) enum ExprKind {
         fields: Vec<Expr>,
         struct_or_variant: StructOrVariant,
     },
-    #[allow(dead_code)]
     StructUnit {
         path: Path,
+        struct_or_variant: StructOrVariant,
     },
     Return(Box<Expr>),
     /// Useful for error messages or annotations
@@ -237,7 +237,10 @@ impl Expr {
                 fields,
                 struct_or_variant: _,
             } => fields.iter().any(Self::has_return),
-            ExprKind::StructUnit { path: _ } => false,
+            ExprKind::StructUnit {
+                path: _,
+                struct_or_variant: _,
+            } => false,
             ExprKind::Return(_) => true,
             ExprKind::Message(_) => false,
         }
@@ -1002,38 +1005,41 @@ impl ExprKind {
                 fields,
                 base,
                 struct_or_variant,
-            } => group([
+            } => paren(
+                with_paren && matches!(struct_or_variant, StructOrVariant::Variant),
                 group([
-                    nest([
-                        match struct_or_variant {
-                            StructOrVariant::Struct => nil(),
-                            StructOrVariant::Variant => concat([path.to_doc(), line()]),
-                        },
-                        text("{|"),
+                    group([
+                        nest([
+                            match struct_or_variant {
+                                StructOrVariant::Struct => nil(),
+                                StructOrVariant::Variant => concat([path.to_doc(), line()]),
+                            },
+                            text("{|"),
+                            line(),
+                            intersperse(
+                                fields.iter().map(|(name, expr)| {
+                                    nest([
+                                        path.to_doc(),
+                                        text("."),
+                                        text(name),
+                                        text(" :="),
+                                        line(),
+                                        expr.to_doc(false),
+                                        text(";"),
+                                    ])
+                                }),
+                                [line()],
+                            ),
+                        ]),
                         line(),
-                        intersperse(
-                            fields.iter().map(|(name, expr)| {
-                                nest([
-                                    path.to_doc(),
-                                    text("."),
-                                    text(name),
-                                    text(" :="),
-                                    line(),
-                                    expr.to_doc(false),
-                                    text(";"),
-                                ])
-                            }),
-                            [line()],
-                        ),
+                        text("|}"),
                     ]),
-                    line(),
-                    text("|}"),
+                    match base {
+                        Some(base) => nest([line(), text("with"), line(), base.to_doc(false)]),
+                        None => nil(),
+                    },
                 ]),
-                match base {
-                    Some(base) => nest([line(), text("with"), line(), base.to_doc(false)]),
-                    None => nil(),
-                },
-            ]),
+            ),
             ExprKind::StructTuple {
                 path,
                 fields,
@@ -1049,7 +1055,16 @@ impl ExprKind {
                     concat(fields.iter().map(|arg| concat([line(), arg.to_doc(true)]))),
                 ]),
             ),
-            ExprKind::StructUnit { path } => concat([path.to_doc(), text(".Build")]),
+            ExprKind::StructUnit {
+                path,
+                struct_or_variant,
+            } => concat([
+                path.to_doc(),
+                match struct_or_variant {
+                    StructOrVariant::Struct => text(".Build"),
+                    StructOrVariant::Variant => nil(),
+                },
+            ]),
             ExprKind::Return(value) => paren(
                 with_paren,
                 nest([text("return_"), line(), value.to_doc(true)]),

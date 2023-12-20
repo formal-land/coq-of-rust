@@ -10,7 +10,7 @@ Parameter decode_input : forall {T : Set}, M (core.result.Result.t T unit).
 
 Module  WildcardSelector.
 Section WildcardSelector.
-  Record t : Set := { }.
+  Inductive t : Set := Build.
 End WildcardSelector.
 End WildcardSelector.
 

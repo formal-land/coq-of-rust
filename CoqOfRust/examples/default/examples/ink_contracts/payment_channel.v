@@ -330,11 +330,11 @@ Section Impl_core_cmp_PartialEq_for_payment_channel_Error_t.
     let* other : M.Val (ref payment_channel.Error.t) := M.alloc other in
     let* __self_tag : M.Val isize.t :=
       let* α0 : ref payment_channel.Error.t := M.read self in
-      let* α1 : isize.t := M.call ("unimplemented parent_kind" α0) in
+      let* α1 : isize.t := M.call (core.intrinsics.discriminant_value α0) in
       M.alloc α1 in
     let* __arg1_tag : M.Val isize.t :=
       let* α0 : ref payment_channel.Error.t := M.read other in
-      let* α1 : isize.t := M.call ("unimplemented parent_kind" α0) in
+      let* α1 : isize.t := M.call (core.intrinsics.discriminant_value α0) in
       M.alloc α1 in
     let* α0 : isize.t := M.read __self_tag in
     let* α1 : isize.t := M.read __arg1_tag in
@@ -1705,10 +1705,7 @@ Section Impl_payment_channel_PaymentChannel_t_2.
             (borrow encodable)
             (borrow_mut message)) in
       M.alloc α0 in
-    let* pub_key : M.Val (array u8.t) :=
-      let* α0 : M.Val u8.t := M.alloc (Integer.of_Z 0) in
-      let* α1 : M.Val (array u8.t) := repeat α0 33 in
-      M.copy α1 in
+    let* pub_key : M.Val (array u8.t) := M.alloc (repeat (Integer.of_Z 0) 33) in
     let* _ : M.Val unit :=
       let* α0 : core.result.Result.t unit payment_channel.Error.t :=
         M.call
@@ -1731,9 +1728,7 @@ Section Impl_payment_channel_PaymentChannel_t_2.
             α1) in
       M.alloc α2 in
     let* signature_account_id : M.Val (array u8.t) :=
-      let* α0 : M.Val u8.t := M.alloc (Integer.of_Z 0) in
-      let* α1 : M.Val (array u8.t) := repeat α0 32 in
-      M.copy α1 in
+      M.alloc (repeat (Integer.of_Z 0) 32) in
     let* _ : M.Val unit :=
       let* α0 : M.Val (ref (array u8.t)) := M.alloc (borrow pub_key) in
       let* α1 : ref (slice u8.t) := M.read (pointer_coercion "Unsize" α0) in

@@ -42,7 +42,7 @@ Definition Error : Set :=
   M.Val Error.t.
 
 Definition Result (T : Set) : Set :=
-  core.result_types.Result T Error.t.
+  core.result_types.Result.t T Error.t.
 
 (* pub struct BorrowedBuf<'data> { /* private fields */ } *)
 Module BorrowedBuf.

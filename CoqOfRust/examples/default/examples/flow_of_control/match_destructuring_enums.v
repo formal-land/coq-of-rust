@@ -46,206 +46,182 @@ Definition main : M unit :=
         (Integer.of_Z 40)) in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
-      let* α0 : M.Val (array (ref str.t)) :=
-        M.alloc [ mk_str "What color is it?
-" ] in
-      let* α1 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α0) in
-      let* α2 : ref (slice (ref str.t)) :=
-        M.read (pointer_coercion "Unsize" α1) in
-      let* α3 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_const"] α2) in
-      let* α4 : unit := M.call (std.io.stdio._print α3) in
-      M.alloc α4 in
+      let* α0 : ref str.t := M.read (mk_str "What color is it?
+") in
+      let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
+      let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
+      let* α3 : ref (slice (ref str.t)) :=
+        M.read (pointer_coercion "Unsize" α2) in
+      let* α4 : core.fmt.Arguments.t :=
+        M.call (core.fmt.Arguments.t::["new_const"] α3) in
+      let* α5 : unit := M.call (std.io.stdio._print α4) in
+      M.alloc α5 in
     M.alloc tt in
   let* α0 : match_destructuring_enums.Color.t := M.read color in
   let* α0 : M.Val unit :=
     match α0 with
     | match_destructuring_enums.Color.Red  =>
       let* _ : M.Val unit :=
-        let* α0 : M.Val (array (ref str.t)) :=
-          M.alloc [ mk_str "The color is Red!
-" ] in
-        let* α1 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α0) in
-        let* α2 : ref (slice (ref str.t)) :=
-          M.read (pointer_coercion "Unsize" α1) in
-        let* α3 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_const"] α2) in
-        let* α4 : unit := M.call (std.io.stdio._print α3) in
-        M.alloc α4 in
+        let* α0 : ref str.t := M.read (mk_str "The color is Red!
+") in
+        let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
+        let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
+        let* α3 : ref (slice (ref str.t)) :=
+          M.read (pointer_coercion "Unsize" α2) in
+        let* α4 : core.fmt.Arguments.t :=
+          M.call (core.fmt.Arguments.t::["new_const"] α3) in
+        let* α5 : unit := M.call (std.io.stdio._print α4) in
+        M.alloc α5 in
       M.alloc tt
     | match_destructuring_enums.Color.Blue  =>
       let* _ : M.Val unit :=
-        let* α0 : M.Val (array (ref str.t)) :=
-          M.alloc [ mk_str "The color is Blue!
-" ] in
-        let* α1 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α0) in
-        let* α2 : ref (slice (ref str.t)) :=
-          M.read (pointer_coercion "Unsize" α1) in
-        let* α3 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_const"] α2) in
-        let* α4 : unit := M.call (std.io.stdio._print α3) in
-        M.alloc α4 in
+        let* α0 : ref str.t := M.read (mk_str "The color is Blue!
+") in
+        let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
+        let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
+        let* α3 : ref (slice (ref str.t)) :=
+          M.read (pointer_coercion "Unsize" α2) in
+        let* α4 : core.fmt.Arguments.t :=
+          M.call (core.fmt.Arguments.t::["new_const"] α3) in
+        let* α5 : unit := M.call (std.io.stdio._print α4) in
+        M.alloc α5 in
       M.alloc tt
     | match_destructuring_enums.Color.Green  =>
       let* _ : M.Val unit :=
-        let* α0 : M.Val (array (ref str.t)) :=
-          M.alloc [ mk_str "The color is Green!
-" ] in
-        let* α1 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α0) in
-        let* α2 : ref (slice (ref str.t)) :=
-          M.read (pointer_coercion "Unsize" α1) in
-        let* α3 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_const"] α2) in
-        let* α4 : unit := M.call (std.io.stdio._print α3) in
-        M.alloc α4 in
+        let* α0 : ref str.t := M.read (mk_str "The color is Green!
+") in
+        let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
+        let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
+        let* α3 : ref (slice (ref str.t)) :=
+          M.read (pointer_coercion "Unsize" α2) in
+        let* α4 : core.fmt.Arguments.t :=
+          M.call (core.fmt.Arguments.t::["new_const"] α3) in
+        let* α5 : unit := M.call (std.io.stdio._print α4) in
+        M.alloc α5 in
       M.alloc tt
     | match_destructuring_enums.Color.RGB r g b =>
       let* b := M.alloc b in
       let* g := M.alloc g in
       let* r := M.alloc r in
       let* _ : M.Val unit :=
-        let* α0 : M.Val (array (ref str.t)) :=
-          M.alloc
-            [
-              mk_str "Red: ";
-              mk_str ", green: ";
-              mk_str ", and blue: ";
-              mk_str "!
-"
-            ] in
-        let* α1 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α0) in
-        let* α2 : ref (slice (ref str.t)) :=
-          M.read (pointer_coercion "Unsize" α1) in
-        let* α3 : core.fmt.rt.Argument.t :=
-          M.call (core.fmt.rt.Argument.t::["new_display"] (borrow r)) in
-        let* α4 : M.Val core.fmt.rt.Argument.t := M.alloc α3 in
-        let* α5 : core.fmt.rt.Argument.t :=
-          M.call (core.fmt.rt.Argument.t::["new_display"] (borrow g)) in
-        let* α6 : M.Val core.fmt.rt.Argument.t := M.alloc α5 in
+        let* α0 : ref str.t := M.read (mk_str "Red: ") in
+        let* α1 : ref str.t := M.read (mk_str ", green: ") in
+        let* α2 : ref str.t := M.read (mk_str ", and blue: ") in
+        let* α3 : ref str.t := M.read (mk_str "!
+") in
+        let* α4 : M.Val (array (ref str.t)) := M.alloc [ α0; α1; α2; α3 ] in
+        let* α5 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α4) in
+        let* α6 : ref (slice (ref str.t)) :=
+          M.read (pointer_coercion "Unsize" α5) in
         let* α7 : core.fmt.rt.Argument.t :=
+          M.call (core.fmt.rt.Argument.t::["new_display"] (borrow r)) in
+        let* α8 : core.fmt.rt.Argument.t :=
+          M.call (core.fmt.rt.Argument.t::["new_display"] (borrow g)) in
+        let* α9 : core.fmt.rt.Argument.t :=
           M.call (core.fmt.rt.Argument.t::["new_display"] (borrow b)) in
-        let* α8 : M.Val core.fmt.rt.Argument.t := M.alloc α7 in
-        let* α9 : M.Val (array core.fmt.rt.Argument.t) :=
-          M.alloc [ α4; α6; α8 ] in
-        let* α10 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-          M.alloc (borrow α9) in
-        let* α11 : ref (slice core.fmt.rt.Argument.t) :=
-          M.read (pointer_coercion "Unsize" α10) in
-        let* α12 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_v1"] α2 α11) in
-        let* α13 : unit := M.call (std.io.stdio._print α12) in
-        M.alloc α13 in
+        let* α10 : M.Val (array core.fmt.rt.Argument.t) :=
+          M.alloc [ α7; α8; α9 ] in
+        let* α11 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+          M.alloc (borrow α10) in
+        let* α12 : ref (slice core.fmt.rt.Argument.t) :=
+          M.read (pointer_coercion "Unsize" α11) in
+        let* α13 : core.fmt.Arguments.t :=
+          M.call (core.fmt.Arguments.t::["new_v1"] α6 α12) in
+        let* α14 : unit := M.call (std.io.stdio._print α13) in
+        M.alloc α14 in
       M.alloc tt
     | match_destructuring_enums.Color.HSV h s v =>
       let* v := M.alloc v in
       let* s := M.alloc s in
       let* h := M.alloc h in
       let* _ : M.Val unit :=
-        let* α0 : M.Val (array (ref str.t)) :=
-          M.alloc
-            [
-              mk_str "Hue: ";
-              mk_str ", saturation: ";
-              mk_str ", value: ";
-              mk_str "!
-"
-            ] in
-        let* α1 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α0) in
-        let* α2 : ref (slice (ref str.t)) :=
-          M.read (pointer_coercion "Unsize" α1) in
-        let* α3 : core.fmt.rt.Argument.t :=
-          M.call (core.fmt.rt.Argument.t::["new_display"] (borrow h)) in
-        let* α4 : M.Val core.fmt.rt.Argument.t := M.alloc α3 in
-        let* α5 : core.fmt.rt.Argument.t :=
-          M.call (core.fmt.rt.Argument.t::["new_display"] (borrow s)) in
-        let* α6 : M.Val core.fmt.rt.Argument.t := M.alloc α5 in
+        let* α0 : ref str.t := M.read (mk_str "Hue: ") in
+        let* α1 : ref str.t := M.read (mk_str ", saturation: ") in
+        let* α2 : ref str.t := M.read (mk_str ", value: ") in
+        let* α3 : ref str.t := M.read (mk_str "!
+") in
+        let* α4 : M.Val (array (ref str.t)) := M.alloc [ α0; α1; α2; α3 ] in
+        let* α5 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α4) in
+        let* α6 : ref (slice (ref str.t)) :=
+          M.read (pointer_coercion "Unsize" α5) in
         let* α7 : core.fmt.rt.Argument.t :=
+          M.call (core.fmt.rt.Argument.t::["new_display"] (borrow h)) in
+        let* α8 : core.fmt.rt.Argument.t :=
+          M.call (core.fmt.rt.Argument.t::["new_display"] (borrow s)) in
+        let* α9 : core.fmt.rt.Argument.t :=
           M.call (core.fmt.rt.Argument.t::["new_display"] (borrow v)) in
-        let* α8 : M.Val core.fmt.rt.Argument.t := M.alloc α7 in
-        let* α9 : M.Val (array core.fmt.rt.Argument.t) :=
-          M.alloc [ α4; α6; α8 ] in
-        let* α10 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-          M.alloc (borrow α9) in
-        let* α11 : ref (slice core.fmt.rt.Argument.t) :=
-          M.read (pointer_coercion "Unsize" α10) in
-        let* α12 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_v1"] α2 α11) in
-        let* α13 : unit := M.call (std.io.stdio._print α12) in
-        M.alloc α13 in
+        let* α10 : M.Val (array core.fmt.rt.Argument.t) :=
+          M.alloc [ α7; α8; α9 ] in
+        let* α11 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+          M.alloc (borrow α10) in
+        let* α12 : ref (slice core.fmt.rt.Argument.t) :=
+          M.read (pointer_coercion "Unsize" α11) in
+        let* α13 : core.fmt.Arguments.t :=
+          M.call (core.fmt.Arguments.t::["new_v1"] α6 α12) in
+        let* α14 : unit := M.call (std.io.stdio._print α13) in
+        M.alloc α14 in
       M.alloc tt
     | match_destructuring_enums.Color.HSL h s l =>
       let* l := M.alloc l in
       let* s := M.alloc s in
       let* h := M.alloc h in
       let* _ : M.Val unit :=
-        let* α0 : M.Val (array (ref str.t)) :=
-          M.alloc
-            [
-              mk_str "Hue: ";
-              mk_str ", saturation: ";
-              mk_str ", lightness: ";
-              mk_str "!
-"
-            ] in
-        let* α1 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α0) in
-        let* α2 : ref (slice (ref str.t)) :=
-          M.read (pointer_coercion "Unsize" α1) in
-        let* α3 : core.fmt.rt.Argument.t :=
-          M.call (core.fmt.rt.Argument.t::["new_display"] (borrow h)) in
-        let* α4 : M.Val core.fmt.rt.Argument.t := M.alloc α3 in
-        let* α5 : core.fmt.rt.Argument.t :=
-          M.call (core.fmt.rt.Argument.t::["new_display"] (borrow s)) in
-        let* α6 : M.Val core.fmt.rt.Argument.t := M.alloc α5 in
+        let* α0 : ref str.t := M.read (mk_str "Hue: ") in
+        let* α1 : ref str.t := M.read (mk_str ", saturation: ") in
+        let* α2 : ref str.t := M.read (mk_str ", lightness: ") in
+        let* α3 : ref str.t := M.read (mk_str "!
+") in
+        let* α4 : M.Val (array (ref str.t)) := M.alloc [ α0; α1; α2; α3 ] in
+        let* α5 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α4) in
+        let* α6 : ref (slice (ref str.t)) :=
+          M.read (pointer_coercion "Unsize" α5) in
         let* α7 : core.fmt.rt.Argument.t :=
+          M.call (core.fmt.rt.Argument.t::["new_display"] (borrow h)) in
+        let* α8 : core.fmt.rt.Argument.t :=
+          M.call (core.fmt.rt.Argument.t::["new_display"] (borrow s)) in
+        let* α9 : core.fmt.rt.Argument.t :=
           M.call (core.fmt.rt.Argument.t::["new_display"] (borrow l)) in
-        let* α8 : M.Val core.fmt.rt.Argument.t := M.alloc α7 in
-        let* α9 : M.Val (array core.fmt.rt.Argument.t) :=
-          M.alloc [ α4; α6; α8 ] in
-        let* α10 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-          M.alloc (borrow α9) in
-        let* α11 : ref (slice core.fmt.rt.Argument.t) :=
-          M.read (pointer_coercion "Unsize" α10) in
-        let* α12 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_v1"] α2 α11) in
-        let* α13 : unit := M.call (std.io.stdio._print α12) in
-        M.alloc α13 in
+        let* α10 : M.Val (array core.fmt.rt.Argument.t) :=
+          M.alloc [ α7; α8; α9 ] in
+        let* α11 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+          M.alloc (borrow α10) in
+        let* α12 : ref (slice core.fmt.rt.Argument.t) :=
+          M.read (pointer_coercion "Unsize" α11) in
+        let* α13 : core.fmt.Arguments.t :=
+          M.call (core.fmt.Arguments.t::["new_v1"] α6 α12) in
+        let* α14 : unit := M.call (std.io.stdio._print α13) in
+        M.alloc α14 in
       M.alloc tt
     | match_destructuring_enums.Color.CMY c m y =>
       let* y := M.alloc y in
       let* m := M.alloc m in
       let* c := M.alloc c in
       let* _ : M.Val unit :=
-        let* α0 : M.Val (array (ref str.t)) :=
-          M.alloc
-            [
-              mk_str "Cyan: ";
-              mk_str ", magenta: ";
-              mk_str ", yellow: ";
-              mk_str "!
-"
-            ] in
-        let* α1 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α0) in
-        let* α2 : ref (slice (ref str.t)) :=
-          M.read (pointer_coercion "Unsize" α1) in
-        let* α3 : core.fmt.rt.Argument.t :=
-          M.call (core.fmt.rt.Argument.t::["new_display"] (borrow c)) in
-        let* α4 : M.Val core.fmt.rt.Argument.t := M.alloc α3 in
-        let* α5 : core.fmt.rt.Argument.t :=
-          M.call (core.fmt.rt.Argument.t::["new_display"] (borrow m)) in
-        let* α6 : M.Val core.fmt.rt.Argument.t := M.alloc α5 in
+        let* α0 : ref str.t := M.read (mk_str "Cyan: ") in
+        let* α1 : ref str.t := M.read (mk_str ", magenta: ") in
+        let* α2 : ref str.t := M.read (mk_str ", yellow: ") in
+        let* α3 : ref str.t := M.read (mk_str "!
+") in
+        let* α4 : M.Val (array (ref str.t)) := M.alloc [ α0; α1; α2; α3 ] in
+        let* α5 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α4) in
+        let* α6 : ref (slice (ref str.t)) :=
+          M.read (pointer_coercion "Unsize" α5) in
         let* α7 : core.fmt.rt.Argument.t :=
+          M.call (core.fmt.rt.Argument.t::["new_display"] (borrow c)) in
+        let* α8 : core.fmt.rt.Argument.t :=
+          M.call (core.fmt.rt.Argument.t::["new_display"] (borrow m)) in
+        let* α9 : core.fmt.rt.Argument.t :=
           M.call (core.fmt.rt.Argument.t::["new_display"] (borrow y)) in
-        let* α8 : M.Val core.fmt.rt.Argument.t := M.alloc α7 in
-        let* α9 : M.Val (array core.fmt.rt.Argument.t) :=
-          M.alloc [ α4; α6; α8 ] in
-        let* α10 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-          M.alloc (borrow α9) in
-        let* α11 : ref (slice core.fmt.rt.Argument.t) :=
-          M.read (pointer_coercion "Unsize" α10) in
-        let* α12 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_v1"] α2 α11) in
-        let* α13 : unit := M.call (std.io.stdio._print α12) in
-        M.alloc α13 in
+        let* α10 : M.Val (array core.fmt.rt.Argument.t) :=
+          M.alloc [ α7; α8; α9 ] in
+        let* α11 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+          M.alloc (borrow α10) in
+        let* α12 : ref (slice core.fmt.rt.Argument.t) :=
+          M.read (pointer_coercion "Unsize" α11) in
+        let* α13 : core.fmt.Arguments.t :=
+          M.call (core.fmt.Arguments.t::["new_v1"] α6 α12) in
+        let* α14 : unit := M.call (std.io.stdio._print α13) in
+        M.alloc α14 in
       M.alloc tt
     | match_destructuring_enums.Color.CMYK c m y k =>
       let* k := M.alloc k in
@@ -253,41 +229,34 @@ Definition main : M unit :=
       let* m := M.alloc m in
       let* c := M.alloc c in
       let* _ : M.Val unit :=
-        let* α0 : M.Val (array (ref str.t)) :=
-          M.alloc
-            [
-              mk_str "Cyan: ";
-              mk_str ", magenta: ";
-              mk_str ", yellow: ";
-              mk_str ", key (black): ";
-              mk_str "!
-"
-            ] in
-        let* α1 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α0) in
-        let* α2 : ref (slice (ref str.t)) :=
-          M.read (pointer_coercion "Unsize" α1) in
-        let* α3 : core.fmt.rt.Argument.t :=
+        let* α0 : ref str.t := M.read (mk_str "Cyan: ") in
+        let* α1 : ref str.t := M.read (mk_str ", magenta: ") in
+        let* α2 : ref str.t := M.read (mk_str ", yellow: ") in
+        let* α3 : ref str.t := M.read (mk_str ", key (black): ") in
+        let* α4 : ref str.t := M.read (mk_str "!
+") in
+        let* α5 : M.Val (array (ref str.t)) := M.alloc [ α0; α1; α2; α3; α4 ] in
+        let* α6 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α5) in
+        let* α7 : ref (slice (ref str.t)) :=
+          M.read (pointer_coercion "Unsize" α6) in
+        let* α8 : core.fmt.rt.Argument.t :=
           M.call (core.fmt.rt.Argument.t::["new_display"] (borrow c)) in
-        let* α4 : M.Val core.fmt.rt.Argument.t := M.alloc α3 in
-        let* α5 : core.fmt.rt.Argument.t :=
-          M.call (core.fmt.rt.Argument.t::["new_display"] (borrow m)) in
-        let* α6 : M.Val core.fmt.rt.Argument.t := M.alloc α5 in
-        let* α7 : core.fmt.rt.Argument.t :=
-          M.call (core.fmt.rt.Argument.t::["new_display"] (borrow y)) in
-        let* α8 : M.Val core.fmt.rt.Argument.t := M.alloc α7 in
         let* α9 : core.fmt.rt.Argument.t :=
+          M.call (core.fmt.rt.Argument.t::["new_display"] (borrow m)) in
+        let* α10 : core.fmt.rt.Argument.t :=
+          M.call (core.fmt.rt.Argument.t::["new_display"] (borrow y)) in
+        let* α11 : core.fmt.rt.Argument.t :=
           M.call (core.fmt.rt.Argument.t::["new_display"] (borrow k)) in
-        let* α10 : M.Val core.fmt.rt.Argument.t := M.alloc α9 in
-        let* α11 : M.Val (array core.fmt.rt.Argument.t) :=
-          M.alloc [ α4; α6; α8; α10 ] in
-        let* α12 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-          M.alloc (borrow α11) in
-        let* α13 : ref (slice core.fmt.rt.Argument.t) :=
-          M.read (pointer_coercion "Unsize" α12) in
-        let* α14 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_v1"] α2 α13) in
-        let* α15 : unit := M.call (std.io.stdio._print α14) in
-        M.alloc α15 in
+        let* α12 : M.Val (array core.fmt.rt.Argument.t) :=
+          M.alloc [ α8; α9; α10; α11 ] in
+        let* α13 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+          M.alloc (borrow α12) in
+        let* α14 : ref (slice core.fmt.rt.Argument.t) :=
+          M.read (pointer_coercion "Unsize" α13) in
+        let* α15 : core.fmt.Arguments.t :=
+          M.call (core.fmt.Arguments.t::["new_v1"] α7 α14) in
+        let* α16 : unit := M.call (std.io.stdio._print α15) in
+        M.alloc α16 in
       M.alloc tt
     end in
   M.read α0.

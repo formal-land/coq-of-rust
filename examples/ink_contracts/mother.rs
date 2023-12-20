@@ -14,7 +14,7 @@ impl<K, V> Mapping<K, V> {
     }
 }
 
-#[derive(Default, Clone, Copy, Eq, PartialEq, Debug)]
+#[derive(Default, Clone, Copy, PartialEq, Eq)]
 struct AccountId(u128);
 
 type Balance = u128;
@@ -27,24 +27,14 @@ struct Env {
     caller: AccountId,
 }
 
-impl Env {
-    fn caller(&self) -> AccountId {
-        self.caller
-    }
-
-    fn emit_event(&self, _event: Event) {
-        unimplemented!()
-    }
-}
-
 /// Struct for storing winning bids per bidding sample (a block).
 /// Vector index corresponds to sample number.
 /// Wrapping vector, just added for testing UI components.
-#[derive(Default, PartialEq, Eq, Debug, Clone)]
+#[derive(Default, PartialEq, Eq, Clone)]
 pub struct Bids(Vec<Vec<Option<(AccountId, Balance)>>>);
 
 /// Auction outline.
-#[derive(PartialEq, Eq, Debug, Clone)]
+#[derive(PartialEq, Eq, Clone)]
 pub enum Outline {
     NoWinner,
     WinnerDetected,
@@ -54,7 +44,7 @@ pub enum Outline {
 /// Auction statuses.
 /// Logic inspired by
 /// [Parachain Auction](https://github.com/paritytech/polkadot/blob/master/runtime/common/src/traits.rs#L160)
-#[derive(PartialEq, Eq, Debug, Clone)]
+#[derive(PartialEq, Eq, Clone)]
 pub enum Status {
     /// An auction has not started yet.
     NotStarted,
@@ -74,7 +64,7 @@ pub enum Status {
 }
 
 /// Struct for storing auction data.
-#[derive(Debug, PartialEq, Eq, Clone)]
+#[derive(PartialEq, Eq, Clone)]
 pub struct Auction {
     /// Branded name of the auction event.
     name: String,
@@ -109,7 +99,7 @@ impl Default for Auction {
 }
 
 /// Way to fail a contract execution.
-#[derive(Debug, Eq, PartialEq)]
+#[derive(PartialEq, Eq)]
 pub enum Failure {
     Revert(String),
     Panic,
@@ -122,6 +112,16 @@ pub struct AuctionEchoed {
 
 enum Event {
     AuctionEchoed(AuctionEchoed),
+}
+
+impl Env {
+    fn caller(&self) -> AccountId {
+        self.caller
+    }
+
+    fn emit_event(&self, _event: Event) {
+        unimplemented!()
+    }
 }
 
 /// Storage of the contract.

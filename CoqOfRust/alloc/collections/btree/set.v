@@ -15,7 +15,7 @@ Module BTreeSet.
     Set.
 
   Module Default.
-    Definition A : Set := alloc.Global.
+    Definition A : Set := alloc.Global.t.
   End Default.
 End BTreeSet.
 Definition BTreeSet (K A : Set)

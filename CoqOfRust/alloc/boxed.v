@@ -1,6 +1,6 @@
 Require Import CoqOfRust.lib.lib.
 
-Require Import CoqOfRust.core.alloc.
+Require Import CoqOfRust.alloc.alloc.
 
 (* ********STRUCTS******** *)
 (* 
@@ -16,7 +16,7 @@ Module Box.
   Definition t (T A : Set) : Set := T.
 
   Module Default.
-    Definition A : Set := core.alloc.Global.
+    Definition A : Set := alloc.Global.t.
   End Default.
 End Box.
 Definition Box (T : Set) (*(A : option Set)
@@ -25,9 +25,9 @@ Definition Box (T : Set) (*(A : option Set)
 
 Parameter new :
   forall {T : Set},
-  T -> M (Box T core.alloc.Global).
+  T -> M (Box T alloc.Global.t).
 
 Global Instance Method_Box_new {T : Set} :
-  Notations.DoubleColon (Box T core.alloc.Global) "new" := {
+  Notations.DoubleColon (Box T alloc.Global.t) "new" := {
   Notations.double_colon (x : T) := new x;
 }.

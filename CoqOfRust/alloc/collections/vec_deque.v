@@ -9,7 +9,7 @@ Module VecDeque.
     Set.
 
   Module Default.
-    Definition A : Set := alloc.Global.
+    Definition A : Set := alloc.Global.t.
   End Default.
 End VecDeque.
 Definition VecDeque (T A : Set)

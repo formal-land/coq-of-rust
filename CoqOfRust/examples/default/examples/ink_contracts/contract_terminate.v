@@ -136,7 +136,7 @@ End Impl_contract_terminate_Env_t.
 
 Module  JustTerminate.
 Section JustTerminate.
-  Record t : Set := { }.
+  Inductive t : Set := Build.
 End JustTerminate.
 End JustTerminate.
 
@@ -179,7 +179,7 @@ Section Impl_contract_terminate_JustTerminate_t.
       }
   *)
   Definition new : M ltac:(Self) :=
-    M.pure contract_terminate.JustTerminate.Build_t.
+    M.pure contract_terminate.JustTerminate.Build.
   
   Global Instance AssociatedFunction_new :
     Notations.DoubleColon ltac:(Self) "new" := {

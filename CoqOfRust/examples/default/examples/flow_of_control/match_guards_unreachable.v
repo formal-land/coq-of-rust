@@ -22,29 +22,30 @@ Definition main : M unit :=
     | i =>
       let* i := M.alloc i in
       let* _ : M.Val unit :=
-        let* α0 : M.Val (array (ref str.t)) := M.alloc [ mk_str "Zero
-" ] in
-        let* α1 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α0) in
-        let* α2 : ref (slice (ref str.t)) :=
-          M.read (pointer_coercion "Unsize" α1) in
-        let* α3 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_const"] α2) in
-        let* α4 : unit := M.call (std.io.stdio._print α3) in
-        M.alloc α4 in
+        let* α0 : ref str.t := M.read (mk_str "Zero
+") in
+        let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
+        let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
+        let* α3 : ref (slice (ref str.t)) :=
+          M.read (pointer_coercion "Unsize" α2) in
+        let* α4 : core.fmt.Arguments.t :=
+          M.call (core.fmt.Arguments.t::["new_const"] α3) in
+        let* α5 : unit := M.call (std.io.stdio._print α4) in
+        M.alloc α5 in
       M.alloc tt
     | i =>
       let* i := M.alloc i in
       let* _ : M.Val unit :=
-        let* α0 : M.Val (array (ref str.t)) :=
-          M.alloc [ mk_str "Greater than zero
-" ] in
-        let* α1 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α0) in
-        let* α2 : ref (slice (ref str.t)) :=
-          M.read (pointer_coercion "Unsize" α1) in
-        let* α3 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_const"] α2) in
-        let* α4 : unit := M.call (std.io.stdio._print α3) in
-        M.alloc α4 in
+        let* α0 : ref str.t := M.read (mk_str "Greater than zero
+") in
+        let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
+        let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
+        let* α3 : ref (slice (ref str.t)) :=
+          M.read (pointer_coercion "Unsize" α2) in
+        let* α4 : core.fmt.Arguments.t :=
+          M.call (core.fmt.Arguments.t::["new_const"] α3) in
+        let* α5 : unit := M.call (std.io.stdio._print α4) in
+        M.alloc α5 in
       M.alloc tt
     | _ =>
       let* α0 : never.t :=

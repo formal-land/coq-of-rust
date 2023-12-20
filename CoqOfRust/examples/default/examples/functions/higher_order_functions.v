@@ -48,18 +48,18 @@ fn main() {
 Definition main : M unit :=
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
-      let* α0 : M.Val (array (ref str.t)) :=
-        M.alloc
-          [ mk_str "Find the sum of all the squared odd numbers under 1000
-"
-          ] in
-      let* α1 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α0) in
-      let* α2 : ref (slice (ref str.t)) :=
-        M.read (pointer_coercion "Unsize" α1) in
-      let* α3 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_const"] α2) in
-      let* α4 : unit := M.call (std.io.stdio._print α3) in
-      M.alloc α4 in
+      let* α0 : ref str.t :=
+        M.read
+          (mk_str "Find the sum of all the squared odd numbers under 1000
+") in
+      let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
+      let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
+      let* α3 : ref (slice (ref str.t)) :=
+        M.read (pointer_coercion "Unsize" α2) in
+      let* α4 : core.fmt.Arguments.t :=
+        M.call (core.fmt.Arguments.t::["new_const"] α3) in
+      let* α5 : unit := M.call (std.io.stdio._print α4) in
+      M.alloc α5 in
     M.alloc tt in
   let* upper : M.Val u32.t := M.alloc (Integer.of_Z 1000) in
   let* acc : M.Val u32.t := M.alloc (Integer.of_Z 0) in
@@ -119,24 +119,24 @@ Definition main : M unit :=
     M.alloc (use α2) in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
-      let* α0 : M.Val (array (ref str.t)) :=
-        M.alloc [ mk_str "imperative style: "; mk_str "
-" ] in
-      let* α1 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α0) in
-      let* α2 : ref (slice (ref str.t)) :=
-        M.read (pointer_coercion "Unsize" α1) in
-      let* α3 : core.fmt.rt.Argument.t :=
+      let* α0 : ref str.t := M.read (mk_str "imperative style: ") in
+      let* α1 : ref str.t := M.read (mk_str "
+") in
+      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
+      let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
+      let* α4 : ref (slice (ref str.t)) :=
+        M.read (pointer_coercion "Unsize" α3) in
+      let* α5 : core.fmt.rt.Argument.t :=
         M.call (core.fmt.rt.Argument.t::["new_display"] (borrow acc)) in
-      let* α4 : M.Val core.fmt.rt.Argument.t := M.alloc α3 in
-      let* α5 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4 ] in
-      let* α6 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-        M.alloc (borrow α5) in
-      let* α7 : ref (slice core.fmt.rt.Argument.t) :=
-        M.read (pointer_coercion "Unsize" α6) in
-      let* α8 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_v1"] α2 α7) in
-      let* α9 : unit := M.call (std.io.stdio._print α8) in
-      M.alloc α9 in
+      let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
+      let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+        M.alloc (borrow α6) in
+      let* α8 : ref (slice core.fmt.rt.Argument.t) :=
+        M.read (pointer_coercion "Unsize" α7) in
+      let* α9 : core.fmt.Arguments.t :=
+        M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
+      let* α10 : unit := M.call (std.io.stdio._print α9) in
+      M.alloc α10 in
     M.alloc tt in
   let* sum_of_squared_odd_numbers : M.Val u32.t :=
     let* α0 : type not implemented :=
@@ -215,26 +215,26 @@ Definition main : M unit :=
     M.alloc α6 in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
-      let* α0 : M.Val (array (ref str.t)) :=
-        M.alloc [ mk_str "functional style: "; mk_str "
-" ] in
-      let* α1 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α0) in
-      let* α2 : ref (slice (ref str.t)) :=
-        M.read (pointer_coercion "Unsize" α1) in
-      let* α3 : core.fmt.rt.Argument.t :=
+      let* α0 : ref str.t := M.read (mk_str "functional style: ") in
+      let* α1 : ref str.t := M.read (mk_str "
+") in
+      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
+      let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
+      let* α4 : ref (slice (ref str.t)) :=
+        M.read (pointer_coercion "Unsize" α3) in
+      let* α5 : core.fmt.rt.Argument.t :=
         M.call
           (core.fmt.rt.Argument.t::["new_display"]
             (borrow sum_of_squared_odd_numbers)) in
-      let* α4 : M.Val core.fmt.rt.Argument.t := M.alloc α3 in
-      let* α5 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4 ] in
-      let* α6 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-        M.alloc (borrow α5) in
-      let* α7 : ref (slice core.fmt.rt.Argument.t) :=
-        M.read (pointer_coercion "Unsize" α6) in
-      let* α8 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_v1"] α2 α7) in
-      let* α9 : unit := M.call (std.io.stdio._print α8) in
-      M.alloc α9 in
+      let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
+      let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+        M.alloc (borrow α6) in
+      let* α8 : ref (slice core.fmt.rt.Argument.t) :=
+        M.read (pointer_coercion "Unsize" α7) in
+      let* α9 : core.fmt.Arguments.t :=
+        M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
+      let* α10 : unit := M.call (std.io.stdio._print α9) in
+      M.alloc α10 in
     M.alloc tt in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.

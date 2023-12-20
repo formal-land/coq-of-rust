@@ -18,18 +18,16 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
   let* some_vector : M.Val (alloc.vec.Vec.t u32.t alloc.alloc.Global.t) :=
-    let* α0 : M.Val u32.t := M.alloc (Integer.of_Z 1) in
-    let* α1 : M.Val u32.t := M.alloc (Integer.of_Z 2) in
-    let* α2 : M.Val u32.t := M.alloc (Integer.of_Z 3) in
-    let* α3 : M.Val u32.t := M.alloc (Integer.of_Z 4) in
-    let* α4 : M.Val (array u32.t) := M.alloc [ α0; α1; α2; α3 ] in
-    let* α5 : M.Val (alloc.boxed.Box.t (array u32.t) alloc.alloc.Global.t) :=
-      M.call ((alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α4) in
-    let* α6 : alloc.boxed.Box.t (slice u32.t) alloc.alloc.Global.t :=
-      M.read (pointer_coercion "Unsize" α5) in
-    let* α7 : alloc.vec.Vec.t u32.t alloc.alloc.Global.t :=
-      M.call ((slice u32.t)::["into_vec"] α6) in
-    M.alloc α7 in
+    let* α0 : M.Val (array u32.t) :=
+      M.alloc
+        [ Integer.of_Z 1; Integer.of_Z 2; Integer.of_Z 3; Integer.of_Z 4 ] in
+    let* α1 : M.Val (alloc.boxed.Box.t (array u32.t) alloc.alloc.Global.t) :=
+      M.call ((alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α0) in
+    let* α2 : alloc.boxed.Box.t (slice u32.t) alloc.alloc.Global.t :=
+      M.read (pointer_coercion "Unsize" α1) in
+    let* α3 : alloc.vec.Vec.t u32.t alloc.alloc.Global.t :=
+      M.call ((slice u32.t)::["into_vec"] α2) in
+    M.alloc α3 in
   let* pointer : M.Val (ref u32.t) :=
     let* α0 : ref u32.t :=
       M.call

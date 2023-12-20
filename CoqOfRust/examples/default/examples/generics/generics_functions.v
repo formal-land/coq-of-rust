@@ -84,13 +84,13 @@ Definition main : M unit :=
     let* α0 : unit :=
       M.call
         (generics_functions.reg_fn
-          (generics_functions.S.Build_t generics_functions.A.Build_t)) in
+          (generics_functions.S.Build_t generics_functions.A.Build)) in
     M.alloc α0 in
   let* _ : M.Val unit :=
     let* α0 : unit :=
       M.call
         (generics_functions.gen_spec_t
-          (generics_functions.SGen.Build_t generics_functions.A.Build_t)) in
+          (generics_functions.SGen.Build_t generics_functions.A.Build)) in
     M.alloc α0 in
   let* _ : M.Val unit :=
     let* α0 : unit :=

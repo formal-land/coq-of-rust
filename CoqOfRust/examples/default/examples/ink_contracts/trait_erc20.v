@@ -313,11 +313,11 @@ Section Impl_core_cmp_PartialEq_for_trait_erc20_Error_t.
     let* other : M.Val (ref trait_erc20.Error.t) := M.alloc other in
     let* __self_tag : M.Val isize.t :=
       let* α0 : ref trait_erc20.Error.t := M.read self in
-      let* α1 : isize.t := M.call ("unimplemented parent_kind" α0) in
+      let* α1 : isize.t := M.call (core.intrinsics.discriminant_value α0) in
       M.alloc α1 in
     let* __arg1_tag : M.Val isize.t :=
       let* α0 : ref trait_erc20.Error.t := M.read other in
-      let* α1 : isize.t := M.call ("unimplemented parent_kind" α0) in
+      let* α1 : isize.t := M.call (core.intrinsics.discriminant_value α0) in
       M.alloc α1 in
     let* α0 : isize.t := M.read __self_tag in
     let* α1 : isize.t := M.read __arg1_tag in

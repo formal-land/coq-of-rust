@@ -29,27 +29,27 @@ Section Impl_core_ops_drop_Drop_for_drop_Droppable_t.
     let* self : M.Val (mut_ref ltac:(Self)) := M.alloc self in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
-        let* α0 : M.Val (array (ref str.t)) :=
-          M.alloc [ mk_str "> Dropping "; mk_str "
-" ] in
-        let* α1 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α0) in
-        let* α2 : ref (slice (ref str.t)) :=
-          M.read (pointer_coercion "Unsize" α1) in
-        let* α3 : mut_ref drop.Droppable.t := M.read self in
-        let* α4 : core.fmt.rt.Argument.t :=
+        let* α0 : ref str.t := M.read (mk_str "> Dropping ") in
+        let* α1 : ref str.t := M.read (mk_str "
+") in
+        let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
+        let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
+        let* α4 : ref (slice (ref str.t)) :=
+          M.read (pointer_coercion "Unsize" α3) in
+        let* α5 : mut_ref drop.Droppable.t := M.read self in
+        let* α6 : core.fmt.rt.Argument.t :=
           M.call
             (core.fmt.rt.Argument.t::["new_display"]
-              (borrow (deref α3).["name"])) in
-        let* α5 : M.Val core.fmt.rt.Argument.t := M.alloc α4 in
-        let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
-        let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-          M.alloc (borrow α6) in
-        let* α8 : ref (slice core.fmt.rt.Argument.t) :=
-          M.read (pointer_coercion "Unsize" α7) in
-        let* α9 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_v1"] α2 α8) in
-        let* α10 : unit := M.call (std.io.stdio._print α9) in
-        M.alloc α10 in
+              (borrow (deref α5).["name"])) in
+        let* α7 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α6 ] in
+        let* α8 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+          M.alloc (borrow α7) in
+        let* α9 : ref (slice core.fmt.rt.Argument.t) :=
+          M.read (pointer_coercion "Unsize" α8) in
+        let* α10 : core.fmt.Arguments.t :=
+          M.call (core.fmt.Arguments.t::["new_v1"] α4 α9) in
+        let* α11 : unit := M.call (std.io.stdio._print α10) in
+        M.alloc α11 in
       M.alloc tt in
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
@@ -114,57 +114,57 @@ Definition main : M unit :=
         M.alloc {| drop.Droppable.name := α0; |} in
       let* _ : M.Val unit :=
         let* _ : M.Val unit :=
-          let* α0 : M.Val (array (ref str.t)) :=
-            M.alloc [ mk_str "Exiting block B
-" ] in
-          let* α1 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α0) in
-          let* α2 : ref (slice (ref str.t)) :=
-            M.read (pointer_coercion "Unsize" α1) in
-          let* α3 : core.fmt.Arguments.t :=
-            M.call (core.fmt.Arguments.t::["new_const"] α2) in
-          let* α4 : unit := M.call (std.io.stdio._print α3) in
-          M.alloc α4 in
+          let* α0 : ref str.t := M.read (mk_str "Exiting block B
+") in
+          let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
+          let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
+          let* α3 : ref (slice (ref str.t)) :=
+            M.read (pointer_coercion "Unsize" α2) in
+          let* α4 : core.fmt.Arguments.t :=
+            M.call (core.fmt.Arguments.t::["new_const"] α3) in
+          let* α5 : unit := M.call (std.io.stdio._print α4) in
+          M.alloc α5 in
         M.alloc tt in
       M.alloc tt in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
-        let* α0 : M.Val (array (ref str.t)) :=
-          M.alloc [ mk_str "Just exited block B
-" ] in
-        let* α1 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α0) in
-        let* α2 : ref (slice (ref str.t)) :=
-          M.read (pointer_coercion "Unsize" α1) in
-        let* α3 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_const"] α2) in
-        let* α4 : unit := M.call (std.io.stdio._print α3) in
-        M.alloc α4 in
+        let* α0 : ref str.t := M.read (mk_str "Just exited block B
+") in
+        let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
+        let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
+        let* α3 : ref (slice (ref str.t)) :=
+          M.read (pointer_coercion "Unsize" α2) in
+        let* α4 : core.fmt.Arguments.t :=
+          M.call (core.fmt.Arguments.t::["new_const"] α3) in
+        let* α5 : unit := M.call (std.io.stdio._print α4) in
+        M.alloc α5 in
       M.alloc tt in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
-        let* α0 : M.Val (array (ref str.t)) :=
-          M.alloc [ mk_str "Exiting block A
-" ] in
-        let* α1 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α0) in
-        let* α2 : ref (slice (ref str.t)) :=
-          M.read (pointer_coercion "Unsize" α1) in
-        let* α3 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_const"] α2) in
-        let* α4 : unit := M.call (std.io.stdio._print α3) in
-        M.alloc α4 in
+        let* α0 : ref str.t := M.read (mk_str "Exiting block A
+") in
+        let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
+        let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
+        let* α3 : ref (slice (ref str.t)) :=
+          M.read (pointer_coercion "Unsize" α2) in
+        let* α4 : core.fmt.Arguments.t :=
+          M.call (core.fmt.Arguments.t::["new_const"] α3) in
+        let* α5 : unit := M.call (std.io.stdio._print α4) in
+        M.alloc α5 in
       M.alloc tt in
     M.alloc tt in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
-      let* α0 : M.Val (array (ref str.t)) :=
-        M.alloc [ mk_str "Just exited block A
-" ] in
-      let* α1 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α0) in
-      let* α2 : ref (slice (ref str.t)) :=
-        M.read (pointer_coercion "Unsize" α1) in
-      let* α3 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_const"] α2) in
-      let* α4 : unit := M.call (std.io.stdio._print α3) in
-      M.alloc α4 in
+      let* α0 : ref str.t := M.read (mk_str "Just exited block A
+") in
+      let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
+      let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
+      let* α3 : ref (slice (ref str.t)) :=
+        M.read (pointer_coercion "Unsize" α2) in
+      let* α4 : core.fmt.Arguments.t :=
+        M.call (core.fmt.Arguments.t::["new_const"] α3) in
+      let* α5 : unit := M.call (std.io.stdio._print α4) in
+      M.alloc α5 in
     M.alloc tt in
   let* _ : M.Val unit :=
     let* α0 : drop.Droppable.t := M.read _a in
@@ -172,16 +172,16 @@ Definition main : M unit :=
     M.alloc α1 in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
-      let* α0 : M.Val (array (ref str.t)) :=
-        M.alloc [ mk_str "end of the main function
-" ] in
-      let* α1 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α0) in
-      let* α2 : ref (slice (ref str.t)) :=
-        M.read (pointer_coercion "Unsize" α1) in
-      let* α3 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_const"] α2) in
-      let* α4 : unit := M.call (std.io.stdio._print α3) in
-      M.alloc α4 in
+      let* α0 : ref str.t := M.read (mk_str "end of the main function
+") in
+      let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
+      let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
+      let* α3 : ref (slice (ref str.t)) :=
+        M.read (pointer_coercion "Unsize" α2) in
+      let* α4 : core.fmt.Arguments.t :=
+        M.call (core.fmt.Arguments.t::["new_const"] α3) in
+      let* α5 : unit := M.call (std.io.stdio._print α4) in
+      M.alloc α5 in
     M.alloc tt in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.

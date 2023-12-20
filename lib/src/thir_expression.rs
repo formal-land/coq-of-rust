@@ -218,7 +218,7 @@ fn compile_expr_kind<'a>(
             }
         }
         thir::ExprKind::Call { fun, args, .. } => {
-            let func = Box::new(compile_expr(env, thir, fun));
+            let func = Box::new(compile_expr(env, thir, fun).read());
             let args = args
                 .iter()
                 .map(|arg| compile_expr(env, thir, arg).read())
@@ -497,7 +497,7 @@ fn compile_expr_kind<'a>(
                 ty: None,
             });
             let args = vec![
-                compile_expr(env, thir, value),
+                compile_expr(env, thir, value).read(),
                 Expr {
                     kind: ExprKind::LocalVar(count.to_string()),
                     ty: None,
@@ -506,14 +506,15 @@ fn compile_expr_kind<'a>(
             ExprKind::Call {
                 func,
                 args,
-                purity: Purity::Effectful,
+                purity: Purity::Pure,
                 from_user: false,
             }
+            .alloc(Some(ty))
         }
         thir::ExprKind::Array { fields } => ExprKind::Array {
             elements: fields
                 .iter()
-                .map(|field| compile_expr(env, thir, field))
+                .map(|field| compile_expr(env, thir, field).read())
                 .collect(),
         }
         .alloc(Some(ty)),
@@ -546,14 +547,22 @@ fn compile_expr_kind<'a>(
                     )
                 })
                 .collect();
-            let is_a_tuple = fields
-                .iter()
-                .all(|(name, _)| name.starts_with(|c: char| c.is_ascii_digit()));
+            let is_a_tuple = !fields.is_empty()
+                && fields
+                    .iter()
+                    .all(|(name, _)| name.starts_with(|c: char| c.is_ascii_digit()));
             let struct_or_variant = if adt_def.is_enum() {
                 StructOrVariant::Variant
             } else {
                 StructOrVariant::Struct
             };
+            if fields.is_empty() {
+                return ExprKind::StructUnit {
+                    path,
+                    struct_or_variant,
+                }
+                .alloc(Some(ty));
+            }
             if is_a_tuple {
                 let fields = fields.into_iter().map(|(_, pattern)| pattern).collect();
                 ExprKind::StructTuple {
@@ -622,12 +631,16 @@ fn compile_expr_kind<'a>(
                         let self_ty = crate::thir_ty::compile_type(env, &self_ty);
                         ExprKind::VarWithSelfTy { path, self_ty }
                     }
-                    DefKind::Mod => ExprKind::Var(compile_def_id(env, *def_id)),
+                    DefKind::Mod | DefKind::ForeignMod => {
+                        ExprKind::Var(compile_def_id(env, *def_id))
+                    }
                     _ => {
                         println!("unimplemented parent_kind: {:#?}", parent_kind);
+                        println!("expression: {:#?}", expr);
                         ExprKind::Message("unimplemented parent_kind".to_string())
                     }
                 }
+                .alloc(Some(ty))
             }
             _ => {
                 let error_message = "Expected a function name";

@@ -95,67 +95,6 @@ Section Env.
 End Env.
 End Env.
 
-Module  Impl_conditional_compilation_Env_t.
-Section Impl_conditional_compilation_Env_t.
-  Ltac Self := exact conditional_compilation.Env.t.
-  
-  (*
-      fn caller(&self) -> AccountId {
-          self.caller
-      }
-  *)
-  Definition caller
-      (self : ref ltac:(Self))
-      : M conditional_compilation.AccountId.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
-    let* α0 : ref conditional_compilation.Env.t := M.read self in
-    M.read (deref α0).["caller"].
-  
-  Global Instance AssociatedFunction_caller :
-    Notations.DoubleColon ltac:(Self) "caller" := {
-    Notations.double_colon := caller;
-  }.
-  
-  (*
-      fn emit_event(&self, _event: Event) {
-          unimplemented!()
-      }
-  *)
-  Definition emit_event
-      (self : ref ltac:(Self))
-      (_event : conditional_compilation.Event.t)
-      : M unit :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
-    let* _event : M.Val conditional_compilation.Event.t := M.alloc _event in
-    let* α0 : ref str.t := M.read (mk_str "not implemented") in
-    let* α1 : never.t := M.call (core.panicking.panic α0) in
-    never_to_any α1.
-  
-  Global Instance AssociatedFunction_emit_event :
-    Notations.DoubleColon ltac:(Self) "emit_event" := {
-    Notations.double_colon := emit_event;
-  }.
-  
-  (*
-      fn block_number(&self) -> BlockNumber {
-          unimplemented!()
-      }
-  *)
-  Definition block_number
-      (self : ref ltac:(Self))
-      : M ltac:(conditional_compilation.BlockNumber) :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
-    let* α0 : ref str.t := M.read (mk_str "not implemented") in
-    let* α1 : never.t := M.call (core.panicking.panic α0) in
-    never_to_any α1.
-  
-  Global Instance AssociatedFunction_block_number :
-    Notations.DoubleColon ltac:(Self) "block_number" := {
-    Notations.double_colon := block_number;
-  }.
-End Impl_conditional_compilation_Env_t.
-End Impl_conditional_compilation_Env_t.
-
 Module  Flip.
 Section Flip.
   Class Trait (Self : Set) : Type := {
@@ -225,6 +164,67 @@ Module Event.
   | Changes (_ : conditional_compilation.Changes.t)
   | ChangesDated (_ : conditional_compilation.ChangesDated.t).
 End Event.
+
+Module  Impl_conditional_compilation_Env_t.
+Section Impl_conditional_compilation_Env_t.
+  Ltac Self := exact conditional_compilation.Env.t.
+  
+  (*
+      fn caller(&self) -> AccountId {
+          self.caller
+      }
+  *)
+  Definition caller
+      (self : ref ltac:(Self))
+      : M conditional_compilation.AccountId.t :=
+    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* α0 : ref conditional_compilation.Env.t := M.read self in
+    M.read (deref α0).["caller"].
+  
+  Global Instance AssociatedFunction_caller :
+    Notations.DoubleColon ltac:(Self) "caller" := {
+    Notations.double_colon := caller;
+  }.
+  
+  (*
+      fn emit_event(&self, _event: Event) {
+          unimplemented!()
+      }
+  *)
+  Definition emit_event
+      (self : ref ltac:(Self))
+      (_event : conditional_compilation.Event.t)
+      : M unit :=
+    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* _event : M.Val conditional_compilation.Event.t := M.alloc _event in
+    let* α0 : ref str.t := M.read (mk_str "not implemented") in
+    let* α1 : never.t := M.call (core.panicking.panic α0) in
+    never_to_any α1.
+  
+  Global Instance AssociatedFunction_emit_event :
+    Notations.DoubleColon ltac:(Self) "emit_event" := {
+    Notations.double_colon := emit_event;
+  }.
+  
+  (*
+      fn block_number(&self) -> BlockNumber {
+          unimplemented!()
+      }
+  *)
+  Definition block_number
+      (self : ref ltac:(Self))
+      : M ltac:(conditional_compilation.BlockNumber) :=
+    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* α0 : ref str.t := M.read (mk_str "not implemented") in
+    let* α1 : never.t := M.call (core.panicking.panic α0) in
+    never_to_any α1.
+  
+  Global Instance AssociatedFunction_block_number :
+    Notations.DoubleColon ltac:(Self) "block_number" := {
+    Notations.double_colon := block_number;
+  }.
+End Impl_conditional_compilation_Env_t.
+End Impl_conditional_compilation_Env_t.
 
 Module  ConditionalCompilation.
 Section ConditionalCompilation.

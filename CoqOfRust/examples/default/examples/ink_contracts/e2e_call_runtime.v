@@ -117,7 +117,7 @@ End Impl_e2e_call_runtime_Env_t.
 
 Module  Contract.
 Section Contract.
-  Record t : Set := { }.
+  Inductive t : Set := Build.
 End Contract.
 End Contract.
 
@@ -129,7 +129,7 @@ Section Impl_core_default_Default_for_e2e_call_runtime_Contract_t.
   Default
   *)
   Definition default : M e2e_call_runtime.Contract.t :=
-    M.pure e2e_call_runtime.Contract.Build_t.
+    M.pure e2e_call_runtime.Contract.Build.
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon ltac:(Self) "default" := {
@@ -180,7 +180,7 @@ Section Impl_e2e_call_runtime_Contract_t.
           Self {}
       }
   *)
-  Definition new : M ltac:(Self) := M.pure e2e_call_runtime.Contract.Build_t.
+  Definition new : M ltac:(Self) := M.pure e2e_call_runtime.Contract.Build.
   
   Global Instance AssociatedFunction_new :
     Notations.DoubleColon ltac:(Self) "new" := {

@@ -142,7 +142,7 @@ End Impl_contract_transfer_Env_t.
 
 Module  GiveMe.
 Section GiveMe.
-  Record t : Set := { }.
+  Inductive t : Set := Build.
 End GiveMe.
 End GiveMe.
 

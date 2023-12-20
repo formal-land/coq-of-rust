@@ -144,6 +144,7 @@ Require CoqOfRust.core.convert.
 Require CoqOfRust.core.default.
 Require CoqOfRust.core.fmt.
 Require CoqOfRust.core.hash.
+Require CoqOfRust.core.intrinsics.
 Require CoqOfRust.core.iter.
 Require CoqOfRust.core.marker.
 Require CoqOfRust.core.mem.
@@ -168,6 +169,7 @@ Module core.
   Export CoqOfRust.core.default.
   Export CoqOfRust.core.fmt.
   Export CoqOfRust.core.hash.
+  Export CoqOfRust.core.intrinsics.
   Export CoqOfRust.core.iter.
   Export CoqOfRust.core.marker.
   Export CoqOfRust.core.mem.
@@ -202,6 +204,7 @@ Require CoqOfRust._std.io.
 Require Import CoqOfRust._std.ops.
 (* Require Import CoqOfRust._std.os. *)
 Require Import CoqOfRust._std.panic.
+Require Import CoqOfRust._std.panicking.
 Require Import CoqOfRust._std.path.
 Require Import CoqOfRust._std.pin.
 Require Import CoqOfRust._std.prelude.
@@ -215,7 +218,6 @@ Require Import CoqOfRust._std.sync.
 Require Import CoqOfRust._std.task.
 Require Import CoqOfRust._std.thread.
 Require Import CoqOfRust._std.time.
-
 
 Module std.
   Module arch := _std.arch.
@@ -239,6 +241,7 @@ Module std.
   Module ops := _std.ops.
   (* Module os := _std.os. *)
   Module panic := _std.panic.
+  Module panicking := _std.panicking.
   Module path := _std.path.
   Module pin := _std.pin.
   Module prelude := _std.prelude.
@@ -583,12 +586,12 @@ Module Impl_Debug_for_Result.
     Context `{core.fmt.Debug.Trait E}.
 
     Parameter fmt :
-      ref (core.result.Result T E) ->
+      ref (core.result.Result.t T E) ->
       mut_ref core.fmt.Formatter.t ->
       M ltac:(core.fmt.Result).
 
     Global Instance I :
-        core.fmt.Debug.Trait (core.result.Result T E) := {
+        core.fmt.Debug.Trait (core.result.Result.t T E) := {
       fmt := fmt;
     }.
   End Impl_Debug_for_Result.

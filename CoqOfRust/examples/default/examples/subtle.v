@@ -2781,20 +2781,20 @@ Section Impl_subtle_CtOption_t_T.
             let* α0 : core.panicking.AssertKind.t := M.read kind in
             let* α1 : ref u8.t := M.read left_val in
             let* α2 : ref u8.t := M.read right_val in
-            let* α3 : M.Val (array (ref str.t)) := M.alloc [ mk_str "" ] in
-            let* α4 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α3) in
-            let* α5 : ref (slice (ref str.t)) :=
-              M.read (pointer_coercion "Unsize" α4) in
-            let* α6 : core.fmt.rt.Argument.t :=
+            let* α3 : ref str.t := M.read (mk_str "") in
+            let* α4 : M.Val (array (ref str.t)) := M.alloc [ α3 ] in
+            let* α5 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α4) in
+            let* α6 : ref (slice (ref str.t)) :=
+              M.read (pointer_coercion "Unsize" α5) in
+            let* α7 : core.fmt.rt.Argument.t :=
               M.call (core.fmt.rt.Argument.t::["new_display"] (borrow msg)) in
-            let* α7 : M.Val core.fmt.rt.Argument.t := M.alloc α6 in
             let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
             let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
               M.alloc (borrow α8) in
             let* α10 : ref (slice core.fmt.rt.Argument.t) :=
               M.read (pointer_coercion "Unsize" α9) in
             let* α11 : core.fmt.Arguments.t :=
-              M.call (core.fmt.Arguments.t::["new_v1"] α5 α10) in
+              M.call (core.fmt.Arguments.t::["new_v1"] α6 α10) in
             let* α12 : never.t :=
               M.call
                 (core.panicking.assert_failed

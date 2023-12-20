@@ -48,23 +48,21 @@ Definition main : M unit :=
         (std.collections.hash.set.HashSet.t
           i32.t
           std.collections.hash.map.RandomState.t) :=
-    let* α0 : M.Val i32.t := M.alloc (Integer.of_Z 1) in
-    let* α1 : M.Val i32.t := M.alloc (Integer.of_Z 2) in
-    let* α2 : M.Val i32.t := M.alloc (Integer.of_Z 3) in
-    let* α3 : M.Val (array i32.t) := M.alloc [ α0; α1; α2 ] in
-    let* α4 : M.Val (alloc.boxed.Box.t (array i32.t) alloc.alloc.Global.t) :=
-      M.call ((alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α3) in
-    let* α5 : alloc.boxed.Box.t (slice i32.t) alloc.alloc.Global.t :=
-      M.read (pointer_coercion "Unsize" α4) in
-    let* α6 : alloc.vec.Vec.t i32.t alloc.alloc.Global.t :=
-      M.call ((slice i32.t)::["into_vec"] α5) in
-    let* α7 : alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t :=
+    let* α0 : M.Val (array i32.t) :=
+      M.alloc [ Integer.of_Z 1; Integer.of_Z 2; Integer.of_Z 3 ] in
+    let* α1 : M.Val (alloc.boxed.Box.t (array i32.t) alloc.alloc.Global.t) :=
+      M.call ((alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α0) in
+    let* α2 : alloc.boxed.Box.t (slice i32.t) alloc.alloc.Global.t :=
+      M.read (pointer_coercion "Unsize" α1) in
+    let* α3 : alloc.vec.Vec.t i32.t alloc.alloc.Global.t :=
+      M.call ((slice i32.t)::["into_vec"] α2) in
+    let* α4 : alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t :=
       M.call
         ((core.iter.traits.collect.IntoIterator.into_iter
             (Self := alloc.vec.Vec.t i32.t alloc.alloc.Global.t)
             (Trait := ltac:(refine _)))
-          α6) in
-    let* α8 :
+          α3) in
+    let* α5 :
         std.collections.hash.set.HashSet.t
           i32.t
           std.collections.hash.map.RandomState.t :=
@@ -72,30 +70,28 @@ Definition main : M unit :=
         ((core.iter.traits.iterator.Iterator.collect
             (Self := alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t)
             (Trait := ltac:(refine _)))
-          α7) in
-    M.alloc α8 in
+          α4) in
+    M.alloc α5 in
   let* b :
       M.Val
         (std.collections.hash.set.HashSet.t
           i32.t
           std.collections.hash.map.RandomState.t) :=
-    let* α0 : M.Val i32.t := M.alloc (Integer.of_Z 2) in
-    let* α1 : M.Val i32.t := M.alloc (Integer.of_Z 3) in
-    let* α2 : M.Val i32.t := M.alloc (Integer.of_Z 4) in
-    let* α3 : M.Val (array i32.t) := M.alloc [ α0; α1; α2 ] in
-    let* α4 : M.Val (alloc.boxed.Box.t (array i32.t) alloc.alloc.Global.t) :=
-      M.call ((alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α3) in
-    let* α5 : alloc.boxed.Box.t (slice i32.t) alloc.alloc.Global.t :=
-      M.read (pointer_coercion "Unsize" α4) in
-    let* α6 : alloc.vec.Vec.t i32.t alloc.alloc.Global.t :=
-      M.call ((slice i32.t)::["into_vec"] α5) in
-    let* α7 : alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t :=
+    let* α0 : M.Val (array i32.t) :=
+      M.alloc [ Integer.of_Z 2; Integer.of_Z 3; Integer.of_Z 4 ] in
+    let* α1 : M.Val (alloc.boxed.Box.t (array i32.t) alloc.alloc.Global.t) :=
+      M.call ((alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α0) in
+    let* α2 : alloc.boxed.Box.t (slice i32.t) alloc.alloc.Global.t :=
+      M.read (pointer_coercion "Unsize" α1) in
+    let* α3 : alloc.vec.Vec.t i32.t alloc.alloc.Global.t :=
+      M.call ((slice i32.t)::["into_vec"] α2) in
+    let* α4 : alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t :=
       M.call
         ((core.iter.traits.collect.IntoIterator.into_iter
             (Self := alloc.vec.Vec.t i32.t alloc.alloc.Global.t)
             (Trait := ltac:(refine _)))
-          α6) in
-    let* α8 :
+          α3) in
+    let* α5 :
         std.collections.hash.set.HashSet.t
           i32.t
           std.collections.hash.map.RandomState.t :=
@@ -103,8 +99,8 @@ Definition main : M unit :=
         ((core.iter.traits.iterator.Iterator.collect
             (Self := alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t)
             (Trait := ltac:(refine _)))
-          α7) in
-    M.alloc α8 in
+          α4) in
+    M.alloc α5 in
   let* _ : M.Val unit :=
     let* α0 : bool.t :=
       M.call
@@ -148,55 +144,56 @@ Definition main : M unit :=
     M.alloc α0 in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
-      let* α0 : M.Val (array (ref str.t)) :=
-        M.alloc [ mk_str "A: "; mk_str "
-" ] in
-      let* α1 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α0) in
-      let* α2 : ref (slice (ref str.t)) :=
-        M.read (pointer_coercion "Unsize" α1) in
-      let* α3 : core.fmt.rt.Argument.t :=
+      let* α0 : ref str.t := M.read (mk_str "A: ") in
+      let* α1 : ref str.t := M.read (mk_str "
+") in
+      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
+      let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
+      let* α4 : ref (slice (ref str.t)) :=
+        M.read (pointer_coercion "Unsize" α3) in
+      let* α5 : core.fmt.rt.Argument.t :=
         M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow a)) in
-      let* α4 : M.Val core.fmt.rt.Argument.t := M.alloc α3 in
-      let* α5 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4 ] in
-      let* α6 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-        M.alloc (borrow α5) in
-      let* α7 : ref (slice core.fmt.rt.Argument.t) :=
-        M.read (pointer_coercion "Unsize" α6) in
-      let* α8 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_v1"] α2 α7) in
-      let* α9 : unit := M.call (std.io.stdio._print α8) in
-      M.alloc α9 in
+      let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
+      let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+        M.alloc (borrow α6) in
+      let* α8 : ref (slice core.fmt.rt.Argument.t) :=
+        M.read (pointer_coercion "Unsize" α7) in
+      let* α9 : core.fmt.Arguments.t :=
+        M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
+      let* α10 : unit := M.call (std.io.stdio._print α9) in
+      M.alloc α10 in
     M.alloc tt in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
-      let* α0 : M.Val (array (ref str.t)) :=
-        M.alloc [ mk_str "B: "; mk_str "
-" ] in
-      let* α1 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α0) in
-      let* α2 : ref (slice (ref str.t)) :=
-        M.read (pointer_coercion "Unsize" α1) in
-      let* α3 : core.fmt.rt.Argument.t :=
+      let* α0 : ref str.t := M.read (mk_str "B: ") in
+      let* α1 : ref str.t := M.read (mk_str "
+") in
+      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
+      let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
+      let* α4 : ref (slice (ref str.t)) :=
+        M.read (pointer_coercion "Unsize" α3) in
+      let* α5 : core.fmt.rt.Argument.t :=
         M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow b)) in
-      let* α4 : M.Val core.fmt.rt.Argument.t := M.alloc α3 in
-      let* α5 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4 ] in
-      let* α6 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-        M.alloc (borrow α5) in
-      let* α7 : ref (slice core.fmt.rt.Argument.t) :=
-        M.read (pointer_coercion "Unsize" α6) in
-      let* α8 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_v1"] α2 α7) in
-      let* α9 : unit := M.call (std.io.stdio._print α8) in
-      M.alloc α9 in
+      let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
+      let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+        M.alloc (borrow α6) in
+      let* α8 : ref (slice core.fmt.rt.Argument.t) :=
+        M.read (pointer_coercion "Unsize" α7) in
+      let* α9 : core.fmt.Arguments.t :=
+        M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
+      let* α10 : unit := M.call (std.io.stdio._print α9) in
+      M.alloc α10 in
     M.alloc tt in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
-      let* α0 : M.Val (array (ref str.t)) :=
-        M.alloc [ mk_str "Union: "; mk_str "
-" ] in
-      let* α1 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α0) in
-      let* α2 : ref (slice (ref str.t)) :=
-        M.read (pointer_coercion "Unsize" α1) in
-      let* α3 :
+      let* α0 : ref str.t := M.read (mk_str "Union: ") in
+      let* α1 : ref str.t := M.read (mk_str "
+") in
+      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
+      let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
+      let* α4 : ref (slice (ref str.t)) :=
+        M.read (pointer_coercion "Unsize" α3) in
+      let* α5 :
           std.collections.hash.set.Union.t
             i32.t
             std.collections.hash.map.RandomState.t :=
@@ -206,7 +203,7 @@ Definition main : M unit :=
                 std.collections.hash.map.RandomState.t)::["union"]
             (borrow a)
             (borrow b)) in
-      let* α4 : alloc.vec.Vec.t (ref i32.t) alloc.alloc.Global.t :=
+      let* α6 : alloc.vec.Vec.t (ref i32.t) alloc.alloc.Global.t :=
         M.call
           ((core.iter.traits.iterator.Iterator.collect
               (Self :=
@@ -214,31 +211,31 @@ Definition main : M unit :=
                   i32.t
                   std.collections.hash.map.RandomState.t)
               (Trait := ltac:(refine _)))
-            α3) in
-      let* α5 : M.Val (alloc.vec.Vec.t (ref i32.t) alloc.alloc.Global.t) :=
-        M.alloc α4 in
-      let* α6 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow α5)) in
-      let* α7 : M.Val core.fmt.rt.Argument.t := M.alloc α6 in
-      let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
-      let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-        M.alloc (borrow α8) in
-      let* α10 : ref (slice core.fmt.rt.Argument.t) :=
-        M.read (pointer_coercion "Unsize" α9) in
-      let* α11 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_v1"] α2 α10) in
-      let* α12 : unit := M.call (std.io.stdio._print α11) in
-      M.alloc α12 in
+            α5) in
+      let* α7 : M.Val (alloc.vec.Vec.t (ref i32.t) alloc.alloc.Global.t) :=
+        M.alloc α6 in
+      let* α8 : core.fmt.rt.Argument.t :=
+        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow α7)) in
+      let* α9 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α8 ] in
+      let* α10 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+        M.alloc (borrow α9) in
+      let* α11 : ref (slice core.fmt.rt.Argument.t) :=
+        M.read (pointer_coercion "Unsize" α10) in
+      let* α12 : core.fmt.Arguments.t :=
+        M.call (core.fmt.Arguments.t::["new_v1"] α4 α11) in
+      let* α13 : unit := M.call (std.io.stdio._print α12) in
+      M.alloc α13 in
     M.alloc tt in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
-      let* α0 : M.Val (array (ref str.t)) :=
-        M.alloc [ mk_str "Difference: "; mk_str "
-" ] in
-      let* α1 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α0) in
-      let* α2 : ref (slice (ref str.t)) :=
-        M.read (pointer_coercion "Unsize" α1) in
-      let* α3 :
+      let* α0 : ref str.t := M.read (mk_str "Difference: ") in
+      let* α1 : ref str.t := M.read (mk_str "
+") in
+      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
+      let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
+      let* α4 : ref (slice (ref str.t)) :=
+        M.read (pointer_coercion "Unsize" α3) in
+      let* α5 :
           std.collections.hash.set.Difference.t
             i32.t
             std.collections.hash.map.RandomState.t :=
@@ -248,7 +245,7 @@ Definition main : M unit :=
                 std.collections.hash.map.RandomState.t)::["difference"]
             (borrow a)
             (borrow b)) in
-      let* α4 : alloc.vec.Vec.t (ref i32.t) alloc.alloc.Global.t :=
+      let* α6 : alloc.vec.Vec.t (ref i32.t) alloc.alloc.Global.t :=
         M.call
           ((core.iter.traits.iterator.Iterator.collect
               (Self :=
@@ -256,31 +253,31 @@ Definition main : M unit :=
                   i32.t
                   std.collections.hash.map.RandomState.t)
               (Trait := ltac:(refine _)))
-            α3) in
-      let* α5 : M.Val (alloc.vec.Vec.t (ref i32.t) alloc.alloc.Global.t) :=
-        M.alloc α4 in
-      let* α6 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow α5)) in
-      let* α7 : M.Val core.fmt.rt.Argument.t := M.alloc α6 in
-      let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
-      let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-        M.alloc (borrow α8) in
-      let* α10 : ref (slice core.fmt.rt.Argument.t) :=
-        M.read (pointer_coercion "Unsize" α9) in
-      let* α11 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_v1"] α2 α10) in
-      let* α12 : unit := M.call (std.io.stdio._print α11) in
-      M.alloc α12 in
+            α5) in
+      let* α7 : M.Val (alloc.vec.Vec.t (ref i32.t) alloc.alloc.Global.t) :=
+        M.alloc α6 in
+      let* α8 : core.fmt.rt.Argument.t :=
+        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow α7)) in
+      let* α9 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α8 ] in
+      let* α10 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+        M.alloc (borrow α9) in
+      let* α11 : ref (slice core.fmt.rt.Argument.t) :=
+        M.read (pointer_coercion "Unsize" α10) in
+      let* α12 : core.fmt.Arguments.t :=
+        M.call (core.fmt.Arguments.t::["new_v1"] α4 α11) in
+      let* α13 : unit := M.call (std.io.stdio._print α12) in
+      M.alloc α13 in
     M.alloc tt in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
-      let* α0 : M.Val (array (ref str.t)) :=
-        M.alloc [ mk_str "Intersection: "; mk_str "
-" ] in
-      let* α1 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α0) in
-      let* α2 : ref (slice (ref str.t)) :=
-        M.read (pointer_coercion "Unsize" α1) in
-      let* α3 :
+      let* α0 : ref str.t := M.read (mk_str "Intersection: ") in
+      let* α1 : ref str.t := M.read (mk_str "
+") in
+      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
+      let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
+      let* α4 : ref (slice (ref str.t)) :=
+        M.read (pointer_coercion "Unsize" α3) in
+      let* α5 :
           std.collections.hash.set.Intersection.t
             i32.t
             std.collections.hash.map.RandomState.t :=
@@ -290,7 +287,7 @@ Definition main : M unit :=
                 std.collections.hash.map.RandomState.t)::["intersection"]
             (borrow a)
             (borrow b)) in
-      let* α4 : alloc.vec.Vec.t (ref i32.t) alloc.alloc.Global.t :=
+      let* α6 : alloc.vec.Vec.t (ref i32.t) alloc.alloc.Global.t :=
         M.call
           ((core.iter.traits.iterator.Iterator.collect
               (Self :=
@@ -298,31 +295,31 @@ Definition main : M unit :=
                   i32.t
                   std.collections.hash.map.RandomState.t)
               (Trait := ltac:(refine _)))
-            α3) in
-      let* α5 : M.Val (alloc.vec.Vec.t (ref i32.t) alloc.alloc.Global.t) :=
-        M.alloc α4 in
-      let* α6 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow α5)) in
-      let* α7 : M.Val core.fmt.rt.Argument.t := M.alloc α6 in
-      let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
-      let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-        M.alloc (borrow α8) in
-      let* α10 : ref (slice core.fmt.rt.Argument.t) :=
-        M.read (pointer_coercion "Unsize" α9) in
-      let* α11 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_v1"] α2 α10) in
-      let* α12 : unit := M.call (std.io.stdio._print α11) in
-      M.alloc α12 in
+            α5) in
+      let* α7 : M.Val (alloc.vec.Vec.t (ref i32.t) alloc.alloc.Global.t) :=
+        M.alloc α6 in
+      let* α8 : core.fmt.rt.Argument.t :=
+        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow α7)) in
+      let* α9 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α8 ] in
+      let* α10 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+        M.alloc (borrow α9) in
+      let* α11 : ref (slice core.fmt.rt.Argument.t) :=
+        M.read (pointer_coercion "Unsize" α10) in
+      let* α12 : core.fmt.Arguments.t :=
+        M.call (core.fmt.Arguments.t::["new_v1"] α4 α11) in
+      let* α13 : unit := M.call (std.io.stdio._print α12) in
+      M.alloc α13 in
     M.alloc tt in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
-      let* α0 : M.Val (array (ref str.t)) :=
-        M.alloc [ mk_str "Symmetric Difference: "; mk_str "
-" ] in
-      let* α1 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α0) in
-      let* α2 : ref (slice (ref str.t)) :=
-        M.read (pointer_coercion "Unsize" α1) in
-      let* α3 :
+      let* α0 : ref str.t := M.read (mk_str "Symmetric Difference: ") in
+      let* α1 : ref str.t := M.read (mk_str "
+") in
+      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
+      let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
+      let* α4 : ref (slice (ref str.t)) :=
+        M.read (pointer_coercion "Unsize" α3) in
+      let* α5 :
           std.collections.hash.set.SymmetricDifference.t
             i32.t
             std.collections.hash.map.RandomState.t :=
@@ -332,7 +329,7 @@ Definition main : M unit :=
                 std.collections.hash.map.RandomState.t)::["symmetric_difference"]
             (borrow a)
             (borrow b)) in
-      let* α4 : alloc.vec.Vec.t (ref i32.t) alloc.alloc.Global.t :=
+      let* α6 : alloc.vec.Vec.t (ref i32.t) alloc.alloc.Global.t :=
         M.call
           ((core.iter.traits.iterator.Iterator.collect
               (Self :=
@@ -340,21 +337,20 @@ Definition main : M unit :=
                   i32.t
                   std.collections.hash.map.RandomState.t)
               (Trait := ltac:(refine _)))
-            α3) in
-      let* α5 : M.Val (alloc.vec.Vec.t (ref i32.t) alloc.alloc.Global.t) :=
-        M.alloc α4 in
-      let* α6 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow α5)) in
-      let* α7 : M.Val core.fmt.rt.Argument.t := M.alloc α6 in
-      let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
-      let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-        M.alloc (borrow α8) in
-      let* α10 : ref (slice core.fmt.rt.Argument.t) :=
-        M.read (pointer_coercion "Unsize" α9) in
-      let* α11 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_v1"] α2 α10) in
-      let* α12 : unit := M.call (std.io.stdio._print α11) in
-      M.alloc α12 in
+            α5) in
+      let* α7 : M.Val (alloc.vec.Vec.t (ref i32.t) alloc.alloc.Global.t) :=
+        M.alloc α6 in
+      let* α8 : core.fmt.rt.Argument.t :=
+        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow α7)) in
+      let* α9 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α8 ] in
+      let* α10 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+        M.alloc (borrow α9) in
+      let* α11 : ref (slice core.fmt.rt.Argument.t) :=
+        M.read (pointer_coercion "Unsize" α10) in
+      let* α12 : core.fmt.Arguments.t :=
+        M.call (core.fmt.Arguments.t::["new_v1"] α4 α11) in
+      let* α13 : unit := M.call (std.io.stdio._print α12) in
+      M.alloc α13 in
     M.alloc tt in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.

@@ -19,20 +19,23 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
   let* vec : M.Val (alloc.vec.Vec.t i32.t alloc.alloc.Global.t) :=
-    let* α0 : M.Val i32.t := M.alloc (Integer.of_Z 1) in
-    let* α1 : M.Val i32.t := M.alloc (Integer.of_Z 9) in
-    let* α2 : M.Val i32.t := M.alloc (Integer.of_Z 3) in
-    let* α3 : M.Val i32.t := M.alloc (Integer.of_Z 3) in
-    let* α4 : M.Val i32.t := M.alloc (Integer.of_Z 13) in
-    let* α5 : M.Val i32.t := M.alloc (Integer.of_Z 2) in
-    let* α6 : M.Val (array i32.t) := M.alloc [ α0; α1; α2; α3; α4; α5 ] in
-    let* α7 : M.Val (alloc.boxed.Box.t (array i32.t) alloc.alloc.Global.t) :=
-      M.call ((alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α6) in
-    let* α8 : alloc.boxed.Box.t (slice i32.t) alloc.alloc.Global.t :=
-      M.read (pointer_coercion "Unsize" α7) in
-    let* α9 : alloc.vec.Vec.t i32.t alloc.alloc.Global.t :=
-      M.call ((slice i32.t)::["into_vec"] α8) in
-    M.alloc α9 in
+    let* α0 : M.Val (array i32.t) :=
+      M.alloc
+        [
+          Integer.of_Z 1;
+          Integer.of_Z 9;
+          Integer.of_Z 3;
+          Integer.of_Z 3;
+          Integer.of_Z 13;
+          Integer.of_Z 2
+        ] in
+    let* α1 : M.Val (alloc.boxed.Box.t (array i32.t) alloc.alloc.Global.t) :=
+      M.call ((alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α0) in
+    let* α2 : alloc.boxed.Box.t (slice i32.t) alloc.alloc.Global.t :=
+      M.read (pointer_coercion "Unsize" α1) in
+    let* α3 : alloc.vec.Vec.t i32.t alloc.alloc.Global.t :=
+      M.call ((slice i32.t)::["into_vec"] α2) in
+    M.alloc α3 in
   let* index_of_first_even_number : M.Val (core.option.Option.t usize.t) :=
     let* α0 : ref (slice i32.t) :=
       M.call

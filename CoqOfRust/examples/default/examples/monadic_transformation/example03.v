@@ -12,17 +12,15 @@ Definition main : M unit :=
   let* _ : M.Val (((i32.t * i32.t) * i32.t) * i32.t) :=
     M.alloc (Integer.of_Z 1, Integer.of_Z 2, Integer.of_Z 3, Integer.of_Z 4) in
   let* _ : M.Val (alloc.vec.Vec.t i32.t alloc.alloc.Global.t) :=
-    let* α0 : M.Val i32.t := M.alloc (Integer.of_Z 5) in
-    let* α1 : M.Val i32.t := M.alloc (Integer.of_Z 6) in
-    let* α2 : M.Val i32.t := M.alloc (Integer.of_Z 7) in
-    let* α3 : M.Val i32.t := M.alloc (Integer.of_Z 8) in
-    let* α4 : M.Val (array i32.t) := M.alloc [ α0; α1; α2; α3 ] in
-    let* α5 : M.Val (alloc.boxed.Box.t (array i32.t) alloc.alloc.Global.t) :=
-      M.call ((alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α4) in
-    let* α6 : alloc.boxed.Box.t (slice i32.t) alloc.alloc.Global.t :=
-      M.read (pointer_coercion "Unsize" α5) in
-    let* α7 : alloc.vec.Vec.t i32.t alloc.alloc.Global.t :=
-      M.call ((slice i32.t)::["into_vec"] α6) in
-    M.alloc α7 in
+    let* α0 : M.Val (array i32.t) :=
+      M.alloc
+        [ Integer.of_Z 5; Integer.of_Z 6; Integer.of_Z 7; Integer.of_Z 8 ] in
+    let* α1 : M.Val (alloc.boxed.Box.t (array i32.t) alloc.alloc.Global.t) :=
+      M.call ((alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α0) in
+    let* α2 : alloc.boxed.Box.t (slice i32.t) alloc.alloc.Global.t :=
+      M.read (pointer_coercion "Unsize" α1) in
+    let* α3 : alloc.vec.Vec.t i32.t alloc.alloc.Global.t :=
+      M.call ((slice i32.t)::["into_vec"] α2) in
+    M.alloc α3 in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.

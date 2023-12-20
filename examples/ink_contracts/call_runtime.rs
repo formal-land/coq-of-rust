@@ -7,18 +7,23 @@ struct Env {
     caller: AccountId,
 }
 
-impl Env {
-    fn call_runtime<Call>(&self, _call: &Call) -> Result<(), EnvError> {
-        unimplemented!()
-    }
-}
-
 enum MultiAddress<AccountId, AccountIndex> {}
 
 impl std::convert::From<AccountId> for MultiAddress<AccountId, ()> {
     fn from(_value: AccountId) -> Self {
         unimplemented!()
     }
+}
+
+enum BalancesCall {
+    /// This index can be found by investigating the pallet dispatchable API. In your
+    /// pallet code, look for `#[pallet::call]` section and check
+    /// `#[pallet::call_index(x)]` attribute of the call. If these attributes are
+    /// missing, use source-code order (0-based).
+    Transfer {
+        dest: MultiAddress<AccountId, ()>,
+        value: u128,
+    },
 }
 
 /// A part of the runtime dispatchable API.
@@ -41,17 +46,6 @@ enum RuntimeCall {
     Balances(BalancesCall),
 }
 
-enum BalancesCall {
-    /// This index can be found by investigating the pallet dispatchable API. In your
-    /// pallet code, look for `#[pallet::call]` section and check
-    /// `#[pallet::call_index(x)]` attribute of the call. If these attributes are
-    /// missing, use source-code order (0-based).
-    Transfer {
-        dest: MultiAddress<AccountId, ()>,
-        value: u128,
-    },
-}
-
 /// A trivial contract with a single message, that uses `call-runtime` API for
 /// performing native token transfer.
 #[derive(Default)]
@@ -64,6 +58,7 @@ pub enum RuntimeError {
 
 enum EnvError {
     CallRuntimeFailed,
+    AnotherKindOfError,
 }
 
 impl From<EnvError> for RuntimeError {
@@ -72,6 +67,12 @@ impl From<EnvError> for RuntimeError {
             EnvError::CallRuntimeFailed => RuntimeError::CallRuntimeFailed,
             _ => panic!("Unexpected error from `pallet-contracts`."),
         }
+    }
+}
+
+impl Env {
+    fn call_runtime<Call>(&self, _call: &Call) -> Result<(), EnvError> {
+        unimplemented!()
     }
 }
 

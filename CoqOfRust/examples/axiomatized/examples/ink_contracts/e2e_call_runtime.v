@@ -101,7 +101,7 @@ End Impl_e2e_call_runtime_Env_t.
 
 Module  Contract.
 Section Contract.
-  Record t : Set := { }.
+  Inductive t : Set := Build.
 End Contract.
 End Contract.
 

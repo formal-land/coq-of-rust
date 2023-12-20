@@ -119,28 +119,25 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
   let* v1 : M.Val (alloc.vec.Vec.t i32.t alloc.alloc.Global.t) :=
-    let* α0 : M.Val i32.t := M.alloc (Integer.of_Z 1) in
-    let* α1 : M.Val i32.t := M.alloc (Integer.of_Z 2) in
-    let* α2 : M.Val i32.t := M.alloc (Integer.of_Z 3) in
-    let* α3 : M.Val (array i32.t) := M.alloc [ α0; α1; α2 ] in
-    let* α4 : M.Val (alloc.boxed.Box.t (array i32.t) alloc.alloc.Global.t) :=
-      M.call ((alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α3) in
-    let* α5 : alloc.boxed.Box.t (slice i32.t) alloc.alloc.Global.t :=
-      M.read (pointer_coercion "Unsize" α4) in
-    let* α6 : alloc.vec.Vec.t i32.t alloc.alloc.Global.t :=
-      M.call ((slice i32.t)::["into_vec"] α5) in
-    M.alloc α6 in
+    let* α0 : M.Val (array i32.t) :=
+      M.alloc [ Integer.of_Z 1; Integer.of_Z 2; Integer.of_Z 3 ] in
+    let* α1 : M.Val (alloc.boxed.Box.t (array i32.t) alloc.alloc.Global.t) :=
+      M.call ((alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α0) in
+    let* α2 : alloc.boxed.Box.t (slice i32.t) alloc.alloc.Global.t :=
+      M.read (pointer_coercion "Unsize" α1) in
+    let* α3 : alloc.vec.Vec.t i32.t alloc.alloc.Global.t :=
+      M.call ((slice i32.t)::["into_vec"] α2) in
+    M.alloc α3 in
   let* v2 : M.Val (alloc.vec.Vec.t i32.t alloc.alloc.Global.t) :=
-    let* α0 : M.Val i32.t := M.alloc (Integer.of_Z 4) in
-    let* α1 : M.Val i32.t := M.alloc (Integer.of_Z 5) in
-    let* α2 : M.Val (array i32.t) := M.alloc [ α0; α1 ] in
-    let* α3 : M.Val (alloc.boxed.Box.t (array i32.t) alloc.alloc.Global.t) :=
-      M.call ((alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α2) in
-    let* α4 : alloc.boxed.Box.t (slice i32.t) alloc.alloc.Global.t :=
-      M.read (pointer_coercion "Unsize" α3) in
-    let* α5 : alloc.vec.Vec.t i32.t alloc.alloc.Global.t :=
-      M.call ((slice i32.t)::["into_vec"] α4) in
-    M.alloc α5 in
+    let* α0 : M.Val (array i32.t) :=
+      M.alloc [ Integer.of_Z 4; Integer.of_Z 5 ] in
+    let* α1 : M.Val (alloc.boxed.Box.t (array i32.t) alloc.alloc.Global.t) :=
+      M.call ((alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α0) in
+    let* α2 : alloc.boxed.Box.t (slice i32.t) alloc.alloc.Global.t :=
+      M.read (pointer_coercion "Unsize" α1) in
+    let* α3 : alloc.vec.Vec.t i32.t alloc.alloc.Global.t :=
+      M.call ((slice i32.t)::["into_vec"] α2) in
+    M.alloc α3 in
   let* v3 : M.Val type not implemented :=
     let* α0 : alloc.vec.Vec.t i32.t alloc.alloc.Global.t := M.read v1 in
     let* α1 : alloc.vec.Vec.t i32.t alloc.alloc.Global.t := M.read v2 in
@@ -354,15 +351,16 @@ Definition main : M unit :=
     end in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
-      let* α0 : M.Val (array (ref str.t)) := M.alloc [ mk_str "all done
-" ] in
-      let* α1 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α0) in
-      let* α2 : ref (slice (ref str.t)) :=
-        M.read (pointer_coercion "Unsize" α1) in
-      let* α3 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_const"] α2) in
-      let* α4 : unit := M.call (std.io.stdio._print α3) in
-      M.alloc α4 in
+      let* α0 : ref str.t := M.read (mk_str "all done
+") in
+      let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
+      let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
+      let* α3 : ref (slice (ref str.t)) :=
+        M.read (pointer_coercion "Unsize" α2) in
+      let* α4 : core.fmt.Arguments.t :=
+        M.call (core.fmt.Arguments.t::["new_const"] α3) in
+      let* α5 : unit := M.call (std.io.stdio._print α4) in
+      M.alloc α5 in
     M.alloc tt in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.

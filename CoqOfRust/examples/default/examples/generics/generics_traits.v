@@ -63,9 +63,9 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
   let* empty : M.Val generics_traits.Empty.t :=
-    M.alloc generics_traits.Empty.Build_t in
+    M.alloc generics_traits.Empty.Build in
   let* null : M.Val generics_traits.Null.t :=
-    M.alloc generics_traits.Null.Build_t in
+    M.alloc generics_traits.Null.Build in
   let* _ : M.Val unit :=
     let* α0 : generics_traits.Empty.t := M.read empty in
     let* α1 : generics_traits.Null.t := M.read null in

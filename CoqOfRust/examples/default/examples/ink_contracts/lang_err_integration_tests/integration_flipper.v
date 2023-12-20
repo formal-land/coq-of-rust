@@ -117,7 +117,7 @@ Section Impl_integration_flipper_Flipper_t.
         M.alloc (core.result.Result.Ok α0)
       else
         M.alloc
-          (core.result.Result.Err integration_flipper.FlipperError.Build_t) in
+          (core.result.Result.Err integration_flipper.FlipperError.Build) in
     M.read α1.
   
   Global Instance AssociatedFunction_try_new :

@@ -140,6 +140,157 @@ Module PartialEq.
     Global Instance I_ref_ref {A B : Set} :
       Trait A (Rhs := B) -> Trait (ref A) (Rhs := ref B).
     Admitted.
+
+    Global Instance I_Option {T U : Set}
+        {ℋ : core.cmp.PartialEq.Trait T (Rhs := U)} :
+      core.cmp.PartialEq.Trait
+        (core.option.Option.t T)
+        (Rhs := core.option.Option.t U).
+    Admitted.
+
+    Global Instance I_tuple_2
+      {T1 T2 : Set}
+      {ℋ1 : Trait T1 (Rhs := T1)}
+      {ℋ2 : Trait T2 (Rhs := T2)} :
+      Trait (T1 * T2) (Rhs := T1 * T2).
+    Admitted.
+
+    Global Instance I_tuple_3
+      {T1 T2 T3 : Set}
+      {ℋ1 : Trait T1 (Rhs := T1)}
+      {ℋ2 : Trait T2 (Rhs := T2)}
+      {ℋ3 : Trait T3 (Rhs := T3)} :
+      Trait (T1 * T2 * T3) (Rhs := T1 * T2 * T3).
+    Admitted.
+
+    Global Instance I_tuple_4
+      {T1 T2 T3 T4 : Set}
+      {ℋ1 : Trait T1 (Rhs := T1)}
+      {ℋ2 : Trait T2 (Rhs := T2)}
+      {ℋ3 : Trait T3 (Rhs := T3)}
+      {ℋ4 : Trait T4 (Rhs := T4)} :
+      Trait (T1 * T2 * T3 * T4) (Rhs := T1 * T2 * T3 * T4).
+    Admitted.
+
+    Global Instance I_tuple_5
+      {T1 T2 T3 T4 T5 : Set}
+      {ℋ1 : Trait T1 (Rhs := T1)}
+      {ℋ2 : Trait T2 (Rhs := T2)}
+      {ℋ3 : Trait T3 (Rhs := T3)}
+      {ℋ4 : Trait T4 (Rhs := T4)}
+      {ℋ5 : Trait T5 (Rhs := T5)} :
+      Trait (T1 * T2 * T3 * T4 * T5) (Rhs := T1 * T2 * T3 * T4 * T5).
+    Admitted.
+
+    Global Instance I_tuple_6
+      {T1 T2 T3 T4 T5 T6 : Set}
+      {ℋ1 : Trait T1 (Rhs := T1)}
+      {ℋ2 : Trait T2 (Rhs := T2)}
+      {ℋ3 : Trait T3 (Rhs := T3)}
+      {ℋ4 : Trait T4 (Rhs := T4)}
+      {ℋ5 : Trait T5 (Rhs := T5)}
+      {ℋ6 : Trait T6 (Rhs := T6)} :
+      Trait (T1 * T2 * T3 * T4 * T5 * T6) (Rhs := T1 * T2 * T3 * T4 * T5 * T6).
+    Admitted.
+
+    Global Instance I_tuple_7
+      {T1 T2 T3 T4 T5 T6 T7 : Set}
+      {ℋ1 : Trait T1 (Rhs := T1)}
+      {ℋ2 : Trait T2 (Rhs := T2)}
+      {ℋ3 : Trait T3 (Rhs := T3)}
+      {ℋ4 : Trait T4 (Rhs := T4)}
+      {ℋ5 : Trait T5 (Rhs := T5)}
+      {ℋ6 : Trait T6 (Rhs := T6)}
+      {ℋ7 : Trait T7 (Rhs := T7)} :
+      Trait
+        (T1 * T2 * T3 * T4 * T5 * T6 * T7)
+        (Rhs := T1 * T2 * T3 * T4 * T5 * T6 * T7).
+    Admitted.
+
+    Global Instance I_tuple_8
+      {T1 T2 T3 T4 T5 T6 T7 T8 : Set}
+      {ℋ1 : Trait T1 (Rhs := T1)}
+      {ℋ2 : Trait T2 (Rhs := T2)}
+      {ℋ3 : Trait T3 (Rhs := T3)}
+      {ℋ4 : Trait T4 (Rhs := T4)}
+      {ℋ5 : Trait T5 (Rhs := T5)}
+      {ℋ6 : Trait T6 (Rhs := T6)}
+      {ℋ7 : Trait T7 (Rhs := T7)}
+      {ℋ8 : Trait T8 (Rhs := T8)} :
+      Trait
+        (T1 * T2 * T3 * T4 * T5 * T6 * T7 * T8)
+        (Rhs := T1 * T2 * T3 * T4 * T5 * T6 * T7 * T8).
+    Admitted.
+
+    Global Instance I_tuple_9
+      {T1 T2 T3 T4 T5 T6 T7 T8 T9 : Set}
+      {ℋ1 : Trait T1 (Rhs := T1)}
+      {ℋ2 : Trait T2 (Rhs := T2)}
+      {ℋ3 : Trait T3 (Rhs := T3)}
+      {ℋ4 : Trait T4 (Rhs := T4)}
+      {ℋ5 : Trait T5 (Rhs := T5)}
+      {ℋ6 : Trait T6 (Rhs := T6)}
+      {ℋ7 : Trait T7 (Rhs := T7)}
+      {ℋ8 : Trait T8 (Rhs := T8)}
+      {ℋ9 : Trait T9 (Rhs := T9)} :
+      Trait
+        (T1 * T2 * T3 * T4 * T5 * T6 * T7 * T8 * T9)
+        (Rhs := T1 * T2 * T3 * T4 * T5 * T6 * T7 * T8 * T9).
+    Admitted.
+
+    Global Instance I_tuple_10
+      {T1 T2 T3 T4 T5 T6 T7 T8 T9 T10 : Set}
+      {ℋ1 : Trait T1 (Rhs := T1)}
+      {ℋ2 : Trait T2 (Rhs := T2)}
+      {ℋ3 : Trait T3 (Rhs := T3)}
+      {ℋ4 : Trait T4 (Rhs := T4)}
+      {ℋ5 : Trait T5 (Rhs := T5)}
+      {ℋ6 : Trait T6 (Rhs := T6)}
+      {ℋ7 : Trait T7 (Rhs := T7)}
+      {ℋ8 : Trait T8 (Rhs := T8)}
+      {ℋ9 : Trait T9 (Rhs := T9)}
+      {ℋ10 : Trait T10 (Rhs := T10)} :
+      Trait
+        (T1 * T2 * T3 * T4 * T5 * T6 * T7 * T8 * T9 * T10)
+        (Rhs := T1 * T2 * T3 * T4 * T5 * T6 * T7 * T8 * T9 * T10).
+    Admitted.
+
+    Global Instance I_tuple_11
+      {T1 T2 T3 T4 T5 T6 T7 T8 T9 T10 T11 : Set}
+      {ℋ1 : Trait T1 (Rhs := T1)}
+      {ℋ2 : Trait T2 (Rhs := T2)}
+      {ℋ3 : Trait T3 (Rhs := T3)}
+      {ℋ4 : Trait T4 (Rhs := T4)}
+      {ℋ5 : Trait T5 (Rhs := T5)}
+      {ℋ6 : Trait T6 (Rhs := T6)}
+      {ℋ7 : Trait T7 (Rhs := T7)}
+      {ℋ8 : Trait T8 (Rhs := T8)}
+      {ℋ9 : Trait T9 (Rhs := T9)}
+      {ℋ10 : Trait T10 (Rhs := T10)}
+      {ℋ11 : Trait T11 (Rhs := T11)} :
+      Trait
+        (T1 * T2 * T3 * T4 * T5 * T6 * T7 * T8 * T9 * T10 * T11)
+        (Rhs := T1 * T2 * T3 * T4 * T5 * T6 * T7 * T8 * T9 * T10 * T11).
+    Admitted.
+
+    Global Instance I_tuple_12
+      {T1 T2 T3 T4 T5 T6 T7 T8 T9 T10 T11 T12 : Set}
+      {ℋ1 : Trait T1 (Rhs := T1)}
+      {ℋ2 : Trait T2 (Rhs := T2)}
+      {ℋ3 : Trait T3 (Rhs := T3)}
+      {ℋ4 : Trait T4 (Rhs := T4)}
+      {ℋ5 : Trait T5 (Rhs := T5)}
+      {ℋ6 : Trait T6 (Rhs := T6)}
+      {ℋ7 : Trait T7 (Rhs := T7)}
+      {ℋ8 : Trait T8 (Rhs := T8)}
+      {ℋ9 : Trait T9 (Rhs := T9)}
+      {ℋ10 : Trait T10 (Rhs := T10)}
+      {ℋ11 : Trait T11 (Rhs := T11)}
+      {ℋ12 : Trait T12 (Rhs := T12)} :
+      Trait
+        (T1 * T2 * T3 * T4 * T5 * T6 * T7 * T8 * T9 * T10 * T11 * T12)
+        (Rhs := T1 * T2 * T3 * T4 * T5 * T6 * T7 * T8 * T9 * T10 * T11 * T12).
+    Admitted.
   End Instances.
 End PartialEq.
 
@@ -309,7 +460,7 @@ Module Eq.
     Class Trait (Self : Set) : Set := {
       L0 :: PartialEq.Trait Self (Rhs := PartialEq.Default.Rhs Self);
       assert_receiver_is_total_eq :
-        Datatypes.option (M.Val (ref Self) -> M (M.Val unit));
+        Datatypes.option (ref Self -> M unit);
     }.
     Global Set Primitive Projections.
   End Required.
@@ -317,18 +468,18 @@ Module Eq.
   Module Provided.
     Definition assert_receiver_is_total_eq {Self : Set}
         {H0 : Required.Trait Self} :
-        M.Val (ref Self) -> M (M.Val unit) :=
+        ref Self -> M unit :=
       match Required.assert_receiver_is_total_eq with
       | Datatypes.Some assert_receiver_is_total_eq =>
         assert_receiver_is_total_eq
-      | Datatypes.None => fun _ => M.alloc tt
+      | Datatypes.None => fun _ => M.pure tt
       end.
   End Provided.
 
   Unset Primitive Projections.
   Class Trait (Self : Set) : Set := {
     L0 :: PartialEq.Trait Self (Rhs := PartialEq.Default.Rhs Self);
-    assert_receiver_is_total_eq : M.Val (ref Self) -> M (M.Val unit);
+    assert_receiver_is_total_eq : ref Self -> M unit;
   }.
   Global Set Primitive Projections.
 
