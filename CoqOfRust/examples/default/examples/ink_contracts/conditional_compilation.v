@@ -375,7 +375,7 @@ Section Impl_conditional_compilation_ConditionalCompilation_t.
             (conditional_compilation.Event.Changes
               {|
                 conditional_compilation.Changes.new_value := α3;
-                conditional_compilation.Changes.by := α4;
+                conditional_compilation.Changes.by_ := α4;
               |})) in
       M.alloc α5 in
     let* α0 : M.Val unit := M.alloc tt in
@@ -437,7 +437,7 @@ Section Impl_conditional_compilation_ConditionalCompilation_t.
             (conditional_compilation.Event.ChangesDated
               {|
                 conditional_compilation.ChangesDated.new_value := α3;
-                conditional_compilation.ChangesDated.by := α4;
+                conditional_compilation.ChangesDated.by_ := α4;
                 conditional_compilation.ChangesDated.when := α5;
               |})) in
       M.alloc α6 in
@@ -525,7 +525,7 @@ Section Impl_conditional_compilation_Flip_for_conditional_compilation_Conditiona
             (conditional_compilation.Event.Changes
               {|
                 conditional_compilation.Changes.new_value := α2;
-                conditional_compilation.Changes.by := α3;
+                conditional_compilation.Changes.by_ := α3;
               |})) in
       M.alloc α4 in
     let* _ : M.Val unit :=

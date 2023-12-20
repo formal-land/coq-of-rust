@@ -872,9 +872,12 @@ Section Impl_erc1155_Contract_t.
         M.call (erc1155.Env.t::["caller"] (borrow α2)) in
       M.alloc α3 in
     let* _ : M.Val unit :=
-      let* α0 : mut_ref erc1155.Contract.t := M.read self in
-      let* α1 : M.Val u128.t := M.alloc (Integer.of_Z 1) in
-      assign_op BinOp.Panic.add (deref α0).["token_id_nonce"] α1 in
+      let* β : M.Val u128.t :=
+        let* α0 : mut_ref erc1155.Contract.t := M.read self in
+        M.pure (deref α0).["token_id_nonce"] in
+      let* α0 := M.read β in
+      let* α1 := BinOp.Panic.add α0 (Integer.of_Z 1) in
+      assign β α1 in
     let* _ : M.Val (core.option.Option.t u32.t) :=
       let* α0 : mut_ref erc1155.Contract.t := M.read self in
       let* α1 : erc1155.AccountId.t := M.read caller in
@@ -1086,7 +1089,12 @@ Section Impl_erc1155_Contract_t.
       let* α6 : u128.t :=
         M.call ((core.option.Option.t u128.t)::["expect"] α4 α5) in
       M.alloc α6 in
-    let* _ : M.Val unit := assign_op BinOp.Panic.sub sender_balance value in
+    let* _ : M.Val unit :=
+      let β : M.Val u128.t := sender_balance in
+      let* α0 := M.read β in
+      let* α1 : u128.t := M.read value in
+      let* α2 := BinOp.Panic.sub α0 α1 in
+      assign β α2 in
     let* _ : M.Val (core.option.Option.t u32.t) :=
       let* α0 : mut_ref erc1155.Contract.t := M.read self in
       let* α1 : erc1155.AccountId.t := M.read from in
@@ -1113,7 +1121,12 @@ Section Impl_erc1155_Contract_t.
         M.call
           ((core.option.Option.t u128.t)::["unwrap_or"] α4 (Integer.of_Z 0)) in
       M.alloc α5 in
-    let* _ : M.Val unit := assign_op BinOp.Panic.add recipient_balance value in
+    let* _ : M.Val unit :=
+      let β : M.Val u128.t := recipient_balance in
+      let* α0 := M.read β in
+      let* α1 : u128.t := M.read value in
+      let* α2 := BinOp.Panic.add α0 α1 in
+      assign β α2 in
     let* _ : M.Val (core.option.Option.t u32.t) :=
       let* α0 : mut_ref erc1155.Contract.t := M.read self in
       let* α1 : erc1155.AccountId.t := M.read to in

@@ -226,21 +226,41 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
     let* x : M.Val f64.t := M.alloc x in
     let* y : M.Val f64.t := M.alloc y in
     let* _ : M.Val unit :=
-      let* α0 : mut_ref associated_functions_and_methods.Rectangle.t :=
-        M.read self in
-      assign_op BinOp.Panic.add (deref α0).["p1"].["x"] x in
+      let* β : M.Val f64.t :=
+        let* α0 : mut_ref associated_functions_and_methods.Rectangle.t :=
+          M.read self in
+        M.pure (deref α0).["p1"].["x"] in
+      let* α0 := M.read β in
+      let* α1 : f64.t := M.read x in
+      let* α2 := BinOp.Panic.add α0 α1 in
+      assign β α2 in
     let* _ : M.Val unit :=
-      let* α0 : mut_ref associated_functions_and_methods.Rectangle.t :=
-        M.read self in
-      assign_op BinOp.Panic.add (deref α0).["p2"].["x"] x in
+      let* β : M.Val f64.t :=
+        let* α0 : mut_ref associated_functions_and_methods.Rectangle.t :=
+          M.read self in
+        M.pure (deref α0).["p2"].["x"] in
+      let* α0 := M.read β in
+      let* α1 : f64.t := M.read x in
+      let* α2 := BinOp.Panic.add α0 α1 in
+      assign β α2 in
     let* _ : M.Val unit :=
-      let* α0 : mut_ref associated_functions_and_methods.Rectangle.t :=
-        M.read self in
-      assign_op BinOp.Panic.add (deref α0).["p1"].["y"] y in
+      let* β : M.Val f64.t :=
+        let* α0 : mut_ref associated_functions_and_methods.Rectangle.t :=
+          M.read self in
+        M.pure (deref α0).["p1"].["y"] in
+      let* α0 := M.read β in
+      let* α1 : f64.t := M.read y in
+      let* α2 := BinOp.Panic.add α0 α1 in
+      assign β α2 in
     let* _ : M.Val unit :=
-      let* α0 : mut_ref associated_functions_and_methods.Rectangle.t :=
-        M.read self in
-      assign_op BinOp.Panic.add (deref α0).["p2"].["y"] y in
+      let* β : M.Val f64.t :=
+        let* α0 : mut_ref associated_functions_and_methods.Rectangle.t :=
+          M.read self in
+        M.pure (deref α0).["p2"].["y"] in
+      let* α0 := M.read β in
+      let* α1 : f64.t := M.read y in
+      let* α2 := BinOp.Panic.add α0 α1 in
+      assign β α2 in
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   

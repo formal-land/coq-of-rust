@@ -40,9 +40,12 @@ fn add_one<'a>(x: &'a mut i32) {
 Definition add_one (x : mut_ref i32.t) : M unit :=
   let* x : M.Val (mut_ref i32.t) := M.alloc x in
   let* _ : M.Val unit :=
-    let* α0 : mut_ref i32.t := M.read x in
-    let* α1 : M.Val i32.t := M.alloc (Integer.of_Z 1) in
-    assign_op BinOp.Panic.add (deref α0) α1 in
+    let* β : M.Val i32.t :=
+      let* α0 : mut_ref i32.t := M.read x in
+      M.pure (deref α0) in
+    let* α0 := M.read β in
+    let* α1 := BinOp.Panic.add α0 (Integer.of_Z 1) in
+    assign β α1 in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.
 

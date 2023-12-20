@@ -2059,8 +2059,10 @@ Section Impl_multisig_Multisig_t.
             M.call ((core.option.Option.t u32.t)::["expect"] α1 α2) in
           M.alloc α3 in
         let* _ : M.Val unit :=
-          let* α0 : M.Val u32.t := M.alloc (Integer.of_Z 1) in
-          assign_op BinOp.Panic.sub confirmation_count α0 in
+          let β : M.Val u32.t := confirmation_count in
+          let* α0 := M.read β in
+          let* α1 := BinOp.Panic.sub α0 (Integer.of_Z 1) in
+          assign β α1 in
         let* _ : M.Val (core.option.Option.t u32.t) :=
           let* α0 : mut_ref multisig.Multisig.t := M.read self in
           let* α1 : u32.t := M.read trans_id in
@@ -2439,8 +2441,10 @@ Section Impl_multisig_Multisig_t.
       let* α0 : bool.t := M.read new_confirmation in
       if (use α0 : bool) then
         let* _ : M.Val unit :=
-          let* α0 : M.Val u32.t := M.alloc (Integer.of_Z 1) in
-          assign_op BinOp.Panic.add count α0 in
+          let β : M.Val u32.t := count in
+          let* α0 := M.read β in
+          let* α1 := BinOp.Panic.add α0 (Integer.of_Z 1) in
+          assign β α1 in
         let* _ : M.Val (core.option.Option.t u32.t) :=
           let* α0 : mut_ref multisig.Multisig.t := M.read self in
           let* α1 : u32.t * multisig.AccountId.t := M.read key in
@@ -2827,8 +2831,10 @@ Section Impl_multisig_Multisig_t.
                         (Integer.of_Z 0)) in
                   M.alloc α3 in
                 let* _ : M.Val unit :=
-                  let* α0 : M.Val u32.t := M.alloc (Integer.of_Z 1) in
-                  assign_op BinOp.Panic.sub count α0 in
+                  let β : M.Val u32.t := count in
+                  let* α0 := M.read β in
+                  let* α1 := BinOp.Panic.sub α0 (Integer.of_Z 1) in
+                  assign β α1 in
                 let* _ : M.Val (core.option.Option.t u32.t) :=
                   let* α0 : mut_ref multisig.Multisig.t := M.read self in
                   let* α1 : ref u32.t := M.read trans_id in

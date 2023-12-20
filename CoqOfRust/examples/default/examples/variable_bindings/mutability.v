@@ -45,8 +45,10 @@ Definition main : M unit :=
       M.alloc α10 in
     M.alloc tt in
   let* _ : M.Val unit :=
-    let* α0 : M.Val i32.t := M.alloc (Integer.of_Z 1) in
-    assign_op BinOp.Panic.add mutable_binding α0 in
+    let β : M.Val i32.t := mutable_binding in
+    let* α0 := M.read β in
+    let* α1 := BinOp.Panic.add α0 (Integer.of_Z 1) in
+    assign β α1 in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "After mutation: ") in

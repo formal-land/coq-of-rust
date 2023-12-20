@@ -625,20 +625,21 @@ Section Impl_subtle_ConstantTimeEq_for_slice_T.
                   let* bi := M.alloc bi in
                   let* ai := M.alloc ai in
                   let* _ : M.Val unit :=
-                    let* α0 : ref T := M.read ai in
-                    let* α1 : ref T := M.read bi in
-                    let* α2 : subtle.Choice.t :=
+                    let β : M.Val u8.t := x in
+                    let* α0 := M.read β in
+                    let* α1 : ref T := M.read ai in
+                    let* α2 : ref T := M.read bi in
+                    let* α3 : subtle.Choice.t :=
                       M.call
                         ((subtle.ConstantTimeEq.ct_eq
                             (Self := T)
                             (Trait := ltac:(refine _)))
-                          α0
-                          α1) in
-                    let* α3 : M.Val subtle.Choice.t := M.alloc α2 in
-                    let* α4 : u8.t :=
-                      M.call (subtle.Choice.t::["unwrap_u8"] (borrow α3)) in
-                    let* α5 : M.Val u8.t := M.alloc α4 in
-                    M.pure (assign_op BinOp.Pure.bit_and x α5) in
+                          α1
+                          α2) in
+                    let* α4 : M.Val subtle.Choice.t := M.alloc α3 in
+                    let* α5 : u8.t :=
+                      M.call (subtle.Choice.t::["unwrap_u8"] (borrow α4)) in
+                    assign β (BinOp.Pure.bit_and α0 α5) in
                   M.alloc tt
                 end in
               M.alloc tt)
@@ -1290,15 +1291,20 @@ Section Impl_subtle_ConditionallySelectable_for_u8_t.
       let* α3 : u8.t := cast α2 in
       M.alloc α3 in
     let* _ : M.Val unit :=
-      let* α0 : mut_ref u8.t := M.read self in
+      let* β : M.Val u8.t :=
+        let* α0 : mut_ref u8.t := M.read self in
+        M.pure (deref α0) in
+      let* α0 := M.read β in
       let* α1 : u8.t := M.read mask in
       let* α2 : mut_ref u8.t := M.read self in
       let* α3 : u8.t := M.read (deref α2) in
       let* α4 : ref u8.t := M.read other in
       let* α5 : u8.t := M.read (deref α4) in
-      let* α6 : M.Val u8.t :=
-        M.alloc (BinOp.Pure.bit_and α1 (BinOp.Pure.bit_xor α3 α5)) in
-      M.pure (assign_op BinOp.Pure.bit_xor (deref α0) α6) in
+      assign
+        β
+        (BinOp.Pure.bit_xor
+          α0
+          (BinOp.Pure.bit_and α1 (BinOp.Pure.bit_xor α3 α5))) in
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
@@ -1340,11 +1346,19 @@ Section Impl_subtle_ConditionallySelectable_for_u8_t.
       let* α4 : u8.t := M.read (deref α3) in
       M.alloc (BinOp.Pure.bit_and α0 (BinOp.Pure.bit_xor α2 α4)) in
     let* _ : M.Val unit :=
-      let* α0 : mut_ref u8.t := M.read a in
-      M.pure (assign_op BinOp.Pure.bit_xor (deref α0) t) in
+      let* β : M.Val u8.t :=
+        let* α0 : mut_ref u8.t := M.read a in
+        M.pure (deref α0) in
+      let* α0 := M.read β in
+      let* α1 : u8.t := M.read t in
+      assign β (BinOp.Pure.bit_xor α0 α1) in
     let* _ : M.Val unit :=
-      let* α0 : mut_ref u8.t := M.read b in
-      M.pure (assign_op BinOp.Pure.bit_xor (deref α0) t) in
+      let* β : M.Val u8.t :=
+        let* α0 : mut_ref u8.t := M.read b in
+        M.pure (deref α0) in
+      let* α0 := M.read β in
+      let* α1 : u8.t := M.read t in
+      assign β (BinOp.Pure.bit_xor α0 α1) in
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
@@ -1438,15 +1452,20 @@ Section Impl_subtle_ConditionallySelectable_for_i8_t.
       let* α2 : i8.t := UnOp.neg α1 in
       M.alloc (use α2) in
     let* _ : M.Val unit :=
-      let* α0 : mut_ref i8.t := M.read self in
+      let* β : M.Val i8.t :=
+        let* α0 : mut_ref i8.t := M.read self in
+        M.pure (deref α0) in
+      let* α0 := M.read β in
       let* α1 : i8.t := M.read mask in
       let* α2 : mut_ref i8.t := M.read self in
       let* α3 : i8.t := M.read (deref α2) in
       let* α4 : ref i8.t := M.read other in
       let* α5 : i8.t := M.read (deref α4) in
-      let* α6 : M.Val i8.t :=
-        M.alloc (BinOp.Pure.bit_and α1 (BinOp.Pure.bit_xor α3 α5)) in
-      M.pure (assign_op BinOp.Pure.bit_xor (deref α0) α6) in
+      assign
+        β
+        (BinOp.Pure.bit_xor
+          α0
+          (BinOp.Pure.bit_and α1 (BinOp.Pure.bit_xor α3 α5))) in
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
@@ -1487,11 +1506,19 @@ Section Impl_subtle_ConditionallySelectable_for_i8_t.
       let* α4 : i8.t := M.read (deref α3) in
       M.alloc (BinOp.Pure.bit_and α0 (BinOp.Pure.bit_xor α2 α4)) in
     let* _ : M.Val unit :=
-      let* α0 : mut_ref i8.t := M.read a in
-      M.pure (assign_op BinOp.Pure.bit_xor (deref α0) t) in
+      let* β : M.Val i8.t :=
+        let* α0 : mut_ref i8.t := M.read a in
+        M.pure (deref α0) in
+      let* α0 := M.read β in
+      let* α1 : i8.t := M.read t in
+      assign β (BinOp.Pure.bit_xor α0 α1) in
     let* _ : M.Val unit :=
-      let* α0 : mut_ref i8.t := M.read b in
-      M.pure (assign_op BinOp.Pure.bit_xor (deref α0) t) in
+      let* β : M.Val i8.t :=
+        let* α0 : mut_ref i8.t := M.read b in
+        M.pure (deref α0) in
+      let* α0 := M.read β in
+      let* α1 : i8.t := M.read t in
+      assign β (BinOp.Pure.bit_xor α0 α1) in
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
@@ -1587,15 +1614,20 @@ Section Impl_subtle_ConditionallySelectable_for_u16_t.
       let* α3 : u16.t := cast α2 in
       M.alloc α3 in
     let* _ : M.Val unit :=
-      let* α0 : mut_ref u16.t := M.read self in
+      let* β : M.Val u16.t :=
+        let* α0 : mut_ref u16.t := M.read self in
+        M.pure (deref α0) in
+      let* α0 := M.read β in
       let* α1 : u16.t := M.read mask in
       let* α2 : mut_ref u16.t := M.read self in
       let* α3 : u16.t := M.read (deref α2) in
       let* α4 : ref u16.t := M.read other in
       let* α5 : u16.t := M.read (deref α4) in
-      let* α6 : M.Val u16.t :=
-        M.alloc (BinOp.Pure.bit_and α1 (BinOp.Pure.bit_xor α3 α5)) in
-      M.pure (assign_op BinOp.Pure.bit_xor (deref α0) α6) in
+      assign
+        β
+        (BinOp.Pure.bit_xor
+          α0
+          (BinOp.Pure.bit_and α1 (BinOp.Pure.bit_xor α3 α5))) in
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
@@ -1637,11 +1669,19 @@ Section Impl_subtle_ConditionallySelectable_for_u16_t.
       let* α4 : u16.t := M.read (deref α3) in
       M.alloc (BinOp.Pure.bit_and α0 (BinOp.Pure.bit_xor α2 α4)) in
     let* _ : M.Val unit :=
-      let* α0 : mut_ref u16.t := M.read a in
-      M.pure (assign_op BinOp.Pure.bit_xor (deref α0) t) in
+      let* β : M.Val u16.t :=
+        let* α0 : mut_ref u16.t := M.read a in
+        M.pure (deref α0) in
+      let* α0 := M.read β in
+      let* α1 : u16.t := M.read t in
+      assign β (BinOp.Pure.bit_xor α0 α1) in
     let* _ : M.Val unit :=
-      let* α0 : mut_ref u16.t := M.read b in
-      M.pure (assign_op BinOp.Pure.bit_xor (deref α0) t) in
+      let* β : M.Val u16.t :=
+        let* α0 : mut_ref u16.t := M.read b in
+        M.pure (deref α0) in
+      let* α0 := M.read β in
+      let* α1 : u16.t := M.read t in
+      assign β (BinOp.Pure.bit_xor α0 α1) in
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
@@ -1735,15 +1775,20 @@ Section Impl_subtle_ConditionallySelectable_for_i16_t.
       let* α2 : i16.t := UnOp.neg α1 in
       M.alloc (use α2) in
     let* _ : M.Val unit :=
-      let* α0 : mut_ref i16.t := M.read self in
+      let* β : M.Val i16.t :=
+        let* α0 : mut_ref i16.t := M.read self in
+        M.pure (deref α0) in
+      let* α0 := M.read β in
       let* α1 : i16.t := M.read mask in
       let* α2 : mut_ref i16.t := M.read self in
       let* α3 : i16.t := M.read (deref α2) in
       let* α4 : ref i16.t := M.read other in
       let* α5 : i16.t := M.read (deref α4) in
-      let* α6 : M.Val i16.t :=
-        M.alloc (BinOp.Pure.bit_and α1 (BinOp.Pure.bit_xor α3 α5)) in
-      M.pure (assign_op BinOp.Pure.bit_xor (deref α0) α6) in
+      assign
+        β
+        (BinOp.Pure.bit_xor
+          α0
+          (BinOp.Pure.bit_and α1 (BinOp.Pure.bit_xor α3 α5))) in
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
@@ -1784,11 +1829,19 @@ Section Impl_subtle_ConditionallySelectable_for_i16_t.
       let* α4 : i16.t := M.read (deref α3) in
       M.alloc (BinOp.Pure.bit_and α0 (BinOp.Pure.bit_xor α2 α4)) in
     let* _ : M.Val unit :=
-      let* α0 : mut_ref i16.t := M.read a in
-      M.pure (assign_op BinOp.Pure.bit_xor (deref α0) t) in
+      let* β : M.Val i16.t :=
+        let* α0 : mut_ref i16.t := M.read a in
+        M.pure (deref α0) in
+      let* α0 := M.read β in
+      let* α1 : i16.t := M.read t in
+      assign β (BinOp.Pure.bit_xor α0 α1) in
     let* _ : M.Val unit :=
-      let* α0 : mut_ref i16.t := M.read b in
-      M.pure (assign_op BinOp.Pure.bit_xor (deref α0) t) in
+      let* β : M.Val i16.t :=
+        let* α0 : mut_ref i16.t := M.read b in
+        M.pure (deref α0) in
+      let* α0 := M.read β in
+      let* α1 : i16.t := M.read t in
+      assign β (BinOp.Pure.bit_xor α0 α1) in
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
@@ -1884,15 +1937,20 @@ Section Impl_subtle_ConditionallySelectable_for_u32_t.
       let* α3 : u32.t := cast α2 in
       M.alloc α3 in
     let* _ : M.Val unit :=
-      let* α0 : mut_ref u32.t := M.read self in
+      let* β : M.Val u32.t :=
+        let* α0 : mut_ref u32.t := M.read self in
+        M.pure (deref α0) in
+      let* α0 := M.read β in
       let* α1 : u32.t := M.read mask in
       let* α2 : mut_ref u32.t := M.read self in
       let* α3 : u32.t := M.read (deref α2) in
       let* α4 : ref u32.t := M.read other in
       let* α5 : u32.t := M.read (deref α4) in
-      let* α6 : M.Val u32.t :=
-        M.alloc (BinOp.Pure.bit_and α1 (BinOp.Pure.bit_xor α3 α5)) in
-      M.pure (assign_op BinOp.Pure.bit_xor (deref α0) α6) in
+      assign
+        β
+        (BinOp.Pure.bit_xor
+          α0
+          (BinOp.Pure.bit_and α1 (BinOp.Pure.bit_xor α3 α5))) in
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
@@ -1934,11 +1992,19 @@ Section Impl_subtle_ConditionallySelectable_for_u32_t.
       let* α4 : u32.t := M.read (deref α3) in
       M.alloc (BinOp.Pure.bit_and α0 (BinOp.Pure.bit_xor α2 α4)) in
     let* _ : M.Val unit :=
-      let* α0 : mut_ref u32.t := M.read a in
-      M.pure (assign_op BinOp.Pure.bit_xor (deref α0) t) in
+      let* β : M.Val u32.t :=
+        let* α0 : mut_ref u32.t := M.read a in
+        M.pure (deref α0) in
+      let* α0 := M.read β in
+      let* α1 : u32.t := M.read t in
+      assign β (BinOp.Pure.bit_xor α0 α1) in
     let* _ : M.Val unit :=
-      let* α0 : mut_ref u32.t := M.read b in
-      M.pure (assign_op BinOp.Pure.bit_xor (deref α0) t) in
+      let* β : M.Val u32.t :=
+        let* α0 : mut_ref u32.t := M.read b in
+        M.pure (deref α0) in
+      let* α0 := M.read β in
+      let* α1 : u32.t := M.read t in
+      assign β (BinOp.Pure.bit_xor α0 α1) in
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
@@ -2032,15 +2098,20 @@ Section Impl_subtle_ConditionallySelectable_for_i32_t.
       let* α2 : i32.t := UnOp.neg α1 in
       M.alloc (use α2) in
     let* _ : M.Val unit :=
-      let* α0 : mut_ref i32.t := M.read self in
+      let* β : M.Val i32.t :=
+        let* α0 : mut_ref i32.t := M.read self in
+        M.pure (deref α0) in
+      let* α0 := M.read β in
       let* α1 : i32.t := M.read mask in
       let* α2 : mut_ref i32.t := M.read self in
       let* α3 : i32.t := M.read (deref α2) in
       let* α4 : ref i32.t := M.read other in
       let* α5 : i32.t := M.read (deref α4) in
-      let* α6 : M.Val i32.t :=
-        M.alloc (BinOp.Pure.bit_and α1 (BinOp.Pure.bit_xor α3 α5)) in
-      M.pure (assign_op BinOp.Pure.bit_xor (deref α0) α6) in
+      assign
+        β
+        (BinOp.Pure.bit_xor
+          α0
+          (BinOp.Pure.bit_and α1 (BinOp.Pure.bit_xor α3 α5))) in
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
@@ -2081,11 +2152,19 @@ Section Impl_subtle_ConditionallySelectable_for_i32_t.
       let* α4 : i32.t := M.read (deref α3) in
       M.alloc (BinOp.Pure.bit_and α0 (BinOp.Pure.bit_xor α2 α4)) in
     let* _ : M.Val unit :=
-      let* α0 : mut_ref i32.t := M.read a in
-      M.pure (assign_op BinOp.Pure.bit_xor (deref α0) t) in
+      let* β : M.Val i32.t :=
+        let* α0 : mut_ref i32.t := M.read a in
+        M.pure (deref α0) in
+      let* α0 := M.read β in
+      let* α1 : i32.t := M.read t in
+      assign β (BinOp.Pure.bit_xor α0 α1) in
     let* _ : M.Val unit :=
-      let* α0 : mut_ref i32.t := M.read b in
-      M.pure (assign_op BinOp.Pure.bit_xor (deref α0) t) in
+      let* β : M.Val i32.t :=
+        let* α0 : mut_ref i32.t := M.read b in
+        M.pure (deref α0) in
+      let* α0 := M.read β in
+      let* α1 : i32.t := M.read t in
+      assign β (BinOp.Pure.bit_xor α0 α1) in
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
@@ -2181,15 +2260,20 @@ Section Impl_subtle_ConditionallySelectable_for_u64_t.
       let* α3 : u64.t := cast α2 in
       M.alloc α3 in
     let* _ : M.Val unit :=
-      let* α0 : mut_ref u64.t := M.read self in
+      let* β : M.Val u64.t :=
+        let* α0 : mut_ref u64.t := M.read self in
+        M.pure (deref α0) in
+      let* α0 := M.read β in
       let* α1 : u64.t := M.read mask in
       let* α2 : mut_ref u64.t := M.read self in
       let* α3 : u64.t := M.read (deref α2) in
       let* α4 : ref u64.t := M.read other in
       let* α5 : u64.t := M.read (deref α4) in
-      let* α6 : M.Val u64.t :=
-        M.alloc (BinOp.Pure.bit_and α1 (BinOp.Pure.bit_xor α3 α5)) in
-      M.pure (assign_op BinOp.Pure.bit_xor (deref α0) α6) in
+      assign
+        β
+        (BinOp.Pure.bit_xor
+          α0
+          (BinOp.Pure.bit_and α1 (BinOp.Pure.bit_xor α3 α5))) in
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
@@ -2231,11 +2315,19 @@ Section Impl_subtle_ConditionallySelectable_for_u64_t.
       let* α4 : u64.t := M.read (deref α3) in
       M.alloc (BinOp.Pure.bit_and α0 (BinOp.Pure.bit_xor α2 α4)) in
     let* _ : M.Val unit :=
-      let* α0 : mut_ref u64.t := M.read a in
-      M.pure (assign_op BinOp.Pure.bit_xor (deref α0) t) in
+      let* β : M.Val u64.t :=
+        let* α0 : mut_ref u64.t := M.read a in
+        M.pure (deref α0) in
+      let* α0 := M.read β in
+      let* α1 : u64.t := M.read t in
+      assign β (BinOp.Pure.bit_xor α0 α1) in
     let* _ : M.Val unit :=
-      let* α0 : mut_ref u64.t := M.read b in
-      M.pure (assign_op BinOp.Pure.bit_xor (deref α0) t) in
+      let* β : M.Val u64.t :=
+        let* α0 : mut_ref u64.t := M.read b in
+        M.pure (deref α0) in
+      let* α0 := M.read β in
+      let* α1 : u64.t := M.read t in
+      assign β (BinOp.Pure.bit_xor α0 α1) in
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
@@ -2329,15 +2421,20 @@ Section Impl_subtle_ConditionallySelectable_for_i64_t.
       let* α2 : i64.t := UnOp.neg α1 in
       M.alloc (use α2) in
     let* _ : M.Val unit :=
-      let* α0 : mut_ref i64.t := M.read self in
+      let* β : M.Val i64.t :=
+        let* α0 : mut_ref i64.t := M.read self in
+        M.pure (deref α0) in
+      let* α0 := M.read β in
       let* α1 : i64.t := M.read mask in
       let* α2 : mut_ref i64.t := M.read self in
       let* α3 : i64.t := M.read (deref α2) in
       let* α4 : ref i64.t := M.read other in
       let* α5 : i64.t := M.read (deref α4) in
-      let* α6 : M.Val i64.t :=
-        M.alloc (BinOp.Pure.bit_and α1 (BinOp.Pure.bit_xor α3 α5)) in
-      M.pure (assign_op BinOp.Pure.bit_xor (deref α0) α6) in
+      assign
+        β
+        (BinOp.Pure.bit_xor
+          α0
+          (BinOp.Pure.bit_and α1 (BinOp.Pure.bit_xor α3 α5))) in
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
@@ -2378,11 +2475,19 @@ Section Impl_subtle_ConditionallySelectable_for_i64_t.
       let* α4 : i64.t := M.read (deref α3) in
       M.alloc (BinOp.Pure.bit_and α0 (BinOp.Pure.bit_xor α2 α4)) in
     let* _ : M.Val unit :=
-      let* α0 : mut_ref i64.t := M.read a in
-      M.pure (assign_op BinOp.Pure.bit_xor (deref α0) t) in
+      let* β : M.Val i64.t :=
+        let* α0 : mut_ref i64.t := M.read a in
+        M.pure (deref α0) in
+      let* α0 := M.read β in
+      let* α1 : i64.t := M.read t in
+      assign β (BinOp.Pure.bit_xor α0 α1) in
     let* _ : M.Val unit :=
-      let* α0 : mut_ref i64.t := M.read b in
-      M.pure (assign_op BinOp.Pure.bit_xor (deref α0) t) in
+      let* β : M.Val i64.t :=
+        let* α0 : mut_ref i64.t := M.read b in
+        M.pure (deref α0) in
+      let* α0 := M.read β in
+      let* α1 : i64.t := M.read t in
+      assign β (BinOp.Pure.bit_xor α0 α1) in
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
@@ -3348,12 +3453,18 @@ Section Impl_subtle_ConstantTimeGreater_for_u8_t.
         (let* α0 : i32.t := M.read pow in
         if (use (BinOp.Pure.lt α0 (Integer.of_Z 8)) : bool) then
           let* _ : M.Val unit :=
-            let* α0 : u8.t := M.read ltb in
+            let β : M.Val u8.t := ltb in
+            let* α0 := M.read β in
+            let* α1 : u8.t := M.read ltb in
+            let* α2 : i32.t := M.read pow in
+            let* α3 : u8.t := BinOp.Panic.shr α1 α2 in
+            assign β (BinOp.Pure.bit_or α0 α3) in
+          let* _ : M.Val unit :=
+            let β : M.Val i32.t := pow in
+            let* α0 := M.read β in
             let* α1 : i32.t := M.read pow in
-            let* α2 : u8.t := BinOp.Panic.shr α0 α1 in
-            let* α3 : M.Val u8.t := M.alloc α2 in
-            M.pure (assign_op BinOp.Pure.bit_or ltb α3) in
-          let* _ : M.Val unit := assign_op BinOp.Panic.add pow pow in
+            let* α2 := BinOp.Panic.add α0 α1 in
+            assign β α2 in
           M.alloc tt
         else
           let* _ : M.Val unit :=
@@ -3375,12 +3486,18 @@ Section Impl_subtle_ConstantTimeGreater_for_u8_t.
         (let* α0 : i32.t := M.read pow in
         if (use (BinOp.Pure.lt α0 (Integer.of_Z 8)) : bool) then
           let* _ : M.Val unit :=
-            let* α0 : u8.t := M.read bit in
+            let β : M.Val u8.t := bit in
+            let* α0 := M.read β in
+            let* α1 : u8.t := M.read bit in
+            let* α2 : i32.t := M.read pow in
+            let* α3 : u8.t := BinOp.Panic.shr α1 α2 in
+            assign β (BinOp.Pure.bit_or α0 α3) in
+          let* _ : M.Val unit :=
+            let β : M.Val i32.t := pow in
+            let* α0 := M.read β in
             let* α1 : i32.t := M.read pow in
-            let* α2 : u8.t := BinOp.Panic.shr α0 α1 in
-            let* α3 : M.Val u8.t := M.alloc α2 in
-            M.pure (assign_op BinOp.Pure.bit_or bit α3) in
-          let* _ : M.Val unit := assign_op BinOp.Panic.add pow pow in
+            let* α2 := BinOp.Panic.add α0 α1 in
+            assign β α2 in
           M.alloc tt
         else
           let* _ : M.Val unit :=
@@ -3479,12 +3596,18 @@ Section Impl_subtle_ConstantTimeGreater_for_u16_t.
         (let* α0 : i32.t := M.read pow in
         if (use (BinOp.Pure.lt α0 (Integer.of_Z 16)) : bool) then
           let* _ : M.Val unit :=
-            let* α0 : u16.t := M.read ltb in
+            let β : M.Val u16.t := ltb in
+            let* α0 := M.read β in
+            let* α1 : u16.t := M.read ltb in
+            let* α2 : i32.t := M.read pow in
+            let* α3 : u16.t := BinOp.Panic.shr α1 α2 in
+            assign β (BinOp.Pure.bit_or α0 α3) in
+          let* _ : M.Val unit :=
+            let β : M.Val i32.t := pow in
+            let* α0 := M.read β in
             let* α1 : i32.t := M.read pow in
-            let* α2 : u16.t := BinOp.Panic.shr α0 α1 in
-            let* α3 : M.Val u16.t := M.alloc α2 in
-            M.pure (assign_op BinOp.Pure.bit_or ltb α3) in
-          let* _ : M.Val unit := assign_op BinOp.Panic.add pow pow in
+            let* α2 := BinOp.Panic.add α0 α1 in
+            assign β α2 in
           M.alloc tt
         else
           let* _ : M.Val unit :=
@@ -3506,12 +3629,18 @@ Section Impl_subtle_ConstantTimeGreater_for_u16_t.
         (let* α0 : i32.t := M.read pow in
         if (use (BinOp.Pure.lt α0 (Integer.of_Z 16)) : bool) then
           let* _ : M.Val unit :=
-            let* α0 : u16.t := M.read bit in
+            let β : M.Val u16.t := bit in
+            let* α0 := M.read β in
+            let* α1 : u16.t := M.read bit in
+            let* α2 : i32.t := M.read pow in
+            let* α3 : u16.t := BinOp.Panic.shr α1 α2 in
+            assign β (BinOp.Pure.bit_or α0 α3) in
+          let* _ : M.Val unit :=
+            let β : M.Val i32.t := pow in
+            let* α0 := M.read β in
             let* α1 : i32.t := M.read pow in
-            let* α2 : u16.t := BinOp.Panic.shr α0 α1 in
-            let* α3 : M.Val u16.t := M.alloc α2 in
-            M.pure (assign_op BinOp.Pure.bit_or bit α3) in
-          let* _ : M.Val unit := assign_op BinOp.Panic.add pow pow in
+            let* α2 := BinOp.Panic.add α0 α1 in
+            assign β α2 in
           M.alloc tt
         else
           let* _ : M.Val unit :=
@@ -3611,12 +3740,18 @@ Section Impl_subtle_ConstantTimeGreater_for_u32_t.
         (let* α0 : i32.t := M.read pow in
         if (use (BinOp.Pure.lt α0 (Integer.of_Z 32)) : bool) then
           let* _ : M.Val unit :=
-            let* α0 : u32.t := M.read ltb in
+            let β : M.Val u32.t := ltb in
+            let* α0 := M.read β in
+            let* α1 : u32.t := M.read ltb in
+            let* α2 : i32.t := M.read pow in
+            let* α3 : u32.t := BinOp.Panic.shr α1 α2 in
+            assign β (BinOp.Pure.bit_or α0 α3) in
+          let* _ : M.Val unit :=
+            let β : M.Val i32.t := pow in
+            let* α0 := M.read β in
             let* α1 : i32.t := M.read pow in
-            let* α2 : u32.t := BinOp.Panic.shr α0 α1 in
-            let* α3 : M.Val u32.t := M.alloc α2 in
-            M.pure (assign_op BinOp.Pure.bit_or ltb α3) in
-          let* _ : M.Val unit := assign_op BinOp.Panic.add pow pow in
+            let* α2 := BinOp.Panic.add α0 α1 in
+            assign β α2 in
           M.alloc tt
         else
           let* _ : M.Val unit :=
@@ -3638,12 +3773,18 @@ Section Impl_subtle_ConstantTimeGreater_for_u32_t.
         (let* α0 : i32.t := M.read pow in
         if (use (BinOp.Pure.lt α0 (Integer.of_Z 32)) : bool) then
           let* _ : M.Val unit :=
-            let* α0 : u32.t := M.read bit in
+            let β : M.Val u32.t := bit in
+            let* α0 := M.read β in
+            let* α1 : u32.t := M.read bit in
+            let* α2 : i32.t := M.read pow in
+            let* α3 : u32.t := BinOp.Panic.shr α1 α2 in
+            assign β (BinOp.Pure.bit_or α0 α3) in
+          let* _ : M.Val unit :=
+            let β : M.Val i32.t := pow in
+            let* α0 := M.read β in
             let* α1 : i32.t := M.read pow in
-            let* α2 : u32.t := BinOp.Panic.shr α0 α1 in
-            let* α3 : M.Val u32.t := M.alloc α2 in
-            M.pure (assign_op BinOp.Pure.bit_or bit α3) in
-          let* _ : M.Val unit := assign_op BinOp.Panic.add pow pow in
+            let* α2 := BinOp.Panic.add α0 α1 in
+            assign β α2 in
           M.alloc tt
         else
           let* _ : M.Val unit :=
@@ -3743,12 +3884,18 @@ Section Impl_subtle_ConstantTimeGreater_for_u64_t.
         (let* α0 : i32.t := M.read pow in
         if (use (BinOp.Pure.lt α0 (Integer.of_Z 64)) : bool) then
           let* _ : M.Val unit :=
-            let* α0 : u64.t := M.read ltb in
+            let β : M.Val u64.t := ltb in
+            let* α0 := M.read β in
+            let* α1 : u64.t := M.read ltb in
+            let* α2 : i32.t := M.read pow in
+            let* α3 : u64.t := BinOp.Panic.shr α1 α2 in
+            assign β (BinOp.Pure.bit_or α0 α3) in
+          let* _ : M.Val unit :=
+            let β : M.Val i32.t := pow in
+            let* α0 := M.read β in
             let* α1 : i32.t := M.read pow in
-            let* α2 : u64.t := BinOp.Panic.shr α0 α1 in
-            let* α3 : M.Val u64.t := M.alloc α2 in
-            M.pure (assign_op BinOp.Pure.bit_or ltb α3) in
-          let* _ : M.Val unit := assign_op BinOp.Panic.add pow pow in
+            let* α2 := BinOp.Panic.add α0 α1 in
+            assign β α2 in
           M.alloc tt
         else
           let* _ : M.Val unit :=
@@ -3770,12 +3917,18 @@ Section Impl_subtle_ConstantTimeGreater_for_u64_t.
         (let* α0 : i32.t := M.read pow in
         if (use (BinOp.Pure.lt α0 (Integer.of_Z 64)) : bool) then
           let* _ : M.Val unit :=
-            let* α0 : u64.t := M.read bit in
+            let β : M.Val u64.t := bit in
+            let* α0 := M.read β in
+            let* α1 : u64.t := M.read bit in
+            let* α2 : i32.t := M.read pow in
+            let* α3 : u64.t := BinOp.Panic.shr α1 α2 in
+            assign β (BinOp.Pure.bit_or α0 α3) in
+          let* _ : M.Val unit :=
+            let β : M.Val i32.t := pow in
+            let* α0 := M.read β in
             let* α1 : i32.t := M.read pow in
-            let* α2 : u64.t := BinOp.Panic.shr α0 α1 in
-            let* α3 : M.Val u64.t := M.alloc α2 in
-            M.pure (assign_op BinOp.Pure.bit_or bit α3) in
-          let* _ : M.Val unit := assign_op BinOp.Panic.add pow pow in
+            let* α2 := BinOp.Panic.add α0 α1 in
+            assign β α2 in
           M.alloc tt
         else
           let* _ : M.Val unit :=

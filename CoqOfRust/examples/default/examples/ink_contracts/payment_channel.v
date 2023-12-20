@@ -1100,8 +1100,13 @@ Section Impl_payment_channel_PaymentChannel_t.
         let* α3 : u128.t := BinOp.Panic.sub α0 α2 in
         M.alloc α3 in
       let* _ : M.Val unit :=
-        let* α0 : mut_ref payment_channel.PaymentChannel.t := M.read self in
-        assign_op BinOp.Panic.add (deref α0).["withdrawn"] amount_to_withdraw in
+        let* β : M.Val u128.t :=
+          let* α0 : mut_ref payment_channel.PaymentChannel.t := M.read self in
+          M.pure (deref α0).["withdrawn"] in
+        let* α0 := M.read β in
+        let* α1 : u128.t := M.read amount_to_withdraw in
+        let* α2 := BinOp.Panic.add α0 α1 in
+        assign β α2 in
       let* _ : M.Val unit :=
         let* α0 : mut_ref payment_channel.PaymentChannel.t := M.read self in
         let* α1 : payment_channel.Env.t :=

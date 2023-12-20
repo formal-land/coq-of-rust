@@ -421,21 +421,49 @@ fn compile_expr_kind<'a>(
         }
         thir::ExprKind::AssignOp { op, lhs, rhs } => {
             let (path, purity) = path_of_bin_op(op);
-            ExprKind::Call {
-                func: Box::new(Expr {
-                    kind: ExprKind::LocalVar("assign_op".to_string()),
+            let lhs = compile_expr(env, thir, lhs);
+            let rhs = compile_expr(env, thir, rhs);
+
+            ExprKind::Let {
+                is_monadic: false,
+                pattern: Box::new(Pattern::Variable("β".to_string())),
+                init: Box::new(lhs),
+                body: Box::new(Expr {
+                    kind: ExprKind::Call {
+                        func: Box::new(Expr {
+                            kind: ExprKind::Var(Path::new(&["assign"])),
+                            ty: None,
+                        }),
+                        args: vec![
+                            Expr {
+                                kind: ExprKind::LocalVar("β".to_string()),
+                                ty: None,
+                            },
+                            Expr {
+                                kind: ExprKind::Call {
+                                    func: Box::new(Expr {
+                                        kind: ExprKind::Var(path),
+                                        ty: None,
+                                    }),
+                                    args: vec![
+                                        Expr {
+                                            kind: ExprKind::LocalVar("β".to_string()),
+                                            ty: None,
+                                        }
+                                        .read(),
+                                        rhs.read(),
+                                    ],
+                                    purity,
+                                    from_user: false,
+                                },
+                                ty: None,
+                            },
+                        ],
+                        purity: Purity::Effectful,
+                        from_user: false,
+                    },
                     ty: None,
                 }),
-                args: vec![
-                    Expr {
-                        kind: ExprKind::Var(path),
-                        ty: None,
-                    },
-                    compile_expr(env, thir, lhs),
-                    compile_expr(env, thir, rhs),
-                ],
-                purity,
-                from_user: false,
             }
         }
         thir::ExprKind::Field {
@@ -549,7 +577,7 @@ fn compile_expr_kind<'a>(
                 .iter()
                 .map(|field| {
                     (
-                        variant.fields.get(field.name).unwrap().name.to_string(),
+                        to_valid_coq_name(variant.fields.get(field.name).unwrap().name.as_str()),
                         compile_expr(env, thir, &field.expr).read(),
                     )
                 })

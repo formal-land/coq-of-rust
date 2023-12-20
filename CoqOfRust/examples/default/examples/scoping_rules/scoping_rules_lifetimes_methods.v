@@ -25,10 +25,13 @@ Section Impl_scoping_rules_lifetimes_methods_Owner_t.
   Definition add_one (self : mut_ref Self) : M unit :=
     let* self : M.Val (mut_ref Self) := M.alloc self in
     let* _ : M.Val unit :=
-      let* α0 : mut_ref scoping_rules_lifetimes_methods.Owner.t :=
-        M.read self in
-      let* α1 : M.Val i32.t := M.alloc (Integer.of_Z 1) in
-      assign_op BinOp.Panic.add (deref α0).["0"] α1 in
+      let* β : M.Val i32.t :=
+        let* α0 : mut_ref scoping_rules_lifetimes_methods.Owner.t :=
+          M.read self in
+        M.pure (deref α0).["0"] in
+      let* α0 := M.read β in
+      let* α1 := BinOp.Panic.add α0 (Integer.of_Z 1) in
+      assign β α1 in
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   

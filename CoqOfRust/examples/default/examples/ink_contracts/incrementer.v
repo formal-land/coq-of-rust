@@ -62,8 +62,13 @@ Section Impl_incrementer_Incrementer_t.
     let* self : M.Val (mut_ref Self) := M.alloc self in
     let* by_ : M.Val i32.t := M.alloc by_ in
     let* _ : M.Val unit :=
-      let* α0 : mut_ref incrementer.Incrementer.t := M.read self in
-      assign_op BinOp.Panic.add (deref α0).["value"] by_ in
+      let* β : M.Val i32.t :=
+        let* α0 : mut_ref incrementer.Incrementer.t := M.read self in
+        M.pure (deref α0).["value"] in
+      let* α0 := M.read β in
+      let* α1 : i32.t := M.read by_ in
+      let* α2 := BinOp.Panic.add α0 α1 in
+      assign β α2 in
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
