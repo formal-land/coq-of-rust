@@ -808,7 +808,7 @@ fn get_arg_names<'a>(
     default: &'a str,
 ) -> impl Iterator<Item = String> + 'a {
     body.params.iter().map(|param| match param.pat.kind {
-        PatKind::Binding(_, _, ident, _) => ident.name.to_string(),
+        PatKind::Binding(_, _, ident, _) => to_valid_coq_name(ident.name.as_str()),
         _ => default.to_string(),
     })
 }

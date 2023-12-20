@@ -1,5 +1,4 @@
 # blacklisting ink smart contracts
-examples/axiomatized/examples/ink_contracts/payment_channel.v
 examples/default/examples/ink_contracts/conditional_compilation.v
 examples/default/examples/ink_contracts/contract_transfer.v
 examples/default/examples/ink_contracts/custom_allocator.v

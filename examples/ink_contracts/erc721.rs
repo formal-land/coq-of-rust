@@ -60,7 +60,7 @@ pub struct Erc721 {
     operator_approvals: Mapping<(AccountId, AccountId), ()>,
 }
 
-#[derive(Debug, PartialEq, Eq, Clone, Copy)]
+#[derive(PartialEq, Eq, Clone, Copy)]
 pub enum Error {
     NotOwner,
     NotApproved,

@@ -451,58 +451,6 @@ Module Error.
   | NotAllowed.
 End Error.
 
-Module  Impl_core_fmt_Debug_for_erc721_Error_t.
-Section Impl_core_fmt_Debug_for_erc721_Error_t.
-  Definition Self : Set := erc721.Error.t.
-  
-  (*
-  Debug
-  *)
-  Definition fmt
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter.t)
-      : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
-    let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
-    let* α1 : ref erc721.Error.t := M.read self in
-    let* α2 : M.Val (ref str.t) :=
-      match α1 with
-      | erc721.Error.NotOwner  =>
-        let* α0 : ref str.t := M.read (mk_str "NotOwner") in
-        M.alloc α0
-      | erc721.Error.NotApproved  =>
-        let* α0 : ref str.t := M.read (mk_str "NotApproved") in
-        M.alloc α0
-      | erc721.Error.TokenExists  =>
-        let* α0 : ref str.t := M.read (mk_str "TokenExists") in
-        M.alloc α0
-      | erc721.Error.TokenNotFound  =>
-        let* α0 : ref str.t := M.read (mk_str "TokenNotFound") in
-        M.alloc α0
-      | erc721.Error.CannotInsert  =>
-        let* α0 : ref str.t := M.read (mk_str "CannotInsert") in
-        M.alloc α0
-      | erc721.Error.CannotFetchValue  =>
-        let* α0 : ref str.t := M.read (mk_str "CannotFetchValue") in
-        M.alloc α0
-      | erc721.Error.NotAllowed  =>
-        let* α0 : ref str.t := M.read (mk_str "NotAllowed") in
-        M.alloc α0
-      end in
-    let* α3 : ref str.t := M.read α2 in
-    M.call (core.fmt.Formatter.t::["write_str"] α0 α3).
-  
-  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
-    Notations.double_colon := fmt;
-  }.
-  
-  Global Instance ℐ : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
-  }.
-End Impl_core_fmt_Debug_for_erc721_Error_t.
-End Impl_core_fmt_Debug_for_erc721_Error_t.
-
 Module  Impl_core_marker_StructuralPartialEq_for_erc721_Error_t.
 Section Impl_core_marker_StructuralPartialEq_for_erc721_Error_t.
   Definition Self : Set := erc721.Error.t.

@@ -453,11 +453,11 @@ fn compile_expr_kind<'a>(
             ExprKind::Index { base, index }
         }
         thir::ExprKind::VarRef { id } => {
-            let name = env.tcx.hir().opt_name(id.0).unwrap().to_string();
+            let name = to_valid_coq_name(env.tcx.hir().opt_name(id.0).unwrap().as_str());
             ExprKind::LocalVar(name)
         }
         thir::ExprKind::UpvarRef { var_hir_id, .. } => {
-            let name = env.tcx.hir().opt_name(var_hir_id.0).unwrap().to_string();
+            let name = to_valid_coq_name(env.tcx.hir().opt_name(var_hir_id.0).unwrap().as_str());
             ExprKind::LocalVar(name)
         }
         thir::ExprKind::Borrow { borrow_kind, arg } => {

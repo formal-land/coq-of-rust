@@ -110,5 +110,34 @@ Module Mapping := Mapping.
         f.write(content)
 
 
+def update_payment_channel_axiomatized():
+    file_name = "CoqOfRust/examples/axiomatized/examples/ink_contracts/payment_channel.v"
+    with open(file_name, "r") as f:
+        content = f.read()
+
+    content = content.replace(
+        """forall {H T : Set} {ℋ_0 : payment_channel.CryptoHash.Trait H},
+    (ref T) ->
+      (mut_ref
+        (payment_channel.HashOutput.Type_
+          (Self := H)
+          (Trait := ltac:(refine _))))
+      ->
+      M unit""",
+        """forall {H T : Set} {ℋ_0 : payment_channel.CryptoHash.Trait H},
+    (ref T) ->
+      (mut_ref
+        (payment_channel.HashOutput.Type_
+          (Self := H)
+          (Trait := ℋ_0.(CryptoHash.ℒ_0))))
+      ->
+      M unit""",
+    )
+
+    with open(file_name, "w") as f:
+        f.write(content)
+
+
 # update files for last changes
 update_erc_20()
+update_payment_channel_axiomatized()

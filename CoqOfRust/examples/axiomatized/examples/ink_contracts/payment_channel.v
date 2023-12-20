@@ -728,7 +728,7 @@ Parameter hash_encoded :
       (mut_ref
         (payment_channel.HashOutput.Type_
           (Self := H)
-          (Trait := ltac:(refine _))))
+          (Trait := ℋ_0.(CryptoHash.ℒ_0))))
       ->
       M unit.
 
