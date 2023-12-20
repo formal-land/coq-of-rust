@@ -2368,7 +2368,10 @@ Section Impl_erc721_Erc721_t.
           self.token_owner.contains(&id)
       }
   *)
-  Definition exists (self : ref Self) (id : ltac:(erc721.TokenId)) : M bool.t :=
+  Definition exists_
+      (self : ref Self)
+      (id : ltac:(erc721.TokenId))
+      : M bool.t :=
     let* self : M.Val (ref Self) := M.alloc self in
     let* id : M.Val ltac:(erc721.TokenId) := M.alloc id in
     let* α0 : ref erc721.Erc721.t := M.read self in
@@ -2377,9 +2380,9 @@ Section Impl_erc721_Erc721_t.
         (borrow (deref α0).["token_owner"])
         (borrow id)).
   
-  Global Instance AssociatedFunction_exists :
-    Notations.DoubleColon Self "exists" := {
-    Notations.double_colon := exists;
+  Global Instance AssociatedFunction_exists_ :
+    Notations.DoubleColon Self "exists_" := {
+    Notations.double_colon := exists_;
   }.
 End Impl_erc721_Erc721_t.
 End Impl_erc721_Erc721_t.

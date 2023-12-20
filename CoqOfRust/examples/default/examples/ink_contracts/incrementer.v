@@ -60,7 +60,7 @@ Section Impl_incrementer_Incrementer_t.
   *)
   Definition inc (self : mut_ref Self) (by : i32.t) : M unit :=
     let* self : M.Val (mut_ref Self) := M.alloc self in
-    let* by : M.Val i32.t := M.alloc by in
+    let* by : M.Val i32.t := M.alloc by_ in
     let* _ : M.Val unit :=
       let* α0 : mut_ref incrementer.Incrementer.t := M.read self in
       assign_op BinOp.Panic.add (deref α0).["value"] by in

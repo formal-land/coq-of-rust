@@ -1061,11 +1061,11 @@ Section Impl_erc721_Erc721_t.
           self.token_owner.contains(&id)
       }
   *)
-  Parameter exists : (ref Self) -> ltac:(erc721.TokenId) -> M bool.t.
+  Parameter exists_ : (ref Self) -> ltac:(erc721.TokenId) -> M bool.t.
   
-  Global Instance AssociatedFunction_exists :
-    Notations.DoubleColon Self "exists" := {
-    Notations.double_colon := exists;
+  Global Instance AssociatedFunction_exists_ :
+    Notations.DoubleColon Self "exists_" := {
+    Notations.double_colon := exists_;
   }.
 End Impl_erc721_Erc721_t.
 End Impl_erc721_Erc721_t.

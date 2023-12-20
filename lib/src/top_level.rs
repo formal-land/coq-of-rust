@@ -502,7 +502,12 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<Rc<To
                     }
                     let fields = fields
                         .iter()
-                        .map(|field| (field.ident.name.to_string(), compile_type(env, field.ty)))
+                        .map(|field| {
+                            (
+                                to_valid_coq_name(field.ident.name.as_str()),
+                                compile_type(env, field.ty),
+                            )
+                        })
                         .collect();
                     vec![Rc::new(TopLevelItem::TypeStructStruct(TypeStructStruct {
                         name,

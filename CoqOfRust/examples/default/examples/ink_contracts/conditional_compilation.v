@@ -108,7 +108,7 @@ Module  Changes.
 Section Changes.
   Record t : Set := {
     new_value : bool.t;
-    by : conditional_compilation.AccountId.t;
+    by_ : conditional_compilation.AccountId.t;
   }.
   
   Global Instance Get_new_value : Notations.Dot "new_value" := {
@@ -118,11 +118,11 @@ Section Changes.
   Global Instance Get_AF_new_value : Notations.DoubleColon t "new_value" := {
     Notations.double_colon (x : M.Val t) := x.["new_value"];
   }.
-  Global Instance Get_by : Notations.Dot "by" := {
-    Notations.dot := Ref.map (fun x => x.(by)) (fun v x => x <| by := v |>);
+  Global Instance Get_by_ : Notations.Dot "by_" := {
+    Notations.dot := Ref.map (fun x => x.(by_)) (fun v x => x <| by_ := v |>);
   }.
-  Global Instance Get_AF_by : Notations.DoubleColon t "by" := {
-    Notations.double_colon (x : M.Val t) := x.["by"];
+  Global Instance Get_AF_by_ : Notations.DoubleColon t "by_" := {
+    Notations.double_colon (x : M.Val t) := x.["by_"];
   }.
 End Changes.
 End Changes.
@@ -131,7 +131,7 @@ Module  ChangesDated.
 Section ChangesDated.
   Record t : Set := {
     new_value : bool.t;
-    by : conditional_compilation.AccountId.t;
+    by_ : conditional_compilation.AccountId.t;
     when : ltac:(conditional_compilation.BlockNumber);
   }.
   
@@ -142,11 +142,11 @@ Section ChangesDated.
   Global Instance Get_AF_new_value : Notations.DoubleColon t "new_value" := {
     Notations.double_colon (x : M.Val t) := x.["new_value"];
   }.
-  Global Instance Get_by : Notations.Dot "by" := {
-    Notations.dot := Ref.map (fun x => x.(by)) (fun v x => x <| by := v |>);
+  Global Instance Get_by_ : Notations.Dot "by_" := {
+    Notations.dot := Ref.map (fun x => x.(by_)) (fun v x => x <| by_ := v |>);
   }.
-  Global Instance Get_AF_by : Notations.DoubleColon t "by" := {
-    Notations.double_colon (x : M.Val t) := x.["by"];
+  Global Instance Get_AF_by_ : Notations.DoubleColon t "by_" := {
+    Notations.double_colon (x : M.Val t) := x.["by_"];
   }.
   Global Instance Get_when : Notations.Dot "when" := {
     Notations.dot := Ref.map (fun x => x.(when)) (fun v x => x <| when := v |>);
