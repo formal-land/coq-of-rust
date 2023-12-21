@@ -15,7 +15,7 @@ End AccountId.
 
 Module  Impl_core_default_Default_for_call_builder_AccountId_t.
 Section Impl_core_default_Default_for_call_builder_AccountId_t.
-  Ltac Self := exact call_builder.AccountId.t.
+  Definition Self : Set := call_builder.AccountId.t.
   
   (*
   Default
@@ -29,11 +29,11 @@ Section Impl_core_default_Default_for_call_builder_AccountId_t.
     M.pure (call_builder.AccountId.Build_t α0).
   
   Global Instance AssociatedFunction_default :
-    Notations.DoubleColon ltac:(Self) "default" := {
+    Notations.DoubleColon Self "default" := {
     Notations.double_colon := default;
   }.
   
-  Global Instance ℐ : core.default.Default.Trait ltac:(Self) := {
+  Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
   }.
 End Impl_core_default_Default_for_call_builder_AccountId_t.
@@ -41,23 +41,23 @@ End Impl_core_default_Default_for_call_builder_AccountId_t.
 
 Module  Impl_core_clone_Clone_for_call_builder_AccountId_t.
 Section Impl_core_clone_Clone_for_call_builder_AccountId_t.
-  Ltac Self := exact call_builder.AccountId.t.
+  Definition Self : Set := call_builder.AccountId.t.
   
   (*
   Clone
   *)
-  Definition clone (self : ref ltac:(Self)) : M call_builder.AccountId.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
-    let* _ : M.Val unit := M.alloc tt in
+  Definition clone (self : ref Self) : M call_builder.AccountId.t :=
+    let* self : M.Val (ref Self) := M.alloc self in
+    let _ : unit := tt in
     let* α0 : ref call_builder.AccountId.t := M.read self in
     M.read (deref α0).
   
   Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon ltac:(Self) "clone" := {
+    Notations.DoubleColon Self "clone" := {
     Notations.double_colon := clone;
   }.
   
-  Global Instance ℐ : core.clone.Clone.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
     core.clone.Clone.clone_from := Datatypes.None;
   }.
@@ -66,9 +66,9 @@ End Impl_core_clone_Clone_for_call_builder_AccountId_t.
 
 Module  Impl_core_marker_Copy_for_call_builder_AccountId_t.
 Section Impl_core_marker_Copy_for_call_builder_AccountId_t.
-  Ltac Self := exact call_builder.AccountId.t.
+  Definition Self : Set := call_builder.AccountId.t.
   
-  Global Instance ℐ : core.marker.Copy.Trait ltac:(Self) := {
+  Global Instance ℐ : core.marker.Copy.Trait Self := {
   }.
 End Impl_core_marker_Copy_for_call_builder_AccountId_t.
 End Impl_core_marker_Copy_for_call_builder_AccountId_t.
@@ -90,21 +90,20 @@ End Selector.
 
 Module  Impl_call_builder_Selector_t.
 Section Impl_call_builder_Selector_t.
-  Ltac Self := exact call_builder.Selector.t.
+  Definition Self : Set := call_builder.Selector.t.
   
   (*
       fn new(bytes: [u8; 4]) -> Self {
           unimplemented!()
       }
   *)
-  Definition new (bytes : array u8.t) : M ltac:(Self) :=
+  Definition new (bytes : array u8.t) : M Self :=
     let* bytes : M.Val (array u8.t) := M.alloc bytes in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_new :
-    Notations.DoubleColon ltac:(Self) "new" := {
+  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
   }.
 End Impl_call_builder_Selector_t.
@@ -118,7 +117,7 @@ End CallBuilderTest.
 
 Module  Impl_core_default_Default_for_call_builder_CallBuilderTest_t.
 Section Impl_core_default_Default_for_call_builder_CallBuilderTest_t.
-  Ltac Self := exact call_builder.CallBuilderTest.t.
+  Definition Self : Set := call_builder.CallBuilderTest.t.
   
   (*
   Default
@@ -127,11 +126,11 @@ Section Impl_core_default_Default_for_call_builder_CallBuilderTest_t.
     M.pure call_builder.CallBuilderTest.Build.
   
   Global Instance AssociatedFunction_default :
-    Notations.DoubleColon ltac:(Self) "default" := {
+    Notations.DoubleColon Self "default" := {
     Notations.double_colon := default;
   }.
   
-  Global Instance ℐ : core.default.Default.Trait ltac:(Self) := {
+  Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
   }.
 End Impl_core_default_Default_for_call_builder_CallBuilderTest_t.
@@ -139,21 +138,20 @@ End Impl_core_default_Default_for_call_builder_CallBuilderTest_t.
 
 Module  Impl_call_builder_CallBuilderTest_t.
 Section Impl_call_builder_CallBuilderTest_t.
-  Ltac Self := exact call_builder.CallBuilderTest.t.
+  Definition Self : Set := call_builder.CallBuilderTest.t.
   
   (*
       pub fn new() -> Self {
           Default::default()
       }
   *)
-  Definition new : M ltac:(Self) :=
+  Definition new : M Self :=
     M.call
       (core.default.Default.default
         (Self := call_builder.CallBuilderTest.t)
         (Trait := ltac:(refine _))).
   
-  Global Instance AssociatedFunction_new :
-    Notations.DoubleColon ltac:(Self) "new" := {
+  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
   }.
   
@@ -177,11 +175,11 @@ Section Impl_call_builder_CallBuilderTest_t.
       }
   *)
   Definition call
-      (self : mut_ref ltac:(Self))
+      (self : mut_ref Self)
       (address : call_builder.AccountId.t)
       (selector : array u8.t)
       : M (core.option.Option.t call_builder.LangError.t) :=
-    let* self : M.Val (mut_ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (mut_ref Self) := M.alloc self in
     let* address : M.Val call_builder.AccountId.t := M.alloc address in
     let* selector : M.Val (array u8.t) := M.alloc selector in
     let* result : M.Val (core.result.Result.t unit call_builder.LangError.t) :=
@@ -226,7 +224,7 @@ Section Impl_call_builder_CallBuilderTest_t.
     M.read α0.
   
   Global Instance AssociatedFunction_call :
-    Notations.DoubleColon ltac:(Self) "call" := {
+    Notations.DoubleColon Self "call" := {
     Notations.double_colon := call;
   }.
   
@@ -242,17 +240,17 @@ Section Impl_call_builder_CallBuilderTest_t.
       }
   *)
   Definition invoke
-      (self : mut_ref ltac:(Self))
+      (self : mut_ref Self)
       (address : call_builder.AccountId.t)
       (selector : array u8.t)
       : M unit :=
-    let* self : M.Val (mut_ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (mut_ref Self) := M.alloc self in
     let* address : M.Val call_builder.AccountId.t := M.alloc address in
     let* selector : M.Val (array u8.t) := M.alloc selector in
     M.pure tt.
   
   Global Instance AssociatedFunction_invoke :
-    Notations.DoubleColon ltac:(Self) "invoke" := {
+    Notations.DoubleColon Self "invoke" := {
     Notations.double_colon := invoke;
   }.
   
@@ -287,19 +285,19 @@ Section Impl_call_builder_CallBuilderTest_t.
       }
   *)
   Definition call_instantiate
-      (self : mut_ref ltac:(Self))
+      (self : mut_ref Self)
       (code_hash : ltac:(call_builder.Hash))
       (selector : array u8.t)
       (init_value : bool.t)
       : M (core.option.Option.t call_builder.LangError.t) :=
-    let* self : M.Val (mut_ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (mut_ref Self) := M.alloc self in
     let* code_hash : M.Val ltac:(call_builder.Hash) := M.alloc code_hash in
     let* selector : M.Val (array u8.t) := M.alloc selector in
     let* init_value : M.Val bool.t := M.alloc init_value in
     M.pure core.option.Option.None.
   
   Global Instance AssociatedFunction_call_instantiate :
-    Notations.DoubleColon ltac:(Self) "call_instantiate" := {
+    Notations.DoubleColon Self "call_instantiate" := {
     Notations.double_colon := call_instantiate;
   }.
   
@@ -331,19 +329,19 @@ Section Impl_call_builder_CallBuilderTest_t.
       }
   *)
   Definition call_instantiate_fallible
-      (self : mut_ref ltac:(Self))
+      (self : mut_ref Self)
       (code_hash : ltac:(call_builder.Hash))
       (selector : array u8.t)
       (init_value : bool.t)
       : M (core.option.Option.t unit) :=
-    let* self : M.Val (mut_ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (mut_ref Self) := M.alloc self in
     let* code_hash : M.Val ltac:(call_builder.Hash) := M.alloc code_hash in
     let* selector : M.Val (array u8.t) := M.alloc selector in
     let* init_value : M.Val bool.t := M.alloc init_value in
     M.pure core.option.Option.None.
   
   Global Instance AssociatedFunction_call_instantiate_fallible :
-    Notations.DoubleColon ltac:(Self) "call_instantiate_fallible" := {
+    Notations.DoubleColon Self "call_instantiate_fallible" := {
     Notations.double_colon := call_instantiate_fallible;
   }.
 End Impl_call_builder_CallBuilderTest_t.

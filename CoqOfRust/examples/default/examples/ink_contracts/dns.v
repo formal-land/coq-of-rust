@@ -34,7 +34,7 @@ Section Impl_core_default_Default_for_dns_Mapping_t_K_V.
     {ℋ_0 : core.default.Default.Trait K}
     {ℋ_1 : core.default.Default.Trait V}.
   
-  Ltac Self := exact (dns.Mapping.t K V).
+  Definition Self : Set := dns.Mapping.t K V.
   
   (*
   Default
@@ -53,11 +53,11 @@ Section Impl_core_default_Default_for_dns_Mapping_t_K_V.
     M.pure {| dns.Mapping._key := α0; dns.Mapping._value := α1; |}.
   
   Global Instance AssociatedFunction_default :
-    Notations.DoubleColon ltac:(Self) "default" := {
+    Notations.DoubleColon Self "default" := {
     Notations.double_colon := default;
   }.
   
-  Global Instance ℐ : core.default.Default.Trait ltac:(Self) := {
+  Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
   }.
 End Impl_core_default_Default_for_dns_Mapping_t_K_V.
@@ -67,22 +67,22 @@ Module  Impl_dns_Mapping_t_K_V.
 Section Impl_dns_Mapping_t_K_V.
   Context {K V : Set}.
   
-  Ltac Self := exact (dns.Mapping.t K V).
+  Definition Self : Set := dns.Mapping.t K V.
   
   (*
       fn contains(&self, _key: &K) -> bool {
           unimplemented!()
       }
   *)
-  Definition contains (self : ref ltac:(Self)) (_key : ref K) : M bool.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition contains (self : ref Self) (_key : ref K) : M bool.t :=
+    let* self : M.Val (ref Self) := M.alloc self in
     let* _key : M.Val (ref K) := M.alloc _key in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
   Global Instance AssociatedFunction_contains :
-    Notations.DoubleColon ltac:(Self) "contains" := {
+    Notations.DoubleColon Self "contains" := {
     Notations.double_colon := contains;
   }.
   
@@ -92,17 +92,16 @@ Section Impl_dns_Mapping_t_K_V.
       }
   *)
   Definition get
-      (self : ref ltac:(Self))
+      (self : ref Self)
       (_key : ref K)
       : M (core.option.Option.t V) :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (ref Self) := M.alloc self in
     let* _key : M.Val (ref K) := M.alloc _key in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_get :
-    Notations.DoubleColon ltac:(Self) "get" := {
+  Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
     Notations.double_colon := get;
   }.
   
@@ -112,11 +111,11 @@ Section Impl_dns_Mapping_t_K_V.
       }
   *)
   Definition insert
-      (self : mut_ref ltac:(Self))
+      (self : mut_ref Self)
       (_key : K)
       (_value : V)
       : M (core.option.Option.t u32.t) :=
-    let* self : M.Val (mut_ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (mut_ref Self) := M.alloc self in
     let* _key : M.Val K := M.alloc _key in
     let* _value : M.Val V := M.alloc _value in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
@@ -124,7 +123,7 @@ Section Impl_dns_Mapping_t_K_V.
     never_to_any α1.
   
   Global Instance AssociatedFunction_insert :
-    Notations.DoubleColon ltac:(Self) "insert" := {
+    Notations.DoubleColon Self "insert" := {
     Notations.double_colon := insert;
   }.
   
@@ -138,8 +137,7 @@ Section Impl_dns_Mapping_t_K_V.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_new :
-    Notations.DoubleColon ltac:(Self) "new" := {
+  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
   }.
   
@@ -148,15 +146,15 @@ Section Impl_dns_Mapping_t_K_V.
           unimplemented!()
       }
   *)
-  Definition remove (self : ref ltac:(Self)) (_key : K) : M unit :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition remove (self : ref Self) (_key : K) : M unit :=
+    let* self : M.Val (ref Self) := M.alloc self in
     let* _key : M.Val K := M.alloc _key in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
   Global Instance AssociatedFunction_remove :
-    Notations.DoubleColon ltac:(Self) "remove" := {
+    Notations.DoubleColon Self "remove" := {
     Notations.double_colon := remove;
   }.
   
@@ -166,17 +164,17 @@ Section Impl_dns_Mapping_t_K_V.
       }
   *)
   Definition size
-      (self : ref ltac:(Self))
+      (self : ref Self)
       (_key : K)
       : M (core.option.Option.t u32.t) :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (ref Self) := M.alloc self in
     let* _key : M.Val K := M.alloc _key in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
   Global Instance AssociatedFunction_size :
-    Notations.DoubleColon ltac:(Self) "size" := {
+    Notations.DoubleColon Self "size" := {
     Notations.double_colon := size;
   }.
   
@@ -185,18 +183,15 @@ Section Impl_dns_Mapping_t_K_V.
           unimplemented!()
       }
   *)
-  Definition take
-      (self : ref ltac:(Self))
-      (_key : K)
-      : M (core.option.Option.t V) :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition take (self : ref Self) (_key : K) : M (core.option.Option.t V) :=
+    let* self : M.Val (ref Self) := M.alloc self in
     let* _key : M.Val K := M.alloc _key in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
   Global Instance AssociatedFunction_take :
-    Notations.DoubleColon ltac:(Self) "take" := {
+    Notations.DoubleColon Self "take" := {
     Notations.double_colon := take;
   }.
 End Impl_dns_Mapping_t_K_V.
@@ -216,7 +211,7 @@ End AccountId.
 
 Module  Impl_core_default_Default_for_dns_AccountId_t.
 Section Impl_core_default_Default_for_dns_AccountId_t.
-  Ltac Self := exact dns.AccountId.t.
+  Definition Self : Set := dns.AccountId.t.
   
   (*
   Default
@@ -230,11 +225,11 @@ Section Impl_core_default_Default_for_dns_AccountId_t.
     M.pure (dns.AccountId.Build_t α0).
   
   Global Instance AssociatedFunction_default :
-    Notations.DoubleColon ltac:(Self) "default" := {
+    Notations.DoubleColon Self "default" := {
     Notations.double_colon := default;
   }.
   
-  Global Instance ℐ : core.default.Default.Trait ltac:(Self) := {
+  Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
   }.
 End Impl_core_default_Default_for_dns_AccountId_t.
@@ -242,23 +237,23 @@ End Impl_core_default_Default_for_dns_AccountId_t.
 
 Module  Impl_core_clone_Clone_for_dns_AccountId_t.
 Section Impl_core_clone_Clone_for_dns_AccountId_t.
-  Ltac Self := exact dns.AccountId.t.
+  Definition Self : Set := dns.AccountId.t.
   
   (*
   Clone
   *)
-  Definition clone (self : ref ltac:(Self)) : M dns.AccountId.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
-    let* _ : M.Val unit := M.alloc tt in
+  Definition clone (self : ref Self) : M dns.AccountId.t :=
+    let* self : M.Val (ref Self) := M.alloc self in
+    let _ : unit := tt in
     let* α0 : ref dns.AccountId.t := M.read self in
     M.read (deref α0).
   
   Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon ltac:(Self) "clone" := {
+    Notations.DoubleColon Self "clone" := {
     Notations.double_colon := clone;
   }.
   
-  Global Instance ℐ : core.clone.Clone.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
     core.clone.Clone.clone_from := Datatypes.None;
   }.
@@ -267,34 +262,31 @@ End Impl_core_clone_Clone_for_dns_AccountId_t.
 
 Module  Impl_core_marker_Copy_for_dns_AccountId_t.
 Section Impl_core_marker_Copy_for_dns_AccountId_t.
-  Ltac Self := exact dns.AccountId.t.
+  Definition Self : Set := dns.AccountId.t.
   
-  Global Instance ℐ : core.marker.Copy.Trait ltac:(Self) := {
+  Global Instance ℐ : core.marker.Copy.Trait Self := {
   }.
 End Impl_core_marker_Copy_for_dns_AccountId_t.
 End Impl_core_marker_Copy_for_dns_AccountId_t.
 
 Module  Impl_core_marker_StructuralPartialEq_for_dns_AccountId_t.
 Section Impl_core_marker_StructuralPartialEq_for_dns_AccountId_t.
-  Ltac Self := exact dns.AccountId.t.
+  Definition Self : Set := dns.AccountId.t.
   
-  Global Instance ℐ : core.marker.StructuralPartialEq.Trait ltac:(Self) := {
+  Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
   }.
 End Impl_core_marker_StructuralPartialEq_for_dns_AccountId_t.
 End Impl_core_marker_StructuralPartialEq_for_dns_AccountId_t.
 
 Module  Impl_core_cmp_PartialEq_for_dns_AccountId_t.
 Section Impl_core_cmp_PartialEq_for_dns_AccountId_t.
-  Ltac Self := exact dns.AccountId.t.
+  Definition Self : Set := dns.AccountId.t.
   
   (*
   PartialEq
   *)
-  Definition eq
-      (self : ref ltac:(Self))
-      (other : ref dns.AccountId.t)
-      : M bool.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition eq (self : ref Self) (other : ref dns.AccountId.t) : M bool.t :=
+    let* self : M.Val (ref Self) := M.alloc self in
     let* other : M.Val (ref dns.AccountId.t) := M.alloc other in
     let* α0 : ref dns.AccountId.t := M.read self in
     let* α1 : u128.t := M.read (deref α0).["0"] in
@@ -302,14 +294,13 @@ Section Impl_core_cmp_PartialEq_for_dns_AccountId_t.
     let* α3 : u128.t := M.read (deref α2).["0"] in
     M.pure (BinOp.Pure.eq α1 α3).
   
-  Global Instance AssociatedFunction_eq :
-    Notations.DoubleColon ltac:(Self) "eq" := {
+  Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
     Notations.double_colon := eq;
   }.
   
   Global Instance ℐ :
-    core.cmp.PartialEq.Required.Trait ltac:(Self)
-      (Rhs := core.cmp.PartialEq.Default.Rhs ltac:(Self)) := {
+    core.cmp.PartialEq.Required.Trait Self
+      (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
     core.cmp.PartialEq.eq := eq;
     core.cmp.PartialEq.ne := Datatypes.None;
   }.
@@ -318,25 +309,25 @@ End Impl_core_cmp_PartialEq_for_dns_AccountId_t.
 
 Module  Impl_core_convert_From_array_u8_t_for_dns_AccountId_t.
 Section Impl_core_convert_From_array_u8_t_for_dns_AccountId_t.
-  Ltac Self := exact dns.AccountId.t.
+  Definition Self : Set := dns.AccountId.t.
   
   (*
       fn from(_value: [u8; 32]) -> Self {
           unimplemented!()
       }
   *)
-  Definition from (_value : array u8.t) : M ltac:(Self) :=
+  Definition from (_value : array u8.t) : M Self :=
     let* _value : M.Val (array u8.t) := M.alloc _value in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
   Global Instance AssociatedFunction_from :
-    Notations.DoubleColon ltac:(Self) "from" := {
+    Notations.DoubleColon Self "from" := {
     Notations.double_colon := from;
   }.
   
-  Global Instance ℐ : core.convert.From.Trait ltac:(Self) (T := array u8.t) := {
+  Global Instance ℐ : core.convert.From.Trait Self (T := array u8.t) := {
     core.convert.From.from := from;
   }.
 End Impl_core_convert_From_array_u8_t_for_dns_AccountId_t.
@@ -471,20 +462,20 @@ End Event.
 
 Module  Impl_dns_Env_t.
 Section Impl_dns_Env_t.
-  Ltac Self := exact dns.Env.t.
+  Definition Self : Set := dns.Env.t.
   
   (*
       fn caller(&self) -> AccountId {
           self.caller
       }
   *)
-  Definition caller (self : ref ltac:(Self)) : M dns.AccountId.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition caller (self : ref Self) : M dns.AccountId.t :=
+    let* self : M.Val (ref Self) := M.alloc self in
     let* α0 : ref dns.Env.t := M.read self in
     M.read (deref α0).["caller"].
   
   Global Instance AssociatedFunction_caller :
-    Notations.DoubleColon ltac:(Self) "caller" := {
+    Notations.DoubleColon Self "caller" := {
     Notations.double_colon := caller;
   }.
   
@@ -493,18 +484,15 @@ Section Impl_dns_Env_t.
           unimplemented!()
       }
   *)
-  Definition emit_event
-      (self : ref ltac:(Self))
-      (_event : dns.Event.t)
-      : M unit :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition emit_event (self : ref Self) (_event : dns.Event.t) : M unit :=
+    let* self : M.Val (ref Self) := M.alloc self in
     let* _event : M.Val dns.Event.t := M.alloc _event in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
   Global Instance AssociatedFunction_emit_event :
-    Notations.DoubleColon ltac:(Self) "emit_event" := {
+    Notations.DoubleColon Self "emit_event" := {
     Notations.double_colon := emit_event;
   }.
 End Impl_dns_Env_t.
@@ -563,7 +551,7 @@ Definition zero_address : M dns.AccountId.t :=
 
 Module  Impl_core_default_Default_for_dns_DomainNameService_t.
 Section Impl_core_default_Default_for_dns_DomainNameService_t.
-  Ltac Self := exact dns.DomainNameService.t.
+  Definition Self : Set := dns.DomainNameService.t.
   
   (*
       fn default() -> Self {
@@ -579,7 +567,7 @@ Section Impl_core_default_Default_for_dns_DomainNameService_t.
           }
       }
   *)
-  Definition default : M ltac:(Self) :=
+  Definition default : M Self :=
     let* name_to_address : M.Val (dns.Mapping.t (array u8.t) dns.AccountId.t) :=
       let* α0 : dns.Mapping.t (array u8.t) dns.AccountId.t :=
         M.call (dns.Mapping.t (array u8.t) dns.AccountId.t)::["new"] in
@@ -631,11 +619,11 @@ Section Impl_core_default_Default_for_dns_DomainNameService_t.
     M.read α0.
   
   Global Instance AssociatedFunction_default :
-    Notations.DoubleColon ltac:(Self) "default" := {
+    Notations.DoubleColon Self "default" := {
     Notations.double_colon := default;
   }.
   
-  Global Instance ℐ : core.default.Default.Trait ltac:(Self) := {
+  Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
   }.
 End Impl_core_default_Default_for_dns_DomainNameService_t.
@@ -649,22 +637,22 @@ End Error.
 
 Module  Impl_core_marker_StructuralPartialEq_for_dns_Error_t.
 Section Impl_core_marker_StructuralPartialEq_for_dns_Error_t.
-  Ltac Self := exact dns.Error.t.
+  Definition Self : Set := dns.Error.t.
   
-  Global Instance ℐ : core.marker.StructuralPartialEq.Trait ltac:(Self) := {
+  Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
   }.
 End Impl_core_marker_StructuralPartialEq_for_dns_Error_t.
 End Impl_core_marker_StructuralPartialEq_for_dns_Error_t.
 
 Module  Impl_core_cmp_PartialEq_for_dns_Error_t.
 Section Impl_core_cmp_PartialEq_for_dns_Error_t.
-  Ltac Self := exact dns.Error.t.
+  Definition Self : Set := dns.Error.t.
   
   (*
   PartialEq
   *)
-  Definition eq (self : ref ltac:(Self)) (other : ref dns.Error.t) : M bool.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition eq (self : ref Self) (other : ref dns.Error.t) : M bool.t :=
+    let* self : M.Val (ref Self) := M.alloc self in
     let* other : M.Val (ref dns.Error.t) := M.alloc other in
     let* __self_tag : M.Val isize.t :=
       let* α0 : ref dns.Error.t := M.read self in
@@ -679,14 +667,13 @@ Section Impl_core_cmp_PartialEq_for_dns_Error_t.
     let* α0 : M.Val bool.t := M.alloc (BinOp.Pure.eq α0 α1) in
     M.read α0.
   
-  Global Instance AssociatedFunction_eq :
-    Notations.DoubleColon ltac:(Self) "eq" := {
+  Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
     Notations.double_colon := eq;
   }.
   
   Global Instance ℐ :
-    core.cmp.PartialEq.Required.Trait ltac:(Self)
-      (Rhs := core.cmp.PartialEq.Default.Rhs ltac:(Self)) := {
+    core.cmp.PartialEq.Required.Trait Self
+      (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
     core.cmp.PartialEq.eq := eq;
     core.cmp.PartialEq.ne := Datatypes.None;
   }.
@@ -695,30 +682,30 @@ End Impl_core_cmp_PartialEq_for_dns_Error_t.
 
 Module  Impl_core_marker_StructuralEq_for_dns_Error_t.
 Section Impl_core_marker_StructuralEq_for_dns_Error_t.
-  Ltac Self := exact dns.Error.t.
+  Definition Self : Set := dns.Error.t.
   
-  Global Instance ℐ : core.marker.StructuralEq.Trait ltac:(Self) := {
+  Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
   }.
 End Impl_core_marker_StructuralEq_for_dns_Error_t.
 End Impl_core_marker_StructuralEq_for_dns_Error_t.
 
 Module  Impl_core_cmp_Eq_for_dns_Error_t.
 Section Impl_core_cmp_Eq_for_dns_Error_t.
-  Ltac Self := exact dns.Error.t.
+  Definition Self : Set := dns.Error.t.
   
   (*
   Eq
   *)
-  Definition assert_receiver_is_total_eq (self : ref ltac:(Self)) : M unit :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
+    let* self : M.Val (ref Self) := M.alloc self in
     M.pure tt.
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
-    Notations.DoubleColon ltac:(Self) "assert_receiver_is_total_eq" := {
+    Notations.DoubleColon Self "assert_receiver_is_total_eq" := {
     Notations.double_colon := assert_receiver_is_total_eq;
   }.
   
-  Global Instance ℐ : core.cmp.Eq.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
     core.cmp.Eq.assert_receiver_is_total_eq :=
       Datatypes.Some assert_receiver_is_total_eq;
   }.
@@ -729,7 +716,7 @@ Ltac Result T := exact (core.result.Result.t T dns.Error.t).
 
 Module  Impl_dns_DomainNameService_t.
 Section Impl_dns_DomainNameService_t.
-  Ltac Self := exact dns.DomainNameService.t.
+  Definition Self : Set := dns.DomainNameService.t.
   
   (*
       fn init_env() -> Env {
@@ -742,7 +729,7 @@ Section Impl_dns_DomainNameService_t.
     never_to_any α1.
   
   Global Instance AssociatedFunction_init_env :
-    Notations.DoubleColon ltac:(Self) "init_env" := {
+    Notations.DoubleColon Self "init_env" := {
     Notations.double_colon := init_env;
   }.
   
@@ -751,12 +738,11 @@ Section Impl_dns_DomainNameService_t.
           Self::init_env()
       }
   *)
-  Definition env (self : ref ltac:(Self)) : M dns.Env.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition env (self : ref Self) : M dns.Env.t :=
+    let* self : M.Val (ref Self) := M.alloc self in
     M.call dns.DomainNameService.t::["init_env"].
   
-  Global Instance AssociatedFunction_env :
-    Notations.DoubleColon ltac:(Self) "env" := {
+  Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
     Notations.double_colon := env;
   }.
   
@@ -765,14 +751,13 @@ Section Impl_dns_DomainNameService_t.
           Default::default()
       }
   *)
-  Definition new : M ltac:(Self) :=
+  Definition new : M Self :=
     M.call
       (core.default.Default.default
         (Self := dns.DomainNameService.t)
         (Trait := ltac:(refine _))).
   
-  Global Instance AssociatedFunction_new :
-    Notations.DoubleColon ltac:(Self) "new" := {
+  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
   }.
   
@@ -791,10 +776,10 @@ Section Impl_dns_DomainNameService_t.
       }
   *)
   Definition register
-      (self : mut_ref ltac:(Self))
+      (self : mut_ref Self)
       (name : ltac:(dns.Hash))
       : M ltac:(dns.Result unit) :=
-    let* self : M.Val (mut_ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (mut_ref Self) := M.alloc self in
     let* name : M.Val ltac:(dns.Hash) := M.alloc name in
     let return_ := M.return_ (R := ltac:(dns.Result unit)) in
     M.catch_return
@@ -852,7 +837,7 @@ Section Impl_dns_DomainNameService_t.
       M.read α0).
   
   Global Instance AssociatedFunction_register :
-    Notations.DoubleColon ltac:(Self) "register" := {
+    Notations.DoubleColon Self "register" := {
     Notations.double_colon := register;
   }.
   
@@ -864,10 +849,10 @@ Section Impl_dns_DomainNameService_t.
       }
   *)
   Definition get_owner_or_default
-      (self : ref ltac:(Self))
+      (self : ref Self)
       (name : ltac:(dns.Hash))
       : M dns.AccountId.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (ref Self) := M.alloc self in
     let* name : M.Val ltac:(dns.Hash) := M.alloc name in
     let* α0 : ref dns.DomainNameService.t := M.read self in
     let* α1 : core.option.Option.t dns.AccountId.t :=
@@ -880,7 +865,7 @@ Section Impl_dns_DomainNameService_t.
     M.call ((core.option.Option.t dns.AccountId.t)::["unwrap_or"] α1 α3).
   
   Global Instance AssociatedFunction_get_owner_or_default :
-    Notations.DoubleColon ltac:(Self) "get_owner_or_default" := {
+    Notations.DoubleColon Self "get_owner_or_default" := {
     Notations.double_colon := get_owner_or_default;
   }.
   
@@ -905,11 +890,11 @@ Section Impl_dns_DomainNameService_t.
       }
   *)
   Definition set_address
-      (self : mut_ref ltac:(Self))
+      (self : mut_ref Self)
       (name : ltac:(dns.Hash))
       (new_address : dns.AccountId.t)
       : M ltac:(dns.Result unit) :=
-    let* self : M.Val (mut_ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (mut_ref Self) := M.alloc self in
     let* name : M.Val ltac:(dns.Hash) := M.alloc name in
     let* new_address : M.Val dns.AccountId.t := M.alloc new_address in
     let return_ := M.return_ (R := ltac:(dns.Result unit)) in
@@ -993,7 +978,7 @@ Section Impl_dns_DomainNameService_t.
       M.read α0).
   
   Global Instance AssociatedFunction_set_address :
-    Notations.DoubleColon ltac:(Self) "set_address" := {
+    Notations.DoubleColon Self "set_address" := {
     Notations.double_colon := set_address;
   }.
   
@@ -1019,11 +1004,11 @@ Section Impl_dns_DomainNameService_t.
       }
   *)
   Definition transfer
-      (self : mut_ref ltac:(Self))
+      (self : mut_ref Self)
       (name : ltac:(dns.Hash))
       (to : dns.AccountId.t)
       : M ltac:(dns.Result unit) :=
-    let* self : M.Val (mut_ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (mut_ref Self) := M.alloc self in
     let* name : M.Val ltac:(dns.Hash) := M.alloc name in
     let* to : M.Val dns.AccountId.t := M.alloc to in
     let return_ := M.return_ (R := ltac:(dns.Result unit)) in
@@ -1107,7 +1092,7 @@ Section Impl_dns_DomainNameService_t.
       M.read α0).
   
   Global Instance AssociatedFunction_transfer :
-    Notations.DoubleColon ltac:(Self) "transfer" := {
+    Notations.DoubleColon Self "transfer" := {
     Notations.double_colon := transfer;
   }.
   
@@ -1119,10 +1104,10 @@ Section Impl_dns_DomainNameService_t.
       }
   *)
   Definition get_address_or_default
-      (self : ref ltac:(Self))
+      (self : ref Self)
       (name : ltac:(dns.Hash))
       : M dns.AccountId.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (ref Self) := M.alloc self in
     let* name : M.Val ltac:(dns.Hash) := M.alloc name in
     let* α0 : ref dns.DomainNameService.t := M.read self in
     let* α1 : core.option.Option.t dns.AccountId.t :=
@@ -1135,7 +1120,7 @@ Section Impl_dns_DomainNameService_t.
     M.call ((core.option.Option.t dns.AccountId.t)::["unwrap_or"] α1 α3).
   
   Global Instance AssociatedFunction_get_address_or_default :
-    Notations.DoubleColon ltac:(Self) "get_address_or_default" := {
+    Notations.DoubleColon Self "get_address_or_default" := {
     Notations.double_colon := get_address_or_default;
   }.
   
@@ -1145,17 +1130,17 @@ Section Impl_dns_DomainNameService_t.
       }
   *)
   Definition get_address
-      (self : ref ltac:(Self))
+      (self : ref Self)
       (name : ltac:(dns.Hash))
       : M dns.AccountId.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (ref Self) := M.alloc self in
     let* name : M.Val ltac:(dns.Hash) := M.alloc name in
     let* α0 : ref dns.DomainNameService.t := M.read self in
     let* α1 : array u8.t := M.read name in
     M.call (dns.DomainNameService.t::["get_address_or_default"] α0 α1).
   
   Global Instance AssociatedFunction_get_address :
-    Notations.DoubleColon ltac:(Self) "get_address" := {
+    Notations.DoubleColon Self "get_address" := {
     Notations.double_colon := get_address;
   }.
   
@@ -1165,17 +1150,17 @@ Section Impl_dns_DomainNameService_t.
       }
   *)
   Definition get_owner
-      (self : ref ltac:(Self))
+      (self : ref Self)
       (name : ltac:(dns.Hash))
       : M dns.AccountId.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (ref Self) := M.alloc self in
     let* name : M.Val ltac:(dns.Hash) := M.alloc name in
     let* α0 : ref dns.DomainNameService.t := M.read self in
     let* α1 : array u8.t := M.read name in
     M.call (dns.DomainNameService.t::["get_owner_or_default"] α0 α1).
   
   Global Instance AssociatedFunction_get_owner :
-    Notations.DoubleColon ltac:(Self) "get_owner" := {
+    Notations.DoubleColon Self "get_owner" := {
     Notations.double_colon := get_owner;
   }.
 End Impl_dns_DomainNameService_t.

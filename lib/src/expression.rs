@@ -25,7 +25,7 @@ impl FreshVars {
 /// matched pattern and [body] the expression on which it is mapped
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
 pub(crate) struct MatchArm {
-    pub(crate) pat: Pattern,
+    pub(crate) pattern: Pattern,
     pub(crate) body: Expr,
 }
 
@@ -217,7 +217,7 @@ impl Expr {
                 scrutinee.has_return()
                     || arms
                         .iter()
-                        .any(|MatchArm { pat: _, body }| body.has_return())
+                        .any(|MatchArm { pattern: _, body }| body.has_return())
             }
             ExprKind::IndexedField { base, index: _ } => base.has_return(),
             ExprKind::NamedField { base, name: _ } => base.has_return(),
@@ -560,11 +560,11 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Expr) -> (Expr, FreshVa
                             scrutinee: Box::new(scrutinee),
                             arms: arms
                                 .iter()
-                                .map(|MatchArm { pat, body }| {
+                                .map(|MatchArm { pattern, body }| {
                                     let (body, _fresh_vars) =
                                         mt_expression(FreshVars::new(), body.clone());
                                     MatchArm {
-                                        pat: pat.clone(),
+                                        pattern: pattern.clone(),
                                         body,
                                     }
                                 })
@@ -733,7 +733,7 @@ pub(crate) fn compile_hir_id(env: &mut Env, hir_id: rustc_hir::hir_id::HirId) ->
 impl MatchArm {
     fn to_doc(&self) -> Doc {
         return nest([
-            nest([text("|"), line(), self.pat.to_doc(), line(), text("=>")]),
+            nest([text("|"), line(), self.pattern.to_doc(), line(), text("=>")]),
             line(),
             self.body.to_doc(false),
         ]);

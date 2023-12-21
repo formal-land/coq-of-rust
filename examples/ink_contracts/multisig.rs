@@ -30,31 +30,13 @@ impl<K, V> Mapping<K, V> {
     }
 }
 
-#[derive(Default, Clone, Copy, Ord, PartialEq, Debug)]
+#[derive(Default, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug)]
 struct AccountId(u128);
 
 type Balance = u128;
 
 struct Env {
     caller: AccountId,
-}
-
-impl Env {
-    fn caller(&self) -> AccountId {
-        self.caller
-    }
-
-    fn emit_event(&self, _event: Event) {
-        unimplemented!()
-    }
-
-    fn transferred_value(&self) -> Balance {
-        unimplemented!()
-    }
-
-    fn account_id(&self) -> AccountId {
-        unimplemented!()
-    }
 }
 
 /// Tune this to your liking but be wary that allowing too many owners will not
@@ -102,7 +84,7 @@ pub struct Transaction {
 }
 
 /// Errors that can occur upon calling this contract.
-#[derive(Copy, Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Error {
     /// Returned if the call failed.
     TransactionFailed,
@@ -189,6 +171,24 @@ enum Event {
     OwnerAddition(OwnerAddition),
     OwnerRemoval(OwnerRemoval),
     RequirementChange(RequirementChange),
+}
+
+impl Env {
+    fn caller(&self) -> AccountId {
+        self.caller
+    }
+
+    fn emit_event(&self, _event: Event) {
+        unimplemented!()
+    }
+
+    fn transferred_value(&self) -> Balance {
+        unimplemented!()
+    }
+
+    fn account_id(&self) -> AccountId {
+        unimplemented!()
+    }
 }
 
 #[derive(Default)]

@@ -15,28 +15,28 @@ End Choice.
 
 Module  Impl_core_marker_Copy_for_subtle_Choice_t.
 Section Impl_core_marker_Copy_for_subtle_Choice_t.
-  Ltac Self := exact subtle.Choice.t.
+  Definition Self : Set := subtle.Choice.t.
   
-  Global Instance ℐ : core.marker.Copy.Trait ltac:(Self) := {
+  Global Instance ℐ : core.marker.Copy.Trait Self := {
   }.
 End Impl_core_marker_Copy_for_subtle_Choice_t.
 End Impl_core_marker_Copy_for_subtle_Choice_t.
 
 Module  Impl_core_clone_Clone_for_subtle_Choice_t.
 Section Impl_core_clone_Clone_for_subtle_Choice_t.
-  Ltac Self := exact subtle.Choice.t.
+  Definition Self : Set := subtle.Choice.t.
   
   (*
   Clone
   *)
-  Parameter clone : (ref ltac:(Self)) -> M subtle.Choice.t.
+  Parameter clone : (ref Self) -> M subtle.Choice.t.
   
   Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon ltac:(Self) "clone" := {
+    Notations.DoubleColon Self "clone" := {
     Notations.double_colon := clone;
   }.
   
-  Global Instance ℐ : core.clone.Clone.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
     core.clone.Clone.clone_from := Datatypes.None;
   }.
@@ -45,22 +45,19 @@ End Impl_core_clone_Clone_for_subtle_Choice_t.
 
 Module  Impl_core_fmt_Debug_for_subtle_Choice_t.
 Section Impl_core_fmt_Debug_for_subtle_Choice_t.
-  Ltac Self := exact subtle.Choice.t.
+  Definition Self : Set := subtle.Choice.t.
   
   (*
   Debug
   *)
   Parameter fmt :
-      (ref ltac:(Self)) ->
-        (mut_ref core.fmt.Formatter.t) ->
-        M ltac:(core.fmt.Result).
+      (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
   
-  Global Instance AssociatedFunction_fmt :
-    Notations.DoubleColon ltac:(Self) "fmt" := {
+  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
+  Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
   }.
 End Impl_core_fmt_Debug_for_subtle_Choice_t.
@@ -68,17 +65,17 @@ End Impl_core_fmt_Debug_for_subtle_Choice_t.
 
 Module  Impl_subtle_Choice_t.
 Section Impl_subtle_Choice_t.
-  Ltac Self := exact subtle.Choice.t.
+  Definition Self : Set := subtle.Choice.t.
   
   (*
       pub fn unwrap_u8(&self) -> u8 {
           self.0
       }
   *)
-  Parameter unwrap_u8 : (ref ltac:(Self)) -> M u8.t.
+  Parameter unwrap_u8 : (ref Self) -> M u8.t.
   
   Global Instance AssociatedFunction_unwrap_u8 :
-    Notations.DoubleColon ltac:(Self) "unwrap_u8" := {
+    Notations.DoubleColon Self "unwrap_u8" := {
     Notations.double_colon := unwrap_u8;
   }.
 End Impl_subtle_Choice_t.
@@ -86,7 +83,7 @@ End Impl_subtle_Choice_t.
 
 Module  Impl_core_convert_From_subtle_Choice_t_for_bool_t.
 Section Impl_core_convert_From_subtle_Choice_t_for_bool_t.
-  Ltac Self := exact bool.t.
+  Definition Self : Set := bool.t.
   
   (*
       fn from(source: Choice) -> bool {
@@ -97,12 +94,11 @@ Section Impl_core_convert_From_subtle_Choice_t_for_bool_t.
   Parameter from : subtle.Choice.t -> M bool.t.
   
   Global Instance AssociatedFunction_from :
-    Notations.DoubleColon ltac:(Self) "from" := {
+    Notations.DoubleColon Self "from" := {
     Notations.double_colon := from;
   }.
   
-  Global Instance ℐ :
-    core.convert.From.Trait ltac:(Self) (T := subtle.Choice.t) := {
+  Global Instance ℐ : core.convert.From.Trait Self (T := subtle.Choice.t) := {
     core.convert.From.from := from;
   }.
 End Impl_core_convert_From_subtle_Choice_t_for_bool_t.
@@ -110,7 +106,7 @@ End Impl_core_convert_From_subtle_Choice_t_for_bool_t.
 
 Module  Impl_core_ops_bit_BitAnd_for_subtle_Choice_t.
 Section Impl_core_ops_bit_BitAnd_for_subtle_Choice_t.
-  Ltac Self := exact subtle.Choice.t.
+  Definition Self : Set := subtle.Choice.t.
   
   (*
       type Output = Choice;
@@ -122,16 +118,16 @@ Section Impl_core_ops_bit_BitAnd_for_subtle_Choice_t.
           (self.0 & rhs.0).into()
       }
   *)
-  Parameter bitand : ltac:(Self) -> subtle.Choice.t -> M subtle.Choice.t.
+  Parameter bitand : Self -> subtle.Choice.t -> M subtle.Choice.t.
   
   Global Instance AssociatedFunction_bitand :
-    Notations.DoubleColon ltac:(Self) "bitand" := {
+    Notations.DoubleColon Self "bitand" := {
     Notations.double_colon := bitand;
   }.
   
   Global Instance ℐ :
-    core.ops.bit.BitAnd.Trait ltac:(Self)
-      (Rhs := core.ops.bit.BitAnd.Default.Rhs ltac:(Self)) := {
+    core.ops.bit.BitAnd.Trait Self
+      (Rhs := core.ops.bit.BitAnd.Default.Rhs Self) := {
     core.ops.bit.BitAnd.Output := Output;
     core.ops.bit.BitAnd.bitand := bitand;
   }.
@@ -140,23 +136,23 @@ End Impl_core_ops_bit_BitAnd_for_subtle_Choice_t.
 
 Module  Impl_core_ops_bit_BitAndAssign_for_subtle_Choice_t.
 Section Impl_core_ops_bit_BitAndAssign_for_subtle_Choice_t.
-  Ltac Self := exact subtle.Choice.t.
+  Definition Self : Set := subtle.Choice.t.
   
   (*
       fn bitand_assign(&mut self, rhs: Choice) {
           *self = *self & rhs;
       }
   *)
-  Parameter bitand_assign : (mut_ref ltac:(Self)) -> subtle.Choice.t -> M unit.
+  Parameter bitand_assign : (mut_ref Self) -> subtle.Choice.t -> M unit.
   
   Global Instance AssociatedFunction_bitand_assign :
-    Notations.DoubleColon ltac:(Self) "bitand_assign" := {
+    Notations.DoubleColon Self "bitand_assign" := {
     Notations.double_colon := bitand_assign;
   }.
   
   Global Instance ℐ :
-    core.ops.bit.BitAndAssign.Trait ltac:(Self)
-      (Rhs := core.ops.bit.BitAndAssign.Default.Rhs ltac:(Self)) := {
+    core.ops.bit.BitAndAssign.Trait Self
+      (Rhs := core.ops.bit.BitAndAssign.Default.Rhs Self) := {
     core.ops.bit.BitAndAssign.bitand_assign := bitand_assign;
   }.
 End Impl_core_ops_bit_BitAndAssign_for_subtle_Choice_t.
@@ -164,7 +160,7 @@ End Impl_core_ops_bit_BitAndAssign_for_subtle_Choice_t.
 
 Module  Impl_core_ops_bit_BitOr_for_subtle_Choice_t.
 Section Impl_core_ops_bit_BitOr_for_subtle_Choice_t.
-  Ltac Self := exact subtle.Choice.t.
+  Definition Self : Set := subtle.Choice.t.
   
   (*
       type Output = Choice;
@@ -176,16 +172,16 @@ Section Impl_core_ops_bit_BitOr_for_subtle_Choice_t.
           (self.0 | rhs.0).into()
       }
   *)
-  Parameter bitor : ltac:(Self) -> subtle.Choice.t -> M subtle.Choice.t.
+  Parameter bitor : Self -> subtle.Choice.t -> M subtle.Choice.t.
   
   Global Instance AssociatedFunction_bitor :
-    Notations.DoubleColon ltac:(Self) "bitor" := {
+    Notations.DoubleColon Self "bitor" := {
     Notations.double_colon := bitor;
   }.
   
   Global Instance ℐ :
-    core.ops.bit.BitOr.Trait ltac:(Self)
-      (Rhs := core.ops.bit.BitOr.Default.Rhs ltac:(Self)) := {
+    core.ops.bit.BitOr.Trait Self
+      (Rhs := core.ops.bit.BitOr.Default.Rhs Self) := {
     core.ops.bit.BitOr.Output := Output;
     core.ops.bit.BitOr.bitor := bitor;
   }.
@@ -194,23 +190,23 @@ End Impl_core_ops_bit_BitOr_for_subtle_Choice_t.
 
 Module  Impl_core_ops_bit_BitOrAssign_for_subtle_Choice_t.
 Section Impl_core_ops_bit_BitOrAssign_for_subtle_Choice_t.
-  Ltac Self := exact subtle.Choice.t.
+  Definition Self : Set := subtle.Choice.t.
   
   (*
       fn bitor_assign(&mut self, rhs: Choice) {
           *self = *self | rhs;
       }
   *)
-  Parameter bitor_assign : (mut_ref ltac:(Self)) -> subtle.Choice.t -> M unit.
+  Parameter bitor_assign : (mut_ref Self) -> subtle.Choice.t -> M unit.
   
   Global Instance AssociatedFunction_bitor_assign :
-    Notations.DoubleColon ltac:(Self) "bitor_assign" := {
+    Notations.DoubleColon Self "bitor_assign" := {
     Notations.double_colon := bitor_assign;
   }.
   
   Global Instance ℐ :
-    core.ops.bit.BitOrAssign.Trait ltac:(Self)
-      (Rhs := core.ops.bit.BitOrAssign.Default.Rhs ltac:(Self)) := {
+    core.ops.bit.BitOrAssign.Trait Self
+      (Rhs := core.ops.bit.BitOrAssign.Default.Rhs Self) := {
     core.ops.bit.BitOrAssign.bitor_assign := bitor_assign;
   }.
 End Impl_core_ops_bit_BitOrAssign_for_subtle_Choice_t.
@@ -218,7 +214,7 @@ End Impl_core_ops_bit_BitOrAssign_for_subtle_Choice_t.
 
 Module  Impl_core_ops_bit_BitXor_for_subtle_Choice_t.
 Section Impl_core_ops_bit_BitXor_for_subtle_Choice_t.
-  Ltac Self := exact subtle.Choice.t.
+  Definition Self : Set := subtle.Choice.t.
   
   (*
       type Output = Choice;
@@ -230,16 +226,16 @@ Section Impl_core_ops_bit_BitXor_for_subtle_Choice_t.
           (self.0 ^ rhs.0).into()
       }
   *)
-  Parameter bitxor : ltac:(Self) -> subtle.Choice.t -> M subtle.Choice.t.
+  Parameter bitxor : Self -> subtle.Choice.t -> M subtle.Choice.t.
   
   Global Instance AssociatedFunction_bitxor :
-    Notations.DoubleColon ltac:(Self) "bitxor" := {
+    Notations.DoubleColon Self "bitxor" := {
     Notations.double_colon := bitxor;
   }.
   
   Global Instance ℐ :
-    core.ops.bit.BitXor.Trait ltac:(Self)
-      (Rhs := core.ops.bit.BitXor.Default.Rhs ltac:(Self)) := {
+    core.ops.bit.BitXor.Trait Self
+      (Rhs := core.ops.bit.BitXor.Default.Rhs Self) := {
     core.ops.bit.BitXor.Output := Output;
     core.ops.bit.BitXor.bitxor := bitxor;
   }.
@@ -248,23 +244,23 @@ End Impl_core_ops_bit_BitXor_for_subtle_Choice_t.
 
 Module  Impl_core_ops_bit_BitXorAssign_for_subtle_Choice_t.
 Section Impl_core_ops_bit_BitXorAssign_for_subtle_Choice_t.
-  Ltac Self := exact subtle.Choice.t.
+  Definition Self : Set := subtle.Choice.t.
   
   (*
       fn bitxor_assign(&mut self, rhs: Choice) {
           *self = *self ^ rhs;
       }
   *)
-  Parameter bitxor_assign : (mut_ref ltac:(Self)) -> subtle.Choice.t -> M unit.
+  Parameter bitxor_assign : (mut_ref Self) -> subtle.Choice.t -> M unit.
   
   Global Instance AssociatedFunction_bitxor_assign :
-    Notations.DoubleColon ltac:(Self) "bitxor_assign" := {
+    Notations.DoubleColon Self "bitxor_assign" := {
     Notations.double_colon := bitxor_assign;
   }.
   
   Global Instance ℐ :
-    core.ops.bit.BitXorAssign.Trait ltac:(Self)
-      (Rhs := core.ops.bit.BitXorAssign.Default.Rhs ltac:(Self)) := {
+    core.ops.bit.BitXorAssign.Trait Self
+      (Rhs := core.ops.bit.BitXorAssign.Default.Rhs Self) := {
     core.ops.bit.BitXorAssign.bitxor_assign := bitxor_assign;
   }.
 End Impl_core_ops_bit_BitXorAssign_for_subtle_Choice_t.
@@ -272,7 +268,7 @@ End Impl_core_ops_bit_BitXorAssign_for_subtle_Choice_t.
 
 Module  Impl_core_ops_bit_Not_for_subtle_Choice_t.
 Section Impl_core_ops_bit_Not_for_subtle_Choice_t.
-  Ltac Self := exact subtle.Choice.t.
+  Definition Self : Set := subtle.Choice.t.
   
   (*
       type Output = Choice;
@@ -284,14 +280,13 @@ Section Impl_core_ops_bit_Not_for_subtle_Choice_t.
           (1u8 & (!self.0)).into()
       }
   *)
-  Parameter not : ltac:(Self) -> M subtle.Choice.t.
+  Parameter not : Self -> M subtle.Choice.t.
   
-  Global Instance AssociatedFunction_not :
-    Notations.DoubleColon ltac:(Self) "not" := {
+  Global Instance AssociatedFunction_not : Notations.DoubleColon Self "not" := {
     Notations.double_colon := not;
   }.
   
-  Global Instance ℐ : core.ops.bit.Not.Trait ltac:(Self) := {
+  Global Instance ℐ : core.ops.bit.Not.Trait Self := {
     core.ops.bit.Not.Output := Output;
     core.ops.bit.Not.not := not;
   }.
@@ -319,7 +314,7 @@ Parameter black_box : u8.t -> M u8.t.
 
 Module  Impl_core_convert_From_u8_t_for_subtle_Choice_t.
 Section Impl_core_convert_From_u8_t_for_subtle_Choice_t.
-  Ltac Self := exact subtle.Choice.t.
+  Definition Self : Set := subtle.Choice.t.
   
   (*
       fn from(input: u8) -> Choice {
@@ -331,11 +326,11 @@ Section Impl_core_convert_From_u8_t_for_subtle_Choice_t.
   Parameter from : u8.t -> M subtle.Choice.t.
   
   Global Instance AssociatedFunction_from :
-    Notations.DoubleColon ltac:(Self) "from" := {
+    Notations.DoubleColon Self "from" := {
     Notations.double_colon := from;
   }.
   
-  Global Instance ℐ : core.convert.From.Trait ltac:(Self) (T := u8.t) := {
+  Global Instance ℐ : core.convert.From.Trait Self (T := u8.t) := {
     core.convert.From.from := from;
   }.
 End Impl_core_convert_From_u8_t_for_subtle_Choice_t.
@@ -344,7 +339,7 @@ End Impl_core_convert_From_u8_t_for_subtle_Choice_t.
 Module  ConstantTimeEq.
 Section ConstantTimeEq.
   Class Trait (Self : Set) : Type := {
-    ct_eq : (ref ltac:(Self)) -> (ref ltac:(Self)) -> M subtle.Choice.t;
+    ct_eq : (ref Self) -> (ref Self) -> M subtle.Choice.t;
   }.
   
 End ConstantTimeEq.
@@ -356,7 +351,7 @@ Section Impl_subtle_ConstantTimeEq_for_slice_T.
   
   Context {ℋ_0 : subtle.ConstantTimeEq.Trait T}.
   
-  Ltac Self := exact (slice T).
+  Definition Self : Set := slice T.
   
   (*
       fn ct_eq(&self, _rhs: &[T]) -> Choice {
@@ -379,14 +374,14 @@ Section Impl_subtle_ConstantTimeEq_for_slice_T.
           x.into()
       }
   *)
-  Parameter ct_eq : (ref ltac:(Self)) -> (ref (slice T)) -> M subtle.Choice.t.
+  Parameter ct_eq : (ref Self) -> (ref (slice T)) -> M subtle.Choice.t.
   
   Global Instance AssociatedFunction_ct_eq :
-    Notations.DoubleColon ltac:(Self) "ct_eq" := {
+    Notations.DoubleColon Self "ct_eq" := {
     Notations.double_colon := ct_eq;
   }.
   
-  Global Instance ℐ : subtle.ConstantTimeEq.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : subtle.ConstantTimeEq.Required.Trait Self := {
     subtle.ConstantTimeEq.ct_eq := ct_eq;
     subtle.ConstantTimeEq.ct_ne := Datatypes.None;
   }.
@@ -395,22 +390,21 @@ End Impl_subtle_ConstantTimeEq_for_slice_T.
 
 Module  Impl_subtle_ConstantTimeEq_for_subtle_Choice_t.
 Section Impl_subtle_ConstantTimeEq_for_subtle_Choice_t.
-  Ltac Self := exact subtle.Choice.t.
+  Definition Self : Set := subtle.Choice.t.
   
   (*
       fn ct_eq(&self, rhs: &Choice) -> Choice {
           !( *self ^ *rhs)
       }
   *)
-  Parameter ct_eq :
-      (ref ltac:(Self)) -> (ref subtle.Choice.t) -> M subtle.Choice.t.
+  Parameter ct_eq : (ref Self) -> (ref subtle.Choice.t) -> M subtle.Choice.t.
   
   Global Instance AssociatedFunction_ct_eq :
-    Notations.DoubleColon ltac:(Self) "ct_eq" := {
+    Notations.DoubleColon Self "ct_eq" := {
     Notations.double_colon := ct_eq;
   }.
   
-  Global Instance ℐ : subtle.ConstantTimeEq.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : subtle.ConstantTimeEq.Required.Trait Self := {
     subtle.ConstantTimeEq.ct_eq := ct_eq;
     subtle.ConstantTimeEq.ct_ne := Datatypes.None;
   }.
@@ -419,7 +413,7 @@ End Impl_subtle_ConstantTimeEq_for_subtle_Choice_t.
 
 Module  Impl_subtle_ConstantTimeEq_for_u8_t.
 Section Impl_subtle_ConstantTimeEq_for_u8_t.
-  Ltac Self := exact u8.t.
+  Definition Self : Set := u8.t.
   
   (*
               fn ct_eq(&self, other: &$t_u) -> Choice {
@@ -434,14 +428,14 @@ Section Impl_subtle_ConstantTimeEq_for_u8_t.
                   ((y ^ (1 as $t_u)) as u8).into()
               }
   *)
-  Parameter ct_eq : (ref ltac:(Self)) -> (ref u8.t) -> M subtle.Choice.t.
+  Parameter ct_eq : (ref Self) -> (ref u8.t) -> M subtle.Choice.t.
   
   Global Instance AssociatedFunction_ct_eq :
-    Notations.DoubleColon ltac:(Self) "ct_eq" := {
+    Notations.DoubleColon Self "ct_eq" := {
     Notations.double_colon := ct_eq;
   }.
   
-  Global Instance ℐ : subtle.ConstantTimeEq.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : subtle.ConstantTimeEq.Required.Trait Self := {
     subtle.ConstantTimeEq.ct_eq := ct_eq;
     subtle.ConstantTimeEq.ct_ne := Datatypes.None;
   }.
@@ -450,7 +444,7 @@ End Impl_subtle_ConstantTimeEq_for_u8_t.
 
 Module  Impl_subtle_ConstantTimeEq_for_i8_t.
 Section Impl_subtle_ConstantTimeEq_for_i8_t.
-  Ltac Self := exact i8.t.
+  Definition Self : Set := i8.t.
   
   (*
               fn ct_eq(&self, other: &$t_i) -> Choice {
@@ -458,14 +452,14 @@ Section Impl_subtle_ConstantTimeEq_for_i8_t.
                   ( *self as $t_u).ct_eq(&( *other as $t_u))
               }
   *)
-  Parameter ct_eq : (ref ltac:(Self)) -> (ref i8.t) -> M subtle.Choice.t.
+  Parameter ct_eq : (ref Self) -> (ref i8.t) -> M subtle.Choice.t.
   
   Global Instance AssociatedFunction_ct_eq :
-    Notations.DoubleColon ltac:(Self) "ct_eq" := {
+    Notations.DoubleColon Self "ct_eq" := {
     Notations.double_colon := ct_eq;
   }.
   
-  Global Instance ℐ : subtle.ConstantTimeEq.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : subtle.ConstantTimeEq.Required.Trait Self := {
     subtle.ConstantTimeEq.ct_eq := ct_eq;
     subtle.ConstantTimeEq.ct_ne := Datatypes.None;
   }.
@@ -474,7 +468,7 @@ End Impl_subtle_ConstantTimeEq_for_i8_t.
 
 Module  Impl_subtle_ConstantTimeEq_for_u16_t.
 Section Impl_subtle_ConstantTimeEq_for_u16_t.
-  Ltac Self := exact u16.t.
+  Definition Self : Set := u16.t.
   
   (*
               fn ct_eq(&self, other: &$t_u) -> Choice {
@@ -489,14 +483,14 @@ Section Impl_subtle_ConstantTimeEq_for_u16_t.
                   ((y ^ (1 as $t_u)) as u8).into()
               }
   *)
-  Parameter ct_eq : (ref ltac:(Self)) -> (ref u16.t) -> M subtle.Choice.t.
+  Parameter ct_eq : (ref Self) -> (ref u16.t) -> M subtle.Choice.t.
   
   Global Instance AssociatedFunction_ct_eq :
-    Notations.DoubleColon ltac:(Self) "ct_eq" := {
+    Notations.DoubleColon Self "ct_eq" := {
     Notations.double_colon := ct_eq;
   }.
   
-  Global Instance ℐ : subtle.ConstantTimeEq.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : subtle.ConstantTimeEq.Required.Trait Self := {
     subtle.ConstantTimeEq.ct_eq := ct_eq;
     subtle.ConstantTimeEq.ct_ne := Datatypes.None;
   }.
@@ -505,7 +499,7 @@ End Impl_subtle_ConstantTimeEq_for_u16_t.
 
 Module  Impl_subtle_ConstantTimeEq_for_i16_t.
 Section Impl_subtle_ConstantTimeEq_for_i16_t.
-  Ltac Self := exact i16.t.
+  Definition Self : Set := i16.t.
   
   (*
               fn ct_eq(&self, other: &$t_i) -> Choice {
@@ -513,14 +507,14 @@ Section Impl_subtle_ConstantTimeEq_for_i16_t.
                   ( *self as $t_u).ct_eq(&( *other as $t_u))
               }
   *)
-  Parameter ct_eq : (ref ltac:(Self)) -> (ref i16.t) -> M subtle.Choice.t.
+  Parameter ct_eq : (ref Self) -> (ref i16.t) -> M subtle.Choice.t.
   
   Global Instance AssociatedFunction_ct_eq :
-    Notations.DoubleColon ltac:(Self) "ct_eq" := {
+    Notations.DoubleColon Self "ct_eq" := {
     Notations.double_colon := ct_eq;
   }.
   
-  Global Instance ℐ : subtle.ConstantTimeEq.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : subtle.ConstantTimeEq.Required.Trait Self := {
     subtle.ConstantTimeEq.ct_eq := ct_eq;
     subtle.ConstantTimeEq.ct_ne := Datatypes.None;
   }.
@@ -529,7 +523,7 @@ End Impl_subtle_ConstantTimeEq_for_i16_t.
 
 Module  Impl_subtle_ConstantTimeEq_for_u32_t.
 Section Impl_subtle_ConstantTimeEq_for_u32_t.
-  Ltac Self := exact u32.t.
+  Definition Self : Set := u32.t.
   
   (*
               fn ct_eq(&self, other: &$t_u) -> Choice {
@@ -544,14 +538,14 @@ Section Impl_subtle_ConstantTimeEq_for_u32_t.
                   ((y ^ (1 as $t_u)) as u8).into()
               }
   *)
-  Parameter ct_eq : (ref ltac:(Self)) -> (ref u32.t) -> M subtle.Choice.t.
+  Parameter ct_eq : (ref Self) -> (ref u32.t) -> M subtle.Choice.t.
   
   Global Instance AssociatedFunction_ct_eq :
-    Notations.DoubleColon ltac:(Self) "ct_eq" := {
+    Notations.DoubleColon Self "ct_eq" := {
     Notations.double_colon := ct_eq;
   }.
   
-  Global Instance ℐ : subtle.ConstantTimeEq.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : subtle.ConstantTimeEq.Required.Trait Self := {
     subtle.ConstantTimeEq.ct_eq := ct_eq;
     subtle.ConstantTimeEq.ct_ne := Datatypes.None;
   }.
@@ -560,7 +554,7 @@ End Impl_subtle_ConstantTimeEq_for_u32_t.
 
 Module  Impl_subtle_ConstantTimeEq_for_i32_t.
 Section Impl_subtle_ConstantTimeEq_for_i32_t.
-  Ltac Self := exact i32.t.
+  Definition Self : Set := i32.t.
   
   (*
               fn ct_eq(&self, other: &$t_i) -> Choice {
@@ -568,14 +562,14 @@ Section Impl_subtle_ConstantTimeEq_for_i32_t.
                   ( *self as $t_u).ct_eq(&( *other as $t_u))
               }
   *)
-  Parameter ct_eq : (ref ltac:(Self)) -> (ref i32.t) -> M subtle.Choice.t.
+  Parameter ct_eq : (ref Self) -> (ref i32.t) -> M subtle.Choice.t.
   
   Global Instance AssociatedFunction_ct_eq :
-    Notations.DoubleColon ltac:(Self) "ct_eq" := {
+    Notations.DoubleColon Self "ct_eq" := {
     Notations.double_colon := ct_eq;
   }.
   
-  Global Instance ℐ : subtle.ConstantTimeEq.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : subtle.ConstantTimeEq.Required.Trait Self := {
     subtle.ConstantTimeEq.ct_eq := ct_eq;
     subtle.ConstantTimeEq.ct_ne := Datatypes.None;
   }.
@@ -584,7 +578,7 @@ End Impl_subtle_ConstantTimeEq_for_i32_t.
 
 Module  Impl_subtle_ConstantTimeEq_for_u64_t.
 Section Impl_subtle_ConstantTimeEq_for_u64_t.
-  Ltac Self := exact u64.t.
+  Definition Self : Set := u64.t.
   
   (*
               fn ct_eq(&self, other: &$t_u) -> Choice {
@@ -599,14 +593,14 @@ Section Impl_subtle_ConstantTimeEq_for_u64_t.
                   ((y ^ (1 as $t_u)) as u8).into()
               }
   *)
-  Parameter ct_eq : (ref ltac:(Self)) -> (ref u64.t) -> M subtle.Choice.t.
+  Parameter ct_eq : (ref Self) -> (ref u64.t) -> M subtle.Choice.t.
   
   Global Instance AssociatedFunction_ct_eq :
-    Notations.DoubleColon ltac:(Self) "ct_eq" := {
+    Notations.DoubleColon Self "ct_eq" := {
     Notations.double_colon := ct_eq;
   }.
   
-  Global Instance ℐ : subtle.ConstantTimeEq.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : subtle.ConstantTimeEq.Required.Trait Self := {
     subtle.ConstantTimeEq.ct_eq := ct_eq;
     subtle.ConstantTimeEq.ct_ne := Datatypes.None;
   }.
@@ -615,7 +609,7 @@ End Impl_subtle_ConstantTimeEq_for_u64_t.
 
 Module  Impl_subtle_ConstantTimeEq_for_i64_t.
 Section Impl_subtle_ConstantTimeEq_for_i64_t.
-  Ltac Self := exact i64.t.
+  Definition Self : Set := i64.t.
   
   (*
               fn ct_eq(&self, other: &$t_i) -> Choice {
@@ -623,14 +617,14 @@ Section Impl_subtle_ConstantTimeEq_for_i64_t.
                   ( *self as $t_u).ct_eq(&( *other as $t_u))
               }
   *)
-  Parameter ct_eq : (ref ltac:(Self)) -> (ref i64.t) -> M subtle.Choice.t.
+  Parameter ct_eq : (ref Self) -> (ref i64.t) -> M subtle.Choice.t.
   
   Global Instance AssociatedFunction_ct_eq :
-    Notations.DoubleColon ltac:(Self) "ct_eq" := {
+    Notations.DoubleColon Self "ct_eq" := {
     Notations.double_colon := ct_eq;
   }.
   
-  Global Instance ℐ : subtle.ConstantTimeEq.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : subtle.ConstantTimeEq.Required.Trait Self := {
     subtle.ConstantTimeEq.ct_eq := ct_eq;
     subtle.ConstantTimeEq.ct_ne := Datatypes.None;
   }.
@@ -639,7 +633,7 @@ End Impl_subtle_ConstantTimeEq_for_i64_t.
 
 Module  Impl_subtle_ConstantTimeEq_for_usize_t.
 Section Impl_subtle_ConstantTimeEq_for_usize_t.
-  Ltac Self := exact usize.t.
+  Definition Self : Set := usize.t.
   
   (*
               fn ct_eq(&self, other: &$t_u) -> Choice {
@@ -654,14 +648,14 @@ Section Impl_subtle_ConstantTimeEq_for_usize_t.
                   ((y ^ (1 as $t_u)) as u8).into()
               }
   *)
-  Parameter ct_eq : (ref ltac:(Self)) -> (ref usize.t) -> M subtle.Choice.t.
+  Parameter ct_eq : (ref Self) -> (ref usize.t) -> M subtle.Choice.t.
   
   Global Instance AssociatedFunction_ct_eq :
-    Notations.DoubleColon ltac:(Self) "ct_eq" := {
+    Notations.DoubleColon Self "ct_eq" := {
     Notations.double_colon := ct_eq;
   }.
   
-  Global Instance ℐ : subtle.ConstantTimeEq.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : subtle.ConstantTimeEq.Required.Trait Self := {
     subtle.ConstantTimeEq.ct_eq := ct_eq;
     subtle.ConstantTimeEq.ct_ne := Datatypes.None;
   }.
@@ -670,7 +664,7 @@ End Impl_subtle_ConstantTimeEq_for_usize_t.
 
 Module  Impl_subtle_ConstantTimeEq_for_isize_t.
 Section Impl_subtle_ConstantTimeEq_for_isize_t.
-  Ltac Self := exact isize.t.
+  Definition Self : Set := isize.t.
   
   (*
               fn ct_eq(&self, other: &$t_i) -> Choice {
@@ -678,14 +672,14 @@ Section Impl_subtle_ConstantTimeEq_for_isize_t.
                   ( *self as $t_u).ct_eq(&( *other as $t_u))
               }
   *)
-  Parameter ct_eq : (ref ltac:(Self)) -> (ref isize.t) -> M subtle.Choice.t.
+  Parameter ct_eq : (ref Self) -> (ref isize.t) -> M subtle.Choice.t.
   
   Global Instance AssociatedFunction_ct_eq :
-    Notations.DoubleColon ltac:(Self) "ct_eq" := {
+    Notations.DoubleColon Self "ct_eq" := {
     Notations.double_colon := ct_eq;
   }.
   
-  Global Instance ℐ : subtle.ConstantTimeEq.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : subtle.ConstantTimeEq.Required.Trait Self := {
     subtle.ConstantTimeEq.ct_eq := ct_eq;
     subtle.ConstantTimeEq.ct_ne := Datatypes.None;
   }.
@@ -696,11 +690,7 @@ Module  ConditionallySelectable.
 Section ConditionallySelectable.
   Class Trait (Self : Set) : Type := {
     ℒ_0 :: core.marker.Copy.Trait Self;
-    conditional_select :
-      (ref ltac:(Self)) ->
-        (ref ltac:(Self)) ->
-        subtle.Choice.t ->
-        M ltac:(Self);
+    conditional_select : (ref Self) -> (ref Self) -> subtle.Choice.t -> M Self;
   }.
   
 End ConditionallySelectable.
@@ -708,7 +698,7 @@ End ConditionallySelectable.
 
 Module  Impl_subtle_ConditionallySelectable_for_u8_t.
 Section Impl_subtle_ConditionallySelectable_for_u8_t.
-  Ltac Self := exact u8.t.
+  Definition Self : Set := u8.t.
   
   (*
               fn conditional_select(a: &Self, b: &Self, choice: Choice) -> Self {
@@ -719,13 +709,10 @@ Section Impl_subtle_ConditionallySelectable_for_u8_t.
               }
   *)
   Parameter conditional_select :
-      (ref ltac:(Self)) ->
-        (ref ltac:(Self)) ->
-        subtle.Choice.t ->
-        M ltac:(Self).
+      (ref Self) -> (ref Self) -> subtle.Choice.t -> M Self.
   
   Global Instance AssociatedFunction_conditional_select :
-    Notations.DoubleColon ltac:(Self) "conditional_select" := {
+    Notations.DoubleColon Self "conditional_select" := {
     Notations.double_colon := conditional_select;
   }.
   
@@ -738,10 +725,10 @@ Section Impl_subtle_ConditionallySelectable_for_u8_t.
               }
   *)
   Parameter conditional_assign :
-      (mut_ref ltac:(Self)) -> (ref ltac:(Self)) -> subtle.Choice.t -> M unit.
+      (mut_ref Self) -> (ref Self) -> subtle.Choice.t -> M unit.
   
   Global Instance AssociatedFunction_conditional_assign :
-    Notations.DoubleColon ltac:(Self) "conditional_assign" := {
+    Notations.DoubleColon Self "conditional_assign" := {
     Notations.double_colon := conditional_assign;
   }.
   
@@ -756,18 +743,14 @@ Section Impl_subtle_ConditionallySelectable_for_u8_t.
               }
   *)
   Parameter conditional_swap :
-      (mut_ref ltac:(Self)) ->
-        (mut_ref ltac:(Self)) ->
-        subtle.Choice.t ->
-        M unit.
+      (mut_ref Self) -> (mut_ref Self) -> subtle.Choice.t -> M unit.
   
   Global Instance AssociatedFunction_conditional_swap :
-    Notations.DoubleColon ltac:(Self) "conditional_swap" := {
+    Notations.DoubleColon Self "conditional_swap" := {
     Notations.double_colon := conditional_swap;
   }.
   
-  Global Instance ℐ :
-    subtle.ConditionallySelectable.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : subtle.ConditionallySelectable.Required.Trait Self := {
     subtle.ConditionallySelectable.conditional_select := conditional_select;
     subtle.ConditionallySelectable.conditional_assign :=
       Datatypes.Some conditional_assign;
@@ -779,7 +762,7 @@ End Impl_subtle_ConditionallySelectable_for_u8_t.
 
 Module  Impl_subtle_ConditionallySelectable_for_i8_t.
 Section Impl_subtle_ConditionallySelectable_for_i8_t.
-  Ltac Self := exact i8.t.
+  Definition Self : Set := i8.t.
   
   (*
               fn conditional_select(a: &Self, b: &Self, choice: Choice) -> Self {
@@ -790,13 +773,10 @@ Section Impl_subtle_ConditionallySelectable_for_i8_t.
               }
   *)
   Parameter conditional_select :
-      (ref ltac:(Self)) ->
-        (ref ltac:(Self)) ->
-        subtle.Choice.t ->
-        M ltac:(Self).
+      (ref Self) -> (ref Self) -> subtle.Choice.t -> M Self.
   
   Global Instance AssociatedFunction_conditional_select :
-    Notations.DoubleColon ltac:(Self) "conditional_select" := {
+    Notations.DoubleColon Self "conditional_select" := {
     Notations.double_colon := conditional_select;
   }.
   
@@ -809,10 +789,10 @@ Section Impl_subtle_ConditionallySelectable_for_i8_t.
               }
   *)
   Parameter conditional_assign :
-      (mut_ref ltac:(Self)) -> (ref ltac:(Self)) -> subtle.Choice.t -> M unit.
+      (mut_ref Self) -> (ref Self) -> subtle.Choice.t -> M unit.
   
   Global Instance AssociatedFunction_conditional_assign :
-    Notations.DoubleColon ltac:(Self) "conditional_assign" := {
+    Notations.DoubleColon Self "conditional_assign" := {
     Notations.double_colon := conditional_assign;
   }.
   
@@ -827,18 +807,14 @@ Section Impl_subtle_ConditionallySelectable_for_i8_t.
               }
   *)
   Parameter conditional_swap :
-      (mut_ref ltac:(Self)) ->
-        (mut_ref ltac:(Self)) ->
-        subtle.Choice.t ->
-        M unit.
+      (mut_ref Self) -> (mut_ref Self) -> subtle.Choice.t -> M unit.
   
   Global Instance AssociatedFunction_conditional_swap :
-    Notations.DoubleColon ltac:(Self) "conditional_swap" := {
+    Notations.DoubleColon Self "conditional_swap" := {
     Notations.double_colon := conditional_swap;
   }.
   
-  Global Instance ℐ :
-    subtle.ConditionallySelectable.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : subtle.ConditionallySelectable.Required.Trait Self := {
     subtle.ConditionallySelectable.conditional_select := conditional_select;
     subtle.ConditionallySelectable.conditional_assign :=
       Datatypes.Some conditional_assign;
@@ -850,7 +826,7 @@ End Impl_subtle_ConditionallySelectable_for_i8_t.
 
 Module  Impl_subtle_ConditionallySelectable_for_u16_t.
 Section Impl_subtle_ConditionallySelectable_for_u16_t.
-  Ltac Self := exact u16.t.
+  Definition Self : Set := u16.t.
   
   (*
               fn conditional_select(a: &Self, b: &Self, choice: Choice) -> Self {
@@ -861,13 +837,10 @@ Section Impl_subtle_ConditionallySelectable_for_u16_t.
               }
   *)
   Parameter conditional_select :
-      (ref ltac:(Self)) ->
-        (ref ltac:(Self)) ->
-        subtle.Choice.t ->
-        M ltac:(Self).
+      (ref Self) -> (ref Self) -> subtle.Choice.t -> M Self.
   
   Global Instance AssociatedFunction_conditional_select :
-    Notations.DoubleColon ltac:(Self) "conditional_select" := {
+    Notations.DoubleColon Self "conditional_select" := {
     Notations.double_colon := conditional_select;
   }.
   
@@ -880,10 +853,10 @@ Section Impl_subtle_ConditionallySelectable_for_u16_t.
               }
   *)
   Parameter conditional_assign :
-      (mut_ref ltac:(Self)) -> (ref ltac:(Self)) -> subtle.Choice.t -> M unit.
+      (mut_ref Self) -> (ref Self) -> subtle.Choice.t -> M unit.
   
   Global Instance AssociatedFunction_conditional_assign :
-    Notations.DoubleColon ltac:(Self) "conditional_assign" := {
+    Notations.DoubleColon Self "conditional_assign" := {
     Notations.double_colon := conditional_assign;
   }.
   
@@ -898,18 +871,14 @@ Section Impl_subtle_ConditionallySelectable_for_u16_t.
               }
   *)
   Parameter conditional_swap :
-      (mut_ref ltac:(Self)) ->
-        (mut_ref ltac:(Self)) ->
-        subtle.Choice.t ->
-        M unit.
+      (mut_ref Self) -> (mut_ref Self) -> subtle.Choice.t -> M unit.
   
   Global Instance AssociatedFunction_conditional_swap :
-    Notations.DoubleColon ltac:(Self) "conditional_swap" := {
+    Notations.DoubleColon Self "conditional_swap" := {
     Notations.double_colon := conditional_swap;
   }.
   
-  Global Instance ℐ :
-    subtle.ConditionallySelectable.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : subtle.ConditionallySelectable.Required.Trait Self := {
     subtle.ConditionallySelectable.conditional_select := conditional_select;
     subtle.ConditionallySelectable.conditional_assign :=
       Datatypes.Some conditional_assign;
@@ -921,7 +890,7 @@ End Impl_subtle_ConditionallySelectable_for_u16_t.
 
 Module  Impl_subtle_ConditionallySelectable_for_i16_t.
 Section Impl_subtle_ConditionallySelectable_for_i16_t.
-  Ltac Self := exact i16.t.
+  Definition Self : Set := i16.t.
   
   (*
               fn conditional_select(a: &Self, b: &Self, choice: Choice) -> Self {
@@ -932,13 +901,10 @@ Section Impl_subtle_ConditionallySelectable_for_i16_t.
               }
   *)
   Parameter conditional_select :
-      (ref ltac:(Self)) ->
-        (ref ltac:(Self)) ->
-        subtle.Choice.t ->
-        M ltac:(Self).
+      (ref Self) -> (ref Self) -> subtle.Choice.t -> M Self.
   
   Global Instance AssociatedFunction_conditional_select :
-    Notations.DoubleColon ltac:(Self) "conditional_select" := {
+    Notations.DoubleColon Self "conditional_select" := {
     Notations.double_colon := conditional_select;
   }.
   
@@ -951,10 +917,10 @@ Section Impl_subtle_ConditionallySelectable_for_i16_t.
               }
   *)
   Parameter conditional_assign :
-      (mut_ref ltac:(Self)) -> (ref ltac:(Self)) -> subtle.Choice.t -> M unit.
+      (mut_ref Self) -> (ref Self) -> subtle.Choice.t -> M unit.
   
   Global Instance AssociatedFunction_conditional_assign :
-    Notations.DoubleColon ltac:(Self) "conditional_assign" := {
+    Notations.DoubleColon Self "conditional_assign" := {
     Notations.double_colon := conditional_assign;
   }.
   
@@ -969,18 +935,14 @@ Section Impl_subtle_ConditionallySelectable_for_i16_t.
               }
   *)
   Parameter conditional_swap :
-      (mut_ref ltac:(Self)) ->
-        (mut_ref ltac:(Self)) ->
-        subtle.Choice.t ->
-        M unit.
+      (mut_ref Self) -> (mut_ref Self) -> subtle.Choice.t -> M unit.
   
   Global Instance AssociatedFunction_conditional_swap :
-    Notations.DoubleColon ltac:(Self) "conditional_swap" := {
+    Notations.DoubleColon Self "conditional_swap" := {
     Notations.double_colon := conditional_swap;
   }.
   
-  Global Instance ℐ :
-    subtle.ConditionallySelectable.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : subtle.ConditionallySelectable.Required.Trait Self := {
     subtle.ConditionallySelectable.conditional_select := conditional_select;
     subtle.ConditionallySelectable.conditional_assign :=
       Datatypes.Some conditional_assign;
@@ -992,7 +954,7 @@ End Impl_subtle_ConditionallySelectable_for_i16_t.
 
 Module  Impl_subtle_ConditionallySelectable_for_u32_t.
 Section Impl_subtle_ConditionallySelectable_for_u32_t.
-  Ltac Self := exact u32.t.
+  Definition Self : Set := u32.t.
   
   (*
               fn conditional_select(a: &Self, b: &Self, choice: Choice) -> Self {
@@ -1003,13 +965,10 @@ Section Impl_subtle_ConditionallySelectable_for_u32_t.
               }
   *)
   Parameter conditional_select :
-      (ref ltac:(Self)) ->
-        (ref ltac:(Self)) ->
-        subtle.Choice.t ->
-        M ltac:(Self).
+      (ref Self) -> (ref Self) -> subtle.Choice.t -> M Self.
   
   Global Instance AssociatedFunction_conditional_select :
-    Notations.DoubleColon ltac:(Self) "conditional_select" := {
+    Notations.DoubleColon Self "conditional_select" := {
     Notations.double_colon := conditional_select;
   }.
   
@@ -1022,10 +981,10 @@ Section Impl_subtle_ConditionallySelectable_for_u32_t.
               }
   *)
   Parameter conditional_assign :
-      (mut_ref ltac:(Self)) -> (ref ltac:(Self)) -> subtle.Choice.t -> M unit.
+      (mut_ref Self) -> (ref Self) -> subtle.Choice.t -> M unit.
   
   Global Instance AssociatedFunction_conditional_assign :
-    Notations.DoubleColon ltac:(Self) "conditional_assign" := {
+    Notations.DoubleColon Self "conditional_assign" := {
     Notations.double_colon := conditional_assign;
   }.
   
@@ -1040,18 +999,14 @@ Section Impl_subtle_ConditionallySelectable_for_u32_t.
               }
   *)
   Parameter conditional_swap :
-      (mut_ref ltac:(Self)) ->
-        (mut_ref ltac:(Self)) ->
-        subtle.Choice.t ->
-        M unit.
+      (mut_ref Self) -> (mut_ref Self) -> subtle.Choice.t -> M unit.
   
   Global Instance AssociatedFunction_conditional_swap :
-    Notations.DoubleColon ltac:(Self) "conditional_swap" := {
+    Notations.DoubleColon Self "conditional_swap" := {
     Notations.double_colon := conditional_swap;
   }.
   
-  Global Instance ℐ :
-    subtle.ConditionallySelectable.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : subtle.ConditionallySelectable.Required.Trait Self := {
     subtle.ConditionallySelectable.conditional_select := conditional_select;
     subtle.ConditionallySelectable.conditional_assign :=
       Datatypes.Some conditional_assign;
@@ -1063,7 +1018,7 @@ End Impl_subtle_ConditionallySelectable_for_u32_t.
 
 Module  Impl_subtle_ConditionallySelectable_for_i32_t.
 Section Impl_subtle_ConditionallySelectable_for_i32_t.
-  Ltac Self := exact i32.t.
+  Definition Self : Set := i32.t.
   
   (*
               fn conditional_select(a: &Self, b: &Self, choice: Choice) -> Self {
@@ -1074,13 +1029,10 @@ Section Impl_subtle_ConditionallySelectable_for_i32_t.
               }
   *)
   Parameter conditional_select :
-      (ref ltac:(Self)) ->
-        (ref ltac:(Self)) ->
-        subtle.Choice.t ->
-        M ltac:(Self).
+      (ref Self) -> (ref Self) -> subtle.Choice.t -> M Self.
   
   Global Instance AssociatedFunction_conditional_select :
-    Notations.DoubleColon ltac:(Self) "conditional_select" := {
+    Notations.DoubleColon Self "conditional_select" := {
     Notations.double_colon := conditional_select;
   }.
   
@@ -1093,10 +1045,10 @@ Section Impl_subtle_ConditionallySelectable_for_i32_t.
               }
   *)
   Parameter conditional_assign :
-      (mut_ref ltac:(Self)) -> (ref ltac:(Self)) -> subtle.Choice.t -> M unit.
+      (mut_ref Self) -> (ref Self) -> subtle.Choice.t -> M unit.
   
   Global Instance AssociatedFunction_conditional_assign :
-    Notations.DoubleColon ltac:(Self) "conditional_assign" := {
+    Notations.DoubleColon Self "conditional_assign" := {
     Notations.double_colon := conditional_assign;
   }.
   
@@ -1111,18 +1063,14 @@ Section Impl_subtle_ConditionallySelectable_for_i32_t.
               }
   *)
   Parameter conditional_swap :
-      (mut_ref ltac:(Self)) ->
-        (mut_ref ltac:(Self)) ->
-        subtle.Choice.t ->
-        M unit.
+      (mut_ref Self) -> (mut_ref Self) -> subtle.Choice.t -> M unit.
   
   Global Instance AssociatedFunction_conditional_swap :
-    Notations.DoubleColon ltac:(Self) "conditional_swap" := {
+    Notations.DoubleColon Self "conditional_swap" := {
     Notations.double_colon := conditional_swap;
   }.
   
-  Global Instance ℐ :
-    subtle.ConditionallySelectable.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : subtle.ConditionallySelectable.Required.Trait Self := {
     subtle.ConditionallySelectable.conditional_select := conditional_select;
     subtle.ConditionallySelectable.conditional_assign :=
       Datatypes.Some conditional_assign;
@@ -1134,7 +1082,7 @@ End Impl_subtle_ConditionallySelectable_for_i32_t.
 
 Module  Impl_subtle_ConditionallySelectable_for_u64_t.
 Section Impl_subtle_ConditionallySelectable_for_u64_t.
-  Ltac Self := exact u64.t.
+  Definition Self : Set := u64.t.
   
   (*
               fn conditional_select(a: &Self, b: &Self, choice: Choice) -> Self {
@@ -1145,13 +1093,10 @@ Section Impl_subtle_ConditionallySelectable_for_u64_t.
               }
   *)
   Parameter conditional_select :
-      (ref ltac:(Self)) ->
-        (ref ltac:(Self)) ->
-        subtle.Choice.t ->
-        M ltac:(Self).
+      (ref Self) -> (ref Self) -> subtle.Choice.t -> M Self.
   
   Global Instance AssociatedFunction_conditional_select :
-    Notations.DoubleColon ltac:(Self) "conditional_select" := {
+    Notations.DoubleColon Self "conditional_select" := {
     Notations.double_colon := conditional_select;
   }.
   
@@ -1164,10 +1109,10 @@ Section Impl_subtle_ConditionallySelectable_for_u64_t.
               }
   *)
   Parameter conditional_assign :
-      (mut_ref ltac:(Self)) -> (ref ltac:(Self)) -> subtle.Choice.t -> M unit.
+      (mut_ref Self) -> (ref Self) -> subtle.Choice.t -> M unit.
   
   Global Instance AssociatedFunction_conditional_assign :
-    Notations.DoubleColon ltac:(Self) "conditional_assign" := {
+    Notations.DoubleColon Self "conditional_assign" := {
     Notations.double_colon := conditional_assign;
   }.
   
@@ -1182,18 +1127,14 @@ Section Impl_subtle_ConditionallySelectable_for_u64_t.
               }
   *)
   Parameter conditional_swap :
-      (mut_ref ltac:(Self)) ->
-        (mut_ref ltac:(Self)) ->
-        subtle.Choice.t ->
-        M unit.
+      (mut_ref Self) -> (mut_ref Self) -> subtle.Choice.t -> M unit.
   
   Global Instance AssociatedFunction_conditional_swap :
-    Notations.DoubleColon ltac:(Self) "conditional_swap" := {
+    Notations.DoubleColon Self "conditional_swap" := {
     Notations.double_colon := conditional_swap;
   }.
   
-  Global Instance ℐ :
-    subtle.ConditionallySelectable.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : subtle.ConditionallySelectable.Required.Trait Self := {
     subtle.ConditionallySelectable.conditional_select := conditional_select;
     subtle.ConditionallySelectable.conditional_assign :=
       Datatypes.Some conditional_assign;
@@ -1205,7 +1146,7 @@ End Impl_subtle_ConditionallySelectable_for_u64_t.
 
 Module  Impl_subtle_ConditionallySelectable_for_i64_t.
 Section Impl_subtle_ConditionallySelectable_for_i64_t.
-  Ltac Self := exact i64.t.
+  Definition Self : Set := i64.t.
   
   (*
               fn conditional_select(a: &Self, b: &Self, choice: Choice) -> Self {
@@ -1216,13 +1157,10 @@ Section Impl_subtle_ConditionallySelectable_for_i64_t.
               }
   *)
   Parameter conditional_select :
-      (ref ltac:(Self)) ->
-        (ref ltac:(Self)) ->
-        subtle.Choice.t ->
-        M ltac:(Self).
+      (ref Self) -> (ref Self) -> subtle.Choice.t -> M Self.
   
   Global Instance AssociatedFunction_conditional_select :
-    Notations.DoubleColon ltac:(Self) "conditional_select" := {
+    Notations.DoubleColon Self "conditional_select" := {
     Notations.double_colon := conditional_select;
   }.
   
@@ -1235,10 +1173,10 @@ Section Impl_subtle_ConditionallySelectable_for_i64_t.
               }
   *)
   Parameter conditional_assign :
-      (mut_ref ltac:(Self)) -> (ref ltac:(Self)) -> subtle.Choice.t -> M unit.
+      (mut_ref Self) -> (ref Self) -> subtle.Choice.t -> M unit.
   
   Global Instance AssociatedFunction_conditional_assign :
-    Notations.DoubleColon ltac:(Self) "conditional_assign" := {
+    Notations.DoubleColon Self "conditional_assign" := {
     Notations.double_colon := conditional_assign;
   }.
   
@@ -1253,18 +1191,14 @@ Section Impl_subtle_ConditionallySelectable_for_i64_t.
               }
   *)
   Parameter conditional_swap :
-      (mut_ref ltac:(Self)) ->
-        (mut_ref ltac:(Self)) ->
-        subtle.Choice.t ->
-        M unit.
+      (mut_ref Self) -> (mut_ref Self) -> subtle.Choice.t -> M unit.
   
   Global Instance AssociatedFunction_conditional_swap :
-    Notations.DoubleColon ltac:(Self) "conditional_swap" := {
+    Notations.DoubleColon Self "conditional_swap" := {
     Notations.double_colon := conditional_swap;
   }.
   
-  Global Instance ℐ :
-    subtle.ConditionallySelectable.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : subtle.ConditionallySelectable.Required.Trait Self := {
     subtle.ConditionallySelectable.conditional_select := conditional_select;
     subtle.ConditionallySelectable.conditional_assign :=
       Datatypes.Some conditional_assign;
@@ -1276,7 +1210,7 @@ End Impl_subtle_ConditionallySelectable_for_i64_t.
 
 Module  Impl_subtle_ConditionallySelectable_for_subtle_Choice_t.
 Section Impl_subtle_ConditionallySelectable_for_subtle_Choice_t.
-  Ltac Self := exact subtle.Choice.t.
+  Definition Self : Set := subtle.Choice.t.
   
   (*
       fn conditional_select(a: &Self, b: &Self, choice: Choice) -> Self {
@@ -1284,18 +1218,14 @@ Section Impl_subtle_ConditionallySelectable_for_subtle_Choice_t.
       }
   *)
   Parameter conditional_select :
-      (ref ltac:(Self)) ->
-        (ref ltac:(Self)) ->
-        subtle.Choice.t ->
-        M ltac:(Self).
+      (ref Self) -> (ref Self) -> subtle.Choice.t -> M Self.
   
   Global Instance AssociatedFunction_conditional_select :
-    Notations.DoubleColon ltac:(Self) "conditional_select" := {
+    Notations.DoubleColon Self "conditional_select" := {
     Notations.double_colon := conditional_select;
   }.
   
-  Global Instance ℐ :
-    subtle.ConditionallySelectable.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : subtle.ConditionallySelectable.Required.Trait Self := {
     subtle.ConditionallySelectable.conditional_select := conditional_select;
     subtle.ConditionallySelectable.conditional_assign := Datatypes.None;
     subtle.ConditionallySelectable.conditional_swap := Datatypes.None;
@@ -1306,7 +1236,7 @@ End Impl_subtle_ConditionallySelectable_for_subtle_Choice_t.
 Module  ConditionallyNegatable.
 Section ConditionallyNegatable.
   Class Trait (Self : Set) : Type := {
-    conditional_negate : (mut_ref ltac:(Self)) -> subtle.Choice.t -> M unit;
+    conditional_negate : (mut_ref Self) -> subtle.Choice.t -> M unit;
   }.
   
 End ConditionallyNegatable.
@@ -1320,7 +1250,7 @@ Section Impl_subtle_ConditionallyNegatable_for_T.
     {ℋ_0 : subtle.ConditionallySelectable.Trait T}
     {ℋ_1 : core.ops.arith.Neg.Trait (ref T)}.
   
-  Ltac Self := exact T.
+  Definition Self : Set := T.
   
   (*
       fn conditional_negate(&mut self, choice: Choice) {
@@ -1329,15 +1259,14 @@ Section Impl_subtle_ConditionallyNegatable_for_T.
           self.conditional_assign(&self_neg, choice);
       }
   *)
-  Parameter conditional_negate :
-      (mut_ref ltac:(Self)) -> subtle.Choice.t -> M unit.
+  Parameter conditional_negate : (mut_ref Self) -> subtle.Choice.t -> M unit.
   
   Global Instance AssociatedFunction_conditional_negate :
-    Notations.DoubleColon ltac:(Self) "conditional_negate" := {
+    Notations.DoubleColon Self "conditional_negate" := {
     Notations.double_colon := conditional_negate;
   }.
   
-  Global Instance ℐ : subtle.ConditionallyNegatable.Trait ltac:(Self) := {
+  Global Instance ℐ : subtle.ConditionallyNegatable.Trait Self := {
     subtle.ConditionallyNegatable.conditional_negate := conditional_negate;
   }.
 End Impl_subtle_ConditionallyNegatable_for_T.
@@ -1375,19 +1304,19 @@ Section Impl_core_clone_Clone_for_subtle_CtOption_t_T.
   
   Context {ℋ_0 : core.clone.Clone.Trait T}.
   
-  Ltac Self := exact (subtle.CtOption.t T).
+  Definition Self : Set := subtle.CtOption.t T.
   
   (*
   Clone
   *)
-  Parameter clone : (ref ltac:(Self)) -> M (subtle.CtOption.t T).
+  Parameter clone : (ref Self) -> M (subtle.CtOption.t T).
   
   Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon ltac:(Self) "clone" := {
+    Notations.DoubleColon Self "clone" := {
     Notations.double_colon := clone;
   }.
   
-  Global Instance ℐ : core.clone.Clone.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
     core.clone.Clone.clone_from := Datatypes.None;
   }.
@@ -1400,9 +1329,9 @@ Section Impl_core_marker_Copy_for_subtle_CtOption_t_T.
   
   Context {ℋ_0 : core.marker.Copy.Trait T}.
   
-  Ltac Self := exact (subtle.CtOption.t T).
+  Definition Self : Set := subtle.CtOption.t T.
   
-  Global Instance ℐ : core.marker.Copy.Trait ltac:(Self) := {
+  Global Instance ℐ : core.marker.Copy.Trait Self := {
   }.
 End Impl_core_marker_Copy_for_subtle_CtOption_t_T.
 End Impl_core_marker_Copy_for_subtle_CtOption_t_T.
@@ -1413,22 +1342,19 @@ Section Impl_core_fmt_Debug_for_subtle_CtOption_t_T.
   
   Context {ℋ_0 : core.fmt.Debug.Trait T}.
   
-  Ltac Self := exact (subtle.CtOption.t T).
+  Definition Self : Set := subtle.CtOption.t T.
   
   (*
   Debug
   *)
   Parameter fmt :
-      (ref ltac:(Self)) ->
-        (mut_ref core.fmt.Formatter.t) ->
-        M ltac:(core.fmt.Result).
+      (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
   
-  Global Instance AssociatedFunction_fmt :
-    Notations.DoubleColon ltac:(Self) "fmt" := {
+  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
+  Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
   }.
 End Impl_core_fmt_Debug_for_subtle_CtOption_t_T.
@@ -1438,7 +1364,7 @@ Module  Impl_core_convert_From_subtle_CtOption_t_T_for_core_option_Option_t_T.
 Section Impl_core_convert_From_subtle_CtOption_t_T_for_core_option_Option_t_T.
   Context {T : Set}.
   
-  Ltac Self := exact (core.option.Option.t T).
+  Definition Self : Set := core.option.Option.t T.
   
   (*
       fn from(source: CtOption<T>) -> Option<T> {
@@ -1452,12 +1378,12 @@ Section Impl_core_convert_From_subtle_CtOption_t_T_for_core_option_Option_t_T.
   Parameter from : (subtle.CtOption.t T) -> M (core.option.Option.t T).
   
   Global Instance AssociatedFunction_from :
-    Notations.DoubleColon ltac:(Self) "from" := {
+    Notations.DoubleColon Self "from" := {
     Notations.double_colon := from;
   }.
   
   Global Instance ℐ :
-    core.convert.From.Trait ltac:(Self) (T := subtle.CtOption.t T) := {
+    core.convert.From.Trait Self (T := subtle.CtOption.t T) := {
     core.convert.From.from := from;
   }.
 End Impl_core_convert_From_subtle_CtOption_t_T_for_core_option_Option_t_T.
@@ -1467,7 +1393,7 @@ Module  Impl_subtle_CtOption_t_T.
 Section Impl_subtle_CtOption_t_T.
   Context {T : Set}.
   
-  Ltac Self := exact (subtle.CtOption.t T).
+  Definition Self : Set := subtle.CtOption.t T.
   
   (*
       pub fn new(value: T, is_some: Choice) -> CtOption<T> {
@@ -1479,8 +1405,7 @@ Section Impl_subtle_CtOption_t_T.
   *)
   Parameter new : T -> subtle.Choice.t -> M (subtle.CtOption.t T).
   
-  Global Instance AssociatedFunction_new :
-    Notations.DoubleColon ltac:(Self) "new" := {
+  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
   }.
   
@@ -1491,10 +1416,10 @@ Section Impl_subtle_CtOption_t_T.
           self.value
       }
   *)
-  Parameter expect : ltac:(Self) -> (ref str.t) -> M T.
+  Parameter expect : Self -> (ref str.t) -> M T.
   
   Global Instance AssociatedFunction_expect :
-    Notations.DoubleColon ltac:(Self) "expect" := {
+    Notations.DoubleColon Self "expect" := {
     Notations.double_colon := expect;
   }.
   
@@ -1505,10 +1430,10 @@ Section Impl_subtle_CtOption_t_T.
           self.value
       }
   *)
-  Parameter unwrap : ltac:(Self) -> M T.
+  Parameter unwrap : Self -> M T.
   
   Global Instance AssociatedFunction_unwrap :
-    Notations.DoubleColon ltac:(Self) "unwrap" := {
+    Notations.DoubleColon Self "unwrap" := {
     Notations.double_colon := unwrap;
   }.
   
@@ -1522,11 +1447,11 @@ Section Impl_subtle_CtOption_t_T.
   *)
   Parameter unwrap_or :
       forall {ℋ_0 : subtle.ConditionallySelectable.Trait T},
-      ltac:(Self) -> T -> M T.
+      Self -> T -> M T.
   
   Global Instance AssociatedFunction_unwrap_or
       {ℋ_0 : subtle.ConditionallySelectable.Trait T} :
-    Notations.DoubleColon ltac:(Self) "unwrap_or" := {
+    Notations.DoubleColon Self "unwrap_or" := {
     Notations.double_colon := unwrap_or;
   }.
   
@@ -1544,13 +1469,13 @@ Section Impl_subtle_CtOption_t_T.
         {F : Set}
         {ℋ_0 : subtle.ConditionallySelectable.Trait T}
         {ℋ_1 : core.ops.function.FnOnce.Trait F (Args := unit)},
-      ltac:(Self) -> F -> M T.
+      Self -> F -> M T.
   
   Global Instance AssociatedFunction_unwrap_or_else
       {F : Set}
       {ℋ_0 : subtle.ConditionallySelectable.Trait T}
       {ℋ_1 : core.ops.function.FnOnce.Trait F (Args := unit)} :
-    Notations.DoubleColon ltac:(Self) "unwrap_or_else" := {
+    Notations.DoubleColon Self "unwrap_or_else" := {
     Notations.double_colon := unwrap_or_else (F := F);
   }.
   
@@ -1559,10 +1484,10 @@ Section Impl_subtle_CtOption_t_T.
           self.is_some
       }
   *)
-  Parameter is_some : (ref ltac:(Self)) -> M subtle.Choice.t.
+  Parameter is_some : (ref Self) -> M subtle.Choice.t.
   
   Global Instance AssociatedFunction_is_some :
-    Notations.DoubleColon ltac:(Self) "is_some" := {
+    Notations.DoubleColon Self "is_some" := {
     Notations.double_colon := is_some;
   }.
   
@@ -1571,10 +1496,10 @@ Section Impl_subtle_CtOption_t_T.
           !self.is_some
       }
   *)
-  Parameter is_none : (ref ltac:(Self)) -> M subtle.Choice.t.
+  Parameter is_none : (ref Self) -> M subtle.Choice.t.
   
   Global Instance AssociatedFunction_is_none :
-    Notations.DoubleColon ltac:(Self) "is_none" := {
+    Notations.DoubleColon Self "is_none" := {
     Notations.double_colon := is_none;
   }.
   
@@ -1600,14 +1525,14 @@ Section Impl_subtle_CtOption_t_T.
         {ℋ_0 : core.default.Default.Trait T}
         {ℋ_1 : subtle.ConditionallySelectable.Trait T}
         {ℋ_2 : core.ops.function.FnOnce.Trait F (Args := T)},
-      ltac:(Self) -> F -> M (subtle.CtOption.t U).
+      Self -> F -> M (subtle.CtOption.t U).
   
   Global Instance AssociatedFunction_map
       {U F : Set}
       {ℋ_0 : core.default.Default.Trait T}
       {ℋ_1 : subtle.ConditionallySelectable.Trait T}
       {ℋ_2 : core.ops.function.FnOnce.Trait F (Args := T)} :
-    Notations.DoubleColon ltac:(Self) "map" := {
+    Notations.DoubleColon Self "map" := {
     Notations.double_colon := map (U := U) (F := F);
   }.
   
@@ -1633,14 +1558,14 @@ Section Impl_subtle_CtOption_t_T.
         {ℋ_0 : core.default.Default.Trait T}
         {ℋ_1 : subtle.ConditionallySelectable.Trait T}
         {ℋ_2 : core.ops.function.FnOnce.Trait F (Args := T)},
-      ltac:(Self) -> F -> M (subtle.CtOption.t U).
+      Self -> F -> M (subtle.CtOption.t U).
   
   Global Instance AssociatedFunction_and_then
       {U F : Set}
       {ℋ_0 : core.default.Default.Trait T}
       {ℋ_1 : subtle.ConditionallySelectable.Trait T}
       {ℋ_2 : core.ops.function.FnOnce.Trait F (Args := T)} :
-    Notations.DoubleColon ltac:(Self) "and_then" := {
+    Notations.DoubleColon Self "and_then" := {
     Notations.double_colon := and_then (U := U) (F := F);
   }.
   
@@ -1661,13 +1586,13 @@ Section Impl_subtle_CtOption_t_T.
         {F : Set}
         {ℋ_0 : subtle.ConditionallySelectable.Trait T}
         {ℋ_1 : core.ops.function.FnOnce.Trait F (Args := unit)},
-      ltac:(Self) -> F -> M (subtle.CtOption.t T).
+      Self -> F -> M (subtle.CtOption.t T).
   
   Global Instance AssociatedFunction_or_else
       {F : Set}
       {ℋ_0 : subtle.ConditionallySelectable.Trait T}
       {ℋ_1 : core.ops.function.FnOnce.Trait F (Args := unit)} :
-    Notations.DoubleColon ltac:(Self) "or_else" := {
+    Notations.DoubleColon Self "or_else" := {
     Notations.double_colon := or_else (F := F);
   }.
 End Impl_subtle_CtOption_t_T.
@@ -1679,7 +1604,7 @@ Section Impl_subtle_ConditionallySelectable_for_subtle_CtOption_t_T.
   
   Context {ℋ_0 : subtle.ConditionallySelectable.Trait T}.
   
-  Ltac Self := exact (subtle.CtOption.t T).
+  Definition Self : Set := subtle.CtOption.t T.
   
   (*
       fn conditional_select(a: &Self, b: &Self, choice: Choice) -> Self {
@@ -1690,18 +1615,14 @@ Section Impl_subtle_ConditionallySelectable_for_subtle_CtOption_t_T.
       }
   *)
   Parameter conditional_select :
-      (ref ltac:(Self)) ->
-        (ref ltac:(Self)) ->
-        subtle.Choice.t ->
-        M ltac:(Self).
+      (ref Self) -> (ref Self) -> subtle.Choice.t -> M Self.
   
   Global Instance AssociatedFunction_conditional_select :
-    Notations.DoubleColon ltac:(Self) "conditional_select" := {
+    Notations.DoubleColon Self "conditional_select" := {
     Notations.double_colon := conditional_select;
   }.
   
-  Global Instance ℐ :
-    subtle.ConditionallySelectable.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : subtle.ConditionallySelectable.Required.Trait Self := {
     subtle.ConditionallySelectable.conditional_select := conditional_select;
     subtle.ConditionallySelectable.conditional_assign := Datatypes.None;
     subtle.ConditionallySelectable.conditional_swap := Datatypes.None;
@@ -1715,7 +1636,7 @@ Section Impl_subtle_ConstantTimeEq_for_subtle_CtOption_t_T.
   
   Context {ℋ_0 : subtle.ConstantTimeEq.Trait T}.
   
-  Ltac Self := exact (subtle.CtOption.t T).
+  Definition Self : Set := subtle.CtOption.t T.
   
   (*
       fn ct_eq(&self, rhs: &CtOption<T>) -> Choice {
@@ -1726,14 +1647,14 @@ Section Impl_subtle_ConstantTimeEq_for_subtle_CtOption_t_T.
       }
   *)
   Parameter ct_eq :
-      (ref ltac:(Self)) -> (ref (subtle.CtOption.t T)) -> M subtle.Choice.t.
+      (ref Self) -> (ref (subtle.CtOption.t T)) -> M subtle.Choice.t.
   
   Global Instance AssociatedFunction_ct_eq :
-    Notations.DoubleColon ltac:(Self) "ct_eq" := {
+    Notations.DoubleColon Self "ct_eq" := {
     Notations.double_colon := ct_eq;
   }.
   
-  Global Instance ℐ : subtle.ConstantTimeEq.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : subtle.ConstantTimeEq.Required.Trait Self := {
     subtle.ConstantTimeEq.ct_eq := ct_eq;
     subtle.ConstantTimeEq.ct_ne := Datatypes.None;
   }.
@@ -1743,7 +1664,7 @@ End Impl_subtle_ConstantTimeEq_for_subtle_CtOption_t_T.
 Module  ConstantTimeGreater.
 Section ConstantTimeGreater.
   Class Trait (Self : Set) : Type := {
-    ct_gt : (ref ltac:(Self)) -> (ref ltac:(Self)) -> M subtle.Choice.t;
+    ct_gt : (ref Self) -> (ref Self) -> M subtle.Choice.t;
   }.
   
 End ConstantTimeGreater.
@@ -1751,7 +1672,7 @@ End ConstantTimeGreater.
 
 Module  Impl_subtle_ConstantTimeGreater_for_u8_t.
 Section Impl_subtle_ConstantTimeGreater_for_u8_t.
-  Ltac Self := exact u8.t.
+  Definition Self : Set := u8.t.
   
   (*
               fn ct_gt(&self, other: &$t_u) -> Choice {
@@ -1776,14 +1697,14 @@ Section Impl_subtle_ConstantTimeGreater_for_u8_t.
                   Choice::from((bit & 1) as u8)
               }
   *)
-  Parameter ct_gt : (ref ltac:(Self)) -> (ref u8.t) -> M subtle.Choice.t.
+  Parameter ct_gt : (ref Self) -> (ref u8.t) -> M subtle.Choice.t.
   
   Global Instance AssociatedFunction_ct_gt :
-    Notations.DoubleColon ltac:(Self) "ct_gt" := {
+    Notations.DoubleColon Self "ct_gt" := {
     Notations.double_colon := ct_gt;
   }.
   
-  Global Instance ℐ : subtle.ConstantTimeGreater.Trait ltac:(Self) := {
+  Global Instance ℐ : subtle.ConstantTimeGreater.Trait Self := {
     subtle.ConstantTimeGreater.ct_gt := ct_gt;
   }.
 End Impl_subtle_ConstantTimeGreater_for_u8_t.
@@ -1791,7 +1712,7 @@ End Impl_subtle_ConstantTimeGreater_for_u8_t.
 
 Module  Impl_subtle_ConstantTimeGreater_for_u16_t.
 Section Impl_subtle_ConstantTimeGreater_for_u16_t.
-  Ltac Self := exact u16.t.
+  Definition Self : Set := u16.t.
   
   (*
               fn ct_gt(&self, other: &$t_u) -> Choice {
@@ -1816,14 +1737,14 @@ Section Impl_subtle_ConstantTimeGreater_for_u16_t.
                   Choice::from((bit & 1) as u8)
               }
   *)
-  Parameter ct_gt : (ref ltac:(Self)) -> (ref u16.t) -> M subtle.Choice.t.
+  Parameter ct_gt : (ref Self) -> (ref u16.t) -> M subtle.Choice.t.
   
   Global Instance AssociatedFunction_ct_gt :
-    Notations.DoubleColon ltac:(Self) "ct_gt" := {
+    Notations.DoubleColon Self "ct_gt" := {
     Notations.double_colon := ct_gt;
   }.
   
-  Global Instance ℐ : subtle.ConstantTimeGreater.Trait ltac:(Self) := {
+  Global Instance ℐ : subtle.ConstantTimeGreater.Trait Self := {
     subtle.ConstantTimeGreater.ct_gt := ct_gt;
   }.
 End Impl_subtle_ConstantTimeGreater_for_u16_t.
@@ -1831,7 +1752,7 @@ End Impl_subtle_ConstantTimeGreater_for_u16_t.
 
 Module  Impl_subtle_ConstantTimeGreater_for_u32_t.
 Section Impl_subtle_ConstantTimeGreater_for_u32_t.
-  Ltac Self := exact u32.t.
+  Definition Self : Set := u32.t.
   
   (*
               fn ct_gt(&self, other: &$t_u) -> Choice {
@@ -1856,14 +1777,14 @@ Section Impl_subtle_ConstantTimeGreater_for_u32_t.
                   Choice::from((bit & 1) as u8)
               }
   *)
-  Parameter ct_gt : (ref ltac:(Self)) -> (ref u32.t) -> M subtle.Choice.t.
+  Parameter ct_gt : (ref Self) -> (ref u32.t) -> M subtle.Choice.t.
   
   Global Instance AssociatedFunction_ct_gt :
-    Notations.DoubleColon ltac:(Self) "ct_gt" := {
+    Notations.DoubleColon Self "ct_gt" := {
     Notations.double_colon := ct_gt;
   }.
   
-  Global Instance ℐ : subtle.ConstantTimeGreater.Trait ltac:(Self) := {
+  Global Instance ℐ : subtle.ConstantTimeGreater.Trait Self := {
     subtle.ConstantTimeGreater.ct_gt := ct_gt;
   }.
 End Impl_subtle_ConstantTimeGreater_for_u32_t.
@@ -1871,7 +1792,7 @@ End Impl_subtle_ConstantTimeGreater_for_u32_t.
 
 Module  Impl_subtle_ConstantTimeGreater_for_u64_t.
 Section Impl_subtle_ConstantTimeGreater_for_u64_t.
-  Ltac Self := exact u64.t.
+  Definition Self : Set := u64.t.
   
   (*
               fn ct_gt(&self, other: &$t_u) -> Choice {
@@ -1896,14 +1817,14 @@ Section Impl_subtle_ConstantTimeGreater_for_u64_t.
                   Choice::from((bit & 1) as u8)
               }
   *)
-  Parameter ct_gt : (ref ltac:(Self)) -> (ref u64.t) -> M subtle.Choice.t.
+  Parameter ct_gt : (ref Self) -> (ref u64.t) -> M subtle.Choice.t.
   
   Global Instance AssociatedFunction_ct_gt :
-    Notations.DoubleColon ltac:(Self) "ct_gt" := {
+    Notations.DoubleColon Self "ct_gt" := {
     Notations.double_colon := ct_gt;
   }.
   
-  Global Instance ℐ : subtle.ConstantTimeGreater.Trait ltac:(Self) := {
+  Global Instance ℐ : subtle.ConstantTimeGreater.Trait Self := {
     subtle.ConstantTimeGreater.ct_gt := ct_gt;
   }.
 End Impl_subtle_ConstantTimeGreater_for_u64_t.
@@ -1921,9 +1842,9 @@ End ConstantTimeLess.
 
 Module  Impl_subtle_ConstantTimeLess_for_u8_t.
 Section Impl_subtle_ConstantTimeLess_for_u8_t.
-  Ltac Self := exact u8.t.
+  Definition Self : Set := u8.t.
   
-  Global Instance ℐ : subtle.ConstantTimeLess.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : subtle.ConstantTimeLess.Required.Trait Self := {
     subtle.ConstantTimeLess.ct_lt := Datatypes.None;
   }.
 End Impl_subtle_ConstantTimeLess_for_u8_t.
@@ -1931,9 +1852,9 @@ End Impl_subtle_ConstantTimeLess_for_u8_t.
 
 Module  Impl_subtle_ConstantTimeLess_for_u16_t.
 Section Impl_subtle_ConstantTimeLess_for_u16_t.
-  Ltac Self := exact u16.t.
+  Definition Self : Set := u16.t.
   
-  Global Instance ℐ : subtle.ConstantTimeLess.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : subtle.ConstantTimeLess.Required.Trait Self := {
     subtle.ConstantTimeLess.ct_lt := Datatypes.None;
   }.
 End Impl_subtle_ConstantTimeLess_for_u16_t.
@@ -1941,9 +1862,9 @@ End Impl_subtle_ConstantTimeLess_for_u16_t.
 
 Module  Impl_subtle_ConstantTimeLess_for_u32_t.
 Section Impl_subtle_ConstantTimeLess_for_u32_t.
-  Ltac Self := exact u32.t.
+  Definition Self : Set := u32.t.
   
-  Global Instance ℐ : subtle.ConstantTimeLess.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : subtle.ConstantTimeLess.Required.Trait Self := {
     subtle.ConstantTimeLess.ct_lt := Datatypes.None;
   }.
 End Impl_subtle_ConstantTimeLess_for_u32_t.
@@ -1951,9 +1872,9 @@ End Impl_subtle_ConstantTimeLess_for_u32_t.
 
 Module  Impl_subtle_ConstantTimeLess_for_u64_t.
 Section Impl_subtle_ConstantTimeLess_for_u64_t.
-  Ltac Self := exact u64.t.
+  Definition Self : Set := u64.t.
   
-  Global Instance ℐ : subtle.ConstantTimeLess.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : subtle.ConstantTimeLess.Required.Trait Self := {
     subtle.ConstantTimeLess.ct_lt := Datatypes.None;
   }.
 End Impl_subtle_ConstantTimeLess_for_u64_t.

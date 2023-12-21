@@ -59,34 +59,34 @@ End SomeOtherType.
 
 Module  Impl_traits_parms_Foo_for_traits_parms_SomeOtherType_t.
 Section Impl_traits_parms_Foo_for_traits_parms_SomeOtherType_t.
-  Ltac Self := exact traits_parms.SomeOtherType.t.
+  Definition Self : Set := traits_parms.SomeOtherType.t.
   
-  Global Instance ℐ : traits_parms.Foo.Trait ltac:(Self) := {
+  Global Instance ℐ : traits_parms.Foo.Trait Self := {
   }.
 End Impl_traits_parms_Foo_for_traits_parms_SomeOtherType_t.
 End Impl_traits_parms_Foo_for_traits_parms_SomeOtherType_t.
 
 Module  Impl_traits_parms_Bar_for_traits_parms_SomeOtherType_t.
 Section Impl_traits_parms_Bar_for_traits_parms_SomeOtherType_t.
-  Ltac Self := exact traits_parms.SomeOtherType.t.
+  Definition Self : Set := traits_parms.SomeOtherType.t.
   
-  Global Instance ℐ : traits_parms.Bar.Trait ltac:(Self) := {
+  Global Instance ℐ : traits_parms.Bar.Trait Self := {
   }.
 End Impl_traits_parms_Bar_for_traits_parms_SomeOtherType_t.
 End Impl_traits_parms_Bar_for_traits_parms_SomeOtherType_t.
 
 Module  Impl_traits_parms_Tar_for_traits_parms_SomeOtherType_t.
 Section Impl_traits_parms_Tar_for_traits_parms_SomeOtherType_t.
-  Ltac Self := exact traits_parms.SomeOtherType.t.
+  Definition Self : Set := traits_parms.SomeOtherType.t.
   
-  Global Instance ℐ : traits_parms.Tar.Trait ltac:(Self) := {
+  Global Instance ℐ : traits_parms.Tar.Trait Self := {
   }.
 End Impl_traits_parms_Tar_for_traits_parms_SomeOtherType_t.
 End Impl_traits_parms_Tar_for_traits_parms_SomeOtherType_t.
 
 Module  Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType_t.
 Section Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType_t.
-  Ltac Self := exact traits_parms.SomeOtherType.t.
+  Definition Self : Set := traits_parms.SomeOtherType.t.
   
   (*
       type SomeType = SomeOtherType;
@@ -99,11 +99,11 @@ Section Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType_t.
   Definition some_fn : M unit := M.pure tt.
   
   Global Instance AssociatedFunction_some_fn :
-    Notations.DoubleColon ltac:(Self) "some_fn" := {
+    Notations.DoubleColon Self "some_fn" := {
     Notations.double_colon := some_fn;
   }.
   
-  Global Instance ℐ : traits_parms.SomeTrait.Trait ltac:(Self) := {
+  Global Instance ℐ : traits_parms.SomeTrait.Trait Self := {
     traits_parms.SomeTrait.SomeType := SomeType;
     traits_parms.SomeTrait.some_fn := some_fn;
   }.

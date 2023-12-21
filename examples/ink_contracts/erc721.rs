@@ -45,16 +45,6 @@ struct Env {
     caller: AccountId,
 }
 
-impl Env {
-    fn caller(&self) -> AccountId {
-        self.caller
-    }
-
-    fn emit_event(&self, _event: Event) {
-        unimplemented!()
-    }
-}
-
 /// A token ID.
 pub type TokenId = u32;
 
@@ -70,7 +60,7 @@ pub struct Erc721 {
     operator_approvals: Mapping<(AccountId, AccountId), ()>,
 }
 
-#[derive(Debug, PartialEq, Eq, Copy, Clone)]
+#[derive(PartialEq, Eq, Clone, Copy)]
 pub enum Error {
     NotOwner,
     NotApproved,
@@ -107,6 +97,16 @@ enum Event {
     Transfer(Transfer),
     Approval(Approval),
     ApprovalForAll(ApprovalForAll),
+}
+
+impl Env {
+    fn caller(&self) -> AccountId {
+        self.caller
+    }
+
+    fn emit_event(&self, _event: Event) {
+        unimplemented!()
+    }
 }
 
 impl Erc721 {

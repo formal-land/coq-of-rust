@@ -15,7 +15,7 @@ End AccountId.
 
 Module  Impl_core_default_Default_for_custom_environment_AccountId_t.
 Section Impl_core_default_Default_for_custom_environment_AccountId_t.
-  Ltac Self := exact custom_environment.AccountId.t.
+  Definition Self : Set := custom_environment.AccountId.t.
   
   (*
   Default
@@ -29,11 +29,11 @@ Section Impl_core_default_Default_for_custom_environment_AccountId_t.
     M.pure (custom_environment.AccountId.Build_t α0).
   
   Global Instance AssociatedFunction_default :
-    Notations.DoubleColon ltac:(Self) "default" := {
+    Notations.DoubleColon Self "default" := {
     Notations.double_colon := default;
   }.
   
-  Global Instance ℐ : core.default.Default.Trait ltac:(Self) := {
+  Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
   }.
 End Impl_core_default_Default_for_custom_environment_AccountId_t.
@@ -41,25 +41,23 @@ End Impl_core_default_Default_for_custom_environment_AccountId_t.
 
 Module  Impl_core_clone_Clone_for_custom_environment_AccountId_t.
 Section Impl_core_clone_Clone_for_custom_environment_AccountId_t.
-  Ltac Self := exact custom_environment.AccountId.t.
+  Definition Self : Set := custom_environment.AccountId.t.
   
   (*
   Clone
   *)
-  Definition clone
-      (self : ref ltac:(Self))
-      : M custom_environment.AccountId.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
-    let* _ : M.Val unit := M.alloc tt in
+  Definition clone (self : ref Self) : M custom_environment.AccountId.t :=
+    let* self : M.Val (ref Self) := M.alloc self in
+    let _ : unit := tt in
     let* α0 : ref custom_environment.AccountId.t := M.read self in
     M.read (deref α0).
   
   Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon ltac:(Self) "clone" := {
+    Notations.DoubleColon Self "clone" := {
     Notations.double_colon := clone;
   }.
   
-  Global Instance ℐ : core.clone.Clone.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
     core.clone.Clone.clone_from := Datatypes.None;
   }.
@@ -68,9 +66,9 @@ End Impl_core_clone_Clone_for_custom_environment_AccountId_t.
 
 Module  Impl_core_marker_Copy_for_custom_environment_AccountId_t.
 Section Impl_core_marker_Copy_for_custom_environment_AccountId_t.
-  Ltac Self := exact custom_environment.AccountId.t.
+  Definition Self : Set := custom_environment.AccountId.t.
   
-  Global Instance ℐ : core.marker.Copy.Trait ltac:(Self) := {
+  Global Instance ℐ : core.marker.Copy.Trait Self := {
   }.
 End Impl_core_marker_Copy_for_custom_environment_AccountId_t.
 End Impl_core_marker_Copy_for_custom_environment_AccountId_t.
@@ -93,49 +91,6 @@ Section Env.
 End Env.
 End Env.
 
-Module  Impl_custom_environment_Env_t.
-Section Impl_custom_environment_Env_t.
-  Ltac Self := exact custom_environment.Env.t.
-  
-  (*
-      fn caller(&self) -> AccountId {
-          self.caller
-      }
-  *)
-  Definition caller
-      (self : ref ltac:(Self))
-      : M custom_environment.AccountId.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
-    let* α0 : ref custom_environment.Env.t := M.read self in
-    M.read (deref α0).["caller"].
-  
-  Global Instance AssociatedFunction_caller :
-    Notations.DoubleColon ltac:(Self) "caller" := {
-    Notations.double_colon := caller;
-  }.
-  
-  (*
-      fn emit_event(&self, _event: Event) {
-          unimplemented!()
-      }
-  *)
-  Definition emit_event
-      (self : ref ltac:(Self))
-      (_event : custom_environment.Event.t)
-      : M unit :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
-    let* _event : M.Val custom_environment.Event.t := M.alloc _event in
-    let* α0 : ref str.t := M.read (mk_str "not implemented") in
-    let* α1 : never.t := M.call (core.panicking.panic α0) in
-    never_to_any α1.
-  
-  Global Instance AssociatedFunction_emit_event :
-    Notations.DoubleColon ltac:(Self) "emit_event" := {
-    Notations.double_colon := emit_event;
-  }.
-End Impl_custom_environment_Env_t.
-End Impl_custom_environment_Env_t.
-
 Module  Topics.
 Section Topics.
   Inductive t : Set := Build.
@@ -144,7 +99,7 @@ End Topics.
 
 Module  Impl_core_default_Default_for_custom_environment_Topics_t.
 Section Impl_core_default_Default_for_custom_environment_Topics_t.
-  Ltac Self := exact custom_environment.Topics.t.
+  Definition Self : Set := custom_environment.Topics.t.
   
   (*
   Default
@@ -153,11 +108,11 @@ Section Impl_core_default_Default_for_custom_environment_Topics_t.
     M.pure custom_environment.Topics.Build.
   
   Global Instance AssociatedFunction_default :
-    Notations.DoubleColon ltac:(Self) "default" := {
+    Notations.DoubleColon Self "default" := {
     Notations.double_colon := default;
   }.
   
-  Global Instance ℐ : core.default.Default.Trait ltac:(Self) := {
+  Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
   }.
 End Impl_core_default_Default_for_custom_environment_Topics_t.
@@ -222,7 +177,7 @@ End EventWithTopics.
 
 Module  Impl_core_default_Default_for_custom_environment_EventWithTopics_t.
 Section Impl_core_default_Default_for_custom_environment_EventWithTopics_t.
-  Ltac Self := exact custom_environment.EventWithTopics.t.
+  Definition Self : Set := custom_environment.EventWithTopics.t.
   
   (*
   Default
@@ -263,11 +218,11 @@ Section Impl_core_default_Default_for_custom_environment_EventWithTopics_t.
       |}.
   
   Global Instance AssociatedFunction_default :
-    Notations.DoubleColon ltac:(Self) "default" := {
+    Notations.DoubleColon Self "default" := {
     Notations.double_colon := default;
   }.
   
-  Global Instance ℐ : core.default.Default.Trait ltac:(Self) := {
+  Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
   }.
 End Impl_core_default_Default_for_custom_environment_EventWithTopics_t.
@@ -278,9 +233,50 @@ Module Event.
   | EventWithTopics (_ : custom_environment.EventWithTopics.t).
 End Event.
 
+Module  Impl_custom_environment_Env_t.
+Section Impl_custom_environment_Env_t.
+  Definition Self : Set := custom_environment.Env.t.
+  
+  (*
+      fn caller(&self) -> AccountId {
+          self.caller
+      }
+  *)
+  Definition caller (self : ref Self) : M custom_environment.AccountId.t :=
+    let* self : M.Val (ref Self) := M.alloc self in
+    let* α0 : ref custom_environment.Env.t := M.read self in
+    M.read (deref α0).["caller"].
+  
+  Global Instance AssociatedFunction_caller :
+    Notations.DoubleColon Self "caller" := {
+    Notations.double_colon := caller;
+  }.
+  
+  (*
+      fn emit_event(&self, _event: Event) {
+          unimplemented!()
+      }
+  *)
+  Definition emit_event
+      (self : ref Self)
+      (_event : custom_environment.Event.t)
+      : M unit :=
+    let* self : M.Val (ref Self) := M.alloc self in
+    let* _event : M.Val custom_environment.Event.t := M.alloc _event in
+    let* α0 : ref str.t := M.read (mk_str "not implemented") in
+    let* α1 : never.t := M.call (core.panicking.panic α0) in
+    never_to_any α1.
+  
+  Global Instance AssociatedFunction_emit_event :
+    Notations.DoubleColon Self "emit_event" := {
+    Notations.double_colon := emit_event;
+  }.
+End Impl_custom_environment_Env_t.
+End Impl_custom_environment_Env_t.
+
 Module  Impl_custom_environment_Topics_t.
 Section Impl_custom_environment_Topics_t.
-  Ltac Self := exact custom_environment.Topics.t.
+  Definition Self : Set := custom_environment.Topics.t.
   
   (*
       fn init_env() -> Env {
@@ -293,7 +289,7 @@ Section Impl_custom_environment_Topics_t.
     never_to_any α1.
   
   Global Instance AssociatedFunction_init_env :
-    Notations.DoubleColon ltac:(Self) "init_env" := {
+    Notations.DoubleColon Self "init_env" := {
     Notations.double_colon := init_env;
   }.
   
@@ -302,12 +298,11 @@ Section Impl_custom_environment_Topics_t.
           Self::init_env()
       }
   *)
-  Definition env (self : ref ltac:(Self)) : M custom_environment.Env.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition env (self : ref Self) : M custom_environment.Env.t :=
+    let* self : M.Val (ref Self) := M.alloc self in
     M.call custom_environment.Topics.t::["init_env"].
   
-  Global Instance AssociatedFunction_env :
-    Notations.DoubleColon ltac:(Self) "env" := {
+  Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
     Notations.double_colon := env;
   }.
   
@@ -316,14 +311,13 @@ Section Impl_custom_environment_Topics_t.
           Default::default()
       }
   *)
-  Definition new : M ltac:(Self) :=
+  Definition new : M Self :=
     M.call
       (core.default.Default.default
         (Self := custom_environment.Topics.t)
         (Trait := ltac:(refine _))).
   
-  Global Instance AssociatedFunction_new :
-    Notations.DoubleColon ltac:(Self) "new" := {
+  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
   }.
   
@@ -333,8 +327,8 @@ Section Impl_custom_environment_Topics_t.
               .emit_event(Event::EventWithTopics(EventWithTopics::default()));
       }
   *)
-  Definition trigger (self : mut_ref ltac:(Self)) : M unit :=
-    let* self : M.Val (mut_ref ltac:(Self)) := M.alloc self in
+  Definition trigger (self : mut_ref Self) : M unit :=
+    let* self : M.Val (mut_ref Self) := M.alloc self in
     let* _ : M.Val unit :=
       let* α0 : mut_ref custom_environment.Topics.t := M.read self in
       let* α1 : custom_environment.Env.t :=
@@ -355,7 +349,7 @@ Section Impl_custom_environment_Topics_t.
     M.read α0.
   
   Global Instance AssociatedFunction_trigger :
-    Notations.DoubleColon ltac:(Self) "trigger" := {
+    Notations.DoubleColon Self "trigger" := {
     Notations.double_colon := trigger;
   }.
 End Impl_custom_environment_Topics_t.

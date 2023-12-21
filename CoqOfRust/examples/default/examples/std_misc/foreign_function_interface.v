@@ -123,25 +123,23 @@ End Complex.
 
 Module  Impl_core_clone_Clone_for_foreign_function_interface_Complex_t.
 Section Impl_core_clone_Clone_for_foreign_function_interface_Complex_t.
-  Ltac Self := exact foreign_function_interface.Complex.t.
+  Definition Self : Set := foreign_function_interface.Complex.t.
   
   (*
   Clone
   *)
-  Definition clone
-      (self : ref ltac:(Self))
-      : M foreign_function_interface.Complex.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
-    let* _ : M.Val unit := M.alloc tt in
+  Definition clone (self : ref Self) : M foreign_function_interface.Complex.t :=
+    let* self : M.Val (ref Self) := M.alloc self in
+    let _ : unit := tt in
     let* α0 : ref foreign_function_interface.Complex.t := M.read self in
     M.read (deref α0).
   
   Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon ltac:(Self) "clone" := {
+    Notations.DoubleColon Self "clone" := {
     Notations.double_colon := clone;
   }.
   
-  Global Instance ℐ : core.clone.Clone.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
     core.clone.Clone.clone_from := Datatypes.None;
   }.
@@ -150,16 +148,16 @@ End Impl_core_clone_Clone_for_foreign_function_interface_Complex_t.
 
 Module  Impl_core_marker_Copy_for_foreign_function_interface_Complex_t.
 Section Impl_core_marker_Copy_for_foreign_function_interface_Complex_t.
-  Ltac Self := exact foreign_function_interface.Complex.t.
+  Definition Self : Set := foreign_function_interface.Complex.t.
   
-  Global Instance ℐ : core.marker.Copy.Trait ltac:(Self) := {
+  Global Instance ℐ : core.marker.Copy.Trait Self := {
   }.
 End Impl_core_marker_Copy_for_foreign_function_interface_Complex_t.
 End Impl_core_marker_Copy_for_foreign_function_interface_Complex_t.
 
 Module  Impl_core_fmt_Debug_for_foreign_function_interface_Complex_t.
 Section Impl_core_fmt_Debug_for_foreign_function_interface_Complex_t.
-  Ltac Self := exact foreign_function_interface.Complex.t.
+  Definition Self : Set := foreign_function_interface.Complex.t.
   
   (*
       fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
@@ -171,10 +169,10 @@ Section Impl_core_fmt_Debug_for_foreign_function_interface_Complex_t.
       }
   *)
   Definition fmt
-      (self : ref ltac:(Self))
+      (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (ref Self) := M.alloc self in
     let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
     let* α0 : ref foreign_function_interface.Complex.t := M.read self in
     let* α1 : f32.t := M.read (deref α0).["im"] in
@@ -243,12 +241,11 @@ Section Impl_core_fmt_Debug_for_foreign_function_interface_Complex_t.
         M.alloc α15 in
     M.read α3.
   
-  Global Instance AssociatedFunction_fmt :
-    Notations.DoubleColon ltac:(Self) "fmt" := {
+  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
+  Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
   }.
 End Impl_core_fmt_Debug_for_foreign_function_interface_Complex_t.

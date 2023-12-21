@@ -15,25 +15,28 @@ End Owner.
 
 Module  Impl_scoping_rules_lifetimes_methods_Owner_t.
 Section Impl_scoping_rules_lifetimes_methods_Owner_t.
-  Ltac Self := exact scoping_rules_lifetimes_methods.Owner.t.
+  Definition Self : Set := scoping_rules_lifetimes_methods.Owner.t.
   
   (*
       fn add_one<'a>(&'a mut self) {
           self.0 += 1;
       }
   *)
-  Definition add_one (self : mut_ref ltac:(Self)) : M unit :=
-    let* self : M.Val (mut_ref ltac:(Self)) := M.alloc self in
+  Definition add_one (self : mut_ref Self) : M unit :=
+    let* self : M.Val (mut_ref Self) := M.alloc self in
     let* _ : M.Val unit :=
-      let* α0 : mut_ref scoping_rules_lifetimes_methods.Owner.t :=
-        M.read self in
-      let* α1 : M.Val i32.t := M.alloc (Integer.of_Z 1) in
-      assign_op BinOp.Panic.add (deref α0).["0"] α1 in
+      let* β : M.Val i32.t :=
+        let* α0 : mut_ref scoping_rules_lifetimes_methods.Owner.t :=
+          M.read self in
+        M.pure (deref α0).["0"] in
+      let* α0 := M.read β in
+      let* α1 := BinOp.Panic.add α0 (Integer.of_Z 1) in
+      assign β α1 in
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
   Global Instance AssociatedFunction_add_one :
-    Notations.DoubleColon ltac:(Self) "add_one" := {
+    Notations.DoubleColon Self "add_one" := {
     Notations.double_colon := add_one;
   }.
   
@@ -42,8 +45,8 @@ Section Impl_scoping_rules_lifetimes_methods_Owner_t.
           println!("`print`: {}", self.0);
       }
   *)
-  Definition print (self : ref ltac:(Self)) : M unit :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition print (self : ref Self) : M unit :=
+    let* self : M.Val (ref Self) := M.alloc self in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "`print`: ") in
@@ -72,7 +75,7 @@ Section Impl_scoping_rules_lifetimes_methods_Owner_t.
     M.read α0.
   
   Global Instance AssociatedFunction_print :
-    Notations.DoubleColon ltac:(Self) "print" := {
+    Notations.DoubleColon Self "print" := {
     Notations.double_colon := print;
   }.
 End Impl_scoping_rules_lifetimes_methods_Owner_t.

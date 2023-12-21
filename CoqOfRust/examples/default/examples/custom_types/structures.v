@@ -25,16 +25,16 @@ End Person.
 
 Module  Impl_core_fmt_Debug_for_structures_Person_t.
 Section Impl_core_fmt_Debug_for_structures_Person_t.
-  Ltac Self := exact structures.Person.t.
+  Definition Self : Set := structures.Person.t.
   
   (*
   Debug
   *)
   Definition fmt
-      (self : ref ltac:(Self))
+      (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (ref Self) := M.alloc self in
     let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref str.t := M.read (mk_str "Person") in
@@ -53,12 +53,11 @@ Section Impl_core_fmt_Debug_for_structures_Person_t.
     M.call
       (core.fmt.Formatter.t::["debug_struct_field2_finish"] α0 α1 α2 α5 α6 α10).
   
-  Global Instance AssociatedFunction_fmt :
-    Notations.DoubleColon ltac:(Self) "fmt" := {
+  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
+  Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
   }.
 End Impl_core_fmt_Debug_for_structures_Person_t.
@@ -286,8 +285,10 @@ Definition main : M unit :=
       M.alloc α12 in
     M.alloc tt in
   let* '{| structures.Point.x := left_edge; structures.Point.y := top_edge; |} :
-      M.Val structures.Point.t :=
-    M.copy point in
+      structures.Point.t :=
+    M.read point in
+  let* top_edge := M.alloc top_edge in
+  let* left_edge := M.alloc left_edge in
   let* _rectangle : M.Val structures.Rectangle.t :=
     let* α0 : f32.t := M.read left_edge in
     let* α1 : f32.t := M.read top_edge in
@@ -326,8 +327,10 @@ Definition main : M unit :=
       let* α12 : unit := M.call (std.io.stdio._print α11) in
       M.alloc α12 in
     M.alloc tt in
-  let* 'structures.Pair.Build_t integer decimal : M.Val structures.Pair.t :=
-    M.copy pair in
+  let* 'structures.Pair.Build_t integer decimal : structures.Pair.t :=
+    M.read pair in
+  let* decimal := M.alloc decimal in
+  let* integer := M.alloc integer in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "pair contains ") in

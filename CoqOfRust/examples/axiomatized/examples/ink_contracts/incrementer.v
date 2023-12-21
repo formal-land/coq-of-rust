@@ -19,17 +19,16 @@ End Incrementer.
 
 Module  Impl_incrementer_Incrementer_t.
 Section Impl_incrementer_Incrementer_t.
-  Ltac Self := exact incrementer.Incrementer.t.
+  Definition Self : Set := incrementer.Incrementer.t.
   
   (*
       pub fn new(init_value: i32) -> Self {
           Self { value: init_value }
       }
   *)
-  Parameter new : i32.t -> M ltac:(Self).
+  Parameter new : i32.t -> M Self.
   
-  Global Instance AssociatedFunction_new :
-    Notations.DoubleColon ltac:(Self) "new" := {
+  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
   }.
   
@@ -38,10 +37,10 @@ Section Impl_incrementer_Incrementer_t.
           Self::new(Default::default())
       }
   *)
-  Parameter new_default : M ltac:(Self).
+  Parameter new_default : M Self.
   
   Global Instance AssociatedFunction_new_default :
-    Notations.DoubleColon ltac:(Self) "new_default" := {
+    Notations.DoubleColon Self "new_default" := {
     Notations.double_colon := new_default;
   }.
   
@@ -50,10 +49,9 @@ Section Impl_incrementer_Incrementer_t.
           self.value += by;
       }
   *)
-  Parameter inc : (mut_ref ltac:(Self)) -> i32.t -> M unit.
+  Parameter inc : (mut_ref Self) -> i32.t -> M unit.
   
-  Global Instance AssociatedFunction_inc :
-    Notations.DoubleColon ltac:(Self) "inc" := {
+  Global Instance AssociatedFunction_inc : Notations.DoubleColon Self "inc" := {
     Notations.double_colon := inc;
   }.
   
@@ -62,10 +60,9 @@ Section Impl_incrementer_Incrementer_t.
           self.value
       }
   *)
-  Parameter get : (ref ltac:(Self)) -> M i32.t.
+  Parameter get : (ref Self) -> M i32.t.
   
-  Global Instance AssociatedFunction_get :
-    Notations.DoubleColon ltac:(Self) "get" := {
+  Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
     Notations.double_colon := get;
   }.
 End Impl_incrementer_Incrementer_t.

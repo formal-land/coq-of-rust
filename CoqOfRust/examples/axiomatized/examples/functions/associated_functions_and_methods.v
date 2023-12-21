@@ -25,7 +25,7 @@ End Point.
 
 Module  Impl_associated_functions_and_methods_Point_t.
 Section Impl_associated_functions_and_methods_Point_t.
-  Ltac Self := exact associated_functions_and_methods.Point.t.
+  Definition Self : Set := associated_functions_and_methods.Point.t.
   
   (*
       fn origin() -> Point {
@@ -35,7 +35,7 @@ Section Impl_associated_functions_and_methods_Point_t.
   Parameter origin : M associated_functions_and_methods.Point.t.
   
   Global Instance AssociatedFunction_origin :
-    Notations.DoubleColon ltac:(Self) "origin" := {
+    Notations.DoubleColon Self "origin" := {
     Notations.double_colon := origin;
   }.
   
@@ -46,8 +46,7 @@ Section Impl_associated_functions_and_methods_Point_t.
   *)
   Parameter new : f64.t -> f64.t -> M associated_functions_and_methods.Point.t.
   
-  Global Instance AssociatedFunction_new :
-    Notations.DoubleColon ltac:(Self) "new" := {
+  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
   }.
 End Impl_associated_functions_and_methods_Point_t.
@@ -77,18 +76,17 @@ End Rectangle.
 
 Module  Impl_associated_functions_and_methods_Rectangle_t.
 Section Impl_associated_functions_and_methods_Rectangle_t.
-  Ltac Self := exact associated_functions_and_methods.Rectangle.t.
+  Definition Self : Set := associated_functions_and_methods.Rectangle.t.
   
   (*
       fn get_p1(&self) -> Point {
           self.p1
       }
   *)
-  Parameter get_p1 :
-      (ref ltac:(Self)) -> M associated_functions_and_methods.Point.t.
+  Parameter get_p1 : (ref Self) -> M associated_functions_and_methods.Point.t.
   
   Global Instance AssociatedFunction_get_p1 :
-    Notations.DoubleColon ltac:(Self) "get_p1" := {
+    Notations.DoubleColon Self "get_p1" := {
     Notations.double_colon := get_p1;
   }.
   
@@ -103,10 +101,10 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
           ((x1 - x2) * (y1 - y2)).abs()
       }
   *)
-  Parameter area : (ref ltac:(Self)) -> M f64.t.
+  Parameter area : (ref Self) -> M f64.t.
   
   Global Instance AssociatedFunction_area :
-    Notations.DoubleColon ltac:(Self) "area" := {
+    Notations.DoubleColon Self "area" := {
     Notations.double_colon := area;
   }.
   
@@ -118,10 +116,10 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
           2.0 * ((x1 - x2).abs() + (y1 - y2).abs())
       }
   *)
-  Parameter perimeter : (ref ltac:(Self)) -> M f64.t.
+  Parameter perimeter : (ref Self) -> M f64.t.
   
   Global Instance AssociatedFunction_perimeter :
-    Notations.DoubleColon ltac:(Self) "perimeter" := {
+    Notations.DoubleColon Self "perimeter" := {
     Notations.double_colon := perimeter;
   }.
   
@@ -134,10 +132,10 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
           self.p2.y += y;
       }
   *)
-  Parameter translate : (mut_ref ltac:(Self)) -> f64.t -> f64.t -> M unit.
+  Parameter translate : (mut_ref Self) -> f64.t -> f64.t -> M unit.
   
   Global Instance AssociatedFunction_translate :
-    Notations.DoubleColon ltac:(Self) "translate" := {
+    Notations.DoubleColon Self "translate" := {
     Notations.double_colon := translate;
   }.
 End Impl_associated_functions_and_methods_Rectangle_t.
@@ -161,7 +159,7 @@ End Pair.
 
 Module  Impl_associated_functions_and_methods_Pair_t.
 Section Impl_associated_functions_and_methods_Pair_t.
-  Ltac Self := exact associated_functions_and_methods.Pair.t.
+  Definition Self : Set := associated_functions_and_methods.Pair.t.
   
   (*
       fn destroy(self) {
@@ -173,10 +171,10 @@ Section Impl_associated_functions_and_methods_Pair_t.
           // `first` and `second` go out of scope and get freed
       }
   *)
-  Parameter destroy : ltac:(Self) -> M unit.
+  Parameter destroy : Self -> M unit.
   
   Global Instance AssociatedFunction_destroy :
-    Notations.DoubleColon ltac:(Self) "destroy" := {
+    Notations.DoubleColon Self "destroy" := {
     Notations.double_colon := destroy;
   }.
 End Impl_associated_functions_and_methods_Pair_t.

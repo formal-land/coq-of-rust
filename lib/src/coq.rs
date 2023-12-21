@@ -988,13 +988,6 @@ impl<'a> Expression<'a> {
             None => Expression::Unit,
         }
     }
-
-    pub(crate) fn self_() -> Self {
-        Expression::ModeWrapper {
-            mode: "ltac".to_string(),
-            expr: Box::new(Expression::just_name("Self")),
-        }
-    }
 }
 
 impl<'a> Field<'a> {

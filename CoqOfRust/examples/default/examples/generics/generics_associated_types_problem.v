@@ -20,9 +20,9 @@ End Container.
 Module  Contains.
 Section Contains.
   Class Trait (Self : Set) {A B : Set} : Type := {
-    contains : (ref ltac:(Self)) -> (ref A) -> (ref B) -> M bool.t;
-    first : (ref ltac:(Self)) -> M i32.t;
-    last : (ref ltac:(Self)) -> M i32.t;
+    contains : (ref Self) -> (ref A) -> (ref B) -> M bool.t;
+    first : (ref Self) -> M i32.t;
+    last : (ref Self) -> M i32.t;
   }.
   
 End Contains.
@@ -30,7 +30,7 @@ End Contains.
 
 Module  Impl_generics_associated_types_problem_Contains_i32_t_i32_t_for_generics_associated_types_problem_Container_t.
 Section Impl_generics_associated_types_problem_Contains_i32_t_i32_t_for_generics_associated_types_problem_Container_t.
-  Ltac Self := exact generics_associated_types_problem.Container.t.
+  Definition Self : Set := generics_associated_types_problem.Container.t.
   
   (*
       fn contains(&self, number_1: &i32, number_2: &i32) -> bool {
@@ -38,11 +38,11 @@ Section Impl_generics_associated_types_problem_Contains_i32_t_i32_t_for_generics
       }
   *)
   Definition contains
-      (self : ref ltac:(Self))
+      (self : ref Self)
       (number_1 : ref i32.t)
       (number_2 : ref i32.t)
       : M bool.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (ref Self) := M.alloc self in
     let* number_1 : M.Val (ref i32.t) := M.alloc number_1 in
     let* number_2 : M.Val (ref i32.t) := M.alloc number_2 in
     let* α0 : ref generics_associated_types_problem.Container.t :=
@@ -64,7 +64,7 @@ Section Impl_generics_associated_types_problem_Contains_i32_t_i32_t_for_generics
     M.pure (BinOp.and α2 α5).
   
   Global Instance AssociatedFunction_contains :
-    Notations.DoubleColon ltac:(Self) "contains" := {
+    Notations.DoubleColon Self "contains" := {
     Notations.double_colon := contains;
   }.
   
@@ -73,14 +73,14 @@ Section Impl_generics_associated_types_problem_Contains_i32_t_i32_t_for_generics
           self.0
       }
   *)
-  Definition first (self : ref ltac:(Self)) : M i32.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition first (self : ref Self) : M i32.t :=
+    let* self : M.Val (ref Self) := M.alloc self in
     let* α0 : ref generics_associated_types_problem.Container.t :=
       M.read self in
     M.read (deref α0).["0"].
   
   Global Instance AssociatedFunction_first :
-    Notations.DoubleColon ltac:(Self) "first" := {
+    Notations.DoubleColon Self "first" := {
     Notations.double_colon := first;
   }.
   
@@ -89,19 +89,19 @@ Section Impl_generics_associated_types_problem_Contains_i32_t_i32_t_for_generics
           self.1
       }
   *)
-  Definition last (self : ref ltac:(Self)) : M i32.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition last (self : ref Self) : M i32.t :=
+    let* self : M.Val (ref Self) := M.alloc self in
     let* α0 : ref generics_associated_types_problem.Container.t :=
       M.read self in
     M.read (deref α0).["1"].
   
   Global Instance AssociatedFunction_last :
-    Notations.DoubleColon ltac:(Self) "last" := {
+    Notations.DoubleColon Self "last" := {
     Notations.double_colon := last;
   }.
   
   Global Instance ℐ :
-    generics_associated_types_problem.Contains.Trait ltac:(Self)
+    generics_associated_types_problem.Contains.Trait Self
       (A := i32.t)
       (B := i32.t) := {
     generics_associated_types_problem.Contains.contains := contains;

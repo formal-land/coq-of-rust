@@ -19,17 +19,16 @@ End Flipper.
 
 Module  Impl_flipper_Flipper_t.
 Section Impl_flipper_Flipper_t.
-  Ltac Self := exact flipper.Flipper.t.
+  Definition Self : Set := flipper.Flipper.t.
   
   (*
       pub fn new(init_value: bool) -> Self {
           Self { value: init_value }
       }
   *)
-  Parameter new : bool.t -> M ltac:(Self).
+  Parameter new : bool.t -> M Self.
   
-  Global Instance AssociatedFunction_new :
-    Notations.DoubleColon ltac:(Self) "new" := {
+  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
   }.
   
@@ -38,10 +37,10 @@ Section Impl_flipper_Flipper_t.
           Self::new(Default::default())
       }
   *)
-  Parameter new_default : M ltac:(Self).
+  Parameter new_default : M Self.
   
   Global Instance AssociatedFunction_new_default :
-    Notations.DoubleColon ltac:(Self) "new_default" := {
+    Notations.DoubleColon Self "new_default" := {
     Notations.double_colon := new_default;
   }.
   
@@ -50,10 +49,10 @@ Section Impl_flipper_Flipper_t.
           self.value = !self.value;
       }
   *)
-  Parameter flip : (mut_ref ltac:(Self)) -> M unit.
+  Parameter flip : (mut_ref Self) -> M unit.
   
   Global Instance AssociatedFunction_flip :
-    Notations.DoubleColon ltac:(Self) "flip" := {
+    Notations.DoubleColon Self "flip" := {
     Notations.double_colon := flip;
   }.
   
@@ -62,10 +61,9 @@ Section Impl_flipper_Flipper_t.
           self.value
       }
   *)
-  Parameter get : (ref ltac:(Self)) -> M bool.t.
+  Parameter get : (ref Self) -> M bool.t.
   
-  Global Instance AssociatedFunction_get :
-    Notations.DoubleColon ltac:(Self) "get" := {
+  Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
     Notations.double_colon := get;
   }.
 End Impl_flipper_Flipper_t.

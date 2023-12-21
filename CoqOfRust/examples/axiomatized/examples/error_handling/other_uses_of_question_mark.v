@@ -15,22 +15,19 @@ End EmptyVec.
 
 Module  Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec_t.
 Section Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec_t.
-  Ltac Self := exact other_uses_of_question_mark.EmptyVec.t.
+  Definition Self : Set := other_uses_of_question_mark.EmptyVec.t.
   
   (*
   Debug
   *)
   Parameter fmt :
-      (ref ltac:(Self)) ->
-        (mut_ref core.fmt.Formatter.t) ->
-        M ltac:(core.fmt.Result).
+      (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
   
-  Global Instance AssociatedFunction_fmt :
-    Notations.DoubleColon ltac:(Self) "fmt" := {
+  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
+  Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
   }.
 End Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec_t.
@@ -38,7 +35,7 @@ End Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec_t.
 
 Module  Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec_t.
 Section Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec_t.
-  Ltac Self := exact other_uses_of_question_mark.EmptyVec.t.
+  Definition Self : Set := other_uses_of_question_mark.EmptyVec.t.
   
   (*
       fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
@@ -46,16 +43,13 @@ Section Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec_t.
       }
   *)
   Parameter fmt :
-      (ref ltac:(Self)) ->
-        (mut_ref core.fmt.Formatter.t) ->
-        M ltac:(core.fmt.Result).
+      (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
   
-  Global Instance AssociatedFunction_fmt :
-    Notations.DoubleColon ltac:(Self) "fmt" := {
+  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Display.Trait ltac:(Self) := {
+  Global Instance ℐ : core.fmt.Display.Trait Self := {
     core.fmt.Display.fmt := fmt;
   }.
 End Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec_t.
@@ -63,9 +57,9 @@ End Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec_t.
 
 Module  Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec_t.
 Section Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec_t.
-  Ltac Self := exact other_uses_of_question_mark.EmptyVec.t.
+  Definition Self : Set := other_uses_of_question_mark.EmptyVec.t.
   
-  Global Instance ℐ : core.error.Error.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : core.error.Error.Required.Trait Self := {
     core.error.Error.source := Datatypes.None;
     core.error.Error.type_id := Datatypes.None;
     core.error.Error.description := Datatypes.None;

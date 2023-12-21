@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module  HasArea.
 Section HasArea.
   Class Trait (Self : Set) : Type := {
-    area : (ref ltac:(Self)) -> M f64.t;
+    area : (ref Self) -> M f64.t;
   }.
   
 End HasArea.
@@ -12,21 +12,21 @@ End HasArea.
 
 Module  Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle_t.
 Section Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle_t.
-  Ltac Self := exact generics_bounds.Rectangle.t.
+  Definition Self : Set := generics_bounds.Rectangle.t.
   
   (*
       fn area(&self) -> f64 {
           self.length * self.height
       }
   *)
-  Parameter area : (ref ltac:(Self)) -> M f64.t.
+  Parameter area : (ref Self) -> M f64.t.
   
   Global Instance AssociatedFunction_area :
-    Notations.DoubleColon ltac:(Self) "area" := {
+    Notations.DoubleColon Self "area" := {
     Notations.double_colon := area;
   }.
   
-  Global Instance ℐ : generics_bounds.HasArea.Trait ltac:(Self) := {
+  Global Instance ℐ : generics_bounds.HasArea.Trait Self := {
     generics_bounds.HasArea.area := area;
   }.
 End Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle_t.
@@ -58,22 +58,19 @@ End Rectangle.
 
 Module  Impl_core_fmt_Debug_for_generics_bounds_Rectangle_t.
 Section Impl_core_fmt_Debug_for_generics_bounds_Rectangle_t.
-  Ltac Self := exact generics_bounds.Rectangle.t.
+  Definition Self : Set := generics_bounds.Rectangle.t.
   
   (*
   Debug
   *)
   Parameter fmt :
-      (ref ltac:(Self)) ->
-        (mut_ref core.fmt.Formatter.t) ->
-        M ltac:(core.fmt.Result).
+      (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
   
-  Global Instance AssociatedFunction_fmt :
-    Notations.DoubleColon ltac:(Self) "fmt" := {
+  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
+  Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
   }.
 End Impl_core_fmt_Debug_for_generics_bounds_Rectangle_t.

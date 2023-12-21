@@ -9,22 +9,19 @@ End Unit.
 
 Module  Impl_core_fmt_Debug_for_clone_Unit_t.
 Section Impl_core_fmt_Debug_for_clone_Unit_t.
-  Ltac Self := exact clone.Unit.t.
+  Definition Self : Set := clone.Unit.t.
   
   (*
   Debug
   *)
   Parameter fmt :
-      (ref ltac:(Self)) ->
-        (mut_ref core.fmt.Formatter.t) ->
-        M ltac:(core.fmt.Result).
+      (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
   
-  Global Instance AssociatedFunction_fmt :
-    Notations.DoubleColon ltac:(Self) "fmt" := {
+  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
+  Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
   }.
 End Impl_core_fmt_Debug_for_clone_Unit_t.
@@ -32,19 +29,19 @@ End Impl_core_fmt_Debug_for_clone_Unit_t.
 
 Module  Impl_core_clone_Clone_for_clone_Unit_t.
 Section Impl_core_clone_Clone_for_clone_Unit_t.
-  Ltac Self := exact clone.Unit.t.
+  Definition Self : Set := clone.Unit.t.
   
   (*
   Clone
   *)
-  Parameter clone : (ref ltac:(Self)) -> M clone.Unit.t.
+  Parameter clone : (ref Self) -> M clone.Unit.t.
   
   Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon ltac:(Self) "clone" := {
+    Notations.DoubleColon Self "clone" := {
     Notations.double_colon := clone;
   }.
   
-  Global Instance ℐ : core.clone.Clone.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
     core.clone.Clone.clone_from := Datatypes.None;
   }.
@@ -53,9 +50,9 @@ End Impl_core_clone_Clone_for_clone_Unit_t.
 
 Module  Impl_core_marker_Copy_for_clone_Unit_t.
 Section Impl_core_marker_Copy_for_clone_Unit_t.
-  Ltac Self := exact clone.Unit.t.
+  Definition Self : Set := clone.Unit.t.
   
-  Global Instance ℐ : core.marker.Copy.Trait ltac:(Self) := {
+  Global Instance ℐ : core.marker.Copy.Trait Self := {
   }.
 End Impl_core_marker_Copy_for_clone_Unit_t.
 End Impl_core_marker_Copy_for_clone_Unit_t.
@@ -78,19 +75,19 @@ End Pair.
 
 Module  Impl_core_clone_Clone_for_clone_Pair_t.
 Section Impl_core_clone_Clone_for_clone_Pair_t.
-  Ltac Self := exact clone.Pair.t.
+  Definition Self : Set := clone.Pair.t.
   
   (*
   Clone
   *)
-  Parameter clone : (ref ltac:(Self)) -> M clone.Pair.t.
+  Parameter clone : (ref Self) -> M clone.Pair.t.
   
   Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon ltac:(Self) "clone" := {
+    Notations.DoubleColon Self "clone" := {
     Notations.double_colon := clone;
   }.
   
-  Global Instance ℐ : core.clone.Clone.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
     core.clone.Clone.clone_from := Datatypes.None;
   }.
@@ -99,22 +96,19 @@ End Impl_core_clone_Clone_for_clone_Pair_t.
 
 Module  Impl_core_fmt_Debug_for_clone_Pair_t.
 Section Impl_core_fmt_Debug_for_clone_Pair_t.
-  Ltac Self := exact clone.Pair.t.
+  Definition Self : Set := clone.Pair.t.
   
   (*
   Debug
   *)
   Parameter fmt :
-      (ref ltac:(Self)) ->
-        (mut_ref core.fmt.Formatter.t) ->
-        M ltac:(core.fmt.Result).
+      (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
   
-  Global Instance AssociatedFunction_fmt :
-    Notations.DoubleColon ltac:(Self) "fmt" := {
+  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
+  Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
   }.
 End Impl_core_fmt_Debug_for_clone_Pair_t.

@@ -108,7 +108,11 @@ Definition main : M unit :=
                 let* α1 : bool.t := M.call (higher_order_functions.is_odd α0) in
                 if (use α1 : bool) then
                   let* _ : M.Val unit :=
-                    assign_op BinOp.Panic.add acc n_squared in
+                    let β : M.Val u32.t := acc in
+                    let* α0 := M.read β in
+                    let* α1 : u32.t := M.read n_squared in
+                    let* α2 := BinOp.Panic.add α0 α1 in
+                    assign β α2 in
                   M.alloc tt
                 else
                   M.alloc tt

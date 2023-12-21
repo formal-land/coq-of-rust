@@ -15,22 +15,19 @@ End EvenNumber.
 
 Module  Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber_t.
 Section Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber_t.
-  Ltac Self := exact try_from_and_try_into.EvenNumber.t.
+  Definition Self : Set := try_from_and_try_into.EvenNumber.t.
   
   (*
   Debug
   *)
   Parameter fmt :
-      (ref ltac:(Self)) ->
-        (mut_ref core.fmt.Formatter.t) ->
-        M ltac:(core.fmt.Result).
+      (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
   
-  Global Instance AssociatedFunction_fmt :
-    Notations.DoubleColon ltac:(Self) "fmt" := {
+  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
+  Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
   }.
 End Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber_t.
@@ -38,31 +35,30 @@ End Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber_t.
 
 Module  Impl_core_marker_StructuralPartialEq_for_try_from_and_try_into_EvenNumber_t.
 Section Impl_core_marker_StructuralPartialEq_for_try_from_and_try_into_EvenNumber_t.
-  Ltac Self := exact try_from_and_try_into.EvenNumber.t.
+  Definition Self : Set := try_from_and_try_into.EvenNumber.t.
   
-  Global Instance ℐ : core.marker.StructuralPartialEq.Trait ltac:(Self) := {
+  Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
   }.
 End Impl_core_marker_StructuralPartialEq_for_try_from_and_try_into_EvenNumber_t.
 End Impl_core_marker_StructuralPartialEq_for_try_from_and_try_into_EvenNumber_t.
 
 Module  Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber_t.
 Section Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber_t.
-  Ltac Self := exact try_from_and_try_into.EvenNumber.t.
+  Definition Self : Set := try_from_and_try_into.EvenNumber.t.
   
   (*
   PartialEq
   *)
   Parameter eq :
-      (ref ltac:(Self)) -> (ref try_from_and_try_into.EvenNumber.t) -> M bool.t.
+      (ref Self) -> (ref try_from_and_try_into.EvenNumber.t) -> M bool.t.
   
-  Global Instance AssociatedFunction_eq :
-    Notations.DoubleColon ltac:(Self) "eq" := {
+  Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
     Notations.double_colon := eq;
   }.
   
   Global Instance ℐ :
-    core.cmp.PartialEq.Required.Trait ltac:(Self)
-      (Rhs := core.cmp.PartialEq.Default.Rhs ltac:(Self)) := {
+    core.cmp.PartialEq.Required.Trait Self
+      (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
     core.cmp.PartialEq.eq := eq;
     core.cmp.PartialEq.ne := Datatypes.None;
   }.
@@ -71,7 +67,7 @@ End Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber_t.
 
 Module  Impl_core_convert_TryFrom_i32_t_for_try_from_and_try_into_EvenNumber_t.
 Section Impl_core_convert_TryFrom_i32_t_for_try_from_and_try_into_EvenNumber_t.
-  Ltac Self := exact try_from_and_try_into.EvenNumber.t.
+  Definition Self : Set := try_from_and_try_into.EvenNumber.t.
   
   (*
       type Error = ();
@@ -87,14 +83,14 @@ Section Impl_core_convert_TryFrom_i32_t_for_try_from_and_try_into_EvenNumber_t.
           }
       }
   *)
-  Parameter try_from : i32.t -> M (core.result.Result.t ltac:(Self) Error.t).
+  Parameter try_from : i32.t -> M (core.result.Result.t Self Error.t).
   
   Global Instance AssociatedFunction_try_from :
-    Notations.DoubleColon ltac:(Self) "try_from" := {
+    Notations.DoubleColon Self "try_from" := {
     Notations.double_colon := try_from;
   }.
   
-  Global Instance ℐ : core.convert.TryFrom.Trait ltac:(Self) (T := i32.t) := {
+  Global Instance ℐ : core.convert.TryFrom.Trait Self (T := i32.t) := {
     core.convert.TryFrom.Error := Error;
     core.convert.TryFrom.try_from := try_from;
   }.

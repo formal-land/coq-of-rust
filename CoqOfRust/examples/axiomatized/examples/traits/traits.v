@@ -27,9 +27,9 @@ End Sheep.
 Module  Animal.
 Section Animal.
   Class Trait (Self : Set) : Type := {
-    new : (ref str.t) -> M ltac:(Self);
-    name : (ref ltac:(Self)) -> M (ref str.t);
-    noise : (ref ltac:(Self)) -> M (ref str.t);
+    new : (ref str.t) -> M Self;
+    name : (ref Self) -> M (ref str.t);
+    noise : (ref Self) -> M (ref str.t);
   }.
   
 End Animal.
@@ -37,17 +37,17 @@ End Animal.
 
 Module  Impl_traits_Sheep_t.
 Section Impl_traits_Sheep_t.
-  Ltac Self := exact traits.Sheep.t.
+  Definition Self : Set := traits.Sheep.t.
   
   (*
       fn is_naked(&self) -> bool {
           self.naked
       }
   *)
-  Parameter is_naked : (ref ltac:(Self)) -> M bool.t.
+  Parameter is_naked : (ref Self) -> M bool.t.
   
   Global Instance AssociatedFunction_is_naked :
-    Notations.DoubleColon ltac:(Self) "is_naked" := {
+    Notations.DoubleColon Self "is_naked" := {
     Notations.double_colon := is_naked;
   }.
 End Impl_traits_Sheep_t.
@@ -55,7 +55,7 @@ End Impl_traits_Sheep_t.
 
 Module  Impl_traits_Animal_for_traits_Sheep_t.
 Section Impl_traits_Animal_for_traits_Sheep_t.
-  Ltac Self := exact traits.Sheep.t.
+  Definition Self : Set := traits.Sheep.t.
   
   (*
       fn new(name: &'static str) -> Sheep {
@@ -67,8 +67,7 @@ Section Impl_traits_Animal_for_traits_Sheep_t.
   *)
   Parameter new : (ref str.t) -> M traits.Sheep.t.
   
-  Global Instance AssociatedFunction_new :
-    Notations.DoubleColon ltac:(Self) "new" := {
+  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
   }.
   
@@ -77,10 +76,10 @@ Section Impl_traits_Animal_for_traits_Sheep_t.
           self.name
       }
   *)
-  Parameter name : (ref ltac:(Self)) -> M (ref str.t).
+  Parameter name : (ref Self) -> M (ref str.t).
   
   Global Instance AssociatedFunction_name :
-    Notations.DoubleColon ltac:(Self) "name" := {
+    Notations.DoubleColon Self "name" := {
     Notations.double_colon := name;
   }.
   
@@ -93,10 +92,10 @@ Section Impl_traits_Animal_for_traits_Sheep_t.
           }
       }
   *)
-  Parameter noise : (ref ltac:(Self)) -> M (ref str.t).
+  Parameter noise : (ref Self) -> M (ref str.t).
   
   Global Instance AssociatedFunction_noise :
-    Notations.DoubleColon ltac:(Self) "noise" := {
+    Notations.DoubleColon Self "noise" := {
     Notations.double_colon := noise;
   }.
   
@@ -106,14 +105,14 @@ Section Impl_traits_Animal_for_traits_Sheep_t.
           println!("{} pauses briefly... {}", self.name, self.noise());
       }
   *)
-  Parameter talk : (ref ltac:(Self)) -> M unit.
+  Parameter talk : (ref Self) -> M unit.
   
   Global Instance AssociatedFunction_talk :
-    Notations.DoubleColon ltac:(Self) "talk" := {
+    Notations.DoubleColon Self "talk" := {
     Notations.double_colon := talk;
   }.
   
-  Global Instance ℐ : traits.Animal.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : traits.Animal.Required.Trait Self := {
     traits.Animal.new := new;
     traits.Animal.name := name;
     traits.Animal.noise := noise;
@@ -124,7 +123,7 @@ End Impl_traits_Animal_for_traits_Sheep_t.
 
 Module  Impl_traits_Sheep_t_2.
 Section Impl_traits_Sheep_t_2.
-  Ltac Self := exact traits.Sheep.t.
+  Definition Self : Set := traits.Sheep.t.
   
   (*
       fn shear(&mut self) {
@@ -138,10 +137,10 @@ Section Impl_traits_Sheep_t_2.
           }
       }
   *)
-  Parameter shear : (mut_ref ltac:(Self)) -> M unit.
+  Parameter shear : (mut_ref Self) -> M unit.
   
   Global Instance AssociatedFunction_shear :
-    Notations.DoubleColon ltac:(Self) "shear" := {
+    Notations.DoubleColon Self "shear" := {
     Notations.double_colon := shear;
   }.
 End Impl_traits_Sheep_t_2.

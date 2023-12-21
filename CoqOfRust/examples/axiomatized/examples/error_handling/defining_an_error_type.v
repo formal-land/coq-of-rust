@@ -9,22 +9,19 @@ End DoubleError.
 
 Module  Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError_t.
 Section Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError_t.
-  Ltac Self := exact defining_an_error_type.DoubleError.t.
+  Definition Self : Set := defining_an_error_type.DoubleError.t.
   
   (*
   Debug
   *)
   Parameter fmt :
-      (ref ltac:(Self)) ->
-        (mut_ref core.fmt.Formatter.t) ->
-        M ltac:(core.fmt.Result).
+      (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
   
-  Global Instance AssociatedFunction_fmt :
-    Notations.DoubleColon ltac:(Self) "fmt" := {
+  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
+  Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
   }.
 End Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError_t.
@@ -32,19 +29,19 @@ End Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError_t.
 
 Module  Impl_core_clone_Clone_for_defining_an_error_type_DoubleError_t.
 Section Impl_core_clone_Clone_for_defining_an_error_type_DoubleError_t.
-  Ltac Self := exact defining_an_error_type.DoubleError.t.
+  Definition Self : Set := defining_an_error_type.DoubleError.t.
   
   (*
   Clone
   *)
-  Parameter clone : (ref ltac:(Self)) -> M defining_an_error_type.DoubleError.t.
+  Parameter clone : (ref Self) -> M defining_an_error_type.DoubleError.t.
   
   Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon ltac:(Self) "clone" := {
+    Notations.DoubleColon Self "clone" := {
     Notations.double_colon := clone;
   }.
   
-  Global Instance ℐ : core.clone.Clone.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
     core.clone.Clone.clone_from := Datatypes.None;
   }.
@@ -56,7 +53,7 @@ Ltac Result T :=
 
 Module  Impl_core_fmt_Display_for_defining_an_error_type_DoubleError_t.
 Section Impl_core_fmt_Display_for_defining_an_error_type_DoubleError_t.
-  Ltac Self := exact defining_an_error_type.DoubleError.t.
+  Definition Self : Set := defining_an_error_type.DoubleError.t.
   
   (*
       fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
@@ -64,16 +61,13 @@ Section Impl_core_fmt_Display_for_defining_an_error_type_DoubleError_t.
       }
   *)
   Parameter fmt :
-      (ref ltac:(Self)) ->
-        (mut_ref core.fmt.Formatter.t) ->
-        M ltac:(core.fmt.Result).
+      (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
   
-  Global Instance AssociatedFunction_fmt :
-    Notations.DoubleColon ltac:(Self) "fmt" := {
+  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Display.Trait ltac:(Self) := {
+  Global Instance ℐ : core.fmt.Display.Trait Self := {
     core.fmt.Display.fmt := fmt;
   }.
 End Impl_core_fmt_Display_for_defining_an_error_type_DoubleError_t.

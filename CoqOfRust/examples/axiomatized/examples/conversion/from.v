@@ -19,21 +19,21 @@ End Number.
 
 Module  Impl_core_convert_From_i32_t_for_from_Number_t.
 Section Impl_core_convert_From_i32_t_for_from_Number_t.
-  Ltac Self := exact from.Number.t.
+  Definition Self : Set := from.Number.t.
   
   (*
       fn from(item: i32) -> Self {
           Number { value: item }
       }
   *)
-  Parameter from : i32.t -> M ltac:(Self).
+  Parameter from : i32.t -> M Self.
   
   Global Instance AssociatedFunction_from :
-    Notations.DoubleColon ltac:(Self) "from" := {
+    Notations.DoubleColon Self "from" := {
     Notations.double_colon := from;
   }.
   
-  Global Instance ℐ : core.convert.From.Trait ltac:(Self) (T := i32.t) := {
+  Global Instance ℐ : core.convert.From.Trait Self (T := i32.t) := {
     core.convert.From.from := from;
   }.
 End Impl_core_convert_From_i32_t_for_from_Number_t.

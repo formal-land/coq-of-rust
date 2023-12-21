@@ -19,7 +19,7 @@ End Circle.
 
 Module  Impl_core_fmt_Display_for_converting_to_string_Circle_t.
 Section Impl_core_fmt_Display_for_converting_to_string_Circle_t.
-  Ltac Self := exact converting_to_string.Circle.t.
+  Definition Self : Set := converting_to_string.Circle.t.
   
   (*
       fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
@@ -27,16 +27,13 @@ Section Impl_core_fmt_Display_for_converting_to_string_Circle_t.
       }
   *)
   Parameter fmt :
-      (ref ltac:(Self)) ->
-        (mut_ref core.fmt.Formatter.t) ->
-        M ltac:(core.fmt.Result).
+      (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
   
-  Global Instance AssociatedFunction_fmt :
-    Notations.DoubleColon ltac:(Self) "fmt" := {
+  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Display.Trait ltac:(Self) := {
+  Global Instance ℐ : core.fmt.Display.Trait Self := {
     core.fmt.Display.fmt := fmt;
   }.
 End Impl_core_fmt_Display_for_converting_to_string_Circle_t.

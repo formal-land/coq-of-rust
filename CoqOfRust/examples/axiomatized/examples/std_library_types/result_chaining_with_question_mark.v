@@ -11,22 +11,23 @@ Module checked.
   
   Module  Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError_t.
   Section Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError_t.
-    Ltac Self := exact result_chaining_with_question_mark.checked.MathError.t.
+    Definition Self : Set :=
+      result_chaining_with_question_mark.checked.MathError.t.
     
     (*
         Debug
     *)
     Parameter fmt :
-        (ref ltac:(Self)) ->
+        (ref Self) ->
           (mut_ref core.fmt.Formatter.t) ->
           M ltac:(core.fmt.Result).
     
     Global Instance AssociatedFunction_fmt :
-      Notations.DoubleColon ltac:(Self) "fmt" := {
+      Notations.DoubleColon Self "fmt" := {
       Notations.double_colon := fmt;
     }.
     
-    Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
+    Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
     }.
   End Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError_t.
@@ -119,22 +120,20 @@ End MathError.
 
 Module  Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError_t.
 Section Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError_t.
-  Ltac Self := exact result_chaining_with_question_mark.checked.MathError.t.
+  Definition Self : Set :=
+    result_chaining_with_question_mark.checked.MathError.t.
   
   (*
       Debug
   *)
   Parameter fmt :
-      (ref ltac:(Self)) ->
-        (mut_ref core.fmt.Formatter.t) ->
-        M ltac:(core.fmt.Result).
+      (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
   
-  Global Instance AssociatedFunction_fmt :
-    Notations.DoubleColon ltac:(Self) "fmt" := {
+  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
+  Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
   }.
 End Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError_t.

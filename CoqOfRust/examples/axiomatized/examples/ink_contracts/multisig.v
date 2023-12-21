@@ -34,7 +34,7 @@ Section Impl_core_default_Default_for_multisig_Mapping_t_K_V.
     {ℋ_0 : core.default.Default.Trait K}
     {ℋ_1 : core.default.Default.Trait V}.
   
-  Ltac Self := exact (multisig.Mapping.t K V).
+  Definition Self : Set := multisig.Mapping.t K V.
   
   (*
   Default
@@ -42,11 +42,11 @@ Section Impl_core_default_Default_for_multisig_Mapping_t_K_V.
   Parameter default : M (multisig.Mapping.t K V).
   
   Global Instance AssociatedFunction_default :
-    Notations.DoubleColon ltac:(Self) "default" := {
+    Notations.DoubleColon Self "default" := {
     Notations.double_colon := default;
   }.
   
-  Global Instance ℐ : core.default.Default.Trait ltac:(Self) := {
+  Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
   }.
 End Impl_core_default_Default_for_multisig_Mapping_t_K_V.
@@ -56,17 +56,17 @@ Module  Impl_multisig_Mapping_t_K_V.
 Section Impl_multisig_Mapping_t_K_V.
   Context {K V : Set}.
   
-  Ltac Self := exact (multisig.Mapping.t K V).
+  Definition Self : Set := multisig.Mapping.t K V.
   
   (*
       fn contains(&self, _key: &K) -> bool {
           unimplemented!()
       }
   *)
-  Parameter contains : (ref ltac:(Self)) -> (ref K) -> M bool.t.
+  Parameter contains : (ref Self) -> (ref K) -> M bool.t.
   
   Global Instance AssociatedFunction_contains :
-    Notations.DoubleColon ltac:(Self) "contains" := {
+    Notations.DoubleColon Self "contains" := {
     Notations.double_colon := contains;
   }.
   
@@ -75,10 +75,9 @@ Section Impl_multisig_Mapping_t_K_V.
           unimplemented!()
       }
   *)
-  Parameter get : (ref ltac:(Self)) -> (ref K) -> M (core.option.Option.t V).
+  Parameter get : (ref Self) -> (ref K) -> M (core.option.Option.t V).
   
-  Global Instance AssociatedFunction_get :
-    Notations.DoubleColon ltac:(Self) "get" := {
+  Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
     Notations.double_colon := get;
   }.
   
@@ -87,11 +86,10 @@ Section Impl_multisig_Mapping_t_K_V.
           unimplemented!()
       }
   *)
-  Parameter insert :
-      (mut_ref ltac:(Self)) -> K -> V -> M (core.option.Option.t u32.t).
+  Parameter insert : (mut_ref Self) -> K -> V -> M (core.option.Option.t u32.t).
   
   Global Instance AssociatedFunction_insert :
-    Notations.DoubleColon ltac:(Self) "insert" := {
+    Notations.DoubleColon Self "insert" := {
     Notations.double_colon := insert;
   }.
   
@@ -100,10 +98,10 @@ Section Impl_multisig_Mapping_t_K_V.
           unimplemented!()
       }
   *)
-  Parameter remove : (ref ltac:(Self)) -> K -> M unit.
+  Parameter remove : (ref Self) -> K -> M unit.
   
   Global Instance AssociatedFunction_remove :
-    Notations.DoubleColon ltac:(Self) "remove" := {
+    Notations.DoubleColon Self "remove" := {
     Notations.double_colon := remove;
   }.
   
@@ -112,10 +110,10 @@ Section Impl_multisig_Mapping_t_K_V.
           unimplemented!()
       }
   *)
-  Parameter size : (ref ltac:(Self)) -> K -> M (core.option.Option.t u32.t).
+  Parameter size : (ref Self) -> K -> M (core.option.Option.t u32.t).
   
   Global Instance AssociatedFunction_size :
-    Notations.DoubleColon ltac:(Self) "size" := {
+    Notations.DoubleColon Self "size" := {
     Notations.double_colon := size;
   }.
   
@@ -124,10 +122,10 @@ Section Impl_multisig_Mapping_t_K_V.
           unimplemented!()
       }
   *)
-  Parameter take : (ref ltac:(Self)) -> K -> M (core.option.Option.t V).
+  Parameter take : (ref Self) -> K -> M (core.option.Option.t V).
   
   Global Instance AssociatedFunction_take :
-    Notations.DoubleColon ltac:(Self) "take" := {
+    Notations.DoubleColon Self "take" := {
     Notations.double_colon := take;
   }.
 End Impl_multisig_Mapping_t_K_V.
@@ -147,7 +145,7 @@ End AccountId.
 
 Module  Impl_core_default_Default_for_multisig_AccountId_t.
 Section Impl_core_default_Default_for_multisig_AccountId_t.
-  Ltac Self := exact multisig.AccountId.t.
+  Definition Self : Set := multisig.AccountId.t.
   
   (*
   Default
@@ -155,11 +153,11 @@ Section Impl_core_default_Default_for_multisig_AccountId_t.
   Parameter default : M multisig.AccountId.t.
   
   Global Instance AssociatedFunction_default :
-    Notations.DoubleColon ltac:(Self) "default" := {
+    Notations.DoubleColon Self "default" := {
     Notations.double_colon := default;
   }.
   
-  Global Instance ℐ : core.default.Default.Trait ltac:(Self) := {
+  Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
   }.
 End Impl_core_default_Default_for_multisig_AccountId_t.
@@ -167,19 +165,19 @@ End Impl_core_default_Default_for_multisig_AccountId_t.
 
 Module  Impl_core_clone_Clone_for_multisig_AccountId_t.
 Section Impl_core_clone_Clone_for_multisig_AccountId_t.
-  Ltac Self := exact multisig.AccountId.t.
+  Definition Self : Set := multisig.AccountId.t.
   
   (*
   Clone
   *)
-  Parameter clone : (ref ltac:(Self)) -> M multisig.AccountId.t.
+  Parameter clone : (ref Self) -> M multisig.AccountId.t.
   
   Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon ltac:(Self) "clone" := {
+    Notations.DoubleColon Self "clone" := {
     Notations.double_colon := clone;
   }.
   
-  Global Instance ℐ : core.clone.Clone.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
     core.clone.Clone.clone_from := Datatypes.None;
   }.
@@ -188,29 +186,118 @@ End Impl_core_clone_Clone_for_multisig_AccountId_t.
 
 Module  Impl_core_marker_Copy_for_multisig_AccountId_t.
 Section Impl_core_marker_Copy_for_multisig_AccountId_t.
-  Ltac Self := exact multisig.AccountId.t.
+  Definition Self : Set := multisig.AccountId.t.
   
-  Global Instance ℐ : core.marker.Copy.Trait ltac:(Self) := {
+  Global Instance ℐ : core.marker.Copy.Trait Self := {
   }.
 End Impl_core_marker_Copy_for_multisig_AccountId_t.
 End Impl_core_marker_Copy_for_multisig_AccountId_t.
 
+Module  Impl_core_marker_StructuralPartialEq_for_multisig_AccountId_t.
+Section Impl_core_marker_StructuralPartialEq_for_multisig_AccountId_t.
+  Definition Self : Set := multisig.AccountId.t.
+  
+  Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
+  }.
+End Impl_core_marker_StructuralPartialEq_for_multisig_AccountId_t.
+End Impl_core_marker_StructuralPartialEq_for_multisig_AccountId_t.
+
+Module  Impl_core_cmp_PartialEq_for_multisig_AccountId_t.
+Section Impl_core_cmp_PartialEq_for_multisig_AccountId_t.
+  Definition Self : Set := multisig.AccountId.t.
+  
+  (*
+  PartialEq
+  *)
+  Parameter eq : (ref Self) -> (ref multisig.AccountId.t) -> M bool.t.
+  
+  Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
+    Notations.double_colon := eq;
+  }.
+  
+  Global Instance ℐ :
+    core.cmp.PartialEq.Required.Trait Self
+      (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
+    core.cmp.PartialEq.eq := eq;
+    core.cmp.PartialEq.ne := Datatypes.None;
+  }.
+End Impl_core_cmp_PartialEq_for_multisig_AccountId_t.
+End Impl_core_cmp_PartialEq_for_multisig_AccountId_t.
+
+Module  Impl_core_marker_StructuralEq_for_multisig_AccountId_t.
+Section Impl_core_marker_StructuralEq_for_multisig_AccountId_t.
+  Definition Self : Set := multisig.AccountId.t.
+  
+  Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
+  }.
+End Impl_core_marker_StructuralEq_for_multisig_AccountId_t.
+End Impl_core_marker_StructuralEq_for_multisig_AccountId_t.
+
+Module  Impl_core_cmp_Eq_for_multisig_AccountId_t.
+Section Impl_core_cmp_Eq_for_multisig_AccountId_t.
+  Definition Self : Set := multisig.AccountId.t.
+  
+  (*
+  Eq
+  *)
+  Parameter assert_receiver_is_total_eq : (ref Self) -> M unit.
+  
+  Global Instance AssociatedFunction_assert_receiver_is_total_eq :
+    Notations.DoubleColon Self "assert_receiver_is_total_eq" := {
+    Notations.double_colon := assert_receiver_is_total_eq;
+  }.
+  
+  Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
+    core.cmp.Eq.assert_receiver_is_total_eq :=
+      Datatypes.Some assert_receiver_is_total_eq;
+  }.
+End Impl_core_cmp_Eq_for_multisig_AccountId_t.
+End Impl_core_cmp_Eq_for_multisig_AccountId_t.
+
+Module  Impl_core_cmp_PartialOrd_for_multisig_AccountId_t.
+Section Impl_core_cmp_PartialOrd_for_multisig_AccountId_t.
+  Definition Self : Set := multisig.AccountId.t.
+  
+  (*
+  PartialOrd
+  *)
+  Parameter partial_cmp :
+      (ref Self) ->
+        (ref multisig.AccountId.t) ->
+        M (core.option.Option.t core.cmp.Ordering.t).
+  
+  Global Instance AssociatedFunction_partial_cmp :
+    Notations.DoubleColon Self "partial_cmp" := {
+    Notations.double_colon := partial_cmp;
+  }.
+  
+  Global Instance ℐ :
+    core.cmp.PartialOrd.Required.Trait Self
+      (Rhs := core.cmp.PartialOrd.Default.Rhs Self) := {
+    core.cmp.PartialOrd.partial_cmp := partial_cmp;
+    core.cmp.PartialOrd.lt := Datatypes.None;
+    core.cmp.PartialOrd.le := Datatypes.None;
+    core.cmp.PartialOrd.gt := Datatypes.None;
+    core.cmp.PartialOrd.ge := Datatypes.None;
+  }.
+End Impl_core_cmp_PartialOrd_for_multisig_AccountId_t.
+End Impl_core_cmp_PartialOrd_for_multisig_AccountId_t.
+
 Module  Impl_core_cmp_Ord_for_multisig_AccountId_t.
 Section Impl_core_cmp_Ord_for_multisig_AccountId_t.
-  Ltac Self := exact multisig.AccountId.t.
+  Definition Self : Set := multisig.AccountId.t.
   
   (*
   Ord
   *)
   Parameter cmp :
-      (ref ltac:(Self)) -> (ref multisig.AccountId.t) -> M core.cmp.Ordering.t.
+      (ref Self) -> (ref multisig.AccountId.t) -> M core.cmp.Ordering.t.
   
-  Global Instance AssociatedFunction_cmp :
-    Notations.DoubleColon ltac:(Self) "cmp" := {
+  Global Instance AssociatedFunction_cmp : Notations.DoubleColon Self "cmp" := {
     Notations.double_colon := cmp;
   }.
   
-  Global Instance ℐ : core.cmp.Ord.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : core.cmp.Ord.Required.Trait Self := {
     core.cmp.Ord.cmp := cmp;
     core.cmp.Ord.max := Datatypes.None;
     core.cmp.Ord.min := Datatypes.None;
@@ -219,56 +306,21 @@ Section Impl_core_cmp_Ord_for_multisig_AccountId_t.
 End Impl_core_cmp_Ord_for_multisig_AccountId_t.
 End Impl_core_cmp_Ord_for_multisig_AccountId_t.
 
-Module  Impl_core_marker_StructuralPartialEq_for_multisig_AccountId_t.
-Section Impl_core_marker_StructuralPartialEq_for_multisig_AccountId_t.
-  Ltac Self := exact multisig.AccountId.t.
-  
-  Global Instance ℐ : core.marker.StructuralPartialEq.Trait ltac:(Self) := {
-  }.
-End Impl_core_marker_StructuralPartialEq_for_multisig_AccountId_t.
-End Impl_core_marker_StructuralPartialEq_for_multisig_AccountId_t.
-
-Module  Impl_core_cmp_PartialEq_for_multisig_AccountId_t.
-Section Impl_core_cmp_PartialEq_for_multisig_AccountId_t.
-  Ltac Self := exact multisig.AccountId.t.
-  
-  (*
-  PartialEq
-  *)
-  Parameter eq : (ref ltac:(Self)) -> (ref multisig.AccountId.t) -> M bool.t.
-  
-  Global Instance AssociatedFunction_eq :
-    Notations.DoubleColon ltac:(Self) "eq" := {
-    Notations.double_colon := eq;
-  }.
-  
-  Global Instance ℐ :
-    core.cmp.PartialEq.Required.Trait ltac:(Self)
-      (Rhs := core.cmp.PartialEq.Default.Rhs ltac:(Self)) := {
-    core.cmp.PartialEq.eq := eq;
-    core.cmp.PartialEq.ne := Datatypes.None;
-  }.
-End Impl_core_cmp_PartialEq_for_multisig_AccountId_t.
-End Impl_core_cmp_PartialEq_for_multisig_AccountId_t.
-
 Module  Impl_core_fmt_Debug_for_multisig_AccountId_t.
 Section Impl_core_fmt_Debug_for_multisig_AccountId_t.
-  Ltac Self := exact multisig.AccountId.t.
+  Definition Self : Set := multisig.AccountId.t.
   
   (*
   Debug
   *)
   Parameter fmt :
-      (ref ltac:(Self)) ->
-        (mut_ref core.fmt.Formatter.t) ->
-        M ltac:(core.fmt.Result).
+      (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
   
-  Global Instance AssociatedFunction_fmt :
-    Notations.DoubleColon ltac:(Self) "fmt" := {
+  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
+  Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
   }.
 End Impl_core_fmt_Debug_for_multisig_AccountId_t.
@@ -291,60 +343,6 @@ Section Env.
   }.
 End Env.
 End Env.
-
-Module  Impl_multisig_Env_t.
-Section Impl_multisig_Env_t.
-  Ltac Self := exact multisig.Env.t.
-  
-  (*
-      fn caller(&self) -> AccountId {
-          self.caller
-      }
-  *)
-  Parameter caller : (ref ltac:(Self)) -> M multisig.AccountId.t.
-  
-  Global Instance AssociatedFunction_caller :
-    Notations.DoubleColon ltac:(Self) "caller" := {
-    Notations.double_colon := caller;
-  }.
-  
-  (*
-      fn emit_event(&self, _event: Event) {
-          unimplemented!()
-      }
-  *)
-  Parameter emit_event : (ref ltac:(Self)) -> multisig.Event.t -> M unit.
-  
-  Global Instance AssociatedFunction_emit_event :
-    Notations.DoubleColon ltac:(Self) "emit_event" := {
-    Notations.double_colon := emit_event;
-  }.
-  
-  (*
-      fn transferred_value(&self) -> Balance {
-          unimplemented!()
-      }
-  *)
-  Parameter transferred_value : (ref ltac:(Self)) -> M ltac:(multisig.Balance).
-  
-  Global Instance AssociatedFunction_transferred_value :
-    Notations.DoubleColon ltac:(Self) "transferred_value" := {
-    Notations.double_colon := transferred_value;
-  }.
-  
-  (*
-      fn account_id(&self) -> AccountId {
-          unimplemented!()
-      }
-  *)
-  Parameter account_id : (ref ltac:(Self)) -> M multisig.AccountId.t.
-  
-  Global Instance AssociatedFunction_account_id :
-    Notations.DoubleColon ltac:(Self) "account_id" := {
-    Notations.double_colon := account_id;
-  }.
-End Impl_multisig_Env_t.
-End Impl_multisig_Env_t.
 
 Parameter MAX_OWNERS : u32.t.
 
@@ -372,19 +370,19 @@ End ConfirmationStatus.
 
 Module  Impl_core_clone_Clone_for_multisig_ConfirmationStatus_t.
 Section Impl_core_clone_Clone_for_multisig_ConfirmationStatus_t.
-  Ltac Self := exact multisig.ConfirmationStatus.t.
+  Definition Self : Set := multisig.ConfirmationStatus.t.
   
   (*
   Clone
   *)
-  Parameter clone : (ref ltac:(Self)) -> M multisig.ConfirmationStatus.t.
+  Parameter clone : (ref Self) -> M multisig.ConfirmationStatus.t.
   
   Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon ltac:(Self) "clone" := {
+    Notations.DoubleColon Self "clone" := {
     Notations.double_colon := clone;
   }.
   
-  Global Instance ℐ : core.clone.Clone.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
     core.clone.Clone.clone_from := Datatypes.None;
   }.
@@ -393,9 +391,9 @@ End Impl_core_clone_Clone_for_multisig_ConfirmationStatus_t.
 
 Module  Impl_core_marker_Copy_for_multisig_ConfirmationStatus_t.
 Section Impl_core_marker_Copy_for_multisig_ConfirmationStatus_t.
-  Ltac Self := exact multisig.ConfirmationStatus.t.
+  Definition Self : Set := multisig.ConfirmationStatus.t.
   
-  Global Instance ℐ : core.marker.Copy.Trait ltac:(Self) := {
+  Global Instance ℐ : core.marker.Copy.Trait Self := {
   }.
 End Impl_core_marker_Copy_for_multisig_ConfirmationStatus_t.
 End Impl_core_marker_Copy_for_multisig_ConfirmationStatus_t.
@@ -464,7 +462,7 @@ End Transaction.
 
 Module  Impl_core_default_Default_for_multisig_Transaction_t.
 Section Impl_core_default_Default_for_multisig_Transaction_t.
-  Ltac Self := exact multisig.Transaction.t.
+  Definition Self : Set := multisig.Transaction.t.
   
   (*
   Default
@@ -472,11 +470,11 @@ Section Impl_core_default_Default_for_multisig_Transaction_t.
   Parameter default : M multisig.Transaction.t.
   
   Global Instance AssociatedFunction_default :
-    Notations.DoubleColon ltac:(Self) "default" := {
+    Notations.DoubleColon Self "default" := {
     Notations.double_colon := default;
   }.
   
-  Global Instance ℐ : core.default.Default.Trait ltac:(Self) := {
+  Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
   }.
 End Impl_core_default_Default_for_multisig_Transaction_t.
@@ -487,54 +485,51 @@ Module Error.
   | TransactionFailed.
 End Error.
 
-Module  Impl_core_marker_Copy_for_multisig_Error_t.
-Section Impl_core_marker_Copy_for_multisig_Error_t.
-  Ltac Self := exact multisig.Error.t.
-  
-  Global Instance ℐ : core.marker.Copy.Trait ltac:(Self) := {
-  }.
-End Impl_core_marker_Copy_for_multisig_Error_t.
-End Impl_core_marker_Copy_for_multisig_Error_t.
-
 Module  Impl_core_clone_Clone_for_multisig_Error_t.
 Section Impl_core_clone_Clone_for_multisig_Error_t.
-  Ltac Self := exact multisig.Error.t.
+  Definition Self : Set := multisig.Error.t.
   
   (*
   Clone
   *)
-  Parameter clone : (ref ltac:(Self)) -> M multisig.Error.t.
+  Parameter clone : (ref Self) -> M multisig.Error.t.
   
   Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon ltac:(Self) "clone" := {
+    Notations.DoubleColon Self "clone" := {
     Notations.double_colon := clone;
   }.
   
-  Global Instance ℐ : core.clone.Clone.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
     core.clone.Clone.clone_from := Datatypes.None;
   }.
 End Impl_core_clone_Clone_for_multisig_Error_t.
 End Impl_core_clone_Clone_for_multisig_Error_t.
 
+Module  Impl_core_marker_Copy_for_multisig_Error_t.
+Section Impl_core_marker_Copy_for_multisig_Error_t.
+  Definition Self : Set := multisig.Error.t.
+  
+  Global Instance ℐ : core.marker.Copy.Trait Self := {
+  }.
+End Impl_core_marker_Copy_for_multisig_Error_t.
+End Impl_core_marker_Copy_for_multisig_Error_t.
+
 Module  Impl_core_fmt_Debug_for_multisig_Error_t.
 Section Impl_core_fmt_Debug_for_multisig_Error_t.
-  Ltac Self := exact multisig.Error.t.
+  Definition Self : Set := multisig.Error.t.
   
   (*
   Debug
   *)
   Parameter fmt :
-      (ref ltac:(Self)) ->
-        (mut_ref core.fmt.Formatter.t) ->
-        M ltac:(core.fmt.Result).
+      (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
   
-  Global Instance AssociatedFunction_fmt :
-    Notations.DoubleColon ltac:(Self) "fmt" := {
+  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
+  Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
   }.
 End Impl_core_fmt_Debug_for_multisig_Error_t.
@@ -542,30 +537,29 @@ End Impl_core_fmt_Debug_for_multisig_Error_t.
 
 Module  Impl_core_marker_StructuralPartialEq_for_multisig_Error_t.
 Section Impl_core_marker_StructuralPartialEq_for_multisig_Error_t.
-  Ltac Self := exact multisig.Error.t.
+  Definition Self : Set := multisig.Error.t.
   
-  Global Instance ℐ : core.marker.StructuralPartialEq.Trait ltac:(Self) := {
+  Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
   }.
 End Impl_core_marker_StructuralPartialEq_for_multisig_Error_t.
 End Impl_core_marker_StructuralPartialEq_for_multisig_Error_t.
 
 Module  Impl_core_cmp_PartialEq_for_multisig_Error_t.
 Section Impl_core_cmp_PartialEq_for_multisig_Error_t.
-  Ltac Self := exact multisig.Error.t.
+  Definition Self : Set := multisig.Error.t.
   
   (*
   PartialEq
   *)
-  Parameter eq : (ref ltac:(Self)) -> (ref multisig.Error.t) -> M bool.t.
+  Parameter eq : (ref Self) -> (ref multisig.Error.t) -> M bool.t.
   
-  Global Instance AssociatedFunction_eq :
-    Notations.DoubleColon ltac:(Self) "eq" := {
+  Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
     Notations.double_colon := eq;
   }.
   
   Global Instance ℐ :
-    core.cmp.PartialEq.Required.Trait ltac:(Self)
-      (Rhs := core.cmp.PartialEq.Default.Rhs ltac:(Self)) := {
+    core.cmp.PartialEq.Required.Trait Self
+      (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
     core.cmp.PartialEq.eq := eq;
     core.cmp.PartialEq.ne := Datatypes.None;
   }.
@@ -574,28 +568,28 @@ End Impl_core_cmp_PartialEq_for_multisig_Error_t.
 
 Module  Impl_core_marker_StructuralEq_for_multisig_Error_t.
 Section Impl_core_marker_StructuralEq_for_multisig_Error_t.
-  Ltac Self := exact multisig.Error.t.
+  Definition Self : Set := multisig.Error.t.
   
-  Global Instance ℐ : core.marker.StructuralEq.Trait ltac:(Self) := {
+  Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
   }.
 End Impl_core_marker_StructuralEq_for_multisig_Error_t.
 End Impl_core_marker_StructuralEq_for_multisig_Error_t.
 
 Module  Impl_core_cmp_Eq_for_multisig_Error_t.
 Section Impl_core_cmp_Eq_for_multisig_Error_t.
-  Ltac Self := exact multisig.Error.t.
+  Definition Self : Set := multisig.Error.t.
   
   (*
   Eq
   *)
-  Parameter assert_receiver_is_total_eq : (ref ltac:(Self)) -> M unit.
+  Parameter assert_receiver_is_total_eq : (ref Self) -> M unit.
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
-    Notations.DoubleColon ltac:(Self) "assert_receiver_is_total_eq" := {
+    Notations.DoubleColon Self "assert_receiver_is_total_eq" := {
     Notations.double_colon := assert_receiver_is_total_eq;
   }.
   
-  Global Instance ℐ : core.cmp.Eq.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
     core.cmp.Eq.assert_receiver_is_total_eq :=
       Datatypes.Some assert_receiver_is_total_eq;
   }.
@@ -632,7 +626,7 @@ End Transactions.
 
 Module  Impl_core_default_Default_for_multisig_Transactions_t.
 Section Impl_core_default_Default_for_multisig_Transactions_t.
-  Ltac Self := exact multisig.Transactions.t.
+  Definition Self : Set := multisig.Transactions.t.
   
   (*
   Default
@@ -640,11 +634,11 @@ Section Impl_core_default_Default_for_multisig_Transactions_t.
   Parameter default : M multisig.Transactions.t.
   
   Global Instance AssociatedFunction_default :
-    Notations.DoubleColon ltac:(Self) "default" := {
+    Notations.DoubleColon Self "default" := {
     Notations.double_colon := default;
   }.
   
-  Global Instance ℐ : core.default.Default.Trait ltac:(Self) := {
+  Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
   }.
 End Impl_core_default_Default_for_multisig_Transactions_t.
@@ -831,6 +825,60 @@ Module Event.
   | RequirementChange (_ : multisig.RequirementChange.t).
 End Event.
 
+Module  Impl_multisig_Env_t.
+Section Impl_multisig_Env_t.
+  Definition Self : Set := multisig.Env.t.
+  
+  (*
+      fn caller(&self) -> AccountId {
+          self.caller
+      }
+  *)
+  Parameter caller : (ref Self) -> M multisig.AccountId.t.
+  
+  Global Instance AssociatedFunction_caller :
+    Notations.DoubleColon Self "caller" := {
+    Notations.double_colon := caller;
+  }.
+  
+  (*
+      fn emit_event(&self, _event: Event) {
+          unimplemented!()
+      }
+  *)
+  Parameter emit_event : (ref Self) -> multisig.Event.t -> M unit.
+  
+  Global Instance AssociatedFunction_emit_event :
+    Notations.DoubleColon Self "emit_event" := {
+    Notations.double_colon := emit_event;
+  }.
+  
+  (*
+      fn transferred_value(&self) -> Balance {
+          unimplemented!()
+      }
+  *)
+  Parameter transferred_value : (ref Self) -> M ltac:(multisig.Balance).
+  
+  Global Instance AssociatedFunction_transferred_value :
+    Notations.DoubleColon Self "transferred_value" := {
+    Notations.double_colon := transferred_value;
+  }.
+  
+  (*
+      fn account_id(&self) -> AccountId {
+          unimplemented!()
+      }
+  *)
+  Parameter account_id : (ref Self) -> M multisig.AccountId.t.
+  
+  Global Instance AssociatedFunction_account_id :
+    Notations.DoubleColon Self "account_id" := {
+    Notations.double_colon := account_id;
+  }.
+End Impl_multisig_Env_t.
+End Impl_multisig_Env_t.
+
 Module  Multisig.
 Section Multisig.
   Record t : Set := {
@@ -915,7 +963,7 @@ End Multisig.
 
 Module  Impl_core_default_Default_for_multisig_Multisig_t.
 Section Impl_core_default_Default_for_multisig_Multisig_t.
-  Ltac Self := exact multisig.Multisig.t.
+  Definition Self : Set := multisig.Multisig.t.
   
   (*
   Default
@@ -923,11 +971,11 @@ Section Impl_core_default_Default_for_multisig_Multisig_t.
   Parameter default : M multisig.Multisig.t.
   
   Global Instance AssociatedFunction_default :
-    Notations.DoubleColon ltac:(Self) "default" := {
+    Notations.DoubleColon Self "default" := {
     Notations.double_colon := default;
   }.
   
-  Global Instance ℐ : core.default.Default.Trait ltac:(Self) := {
+  Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
   }.
 End Impl_core_default_Default_for_multisig_Multisig_t.
@@ -935,7 +983,7 @@ End Impl_core_default_Default_for_multisig_Multisig_t.
 
 Module  Impl_multisig_Multisig_t.
 Section Impl_multisig_Multisig_t.
-  Ltac Self := exact multisig.Multisig.t.
+  Definition Self : Set := multisig.Multisig.t.
   
   (*
       fn init_env() -> Env {
@@ -945,7 +993,7 @@ Section Impl_multisig_Multisig_t.
   Parameter init_env : M multisig.Env.t.
   
   Global Instance AssociatedFunction_init_env :
-    Notations.DoubleColon ltac:(Self) "init_env" := {
+    Notations.DoubleColon Self "init_env" := {
     Notations.double_colon := init_env;
   }.
   
@@ -954,10 +1002,9 @@ Section Impl_multisig_Multisig_t.
           Self::init_env()
       }
   *)
-  Parameter env : (ref ltac:(Self)) -> M multisig.Env.t.
+  Parameter env : (ref Self) -> M multisig.Env.t.
   
-  Global Instance AssociatedFunction_env :
-    Notations.DoubleColon ltac:(Self) "env" := {
+  Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
     Notations.double_colon := env;
   }.
   
@@ -981,10 +1028,9 @@ Section Impl_multisig_Multisig_t.
   Parameter new :
       u32.t ->
         (alloc.vec.Vec.t multisig.AccountId.t alloc.vec.Vec.Default.A) ->
-        M ltac:(Self).
+        M Self.
   
-  Global Instance AssociatedFunction_new :
-    Notations.DoubleColon ltac:(Self) "new" := {
+  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
   }.
   
@@ -999,10 +1045,10 @@ Section Impl_multisig_Multisig_t.
               .emit_event(Event::OwnerAddition(OwnerAddition { owner: new_owner }));
       }
   *)
-  Parameter add_owner : (mut_ref ltac:(Self)) -> multisig.AccountId.t -> M unit.
+  Parameter add_owner : (mut_ref Self) -> multisig.AccountId.t -> M unit.
   
   Global Instance AssociatedFunction_add_owner :
-    Notations.DoubleColon ltac:(Self) "add_owner" := {
+    Notations.DoubleColon Self "add_owner" := {
     Notations.double_colon := add_owner;
   }.
   
@@ -1022,11 +1068,10 @@ Section Impl_multisig_Multisig_t.
               .emit_event(Event::OwnerRemoval(OwnerRemoval { owner }));
       }
   *)
-  Parameter remove_owner :
-      (mut_ref ltac:(Self)) -> multisig.AccountId.t -> M unit.
+  Parameter remove_owner : (mut_ref Self) -> multisig.AccountId.t -> M unit.
   
   Global Instance AssociatedFunction_remove_owner :
-    Notations.DoubleColon ltac:(Self) "remove_owner" := {
+    Notations.DoubleColon Self "remove_owner" := {
     Notations.double_colon := remove_owner;
   }.
   
@@ -1047,13 +1092,10 @@ Section Impl_multisig_Multisig_t.
       }
   *)
   Parameter replace_owner :
-      (mut_ref ltac:(Self)) ->
-        multisig.AccountId.t ->
-        multisig.AccountId.t ->
-        M unit.
+      (mut_ref Self) -> multisig.AccountId.t -> multisig.AccountId.t -> M unit.
   
   Global Instance AssociatedFunction_replace_owner :
-    Notations.DoubleColon ltac:(Self) "replace_owner" := {
+    Notations.DoubleColon Self "replace_owner" := {
     Notations.double_colon := replace_owner;
   }.
   
@@ -1068,10 +1110,10 @@ Section Impl_multisig_Multisig_t.
               }));
       }
   *)
-  Parameter change_requirement : (mut_ref ltac:(Self)) -> u32.t -> M unit.
+  Parameter change_requirement : (mut_ref Self) -> u32.t -> M unit.
   
   Global Instance AssociatedFunction_change_requirement :
-    Notations.DoubleColon ltac:(Self) "change_requirement" := {
+    Notations.DoubleColon Self "change_requirement" := {
     Notations.double_colon := change_requirement;
   }.
   
@@ -1096,12 +1138,12 @@ Section Impl_multisig_Multisig_t.
       }
   *)
   Parameter submit_transaction :
-      (mut_ref ltac:(Self)) ->
+      (mut_ref Self) ->
         multisig.Transaction.t ->
         M (ltac:(multisig.TransactionId) * multisig.ConfirmationStatus.t).
   
   Global Instance AssociatedFunction_submit_transaction :
-    Notations.DoubleColon ltac:(Self) "submit_transaction" := {
+    Notations.DoubleColon Self "submit_transaction" := {
     Notations.double_colon := submit_transaction;
   }.
   
@@ -1116,10 +1158,10 @@ Section Impl_multisig_Multisig_t.
       }
   *)
   Parameter cancel_transaction :
-      (mut_ref ltac:(Self)) -> ltac:(multisig.TransactionId) -> M unit.
+      (mut_ref Self) -> ltac:(multisig.TransactionId) -> M unit.
   
   Global Instance AssociatedFunction_cancel_transaction :
-    Notations.DoubleColon ltac:(Self) "cancel_transaction" := {
+    Notations.DoubleColon Self "cancel_transaction" := {
     Notations.double_colon := cancel_transaction;
   }.
   
@@ -1131,12 +1173,12 @@ Section Impl_multisig_Multisig_t.
       }
   *)
   Parameter confirm_transaction :
-      (mut_ref ltac:(Self)) ->
+      (mut_ref Self) ->
         ltac:(multisig.TransactionId) ->
         M multisig.ConfirmationStatus.t.
   
   Global Instance AssociatedFunction_confirm_transaction :
-    Notations.DoubleColon ltac:(Self) "confirm_transaction" := {
+    Notations.DoubleColon Self "confirm_transaction" := {
     Notations.double_colon := confirm_transaction;
   }.
   
@@ -1161,10 +1203,10 @@ Section Impl_multisig_Multisig_t.
       }
   *)
   Parameter revoke_confirmation :
-      (mut_ref ltac:(Self)) -> ltac:(multisig.TransactionId) -> M unit.
+      (mut_ref Self) -> ltac:(multisig.TransactionId) -> M unit.
   
   Global Instance AssociatedFunction_revoke_confirmation :
-    Notations.DoubleColon ltac:(Self) "revoke_confirmation" := {
+    Notations.DoubleColon Self "revoke_confirmation" := {
     Notations.double_colon := revoke_confirmation;
   }.
   
@@ -1196,12 +1238,12 @@ Section Impl_multisig_Multisig_t.
       }
   *)
   Parameter invoke_transaction :
-      (mut_ref ltac:(Self)) ->
+      (mut_ref Self) ->
         ltac:(multisig.TransactionId) ->
         M (core.result.Result.t unit multisig.Error.t).
   
   Global Instance AssociatedFunction_invoke_transaction :
-    Notations.DoubleColon ltac:(Self) "invoke_transaction" := {
+    Notations.DoubleColon Self "invoke_transaction" := {
     Notations.double_colon := invoke_transaction;
   }.
   
@@ -1232,7 +1274,7 @@ Section Impl_multisig_Multisig_t.
       }
   *)
   Parameter eval_transaction :
-      (mut_ref ltac:(Self)) ->
+      (mut_ref Self) ->
         ltac:(multisig.TransactionId) ->
         M
           (core.result.Result.t
@@ -1240,7 +1282,7 @@ Section Impl_multisig_Multisig_t.
             multisig.Error.t).
   
   Global Instance AssociatedFunction_eval_transaction :
-    Notations.DoubleColon ltac:(Self) "eval_transaction" := {
+    Notations.DoubleColon Self "eval_transaction" := {
     Notations.double_colon := eval_transaction;
   }.
   
@@ -1276,13 +1318,13 @@ Section Impl_multisig_Multisig_t.
       }
   *)
   Parameter confirm_by_caller :
-      (mut_ref ltac:(Self)) ->
+      (mut_ref Self) ->
         multisig.AccountId.t ->
         ltac:(multisig.TransactionId) ->
         M multisig.ConfirmationStatus.t.
   
   Global Instance AssociatedFunction_confirm_by_caller :
-    Notations.DoubleColon ltac:(Self) "confirm_by_caller" := {
+    Notations.DoubleColon Self "confirm_by_caller" := {
     Notations.double_colon := confirm_by_caller;
   }.
   
@@ -1294,11 +1336,10 @@ Section Impl_multisig_Multisig_t.
           ) as u32
       }
   *)
-  Parameter owner_index :
-      (ref ltac:(Self)) -> (ref multisig.AccountId.t) -> M u32.t.
+  Parameter owner_index : (ref Self) -> (ref multisig.AccountId.t) -> M u32.t.
   
   Global Instance AssociatedFunction_owner_index :
-    Notations.DoubleColon ltac:(Self) "owner_index" := {
+    Notations.DoubleColon Self "owner_index" := {
     Notations.double_colon := owner_index;
   }.
   
@@ -1323,12 +1364,12 @@ Section Impl_multisig_Multisig_t.
       }
   *)
   Parameter take_transaction :
-      (mut_ref ltac:(Self)) ->
+      (mut_ref Self) ->
         ltac:(multisig.TransactionId) ->
         M (core.option.Option.t multisig.Transaction.t).
   
   Global Instance AssociatedFunction_take_transaction :
-    Notations.DoubleColon ltac:(Self) "take_transaction" := {
+    Notations.DoubleColon Self "take_transaction" := {
     Notations.double_colon := take_transaction;
   }.
   
@@ -1346,10 +1387,10 @@ Section Impl_multisig_Multisig_t.
       }
   *)
   Parameter clean_owner_confirmations :
-      (mut_ref ltac:(Self)) -> (ref multisig.AccountId.t) -> M unit.
+      (mut_ref Self) -> (ref multisig.AccountId.t) -> M unit.
   
   Global Instance AssociatedFunction_clean_owner_confirmations :
-    Notations.DoubleColon ltac:(Self) "clean_owner_confirmations" := {
+    Notations.DoubleColon Self "clean_owner_confirmations" := {
     Notations.double_colon := clean_owner_confirmations;
   }.
   
@@ -1364,10 +1405,10 @@ Section Impl_multisig_Multisig_t.
       }
   *)
   Parameter ensure_confirmed :
-      (ref ltac:(Self)) -> ltac:(multisig.TransactionId) -> M unit.
+      (ref Self) -> ltac:(multisig.TransactionId) -> M unit.
   
   Global Instance AssociatedFunction_ensure_confirmed :
-    Notations.DoubleColon ltac:(Self) "ensure_confirmed" := {
+    Notations.DoubleColon Self "ensure_confirmed" := {
     Notations.double_colon := ensure_confirmed;
   }.
   
@@ -1379,10 +1420,10 @@ Section Impl_multisig_Multisig_t.
       }
   *)
   Parameter ensure_transaction_exists :
-      (ref ltac:(Self)) -> ltac:(multisig.TransactionId) -> M unit.
+      (ref Self) -> ltac:(multisig.TransactionId) -> M unit.
   
   Global Instance AssociatedFunction_ensure_transaction_exists :
-    Notations.DoubleColon ltac:(Self) "ensure_transaction_exists" := {
+    Notations.DoubleColon Self "ensure_transaction_exists" := {
     Notations.double_colon := ensure_transaction_exists;
   }.
   
@@ -1391,10 +1432,10 @@ Section Impl_multisig_Multisig_t.
           self.ensure_owner(&self.env().caller());
       }
   *)
-  Parameter ensure_caller_is_owner : (ref ltac:(Self)) -> M unit.
+  Parameter ensure_caller_is_owner : (ref Self) -> M unit.
   
   Global Instance AssociatedFunction_ensure_caller_is_owner :
-    Notations.DoubleColon ltac:(Self) "ensure_caller_is_owner" := {
+    Notations.DoubleColon Self "ensure_caller_is_owner" := {
     Notations.double_colon := ensure_caller_is_owner;
   }.
   
@@ -1403,10 +1444,10 @@ Section Impl_multisig_Multisig_t.
           assert_eq!(self.env().caller(), self.env().account_id());
       }
   *)
-  Parameter ensure_from_wallet : (ref ltac:(Self)) -> M unit.
+  Parameter ensure_from_wallet : (ref Self) -> M unit.
   
   Global Instance AssociatedFunction_ensure_from_wallet :
-    Notations.DoubleColon ltac:(Self) "ensure_from_wallet" := {
+    Notations.DoubleColon Self "ensure_from_wallet" := {
     Notations.double_colon := ensure_from_wallet;
   }.
   
@@ -1415,11 +1456,10 @@ Section Impl_multisig_Multisig_t.
           assert!(self.is_owner.contains(owner));
       }
   *)
-  Parameter ensure_owner :
-      (ref ltac:(Self)) -> (ref multisig.AccountId.t) -> M unit.
+  Parameter ensure_owner : (ref Self) -> (ref multisig.AccountId.t) -> M unit.
   
   Global Instance AssociatedFunction_ensure_owner :
-    Notations.DoubleColon ltac:(Self) "ensure_owner" := {
+    Notations.DoubleColon Self "ensure_owner" := {
     Notations.double_colon := ensure_owner;
   }.
   
@@ -1429,10 +1469,10 @@ Section Impl_multisig_Multisig_t.
       }
   *)
   Parameter ensure_no_owner :
-      (ref ltac:(Self)) -> (ref multisig.AccountId.t) -> M unit.
+      (ref Self) -> (ref multisig.AccountId.t) -> M unit.
   
   Global Instance AssociatedFunction_ensure_no_owner :
-    Notations.DoubleColon ltac:(Self) "ensure_no_owner" := {
+    Notations.DoubleColon Self "ensure_no_owner" := {
     Notations.double_colon := ensure_no_owner;
   }.
 End Impl_multisig_Multisig_t.

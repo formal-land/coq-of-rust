@@ -18,15 +18,15 @@ End Droppable.
 
 Module  Impl_core_ops_drop_Drop_for_drop_Droppable_t.
 Section Impl_core_ops_drop_Drop_for_drop_Droppable_t.
-  Ltac Self := exact drop.Droppable.t.
+  Definition Self : Set := drop.Droppable.t.
   
   (*
       fn drop(&mut self) {
           println!("> Dropping {}", self.name);
       }
   *)
-  Definition drop (self : mut_ref ltac:(Self)) : M unit :=
-    let* self : M.Val (mut_ref ltac:(Self)) := M.alloc self in
+  Definition drop (self : mut_ref Self) : M unit :=
+    let* self : M.Val (mut_ref Self) := M.alloc self in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "> Dropping ") in
@@ -55,11 +55,11 @@ Section Impl_core_ops_drop_Drop_for_drop_Droppable_t.
     M.read α0.
   
   Global Instance AssociatedFunction_drop :
-    Notations.DoubleColon ltac:(Self) "drop" := {
+    Notations.DoubleColon Self "drop" := {
     Notations.double_colon := drop;
   }.
   
-  Global Instance ℐ : core.ops.drop.Drop.Trait ltac:(Self) := {
+  Global Instance ℐ : core.ops.drop.Drop.Trait Self := {
     core.ops.drop.Drop.drop := drop;
   }.
 End Impl_core_ops_drop_Drop_for_drop_Droppable_t.

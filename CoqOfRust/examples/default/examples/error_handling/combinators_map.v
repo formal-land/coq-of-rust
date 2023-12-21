@@ -10,16 +10,16 @@ End Food.
 
 Module  Impl_core_fmt_Debug_for_combinators_map_Food_t.
 Section Impl_core_fmt_Debug_for_combinators_map_Food_t.
-  Ltac Self := exact combinators_map.Food.t.
+  Definition Self : Set := combinators_map.Food.t.
   
   (*
   Debug
   *)
   Definition fmt
-      (self : ref ltac:(Self))
+      (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (ref Self) := M.alloc self in
     let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref combinators_map.Food.t := M.read self in
@@ -38,12 +38,11 @@ Section Impl_core_fmt_Debug_for_combinators_map_Food_t.
     let* α3 : ref str.t := M.read α2 in
     M.call (core.fmt.Formatter.t::["write_str"] α0 α3).
   
-  Global Instance AssociatedFunction_fmt :
-    Notations.DoubleColon ltac:(Self) "fmt" := {
+  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
+  Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
   }.
 End Impl_core_fmt_Debug_for_combinators_map_Food_t.
@@ -63,16 +62,16 @@ End Peeled.
 
 Module  Impl_core_fmt_Debug_for_combinators_map_Peeled_t.
 Section Impl_core_fmt_Debug_for_combinators_map_Peeled_t.
-  Ltac Self := exact combinators_map.Peeled.t.
+  Definition Self : Set := combinators_map.Peeled.t.
   
   (*
   Debug
   *)
   Definition fmt
-      (self : ref ltac:(Self))
+      (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (ref Self) := M.alloc self in
     let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref str.t := M.read (mk_str "Peeled") in
@@ -84,12 +83,11 @@ Section Impl_core_fmt_Debug_for_combinators_map_Peeled_t.
       M.read (pointer_coercion "Unsize" α4) in
     M.call (core.fmt.Formatter.t::["debug_tuple_field1_finish"] α0 α1 α5).
   
-  Global Instance AssociatedFunction_fmt :
-    Notations.DoubleColon ltac:(Self) "fmt" := {
+  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
+  Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
   }.
 End Impl_core_fmt_Debug_for_combinators_map_Peeled_t.
@@ -109,16 +107,16 @@ End Chopped.
 
 Module  Impl_core_fmt_Debug_for_combinators_map_Chopped_t.
 Section Impl_core_fmt_Debug_for_combinators_map_Chopped_t.
-  Ltac Self := exact combinators_map.Chopped.t.
+  Definition Self : Set := combinators_map.Chopped.t.
   
   (*
   Debug
   *)
   Definition fmt
-      (self : ref ltac:(Self))
+      (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (ref Self) := M.alloc self in
     let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref str.t := M.read (mk_str "Chopped") in
@@ -130,12 +128,11 @@ Section Impl_core_fmt_Debug_for_combinators_map_Chopped_t.
       M.read (pointer_coercion "Unsize" α4) in
     M.call (core.fmt.Formatter.t::["debug_tuple_field1_finish"] α0 α1 α5).
   
-  Global Instance AssociatedFunction_fmt :
-    Notations.DoubleColon ltac:(Self) "fmt" := {
+  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
+  Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
   }.
 End Impl_core_fmt_Debug_for_combinators_map_Chopped_t.
@@ -155,16 +152,16 @@ End Cooked.
 
 Module  Impl_core_fmt_Debug_for_combinators_map_Cooked_t.
 Section Impl_core_fmt_Debug_for_combinators_map_Cooked_t.
-  Ltac Self := exact combinators_map.Cooked.t.
+  Definition Self : Set := combinators_map.Cooked.t.
   
   (*
   Debug
   *)
   Definition fmt
-      (self : ref ltac:(Self))
+      (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (ref Self) := M.alloc self in
     let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref str.t := M.read (mk_str "Cooked") in
@@ -176,12 +173,11 @@ Section Impl_core_fmt_Debug_for_combinators_map_Cooked_t.
       M.read (pointer_coercion "Unsize" α4) in
     M.call (core.fmt.Formatter.t::["debug_tuple_field1_finish"] α0 α1 α5).
   
-  Global Instance AssociatedFunction_fmt :
-    Notations.DoubleColon ltac:(Self) "fmt" := {
+  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
+  Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
   }.
 End Impl_core_fmt_Debug_for_combinators_map_Cooked_t.

@@ -36,17 +36,17 @@ End GenVal.
 
 Module  Impl_generics_implementation_Val_t.
 Section Impl_generics_implementation_Val_t.
-  Ltac Self := exact generics_implementation.Val.t.
+  Definition Self : Set := generics_implementation.Val.t.
   
   (*
       fn value(&self) -> &f64 {
           &self.val
       }
   *)
-  Parameter value : (ref ltac:(Self)) -> M (ref f64.t).
+  Parameter value : (ref Self) -> M (ref f64.t).
   
   Global Instance AssociatedFunction_value :
-    Notations.DoubleColon ltac:(Self) "value" := {
+    Notations.DoubleColon Self "value" := {
     Notations.double_colon := value;
   }.
 End Impl_generics_implementation_Val_t.
@@ -56,17 +56,17 @@ Module  Impl_generics_implementation_GenVal_t_T.
 Section Impl_generics_implementation_GenVal_t_T.
   Context {T : Set}.
   
-  Ltac Self := exact (generics_implementation.GenVal.t T).
+  Definition Self : Set := generics_implementation.GenVal.t T.
   
   (*
       fn value(&self) -> &T {
           &self.gen_val
       }
   *)
-  Parameter value : (ref ltac:(Self)) -> M (ref T).
+  Parameter value : (ref Self) -> M (ref T).
   
   Global Instance AssociatedFunction_value :
-    Notations.DoubleColon ltac:(Self) "value" := {
+    Notations.DoubleColon Self "value" := {
     Notations.double_colon := value;
   }.
 End Impl_generics_implementation_GenVal_t_T.

@@ -34,7 +34,7 @@ Section Impl_core_default_Default_for_mother_Mapping_t_K_V.
     {ℋ_0 : core.default.Default.Trait K}
     {ℋ_1 : core.default.Default.Trait V}.
   
-  Ltac Self := exact (mother.Mapping.t K V).
+  Definition Self : Set := mother.Mapping.t K V.
   
   (*
   Default
@@ -53,11 +53,11 @@ Section Impl_core_default_Default_for_mother_Mapping_t_K_V.
     M.pure {| mother.Mapping._key := α0; mother.Mapping._value := α1; |}.
   
   Global Instance AssociatedFunction_default :
-    Notations.DoubleColon ltac:(Self) "default" := {
+    Notations.DoubleColon Self "default" := {
     Notations.double_colon := default;
   }.
   
-  Global Instance ℐ : core.default.Default.Trait ltac:(Self) := {
+  Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
   }.
 End Impl_core_default_Default_for_mother_Mapping_t_K_V.
@@ -67,7 +67,7 @@ Module  Impl_mother_Mapping_t_K_V.
 Section Impl_mother_Mapping_t_K_V.
   Context {K V : Set}.
   
-  Ltac Self := exact (mother.Mapping.t K V).
+  Definition Self : Set := mother.Mapping.t K V.
   
   (*
       fn get(&self, _key: &K) -> Option<V> {
@@ -75,17 +75,16 @@ Section Impl_mother_Mapping_t_K_V.
       }
   *)
   Definition get
-      (self : ref ltac:(Self))
+      (self : ref Self)
       (_key : ref K)
       : M (core.option.Option.t V) :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (ref Self) := M.alloc self in
     let* _key : M.Val (ref K) := M.alloc _key in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_get :
-    Notations.DoubleColon ltac:(Self) "get" := {
+  Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
     Notations.double_colon := get;
   }.
   
@@ -94,12 +93,8 @@ Section Impl_mother_Mapping_t_K_V.
           unimplemented!()
       }
   *)
-  Definition insert
-      (self : mut_ref ltac:(Self))
-      (_key : K)
-      (_value : V)
-      : M unit :=
-    let* self : M.Val (mut_ref ltac:(Self)) := M.alloc self in
+  Definition insert (self : mut_ref Self) (_key : K) (_value : V) : M unit :=
+    let* self : M.Val (mut_ref Self) := M.alloc self in
     let* _key : M.Val K := M.alloc _key in
     let* _value : M.Val V := M.alloc _value in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
@@ -107,7 +102,7 @@ Section Impl_mother_Mapping_t_K_V.
     never_to_any α1.
   
   Global Instance AssociatedFunction_insert :
-    Notations.DoubleColon ltac:(Self) "insert" := {
+    Notations.DoubleColon Self "insert" := {
     Notations.double_colon := insert;
   }.
 End Impl_mother_Mapping_t_K_V.
@@ -127,7 +122,7 @@ End AccountId.
 
 Module  Impl_core_default_Default_for_mother_AccountId_t.
 Section Impl_core_default_Default_for_mother_AccountId_t.
-  Ltac Self := exact mother.AccountId.t.
+  Definition Self : Set := mother.AccountId.t.
   
   (*
   Default
@@ -141,11 +136,11 @@ Section Impl_core_default_Default_for_mother_AccountId_t.
     M.pure (mother.AccountId.Build_t α0).
   
   Global Instance AssociatedFunction_default :
-    Notations.DoubleColon ltac:(Self) "default" := {
+    Notations.DoubleColon Self "default" := {
     Notations.double_colon := default;
   }.
   
-  Global Instance ℐ : core.default.Default.Trait ltac:(Self) := {
+  Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
   }.
 End Impl_core_default_Default_for_mother_AccountId_t.
@@ -153,23 +148,23 @@ End Impl_core_default_Default_for_mother_AccountId_t.
 
 Module  Impl_core_clone_Clone_for_mother_AccountId_t.
 Section Impl_core_clone_Clone_for_mother_AccountId_t.
-  Ltac Self := exact mother.AccountId.t.
+  Definition Self : Set := mother.AccountId.t.
   
   (*
   Clone
   *)
-  Definition clone (self : ref ltac:(Self)) : M mother.AccountId.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
-    let* _ : M.Val unit := M.alloc tt in
+  Definition clone (self : ref Self) : M mother.AccountId.t :=
+    let* self : M.Val (ref Self) := M.alloc self in
+    let _ : unit := tt in
     let* α0 : ref mother.AccountId.t := M.read self in
     M.read (deref α0).
   
   Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon ltac:(Self) "clone" := {
+    Notations.DoubleColon Self "clone" := {
     Notations.double_colon := clone;
   }.
   
-  Global Instance ℐ : core.clone.Clone.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
     core.clone.Clone.clone_from := Datatypes.None;
   }.
@@ -178,34 +173,31 @@ End Impl_core_clone_Clone_for_mother_AccountId_t.
 
 Module  Impl_core_marker_Copy_for_mother_AccountId_t.
 Section Impl_core_marker_Copy_for_mother_AccountId_t.
-  Ltac Self := exact mother.AccountId.t.
+  Definition Self : Set := mother.AccountId.t.
   
-  Global Instance ℐ : core.marker.Copy.Trait ltac:(Self) := {
+  Global Instance ℐ : core.marker.Copy.Trait Self := {
   }.
 End Impl_core_marker_Copy_for_mother_AccountId_t.
 End Impl_core_marker_Copy_for_mother_AccountId_t.
 
 Module  Impl_core_marker_StructuralPartialEq_for_mother_AccountId_t.
 Section Impl_core_marker_StructuralPartialEq_for_mother_AccountId_t.
-  Ltac Self := exact mother.AccountId.t.
+  Definition Self : Set := mother.AccountId.t.
   
-  Global Instance ℐ : core.marker.StructuralPartialEq.Trait ltac:(Self) := {
+  Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
   }.
 End Impl_core_marker_StructuralPartialEq_for_mother_AccountId_t.
 End Impl_core_marker_StructuralPartialEq_for_mother_AccountId_t.
 
 Module  Impl_core_cmp_PartialEq_for_mother_AccountId_t.
 Section Impl_core_cmp_PartialEq_for_mother_AccountId_t.
-  Ltac Self := exact mother.AccountId.t.
+  Definition Self : Set := mother.AccountId.t.
   
   (*
   PartialEq
   *)
-  Definition eq
-      (self : ref ltac:(Self))
-      (other : ref mother.AccountId.t)
-      : M bool.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition eq (self : ref Self) (other : ref mother.AccountId.t) : M bool.t :=
+    let* self : M.Val (ref Self) := M.alloc self in
     let* other : M.Val (ref mother.AccountId.t) := M.alloc other in
     let* α0 : ref mother.AccountId.t := M.read self in
     let* α1 : u128.t := M.read (deref α0).["0"] in
@@ -213,14 +205,13 @@ Section Impl_core_cmp_PartialEq_for_mother_AccountId_t.
     let* α3 : u128.t := M.read (deref α2).["0"] in
     M.pure (BinOp.Pure.eq α1 α3).
   
-  Global Instance AssociatedFunction_eq :
-    Notations.DoubleColon ltac:(Self) "eq" := {
+  Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
     Notations.double_colon := eq;
   }.
   
   Global Instance ℐ :
-    core.cmp.PartialEq.Required.Trait ltac:(Self)
-      (Rhs := core.cmp.PartialEq.Default.Rhs ltac:(Self)) := {
+    core.cmp.PartialEq.Required.Trait Self
+      (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
     core.cmp.PartialEq.eq := eq;
     core.cmp.PartialEq.ne := Datatypes.None;
   }.
@@ -229,32 +220,32 @@ End Impl_core_cmp_PartialEq_for_mother_AccountId_t.
 
 Module  Impl_core_marker_StructuralEq_for_mother_AccountId_t.
 Section Impl_core_marker_StructuralEq_for_mother_AccountId_t.
-  Ltac Self := exact mother.AccountId.t.
+  Definition Self : Set := mother.AccountId.t.
   
-  Global Instance ℐ : core.marker.StructuralEq.Trait ltac:(Self) := {
+  Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
   }.
 End Impl_core_marker_StructuralEq_for_mother_AccountId_t.
 End Impl_core_marker_StructuralEq_for_mother_AccountId_t.
 
 Module  Impl_core_cmp_Eq_for_mother_AccountId_t.
 Section Impl_core_cmp_Eq_for_mother_AccountId_t.
-  Ltac Self := exact mother.AccountId.t.
+  Definition Self : Set := mother.AccountId.t.
   
   (*
   Eq
   *)
-  Definition assert_receiver_is_total_eq (self : ref ltac:(Self)) : M unit :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
-    let* _ : M.Val unit := M.alloc tt in
+  Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
+    let* self : M.Val (ref Self) := M.alloc self in
+    let _ : unit := tt in
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
-    Notations.DoubleColon ltac:(Self) "assert_receiver_is_total_eq" := {
+    Notations.DoubleColon Self "assert_receiver_is_total_eq" := {
     Notations.double_colon := assert_receiver_is_total_eq;
   }.
   
-  Global Instance ℐ : core.cmp.Eq.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
     core.cmp.Eq.assert_receiver_is_total_eq :=
       Datatypes.Some assert_receiver_is_total_eq;
   }.
@@ -302,7 +293,7 @@ End Bids.
 
 Module  Impl_core_default_Default_for_mother_Bids_t.
 Section Impl_core_default_Default_for_mother_Bids_t.
-  Ltac Self := exact mother.Bids.t.
+  Definition Self : Set := mother.Bids.t.
   
   (*
   Default
@@ -326,11 +317,11 @@ Section Impl_core_default_Default_for_mother_Bids_t.
     M.pure (mother.Bids.Build_t α0).
   
   Global Instance AssociatedFunction_default :
-    Notations.DoubleColon ltac:(Self) "default" := {
+    Notations.DoubleColon Self "default" := {
     Notations.double_colon := default;
   }.
   
-  Global Instance ℐ : core.default.Default.Trait ltac:(Self) := {
+  Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
   }.
 End Impl_core_default_Default_for_mother_Bids_t.
@@ -338,25 +329,22 @@ End Impl_core_default_Default_for_mother_Bids_t.
 
 Module  Impl_core_marker_StructuralPartialEq_for_mother_Bids_t.
 Section Impl_core_marker_StructuralPartialEq_for_mother_Bids_t.
-  Ltac Self := exact mother.Bids.t.
+  Definition Self : Set := mother.Bids.t.
   
-  Global Instance ℐ : core.marker.StructuralPartialEq.Trait ltac:(Self) := {
+  Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
   }.
 End Impl_core_marker_StructuralPartialEq_for_mother_Bids_t.
 End Impl_core_marker_StructuralPartialEq_for_mother_Bids_t.
 
 Module  Impl_core_cmp_PartialEq_for_mother_Bids_t.
 Section Impl_core_cmp_PartialEq_for_mother_Bids_t.
-  Ltac Self := exact mother.Bids.t.
+  Definition Self : Set := mother.Bids.t.
   
   (*
   PartialEq
   *)
-  Definition eq
-      (self : ref ltac:(Self))
-      (other : ref mother.Bids.t)
-      : M bool.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition eq (self : ref Self) (other : ref mother.Bids.t) : M bool.t :=
+    let* self : M.Val (ref Self) := M.alloc self in
     let* other : M.Val (ref mother.Bids.t) := M.alloc other in
     let* α0 : ref mother.Bids.t := M.read self in
     let* α1 : ref mother.Bids.t := M.read other in
@@ -372,14 +360,13 @@ Section Impl_core_cmp_PartialEq_for_mother_Bids_t.
         (borrow (deref α0).["0"])
         (borrow (deref α1).["0"])).
   
-  Global Instance AssociatedFunction_eq :
-    Notations.DoubleColon ltac:(Self) "eq" := {
+  Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
     Notations.double_colon := eq;
   }.
   
   Global Instance ℐ :
-    core.cmp.PartialEq.Required.Trait ltac:(Self)
-      (Rhs := core.cmp.PartialEq.Default.Rhs ltac:(Self)) := {
+    core.cmp.PartialEq.Required.Trait Self
+      (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
     core.cmp.PartialEq.eq := eq;
     core.cmp.PartialEq.ne := Datatypes.None;
   }.
@@ -388,32 +375,32 @@ End Impl_core_cmp_PartialEq_for_mother_Bids_t.
 
 Module  Impl_core_marker_StructuralEq_for_mother_Bids_t.
 Section Impl_core_marker_StructuralEq_for_mother_Bids_t.
-  Ltac Self := exact mother.Bids.t.
+  Definition Self : Set := mother.Bids.t.
   
-  Global Instance ℐ : core.marker.StructuralEq.Trait ltac:(Self) := {
+  Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
   }.
 End Impl_core_marker_StructuralEq_for_mother_Bids_t.
 End Impl_core_marker_StructuralEq_for_mother_Bids_t.
 
 Module  Impl_core_cmp_Eq_for_mother_Bids_t.
 Section Impl_core_cmp_Eq_for_mother_Bids_t.
-  Ltac Self := exact mother.Bids.t.
+  Definition Self : Set := mother.Bids.t.
   
   (*
   Eq
   *)
-  Definition assert_receiver_is_total_eq (self : ref ltac:(Self)) : M unit :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
-    let* _ : M.Val unit := M.alloc tt in
+  Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
+    let* self : M.Val (ref Self) := M.alloc self in
+    let _ : unit := tt in
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
-    Notations.DoubleColon ltac:(Self) "assert_receiver_is_total_eq" := {
+    Notations.DoubleColon Self "assert_receiver_is_total_eq" := {
     Notations.double_colon := assert_receiver_is_total_eq;
   }.
   
-  Global Instance ℐ : core.cmp.Eq.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
     core.cmp.Eq.assert_receiver_is_total_eq :=
       Datatypes.Some assert_receiver_is_total_eq;
   }.
@@ -422,13 +409,13 @@ End Impl_core_cmp_Eq_for_mother_Bids_t.
 
 Module  Impl_core_clone_Clone_for_mother_Bids_t.
 Section Impl_core_clone_Clone_for_mother_Bids_t.
-  Ltac Self := exact mother.Bids.t.
+  Definition Self : Set := mother.Bids.t.
   
   (*
   Clone
   *)
-  Definition clone (self : ref ltac:(Self)) : M mother.Bids.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition clone (self : ref Self) : M mother.Bids.t :=
+    let* self : M.Val (ref Self) := M.alloc self in
     let* α0 : ref mother.Bids.t := M.read self in
     let* α1 :
         alloc.vec.Vec.t
@@ -449,11 +436,11 @@ Section Impl_core_clone_Clone_for_mother_Bids_t.
     M.pure (mother.Bids.Build_t α1).
   
   Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon ltac:(Self) "clone" := {
+    Notations.DoubleColon Self "clone" := {
     Notations.double_colon := clone;
   }.
   
-  Global Instance ℐ : core.clone.Clone.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
     core.clone.Clone.clone_from := Datatypes.None;
   }.
@@ -469,25 +456,22 @@ End Outline.
 
 Module  Impl_core_marker_StructuralPartialEq_for_mother_Outline_t.
 Section Impl_core_marker_StructuralPartialEq_for_mother_Outline_t.
-  Ltac Self := exact mother.Outline.t.
+  Definition Self : Set := mother.Outline.t.
   
-  Global Instance ℐ : core.marker.StructuralPartialEq.Trait ltac:(Self) := {
+  Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
   }.
 End Impl_core_marker_StructuralPartialEq_for_mother_Outline_t.
 End Impl_core_marker_StructuralPartialEq_for_mother_Outline_t.
 
 Module  Impl_core_cmp_PartialEq_for_mother_Outline_t.
 Section Impl_core_cmp_PartialEq_for_mother_Outline_t.
-  Ltac Self := exact mother.Outline.t.
+  Definition Self : Set := mother.Outline.t.
   
   (*
   PartialEq
   *)
-  Definition eq
-      (self : ref ltac:(Self))
-      (other : ref mother.Outline.t)
-      : M bool.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition eq (self : ref Self) (other : ref mother.Outline.t) : M bool.t :=
+    let* self : M.Val (ref Self) := M.alloc self in
     let* other : M.Val (ref mother.Outline.t) := M.alloc other in
     let* __self_tag : M.Val isize.t :=
       let* α0 : ref mother.Outline.t := M.read self in
@@ -502,14 +486,13 @@ Section Impl_core_cmp_PartialEq_for_mother_Outline_t.
     let* α0 : M.Val bool.t := M.alloc (BinOp.Pure.eq α0 α1) in
     M.read α0.
   
-  Global Instance AssociatedFunction_eq :
-    Notations.DoubleColon ltac:(Self) "eq" := {
+  Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
     Notations.double_colon := eq;
   }.
   
   Global Instance ℐ :
-    core.cmp.PartialEq.Required.Trait ltac:(Self)
-      (Rhs := core.cmp.PartialEq.Default.Rhs ltac:(Self)) := {
+    core.cmp.PartialEq.Required.Trait Self
+      (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
     core.cmp.PartialEq.eq := eq;
     core.cmp.PartialEq.ne := Datatypes.None;
   }.
@@ -518,30 +501,30 @@ End Impl_core_cmp_PartialEq_for_mother_Outline_t.
 
 Module  Impl_core_marker_StructuralEq_for_mother_Outline_t.
 Section Impl_core_marker_StructuralEq_for_mother_Outline_t.
-  Ltac Self := exact mother.Outline.t.
+  Definition Self : Set := mother.Outline.t.
   
-  Global Instance ℐ : core.marker.StructuralEq.Trait ltac:(Self) := {
+  Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
   }.
 End Impl_core_marker_StructuralEq_for_mother_Outline_t.
 End Impl_core_marker_StructuralEq_for_mother_Outline_t.
 
 Module  Impl_core_cmp_Eq_for_mother_Outline_t.
 Section Impl_core_cmp_Eq_for_mother_Outline_t.
-  Ltac Self := exact mother.Outline.t.
+  Definition Self : Set := mother.Outline.t.
   
   (*
   Eq
   *)
-  Definition assert_receiver_is_total_eq (self : ref ltac:(Self)) : M unit :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
+    let* self : M.Val (ref Self) := M.alloc self in
     M.pure tt.
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
-    Notations.DoubleColon ltac:(Self) "assert_receiver_is_total_eq" := {
+    Notations.DoubleColon Self "assert_receiver_is_total_eq" := {
     Notations.double_colon := assert_receiver_is_total_eq;
   }.
   
-  Global Instance ℐ : core.cmp.Eq.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
     core.cmp.Eq.assert_receiver_is_total_eq :=
       Datatypes.Some assert_receiver_is_total_eq;
   }.
@@ -550,13 +533,13 @@ End Impl_core_cmp_Eq_for_mother_Outline_t.
 
 Module  Impl_core_clone_Clone_for_mother_Outline_t.
 Section Impl_core_clone_Clone_for_mother_Outline_t.
-  Ltac Self := exact mother.Outline.t.
+  Definition Self : Set := mother.Outline.t.
   
   (*
   Clone
   *)
-  Definition clone (self : ref ltac:(Self)) : M mother.Outline.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition clone (self : ref Self) : M mother.Outline.t :=
+    let* self : M.Val (ref Self) := M.alloc self in
     let* α0 : ref mother.Outline.t := M.read self in
     let* α1 : M.Val mother.Outline.t :=
       match α0 with
@@ -568,11 +551,11 @@ Section Impl_core_clone_Clone_for_mother_Outline_t.
     M.read α1.
   
   Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon ltac:(Self) "clone" := {
+    Notations.DoubleColon Self "clone" := {
     Notations.double_colon := clone;
   }.
   
-  Global Instance ℐ : core.clone.Clone.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
     core.clone.Clone.clone_from := Datatypes.None;
   }.
@@ -590,25 +573,22 @@ End Status.
 
 Module  Impl_core_marker_StructuralPartialEq_for_mother_Status_t.
 Section Impl_core_marker_StructuralPartialEq_for_mother_Status_t.
-  Ltac Self := exact mother.Status.t.
+  Definition Self : Set := mother.Status.t.
   
-  Global Instance ℐ : core.marker.StructuralPartialEq.Trait ltac:(Self) := {
+  Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
   }.
 End Impl_core_marker_StructuralPartialEq_for_mother_Status_t.
 End Impl_core_marker_StructuralPartialEq_for_mother_Status_t.
 
 Module  Impl_core_cmp_PartialEq_for_mother_Status_t.
 Section Impl_core_cmp_PartialEq_for_mother_Status_t.
-  Ltac Self := exact mother.Status.t.
+  Definition Self : Set := mother.Status.t.
   
   (*
   PartialEq
   *)
-  Definition eq
-      (self : ref ltac:(Self))
-      (other : ref mother.Status.t)
-      : M bool.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition eq (self : ref Self) (other : ref mother.Status.t) : M bool.t :=
+    let* self : M.Val (ref Self) := M.alloc self in
     let* other : M.Val (ref mother.Status.t) := M.alloc other in
     let* __self_tag : M.Val isize.t :=
       let* α0 : ref mother.Status.t := M.read self in
@@ -662,14 +642,13 @@ Section Impl_core_cmp_PartialEq_for_mother_Status_t.
     let* α0 : M.Val bool.t := M.alloc (BinOp.and (BinOp.Pure.eq α0 α1) α5) in
     M.read α0.
   
-  Global Instance AssociatedFunction_eq :
-    Notations.DoubleColon ltac:(Self) "eq" := {
+  Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
     Notations.double_colon := eq;
   }.
   
   Global Instance ℐ :
-    core.cmp.PartialEq.Required.Trait ltac:(Self)
-      (Rhs := core.cmp.PartialEq.Default.Rhs ltac:(Self)) := {
+    core.cmp.PartialEq.Required.Trait Self
+      (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
     core.cmp.PartialEq.eq := eq;
     core.cmp.PartialEq.ne := Datatypes.None;
   }.
@@ -678,33 +657,33 @@ End Impl_core_cmp_PartialEq_for_mother_Status_t.
 
 Module  Impl_core_marker_StructuralEq_for_mother_Status_t.
 Section Impl_core_marker_StructuralEq_for_mother_Status_t.
-  Ltac Self := exact mother.Status.t.
+  Definition Self : Set := mother.Status.t.
   
-  Global Instance ℐ : core.marker.StructuralEq.Trait ltac:(Self) := {
+  Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
   }.
 End Impl_core_marker_StructuralEq_for_mother_Status_t.
 End Impl_core_marker_StructuralEq_for_mother_Status_t.
 
 Module  Impl_core_cmp_Eq_for_mother_Status_t.
 Section Impl_core_cmp_Eq_for_mother_Status_t.
-  Ltac Self := exact mother.Status.t.
+  Definition Self : Set := mother.Status.t.
   
   (*
   Eq
   *)
-  Definition assert_receiver_is_total_eq (self : ref ltac:(Self)) : M unit :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
-    let* _ : M.Val unit := M.alloc tt in
-    let* _ : M.Val unit := M.alloc tt in
+  Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
+    let* self : M.Val (ref Self) := M.alloc self in
+    let _ : unit := tt in
+    let _ : unit := tt in
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
-    Notations.DoubleColon ltac:(Self) "assert_receiver_is_total_eq" := {
+    Notations.DoubleColon Self "assert_receiver_is_total_eq" := {
     Notations.double_colon := assert_receiver_is_total_eq;
   }.
   
-  Global Instance ℐ : core.cmp.Eq.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
     core.cmp.Eq.assert_receiver_is_total_eq :=
       Datatypes.Some assert_receiver_is_total_eq;
   }.
@@ -713,13 +692,13 @@ End Impl_core_cmp_Eq_for_mother_Status_t.
 
 Module  Impl_core_clone_Clone_for_mother_Status_t.
 Section Impl_core_clone_Clone_for_mother_Status_t.
-  Ltac Self := exact mother.Status.t.
+  Definition Self : Set := mother.Status.t.
   
   (*
   Clone
   *)
-  Definition clone (self : ref ltac:(Self)) : M mother.Status.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition clone (self : ref Self) : M mother.Status.t :=
+    let* self : M.Val (ref Self) := M.alloc self in
     let* α0 : ref mother.Status.t := M.read self in
     let* α1 : M.Val mother.Status.t :=
       match α0 with
@@ -755,11 +734,11 @@ Section Impl_core_clone_Clone_for_mother_Status_t.
     M.read α1.
   
   Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon ltac:(Self) "clone" := {
+    Notations.DoubleColon Self "clone" := {
     Notations.double_colon := clone;
   }.
   
-  Global Instance ℐ : core.clone.Clone.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
     core.clone.Clone.clone_from := Datatypes.None;
   }.
@@ -830,25 +809,22 @@ End Auction.
 
 Module  Impl_core_marker_StructuralPartialEq_for_mother_Auction_t.
 Section Impl_core_marker_StructuralPartialEq_for_mother_Auction_t.
-  Ltac Self := exact mother.Auction.t.
+  Definition Self : Set := mother.Auction.t.
   
-  Global Instance ℐ : core.marker.StructuralPartialEq.Trait ltac:(Self) := {
+  Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
   }.
 End Impl_core_marker_StructuralPartialEq_for_mother_Auction_t.
 End Impl_core_marker_StructuralPartialEq_for_mother_Auction_t.
 
 Module  Impl_core_cmp_PartialEq_for_mother_Auction_t.
 Section Impl_core_cmp_PartialEq_for_mother_Auction_t.
-  Ltac Self := exact mother.Auction.t.
+  Definition Self : Set := mother.Auction.t.
   
   (*
   PartialEq
   *)
-  Definition eq
-      (self : ref ltac:(Self))
-      (other : ref mother.Auction.t)
-      : M bool.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition eq (self : ref Self) (other : ref mother.Auction.t) : M bool.t :=
+    let* self : M.Val (ref Self) := M.alloc self in
     let* other : M.Val (ref mother.Auction.t) := M.alloc other in
     let* α0 : ref mother.Auction.t := M.read self in
     let* α1 : ref mother.Auction.t := M.read other in
@@ -913,14 +889,13 @@ Section Impl_core_cmp_PartialEq_for_mother_Auction_t.
           (BinOp.Pure.eq α16 α18))
         α21).
   
-  Global Instance AssociatedFunction_eq :
-    Notations.DoubleColon ltac:(Self) "eq" := {
+  Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
     Notations.double_colon := eq;
   }.
   
   Global Instance ℐ :
-    core.cmp.PartialEq.Required.Trait ltac:(Self)
-      (Rhs := core.cmp.PartialEq.Default.Rhs ltac:(Self)) := {
+    core.cmp.PartialEq.Required.Trait Self
+      (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
     core.cmp.PartialEq.eq := eq;
     core.cmp.PartialEq.ne := Datatypes.None;
   }.
@@ -929,38 +904,38 @@ End Impl_core_cmp_PartialEq_for_mother_Auction_t.
 
 Module  Impl_core_marker_StructuralEq_for_mother_Auction_t.
 Section Impl_core_marker_StructuralEq_for_mother_Auction_t.
-  Ltac Self := exact mother.Auction.t.
+  Definition Self : Set := mother.Auction.t.
   
-  Global Instance ℐ : core.marker.StructuralEq.Trait ltac:(Self) := {
+  Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
   }.
 End Impl_core_marker_StructuralEq_for_mother_Auction_t.
 End Impl_core_marker_StructuralEq_for_mother_Auction_t.
 
 Module  Impl_core_cmp_Eq_for_mother_Auction_t.
 Section Impl_core_cmp_Eq_for_mother_Auction_t.
-  Ltac Self := exact mother.Auction.t.
+  Definition Self : Set := mother.Auction.t.
   
   (*
   Eq
   *)
-  Definition assert_receiver_is_total_eq (self : ref ltac:(Self)) : M unit :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
-    let* _ : M.Val unit := M.alloc tt in
-    let* _ : M.Val unit := M.alloc tt in
-    let* _ : M.Val unit := M.alloc tt in
-    let* _ : M.Val unit := M.alloc tt in
-    let* _ : M.Val unit := M.alloc tt in
-    let* _ : M.Val unit := M.alloc tt in
-    let* _ : M.Val unit := M.alloc tt in
+  Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
+    let* self : M.Val (ref Self) := M.alloc self in
+    let _ : unit := tt in
+    let _ : unit := tt in
+    let _ : unit := tt in
+    let _ : unit := tt in
+    let _ : unit := tt in
+    let _ : unit := tt in
+    let _ : unit := tt in
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
-    Notations.DoubleColon ltac:(Self) "assert_receiver_is_total_eq" := {
+    Notations.DoubleColon Self "assert_receiver_is_total_eq" := {
     Notations.double_colon := assert_receiver_is_total_eq;
   }.
   
-  Global Instance ℐ : core.cmp.Eq.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
     core.cmp.Eq.assert_receiver_is_total_eq :=
       Datatypes.Some assert_receiver_is_total_eq;
   }.
@@ -969,13 +944,13 @@ End Impl_core_cmp_Eq_for_mother_Auction_t.
 
 Module  Impl_core_clone_Clone_for_mother_Auction_t.
 Section Impl_core_clone_Clone_for_mother_Auction_t.
-  Ltac Self := exact mother.Auction.t.
+  Definition Self : Set := mother.Auction.t.
   
   (*
   Clone
   *)
-  Definition clone (self : ref ltac:(Self)) : M mother.Auction.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition clone (self : ref Self) : M mother.Auction.t :=
+    let* self : M.Val (ref Self) := M.alloc self in
     let* α0 : ref mother.Auction.t := M.read self in
     let* α1 : alloc.string.String.t :=
       M.call
@@ -1035,11 +1010,11 @@ Section Impl_core_clone_Clone_for_mother_Auction_t.
       |}.
   
   Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon ltac:(Self) "clone" := {
+    Notations.DoubleColon Self "clone" := {
     Notations.double_colon := clone;
   }.
   
-  Global Instance ℐ : core.clone.Clone.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
     core.clone.Clone.clone_from := Datatypes.None;
   }.
@@ -1048,7 +1023,7 @@ End Impl_core_clone_Clone_for_mother_Auction_t.
 
 Module  Impl_core_default_Default_for_mother_Auction_t.
 Section Impl_core_default_Default_for_mother_Auction_t.
-  Ltac Self := exact mother.Auction.t.
+  Definition Self : Set := mother.Auction.t.
   
   (*
       fn default() -> Auction {
@@ -1101,11 +1076,11 @@ Section Impl_core_default_Default_for_mother_Auction_t.
       |}.
   
   Global Instance AssociatedFunction_default :
-    Notations.DoubleColon ltac:(Self) "default" := {
+    Notations.DoubleColon Self "default" := {
     Notations.double_colon := default;
   }.
   
-  Global Instance ℐ : core.default.Default.Trait ltac:(Self) := {
+  Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
   }.
 End Impl_core_default_Default_for_mother_Auction_t.
@@ -1119,25 +1094,22 @@ End Failure.
 
 Module  Impl_core_marker_StructuralPartialEq_for_mother_Failure_t.
 Section Impl_core_marker_StructuralPartialEq_for_mother_Failure_t.
-  Ltac Self := exact mother.Failure.t.
+  Definition Self : Set := mother.Failure.t.
   
-  Global Instance ℐ : core.marker.StructuralPartialEq.Trait ltac:(Self) := {
+  Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
   }.
 End Impl_core_marker_StructuralPartialEq_for_mother_Failure_t.
 End Impl_core_marker_StructuralPartialEq_for_mother_Failure_t.
 
 Module  Impl_core_cmp_PartialEq_for_mother_Failure_t.
 Section Impl_core_cmp_PartialEq_for_mother_Failure_t.
-  Ltac Self := exact mother.Failure.t.
+  Definition Self : Set := mother.Failure.t.
   
   (*
   PartialEq
   *)
-  Definition eq
-      (self : ref ltac:(Self))
-      (other : ref mother.Failure.t)
-      : M bool.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition eq (self : ref Self) (other : ref mother.Failure.t) : M bool.t :=
+    let* self : M.Val (ref Self) := M.alloc self in
     let* other : M.Val (ref mother.Failure.t) := M.alloc other in
     let* __self_tag : M.Val isize.t :=
       let* α0 : ref mother.Failure.t := M.read self in
@@ -1172,14 +1144,13 @@ Section Impl_core_cmp_PartialEq_for_mother_Failure_t.
     let* α0 : M.Val bool.t := M.alloc (BinOp.and (BinOp.Pure.eq α0 α1) α5) in
     M.read α0.
   
-  Global Instance AssociatedFunction_eq :
-    Notations.DoubleColon ltac:(Self) "eq" := {
+  Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
     Notations.double_colon := eq;
   }.
   
   Global Instance ℐ :
-    core.cmp.PartialEq.Required.Trait ltac:(Self)
-      (Rhs := core.cmp.PartialEq.Default.Rhs ltac:(Self)) := {
+    core.cmp.PartialEq.Required.Trait Self
+      (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
     core.cmp.PartialEq.eq := eq;
     core.cmp.PartialEq.ne := Datatypes.None;
   }.
@@ -1188,32 +1159,32 @@ End Impl_core_cmp_PartialEq_for_mother_Failure_t.
 
 Module  Impl_core_marker_StructuralEq_for_mother_Failure_t.
 Section Impl_core_marker_StructuralEq_for_mother_Failure_t.
-  Ltac Self := exact mother.Failure.t.
+  Definition Self : Set := mother.Failure.t.
   
-  Global Instance ℐ : core.marker.StructuralEq.Trait ltac:(Self) := {
+  Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
   }.
 End Impl_core_marker_StructuralEq_for_mother_Failure_t.
 End Impl_core_marker_StructuralEq_for_mother_Failure_t.
 
 Module  Impl_core_cmp_Eq_for_mother_Failure_t.
 Section Impl_core_cmp_Eq_for_mother_Failure_t.
-  Ltac Self := exact mother.Failure.t.
+  Definition Self : Set := mother.Failure.t.
   
   (*
   Eq
   *)
-  Definition assert_receiver_is_total_eq (self : ref ltac:(Self)) : M unit :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
-    let* _ : M.Val unit := M.alloc tt in
+  Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
+    let* self : M.Val (ref Self) := M.alloc self in
+    let _ : unit := tt in
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
-    Notations.DoubleColon ltac:(Self) "assert_receiver_is_total_eq" := {
+    Notations.DoubleColon Self "assert_receiver_is_total_eq" := {
     Notations.double_colon := assert_receiver_is_total_eq;
   }.
   
-  Global Instance ℐ : core.cmp.Eq.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
     core.cmp.Eq.assert_receiver_is_total_eq :=
       Datatypes.Some assert_receiver_is_total_eq;
   }.
@@ -1243,20 +1214,20 @@ End Event.
 
 Module  Impl_mother_Env_t.
 Section Impl_mother_Env_t.
-  Ltac Self := exact mother.Env.t.
+  Definition Self : Set := mother.Env.t.
   
   (*
       fn caller(&self) -> AccountId {
           self.caller
       }
   *)
-  Definition caller (self : ref ltac:(Self)) : M mother.AccountId.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition caller (self : ref Self) : M mother.AccountId.t :=
+    let* self : M.Val (ref Self) := M.alloc self in
     let* α0 : ref mother.Env.t := M.read self in
     M.read (deref α0).["caller"].
   
   Global Instance AssociatedFunction_caller :
-    Notations.DoubleColon ltac:(Self) "caller" := {
+    Notations.DoubleColon Self "caller" := {
     Notations.double_colon := caller;
   }.
   
@@ -1265,18 +1236,15 @@ Section Impl_mother_Env_t.
           unimplemented!()
       }
   *)
-  Definition emit_event
-      (self : ref ltac:(Self))
-      (_event : mother.Event.t)
-      : M unit :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition emit_event (self : ref Self) (_event : mother.Event.t) : M unit :=
+    let* self : M.Val (ref Self) := M.alloc self in
     let* _event : M.Val mother.Event.t := M.alloc _event in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
   Global Instance AssociatedFunction_emit_event :
-    Notations.DoubleColon ltac:(Self) "emit_event" := {
+    Notations.DoubleColon Self "emit_event" := {
     Notations.double_colon := emit_event;
   }.
 End Impl_mother_Env_t.
@@ -1308,7 +1276,7 @@ End Mother.
 
 Module  Impl_core_default_Default_for_mother_Mother_t.
 Section Impl_core_default_Default_for_mother_Mother_t.
-  Ltac Self := exact mother.Mother.t.
+  Definition Self : Set := mother.Mother.t.
   
   (*
   Default
@@ -1327,11 +1295,11 @@ Section Impl_core_default_Default_for_mother_Mother_t.
     M.pure {| mother.Mother.auction := α0; mother.Mother.balances := α1; |}.
   
   Global Instance AssociatedFunction_default :
-    Notations.DoubleColon ltac:(Self) "default" := {
+    Notations.DoubleColon Self "default" := {
     Notations.double_colon := default;
   }.
   
-  Global Instance ℐ : core.default.Default.Trait ltac:(Self) := {
+  Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
   }.
 End Impl_core_default_Default_for_mother_Mother_t.
@@ -1339,7 +1307,7 @@ End Impl_core_default_Default_for_mother_Mother_t.
 
 Module  Impl_mother_Mother_t.
 Section Impl_mother_Mother_t.
-  Ltac Self := exact mother.Mother.t.
+  Definition Self : Set := mother.Mother.t.
   
   (*
       fn init_env() -> Env {
@@ -1352,7 +1320,7 @@ Section Impl_mother_Mother_t.
     never_to_any α1.
   
   Global Instance AssociatedFunction_init_env :
-    Notations.DoubleColon ltac:(Self) "init_env" := {
+    Notations.DoubleColon Self "init_env" := {
     Notations.double_colon := init_env;
   }.
   
@@ -1361,12 +1329,11 @@ Section Impl_mother_Mother_t.
           Self::init_env()
       }
   *)
-  Definition env (self : ref ltac:(Self)) : M mother.Env.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition env (self : ref Self) : M mother.Env.t :=
+    let* self : M.Val (ref Self) := M.alloc self in
     M.call mother.Mother.t::["init_env"].
   
-  Global Instance AssociatedFunction_env :
-    Notations.DoubleColon ltac:(Self) "env" := {
+  Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
     Notations.double_colon := env;
   }.
   
@@ -1378,7 +1345,7 @@ Section Impl_mother_Mother_t.
           }
       }
   *)
-  Definition new (auction : mother.Auction.t) : M ltac:(Self) :=
+  Definition new (auction : mother.Auction.t) : M Self :=
     let* auction : M.Val mother.Auction.t := M.alloc auction in
     let* α0 : mother.Mapping.t mother.AccountId.t u128.t :=
       M.call
@@ -1388,8 +1355,7 @@ Section Impl_mother_Mother_t.
     let* α1 : mother.Auction.t := M.read auction in
     M.pure {| mother.Mother.balances := α0; mother.Mother.auction := α1; |}.
   
-  Global Instance AssociatedFunction_new :
-    Notations.DoubleColon ltac:(Self) "new" := {
+  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
   }.
   
@@ -1398,14 +1364,14 @@ Section Impl_mother_Mother_t.
           Default::default()
       }
   *)
-  Definition new_default : M ltac:(Self) :=
+  Definition new_default : M Self :=
     M.call
       (core.default.Default.default
         (Self := mother.Mother.t)
         (Trait := ltac:(refine _))).
   
   Global Instance AssociatedFunction_new_default :
-    Notations.DoubleColon ltac:(Self) "new_default" := {
+    Notations.DoubleColon Self "new_default" := {
     Notations.double_colon := new_default;
   }.
   
@@ -1420,7 +1386,7 @@ Section Impl_mother_Mother_t.
   *)
   Definition failed_new
       (fail : bool.t)
-      : M (core.result.Result.t ltac:(Self) mother.Failure.t) :=
+      : M (core.result.Result.t Self mother.Failure.t) :=
     let* fail : M.Val bool.t := M.alloc fail in
     let* α0 : bool.t := M.read fail in
     let* α1 : M.Val (core.result.Result.t mother.Mother.t mother.Failure.t) :=
@@ -1443,7 +1409,7 @@ Section Impl_mother_Mother_t.
     M.read α1.
   
   Global Instance AssociatedFunction_failed_new :
-    Notations.DoubleColon ltac:(Self) "failed_new" := {
+    Notations.DoubleColon Self "failed_new" := {
     Notations.double_colon := failed_new;
   }.
   
@@ -1456,10 +1422,10 @@ Section Impl_mother_Mother_t.
       }
   *)
   Definition echo_auction
-      (self : mut_ref ltac:(Self))
+      (self : mut_ref Self)
       (auction : mother.Auction.t)
       : M mother.Auction.t :=
-    let* self : M.Val (mut_ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (mut_ref Self) := M.alloc self in
     let* auction : M.Val mother.Auction.t := M.alloc auction in
     let* _ : M.Val unit :=
       let* α0 : mut_ref mother.Mother.t := M.read self in
@@ -1482,7 +1448,7 @@ Section Impl_mother_Mother_t.
     M.read auction.
   
   Global Instance AssociatedFunction_echo_auction :
-    Notations.DoubleColon ltac:(Self) "echo_auction" := {
+    Notations.DoubleColon Self "echo_auction" := {
     Notations.double_colon := echo_auction;
   }.
   
@@ -1500,10 +1466,10 @@ Section Impl_mother_Mother_t.
       }
   *)
   Definition revert_or_trap
-      (self : mut_ref ltac:(Self))
+      (self : mut_ref Self)
       (fail : core.option.Option.t mother.Failure.t)
       : M (core.result.Result.t unit mother.Failure.t) :=
-    let* self : M.Val (mut_ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (mut_ref Self) := M.alloc self in
     let* fail : M.Val (core.option.Option.t mother.Failure.t) := M.alloc fail in
     let* α0 : core.option.Option.t mother.Failure.t := M.read fail in
     let* α1 : M.Val (core.result.Result.t unit mother.Failure.t) :=
@@ -1528,7 +1494,7 @@ Section Impl_mother_Mother_t.
     M.read α1.
   
   Global Instance AssociatedFunction_revert_or_trap :
-    Notations.DoubleColon ltac:(Self) "revert_or_trap" := {
+    Notations.DoubleColon Self "revert_or_trap" := {
     Notations.double_colon := revert_or_trap;
   }.
   
@@ -1538,10 +1504,10 @@ Section Impl_mother_Mother_t.
       }
   *)
   Definition debug_log
-      (self : mut_ref ltac:(Self))
+      (self : mut_ref Self)
       (_message : alloc.string.String.t)
       : M unit :=
-    let* self : M.Val (mut_ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (mut_ref Self) := M.alloc self in
     let* _message : M.Val alloc.string.String.t := M.alloc _message in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
@@ -1568,7 +1534,7 @@ Section Impl_mother_Mother_t.
     M.read α0.
   
   Global Instance AssociatedFunction_debug_log :
-    Notations.DoubleColon ltac:(Self) "debug_log" := {
+    Notations.DoubleColon Self "debug_log" := {
     Notations.double_colon := debug_log;
   }.
 End Impl_mother_Mother_t.

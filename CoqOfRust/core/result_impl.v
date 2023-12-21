@@ -44,8 +44,21 @@ Section Impl_Result.
   Parameter map_err : forall {F : Set},
     Self -> (E -> M F) -> M (Result.t T F).
 
-  Global Instance AF_map_err {F : Set} : Notations.DoubleColon Self "map_err" := {|
+  Global Instance AF_map_err {F : Set} :
+      Notations.DoubleColon Self "map_err" := {|
     Notations.double_colon := map_err (F := F);
+  |}.
+
+  (*
+  pub fn unwrap(self) -> T
+  where
+    E: Debug,
+  *)
+  Parameter unwrap : Self -> M T.
+
+  Global Instance AF_unwrap : Notations.DoubleColon Self "unwrap" := {|
+    Notations.double_colon := unwrap;
   |}.
 End Impl_Result.
 End Impl_Result.
+

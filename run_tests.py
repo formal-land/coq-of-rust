@@ -90,17 +90,14 @@ Module Mapping := Mapping.
     )
 
     content = content.replace(
-        """Definition emit_event
-      (self : ref ltac:(Self))
-      (_event : erc20.Event.t)
-      : M unit :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+        """Definition emit_event (self : ref Self) (_event : erc20.Event.t) : M unit :=
+    let* self : M.Val (ref Self) := M.alloc self in
     let* _event : M.Val erc20.Event.t := M.alloc _event in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.""",
         """Definition emit_event
-      (self : ref ltac:(Self))
+      (self : ref Self)
       (event : erc20.Event.t)
       : M unit :=
     let* env : erc20.Env.t * ref (list erc20.Event.t) := M.read_env in
@@ -113,5 +110,34 @@ Module Mapping := Mapping.
         f.write(content)
 
 
+def update_payment_channel_axiomatized():
+    file_name = "CoqOfRust/examples/axiomatized/examples/ink_contracts/payment_channel.v"
+    with open(file_name, "r") as f:
+        content = f.read()
+
+    content = content.replace(
+        """forall {H T : Set} {ℋ_0 : payment_channel.CryptoHash.Trait H},
+    (ref T) ->
+      (mut_ref
+        (payment_channel.HashOutput.Type_
+          (Self := H)
+          (Trait := ltac:(refine _))))
+      ->
+      M unit""",
+        """forall {H T : Set} {ℋ_0 : payment_channel.CryptoHash.Trait H},
+    (ref T) ->
+      (mut_ref
+        (payment_channel.HashOutput.Type_
+          (Self := H)
+          (Trait := ℋ_0.(CryptoHash.ℒ_0))))
+      ->
+      M unit""",
+    )
+
+    with open(file_name, "w") as f:
+        f.write(content)
+
+
 # update files for last changes
 update_erc_20()
+update_payment_channel_axiomatized()

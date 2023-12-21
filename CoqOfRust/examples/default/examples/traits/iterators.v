@@ -25,7 +25,7 @@ End Fibonacci.
 
 Module  Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci_t.
 Section Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci_t.
-  Ltac Self := exact iterators.Fibonacci.t.
+  Definition Self : Set := iterators.Fibonacci.t.
   
   (*
       type Item = u32;
@@ -44,10 +44,8 @@ Section Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci_t.
           Some(current)
       }
   *)
-  Definition next
-      (self : mut_ref ltac:(Self))
-      : M (core.option.Option.t Item.t) :=
-    let* self : M.Val (mut_ref ltac:(Self)) := M.alloc self in
+  Definition next (self : mut_ref Self) : M (core.option.Option.t Item.t) :=
+    let* self : M.Val (mut_ref Self) := M.alloc self in
     let* current : M.Val u32.t :=
       let* α0 : mut_ref iterators.Fibonacci.t := M.read self in
       M.copy (deref α0).["curr"] in
@@ -69,12 +67,12 @@ Section Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci_t.
     M.read α0.
   
   Global Instance AssociatedFunction_next :
-    Notations.DoubleColon ltac:(Self) "next" := {
+    Notations.DoubleColon Self "next" := {
     Notations.double_colon := next;
   }.
   
   Global Instance ℐ :
-    core.iter.traits.iterator.Iterator.Required.Trait ltac:(Self) := {
+    core.iter.traits.iterator.Iterator.Required.Trait Self := {
     core.iter.traits.iterator.Iterator.Item := Item;
     core.iter.traits.iterator.Iterator.next := next;
     core.iter.traits.iterator.Iterator.next_chunk := Datatypes.None;

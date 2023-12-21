@@ -15,16 +15,16 @@ End EvenNumber.
 
 Module  Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber_t.
 Section Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber_t.
-  Ltac Self := exact try_from_and_try_into.EvenNumber.t.
+  Definition Self : Set := try_from_and_try_into.EvenNumber.t.
   
   (*
   Debug
   *)
   Definition fmt
-      (self : ref ltac:(Self))
+      (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (ref Self) := M.alloc self in
     let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref str.t := M.read (mk_str "EvenNumber") in
@@ -35,12 +35,11 @@ Section Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber_t.
       M.read (pointer_coercion "Unsize" α4) in
     M.call (core.fmt.Formatter.t::["debug_tuple_field1_finish"] α0 α1 α5).
   
-  Global Instance AssociatedFunction_fmt :
-    Notations.DoubleColon ltac:(Self) "fmt" := {
+  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
+  Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
   }.
 End Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber_t.
@@ -48,25 +47,25 @@ End Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber_t.
 
 Module  Impl_core_marker_StructuralPartialEq_for_try_from_and_try_into_EvenNumber_t.
 Section Impl_core_marker_StructuralPartialEq_for_try_from_and_try_into_EvenNumber_t.
-  Ltac Self := exact try_from_and_try_into.EvenNumber.t.
+  Definition Self : Set := try_from_and_try_into.EvenNumber.t.
   
-  Global Instance ℐ : core.marker.StructuralPartialEq.Trait ltac:(Self) := {
+  Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
   }.
 End Impl_core_marker_StructuralPartialEq_for_try_from_and_try_into_EvenNumber_t.
 End Impl_core_marker_StructuralPartialEq_for_try_from_and_try_into_EvenNumber_t.
 
 Module  Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber_t.
 Section Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber_t.
-  Ltac Self := exact try_from_and_try_into.EvenNumber.t.
+  Definition Self : Set := try_from_and_try_into.EvenNumber.t.
   
   (*
   PartialEq
   *)
   Definition eq
-      (self : ref ltac:(Self))
+      (self : ref Self)
       (other : ref try_from_and_try_into.EvenNumber.t)
       : M bool.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (ref Self) := M.alloc self in
     let* other : M.Val (ref try_from_and_try_into.EvenNumber.t) :=
       M.alloc other in
     let* α0 : ref try_from_and_try_into.EvenNumber.t := M.read self in
@@ -75,14 +74,13 @@ Section Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber_t.
     let* α3 : i32.t := M.read (deref α2).["0"] in
     M.pure (BinOp.Pure.eq α1 α3).
   
-  Global Instance AssociatedFunction_eq :
-    Notations.DoubleColon ltac:(Self) "eq" := {
+  Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
     Notations.double_colon := eq;
   }.
   
   Global Instance ℐ :
-    core.cmp.PartialEq.Required.Trait ltac:(Self)
-      (Rhs := core.cmp.PartialEq.Default.Rhs ltac:(Self)) := {
+    core.cmp.PartialEq.Required.Trait Self
+      (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
     core.cmp.PartialEq.eq := eq;
     core.cmp.PartialEq.ne := Datatypes.None;
   }.
@@ -91,7 +89,7 @@ End Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber_t.
 
 Module  Impl_core_convert_TryFrom_i32_t_for_try_from_and_try_into_EvenNumber_t.
 Section Impl_core_convert_TryFrom_i32_t_for_try_from_and_try_into_EvenNumber_t.
-  Ltac Self := exact try_from_and_try_into.EvenNumber.t.
+  Definition Self : Set := try_from_and_try_into.EvenNumber.t.
   
   (*
       type Error = ();
@@ -107,9 +105,7 @@ Section Impl_core_convert_TryFrom_i32_t_for_try_from_and_try_into_EvenNumber_t.
           }
       }
   *)
-  Definition try_from
-      (value : i32.t)
-      : M (core.result.Result.t ltac:(Self) Error.t) :=
+  Definition try_from (value : i32.t) : M (core.result.Result.t Self Error.t) :=
     let* value : M.Val i32.t := M.alloc value in
     let* α0 : i32.t := M.read value in
     let* α1 : i32.t := BinOp.Panic.rem α0 (Integer.of_Z 2) in
@@ -124,11 +120,11 @@ Section Impl_core_convert_TryFrom_i32_t_for_try_from_and_try_into_EvenNumber_t.
     M.read α2.
   
   Global Instance AssociatedFunction_try_from :
-    Notations.DoubleColon ltac:(Self) "try_from" := {
+    Notations.DoubleColon Self "try_from" := {
     Notations.double_colon := try_from;
   }.
   
-  Global Instance ℐ : core.convert.TryFrom.Trait ltac:(Self) (T := i32.t) := {
+  Global Instance ℐ : core.convert.TryFrom.Trait Self (T := i32.t) := {
     core.convert.TryFrom.Error := Error;
     core.convert.TryFrom.try_from := try_from;
   }.

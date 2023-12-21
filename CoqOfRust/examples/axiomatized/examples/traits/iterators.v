@@ -25,7 +25,7 @@ End Fibonacci.
 
 Module  Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci_t.
 Section Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci_t.
-  Ltac Self := exact iterators.Fibonacci.t.
+  Definition Self : Set := iterators.Fibonacci.t.
   
   (*
       type Item = u32;
@@ -44,15 +44,15 @@ Section Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci_t.
           Some(current)
       }
   *)
-  Parameter next : (mut_ref ltac:(Self)) -> M (core.option.Option.t Item.t).
+  Parameter next : (mut_ref Self) -> M (core.option.Option.t Item.t).
   
   Global Instance AssociatedFunction_next :
-    Notations.DoubleColon ltac:(Self) "next" := {
+    Notations.DoubleColon Self "next" := {
     Notations.double_colon := next;
   }.
   
   Global Instance ℐ :
-    core.iter.traits.iterator.Iterator.Required.Trait ltac:(Self) := {
+    core.iter.traits.iterator.Iterator.Required.Trait Self := {
     core.iter.traits.iterator.Iterator.Item := Item;
     core.iter.traits.iterator.Iterator.next := next;
     core.iter.traits.iterator.Iterator.next_chunk := Datatypes.None;

@@ -23,16 +23,6 @@ struct Env {
     caller: AccountId,
 }
 
-impl Env {
-    fn caller(&self) -> AccountId {
-        self.caller
-    }
-
-    fn emit_event(&self, _event: Event) {
-        unimplemented!()
-    }
-}
-
 /// The ERC-20 error types.
 #[derive(Debug, PartialEq, Eq)]
 pub enum Error {
@@ -97,6 +87,16 @@ pub struct Approval {
 enum Event {
     Transfer(Transfer),
     Approval(Approval),
+}
+
+impl Env {
+    fn caller(&self) -> AccountId {
+        self.caller
+    }
+
+    fn emit_event(&self, _event: Event) {
+        unimplemented!()
+    }
 }
 
 impl Erc20 {

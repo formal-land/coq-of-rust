@@ -15,7 +15,7 @@ End AccountId.
 
 Module  Impl_core_default_Default_for_contract_terminate_AccountId_t.
 Section Impl_core_default_Default_for_contract_terminate_AccountId_t.
-  Ltac Self := exact contract_terminate.AccountId.t.
+  Definition Self : Set := contract_terminate.AccountId.t.
   
   (*
   Default
@@ -23,11 +23,11 @@ Section Impl_core_default_Default_for_contract_terminate_AccountId_t.
   Parameter default : M contract_terminate.AccountId.t.
   
   Global Instance AssociatedFunction_default :
-    Notations.DoubleColon ltac:(Self) "default" := {
+    Notations.DoubleColon Self "default" := {
     Notations.double_colon := default;
   }.
   
-  Global Instance ℐ : core.default.Default.Trait ltac:(Self) := {
+  Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
   }.
 End Impl_core_default_Default_for_contract_terminate_AccountId_t.
@@ -35,19 +35,19 @@ End Impl_core_default_Default_for_contract_terminate_AccountId_t.
 
 Module  Impl_core_clone_Clone_for_contract_terminate_AccountId_t.
 Section Impl_core_clone_Clone_for_contract_terminate_AccountId_t.
-  Ltac Self := exact contract_terminate.AccountId.t.
+  Definition Self : Set := contract_terminate.AccountId.t.
   
   (*
   Clone
   *)
-  Parameter clone : (ref ltac:(Self)) -> M contract_terminate.AccountId.t.
+  Parameter clone : (ref Self) -> M contract_terminate.AccountId.t.
   
   Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon ltac:(Self) "clone" := {
+    Notations.DoubleColon Self "clone" := {
     Notations.double_colon := clone;
   }.
   
-  Global Instance ℐ : core.clone.Clone.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
     core.clone.Clone.clone_from := Datatypes.None;
   }.
@@ -56,9 +56,9 @@ End Impl_core_clone_Clone_for_contract_terminate_AccountId_t.
 
 Module  Impl_core_marker_Copy_for_contract_terminate_AccountId_t.
 Section Impl_core_marker_Copy_for_contract_terminate_AccountId_t.
-  Ltac Self := exact contract_terminate.AccountId.t.
+  Definition Self : Set := contract_terminate.AccountId.t.
   
-  Global Instance ℐ : core.marker.Copy.Trait ltac:(Self) := {
+  Global Instance ℐ : core.marker.Copy.Trait Self := {
   }.
 End Impl_core_marker_Copy_for_contract_terminate_AccountId_t.
 End Impl_core_marker_Copy_for_contract_terminate_AccountId_t.
@@ -81,17 +81,17 @@ End Env.
 
 Module  Impl_contract_terminate_Env_t.
 Section Impl_contract_terminate_Env_t.
-  Ltac Self := exact contract_terminate.Env.t.
+  Definition Self : Set := contract_terminate.Env.t.
   
   (*
       fn caller(&self) -> AccountId {
           self.caller
       }
   *)
-  Parameter caller : (ref ltac:(Self)) -> M contract_terminate.AccountId.t.
+  Parameter caller : (ref Self) -> M contract_terminate.AccountId.t.
   
   Global Instance AssociatedFunction_caller :
-    Notations.DoubleColon ltac:(Self) "caller" := {
+    Notations.DoubleColon Self "caller" := {
     Notations.double_colon := caller;
   }.
   
@@ -101,10 +101,10 @@ Section Impl_contract_terminate_Env_t.
       }
   *)
   Parameter terminate_contract :
-      (ref ltac:(Self)) -> contract_terminate.AccountId.t -> M unit.
+      (ref Self) -> contract_terminate.AccountId.t -> M unit.
   
   Global Instance AssociatedFunction_terminate_contract :
-    Notations.DoubleColon ltac:(Self) "terminate_contract" := {
+    Notations.DoubleColon Self "terminate_contract" := {
     Notations.double_colon := terminate_contract;
   }.
 End Impl_contract_terminate_Env_t.
@@ -118,7 +118,7 @@ End JustTerminate.
 
 Module  Impl_contract_terminate_JustTerminate_t.
 Section Impl_contract_terminate_JustTerminate_t.
-  Ltac Self := exact contract_terminate.JustTerminate.t.
+  Definition Self : Set := contract_terminate.JustTerminate.t.
   
   (*
       fn init_env() -> Env {
@@ -128,7 +128,7 @@ Section Impl_contract_terminate_JustTerminate_t.
   Parameter init_env : M contract_terminate.Env.t.
   
   Global Instance AssociatedFunction_init_env :
-    Notations.DoubleColon ltac:(Self) "init_env" := {
+    Notations.DoubleColon Self "init_env" := {
     Notations.double_colon := init_env;
   }.
   
@@ -137,10 +137,9 @@ Section Impl_contract_terminate_JustTerminate_t.
           Self::init_env()
       }
   *)
-  Parameter env : (ref ltac:(Self)) -> M contract_terminate.Env.t.
+  Parameter env : (ref Self) -> M contract_terminate.Env.t.
   
-  Global Instance AssociatedFunction_env :
-    Notations.DoubleColon ltac:(Self) "env" := {
+  Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
     Notations.double_colon := env;
   }.
   
@@ -149,10 +148,9 @@ Section Impl_contract_terminate_JustTerminate_t.
           Self {}
       }
   *)
-  Parameter new : M ltac:(Self).
+  Parameter new : M Self.
   
-  Global Instance AssociatedFunction_new :
-    Notations.DoubleColon ltac:(Self) "new" := {
+  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
   }.
   
@@ -161,10 +159,10 @@ Section Impl_contract_terminate_JustTerminate_t.
           self.env().terminate_contract(self.env().caller());
       }
   *)
-  Parameter terminate_me : (mut_ref ltac:(Self)) -> M unit.
+  Parameter terminate_me : (mut_ref Self) -> M unit.
   
   Global Instance AssociatedFunction_terminate_me :
-    Notations.DoubleColon ltac:(Self) "terminate_me" := {
+    Notations.DoubleColon Self "terminate_me" := {
     Notations.double_colon := terminate_me;
   }.
 End Impl_contract_terminate_JustTerminate_t.

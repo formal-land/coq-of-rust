@@ -122,7 +122,12 @@ Definition sum_odd_numbers (up_to : u32.t) : M u32.t :=
                     M.alloc α2
                   end in
                 M.copy α2 in
-              let* _ : M.Val unit := assign_op BinOp.Panic.add acc addition in
+              let* _ : M.Val unit :=
+                let β : M.Val u32.t := acc in
+                let* α0 := M.read β in
+                let* α1 : u32.t := M.read addition in
+                let* α2 := BinOp.Panic.add α0 α1 in
+                assign β α2 in
               M.alloc tt
             end in
           M.alloc tt)

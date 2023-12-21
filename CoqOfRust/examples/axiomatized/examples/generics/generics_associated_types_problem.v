@@ -20,9 +20,9 @@ End Container.
 Module  Contains.
 Section Contains.
   Class Trait (Self : Set) {A B : Set} : Type := {
-    contains : (ref ltac:(Self)) -> (ref A) -> (ref B) -> M bool.t;
-    first : (ref ltac:(Self)) -> M i32.t;
-    last : (ref ltac:(Self)) -> M i32.t;
+    contains : (ref Self) -> (ref A) -> (ref B) -> M bool.t;
+    first : (ref Self) -> M i32.t;
+    last : (ref Self) -> M i32.t;
   }.
   
 End Contains.
@@ -30,18 +30,17 @@ End Contains.
 
 Module  Impl_generics_associated_types_problem_Contains_i32_t_i32_t_for_generics_associated_types_problem_Container_t.
 Section Impl_generics_associated_types_problem_Contains_i32_t_i32_t_for_generics_associated_types_problem_Container_t.
-  Ltac Self := exact generics_associated_types_problem.Container.t.
+  Definition Self : Set := generics_associated_types_problem.Container.t.
   
   (*
       fn contains(&self, number_1: &i32, number_2: &i32) -> bool {
           (&self.0 == number_1) && (&self.1 == number_2)
       }
   *)
-  Parameter contains :
-      (ref ltac:(Self)) -> (ref i32.t) -> (ref i32.t) -> M bool.t.
+  Parameter contains : (ref Self) -> (ref i32.t) -> (ref i32.t) -> M bool.t.
   
   Global Instance AssociatedFunction_contains :
-    Notations.DoubleColon ltac:(Self) "contains" := {
+    Notations.DoubleColon Self "contains" := {
     Notations.double_colon := contains;
   }.
   
@@ -50,10 +49,10 @@ Section Impl_generics_associated_types_problem_Contains_i32_t_i32_t_for_generics
           self.0
       }
   *)
-  Parameter first : (ref ltac:(Self)) -> M i32.t.
+  Parameter first : (ref Self) -> M i32.t.
   
   Global Instance AssociatedFunction_first :
-    Notations.DoubleColon ltac:(Self) "first" := {
+    Notations.DoubleColon Self "first" := {
     Notations.double_colon := first;
   }.
   
@@ -62,15 +61,15 @@ Section Impl_generics_associated_types_problem_Contains_i32_t_i32_t_for_generics
           self.1
       }
   *)
-  Parameter last : (ref ltac:(Self)) -> M i32.t.
+  Parameter last : (ref Self) -> M i32.t.
   
   Global Instance AssociatedFunction_last :
-    Notations.DoubleColon ltac:(Self) "last" := {
+    Notations.DoubleColon Self "last" := {
     Notations.double_colon := last;
   }.
   
   Global Instance ℐ :
-    generics_associated_types_problem.Contains.Trait ltac:(Self)
+    generics_associated_types_problem.Contains.Trait Self
       (A := i32.t)
       (B := i32.t) := {
     generics_associated_types_problem.Contains.contains := contains;

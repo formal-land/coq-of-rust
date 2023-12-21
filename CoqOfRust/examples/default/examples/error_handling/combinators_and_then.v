@@ -10,16 +10,16 @@ End Food.
 
 Module  Impl_core_fmt_Debug_for_combinators_and_then_Food_t.
 Section Impl_core_fmt_Debug_for_combinators_and_then_Food_t.
-  Ltac Self := exact combinators_and_then.Food.t.
+  Definition Self : Set := combinators_and_then.Food.t.
   
   (*
   Debug
   *)
   Definition fmt
-      (self : ref ltac:(Self))
+      (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (ref Self) := M.alloc self in
     let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref combinators_and_then.Food.t := M.read self in
@@ -38,12 +38,11 @@ Section Impl_core_fmt_Debug_for_combinators_and_then_Food_t.
     let* α3 : ref str.t := M.read α2 in
     M.call (core.fmt.Formatter.t::["write_str"] α0 α3).
   
-  Global Instance AssociatedFunction_fmt :
-    Notations.DoubleColon ltac:(Self) "fmt" := {
+  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
+  Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
   }.
 End Impl_core_fmt_Debug_for_combinators_and_then_Food_t.
@@ -58,16 +57,16 @@ End Day.
 
 Module  Impl_core_fmt_Debug_for_combinators_and_then_Day_t.
 Section Impl_core_fmt_Debug_for_combinators_and_then_Day_t.
-  Ltac Self := exact combinators_and_then.Day.t.
+  Definition Self : Set := combinators_and_then.Day.t.
   
   (*
   Debug
   *)
   Definition fmt
-      (self : ref ltac:(Self))
+      (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (ref Self) := M.alloc self in
     let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref combinators_and_then.Day.t := M.read self in
@@ -86,12 +85,11 @@ Section Impl_core_fmt_Debug_for_combinators_and_then_Day_t.
     let* α3 : ref str.t := M.read α2 in
     M.call (core.fmt.Formatter.t::["write_str"] α0 α3).
   
-  Global Instance AssociatedFunction_fmt :
-    Notations.DoubleColon ltac:(Self) "fmt" := {
+  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
+  Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
   }.
 End Impl_core_fmt_Debug_for_combinators_and_then_Day_t.
@@ -274,15 +272,16 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* '(cordon_bleu, steak, sushi) :
-      M.Val
-        ((combinators_and_then.Food.t * combinators_and_then.Food.t)
-        *
-        combinators_and_then.Food.t) :=
-    M.alloc
-      (combinators_and_then.Food.CordonBleu,
-        combinators_and_then.Food.Steak,
-        combinators_and_then.Food.Sushi) in
+  let '(cordon_bleu, steak, sushi) :
+      (combinators_and_then.Food.t * combinators_and_then.Food.t)
+      *
+      combinators_and_then.Food.t :=
+    (combinators_and_then.Food.CordonBleu,
+      combinators_and_then.Food.Steak,
+      combinators_and_then.Food.Sushi) in
+  let* sushi := M.alloc sushi in
+  let* steak := M.alloc steak in
+  let* cordon_bleu := M.alloc cordon_bleu in
   let* _ : M.Val unit :=
     let* α0 : combinators_and_then.Food.t := M.read cordon_bleu in
     let* α1 : unit :=

@@ -15,30 +15,29 @@ End Centimeters.
 
 Module  Impl_core_marker_StructuralPartialEq_for_derive_Centimeters_t.
 Section Impl_core_marker_StructuralPartialEq_for_derive_Centimeters_t.
-  Ltac Self := exact derive.Centimeters.t.
+  Definition Self : Set := derive.Centimeters.t.
   
-  Global Instance ℐ : core.marker.StructuralPartialEq.Trait ltac:(Self) := {
+  Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
   }.
 End Impl_core_marker_StructuralPartialEq_for_derive_Centimeters_t.
 End Impl_core_marker_StructuralPartialEq_for_derive_Centimeters_t.
 
 Module  Impl_core_cmp_PartialEq_for_derive_Centimeters_t.
 Section Impl_core_cmp_PartialEq_for_derive_Centimeters_t.
-  Ltac Self := exact derive.Centimeters.t.
+  Definition Self : Set := derive.Centimeters.t.
   
   (*
   PartialEq
   *)
-  Parameter eq : (ref ltac:(Self)) -> (ref derive.Centimeters.t) -> M bool.t.
+  Parameter eq : (ref Self) -> (ref derive.Centimeters.t) -> M bool.t.
   
-  Global Instance AssociatedFunction_eq :
-    Notations.DoubleColon ltac:(Self) "eq" := {
+  Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
     Notations.double_colon := eq;
   }.
   
   Global Instance ℐ :
-    core.cmp.PartialEq.Required.Trait ltac:(Self)
-      (Rhs := core.cmp.PartialEq.Default.Rhs ltac:(Self)) := {
+    core.cmp.PartialEq.Required.Trait Self
+      (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
     core.cmp.PartialEq.eq := eq;
     core.cmp.PartialEq.ne := Datatypes.None;
   }.
@@ -47,24 +46,24 @@ End Impl_core_cmp_PartialEq_for_derive_Centimeters_t.
 
 Module  Impl_core_cmp_PartialOrd_for_derive_Centimeters_t.
 Section Impl_core_cmp_PartialOrd_for_derive_Centimeters_t.
-  Ltac Self := exact derive.Centimeters.t.
+  Definition Self : Set := derive.Centimeters.t.
   
   (*
   PartialOrd
   *)
   Parameter partial_cmp :
-      (ref ltac:(Self)) ->
+      (ref Self) ->
         (ref derive.Centimeters.t) ->
         M (core.option.Option.t core.cmp.Ordering.t).
   
   Global Instance AssociatedFunction_partial_cmp :
-    Notations.DoubleColon ltac:(Self) "partial_cmp" := {
+    Notations.DoubleColon Self "partial_cmp" := {
     Notations.double_colon := partial_cmp;
   }.
   
   Global Instance ℐ :
-    core.cmp.PartialOrd.Required.Trait ltac:(Self)
-      (Rhs := core.cmp.PartialOrd.Default.Rhs ltac:(Self)) := {
+    core.cmp.PartialOrd.Required.Trait Self
+      (Rhs := core.cmp.PartialOrd.Default.Rhs Self) := {
     core.cmp.PartialOrd.partial_cmp := partial_cmp;
     core.cmp.PartialOrd.lt := Datatypes.None;
     core.cmp.PartialOrd.le := Datatypes.None;
@@ -88,22 +87,19 @@ End Inches.
 
 Module  Impl_core_fmt_Debug_for_derive_Inches_t.
 Section Impl_core_fmt_Debug_for_derive_Inches_t.
-  Ltac Self := exact derive.Inches.t.
+  Definition Self : Set := derive.Inches.t.
   
   (*
   Debug
   *)
   Parameter fmt :
-      (ref ltac:(Self)) ->
-        (mut_ref core.fmt.Formatter.t) ->
-        M ltac:(core.fmt.Result).
+      (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
   
-  Global Instance AssociatedFunction_fmt :
-    Notations.DoubleColon ltac:(Self) "fmt" := {
+  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
+  Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
   }.
 End Impl_core_fmt_Debug_for_derive_Inches_t.
@@ -111,7 +107,7 @@ End Impl_core_fmt_Debug_for_derive_Inches_t.
 
 Module  Impl_derive_Inches_t.
 Section Impl_derive_Inches_t.
-  Ltac Self := exact derive.Inches.t.
+  Definition Self : Set := derive.Inches.t.
   
   (*
       fn to_centimeters(&self) -> Centimeters {
@@ -120,10 +116,10 @@ Section Impl_derive_Inches_t.
           Centimeters(inches as f64 * 2.54)
       }
   *)
-  Parameter to_centimeters : (ref ltac:(Self)) -> M derive.Centimeters.t.
+  Parameter to_centimeters : (ref Self) -> M derive.Centimeters.t.
   
   Global Instance AssociatedFunction_to_centimeters :
-    Notations.DoubleColon ltac:(Self) "to_centimeters" := {
+    Notations.DoubleColon Self "to_centimeters" := {
     Notations.double_colon := to_centimeters;
   }.
 End Impl_derive_Inches_t.

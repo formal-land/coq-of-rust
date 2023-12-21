@@ -19,18 +19,16 @@ End WildcardSelector.
 
 Module  Impl_wildcard_selector_WildcardSelector_t.
 Section Impl_wildcard_selector_WildcardSelector_t.
-  Ltac Self := exact wildcard_selector.WildcardSelector.t.
+  Definition Self : Set := wildcard_selector.WildcardSelector.t.
   
   (*
       pub fn new() -> Self {
           Self {}
       }
   *)
-  Definition new : M ltac:(Self) :=
-    M.pure wildcard_selector.WildcardSelector.Build.
+  Definition new : M Self := M.pure wildcard_selector.WildcardSelector.Build.
   
-  Global Instance AssociatedFunction_new :
-    Notations.DoubleColon ltac:(Self) "new" := {
+  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
   }.
   
@@ -40,20 +38,19 @@ Section Impl_wildcard_selector_WildcardSelector_t.
           println!("Wildcard selector: {:?}, message: {}", _selector, _message);
       }
   *)
-  Definition wildcard (self : mut_ref ltac:(Self)) : M unit :=
-    let* self : M.Val (mut_ref ltac:(Self)) := M.alloc self in
-    let* '(_selector, _message) :
-        M.Val ((array u8.t) * alloc.string.String.t) :=
+  Definition wildcard (self : mut_ref Self) : M unit :=
+    let* self : M.Val (mut_ref Self) := M.alloc self in
+    let* '(_selector, _message) : (array u8.t) * alloc.string.String.t :=
       let* α0 :
           core.result.Result.t ((array u8.t) * alloc.string.String.t) unit :=
         M.call wildcard_selector.decode_input in
-      let* α1 : (array u8.t) * alloc.string.String.t :=
-        M.call
-          ((core.result.Result.t
-                ((array u8.t) * alloc.string.String.t)
-                unit)::["unwrap"]
-            α0) in
-      M.alloc α1 in
+      M.call
+        ((core.result.Result.t
+              ((array u8.t) * alloc.string.String.t)
+              unit)::["unwrap"]
+          α0) in
+    let* _message := M.alloc _message in
+    let* _selector := M.alloc _selector in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "Wildcard selector: ") in
@@ -82,7 +79,7 @@ Section Impl_wildcard_selector_WildcardSelector_t.
     M.read α0.
   
   Global Instance AssociatedFunction_wildcard :
-    Notations.DoubleColon ltac:(Self) "wildcard" := {
+    Notations.DoubleColon Self "wildcard" := {
     Notations.double_colon := wildcard;
   }.
   
@@ -92,10 +89,10 @@ Section Impl_wildcard_selector_WildcardSelector_t.
       }
   *)
   Definition wildcard_complement
-      (self : mut_ref ltac:(Self))
+      (self : mut_ref Self)
       (_message : alloc.string.String.t)
       : M unit :=
-    let* self : M.Val (mut_ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (mut_ref Self) := M.alloc self in
     let* _message : M.Val alloc.string.String.t := M.alloc _message in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
@@ -123,7 +120,7 @@ Section Impl_wildcard_selector_WildcardSelector_t.
     M.read α0.
   
   Global Instance AssociatedFunction_wildcard_complement :
-    Notations.DoubleColon ltac:(Self) "wildcard_complement" := {
+    Notations.DoubleColon Self "wildcard_complement" := {
     Notations.double_colon := wildcard_complement;
   }.
 End Impl_wildcard_selector_WildcardSelector_t.

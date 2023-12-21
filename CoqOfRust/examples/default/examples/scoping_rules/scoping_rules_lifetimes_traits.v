@@ -18,16 +18,16 @@ End Borrowed.
 
 Module  Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed_t.
 Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed_t.
-  Ltac Self := exact scoping_rules_lifetimes_traits.Borrowed.t.
+  Definition Self : Set := scoping_rules_lifetimes_traits.Borrowed.t.
   
   (*
   Debug
   *)
   Definition fmt
-      (self : ref ltac:(Self))
+      (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (ref Self) := M.alloc self in
     let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref str.t := M.read (mk_str "Borrowed") in
@@ -39,12 +39,11 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed_t.
       M.read (pointer_coercion "Unsize" α5) in
     M.call (core.fmt.Formatter.t::["debug_struct_field1_finish"] α0 α1 α2 α6).
   
-  Global Instance AssociatedFunction_fmt :
-    Notations.DoubleColon ltac:(Self) "fmt" := {
+  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
+  Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
   }.
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed_t.
@@ -52,23 +51,23 @@ End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed_t.
 
 Module  Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed_t.
 Section Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed_t.
-  Ltac Self := exact scoping_rules_lifetimes_traits.Borrowed.t.
+  Definition Self : Set := scoping_rules_lifetimes_traits.Borrowed.t.
   
   (*
       fn default() -> Self {
           Self { x: &10 }
       }
   *)
-  Definition default : M ltac:(Self) :=
+  Definition default : M Self :=
     let* α0 : M.Val i32.t := M.alloc (Integer.of_Z 10) in
     M.pure {| scoping_rules_lifetimes_traits.Borrowed.x := borrow α0; |}.
   
   Global Instance AssociatedFunction_default :
-    Notations.DoubleColon ltac:(Self) "default" := {
+    Notations.DoubleColon Self "default" := {
     Notations.double_colon := default;
   }.
   
-  Global Instance ℐ : core.default.Default.Trait ltac:(Self) := {
+  Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
   }.
 End Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed_t.

@@ -11,7 +11,9 @@ fn reverse(pair: (i32, bool)) -> (bool, i32) {
 *)
 Definition reverse (pair : i32.t * bool.t) : M (bool.t * i32.t) :=
   let* pair : M.Val (i32.t * bool.t) := M.alloc pair in
-  let* '(int_param, bool_param) : M.Val (i32.t * bool.t) := M.copy pair in
+  let* '(int_param, bool_param) : i32.t * bool.t := M.read pair in
+  let* bool_param := M.alloc bool_param in
+  let* int_param := M.alloc int_param in
   let* α0 : bool.t := M.read bool_param in
   let* α1 : i32.t := M.read int_param in
   let* α0 : M.Val (bool.t * i32.t) := M.alloc (α0, α1) in
@@ -43,16 +45,16 @@ End Matrix.
 
 Module  Impl_core_fmt_Debug_for_tuples_Matrix_t.
 Section Impl_core_fmt_Debug_for_tuples_Matrix_t.
-  Ltac Self := exact tuples.Matrix.t.
+  Definition Self : Set := tuples.Matrix.t.
   
   (*
   Debug
   *)
   Definition fmt
-      (self : ref ltac:(Self))
+      (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (ref Self) := M.alloc self in
     let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref str.t := M.read (mk_str "Matrix") in
@@ -76,12 +78,11 @@ Section Impl_core_fmt_Debug_for_tuples_Matrix_t.
     M.call
       (core.fmt.Formatter.t::["debug_tuple_field4_finish"] α0 α1 α4 α7 α10 α14).
   
-  Global Instance AssociatedFunction_fmt :
-    Notations.DoubleColon ltac:(Self) "fmt" := {
+  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
+  Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
   }.
 End Impl_core_fmt_Debug_for_tuples_Matrix_t.
@@ -327,8 +328,12 @@ Definition main : M unit :=
     let* α0 : ref str.t := M.read (mk_str "hello") in
     let* α1 : f64.t := M.read UnsupportedLiteral in
     M.alloc (Integer.of_Z 1, α0, α1, true) in
-  let* '(a, b, c, d) : M.Val (((i32.t * (ref str.t)) * f64.t) * bool.t) :=
-    M.copy tuple in
+  let* '(a, b, c, d) : ((i32.t * (ref str.t)) * f64.t) * bool.t :=
+    M.read tuple in
+  let* d := M.alloc d in
+  let* c := M.alloc c in
+  let* b := M.alloc b in
+  let* a := M.alloc a in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "") in

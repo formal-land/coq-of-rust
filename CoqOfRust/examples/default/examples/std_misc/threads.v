@@ -148,21 +148,13 @@ Definition main : M unit :=
           | core.option.Option.Some child =>
             let* child := M.alloc child in
             let* _ :
-                M.Val
-                  (core.result.Result.t
-                    unit
-                    (alloc.boxed.Box.t
-                      type not implemented
-                      alloc.alloc.Global.t)) :=
+                core.result.Result.t
+                  unit
+                  (alloc.boxed.Box.t
+                    type not implemented
+                    alloc.alloc.Global.t) :=
               let* α0 : std.thread.JoinHandle.t unit := M.read child in
-              let* α1 :
-                  core.result.Result.t
-                    unit
-                    (alloc.boxed.Box.t
-                      type not implemented
-                      alloc.alloc.Global.t) :=
-                M.call ((std.thread.JoinHandle.t unit)::["join"] α0) in
-              M.alloc α1 in
+              M.call ((std.thread.JoinHandle.t unit)::["join"] α0) in
             M.alloc tt
           end in
         M.alloc tt)

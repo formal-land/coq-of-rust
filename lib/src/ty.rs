@@ -150,33 +150,27 @@ pub(crate) fn compile_type(env: &Env, ty: &Ty) -> Rc<CoqType> {
             tys.iter().map(|ty| compile_type(env, ty)).collect(),
         )),
         TyKind::Path(qpath) => {
-            let is_self = match qpath {
-                rustc_hir::QPath::Resolved(_, path) => {
-                    path.segments.len() == 1
-                        && path.segments.first().unwrap().ident.to_string() == "Self"
-                }
-                _ => false,
-            };
             let is_alias = match qpath {
                 rustc_hir::QPath::Resolved(_, path) => {
-                    matches!(path.res, Res::Def(DefKind::TyAlias, _)) || is_self
+                    matches!(path.res, Res::Def(DefKind::TyAlias, _))
                 }
                 _ => false,
             };
-            let is_variable: Option<String> = if is_self {
-                Some("Self".to_string())
-            } else {
-                match qpath {
-                    rustc_hir::QPath::Resolved(_, path) => {
-                        if matches!(path.res, Res::Def(DefKind::AssocTy | DefKind::TyParam, _)) {
-                            // We assume that a variable is a path with a single element
-                            Some(path.segments.last().unwrap().ident.to_string())
-                        } else {
-                            None
-                        }
+            let is_variable: Option<String> = match qpath {
+                rustc_hir::QPath::Resolved(_, path) => {
+                    if matches!(
+                        path.res,
+                        Res::SelfTyAlias { .. }
+                            | Res::SelfTyParam { .. }
+                            | Res::Def(DefKind::AssocTy | DefKind::TyParam, _)
+                    ) {
+                        // We assume that a variable is a path with a single element
+                        Some(path.segments.last().unwrap().ident.to_string())
+                    } else {
+                        None
                     }
-                    _ => None,
                 }
+                _ => None,
             };
             let self_ty = match qpath {
                 rustc_hir::QPath::Resolved(Some(self_ty), _) => Some(compile_type(env, self_ty)),

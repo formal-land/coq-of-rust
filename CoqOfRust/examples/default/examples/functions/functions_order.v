@@ -27,17 +27,17 @@ End OtherType.
 
 Module  Impl_functions_order_SomeType_t.
 Section Impl_functions_order_SomeType_t.
-  Ltac Self := exact functions_order.SomeType.t.
+  Definition Self : Set := functions_order.SomeType.t.
   
   (*
       fn meth2(self) {}
   *)
-  Definition meth2 (self : ltac:(Self)) : M unit :=
-    let* self : M.Val ltac:(Self) := M.alloc self in
+  Definition meth2 (self : Self) : M unit :=
+    let* self : M.Val Self := M.alloc self in
     M.pure tt.
   
   Global Instance AssociatedFunction_meth2 :
-    Notations.DoubleColon ltac:(Self) "meth2" := {
+    Notations.DoubleColon Self "meth2" := {
     Notations.double_colon := meth2;
   }.
   
@@ -46,8 +46,8 @@ Section Impl_functions_order_SomeType_t.
           self.meth2();
       }
   *)
-  Definition meth1 (self : ltac:(Self)) : M unit :=
-    let* self : M.Val ltac:(Self) := M.alloc self in
+  Definition meth1 (self : Self) : M unit :=
+    let* self : M.Val Self := M.alloc self in
     let* _ : M.Val unit :=
       let* α0 : functions_order.SomeType.t := M.read self in
       let* α1 : unit := M.call (functions_order.SomeType.t::["meth2"] α0) in
@@ -56,7 +56,7 @@ Section Impl_functions_order_SomeType_t.
     M.read α0.
   
   Global Instance AssociatedFunction_meth1 :
-    Notations.DoubleColon ltac:(Self) "meth1" := {
+    Notations.DoubleColon Self "meth1" := {
     Notations.double_colon := meth1;
   }.
 End Impl_functions_order_SomeType_t.
@@ -65,8 +65,8 @@ End Impl_functions_order_SomeType_t.
 Module  SomeTrait.
 Section SomeTrait.
   Class Trait (Self : Set) : Type := {
-    some_trait_foo : (ref ltac:(Self)) -> M unit;
-    some_trait_bar : (ref ltac:(Self)) -> M unit;
+    some_trait_foo : (ref Self) -> M unit;
+    some_trait_bar : (ref Self) -> M unit;
   }.
   
 End SomeTrait.
@@ -74,17 +74,17 @@ End SomeTrait.
 
 Module  Impl_functions_order_SomeTrait_for_functions_order_SomeType_t.
 Section Impl_functions_order_SomeTrait_for_functions_order_SomeType_t.
-  Ltac Self := exact functions_order.SomeType.t.
+  Definition Self : Set := functions_order.SomeType.t.
   
   (*
       fn some_trait_bar(&self) {}
   *)
-  Definition some_trait_bar (self : ref ltac:(Self)) : M unit :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition some_trait_bar (self : ref Self) : M unit :=
+    let* self : M.Val (ref Self) := M.alloc self in
     M.pure tt.
   
   Global Instance AssociatedFunction_some_trait_bar :
-    Notations.DoubleColon ltac:(Self) "some_trait_bar" := {
+    Notations.DoubleColon Self "some_trait_bar" := {
     Notations.double_colon := some_trait_bar;
   }.
   
@@ -93,8 +93,8 @@ Section Impl_functions_order_SomeTrait_for_functions_order_SomeType_t.
           self.some_trait_bar()
       }
   *)
-  Definition some_trait_foo (self : ref ltac:(Self)) : M unit :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition some_trait_foo (self : ref Self) : M unit :=
+    let* self : M.Val (ref Self) := M.alloc self in
     let* α0 : ref functions_order.SomeType.t := M.read self in
     M.call
       ((functions_order.SomeTrait.some_trait_bar
@@ -103,11 +103,11 @@ Section Impl_functions_order_SomeTrait_for_functions_order_SomeType_t.
         α0).
   
   Global Instance AssociatedFunction_some_trait_foo :
-    Notations.DoubleColon ltac:(Self) "some_trait_foo" := {
+    Notations.DoubleColon Self "some_trait_foo" := {
     Notations.double_colon := some_trait_foo;
   }.
   
-  Global Instance ℐ : functions_order.SomeTrait.Trait ltac:(Self) := {
+  Global Instance ℐ : functions_order.SomeTrait.Trait Self := {
     functions_order.SomeTrait.some_trait_bar := some_trait_bar;
     functions_order.SomeTrait.some_trait_foo := some_trait_foo;
   }.
@@ -116,33 +116,33 @@ End Impl_functions_order_SomeTrait_for_functions_order_SomeType_t.
 
 Module  Impl_functions_order_SomeTrait_for_functions_order_OtherType_t.
 Section Impl_functions_order_SomeTrait_for_functions_order_OtherType_t.
-  Ltac Self := exact functions_order.OtherType.t.
+  Definition Self : Set := functions_order.OtherType.t.
   
   (*
       fn some_trait_foo(&self) {}
   *)
-  Definition some_trait_foo (self : ref ltac:(Self)) : M unit :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition some_trait_foo (self : ref Self) : M unit :=
+    let* self : M.Val (ref Self) := M.alloc self in
     M.pure tt.
   
   Global Instance AssociatedFunction_some_trait_foo :
-    Notations.DoubleColon ltac:(Self) "some_trait_foo" := {
+    Notations.DoubleColon Self "some_trait_foo" := {
     Notations.double_colon := some_trait_foo;
   }.
   
   (*
       fn some_trait_bar(&self) {}
   *)
-  Definition some_trait_bar (self : ref ltac:(Self)) : M unit :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition some_trait_bar (self : ref Self) : M unit :=
+    let* self : M.Val (ref Self) := M.alloc self in
     M.pure tt.
   
   Global Instance AssociatedFunction_some_trait_bar :
-    Notations.DoubleColon ltac:(Self) "some_trait_bar" := {
+    Notations.DoubleColon Self "some_trait_bar" := {
     Notations.double_colon := some_trait_bar;
   }.
   
-  Global Instance ℐ : functions_order.SomeTrait.Trait ltac:(Self) := {
+  Global Instance ℐ : functions_order.SomeTrait.Trait Self := {
     functions_order.SomeTrait.some_trait_foo := some_trait_foo;
     functions_order.SomeTrait.some_trait_bar := some_trait_bar;
   }.

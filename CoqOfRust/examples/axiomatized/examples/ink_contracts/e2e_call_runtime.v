@@ -15,7 +15,7 @@ End AccountId.
 
 Module  Impl_core_default_Default_for_e2e_call_runtime_AccountId_t.
 Section Impl_core_default_Default_for_e2e_call_runtime_AccountId_t.
-  Ltac Self := exact e2e_call_runtime.AccountId.t.
+  Definition Self : Set := e2e_call_runtime.AccountId.t.
   
   (*
   Default
@@ -23,11 +23,11 @@ Section Impl_core_default_Default_for_e2e_call_runtime_AccountId_t.
   Parameter default : M e2e_call_runtime.AccountId.t.
   
   Global Instance AssociatedFunction_default :
-    Notations.DoubleColon ltac:(Self) "default" := {
+    Notations.DoubleColon Self "default" := {
     Notations.double_colon := default;
   }.
   
-  Global Instance ℐ : core.default.Default.Trait ltac:(Self) := {
+  Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
   }.
 End Impl_core_default_Default_for_e2e_call_runtime_AccountId_t.
@@ -35,19 +35,19 @@ End Impl_core_default_Default_for_e2e_call_runtime_AccountId_t.
 
 Module  Impl_core_clone_Clone_for_e2e_call_runtime_AccountId_t.
 Section Impl_core_clone_Clone_for_e2e_call_runtime_AccountId_t.
-  Ltac Self := exact e2e_call_runtime.AccountId.t.
+  Definition Self : Set := e2e_call_runtime.AccountId.t.
   
   (*
   Clone
   *)
-  Parameter clone : (ref ltac:(Self)) -> M e2e_call_runtime.AccountId.t.
+  Parameter clone : (ref Self) -> M e2e_call_runtime.AccountId.t.
   
   Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon ltac:(Self) "clone" := {
+    Notations.DoubleColon Self "clone" := {
     Notations.double_colon := clone;
   }.
   
-  Global Instance ℐ : core.clone.Clone.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
     core.clone.Clone.clone_from := Datatypes.None;
   }.
@@ -56,9 +56,9 @@ End Impl_core_clone_Clone_for_e2e_call_runtime_AccountId_t.
 
 Module  Impl_core_marker_Copy_for_e2e_call_runtime_AccountId_t.
 Section Impl_core_marker_Copy_for_e2e_call_runtime_AccountId_t.
-  Ltac Self := exact e2e_call_runtime.AccountId.t.
+  Definition Self : Set := e2e_call_runtime.AccountId.t.
   
-  Global Instance ℐ : core.marker.Copy.Trait ltac:(Self) := {
+  Global Instance ℐ : core.marker.Copy.Trait Self := {
   }.
 End Impl_core_marker_Copy_for_e2e_call_runtime_AccountId_t.
 End Impl_core_marker_Copy_for_e2e_call_runtime_AccountId_t.
@@ -83,17 +83,17 @@ End Env.
 
 Module  Impl_e2e_call_runtime_Env_t.
 Section Impl_e2e_call_runtime_Env_t.
-  Ltac Self := exact e2e_call_runtime.Env.t.
+  Definition Self : Set := e2e_call_runtime.Env.t.
   
   (*
       fn balance(&self) -> Balance {
           unimplemented!()
       }
   *)
-  Parameter balance : (ref ltac:(Self)) -> M ltac:(e2e_call_runtime.Balance).
+  Parameter balance : (ref Self) -> M ltac:(e2e_call_runtime.Balance).
   
   Global Instance AssociatedFunction_balance :
-    Notations.DoubleColon ltac:(Self) "balance" := {
+    Notations.DoubleColon Self "balance" := {
     Notations.double_colon := balance;
   }.
 End Impl_e2e_call_runtime_Env_t.
@@ -107,7 +107,7 @@ End Contract.
 
 Module  Impl_core_default_Default_for_e2e_call_runtime_Contract_t.
 Section Impl_core_default_Default_for_e2e_call_runtime_Contract_t.
-  Ltac Self := exact e2e_call_runtime.Contract.t.
+  Definition Self : Set := e2e_call_runtime.Contract.t.
   
   (*
   Default
@@ -115,11 +115,11 @@ Section Impl_core_default_Default_for_e2e_call_runtime_Contract_t.
   Parameter default : M e2e_call_runtime.Contract.t.
   
   Global Instance AssociatedFunction_default :
-    Notations.DoubleColon ltac:(Self) "default" := {
+    Notations.DoubleColon Self "default" := {
     Notations.double_colon := default;
   }.
   
-  Global Instance ℐ : core.default.Default.Trait ltac:(Self) := {
+  Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
   }.
 End Impl_core_default_Default_for_e2e_call_runtime_Contract_t.
@@ -127,7 +127,7 @@ End Impl_core_default_Default_for_e2e_call_runtime_Contract_t.
 
 Module  Impl_e2e_call_runtime_Contract_t.
 Section Impl_e2e_call_runtime_Contract_t.
-  Ltac Self := exact e2e_call_runtime.Contract.t.
+  Definition Self : Set := e2e_call_runtime.Contract.t.
   
   (*
       fn init_env() -> Env {
@@ -137,7 +137,7 @@ Section Impl_e2e_call_runtime_Contract_t.
   Parameter init_env : M e2e_call_runtime.Env.t.
   
   Global Instance AssociatedFunction_init_env :
-    Notations.DoubleColon ltac:(Self) "init_env" := {
+    Notations.DoubleColon Self "init_env" := {
     Notations.double_colon := init_env;
   }.
   
@@ -146,10 +146,9 @@ Section Impl_e2e_call_runtime_Contract_t.
           Self::init_env()
       }
   *)
-  Parameter env : (ref ltac:(Self)) -> M e2e_call_runtime.Env.t.
+  Parameter env : (ref Self) -> M e2e_call_runtime.Env.t.
   
-  Global Instance AssociatedFunction_env :
-    Notations.DoubleColon ltac:(Self) "env" := {
+  Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
     Notations.double_colon := env;
   }.
   
@@ -158,10 +157,9 @@ Section Impl_e2e_call_runtime_Contract_t.
           Self {}
       }
   *)
-  Parameter new : M ltac:(Self).
+  Parameter new : M Self.
   
-  Global Instance AssociatedFunction_new :
-    Notations.DoubleColon ltac:(Self) "new" := {
+  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
   }.
   
@@ -171,10 +169,10 @@ Section Impl_e2e_call_runtime_Contract_t.
       }
   *)
   Parameter get_contract_balance :
-      (ref ltac:(Self)) -> M ltac:(e2e_call_runtime.Balance).
+      (ref Self) -> M ltac:(e2e_call_runtime.Balance).
   
   Global Instance AssociatedFunction_get_contract_balance :
-    Notations.DoubleColon ltac:(Self) "get_contract_balance" := {
+    Notations.DoubleColon Self "get_contract_balance" := {
     Notations.double_colon := get_contract_balance;
   }.
 End Impl_e2e_call_runtime_Contract_t.

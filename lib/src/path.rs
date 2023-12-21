@@ -20,7 +20,7 @@ impl fmt::Display for Path {
 impl Path {
     pub fn local(name: &str) -> Path {
         Path {
-            segments: vec![to_valid_coq_name(name.to_string())],
+            segments: vec![to_valid_coq_name(name)],
         }
     }
 
@@ -67,7 +67,7 @@ fn compile_path_without_env(path: &rustc_hir::Path) -> Path {
         segments: path
             .segments
             .iter()
-            .map(|segment| to_valid_coq_name(segment.ident.name.to_string()))
+            .map(|segment| to_valid_coq_name(segment.ident.name.as_str()))
             .collect(),
     }
 }
@@ -81,7 +81,7 @@ pub(crate) fn compile_def_id(env: &Env, def_id: rustc_hir::def_id::DefId) -> Pat
             .data
             .iter()
             .filter_map(|item| item.data.get_opt_name())
-            .map(|name| to_valid_coq_name(name.to_string())),
+            .map(|name| to_valid_coq_name(name.as_str())),
     );
     Path { segments }
 }
@@ -124,21 +124,21 @@ pub(crate) fn compile_qpath(env: &Env, qpath: &QPath) -> Path {
                         Path {
                             segments: vec![format!(
                                 "{}::type[\"{}\"]",
-                                to_valid_coq_name(path.to_string()),
-                                to_valid_coq_name(segment.ident.name.to_string()),
+                                to_valid_coq_name(&path.to_string()),
+                                to_valid_coq_name(segment.ident.name.as_str()),
                             )],
                         }
                     } else {
                         Path {
                             segments: vec![
-                                to_valid_coq_name(path.to_string()),
-                                to_valid_coq_name(segment.ident.name.to_string()),
+                                to_valid_coq_name(&path.to_string()),
+                                to_valid_coq_name(segment.ident.name.as_str()),
                             ],
                         }
                     }
                 }
                 None => Path {
-                    segments: vec![to_valid_coq_name(segment.ident.name.to_string())],
+                    segments: vec![to_valid_coq_name(segment.ident.name.as_str())],
                 },
             }
         }
@@ -163,17 +163,14 @@ pub(crate) enum StructOrVariant {
     Variant,
 }
 
-pub(crate) fn to_valid_coq_name(str: String) -> String {
-    if str == "Type" {
-        return "Type_".to_string();
+pub(crate) fn to_valid_coq_name(str: &str) -> String {
+    let reserved_names = ["Set", "Type", "Unset", "by", "exists"];
+
+    if reserved_names.contains(&str) {
+        return format!("{}_", str);
     }
-    if str == "Set" {
-        return "Set_".to_string();
-    }
-    if str == "Unset" {
-        return "Unset_".to_string();
-    }
-    let str = str::replace(&str, "$", "_");
+
+    let str = str::replace(str, "$", "_");
     let str = str::replace(&str, "{{root}}", "CoqOfRust");
     str::replace(&str, "::", ".")
 }

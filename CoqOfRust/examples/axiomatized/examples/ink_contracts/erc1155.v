@@ -34,7 +34,7 @@ Section Impl_core_default_Default_for_erc1155_Mapping_t_K_V.
     {ℋ_0 : core.default.Default.Trait K}
     {ℋ_1 : core.default.Default.Trait V}.
   
-  Ltac Self := exact (erc1155.Mapping.t K V).
+  Definition Self : Set := erc1155.Mapping.t K V.
   
   (*
   Default
@@ -42,11 +42,11 @@ Section Impl_core_default_Default_for_erc1155_Mapping_t_K_V.
   Parameter default : M (erc1155.Mapping.t K V).
   
   Global Instance AssociatedFunction_default :
-    Notations.DoubleColon ltac:(Self) "default" := {
+    Notations.DoubleColon Self "default" := {
     Notations.double_colon := default;
   }.
   
-  Global Instance ℐ : core.default.Default.Trait ltac:(Self) := {
+  Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
   }.
 End Impl_core_default_Default_for_erc1155_Mapping_t_K_V.
@@ -56,17 +56,17 @@ Module  Impl_erc1155_Mapping_t_K_V.
 Section Impl_erc1155_Mapping_t_K_V.
   Context {K V : Set}.
   
-  Ltac Self := exact (erc1155.Mapping.t K V).
+  Definition Self : Set := erc1155.Mapping.t K V.
   
   (*
       fn contains(&self, _key: &K) -> bool {
           unimplemented!()
       }
   *)
-  Parameter contains : (ref ltac:(Self)) -> (ref K) -> M bool.t.
+  Parameter contains : (ref Self) -> (ref K) -> M bool.t.
   
   Global Instance AssociatedFunction_contains :
-    Notations.DoubleColon ltac:(Self) "contains" := {
+    Notations.DoubleColon Self "contains" := {
     Notations.double_colon := contains;
   }.
   
@@ -75,10 +75,9 @@ Section Impl_erc1155_Mapping_t_K_V.
           unimplemented!()
       }
   *)
-  Parameter get : (ref ltac:(Self)) -> (ref K) -> M (core.option.Option.t V).
+  Parameter get : (ref Self) -> (ref K) -> M (core.option.Option.t V).
   
-  Global Instance AssociatedFunction_get :
-    Notations.DoubleColon ltac:(Self) "get" := {
+  Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
     Notations.double_colon := get;
   }.
   
@@ -87,11 +86,10 @@ Section Impl_erc1155_Mapping_t_K_V.
           unimplemented!()
       }
   *)
-  Parameter insert :
-      (mut_ref ltac:(Self)) -> K -> V -> M (core.option.Option.t u32.t).
+  Parameter insert : (mut_ref Self) -> K -> V -> M (core.option.Option.t u32.t).
   
   Global Instance AssociatedFunction_insert :
-    Notations.DoubleColon ltac:(Self) "insert" := {
+    Notations.DoubleColon Self "insert" := {
     Notations.double_colon := insert;
   }.
   
@@ -100,10 +98,10 @@ Section Impl_erc1155_Mapping_t_K_V.
           unimplemented!()
       }
   *)
-  Parameter remove : (ref ltac:(Self)) -> K -> M unit.
+  Parameter remove : (ref Self) -> K -> M unit.
   
   Global Instance AssociatedFunction_remove :
-    Notations.DoubleColon ltac:(Self) "remove" := {
+    Notations.DoubleColon Self "remove" := {
     Notations.double_colon := remove;
   }.
   
@@ -112,10 +110,10 @@ Section Impl_erc1155_Mapping_t_K_V.
           unimplemented!()
       }
   *)
-  Parameter size : (ref ltac:(Self)) -> K -> M (core.option.Option.t u32.t).
+  Parameter size : (ref Self) -> K -> M (core.option.Option.t u32.t).
   
   Global Instance AssociatedFunction_size :
-    Notations.DoubleColon ltac:(Self) "size" := {
+    Notations.DoubleColon Self "size" := {
     Notations.double_colon := size;
   }.
   
@@ -124,10 +122,10 @@ Section Impl_erc1155_Mapping_t_K_V.
           unimplemented!()
       }
   *)
-  Parameter take : (ref ltac:(Self)) -> K -> M (core.option.Option.t V).
+  Parameter take : (ref Self) -> K -> M (core.option.Option.t V).
   
   Global Instance AssociatedFunction_take :
-    Notations.DoubleColon ltac:(Self) "take" := {
+    Notations.DoubleColon Self "take" := {
     Notations.double_colon := take;
   }.
 End Impl_erc1155_Mapping_t_K_V.
@@ -147,7 +145,7 @@ End AccountId.
 
 Module  Impl_core_default_Default_for_erc1155_AccountId_t.
 Section Impl_core_default_Default_for_erc1155_AccountId_t.
-  Ltac Self := exact erc1155.AccountId.t.
+  Definition Self : Set := erc1155.AccountId.t.
   
   (*
   Default
@@ -155,11 +153,11 @@ Section Impl_core_default_Default_for_erc1155_AccountId_t.
   Parameter default : M erc1155.AccountId.t.
   
   Global Instance AssociatedFunction_default :
-    Notations.DoubleColon ltac:(Self) "default" := {
+    Notations.DoubleColon Self "default" := {
     Notations.double_colon := default;
   }.
   
-  Global Instance ℐ : core.default.Default.Trait ltac:(Self) := {
+  Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
   }.
 End Impl_core_default_Default_for_erc1155_AccountId_t.
@@ -167,19 +165,19 @@ End Impl_core_default_Default_for_erc1155_AccountId_t.
 
 Module  Impl_core_clone_Clone_for_erc1155_AccountId_t.
 Section Impl_core_clone_Clone_for_erc1155_AccountId_t.
-  Ltac Self := exact erc1155.AccountId.t.
+  Definition Self : Set := erc1155.AccountId.t.
   
   (*
   Clone
   *)
-  Parameter clone : (ref ltac:(Self)) -> M erc1155.AccountId.t.
+  Parameter clone : (ref Self) -> M erc1155.AccountId.t.
   
   Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon ltac:(Self) "clone" := {
+    Notations.DoubleColon Self "clone" := {
     Notations.double_colon := clone;
   }.
   
-  Global Instance ℐ : core.clone.Clone.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
     core.clone.Clone.clone_from := Datatypes.None;
   }.
@@ -188,39 +186,38 @@ End Impl_core_clone_Clone_for_erc1155_AccountId_t.
 
 Module  Impl_core_marker_Copy_for_erc1155_AccountId_t.
 Section Impl_core_marker_Copy_for_erc1155_AccountId_t.
-  Ltac Self := exact erc1155.AccountId.t.
+  Definition Self : Set := erc1155.AccountId.t.
   
-  Global Instance ℐ : core.marker.Copy.Trait ltac:(Self) := {
+  Global Instance ℐ : core.marker.Copy.Trait Self := {
   }.
 End Impl_core_marker_Copy_for_erc1155_AccountId_t.
 End Impl_core_marker_Copy_for_erc1155_AccountId_t.
 
 Module  Impl_core_marker_StructuralPartialEq_for_erc1155_AccountId_t.
 Section Impl_core_marker_StructuralPartialEq_for_erc1155_AccountId_t.
-  Ltac Self := exact erc1155.AccountId.t.
+  Definition Self : Set := erc1155.AccountId.t.
   
-  Global Instance ℐ : core.marker.StructuralPartialEq.Trait ltac:(Self) := {
+  Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
   }.
 End Impl_core_marker_StructuralPartialEq_for_erc1155_AccountId_t.
 End Impl_core_marker_StructuralPartialEq_for_erc1155_AccountId_t.
 
 Module  Impl_core_cmp_PartialEq_for_erc1155_AccountId_t.
 Section Impl_core_cmp_PartialEq_for_erc1155_AccountId_t.
-  Ltac Self := exact erc1155.AccountId.t.
+  Definition Self : Set := erc1155.AccountId.t.
   
   (*
   PartialEq
   *)
-  Parameter eq : (ref ltac:(Self)) -> (ref erc1155.AccountId.t) -> M bool.t.
+  Parameter eq : (ref Self) -> (ref erc1155.AccountId.t) -> M bool.t.
   
-  Global Instance AssociatedFunction_eq :
-    Notations.DoubleColon ltac:(Self) "eq" := {
+  Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
     Notations.double_colon := eq;
   }.
   
   Global Instance ℐ :
-    core.cmp.PartialEq.Required.Trait ltac:(Self)
-      (Rhs := core.cmp.PartialEq.Default.Rhs ltac:(Self)) := {
+    core.cmp.PartialEq.Required.Trait Self
+      (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
     core.cmp.PartialEq.eq := eq;
     core.cmp.PartialEq.ne := Datatypes.None;
   }.
@@ -229,21 +226,21 @@ End Impl_core_cmp_PartialEq_for_erc1155_AccountId_t.
 
 Module  Impl_core_convert_From_array_u8_t_for_erc1155_AccountId_t.
 Section Impl_core_convert_From_array_u8_t_for_erc1155_AccountId_t.
-  Ltac Self := exact erc1155.AccountId.t.
+  Definition Self : Set := erc1155.AccountId.t.
   
   (*
       fn from(_v: [u8; 32]) -> Self {
           unimplemented!()
       }
   *)
-  Parameter from : (array u8.t) -> M ltac:(Self).
+  Parameter from : (array u8.t) -> M Self.
   
   Global Instance AssociatedFunction_from :
-    Notations.DoubleColon ltac:(Self) "from" := {
+    Notations.DoubleColon Self "from" := {
     Notations.double_colon := from;
   }.
   
-  Global Instance ℐ : core.convert.From.Trait ltac:(Self) (T := array u8.t) := {
+  Global Instance ℐ : core.convert.From.Trait Self (T := array u8.t) := {
     core.convert.From.from := from;
   }.
 End Impl_core_convert_From_array_u8_t_for_erc1155_AccountId_t.
@@ -267,36 +264,6 @@ Section Env.
 End Env.
 End Env.
 
-Module  Impl_erc1155_Env_t.
-Section Impl_erc1155_Env_t.
-  Ltac Self := exact erc1155.Env.t.
-  
-  (*
-      fn caller(&self) -> AccountId {
-          self.caller
-      }
-  *)
-  Parameter caller : (ref ltac:(Self)) -> M erc1155.AccountId.t.
-  
-  Global Instance AssociatedFunction_caller :
-    Notations.DoubleColon ltac:(Self) "caller" := {
-    Notations.double_colon := caller;
-  }.
-  
-  (*
-      fn emit_event(&self, _event: Event) {
-          unimplemented!()
-      }
-  *)
-  Parameter emit_event : (ref ltac:(Self)) -> erc1155.Event.t -> M unit.
-  
-  Global Instance AssociatedFunction_emit_event :
-    Notations.DoubleColon ltac:(Self) "emit_event" := {
-    Notations.double_colon := emit_event;
-  }.
-End Impl_erc1155_Env_t.
-End Impl_erc1155_Env_t.
-
 Parameter ON_ERC_1155_RECEIVED_SELECTOR : array u8.t.
 
 Parameter _ON_ERC_1155_BATCH_RECEIVED_SELECTOR : array u8.t.
@@ -315,22 +282,19 @@ End Error.
 
 Module  Impl_core_fmt_Debug_for_erc1155_Error_t.
 Section Impl_core_fmt_Debug_for_erc1155_Error_t.
-  Ltac Self := exact erc1155.Error.t.
+  Definition Self : Set := erc1155.Error.t.
   
   (*
   Debug
   *)
   Parameter fmt :
-      (ref ltac:(Self)) ->
-        (mut_ref core.fmt.Formatter.t) ->
-        M ltac:(core.fmt.Result).
+      (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
   
-  Global Instance AssociatedFunction_fmt :
-    Notations.DoubleColon ltac:(Self) "fmt" := {
+  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
+  Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
   }.
 End Impl_core_fmt_Debug_for_erc1155_Error_t.
@@ -338,30 +302,29 @@ End Impl_core_fmt_Debug_for_erc1155_Error_t.
 
 Module  Impl_core_marker_StructuralPartialEq_for_erc1155_Error_t.
 Section Impl_core_marker_StructuralPartialEq_for_erc1155_Error_t.
-  Ltac Self := exact erc1155.Error.t.
+  Definition Self : Set := erc1155.Error.t.
   
-  Global Instance ℐ : core.marker.StructuralPartialEq.Trait ltac:(Self) := {
+  Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
   }.
 End Impl_core_marker_StructuralPartialEq_for_erc1155_Error_t.
 End Impl_core_marker_StructuralPartialEq_for_erc1155_Error_t.
 
 Module  Impl_core_cmp_PartialEq_for_erc1155_Error_t.
 Section Impl_core_cmp_PartialEq_for_erc1155_Error_t.
-  Ltac Self := exact erc1155.Error.t.
+  Definition Self : Set := erc1155.Error.t.
   
   (*
   PartialEq
   *)
-  Parameter eq : (ref ltac:(Self)) -> (ref erc1155.Error.t) -> M bool.t.
+  Parameter eq : (ref Self) -> (ref erc1155.Error.t) -> M bool.t.
   
-  Global Instance AssociatedFunction_eq :
-    Notations.DoubleColon ltac:(Self) "eq" := {
+  Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
     Notations.double_colon := eq;
   }.
   
   Global Instance ℐ :
-    core.cmp.PartialEq.Required.Trait ltac:(Self)
-      (Rhs := core.cmp.PartialEq.Default.Rhs ltac:(Self)) := {
+    core.cmp.PartialEq.Required.Trait Self
+      (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
     core.cmp.PartialEq.eq := eq;
     core.cmp.PartialEq.ne := Datatypes.None;
   }.
@@ -370,28 +333,28 @@ End Impl_core_cmp_PartialEq_for_erc1155_Error_t.
 
 Module  Impl_core_marker_StructuralEq_for_erc1155_Error_t.
 Section Impl_core_marker_StructuralEq_for_erc1155_Error_t.
-  Ltac Self := exact erc1155.Error.t.
+  Definition Self : Set := erc1155.Error.t.
   
-  Global Instance ℐ : core.marker.StructuralEq.Trait ltac:(Self) := {
+  Global Instance ℐ : core.marker.StructuralEq.Trait Self := {
   }.
 End Impl_core_marker_StructuralEq_for_erc1155_Error_t.
 End Impl_core_marker_StructuralEq_for_erc1155_Error_t.
 
 Module  Impl_core_cmp_Eq_for_erc1155_Error_t.
 Section Impl_core_cmp_Eq_for_erc1155_Error_t.
-  Ltac Self := exact erc1155.Error.t.
+  Definition Self : Set := erc1155.Error.t.
   
   (*
   Eq
   *)
-  Parameter assert_receiver_is_total_eq : (ref ltac:(Self)) -> M unit.
+  Parameter assert_receiver_is_total_eq : (ref Self) -> M unit.
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
-    Notations.DoubleColon ltac:(Self) "assert_receiver_is_total_eq" := {
+    Notations.DoubleColon Self "assert_receiver_is_total_eq" := {
     Notations.double_colon := assert_receiver_is_total_eq;
   }.
   
-  Global Instance ℐ : core.cmp.Eq.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
     core.cmp.Eq.assert_receiver_is_total_eq :=
       Datatypes.Some assert_receiver_is_total_eq;
   }.
@@ -404,7 +367,7 @@ Module  Erc1155.
 Section Erc1155.
   Class Trait (Self : Set) : Type := {
     safe_transfer_from :
-      (mut_ref ltac:(Self)) ->
+      (mut_ref Self) ->
         erc1155.AccountId.t ->
         erc1155.AccountId.t ->
         ltac:(erc1155.TokenId) ->
@@ -412,7 +375,7 @@ Section Erc1155.
         (alloc.vec.Vec.t u8.t alloc.vec.Vec.Default.A) ->
         M ltac:(erc1155.Result unit);
     safe_batch_transfer_from :
-      (mut_ref ltac:(Self)) ->
+      (mut_ref Self) ->
         erc1155.AccountId.t ->
         erc1155.AccountId.t ->
         (alloc.vec.Vec.t ltac:(erc1155.TokenId) alloc.vec.Vec.Default.A) ->
@@ -420,25 +383,22 @@ Section Erc1155.
         (alloc.vec.Vec.t u8.t alloc.vec.Vec.Default.A) ->
         M ltac:(erc1155.Result unit);
     balance_of :
-      (ref ltac:(Self)) ->
+      (ref Self) ->
         erc1155.AccountId.t ->
         ltac:(erc1155.TokenId) ->
         M ltac:(erc1155.Balance);
     balance_of_batch :
-      (ref ltac:(Self)) ->
+      (ref Self) ->
         (alloc.vec.Vec.t erc1155.AccountId.t alloc.vec.Vec.Default.A) ->
         (alloc.vec.Vec.t ltac:(erc1155.TokenId) alloc.vec.Vec.Default.A) ->
         M (alloc.vec.Vec.t ltac:(erc1155.Balance) alloc.vec.Vec.Default.A);
     set_approval_for_all :
-      (mut_ref ltac:(Self)) ->
+      (mut_ref Self) ->
         erc1155.AccountId.t ->
         bool.t ->
         M ltac:(erc1155.Result unit);
     is_approved_for_all :
-      (ref ltac:(Self)) ->
-        erc1155.AccountId.t ->
-        erc1155.AccountId.t ->
-        M bool.t;
+      (ref Self) -> erc1155.AccountId.t -> erc1155.AccountId.t -> M bool.t;
   }.
   
 End Erc1155.
@@ -448,7 +408,7 @@ Module  Erc1155TokenReceiver.
 Section Erc1155TokenReceiver.
   Class Trait (Self : Set) : Type := {
     on_received :
-      (mut_ref ltac:(Self)) ->
+      (mut_ref Self) ->
         erc1155.AccountId.t ->
         erc1155.AccountId.t ->
         ltac:(erc1155.TokenId) ->
@@ -456,7 +416,7 @@ Section Erc1155TokenReceiver.
         (alloc.vec.Vec.t u8.t alloc.vec.Vec.Default.A) ->
         M (alloc.vec.Vec.t u8.t alloc.vec.Vec.Default.A);
     on_batch_received :
-      (mut_ref ltac:(Self)) ->
+      (mut_ref Self) ->
         erc1155.AccountId.t ->
         erc1155.AccountId.t ->
         (alloc.vec.Vec.t ltac:(erc1155.TokenId) alloc.vec.Vec.Default.A) ->
@@ -581,6 +541,36 @@ Module Event.
   | Uri (_ : erc1155.Uri.t).
 End Event.
 
+Module  Impl_erc1155_Env_t.
+Section Impl_erc1155_Env_t.
+  Definition Self : Set := erc1155.Env.t.
+  
+  (*
+      fn caller(&self) -> AccountId {
+          self.caller
+      }
+  *)
+  Parameter caller : (ref Self) -> M erc1155.AccountId.t.
+  
+  Global Instance AssociatedFunction_caller :
+    Notations.DoubleColon Self "caller" := {
+    Notations.double_colon := caller;
+  }.
+  
+  (*
+      fn emit_event(&self, _event: Event) {
+          unimplemented!()
+      }
+  *)
+  Parameter emit_event : (ref Self) -> erc1155.Event.t -> M unit.
+  
+  Global Instance AssociatedFunction_emit_event :
+    Notations.DoubleColon Self "emit_event" := {
+    Notations.double_colon := emit_event;
+  }.
+End Impl_erc1155_Env_t.
+End Impl_erc1155_Env_t.
+
 Module  Contract.
 Section Contract.
   Record t : Set := {
@@ -622,7 +612,7 @@ End Contract.
 
 Module  Impl_core_default_Default_for_erc1155_Contract_t.
 Section Impl_core_default_Default_for_erc1155_Contract_t.
-  Ltac Self := exact erc1155.Contract.t.
+  Definition Self : Set := erc1155.Contract.t.
   
   (*
   Default
@@ -630,11 +620,11 @@ Section Impl_core_default_Default_for_erc1155_Contract_t.
   Parameter default : M erc1155.Contract.t.
   
   Global Instance AssociatedFunction_default :
-    Notations.DoubleColon ltac:(Self) "default" := {
+    Notations.DoubleColon Self "default" := {
     Notations.double_colon := default;
   }.
   
-  Global Instance ℐ : core.default.Default.Trait ltac:(Self) := {
+  Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
   }.
 End Impl_core_default_Default_for_erc1155_Contract_t.
@@ -642,7 +632,7 @@ End Impl_core_default_Default_for_erc1155_Contract_t.
 
 Module  Impl_erc1155_Contract_t.
 Section Impl_erc1155_Contract_t.
-  Ltac Self := exact erc1155.Contract.t.
+  Definition Self : Set := erc1155.Contract.t.
   
   (*
       fn init_env() -> Env {
@@ -652,7 +642,7 @@ Section Impl_erc1155_Contract_t.
   Parameter init_env : M erc1155.Env.t.
   
   Global Instance AssociatedFunction_init_env :
-    Notations.DoubleColon ltac:(Self) "init_env" := {
+    Notations.DoubleColon Self "init_env" := {
     Notations.double_colon := init_env;
   }.
   
@@ -661,10 +651,9 @@ Section Impl_erc1155_Contract_t.
           Self::init_env()
       }
   *)
-  Parameter env : (ref ltac:(Self)) -> M erc1155.Env.t.
+  Parameter env : (ref Self) -> M erc1155.Env.t.
   
-  Global Instance AssociatedFunction_env :
-    Notations.DoubleColon ltac:(Self) "env" := {
+  Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
     Notations.double_colon := env;
   }.
   
@@ -673,10 +662,9 @@ Section Impl_erc1155_Contract_t.
           Default::default()
       }
   *)
-  Parameter new : M ltac:(Self).
+  Parameter new : M Self.
   
-  Global Instance AssociatedFunction_new :
-    Notations.DoubleColon ltac:(Self) "new" := {
+  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
   }.
   
@@ -702,12 +690,10 @@ Section Impl_erc1155_Contract_t.
       }
   *)
   Parameter create :
-      (mut_ref ltac:(Self)) ->
-        ltac:(erc1155.Balance) ->
-        M ltac:(erc1155.TokenId).
+      (mut_ref Self) -> ltac:(erc1155.Balance) -> M ltac:(erc1155.TokenId).
   
   Global Instance AssociatedFunction_create :
-    Notations.DoubleColon ltac:(Self) "create" := {
+    Notations.DoubleColon Self "create" := {
     Notations.double_colon := create;
   }.
   
@@ -731,13 +717,13 @@ Section Impl_erc1155_Contract_t.
       }
   *)
   Parameter mint :
-      (mut_ref ltac:(Self)) ->
+      (mut_ref Self) ->
         ltac:(erc1155.TokenId) ->
         ltac:(erc1155.Balance) ->
         M ltac:(erc1155.Result unit).
   
   Global Instance AssociatedFunction_mint :
-    Notations.DoubleColon ltac:(Self) "mint" := {
+    Notations.DoubleColon Self "mint" := {
     Notations.double_colon := mint;
   }.
   
@@ -771,7 +757,7 @@ Section Impl_erc1155_Contract_t.
       }
   *)
   Parameter perform_transfer :
-      (mut_ref ltac:(Self)) ->
+      (mut_ref Self) ->
         erc1155.AccountId.t ->
         erc1155.AccountId.t ->
         ltac:(erc1155.TokenId) ->
@@ -779,7 +765,7 @@ Section Impl_erc1155_Contract_t.
         M unit.
   
   Global Instance AssociatedFunction_perform_transfer :
-    Notations.DoubleColon ltac:(Self) "perform_transfer" := {
+    Notations.DoubleColon Self "perform_transfer" := {
     Notations.double_colon := perform_transfer;
   }.
   
@@ -857,7 +843,7 @@ Section Impl_erc1155_Contract_t.
       }
   *)
   Parameter transfer_acceptance_check :
-      (mut_ref ltac:(Self)) ->
+      (mut_ref Self) ->
         erc1155.AccountId.t ->
         erc1155.AccountId.t ->
         erc1155.AccountId.t ->
@@ -867,7 +853,7 @@ Section Impl_erc1155_Contract_t.
         M unit.
   
   Global Instance AssociatedFunction_transfer_acceptance_check :
-    Notations.DoubleColon ltac:(Self) "transfer_acceptance_check" := {
+    Notations.DoubleColon Self "transfer_acceptance_check" := {
     Notations.double_colon := transfer_acceptance_check;
   }.
 End Impl_erc1155_Contract_t.
@@ -875,7 +861,7 @@ End Impl_erc1155_Contract_t.
 
 Module  Impl_erc1155_Erc1155_for_erc1155_Contract_t.
 Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
-  Ltac Self := exact erc1155.Contract.t.
+  Definition Self : Set := erc1155.Contract.t.
   
   (*
       fn safe_transfer_from(
@@ -903,7 +889,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
       }
   *)
   Parameter safe_transfer_from :
-      (mut_ref ltac:(Self)) ->
+      (mut_ref Self) ->
         erc1155.AccountId.t ->
         erc1155.AccountId.t ->
         ltac:(erc1155.TokenId) ->
@@ -912,7 +898,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
         M ltac:(erc1155.Result unit).
   
   Global Instance AssociatedFunction_safe_transfer_from :
-    Notations.DoubleColon ltac:(Self) "safe_transfer_from" := {
+    Notations.DoubleColon Self "safe_transfer_from" := {
     Notations.double_colon := safe_transfer_from;
   }.
   
@@ -955,7 +941,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
       }
   *)
   Parameter safe_batch_transfer_from :
-      (mut_ref ltac:(Self)) ->
+      (mut_ref Self) ->
         erc1155.AccountId.t ->
         erc1155.AccountId.t ->
         (alloc.vec.Vec.t ltac:(erc1155.TokenId) alloc.vec.Vec.Default.A) ->
@@ -964,7 +950,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
         M ltac:(erc1155.Result unit).
   
   Global Instance AssociatedFunction_safe_batch_transfer_from :
-    Notations.DoubleColon ltac:(Self) "safe_batch_transfer_from" := {
+    Notations.DoubleColon Self "safe_batch_transfer_from" := {
     Notations.double_colon := safe_batch_transfer_from;
   }.
   
@@ -974,13 +960,13 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
       }
   *)
   Parameter balance_of :
-      (ref ltac:(Self)) ->
+      (ref Self) ->
         erc1155.AccountId.t ->
         ltac:(erc1155.TokenId) ->
         M ltac:(erc1155.Balance).
   
   Global Instance AssociatedFunction_balance_of :
-    Notations.DoubleColon ltac:(Self) "balance_of" := {
+    Notations.DoubleColon Self "balance_of" := {
     Notations.double_colon := balance_of;
   }.
   
@@ -997,13 +983,13 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
       }
   *)
   Parameter balance_of_batch :
-      (ref ltac:(Self)) ->
+      (ref Self) ->
         (alloc.vec.Vec.t erc1155.AccountId.t alloc.vec.Vec.Default.A) ->
         (alloc.vec.Vec.t ltac:(erc1155.TokenId) alloc.vec.Vec.Default.A) ->
         M (alloc.vec.Vec.t ltac:(erc1155.Balance) alloc.vec.Vec.Default.A).
   
   Global Instance AssociatedFunction_balance_of_batch :
-    Notations.DoubleColon ltac:(Self) "balance_of_batch" := {
+    Notations.DoubleColon Self "balance_of_batch" := {
     Notations.double_colon := balance_of_batch;
   }.
   
@@ -1028,13 +1014,13 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
       }
   *)
   Parameter set_approval_for_all :
-      (mut_ref ltac:(Self)) ->
+      (mut_ref Self) ->
         erc1155.AccountId.t ->
         bool.t ->
         M ltac:(erc1155.Result unit).
   
   Global Instance AssociatedFunction_set_approval_for_all :
-    Notations.DoubleColon ltac:(Self) "set_approval_for_all" := {
+    Notations.DoubleColon Self "set_approval_for_all" := {
     Notations.double_colon := set_approval_for_all;
   }.
   
@@ -1044,17 +1030,14 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
       }
   *)
   Parameter is_approved_for_all :
-      (ref ltac:(Self)) ->
-        erc1155.AccountId.t ->
-        erc1155.AccountId.t ->
-        M bool.t.
+      (ref Self) -> erc1155.AccountId.t -> erc1155.AccountId.t -> M bool.t.
   
   Global Instance AssociatedFunction_is_approved_for_all :
-    Notations.DoubleColon ltac:(Self) "is_approved_for_all" := {
+    Notations.DoubleColon Self "is_approved_for_all" := {
     Notations.double_colon := is_approved_for_all;
   }.
   
-  Global Instance ℐ : erc1155.Erc1155.Trait ltac:(Self) := {
+  Global Instance ℐ : erc1155.Erc1155.Trait Self := {
     erc1155.Erc1155.safe_transfer_from := safe_transfer_from;
     erc1155.Erc1155.safe_batch_transfer_from := safe_batch_transfer_from;
     erc1155.Erc1155.balance_of := balance_of;
@@ -1067,7 +1050,7 @@ End Impl_erc1155_Erc1155_for_erc1155_Contract_t.
 
 Module  Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract_t.
 Section Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract_t.
-  Ltac Self := exact erc1155.Contract.t.
+  Definition Self : Set := erc1155.Contract.t.
   
   (*
       fn on_received(
@@ -1093,7 +1076,7 @@ Section Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract_t.
       }
   *)
   Parameter on_received :
-      (mut_ref ltac:(Self)) ->
+      (mut_ref Self) ->
         erc1155.AccountId.t ->
         erc1155.AccountId.t ->
         ltac:(erc1155.TokenId) ->
@@ -1102,7 +1085,7 @@ Section Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract_t.
         M (alloc.vec.Vec.t u8.t alloc.vec.Vec.Default.A).
   
   Global Instance AssociatedFunction_on_received :
-    Notations.DoubleColon ltac:(Self) "on_received" := {
+    Notations.DoubleColon Self "on_received" := {
     Notations.double_colon := on_received;
   }.
   
@@ -1130,7 +1113,7 @@ Section Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract_t.
       }
   *)
   Parameter on_batch_received :
-      (mut_ref ltac:(Self)) ->
+      (mut_ref Self) ->
         erc1155.AccountId.t ->
         erc1155.AccountId.t ->
         (alloc.vec.Vec.t ltac:(erc1155.TokenId) alloc.vec.Vec.Default.A) ->
@@ -1139,11 +1122,11 @@ Section Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract_t.
         M (alloc.vec.Vec.t u8.t alloc.vec.Vec.Default.A).
   
   Global Instance AssociatedFunction_on_batch_received :
-    Notations.DoubleColon ltac:(Self) "on_batch_received" := {
+    Notations.DoubleColon Self "on_batch_received" := {
     Notations.double_colon := on_batch_received;
   }.
   
-  Global Instance ℐ : erc1155.Erc1155TokenReceiver.Trait ltac:(Self) := {
+  Global Instance ℐ : erc1155.Erc1155TokenReceiver.Trait Self := {
     erc1155.Erc1155TokenReceiver.on_received := on_received;
     erc1155.Erc1155TokenReceiver.on_batch_received := on_batch_received;
   }.

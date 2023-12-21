@@ -219,17 +219,16 @@ End UpperExp.
 Module ArgumentV1.
   Parameter t : Set.
 End ArgumentV1.
-Definition ArgumentV1 := ArgumentV1.t.
 
 Module ImplArgumentV1.
-  Definition Self := ArgumentV1.
+  Definition Self := ArgumentV1.t.
 
   Parameter new :
     forall {T : Set},
     ref T -> (ref T -> mut_ref Formatter.t -> M ltac:(Result)) -> M Self.
 
   Global Instance ArgumentV1_new {T : Set} :
-    Notations.DoubleColon ArgumentV1 "new" := {
+    Notations.DoubleColon ArgumentV1.t "new" := {
     Notations.double_colon := new (T := T);
   }.
 
@@ -238,7 +237,7 @@ Module ImplArgumentV1.
 
   Global Instance ArgumentV1_new_display
     {T : Set} `{Display.Trait T} :
-    Notations.DoubleColon ArgumentV1 "new_display" := {
+    Notations.DoubleColon ArgumentV1.t "new_display" := {
     Notations.double_colon := new_display (T := T);
   }.
 
@@ -247,7 +246,7 @@ Module ImplArgumentV1.
 
   Global Instance ArgumentV1_new_debug
     {T : Set} `{Debug.Trait T} :
-    Notations.DoubleColon ArgumentV1 "new_debug" := {
+    Notations.DoubleColon ArgumentV1.t "new_debug" := {
     Notations.double_colon := new_debug (T := T);
   }.
 
@@ -256,7 +255,7 @@ Module ImplArgumentV1.
 
   Global Instance ArgumentV1_new_octal
     {T : Set} `{Octal.Trait T} :
-    Notations.DoubleColon ArgumentV1 "new_octal" := {
+    Notations.DoubleColon ArgumentV1.t "new_octal" := {
     Notations.double_colon := new_octal (T := T);
   }.
 
@@ -265,7 +264,7 @@ Module ImplArgumentV1.
 
   Global Instance ArgumentV1_new_lower_hex
     {T : Set} `{LowerHex.Trait T} :
-    Notations.DoubleColon ArgumentV1 "new_lower_hex" := {
+    Notations.DoubleColon ArgumentV1.t "new_lower_hex" := {
     Notations.double_colon := new_lower_hex (T := T);
   }.
 
@@ -274,7 +273,7 @@ Module ImplArgumentV1.
 
   Global Instance ArgumentV1_new_upper_hex
     {T : Set} `{UpperHex.Trait T} :
-    Notations.DoubleColon ArgumentV1 "new_upper_hex" := {
+    Notations.DoubleColon ArgumentV1.t "new_upper_hex" := {
     Notations.double_colon := new_upper_hex (T := T);
   }.
 
@@ -283,7 +282,7 @@ Module ImplArgumentV1.
 
   Global Instance ArgumentV1_new_pointer
     {T : Set} `{Pointer.Trait T} :
-    Notations.DoubleColon ArgumentV1 "new_pointer" := {
+    Notations.DoubleColon ArgumentV1.t "new_pointer" := {
     Notations.double_colon := new_pointer (T := T);
   }.
 
@@ -292,7 +291,7 @@ Module ImplArgumentV1.
 
   Global Instance ArgumentV1_new_binary
     {T : Set} `{Binary.Trait T} :
-    Notations.DoubleColon ArgumentV1 "new_binary" := {
+    Notations.DoubleColon ArgumentV1.t "new_binary" := {
     Notations.double_colon := new_binary (T := T);
   }.
 
@@ -301,7 +300,7 @@ Module ImplArgumentV1.
 
   Global Instance ArgumentV1_new_lower_exp
     {T : Set} `{LowerExp.Trait T} :
-    Notations.DoubleColon ArgumentV1 "new_lower_exp" := {
+    Notations.DoubleColon ArgumentV1.t "new_lower_exp" := {
     Notations.double_colon := new_lower_exp (T := T);
   }.
 
@@ -310,7 +309,7 @@ Module ImplArgumentV1.
 
   Global Instance ArgumentV1_new_upper_exp
     {T : Set} `{UpperExp.Trait T} :
-    Notations.DoubleColon ArgumentV1 "new_upper_exp" := {
+    Notations.DoubleColon ArgumentV1.t "new_upper_exp" := {
     Notations.double_colon := new_upper_exp (T := T);
   }.
 End ImplArgumentV1.
@@ -324,7 +323,7 @@ Module ImplArguments.
   }.
 
   Parameter new_v1 :
-    ref (slice (ref str.t)) -> ref (slice ArgumentV1) -> M Arguments.t.
+    ref (slice (ref str.t)) -> ref (slice ArgumentV1.t) -> M Arguments.t.
 
   Global Instance Arguments_new_v1 :
     Notations.DoubleColon Arguments.t "new_v1" := {
@@ -365,7 +364,8 @@ End Impl_Write_for_Formatter.
 
 Module rt.
   Module Argument.
-    Parameter t : Set.
+    (* TODO: check if this definition is correct for the current Rust version *)
+    Definition t : Set := ArgumentV1.t.
   End Argument.
 
   Parameter new_display :

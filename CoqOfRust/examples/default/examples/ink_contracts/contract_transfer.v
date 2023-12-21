@@ -15,7 +15,7 @@ End AccountId.
 
 Module  Impl_core_default_Default_for_contract_transfer_AccountId_t.
 Section Impl_core_default_Default_for_contract_transfer_AccountId_t.
-  Ltac Self := exact contract_transfer.AccountId.t.
+  Definition Self : Set := contract_transfer.AccountId.t.
   
   (*
   Default
@@ -29,11 +29,11 @@ Section Impl_core_default_Default_for_contract_transfer_AccountId_t.
     M.pure (contract_transfer.AccountId.Build_t α0).
   
   Global Instance AssociatedFunction_default :
-    Notations.DoubleColon ltac:(Self) "default" := {
+    Notations.DoubleColon Self "default" := {
     Notations.double_colon := default;
   }.
   
-  Global Instance ℐ : core.default.Default.Trait ltac:(Self) := {
+  Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
   }.
 End Impl_core_default_Default_for_contract_transfer_AccountId_t.
@@ -41,23 +41,23 @@ End Impl_core_default_Default_for_contract_transfer_AccountId_t.
 
 Module  Impl_core_clone_Clone_for_contract_transfer_AccountId_t.
 Section Impl_core_clone_Clone_for_contract_transfer_AccountId_t.
-  Ltac Self := exact contract_transfer.AccountId.t.
+  Definition Self : Set := contract_transfer.AccountId.t.
   
   (*
   Clone
   *)
-  Definition clone (self : ref ltac:(Self)) : M contract_transfer.AccountId.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
-    let* _ : M.Val unit := M.alloc tt in
+  Definition clone (self : ref Self) : M contract_transfer.AccountId.t :=
+    let* self : M.Val (ref Self) := M.alloc self in
+    let _ : unit := tt in
     let* α0 : ref contract_transfer.AccountId.t := M.read self in
     M.read (deref α0).
   
   Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon ltac:(Self) "clone" := {
+    Notations.DoubleColon Self "clone" := {
     Notations.double_colon := clone;
   }.
   
-  Global Instance ℐ : core.clone.Clone.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
     core.clone.Clone.clone_from := Datatypes.None;
   }.
@@ -66,9 +66,9 @@ End Impl_core_clone_Clone_for_contract_transfer_AccountId_t.
 
 Module  Impl_core_marker_Copy_for_contract_transfer_AccountId_t.
 Section Impl_core_marker_Copy_for_contract_transfer_AccountId_t.
-  Ltac Self := exact contract_transfer.AccountId.t.
+  Definition Self : Set := contract_transfer.AccountId.t.
   
-  Global Instance ℐ : core.marker.Copy.Trait ltac:(Self) := {
+  Global Instance ℐ : core.marker.Copy.Trait Self := {
   }.
 End Impl_core_marker_Copy_for_contract_transfer_AccountId_t.
 End Impl_core_marker_Copy_for_contract_transfer_AccountId_t.
@@ -93,22 +93,20 @@ End Env.
 
 Module  Impl_contract_transfer_Env_t.
 Section Impl_contract_transfer_Env_t.
-  Ltac Self := exact contract_transfer.Env.t.
+  Definition Self : Set := contract_transfer.Env.t.
   
   (*
       fn caller(&self) -> AccountId {
           self.caller
       }
   *)
-  Definition caller
-      (self : ref ltac:(Self))
-      : M contract_transfer.AccountId.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition caller (self : ref Self) : M contract_transfer.AccountId.t :=
+    let* self : M.Val (ref Self) := M.alloc self in
     let* α0 : ref contract_transfer.Env.t := M.read self in
     M.read (deref α0).["caller"].
   
   Global Instance AssociatedFunction_caller :
-    Notations.DoubleColon ltac:(Self) "caller" := {
+    Notations.DoubleColon Self "caller" := {
     Notations.double_colon := caller;
   }.
   
@@ -117,16 +115,14 @@ Section Impl_contract_transfer_Env_t.
           unimplemented!()
       }
   *)
-  Definition balance
-      (self : ref ltac:(Self))
-      : M ltac:(contract_transfer.Balance) :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition balance (self : ref Self) : M ltac:(contract_transfer.Balance) :=
+    let* self : M.Val (ref Self) := M.alloc self in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
   Global Instance AssociatedFunction_balance :
-    Notations.DoubleColon ltac:(Self) "balance" := {
+    Notations.DoubleColon Self "balance" := {
     Notations.double_colon := balance;
   }.
   
@@ -136,11 +132,11 @@ Section Impl_contract_transfer_Env_t.
       }
   *)
   Definition transfer
-      (self : mut_ref ltac:(Self))
+      (self : mut_ref Self)
       (_to : contract_transfer.AccountId.t)
       (_value : ltac:(contract_transfer.Balance))
       : M (core.result.Result.t unit unit) :=
-    let* self : M.Val (mut_ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (mut_ref Self) := M.alloc self in
     let* _to : M.Val contract_transfer.AccountId.t := M.alloc _to in
     let* _value : M.Val ltac:(contract_transfer.Balance) := M.alloc _value in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
@@ -148,7 +144,7 @@ Section Impl_contract_transfer_Env_t.
     never_to_any α1.
   
   Global Instance AssociatedFunction_transfer :
-    Notations.DoubleColon ltac:(Self) "transfer" := {
+    Notations.DoubleColon Self "transfer" := {
     Notations.double_colon := transfer;
   }.
   
@@ -158,15 +154,15 @@ Section Impl_contract_transfer_Env_t.
       }
   *)
   Definition transferred_value
-      (self : ref ltac:(Self))
+      (self : ref Self)
       : M ltac:(contract_transfer.Balance) :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (ref Self) := M.alloc self in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
   Global Instance AssociatedFunction_transferred_value :
-    Notations.DoubleColon ltac:(Self) "transferred_value" := {
+    Notations.DoubleColon Self "transferred_value" := {
     Notations.double_colon := transferred_value;
   }.
 End Impl_contract_transfer_Env_t.
@@ -180,7 +176,7 @@ End GiveMe.
 
 Module  Impl_contract_transfer_GiveMe_t.
 Section Impl_contract_transfer_GiveMe_t.
-  Ltac Self := exact contract_transfer.GiveMe.t.
+  Definition Self : Set := contract_transfer.GiveMe.t.
   
   (*
       fn init_env() -> Env {
@@ -193,7 +189,7 @@ Section Impl_contract_transfer_GiveMe_t.
     never_to_any α1.
   
   Global Instance AssociatedFunction_init_env :
-    Notations.DoubleColon ltac:(Self) "init_env" := {
+    Notations.DoubleColon Self "init_env" := {
     Notations.double_colon := init_env;
   }.
   
@@ -202,12 +198,11 @@ Section Impl_contract_transfer_GiveMe_t.
           Self::init_env()
       }
   *)
-  Definition env (self : ref ltac:(Self)) : M contract_transfer.Env.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition env (self : ref Self) : M contract_transfer.Env.t :=
+    let* self : M.Val (ref Self) := M.alloc self in
     M.call contract_transfer.GiveMe.t::["init_env"].
   
-  Global Instance AssociatedFunction_env :
-    Notations.DoubleColon ltac:(Self) "env" := {
+  Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
     Notations.double_colon := env;
   }.
   
@@ -216,10 +211,9 @@ Section Impl_contract_transfer_GiveMe_t.
           Self {}
       }
   *)
-  Definition new : M ltac:(Self) := M.pure contract_transfer.GiveMe.Build.
+  Definition new : M Self := M.pure contract_transfer.GiveMe.Build.
   
-  Global Instance AssociatedFunction_new :
-    Notations.DoubleColon ltac:(Self) "new" := {
+  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
   }.
   
@@ -240,10 +234,10 @@ Section Impl_contract_transfer_GiveMe_t.
       }
   *)
   Definition give_me
-      (self : mut_ref ltac:(Self))
+      (self : mut_ref Self)
       (value : ltac:(contract_transfer.Balance))
       : M unit :=
-    let* self : M.Val (mut_ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (mut_ref Self) := M.alloc self in
     let* value : M.Val ltac:(contract_transfer.Balance) := M.alloc value in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
@@ -339,7 +333,7 @@ Section Impl_contract_transfer_GiveMe_t.
     M.read α0.
   
   Global Instance AssociatedFunction_give_me :
-    Notations.DoubleColon ltac:(Self) "give_me" := {
+    Notations.DoubleColon Self "give_me" := {
     Notations.double_colon := give_me;
   }.
   
@@ -349,8 +343,8 @@ Section Impl_contract_transfer_GiveMe_t.
           assert!(self.env().transferred_value() == 10, "payment was not ten");
       }
   *)
-  Definition was_it_ten (self : ref ltac:(Self)) : M unit :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition was_it_ten (self : ref Self) : M unit :=
+    let* self : M.Val (ref Self) := M.alloc self in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "received payment: ") in
@@ -397,7 +391,7 @@ Section Impl_contract_transfer_GiveMe_t.
     M.read α0.
   
   Global Instance AssociatedFunction_was_it_ten :
-    Notations.DoubleColon ltac:(Self) "was_it_ten" := {
+    Notations.DoubleColon Self "was_it_ten" := {
     Notations.double_colon := was_it_ten;
   }.
 End Impl_contract_transfer_GiveMe_t.

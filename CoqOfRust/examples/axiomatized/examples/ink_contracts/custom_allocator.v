@@ -19,7 +19,7 @@ End CustomAllocator.
 
 Module  Impl_custom_allocator_CustomAllocator_t.
 Section Impl_custom_allocator_CustomAllocator_t.
-  Ltac Self := exact custom_allocator.CustomAllocator.t.
+  Definition Self : Set := custom_allocator.CustomAllocator.t.
   
   (*
       pub fn new(init_value: bool) -> Self {
@@ -28,10 +28,9 @@ Section Impl_custom_allocator_CustomAllocator_t.
           }
       }
   *)
-  Parameter new : bool.t -> M ltac:(Self).
+  Parameter new : bool.t -> M Self.
   
-  Global Instance AssociatedFunction_new :
-    Notations.DoubleColon ltac:(Self) "new" := {
+  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
   }.
   
@@ -40,10 +39,10 @@ Section Impl_custom_allocator_CustomAllocator_t.
           Self::new(Default::default())
       }
   *)
-  Parameter default : M ltac:(Self).
+  Parameter default : M Self.
   
   Global Instance AssociatedFunction_default :
-    Notations.DoubleColon ltac:(Self) "default" := {
+    Notations.DoubleColon Self "default" := {
     Notations.double_colon := default;
   }.
   
@@ -52,10 +51,10 @@ Section Impl_custom_allocator_CustomAllocator_t.
           self.value[0] = !self.value[0];
       }
   *)
-  Parameter flip : (mut_ref ltac:(Self)) -> M unit.
+  Parameter flip : (mut_ref Self) -> M unit.
   
   Global Instance AssociatedFunction_flip :
-    Notations.DoubleColon ltac:(Self) "flip" := {
+    Notations.DoubleColon Self "flip" := {
     Notations.double_colon := flip;
   }.
   
@@ -64,10 +63,9 @@ Section Impl_custom_allocator_CustomAllocator_t.
           self.value[0]
       }
   *)
-  Parameter get : (ref ltac:(Self)) -> M bool.t.
+  Parameter get : (ref Self) -> M bool.t.
   
-  Global Instance AssociatedFunction_get :
-    Notations.DoubleColon ltac:(Self) "get" := {
+  Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
     Notations.double_colon := get;
   }.
 End Impl_custom_allocator_CustomAllocator_t.

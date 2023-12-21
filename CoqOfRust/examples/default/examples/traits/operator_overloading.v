@@ -21,27 +21,26 @@ End FooBar.
 
 Module  Impl_core_fmt_Debug_for_operator_overloading_FooBar_t.
 Section Impl_core_fmt_Debug_for_operator_overloading_FooBar_t.
-  Ltac Self := exact operator_overloading.FooBar.t.
+  Definition Self : Set := operator_overloading.FooBar.t.
   
   (*
   Debug
   *)
   Definition fmt
-      (self : ref ltac:(Self))
+      (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (ref Self) := M.alloc self in
     let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref str.t := M.read (mk_str "FooBar") in
     M.call (core.fmt.Formatter.t::["write_str"] α0 α1).
   
-  Global Instance AssociatedFunction_fmt :
-    Notations.DoubleColon ltac:(Self) "fmt" := {
+  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
+  Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
   }.
 End Impl_core_fmt_Debug_for_operator_overloading_FooBar_t.
@@ -55,27 +54,26 @@ End BarFoo.
 
 Module  Impl_core_fmt_Debug_for_operator_overloading_BarFoo_t.
 Section Impl_core_fmt_Debug_for_operator_overloading_BarFoo_t.
-  Ltac Self := exact operator_overloading.BarFoo.t.
+  Definition Self : Set := operator_overloading.BarFoo.t.
   
   (*
   Debug
   *)
   Definition fmt
-      (self : ref ltac:(Self))
+      (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (ref Self) := M.alloc self in
     let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref str.t := M.read (mk_str "BarFoo") in
     M.call (core.fmt.Formatter.t::["write_str"] α0 α1).
   
-  Global Instance AssociatedFunction_fmt :
-    Notations.DoubleColon ltac:(Self) "fmt" := {
+  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
+  Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
   }.
 End Impl_core_fmt_Debug_for_operator_overloading_BarFoo_t.
@@ -83,7 +81,7 @@ End Impl_core_fmt_Debug_for_operator_overloading_BarFoo_t.
 
 Module  Impl_core_ops_arith_Add_operator_overloading_Bar_t_for_operator_overloading_Foo_t.
 Section Impl_core_ops_arith_Add_operator_overloading_Bar_t_for_operator_overloading_Foo_t.
-  Ltac Self := exact operator_overloading.Foo.t.
+  Definition Self : Set := operator_overloading.Foo.t.
   
   (*
       type Output = FooBar;
@@ -98,10 +96,10 @@ Section Impl_core_ops_arith_Add_operator_overloading_Bar_t_for_operator_overload
       }
   *)
   Definition add
-      (self : ltac:(Self))
+      (self : Self)
       (_rhs : operator_overloading.Bar.t)
       : M operator_overloading.FooBar.t :=
-    let* self : M.Val ltac:(Self) := M.alloc self in
+    let* self : M.Val Self := M.alloc self in
     let* _rhs : M.Val operator_overloading.Bar.t := M.alloc _rhs in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
@@ -120,14 +118,12 @@ Section Impl_core_ops_arith_Add_operator_overloading_Bar_t_for_operator_overload
       M.alloc operator_overloading.FooBar.Build in
     M.read α0.
   
-  Global Instance AssociatedFunction_add :
-    Notations.DoubleColon ltac:(Self) "add" := {
+  Global Instance AssociatedFunction_add : Notations.DoubleColon Self "add" := {
     Notations.double_colon := add;
   }.
   
   Global Instance ℐ :
-    core.ops.arith.Add.Trait ltac:(Self)
-      (Rhs := operator_overloading.Bar.t) := {
+    core.ops.arith.Add.Trait Self (Rhs := operator_overloading.Bar.t) := {
     core.ops.arith.Add.Output := Output;
     core.ops.arith.Add.add := add;
   }.
@@ -136,7 +132,7 @@ End Impl_core_ops_arith_Add_operator_overloading_Bar_t_for_operator_overloading_
 
 Module  Impl_core_ops_arith_Add_operator_overloading_Foo_t_for_operator_overloading_Bar_t.
 Section Impl_core_ops_arith_Add_operator_overloading_Foo_t_for_operator_overloading_Bar_t.
-  Ltac Self := exact operator_overloading.Bar.t.
+  Definition Self : Set := operator_overloading.Bar.t.
   
   (*
       type Output = BarFoo;
@@ -151,10 +147,10 @@ Section Impl_core_ops_arith_Add_operator_overloading_Foo_t_for_operator_overload
       }
   *)
   Definition add
-      (self : ltac:(Self))
+      (self : Self)
       (_rhs : operator_overloading.Foo.t)
       : M operator_overloading.BarFoo.t :=
-    let* self : M.Val ltac:(Self) := M.alloc self in
+    let* self : M.Val Self := M.alloc self in
     let* _rhs : M.Val operator_overloading.Foo.t := M.alloc _rhs in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
@@ -173,14 +169,12 @@ Section Impl_core_ops_arith_Add_operator_overloading_Foo_t_for_operator_overload
       M.alloc operator_overloading.BarFoo.Build in
     M.read α0.
   
-  Global Instance AssociatedFunction_add :
-    Notations.DoubleColon ltac:(Self) "add" := {
+  Global Instance AssociatedFunction_add : Notations.DoubleColon Self "add" := {
     Notations.double_colon := add;
   }.
   
   Global Instance ℐ :
-    core.ops.arith.Add.Trait ltac:(Self)
-      (Rhs := operator_overloading.Foo.t) := {
+    core.ops.arith.Add.Trait Self (Rhs := operator_overloading.Foo.t) := {
     core.ops.arith.Add.Output := Output;
     core.ops.arith.Add.add := add;
   }.

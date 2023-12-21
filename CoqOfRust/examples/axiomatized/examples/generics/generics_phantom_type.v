@@ -23,9 +23,9 @@ Module  Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomTu
 Section Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomTuple_t_A_B.
   Context {A B : Set}.
   
-  Ltac Self := exact (generics_phantom_type.PhantomTuple.t A B).
+  Definition Self : Set := generics_phantom_type.PhantomTuple.t A B.
   
-  Global Instance ℐ : core.marker.StructuralPartialEq.Trait ltac:(Self) := {
+  Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
   }.
 End Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomTuple_t_A_B.
 End Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomTuple_t_A_B.
@@ -39,24 +39,23 @@ Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_t_A_B.
     {ℋ_1 :
       core.cmp.PartialEq.Trait B (Rhs := core.cmp.PartialEq.Default.Rhs B)}.
   
-  Ltac Self := exact (generics_phantom_type.PhantomTuple.t A B).
+  Definition Self : Set := generics_phantom_type.PhantomTuple.t A B.
   
   (*
   PartialEq
   *)
   Parameter eq :
-      (ref ltac:(Self)) ->
+      (ref Self) ->
         (ref (generics_phantom_type.PhantomTuple.t A B)) ->
         M bool.t.
   
-  Global Instance AssociatedFunction_eq :
-    Notations.DoubleColon ltac:(Self) "eq" := {
+  Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
     Notations.double_colon := eq;
   }.
   
   Global Instance ℐ :
-    core.cmp.PartialEq.Required.Trait ltac:(Self)
-      (Rhs := core.cmp.PartialEq.Default.Rhs ltac:(Self)) := {
+    core.cmp.PartialEq.Required.Trait Self
+      (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
     core.cmp.PartialEq.eq := eq;
     core.cmp.PartialEq.ne := Datatypes.None;
   }.
@@ -93,9 +92,9 @@ Module  Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomSt
 Section Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomStruct_t_A_B.
   Context {A B : Set}.
   
-  Ltac Self := exact (generics_phantom_type.PhantomStruct.t A B).
+  Definition Self : Set := generics_phantom_type.PhantomStruct.t A B.
   
-  Global Instance ℐ : core.marker.StructuralPartialEq.Trait ltac:(Self) := {
+  Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
   }.
 End Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomStruct_t_A_B.
 End Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomStruct_t_A_B.
@@ -109,24 +108,23 @@ Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_t_A_B.
     {ℋ_1 :
       core.cmp.PartialEq.Trait B (Rhs := core.cmp.PartialEq.Default.Rhs B)}.
   
-  Ltac Self := exact (generics_phantom_type.PhantomStruct.t A B).
+  Definition Self : Set := generics_phantom_type.PhantomStruct.t A B.
   
   (*
   PartialEq
   *)
   Parameter eq :
-      (ref ltac:(Self)) ->
+      (ref Self) ->
         (ref (generics_phantom_type.PhantomStruct.t A B)) ->
         M bool.t.
   
-  Global Instance AssociatedFunction_eq :
-    Notations.DoubleColon ltac:(Self) "eq" := {
+  Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
     Notations.double_colon := eq;
   }.
   
   Global Instance ℐ :
-    core.cmp.PartialEq.Required.Trait ltac:(Self)
-      (Rhs := core.cmp.PartialEq.Default.Rhs ltac:(Self)) := {
+    core.cmp.PartialEq.Required.Trait Self
+      (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
     core.cmp.PartialEq.eq := eq;
     core.cmp.PartialEq.ne := Datatypes.None;
   }.

@@ -11,22 +11,19 @@ End DoubleError.
 
 Module  Impl_core_fmt_Debug_for_wrapping_errors_DoubleError_t.
 Section Impl_core_fmt_Debug_for_wrapping_errors_DoubleError_t.
-  Ltac Self := exact wrapping_errors.DoubleError.t.
+  Definition Self : Set := wrapping_errors.DoubleError.t.
   
   (*
   Debug
   *)
   Parameter fmt :
-      (ref ltac:(Self)) ->
-        (mut_ref core.fmt.Formatter.t) ->
-        M ltac:(core.fmt.Result).
+      (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
   
-  Global Instance AssociatedFunction_fmt :
-    Notations.DoubleColon ltac:(Self) "fmt" := {
+  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
+  Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
   }.
 End Impl_core_fmt_Debug_for_wrapping_errors_DoubleError_t.
@@ -34,7 +31,7 @@ End Impl_core_fmt_Debug_for_wrapping_errors_DoubleError_t.
 
 Module  Impl_core_fmt_Display_for_wrapping_errors_DoubleError_t.
 Section Impl_core_fmt_Display_for_wrapping_errors_DoubleError_t.
-  Ltac Self := exact wrapping_errors.DoubleError.t.
+  Definition Self : Set := wrapping_errors.DoubleError.t.
   
   (*
       fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
@@ -47,16 +44,13 @@ Section Impl_core_fmt_Display_for_wrapping_errors_DoubleError_t.
       }
   *)
   Parameter fmt :
-      (ref ltac:(Self)) ->
-        (mut_ref core.fmt.Formatter.t) ->
-        M ltac:(core.fmt.Result).
+      (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
   
-  Global Instance AssociatedFunction_fmt :
-    Notations.DoubleColon ltac:(Self) "fmt" := {
+  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Display.Trait ltac:(Self) := {
+  Global Instance ℐ : core.fmt.Display.Trait Self := {
     core.fmt.Display.fmt := fmt;
   }.
 End Impl_core_fmt_Display_for_wrapping_errors_DoubleError_t.
@@ -64,7 +58,7 @@ End Impl_core_fmt_Display_for_wrapping_errors_DoubleError_t.
 
 Module  Impl_core_error_Error_for_wrapping_errors_DoubleError_t.
 Section Impl_core_error_Error_for_wrapping_errors_DoubleError_t.
-  Ltac Self := exact wrapping_errors.DoubleError.t.
+  Definition Self : Set := wrapping_errors.DoubleError.t.
   
   (*
       fn source(&self) -> Option<&(dyn error::Error + 'static)> {
@@ -77,15 +71,14 @@ Section Impl_core_error_Error_for_wrapping_errors_DoubleError_t.
           }
       }
   *)
-  Parameter source :
-      (ref ltac:(Self)) -> M (core.option.Option.t (ref _ (* dyn *))).
+  Parameter source : (ref Self) -> M (core.option.Option.t (ref _ (* dyn *))).
   
   Global Instance AssociatedFunction_source :
-    Notations.DoubleColon ltac:(Self) "source" := {
+    Notations.DoubleColon Self "source" := {
     Notations.double_colon := source;
   }.
   
-  Global Instance ℐ : core.error.Error.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : core.error.Error.Required.Trait Self := {
     core.error.Error.source := Datatypes.Some source;
     core.error.Error.type_id := Datatypes.None;
     core.error.Error.description := Datatypes.None;
@@ -97,7 +90,7 @@ End Impl_core_error_Error_for_wrapping_errors_DoubleError_t.
 
 Module  Impl_core_convert_From_core_num_error_ParseIntError_t_for_wrapping_errors_DoubleError_t.
 Section Impl_core_convert_From_core_num_error_ParseIntError_t_for_wrapping_errors_DoubleError_t.
-  Ltac Self := exact wrapping_errors.DoubleError.t.
+  Definition Self : Set := wrapping_errors.DoubleError.t.
   
   (*
       fn from(err: ParseIntError) -> DoubleError {
@@ -108,13 +101,12 @@ Section Impl_core_convert_From_core_num_error_ParseIntError_t_for_wrapping_error
       core.num.error.ParseIntError.t -> M wrapping_errors.DoubleError.t.
   
   Global Instance AssociatedFunction_from :
-    Notations.DoubleColon ltac:(Self) "from" := {
+    Notations.DoubleColon Self "from" := {
     Notations.double_colon := from;
   }.
   
   Global Instance ℐ :
-    core.convert.From.Trait ltac:(Self)
-      (T := core.num.error.ParseIntError.t) := {
+    core.convert.From.Trait Self (T := core.num.error.ParseIntError.t) := {
     core.convert.From.from := from;
   }.
 End Impl_core_convert_From_core_num_error_ParseIntError_t_for_wrapping_errors_DoubleError_t.

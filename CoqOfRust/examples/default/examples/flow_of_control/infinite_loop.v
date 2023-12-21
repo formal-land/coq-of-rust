@@ -48,8 +48,10 @@ Definition main : M unit :=
   let* α0 : M.Val unit :=
     loop
       (let* _ : M.Val unit :=
-        let* α0 : M.Val u32.t := M.alloc (Integer.of_Z 1) in
-        assign_op BinOp.Panic.add count α0 in
+        let β : M.Val u32.t := count in
+        let* α0 := M.read β in
+        let* α1 := BinOp.Panic.add α0 (Integer.of_Z 1) in
+        assign β α1 in
       let* _ : M.Val unit :=
         let* α0 : u32.t := M.read count in
         if (use (BinOp.Pure.eq α0 (Integer.of_Z 3)) : bool) then

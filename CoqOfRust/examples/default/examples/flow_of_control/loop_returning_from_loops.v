@@ -23,8 +23,10 @@ Definition main : M unit :=
     let* α0 : M.Val i32.t :=
       loop
         (let* _ : M.Val unit :=
-          let* α0 : M.Val i32.t := M.alloc (Integer.of_Z 1) in
-          assign_op BinOp.Panic.add counter α0 in
+          let β : M.Val i32.t := counter in
+          let* α0 := M.read β in
+          let* α1 := BinOp.Panic.add α0 (Integer.of_Z 1) in
+          assign β α1 in
         let* α0 : i32.t := M.read counter in
         if (use (BinOp.Pure.eq α0 (Integer.of_Z 10)) : bool) then
           let* _ : M.Val never.t := Break in

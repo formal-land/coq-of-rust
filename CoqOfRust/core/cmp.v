@@ -21,8 +21,6 @@ Module Ordering.
   | Greater : t
   | Equal : t.
 End Ordering.
-Definition Ordering : Set :=
-  M.Val Ordering.t.
 
 (* ********TRAITS******** *)
 (* 
@@ -514,10 +512,49 @@ pub trait Ord: Eq + PartialOrd<Self> {
 }
 *)
 Module Ord.
-  Class Trait (Self : Set) := {
-    _ :: Eq.Trait Self;
-    _ :: PartialOrd.Trait Self (Rhs := Self);
-    cmp : ref Self -> ref Self -> M Ordering;
+  Module Required.
+    Class Trait (Self : Set) : Set := {
+      ℒ_0 :: Eq.Trait Self;
+      ℒ_1 :: PartialOrd.Trait Self (Rhs := Self);
+      cmp : ref Self -> ref Self -> M Ordering.t;
+      max : option (Self -> Self -> M Self);
+      min : option (Self -> Self -> M Self);
+      clamp : option (Self -> Self -> Self -> M Self);
+    }.
+  End Required.
+
+  Module Provided.
+    Parameter max :
+      forall {Self : Set} {ℋ_0 : Required.Trait Self},
+      Self -> Self -> M Self.
+
+    Parameter min :
+      forall {Self : Set} {ℋ_0 : Required.Trait Self},
+      Self -> Self -> M Self.
+
+    Parameter clamp :
+      forall {Self : Set} {ℋ_0 : Required.Trait Self},
+      Self -> Self -> Self -> M Self.
+  End Provided.
+
+  Class Trait (Self : Set) : Set := {
+    ℒ_0 :: Eq.Trait Self;
+    ℒ_1 :: PartialOrd.Trait Self (Rhs := Self);
+    cmp : ref Self -> ref Self -> M Ordering.t;
+    max : Self -> Self -> M Self;
+    min : Self -> Self -> M Self;
+    clamp : Self -> Self -> Self -> M Self;
+  }.
+
+  Global Instance From_Required (Self : Set)
+      {ℋ_0 : Required.Trait Self} :
+      Trait Self := {
+    ℒ_0 := ℋ_0.(Required.ℒ_0);
+    ℒ_1 := ℋ_0.(Required.ℒ_1);
+    cmp := Required.cmp;
+    max := Provided.max;
+    min := Provided.min;
+    clamp := Provided.clamp;
   }.
 
   Module Impl_Ord_for_str.

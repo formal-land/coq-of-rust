@@ -16,17 +16,16 @@ End WildcardSelector.
 
 Module  Impl_wildcard_selector_WildcardSelector_t.
 Section Impl_wildcard_selector_WildcardSelector_t.
-  Ltac Self := exact wildcard_selector.WildcardSelector.t.
+  Definition Self : Set := wildcard_selector.WildcardSelector.t.
   
   (*
       pub fn new() -> Self {
           Self {}
       }
   *)
-  Parameter new : M ltac:(Self).
+  Parameter new : M Self.
   
-  Global Instance AssociatedFunction_new :
-    Notations.DoubleColon ltac:(Self) "new" := {
+  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
   }.
   
@@ -36,10 +35,10 @@ Section Impl_wildcard_selector_WildcardSelector_t.
           println!("Wildcard selector: {:?}, message: {}", _selector, _message);
       }
   *)
-  Parameter wildcard : (mut_ref ltac:(Self)) -> M unit.
+  Parameter wildcard : (mut_ref Self) -> M unit.
   
   Global Instance AssociatedFunction_wildcard :
-    Notations.DoubleColon ltac:(Self) "wildcard" := {
+    Notations.DoubleColon Self "wildcard" := {
     Notations.double_colon := wildcard;
   }.
   
@@ -49,10 +48,10 @@ Section Impl_wildcard_selector_WildcardSelector_t.
       }
   *)
   Parameter wildcard_complement :
-      (mut_ref ltac:(Self)) -> alloc.string.String.t -> M unit.
+      (mut_ref Self) -> alloc.string.String.t -> M unit.
   
   Global Instance AssociatedFunction_wildcard_complement :
-    Notations.DoubleColon ltac:(Self) "wildcard_complement" := {
+    Notations.DoubleColon Self "wildcard_complement" := {
     Notations.double_colon := wildcard_complement;
   }.
 End Impl_wildcard_selector_WildcardSelector_t.

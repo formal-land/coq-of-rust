@@ -27,9 +27,9 @@ End Sheep.
 Module  Animal.
 Section Animal.
   Class Trait (Self : Set) : Type := {
-    new : (ref str.t) -> M ltac:(Self);
-    name : (ref ltac:(Self)) -> M (ref str.t);
-    noise : (ref ltac:(Self)) -> M (ref str.t);
+    new : (ref str.t) -> M Self;
+    name : (ref Self) -> M (ref str.t);
+    noise : (ref Self) -> M (ref str.t);
   }.
   
 End Animal.
@@ -37,20 +37,20 @@ End Animal.
 
 Module  Impl_traits_Sheep_t.
 Section Impl_traits_Sheep_t.
-  Ltac Self := exact traits.Sheep.t.
+  Definition Self : Set := traits.Sheep.t.
   
   (*
       fn is_naked(&self) -> bool {
           self.naked
       }
   *)
-  Definition is_naked (self : ref ltac:(Self)) : M bool.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition is_naked (self : ref Self) : M bool.t :=
+    let* self : M.Val (ref Self) := M.alloc self in
     let* α0 : ref traits.Sheep.t := M.read self in
     M.read (deref α0).["naked"].
   
   Global Instance AssociatedFunction_is_naked :
-    Notations.DoubleColon ltac:(Self) "is_naked" := {
+    Notations.DoubleColon Self "is_naked" := {
     Notations.double_colon := is_naked;
   }.
 End Impl_traits_Sheep_t.
@@ -58,7 +58,7 @@ End Impl_traits_Sheep_t.
 
 Module  Impl_traits_Animal_for_traits_Sheep_t.
 Section Impl_traits_Animal_for_traits_Sheep_t.
-  Ltac Self := exact traits.Sheep.t.
+  Definition Self : Set := traits.Sheep.t.
   
   (*
       fn new(name: &'static str) -> Sheep {
@@ -73,8 +73,7 @@ Section Impl_traits_Animal_for_traits_Sheep_t.
     let* α0 : ref str.t := M.read name in
     M.pure {| traits.Sheep.name := α0; traits.Sheep.naked := false; |}.
   
-  Global Instance AssociatedFunction_new :
-    Notations.DoubleColon ltac:(Self) "new" := {
+  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
   }.
   
@@ -83,13 +82,13 @@ Section Impl_traits_Animal_for_traits_Sheep_t.
           self.name
       }
   *)
-  Definition name (self : ref ltac:(Self)) : M (ref str.t) :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition name (self : ref Self) : M (ref str.t) :=
+    let* self : M.Val (ref Self) := M.alloc self in
     let* α0 : ref traits.Sheep.t := M.read self in
     M.read (deref α0).["name"].
   
   Global Instance AssociatedFunction_name :
-    Notations.DoubleColon ltac:(Self) "name" := {
+    Notations.DoubleColon Self "name" := {
     Notations.double_colon := name;
   }.
   
@@ -102,8 +101,8 @@ Section Impl_traits_Animal_for_traits_Sheep_t.
           }
       }
   *)
-  Definition noise (self : ref ltac:(Self)) : M (ref str.t) :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition noise (self : ref Self) : M (ref str.t) :=
+    let* self : M.Val (ref Self) := M.alloc self in
     let* α0 : ref traits.Sheep.t := M.read self in
     let* α1 : bool.t := M.call (traits.Sheep.t::["is_naked"] α0) in
     let* α2 : M.Val (ref str.t) :=
@@ -114,7 +113,7 @@ Section Impl_traits_Animal_for_traits_Sheep_t.
     M.read α2.
   
   Global Instance AssociatedFunction_noise :
-    Notations.DoubleColon ltac:(Self) "noise" := {
+    Notations.DoubleColon Self "noise" := {
     Notations.double_colon := noise;
   }.
   
@@ -124,8 +123,8 @@ Section Impl_traits_Animal_for_traits_Sheep_t.
           println!("{} pauses briefly... {}", self.name, self.noise());
       }
   *)
-  Definition talk (self : ref ltac:(Self)) : M unit :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition talk (self : ref Self) : M unit :=
+    let* self : M.Val (ref Self) := M.alloc self in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "") in
@@ -166,11 +165,11 @@ Section Impl_traits_Animal_for_traits_Sheep_t.
     M.read α0.
   
   Global Instance AssociatedFunction_talk :
-    Notations.DoubleColon ltac:(Self) "talk" := {
+    Notations.DoubleColon Self "talk" := {
     Notations.double_colon := talk;
   }.
   
-  Global Instance ℐ : traits.Animal.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : traits.Animal.Required.Trait Self := {
     traits.Animal.new := new;
     traits.Animal.name := name;
     traits.Animal.noise := noise;
@@ -181,7 +180,7 @@ End Impl_traits_Animal_for_traits_Sheep_t.
 
 Module  Impl_traits_Sheep_t_2.
 Section Impl_traits_Sheep_t_2.
-  Ltac Self := exact traits.Sheep.t.
+  Definition Self : Set := traits.Sheep.t.
   
   (*
       fn shear(&mut self) {
@@ -195,8 +194,8 @@ Section Impl_traits_Sheep_t_2.
           }
       }
   *)
-  Definition shear (self : mut_ref ltac:(Self)) : M unit :=
-    let* self : M.Val (mut_ref ltac:(Self)) := M.alloc self in
+  Definition shear (self : mut_ref Self) : M unit :=
+    let* self : M.Val (mut_ref Self) := M.alloc self in
     let* α0 : mut_ref traits.Sheep.t := M.read self in
     let* α1 : bool.t :=
       M.call (traits.Sheep.t::["is_naked"] (borrow (deref α0))) in
@@ -264,7 +263,7 @@ Section Impl_traits_Sheep_t_2.
     M.read α2.
   
   Global Instance AssociatedFunction_shear :
-    Notations.DoubleColon ltac:(Self) "shear" := {
+    Notations.DoubleColon Self "shear" := {
     Notations.double_colon := shear;
   }.
 End Impl_traits_Sheep_t_2.

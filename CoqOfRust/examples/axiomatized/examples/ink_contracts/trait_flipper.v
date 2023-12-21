@@ -4,8 +4,8 @@ Require Import CoqOfRust.CoqOfRust.
 Module  Flip.
 Section Flip.
   Class Trait (Self : Set) : Type := {
-    flip : (mut_ref ltac:(Self)) -> M unit;
-    get : (ref ltac:(Self)) -> M bool.t;
+    flip : (mut_ref Self) -> M unit;
+    get : (ref Self) -> M bool.t;
   }.
   
 End Flip.
@@ -29,7 +29,7 @@ End Flipper.
 
 Module  Impl_trait_flipper_Flipper_t.
 Section Impl_trait_flipper_Flipper_t.
-  Ltac Self := exact trait_flipper.Flipper.t.
+  Definition Self : Set := trait_flipper.Flipper.t.
   
   (*
       pub fn new() -> Self {
@@ -38,10 +38,9 @@ Section Impl_trait_flipper_Flipper_t.
           }
       }
   *)
-  Parameter new : M ltac:(Self).
+  Parameter new : M Self.
   
-  Global Instance AssociatedFunction_new :
-    Notations.DoubleColon ltac:(Self) "new" := {
+  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
   }.
 End Impl_trait_flipper_Flipper_t.
@@ -49,17 +48,17 @@ End Impl_trait_flipper_Flipper_t.
 
 Module  Impl_trait_flipper_Flip_for_trait_flipper_Flipper_t.
 Section Impl_trait_flipper_Flip_for_trait_flipper_Flipper_t.
-  Ltac Self := exact trait_flipper.Flipper.t.
+  Definition Self : Set := trait_flipper.Flipper.t.
   
   (*
       fn flip(&mut self) {
           self.value = !self.value;
       }
   *)
-  Parameter flip : (mut_ref ltac:(Self)) -> M unit.
+  Parameter flip : (mut_ref Self) -> M unit.
   
   Global Instance AssociatedFunction_flip :
-    Notations.DoubleColon ltac:(Self) "flip" := {
+    Notations.DoubleColon Self "flip" := {
     Notations.double_colon := flip;
   }.
   
@@ -68,14 +67,13 @@ Section Impl_trait_flipper_Flip_for_trait_flipper_Flipper_t.
           self.value
       }
   *)
-  Parameter get : (ref ltac:(Self)) -> M bool.t.
+  Parameter get : (ref Self) -> M bool.t.
   
-  Global Instance AssociatedFunction_get :
-    Notations.DoubleColon ltac:(Self) "get" := {
+  Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
     Notations.double_colon := get;
   }.
   
-  Global Instance ℐ : trait_flipper.Flip.Trait ltac:(Self) := {
+  Global Instance ℐ : trait_flipper.Flip.Trait Self := {
     trait_flipper.Flip.flip := flip;
     trait_flipper.Flip.get := get;
   }.

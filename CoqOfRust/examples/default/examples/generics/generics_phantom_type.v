@@ -23,9 +23,9 @@ Module  Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomTu
 Section Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomTuple_t_A_B.
   Context {A B : Set}.
   
-  Ltac Self := exact (generics_phantom_type.PhantomTuple.t A B).
+  Definition Self : Set := generics_phantom_type.PhantomTuple.t A B.
   
-  Global Instance ℐ : core.marker.StructuralPartialEq.Trait ltac:(Self) := {
+  Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
   }.
 End Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomTuple_t_A_B.
 End Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomTuple_t_A_B.
@@ -39,16 +39,16 @@ Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_t_A_B.
     {ℋ_1 :
       core.cmp.PartialEq.Trait B (Rhs := core.cmp.PartialEq.Default.Rhs B)}.
   
-  Ltac Self := exact (generics_phantom_type.PhantomTuple.t A B).
+  Definition Self : Set := generics_phantom_type.PhantomTuple.t A B.
   
   (*
   PartialEq
   *)
   Definition eq
-      (self : ref ltac:(Self))
+      (self : ref Self)
       (other : ref (generics_phantom_type.PhantomTuple.t A B))
       : M bool.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (ref Self) := M.alloc self in
     let* other : M.Val (ref (generics_phantom_type.PhantomTuple.t A B)) :=
       M.alloc other in
     let* α0 : ref (generics_phantom_type.PhantomTuple.t A B) := M.read self in
@@ -69,14 +69,13 @@ Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_t_A_B.
           (borrow (deref α4).["1"])) in
     M.pure (BinOp.and α2 α5).
   
-  Global Instance AssociatedFunction_eq :
-    Notations.DoubleColon ltac:(Self) "eq" := {
+  Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
     Notations.double_colon := eq;
   }.
   
   Global Instance ℐ :
-    core.cmp.PartialEq.Required.Trait ltac:(Self)
-      (Rhs := core.cmp.PartialEq.Default.Rhs ltac:(Self)) := {
+    core.cmp.PartialEq.Required.Trait Self
+      (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
     core.cmp.PartialEq.eq := eq;
     core.cmp.PartialEq.ne := Datatypes.None;
   }.
@@ -113,9 +112,9 @@ Module  Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomSt
 Section Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomStruct_t_A_B.
   Context {A B : Set}.
   
-  Ltac Self := exact (generics_phantom_type.PhantomStruct.t A B).
+  Definition Self : Set := generics_phantom_type.PhantomStruct.t A B.
   
-  Global Instance ℐ : core.marker.StructuralPartialEq.Trait ltac:(Self) := {
+  Global Instance ℐ : core.marker.StructuralPartialEq.Trait Self := {
   }.
 End Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomStruct_t_A_B.
 End Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomStruct_t_A_B.
@@ -129,16 +128,16 @@ Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_t_A_B.
     {ℋ_1 :
       core.cmp.PartialEq.Trait B (Rhs := core.cmp.PartialEq.Default.Rhs B)}.
   
-  Ltac Self := exact (generics_phantom_type.PhantomStruct.t A B).
+  Definition Self : Set := generics_phantom_type.PhantomStruct.t A B.
   
   (*
   PartialEq
   *)
   Definition eq
-      (self : ref ltac:(Self))
+      (self : ref Self)
       (other : ref (generics_phantom_type.PhantomStruct.t A B))
       : M bool.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (ref Self) := M.alloc self in
     let* other : M.Val (ref (generics_phantom_type.PhantomStruct.t A B)) :=
       M.alloc other in
     let* α0 : ref (generics_phantom_type.PhantomStruct.t A B) := M.read self in
@@ -159,14 +158,13 @@ Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_t_A_B.
           (borrow (deref α4).["phantom"])) in
     M.pure (BinOp.and α2 α5).
   
-  Global Instance AssociatedFunction_eq :
-    Notations.DoubleColon ltac:(Self) "eq" := {
+  Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
     Notations.double_colon := eq;
   }.
   
   Global Instance ℐ :
-    core.cmp.PartialEq.Required.Trait ltac:(Self)
-      (Rhs := core.cmp.PartialEq.Default.Rhs ltac:(Self)) := {
+    core.cmp.PartialEq.Required.Trait Self
+      (Rhs := core.cmp.PartialEq.Default.Rhs Self) := {
     core.cmp.PartialEq.eq := eq;
     core.cmp.PartialEq.ne := Datatypes.None;
   }.

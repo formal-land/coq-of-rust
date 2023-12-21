@@ -22,10 +22,10 @@ Section Contains.
   Class Trait (Self : Set) : Type := {
     A : Set;
     B : Set;
-    contains : (ref ltac:(Self)) -> (ref A.t) -> (ref B.t) -> M bool.t;
-    first : (ref ltac:(Self)) -> M i32.t;
-    last : (ref ltac:(Self)) -> M i32.t;
-    a : (ref ltac:(Self)) -> M A.t;
+    contains : (ref Self) -> (ref A.t) -> (ref B.t) -> M bool.t;
+    first : (ref Self) -> M i32.t;
+    last : (ref Self) -> M i32.t;
+    a : (ref Self) -> M A.t;
   }.
   
   Global Instance Method_A `(Trait) : Notations.DoubleColonType Self "A" := {
@@ -39,7 +39,7 @@ End Contains.
 
 Module  Impl_generics_associated_types_solution_Contains_for_generics_associated_types_solution_Container_t.
 Section Impl_generics_associated_types_solution_Contains_for_generics_associated_types_solution_Container_t.
-  Ltac Self := exact generics_associated_types_solution.Container.t.
+  Definition Self : Set := generics_associated_types_solution.Container.t.
   
   (*
       type A = i32;
@@ -57,11 +57,11 @@ Section Impl_generics_associated_types_solution_Contains_for_generics_associated
       }
   *)
   Definition contains
-      (self : ref ltac:(Self))
+      (self : ref Self)
       (number_1 : ref i32.t)
       (number_2 : ref i32.t)
       : M bool.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+    let* self : M.Val (ref Self) := M.alloc self in
     let* number_1 : M.Val (ref i32.t) := M.alloc number_1 in
     let* number_2 : M.Val (ref i32.t) := M.alloc number_2 in
     let* α0 : ref generics_associated_types_solution.Container.t :=
@@ -83,7 +83,7 @@ Section Impl_generics_associated_types_solution_Contains_for_generics_associated
     M.pure (BinOp.and α2 α5).
   
   Global Instance AssociatedFunction_contains :
-    Notations.DoubleColon ltac:(Self) "contains" := {
+    Notations.DoubleColon Self "contains" := {
     Notations.double_colon := contains;
   }.
   
@@ -92,14 +92,14 @@ Section Impl_generics_associated_types_solution_Contains_for_generics_associated
           self.0
       }
   *)
-  Definition first (self : ref ltac:(Self)) : M i32.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition first (self : ref Self) : M i32.t :=
+    let* self : M.Val (ref Self) := M.alloc self in
     let* α0 : ref generics_associated_types_solution.Container.t :=
       M.read self in
     M.read (deref α0).["0"].
   
   Global Instance AssociatedFunction_first :
-    Notations.DoubleColon ltac:(Self) "first" := {
+    Notations.DoubleColon Self "first" := {
     Notations.double_colon := first;
   }.
   
@@ -108,14 +108,14 @@ Section Impl_generics_associated_types_solution_Contains_for_generics_associated
           self.1
       }
   *)
-  Definition last (self : ref ltac:(Self)) : M i32.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition last (self : ref Self) : M i32.t :=
+    let* self : M.Val (ref Self) := M.alloc self in
     let* α0 : ref generics_associated_types_solution.Container.t :=
       M.read self in
     M.read (deref α0).["1"].
   
   Global Instance AssociatedFunction_last :
-    Notations.DoubleColon ltac:(Self) "last" := {
+    Notations.DoubleColon Self "last" := {
     Notations.double_colon := last;
   }.
   
@@ -124,19 +124,18 @@ Section Impl_generics_associated_types_solution_Contains_for_generics_associated
           self.0
       }
   *)
-  Definition a (self : ref ltac:(Self)) : M i32.t :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition a (self : ref Self) : M i32.t :=
+    let* self : M.Val (ref Self) := M.alloc self in
     let* α0 : ref generics_associated_types_solution.Container.t :=
       M.read self in
     M.read (deref α0).["0"].
   
-  Global Instance AssociatedFunction_a :
-    Notations.DoubleColon ltac:(Self) "a" := {
+  Global Instance AssociatedFunction_a : Notations.DoubleColon Self "a" := {
     Notations.double_colon := a;
   }.
   
   Global Instance ℐ :
-    generics_associated_types_solution.Contains.Trait ltac:(Self) := {
+    generics_associated_types_solution.Contains.Trait Self := {
     generics_associated_types_solution.Contains.A := A;
     generics_associated_types_solution.Contains.B := B;
     generics_associated_types_solution.Contains.contains := contains;

@@ -15,7 +15,7 @@ End AccountId.
 
 Module  Impl_core_default_Default_for_contract_ref_AccountId_t.
 Section Impl_core_default_Default_for_contract_ref_AccountId_t.
-  Ltac Self := exact contract_ref.AccountId.t.
+  Definition Self : Set := contract_ref.AccountId.t.
   
   (*
   Default
@@ -23,11 +23,11 @@ Section Impl_core_default_Default_for_contract_ref_AccountId_t.
   Parameter default : M contract_ref.AccountId.t.
   
   Global Instance AssociatedFunction_default :
-    Notations.DoubleColon ltac:(Self) "default" := {
+    Notations.DoubleColon Self "default" := {
     Notations.double_colon := default;
   }.
   
-  Global Instance ℐ : core.default.Default.Trait ltac:(Self) := {
+  Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
   }.
 End Impl_core_default_Default_for_contract_ref_AccountId_t.
@@ -35,19 +35,19 @@ End Impl_core_default_Default_for_contract_ref_AccountId_t.
 
 Module  Impl_core_clone_Clone_for_contract_ref_AccountId_t.
 Section Impl_core_clone_Clone_for_contract_ref_AccountId_t.
-  Ltac Self := exact contract_ref.AccountId.t.
+  Definition Self : Set := contract_ref.AccountId.t.
   
   (*
   Clone
   *)
-  Parameter clone : (ref ltac:(Self)) -> M contract_ref.AccountId.t.
+  Parameter clone : (ref Self) -> M contract_ref.AccountId.t.
   
   Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon ltac:(Self) "clone" := {
+    Notations.DoubleColon Self "clone" := {
     Notations.double_colon := clone;
   }.
   
-  Global Instance ℐ : core.clone.Clone.Required.Trait ltac:(Self) := {
+  Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
     core.clone.Clone.clone_from := Datatypes.None;
   }.
@@ -56,9 +56,9 @@ End Impl_core_clone_Clone_for_contract_ref_AccountId_t.
 
 Module  Impl_core_marker_Copy_for_contract_ref_AccountId_t.
 Section Impl_core_marker_Copy_for_contract_ref_AccountId_t.
-  Ltac Self := exact contract_ref.AccountId.t.
+  Definition Self : Set := contract_ref.AccountId.t.
   
-  Global Instance ℐ : core.marker.Copy.Trait ltac:(Self) := {
+  Global Instance ℐ : core.marker.Copy.Trait Self := {
   }.
 End Impl_core_marker_Copy_for_contract_ref_AccountId_t.
 End Impl_core_marker_Copy_for_contract_ref_AccountId_t.
@@ -107,22 +107,19 @@ End FlipperError.
 
 Module  Impl_core_fmt_Debug_for_contract_ref_FlipperError_t.
 Section Impl_core_fmt_Debug_for_contract_ref_FlipperError_t.
-  Ltac Self := exact contract_ref.FlipperError.t.
+  Definition Self : Set := contract_ref.FlipperError.t.
   
   (*
   Debug
   *)
   Parameter fmt :
-      (ref ltac:(Self)) ->
-        (mut_ref core.fmt.Formatter.t) ->
-        M ltac:(core.fmt.Result).
+      (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
   
-  Global Instance AssociatedFunction_fmt :
-    Notations.DoubleColon ltac:(Self) "fmt" := {
+  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait ltac:(Self) := {
+  Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
   }.
 End Impl_core_fmt_Debug_for_contract_ref_FlipperError_t.
@@ -130,7 +127,7 @@ End Impl_core_fmt_Debug_for_contract_ref_FlipperError_t.
 
 Module  Impl_contract_ref_FlipperRef_t.
 Section Impl_contract_ref_FlipperRef_t.
-  Ltac Self := exact contract_ref.FlipperRef.t.
+  Definition Self : Set := contract_ref.FlipperRef.t.
   
   (*
       fn init_env() -> Env {
@@ -140,7 +137,7 @@ Section Impl_contract_ref_FlipperRef_t.
   Parameter init_env : M contract_ref.Env.t.
   
   Global Instance AssociatedFunction_init_env :
-    Notations.DoubleColon ltac:(Self) "init_env" := {
+    Notations.DoubleColon Self "init_env" := {
     Notations.double_colon := init_env;
   }.
   
@@ -149,10 +146,9 @@ Section Impl_contract_ref_FlipperRef_t.
           Self::init_env()
       }
   *)
-  Parameter env : (ref ltac:(Self)) -> M contract_ref.Env.t.
+  Parameter env : (ref Self) -> M contract_ref.Env.t.
   
-  Global Instance AssociatedFunction_env :
-    Notations.DoubleColon ltac:(Self) "env" := {
+  Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
     Notations.double_colon := env;
   }.
   
@@ -161,10 +157,9 @@ Section Impl_contract_ref_FlipperRef_t.
           Self { value: init_value }
       }
   *)
-  Parameter new : bool.t -> M ltac:(Self).
+  Parameter new : bool.t -> M Self.
   
-  Global Instance AssociatedFunction_new :
-    Notations.DoubleColon ltac:(Self) "new" := {
+  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
   }.
   
@@ -173,10 +168,10 @@ Section Impl_contract_ref_FlipperRef_t.
           Self::new(Default::default())
       }
   *)
-  Parameter new_default : M ltac:(Self).
+  Parameter new_default : M Self.
   
   Global Instance AssociatedFunction_new_default :
-    Notations.DoubleColon ltac:(Self) "new_default" := {
+    Notations.DoubleColon Self "new_default" := {
     Notations.double_colon := new_default;
   }.
   
@@ -190,11 +185,10 @@ Section Impl_contract_ref_FlipperRef_t.
       }
   *)
   Parameter try_new :
-      bool.t ->
-        M (core.result.Result.t ltac:(Self) contract_ref.FlipperError.t).
+      bool.t -> M (core.result.Result.t Self contract_ref.FlipperError.t).
   
   Global Instance AssociatedFunction_try_new :
-    Notations.DoubleColon ltac:(Self) "try_new" := {
+    Notations.DoubleColon Self "try_new" := {
     Notations.double_colon := try_new;
   }.
   
@@ -203,10 +197,10 @@ Section Impl_contract_ref_FlipperRef_t.
           self.value = !self.value;
       }
   *)
-  Parameter flip : (mut_ref ltac:(Self)) -> M unit.
+  Parameter flip : (mut_ref Self) -> M unit.
   
   Global Instance AssociatedFunction_flip :
-    Notations.DoubleColon ltac:(Self) "flip" := {
+    Notations.DoubleColon Self "flip" := {
     Notations.double_colon := flip;
   }.
   
@@ -215,10 +209,9 @@ Section Impl_contract_ref_FlipperRef_t.
           self.value
       }
   *)
-  Parameter get : (ref ltac:(Self)) -> M bool.t.
+  Parameter get : (ref Self) -> M bool.t.
   
-  Global Instance AssociatedFunction_get :
-    Notations.DoubleColon ltac:(Self) "get" := {
+  Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
     Notations.double_colon := get;
   }.
 End Impl_contract_ref_FlipperRef_t.
@@ -242,7 +235,7 @@ End ContractRef.
 
 Module  Impl_contract_ref_ContractRef_t.
 Section Impl_contract_ref_ContractRef_t.
-  Ltac Self := exact contract_ref.ContractRef.t.
+  Definition Self : Set := contract_ref.ContractRef.t.
   
   (*
       pub fn new(version: u32, flipper_code_hash: Hash) -> Self {
@@ -256,10 +249,9 @@ Section Impl_contract_ref_ContractRef_t.
           Self { flipper }
       }
   *)
-  Parameter new : u32.t -> ltac:(contract_ref.Hash) -> M ltac:(Self).
+  Parameter new : u32.t -> ltac:(contract_ref.Hash) -> M Self.
   
-  Global Instance AssociatedFunction_new :
-    Notations.DoubleColon ltac:(Self) "new" := {
+  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
   }.
   
@@ -281,11 +273,10 @@ Section Impl_contract_ref_ContractRef_t.
           Self { flipper }
       }
   *)
-  Parameter try_new :
-      u32.t -> ltac:(contract_ref.Hash) -> bool.t -> M ltac:(Self).
+  Parameter try_new : u32.t -> ltac:(contract_ref.Hash) -> bool.t -> M Self.
   
   Global Instance AssociatedFunction_try_new :
-    Notations.DoubleColon ltac:(Self) "try_new" := {
+    Notations.DoubleColon Self "try_new" := {
     Notations.double_colon := try_new;
   }.
   
@@ -294,10 +285,10 @@ Section Impl_contract_ref_ContractRef_t.
           self.flipper.flip();
       }
   *)
-  Parameter flip : (mut_ref ltac:(Self)) -> M unit.
+  Parameter flip : (mut_ref Self) -> M unit.
   
   Global Instance AssociatedFunction_flip :
-    Notations.DoubleColon ltac:(Self) "flip" := {
+    Notations.DoubleColon Self "flip" := {
     Notations.double_colon := flip;
   }.
   
@@ -306,10 +297,9 @@ Section Impl_contract_ref_ContractRef_t.
           self.flipper.get()
       }
   *)
-  Parameter get : (mut_ref ltac:(Self)) -> M bool.t.
+  Parameter get : (mut_ref Self) -> M bool.t.
   
-  Global Instance AssociatedFunction_get :
-    Notations.DoubleColon ltac:(Self) "get" := {
+  Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
     Notations.double_colon := get;
   }.
 End Impl_contract_ref_ContractRef_t.

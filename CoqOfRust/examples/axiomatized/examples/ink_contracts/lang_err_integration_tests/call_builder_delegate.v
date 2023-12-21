@@ -26,7 +26,7 @@ End CallBuilderDelegateTest.
 
 Module  Impl_core_default_Default_for_call_builder_delegate_CallBuilderDelegateTest_t.
 Section Impl_core_default_Default_for_call_builder_delegate_CallBuilderDelegateTest_t.
-  Ltac Self := exact call_builder_delegate.CallBuilderDelegateTest.t.
+  Definition Self : Set := call_builder_delegate.CallBuilderDelegateTest.t.
   
   (*
   Default
@@ -34,11 +34,11 @@ Section Impl_core_default_Default_for_call_builder_delegate_CallBuilderDelegateT
   Parameter default : M call_builder_delegate.CallBuilderDelegateTest.t.
   
   Global Instance AssociatedFunction_default :
-    Notations.DoubleColon ltac:(Self) "default" := {
+    Notations.DoubleColon Self "default" := {
     Notations.double_colon := default;
   }.
   
-  Global Instance ℐ : core.default.Default.Trait ltac:(Self) := {
+  Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
   }.
 End Impl_core_default_Default_for_call_builder_delegate_CallBuilderDelegateTest_t.
@@ -46,17 +46,16 @@ End Impl_core_default_Default_for_call_builder_delegate_CallBuilderDelegateTest_
 
 Module  Impl_call_builder_delegate_CallBuilderDelegateTest_t.
 Section Impl_call_builder_delegate_CallBuilderDelegateTest_t.
-  Ltac Self := exact call_builder_delegate.CallBuilderDelegateTest.t.
+  Definition Self : Set := call_builder_delegate.CallBuilderDelegateTest.t.
   
   (*
       pub fn new(value: i32) -> Self {
           Self { value }
       }
   *)
-  Parameter new : i32.t -> M ltac:(Self).
+  Parameter new : i32.t -> M Self.
   
-  Global Instance AssociatedFunction_new :
-    Notations.DoubleColon ltac:(Self) "new" := {
+  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
   }.
   
@@ -80,13 +79,13 @@ Section Impl_call_builder_delegate_CallBuilderDelegateTest_t.
       }
   *)
   Parameter delegate :
-      (mut_ref ltac:(Self)) ->
+      (mut_ref Self) ->
         ltac:(call_builder_delegate.Hash) ->
         (array u8.t) ->
         M (core.option.Option.t call_builder_delegate.LangError.t).
   
   Global Instance AssociatedFunction_delegate :
-    Notations.DoubleColon ltac:(Self) "delegate" := {
+    Notations.DoubleColon Self "delegate" := {
     Notations.double_colon := delegate;
   }.
   
@@ -103,13 +102,13 @@ Section Impl_call_builder_delegate_CallBuilderDelegateTest_t.
       }
   *)
   Parameter invoke :
-      (mut_ref ltac:(Self)) ->
+      (mut_ref Self) ->
         ltac:(call_builder_delegate.Hash) ->
         (array u8.t) ->
         M i32.t.
   
   Global Instance AssociatedFunction_invoke :
-    Notations.DoubleColon ltac:(Self) "invoke" := {
+    Notations.DoubleColon Self "invoke" := {
     Notations.double_colon := invoke;
   }.
 End Impl_call_builder_delegate_CallBuilderDelegateTest_t.

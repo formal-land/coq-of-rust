@@ -16,7 +16,7 @@ End Cow.
 Module  Animal.
 Section Animal.
   Class Trait (Self : Set) : Type := {
-    noise : (ref ltac:(Self)) -> M (ref str.t);
+    noise : (ref Self) -> M (ref str.t);
   }.
   
 End Animal.
@@ -24,23 +24,23 @@ End Animal.
 
 Module  Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep_t.
 Section Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep_t.
-  Ltac Self := exact returning_traits_with_dyn.Sheep.t.
+  Definition Self : Set := returning_traits_with_dyn.Sheep.t.
   
   (*
       fn noise(&self) -> &'static str {
           "baaaaah!"
       }
   *)
-  Definition noise (self : ref ltac:(Self)) : M (ref str.t) :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition noise (self : ref Self) : M (ref str.t) :=
+    let* self : M.Val (ref Self) := M.alloc self in
     M.read (mk_str "baaaaah!").
   
   Global Instance AssociatedFunction_noise :
-    Notations.DoubleColon ltac:(Self) "noise" := {
+    Notations.DoubleColon Self "noise" := {
     Notations.double_colon := noise;
   }.
   
-  Global Instance ℐ : returning_traits_with_dyn.Animal.Trait ltac:(Self) := {
+  Global Instance ℐ : returning_traits_with_dyn.Animal.Trait Self := {
     returning_traits_with_dyn.Animal.noise := noise;
   }.
 End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep_t.
@@ -48,23 +48,23 @@ End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep_t.
 
 Module  Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow_t.
 Section Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow_t.
-  Ltac Self := exact returning_traits_with_dyn.Cow.t.
+  Definition Self : Set := returning_traits_with_dyn.Cow.t.
   
   (*
       fn noise(&self) -> &'static str {
           "moooooo!"
       }
   *)
-  Definition noise (self : ref ltac:(Self)) : M (ref str.t) :=
-    let* self : M.Val (ref ltac:(Self)) := M.alloc self in
+  Definition noise (self : ref Self) : M (ref str.t) :=
+    let* self : M.Val (ref Self) := M.alloc self in
     M.read (mk_str "moooooo!").
   
   Global Instance AssociatedFunction_noise :
-    Notations.DoubleColon ltac:(Self) "noise" := {
+    Notations.DoubleColon Self "noise" := {
     Notations.double_colon := noise;
   }.
   
-  Global Instance ℐ : returning_traits_with_dyn.Animal.Trait ltac:(Self) := {
+  Global Instance ℐ : returning_traits_with_dyn.Animal.Trait Self := {
     returning_traits_with_dyn.Animal.noise := noise;
   }.
 End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow_t.
