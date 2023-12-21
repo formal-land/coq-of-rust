@@ -96,11 +96,7 @@ Section Impl_functions_order_SomeTrait_for_functions_order_SomeType_t.
   Definition some_trait_foo (self : ref Self) : M unit :=
     let* self := M.alloc self in
     let* α0 : ref functions_order.SomeType.t := M.read self in
-    M.call
-      ((functions_order.SomeTrait.some_trait_bar
-          (Self := functions_order.SomeType.t)
-          (Trait := ltac:(refine _)))
-        α0).
+    M.call (some_trait_bar α0).
   
   Global Instance AssociatedFunction_some_trait_foo :
     Notations.DoubleColon Self "some_trait_foo" := {

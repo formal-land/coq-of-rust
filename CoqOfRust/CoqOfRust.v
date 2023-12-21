@@ -155,6 +155,7 @@ Require CoqOfRust.core.panic.
 Require CoqOfRust.core.panicking.
 Require CoqOfRust.core.primitive.
 Require CoqOfRust.core.result.
+Require CoqOfRust.core.slice.
 Require CoqOfRust.core.str.
 
 Module core.
@@ -180,6 +181,7 @@ Module core.
   Export CoqOfRust.core.panicking.
   Export CoqOfRust.core.primitive.
   Export CoqOfRust.core.result.
+  Export CoqOfRust.core.slice.
   Export CoqOfRust.core.str.
 End core.
 
@@ -212,7 +214,6 @@ Require Import CoqOfRust._std.process.
 Require Import CoqOfRust._std.ptr.
 Require Import CoqOfRust._std.rc.
 Require Import CoqOfRust._std.simd.
-Require Import CoqOfRust._std.slice.
 Require Import CoqOfRust._std.str.
 Require Import CoqOfRust._std.sync.
 Require Import CoqOfRust._std.task.
@@ -249,7 +250,6 @@ Module std.
   Module ptr := _std.ptr.
   Module rc := _std.rc.
   Module simd := _std.simd.
-  Module slice := _std.slice.
   Module str := _std.str.
   Module sync := _std.sync.
   Module task := _std.task.
@@ -853,7 +853,7 @@ Module Impl_Iterator_for_Slice_Iter.
   Section Impl_Iterator_for_Slice_Iter.
   Context {A : Set}.
 
-  Definition Self := std.slice.Iter.t A.
+  Definition Self := core.slice.iter.Iter.t A.
 
   Definition Item := A.
 
@@ -871,7 +871,7 @@ End Impl_Iterator_for_Slice_Iter.
 Module Impl_IntoIterator_for_Slice_Iter.
   Section Impl_IntoIterator_for_Slice_Iter.
   Context {A : Set}.
-  Definition I := std.slice.Iter.t A.
+  Definition I := core.slice.iter.Iter.t A.
 
   Definition Self := I.
 
@@ -893,7 +893,7 @@ Module Impl_Iterator_for_Slice_IterMut.
   Section Impl_Iterator_for_Slice_IterMut.
   Context {A : Set}.
 
-  Definition Self := std.slice.IterMut.t A.
+  Definition Self := core.slice.IterMut.t A.
 
   Definition Item := A.
 
@@ -911,7 +911,7 @@ End Impl_Iterator_for_Slice_IterMut.
 Module Impl_IntoIterator_for_Slice_IterMut.
   Section Impl_IntoIterator_for_Slice_IterMut.
   Context {A : Set}.
-  Definition I := std.slice.IterMut.t A.
+  Definition I := core.slice.IterMut.t A.
 
   Definition Self := I.
 
@@ -997,9 +997,9 @@ Module Temp_Impl_for_Vec.
 
   Definition Self := alloc.vec.Vec T alloc.vec.Vec.Default.A.
 
-  Parameter iter : ref Self -> M (std.slice.Iter.t T).
+  Parameter iter : ref Self -> M (core.slice.iter.Iter.t T).
   Parameter iter_mut :
-    ref Self -> M (std.slice.IterMut.t T).
+    ref Self -> M (core.slice.IterMut.t T).
 
   Global Instance Method_iter : Notations.Dot "iter" := {
     Notations.dot := iter;

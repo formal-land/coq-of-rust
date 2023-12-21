@@ -582,7 +582,16 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<Rc<To
             let mut items: Vec<ImplItemRef> = items.to_vec();
             let context = get_full_name(tcx, item.hir_id());
             reorder_definitions_inplace(tcx, env, &context, &mut items);
+
+            // Add the current trait to the environment to be recognized latter
+            // in the translation of expressions.
+            if let Some(trait_ref) = of_trait {
+                let trait_path = compile_path(env, trait_ref.path);
+                env.current_trait_impl = Some((trait_path, self_ty.clone()));
+            }
+
             let items = compile_impl_item_refs(tcx, env, &items, is_dead_code);
+            env.current_trait_impl = None;
 
             match of_trait {
                 Some(trait_ref) => {
@@ -1015,6 +1024,7 @@ fn compile_top_level(tcx: &TyCtxt, opts: TopLevelOptions) -> Rc<TopLevel> {
         file: opts.filename,
         reorder_map: HashMap::new(),
         configuration: get_configuration(&opts.configuration_file),
+        current_trait_impl: None,
     };
 
     let mut results: Vec<ItemId> = tcx.hir().items().collect();

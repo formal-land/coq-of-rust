@@ -682,13 +682,19 @@ fn compile_expr_kind<'a>(
                         ExprKind::AssociatedFunction { ty, func }
                     }
                     DefKind::Trait => {
+                        let parent_path = compile_def_id(env, parent);
                         let path = Path::concat(&[
-                            compile_def_id(env, parent),
+                            parent_path.clone(),
                             Path::local(symbol.unwrap().as_str()),
                         ]);
                         let self_ty = generic_args.type_at(0);
                         let self_ty = crate::thir_ty::compile_type(env, &self_ty);
-                        ExprKind::VarWithSelfTy { path, self_ty }
+
+                        if Some((parent_path, self_ty.clone())) == env.current_trait_impl {
+                            ExprKind::LocalVar(symbol.unwrap().to_string())
+                        } else {
+                            ExprKind::VarWithSelfTy { path, self_ty }
+                        }
                     }
                     DefKind::Mod | DefKind::ForeignMod => {
                         ExprKind::Var(compile_def_id(env, *def_id))

@@ -851,6 +851,35 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
   Definition Self : Set := erc1155.Contract.t.
   
   (*
+      fn is_approved_for_all(&self, owner: AccountId, operator: AccountId) -> bool {
+          self.approvals.contains(&(owner, operator))
+      }
+  *)
+  Parameter is_approved_for_all :
+      (ref Self) -> erc1155.AccountId.t -> erc1155.AccountId.t -> M bool.t.
+  
+  Global Instance AssociatedFunction_is_approved_for_all :
+    Notations.DoubleColon Self "is_approved_for_all" := {
+    Notations.double_colon := is_approved_for_all;
+  }.
+  
+  (*
+      fn balance_of(&self, owner: AccountId, token_id: TokenId) -> Balance {
+          self.balances.get(&(owner, token_id)).unwrap_or(0 as u128)
+      }
+  *)
+  Parameter balance_of :
+      (ref Self) ->
+        erc1155.AccountId.t ->
+        ltac:(erc1155.TokenId) ->
+        M ltac:(erc1155.Balance).
+  
+  Global Instance AssociatedFunction_balance_of :
+    Notations.DoubleColon Self "balance_of" := {
+    Notations.double_colon := balance_of;
+  }.
+  
+  (*
       fn safe_transfer_from(
           &mut self,
           from: AccountId,
@@ -942,22 +971,6 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
   }.
   
   (*
-      fn balance_of(&self, owner: AccountId, token_id: TokenId) -> Balance {
-          self.balances.get(&(owner, token_id)).unwrap_or(0 as u128)
-      }
-  *)
-  Parameter balance_of :
-      (ref Self) ->
-        erc1155.AccountId.t ->
-        ltac:(erc1155.TokenId) ->
-        M ltac:(erc1155.Balance).
-  
-  Global Instance AssociatedFunction_balance_of :
-    Notations.DoubleColon Self "balance_of" := {
-    Notations.double_colon := balance_of;
-  }.
-  
-  (*
       fn balance_of_batch(&self, owners: Vec<AccountId>, token_ids: Vec<TokenId>) -> Vec<Balance> {
           let mut output = Vec::new();
           for o in &owners {
@@ -1011,26 +1024,13 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
     Notations.double_colon := set_approval_for_all;
   }.
   
-  (*
-      fn is_approved_for_all(&self, owner: AccountId, operator: AccountId) -> bool {
-          self.approvals.contains(&(owner, operator))
-      }
-  *)
-  Parameter is_approved_for_all :
-      (ref Self) -> erc1155.AccountId.t -> erc1155.AccountId.t -> M bool.t.
-  
-  Global Instance AssociatedFunction_is_approved_for_all :
-    Notations.DoubleColon Self "is_approved_for_all" := {
-    Notations.double_colon := is_approved_for_all;
-  }.
-  
   Global Instance ℐ : erc1155.Erc1155.Trait Self := {
+    erc1155.Erc1155.is_approved_for_all := is_approved_for_all;
+    erc1155.Erc1155.balance_of := balance_of;
     erc1155.Erc1155.safe_transfer_from := safe_transfer_from;
     erc1155.Erc1155.safe_batch_transfer_from := safe_batch_transfer_from;
-    erc1155.Erc1155.balance_of := balance_of;
     erc1155.Erc1155.balance_of_batch := balance_of_batch;
     erc1155.Erc1155.set_approval_for_all := set_approval_for_all;
-    erc1155.Erc1155.is_approved_for_all := is_approved_for_all;
   }.
 End Impl_erc1155_Erc1155_for_erc1155_Contract_t.
 End Impl_erc1155_Erc1155_for_erc1155_Contract_t.

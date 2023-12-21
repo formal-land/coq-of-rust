@@ -1,4 +1,5 @@
 use crate::configuration::*;
+use crate::path::*;
 use crate::ty::*;
 use rustc_middle::ty::TyCtxt;
 use std::collections::HashMap;
@@ -19,4 +20,6 @@ pub(crate) struct Env<'a> {
     pub(crate) reorder_map: HashMap<String, Vec<String>>,
     /// the configuration read or default if no config file is found
     pub(crate) configuration: Configuration,
+    /// the current trait that we are implementing, with its Self type
+    pub(crate) current_trait_impl: Option<(Path, Rc<CoqType>)>,
 }

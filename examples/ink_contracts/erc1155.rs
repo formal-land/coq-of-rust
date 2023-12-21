@@ -67,7 +67,6 @@ pub type TokenId = u128;
 
 // The ERC-1155 error types.
 #[derive(PartialEq, Eq)]
-#[cfg_attr(feature = "std", derive(scale_info::TypeInfo))]
 pub enum Error {
     /// This token ID has not yet been created by the contract.
     UnexistentToken,
@@ -455,6 +454,14 @@ impl Contract {
 }
 
 impl Erc1155 for Contract {
+    fn is_approved_for_all(&self, owner: AccountId, operator: AccountId) -> bool {
+        self.approvals.contains(&(owner, operator))
+    }
+
+    fn balance_of(&self, owner: AccountId, token_id: TokenId) -> Balance {
+        self.balances.get(&(owner, token_id)).unwrap_or(0 as u128)
+    }
+
     fn safe_transfer_from(
         &mut self,
         from: AccountId,
@@ -516,10 +523,6 @@ impl Erc1155 for Contract {
         Ok(())
     }
 
-    fn balance_of(&self, owner: AccountId, token_id: TokenId) -> Balance {
-        self.balances.get(&(owner, token_id)).unwrap_or(0 as u128)
-    }
-
     fn balance_of_batch(&self, owners: Vec<AccountId>, token_ids: Vec<TokenId>) -> Vec<Balance> {
         let mut output = Vec::new();
         for o in &owners {
@@ -548,10 +551,6 @@ impl Erc1155 for Contract {
         }));
 
         Ok(())
-    }
-
-    fn is_approved_for_all(&self, owner: AccountId, operator: AccountId) -> bool {
-        self.approvals.contains(&(owner, operator))
     }
 }
 

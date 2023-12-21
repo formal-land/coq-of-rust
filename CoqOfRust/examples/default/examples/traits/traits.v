@@ -143,12 +143,7 @@ Section Impl_traits_Animal_for_traits_Sheep_t.
             (core.fmt.rt.Argument.t::["new_display"]
               (borrow (deref α6).["name"])) in
         let* α8 : ref traits.Sheep.t := M.read self in
-        let* α9 : ref str.t :=
-          M.call
-            ((traits.Animal.noise
-                (Self := traits.Sheep.t)
-                (Trait := ltac:(refine _)))
-              α8) in
+        let* α9 : ref str.t := M.call (noise α8) in
         let* α10 : M.Val (ref str.t) := M.alloc α9 in
         let* α11 : core.fmt.rt.Argument.t :=
           M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α10)) in

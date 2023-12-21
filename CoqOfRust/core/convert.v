@@ -94,6 +94,12 @@ Module From.
   Class Trait (Self : Set) {T : Set} : Set := {
     from : T -> M Self;
   }.
+
+  Module Impl.
+    Global Instance I_id {T : Set} : Trait T (T := T) := {
+      from := M.pure;
+    }.
+  End Impl.
 End From.
 
 (* 

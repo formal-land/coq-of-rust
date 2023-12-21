@@ -1245,6 +1245,67 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
   Definition Self : Set := erc1155.Contract.t.
   
   (*
+      fn is_approved_for_all(&self, owner: AccountId, operator: AccountId) -> bool {
+          self.approvals.contains(&(owner, operator))
+      }
+  *)
+  Definition is_approved_for_all
+      (self : ref Self)
+      (owner : erc1155.AccountId.t)
+      (operator : erc1155.AccountId.t)
+      : M bool.t :=
+    let* self := M.alloc self in
+    let* owner := M.alloc owner in
+    let* operator := M.alloc operator in
+    let* α0 : ref erc1155.Contract.t := M.read self in
+    let* α1 : erc1155.AccountId.t := M.read owner in
+    let* α2 : erc1155.AccountId.t := M.read operator in
+    let* α3 : M.Val (erc1155.AccountId.t * erc1155.AccountId.t) :=
+      M.alloc (α1, α2) in
+    M.call
+      ((erc1155.Mapping.t
+            (erc1155.AccountId.t * erc1155.AccountId.t)
+            unit)::["contains"]
+        (borrow (deref α0).["approvals"])
+        (borrow α3)).
+  
+  Global Instance AssociatedFunction_is_approved_for_all :
+    Notations.DoubleColon Self "is_approved_for_all" := {
+    Notations.double_colon := is_approved_for_all;
+  }.
+  
+  (*
+      fn balance_of(&self, owner: AccountId, token_id: TokenId) -> Balance {
+          self.balances.get(&(owner, token_id)).unwrap_or(0 as u128)
+      }
+  *)
+  Definition balance_of
+      (self : ref Self)
+      (owner : erc1155.AccountId.t)
+      (token_id : ltac:(erc1155.TokenId))
+      : M ltac:(erc1155.Balance) :=
+    let* self := M.alloc self in
+    let* owner := M.alloc owner in
+    let* token_id := M.alloc token_id in
+    let* α0 : ref erc1155.Contract.t := M.read self in
+    let* α1 : erc1155.AccountId.t := M.read owner in
+    let* α2 : u128.t := M.read token_id in
+    let* α3 : M.Val (erc1155.AccountId.t * u128.t) := M.alloc (α1, α2) in
+    let* α4 : core.option.Option.t u128.t :=
+      M.call
+        ((erc1155.Mapping.t (erc1155.AccountId.t * u128.t) u128.t)::["get"]
+          (borrow (deref α0).["balances"])
+          (borrow α3)) in
+    let* α5 : M.Val u128.t := M.alloc (Integer.of_Z 0) in
+    let* α6 : u128.t := M.read (use α5) in
+    M.call ((core.option.Option.t u128.t)::["unwrap_or"] α4 α6).
+  
+  Global Instance AssociatedFunction_balance_of :
+    Notations.DoubleColon Self "balance_of" := {
+    Notations.double_colon := balance_of;
+  }.
+  
+  (*
       fn safe_transfer_from(
           &mut self,
           from: AccountId,
@@ -1309,13 +1370,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
             let* α1 : erc1155.AccountId.t := M.read from in
             let* α2 : erc1155.AccountId.t := M.read caller in
             let* α3 : bool.t :=
-              M.call
-                ((erc1155.Erc1155.is_approved_for_all
-                    (Self := erc1155.Contract.t)
-                    (Trait := ltac:(refine _)))
-                  (borrow (deref α0))
-                  α1
-                  α2) in
+              M.call (is_approved_for_all (borrow (deref α0)) α1 α2) in
             let* α4 : M.Val bool.t := M.alloc (UnOp.not α3) in
             let* α5 : bool.t := M.read (use α4) in
             if α5 then
@@ -1367,14 +1422,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
         let* α0 : mut_ref erc1155.Contract.t := M.read self in
         let* α1 : erc1155.AccountId.t := M.read from in
         let* α2 : u128.t := M.read token_id in
-        let* α3 : u128.t :=
-          M.call
-            ((erc1155.Erc1155.balance_of
-                (Self := erc1155.Contract.t)
-                (Trait := ltac:(refine _)))
-              (borrow (deref α0))
-              α1
-              α2) in
+        let* α3 : u128.t := M.call (balance_of (borrow (deref α0)) α1 α2) in
         M.alloc α3 in
       let* _ : M.Val unit :=
         let* α0 : u128.t := M.read balance in
@@ -1513,13 +1561,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
             let* α1 : erc1155.AccountId.t := M.read from in
             let* α2 : erc1155.AccountId.t := M.read caller in
             let* α3 : bool.t :=
-              M.call
-                ((erc1155.Erc1155.is_approved_for_all
-                    (Self := erc1155.Contract.t)
-                    (Trait := ltac:(refine _)))
-                  (borrow (deref α0))
-                  α1
-                  α2) in
+              M.call (is_approved_for_all (borrow (deref α0)) α1 α2) in
             let* α4 : M.Val bool.t := M.alloc (UnOp.not α3) in
             let* α5 : bool.t := M.read (use α4) in
             if α5 then
@@ -1701,13 +1743,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                     let* α1 : erc1155.AccountId.t := M.read from in
                     let* α2 : u128.t := M.read id in
                     let* α3 : u128.t :=
-                      M.call
-                        ((erc1155.Erc1155.balance_of
-                            (Self := erc1155.Contract.t)
-                            (Trait := ltac:(refine _)))
-                          (borrow (deref α0))
-                          α1
-                          α2) in
+                      M.call (balance_of (borrow (deref α0)) α1 α2) in
                     M.alloc α3 in
                   let* _ : M.Val unit :=
                     let* α0 : u128.t := M.read balance in
@@ -1840,37 +1876,6 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
   }.
   
   (*
-      fn balance_of(&self, owner: AccountId, token_id: TokenId) -> Balance {
-          self.balances.get(&(owner, token_id)).unwrap_or(0 as u128)
-      }
-  *)
-  Definition balance_of
-      (self : ref Self)
-      (owner : erc1155.AccountId.t)
-      (token_id : ltac:(erc1155.TokenId))
-      : M ltac:(erc1155.Balance) :=
-    let* self := M.alloc self in
-    let* owner := M.alloc owner in
-    let* token_id := M.alloc token_id in
-    let* α0 : ref erc1155.Contract.t := M.read self in
-    let* α1 : erc1155.AccountId.t := M.read owner in
-    let* α2 : u128.t := M.read token_id in
-    let* α3 : M.Val (erc1155.AccountId.t * u128.t) := M.alloc (α1, α2) in
-    let* α4 : core.option.Option.t u128.t :=
-      M.call
-        ((erc1155.Mapping.t (erc1155.AccountId.t * u128.t) u128.t)::["get"]
-          (borrow (deref α0).["balances"])
-          (borrow α3)) in
-    let* α5 : M.Val u128.t := M.alloc (Integer.of_Z 0) in
-    let* α6 : u128.t := M.read (use α5) in
-    M.call ((core.option.Option.t u128.t)::["unwrap_or"] α4 α6).
-  
-  Global Instance AssociatedFunction_balance_of :
-    Notations.DoubleColon Self "balance_of" := {
-    Notations.double_colon := balance_of;
-  }.
-  
-  (*
       fn balance_of_batch(&self, owners: Vec<AccountId>, token_ids: Vec<TokenId>) -> Vec<Balance> {
           let mut output = Vec::new();
           for o in &owners {
@@ -1958,14 +1963,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                               M.read (deref α1) in
                             let* α3 : ref u128.t := M.read t in
                             let* α4 : u128.t := M.read (deref α3) in
-                            let* α5 : u128.t :=
-                              M.call
-                                ((erc1155.Erc1155.balance_of
-                                    (Self := erc1155.Contract.t)
-                                    (Trait := ltac:(refine _)))
-                                  α0
-                                  α2
-                                  α4) in
+                            let* α5 : u128.t := M.call (balance_of α0 α2 α4) in
                             M.alloc α5 in
                           let* _ : M.Val unit :=
                             let* α0 : u128.t := M.read amount in
@@ -2115,43 +2113,13 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
     Notations.double_colon := set_approval_for_all;
   }.
   
-  (*
-      fn is_approved_for_all(&self, owner: AccountId, operator: AccountId) -> bool {
-          self.approvals.contains(&(owner, operator))
-      }
-  *)
-  Definition is_approved_for_all
-      (self : ref Self)
-      (owner : erc1155.AccountId.t)
-      (operator : erc1155.AccountId.t)
-      : M bool.t :=
-    let* self := M.alloc self in
-    let* owner := M.alloc owner in
-    let* operator := M.alloc operator in
-    let* α0 : ref erc1155.Contract.t := M.read self in
-    let* α1 : erc1155.AccountId.t := M.read owner in
-    let* α2 : erc1155.AccountId.t := M.read operator in
-    let* α3 : M.Val (erc1155.AccountId.t * erc1155.AccountId.t) :=
-      M.alloc (α1, α2) in
-    M.call
-      ((erc1155.Mapping.t
-            (erc1155.AccountId.t * erc1155.AccountId.t)
-            unit)::["contains"]
-        (borrow (deref α0).["approvals"])
-        (borrow α3)).
-  
-  Global Instance AssociatedFunction_is_approved_for_all :
-    Notations.DoubleColon Self "is_approved_for_all" := {
-    Notations.double_colon := is_approved_for_all;
-  }.
-  
   Global Instance ℐ : erc1155.Erc1155.Trait Self := {
+    erc1155.Erc1155.is_approved_for_all := is_approved_for_all;
+    erc1155.Erc1155.balance_of := balance_of;
     erc1155.Erc1155.safe_transfer_from := safe_transfer_from;
     erc1155.Erc1155.safe_batch_transfer_from := safe_batch_transfer_from;
-    erc1155.Erc1155.balance_of := balance_of;
     erc1155.Erc1155.balance_of_batch := balance_of_batch;
     erc1155.Erc1155.set_approval_for_all := set_approval_for_all;
-    erc1155.Erc1155.is_approved_for_all := is_approved_for_all;
   }.
 End Impl_erc1155_Erc1155_for_erc1155_Contract_t.
 End Impl_erc1155_Erc1155_for_erc1155_Contract_t.

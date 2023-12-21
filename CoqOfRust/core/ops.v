@@ -360,17 +360,19 @@ Module arith.
   End Not.
 End arith.
 
-Module Deref.
-  Class Trait (Self : Set) {Target : Set} : Set := {
-    Target := Target;
-    deref : ref Self -> M (ref Target);
-  }.
+Module deref.
+  Module Deref.
+    Class Trait (Self : Set) {Target : Set} : Set := {
+      Target := Target;
+      deref : ref Self -> M (ref Target);
+    }.
 
-  Global Instance Method_deref `(Trait) :
-    Notations.Dot "deref" := {
-    Notations.dot := deref;
-  }.
-End Deref.
+    Global Instance Method_deref `(Trait) :
+      Notations.Dot "deref" := {
+      Notations.dot := deref;
+    }.
+  End Deref.
+End deref.
 
 Module function.
   Module FnOnce.
@@ -548,21 +550,6 @@ Module Impl_Not_for_bool.
     not := not;
   }.
 End Impl_Not_for_bool.
-
-(** For now we implement the dereferencing operator on any types, as the
-    identity. *)
-Module Impl_Deref_for_any.
-  Definition deref {A : Set} (x : A) : M A := M.pure x.
-
-  Global Instance Method_deref (A : Set) :
-    Notations.Dot "deref" := {
-    Notations.dot := deref (A := A);
-  }.
-
-  Global Instance Deref_for_any (A : Set) : Deref.Trait A := {
-    deref := deref;
-  }.
-End Impl_Deref_for_any.
 
 Module drop.
   (*
