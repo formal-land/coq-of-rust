@@ -1580,14 +1580,10 @@ impl ImplItemKind {
       coq::TopLevelItem::Instance(coq::Instance::new(
           &format!("{instance_prefix}_{name}"),
           &[ty_params_arg, where_predicates],
-          coq::Expression::Variable {
-              ident: Path::new(&[class_name]),
-              no_implicit: false,
-          }
-          .apply(&coq::Expression::Variable {
-              ident: Path::new(&[format!("\"{name}\"")]),
-              no_implicit: false,
-          }),
+
+            // gy@TODO: make a single_var function in coq
+            coq::Expression::just_name(class_name)
+            .apply(&coq::Expression::just_name(format!("\"{name}\"").as_str())),
           &coq::Expression::Record {
               fields: vec![coq::Field::new(&Path::new(&[method_name]), &[], &entry)],
           },
