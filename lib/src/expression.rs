@@ -64,6 +64,7 @@ pub(crate) enum ExprKind {
     Pure(Box<Expr>),
     LocalVar(String),
     Var(Path),
+    Constructor(Path),
     VarWithTy {
         path: Path,
         ty_name: String,
@@ -179,6 +180,7 @@ impl Expr {
             ExprKind::Pure(expr) => expr.has_return(),
             ExprKind::LocalVar(_) => false,
             ExprKind::Var(_) => false,
+            ExprKind::Constructor(_) => false,
             ExprKind::VarWithTy {
                 path: _,
                 ty_name: _,
@@ -363,6 +365,7 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Expr) -> (Expr, FreshVa
         ExprKind::Pure(_) => panic!("Expressions should not be monadic yet."),
         ExprKind::LocalVar(_) => (pure(expr), fresh_vars),
         ExprKind::Var(_) => (pure(expr), fresh_vars),
+        ExprKind::Constructor(_) => (pure(expr), fresh_vars),
         ExprKind::VarWithTy {
             path,
             ty_name,
@@ -801,6 +804,7 @@ impl ExprKind {
             ),
             ExprKind::LocalVar(ref name) => text(name),
             ExprKind::Var(path) => path.to_doc(),
+            ExprKind::Constructor(path) => path.to_doc(),
             ExprKind::VarWithTy { path, ty_name, ty } => paren(
                 with_paren,
                 nest([

@@ -264,9 +264,16 @@ Section Env.
 End Env.
 End Env.
 
-Parameter ON_ERC_1155_RECEIVED_SELECTOR : array u8.t.
+(*
+fn zero_address() -> AccountId {
+    [0u8; 32].into()
+}
+*)
+Parameter zero_address : M erc1155.AccountId.t.
 
-Parameter _ON_ERC_1155_BATCH_RECEIVED_SELECTOR : array u8.t.
+Parameter ON_ERC_1155_RECEIVED_SELECTOR : M.Val (array u8.t).
+
+Parameter _ON_ERC_1155_BATCH_RECEIVED_SELECTOR : M.Val (array u8.t).
 
 Ltac TokenId := exact u128.t.
 
@@ -722,7 +729,7 @@ Section Impl_erc1155_Contract_t.
           sender_balance -= value;
           self.balances.insert((from, token_id), sender_balance);
   
-          let mut recipient_balance = self.balances.get(&(to, token_id)).unwrap_or(0);
+          let mut recipient_balance = self.balances.get(&(to, token_id)).unwrap_or(0 as u128);
           recipient_balance += value;
           self.balances.insert((to, token_id), recipient_balance);
   
@@ -936,7 +943,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
   
   (*
       fn balance_of(&self, owner: AccountId, token_id: TokenId) -> Balance {
-          self.balances.get(&(owner, token_id)).unwrap_or(0)
+          self.balances.get(&(owner, token_id)).unwrap_or(0 as u128)
       }
   *)
   Parameter balance_of :
@@ -1112,10 +1119,3 @@ Section Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract_t.
   }.
 End Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract_t.
 End Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract_t.
-
-(*
-fn zero_address() -> AccountId {
-    [0u8; 32].into()
-}
-*)
-Parameter zero_address : M erc1155.AccountId.t.

@@ -241,16 +241,25 @@ fn compile_expr_kind<'a>(
             }
         }
         thir::ExprKind::Call { fun, args, .. } => {
-            let func = Box::new(compile_expr(env, thir, fun).read());
             let args = args
                 .iter()
                 .map(|arg| compile_expr(env, thir, arg).read())
                 .collect();
+            let func = compile_expr(env, thir, fun);
+            let (purity, from_user) = match &func.match_simple_call(&["M.alloc"]) {
+                Some(Expr {
+                    kind: ExprKind::Constructor(_),
+                    ..
+                }) => (Purity::Pure, false),
+                _ => (Purity::Effectful, true),
+            };
+            let func = Box::new(func.read());
+
             ExprKind::Call {
                 func,
                 args,
-                purity: Purity::Effectful,
-                from_user: true,
+                purity,
+                from_user,
             }
             .alloc(Some(ty))
         }
@@ -684,6 +693,7 @@ fn compile_expr_kind<'a>(
                     DefKind::Mod | DefKind::ForeignMod => {
                         ExprKind::Var(compile_def_id(env, *def_id))
                     }
+                    DefKind::Variant => ExprKind::Constructor(compile_def_id(env, *def_id)),
                     _ => {
                         println!("unimplemented parent_kind: {:#?}", parent_kind);
                         println!("expression: {:#?}", expr);

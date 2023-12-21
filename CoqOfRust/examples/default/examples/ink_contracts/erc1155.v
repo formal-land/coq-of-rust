@@ -340,12 +340,22 @@ Section Env.
 End Env.
 End Env.
 
-Definition ON_ERC_1155_RECEIVED_SELECTOR : array u8.t :=
+(*
+fn zero_address() -> AccountId {
+    [0u8; 32].into()
+}
+*)
+Definition zero_address : M erc1155.AccountId.t :=
+  M.call
+    ((core.convert.Into.into (Self := array u8.t) (Trait := ltac:(refine _)))
+      (repeat (Integer.of_Z 0) 32)).
+
+Definition ON_ERC_1155_RECEIVED_SELECTOR : M.Val (array u8.t) :=
   M.run
     (M.alloc
       [ Integer.of_Z 242; Integer.of_Z 58; Integer.of_Z 110; Integer.of_Z 97 ]).
 
-Definition _ON_ERC_1155_BATCH_RECEIVED_SELECTOR : array u8.t :=
+Definition _ON_ERC_1155_BATCH_RECEIVED_SELECTOR : M.Val (array u8.t) :=
   M.run
     (M.alloc
       [ Integer.of_Z 188; Integer.of_Z 25; Integer.of_Z 124; Integer.of_Z 129
@@ -925,9 +935,7 @@ Section Impl_erc1155_Contract_t.
                     (Self := erc1155.Error.t)
                     (Trait := ltac:(refine _)))
                   erc1155.Error.UnexistentToken) in
-            let* α1 : core.result.Result.t unit erc1155.Error.t :=
-              M.call ("unimplemented parent_kind" α0) in
-            return_ α1 in
+            return_ (core.result.Result.Err α0) in
           let* α0 : M.Val unit := M.alloc tt in
           let* α1 := M.read α0 in
           let* α2 : unit := never_to_any α1 in
@@ -1002,7 +1010,7 @@ Section Impl_erc1155_Contract_t.
           sender_balance -= value;
           self.balances.insert((from, token_id), sender_balance);
   
-          let mut recipient_balance = self.balances.get(&(to, token_id)).unwrap_or(0);
+          let mut recipient_balance = self.balances.get(&(to, token_id)).unwrap_or(0 as u128);
           recipient_balance += value;
           self.balances.insert((to, token_id), recipient_balance);
   
@@ -1072,10 +1080,11 @@ Section Impl_erc1155_Contract_t.
           ((erc1155.Mapping.t (erc1155.AccountId.t * u128.t) u128.t)::["get"]
             (borrow (deref α0).["balances"])
             (borrow α3)) in
-      let* α5 : u128.t :=
-        M.call
-          ((core.option.Option.t u128.t)::["unwrap_or"] α4 (Integer.of_Z 0)) in
-      M.alloc α5 in
+      let* α5 : M.Val u128.t := M.alloc (Integer.of_Z 0) in
+      let* α6 : u128.t := M.read (use α5) in
+      let* α7 : u128.t :=
+        M.call ((core.option.Option.t u128.t)::["unwrap_or"] α4 α6) in
+      M.alloc α7 in
     let* _ : M.Val unit :=
       let β : M.Val u128.t := recipient_balance in
       let* α0 := M.read β in
@@ -1317,9 +1326,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                         (Self := erc1155.Error.t)
                         (Trait := ltac:(refine _)))
                       erc1155.Error.NotApproved) in
-                let* α1 : core.result.Result.t unit erc1155.Error.t :=
-                  M.call ("unimplemented parent_kind" α0) in
-                return_ α1 in
+                return_ (core.result.Result.Err α0) in
               let* α0 : M.Val unit := M.alloc tt in
               let* α1 := M.read α0 in
               let* α2 : unit := never_to_any α1 in
@@ -1349,9 +1356,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                     (Self := erc1155.Error.t)
                     (Trait := ltac:(refine _)))
                   erc1155.Error.ZeroAddressTransfer) in
-            let* α1 : core.result.Result.t unit erc1155.Error.t :=
-              M.call ("unimplemented parent_kind" α0) in
-            return_ α1 in
+            return_ (core.result.Result.Err α0) in
           let* α0 : M.Val unit := M.alloc tt in
           let* α1 := M.read α0 in
           let* α2 : unit := never_to_any α1 in
@@ -1384,9 +1389,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                     (Self := erc1155.Error.t)
                     (Trait := ltac:(refine _)))
                   erc1155.Error.InsufficientBalance) in
-            let* α1 : core.result.Result.t unit erc1155.Error.t :=
-              M.call ("unimplemented parent_kind" α0) in
-            return_ α1 in
+            return_ (core.result.Result.Err α0) in
           let* α0 : M.Val unit := M.alloc tt in
           let* α1 := M.read α0 in
           let* α2 : unit := never_to_any α1 in
@@ -1527,9 +1530,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                         (Self := erc1155.Error.t)
                         (Trait := ltac:(refine _)))
                       erc1155.Error.NotApproved) in
-                let* α1 : core.result.Result.t unit erc1155.Error.t :=
-                  M.call ("unimplemented parent_kind" α0) in
-                return_ α1 in
+                return_ (core.result.Result.Err α0) in
               let* α0 : M.Val unit := M.alloc tt in
               let* α1 := M.read α0 in
               let* α2 : unit := never_to_any α1 in
@@ -1559,9 +1560,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                     (Self := erc1155.Error.t)
                     (Trait := ltac:(refine _)))
                   erc1155.Error.ZeroAddressTransfer) in
-            let* α1 : core.result.Result.t unit erc1155.Error.t :=
-              M.call ("unimplemented parent_kind" α0) in
-            return_ α1 in
+            return_ (core.result.Result.Err α0) in
           let* α0 : M.Val unit := M.alloc tt in
           let* α1 := M.read α0 in
           let* α2 : unit := never_to_any α1 in
@@ -1583,9 +1582,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                     (Self := erc1155.Error.t)
                     (Trait := ltac:(refine _)))
                   erc1155.Error.BatchTransferMismatch) in
-            let* α1 : core.result.Result.t unit erc1155.Error.t :=
-              M.call ("unimplemented parent_kind" α0) in
-            return_ α1 in
+            return_ (core.result.Result.Err α0) in
           let* α0 : M.Val unit := M.alloc tt in
           let* α1 := M.read α0 in
           let* α2 : unit := never_to_any α1 in
@@ -1611,9 +1608,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                     (Self := erc1155.Error.t)
                     (Trait := ltac:(refine _)))
                   erc1155.Error.BatchTransferMismatch) in
-            let* α1 : core.result.Result.t unit erc1155.Error.t :=
-              M.call ("unimplemented parent_kind" α0) in
-            return_ α1 in
+            return_ (core.result.Result.Err α0) in
           let* α0 : M.Val unit := M.alloc tt in
           let* α1 := M.read α0 in
           let* α2 : unit := never_to_any α1 in
@@ -1728,9 +1723,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                                 (Self := erc1155.Error.t)
                                 (Trait := ltac:(refine _)))
                               erc1155.Error.InsufficientBalance) in
-                        let* α1 : core.result.Result.t unit erc1155.Error.t :=
-                          M.call ("unimplemented parent_kind" α0) in
-                        return_ α1 in
+                        return_ (core.result.Result.Err α0) in
                       let* α0 : M.Val unit := M.alloc tt in
                       let* α1 := M.read α0 in
                       let* α2 : unit := never_to_any α1 in
@@ -1848,7 +1841,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
   
   (*
       fn balance_of(&self, owner: AccountId, token_id: TokenId) -> Balance {
-          self.balances.get(&(owner, token_id)).unwrap_or(0)
+          self.balances.get(&(owner, token_id)).unwrap_or(0 as u128)
       }
   *)
   Definition balance_of
@@ -1868,7 +1861,9 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
         ((erc1155.Mapping.t (erc1155.AccountId.t * u128.t) u128.t)::["get"]
           (borrow (deref α0).["balances"])
           (borrow α3)) in
-    M.call ((core.option.Option.t u128.t)::["unwrap_or"] α4 (Integer.of_Z 0)).
+    let* α5 : M.Val u128.t := M.alloc (Integer.of_Z 0) in
+    let* α6 : u128.t := M.read (use α5) in
+    M.call ((core.option.Option.t u128.t)::["unwrap_or"] α4 α6).
   
   Global Instance AssociatedFunction_balance_of :
     Notations.DoubleColon Self "balance_of" := {
@@ -2054,9 +2049,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                     (Self := erc1155.Error.t)
                     (Trait := ltac:(refine _)))
                   erc1155.Error.SelfApproval) in
-            let* α1 : core.result.Result.t unit erc1155.Error.t :=
-              M.call ("unimplemented parent_kind" α0) in
-            return_ α1 in
+            return_ (core.result.Result.Err α0) in
           let* α0 : M.Val unit := M.alloc tt in
           let* α1 := M.read α0 in
           let* α2 : unit := never_to_any α1 in
@@ -2295,13 +2288,3 @@ Section Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract_t.
   }.
 End Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract_t.
 End Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract_t.
-
-(*
-fn zero_address() -> AccountId {
-    [0u8; 32].into()
-}
-*)
-Definition zero_address : M erc1155.AccountId.t :=
-  M.call
-    ((core.convert.Into.into (Self := array u8.t) (Trait := ltac:(refine _)))
-      (repeat (Integer.of_Z 0) 32)).

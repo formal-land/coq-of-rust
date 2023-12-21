@@ -451,11 +451,11 @@ Section Env.
 End Env.
 End Env.
 
-Definition MAX_OWNERS : u32.t := M.run (M.alloc (Integer.of_Z 50)).
+Definition MAX_OWNERS : M.Val u32.t := M.run (M.alloc (Integer.of_Z 50)).
 
 Ltac TransactionId := exact u32.t.
 
-Definition WRONG_TRANSACTION_ID : ref str.t :=
+Definition WRONG_TRANSACTION_ID : M.Val (ref str.t) :=
   M.run
     (M.pure (mk_str "The user specified an invalid transaction id. Abort.")).
 
@@ -2334,7 +2334,7 @@ Section Impl_multisig_Multisig_t.
                 (alloc.vec.Vec.t u8.t alloc.alloc.Global.t)
                 multisig.Error.t)::["map"]
             α4
-            "unimplemented parent_kind") in
+            core.option.Option.Some) in
       let* α6 : unit :=
         M.call
           (multisig.Env.t::["emit_event"]

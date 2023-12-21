@@ -45,6 +45,13 @@ struct Env {
     caller: AccountId,
 }
 
+/// Helper for referencing the zero address (`0x00`). Note that in practice this
+/// address should not be treated in any special way (such as a default
+/// placeholder) since it has a known private key.
+fn zero_address() -> AccountId {
+    [0u8; 32].into()
+}
+
 const ON_ERC_1155_RECEIVED_SELECTOR: [u8; 4] = [0xF2, 0x3A, 0x6E, 0x61];
 
 // This is the return value that we expect if a smart contract supports batch receiving
@@ -353,7 +360,7 @@ impl Contract {
         sender_balance -= value;
         self.balances.insert((from, token_id), sender_balance);
 
-        let mut recipient_balance = self.balances.get(&(to, token_id)).unwrap_or(0);
+        let mut recipient_balance = self.balances.get(&(to, token_id)).unwrap_or(0 as u128);
         recipient_balance += value;
         self.balances.insert((to, token_id), recipient_balance);
 
@@ -510,7 +517,7 @@ impl Erc1155 for Contract {
     }
 
     fn balance_of(&self, owner: AccountId, token_id: TokenId) -> Balance {
-        self.balances.get(&(owner, token_id)).unwrap_or(0)
+        self.balances.get(&(owner, token_id)).unwrap_or(0 as u128)
     }
 
     fn balance_of_batch(&self, owners: Vec<AccountId>, token_ids: Vec<TokenId>) -> Vec<Balance> {
@@ -592,11 +599,4 @@ impl Erc1155TokenReceiver for Contract {
         // implementation.
         unimplemented!("This smart contract does not accept batch token transfers.")
     }
-}
-
-/// Helper for referencing the zero address (`0x00`). Note that in practice this
-/// address should not be treated in any special way (such as a default
-/// placeholder) since it has a known private key.
-fn zero_address() -> AccountId {
-    [0u8; 32].into()
 }

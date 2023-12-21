@@ -77,7 +77,7 @@ Definition double_first
                   i32.t
                   core.num.error.ParseIntError.t)::["map"]
               α0
-              "unimplemented parent_kind")) :
+              core.option.Option.Some)) :
           M
             (core.result.Result.t
               (core.option.Option.t i32.t)

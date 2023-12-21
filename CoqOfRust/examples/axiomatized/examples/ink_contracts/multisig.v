@@ -344,11 +344,11 @@ Section Env.
 End Env.
 End Env.
 
-Parameter MAX_OWNERS : u32.t.
+Parameter MAX_OWNERS : M.Val u32.t.
 
 Ltac TransactionId := exact u32.t.
 
-Parameter WRONG_TRANSACTION_ID : ref str.t.
+Parameter WRONG_TRANSACTION_ID : M.Val (ref str.t).
 
 Module  CallInput.
 Section CallInput.

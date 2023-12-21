@@ -396,7 +396,7 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<Rc<To
             };
             vec![Rc::new(TopLevelItem::Const {
                 name,
-                ty: compile_type(env, ty),
+                ty: compile_type(env, ty).val(),
                 value,
             })]
         }
