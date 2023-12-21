@@ -38,7 +38,7 @@ Section SomeTrait.
     some_fn : M unit;
   }.
   
-  Global Instance Method_SomeType :
+  Global Instance Method_SomeType `(Trait) :
     Notations.DoubleColonType Self "SomeType" := {
     Notations.double_colon_type := SomeType;
   }.

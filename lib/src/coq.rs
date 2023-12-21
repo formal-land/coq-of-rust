@@ -1026,7 +1026,7 @@ impl<'a> ArgDecl<'a> {
     pub(crate) fn is_empty(&self) -> bool {
         match self.decl.to_owned() {
             ArgDeclVar::Simple { idents, .. } => idents.is_empty(),
-            ArgDeclVar::Generalized { idents, .. } => idents.is_empty(),
+            ArgDeclVar::Generalized { .. } => false, // ty would always be exist
             ArgDeclVar::Traits { traits } => traits.is_empty(),
             ArgDeclVar::Destructured { .. } => false,
         }

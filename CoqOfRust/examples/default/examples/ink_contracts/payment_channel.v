@@ -1276,7 +1276,8 @@ Section HashOutput.
     ℒ_0 :: core.default.Default.Trait Type_;
   }.
   
-  Global Instance Method_Type_ : Notations.DoubleColonType Self "Type_" := {
+  Global Instance Method_Type_ `(Trait) :
+    Notations.DoubleColonType Self "Type_" := {
     Notations.double_colon_type := Type_;
   }.
 End HashOutput.
