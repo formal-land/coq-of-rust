@@ -18,8 +18,8 @@ Section Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificati
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
+    let* self := M.alloc self in
+    let* f := M.alloc f in
     let* α0 : never.t := M.call core.intrinsics.unreachable in
     never_to_any α0.
   
@@ -44,7 +44,7 @@ Section Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarifica
   Definition clone
       (self : ref Self)
       : M generics_phantom_type_test_case_unit_clarification.Inch.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* α0 : ref generics_phantom_type_test_case_unit_clarification.Inch.t :=
       M.read self in
     M.read (deref α0).
@@ -88,8 +88,8 @@ Section Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificati
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
+    let* self := M.alloc self in
+    let* f := M.alloc f in
     let* α0 : never.t := M.call core.intrinsics.unreachable in
     never_to_any α0.
   
@@ -114,7 +114,7 @@ Section Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarifica
   Definition clone
       (self : ref Self)
       : M generics_phantom_type_test_case_unit_clarification.Mm.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* α0 : ref generics_phantom_type_test_case_unit_clarification.Mm.t :=
       M.read self in
     M.read (deref α0).
@@ -175,8 +175,8 @@ Section Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificati
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
+    let* self := M.alloc self in
+    let* f := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref str.t := M.read (mk_str "Length") in
     let* α2 :
@@ -221,7 +221,7 @@ Section Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarifica
   Definition clone
       (self : ref Self)
       : M (generics_phantom_type_test_case_unit_clarification.Length.t Unit) :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* α0 :
         ref
           (generics_phantom_type_test_case_unit_clarification.Length.t Unit) :=
@@ -292,11 +292,8 @@ Section Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarifi
       (self : Self)
       (rhs : generics_phantom_type_test_case_unit_clarification.Length.t Unit)
       : M (generics_phantom_type_test_case_unit_clarification.Length.t Unit) :=
-    let* self : M.Val Self := M.alloc self in
-    let* rhs :
-        M.Val
-          (generics_phantom_type_test_case_unit_clarification.Length.t Unit) :=
-      M.alloc rhs in
+    let* self := M.alloc self in
+    let* rhs := M.alloc rhs in
     let* α0 : f64.t := M.read self.["0"] in
     let* α1 : f64.t := M.read rhs.["0"] in
     let* α2 : f64.t := BinOp.Panic.add α0 α1 in

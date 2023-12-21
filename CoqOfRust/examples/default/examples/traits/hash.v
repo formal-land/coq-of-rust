@@ -44,8 +44,8 @@ Section Impl_core_hash_Hash_for_hash_Person_t.
       (self : ref Self)
       (state : mut_ref __H)
       : M unit :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* state : M.Val (mut_ref __H) := M.alloc state in
+    let* self := M.alloc self in
+    let* state := M.alloc state in
     let* _ : M.Val unit :=
       let* α0 : ref hash.Person.t := M.read self in
       let* α1 : mut_ref __H := M.read state in
@@ -103,7 +103,7 @@ Definition calculate_hash
     {ℋ_0 : core.hash.Hash.Trait T}
     (t : ref T)
     : M u64.t :=
-  let* t : M.Val (ref T) := M.alloc t in
+  let* t := M.alloc t in
   let* s : M.Val std.collections.hash.map.DefaultHasher.t :=
     let* α0 : std.collections.hash.map.DefaultHasher.t :=
       M.call std.collections.hash.map.DefaultHasher.t::["new"] in
@@ -174,7 +174,9 @@ Definition main : M unit :=
   let* _ : M.Val unit :=
     let* α0 : u64.t := M.call (hash.calculate_hash (borrow person1)) in
     let* α1 : u64.t := M.call (hash.calculate_hash (borrow person2)) in
-    if (use (UnOp.not (BinOp.Pure.ne α0 α1)) : bool) then
+    let* α2 : M.Val bool.t := M.alloc (UnOp.not (BinOp.Pure.ne α0 α1)) in
+    let* α3 : bool.t := M.read (use α2) in
+    if α3 then
       let* α0 : ref str.t :=
         M.read
           (mk_str

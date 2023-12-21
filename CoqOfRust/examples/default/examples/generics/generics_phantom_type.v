@@ -48,9 +48,8 @@ Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_t_A_B.
       (self : ref Self)
       (other : ref (generics_phantom_type.PhantomTuple.t A B))
       : M bool.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* other : M.Val (ref (generics_phantom_type.PhantomTuple.t A B)) :=
-      M.alloc other in
+    let* self := M.alloc self in
+    let* other := M.alloc other in
     let* α0 : ref (generics_phantom_type.PhantomTuple.t A B) := M.read self in
     let* α1 : ref (generics_phantom_type.PhantomTuple.t A B) := M.read other in
     let* α2 : bool.t :=
@@ -137,9 +136,8 @@ Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_t_A_B.
       (self : ref Self)
       (other : ref (generics_phantom_type.PhantomStruct.t A B))
       : M bool.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* other : M.Val (ref (generics_phantom_type.PhantomStruct.t A B)) :=
-      M.alloc other in
+    let* self := M.alloc self in
+    let* other := M.alloc other in
     let* α0 : ref (generics_phantom_type.PhantomStruct.t A B) := M.read self in
     let* α1 : ref (generics_phantom_type.PhantomStruct.t A B) := M.read other in
     let* α2 : bool.t :=

@@ -47,7 +47,7 @@ Section Impl_core_clone_Clone_for_conditional_compilation_AccountId_t.
   Clone
   *)
   Definition clone (self : ref Self) : M conditional_compilation.AccountId.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let _ : unit := tt in
     let* α0 : ref conditional_compilation.AccountId.t := M.read self in
     M.read (deref α0).
@@ -173,7 +173,7 @@ Section Impl_conditional_compilation_Env_t.
       }
   *)
   Definition caller (self : ref Self) : M conditional_compilation.AccountId.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* α0 : ref conditional_compilation.Env.t := M.read self in
     M.read (deref α0).["caller"].
   
@@ -191,8 +191,8 @@ Section Impl_conditional_compilation_Env_t.
       (self : ref Self)
       (_event : conditional_compilation.Event.t)
       : M unit :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* _event : M.Val conditional_compilation.Event.t := M.alloc _event in
+    let* self := M.alloc self in
+    let* _event := M.alloc _event in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
@@ -210,7 +210,7 @@ Section Impl_conditional_compilation_Env_t.
   Definition block_number
       (self : ref Self)
       : M ltac:(conditional_compilation.BlockNumber) :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
@@ -263,7 +263,7 @@ Section Impl_conditional_compilation_ConditionalCompilation_t.
       }
   *)
   Definition env (self : ref Self) : M conditional_compilation.Env.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     M.call conditional_compilation.ConditionalCompilation.t::["init_env"].
   
   Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
@@ -295,7 +295,7 @@ Section Impl_conditional_compilation_ConditionalCompilation_t.
       }
   *)
   Definition new_foo (value : bool.t) : M Self :=
-    let* value : M.Val bool.t := M.alloc value in
+    let* value := M.alloc value in
     let* α0 : bool.t := M.read value in
     M.pure {| conditional_compilation.ConditionalCompilation.value := α0; |}.
   
@@ -310,7 +310,7 @@ Section Impl_conditional_compilation_ConditionalCompilation_t.
       }
   *)
   Definition new_bar (value : bool.t) : M Self :=
-    let* value : M.Val bool.t := M.alloc value in
+    let* value := M.alloc value in
     let* α0 : bool.t := M.read value in
     M.pure {| conditional_compilation.ConditionalCompilation.value := α0; |}.
   
@@ -325,7 +325,7 @@ Section Impl_conditional_compilation_ConditionalCompilation_t.
       }
   *)
   Definition new_foo_bar (value : bool.t) : M Self :=
-    let* value : M.Val bool.t := M.alloc value in
+    let* value := M.alloc value in
     let* α0 : bool.t := M.read value in
     M.pure {| conditional_compilation.ConditionalCompilation.value := α0; |}.
   
@@ -345,7 +345,7 @@ Section Impl_conditional_compilation_ConditionalCompilation_t.
       }
   *)
   Definition inherent_flip_foo (self : mut_ref Self) : M unit :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* _ : M.Val unit :=
       let* α0 : mut_ref conditional_compilation.ConditionalCompilation.t :=
         M.read self in
@@ -399,7 +399,7 @@ Section Impl_conditional_compilation_ConditionalCompilation_t.
       }
   *)
   Definition inherent_flip_bar (self : mut_ref Self) : M unit :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* caller : M.Val conditional_compilation.AccountId.t :=
       let* α0 : conditional_compilation.Env.t :=
         M.call conditional_compilation.ConditionalCompilation.t::["init_env"] in
@@ -461,7 +461,7 @@ Section Impl_conditional_compilation_Flip_for_conditional_compilation_Conditiona
       }
   *)
   Definition flip (self : mut_ref Self) : M unit :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* _ : M.Val unit :=
       let* α0 : mut_ref conditional_compilation.ConditionalCompilation.t :=
         M.read self in
@@ -483,7 +483,7 @@ Section Impl_conditional_compilation_Flip_for_conditional_compilation_Conditiona
       }
   *)
   Definition get (self : ref Self) : M bool.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* α0 : ref conditional_compilation.ConditionalCompilation.t :=
       M.read self in
     M.read (deref α0).["value"].
@@ -503,8 +503,8 @@ Section Impl_conditional_compilation_Flip_for_conditional_compilation_Conditiona
       }
   *)
   Definition push_foo (self : mut_ref Self) (value : bool.t) : M unit :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
-    let* value : M.Val bool.t := M.alloc value in
+    let* self := M.alloc self in
+    let* value := M.alloc value in
     let* caller : M.Val conditional_compilation.AccountId.t :=
       let* α0 : conditional_compilation.Env.t :=
         M.call conditional_compilation.ConditionalCompilation.t::["init_env"] in

@@ -47,7 +47,7 @@ Section Impl_core_clone_Clone_for_contract_terminate_AccountId_t.
   Clone
   *)
   Definition clone (self : ref Self) : M contract_terminate.AccountId.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let _ : unit := tt in
     let* α0 : ref contract_terminate.AccountId.t := M.read self in
     M.read (deref α0).
@@ -99,7 +99,7 @@ Section Impl_contract_terminate_Env_t.
       }
   *)
   Definition caller (self : ref Self) : M contract_terminate.AccountId.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* α0 : ref contract_terminate.Env.t := M.read self in
     M.read (deref α0).["caller"].
   
@@ -117,8 +117,8 @@ Section Impl_contract_terminate_Env_t.
       (self : ref Self)
       (_account : contract_terminate.AccountId.t)
       : M unit :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* _account : M.Val contract_terminate.AccountId.t := M.alloc _account in
+    let* self := M.alloc self in
+    let* _account := M.alloc _account in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
@@ -161,7 +161,7 @@ Section Impl_contract_terminate_JustTerminate_t.
       }
   *)
   Definition env (self : ref Self) : M contract_terminate.Env.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     M.call contract_terminate.JustTerminate.t::["init_env"].
   
   Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
@@ -185,7 +185,7 @@ Section Impl_contract_terminate_JustTerminate_t.
       }
   *)
   Definition terminate_me (self : mut_ref Self) : M unit :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* _ : M.Val unit :=
       let* α0 : mut_ref contract_terminate.JustTerminate.t := M.read self in
       let* α1 : contract_terminate.Env.t :=

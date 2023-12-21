@@ -12,11 +12,13 @@ fn division(dividend: i32, divisor: i32) -> i32 {
 }
 *)
 Definition division (dividend : i32.t) (divisor : i32.t) : M i32.t :=
-  let* dividend : M.Val i32.t := M.alloc dividend in
-  let* divisor : M.Val i32.t := M.alloc divisor in
+  let* dividend := M.alloc dividend in
+  let* divisor := M.alloc divisor in
   let* α0 : i32.t := M.read divisor in
-  let* α1 : M.Val i32.t :=
-    if (use (BinOp.Pure.eq α0 (Integer.of_Z 0)) : bool) then
+  let* α1 : M.Val bool.t := M.alloc (BinOp.Pure.eq α0 (Integer.of_Z 0)) in
+  let* α2 : bool.t := M.read (use α1) in
+  let* α3 : M.Val i32.t :=
+    if α2 then
       let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "division by zero") in
         let* α1 : never.t := M.call (std.panicking.begin_panic α0) in
@@ -31,7 +33,7 @@ Definition division (dividend : i32.t) (divisor : i32.t) : M i32.t :=
       let* α1 : i32.t := M.read divisor in
       let* α2 : i32.t := BinOp.Panic.div α0 α1 in
       M.alloc α2 in
-  M.read α1.
+  M.read α3.
 
 (*
 fn main() {

@@ -78,8 +78,8 @@ Section Impl_mother_Mapping_t_K_V.
       (self : ref Self)
       (_key : ref K)
       : M (core.option.Option.t V) :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* _key : M.Val (ref K) := M.alloc _key in
+    let* self := M.alloc self in
+    let* _key := M.alloc _key in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
@@ -94,9 +94,9 @@ Section Impl_mother_Mapping_t_K_V.
       }
   *)
   Definition insert (self : mut_ref Self) (_key : K) (_value : V) : M unit :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
-    let* _key : M.Val K := M.alloc _key in
-    let* _value : M.Val V := M.alloc _value in
+    let* self := M.alloc self in
+    let* _key := M.alloc _key in
+    let* _value := M.alloc _value in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
@@ -154,7 +154,7 @@ Section Impl_core_clone_Clone_for_mother_AccountId_t.
   Clone
   *)
   Definition clone (self : ref Self) : M mother.AccountId.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let _ : unit := tt in
     let* α0 : ref mother.AccountId.t := M.read self in
     M.read (deref α0).
@@ -197,8 +197,8 @@ Section Impl_core_cmp_PartialEq_for_mother_AccountId_t.
   PartialEq
   *)
   Definition eq (self : ref Self) (other : ref mother.AccountId.t) : M bool.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* other : M.Val (ref mother.AccountId.t) := M.alloc other in
+    let* self := M.alloc self in
+    let* other := M.alloc other in
     let* α0 : ref mother.AccountId.t := M.read self in
     let* α1 : u128.t := M.read (deref α0).["0"] in
     let* α2 : ref mother.AccountId.t := M.read other in
@@ -235,7 +235,7 @@ Section Impl_core_cmp_Eq_for_mother_AccountId_t.
   Eq
   *)
   Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let _ : unit := tt in
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
@@ -344,8 +344,8 @@ Section Impl_core_cmp_PartialEq_for_mother_Bids_t.
   PartialEq
   *)
   Definition eq (self : ref Self) (other : ref mother.Bids.t) : M bool.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* other : M.Val (ref mother.Bids.t) := M.alloc other in
+    let* self := M.alloc self in
+    let* other := M.alloc other in
     let* α0 : ref mother.Bids.t := M.read self in
     let* α1 : ref mother.Bids.t := M.read other in
     M.call
@@ -390,7 +390,7 @@ Section Impl_core_cmp_Eq_for_mother_Bids_t.
   Eq
   *)
   Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let _ : unit := tt in
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
@@ -415,7 +415,7 @@ Section Impl_core_clone_Clone_for_mother_Bids_t.
   Clone
   *)
   Definition clone (self : ref Self) : M mother.Bids.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* α0 : ref mother.Bids.t := M.read self in
     let* α1 :
         alloc.vec.Vec.t
@@ -471,8 +471,8 @@ Section Impl_core_cmp_PartialEq_for_mother_Outline_t.
   PartialEq
   *)
   Definition eq (self : ref Self) (other : ref mother.Outline.t) : M bool.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* other : M.Val (ref mother.Outline.t) := M.alloc other in
+    let* self := M.alloc self in
+    let* other := M.alloc other in
     let* __self_tag : M.Val isize.t :=
       let* α0 : ref mother.Outline.t := M.read self in
       let* α1 : isize.t := M.call (core.intrinsics.discriminant_value α0) in
@@ -516,7 +516,7 @@ Section Impl_core_cmp_Eq_for_mother_Outline_t.
   Eq
   *)
   Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     M.pure tt.
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
@@ -539,7 +539,7 @@ Section Impl_core_clone_Clone_for_mother_Outline_t.
   Clone
   *)
   Definition clone (self : ref Self) : M mother.Outline.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* α0 : ref mother.Outline.t := M.read self in
     let* α1 : M.Val mother.Outline.t :=
       match α0 with
@@ -588,8 +588,8 @@ Section Impl_core_cmp_PartialEq_for_mother_Status_t.
   PartialEq
   *)
   Definition eq (self : ref Self) (other : ref mother.Status.t) : M bool.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* other : M.Val (ref mother.Status.t) := M.alloc other in
+    let* self := M.alloc self in
+    let* other := M.alloc other in
     let* __self_tag : M.Val isize.t :=
       let* α0 : ref mother.Status.t := M.read self in
       let* α1 : isize.t := M.call (core.intrinsics.discriminant_value α0) in
@@ -608,16 +608,16 @@ Section Impl_core_cmp_PartialEq_for_mother_Status_t.
           (mother.Status.EndingPeriod __self_0,
             mother.Status.EndingPeriod __arg1_0)
           =>
-        let* __arg1_0 := M.alloc __arg1_0 in
         let* __self_0 := M.alloc __self_0 in
+        let* __arg1_0 := M.alloc __arg1_0 in
         let* α0 : ref u32.t := M.read __self_0 in
         let* α1 : u32.t := M.read (deref α0) in
         let* α2 : ref u32.t := M.read __arg1_0 in
         let* α3 : u32.t := M.read (deref α2) in
         M.alloc (BinOp.Pure.eq α1 α3)
       | (mother.Status.Ended __self_0, mother.Status.Ended __arg1_0) =>
-        let* __arg1_0 := M.alloc __arg1_0 in
         let* __self_0 := M.alloc __self_0 in
+        let* __arg1_0 := M.alloc __arg1_0 in
         let* α0 : ref mother.Outline.t := M.read __self_0 in
         let* α1 : ref mother.Outline.t := M.read __arg1_0 in
         let* α2 : bool.t :=
@@ -629,8 +629,8 @@ Section Impl_core_cmp_PartialEq_for_mother_Status_t.
               α1) in
         M.alloc α2
       | (mother.Status.RfDelay __self_0, mother.Status.RfDelay __arg1_0) =>
-        let* __arg1_0 := M.alloc __arg1_0 in
         let* __self_0 := M.alloc __self_0 in
+        let* __arg1_0 := M.alloc __arg1_0 in
         let* α0 : ref u32.t := M.read __self_0 in
         let* α1 : u32.t := M.read (deref α0) in
         let* α2 : ref u32.t := M.read __arg1_0 in
@@ -673,7 +673,7 @@ Section Impl_core_cmp_Eq_for_mother_Status_t.
   Eq
   *)
   Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let _ : unit := tt in
     let _ : unit := tt in
     let* α0 : M.Val unit := M.alloc tt in
@@ -699,7 +699,7 @@ Section Impl_core_clone_Clone_for_mother_Status_t.
   Clone
   *)
   Definition clone (self : ref Self) : M mother.Status.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* α0 : ref mother.Status.t := M.read self in
     let* α1 : M.Val mother.Status.t :=
       match α0 with
@@ -825,8 +825,8 @@ Section Impl_core_cmp_PartialEq_for_mother_Auction_t.
   PartialEq
   *)
   Definition eq (self : ref Self) (other : ref mother.Auction.t) : M bool.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* other : M.Val (ref mother.Auction.t) := M.alloc other in
+    let* self := M.alloc self in
+    let* other := M.alloc other in
     let* α0 : ref mother.Auction.t := M.read self in
     let* α1 : ref mother.Auction.t := M.read other in
     let* α2 : bool.t :=
@@ -922,7 +922,7 @@ Section Impl_core_cmp_Eq_for_mother_Auction_t.
   Eq
   *)
   Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let _ : unit := tt in
     let _ : unit := tt in
     let _ : unit := tt in
@@ -953,7 +953,7 @@ Section Impl_core_clone_Clone_for_mother_Auction_t.
   Clone
   *)
   Definition clone (self : ref Self) : M mother.Auction.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* α0 : ref mother.Auction.t := M.read self in
     let* α1 : alloc.string.String.t :=
       M.call
@@ -1112,8 +1112,8 @@ Section Impl_core_cmp_PartialEq_for_mother_Failure_t.
   PartialEq
   *)
   Definition eq (self : ref Self) (other : ref mother.Failure.t) : M bool.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* other : M.Val (ref mother.Failure.t) := M.alloc other in
+    let* self := M.alloc self in
+    let* other := M.alloc other in
     let* __self_tag : M.Val isize.t :=
       let* α0 : ref mother.Failure.t := M.read self in
       let* α1 : isize.t := M.call (core.intrinsics.discriminant_value α0) in
@@ -1129,8 +1129,8 @@ Section Impl_core_cmp_PartialEq_for_mother_Failure_t.
     let* α4 : M.Val bool.t :=
       match (α2, α3) with
       | (mother.Failure.Revert __self_0, mother.Failure.Revert __arg1_0) =>
-        let* __arg1_0 := M.alloc __arg1_0 in
         let* __self_0 := M.alloc __self_0 in
+        let* __arg1_0 := M.alloc __arg1_0 in
         let* α0 : ref alloc.string.String.t := M.read __self_0 in
         let* α1 : ref alloc.string.String.t := M.read __arg1_0 in
         let* α2 : bool.t :=
@@ -1178,7 +1178,7 @@ Section Impl_core_cmp_Eq_for_mother_Failure_t.
   Eq
   *)
   Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let _ : unit := tt in
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
@@ -1226,7 +1226,7 @@ Section Impl_mother_Env_t.
       }
   *)
   Definition caller (self : ref Self) : M mother.AccountId.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* α0 : ref mother.Env.t := M.read self in
     M.read (deref α0).["caller"].
   
@@ -1241,8 +1241,8 @@ Section Impl_mother_Env_t.
       }
   *)
   Definition emit_event (self : ref Self) (_event : mother.Event.t) : M unit :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* _event : M.Val mother.Event.t := M.alloc _event in
+    let* self := M.alloc self in
+    let* _event := M.alloc _event in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
@@ -1334,7 +1334,7 @@ Section Impl_mother_Mother_t.
       }
   *)
   Definition env (self : ref Self) : M mother.Env.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     M.call mother.Mother.t::["init_env"].
   
   Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
@@ -1350,7 +1350,7 @@ Section Impl_mother_Mother_t.
       }
   *)
   Definition new (auction : mother.Auction.t) : M Self :=
-    let* auction : M.Val mother.Auction.t := M.alloc auction in
+    let* auction := M.alloc auction in
     let* α0 : mother.Mapping.t mother.AccountId.t u128.t :=
       M.call
         (core.default.Default.default
@@ -1391,10 +1391,10 @@ Section Impl_mother_Mother_t.
   Definition failed_new
       (fail : bool.t)
       : M (core.result.Result.t Self mother.Failure.t) :=
-    let* fail : M.Val bool.t := M.alloc fail in
-    let* α0 : bool.t := M.read fail in
+    let* fail := M.alloc fail in
+    let* α0 : bool.t := M.read (use fail) in
     let* α1 : M.Val (core.result.Result.t mother.Mother.t mother.Failure.t) :=
-      if (use α0 : bool) then
+      if α0 then
         let* α0 : ref str.t := M.read (mk_str "Reverting instantiation") in
         let* α1 : alloc.string.String.t :=
           M.call
@@ -1429,8 +1429,8 @@ Section Impl_mother_Mother_t.
       (self : mut_ref Self)
       (auction : mother.Auction.t)
       : M mother.Auction.t :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
-    let* auction : M.Val mother.Auction.t := M.alloc auction in
+    let* self := M.alloc self in
+    let* auction := M.alloc auction in
     let* _ : M.Val unit :=
       let* α0 : mut_ref mother.Mother.t := M.read self in
       let* α1 : mother.Env.t :=
@@ -1473,8 +1473,8 @@ Section Impl_mother_Mother_t.
       (self : mut_ref Self)
       (fail : core.option.Option.t mother.Failure.t)
       : M (core.result.Result.t unit mother.Failure.t) :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
-    let* fail : M.Val (core.option.Option.t mother.Failure.t) := M.alloc fail in
+    let* self := M.alloc self in
+    let* fail := M.alloc fail in
     let* α0 : core.option.Option.t mother.Failure.t := M.read fail in
     let* α1 : M.Val (core.result.Result.t unit mother.Failure.t) :=
       match α0 with
@@ -1511,8 +1511,8 @@ Section Impl_mother_Mother_t.
       (self : mut_ref Self)
       (_message : alloc.string.String.t)
       : M unit :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
-    let* _message : M.Val alloc.string.String.t := M.alloc _message in
+    let* self := M.alloc self in
+    let* _message := M.alloc _message in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "debug_log: ") in

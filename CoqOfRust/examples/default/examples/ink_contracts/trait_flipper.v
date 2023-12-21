@@ -62,7 +62,7 @@ Section Impl_trait_flipper_Flip_for_trait_flipper_Flipper_t.
       }
   *)
   Definition flip (self : mut_ref Self) : M unit :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* _ : M.Val unit :=
       let* α0 : mut_ref trait_flipper.Flipper.t := M.read self in
       let* α1 : mut_ref trait_flipper.Flipper.t := M.read self in
@@ -82,7 +82,7 @@ Section Impl_trait_flipper_Flip_for_trait_flipper_Flipper_t.
       }
   *)
   Definition get (self : ref Self) : M bool.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* α0 : ref trait_flipper.Flipper.t := M.read self in
     M.read (deref α0).["value"].
   

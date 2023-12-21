@@ -29,7 +29,7 @@ Section Impl_custom_allocator_CustomAllocator_t.
       }
   *)
   Definition new (init_value : bool.t) : M Self :=
-    let* init_value : M.Val bool.t := M.alloc init_value in
+    let* init_value := M.alloc init_value in
     let* α0 : bool.t := M.read init_value in
     let* α1 : M.Val (array bool.t) := M.alloc [ α0 ] in
     let* α2 : M.Val (alloc.boxed.Box.t (array bool.t) alloc.alloc.Global.t) :=
@@ -68,7 +68,7 @@ Section Impl_custom_allocator_CustomAllocator_t.
       }
   *)
   Definition flip (self : mut_ref Self) : M unit :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* _ : M.Val unit :=
       let* α0 : mut_ref custom_allocator.CustomAllocator.t := M.read self in
       let* α1 : mut_ref bool.t :=
@@ -102,7 +102,7 @@ Section Impl_custom_allocator_CustomAllocator_t.
       }
   *)
   Definition get (self : ref Self) : M bool.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* α0 : ref custom_allocator.CustomAllocator.t := M.read self in
     let* α1 : ref bool.t :=
       M.call

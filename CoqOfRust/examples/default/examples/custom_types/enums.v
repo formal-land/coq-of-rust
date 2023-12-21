@@ -35,7 +35,7 @@ fn inspect(event: WebEvent) {
 }
 *)
 Definition inspect (event : enums.WebEvent.t) : M unit :=
-  let* event : M.Val enums.WebEvent.t := M.alloc event in
+  let* event := M.alloc event in
   let* α0 : enums.WebEvent.t := M.read event in
   let* α1 : M.Val unit :=
     match α0 with
@@ -118,8 +118,8 @@ Definition inspect (event : enums.WebEvent.t) : M unit :=
         {| enums.WebEvent.Click.x := x; enums.WebEvent.Click.y := y;
         |}
         =>
-      let* y := M.alloc y in
       let* x := M.alloc x in
+      let* y := M.alloc y in
       let* _ : M.Val unit :=
         let* _ : M.Val unit :=
           let* α0 : ref str.t := M.read (mk_str "clicked at x=") in

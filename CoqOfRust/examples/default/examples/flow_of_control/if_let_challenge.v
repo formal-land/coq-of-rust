@@ -23,7 +23,7 @@ Definition main : M unit :=
   let* α0 : M.Val bool.t := let_if if_let_challenge.Foo.Bar  := a in
   let* α1 : bool.t := M.read α0 in
   let* α0 : M.Val unit :=
-    if (α1 : bool) then
+    if α1 then
       let* _ : M.Val unit :=
         let* _ : M.Val unit :=
           let* α0 : ref str.t := M.read (mk_str "a is foobar

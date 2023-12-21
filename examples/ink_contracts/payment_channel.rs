@@ -98,6 +98,78 @@ impl Env {
     }
 }
 
+pub trait HashOutput {
+    type Type: Default;
+}
+
+pub trait CryptoHash: HashOutput {
+    // Required method
+    fn hash(input: &[u8], output: &mut <Self as HashOutput>::Type);
+}
+
+pub fn hash_encoded<H, T>(input: &T, output: &mut <H as HashOutput>::Type)
+where
+    H: CryptoHash,
+{
+    unimplemented!()
+}
+
+pub fn ecdsa_recover(
+    signature: &[u8; 65],
+    message_hash: &[u8; 32],
+    output: &mut [u8; 33],
+) -> Result<()> {
+    unimplemented!()
+}
+
+pub enum Sha2x256 {}
+
+pub enum Keccak256 {}
+
+pub enum Blake2x256 {}
+
+pub enum Blake2x128 {}
+
+impl HashOutput for Sha2x256 {
+    type Type = [u8; 32];
+}
+
+impl HashOutput for Keccak256 {
+    type Type = [u8; 32];
+}
+
+impl HashOutput for Blake2x256 {
+    type Type = [u8; 32];
+}
+
+impl HashOutput for Blake2x128 {
+    type Type = [u8; 16];
+}
+
+impl CryptoHash for Sha2x256 {
+    fn hash(input: &[u8], output: &mut <Self as HashOutput>::Type) {
+        unimplemented!()
+    }
+}
+
+impl CryptoHash for Keccak256 {
+    fn hash(input: &[u8], output: &mut <Self as HashOutput>::Type) {
+        unimplemented!()
+    }
+}
+
+impl CryptoHash for Blake2x256 {
+    fn hash(input: &[u8], output: &mut <Self as HashOutput>::Type) {
+        unimplemented!()
+    }
+}
+
+impl CryptoHash for Blake2x128 {
+    fn hash(input: &[u8], output: &mut <Self as HashOutput>::Type) {
+        unimplemented!()
+    }
+}
+
 impl PaymentChannel {
     fn init_env() -> Env {
         unimplemented!()
@@ -105,6 +177,20 @@ impl PaymentChannel {
 
     fn env(&self) -> Env {
         Self::init_env()
+    }
+
+    fn is_signature_valid(&self, amount: Balance, signature: [u8; 65]) -> bool {
+        let encodable = (self.env().account_id(), amount);
+        let mut message = <Sha2x256 as HashOutput>::Type::default();
+        hash_encoded::<Sha2x256, _>(&encodable, &mut message);
+
+        let mut pub_key = [0; 33];
+        ecdsa_recover(&signature, &message, &mut pub_key)
+            .unwrap_or_else(|err| panic!("recover failed: {err:?}"));
+        let mut signature_account_id = [0; 32];
+        <Blake2x256 as CryptoHash>::hash(&pub_key, &mut signature_account_id);
+
+        self.recipient == signature_account_id.into()
     }
 
     /// The only constructor of the contract.
@@ -125,16 +211,6 @@ impl PaymentChannel {
         }
     }
 
-    /// The `recipient` can close the payment channel anytime. The specified
-    /// `amount` will be sent to the `recipient` and the remainder will go
-    /// back to the `sender`.
-    pub fn close(&mut self, amount: Balance, signature: [u8; 65]) -> Result<()> {
-        self.close_inner(amount, signature)?;
-        self.env().terminate_contract(self.sender);
-
-        Ok(())
-    }
-
     /// We split this out in order to make testing `close` simpler.
     fn close_inner(&mut self, amount: Balance, signature: [u8; 65]) -> Result<()> {
         if self.env().caller() != self.recipient {
@@ -153,6 +229,16 @@ impl PaymentChannel {
         self.env()
             .transfer(self.recipient, amount - self.withdrawn)
             .map_err(|_| Error::TransferFailed)?;
+
+        Ok(())
+    }
+
+    /// The `recipient` can close the payment channel anytime. The specified
+    /// `amount` will be sent to the `recipient` and the remainder will go
+    /// back to the `sender`.
+    pub fn close(&mut self, amount: Balance, signature: [u8; 65]) -> Result<()> {
+        self.close_inner(amount, signature)?;
+        self.env().terminate_contract(self.sender);
 
         Ok(())
     }
@@ -257,93 +343,5 @@ impl PaymentChannel {
     /// Returns the `balance` of the contract.
     pub fn get_balance(&self) -> Balance {
         self.env().balance()
-    }
-}
-
-pub trait HashOutput {
-    type Type: Default;
-}
-
-pub trait CryptoHash: HashOutput {
-    // Required method
-    fn hash(input: &[u8], output: &mut <Self as HashOutput>::Type);
-}
-
-pub fn hash_encoded<H, T>(input: &T, output: &mut <H as HashOutput>::Type)
-where
-    H: CryptoHash,
-{
-    unimplemented!()
-}
-
-pub fn ecdsa_recover(
-    signature: &[u8; 65],
-    message_hash: &[u8; 32],
-    output: &mut [u8; 33],
-) -> Result<()> {
-    unimplemented!()
-}
-
-pub enum Sha2x256 {}
-
-pub enum Keccak256 {}
-
-pub enum Blake2x256 {}
-
-pub enum Blake2x128 {}
-
-impl HashOutput for Sha2x256 {
-    type Type = [u8; 32];
-}
-
-impl HashOutput for Keccak256 {
-    type Type = [u8; 32];
-}
-
-impl HashOutput for Blake2x256 {
-    type Type = [u8; 32];
-}
-
-impl HashOutput for Blake2x128 {
-    type Type = [u8; 16];
-}
-
-impl CryptoHash for Sha2x256 {
-    fn hash(input: &[u8], output: &mut <Self as HashOutput>::Type) {
-        unimplemented!()
-    }
-}
-
-impl CryptoHash for Keccak256 {
-    fn hash(input: &[u8], output: &mut <Self as HashOutput>::Type) {
-        unimplemented!()
-    }
-}
-
-impl CryptoHash for Blake2x256 {
-    fn hash(input: &[u8], output: &mut <Self as HashOutput>::Type) {
-        unimplemented!()
-    }
-}
-
-impl CryptoHash for Blake2x128 {
-    fn hash(input: &[u8], output: &mut <Self as HashOutput>::Type) {
-        unimplemented!()
-    }
-}
-
-impl PaymentChannel {
-    fn is_signature_valid(&self, amount: Balance, signature: [u8; 65]) -> bool {
-        let encodable = (self.env().account_id(), amount);
-        let mut message = <Sha2x256 as HashOutput>::Type::default();
-        hash_encoded::<Sha2x256, _>(&encodable, &mut message);
-
-        let mut pub_key = [0; 33];
-        ecdsa_recover(&signature, &message, &mut pub_key)
-            .unwrap_or_else(|err| panic!("recover failed: {err:?}"));
-        let mut signature_account_id = [0; 32];
-        <Blake2x256 as CryptoHash>::hash(&pub_key, &mut signature_account_id);
-
-        self.recipient == signature_account_id.into()
     }
 }

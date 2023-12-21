@@ -10,8 +10,7 @@ fn double_first(vec: Vec<&str>) -> i32 {
 Definition double_first
     (vec : alloc.vec.Vec.t (ref str.t) alloc.vec.Vec.Default.A)
     : M i32.t :=
-  let* vec : M.Val (alloc.vec.Vec.t (ref str.t) alloc.vec.Vec.Default.A) :=
-    M.alloc vec in
+  let* vec := M.alloc vec in
   let* first : M.Val (ref (ref str.t)) :=
     let* α0 : ref (slice (ref str.t)) :=
       M.call

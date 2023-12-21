@@ -23,7 +23,7 @@ Section Impl_scoping_rules_lifetimes_methods_Owner_t.
       }
   *)
   Definition add_one (self : mut_ref Self) : M unit :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* _ : M.Val unit :=
       let* β : M.Val i32.t :=
         let* α0 : mut_ref scoping_rules_lifetimes_methods.Owner.t :=
@@ -46,7 +46,7 @@ Section Impl_scoping_rules_lifetimes_methods_Owner_t.
       }
   *)
   Definition print (self : ref Self) : M unit :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "`print`: ") in

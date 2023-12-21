@@ -44,7 +44,7 @@ Section Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book_t.
   Definition clone
       (self : ref Self)
       : M scoping_rules_borrowing_mutablity.Book.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let _ : unit := tt in
     let _ : unit := tt in
     let _ : unit := tt in
@@ -83,8 +83,7 @@ fn borrow_book(book: &Book) {
 Definition borrow_book
     (book : ref scoping_rules_borrowing_mutablity.Book.t)
     : M unit :=
-  let* book : M.Val (ref scoping_rules_borrowing_mutablity.Book.t) :=
-    M.alloc book in
+  let* book := M.alloc book in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "I immutably borrowed ") in
@@ -127,8 +126,7 @@ fn new_edition(book: &mut Book) {
 Definition new_edition
     (book : mut_ref scoping_rules_borrowing_mutablity.Book.t)
     : M unit :=
-  let* book : M.Val (mut_ref scoping_rules_borrowing_mutablity.Book.t) :=
-    M.alloc book in
+  let* book := M.alloc book in
   let* _ : M.Val unit :=
     let* α0 : mut_ref scoping_rules_borrowing_mutablity.Book.t := M.read book in
     assign (deref α0).["year"] (Integer.of_Z 2014) in

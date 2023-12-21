@@ -51,6 +51,13 @@ Module Impl_Option. Section Impl_Option.
 
   Definition Self : Set := Option.t T.
 
+  (* pub fn expect(self, msg: &str) -> T *)
+  Parameter expect : Self -> ref str.t -> M T.
+
+  Global Instance AF_expect : Notations.DoubleColon Self "expect" := {
+    Notations.double_colon := expect;
+  }.
+
   Definition unwrap_or_default {H0 : core.default.Default.Trait T}
       (self : Self) : M T :=
     match self with

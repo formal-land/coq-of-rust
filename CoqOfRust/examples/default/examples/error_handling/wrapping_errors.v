@@ -20,8 +20,8 @@ Section Impl_core_fmt_Debug_for_wrapping_errors_DoubleError_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
+    let* self := M.alloc self in
+    let* f := M.alloc f in
     let* α0 : ref wrapping_errors.DoubleError.t := M.read self in
     let* α1 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=
       match α0 with
@@ -73,8 +73,8 @@ Section Impl_core_fmt_Display_for_wrapping_errors_DoubleError_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
+    let* self := M.alloc self in
+    let* f := M.alloc f in
     let* α0 : ref wrapping_errors.DoubleError.t := M.read self in
     let* α1 : wrapping_errors.DoubleError.t := M.read (deref α0) in
     let* α2 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=
@@ -136,7 +136,7 @@ Section Impl_core_error_Error_for_wrapping_errors_DoubleError_t.
   Definition source
       (self : ref Self)
       : M (core.option.Option.t (ref _ (* dyn *))) :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* α0 : ref wrapping_errors.DoubleError.t := M.read self in
     let* α1 : wrapping_errors.DoubleError.t := M.read (deref α0) in
     let* α2 : M.Val (core.option.Option.t (ref dynamic)) :=
@@ -178,7 +178,7 @@ Section Impl_core_convert_From_core_num_error_ParseIntError_t_for_wrapping_error
   Definition from
       (err : core.num.error.ParseIntError.t)
       : M wrapping_errors.DoubleError.t :=
-    let* err : M.Val core.num.error.ParseIntError.t := M.alloc err in
+    let* err := M.alloc err in
     let* α0 : core.num.error.ParseIntError.t := M.read err in
     M.pure (wrapping_errors.DoubleError.Parse α0).
   
@@ -207,8 +207,7 @@ fn double_first(vec: Vec<&str>) -> Result<i32> {
 Definition double_first
     (vec : alloc.vec.Vec.t (ref str.t) alloc.vec.Vec.Default.A)
     : M ltac:(wrapping_errors.Result i32.t) :=
-  let* vec : M.Val (alloc.vec.Vec.t (ref str.t) alloc.vec.Vec.Default.A) :=
-    M.alloc vec in
+  let* vec := M.alloc vec in
   let return_ := M.return_ (R := ltac:(wrapping_errors.Result i32.t)) in
   M.catch_return
     (let* first : M.Val (ref (ref str.t)) :=
@@ -330,7 +329,7 @@ fn print(result: Result<i32>) {
 }
 *)
 Definition print (result : ltac:(wrapping_errors.Result i32.t)) : M unit :=
-  let* result : M.Val ltac:(wrapping_errors.Result i32.t) := M.alloc result in
+  let* result := M.alloc result in
   let* α0 : core.result.Result.t i32.t wrapping_errors.DoubleError.t :=
     M.read result in
   let* α1 : M.Val unit :=
@@ -389,7 +388,7 @@ Definition print (result : ltac:(wrapping_errors.Result i32.t)) : M unit :=
       let* α1 : M.Val (core.option.Option.t (ref dynamic)) := M.alloc α0 in
       let* α2 : M.Val bool.t := let_if core.option.Option.Some source := α1 in
       let* α3 : bool.t := M.read α2 in
-      if (α3 : bool) then
+      if α3 then
         let* _ : M.Val unit :=
           let* _ : M.Val unit :=
             let* α0 : ref str.t := M.read (mk_str "  Caused by: ") in

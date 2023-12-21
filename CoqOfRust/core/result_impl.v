@@ -68,6 +68,14 @@ Section Impl_Result.
   Global Instance AF_unwrap : Notations.DoubleColon Self "unwrap" := {|
     Notations.double_colon := unwrap;
   |}.
+
+  (* pub fn unwrap_or_else<F: FnOnce(E) -> T>(self, op: F) -> T *)
+  Parameter unwrap_or_else : Self -> (E -> M T) -> M T.
+
+  Global Instance AF_unwrap_or_else :
+      Notations.DoubleColon Self "unwrap_or_else" := {|
+    Notations.double_colon := unwrap_or_else;
+  |}.
 End Impl_Result.
 End Impl_Result.
 

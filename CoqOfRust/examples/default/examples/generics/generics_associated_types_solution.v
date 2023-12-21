@@ -61,9 +61,9 @@ Section Impl_generics_associated_types_solution_Contains_for_generics_associated
       (number_1 : ref i32.t)
       (number_2 : ref i32.t)
       : M bool.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* number_1 : M.Val (ref i32.t) := M.alloc number_1 in
-    let* number_2 : M.Val (ref i32.t) := M.alloc number_2 in
+    let* self := M.alloc self in
+    let* number_1 := M.alloc number_1 in
+    let* number_2 := M.alloc number_2 in
     let* α0 : ref generics_associated_types_solution.Container.t :=
       M.read self in
     let* α1 : M.Val (ref i32.t) := M.alloc (borrow (deref α0).["0"]) in
@@ -93,7 +93,7 @@ Section Impl_generics_associated_types_solution_Contains_for_generics_associated
       }
   *)
   Definition first (self : ref Self) : M i32.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* α0 : ref generics_associated_types_solution.Container.t :=
       M.read self in
     M.read (deref α0).["0"].
@@ -109,7 +109,7 @@ Section Impl_generics_associated_types_solution_Contains_for_generics_associated
       }
   *)
   Definition last (self : ref Self) : M i32.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* α0 : ref generics_associated_types_solution.Container.t :=
       M.read self in
     M.read (deref α0).["1"].
@@ -125,7 +125,7 @@ Section Impl_generics_associated_types_solution_Contains_for_generics_associated
       }
   *)
   Definition a (self : ref Self) : M i32.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* α0 : ref generics_associated_types_solution.Container.t :=
       M.read self in
     M.read (deref α0).["0"].
@@ -156,7 +156,7 @@ Definition difference
     {ℋ_0 : generics_associated_types_solution.Contains.Trait C}
     (container : ref C)
     : M i32.t :=
-  let* container : M.Val (ref C) := M.alloc container in
+  let* container := M.alloc container in
   let* α0 : ref C := M.read container in
   let* α1 : i32.t :=
     M.call
@@ -183,7 +183,7 @@ Definition get_a
     {ℋ_0 : generics_associated_types_solution.Contains.Trait C}
     (container : ref C)
     : M C::type["A"].t :=
-  let* container : M.Val (ref C) := M.alloc container in
+  let* container := M.alloc container in
   let* α0 : ref C := M.read container in
   M.call
     ((generics_associated_types_solution.Contains.a

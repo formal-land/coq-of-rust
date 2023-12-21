@@ -9,8 +9,7 @@ fn eat_box_i32(boxed_i32: Box<i32>) {
 Definition eat_box_i32
     (boxed_i32 : alloc.boxed.Box.t i32.t alloc.boxed.Box.Default.A)
     : M unit :=
-  let* boxed_i32 : M.Val (alloc.boxed.Box.t i32.t alloc.boxed.Box.Default.A) :=
-    M.alloc boxed_i32 in
+  let* boxed_i32 := M.alloc boxed_i32 in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "Destroying box that contains ") in
@@ -41,7 +40,7 @@ fn borrow_i32(borrowed_i32: &i32) {
 }
 *)
 Definition borrow_i32 (borrowed_i32 : ref i32.t) : M unit :=
-  let* borrowed_i32 : M.Val (ref i32.t) := M.alloc borrowed_i32 in
+  let* borrowed_i32 := M.alloc borrowed_i32 in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "This int is: ") in

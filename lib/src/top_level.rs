@@ -772,20 +772,13 @@ fn compile_function_body(
     } else {
         Box::new(body)
     };
-    let body: Box<Expr> = args.iter().rfold(body, |body, (name, ty)| {
-        Box::new(Expr {
-            ty: body.ty.clone(),
-            kind: ExprKind::Let {
-                is_monadic: false,
-                pattern: Box::new(Pattern::Variable(name.to_string())),
-                init: Box::new(Expr {
-                    kind: ExprKind::Var(Path::local(name)).alloc(Some(ty.clone())),
-                    ty: Some(ty.clone().val()),
-                }),
-                body,
-            },
-        })
-    });
+    let body = crate::thir_expression::allocate_bindings(
+        &args
+            .iter()
+            .map(|(name, _)| name.clone())
+            .collect::<Vec<_>>(),
+        body,
+    );
 
     Some(body)
 }

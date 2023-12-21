@@ -68,7 +68,7 @@ Definition main : M unit :=
                 let* α0 : std.thread.JoinHandle.t unit :=
                   M.call
                     (std.thread.spawn
-                      (let* _ : M.Val unit :=
+                      ((let* _ : M.Val unit :=
                         let* _ : M.Val unit :=
                           let* α0 : ref str.t :=
                             M.read (mk_str "this is thread number ") in
@@ -96,7 +96,9 @@ Definition main : M unit :=
                           let* α10 : unit := M.call (std.io.stdio._print α9) in
                           M.alloc α10 in
                         M.alloc tt in
-                      M.alloc tt)) in
+                      let* α0 : M.Val unit := M.alloc tt in
+                      M.read α0) :
+                      M unit)) in
                 let* α1 : unit :=
                   M.call
                     ((alloc.vec.Vec.t
@@ -109,8 +111,7 @@ Definition main : M unit :=
             end in
           M.alloc tt)
       end in
-    let* α3 : unit := M.read α2 in
-    M.alloc (use α3) in
+    M.pure (use α2) in
   let* α0 :
       alloc.vec.Vec.t (std.thread.JoinHandle.t unit) alloc.alloc.Global.t :=
     M.read children in
@@ -157,6 +158,4 @@ Definition main : M unit :=
           end in
         M.alloc tt)
     end in
-  let* α3 : unit := M.read α2 in
-  let* α0 : M.Val unit := M.alloc (use α3) in
-  M.read α0.
+  M.read (use α2).

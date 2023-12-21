@@ -17,7 +17,7 @@ fn call(number: &str) -> &str {
 }
 *)
 Definition call (number : ref str.t) : M (ref str.t) :=
-  let* number : M.Val (ref str.t) := M.alloc number in
+  let* number := M.alloc number in
   let* α0 : ref str.t := M.read number in
   let* α1 : M.Val (ref str.t) :=
     match α0 with
@@ -300,8 +300,8 @@ Definition main : M unit :=
             let* α2 : unit := never_to_any α1 in
             M.alloc α2
           | core.option.Option.Some (contact, number) =>
-            let* number := M.alloc number in
             let* contact := M.alloc contact in
+            let* number := M.alloc number in
             let* _ : M.Val unit :=
               let* _ : M.Val unit :=
                 let* α0 : ref str.t := M.read (mk_str "Calling ") in
@@ -338,6 +338,4 @@ Definition main : M unit :=
           end in
         M.alloc tt)
     end in
-  let* α3 : unit := M.read α2 in
-  let* α0 : M.Val unit := M.alloc (use α3) in
-  M.read α0.
+  M.read (use α2).

@@ -20,7 +20,7 @@ Definition create_fn : M _ (* OpaqueTy *) :=
     M.alloc α1 in
   let* α0 : M.Val (unit -> M unit) :=
     M.alloc
-      (let* _ : M.Val unit :=
+      ((let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "This is a: ") in
         let* α1 : ref str.t := M.read (mk_str "
 ") in
@@ -39,7 +39,9 @@ Definition create_fn : M _ (* OpaqueTy *) :=
           M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
         let* α10 : unit := M.call (std.io.stdio._print α9) in
         M.alloc α10 in
-      M.alloc tt) in
+      let* α0 : M.Val unit := M.alloc tt in
+      M.read α0) :
+      M unit) in
   M.read α0.
 
 Error OpaqueTy.
@@ -63,7 +65,7 @@ Definition create_fnmut : M _ (* OpaqueTy *) :=
     M.alloc α1 in
   let* α0 : M.Val (unit -> M unit) :=
     M.alloc
-      (let* _ : M.Val unit :=
+      ((let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "This is a: ") in
         let* α1 : ref str.t := M.read (mk_str "
 ") in
@@ -82,7 +84,9 @@ Definition create_fnmut : M _ (* OpaqueTy *) :=
           M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
         let* α10 : unit := M.call (std.io.stdio._print α9) in
         M.alloc α10 in
-      M.alloc tt) in
+      let* α0 : M.Val unit := M.alloc tt in
+      M.read α0) :
+      M unit) in
   M.read α0.
 
 (*
@@ -104,7 +108,7 @@ Definition create_fnonce : M _ (* OpaqueTy *) :=
     M.alloc α1 in
   let* α0 : M.Val (unit -> M unit) :=
     M.alloc
-      (let* _ : M.Val unit :=
+      ((let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "This is a: ") in
         let* α1 : ref str.t := M.read (mk_str "
 ") in
@@ -123,7 +127,9 @@ Definition create_fnonce : M _ (* OpaqueTy *) :=
           M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
         let* α10 : unit := M.call (std.io.stdio._print α9) in
         M.alloc α10 in
-      M.alloc tt) in
+      let* α0 : M.Val unit := M.alloc tt in
+      M.read α0) :
+      M unit) in
   M.read α0.
 
 (*

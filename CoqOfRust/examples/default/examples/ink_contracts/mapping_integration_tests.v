@@ -79,8 +79,8 @@ Section Impl_mapping_integration_tests_Mapping_t_K_V.
       }
   *)
   Definition contains (self : ref Self) (_key : ref K) : M bool.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* _key : M.Val (ref K) := M.alloc _key in
+    let* self := M.alloc self in
+    let* _key := M.alloc _key in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
@@ -99,8 +99,8 @@ Section Impl_mapping_integration_tests_Mapping_t_K_V.
       (self : ref Self)
       (_key : ref K)
       : M (core.option.Option.t V) :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* _key : M.Val (ref K) := M.alloc _key in
+    let* self := M.alloc self in
+    let* _key := M.alloc _key in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
@@ -119,9 +119,9 @@ Section Impl_mapping_integration_tests_Mapping_t_K_V.
       (_key : K)
       (_value : V)
       : M (core.option.Option.t u32.t) :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
-    let* _key : M.Val K := M.alloc _key in
-    let* _value : M.Val V := M.alloc _value in
+    let* self := M.alloc self in
+    let* _key := M.alloc _key in
+    let* _value := M.alloc _value in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
@@ -151,8 +151,8 @@ Section Impl_mapping_integration_tests_Mapping_t_K_V.
       }
   *)
   Definition remove (self : ref Self) (_key : K) : M unit :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* _key : M.Val K := M.alloc _key in
+    let* self := M.alloc self in
+    let* _key := M.alloc _key in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
@@ -171,8 +171,8 @@ Section Impl_mapping_integration_tests_Mapping_t_K_V.
       (self : ref Self)
       (_key : K)
       : M (core.option.Option.t u32.t) :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* _key : M.Val K := M.alloc _key in
+    let* self := M.alloc self in
+    let* _key := M.alloc _key in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
@@ -188,8 +188,8 @@ Section Impl_mapping_integration_tests_Mapping_t_K_V.
       }
   *)
   Definition take (self : ref Self) (_key : K) : M (core.option.Option.t V) :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* _key : M.Val K := M.alloc _key in
+    let* self := M.alloc self in
+    let* _key := M.alloc _key in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
@@ -249,7 +249,7 @@ Section Impl_core_clone_Clone_for_mapping_integration_tests_AccountId_t.
   Definition clone
       (self : ref Self)
       : M mapping_integration_tests.AccountId.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let _ : unit := tt in
     let* α0 : ref mapping_integration_tests.AccountId.t := M.read self in
     M.read (deref α0).
@@ -305,7 +305,7 @@ Section Impl_mapping_integration_tests_Env_t.
   Definition caller
       (self : ref Self)
       : M mapping_integration_tests.AccountId.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* α0 : ref mapping_integration_tests.Env.t := M.read self in
     M.read (deref α0).["caller"].
   
@@ -446,7 +446,7 @@ Section Impl_mapping_integration_tests_Mappings_t.
   Definition get_balance
       (self : ref Self)
       : M (core.option.Option.t ltac:(mapping_integration_tests.Balance)) :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* caller : M.Val mapping_integration_tests.AccountId.t :=
       let* α0 : mapping_integration_tests.Env.t :=
         M.call mapping_integration_tests.Mappings.t::["env"] in
@@ -480,9 +480,8 @@ Section Impl_mapping_integration_tests_Mappings_t.
       (self : mut_ref Self)
       (value : ltac:(mapping_integration_tests.Balance))
       : M (core.option.Option.t u32.t) :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
-    let* value : M.Val ltac:(mapping_integration_tests.Balance) :=
-      M.alloc value in
+    let* self := M.alloc self in
+    let* value := M.alloc value in
     let* caller : M.Val mapping_integration_tests.AccountId.t :=
       let* α0 : mapping_integration_tests.Env.t :=
         M.call mapping_integration_tests.Mappings.t::["env"] in
@@ -518,7 +517,7 @@ Section Impl_mapping_integration_tests_Mappings_t.
   Definition size_balance
       (self : mut_ref Self)
       : M (core.option.Option.t u32.t) :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* caller : M.Val mapping_integration_tests.AccountId.t :=
       let* α0 : mapping_integration_tests.Env.t :=
         M.call mapping_integration_tests.Mappings.t::["env"] in
@@ -550,7 +549,7 @@ Section Impl_mapping_integration_tests_Mappings_t.
       }
   *)
   Definition contains_balance (self : ref Self) : M bool.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* caller : M.Val mapping_integration_tests.AccountId.t :=
       let* α0 : mapping_integration_tests.Env.t :=
         M.call mapping_integration_tests.Mappings.t::["env"] in
@@ -581,7 +580,7 @@ Section Impl_mapping_integration_tests_Mappings_t.
       }
   *)
   Definition remove_balance (self : mut_ref Self) : M unit :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* caller : M.Val mapping_integration_tests.AccountId.t :=
       let* α0 : mapping_integration_tests.Env.t :=
         M.call mapping_integration_tests.Mappings.t::["env"] in
@@ -617,7 +616,7 @@ Section Impl_mapping_integration_tests_Mappings_t.
   Definition take_balance
       (self : mut_ref Self)
       : M (core.option.Option.t ltac:(mapping_integration_tests.Balance)) :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* caller : M.Val mapping_integration_tests.AccountId.t :=
       let* α0 : mapping_integration_tests.Env.t :=
         M.call mapping_integration_tests.Mappings.t::["env"] in

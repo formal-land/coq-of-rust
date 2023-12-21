@@ -16,8 +16,8 @@ Definition multiply
     (first_number_str : ref str.t)
     (second_number_str : ref str.t)
     : M (core.result.Result.t i32.t core.num.error.ParseIntError.t) :=
-  let* first_number_str : M.Val (ref str.t) := M.alloc first_number_str in
-  let* second_number_str : M.Val (ref str.t) := M.alloc second_number_str in
+  let* first_number_str := M.alloc first_number_str in
+  let* second_number_str := M.alloc second_number_str in
   let* α0 : ref str.t := M.read first_number_str in
   let* α1 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
     M.call (str.t::["parse"] α0) in
@@ -58,9 +58,7 @@ fn print(result: Result<i32, ParseIntError>) {
 Definition print
     (result : core.result.Result.t i32.t core.num.error.ParseIntError.t)
     : M unit :=
-  let* result :
-      M.Val (core.result.Result.t i32.t core.num.error.ParseIntError.t) :=
-    M.alloc result in
+  let* result := M.alloc result in
   let* α0 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
     M.read result in
   let* α1 : M.Val unit :=

@@ -46,7 +46,7 @@ Section Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job_t.
   Definition clone
       (self : ref Self)
       : M unpacking_options_via_question_mark.Job.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let _ : unit := tt in
     let* α0 : ref unpacking_options_via_question_mark.Job.t := M.read self in
     M.read (deref α0).
@@ -106,7 +106,7 @@ Section Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumbe
   Definition clone
       (self : ref Self)
       : M unpacking_options_via_question_mark.PhoneNumber.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let _ : unit := tt in
     let _ : unit := tt in
     let* α0 : ref unpacking_options_via_question_mark.PhoneNumber.t :=
@@ -149,7 +149,7 @@ Section Impl_unpacking_options_via_question_mark_Person_t.
   Definition work_phone_area_code
       (self : ref Self)
       : M (core.option.Option.t u8.t) :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let return_ := M.return_ (R := core.option.Option.t u8.t) in
     M.catch_return
       (let* α0 : ref unpacking_options_via_question_mark.Person.t :=
@@ -275,8 +275,8 @@ Definition main : M unit :=
       M.alloc (core.option.Option.Some (Integer.of_Z 61)) in
     match (borrow α1, borrow α2) with
     | (left_val, right_val) =>
-      let* right_val := M.alloc right_val in
       let* left_val := M.alloc left_val in
+      let* right_val := M.alloc right_val in
       let* α0 : ref (core.option.Option.t u8.t) := M.read left_val in
       let* α1 : ref (core.option.Option.t u8.t) := M.read right_val in
       let* α2 : bool.t :=
@@ -286,7 +286,9 @@ Definition main : M unit :=
               (Trait := ltac:(refine _)))
             α0
             α1) in
-      if (use (UnOp.not α2) : bool) then
+      let* α3 : M.Val bool.t := M.alloc (UnOp.not α2) in
+      let* α4 : bool.t := M.read (use α3) in
+      if α4 then
         let* kind : M.Val core.panicking.AssertKind.t :=
           M.alloc core.panicking.AssertKind.Eq in
         let* _ : M.Val never.t :=

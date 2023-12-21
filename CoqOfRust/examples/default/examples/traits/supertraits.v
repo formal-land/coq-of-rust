@@ -56,7 +56,7 @@ Definition comp_sci_student_greeting
     {ℋ_0 : supertraits.CompSciStudent.Trait DynT}
     (student : ref DynT)
     : M alloc.string.String.t :=
-  let* student : M.Val (ref _ (* dyn *)) := M.alloc student in
+  let* student := M.alloc student in
   let* res : M.Val alloc.string.String.t :=
     let* α0 : ref str.t := M.read (mk_str "My name is ") in
     let* α1 : ref str.t := M.read (mk_str " and I attend ") in

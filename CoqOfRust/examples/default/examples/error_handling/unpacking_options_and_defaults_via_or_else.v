@@ -21,8 +21,8 @@ Section Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_else_Fruit
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
+    let* self := M.alloc self in
+    let* f := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref unpacking_options_and_defaults_via_or_else.Fruit.t :=
       M.read self in
@@ -99,7 +99,7 @@ Definition main : M unit :=
             (core.option.Option.t
               unpacking_options_and_defaults_via_or_else.Fruit.t)) :=
     M.alloc
-      (let* _ : M.Val unit :=
+      ((let* _ : M.Val unit :=
         let* _ : M.Val unit :=
           let* α0 : ref str.t :=
             M.read (mk_str "Providing kiwi as fallback
@@ -113,9 +113,17 @@ Definition main : M unit :=
           let* α5 : unit := M.call (std.io.stdio._print α4) in
           M.alloc α5 in
         M.alloc tt in
-      M.alloc
-        (core.option.Option.Some
-          unpacking_options_and_defaults_via_or_else.Fruit.Kiwi)) in
+      let* α0 :
+          M.Val
+            (core.option.Option.t
+              unpacking_options_and_defaults_via_or_else.Fruit.t) :=
+        M.alloc
+          (core.option.Option.Some
+            unpacking_options_and_defaults_via_or_else.Fruit.Kiwi) in
+      M.read α0) :
+      M
+        (core.option.Option.t
+          unpacking_options_and_defaults_via_or_else.Fruit.t)) in
   let* get_lemon_as_fallback :
       M.Val
         (unit ->
@@ -123,7 +131,7 @@ Definition main : M unit :=
             (core.option.Option.t
               unpacking_options_and_defaults_via_or_else.Fruit.t)) :=
     M.alloc
-      (let* _ : M.Val unit :=
+      ((let* _ : M.Val unit :=
         let* _ : M.Val unit :=
           let* α0 : ref str.t :=
             M.read (mk_str "Providing lemon as fallback
@@ -137,9 +145,17 @@ Definition main : M unit :=
           let* α5 : unit := M.call (std.io.stdio._print α4) in
           M.alloc α5 in
         M.alloc tt in
-      M.alloc
-        (core.option.Option.Some
-          unpacking_options_and_defaults_via_or_else.Fruit.Lemon)) in
+      let* α0 :
+          M.Val
+            (core.option.Option.t
+              unpacking_options_and_defaults_via_or_else.Fruit.t) :=
+        M.alloc
+          (core.option.Option.Some
+            unpacking_options_and_defaults_via_or_else.Fruit.Lemon) in
+      M.read α0) :
+      M
+        (core.option.Option.t
+          unpacking_options_and_defaults_via_or_else.Fruit.t)) in
   let* first_available_fruit :
       M.Val
         (core.option.Option.t

@@ -417,272 +417,6 @@ Section Impl_payment_channel_Env_t.
 End Impl_payment_channel_Env_t.
 End Impl_payment_channel_Env_t.
 
-Module  Impl_payment_channel_PaymentChannel_t.
-Section Impl_payment_channel_PaymentChannel_t.
-  Definition Self : Set := payment_channel.PaymentChannel.t.
-  
-  (*
-      fn init_env() -> Env {
-          unimplemented!()
-      }
-  *)
-  Parameter init_env : M payment_channel.Env.t.
-  
-  Global Instance AssociatedFunction_init_env :
-    Notations.DoubleColon Self "init_env" := {
-    Notations.double_colon := init_env;
-  }.
-  
-  (*
-      fn env(&self) -> Env {
-          Self::init_env()
-      }
-  *)
-  Parameter env : (ref Self) -> M payment_channel.Env.t.
-  
-  Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
-    Notations.double_colon := env;
-  }.
-  
-  (*
-      pub fn new(recipient: AccountId, close_duration: Timestamp) -> Self {
-          Self {
-              sender: Self::init_env().caller(),
-              recipient,
-              expiration: None,
-              withdrawn: 0,
-              close_duration,
-          }
-      }
-  *)
-  Parameter new :
-      payment_channel.AccountId.t -> ltac:(payment_channel.Timestamp) -> M Self.
-  
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
-    Notations.double_colon := new;
-  }.
-  
-  (*
-      pub fn close(&mut self, amount: Balance, signature: [u8; 65]) -> Result<()> {
-          self.close_inner(amount, signature)?;
-          self.env().terminate_contract(self.sender);
-  
-          Ok(())
-      }
-  *)
-  Parameter close :
-      (mut_ref Self) ->
-        ltac:(payment_channel.Balance) ->
-        (array u8.t) ->
-        M ltac:(payment_channel.Result unit).
-  
-  Global Instance AssociatedFunction_close :
-    Notations.DoubleColon Self "close" := {
-    Notations.double_colon := close;
-  }.
-  
-  (*
-      fn close_inner(&mut self, amount: Balance, signature: [u8; 65]) -> Result<()> {
-          if self.env().caller() != self.recipient {
-              return Err(Error::CallerIsNotRecipient);
-          }
-  
-          if amount < self.withdrawn {
-              return Err(Error::AmountIsLessThanWithdrawn);
-          }
-  
-          // Signature validation
-          if !self.is_signature_valid(amount, signature) {
-              return Err(Error::InvalidSignature);
-          }
-  
-          self.env()
-              .transfer(self.recipient, amount - self.withdrawn)
-              .map_err(|_| Error::TransferFailed)?;
-  
-          Ok(())
-      }
-  *)
-  Parameter close_inner :
-      (mut_ref Self) ->
-        ltac:(payment_channel.Balance) ->
-        (array u8.t) ->
-        M ltac:(payment_channel.Result unit).
-  
-  Global Instance AssociatedFunction_close_inner :
-    Notations.DoubleColon Self "close_inner" := {
-    Notations.double_colon := close_inner;
-  }.
-  
-  (*
-      pub fn start_sender_close(&mut self) -> Result<()> {
-          if self.env().caller() != self.sender {
-              return Err(Error::CallerIsNotSender);
-          }
-  
-          let now = self.env().block_timestamp();
-          let expiration = now + self.close_duration;
-  
-          self.env()
-              .emit_event(Event::SenderCloseStarted(SenderCloseStarted {
-                  expiration,
-                  close_duration: self.close_duration,
-              }));
-  
-          self.expiration = Some(expiration);
-  
-          Ok(())
-      }
-  *)
-  Parameter start_sender_close :
-      (mut_ref Self) -> M ltac:(payment_channel.Result unit).
-  
-  Global Instance AssociatedFunction_start_sender_close :
-    Notations.DoubleColon Self "start_sender_close" := {
-    Notations.double_colon := start_sender_close;
-  }.
-  
-  (*
-      pub fn claim_timeout(&mut self) -> Result<()> {
-          match self.expiration {
-              Some(expiration) => {
-                  // expiration is set. Check if it's reached and if so, release the
-                  // funds and terminate the contract.
-                  let now = self.env().block_timestamp();
-                  if now < expiration {
-                      return Err(Error::NotYetExpired);
-                  }
-  
-                  self.env().terminate_contract(self.sender);
-  
-                  Ok(())
-              }
-  
-              None => Err(Error::NotYetExpired),
-          }
-      }
-  *)
-  Parameter claim_timeout :
-      (mut_ref Self) -> M ltac:(payment_channel.Result unit).
-  
-  Global Instance AssociatedFunction_claim_timeout :
-    Notations.DoubleColon Self "claim_timeout" := {
-    Notations.double_colon := claim_timeout;
-  }.
-  
-  (*
-      pub fn withdraw(&mut self, amount: Balance, signature: [u8; 65]) -> Result<()> {
-          if self.env().caller() != self.recipient {
-              return Err(Error::CallerIsNotRecipient);
-          }
-  
-          // Signature validation
-          if !self.is_signature_valid(amount, signature) {
-              return Err(Error::InvalidSignature);
-          }
-  
-          // Make sure there's something to withdraw (guards against underflow)
-          if amount < self.withdrawn {
-              return Err(Error::AmountIsLessThanWithdrawn);
-          }
-  
-          let amount_to_withdraw = amount - self.withdrawn;
-          self.withdrawn += amount_to_withdraw;
-  
-          self.env()
-              .transfer(self.recipient, amount_to_withdraw)
-              .map_err(|_| Error::TransferFailed)?;
-  
-          Ok(())
-      }
-  *)
-  Parameter withdraw :
-      (mut_ref Self) ->
-        ltac:(payment_channel.Balance) ->
-        (array u8.t) ->
-        M ltac:(payment_channel.Result unit).
-  
-  Global Instance AssociatedFunction_withdraw :
-    Notations.DoubleColon Self "withdraw" := {
-    Notations.double_colon := withdraw;
-  }.
-  
-  (*
-      pub fn get_sender(&self) -> AccountId {
-          self.sender
-      }
-  *)
-  Parameter get_sender : (ref Self) -> M payment_channel.AccountId.t.
-  
-  Global Instance AssociatedFunction_get_sender :
-    Notations.DoubleColon Self "get_sender" := {
-    Notations.double_colon := get_sender;
-  }.
-  
-  (*
-      pub fn get_recipient(&self) -> AccountId {
-          self.recipient
-      }
-  *)
-  Parameter get_recipient : (ref Self) -> M payment_channel.AccountId.t.
-  
-  Global Instance AssociatedFunction_get_recipient :
-    Notations.DoubleColon Self "get_recipient" := {
-    Notations.double_colon := get_recipient;
-  }.
-  
-  (*
-      pub fn get_expiration(&self) -> Option<Timestamp> {
-          self.expiration
-      }
-  *)
-  Parameter get_expiration :
-      (ref Self) -> M (core.option.Option.t ltac:(payment_channel.Timestamp)).
-  
-  Global Instance AssociatedFunction_get_expiration :
-    Notations.DoubleColon Self "get_expiration" := {
-    Notations.double_colon := get_expiration;
-  }.
-  
-  (*
-      pub fn get_withdrawn(&self) -> Balance {
-          self.withdrawn
-      }
-  *)
-  Parameter get_withdrawn : (ref Self) -> M ltac:(payment_channel.Balance).
-  
-  Global Instance AssociatedFunction_get_withdrawn :
-    Notations.DoubleColon Self "get_withdrawn" := {
-    Notations.double_colon := get_withdrawn;
-  }.
-  
-  (*
-      pub fn get_close_duration(&self) -> Timestamp {
-          self.close_duration
-      }
-  *)
-  Parameter get_close_duration :
-      (ref Self) -> M ltac:(payment_channel.Timestamp).
-  
-  Global Instance AssociatedFunction_get_close_duration :
-    Notations.DoubleColon Self "get_close_duration" := {
-    Notations.double_colon := get_close_duration;
-  }.
-  
-  (*
-      pub fn get_balance(&self) -> Balance {
-          self.env().balance()
-      }
-  *)
-  Parameter get_balance : (ref Self) -> M ltac:(payment_channel.Balance).
-  
-  Global Instance AssociatedFunction_get_balance :
-    Notations.DoubleColon Self "get_balance" := {
-    Notations.double_colon := get_balance;
-  }.
-End Impl_payment_channel_PaymentChannel_t.
-End Impl_payment_channel_PaymentChannel_t.
-
 Module  HashOutput.
 Section HashOutput.
   Class Trait (Self : Set) : Type := {
@@ -943,9 +677,32 @@ Section Impl_payment_channel_CryptoHash_for_payment_channel_Blake2x128_t.
 End Impl_payment_channel_CryptoHash_for_payment_channel_Blake2x128_t.
 End Impl_payment_channel_CryptoHash_for_payment_channel_Blake2x128_t.
 
-Module  Impl_payment_channel_PaymentChannel_t_2.
-Section Impl_payment_channel_PaymentChannel_t_2.
+Module  Impl_payment_channel_PaymentChannel_t.
+Section Impl_payment_channel_PaymentChannel_t.
   Definition Self : Set := payment_channel.PaymentChannel.t.
+  
+  (*
+      fn init_env() -> Env {
+          unimplemented!()
+      }
+  *)
+  Parameter init_env : M payment_channel.Env.t.
+  
+  Global Instance AssociatedFunction_init_env :
+    Notations.DoubleColon Self "init_env" := {
+    Notations.double_colon := init_env;
+  }.
+  
+  (*
+      fn env(&self) -> Env {
+          Self::init_env()
+      }
+  *)
+  Parameter env : (ref Self) -> M payment_channel.Env.t.
+  
+  Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
+    Notations.double_colon := env;
+  }.
   
   (*
       fn is_signature_valid(&self, amount: Balance, signature: [u8; 65]) -> bool {
@@ -969,5 +726,242 @@ Section Impl_payment_channel_PaymentChannel_t_2.
     Notations.DoubleColon Self "is_signature_valid" := {
     Notations.double_colon := is_signature_valid;
   }.
-End Impl_payment_channel_PaymentChannel_t_2.
-End Impl_payment_channel_PaymentChannel_t_2.
+  
+  (*
+      pub fn new(recipient: AccountId, close_duration: Timestamp) -> Self {
+          Self {
+              sender: Self::init_env().caller(),
+              recipient,
+              expiration: None,
+              withdrawn: 0,
+              close_duration,
+          }
+      }
+  *)
+  Parameter new :
+      payment_channel.AccountId.t -> ltac:(payment_channel.Timestamp) -> M Self.
+  
+  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
+    Notations.double_colon := new;
+  }.
+  
+  (*
+      fn close_inner(&mut self, amount: Balance, signature: [u8; 65]) -> Result<()> {
+          if self.env().caller() != self.recipient {
+              return Err(Error::CallerIsNotRecipient);
+          }
+  
+          if amount < self.withdrawn {
+              return Err(Error::AmountIsLessThanWithdrawn);
+          }
+  
+          // Signature validation
+          if !self.is_signature_valid(amount, signature) {
+              return Err(Error::InvalidSignature);
+          }
+  
+          self.env()
+              .transfer(self.recipient, amount - self.withdrawn)
+              .map_err(|_| Error::TransferFailed)?;
+  
+          Ok(())
+      }
+  *)
+  Parameter close_inner :
+      (mut_ref Self) ->
+        ltac:(payment_channel.Balance) ->
+        (array u8.t) ->
+        M ltac:(payment_channel.Result unit).
+  
+  Global Instance AssociatedFunction_close_inner :
+    Notations.DoubleColon Self "close_inner" := {
+    Notations.double_colon := close_inner;
+  }.
+  
+  (*
+      pub fn close(&mut self, amount: Balance, signature: [u8; 65]) -> Result<()> {
+          self.close_inner(amount, signature)?;
+          self.env().terminate_contract(self.sender);
+  
+          Ok(())
+      }
+  *)
+  Parameter close :
+      (mut_ref Self) ->
+        ltac:(payment_channel.Balance) ->
+        (array u8.t) ->
+        M ltac:(payment_channel.Result unit).
+  
+  Global Instance AssociatedFunction_close :
+    Notations.DoubleColon Self "close" := {
+    Notations.double_colon := close;
+  }.
+  
+  (*
+      pub fn start_sender_close(&mut self) -> Result<()> {
+          if self.env().caller() != self.sender {
+              return Err(Error::CallerIsNotSender);
+          }
+  
+          let now = self.env().block_timestamp();
+          let expiration = now + self.close_duration;
+  
+          self.env()
+              .emit_event(Event::SenderCloseStarted(SenderCloseStarted {
+                  expiration,
+                  close_duration: self.close_duration,
+              }));
+  
+          self.expiration = Some(expiration);
+  
+          Ok(())
+      }
+  *)
+  Parameter start_sender_close :
+      (mut_ref Self) -> M ltac:(payment_channel.Result unit).
+  
+  Global Instance AssociatedFunction_start_sender_close :
+    Notations.DoubleColon Self "start_sender_close" := {
+    Notations.double_colon := start_sender_close;
+  }.
+  
+  (*
+      pub fn claim_timeout(&mut self) -> Result<()> {
+          match self.expiration {
+              Some(expiration) => {
+                  // expiration is set. Check if it's reached and if so, release the
+                  // funds and terminate the contract.
+                  let now = self.env().block_timestamp();
+                  if now < expiration {
+                      return Err(Error::NotYetExpired);
+                  }
+  
+                  self.env().terminate_contract(self.sender);
+  
+                  Ok(())
+              }
+  
+              None => Err(Error::NotYetExpired),
+          }
+      }
+  *)
+  Parameter claim_timeout :
+      (mut_ref Self) -> M ltac:(payment_channel.Result unit).
+  
+  Global Instance AssociatedFunction_claim_timeout :
+    Notations.DoubleColon Self "claim_timeout" := {
+    Notations.double_colon := claim_timeout;
+  }.
+  
+  (*
+      pub fn withdraw(&mut self, amount: Balance, signature: [u8; 65]) -> Result<()> {
+          if self.env().caller() != self.recipient {
+              return Err(Error::CallerIsNotRecipient);
+          }
+  
+          // Signature validation
+          if !self.is_signature_valid(amount, signature) {
+              return Err(Error::InvalidSignature);
+          }
+  
+          // Make sure there's something to withdraw (guards against underflow)
+          if amount < self.withdrawn {
+              return Err(Error::AmountIsLessThanWithdrawn);
+          }
+  
+          let amount_to_withdraw = amount - self.withdrawn;
+          self.withdrawn += amount_to_withdraw;
+  
+          self.env()
+              .transfer(self.recipient, amount_to_withdraw)
+              .map_err(|_| Error::TransferFailed)?;
+  
+          Ok(())
+      }
+  *)
+  Parameter withdraw :
+      (mut_ref Self) ->
+        ltac:(payment_channel.Balance) ->
+        (array u8.t) ->
+        M ltac:(payment_channel.Result unit).
+  
+  Global Instance AssociatedFunction_withdraw :
+    Notations.DoubleColon Self "withdraw" := {
+    Notations.double_colon := withdraw;
+  }.
+  
+  (*
+      pub fn get_sender(&self) -> AccountId {
+          self.sender
+      }
+  *)
+  Parameter get_sender : (ref Self) -> M payment_channel.AccountId.t.
+  
+  Global Instance AssociatedFunction_get_sender :
+    Notations.DoubleColon Self "get_sender" := {
+    Notations.double_colon := get_sender;
+  }.
+  
+  (*
+      pub fn get_recipient(&self) -> AccountId {
+          self.recipient
+      }
+  *)
+  Parameter get_recipient : (ref Self) -> M payment_channel.AccountId.t.
+  
+  Global Instance AssociatedFunction_get_recipient :
+    Notations.DoubleColon Self "get_recipient" := {
+    Notations.double_colon := get_recipient;
+  }.
+  
+  (*
+      pub fn get_expiration(&self) -> Option<Timestamp> {
+          self.expiration
+      }
+  *)
+  Parameter get_expiration :
+      (ref Self) -> M (core.option.Option.t ltac:(payment_channel.Timestamp)).
+  
+  Global Instance AssociatedFunction_get_expiration :
+    Notations.DoubleColon Self "get_expiration" := {
+    Notations.double_colon := get_expiration;
+  }.
+  
+  (*
+      pub fn get_withdrawn(&self) -> Balance {
+          self.withdrawn
+      }
+  *)
+  Parameter get_withdrawn : (ref Self) -> M ltac:(payment_channel.Balance).
+  
+  Global Instance AssociatedFunction_get_withdrawn :
+    Notations.DoubleColon Self "get_withdrawn" := {
+    Notations.double_colon := get_withdrawn;
+  }.
+  
+  (*
+      pub fn get_close_duration(&self) -> Timestamp {
+          self.close_duration
+      }
+  *)
+  Parameter get_close_duration :
+      (ref Self) -> M ltac:(payment_channel.Timestamp).
+  
+  Global Instance AssociatedFunction_get_close_duration :
+    Notations.DoubleColon Self "get_close_duration" := {
+    Notations.double_colon := get_close_duration;
+  }.
+  
+  (*
+      pub fn get_balance(&self) -> Balance {
+          self.env().balance()
+      }
+  *)
+  Parameter get_balance : (ref Self) -> M ltac:(payment_channel.Balance).
+  
+  Global Instance AssociatedFunction_get_balance :
+    Notations.DoubleColon Self "get_balance" := {
+    Notations.double_colon := get_balance;
+  }.
+End Impl_payment_channel_PaymentChannel_t.
+End Impl_payment_channel_PaymentChannel_t.

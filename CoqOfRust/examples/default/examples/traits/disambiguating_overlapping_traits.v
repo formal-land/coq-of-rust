@@ -52,7 +52,7 @@ Section Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating
       }
   *)
   Definition get (self : ref Self) : M alloc.string.String.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* α0 : ref disambiguating_overlapping_traits.Form.t := M.read self in
     M.call
       ((core.clone.Clone.clone
@@ -81,7 +81,7 @@ Section Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_over
       }
   *)
   Definition get (self : ref Self) : M u8.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* α0 : ref disambiguating_overlapping_traits.Form.t := M.read self in
     M.read (deref α0).["age"].
   
@@ -148,8 +148,8 @@ Definition main : M unit :=
     let* α2 : M.Val alloc.string.String.t := M.alloc α1 in
     match (borrow α2, borrow username) with
     | (left_val, right_val) =>
-      let* right_val := M.alloc right_val in
       let* left_val := M.alloc left_val in
+      let* right_val := M.alloc right_val in
       let* α0 : ref alloc.string.String.t := M.read left_val in
       let* α1 : ref alloc.string.String.t := M.read right_val in
       let* α2 : bool.t :=
@@ -159,7 +159,9 @@ Definition main : M unit :=
               (Trait := ltac:(refine _)))
             α0
             α1) in
-      if (use (UnOp.not α2) : bool) then
+      let* α3 : M.Val bool.t := M.alloc (UnOp.not α2) in
+      let* α4 : bool.t := M.read (use α3) in
+      if α4 then
         let* kind : M.Val core.panicking.AssertKind.t :=
           M.alloc core.panicking.AssertKind.Eq in
         let* _ : M.Val never.t :=
@@ -189,13 +191,15 @@ Definition main : M unit :=
     let* α0 : M.Val u8.t := M.alloc (Integer.of_Z 28) in
     match (borrow α0, borrow age) with
     | (left_val, right_val) =>
-      let* right_val := M.alloc right_val in
       let* left_val := M.alloc left_val in
+      let* right_val := M.alloc right_val in
       let* α0 : ref u8.t := M.read left_val in
       let* α1 : u8.t := M.read (deref α0) in
       let* α2 : ref u8.t := M.read right_val in
       let* α3 : u8.t := M.read (deref α2) in
-      if (use (UnOp.not (BinOp.Pure.eq α1 α3)) : bool) then
+      let* α4 : M.Val bool.t := M.alloc (UnOp.not (BinOp.Pure.eq α1 α3)) in
+      let* α5 : bool.t := M.read (use α4) in
+      if α5 then
         let* kind : M.Val core.panicking.AssertKind.t :=
           M.alloc core.panicking.AssertKind.Eq in
         let* _ : M.Val never.t :=

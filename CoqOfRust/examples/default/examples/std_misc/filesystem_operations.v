@@ -14,7 +14,7 @@ fn cat(path: &Path) -> io::Result<String> {
 Definition cat
     (path : ref std.path.Path.t)
     : M ltac:(std.io.error.Result alloc.string.String.t) :=
-  let* path : M.Val (ref std.path.Path.t) := M.alloc path in
+  let* path := M.alloc path in
   let return_ :=
     M.return_ (R := ltac:(std.io.error.Result alloc.string.String.t)) in
   M.catch_return
@@ -97,8 +97,8 @@ Definition echo
     (s : ref str.t)
     (path : ref std.path.Path.t)
     : M ltac:(std.io.error.Result unit) :=
-  let* s : M.Val (ref str.t) := M.alloc s in
-  let* path : M.Val (ref std.path.Path.t) := M.alloc path in
+  let* s := M.alloc s in
+  let* path := M.alloc path in
   let return_ := M.return_ (R := ltac:(std.io.error.Result unit)) in
   M.catch_return
     (let* f : M.Val std.fs.File.t :=
@@ -164,7 +164,7 @@ fn touch(path: &Path) -> io::Result<()> {
 Definition touch
     (path : ref std.path.Path.t)
     : M ltac:(std.io.error.Result unit) :=
-  let* path : M.Val (ref std.path.Path.t) := M.alloc path in
+  let* path := M.alloc path in
   let* α0 : std.fs.OpenOptions.t := M.call std.fs.OpenOptions.t::["new"] in
   let* α1 : M.Val std.fs.OpenOptions.t := M.alloc α0 in
   let* α2 : mut_ref std.fs.OpenOptions.t :=
@@ -319,6 +319,7 @@ Definition main : M unit :=
         ((core.result.Result.t unit std.io.error.Error.t)::["unwrap_or_else"]
           α3
           (fun (why : std.io.error.Error.t) =>
+            (let* why := M.alloc why in
             let* _ : M.Val unit :=
               let* _ : M.Val unit :=
                 let* α0 : ref str.t := M.read (mk_str "! ") in
@@ -345,7 +346,9 @@ Definition main : M unit :=
                 let* α12 : unit := M.call (std.io.stdio._print α11) in
                 M.alloc α12 in
               M.alloc tt in
-            M.alloc tt)) in
+            let* α0 : M.Val unit := M.alloc tt in
+            M.read α0) :
+            M unit)) in
     M.alloc α4 in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
@@ -369,6 +372,7 @@ Definition main : M unit :=
         ((core.result.Result.t unit std.io.error.Error.t)::["unwrap_or_else"]
           α1
           (fun (why : std.io.error.Error.t) =>
+            (let* why := M.alloc why in
             let* _ : M.Val unit :=
               let* _ : M.Val unit :=
                 let* α0 : ref str.t := M.read (mk_str "! ") in
@@ -395,7 +399,9 @@ Definition main : M unit :=
                 let* α12 : unit := M.call (std.io.stdio._print α11) in
                 M.alloc α12 in
               M.alloc tt in
-            M.alloc tt)) in
+            let* α0 : M.Val unit := M.alloc tt in
+            M.read α0) :
+            M unit)) in
     M.alloc α2 in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
@@ -420,6 +426,7 @@ Definition main : M unit :=
         ((core.result.Result.t unit std.io.error.Error.t)::["unwrap_or_else"]
           α2
           (fun (why : std.io.error.Error.t) =>
+            (let* why := M.alloc why in
             let* _ : M.Val unit :=
               let* _ : M.Val unit :=
                 let* α0 : ref str.t := M.read (mk_str "! ") in
@@ -446,7 +453,9 @@ Definition main : M unit :=
                 let* α12 : unit := M.call (std.io.stdio._print α11) in
                 M.alloc α12 in
               M.alloc tt in
-            M.alloc tt)) in
+            let* α0 : M.Val unit := M.alloc tt in
+            M.read α0) :
+            M unit)) in
     M.alloc α3 in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
@@ -462,7 +471,9 @@ Definition main : M unit :=
       M.alloc α5 in
     M.alloc tt in
   let* _ : M.Val unit :=
-    if (use true : bool) then
+    let* α0 : M.Val bool.t := M.alloc true in
+    let* α1 : bool.t := M.read (use α0) in
+    if α1 then
       let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "../b.txt") in
         let* α1 : ref str.t := M.read (mk_str "a/c/b.txt") in
@@ -475,6 +486,7 @@ Definition main : M unit :=
                   std.io.error.Error.t)::["unwrap_or_else"]
               α2
               (fun (why : std.io.error.Error.t) =>
+                (let* why := M.alloc why in
                 let* _ : M.Val unit :=
                   let* _ : M.Val unit :=
                     let* α0 : ref str.t := M.read (mk_str "! ") in
@@ -502,7 +514,9 @@ Definition main : M unit :=
                     let* α12 : unit := M.call (std.io.stdio._print α11) in
                     M.alloc α12 in
                   M.alloc tt in
-                M.alloc tt)) in
+                let* α0 : M.Val unit := M.alloc tt in
+                M.read α0) :
+                M unit)) in
         M.alloc α3 in
       M.alloc tt
     else
@@ -693,8 +707,7 @@ Definition main : M unit :=
               end in
             M.alloc tt)
         end in
-      let* α3 : unit := M.read α2 in
-      M.alloc (use α3)
+      M.pure (use α2)
     end in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
@@ -718,6 +731,7 @@ Definition main : M unit :=
         ((core.result.Result.t unit std.io.error.Error.t)::["unwrap_or_else"]
           α1
           (fun (why : std.io.error.Error.t) =>
+            (let* why := M.alloc why in
             let* _ : M.Val unit :=
               let* _ : M.Val unit :=
                 let* α0 : ref str.t := M.read (mk_str "! ") in
@@ -744,7 +758,9 @@ Definition main : M unit :=
                 let* α12 : unit := M.call (std.io.stdio._print α11) in
                 M.alloc α12 in
               M.alloc tt in
-            M.alloc tt)) in
+            let* α0 : M.Val unit := M.alloc tt in
+            M.read α0) :
+            M unit)) in
     M.alloc α2 in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
@@ -768,6 +784,7 @@ Definition main : M unit :=
         ((core.result.Result.t unit std.io.error.Error.t)::["unwrap_or_else"]
           α1
           (fun (why : std.io.error.Error.t) =>
+            (let* why := M.alloc why in
             let* _ : M.Val unit :=
               let* _ : M.Val unit :=
                 let* α0 : ref str.t := M.read (mk_str "! ") in
@@ -794,7 +811,9 @@ Definition main : M unit :=
                 let* α12 : unit := M.call (std.io.stdio._print α11) in
                 M.alloc α12 in
               M.alloc tt in
-            M.alloc tt)) in
+            let* α0 : M.Val unit := M.alloc tt in
+            M.read α0) :
+            M unit)) in
     M.alloc α2 in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.

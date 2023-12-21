@@ -7,8 +7,8 @@ pub fn add(a: i32, b: i32) -> i32 {
 }
 *)
 Definition add (a : i32.t) (b : i32.t) : M i32.t :=
-  let* a : M.Val i32.t := M.alloc a in
-  let* b : M.Val i32.t := M.alloc b in
+  let* a := M.alloc a in
+  let* b := M.alloc b in
   let* α0 : i32.t := M.read a in
   let* α1 : i32.t := M.read b in
   BinOp.Panic.add α0 α1.
@@ -20,8 +20,8 @@ fn bad_add(a: i32, b: i32) -> i32 {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition bad_add (a : i32.t) (b : i32.t) : M i32.t :=
-  let* a : M.Val i32.t := M.alloc a in
-  let* b : M.Val i32.t := M.alloc b in
+  let* a := M.alloc a in
+  let* b := M.alloc b in
   let* α0 : i32.t := M.read a in
   let* α1 : i32.t := M.read b in
   BinOp.Panic.sub α0 α1.
@@ -40,13 +40,15 @@ Module tests.
       let* α2 : M.Val i32.t := M.alloc (Integer.of_Z 3) in
       match (borrow α1, borrow α2) with
       | (left_val, right_val) =>
-        let* right_val := M.alloc right_val in
         let* left_val := M.alloc left_val in
+        let* right_val := M.alloc right_val in
         let* α0 : ref i32.t := M.read left_val in
         let* α1 : i32.t := M.read (deref α0) in
         let* α2 : ref i32.t := M.read right_val in
         let* α3 : i32.t := M.read (deref α2) in
-        if (use (UnOp.not (BinOp.Pure.eq α1 α3)) : bool) then
+        let* α4 : M.Val bool.t := M.alloc (UnOp.not (BinOp.Pure.eq α1 α3)) in
+        let* α5 : bool.t := M.read (use α4) in
+        if α5 then
           let* kind : M.Val core.panicking.AssertKind.t :=
             M.alloc core.panicking.AssertKind.Eq in
           let* _ : M.Val never.t :=
@@ -86,13 +88,15 @@ Module tests.
       let* α2 : M.Val i32.t := M.alloc (Integer.of_Z 3) in
       match (borrow α1, borrow α2) with
       | (left_val, right_val) =>
-        let* right_val := M.alloc right_val in
         let* left_val := M.alloc left_val in
+        let* right_val := M.alloc right_val in
         let* α0 : ref i32.t := M.read left_val in
         let* α1 : i32.t := M.read (deref α0) in
         let* α2 : ref i32.t := M.read right_val in
         let* α3 : i32.t := M.read (deref α2) in
-        if (use (UnOp.not (BinOp.Pure.eq α1 α3)) : bool) then
+        let* α4 : M.Val bool.t := M.alloc (UnOp.not (BinOp.Pure.eq α1 α3)) in
+        let* α5 : bool.t := M.read (use α4) in
+        if α5 then
           let* kind : M.Val core.panicking.AssertKind.t :=
             M.alloc core.panicking.AssertKind.Eq in
           let* _ : M.Val never.t :=
@@ -131,13 +135,15 @@ Definition test_add : M unit :=
     let* α2 : M.Val i32.t := M.alloc (Integer.of_Z 3) in
     match (borrow α1, borrow α2) with
     | (left_val, right_val) =>
-      let* right_val := M.alloc right_val in
       let* left_val := M.alloc left_val in
+      let* right_val := M.alloc right_val in
       let* α0 : ref i32.t := M.read left_val in
       let* α1 : i32.t := M.read (deref α0) in
       let* α2 : ref i32.t := M.read right_val in
       let* α3 : i32.t := M.read (deref α2) in
-      if (use (UnOp.not (BinOp.Pure.eq α1 α3)) : bool) then
+      let* α4 : M.Val bool.t := M.alloc (UnOp.not (BinOp.Pure.eq α1 α3)) in
+      let* α5 : bool.t := M.read (use α4) in
+      if α5 then
         let* kind : M.Val core.panicking.AssertKind.t :=
           M.alloc core.panicking.AssertKind.Eq in
         let* _ : M.Val never.t :=
@@ -173,13 +179,15 @@ Definition test_bad_add : M unit :=
     let* α2 : M.Val i32.t := M.alloc (Integer.of_Z 3) in
     match (borrow α1, borrow α2) with
     | (left_val, right_val) =>
-      let* right_val := M.alloc right_val in
       let* left_val := M.alloc left_val in
+      let* right_val := M.alloc right_val in
       let* α0 : ref i32.t := M.read left_val in
       let* α1 : i32.t := M.read (deref α0) in
       let* α2 : ref i32.t := M.read right_val in
       let* α3 : i32.t := M.read (deref α2) in
-      if (use (UnOp.not (BinOp.Pure.eq α1 α3)) : bool) then
+      let* α4 : M.Val bool.t := M.alloc (UnOp.not (BinOp.Pure.eq α1 α3)) in
+      let* α5 : bool.t := M.read (use α4) in
+      if α5 then
         let* kind : M.Val core.panicking.AssertKind.t :=
           M.alloc core.panicking.AssertKind.Eq in
         let* _ : M.Val never.t :=

@@ -17,8 +17,8 @@ Definition multiply
     (first_number_str : ref str.t)
     (second_number_str : ref str.t)
     : M ltac:(aliases_for_result.AliasedResult i32.t) :=
-  let* first_number_str : M.Val (ref str.t) := M.alloc first_number_str in
-  let* second_number_str : M.Val (ref str.t) := M.alloc second_number_str in
+  let* first_number_str := M.alloc first_number_str in
+  let* second_number_str := M.alloc second_number_str in
   let* α0 : ref str.t := M.read first_number_str in
   let* α1 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
     M.call (str.t::["parse"] α0) in
@@ -26,21 +26,20 @@ Definition multiply
     ((core.result.Result.t i32.t core.num.error.ParseIntError.t)::["and_then"]
       α1
       (fun (first_number : i32.t) =>
+        (let* first_number := M.alloc first_number in
         let* α0 : ref str.t := M.read second_number_str in
         let* α1 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
           M.call (str.t::["parse"] α0) in
-        let* α2 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
-          M.call
-            ((core.result.Result.t
-                  i32.t
-                  core.num.error.ParseIntError.t)::["map"]
-              α1
-              (fun (second_number : i32.t) =>
-                let* α0 : i32.t := M.read first_number in
-                let* α1 : i32.t := M.read second_number in
-                let* α2 : i32.t := BinOp.Panic.mul α0 α1 in
-                M.alloc α2)) in
-        M.alloc α2)).
+        M.call
+          ((core.result.Result.t i32.t core.num.error.ParseIntError.t)::["map"]
+            α1
+            (fun (second_number : i32.t) =>
+              (let* second_number := M.alloc second_number in
+              let* α0 : i32.t := M.read first_number in
+              let* α1 : i32.t := M.read second_number in
+              BinOp.Panic.mul α0 α1) :
+              M i32.t))) :
+        M (core.result.Result.t i32.t core.num.error.ParseIntError.t))).
 
 (*
 fn print(result: AliasedResult<i32>) {
@@ -53,8 +52,7 @@ fn print(result: AliasedResult<i32>) {
 Definition print
     (result : ltac:(aliases_for_result.AliasedResult i32.t))
     : M unit :=
-  let* result : M.Val ltac:(aliases_for_result.AliasedResult i32.t) :=
-    M.alloc result in
+  let* result := M.alloc result in
   let* α0 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
     M.read result in
   let* α1 : M.Val unit :=

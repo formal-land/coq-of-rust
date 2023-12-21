@@ -111,8 +111,7 @@ Definition main : M unit :=
             end in
           M.alloc tt)
       end in
-    let* α4 : unit := M.read α3 in
-    M.alloc (use α4) in
+    M.pure (use α3) in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "names: ") in

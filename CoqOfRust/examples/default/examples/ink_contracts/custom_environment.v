@@ -47,7 +47,7 @@ Section Impl_core_clone_Clone_for_custom_environment_AccountId_t.
   Clone
   *)
   Definition clone (self : ref Self) : M custom_environment.AccountId.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let _ : unit := tt in
     let* α0 : ref custom_environment.AccountId.t := M.read self in
     M.read (deref α0).
@@ -243,7 +243,7 @@ Section Impl_custom_environment_Env_t.
       }
   *)
   Definition caller (self : ref Self) : M custom_environment.AccountId.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* α0 : ref custom_environment.Env.t := M.read self in
     M.read (deref α0).["caller"].
   
@@ -261,8 +261,8 @@ Section Impl_custom_environment_Env_t.
       (self : ref Self)
       (_event : custom_environment.Event.t)
       : M unit :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* _event : M.Val custom_environment.Event.t := M.alloc _event in
+    let* self := M.alloc self in
+    let* _event := M.alloc _event in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
@@ -299,7 +299,7 @@ Section Impl_custom_environment_Topics_t.
       }
   *)
   Definition env (self : ref Self) : M custom_environment.Env.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     M.call custom_environment.Topics.t::["init_env"].
   
   Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
@@ -328,7 +328,7 @@ Section Impl_custom_environment_Topics_t.
       }
   *)
   Definition trigger (self : mut_ref Self) : M unit :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* _ : M.Val unit :=
       let* α0 : mut_ref custom_environment.Topics.t := M.read self in
       let* α1 : custom_environment.Env.t :=

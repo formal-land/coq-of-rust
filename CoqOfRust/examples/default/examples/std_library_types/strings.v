@@ -148,8 +148,7 @@ Definition main : M unit :=
             end in
           M.alloc tt)
       end in
-    let* α5 : unit := M.read α4 in
-    M.alloc (use α5) in
+    M.pure (use α4) in
   let* chars : M.Val (alloc.vec.Vec.t char.t alloc.alloc.Global.t) :=
     let* α0 : ref str.t := M.read pangram in
     let* α1 : core.str.iter.Chars.t := M.call (str.t::["chars"] α0) in
@@ -227,8 +226,7 @@ Definition main : M unit :=
             end in
           M.alloc tt)
       end in
-    let* α3 : unit := M.read α2 in
-    M.alloc (use α3) in
+    M.pure (use α2) in
   let* chars_to_trim : M.Val (ref (slice char.t)) :=
     let* α0 : M.Val (array char.t) := M.alloc [ " "%char; ","%char ] in
     let* α1 : M.Val (ref (array char.t)) := M.alloc (borrow α0) in

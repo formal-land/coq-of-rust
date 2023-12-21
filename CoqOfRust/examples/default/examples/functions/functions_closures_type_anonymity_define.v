@@ -28,7 +28,7 @@ Definition apply
     {ℋ_0 : core.ops.function.FnOnce.Trait F (Args := unit)}
     (f : F)
     : M unit :=
-  let* f : M.Val F := M.alloc f in
+  let* f := M.alloc f in
   let* _ : M.Val unit :=
     let* α0 : F := M.read f in
     let* α1 : unit :=

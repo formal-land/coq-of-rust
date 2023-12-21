@@ -8,7 +8,7 @@ fn analyze_slice(slice: &[i32]) {
 }
 *)
 Definition analyze_slice (slice : ref (slice i32.t)) : M unit :=
-  let* slice : M.Val (ref (slice i32.t)) := M.alloc slice in
+  let* slice := M.alloc slice in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "first element of the slice: ") in
@@ -268,8 +268,8 @@ Definition main : M unit :=
     let* α2 : M.Val (ref (array u32.t)) := M.alloc (borrow α1) in
     match (borrow α0, borrow α2) with
     | (left_val, right_val) =>
-      let* right_val := M.alloc right_val in
       let* left_val := M.alloc left_val in
+      let* right_val := M.alloc right_val in
       let* α0 : ref (ref (array u32.t)) := M.read left_val in
       let* α1 : ref (ref (array u32.t)) := M.read right_val in
       let* α2 : bool.t :=
@@ -279,7 +279,9 @@ Definition main : M unit :=
               (Trait := ltac:(refine _)))
             α0
             α1) in
-      if (use (UnOp.not α2) : bool) then
+      let* α3 : M.Val bool.t := M.alloc (UnOp.not α2) in
+      let* α4 : bool.t := M.read (use α3) in
+      if α4 then
         let* kind : M.Val core.panicking.AssertKind.t :=
           M.alloc core.panicking.AssertKind.Eq in
         let* _ : M.Val never.t :=
@@ -310,8 +312,8 @@ Definition main : M unit :=
     let* α3 : M.Val (ref (slice u32.t)) := M.alloc α2 in
     match (borrow α0, borrow α3) with
     | (left_val, right_val) =>
-      let* right_val := M.alloc right_val in
       let* left_val := M.alloc left_val in
+      let* right_val := M.alloc right_val in
       let* α0 : ref (ref (array u32.t)) := M.read left_val in
       let* α1 : ref (ref (slice u32.t)) := M.read right_val in
       let* α2 : bool.t :=
@@ -321,7 +323,9 @@ Definition main : M unit :=
               (Trait := ltac:(refine _)))
             α0
             α1) in
-      if (use (UnOp.not α2) : bool) then
+      let* α3 : M.Val bool.t := M.alloc (UnOp.not α2) in
+      let* α4 : bool.t := M.read (use α3) in
+      if α4 then
         let* kind : M.Val core.panicking.AssertKind.t :=
           M.alloc core.panicking.AssertKind.Eq in
         let* _ : M.Val never.t :=
@@ -434,6 +438,4 @@ Definition main : M unit :=
           end in
         M.alloc tt)
     end in
-  let* α6 : unit := M.read α5 in
-  let* α0 : M.Val unit := M.alloc (use α6) in
-  M.read α0.
+  M.read (use α5).

@@ -11,7 +11,7 @@ fn cos(z: Complex) -> Complex {
 Definition cos
     (z : foreign_function_interface.Complex.t)
     : M foreign_function_interface.Complex.t :=
-  let* z : M.Val foreign_function_interface.Complex.t := M.alloc z in
+  let* z := M.alloc z in
   let* α0 : foreign_function_interface.Complex.t := M.read z in
   M.call (foreign_function_interface.ccosf α0).
 
@@ -129,7 +129,7 @@ Section Impl_core_clone_Clone_for_foreign_function_interface_Complex_t.
   Clone
   *)
   Definition clone (self : ref Self) : M foreign_function_interface.Complex.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let _ : unit := tt in
     let* α0 : ref foreign_function_interface.Complex.t := M.read self in
     M.read (deref α0).
@@ -172,13 +172,15 @@ Section Impl_core_fmt_Debug_for_foreign_function_interface_Complex_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
+    let* self := M.alloc self in
+    let* f := M.alloc f in
     let* α0 : ref foreign_function_interface.Complex.t := M.read self in
     let* α1 : f32.t := M.read (deref α0).["im"] in
     let* α2 : f32.t := M.read UnsupportedLiteral in
-    let* α3 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=
-      if (use (BinOp.Pure.lt α1 α2) : bool) then
+    let* α3 : M.Val bool.t := M.alloc (BinOp.Pure.lt α1 α2) in
+    let* α4 : bool.t := M.read (use α3) in
+    let* α5 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=
+      if α4 then
         let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
         let* α1 : ref str.t := M.read (mk_str "") in
         let* α2 : ref str.t := M.read (mk_str "-") in
@@ -239,7 +241,7 @@ Section Impl_core_fmt_Debug_for_foreign_function_interface_Complex_t.
         let* α15 : core.result.Result.t unit core.fmt.Error.t :=
           M.call (core.fmt.Formatter.t::["write_fmt"] α0 α14) in
         M.alloc α15 in
-    M.read α3.
+    M.read α5.
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;

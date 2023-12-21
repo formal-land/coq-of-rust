@@ -50,7 +50,7 @@ Section Impl_const_underscore_expression_BarTrait_for_const_underscore_expressio
           }
   *)
   Definition show (self : Self) : M alloc.string.String.t :=
-    let* self : M.Val Self := M.alloc self in
+    let* self := M.alloc self in
     M.read self.["test"].
   
   Global Instance AssociatedFunction_show :

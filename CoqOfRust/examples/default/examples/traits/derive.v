@@ -33,8 +33,8 @@ Section Impl_core_cmp_PartialEq_for_derive_Centimeters_t.
       (self : ref Self)
       (other : ref derive.Centimeters.t)
       : M bool.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* other : M.Val (ref derive.Centimeters.t) := M.alloc other in
+    let* self := M.alloc self in
+    let* other := M.alloc other in
     let* α0 : ref derive.Centimeters.t := M.read self in
     let* α1 : f64.t := M.read (deref α0).["0"] in
     let* α2 : ref derive.Centimeters.t := M.read other in
@@ -65,8 +65,8 @@ Section Impl_core_cmp_PartialOrd_for_derive_Centimeters_t.
       (self : ref Self)
       (other : ref derive.Centimeters.t)
       : M (core.option.Option.t core.cmp.Ordering.t) :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* other : M.Val (ref derive.Centimeters.t) := M.alloc other in
+    let* self := M.alloc self in
+    let* other := M.alloc other in
     let* α0 : ref derive.Centimeters.t := M.read self in
     let* α1 : ref derive.Centimeters.t := M.read other in
     M.call
@@ -116,8 +116,8 @@ Section Impl_core_fmt_Debug_for_derive_Inches_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
+    let* self := M.alloc self in
+    let* f := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref str.t := M.read (mk_str "Inches") in
     let* α2 : ref derive.Inches.t := M.read self in
@@ -148,7 +148,7 @@ Section Impl_derive_Inches_t.
       }
   *)
   Definition to_centimeters (self : ref Self) : M derive.Centimeters.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* 'derive.Inches.Build_t inches : ref derive.Inches.t := M.read self in
     let* inches := M.alloc inches in
     let* α0 : i32.t := M.read inches in
@@ -246,13 +246,15 @@ Definition main : M unit :=
             (Trait := ltac:(refine _)))
           (borrow α1)
           (borrow meter)) in
-    let* α3 : M.Val (ref str.t) :=
-      if (use α2 : bool) then
+    let* α3 : M.Val bool.t := M.alloc α2 in
+    let* α4 : bool.t := M.read (use α3) in
+    let* α5 : M.Val (ref str.t) :=
+      if α4 then
         M.pure (mk_str "smaller")
       else
         let* α0 : ref str.t := M.read (mk_str "bigger") in
         M.alloc α0 in
-    M.copy α3 in
+    M.copy α5 in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "One foot is ") in

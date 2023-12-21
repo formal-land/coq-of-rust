@@ -36,6 +36,7 @@ Definition main : M unit :=
   let* contains : M.Val ((ref i32.t) -> M bool.t) :=
     M.alloc
       (fun (needle : ref i32.t) =>
+        (let* needle := M.alloc needle in
         let* α0 : ref (slice i32.t) :=
           M.call
             ((core.ops.deref.Deref.deref
@@ -43,8 +44,8 @@ Definition main : M unit :=
                 (Trait := ltac:(refine _)))
               (borrow haystack)) in
         let* α1 : ref i32.t := M.read needle in
-        let* α2 : bool.t := M.call ((slice i32.t)::["contains"] α0 α1) in
-        M.alloc α2) in
+        M.call ((slice i32.t)::["contains"] α0 α1)) :
+        M bool.t) in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "") in

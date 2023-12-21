@@ -59,8 +59,8 @@ Definition main : M unit :=
           match_destructuring_structs.Foo.y := y;
         |}
         =>
-      let* y := M.alloc y in
       let* b := M.alloc b in
+      let* y := M.alloc y in
       let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "First of x is 1, b = ") in
         let* α1 : ref str.t := M.read (mk_str ",  y = ") in

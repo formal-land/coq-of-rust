@@ -76,7 +76,7 @@ Definition main : M unit :=
     }
 *)
 Definition sum_odd_numbers (up_to : u32.t) : M u32.t :=
-  let* up_to : M.Val u32.t := M.alloc up_to in
+  let* up_to := M.alloc up_to in
   let* acc : M.Val u32.t := M.alloc (Integer.of_Z 0) in
   let* _ : M.Val unit :=
     let* α0 : u32.t := M.read up_to in
@@ -132,6 +132,5 @@ Definition sum_odd_numbers (up_to : u32.t) : M u32.t :=
             end in
           M.alloc tt)
       end in
-    let* α3 : unit := M.read α2 in
-    M.alloc (use α3) in
+    M.pure (use α2) in
   M.read acc.

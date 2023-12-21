@@ -54,8 +54,8 @@ Definition main : M unit :=
     let* α1 : M.Val (ref (slice u32.t)) := M.alloc α0 in
     match (borrow α1, borrow my_slice) with
     | (left_val, right_val) =>
-      let* right_val := M.alloc right_val in
       let* left_val := M.alloc left_val in
+      let* right_val := M.alloc right_val in
       let* α0 : ref (ref (slice u32.t)) := M.read left_val in
       let* α1 : ref (ref (slice u32.t)) := M.read right_val in
       let* α2 : bool.t :=
@@ -65,7 +65,9 @@ Definition main : M unit :=
               (Trait := ltac:(refine _)))
             α0
             α1) in
-      if (use (UnOp.not α2) : bool) then
+      let* α3 : M.Val bool.t := M.alloc (UnOp.not α2) in
+      let* α4 : bool.t := M.read (use α3) in
+      if α4 then
         let* kind : M.Val core.panicking.AssertKind.t :=
           M.alloc core.panicking.AssertKind.Eq in
         let* _ : M.Val never.t :=

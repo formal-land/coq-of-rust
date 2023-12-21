@@ -31,9 +31,11 @@ Definition main : M unit :=
     loop
       (let* α0 : M.Val bool.t := let_if core.option.Option.Some i := optional in
       let* α1 : bool.t := M.read α0 in
-      if (α1 : bool) then
+      if α1 then
         let* α0 : i32.t := M.read i in
-        if (use (BinOp.Pure.gt α0 (Integer.of_Z 9)) : bool) then
+        let* α1 : M.Val bool.t := M.alloc (BinOp.Pure.gt α0 (Integer.of_Z 9)) in
+        let* α2 : bool.t := M.read (use α1) in
+        if α2 then
           let* _ : M.Val unit :=
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "Greater than 9, quit!

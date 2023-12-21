@@ -31,7 +31,7 @@ Definition main : M unit :=
   let* α3 : M.Val bool.t := let_if core.result.Result.Ok lines := α2 in
   let* α4 : bool.t := M.read α3 in
   let* α5 : M.Val unit :=
-    if (α4 : bool) then
+    if α4 then
       let* α0 :
           std.io.Lines.t
             (std.io.buffered.bufreader.BufReader.t std.fs.File.t) :=
@@ -75,7 +75,7 @@ Definition main : M unit :=
                 let* α0 : M.Val bool.t :=
                   let_if core.result.Result.Ok ip := line in
                 let* α1 : bool.t := M.read α0 in
-                if (α1 : bool) then
+                if α1 then
                   let* _ : M.Val unit :=
                     let* _ : M.Val unit :=
                       let* α0 : ref str.t := M.read (mk_str "") in
@@ -108,8 +108,7 @@ Definition main : M unit :=
               end in
             M.alloc tt)
         end in
-      let* α3 : unit := M.read α2 in
-      M.alloc (use α3)
+      M.pure (use α2)
     else
       M.alloc tt in
   M.read α5.
@@ -132,7 +131,7 @@ Definition read_lines
         ltac:(std.io.error.Result
           (std.io.Lines.t
             (std.io.buffered.bufreader.BufReader.t std.fs.File.t))) :=
-  let* filename : M.Val P := M.alloc filename in
+  let* filename := M.alloc filename in
   let return_ :=
     M.return_
       (R :=

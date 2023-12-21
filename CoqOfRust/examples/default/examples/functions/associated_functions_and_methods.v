@@ -55,8 +55,8 @@ Section Impl_associated_functions_and_methods_Point_t.
       (x : f64.t)
       (y : f64.t)
       : M associated_functions_and_methods.Point.t :=
-    let* x : M.Val f64.t := M.alloc x in
-    let* y : M.Val f64.t := M.alloc y in
+    let* x := M.alloc x in
+    let* y := M.alloc y in
     let* α0 : f64.t := M.read x in
     let* α1 : f64.t := M.read y in
     M.pure
@@ -105,7 +105,7 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
   Definition get_p1
       (self : ref Self)
       : M associated_functions_and_methods.Point.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* α0 : ref associated_functions_and_methods.Rectangle.t := M.read self in
     M.read (deref α0).["p1"].
   
@@ -126,7 +126,7 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
       }
   *)
   Definition area (self : ref Self) : M f64.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* '{|
           associated_functions_and_methods.Point.x := x1;
           associated_functions_and_methods.Point.y := y1;
@@ -135,8 +135,8 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
       let* α0 : ref associated_functions_and_methods.Rectangle.t :=
         M.read self in
       M.read (deref α0).["p1"] in
-    let* y1 := M.alloc y1 in
     let* x1 := M.alloc x1 in
+    let* y1 := M.alloc y1 in
     let* '{|
           associated_functions_and_methods.Point.x := x2;
           associated_functions_and_methods.Point.y := y2;
@@ -145,8 +145,8 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
       let* α0 : ref associated_functions_and_methods.Rectangle.t :=
         M.read self in
       M.read (deref α0).["p2"] in
-    let* y2 := M.alloc y2 in
     let* x2 := M.alloc x2 in
+    let* y2 := M.alloc y2 in
     let* α0 : f64.t := M.read x1 in
     let* α1 : f64.t := M.read x2 in
     let* α2 : f64.t := BinOp.Panic.sub α0 α1 in
@@ -172,7 +172,7 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
       }
   *)
   Definition perimeter (self : ref Self) : M f64.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* '{|
           associated_functions_and_methods.Point.x := x1;
           associated_functions_and_methods.Point.y := y1;
@@ -181,8 +181,8 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
       let* α0 : ref associated_functions_and_methods.Rectangle.t :=
         M.read self in
       M.read (deref α0).["p1"] in
-    let* y1 := M.alloc y1 in
     let* x1 := M.alloc x1 in
+    let* y1 := M.alloc y1 in
     let* '{|
           associated_functions_and_methods.Point.x := x2;
           associated_functions_and_methods.Point.y := y2;
@@ -191,8 +191,8 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
       let* α0 : ref associated_functions_and_methods.Rectangle.t :=
         M.read self in
       M.read (deref α0).["p2"] in
-    let* y2 := M.alloc y2 in
     let* x2 := M.alloc x2 in
+    let* y2 := M.alloc y2 in
     let* α0 : f64.t := M.read UnsupportedLiteral in
     let* α1 : f64.t := M.read x1 in
     let* α2 : f64.t := M.read x2 in
@@ -222,9 +222,9 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
       }
   *)
   Definition translate (self : mut_ref Self) (x : f64.t) (y : f64.t) : M unit :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
-    let* x : M.Val f64.t := M.alloc x in
-    let* y : M.Val f64.t := M.alloc y in
+    let* self := M.alloc self in
+    let* x := M.alloc x in
+    let* y := M.alloc y in
     let* _ : M.Val unit :=
       let* β : M.Val f64.t :=
         let* α0 : mut_ref associated_functions_and_methods.Rectangle.t :=
@@ -302,12 +302,12 @@ Section Impl_associated_functions_and_methods_Pair_t.
       }
   *)
   Definition destroy (self : Self) : M unit :=
-    let* self : M.Val Self := M.alloc self in
+    let* self := M.alloc self in
     let* 'associated_functions_and_methods.Pair.Build_t first second :
         associated_functions_and_methods.Pair.t :=
       M.read self in
-    let* second := M.alloc second in
     let* first := M.alloc first in
+    let* second := M.alloc second in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "Destroying Pair(") in

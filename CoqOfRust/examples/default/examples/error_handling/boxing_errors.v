@@ -24,8 +24,8 @@ Section Impl_core_fmt_Debug_for_boxing_errors_EmptyVec_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
+    let* self := M.alloc self in
+    let* f := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref str.t := M.read (mk_str "EmptyVec") in
     M.call (core.fmt.Formatter.t::["write_str"] α0 α1).
@@ -48,7 +48,7 @@ Section Impl_core_clone_Clone_for_boxing_errors_EmptyVec_t.
   Clone
   *)
   Definition clone (self : ref Self) : M boxing_errors.EmptyVec.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     M.pure boxing_errors.EmptyVec.Build.
   
   Global Instance AssociatedFunction_clone :
@@ -76,8 +76,8 @@ Section Impl_core_fmt_Display_for_boxing_errors_EmptyVec_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
+    let* self := M.alloc self in
+    let* f := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref str.t := M.read (mk_str "invalid first item to double") in
     let* α2 : M.Val (array (ref str.t)) := M.alloc [ α1 ] in
@@ -126,8 +126,7 @@ fn double_first(vec: Vec<&str>) -> Result<i32> {
 Definition double_first
     (vec : alloc.vec.Vec.t (ref str.t) alloc.vec.Vec.Default.A)
     : M ltac:(boxing_errors.Result i32.t) :=
-  let* vec : M.Val (alloc.vec.Vec.t (ref str.t) alloc.vec.Vec.Default.A) :=
-    M.alloc vec in
+  let* vec := M.alloc vec in
   let* α0 : ref (slice (ref str.t)) :=
     M.call
       ((core.ops.deref.Deref.deref
@@ -143,19 +142,19 @@ Definition double_first
     M.call
       ((core.option.Option.t (ref (ref str.t)))::["ok_or_else"]
         α1
-        (let* α0 : alloc.boxed.Box.t dynamic alloc.alloc.Global.t :=
-          M.call
-            ((core.convert.Into.into
-                (Self := boxing_errors.EmptyVec.t)
-                (Trait := ltac:(refine _)))
-              boxing_errors.EmptyVec.Build) in
-        M.alloc α0)) in
+        ((M.call
+          ((core.convert.Into.into
+              (Self := boxing_errors.EmptyVec.t)
+              (Trait := ltac:(refine _)))
+            boxing_errors.EmptyVec.Build)) :
+        M (alloc.boxed.Box.t dynamic alloc.alloc.Global.t))) in
   M.call
     ((core.result.Result.t
           (ref (ref str.t))
           (alloc.boxed.Box.t dynamic alloc.alloc.Global.t))::["and_then"]
       α2
       (fun (s : ref (ref str.t)) =>
+        (let* s := M.alloc s in
         let* α0 : ref (ref str.t) := M.read s in
         let* α1 : ref str.t := M.read (deref α0) in
         let* α2 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
@@ -170,28 +169,28 @@ Definition double_first
                   core.num.error.ParseIntError.t)::["map_err"]
               α2
               (fun (e : core.num.error.ParseIntError.t) =>
+                (let* e := M.alloc e in
                 let* α0 : core.num.error.ParseIntError.t := M.read e in
-                let* α1 : alloc.boxed.Box.t dynamic alloc.alloc.Global.t :=
-                  M.call
-                    ((core.convert.Into.into
-                        (Self := core.num.error.ParseIntError.t)
-                        (Trait := ltac:(refine _)))
-                      α0) in
-                M.alloc α1)) in
-        let* α4 :
-            core.result.Result.t
-              i32.t
-              (alloc.boxed.Box.t dynamic alloc.alloc.Global.t) :=
-          M.call
-            ((core.result.Result.t
-                  i32.t
-                  (alloc.boxed.Box.t dynamic alloc.alloc.Global.t))::["map"]
-              α3
-              (fun (i : i32.t) =>
-                let* α0 : i32.t := M.read i in
-                let* α1 : i32.t := BinOp.Panic.mul (Integer.of_Z 2) α0 in
-                M.alloc α1)) in
-        M.alloc α4)).
+                M.call
+                  ((core.convert.Into.into
+                      (Self := core.num.error.ParseIntError.t)
+                      (Trait := ltac:(refine _)))
+                    α0)) :
+                M (alloc.boxed.Box.t dynamic alloc.alloc.Global.t))) in
+        M.call
+          ((core.result.Result.t
+                i32.t
+                (alloc.boxed.Box.t dynamic alloc.alloc.Global.t))::["map"]
+            α3
+            (fun (i : i32.t) =>
+              (let* i := M.alloc i in
+              let* α0 : i32.t := M.read i in
+              BinOp.Panic.mul (Integer.of_Z 2) α0) :
+              M i32.t))) :
+        M
+          (core.result.Result.t
+            i32.t
+            (alloc.boxed.Box.t dynamic alloc.alloc.Global.t)))).
 
 (*
 fn print(result: Result<i32>) {
@@ -202,7 +201,7 @@ fn print(result: Result<i32>) {
 }
 *)
 Definition print (result : ltac:(boxing_errors.Result i32.t)) : M unit :=
-  let* result : M.Val ltac:(boxing_errors.Result i32.t) := M.alloc result in
+  let* result := M.alloc result in
   let* α0 :
       core.result.Result.t
         i32.t

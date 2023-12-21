@@ -51,8 +51,8 @@ Definition main : M unit :=
   let* '(tx, rx) :
       (std.sync.mpsc.Sender.t i32.t) * (std.sync.mpsc.Receiver.t i32.t) :=
     M.call std.sync.mpsc.channel in
-  let* rx := M.alloc rx in
   let* tx := M.alloc tx in
+  let* rx := M.alloc rx in
   let* children :
       M.Val
         (alloc.vec.Vec.t (std.thread.JoinHandle.t unit) alloc.alloc.Global.t) :=
@@ -107,7 +107,7 @@ Definition main : M unit :=
                 let* α0 : std.thread.JoinHandle.t unit :=
                   M.call
                     (std.thread.spawn
-                      (let* _ : M.Val unit :=
+                      ((let* _ : M.Val unit :=
                         let* α0 : i32.t := M.read id in
                         let* α1 :
                             core.result.Result.t
@@ -151,7 +151,9 @@ Definition main : M unit :=
                           let* α10 : unit := M.call (std.io.stdio._print α9) in
                           M.alloc α10 in
                         M.alloc tt in
-                      M.alloc tt)) in
+                      let* α0 : M.Val unit := M.alloc tt in
+                      M.read α0) :
+                      M unit)) in
                 M.alloc α0 in
               let* _ : M.Val unit :=
                 let* α0 : std.thread.JoinHandle.t unit := M.read child in
@@ -167,8 +169,7 @@ Definition main : M unit :=
             end in
           M.alloc tt)
       end in
-    let* α4 : unit := M.read α3 in
-    M.alloc (use α4) in
+    M.pure (use α3) in
   let* ids :
       M.Val
         (alloc.vec.Vec.t
@@ -235,8 +236,7 @@ Definition main : M unit :=
             end in
           M.alloc tt)
       end in
-    let* α4 : unit := M.read α3 in
-    M.alloc (use α4) in
+    M.pure (use α3) in
   let* _ : M.Val unit :=
     let* α0 :
         alloc.vec.Vec.t (std.thread.JoinHandle.t unit) alloc.alloc.Global.t :=
@@ -299,8 +299,7 @@ Definition main : M unit :=
             end in
           M.alloc tt)
       end in
-    let* α3 : unit := M.read α2 in
-    M.alloc (use α3) in
+    M.pure (use α2) in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "") in

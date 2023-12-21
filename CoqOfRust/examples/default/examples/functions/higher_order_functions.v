@@ -7,7 +7,7 @@ fn is_odd(n: u32) -> bool {
 }
 *)
 Definition is_odd (n : u32.t) : M bool.t :=
-  let* n : M.Val u32.t := M.alloc n in
+  let* n := M.alloc n in
   let* α0 : u32.t := M.read n in
   let* α1 : u32.t := BinOp.Panic.rem α0 (Integer.of_Z 2) in
   M.pure (BinOp.Pure.eq α1 (Integer.of_Z 1)).
@@ -97,7 +97,9 @@ Definition main : M unit :=
                 M.alloc α2 in
               let* α0 : u32.t := M.read n_squared in
               let* α1 : u32.t := M.read upper in
-              if (use (BinOp.Pure.ge α0 α1) : bool) then
+              let* α2 : M.Val bool.t := M.alloc (BinOp.Pure.ge α0 α1) in
+              let* α3 : bool.t := M.read (use α2) in
+              if α3 then
                 let* _ : M.Val never.t := Break in
                 let* α0 : M.Val unit := M.alloc tt in
                 let* α1 := M.read α0 in
@@ -106,7 +108,9 @@ Definition main : M unit :=
               else
                 let* α0 : u32.t := M.read n_squared in
                 let* α1 : bool.t := M.call (higher_order_functions.is_odd α0) in
-                if (use α1 : bool) then
+                let* α2 : M.Val bool.t := M.alloc α1 in
+                let* α3 : bool.t := M.read (use α2) in
+                if α3 then
                   let* _ : M.Val unit :=
                     let β : M.Val u32.t := acc in
                     let* α0 := M.read β in
@@ -119,8 +123,7 @@ Definition main : M unit :=
             end in
           M.alloc tt)
       end in
-    let* α2 : unit := M.read α1 in
-    M.alloc (use α2) in
+    M.pure (use α1) in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "imperative style: ") in
@@ -153,10 +156,11 @@ Definition main : M unit :=
             (Trait := ltac:(refine _)))
           {| core.ops.range.RangeFrom.start := Integer.of_Z 0; |}
           (fun (n : u32.t) =>
+            (let* n := M.alloc n in
             let* α0 : u32.t := M.read n in
             let* α1 : u32.t := M.read n in
-            let* α2 : u32.t := BinOp.Panic.mul α0 α1 in
-            M.alloc α2)) in
+            BinOp.Panic.mul α0 α1) :
+            M u32.t)) in
     let* α1 :
         core.iter.adapters.take_while.TakeWhile.t
           (core.iter.adapters.map.Map.t
@@ -172,9 +176,11 @@ Definition main : M unit :=
             (Trait := ltac:(refine _)))
           α0
           (fun (n_squared : ref u32.t) =>
+            (let* n_squared := M.alloc n_squared in
             let* α0 : u32.t := M.read n_squared in
             let* α1 : u32.t := M.read upper in
-            M.alloc (BinOp.Pure.lt α0 α1))) in
+            M.pure (BinOp.Pure.lt α0 α1)) :
+            M bool.t)) in
     let* α2 :
         core.iter.adapters.filter.Filter.t
           (core.iter.adapters.take_while.TakeWhile.t
@@ -194,9 +200,10 @@ Definition main : M unit :=
             (Trait := ltac:(refine _)))
           α1
           (fun (n_squared : ref u32.t) =>
+            (let* n_squared := M.alloc n_squared in
             let* α0 : u32.t := M.read n_squared in
-            let* α1 : bool.t := M.call (higher_order_functions.is_odd α0) in
-            M.alloc α1)) in
+            M.call (higher_order_functions.is_odd α0)) :
+            M bool.t)) in
     let* α3 : u32.t :=
       M.call
         ((core.iter.traits.iterator.Iterator.sum

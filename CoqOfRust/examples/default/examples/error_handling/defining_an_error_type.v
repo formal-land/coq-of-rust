@@ -18,8 +18,8 @@ Section Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
+    let* self := M.alloc self in
+    let* f := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref str.t := M.read (mk_str "DoubleError") in
     M.call (core.fmt.Formatter.t::["write_str"] α0 α1).
@@ -42,7 +42,7 @@ Section Impl_core_clone_Clone_for_defining_an_error_type_DoubleError_t.
   Clone
   *)
   Definition clone (self : ref Self) : M defining_an_error_type.DoubleError.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     M.pure defining_an_error_type.DoubleError.Build.
   
   Global Instance AssociatedFunction_clone :
@@ -73,8 +73,8 @@ Section Impl_core_fmt_Display_for_defining_an_error_type_DoubleError_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
+    let* self := M.alloc self in
+    let* f := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref str.t := M.read (mk_str "invalid first item to double") in
     let* α2 : M.Val (array (ref str.t)) := M.alloc [ α1 ] in
@@ -111,8 +111,7 @@ fn double_first(vec: Vec<&str>) -> Result<i32> {
 Definition double_first
     (vec : alloc.vec.Vec.t (ref str.t) alloc.vec.Vec.Default.A)
     : M ltac:(defining_an_error_type.Result i32.t) :=
-  let* vec : M.Val (alloc.vec.Vec.t (ref str.t) alloc.vec.Vec.Default.A) :=
-    M.alloc vec in
+  let* vec := M.alloc vec in
   let* α0 : ref (slice (ref str.t)) :=
     M.call
       ((core.ops.deref.Deref.deref
@@ -135,6 +134,7 @@ Definition double_first
           defining_an_error_type.DoubleError.t)::["and_then"]
       α2
       (fun (s : ref (ref str.t)) =>
+        (let* s := M.alloc s in
         let* α0 : ref (ref str.t) := M.read s in
         let* α1 : ref str.t := M.read (deref α0) in
         let* α2 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
@@ -147,19 +147,19 @@ Definition double_first
                   core.num.error.ParseIntError.t)::["map_err"]
               α2
               (fun (_ : core.num.error.ParseIntError.t) =>
-                M.alloc defining_an_error_type.DoubleError.Build)) in
-        let* α4 :
-            core.result.Result.t i32.t defining_an_error_type.DoubleError.t :=
-          M.call
-            ((core.result.Result.t
-                  i32.t
-                  defining_an_error_type.DoubleError.t)::["map"]
-              α3
-              (fun (i : i32.t) =>
-                let* α0 : i32.t := M.read i in
-                let* α1 : i32.t := BinOp.Panic.mul (Integer.of_Z 2) α0 in
-                M.alloc α1)) in
-        M.alloc α4)).
+                (M.pure defining_an_error_type.DoubleError.Build) :
+                M defining_an_error_type.DoubleError.t)) in
+        M.call
+          ((core.result.Result.t
+                i32.t
+                defining_an_error_type.DoubleError.t)::["map"]
+            α3
+            (fun (i : i32.t) =>
+              (let* i := M.alloc i in
+              let* α0 : i32.t := M.read i in
+              BinOp.Panic.mul (Integer.of_Z 2) α0) :
+              M i32.t))) :
+        M (core.result.Result.t i32.t defining_an_error_type.DoubleError.t))).
 
 (*
 fn print(result: Result<i32>) {
@@ -172,8 +172,7 @@ fn print(result: Result<i32>) {
 Definition print
     (result : ltac:(defining_an_error_type.Result i32.t))
     : M unit :=
-  let* result : M.Val ltac:(defining_an_error_type.Result i32.t) :=
-    M.alloc result in
+  let* result := M.alloc result in
   let* α0 : core.result.Result.t i32.t defining_an_error_type.DoubleError.t :=
     M.read result in
   let* α1 : M.Val unit :=

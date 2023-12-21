@@ -47,7 +47,7 @@ Section Impl_core_clone_Clone_for_basic_contract_caller_AccountId_t.
   Clone
   *)
   Definition clone (self : ref Self) : M basic_contract_caller.AccountId.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let _ : unit := tt in
     let* α0 : ref basic_contract_caller.AccountId.t := M.read self in
     M.read (deref α0).
@@ -106,7 +106,7 @@ Section Impl_basic_contract_caller_OtherContract_t.
       }
   *)
   Definition new (init_value : bool.t) : M Self :=
-    let* init_value : M.Val bool.t := M.alloc init_value in
+    let* init_value := M.alloc init_value in
     let* α0 : bool.t := M.read init_value in
     M.pure {| basic_contract_caller.OtherContract.value := α0; |}.
   
@@ -120,7 +120,7 @@ Section Impl_basic_contract_caller_OtherContract_t.
       }
   *)
   Definition flip (self : mut_ref Self) : M unit :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* _ : M.Val unit :=
       let* α0 : mut_ref basic_contract_caller.OtherContract.t := M.read self in
       let* α1 : mut_ref basic_contract_caller.OtherContract.t := M.read self in
@@ -140,7 +140,7 @@ Section Impl_basic_contract_caller_OtherContract_t.
       }
   *)
   Definition get (self : ref Self) : M bool.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* α0 : ref basic_contract_caller.OtherContract.t := M.read self in
     M.read (deref α0).["value"].
   
@@ -188,8 +188,7 @@ Section Impl_basic_contract_caller_BasicContractCaller_t.
   Definition new
       (other_contract_code_hash : ltac:(basic_contract_caller.Hash))
       : M Self :=
-    let* other_contract_code_hash : M.Val ltac:(basic_contract_caller.Hash) :=
-      M.alloc other_contract_code_hash in
+    let* other_contract_code_hash := M.alloc other_contract_code_hash in
     let* other_contract : M.Val basic_contract_caller.OtherContract.t :=
       let* α0 : ref str.t := M.read (mk_str "not yet implemented") in
       let* α1 : never.t := M.call (core.panicking.panic α0) in
@@ -212,7 +211,7 @@ Section Impl_basic_contract_caller_BasicContractCaller_t.
       }
   *)
   Definition flip_and_get (self : mut_ref Self) : M bool.t :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* _ : M.Val unit :=
       let* α0 : mut_ref basic_contract_caller.BasicContractCaller.t :=
         M.read self in

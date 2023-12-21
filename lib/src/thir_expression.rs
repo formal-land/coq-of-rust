@@ -175,10 +175,8 @@ fn compile_borrow(borrow_kind: &BorrowKind, arg: Expr) -> ExprKind {
     }
 }
 
-/// Allocate all the bindings in the [pattern] to some [M.Val]
-fn allocate_bindings(pattern: &Pattern, body: Box<Expr>) -> Box<Expr> {
-    let bindings = pattern.get_bindings();
-    bindings.iter().fold(body, |body, binding| {
+pub(crate) fn allocate_bindings(bindings: &[String], body: Box<Expr>) -> Box<Expr> {
+    bindings.iter().rfold(body, |body, binding| {
         Box::new(Expr {
             ty: body.ty.clone(),
             kind: ExprKind::Let {
@@ -192,6 +190,12 @@ fn allocate_bindings(pattern: &Pattern, body: Box<Expr>) -> Box<Expr> {
             },
         })
     })
+}
+
+/// Allocate all the bindings in the [pattern] to some [M.Val]
+fn allocate_bindings_in_pattern(pattern: &Pattern, body: Box<Expr>) -> Box<Expr> {
+    let bindings = pattern.get_bindings();
+    allocate_bindings(&bindings, body)
 }
 
 fn compile_expr_kind<'a>(
@@ -332,18 +336,8 @@ fn compile_expr_kind<'a>(
             .alloc(Some(ty))
         }
         thir::ExprKind::Use { source } => {
-            let func = Box::new(Expr {
-                kind: ExprKind::LocalVar("use".to_string()),
-                ty: None,
-            });
             let source = compile_expr(env, thir, source);
-            ExprKind::Call {
-                func,
-                args: vec![source.read()],
-                purity: Purity::Pure,
-                from_user: false,
-            }
-            .alloc(Some(ty))
+            ExprKind::Use(Box::new(source))
         }
         thir::ExprKind::NeverToAny { source } => {
             let func = Box::new(Expr {
@@ -393,7 +387,7 @@ fn compile_expr_kind<'a>(
                     let arm = thir.arms.get(*arm_id).unwrap();
                     let pattern = crate::thir_pattern::compile_pattern(env, &arm.pattern);
                     let body = Box::new(compile_expr(env, thir, &arm.body));
-                    let body = allocate_bindings(&pattern, body);
+                    let body = allocate_bindings_in_pattern(&pattern, body);
                     MatchArm {
                         pattern,
                         body: *body,
@@ -627,8 +621,7 @@ fn compile_expr_kind<'a>(
                 panic!("thir failed to compile");
             };
             let thir = thir.borrow();
-            let body = Box::new(compile_expr(env, &thir, &expr_id));
-            let args = thir
+            let args: Vec<(Pattern, Rc<CoqType>)> = thir
                 .params
                 .iter()
                 .filter_map(|param| match &param.pat {
@@ -640,6 +633,16 @@ fn compile_expr_kind<'a>(
                     None => None,
                 })
                 .collect();
+            let body = Box::new(compile_expr(env, &thir, &expr_id).read());
+            let body = allocate_bindings(
+                &args
+                    .iter()
+                    .map(|(pattern, _)| pattern.get_bindings())
+                    .collect::<Vec<_>>()
+                    .concat(),
+                body,
+            );
+
             ExprKind::Lambda { args, body }.alloc(Some(ty))
         }
         thir::ExprKind::Literal { lit, neg } => match lit.node {
@@ -758,7 +761,10 @@ fn compile_stmts<'a>(
                     let (init, body) = if matches!(pattern.as_ref(), Pattern::Variable(_)) {
                         (init.copy(), body)
                     } else {
-                        (init.read(), allocate_bindings(pattern.as_ref(), body))
+                        (
+                            init.read(),
+                            allocate_bindings_in_pattern(pattern.as_ref(), body),
+                        )
                     };
                     let ty = body.ty.clone();
                     Expr {

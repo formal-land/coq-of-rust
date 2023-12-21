@@ -23,7 +23,7 @@ Section Impl_example05_Foo_t.
       }
   *)
   Definition plus1 (self : Self) : M u32.t :=
-    let* self : M.Val Self := M.alloc self in
+    let* self := M.alloc self in
     let* α0 : u32.t := M.read self.["0"] in
     BinOp.Panic.add α0 (Integer.of_Z 1).
   

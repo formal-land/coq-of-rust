@@ -12,8 +12,7 @@ Definition double_first
       M
         (core.option.Option.t
           (core.result.Result.t i32.t core.num.error.ParseIntError.t)) :=
-  let* vec : M.Val (alloc.vec.Vec.t (ref str.t) alloc.vec.Vec.Default.A) :=
-    M.alloc vec in
+  let* vec := M.alloc vec in
   let* α0 : ref (slice (ref str.t)) :=
     M.call
       ((core.ops.deref.Deref.deref
@@ -26,21 +25,20 @@ Definition double_first
     ((core.option.Option.t (ref (ref str.t)))::["map"]
       α1
       (fun (first : ref (ref str.t)) =>
+        (let* first := M.alloc first in
         let* α0 : ref (ref str.t) := M.read first in
         let* α1 : ref str.t := M.read (deref α0) in
         let* α2 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
           M.call (str.t::["parse"] α1) in
-        let* α3 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
-          M.call
-            ((core.result.Result.t
-                  i32.t
-                  core.num.error.ParseIntError.t)::["map"]
-              α2
-              (fun (n : i32.t) =>
-                let* α0 : i32.t := M.read n in
-                let* α1 : i32.t := BinOp.Panic.mul (Integer.of_Z 2) α0 in
-                M.alloc α1)) in
-        M.alloc α3)).
+        M.call
+          ((core.result.Result.t i32.t core.num.error.ParseIntError.t)::["map"]
+            α2
+            (fun (n : i32.t) =>
+              (let* n := M.alloc n in
+              let* α0 : i32.t := M.read n in
+              BinOp.Panic.mul (Integer.of_Z 2) α0) :
+              M i32.t))) :
+        M (core.result.Result.t i32.t core.num.error.ParseIntError.t))).
 
 (*
 fn main() {

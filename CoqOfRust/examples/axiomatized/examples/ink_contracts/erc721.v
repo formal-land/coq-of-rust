@@ -608,7 +608,7 @@ Section Impl_erc721_Erc721_t.
   
   (*
       fn balance_of_or_zero(&self, of: &AccountId) -> u32 {
-          self.owned_tokens_count.get(of).unwrap_or(0)
+          self.owned_tokens_count.get(of).unwrap_or(0 as u32)
       }
   *)
   Parameter balance_of_or_zero :
@@ -735,6 +735,38 @@ Section Impl_erc721_Erc721_t.
   }.
   
   (*
+      fn approve_for_all(&mut self, to: AccountId, approved: bool) -> Result<(), Error> {
+          let caller = self.env().caller();
+          if to == caller {
+              return Err(Error::NotAllowed);
+          }
+          self.env().emit_event(Event::ApprovalForAll(ApprovalForAll {
+              owner: caller,
+              operator: to,
+              approved,
+          }));
+  
+          if approved {
+              self.operator_approvals.insert((caller, to), ());
+          } else {
+              self.operator_approvals.remove((caller, to));
+          }
+  
+          Ok(())
+      }
+  *)
+  Parameter approve_for_all :
+      (mut_ref Self) ->
+        erc721.AccountId.t ->
+        bool.t ->
+        M (core.result.Result.t unit erc721.Error.t).
+  
+  Global Instance AssociatedFunction_approve_for_all :
+    Notations.DoubleColon Self "approve_for_all" := {
+    Notations.double_colon := approve_for_all;
+  }.
+  
+  (*
       pub fn set_approval_for_all(&mut self, to: AccountId, approved: bool) -> Result<(), Error> {
           self.approve_for_all(to, approved)?;
           Ok(())
@@ -752,6 +784,46 @@ Section Impl_erc721_Erc721_t.
   }.
   
   (*
+      fn approve_for(&mut self, to: &AccountId, id: TokenId) -> Result<(), Error> {
+          let caller = self.env().caller();
+          let owner = self.owner_of(id);
+          if !(owner == Some(caller)
+              || self.approved_for_all(owner.expect("Error with AccountId"), caller))
+          {
+              return Err(Error::NotAllowed);
+          };
+  
+          if *to == AccountId::from([0x0; 32]) {
+              return Err(Error::NotAllowed);
+          };
+  
+          if self.token_approvals.contains(&id) {
+              return Err(Error::CannotInsert);
+          } else {
+              self.token_approvals.insert(id, *to);
+          }
+  
+          self.env().emit_event(Event::Approval(Approval {
+              from: caller,
+              to: *to,
+              id,
+          }));
+  
+          Ok(())
+      }
+  *)
+  Parameter approve_for :
+      (mut_ref Self) ->
+        (ref erc721.AccountId.t) ->
+        ltac:(erc721.TokenId) ->
+        M (core.result.Result.t unit erc721.Error.t).
+  
+  Global Instance AssociatedFunction_approve_for :
+    Notations.DoubleColon Self "approve_for" := {
+    Notations.double_colon := approve_for;
+  }.
+  
+  (*
       pub fn approve(&mut self, to: AccountId, id: TokenId) -> Result<(), Error> {
           self.approve_for(&to, id)?;
           Ok(())
@@ -766,6 +838,111 @@ Section Impl_erc721_Erc721_t.
   Global Instance AssociatedFunction_approve :
     Notations.DoubleColon Self "approve" := {
     Notations.double_colon := approve;
+  }.
+  
+  (*
+      fn remove_token_from(&mut self, from: &AccountId, id: TokenId) -> Result<(), Error> {
+          let Self {
+              token_owner,
+              owned_tokens_count,
+              ..
+          } = self;
+  
+          if !token_owner.contains(&id) {
+              return Err(Error::TokenNotFound);
+          }
+  
+          let count = owned_tokens_count
+              .get(from)
+              .map(|c| c - 1)
+              .ok_or(Error::CannotFetchValue)?;
+          owned_tokens_count.insert( *from, count);
+          token_owner.remove(id);
+  
+          Ok(())
+      }
+  *)
+  Parameter remove_token_from :
+      (mut_ref Self) ->
+        (ref erc721.AccountId.t) ->
+        ltac:(erc721.TokenId) ->
+        M (core.result.Result.t unit erc721.Error.t).
+  
+  Global Instance AssociatedFunction_remove_token_from :
+    Notations.DoubleColon Self "remove_token_from" := {
+    Notations.double_colon := remove_token_from;
+  }.
+  
+  (*
+      fn add_token_to(&mut self, to: &AccountId, id: TokenId) -> Result<(), Error> {
+          let Self {
+              token_owner,
+              owned_tokens_count,
+              ..
+          } = self;
+  
+          if token_owner.contains(&id) {
+              return Err(Error::TokenExists);
+          }
+  
+          if *to == AccountId::from([0x0; 32]) {
+              return Err(Error::NotAllowed);
+          };
+  
+          let count = owned_tokens_count.get(to).map(|c| c + 1).unwrap_or(1);
+  
+          owned_tokens_count.insert( *to, count);
+          token_owner.insert(id, *to);
+  
+          Ok(())
+      }
+  *)
+  Parameter add_token_to :
+      (mut_ref Self) ->
+        (ref erc721.AccountId.t) ->
+        ltac:(erc721.TokenId) ->
+        M (core.result.Result.t unit erc721.Error.t).
+  
+  Global Instance AssociatedFunction_add_token_to :
+    Notations.DoubleColon Self "add_token_to" := {
+    Notations.double_colon := add_token_to;
+  }.
+  
+  (*
+      fn transfer_token_from(
+          &mut self,
+          from: &AccountId,
+          to: &AccountId,
+          id: TokenId,
+      ) -> Result<(), Error> {
+          let caller = self.env().caller();
+          if !self.exists(id) {
+              return Err(Error::TokenNotFound);
+          };
+          if !self.approved_or_owner(Some(caller), id) {
+              return Err(Error::NotApproved);
+          };
+          self.clear_approval(id);
+          self.remove_token_from(from, id)?;
+          self.add_token_to(to, id)?;
+          self.env().emit_event(Event::Transfer(Transfer {
+              from: Some( *from),
+              to: Some( *to),
+              id,
+          }));
+          Ok(())
+      }
+  *)
+  Parameter transfer_token_from :
+      (mut_ref Self) ->
+        (ref erc721.AccountId.t) ->
+        (ref erc721.AccountId.t) ->
+        ltac:(erc721.TokenId) ->
+        M (core.result.Result.t unit erc721.Error.t).
+  
+  Global Instance AssociatedFunction_transfer_token_from :
+    Notations.DoubleColon Self "transfer_token_from" := {
+    Notations.double_colon := transfer_token_from;
   }.
   
   (*
@@ -869,183 +1046,6 @@ Section Impl_erc721_Erc721_t.
   Global Instance AssociatedFunction_burn :
     Notations.DoubleColon Self "burn" := {
     Notations.double_colon := burn;
-  }.
-  
-  (*
-      fn transfer_token_from(
-          &mut self,
-          from: &AccountId,
-          to: &AccountId,
-          id: TokenId,
-      ) -> Result<(), Error> {
-          let caller = self.env().caller();
-          if !self.exists(id) {
-              return Err(Error::TokenNotFound);
-          };
-          if !self.approved_or_owner(Some(caller), id) {
-              return Err(Error::NotApproved);
-          };
-          self.clear_approval(id);
-          self.remove_token_from(from, id)?;
-          self.add_token_to(to, id)?;
-          self.env().emit_event(Event::Transfer(Transfer {
-              from: Some( *from),
-              to: Some( *to),
-              id,
-          }));
-          Ok(())
-      }
-  *)
-  Parameter transfer_token_from :
-      (mut_ref Self) ->
-        (ref erc721.AccountId.t) ->
-        (ref erc721.AccountId.t) ->
-        ltac:(erc721.TokenId) ->
-        M (core.result.Result.t unit erc721.Error.t).
-  
-  Global Instance AssociatedFunction_transfer_token_from :
-    Notations.DoubleColon Self "transfer_token_from" := {
-    Notations.double_colon := transfer_token_from;
-  }.
-  
-  (*
-      fn remove_token_from(&mut self, from: &AccountId, id: TokenId) -> Result<(), Error> {
-          let Self {
-              token_owner,
-              owned_tokens_count,
-              ..
-          } = self;
-  
-          if !token_owner.contains(&id) {
-              return Err(Error::TokenNotFound);
-          }
-  
-          let count = owned_tokens_count
-              .get(from)
-              .map(|c| c - 1)
-              .ok_or(Error::CannotFetchValue)?;
-          owned_tokens_count.insert( *from, count);
-          token_owner.remove(id);
-  
-          Ok(())
-      }
-  *)
-  Parameter remove_token_from :
-      (mut_ref Self) ->
-        (ref erc721.AccountId.t) ->
-        ltac:(erc721.TokenId) ->
-        M (core.result.Result.t unit erc721.Error.t).
-  
-  Global Instance AssociatedFunction_remove_token_from :
-    Notations.DoubleColon Self "remove_token_from" := {
-    Notations.double_colon := remove_token_from;
-  }.
-  
-  (*
-      fn add_token_to(&mut self, to: &AccountId, id: TokenId) -> Result<(), Error> {
-          let Self {
-              token_owner,
-              owned_tokens_count,
-              ..
-          } = self;
-  
-          if token_owner.contains(&id) {
-              return Err(Error::TokenExists);
-          }
-  
-          if *to == AccountId::from([0x0; 32]) {
-              return Err(Error::NotAllowed);
-          };
-  
-          let count = owned_tokens_count.get(to).map(|c| c + 1).unwrap_or(1);
-  
-          owned_tokens_count.insert( *to, count);
-          token_owner.insert(id, *to);
-  
-          Ok(())
-      }
-  *)
-  Parameter add_token_to :
-      (mut_ref Self) ->
-        (ref erc721.AccountId.t) ->
-        ltac:(erc721.TokenId) ->
-        M (core.result.Result.t unit erc721.Error.t).
-  
-  Global Instance AssociatedFunction_add_token_to :
-    Notations.DoubleColon Self "add_token_to" := {
-    Notations.double_colon := add_token_to;
-  }.
-  
-  (*
-      fn approve_for_all(&mut self, to: AccountId, approved: bool) -> Result<(), Error> {
-          let caller = self.env().caller();
-          if to == caller {
-              return Err(Error::NotAllowed);
-          }
-          self.env().emit_event(Event::ApprovalForAll(ApprovalForAll {
-              owner: caller,
-              operator: to,
-              approved,
-          }));
-  
-          if approved {
-              self.operator_approvals.insert((caller, to), ());
-          } else {
-              self.operator_approvals.remove((caller, to));
-          }
-  
-          Ok(())
-      }
-  *)
-  Parameter approve_for_all :
-      (mut_ref Self) ->
-        erc721.AccountId.t ->
-        bool.t ->
-        M (core.result.Result.t unit erc721.Error.t).
-  
-  Global Instance AssociatedFunction_approve_for_all :
-    Notations.DoubleColon Self "approve_for_all" := {
-    Notations.double_colon := approve_for_all;
-  }.
-  
-  (*
-      fn approve_for(&mut self, to: &AccountId, id: TokenId) -> Result<(), Error> {
-          let caller = self.env().caller();
-          let owner = self.owner_of(id);
-          if !(owner == Some(caller)
-              || self.approved_for_all(owner.expect("Error with AccountId"), caller))
-          {
-              return Err(Error::NotAllowed);
-          };
-  
-          if *to == AccountId::from([0x0; 32]) {
-              return Err(Error::NotAllowed);
-          };
-  
-          if self.token_approvals.contains(&id) {
-              return Err(Error::CannotInsert);
-          } else {
-              self.token_approvals.insert(id, *to);
-          }
-  
-          self.env().emit_event(Event::Approval(Approval {
-              from: caller,
-              to: *to,
-              id,
-          }));
-  
-          Ok(())
-      }
-  *)
-  Parameter approve_for :
-      (mut_ref Self) ->
-        (ref erc721.AccountId.t) ->
-        ltac:(erc721.TokenId) ->
-        M (core.result.Result.t unit erc721.Error.t).
-  
-  Global Instance AssociatedFunction_approve_for :
-    Notations.DoubleColon Self "approve_for" := {
-    Notations.double_colon := approve_for;
   }.
 End Impl_erc721_Erc721_t.
 End Impl_erc721_Erc721_t.

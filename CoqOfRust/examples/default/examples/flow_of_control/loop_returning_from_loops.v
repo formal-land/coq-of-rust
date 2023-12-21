@@ -28,7 +28,10 @@ Definition main : M unit :=
           let* α1 := BinOp.Panic.add α0 (Integer.of_Z 1) in
           assign β α1 in
         let* α0 : i32.t := M.read counter in
-        if (use (BinOp.Pure.eq α0 (Integer.of_Z 10)) : bool) then
+        let* α1 : M.Val bool.t :=
+          M.alloc (BinOp.Pure.eq α0 (Integer.of_Z 10)) in
+        let* α2 : bool.t := M.read (use α1) in
+        if α2 then
           let* _ : M.Val never.t := Break in
           let* α0 : M.Val unit := M.alloc tt in
           let* α1 := M.read α0 in
@@ -41,13 +44,15 @@ Definition main : M unit :=
     let* α0 : M.Val i32.t := M.alloc (Integer.of_Z 20) in
     match (borrow result, borrow α0) with
     | (left_val, right_val) =>
-      let* right_val := M.alloc right_val in
       let* left_val := M.alloc left_val in
+      let* right_val := M.alloc right_val in
       let* α0 : ref i32.t := M.read left_val in
       let* α1 : i32.t := M.read (deref α0) in
       let* α2 : ref i32.t := M.read right_val in
       let* α3 : i32.t := M.read (deref α2) in
-      if (use (UnOp.not (BinOp.Pure.eq α1 α3)) : bool) then
+      let* α4 : M.Val bool.t := M.alloc (UnOp.not (BinOp.Pure.eq α1 α3)) in
+      let* α5 : bool.t := M.read (use α4) in
+      if α5 then
         let* kind : M.Val core.panicking.AssertKind.t :=
           M.alloc core.panicking.AssertKind.Eq in
         let* _ : M.Val never.t :=

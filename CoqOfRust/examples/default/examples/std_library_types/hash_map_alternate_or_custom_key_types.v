@@ -45,9 +45,8 @@ Section Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Accou
       (self : ref Self)
       (other : ref hash_map_alternate_or_custom_key_types.Account.t)
       : M bool.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* other : M.Val (ref hash_map_alternate_or_custom_key_types.Account.t) :=
-      M.alloc other in
+    let* self := M.alloc self in
+    let* other := M.alloc other in
     let* α0 : ref hash_map_alternate_or_custom_key_types.Account.t :=
       M.read self in
     let* α1 : ref hash_map_alternate_or_custom_key_types.Account.t :=
@@ -98,7 +97,7 @@ Section Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account_t.
   Eq
   *)
   Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let _ : unit := tt in
     let _ : unit := tt in
     let* α0 : M.Val unit := M.alloc tt in
@@ -129,8 +128,8 @@ Section Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account_t
       (self : ref Self)
       (state : mut_ref __H)
       : M unit :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* state : M.Val (mut_ref __H) := M.alloc state in
+    let* self := M.alloc self in
+    let* state := M.alloc state in
     let* _ : M.Val unit :=
       let* α0 : ref hash_map_alternate_or_custom_key_types.Account.t :=
         M.read self in
@@ -220,11 +219,9 @@ Definition try_logon
     (username : ref str.t)
     (password : ref str.t)
     : M unit :=
-  let* accounts :
-      M.Val (ref ltac:(hash_map_alternate_or_custom_key_types.Accounts)) :=
-    M.alloc accounts in
-  let* username : M.Val (ref str.t) := M.alloc username in
-  let* password : M.Val (ref str.t) := M.alloc password in
+  let* accounts := M.alloc accounts in
+  let* username := M.alloc username in
+  let* password := M.alloc password in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "Username: ") in

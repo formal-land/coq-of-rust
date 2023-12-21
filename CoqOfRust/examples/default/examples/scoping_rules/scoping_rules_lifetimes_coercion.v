@@ -7,8 +7,8 @@ fn multiply<'a>(first: &'a i32, second: &'a i32) -> i32 {
 }
 *)
 Definition multiply (first : ref i32.t) (second : ref i32.t) : M i32.t :=
-  let* first : M.Val (ref i32.t) := M.alloc first in
-  let* second : M.Val (ref i32.t) := M.alloc second in
+  let* first := M.alloc first in
+  let* second := M.alloc second in
   let* α0 : ref i32.t := M.read first in
   let* α1 : ref i32.t := M.read second in
   M.call
@@ -22,8 +22,8 @@ fn choose_first<'a: 'b, 'b>(first: &'a i32, _: &'b i32) -> &'b i32 {
 }
 *)
 Definition choose_first (first : ref i32.t) (arg : ref i32.t) : M (ref i32.t) :=
-  let* first : M.Val (ref i32.t) := M.alloc first in
-  let* arg : M.Val (ref i32.t) := M.alloc arg in
+  let* first := M.alloc first in
+  let* arg := M.alloc arg in
   M.read first.
 
 (*

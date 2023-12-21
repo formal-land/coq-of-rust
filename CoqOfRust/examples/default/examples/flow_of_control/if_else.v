@@ -35,7 +35,9 @@ Definition main : M unit :=
   let* n : M.Val i32.t := M.alloc (Integer.of_Z 5) in
   let* _ : M.Val unit :=
     let* α0 : i32.t := M.read n in
-    if (use (BinOp.Pure.lt α0 (Integer.of_Z 0)) : bool) then
+    let* α1 : M.Val bool.t := M.alloc (BinOp.Pure.lt α0 (Integer.of_Z 0)) in
+    let* α2 : bool.t := M.read (use α1) in
+    if α2 then
       let* _ : M.Val unit :=
         let* _ : M.Val unit :=
           let* α0 : ref str.t := M.read (mk_str "") in
@@ -59,7 +61,9 @@ Definition main : M unit :=
       M.alloc tt
     else
       let* α0 : i32.t := M.read n in
-      if (use (BinOp.Pure.gt α0 (Integer.of_Z 0)) : bool) then
+      let* α1 : M.Val bool.t := M.alloc (BinOp.Pure.gt α0 (Integer.of_Z 0)) in
+      let* α2 : bool.t := M.read (use α1) in
+      if α2 then
         let* _ : M.Val unit :=
           let* _ : M.Val unit :=
             let* α0 : ref str.t := M.read (mk_str "") in
@@ -106,14 +110,14 @@ Definition main : M unit :=
   let* big_n : M.Val i32.t :=
     let* α0 : i32.t := M.read n in
     let* α1 : i32.t := M.read n in
-    let* α2 : M.Val i32.t :=
-      if
-        (use
-          (BinOp.Pure.and
-            (BinOp.Pure.lt α0 (Integer.of_Z 10))
-            (BinOp.Pure.gt α1 (Integer.of_Z (-10))))
-        : bool)
-      then
+    let* α2 : M.Val bool.t :=
+      M.alloc
+        (BinOp.Pure.and
+          (BinOp.Pure.lt α0 (Integer.of_Z 10))
+          (BinOp.Pure.gt α1 (Integer.of_Z (-10)))) in
+    let* α3 : bool.t := M.read (use α2) in
+    let* α4 : M.Val i32.t :=
+      if α3 then
         let* _ : M.Val unit :=
           let* _ : M.Val unit :=
             let* α0 : ref str.t :=
@@ -149,7 +153,7 @@ Definition main : M unit :=
         let* α0 : i32.t := M.read n in
         let* α1 : i32.t := BinOp.Panic.div α0 (Integer.of_Z 2) in
         M.alloc α1 in
-    M.copy α2 in
+    M.copy α4 in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "") in

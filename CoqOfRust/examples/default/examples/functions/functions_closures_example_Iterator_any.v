@@ -75,8 +75,10 @@ Definition main : M unit :=
               (Trait := ltac:(refine _)))
             (borrow_mut α7)
             (fun (x : ref i32.t) =>
+              (let* x := M.alloc x in
               let* α0 : i32.t := M.read x in
-              M.alloc (BinOp.Pure.eq α0 (Integer.of_Z 2)))) in
+              M.pure (BinOp.Pure.eq α0 (Integer.of_Z 2))) :
+              M bool.t)) in
       let* α9 : M.Val bool.t := M.alloc α8 in
       let* α10 : core.fmt.rt.Argument.t :=
         M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α9)) in
@@ -117,8 +119,10 @@ Definition main : M unit :=
               (Trait := ltac:(refine _)))
             (borrow_mut α7)
             (fun (x : i32.t) =>
+              (let* x := M.alloc x in
               let* α0 : i32.t := M.read x in
-              M.alloc (BinOp.Pure.eq α0 (Integer.of_Z 2)))) in
+              M.pure (BinOp.Pure.eq α0 (Integer.of_Z 2))) :
+              M bool.t)) in
       let* α9 : M.Val bool.t := M.alloc α8 in
       let* α10 : core.fmt.rt.Argument.t :=
         M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α9)) in
@@ -211,8 +215,10 @@ Definition main : M unit :=
               (Trait := ltac:(refine _)))
             (borrow_mut α8)
             (fun (x : ref i32.t) =>
+              (let* x := M.alloc x in
               let* α0 : i32.t := M.read x in
-              M.alloc (BinOp.Pure.eq α0 (Integer.of_Z 2)))) in
+              M.pure (BinOp.Pure.eq α0 (Integer.of_Z 2))) :
+              M bool.t)) in
       let* α10 : M.Val bool.t := M.alloc α9 in
       let* α11 : core.fmt.rt.Argument.t :=
         M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α10)) in
@@ -249,9 +255,11 @@ Definition main : M unit :=
               (Trait := ltac:(refine _)))
             (borrow_mut α6)
             (fun (x : ref i32.t) =>
+              (let* x := M.alloc x in
               let* α0 : ref i32.t := M.read x in
               let* α1 : i32.t := M.read (deref α0) in
-              M.alloc (BinOp.Pure.eq α1 (Integer.of_Z 2)))) in
+              M.pure (BinOp.Pure.eq α1 (Integer.of_Z 2))) :
+              M bool.t)) in
       let* α8 : M.Val bool.t := M.alloc α7 in
       let* α9 : core.fmt.rt.Argument.t :=
         M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α8)) in

@@ -30,8 +30,8 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_t_T.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
+    let* self := M.alloc self in
+    let* f := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref str.t := M.read (mk_str "Ref") in
     let* α2 : ref (scoping_rules_lifetimes_bounds.Ref.t T) := M.read self in
@@ -59,7 +59,7 @@ where
 }
 *)
 Definition print {T : Set} {ℋ_0 : core.fmt.Debug.Trait T} (t : T) : M unit :=
-  let* t : M.Val T := M.alloc t in
+  let* t := M.alloc t in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "`print`: t is ") in
@@ -97,7 +97,7 @@ Definition print_ref
     {ℋ_0 : core.fmt.Debug.Trait T}
     (t : ref T)
     : M unit :=
-  let* t : M.Val (ref T) := M.alloc t in
+  let* t := M.alloc t in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "`print_ref`: t is ") in

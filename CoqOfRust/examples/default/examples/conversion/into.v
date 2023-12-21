@@ -27,7 +27,7 @@ Section Impl_core_convert_From_i32_t_for_into_Number_t.
       }
   *)
   Definition from (item : i32.t) : M Self :=
-    let* item : M.Val i32.t := M.alloc item in
+    let* item := M.alloc item in
     let* α0 : i32.t := M.read item in
     M.pure {| into.Number.value := α0; |}.
   

@@ -3,7 +3,6 @@ examples/default/examples/ink_contracts/erc1155.v
 examples/default/examples/ink_contracts/erc721.v
 examples/default/examples/ink_contracts/mother.v
 examples/default/examples/ink_contracts/multisig.v
-examples/default/examples/ink_contracts/payment_channel.v
 examples/default/examples/ink_contracts/trait_erc20.v
 # blacklisting for changes that explicit M.Val
 examples/axiomatized/examples/conversion/try_from_and_try_into.v

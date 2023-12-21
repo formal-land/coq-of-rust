@@ -446,6 +446,29 @@ Section Impl_trait_erc20_Erc20_t.
   Definition Self : Set := trait_erc20.Erc20.t.
   
   (*
+      fn init_env() -> Env {
+          unimplemented!()
+      }
+  *)
+  Parameter init_env : M trait_erc20.Env.t.
+  
+  Global Instance AssociatedFunction_init_env :
+    Notations.DoubleColon Self "init_env" := {
+    Notations.double_colon := init_env;
+  }.
+  
+  (*
+      fn env(&self) -> Env {
+          Self::init_env()
+      }
+  *)
+  Parameter env : (ref Self) -> M trait_erc20.Env.t.
+  
+  Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
+    Notations.double_colon := env;
+  }.
+  
+  (*
       pub fn new(total_supply: Balance) -> Self {
           let mut balances = Mapping::default();
           let caller = Self::init_env().caller();
@@ -466,6 +489,67 @@ Section Impl_trait_erc20_Erc20_t.
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
+  }.
+  
+  (*
+      fn balance_of_impl(&self, owner: &AccountId) -> Balance {
+          self.balances.get(owner).unwrap_or_default()
+      }
+  *)
+  Parameter balance_of_impl :
+      (ref Self) ->
+        (ref trait_erc20.AccountId.t) ->
+        M ltac:(trait_erc20.Balance).
+  
+  Global Instance AssociatedFunction_balance_of_impl :
+    Notations.DoubleColon Self "balance_of_impl" := {
+    Notations.double_colon := balance_of_impl;
+  }.
+  
+  (*
+      fn allowance_impl(&self, owner: &AccountId, spender: &AccountId) -> Balance {
+          self.allowances.get(&( *owner, *spender)).unwrap_or_default()
+      }
+  *)
+  Parameter allowance_impl :
+      (ref Self) ->
+        (ref trait_erc20.AccountId.t) ->
+        (ref trait_erc20.AccountId.t) ->
+        M ltac:(trait_erc20.Balance).
+  
+  Global Instance AssociatedFunction_allowance_impl :
+    Notations.DoubleColon Self "allowance_impl" := {
+    Notations.double_colon := allowance_impl;
+  }.
+  
+  (*
+      fn transfer_from_to(&mut self, from: &AccountId, to: &AccountId, value: Balance) -> Result<()> {
+          let from_balance = self.balance_of_impl(from);
+          if from_balance < value {
+              return Err(Error::InsufficientBalance);
+          }
+  
+          self.balances.insert( *from, from_balance - value);
+          let to_balance = self.balance_of_impl(to);
+          self.balances.insert( *to, to_balance + value);
+          self.env().emit_event(Event::Transfer(Transfer {
+              from: Some( *from),
+              to: Some( *to),
+              value,
+          }));
+          Ok(())
+      }
+  *)
+  Parameter transfer_from_to :
+      (mut_ref Self) ->
+        (ref trait_erc20.AccountId.t) ->
+        (ref trait_erc20.AccountId.t) ->
+        ltac:(trait_erc20.Balance) ->
+        M ltac:(trait_erc20.Result unit).
+  
+  Global Instance AssociatedFunction_transfer_from_to :
+    Notations.DoubleColon Self "transfer_from_to" := {
+    Notations.double_colon := transfer_from_to;
   }.
 End Impl_trait_erc20_Erc20_t.
 End Impl_trait_erc20_Erc20_t.
@@ -589,93 +673,3 @@ Section Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20_t.
   }.
 End Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20_t.
 End Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20_t.
-
-Module  Impl_trait_erc20_Erc20_t_2.
-Section Impl_trait_erc20_Erc20_t_2.
-  Definition Self : Set := trait_erc20.Erc20.t.
-  
-  (*
-      fn init_env() -> Env {
-          unimplemented!()
-      }
-  *)
-  Parameter init_env : M trait_erc20.Env.t.
-  
-  Global Instance AssociatedFunction_init_env :
-    Notations.DoubleColon Self "init_env" := {
-    Notations.double_colon := init_env;
-  }.
-  
-  (*
-      fn env(&self) -> Env {
-          Self::init_env()
-      }
-  *)
-  Parameter env : (ref Self) -> M trait_erc20.Env.t.
-  
-  Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
-    Notations.double_colon := env;
-  }.
-  
-  (*
-      fn balance_of_impl(&self, owner: &AccountId) -> Balance {
-          self.balances.get(owner).unwrap_or_default()
-      }
-  *)
-  Parameter balance_of_impl :
-      (ref Self) ->
-        (ref trait_erc20.AccountId.t) ->
-        M ltac:(trait_erc20.Balance).
-  
-  Global Instance AssociatedFunction_balance_of_impl :
-    Notations.DoubleColon Self "balance_of_impl" := {
-    Notations.double_colon := balance_of_impl;
-  }.
-  
-  (*
-      fn allowance_impl(&self, owner: &AccountId, spender: &AccountId) -> Balance {
-          self.allowances.get(&( *owner, *spender)).unwrap_or_default()
-      }
-  *)
-  Parameter allowance_impl :
-      (ref Self) ->
-        (ref trait_erc20.AccountId.t) ->
-        (ref trait_erc20.AccountId.t) ->
-        M ltac:(trait_erc20.Balance).
-  
-  Global Instance AssociatedFunction_allowance_impl :
-    Notations.DoubleColon Self "allowance_impl" := {
-    Notations.double_colon := allowance_impl;
-  }.
-  
-  (*
-      fn transfer_from_to(&mut self, from: &AccountId, to: &AccountId, value: Balance) -> Result<()> {
-          let from_balance = self.balance_of_impl(from);
-          if from_balance < value {
-              return Err(Error::InsufficientBalance);
-          }
-  
-          self.balances.insert( *from, from_balance - value);
-          let to_balance = self.balance_of_impl(to);
-          self.balances.insert( *to, to_balance + value);
-          self.env().emit_event(Event::Transfer(Transfer {
-              from: Some( *from),
-              to: Some( *to),
-              value,
-          }));
-          Ok(())
-      }
-  *)
-  Parameter transfer_from_to :
-      (mut_ref Self) ->
-        (ref trait_erc20.AccountId.t) ->
-        (ref trait_erc20.AccountId.t) ->
-        ltac:(trait_erc20.Balance) ->
-        M ltac:(trait_erc20.Result unit).
-  
-  Global Instance AssociatedFunction_transfer_from_to :
-    Notations.DoubleColon Self "transfer_from_to" := {
-    Notations.double_colon := transfer_from_to;
-  }.
-End Impl_trait_erc20_Erc20_t_2.
-End Impl_trait_erc20_Erc20_t_2.

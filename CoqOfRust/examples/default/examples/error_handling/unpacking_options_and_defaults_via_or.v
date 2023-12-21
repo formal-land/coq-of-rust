@@ -21,8 +21,8 @@ Section Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_Fruit_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
+    let* self := M.alloc self in
+    let* f := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref unpacking_options_and_defaults_via_or.Fruit.t :=
       M.read self in

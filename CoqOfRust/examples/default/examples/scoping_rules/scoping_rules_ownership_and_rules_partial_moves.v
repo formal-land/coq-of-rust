@@ -56,8 +56,8 @@ Definition main : M unit :=
       |} :
       scoping_rules_ownership_and_rules_partial_moves.main.Person.t :=
     M.read person in
-  let* age := M.alloc age in
   let* name := M.alloc name in
+  let* age := M.alloc age in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "The person's age is ") in
@@ -160,8 +160,8 @@ Section Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
+    let* self := M.alloc self in
+    let* f := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref str.t := M.read (mk_str "Person") in
     let* α2 : ref str.t := M.read (mk_str "name") in

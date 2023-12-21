@@ -75,8 +75,8 @@ Section Impl_multisig_Mapping_t_K_V.
       }
   *)
   Definition contains (self : ref Self) (_key : ref K) : M bool.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* _key : M.Val (ref K) := M.alloc _key in
+    let* self := M.alloc self in
+    let* _key := M.alloc _key in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
@@ -95,8 +95,8 @@ Section Impl_multisig_Mapping_t_K_V.
       (self : ref Self)
       (_key : ref K)
       : M (core.option.Option.t V) :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* _key : M.Val (ref K) := M.alloc _key in
+    let* self := M.alloc self in
+    let* _key := M.alloc _key in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
@@ -115,9 +115,9 @@ Section Impl_multisig_Mapping_t_K_V.
       (_key : K)
       (_value : V)
       : M (core.option.Option.t u32.t) :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
-    let* _key : M.Val K := M.alloc _key in
-    let* _value : M.Val V := M.alloc _value in
+    let* self := M.alloc self in
+    let* _key := M.alloc _key in
+    let* _value := M.alloc _value in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
@@ -133,8 +133,8 @@ Section Impl_multisig_Mapping_t_K_V.
       }
   *)
   Definition remove (self : ref Self) (_key : K) : M unit :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* _key : M.Val K := M.alloc _key in
+    let* self := M.alloc self in
+    let* _key := M.alloc _key in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
@@ -153,8 +153,8 @@ Section Impl_multisig_Mapping_t_K_V.
       (self : ref Self)
       (_key : K)
       : M (core.option.Option.t u32.t) :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* _key : M.Val K := M.alloc _key in
+    let* self := M.alloc self in
+    let* _key := M.alloc _key in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
@@ -170,8 +170,8 @@ Section Impl_multisig_Mapping_t_K_V.
       }
   *)
   Definition take (self : ref Self) (_key : K) : M (core.option.Option.t V) :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* _key : M.Val K := M.alloc _key in
+    let* self := M.alloc self in
+    let* _key := M.alloc _key in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
@@ -232,8 +232,8 @@ Section Impl_core_fmt_Debug_for_multisig_AccountId_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
+    let* self := M.alloc self in
+    let* f := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref str.t := M.read (mk_str "AccountId") in
     let* α2 : ref multisig.AccountId.t := M.read self in
@@ -260,7 +260,7 @@ Section Impl_core_clone_Clone_for_multisig_AccountId_t.
   Clone
   *)
   Definition clone (self : ref Self) : M multisig.AccountId.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let _ : unit := tt in
     let* α0 : ref multisig.AccountId.t := M.read self in
     M.read (deref α0).
@@ -306,8 +306,8 @@ Section Impl_core_cmp_PartialEq_for_multisig_AccountId_t.
       (self : ref Self)
       (other : ref multisig.AccountId.t)
       : M bool.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* other : M.Val (ref multisig.AccountId.t) := M.alloc other in
+    let* self := M.alloc self in
+    let* other := M.alloc other in
     let* α0 : ref multisig.AccountId.t := M.read self in
     let* α1 : u128.t := M.read (deref α0).["0"] in
     let* α2 : ref multisig.AccountId.t := M.read other in
@@ -344,7 +344,7 @@ Section Impl_core_cmp_Eq_for_multisig_AccountId_t.
   Eq
   *)
   Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let _ : unit := tt in
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
@@ -372,8 +372,8 @@ Section Impl_core_cmp_PartialOrd_for_multisig_AccountId_t.
       (self : ref Self)
       (other : ref multisig.AccountId.t)
       : M (core.option.Option.t core.cmp.Ordering.t) :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* other : M.Val (ref multisig.AccountId.t) := M.alloc other in
+    let* self := M.alloc self in
+    let* other := M.alloc other in
     let* α0 : ref multisig.AccountId.t := M.read self in
     let* α1 : ref multisig.AccountId.t := M.read other in
     M.call
@@ -411,8 +411,8 @@ Section Impl_core_cmp_Ord_for_multisig_AccountId_t.
       (self : ref Self)
       (other : ref multisig.AccountId.t)
       : M core.cmp.Ordering.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* other : M.Val (ref multisig.AccountId.t) := M.alloc other in
+    let* self := M.alloc self in
+    let* other := M.alloc other in
     let* α0 : ref multisig.AccountId.t := M.read self in
     let* α1 : ref multisig.AccountId.t := M.read other in
     M.call
@@ -485,7 +485,7 @@ Section Impl_core_clone_Clone_for_multisig_ConfirmationStatus_t.
   Clone
   *)
   Definition clone (self : ref Self) : M multisig.ConfirmationStatus.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let _ : unit := tt in
     let* α0 : ref multisig.ConfirmationStatus.t := M.read self in
     M.read (deref α0).
@@ -645,7 +645,7 @@ Section Impl_core_clone_Clone_for_multisig_Error_t.
   Clone
   *)
   Definition clone (self : ref Self) : M multisig.Error.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* α0 : ref multisig.Error.t := M.read self in
     M.read (deref α0).
   
@@ -687,8 +687,8 @@ Section Impl_core_cmp_PartialEq_for_multisig_Error_t.
   PartialEq
   *)
   Definition eq (self : ref Self) (other : ref multisig.Error.t) : M bool.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* other : M.Val (ref multisig.Error.t) := M.alloc other in
+    let* self := M.alloc self in
+    let* other := M.alloc other in
     M.pure true.
   
   Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
@@ -721,7 +721,7 @@ Section Impl_core_cmp_Eq_for_multisig_Error_t.
   Eq
   *)
   Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     M.pure tt.
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
@@ -990,7 +990,7 @@ Section Impl_multisig_Env_t.
       }
   *)
   Definition caller (self : ref Self) : M multisig.AccountId.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* α0 : ref multisig.Env.t := M.read self in
     M.read (deref α0).["caller"].
   
@@ -1008,8 +1008,8 @@ Section Impl_multisig_Env_t.
       (self : ref Self)
       (_event : multisig.Event.t)
       : M unit :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* _event : M.Val multisig.Event.t := M.alloc _event in
+    let* self := M.alloc self in
+    let* _event := M.alloc _event in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
@@ -1025,7 +1025,7 @@ Section Impl_multisig_Env_t.
       }
   *)
   Definition transferred_value (self : ref Self) : M ltac:(multisig.Balance) :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
@@ -1041,7 +1041,7 @@ Section Impl_multisig_Env_t.
       }
   *)
   Definition account_id (self : ref Self) : M multisig.AccountId.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
@@ -1225,7 +1225,7 @@ Section Impl_multisig_Multisig_t.
       }
   *)
   Definition env (self : ref Self) : M multisig.Env.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     M.call multisig.Multisig.t::["init_env"].
   
   Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
@@ -1253,10 +1253,8 @@ Section Impl_multisig_Multisig_t.
       (requirement : u32.t)
       (owners : alloc.vec.Vec.t multisig.AccountId.t alloc.vec.Vec.Default.A)
       : M Self :=
-    let* requirement : M.Val u32.t := M.alloc requirement in
-    let* owners :
-        M.Val (alloc.vec.Vec.t multisig.AccountId.t alloc.vec.Vec.Default.A) :=
-      M.alloc owners in
+    let* requirement := M.alloc requirement in
+    let* owners := M.alloc owners in
     let* contract : M.Val multisig.Multisig.t :=
       let* α0 : multisig.Multisig.t :=
         M.call
@@ -1336,8 +1334,7 @@ Section Impl_multisig_Multisig_t.
               end in
             M.alloc tt)
         end in
-      let* α2 : unit := M.read α1 in
-      M.alloc (use α2) in
+      M.pure (use α1) in
     let* _ : M.Val unit :=
       let* α0 : alloc.vec.Vec.t multisig.AccountId.t alloc.alloc.Global.t :=
         M.read owners in
@@ -1373,8 +1370,8 @@ Section Impl_multisig_Multisig_t.
       (self : mut_ref Self)
       (new_owner : multisig.AccountId.t)
       : M unit :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
-    let* new_owner : M.Val multisig.AccountId.t := M.alloc new_owner in
+    let* self := M.alloc self in
+    let* new_owner := M.alloc new_owner in
     let* _ : M.Val unit :=
       let* α0 : mut_ref multisig.Multisig.t := M.read self in
       let* α1 : unit :=
@@ -1461,8 +1458,8 @@ Section Impl_multisig_Multisig_t.
       (self : mut_ref Self)
       (owner : multisig.AccountId.t)
       : M unit :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
-    let* owner : M.Val multisig.AccountId.t := M.alloc owner in
+    let* self := M.alloc self in
+    let* owner := M.alloc owner in
     let* _ : M.Val unit :=
       let* α0 : mut_ref multisig.Multisig.t := M.read self in
       let* α1 : unit :=
@@ -1584,9 +1581,9 @@ Section Impl_multisig_Multisig_t.
       (old_owner : multisig.AccountId.t)
       (new_owner : multisig.AccountId.t)
       : M unit :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
-    let* old_owner : M.Val multisig.AccountId.t := M.alloc old_owner in
-    let* new_owner : M.Val multisig.AccountId.t := M.alloc new_owner in
+    let* self := M.alloc self in
+    let* old_owner := M.alloc old_owner in
+    let* new_owner := M.alloc new_owner in
     let* _ : M.Val unit :=
       let* α0 : mut_ref multisig.Multisig.t := M.read self in
       let* α1 : unit :=
@@ -1707,8 +1704,8 @@ Section Impl_multisig_Multisig_t.
       (self : mut_ref Self)
       (new_requirement : u32.t)
       : M unit :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
-    let* new_requirement : M.Val u32.t := M.alloc new_requirement in
+    let* self := M.alloc self in
+    let* new_requirement := M.alloc new_requirement in
     let* _ : M.Val unit :=
       let* α0 : mut_ref multisig.Multisig.t := M.read self in
       let* α1 : unit :=
@@ -1774,8 +1771,8 @@ Section Impl_multisig_Multisig_t.
       (self : mut_ref Self)
       (transaction : multisig.Transaction.t)
       : M (ltac:(multisig.TransactionId) * multisig.ConfirmationStatus.t) :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
-    let* transaction : M.Val multisig.Transaction.t := M.alloc transaction in
+    let* self := M.alloc self in
+    let* transaction := M.alloc transaction in
     let* _ : M.Val unit :=
       let* α0 : mut_ref multisig.Multisig.t := M.read self in
       let* α1 : unit :=
@@ -1862,8 +1859,8 @@ Section Impl_multisig_Multisig_t.
       (self : mut_ref Self)
       (trans_id : ltac:(multisig.TransactionId))
       : M unit :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
-    let* trans_id : M.Val ltac:(multisig.TransactionId) := M.alloc trans_id in
+    let* self := M.alloc self in
+    let* trans_id := M.alloc trans_id in
     let* _ : M.Val unit :=
       let* α0 : mut_ref multisig.Multisig.t := M.read self in
       let* α1 : unit :=
@@ -1880,8 +1877,10 @@ Section Impl_multisig_Multisig_t.
       M.call
         ((core.option.Option.t multisig.Transaction.t)::["is_some"]
           (borrow α3)) in
+    let* α5 : M.Val bool.t := M.alloc α4 in
+    let* α6 : bool.t := M.read (use α5) in
     let* α0 : M.Val unit :=
-      if (use α4 : bool) then
+      if α6 then
         let* _ : M.Val unit :=
           let* α0 : mut_ref multisig.Multisig.t := M.read self in
           let* α1 : multisig.Env.t :=
@@ -1916,8 +1915,8 @@ Section Impl_multisig_Multisig_t.
       (self : mut_ref Self)
       (trans_id : ltac:(multisig.TransactionId))
       : M multisig.ConfirmationStatus.t :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
-    let* trans_id : M.Val ltac:(multisig.TransactionId) := M.alloc trans_id in
+    let* self := M.alloc self in
+    let* trans_id := M.alloc trans_id in
     let* _ : M.Val unit :=
       let* α0 : mut_ref multisig.Multisig.t := M.read self in
       let* α1 : unit :=
@@ -1976,8 +1975,8 @@ Section Impl_multisig_Multisig_t.
       (self : mut_ref Self)
       (trans_id : ltac:(multisig.TransactionId))
       : M unit :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
-    let* trans_id : M.Val ltac:(multisig.TransactionId) := M.alloc trans_id in
+    let* self := M.alloc self in
+    let* trans_id := M.alloc trans_id in
     let* _ : M.Val unit :=
       let* α0 : mut_ref multisig.Multisig.t := M.read self in
       let* α1 : unit :=
@@ -2002,8 +2001,10 @@ Section Impl_multisig_Multisig_t.
         ((multisig.Mapping.t (u32.t * multisig.AccountId.t) unit)::["contains"]
           (borrow (deref α0).["confirmations"])
           (borrow α3)) in
+    let* α5 : M.Val bool.t := M.alloc α4 in
+    let* α6 : bool.t := M.read (use α5) in
     let* α0 : M.Val unit :=
-      if (use α4 : bool) then
+      if α6 then
         let* _ : M.Val unit :=
           let* α0 : mut_ref multisig.Multisig.t := M.read self in
           let* α1 : u32.t := M.read trans_id in
@@ -2104,8 +2105,8 @@ Section Impl_multisig_Multisig_t.
       (self : mut_ref Self)
       (trans_id : ltac:(multisig.TransactionId))
       : M (core.result.Result.t unit multisig.Error.t) :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
-    let* trans_id : M.Val ltac:(multisig.TransactionId) := M.alloc trans_id in
+    let* self := M.alloc self in
+    let* trans_id := M.alloc trans_id in
     let* _ : M.Val unit :=
       let* α0 : mut_ref multisig.Multisig.t := M.read self in
       let* α1 : u32.t := M.read trans_id in
@@ -2131,7 +2132,9 @@ Section Impl_multisig_Multisig_t.
       let* α3 : u128.t :=
         M.call (multisig.Env.t::["transferred_value"] (borrow α2)) in
       let* α4 : u128.t := M.read t.["transferred_value"] in
-      if (use (UnOp.not (BinOp.Pure.eq α3 α4)) : bool) then
+      let* α5 : M.Val bool.t := M.alloc (UnOp.not (BinOp.Pure.eq α3 α4)) in
+      let* α6 : bool.t := M.read (use α5) in
+      if α6 then
         let* α0 : ref str.t :=
           M.read
             (mk_str
@@ -2187,7 +2190,11 @@ Section Impl_multisig_Multisig_t.
         M.call
           ((core.result.Result.t unit multisig.Error.t)::["map"]
             α4
-            (fun (_ : unit) => M.alloc core.option.Option.None)) in
+            (fun (_ : unit) =>
+              (M.pure core.option.Option.None) :
+              M
+                (core.option.Option.t
+                  (alloc.vec.Vec.t u8.t alloc.alloc.Global.t)))) in
       let* α6 : unit :=
         M.call
           (multisig.Env.t::["emit_event"]
@@ -2239,8 +2246,8 @@ Section Impl_multisig_Multisig_t.
           (core.result.Result.t
             (alloc.vec.Vec.t u8.t alloc.vec.Vec.Default.A)
             multisig.Error.t) :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
-    let* trans_id : M.Val ltac:(multisig.TransactionId) := M.alloc trans_id in
+    let* self := M.alloc self in
+    let* trans_id := M.alloc trans_id in
     let* _ : M.Val unit :=
       let* α0 : mut_ref multisig.Multisig.t := M.read self in
       let* α1 : u32.t := M.read trans_id in
@@ -2381,10 +2388,9 @@ Section Impl_multisig_Multisig_t.
       (confirmer : multisig.AccountId.t)
       (transaction : ltac:(multisig.TransactionId))
       : M multisig.ConfirmationStatus.t :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
-    let* confirmer : M.Val multisig.AccountId.t := M.alloc confirmer in
-    let* transaction : M.Val ltac:(multisig.TransactionId) :=
-      M.alloc transaction in
+    let* self := M.alloc self in
+    let* confirmer := M.alloc confirmer in
+    let* transaction := M.alloc transaction in
     let* count : M.Val u32.t :=
       let* α0 : mut_ref multisig.Multisig.t := M.read self in
       let* α1 : core.option.Option.t u32.t :=
@@ -2411,8 +2417,8 @@ Section Impl_multisig_Multisig_t.
             (borrow key)) in
       M.alloc (UnOp.not α1) in
     let* _ : M.Val unit :=
-      let* α0 : bool.t := M.read new_confirmation in
-      if (use α0 : bool) then
+      let* α0 : bool.t := M.read (use new_confirmation) in
+      if α0 then
         let* _ : M.Val unit :=
           let β : M.Val u32.t := count in
           let* α0 := M.read β in
@@ -2448,8 +2454,10 @@ Section Impl_multisig_Multisig_t.
       let* α0 : u32.t := M.read count in
       let* α1 : mut_ref multisig.Multisig.t := M.read self in
       let* α2 : u32.t := M.read (deref α1).["requirement"] in
-      let* α3 : M.Val multisig.ConfirmationStatus.t :=
-        if (use (BinOp.Pure.ge α0 α2) : bool) then
+      let* α3 : M.Val bool.t := M.alloc (BinOp.Pure.ge α0 α2) in
+      let* α4 : bool.t := M.read (use α3) in
+      let* α5 : M.Val multisig.ConfirmationStatus.t :=
+        if α4 then
           M.alloc multisig.ConfirmationStatus.Confirmed
         else
           let* α0 : mut_ref multisig.Multisig.t := M.read self in
@@ -2457,10 +2465,10 @@ Section Impl_multisig_Multisig_t.
           let* α2 : u32.t := M.read count in
           let* α3 : u32.t := BinOp.Panic.sub α1 α2 in
           M.alloc (multisig.ConfirmationStatus.ConfirmationsNeeded α3) in
-      M.copy α3 in
+      M.copy α5 in
     let* _ : M.Val unit :=
-      let* α0 : bool.t := M.read new_confirmation in
-      if (use α0 : bool) then
+      let* α0 : bool.t := M.read (use new_confirmation) in
+      if α0 then
         let* _ : M.Val unit :=
           let* α0 : mut_ref multisig.Multisig.t := M.read self in
           let* α1 : multisig.Env.t :=
@@ -2502,8 +2510,8 @@ Section Impl_multisig_Multisig_t.
       (self : ref Self)
       (owner : ref multisig.AccountId.t)
       : M u32.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* owner : M.Val (ref multisig.AccountId.t) := M.alloc owner in
+    let* self := M.alloc self in
+    let* owner := M.alloc owner in
     let* α0 : ref multisig.Multisig.t := M.read self in
     let* α1 : ref (slice multisig.AccountId.t) :=
       M.call
@@ -2522,16 +2530,16 @@ Section Impl_multisig_Multisig_t.
             (Trait := ltac:(refine _)))
           (borrow_mut α3)
           (fun (x : ref multisig.AccountId.t) =>
+            (let* x := M.alloc x in
             let* α0 : ref multisig.AccountId.t := M.read x in
             let* α1 : ref multisig.AccountId.t := M.read owner in
-            let* α2 : bool.t :=
-              M.call
-                ((core.cmp.PartialEq.eq
-                    (Self := multisig.AccountId.t)
-                    (Trait := ltac:(refine _)))
-                  α0
-                  α1) in
-            M.alloc α2)) in
+            M.call
+              ((core.cmp.PartialEq.eq
+                  (Self := multisig.AccountId.t)
+                  (Trait := ltac:(refine _)))
+                α0
+                α1)) :
+            M bool.t)) in
     let* α5 : ref str.t :=
       M.read
         (mk_str
@@ -2570,8 +2578,8 @@ Section Impl_multisig_Multisig_t.
       (self : mut_ref Self)
       (trans_id : ltac:(multisig.TransactionId))
       : M (core.option.Option.t multisig.Transaction.t) :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
-    let* trans_id : M.Val ltac:(multisig.TransactionId) := M.alloc trans_id in
+    let* self := M.alloc self in
+    let* trans_id := M.alloc trans_id in
     let* transaction : M.Val (core.option.Option.t multisig.Transaction.t) :=
       let* α0 : mut_ref multisig.Multisig.t := M.read self in
       let* α1 : core.option.Option.t multisig.Transaction.t :=
@@ -2585,7 +2593,9 @@ Section Impl_multisig_Multisig_t.
         M.call
           ((core.option.Option.t multisig.Transaction.t)::["is_some"]
             (borrow transaction)) in
-      if (use α0 : bool) then
+      let* α1 : M.Val bool.t := M.alloc α0 in
+      let* α2 : bool.t := M.read (use α1) in
+      if α2 then
         let* _ : M.Val unit :=
           let* α0 : mut_ref multisig.Multisig.t := M.read self in
           let* α1 : u32.t := M.read trans_id in
@@ -2613,15 +2623,15 @@ Section Impl_multisig_Multisig_t.
                   (Trait := ltac:(refine _)))
                 (borrow_mut α3)
                 (fun (t : ref u32.t) =>
+                  (let* t := M.alloc t in
                   let* α0 : M.Val (ref u32.t) := M.alloc (borrow trans_id) in
-                  let* α1 : bool.t :=
-                    M.call
-                      ((core.cmp.PartialEq.eq
-                          (Self := ref u32.t)
-                          (Trait := ltac:(refine _)))
-                        (borrow t)
-                        (borrow α0)) in
-                  M.alloc α1)) in
+                  M.call
+                    ((core.cmp.PartialEq.eq
+                        (Self := ref u32.t)
+                        (Trait := ltac:(refine _)))
+                      (borrow t)
+                      (borrow α0))) :
+                  M bool.t)) in
           let* α5 : ref str.t :=
             M.read
               (mk_str
@@ -2692,8 +2702,7 @@ Section Impl_multisig_Multisig_t.
                   end in
                 M.alloc tt)
             end in
-          let* α5 : unit := M.read α4 in
-          M.alloc (use α5) in
+          M.pure (use α4) in
         let* _ : M.Val unit :=
           let* α0 : mut_ref multisig.Multisig.t := M.read self in
           let* α1 : u32.t := M.read trans_id in
@@ -2730,8 +2739,8 @@ Section Impl_multisig_Multisig_t.
       (self : mut_ref Self)
       (owner : ref multisig.AccountId.t)
       : M unit :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
-    let* owner : M.Val (ref multisig.AccountId.t) := M.alloc owner in
+    let* self := M.alloc self in
+    let* owner := M.alloc owner in
     let* α0 : mut_ref multisig.Multisig.t := M.read self in
     let* α1 : core.slice.iter.Iter.t u32.t :=
       M.call
@@ -2773,7 +2782,9 @@ Section Impl_multisig_Multisig_t.
                         unit)::["contains"]
                     (borrow (deref α0).["confirmations"])
                     (borrow key)) in
-              if (use α1 : bool) then
+              let* α2 : M.Val bool.t := M.alloc α1 in
+              let* α3 : bool.t := M.read (use α2) in
+              if α3 then
                 let* _ : M.Val unit :=
                   let* α0 : mut_ref multisig.Multisig.t := M.read self in
                   let* α1 : u32.t * multisig.AccountId.t := M.read key in
@@ -2822,8 +2833,7 @@ Section Impl_multisig_Multisig_t.
             end in
           M.alloc tt)
       end in
-    let* α3 : unit := M.read α2 in
-    M.pure (use α3).
+    M.read (use α2).
   
   Global Instance AssociatedFunction_clean_owner_confirmations :
     Notations.DoubleColon Self "clean_owner_confirmations" := {
@@ -2844,8 +2854,8 @@ Section Impl_multisig_Multisig_t.
       (self : ref Self)
       (trans_id : ltac:(multisig.TransactionId))
       : M unit :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* trans_id : M.Val ltac:(multisig.TransactionId) := M.alloc trans_id in
+    let* self := M.alloc self in
+    let* trans_id := M.alloc trans_id in
     let* _ : M.Val unit :=
       let* α0 : ref multisig.Multisig.t := M.read self in
       let* α1 : core.option.Option.t u32.t :=
@@ -2858,7 +2868,9 @@ Section Impl_multisig_Multisig_t.
         M.call ((core.option.Option.t u32.t)::["expect"] α1 α2) in
       let* α4 : ref multisig.Multisig.t := M.read self in
       let* α5 : u32.t := M.read (deref α4).["requirement"] in
-      if (use (UnOp.not (BinOp.Pure.ge α3 α5)) : bool) then
+      let* α6 : M.Val bool.t := M.alloc (UnOp.not (BinOp.Pure.ge α3 α5)) in
+      let* α7 : bool.t := M.read (use α6) in
+      if α7 then
         let* α0 : ref str.t :=
           M.read
             (mk_str
@@ -2887,8 +2899,8 @@ Section Impl_multisig_Multisig_t.
       (self : ref Self)
       (trans_id : ltac:(multisig.TransactionId))
       : M unit :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* trans_id : M.Val ltac:(multisig.TransactionId) := M.alloc trans_id in
+    let* self := M.alloc self in
+    let* trans_id := M.alloc trans_id in
     let* _ : M.Val multisig.Transaction.t :=
       let* α0 : ref multisig.Multisig.t := M.read self in
       let* α1 : core.option.Option.t multisig.Transaction.t :=
@@ -2915,7 +2927,7 @@ Section Impl_multisig_Multisig_t.
       }
   *)
   Definition ensure_caller_is_owner (self : ref Self) : M unit :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* _ : M.Val unit :=
       let* α0 : ref multisig.Multisig.t := M.read self in
       let* α1 : ref multisig.Multisig.t := M.read self in
@@ -2941,7 +2953,7 @@ Section Impl_multisig_Multisig_t.
       }
   *)
   Definition ensure_from_wallet (self : ref Self) : M unit :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* _ : M.Val unit :=
       let* α0 : ref multisig.Multisig.t := M.read self in
       let* α1 : multisig.Env.t := M.call (multisig.Multisig.t::["env"] α0) in
@@ -2957,8 +2969,8 @@ Section Impl_multisig_Multisig_t.
       let* α9 : M.Val multisig.AccountId.t := M.alloc α8 in
       match (borrow α4, borrow α9) with
       | (left_val, right_val) =>
-        let* right_val := M.alloc right_val in
         let* left_val := M.alloc left_val in
+        let* right_val := M.alloc right_val in
         let* α0 : ref multisig.AccountId.t := M.read left_val in
         let* α1 : ref multisig.AccountId.t := M.read right_val in
         let* α2 : bool.t :=
@@ -2968,7 +2980,9 @@ Section Impl_multisig_Multisig_t.
                 (Trait := ltac:(refine _)))
               α0
               α1) in
-        if (use (UnOp.not α2) : bool) then
+        let* α3 : M.Val bool.t := M.alloc (UnOp.not α2) in
+        let* α4 : bool.t := M.read (use α3) in
+        if α4 then
           let* kind : M.Val core.panicking.AssertKind.t :=
             M.alloc core.panicking.AssertKind.Eq in
           let* _ : M.Val never.t :=
@@ -3007,8 +3021,8 @@ Section Impl_multisig_Multisig_t.
       (self : ref Self)
       (owner : ref multisig.AccountId.t)
       : M unit :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* owner : M.Val (ref multisig.AccountId.t) := M.alloc owner in
+    let* self := M.alloc self in
+    let* owner := M.alloc owner in
     let* _ : M.Val unit :=
       let* α0 : ref multisig.Multisig.t := M.read self in
       let* α1 : ref multisig.AccountId.t := M.read owner in
@@ -3017,7 +3031,9 @@ Section Impl_multisig_Multisig_t.
           ((multisig.Mapping.t multisig.AccountId.t unit)::["contains"]
             (borrow (deref α0).["is_owner"])
             α1) in
-      if (use (UnOp.not α2) : bool) then
+      let* α3 : M.Val bool.t := M.alloc (UnOp.not α2) in
+      let* α4 : bool.t := M.read (use α3) in
+      if α4 then
         let* α0 : ref str.t :=
           M.read (mk_str "assertion failed: self.is_owner.contains(owner)") in
         let* α1 : never.t := M.call (core.panicking.panic α0) in
@@ -3042,8 +3058,8 @@ Section Impl_multisig_Multisig_t.
       (self : ref Self)
       (owner : ref multisig.AccountId.t)
       : M unit :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* owner : M.Val (ref multisig.AccountId.t) := M.alloc owner in
+    let* self := M.alloc self in
+    let* owner := M.alloc owner in
     let* _ : M.Val unit :=
       let* α0 : ref multisig.Multisig.t := M.read self in
       let* α1 : ref multisig.AccountId.t := M.read owner in
@@ -3052,7 +3068,9 @@ Section Impl_multisig_Multisig_t.
           ((multisig.Mapping.t multisig.AccountId.t unit)::["contains"]
             (borrow (deref α0).["is_owner"])
             α1) in
-      if (use (UnOp.not (UnOp.not α2)) : bool) then
+      let* α3 : M.Val bool.t := M.alloc (UnOp.not (UnOp.not α2)) in
+      let* α4 : bool.t := M.read (use α3) in
+      if α4 then
         let* α0 : ref str.t :=
           M.read (mk_str "assertion failed: !self.is_owner.contains(owner)") in
         let* α1 : never.t := M.call (core.panicking.panic α0) in
@@ -3079,24 +3097,24 @@ Definition ensure_requirement_is_valid
     (owners : u32.t)
     (requirement : u32.t)
     : M unit :=
-  let* owners : M.Val u32.t := M.alloc owners in
-  let* requirement : M.Val u32.t := M.alloc requirement in
+  let* owners := M.alloc owners in
+  let* requirement := M.alloc requirement in
   let* _ : M.Val unit :=
     let* α0 : u32.t := M.read requirement in
     let* α1 : u32.t := M.read requirement in
     let* α2 : u32.t := M.read owners in
     let* α3 : u32.t := M.read owners in
     let* α4 : u32.t := M.read multisig.MAX_OWNERS in
-    if
-      (use
+    let* α5 : M.Val bool.t :=
+      M.alloc
         (UnOp.not
           (BinOp.Pure.and
             (BinOp.Pure.and
               (BinOp.Pure.lt (Integer.of_Z 0) α0)
               (BinOp.Pure.le α1 α2))
-            (BinOp.Pure.le α3 α4)))
-      : bool)
-    then
+            (BinOp.Pure.le α3 α4))) in
+    let* α6 : bool.t := M.read (use α5) in
+    if α6 then
       let* α0 : ref str.t :=
         M.read
           (mk_str

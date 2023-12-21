@@ -45,7 +45,7 @@ Section Impl_traits_Sheep_t.
       }
   *)
   Definition is_naked (self : ref Self) : M bool.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* α0 : ref traits.Sheep.t := M.read self in
     M.read (deref α0).["naked"].
   
@@ -69,7 +69,7 @@ Section Impl_traits_Animal_for_traits_Sheep_t.
       }
   *)
   Definition new (name : ref str.t) : M traits.Sheep.t :=
-    let* name : M.Val (ref str.t) := M.alloc name in
+    let* name := M.alloc name in
     let* α0 : ref str.t := M.read name in
     M.pure {| traits.Sheep.name := α0; traits.Sheep.naked := false; |}.
   
@@ -83,7 +83,7 @@ Section Impl_traits_Animal_for_traits_Sheep_t.
       }
   *)
   Definition name (self : ref Self) : M (ref str.t) :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* α0 : ref traits.Sheep.t := M.read self in
     M.read (deref α0).["name"].
   
@@ -102,15 +102,17 @@ Section Impl_traits_Animal_for_traits_Sheep_t.
       }
   *)
   Definition noise (self : ref Self) : M (ref str.t) :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* α0 : ref traits.Sheep.t := M.read self in
     let* α1 : bool.t := M.call (traits.Sheep.t::["is_naked"] α0) in
-    let* α2 : M.Val (ref str.t) :=
-      if (use α1 : bool) then
+    let* α2 : M.Val bool.t := M.alloc α1 in
+    let* α3 : bool.t := M.read (use α2) in
+    let* α4 : M.Val (ref str.t) :=
+      if α3 then
         M.pure (mk_str "baaaaah?")
       else
         M.pure (mk_str "baaaaah!") in
-    M.read α2.
+    M.read α4.
   
   Global Instance AssociatedFunction_noise :
     Notations.DoubleColon Self "noise" := {
@@ -124,7 +126,7 @@ Section Impl_traits_Animal_for_traits_Sheep_t.
       }
   *)
   Definition talk (self : ref Self) : M unit :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "") in
@@ -195,12 +197,14 @@ Section Impl_traits_Sheep_t_2.
       }
   *)
   Definition shear (self : mut_ref Self) : M unit :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* α0 : mut_ref traits.Sheep.t := M.read self in
     let* α1 : bool.t :=
       M.call (traits.Sheep.t::["is_naked"] (borrow (deref α0))) in
-    let* α2 : M.Val unit :=
-      if (use α1 : bool) then
+    let* α2 : M.Val bool.t := M.alloc α1 in
+    let* α3 : bool.t := M.read (use α2) in
+    let* α4 : M.Val unit :=
+      if α3 then
         let* _ : M.Val unit :=
           let* _ : M.Val unit :=
             let* α0 : ref str.t := M.read (mk_str "") in
@@ -260,7 +264,7 @@ Section Impl_traits_Sheep_t_2.
           let* α0 : mut_ref traits.Sheep.t := M.read self in
           assign (deref α0).["naked"] true in
         M.alloc tt in
-    M.read α2.
+    M.read α4.
   
   Global Instance AssociatedFunction_shear :
     Notations.DoubleColon Self "shear" := {

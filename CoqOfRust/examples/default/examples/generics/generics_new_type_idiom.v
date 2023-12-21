@@ -35,7 +35,7 @@ Section Impl_generics_new_type_idiom_Years_t.
       }
   *)
   Definition to_days (self : ref Self) : M generics_new_type_idiom.Days.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* α0 : ref generics_new_type_idiom.Years.t := M.read self in
     let* α1 : i64.t := M.read (deref α0).["0"] in
     let* α2 : i64.t := BinOp.Panic.mul α1 (Integer.of_Z 365) in
@@ -58,7 +58,7 @@ Section Impl_generics_new_type_idiom_Days_t.
       }
   *)
   Definition to_years (self : ref Self) : M generics_new_type_idiom.Years.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* α0 : ref generics_new_type_idiom.Days.t := M.read self in
     let* α1 : i64.t := M.read (deref α0).["0"] in
     let* α2 : i64.t := BinOp.Panic.div α1 (Integer.of_Z 365) in
@@ -77,7 +77,7 @@ fn old_enough(age: &Years) -> bool {
 }
 *)
 Definition old_enough (age : ref generics_new_type_idiom.Years.t) : M bool.t :=
-  let* age : M.Val (ref generics_new_type_idiom.Years.t) := M.alloc age in
+  let* age := M.alloc age in
   let* α0 : ref generics_new_type_idiom.Years.t := M.read age in
   let* α1 : i64.t := M.read (deref α0).["0"] in
   M.pure (BinOp.Pure.ge α1 (Integer.of_Z 18)).

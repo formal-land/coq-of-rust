@@ -34,8 +34,8 @@ Section Impl_core_fmt_Debug_for_structures_Person_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
+    let* self := M.alloc self in
+    let* f := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref str.t := M.read (mk_str "Person") in
     let* α2 : ref str.t := M.read (mk_str "name") in
@@ -285,8 +285,8 @@ Definition main : M unit :=
   let* '{| structures.Point.x := left_edge; structures.Point.y := top_edge; |} :
       structures.Point.t :=
     M.read point in
-  let* top_edge := M.alloc top_edge in
   let* left_edge := M.alloc left_edge in
+  let* top_edge := M.alloc top_edge in
   let* _rectangle : M.Val structures.Rectangle.t :=
     let* α0 : f32.t := M.read left_edge in
     let* α1 : f32.t := M.read top_edge in
@@ -327,8 +327,8 @@ Definition main : M unit :=
     M.alloc tt in
   let* 'structures.Pair.Build_t integer decimal : structures.Pair.t :=
     M.read pair in
-  let* decimal := M.alloc decimal in
   let* integer := M.alloc integer in
+  let* decimal := M.alloc decimal in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "pair contains ") in

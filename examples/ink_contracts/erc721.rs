@@ -125,7 +125,7 @@ impl Erc721 {
 
     // Returns the total number of tokens from an account.
     fn balance_of_or_zero(&self, of: &AccountId) -> u32 {
-        self.owned_tokens_count.get(of).unwrap_or(0)
+        self.owned_tokens_count.get(of).unwrap_or(0 as u32)
     }
 
     /// Removes existing approval from token `id`.
@@ -178,15 +178,137 @@ impl Erc721 {
         self.approved_for_all(owner, operator)
     }
 
+    /// Approves or disapproves the operator to transfer all tokens of the caller.
+    fn approve_for_all(&mut self, to: AccountId, approved: bool) -> Result<(), Error> {
+        let caller = self.env().caller();
+        if to == caller {
+            return Err(Error::NotAllowed);
+        }
+        self.env().emit_event(Event::ApprovalForAll(ApprovalForAll {
+            owner: caller,
+            operator: to,
+            approved,
+        }));
+
+        if approved {
+            self.operator_approvals.insert((caller, to), ());
+        } else {
+            self.operator_approvals.remove((caller, to));
+        }
+
+        Ok(())
+    }
+
     /// Approves or disapproves the operator for all tokens of the caller.
     pub fn set_approval_for_all(&mut self, to: AccountId, approved: bool) -> Result<(), Error> {
         self.approve_for_all(to, approved)?;
         Ok(())
     }
 
+    /// Approve the passed `AccountId` to transfer the specified token on behalf of
+    /// the message's sender.
+    fn approve_for(&mut self, to: &AccountId, id: TokenId) -> Result<(), Error> {
+        let caller = self.env().caller();
+        let owner = self.owner_of(id);
+        if !(owner == Some(caller)
+            || self.approved_for_all(owner.expect("Error with AccountId"), caller))
+        {
+            return Err(Error::NotAllowed);
+        };
+
+        if *to == AccountId::from([0x0; 32]) {
+            return Err(Error::NotAllowed);
+        };
+
+        if self.token_approvals.contains(&id) {
+            return Err(Error::CannotInsert);
+        } else {
+            self.token_approvals.insert(id, *to);
+        }
+
+        self.env().emit_event(Event::Approval(Approval {
+            from: caller,
+            to: *to,
+            id,
+        }));
+
+        Ok(())
+    }
+
     /// Approves the account to transfer the specified token on behalf of the caller.
     pub fn approve(&mut self, to: AccountId, id: TokenId) -> Result<(), Error> {
         self.approve_for(&to, id)?;
+        Ok(())
+    }
+
+    /// Removes token `id` from the owner.
+    fn remove_token_from(&mut self, from: &AccountId, id: TokenId) -> Result<(), Error> {
+        let Self {
+            token_owner,
+            owned_tokens_count,
+            ..
+        } = self;
+
+        if !token_owner.contains(&id) {
+            return Err(Error::TokenNotFound);
+        }
+
+        let count = owned_tokens_count
+            .get(from)
+            .map(|c| c - 1)
+            .ok_or(Error::CannotFetchValue)?;
+        owned_tokens_count.insert(*from, count);
+        token_owner.remove(id);
+
+        Ok(())
+    }
+
+    /// Adds the token `id` to the `to` AccountID.
+    fn add_token_to(&mut self, to: &AccountId, id: TokenId) -> Result<(), Error> {
+        let Self {
+            token_owner,
+            owned_tokens_count,
+            ..
+        } = self;
+
+        if token_owner.contains(&id) {
+            return Err(Error::TokenExists);
+        }
+
+        if *to == AccountId::from([0x0; 32]) {
+            return Err(Error::NotAllowed);
+        };
+
+        let count = owned_tokens_count.get(to).map(|c| c + 1).unwrap_or(1);
+
+        owned_tokens_count.insert(*to, count);
+        token_owner.insert(id, *to);
+
+        Ok(())
+    }
+
+    /// Transfers token `id` `from` the sender to the `to` `AccountId`.
+    fn transfer_token_from(
+        &mut self,
+        from: &AccountId,
+        to: &AccountId,
+        id: TokenId,
+    ) -> Result<(), Error> {
+        let caller = self.env().caller();
+        if !self.exists(id) {
+            return Err(Error::TokenNotFound);
+        };
+        if !self.approved_or_owner(Some(caller), id) {
+            return Err(Error::NotApproved);
+        };
+        self.clear_approval(id);
+        self.remove_token_from(from, id)?;
+        self.add_token_to(to, id)?;
+        self.env().emit_event(Event::Transfer(Transfer {
+            from: Some(*from),
+            to: Some(*to),
+            id,
+        }));
         Ok(())
     }
 
@@ -244,128 +366,6 @@ impl Erc721 {
         self.env().emit_event(Event::Transfer(Transfer {
             from: Some(caller),
             to: Some(AccountId::from([0x0; 32])),
-            id,
-        }));
-
-        Ok(())
-    }
-
-    /// Transfers token `id` `from` the sender to the `to` `AccountId`.
-    fn transfer_token_from(
-        &mut self,
-        from: &AccountId,
-        to: &AccountId,
-        id: TokenId,
-    ) -> Result<(), Error> {
-        let caller = self.env().caller();
-        if !self.exists(id) {
-            return Err(Error::TokenNotFound);
-        };
-        if !self.approved_or_owner(Some(caller), id) {
-            return Err(Error::NotApproved);
-        };
-        self.clear_approval(id);
-        self.remove_token_from(from, id)?;
-        self.add_token_to(to, id)?;
-        self.env().emit_event(Event::Transfer(Transfer {
-            from: Some(*from),
-            to: Some(*to),
-            id,
-        }));
-        Ok(())
-    }
-
-    /// Removes token `id` from the owner.
-    fn remove_token_from(&mut self, from: &AccountId, id: TokenId) -> Result<(), Error> {
-        let Self {
-            token_owner,
-            owned_tokens_count,
-            ..
-        } = self;
-
-        if !token_owner.contains(&id) {
-            return Err(Error::TokenNotFound);
-        }
-
-        let count = owned_tokens_count
-            .get(from)
-            .map(|c| c - 1)
-            .ok_or(Error::CannotFetchValue)?;
-        owned_tokens_count.insert(*from, count);
-        token_owner.remove(id);
-
-        Ok(())
-    }
-
-    /// Adds the token `id` to the `to` AccountID.
-    fn add_token_to(&mut self, to: &AccountId, id: TokenId) -> Result<(), Error> {
-        let Self {
-            token_owner,
-            owned_tokens_count,
-            ..
-        } = self;
-
-        if token_owner.contains(&id) {
-            return Err(Error::TokenExists);
-        }
-
-        if *to == AccountId::from([0x0; 32]) {
-            return Err(Error::NotAllowed);
-        };
-
-        let count = owned_tokens_count.get(to).map(|c| c + 1).unwrap_or(1);
-
-        owned_tokens_count.insert(*to, count);
-        token_owner.insert(id, *to);
-
-        Ok(())
-    }
-
-    /// Approves or disapproves the operator to transfer all tokens of the caller.
-    fn approve_for_all(&mut self, to: AccountId, approved: bool) -> Result<(), Error> {
-        let caller = self.env().caller();
-        if to == caller {
-            return Err(Error::NotAllowed);
-        }
-        self.env().emit_event(Event::ApprovalForAll(ApprovalForAll {
-            owner: caller,
-            operator: to,
-            approved,
-        }));
-
-        if approved {
-            self.operator_approvals.insert((caller, to), ());
-        } else {
-            self.operator_approvals.remove((caller, to));
-        }
-
-        Ok(())
-    }
-
-    /// Approve the passed `AccountId` to transfer the specified token on behalf of
-    /// the message's sender.
-    fn approve_for(&mut self, to: &AccountId, id: TokenId) -> Result<(), Error> {
-        let caller = self.env().caller();
-        let owner = self.owner_of(id);
-        if !(owner == Some(caller)
-            || self.approved_for_all(owner.expect("Error with AccountId"), caller))
-        {
-            return Err(Error::NotAllowed);
-        };
-
-        if *to == AccountId::from([0x0; 32]) {
-            return Err(Error::NotAllowed);
-        };
-
-        if self.token_approvals.contains(&id) {
-            return Err(Error::CannotInsert);
-        } else {
-            self.token_approvals.insert(id, *to);
-        }
-
-        self.env().emit_event(Event::Approval(Approval {
-            from: caller,
-            to: *to,
             id,
         }));
 

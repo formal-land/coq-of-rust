@@ -34,8 +34,8 @@ Section Impl_core_fmt_Debug_for_integration_flipper_FlipperError_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
+    let* self := M.alloc self in
+    let* f := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref str.t := M.read (mk_str "FlipperError") in
     M.call (core.fmt.Formatter.t::["write_str"] α0 α1).
@@ -60,7 +60,7 @@ Section Impl_integration_flipper_Flipper_t.
       }
   *)
   Definition new (init_value : bool.t) : M Self :=
-    let* init_value : M.Val bool.t := M.alloc init_value in
+    let* init_value := M.alloc init_value in
     let* α0 : bool.t := M.read init_value in
     M.pure {| integration_flipper.Flipper.value := α0; |}.
   
@@ -98,14 +98,14 @@ Section Impl_integration_flipper_Flipper_t.
   Definition try_new
       (succeed : bool.t)
       : M (core.result.Result.t Self integration_flipper.FlipperError.t) :=
-    let* succeed : M.Val bool.t := M.alloc succeed in
-    let* α0 : bool.t := M.read succeed in
+    let* succeed := M.alloc succeed in
+    let* α0 : bool.t := M.read (use succeed) in
     let* α1 :
         M.Val
           (core.result.Result.t
             integration_flipper.Flipper.t
             integration_flipper.FlipperError.t) :=
-      if (use α0 : bool) then
+      if α0 then
         let* α0 : integration_flipper.Flipper.t :=
           M.call (integration_flipper.Flipper.t::["new"] true) in
         M.alloc (core.result.Result.Ok α0)
@@ -125,7 +125,7 @@ Section Impl_integration_flipper_Flipper_t.
       }
   *)
   Definition flip (self : mut_ref Self) : M unit :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* _ : M.Val unit :=
       let* α0 : mut_ref integration_flipper.Flipper.t := M.read self in
       let* α1 : mut_ref integration_flipper.Flipper.t := M.read self in
@@ -145,7 +145,7 @@ Section Impl_integration_flipper_Flipper_t.
       }
   *)
   Definition get (self : ref Self) : M bool.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* α0 : ref integration_flipper.Flipper.t := M.read self in
     M.read (deref α0).["value"].
   
@@ -162,7 +162,7 @@ Section Impl_integration_flipper_Flipper_t.
   Definition err_flip
       (self : mut_ref Self)
       : M (core.result.Result.t unit unit) :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* _ : M.Val unit :=
       let* α0 : mut_ref integration_flipper.Flipper.t := M.read self in
       let* α1 : unit := M.call (integration_flipper.Flipper.t::["flip"] α0) in

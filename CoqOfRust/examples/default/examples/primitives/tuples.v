@@ -10,10 +10,10 @@ fn reverse(pair: (i32, bool)) -> (bool, i32) {
 }
 *)
 Definition reverse (pair : i32.t * bool.t) : M (bool.t * i32.t) :=
-  let* pair : M.Val (i32.t * bool.t) := M.alloc pair in
+  let* pair := M.alloc pair in
   let* '(int_param, bool_param) : i32.t * bool.t := M.read pair in
-  let* bool_param := M.alloc bool_param in
   let* int_param := M.alloc int_param in
+  let* bool_param := M.alloc bool_param in
   let* α0 : bool.t := M.read bool_param in
   let* α1 : i32.t := M.read int_param in
   let* α0 : M.Val (bool.t * i32.t) := M.alloc (α0, α1) in
@@ -54,8 +54,8 @@ Section Impl_core_fmt_Debug_for_tuples_Matrix_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
+    let* self := M.alloc self in
+    let* f := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref str.t := M.read (mk_str "Matrix") in
     let* α2 : ref tuples.Matrix.t := M.read self in
@@ -326,10 +326,10 @@ Definition main : M unit :=
     M.alloc (Integer.of_Z 1, α0, α1, true) in
   let* '(a, b, c, d) : ((i32.t * (ref str.t)) * f64.t) * bool.t :=
     M.read tuple in
-  let* d := M.alloc d in
-  let* c := M.alloc c in
-  let* b := M.alloc b in
   let* a := M.alloc a in
+  let* b := M.alloc b in
+  let* c := M.alloc c in
+  let* d := M.alloc d in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "") in

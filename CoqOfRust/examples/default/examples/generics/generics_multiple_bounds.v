@@ -13,7 +13,7 @@ Definition compare_prints
     {ℋ_1 : core.fmt.Display.Trait T}
     (t : ref T)
     : M unit :=
-  let* t : M.Val (ref T) := M.alloc t in
+  let* t := M.alloc t in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "Debug: `") in
@@ -72,8 +72,8 @@ Definition compare_types
     (t : ref T)
     (u : ref U)
     : M unit :=
-  let* t : M.Val (ref T) := M.alloc t in
-  let* u : M.Val (ref U) := M.alloc u in
+  let* t := M.alloc t in
+  let* u := M.alloc u in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "t: `") in

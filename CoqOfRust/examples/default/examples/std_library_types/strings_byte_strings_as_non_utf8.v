@@ -119,7 +119,7 @@ Definition main : M unit :=
       M.alloc α3 in
     let* α5 : M.Val bool.t := let_if core.result.Result.Ok my_str := α4 in
     let* α6 : bool.t := M.read α5 in
-    if (α6 : bool) then
+    if α6 then
       let* _ : M.Val unit :=
         let* _ : M.Val unit :=
           let* α0 : ref str.t := M.read (mk_str "And the same as text: '") in

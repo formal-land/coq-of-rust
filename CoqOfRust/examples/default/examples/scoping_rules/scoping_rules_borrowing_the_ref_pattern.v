@@ -33,7 +33,7 @@ Section Impl_core_clone_Clone_for_scoping_rules_borrowing_the_ref_pattern_Point_
   Definition clone
       (self : ref Self)
       : M scoping_rules_borrowing_the_ref_pattern.Point.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let _ : unit := tt in
     let* α0 : ref scoping_rules_borrowing_the_ref_pattern.Point.t :=
       M.read self in

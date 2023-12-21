@@ -14,7 +14,7 @@ Definition apply
     {ℋ_0 : core.ops.function.Fn.Trait F (Args := unit)}
     (f : F)
     : M unit :=
-  let* f : M.Val F := M.alloc f in
+  let* f := M.alloc f in
   let* _ : M.Val unit :=
     let* α0 : unit :=
       M.call
@@ -41,7 +41,7 @@ Definition main : M unit :=
   let* x : M.Val i32.t := M.alloc (Integer.of_Z 7) in
   let* print : M.Val (unit -> M unit) :=
     M.alloc
-      (let* _ : M.Val unit :=
+      ((let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "") in
         let* α1 : ref str.t := M.read (mk_str "
 ") in
@@ -60,7 +60,9 @@ Definition main : M unit :=
           M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
         let* α10 : unit := M.call (std.io.stdio._print α9) in
         M.alloc α10 in
-      M.alloc tt) in
+      let* α0 : M.Val unit := M.alloc tt in
+      M.read α0) :
+      M unit) in
   let* _ : M.Val unit :=
     let* α0 : unit -> M unit := M.read print in
     let* α1 : unit :=

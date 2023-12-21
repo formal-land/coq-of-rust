@@ -54,7 +54,9 @@ Definition main : M unit :=
         assign β α1 in
       let* _ : M.Val unit :=
         let* α0 : u32.t := M.read count in
-        if (use (BinOp.Pure.eq α0 (Integer.of_Z 3)) : bool) then
+        let* α1 : M.Val bool.t := M.alloc (BinOp.Pure.eq α0 (Integer.of_Z 3)) in
+        let* α2 : bool.t := M.read (use α1) in
+        if α2 then
           let* _ : M.Val unit :=
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "three
@@ -98,7 +100,9 @@ Definition main : M unit :=
           M.alloc α10 in
         M.alloc tt in
       let* α0 : u32.t := M.read count in
-      if (use (BinOp.Pure.eq α0 (Integer.of_Z 5)) : bool) then
+      let* α1 : M.Val bool.t := M.alloc (BinOp.Pure.eq α0 (Integer.of_Z 5)) in
+      let* α2 : bool.t := M.read (use α1) in
+      if α2 then
         let* _ : M.Val unit :=
           let* _ : M.Val unit :=
             let* α0 : ref str.t := M.read (mk_str "OK, that's enough

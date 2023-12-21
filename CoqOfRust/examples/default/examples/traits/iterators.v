@@ -45,7 +45,7 @@ Section Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci_t.
       }
   *)
   Definition next (self : mut_ref Self) : M (core.option.Option.t Item.t) :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* current : M.Val u32.t :=
       let* α0 : mut_ref iterators.Fibonacci.t := M.read self in
       M.copy (deref α0).["curr"] in
@@ -412,8 +412,7 @@ Definition main : M unit :=
             end in
           M.alloc tt)
       end in
-    let* α2 : unit := M.read α1 in
-    M.alloc (use α2) in
+    M.pure (use α1) in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t :=
@@ -493,8 +492,7 @@ Definition main : M unit :=
             end in
           M.alloc tt)
       end in
-    let* α4 : unit := M.read α3 in
-    M.alloc (use α4) in
+    M.pure (use α3) in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t :=
@@ -588,8 +586,7 @@ Definition main : M unit :=
             end in
           M.alloc tt)
       end in
-    let* α5 : unit := M.read α4 in
-    M.alloc (use α5) in
+    M.pure (use α4) in
   let* array : M.Val (array u32.t) :=
     M.alloc
       [ Integer.of_Z 1; Integer.of_Z 3; Integer.of_Z 3; Integer.of_Z 7 ] in
@@ -672,6 +669,4 @@ Definition main : M unit :=
           end in
         M.alloc tt)
     end in
-  let* α5 : unit := M.read α4 in
-  let* α0 : M.Val unit := M.alloc (use α5) in
-  M.read α0.
+  M.read (use α4).

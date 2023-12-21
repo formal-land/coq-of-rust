@@ -57,11 +57,10 @@ Definition main : M unit :=
             (Trait := ltac:(refine _)))
           α1
           (fun (s : ref str.t) =>
+            (let* s := M.alloc s in
             let* α0 : ref str.t := M.read s in
-            let* α1 :
-                core.result.Result.t i32.t core.num.error.ParseIntError.t :=
-              M.call (str.t::["parse"] α0) in
-            M.alloc α1)) in
+            M.call (str.t::["parse"] α0)) :
+            M (core.result.Result.t i32.t core.num.error.ParseIntError.t))) in
     M.call
       ((core.iter.traits.iterator.Iterator.partition
           (Self :=
@@ -74,8 +73,8 @@ Definition main : M unit :=
         (core.result.Result.t
             i32.t
             core.num.error.ParseIntError.t)::["is_ok"]) in
-  let* errors := M.alloc errors in
   let* numbers := M.alloc numbers in
+  let* errors := M.alloc errors in
   let* numbers : M.Val (alloc.vec.Vec.t i32.t alloc.alloc.Global.t) :=
     let* α0 :
         alloc.vec.Vec.t

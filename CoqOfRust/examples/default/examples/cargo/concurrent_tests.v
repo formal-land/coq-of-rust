@@ -10,7 +10,7 @@ fn foo<A>(o: Option<A>) {
 }
 *)
 Definition foo {A : Set} (o : core.option.Option.t A) : M unit :=
-  let* o : M.Val (core.option.Option.t A) := M.alloc o in
+  let* o := M.alloc o in
   let* α0 : core.option.Option.t A := M.read o in
   let* α1 : M.Val unit :=
     match α0 with
@@ -132,9 +132,7 @@ Module tests.
             end in
           M.alloc tt)
       end in
-    let* α2 : unit := M.read α1 in
-    let* α0 : M.Val unit := M.alloc (use α2) in
-    M.read α0.
+    M.read (use α1).
   
   (*
       fn test_file_also() {
@@ -223,9 +221,7 @@ Module tests.
             end in
           M.alloc tt)
       end in
-    let* α2 : unit := M.read α1 in
-    let* α0 : M.Val unit := M.alloc (use α2) in
-    M.read α0.
+    M.read (use α1).
 End tests.
 
 (*
@@ -313,9 +309,7 @@ Definition test_file : M unit :=
           end in
         M.alloc tt)
     end in
-  let* α2 : unit := M.read α1 in
-  let* α0 : M.Val unit := M.alloc (use α2) in
-  M.read α0.
+  M.read (use α1).
 
 (*
     fn test_file_also() {
@@ -402,6 +396,4 @@ Definition test_file_also : M unit :=
           end in
         M.alloc tt)
     end in
-  let* α2 : unit := M.read α1 in
-  let* α0 : M.Val unit := M.alloc (use α2) in
-  M.read α0.
+  M.read (use α1).

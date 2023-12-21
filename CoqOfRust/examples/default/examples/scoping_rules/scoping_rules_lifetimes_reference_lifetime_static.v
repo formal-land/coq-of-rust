@@ -9,7 +9,7 @@ fn coerce_static<'a>(_: &'a i32) -> &'a i32 {
 }
 *)
 Definition coerce_static (arg : ref i32.t) : M (ref i32.t) :=
-  let* arg : M.Val (ref i32.t) := M.alloc arg in
+  let* arg := M.alloc arg in
   M.read scoping_rules_lifetimes_reference_lifetime_static.NUM.
 
 (*

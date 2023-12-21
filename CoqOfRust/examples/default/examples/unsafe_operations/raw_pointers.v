@@ -18,7 +18,10 @@ Definition main : M unit :=
   let* _ : M.Val unit :=
     let* α0 : ref u32.t := M.read raw_p in
     let* α1 : u32.t := M.read (deref α0) in
-    if (use (UnOp.not (BinOp.Pure.eq α1 (Integer.of_Z 10))) : bool) then
+    let* α2 : M.Val bool.t :=
+      M.alloc (UnOp.not (BinOp.Pure.eq α1 (Integer.of_Z 10))) in
+    let* α3 : bool.t := M.read (use α2) in
+    if α3 then
       let* α0 : ref str.t := M.read (mk_str "assertion failed: *raw_p == 10") in
       let* α1 : never.t := M.call (core.panicking.panic α0) in
       let* α2 : unit := never_to_any α1 in

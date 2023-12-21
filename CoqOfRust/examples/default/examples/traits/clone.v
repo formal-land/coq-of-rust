@@ -18,8 +18,8 @@ Section Impl_core_fmt_Debug_for_clone_Unit_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
+    let* self := M.alloc self in
+    let* f := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref str.t := M.read (mk_str "Unit") in
     M.call (core.fmt.Formatter.t::["write_str"] α0 α1).
@@ -42,7 +42,7 @@ Section Impl_core_clone_Clone_for_clone_Unit_t.
   Clone
   *)
   Definition clone (self : ref Self) : M clone.Unit.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* α0 : ref clone.Unit.t := M.read self in
     M.read (deref α0).
   
@@ -91,7 +91,7 @@ Section Impl_core_clone_Clone_for_clone_Pair_t.
   Clone
   *)
   Definition clone (self : ref Self) : M clone.Pair.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* α0 : ref clone.Pair.t := M.read self in
     let* α1 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t :=
       M.call
@@ -131,8 +131,8 @@ Section Impl_core_fmt_Debug_for_clone_Pair_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
+    let* self := M.alloc self in
+    let* f := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref str.t := M.read (mk_str "Pair") in
     let* α2 : ref clone.Pair.t := M.read self in

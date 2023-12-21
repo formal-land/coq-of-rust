@@ -21,9 +21,9 @@ Section Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers_t.
       }
   *)
   Definition run (self : ref Self) (x : i32.t) (y : i32.t) : M i32.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* x : M.Val i32.t := M.alloc x in
-    let* y : M.Val i32.t := M.alloc y in
+    let* self := M.alloc self in
+    let* x := M.alloc x in
+    let* y := M.alloc y in
     let* α0 :
         ref enums_type_aliases_v2.VeryVerboseEnumOfThingsToDoWithNumbers.t :=
       M.read self in

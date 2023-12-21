@@ -36,8 +36,8 @@ Section Impl_core_fmt_Debug_for_box_stack_heap_Point_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
+    let* self := M.alloc self in
+    let* f := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref str.t := M.read (mk_str "Point") in
     let* α2 : ref str.t := M.read (mk_str "x") in
@@ -71,7 +71,7 @@ Section Impl_core_clone_Clone_for_box_stack_heap_Point_t.
   *)
   (* #[allow(dead_code)] - function was ignored by the compiler *)
   Definition clone (self : ref Self) : M box_stack_heap.Point.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let _ : unit := tt in
     let* α0 : ref box_stack_heap.Point.t := M.read self in
     M.read (deref α0).

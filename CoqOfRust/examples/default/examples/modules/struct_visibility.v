@@ -50,7 +50,7 @@ Module my.
             }
     *)
     Definition new (contents : T) : M (struct_visibility.my.ClosedBox.t T) :=
-      let* contents : M.Val T := M.alloc contents in
+      let* contents := M.alloc contents in
       let* α0 : T := M.read contents in
       M.pure {| struct_visibility.my.ClosedBox.contents := α0; |}.
     
@@ -110,7 +110,7 @@ Section Impl_struct_visibility_my_ClosedBox_t_T_2.
           }
   *)
   Definition new (contents : T) : M (struct_visibility.my.ClosedBox.t T) :=
-    let* contents : M.Val T := M.alloc contents in
+    let* contents := M.alloc contents in
     let* α0 : T := M.read contents in
     M.pure {| struct_visibility.my.ClosedBox.contents := α0; |}.
   

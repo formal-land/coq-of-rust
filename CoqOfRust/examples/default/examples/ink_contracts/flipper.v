@@ -27,7 +27,7 @@ Section Impl_flipper_Flipper_t.
       }
   *)
   Definition new (init_value : bool.t) : M Self :=
-    let* init_value : M.Val bool.t := M.alloc init_value in
+    let* init_value := M.alloc init_value in
     let* α0 : bool.t := M.read init_value in
     M.pure {| flipper.Flipper.value := α0; |}.
   
@@ -59,7 +59,7 @@ Section Impl_flipper_Flipper_t.
       }
   *)
   Definition flip (self : mut_ref Self) : M unit :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* _ : M.Val unit :=
       let* α0 : mut_ref flipper.Flipper.t := M.read self in
       let* α1 : mut_ref flipper.Flipper.t := M.read self in
@@ -79,7 +79,7 @@ Section Impl_flipper_Flipper_t.
       }
   *)
   Definition get (self : ref Self) : M bool.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* α0 : ref flipper.Flipper.t := M.read self in
     M.read (deref α0).["value"].
   

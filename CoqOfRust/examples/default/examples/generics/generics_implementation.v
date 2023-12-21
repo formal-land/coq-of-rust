@@ -44,7 +44,7 @@ Section Impl_generics_implementation_Val_t.
       }
   *)
   Definition value (self : ref Self) : M (ref f64.t) :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* α0 : ref generics_implementation.Val.t := M.read self in
     M.pure (borrow (deref α0).["val"]).
   
@@ -67,7 +67,7 @@ Section Impl_generics_implementation_GenVal_t_T.
       }
   *)
   Definition value (self : ref Self) : M (ref T) :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* α0 : ref (generics_implementation.GenVal.t T) := M.read self in
     M.pure (borrow (deref α0).["gen_val"]).
   

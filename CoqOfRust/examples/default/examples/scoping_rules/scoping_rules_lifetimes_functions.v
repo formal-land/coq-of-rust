@@ -7,7 +7,7 @@ fn print_one<'a>(x: &'a i32) {
 }
 *)
 Definition print_one (x : ref i32.t) : M unit :=
-  let* x : M.Val (ref i32.t) := M.alloc x in
+  let* x := M.alloc x in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "`print_one`: x is ") in
@@ -38,7 +38,7 @@ fn add_one<'a>(x: &'a mut i32) {
 }
 *)
 Definition add_one (x : mut_ref i32.t) : M unit :=
-  let* x : M.Val (mut_ref i32.t) := M.alloc x in
+  let* x := M.alloc x in
   let* _ : M.Val unit :=
     let* β : M.Val i32.t :=
       let* α0 : mut_ref i32.t := M.read x in
@@ -55,8 +55,8 @@ fn print_multi<'a, 'b>(x: &'a i32, y: &'b i32) {
 }
 *)
 Definition print_multi (x : ref i32.t) (y : ref i32.t) : M unit :=
-  let* x : M.Val (ref i32.t) := M.alloc x in
-  let* y : M.Val (ref i32.t) := M.alloc y in
+  let* x := M.alloc x in
+  let* y := M.alloc y in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "`print_multi`: x is ") in
@@ -90,8 +90,8 @@ fn pass_x<'a, 'b>(x: &'a i32, _: &'b i32) -> &'a i32 {
 }
 *)
 Definition pass_x (x : ref i32.t) (arg : ref i32.t) : M (ref i32.t) :=
-  let* x : M.Val (ref i32.t) := M.alloc x in
-  let* arg : M.Val (ref i32.t) := M.alloc arg in
+  let* x := M.alloc x in
+  let* arg := M.alloc arg in
   M.read x.
 
 (*

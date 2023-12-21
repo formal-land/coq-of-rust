@@ -82,7 +82,7 @@ Definition main : M unit :=
     M.alloc α1 in
   let* print : M.Val (unit -> M unit) :=
     M.alloc
-      (let* _ : M.Val unit :=
+      ((let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "`color`: ") in
         let* α1 : ref str.t := M.read (mk_str "
 ") in
@@ -101,7 +101,9 @@ Definition main : M unit :=
           M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
         let* α10 : unit := M.call (std.io.stdio._print α9) in
         M.alloc α10 in
-      M.alloc tt) in
+      let* α0 : M.Val unit := M.alloc tt in
+      M.read α0) :
+      M unit) in
   let* _ : M.Val unit :=
     let* α0 : unit :=
       M.call
@@ -126,7 +128,7 @@ Definition main : M unit :=
   let* count : M.Val i32.t := M.alloc (Integer.of_Z 0) in
   let* inc : M.Val (unit -> M unit) :=
     M.alloc
-      (let* _ : M.Val unit :=
+      ((let* _ : M.Val unit :=
         let β : M.Val i32.t := count in
         let* α0 := M.read β in
         let* α1 := BinOp.Panic.add α0 (Integer.of_Z 1) in
@@ -152,7 +154,9 @@ Definition main : M unit :=
           let* α10 : unit := M.call (std.io.stdio._print α9) in
           M.alloc α10 in
         M.alloc tt in
-      M.alloc tt) in
+      let* α0 : M.Val unit := M.alloc tt in
+      M.read α0) :
+      M unit) in
   let* _ : M.Val unit :=
     let* α0 : unit :=
       M.call
@@ -181,7 +185,7 @@ Definition main : M unit :=
     M.alloc α0 in
   let* consume : M.Val (unit -> M unit) :=
     M.alloc
-      (let* _ : M.Val unit :=
+      ((let* _ : M.Val unit :=
         let* _ : M.Val unit :=
           let* α0 : ref str.t := M.read (mk_str "`movable`: ") in
           let* α1 : ref str.t := M.read (mk_str "
@@ -207,7 +211,9 @@ Definition main : M unit :=
           M.read movable in
         let* α1 : unit := M.call (core.mem.drop α0) in
         M.alloc α1 in
-      M.alloc tt) in
+      let* α0 : M.Val unit := M.alloc tt in
+      M.read α0) :
+      M unit) in
   let* _ : M.Val unit :=
     let* α0 : unit -> M unit := M.read consume in
     let* α1 : unit :=

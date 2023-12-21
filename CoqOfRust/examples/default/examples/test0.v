@@ -74,7 +74,7 @@ Definition main : M unit :=
   let* _ : M.Val unit :=
     let* α0 : M.Val bool.t := let_if core.option.Option.Some i := number in
     let* α1 : bool.t := M.read α0 in
-    if (α1 : bool) then
+    if α1 then
       let* _ : M.Val unit :=
         let* _ : M.Val unit :=
           let* α0 : ref str.t := M.read (mk_str "Matched ") in
@@ -102,7 +102,7 @@ Definition main : M unit :=
   let* _ : M.Val unit :=
     let* α0 : M.Val bool.t := let_if core.option.Option.Some j := letter in
     let* α1 : bool.t := M.read α0 in
-    if (α1 : bool) then
+    if α1 then
       let* _ : M.Val unit :=
         let* _ : M.Val unit :=
           let* α0 : ref str.t := M.read (mk_str "Matched ") in
@@ -145,7 +145,7 @@ Definition main : M unit :=
   let* α0 : M.Val bool.t := let_if core.option.Option.Some i := emoticon in
   let* α1 : bool.t := M.read α0 in
   let* α0 : M.Val unit :=
-    if (α1 : bool) then
+    if α1 then
       let* _ : M.Val unit :=
         let* _ : M.Val unit :=
           let* α0 : ref str.t := M.read (mk_str "Matched ") in
@@ -169,8 +169,8 @@ Definition main : M unit :=
         M.alloc tt in
       M.alloc tt
     else
-      let* α0 : bool.t := M.read i_like_letters in
-      if (use α0 : bool) then
+      let* α0 : bool.t := M.read (use i_like_letters) in
+      if α0 then
         let* _ : M.Val unit :=
           let* _ : M.Val unit :=
             let* α0 : ref str.t :=

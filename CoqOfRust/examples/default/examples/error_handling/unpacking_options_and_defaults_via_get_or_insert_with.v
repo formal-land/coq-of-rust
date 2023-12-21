@@ -22,8 +22,8 @@ Section Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
+    let* self := M.alloc self in
+    let* f := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 :
         ref unpacking_options_and_defaults_via_get_or_insert_with.Fruit.t :=
@@ -95,7 +95,7 @@ Definition main : M unit :=
         (unit ->
           M unpacking_options_and_defaults_via_get_or_insert_with.Fruit.t) :=
     M.alloc
-      (let* _ : M.Val unit :=
+      ((let* _ : M.Val unit :=
         let* _ : M.Val unit :=
           let* α0 : ref str.t :=
             M.read (mk_str "Providing lemon as fallback
@@ -109,8 +109,12 @@ Definition main : M unit :=
           let* α5 : unit := M.call (std.io.stdio._print α4) in
           M.alloc α5 in
         M.alloc tt in
-      M.alloc
-        unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Lemon) in
+      let* α0 :
+          M.Val unpacking_options_and_defaults_via_get_or_insert_with.Fruit.t :=
+        M.alloc
+          unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Lemon in
+      M.read α0) :
+      M unpacking_options_and_defaults_via_get_or_insert_with.Fruit.t) in
   let* first_available_fruit :
       M.Val
         (mut_ref

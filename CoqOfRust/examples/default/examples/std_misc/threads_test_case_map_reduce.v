@@ -159,8 +159,8 @@ Definition main : M unit :=
               let* α2 : unit := never_to_any α1 in
               M.alloc α2
             | core.option.Option.Some (i, data_segment) =>
-              let* data_segment := M.alloc data_segment in
               let* i := M.alloc i in
+              let* data_segment := M.alloc data_segment in
               let* _ : M.Val unit :=
                 let* _ : M.Val unit :=
                   let* α0 : ref str.t := M.read (mk_str "data segment ") in
@@ -195,7 +195,7 @@ Definition main : M unit :=
                 let* α0 : std.thread.JoinHandle.t u32.t :=
                   M.call
                     (std.thread.spawn
-                      (let* result : M.Val u32.t :=
+                      ((let* result : M.Val u32.t :=
                         let* α0 : ref str.t := M.read data_segment in
                         let* α1 : core.str.iter.Chars.t :=
                           M.call (str.t::["chars"] α0) in
@@ -209,6 +209,7 @@ Definition main : M unit :=
                                 (Trait := ltac:(refine _)))
                               α1
                               (fun (c : char.t) =>
+                                (let* c := M.alloc c in
                                 let* α0 : char.t := M.read c in
                                 let* α1 : core.option.Option.t u32.t :=
                                   M.call
@@ -217,12 +218,11 @@ Definition main : M unit :=
                                       (Integer.of_Z 10)) in
                                 let* α2 : ref str.t :=
                                   M.read (mk_str "should be a digit") in
-                                let* α3 : u32.t :=
-                                  M.call
-                                    ((core.option.Option.t u32.t)::["expect"]
-                                      α1
-                                      α2) in
-                                M.alloc α3)) in
+                                M.call
+                                  ((core.option.Option.t u32.t)::["expect"]
+                                    α1
+                                    α2)) :
+                                M u32.t)) in
                         let* α3 : u32.t :=
                           M.call
                             ((core.iter.traits.iterator.Iterator.sum
@@ -266,7 +266,8 @@ Definition main : M unit :=
                           let* α12 : unit := M.call (std.io.stdio._print α11) in
                           M.alloc α12 in
                         M.alloc tt in
-                      M.pure result)) in
+                      M.read result) :
+                      M u32.t)) in
                 let* α1 : unit :=
                   M.call
                     ((alloc.vec.Vec.t
@@ -279,8 +280,7 @@ Definition main : M unit :=
             end in
           M.alloc tt)
       end in
-    let* α4 : unit := M.read α3 in
-    M.alloc (use α4) in
+    M.pure (use α3) in
   let* final_result : M.Val u32.t :=
     let* α0 :
         alloc.vec.Vec.t (std.thread.JoinHandle.t u32.t) alloc.alloc.Global.t :=
@@ -312,21 +312,21 @@ Definition main : M unit :=
             (Trait := ltac:(refine _)))
           α1
           (fun (c : std.thread.JoinHandle.t u32.t) =>
+            (let* c := M.alloc c in
             let* α0 : std.thread.JoinHandle.t u32.t := M.read c in
             let* α1 :
                 core.result.Result.t
                   u32.t
                   (alloc.boxed.Box.t dynamic alloc.alloc.Global.t) :=
               M.call ((std.thread.JoinHandle.t u32.t)::["join"] α0) in
-            let* α2 : u32.t :=
-              M.call
-                ((core.result.Result.t
-                      u32.t
-                      (alloc.boxed.Box.t
-                        dynamic
-                        alloc.alloc.Global.t))::["unwrap"]
-                  α1) in
-            M.alloc α2)) in
+            M.call
+              ((core.result.Result.t
+                    u32.t
+                    (alloc.boxed.Box.t
+                      dynamic
+                      alloc.alloc.Global.t))::["unwrap"]
+                α1)) :
+            M u32.t)) in
     let* α3 : u32.t :=
       M.call
         ((core.iter.traits.iterator.Iterator.sum

@@ -15,7 +15,7 @@ Definition read_lines
       M
         (std.io.Lines.t
           (std.io.buffered.bufreader.BufReader.t std.fs.File.t)) :=
-  let* filename : M.Val alloc.string.String.t := M.alloc filename in
+  let* filename := M.alloc filename in
   let return_ :=
     M.return_
       (R :=
@@ -153,6 +153,4 @@ Definition main : M unit :=
           end in
         M.alloc tt)
     end in
-  let* α3 : unit := M.read α2 in
-  let* α0 : M.Val unit := M.alloc (use α3) in
-  M.read α0.
+  M.read (use α2).

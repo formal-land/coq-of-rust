@@ -29,13 +29,15 @@ Definition main : M unit :=
     let* α0 : M.Val u64.t := M.alloc (Integer.of_Z 8) in
     match (borrow o, borrow α0) with
     | (left_val, right_val) =>
-      let* right_val := M.alloc right_val in
       let* left_val := M.alloc left_val in
+      let* right_val := M.alloc right_val in
       let* α0 : ref u64.t := M.read left_val in
       let* α1 : u64.t := M.read (deref α0) in
       let* α2 : ref u64.t := M.read right_val in
       let* α3 : u64.t := M.read (deref α2) in
-      if (use (UnOp.not (BinOp.Pure.eq α1 α3)) : bool) then
+      let* α4 : M.Val bool.t := M.alloc (UnOp.not (BinOp.Pure.eq α1 α3)) in
+      let* α5 : bool.t := M.read (use α4) in
+      if α5 then
         let* kind : M.Val core.panicking.AssertKind.t :=
           M.alloc core.panicking.AssertKind.Eq in
         let* _ : M.Val never.t :=

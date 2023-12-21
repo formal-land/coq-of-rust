@@ -70,7 +70,7 @@ Definition main : M unit :=
                 let* α0 : std.thread.JoinHandle.t unit :=
                   M.call
                     (std.thread.spawn
-                      (let* _ : M.Val unit :=
+                      ((let* _ : M.Val unit :=
                         let* _ : M.Val unit :=
                           let* α0 : ref str.t := M.read (mk_str "") in
                           let* α1 : ref str.t := M.read (mk_str "
@@ -97,14 +97,15 @@ Definition main : M unit :=
                           let* α10 : unit := M.call (std.io.stdio._print α9) in
                           M.alloc α10 in
                         M.alloc tt in
-                      M.alloc tt)) in
+                      let* α0 : M.Val unit := M.alloc tt in
+                      M.read α0) :
+                      M unit)) in
                 M.alloc α0 in
               M.alloc tt
             end in
           M.alloc tt)
       end in
-    let* α2 : unit := M.read α1 in
-    M.alloc (use α2) in
+    M.pure (use α1) in
   let* _ : M.Val unit :=
     let* α0 : core.time.Duration.t :=
       M.call (core.time.Duration.t::["from_secs"] (Integer.of_Z 1)) in

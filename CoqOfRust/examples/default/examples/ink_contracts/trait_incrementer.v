@@ -46,7 +46,7 @@ Section Impl_trait_incrementer_Incrementer_t.
       }
   *)
   Definition new (init_value : u64.t) : M Self :=
-    let* init_value : M.Val u64.t := M.alloc init_value in
+    let* init_value := M.alloc init_value in
     let* α0 : u64.t := M.read init_value in
     M.pure {| trait_incrementer.Incrementer.value := α0; |}.
   
@@ -60,8 +60,8 @@ Section Impl_trait_incrementer_Incrementer_t.
       }
   *)
   Definition inc_by (self : mut_ref Self) (delta : u64.t) : M unit :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
-    let* delta : M.Val u64.t := M.alloc delta in
+    let* self := M.alloc self in
+    let* delta := M.alloc delta in
     let* _ : M.Val unit :=
       let* β : M.Val u64.t :=
         let* α0 : mut_ref trait_incrementer.Incrementer.t := M.read self in
@@ -90,7 +90,7 @@ Section Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer_t.
       }
   *)
   Definition inc (self : mut_ref Self) : M unit :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* α0 : mut_ref trait_incrementer.Incrementer.t := M.read self in
     M.call (trait_incrementer.Incrementer.t::["inc_by"] α0 (Integer.of_Z 1)).
   
@@ -104,7 +104,7 @@ Section Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer_t.
       }
   *)
   Definition get (self : ref Self) : M u64.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* α0 : ref trait_incrementer.Incrementer.t := M.read self in
     M.read (deref α0).["value"].
   
@@ -129,7 +129,7 @@ Section Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer_t.
       }
   *)
   Definition reset (self : mut_ref Self) : M unit :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* _ : M.Val unit :=
       let* α0 : mut_ref trait_incrementer.Incrementer.t := M.read self in
       assign (deref α0).["value"] (Integer.of_Z 0) in
