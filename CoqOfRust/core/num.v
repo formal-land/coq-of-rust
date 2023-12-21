@@ -97,7 +97,6 @@ Definition NonZeroU128 := NonZeroU128.t.
 Module NonZeroUsize.
   Parameter t : Set.
 End NonZeroUsize.
-Definition NonZeroUsize := NonZeroUsize.t.
 
 Module error.
   (* pub struct ParseFloatError { /* private fields */ } *)
