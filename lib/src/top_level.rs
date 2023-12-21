@@ -1607,80 +1607,75 @@ impl ImplItemKind {
         ])
     }
 
-    fn to_doc<'a>(&'a self, name: &'a str) -> Doc {
+    fn to_coq<'a>(&'a self, name: &'a str) -> coq::TopLevel<'a> {
         match self {
             ImplItemKind::Const {
                 ty,
                 body,
                 is_dead_code,
-            } => concat([
-                optional_insert(
+            } => coq::TopLevel::concat(&[coq::TopLevel::new(&[
+                coq::TopLevelItem::Code(optional_insert(
                     !*is_dead_code,
                     concat([
                         text("(* #[allow(dead_code)] - function was ignored by the compiler *)"),
                         hardline(),
                     ]),
-                ),
+                )),
                 match body {
-                    None => nest([
-                        nest([text("Parameter"), line(), text(name), text(" :")]),
-                        line(),
-                        ty.to_coq().to_doc(false),
-                        text("."),
-                    ]),
-                    Some(body) => nest([
-                        nest([
-                            nest([text("Definition"), line(), text(name), text(" :")]),
-                            line(),
-                            ty.to_coq().to_doc(false),
-                            text(" :="),
-                        ]),
-                        line(),
-                        nest([text("M.run"), line(), body.to_doc(true)]),
-                        text("."),
-                    ]),
+                    None => coq::TopLevelItem::Definition(coq::Definition::new(
+                        name,
+                        &coq::DefinitionKind::Assumption { ty: ty.to_coq() },
+                    )),
+                    Some(body) => coq::TopLevelItem::Definition(coq::Definition::new(
+                        name,
+                        &coq::DefinitionKind::Alias {
+                            args: vec![],
+                            ty: Some(ty.to_coq()),
+                            body: coq::Expression::Code(nest([
+                                text("M.run"),
+                                line(),
+                                body.to_doc(true),
+                            ])),
+                        },
+                    )),
                 },
-                hardline(),
-                hardline(),
-                Self::class_instance_to_doc(
+                coq::TopLevelItem::Line,
+                coq::TopLevelItem::Code(Self::class_instance_to_doc(
                     "AssociatedFunction",
                     name,
                     None,
                     None,
                     "Notations.DoubleColon ltac:(Self)",
                     "Notations.double_colon",
-                ),
-            ]),
-            ImplItemKind::Definition { definition, .. } => concat([
-                definition.to_doc(name, None),
-                hardline(),
-                hardline(),
-                Self::class_instance_to_doc(
+                )),
+            ])]),
+            ImplItemKind::Definition { definition, .. } => coq::TopLevel::new(&[
+                coq::TopLevelItem::Code(definition.to_doc(name, None)),
+                coq::TopLevelItem::Line,
+                coq::TopLevelItem::Code(Self::class_instance_to_doc(
                     "AssociatedFunction",
                     name,
                     Some(&definition.ty_params),
                     Some(&definition.where_predicates),
                     "Notations.DoubleColon ltac:(Self)",
                     "Notations.double_colon",
-                ),
+                )),
             ]),
-            ImplItemKind::Type { ty } => nest([
-                nest([
-                    text("Definition"),
-                    line(),
-                    text(name),
-                    line(),
-                    text(":"),
-                    line(),
-                    text("Set"),
-                    line(),
-                    text(":="),
-                ]),
-                line(),
-                ty.to_coq().to_doc(false),
-                text("."),
-            ]),
+            ImplItemKind::Type { ty } => {
+                coq::TopLevel::new(&[coq::TopLevelItem::Definition(coq::Definition::new(
+                    name,
+                    &coq::DefinitionKind::Alias {
+                        args: vec![],
+                        ty: Some(coq::Expression::Set),
+                        body: coq::Expression::Code(nest([ty.to_coq().to_doc(false)])),
+                    },
+                ))])
+            }
         }
+    }
+
+    fn to_doc<'a>(&'a self, name: &'a str) -> Doc {
+        self.to_coq(name).to_doc()
     }
 }
 
