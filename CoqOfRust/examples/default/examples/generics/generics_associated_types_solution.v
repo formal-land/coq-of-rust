@@ -28,10 +28,10 @@ Section Contains.
     a : (ref Self) -> M A.t;
   }.
   
-  Global Instance Method_A `(Trait) : Notations.DoubleColonType Self "A" := {
+  Global Instance Method_A : Notations.DoubleColonType Self "A" := {
     Notations.double_colon_type := A;
   }.
-  Global Instance Method_B `(Trait) : Notations.DoubleColonType Self "B" := {
+  Global Instance Method_B : Notations.DoubleColonType Self "B" := {
     Notations.double_colon_type := B;
   }.
 End Contains.
