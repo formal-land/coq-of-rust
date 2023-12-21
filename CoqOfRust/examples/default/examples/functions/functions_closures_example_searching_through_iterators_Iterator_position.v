@@ -46,19 +46,17 @@ Definition main : M unit :=
     let* α1 : core.slice.iter.Iter.t i32.t :=
       M.call ((slice i32.t)::["iter"] α0) in
     let* α2 : M.Val (core.slice.iter.Iter.t i32.t) := M.alloc α1 in
-    let* α3 : type not implemented :=
-      M.read
-        (let* α0 : i32.t := M.read x in
-        let* α1 : i32.t := BinOp.Panic.rem α0 (Integer.of_Z 2) in
-        M.alloc (BinOp.Pure.eq α1 (Integer.of_Z 0))) in
-    let* α4 : core.option.Option.t usize.t :=
+    let* α3 : core.option.Option.t usize.t :=
       M.call
         ((core.iter.traits.iterator.Iterator.position
             (Self := core.slice.iter.Iter.t i32.t)
             (Trait := ltac:(refine _)))
           (borrow_mut α2)
-          α3) in
-    M.alloc α4 in
+          (fun (x : ref i32.t) =>
+            let* α0 : i32.t := M.read x in
+            let* α1 : i32.t := BinOp.Panic.rem α0 (Integer.of_Z 2) in
+            M.alloc (BinOp.Pure.eq α1 (Integer.of_Z 0)))) in
+    M.alloc α3 in
   let* _ : M.Val unit :=
     let* α0 : M.Val (core.option.Option.t usize.t) :=
       M.alloc (core.option.Option.Some (Integer.of_Z 5)) in
@@ -104,18 +102,16 @@ Definition main : M unit :=
     let* α2 :
         M.Val (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t) :=
       M.alloc α1 in
-    let* α3 : type not implemented :=
-      M.read
-        (let* α0 : i32.t := M.read x in
-        M.alloc (BinOp.Pure.lt α0 (Integer.of_Z 0))) in
-    let* α4 : core.option.Option.t usize.t :=
+    let* α3 : core.option.Option.t usize.t :=
       M.call
         ((core.iter.traits.iterator.Iterator.position
             (Self := alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t)
             (Trait := ltac:(refine _)))
           (borrow_mut α2)
-          α3) in
-    M.alloc α4 in
+          (fun (x : i32.t) =>
+            let* α0 : i32.t := M.read x in
+            M.alloc (BinOp.Pure.lt α0 (Integer.of_Z 0)))) in
+    M.alloc α3 in
   let* _ : M.Val unit :=
     let* α0 : M.Val (core.option.Option.t usize.t) :=
       M.alloc core.option.Option.None in

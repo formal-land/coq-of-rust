@@ -80,7 +80,7 @@ Section Impl_generics_associated_types_solution_Contains_for_generics_associated
         ((core.cmp.PartialEq.eq (Self := ref i32.t) (Trait := ltac:(refine _)))
           (borrow α4)
           (borrow number_2)) in
-    M.pure (BinOp.and α2 α5).
+    M.pure (BinOp.Pure.and α2 α5).
   
   Global Instance AssociatedFunction_contains :
     Notations.DoubleColon Self "contains" := {

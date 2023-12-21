@@ -163,6 +163,26 @@ Section Impl_core_default_Default_for_multisig_AccountId_t.
 End Impl_core_default_Default_for_multisig_AccountId_t.
 End Impl_core_default_Default_for_multisig_AccountId_t.
 
+Module  Impl_core_fmt_Debug_for_multisig_AccountId_t.
+Section Impl_core_fmt_Debug_for_multisig_AccountId_t.
+  Definition Self : Set := multisig.AccountId.t.
+  
+  (*
+  Debug
+  *)
+  Parameter fmt :
+      (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
+  
+  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
+    Notations.double_colon := fmt;
+  }.
+  
+  Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    core.fmt.Debug.fmt := fmt;
+  }.
+End Impl_core_fmt_Debug_for_multisig_AccountId_t.
+End Impl_core_fmt_Debug_for_multisig_AccountId_t.
+
 Module  Impl_core_clone_Clone_for_multisig_AccountId_t.
 Section Impl_core_clone_Clone_for_multisig_AccountId_t.
   Definition Self : Set := multisig.AccountId.t.
@@ -305,26 +325,6 @@ Section Impl_core_cmp_Ord_for_multisig_AccountId_t.
   }.
 End Impl_core_cmp_Ord_for_multisig_AccountId_t.
 End Impl_core_cmp_Ord_for_multisig_AccountId_t.
-
-Module  Impl_core_fmt_Debug_for_multisig_AccountId_t.
-Section Impl_core_fmt_Debug_for_multisig_AccountId_t.
-  Definition Self : Set := multisig.AccountId.t.
-  
-  (*
-  Debug
-  *)
-  Parameter fmt :
-      (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
-  
-  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
-    Notations.double_colon := fmt;
-  }.
-  
-  Global Instance ℐ : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
-  }.
-End Impl_core_fmt_Debug_for_multisig_AccountId_t.
-End Impl_core_fmt_Debug_for_multisig_AccountId_t.
 
 Ltac Balance := exact u128.t.
 
@@ -514,26 +514,6 @@ Section Impl_core_marker_Copy_for_multisig_Error_t.
   }.
 End Impl_core_marker_Copy_for_multisig_Error_t.
 End Impl_core_marker_Copy_for_multisig_Error_t.
-
-Module  Impl_core_fmt_Debug_for_multisig_Error_t.
-Section Impl_core_fmt_Debug_for_multisig_Error_t.
-  Definition Self : Set := multisig.Error.t.
-  
-  (*
-  Debug
-  *)
-  Parameter fmt :
-      (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
-  
-  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
-    Notations.double_colon := fmt;
-  }.
-  
-  Global Instance ℐ : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
-  }.
-End Impl_core_fmt_Debug_for_multisig_Error_t.
-End Impl_core_fmt_Debug_for_multisig_Error_t.
 
 Module  Impl_core_marker_StructuralPartialEq_for_multisig_Error_t.
 Section Impl_core_marker_StructuralPartialEq_for_multisig_Error_t.

@@ -123,8 +123,7 @@ Section Impl_core_fmt_Debug_for_derive_Inches_t.
     let* α2 : ref derive.Inches.t := M.read self in
     let* α3 : M.Val (ref i32.t) := M.alloc (borrow (deref α2).["0"]) in
     let* α4 : M.Val (ref (ref i32.t)) := M.alloc (borrow α3) in
-    let* α5 : ref type not implemented :=
-      M.read (pointer_coercion "Unsize" α4) in
+    let* α5 : ref dynamic := M.read (pointer_coercion "Unsize" α4) in
     M.call (core.fmt.Formatter.t::["debug_tuple_field1_finish"] α0 α1 α5).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {

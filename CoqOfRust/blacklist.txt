@@ -1,13 +1,6 @@
 # blacklisting ink smart contracts
-examples/default/examples/ink_contracts/contract_transfer.v
-examples/default/examples/ink_contracts/custom_allocator.v
-examples/default/examples/ink_contracts/custom_environment.v
 examples/default/examples/ink_contracts/erc1155.v
 examples/default/examples/ink_contracts/erc721.v
-examples/default/examples/ink_contracts/lang_err_integration_tests/call_builder.v
-examples/default/examples/ink_contracts/lang_err_integration_tests/constructors_return_value.v
-examples/default/examples/ink_contracts/lang_err_integration_tests/contract_ref.v
-examples/default/examples/ink_contracts/lang_err_integration_tests/integration_flipper.v
 examples/default/examples/ink_contracts/mother.v
 examples/default/examples/ink_contracts/multisig.v
 examples/default/examples/ink_contracts/payment_channel.v
@@ -29,7 +22,6 @@ examples/axiomatized/examples/scoping_rules/scoping_rules_lifetimes_bounds.v
 examples/axiomatized/examples/std_library_types/hash_map_alternate_or_custom_key_types.v
 examples/axiomatized/examples/std_library_types/strings_raw_string_literals.v
 examples/axiomatized/examples/test0.v
-examples/axiomatized/examples/test0.v",
 examples/axiomatized/examples/traits/disambiguating_overlapping_traits.v
 examples/axiomatized/examples/traits/hash.v
 examples/axiomatized/examples/traits/operator_overloading.v

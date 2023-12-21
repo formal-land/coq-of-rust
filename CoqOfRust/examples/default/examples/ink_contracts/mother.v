@@ -639,7 +639,8 @@ Section Impl_core_cmp_PartialEq_for_mother_Status_t.
       | _ => M.alloc true
       end in
     let* α5 : bool.t := M.read α4 in
-    let* α0 : M.Val bool.t := M.alloc (BinOp.and (BinOp.Pure.eq α0 α1) α5) in
+    let* α0 : M.Val bool.t :=
+      M.alloc (BinOp.Pure.and (BinOp.Pure.eq α0 α1) α5) in
     M.read α0.
   
   Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
@@ -883,9 +884,11 @@ Section Impl_core_cmp_PartialEq_for_mother_Auction_t.
           (borrow (deref α19).["vector"])
           (borrow (deref α20).["vector"])) in
     M.pure
-      (BinOp.and
-        (BinOp.and
-          (BinOp.and (BinOp.and (BinOp.and (BinOp.and α2 α5) α8) α11) α14)
+      (BinOp.Pure.and
+        (BinOp.Pure.and
+          (BinOp.Pure.and
+            (BinOp.Pure.and (BinOp.Pure.and (BinOp.Pure.and α2 α5) α8) α11)
+            α14)
           (BinOp.Pure.eq α16 α18))
         α21).
   
@@ -1141,7 +1144,8 @@ Section Impl_core_cmp_PartialEq_for_mother_Failure_t.
       | _ => M.alloc true
       end in
     let* α5 : bool.t := M.read α4 in
-    let* α0 : M.Val bool.t := M.alloc (BinOp.and (BinOp.Pure.eq α0 α1) α5) in
+    let* α0 : M.Val bool.t :=
+      M.alloc (BinOp.Pure.and (BinOp.Pure.eq α0 α1) α5) in
     M.read α0.
   
   Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {

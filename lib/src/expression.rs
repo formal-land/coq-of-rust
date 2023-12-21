@@ -92,7 +92,7 @@ pub(crate) enum ExprKind {
         arg: Box<Expr>,
     },
     Lambda {
-        args: Vec<Pattern>,
+        args: Vec<(Pattern, Rc<CoqType>)>,
         body: Box<Expr>,
     },
     Array {
@@ -871,7 +871,19 @@ impl ExprKind {
                             nest([
                                 text("fun"),
                                 line(),
-                                intersperse(args.iter().map(|arg| arg.to_doc()), [line()]),
+                                intersperse(
+                                    args.iter().map(|(pattern, ty)| {
+                                        nest([
+                                            text("("),
+                                            pattern.to_doc(),
+                                            text(" :"),
+                                            line(),
+                                            ty.to_coq().to_doc(false),
+                                            text(")"),
+                                        ])
+                                    }),
+                                    [line()],
+                                ),
                                 text(" =>"),
                             ]),
                             line(),

@@ -90,8 +90,11 @@ Definition main : M unit :=
         (core.option.Option.t
           unpacking_options_and_defaults_via_get_or_insert_with.Fruit.t) :=
     M.alloc core.option.Option.None in
-  let* get_lemon_as_fallback : M.Val type not implemented :=
-    M.copy
+  let* get_lemon_as_fallback :
+      M.Val
+        (unit ->
+          M unpacking_options_and_defaults_via_get_or_insert_with.Fruit.t) :=
+    M.alloc
       (let* _ : M.Val unit :=
         let* _ : M.Val unit :=
           let* α0 : ref str.t :=
@@ -112,7 +115,10 @@ Definition main : M unit :=
       M.Val
         (mut_ref
           unpacking_options_and_defaults_via_get_or_insert_with.Fruit.t) :=
-    let* α0 : type not implemented := M.read get_lemon_as_fallback in
+    let* α0 :
+        unit ->
+          M unpacking_options_and_defaults_via_get_or_insert_with.Fruit.t :=
+      M.read get_lemon_as_fallback in
     let* α1 :
         mut_ref unpacking_options_and_defaults_via_get_or_insert_with.Fruit.t :=
       M.call
@@ -178,7 +184,10 @@ Definition main : M unit :=
       M.Val
         (mut_ref
           unpacking_options_and_defaults_via_get_or_insert_with.Fruit.t) :=
-    let* α0 : type not implemented := M.read get_lemon_as_fallback in
+    let* α0 :
+        unit ->
+          M unpacking_options_and_defaults_via_get_or_insert_with.Fruit.t :=
+      M.read get_lemon_as_fallback in
     let* α1 :
         mut_ref unpacking_options_and_defaults_via_get_or_insert_with.Fruit.t :=
       M.call

@@ -760,14 +760,13 @@ Section Impl_payment_channel_PaymentChannel_t.
         let* α8 : u128.t := BinOp.Panic.sub α5 α7 in
         let* α9 : core.result.Result.t unit payment_channel.Error.t :=
           M.call (payment_channel.Env.t::["transfer"] (borrow α2) α4 α8) in
-        let* α10 : type not implemented :=
-          M.read (M.alloc payment_channel.Error.TransferFailed) in
-        let* α11 : core.result.Result.t unit payment_channel.Error.t :=
+        let* α10 : core.result.Result.t unit payment_channel.Error.t :=
           M.call
             ((core.result.Result.t unit payment_channel.Error.t)::["map_err"]
               α9
-              α10) in
-        let* α12 :
+              (fun (_ : payment_channel.Error.t) =>
+                M.alloc payment_channel.Error.TransferFailed)) in
+        let* α11 :
             core.ops.control_flow.ControlFlow.t
               (core.result.Result.t
                 core.convert.Infallible.t
@@ -777,8 +776,8 @@ Section Impl_payment_channel_PaymentChannel_t.
             ((core.ops.try_trait.Try.branch
                 (Self := core.result.Result.t unit payment_channel.Error.t)
                 (Trait := ltac:(refine _)))
-              α11) in
-        match α12 with
+              α10) in
+        match α11 with
         | core.ops.control_flow.ControlFlow.Break residual =>
           let* residual := M.alloc residual in
           let* α0 :
@@ -1119,14 +1118,13 @@ Section Impl_payment_channel_PaymentChannel_t.
         let* α5 : u128.t := M.read amount_to_withdraw in
         let* α6 : core.result.Result.t unit payment_channel.Error.t :=
           M.call (payment_channel.Env.t::["transfer"] (borrow α2) α4 α5) in
-        let* α7 : type not implemented :=
-          M.read (M.alloc payment_channel.Error.TransferFailed) in
-        let* α8 : core.result.Result.t unit payment_channel.Error.t :=
+        let* α7 : core.result.Result.t unit payment_channel.Error.t :=
           M.call
             ((core.result.Result.t unit payment_channel.Error.t)::["map_err"]
               α6
-              α7) in
-        let* α9 :
+              (fun (_ : payment_channel.Error.t) =>
+                M.alloc payment_channel.Error.TransferFailed)) in
+        let* α8 :
             core.ops.control_flow.ControlFlow.t
               (core.result.Result.t
                 core.convert.Infallible.t
@@ -1136,8 +1134,8 @@ Section Impl_payment_channel_PaymentChannel_t.
             ((core.ops.try_trait.Try.branch
                 (Self := core.result.Result.t unit payment_channel.Error.t)
                 (Trait := ltac:(refine _)))
-              α8) in
-        match α9 with
+              α7) in
+        match α8 with
         | core.ops.control_flow.ControlFlow.Break residual =>
           let* residual := M.alloc residual in
           let* α0 :
@@ -1654,20 +1652,19 @@ Section Impl_payment_channel_PaymentChannel_t_2.
             (borrow signature)
             (borrow message)
             (borrow_mut pub_key)) in
-      let* α1 : type not implemented :=
-        M.read
-          (let* α0 : ref str.t := M.read (mk_str "recover failed: {err:?}") in
-          let* α1 : never.t := M.call (std.panicking.begin_panic α0) in
-          let* α2 : unit := never_to_any α1 in
-          M.alloc α2) in
-      let* α2 : unit :=
+      let* α1 : unit :=
         M.call
           ((core.result.Result.t
                 unit
                 payment_channel.Error.t)::["unwrap_or_else"]
             α0
-            α1) in
-      M.alloc α2 in
+            (fun (err : payment_channel.Error.t) =>
+              let* α0 : ref str.t :=
+                M.read (mk_str "recover failed: {err:?}") in
+              let* α1 : never.t := M.call (std.panicking.begin_panic α0) in
+              let* α2 : unit := never_to_any α1 in
+              M.alloc α2)) in
+      M.alloc α1 in
     let* signature_account_id : M.Val (array u8.t) :=
       M.alloc (repeat (Integer.of_Z 0) 32) in
     let* _ : M.Val unit :=

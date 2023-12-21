@@ -744,22 +744,86 @@ Section Impl_erc721_Erc721_t.
   }.
   
   (*
-      pub fn balance_of(&self, owner: AccountId) -> u32 {
-          self.balance_of_or_zero(&owner)
+      fn balance_of_or_zero(&self, of: &AccountId) -> u32 {
+          self.owned_tokens_count.get(of).unwrap_or(0)
       }
   *)
-  Definition balance_of
+  Definition balance_of_or_zero
       (self : ref Self)
-      (owner : erc721.AccountId.t)
+      (of : ref erc721.AccountId.t)
       : M u32.t :=
     let* self : M.Val (ref Self) := M.alloc self in
-    let* owner : M.Val erc721.AccountId.t := M.alloc owner in
+    let* of : M.Val (ref erc721.AccountId.t) := M.alloc of in
     let* α0 : ref erc721.Erc721.t := M.read self in
-    M.call (erc721.Erc721.t::["balance_of_or_zero"] α0 (borrow owner)).
+    let* α1 : ref erc721.AccountId.t := M.read of in
+    let* α2 : core.option.Option.t u32.t :=
+      M.call
+        ((erc721.Mapping.t erc721.AccountId.t u32.t)::["get"]
+          (borrow (deref α0).["owned_tokens_count"])
+          α1) in
+    M.call ((core.option.Option.t u32.t)::["unwrap_or"] α2 (Integer.of_Z 0)).
   
-  Global Instance AssociatedFunction_balance_of :
-    Notations.DoubleColon Self "balance_of" := {
-    Notations.double_colon := balance_of;
+  Global Instance AssociatedFunction_balance_of_or_zero :
+    Notations.DoubleColon Self "balance_of_or_zero" := {
+    Notations.double_colon := balance_of_or_zero;
+  }.
+  
+  (*
+      fn clear_approval(&mut self, id: TokenId) {
+          self.token_approvals.remove(id);
+      }
+  *)
+  Definition clear_approval
+      (self : mut_ref Self)
+      (id : ltac:(erc721.TokenId))
+      : M unit :=
+    let* self : M.Val (mut_ref Self) := M.alloc self in
+    let* id : M.Val ltac:(erc721.TokenId) := M.alloc id in
+    let* _ : M.Val unit :=
+      let* α0 : mut_ref erc721.Erc721.t := M.read self in
+      let* α1 : u32.t := M.read id in
+      let* α2 : unit :=
+        M.call
+          ((erc721.Mapping.t u32.t erc721.AccountId.t)::["remove"]
+            (borrow (deref α0).["token_approvals"])
+            α1) in
+      M.alloc α2 in
+    let* α0 : M.Val unit := M.alloc tt in
+    M.read α0.
+  
+  Global Instance AssociatedFunction_clear_approval :
+    Notations.DoubleColon Self "clear_approval" := {
+    Notations.double_colon := clear_approval;
+  }.
+  
+  (*
+      fn approved_for_all(&self, owner: AccountId, operator: AccountId) -> bool {
+          self.operator_approvals.contains(&(owner, operator))
+      }
+  *)
+  Definition approved_for_all
+      (self : ref Self)
+      (owner : erc721.AccountId.t)
+      (operator : erc721.AccountId.t)
+      : M bool.t :=
+    let* self : M.Val (ref Self) := M.alloc self in
+    let* owner : M.Val erc721.AccountId.t := M.alloc owner in
+    let* operator : M.Val erc721.AccountId.t := M.alloc operator in
+    let* α0 : ref erc721.Erc721.t := M.read self in
+    let* α1 : erc721.AccountId.t := M.read owner in
+    let* α2 : erc721.AccountId.t := M.read operator in
+    let* α3 : M.Val (erc721.AccountId.t * erc721.AccountId.t) :=
+      M.alloc (α1, α2) in
+    M.call
+      ((erc721.Mapping.t
+            (erc721.AccountId.t * erc721.AccountId.t)
+            unit)::["contains"]
+        (borrow (deref α0).["operator_approvals"])
+        (borrow α3)).
+  
+  Global Instance AssociatedFunction_approved_for_all :
+    Notations.DoubleColon Self "approved_for_all" := {
+    Notations.double_colon := approved_for_all;
   }.
   
   (*
@@ -782,6 +846,130 @@ Section Impl_erc721_Erc721_t.
   Global Instance AssociatedFunction_owner_of :
     Notations.DoubleColon Self "owner_of" := {
     Notations.double_colon := owner_of;
+  }.
+  
+  (*
+      fn approved_or_owner(&self, from: Option<AccountId>, id: TokenId) -> bool {
+          let owner = self.owner_of(id);
+          from != Some(AccountId::from([0x0; 32]))
+              && (from == owner
+                  || from == self.token_approvals.get(&id)
+                  || self.approved_for_all(
+                      owner.expect("Error with AccountId"),
+                      from.expect("Error with AccountId"),
+                  ))
+      }
+  *)
+  Definition approved_or_owner
+      (self : ref Self)
+      (from : core.option.Option.t erc721.AccountId.t)
+      (id : ltac:(erc721.TokenId))
+      : M bool.t :=
+    let* self : M.Val (ref Self) := M.alloc self in
+    let* from : M.Val (core.option.Option.t erc721.AccountId.t) :=
+      M.alloc from in
+    let* id : M.Val ltac:(erc721.TokenId) := M.alloc id in
+    let* owner : M.Val (core.option.Option.t erc721.AccountId.t) :=
+      let* α0 : ref erc721.Erc721.t := M.read self in
+      let* α1 : u32.t := M.read id in
+      let* α2 : core.option.Option.t erc721.AccountId.t :=
+        M.call (erc721.Erc721.t::["owner_of"] α0 α1) in
+      M.alloc α2 in
+    let* α0 : erc721.AccountId.t :=
+      M.call
+        ((core.convert.From.from
+            (Self := erc721.AccountId.t)
+            (Trait := ltac:(refine _)))
+          (repeat (Integer.of_Z 0) 32)) in
+    let* α1 : M.Val (core.option.Option.t erc721.AccountId.t) :=
+      M.alloc (core.option.Option.Some α0) in
+    let* α2 : bool.t :=
+      M.call
+        ((core.cmp.PartialEq.ne
+            (Self := core.option.Option.t erc721.AccountId.t)
+            (Trait := ltac:(refine _)))
+          (borrow from)
+          (borrow α1)) in
+    let* α3 : bool.t :=
+      M.call
+        ((core.cmp.PartialEq.eq
+            (Self := core.option.Option.t erc721.AccountId.t)
+            (Trait := ltac:(refine _)))
+          (borrow from)
+          (borrow owner)) in
+    let* α4 : ref erc721.Erc721.t := M.read self in
+    let* α5 : core.option.Option.t erc721.AccountId.t :=
+      M.call
+        ((erc721.Mapping.t u32.t erc721.AccountId.t)::["get"]
+          (borrow (deref α4).["token_approvals"])
+          (borrow id)) in
+    let* α6 : M.Val (core.option.Option.t erc721.AccountId.t) := M.alloc α5 in
+    let* α7 : bool.t :=
+      M.call
+        ((core.cmp.PartialEq.eq
+            (Self := core.option.Option.t erc721.AccountId.t)
+            (Trait := ltac:(refine _)))
+          (borrow from)
+          (borrow α6)) in
+    let* α8 : ref erc721.Erc721.t := M.read self in
+    let* α9 : core.option.Option.t erc721.AccountId.t := M.read owner in
+    let* α10 : ref str.t := M.read (mk_str "Error with AccountId") in
+    let* α11 : erc721.AccountId.t :=
+      M.call ((core.option.Option.t erc721.AccountId.t)::["expect"] α9 α10) in
+    let* α12 : core.option.Option.t erc721.AccountId.t := M.read from in
+    let* α13 : ref str.t := M.read (mk_str "Error with AccountId") in
+    let* α14 : erc721.AccountId.t :=
+      M.call ((core.option.Option.t erc721.AccountId.t)::["expect"] α12 α13) in
+    let* α15 : bool.t :=
+      M.call (erc721.Erc721.t::["approved_for_all"] α8 α11 α14) in
+    let* α0 : M.Val bool.t :=
+      M.alloc (BinOp.Pure.and α2 (BinOp.Pure.or (BinOp.Pure.or α3 α7) α15)) in
+    M.read α0.
+  
+  Global Instance AssociatedFunction_approved_or_owner :
+    Notations.DoubleColon Self "approved_or_owner" := {
+    Notations.double_colon := approved_or_owner;
+  }.
+  
+  (*
+      fn exists(&self, id: TokenId) -> bool {
+          self.token_owner.contains(&id)
+      }
+  *)
+  Definition exists_
+      (self : ref Self)
+      (id : ltac:(erc721.TokenId))
+      : M bool.t :=
+    let* self : M.Val (ref Self) := M.alloc self in
+    let* id : M.Val ltac:(erc721.TokenId) := M.alloc id in
+    let* α0 : ref erc721.Erc721.t := M.read self in
+    M.call
+      ((erc721.Mapping.t u32.t erc721.AccountId.t)::["contains"]
+        (borrow (deref α0).["token_owner"])
+        (borrow id)).
+  
+  Global Instance AssociatedFunction_exists_ :
+    Notations.DoubleColon Self "exists_" := {
+    Notations.double_colon := exists_;
+  }.
+  
+  (*
+      pub fn balance_of(&self, owner: AccountId) -> u32 {
+          self.balance_of_or_zero(&owner)
+      }
+  *)
+  Definition balance_of
+      (self : ref Self)
+      (owner : erc721.AccountId.t)
+      : M u32.t :=
+    let* self : M.Val (ref Self) := M.alloc self in
+    let* owner : M.Val erc721.AccountId.t := M.alloc owner in
+    let* α0 : ref erc721.Erc721.t := M.read self in
+    M.call (erc721.Erc721.t::["balance_of_or_zero"] α0 (borrow owner)).
+  
+  Global Instance AssociatedFunction_balance_of :
+    Notations.DoubleColon Self "balance_of" := {
+    Notations.double_colon := balance_of;
   }.
   
   (*
@@ -1310,19 +1498,20 @@ Section Impl_erc721_Erc721_t.
             ((erc721.Mapping.t erc721.AccountId.t u32.t)::["get"]
               (borrow (deref α0))
               (borrow caller)) in
-        let* α2 : type not implemented :=
-          M.read
-            (let* α0 : u32.t := M.read c in
-            let* α1 : u32.t := BinOp.Panic.sub α0 (Integer.of_Z 1) in
-            M.alloc α1) in
-        let* α3 : core.option.Option.t u32.t :=
-          M.call ((core.option.Option.t u32.t)::["map"] α1 α2) in
-        let* α4 : core.result.Result.t u32.t erc721.Error.t :=
+        let* α2 : core.option.Option.t u32.t :=
+          M.call
+            ((core.option.Option.t u32.t)::["map"]
+              α1
+              (fun (c : u32.t) =>
+                let* α0 : u32.t := M.read c in
+                let* α1 : u32.t := BinOp.Panic.sub α0 (Integer.of_Z 1) in
+                M.alloc α1)) in
+        let* α3 : core.result.Result.t u32.t erc721.Error.t :=
           M.call
             ((core.option.Option.t u32.t)::["ok_or"]
-              α3
+              α2
               erc721.Error.CannotFetchValue) in
-        let* α5 :
+        let* α4 :
             core.ops.control_flow.ControlFlow.t
               (core.result.Result.t core.convert.Infallible.t erc721.Error.t)
               u32.t :=
@@ -1330,9 +1519,9 @@ Section Impl_erc721_Erc721_t.
             ((core.ops.try_trait.Try.branch
                 (Self := core.result.Result.t u32.t erc721.Error.t)
                 (Trait := ltac:(refine _)))
-              α4) in
-        let* α6 : M.Val u32.t :=
-          match α5 with
+              α3) in
+        let* α5 : M.Val u32.t :=
+          match α4 with
           | core.ops.control_flow.ControlFlow.Break residual =>
             let* residual := M.alloc residual in
             let* α0 :
@@ -1352,7 +1541,7 @@ Section Impl_erc721_Erc721_t.
             let* val := M.alloc val in
             M.pure val
           end in
-        M.copy α6 in
+        M.copy α5 in
       let* _ : M.Val (core.option.Option.t u32.t) :=
         let* α0 : mut_ref (erc721.Mapping.t erc721.AccountId.t u32.t) :=
           M.read owned_tokens_count in
@@ -1657,19 +1846,20 @@ Section Impl_erc721_Erc721_t.
             ((erc721.Mapping.t erc721.AccountId.t u32.t)::["get"]
               (borrow (deref α0))
               α1) in
-        let* α3 : type not implemented :=
-          M.read
-            (let* α0 : u32.t := M.read c in
-            let* α1 : u32.t := BinOp.Panic.sub α0 (Integer.of_Z 1) in
-            M.alloc α1) in
-        let* α4 : core.option.Option.t u32.t :=
-          M.call ((core.option.Option.t u32.t)::["map"] α2 α3) in
-        let* α5 : core.result.Result.t u32.t erc721.Error.t :=
+        let* α3 : core.option.Option.t u32.t :=
+          M.call
+            ((core.option.Option.t u32.t)::["map"]
+              α2
+              (fun (c : u32.t) =>
+                let* α0 : u32.t := M.read c in
+                let* α1 : u32.t := BinOp.Panic.sub α0 (Integer.of_Z 1) in
+                M.alloc α1)) in
+        let* α4 : core.result.Result.t u32.t erc721.Error.t :=
           M.call
             ((core.option.Option.t u32.t)::["ok_or"]
-              α4
+              α3
               erc721.Error.CannotFetchValue) in
-        let* α6 :
+        let* α5 :
             core.ops.control_flow.ControlFlow.t
               (core.result.Result.t core.convert.Infallible.t erc721.Error.t)
               u32.t :=
@@ -1677,9 +1867,9 @@ Section Impl_erc721_Erc721_t.
             ((core.ops.try_trait.Try.branch
                 (Self := core.result.Result.t u32.t erc721.Error.t)
                 (Trait := ltac:(refine _)))
-              α5) in
-        let* α7 : M.Val u32.t :=
-          match α6 with
+              α4) in
+        let* α6 : M.Val u32.t :=
+          match α5 with
           | core.ops.control_flow.ControlFlow.Break residual =>
             let* residual := M.alloc residual in
             let* α0 :
@@ -1699,7 +1889,7 @@ Section Impl_erc721_Erc721_t.
             let* val := M.alloc val in
             M.pure val
           end in
-        M.copy α7 in
+        M.copy α6 in
       let* _ : M.Val (core.option.Option.t u32.t) :=
         let* α0 : mut_ref (erc721.Mapping.t erc721.AccountId.t u32.t) :=
           M.read owned_tokens_count in
@@ -1825,17 +2015,18 @@ Section Impl_erc721_Erc721_t.
             ((erc721.Mapping.t erc721.AccountId.t u32.t)::["get"]
               (borrow (deref α0))
               α1) in
-        let* α3 : type not implemented :=
-          M.read
-            (let* α0 : u32.t := M.read c in
-            let* α1 : u32.t := BinOp.Panic.add α0 (Integer.of_Z 1) in
-            M.alloc α1) in
-        let* α4 : core.option.Option.t u32.t :=
-          M.call ((core.option.Option.t u32.t)::["map"] α2 α3) in
-        let* α5 : u32.t :=
+        let* α3 : core.option.Option.t u32.t :=
           M.call
-            ((core.option.Option.t u32.t)::["unwrap_or"] α4 (Integer.of_Z 1)) in
-        M.alloc α5 in
+            ((core.option.Option.t u32.t)::["map"]
+              α2
+              (fun (c : u32.t) =>
+                let* α0 : u32.t := M.read c in
+                let* α1 : u32.t := BinOp.Panic.add α0 (Integer.of_Z 1) in
+                M.alloc α1)) in
+        let* α4 : u32.t :=
+          M.call
+            ((core.option.Option.t u32.t)::["unwrap_or"] α3 (Integer.of_Z 1)) in
+        M.alloc α4 in
       let* _ : M.Val (core.option.Option.t u32.t) :=
         let* α0 : mut_ref (erc721.Mapping.t erc721.AccountId.t u32.t) :=
           M.read owned_tokens_count in
@@ -2060,7 +2251,7 @@ Section Impl_erc721_Erc721_t.
         let* α8 : bool.t :=
           M.call
             (erc721.Erc721.t::["approved_for_all"] (borrow (deref α3)) α6 α7) in
-        if (use (UnOp.not (BinOp.or α2 α8)) : bool) then
+        if (use (UnOp.not (BinOp.Pure.or α2 α8)) : bool) then
           let* _ : M.Val never.t :=
             return_ (core.result.Result.Err erc721.Error.NotAllowed) in
           let* α0 : M.Val unit := M.alloc tt in
@@ -2149,194 +2340,6 @@ Section Impl_erc721_Erc721_t.
   Global Instance AssociatedFunction_approve_for :
     Notations.DoubleColon Self "approve_for" := {
     Notations.double_colon := approve_for;
-  }.
-  
-  (*
-      fn clear_approval(&mut self, id: TokenId) {
-          self.token_approvals.remove(id);
-      }
-  *)
-  Definition clear_approval
-      (self : mut_ref Self)
-      (id : ltac:(erc721.TokenId))
-      : M unit :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
-    let* id : M.Val ltac:(erc721.TokenId) := M.alloc id in
-    let* _ : M.Val unit :=
-      let* α0 : mut_ref erc721.Erc721.t := M.read self in
-      let* α1 : u32.t := M.read id in
-      let* α2 : unit :=
-        M.call
-          ((erc721.Mapping.t u32.t erc721.AccountId.t)::["remove"]
-            (borrow (deref α0).["token_approvals"])
-            α1) in
-      M.alloc α2 in
-    let* α0 : M.Val unit := M.alloc tt in
-    M.read α0.
-  
-  Global Instance AssociatedFunction_clear_approval :
-    Notations.DoubleColon Self "clear_approval" := {
-    Notations.double_colon := clear_approval;
-  }.
-  
-  (*
-      fn balance_of_or_zero(&self, of: &AccountId) -> u32 {
-          self.owned_tokens_count.get(of).unwrap_or(0)
-      }
-  *)
-  Definition balance_of_or_zero
-      (self : ref Self)
-      (of : ref erc721.AccountId.t)
-      : M u32.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* of : M.Val (ref erc721.AccountId.t) := M.alloc of in
-    let* α0 : ref erc721.Erc721.t := M.read self in
-    let* α1 : ref erc721.AccountId.t := M.read of in
-    let* α2 : core.option.Option.t u32.t :=
-      M.call
-        ((erc721.Mapping.t erc721.AccountId.t u32.t)::["get"]
-          (borrow (deref α0).["owned_tokens_count"])
-          α1) in
-    M.call ((core.option.Option.t u32.t)::["unwrap_or"] α2 (Integer.of_Z 0)).
-  
-  Global Instance AssociatedFunction_balance_of_or_zero :
-    Notations.DoubleColon Self "balance_of_or_zero" := {
-    Notations.double_colon := balance_of_or_zero;
-  }.
-  
-  (*
-      fn approved_for_all(&self, owner: AccountId, operator: AccountId) -> bool {
-          self.operator_approvals.contains(&(owner, operator))
-      }
-  *)
-  Definition approved_for_all
-      (self : ref Self)
-      (owner : erc721.AccountId.t)
-      (operator : erc721.AccountId.t)
-      : M bool.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* owner : M.Val erc721.AccountId.t := M.alloc owner in
-    let* operator : M.Val erc721.AccountId.t := M.alloc operator in
-    let* α0 : ref erc721.Erc721.t := M.read self in
-    let* α1 : erc721.AccountId.t := M.read owner in
-    let* α2 : erc721.AccountId.t := M.read operator in
-    let* α3 : M.Val (erc721.AccountId.t * erc721.AccountId.t) :=
-      M.alloc (α1, α2) in
-    M.call
-      ((erc721.Mapping.t
-            (erc721.AccountId.t * erc721.AccountId.t)
-            unit)::["contains"]
-        (borrow (deref α0).["operator_approvals"])
-        (borrow α3)).
-  
-  Global Instance AssociatedFunction_approved_for_all :
-    Notations.DoubleColon Self "approved_for_all" := {
-    Notations.double_colon := approved_for_all;
-  }.
-  
-  (*
-      fn approved_or_owner(&self, from: Option<AccountId>, id: TokenId) -> bool {
-          let owner = self.owner_of(id);
-          from != Some(AccountId::from([0x0; 32]))
-              && (from == owner
-                  || from == self.token_approvals.get(&id)
-                  || self.approved_for_all(
-                      owner.expect("Error with AccountId"),
-                      from.expect("Error with AccountId"),
-                  ))
-      }
-  *)
-  Definition approved_or_owner
-      (self : ref Self)
-      (from : core.option.Option.t erc721.AccountId.t)
-      (id : ltac:(erc721.TokenId))
-      : M bool.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* from : M.Val (core.option.Option.t erc721.AccountId.t) :=
-      M.alloc from in
-    let* id : M.Val ltac:(erc721.TokenId) := M.alloc id in
-    let* owner : M.Val (core.option.Option.t erc721.AccountId.t) :=
-      let* α0 : ref erc721.Erc721.t := M.read self in
-      let* α1 : u32.t := M.read id in
-      let* α2 : core.option.Option.t erc721.AccountId.t :=
-        M.call (erc721.Erc721.t::["owner_of"] α0 α1) in
-      M.alloc α2 in
-    let* α0 : erc721.AccountId.t :=
-      M.call
-        ((core.convert.From.from
-            (Self := erc721.AccountId.t)
-            (Trait := ltac:(refine _)))
-          (repeat (Integer.of_Z 0) 32)) in
-    let* α1 : M.Val (core.option.Option.t erc721.AccountId.t) :=
-      M.alloc (core.option.Option.Some α0) in
-    let* α2 : bool.t :=
-      M.call
-        ((core.cmp.PartialEq.ne
-            (Self := core.option.Option.t erc721.AccountId.t)
-            (Trait := ltac:(refine _)))
-          (borrow from)
-          (borrow α1)) in
-    let* α3 : bool.t :=
-      M.call
-        ((core.cmp.PartialEq.eq
-            (Self := core.option.Option.t erc721.AccountId.t)
-            (Trait := ltac:(refine _)))
-          (borrow from)
-          (borrow owner)) in
-    let* α4 : ref erc721.Erc721.t := M.read self in
-    let* α5 : core.option.Option.t erc721.AccountId.t :=
-      M.call
-        ((erc721.Mapping.t u32.t erc721.AccountId.t)::["get"]
-          (borrow (deref α4).["token_approvals"])
-          (borrow id)) in
-    let* α6 : M.Val (core.option.Option.t erc721.AccountId.t) := M.alloc α5 in
-    let* α7 : bool.t :=
-      M.call
-        ((core.cmp.PartialEq.eq
-            (Self := core.option.Option.t erc721.AccountId.t)
-            (Trait := ltac:(refine _)))
-          (borrow from)
-          (borrow α6)) in
-    let* α8 : ref erc721.Erc721.t := M.read self in
-    let* α9 : core.option.Option.t erc721.AccountId.t := M.read owner in
-    let* α10 : ref str.t := M.read (mk_str "Error with AccountId") in
-    let* α11 : erc721.AccountId.t :=
-      M.call ((core.option.Option.t erc721.AccountId.t)::["expect"] α9 α10) in
-    let* α12 : core.option.Option.t erc721.AccountId.t := M.read from in
-    let* α13 : ref str.t := M.read (mk_str "Error with AccountId") in
-    let* α14 : erc721.AccountId.t :=
-      M.call ((core.option.Option.t erc721.AccountId.t)::["expect"] α12 α13) in
-    let* α15 : bool.t :=
-      M.call (erc721.Erc721.t::["approved_for_all"] α8 α11 α14) in
-    let* α0 : M.Val bool.t :=
-      M.alloc (BinOp.and α2 (BinOp.or (BinOp.or α3 α7) α15)) in
-    M.read α0.
-  
-  Global Instance AssociatedFunction_approved_or_owner :
-    Notations.DoubleColon Self "approved_or_owner" := {
-    Notations.double_colon := approved_or_owner;
-  }.
-  
-  (*
-      fn exists(&self, id: TokenId) -> bool {
-          self.token_owner.contains(&id)
-      }
-  *)
-  Definition exists_
-      (self : ref Self)
-      (id : ltac:(erc721.TokenId))
-      : M bool.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* id : M.Val ltac:(erc721.TokenId) := M.alloc id in
-    let* α0 : ref erc721.Erc721.t := M.read self in
-    M.call
-      ((erc721.Mapping.t u32.t erc721.AccountId.t)::["contains"]
-        (borrow (deref α0).["token_owner"])
-        (borrow id)).
-  
-  Global Instance AssociatedFunction_exists_ :
-    Notations.DoubleColon Self "exists_" := {
-    Notations.double_colon := exists_;
   }.
 End Impl_erc721_Erc721_t.
 End Impl_erc721_Erc721_t.

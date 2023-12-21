@@ -170,3 +170,14 @@ Module IntErrorKind.
   .
 End IntErrorKind.
 Definition IntErrorKind := IntErrorKind.t.
+
+Module Impl_u32.
+  Definition Self : Set := u32.t.
+
+  (* pub const fn to_le_bytes(self) -> [u8; 4] *)
+  Parameter to_le_bytes : Self -> M (array u8.t).
+
+  Global Instance AF_to_le_bytes : Notations.DoubleColon Self "to_le_bytes" := {
+    Notations.double_colon := to_le_bytes;
+  }.
+End Impl_u32.

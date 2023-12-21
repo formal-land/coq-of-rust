@@ -92,8 +92,13 @@ Definition main : M unit :=
         (core.option.Option.t
           unpacking_options_and_defaults_via_or_else.Fruit.t) :=
     M.alloc core.option.Option.None in
-  let* get_kiwi_as_fallback : M.Val type not implemented :=
-    M.copy
+  let* get_kiwi_as_fallback :
+      M.Val
+        (unit ->
+          M
+            (core.option.Option.t
+              unpacking_options_and_defaults_via_or_else.Fruit.t)) :=
+    M.alloc
       (let* _ : M.Val unit :=
         let* _ : M.Val unit :=
           let* α0 : ref str.t :=
@@ -111,8 +116,13 @@ Definition main : M unit :=
       M.alloc
         (core.option.Option.Some
           unpacking_options_and_defaults_via_or_else.Fruit.Kiwi)) in
-  let* get_lemon_as_fallback : M.Val type not implemented :=
-    M.copy
+  let* get_lemon_as_fallback :
+      M.Val
+        (unit ->
+          M
+            (core.option.Option.t
+              unpacking_options_and_defaults_via_or_else.Fruit.t)) :=
+    M.alloc
       (let* _ : M.Val unit :=
         let* _ : M.Val unit :=
           let* α0 : ref str.t :=
@@ -138,7 +148,12 @@ Definition main : M unit :=
         core.option.Option.t
           unpacking_options_and_defaults_via_or_else.Fruit.t :=
       M.read no_fruit in
-    let* α1 : type not implemented := M.read get_kiwi_as_fallback in
+    let* α1 :
+        unit ->
+          M
+            (core.option.Option.t
+              unpacking_options_and_defaults_via_or_else.Fruit.t) :=
+      M.read get_kiwi_as_fallback in
     let* α2 :
         core.option.Option.t
           unpacking_options_and_defaults_via_or_else.Fruit.t :=
@@ -147,7 +162,12 @@ Definition main : M unit :=
               unpacking_options_and_defaults_via_or_else.Fruit.t)::["or_else"]
           α0
           α1) in
-    let* α3 : type not implemented := M.read get_lemon_as_fallback in
+    let* α3 :
+        unit ->
+          M
+            (core.option.Option.t
+              unpacking_options_and_defaults_via_or_else.Fruit.t) :=
+      M.read get_lemon_as_fallback in
     let* α4 :
         core.option.Option.t
           unpacking_options_and_defaults_via_or_else.Fruit.t :=

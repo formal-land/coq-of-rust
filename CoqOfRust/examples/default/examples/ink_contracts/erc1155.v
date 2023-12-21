@@ -363,55 +363,6 @@ Module Error.
   | BatchTransferMismatch.
 End Error.
 
-Module  Impl_core_fmt_Debug_for_erc1155_Error_t.
-Section Impl_core_fmt_Debug_for_erc1155_Error_t.
-  Definition Self : Set := erc1155.Error.t.
-  
-  (*
-  Debug
-  *)
-  Definition fmt
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter.t)
-      : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
-    let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
-    let* α1 : ref erc1155.Error.t := M.read self in
-    let* α2 : M.Val (ref str.t) :=
-      match α1 with
-      | erc1155.Error.UnexistentToken  =>
-        let* α0 : ref str.t := M.read (mk_str "UnexistentToken") in
-        M.alloc α0
-      | erc1155.Error.ZeroAddressTransfer  =>
-        let* α0 : ref str.t := M.read (mk_str "ZeroAddressTransfer") in
-        M.alloc α0
-      | erc1155.Error.NotApproved  =>
-        let* α0 : ref str.t := M.read (mk_str "NotApproved") in
-        M.alloc α0
-      | erc1155.Error.InsufficientBalance  =>
-        let* α0 : ref str.t := M.read (mk_str "InsufficientBalance") in
-        M.alloc α0
-      | erc1155.Error.SelfApproval  =>
-        let* α0 : ref str.t := M.read (mk_str "SelfApproval") in
-        M.alloc α0
-      | erc1155.Error.BatchTransferMismatch  =>
-        let* α0 : ref str.t := M.read (mk_str "BatchTransferMismatch") in
-        M.alloc α0
-      end in
-    let* α3 : ref str.t := M.read α2 in
-    M.call (core.fmt.Formatter.t::["write_str"] α0 α3).
-  
-  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
-    Notations.double_colon := fmt;
-  }.
-  
-  Global Instance ℐ : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
-  }.
-End Impl_core_fmt_Debug_for_erc1155_Error_t.
-End Impl_core_fmt_Debug_for_erc1155_Error_t.
-
 Module  Impl_core_marker_StructuralPartialEq_for_erc1155_Error_t.
 Section Impl_core_marker_StructuralPartialEq_for_erc1155_Error_t.
   Definition Self : Set := erc1155.Error.t.

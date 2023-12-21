@@ -104,55 +104,55 @@ Definition main : M unit :=
                       (borrow tx)) in
                 M.alloc α0 in
               let* child : M.Val (std.thread.JoinHandle.t unit) :=
-                let* α0 : type not implemented :=
-                  M.read
-                    (let* _ : M.Val unit :=
-                      let* α0 : i32.t := M.read id in
-                      let* α1 :
-                          core.result.Result.t
-                            unit
-                            (std.sync.mpsc.SendError.t i32.t) :=
-                        M.call
-                          ((std.sync.mpsc.Sender.t i32.t)::["send"]
-                            (borrow thread_tx)
-                            α0) in
-                      let* α2 : unit :=
-                        M.call
-                          ((core.result.Result.t
-                                unit
-                                (std.sync.mpsc.SendError.t i32.t))::["unwrap"]
-                            α1) in
-                      M.alloc α2 in
-                    let* _ : M.Val unit :=
-                      let* _ : M.Val unit :=
-                        let* α0 : ref str.t := M.read (mk_str "thread ") in
-                        let* α1 : ref str.t := M.read (mk_str " finished
-") in
-                        let* α2 : M.Val (array (ref str.t)) :=
-                          M.alloc [ α0; α1 ] in
-                        let* α3 : M.Val (ref (array (ref str.t))) :=
-                          M.alloc (borrow α2) in
-                        let* α4 : ref (slice (ref str.t)) :=
-                          M.read (pointer_coercion "Unsize" α3) in
-                        let* α5 : core.fmt.rt.Argument.t :=
+                let* α0 : std.thread.JoinHandle.t unit :=
+                  M.call
+                    (std.thread.spawn
+                      (let* _ : M.Val unit :=
+                        let* α0 : i32.t := M.read id in
+                        let* α1 :
+                            core.result.Result.t
+                              unit
+                              (std.sync.mpsc.SendError.t i32.t) :=
                           M.call
-                            (core.fmt.rt.Argument.t::["new_display"]
-                              (borrow id)) in
-                        let* α6 : M.Val (array core.fmt.rt.Argument.t) :=
-                          M.alloc [ α5 ] in
-                        let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-                          M.alloc (borrow α6) in
-                        let* α8 : ref (slice core.fmt.rt.Argument.t) :=
-                          M.read (pointer_coercion "Unsize" α7) in
-                        let* α9 : core.fmt.Arguments.t :=
-                          M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
-                        let* α10 : unit := M.call (std.io.stdio._print α9) in
-                        M.alloc α10 in
-                      M.alloc tt in
-                    M.alloc tt) in
-                let* α1 : std.thread.JoinHandle.t unit :=
-                  M.call (std.thread.spawn α0) in
-                M.alloc α1 in
+                            ((std.sync.mpsc.Sender.t i32.t)::["send"]
+                              (borrow thread_tx)
+                              α0) in
+                        let* α2 : unit :=
+                          M.call
+                            ((core.result.Result.t
+                                  unit
+                                  (std.sync.mpsc.SendError.t i32.t))::["unwrap"]
+                              α1) in
+                        M.alloc α2 in
+                      let* _ : M.Val unit :=
+                        let* _ : M.Val unit :=
+                          let* α0 : ref str.t := M.read (mk_str "thread ") in
+                          let* α1 : ref str.t := M.read (mk_str " finished
+") in
+                          let* α2 : M.Val (array (ref str.t)) :=
+                            M.alloc [ α0; α1 ] in
+                          let* α3 : M.Val (ref (array (ref str.t))) :=
+                            M.alloc (borrow α2) in
+                          let* α4 : ref (slice (ref str.t)) :=
+                            M.read (pointer_coercion "Unsize" α3) in
+                          let* α5 : core.fmt.rt.Argument.t :=
+                            M.call
+                              (core.fmt.rt.Argument.t::["new_display"]
+                                (borrow id)) in
+                          let* α6 : M.Val (array core.fmt.rt.Argument.t) :=
+                            M.alloc [ α5 ] in
+                          let* α7 :
+                              M.Val (ref (array core.fmt.rt.Argument.t)) :=
+                            M.alloc (borrow α6) in
+                          let* α8 : ref (slice core.fmt.rt.Argument.t) :=
+                            M.read (pointer_coercion "Unsize" α7) in
+                          let* α9 : core.fmt.Arguments.t :=
+                            M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
+                          let* α10 : unit := M.call (std.io.stdio._print α9) in
+                          M.alloc α10 in
+                        M.alloc tt in
+                      M.alloc tt)) in
+                M.alloc α0 in
               let* _ : M.Val unit :=
                 let* α0 : std.thread.JoinHandle.t unit := M.read child in
                 let* α1 : unit :=
@@ -281,9 +281,7 @@ Definition main : M unit :=
                 let* α1 :
                     core.result.Result.t
                       unit
-                      (alloc.boxed.Box.t
-                        type not implemented
-                        alloc.alloc.Global.t) :=
+                      (alloc.boxed.Box.t dynamic alloc.alloc.Global.t) :=
                   M.call ((std.thread.JoinHandle.t unit)::["join"] α0) in
                 let* α2 : ref str.t :=
                   M.read (mk_str "oops! the child thread panicked") in
@@ -292,7 +290,7 @@ Definition main : M unit :=
                     ((core.result.Result.t
                           unit
                           (alloc.boxed.Box.t
-                            type not implemented
+                            dynamic
                             alloc.alloc.Global.t))::["expect"]
                       α1
                       α2) in

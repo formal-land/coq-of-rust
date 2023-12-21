@@ -80,14 +80,12 @@ Section Impl_core_fmt_Debug_for_generics_bounds_Rectangle_t.
     let* α2 : ref str.t := M.read (mk_str "length") in
     let* α3 : ref generics_bounds.Rectangle.t := M.read self in
     let* α4 : M.Val (ref f64.t) := M.alloc (borrow (deref α3).["length"]) in
-    let* α5 : ref type not implemented :=
-      M.read (pointer_coercion "Unsize" α4) in
+    let* α5 : ref dynamic := M.read (pointer_coercion "Unsize" α4) in
     let* α6 : ref str.t := M.read (mk_str "height") in
     let* α7 : ref generics_bounds.Rectangle.t := M.read self in
     let* α8 : M.Val (ref f64.t) := M.alloc (borrow (deref α7).["height"]) in
     let* α9 : M.Val (ref (ref f64.t)) := M.alloc (borrow α8) in
-    let* α10 : ref type not implemented :=
-      M.read (pointer_coercion "Unsize" α9) in
+    let* α10 : ref dynamic := M.read (pointer_coercion "Unsize" α9) in
     M.call
       (core.fmt.Formatter.t::["debug_struct_field2_finish"] α0 α1 α2 α5 α6 α10).
   

@@ -85,8 +85,7 @@ Definition random_animal
   let* random_number : M.Val f64.t := M.alloc random_number in
   let* α0 : f64.t := M.read random_number in
   let* α1 : f64.t := M.read UnsupportedLiteral in
-  let* α2 :
-      M.Val (alloc.boxed.Box.t type not implemented alloc.alloc.Global.t) :=
+  let* α2 : M.Val (alloc.boxed.Box.t dynamic alloc.alloc.Global.t) :=
     if (use (BinOp.Pure.lt α0 α1) : bool) then
       let* α0 :
           alloc.boxed.Box.t
@@ -136,10 +135,9 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
   let* random_number : M.Val f64.t := M.copy UnsupportedLiteral in
-  let* animal :
-      M.Val (alloc.boxed.Box.t type not implemented alloc.alloc.Global.t) :=
+  let* animal : M.Val (alloc.boxed.Box.t dynamic alloc.alloc.Global.t) :=
     let* α0 : f64.t := M.read random_number in
-    let* α1 : alloc.boxed.Box.t type not implemented alloc.alloc.Global.t :=
+    let* α1 : alloc.boxed.Box.t dynamic alloc.alloc.Global.t :=
       M.call (returning_traits_with_dyn.random_animal α0) in
     M.alloc α1 in
   let* _ : M.Val unit :=
@@ -152,12 +150,12 @@ Definition main : M unit :=
       let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
       let* α4 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α3) in
-      let* α5 : alloc.boxed.Box.t type not implemented alloc.alloc.Global.t :=
+      let* α5 : alloc.boxed.Box.t dynamic alloc.alloc.Global.t :=
         M.read animal in
       let* α6 : ref str.t :=
         M.call
           ((returning_traits_with_dyn.Animal.noise
-              (Self := type not implemented)
+              (Self := dynamic)
               (Trait := ltac:(refine _)))
             (borrow (deref α5))) in
       let* α7 : M.Val (ref str.t) := M.alloc α6 in

@@ -37,8 +37,7 @@ Section Impl_core_fmt_Debug_for_wrapping_errors_DoubleError_t.
         let* α1 : ref str.t := M.read (mk_str "Parse") in
         let* α2 : M.Val (ref (ref core.num.error.ParseIntError.t)) :=
           M.alloc (borrow __self_0) in
-        let* α3 : ref type not implemented :=
-          M.read (pointer_coercion "Unsize" α2) in
+        let* α3 : ref dynamic := M.read (pointer_coercion "Unsize" α2) in
         let* α4 : core.result.Result.t unit core.fmt.Error.t :=
           M.call
             (core.fmt.Formatter.t::["debug_tuple_field1_finish"] α0 α1 α3) in
@@ -140,15 +139,14 @@ Section Impl_core_error_Error_for_wrapping_errors_DoubleError_t.
     let* self : M.Val (ref Self) := M.alloc self in
     let* α0 : ref wrapping_errors.DoubleError.t := M.read self in
     let* α1 : wrapping_errors.DoubleError.t := M.read (deref α0) in
-    let* α2 : M.Val (core.option.Option.t (ref type not implemented)) :=
+    let* α2 : M.Val (core.option.Option.t (ref dynamic)) :=
       match α1 with
       | wrapping_errors.DoubleError.EmptyVec  => M.alloc core.option.Option.None
       | wrapping_errors.DoubleError.Parse e =>
         let* e := M.alloc e in
         let* α0 : ref core.num.error.ParseIntError.t := M.read e in
         let* α1 : M.Val (ref core.num.error.ParseIntError.t) := M.alloc α0 in
-        let* α2 : ref type not implemented :=
-          M.read (pointer_coercion "Unsize" α1) in
+        let* α2 : ref dynamic := M.read (pointer_coercion "Unsize" α1) in
         M.alloc (core.option.Option.Some α2)
       end in
     M.read α2.
@@ -382,14 +380,13 @@ Definition print (result : ltac:(wrapping_errors.Result i32.t)) : M unit :=
           let* α10 : unit := M.call (std.io.stdio._print α9) in
           M.alloc α10 in
         M.alloc tt in
-      let* α0 : core.option.Option.t (ref type not implemented) :=
+      let* α0 : core.option.Option.t (ref dynamic) :=
         M.call
           ((core.error.Error.source
               (Self := wrapping_errors.DoubleError.t)
               (Trait := ltac:(refine _)))
             (borrow e)) in
-      let* α1 : M.Val (core.option.Option.t (ref type not implemented)) :=
-        M.alloc α0 in
+      let* α1 : M.Val (core.option.Option.t (ref dynamic)) := M.alloc α0 in
       let* α2 : M.Val bool.t := let_if core.option.Option.Some source := α1 in
       let* α3 : bool.t := M.read α2 in
       if (α3 : bool) then

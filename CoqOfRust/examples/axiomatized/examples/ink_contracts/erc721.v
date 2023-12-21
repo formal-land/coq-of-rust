@@ -607,15 +607,41 @@ Section Impl_erc721_Erc721_t.
   }.
   
   (*
-      pub fn balance_of(&self, owner: AccountId) -> u32 {
-          self.balance_of_or_zero(&owner)
+      fn balance_of_or_zero(&self, of: &AccountId) -> u32 {
+          self.owned_tokens_count.get(of).unwrap_or(0)
       }
   *)
-  Parameter balance_of : (ref Self) -> erc721.AccountId.t -> M u32.t.
+  Parameter balance_of_or_zero :
+      (ref Self) -> (ref erc721.AccountId.t) -> M u32.t.
   
-  Global Instance AssociatedFunction_balance_of :
-    Notations.DoubleColon Self "balance_of" := {
-    Notations.double_colon := balance_of;
+  Global Instance AssociatedFunction_balance_of_or_zero :
+    Notations.DoubleColon Self "balance_of_or_zero" := {
+    Notations.double_colon := balance_of_or_zero;
+  }.
+  
+  (*
+      fn clear_approval(&mut self, id: TokenId) {
+          self.token_approvals.remove(id);
+      }
+  *)
+  Parameter clear_approval : (mut_ref Self) -> ltac:(erc721.TokenId) -> M unit.
+  
+  Global Instance AssociatedFunction_clear_approval :
+    Notations.DoubleColon Self "clear_approval" := {
+    Notations.double_colon := clear_approval;
+  }.
+  
+  (*
+      fn approved_for_all(&self, owner: AccountId, operator: AccountId) -> bool {
+          self.operator_approvals.contains(&(owner, operator))
+      }
+  *)
+  Parameter approved_for_all :
+      (ref Self) -> erc721.AccountId.t -> erc721.AccountId.t -> M bool.t.
+  
+  Global Instance AssociatedFunction_approved_for_all :
+    Notations.DoubleColon Self "approved_for_all" := {
+    Notations.double_colon := approved_for_all;
   }.
   
   (*
@@ -631,6 +657,53 @@ Section Impl_erc721_Erc721_t.
   Global Instance AssociatedFunction_owner_of :
     Notations.DoubleColon Self "owner_of" := {
     Notations.double_colon := owner_of;
+  }.
+  
+  (*
+      fn approved_or_owner(&self, from: Option<AccountId>, id: TokenId) -> bool {
+          let owner = self.owner_of(id);
+          from != Some(AccountId::from([0x0; 32]))
+              && (from == owner
+                  || from == self.token_approvals.get(&id)
+                  || self.approved_for_all(
+                      owner.expect("Error with AccountId"),
+                      from.expect("Error with AccountId"),
+                  ))
+      }
+  *)
+  Parameter approved_or_owner :
+      (ref Self) ->
+        (core.option.Option.t erc721.AccountId.t) ->
+        ltac:(erc721.TokenId) ->
+        M bool.t.
+  
+  Global Instance AssociatedFunction_approved_or_owner :
+    Notations.DoubleColon Self "approved_or_owner" := {
+    Notations.double_colon := approved_or_owner;
+  }.
+  
+  (*
+      fn exists(&self, id: TokenId) -> bool {
+          self.token_owner.contains(&id)
+      }
+  *)
+  Parameter exists_ : (ref Self) -> ltac:(erc721.TokenId) -> M bool.t.
+  
+  Global Instance AssociatedFunction_exists_ :
+    Notations.DoubleColon Self "exists_" := {
+    Notations.double_colon := exists_;
+  }.
+  
+  (*
+      pub fn balance_of(&self, owner: AccountId) -> u32 {
+          self.balance_of_or_zero(&owner)
+      }
+  *)
+  Parameter balance_of : (ref Self) -> erc721.AccountId.t -> M u32.t.
+  
+  Global Instance AssociatedFunction_balance_of :
+    Notations.DoubleColon Self "balance_of" := {
+    Notations.double_colon := balance_of;
   }.
   
   (*
@@ -973,79 +1046,6 @@ Section Impl_erc721_Erc721_t.
   Global Instance AssociatedFunction_approve_for :
     Notations.DoubleColon Self "approve_for" := {
     Notations.double_colon := approve_for;
-  }.
-  
-  (*
-      fn clear_approval(&mut self, id: TokenId) {
-          self.token_approvals.remove(id);
-      }
-  *)
-  Parameter clear_approval : (mut_ref Self) -> ltac:(erc721.TokenId) -> M unit.
-  
-  Global Instance AssociatedFunction_clear_approval :
-    Notations.DoubleColon Self "clear_approval" := {
-    Notations.double_colon := clear_approval;
-  }.
-  
-  (*
-      fn balance_of_or_zero(&self, of: &AccountId) -> u32 {
-          self.owned_tokens_count.get(of).unwrap_or(0)
-      }
-  *)
-  Parameter balance_of_or_zero :
-      (ref Self) -> (ref erc721.AccountId.t) -> M u32.t.
-  
-  Global Instance AssociatedFunction_balance_of_or_zero :
-    Notations.DoubleColon Self "balance_of_or_zero" := {
-    Notations.double_colon := balance_of_or_zero;
-  }.
-  
-  (*
-      fn approved_for_all(&self, owner: AccountId, operator: AccountId) -> bool {
-          self.operator_approvals.contains(&(owner, operator))
-      }
-  *)
-  Parameter approved_for_all :
-      (ref Self) -> erc721.AccountId.t -> erc721.AccountId.t -> M bool.t.
-  
-  Global Instance AssociatedFunction_approved_for_all :
-    Notations.DoubleColon Self "approved_for_all" := {
-    Notations.double_colon := approved_for_all;
-  }.
-  
-  (*
-      fn approved_or_owner(&self, from: Option<AccountId>, id: TokenId) -> bool {
-          let owner = self.owner_of(id);
-          from != Some(AccountId::from([0x0; 32]))
-              && (from == owner
-                  || from == self.token_approvals.get(&id)
-                  || self.approved_for_all(
-                      owner.expect("Error with AccountId"),
-                      from.expect("Error with AccountId"),
-                  ))
-      }
-  *)
-  Parameter approved_or_owner :
-      (ref Self) ->
-        (core.option.Option.t erc721.AccountId.t) ->
-        ltac:(erc721.TokenId) ->
-        M bool.t.
-  
-  Global Instance AssociatedFunction_approved_or_owner :
-    Notations.DoubleColon Self "approved_or_owner" := {
-    Notations.double_colon := approved_or_owner;
-  }.
-  
-  (*
-      fn exists(&self, id: TokenId) -> bool {
-          self.token_owner.contains(&id)
-      }
-  *)
-  Parameter exists_ : (ref Self) -> ltac:(erc721.TokenId) -> M bool.t.
-  
-  Global Instance AssociatedFunction_exists_ :
-    Notations.DoubleColon Self "exists_" := {
-    Notations.double_colon := exists_;
   }.
 End Impl_erc721_Erc721_t.
 End Impl_erc721_Erc721_t.

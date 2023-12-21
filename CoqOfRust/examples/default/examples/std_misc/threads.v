@@ -65,46 +65,46 @@ Definition main : M unit :=
             | core.option.Option.Some i =>
               let* i := M.alloc i in
               let* _ : M.Val unit :=
-                let* α0 : type not implemented :=
-                  M.read
-                    (let* _ : M.Val unit :=
-                      let* _ : M.Val unit :=
-                        let* α0 : ref str.t :=
-                          M.read (mk_str "this is thread number ") in
-                        let* α1 : ref str.t := M.read (mk_str "
+                let* α0 : std.thread.JoinHandle.t unit :=
+                  M.call
+                    (std.thread.spawn
+                      (let* _ : M.Val unit :=
+                        let* _ : M.Val unit :=
+                          let* α0 : ref str.t :=
+                            M.read (mk_str "this is thread number ") in
+                          let* α1 : ref str.t := M.read (mk_str "
 ") in
-                        let* α2 : M.Val (array (ref str.t)) :=
-                          M.alloc [ α0; α1 ] in
-                        let* α3 : M.Val (ref (array (ref str.t))) :=
-                          M.alloc (borrow α2) in
-                        let* α4 : ref (slice (ref str.t)) :=
-                          M.read (pointer_coercion "Unsize" α3) in
-                        let* α5 : core.fmt.rt.Argument.t :=
-                          M.call
-                            (core.fmt.rt.Argument.t::["new_display"]
-                              (borrow i)) in
-                        let* α6 : M.Val (array core.fmt.rt.Argument.t) :=
-                          M.alloc [ α5 ] in
-                        let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-                          M.alloc (borrow α6) in
-                        let* α8 : ref (slice core.fmt.rt.Argument.t) :=
-                          M.read (pointer_coercion "Unsize" α7) in
-                        let* α9 : core.fmt.Arguments.t :=
-                          M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
-                        let* α10 : unit := M.call (std.io.stdio._print α9) in
-                        M.alloc α10 in
-                      M.alloc tt in
-                    M.alloc tt) in
-                let* α1 : std.thread.JoinHandle.t unit :=
-                  M.call (std.thread.spawn α0) in
-                let* α2 : unit :=
+                          let* α2 : M.Val (array (ref str.t)) :=
+                            M.alloc [ α0; α1 ] in
+                          let* α3 : M.Val (ref (array (ref str.t))) :=
+                            M.alloc (borrow α2) in
+                          let* α4 : ref (slice (ref str.t)) :=
+                            M.read (pointer_coercion "Unsize" α3) in
+                          let* α5 : core.fmt.rt.Argument.t :=
+                            M.call
+                              (core.fmt.rt.Argument.t::["new_display"]
+                                (borrow i)) in
+                          let* α6 : M.Val (array core.fmt.rt.Argument.t) :=
+                            M.alloc [ α5 ] in
+                          let* α7 :
+                              M.Val (ref (array core.fmt.rt.Argument.t)) :=
+                            M.alloc (borrow α6) in
+                          let* α8 : ref (slice core.fmt.rt.Argument.t) :=
+                            M.read (pointer_coercion "Unsize" α7) in
+                          let* α9 : core.fmt.Arguments.t :=
+                            M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
+                          let* α10 : unit := M.call (std.io.stdio._print α9) in
+                          M.alloc α10 in
+                        M.alloc tt in
+                      M.alloc tt)) in
+                let* α1 : unit :=
                   M.call
                     ((alloc.vec.Vec.t
                           (std.thread.JoinHandle.t unit)
                           alloc.alloc.Global.t)::["push"]
                       (borrow_mut children)
-                      α1) in
-                M.alloc α2 in
+                      α0) in
+                M.alloc α1 in
               M.alloc tt
             end in
           M.alloc tt)
@@ -150,9 +150,7 @@ Definition main : M unit :=
             let* _ :
                 core.result.Result.t
                   unit
-                  (alloc.boxed.Box.t
-                    type not implemented
-                    alloc.alloc.Global.t) :=
+                  (alloc.boxed.Box.t dynamic alloc.alloc.Global.t) :=
               let* α0 : std.thread.JoinHandle.t unit := M.read child in
               M.call ((std.thread.JoinHandle.t unit)::["join"] α0) in
             M.alloc tt

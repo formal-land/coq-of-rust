@@ -280,26 +280,6 @@ Module Error.
   | BatchTransferMismatch.
 End Error.
 
-Module  Impl_core_fmt_Debug_for_erc1155_Error_t.
-Section Impl_core_fmt_Debug_for_erc1155_Error_t.
-  Definition Self : Set := erc1155.Error.t.
-  
-  (*
-  Debug
-  *)
-  Parameter fmt :
-      (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
-  
-  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
-    Notations.double_colon := fmt;
-  }.
-  
-  Global Instance ℐ : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
-  }.
-End Impl_core_fmt_Debug_for_erc1155_Error_t.
-End Impl_core_fmt_Debug_for_erc1155_Error_t.
-
 Module  Impl_core_marker_StructuralPartialEq_for_erc1155_Error_t.
 Section Impl_core_marker_StructuralPartialEq_for_erc1155_Error_t.
   Definition Self : Set := erc1155.Error.t.

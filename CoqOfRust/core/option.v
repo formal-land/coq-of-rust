@@ -76,4 +76,8 @@ Module Impl_Option. Section Impl_Option.
   Global Instance I_Default {ℋ : default.Default.Trait T} :
     default.Default.Trait (core.option.Option.t T).
   Admitted.
+
+  Global Instance I_Clone {ℋ : clone.Clone.Trait T} :
+    clone.Clone.Trait (core.option.Option.t T).
+  Admitted.
 End Impl_Option. End Impl_Option.

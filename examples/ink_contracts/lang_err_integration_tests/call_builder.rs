@@ -7,6 +7,7 @@ type Hash = [u8; 32];
 
 pub enum LangError {
     CouldNotReadInput,
+    AnotherError,
 }
 
 pub struct Selector {/* private fields */}

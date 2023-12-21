@@ -284,8 +284,8 @@ fn compile_expr_kind<'a>(
         }
         thir::ExprKind::LogicalOp { op, lhs, rhs } => {
             let path = match op {
-                LogicalOp::And => Path::new(&["BinOp", "and"]),
-                LogicalOp::Or => Path::new(&["BinOp", "or"]),
+                LogicalOp::And => Path::new(&["BinOp", "Pure", "and"]),
+                LogicalOp::Or => Path::new(&["BinOp", "Pure", "or"]),
             };
             let lhs = compile_expr(env, thir, lhs);
             let rhs = compile_expr(env, thir, rhs);
@@ -628,7 +628,19 @@ fn compile_expr_kind<'a>(
             };
             let thir = thir.borrow();
             let body = Box::new(compile_expr(env, &thir, &expr_id));
-            ExprKind::Lambda { args: vec![], body }
+            let args = thir
+                .params
+                .iter()
+                .filter_map(|param| match &param.pat {
+                    Some(pattern) => {
+                        let pattern = crate::thir_pattern::compile_pattern(env, pattern.as_ref());
+                        let ty = compile_type(env, &param.ty);
+                        Some((pattern, ty))
+                    }
+                    None => None,
+                })
+                .collect();
+            ExprKind::Lambda { args, body }.alloc(Some(ty))
         }
         thir::ExprKind::Literal { lit, neg } => match lit.node {
             rustc_ast::LitKind::Str(symbol, _) => {

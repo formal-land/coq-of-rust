@@ -557,9 +557,67 @@ Module Ord.
     clamp := Provided.clamp;
   }.
 
-  Module Impl_Ord_for_str.
-    Global Instance I : Trait str.t. Admitted.
-  End Impl_Ord_for_str.
+  Module Instances.
+    Global Instance I_bool : Trait bool.
+    Admitted.
+
+    Global Instance I_char : Trait char.t.
+    Admitted.
+
+    Global Instance I_f32 : Trait f32.t.
+    Admitted.
+
+    Global Instance I_f64 : Trait f64.t.
+    Admitted.
+
+    Global Instance I_i8 : Trait i8.t.
+    Admitted.
+
+    Global Instance I_i16 : Trait i16.t.
+    Admitted.
+
+    Global Instance I_i32 : Trait i32.t.
+    Admitted.
+
+    Global Instance I_i64 : Trait i64.t.
+    Admitted.
+
+    Global Instance I_i128 : Trait i128.t.
+    Admitted.
+
+    Global Instance I_isize : Trait isize.t.
+    Admitted.
+
+    Global Instance I_never : Trait never.t.
+    Admitted.
+
+    Global Instance I_str : Trait str.t.
+    Admitted.
+
+    Global Instance I_u8 : Trait u8.t.
+    Admitted.
+
+    Global Instance I_u16 : Trait u16.t.
+    Admitted.
+
+    Global Instance I_u32 : Trait u32.t.
+    Admitted.
+
+    Global Instance I_u64 : Trait u64.t.
+    Admitted.
+
+    Global Instance I_u128 : Trait u128.t.
+    Admitted.
+
+    Global Instance I_unit : Trait unit.
+    Admitted.
+
+    Global Instance I_usize : Trait usize.t.
+    Admitted.
+
+    Global Instance I_ref_ref {A B : Set} : Trait A -> Trait (ref A).
+    Admitted.
+  End Instances.
 End Ord.
 
 (* ********FUNCTIONS******** *)

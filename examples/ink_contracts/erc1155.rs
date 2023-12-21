@@ -59,7 +59,7 @@ const _ON_ERC_1155_BATCH_RECEIVED_SELECTOR: [u8; 4] = [0xBC, 0x19, 0x7C, 0x81];
 pub type TokenId = u128;
 
 // The ERC-1155 error types.
-#[derive(Debug, PartialEq, Eq)]
+#[derive(PartialEq, Eq)]
 #[cfg_attr(feature = "std", derive(scale_info::TypeInfo))]
 pub enum Error {
     /// This token ID has not yet been created by the contract.

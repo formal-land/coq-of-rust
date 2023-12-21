@@ -1,4 +1,6 @@
 Require Import CoqOfRust.lib.lib.
+
+Require CoqOfRust.alloc.vec.
 Require CoqOfRust.core.convert.
 Require CoqOfRust.core.result.
 
@@ -671,3 +673,50 @@ Module try_trait.
     End Impl.
   End FromResidual.
 End try_trait.
+
+Module index.
+  (*
+  pub trait Index<Idx: ?Sized> {
+      type Output: ?Sized;
+
+      // Required method
+      fn index(&self, index: Idx) -> &Self::Output;
+  }
+  *)
+  Module Index.
+    Class Trait (Self : Set) {Idx : Set} : Type := {
+      Output : Set;
+      index : ref Self -> Idx -> M (ref Output);
+    }.
+
+    Module Impl.
+      Global Instance for_vec (T : Set) :
+          Trait (vec.Vec.t T vec.Vec.Default.A) (Idx := usize.t) := {
+        Output := T;
+        index self index :=
+          axiom "index";
+      }.
+    End Impl.
+  End Index.
+
+  (*
+  pub trait IndexMut<Idx: ?Sized>: Index<Idx> {
+      // Required method
+      fn index_mut(&mut self, index: Idx) -> &mut Self::Output;
+  }
+  *)
+  Module IndexMut.
+    Class Trait (Self : Set) {Idx : Set} : Type := {
+      L0 :: Index.Trait Self (Idx := Idx);
+      index_mut : mut_ref Self -> Idx -> M (mut_ref L0.(Index.Output));
+    }.
+
+    Module Impl.
+      Global Instance for_vec (T : Set) :
+          Trait (vec.Vec.t T vec.Vec.Default.A) (Idx := usize.t) := {
+        index_mut self index :=
+          axiom "index_mut";
+      }.
+    End Impl.
+  End IndexMut.
+End index.

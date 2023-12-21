@@ -123,16 +123,49 @@ impl Erc721 {
         Default::default()
     }
 
-    /// Returns the balance of the owner.
-    ///
-    /// This represents the amount of unique tokens the owner has.
-    pub fn balance_of(&self, owner: AccountId) -> u32 {
-        self.balance_of_or_zero(&owner)
+    // Returns the total number of tokens from an account.
+    fn balance_of_or_zero(&self, of: &AccountId) -> u32 {
+        self.owned_tokens_count.get(of).unwrap_or(0)
+    }
+
+    /// Removes existing approval from token `id`.
+    fn clear_approval(&mut self, id: TokenId) {
+        self.token_approvals.remove(id);
+    }
+
+    /// Gets an operator on other Account's behalf.
+    fn approved_for_all(&self, owner: AccountId, operator: AccountId) -> bool {
+        self.operator_approvals.contains(&(owner, operator))
     }
 
     /// Returns the owner of the token.
     pub fn owner_of(&self, id: TokenId) -> Option<AccountId> {
         self.token_owner.get(&id)
+    }
+
+    /// Returns true if the `AccountId` `from` is the owner of token `id`
+    /// or it has been approved on behalf of the token `id` owner.
+    fn approved_or_owner(&self, from: Option<AccountId>, id: TokenId) -> bool {
+        let owner = self.owner_of(id);
+        from != Some(AccountId::from([0x0; 32]))
+            && (from == owner
+                || from == self.token_approvals.get(&id)
+                || self.approved_for_all(
+                    owner.expect("Error with AccountId"),
+                    from.expect("Error with AccountId"),
+                ))
+    }
+
+    /// Returns true if token `id` exists or false if it does not.
+    fn exists(&self, id: TokenId) -> bool {
+        self.token_owner.contains(&id)
+    }
+
+    /// Returns the balance of the owner.
+    ///
+    /// This represents the amount of unique tokens the owner has.
+    pub fn balance_of(&self, owner: AccountId) -> u32 {
+        self.balance_of_or_zero(&owner)
     }
 
     /// Returns the approved account ID for this token if any.
@@ -337,38 +370,5 @@ impl Erc721 {
         }));
 
         Ok(())
-    }
-
-    /// Removes existing approval from token `id`.
-    fn clear_approval(&mut self, id: TokenId) {
-        self.token_approvals.remove(id);
-    }
-
-    // Returns the total number of tokens from an account.
-    fn balance_of_or_zero(&self, of: &AccountId) -> u32 {
-        self.owned_tokens_count.get(of).unwrap_or(0)
-    }
-
-    /// Gets an operator on other Account's behalf.
-    fn approved_for_all(&self, owner: AccountId, operator: AccountId) -> bool {
-        self.operator_approvals.contains(&(owner, operator))
-    }
-
-    /// Returns true if the `AccountId` `from` is the owner of token `id`
-    /// or it has been approved on behalf of the token `id` owner.
-    fn approved_or_owner(&self, from: Option<AccountId>, id: TokenId) -> bool {
-        let owner = self.owner_of(id);
-        from != Some(AccountId::from([0x0; 32]))
-            && (from == owner
-                || from == self.token_approvals.get(&id)
-                || self.approved_for_all(
-                    owner.expect("Error with AccountId"),
-                    from.expect("Error with AccountId"),
-                ))
-    }
-
-    /// Returns true if token `id` exists or false if it does not.
-    fn exists(&self, id: TokenId) -> bool {
-        self.token_owner.contains(&id)
     }
 }

@@ -67,7 +67,7 @@ Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_t_A_B.
             (Trait := ltac:(refine _)))
           (borrow (deref α3).["1"])
           (borrow (deref α4).["1"])) in
-    M.pure (BinOp.and α2 α5).
+    M.pure (BinOp.Pure.and α2 α5).
   
   Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
     Notations.double_colon := eq;
@@ -156,7 +156,7 @@ Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_t_A_B.
             (Trait := ltac:(refine _)))
           (borrow (deref α3).["phantom"])
           (borrow (deref α4).["phantom"])) in
-    M.pure (BinOp.and α2 α5).
+    M.pure (BinOp.Pure.and α2 α5).
   
   Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
     Notations.double_colon := eq;

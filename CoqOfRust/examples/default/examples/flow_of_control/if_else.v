@@ -109,7 +109,7 @@ Definition main : M unit :=
     let* α2 : M.Val i32.t :=
       if
         (use
-          (BinOp.and
+          (BinOp.Pure.and
             (BinOp.Pure.lt α0 (Integer.of_Z 10))
             (BinOp.Pure.gt α1 (Integer.of_Z (-10))))
         : bool)

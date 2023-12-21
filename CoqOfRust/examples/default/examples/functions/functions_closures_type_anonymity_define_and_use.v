@@ -39,8 +39,8 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
   let* x : M.Val i32.t := M.alloc (Integer.of_Z 7) in
-  let* print : M.Val type not implemented :=
-    M.copy
+  let* print : M.Val (unit -> M unit) :=
+    M.alloc
       (let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "") in
         let* α1 : ref str.t := M.read (mk_str "
@@ -62,7 +62,7 @@ Definition main : M unit :=
         M.alloc α10 in
       M.alloc tt) in
   let* _ : M.Val unit :=
-    let* α0 : type not implemented := M.read print in
+    let* α0 : unit -> M unit := M.read print in
     let* α1 : unit :=
       M.call (functions_closures_type_anonymity_define_and_use.apply α0) in
     M.alloc α1 in

@@ -66,7 +66,7 @@ Section Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Accou
         ((core.cmp.PartialEq.eq (Self := ref str.t) (Trait := ltac:(refine _)))
           (borrow (deref α3).["password"])
           (borrow (deref α4).["password"])) in
-    M.pure (BinOp.and α2 α5).
+    M.pure (BinOp.Pure.and α2 α5).
   
   Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
     Notations.double_colon := eq;

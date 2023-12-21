@@ -36,24 +36,24 @@ Definition main : M unit :=
             (Self := alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t)
             (Trait := ltac:(refine _)))
           α0) in
-    let* α2 : type not implemented :=
-      M.read
-        (let* α0 : ref str.t := M.read s in
-        let* α1 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
-          M.call (str.t::["parse"] α0) in
-        M.alloc α1) in
-    let* α3 :
+    let* α2 :
         core.iter.adapters.map.Map.t
           (alloc.vec.into_iter.IntoIter.t (ref str.t) alloc.alloc.Global.t)
-          type not implemented :=
+          ((ref str.t) ->
+            M (core.result.Result.t i32.t core.num.error.ParseIntError.t)) :=
       M.call
         ((core.iter.traits.iterator.Iterator.map
             (Self :=
               alloc.vec.into_iter.IntoIter.t (ref str.t) alloc.alloc.Global.t)
             (Trait := ltac:(refine _)))
           α1
-          α2) in
-    let* α4 :
+          (fun (s : ref str.t) =>
+            let* α0 : ref str.t := M.read s in
+            let* α1 :
+                core.result.Result.t i32.t core.num.error.ParseIntError.t :=
+              M.call (str.t::["parse"] α0) in
+            M.alloc α1)) in
+    let* α3 :
         core.result.Result.t
           (alloc.vec.Vec.t i32.t alloc.alloc.Global.t)
           core.num.error.ParseIntError.t :=
@@ -64,10 +64,14 @@ Definition main : M unit :=
                 (alloc.vec.into_iter.IntoIter.t
                   (ref str.t)
                   alloc.alloc.Global.t)
-                type not implemented)
+                ((ref str.t) ->
+                  M
+                    (core.result.Result.t
+                      i32.t
+                      core.num.error.ParseIntError.t)))
             (Trait := ltac:(refine _)))
-          α3) in
-    M.alloc α4 in
+          α2) in
+    M.alloc α3 in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "Results: ") in

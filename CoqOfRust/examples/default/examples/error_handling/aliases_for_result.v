@@ -22,27 +22,25 @@ Definition multiply
   let* α0 : ref str.t := M.read first_number_str in
   let* α1 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
     M.call (str.t::["parse"] α0) in
-  let* α2 : type not implemented :=
-    M.read
-      (let* α0 : ref str.t := M.read second_number_str in
-      let* α1 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
-        M.call (str.t::["parse"] α0) in
-      let* α2 : type not implemented :=
-        M.read
-          (let* α0 : i32.t := M.read first_number in
-          let* α1 : i32.t := M.read second_number in
-          let* α2 : i32.t := BinOp.Panic.mul α0 α1 in
-          M.alloc α2) in
-      let* α3 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
-        M.call
-          ((core.result.Result.t i32.t core.num.error.ParseIntError.t)::["map"]
-            α1
-            α2) in
-      M.alloc α3) in
   M.call
     ((core.result.Result.t i32.t core.num.error.ParseIntError.t)::["and_then"]
       α1
-      α2).
+      (fun (first_number : i32.t) =>
+        let* α0 : ref str.t := M.read second_number_str in
+        let* α1 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
+          M.call (str.t::["parse"] α0) in
+        let* α2 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
+          M.call
+            ((core.result.Result.t
+                  i32.t
+                  core.num.error.ParseIntError.t)::["map"]
+              α1
+              (fun (second_number : i32.t) =>
+                let* α0 : i32.t := M.read first_number in
+                let* α1 : i32.t := M.read second_number in
+                let* α2 : i32.t := BinOp.Panic.mul α0 α1 in
+                M.alloc α2)) in
+        M.alloc α2)).
 
 (*
 fn print(result: AliasedResult<i32>) {

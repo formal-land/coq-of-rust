@@ -136,73 +136,62 @@ Definition double_first
         (borrow vec)) in
   let* α1 : core.option.Option.t (ref (ref str.t)) :=
     M.call ((slice (ref str.t))::["first"] α0) in
-  let* α2 : type not implemented :=
-    M.read
-      (let* α0 : alloc.boxed.Box.t type not implemented alloc.alloc.Global.t :=
-        M.call
-          ((core.convert.Into.into
-              (Self := boxing_errors.EmptyVec.t)
-              (Trait := ltac:(refine _)))
-            boxing_errors.EmptyVec.Build) in
-      M.alloc α0) in
-  let* α3 :
+  let* α2 :
       core.result.Result.t
         (ref (ref str.t))
-        (alloc.boxed.Box.t type not implemented alloc.alloc.Global.t) :=
-    M.call ((core.option.Option.t (ref (ref str.t)))::["ok_or_else"] α1 α2) in
-  let* α4 : type not implemented :=
-    M.read
-      (let* α0 : ref (ref str.t) := M.read s in
-      let* α1 : ref str.t := M.read (deref α0) in
-      let* α2 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
-        M.call (str.t::["parse"] α1) in
-      let* α3 : type not implemented :=
-        M.read
-          (let* α0 : core.num.error.ParseIntError.t := M.read e in
-          let* α1 :
-              alloc.boxed.Box.t type not implemented alloc.alloc.Global.t :=
-            M.call
-              ((core.convert.Into.into
-                  (Self := core.num.error.ParseIntError.t)
-                  (Trait := ltac:(refine _)))
-                α0) in
-          M.alloc α1) in
-      let* α4 :
-          core.result.Result.t
-            i32.t
-            (alloc.boxed.Box.t type not implemented alloc.alloc.Global.t) :=
-        M.call
-          ((core.result.Result.t
-                i32.t
-                core.num.error.ParseIntError.t)::["map_err"]
-            α2
-            α3) in
-      let* α5 : type not implemented :=
-        M.read
-          (let* α0 : i32.t := M.read i in
-          let* α1 : i32.t := BinOp.Panic.mul (Integer.of_Z 2) α0 in
-          M.alloc α1) in
-      let* α6 :
-          core.result.Result.t
-            i32.t
-            (alloc.boxed.Box.t type not implemented alloc.alloc.Global.t) :=
-        M.call
-          ((core.result.Result.t
-                i32.t
-                (alloc.boxed.Box.t
-                  type not implemented
-                  alloc.alloc.Global.t))::["map"]
-            α4
-            α5) in
-      M.alloc α6) in
+        (alloc.boxed.Box.t dynamic alloc.alloc.Global.t) :=
+    M.call
+      ((core.option.Option.t (ref (ref str.t)))::["ok_or_else"]
+        α1
+        (let* α0 : alloc.boxed.Box.t dynamic alloc.alloc.Global.t :=
+          M.call
+            ((core.convert.Into.into
+                (Self := boxing_errors.EmptyVec.t)
+                (Trait := ltac:(refine _)))
+              boxing_errors.EmptyVec.Build) in
+        M.alloc α0)) in
   M.call
     ((core.result.Result.t
           (ref (ref str.t))
-          (alloc.boxed.Box.t
-            type not implemented
-            alloc.alloc.Global.t))::["and_then"]
-      α3
-      α4).
+          (alloc.boxed.Box.t dynamic alloc.alloc.Global.t))::["and_then"]
+      α2
+      (fun (s : ref (ref str.t)) =>
+        let* α0 : ref (ref str.t) := M.read s in
+        let* α1 : ref str.t := M.read (deref α0) in
+        let* α2 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
+          M.call (str.t::["parse"] α1) in
+        let* α3 :
+            core.result.Result.t
+              i32.t
+              (alloc.boxed.Box.t dynamic alloc.alloc.Global.t) :=
+          M.call
+            ((core.result.Result.t
+                  i32.t
+                  core.num.error.ParseIntError.t)::["map_err"]
+              α2
+              (fun (e : core.num.error.ParseIntError.t) =>
+                let* α0 : core.num.error.ParseIntError.t := M.read e in
+                let* α1 : alloc.boxed.Box.t dynamic alloc.alloc.Global.t :=
+                  M.call
+                    ((core.convert.Into.into
+                        (Self := core.num.error.ParseIntError.t)
+                        (Trait := ltac:(refine _)))
+                      α0) in
+                M.alloc α1)) in
+        let* α4 :
+            core.result.Result.t
+              i32.t
+              (alloc.boxed.Box.t dynamic alloc.alloc.Global.t) :=
+          M.call
+            ((core.result.Result.t
+                  i32.t
+                  (alloc.boxed.Box.t dynamic alloc.alloc.Global.t))::["map"]
+              α3
+              (fun (i : i32.t) =>
+                let* α0 : i32.t := M.read i in
+                let* α1 : i32.t := BinOp.Panic.mul (Integer.of_Z 2) α0 in
+                M.alloc α1)) in
+        M.alloc α4)).
 
 (*
 fn print(result: Result<i32>) {
@@ -217,7 +206,7 @@ Definition print (result : ltac:(boxing_errors.Result i32.t)) : M unit :=
   let* α0 :
       core.result.Result.t
         i32.t
-        (alloc.boxed.Box.t type not implemented alloc.alloc.Global.t) :=
+        (alloc.boxed.Box.t dynamic alloc.alloc.Global.t) :=
     M.read result in
   let* α1 : M.Val unit :=
     match α0 with
@@ -317,7 +306,7 @@ Definition main : M unit :=
     let* α1 :
         core.result.Result.t
           i32.t
-          (alloc.boxed.Box.t type not implemented alloc.alloc.Global.t) :=
+          (alloc.boxed.Box.t dynamic alloc.alloc.Global.t) :=
       M.call (boxing_errors.double_first α0) in
     let* α2 : unit := M.call (boxing_errors.print α1) in
     M.alloc α2 in
@@ -327,7 +316,7 @@ Definition main : M unit :=
     let* α1 :
         core.result.Result.t
           i32.t
-          (alloc.boxed.Box.t type not implemented alloc.alloc.Global.t) :=
+          (alloc.boxed.Box.t dynamic alloc.alloc.Global.t) :=
       M.call (boxing_errors.double_first α0) in
     let* α2 : unit := M.call (boxing_errors.print α1) in
     M.alloc α2 in
@@ -337,7 +326,7 @@ Definition main : M unit :=
     let* α1 :
         core.result.Result.t
           i32.t
-          (alloc.boxed.Box.t type not implemented alloc.alloc.Global.t) :=
+          (alloc.boxed.Box.t dynamic alloc.alloc.Global.t) :=
       M.call (boxing_errors.double_first α0) in
     let* α2 : unit := M.call (boxing_errors.print α1) in
     M.alloc α2 in

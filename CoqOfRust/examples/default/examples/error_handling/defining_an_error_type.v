@@ -129,42 +129,37 @@ Definition double_first
       ((core.option.Option.t (ref (ref str.t)))::["ok_or"]
         α1
         defining_an_error_type.DoubleError.Build) in
-  let* α3 : type not implemented :=
-    M.read
-      (let* α0 : ref (ref str.t) := M.read s in
-      let* α1 : ref str.t := M.read (deref α0) in
-      let* α2 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
-        M.call (str.t::["parse"] α1) in
-      let* α3 : type not implemented :=
-        M.read (M.alloc defining_an_error_type.DoubleError.Build) in
-      let* α4 :
-          core.result.Result.t i32.t defining_an_error_type.DoubleError.t :=
-        M.call
-          ((core.result.Result.t
-                i32.t
-                core.num.error.ParseIntError.t)::["map_err"]
-            α2
-            α3) in
-      let* α5 : type not implemented :=
-        M.read
-          (let* α0 : i32.t := M.read i in
-          let* α1 : i32.t := BinOp.Panic.mul (Integer.of_Z 2) α0 in
-          M.alloc α1) in
-      let* α6 :
-          core.result.Result.t i32.t defining_an_error_type.DoubleError.t :=
-        M.call
-          ((core.result.Result.t
-                i32.t
-                defining_an_error_type.DoubleError.t)::["map"]
-            α4
-            α5) in
-      M.alloc α6) in
   M.call
     ((core.result.Result.t
           (ref (ref str.t))
           defining_an_error_type.DoubleError.t)::["and_then"]
       α2
-      α3).
+      (fun (s : ref (ref str.t)) =>
+        let* α0 : ref (ref str.t) := M.read s in
+        let* α1 : ref str.t := M.read (deref α0) in
+        let* α2 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
+          M.call (str.t::["parse"] α1) in
+        let* α3 :
+            core.result.Result.t i32.t defining_an_error_type.DoubleError.t :=
+          M.call
+            ((core.result.Result.t
+                  i32.t
+                  core.num.error.ParseIntError.t)::["map_err"]
+              α2
+              (fun (_ : core.num.error.ParseIntError.t) =>
+                M.alloc defining_an_error_type.DoubleError.Build)) in
+        let* α4 :
+            core.result.Result.t i32.t defining_an_error_type.DoubleError.t :=
+          M.call
+            ((core.result.Result.t
+                  i32.t
+                  defining_an_error_type.DoubleError.t)::["map"]
+              α3
+              (fun (i : i32.t) =>
+                let* α0 : i32.t := M.read i in
+                let* α1 : i32.t := BinOp.Panic.mul (Integer.of_Z 2) α0 in
+                M.alloc α1)) in
+        M.alloc α4)).
 
 (*
 fn print(result: Result<i32>) {

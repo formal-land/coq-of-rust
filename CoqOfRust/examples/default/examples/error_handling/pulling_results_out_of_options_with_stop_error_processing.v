@@ -29,48 +29,36 @@ Definition double_first
           (borrow vec)) in
     let* α1 : core.option.Option.t (ref (ref str.t)) :=
       M.call ((slice (ref str.t))::["first"] α0) in
-    let* α2 : type not implemented :=
-      M.read
-        (let* α0 : ref (ref str.t) := M.read first in
-        let* α1 : ref str.t := M.read (deref α0) in
-        let* α2 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
-          M.call (str.t::["parse"] α1) in
-        let* α3 : type not implemented :=
-          M.read
-            (let* α0 : i32.t := M.read n in
-            let* α1 : i32.t := BinOp.Panic.mul (Integer.of_Z 2) α0 in
-            M.alloc α1) in
-        let* α4 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
-          M.call
-            ((core.result.Result.t
-                  i32.t
-                  core.num.error.ParseIntError.t)::["map"]
-              α2
-              α3) in
-        M.alloc α4) in
-    let* α3 :
+    let* α2 :
         core.option.Option.t
           (core.result.Result.t i32.t core.num.error.ParseIntError.t) :=
-      M.call ((core.option.Option.t (ref (ref str.t)))::["map"] α1 α2) in
-    M.alloc α3 in
+      M.call
+        ((core.option.Option.t (ref (ref str.t)))::["map"]
+          α1
+          (fun (first : ref (ref str.t)) =>
+            let* α0 : ref (ref str.t) := M.read first in
+            let* α1 : ref str.t := M.read (deref α0) in
+            let* α2 :
+                core.result.Result.t i32.t core.num.error.ParseIntError.t :=
+              M.call (str.t::["parse"] α1) in
+            let* α3 :
+                core.result.Result.t i32.t core.num.error.ParseIntError.t :=
+              M.call
+                ((core.result.Result.t
+                      i32.t
+                      core.num.error.ParseIntError.t)::["map"]
+                  α2
+                  (fun (n : i32.t) =>
+                    let* α0 : i32.t := M.read n in
+                    let* α1 : i32.t := BinOp.Panic.mul (Integer.of_Z 2) α0 in
+                    M.alloc α1)) in
+            M.alloc α3)) in
+    M.alloc α2 in
   let* α0 :
       core.option.Option.t
         (core.result.Result.t i32.t core.num.error.ParseIntError.t) :=
     M.read opt in
-  let* α1 : type not implemented :=
-    M.read
-      (let* α0 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
-        M.read r in
-      let* α1 :
-          core.result.Result.t
-            (core.option.Option.t i32.t)
-            core.num.error.ParseIntError.t :=
-        M.call
-          ((core.result.Result.t i32.t core.num.error.ParseIntError.t)::["map"]
-            α0
-            "unimplemented parent_kind") in
-      M.alloc α1) in
-  let* α2 :
+  let* α1 :
       core.result.Result.t
         (core.option.Option.t i32.t)
         core.num.error.ParseIntError.t :=
@@ -81,13 +69,26 @@ Definition double_first
               core.num.error.ParseIntError.t))::["map_or"]
         α0
         (core.result.Result.Ok core.option.Option.None)
-        α1) in
+        (fun (r : core.result.Result.t i32.t core.num.error.ParseIntError.t) =>
+          let* α0 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
+            M.read r in
+          let* α1 :
+              core.result.Result.t
+                (core.option.Option.t i32.t)
+                core.num.error.ParseIntError.t :=
+            M.call
+              ((core.result.Result.t
+                    i32.t
+                    core.num.error.ParseIntError.t)::["map"]
+                α0
+                "unimplemented parent_kind") in
+          M.alloc α1)) in
   let* α0 :
       M.Val
         (core.result.Result.t
           (core.option.Option.t i32.t)
           core.num.error.ParseIntError.t) :=
-    M.alloc α2 in
+    M.alloc α1 in
   M.read α0.
 
 (*

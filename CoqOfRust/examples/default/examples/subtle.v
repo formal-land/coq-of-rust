@@ -65,8 +65,7 @@ Section Impl_core_fmt_Debug_for_subtle_Choice_t.
     let* α2 : ref subtle.Choice.t := M.read self in
     let* α3 : M.Val (ref u8.t) := M.alloc (borrow (deref α2).["0"]) in
     let* α4 : M.Val (ref (ref u8.t)) := M.alloc (borrow α3) in
-    let* α5 : ref type not implemented :=
-      M.read (pointer_coercion "Unsize" α4) in
+    let* α5 : ref dynamic := M.read (pointer_coercion "Unsize" α4) in
     M.call (core.fmt.Formatter.t::["debug_tuple_field1_finish"] α0 α1 α5).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
@@ -2714,15 +2713,13 @@ Section Impl_core_fmt_Debug_for_subtle_CtOption_t_T.
     let* α2 : ref str.t := M.read (mk_str "value") in
     let* α3 : ref (subtle.CtOption.t T) := M.read self in
     let* α4 : M.Val (ref T) := M.alloc (borrow (deref α3).["value"]) in
-    let* α5 : ref type not implemented :=
-      M.read (pointer_coercion "Unsize" α4) in
+    let* α5 : ref dynamic := M.read (pointer_coercion "Unsize" α4) in
     let* α6 : ref str.t := M.read (mk_str "is_some") in
     let* α7 : ref (subtle.CtOption.t T) := M.read self in
     let* α8 : M.Val (ref subtle.Choice.t) :=
       M.alloc (borrow (deref α7).["is_some"]) in
     let* α9 : M.Val (ref (ref subtle.Choice.t)) := M.alloc (borrow α8) in
-    let* α10 : ref type not implemented :=
-      M.read (pointer_coercion "Unsize" α9) in
+    let* α10 : ref dynamic := M.read (pointer_coercion "Unsize" α9) in
     M.call
       (core.fmt.Formatter.t::["debug_struct_field2_finish"] α0 α1 α2 α5 α6 α10).
   

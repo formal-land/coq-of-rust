@@ -80,8 +80,8 @@ Definition main : M unit :=
             (Trait := ltac:(refine _)))
           α0) in
     M.alloc α1 in
-  let* print : M.Val type not implemented :=
-    M.copy
+  let* print : M.Val (unit -> M unit) :=
+    M.alloc
       (let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "`color`: ") in
         let* α1 : ref str.t := M.read (mk_str "
@@ -106,7 +106,7 @@ Definition main : M unit :=
     let* α0 : unit :=
       M.call
         ((core.ops.function.Fn.call
-            (Self := type not implemented)
+            (Self := unit -> M unit)
             (Trait := ltac:(refine _)))
           (borrow print)
           tt) in
@@ -117,15 +117,15 @@ Definition main : M unit :=
     let* α0 : unit :=
       M.call
         ((core.ops.function.Fn.call
-            (Self := type not implemented)
+            (Self := unit -> M unit)
             (Trait := ltac:(refine _)))
           (borrow print)
           tt) in
     M.alloc α0 in
   let* _color_moved : M.Val alloc.string.String.t := M.copy color in
   let* count : M.Val i32.t := M.alloc (Integer.of_Z 0) in
-  let* inc : M.Val type not implemented :=
-    M.copy
+  let* inc : M.Val (unit -> M unit) :=
+    M.alloc
       (let* _ : M.Val unit :=
         let β : M.Val i32.t := count in
         let* α0 := M.read β in
@@ -157,7 +157,7 @@ Definition main : M unit :=
     let* α0 : unit :=
       M.call
         ((core.ops.function.FnMut.call_mut
-            (Self := type not implemented)
+            (Self := unit -> M unit)
             (Trait := ltac:(refine _)))
           (borrow_mut inc)
           tt) in
@@ -166,7 +166,7 @@ Definition main : M unit :=
     let* α0 : unit :=
       M.call
         ((core.ops.function.FnMut.call_mut
-            (Self := type not implemented)
+            (Self := unit -> M unit)
             (Trait := ltac:(refine _)))
           (borrow_mut inc)
           tt) in
@@ -179,8 +179,8 @@ Definition main : M unit :=
         ((alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"]
           (Integer.of_Z 3)) in
     M.alloc α0 in
-  let* consume : M.Val type not implemented :=
-    M.copy
+  let* consume : M.Val (unit -> M unit) :=
+    M.alloc
       (let* _ : M.Val unit :=
         let* _ : M.Val unit :=
           let* α0 : ref str.t := M.read (mk_str "`movable`: ") in
@@ -209,11 +209,11 @@ Definition main : M unit :=
         M.alloc α1 in
       M.alloc tt) in
   let* _ : M.Val unit :=
-    let* α0 : type not implemented := M.read consume in
+    let* α0 : unit -> M unit := M.read consume in
     let* α1 : unit :=
       M.call
         ((core.ops.function.FnOnce.call_once
-            (Self := type not implemented)
+            (Self := unit -> M unit)
             (Trait := ltac:(refine _)))
           α0
           tt) in

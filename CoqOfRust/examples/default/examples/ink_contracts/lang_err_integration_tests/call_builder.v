@@ -79,7 +79,8 @@ Ltac Hash := exact (array u8.t).
 
 Module LangError.
   Inductive t : Set :=
-  | CouldNotReadInput.
+  | CouldNotReadInput
+  | AnotherError.
 End LangError.
 
 Module  Selector.

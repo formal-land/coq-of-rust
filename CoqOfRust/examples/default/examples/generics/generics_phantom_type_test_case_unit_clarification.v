@@ -184,8 +184,7 @@ Section Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificati
           (generics_phantom_type_test_case_unit_clarification.Length.t Unit) :=
       M.read self in
     let* α3 : M.Val (ref f64.t) := M.alloc (borrow (deref α2).["0"]) in
-    let* α4 : ref type not implemented :=
-      M.read (pointer_coercion "Unsize" α3) in
+    let* α4 : ref dynamic := M.read (pointer_coercion "Unsize" α3) in
     let* α5 :
         ref
           (generics_phantom_type_test_case_unit_clarification.Length.t Unit) :=
@@ -194,8 +193,7 @@ Section Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificati
       M.alloc (borrow (deref α5).["1"]) in
     let* α7 : M.Val (ref (ref (core.marker.PhantomData.t Unit))) :=
       M.alloc (borrow α6) in
-    let* α8 : ref type not implemented :=
-      M.read (pointer_coercion "Unsize" α7) in
+    let* α8 : ref dynamic := M.read (pointer_coercion "Unsize" α7) in
     M.call (core.fmt.Formatter.t::["debug_tuple_field2_finish"] α0 α1 α4 α8).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {

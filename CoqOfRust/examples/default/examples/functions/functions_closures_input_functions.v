@@ -55,8 +55,8 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* closure : M.Val type not implemented :=
-    M.copy
+  let* closure : M.Val (unit -> M unit) :=
+    M.alloc
       (let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "I'm a closure!
 ") in
@@ -70,7 +70,7 @@ Definition main : M unit :=
         M.alloc α5 in
       M.alloc tt) in
   let* _ : M.Val unit :=
-    let* α0 : type not implemented := M.read closure in
+    let* α0 : unit -> M unit := M.read closure in
     let* α1 : unit := M.call (functions_closures_input_functions.call_me α0) in
     M.alloc α1 in
   let* _ : M.Val unit :=

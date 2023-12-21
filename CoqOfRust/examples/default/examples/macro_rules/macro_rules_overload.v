@@ -32,7 +32,7 @@ Definition main : M unit :=
       let* α10 : i32.t := BinOp.Panic.mul (Integer.of_Z 2) (Integer.of_Z 2) in
       let* α11 : M.Val bool.t :=
         M.alloc
-          (BinOp.and
+          (BinOp.Pure.and
             (BinOp.Pure.eq α9 (Integer.of_Z 2))
             (BinOp.Pure.eq α10 (Integer.of_Z 4))) in
       let* α12 : core.fmt.rt.Argument.t :=
@@ -65,7 +65,7 @@ Definition main : M unit :=
       let* α8 : core.fmt.rt.Argument.t :=
         M.call
           (core.fmt.rt.Argument.t::["new_debug"] (borrow (mk_str "false"))) in
-      let* α9 : M.Val bool.t := M.alloc (BinOp.or true false) in
+      let* α9 : M.Val bool.t := M.alloc (BinOp.Pure.or true false) in
       let* α10 : core.fmt.rt.Argument.t :=
         M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow α9)) in
       let* α11 : M.Val (array core.fmt.rt.Argument.t) :=

@@ -37,6 +37,15 @@ Section Impl_Result.
   |}.
 
   (*
+  pub const fn is_err(&self) -> bool
+  *)
+  Parameter is_err : ref Self -> M bool.
+
+  Global Instance AF_is_err : Notations.DoubleColon Self "is_err" := {|
+    Notations.double_colon := is_err;
+  |}.
+
+  (*
   pub fn map_err<F, O>(self, op: O) -> Result<T, F>
   where
     O: FnOnce(E) -> F,

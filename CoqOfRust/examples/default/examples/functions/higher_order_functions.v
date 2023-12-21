@@ -143,67 +143,61 @@ Definition main : M unit :=
       M.alloc α10 in
     M.alloc tt in
   let* sum_of_squared_odd_numbers : M.Val u32.t :=
-    let* α0 : type not implemented :=
-      M.read
-        (let* α0 : u32.t := M.read n in
-        let* α1 : u32.t := M.read n in
-        let* α2 : u32.t := BinOp.Panic.mul α0 α1 in
-        M.alloc α2) in
-    let* α1 :
+    let* α0 :
         core.iter.adapters.map.Map.t
           (core.ops.range.RangeFrom.t u32.t)
-          type not implemented :=
+          (u32.t -> M u32.t) :=
       M.call
         ((core.iter.traits.iterator.Iterator.map
             (Self := core.ops.range.RangeFrom.t u32.t)
             (Trait := ltac:(refine _)))
           {| core.ops.range.RangeFrom.start := Integer.of_Z 0; |}
-          α0) in
-    let* α2 : type not implemented :=
-      M.read
-        (let* α0 : u32.t := M.read n_squared in
-        let* α1 : u32.t := M.read upper in
-        M.alloc (BinOp.Pure.lt α0 α1)) in
-    let* α3 :
+          (fun (n : u32.t) =>
+            let* α0 : u32.t := M.read n in
+            let* α1 : u32.t := M.read n in
+            let* α2 : u32.t := BinOp.Panic.mul α0 α1 in
+            M.alloc α2)) in
+    let* α1 :
         core.iter.adapters.take_while.TakeWhile.t
           (core.iter.adapters.map.Map.t
             (core.ops.range.RangeFrom.t u32.t)
-            type not implemented)
-          type not implemented :=
+            (u32.t -> M u32.t))
+          ((ref u32.t) -> M bool.t) :=
       M.call
         ((core.iter.traits.iterator.Iterator.take_while
             (Self :=
               core.iter.adapters.map.Map.t
                 (core.ops.range.RangeFrom.t u32.t)
-                type not implemented)
+                (u32.t -> M u32.t))
             (Trait := ltac:(refine _)))
-          α1
-          α2) in
-    let* α4 : type not implemented :=
-      M.read
-        (let* α0 : u32.t := M.read n_squared in
-        let* α1 : bool.t := M.call (higher_order_functions.is_odd α0) in
-        M.alloc α1) in
-    let* α5 :
+          α0
+          (fun (n_squared : ref u32.t) =>
+            let* α0 : u32.t := M.read n_squared in
+            let* α1 : u32.t := M.read upper in
+            M.alloc (BinOp.Pure.lt α0 α1))) in
+    let* α2 :
         core.iter.adapters.filter.Filter.t
           (core.iter.adapters.take_while.TakeWhile.t
             (core.iter.adapters.map.Map.t
               (core.ops.range.RangeFrom.t u32.t)
-              type not implemented)
-            type not implemented)
-          type not implemented :=
+              (u32.t -> M u32.t))
+            ((ref u32.t) -> M bool.t))
+          ((ref u32.t) -> M bool.t) :=
       M.call
         ((core.iter.traits.iterator.Iterator.filter
             (Self :=
               core.iter.adapters.take_while.TakeWhile.t
                 (core.iter.adapters.map.Map.t
                   (core.ops.range.RangeFrom.t u32.t)
-                  type not implemented)
-                type not implemented)
+                  (u32.t -> M u32.t))
+                ((ref u32.t) -> M bool.t))
             (Trait := ltac:(refine _)))
-          α3
-          α4) in
-    let* α6 : u32.t :=
+          α1
+          (fun (n_squared : ref u32.t) =>
+            let* α0 : u32.t := M.read n_squared in
+            let* α1 : bool.t := M.call (higher_order_functions.is_odd α0) in
+            M.alloc α1)) in
+    let* α3 : u32.t :=
       M.call
         ((core.iter.traits.iterator.Iterator.sum
             (Self :=
@@ -211,12 +205,12 @@ Definition main : M unit :=
                 (core.iter.adapters.take_while.TakeWhile.t
                   (core.iter.adapters.map.Map.t
                     (core.ops.range.RangeFrom.t u32.t)
-                    type not implemented)
-                  type not implemented)
-                type not implemented)
+                    (u32.t -> M u32.t))
+                  ((ref u32.t) -> M bool.t))
+                ((ref u32.t) -> M bool.t))
             (Trait := ltac:(refine _)))
-          α5) in
-    M.alloc α6 in
+          α2) in
+    M.alloc α3 in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "functional style: ") in

@@ -221,6 +221,37 @@ Section Impl_core_default_Default_for_multisig_AccountId_t.
 End Impl_core_default_Default_for_multisig_AccountId_t.
 End Impl_core_default_Default_for_multisig_AccountId_t.
 
+Module  Impl_core_fmt_Debug_for_multisig_AccountId_t.
+Section Impl_core_fmt_Debug_for_multisig_AccountId_t.
+  Definition Self : Set := multisig.AccountId.t.
+  
+  (*
+  Debug
+  *)
+  Definition fmt
+      (self : ref Self)
+      (f : mut_ref core.fmt.Formatter.t)
+      : M ltac:(core.fmt.Result) :=
+    let* self : M.Val (ref Self) := M.alloc self in
+    let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
+    let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
+    let* α1 : ref str.t := M.read (mk_str "AccountId") in
+    let* α2 : ref multisig.AccountId.t := M.read self in
+    let* α3 : M.Val (ref u128.t) := M.alloc (borrow (deref α2).["0"]) in
+    let* α4 : M.Val (ref (ref u128.t)) := M.alloc (borrow α3) in
+    let* α5 : ref dynamic := M.read (pointer_coercion "Unsize" α4) in
+    M.call (core.fmt.Formatter.t::["debug_tuple_field1_finish"] α0 α1 α5).
+  
+  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
+    Notations.double_colon := fmt;
+  }.
+  
+  Global Instance ℐ : core.fmt.Debug.Trait Self := {
+    core.fmt.Debug.fmt := fmt;
+  }.
+End Impl_core_fmt_Debug_for_multisig_AccountId_t.
+End Impl_core_fmt_Debug_for_multisig_AccountId_t.
+
 Module  Impl_core_clone_Clone_for_multisig_AccountId_t.
 Section Impl_core_clone_Clone_for_multisig_AccountId_t.
   Definition Self : Set := multisig.AccountId.t.
@@ -401,38 +432,6 @@ Section Impl_core_cmp_Ord_for_multisig_AccountId_t.
   }.
 End Impl_core_cmp_Ord_for_multisig_AccountId_t.
 End Impl_core_cmp_Ord_for_multisig_AccountId_t.
-
-Module  Impl_core_fmt_Debug_for_multisig_AccountId_t.
-Section Impl_core_fmt_Debug_for_multisig_AccountId_t.
-  Definition Self : Set := multisig.AccountId.t.
-  
-  (*
-  Debug
-  *)
-  Definition fmt
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter.t)
-      : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
-    let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
-    let* α1 : ref str.t := M.read (mk_str "AccountId") in
-    let* α2 : ref multisig.AccountId.t := M.read self in
-    let* α3 : M.Val (ref u128.t) := M.alloc (borrow (deref α2).["0"]) in
-    let* α4 : M.Val (ref (ref u128.t)) := M.alloc (borrow α3) in
-    let* α5 : ref type not implemented :=
-      M.read (pointer_coercion "Unsize" α4) in
-    M.call (core.fmt.Formatter.t::["debug_tuple_field1_finish"] α0 α1 α5).
-  
-  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
-    Notations.double_colon := fmt;
-  }.
-  
-  Global Instance ℐ : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
-  }.
-End Impl_core_fmt_Debug_for_multisig_AccountId_t.
-End Impl_core_fmt_Debug_for_multisig_AccountId_t.
 
 Ltac Balance := exact u128.t.
 
@@ -670,33 +669,6 @@ Section Impl_core_marker_Copy_for_multisig_Error_t.
   }.
 End Impl_core_marker_Copy_for_multisig_Error_t.
 End Impl_core_marker_Copy_for_multisig_Error_t.
-
-Module  Impl_core_fmt_Debug_for_multisig_Error_t.
-Section Impl_core_fmt_Debug_for_multisig_Error_t.
-  Definition Self : Set := multisig.Error.t.
-  
-  (*
-  Debug
-  *)
-  Definition fmt
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter.t)
-      : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
-    let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
-    let* α1 : ref str.t := M.read (mk_str "TransactionFailed") in
-    M.call (core.fmt.Formatter.t::["write_str"] α0 α1).
-  
-  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
-    Notations.double_colon := fmt;
-  }.
-  
-  Global Instance ℐ : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
-  }.
-End Impl_core_fmt_Debug_for_multisig_Error_t.
-End Impl_core_fmt_Debug_for_multisig_Error_t.
 
 Module  Impl_core_marker_StructuralPartialEq_for_multisig_Error_t.
 Section Impl_core_marker_StructuralPartialEq_for_multisig_Error_t.
@@ -2208,23 +2180,24 @@ Section Impl_multisig_Multisig_t.
       let* α2 : M.Val multisig.Env.t := M.alloc α1 in
       let* α3 : u32.t := M.read trans_id in
       let* α4 : core.result.Result.t unit multisig.Error.t := M.read result in
-      let* α5 : type not implemented :=
-        M.read (M.alloc core.option.Option.None) in
-      let* α6 :
+      let* α5 :
           core.result.Result.t
             (core.option.Option.t (alloc.vec.Vec.t u8.t alloc.alloc.Global.t))
             multisig.Error.t :=
-        M.call ((core.result.Result.t unit multisig.Error.t)::["map"] α4 α5) in
-      let* α7 : unit :=
+        M.call
+          ((core.result.Result.t unit multisig.Error.t)::["map"]
+            α4
+            (fun (_ : unit) => M.alloc core.option.Option.None)) in
+      let* α6 : unit :=
         M.call
           (multisig.Env.t::["emit_event"]
             (borrow α2)
             (multisig.Event.Execution
               {|
                 multisig.Execution.transaction := α3;
-                multisig.Execution.result := α6;
+                multisig.Execution.result := α5;
               |})) in
-      M.alloc α7 in
+      M.alloc α6 in
     M.read result.
   
   Global Instance AssociatedFunction_invoke_transaction :
@@ -2542,33 +2515,31 @@ Section Impl_multisig_Multisig_t.
       M.call ((slice multisig.AccountId.t)::["iter"] α1) in
     let* α3 : M.Val (core.slice.iter.Iter.t multisig.AccountId.t) :=
       M.alloc α2 in
-    let* α4 : type not implemented :=
-      M.read
-        (let* α0 : ref multisig.AccountId.t := M.read x in
-        let* α1 : ref multisig.AccountId.t := M.read owner in
-        let* α2 : bool.t :=
-          M.call
-            ((core.cmp.PartialEq.eq
-                (Self := multisig.AccountId.t)
-                (Trait := ltac:(refine _)))
-              α0
-              α1) in
-        M.alloc α2) in
-    let* α5 : core.option.Option.t usize.t :=
+    let* α4 : core.option.Option.t usize.t :=
       M.call
         ((core.iter.traits.iterator.Iterator.position
             (Self := core.slice.iter.Iter.t multisig.AccountId.t)
             (Trait := ltac:(refine _)))
           (borrow_mut α3)
-          α4) in
-    let* α6 : ref str.t :=
+          (fun (x : ref multisig.AccountId.t) =>
+            let* α0 : ref multisig.AccountId.t := M.read x in
+            let* α1 : ref multisig.AccountId.t := M.read owner in
+            let* α2 : bool.t :=
+              M.call
+                ((core.cmp.PartialEq.eq
+                    (Self := multisig.AccountId.t)
+                    (Trait := ltac:(refine _)))
+                  α0
+                  α1) in
+            M.alloc α2)) in
+    let* α5 : ref str.t :=
       M.read
         (mk_str
           "This is only called after it was already verified that the id is
                actually an owner.") in
-    let* α7 : usize.t :=
-      M.call ((core.option.Option.t usize.t)::["expect"] α5 α6) in
-    cast α7.
+    let* α6 : usize.t :=
+      M.call ((core.option.Option.t usize.t)::["expect"] α4 α5) in
+    cast α6.
   
   Global Instance AssociatedFunction_owner_index :
     Notations.DoubleColon Self "owner_index" := {
@@ -2635,31 +2606,29 @@ Section Impl_multisig_Multisig_t.
           let* α2 : core.slice.iter.Iter.t u32.t :=
             M.call ((slice u32.t)::["iter"] α1) in
           let* α3 : M.Val (core.slice.iter.Iter.t u32.t) := M.alloc α2 in
-          let* α4 : type not implemented :=
-            M.read
-              (let* α0 : M.Val (ref u32.t) := M.alloc (borrow trans_id) in
-              let* α1 : bool.t :=
-                M.call
-                  ((core.cmp.PartialEq.eq
-                      (Self := ref u32.t)
-                      (Trait := ltac:(refine _)))
-                    (borrow t)
-                    (borrow α0)) in
-              M.alloc α1) in
-          let* α5 : core.option.Option.t usize.t :=
+          let* α4 : core.option.Option.t usize.t :=
             M.call
               ((core.iter.traits.iterator.Iterator.position
                   (Self := core.slice.iter.Iter.t u32.t)
                   (Trait := ltac:(refine _)))
                 (borrow_mut α3)
-                α4) in
-          let* α6 : ref str.t :=
+                (fun (t : ref u32.t) =>
+                  let* α0 : M.Val (ref u32.t) := M.alloc (borrow trans_id) in
+                  let* α1 : bool.t :=
+                    M.call
+                      ((core.cmp.PartialEq.eq
+                          (Self := ref u32.t)
+                          (Trait := ltac:(refine _)))
+                        (borrow t)
+                        (borrow α0)) in
+                  M.alloc α1)) in
+          let* α5 : ref str.t :=
             M.read
               (mk_str
                 "The transaction exists hence it must also be in the list.") in
-          let* α7 : usize.t :=
-            M.call ((core.option.Option.t usize.t)::["expect"] α5 α6) in
-          M.alloc α7 in
+          let* α6 : usize.t :=
+            M.call ((core.option.Option.t usize.t)::["expect"] α4 α5) in
+          M.alloc α6 in
         let* _ : M.Val u32.t :=
           let* α0 : mut_ref multisig.Multisig.t := M.read self in
           let* α1 : usize.t := M.read pos in
@@ -3121,8 +3090,8 @@ Definition ensure_requirement_is_valid
     if
       (use
         (UnOp.not
-          (BinOp.and
-            (BinOp.and
+          (BinOp.Pure.and
+            (BinOp.Pure.and
               (BinOp.Pure.lt (Integer.of_Z 0) α0)
               (BinOp.Pure.le α1 α2))
             (BinOp.Pure.le α3 α4)))
