@@ -47,20 +47,93 @@ for filename in os.listdir(source_dir):
         with open(target_file, 'r+') as f:
             content = f.read()
 
+            # General headers
             first_line = '#![cfg_attr(not(feature = "std"), no_std, no_main)]'
             content = content.replace(
                 first_line,
-                '#[macro_use]\nmod storage;'
+                '#[macro_use]\nmod storage;\nuse storage::*;\n'
+            )
+
+            # for erc1155
+            content = content.replace(
+              'value: ink::prelude::string',
+              'value: string'
             )
 
             content = content.replace(
-                'use ink::storage::Mapping;',
-                'use crate::storage::*;',
+              'mod erc20 {\n    use ink::storage::Mapping;',
+              'mod erc20 {\n    use crate::storage::*;',
+            )
+
+            content = content.replace(
+              'mod erc721 {\n    use ink::storage::Mapping;',
+              'mod erc721 {\n    use crate::storage::*;',
+            )
+
+            content = content.replace(
+              'mod erc1155 {\n    use super::*;',
+              'mod erc1155 {\n    use super::*;\n    use super::Error;'
+            )
+            
+            multisig_header = """    use ink::{
+        env::{
+            call::{
+                build_call,
+                ExecutionInput,
+            },
+            CallFlags,
+        },
+        prelude::vec::Vec,
+        storage::Mapping,
+    };
+    use scale::Output;"""
+            content = re.sub(multisig_header, '    use super::*;\n    use crate::storage::call::ExecutionInput;', content)
+
+            # for erc1155
+            content = content.replace(
+              'use ink::storage::Mapping;',
+              ''
+            )
+
+            content = content.replace(
+              'ink::env::DefaultEnvironment',
+              'crate::storage::DefaultEnvironment'
+            )
+
+            content = content.replace(
+              'ink::env::Environment',
+              'crate::storage::Environment'
+            )
+
+            content = content.replace(
+              'ink::env::Error',
+              'crate::storage::Error'
+            )
+
+            content = content.replace(
+              '::ink::env::ContractEnv',
+              'ContractEnv'
             )
 
             content = content.replace(
                 'Self::env()',
                 'Self::init_env()',
+            )
+
+            # content = content.replace(
+            #     'ink::env::',
+            #     'crate::storage::',
+            # )
+
+            # For storage::call errors
+            content = content.replace(
+              'ink::env::call',
+              'crate::storage::call'
+            )
+
+            content = content.replace(
+                'ink::env::debug_println!',
+                'debug_println!',
             )
 
             storage_name = "DefaultName"
@@ -84,20 +157,31 @@ for filename in os.listdir(source_dir):
                 'impl_storage!(%s);' % storage_name,
             )
 
+            # content = content.replace(
+            #     'scale::Encode',
+            #     'Encode'
+            # )
+
+            # content = content.replace(
+            #     'scale::Decode',
+            #     'Decode'
+            # )
+
             content = content.replace(
               'use ink::{',
               'use crate::storage::{'
             )
 
             content = content.replace(
-              'prelude::',
-              ''
+              'prelude::vec::Vec',
+              'vec::Vec'
             )
 
-            content = content.replace(
-              'primitives::',
-              ''
-            )
+            imports_to_delete = [
+              'use crate::storage::{\n    vec::Vec,\n    primitives::AccountId,\n};\n'
+            ]
+            for imports in imports_to_delete:
+                content = content.replace(imports, '')
 
             macros_to_comment = [
                 '#[ink::contract]',
