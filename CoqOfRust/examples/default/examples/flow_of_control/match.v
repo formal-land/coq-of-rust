@@ -72,7 +72,7 @@ Definition main : M unit :=
         let* α5 : unit := M.call (std.io.stdio._print α4) in
         M.alloc α5 in
       M.alloc tt
-    | (_|_|_|_|_) =>
+    | _ | _ | _ | _ | _ =>
       let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "This is a prime
 ") in

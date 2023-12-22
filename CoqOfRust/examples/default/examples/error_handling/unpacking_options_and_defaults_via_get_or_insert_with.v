@@ -30,19 +30,19 @@ Section Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert
       M.read self in
     let* α2 : M.Val (ref str.t) :=
       match α1 with
-      | unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Apple  =>
+      | unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Apple =>
         let* α0 : ref str.t := M.read (mk_str "Apple") in
         M.alloc α0
-      | unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Orange  =>
+      | unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Orange =>
         let* α0 : ref str.t := M.read (mk_str "Orange") in
         M.alloc α0
-      | unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Banana  =>
+      | unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Banana =>
         let* α0 : ref str.t := M.read (mk_str "Banana") in
         M.alloc α0
-      | unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Kiwi  =>
+      | unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Kiwi =>
         let* α0 : ref str.t := M.read (mk_str "Kiwi") in
         M.alloc α0
-      | unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Lemon  =>
+      | unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Lemon =>
         let* α0 : ref str.t := M.read (mk_str "Lemon") in
         M.alloc α0
       end in

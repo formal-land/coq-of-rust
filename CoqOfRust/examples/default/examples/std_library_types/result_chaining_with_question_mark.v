@@ -28,20 +28,16 @@ Module checked.
         M.read self in
       let* α2 : M.Val (ref str.t) :=
         match α1 with
-        |
-            result_chaining_with_question_mark.checked.MathError.DivisionByZero 
-            =>
+        | result_chaining_with_question_mark.checked.MathError.DivisionByZero =>
           let* α0 : ref str.t := M.read (mk_str "DivisionByZero") in
           M.alloc α0
         |
             result_chaining_with_question_mark.checked.MathError.NonPositiveLogarithm
-              
             =>
           let* α0 : ref str.t := M.read (mk_str "NonPositiveLogarithm") in
           M.alloc α0
         |
             result_chaining_with_question_mark.checked.MathError.NegativeSquareRoot
-              
             =>
           let* α0 : ref str.t := M.read (mk_str "NegativeSquareRoot") in
           M.alloc α0
@@ -338,18 +334,15 @@ Module checked.
           match α0 with
           |
               result_chaining_with_question_mark.checked.MathError.NonPositiveLogarithm
-                
               =>
             M.pure (mk_str "logarithm of non-positive number")
           |
               result_chaining_with_question_mark.checked.MathError.DivisionByZero
-                
               =>
             let* α0 : ref str.t := M.read (mk_str "division by zero") in
             M.alloc α0
           |
               result_chaining_with_question_mark.checked.MathError.NegativeSquareRoot
-                
               =>
             let* α0 : ref str.t :=
               M.read (mk_str "square root of negative number") in
@@ -411,18 +404,16 @@ Section Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathE
       M.read self in
     let* α2 : M.Val (ref str.t) :=
       match α1 with
-      | result_chaining_with_question_mark.checked.MathError.DivisionByZero  =>
+      | result_chaining_with_question_mark.checked.MathError.DivisionByZero =>
         let* α0 : ref str.t := M.read (mk_str "DivisionByZero") in
         M.alloc α0
       |
           result_chaining_with_question_mark.checked.MathError.NonPositiveLogarithm
-            
           =>
         let* α0 : ref str.t := M.read (mk_str "NonPositiveLogarithm") in
         M.alloc α0
       |
           result_chaining_with_question_mark.checked.MathError.NegativeSquareRoot
-            
           =>
         let* α0 : ref str.t := M.read (mk_str "NegativeSquareRoot") in
         M.alloc α0
@@ -718,17 +709,13 @@ Definition op (x : f64.t) (y : f64.t) : M unit :=
         match α0 with
         |
             result_chaining_with_question_mark.checked.MathError.NonPositiveLogarithm
-              
             =>
           M.pure (mk_str "logarithm of non-positive number")
-        |
-            result_chaining_with_question_mark.checked.MathError.DivisionByZero 
-            =>
+        | result_chaining_with_question_mark.checked.MathError.DivisionByZero =>
           let* α0 : ref str.t := M.read (mk_str "division by zero") in
           M.alloc α0
         |
             result_chaining_with_question_mark.checked.MathError.NegativeSquareRoot
-              
             =>
           let* α0 : ref str.t :=
             M.read (mk_str "square root of negative number") in

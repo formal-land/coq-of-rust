@@ -51,7 +51,7 @@ Definition give_adult (drink : core.option.Option.t (ref str.t)) : M unit :=
         let* α10 : unit := M.call (std.io.stdio._print α9) in
         M.alloc α10 in
       M.alloc tt
-    | core.option.Option.None  =>
+    | core.option.Option.None =>
       let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "No drink? Oh well.
 ") in

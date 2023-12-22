@@ -51,7 +51,7 @@ Definition try_division (dividend : i32.t) (divisor : i32.t) : M unit :=
     M.call (option.checked_division α0 α1) in
   let* α3 : M.Val unit :=
     match α2 with
-    | core.option.Option.None  =>
+    | core.option.Option.None =>
       let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "") in
         let* α1 : ref str.t := M.read (mk_str " / ") in

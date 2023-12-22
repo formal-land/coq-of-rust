@@ -403,6 +403,7 @@ fn compile_expr_kind<'a>(
                     }
                 })
                 .collect();
+
             ExprKind::Match { scrutinee, arms }
         }
         thir::ExprKind::Block { block: block_id } => compile_block(env, thir, block_id).kind,

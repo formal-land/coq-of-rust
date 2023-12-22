@@ -1395,7 +1395,7 @@ Section Impl_payment_channel_PaymentChannel_t.
                   α4) in
             M.alloc α5 in
           M.alloc (core.result.Result.Ok tt)
-        | core.option.Option.None  =>
+        | core.option.Option.None =>
           M.alloc (core.result.Result.Err payment_channel.Error.NotYetExpired)
         end in
       M.read α2).

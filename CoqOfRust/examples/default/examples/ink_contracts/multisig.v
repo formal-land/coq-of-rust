@@ -1311,7 +1311,7 @@ Section Impl_multisig_Multisig_t.
                       (Trait := ltac:(refine _)))
                     (borrow_mut iter)) in
               match α0 with
-              | core.option.Option.None  =>
+              | core.option.Option.None =>
                 let* α0 : M.Val never.t := Break in
                 let* α1 := M.read α0 in
                 let* α2 : unit := never_to_any α1 in
@@ -2171,7 +2171,7 @@ Section Impl_multisig_Multisig_t.
         M.read result in
       let* α1 : M.Val (core.result.Result.t unit multisig.Error.t) :=
         match α0 with
-        | core.result.Result.Ok core.result.Result.Ok _ =>
+        | core.result.Result.Ok (core.result.Result.Ok _) =>
           M.alloc (core.result.Result.Ok tt)
         | _ => M.alloc (core.result.Result.Err multisig.Error.TransactionFailed)
         end in
@@ -2300,7 +2300,7 @@ Section Impl_multisig_Multisig_t.
               (alloc.vec.Vec.t u8.t alloc.alloc.Global.t)
               multisig.Error.t) :=
         match α0 with
-        | core.result.Result.Ok core.result.Result.Ok v =>
+        | core.result.Result.Ok (core.result.Result.Ok v) =>
           let* v := M.alloc v in
           let* α0 : alloc.vec.Vec.t u8.t alloc.alloc.Global.t := M.read v in
           M.alloc (core.result.Result.Ok α0)
@@ -2678,7 +2678,7 @@ Section Impl_multisig_Multisig_t.
                           (Trait := ltac:(refine _)))
                         (borrow_mut iter)) in
                   match α0 with
-                  | core.option.Option.None  =>
+                  | core.option.Option.None =>
                     let* α0 : M.Val never.t := Break in
                     let* α1 := M.read α0 in
                     let* α2 : unit := never_to_any α1 in
@@ -2761,7 +2761,7 @@ Section Impl_multisig_Multisig_t.
                     (Trait := ltac:(refine _)))
                   (borrow_mut iter)) in
             match α0 with
-            | core.option.Option.None  =>
+            | core.option.Option.None =>
               let* α0 : M.Val never.t := Break in
               let* α1 := M.read α0 in
               let* α2 : unit := never_to_any α1 in

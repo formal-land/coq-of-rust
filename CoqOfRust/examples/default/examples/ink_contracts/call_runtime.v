@@ -294,7 +294,7 @@ Section Impl_core_convert_From_call_runtime_EnvError_t_for_call_runtime_RuntimeE
     let* α0 : call_runtime.EnvError.t := M.read e in
     let* α1 : M.Val call_runtime.RuntimeError.t :=
       match α0 with
-      | call_runtime.EnvError.CallRuntimeFailed  =>
+      | call_runtime.EnvError.CallRuntimeFailed =>
         M.alloc call_runtime.RuntimeError.CallRuntimeFailed
       | _ =>
         let* α0 : ref str.t :=

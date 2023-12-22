@@ -747,7 +747,13 @@ pub(crate) fn compile_hir_id(env: &mut Env, hir_id: rustc_hir::hir_id::HirId) ->
 impl MatchArm {
     fn to_doc(&self) -> Doc {
         return nest([
-            nest([text("|"), line(), self.pattern.to_doc(), line(), text("=>")]),
+            nest([
+                text("|"),
+                line(),
+                self.pattern.to_doc(false),
+                line(),
+                text("=>"),
+            ]),
             line(),
             self.body.to_doc(false),
         ]);
@@ -900,7 +906,7 @@ impl ExprKind {
                                     args.iter().map(|(pattern, ty)| {
                                         nest([
                                             text("("),
-                                            pattern.to_doc(),
+                                            pattern.to_doc(false),
                                             text(" :"),
                                             line(),
                                             ty.to_coq().to_doc(false),
@@ -952,7 +958,7 @@ impl ExprKind {
                                 line(),
                                 optional_insert(pattern.is_single_binding(), text("'")),
                             ]),
-                            pattern.to_doc(),
+                            pattern.to_doc(false),
                             match &init.ty {
                                 Some(ty) => concat([text(" :"), line(), ty.to_coq().to_doc(false)]),
                                 None => nil(),
@@ -970,7 +976,7 @@ impl ExprKind {
             ExprKind::LetIf { pat, init } => group([
                 text("let_if"),
                 line(),
-                pat.to_doc(),
+                pat.to_doc(false),
                 line(),
                 text(":="),
                 line(),

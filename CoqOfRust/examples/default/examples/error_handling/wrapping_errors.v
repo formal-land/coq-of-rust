@@ -25,7 +25,7 @@ Section Impl_core_fmt_Debug_for_wrapping_errors_DoubleError_t.
     let* α0 : ref wrapping_errors.DoubleError.t := M.read self in
     let* α1 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=
       match α0 with
-      | wrapping_errors.DoubleError.EmptyVec  =>
+      | wrapping_errors.DoubleError.EmptyVec =>
         let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
         let* α1 : ref str.t := M.read (mk_str "EmptyVec") in
         let* α2 : core.result.Result.t unit core.fmt.Error.t :=
@@ -79,7 +79,7 @@ Section Impl_core_fmt_Display_for_wrapping_errors_DoubleError_t.
     let* α1 : wrapping_errors.DoubleError.t := M.read (deref α0) in
     let* α2 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=
       match α1 with
-      | wrapping_errors.DoubleError.EmptyVec  =>
+      | wrapping_errors.DoubleError.EmptyVec =>
         let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
         let* α1 : ref str.t :=
           M.read (mk_str "please use a vector with at least one element") in
@@ -92,7 +92,7 @@ Section Impl_core_fmt_Display_for_wrapping_errors_DoubleError_t.
         let* α6 : core.result.Result.t unit core.fmt.Error.t :=
           M.call (core.fmt.Formatter.t::["write_fmt"] α0 α5) in
         M.alloc α6
-      | wrapping_errors.DoubleError.Parse  =>
+      | wrapping_errors.DoubleError.Parse =>
         let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
         let* α1 : ref str.t :=
           M.read (mk_str "the provided string could not be parsed as int") in
@@ -141,7 +141,7 @@ Section Impl_core_error_Error_for_wrapping_errors_DoubleError_t.
     let* α1 : wrapping_errors.DoubleError.t := M.read (deref α0) in
     let* α2 : M.Val (core.option.Option.t (ref dynamic)) :=
       match α1 with
-      | wrapping_errors.DoubleError.EmptyVec  => M.alloc core.option.Option.None
+      | wrapping_errors.DoubleError.EmptyVec => M.alloc core.option.Option.None
       | wrapping_errors.DoubleError.Parse e =>
         let* e := M.alloc e in
         let* α0 : ref core.num.error.ParseIntError.t := M.read e in

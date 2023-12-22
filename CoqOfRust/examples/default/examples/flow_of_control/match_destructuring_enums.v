@@ -60,7 +60,7 @@ Definition main : M unit :=
   let* α0 : match_destructuring_enums.Color.t := M.read color in
   let* α0 : M.Val unit :=
     match α0 with
-    | match_destructuring_enums.Color.Red  =>
+    | match_destructuring_enums.Color.Red =>
       let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "The color is Red!
 ") in
@@ -73,7 +73,7 @@ Definition main : M unit :=
         let* α5 : unit := M.call (std.io.stdio._print α4) in
         M.alloc α5 in
       M.alloc tt
-    | match_destructuring_enums.Color.Blue  =>
+    | match_destructuring_enums.Color.Blue =>
       let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "The color is Blue!
 ") in
@@ -86,7 +86,7 @@ Definition main : M unit :=
         let* α5 : unit := M.call (std.io.stdio._print α4) in
         M.alloc α5 in
       M.alloc tt
-    | match_destructuring_enums.Color.Green  =>
+    | match_destructuring_enums.Color.Green =>
       let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "The color is Green!
 ") in

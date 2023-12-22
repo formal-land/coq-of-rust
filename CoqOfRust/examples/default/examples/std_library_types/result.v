@@ -26,13 +26,13 @@ Module checked.
       let* α1 : ref result.checked.MathError.t := M.read self in
       let* α2 : M.Val (ref str.t) :=
         match α1 with
-        | result.checked.MathError.DivisionByZero  =>
+        | result.checked.MathError.DivisionByZero =>
           let* α0 : ref str.t := M.read (mk_str "DivisionByZero") in
           M.alloc α0
-        | result.checked.MathError.NonPositiveLogarithm  =>
+        | result.checked.MathError.NonPositiveLogarithm =>
           let* α0 : ref str.t := M.read (mk_str "NonPositiveLogarithm") in
           M.alloc α0
-        | result.checked.MathError.NegativeSquareRoot  =>
+        | result.checked.MathError.NegativeSquareRoot =>
           let* α0 : ref str.t := M.read (mk_str "NegativeSquareRoot") in
           M.alloc α0
         end in
@@ -157,13 +157,13 @@ Section Impl_core_fmt_Debug_for_result_checked_MathError_t.
     let* α1 : ref result.checked.MathError.t := M.read self in
     let* α2 : M.Val (ref str.t) :=
       match α1 with
-      | result.checked.MathError.DivisionByZero  =>
+      | result.checked.MathError.DivisionByZero =>
         let* α0 : ref str.t := M.read (mk_str "DivisionByZero") in
         M.alloc α0
-      | result.checked.MathError.NonPositiveLogarithm  =>
+      | result.checked.MathError.NonPositiveLogarithm =>
         let* α0 : ref str.t := M.read (mk_str "NonPositiveLogarithm") in
         M.alloc α0
-      | result.checked.MathError.NegativeSquareRoot  =>
+      | result.checked.MathError.NegativeSquareRoot =>
         let* α0 : ref str.t := M.read (mk_str "NegativeSquareRoot") in
         M.alloc α0
       end in

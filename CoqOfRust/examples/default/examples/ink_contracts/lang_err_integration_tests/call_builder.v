@@ -195,8 +195,7 @@ Section Impl_call_builder_CallBuilderTest_t.
       match α0 with
       | core.result.Result.Ok _ => M.alloc core.option.Option.None
       |
-          core.result.Result.Err
-            (call_builder.LangError.CouldNotReadInput  as e)
+          core.result.Result.Err (call_builder.LangError.CouldNotReadInput as e)
           =>
         let* e := M.alloc e in
         let* α0 : call_builder.LangError.t := M.read e in

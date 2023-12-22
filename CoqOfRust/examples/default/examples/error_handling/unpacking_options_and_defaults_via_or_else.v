@@ -28,19 +28,19 @@ Section Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_else_Fruit
       M.read self in
     let* α2 : M.Val (ref str.t) :=
       match α1 with
-      | unpacking_options_and_defaults_via_or_else.Fruit.Apple  =>
+      | unpacking_options_and_defaults_via_or_else.Fruit.Apple =>
         let* α0 : ref str.t := M.read (mk_str "Apple") in
         M.alloc α0
-      | unpacking_options_and_defaults_via_or_else.Fruit.Orange  =>
+      | unpacking_options_and_defaults_via_or_else.Fruit.Orange =>
         let* α0 : ref str.t := M.read (mk_str "Orange") in
         M.alloc α0
-      | unpacking_options_and_defaults_via_or_else.Fruit.Banana  =>
+      | unpacking_options_and_defaults_via_or_else.Fruit.Banana =>
         let* α0 : ref str.t := M.read (mk_str "Banana") in
         M.alloc α0
-      | unpacking_options_and_defaults_via_or_else.Fruit.Kiwi  =>
+      | unpacking_options_and_defaults_via_or_else.Fruit.Kiwi =>
         let* α0 : ref str.t := M.read (mk_str "Kiwi") in
         M.alloc α0
-      | unpacking_options_and_defaults_via_or_else.Fruit.Lemon  =>
+      | unpacking_options_and_defaults_via_or_else.Fruit.Lemon =>
         let* α0 : ref str.t := M.read (mk_str "Lemon") in
         M.alloc α0
       end in

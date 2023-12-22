@@ -369,7 +369,7 @@ Definition main : M unit :=
                   (Trait := ltac:(refine _)))
                 (borrow_mut iter)) in
           match α0 with
-          | core.option.Option.None  =>
+          | core.option.Option.None =>
             let* α0 : M.Val never.t := Break in
             let* α1 := M.read α0 in
             let* α2 : unit := never_to_any α1 in
@@ -411,7 +411,7 @@ Definition main : M unit :=
                 let* α12 : unit := M.call (std.io.stdio._print α11) in
                 M.alloc α12 in
               M.alloc tt
-            | core.option.Option.None  =>
+            | core.option.Option.None =>
               let* _ : M.Val unit :=
                 let* α0 : ref str.t := M.read (mk_str "Slow down! ") in
                 let* α1 : ref str.t := M.read (mk_str " is too far!

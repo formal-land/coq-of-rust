@@ -25,13 +25,13 @@ Section Impl_core_fmt_Debug_for_combinators_and_then_Food_t.
     let* α1 : ref combinators_and_then.Food.t := M.read self in
     let* α2 : M.Val (ref str.t) :=
       match α1 with
-      | combinators_and_then.Food.CordonBleu  =>
+      | combinators_and_then.Food.CordonBleu =>
         let* α0 : ref str.t := M.read (mk_str "CordonBleu") in
         M.alloc α0
-      | combinators_and_then.Food.Steak  =>
+      | combinators_and_then.Food.Steak =>
         let* α0 : ref str.t := M.read (mk_str "Steak") in
         M.alloc α0
-      | combinators_and_then.Food.Sushi  =>
+      | combinators_and_then.Food.Sushi =>
         let* α0 : ref str.t := M.read (mk_str "Sushi") in
         M.alloc α0
       end in
@@ -72,13 +72,13 @@ Section Impl_core_fmt_Debug_for_combinators_and_then_Day_t.
     let* α1 : ref combinators_and_then.Day.t := M.read self in
     let* α2 : M.Val (ref str.t) :=
       match α1 with
-      | combinators_and_then.Day.Monday  =>
+      | combinators_and_then.Day.Monday =>
         let* α0 : ref str.t := M.read (mk_str "Monday") in
         M.alloc α0
-      | combinators_and_then.Day.Tuesday  =>
+      | combinators_and_then.Day.Tuesday =>
         let* α0 : ref str.t := M.read (mk_str "Tuesday") in
         M.alloc α0
-      | combinators_and_then.Day.Wednesday  =>
+      | combinators_and_then.Day.Wednesday =>
         let* α0 : ref str.t := M.read (mk_str "Wednesday") in
         M.alloc α0
       end in
@@ -110,7 +110,7 @@ Definition have_ingredients
   let* α0 : combinators_and_then.Food.t := M.read food in
   let* α1 : M.Val (core.option.Option.t combinators_and_then.Food.t) :=
     match α0 with
-    | combinators_and_then.Food.Sushi  => M.alloc core.option.Option.None
+    | combinators_and_then.Food.Sushi => M.alloc core.option.Option.None
     | _ =>
       let* α0 : combinators_and_then.Food.t := M.read food in
       M.alloc (core.option.Option.Some α0)
@@ -132,7 +132,7 @@ Definition have_recipe
   let* α0 : combinators_and_then.Food.t := M.read food in
   let* α1 : M.Val (core.option.Option.t combinators_and_then.Food.t) :=
     match α0 with
-    | combinators_and_then.Food.CordonBleu  => M.alloc core.option.Option.None
+    | combinators_and_then.Food.CordonBleu => M.alloc core.option.Option.None
     | _ =>
       let* α0 : combinators_and_then.Food.t := M.read food in
       M.alloc (core.option.Option.Some α0)
@@ -159,14 +159,14 @@ Definition cookable_v1
     M.call (combinators_and_then.have_recipe α0) in
   let* α2 : M.Val (core.option.Option.t combinators_and_then.Food.t) :=
     match α1 with
-    | core.option.Option.None  => M.alloc core.option.Option.None
+    | core.option.Option.None => M.alloc core.option.Option.None
     | core.option.Option.Some food =>
       let* food := M.alloc food in
       let* α0 : combinators_and_then.Food.t := M.read food in
       let* α1 : core.option.Option.t combinators_and_then.Food.t :=
         M.call (combinators_and_then.have_ingredients α0) in
       match α1 with
-      | core.option.Option.None  => M.alloc core.option.Option.None
+      | core.option.Option.None => M.alloc core.option.Option.None
       | core.option.Option.Some food =>
         let* food := M.alloc food in
         let* α0 : combinators_and_then.Food.t := M.read food in
@@ -236,7 +236,7 @@ Definition eat
         let* α12 : unit := M.call (std.io.stdio._print α11) in
         M.alloc α12 in
       M.alloc tt
-    | core.option.Option.None  =>
+    | core.option.Option.None =>
       let* _ : M.Val unit :=
         let* α0 : ref str.t :=
           M.read (mk_str "Oh no. We don't get to eat on ") in

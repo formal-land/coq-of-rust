@@ -39,7 +39,7 @@ Definition inspect (event : enums.WebEvent.t) : M unit :=
   let* α0 : enums.WebEvent.t := M.read event in
   let* α1 : M.Val unit :=
     match α0 with
-    | enums.WebEvent.PageLoad  =>
+    | enums.WebEvent.PageLoad =>
       let* _ : M.Val unit :=
         let* α0 : ref str.t :=
           M.read
@@ -56,7 +56,7 @@ Definition inspect (event : enums.WebEvent.t) : M unit :=
         let* α5 : unit := M.call (std.io.stdio._print α4) in
         M.alloc α5 in
       M.alloc tt
-    | enums.WebEvent.PageUnload  =>
+    | enums.WebEvent.PageUnload =>
       let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "page unloaded
 ") in

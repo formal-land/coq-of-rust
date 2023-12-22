@@ -76,7 +76,7 @@ Definition main : M unit :=
     M.call (std.path.Path.t::["to_str"] α0) in
   let* α0 : M.Val unit :=
     match α1 with
-    | core.option.Option.None  =>
+    | core.option.Option.None =>
       let* α0 : ref str.t :=
         M.read (mk_str "new path is not a valid UTF-8 sequence") in
       let* α1 : never.t := M.call (std.panicking.begin_panic α0) in

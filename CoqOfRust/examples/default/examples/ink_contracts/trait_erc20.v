@@ -222,10 +222,10 @@ Section Impl_core_fmt_Debug_for_trait_erc20_Error_t.
     let* α1 : ref trait_erc20.Error.t := M.read self in
     let* α2 : M.Val (ref str.t) :=
       match α1 with
-      | trait_erc20.Error.InsufficientBalance  =>
+      | trait_erc20.Error.InsufficientBalance =>
         let* α0 : ref str.t := M.read (mk_str "InsufficientBalance") in
         M.alloc α0
-      | trait_erc20.Error.InsufficientAllowance  =>
+      | trait_erc20.Error.InsufficientAllowance =>
         let* α0 : ref str.t := M.read (mk_str "InsufficientAllowance") in
         M.alloc α0
       end in

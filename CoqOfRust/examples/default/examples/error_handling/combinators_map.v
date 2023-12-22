@@ -25,13 +25,13 @@ Section Impl_core_fmt_Debug_for_combinators_map_Food_t.
     let* α1 : ref combinators_map.Food.t := M.read self in
     let* α2 : M.Val (ref str.t) :=
       match α1 with
-      | combinators_map.Food.Apple  =>
+      | combinators_map.Food.Apple =>
         let* α0 : ref str.t := M.read (mk_str "Apple") in
         M.alloc α0
-      | combinators_map.Food.Carrot  =>
+      | combinators_map.Food.Carrot =>
         let* α0 : ref str.t := M.read (mk_str "Carrot") in
         M.alloc α0
-      | combinators_map.Food.Potato  =>
+      | combinators_map.Food.Potato =>
         let* α0 : ref str.t := M.read (mk_str "Potato") in
         M.alloc α0
       end in
@@ -199,7 +199,7 @@ Definition peel
       let* food := M.alloc food in
       let* α0 : combinators_map.Food.t := M.read food in
       M.alloc (core.option.Option.Some (combinators_map.Peeled.Build_t α0))
-    | core.option.Option.None  => M.alloc core.option.Option.None
+    | core.option.Option.None => M.alloc core.option.Option.None
     end in
   M.read α1.
 
@@ -218,11 +218,11 @@ Definition chop
   let* α0 : core.option.Option.t combinators_map.Peeled.t := M.read peeled in
   let* α1 : M.Val (core.option.Option.t combinators_map.Chopped.t) :=
     match α0 with
-    | core.option.Option.Some combinators_map.Peeled.Build_t food =>
+    | core.option.Option.Some (combinators_map.Peeled.Build_t food) =>
       let* food := M.alloc food in
       let* α0 : combinators_map.Food.t := M.read food in
       M.alloc (core.option.Option.Some (combinators_map.Chopped.Build_t α0))
-    | core.option.Option.None  => M.alloc core.option.Option.None
+    | core.option.Option.None => M.alloc core.option.Option.None
     end in
   M.read α1.
 
@@ -321,7 +321,7 @@ Definition eat
         let* α10 : unit := M.call (std.io.stdio._print α9) in
         M.alloc α10 in
       M.alloc tt
-    | core.option.Option.None  =>
+    | core.option.Option.None =>
       let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "Oh no! It wasn't edible.
 ") in

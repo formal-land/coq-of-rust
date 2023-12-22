@@ -543,10 +543,9 @@ Section Impl_core_clone_Clone_for_mother_Outline_t.
     let* α0 : ref mother.Outline.t := M.read self in
     let* α1 : M.Val mother.Outline.t :=
       match α0 with
-      | mother.Outline.NoWinner  => M.alloc mother.Outline.NoWinner
-      | mother.Outline.WinnerDetected  => M.alloc mother.Outline.WinnerDetected
-      | mother.Outline.PayoutCompleted  =>
-        M.alloc mother.Outline.PayoutCompleted
+      | mother.Outline.NoWinner => M.alloc mother.Outline.NoWinner
+      | mother.Outline.WinnerDetected => M.alloc mother.Outline.WinnerDetected
+      | mother.Outline.PayoutCompleted => M.alloc mother.Outline.PayoutCompleted
       end in
     M.read α1.
   
@@ -703,8 +702,8 @@ Section Impl_core_clone_Clone_for_mother_Status_t.
     let* α0 : ref mother.Status.t := M.read self in
     let* α1 : M.Val mother.Status.t :=
       match α0 with
-      | mother.Status.NotStarted  => M.alloc mother.Status.NotStarted
-      | mother.Status.OpeningPeriod  => M.alloc mother.Status.OpeningPeriod
+      | mother.Status.NotStarted => M.alloc mother.Status.NotStarted
+      | mother.Status.OpeningPeriod => M.alloc mother.Status.OpeningPeriod
       | mother.Status.EndingPeriod __self_0 =>
         let* __self_0 := M.alloc __self_0 in
         let* α0 : ref u32.t := M.read __self_0 in
@@ -1478,7 +1477,7 @@ Section Impl_mother_Mother_t.
     let* α0 : core.option.Option.t mother.Failure.t := M.read fail in
     let* α1 : M.Val (core.result.Result.t unit mother.Failure.t) :=
       match α0 with
-      | core.option.Option.Some mother.Failure.Revert _ =>
+      | core.option.Option.Some (mother.Failure.Revert _) =>
         let* α0 : ref str.t := M.read (mk_str "Reverting on user demand!") in
         let* α1 : alloc.string.String.t :=
           M.call
@@ -1487,13 +1486,13 @@ Section Impl_mother_Mother_t.
                 (Trait := ltac:(refine _)))
               α0) in
         M.alloc (core.result.Result.Err (mother.Failure.Revert α1))
-      | core.option.Option.Some mother.Failure.Panic  =>
+      | core.option.Option.Some mother.Failure.Panic =>
         let* α0 : ref str.t := M.read (mk_str "Trapping on user demand!") in
         let* α1 : never.t := M.call (std.panicking.begin_panic α0) in
         let* α2 : core.result.Result.t unit mother.Failure.t :=
           never_to_any α1 in
         M.alloc α2
-      | core.option.Option.None  => M.alloc (core.result.Result.Ok tt)
+      | core.option.Option.None => M.alloc (core.result.Result.Ok tt)
       end in
     M.read α1.
   

@@ -146,7 +146,7 @@ Definition main : M unit :=
             (borrow guess)
             (borrow secret_number)) in
       match α0 with
-      | core.cmp.Ordering.Less  =>
+      | core.cmp.Ordering.Less =>
         let* _ : M.Val unit :=
           let* α0 : ref str.t := M.read (mk_str "Too small!
 ") in
@@ -159,7 +159,7 @@ Definition main : M unit :=
           let* α5 : unit := M.call (std.io.stdio._print α4) in
           M.alloc α5 in
         M.alloc tt
-      | core.cmp.Ordering.Greater  =>
+      | core.cmp.Ordering.Greater =>
         let* _ : M.Val unit :=
           let* α0 : ref str.t := M.read (mk_str "Too big!
 ") in
@@ -172,7 +172,7 @@ Definition main : M unit :=
           let* α5 : unit := M.call (std.io.stdio._print α4) in
           M.alloc α5 in
         M.alloc tt
-      | core.cmp.Ordering.Equal  =>
+      | core.cmp.Ordering.Equal =>
         let* _ : M.Val unit :=
           let* _ : M.Val unit :=
             let* α0 : ref str.t := M.read (mk_str "You win!

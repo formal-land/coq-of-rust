@@ -20,7 +20,7 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
   let* a : M.Val if_let_challenge.Foo.t := M.alloc if_let_challenge.Foo.Bar in
-  let* α0 : M.Val bool.t := let_if if_let_challenge.Foo.Bar  := a in
+  let* α0 : M.Val bool.t := let_if if_let_challenge.Foo.Bar := a in
   let* α1 : bool.t := M.read α0 in
   let* α0 : M.Val unit :=
     if α1 then
