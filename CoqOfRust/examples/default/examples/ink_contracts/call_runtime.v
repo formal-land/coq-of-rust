@@ -162,6 +162,13 @@ End BalancesCall.
 Module RuntimeCall.
   Inductive t : Set :=
   | Balances (_ : call_runtime.BalancesCall.t).
+  
+  Global Instance Get_Balances_0 : Notations.Dot "Balances.0" := {
+    Notations.dot :=
+      Ref.map
+        (fun α => match α with | Balances α0 => Some α0 end)
+        (fun β α => match α with | Balances _ => Some (Balances β) end);
+  }.
 End RuntimeCall.
 
 Module  RuntimeCaller.

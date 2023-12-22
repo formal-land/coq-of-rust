@@ -333,6 +333,17 @@ End SenderCloseStarted.
 Module Event.
   Inductive t : Set :=
   | SenderCloseStarted (_ : payment_channel.SenderCloseStarted.t).
+  
+  Global Instance Get_SenderCloseStarted_0 :
+    Notations.Dot "SenderCloseStarted.0" := {
+    Notations.dot :=
+      Ref.map
+        (fun α => match α with | SenderCloseStarted α0 => Some α0 end)
+        (fun β α =>
+          match α with
+          | SenderCloseStarted _ => Some (SenderCloseStarted β)
+          end);
+  }.
 End Event.
 
 Module  Impl_payment_channel_Env_t.

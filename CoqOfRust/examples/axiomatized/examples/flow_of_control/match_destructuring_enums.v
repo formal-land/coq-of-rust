@@ -11,6 +11,146 @@ Module Color.
   | HSL (_ : u32.t) (_ : u32.t) (_ : u32.t)
   | CMY (_ : u32.t) (_ : u32.t) (_ : u32.t)
   | CMYK (_ : u32.t) (_ : u32.t) (_ : u32.t) (_ : u32.t).
+  
+  Global Instance Get_RGB_0 : Notations.Dot "RGB.0" := {
+    Notations.dot :=
+      Ref.map
+        (fun α => match α with | RGB α0 _ _ => Some α0 | _ => None end)
+        (fun β α =>
+          match α with | RGB _ α1 α2 => Some (RGB β α1 α2) | _ => None end);
+  }.
+  
+  Global Instance Get_RGB_1 : Notations.Dot "RGB.1" := {
+    Notations.dot :=
+      Ref.map
+        (fun α => match α with | RGB _ α1 _ => Some α1 | _ => None end)
+        (fun β α =>
+          match α with | RGB α0 _ α2 => Some (RGB α0 β α2) | _ => None end);
+  }.
+  
+  Global Instance Get_RGB_2 : Notations.Dot "RGB.2" := {
+    Notations.dot :=
+      Ref.map
+        (fun α => match α with | RGB _ _ α2 => Some α2 | _ => None end)
+        (fun β α =>
+          match α with | RGB α0 α1 _ => Some (RGB α0 α1 β) | _ => None end);
+  }.
+  
+  Global Instance Get_HSV_0 : Notations.Dot "HSV.0" := {
+    Notations.dot :=
+      Ref.map
+        (fun α => match α with | HSV α0 _ _ => Some α0 | _ => None end)
+        (fun β α =>
+          match α with | HSV _ α1 α2 => Some (HSV β α1 α2) | _ => None end);
+  }.
+  
+  Global Instance Get_HSV_1 : Notations.Dot "HSV.1" := {
+    Notations.dot :=
+      Ref.map
+        (fun α => match α with | HSV _ α1 _ => Some α1 | _ => None end)
+        (fun β α =>
+          match α with | HSV α0 _ α2 => Some (HSV α0 β α2) | _ => None end);
+  }.
+  
+  Global Instance Get_HSV_2 : Notations.Dot "HSV.2" := {
+    Notations.dot :=
+      Ref.map
+        (fun α => match α with | HSV _ _ α2 => Some α2 | _ => None end)
+        (fun β α =>
+          match α with | HSV α0 α1 _ => Some (HSV α0 α1 β) | _ => None end);
+  }.
+  
+  Global Instance Get_HSL_0 : Notations.Dot "HSL.0" := {
+    Notations.dot :=
+      Ref.map
+        (fun α => match α with | HSL α0 _ _ => Some α0 | _ => None end)
+        (fun β α =>
+          match α with | HSL _ α1 α2 => Some (HSL β α1 α2) | _ => None end);
+  }.
+  
+  Global Instance Get_HSL_1 : Notations.Dot "HSL.1" := {
+    Notations.dot :=
+      Ref.map
+        (fun α => match α with | HSL _ α1 _ => Some α1 | _ => None end)
+        (fun β α =>
+          match α with | HSL α0 _ α2 => Some (HSL α0 β α2) | _ => None end);
+  }.
+  
+  Global Instance Get_HSL_2 : Notations.Dot "HSL.2" := {
+    Notations.dot :=
+      Ref.map
+        (fun α => match α with | HSL _ _ α2 => Some α2 | _ => None end)
+        (fun β α =>
+          match α with | HSL α0 α1 _ => Some (HSL α0 α1 β) | _ => None end);
+  }.
+  
+  Global Instance Get_CMY_0 : Notations.Dot "CMY.0" := {
+    Notations.dot :=
+      Ref.map
+        (fun α => match α with | CMY α0 _ _ => Some α0 | _ => None end)
+        (fun β α =>
+          match α with | CMY _ α1 α2 => Some (CMY β α1 α2) | _ => None end);
+  }.
+  
+  Global Instance Get_CMY_1 : Notations.Dot "CMY.1" := {
+    Notations.dot :=
+      Ref.map
+        (fun α => match α with | CMY _ α1 _ => Some α1 | _ => None end)
+        (fun β α =>
+          match α with | CMY α0 _ α2 => Some (CMY α0 β α2) | _ => None end);
+  }.
+  
+  Global Instance Get_CMY_2 : Notations.Dot "CMY.2" := {
+    Notations.dot :=
+      Ref.map
+        (fun α => match α with | CMY _ _ α2 => Some α2 | _ => None end)
+        (fun β α =>
+          match α with | CMY α0 α1 _ => Some (CMY α0 α1 β) | _ => None end);
+  }.
+  
+  Global Instance Get_CMYK_0 : Notations.Dot "CMYK.0" := {
+    Notations.dot :=
+      Ref.map
+        (fun α => match α with | CMYK α0 _ _ _ => Some α0 | _ => None end)
+        (fun β α =>
+          match α with
+          | CMYK _ α1 α2 α3 => Some (CMYK β α1 α2 α3)
+          | _ => None
+          end);
+  }.
+  
+  Global Instance Get_CMYK_1 : Notations.Dot "CMYK.1" := {
+    Notations.dot :=
+      Ref.map
+        (fun α => match α with | CMYK _ α1 _ _ => Some α1 | _ => None end)
+        (fun β α =>
+          match α with
+          | CMYK α0 _ α2 α3 => Some (CMYK α0 β α2 α3)
+          | _ => None
+          end);
+  }.
+  
+  Global Instance Get_CMYK_2 : Notations.Dot "CMYK.2" := {
+    Notations.dot :=
+      Ref.map
+        (fun α => match α with | CMYK _ _ α2 _ => Some α2 | _ => None end)
+        (fun β α =>
+          match α with
+          | CMYK α0 α1 _ α3 => Some (CMYK α0 α1 β α3)
+          | _ => None
+          end);
+  }.
+  
+  Global Instance Get_CMYK_3 : Notations.Dot "CMYK.3" := {
+    Notations.dot :=
+      Ref.map
+        (fun α => match α with | CMYK _ _ _ α3 => Some α3 | _ => None end)
+        (fun β α =>
+          match α with
+          | CMYK α0 α1 α2 _ => Some (CMYK α0 α1 α2 β)
+          | _ => None
+          end);
+  }.
 End Color.
 
 (*

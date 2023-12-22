@@ -6,6 +6,13 @@ Module Foo.
   | Bar
   | Baz
   | Qux (_ : u32.t).
+  
+  Global Instance Get_Qux_0 : Notations.Dot "Qux.0" := {
+    Notations.dot :=
+      Ref.map
+        (fun α => match α with | Qux α0 => Some α0 | _ => None end)
+        (fun β α => match α with | Qux _ => Some (Qux β) | _ => None end);
+  }.
 End Foo.
 
 (*

@@ -554,6 +554,33 @@ Module Event.
   | Transfer (_ : erc721.Transfer.t)
   | Approval (_ : erc721.Approval.t)
   | ApprovalForAll (_ : erc721.ApprovalForAll.t).
+  
+  Global Instance Get_Transfer_0 : Notations.Dot "Transfer.0" := {
+    Notations.dot :=
+      Ref.map
+        (fun α => match α with | Transfer α0 => Some α0 | _ => None end)
+        (fun β α =>
+          match α with | Transfer _ => Some (Transfer β) | _ => None end);
+  }.
+  
+  Global Instance Get_Approval_0 : Notations.Dot "Approval.0" := {
+    Notations.dot :=
+      Ref.map
+        (fun α => match α with | Approval α0 => Some α0 | _ => None end)
+        (fun β α =>
+          match α with | Approval _ => Some (Approval β) | _ => None end);
+  }.
+  
+  Global Instance Get_ApprovalForAll_0 : Notations.Dot "ApprovalForAll.0" := {
+    Notations.dot :=
+      Ref.map
+        (fun α => match α with | ApprovalForAll α0 => Some α0 | _ => None end)
+        (fun β α =>
+          match α with
+          | ApprovalForAll _ => Some (ApprovalForAll β)
+          | _ => None
+          end);
+  }.
 End Event.
 
 Module  Impl_erc721_Env_t.

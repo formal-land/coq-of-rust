@@ -482,6 +482,19 @@ Module ConfirmationStatus.
   Inductive t : Set :=
   | Confirmed
   | ConfirmationsNeeded (_ : u32.t).
+  
+  Global Instance Get_ConfirmationsNeeded_0 :
+    Notations.Dot "ConfirmationsNeeded.0" := {
+    Notations.dot :=
+      Ref.map
+        (fun α =>
+          match α with | ConfirmationsNeeded α0 => Some α0 | _ => None end)
+        (fun β α =>
+          match α with
+          | ConfirmationsNeeded _ => Some (ConfirmationsNeeded β)
+          | _ => None
+          end);
+  }.
 End ConfirmationStatus.
 
 Module  Impl_core_clone_Clone_for_multisig_ConfirmationStatus_t.
@@ -1009,6 +1022,87 @@ Module Event.
   | OwnerAddition (_ : multisig.OwnerAddition.t)
   | OwnerRemoval (_ : multisig.OwnerRemoval.t)
   | RequirementChange (_ : multisig.RequirementChange.t).
+  
+  Global Instance Get_Confirmation_0 : Notations.Dot "Confirmation.0" := {
+    Notations.dot :=
+      Ref.map
+        (fun α => match α with | Confirmation α0 => Some α0 | _ => None end)
+        (fun β α =>
+          match α with
+          | Confirmation _ => Some (Confirmation β)
+          | _ => None
+          end);
+  }.
+  
+  Global Instance Get_Revocation_0 : Notations.Dot "Revocation.0" := {
+    Notations.dot :=
+      Ref.map
+        (fun α => match α with | Revocation α0 => Some α0 | _ => None end)
+        (fun β α =>
+          match α with | Revocation _ => Some (Revocation β) | _ => None end);
+  }.
+  
+  Global Instance Get_Submission_0 : Notations.Dot "Submission.0" := {
+    Notations.dot :=
+      Ref.map
+        (fun α => match α with | Submission α0 => Some α0 | _ => None end)
+        (fun β α =>
+          match α with | Submission _ => Some (Submission β) | _ => None end);
+  }.
+  
+  Global Instance Get_Cancellation_0 : Notations.Dot "Cancellation.0" := {
+    Notations.dot :=
+      Ref.map
+        (fun α => match α with | Cancellation α0 => Some α0 | _ => None end)
+        (fun β α =>
+          match α with
+          | Cancellation _ => Some (Cancellation β)
+          | _ => None
+          end);
+  }.
+  
+  Global Instance Get_Execution_0 : Notations.Dot "Execution.0" := {
+    Notations.dot :=
+      Ref.map
+        (fun α => match α with | Execution α0 => Some α0 | _ => None end)
+        (fun β α =>
+          match α with | Execution _ => Some (Execution β) | _ => None end);
+  }.
+  
+  Global Instance Get_OwnerAddition_0 : Notations.Dot "OwnerAddition.0" := {
+    Notations.dot :=
+      Ref.map
+        (fun α => match α with | OwnerAddition α0 => Some α0 | _ => None end)
+        (fun β α =>
+          match α with
+          | OwnerAddition _ => Some (OwnerAddition β)
+          | _ => None
+          end);
+  }.
+  
+  Global Instance Get_OwnerRemoval_0 : Notations.Dot "OwnerRemoval.0" := {
+    Notations.dot :=
+      Ref.map
+        (fun α => match α with | OwnerRemoval α0 => Some α0 | _ => None end)
+        (fun β α =>
+          match α with
+          | OwnerRemoval _ => Some (OwnerRemoval β)
+          | _ => None
+          end);
+  }.
+  
+  Global Instance Get_RequirementChange_0 :
+    Notations.Dot "RequirementChange.0" := {
+    Notations.dot :=
+      Ref.map
+        (fun α =>
+          match α with | RequirementChange α0 => Some α0 | _ => None end)
+        (fun β α =>
+          match α with
+          | RequirementChange _ => Some (RequirementChange β)
+          | _ => None
+          end);
+  }.
 End Event.
 
 Module  Impl_multisig_Env_t.

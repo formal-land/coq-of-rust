@@ -402,6 +402,30 @@ Module Event.
   | Register (_ : dns.Register.t)
   | SetAddress (_ : dns.SetAddress.t)
   | Transfer (_ : dns.Transfer.t).
+  
+  Global Instance Get_Register_0 : Notations.Dot "Register.0" := {
+    Notations.dot :=
+      Ref.map
+        (fun α => match α with | Register α0 => Some α0 | _ => None end)
+        (fun β α =>
+          match α with | Register _ => Some (Register β) | _ => None end);
+  }.
+  
+  Global Instance Get_SetAddress_0 : Notations.Dot "SetAddress.0" := {
+    Notations.dot :=
+      Ref.map
+        (fun α => match α with | SetAddress α0 => Some α0 | _ => None end)
+        (fun β α =>
+          match α with | SetAddress _ => Some (SetAddress β) | _ => None end);
+  }.
+  
+  Global Instance Get_Transfer_0 : Notations.Dot "Transfer.0" := {
+    Notations.dot :=
+      Ref.map
+        (fun α => match α with | Transfer α0 => Some α0 | _ => None end)
+        (fun β α =>
+          match α with | Transfer _ => Some (Transfer β) | _ => None end);
+  }.
 End Event.
 
 Module  Impl_dns_Env_t.

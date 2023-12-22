@@ -575,6 +575,32 @@ Module Status.
   | EndingPeriod (_ : ltac:(mother.BlockNumber))
   | Ended (_ : mother.Outline.t)
   | RfDelay (_ : ltac:(mother.BlockNumber)).
+  
+  Global Instance Get_EndingPeriod_0 : Notations.Dot "EndingPeriod.0" := {
+    Notations.dot :=
+      Ref.map
+        (fun α => match α with | EndingPeriod α0 => Some α0 | _ => None end)
+        (fun β α =>
+          match α with
+          | EndingPeriod _ => Some (EndingPeriod β)
+          | _ => None
+          end);
+  }.
+  
+  Global Instance Get_Ended_0 : Notations.Dot "Ended.0" := {
+    Notations.dot :=
+      Ref.map
+        (fun α => match α with | Ended α0 => Some α0 | _ => None end)
+        (fun β α => match α with | Ended _ => Some (Ended β) | _ => None end);
+  }.
+  
+  Global Instance Get_RfDelay_0 : Notations.Dot "RfDelay.0" := {
+    Notations.dot :=
+      Ref.map
+        (fun α => match α with | RfDelay α0 => Some α0 | _ => None end)
+        (fun β α =>
+          match α with | RfDelay _ => Some (RfDelay β) | _ => None end);
+  }.
 End Status.
 
 Module  Impl_core_marker_StructuralPartialEq_for_mother_Status_t.
@@ -1109,6 +1135,13 @@ Module Failure.
   Inductive t : Set :=
   | Revert (_ : alloc.string.String.t)
   | Panic.
+  
+  Global Instance Get_Revert_0 : Notations.Dot "Revert.0" := {
+    Notations.dot :=
+      Ref.map
+        (fun α => match α with | Revert α0 => Some α0 | _ => None end)
+        (fun β α => match α with | Revert _ => Some (Revert β) | _ => None end);
+  }.
 End Failure.
 
 Module  Impl_core_marker_StructuralPartialEq_for_mother_Failure_t.
@@ -1232,6 +1265,14 @@ End AuctionEchoed.
 Module Event.
   Inductive t : Set :=
   | AuctionEchoed (_ : mother.AuctionEchoed.t).
+  
+  Global Instance Get_AuctionEchoed_0 : Notations.Dot "AuctionEchoed.0" := {
+    Notations.dot :=
+      Ref.map
+        (fun α => match α with | AuctionEchoed α0 => Some α0 end)
+        (fun β α =>
+          match α with | AuctionEchoed _ => Some (AuctionEchoed β) end);
+  }.
 End Event.
 
 Module  Impl_mother_Env_t.

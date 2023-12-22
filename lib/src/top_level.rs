@@ -1955,7 +1955,7 @@ impl TopLevelItem {
                                                     fields: vec![coq::Field::new(
                                                         &Path::new(&["Notations", "dot"]),
                                                         &[],
-                                                        &enum_field_value(
+                                                        &enum_struct_field_value(
                                                             name,
                                                             field_name,
                                                             variants.len() != 1,
@@ -1971,7 +1971,36 @@ impl TopLevelItem {
                                 VariantItem::Tuple { tys } => tys
                                     .iter()
                                     .enumerate()
-                                    .map(|(_index, _)| [])
+                                    .map(|(index, _)| {
+                                        let full_name = format!("{name}.{index}");
+                                        let full_name_underscore = format!("{name}_{index}");
+
+                                        [
+                                            coq::TopLevelItem::Line,
+                                            coq::TopLevelItem::Instance(coq::Instance::new(
+                                                &format!("Get_{full_name_underscore}"),
+                                                &[],
+                                                coq::Expression::Variable {
+                                                    ident: Path::new(&["Notations", "Dot"]),
+                                                    no_implicit: false,
+                                                }
+                                                .apply(&coq::Expression::String(full_name)),
+                                                &coq::Expression::Record {
+                                                    fields: vec![coq::Field::new(
+                                                        &Path::new(&["Notations", "dot"]),
+                                                        &[],
+                                                        &enum_tuple_field_value(
+                                                            name,
+                                                            tys.len(),
+                                                            index,
+                                                            variants.len() != 1,
+                                                        ),
+                                                    )],
+                                                },
+                                                vec![],
+                                            )),
+                                        ]
+                                    })
                                     .collect::<Vec<_>>()
                                     .concat(),
                             })
@@ -2445,11 +2474,17 @@ fn struct_field_value<'a>(name: String) -> coq::Expression<'a> {
     ])
 }
 
-fn enum_field_value<'a>(
+fn enum_struct_field_value<'a>(
     constructor_name: &'a str,
     field_name: &'a str,
     has_more_than_one_case: bool,
 ) -> coq::Expression<'a> {
+    let default_branch = if has_more_than_one_case {
+        vec![(coq::Expression::Wild, coq::Expression::just_name("None"))]
+    } else {
+        vec![]
+    };
+
     coq::Expression::just_name("Ref.map").apply_many(&[
         coq::Expression::Function {
             parameters: vec![coq::Expression::just_name("α")],
@@ -2464,11 +2499,7 @@ fn enum_field_value<'a>(
                             field: format!("{constructor_name}.{field_name}"),
                         }),
                     )],
-                    if has_more_than_one_case {
-                        vec![(coq::Expression::Wild, coq::Expression::just_name("None"))]
-                    } else {
-                        vec![]
-                    },
+                    default_branch.clone(),
                 ]
                 .concat(),
             }),
@@ -2494,11 +2525,87 @@ fn enum_field_value<'a>(
                             ),
                         ),
                     )],
-                    if has_more_than_one_case {
-                        vec![(coq::Expression::Wild, coq::Expression::just_name("None"))]
-                    } else {
-                        vec![]
-                    },
+                    default_branch,
+                ]
+                .concat(),
+            }),
+        },
+    ])
+}
+
+fn enum_tuple_field_value(
+    constructor_name: &str,
+    nb_fields: usize,
+    field_index: usize,
+    has_more_than_one_case: bool,
+) -> coq::Expression {
+    let default_branch = if has_more_than_one_case {
+        vec![(coq::Expression::Wild, coq::Expression::just_name("None"))]
+    } else {
+        vec![]
+    };
+
+    coq::Expression::just_name("Ref.map").apply_many(&[
+        coq::Expression::Function {
+            parameters: vec![coq::Expression::just_name("α")],
+            body: Box::new(coq::Expression::Match {
+                scrutinee: Box::new(coq::Expression::just_name("α")),
+                arms: [
+                    vec![(
+                        coq::Expression::just_name(constructor_name).apply_many(
+                            &(0..nb_fields)
+                                .map(|index| {
+                                    if index == field_index {
+                                        coq::Expression::just_name(&format!("α{index}"))
+                                    } else {
+                                        coq::Expression::Wild
+                                    }
+                                })
+                                .collect::<Vec<_>>(),
+                        ),
+                        coq::Expression::just_name("Some")
+                            .apply(&coq::Expression::just_name(&format!("α{field_index}"))),
+                    )],
+                    default_branch.clone(),
+                ]
+                .concat(),
+            }),
+        },
+        coq::Expression::Function {
+            parameters: vec![
+                coq::Expression::just_name("β"),
+                coq::Expression::just_name("α"),
+            ],
+            body: Box::new(coq::Expression::Match {
+                scrutinee: Box::new(coq::Expression::just_name("α")),
+                arms: [
+                    vec![(
+                        coq::Expression::just_name(constructor_name).apply_many(
+                            &(0..nb_fields)
+                                .map(|index| {
+                                    if index != field_index {
+                                        coq::Expression::just_name(&format!("α{index}"))
+                                    } else {
+                                        coq::Expression::Wild
+                                    }
+                                })
+                                .collect::<Vec<_>>(),
+                        ),
+                        coq::Expression::just_name("Some").apply(
+                            &coq::Expression::just_name(constructor_name).apply_many(
+                                &(0..nb_fields)
+                                    .map(|index| {
+                                        if index == field_index {
+                                            coq::Expression::just_name("β")
+                                        } else {
+                                            coq::Expression::just_name(&format!("α{index}"))
+                                        }
+                                    })
+                                    .collect::<Vec<_>>(),
+                            ),
+                        ),
+                    )],
+                    default_branch,
                 ]
                 .concat(),
             }),

@@ -423,6 +423,22 @@ Module Event.
   Inductive t : Set :=
   | Transfer (_ : trait_erc20.Transfer.t)
   | Approval (_ : trait_erc20.Approval.t).
+  
+  Global Instance Get_Transfer_0 : Notations.Dot "Transfer.0" := {
+    Notations.dot :=
+      Ref.map
+        (fun α => match α with | Transfer α0 => Some α0 | _ => None end)
+        (fun β α =>
+          match α with | Transfer _ => Some (Transfer β) | _ => None end);
+  }.
+  
+  Global Instance Get_Approval_0 : Notations.Dot "Approval.0" := {
+    Notations.dot :=
+      Ref.map
+        (fun α => match α with | Approval α0 => Some α0 | _ => None end)
+        (fun β α =>
+          match α with | Approval _ => Some (Approval β) | _ => None end);
+  }.
 End Event.
 
 Module  Impl_trait_erc20_Env_t.

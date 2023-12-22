@@ -240,6 +240,14 @@ End Impl_core_default_Default_for_custom_environment_EventWithTopics_t.
 Module Event.
   Inductive t : Set :=
   | EventWithTopics (_ : custom_environment.EventWithTopics.t).
+  
+  Global Instance Get_EventWithTopics_0 : Notations.Dot "EventWithTopics.0" := {
+    Notations.dot :=
+      Ref.map
+        (fun α => match α with | EventWithTopics α0 => Some α0 end)
+        (fun β α =>
+          match α with | EventWithTopics _ => Some (EventWithTopics β) end);
+  }.
 End Event.
 
 Module  Impl_custom_environment_Env_t.

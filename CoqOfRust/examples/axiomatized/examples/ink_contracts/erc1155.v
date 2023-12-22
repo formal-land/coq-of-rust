@@ -544,6 +544,35 @@ Module Event.
   | TransferSingle (_ : erc1155.TransferSingle.t)
   | ApprovalForAll (_ : erc1155.ApprovalForAll.t)
   | Uri (_ : erc1155.Uri.t).
+  
+  Global Instance Get_TransferSingle_0 : Notations.Dot "TransferSingle.0" := {
+    Notations.dot :=
+      Ref.map
+        (fun α => match α with | TransferSingle α0 => Some α0 | _ => None end)
+        (fun β α =>
+          match α with
+          | TransferSingle _ => Some (TransferSingle β)
+          | _ => None
+          end);
+  }.
+  
+  Global Instance Get_ApprovalForAll_0 : Notations.Dot "ApprovalForAll.0" := {
+    Notations.dot :=
+      Ref.map
+        (fun α => match α with | ApprovalForAll α0 => Some α0 | _ => None end)
+        (fun β α =>
+          match α with
+          | ApprovalForAll _ => Some (ApprovalForAll β)
+          | _ => None
+          end);
+  }.
+  
+  Global Instance Get_Uri_0 : Notations.Dot "Uri.0" := {
+    Notations.dot :=
+      Ref.map
+        (fun α => match α with | Uri α0 => Some α0 | _ => None end)
+        (fun β α => match α with | Uri _ => Some (Uri β) | _ => None end);
+  }.
 End Event.
 
 Module  Impl_erc1155_Env_t.

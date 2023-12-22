@@ -161,6 +161,25 @@ Module Event.
   Inductive t : Set :=
   | Changes (_ : conditional_compilation.Changes.t)
   | ChangesDated (_ : conditional_compilation.ChangesDated.t).
+  
+  Global Instance Get_Changes_0 : Notations.Dot "Changes.0" := {
+    Notations.dot :=
+      Ref.map
+        (fun α => match α with | Changes α0 => Some α0 | _ => None end)
+        (fun β α =>
+          match α with | Changes _ => Some (Changes β) | _ => None end);
+  }.
+  
+  Global Instance Get_ChangesDated_0 : Notations.Dot "ChangesDated.0" := {
+    Notations.dot :=
+      Ref.map
+        (fun α => match α with | ChangesDated α0 => Some α0 | _ => None end)
+        (fun β α =>
+          match α with
+          | ChangesDated _ => Some (ChangesDated β)
+          | _ => None
+          end);
+  }.
 End Event.
 
 Module  Impl_conditional_compilation_Env_t.
