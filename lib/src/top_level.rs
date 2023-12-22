@@ -1865,51 +1865,29 @@ impl TopLevelItem {
                     concat(variants.iter().map(|(name, fields)| {
                         match &**fields {
                             VariantItem::Tuple { .. } => nil(),
-                            VariantItem::Struct { fields } => concat([
-                                coq::Module::new(
-                                    name,
-                                    false,
-                                    coq::TopLevel::locally_unset_primitive_projections(&[
-                                        coq::TopLevelItem::Code(concat([
-                                            nest([
-                                                text("Record"),
-                                                line(),
-                                                text("t"),
-                                                text(" :"),
-                                                line(),
-                                                text("Set := {"),
-                                            ]),
-                                            optional_insert_with(
-                                                fields.is_empty(),
-                                                text(" "),
-                                                concat([
-                                                    nest([
-                                                        hardline(),
-                                                        intersperse(
-                                                            fields.iter().map(|(name, ty)| {
-                                                                nest([
-                                                                    text(name),
-                                                                    line(),
-                                                                    text(":"),
-                                                                    line(),
-                                                                    ty.to_coq().to_doc(false),
-                                                                    text(";"),
-                                                                ])
-                                                            }),
-                                                            [hardline()],
-                                                        ),
-                                                    ]),
-                                                    hardline(),
-                                                ]),
-                                            ),
-                                            text("}."),
-                                        ])),
-                                    ]),
-                                )
-                                .to_doc(),
-                                hardline(),
-                                hardline(),
-                            ]),
+                            VariantItem::Struct { fields } => coq::TopLevel::new(&[
+                              coq::TopLevelItem::Module(coq::Module::new(
+                                  name,
+                                  false,
+                                  coq::TopLevel::locally_unset_primitive_projections(&[
+                                      coq::TopLevelItem::Record(coq::Record::new(
+                                          "t",
+                                          &coq::Expression::Set,
+                                          &fields
+                                              .iter()
+                                              .map(|(name, ty)| {
+                                                  coq::FieldDef::new(
+                                                      &Some(name.to_owned()),
+                                                      &ty.to_coq(),
+                                                  )
+                                              })
+                                              .collect::<Vec<_>>(),
+                                      )),
+                                  ]),
+                              )),
+                              coq::TopLevelItem::Line,
+                          ])
+                          .to_doc(),
                         }
                     })),
                     nest([
