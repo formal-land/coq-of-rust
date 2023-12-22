@@ -140,6 +140,10 @@ pub(crate) enum Expression<'a> {
         parameters: Vec<Expression<'a>>,
         body: Box<Expression<'a>>,
     },
+    Match {
+        scrutinee: Box<Expression<'a>>,
+        arms: Vec<(Expression<'a>, Expression<'a>)>,
+    },
     /// a (curried) function type
     FunctionType {
         /// a nonempty list of domains
@@ -817,6 +821,27 @@ impl<'a> Expression<'a> {
                     body.to_doc(false),
                 ]),
             ),
+            Self::Match { scrutinee, arms } => group([
+                group([
+                    nest([text("match"), line(), scrutinee.to_doc(false)]),
+                    line(),
+                    text("with"),
+                ]),
+                concat(arms.iter().map(|(pattern, body)| {
+                    concat([
+                        line(),
+                        nest([
+                            text("| "),
+                            pattern.to_doc(false),
+                            text(" =>"),
+                            line(),
+                            body.to_doc(false),
+                        ]),
+                    ])
+                })),
+                line(),
+                text("end"),
+            ]),
             Self::FunctionType { domains, image } => paren(
                 with_paren,
                 nest([

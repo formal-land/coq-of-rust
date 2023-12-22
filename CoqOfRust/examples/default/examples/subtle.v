@@ -9,7 +9,7 @@ Section Choice.
   
   Global Instance Get_0 : Notations.Dot "0" := {
     Notations.dot :=
-      Ref.map (fun x => Some x.(x0)) (fun v x => Some (x <| x0 := v |>));
+      Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>));
   }.
 End Choice.
 End Choice.
@@ -2656,19 +2656,19 @@ Section CtOption.
   
   Global Instance Get_value : Notations.Dot "value" := {
     Notations.dot :=
-      Ref.map (fun x => Some x.(value)) (fun v x => Some (x <| value := v |>));
+      Ref.map (fun α => Some α.(value)) (fun β α => Some (α <| value := β |>));
   }.
   Global Instance Get_AF_value : Notations.DoubleColon t "value" := {
-    Notations.double_colon (x : M.Val t) := x.["value"];
+    Notations.double_colon (α : M.Val t) := α.["value"];
   }.
   Global Instance Get_is_some : Notations.Dot "is_some" := {
     Notations.dot :=
       Ref.map
-        (fun x => Some x.(is_some))
-        (fun v x => Some (x <| is_some := v |>));
+        (fun α => Some α.(is_some))
+        (fun β α => Some (α <| is_some := β |>));
   }.
   Global Instance Get_AF_is_some : Notations.DoubleColon t "is_some" := {
-    Notations.double_colon (x : M.Val t) := x.["is_some"];
+    Notations.double_colon (α : M.Val t) := α.["is_some"];
   }.
 End CtOption.
 End CtOption.

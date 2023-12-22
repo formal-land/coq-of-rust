@@ -10,17 +10,17 @@ Section Person.
   
   Global Instance Get_name : Notations.Dot "name" := {
     Notations.dot :=
-      Ref.map (fun x => Some x.(name)) (fun v x => Some (x <| name := v |>));
+      Ref.map (fun α => Some α.(name)) (fun β α => Some (α <| name := β |>));
   }.
   Global Instance Get_AF_name : Notations.DoubleColon t "name" := {
-    Notations.double_colon (x : M.Val t) := x.["name"];
+    Notations.double_colon (α : M.Val t) := α.["name"];
   }.
   Global Instance Get_age : Notations.Dot "age" := {
     Notations.dot :=
-      Ref.map (fun x => Some x.(age)) (fun v x => Some (x <| age := v |>));
+      Ref.map (fun α => Some α.(age)) (fun β α => Some (α <| age := β |>));
   }.
   Global Instance Get_AF_age : Notations.DoubleColon t "age" := {
-    Notations.double_colon (x : M.Val t) := x.["age"];
+    Notations.double_colon (α : M.Val t) := α.["age"];
   }.
 End Person.
 End Person.
@@ -60,11 +60,11 @@ Section Pair.
   
   Global Instance Get_0 : Notations.Dot "0" := {
     Notations.dot :=
-      Ref.map (fun x => Some x.(x0)) (fun v x => Some (x <| x0 := v |>));
+      Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>));
   }.
   Global Instance Get_1 : Notations.Dot "1" := {
     Notations.dot :=
-      Ref.map (fun x => Some x.(x1)) (fun v x => Some (x <| x1 := v |>));
+      Ref.map (fun α => Some α.(x1)) (fun β α => Some (α <| x1 := β |>));
   }.
 End Pair.
 End Pair.
@@ -78,17 +78,17 @@ Section Point.
   
   Global Instance Get_x : Notations.Dot "x" := {
     Notations.dot :=
-      Ref.map (fun x' => Some x'.(x)) (fun v x' => Some (x' <| x := v |>));
+      Ref.map (fun α => Some α.(x)) (fun β α => Some (α <| x := β |>));
   }.
   Global Instance Get_AF_x : Notations.DoubleColon t "x" := {
-    Notations.double_colon (x' : M.Val t) := x'.["x"];
+    Notations.double_colon (α : M.Val t) := α.["x"];
   }.
   Global Instance Get_y : Notations.Dot "y" := {
     Notations.dot :=
-      Ref.map (fun x => Some x.(y)) (fun v x => Some (x <| y := v |>));
+      Ref.map (fun α => Some α.(y)) (fun β α => Some (α <| y := β |>));
   }.
   Global Instance Get_AF_y : Notations.DoubleColon t "y" := {
-    Notations.double_colon (x : M.Val t) := x.["y"];
+    Notations.double_colon (α : M.Val t) := α.["y"];
   }.
 End Point.
 End Point.
@@ -103,21 +103,21 @@ Section Rectangle.
   Global Instance Get_top_left : Notations.Dot "top_left" := {
     Notations.dot :=
       Ref.map
-        (fun x => Some x.(top_left))
-        (fun v x => Some (x <| top_left := v |>));
+        (fun α => Some α.(top_left))
+        (fun β α => Some (α <| top_left := β |>));
   }.
   Global Instance Get_AF_top_left : Notations.DoubleColon t "top_left" := {
-    Notations.double_colon (x : M.Val t) := x.["top_left"];
+    Notations.double_colon (α : M.Val t) := α.["top_left"];
   }.
   Global Instance Get_bottom_right : Notations.Dot "bottom_right" := {
     Notations.dot :=
       Ref.map
-        (fun x => Some x.(bottom_right))
-        (fun v x => Some (x <| bottom_right := v |>));
+        (fun α => Some α.(bottom_right))
+        (fun β α => Some (α <| bottom_right := β |>));
   }.
   Global Instance Get_AF_bottom_right :
     Notations.DoubleColon t "bottom_right" := {
-    Notations.double_colon (x : M.Val t) := x.["bottom_right"];
+    Notations.double_colon (α : M.Val t) := α.["bottom_right"];
   }.
 End Rectangle.
 End Rectangle.

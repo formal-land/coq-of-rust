@@ -13,11 +13,11 @@ Module my.
     Global Instance Get_contents : Notations.Dot "contents" := {
       Notations.dot :=
         Ref.map
-          (fun x => Some x.(contents))
-          (fun v x => Some (x <| contents := v |>));
+          (fun α => Some α.(contents))
+          (fun β α => Some (α <| contents := β |>));
     }.
     Global Instance Get_AF_contents : Notations.DoubleColon t "contents" := {
-      Notations.double_colon (x : M.Val t) := x.["contents"];
+      Notations.double_colon (α : M.Val t) := α.["contents"];
     }.
   End OpenBox.
   End OpenBox.
@@ -33,11 +33,11 @@ Module my.
     Global Instance Get_contents : Notations.Dot "contents" := {
       Notations.dot :=
         Ref.map
-          (fun x => Some x.(contents))
-          (fun v x => Some (x <| contents := v |>));
+          (fun α => Some α.(contents))
+          (fun β α => Some (α <| contents := β |>));
     }.
     Global Instance Get_AF_contents : Notations.DoubleColon t "contents" := {
-      Notations.double_colon (x : M.Val t) := x.["contents"];
+      Notations.double_colon (α : M.Val t) := α.["contents"];
     }.
   End ClosedBox.
   End ClosedBox.
@@ -74,11 +74,11 @@ Section OpenBox.
   Global Instance Get_contents : Notations.Dot "contents" := {
     Notations.dot :=
       Ref.map
-        (fun x => Some x.(contents))
-        (fun v x => Some (x <| contents := v |>));
+        (fun α => Some α.(contents))
+        (fun β α => Some (α <| contents := β |>));
   }.
   Global Instance Get_AF_contents : Notations.DoubleColon t "contents" := {
-    Notations.double_colon (x : M.Val t) := x.["contents"];
+    Notations.double_colon (α : M.Val t) := α.["contents"];
   }.
 End OpenBox.
 End OpenBox.
@@ -94,11 +94,11 @@ Section ClosedBox.
   Global Instance Get_contents : Notations.Dot "contents" := {
     Notations.dot :=
       Ref.map
-        (fun x => Some x.(contents))
-        (fun v x => Some (x <| contents := v |>));
+        (fun α => Some α.(contents))
+        (fun β α => Some (α <| contents := β |>));
   }.
   Global Instance Get_AF_contents : Notations.DoubleColon t "contents" := {
-    Notations.double_colon (x : M.Val t) := x.["contents"];
+    Notations.double_colon (α : M.Val t) := α.["contents"];
   }.
 End ClosedBox.
 End ClosedBox.

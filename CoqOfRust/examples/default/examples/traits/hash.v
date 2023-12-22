@@ -11,24 +11,24 @@ Section Person.
   
   Global Instance Get_id : Notations.Dot "id" := {
     Notations.dot :=
-      Ref.map (fun x => Some x.(id)) (fun v x => Some (x <| id := v |>));
+      Ref.map (fun α => Some α.(id)) (fun β α => Some (α <| id := β |>));
   }.
   Global Instance Get_AF_id : Notations.DoubleColon t "id" := {
-    Notations.double_colon (x : M.Val t) := x.["id"];
+    Notations.double_colon (α : M.Val t) := α.["id"];
   }.
   Global Instance Get_name : Notations.Dot "name" := {
     Notations.dot :=
-      Ref.map (fun x => Some x.(name)) (fun v x => Some (x <| name := v |>));
+      Ref.map (fun α => Some α.(name)) (fun β α => Some (α <| name := β |>));
   }.
   Global Instance Get_AF_name : Notations.DoubleColon t "name" := {
-    Notations.double_colon (x : M.Val t) := x.["name"];
+    Notations.double_colon (α : M.Val t) := α.["name"];
   }.
   Global Instance Get_phone : Notations.Dot "phone" := {
     Notations.dot :=
-      Ref.map (fun x => Some x.(phone)) (fun v x => Some (x <| phone := v |>));
+      Ref.map (fun α => Some α.(phone)) (fun β α => Some (α <| phone := β |>));
   }.
   Global Instance Get_AF_phone : Notations.DoubleColon t "phone" := {
-    Notations.double_colon (x : M.Val t) := x.["phone"];
+    Notations.double_colon (α : M.Val t) := α.["phone"];
   }.
 End Person.
 End Person.

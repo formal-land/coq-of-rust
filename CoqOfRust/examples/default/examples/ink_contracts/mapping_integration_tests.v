@@ -12,19 +12,19 @@ Section Mapping.
   
   Global Instance Get__key : Notations.Dot "_key" := {
     Notations.dot :=
-      Ref.map (fun x => Some x.(_key)) (fun v x => Some (x <| _key := v |>));
+      Ref.map (fun α => Some α.(_key)) (fun β α => Some (α <| _key := β |>));
   }.
   Global Instance Get_AF__key : Notations.DoubleColon t "_key" := {
-    Notations.double_colon (x : M.Val t) := x.["_key"];
+    Notations.double_colon (α : M.Val t) := α.["_key"];
   }.
   Global Instance Get__value : Notations.Dot "_value" := {
     Notations.dot :=
       Ref.map
-        (fun x => Some x.(_value))
-        (fun v x => Some (x <| _value := v |>));
+        (fun α => Some α.(_value))
+        (fun β α => Some (α <| _value := β |>));
   }.
   Global Instance Get_AF__value : Notations.DoubleColon t "_value" := {
-    Notations.double_colon (x : M.Val t) := x.["_value"];
+    Notations.double_colon (α : M.Val t) := α.["_value"];
   }.
 End Mapping.
 End Mapping.
@@ -212,7 +212,7 @@ Section AccountId.
   
   Global Instance Get_0 : Notations.Dot "0" := {
     Notations.dot :=
-      Ref.map (fun x => Some x.(x0)) (fun v x => Some (x <| x0 := v |>));
+      Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>));
   }.
 End AccountId.
 End AccountId.
@@ -290,11 +290,11 @@ Section Env.
   Global Instance Get_caller : Notations.Dot "caller" := {
     Notations.dot :=
       Ref.map
-        (fun x => Some x.(caller))
-        (fun v x => Some (x <| caller := v |>));
+        (fun α => Some α.(caller))
+        (fun β α => Some (α <| caller := β |>));
   }.
   Global Instance Get_AF_caller : Notations.DoubleColon t "caller" := {
-    Notations.double_colon (x : M.Val t) := x.["caller"];
+    Notations.double_colon (α : M.Val t) := α.["caller"];
   }.
 End Env.
 End Env.
@@ -334,11 +334,11 @@ Section Mappings.
   Global Instance Get_balances : Notations.Dot "balances" := {
     Notations.dot :=
       Ref.map
-        (fun x => Some x.(balances))
-        (fun v x => Some (x <| balances := v |>));
+        (fun α => Some α.(balances))
+        (fun β α => Some (α <| balances := β |>));
   }.
   Global Instance Get_AF_balances : Notations.DoubleColon t "balances" := {
-    Notations.double_colon (x : M.Val t) := x.["balances"];
+    Notations.double_colon (α : M.Val t) := α.["balances"];
   }.
 End Mappings.
 End Mappings.

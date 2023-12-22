@@ -3,12 +3,10 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module WebEvent.
   Module Click.
-    Unset Primitive Projections.
     Record t : Set := {
       x : i64.t;
       y : i64.t;
     }.
-    Global Set Primitive Projections.
   End Click.
   
   Inductive t : Set :=
@@ -17,6 +15,28 @@ Module WebEvent.
   | KeyPress (_ : char.t)
   | Paste (_ : alloc.string.String.t)
   | Click (_ : Click.t).
+  
+  Global Instance Get_Click_x : Notations.Dot "Click.x" := {
+    Notations.dot :=
+      Ref.map
+        (fun α => match α with | Click α => Some α.(Click.x) | _ => None end)
+        (fun β α =>
+          match α with
+          | Click α => Some (Click (α <| Click.x := β |>))
+          | _ => None
+          end);
+  }.
+  
+  Global Instance Get_Click_y : Notations.Dot "Click.y" := {
+    Notations.dot :=
+      Ref.map
+        (fun α => match α with | Click α => Some α.(Click.y) | _ => None end)
+        (fun β α =>
+          match α with
+          | Click α => Some (Click (α <| Click.y := β |>))
+          | _ => None
+          end);
+  }.
 End WebEvent.
 
 (*

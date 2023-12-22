@@ -108,17 +108,17 @@ Section Complex.
   
   Global Instance Get_re : Notations.Dot "re" := {
     Notations.dot :=
-      Ref.map (fun x => Some x.(re)) (fun v x => Some (x <| re := v |>));
+      Ref.map (fun α => Some α.(re)) (fun β α => Some (α <| re := β |>));
   }.
   Global Instance Get_AF_re : Notations.DoubleColon t "re" := {
-    Notations.double_colon (x : M.Val t) := x.["re"];
+    Notations.double_colon (α : M.Val t) := α.["re"];
   }.
   Global Instance Get_im : Notations.Dot "im" := {
     Notations.dot :=
-      Ref.map (fun x => Some x.(im)) (fun v x => Some (x <| im := v |>));
+      Ref.map (fun α => Some α.(im)) (fun β α => Some (α <| im := β |>));
   }.
   Global Instance Get_AF_im : Notations.DoubleColon t "im" := {
-    Notations.double_colon (x : M.Val t) := x.["im"];
+    Notations.double_colon (α : M.Val t) := α.["im"];
   }.
 End Complex.
 End Complex.

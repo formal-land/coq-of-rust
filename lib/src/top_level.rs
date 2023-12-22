@@ -1841,87 +1841,145 @@ impl TopLevelItem {
             } => group([coq::TopLevelItem::Module(coq::Module::new(
                 name,
                 false,
-                coq::TopLevel::concat(&[coq::TopLevel::new(&[coq::TopLevelItem::Code(group([
-                    concat(variants.iter().map(|(name, fields)| {
-                        match &**fields {
-                            VariantItem::Tuple { .. } => nil(),
-                            VariantItem::Struct { fields } => coq::TopLevel::new(&[
-                                coq::TopLevelItem::Module(coq::Module::new(
-                                    name,
-                                    false,
-                                    coq::TopLevel::locally_unset_primitive_projections(&[
-                                        coq::TopLevelItem::Record(coq::Record::new(
-                                            "t",
-                                            &coq::Expression::Set,
-                                            &fields
-                                                .iter()
-                                                .map(|(name, ty)| {
-                                                    coq::FieldDef::new(
-                                                        &Some(name.to_owned()),
-                                                        &ty.to_coq(),
-                                                    )
-                                                })
-                                                .collect::<Vec<_>>(),
-                                        )),
-                                    ]),
-                                )),
-                                coq::TopLevelItem::Line,
-                                coq::TopLevelItem::Line,
-                            ])
-                            .to_doc(),
-                        }
-                    })),
-                    nest([
-                        text("Inductive"),
-                        line(),
-                        text("t"),
-                        concat(ty_params.iter().map(|(name, _)| {
-                            concat([
-                                line(),
-                                nest([text("("), text(name), text(" :"), line(), text("Set)")]),
-                            ])
-                        })),
-                        text(" :"),
-                        line(),
-                        text("Set :="),
-                    ]),
-                    hardline(),
-                    intersperse(
-                        variants.iter().map(|(name, fields)| {
-                            nest([
-                                text("|"),
-                                line(),
-                                text(name),
+                coq::TopLevel::concat(&[coq::TopLevel::new(
+                    &[
+                        vec![coq::TopLevelItem::Code(group([
+                            concat(variants.iter().map(|(name, fields)| {
                                 match &**fields {
-                                    VariantItem::Struct { .. } => concat([
+                                    VariantItem::Tuple { .. } => nil(),
+                                    VariantItem::Struct { fields } => coq::TopLevel::new(&[
+                                        coq::TopLevelItem::Module(coq::Module::new(
+                                            name,
+                                            false,
+                                            coq::TopLevel::new(&[coq::TopLevelItem::Record(
+                                                coq::Record::new(
+                                                    "t",
+                                                    &coq::Expression::Set,
+                                                    &fields
+                                                        .iter()
+                                                        .map(|(name, ty)| {
+                                                            coq::FieldDef::new(
+                                                                &Some(name.to_owned()),
+                                                                &ty.to_coq(),
+                                                            )
+                                                        })
+                                                        .collect::<Vec<_>>(),
+                                                ),
+                                            )]),
+                                        )),
+                                        coq::TopLevelItem::Line,
+                                        coq::TopLevelItem::Line,
+                                    ])
+                                    .to_doc(),
+                                }
+                            })),
+                            nest([
+                                text("Inductive"),
+                                line(),
+                                text("t"),
+                                concat(ty_params.iter().map(|(name, _)| {
+                                    concat([
                                         line(),
                                         nest([
-                                            text("(_ :"),
+                                            text("("),
+                                            text(name),
+                                            text(" :"),
                                             line(),
-                                            text(format!("{name}.t")),
-                                            text(")"),
+                                            text("Set)"),
                                         ]),
-                                    ]),
-                                    VariantItem::Tuple { tys } => concat(tys.iter().map(|ty| {
-                                        concat([
-                                            line(),
-                                            nest([
-                                                text("(_"),
+                                    ])
+                                })),
+                                text(" :"),
+                                line(),
+                                text("Set :="),
+                            ]),
+                            hardline(),
+                            intersperse(
+                                variants.iter().map(|(name, fields)| {
+                                    nest([
+                                        text("|"),
+                                        line(),
+                                        text(name),
+                                        match &**fields {
+                                            VariantItem::Struct { .. } => concat([
                                                 line(),
-                                                text(":"),
-                                                line(),
-                                                ty.to_coq().to_doc(false),
-                                                text(")"),
+                                                nest([
+                                                    text("(_ :"),
+                                                    line(),
+                                                    text(format!("{name}.t")),
+                                                    text(")"),
+                                                ]),
                                             ]),
-                                        ])
-                                    })),
-                                },
-                            ])
-                        }),
-                        [line()],
-                    ),
-                    text("."),
-                ]))])]),
+                                            VariantItem::Tuple { tys } => {
+                                                concat(tys.iter().map(|ty| {
+                                                    concat([
+                                                        line(),
+                                                        nest([
+                                                            text("(_"),
+                                                            line(),
+                                                            text(":"),
+                                                            line(),
+                                                            ty.to_coq().to_doc(false),
+                                                            text(")"),
+                                                        ]),
+                                                    ])
+                                                }))
+                                            }
+                                        },
+                                    ])
+                                }),
+                                [line()],
+                            ),
+                            text("."),
+                        ]))],
+                        variants
+                            .iter()
+                            .map(|(name, fields)| match fields.as_ref() {
+                                VariantItem::Struct { fields } => fields
+                                    .iter()
+                                    .map(|(field_name, _)| {
+                                        let full_name = format!("{name}.{field_name}");
+                                        let full_name_underscore = format!("{name}_{field_name}");
+
+                                        [
+                                            coq::TopLevelItem::Line,
+                                            coq::TopLevelItem::Instance(coq::Instance::new(
+                                                &format!("Get_{full_name_underscore}"),
+                                                &[],
+                                                coq::Expression::Variable {
+                                                    ident: Path::new(&["Notations", "Dot"]),
+                                                    no_implicit: false,
+                                                }
+                                                .apply(&coq::Expression::String(full_name)),
+                                                &coq::Expression::Record {
+                                                    fields: vec![coq::Field::new(
+                                                        &Path::new(&["Notations", "dot"]),
+                                                        &[],
+                                                        &enum_field_value(
+                                                            name,
+                                                            field_name,
+                                                            variants.len() != 1,
+                                                        ),
+                                                    )],
+                                                },
+                                                vec![],
+                                            )),
+                                        ]
+                                    })
+                                    .collect::<Vec<_>>()
+                                    .concat(),
+                                VariantItem::Tuple { tys } => tys
+                                    .iter()
+                                    .enumerate()
+                                    .map(|(_index, _)| [])
+                                    .collect::<Vec<_>>()
+                                    .concat(),
+                            })
+                            .collect::<Vec<_>>()
+                            .concat(),
+                    ]
+                    .concat(),
+                )]),
             ))
             .to_doc()]),
             TopLevelItem::TypeStructStruct(tss) => tss.to_doc(),
@@ -2350,10 +2408,10 @@ impl TopLevelItem {
     }
 }
 
-fn struct_projection_pattern<'a>(name: String) -> coq::ArgDecl<'a> {
+fn struct_projection_pattern<'a>() -> coq::ArgDecl<'a> {
     coq::ArgDecl::new(
         &coq::ArgDeclVar::Simple {
-            idents: vec![if name == "x" { "x'" } else { "x" }.to_string()],
+            idents: vec!["α".to_string()],
             ty: Some(coq::Expression::just_name("M.Val").apply(&coq::Expression::just_name("t"))),
         },
         coq::ArgSpecKind::Explicit,
@@ -2361,28 +2419,89 @@ fn struct_projection_pattern<'a>(name: String) -> coq::ArgDecl<'a> {
 }
 
 fn struct_field_value<'a>(name: String) -> coq::Expression<'a> {
-    let x = if name == "x" { "x'" } else { "x" };
-    let v = if name == "v" { "v'" } else { "v" };
-
     coq::Expression::just_name("Ref.map").apply_many(&[
         coq::Expression::Function {
-            parameters: vec![coq::Expression::just_name(x)],
+            parameters: vec![coq::Expression::just_name("α")],
             body: Box::new(coq::Expression::just_name("Some").apply(
                 &coq::Expression::RecordField {
-                    record: Box::new(coq::Expression::just_name(x)),
+                    record: Box::new(coq::Expression::just_name("α")),
                     field: name.to_owned(),
                 },
             )),
         },
         coq::Expression::Function {
-            parameters: vec![coq::Expression::just_name(v), coq::Expression::just_name(x)],
+            parameters: vec![
+                coq::Expression::just_name("β"),
+                coq::Expression::just_name("α"),
+            ],
             body: Box::new(coq::Expression::just_name("Some").apply(
                 &coq::Expression::RecordUpdate {
-                    record: Box::new(coq::Expression::just_name(x)),
+                    record: Box::new(coq::Expression::just_name("α")),
                     field: name,
-                    update: Box::new(coq::Expression::just_name(v)),
+                    update: Box::new(coq::Expression::just_name("β")),
                 },
             )),
+        },
+    ])
+}
+
+fn enum_field_value<'a>(
+    constructor_name: &'a str,
+    field_name: &'a str,
+    has_more_than_one_case: bool,
+) -> coq::Expression<'a> {
+    coq::Expression::just_name("Ref.map").apply_many(&[
+        coq::Expression::Function {
+            parameters: vec![coq::Expression::just_name("α")],
+            body: Box::new(coq::Expression::Match {
+                scrutinee: Box::new(coq::Expression::just_name("α")),
+                arms: [
+                    vec![(
+                        coq::Expression::just_name(constructor_name)
+                            .apply(&coq::Expression::just_name("α")),
+                        coq::Expression::just_name("Some").apply(&coq::Expression::RecordField {
+                            record: Box::new(coq::Expression::just_name("α")),
+                            field: format!("{constructor_name}.{field_name}"),
+                        }),
+                    )],
+                    if has_more_than_one_case {
+                        vec![(coq::Expression::Wild, coq::Expression::just_name("None"))]
+                    } else {
+                        vec![]
+                    },
+                ]
+                .concat(),
+            }),
+        },
+        coq::Expression::Function {
+            parameters: vec![
+                coq::Expression::just_name("β"),
+                coq::Expression::just_name("α"),
+            ],
+            body: Box::new(coq::Expression::Match {
+                scrutinee: Box::new(coq::Expression::just_name("α")),
+                arms: [
+                    vec![(
+                        coq::Expression::just_name(constructor_name)
+                            .apply(&coq::Expression::just_name("α")),
+                        coq::Expression::just_name("Some").apply(
+                            &coq::Expression::just_name(constructor_name).apply(
+                                &coq::Expression::RecordUpdate {
+                                    record: Box::new(coq::Expression::just_name("α")),
+                                    field: format!("{constructor_name}.{field_name}"),
+                                    update: Box::new(coq::Expression::just_name("β")),
+                                },
+                            ),
+                        ),
+                    )],
+                    if has_more_than_one_case {
+                        vec![(coq::Expression::Wild, coq::Expression::just_name("None"))]
+                    } else {
+                        vec![]
+                    },
+                ]
+                .concat(),
+            }),
         },
     ])
 }
@@ -2619,18 +2738,10 @@ impl TypeStructStruct {
                                                                 "Notations",
                                                                 "double_colon",
                                                             ]),
-                                                            &[struct_projection_pattern(
-                                                                name.to_owned(),
-                                                            )],
+                                                            &[struct_projection_pattern()],
                                                             &coq::Expression::NotationsDot {
                                                                 value: Box::new(
-                                                                    coq::Expression::just_name(
-                                                                        if name == "x" {
-                                                                            "x'"
-                                                                        } else {
-                                                                            "x"
-                                                                        },
-                                                                    ),
+                                                                    coq::Expression::just_name("α"),
                                                                 ),
                                                                 field: name.to_owned(),
                                                             },

@@ -9,7 +9,7 @@ Section Centimeters.
   
   Global Instance Get_0 : Notations.Dot "0" := {
     Notations.dot :=
-      Ref.map (fun x => Some x.(x0)) (fun v x => Some (x <| x0 := v |>));
+      Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>));
   }.
 End Centimeters.
 End Centimeters.
@@ -82,7 +82,7 @@ Section Inches.
   
   Global Instance Get_0 : Notations.Dot "0" := {
     Notations.dot :=
-      Ref.map (fun x => Some x.(x0)) (fun v x => Some (x <| x0 := v |>));
+      Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>));
   }.
 End Inches.
 End Inches.
@@ -135,7 +135,7 @@ Section Seconds.
   
   Global Instance Get_0 : Notations.Dot "0" := {
     Notations.dot :=
-      Ref.map (fun x => Some x.(x0)) (fun v x => Some (x <| x0 := v |>));
+      Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>));
   }.
 End Seconds.
 End Seconds.

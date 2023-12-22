@@ -9,10 +9,10 @@ Section Person.
   
   Global Instance Get_job : Notations.Dot "job" := {
     Notations.dot :=
-      Ref.map (fun x => Some x.(job)) (fun v x => Some (x <| job := v |>));
+      Ref.map (fun α => Some α.(job)) (fun β α => Some (α <| job := β |>));
   }.
   Global Instance Get_AF_job : Notations.DoubleColon t "job" := {
-    Notations.double_colon (x : M.Val t) := x.["job"];
+    Notations.double_colon (α : M.Val t) := α.["job"];
   }.
 End Person.
 End Person.
@@ -27,12 +27,12 @@ Section Job.
   Global Instance Get_phone_number : Notations.Dot "phone_number" := {
     Notations.dot :=
       Ref.map
-        (fun x => Some x.(phone_number))
-        (fun v x => Some (x <| phone_number := v |>));
+        (fun α => Some α.(phone_number))
+        (fun β α => Some (α <| phone_number := β |>));
   }.
   Global Instance Get_AF_phone_number :
     Notations.DoubleColon t "phone_number" := {
-    Notations.double_colon (x : M.Val t) := x.["phone_number"];
+    Notations.double_colon (α : M.Val t) := α.["phone_number"];
   }.
 End Job.
 End Job.
@@ -83,20 +83,20 @@ Section PhoneNumber.
   Global Instance Get_area_code : Notations.Dot "area_code" := {
     Notations.dot :=
       Ref.map
-        (fun x => Some x.(area_code))
-        (fun v x => Some (x <| area_code := v |>));
+        (fun α => Some α.(area_code))
+        (fun β α => Some (α <| area_code := β |>));
   }.
   Global Instance Get_AF_area_code : Notations.DoubleColon t "area_code" := {
-    Notations.double_colon (x : M.Val t) := x.["area_code"];
+    Notations.double_colon (α : M.Val t) := α.["area_code"];
   }.
   Global Instance Get_number : Notations.Dot "number" := {
     Notations.dot :=
       Ref.map
-        (fun x => Some x.(number))
-        (fun v x => Some (x <| number := v |>));
+        (fun α => Some α.(number))
+        (fun β α => Some (α <| number := β |>));
   }.
   Global Instance Get_AF_number : Notations.DoubleColon t "number" := {
-    Notations.double_colon (x : M.Val t) := x.["number"];
+    Notations.double_colon (α : M.Val t) := α.["number"];
   }.
 End PhoneNumber.
 End PhoneNumber.

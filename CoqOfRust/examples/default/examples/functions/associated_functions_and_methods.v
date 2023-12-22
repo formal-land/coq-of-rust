@@ -10,17 +10,17 @@ Section Point.
   
   Global Instance Get_x : Notations.Dot "x" := {
     Notations.dot :=
-      Ref.map (fun x' => Some x'.(x)) (fun v x' => Some (x' <| x := v |>));
+      Ref.map (fun α => Some α.(x)) (fun β α => Some (α <| x := β |>));
   }.
   Global Instance Get_AF_x : Notations.DoubleColon t "x" := {
-    Notations.double_colon (x' : M.Val t) := x'.["x"];
+    Notations.double_colon (α : M.Val t) := α.["x"];
   }.
   Global Instance Get_y : Notations.Dot "y" := {
     Notations.dot :=
-      Ref.map (fun x => Some x.(y)) (fun v x => Some (x <| y := v |>));
+      Ref.map (fun α => Some α.(y)) (fun β α => Some (α <| y := β |>));
   }.
   Global Instance Get_AF_y : Notations.DoubleColon t "y" := {
-    Notations.double_colon (x : M.Val t) := x.["y"];
+    Notations.double_colon (α : M.Val t) := α.["y"];
   }.
 End Point.
 End Point.
@@ -82,17 +82,17 @@ Section Rectangle.
   
   Global Instance Get_p1 : Notations.Dot "p1" := {
     Notations.dot :=
-      Ref.map (fun x => Some x.(p1)) (fun v x => Some (x <| p1 := v |>));
+      Ref.map (fun α => Some α.(p1)) (fun β α => Some (α <| p1 := β |>));
   }.
   Global Instance Get_AF_p1 : Notations.DoubleColon t "p1" := {
-    Notations.double_colon (x : M.Val t) := x.["p1"];
+    Notations.double_colon (α : M.Val t) := α.["p1"];
   }.
   Global Instance Get_p2 : Notations.Dot "p2" := {
     Notations.dot :=
-      Ref.map (fun x => Some x.(p2)) (fun v x => Some (x <| p2 := v |>));
+      Ref.map (fun α => Some α.(p2)) (fun β α => Some (α <| p2 := β |>));
   }.
   Global Instance Get_AF_p2 : Notations.DoubleColon t "p2" := {
-    Notations.double_colon (x : M.Val t) := x.["p2"];
+    Notations.double_colon (α : M.Val t) := α.["p2"];
   }.
 End Rectangle.
 End Rectangle.
@@ -284,11 +284,11 @@ Section Pair.
   
   Global Instance Get_0 : Notations.Dot "0" := {
     Notations.dot :=
-      Ref.map (fun x => Some x.(x0)) (fun v x => Some (x <| x0 := v |>));
+      Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>));
   }.
   Global Instance Get_1 : Notations.Dot "1" := {
     Notations.dot :=
-      Ref.map (fun x => Some x.(x1)) (fun v x => Some (x <| x1 := v |>));
+      Ref.map (fun α => Some α.(x1)) (fun β α => Some (α <| x1 := β |>));
   }.
 End Pair.
 End Pair.

@@ -12,19 +12,19 @@ Section Mapping.
   
   Global Instance Get__key : Notations.Dot "_key" := {
     Notations.dot :=
-      Ref.map (fun x => Some x.(_key)) (fun v x => Some (x <| _key := v |>));
+      Ref.map (fun α => Some α.(_key)) (fun β α => Some (α <| _key := β |>));
   }.
   Global Instance Get_AF__key : Notations.DoubleColon t "_key" := {
-    Notations.double_colon (x : M.Val t) := x.["_key"];
+    Notations.double_colon (α : M.Val t) := α.["_key"];
   }.
   Global Instance Get__value : Notations.Dot "_value" := {
     Notations.dot :=
       Ref.map
-        (fun x => Some x.(_value))
-        (fun v x => Some (x <| _value := v |>));
+        (fun α => Some α.(_value))
+        (fun β α => Some (α <| _value := β |>));
   }.
   Global Instance Get_AF__value : Notations.DoubleColon t "_value" := {
-    Notations.double_colon (x : M.Val t) := x.["_value"];
+    Notations.double_colon (α : M.Val t) := α.["_value"];
   }.
 End Mapping.
 End Mapping.
@@ -119,7 +119,7 @@ Section AccountId.
   
   Global Instance Get_0 : Notations.Dot "0" := {
     Notations.dot :=
-      Ref.map (fun x => Some x.(x0)) (fun v x => Some (x <| x0 := v |>));
+      Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>));
   }.
 End AccountId.
 End AccountId.
@@ -271,11 +271,11 @@ Section Env.
   Global Instance Get_caller : Notations.Dot "caller" := {
     Notations.dot :=
       Ref.map
-        (fun x => Some x.(caller))
-        (fun v x => Some (x <| caller := v |>));
+        (fun α => Some α.(caller))
+        (fun β α => Some (α <| caller := β |>));
   }.
   Global Instance Get_AF_caller : Notations.DoubleColon t "caller" := {
-    Notations.double_colon (x : M.Val t) := x.["caller"];
+    Notations.double_colon (α : M.Val t) := α.["caller"];
   }.
 End Env.
 End Env.
@@ -293,7 +293,7 @@ Section Bids.
   
   Global Instance Get_0 : Notations.Dot "0" := {
     Notations.dot :=
-      Ref.map (fun x => Some x.(x0)) (fun v x => Some (x <| x0 := v |>));
+      Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>));
   }.
 End Bids.
 End Bids.
@@ -766,60 +766,60 @@ Section Auction.
   
   Global Instance Get_name : Notations.Dot "name" := {
     Notations.dot :=
-      Ref.map (fun x => Some x.(name)) (fun v x => Some (x <| name := v |>));
+      Ref.map (fun α => Some α.(name)) (fun β α => Some (α <| name := β |>));
   }.
   Global Instance Get_AF_name : Notations.DoubleColon t "name" := {
-    Notations.double_colon (x : M.Val t) := x.["name"];
+    Notations.double_colon (α : M.Val t) := α.["name"];
   }.
   Global Instance Get_subject : Notations.Dot "subject" := {
     Notations.dot :=
       Ref.map
-        (fun x => Some x.(subject))
-        (fun v x => Some (x <| subject := v |>));
+        (fun α => Some α.(subject))
+        (fun β α => Some (α <| subject := β |>));
   }.
   Global Instance Get_AF_subject : Notations.DoubleColon t "subject" := {
-    Notations.double_colon (x : M.Val t) := x.["subject"];
+    Notations.double_colon (α : M.Val t) := α.["subject"];
   }.
   Global Instance Get_bids : Notations.Dot "bids" := {
     Notations.dot :=
-      Ref.map (fun x => Some x.(bids)) (fun v x => Some (x <| bids := v |>));
+      Ref.map (fun α => Some α.(bids)) (fun β α => Some (α <| bids := β |>));
   }.
   Global Instance Get_AF_bids : Notations.DoubleColon t "bids" := {
-    Notations.double_colon (x : M.Val t) := x.["bids"];
+    Notations.double_colon (α : M.Val t) := α.["bids"];
   }.
   Global Instance Get_terms : Notations.Dot "terms" := {
     Notations.dot :=
-      Ref.map (fun x => Some x.(terms)) (fun v x => Some (x <| terms := v |>));
+      Ref.map (fun α => Some α.(terms)) (fun β α => Some (α <| terms := β |>));
   }.
   Global Instance Get_AF_terms : Notations.DoubleColon t "terms" := {
-    Notations.double_colon (x : M.Val t) := x.["terms"];
+    Notations.double_colon (α : M.Val t) := α.["terms"];
   }.
   Global Instance Get_status : Notations.Dot "status" := {
     Notations.dot :=
       Ref.map
-        (fun x => Some x.(status))
-        (fun v x => Some (x <| status := v |>));
+        (fun α => Some α.(status))
+        (fun β α => Some (α <| status := β |>));
   }.
   Global Instance Get_AF_status : Notations.DoubleColon t "status" := {
-    Notations.double_colon (x : M.Val t) := x.["status"];
+    Notations.double_colon (α : M.Val t) := α.["status"];
   }.
   Global Instance Get_finalized : Notations.Dot "finalized" := {
     Notations.dot :=
       Ref.map
-        (fun x => Some x.(finalized))
-        (fun v x => Some (x <| finalized := v |>));
+        (fun α => Some α.(finalized))
+        (fun β α => Some (α <| finalized := β |>));
   }.
   Global Instance Get_AF_finalized : Notations.DoubleColon t "finalized" := {
-    Notations.double_colon (x : M.Val t) := x.["finalized"];
+    Notations.double_colon (α : M.Val t) := α.["finalized"];
   }.
   Global Instance Get_vector : Notations.Dot "vector" := {
     Notations.dot :=
       Ref.map
-        (fun x => Some x.(vector))
-        (fun v x => Some (x <| vector := v |>));
+        (fun α => Some α.(vector))
+        (fun β α => Some (α <| vector := β |>));
   }.
   Global Instance Get_AF_vector : Notations.DoubleColon t "vector" := {
-    Notations.double_colon (x : M.Val t) := x.["vector"];
+    Notations.double_colon (α : M.Val t) := α.["vector"];
   }.
 End Auction.
 End Auction.
@@ -1220,11 +1220,11 @@ Section AuctionEchoed.
   Global Instance Get_auction : Notations.Dot "auction" := {
     Notations.dot :=
       Ref.map
-        (fun x => Some x.(auction))
-        (fun v x => Some (x <| auction := v |>));
+        (fun α => Some α.(auction))
+        (fun β α => Some (α <| auction := β |>));
   }.
   Global Instance Get_AF_auction : Notations.DoubleColon t "auction" := {
-    Notations.double_colon (x : M.Val t) := x.["auction"];
+    Notations.double_colon (α : M.Val t) := α.["auction"];
   }.
 End AuctionEchoed.
 End AuctionEchoed.
@@ -1282,20 +1282,20 @@ Section Mother.
   Global Instance Get_auction : Notations.Dot "auction" := {
     Notations.dot :=
       Ref.map
-        (fun x => Some x.(auction))
-        (fun v x => Some (x <| auction := v |>));
+        (fun α => Some α.(auction))
+        (fun β α => Some (α <| auction := β |>));
   }.
   Global Instance Get_AF_auction : Notations.DoubleColon t "auction" := {
-    Notations.double_colon (x : M.Val t) := x.["auction"];
+    Notations.double_colon (α : M.Val t) := α.["auction"];
   }.
   Global Instance Get_balances : Notations.Dot "balances" := {
     Notations.dot :=
       Ref.map
-        (fun x => Some x.(balances))
-        (fun v x => Some (x <| balances := v |>));
+        (fun α => Some α.(balances))
+        (fun β α => Some (α <| balances := β |>));
   }.
   Global Instance Get_AF_balances : Notations.DoubleColon t "balances" := {
-    Notations.double_colon (x : M.Val t) := x.["balances"];
+    Notations.double_colon (α : M.Val t) := α.["balances"];
   }.
 End Mother.
 End Mother.

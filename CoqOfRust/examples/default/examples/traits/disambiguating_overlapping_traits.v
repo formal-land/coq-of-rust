@@ -29,18 +29,18 @@ Section Form.
   Global Instance Get_username : Notations.Dot "username" := {
     Notations.dot :=
       Ref.map
-        (fun x => Some x.(username))
-        (fun v x => Some (x <| username := v |>));
+        (fun α => Some α.(username))
+        (fun β α => Some (α <| username := β |>));
   }.
   Global Instance Get_AF_username : Notations.DoubleColon t "username" := {
-    Notations.double_colon (x : M.Val t) := x.["username"];
+    Notations.double_colon (α : M.Val t) := α.["username"];
   }.
   Global Instance Get_age : Notations.Dot "age" := {
     Notations.dot :=
-      Ref.map (fun x => Some x.(age)) (fun v x => Some (x <| age := v |>));
+      Ref.map (fun α => Some α.(age)) (fun β α => Some (α <| age := β |>));
   }.
   Global Instance Get_AF_age : Notations.DoubleColon t "age" := {
-    Notations.double_colon (x : M.Val t) := x.["age"];
+    Notations.double_colon (α : M.Val t) := α.["age"];
   }.
 End Form.
 End Form.

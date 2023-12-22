@@ -9,7 +9,7 @@ Section Borrowed.
   
   Global Instance Get_0 : Notations.Dot "0" := {
     Notations.dot :=
-      Ref.map (fun x => Some x.(x0)) (fun v x => Some (x <| x0 := v |>));
+      Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>));
   }.
 End Borrowed.
 End Borrowed.
@@ -54,17 +54,17 @@ Section NamedBorrowed.
   
   Global Instance Get_x : Notations.Dot "x" := {
     Notations.dot :=
-      Ref.map (fun x' => Some x'.(x)) (fun v x' => Some (x' <| x := v |>));
+      Ref.map (fun α => Some α.(x)) (fun β α => Some (α <| x := β |>));
   }.
   Global Instance Get_AF_x : Notations.DoubleColon t "x" := {
-    Notations.double_colon (x' : M.Val t) := x'.["x"];
+    Notations.double_colon (α : M.Val t) := α.["x"];
   }.
   Global Instance Get_y : Notations.Dot "y" := {
     Notations.dot :=
-      Ref.map (fun x => Some x.(y)) (fun v x => Some (x <| y := v |>));
+      Ref.map (fun α => Some α.(y)) (fun β α => Some (α <| y := β |>));
   }.
   Global Instance Get_AF_y : Notations.DoubleColon t "y" := {
-    Notations.double_colon (x : M.Val t) := x.["y"];
+    Notations.double_colon (α : M.Val t) := α.["y"];
   }.
 End NamedBorrowed.
 End NamedBorrowed.

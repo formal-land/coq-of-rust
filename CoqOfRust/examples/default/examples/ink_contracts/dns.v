@@ -12,19 +12,19 @@ Section Mapping.
   
   Global Instance Get__key : Notations.Dot "_key" := {
     Notations.dot :=
-      Ref.map (fun x => Some x.(_key)) (fun v x => Some (x <| _key := v |>));
+      Ref.map (fun α => Some α.(_key)) (fun β α => Some (α <| _key := β |>));
   }.
   Global Instance Get_AF__key : Notations.DoubleColon t "_key" := {
-    Notations.double_colon (x : M.Val t) := x.["_key"];
+    Notations.double_colon (α : M.Val t) := α.["_key"];
   }.
   Global Instance Get__value : Notations.Dot "_value" := {
     Notations.dot :=
       Ref.map
-        (fun x => Some x.(_value))
-        (fun v x => Some (x <| _value := v |>));
+        (fun α => Some α.(_value))
+        (fun β α => Some (α <| _value := β |>));
   }.
   Global Instance Get_AF__value : Notations.DoubleColon t "_value" := {
-    Notations.double_colon (x : M.Val t) := x.["_value"];
+    Notations.double_colon (α : M.Val t) := α.["_value"];
   }.
 End Mapping.
 End Mapping.
@@ -208,7 +208,7 @@ Section AccountId.
   
   Global Instance Get_0 : Notations.Dot "0" := {
     Notations.dot :=
-      Ref.map (fun x => Some x.(x0)) (fun v x => Some (x <| x0 := v |>));
+      Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>));
   }.
 End AccountId.
 End AccountId.
@@ -350,11 +350,11 @@ Section Env.
   Global Instance Get_caller : Notations.Dot "caller" := {
     Notations.dot :=
       Ref.map
-        (fun x => Some x.(caller))
-        (fun v x => Some (x <| caller := v |>));
+        (fun α => Some α.(caller))
+        (fun β α => Some (α <| caller := β |>));
   }.
   Global Instance Get_AF_caller : Notations.DoubleColon t "caller" := {
-    Notations.double_colon (x : M.Val t) := x.["caller"];
+    Notations.double_colon (α : M.Val t) := α.["caller"];
   }.
 End Env.
 End Env.
@@ -368,17 +368,17 @@ Section Register.
   
   Global Instance Get_name : Notations.Dot "name" := {
     Notations.dot :=
-      Ref.map (fun x => Some x.(name)) (fun v x => Some (x <| name := v |>));
+      Ref.map (fun α => Some α.(name)) (fun β α => Some (α <| name := β |>));
   }.
   Global Instance Get_AF_name : Notations.DoubleColon t "name" := {
-    Notations.double_colon (x : M.Val t) := x.["name"];
+    Notations.double_colon (α : M.Val t) := α.["name"];
   }.
   Global Instance Get_from : Notations.Dot "from" := {
     Notations.dot :=
-      Ref.map (fun x => Some x.(from)) (fun v x => Some (x <| from := v |>));
+      Ref.map (fun α => Some α.(from)) (fun β α => Some (α <| from := β |>));
   }.
   Global Instance Get_AF_from : Notations.DoubleColon t "from" := {
-    Notations.double_colon (x : M.Val t) := x.["from"];
+    Notations.double_colon (α : M.Val t) := α.["from"];
   }.
 End Register.
 End Register.
@@ -394,37 +394,37 @@ Section SetAddress.
   
   Global Instance Get_name : Notations.Dot "name" := {
     Notations.dot :=
-      Ref.map (fun x => Some x.(name)) (fun v x => Some (x <| name := v |>));
+      Ref.map (fun α => Some α.(name)) (fun β α => Some (α <| name := β |>));
   }.
   Global Instance Get_AF_name : Notations.DoubleColon t "name" := {
-    Notations.double_colon (x : M.Val t) := x.["name"];
+    Notations.double_colon (α : M.Val t) := α.["name"];
   }.
   Global Instance Get_from : Notations.Dot "from" := {
     Notations.dot :=
-      Ref.map (fun x => Some x.(from)) (fun v x => Some (x <| from := v |>));
+      Ref.map (fun α => Some α.(from)) (fun β α => Some (α <| from := β |>));
   }.
   Global Instance Get_AF_from : Notations.DoubleColon t "from" := {
-    Notations.double_colon (x : M.Val t) := x.["from"];
+    Notations.double_colon (α : M.Val t) := α.["from"];
   }.
   Global Instance Get_old_address : Notations.Dot "old_address" := {
     Notations.dot :=
       Ref.map
-        (fun x => Some x.(old_address))
-        (fun v x => Some (x <| old_address := v |>));
+        (fun α => Some α.(old_address))
+        (fun β α => Some (α <| old_address := β |>));
   }.
   Global Instance Get_AF_old_address :
     Notations.DoubleColon t "old_address" := {
-    Notations.double_colon (x : M.Val t) := x.["old_address"];
+    Notations.double_colon (α : M.Val t) := α.["old_address"];
   }.
   Global Instance Get_new_address : Notations.Dot "new_address" := {
     Notations.dot :=
       Ref.map
-        (fun x => Some x.(new_address))
-        (fun v x => Some (x <| new_address := v |>));
+        (fun α => Some α.(new_address))
+        (fun β α => Some (α <| new_address := β |>));
   }.
   Global Instance Get_AF_new_address :
     Notations.DoubleColon t "new_address" := {
-    Notations.double_colon (x : M.Val t) := x.["new_address"];
+    Notations.double_colon (α : M.Val t) := α.["new_address"];
   }.
 End SetAddress.
 End SetAddress.
@@ -440,35 +440,35 @@ Section Transfer.
   
   Global Instance Get_name : Notations.Dot "name" := {
     Notations.dot :=
-      Ref.map (fun x => Some x.(name)) (fun v x => Some (x <| name := v |>));
+      Ref.map (fun α => Some α.(name)) (fun β α => Some (α <| name := β |>));
   }.
   Global Instance Get_AF_name : Notations.DoubleColon t "name" := {
-    Notations.double_colon (x : M.Val t) := x.["name"];
+    Notations.double_colon (α : M.Val t) := α.["name"];
   }.
   Global Instance Get_from : Notations.Dot "from" := {
     Notations.dot :=
-      Ref.map (fun x => Some x.(from)) (fun v x => Some (x <| from := v |>));
+      Ref.map (fun α => Some α.(from)) (fun β α => Some (α <| from := β |>));
   }.
   Global Instance Get_AF_from : Notations.DoubleColon t "from" := {
-    Notations.double_colon (x : M.Val t) := x.["from"];
+    Notations.double_colon (α : M.Val t) := α.["from"];
   }.
   Global Instance Get_old_owner : Notations.Dot "old_owner" := {
     Notations.dot :=
       Ref.map
-        (fun x => Some x.(old_owner))
-        (fun v x => Some (x <| old_owner := v |>));
+        (fun α => Some α.(old_owner))
+        (fun β α => Some (α <| old_owner := β |>));
   }.
   Global Instance Get_AF_old_owner : Notations.DoubleColon t "old_owner" := {
-    Notations.double_colon (x : M.Val t) := x.["old_owner"];
+    Notations.double_colon (α : M.Val t) := α.["old_owner"];
   }.
   Global Instance Get_new_owner : Notations.Dot "new_owner" := {
     Notations.dot :=
       Ref.map
-        (fun x => Some x.(new_owner))
-        (fun v x => Some (x <| new_owner := v |>));
+        (fun α => Some α.(new_owner))
+        (fun β α => Some (α <| new_owner := β |>));
   }.
   Global Instance Get_AF_new_owner : Notations.DoubleColon t "new_owner" := {
-    Notations.double_colon (x : M.Val t) := x.["new_owner"];
+    Notations.double_colon (α : M.Val t) := α.["new_owner"];
   }.
 End Transfer.
 End Transfer.
@@ -529,32 +529,32 @@ Section DomainNameService.
   Global Instance Get_name_to_address : Notations.Dot "name_to_address" := {
     Notations.dot :=
       Ref.map
-        (fun x => Some x.(name_to_address))
-        (fun v x => Some (x <| name_to_address := v |>));
+        (fun α => Some α.(name_to_address))
+        (fun β α => Some (α <| name_to_address := β |>));
   }.
   Global Instance Get_AF_name_to_address :
     Notations.DoubleColon t "name_to_address" := {
-    Notations.double_colon (x : M.Val t) := x.["name_to_address"];
+    Notations.double_colon (α : M.Val t) := α.["name_to_address"];
   }.
   Global Instance Get_name_to_owner : Notations.Dot "name_to_owner" := {
     Notations.dot :=
       Ref.map
-        (fun x => Some x.(name_to_owner))
-        (fun v x => Some (x <| name_to_owner := v |>));
+        (fun α => Some α.(name_to_owner))
+        (fun β α => Some (α <| name_to_owner := β |>));
   }.
   Global Instance Get_AF_name_to_owner :
     Notations.DoubleColon t "name_to_owner" := {
-    Notations.double_colon (x : M.Val t) := x.["name_to_owner"];
+    Notations.double_colon (α : M.Val t) := α.["name_to_owner"];
   }.
   Global Instance Get_default_address : Notations.Dot "default_address" := {
     Notations.dot :=
       Ref.map
-        (fun x => Some x.(default_address))
-        (fun v x => Some (x <| default_address := v |>));
+        (fun α => Some α.(default_address))
+        (fun β α => Some (α <| default_address := β |>));
   }.
   Global Instance Get_AF_default_address :
     Notations.DoubleColon t "default_address" := {
-    Notations.double_colon (x : M.Val t) := x.["default_address"];
+    Notations.double_colon (α : M.Val t) := α.["default_address"];
   }.
 End DomainNameService.
 End DomainNameService.
