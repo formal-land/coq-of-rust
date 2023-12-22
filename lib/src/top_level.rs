@@ -1866,28 +1866,28 @@ impl TopLevelItem {
                         match &**fields {
                             VariantItem::Tuple { .. } => nil(),
                             VariantItem::Struct { fields } => coq::TopLevel::new(&[
-                              coq::TopLevelItem::Module(coq::Module::new(
-                                  name,
-                                  false,
-                                  coq::TopLevel::locally_unset_primitive_projections(&[
-                                      coq::TopLevelItem::Record(coq::Record::new(
-                                          "t",
-                                          &coq::Expression::Set,
-                                          &fields
-                                              .iter()
-                                              .map(|(name, ty)| {
-                                                  coq::FieldDef::new(
-                                                      &Some(name.to_owned()),
-                                                      &ty.to_coq(),
-                                                  )
-                                              })
-                                              .collect::<Vec<_>>(),
-                                      )),
-                                  ]),
-                              )),
-                              coq::TopLevelItem::Line,
-                          ])
-                          .to_doc(),
+                                coq::TopLevelItem::Module(coq::Module::new(
+                                    name,
+                                    false,
+                                    coq::TopLevel::locally_unset_primitive_projections(&[
+                                        coq::TopLevelItem::Record(coq::Record::new(
+                                            "t",
+                                            &coq::Expression::Set,
+                                            &fields
+                                                .iter()
+                                                .map(|(name, ty)| {
+                                                    coq::FieldDef::new(
+                                                        &Some(name.to_owned()),
+                                                        &ty.to_coq(),
+                                                    )
+                                                })
+                                                .collect::<Vec<_>>(),
+                                        )),
+                                    ]),
+                                )),
+                                coq::TopLevelItem::Line,
+                            ])
+                            .to_doc(),
                         }
                     })),
                     nest([
