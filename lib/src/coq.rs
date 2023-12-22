@@ -690,16 +690,19 @@ impl<'a> Instance<'a> {
         concat([
             nest([
                 nest([
-                    text("Global Instance"),
-                    line(),
+                    text("Global Instance "),
                     text(self.name.to_owned()),
-                    optional_insert(
-                        self.parameters.is_empty(),
-                        concat([
-                            line(),
-                            intersperse(self.parameters.iter().map(|p| p.to_doc()), [line()]),
-                        ]),
-                    ),
+                    optional_insert(self.parameters.is_empty(), {
+                        let non_empty_params: Vec<_> =
+                            self.parameters.iter().filter(|p| !p.is_empty()).collect();
+                        optional_insert(
+                            non_empty_params.is_empty(),
+                            concat([
+                                line(),
+                                intersperse(non_empty_params.iter().map(|p| p.to_doc()), [line()]),
+                            ]),
+                        )
+                    }),
                 ]),
                 text(" :"),
                 line(),
@@ -1020,6 +1023,15 @@ impl<'a> Field<'a> {
 }
 
 impl<'a> ArgDecl<'a> {
+    pub(crate) fn is_empty(&self) -> bool {
+        match self.decl.to_owned() {
+            ArgDeclVar::Simple { idents, .. } => idents.is_empty(),
+            ArgDeclVar::Generalized { .. } => false, // ty would always be exist
+            ArgDeclVar::Traits { traits } => traits.is_empty(),
+            ArgDeclVar::Destructured { .. } => false,
+        }
+    }
+
     /// produces a new coq argument
     pub(crate) fn new(decl: &ArgDeclVar<'a>, kind: ArgSpecKind) -> Self {
         ArgDecl {

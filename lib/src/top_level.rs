@@ -1539,77 +1539,54 @@ impl FunDefinition {
 }
 
 impl ImplItemKind {
-    fn class_instance_to_doc<'a>(
+    fn class_instance_to_coq<'a>(
         instance_prefix: &'a str,
         name: &'a str,
         ty_params: Option<&'a [String]>,
         where_predicates: Option<&'a [Rc<WherePredicate>]>,
         class_name: &'a str,
         method_name: &'a str,
-    ) -> Doc<'a> {
-        group([
-            nest([
-                nest([
-                    text("Global Instance "),
-                    text(format!("{instance_prefix}_{name}")),
-                    // Type parameters a, b, c... compiles to {a b c ... : Set}
-                    match ty_params {
-                        None | Some([]) => nil(),
-                        Some(ty_params) => concat([
-                            line(),
-                            coq::ArgDecl::of_ty_params(ty_params, coq::ArgSpecKind::Implicit)
-                                .to_doc(),
-                        ]),
-                    },
-                    // where predicates types
-                    match where_predicates {
-                        None | Some([]) => nil(),
-                        Some(where_predicates) => concat([
-                            line(),
-                            WherePredicate::vec_to_coq(where_predicates).to_doc(),
-                        ]),
-                    },
-                    text(" :"),
-                ]),
-                line(),
-                nest([
-                    text(class_name),
-                    line(),
-                    text(format!("\"{name}\"")),
-                    text(" := {"),
-                ]),
-            ]),
-            nest([
-                hardline(),
-                nest([
-                    text(method_name),
-                    line(),
-                    text(":="),
-                    line(),
-                    {
-                        let body = coq::Expression::just_name(name);
-                        match ty_params {
-                            None => body,
-                            Some(ty_params) => body.apply_many_args(
-                                &ty_params
-                                    .iter()
-                                    .map(|ty_param| {
-                                        (
-                                            Some(ty_param.to_owned()),
-                                            coq::Expression::just_name(ty_param),
-                                        )
-                                    })
-                                    .collect::<Vec<_>>(),
-                            ),
-                        }
-                        .to_doc(false)
-                    },
-                    text(";"),
-                ]),
-            ]),
-            hardline(),
-            text("}."),
-        ])
+    ) -> coq::TopLevelItem<'a> {
+        // Type parameters a, b, c... compiles to {a b c ... : Set}
+        let ty_params_arg = coq::ArgDecl::of_ty_params(
+            match ty_params {
+                None | Some([]) => &[],
+                Some(ty_params) => ty_params,
+            },
+            coq::ArgSpecKind::Implicit,
+        );
+        // where predicates types
+        let where_predicates = match where_predicates {
+            None | Some([]) => WherePredicate::vec_to_coq(&[]),
+            Some(where_predicates) => WherePredicate::vec_to_coq(where_predicates),
+        };
+
+        let body = coq::Expression::just_name(name);
+        let entry = match ty_params {
+            None => body,
+            Some(ty_params) => body.apply_many_args(
+                &ty_params
+                    .iter()
+                    .map(|ty_param| {
+                        (
+                            Some(ty_param.to_owned()),
+                            coq::Expression::just_name(ty_param),
+                        )
+                    })
+                    .collect::<Vec<_>>(),
+            ),
+        };
+
+        coq::TopLevelItem::Instance(coq::Instance::new(
+            &format!("{instance_prefix}_{name}"),
+            &[ty_params_arg, where_predicates],
+            coq::Expression::just_name(class_name)
+                .apply(&coq::Expression::just_name(format!("\"{name}\"").as_str())),
+            &coq::Expression::Record {
+                fields: vec![coq::Field::new(&Path::new(&[method_name]), &[], &entry)],
+            },
+            vec![],
+        ))
     }
 
     fn to_coq<'a>(&'a self, name: &'a str) -> coq::TopLevel<'a> {
@@ -1645,26 +1622,26 @@ impl ImplItemKind {
                     )),
                 },
                 coq::TopLevelItem::Line,
-                coq::TopLevelItem::Code(Self::class_instance_to_doc(
+                Self::class_instance_to_coq(
                     "AssociatedFunction",
                     name,
                     None,
                     None,
                     "Notations.DoubleColon Self",
                     "Notations.double_colon",
-                )),
+                ),
             ])]),
             ImplItemKind::Definition { definition, .. } => coq::TopLevel::new(&[
                 coq::TopLevelItem::Code(definition.to_doc(name, None)),
                 coq::TopLevelItem::Line,
-                coq::TopLevelItem::Code(Self::class_instance_to_doc(
+                Self::class_instance_to_coq(
                     "AssociatedFunction",
                     name,
                     Some(&definition.ty_params),
                     Some(&definition.where_predicates),
                     "Notations.DoubleColon Self",
                     "Notations.double_colon",
-                )),
+                ),
             ]),
             ImplItemKind::Type { ty } => {
                 coq::TopLevel::new(&[coq::TopLevelItem::Definition(coq::Definition::new(
