@@ -548,13 +548,14 @@ Section Impl_core_clone_Clone_for_mother_Outline_t.
   Definition clone (self : ref Self) : M mother.Outline.t :=
     let* self := M.alloc self in
     let* α0 : ref mother.Outline.t := M.read self in
-    let* α1 : M.Val mother.Outline.t :=
-      match α0 with
+    let* α1 := M.read α0 in
+    let* α2 : M.Val mother.Outline.t :=
+      match α1 with
       | mother.Outline.NoWinner => M.alloc mother.Outline.NoWinner
       | mother.Outline.WinnerDetected => M.alloc mother.Outline.WinnerDetected
       | mother.Outline.PayoutCompleted => M.alloc mother.Outline.PayoutCompleted
       end in
-    M.read α1.
+    M.read α2.
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {

@@ -389,8 +389,8 @@ fn compile_expr_kind<'a>(
             ExprKind::LetIf { pat, init }
         }
         thir::ExprKind::Match { scrutinee, arms } => {
-            let scrutinee = Box::new(compile_expr(env, thir, scrutinee).read());
-            let arms = arms
+            let scrutinee = compile_expr(env, thir, scrutinee).read();
+            let arms: Vec<MatchArm> = arms
                 .iter()
                 .map(|arm_id| {
                     let arm = thir.arms.get(*arm_id).unwrap();
@@ -403,6 +403,19 @@ fn compile_expr_kind<'a>(
                     }
                 })
                 .collect();
+            let is_reference = match &scrutinee.ty {
+                Some(ty) => matches!(ty.clone().match_ref(), Some((_, _, _))),
+                None => false,
+            };
+            let are_all_bindings_empty =
+                arms.iter().all(|arm| arm.pattern.get_bindings().is_empty());
+            let scrutinee = Box::new(if is_reference && are_all_bindings_empty {
+                // This is a simple case of `match` on a reference, when all
+                // patterns are without bindings.
+                scrutinee.read()
+            } else {
+                scrutinee
+            });
 
             ExprKind::Match { scrutinee, arms }
         }

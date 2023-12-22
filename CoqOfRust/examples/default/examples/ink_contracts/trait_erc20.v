@@ -226,8 +226,9 @@ Section Impl_core_fmt_Debug_for_trait_erc20_Error_t.
     let* f := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref trait_erc20.Error.t := M.read self in
-    let* α2 : M.Val (ref str.t) :=
-      match α1 with
+    let* α2 := M.read α1 in
+    let* α3 : M.Val (ref str.t) :=
+      match α2 with
       | trait_erc20.Error.InsufficientBalance =>
         let* α0 : ref str.t := M.read (mk_str "InsufficientBalance") in
         M.alloc α0
@@ -235,8 +236,8 @@ Section Impl_core_fmt_Debug_for_trait_erc20_Error_t.
         let* α0 : ref str.t := M.read (mk_str "InsufficientAllowance") in
         M.alloc α0
       end in
-    let* α3 : ref str.t := M.read α2 in
-    M.call (core.fmt.Formatter.t::["write_str"] α0 α3).
+    let* α4 : ref str.t := M.read α3 in
+    M.call (core.fmt.Formatter.t::["write_str"] α0 α4).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;

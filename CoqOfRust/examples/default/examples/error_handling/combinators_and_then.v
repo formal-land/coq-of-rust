@@ -23,8 +23,9 @@ Section Impl_core_fmt_Debug_for_combinators_and_then_Food_t.
     let* f := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref combinators_and_then.Food.t := M.read self in
-    let* α2 : M.Val (ref str.t) :=
-      match α1 with
+    let* α2 := M.read α1 in
+    let* α3 : M.Val (ref str.t) :=
+      match α2 with
       | combinators_and_then.Food.CordonBleu =>
         let* α0 : ref str.t := M.read (mk_str "CordonBleu") in
         M.alloc α0
@@ -35,8 +36,8 @@ Section Impl_core_fmt_Debug_for_combinators_and_then_Food_t.
         let* α0 : ref str.t := M.read (mk_str "Sushi") in
         M.alloc α0
       end in
-    let* α3 : ref str.t := M.read α2 in
-    M.call (core.fmt.Formatter.t::["write_str"] α0 α3).
+    let* α4 : ref str.t := M.read α3 in
+    M.call (core.fmt.Formatter.t::["write_str"] α0 α4).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
@@ -70,8 +71,9 @@ Section Impl_core_fmt_Debug_for_combinators_and_then_Day_t.
     let* f := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref combinators_and_then.Day.t := M.read self in
-    let* α2 : M.Val (ref str.t) :=
-      match α1 with
+    let* α2 := M.read α1 in
+    let* α3 : M.Val (ref str.t) :=
+      match α2 with
       | combinators_and_then.Day.Monday =>
         let* α0 : ref str.t := M.read (mk_str "Monday") in
         M.alloc α0
@@ -82,8 +84,8 @@ Section Impl_core_fmt_Debug_for_combinators_and_then_Day_t.
         let* α0 : ref str.t := M.read (mk_str "Wednesday") in
         M.alloc α0
       end in
-    let* α3 : ref str.t := M.read α2 in
-    M.call (core.fmt.Formatter.t::["write_str"] α0 α3).
+    let* α4 : ref str.t := M.read α3 in
+    M.call (core.fmt.Formatter.t::["write_str"] α0 α4).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
