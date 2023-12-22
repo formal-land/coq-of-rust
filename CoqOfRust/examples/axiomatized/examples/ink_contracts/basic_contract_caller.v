@@ -8,7 +8,8 @@ Section AccountId.
   }.
   
   Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot := Ref.map (fun x => x.(x0)) (fun v x => x <| x0 := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(x0)) (fun v x => Some (x <| x0 := v |>));
   }.
 End AccountId.
 End AccountId.
@@ -78,7 +79,7 @@ Section OtherContract.
   
   Global Instance Get_value : Notations.Dot "value" := {
     Notations.dot :=
-      Ref.map (fun x => x.(value)) (fun v x => x <| value := v |>);
+      Ref.map (fun x => Some x.(value)) (fun v x => Some (x <| value := v |>));
   }.
   Global Instance Get_AF_value : Notations.DoubleColon t "value" := {
     Notations.double_colon (x : M.Val t) := x.["value"];
@@ -135,8 +136,8 @@ Section BasicContractCaller.
   Global Instance Get_other_contract : Notations.Dot "other_contract" := {
     Notations.dot :=
       Ref.map
-        (fun x => x.(other_contract))
-        (fun v x => x <| other_contract := v |>);
+        (fun x => Some x.(other_contract))
+        (fun v x => Some (x <| other_contract := v |>));
   }.
   Global Instance Get_AF_other_contract :
     Notations.DoubleColon t "other_contract" := {

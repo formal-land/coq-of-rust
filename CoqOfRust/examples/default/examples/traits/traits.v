@@ -10,13 +10,14 @@ Section Sheep.
   
   Global Instance Get_naked : Notations.Dot "naked" := {
     Notations.dot :=
-      Ref.map (fun x => x.(naked)) (fun v x => x <| naked := v |>);
+      Ref.map (fun x => Some x.(naked)) (fun v x => Some (x <| naked := v |>));
   }.
   Global Instance Get_AF_naked : Notations.DoubleColon t "naked" := {
     Notations.double_colon (x : M.Val t) := x.["naked"];
   }.
   Global Instance Get_name : Notations.Dot "name" := {
-    Notations.dot := Ref.map (fun x => x.(name)) (fun v x => x <| name := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(name)) (fun v x => Some (x <| name := v |>));
   }.
   Global Instance Get_AF_name : Notations.DoubleColon t "name" := {
     Notations.double_colon (x : M.Val t) := x.["name"];

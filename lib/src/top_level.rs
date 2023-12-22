@@ -2367,18 +2367,22 @@ fn struct_field_value<'a>(name: String) -> coq::Expression<'a> {
     coq::Expression::just_name("Ref.map").apply_many(&[
         coq::Expression::Function {
             parameters: vec![coq::Expression::just_name(x)],
-            body: Box::new(coq::Expression::RecordField {
-                record: Box::new(coq::Expression::just_name(x)),
-                field: name.to_owned(),
-            }),
+            body: Box::new(coq::Expression::just_name("Some").apply(
+                &coq::Expression::RecordField {
+                    record: Box::new(coq::Expression::just_name(x)),
+                    field: name.to_owned(),
+                },
+            )),
         },
         coq::Expression::Function {
             parameters: vec![coq::Expression::just_name(v), coq::Expression::just_name(x)],
-            body: Box::new(coq::Expression::RecordUpdate {
-                record: Box::new(coq::Expression::just_name(x)),
-                field: name,
-                update: Box::new(coq::Expression::just_name(v)),
-            }),
+            body: Box::new(coq::Expression::just_name("Some").apply(
+                &coq::Expression::RecordUpdate {
+                    record: Box::new(coq::Expression::just_name(x)),
+                    field: name,
+                    update: Box::new(coq::Expression::just_name(v)),
+                },
+            )),
         },
     ])
 }

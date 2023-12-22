@@ -134,13 +134,15 @@ Section Person.
   }.
   
   Global Instance Get_name : Notations.Dot "name" := {
-    Notations.dot := Ref.map (fun x => x.(name)) (fun v x => x <| name := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(name)) (fun v x => Some (x <| name := v |>));
   }.
   Global Instance Get_AF_name : Notations.DoubleColon t "name" := {
     Notations.double_colon (x : M.Val t) := x.["name"];
   }.
   Global Instance Get_age : Notations.Dot "age" := {
-    Notations.dot := Ref.map (fun x => x.(age)) (fun v x => x <| age := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(age)) (fun v x => Some (x <| age := v |>));
   }.
   Global Instance Get_AF_age : Notations.DoubleColon t "age" := {
     Notations.double_colon (x : M.Val t) := x.["age"];

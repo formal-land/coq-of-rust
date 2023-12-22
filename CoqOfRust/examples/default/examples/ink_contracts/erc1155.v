@@ -11,14 +11,17 @@ Section Mapping.
   }.
   
   Global Instance Get__key : Notations.Dot "_key" := {
-    Notations.dot := Ref.map (fun x => x.(_key)) (fun v x => x <| _key := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(_key)) (fun v x => Some (x <| _key := v |>));
   }.
   Global Instance Get_AF__key : Notations.DoubleColon t "_key" := {
     Notations.double_colon (x : M.Val t) := x.["_key"];
   }.
   Global Instance Get__value : Notations.Dot "_value" := {
     Notations.dot :=
-      Ref.map (fun x => x.(_value)) (fun v x => x <| _value := v |>);
+      Ref.map
+        (fun x => Some x.(_value))
+        (fun v x => Some (x <| _value := v |>));
   }.
   Global Instance Get_AF__value : Notations.DoubleColon t "_value" := {
     Notations.double_colon (x : M.Val t) := x.["_value"];
@@ -190,7 +193,8 @@ Section AccountId.
   }.
   
   Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot := Ref.map (fun x => x.(x0)) (fun v x => x <| x0 := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(x0)) (fun v x => Some (x <| x0 := v |>));
   }.
 End AccountId.
 End AccountId.
@@ -332,7 +336,9 @@ Section Env.
   
   Global Instance Get_caller : Notations.Dot "caller" := {
     Notations.dot :=
-      Ref.map (fun x => x.(caller)) (fun v x => x <| caller := v |>);
+      Ref.map
+        (fun x => Some x.(caller))
+        (fun v x => Some (x <| caller := v |>));
   }.
   Global Instance Get_AF_caller : Notations.DoubleColon t "caller" := {
     Notations.double_colon (x : M.Val t) := x.["caller"];
@@ -533,33 +539,39 @@ Section TransferSingle.
   
   Global Instance Get_operator : Notations.Dot "operator" := {
     Notations.dot :=
-      Ref.map (fun x => x.(operator)) (fun v x => x <| operator := v |>);
+      Ref.map
+        (fun x => Some x.(operator))
+        (fun v x => Some (x <| operator := v |>));
   }.
   Global Instance Get_AF_operator : Notations.DoubleColon t "operator" := {
     Notations.double_colon (x : M.Val t) := x.["operator"];
   }.
   Global Instance Get_from : Notations.Dot "from" := {
-    Notations.dot := Ref.map (fun x => x.(from)) (fun v x => x <| from := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(from)) (fun v x => Some (x <| from := v |>));
   }.
   Global Instance Get_AF_from : Notations.DoubleColon t "from" := {
     Notations.double_colon (x : M.Val t) := x.["from"];
   }.
   Global Instance Get_to : Notations.Dot "to" := {
-    Notations.dot := Ref.map (fun x => x.(to)) (fun v x => x <| to := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(to)) (fun v x => Some (x <| to := v |>));
   }.
   Global Instance Get_AF_to : Notations.DoubleColon t "to" := {
     Notations.double_colon (x : M.Val t) := x.["to"];
   }.
   Global Instance Get_token_id : Notations.Dot "token_id" := {
     Notations.dot :=
-      Ref.map (fun x => x.(token_id)) (fun v x => x <| token_id := v |>);
+      Ref.map
+        (fun x => Some x.(token_id))
+        (fun v x => Some (x <| token_id := v |>));
   }.
   Global Instance Get_AF_token_id : Notations.DoubleColon t "token_id" := {
     Notations.double_colon (x : M.Val t) := x.["token_id"];
   }.
   Global Instance Get_value : Notations.Dot "value" := {
     Notations.dot :=
-      Ref.map (fun x => x.(value)) (fun v x => x <| value := v |>);
+      Ref.map (fun x => Some x.(value)) (fun v x => Some (x <| value := v |>));
   }.
   Global Instance Get_AF_value : Notations.DoubleColon t "value" := {
     Notations.double_colon (x : M.Val t) := x.["value"];
@@ -577,21 +589,25 @@ Section ApprovalForAll.
   
   Global Instance Get_owner : Notations.Dot "owner" := {
     Notations.dot :=
-      Ref.map (fun x => x.(owner)) (fun v x => x <| owner := v |>);
+      Ref.map (fun x => Some x.(owner)) (fun v x => Some (x <| owner := v |>));
   }.
   Global Instance Get_AF_owner : Notations.DoubleColon t "owner" := {
     Notations.double_colon (x : M.Val t) := x.["owner"];
   }.
   Global Instance Get_operator : Notations.Dot "operator" := {
     Notations.dot :=
-      Ref.map (fun x => x.(operator)) (fun v x => x <| operator := v |>);
+      Ref.map
+        (fun x => Some x.(operator))
+        (fun v x => Some (x <| operator := v |>));
   }.
   Global Instance Get_AF_operator : Notations.DoubleColon t "operator" := {
     Notations.double_colon (x : M.Val t) := x.["operator"];
   }.
   Global Instance Get_approved : Notations.Dot "approved" := {
     Notations.dot :=
-      Ref.map (fun x => x.(approved)) (fun v x => x <| approved := v |>);
+      Ref.map
+        (fun x => Some x.(approved))
+        (fun v x => Some (x <| approved := v |>));
   }.
   Global Instance Get_AF_approved : Notations.DoubleColon t "approved" := {
     Notations.double_colon (x : M.Val t) := x.["approved"];
@@ -608,14 +624,16 @@ Section Uri.
   
   Global Instance Get_value : Notations.Dot "value" := {
     Notations.dot :=
-      Ref.map (fun x => x.(value)) (fun v x => x <| value := v |>);
+      Ref.map (fun x => Some x.(value)) (fun v x => Some (x <| value := v |>));
   }.
   Global Instance Get_AF_value : Notations.DoubleColon t "value" := {
     Notations.double_colon (x : M.Val t) := x.["value"];
   }.
   Global Instance Get_token_id : Notations.Dot "token_id" := {
     Notations.dot :=
-      Ref.map (fun x => x.(token_id)) (fun v x => x <| token_id := v |>);
+      Ref.map
+        (fun x => Some x.(token_id))
+        (fun v x => Some (x <| token_id := v |>));
   }.
   Global Instance Get_AF_token_id : Notations.DoubleColon t "token_id" := {
     Notations.double_colon (x : M.Val t) := x.["token_id"];
@@ -682,14 +700,18 @@ Section Contract.
   
   Global Instance Get_balances : Notations.Dot "balances" := {
     Notations.dot :=
-      Ref.map (fun x => x.(balances)) (fun v x => x <| balances := v |>);
+      Ref.map
+        (fun x => Some x.(balances))
+        (fun v x => Some (x <| balances := v |>));
   }.
   Global Instance Get_AF_balances : Notations.DoubleColon t "balances" := {
     Notations.double_colon (x : M.Val t) := x.["balances"];
   }.
   Global Instance Get_approvals : Notations.Dot "approvals" := {
     Notations.dot :=
-      Ref.map (fun x => x.(approvals)) (fun v x => x <| approvals := v |>);
+      Ref.map
+        (fun x => Some x.(approvals))
+        (fun v x => Some (x <| approvals := v |>));
   }.
   Global Instance Get_AF_approvals : Notations.DoubleColon t "approvals" := {
     Notations.double_colon (x : M.Val t) := x.["approvals"];
@@ -697,8 +719,8 @@ Section Contract.
   Global Instance Get_token_id_nonce : Notations.Dot "token_id_nonce" := {
     Notations.dot :=
       Ref.map
-        (fun x => x.(token_id_nonce))
-        (fun v x => x <| token_id_nonce := v |>);
+        (fun x => Some x.(token_id_nonce))
+        (fun v x => Some (x <| token_id_nonce := v |>));
   }.
   Global Instance Get_AF_token_id_nonce :
     Notations.DoubleColon t "token_id_nonce" := {

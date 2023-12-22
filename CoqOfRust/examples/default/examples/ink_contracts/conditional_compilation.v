@@ -8,7 +8,8 @@ Section AccountId.
   }.
   
   Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot := Ref.map (fun x => x.(x0)) (fun v x => x <| x0 := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(x0)) (fun v x => Some (x <| x0 := v |>));
   }.
 End AccountId.
 End AccountId.
@@ -85,7 +86,9 @@ Section Env.
   
   Global Instance Get_caller : Notations.Dot "caller" := {
     Notations.dot :=
-      Ref.map (fun x => x.(caller)) (fun v x => x <| caller := v |>);
+      Ref.map
+        (fun x => Some x.(caller))
+        (fun v x => Some (x <| caller := v |>));
   }.
   Global Instance Get_AF_caller : Notations.DoubleColon t "caller" := {
     Notations.double_colon (x : M.Val t) := x.["caller"];
@@ -113,13 +116,16 @@ Section Changes.
   
   Global Instance Get_new_value : Notations.Dot "new_value" := {
     Notations.dot :=
-      Ref.map (fun x => x.(new_value)) (fun v x => x <| new_value := v |>);
+      Ref.map
+        (fun x => Some x.(new_value))
+        (fun v x => Some (x <| new_value := v |>));
   }.
   Global Instance Get_AF_new_value : Notations.DoubleColon t "new_value" := {
     Notations.double_colon (x : M.Val t) := x.["new_value"];
   }.
   Global Instance Get_by_ : Notations.Dot "by_" := {
-    Notations.dot := Ref.map (fun x => x.(by_)) (fun v x => x <| by_ := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(by_)) (fun v x => Some (x <| by_ := v |>));
   }.
   Global Instance Get_AF_by_ : Notations.DoubleColon t "by_" := {
     Notations.double_colon (x : M.Val t) := x.["by_"];
@@ -137,19 +143,23 @@ Section ChangesDated.
   
   Global Instance Get_new_value : Notations.Dot "new_value" := {
     Notations.dot :=
-      Ref.map (fun x => x.(new_value)) (fun v x => x <| new_value := v |>);
+      Ref.map
+        (fun x => Some x.(new_value))
+        (fun v x => Some (x <| new_value := v |>));
   }.
   Global Instance Get_AF_new_value : Notations.DoubleColon t "new_value" := {
     Notations.double_colon (x : M.Val t) := x.["new_value"];
   }.
   Global Instance Get_by_ : Notations.Dot "by_" := {
-    Notations.dot := Ref.map (fun x => x.(by_)) (fun v x => x <| by_ := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(by_)) (fun v x => Some (x <| by_ := v |>));
   }.
   Global Instance Get_AF_by_ : Notations.DoubleColon t "by_" := {
     Notations.double_colon (x : M.Val t) := x.["by_"];
   }.
   Global Instance Get_when : Notations.Dot "when" := {
-    Notations.dot := Ref.map (fun x => x.(when)) (fun v x => x <| when := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(when)) (fun v x => Some (x <| when := v |>));
   }.
   Global Instance Get_AF_when : Notations.DoubleColon t "when" := {
     Notations.double_colon (x : M.Val t) := x.["when"];
@@ -230,7 +240,7 @@ Section ConditionalCompilation.
   
   Global Instance Get_value : Notations.Dot "value" := {
     Notations.dot :=
-      Ref.map (fun x => x.(value)) (fun v x => x <| value := v |>);
+      Ref.map (fun x => Some x.(value)) (fun v x => Some (x <| value := v |>));
   }.
   Global Instance Get_AF_value : Notations.DoubleColon t "value" := {
     Notations.double_colon (x : M.Val t) := x.["value"];

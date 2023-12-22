@@ -877,18 +877,21 @@ impl<'a> Expression<'a> {
                 record,
                 field,
                 update,
-            } => nest([
-                record.to_doc(true),
-                line(),
+            } => paren(
+                with_paren,
                 nest([
-                    text("<| "),
-                    text(field.to_owned()),
-                    text(" :="),
+                    record.to_doc(true),
                     line(),
-                    update.to_doc(false),
-                    text(" |>"),
+                    nest([
+                        text("<| "),
+                        text(field.to_owned()),
+                        text(" :="),
+                        line(),
+                        update.to_doc(false),
+                        text(" |>"),
+                    ]),
                 ]),
-            ]),
+            ),
             Self::NotationsDot { value, field } => concat([
                 value.to_doc(true),
                 text(".[\""),

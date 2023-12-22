@@ -21,16 +21,20 @@ Section Matrix.
   }.
   
   Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot := Ref.map (fun x => x.(x0)) (fun v x => x <| x0 := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(x0)) (fun v x => Some (x <| x0 := v |>));
   }.
   Global Instance Get_1 : Notations.Dot "1" := {
-    Notations.dot := Ref.map (fun x => x.(x1)) (fun v x => x <| x1 := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(x1)) (fun v x => Some (x <| x1 := v |>));
   }.
   Global Instance Get_2 : Notations.Dot "2" := {
-    Notations.dot := Ref.map (fun x => x.(x2)) (fun v x => x <| x2 := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(x2)) (fun v x => Some (x <| x2 := v |>));
   }.
   Global Instance Get_3 : Notations.Dot "3" := {
-    Notations.dot := Ref.map (fun x => x.(x3)) (fun v x => x <| x3 := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(x3)) (fun v x => Some (x <| x3 := v |>));
   }.
 End Matrix.
 End Matrix.

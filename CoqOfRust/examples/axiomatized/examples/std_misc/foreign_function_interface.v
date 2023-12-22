@@ -37,13 +37,15 @@ Section Complex.
   }.
   
   Global Instance Get_re : Notations.Dot "re" := {
-    Notations.dot := Ref.map (fun x => x.(re)) (fun v x => x <| re := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(re)) (fun v x => Some (x <| re := v |>));
   }.
   Global Instance Get_AF_re : Notations.DoubleColon t "re" := {
     Notations.double_colon (x : M.Val t) := x.["re"];
   }.
   Global Instance Get_im : Notations.Dot "im" := {
-    Notations.dot := Ref.map (fun x => x.(im)) (fun v x => x <| im := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(im)) (fun v x => Some (x <| im := v |>));
   }.
   Global Instance Get_AF_im : Notations.DoubleColon t "im" := {
     Notations.double_colon (x : M.Val t) := x.["im"];

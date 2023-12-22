@@ -8,7 +8,8 @@ Section Person.
   }.
   
   Global Instance Get_job : Notations.Dot "job" := {
-    Notations.dot := Ref.map (fun x => x.(job)) (fun v x => x <| job := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(job)) (fun v x => Some (x <| job := v |>));
   }.
   Global Instance Get_AF_job : Notations.DoubleColon t "job" := {
     Notations.double_colon (x : M.Val t) := x.["job"];
@@ -26,8 +27,8 @@ Section Job.
   Global Instance Get_phone_number : Notations.Dot "phone_number" := {
     Notations.dot :=
       Ref.map
-        (fun x => x.(phone_number))
-        (fun v x => x <| phone_number := v |>);
+        (fun x => Some x.(phone_number))
+        (fun v x => Some (x <| phone_number := v |>));
   }.
   Global Instance Get_AF_phone_number :
     Notations.DoubleColon t "phone_number" := {
@@ -81,14 +82,18 @@ Section PhoneNumber.
   
   Global Instance Get_area_code : Notations.Dot "area_code" := {
     Notations.dot :=
-      Ref.map (fun x => x.(area_code)) (fun v x => x <| area_code := v |>);
+      Ref.map
+        (fun x => Some x.(area_code))
+        (fun v x => Some (x <| area_code := v |>));
   }.
   Global Instance Get_AF_area_code : Notations.DoubleColon t "area_code" := {
     Notations.double_colon (x : M.Val t) := x.["area_code"];
   }.
   Global Instance Get_number : Notations.Dot "number" := {
     Notations.dot :=
-      Ref.map (fun x => x.(number)) (fun v x => x <| number := v |>);
+      Ref.map
+        (fun x => Some x.(number))
+        (fun v x => Some (x <| number := v |>));
   }.
   Global Instance Get_AF_number : Notations.DoubleColon t "number" := {
     Notations.double_colon (x : M.Val t) := x.["number"];

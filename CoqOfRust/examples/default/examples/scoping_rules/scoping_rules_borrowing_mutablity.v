@@ -12,20 +12,23 @@ Section Book.
   
   Global Instance Get_author : Notations.Dot "author" := {
     Notations.dot :=
-      Ref.map (fun x => x.(author)) (fun v x => x <| author := v |>);
+      Ref.map
+        (fun x => Some x.(author))
+        (fun v x => Some (x <| author := v |>));
   }.
   Global Instance Get_AF_author : Notations.DoubleColon t "author" := {
     Notations.double_colon (x : M.Val t) := x.["author"];
   }.
   Global Instance Get_title : Notations.Dot "title" := {
     Notations.dot :=
-      Ref.map (fun x => x.(title)) (fun v x => x <| title := v |>);
+      Ref.map (fun x => Some x.(title)) (fun v x => Some (x <| title := v |>));
   }.
   Global Instance Get_AF_title : Notations.DoubleColon t "title" := {
     Notations.double_colon (x : M.Val t) := x.["title"];
   }.
   Global Instance Get_year : Notations.Dot "year" := {
-    Notations.dot := Ref.map (fun x => x.(year)) (fun v x => x <| year := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(year)) (fun v x => Some (x <| year := v |>));
   }.
   Global Instance Get_AF_year : Notations.DoubleColon t "year" := {
     Notations.double_colon (x : M.Val t) := x.["year"];

@@ -47,14 +47,18 @@ Section Rectangle.
   
   Global Instance Get_length : Notations.Dot "length" := {
     Notations.dot :=
-      Ref.map (fun x => x.(length)) (fun v x => x <| length := v |>);
+      Ref.map
+        (fun x => Some x.(length))
+        (fun v x => Some (x <| length := v |>));
   }.
   Global Instance Get_AF_length : Notations.DoubleColon t "length" := {
     Notations.double_colon (x : M.Val t) := x.["length"];
   }.
   Global Instance Get_height : Notations.Dot "height" := {
     Notations.dot :=
-      Ref.map (fun x => x.(height)) (fun v x => x <| height := v |>);
+      Ref.map
+        (fun x => Some x.(height))
+        (fun v x => Some (x <| height := v |>));
   }.
   Global Instance Get_AF_height : Notations.DoubleColon t "height" := {
     Notations.double_colon (x : M.Val t) := x.["height"];
@@ -109,14 +113,18 @@ Section Triangle.
   
   Global Instance Get_length : Notations.Dot "length" := {
     Notations.dot :=
-      Ref.map (fun x => x.(length)) (fun v x => x <| length := v |>);
+      Ref.map
+        (fun x => Some x.(length))
+        (fun v x => Some (x <| length := v |>));
   }.
   Global Instance Get_AF_length : Notations.DoubleColon t "length" := {
     Notations.double_colon (x : M.Val t) := x.["length"];
   }.
   Global Instance Get_height : Notations.Dot "height" := {
     Notations.dot :=
-      Ref.map (fun x => x.(height)) (fun v x => x <| height := v |>);
+      Ref.map
+        (fun x => Some x.(height))
+        (fun v x => Some (x <| height := v |>));
   }.
   Global Instance Get_AF_height : Notations.DoubleColon t "height" := {
     Notations.double_colon (x : M.Val t) := x.["height"];

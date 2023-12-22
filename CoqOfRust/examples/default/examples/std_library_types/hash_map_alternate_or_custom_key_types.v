@@ -10,14 +10,18 @@ Section Account.
   
   Global Instance Get_username : Notations.Dot "username" := {
     Notations.dot :=
-      Ref.map (fun x => x.(username)) (fun v x => x <| username := v |>);
+      Ref.map
+        (fun x => Some x.(username))
+        (fun v x => Some (x <| username := v |>));
   }.
   Global Instance Get_AF_username : Notations.DoubleColon t "username" := {
     Notations.double_colon (x : M.Val t) := x.["username"];
   }.
   Global Instance Get_password : Notations.Dot "password" := {
     Notations.dot :=
-      Ref.map (fun x => x.(password)) (fun v x => x <| password := v |>);
+      Ref.map
+        (fun x => Some x.(password))
+        (fun v x => Some (x <| password := v |>));
   }.
   Global Instance Get_AF_password : Notations.DoubleColon t "password" := {
     Notations.double_colon (x : M.Val t) := x.["password"];
@@ -174,14 +178,15 @@ Section AccountInfo.
   }.
   
   Global Instance Get_name : Notations.Dot "name" := {
-    Notations.dot := Ref.map (fun x => x.(name)) (fun v x => x <| name := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(name)) (fun v x => Some (x <| name := v |>));
   }.
   Global Instance Get_AF_name : Notations.DoubleColon t "name" := {
     Notations.double_colon (x : M.Val t) := x.["name"];
   }.
   Global Instance Get_email : Notations.Dot "email" := {
     Notations.dot :=
-      Ref.map (fun x => x.(email)) (fun v x => x <| email := v |>);
+      Ref.map (fun x => Some x.(email)) (fun v x => Some (x <| email := v |>));
   }.
   Global Instance Get_AF_email : Notations.DoubleColon t "email" := {
     Notations.double_colon (x : M.Val t) := x.["email"];
