@@ -9,7 +9,7 @@ Section Number.
   
   Global Instance Get_value : Notations.Dot "value" := {
     Notations.dot :=
-      Ref.map (fun x => x.(value)) (fun v x => x <| value := v |>);
+      Ref.map (fun x => Some x.(value)) (fun v x => Some (x <| value := v |>));
   }.
   Global Instance Get_AF_value : Notations.DoubleColon t "value" := {
     Notations.double_colon (x : M.Val t) := x.["value"];

@@ -11,14 +11,17 @@ Section Mapping.
   }.
   
   Global Instance Get__key : Notations.Dot "_key" := {
-    Notations.dot := Ref.map (fun x => x.(_key)) (fun v x => x <| _key := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(_key)) (fun v x => Some (x <| _key := v |>));
   }.
   Global Instance Get_AF__key : Notations.DoubleColon t "_key" := {
     Notations.double_colon (x : M.Val t) := x.["_key"];
   }.
   Global Instance Get__value : Notations.Dot "_value" := {
     Notations.dot :=
-      Ref.map (fun x => x.(_value)) (fun v x => x <| _value := v |>);
+      Ref.map
+        (fun x => Some x.(_value))
+        (fun v x => Some (x <| _value := v |>));
   }.
   Global Instance Get_AF__value : Notations.DoubleColon t "_value" := {
     Notations.double_colon (x : M.Val t) := x.["_value"];
@@ -138,7 +141,8 @@ Section AccountId.
   }.
   
   Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot := Ref.map (fun x => x.(x0)) (fun v x => x <| x0 := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(x0)) (fun v x => Some (x <| x0 := v |>));
   }.
 End AccountId.
 End AccountId.
@@ -256,7 +260,9 @@ Section Env.
   
   Global Instance Get_caller : Notations.Dot "caller" := {
     Notations.dot :=
-      Ref.map (fun x => x.(caller)) (fun v x => x <| caller := v |>);
+      Ref.map
+        (fun x => Some x.(caller))
+        (fun v x => Some (x <| caller := v |>));
   }.
   Global Instance Get_AF_caller : Notations.DoubleColon t "caller" := {
     Notations.double_colon (x : M.Val t) := x.["caller"];
@@ -278,7 +284,9 @@ Section Erc721.
   
   Global Instance Get_token_owner : Notations.Dot "token_owner" := {
     Notations.dot :=
-      Ref.map (fun x => x.(token_owner)) (fun v x => x <| token_owner := v |>);
+      Ref.map
+        (fun x => Some x.(token_owner))
+        (fun v x => Some (x <| token_owner := v |>));
   }.
   Global Instance Get_AF_token_owner :
     Notations.DoubleColon t "token_owner" := {
@@ -287,8 +295,8 @@ Section Erc721.
   Global Instance Get_token_approvals : Notations.Dot "token_approvals" := {
     Notations.dot :=
       Ref.map
-        (fun x => x.(token_approvals))
-        (fun v x => x <| token_approvals := v |>);
+        (fun x => Some x.(token_approvals))
+        (fun v x => Some (x <| token_approvals := v |>));
   }.
   Global Instance Get_AF_token_approvals :
     Notations.DoubleColon t "token_approvals" := {
@@ -298,8 +306,8 @@ Section Erc721.
     Notations.Dot "owned_tokens_count" := {
     Notations.dot :=
       Ref.map
-        (fun x => x.(owned_tokens_count))
-        (fun v x => x <| owned_tokens_count := v |>);
+        (fun x => Some x.(owned_tokens_count))
+        (fun v x => Some (x <| owned_tokens_count := v |>));
   }.
   Global Instance Get_AF_owned_tokens_count :
     Notations.DoubleColon t "owned_tokens_count" := {
@@ -309,8 +317,8 @@ Section Erc721.
     Notations.Dot "operator_approvals" := {
     Notations.dot :=
       Ref.map
-        (fun x => x.(operator_approvals))
-        (fun v x => x <| operator_approvals := v |>);
+        (fun x => Some x.(operator_approvals))
+        (fun v x => Some (x <| operator_approvals := v |>));
   }.
   Global Instance Get_AF_operator_approvals :
     Notations.DoubleColon t "operator_approvals" := {
@@ -450,19 +458,22 @@ Section Transfer.
   }.
   
   Global Instance Get_from : Notations.Dot "from" := {
-    Notations.dot := Ref.map (fun x => x.(from)) (fun v x => x <| from := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(from)) (fun v x => Some (x <| from := v |>));
   }.
   Global Instance Get_AF_from : Notations.DoubleColon t "from" := {
     Notations.double_colon (x : M.Val t) := x.["from"];
   }.
   Global Instance Get_to : Notations.Dot "to" := {
-    Notations.dot := Ref.map (fun x => x.(to)) (fun v x => x <| to := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(to)) (fun v x => Some (x <| to := v |>));
   }.
   Global Instance Get_AF_to : Notations.DoubleColon t "to" := {
     Notations.double_colon (x : M.Val t) := x.["to"];
   }.
   Global Instance Get_id : Notations.Dot "id" := {
-    Notations.dot := Ref.map (fun x => x.(id)) (fun v x => x <| id := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(id)) (fun v x => Some (x <| id := v |>));
   }.
   Global Instance Get_AF_id : Notations.DoubleColon t "id" := {
     Notations.double_colon (x : M.Val t) := x.["id"];
@@ -479,19 +490,22 @@ Section Approval.
   }.
   
   Global Instance Get_from : Notations.Dot "from" := {
-    Notations.dot := Ref.map (fun x => x.(from)) (fun v x => x <| from := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(from)) (fun v x => Some (x <| from := v |>));
   }.
   Global Instance Get_AF_from : Notations.DoubleColon t "from" := {
     Notations.double_colon (x : M.Val t) := x.["from"];
   }.
   Global Instance Get_to : Notations.Dot "to" := {
-    Notations.dot := Ref.map (fun x => x.(to)) (fun v x => x <| to := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(to)) (fun v x => Some (x <| to := v |>));
   }.
   Global Instance Get_AF_to : Notations.DoubleColon t "to" := {
     Notations.double_colon (x : M.Val t) := x.["to"];
   }.
   Global Instance Get_id : Notations.Dot "id" := {
-    Notations.dot := Ref.map (fun x => x.(id)) (fun v x => x <| id := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(id)) (fun v x => Some (x <| id := v |>));
   }.
   Global Instance Get_AF_id : Notations.DoubleColon t "id" := {
     Notations.double_colon (x : M.Val t) := x.["id"];
@@ -509,21 +523,25 @@ Section ApprovalForAll.
   
   Global Instance Get_owner : Notations.Dot "owner" := {
     Notations.dot :=
-      Ref.map (fun x => x.(owner)) (fun v x => x <| owner := v |>);
+      Ref.map (fun x => Some x.(owner)) (fun v x => Some (x <| owner := v |>));
   }.
   Global Instance Get_AF_owner : Notations.DoubleColon t "owner" := {
     Notations.double_colon (x : M.Val t) := x.["owner"];
   }.
   Global Instance Get_operator : Notations.Dot "operator" := {
     Notations.dot :=
-      Ref.map (fun x => x.(operator)) (fun v x => x <| operator := v |>);
+      Ref.map
+        (fun x => Some x.(operator))
+        (fun v x => Some (x <| operator := v |>));
   }.
   Global Instance Get_AF_operator : Notations.DoubleColon t "operator" := {
     Notations.double_colon (x : M.Val t) := x.["operator"];
   }.
   Global Instance Get_approved : Notations.Dot "approved" := {
     Notations.dot :=
-      Ref.map (fun x => x.(approved)) (fun v x => x <| approved := v |>);
+      Ref.map
+        (fun x => Some x.(approved))
+        (fun v x => Some (x <| approved := v |>));
   }.
   Global Instance Get_AF_approved : Notations.DoubleColon t "approved" := {
     Notations.double_colon (x : M.Val t) := x.["approved"];
@@ -607,15 +625,41 @@ Section Impl_erc721_Erc721_t.
   }.
   
   (*
-      pub fn balance_of(&self, owner: AccountId) -> u32 {
-          self.balance_of_or_zero(&owner)
+      fn balance_of_or_zero(&self, of: &AccountId) -> u32 {
+          self.owned_tokens_count.get(of).unwrap_or(0 as u32)
       }
   *)
-  Parameter balance_of : (ref Self) -> erc721.AccountId.t -> M u32.t.
+  Parameter balance_of_or_zero :
+      (ref Self) -> (ref erc721.AccountId.t) -> M u32.t.
   
-  Global Instance AssociatedFunction_balance_of :
-    Notations.DoubleColon Self "balance_of" := {
-    Notations.double_colon := balance_of;
+  Global Instance AssociatedFunction_balance_of_or_zero :
+    Notations.DoubleColon Self "balance_of_or_zero" := {
+    Notations.double_colon := balance_of_or_zero;
+  }.
+  
+  (*
+      fn clear_approval(&mut self, id: TokenId) {
+          self.token_approvals.remove(id);
+      }
+  *)
+  Parameter clear_approval : (mut_ref Self) -> ltac:(erc721.TokenId) -> M unit.
+  
+  Global Instance AssociatedFunction_clear_approval :
+    Notations.DoubleColon Self "clear_approval" := {
+    Notations.double_colon := clear_approval;
+  }.
+  
+  (*
+      fn approved_for_all(&self, owner: AccountId, operator: AccountId) -> bool {
+          self.operator_approvals.contains(&(owner, operator))
+      }
+  *)
+  Parameter approved_for_all :
+      (ref Self) -> erc721.AccountId.t -> erc721.AccountId.t -> M bool.t.
+  
+  Global Instance AssociatedFunction_approved_for_all :
+    Notations.DoubleColon Self "approved_for_all" := {
+    Notations.double_colon := approved_for_all;
   }.
   
   (*
@@ -631,6 +675,53 @@ Section Impl_erc721_Erc721_t.
   Global Instance AssociatedFunction_owner_of :
     Notations.DoubleColon Self "owner_of" := {
     Notations.double_colon := owner_of;
+  }.
+  
+  (*
+      fn approved_or_owner(&self, from: Option<AccountId>, id: TokenId) -> bool {
+          let owner = self.owner_of(id);
+          from != Some(AccountId::from([0x0; 32]))
+              && (from == owner
+                  || from == self.token_approvals.get(&id)
+                  || self.approved_for_all(
+                      owner.expect("Error with AccountId"),
+                      from.expect("Error with AccountId"),
+                  ))
+      }
+  *)
+  Parameter approved_or_owner :
+      (ref Self) ->
+        (core.option.Option.t erc721.AccountId.t) ->
+        ltac:(erc721.TokenId) ->
+        M bool.t.
+  
+  Global Instance AssociatedFunction_approved_or_owner :
+    Notations.DoubleColon Self "approved_or_owner" := {
+    Notations.double_colon := approved_or_owner;
+  }.
+  
+  (*
+      fn exists(&self, id: TokenId) -> bool {
+          self.token_owner.contains(&id)
+      }
+  *)
+  Parameter exists_ : (ref Self) -> ltac:(erc721.TokenId) -> M bool.t.
+  
+  Global Instance AssociatedFunction_exists_ :
+    Notations.DoubleColon Self "exists_" := {
+    Notations.double_colon := exists_;
+  }.
+  
+  (*
+      pub fn balance_of(&self, owner: AccountId) -> u32 {
+          self.balance_of_or_zero(&owner)
+      }
+  *)
+  Parameter balance_of : (ref Self) -> erc721.AccountId.t -> M u32.t.
+  
+  Global Instance AssociatedFunction_balance_of :
+    Notations.DoubleColon Self "balance_of" := {
+    Notations.double_colon := balance_of;
   }.
   
   (*
@@ -662,6 +753,38 @@ Section Impl_erc721_Erc721_t.
   }.
   
   (*
+      fn approve_for_all(&mut self, to: AccountId, approved: bool) -> Result<(), Error> {
+          let caller = self.env().caller();
+          if to == caller {
+              return Err(Error::NotAllowed);
+          }
+          self.env().emit_event(Event::ApprovalForAll(ApprovalForAll {
+              owner: caller,
+              operator: to,
+              approved,
+          }));
+  
+          if approved {
+              self.operator_approvals.insert((caller, to), ());
+          } else {
+              self.operator_approvals.remove((caller, to));
+          }
+  
+          Ok(())
+      }
+  *)
+  Parameter approve_for_all :
+      (mut_ref Self) ->
+        erc721.AccountId.t ->
+        bool.t ->
+        M (core.result.Result.t unit erc721.Error.t).
+  
+  Global Instance AssociatedFunction_approve_for_all :
+    Notations.DoubleColon Self "approve_for_all" := {
+    Notations.double_colon := approve_for_all;
+  }.
+  
+  (*
       pub fn set_approval_for_all(&mut self, to: AccountId, approved: bool) -> Result<(), Error> {
           self.approve_for_all(to, approved)?;
           Ok(())
@@ -679,6 +802,46 @@ Section Impl_erc721_Erc721_t.
   }.
   
   (*
+      fn approve_for(&mut self, to: &AccountId, id: TokenId) -> Result<(), Error> {
+          let caller = self.env().caller();
+          let owner = self.owner_of(id);
+          if !(owner == Some(caller)
+              || self.approved_for_all(owner.expect("Error with AccountId"), caller))
+          {
+              return Err(Error::NotAllowed);
+          };
+  
+          if *to == AccountId::from([0x0; 32]) {
+              return Err(Error::NotAllowed);
+          };
+  
+          if self.token_approvals.contains(&id) {
+              return Err(Error::CannotInsert);
+          } else {
+              self.token_approvals.insert(id, *to);
+          }
+  
+          self.env().emit_event(Event::Approval(Approval {
+              from: caller,
+              to: *to,
+              id,
+          }));
+  
+          Ok(())
+      }
+  *)
+  Parameter approve_for :
+      (mut_ref Self) ->
+        (ref erc721.AccountId.t) ->
+        ltac:(erc721.TokenId) ->
+        M (core.result.Result.t unit erc721.Error.t).
+  
+  Global Instance AssociatedFunction_approve_for :
+    Notations.DoubleColon Self "approve_for" := {
+    Notations.double_colon := approve_for;
+  }.
+  
+  (*
       pub fn approve(&mut self, to: AccountId, id: TokenId) -> Result<(), Error> {
           self.approve_for(&to, id)?;
           Ok(())
@@ -693,6 +856,111 @@ Section Impl_erc721_Erc721_t.
   Global Instance AssociatedFunction_approve :
     Notations.DoubleColon Self "approve" := {
     Notations.double_colon := approve;
+  }.
+  
+  (*
+      fn remove_token_from(&mut self, from: &AccountId, id: TokenId) -> Result<(), Error> {
+          let Self {
+              token_owner,
+              owned_tokens_count,
+              ..
+          } = self;
+  
+          if !token_owner.contains(&id) {
+              return Err(Error::TokenNotFound);
+          }
+  
+          let count = owned_tokens_count
+              .get(from)
+              .map(|c| c - 1)
+              .ok_or(Error::CannotFetchValue)?;
+          owned_tokens_count.insert( *from, count);
+          token_owner.remove(id);
+  
+          Ok(())
+      }
+  *)
+  Parameter remove_token_from :
+      (mut_ref Self) ->
+        (ref erc721.AccountId.t) ->
+        ltac:(erc721.TokenId) ->
+        M (core.result.Result.t unit erc721.Error.t).
+  
+  Global Instance AssociatedFunction_remove_token_from :
+    Notations.DoubleColon Self "remove_token_from" := {
+    Notations.double_colon := remove_token_from;
+  }.
+  
+  (*
+      fn add_token_to(&mut self, to: &AccountId, id: TokenId) -> Result<(), Error> {
+          let Self {
+              token_owner,
+              owned_tokens_count,
+              ..
+          } = self;
+  
+          if token_owner.contains(&id) {
+              return Err(Error::TokenExists);
+          }
+  
+          if *to == AccountId::from([0x0; 32]) {
+              return Err(Error::NotAllowed);
+          };
+  
+          let count = owned_tokens_count.get(to).map(|c| c + 1).unwrap_or(1);
+  
+          owned_tokens_count.insert( *to, count);
+          token_owner.insert(id, *to);
+  
+          Ok(())
+      }
+  *)
+  Parameter add_token_to :
+      (mut_ref Self) ->
+        (ref erc721.AccountId.t) ->
+        ltac:(erc721.TokenId) ->
+        M (core.result.Result.t unit erc721.Error.t).
+  
+  Global Instance AssociatedFunction_add_token_to :
+    Notations.DoubleColon Self "add_token_to" := {
+    Notations.double_colon := add_token_to;
+  }.
+  
+  (*
+      fn transfer_token_from(
+          &mut self,
+          from: &AccountId,
+          to: &AccountId,
+          id: TokenId,
+      ) -> Result<(), Error> {
+          let caller = self.env().caller();
+          if !self.exists(id) {
+              return Err(Error::TokenNotFound);
+          };
+          if !self.approved_or_owner(Some(caller), id) {
+              return Err(Error::NotApproved);
+          };
+          self.clear_approval(id);
+          self.remove_token_from(from, id)?;
+          self.add_token_to(to, id)?;
+          self.env().emit_event(Event::Transfer(Transfer {
+              from: Some( *from),
+              to: Some( *to),
+              id,
+          }));
+          Ok(())
+      }
+  *)
+  Parameter transfer_token_from :
+      (mut_ref Self) ->
+        (ref erc721.AccountId.t) ->
+        (ref erc721.AccountId.t) ->
+        ltac:(erc721.TokenId) ->
+        M (core.result.Result.t unit erc721.Error.t).
+  
+  Global Instance AssociatedFunction_transfer_token_from :
+    Notations.DoubleColon Self "transfer_token_from" := {
+    Notations.double_colon := transfer_token_from;
   }.
   
   (*
@@ -796,256 +1064,6 @@ Section Impl_erc721_Erc721_t.
   Global Instance AssociatedFunction_burn :
     Notations.DoubleColon Self "burn" := {
     Notations.double_colon := burn;
-  }.
-  
-  (*
-      fn transfer_token_from(
-          &mut self,
-          from: &AccountId,
-          to: &AccountId,
-          id: TokenId,
-      ) -> Result<(), Error> {
-          let caller = self.env().caller();
-          if !self.exists(id) {
-              return Err(Error::TokenNotFound);
-          };
-          if !self.approved_or_owner(Some(caller), id) {
-              return Err(Error::NotApproved);
-          };
-          self.clear_approval(id);
-          self.remove_token_from(from, id)?;
-          self.add_token_to(to, id)?;
-          self.env().emit_event(Event::Transfer(Transfer {
-              from: Some( *from),
-              to: Some( *to),
-              id,
-          }));
-          Ok(())
-      }
-  *)
-  Parameter transfer_token_from :
-      (mut_ref Self) ->
-        (ref erc721.AccountId.t) ->
-        (ref erc721.AccountId.t) ->
-        ltac:(erc721.TokenId) ->
-        M (core.result.Result.t unit erc721.Error.t).
-  
-  Global Instance AssociatedFunction_transfer_token_from :
-    Notations.DoubleColon Self "transfer_token_from" := {
-    Notations.double_colon := transfer_token_from;
-  }.
-  
-  (*
-      fn remove_token_from(&mut self, from: &AccountId, id: TokenId) -> Result<(), Error> {
-          let Self {
-              token_owner,
-              owned_tokens_count,
-              ..
-          } = self;
-  
-          if !token_owner.contains(&id) {
-              return Err(Error::TokenNotFound);
-          }
-  
-          let count = owned_tokens_count
-              .get(from)
-              .map(|c| c - 1)
-              .ok_or(Error::CannotFetchValue)?;
-          owned_tokens_count.insert( *from, count);
-          token_owner.remove(id);
-  
-          Ok(())
-      }
-  *)
-  Parameter remove_token_from :
-      (mut_ref Self) ->
-        (ref erc721.AccountId.t) ->
-        ltac:(erc721.TokenId) ->
-        M (core.result.Result.t unit erc721.Error.t).
-  
-  Global Instance AssociatedFunction_remove_token_from :
-    Notations.DoubleColon Self "remove_token_from" := {
-    Notations.double_colon := remove_token_from;
-  }.
-  
-  (*
-      fn add_token_to(&mut self, to: &AccountId, id: TokenId) -> Result<(), Error> {
-          let Self {
-              token_owner,
-              owned_tokens_count,
-              ..
-          } = self;
-  
-          if token_owner.contains(&id) {
-              return Err(Error::TokenExists);
-          }
-  
-          if *to == AccountId::from([0x0; 32]) {
-              return Err(Error::NotAllowed);
-          };
-  
-          let count = owned_tokens_count.get(to).map(|c| c + 1).unwrap_or(1);
-  
-          owned_tokens_count.insert( *to, count);
-          token_owner.insert(id, *to);
-  
-          Ok(())
-      }
-  *)
-  Parameter add_token_to :
-      (mut_ref Self) ->
-        (ref erc721.AccountId.t) ->
-        ltac:(erc721.TokenId) ->
-        M (core.result.Result.t unit erc721.Error.t).
-  
-  Global Instance AssociatedFunction_add_token_to :
-    Notations.DoubleColon Self "add_token_to" := {
-    Notations.double_colon := add_token_to;
-  }.
-  
-  (*
-      fn approve_for_all(&mut self, to: AccountId, approved: bool) -> Result<(), Error> {
-          let caller = self.env().caller();
-          if to == caller {
-              return Err(Error::NotAllowed);
-          }
-          self.env().emit_event(Event::ApprovalForAll(ApprovalForAll {
-              owner: caller,
-              operator: to,
-              approved,
-          }));
-  
-          if approved {
-              self.operator_approvals.insert((caller, to), ());
-          } else {
-              self.operator_approvals.remove((caller, to));
-          }
-  
-          Ok(())
-      }
-  *)
-  Parameter approve_for_all :
-      (mut_ref Self) ->
-        erc721.AccountId.t ->
-        bool.t ->
-        M (core.result.Result.t unit erc721.Error.t).
-  
-  Global Instance AssociatedFunction_approve_for_all :
-    Notations.DoubleColon Self "approve_for_all" := {
-    Notations.double_colon := approve_for_all;
-  }.
-  
-  (*
-      fn approve_for(&mut self, to: &AccountId, id: TokenId) -> Result<(), Error> {
-          let caller = self.env().caller();
-          let owner = self.owner_of(id);
-          if !(owner == Some(caller)
-              || self.approved_for_all(owner.expect("Error with AccountId"), caller))
-          {
-              return Err(Error::NotAllowed);
-          };
-  
-          if *to == AccountId::from([0x0; 32]) {
-              return Err(Error::NotAllowed);
-          };
-  
-          if self.token_approvals.contains(&id) {
-              return Err(Error::CannotInsert);
-          } else {
-              self.token_approvals.insert(id, *to);
-          }
-  
-          self.env().emit_event(Event::Approval(Approval {
-              from: caller,
-              to: *to,
-              id,
-          }));
-  
-          Ok(())
-      }
-  *)
-  Parameter approve_for :
-      (mut_ref Self) ->
-        (ref erc721.AccountId.t) ->
-        ltac:(erc721.TokenId) ->
-        M (core.result.Result.t unit erc721.Error.t).
-  
-  Global Instance AssociatedFunction_approve_for :
-    Notations.DoubleColon Self "approve_for" := {
-    Notations.double_colon := approve_for;
-  }.
-  
-  (*
-      fn clear_approval(&mut self, id: TokenId) {
-          self.token_approvals.remove(id);
-      }
-  *)
-  Parameter clear_approval : (mut_ref Self) -> ltac:(erc721.TokenId) -> M unit.
-  
-  Global Instance AssociatedFunction_clear_approval :
-    Notations.DoubleColon Self "clear_approval" := {
-    Notations.double_colon := clear_approval;
-  }.
-  
-  (*
-      fn balance_of_or_zero(&self, of: &AccountId) -> u32 {
-          self.owned_tokens_count.get(of).unwrap_or(0)
-      }
-  *)
-  Parameter balance_of_or_zero :
-      (ref Self) -> (ref erc721.AccountId.t) -> M u32.t.
-  
-  Global Instance AssociatedFunction_balance_of_or_zero :
-    Notations.DoubleColon Self "balance_of_or_zero" := {
-    Notations.double_colon := balance_of_or_zero;
-  }.
-  
-  (*
-      fn approved_for_all(&self, owner: AccountId, operator: AccountId) -> bool {
-          self.operator_approvals.contains(&(owner, operator))
-      }
-  *)
-  Parameter approved_for_all :
-      (ref Self) -> erc721.AccountId.t -> erc721.AccountId.t -> M bool.t.
-  
-  Global Instance AssociatedFunction_approved_for_all :
-    Notations.DoubleColon Self "approved_for_all" := {
-    Notations.double_colon := approved_for_all;
-  }.
-  
-  (*
-      fn approved_or_owner(&self, from: Option<AccountId>, id: TokenId) -> bool {
-          let owner = self.owner_of(id);
-          from != Some(AccountId::from([0x0; 32]))
-              && (from == owner
-                  || from == self.token_approvals.get(&id)
-                  || self.approved_for_all(
-                      owner.expect("Error with AccountId"),
-                      from.expect("Error with AccountId"),
-                  ))
-      }
-  *)
-  Parameter approved_or_owner :
-      (ref Self) ->
-        (core.option.Option.t erc721.AccountId.t) ->
-        ltac:(erc721.TokenId) ->
-        M bool.t.
-  
-  Global Instance AssociatedFunction_approved_or_owner :
-    Notations.DoubleColon Self "approved_or_owner" := {
-    Notations.double_colon := approved_or_owner;
-  }.
-  
-  (*
-      fn exists(&self, id: TokenId) -> bool {
-          self.token_owner.contains(&id)
-      }
-  *)
-  Parameter exists_ : (ref Self) -> ltac:(erc721.TokenId) -> M bool.t.
-  
-  Global Instance AssociatedFunction_exists_ :
-    Notations.DoubleColon Self "exists_" := {
-    Notations.double_colon := exists_;
   }.
 End Impl_erc721_Erc721_t.
 End Impl_erc721_Erc721_t.

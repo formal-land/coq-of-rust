@@ -16,7 +16,7 @@ Section CallBuilderDelegateTest.
   
   Global Instance Get_value : Notations.Dot "value" := {
     Notations.dot :=
-      Ref.map (fun x => x.(value)) (fun v x => x <| value := v |>);
+      Ref.map (fun x => Some x.(value)) (fun v x => Some (x <| value := v |>));
   }.
   Global Instance Get_AF_value : Notations.DoubleColon t "value" := {
     Notations.double_colon (x : M.Val t) := x.["value"];
@@ -60,7 +60,7 @@ Section Impl_call_builder_delegate_CallBuilderDelegateTest_t.
       }
   *)
   Definition new (value : i32.t) : M Self :=
-    let* value : M.Val i32.t := M.alloc value in
+    let* value := M.alloc value in
     let* α0 : i32.t := M.read value in
     M.pure {| call_builder_delegate.CallBuilderDelegateTest.value := α0; |}.
   
@@ -92,10 +92,9 @@ Section Impl_call_builder_delegate_CallBuilderDelegateTest_t.
       (code_hash : ltac:(call_builder_delegate.Hash))
       (selector : array u8.t)
       : M (core.option.Option.t call_builder_delegate.LangError.t) :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
-    let* code_hash : M.Val ltac:(call_builder_delegate.Hash) :=
-      M.alloc code_hash in
-    let* selector : M.Val (array u8.t) := M.alloc selector in
+    let* self := M.alloc self in
+    let* code_hash := M.alloc code_hash in
+    let* selector := M.alloc selector in
     M.pure core.option.Option.None.
   
   Global Instance AssociatedFunction_delegate :
@@ -120,10 +119,9 @@ Section Impl_call_builder_delegate_CallBuilderDelegateTest_t.
       (code_hash : ltac:(call_builder_delegate.Hash))
       (selector : array u8.t)
       : M i32.t :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
-    let* code_hash : M.Val ltac:(call_builder_delegate.Hash) :=
-      M.alloc code_hash in
-    let* selector : M.Val (array u8.t) := M.alloc selector in
+    let* self := M.alloc self in
+    let* code_hash := M.alloc code_hash in
+    let* selector := M.alloc selector in
     M.pure (Integer.of_Z 0).
   
   Global Instance AssociatedFunction_invoke :

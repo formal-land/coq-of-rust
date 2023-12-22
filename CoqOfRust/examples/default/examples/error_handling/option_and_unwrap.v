@@ -12,7 +12,7 @@ fn give_adult(drink: Option<&str>) {
 }
 *)
 Definition give_adult (drink : core.option.Option.t (ref str.t)) : M unit :=
-  let* drink : M.Val (core.option.Option.t (ref str.t)) := M.alloc drink in
+  let* drink := M.alloc drink in
   let* α0 : core.option.Option.t (ref str.t) := M.read drink in
   let* α1 : M.Val unit :=
     match α0 with
@@ -51,7 +51,7 @@ Definition give_adult (drink : core.option.Option.t (ref str.t)) : M unit :=
         let* α10 : unit := M.call (std.io.stdio._print α9) in
         M.alloc α10 in
       M.alloc tt
-    | core.option.Option.None  =>
+    | core.option.Option.None =>
       let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "No drink? Oh well.
 ") in
@@ -79,7 +79,7 @@ fn drink(drink: Option<&str>) {
 }
 *)
 Definition drink (drink : core.option.Option.t (ref str.t)) : M unit :=
-  let* drink : M.Val (core.option.Option.t (ref str.t)) := M.alloc drink in
+  let* drink := M.alloc drink in
   let* inside : M.Val (ref str.t) :=
     let* α0 : core.option.Option.t (ref str.t) := M.read drink in
     let* α1 : ref str.t :=
@@ -91,7 +91,9 @@ Definition drink (drink : core.option.Option.t (ref str.t)) : M unit :=
         ((core.cmp.PartialEq.eq (Self := ref str.t) (Trait := ltac:(refine _)))
           (borrow inside)
           (borrow (mk_str "lemonade"))) in
-    if (use α0 : bool) then
+    let* α1 : M.Val bool.t := M.alloc α0 in
+    let* α2 : bool.t := M.read (use α1) in
+    if α2 then
       let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "AAAaaaaa!!!!") in
         let* α1 : never.t := M.call (std.panicking.begin_panic α0) in

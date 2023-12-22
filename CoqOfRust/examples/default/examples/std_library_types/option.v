@@ -16,18 +16,20 @@ Definition checked_division
     (dividend : i32.t)
     (divisor : i32.t)
     : M (core.option.Option.t i32.t) :=
-  let* dividend : M.Val i32.t := M.alloc dividend in
-  let* divisor : M.Val i32.t := M.alloc divisor in
+  let* dividend := M.alloc dividend in
+  let* divisor := M.alloc divisor in
   let* α0 : i32.t := M.read divisor in
-  let* α1 : M.Val (core.option.Option.t i32.t) :=
-    if (use (BinOp.Pure.eq α0 (Integer.of_Z 0)) : bool) then
+  let* α1 : M.Val bool.t := M.alloc (BinOp.Pure.eq α0 (Integer.of_Z 0)) in
+  let* α2 : bool.t := M.read (use α1) in
+  let* α3 : M.Val (core.option.Option.t i32.t) :=
+    if α2 then
       M.alloc core.option.Option.None
     else
       let* α0 : i32.t := M.read dividend in
       let* α1 : i32.t := M.read divisor in
       let* α2 : i32.t := BinOp.Panic.div α0 α1 in
       M.alloc (core.option.Option.Some α2) in
-  M.read α1.
+  M.read α3.
 
 (*
 fn try_division(dividend: i32, divisor: i32) {
@@ -41,15 +43,15 @@ fn try_division(dividend: i32, divisor: i32) {
 }
 *)
 Definition try_division (dividend : i32.t) (divisor : i32.t) : M unit :=
-  let* dividend : M.Val i32.t := M.alloc dividend in
-  let* divisor : M.Val i32.t := M.alloc divisor in
+  let* dividend := M.alloc dividend in
+  let* divisor := M.alloc divisor in
   let* α0 : i32.t := M.read dividend in
   let* α1 : i32.t := M.read divisor in
   let* α2 : core.option.Option.t i32.t :=
     M.call (option.checked_division α0 α1) in
   let* α3 : M.Val unit :=
     match α2 with
-    | core.option.Option.None  =>
+    | core.option.Option.None =>
       let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "") in
         let* α1 : ref str.t := M.read (mk_str " / ") in

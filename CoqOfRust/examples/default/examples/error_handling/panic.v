@@ -12,14 +12,16 @@ fn drink(beverage: &str) {
 }
 *)
 Definition drink (beverage : ref str.t) : M unit :=
-  let* beverage : M.Val (ref str.t) := M.alloc beverage in
+  let* beverage := M.alloc beverage in
   let* _ : M.Val unit :=
     let* α0 : bool.t :=
       M.call
         ((core.cmp.PartialEq.eq (Self := ref str.t) (Trait := ltac:(refine _)))
           (borrow beverage)
           (borrow (mk_str "lemonade"))) in
-    if (use α0 : bool) then
+    let* α1 : M.Val bool.t := M.alloc α0 in
+    let* α2 : bool.t := M.read (use α1) in
+    if α2 then
       let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "AAAaaaaa!!!!") in
         let* α1 : never.t := M.call (std.panicking.begin_panic α0) in

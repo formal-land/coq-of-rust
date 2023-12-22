@@ -40,7 +40,7 @@ Definition main : M unit :=
   let* _ : M.Val unit :=
     let* α0 : enums_use.Status.t := M.read status in
     match α0 with
-    | enums_use.Status.Rich  =>
+    | enums_use.Status.Rich =>
       let* _ : M.Val unit :=
         let* α0 : ref str.t :=
           M.read (mk_str "The rich have lots of money!
@@ -54,7 +54,7 @@ Definition main : M unit :=
         let* α5 : unit := M.call (std.io.stdio._print α4) in
         M.alloc α5 in
       M.alloc tt
-    | enums_use.Status.Poor  =>
+    | enums_use.Status.Poor =>
       let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "The poor have no money...
 ") in
@@ -71,7 +71,7 @@ Definition main : M unit :=
   let* α0 : enums_use.Work.t := M.read work in
   let* α0 : M.Val unit :=
     match α0 with
-    | enums_use.Work.Civilian  =>
+    | enums_use.Work.Civilian =>
       let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "Civilians work!
 ") in
@@ -84,7 +84,7 @@ Definition main : M unit :=
         let* α5 : unit := M.call (std.io.stdio._print α4) in
         M.alloc α5 in
       M.alloc tt
-    | enums_use.Work.Soldier  =>
+    | enums_use.Work.Soldier =>
       let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "Soldiers fight!
 ") in

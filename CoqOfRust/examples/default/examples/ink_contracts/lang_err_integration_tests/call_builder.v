@@ -8,7 +8,8 @@ Section AccountId.
   }.
   
   Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot := Ref.map (fun x => x.(x0)) (fun v x => x <| x0 := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(x0)) (fun v x => Some (x <| x0 := v |>));
   }.
 End AccountId.
 End AccountId.
@@ -47,7 +48,7 @@ Section Impl_core_clone_Clone_for_call_builder_AccountId_t.
   Clone
   *)
   Definition clone (self : ref Self) : M call_builder.AccountId.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let _ : unit := tt in
     let* α0 : ref call_builder.AccountId.t := M.read self in
     M.read (deref α0).
@@ -79,7 +80,8 @@ Ltac Hash := exact (array u8.t).
 
 Module LangError.
   Inductive t : Set :=
-  | CouldNotReadInput.
+  | CouldNotReadInput
+  | AnotherError.
 End LangError.
 
 Module  Selector.
@@ -98,7 +100,7 @@ Section Impl_call_builder_Selector_t.
       }
   *)
   Definition new (bytes : array u8.t) : M Self :=
-    let* bytes : M.Val (array u8.t) := M.alloc bytes in
+    let* bytes := M.alloc bytes in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
@@ -179,9 +181,9 @@ Section Impl_call_builder_CallBuilderTest_t.
       (address : call_builder.AccountId.t)
       (selector : array u8.t)
       : M (core.option.Option.t call_builder.LangError.t) :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
-    let* address : M.Val call_builder.AccountId.t := M.alloc address in
-    let* selector : M.Val (array u8.t) := M.alloc selector in
+    let* self := M.alloc self in
+    let* address := M.alloc address in
+    let* selector := M.alloc selector in
     let* result : M.Val (core.result.Result.t unit call_builder.LangError.t) :=
       let* α0 : ref str.t := M.read (mk_str "not yet implemented") in
       let* α1 : never.t := M.call (core.panicking.panic α0) in
@@ -194,8 +196,7 @@ Section Impl_call_builder_CallBuilderTest_t.
       match α0 with
       | core.result.Result.Ok _ => M.alloc core.option.Option.None
       |
-          core.result.Result.Err
-            (call_builder.LangError.CouldNotReadInput  as e)
+          core.result.Result.Err (call_builder.LangError.CouldNotReadInput as e)
           =>
         let* e := M.alloc e in
         let* α0 : call_builder.LangError.t := M.read e in
@@ -244,9 +245,9 @@ Section Impl_call_builder_CallBuilderTest_t.
       (address : call_builder.AccountId.t)
       (selector : array u8.t)
       : M unit :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
-    let* address : M.Val call_builder.AccountId.t := M.alloc address in
-    let* selector : M.Val (array u8.t) := M.alloc selector in
+    let* self := M.alloc self in
+    let* address := M.alloc address in
+    let* selector := M.alloc selector in
     M.pure tt.
   
   Global Instance AssociatedFunction_invoke :
@@ -290,10 +291,10 @@ Section Impl_call_builder_CallBuilderTest_t.
       (selector : array u8.t)
       (init_value : bool.t)
       : M (core.option.Option.t call_builder.LangError.t) :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
-    let* code_hash : M.Val ltac:(call_builder.Hash) := M.alloc code_hash in
-    let* selector : M.Val (array u8.t) := M.alloc selector in
-    let* init_value : M.Val bool.t := M.alloc init_value in
+    let* self := M.alloc self in
+    let* code_hash := M.alloc code_hash in
+    let* selector := M.alloc selector in
+    let* init_value := M.alloc init_value in
     M.pure core.option.Option.None.
   
   Global Instance AssociatedFunction_call_instantiate :
@@ -334,10 +335,10 @@ Section Impl_call_builder_CallBuilderTest_t.
       (selector : array u8.t)
       (init_value : bool.t)
       : M (core.option.Option.t unit) :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
-    let* code_hash : M.Val ltac:(call_builder.Hash) := M.alloc code_hash in
-    let* selector : M.Val (array u8.t) := M.alloc selector in
-    let* init_value : M.Val bool.t := M.alloc init_value in
+    let* self := M.alloc self in
+    let* code_hash := M.alloc code_hash in
+    let* selector := M.alloc selector in
+    let* init_value := M.alloc init_value in
     M.pure core.option.Option.None.
   
   Global Instance AssociatedFunction_call_instantiate_fallible :

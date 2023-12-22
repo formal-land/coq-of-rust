@@ -31,18 +31,26 @@ Definition main : M unit :=
     | _ => M.alloc true
     end in
   let* _ : M.Val i32.t :=
-    if (use true : bool) then
+    let* α0 : M.Val bool.t := M.alloc true in
+    let* α1 : bool.t := M.read (use α0) in
+    if α1 then
       M.alloc (Integer.of_Z 0)
     else
       M.alloc (Integer.of_Z 1) in
   let* _ : M.Val i32.t :=
-    if (use false : bool) then
+    let* α0 : M.Val bool.t := M.alloc false in
+    let* α1 : bool.t := M.read (use α0) in
+    if α1 then
       M.alloc (Integer.of_Z 2)
     else
-      if (use false : bool) then
+      let* α0 : M.Val bool.t := M.alloc false in
+      let* α1 : bool.t := M.read (use α0) in
+      if α1 then
         M.alloc (Integer.of_Z 3)
       else
-        if (use false : bool) then
+        let* α0 : M.Val bool.t := M.alloc false in
+        let* α1 : bool.t := M.read (use α0) in
+        if α1 then
           M.alloc (Integer.of_Z 4)
         else
           M.alloc (Integer.of_Z 5) in

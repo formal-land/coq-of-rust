@@ -18,3 +18,6 @@ Parameter assert_failed :
   ref U ->
   option.Option.t fmt.Arguments.t ->
   M never.t.
+
+(* pub fn panic_fmt(fmt: Arguments<'_>) -> ! *)
+Parameter panic_fmt : fmt.Arguments.t -> M never.t.

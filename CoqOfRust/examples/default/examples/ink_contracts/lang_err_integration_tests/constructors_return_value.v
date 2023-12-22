@@ -8,7 +8,8 @@ Section AccountId.
   }.
   
   Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot := Ref.map (fun x => x.(x0)) (fun v x => x <| x0 := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(x0)) (fun v x => Some (x <| x0 := v |>));
   }.
 End AccountId.
 End AccountId.
@@ -49,7 +50,7 @@ Section Impl_core_clone_Clone_for_constructors_return_value_AccountId_t.
   Definition clone
       (self : ref Self)
       : M constructors_return_value.AccountId.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let _ : unit := tt in
     let* α0 : ref constructors_return_value.AccountId.t := M.read self in
     M.read (deref α0).
@@ -85,7 +86,7 @@ Section Impl_core_convert_From_array_u8_t_for_constructors_return_value_AccountI
       }
   *)
   Definition from (_value : array u8.t) : M Self :=
-    let* _value : M.Val (array u8.t) := M.alloc _value in
+    let* _value := M.alloc _value in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
@@ -111,7 +112,7 @@ Section ConstructorsReturnValue.
   
   Global Instance Get_value : Notations.Dot "value" := {
     Notations.dot :=
-      Ref.map (fun x => x.(value)) (fun v x => x <| value := v |>);
+      Ref.map (fun x => Some x.(value)) (fun v x => Some (x <| value := v |>));
   }.
   Global Instance Get_AF_value : Notations.DoubleColon t "value" := {
     Notations.double_colon (x : M.Val t) := x.["value"];
@@ -144,8 +145,8 @@ Section Impl_core_fmt_Debug_for_constructors_return_value_ConstructorError_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
+    let* self := M.alloc self in
+    let* f := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref str.t := M.read (mk_str "ConstructorError") in
     M.call (core.fmt.Formatter.t::["write_str"] α0 α1).
@@ -176,7 +177,7 @@ Section Impl_constructors_return_value_ReturnFlags_t.
       }
   *)
   Definition new_with_reverted (has_reverted : bool.t) : M Self :=
-    let* has_reverted : M.Val bool.t := M.alloc has_reverted in
+    let* has_reverted := M.alloc has_reverted in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
@@ -198,9 +199,8 @@ Definition return_value
     (return_flags : constructors_return_value.ReturnFlags.t)
     (return_value : ref R)
     : M never.t :=
-  let* return_flags : M.Val constructors_return_value.ReturnFlags.t :=
-    M.alloc return_flags in
-  let* return_value : M.Val (ref R) := M.alloc return_value in
+  let* return_flags := M.alloc return_flags in
+  let* return_value := M.alloc return_value in
   let* α0 : ref str.t := M.read (mk_str "not implemented") in
   let* α1 : never.t := M.call (core.panicking.panic α0) in
   let* α2 : never.t := never_to_any α1 in
@@ -216,7 +216,7 @@ Section Impl_constructors_return_value_ConstructorsReturnValue_t.
       }
   *)
   Definition new (init_value : bool.t) : M Self :=
-    let* init_value : M.Val bool.t := M.alloc init_value in
+    let* init_value := M.alloc init_value in
     let* α0 : bool.t := M.read init_value in
     M.pure {| constructors_return_value.ConstructorsReturnValue.value := α0; |}.
   
@@ -240,14 +240,14 @@ Section Impl_constructors_return_value_ConstructorsReturnValue_t.
           (core.result.Result.t
             Self
             constructors_return_value.ConstructorError.t) :=
-    let* succeed : M.Val bool.t := M.alloc succeed in
-    let* α0 : bool.t := M.read succeed in
+    let* succeed := M.alloc succeed in
+    let* α0 : bool.t := M.read (use succeed) in
     let* α1 :
         M.Val
           (core.result.Result.t
             constructors_return_value.ConstructorsReturnValue.t
             constructors_return_value.ConstructorError.t) :=
-      if (use α0 : bool) then
+      if α0 then
         let* α0 : constructors_return_value.ConstructorsReturnValue.t :=
           M.call
             (constructors_return_value.ConstructorsReturnValue.t::["new"]
@@ -273,7 +273,7 @@ Section Impl_constructors_return_value_ConstructorsReturnValue_t.
       }
   *)
   Definition revert_new (_init_value : bool.t) : M Self :=
-    let* _init_value : M.Val bool.t := M.alloc _init_value in
+    let* _init_value := M.alloc _init_value in
     let* α0 : constructors_return_value.ReturnFlags.t :=
       M.call
         (constructors_return_value.ReturnFlags.t::["new_with_reverted"] true) in
@@ -319,7 +319,7 @@ Section Impl_constructors_return_value_ConstructorsReturnValue_t.
           (core.result.Result.t
             Self
             constructors_return_value.ConstructorError.t) :=
-    let* init_value : M.Val bool.t := M.alloc init_value in
+    let* init_value := M.alloc init_value in
     let* value :
         M.Val
           (core.result.Result.t
@@ -327,7 +327,7 @@ Section Impl_constructors_return_value_ConstructorsReturnValue_t.
               constructors_return_value.AccountId.t
               constructors_return_value.ConstructorError.t)
             constructors_return_value.LangError.t) :=
-      let* α0 : bool.t := M.read init_value in
+      let* α0 : bool.t := M.read (use init_value) in
       let* α1 :
           M.Val
             (core.result.Result.t
@@ -335,7 +335,7 @@ Section Impl_constructors_return_value_ConstructorsReturnValue_t.
                 constructors_return_value.AccountId.t
                 constructors_return_value.ConstructorError.t)
               constructors_return_value.LangError.t) :=
-        if (use α0 : bool) then
+        if α0 then
           let* α0 : constructors_return_value.AccountId.t :=
             M.call
               ((core.convert.From.from
@@ -377,7 +377,7 @@ Section Impl_constructors_return_value_ConstructorsReturnValue_t.
       }
   *)
   Definition get_value (self : ref Self) : M bool.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* α0 : ref constructors_return_value.ConstructorsReturnValue.t :=
       M.read self in
     M.read (deref α0).["value"].

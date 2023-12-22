@@ -21,26 +21,26 @@ Section Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_else_Fruit
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
+    let* self := M.alloc self in
+    let* f := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref unpacking_options_and_defaults_via_or_else.Fruit.t :=
       M.read self in
     let* α2 : M.Val (ref str.t) :=
       match α1 with
-      | unpacking_options_and_defaults_via_or_else.Fruit.Apple  =>
+      | unpacking_options_and_defaults_via_or_else.Fruit.Apple =>
         let* α0 : ref str.t := M.read (mk_str "Apple") in
         M.alloc α0
-      | unpacking_options_and_defaults_via_or_else.Fruit.Orange  =>
+      | unpacking_options_and_defaults_via_or_else.Fruit.Orange =>
         let* α0 : ref str.t := M.read (mk_str "Orange") in
         M.alloc α0
-      | unpacking_options_and_defaults_via_or_else.Fruit.Banana  =>
+      | unpacking_options_and_defaults_via_or_else.Fruit.Banana =>
         let* α0 : ref str.t := M.read (mk_str "Banana") in
         M.alloc α0
-      | unpacking_options_and_defaults_via_or_else.Fruit.Kiwi  =>
+      | unpacking_options_and_defaults_via_or_else.Fruit.Kiwi =>
         let* α0 : ref str.t := M.read (mk_str "Kiwi") in
         M.alloc α0
-      | unpacking_options_and_defaults_via_or_else.Fruit.Lemon  =>
+      | unpacking_options_and_defaults_via_or_else.Fruit.Lemon =>
         let* α0 : ref str.t := M.read (mk_str "Lemon") in
         M.alloc α0
       end in
@@ -92,9 +92,14 @@ Definition main : M unit :=
         (core.option.Option.t
           unpacking_options_and_defaults_via_or_else.Fruit.t) :=
     M.alloc core.option.Option.None in
-  let* get_kiwi_as_fallback : M.Val type not implemented :=
-    M.copy
-      (let* _ : M.Val unit :=
+  let* get_kiwi_as_fallback :
+      M.Val
+        (unit ->
+          M
+            (core.option.Option.t
+              unpacking_options_and_defaults_via_or_else.Fruit.t)) :=
+    M.alloc
+      ((let* _ : M.Val unit :=
         let* _ : M.Val unit :=
           let* α0 : ref str.t :=
             M.read (mk_str "Providing kiwi as fallback
@@ -108,12 +113,25 @@ Definition main : M unit :=
           let* α5 : unit := M.call (std.io.stdio._print α4) in
           M.alloc α5 in
         M.alloc tt in
-      M.alloc
-        (core.option.Option.Some
-          unpacking_options_and_defaults_via_or_else.Fruit.Kiwi)) in
-  let* get_lemon_as_fallback : M.Val type not implemented :=
-    M.copy
-      (let* _ : M.Val unit :=
+      let* α0 :
+          M.Val
+            (core.option.Option.t
+              unpacking_options_and_defaults_via_or_else.Fruit.t) :=
+        M.alloc
+          (core.option.Option.Some
+            unpacking_options_and_defaults_via_or_else.Fruit.Kiwi) in
+      M.read α0) :
+      M
+        (core.option.Option.t
+          unpacking_options_and_defaults_via_or_else.Fruit.t)) in
+  let* get_lemon_as_fallback :
+      M.Val
+        (unit ->
+          M
+            (core.option.Option.t
+              unpacking_options_and_defaults_via_or_else.Fruit.t)) :=
+    M.alloc
+      ((let* _ : M.Val unit :=
         let* _ : M.Val unit :=
           let* α0 : ref str.t :=
             M.read (mk_str "Providing lemon as fallback
@@ -127,9 +145,17 @@ Definition main : M unit :=
           let* α5 : unit := M.call (std.io.stdio._print α4) in
           M.alloc α5 in
         M.alloc tt in
-      M.alloc
-        (core.option.Option.Some
-          unpacking_options_and_defaults_via_or_else.Fruit.Lemon)) in
+      let* α0 :
+          M.Val
+            (core.option.Option.t
+              unpacking_options_and_defaults_via_or_else.Fruit.t) :=
+        M.alloc
+          (core.option.Option.Some
+            unpacking_options_and_defaults_via_or_else.Fruit.Lemon) in
+      M.read α0) :
+      M
+        (core.option.Option.t
+          unpacking_options_and_defaults_via_or_else.Fruit.t)) in
   let* first_available_fruit :
       M.Val
         (core.option.Option.t
@@ -138,7 +164,12 @@ Definition main : M unit :=
         core.option.Option.t
           unpacking_options_and_defaults_via_or_else.Fruit.t :=
       M.read no_fruit in
-    let* α1 : type not implemented := M.read get_kiwi_as_fallback in
+    let* α1 :
+        unit ->
+          M
+            (core.option.Option.t
+              unpacking_options_and_defaults_via_or_else.Fruit.t) :=
+      M.read get_kiwi_as_fallback in
     let* α2 :
         core.option.Option.t
           unpacking_options_and_defaults_via_or_else.Fruit.t :=
@@ -147,7 +178,12 @@ Definition main : M unit :=
               unpacking_options_and_defaults_via_or_else.Fruit.t)::["or_else"]
           α0
           α1) in
-    let* α3 : type not implemented := M.read get_lemon_as_fallback in
+    let* α3 :
+        unit ->
+          M
+            (core.option.Option.t
+              unpacking_options_and_defaults_via_or_else.Fruit.t) :=
+      M.read get_lemon_as_fallback in
     let* α4 :
         core.option.Option.t
           unpacking_options_and_defaults_via_or_else.Fruit.t :=

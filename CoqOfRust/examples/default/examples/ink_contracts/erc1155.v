@@ -11,14 +11,17 @@ Section Mapping.
   }.
   
   Global Instance Get__key : Notations.Dot "_key" := {
-    Notations.dot := Ref.map (fun x => x.(_key)) (fun v x => x <| _key := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(_key)) (fun v x => Some (x <| _key := v |>));
   }.
   Global Instance Get_AF__key : Notations.DoubleColon t "_key" := {
     Notations.double_colon (x : M.Val t) := x.["_key"];
   }.
   Global Instance Get__value : Notations.Dot "_value" := {
     Notations.dot :=
-      Ref.map (fun x => x.(_value)) (fun v x => x <| _value := v |>);
+      Ref.map
+        (fun x => Some x.(_value))
+        (fun v x => Some (x <| _value := v |>));
   }.
   Global Instance Get_AF__value : Notations.DoubleColon t "_value" := {
     Notations.double_colon (x : M.Val t) := x.["_value"];
@@ -75,8 +78,8 @@ Section Impl_erc1155_Mapping_t_K_V.
       }
   *)
   Definition contains (self : ref Self) (_key : ref K) : M bool.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* _key : M.Val (ref K) := M.alloc _key in
+    let* self := M.alloc self in
+    let* _key := M.alloc _key in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
@@ -95,8 +98,8 @@ Section Impl_erc1155_Mapping_t_K_V.
       (self : ref Self)
       (_key : ref K)
       : M (core.option.Option.t V) :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* _key : M.Val (ref K) := M.alloc _key in
+    let* self := M.alloc self in
+    let* _key := M.alloc _key in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
@@ -115,9 +118,9 @@ Section Impl_erc1155_Mapping_t_K_V.
       (_key : K)
       (_value : V)
       : M (core.option.Option.t u32.t) :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
-    let* _key : M.Val K := M.alloc _key in
-    let* _value : M.Val V := M.alloc _value in
+    let* self := M.alloc self in
+    let* _key := M.alloc _key in
+    let* _value := M.alloc _value in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
@@ -133,8 +136,8 @@ Section Impl_erc1155_Mapping_t_K_V.
       }
   *)
   Definition remove (self : ref Self) (_key : K) : M unit :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* _key : M.Val K := M.alloc _key in
+    let* self := M.alloc self in
+    let* _key := M.alloc _key in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
@@ -153,8 +156,8 @@ Section Impl_erc1155_Mapping_t_K_V.
       (self : ref Self)
       (_key : K)
       : M (core.option.Option.t u32.t) :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* _key : M.Val K := M.alloc _key in
+    let* self := M.alloc self in
+    let* _key := M.alloc _key in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
@@ -170,8 +173,8 @@ Section Impl_erc1155_Mapping_t_K_V.
       }
   *)
   Definition take (self : ref Self) (_key : K) : M (core.option.Option.t V) :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* _key : M.Val K := M.alloc _key in
+    let* self := M.alloc self in
+    let* _key := M.alloc _key in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
@@ -190,7 +193,8 @@ Section AccountId.
   }.
   
   Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot := Ref.map (fun x => x.(x0)) (fun v x => x <| x0 := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(x0)) (fun v x => Some (x <| x0 := v |>));
   }.
 End AccountId.
 End AccountId.
@@ -229,7 +233,7 @@ Section Impl_core_clone_Clone_for_erc1155_AccountId_t.
   Clone
   *)
   Definition clone (self : ref Self) : M erc1155.AccountId.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let _ : unit := tt in
     let* α0 : ref erc1155.AccountId.t := M.read self in
     M.read (deref α0).
@@ -275,8 +279,8 @@ Section Impl_core_cmp_PartialEq_for_erc1155_AccountId_t.
       (self : ref Self)
       (other : ref erc1155.AccountId.t)
       : M bool.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* other : M.Val (ref erc1155.AccountId.t) := M.alloc other in
+    let* self := M.alloc self in
+    let* other := M.alloc other in
     let* α0 : ref erc1155.AccountId.t := M.read self in
     let* α1 : u128.t := M.read (deref α0).["0"] in
     let* α2 : ref erc1155.AccountId.t := M.read other in
@@ -306,7 +310,7 @@ Section Impl_core_convert_From_array_u8_t_for_erc1155_AccountId_t.
       }
   *)
   Definition from (_v : array u8.t) : M Self :=
-    let* _v : M.Val (array u8.t) := M.alloc _v in
+    let* _v := M.alloc _v in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
@@ -332,7 +336,9 @@ Section Env.
   
   Global Instance Get_caller : Notations.Dot "caller" := {
     Notations.dot :=
-      Ref.map (fun x => x.(caller)) (fun v x => x <| caller := v |>);
+      Ref.map
+        (fun x => Some x.(caller))
+        (fun v x => Some (x <| caller := v |>));
   }.
   Global Instance Get_AF_caller : Notations.DoubleColon t "caller" := {
     Notations.double_colon (x : M.Val t) := x.["caller"];
@@ -340,12 +346,22 @@ Section Env.
 End Env.
 End Env.
 
-Definition ON_ERC_1155_RECEIVED_SELECTOR : array u8.t :=
+(*
+fn zero_address() -> AccountId {
+    [0u8; 32].into()
+}
+*)
+Definition zero_address : M erc1155.AccountId.t :=
+  M.call
+    ((core.convert.Into.into (Self := array u8.t) (Trait := ltac:(refine _)))
+      (repeat (Integer.of_Z 0) 32)).
+
+Definition ON_ERC_1155_RECEIVED_SELECTOR : M.Val (array u8.t) :=
   M.run
     (M.alloc
       [ Integer.of_Z 242; Integer.of_Z 58; Integer.of_Z 110; Integer.of_Z 97 ]).
 
-Definition _ON_ERC_1155_BATCH_RECEIVED_SELECTOR : array u8.t :=
+Definition _ON_ERC_1155_BATCH_RECEIVED_SELECTOR : M.Val (array u8.t) :=
   M.run
     (M.alloc
       [ Integer.of_Z 188; Integer.of_Z 25; Integer.of_Z 124; Integer.of_Z 129
@@ -362,55 +378,6 @@ Module Error.
   | SelfApproval
   | BatchTransferMismatch.
 End Error.
-
-Module  Impl_core_fmt_Debug_for_erc1155_Error_t.
-Section Impl_core_fmt_Debug_for_erc1155_Error_t.
-  Definition Self : Set := erc1155.Error.t.
-  
-  (*
-  Debug
-  *)
-  Definition fmt
-      (self : ref Self)
-      (f : mut_ref core.fmt.Formatter.t)
-      : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
-    let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
-    let* α1 : ref erc1155.Error.t := M.read self in
-    let* α2 : M.Val (ref str.t) :=
-      match α1 with
-      | erc1155.Error.UnexistentToken  =>
-        let* α0 : ref str.t := M.read (mk_str "UnexistentToken") in
-        M.alloc α0
-      | erc1155.Error.ZeroAddressTransfer  =>
-        let* α0 : ref str.t := M.read (mk_str "ZeroAddressTransfer") in
-        M.alloc α0
-      | erc1155.Error.NotApproved  =>
-        let* α0 : ref str.t := M.read (mk_str "NotApproved") in
-        M.alloc α0
-      | erc1155.Error.InsufficientBalance  =>
-        let* α0 : ref str.t := M.read (mk_str "InsufficientBalance") in
-        M.alloc α0
-      | erc1155.Error.SelfApproval  =>
-        let* α0 : ref str.t := M.read (mk_str "SelfApproval") in
-        M.alloc α0
-      | erc1155.Error.BatchTransferMismatch  =>
-        let* α0 : ref str.t := M.read (mk_str "BatchTransferMismatch") in
-        M.alloc α0
-      end in
-    let* α3 : ref str.t := M.read α2 in
-    M.call (core.fmt.Formatter.t::["write_str"] α0 α3).
-  
-  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
-    Notations.double_colon := fmt;
-  }.
-  
-  Global Instance ℐ : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
-  }.
-End Impl_core_fmt_Debug_for_erc1155_Error_t.
-End Impl_core_fmt_Debug_for_erc1155_Error_t.
 
 Module  Impl_core_marker_StructuralPartialEq_for_erc1155_Error_t.
 Section Impl_core_marker_StructuralPartialEq_for_erc1155_Error_t.
@@ -429,8 +396,8 @@ Section Impl_core_cmp_PartialEq_for_erc1155_Error_t.
   PartialEq
   *)
   Definition eq (self : ref Self) (other : ref erc1155.Error.t) : M bool.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* other : M.Val (ref erc1155.Error.t) := M.alloc other in
+    let* self := M.alloc self in
+    let* other := M.alloc other in
     let* __self_tag : M.Val isize.t :=
       let* α0 : ref erc1155.Error.t := M.read self in
       let* α1 : isize.t := M.call (core.intrinsics.discriminant_value α0) in
@@ -474,7 +441,7 @@ Section Impl_core_cmp_Eq_for_erc1155_Error_t.
   Eq
   *)
   Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     M.pure tt.
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
@@ -572,33 +539,39 @@ Section TransferSingle.
   
   Global Instance Get_operator : Notations.Dot "operator" := {
     Notations.dot :=
-      Ref.map (fun x => x.(operator)) (fun v x => x <| operator := v |>);
+      Ref.map
+        (fun x => Some x.(operator))
+        (fun v x => Some (x <| operator := v |>));
   }.
   Global Instance Get_AF_operator : Notations.DoubleColon t "operator" := {
     Notations.double_colon (x : M.Val t) := x.["operator"];
   }.
   Global Instance Get_from : Notations.Dot "from" := {
-    Notations.dot := Ref.map (fun x => x.(from)) (fun v x => x <| from := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(from)) (fun v x => Some (x <| from := v |>));
   }.
   Global Instance Get_AF_from : Notations.DoubleColon t "from" := {
     Notations.double_colon (x : M.Val t) := x.["from"];
   }.
   Global Instance Get_to : Notations.Dot "to" := {
-    Notations.dot := Ref.map (fun x => x.(to)) (fun v x => x <| to := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(to)) (fun v x => Some (x <| to := v |>));
   }.
   Global Instance Get_AF_to : Notations.DoubleColon t "to" := {
     Notations.double_colon (x : M.Val t) := x.["to"];
   }.
   Global Instance Get_token_id : Notations.Dot "token_id" := {
     Notations.dot :=
-      Ref.map (fun x => x.(token_id)) (fun v x => x <| token_id := v |>);
+      Ref.map
+        (fun x => Some x.(token_id))
+        (fun v x => Some (x <| token_id := v |>));
   }.
   Global Instance Get_AF_token_id : Notations.DoubleColon t "token_id" := {
     Notations.double_colon (x : M.Val t) := x.["token_id"];
   }.
   Global Instance Get_value : Notations.Dot "value" := {
     Notations.dot :=
-      Ref.map (fun x => x.(value)) (fun v x => x <| value := v |>);
+      Ref.map (fun x => Some x.(value)) (fun v x => Some (x <| value := v |>));
   }.
   Global Instance Get_AF_value : Notations.DoubleColon t "value" := {
     Notations.double_colon (x : M.Val t) := x.["value"];
@@ -616,21 +589,25 @@ Section ApprovalForAll.
   
   Global Instance Get_owner : Notations.Dot "owner" := {
     Notations.dot :=
-      Ref.map (fun x => x.(owner)) (fun v x => x <| owner := v |>);
+      Ref.map (fun x => Some x.(owner)) (fun v x => Some (x <| owner := v |>));
   }.
   Global Instance Get_AF_owner : Notations.DoubleColon t "owner" := {
     Notations.double_colon (x : M.Val t) := x.["owner"];
   }.
   Global Instance Get_operator : Notations.Dot "operator" := {
     Notations.dot :=
-      Ref.map (fun x => x.(operator)) (fun v x => x <| operator := v |>);
+      Ref.map
+        (fun x => Some x.(operator))
+        (fun v x => Some (x <| operator := v |>));
   }.
   Global Instance Get_AF_operator : Notations.DoubleColon t "operator" := {
     Notations.double_colon (x : M.Val t) := x.["operator"];
   }.
   Global Instance Get_approved : Notations.Dot "approved" := {
     Notations.dot :=
-      Ref.map (fun x => x.(approved)) (fun v x => x <| approved := v |>);
+      Ref.map
+        (fun x => Some x.(approved))
+        (fun v x => Some (x <| approved := v |>));
   }.
   Global Instance Get_AF_approved : Notations.DoubleColon t "approved" := {
     Notations.double_colon (x : M.Val t) := x.["approved"];
@@ -647,14 +624,16 @@ Section Uri.
   
   Global Instance Get_value : Notations.Dot "value" := {
     Notations.dot :=
-      Ref.map (fun x => x.(value)) (fun v x => x <| value := v |>);
+      Ref.map (fun x => Some x.(value)) (fun v x => Some (x <| value := v |>));
   }.
   Global Instance Get_AF_value : Notations.DoubleColon t "value" := {
     Notations.double_colon (x : M.Val t) := x.["value"];
   }.
   Global Instance Get_token_id : Notations.Dot "token_id" := {
     Notations.dot :=
-      Ref.map (fun x => x.(token_id)) (fun v x => x <| token_id := v |>);
+      Ref.map
+        (fun x => Some x.(token_id))
+        (fun v x => Some (x <| token_id := v |>));
   }.
   Global Instance Get_AF_token_id : Notations.DoubleColon t "token_id" := {
     Notations.double_colon (x : M.Val t) := x.["token_id"];
@@ -679,7 +658,7 @@ Section Impl_erc1155_Env_t.
       }
   *)
   Definition caller (self : ref Self) : M erc1155.AccountId.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* α0 : ref erc1155.Env.t := M.read self in
     M.read (deref α0).["caller"].
   
@@ -694,8 +673,8 @@ Section Impl_erc1155_Env_t.
       }
   *)
   Definition emit_event (self : ref Self) (_event : erc1155.Event.t) : M unit :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* _event : M.Val erc1155.Event.t := M.alloc _event in
+    let* self := M.alloc self in
+    let* _event := M.alloc _event in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
@@ -721,14 +700,18 @@ Section Contract.
   
   Global Instance Get_balances : Notations.Dot "balances" := {
     Notations.dot :=
-      Ref.map (fun x => x.(balances)) (fun v x => x <| balances := v |>);
+      Ref.map
+        (fun x => Some x.(balances))
+        (fun v x => Some (x <| balances := v |>));
   }.
   Global Instance Get_AF_balances : Notations.DoubleColon t "balances" := {
     Notations.double_colon (x : M.Val t) := x.["balances"];
   }.
   Global Instance Get_approvals : Notations.Dot "approvals" := {
     Notations.dot :=
-      Ref.map (fun x => x.(approvals)) (fun v x => x <| approvals := v |>);
+      Ref.map
+        (fun x => Some x.(approvals))
+        (fun v x => Some (x <| approvals := v |>));
   }.
   Global Instance Get_AF_approvals : Notations.DoubleColon t "approvals" := {
     Notations.double_colon (x : M.Val t) := x.["approvals"];
@@ -736,8 +719,8 @@ Section Contract.
   Global Instance Get_token_id_nonce : Notations.Dot "token_id_nonce" := {
     Notations.dot :=
       Ref.map
-        (fun x => x.(token_id_nonce))
-        (fun v x => x <| token_id_nonce := v |>);
+        (fun x => Some x.(token_id_nonce))
+        (fun v x => Some (x <| token_id_nonce := v |>));
   }.
   Global Instance Get_AF_token_id_nonce :
     Notations.DoubleColon t "token_id_nonce" := {
@@ -814,7 +797,7 @@ Section Impl_erc1155_Contract_t.
       }
   *)
   Definition env (self : ref Self) : M erc1155.Env.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     M.call erc1155.Contract.t::["init_env"].
   
   Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
@@ -861,8 +844,8 @@ Section Impl_erc1155_Contract_t.
       (self : mut_ref Self)
       (value : ltac:(erc1155.Balance))
       : M ltac:(erc1155.TokenId) :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
-    let* value : M.Val ltac:(erc1155.Balance) := M.alloc value in
+    let* self := M.alloc self in
+    let* value := M.alloc value in
     let* caller : M.Val erc1155.AccountId.t :=
       let* α0 : mut_ref erc1155.Contract.t := M.read self in
       let* α1 : erc1155.Env.t :=
@@ -898,17 +881,19 @@ Section Impl_erc1155_Contract_t.
       let* α2 : M.Val erc1155.Env.t := M.alloc α1 in
       let* α3 : erc1155.AccountId.t := M.read caller in
       let* α4 : u128.t := M.read value in
-      let* α5 : M.Val (core.option.Option.t erc1155.AccountId.t) :=
-        if (use (BinOp.Pure.eq α4 (Integer.of_Z 0)) : bool) then
+      let* α5 : M.Val bool.t := M.alloc (BinOp.Pure.eq α4 (Integer.of_Z 0)) in
+      let* α6 : bool.t := M.read (use α5) in
+      let* α7 : M.Val (core.option.Option.t erc1155.AccountId.t) :=
+        if α6 then
           M.alloc core.option.Option.None
         else
           let* α0 : erc1155.AccountId.t := M.read caller in
           M.alloc (core.option.Option.Some α0) in
-      let* α6 : core.option.Option.t erc1155.AccountId.t := M.read α5 in
-      let* α7 : mut_ref erc1155.Contract.t := M.read self in
-      let* α8 : u128.t := M.read (deref α7).["token_id_nonce"] in
-      let* α9 : u128.t := M.read value in
-      let* α10 : unit :=
+      let* α8 : core.option.Option.t erc1155.AccountId.t := M.read α7 in
+      let* α9 : mut_ref erc1155.Contract.t := M.read self in
+      let* α10 : u128.t := M.read (deref α9).["token_id_nonce"] in
+      let* α11 : u128.t := M.read value in
+      let* α12 : unit :=
         M.call
           (erc1155.Env.t::["emit_event"]
             (borrow α2)
@@ -916,11 +901,11 @@ Section Impl_erc1155_Contract_t.
               {|
                 erc1155.TransferSingle.operator := core.option.Option.Some α3;
                 erc1155.TransferSingle.from := core.option.Option.None;
-                erc1155.TransferSingle.to := α6;
-                erc1155.TransferSingle.token_id := α8;
-                erc1155.TransferSingle.value := α9;
+                erc1155.TransferSingle.to := α8;
+                erc1155.TransferSingle.token_id := α10;
+                erc1155.TransferSingle.value := α11;
               |})) in
-      M.alloc α10 in
+      M.alloc α12 in
     let* α0 : mut_ref erc1155.Contract.t := M.read self in
     M.read (deref α0).["token_id_nonce"].
   
@@ -953,16 +938,18 @@ Section Impl_erc1155_Contract_t.
       (token_id : ltac:(erc1155.TokenId))
       (value : ltac:(erc1155.Balance))
       : M ltac:(erc1155.Result unit) :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
-    let* token_id : M.Val ltac:(erc1155.TokenId) := M.alloc token_id in
-    let* value : M.Val ltac:(erc1155.Balance) := M.alloc value in
+    let* self := M.alloc self in
+    let* token_id := M.alloc token_id in
+    let* value := M.alloc value in
     let return_ := M.return_ (R := ltac:(erc1155.Result unit)) in
     M.catch_return
       (let* _ : M.Val unit :=
         let* α0 : u128.t := M.read token_id in
         let* α1 : mut_ref erc1155.Contract.t := M.read self in
         let* α2 : u128.t := M.read (deref α1).["token_id_nonce"] in
-        if (use (UnOp.not (BinOp.Pure.le α0 α2)) : bool) then
+        let* α3 : M.Val bool.t := M.alloc (UnOp.not (BinOp.Pure.le α0 α2)) in
+        let* α4 : bool.t := M.read (use α3) in
+        if α4 then
           let* _ : M.Val never.t :=
             let* α0 : erc1155.Error.t :=
               M.call
@@ -970,9 +957,7 @@ Section Impl_erc1155_Contract_t.
                     (Self := erc1155.Error.t)
                     (Trait := ltac:(refine _)))
                   erc1155.Error.UnexistentToken) in
-            let* α1 : core.result.Result.t unit erc1155.Error.t :=
-              M.call ("unimplemented parent_kind" α0) in
-            return_ α1 in
+            return_ (core.result.Result.Err α0) in
           let* α0 : M.Val unit := M.alloc tt in
           let* α1 := M.read α0 in
           let* α2 : unit := never_to_any α1 in
@@ -1047,7 +1032,7 @@ Section Impl_erc1155_Contract_t.
           sender_balance -= value;
           self.balances.insert((from, token_id), sender_balance);
   
-          let mut recipient_balance = self.balances.get(&(to, token_id)).unwrap_or(0);
+          let mut recipient_balance = self.balances.get(&(to, token_id)).unwrap_or(0 as u128);
           recipient_balance += value;
           self.balances.insert((to, token_id), recipient_balance);
   
@@ -1068,11 +1053,11 @@ Section Impl_erc1155_Contract_t.
       (token_id : ltac:(erc1155.TokenId))
       (value : ltac:(erc1155.Balance))
       : M unit :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
-    let* from : M.Val erc1155.AccountId.t := M.alloc from in
-    let* to : M.Val erc1155.AccountId.t := M.alloc to in
-    let* token_id : M.Val ltac:(erc1155.TokenId) := M.alloc token_id in
-    let* value : M.Val ltac:(erc1155.Balance) := M.alloc value in
+    let* self := M.alloc self in
+    let* from := M.alloc from in
+    let* to := M.alloc to in
+    let* token_id := M.alloc token_id in
+    let* value := M.alloc value in
     let* sender_balance : M.Val u128.t :=
       let* α0 : mut_ref erc1155.Contract.t := M.read self in
       let* α1 : erc1155.AccountId.t := M.read from in
@@ -1117,10 +1102,11 @@ Section Impl_erc1155_Contract_t.
           ((erc1155.Mapping.t (erc1155.AccountId.t * u128.t) u128.t)::["get"]
             (borrow (deref α0).["balances"])
             (borrow α3)) in
-      let* α5 : u128.t :=
-        M.call
-          ((core.option.Option.t u128.t)::["unwrap_or"] α4 (Integer.of_Z 0)) in
-      M.alloc α5 in
+      let* α5 : M.Val u128.t := M.alloc (Integer.of_Z 0) in
+      let* α6 : u128.t := M.read (use α5) in
+      let* α7 : u128.t :=
+        M.call ((core.option.Option.t u128.t)::["unwrap_or"] α4 α6) in
+      M.alloc α7 in
     let* _ : M.Val unit :=
       let β : M.Val u128.t := recipient_balance in
       let* α0 := M.read β in
@@ -1260,14 +1246,13 @@ Section Impl_erc1155_Contract_t.
       (value : ltac:(erc1155.Balance))
       (data : alloc.vec.Vec.t u8.t alloc.vec.Vec.Default.A)
       : M unit :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
-    let* caller : M.Val erc1155.AccountId.t := M.alloc caller in
-    let* from : M.Val erc1155.AccountId.t := M.alloc from in
-    let* to : M.Val erc1155.AccountId.t := M.alloc to in
-    let* token_id : M.Val ltac:(erc1155.TokenId) := M.alloc token_id in
-    let* value : M.Val ltac:(erc1155.Balance) := M.alloc value in
-    let* data : M.Val (alloc.vec.Vec.t u8.t alloc.vec.Vec.Default.A) :=
-      M.alloc data in
+    let* self := M.alloc self in
+    let* caller := M.alloc caller in
+    let* from := M.alloc from in
+    let* to := M.alloc to in
+    let* token_id := M.alloc token_id in
+    let* value := M.alloc value in
+    let* data := M.alloc data in
     M.pure tt.
   
   Global Instance AssociatedFunction_transfer_acceptance_check :
@@ -1280,6 +1265,67 @@ End Impl_erc1155_Contract_t.
 Module  Impl_erc1155_Erc1155_for_erc1155_Contract_t.
 Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
   Definition Self : Set := erc1155.Contract.t.
+  
+  (*
+      fn is_approved_for_all(&self, owner: AccountId, operator: AccountId) -> bool {
+          self.approvals.contains(&(owner, operator))
+      }
+  *)
+  Definition is_approved_for_all
+      (self : ref Self)
+      (owner : erc1155.AccountId.t)
+      (operator : erc1155.AccountId.t)
+      : M bool.t :=
+    let* self := M.alloc self in
+    let* owner := M.alloc owner in
+    let* operator := M.alloc operator in
+    let* α0 : ref erc1155.Contract.t := M.read self in
+    let* α1 : erc1155.AccountId.t := M.read owner in
+    let* α2 : erc1155.AccountId.t := M.read operator in
+    let* α3 : M.Val (erc1155.AccountId.t * erc1155.AccountId.t) :=
+      M.alloc (α1, α2) in
+    M.call
+      ((erc1155.Mapping.t
+            (erc1155.AccountId.t * erc1155.AccountId.t)
+            unit)::["contains"]
+        (borrow (deref α0).["approvals"])
+        (borrow α3)).
+  
+  Global Instance AssociatedFunction_is_approved_for_all :
+    Notations.DoubleColon Self "is_approved_for_all" := {
+    Notations.double_colon := is_approved_for_all;
+  }.
+  
+  (*
+      fn balance_of(&self, owner: AccountId, token_id: TokenId) -> Balance {
+          self.balances.get(&(owner, token_id)).unwrap_or(0 as u128)
+      }
+  *)
+  Definition balance_of
+      (self : ref Self)
+      (owner : erc1155.AccountId.t)
+      (token_id : ltac:(erc1155.TokenId))
+      : M ltac:(erc1155.Balance) :=
+    let* self := M.alloc self in
+    let* owner := M.alloc owner in
+    let* token_id := M.alloc token_id in
+    let* α0 : ref erc1155.Contract.t := M.read self in
+    let* α1 : erc1155.AccountId.t := M.read owner in
+    let* α2 : u128.t := M.read token_id in
+    let* α3 : M.Val (erc1155.AccountId.t * u128.t) := M.alloc (α1, α2) in
+    let* α4 : core.option.Option.t u128.t :=
+      M.call
+        ((erc1155.Mapping.t (erc1155.AccountId.t * u128.t) u128.t)::["get"]
+          (borrow (deref α0).["balances"])
+          (borrow α3)) in
+    let* α5 : M.Val u128.t := M.alloc (Integer.of_Z 0) in
+    let* α6 : u128.t := M.read (use α5) in
+    M.call ((core.option.Option.t u128.t)::["unwrap_or"] α4 α6).
+  
+  Global Instance AssociatedFunction_balance_of :
+    Notations.DoubleColon Self "balance_of" := {
+    Notations.double_colon := balance_of;
+  }.
   
   (*
       fn safe_transfer_from(
@@ -1314,13 +1360,12 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
       (value : ltac:(erc1155.Balance))
       (data : alloc.vec.Vec.t u8.t alloc.vec.Vec.Default.A)
       : M ltac:(erc1155.Result unit) :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
-    let* from : M.Val erc1155.AccountId.t := M.alloc from in
-    let* to : M.Val erc1155.AccountId.t := M.alloc to in
-    let* token_id : M.Val ltac:(erc1155.TokenId) := M.alloc token_id in
-    let* value : M.Val ltac:(erc1155.Balance) := M.alloc value in
-    let* data : M.Val (alloc.vec.Vec.t u8.t alloc.vec.Vec.Default.A) :=
-      M.alloc data in
+    let* self := M.alloc self in
+    let* from := M.alloc from in
+    let* to := M.alloc to in
+    let* token_id := M.alloc token_id in
+    let* value := M.alloc value in
+    let* data := M.alloc data in
     let return_ := M.return_ (R := ltac:(erc1155.Result unit)) in
     M.catch_return
       (let* caller : M.Val erc1155.AccountId.t :=
@@ -1339,20 +1384,18 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                 (Trait := ltac:(refine _)))
               (borrow caller)
               (borrow from)) in
-        if (use α0 : bool) then
+        let* α1 : M.Val bool.t := M.alloc α0 in
+        let* α2 : bool.t := M.read (use α1) in
+        if α2 then
           let* _ : M.Val unit :=
             let* α0 : mut_ref erc1155.Contract.t := M.read self in
             let* α1 : erc1155.AccountId.t := M.read from in
             let* α2 : erc1155.AccountId.t := M.read caller in
             let* α3 : bool.t :=
-              M.call
-                ((erc1155.Erc1155.is_approved_for_all
-                    (Self := erc1155.Contract.t)
-                    (Trait := ltac:(refine _)))
-                  (borrow (deref α0))
-                  α1
-                  α2) in
-            if (use (UnOp.not α3) : bool) then
+              M.call (is_approved_for_all (borrow (deref α0)) α1 α2) in
+            let* α4 : M.Val bool.t := M.alloc (UnOp.not α3) in
+            let* α5 : bool.t := M.read (use α4) in
+            if α5 then
               let* _ : M.Val never.t :=
                 let* α0 : erc1155.Error.t :=
                   M.call
@@ -1360,9 +1403,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                         (Self := erc1155.Error.t)
                         (Trait := ltac:(refine _)))
                       erc1155.Error.NotApproved) in
-                let* α1 : core.result.Result.t unit erc1155.Error.t :=
-                  M.call ("unimplemented parent_kind" α0) in
-                return_ α1 in
+                return_ (core.result.Result.Err α0) in
               let* α0 : M.Val unit := M.alloc tt in
               let* α1 := M.read α0 in
               let* α2 : unit := never_to_any α1 in
@@ -1382,7 +1423,9 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                 (Trait := ltac:(refine _)))
               (borrow to)
               (borrow α1)) in
-        if (use (UnOp.not α2) : bool) then
+        let* α3 : M.Val bool.t := M.alloc (UnOp.not α2) in
+        let* α4 : bool.t := M.read (use α3) in
+        if α4 then
           let* _ : M.Val never.t :=
             let* α0 : erc1155.Error.t :=
               M.call
@@ -1390,9 +1433,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                     (Self := erc1155.Error.t)
                     (Trait := ltac:(refine _)))
                   erc1155.Error.ZeroAddressTransfer) in
-            let* α1 : core.result.Result.t unit erc1155.Error.t :=
-              M.call ("unimplemented parent_kind" α0) in
-            return_ α1 in
+            return_ (core.result.Result.Err α0) in
           let* α0 : M.Val unit := M.alloc tt in
           let* α1 := M.read α0 in
           let* α2 : unit := never_to_any α1 in
@@ -1403,19 +1444,14 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
         let* α0 : mut_ref erc1155.Contract.t := M.read self in
         let* α1 : erc1155.AccountId.t := M.read from in
         let* α2 : u128.t := M.read token_id in
-        let* α3 : u128.t :=
-          M.call
-            ((erc1155.Erc1155.balance_of
-                (Self := erc1155.Contract.t)
-                (Trait := ltac:(refine _)))
-              (borrow (deref α0))
-              α1
-              α2) in
+        let* α3 : u128.t := M.call (balance_of (borrow (deref α0)) α1 α2) in
         M.alloc α3 in
       let* _ : M.Val unit :=
         let* α0 : u128.t := M.read balance in
         let* α1 : u128.t := M.read value in
-        if (use (UnOp.not (BinOp.Pure.ge α0 α1)) : bool) then
+        let* α2 : M.Val bool.t := M.alloc (UnOp.not (BinOp.Pure.ge α0 α1)) in
+        let* α3 : bool.t := M.read (use α2) in
+        if α3 then
           let* _ : M.Val never.t :=
             let* α0 : erc1155.Error.t :=
               M.call
@@ -1423,9 +1459,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                     (Self := erc1155.Error.t)
                     (Trait := ltac:(refine _)))
                   erc1155.Error.InsufficientBalance) in
-            let* α1 : core.result.Result.t unit erc1155.Error.t :=
-              M.call ("unimplemented parent_kind" α0) in
-            return_ α1 in
+            return_ (core.result.Result.Err α0) in
           let* α0 : M.Val unit := M.alloc tt in
           let* α1 := M.read α0 in
           let* α2 : unit := never_to_any α1 in
@@ -1517,19 +1551,12 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
       (values : alloc.vec.Vec.t ltac:(erc1155.Balance) alloc.vec.Vec.Default.A)
       (data : alloc.vec.Vec.t u8.t alloc.vec.Vec.Default.A)
       : M ltac:(erc1155.Result unit) :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
-    let* from : M.Val erc1155.AccountId.t := M.alloc from in
-    let* to : M.Val erc1155.AccountId.t := M.alloc to in
-    let* token_ids :
-        M.Val
-          (alloc.vec.Vec.t ltac:(erc1155.TokenId) alloc.vec.Vec.Default.A) :=
-      M.alloc token_ids in
-    let* values :
-        M.Val
-          (alloc.vec.Vec.t ltac:(erc1155.Balance) alloc.vec.Vec.Default.A) :=
-      M.alloc values in
-    let* data : M.Val (alloc.vec.Vec.t u8.t alloc.vec.Vec.Default.A) :=
-      M.alloc data in
+    let* self := M.alloc self in
+    let* from := M.alloc from in
+    let* to := M.alloc to in
+    let* token_ids := M.alloc token_ids in
+    let* values := M.alloc values in
+    let* data := M.alloc data in
     let return_ := M.return_ (R := ltac:(erc1155.Result unit)) in
     M.catch_return
       (let* caller : M.Val erc1155.AccountId.t :=
@@ -1548,20 +1575,18 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                 (Trait := ltac:(refine _)))
               (borrow caller)
               (borrow from)) in
-        if (use α0 : bool) then
+        let* α1 : M.Val bool.t := M.alloc α0 in
+        let* α2 : bool.t := M.read (use α1) in
+        if α2 then
           let* _ : M.Val unit :=
             let* α0 : mut_ref erc1155.Contract.t := M.read self in
             let* α1 : erc1155.AccountId.t := M.read from in
             let* α2 : erc1155.AccountId.t := M.read caller in
             let* α3 : bool.t :=
-              M.call
-                ((erc1155.Erc1155.is_approved_for_all
-                    (Self := erc1155.Contract.t)
-                    (Trait := ltac:(refine _)))
-                  (borrow (deref α0))
-                  α1
-                  α2) in
-            if (use (UnOp.not α3) : bool) then
+              M.call (is_approved_for_all (borrow (deref α0)) α1 α2) in
+            let* α4 : M.Val bool.t := M.alloc (UnOp.not α3) in
+            let* α5 : bool.t := M.read (use α4) in
+            if α5 then
               let* _ : M.Val never.t :=
                 let* α0 : erc1155.Error.t :=
                   M.call
@@ -1569,9 +1594,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                         (Self := erc1155.Error.t)
                         (Trait := ltac:(refine _)))
                       erc1155.Error.NotApproved) in
-                let* α1 : core.result.Result.t unit erc1155.Error.t :=
-                  M.call ("unimplemented parent_kind" α0) in
-                return_ α1 in
+                return_ (core.result.Result.Err α0) in
               let* α0 : M.Val unit := M.alloc tt in
               let* α1 := M.read α0 in
               let* α2 : unit := never_to_any α1 in
@@ -1591,7 +1614,9 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                 (Trait := ltac:(refine _)))
               (borrow to)
               (borrow α1)) in
-        if (use (UnOp.not α2) : bool) then
+        let* α3 : M.Val bool.t := M.alloc (UnOp.not α2) in
+        let* α4 : bool.t := M.read (use α3) in
+        if α4 then
           let* _ : M.Val never.t :=
             let* α0 : erc1155.Error.t :=
               M.call
@@ -1599,9 +1624,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                     (Self := erc1155.Error.t)
                     (Trait := ltac:(refine _)))
                   erc1155.Error.ZeroAddressTransfer) in
-            let* α1 : core.result.Result.t unit erc1155.Error.t :=
-              M.call ("unimplemented parent_kind" α0) in
-            return_ α1 in
+            return_ (core.result.Result.Err α0) in
           let* α0 : M.Val unit := M.alloc tt in
           let* α1 := M.read α0 in
           let* α2 : unit := never_to_any α1 in
@@ -1613,7 +1636,9 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
           M.call
             ((alloc.vec.Vec.t u128.t alloc.alloc.Global.t)::["is_empty"]
               (borrow token_ids)) in
-        if (use (UnOp.not (UnOp.not α0)) : bool) then
+        let* α1 : M.Val bool.t := M.alloc (UnOp.not (UnOp.not α0)) in
+        let* α2 : bool.t := M.read (use α1) in
+        if α2 then
           let* _ : M.Val never.t :=
             let* α0 : erc1155.Error.t :=
               M.call
@@ -1621,9 +1646,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                     (Self := erc1155.Error.t)
                     (Trait := ltac:(refine _)))
                   erc1155.Error.BatchTransferMismatch) in
-            let* α1 : core.result.Result.t unit erc1155.Error.t :=
-              M.call ("unimplemented parent_kind" α0) in
-            return_ α1 in
+            return_ (core.result.Result.Err α0) in
           let* α0 : M.Val unit := M.alloc tt in
           let* α1 := M.read α0 in
           let* α2 : unit := never_to_any α1 in
@@ -1639,7 +1662,9 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
           M.call
             ((alloc.vec.Vec.t u128.t alloc.alloc.Global.t)::["len"]
               (borrow values)) in
-        if (use (UnOp.not (BinOp.Pure.eq α0 α1)) : bool) then
+        let* α2 : M.Val bool.t := M.alloc (UnOp.not (BinOp.Pure.eq α0 α1)) in
+        let* α3 : bool.t := M.read (use α2) in
+        if α3 then
           let* _ : M.Val never.t :=
             let* α0 : erc1155.Error.t :=
               M.call
@@ -1647,9 +1672,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                     (Self := erc1155.Error.t)
                     (Trait := ltac:(refine _)))
                   erc1155.Error.BatchTransferMismatch) in
-            let* α1 : core.result.Result.t unit erc1155.Error.t :=
-              M.call ("unimplemented parent_kind" α0) in
-            return_ α1 in
+            return_ (core.result.Result.Err α0) in
           let* α0 : M.Val unit := M.alloc tt in
           let* α1 := M.read α0 in
           let* α2 : unit := never_to_any α1 in
@@ -1729,31 +1752,28 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                         (Trait := ltac:(refine _)))
                       (borrow_mut iter)) in
                 match α0 with
-                | core.option.Option.None  =>
+                | core.option.Option.None =>
                   let* α0 : M.Val never.t := Break in
                   let* α1 := M.read α0 in
                   let* α2 : unit := never_to_any α1 in
                   M.alloc α2
                 | core.option.Option.Some (id, v) =>
-                  let* v := M.alloc v in
                   let* id := M.alloc id in
+                  let* v := M.alloc v in
                   let* balance : M.Val u128.t :=
                     let* α0 : mut_ref erc1155.Contract.t := M.read self in
                     let* α1 : erc1155.AccountId.t := M.read from in
                     let* α2 : u128.t := M.read id in
                     let* α3 : u128.t :=
-                      M.call
-                        ((erc1155.Erc1155.balance_of
-                            (Self := erc1155.Contract.t)
-                            (Trait := ltac:(refine _)))
-                          (borrow (deref α0))
-                          α1
-                          α2) in
+                      M.call (balance_of (borrow (deref α0)) α1 α2) in
                     M.alloc α3 in
                   let* _ : M.Val unit :=
                     let* α0 : u128.t := M.read balance in
                     let* α1 : u128.t := M.read v in
-                    if (use (UnOp.not (BinOp.Pure.ge α0 α1)) : bool) then
+                    let* α2 : M.Val bool.t :=
+                      M.alloc (UnOp.not (BinOp.Pure.ge α0 α1)) in
+                    let* α3 : bool.t := M.read (use α2) in
+                    if α3 then
                       let* _ : M.Val never.t :=
                         let* α0 : erc1155.Error.t :=
                           M.call
@@ -1761,9 +1781,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                                 (Self := erc1155.Error.t)
                                 (Trait := ltac:(refine _)))
                               erc1155.Error.InsufficientBalance) in
-                        let* α1 : core.result.Result.t unit erc1155.Error.t :=
-                          M.call ("unimplemented parent_kind" α0) in
-                        return_ α1 in
+                        return_ (core.result.Result.Err α0) in
                       let* α0 : M.Val unit := M.alloc tt in
                       let* α1 := M.read α0 in
                       let* α2 : unit := never_to_any α1 in
@@ -1774,8 +1792,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                 end in
               M.alloc tt)
           end in
-        let* α3 : unit := M.read α2 in
-        M.alloc (use α3) in
+        M.pure (use α2) in
       let* _ : M.Val unit :=
         let* α0 :
             core.iter.adapters.zip.Zip.t
@@ -1810,14 +1827,14 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                         (Trait := ltac:(refine _)))
                       (borrow_mut iter)) in
                 match α0 with
-                | core.option.Option.None  =>
+                | core.option.Option.None =>
                   let* α0 : M.Val never.t := Break in
                   let* α1 := M.read α0 in
                   let* α2 : unit := never_to_any α1 in
                   M.alloc α2
                 | core.option.Option.Some (id, v) =>
-                  let* v := M.alloc v in
                   let* id := M.alloc id in
+                  let* v := M.alloc v in
                   let* _ : M.Val unit :=
                     let* α0 : mut_ref erc1155.Contract.t := M.read self in
                     let* α1 : erc1155.AccountId.t := M.read from in
@@ -1837,8 +1854,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                 end in
               M.alloc tt)
           end in
-        let* α3 : unit := M.read α2 in
-        M.alloc (use α3) in
+        M.pure (use α2) in
       let* _ : M.Val unit :=
         let* α0 : mut_ref erc1155.Contract.t := M.read self in
         let* α1 : erc1155.AccountId.t := M.read caller in
@@ -1882,35 +1898,6 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
   }.
   
   (*
-      fn balance_of(&self, owner: AccountId, token_id: TokenId) -> Balance {
-          self.balances.get(&(owner, token_id)).unwrap_or(0)
-      }
-  *)
-  Definition balance_of
-      (self : ref Self)
-      (owner : erc1155.AccountId.t)
-      (token_id : ltac:(erc1155.TokenId))
-      : M ltac:(erc1155.Balance) :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* owner : M.Val erc1155.AccountId.t := M.alloc owner in
-    let* token_id : M.Val ltac:(erc1155.TokenId) := M.alloc token_id in
-    let* α0 : ref erc1155.Contract.t := M.read self in
-    let* α1 : erc1155.AccountId.t := M.read owner in
-    let* α2 : u128.t := M.read token_id in
-    let* α3 : M.Val (erc1155.AccountId.t * u128.t) := M.alloc (α1, α2) in
-    let* α4 : core.option.Option.t u128.t :=
-      M.call
-        ((erc1155.Mapping.t (erc1155.AccountId.t * u128.t) u128.t)::["get"]
-          (borrow (deref α0).["balances"])
-          (borrow α3)) in
-    M.call ((core.option.Option.t u128.t)::["unwrap_or"] α4 (Integer.of_Z 0)).
-  
-  Global Instance AssociatedFunction_balance_of :
-    Notations.DoubleColon Self "balance_of" := {
-    Notations.double_colon := balance_of;
-  }.
-  
-  (*
       fn balance_of_batch(&self, owners: Vec<AccountId>, token_ids: Vec<TokenId>) -> Vec<Balance> {
           let mut output = Vec::new();
           for o in &owners {
@@ -1929,14 +1916,9 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
         :
         alloc.vec.Vec.t ltac:(erc1155.TokenId) alloc.vec.Vec.Default.A)
       : M (alloc.vec.Vec.t ltac:(erc1155.Balance) alloc.vec.Vec.Default.A) :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* owners :
-        M.Val (alloc.vec.Vec.t erc1155.AccountId.t alloc.vec.Vec.Default.A) :=
-      M.alloc owners in
-    let* token_ids :
-        M.Val
-          (alloc.vec.Vec.t ltac:(erc1155.TokenId) alloc.vec.Vec.Default.A) :=
-      M.alloc token_ids in
+    let* self := M.alloc self in
+    let* owners := M.alloc owners in
+    let* token_ids := M.alloc token_ids in
     let* output : M.Val (alloc.vec.Vec.t u128.t alloc.alloc.Global.t) :=
       let* α0 : alloc.vec.Vec.t u128.t alloc.alloc.Global.t :=
         M.call (alloc.vec.Vec.t u128.t alloc.alloc.Global.t)::["new"] in
@@ -1962,7 +1944,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                       (Trait := ltac:(refine _)))
                     (borrow_mut iter)) in
               match α0 with
-              | core.option.Option.None  =>
+              | core.option.Option.None =>
                 let* α0 : M.Val never.t := Break in
                 let* α1 := M.read α0 in
                 let* α2 : unit := never_to_any α1 in
@@ -1989,7 +1971,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                                 (Trait := ltac:(refine _)))
                               (borrow_mut iter)) in
                         match α0 with
-                        | core.option.Option.None  =>
+                        | core.option.Option.None =>
                           let* α0 : M.Val never.t := Break in
                           let* α1 := M.read α0 in
                           let* α2 : unit := never_to_any α1 in
@@ -2003,14 +1985,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                               M.read (deref α1) in
                             let* α3 : ref u128.t := M.read t in
                             let* α4 : u128.t := M.read (deref α3) in
-                            let* α5 : u128.t :=
-                              M.call
-                                ((erc1155.Erc1155.balance_of
-                                    (Self := erc1155.Contract.t)
-                                    (Trait := ltac:(refine _)))
-                                  α0
-                                  α2
-                                  α4) in
+                            let* α5 : u128.t := M.call (balance_of α0 α2 α4) in
                             M.alloc α5 in
                           let* _ : M.Val unit :=
                             let* α0 : u128.t := M.read amount in
@@ -2026,13 +2001,11 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                         end in
                       M.alloc tt)
                   end in
-                let* α2 : unit := M.read α1 in
-                M.alloc (use α2)
+                M.pure (use α1)
               end in
             M.alloc tt)
         end in
-      let* α2 : unit := M.read α1 in
-      M.alloc (use α2) in
+      M.pure (use α1) in
     M.read output.
   
   Global Instance AssociatedFunction_balance_of_batch :
@@ -2065,9 +2038,9 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
       (operator : erc1155.AccountId.t)
       (approved : bool.t)
       : M ltac:(erc1155.Result unit) :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
-    let* operator : M.Val erc1155.AccountId.t := M.alloc operator in
-    let* approved : M.Val bool.t := M.alloc approved in
+    let* self := M.alloc self in
+    let* operator := M.alloc operator in
+    let* approved := M.alloc approved in
     let return_ := M.return_ (R := ltac:(erc1155.Result unit)) in
     M.catch_return
       (let* caller : M.Val erc1155.AccountId.t :=
@@ -2086,7 +2059,9 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                 (Trait := ltac:(refine _)))
               (borrow operator)
               (borrow caller)) in
-        if (use (UnOp.not α0) : bool) then
+        let* α1 : M.Val bool.t := M.alloc (UnOp.not α0) in
+        let* α2 : bool.t := M.read (use α1) in
+        if α2 then
           let* _ : M.Val never.t :=
             let* α0 : erc1155.Error.t :=
               M.call
@@ -2094,9 +2069,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                     (Self := erc1155.Error.t)
                     (Trait := ltac:(refine _)))
                   erc1155.Error.SelfApproval) in
-            let* α1 : core.result.Result.t unit erc1155.Error.t :=
-              M.call ("unimplemented parent_kind" α0) in
-            return_ α1 in
+            return_ (core.result.Result.Err α0) in
           let* α0 : M.Val unit := M.alloc tt in
           let* α1 := M.read α0 in
           let* α2 : unit := never_to_any α1 in
@@ -2104,8 +2077,8 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
         else
           M.alloc tt in
       let* _ : M.Val unit :=
-        let* α0 : bool.t := M.read approved in
-        if (use α0 : bool) then
+        let* α0 : bool.t := M.read (use approved) in
+        if α0 then
           let* _ : M.Val (core.option.Option.t u32.t) :=
             let* α0 : mut_ref erc1155.Contract.t := M.read self in
             let* α1 : erc1155.AccountId.t := M.read caller in
@@ -2162,43 +2135,13 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
     Notations.double_colon := set_approval_for_all;
   }.
   
-  (*
-      fn is_approved_for_all(&self, owner: AccountId, operator: AccountId) -> bool {
-          self.approvals.contains(&(owner, operator))
-      }
-  *)
-  Definition is_approved_for_all
-      (self : ref Self)
-      (owner : erc1155.AccountId.t)
-      (operator : erc1155.AccountId.t)
-      : M bool.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* owner : M.Val erc1155.AccountId.t := M.alloc owner in
-    let* operator : M.Val erc1155.AccountId.t := M.alloc operator in
-    let* α0 : ref erc1155.Contract.t := M.read self in
-    let* α1 : erc1155.AccountId.t := M.read owner in
-    let* α2 : erc1155.AccountId.t := M.read operator in
-    let* α3 : M.Val (erc1155.AccountId.t * erc1155.AccountId.t) :=
-      M.alloc (α1, α2) in
-    M.call
-      ((erc1155.Mapping.t
-            (erc1155.AccountId.t * erc1155.AccountId.t)
-            unit)::["contains"]
-        (borrow (deref α0).["approvals"])
-        (borrow α3)).
-  
-  Global Instance AssociatedFunction_is_approved_for_all :
-    Notations.DoubleColon Self "is_approved_for_all" := {
-    Notations.double_colon := is_approved_for_all;
-  }.
-  
   Global Instance ℐ : erc1155.Erc1155.Trait Self := {
+    erc1155.Erc1155.is_approved_for_all := is_approved_for_all;
+    erc1155.Erc1155.balance_of := balance_of;
     erc1155.Erc1155.safe_transfer_from := safe_transfer_from;
     erc1155.Erc1155.safe_batch_transfer_from := safe_batch_transfer_from;
-    erc1155.Erc1155.balance_of := balance_of;
     erc1155.Erc1155.balance_of_batch := balance_of_batch;
     erc1155.Erc1155.set_approval_for_all := set_approval_for_all;
-    erc1155.Erc1155.is_approved_for_all := is_approved_for_all;
   }.
 End Impl_erc1155_Erc1155_for_erc1155_Contract_t.
 End Impl_erc1155_Erc1155_for_erc1155_Contract_t.
@@ -2238,13 +2181,12 @@ Section Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract_t.
       (_value : ltac:(erc1155.Balance))
       (_data : alloc.vec.Vec.t u8.t alloc.vec.Vec.Default.A)
       : M (alloc.vec.Vec.t u8.t alloc.vec.Vec.Default.A) :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
-    let* _operator : M.Val erc1155.AccountId.t := M.alloc _operator in
-    let* _from : M.Val erc1155.AccountId.t := M.alloc _from in
-    let* _token_id : M.Val ltac:(erc1155.TokenId) := M.alloc _token_id in
-    let* _value : M.Val ltac:(erc1155.Balance) := M.alloc _value in
-    let* _data : M.Val (alloc.vec.Vec.t u8.t alloc.vec.Vec.Default.A) :=
-      M.alloc _data in
+    let* self := M.alloc self in
+    let* _operator := M.alloc _operator in
+    let* _from := M.alloc _from in
+    let* _token_id := M.alloc _token_id in
+    let* _value := M.alloc _value in
+    let* _data := M.alloc _data in
     let* α0 : ref str.t :=
       M.read
         (mk_str
@@ -2301,19 +2243,12 @@ Section Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract_t.
       (_values : alloc.vec.Vec.t ltac:(erc1155.Balance) alloc.vec.Vec.Default.A)
       (_data : alloc.vec.Vec.t u8.t alloc.vec.Vec.Default.A)
       : M (alloc.vec.Vec.t u8.t alloc.vec.Vec.Default.A) :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
-    let* _operator : M.Val erc1155.AccountId.t := M.alloc _operator in
-    let* _from : M.Val erc1155.AccountId.t := M.alloc _from in
-    let* _token_ids :
-        M.Val
-          (alloc.vec.Vec.t ltac:(erc1155.TokenId) alloc.vec.Vec.Default.A) :=
-      M.alloc _token_ids in
-    let* _values :
-        M.Val
-          (alloc.vec.Vec.t ltac:(erc1155.Balance) alloc.vec.Vec.Default.A) :=
-      M.alloc _values in
-    let* _data : M.Val (alloc.vec.Vec.t u8.t alloc.vec.Vec.Default.A) :=
-      M.alloc _data in
+    let* self := M.alloc self in
+    let* _operator := M.alloc _operator in
+    let* _from := M.alloc _from in
+    let* _token_ids := M.alloc _token_ids in
+    let* _values := M.alloc _values in
+    let* _data := M.alloc _data in
     let* α0 : ref str.t :=
       M.read
         (mk_str
@@ -2343,13 +2278,3 @@ Section Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract_t.
   }.
 End Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract_t.
 End Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract_t.
-
-(*
-fn zero_address() -> AccountId {
-    [0u8; 32].into()
-}
-*)
-Definition zero_address : M erc1155.AccountId.t :=
-  M.call
-    ((core.convert.Into.into (Self := array u8.t) (Trait := ltac:(refine _)))
-      (repeat (Integer.of_Z 0) 32)).

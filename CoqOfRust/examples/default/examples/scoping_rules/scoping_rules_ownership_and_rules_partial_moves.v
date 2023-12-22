@@ -56,8 +56,8 @@ Definition main : M unit :=
       |} :
       scoping_rules_ownership_and_rules_partial_moves.main.Person.t :=
     M.read person in
-  let* age := M.alloc age in
   let* name := M.alloc name in
+  let* age := M.alloc age in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "The person's age is ") in
@@ -134,13 +134,15 @@ Section Person.
   }.
   
   Global Instance Get_name : Notations.Dot "name" := {
-    Notations.dot := Ref.map (fun x => x.(name)) (fun v x => x <| name := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(name)) (fun v x => Some (x <| name := v |>));
   }.
   Global Instance Get_AF_name : Notations.DoubleColon t "name" := {
     Notations.double_colon (x : M.Val t) := x.["name"];
   }.
   Global Instance Get_age : Notations.Dot "age" := {
-    Notations.dot := Ref.map (fun x => x.(age)) (fun v x => x <| age := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(age)) (fun v x => Some (x <| age := v |>));
   }.
   Global Instance Get_AF_age : Notations.DoubleColon t "age" := {
     Notations.double_colon (x : M.Val t) := x.["age"];
@@ -160,8 +162,8 @@ Section Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
+    let* self := M.alloc self in
+    let* f := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref str.t := M.read (mk_str "Person") in
     let* α2 : ref str.t := M.read (mk_str "name") in
@@ -170,8 +172,7 @@ Section Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_
       M.read self in
     let* α4 : M.Val (ref alloc.string.String.t) :=
       M.alloc (borrow (deref α3).["name"]) in
-    let* α5 : ref type not implemented :=
-      M.read (pointer_coercion "Unsize" α4) in
+    let* α5 : ref dynamic := M.read (pointer_coercion "Unsize" α4) in
     let* α6 : ref str.t := M.read (mk_str "age") in
     let* α7 :
         ref scoping_rules_ownership_and_rules_partial_moves.main.Person.t :=
@@ -180,8 +181,7 @@ Section Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_
       M.alloc (borrow (deref α7).["age"]) in
     let* α9 : M.Val (ref (ref (alloc.boxed.Box.t u8.t alloc.alloc.Global.t))) :=
       M.alloc (borrow α8) in
-    let* α10 : ref type not implemented :=
-      M.read (pointer_coercion "Unsize" α9) in
+    let* α10 : ref dynamic := M.read (pointer_coercion "Unsize" α9) in
     M.call
       (core.fmt.Formatter.t::["debug_struct_field2_finish"] α0 α1 α2 α5 α6 α10).
   

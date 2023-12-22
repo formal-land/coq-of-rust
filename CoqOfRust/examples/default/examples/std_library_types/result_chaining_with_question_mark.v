@@ -21,27 +21,23 @@ Module checked.
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter.t)
         : M ltac:(core.fmt.Result) :=
-      let* self : M.Val (ref Self) := M.alloc self in
-      let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
+      let* self := M.alloc self in
+      let* f := M.alloc f in
       let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
       let* α1 : ref result_chaining_with_question_mark.checked.MathError.t :=
         M.read self in
       let* α2 : M.Val (ref str.t) :=
         match α1 with
-        |
-            result_chaining_with_question_mark.checked.MathError.DivisionByZero 
-            =>
+        | result_chaining_with_question_mark.checked.MathError.DivisionByZero =>
           let* α0 : ref str.t := M.read (mk_str "DivisionByZero") in
           M.alloc α0
         |
             result_chaining_with_question_mark.checked.MathError.NonPositiveLogarithm
-              
             =>
           let* α0 : ref str.t := M.read (mk_str "NonPositiveLogarithm") in
           M.alloc α0
         |
             result_chaining_with_question_mark.checked.MathError.NegativeSquareRoot
-              
             =>
           let* α0 : ref str.t := M.read (mk_str "NegativeSquareRoot") in
           M.alloc α0
@@ -79,16 +75,18 @@ Module checked.
       (x : f64.t)
       (y : f64.t)
       : M ltac:(result_chaining_with_question_mark.checked.MathResult) :=
-    let* x : M.Val f64.t := M.alloc x in
-    let* y : M.Val f64.t := M.alloc y in
+    let* x := M.alloc x in
+    let* y := M.alloc y in
     let* α0 : f64.t := M.read y in
     let* α1 : f64.t := M.read UnsupportedLiteral in
-    let* α2 :
+    let* α2 : M.Val bool.t := M.alloc (BinOp.Pure.eq α0 α1) in
+    let* α3 : bool.t := M.read (use α2) in
+    let* α4 :
         M.Val
           (core.result.Result.t
             f64.t
             result_chaining_with_question_mark.checked.MathError.t) :=
-      if (use (BinOp.Pure.eq α0 α1) : bool) then
+      if α3 then
         M.alloc
           (core.result.Result.Err
             result_chaining_with_question_mark.checked.MathError.DivisionByZero)
@@ -97,7 +95,7 @@ Module checked.
         let* α1 : f64.t := M.read y in
         let* α2 : f64.t := BinOp.Panic.div α0 α1 in
         M.alloc (core.result.Result.Ok α2) in
-    M.read α2.
+    M.read α4.
   
   (*
       fn sqrt(x: f64) -> MathResult {
@@ -111,15 +109,17 @@ Module checked.
   Definition sqrt
       (x : f64.t)
       : M ltac:(result_chaining_with_question_mark.checked.MathResult) :=
-    let* x : M.Val f64.t := M.alloc x in
+    let* x := M.alloc x in
     let* α0 : f64.t := M.read x in
     let* α1 : f64.t := M.read UnsupportedLiteral in
-    let* α2 :
+    let* α2 : M.Val bool.t := M.alloc (BinOp.Pure.lt α0 α1) in
+    let* α3 : bool.t := M.read (use α2) in
+    let* α4 :
         M.Val
           (core.result.Result.t
             f64.t
             result_chaining_with_question_mark.checked.MathError.t) :=
-      if (use (BinOp.Pure.lt α0 α1) : bool) then
+      if α3 then
         M.alloc
           (core.result.Result.Err
             result_chaining_with_question_mark.checked.MathError.NegativeSquareRoot)
@@ -127,7 +127,7 @@ Module checked.
         let* α0 : f64.t := M.read x in
         let* α1 : f64.t := M.call (f64.t::["sqrt"] α0) in
         M.alloc (core.result.Result.Ok α1) in
-    M.read α2.
+    M.read α4.
   
   (*
       fn ln(x: f64) -> MathResult {
@@ -141,15 +141,17 @@ Module checked.
   Definition ln
       (x : f64.t)
       : M ltac:(result_chaining_with_question_mark.checked.MathResult) :=
-    let* x : M.Val f64.t := M.alloc x in
+    let* x := M.alloc x in
     let* α0 : f64.t := M.read x in
     let* α1 : f64.t := M.read UnsupportedLiteral in
-    let* α2 :
+    let* α2 : M.Val bool.t := M.alloc (BinOp.Pure.le α0 α1) in
+    let* α3 : bool.t := M.read (use α2) in
+    let* α4 :
         M.Val
           (core.result.Result.t
             f64.t
             result_chaining_with_question_mark.checked.MathError.t) :=
-      if (use (BinOp.Pure.le α0 α1) : bool) then
+      if α3 then
         M.alloc
           (core.result.Result.Err
             result_chaining_with_question_mark.checked.MathError.NonPositiveLogarithm)
@@ -157,7 +159,7 @@ Module checked.
         let* α0 : f64.t := M.read x in
         let* α1 : f64.t := M.call (f64.t::["ln"] α0) in
         M.alloc (core.result.Result.Ok α1) in
-    M.read α2.
+    M.read α4.
   
   (*
       fn op_(x: f64, y: f64) -> MathResult {
@@ -174,8 +176,8 @@ Module checked.
       (x : f64.t)
       (y : f64.t)
       : M ltac:(result_chaining_with_question_mark.checked.MathResult) :=
-    let* x : M.Val f64.t := M.alloc x in
-    let* y : M.Val f64.t := M.alloc y in
+    let* x := M.alloc x in
+    let* y := M.alloc y in
     let return_ :=
       M.return_
         (R := ltac:(result_chaining_with_question_mark.checked.MathResult)) in
@@ -313,8 +315,8 @@ Module checked.
       }
   *)
   Definition op (x : f64.t) (y : f64.t) : M unit :=
-    let* x : M.Val f64.t := M.alloc x in
-    let* y : M.Val f64.t := M.alloc y in
+    let* x := M.alloc x in
+    let* y := M.alloc y in
     let* α0 : f64.t := M.read x in
     let* α1 : f64.t := M.read y in
     let* α2 :
@@ -332,18 +334,15 @@ Module checked.
           match α0 with
           |
               result_chaining_with_question_mark.checked.MathError.NonPositiveLogarithm
-                
               =>
             M.pure (mk_str "logarithm of non-positive number")
           |
               result_chaining_with_question_mark.checked.MathError.DivisionByZero
-                
               =>
             let* α0 : ref str.t := M.read (mk_str "division by zero") in
             M.alloc α0
           |
               result_chaining_with_question_mark.checked.MathError.NegativeSquareRoot
-                
               =>
             let* α0 : ref str.t :=
               M.read (mk_str "square root of negative number") in
@@ -398,25 +397,23 @@ Section Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathE
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
+    let* self := M.alloc self in
+    let* f := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref result_chaining_with_question_mark.checked.MathError.t :=
       M.read self in
     let* α2 : M.Val (ref str.t) :=
       match α1 with
-      | result_chaining_with_question_mark.checked.MathError.DivisionByZero  =>
+      | result_chaining_with_question_mark.checked.MathError.DivisionByZero =>
         let* α0 : ref str.t := M.read (mk_str "DivisionByZero") in
         M.alloc α0
       |
           result_chaining_with_question_mark.checked.MathError.NonPositiveLogarithm
-            
           =>
         let* α0 : ref str.t := M.read (mk_str "NonPositiveLogarithm") in
         M.alloc α0
       |
           result_chaining_with_question_mark.checked.MathError.NegativeSquareRoot
-            
           =>
         let* α0 : ref str.t := M.read (mk_str "NegativeSquareRoot") in
         M.alloc α0
@@ -453,16 +450,18 @@ Definition div
     (x : f64.t)
     (y : f64.t)
     : M ltac:(result_chaining_with_question_mark.checked.MathResult) :=
-  let* x : M.Val f64.t := M.alloc x in
-  let* y : M.Val f64.t := M.alloc y in
+  let* x := M.alloc x in
+  let* y := M.alloc y in
   let* α0 : f64.t := M.read y in
   let* α1 : f64.t := M.read UnsupportedLiteral in
-  let* α2 :
+  let* α2 : M.Val bool.t := M.alloc (BinOp.Pure.eq α0 α1) in
+  let* α3 : bool.t := M.read (use α2) in
+  let* α4 :
       M.Val
         (core.result.Result.t
           f64.t
           result_chaining_with_question_mark.checked.MathError.t) :=
-    if (use (BinOp.Pure.eq α0 α1) : bool) then
+    if α3 then
       M.alloc
         (core.result.Result.Err
           result_chaining_with_question_mark.checked.MathError.DivisionByZero)
@@ -471,7 +470,7 @@ Definition div
       let* α1 : f64.t := M.read y in
       let* α2 : f64.t := BinOp.Panic.div α0 α1 in
       M.alloc (core.result.Result.Ok α2) in
-  M.read α2.
+  M.read α4.
 
 (*
     fn sqrt(x: f64) -> MathResult {
@@ -485,15 +484,17 @@ Definition div
 Definition sqrt
     (x : f64.t)
     : M ltac:(result_chaining_with_question_mark.checked.MathResult) :=
-  let* x : M.Val f64.t := M.alloc x in
+  let* x := M.alloc x in
   let* α0 : f64.t := M.read x in
   let* α1 : f64.t := M.read UnsupportedLiteral in
-  let* α2 :
+  let* α2 : M.Val bool.t := M.alloc (BinOp.Pure.lt α0 α1) in
+  let* α3 : bool.t := M.read (use α2) in
+  let* α4 :
       M.Val
         (core.result.Result.t
           f64.t
           result_chaining_with_question_mark.checked.MathError.t) :=
-    if (use (BinOp.Pure.lt α0 α1) : bool) then
+    if α3 then
       M.alloc
         (core.result.Result.Err
           result_chaining_with_question_mark.checked.MathError.NegativeSquareRoot)
@@ -501,7 +502,7 @@ Definition sqrt
       let* α0 : f64.t := M.read x in
       let* α1 : f64.t := M.call (f64.t::["sqrt"] α0) in
       M.alloc (core.result.Result.Ok α1) in
-  M.read α2.
+  M.read α4.
 
 (*
     fn ln(x: f64) -> MathResult {
@@ -515,15 +516,17 @@ Definition sqrt
 Definition ln
     (x : f64.t)
     : M ltac:(result_chaining_with_question_mark.checked.MathResult) :=
-  let* x : M.Val f64.t := M.alloc x in
+  let* x := M.alloc x in
   let* α0 : f64.t := M.read x in
   let* α1 : f64.t := M.read UnsupportedLiteral in
-  let* α2 :
+  let* α2 : M.Val bool.t := M.alloc (BinOp.Pure.le α0 α1) in
+  let* α3 : bool.t := M.read (use α2) in
+  let* α4 :
       M.Val
         (core.result.Result.t
           f64.t
           result_chaining_with_question_mark.checked.MathError.t) :=
-    if (use (BinOp.Pure.le α0 α1) : bool) then
+    if α3 then
       M.alloc
         (core.result.Result.Err
           result_chaining_with_question_mark.checked.MathError.NonPositiveLogarithm)
@@ -531,7 +534,7 @@ Definition ln
       let* α0 : f64.t := M.read x in
       let* α1 : f64.t := M.call (f64.t::["ln"] α0) in
       M.alloc (core.result.Result.Ok α1) in
-  M.read α2.
+  M.read α4.
 
 (*
     fn op_(x: f64, y: f64) -> MathResult {
@@ -548,8 +551,8 @@ Definition op_
     (x : f64.t)
     (y : f64.t)
     : M ltac:(result_chaining_with_question_mark.checked.MathResult) :=
-  let* x : M.Val f64.t := M.alloc x in
-  let* y : M.Val f64.t := M.alloc y in
+  let* x := M.alloc x in
+  let* y := M.alloc y in
   let return_ :=
     M.return_
       (R := ltac:(result_chaining_with_question_mark.checked.MathResult)) in
@@ -687,8 +690,8 @@ Definition op_
     }
 *)
 Definition op (x : f64.t) (y : f64.t) : M unit :=
-  let* x : M.Val f64.t := M.alloc x in
-  let* y : M.Val f64.t := M.alloc y in
+  let* x := M.alloc x in
+  let* y := M.alloc y in
   let* α0 : f64.t := M.read x in
   let* α1 : f64.t := M.read y in
   let* α2 :
@@ -706,17 +709,13 @@ Definition op (x : f64.t) (y : f64.t) : M unit :=
         match α0 with
         |
             result_chaining_with_question_mark.checked.MathError.NonPositiveLogarithm
-              
             =>
           M.pure (mk_str "logarithm of non-positive number")
-        |
-            result_chaining_with_question_mark.checked.MathError.DivisionByZero 
-            =>
+        | result_chaining_with_question_mark.checked.MathError.DivisionByZero =>
           let* α0 : ref str.t := M.read (mk_str "division by zero") in
           M.alloc α0
         |
             result_chaining_with_question_mark.checked.MathError.NegativeSquareRoot
-              
             =>
           let* α0 : ref str.t :=
             M.read (mk_str "square root of negative number") in

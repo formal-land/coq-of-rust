@@ -8,7 +8,8 @@ Section AccountId.
   }.
   
   Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot := Ref.map (fun x => x.(x0)) (fun v x => x <| x0 := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(x0)) (fun v x => Some (x <| x0 := v |>));
   }.
 End AccountId.
 End AccountId.
@@ -47,7 +48,7 @@ Section Impl_core_clone_Clone_for_e2e_call_runtime_AccountId_t.
   Clone
   *)
   Definition clone (self : ref Self) : M e2e_call_runtime.AccountId.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let _ : unit := tt in
     let* α0 : ref e2e_call_runtime.AccountId.t := M.read self in
     M.read (deref α0).
@@ -83,7 +84,9 @@ Section Env.
   
   Global Instance Get_caller : Notations.Dot "caller" := {
     Notations.dot :=
-      Ref.map (fun x => x.(caller)) (fun v x => x <| caller := v |>);
+      Ref.map
+        (fun x => Some x.(caller))
+        (fun v x => Some (x <| caller := v |>));
   }.
   Global Instance Get_AF_caller : Notations.DoubleColon t "caller" := {
     Notations.double_colon (x : M.Val t) := x.["caller"];
@@ -101,7 +104,7 @@ Section Impl_e2e_call_runtime_Env_t.
       }
   *)
   Definition balance (self : ref Self) : M ltac:(e2e_call_runtime.Balance) :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
@@ -165,7 +168,7 @@ Section Impl_e2e_call_runtime_Contract_t.
       }
   *)
   Definition env (self : ref Self) : M e2e_call_runtime.Env.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     M.call e2e_call_runtime.Contract.t::["init_env"].
   
   Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
@@ -191,7 +194,7 @@ Section Impl_e2e_call_runtime_Contract_t.
   Definition get_contract_balance
       (self : ref Self)
       : M ltac:(e2e_call_runtime.Balance) :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* α0 : ref e2e_call_runtime.Contract.t := M.read self in
     let* α1 : e2e_call_runtime.Env.t :=
       M.call (e2e_call_runtime.Contract.t::["env"] α0) in

@@ -10,10 +10,10 @@ fn reverse(pair: (i32, bool)) -> (bool, i32) {
 }
 *)
 Definition reverse (pair : i32.t * bool.t) : M (bool.t * i32.t) :=
-  let* pair : M.Val (i32.t * bool.t) := M.alloc pair in
+  let* pair := M.alloc pair in
   let* '(int_param, bool_param) : i32.t * bool.t := M.read pair in
-  let* bool_param := M.alloc bool_param in
   let* int_param := M.alloc int_param in
+  let* bool_param := M.alloc bool_param in
   let* α0 : bool.t := M.read bool_param in
   let* α1 : i32.t := M.read int_param in
   let* α0 : M.Val (bool.t * i32.t) := M.alloc (α0, α1) in
@@ -29,16 +29,20 @@ Section Matrix.
   }.
   
   Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot := Ref.map (fun x => x.(x0)) (fun v x => x <| x0 := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(x0)) (fun v x => Some (x <| x0 := v |>));
   }.
   Global Instance Get_1 : Notations.Dot "1" := {
-    Notations.dot := Ref.map (fun x => x.(x1)) (fun v x => x <| x1 := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(x1)) (fun v x => Some (x <| x1 := v |>));
   }.
   Global Instance Get_2 : Notations.Dot "2" := {
-    Notations.dot := Ref.map (fun x => x.(x2)) (fun v x => x <| x2 := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(x2)) (fun v x => Some (x <| x2 := v |>));
   }.
   Global Instance Get_3 : Notations.Dot "3" := {
-    Notations.dot := Ref.map (fun x => x.(x3)) (fun v x => x <| x3 := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(x3)) (fun v x => Some (x <| x3 := v |>));
   }.
 End Matrix.
 End Matrix.
@@ -54,27 +58,23 @@ Section Impl_core_fmt_Debug_for_tuples_Matrix_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
+    let* self := M.alloc self in
+    let* f := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref str.t := M.read (mk_str "Matrix") in
     let* α2 : ref tuples.Matrix.t := M.read self in
     let* α3 : M.Val (ref f32.t) := M.alloc (borrow (deref α2).["0"]) in
-    let* α4 : ref type not implemented :=
-      M.read (pointer_coercion "Unsize" α3) in
+    let* α4 : ref dynamic := M.read (pointer_coercion "Unsize" α3) in
     let* α5 : ref tuples.Matrix.t := M.read self in
     let* α6 : M.Val (ref f32.t) := M.alloc (borrow (deref α5).["1"]) in
-    let* α7 : ref type not implemented :=
-      M.read (pointer_coercion "Unsize" α6) in
+    let* α7 : ref dynamic := M.read (pointer_coercion "Unsize" α6) in
     let* α8 : ref tuples.Matrix.t := M.read self in
     let* α9 : M.Val (ref f32.t) := M.alloc (borrow (deref α8).["2"]) in
-    let* α10 : ref type not implemented :=
-      M.read (pointer_coercion "Unsize" α9) in
+    let* α10 : ref dynamic := M.read (pointer_coercion "Unsize" α9) in
     let* α11 : ref tuples.Matrix.t := M.read self in
     let* α12 : M.Val (ref f32.t) := M.alloc (borrow (deref α11).["3"]) in
     let* α13 : M.Val (ref (ref f32.t)) := M.alloc (borrow α12) in
-    let* α14 : ref type not implemented :=
-      M.read (pointer_coercion "Unsize" α13) in
+    let* α14 : ref dynamic := M.read (pointer_coercion "Unsize" α13) in
     M.call
       (core.fmt.Formatter.t::["debug_tuple_field4_finish"] α0 α1 α4 α7 α10 α14).
   
@@ -330,10 +330,10 @@ Definition main : M unit :=
     M.alloc (Integer.of_Z 1, α0, α1, true) in
   let* '(a, b, c, d) : ((i32.t * (ref str.t)) * f64.t) * bool.t :=
     M.read tuple in
-  let* d := M.alloc d in
-  let* c := M.alloc c in
-  let* b := M.alloc b in
   let* a := M.alloc a in
+  let* b := M.alloc b in
+  let* c := M.alloc c in
+  let* d := M.alloc d in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "") in

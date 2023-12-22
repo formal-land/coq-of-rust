@@ -22,8 +22,8 @@ Definition combine_vecs_explicit_return_type
             (alloc.vec.into_iter.IntoIter.t
               i32.t
               alloc.vec.into_iter.IntoIter.Default.A))) :=
-  let* v : M.Val (alloc.vec.Vec.t i32.t alloc.vec.Vec.Default.A) := M.alloc v in
-  let* u : M.Val (alloc.vec.Vec.t i32.t alloc.vec.Vec.Default.A) := M.alloc u in
+  let* v := M.alloc v in
+  let* u := M.alloc u in
   let* α0 : alloc.vec.Vec.t i32.t alloc.alloc.Global.t := M.read v in
   let* α1 : alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t :=
     M.call
@@ -66,8 +66,8 @@ Definition combine_vecs
     (v : alloc.vec.Vec.t i32.t alloc.vec.Vec.Default.A)
     (u : alloc.vec.Vec.t i32.t alloc.vec.Vec.Default.A)
     : M _ (* OpaqueTy *) :=
-  let* v : M.Val (alloc.vec.Vec.t i32.t alloc.vec.Vec.Default.A) := M.alloc v in
-  let* u : M.Val (alloc.vec.Vec.t i32.t alloc.vec.Vec.Default.A) := M.alloc u in
+  let* v := M.alloc v in
+  let* u := M.alloc u in
   let* α0 : alloc.vec.Vec.t i32.t alloc.alloc.Global.t := M.read v in
   let* α1 : alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t :=
     M.call
@@ -156,8 +156,8 @@ Definition main : M unit :=
     let* α2 : M.Val (core.option.Option.t i32.t) := M.alloc α1 in
     match (borrow α0, borrow α2) with
     | (left_val, right_val) =>
-      let* right_val := M.alloc right_val in
       let* left_val := M.alloc left_val in
+      let* right_val := M.alloc right_val in
       let* α0 : ref (core.option.Option.t i32.t) := M.read left_val in
       let* α1 : ref (core.option.Option.t i32.t) := M.read right_val in
       let* α2 : bool.t :=
@@ -167,7 +167,9 @@ Definition main : M unit :=
               (Trait := ltac:(refine _)))
             α0
             α1) in
-      if (use (UnOp.not α2) : bool) then
+      let* α3 : M.Val bool.t := M.alloc (UnOp.not α2) in
+      let* α4 : bool.t := M.read (use α3) in
+      if α4 then
         let* kind : M.Val core.panicking.AssertKind.t :=
           M.alloc core.panicking.AssertKind.Eq in
         let* _ : M.Val never.t :=
@@ -197,8 +199,8 @@ Definition main : M unit :=
     let* α2 : M.Val (core.option.Option.t i32.t) := M.alloc α1 in
     match (borrow α0, borrow α2) with
     | (left_val, right_val) =>
-      let* right_val := M.alloc right_val in
       let* left_val := M.alloc left_val in
+      let* right_val := M.alloc right_val in
       let* α0 : ref (core.option.Option.t i32.t) := M.read left_val in
       let* α1 : ref (core.option.Option.t i32.t) := M.read right_val in
       let* α2 : bool.t :=
@@ -208,7 +210,9 @@ Definition main : M unit :=
               (Trait := ltac:(refine _)))
             α0
             α1) in
-      if (use (UnOp.not α2) : bool) then
+      let* α3 : M.Val bool.t := M.alloc (UnOp.not α2) in
+      let* α4 : bool.t := M.read (use α3) in
+      if α4 then
         let* kind : M.Val core.panicking.AssertKind.t :=
           M.alloc core.panicking.AssertKind.Eq in
         let* _ : M.Val never.t :=
@@ -238,8 +242,8 @@ Definition main : M unit :=
     let* α2 : M.Val (core.option.Option.t i32.t) := M.alloc α1 in
     match (borrow α0, borrow α2) with
     | (left_val, right_val) =>
-      let* right_val := M.alloc right_val in
       let* left_val := M.alloc left_val in
+      let* right_val := M.alloc right_val in
       let* α0 : ref (core.option.Option.t i32.t) := M.read left_val in
       let* α1 : ref (core.option.Option.t i32.t) := M.read right_val in
       let* α2 : bool.t :=
@@ -249,7 +253,9 @@ Definition main : M unit :=
               (Trait := ltac:(refine _)))
             α0
             α1) in
-      if (use (UnOp.not α2) : bool) then
+      let* α3 : M.Val bool.t := M.alloc (UnOp.not α2) in
+      let* α4 : bool.t := M.read (use α3) in
+      if α4 then
         let* kind : M.Val core.panicking.AssertKind.t :=
           M.alloc core.panicking.AssertKind.Eq in
         let* _ : M.Val never.t :=
@@ -279,8 +285,8 @@ Definition main : M unit :=
     let* α2 : M.Val (core.option.Option.t i32.t) := M.alloc α1 in
     match (borrow α0, borrow α2) with
     | (left_val, right_val) =>
-      let* right_val := M.alloc right_val in
       let* left_val := M.alloc left_val in
+      let* right_val := M.alloc right_val in
       let* α0 : ref (core.option.Option.t i32.t) := M.read left_val in
       let* α1 : ref (core.option.Option.t i32.t) := M.read right_val in
       let* α2 : bool.t :=
@@ -290,7 +296,9 @@ Definition main : M unit :=
               (Trait := ltac:(refine _)))
             α0
             α1) in
-      if (use (UnOp.not α2) : bool) then
+      let* α3 : M.Val bool.t := M.alloc (UnOp.not α2) in
+      let* α4 : bool.t := M.read (use α3) in
+      if α4 then
         let* kind : M.Val core.panicking.AssertKind.t :=
           M.alloc core.panicking.AssertKind.Eq in
         let* _ : M.Val never.t :=
@@ -320,8 +328,8 @@ Definition main : M unit :=
     let* α2 : M.Val (core.option.Option.t i32.t) := M.alloc α1 in
     match (borrow α0, borrow α2) with
     | (left_val, right_val) =>
-      let* right_val := M.alloc right_val in
       let* left_val := M.alloc left_val in
+      let* right_val := M.alloc right_val in
       let* α0 : ref (core.option.Option.t i32.t) := M.read left_val in
       let* α1 : ref (core.option.Option.t i32.t) := M.read right_val in
       let* α2 : bool.t :=
@@ -331,7 +339,9 @@ Definition main : M unit :=
               (Trait := ltac:(refine _)))
             α0
             α1) in
-      if (use (UnOp.not α2) : bool) then
+      let* α3 : M.Val bool.t := M.alloc (UnOp.not α2) in
+      let* α4 : bool.t := M.read (use α3) in
+      if α4 then
         let* kind : M.Val core.panicking.AssertKind.t :=
           M.alloc core.panicking.AssertKind.Eq in
         let* _ : M.Val never.t :=

@@ -37,6 +37,15 @@ Section Impl_Result.
   |}.
 
   (*
+  pub const fn is_err(&self) -> bool
+  *)
+  Parameter is_err : ref Self -> M bool.
+
+  Global Instance AF_is_err : Notations.DoubleColon Self "is_err" := {|
+    Notations.double_colon := is_err;
+  |}.
+
+  (*
   pub fn map_err<F, O>(self, op: O) -> Result<T, F>
   where
     O: FnOnce(E) -> F,
@@ -58,6 +67,14 @@ Section Impl_Result.
 
   Global Instance AF_unwrap : Notations.DoubleColon Self "unwrap" := {|
     Notations.double_colon := unwrap;
+  |}.
+
+  (* pub fn unwrap_or_else<F: FnOnce(E) -> T>(self, op: F) -> T *)
+  Parameter unwrap_or_else : Self -> (E -> M T) -> M T.
+
+  Global Instance AF_unwrap_or_else :
+      Notations.DoubleColon Self "unwrap_or_else" := {|
+    Notations.double_colon := unwrap_or_else;
   |}.
 End Impl_Result.
 End Impl_Result.

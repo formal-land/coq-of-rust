@@ -30,8 +30,8 @@ Section Impl_core_fmt_Debug_for_operator_overloading_FooBar_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
+    let* self := M.alloc self in
+    let* f := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref str.t := M.read (mk_str "FooBar") in
     M.call (core.fmt.Formatter.t::["write_str"] α0 α1).
@@ -63,8 +63,8 @@ Section Impl_core_fmt_Debug_for_operator_overloading_BarFoo_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
+    let* self := M.alloc self in
+    let* f := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref str.t := M.read (mk_str "BarFoo") in
     M.call (core.fmt.Formatter.t::["write_str"] α0 α1).
@@ -99,8 +99,8 @@ Section Impl_core_ops_arith_Add_operator_overloading_Bar_t_for_operator_overload
       (self : Self)
       (_rhs : operator_overloading.Bar.t)
       : M operator_overloading.FooBar.t :=
-    let* self : M.Val Self := M.alloc self in
-    let* _rhs : M.Val operator_overloading.Bar.t := M.alloc _rhs in
+    let* self := M.alloc self in
+    let* _rhs := M.alloc _rhs in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "> Foo.add(Bar) was called
@@ -150,8 +150,8 @@ Section Impl_core_ops_arith_Add_operator_overloading_Foo_t_for_operator_overload
       (self : Self)
       (_rhs : operator_overloading.Foo.t)
       : M operator_overloading.BarFoo.t :=
-    let* self : M.Val Self := M.alloc self in
-    let* _rhs : M.Val operator_overloading.Foo.t := M.alloc _rhs in
+    let* self := M.alloc self in
+    let* _rhs := M.alloc _rhs in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "> Bar.add(Foo) was called

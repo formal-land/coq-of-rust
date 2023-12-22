@@ -47,9 +47,9 @@ Definition main : M unit :=
   let* c : M.Val if_let_match_enum_values.Foo.t :=
     M.alloc (if_let_match_enum_values.Foo.Qux (Integer.of_Z 100)) in
   let* _ : M.Val unit :=
-    let* α0 : M.Val bool.t := let_if if_let_match_enum_values.Foo.Bar  := a in
+    let* α0 : M.Val bool.t := let_if if_let_match_enum_values.Foo.Bar := a in
     let* α1 : bool.t := M.read α0 in
-    if (α1 : bool) then
+    if α1 then
       let* _ : M.Val unit :=
         let* _ : M.Val unit :=
           let* α0 : ref str.t := M.read (mk_str "a is foobar
@@ -67,9 +67,9 @@ Definition main : M unit :=
     else
       M.alloc tt in
   let* _ : M.Val unit :=
-    let* α0 : M.Val bool.t := let_if if_let_match_enum_values.Foo.Bar  := b in
+    let* α0 : M.Val bool.t := let_if if_let_match_enum_values.Foo.Bar := b in
     let* α1 : bool.t := M.read α0 in
-    if (α1 : bool) then
+    if α1 then
       let* _ : M.Val unit :=
         let* _ : M.Val unit :=
           let* α0 : ref str.t := M.read (mk_str "b is foobar
@@ -90,7 +90,7 @@ Definition main : M unit :=
     let* α0 : M.Val bool.t :=
       let_if if_let_match_enum_values.Foo.Qux value := c in
     let* α1 : bool.t := M.read α0 in
-    if (α1 : bool) then
+    if α1 then
       let* _ : M.Val unit :=
         let* _ : M.Val unit :=
           let* α0 : ref str.t := M.read (mk_str "c is ") in
@@ -119,7 +119,7 @@ Definition main : M unit :=
     let_if if_let_match_enum_values.Foo.Qux (_ as value) := c in
   let* α1 : bool.t := M.read α0 in
   let* α0 : M.Val unit :=
-    if (α1 : bool) then
+    if α1 then
       let* _ : M.Val unit :=
         let* _ : M.Val unit :=
           let* α0 : ref str.t := M.read (mk_str "c is one hundred

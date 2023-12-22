@@ -10,7 +10,7 @@ fn foo<A>(o: Option<A>) {
 }
 *)
 Definition foo {A : Set} (o : core.option.Option.t A) : M unit :=
-  let* o : M.Val (core.option.Option.t A) := M.alloc o in
+  let* o := M.alloc o in
   let* α0 : core.option.Option.t A := M.read o in
   let* α1 : M.Val unit :=
     match α0 with
@@ -28,7 +28,7 @@ Definition foo {A : Set} (o : core.option.Option.t A) : M unit :=
         let* α5 : unit := M.call (std.io.stdio._print α4) in
         M.alloc α5 in
       M.alloc tt
-    | core.option.Option.None  =>
+    | core.option.Option.None =>
       let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "nothing
 ") in
@@ -101,7 +101,7 @@ Module tests.
                     (Trait := ltac:(refine _)))
                   (borrow_mut iter)) in
             match α0 with
-            | core.option.Option.None  =>
+            | core.option.Option.None =>
               let* α0 : M.Val never.t := Break in
               let* α1 := M.read α0 in
               let* α2 : unit := never_to_any α1 in
@@ -132,9 +132,7 @@ Module tests.
             end in
           M.alloc tt)
       end in
-    let* α2 : unit := M.read α1 in
-    let* α0 : M.Val unit := M.alloc (use α2) in
-    M.read α0.
+    M.read (use α1).
   
   (*
       fn test_file_also() {
@@ -192,7 +190,7 @@ Module tests.
                     (Trait := ltac:(refine _)))
                   (borrow_mut iter)) in
             match α0 with
-            | core.option.Option.None  =>
+            | core.option.Option.None =>
               let* α0 : M.Val never.t := Break in
               let* α1 := M.read α0 in
               let* α2 : unit := never_to_any α1 in
@@ -223,9 +221,7 @@ Module tests.
             end in
           M.alloc tt)
       end in
-    let* α2 : unit := M.read α1 in
-    let* α0 : M.Val unit := M.alloc (use α2) in
-    M.read α0.
+    M.read (use α1).
 End tests.
 
 (*
@@ -284,7 +280,7 @@ Definition test_file : M unit :=
                   (Trait := ltac:(refine _)))
                 (borrow_mut iter)) in
           match α0 with
-          | core.option.Option.None  =>
+          | core.option.Option.None =>
             let* α0 : M.Val never.t := Break in
             let* α1 := M.read α0 in
             let* α2 : unit := never_to_any α1 in
@@ -313,9 +309,7 @@ Definition test_file : M unit :=
           end in
         M.alloc tt)
     end in
-  let* α2 : unit := M.read α1 in
-  let* α0 : M.Val unit := M.alloc (use α2) in
-  M.read α0.
+  M.read (use α1).
 
 (*
     fn test_file_also() {
@@ -373,7 +367,7 @@ Definition test_file_also : M unit :=
                   (Trait := ltac:(refine _)))
                 (borrow_mut iter)) in
           match α0 with
-          | core.option.Option.None  =>
+          | core.option.Option.None =>
             let* α0 : M.Val never.t := Break in
             let* α1 := M.read α0 in
             let* α2 : unit := never_to_any α1 in
@@ -402,6 +396,4 @@ Definition test_file_also : M unit :=
           end in
         M.alloc tt)
     end in
-  let* α2 : unit := M.read α1 in
-  let* α0 : M.Val unit := M.alloc (use α2) in
-  M.read α0.
+  M.read (use α1).

@@ -9,13 +9,15 @@ Section Fibonacci.
   }.
   
   Global Instance Get_curr : Notations.Dot "curr" := {
-    Notations.dot := Ref.map (fun x => x.(curr)) (fun v x => x <| curr := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(curr)) (fun v x => Some (x <| curr := v |>));
   }.
   Global Instance Get_AF_curr : Notations.DoubleColon t "curr" := {
     Notations.double_colon (x : M.Val t) := x.["curr"];
   }.
   Global Instance Get_next : Notations.Dot "next" := {
-    Notations.dot := Ref.map (fun x => x.(next)) (fun v x => x <| next := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(next)) (fun v x => Some (x <| next := v |>));
   }.
   Global Instance Get_AF_next : Notations.DoubleColon t "next" := {
     Notations.double_colon (x : M.Val t) := x.["next"];

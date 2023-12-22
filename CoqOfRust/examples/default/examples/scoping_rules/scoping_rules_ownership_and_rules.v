@@ -11,8 +11,7 @@ fn destroy_box(c: Box<i32>) {
 Definition destroy_box
     (c : alloc.boxed.Box.t i32.t alloc.boxed.Box.Default.A)
     : M unit :=
-  let* c : M.Val (alloc.boxed.Box.t i32.t alloc.boxed.Box.Default.A) :=
-    M.alloc c in
+  let* c := M.alloc c in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t :=

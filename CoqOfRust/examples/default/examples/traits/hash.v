@@ -10,20 +10,22 @@ Section Person.
   }.
   
   Global Instance Get_id : Notations.Dot "id" := {
-    Notations.dot := Ref.map (fun x => x.(id)) (fun v x => x <| id := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(id)) (fun v x => Some (x <| id := v |>));
   }.
   Global Instance Get_AF_id : Notations.DoubleColon t "id" := {
     Notations.double_colon (x : M.Val t) := x.["id"];
   }.
   Global Instance Get_name : Notations.Dot "name" := {
-    Notations.dot := Ref.map (fun x => x.(name)) (fun v x => x <| name := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(name)) (fun v x => Some (x <| name := v |>));
   }.
   Global Instance Get_AF_name : Notations.DoubleColon t "name" := {
     Notations.double_colon (x : M.Val t) := x.["name"];
   }.
   Global Instance Get_phone : Notations.Dot "phone" := {
     Notations.dot :=
-      Ref.map (fun x => x.(phone)) (fun v x => x <| phone := v |>);
+      Ref.map (fun x => Some x.(phone)) (fun v x => Some (x <| phone := v |>));
   }.
   Global Instance Get_AF_phone : Notations.DoubleColon t "phone" := {
     Notations.double_colon (x : M.Val t) := x.["phone"];
@@ -44,8 +46,8 @@ Section Impl_core_hash_Hash_for_hash_Person_t.
       (self : ref Self)
       (state : mut_ref __H)
       : M unit :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* state : M.Val (mut_ref __H) := M.alloc state in
+    let* self := M.alloc self in
+    let* state := M.alloc state in
     let* _ : M.Val unit :=
       let* α0 : ref hash.Person.t := M.read self in
       let* α1 : mut_ref __H := M.read state in
@@ -103,7 +105,7 @@ Definition calculate_hash
     {ℋ_0 : core.hash.Hash.Trait T}
     (t : ref T)
     : M u64.t :=
-  let* t : M.Val (ref T) := M.alloc t in
+  let* t := M.alloc t in
   let* s : M.Val std.collections.hash.map.DefaultHasher.t :=
     let* α0 : std.collections.hash.map.DefaultHasher.t :=
       M.call std.collections.hash.map.DefaultHasher.t::["new"] in
@@ -174,7 +176,9 @@ Definition main : M unit :=
   let* _ : M.Val unit :=
     let* α0 : u64.t := M.call (hash.calculate_hash (borrow person1)) in
     let* α1 : u64.t := M.call (hash.calculate_hash (borrow person2)) in
-    if (use (UnOp.not (BinOp.Pure.ne α0 α1)) : bool) then
+    let* α2 : M.Val bool.t := M.alloc (UnOp.not (BinOp.Pure.ne α0 α1)) in
+    let* α3 : bool.t := M.read (use α2) in
+    if α3 then
       let* α0 : ref str.t :=
         M.read
           (mk_str

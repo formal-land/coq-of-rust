@@ -7,16 +7,16 @@ fn id(x: u64) -> u64 {
 }
 *)
 Definition id (x : u64.t) : M u64.t :=
-  let* x : M.Val u64.t := M.alloc x in
+  let* x := M.alloc x in
   M.read x.
 
 (*
 fn tri(a: u64, b: u64, c: u64) {}
 *)
 Definition tri (a : u64.t) (b : u64.t) (c : u64.t) : M unit :=
-  let* a : M.Val u64.t := M.alloc a in
-  let* b : M.Val u64.t := M.alloc b in
-  let* c : M.Val u64.t := M.alloc c in
+  let* a := M.alloc a in
+  let* b := M.alloc b in
+  let* c := M.alloc c in
   M.pure tt.
 
 (*

@@ -16,32 +16,49 @@ Notation "{ ' pat : A @ P }" := (sigS (A := A) (fun pat => P)) : type_scope.
 
 Module Ref.
   Inductive t (A : Set) : Set :=
+  (** Can be produced from [Imm] referencing on sum types. *)
+  | Null : t A
   | Imm : A -> t A
   | MutRef {Address B : Set} (address : Address)
-      (projection : B -> A) (injection : A -> B -> B) :
+      (projection : B -> option A) (injection : A -> B -> option B) :
       t A.
+  Arguments Null {_}.
   Arguments Imm {_}.
   Arguments MutRef {_ _ _}.
 
   (** For the case where the reference covers the whole address. *)
   Definition mut_ref {Address A : Set} (address : Address) : t A :=
-    MutRef address (fun v => v) (fun v _ => v).
+    MutRef address (fun v => Some v) (fun v _ => Some v).
 
   Definition map {Big Small : Set}
-      (projection : Big -> Small) (injection : Small -> Big -> Big)
+      (projection : Big -> option Small)
+      (injection : Small -> Big -> option Big)
       (r : t Big)
       : t Small :=
     match r with
-    | Imm big => Imm (projection big)
+    | Null => Null
+    | Imm big =>
+      match projection big with
+      | Some small => Imm small
+      | None => Null
+      end
     | MutRef address projection' injection' =>
       MutRef address
         (fun big_big =>
-          let big := projection' big_big in
-          projection big
+          match projection' big_big with
+          | Some big => projection big
+          | None => None
+          end
         )
         (fun small big_big =>
-          let big := projection' big_big in
-          injection' (injection small big) big_big
+          match projection' big_big with
+          | Some big =>
+            match injection small big with
+            | Some big' => injection' big' big_big
+            | None => None
+            end
+          | None => None
+          end
         )
     end.
 End Ref.
@@ -182,20 +199,28 @@ Definition alloc {A : Set} (v : A) : M (Ref A) :=
 
 Definition read {A : Set} (r : Ref A) : M A :=
   match r with
+  | Ref.Null => LowM.Impossible
   | Ref.Imm v => LowM.Pure (inl v)
   | Ref.MutRef address projection _ =>
     let- full_v := LowM.CallPrimitive (Primitive.StateRead address) LowM.Pure in
-    LowM.Pure (inl (projection full_v))
+    match projection full_v with
+    | None => LowM.Impossible
+    | Some v => LowM.Pure (inl v)
+    end
   end.
 
 Definition write {A : Set} (r : Ref A) (v : A) : M unit :=
   match r with
+  | Ref.Null => LowM.Impossible
   | Ref.Imm _ => LowM.Impossible
   | Ref.MutRef address _ injection =>
     let- full_v := LowM.CallPrimitive (Primitive.StateRead address) LowM.Pure in
-    let full_v' := injection v full_v in
-    let- _ := LowM.CallPrimitive (Primitive.StateWrite address full_v') LowM.Pure in
-    LowM.Pure (inl tt)
+    match injection v full_v with
+    | None => LowM.Impossible
+    | Some full_v' =>
+      let- _ := LowM.CallPrimitive (Primitive.StateWrite address full_v') LowM.Pure in
+      LowM.Pure (inl tt)
+    end
   end.
 
 Definition copy {A : Set} (r : Ref A) : M (Ref A) :=

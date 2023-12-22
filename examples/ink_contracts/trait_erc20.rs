@@ -100,6 +100,14 @@ impl Env {
 }
 
 impl Erc20 {
+    fn init_env() -> Env {
+        unimplemented!()
+    }
+
+    fn env(&self) -> Env {
+        Self::init_env()
+    }
+
     /// Creates a new ERC-20 contract with the specified initial supply.
     pub fn new(total_supply: Balance) -> Self {
         let mut balances = Mapping::default();
@@ -115,6 +123,57 @@ impl Erc20 {
             balances,
             allowances: Default::default(),
         }
+    }
+
+    /// Returns the account balance for the specified `owner`.
+    ///
+    /// Returns `0` if the account is non-existent.
+    ///
+    /// # Note
+    ///
+    /// Prefer to call this method over `balance_of` since this
+    /// works using references which are more efficient in Wasm.
+    #[inline]
+    fn balance_of_impl(&self, owner: &AccountId) -> Balance {
+        self.balances.get(owner).unwrap_or_default()
+    }
+
+    /// Returns the amount which `spender` is still allowed to withdraw from `owner`.
+    ///
+    /// Returns `0` if no allowance has been set.
+    ///
+    /// # Note
+    ///
+    /// Prefer to call this method over `allowance` since this
+    /// works using references which are more efficient in Wasm.
+    #[inline]
+    fn allowance_impl(&self, owner: &AccountId, spender: &AccountId) -> Balance {
+        self.allowances.get(&(*owner, *spender)).unwrap_or_default()
+    }
+
+    /// Transfers `value` amount of tokens from the caller's account to account `to`.
+    ///
+    /// On success a `Transfer` event is emitted.
+    ///
+    /// # Errors
+    ///
+    /// Returns `InsufficientBalance` error if there are not enough tokens on
+    /// the caller's account balance.
+    fn transfer_from_to(&mut self, from: &AccountId, to: &AccountId, value: Balance) -> Result<()> {
+        let from_balance = self.balance_of_impl(from);
+        if from_balance < value {
+            return Err(Error::InsufficientBalance);
+        }
+
+        self.balances.insert(*from, from_balance - value);
+        let to_balance = self.balance_of_impl(to);
+        self.balances.insert(*to, to_balance + value);
+        self.env().emit_event(Event::Transfer(Transfer {
+            from: Some(*from),
+            to: Some(*to),
+            value,
+        }));
+        Ok(())
     }
 }
 
@@ -191,67 +250,6 @@ impl BaseErc20 for Erc20 {
         }
         self.transfer_from_to(&from, &to, value)?;
         self.allowances.insert((from, caller), allowance - value);
-        Ok(())
-    }
-}
-
-impl Erc20 {
-    fn init_env() -> Env {
-        unimplemented!()
-    }
-
-    fn env(&self) -> Env {
-        Self::init_env()
-    }
-
-    /// Returns the account balance for the specified `owner`.
-    ///
-    /// Returns `0` if the account is non-existent.
-    ///
-    /// # Note
-    ///
-    /// Prefer to call this method over `balance_of` since this
-    /// works using references which are more efficient in Wasm.
-    #[inline]
-    fn balance_of_impl(&self, owner: &AccountId) -> Balance {
-        self.balances.get(owner).unwrap_or_default()
-    }
-
-    /// Returns the amount which `spender` is still allowed to withdraw from `owner`.
-    ///
-    /// Returns `0` if no allowance has been set.
-    ///
-    /// # Note
-    ///
-    /// Prefer to call this method over `allowance` since this
-    /// works using references which are more efficient in Wasm.
-    #[inline]
-    fn allowance_impl(&self, owner: &AccountId, spender: &AccountId) -> Balance {
-        self.allowances.get(&(*owner, *spender)).unwrap_or_default()
-    }
-
-    /// Transfers `value` amount of tokens from the caller's account to account `to`.
-    ///
-    /// On success a `Transfer` event is emitted.
-    ///
-    /// # Errors
-    ///
-    /// Returns `InsufficientBalance` error if there are not enough tokens on
-    /// the caller's account balance.
-    fn transfer_from_to(&mut self, from: &AccountId, to: &AccountId, value: Balance) -> Result<()> {
-        let from_balance = self.balance_of_impl(from);
-        if from_balance < value {
-            return Err(Error::InsufficientBalance);
-        }
-
-        self.balances.insert(*from, from_balance - value);
-        let to_balance = self.balance_of_impl(to);
-        self.balances.insert(*to, to_balance + value);
-        self.env().emit_event(Event::Transfer(Transfer {
-            from: Some(*from),
-            to: Some(*to),
-            value,
-        }));
         Ok(())
     }
 }

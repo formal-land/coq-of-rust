@@ -43,7 +43,7 @@ Definition main : M unit :=
                   (Trait := ltac:(refine _)))
                 (borrow_mut iter)) in
           match α0 with
-          | core.option.Option.None  =>
+          | core.option.Option.None =>
             let* α0 : M.Val never.t := Break in
             let* α1 := M.read α0 in
             let* α2 : unit := never_to_any α1 in
@@ -52,7 +52,10 @@ Definition main : M unit :=
             let* n := M.alloc n in
             let* α0 : i32.t := M.read n in
             let* α1 : i32.t := BinOp.Panic.rem α0 (Integer.of_Z 15) in
-            if (use (BinOp.Pure.eq α1 (Integer.of_Z 0)) : bool) then
+            let* α2 : M.Val bool.t :=
+              M.alloc (BinOp.Pure.eq α1 (Integer.of_Z 0)) in
+            let* α3 : bool.t := M.read (use α2) in
+            if α3 then
               let* _ : M.Val unit :=
                 let* _ : M.Val unit :=
                   let* α0 : ref str.t := M.read (mk_str "fizzbuzz
@@ -71,7 +74,10 @@ Definition main : M unit :=
             else
               let* α0 : i32.t := M.read n in
               let* α1 : i32.t := BinOp.Panic.rem α0 (Integer.of_Z 3) in
-              if (use (BinOp.Pure.eq α1 (Integer.of_Z 0)) : bool) then
+              let* α2 : M.Val bool.t :=
+                M.alloc (BinOp.Pure.eq α1 (Integer.of_Z 0)) in
+              let* α3 : bool.t := M.read (use α2) in
+              if α3 then
                 let* _ : M.Val unit :=
                   let* _ : M.Val unit :=
                     let* α0 : ref str.t := M.read (mk_str "fizz
@@ -90,7 +96,10 @@ Definition main : M unit :=
               else
                 let* α0 : i32.t := M.read n in
                 let* α1 : i32.t := BinOp.Panic.rem α0 (Integer.of_Z 5) in
-                if (use (BinOp.Pure.eq α1 (Integer.of_Z 0)) : bool) then
+                let* α2 : M.Val bool.t :=
+                  M.alloc (BinOp.Pure.eq α1 (Integer.of_Z 0)) in
+                let* α3 : bool.t := M.read (use α2) in
+                if α3 then
                   let* _ : M.Val unit :=
                     let* _ : M.Val unit :=
                       let* α0 : ref str.t := M.read (mk_str "buzz
@@ -137,5 +146,4 @@ Definition main : M unit :=
           end in
         M.alloc tt)
     end in
-  let* α3 : unit := M.read α2 in
-  M.pure (use α3).
+  M.read (use α2).

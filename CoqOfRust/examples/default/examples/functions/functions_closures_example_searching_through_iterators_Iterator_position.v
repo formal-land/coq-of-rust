@@ -46,26 +46,26 @@ Definition main : M unit :=
     let* α1 : core.slice.iter.Iter.t i32.t :=
       M.call ((slice i32.t)::["iter"] α0) in
     let* α2 : M.Val (core.slice.iter.Iter.t i32.t) := M.alloc α1 in
-    let* α3 : type not implemented :=
-      M.read
-        (let* α0 : i32.t := M.read x in
-        let* α1 : i32.t := BinOp.Panic.rem α0 (Integer.of_Z 2) in
-        M.alloc (BinOp.Pure.eq α1 (Integer.of_Z 0))) in
-    let* α4 : core.option.Option.t usize.t :=
+    let* α3 : core.option.Option.t usize.t :=
       M.call
         ((core.iter.traits.iterator.Iterator.position
             (Self := core.slice.iter.Iter.t i32.t)
             (Trait := ltac:(refine _)))
           (borrow_mut α2)
-          α3) in
-    M.alloc α4 in
+          (fun (x : ref i32.t) =>
+            (let* x := M.alloc x in
+            let* α0 : i32.t := M.read x in
+            let* α1 : i32.t := BinOp.Panic.rem α0 (Integer.of_Z 2) in
+            M.pure (BinOp.Pure.eq α1 (Integer.of_Z 0))) :
+            M bool.t)) in
+    M.alloc α3 in
   let* _ : M.Val unit :=
     let* α0 : M.Val (core.option.Option.t usize.t) :=
       M.alloc (core.option.Option.Some (Integer.of_Z 5)) in
     match (borrow index_of_first_even_number, borrow α0) with
     | (left_val, right_val) =>
-      let* right_val := M.alloc right_val in
       let* left_val := M.alloc left_val in
+      let* right_val := M.alloc right_val in
       let* α0 : ref (core.option.Option.t usize.t) := M.read left_val in
       let* α1 : ref (core.option.Option.t usize.t) := M.read right_val in
       let* α2 : bool.t :=
@@ -75,7 +75,9 @@ Definition main : M unit :=
               (Trait := ltac:(refine _)))
             α0
             α1) in
-      if (use (UnOp.not α2) : bool) then
+      let* α3 : M.Val bool.t := M.alloc (UnOp.not α2) in
+      let* α4 : bool.t := M.read (use α3) in
+      if α4 then
         let* kind : M.Val core.panicking.AssertKind.t :=
           M.alloc core.panicking.AssertKind.Eq in
         let* _ : M.Val never.t :=
@@ -104,25 +106,25 @@ Definition main : M unit :=
     let* α2 :
         M.Val (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t) :=
       M.alloc α1 in
-    let* α3 : type not implemented :=
-      M.read
-        (let* α0 : i32.t := M.read x in
-        M.alloc (BinOp.Pure.lt α0 (Integer.of_Z 0))) in
-    let* α4 : core.option.Option.t usize.t :=
+    let* α3 : core.option.Option.t usize.t :=
       M.call
         ((core.iter.traits.iterator.Iterator.position
             (Self := alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t)
             (Trait := ltac:(refine _)))
           (borrow_mut α2)
-          α3) in
-    M.alloc α4 in
+          (fun (x : i32.t) =>
+            (let* x := M.alloc x in
+            let* α0 : i32.t := M.read x in
+            M.pure (BinOp.Pure.lt α0 (Integer.of_Z 0))) :
+            M bool.t)) in
+    M.alloc α3 in
   let* _ : M.Val unit :=
     let* α0 : M.Val (core.option.Option.t usize.t) :=
       M.alloc core.option.Option.None in
     match (borrow index_of_first_negative_number, borrow α0) with
     | (left_val, right_val) =>
-      let* right_val := M.alloc right_val in
       let* left_val := M.alloc left_val in
+      let* right_val := M.alloc right_val in
       let* α0 : ref (core.option.Option.t usize.t) := M.read left_val in
       let* α1 : ref (core.option.Option.t usize.t) := M.read right_val in
       let* α2 : bool.t :=
@@ -132,7 +134,9 @@ Definition main : M unit :=
               (Trait := ltac:(refine _)))
             α0
             α1) in
-      if (use (UnOp.not α2) : bool) then
+      let* α3 : M.Val bool.t := M.alloc (UnOp.not α2) in
+      let* α4 : bool.t := M.read (use α3) in
+      if α4 then
         let* kind : M.Val core.panicking.AssertKind.t :=
           M.alloc core.panicking.AssertKind.Eq in
         let* _ : M.Val never.t :=

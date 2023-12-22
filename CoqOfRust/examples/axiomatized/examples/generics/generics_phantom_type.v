@@ -11,10 +11,12 @@ Section PhantomTuple.
   }.
   
   Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot := Ref.map (fun x => x.(x0)) (fun v x => x <| x0 := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(x0)) (fun v x => Some (x <| x0 := v |>));
   }.
   Global Instance Get_1 : Notations.Dot "1" := {
-    Notations.dot := Ref.map (fun x => x.(x1)) (fun v x => x <| x1 := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(x1)) (fun v x => Some (x <| x1 := v |>));
   }.
 End PhantomTuple.
 End PhantomTuple.
@@ -73,14 +75,16 @@ Section PhantomStruct.
   
   Global Instance Get_first : Notations.Dot "first" := {
     Notations.dot :=
-      Ref.map (fun x => x.(first)) (fun v x => x <| first := v |>);
+      Ref.map (fun x => Some x.(first)) (fun v x => Some (x <| first := v |>));
   }.
   Global Instance Get_AF_first : Notations.DoubleColon t "first" := {
     Notations.double_colon (x : M.Val t) := x.["first"];
   }.
   Global Instance Get_phantom : Notations.Dot "phantom" := {
     Notations.dot :=
-      Ref.map (fun x => x.(phantom)) (fun v x => x <| phantom := v |>);
+      Ref.map
+        (fun x => Some x.(phantom))
+        (fun v x => Some (x <| phantom := v |>));
   }.
   Global Instance Get_AF_phantom : Notations.DoubleColon t "phantom" := {
     Notations.double_colon (x : M.Val t) := x.["phantom"];

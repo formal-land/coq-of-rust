@@ -109,7 +109,9 @@ Definition main : M unit :=
               std.collections.hash.map.RandomState.t)::["insert"]
           (borrow_mut a)
           (Integer.of_Z 4)) in
-    if (use (UnOp.not α0) : bool) then
+    let* α1 : M.Val bool.t := M.alloc (UnOp.not α0) in
+    let* α2 : bool.t := M.read (use α1) in
+    if α2 then
       let* α0 : ref str.t := M.read (mk_str "assertion failed: a.insert(4)") in
       let* α1 : never.t := M.call (core.panicking.panic α0) in
       let* α2 : unit := never_to_any α1 in
@@ -125,7 +127,9 @@ Definition main : M unit :=
               std.collections.hash.map.RandomState.t)::["contains"]
           (borrow a)
           (borrow α0)) in
-    if (use (UnOp.not α1) : bool) then
+    let* α2 : M.Val bool.t := M.alloc (UnOp.not α1) in
+    let* α3 : bool.t := M.read (use α2) in
+    if α3 then
       let* α0 : ref str.t :=
         M.read (mk_str "assertion failed: a.contains(&4)") in
       let* α1 : never.t := M.call (core.panicking.panic α0) in

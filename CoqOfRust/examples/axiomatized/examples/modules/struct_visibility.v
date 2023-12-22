@@ -12,7 +12,9 @@ Module my.
     
     Global Instance Get_contents : Notations.Dot "contents" := {
       Notations.dot :=
-        Ref.map (fun x => x.(contents)) (fun v x => x <| contents := v |>);
+        Ref.map
+          (fun x => Some x.(contents))
+          (fun v x => Some (x <| contents := v |>));
     }.
     Global Instance Get_AF_contents : Notations.DoubleColon t "contents" := {
       Notations.double_colon (x : M.Val t) := x.["contents"];
@@ -30,7 +32,9 @@ Module my.
     
     Global Instance Get_contents : Notations.Dot "contents" := {
       Notations.dot :=
-        Ref.map (fun x => x.(contents)) (fun v x => x <| contents := v |>);
+        Ref.map
+          (fun x => Some x.(contents))
+          (fun v x => Some (x <| contents := v |>));
     }.
     Global Instance Get_AF_contents : Notations.DoubleColon t "contents" := {
       Notations.double_colon (x : M.Val t) := x.["contents"];
@@ -69,7 +73,9 @@ Section OpenBox.
   
   Global Instance Get_contents : Notations.Dot "contents" := {
     Notations.dot :=
-      Ref.map (fun x => x.(contents)) (fun v x => x <| contents := v |>);
+      Ref.map
+        (fun x => Some x.(contents))
+        (fun v x => Some (x <| contents := v |>));
   }.
   Global Instance Get_AF_contents : Notations.DoubleColon t "contents" := {
     Notations.double_colon (x : M.Val t) := x.["contents"];
@@ -87,7 +93,9 @@ Section ClosedBox.
   
   Global Instance Get_contents : Notations.Dot "contents" := {
     Notations.dot :=
-      Ref.map (fun x => x.(contents)) (fun v x => x <| contents := v |>);
+      Ref.map
+        (fun x => Some x.(contents))
+        (fun v x => Some (x <| contents := v |>));
   }.
   Global Instance Get_AF_contents : Notations.DoubleColon t "contents" := {
     Notations.double_colon (x : M.Val t) := x.["contents"];

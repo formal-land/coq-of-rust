@@ -1,4 +1,6 @@
 Require Import CoqOfRust.lib.lib.
+
+Require CoqOfRust.alloc.vec.
 Require CoqOfRust.core.convert.
 Require CoqOfRust.core.result.
 
@@ -358,17 +360,19 @@ Module arith.
   End Not.
 End arith.
 
-Module Deref.
-  Class Trait (Self : Set) {Target : Set} : Set := {
-    Target := Target;
-    deref : ref Self -> M (ref Target);
-  }.
+Module deref.
+  Module Deref.
+    Class Trait (Self : Set) {Target : Set} : Set := {
+      Target := Target;
+      deref : ref Self -> M (ref Target);
+    }.
 
-  Global Instance Method_deref `(Trait) :
-    Notations.Dot "deref" := {
-    Notations.dot := deref;
-  }.
-End Deref.
+    Global Instance Method_deref `(Trait) :
+      Notations.Dot "deref" := {
+      Notations.dot := deref;
+    }.
+  End Deref.
+End deref.
 
 Module function.
   Module FnOnce.
@@ -547,21 +551,6 @@ Module Impl_Not_for_bool.
   }.
 End Impl_Not_for_bool.
 
-(** For now we implement the dereferencing operator on any types, as the
-    identity. *)
-Module Impl_Deref_for_any.
-  Definition deref {A : Set} (x : A) : M A := M.pure x.
-
-  Global Instance Method_deref (A : Set) :
-    Notations.Dot "deref" := {
-    Notations.dot := deref (A := A);
-  }.
-
-  Global Instance Deref_for_any (A : Set) : Deref.Trait A := {
-    deref := deref;
-  }.
-End Impl_Deref_for_any.
-
 Module drop.
   (*
   pub trait Drop {
@@ -671,3 +660,50 @@ Module try_trait.
     End Impl.
   End FromResidual.
 End try_trait.
+
+Module index.
+  (*
+  pub trait Index<Idx: ?Sized> {
+      type Output: ?Sized;
+
+      // Required method
+      fn index(&self, index: Idx) -> &Self::Output;
+  }
+  *)
+  Module Index.
+    Class Trait (Self : Set) {Idx : Set} : Type := {
+      Output : Set;
+      index : ref Self -> Idx -> M (ref Output);
+    }.
+
+    Module Impl.
+      Global Instance for_vec (T : Set) :
+          Trait (vec.Vec.t T vec.Vec.Default.A) (Idx := usize.t) := {
+        Output := T;
+        index self index :=
+          axiom "index";
+      }.
+    End Impl.
+  End Index.
+
+  (*
+  pub trait IndexMut<Idx: ?Sized>: Index<Idx> {
+      // Required method
+      fn index_mut(&mut self, index: Idx) -> &mut Self::Output;
+  }
+  *)
+  Module IndexMut.
+    Class Trait (Self : Set) {Idx : Set} : Type := {
+      L0 :: Index.Trait Self (Idx := Idx);
+      index_mut : mut_ref Self -> Idx -> M (mut_ref L0.(Index.Output));
+    }.
+
+    Module Impl.
+      Global Instance for_vec (T : Set) :
+          Trait (vec.Vec.t T vec.Vec.Default.A) (Idx := usize.t) := {
+        index_mut self index :=
+          axiom "index_mut";
+      }.
+    End Impl.
+  End IndexMut.
+End index.

@@ -8,7 +8,8 @@ Section AccountId.
   }.
   
   Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot := Ref.map (fun x => x.(x0)) (fun v x => x <| x0 := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(x0)) (fun v x => Some (x <| x0 := v |>));
   }.
 End AccountId.
 End AccountId.
@@ -47,7 +48,7 @@ Section Impl_core_clone_Clone_for_contract_transfer_AccountId_t.
   Clone
   *)
   Definition clone (self : ref Self) : M contract_transfer.AccountId.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let _ : unit := tt in
     let* α0 : ref contract_transfer.AccountId.t := M.read self in
     M.read (deref α0).
@@ -83,7 +84,9 @@ Section Env.
   
   Global Instance Get_caller : Notations.Dot "caller" := {
     Notations.dot :=
-      Ref.map (fun x => x.(caller)) (fun v x => x <| caller := v |>);
+      Ref.map
+        (fun x => Some x.(caller))
+        (fun v x => Some (x <| caller := v |>));
   }.
   Global Instance Get_AF_caller : Notations.DoubleColon t "caller" := {
     Notations.double_colon (x : M.Val t) := x.["caller"];
@@ -101,7 +104,7 @@ Section Impl_contract_transfer_Env_t.
       }
   *)
   Definition caller (self : ref Self) : M contract_transfer.AccountId.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* α0 : ref contract_transfer.Env.t := M.read self in
     M.read (deref α0).["caller"].
   
@@ -116,7 +119,7 @@ Section Impl_contract_transfer_Env_t.
       }
   *)
   Definition balance (self : ref Self) : M ltac:(contract_transfer.Balance) :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
@@ -136,9 +139,9 @@ Section Impl_contract_transfer_Env_t.
       (_to : contract_transfer.AccountId.t)
       (_value : ltac:(contract_transfer.Balance))
       : M (core.result.Result.t unit unit) :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
-    let* _to : M.Val contract_transfer.AccountId.t := M.alloc _to in
-    let* _value : M.Val ltac:(contract_transfer.Balance) := M.alloc _value in
+    let* self := M.alloc self in
+    let* _to := M.alloc _to in
+    let* _value := M.alloc _value in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
@@ -156,7 +159,7 @@ Section Impl_contract_transfer_Env_t.
   Definition transferred_value
       (self : ref Self)
       : M ltac:(contract_transfer.Balance) :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
@@ -199,7 +202,7 @@ Section Impl_contract_transfer_GiveMe_t.
       }
   *)
   Definition env (self : ref Self) : M contract_transfer.Env.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     M.call contract_transfer.GiveMe.t::["init_env"].
   
   Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
@@ -237,8 +240,8 @@ Section Impl_contract_transfer_GiveMe_t.
       (self : mut_ref Self)
       (value : ltac:(contract_transfer.Balance))
       : M unit :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
-    let* value : M.Val ltac:(contract_transfer.Balance) := M.alloc value in
+    let* self := M.alloc self in
+    let* value := M.alloc value in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "requested value: ") in
@@ -296,7 +299,9 @@ Section Impl_contract_transfer_GiveMe_t.
       let* α3 : M.Val contract_transfer.Env.t := M.alloc α2 in
       let* α4 : u128.t :=
         M.call (contract_transfer.Env.t::["balance"] (borrow α3)) in
-      if (use (UnOp.not (BinOp.Pure.le α0 α4)) : bool) then
+      let* α5 : M.Val bool.t := M.alloc (UnOp.not (BinOp.Pure.le α0 α4)) in
+      let* α6 : bool.t := M.read (use α5) in
+      if α6 then
         let* α0 : ref str.t := M.read (mk_str "insufficient funds!") in
         let* α1 : never.t := M.call (std.panicking.begin_panic α0) in
         let* α2 : unit := never_to_any α1 in
@@ -319,8 +324,10 @@ Section Impl_contract_transfer_GiveMe_t.
     let* α9 : M.Val (core.result.Result.t unit unit) := M.alloc α8 in
     let* α10 : bool.t :=
       M.call ((core.result.Result.t unit unit)::["is_err"] (borrow α9)) in
+    let* α11 : M.Val bool.t := M.alloc α10 in
+    let* α12 : bool.t := M.read (use α11) in
     let* α0 : M.Val unit :=
-      if (use α10 : bool) then
+      if α12 then
         let* α0 : ref str.t :=
           M.read
             (mk_str
@@ -344,7 +351,7 @@ Section Impl_contract_transfer_GiveMe_t.
       }
   *)
   Definition was_it_ten (self : ref Self) : M unit :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "received payment: ") in
@@ -380,7 +387,10 @@ Section Impl_contract_transfer_GiveMe_t.
       let* α2 : M.Val contract_transfer.Env.t := M.alloc α1 in
       let* α3 : u128.t :=
         M.call (contract_transfer.Env.t::["transferred_value"] (borrow α2)) in
-      if (use (UnOp.not (BinOp.Pure.eq α3 (Integer.of_Z 10))) : bool) then
+      let* α4 : M.Val bool.t :=
+        M.alloc (UnOp.not (BinOp.Pure.eq α3 (Integer.of_Z 10))) in
+      let* α5 : bool.t := M.read (use α4) in
+      if α5 then
         let* α0 : ref str.t := M.read (mk_str "payment was not ten") in
         let* α1 : never.t := M.call (std.panicking.begin_panic α0) in
         let* α2 : unit := never_to_any α1 in

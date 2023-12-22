@@ -60,7 +60,7 @@ Definition main : M unit :=
   let* α0 : match_destructuring_enums.Color.t := M.read color in
   let* α0 : M.Val unit :=
     match α0 with
-    | match_destructuring_enums.Color.Red  =>
+    | match_destructuring_enums.Color.Red =>
       let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "The color is Red!
 ") in
@@ -73,7 +73,7 @@ Definition main : M unit :=
         let* α5 : unit := M.call (std.io.stdio._print α4) in
         M.alloc α5 in
       M.alloc tt
-    | match_destructuring_enums.Color.Blue  =>
+    | match_destructuring_enums.Color.Blue =>
       let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "The color is Blue!
 ") in
@@ -86,7 +86,7 @@ Definition main : M unit :=
         let* α5 : unit := M.call (std.io.stdio._print α4) in
         M.alloc α5 in
       M.alloc tt
-    | match_destructuring_enums.Color.Green  =>
+    | match_destructuring_enums.Color.Green =>
       let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "The color is Green!
 ") in
@@ -100,9 +100,9 @@ Definition main : M unit :=
         M.alloc α5 in
       M.alloc tt
     | match_destructuring_enums.Color.RGB r g b =>
-      let* b := M.alloc b in
-      let* g := M.alloc g in
       let* r := M.alloc r in
+      let* g := M.alloc g in
+      let* b := M.alloc b in
       let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "Red: ") in
         let* α1 : ref str.t := M.read (mk_str ", green: ") in
@@ -131,9 +131,9 @@ Definition main : M unit :=
         M.alloc α14 in
       M.alloc tt
     | match_destructuring_enums.Color.HSV h s v =>
-      let* v := M.alloc v in
-      let* s := M.alloc s in
       let* h := M.alloc h in
+      let* s := M.alloc s in
+      let* v := M.alloc v in
       let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "Hue: ") in
         let* α1 : ref str.t := M.read (mk_str ", saturation: ") in
@@ -162,9 +162,9 @@ Definition main : M unit :=
         M.alloc α14 in
       M.alloc tt
     | match_destructuring_enums.Color.HSL h s l =>
-      let* l := M.alloc l in
-      let* s := M.alloc s in
       let* h := M.alloc h in
+      let* s := M.alloc s in
+      let* l := M.alloc l in
       let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "Hue: ") in
         let* α1 : ref str.t := M.read (mk_str ", saturation: ") in
@@ -193,9 +193,9 @@ Definition main : M unit :=
         M.alloc α14 in
       M.alloc tt
     | match_destructuring_enums.Color.CMY c m y =>
-      let* y := M.alloc y in
-      let* m := M.alloc m in
       let* c := M.alloc c in
+      let* m := M.alloc m in
+      let* y := M.alloc y in
       let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "Cyan: ") in
         let* α1 : ref str.t := M.read (mk_str ", magenta: ") in
@@ -224,10 +224,10 @@ Definition main : M unit :=
         M.alloc α14 in
       M.alloc tt
     | match_destructuring_enums.Color.CMYK c m y k =>
-      let* k := M.alloc k in
-      let* y := M.alloc y in
-      let* m := M.alloc m in
       let* c := M.alloc c in
+      let* m := M.alloc m in
+      let* y := M.alloc y in
+      let* k := M.alloc k in
       let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "Cyan: ") in
         let* α1 : ref str.t := M.read (mk_str ", magenta: ") in

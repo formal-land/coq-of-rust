@@ -48,8 +48,8 @@ Definition main : M unit :=
   let* α0 : M.Val unit :=
     match α0 with
     | [_; second; third] =>
-      let* third := M.alloc third in
       let* second := M.alloc second in
+      let* third := M.alloc third in
       let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "array[0] = 0, array[1] = ") in
         let* α1 : ref str.t := M.read (mk_str ", array[2] = ") in
@@ -119,8 +119,8 @@ Definition main : M unit :=
         M.alloc α10 in
       M.alloc tt
     | (_:: second:: (_ as tail)) =>
-      let* tail := M.alloc tail in
       let* second := M.alloc second in
+      let* tail := M.alloc tail in
       let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "array[0] = 3, array[1] = ") in
         let* α1 : ref str.t :=

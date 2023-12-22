@@ -8,7 +8,8 @@ Section Droppable.
   }.
   
   Global Instance Get_name : Notations.Dot "name" := {
-    Notations.dot := Ref.map (fun x => x.(name)) (fun v x => x <| name := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(name)) (fun v x => Some (x <| name := v |>));
   }.
   Global Instance Get_AF_name : Notations.DoubleColon t "name" := {
     Notations.double_colon (x : M.Val t) := x.["name"];
@@ -26,7 +27,7 @@ Section Impl_core_ops_drop_Drop_for_drop_Droppable_t.
       }
   *)
   Definition drop (self : mut_ref Self) : M unit :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "> Dropping ") in

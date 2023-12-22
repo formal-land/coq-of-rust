@@ -155,6 +155,7 @@ Require CoqOfRust.core.panic.
 Require CoqOfRust.core.panicking.
 Require CoqOfRust.core.primitive.
 Require CoqOfRust.core.result.
+Require CoqOfRust.core.slice.
 Require CoqOfRust.core.str.
 
 Module core.
@@ -180,6 +181,7 @@ Module core.
   Export CoqOfRust.core.panicking.
   Export CoqOfRust.core.primitive.
   Export CoqOfRust.core.result.
+  Export CoqOfRust.core.slice.
   Export CoqOfRust.core.str.
 End core.
 
@@ -212,7 +214,6 @@ Require Import CoqOfRust._std.process.
 Require Import CoqOfRust._std.ptr.
 Require Import CoqOfRust._std.rc.
 Require Import CoqOfRust._std.simd.
-Require Import CoqOfRust._std.slice.
 Require Import CoqOfRust._std.str.
 Require Import CoqOfRust._std.sync.
 Require Import CoqOfRust._std.task.
@@ -249,7 +250,6 @@ Module std.
   Module ptr := _std.ptr.
   Module rc := _std.rc.
   Module simd := _std.simd.
-  Module slice := _std.slice.
   Module str := _std.str.
   Module sync := _std.sync.
   Module task := _std.task.
@@ -294,6 +294,9 @@ Module unit_Instances.
 
   Global Instance IDebug : core.fmt.Debug.Trait unit.
   Admitted.
+
+  Global Instance IClone : core.clone.Clone.Trait unit.
+  Admitted.
 End unit_Instances.
 
 Module bool_Instances.
@@ -301,6 +304,9 @@ Module bool_Instances.
   Admitted.
 
   Global Instance IDebug : core.fmt.Debug.Trait bool.
+  Admitted.
+
+  Global Instance IClone : core.clone.Clone.Trait bool.
   Admitted.
 End bool_Instances.
 
@@ -310,6 +316,9 @@ Module char_Instances.
 
   Global Instance IDebug : core.fmt.Debug.Trait char.t.
   Admitted.
+
+  Global Instance IClone : core.clone.Clone.Trait char.t.
+  Admitted.
 End char_Instances.
 
 Module str_Instances.
@@ -317,6 +326,9 @@ Module str_Instances.
   Admitted.
 
   Global Instance IDebug : core.fmt.Debug.Trait str.t.
+  Admitted.
+
+  Global Instance IClone : core.clone.Clone.Trait str.t.
   Admitted.
 End str_Instances.
 
@@ -326,6 +338,9 @@ Module u8_Instances.
 
   Global Instance IDebug : core.fmt.Debug.Trait u8.t.
   Admitted.
+
+  Global Instance IClone : core.clone.Clone.Trait u8.t.
+  Admitted.
 End u8_Instances.
 
 Module u16_Instances.
@@ -333,6 +348,9 @@ Module u16_Instances.
   Admitted.
 
   Global Instance IDebug : core.fmt.Debug.Trait u16.t.
+  Admitted.
+
+  Global Instance IClone : core.clone.Clone.Trait u16.t.
   Admitted.
 End u16_Instances.
 
@@ -342,6 +360,9 @@ Module u32_Instances.
 
   Global Instance IDebug : core.fmt.Debug.Trait u32.t.
   Admitted.
+
+  Global Instance IClone : core.clone.Clone.Trait u32.t.
+  Admitted.
 End u32_Instances.
 
 Module u64_Instances.
@@ -349,6 +370,9 @@ Module u64_Instances.
   Admitted.
 
   Global Instance IDebug : core.fmt.Debug.Trait u64.t.
+  Admitted.
+
+  Global Instance IClone : core.clone.Clone.Trait u64.t.
   Admitted.
 End u64_Instances.
 
@@ -358,6 +382,9 @@ Module u128_Instances.
 
   Global Instance IDebug : core.fmt.Debug.Trait u128.t.
   Admitted.
+
+  Global Instance IClone : core.clone.Clone.Trait u128.t.
+  Admitted.
 End u128_Instances.
 
 Module usize_Instances.
@@ -365,6 +392,9 @@ Module usize_Instances.
   Admitted.
 
   Global Instance IDebug : core.fmt.Debug.Trait usize.t.
+  Admitted.
+
+  Global Instance IClone : core.clone.Clone.Trait usize.t.
   Admitted.
 End usize_Instances.
 
@@ -374,6 +404,9 @@ Module i8_Instances.
 
   Global Instance IDebug : core.fmt.Debug.Trait i8.t.
   Admitted.
+
+  Global Instance IClone : core.clone.Clone.Trait i8.t.
+  Admitted.
 End i8_Instances.
 
 Module i16_Instances.
@@ -381,6 +414,9 @@ Module i16_Instances.
   Admitted.
 
   Global Instance IDebug : core.fmt.Debug.Trait i16.t.
+  Admitted.
+
+  Global Instance IClone : core.clone.Clone.Trait i16.t.
   Admitted.
 End i16_Instances.
 
@@ -390,6 +426,9 @@ Module i32_Instances.
 
   Global Instance IDebug : core.fmt.Debug.Trait i32.t.
   Admitted.
+
+  Global Instance IClone : core.clone.Clone.Trait i32.t.
+  Admitted.
 End i32_Instances.
 
 Module i64_Instances.
@@ -397,6 +436,9 @@ Module i64_Instances.
   Admitted.
 
   Global Instance IDebug : core.fmt.Debug.Trait i64.t.
+  Admitted.
+
+  Global Instance IClone : core.clone.Clone.Trait i64.t.
   Admitted.
 End i64_Instances.
 
@@ -406,6 +448,9 @@ Module i128_Instances.
 
   Global Instance IDebug : core.fmt.Debug.Trait i128.t.
   Admitted.
+
+  Global Instance IClone : core.clone.Clone.Trait i128.t.
+  Admitted.
 End i128_Instances.
 
 Module isize_Instances.
@@ -413,6 +458,9 @@ Module isize_Instances.
   Admitted.
 
   Global Instance IDebug : core.fmt.Debug.Trait isize.t.
+  Admitted.
+
+  Global Instance IClone : core.clone.Clone.Trait isize.t.
   Admitted.
 End isize_Instances.
 
@@ -423,6 +471,10 @@ Module ref_Instances.
 
   Global Instance IDebug {T : Set} {_ : core.fmt.Debug.Trait T} :
     core.fmt.Debug.Trait (ref T).
+  Admitted.
+
+  Global Instance IClone {T : Set} {_ : core.clone.Clone.Trait T} :
+    core.clone.Clone.Trait (ref T).
   Admitted.
 End ref_Instances.
 
@@ -435,6 +487,11 @@ Module array_Instance.
   Global Instance IDebug {T : Set}
     {_ : core.fmt.Debug.Trait T} :
     core.fmt.Debug.Trait (array T).
+  Admitted.
+
+  Global Instance IClone {T : Set}
+    {_ : core.clone.Clone.Trait T} :
+    core.clone.Clone.Trait (array T).
   Admitted.
 End array_Instance.
 
@@ -561,6 +618,129 @@ Global Instance IDebug11 {A1 A2 A3 A4 A5 A6 A7 A8 A9 A10 A11 : Set}
   Admitted.
 End Debug_Tuple_Instances.
 
+Module Clone_Tuple_Instances.
+  Global Instance IClone2 {A1 A2 : Set}
+    `(core.clone.Clone.Trait A1)
+    `(core.clone.Clone.Trait A2) :
+    core.clone.Clone.Trait (A1 * A2).
+  Admitted.
+
+  Global Instance IClone3 {A1 A2 A3 : Set}
+    `(core.clone.Clone.Trait A1)
+    `(core.clone.Clone.Trait A2)
+    `(core.clone.Clone.Trait A3) :
+    core.clone.Clone.Trait (A1 * A2 * A3).
+  Admitted.
+
+  Global Instance IClone4 {A1 A2 A3 A4 : Set}
+    `(core.clone.Clone.Trait A1)
+    `(core.clone.Clone.Trait A2)
+    `(core.clone.Clone.Trait A3)
+    `(core.clone.Clone.Trait A4) :
+   core.clone.Clone.Trait (A1 * A2 * A3 * A4).
+  Admitted.
+
+  Global Instance IClone5 {A1 A2 A3 A4 A5 : Set}
+    `(core.clone.Clone.Trait A1)
+    `(core.clone.Clone.Trait A2)
+    `(core.clone.Clone.Trait A3)
+    `(core.clone.Clone.Trait A4)
+    `(core.clone.Clone.Trait A5) :
+   core.clone.Clone.Trait (A1 * A2 * A3 * A4 * A5).
+  Admitted.
+
+  Global Instance IClone6 {A1 A2 A3 A4 A5 A6 : Set}
+    `(core.clone.Clone.Trait A1)
+    `(core.clone.Clone.Trait A2)
+    `(core.clone.Clone.Trait A3)
+    `(core.clone.Clone.Trait A4)
+    `(core.clone.Clone.Trait A5)
+    `(core.clone.Clone.Trait A6) :
+   core.clone.Clone.Trait (A1 * A2 * A3 * A4 * A5 * A6).
+  Admitted.
+
+  Global Instance IClone7 {A1 A2 A3 A4 A5 A6 A7 : Set}
+    `(core.clone.Clone.Trait A1)
+    `(core.clone.Clone.Trait A2)
+    `(core.clone.Clone.Trait A3)
+    `(core.clone.Clone.Trait A4)
+    `(core.clone.Clone.Trait A5)
+    `(core.clone.Clone.Trait A6)
+    `(core.clone.Clone.Trait A7) :
+    core.clone.Clone.Trait (A1 * A2 * A3 * A4 * A5 * A6 * A7).
+  Admitted.
+
+  Global Instance IClone8 {A1 A2 A3 A4 A5 A6 A7 A8 : Set}
+    `(core.clone.Clone.Trait A1)
+    `(core.clone.Clone.Trait A2)
+    `(core.clone.Clone.Trait A3)
+    `(core.clone.Clone.Trait A4)
+    `(core.clone.Clone.Trait A5)
+    `(core.clone.Clone.Trait A6)
+    `(core.clone.Clone.Trait A7)
+    `(core.clone.Clone.Trait A8) :
+    core.clone.Clone.Trait (A1 * A2 * A3 * A4 * A5 * A6 * A7 * A8).
+  Admitted.
+
+  Global Instance IClone9 {A1 A2 A3 A4 A5 A6 A7 A8 A9 : Set}
+    `(core.clone.Clone.Trait A1)
+    `(core.clone.Clone.Trait A2)
+    `(core.clone.Clone.Trait A3)
+    `(core.clone.Clone.Trait A4)
+    `(core.clone.Clone.Trait A5)
+    `(core.clone.Clone.Trait A6)
+    `(core.clone.Clone.Trait A7)
+    `(core.clone.Clone.Trait A8)
+    `(core.clone.Clone.Trait A9) :
+    core.clone.Clone.Trait (A1 * A2 * A3 * A4 * A5 * A6 * A7 * A8 * A9).
+  Admitted.
+
+  Global Instance IClone10 {A1 A2 A3 A4 A5 A6 A7 A8 A9 A10 : Set}
+    `(core.clone.Clone.Trait A1)
+    `(core.clone.Clone.Trait A2)
+    `(core.clone.Clone.Trait A3)
+    `(core.clone.Clone.Trait A4)
+    `(core.clone.Clone.Trait A5)
+    `(core.clone.Clone.Trait A6)
+    `(core.clone.Clone.Trait A7)
+    `(core.clone.Clone.Trait A8)
+    `(core.clone.Clone.Trait A9)
+    `(core.clone.Clone.Trait A10) :
+    core.clone.Clone.Trait (A1 * A2 * A3 * A4 * A5 * A6 * A7 * A8 * A9 * A10).
+  Admitted.
+
+Global Instance IClone11 {A1 A2 A3 A4 A5 A6 A7 A8 A9 A10 A11 : Set}
+    `(core.clone.Clone.Trait A1)
+    `(core.clone.Clone.Trait A2)
+    `(core.clone.Clone.Trait A3)
+    `(core.clone.Clone.Trait A4)
+    `(core.clone.Clone.Trait A5)
+    `(core.clone.Clone.Trait A6)
+    `(core.clone.Clone.Trait A7)
+    `(core.clone.Clone.Trait A8)
+    `(core.clone.Clone.Trait A9)
+    `(core.clone.Clone.Trait A10)
+    `(core.clone.Clone.Trait A11) :
+    core.clone.Clone.Trait (A1 * A2 * A3 * A4 * A5 * A6 * A7 * A8 * A9 * A10 * A11).
+  Admitted.
+
+  Global Instance IClone12 {A1 A2 A3 A4 A5 A6 A7 A8 A9 A10 A11 A12 : Set}
+    `(core.clone.Clone.Trait A1)
+    `(core.clone.Clone.Trait A2)
+    `(core.clone.Clone.Trait A3)
+    `(core.clone.Clone.Trait A4)
+    `(core.clone.Clone.Trait A5)
+    `(core.clone.Clone.Trait A6)
+    `(core.clone.Clone.Trait A7)
+    `(core.clone.Clone.Trait A8)
+    `(core.clone.Clone.Trait A9)
+    `(core.clone.Clone.Trait A10)
+    `(core.clone.Clone.Trait A11)
+    `(core.clone.Clone.Trait A12) :
+    core.clone.Clone.Trait (A1 * A2 * A3 * A4 * A5 * A6 * A7 * A8 * A9 * A10 * A11 * A12).
+  Admitted.
+End Clone_Tuple_Instances.
+
 Module ToString_Instances.
   Global Instance ToString_on_Display {Self : Set}
     `{core.fmt.Display.Trait Self} :
@@ -673,7 +853,7 @@ Module Impl_Iterator_for_Slice_Iter.
   Section Impl_Iterator_for_Slice_Iter.
   Context {A : Set}.
 
-  Definition Self := std.slice.Iter.t A.
+  Definition Self := core.slice.iter.Iter.t A.
 
   Definition Item := A.
 
@@ -691,7 +871,7 @@ End Impl_Iterator_for_Slice_Iter.
 Module Impl_IntoIterator_for_Slice_Iter.
   Section Impl_IntoIterator_for_Slice_Iter.
   Context {A : Set}.
-  Definition I := std.slice.Iter.t A.
+  Definition I := core.slice.iter.Iter.t A.
 
   Definition Self := I.
 
@@ -713,7 +893,7 @@ Module Impl_Iterator_for_Slice_IterMut.
   Section Impl_Iterator_for_Slice_IterMut.
   Context {A : Set}.
 
-  Definition Self := std.slice.IterMut.t A.
+  Definition Self := core.slice.IterMut.t A.
 
   Definition Item := A.
 
@@ -731,7 +911,7 @@ End Impl_Iterator_for_Slice_IterMut.
 Module Impl_IntoIterator_for_Slice_IterMut.
   Section Impl_IntoIterator_for_Slice_IterMut.
   Context {A : Set}.
-  Definition I := std.slice.IterMut.t A.
+  Definition I := core.slice.IterMut.t A.
 
   Definition Self := I.
 
@@ -817,9 +997,9 @@ Module Temp_Impl_for_Vec.
 
   Definition Self := alloc.vec.Vec T alloc.vec.Vec.Default.A.
 
-  Parameter iter : ref Self -> M (std.slice.Iter.t T).
+  Parameter iter : ref Self -> M (core.slice.iter.Iter.t T).
   Parameter iter_mut :
-    ref Self -> M (std.slice.IterMut.t T).
+    ref Self -> M (core.slice.IterMut.t T).
 
   Global Instance Method_iter : Notations.Dot "iter" := {
     Notations.dot := iter;

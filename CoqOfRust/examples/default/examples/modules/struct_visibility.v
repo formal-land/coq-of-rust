@@ -12,7 +12,9 @@ Module my.
     
     Global Instance Get_contents : Notations.Dot "contents" := {
       Notations.dot :=
-        Ref.map (fun x => x.(contents)) (fun v x => x <| contents := v |>);
+        Ref.map
+          (fun x => Some x.(contents))
+          (fun v x => Some (x <| contents := v |>));
     }.
     Global Instance Get_AF_contents : Notations.DoubleColon t "contents" := {
       Notations.double_colon (x : M.Val t) := x.["contents"];
@@ -30,7 +32,9 @@ Module my.
     
     Global Instance Get_contents : Notations.Dot "contents" := {
       Notations.dot :=
-        Ref.map (fun x => x.(contents)) (fun v x => x <| contents := v |>);
+        Ref.map
+          (fun x => Some x.(contents))
+          (fun v x => Some (x <| contents := v |>));
     }.
     Global Instance Get_AF_contents : Notations.DoubleColon t "contents" := {
       Notations.double_colon (x : M.Val t) := x.["contents"];
@@ -50,7 +54,7 @@ Module my.
             }
     *)
     Definition new (contents : T) : M (struct_visibility.my.ClosedBox.t T) :=
-      let* contents : M.Val T := M.alloc contents in
+      let* contents := M.alloc contents in
       let* α0 : T := M.read contents in
       M.pure {| struct_visibility.my.ClosedBox.contents := α0; |}.
     
@@ -72,7 +76,9 @@ Section OpenBox.
   
   Global Instance Get_contents : Notations.Dot "contents" := {
     Notations.dot :=
-      Ref.map (fun x => x.(contents)) (fun v x => x <| contents := v |>);
+      Ref.map
+        (fun x => Some x.(contents))
+        (fun v x => Some (x <| contents := v |>));
   }.
   Global Instance Get_AF_contents : Notations.DoubleColon t "contents" := {
     Notations.double_colon (x : M.Val t) := x.["contents"];
@@ -90,7 +96,9 @@ Section ClosedBox.
   
   Global Instance Get_contents : Notations.Dot "contents" := {
     Notations.dot :=
-      Ref.map (fun x => x.(contents)) (fun v x => x <| contents := v |>);
+      Ref.map
+        (fun x => Some x.(contents))
+        (fun v x => Some (x <| contents := v |>));
   }.
   Global Instance Get_AF_contents : Notations.DoubleColon t "contents" := {
     Notations.double_colon (x : M.Val t) := x.["contents"];
@@ -110,7 +118,7 @@ Section Impl_struct_visibility_my_ClosedBox_t_T_2.
           }
   *)
   Definition new (contents : T) : M (struct_visibility.my.ClosedBox.t T) :=
-    let* contents : M.Val T := M.alloc contents in
+    let* contents := M.alloc contents in
     let* α0 : T := M.read contents in
     M.pure {| struct_visibility.my.ClosedBox.contents := α0; |}.
   

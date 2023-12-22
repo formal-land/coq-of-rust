@@ -91,8 +91,8 @@ Module Mapping := Mapping.
 
     content = content.replace(
         """Definition emit_event (self : ref Self) (_event : erc20.Event.t) : M unit :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* _event : M.Val erc20.Event.t := M.alloc _event in
+    let* self := M.alloc self in
+    let* _event := M.alloc _event in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.""",
@@ -104,6 +104,30 @@ Module Mapping := Mapping.
     let ref_events := snd env in
     let* events := M.read ref_events in
     M.write ref_events (event :: events)."""
+    )
+
+    with open(file_name, "w") as f:
+        f.write(content)
+
+
+def update_payment_channel():
+    file_name = "CoqOfRust/examples/default/examples/ink_contracts/payment_channel.v"
+    with open(file_name, "r") as f:
+        content = f.read()
+
+    content = content.replace(
+        """(output
+      :
+      mut_ref
+        (payment_channel.HashOutput.Type_
+          (Self := H)
+          (Trait := ltac:(refine _))))""",
+        """(output
+      :
+      mut_ref
+        (payment_channel.HashOutput.Type_
+          (Self := H)
+          (Trait := ltac:(refine ℋ_0.(CryptoHash.ℒ_0)))))""",
     )
 
     with open(file_name, "w") as f:
@@ -140,4 +164,5 @@ def update_payment_channel_axiomatized():
 
 # update files for last changes
 update_erc_20()
+update_payment_channel()
 update_payment_channel_axiomatized()

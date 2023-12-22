@@ -25,8 +25,12 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* nanoseconds : M.Val u64.t := M.alloc (use (Integer.of_Z 5)) in
-  let* inches : M.Val u64.t := M.alloc (use (Integer.of_Z 2)) in
+  let* nanoseconds : M.Val u64.t :=
+    let* α0 : M.Val u64.t := M.alloc (Integer.of_Z 5) in
+    M.copy (use α0) in
+  let* inches : M.Val u64.t :=
+    let* α0 : M.Val u64.t := M.alloc (Integer.of_Z 2) in
+    M.copy (use α0) in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "") in

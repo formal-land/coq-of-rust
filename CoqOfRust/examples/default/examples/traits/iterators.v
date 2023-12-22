@@ -9,13 +9,15 @@ Section Fibonacci.
   }.
   
   Global Instance Get_curr : Notations.Dot "curr" := {
-    Notations.dot := Ref.map (fun x => x.(curr)) (fun v x => x <| curr := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(curr)) (fun v x => Some (x <| curr := v |>));
   }.
   Global Instance Get_AF_curr : Notations.DoubleColon t "curr" := {
     Notations.double_colon (x : M.Val t) := x.["curr"];
   }.
   Global Instance Get_next : Notations.Dot "next" := {
-    Notations.dot := Ref.map (fun x => x.(next)) (fun v x => x <| next := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(next)) (fun v x => Some (x <| next := v |>));
   }.
   Global Instance Get_AF_next : Notations.DoubleColon t "next" := {
     Notations.double_colon (x : M.Val t) := x.["next"];
@@ -45,7 +47,7 @@ Section Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci_t.
       }
   *)
   Definition next (self : mut_ref Self) : M (core.option.Option.t Item.t) :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* current : M.Val u32.t :=
       let* α0 : mut_ref iterators.Fibonacci.t := M.read self in
       M.copy (deref α0).["curr"] in
@@ -377,7 +379,7 @@ Definition main : M unit :=
                     (Trait := ltac:(refine _)))
                   (borrow_mut iter)) in
             match α0 with
-            | core.option.Option.None  =>
+            | core.option.Option.None =>
               let* α0 : M.Val never.t := Break in
               let* α1 := M.read α0 in
               let* α2 : unit := never_to_any α1 in
@@ -412,8 +414,7 @@ Definition main : M unit :=
             end in
           M.alloc tt)
       end in
-    let* α2 : unit := M.read α1 in
-    M.alloc (use α2) in
+    M.pure (use α1) in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t :=
@@ -458,7 +459,7 @@ Definition main : M unit :=
                     (Trait := ltac:(refine _)))
                   (borrow_mut iter)) in
             match α0 with
-            | core.option.Option.None  =>
+            | core.option.Option.None =>
               let* α0 : M.Val never.t := Break in
               let* α1 := M.read α0 in
               let* α2 : unit := never_to_any α1 in
@@ -493,8 +494,7 @@ Definition main : M unit :=
             end in
           M.alloc tt)
       end in
-    let* α4 : unit := M.read α3 in
-    M.alloc (use α4) in
+    M.pure (use α3) in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t :=
@@ -553,7 +553,7 @@ Definition main : M unit :=
                     (Trait := ltac:(refine _)))
                   (borrow_mut iter)) in
             match α0 with
-            | core.option.Option.None  =>
+            | core.option.Option.None =>
               let* α0 : M.Val never.t := Break in
               let* α1 := M.read α0 in
               let* α2 : unit := never_to_any α1 in
@@ -588,8 +588,7 @@ Definition main : M unit :=
             end in
           M.alloc tt)
       end in
-    let* α5 : unit := M.read α4 in
-    M.alloc (use α5) in
+    M.pure (use α4) in
   let* array : M.Val (array u32.t) :=
     M.alloc
       [ Integer.of_Z 1; Integer.of_Z 3; Integer.of_Z 3; Integer.of_Z 7 ] in
@@ -638,7 +637,7 @@ Definition main : M unit :=
                   (Trait := ltac:(refine _)))
                 (borrow_mut iter)) in
           match α0 with
-          | core.option.Option.None  =>
+          | core.option.Option.None =>
             let* α0 : M.Val never.t := Break in
             let* α1 := M.read α0 in
             let* α2 : unit := never_to_any α1 in
@@ -672,6 +671,4 @@ Definition main : M unit :=
           end in
         M.alloc tt)
     end in
-  let* α5 : unit := M.read α4 in
-  let* α0 : M.Val unit := M.alloc (use α5) in
-  M.read α0.
+  M.read (use α4).

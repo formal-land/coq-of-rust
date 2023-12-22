@@ -22,27 +22,27 @@ Section Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
+    let* self := M.alloc self in
+    let* f := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 :
         ref unpacking_options_and_defaults_via_get_or_insert_with.Fruit.t :=
       M.read self in
     let* α2 : M.Val (ref str.t) :=
       match α1 with
-      | unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Apple  =>
+      | unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Apple =>
         let* α0 : ref str.t := M.read (mk_str "Apple") in
         M.alloc α0
-      | unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Orange  =>
+      | unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Orange =>
         let* α0 : ref str.t := M.read (mk_str "Orange") in
         M.alloc α0
-      | unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Banana  =>
+      | unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Banana =>
         let* α0 : ref str.t := M.read (mk_str "Banana") in
         M.alloc α0
-      | unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Kiwi  =>
+      | unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Kiwi =>
         let* α0 : ref str.t := M.read (mk_str "Kiwi") in
         M.alloc α0
-      | unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Lemon  =>
+      | unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Lemon =>
         let* α0 : ref str.t := M.read (mk_str "Lemon") in
         M.alloc α0
       end in
@@ -90,9 +90,12 @@ Definition main : M unit :=
         (core.option.Option.t
           unpacking_options_and_defaults_via_get_or_insert_with.Fruit.t) :=
     M.alloc core.option.Option.None in
-  let* get_lemon_as_fallback : M.Val type not implemented :=
-    M.copy
-      (let* _ : M.Val unit :=
+  let* get_lemon_as_fallback :
+      M.Val
+        (unit ->
+          M unpacking_options_and_defaults_via_get_or_insert_with.Fruit.t) :=
+    M.alloc
+      ((let* _ : M.Val unit :=
         let* _ : M.Val unit :=
           let* α0 : ref str.t :=
             M.read (mk_str "Providing lemon as fallback
@@ -106,13 +109,20 @@ Definition main : M unit :=
           let* α5 : unit := M.call (std.io.stdio._print α4) in
           M.alloc α5 in
         M.alloc tt in
-      M.alloc
-        unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Lemon) in
+      let* α0 :
+          M.Val unpacking_options_and_defaults_via_get_or_insert_with.Fruit.t :=
+        M.alloc
+          unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Lemon in
+      M.read α0) :
+      M unpacking_options_and_defaults_via_get_or_insert_with.Fruit.t) in
   let* first_available_fruit :
       M.Val
         (mut_ref
           unpacking_options_and_defaults_via_get_or_insert_with.Fruit.t) :=
-    let* α0 : type not implemented := M.read get_lemon_as_fallback in
+    let* α0 :
+        unit ->
+          M unpacking_options_and_defaults_via_get_or_insert_with.Fruit.t :=
+      M.read get_lemon_as_fallback in
     let* α1 :
         mut_ref unpacking_options_and_defaults_via_get_or_insert_with.Fruit.t :=
       M.call
@@ -178,7 +188,10 @@ Definition main : M unit :=
       M.Val
         (mut_ref
           unpacking_options_and_defaults_via_get_or_insert_with.Fruit.t) :=
-    let* α0 : type not implemented := M.read get_lemon_as_fallback in
+    let* α0 :
+        unit ->
+          M unpacking_options_and_defaults_via_get_or_insert_with.Fruit.t :=
+      M.read get_lemon_as_fallback in
     let* α1 :
         mut_ref unpacking_options_and_defaults_via_get_or_insert_with.Fruit.t :=
       M.call

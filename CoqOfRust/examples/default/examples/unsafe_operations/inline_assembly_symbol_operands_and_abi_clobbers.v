@@ -40,7 +40,7 @@ Definition main : M unit := M.pure tt.
     }
 *)
 Definition foo (arg : i32.t) : M i32.t :=
-  let* arg : M.Val i32.t := M.alloc arg in
+  let* arg := M.alloc arg in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "arg = ") in
@@ -88,7 +88,7 @@ Definition foo (arg : i32.t) : M i32.t :=
     }
 *)
 Definition call_foo (arg : i32.t) : M i32.t :=
-  let* arg : M.Val i32.t := M.alloc arg in
+  let* arg := M.alloc arg in
   let* result : M.Val unit := M.alloc tt in
   let _ : M.Val unit := InlineAssembly in
   M.read result.

@@ -8,7 +8,8 @@ Section Val.
   }.
   
   Global Instance Get_val : Notations.Dot "val" := {
-    Notations.dot := Ref.map (fun x => x.(val)) (fun v x => x <| val := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(val)) (fun v x => Some (x <| val := v |>));
   }.
   Global Instance Get_AF_val : Notations.DoubleColon t "val" := {
     Notations.double_colon (x : M.Val t) := x.["val"];
@@ -26,7 +27,9 @@ Section GenVal.
   
   Global Instance Get_gen_val : Notations.Dot "gen_val" := {
     Notations.dot :=
-      Ref.map (fun x => x.(gen_val)) (fun v x => x <| gen_val := v |>);
+      Ref.map
+        (fun x => Some x.(gen_val))
+        (fun v x => Some (x <| gen_val := v |>));
   }.
   Global Instance Get_AF_gen_val : Notations.DoubleColon t "gen_val" := {
     Notations.double_colon (x : M.Val t) := x.["gen_val"];
@@ -44,7 +47,7 @@ Section Impl_generics_implementation_Val_t.
       }
   *)
   Definition value (self : ref Self) : M (ref f64.t) :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* α0 : ref generics_implementation.Val.t := M.read self in
     M.pure (borrow (deref α0).["val"]).
   
@@ -67,7 +70,7 @@ Section Impl_generics_implementation_GenVal_t_T.
       }
   *)
   Definition value (self : ref Self) : M (ref T) :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* α0 : ref (generics_implementation.GenVal.t T) := M.read self in
     M.pure (borrow (deref α0).["gen_val"]).
   

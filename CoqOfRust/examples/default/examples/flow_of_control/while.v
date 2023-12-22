@@ -29,11 +29,16 @@ Definition main : M unit :=
   let* α0 : M.Val unit :=
     loop
       (let* α0 : i32.t := M.read n in
-      if (use (BinOp.Pure.lt α0 (Integer.of_Z 101)) : bool) then
+      let* α1 : M.Val bool.t := M.alloc (BinOp.Pure.lt α0 (Integer.of_Z 101)) in
+      let* α2 : bool.t := M.read (use α1) in
+      if α2 then
         let* _ : M.Val unit :=
           let* α0 : i32.t := M.read n in
           let* α1 : i32.t := BinOp.Panic.rem α0 (Integer.of_Z 15) in
-          if (use (BinOp.Pure.eq α1 (Integer.of_Z 0)) : bool) then
+          let* α2 : M.Val bool.t :=
+            M.alloc (BinOp.Pure.eq α1 (Integer.of_Z 0)) in
+          let* α3 : bool.t := M.read (use α2) in
+          if α3 then
             let* _ : M.Val unit :=
               let* _ : M.Val unit :=
                 let* α0 : ref str.t := M.read (mk_str "fizzbuzz
@@ -52,7 +57,10 @@ Definition main : M unit :=
           else
             let* α0 : i32.t := M.read n in
             let* α1 : i32.t := BinOp.Panic.rem α0 (Integer.of_Z 3) in
-            if (use (BinOp.Pure.eq α1 (Integer.of_Z 0)) : bool) then
+            let* α2 : M.Val bool.t :=
+              M.alloc (BinOp.Pure.eq α1 (Integer.of_Z 0)) in
+            let* α3 : bool.t := M.read (use α2) in
+            if α3 then
               let* _ : M.Val unit :=
                 let* _ : M.Val unit :=
                   let* α0 : ref str.t := M.read (mk_str "fizz
@@ -71,7 +79,10 @@ Definition main : M unit :=
             else
               let* α0 : i32.t := M.read n in
               let* α1 : i32.t := BinOp.Panic.rem α0 (Integer.of_Z 5) in
-              if (use (BinOp.Pure.eq α1 (Integer.of_Z 0)) : bool) then
+              let* α2 : M.Val bool.t :=
+                M.alloc (BinOp.Pure.eq α1 (Integer.of_Z 0)) in
+              let* α3 : bool.t := M.read (use α2) in
+              if α3 then
                 let* _ : M.Val unit :=
                   let* _ : M.Val unit :=
                     let* α0 : ref str.t := M.read (mk_str "buzz

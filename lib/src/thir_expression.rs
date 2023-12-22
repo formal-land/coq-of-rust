@@ -175,10 +175,8 @@ fn compile_borrow(borrow_kind: &BorrowKind, arg: Expr) -> ExprKind {
     }
 }
 
-/// Allocate all the bindings in the [pattern] to some [M.Val]
-fn allocate_bindings(pattern: &Pattern, body: Box<Expr>) -> Box<Expr> {
-    let bindings = pattern.get_bindings();
-    bindings.iter().fold(body, |body, binding| {
+pub(crate) fn allocate_bindings(bindings: &[String], body: Box<Expr>) -> Box<Expr> {
+    bindings.iter().rfold(body, |body, binding| {
         Box::new(Expr {
             ty: body.ty.clone(),
             kind: ExprKind::Let {
@@ -192,6 +190,12 @@ fn allocate_bindings(pattern: &Pattern, body: Box<Expr>) -> Box<Expr> {
             },
         })
     })
+}
+
+/// Allocate all the bindings in the [pattern] to some [M.Val]
+fn allocate_bindings_in_pattern(pattern: &Pattern, body: Box<Expr>) -> Box<Expr> {
+    let bindings = pattern.get_bindings();
+    allocate_bindings(&bindings, body)
 }
 
 fn compile_expr_kind<'a>(
@@ -237,16 +241,25 @@ fn compile_expr_kind<'a>(
             }
         }
         thir::ExprKind::Call { fun, args, .. } => {
-            let func = Box::new(compile_expr(env, thir, fun).read());
             let args = args
                 .iter()
                 .map(|arg| compile_expr(env, thir, arg).read())
                 .collect();
+            let func = compile_expr(env, thir, fun);
+            let (purity, from_user) = match &func.match_simple_call(&["M.alloc"]) {
+                Some(Expr {
+                    kind: ExprKind::Constructor(_),
+                    ..
+                }) => (Purity::Pure, false),
+                _ => (Purity::Effectful, true),
+            };
+            let func = Box::new(func.read());
+
             ExprKind::Call {
                 func,
                 args,
-                purity: Purity::Effectful,
-                from_user: true,
+                purity,
+                from_user,
             }
             .alloc(Some(ty))
         }
@@ -284,8 +297,8 @@ fn compile_expr_kind<'a>(
         }
         thir::ExprKind::LogicalOp { op, lhs, rhs } => {
             let path = match op {
-                LogicalOp::And => Path::new(&["BinOp", "and"]),
-                LogicalOp::Or => Path::new(&["BinOp", "or"]),
+                LogicalOp::And => Path::new(&["BinOp", "Pure", "and"]),
+                LogicalOp::Or => Path::new(&["BinOp", "Pure", "or"]),
             };
             let lhs = compile_expr(env, thir, lhs);
             let rhs = compile_expr(env, thir, rhs);
@@ -332,18 +345,8 @@ fn compile_expr_kind<'a>(
             .alloc(Some(ty))
         }
         thir::ExprKind::Use { source } => {
-            let func = Box::new(Expr {
-                kind: ExprKind::LocalVar("use".to_string()),
-                ty: None,
-            });
             let source = compile_expr(env, thir, source);
-            ExprKind::Call {
-                func,
-                args: vec![source.read()],
-                purity: Purity::Pure,
-                from_user: false,
-            }
-            .alloc(Some(ty))
+            ExprKind::Use(Box::new(source))
         }
         thir::ExprKind::NeverToAny { source } => {
             let func = Box::new(Expr {
@@ -393,13 +396,14 @@ fn compile_expr_kind<'a>(
                     let arm = thir.arms.get(*arm_id).unwrap();
                     let pattern = crate::thir_pattern::compile_pattern(env, &arm.pattern);
                     let body = Box::new(compile_expr(env, thir, &arm.body));
-                    let body = allocate_bindings(&pattern, body);
+                    let body = allocate_bindings_in_pattern(&pattern, body);
                     MatchArm {
                         pattern,
                         body: *body,
                     }
                 })
                 .collect();
+
             ExprKind::Match { scrutinee, arms }
         }
         thir::ExprKind::Block { block: block_id } => compile_block(env, thir, block_id).kind,
@@ -627,8 +631,29 @@ fn compile_expr_kind<'a>(
                 panic!("thir failed to compile");
             };
             let thir = thir.borrow();
-            let body = Box::new(compile_expr(env, &thir, &expr_id));
-            ExprKind::Lambda { args: vec![], body }
+            let args: Vec<(Pattern, Rc<CoqType>)> = thir
+                .params
+                .iter()
+                .filter_map(|param| match &param.pat {
+                    Some(pattern) => {
+                        let pattern = crate::thir_pattern::compile_pattern(env, pattern.as_ref());
+                        let ty = compile_type(env, &param.ty);
+                        Some((pattern, ty))
+                    }
+                    None => None,
+                })
+                .collect();
+            let body = Box::new(compile_expr(env, &thir, &expr_id).read());
+            let body = allocate_bindings(
+                &args
+                    .iter()
+                    .map(|(pattern, _)| pattern.get_bindings())
+                    .collect::<Vec<_>>()
+                    .concat(),
+                body,
+            );
+
+            ExprKind::Lambda { args, body }.alloc(Some(ty))
         }
         thir::ExprKind::Literal { lit, neg } => match lit.node {
             rustc_ast::LitKind::Str(symbol, _) => {
@@ -658,17 +683,24 @@ fn compile_expr_kind<'a>(
                         ExprKind::AssociatedFunction { ty, func }
                     }
                     DefKind::Trait => {
+                        let parent_path = compile_def_id(env, parent);
                         let path = Path::concat(&[
-                            compile_def_id(env, parent),
+                            parent_path.clone(),
                             Path::local(symbol.unwrap().as_str()),
                         ]);
                         let self_ty = generic_args.type_at(0);
                         let self_ty = crate::thir_ty::compile_type(env, &self_ty);
-                        ExprKind::VarWithSelfTy { path, self_ty }
+
+                        if Some((parent_path, self_ty.clone())) == env.current_trait_impl {
+                            ExprKind::LocalVar(symbol.unwrap().to_string())
+                        } else {
+                            ExprKind::VarWithSelfTy { path, self_ty }
+                        }
                     }
                     DefKind::Mod | DefKind::ForeignMod => {
                         ExprKind::Var(compile_def_id(env, *def_id))
                     }
+                    DefKind::Variant => ExprKind::Constructor(compile_def_id(env, *def_id)),
                     _ => {
                         println!("unimplemented parent_kind: {:#?}", parent_kind);
                         println!("expression: {:#?}", expr);
@@ -746,7 +778,10 @@ fn compile_stmts<'a>(
                     let (init, body) = if matches!(pattern.as_ref(), Pattern::Variable(_)) {
                         (init.copy(), body)
                     } else {
-                        (init.read(), allocate_bindings(pattern.as_ref(), body))
+                        (
+                            init.read(),
+                            allocate_bindings_in_pattern(pattern.as_ref(), body),
+                        )
                     };
                     let ty = body.ty.clone();
                     Expr {

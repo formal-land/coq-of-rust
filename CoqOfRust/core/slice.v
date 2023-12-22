@@ -128,15 +128,17 @@ Module EscapeAscii.
   Parameter t : Set.
 End EscapeAscii.
 
-(* 
-pub struct Iter<'a, T>
-where
-    T: 'a,
-{ /* private fields */ }
-*)
-Module Iter.
-  Parameter t : Set -> Set.
-End Iter.
+Module iter.
+  (* 
+  pub struct Iter<'a, T>
+  where
+      T: 'a,
+  { /* private fields */ }
+  *)
+  Module Iter.
+    Parameter t : Set -> Set.
+  End Iter.
+End iter.
 
 (* 
 pub struct IterMut<'a, T>

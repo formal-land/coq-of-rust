@@ -148,5 +148,9 @@ Section Impl_Vec.
       {ℋ_0 : cmp.PartialEq.Trait T (Rhs := U)} :
     cmp.PartialEq.Trait Self (Rhs := Vec.t U alloc.Global.t).
   Admitted.
+
+  Global Instance I_Clone {ℋ_0 : clone.Clone.Trait T} :
+    clone.Clone.Trait Self.
+  Admitted.
 End Impl_Vec.
 End Impl_Vec.

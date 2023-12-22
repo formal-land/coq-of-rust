@@ -43,36 +43,36 @@ Definition main : M unit :=
             (Self := alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t)
             (Trait := ltac:(refine _)))
           α0) in
-    let* α2 : type not implemented :=
-      M.read
-        (let* α0 : ref str.t := M.read s in
-        let* α1 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
-          M.call (str.t::["parse"] α0) in
-        M.alloc α1) in
-    let* α3 :
+    let* α2 :
         core.iter.adapters.map.Map.t
           (alloc.vec.into_iter.IntoIter.t (ref str.t) alloc.alloc.Global.t)
-          type not implemented :=
+          ((ref str.t) ->
+            M (core.result.Result.t i32.t core.num.error.ParseIntError.t)) :=
       M.call
         ((core.iter.traits.iterator.Iterator.map
             (Self :=
               alloc.vec.into_iter.IntoIter.t (ref str.t) alloc.alloc.Global.t)
             (Trait := ltac:(refine _)))
           α1
-          α2) in
+          (fun (s : ref str.t) =>
+            (let* s := M.alloc s in
+            let* α0 : ref str.t := M.read s in
+            M.call (str.t::["parse"] α0)) :
+            M (core.result.Result.t i32.t core.num.error.ParseIntError.t))) in
     M.call
       ((core.iter.traits.iterator.Iterator.partition
           (Self :=
             core.iter.adapters.map.Map.t
               (alloc.vec.into_iter.IntoIter.t (ref str.t) alloc.alloc.Global.t)
-              type not implemented)
+              ((ref str.t) ->
+                M (core.result.Result.t i32.t core.num.error.ParseIntError.t)))
           (Trait := ltac:(refine _)))
-        α3
+        α2
         (core.result.Result.t
             i32.t
             core.num.error.ParseIntError.t)::["is_ok"]) in
-  let* errors := M.alloc errors in
   let* numbers := M.alloc numbers in
+  let* errors := M.alloc errors in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "Numbers: ") in

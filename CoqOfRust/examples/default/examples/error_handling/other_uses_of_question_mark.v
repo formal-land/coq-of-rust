@@ -24,8 +24,8 @@ Section Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
+    let* self := M.alloc self in
+    let* f := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref str.t := M.read (mk_str "EmptyVec") in
     M.call (core.fmt.Formatter.t::["write_str"] α0 α1).
@@ -53,8 +53,8 @@ Section Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
+    let* self := M.alloc self in
+    let* f := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref str.t := M.read (mk_str "invalid first item to double") in
     let* α2 : M.Val (array (ref str.t)) := M.alloc [ α1 ] in
@@ -99,8 +99,7 @@ fn double_first(vec: Vec<&str>) -> Result<i32> {
 Definition double_first
     (vec : alloc.vec.Vec.t (ref str.t) alloc.vec.Vec.Default.A)
     : M ltac:(other_uses_of_question_mark.Result i32.t) :=
-  let* vec : M.Val (alloc.vec.Vec.t (ref str.t) alloc.vec.Vec.Default.A) :=
-    M.alloc vec in
+  let* vec := M.alloc vec in
   let return_ :=
     M.return_ (R := ltac:(other_uses_of_question_mark.Result i32.t)) in
   M.catch_return
@@ -147,15 +146,13 @@ Definition double_first
           let* α1 :
               core.result.Result.t
                 i32.t
-                (alloc.boxed.Box.t type not implemented alloc.alloc.Global.t) :=
+                (alloc.boxed.Box.t dynamic alloc.alloc.Global.t) :=
             M.call
               ((core.ops.try_trait.FromResidual.from_residual
                   (Self :=
                     core.result.Result.t
                       i32.t
-                      (alloc.boxed.Box.t
-                        type not implemented
-                        alloc.alloc.Global.t))
+                      (alloc.boxed.Box.t dynamic alloc.alloc.Global.t))
                   (Trait := ltac:(refine _)))
                 α0) in
           let* α2 : M.Val never.t := return_ α1 in
@@ -196,15 +193,13 @@ Definition double_first
           let* α1 :
               core.result.Result.t
                 i32.t
-                (alloc.boxed.Box.t type not implemented alloc.alloc.Global.t) :=
+                (alloc.boxed.Box.t dynamic alloc.alloc.Global.t) :=
             M.call
               ((core.ops.try_trait.FromResidual.from_residual
                   (Self :=
                     core.result.Result.t
                       i32.t
-                      (alloc.boxed.Box.t
-                        type not implemented
-                        alloc.alloc.Global.t))
+                      (alloc.boxed.Box.t dynamic alloc.alloc.Global.t))
                   (Trait := ltac:(refine _)))
                 α0) in
           let* α2 : M.Val never.t := return_ α1 in
@@ -222,7 +217,7 @@ Definition double_first
         M.Val
           (core.result.Result.t
             i32.t
-            (alloc.boxed.Box.t type not implemented alloc.alloc.Global.t)) :=
+            (alloc.boxed.Box.t dynamic alloc.alloc.Global.t)) :=
       M.alloc (core.result.Result.Ok α1) in
     M.read α0).
 
@@ -237,12 +232,11 @@ fn print(result: Result<i32>) {
 Definition print
     (result : ltac:(other_uses_of_question_mark.Result i32.t))
     : M unit :=
-  let* result : M.Val ltac:(other_uses_of_question_mark.Result i32.t) :=
-    M.alloc result in
+  let* result := M.alloc result in
   let* α0 :
       core.result.Result.t
         i32.t
-        (alloc.boxed.Box.t type not implemented alloc.alloc.Global.t) :=
+        (alloc.boxed.Box.t dynamic alloc.alloc.Global.t) :=
     M.read result in
   let* α1 : M.Val unit :=
     match α0 with
@@ -342,7 +336,7 @@ Definition main : M unit :=
     let* α1 :
         core.result.Result.t
           i32.t
-          (alloc.boxed.Box.t type not implemented alloc.alloc.Global.t) :=
+          (alloc.boxed.Box.t dynamic alloc.alloc.Global.t) :=
       M.call (other_uses_of_question_mark.double_first α0) in
     let* α2 : unit := M.call (other_uses_of_question_mark.print α1) in
     M.alloc α2 in
@@ -352,7 +346,7 @@ Definition main : M unit :=
     let* α1 :
         core.result.Result.t
           i32.t
-          (alloc.boxed.Box.t type not implemented alloc.alloc.Global.t) :=
+          (alloc.boxed.Box.t dynamic alloc.alloc.Global.t) :=
       M.call (other_uses_of_question_mark.double_first α0) in
     let* α2 : unit := M.call (other_uses_of_question_mark.print α1) in
     M.alloc α2 in
@@ -362,7 +356,7 @@ Definition main : M unit :=
     let* α1 :
         core.result.Result.t
           i32.t
-          (alloc.boxed.Box.t type not implemented alloc.alloc.Global.t) :=
+          (alloc.boxed.Box.t dynamic alloc.alloc.Global.t) :=
       M.call (other_uses_of_question_mark.double_first α0) in
     let* α2 : unit := M.call (other_uses_of_question_mark.print α1) in
     M.alloc α2 in

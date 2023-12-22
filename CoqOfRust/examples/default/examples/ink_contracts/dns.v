@@ -11,14 +11,17 @@ Section Mapping.
   }.
   
   Global Instance Get__key : Notations.Dot "_key" := {
-    Notations.dot := Ref.map (fun x => x.(_key)) (fun v x => x <| _key := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(_key)) (fun v x => Some (x <| _key := v |>));
   }.
   Global Instance Get_AF__key : Notations.DoubleColon t "_key" := {
     Notations.double_colon (x : M.Val t) := x.["_key"];
   }.
   Global Instance Get__value : Notations.Dot "_value" := {
     Notations.dot :=
-      Ref.map (fun x => x.(_value)) (fun v x => x <| _value := v |>);
+      Ref.map
+        (fun x => Some x.(_value))
+        (fun v x => Some (x <| _value := v |>));
   }.
   Global Instance Get_AF__value : Notations.DoubleColon t "_value" := {
     Notations.double_colon (x : M.Val t) := x.["_value"];
@@ -75,8 +78,8 @@ Section Impl_dns_Mapping_t_K_V.
       }
   *)
   Definition contains (self : ref Self) (_key : ref K) : M bool.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* _key : M.Val (ref K) := M.alloc _key in
+    let* self := M.alloc self in
+    let* _key := M.alloc _key in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
@@ -95,8 +98,8 @@ Section Impl_dns_Mapping_t_K_V.
       (self : ref Self)
       (_key : ref K)
       : M (core.option.Option.t V) :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* _key : M.Val (ref K) := M.alloc _key in
+    let* self := M.alloc self in
+    let* _key := M.alloc _key in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
@@ -115,9 +118,9 @@ Section Impl_dns_Mapping_t_K_V.
       (_key : K)
       (_value : V)
       : M (core.option.Option.t u32.t) :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
-    let* _key : M.Val K := M.alloc _key in
-    let* _value : M.Val V := M.alloc _value in
+    let* self := M.alloc self in
+    let* _key := M.alloc _key in
+    let* _value := M.alloc _value in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
@@ -147,8 +150,8 @@ Section Impl_dns_Mapping_t_K_V.
       }
   *)
   Definition remove (self : ref Self) (_key : K) : M unit :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* _key : M.Val K := M.alloc _key in
+    let* self := M.alloc self in
+    let* _key := M.alloc _key in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
@@ -167,8 +170,8 @@ Section Impl_dns_Mapping_t_K_V.
       (self : ref Self)
       (_key : K)
       : M (core.option.Option.t u32.t) :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* _key : M.Val K := M.alloc _key in
+    let* self := M.alloc self in
+    let* _key := M.alloc _key in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
@@ -184,8 +187,8 @@ Section Impl_dns_Mapping_t_K_V.
       }
   *)
   Definition take (self : ref Self) (_key : K) : M (core.option.Option.t V) :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* _key : M.Val K := M.alloc _key in
+    let* self := M.alloc self in
+    let* _key := M.alloc _key in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
@@ -204,7 +207,8 @@ Section AccountId.
   }.
   
   Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot := Ref.map (fun x => x.(x0)) (fun v x => x <| x0 := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(x0)) (fun v x => Some (x <| x0 := v |>));
   }.
 End AccountId.
 End AccountId.
@@ -243,7 +247,7 @@ Section Impl_core_clone_Clone_for_dns_AccountId_t.
   Clone
   *)
   Definition clone (self : ref Self) : M dns.AccountId.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let _ : unit := tt in
     let* α0 : ref dns.AccountId.t := M.read self in
     M.read (deref α0).
@@ -286,8 +290,8 @@ Section Impl_core_cmp_PartialEq_for_dns_AccountId_t.
   PartialEq
   *)
   Definition eq (self : ref Self) (other : ref dns.AccountId.t) : M bool.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* other : M.Val (ref dns.AccountId.t) := M.alloc other in
+    let* self := M.alloc self in
+    let* other := M.alloc other in
     let* α0 : ref dns.AccountId.t := M.read self in
     let* α1 : u128.t := M.read (deref α0).["0"] in
     let* α2 : ref dns.AccountId.t := M.read other in
@@ -317,7 +321,7 @@ Section Impl_core_convert_From_array_u8_t_for_dns_AccountId_t.
       }
   *)
   Definition from (_value : array u8.t) : M Self :=
-    let* _value : M.Val (array u8.t) := M.alloc _value in
+    let* _value := M.alloc _value in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
@@ -345,7 +349,9 @@ Section Env.
   
   Global Instance Get_caller : Notations.Dot "caller" := {
     Notations.dot :=
-      Ref.map (fun x => x.(caller)) (fun v x => x <| caller := v |>);
+      Ref.map
+        (fun x => Some x.(caller))
+        (fun v x => Some (x <| caller := v |>));
   }.
   Global Instance Get_AF_caller : Notations.DoubleColon t "caller" := {
     Notations.double_colon (x : M.Val t) := x.["caller"];
@@ -361,13 +367,15 @@ Section Register.
   }.
   
   Global Instance Get_name : Notations.Dot "name" := {
-    Notations.dot := Ref.map (fun x => x.(name)) (fun v x => x <| name := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(name)) (fun v x => Some (x <| name := v |>));
   }.
   Global Instance Get_AF_name : Notations.DoubleColon t "name" := {
     Notations.double_colon (x : M.Val t) := x.["name"];
   }.
   Global Instance Get_from : Notations.Dot "from" := {
-    Notations.dot := Ref.map (fun x => x.(from)) (fun v x => x <| from := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(from)) (fun v x => Some (x <| from := v |>));
   }.
   Global Instance Get_AF_from : Notations.DoubleColon t "from" := {
     Notations.double_colon (x : M.Val t) := x.["from"];
@@ -385,20 +393,24 @@ Section SetAddress.
   }.
   
   Global Instance Get_name : Notations.Dot "name" := {
-    Notations.dot := Ref.map (fun x => x.(name)) (fun v x => x <| name := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(name)) (fun v x => Some (x <| name := v |>));
   }.
   Global Instance Get_AF_name : Notations.DoubleColon t "name" := {
     Notations.double_colon (x : M.Val t) := x.["name"];
   }.
   Global Instance Get_from : Notations.Dot "from" := {
-    Notations.dot := Ref.map (fun x => x.(from)) (fun v x => x <| from := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(from)) (fun v x => Some (x <| from := v |>));
   }.
   Global Instance Get_AF_from : Notations.DoubleColon t "from" := {
     Notations.double_colon (x : M.Val t) := x.["from"];
   }.
   Global Instance Get_old_address : Notations.Dot "old_address" := {
     Notations.dot :=
-      Ref.map (fun x => x.(old_address)) (fun v x => x <| old_address := v |>);
+      Ref.map
+        (fun x => Some x.(old_address))
+        (fun v x => Some (x <| old_address := v |>));
   }.
   Global Instance Get_AF_old_address :
     Notations.DoubleColon t "old_address" := {
@@ -406,7 +418,9 @@ Section SetAddress.
   }.
   Global Instance Get_new_address : Notations.Dot "new_address" := {
     Notations.dot :=
-      Ref.map (fun x => x.(new_address)) (fun v x => x <| new_address := v |>);
+      Ref.map
+        (fun x => Some x.(new_address))
+        (fun v x => Some (x <| new_address := v |>));
   }.
   Global Instance Get_AF_new_address :
     Notations.DoubleColon t "new_address" := {
@@ -425,27 +439,33 @@ Section Transfer.
   }.
   
   Global Instance Get_name : Notations.Dot "name" := {
-    Notations.dot := Ref.map (fun x => x.(name)) (fun v x => x <| name := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(name)) (fun v x => Some (x <| name := v |>));
   }.
   Global Instance Get_AF_name : Notations.DoubleColon t "name" := {
     Notations.double_colon (x : M.Val t) := x.["name"];
   }.
   Global Instance Get_from : Notations.Dot "from" := {
-    Notations.dot := Ref.map (fun x => x.(from)) (fun v x => x <| from := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(from)) (fun v x => Some (x <| from := v |>));
   }.
   Global Instance Get_AF_from : Notations.DoubleColon t "from" := {
     Notations.double_colon (x : M.Val t) := x.["from"];
   }.
   Global Instance Get_old_owner : Notations.Dot "old_owner" := {
     Notations.dot :=
-      Ref.map (fun x => x.(old_owner)) (fun v x => x <| old_owner := v |>);
+      Ref.map
+        (fun x => Some x.(old_owner))
+        (fun v x => Some (x <| old_owner := v |>));
   }.
   Global Instance Get_AF_old_owner : Notations.DoubleColon t "old_owner" := {
     Notations.double_colon (x : M.Val t) := x.["old_owner"];
   }.
   Global Instance Get_new_owner : Notations.Dot "new_owner" := {
     Notations.dot :=
-      Ref.map (fun x => x.(new_owner)) (fun v x => x <| new_owner := v |>);
+      Ref.map
+        (fun x => Some x.(new_owner))
+        (fun v x => Some (x <| new_owner := v |>));
   }.
   Global Instance Get_AF_new_owner : Notations.DoubleColon t "new_owner" := {
     Notations.double_colon (x : M.Val t) := x.["new_owner"];
@@ -470,7 +490,7 @@ Section Impl_dns_Env_t.
       }
   *)
   Definition caller (self : ref Self) : M dns.AccountId.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* α0 : ref dns.Env.t := M.read self in
     M.read (deref α0).["caller"].
   
@@ -485,8 +505,8 @@ Section Impl_dns_Env_t.
       }
   *)
   Definition emit_event (self : ref Self) (_event : dns.Event.t) : M unit :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* _event : M.Val dns.Event.t := M.alloc _event in
+    let* self := M.alloc self in
+    let* _event := M.alloc _event in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
@@ -509,8 +529,8 @@ Section DomainNameService.
   Global Instance Get_name_to_address : Notations.Dot "name_to_address" := {
     Notations.dot :=
       Ref.map
-        (fun x => x.(name_to_address))
-        (fun v x => x <| name_to_address := v |>);
+        (fun x => Some x.(name_to_address))
+        (fun v x => Some (x <| name_to_address := v |>));
   }.
   Global Instance Get_AF_name_to_address :
     Notations.DoubleColon t "name_to_address" := {
@@ -519,8 +539,8 @@ Section DomainNameService.
   Global Instance Get_name_to_owner : Notations.Dot "name_to_owner" := {
     Notations.dot :=
       Ref.map
-        (fun x => x.(name_to_owner))
-        (fun v x => x <| name_to_owner := v |>);
+        (fun x => Some x.(name_to_owner))
+        (fun v x => Some (x <| name_to_owner := v |>));
   }.
   Global Instance Get_AF_name_to_owner :
     Notations.DoubleColon t "name_to_owner" := {
@@ -529,8 +549,8 @@ Section DomainNameService.
   Global Instance Get_default_address : Notations.Dot "default_address" := {
     Notations.dot :=
       Ref.map
-        (fun x => x.(default_address))
-        (fun v x => x <| default_address := v |>);
+        (fun x => Some x.(default_address))
+        (fun v x => Some (x <| default_address := v |>));
   }.
   Global Instance Get_AF_default_address :
     Notations.DoubleColon t "default_address" := {
@@ -652,8 +672,8 @@ Section Impl_core_cmp_PartialEq_for_dns_Error_t.
   PartialEq
   *)
   Definition eq (self : ref Self) (other : ref dns.Error.t) : M bool.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* other : M.Val (ref dns.Error.t) := M.alloc other in
+    let* self := M.alloc self in
+    let* other := M.alloc other in
     let* __self_tag : M.Val isize.t :=
       let* α0 : ref dns.Error.t := M.read self in
       let* α1 : isize.t := M.call (core.intrinsics.discriminant_value α0) in
@@ -697,7 +717,7 @@ Section Impl_core_cmp_Eq_for_dns_Error_t.
   Eq
   *)
   Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     M.pure tt.
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
@@ -739,7 +759,7 @@ Section Impl_dns_DomainNameService_t.
       }
   *)
   Definition env (self : ref Self) : M dns.Env.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     M.call dns.DomainNameService.t::["init_env"].
   
   Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
@@ -779,8 +799,8 @@ Section Impl_dns_DomainNameService_t.
       (self : mut_ref Self)
       (name : ltac:(dns.Hash))
       : M ltac:(dns.Result unit) :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
-    let* name : M.Val ltac:(dns.Hash) := M.alloc name in
+    let* self := M.alloc self in
+    let* name := M.alloc name in
     let return_ := M.return_ (R := ltac:(dns.Result unit)) in
     M.catch_return
       (let* caller : M.Val dns.AccountId.t :=
@@ -798,7 +818,9 @@ Section Impl_dns_DomainNameService_t.
             ((dns.Mapping.t (array u8.t) dns.AccountId.t)::["contains"]
               (borrow (deref α0).["name_to_owner"])
               (borrow name)) in
-        if (use α1 : bool) then
+        let* α2 : M.Val bool.t := M.alloc α1 in
+        let* α3 : bool.t := M.read (use α2) in
+        if α3 then
           let* _ : M.Val never.t :=
             return_ (core.result.Result.Err dns.Error.NameAlreadyExists) in
           let* α0 : M.Val unit := M.alloc tt in
@@ -852,8 +874,8 @@ Section Impl_dns_DomainNameService_t.
       (self : ref Self)
       (name : ltac:(dns.Hash))
       : M dns.AccountId.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* name : M.Val ltac:(dns.Hash) := M.alloc name in
+    let* self := M.alloc self in
+    let* name := M.alloc name in
     let* α0 : ref dns.DomainNameService.t := M.read self in
     let* α1 : core.option.Option.t dns.AccountId.t :=
       M.call
@@ -894,9 +916,9 @@ Section Impl_dns_DomainNameService_t.
       (name : ltac:(dns.Hash))
       (new_address : dns.AccountId.t)
       : M ltac:(dns.Result unit) :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
-    let* name : M.Val ltac:(dns.Hash) := M.alloc name in
-    let* new_address : M.Val dns.AccountId.t := M.alloc new_address in
+    let* self := M.alloc self in
+    let* name := M.alloc name in
+    let* new_address := M.alloc new_address in
     let return_ := M.return_ (R := ltac:(dns.Result unit)) in
     M.catch_return
       (let* caller : M.Val dns.AccountId.t :=
@@ -924,7 +946,9 @@ Section Impl_dns_DomainNameService_t.
                 (Trait := ltac:(refine _)))
               (borrow caller)
               (borrow owner)) in
-        if (use α0 : bool) then
+        let* α1 : M.Val bool.t := M.alloc α0 in
+        let* α2 : bool.t := M.read (use α1) in
+        if α2 then
           let* _ : M.Val never.t :=
             return_ (core.result.Result.Err dns.Error.CallerIsNotOwner) in
           let* α0 : M.Val unit := M.alloc tt in
@@ -1008,9 +1032,9 @@ Section Impl_dns_DomainNameService_t.
       (name : ltac:(dns.Hash))
       (to : dns.AccountId.t)
       : M ltac:(dns.Result unit) :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
-    let* name : M.Val ltac:(dns.Hash) := M.alloc name in
-    let* to : M.Val dns.AccountId.t := M.alloc to in
+    let* self := M.alloc self in
+    let* name := M.alloc name in
+    let* to := M.alloc to in
     let return_ := M.return_ (R := ltac:(dns.Result unit)) in
     M.catch_return
       (let* caller : M.Val dns.AccountId.t :=
@@ -1038,7 +1062,9 @@ Section Impl_dns_DomainNameService_t.
                 (Trait := ltac:(refine _)))
               (borrow caller)
               (borrow owner)) in
-        if (use α0 : bool) then
+        let* α1 : M.Val bool.t := M.alloc α0 in
+        let* α2 : bool.t := M.read (use α1) in
+        if α2 then
           let* _ : M.Val never.t :=
             return_ (core.result.Result.Err dns.Error.CallerIsNotOwner) in
           let* α0 : M.Val unit := M.alloc tt in
@@ -1107,8 +1133,8 @@ Section Impl_dns_DomainNameService_t.
       (self : ref Self)
       (name : ltac:(dns.Hash))
       : M dns.AccountId.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* name : M.Val ltac:(dns.Hash) := M.alloc name in
+    let* self := M.alloc self in
+    let* name := M.alloc name in
     let* α0 : ref dns.DomainNameService.t := M.read self in
     let* α1 : core.option.Option.t dns.AccountId.t :=
       M.call
@@ -1133,8 +1159,8 @@ Section Impl_dns_DomainNameService_t.
       (self : ref Self)
       (name : ltac:(dns.Hash))
       : M dns.AccountId.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* name : M.Val ltac:(dns.Hash) := M.alloc name in
+    let* self := M.alloc self in
+    let* name := M.alloc name in
     let* α0 : ref dns.DomainNameService.t := M.read self in
     let* α1 : array u8.t := M.read name in
     M.call (dns.DomainNameService.t::["get_address_or_default"] α0 α1).
@@ -1153,8 +1179,8 @@ Section Impl_dns_DomainNameService_t.
       (self : ref Self)
       (name : ltac:(dns.Hash))
       : M dns.AccountId.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* name : M.Val ltac:(dns.Hash) := M.alloc name in
+    let* self := M.alloc self in
+    let* name := M.alloc name in
     let* α0 : ref dns.DomainNameService.t := M.read self in
     let* α1 : array u8.t := M.read name in
     M.call (dns.DomainNameService.t::["get_owner_or_default"] α0 α1).

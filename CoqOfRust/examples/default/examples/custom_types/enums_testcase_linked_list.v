@@ -41,8 +41,8 @@ Section Impl_enums_testcase_linked_list_List_t.
       (self : Self)
       (elem : u32.t)
       : M enums_testcase_linked_list.List.t :=
-    let* self : M.Val Self := M.alloc self in
-    let* elem : M.Val u32.t := M.alloc elem in
+    let* self := M.alloc self in
+    let* elem := M.alloc elem in
     let* α0 : u32.t := M.read elem in
     let* α1 : enums_testcase_linked_list.List.t := M.read self in
     let* α2 :
@@ -80,7 +80,7 @@ Section Impl_enums_testcase_linked_list_List_t.
       }
   *)
   Definition len (self : ref Self) : M u32.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* α0 : ref enums_testcase_linked_list.List.t := M.read self in
     let* α1 : enums_testcase_linked_list.List.t := M.read (deref α0) in
     let* α2 : M.Val u32.t :=
@@ -103,7 +103,7 @@ Section Impl_enums_testcase_linked_list_List_t.
             (enums_testcase_linked_list.List.t::["len"] (borrow (deref α1))) in
         let* α3 : u32.t := BinOp.Panic.add (Integer.of_Z 1) α2 in
         M.alloc α3
-      | enums_testcase_linked_list.List.Nil  => M.alloc (Integer.of_Z 0)
+      | enums_testcase_linked_list.List.Nil => M.alloc (Integer.of_Z 0)
       end in
     M.read α2.
   
@@ -126,14 +126,14 @@ Section Impl_enums_testcase_linked_list_List_t.
       }
   *)
   Definition stringify (self : ref Self) : M alloc.string.String.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* α0 : ref enums_testcase_linked_list.List.t := M.read self in
     let* α1 : enums_testcase_linked_list.List.t := M.read (deref α0) in
     let* α2 : M.Val alloc.string.String.t :=
       match α1 with
       | enums_testcase_linked_list.List.Cons head tail =>
-        let* tail := M.alloc tail in
         let* head := M.alloc head in
+        let* tail := M.alloc tail in
         let* res : M.Val alloc.string.String.t :=
           let* α0 : ref str.t := M.read (mk_str "") in
           let* α1 : ref str.t := M.read (mk_str ", ") in
@@ -172,7 +172,7 @@ Section Impl_enums_testcase_linked_list_List_t.
           let* α15 : alloc.string.String.t := M.call (alloc.fmt.format α14) in
           M.alloc α15 in
         M.pure res
-      | enums_testcase_linked_list.List.Nil  =>
+      | enums_testcase_linked_list.List.Nil =>
         let* res : M.Val alloc.string.String.t :=
           let* α0 : ref str.t := M.read (mk_str "Nil") in
           let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in

@@ -12,20 +12,23 @@ Section Book.
   
   Global Instance Get_author : Notations.Dot "author" := {
     Notations.dot :=
-      Ref.map (fun x => x.(author)) (fun v x => x <| author := v |>);
+      Ref.map
+        (fun x => Some x.(author))
+        (fun v x => Some (x <| author := v |>));
   }.
   Global Instance Get_AF_author : Notations.DoubleColon t "author" := {
     Notations.double_colon (x : M.Val t) := x.["author"];
   }.
   Global Instance Get_title : Notations.Dot "title" := {
     Notations.dot :=
-      Ref.map (fun x => x.(title)) (fun v x => x <| title := v |>);
+      Ref.map (fun x => Some x.(title)) (fun v x => Some (x <| title := v |>));
   }.
   Global Instance Get_AF_title : Notations.DoubleColon t "title" := {
     Notations.double_colon (x : M.Val t) := x.["title"];
   }.
   Global Instance Get_year : Notations.Dot "year" := {
-    Notations.dot := Ref.map (fun x => x.(year)) (fun v x => x <| year := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(year)) (fun v x => Some (x <| year := v |>));
   }.
   Global Instance Get_AF_year : Notations.DoubleColon t "year" := {
     Notations.double_colon (x : M.Val t) := x.["year"];
@@ -44,7 +47,7 @@ Section Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book_t.
   Definition clone
       (self : ref Self)
       : M scoping_rules_borrowing_mutablity.Book.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let _ : unit := tt in
     let _ : unit := tt in
     let _ : unit := tt in
@@ -83,8 +86,7 @@ fn borrow_book(book: &Book) {
 Definition borrow_book
     (book : ref scoping_rules_borrowing_mutablity.Book.t)
     : M unit :=
-  let* book : M.Val (ref scoping_rules_borrowing_mutablity.Book.t) :=
-    M.alloc book in
+  let* book := M.alloc book in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "I immutably borrowed ") in
@@ -127,8 +129,7 @@ fn new_edition(book: &mut Book) {
 Definition new_edition
     (book : mut_ref scoping_rules_borrowing_mutablity.Book.t)
     : M unit :=
-  let* book : M.Val (mut_ref scoping_rules_borrowing_mutablity.Book.t) :=
-    M.alloc book in
+  let* book := M.alloc book in
   let* _ : M.Val unit :=
     let* α0 : mut_ref scoping_rules_borrowing_mutablity.Book.t := M.read book in
     assign (deref α0).["year"] (Integer.of_Z 2014) in

@@ -7,7 +7,7 @@ fn elided_input(x: &i32) {
 }
 *)
 Definition elided_input (x : ref i32.t) : M unit :=
-  let* x : M.Val (ref i32.t) := M.alloc x in
+  let* x := M.alloc x in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "`elided_input`: ") in
@@ -38,7 +38,7 @@ fn annotated_input<'a>(x: &'a i32) {
 }
 *)
 Definition annotated_input (x : ref i32.t) : M unit :=
-  let* x : M.Val (ref i32.t) := M.alloc x in
+  let* x := M.alloc x in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "`annotated_input`: ") in
@@ -69,7 +69,7 @@ fn elided_pass(x: &i32) -> &i32 {
 }
 *)
 Definition elided_pass (x : ref i32.t) : M (ref i32.t) :=
-  let* x : M.Val (ref i32.t) := M.alloc x in
+  let* x := M.alloc x in
   M.read x.
 
 (*
@@ -78,7 +78,7 @@ fn annotated_pass<'a>(x: &'a i32) -> &'a i32 {
 }
 *)
 Definition annotated_pass (x : ref i32.t) : M (ref i32.t) :=
-  let* x : M.Val (ref i32.t) := M.alloc x in
+  let* x := M.alloc x in
   M.read x.
 
 (*

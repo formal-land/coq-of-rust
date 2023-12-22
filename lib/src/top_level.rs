@@ -396,7 +396,7 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<Rc<To
             };
             vec![Rc::new(TopLevelItem::Const {
                 name,
-                ty: compile_type(env, ty),
+                ty: compile_type(env, ty).val(),
                 value,
             })]
         }
@@ -582,7 +582,16 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<Rc<To
             let mut items: Vec<ImplItemRef> = items.to_vec();
             let context = get_full_name(tcx, item.hir_id());
             reorder_definitions_inplace(tcx, env, &context, &mut items);
+
+            // Add the current trait to the environment to be recognized latter
+            // in the translation of expressions.
+            if let Some(trait_ref) = of_trait {
+                let trait_path = compile_path(env, trait_ref.path);
+                env.current_trait_impl = Some((trait_path, self_ty.clone()));
+            }
+
             let items = compile_impl_item_refs(tcx, env, &items, is_dead_code);
+            env.current_trait_impl = None;
 
             match of_trait {
                 Some(trait_ref) => {
@@ -772,20 +781,13 @@ fn compile_function_body(
     } else {
         Box::new(body)
     };
-    let body: Box<Expr> = args.iter().rfold(body, |body, (name, ty)| {
-        Box::new(Expr {
-            ty: body.ty.clone(),
-            kind: ExprKind::Let {
-                is_monadic: false,
-                pattern: Box::new(Pattern::Variable(name.to_string())),
-                init: Box::new(Expr {
-                    kind: ExprKind::Var(Path::local(name)).alloc(Some(ty.clone())),
-                    ty: Some(ty.clone().val()),
-                }),
-                body,
-            },
-        })
-    });
+    let body = crate::thir_expression::allocate_bindings(
+        &args
+            .iter()
+            .map(|(name, _)| name.clone())
+            .collect::<Vec<_>>(),
+        body,
+    );
 
     Some(body)
 }
@@ -1022,6 +1024,7 @@ fn compile_top_level(tcx: &TyCtxt, opts: TopLevelOptions) -> Rc<TopLevel> {
         file: opts.filename,
         reorder_map: HashMap::new(),
         configuration: get_configuration(&opts.configuration_file),
+        current_trait_impl: None,
     };
 
     let mut results: Vec<ItemId> = tcx.hir().items().collect();
@@ -2364,18 +2367,22 @@ fn struct_field_value<'a>(name: String) -> coq::Expression<'a> {
     coq::Expression::just_name("Ref.map").apply_many(&[
         coq::Expression::Function {
             parameters: vec![coq::Expression::just_name(x)],
-            body: Box::new(coq::Expression::RecordField {
-                record: Box::new(coq::Expression::just_name(x)),
-                field: name.to_owned(),
-            }),
+            body: Box::new(coq::Expression::just_name("Some").apply(
+                &coq::Expression::RecordField {
+                    record: Box::new(coq::Expression::just_name(x)),
+                    field: name.to_owned(),
+                },
+            )),
         },
         coq::Expression::Function {
             parameters: vec![coq::Expression::just_name(v), coq::Expression::just_name(x)],
-            body: Box::new(coq::Expression::RecordUpdate {
-                record: Box::new(coq::Expression::just_name(x)),
-                field: name,
-                update: Box::new(coq::Expression::just_name(v)),
-            }),
+            body: Box::new(coq::Expression::just_name("Some").apply(
+                &coq::Expression::RecordUpdate {
+                    record: Box::new(coq::Expression::just_name(x)),
+                    field: name,
+                    update: Box::new(coq::Expression::just_name(v)),
+                },
+            )),
         },
     ])
 }

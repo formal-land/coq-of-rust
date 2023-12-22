@@ -8,7 +8,8 @@ Section Borrowed.
   }.
   
   Global Instance Get_x : Notations.Dot "x" := {
-    Notations.dot := Ref.map (fun x' => x'.(x)) (fun v x' => x' <| x := v |>);
+    Notations.dot :=
+      Ref.map (fun x' => Some x'.(x)) (fun v x' => Some (x' <| x := v |>));
   }.
   Global Instance Get_AF_x : Notations.DoubleColon t "x" := {
     Notations.double_colon (x' : M.Val t) := x'.["x"];

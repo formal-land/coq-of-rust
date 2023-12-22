@@ -61,7 +61,7 @@ Definition main : M unit :=
                   (Trait := ltac:(refine _)))
                 (borrow_mut iter)) in
           match α0 with
-          | core.option.Option.None  =>
+          | core.option.Option.None =>
             let* α0 : M.Val never.t := Break in
             let* α1 := M.read α0 in
             let* α2 : unit := never_to_any α1 in
@@ -113,6 +113,4 @@ Definition main : M unit :=
           end in
         M.alloc tt)
     end in
-  let* α4 : unit := M.read α3 in
-  let* α0 : M.Val unit := M.alloc (use α4) in
-  M.read α0.
+  M.read (use α3).

@@ -49,8 +49,8 @@ Definition main : M unit :=
   let* α0 : M.Val unit :=
     match α0 with
     | (_, y, z) =>
-      let* z := M.alloc z in
       let* y := M.alloc y in
+      let* z := M.alloc z in
       let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "First is `0`, `y` is ") in
         let* α1 : ref str.t := M.read (mk_str ", and `z` is ") in

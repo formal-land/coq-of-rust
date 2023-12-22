@@ -9,13 +9,15 @@ Section Point.
   }.
   
   Global Instance Get_x : Notations.Dot "x" := {
-    Notations.dot := Ref.map (fun x' => x'.(x)) (fun v x' => x' <| x := v |>);
+    Notations.dot :=
+      Ref.map (fun x' => Some x'.(x)) (fun v x' => Some (x' <| x := v |>));
   }.
   Global Instance Get_AF_x : Notations.DoubleColon t "x" := {
     Notations.double_colon (x' : M.Val t) := x'.["x"];
   }.
   Global Instance Get_y : Notations.Dot "y" := {
-    Notations.dot := Ref.map (fun x => x.(y)) (fun v x => x <| y := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(y)) (fun v x => Some (x <| y := v |>));
   }.
   Global Instance Get_AF_y : Notations.DoubleColon t "y" := {
     Notations.double_colon (x : M.Val t) := x.["y"];
@@ -55,8 +57,8 @@ Section Impl_associated_functions_and_methods_Point_t.
       (x : f64.t)
       (y : f64.t)
       : M associated_functions_and_methods.Point.t :=
-    let* x : M.Val f64.t := M.alloc x in
-    let* y : M.Val f64.t := M.alloc y in
+    let* x := M.alloc x in
+    let* y := M.alloc y in
     let* α0 : f64.t := M.read x in
     let* α1 : f64.t := M.read y in
     M.pure
@@ -79,13 +81,15 @@ Section Rectangle.
   }.
   
   Global Instance Get_p1 : Notations.Dot "p1" := {
-    Notations.dot := Ref.map (fun x => x.(p1)) (fun v x => x <| p1 := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(p1)) (fun v x => Some (x <| p1 := v |>));
   }.
   Global Instance Get_AF_p1 : Notations.DoubleColon t "p1" := {
     Notations.double_colon (x : M.Val t) := x.["p1"];
   }.
   Global Instance Get_p2 : Notations.Dot "p2" := {
-    Notations.dot := Ref.map (fun x => x.(p2)) (fun v x => x <| p2 := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(p2)) (fun v x => Some (x <| p2 := v |>));
   }.
   Global Instance Get_AF_p2 : Notations.DoubleColon t "p2" := {
     Notations.double_colon (x : M.Val t) := x.["p2"];
@@ -105,7 +109,7 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
   Definition get_p1
       (self : ref Self)
       : M associated_functions_and_methods.Point.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* α0 : ref associated_functions_and_methods.Rectangle.t := M.read self in
     M.read (deref α0).["p1"].
   
@@ -126,7 +130,7 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
       }
   *)
   Definition area (self : ref Self) : M f64.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* '{|
           associated_functions_and_methods.Point.x := x1;
           associated_functions_and_methods.Point.y := y1;
@@ -135,8 +139,8 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
       let* α0 : ref associated_functions_and_methods.Rectangle.t :=
         M.read self in
       M.read (deref α0).["p1"] in
-    let* y1 := M.alloc y1 in
     let* x1 := M.alloc x1 in
+    let* y1 := M.alloc y1 in
     let* '{|
           associated_functions_and_methods.Point.x := x2;
           associated_functions_and_methods.Point.y := y2;
@@ -145,8 +149,8 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
       let* α0 : ref associated_functions_and_methods.Rectangle.t :=
         M.read self in
       M.read (deref α0).["p2"] in
-    let* y2 := M.alloc y2 in
     let* x2 := M.alloc x2 in
+    let* y2 := M.alloc y2 in
     let* α0 : f64.t := M.read x1 in
     let* α1 : f64.t := M.read x2 in
     let* α2 : f64.t := BinOp.Panic.sub α0 α1 in
@@ -172,7 +176,7 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
       }
   *)
   Definition perimeter (self : ref Self) : M f64.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* '{|
           associated_functions_and_methods.Point.x := x1;
           associated_functions_and_methods.Point.y := y1;
@@ -181,8 +185,8 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
       let* α0 : ref associated_functions_and_methods.Rectangle.t :=
         M.read self in
       M.read (deref α0).["p1"] in
-    let* y1 := M.alloc y1 in
     let* x1 := M.alloc x1 in
+    let* y1 := M.alloc y1 in
     let* '{|
           associated_functions_and_methods.Point.x := x2;
           associated_functions_and_methods.Point.y := y2;
@@ -191,8 +195,8 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
       let* α0 : ref associated_functions_and_methods.Rectangle.t :=
         M.read self in
       M.read (deref α0).["p2"] in
-    let* y2 := M.alloc y2 in
     let* x2 := M.alloc x2 in
+    let* y2 := M.alloc y2 in
     let* α0 : f64.t := M.read UnsupportedLiteral in
     let* α1 : f64.t := M.read x1 in
     let* α2 : f64.t := M.read x2 in
@@ -222,9 +226,9 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
       }
   *)
   Definition translate (self : mut_ref Self) (x : f64.t) (y : f64.t) : M unit :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
-    let* x : M.Val f64.t := M.alloc x in
-    let* y : M.Val f64.t := M.alloc y in
+    let* self := M.alloc self in
+    let* x := M.alloc x in
+    let* y := M.alloc y in
     let* _ : M.Val unit :=
       let* β : M.Val f64.t :=
         let* α0 : mut_ref associated_functions_and_methods.Rectangle.t :=
@@ -279,10 +283,12 @@ Section Pair.
   }.
   
   Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot := Ref.map (fun x => x.(x0)) (fun v x => x <| x0 := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(x0)) (fun v x => Some (x <| x0 := v |>));
   }.
   Global Instance Get_1 : Notations.Dot "1" := {
-    Notations.dot := Ref.map (fun x => x.(x1)) (fun v x => x <| x1 := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(x1)) (fun v x => Some (x <| x1 := v |>));
   }.
 End Pair.
 End Pair.
@@ -302,12 +308,12 @@ Section Impl_associated_functions_and_methods_Pair_t.
       }
   *)
   Definition destroy (self : Self) : M unit :=
-    let* self : M.Val Self := M.alloc self in
+    let* self := M.alloc self in
     let* 'associated_functions_and_methods.Pair.Build_t first second :
         associated_functions_and_methods.Pair.t :=
       M.read self in
-    let* second := M.alloc second in
     let* first := M.alloc first in
+    let* second := M.alloc second in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "Destroying Pair(") in

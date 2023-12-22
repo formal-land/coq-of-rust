@@ -11,14 +11,17 @@ Section Mapping.
   }.
   
   Global Instance Get__key : Notations.Dot "_key" := {
-    Notations.dot := Ref.map (fun x => x.(_key)) (fun v x => x <| _key := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(_key)) (fun v x => Some (x <| _key := v |>));
   }.
   Global Instance Get_AF__key : Notations.DoubleColon t "_key" := {
     Notations.double_colon (x : M.Val t) := x.["_key"];
   }.
   Global Instance Get__value : Notations.Dot "_value" := {
     Notations.dot :=
-      Ref.map (fun x => x.(_value)) (fun v x => x <| _value := v |>);
+      Ref.map
+        (fun x => Some x.(_value))
+        (fun v x => Some (x <| _value := v |>));
   }.
   Global Instance Get_AF__value : Notations.DoubleColon t "_value" := {
     Notations.double_colon (x : M.Val t) := x.["_value"];
@@ -138,7 +141,8 @@ Section AccountId.
   }.
   
   Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot := Ref.map (fun x => x.(x0)) (fun v x => x <| x0 := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(x0)) (fun v x => Some (x <| x0 := v |>));
   }.
 End AccountId.
 End AccountId.
@@ -256,7 +260,9 @@ Section Env.
   
   Global Instance Get_caller : Notations.Dot "caller" := {
     Notations.dot :=
-      Ref.map (fun x => x.(caller)) (fun v x => x <| caller := v |>);
+      Ref.map
+        (fun x => Some x.(caller))
+        (fun v x => Some (x <| caller := v |>));
   }.
   Global Instance Get_AF_caller : Notations.DoubleColon t "caller" := {
     Notations.double_colon (x : M.Val t) := x.["caller"];
@@ -264,9 +270,16 @@ Section Env.
 End Env.
 End Env.
 
-Parameter ON_ERC_1155_RECEIVED_SELECTOR : array u8.t.
+(*
+fn zero_address() -> AccountId {
+    [0u8; 32].into()
+}
+*)
+Parameter zero_address : M erc1155.AccountId.t.
 
-Parameter _ON_ERC_1155_BATCH_RECEIVED_SELECTOR : array u8.t.
+Parameter ON_ERC_1155_RECEIVED_SELECTOR : M.Val (array u8.t).
+
+Parameter _ON_ERC_1155_BATCH_RECEIVED_SELECTOR : M.Val (array u8.t).
 
 Ltac TokenId := exact u128.t.
 
@@ -279,26 +292,6 @@ Module Error.
   | SelfApproval
   | BatchTransferMismatch.
 End Error.
-
-Module  Impl_core_fmt_Debug_for_erc1155_Error_t.
-Section Impl_core_fmt_Debug_for_erc1155_Error_t.
-  Definition Self : Set := erc1155.Error.t.
-  
-  (*
-  Debug
-  *)
-  Parameter fmt :
-      (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
-  
-  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
-    Notations.double_colon := fmt;
-  }.
-  
-  Global Instance ℐ : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
-  }.
-End Impl_core_fmt_Debug_for_erc1155_Error_t.
-End Impl_core_fmt_Debug_for_erc1155_Error_t.
 
 Module  Impl_core_marker_StructuralPartialEq_for_erc1155_Error_t.
 Section Impl_core_marker_StructuralPartialEq_for_erc1155_Error_t.
@@ -444,33 +437,39 @@ Section TransferSingle.
   
   Global Instance Get_operator : Notations.Dot "operator" := {
     Notations.dot :=
-      Ref.map (fun x => x.(operator)) (fun v x => x <| operator := v |>);
+      Ref.map
+        (fun x => Some x.(operator))
+        (fun v x => Some (x <| operator := v |>));
   }.
   Global Instance Get_AF_operator : Notations.DoubleColon t "operator" := {
     Notations.double_colon (x : M.Val t) := x.["operator"];
   }.
   Global Instance Get_from : Notations.Dot "from" := {
-    Notations.dot := Ref.map (fun x => x.(from)) (fun v x => x <| from := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(from)) (fun v x => Some (x <| from := v |>));
   }.
   Global Instance Get_AF_from : Notations.DoubleColon t "from" := {
     Notations.double_colon (x : M.Val t) := x.["from"];
   }.
   Global Instance Get_to : Notations.Dot "to" := {
-    Notations.dot := Ref.map (fun x => x.(to)) (fun v x => x <| to := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(to)) (fun v x => Some (x <| to := v |>));
   }.
   Global Instance Get_AF_to : Notations.DoubleColon t "to" := {
     Notations.double_colon (x : M.Val t) := x.["to"];
   }.
   Global Instance Get_token_id : Notations.Dot "token_id" := {
     Notations.dot :=
-      Ref.map (fun x => x.(token_id)) (fun v x => x <| token_id := v |>);
+      Ref.map
+        (fun x => Some x.(token_id))
+        (fun v x => Some (x <| token_id := v |>));
   }.
   Global Instance Get_AF_token_id : Notations.DoubleColon t "token_id" := {
     Notations.double_colon (x : M.Val t) := x.["token_id"];
   }.
   Global Instance Get_value : Notations.Dot "value" := {
     Notations.dot :=
-      Ref.map (fun x => x.(value)) (fun v x => x <| value := v |>);
+      Ref.map (fun x => Some x.(value)) (fun v x => Some (x <| value := v |>));
   }.
   Global Instance Get_AF_value : Notations.DoubleColon t "value" := {
     Notations.double_colon (x : M.Val t) := x.["value"];
@@ -488,21 +487,25 @@ Section ApprovalForAll.
   
   Global Instance Get_owner : Notations.Dot "owner" := {
     Notations.dot :=
-      Ref.map (fun x => x.(owner)) (fun v x => x <| owner := v |>);
+      Ref.map (fun x => Some x.(owner)) (fun v x => Some (x <| owner := v |>));
   }.
   Global Instance Get_AF_owner : Notations.DoubleColon t "owner" := {
     Notations.double_colon (x : M.Val t) := x.["owner"];
   }.
   Global Instance Get_operator : Notations.Dot "operator" := {
     Notations.dot :=
-      Ref.map (fun x => x.(operator)) (fun v x => x <| operator := v |>);
+      Ref.map
+        (fun x => Some x.(operator))
+        (fun v x => Some (x <| operator := v |>));
   }.
   Global Instance Get_AF_operator : Notations.DoubleColon t "operator" := {
     Notations.double_colon (x : M.Val t) := x.["operator"];
   }.
   Global Instance Get_approved : Notations.Dot "approved" := {
     Notations.dot :=
-      Ref.map (fun x => x.(approved)) (fun v x => x <| approved := v |>);
+      Ref.map
+        (fun x => Some x.(approved))
+        (fun v x => Some (x <| approved := v |>));
   }.
   Global Instance Get_AF_approved : Notations.DoubleColon t "approved" := {
     Notations.double_colon (x : M.Val t) := x.["approved"];
@@ -519,14 +522,16 @@ Section Uri.
   
   Global Instance Get_value : Notations.Dot "value" := {
     Notations.dot :=
-      Ref.map (fun x => x.(value)) (fun v x => x <| value := v |>);
+      Ref.map (fun x => Some x.(value)) (fun v x => Some (x <| value := v |>));
   }.
   Global Instance Get_AF_value : Notations.DoubleColon t "value" := {
     Notations.double_colon (x : M.Val t) := x.["value"];
   }.
   Global Instance Get_token_id : Notations.Dot "token_id" := {
     Notations.dot :=
-      Ref.map (fun x => x.(token_id)) (fun v x => x <| token_id := v |>);
+      Ref.map
+        (fun x => Some x.(token_id))
+        (fun v x => Some (x <| token_id := v |>));
   }.
   Global Instance Get_AF_token_id : Notations.DoubleColon t "token_id" := {
     Notations.double_colon (x : M.Val t) := x.["token_id"];
@@ -585,14 +590,18 @@ Section Contract.
   
   Global Instance Get_balances : Notations.Dot "balances" := {
     Notations.dot :=
-      Ref.map (fun x => x.(balances)) (fun v x => x <| balances := v |>);
+      Ref.map
+        (fun x => Some x.(balances))
+        (fun v x => Some (x <| balances := v |>));
   }.
   Global Instance Get_AF_balances : Notations.DoubleColon t "balances" := {
     Notations.double_colon (x : M.Val t) := x.["balances"];
   }.
   Global Instance Get_approvals : Notations.Dot "approvals" := {
     Notations.dot :=
-      Ref.map (fun x => x.(approvals)) (fun v x => x <| approvals := v |>);
+      Ref.map
+        (fun x => Some x.(approvals))
+        (fun v x => Some (x <| approvals := v |>));
   }.
   Global Instance Get_AF_approvals : Notations.DoubleColon t "approvals" := {
     Notations.double_colon (x : M.Val t) := x.["approvals"];
@@ -600,8 +609,8 @@ Section Contract.
   Global Instance Get_token_id_nonce : Notations.Dot "token_id_nonce" := {
     Notations.dot :=
       Ref.map
-        (fun x => x.(token_id_nonce))
-        (fun v x => x <| token_id_nonce := v |>);
+        (fun x => Some x.(token_id_nonce))
+        (fun v x => Some (x <| token_id_nonce := v |>));
   }.
   Global Instance Get_AF_token_id_nonce :
     Notations.DoubleColon t "token_id_nonce" := {
@@ -742,7 +751,7 @@ Section Impl_erc1155_Contract_t.
           sender_balance -= value;
           self.balances.insert((from, token_id), sender_balance);
   
-          let mut recipient_balance = self.balances.get(&(to, token_id)).unwrap_or(0);
+          let mut recipient_balance = self.balances.get(&(to, token_id)).unwrap_or(0 as u128);
           recipient_balance += value;
           self.balances.insert((to, token_id), recipient_balance);
   
@@ -864,6 +873,35 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
   Definition Self : Set := erc1155.Contract.t.
   
   (*
+      fn is_approved_for_all(&self, owner: AccountId, operator: AccountId) -> bool {
+          self.approvals.contains(&(owner, operator))
+      }
+  *)
+  Parameter is_approved_for_all :
+      (ref Self) -> erc1155.AccountId.t -> erc1155.AccountId.t -> M bool.t.
+  
+  Global Instance AssociatedFunction_is_approved_for_all :
+    Notations.DoubleColon Self "is_approved_for_all" := {
+    Notations.double_colon := is_approved_for_all;
+  }.
+  
+  (*
+      fn balance_of(&self, owner: AccountId, token_id: TokenId) -> Balance {
+          self.balances.get(&(owner, token_id)).unwrap_or(0 as u128)
+      }
+  *)
+  Parameter balance_of :
+      (ref Self) ->
+        erc1155.AccountId.t ->
+        ltac:(erc1155.TokenId) ->
+        M ltac:(erc1155.Balance).
+  
+  Global Instance AssociatedFunction_balance_of :
+    Notations.DoubleColon Self "balance_of" := {
+    Notations.double_colon := balance_of;
+  }.
+  
+  (*
       fn safe_transfer_from(
           &mut self,
           from: AccountId,
@@ -955,22 +993,6 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
   }.
   
   (*
-      fn balance_of(&self, owner: AccountId, token_id: TokenId) -> Balance {
-          self.balances.get(&(owner, token_id)).unwrap_or(0)
-      }
-  *)
-  Parameter balance_of :
-      (ref Self) ->
-        erc1155.AccountId.t ->
-        ltac:(erc1155.TokenId) ->
-        M ltac:(erc1155.Balance).
-  
-  Global Instance AssociatedFunction_balance_of :
-    Notations.DoubleColon Self "balance_of" := {
-    Notations.double_colon := balance_of;
-  }.
-  
-  (*
       fn balance_of_batch(&self, owners: Vec<AccountId>, token_ids: Vec<TokenId>) -> Vec<Balance> {
           let mut output = Vec::new();
           for o in &owners {
@@ -1024,26 +1046,13 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
     Notations.double_colon := set_approval_for_all;
   }.
   
-  (*
-      fn is_approved_for_all(&self, owner: AccountId, operator: AccountId) -> bool {
-          self.approvals.contains(&(owner, operator))
-      }
-  *)
-  Parameter is_approved_for_all :
-      (ref Self) -> erc1155.AccountId.t -> erc1155.AccountId.t -> M bool.t.
-  
-  Global Instance AssociatedFunction_is_approved_for_all :
-    Notations.DoubleColon Self "is_approved_for_all" := {
-    Notations.double_colon := is_approved_for_all;
-  }.
-  
   Global Instance ℐ : erc1155.Erc1155.Trait Self := {
+    erc1155.Erc1155.is_approved_for_all := is_approved_for_all;
+    erc1155.Erc1155.balance_of := balance_of;
     erc1155.Erc1155.safe_transfer_from := safe_transfer_from;
     erc1155.Erc1155.safe_batch_transfer_from := safe_batch_transfer_from;
-    erc1155.Erc1155.balance_of := balance_of;
     erc1155.Erc1155.balance_of_batch := balance_of_batch;
     erc1155.Erc1155.set_approval_for_all := set_approval_for_all;
-    erc1155.Erc1155.is_approved_for_all := is_approved_for_all;
   }.
 End Impl_erc1155_Erc1155_for_erc1155_Contract_t.
 End Impl_erc1155_Erc1155_for_erc1155_Contract_t.
@@ -1132,10 +1141,3 @@ Section Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract_t.
   }.
 End Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract_t.
 End Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract_t.
-
-(*
-fn zero_address() -> AccountId {
-    [0u8; 32].into()
-}
-*)
-Parameter zero_address : M erc1155.AccountId.t.

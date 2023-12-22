@@ -281,7 +281,7 @@ Definition main : M unit :=
                     (Trait := ltac:(refine _)))
                   (borrow_mut iter)) in
             match α0 with
-            | core.option.Option.None  =>
+            | core.option.Option.None =>
               let* α0 : M.Val never.t := Break in
               let* α1 := M.read α0 in
               let* α2 : unit := never_to_any α1 in
@@ -316,8 +316,7 @@ Definition main : M unit :=
             end in
           M.alloc tt)
       end in
-    let* α4 : unit := M.read α3 in
-    M.alloc (use α4) in
+    M.pure (use α3) in
   let* _ : M.Val unit :=
     let* α0 : ref (slice i32.t) :=
       M.call
@@ -360,14 +359,14 @@ Definition main : M unit :=
                     (Trait := ltac:(refine _)))
                   (borrow_mut iter)) in
             match α0 with
-            | core.option.Option.None  =>
+            | core.option.Option.None =>
               let* α0 : M.Val never.t := Break in
               let* α1 := M.read α0 in
               let* α2 : unit := never_to_any α1 in
               M.alloc α2
             | core.option.Option.Some (i, x) =>
-              let* x := M.alloc x in
               let* i := M.alloc i in
+              let* x := M.alloc x in
               let* _ : M.Val unit :=
                 let* _ : M.Val unit :=
                   let* α0 : ref str.t := M.read (mk_str "In position ") in
@@ -401,8 +400,7 @@ Definition main : M unit :=
             end in
           M.alloc tt)
       end in
-    let* α5 : unit := M.read α4 in
-    M.alloc (use α5) in
+    M.pure (use α4) in
   let* _ : M.Val unit :=
     let* α0 : mut_ref (slice i32.t) :=
       M.call
@@ -431,7 +429,7 @@ Definition main : M unit :=
                     (Trait := ltac:(refine _)))
                   (borrow_mut iter)) in
             match α0 with
-            | core.option.Option.None  =>
+            | core.option.Option.None =>
               let* α0 : M.Val never.t := Break in
               let* α1 := M.read α0 in
               let* α2 : unit := never_to_any α1 in
@@ -449,8 +447,7 @@ Definition main : M unit :=
             end in
           M.alloc tt)
       end in
-    let* α4 : unit := M.read α3 in
-    M.alloc (use α4) in
+    M.pure (use α3) in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "Updated vector: ") in

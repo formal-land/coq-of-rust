@@ -8,7 +8,8 @@ Section AccountId.
   }.
   
   Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot := Ref.map (fun x => x.(x0)) (fun v x => x <| x0 := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(x0)) (fun v x => Some (x <| x0 := v |>));
   }.
 End AccountId.
 End AccountId.
@@ -47,7 +48,7 @@ Section Impl_core_clone_Clone_for_contract_ref_AccountId_t.
   Clone
   *)
   Definition clone (self : ref Self) : M contract_ref.AccountId.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let _ : unit := tt in
     let* α0 : ref contract_ref.AccountId.t := M.read self in
     M.read (deref α0).
@@ -85,7 +86,9 @@ Section Env.
   
   Global Instance Get_caller : Notations.Dot "caller" := {
     Notations.dot :=
-      Ref.map (fun x => x.(caller)) (fun v x => x <| caller := v |>);
+      Ref.map
+        (fun x => Some x.(caller))
+        (fun v x => Some (x <| caller := v |>));
   }.
   Global Instance Get_AF_caller : Notations.DoubleColon t "caller" := {
     Notations.double_colon (x : M.Val t) := x.["caller"];
@@ -101,7 +104,7 @@ Section FlipperRef.
   
   Global Instance Get_value : Notations.Dot "value" := {
     Notations.dot :=
-      Ref.map (fun x => x.(value)) (fun v x => x <| value := v |>);
+      Ref.map (fun x => Some x.(value)) (fun v x => Some (x <| value := v |>));
   }.
   Global Instance Get_AF_value : Notations.DoubleColon t "value" := {
     Notations.double_colon (x : M.Val t) := x.["value"];
@@ -126,8 +129,8 @@ Section Impl_core_fmt_Debug_for_contract_ref_FlipperError_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
+    let* self := M.alloc self in
+    let* f := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref str.t := M.read (mk_str "FlipperError") in
     M.call (core.fmt.Formatter.t::["write_str"] α0 α1).
@@ -167,7 +170,7 @@ Section Impl_contract_ref_FlipperRef_t.
       }
   *)
   Definition env (self : ref Self) : M contract_ref.Env.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     M.call contract_ref.FlipperRef.t::["init_env"].
   
   Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
@@ -180,7 +183,7 @@ Section Impl_contract_ref_FlipperRef_t.
       }
   *)
   Definition new (init_value : bool.t) : M Self :=
-    let* init_value : M.Val bool.t := M.alloc init_value in
+    let* init_value := M.alloc init_value in
     let* α0 : bool.t := M.read init_value in
     M.pure {| contract_ref.FlipperRef.value := α0; |}.
   
@@ -218,14 +221,14 @@ Section Impl_contract_ref_FlipperRef_t.
   Definition try_new
       (succeed : bool.t)
       : M (core.result.Result.t Self contract_ref.FlipperError.t) :=
-    let* succeed : M.Val bool.t := M.alloc succeed in
-    let* α0 : bool.t := M.read succeed in
+    let* succeed := M.alloc succeed in
+    let* α0 : bool.t := M.read (use succeed) in
     let* α1 :
         M.Val
           (core.result.Result.t
             contract_ref.FlipperRef.t
             contract_ref.FlipperError.t) :=
-      if (use α0 : bool) then
+      if α0 then
         let* α0 : contract_ref.FlipperRef.t :=
           M.call (contract_ref.FlipperRef.t::["new"] true) in
         M.alloc (core.result.Result.Ok α0)
@@ -244,7 +247,7 @@ Section Impl_contract_ref_FlipperRef_t.
       }
   *)
   Definition flip (self : mut_ref Self) : M unit :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* _ : M.Val unit :=
       let* α0 : mut_ref contract_ref.FlipperRef.t := M.read self in
       let* α1 : mut_ref contract_ref.FlipperRef.t := M.read self in
@@ -264,7 +267,7 @@ Section Impl_contract_ref_FlipperRef_t.
       }
   *)
   Definition get (self : ref Self) : M bool.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* α0 : ref contract_ref.FlipperRef.t := M.read self in
     M.read (deref α0).["value"].
   
@@ -282,7 +285,9 @@ Section ContractRef.
   
   Global Instance Get_flipper : Notations.Dot "flipper" := {
     Notations.dot :=
-      Ref.map (fun x => x.(flipper)) (fun v x => x <| flipper := v |>);
+      Ref.map
+        (fun x => Some x.(flipper))
+        (fun v x => Some (x <| flipper := v |>));
   }.
   Global Instance Get_AF_flipper : Notations.DoubleColon t "flipper" := {
     Notations.double_colon (x : M.Val t) := x.["flipper"];
@@ -310,9 +315,8 @@ Section Impl_contract_ref_ContractRef_t.
       (version : u32.t)
       (flipper_code_hash : ltac:(contract_ref.Hash))
       : M Self :=
-    let* version : M.Val u32.t := M.alloc version in
-    let* flipper_code_hash : M.Val ltac:(contract_ref.Hash) :=
-      M.alloc flipper_code_hash in
+    let* version := M.alloc version in
+    let* flipper_code_hash := M.alloc flipper_code_hash in
     let* salt : M.Val (array u8.t) :=
       let* α0 : u32.t := M.read version in
       let* α1 : array u8.t := M.call (u32.t::["to_le_bytes"] α0) in
@@ -353,10 +357,9 @@ Section Impl_contract_ref_ContractRef_t.
       (flipper_code_hash : ltac:(contract_ref.Hash))
       (succeed : bool.t)
       : M Self :=
-    let* version : M.Val u32.t := M.alloc version in
-    let* flipper_code_hash : M.Val ltac:(contract_ref.Hash) :=
-      M.alloc flipper_code_hash in
-    let* succeed : M.Val bool.t := M.alloc succeed in
+    let* version := M.alloc version in
+    let* flipper_code_hash := M.alloc flipper_code_hash in
+    let* succeed := M.alloc succeed in
     let* salt : M.Val (array u8.t) :=
       let* α0 : u32.t := M.read version in
       let* α1 : array u8.t := M.call (u32.t::["to_le_bytes"] α0) in
@@ -391,7 +394,7 @@ Section Impl_contract_ref_ContractRef_t.
       }
   *)
   Definition flip (self : mut_ref Self) : M unit :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* _ : M.Val unit :=
       let* α0 : mut_ref contract_ref.ContractRef.t := M.read self in
       let* α1 : unit :=
@@ -413,7 +416,7 @@ Section Impl_contract_ref_ContractRef_t.
       }
   *)
   Definition get (self : mut_ref Self) : M bool.t :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* α0 : mut_ref contract_ref.ContractRef.t := M.read self in
     M.call (contract_ref.FlipperRef.t::["get"] (borrow (deref α0).["flipper"])).
   

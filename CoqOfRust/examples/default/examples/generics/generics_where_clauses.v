@@ -24,7 +24,7 @@ Section Impl_generics_where_clauses_PrintInOption_for_T.
       }
   *)
   Definition print_in_option (self : Self) : M unit :=
-    let* self : M.Val Self := M.alloc self in
+    let* self := M.alloc self in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "") in

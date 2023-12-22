@@ -10,7 +10,8 @@ Section Ref.
   }.
   
   Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot := Ref.map (fun x => x.(x0)) (fun v x => x <| x0 := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(x0)) (fun v x => Some (x <| x0 := v |>));
   }.
 End Ref.
 End Ref.
@@ -30,15 +31,14 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_t_T.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
+    let* self := M.alloc self in
+    let* f := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref str.t := M.read (mk_str "Ref") in
     let* α2 : ref (scoping_rules_lifetimes_bounds.Ref.t T) := M.read self in
     let* α3 : M.Val (ref (ref T)) := M.alloc (borrow (deref α2).["0"]) in
     let* α4 : M.Val (ref (ref (ref T))) := M.alloc (borrow α3) in
-    let* α5 : ref type not implemented :=
-      M.read (pointer_coercion "Unsize" α4) in
+    let* α5 : ref dynamic := M.read (pointer_coercion "Unsize" α4) in
     M.call (core.fmt.Formatter.t::["debug_tuple_field1_finish"] α0 α1 α5).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
@@ -60,7 +60,7 @@ where
 }
 *)
 Definition print {T : Set} {ℋ_0 : core.fmt.Debug.Trait T} (t : T) : M unit :=
-  let* t : M.Val T := M.alloc t in
+  let* t := M.alloc t in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "`print`: t is ") in
@@ -98,7 +98,7 @@ Definition print_ref
     {ℋ_0 : core.fmt.Debug.Trait T}
     (t : ref T)
     : M unit :=
-  let* t : M.Val (ref T) := M.alloc t in
+  let* t := M.alloc t in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "`print_ref`: t is ") in

@@ -8,7 +8,8 @@ Section Person.
   }.
   
   Global Instance Get_job : Notations.Dot "job" := {
-    Notations.dot := Ref.map (fun x => x.(job)) (fun v x => x <| job := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(job)) (fun v x => Some (x <| job := v |>));
   }.
   Global Instance Get_AF_job : Notations.DoubleColon t "job" := {
     Notations.double_colon (x : M.Val t) := x.["job"];
@@ -26,8 +27,8 @@ Section Job.
   Global Instance Get_phone_number : Notations.Dot "phone_number" := {
     Notations.dot :=
       Ref.map
-        (fun x => x.(phone_number))
-        (fun v x => x <| phone_number := v |>);
+        (fun x => Some x.(phone_number))
+        (fun v x => Some (x <| phone_number := v |>));
   }.
   Global Instance Get_AF_phone_number :
     Notations.DoubleColon t "phone_number" := {
@@ -46,7 +47,7 @@ Section Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job_t.
   Definition clone
       (self : ref Self)
       : M unpacking_options_via_question_mark.Job.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let _ : unit := tt in
     let* α0 : ref unpacking_options_via_question_mark.Job.t := M.read self in
     M.read (deref α0).
@@ -81,14 +82,18 @@ Section PhoneNumber.
   
   Global Instance Get_area_code : Notations.Dot "area_code" := {
     Notations.dot :=
-      Ref.map (fun x => x.(area_code)) (fun v x => x <| area_code := v |>);
+      Ref.map
+        (fun x => Some x.(area_code))
+        (fun v x => Some (x <| area_code := v |>));
   }.
   Global Instance Get_AF_area_code : Notations.DoubleColon t "area_code" := {
     Notations.double_colon (x : M.Val t) := x.["area_code"];
   }.
   Global Instance Get_number : Notations.Dot "number" := {
     Notations.dot :=
-      Ref.map (fun x => x.(number)) (fun v x => x <| number := v |>);
+      Ref.map
+        (fun x => Some x.(number))
+        (fun v x => Some (x <| number := v |>));
   }.
   Global Instance Get_AF_number : Notations.DoubleColon t "number" := {
     Notations.double_colon (x : M.Val t) := x.["number"];
@@ -106,7 +111,7 @@ Section Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumbe
   Definition clone
       (self : ref Self)
       : M unpacking_options_via_question_mark.PhoneNumber.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let _ : unit := tt in
     let _ : unit := tt in
     let* α0 : ref unpacking_options_via_question_mark.PhoneNumber.t :=
@@ -149,7 +154,7 @@ Section Impl_unpacking_options_via_question_mark_Person_t.
   Definition work_phone_area_code
       (self : ref Self)
       : M (core.option.Option.t u8.t) :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let return_ := M.return_ (R := core.option.Option.t u8.t) in
     M.catch_return
       (let* α0 : ref unpacking_options_via_question_mark.Person.t :=
@@ -275,8 +280,8 @@ Definition main : M unit :=
       M.alloc (core.option.Option.Some (Integer.of_Z 61)) in
     match (borrow α1, borrow α2) with
     | (left_val, right_val) =>
-      let* right_val := M.alloc right_val in
       let* left_val := M.alloc left_val in
+      let* right_val := M.alloc right_val in
       let* α0 : ref (core.option.Option.t u8.t) := M.read left_val in
       let* α1 : ref (core.option.Option.t u8.t) := M.read right_val in
       let* α2 : bool.t :=
@@ -286,7 +291,9 @@ Definition main : M unit :=
               (Trait := ltac:(refine _)))
             α0
             α1) in
-      if (use (UnOp.not α2) : bool) then
+      let* α3 : M.Val bool.t := M.alloc (UnOp.not α2) in
+      let* α4 : bool.t := M.read (use α3) in
+      if α4 then
         let* kind : M.Val core.panicking.AssertKind.t :=
           M.alloc core.panicking.AssertKind.Eq in
         let* _ : M.Val never.t :=

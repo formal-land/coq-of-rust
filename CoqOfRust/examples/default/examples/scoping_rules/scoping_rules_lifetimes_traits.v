@@ -8,7 +8,8 @@ Section Borrowed.
   }.
   
   Global Instance Get_x : Notations.Dot "x" := {
-    Notations.dot := Ref.map (fun x' => x'.(x)) (fun v x' => x' <| x := v |>);
+    Notations.dot :=
+      Ref.map (fun x' => Some x'.(x)) (fun v x' => Some (x' <| x := v |>));
   }.
   Global Instance Get_AF_x : Notations.DoubleColon t "x" := {
     Notations.double_colon (x' : M.Val t) := x'.["x"];
@@ -27,16 +28,15 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
+    let* self := M.alloc self in
+    let* f := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref str.t := M.read (mk_str "Borrowed") in
     let* α2 : ref str.t := M.read (mk_str "x") in
     let* α3 : ref scoping_rules_lifetimes_traits.Borrowed.t := M.read self in
     let* α4 : M.Val (ref (ref i32.t)) := M.alloc (borrow (deref α3).["x"]) in
     let* α5 : M.Val (ref (ref (ref i32.t))) := M.alloc (borrow α4) in
-    let* α6 : ref type not implemented :=
-      M.read (pointer_coercion "Unsize" α5) in
+    let* α6 : ref dynamic := M.read (pointer_coercion "Unsize" α5) in
     M.call (core.fmt.Formatter.t::["debug_struct_field1_finish"] α0 α1 α2 α6).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {

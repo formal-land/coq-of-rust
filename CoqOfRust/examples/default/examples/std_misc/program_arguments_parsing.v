@@ -7,7 +7,7 @@ fn increase(number: i32) {
 }
 *)
 Definition increase (number : i32.t) : M unit :=
-  let* number : M.Val i32.t := M.alloc number in
+  let* number := M.alloc number in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "") in
@@ -41,7 +41,7 @@ fn decrease(number: i32) {
 }
 *)
 Definition decrease (number : i32.t) : M unit :=
-  let* number : M.Val i32.t := M.alloc number in
+  let* number := M.alloc number in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "") in

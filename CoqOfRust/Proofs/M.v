@@ -56,9 +56,7 @@ Module Run.
       (address : Address) (v : State.get_Set address)
       (state : State)
       (k : Ref (State.get_Set address) -> LowM A) :
-    let r :=
-      Ref.MutRef (A := State.get_Set address) (B := State.get_Set address)
-        address (fun full_v => full_v) (fun v _full_v => v) in
+    let r := Ref.mut_ref address in
     State.read address state = None ->
     State.alloc_write address state v = Some state' ->
     {{ env, state | k r ⇓ result | state' }} ->

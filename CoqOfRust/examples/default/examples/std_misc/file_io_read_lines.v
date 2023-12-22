@@ -15,7 +15,7 @@ Definition read_lines
       M
         (std.io.Lines.t
           (std.io.buffered.bufreader.BufReader.t std.fs.File.t)) :=
-  let* filename : M.Val alloc.string.String.t := M.alloc filename in
+  let* filename := M.alloc filename in
   let return_ :=
     M.return_
       (R :=
@@ -106,7 +106,7 @@ Definition main : M unit :=
                   (Trait := ltac:(refine _)))
                 (borrow_mut iter)) in
           match α0 with
-          | core.option.Option.None  =>
+          | core.option.Option.None =>
             let* α0 : M.Val never.t := Break in
             let* α1 := M.read α0 in
             let* α2 : unit := never_to_any α1 in
@@ -153,6 +153,4 @@ Definition main : M unit :=
           end in
         M.alloc tt)
     end in
-  let* α3 : unit := M.read α2 in
-  let* α0 : M.Val unit := M.alloc (use α3) in
-  M.read α0.
+  M.read (use α2).

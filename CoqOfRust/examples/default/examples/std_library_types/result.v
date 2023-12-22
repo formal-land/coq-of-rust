@@ -20,19 +20,19 @@ Module checked.
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter.t)
         : M ltac:(core.fmt.Result) :=
-      let* self : M.Val (ref Self) := M.alloc self in
-      let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
+      let* self := M.alloc self in
+      let* f := M.alloc f in
       let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
       let* α1 : ref result.checked.MathError.t := M.read self in
       let* α2 : M.Val (ref str.t) :=
         match α1 with
-        | result.checked.MathError.DivisionByZero  =>
+        | result.checked.MathError.DivisionByZero =>
           let* α0 : ref str.t := M.read (mk_str "DivisionByZero") in
           M.alloc α0
-        | result.checked.MathError.NonPositiveLogarithm  =>
+        | result.checked.MathError.NonPositiveLogarithm =>
           let* α0 : ref str.t := M.read (mk_str "NonPositiveLogarithm") in
           M.alloc α0
-        | result.checked.MathError.NegativeSquareRoot  =>
+        | result.checked.MathError.NegativeSquareRoot =>
           let* α0 : ref str.t := M.read (mk_str "NegativeSquareRoot") in
           M.alloc α0
         end in
@@ -66,19 +66,21 @@ Module checked.
       }
   *)
   Definition div (x : f64.t) (y : f64.t) : M ltac:(result.checked.MathResult) :=
-    let* x : M.Val f64.t := M.alloc x in
-    let* y : M.Val f64.t := M.alloc y in
+    let* x := M.alloc x in
+    let* y := M.alloc y in
     let* α0 : f64.t := M.read y in
     let* α1 : f64.t := M.read UnsupportedLiteral in
-    let* α2 : M.Val (core.result.Result.t f64.t result.checked.MathError.t) :=
-      if (use (BinOp.Pure.eq α0 α1) : bool) then
+    let* α2 : M.Val bool.t := M.alloc (BinOp.Pure.eq α0 α1) in
+    let* α3 : bool.t := M.read (use α2) in
+    let* α4 : M.Val (core.result.Result.t f64.t result.checked.MathError.t) :=
+      if α3 then
         M.alloc (core.result.Result.Err result.checked.MathError.DivisionByZero)
       else
         let* α0 : f64.t := M.read x in
         let* α1 : f64.t := M.read y in
         let* α2 : f64.t := BinOp.Panic.div α0 α1 in
         M.alloc (core.result.Result.Ok α2) in
-    M.read α2.
+    M.read α4.
   
   (*
       pub fn sqrt(x: f64) -> MathResult {
@@ -90,18 +92,20 @@ Module checked.
       }
   *)
   Definition sqrt (x : f64.t) : M ltac:(result.checked.MathResult) :=
-    let* x : M.Val f64.t := M.alloc x in
+    let* x := M.alloc x in
     let* α0 : f64.t := M.read x in
     let* α1 : f64.t := M.read UnsupportedLiteral in
-    let* α2 : M.Val (core.result.Result.t f64.t result.checked.MathError.t) :=
-      if (use (BinOp.Pure.lt α0 α1) : bool) then
+    let* α2 : M.Val bool.t := M.alloc (BinOp.Pure.lt α0 α1) in
+    let* α3 : bool.t := M.read (use α2) in
+    let* α4 : M.Val (core.result.Result.t f64.t result.checked.MathError.t) :=
+      if α3 then
         M.alloc
           (core.result.Result.Err result.checked.MathError.NegativeSquareRoot)
       else
         let* α0 : f64.t := M.read x in
         let* α1 : f64.t := M.call (f64.t::["sqrt"] α0) in
         M.alloc (core.result.Result.Ok α1) in
-    M.read α2.
+    M.read α4.
   
   (*
       pub fn ln(x: f64) -> MathResult {
@@ -113,18 +117,20 @@ Module checked.
       }
   *)
   Definition ln (x : f64.t) : M ltac:(result.checked.MathResult) :=
-    let* x : M.Val f64.t := M.alloc x in
+    let* x := M.alloc x in
     let* α0 : f64.t := M.read x in
     let* α1 : f64.t := M.read UnsupportedLiteral in
-    let* α2 : M.Val (core.result.Result.t f64.t result.checked.MathError.t) :=
-      if (use (BinOp.Pure.le α0 α1) : bool) then
+    let* α2 : M.Val bool.t := M.alloc (BinOp.Pure.le α0 α1) in
+    let* α3 : bool.t := M.read (use α2) in
+    let* α4 : M.Val (core.result.Result.t f64.t result.checked.MathError.t) :=
+      if α3 then
         M.alloc
           (core.result.Result.Err result.checked.MathError.NonPositiveLogarithm)
       else
         let* α0 : f64.t := M.read x in
         let* α1 : f64.t := M.call (f64.t::["ln"] α0) in
         M.alloc (core.result.Result.Ok α1) in
-    M.read α2.
+    M.read α4.
 End checked.
 
 Module MathError.
@@ -145,19 +151,19 @@ Section Impl_core_fmt_Debug_for_result_checked_MathError_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
+    let* self := M.alloc self in
+    let* f := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref result.checked.MathError.t := M.read self in
     let* α2 : M.Val (ref str.t) :=
       match α1 with
-      | result.checked.MathError.DivisionByZero  =>
+      | result.checked.MathError.DivisionByZero =>
         let* α0 : ref str.t := M.read (mk_str "DivisionByZero") in
         M.alloc α0
-      | result.checked.MathError.NonPositiveLogarithm  =>
+      | result.checked.MathError.NonPositiveLogarithm =>
         let* α0 : ref str.t := M.read (mk_str "NonPositiveLogarithm") in
         M.alloc α0
-      | result.checked.MathError.NegativeSquareRoot  =>
+      | result.checked.MathError.NegativeSquareRoot =>
         let* α0 : ref str.t := M.read (mk_str "NegativeSquareRoot") in
         M.alloc α0
       end in
@@ -190,19 +196,21 @@ Ltac MathResult :=
     }
 *)
 Definition div (x : f64.t) (y : f64.t) : M ltac:(result.checked.MathResult) :=
-  let* x : M.Val f64.t := M.alloc x in
-  let* y : M.Val f64.t := M.alloc y in
+  let* x := M.alloc x in
+  let* y := M.alloc y in
   let* α0 : f64.t := M.read y in
   let* α1 : f64.t := M.read UnsupportedLiteral in
-  let* α2 : M.Val (core.result.Result.t f64.t result.checked.MathError.t) :=
-    if (use (BinOp.Pure.eq α0 α1) : bool) then
+  let* α2 : M.Val bool.t := M.alloc (BinOp.Pure.eq α0 α1) in
+  let* α3 : bool.t := M.read (use α2) in
+  let* α4 : M.Val (core.result.Result.t f64.t result.checked.MathError.t) :=
+    if α3 then
       M.alloc (core.result.Result.Err result.checked.MathError.DivisionByZero)
     else
       let* α0 : f64.t := M.read x in
       let* α1 : f64.t := M.read y in
       let* α2 : f64.t := BinOp.Panic.div α0 α1 in
       M.alloc (core.result.Result.Ok α2) in
-  M.read α2.
+  M.read α4.
 
 (*
     pub fn sqrt(x: f64) -> MathResult {
@@ -214,18 +222,20 @@ Definition div (x : f64.t) (y : f64.t) : M ltac:(result.checked.MathResult) :=
     }
 *)
 Definition sqrt (x : f64.t) : M ltac:(result.checked.MathResult) :=
-  let* x : M.Val f64.t := M.alloc x in
+  let* x := M.alloc x in
   let* α0 : f64.t := M.read x in
   let* α1 : f64.t := M.read UnsupportedLiteral in
-  let* α2 : M.Val (core.result.Result.t f64.t result.checked.MathError.t) :=
-    if (use (BinOp.Pure.lt α0 α1) : bool) then
+  let* α2 : M.Val bool.t := M.alloc (BinOp.Pure.lt α0 α1) in
+  let* α3 : bool.t := M.read (use α2) in
+  let* α4 : M.Val (core.result.Result.t f64.t result.checked.MathError.t) :=
+    if α3 then
       M.alloc
         (core.result.Result.Err result.checked.MathError.NegativeSquareRoot)
     else
       let* α0 : f64.t := M.read x in
       let* α1 : f64.t := M.call (f64.t::["sqrt"] α0) in
       M.alloc (core.result.Result.Ok α1) in
-  M.read α2.
+  M.read α4.
 
 (*
     pub fn ln(x: f64) -> MathResult {
@@ -237,18 +247,20 @@ Definition sqrt (x : f64.t) : M ltac:(result.checked.MathResult) :=
     }
 *)
 Definition ln (x : f64.t) : M ltac:(result.checked.MathResult) :=
-  let* x : M.Val f64.t := M.alloc x in
+  let* x := M.alloc x in
   let* α0 : f64.t := M.read x in
   let* α1 : f64.t := M.read UnsupportedLiteral in
-  let* α2 : M.Val (core.result.Result.t f64.t result.checked.MathError.t) :=
-    if (use (BinOp.Pure.le α0 α1) : bool) then
+  let* α2 : M.Val bool.t := M.alloc (BinOp.Pure.le α0 α1) in
+  let* α3 : bool.t := M.read (use α2) in
+  let* α4 : M.Val (core.result.Result.t f64.t result.checked.MathError.t) :=
+    if α3 then
       M.alloc
         (core.result.Result.Err result.checked.MathError.NonPositiveLogarithm)
     else
       let* α0 : f64.t := M.read x in
       let* α1 : f64.t := M.call (f64.t::["ln"] α0) in
       M.alloc (core.result.Result.Ok α1) in
-  M.read α2.
+  M.read α4.
 
 (*
 fn op(x: f64, y: f64) -> f64 {
@@ -266,8 +278,8 @@ fn op(x: f64, y: f64) -> f64 {
 }
 *)
 Definition op (x : f64.t) (y : f64.t) : M f64.t :=
-  let* x : M.Val f64.t := M.alloc x in
-  let* y : M.Val f64.t := M.alloc y in
+  let* x := M.alloc x in
+  let* y := M.alloc y in
   let* α0 : f64.t := M.read x in
   let* α1 : f64.t := M.read y in
   let* α2 : core.result.Result.t f64.t result.checked.MathError.t :=

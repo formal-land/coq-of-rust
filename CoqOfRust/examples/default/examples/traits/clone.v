@@ -18,8 +18,8 @@ Section Impl_core_fmt_Debug_for_clone_Unit_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
+    let* self := M.alloc self in
+    let* f := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref str.t := M.read (mk_str "Unit") in
     M.call (core.fmt.Formatter.t::["write_str"] α0 α1).
@@ -42,7 +42,7 @@ Section Impl_core_clone_Clone_for_clone_Unit_t.
   Clone
   *)
   Definition clone (self : ref Self) : M clone.Unit.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* α0 : ref clone.Unit.t := M.read self in
     M.read (deref α0).
   
@@ -75,10 +75,12 @@ Section Pair.
   }.
   
   Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot := Ref.map (fun x => x.(x0)) (fun v x => x <| x0 := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(x0)) (fun v x => Some (x <| x0 := v |>));
   }.
   Global Instance Get_1 : Notations.Dot "1" := {
-    Notations.dot := Ref.map (fun x => x.(x1)) (fun v x => x <| x1 := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(x1)) (fun v x => Some (x <| x1 := v |>));
   }.
 End Pair.
 End Pair.
@@ -91,7 +93,7 @@ Section Impl_core_clone_Clone_for_clone_Pair_t.
   Clone
   *)
   Definition clone (self : ref Self) : M clone.Pair.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* α0 : ref clone.Pair.t := M.read self in
     let* α1 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t :=
       M.call
@@ -131,23 +133,21 @@ Section Impl_core_fmt_Debug_for_clone_Pair_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
+    let* self := M.alloc self in
+    let* f := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref str.t := M.read (mk_str "Pair") in
     let* α2 : ref clone.Pair.t := M.read self in
     let* α3 : M.Val (ref (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)) :=
       M.alloc (borrow (deref α2).["0"]) in
-    let* α4 : ref type not implemented :=
-      M.read (pointer_coercion "Unsize" α3) in
+    let* α4 : ref dynamic := M.read (pointer_coercion "Unsize" α3) in
     let* α5 : ref clone.Pair.t := M.read self in
     let* α6 : M.Val (ref (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)) :=
       M.alloc (borrow (deref α5).["1"]) in
     let* α7 :
         M.Val (ref (ref (alloc.boxed.Box.t i32.t alloc.alloc.Global.t))) :=
       M.alloc (borrow α6) in
-    let* α8 : ref type not implemented :=
-      M.read (pointer_coercion "Unsize" α7) in
+    let* α8 : ref dynamic := M.read (pointer_coercion "Unsize" α7) in
     M.call (core.fmt.Formatter.t::["debug_tuple_field2_finish"] α0 α1 α4 α8).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {

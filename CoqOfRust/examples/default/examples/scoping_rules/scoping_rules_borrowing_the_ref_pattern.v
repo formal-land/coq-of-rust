@@ -9,13 +9,15 @@ Section Point.
   }.
   
   Global Instance Get_x : Notations.Dot "x" := {
-    Notations.dot := Ref.map (fun x' => x'.(x)) (fun v x' => x' <| x := v |>);
+    Notations.dot :=
+      Ref.map (fun x' => Some x'.(x)) (fun v x' => Some (x' <| x := v |>));
   }.
   Global Instance Get_AF_x : Notations.DoubleColon t "x" := {
     Notations.double_colon (x' : M.Val t) := x'.["x"];
   }.
   Global Instance Get_y : Notations.Dot "y" := {
-    Notations.dot := Ref.map (fun x => x.(y)) (fun v x => x <| y := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(y)) (fun v x => Some (x <| y := v |>));
   }.
   Global Instance Get_AF_y : Notations.DoubleColon t "y" := {
     Notations.double_colon (x : M.Val t) := x.["y"];
@@ -33,7 +35,7 @@ Section Impl_core_clone_Clone_for_scoping_rules_borrowing_the_ref_pattern_Point_
   Definition clone
       (self : ref Self)
       : M scoping_rules_borrowing_the_ref_pattern.Point.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let _ : unit := tt in
     let* α0 : ref scoping_rules_borrowing_the_ref_pattern.Point.t :=
       M.read self in

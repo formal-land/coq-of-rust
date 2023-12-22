@@ -66,7 +66,7 @@ Definition red
     {ℋ_0 : generics_bounds_test_case_empty_bounds.Red.Trait T}
     (arg : ref T)
     : M (ref str.t) :=
-  let* arg : M.Val (ref T) := M.alloc arg in
+  let* arg := M.alloc arg in
   M.read (mk_str "red").
 
 (*
@@ -79,7 +79,7 @@ Definition blue
     {ℋ_0 : generics_bounds_test_case_empty_bounds.Blue.Trait T}
     (arg : ref T)
     : M (ref str.t) :=
-  let* arg : M.Val (ref T) := M.alloc arg in
+  let* arg := M.alloc arg in
   M.read (mk_str "blue").
 
 (*

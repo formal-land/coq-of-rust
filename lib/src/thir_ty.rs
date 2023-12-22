@@ -5,7 +5,18 @@ use rustc_middle::ty::GenericArgKind;
 use rustc_type_ir::sty::TyKind;
 use std::rc::Rc;
 
-pub(crate) fn compile_type(env: &Env, ty: &rustc_middle::ty::Ty) -> Rc<CoqType> {
+fn compile_poly_fn_sig<'a>(env: &Env<'a>, sig: &rustc_middle::ty::PolyFnSig<'a>) -> Rc<CoqType> {
+    let sig = sig.skip_binder();
+    let args = sig
+        .inputs()
+        .iter()
+        .map(|ty| compile_type(env, ty))
+        .collect::<Vec<_>>();
+    let ret = compile_type(env, &sig.output());
+    Rc::new(CoqType::Function { args, ret })
+}
+
+pub(crate) fn compile_type<'a>(env: &Env<'a>, ty: &rustc_middle::ty::Ty<'a>) -> Rc<CoqType> {
     match ty.kind() {
         TyKind::Bool | TyKind::Char | TyKind::Int(_) | TyKind::Uint(_) | TyKind::Float(_) => {
             CoqType::path(&[&ty.to_string(), "t"])
@@ -42,11 +53,17 @@ pub(crate) fn compile_type(env: &Env, ty: &rustc_middle::ty::Ty) -> Rc<CoqType> 
         TyKind::RawPtr(rustc_middle::ty::TypeAndMut { ty, mutbl }) | TyKind::Ref(_, ty, mutbl) => {
             CoqType::make_ref(mutbl, compile_type(env, ty))
         }
-        // Ref(Region<'tcx>, Ty<'tcx>, Mutability),
-        TyKind::FnDef(_, _) => Rc::new(CoqType::Infer),
-        // FnPtr(Binder<'tcx, FnSig<'tcx>>),
-        // Dynamic(&'tcx List<Binder<'tcx, ExistentialPredicate<'tcx>>>, Region<'tcx>, DynKind),
-        // Closure(DefId, &'tcx List<GenericArg<'tcx>>),
+        TyKind::FnPtr(fn_sig) => compile_poly_fn_sig(env, fn_sig),
+        TyKind::Dynamic(_, _, _) => CoqType::path(&["dynamic"]),
+        TyKind::FnDef(_, _) => {
+            // We consider that for this case the type is not important as an
+            // existing function already has a type, so this can be inferred.
+            Rc::new(CoqType::Infer)
+        }
+        TyKind::Closure(_, generic_args) => {
+            let fn_sig = generic_args.as_closure().sig();
+            compile_poly_fn_sig(env, &fn_sig)
+        }
         // Generator(DefId, &'tcx List<GenericArg<'tcx>>, Movability),
         // GeneratorWitness(DefId, &'tcx List<GenericArg<'tcx>>),
         TyKind::Never => CoqType::path(&["never", "t"]),

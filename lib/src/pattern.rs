@@ -66,76 +66,85 @@ impl Pattern {
         }
     }
 
-    pub(crate) fn to_doc(&self) -> Doc {
+    pub(crate) fn to_doc(&self, with_paren: bool) -> Doc {
         match self {
             Pattern::Wild => text("_"),
             Pattern::Variable(name) => text(name),
             Pattern::Binding(name, pat) => nest([
                 text("("),
-                pat.to_doc(),
+                pat.to_doc(false),
                 text(" as"),
                 line(),
                 text(name),
                 text(")"),
             ]),
-            Pattern::StructStruct(path, fields, struct_or_variant) => group([
-                match struct_or_variant {
-                    StructOrVariant::Struct => nil(),
-                    StructOrVariant::Variant => path.to_doc(),
-                },
-                optional_insert(
-                    fields.is_empty(),
-                    concat([
-                        match struct_or_variant {
-                            StructOrVariant::Struct => nil(),
-                            StructOrVariant::Variant => line(),
-                        },
-                        nest([
-                            text("{|"),
+            Pattern::StructStruct(path, fields, struct_or_variant) => paren(
+                with_paren
+                    && matches!(struct_or_variant, StructOrVariant::Variant)
+                    && !fields.is_empty(),
+                group([
+                    match struct_or_variant {
+                        StructOrVariant::Struct => nil(),
+                        StructOrVariant::Variant => path.to_doc(),
+                    },
+                    optional_insert(
+                        fields.is_empty(),
+                        concat([
+                            match struct_or_variant {
+                                StructOrVariant::Struct => nil(),
+                                StructOrVariant::Variant => line(),
+                            },
+                            nest([
+                                text("{|"),
+                                line(),
+                                intersperse(
+                                    fields.iter().map(|(name, pattern)| {
+                                        nest([
+                                            path.to_doc(),
+                                            text("."),
+                                            text(name),
+                                            line(),
+                                            text(":="),
+                                            line(),
+                                            pattern.to_doc(false),
+                                            text(";"),
+                                        ])
+                                    }),
+                                    [line()],
+                                ),
+                            ]),
                             line(),
-                            intersperse(
-                                fields.iter().map(|(name, pattern)| {
-                                    nest([
-                                        path.to_doc(),
-                                        text("."),
-                                        text(name),
-                                        line(),
-                                        text(":="),
-                                        line(),
-                                        pattern.to_doc(),
-                                        text(";"),
-                                    ])
-                                }),
-                                [line()],
-                            ),
+                            text("|}"),
                         ]),
-                        line(),
-                        text("|}"),
-                    ]),
-                ),
-            ]),
-            Pattern::StructTuple(path, fields, struct_or_variant) => {
-                return nest([
+                    ),
+                ]),
+            ),
+            Pattern::StructTuple(path, fields, struct_or_variant) => paren(
+                with_paren && !fields.is_empty(),
+                nest([
                     path.to_doc(),
                     match struct_or_variant {
                         StructOrVariant::Variant => nil(),
                         StructOrVariant::Struct => text(".Build_t"),
                     },
-                    line(),
-                    nest([intersperse(
-                        fields.iter().map(|field| field.to_doc()),
-                        [line()],
-                    )]),
-                ]);
-            }
+                    concat(
+                        fields
+                            .iter()
+                            .map(|field| concat([line(), field.to_doc(true)])),
+                    ),
+                ]),
+            ),
             Pattern::Or(pats) => paren(
-                true,
-                intersperse(pats.iter().map(|pat| pat.to_doc()), [text("|")]),
+                with_paren,
+                nest([intersperse(
+                    pats.iter().map(|pat| pat.to_doc(true)),
+                    [text(" |"), line()],
+                )]),
             ),
             Pattern::Tuple(pats) => paren(
                 true,
                 nest([intersperse(
-                    pats.iter().map(|pat| pat.to_doc()),
+                    pats.iter().map(|pat| pat.to_doc(false)),
                     [text(","), line()],
                 )]),
             ),
@@ -144,12 +153,12 @@ impl Pattern {
                 init_patterns,
                 slice_pattern,
             } => {
-                let pats: Vec<Doc> = init_patterns.iter().map(|pat| pat.to_doc()).collect();
+                let pats: Vec<Doc> = init_patterns.iter().map(|pat| pat.to_doc(false)).collect();
                 match slice_pattern {
                     Some(slice_pattern) => nest([
                         text("("),
                         intersperse(
-                            [pats, vec![slice_pattern.to_doc()]].concat(),
+                            [pats, vec![slice_pattern.to_doc(false)]].concat(),
                             [text("::"), line()],
                         ),
                         text(")"),

@@ -8,7 +8,8 @@ Section AccountId.
   }.
   
   Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot := Ref.map (fun x => x.(x0)) (fun v x => x <| x0 := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(x0)) (fun v x => Some (x <| x0 := v |>));
   }.
 End AccountId.
 End AccountId.
@@ -69,7 +70,8 @@ Ltac Hash := exact (array u8.t).
 
 Module LangError.
   Inductive t : Set :=
-  | CouldNotReadInput.
+  | CouldNotReadInput
+  | AnotherError.
 End LangError.
 
 Module  Selector.

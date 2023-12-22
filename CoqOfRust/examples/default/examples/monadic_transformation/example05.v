@@ -8,7 +8,8 @@ Section Foo.
   }.
   
   Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot := Ref.map (fun x => x.(x0)) (fun v x => x <| x0 := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(x0)) (fun v x => Some (x <| x0 := v |>));
   }.
 End Foo.
 End Foo.
@@ -23,7 +24,7 @@ Section Impl_example05_Foo_t.
       }
   *)
   Definition plus1 (self : Self) : M u32.t :=
-    let* self : M.Val Self := M.alloc self in
+    let* self := M.alloc self in
     let* α0 : u32.t := M.read self.["0"] in
     BinOp.Panic.add α0 (Integer.of_Z 1).
   

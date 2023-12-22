@@ -64,6 +64,7 @@ pub(crate) enum ExprKind {
     Pure(Box<Expr>),
     LocalVar(String),
     Var(Path),
+    Constructor(Path),
     VarWithTy {
         path: Path,
         ty_name: String,
@@ -92,7 +93,7 @@ pub(crate) enum ExprKind {
         arg: Box<Expr>,
     },
     Lambda {
-        args: Vec<Pattern>,
+        args: Vec<(Pattern, Rc<CoqType>)>,
         body: Box<Expr>,
     },
     Array {
@@ -152,6 +153,7 @@ pub(crate) enum ExprKind {
         path: Path,
         struct_or_variant: StructOrVariant,
     },
+    Use(Box<Expr>),
     Return(Box<Expr>),
     /// Useful for error messages or annotations
     Message(String),
@@ -178,6 +180,7 @@ impl Expr {
             ExprKind::Pure(expr) => expr.has_return(),
             ExprKind::LocalVar(_) => false,
             ExprKind::Var(_) => false,
+            ExprKind::Constructor(_) => false,
             ExprKind::VarWithTy {
                 path: _,
                 ty_name: _,
@@ -197,7 +200,7 @@ impl Expr {
                 from_user: _,
             } => func.has_return() || args.iter().any(Self::has_return),
             ExprKind::MonadicOperator { name: _, arg } => arg.has_return(),
-            ExprKind::Lambda { args: _, body } => body.has_return(),
+            ExprKind::Lambda { .. } => false,
             ExprKind::Array { elements } => elements.iter().any(Self::has_return),
             ExprKind::Tuple { elements } => elements.iter().any(Self::has_return),
             ExprKind::Let {
@@ -241,6 +244,7 @@ impl Expr {
                 path: _,
                 struct_or_variant: _,
             } => false,
+            ExprKind::Use(expr) => expr.has_return(),
             ExprKind::Return(_) => true,
             ExprKind::Message(_) => false,
         }
@@ -361,6 +365,7 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Expr) -> (Expr, FreshVa
         ExprKind::Pure(_) => panic!("Expressions should not be monadic yet."),
         ExprKind::LocalVar(_) => (pure(expr), fresh_vars),
         ExprKind::Var(_) => (pure(expr), fresh_vars),
+        ExprKind::Constructor(_) => (pure(expr), fresh_vars),
         ExprKind::VarWithTy {
             path,
             ty_name,
@@ -680,6 +685,15 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Expr) -> (Expr, FreshVa
             }),
         ),
         ExprKind::StructUnit { .. } => (pure(expr), fresh_vars),
+        ExprKind::Use(expr) => monadic_let(fresh_vars, *expr, |fresh_vars, expr| {
+            (
+                pure(Expr {
+                    kind: ExprKind::Use(Box::new(expr)),
+                    ty,
+                }),
+                fresh_vars,
+            )
+        }),
         ExprKind::Return(expr) => monadic_let(fresh_vars, *expr, |fresh_vars, expr| {
             (
                 Expr {
@@ -733,7 +747,13 @@ pub(crate) fn compile_hir_id(env: &mut Env, hir_id: rustc_hir::hir_id::HirId) ->
 impl MatchArm {
     fn to_doc(&self) -> Doc {
         return nest([
-            nest([text("|"), line(), self.pattern.to_doc(), line(), text("=>")]),
+            nest([
+                text("|"),
+                line(),
+                self.pattern.to_doc(false),
+                line(),
+                text("=>"),
+            ]),
             line(),
             self.body.to_doc(false),
         ]);
@@ -790,6 +810,7 @@ impl ExprKind {
             ),
             ExprKind::LocalVar(ref name) => text(name),
             ExprKind::Var(path) => path.to_doc(),
+            ExprKind::Constructor(path) => path.to_doc(),
             ExprKind::VarWithTy { path, ty_name, ty } => paren(
                 with_paren,
                 nest([
@@ -862,8 +883,18 @@ impl ExprKind {
                 paren(with_paren, nest([text(name), line(), arg.to_doc(true)]))
             }
             ExprKind::Lambda { args, body } => {
+                let body = group([
+                    body.to_doc(true),
+                    text(" :"),
+                    line(),
+                    match &body.ty {
+                        Some(ret_ty) => CoqType::Monad(ret_ty.clone()).to_coq().to_doc(false),
+                        None => text("_"),
+                    },
+                ]);
+
                 if args.is_empty() {
-                    body.to_doc(with_paren)
+                    paren(with_paren, body)
                 } else {
                     paren(
                         with_paren,
@@ -871,11 +902,23 @@ impl ExprKind {
                             nest([
                                 text("fun"),
                                 line(),
-                                intersperse(args.iter().map(|arg| arg.to_doc()), [line()]),
+                                intersperse(
+                                    args.iter().map(|(pattern, ty)| {
+                                        nest([
+                                            text("("),
+                                            pattern.to_doc(false),
+                                            text(" :"),
+                                            line(),
+                                            ty.to_coq().to_doc(false),
+                                            text(")"),
+                                        ])
+                                    }),
+                                    [line()],
+                                ),
                                 text(" =>"),
                             ]),
                             line(),
-                            body.to_doc(false),
+                            body,
                         ]),
                     )
                 }
@@ -915,7 +958,7 @@ impl ExprKind {
                                 line(),
                                 optional_insert(pattern.is_single_binding(), text("'")),
                             ]),
-                            pattern.to_doc(),
+                            pattern.to_doc(false),
                             match &init.ty {
                                 Some(ty) => concat([text(" :"), line(), ty.to_coq().to_doc(false)]),
                                 None => nil(),
@@ -933,7 +976,7 @@ impl ExprKind {
             ExprKind::LetIf { pat, init } => group([
                 text("let_if"),
                 line(),
-                pat.to_doc(),
+                pat.to_doc(false),
                 line(),
                 text(":="),
                 line(),
@@ -947,14 +990,7 @@ impl ExprKind {
                 with_paren,
                 group([
                     group([
-                        nest([
-                            text("if"),
-                            line(),
-                            text("("),
-                            condition.to_doc(false),
-                            line(),
-                            text(": bool)"),
-                        ]),
+                        nest([text("if"), line(), condition.to_doc(false)]),
                         line(),
                         text("then"),
                     ]),
@@ -1065,6 +1101,9 @@ impl ExprKind {
                     StructOrVariant::Variant => nil(),
                 },
             ]),
+            ExprKind::Use(expr) => {
+                paren(with_paren, nest([text("use"), line(), expr.to_doc(true)]))
+            }
             ExprKind::Return(value) => paren(
                 with_paren,
                 nest([text("return_"), line(), value.to_doc(true)]),

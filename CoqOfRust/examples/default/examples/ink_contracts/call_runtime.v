@@ -8,7 +8,8 @@ Section AccountId.
   }.
   
   Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot := Ref.map (fun x => x.(x0)) (fun v x => x <| x0 := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(x0)) (fun v x => Some (x <| x0 := v |>));
   }.
 End AccountId.
 End AccountId.
@@ -47,7 +48,7 @@ Section Impl_core_clone_Clone_for_call_runtime_AccountId_t.
   Clone
   *)
   Definition clone (self : ref Self) : M call_runtime.AccountId.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let _ : unit := tt in
     let* α0 : ref call_runtime.AccountId.t := M.read self in
     M.read (deref α0).
@@ -83,7 +84,9 @@ Section Env.
   
   Global Instance Get_caller : Notations.Dot "caller" := {
     Notations.dot :=
-      Ref.map (fun x => x.(caller)) (fun v x => x <| caller := v |>);
+      Ref.map
+        (fun x => Some x.(caller))
+        (fun v x => Some (x <| caller := v |>));
   }.
   Global Instance Get_AF_caller : Notations.DoubleColon t "caller" := {
     Notations.double_colon (x : M.Val t) := x.["caller"];
@@ -107,7 +110,7 @@ Section Impl_core_convert_From_call_runtime_AccountId_t_for_call_runtime_MultiAd
       }
   *)
   Definition from (_value : call_runtime.AccountId.t) : M Self :=
-    let* _value : M.Val call_runtime.AccountId.t := M.alloc _value in
+    let* _value := M.alloc _value in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
@@ -186,8 +189,8 @@ Section Impl_core_fmt_Debug_for_call_runtime_RuntimeError_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
+    let* self := M.alloc self in
+    let* f := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref str.t := M.read (mk_str "CallRuntimeFailed") in
     M.call (core.fmt.Formatter.t::["write_str"] α0 α1).
@@ -222,8 +225,8 @@ Section Impl_core_cmp_PartialEq_for_call_runtime_RuntimeError_t.
       (self : ref Self)
       (other : ref call_runtime.RuntimeError.t)
       : M bool.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* other : M.Val (ref call_runtime.RuntimeError.t) := M.alloc other in
+    let* self := M.alloc self in
+    let* other := M.alloc other in
     M.pure true.
   
   Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
@@ -256,7 +259,7 @@ Section Impl_core_cmp_Eq_for_call_runtime_RuntimeError_t.
   Eq
   *)
   Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     M.pure tt.
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
@@ -290,11 +293,11 @@ Section Impl_core_convert_From_call_runtime_EnvError_t_for_call_runtime_RuntimeE
       }
   *)
   Definition from (e : call_runtime.EnvError.t) : M Self :=
-    let* e : M.Val call_runtime.EnvError.t := M.alloc e in
+    let* e := M.alloc e in
     let* α0 : call_runtime.EnvError.t := M.read e in
     let* α1 : M.Val call_runtime.RuntimeError.t :=
       match α0 with
-      | call_runtime.EnvError.CallRuntimeFailed  =>
+      | call_runtime.EnvError.CallRuntimeFailed =>
         M.alloc call_runtime.RuntimeError.CallRuntimeFailed
       | _ =>
         let* α0 : ref str.t :=
@@ -331,8 +334,8 @@ Section Impl_call_runtime_Env_t.
       (self : ref Self)
       (_call : ref Call)
       : M (core.result.Result.t unit call_runtime.EnvError.t) :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* _call : M.Val (ref Call) := M.alloc _call in
+    let* self := M.alloc self in
+    let* _call := M.alloc _call in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
@@ -369,7 +372,7 @@ Section Impl_call_runtime_RuntimeCaller_t.
       }
   *)
   Definition env (self : ref Self) : M call_runtime.Env.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     M.call call_runtime.RuntimeCaller.t::["init_env"].
   
   Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
@@ -410,9 +413,9 @@ Section Impl_call_runtime_RuntimeCaller_t.
       (receiver : call_runtime.AccountId.t)
       (value : ltac:(call_runtime.Balance))
       : M (core.result.Result.t unit call_runtime.RuntimeError.t) :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
-    let* receiver : M.Val call_runtime.AccountId.t := M.alloc receiver in
-    let* value : M.Val ltac:(call_runtime.Balance) := M.alloc value in
+    let* self := M.alloc self in
+    let* receiver := M.alloc receiver in
+    let* value := M.alloc value in
     let* α0 : mut_ref call_runtime.RuntimeCaller.t := M.read self in
     let* α1 : call_runtime.Env.t :=
       M.call (call_runtime.RuntimeCaller.t::["env"] (borrow (deref α0))) in
@@ -455,7 +458,7 @@ Section Impl_call_runtime_RuntimeCaller_t.
   Definition call_nonexistent_extrinsic
       (self : mut_ref Self)
       : M (core.result.Result.t unit call_runtime.RuntimeError.t) :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* α0 : mut_ref call_runtime.RuntimeCaller.t := M.read self in
     let* α1 : call_runtime.Env.t :=
       M.call (call_runtime.RuntimeCaller.t::["env"] (borrow (deref α0))) in

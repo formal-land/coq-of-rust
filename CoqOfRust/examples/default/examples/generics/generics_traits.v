@@ -32,8 +32,8 @@ Section Impl_generics_traits_DoubleDrop_T_for_U.
       fn double_drop(self, _: T) {}
   *)
   Definition double_drop (self : Self) (Pattern : T) : M unit :=
-    let* self : M.Val Self := M.alloc self in
-    let* Pattern : M.Val T := M.alloc Pattern in
+    let* self := M.alloc self in
+    let* Pattern := M.alloc Pattern in
     M.pure tt.
   
   Global Instance AssociatedFunction_double_drop :

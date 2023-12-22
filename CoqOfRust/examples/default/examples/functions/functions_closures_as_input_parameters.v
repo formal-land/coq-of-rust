@@ -17,7 +17,7 @@ Definition apply
     {ℋ_0 : core.ops.function.FnOnce.Trait F (Args := unit)}
     (f : F)
     : M unit :=
-  let* f : M.Val F := M.alloc f in
+  let* f := M.alloc f in
   let* _ : M.Val unit :=
     let* α0 : F := M.read f in
     let* α1 : unit :=
@@ -45,7 +45,7 @@ Definition apply_to_3
     {ℋ_0 : core.ops.function.Fn.Trait F (Args := i32.t)}
     (f : F)
     : M i32.t :=
-  let* f : M.Val F := M.alloc f in
+  let* f := M.alloc f in
   M.call
     ((core.ops.function.Fn.call (Self := F) (Trait := ltac:(refine _)))
       (borrow f)
@@ -98,9 +98,9 @@ Definition main : M unit :=
             (Trait := ltac:(refine _)))
           α0) in
     M.alloc α1 in
-  let* diary : M.Val type not implemented :=
-    M.copy
-      (let* _ : M.Val unit :=
+  let* diary : M.Val (unit -> M unit) :=
+    M.alloc
+      ((let* _ : M.Val unit :=
         let* _ : M.Val unit :=
           let* α0 : ref str.t := M.read (mk_str "I said ") in
           let* α1 : ref str.t := M.read (mk_str ".
@@ -167,17 +167,21 @@ Definition main : M unit :=
         let* α0 : alloc.string.String.t := M.read farewell in
         let* α1 : unit := M.call (core.mem.drop α0) in
         M.alloc α1 in
-      M.alloc tt) in
+      let* α0 : M.Val unit := M.alloc tt in
+      M.read α0) :
+      M unit) in
   let* _ : M.Val unit :=
-    let* α0 : type not implemented := M.read diary in
+    let* α0 : unit -> M unit := M.read diary in
     let* α1 : unit :=
       M.call (functions_closures_as_input_parameters.apply α0) in
     M.alloc α1 in
-  let* double : M.Val type not implemented :=
-    M.copy
-      (let* α0 : i32.t := M.read x in
-      let* α1 : i32.t := BinOp.Panic.mul (Integer.of_Z 2) α0 in
-      M.alloc α1) in
+  let* double : M.Val (i32.t -> M i32.t) :=
+    M.alloc
+      (fun (x : i32.t) =>
+        (let* x := M.alloc x in
+        let* α0 : i32.t := M.read x in
+        BinOp.Panic.mul (Integer.of_Z 2) α0) :
+        M i32.t) in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "3 doubled: ") in
@@ -187,7 +191,7 @@ Definition main : M unit :=
       let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
       let* α4 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α3) in
-      let* α5 : type not implemented := M.read double in
+      let* α5 : i32.t -> M i32.t := M.read double in
       let* α6 : i32.t :=
         M.call (functions_closures_as_input_parameters.apply_to_3 α5) in
       let* α7 : M.Val i32.t := M.alloc α6 in

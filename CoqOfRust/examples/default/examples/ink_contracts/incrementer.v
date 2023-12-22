@@ -9,7 +9,7 @@ Section Incrementer.
   
   Global Instance Get_value : Notations.Dot "value" := {
     Notations.dot :=
-      Ref.map (fun x => x.(value)) (fun v x => x <| value := v |>);
+      Ref.map (fun x => Some x.(value)) (fun v x => Some (x <| value := v |>));
   }.
   Global Instance Get_AF_value : Notations.DoubleColon t "value" := {
     Notations.double_colon (x : M.Val t) := x.["value"];
@@ -27,7 +27,7 @@ Section Impl_incrementer_Incrementer_t.
       }
   *)
   Definition new (init_value : i32.t) : M Self :=
-    let* init_value : M.Val i32.t := M.alloc init_value in
+    let* init_value := M.alloc init_value in
     let* α0 : i32.t := M.read init_value in
     M.pure {| incrementer.Incrementer.value := α0; |}.
   
@@ -59,8 +59,8 @@ Section Impl_incrementer_Incrementer_t.
       }
   *)
   Definition inc (self : mut_ref Self) (by_ : i32.t) : M unit :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
-    let* by_ : M.Val i32.t := M.alloc by_ in
+    let* self := M.alloc self in
+    let* by_ := M.alloc by_ in
     let* _ : M.Val unit :=
       let* β : M.Val i32.t :=
         let* α0 : mut_ref incrementer.Incrementer.t := M.read self in
@@ -82,7 +82,7 @@ Section Impl_incrementer_Incrementer_t.
       }
   *)
   Definition get (self : ref Self) : M i32.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* α0 : ref incrementer.Incrementer.t := M.read self in
     M.read (deref α0).["value"].
   

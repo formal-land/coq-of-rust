@@ -39,7 +39,7 @@ Section Impl_wildcard_selector_WildcardSelector_t.
       }
   *)
   Definition wildcard (self : mut_ref Self) : M unit :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* '(_selector, _message) : (array u8.t) * alloc.string.String.t :=
       let* α0 :
           core.result.Result.t ((array u8.t) * alloc.string.String.t) unit :=
@@ -49,8 +49,8 @@ Section Impl_wildcard_selector_WildcardSelector_t.
               ((array u8.t) * alloc.string.String.t)
               unit)::["unwrap"]
           α0) in
-    let* _message := M.alloc _message in
     let* _selector := M.alloc _selector in
+    let* _message := M.alloc _message in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "Wildcard selector: ") in
@@ -92,8 +92,8 @@ Section Impl_wildcard_selector_WildcardSelector_t.
       (self : mut_ref Self)
       (_message : alloc.string.String.t)
       : M unit :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
-    let* _message : M.Val alloc.string.String.t := M.alloc _message in
+    let* self := M.alloc self in
+    let* _message := M.alloc _message in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
         let* α0 : ref str.t :=

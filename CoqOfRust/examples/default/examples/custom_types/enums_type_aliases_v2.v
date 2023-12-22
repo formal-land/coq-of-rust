@@ -21,22 +21,20 @@ Section Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers_t.
       }
   *)
   Definition run (self : ref Self) (x : i32.t) (y : i32.t) : M i32.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* x : M.Val i32.t := M.alloc x in
-    let* y : M.Val i32.t := M.alloc y in
+    let* self := M.alloc self in
+    let* x := M.alloc x in
+    let* y := M.alloc y in
     let* α0 :
         ref enums_type_aliases_v2.VeryVerboseEnumOfThingsToDoWithNumbers.t :=
       M.read self in
     let* α1 : M.Val i32.t :=
       match α0 with
-      | enums_type_aliases_v2.VeryVerboseEnumOfThingsToDoWithNumbers.Add  =>
+      | enums_type_aliases_v2.VeryVerboseEnumOfThingsToDoWithNumbers.Add =>
         let* α0 : i32.t := M.read x in
         let* α1 : i32.t := M.read y in
         let* α2 : i32.t := BinOp.Panic.add α0 α1 in
         M.alloc α2
-      |
-          enums_type_aliases_v2.VeryVerboseEnumOfThingsToDoWithNumbers.Subtract 
-          =>
+      | enums_type_aliases_v2.VeryVerboseEnumOfThingsToDoWithNumbers.Subtract =>
         let* α0 : i32.t := M.read x in
         let* α1 : i32.t := M.read y in
         let* α2 : i32.t := BinOp.Panic.sub α0 α1 in

@@ -9,10 +9,12 @@ Section Container.
   }.
   
   Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot := Ref.map (fun x => x.(x0)) (fun v x => x <| x0 := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(x0)) (fun v x => Some (x <| x0 := v |>));
   }.
   Global Instance Get_1 : Notations.Dot "1" := {
-    Notations.dot := Ref.map (fun x => x.(x1)) (fun v x => x <| x1 := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(x1)) (fun v x => Some (x <| x1 := v |>));
   }.
 End Container.
 End Container.
@@ -42,9 +44,9 @@ Section Impl_generics_associated_types_problem_Contains_i32_t_i32_t_for_generics
       (number_1 : ref i32.t)
       (number_2 : ref i32.t)
       : M bool.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* number_1 : M.Val (ref i32.t) := M.alloc number_1 in
-    let* number_2 : M.Val (ref i32.t) := M.alloc number_2 in
+    let* self := M.alloc self in
+    let* number_1 := M.alloc number_1 in
+    let* number_2 := M.alloc number_2 in
     let* α0 : ref generics_associated_types_problem.Container.t :=
       M.read self in
     let* α1 : M.Val (ref i32.t) := M.alloc (borrow (deref α0).["0"]) in
@@ -61,7 +63,7 @@ Section Impl_generics_associated_types_problem_Contains_i32_t_i32_t_for_generics
         ((core.cmp.PartialEq.eq (Self := ref i32.t) (Trait := ltac:(refine _)))
           (borrow α4)
           (borrow number_2)) in
-    M.pure (BinOp.and α2 α5).
+    M.pure (BinOp.Pure.and α2 α5).
   
   Global Instance AssociatedFunction_contains :
     Notations.DoubleColon Self "contains" := {
@@ -74,7 +76,7 @@ Section Impl_generics_associated_types_problem_Contains_i32_t_i32_t_for_generics
       }
   *)
   Definition first (self : ref Self) : M i32.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* α0 : ref generics_associated_types_problem.Container.t :=
       M.read self in
     M.read (deref α0).["0"].
@@ -90,7 +92,7 @@ Section Impl_generics_associated_types_problem_Contains_i32_t_i32_t_for_generics
       }
   *)
   Definition last (self : ref Self) : M i32.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* α0 : ref generics_associated_types_problem.Container.t :=
       M.read self in
     M.read (deref α0).["1"].
@@ -124,7 +126,7 @@ Definition difference
     {ℋ_0 : generics_associated_types_problem.Contains.Trait C (A := A) (B := B)}
     (container : ref C)
     : M i32.t :=
-  let* container : M.Val (ref C) := M.alloc container in
+  let* container := M.alloc container in
   let* α0 : ref C := M.read container in
   let* α1 : i32.t :=
     M.call

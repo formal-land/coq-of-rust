@@ -9,7 +9,7 @@ Section Number.
   
   Global Instance Get_value : Notations.Dot "value" := {
     Notations.dot :=
-      Ref.map (fun x => x.(value)) (fun v x => x <| value := v |>);
+      Ref.map (fun x => Some x.(value)) (fun v x => Some (x <| value := v |>));
   }.
   Global Instance Get_AF_value : Notations.DoubleColon t "value" := {
     Notations.double_colon (x : M.Val t) := x.["value"];
@@ -27,7 +27,7 @@ Section Impl_core_convert_From_i32_t_for_into_Number_t.
       }
   *)
   Definition from (item : i32.t) : M Self :=
-    let* item : M.Val i32.t := M.alloc item in
+    let* item := M.alloc item in
     let* α0 : i32.t := M.read item in
     M.pure {| into.Number.value := α0; |}.
   

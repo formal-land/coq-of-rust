@@ -9,7 +9,9 @@ Section Circle.
   
   Global Instance Get_radius : Notations.Dot "radius" := {
     Notations.dot :=
-      Ref.map (fun x => x.(radius)) (fun v x => x <| radius := v |>);
+      Ref.map
+        (fun x => Some x.(radius))
+        (fun v x => Some (x <| radius := v |>));
   }.
   Global Instance Get_AF_radius : Notations.DoubleColon t "radius" := {
     Notations.double_colon (x : M.Val t) := x.["radius"];
@@ -30,8 +32,8 @@ Section Impl_core_fmt_Display_for_converting_to_string_Circle_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* f : M.Val (mut_ref core.fmt.Formatter.t) := M.alloc f in
+    let* self := M.alloc self in
+    let* f := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref str.t := M.read (mk_str "Circle of radius ") in
     let* α2 : M.Val (array (ref str.t)) := M.alloc [ α1 ] in

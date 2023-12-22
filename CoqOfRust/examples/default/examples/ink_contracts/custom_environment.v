@@ -8,7 +8,8 @@ Section AccountId.
   }.
   
   Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot := Ref.map (fun x => x.(x0)) (fun v x => x <| x0 := v |>);
+    Notations.dot :=
+      Ref.map (fun x => Some x.(x0)) (fun v x => Some (x <| x0 := v |>));
   }.
 End AccountId.
 End AccountId.
@@ -47,7 +48,7 @@ Section Impl_core_clone_Clone_for_custom_environment_AccountId_t.
   Clone
   *)
   Definition clone (self : ref Self) : M custom_environment.AccountId.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let _ : unit := tt in
     let* α0 : ref custom_environment.AccountId.t := M.read self in
     M.read (deref α0).
@@ -83,7 +84,9 @@ Section Env.
   
   Global Instance Get_caller : Notations.Dot "caller" := {
     Notations.dot :=
-      Ref.map (fun x => x.(caller)) (fun v x => x <| caller := v |>);
+      Ref.map
+        (fun x => Some x.(caller))
+        (fun v x => Some (x <| caller := v |>));
   }.
   Global Instance Get_AF_caller : Notations.DoubleColon t "caller" := {
     Notations.double_colon (x : M.Val t) := x.["caller"];
@@ -130,7 +133,9 @@ Section EventWithTopics.
   
   Global Instance Get_first_topic : Notations.Dot "first_topic" := {
     Notations.dot :=
-      Ref.map (fun x => x.(first_topic)) (fun v x => x <| first_topic := v |>);
+      Ref.map
+        (fun x => Some x.(first_topic))
+        (fun v x => Some (x <| first_topic := v |>));
   }.
   Global Instance Get_AF_first_topic :
     Notations.DoubleColon t "first_topic" := {
@@ -139,8 +144,8 @@ Section EventWithTopics.
   Global Instance Get_second_topic : Notations.Dot "second_topic" := {
     Notations.dot :=
       Ref.map
-        (fun x => x.(second_topic))
-        (fun v x => x <| second_topic := v |>);
+        (fun x => Some x.(second_topic))
+        (fun v x => Some (x <| second_topic := v |>));
   }.
   Global Instance Get_AF_second_topic :
     Notations.DoubleColon t "second_topic" := {
@@ -148,7 +153,9 @@ Section EventWithTopics.
   }.
   Global Instance Get_third_topic : Notations.Dot "third_topic" := {
     Notations.dot :=
-      Ref.map (fun x => x.(third_topic)) (fun v x => x <| third_topic := v |>);
+      Ref.map
+        (fun x => Some x.(third_topic))
+        (fun v x => Some (x <| third_topic := v |>));
   }.
   Global Instance Get_AF_third_topic :
     Notations.DoubleColon t "third_topic" := {
@@ -157,8 +164,8 @@ Section EventWithTopics.
   Global Instance Get_fourth_topic : Notations.Dot "fourth_topic" := {
     Notations.dot :=
       Ref.map
-        (fun x => x.(fourth_topic))
-        (fun v x => x <| fourth_topic := v |>);
+        (fun x => Some x.(fourth_topic))
+        (fun v x => Some (x <| fourth_topic := v |>));
   }.
   Global Instance Get_AF_fourth_topic :
     Notations.DoubleColon t "fourth_topic" := {
@@ -166,7 +173,9 @@ Section EventWithTopics.
   }.
   Global Instance Get_fifth_topic : Notations.Dot "fifth_topic" := {
     Notations.dot :=
-      Ref.map (fun x => x.(fifth_topic)) (fun v x => x <| fifth_topic := v |>);
+      Ref.map
+        (fun x => Some x.(fifth_topic))
+        (fun v x => Some (x <| fifth_topic := v |>));
   }.
   Global Instance Get_AF_fifth_topic :
     Notations.DoubleColon t "fifth_topic" := {
@@ -243,7 +252,7 @@ Section Impl_custom_environment_Env_t.
       }
   *)
   Definition caller (self : ref Self) : M custom_environment.AccountId.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* α0 : ref custom_environment.Env.t := M.read self in
     M.read (deref α0).["caller"].
   
@@ -261,8 +270,8 @@ Section Impl_custom_environment_Env_t.
       (self : ref Self)
       (_event : custom_environment.Event.t)
       : M unit :=
-    let* self : M.Val (ref Self) := M.alloc self in
-    let* _event : M.Val custom_environment.Event.t := M.alloc _event in
+    let* self := M.alloc self in
+    let* _event := M.alloc _event in
     let* α0 : ref str.t := M.read (mk_str "not implemented") in
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
@@ -299,7 +308,7 @@ Section Impl_custom_environment_Topics_t.
       }
   *)
   Definition env (self : ref Self) : M custom_environment.Env.t :=
-    let* self : M.Val (ref Self) := M.alloc self in
+    let* self := M.alloc self in
     M.call custom_environment.Topics.t::["init_env"].
   
   Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
@@ -328,7 +337,7 @@ Section Impl_custom_environment_Topics_t.
       }
   *)
   Definition trigger (self : mut_ref Self) : M unit :=
-    let* self : M.Val (mut_ref Self) := M.alloc self in
+    let* self := M.alloc self in
     let* _ : M.Val unit :=
       let* α0 : mut_ref custom_environment.Topics.t := M.read self in
       let* α1 : custom_environment.Env.t :=

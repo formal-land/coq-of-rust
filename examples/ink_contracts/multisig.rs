@@ -30,7 +30,7 @@ impl<K, V> Mapping<K, V> {
     }
 }
 
-#[derive(Default, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug)]
+#[derive(Default, Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 struct AccountId(u128);
 
 type Balance = u128;
@@ -64,7 +64,7 @@ pub enum ConfirmationStatus {
 /// A Transaction is what every `owner` can submit for confirmation by other owners.
 /// If enough owners agree it will be executed by the contract.
 #[derive(Default)]
-#[cfg_attr(feature = "std", derive(Debug, PartialEq, Eq,))]
+#[cfg_attr(feature = "std", derive(PartialEq, Eq,))]
 pub struct Transaction {
     /// The `AccountId` of the contract that is called in this transaction.
     pub callee: AccountId,
@@ -84,7 +84,7 @@ pub struct Transaction {
 }
 
 /// Errors that can occur upon calling this contract.
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Clone, Copy, PartialEq, Eq)]
 pub enum Error {
     /// Returned if the call failed.
     TransactionFailed,
@@ -93,7 +93,7 @@ pub enum Error {
 /// This is a book keeping struct that stores a list of all transaction ids and
 /// also the next id to use. We need it for cleaning up the storage.
 #[derive(Default)]
-#[cfg_attr(feature = "std", derive(Debug, PartialEq, Eq,))]
+#[cfg_attr(feature = "std", derive(PartialEq, Eq,))]
 pub struct Transactions {
     /// Just store all transaction ids packed.
     transactions: Vec<TransactionId>,
