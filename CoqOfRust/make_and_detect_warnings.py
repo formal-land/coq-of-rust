@@ -67,7 +67,7 @@ def check_warnings():
         print("Checking warnings...")
         for line in errorlines:
             if line.startswith("Warning: "):
-                print("Warnings detected from coqc. Abort.", file=sys.err)
+                print("Warnings detected from coqc. Abort.", file=sys.stderr)
                 exit(1)
         print("Check complete, no warnings detected")
 
