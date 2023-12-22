@@ -1886,6 +1886,7 @@ impl TopLevelItem {
                                     ]),
                                 )),
                                 coq::TopLevelItem::Line,
+                                coq::TopLevelItem::Line,
                             ])
                             .to_doc(),
                         }
