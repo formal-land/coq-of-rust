@@ -1,22 +1,20 @@
 Require Import CoqOfRust.lib.lib.
 
 (* ********STRUCTS******** *)
-(* 
+(*
 [x] Demand
-[x] TypeId 
+[x] TypeId
 *)
 
 (* pub struct Demand<'a>(_); *)
 Module Demand.
   Parameter t : Set.
 End Demand.
-Definition Demand := Demand.t.
 
 (* pub struct TypeId { /* private fields */ } *)
 Module TypeId.
   Parameter t : Set.
 End TypeId.
-Definition TypeId := TypeId.t.
 
 (* ********TRAITS******** *)
 (* 
@@ -32,7 +30,7 @@ pub trait Provider {
 *)
 Module Provider.
   Class Trait (Self : Set) : Set := { 
-    provide : ref Self -> mut_ref Demand;
+    provide : ref Self -> M (mut_ref Demand.t);
   }.
 End Provider.
 
@@ -44,6 +42,6 @@ pub trait Any: 'static {
 *)
 Module Any.
   Class Trait (Self : Set) : Set := { 
-    type_id : ref Self -> TypeId;
+    type_id : ref Self -> M TypeId.t;
   }.
 End Any.
