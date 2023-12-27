@@ -759,7 +759,7 @@ fn compile_function_body(
         Box::new(Expr {
             kind: ExprKind::Let {
                 is_monadic: false,
-                pattern: Box::new(Pattern::Binding {
+                pattern: Rc::new(Pattern::Binding {
                     name: "return_".to_string(),
                     is_with_ref: false,
                     pattern: None,

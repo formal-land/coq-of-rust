@@ -25,7 +25,7 @@ impl FreshVars {
 /// matched pattern and [body] the expression on which it is mapped
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
 pub(crate) struct MatchArm {
-    pub(crate) pattern: Pattern,
+    pub(crate) pattern: Rc<Pattern>,
     pub(crate) body: Expr,
 }
 
@@ -93,7 +93,7 @@ pub(crate) enum ExprKind {
         arg: Box<Expr>,
     },
     Lambda {
-        args: Vec<(Pattern, Rc<CoqType>)>,
+        args: Vec<(Rc<Pattern>, Rc<CoqType>)>,
         body: Box<Expr>,
     },
     Array {
@@ -104,12 +104,12 @@ pub(crate) enum ExprKind {
     },
     Let {
         is_monadic: bool,
-        pattern: Box<Pattern>,
+        pattern: Rc<Pattern>,
         init: Box<Expr>,
         body: Box<Expr>,
     },
     LetIf {
-        pat: Box<Pattern>,
+        pat: Rc<Pattern>,
         init: Box<Expr>,
     },
     If {
@@ -301,7 +301,7 @@ fn monadic_let_in_stmt(
                     ty: body.ty.clone(),
                     kind: ExprKind::Let {
                         is_monadic: true,
-                        pattern: Box::new(Pattern::Binding {
+                        pattern: Rc::new(Pattern::Binding {
                             name: var_name,
                             is_with_ref: false,
                             pattern: None,

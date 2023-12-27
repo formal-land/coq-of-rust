@@ -1,27 +1,28 @@
 use crate::path::*;
 use crate::render::*;
 use rustc_ast::LitKind;
+use std::rc::Rc;
 
 /// The enum [Pat] represents the patterns which can be matched
-#[derive(Clone, Debug, Eq, Hash, PartialEq)]
+#[derive(Debug, Eq, Hash, PartialEq)]
 pub(crate) enum Pattern {
     Wild,
     Binding {
         name: String,
         is_with_ref: bool,
-        pattern: Option<Box<Pattern>>,
+        pattern: Option<Rc<Pattern>>,
     },
-    StructStruct(Path, Vec<(String, Pattern)>, StructOrVariant),
-    StructTuple(Path, Vec<Pattern>, StructOrVariant),
-    Deref(Box<Pattern>),
-    Or(Vec<Pattern>),
-    Tuple(Vec<Pattern>),
+    StructStruct(Path, Vec<(String, Rc<Pattern>)>, StructOrVariant),
+    StructTuple(Path, Vec<Rc<Pattern>>, StructOrVariant),
+    Deref(Rc<Pattern>),
+    Or(Vec<Rc<Pattern>>),
+    Tuple(Vec<Rc<Pattern>>),
     #[allow(dead_code)]
     Lit(LitKind),
     // TODO: modify if necessary to fully implement the case of Slice in compile_pattern below
     Slice {
-        init_patterns: Vec<Pattern>,
-        slice_pattern: Option<Box<Pattern>>,
+        init_patterns: Vec<Rc<Pattern>>,
+        slice_pattern: Option<Rc<Pattern>>,
     },
 }
 
@@ -50,15 +51,19 @@ impl Pattern {
                 .iter()
                 .flat_map(|(_, pattern)| pattern.get_bindings())
                 .collect(),
-            Pattern::StructTuple(_, patterns, _) => {
-                patterns.iter().flat_map(Pattern::get_bindings).collect()
-            }
+            Pattern::StructTuple(_, patterns, _) => patterns
+                .iter()
+                .flat_map(|pattern| pattern.get_bindings())
+                .collect(),
             Pattern::Deref(pattern) => pattern.get_bindings(),
             Pattern::Or(patterns) => optional_insert_vec(
                 patterns.is_empty(),
                 patterns.first().unwrap().get_bindings(),
             ),
-            Pattern::Tuple(patterns) => patterns.iter().flat_map(Pattern::get_bindings).collect(),
+            Pattern::Tuple(patterns) => patterns
+                .iter()
+                .flat_map(|pattern| pattern.get_bindings())
+                .collect(),
             Pattern::Lit(_) => vec![],
             Pattern::Slice {
                 init_patterns,
@@ -66,7 +71,7 @@ impl Pattern {
             } => vec![
                 init_patterns
                     .iter()
-                    .flat_map(Pattern::get_bindings)
+                    .flat_map(|pattern| pattern.get_bindings())
                     .collect(),
                 match slice_pattern {
                     None => vec![],

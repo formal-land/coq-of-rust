@@ -3,6 +3,7 @@ use crate::path::*;
 use crate::pattern::*;
 use rustc_middle::thir::{Pat, PatKind};
 use rustc_type_ir::sty::TyKind;
+use std::rc::Rc;
 
 // fn const_to_lit_kind(constant: rustc_middle::mir::ConstantKind) -> rustc_ast::LitKind {
 //     match constant {
@@ -23,9 +24,9 @@ use rustc_type_ir::sty::TyKind;
 //     panic!("constant {:#?} not yet handled", constant);
 // }
 
-pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Pattern {
+pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Rc<Pattern> {
     match &pat.kind {
-        PatKind::Wild => Pattern::Wild,
+        PatKind::Wild => Rc::new(Pattern::Wild),
         PatKind::AscribeUserType { subpattern, .. } => compile_pattern(env, subpattern),
         PatKind::Binding {
             name,
@@ -37,12 +38,12 @@ pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Pattern {
             let is_with_ref = matches!(mode, rustc_middle::thir::BindingMode::ByValue);
             let pattern = subpattern
                 .as_ref()
-                .map(|subpattern| Box::new(compile_pattern(env, subpattern)));
-            Pattern::Binding {
+                .map(|subpattern| compile_pattern(env, subpattern));
+            Rc::new(Pattern::Binding {
                 name,
                 is_with_ref,
                 pattern,
-            }
+            })
         }
         PatKind::Variant {
             adt_def,
@@ -70,19 +71,19 @@ pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Pattern {
                 .all(|(name, _)| name.starts_with(|c: char| c.is_ascii_digit()));
             if is_a_tuple {
                 let fields = fields.into_iter().map(|(_, pattern)| pattern).collect();
-                Pattern::StructTuple(path, fields, struct_or_variant)
+                Rc::new(Pattern::StructTuple(path, fields, struct_or_variant))
             } else {
-                Pattern::StructStruct(path, fields, struct_or_variant)
+                Rc::new(Pattern::StructStruct(path, fields, struct_or_variant))
             }
         }
         PatKind::Leaf { subpatterns } => {
             if let TyKind::Tuple(_) = pat.ty.kind() {
-                return Pattern::Tuple(
+                return Rc::new(Pattern::Tuple(
                     subpatterns
                         .iter()
                         .map(|field| compile_pattern(env, &field.pattern))
                         .collect(),
-                );
+                ));
             }
             let adt_def = pat.ty.ty_adt_def().unwrap();
             let path = compile_def_id(env, adt_def.did());
@@ -102,12 +103,12 @@ pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Pattern {
                 .all(|(name, _)| name.starts_with(|c: char| c.is_ascii_digit()));
             if is_a_tuple {
                 let fields = fields.into_iter().map(|(_, pattern)| pattern).collect();
-                Pattern::StructTuple(path, fields, struct_or_variant)
+                Rc::new(Pattern::StructTuple(path, fields, struct_or_variant))
             } else {
-                Pattern::StructStruct(path, fields, struct_or_variant)
+                Rc::new(Pattern::StructStruct(path, fields, struct_or_variant))
             }
         }
-        PatKind::Deref { subpattern } => Pattern::Deref(Box::new(compile_pattern(env, subpattern))),
+        PatKind::Deref { subpattern } => Rc::new(Pattern::Deref(compile_pattern(env, subpattern))),
         // PatKind::Constant { value } => {
         //     let literal = const_to_lit_kind(*value);
         //     Pattern::Lit(literal)
@@ -117,14 +118,14 @@ pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Pattern {
                 .sess
                 .struct_span_warn(pat.span, "Constants in patterns are not yet supported.")
                 .emit();
-            Pattern::Wild
+            Rc::new(Pattern::Wild)
         }
         PatKind::Range(_) => {
             env.tcx
                 .sess
                 .struct_span_warn(pat.span, "Ranges in patterns are not yet supported.")
                 .emit();
-            Pattern::Wild
+            Rc::new(Pattern::Wild)
         }
         PatKind::Slice {
             prefix,
@@ -136,16 +137,18 @@ pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Pattern {
             slice,
             suffix,
         } => {
-            let prefix: Vec<Pattern> = prefix.iter().map(|pat| compile_pattern(env, pat)).collect();
-            let suffix: Vec<Pattern> = suffix.iter().map(|pat| compile_pattern(env, pat)).collect();
+            let prefix: Vec<Rc<Pattern>> =
+                prefix.iter().map(|pat| compile_pattern(env, pat)).collect();
+            let suffix: Vec<Rc<Pattern>> =
+                suffix.iter().map(|pat| compile_pattern(env, pat)).collect();
             match slice {
                 Some(pat_middle) => {
                     if suffix.is_empty() {
                         let pat_middle = compile_pattern(env, pat_middle);
-                        Pattern::Slice {
+                        Rc::new(Pattern::Slice {
                             init_patterns: prefix,
-                            slice_pattern: Some(Box::new(pat_middle)),
-                        }
+                            slice_pattern: Some(pat_middle),
+                        })
                     } else {
                         env.tcx
                             .sess
@@ -155,20 +158,20 @@ pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Pattern {
                             )
                             .help("Reverse the slice instead.")
                             .emit();
-                        Pattern::Wild
+                        Rc::new(Pattern::Wild)
                     }
                 }
                 None => {
                     let all_patterns = [prefix, suffix].concat().to_vec();
-                    Pattern::Slice {
+                    Rc::new(Pattern::Slice {
                         init_patterns: all_patterns,
                         slice_pattern: None,
-                    }
+                    })
                 }
             }
         }
-        PatKind::Or { pats } => {
-            Pattern::Or(pats.iter().map(|pat| compile_pattern(env, pat)).collect())
-        }
+        PatKind::Or { pats } => Rc::new(Pattern::Or(
+            pats.iter().map(|pat| compile_pattern(env, pat)).collect(),
+        )),
     }
 }

@@ -181,7 +181,7 @@ pub(crate) fn allocate_bindings(bindings: &[String], body: Box<Expr>) -> Box<Exp
             ty: body.ty.clone(),
             kind: ExprKind::Let {
                 is_monadic: false,
-                pattern: Box::new(Pattern::Binding {
+                pattern: Rc::new(Pattern::Binding {
                     name: binding.clone(),
                     is_with_ref: false,
                     pattern: None,
@@ -388,7 +388,7 @@ fn compile_expr_kind<'a>(
             ExprKind::Loop { body }
         }
         thir::ExprKind::Let { expr, pat } => {
-            let pat = Box::new(crate::thir_pattern::compile_pattern(env, pat));
+            let pat = crate::thir_pattern::compile_pattern(env, pat);
             let init = Box::new(compile_expr(env, thir, expr));
             ExprKind::LetIf { pat, init }
         }
@@ -447,7 +447,7 @@ fn compile_expr_kind<'a>(
 
             ExprKind::Let {
                 is_monadic: false,
-                pattern: Box::new(Pattern::Binding {
+                pattern: Rc::new(Pattern::Binding {
                     name: "β".to_string(),
                     is_with_ref: false,
                     pattern: None,
@@ -652,7 +652,7 @@ fn compile_expr_kind<'a>(
                 panic!("thir failed to compile");
             };
             let thir = thir.borrow();
-            let args: Vec<(Pattern, Rc<CoqType>)> = thir
+            let args: Vec<(Rc<Pattern>, Rc<CoqType>)> = thir
                 .params
                 .iter()
                 .filter_map(|param| match &param.pat {
@@ -791,7 +791,7 @@ fn compile_stmts<'a>(
                     initializer,
                     ..
                 } => {
-                    let pattern = Box::new(crate::thir_pattern::compile_pattern(env, pattern));
+                    let pattern = crate::thir_pattern::compile_pattern(env, pattern);
                     let init = match initializer {
                         Some(initializer) => compile_expr(env, thir, initializer),
                         None => Expr::tt(),
@@ -822,7 +822,7 @@ fn compile_stmts<'a>(
                     Expr {
                         kind: ExprKind::Let {
                             is_monadic: false,
-                            pattern: Box::new(Pattern::Wild),
+                            pattern: Rc::new(Pattern::Wild),
                             init,
                             body,
                         },
