@@ -12,19 +12,19 @@ Section Mapping.
   
   Global Instance Get__key : Notations.Dot "_key" := {
     Notations.dot :=
-      Ref.map (fun x => Some x.(_key)) (fun v x => Some (x <| _key := v |>));
+      Ref.map (fun α => Some α.(_key)) (fun β α => Some (α <| _key := β |>));
   }.
   Global Instance Get_AF__key : Notations.DoubleColon t "_key" := {
-    Notations.double_colon (x : M.Val t) := x.["_key"];
+    Notations.double_colon (α : M.Val t) := α.["_key"];
   }.
   Global Instance Get__value : Notations.Dot "_value" := {
     Notations.dot :=
       Ref.map
-        (fun x => Some x.(_value))
-        (fun v x => Some (x <| _value := v |>));
+        (fun α => Some α.(_value))
+        (fun β α => Some (α <| _value := β |>));
   }.
   Global Instance Get_AF__value : Notations.DoubleColon t "_value" := {
-    Notations.double_colon (x : M.Val t) := x.["_value"];
+    Notations.double_colon (α : M.Val t) := α.["_value"];
   }.
 End Mapping.
 End Mapping.
@@ -94,7 +94,7 @@ Section AccountId.
   
   Global Instance Get_0 : Notations.Dot "0" := {
     Notations.dot :=
-      Ref.map (fun x => Some x.(x0)) (fun v x => Some (x <| x0 := v |>));
+      Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>));
   }.
 End AccountId.
 End AccountId.
@@ -160,11 +160,11 @@ Section Env.
   Global Instance Get_caller : Notations.Dot "caller" := {
     Notations.dot :=
       Ref.map
-        (fun x => Some x.(caller))
-        (fun v x => Some (x <| caller := v |>));
+        (fun α => Some α.(caller))
+        (fun β α => Some (α <| caller := β |>));
   }.
   Global Instance Get_AF_caller : Notations.DoubleColon t "caller" := {
-    Notations.double_colon (x : M.Val t) := x.["caller"];
+    Notations.double_colon (α : M.Val t) := α.["caller"];
   }.
 End Env.
 End Env.
@@ -305,30 +305,30 @@ Section Erc20.
   Global Instance Get_total_supply : Notations.Dot "total_supply" := {
     Notations.dot :=
       Ref.map
-        (fun x => Some x.(total_supply))
-        (fun v x => Some (x <| total_supply := v |>));
+        (fun α => Some α.(total_supply))
+        (fun β α => Some (α <| total_supply := β |>));
   }.
   Global Instance Get_AF_total_supply :
     Notations.DoubleColon t "total_supply" := {
-    Notations.double_colon (x : M.Val t) := x.["total_supply"];
+    Notations.double_colon (α : M.Val t) := α.["total_supply"];
   }.
   Global Instance Get_balances : Notations.Dot "balances" := {
     Notations.dot :=
       Ref.map
-        (fun x => Some x.(balances))
-        (fun v x => Some (x <| balances := v |>));
+        (fun α => Some α.(balances))
+        (fun β α => Some (α <| balances := β |>));
   }.
   Global Instance Get_AF_balances : Notations.DoubleColon t "balances" := {
-    Notations.double_colon (x : M.Val t) := x.["balances"];
+    Notations.double_colon (α : M.Val t) := α.["balances"];
   }.
   Global Instance Get_allowances : Notations.Dot "allowances" := {
     Notations.dot :=
       Ref.map
-        (fun x => Some x.(allowances))
-        (fun v x => Some (x <| allowances := v |>));
+        (fun α => Some α.(allowances))
+        (fun β α => Some (α <| allowances := β |>));
   }.
   Global Instance Get_AF_allowances : Notations.DoubleColon t "allowances" := {
-    Notations.double_colon (x : M.Val t) := x.["allowances"];
+    Notations.double_colon (α : M.Val t) := α.["allowances"];
   }.
 End Erc20.
 End Erc20.
@@ -363,24 +363,24 @@ Section Transfer.
   
   Global Instance Get_from : Notations.Dot "from" := {
     Notations.dot :=
-      Ref.map (fun x => Some x.(from)) (fun v x => Some (x <| from := v |>));
+      Ref.map (fun α => Some α.(from)) (fun β α => Some (α <| from := β |>));
   }.
   Global Instance Get_AF_from : Notations.DoubleColon t "from" := {
-    Notations.double_colon (x : M.Val t) := x.["from"];
+    Notations.double_colon (α : M.Val t) := α.["from"];
   }.
   Global Instance Get_to : Notations.Dot "to" := {
     Notations.dot :=
-      Ref.map (fun x => Some x.(to)) (fun v x => Some (x <| to := v |>));
+      Ref.map (fun α => Some α.(to)) (fun β α => Some (α <| to := β |>));
   }.
   Global Instance Get_AF_to : Notations.DoubleColon t "to" := {
-    Notations.double_colon (x : M.Val t) := x.["to"];
+    Notations.double_colon (α : M.Val t) := α.["to"];
   }.
   Global Instance Get_value : Notations.Dot "value" := {
     Notations.dot :=
-      Ref.map (fun x => Some x.(value)) (fun v x => Some (x <| value := v |>));
+      Ref.map (fun α => Some α.(value)) (fun β α => Some (α <| value := β |>));
   }.
   Global Instance Get_AF_value : Notations.DoubleColon t "value" := {
-    Notations.double_colon (x : M.Val t) := x.["value"];
+    Notations.double_colon (α : M.Val t) := α.["value"];
   }.
 End Transfer.
 End Transfer.
@@ -395,26 +395,26 @@ Section Approval.
   
   Global Instance Get_owner : Notations.Dot "owner" := {
     Notations.dot :=
-      Ref.map (fun x => Some x.(owner)) (fun v x => Some (x <| owner := v |>));
+      Ref.map (fun α => Some α.(owner)) (fun β α => Some (α <| owner := β |>));
   }.
   Global Instance Get_AF_owner : Notations.DoubleColon t "owner" := {
-    Notations.double_colon (x : M.Val t) := x.["owner"];
+    Notations.double_colon (α : M.Val t) := α.["owner"];
   }.
   Global Instance Get_spender : Notations.Dot "spender" := {
     Notations.dot :=
       Ref.map
-        (fun x => Some x.(spender))
-        (fun v x => Some (x <| spender := v |>));
+        (fun α => Some α.(spender))
+        (fun β α => Some (α <| spender := β |>));
   }.
   Global Instance Get_AF_spender : Notations.DoubleColon t "spender" := {
-    Notations.double_colon (x : M.Val t) := x.["spender"];
+    Notations.double_colon (α : M.Val t) := α.["spender"];
   }.
   Global Instance Get_value : Notations.Dot "value" := {
     Notations.dot :=
-      Ref.map (fun x => Some x.(value)) (fun v x => Some (x <| value := v |>));
+      Ref.map (fun α => Some α.(value)) (fun β α => Some (α <| value := β |>));
   }.
   Global Instance Get_AF_value : Notations.DoubleColon t "value" := {
-    Notations.double_colon (x : M.Val t) := x.["value"];
+    Notations.double_colon (α : M.Val t) := α.["value"];
   }.
 End Approval.
 End Approval.
@@ -423,6 +423,22 @@ Module Event.
   Inductive t : Set :=
   | Transfer (_ : trait_erc20.Transfer.t)
   | Approval (_ : trait_erc20.Approval.t).
+  
+  Global Instance Get_Transfer_0 : Notations.Dot "Transfer.0" := {
+    Notations.dot :=
+      Ref.map
+        (fun α => match α with | Transfer α0 => Some α0 | _ => None end)
+        (fun β α =>
+          match α with | Transfer _ => Some (Transfer β) | _ => None end);
+  }.
+  
+  Global Instance Get_Approval_0 : Notations.Dot "Approval.0" := {
+    Notations.dot :=
+      Ref.map
+        (fun α => match α with | Approval α0 => Some α0 | _ => None end)
+        (fun β α =>
+          match α with | Approval _ => Some (Approval β) | _ => None end);
+  }.
 End Event.
 
 Module  Impl_trait_erc20_Env_t.

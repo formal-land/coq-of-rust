@@ -10,11 +10,11 @@ Section Circle.
   Global Instance Get_radius : Notations.Dot "radius" := {
     Notations.dot :=
       Ref.map
-        (fun x => Some x.(radius))
-        (fun v x => Some (x <| radius := v |>));
+        (fun α => Some α.(radius))
+        (fun β α => Some (α <| radius := β |>));
   }.
   Global Instance Get_AF_radius : Notations.DoubleColon t "radius" := {
-    Notations.double_colon (x : M.Val t) := x.["radius"];
+    Notations.double_colon (α : M.Val t) := α.["radius"];
   }.
 End Circle.
 End Circle.

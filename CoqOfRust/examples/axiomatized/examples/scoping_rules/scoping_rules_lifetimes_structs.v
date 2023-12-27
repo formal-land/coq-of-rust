@@ -9,7 +9,7 @@ Section Borrowed.
   
   Global Instance Get_0 : Notations.Dot "0" := {
     Notations.dot :=
-      Ref.map (fun x => Some x.(x0)) (fun v x => Some (x <| x0 := v |>));
+      Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>));
   }.
 End Borrowed.
 End Borrowed.
@@ -43,17 +43,17 @@ Section NamedBorrowed.
   
   Global Instance Get_x : Notations.Dot "x" := {
     Notations.dot :=
-      Ref.map (fun x' => Some x'.(x)) (fun v x' => Some (x' <| x := v |>));
+      Ref.map (fun α => Some α.(x)) (fun β α => Some (α <| x := β |>));
   }.
   Global Instance Get_AF_x : Notations.DoubleColon t "x" := {
-    Notations.double_colon (x' : M.Val t) := x'.["x"];
+    Notations.double_colon (α : M.Val t) := α.["x"];
   }.
   Global Instance Get_y : Notations.Dot "y" := {
     Notations.dot :=
-      Ref.map (fun x => Some x.(y)) (fun v x => Some (x <| y := v |>));
+      Ref.map (fun α => Some α.(y)) (fun β α => Some (α <| y := β |>));
   }.
   Global Instance Get_AF_y : Notations.DoubleColon t "y" := {
-    Notations.double_colon (x : M.Val t) := x.["y"];
+    Notations.double_colon (α : M.Val t) := α.["y"];
   }.
 End NamedBorrowed.
 End NamedBorrowed.
@@ -82,6 +82,20 @@ Module Either.
   Inductive t : Set :=
   | Num (_ : i32.t)
   | Ref (_ : ref i32.t).
+  
+  Global Instance Get_Num_0 : Notations.Dot "Num.0" := {
+    Notations.dot :=
+      Ref.map
+        (fun α => match α with | Num α0 => Some α0 | _ => None end)
+        (fun β α => match α with | Num _ => Some (Num β) | _ => None end);
+  }.
+  
+  Global Instance Get_Ref_0 : Notations.Dot "Ref.0" := {
+    Notations.dot :=
+      Ref.map
+        (fun α => match α with | Ref α0 => Some α0 | _ => None end)
+        (fun β α => match α with | Ref _ => Some (Ref β) | _ => None end);
+  }.
 End Either.
 
 Module  Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either_t.

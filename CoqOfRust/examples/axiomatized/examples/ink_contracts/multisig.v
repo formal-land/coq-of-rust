@@ -12,19 +12,19 @@ Section Mapping.
   
   Global Instance Get__key : Notations.Dot "_key" := {
     Notations.dot :=
-      Ref.map (fun x => Some x.(_key)) (fun v x => Some (x <| _key := v |>));
+      Ref.map (fun α => Some α.(_key)) (fun β α => Some (α <| _key := β |>));
   }.
   Global Instance Get_AF__key : Notations.DoubleColon t "_key" := {
-    Notations.double_colon (x : M.Val t) := x.["_key"];
+    Notations.double_colon (α : M.Val t) := α.["_key"];
   }.
   Global Instance Get__value : Notations.Dot "_value" := {
     Notations.dot :=
       Ref.map
-        (fun x => Some x.(_value))
-        (fun v x => Some (x <| _value := v |>));
+        (fun α => Some α.(_value))
+        (fun β α => Some (α <| _value := β |>));
   }.
   Global Instance Get_AF__value : Notations.DoubleColon t "_value" := {
-    Notations.double_colon (x : M.Val t) := x.["_value"];
+    Notations.double_colon (α : M.Val t) := α.["_value"];
   }.
 End Mapping.
 End Mapping.
@@ -142,7 +142,7 @@ Section AccountId.
   
   Global Instance Get_0 : Notations.Dot "0" := {
     Notations.dot :=
-      Ref.map (fun x => Some x.(x0)) (fun v x => Some (x <| x0 := v |>));
+      Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>));
   }.
 End AccountId.
 End AccountId.
@@ -341,11 +341,11 @@ Section Env.
   Global Instance Get_caller : Notations.Dot "caller" := {
     Notations.dot :=
       Ref.map
-        (fun x => Some x.(caller))
-        (fun v x => Some (x <| caller := v |>));
+        (fun α => Some α.(caller))
+        (fun β α => Some (α <| caller := β |>));
   }.
   Global Instance Get_AF_caller : Notations.DoubleColon t "caller" := {
-    Notations.double_colon (x : M.Val t) := x.["caller"];
+    Notations.double_colon (α : M.Val t) := α.["caller"];
   }.
 End Env.
 End Env.
@@ -364,7 +364,7 @@ Section CallInput.
   
   Global Instance Get_0 : Notations.Dot "0" := {
     Notations.dot :=
-      Ref.map (fun x => Some x.(x0)) (fun v x => Some (x <| x0 := v |>));
+      Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>));
   }.
 End CallInput.
 End CallInput.
@@ -373,6 +373,19 @@ Module ConfirmationStatus.
   Inductive t : Set :=
   | Confirmed
   | ConfirmationsNeeded (_ : u32.t).
+  
+  Global Instance Get_ConfirmationsNeeded_0 :
+    Notations.Dot "ConfirmationsNeeded.0" := {
+    Notations.dot :=
+      Ref.map
+        (fun α =>
+          match α with | ConfirmationsNeeded α0 => Some α0 | _ => None end)
+        (fun β α =>
+          match α with
+          | ConfirmationsNeeded _ => Some (ConfirmationsNeeded β)
+          | _ => None
+          end);
+  }.
 End ConfirmationStatus.
 
 Module  Impl_core_clone_Clone_for_multisig_ConfirmationStatus_t.
@@ -419,56 +432,56 @@ Section Transaction.
   Global Instance Get_callee : Notations.Dot "callee" := {
     Notations.dot :=
       Ref.map
-        (fun x => Some x.(callee))
-        (fun v x => Some (x <| callee := v |>));
+        (fun α => Some α.(callee))
+        (fun β α => Some (α <| callee := β |>));
   }.
   Global Instance Get_AF_callee : Notations.DoubleColon t "callee" := {
-    Notations.double_colon (x : M.Val t) := x.["callee"];
+    Notations.double_colon (α : M.Val t) := α.["callee"];
   }.
   Global Instance Get_selector : Notations.Dot "selector" := {
     Notations.dot :=
       Ref.map
-        (fun x => Some x.(selector))
-        (fun v x => Some (x <| selector := v |>));
+        (fun α => Some α.(selector))
+        (fun β α => Some (α <| selector := β |>));
   }.
   Global Instance Get_AF_selector : Notations.DoubleColon t "selector" := {
-    Notations.double_colon (x : M.Val t) := x.["selector"];
+    Notations.double_colon (α : M.Val t) := α.["selector"];
   }.
   Global Instance Get_input : Notations.Dot "input" := {
     Notations.dot :=
-      Ref.map (fun x => Some x.(input)) (fun v x => Some (x <| input := v |>));
+      Ref.map (fun α => Some α.(input)) (fun β α => Some (α <| input := β |>));
   }.
   Global Instance Get_AF_input : Notations.DoubleColon t "input" := {
-    Notations.double_colon (x : M.Val t) := x.["input"];
+    Notations.double_colon (α : M.Val t) := α.["input"];
   }.
   Global Instance Get_transferred_value : Notations.Dot "transferred_value" := {
     Notations.dot :=
       Ref.map
-        (fun x => Some x.(transferred_value))
-        (fun v x => Some (x <| transferred_value := v |>));
+        (fun α => Some α.(transferred_value))
+        (fun β α => Some (α <| transferred_value := β |>));
   }.
   Global Instance Get_AF_transferred_value :
     Notations.DoubleColon t "transferred_value" := {
-    Notations.double_colon (x : M.Val t) := x.["transferred_value"];
+    Notations.double_colon (α : M.Val t) := α.["transferred_value"];
   }.
   Global Instance Get_gas_limit : Notations.Dot "gas_limit" := {
     Notations.dot :=
       Ref.map
-        (fun x => Some x.(gas_limit))
-        (fun v x => Some (x <| gas_limit := v |>));
+        (fun α => Some α.(gas_limit))
+        (fun β α => Some (α <| gas_limit := β |>));
   }.
   Global Instance Get_AF_gas_limit : Notations.DoubleColon t "gas_limit" := {
-    Notations.double_colon (x : M.Val t) := x.["gas_limit"];
+    Notations.double_colon (α : M.Val t) := α.["gas_limit"];
   }.
   Global Instance Get_allow_reentry : Notations.Dot "allow_reentry" := {
     Notations.dot :=
       Ref.map
-        (fun x => Some x.(allow_reentry))
-        (fun v x => Some (x <| allow_reentry := v |>));
+        (fun α => Some α.(allow_reentry))
+        (fun β α => Some (α <| allow_reentry := β |>));
   }.
   Global Instance Get_AF_allow_reentry :
     Notations.DoubleColon t "allow_reentry" := {
-    Notations.double_colon (x : M.Val t) := x.["allow_reentry"];
+    Notations.double_colon (α : M.Val t) := α.["allow_reentry"];
   }.
 End Transaction.
 End Transaction.
@@ -600,21 +613,21 @@ Section Transactions.
   Global Instance Get_transactions : Notations.Dot "transactions" := {
     Notations.dot :=
       Ref.map
-        (fun x => Some x.(transactions))
-        (fun v x => Some (x <| transactions := v |>));
+        (fun α => Some α.(transactions))
+        (fun β α => Some (α <| transactions := β |>));
   }.
   Global Instance Get_AF_transactions :
     Notations.DoubleColon t "transactions" := {
-    Notations.double_colon (x : M.Val t) := x.["transactions"];
+    Notations.double_colon (α : M.Val t) := α.["transactions"];
   }.
   Global Instance Get_next_id : Notations.Dot "next_id" := {
     Notations.dot :=
       Ref.map
-        (fun x => Some x.(next_id))
-        (fun v x => Some (x <| next_id := v |>));
+        (fun α => Some α.(next_id))
+        (fun β α => Some (α <| next_id := β |>));
   }.
   Global Instance Get_AF_next_id : Notations.DoubleColon t "next_id" := {
-    Notations.double_colon (x : M.Val t) := x.["next_id"];
+    Notations.double_colon (α : M.Val t) := α.["next_id"];
   }.
 End Transactions.
 End Transactions.
@@ -650,28 +663,28 @@ Section Confirmation.
   Global Instance Get_transaction : Notations.Dot "transaction" := {
     Notations.dot :=
       Ref.map
-        (fun x => Some x.(transaction))
-        (fun v x => Some (x <| transaction := v |>));
+        (fun α => Some α.(transaction))
+        (fun β α => Some (α <| transaction := β |>));
   }.
   Global Instance Get_AF_transaction :
     Notations.DoubleColon t "transaction" := {
-    Notations.double_colon (x : M.Val t) := x.["transaction"];
+    Notations.double_colon (α : M.Val t) := α.["transaction"];
   }.
   Global Instance Get_from : Notations.Dot "from" := {
     Notations.dot :=
-      Ref.map (fun x => Some x.(from)) (fun v x => Some (x <| from := v |>));
+      Ref.map (fun α => Some α.(from)) (fun β α => Some (α <| from := β |>));
   }.
   Global Instance Get_AF_from : Notations.DoubleColon t "from" := {
-    Notations.double_colon (x : M.Val t) := x.["from"];
+    Notations.double_colon (α : M.Val t) := α.["from"];
   }.
   Global Instance Get_status : Notations.Dot "status" := {
     Notations.dot :=
       Ref.map
-        (fun x => Some x.(status))
-        (fun v x => Some (x <| status := v |>));
+        (fun α => Some α.(status))
+        (fun β α => Some (α <| status := β |>));
   }.
   Global Instance Get_AF_status : Notations.DoubleColon t "status" := {
-    Notations.double_colon (x : M.Val t) := x.["status"];
+    Notations.double_colon (α : M.Val t) := α.["status"];
   }.
 End Confirmation.
 End Confirmation.
@@ -686,19 +699,19 @@ Section Revocation.
   Global Instance Get_transaction : Notations.Dot "transaction" := {
     Notations.dot :=
       Ref.map
-        (fun x => Some x.(transaction))
-        (fun v x => Some (x <| transaction := v |>));
+        (fun α => Some α.(transaction))
+        (fun β α => Some (α <| transaction := β |>));
   }.
   Global Instance Get_AF_transaction :
     Notations.DoubleColon t "transaction" := {
-    Notations.double_colon (x : M.Val t) := x.["transaction"];
+    Notations.double_colon (α : M.Val t) := α.["transaction"];
   }.
   Global Instance Get_from : Notations.Dot "from" := {
     Notations.dot :=
-      Ref.map (fun x => Some x.(from)) (fun v x => Some (x <| from := v |>));
+      Ref.map (fun α => Some α.(from)) (fun β α => Some (α <| from := β |>));
   }.
   Global Instance Get_AF_from : Notations.DoubleColon t "from" := {
-    Notations.double_colon (x : M.Val t) := x.["from"];
+    Notations.double_colon (α : M.Val t) := α.["from"];
   }.
 End Revocation.
 End Revocation.
@@ -712,12 +725,12 @@ Section Submission.
   Global Instance Get_transaction : Notations.Dot "transaction" := {
     Notations.dot :=
       Ref.map
-        (fun x => Some x.(transaction))
-        (fun v x => Some (x <| transaction := v |>));
+        (fun α => Some α.(transaction))
+        (fun β α => Some (α <| transaction := β |>));
   }.
   Global Instance Get_AF_transaction :
     Notations.DoubleColon t "transaction" := {
-    Notations.double_colon (x : M.Val t) := x.["transaction"];
+    Notations.double_colon (α : M.Val t) := α.["transaction"];
   }.
 End Submission.
 End Submission.
@@ -731,12 +744,12 @@ Section Cancellation.
   Global Instance Get_transaction : Notations.Dot "transaction" := {
     Notations.dot :=
       Ref.map
-        (fun x => Some x.(transaction))
-        (fun v x => Some (x <| transaction := v |>));
+        (fun α => Some α.(transaction))
+        (fun β α => Some (α <| transaction := β |>));
   }.
   Global Instance Get_AF_transaction :
     Notations.DoubleColon t "transaction" := {
-    Notations.double_colon (x : M.Val t) := x.["transaction"];
+    Notations.double_colon (α : M.Val t) := α.["transaction"];
   }.
 End Cancellation.
 End Cancellation.
@@ -754,21 +767,21 @@ Section Execution.
   Global Instance Get_transaction : Notations.Dot "transaction" := {
     Notations.dot :=
       Ref.map
-        (fun x => Some x.(transaction))
-        (fun v x => Some (x <| transaction := v |>));
+        (fun α => Some α.(transaction))
+        (fun β α => Some (α <| transaction := β |>));
   }.
   Global Instance Get_AF_transaction :
     Notations.DoubleColon t "transaction" := {
-    Notations.double_colon (x : M.Val t) := x.["transaction"];
+    Notations.double_colon (α : M.Val t) := α.["transaction"];
   }.
   Global Instance Get_result : Notations.Dot "result" := {
     Notations.dot :=
       Ref.map
-        (fun x => Some x.(result))
-        (fun v x => Some (x <| result := v |>));
+        (fun α => Some α.(result))
+        (fun β α => Some (α <| result := β |>));
   }.
   Global Instance Get_AF_result : Notations.DoubleColon t "result" := {
-    Notations.double_colon (x : M.Val t) := x.["result"];
+    Notations.double_colon (α : M.Val t) := α.["result"];
   }.
 End Execution.
 End Execution.
@@ -781,10 +794,10 @@ Section OwnerAddition.
   
   Global Instance Get_owner : Notations.Dot "owner" := {
     Notations.dot :=
-      Ref.map (fun x => Some x.(owner)) (fun v x => Some (x <| owner := v |>));
+      Ref.map (fun α => Some α.(owner)) (fun β α => Some (α <| owner := β |>));
   }.
   Global Instance Get_AF_owner : Notations.DoubleColon t "owner" := {
-    Notations.double_colon (x : M.Val t) := x.["owner"];
+    Notations.double_colon (α : M.Val t) := α.["owner"];
   }.
 End OwnerAddition.
 End OwnerAddition.
@@ -797,10 +810,10 @@ Section OwnerRemoval.
   
   Global Instance Get_owner : Notations.Dot "owner" := {
     Notations.dot :=
-      Ref.map (fun x => Some x.(owner)) (fun v x => Some (x <| owner := v |>));
+      Ref.map (fun α => Some α.(owner)) (fun β α => Some (α <| owner := β |>));
   }.
   Global Instance Get_AF_owner : Notations.DoubleColon t "owner" := {
-    Notations.double_colon (x : M.Val t) := x.["owner"];
+    Notations.double_colon (α : M.Val t) := α.["owner"];
   }.
 End OwnerRemoval.
 End OwnerRemoval.
@@ -814,12 +827,12 @@ Section RequirementChange.
   Global Instance Get_new_requirement : Notations.Dot "new_requirement" := {
     Notations.dot :=
       Ref.map
-        (fun x => Some x.(new_requirement))
-        (fun v x => Some (x <| new_requirement := v |>));
+        (fun α => Some α.(new_requirement))
+        (fun β α => Some (α <| new_requirement := β |>));
   }.
   Global Instance Get_AF_new_requirement :
     Notations.DoubleColon t "new_requirement" := {
-    Notations.double_colon (x : M.Val t) := x.["new_requirement"];
+    Notations.double_colon (α : M.Val t) := α.["new_requirement"];
   }.
 End RequirementChange.
 End RequirementChange.
@@ -834,6 +847,87 @@ Module Event.
   | OwnerAddition (_ : multisig.OwnerAddition.t)
   | OwnerRemoval (_ : multisig.OwnerRemoval.t)
   | RequirementChange (_ : multisig.RequirementChange.t).
+  
+  Global Instance Get_Confirmation_0 : Notations.Dot "Confirmation.0" := {
+    Notations.dot :=
+      Ref.map
+        (fun α => match α with | Confirmation α0 => Some α0 | _ => None end)
+        (fun β α =>
+          match α with
+          | Confirmation _ => Some (Confirmation β)
+          | _ => None
+          end);
+  }.
+  
+  Global Instance Get_Revocation_0 : Notations.Dot "Revocation.0" := {
+    Notations.dot :=
+      Ref.map
+        (fun α => match α with | Revocation α0 => Some α0 | _ => None end)
+        (fun β α =>
+          match α with | Revocation _ => Some (Revocation β) | _ => None end);
+  }.
+  
+  Global Instance Get_Submission_0 : Notations.Dot "Submission.0" := {
+    Notations.dot :=
+      Ref.map
+        (fun α => match α with | Submission α0 => Some α0 | _ => None end)
+        (fun β α =>
+          match α with | Submission _ => Some (Submission β) | _ => None end);
+  }.
+  
+  Global Instance Get_Cancellation_0 : Notations.Dot "Cancellation.0" := {
+    Notations.dot :=
+      Ref.map
+        (fun α => match α with | Cancellation α0 => Some α0 | _ => None end)
+        (fun β α =>
+          match α with
+          | Cancellation _ => Some (Cancellation β)
+          | _ => None
+          end);
+  }.
+  
+  Global Instance Get_Execution_0 : Notations.Dot "Execution.0" := {
+    Notations.dot :=
+      Ref.map
+        (fun α => match α with | Execution α0 => Some α0 | _ => None end)
+        (fun β α =>
+          match α with | Execution _ => Some (Execution β) | _ => None end);
+  }.
+  
+  Global Instance Get_OwnerAddition_0 : Notations.Dot "OwnerAddition.0" := {
+    Notations.dot :=
+      Ref.map
+        (fun α => match α with | OwnerAddition α0 => Some α0 | _ => None end)
+        (fun β α =>
+          match α with
+          | OwnerAddition _ => Some (OwnerAddition β)
+          | _ => None
+          end);
+  }.
+  
+  Global Instance Get_OwnerRemoval_0 : Notations.Dot "OwnerRemoval.0" := {
+    Notations.dot :=
+      Ref.map
+        (fun α => match α with | OwnerRemoval α0 => Some α0 | _ => None end)
+        (fun β α =>
+          match α with
+          | OwnerRemoval _ => Some (OwnerRemoval β)
+          | _ => None
+          end);
+  }.
+  
+  Global Instance Get_RequirementChange_0 :
+    Notations.Dot "RequirementChange.0" := {
+    Notations.dot :=
+      Ref.map
+        (fun α =>
+          match α with | RequirementChange α0 => Some α0 | _ => None end)
+        (fun β α =>
+          match α with
+          | RequirementChange _ => Some (RequirementChange β)
+          | _ => None
+          end);
+  }.
 End Event.
 
 Module  Impl_multisig_Env_t.
@@ -909,71 +1003,71 @@ Section Multisig.
   Global Instance Get_confirmations : Notations.Dot "confirmations" := {
     Notations.dot :=
       Ref.map
-        (fun x => Some x.(confirmations))
-        (fun v x => Some (x <| confirmations := v |>));
+        (fun α => Some α.(confirmations))
+        (fun β α => Some (α <| confirmations := β |>));
   }.
   Global Instance Get_AF_confirmations :
     Notations.DoubleColon t "confirmations" := {
-    Notations.double_colon (x : M.Val t) := x.["confirmations"];
+    Notations.double_colon (α : M.Val t) := α.["confirmations"];
   }.
   Global Instance Get_confirmation_count :
     Notations.Dot "confirmation_count" := {
     Notations.dot :=
       Ref.map
-        (fun x => Some x.(confirmation_count))
-        (fun v x => Some (x <| confirmation_count := v |>));
+        (fun α => Some α.(confirmation_count))
+        (fun β α => Some (α <| confirmation_count := β |>));
   }.
   Global Instance Get_AF_confirmation_count :
     Notations.DoubleColon t "confirmation_count" := {
-    Notations.double_colon (x : M.Val t) := x.["confirmation_count"];
+    Notations.double_colon (α : M.Val t) := α.["confirmation_count"];
   }.
   Global Instance Get_transactions : Notations.Dot "transactions" := {
     Notations.dot :=
       Ref.map
-        (fun x => Some x.(transactions))
-        (fun v x => Some (x <| transactions := v |>));
+        (fun α => Some α.(transactions))
+        (fun β α => Some (α <| transactions := β |>));
   }.
   Global Instance Get_AF_transactions :
     Notations.DoubleColon t "transactions" := {
-    Notations.double_colon (x : M.Val t) := x.["transactions"];
+    Notations.double_colon (α : M.Val t) := α.["transactions"];
   }.
   Global Instance Get_transaction_list : Notations.Dot "transaction_list" := {
     Notations.dot :=
       Ref.map
-        (fun x => Some x.(transaction_list))
-        (fun v x => Some (x <| transaction_list := v |>));
+        (fun α => Some α.(transaction_list))
+        (fun β α => Some (α <| transaction_list := β |>));
   }.
   Global Instance Get_AF_transaction_list :
     Notations.DoubleColon t "transaction_list" := {
-    Notations.double_colon (x : M.Val t) := x.["transaction_list"];
+    Notations.double_colon (α : M.Val t) := α.["transaction_list"];
   }.
   Global Instance Get_owners : Notations.Dot "owners" := {
     Notations.dot :=
       Ref.map
-        (fun x => Some x.(owners))
-        (fun v x => Some (x <| owners := v |>));
+        (fun α => Some α.(owners))
+        (fun β α => Some (α <| owners := β |>));
   }.
   Global Instance Get_AF_owners : Notations.DoubleColon t "owners" := {
-    Notations.double_colon (x : M.Val t) := x.["owners"];
+    Notations.double_colon (α : M.Val t) := α.["owners"];
   }.
   Global Instance Get_is_owner : Notations.Dot "is_owner" := {
     Notations.dot :=
       Ref.map
-        (fun x => Some x.(is_owner))
-        (fun v x => Some (x <| is_owner := v |>));
+        (fun α => Some α.(is_owner))
+        (fun β α => Some (α <| is_owner := β |>));
   }.
   Global Instance Get_AF_is_owner : Notations.DoubleColon t "is_owner" := {
-    Notations.double_colon (x : M.Val t) := x.["is_owner"];
+    Notations.double_colon (α : M.Val t) := α.["is_owner"];
   }.
   Global Instance Get_requirement : Notations.Dot "requirement" := {
     Notations.dot :=
       Ref.map
-        (fun x => Some x.(requirement))
-        (fun v x => Some (x <| requirement := v |>));
+        (fun α => Some α.(requirement))
+        (fun β α => Some (α <| requirement := β |>));
   }.
   Global Instance Get_AF_requirement :
     Notations.DoubleColon t "requirement" := {
-    Notations.double_colon (x : M.Val t) := x.["requirement"];
+    Notations.double_colon (α : M.Val t) := α.["requirement"];
   }.
 End Multisig.
 End Multisig.

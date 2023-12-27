@@ -9,7 +9,7 @@ Section AccountId.
   
   Global Instance Get_0 : Notations.Dot "0" := {
     Notations.dot :=
-      Ref.map (fun x => Some x.(x0)) (fun v x => Some (x <| x0 := v |>));
+      Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>));
   }.
 End AccountId.
 End AccountId.
@@ -75,11 +75,11 @@ Section Env.
   Global Instance Get_caller : Notations.Dot "caller" := {
     Notations.dot :=
       Ref.map
-        (fun x => Some x.(caller))
-        (fun v x => Some (x <| caller := v |>));
+        (fun α => Some α.(caller))
+        (fun β α => Some (α <| caller := β |>));
   }.
   Global Instance Get_AF_caller : Notations.DoubleColon t "caller" := {
-    Notations.double_colon (x : M.Val t) := x.["caller"];
+    Notations.double_colon (α : M.Val t) := α.["caller"];
   }.
 End Env.
 End Env.
@@ -123,52 +123,52 @@ Section EventWithTopics.
   Global Instance Get_first_topic : Notations.Dot "first_topic" := {
     Notations.dot :=
       Ref.map
-        (fun x => Some x.(first_topic))
-        (fun v x => Some (x <| first_topic := v |>));
+        (fun α => Some α.(first_topic))
+        (fun β α => Some (α <| first_topic := β |>));
   }.
   Global Instance Get_AF_first_topic :
     Notations.DoubleColon t "first_topic" := {
-    Notations.double_colon (x : M.Val t) := x.["first_topic"];
+    Notations.double_colon (α : M.Val t) := α.["first_topic"];
   }.
   Global Instance Get_second_topic : Notations.Dot "second_topic" := {
     Notations.dot :=
       Ref.map
-        (fun x => Some x.(second_topic))
-        (fun v x => Some (x <| second_topic := v |>));
+        (fun α => Some α.(second_topic))
+        (fun β α => Some (α <| second_topic := β |>));
   }.
   Global Instance Get_AF_second_topic :
     Notations.DoubleColon t "second_topic" := {
-    Notations.double_colon (x : M.Val t) := x.["second_topic"];
+    Notations.double_colon (α : M.Val t) := α.["second_topic"];
   }.
   Global Instance Get_third_topic : Notations.Dot "third_topic" := {
     Notations.dot :=
       Ref.map
-        (fun x => Some x.(third_topic))
-        (fun v x => Some (x <| third_topic := v |>));
+        (fun α => Some α.(third_topic))
+        (fun β α => Some (α <| third_topic := β |>));
   }.
   Global Instance Get_AF_third_topic :
     Notations.DoubleColon t "third_topic" := {
-    Notations.double_colon (x : M.Val t) := x.["third_topic"];
+    Notations.double_colon (α : M.Val t) := α.["third_topic"];
   }.
   Global Instance Get_fourth_topic : Notations.Dot "fourth_topic" := {
     Notations.dot :=
       Ref.map
-        (fun x => Some x.(fourth_topic))
-        (fun v x => Some (x <| fourth_topic := v |>));
+        (fun α => Some α.(fourth_topic))
+        (fun β α => Some (α <| fourth_topic := β |>));
   }.
   Global Instance Get_AF_fourth_topic :
     Notations.DoubleColon t "fourth_topic" := {
-    Notations.double_colon (x : M.Val t) := x.["fourth_topic"];
+    Notations.double_colon (α : M.Val t) := α.["fourth_topic"];
   }.
   Global Instance Get_fifth_topic : Notations.Dot "fifth_topic" := {
     Notations.dot :=
       Ref.map
-        (fun x => Some x.(fifth_topic))
-        (fun v x => Some (x <| fifth_topic := v |>));
+        (fun α => Some α.(fifth_topic))
+        (fun β α => Some (α <| fifth_topic := β |>));
   }.
   Global Instance Get_AF_fifth_topic :
     Notations.DoubleColon t "fifth_topic" := {
-    Notations.double_colon (x : M.Val t) := x.["fifth_topic"];
+    Notations.double_colon (α : M.Val t) := α.["fifth_topic"];
   }.
 End EventWithTopics.
 End EventWithTopics.
@@ -196,6 +196,14 @@ End Impl_core_default_Default_for_custom_environment_EventWithTopics_t.
 Module Event.
   Inductive t : Set :=
   | EventWithTopics (_ : custom_environment.EventWithTopics.t).
+  
+  Global Instance Get_EventWithTopics_0 : Notations.Dot "EventWithTopics.0" := {
+    Notations.dot :=
+      Ref.map
+        (fun α => match α with | EventWithTopics α0 => Some α0 end)
+        (fun β α =>
+          match α with | EventWithTopics _ => Some (EventWithTopics β) end);
+  }.
 End Event.
 
 Module  Impl_custom_environment_Env_t.

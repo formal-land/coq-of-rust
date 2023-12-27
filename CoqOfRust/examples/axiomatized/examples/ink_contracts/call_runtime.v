@@ -9,7 +9,7 @@ Section AccountId.
   
   Global Instance Get_0 : Notations.Dot "0" := {
     Notations.dot :=
-      Ref.map (fun x => Some x.(x0)) (fun v x => Some (x <| x0 := v |>));
+      Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>));
   }.
 End AccountId.
 End AccountId.
@@ -75,11 +75,11 @@ Section Env.
   Global Instance Get_caller : Notations.Dot "caller" := {
     Notations.dot :=
       Ref.map
-        (fun x => Some x.(caller))
-        (fun v x => Some (x <| caller := v |>));
+        (fun α => Some α.(caller))
+        (fun β α => Some (α <| caller := β |>));
   }.
   Global Instance Get_AF_caller : Notations.DoubleColon t "caller" := {
-    Notations.double_colon (x : M.Val t) := x.["caller"];
+    Notations.double_colon (α : M.Val t) := α.["caller"];
   }.
 End Env.
 End Env.
@@ -115,21 +115,46 @@ End Impl_core_convert_From_call_runtime_AccountId_t_for_call_runtime_MultiAddres
 
 Module BalancesCall.
   Module Transfer.
-    Unset Primitive Projections.
     Record t : Set := {
       dest : call_runtime.MultiAddress.t call_runtime.AccountId.t unit;
       value : u128.t;
     }.
-    Global Set Primitive Projections.
   End Transfer.
   
   Inductive t : Set :=
   | Transfer (_ : Transfer.t).
+  
+  Global Instance Get_Transfer_dest : Notations.Dot "Transfer.dest" := {
+    Notations.dot :=
+      Ref.map
+        (fun α => match α with | Transfer α => Some α.(Transfer.dest) end)
+        (fun β α =>
+          match α with
+          | Transfer α => Some (Transfer (α <| Transfer.dest := β |>))
+          end);
+  }.
+  
+  Global Instance Get_Transfer_value : Notations.Dot "Transfer.value" := {
+    Notations.dot :=
+      Ref.map
+        (fun α => match α with | Transfer α => Some α.(Transfer.value) end)
+        (fun β α =>
+          match α with
+          | Transfer α => Some (Transfer (α <| Transfer.value := β |>))
+          end);
+  }.
 End BalancesCall.
 
 Module RuntimeCall.
   Inductive t : Set :=
   | Balances (_ : call_runtime.BalancesCall.t).
+  
+  Global Instance Get_Balances_0 : Notations.Dot "Balances.0" := {
+    Notations.dot :=
+      Ref.map
+        (fun α => match α with | Balances α0 => Some α0 end)
+        (fun β α => match α with | Balances _ => Some (Balances β) end);
+  }.
 End RuntimeCall.
 
 Module  RuntimeCaller.

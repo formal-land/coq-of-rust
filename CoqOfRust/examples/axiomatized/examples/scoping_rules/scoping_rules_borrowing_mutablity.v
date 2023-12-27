@@ -13,25 +13,25 @@ Section Book.
   Global Instance Get_author : Notations.Dot "author" := {
     Notations.dot :=
       Ref.map
-        (fun x => Some x.(author))
-        (fun v x => Some (x <| author := v |>));
+        (fun α => Some α.(author))
+        (fun β α => Some (α <| author := β |>));
   }.
   Global Instance Get_AF_author : Notations.DoubleColon t "author" := {
-    Notations.double_colon (x : M.Val t) := x.["author"];
+    Notations.double_colon (α : M.Val t) := α.["author"];
   }.
   Global Instance Get_title : Notations.Dot "title" := {
     Notations.dot :=
-      Ref.map (fun x => Some x.(title)) (fun v x => Some (x <| title := v |>));
+      Ref.map (fun α => Some α.(title)) (fun β α => Some (α <| title := β |>));
   }.
   Global Instance Get_AF_title : Notations.DoubleColon t "title" := {
-    Notations.double_colon (x : M.Val t) := x.["title"];
+    Notations.double_colon (α : M.Val t) := α.["title"];
   }.
   Global Instance Get_year : Notations.Dot "year" := {
     Notations.dot :=
-      Ref.map (fun x => Some x.(year)) (fun v x => Some (x <| year := v |>));
+      Ref.map (fun α => Some α.(year)) (fun β α => Some (α <| year := β |>));
   }.
   Global Instance Get_AF_year : Notations.DoubleColon t "year" := {
-    Notations.double_colon (x : M.Val t) := x.["year"];
+    Notations.double_colon (α : M.Val t) := α.["year"];
   }.
 End Book.
 End Book.

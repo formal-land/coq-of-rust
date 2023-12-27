@@ -27,8 +27,9 @@ Section Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers_t.
     let* α0 :
         ref enums_type_aliases_v2.VeryVerboseEnumOfThingsToDoWithNumbers.t :=
       M.read self in
-    let* α1 : M.Val i32.t :=
-      match α0 with
+    let* α1 := M.read α0 in
+    let* α2 : M.Val i32.t :=
+      match α1 with
       | enums_type_aliases_v2.VeryVerboseEnumOfThingsToDoWithNumbers.Add =>
         let* α0 : i32.t := M.read x in
         let* α1 : i32.t := M.read y in
@@ -40,7 +41,7 @@ Section Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers_t.
         let* α2 : i32.t := BinOp.Panic.sub α0 α1 in
         M.alloc α2
       end in
-    M.read α1.
+    M.read α2.
   
   Global Instance AssociatedFunction_run : Notations.DoubleColon Self "run" := {
     Notations.double_colon := run;

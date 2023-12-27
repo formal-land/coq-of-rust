@@ -102,6 +102,7 @@ Global Instance Method_ne_u64 :
   Notations.Dot "ne" (T := u64.t -> u64.t -> M bool). Admitted.
 
 Require CoqOfRust.alloc.alloc.
+Require CoqOfRust.alloc.borrow.
 Require CoqOfRust.alloc.boxed.
 Require CoqOfRust.alloc.collections.
 Require CoqOfRust.alloc.fmt.
@@ -110,6 +111,7 @@ Require CoqOfRust.alloc.vec.
 
 Module alloc.
   Export CoqOfRust.alloc.alloc.
+  Export CoqOfRust.alloc.borrow.
   Export CoqOfRust.alloc.boxed.
   Export CoqOfRust.alloc.collections.
   Export CoqOfRust.alloc.fmt.
@@ -136,12 +138,12 @@ End alloc.
 Require CoqOfRust.core.alloc.
 Require CoqOfRust.core.any.
 Require CoqOfRust.core.array.
-Require CoqOfRust.core.borrow.
 Require CoqOfRust.core.cell.
 Require CoqOfRust.core.clone.
 Require CoqOfRust.core.cmp.
 Require CoqOfRust.core.convert.
 Require CoqOfRust.core.default.
+Require CoqOfRust.core.error.
 Require CoqOfRust.core.fmt.
 Require CoqOfRust.core.hash.
 Require CoqOfRust.core.intrinsics.
@@ -162,12 +164,12 @@ Module core.
   Export CoqOfRust.core.alloc.
   Export CoqOfRust.core.any.
   Export CoqOfRust.core.array.
-  Export CoqOfRust.core.borrow.
   Export CoqOfRust.core.cell.
   Export CoqOfRust.core.clone.
   Export CoqOfRust.core.cmp.
   Export CoqOfRust.core.convert.
   Export CoqOfRust.core.default.
+  Export CoqOfRust.core.error.
   Export CoqOfRust.core.fmt.
   Export CoqOfRust.core.hash.
   Export CoqOfRust.core.intrinsics.
@@ -193,7 +195,6 @@ Require CoqOfRust._std.backtrace.
 Require CoqOfRust._std.char.
 Require CoqOfRust._std.collections.
 Require CoqOfRust._std.env.
-Require CoqOfRust._std.error.
 Require CoqOfRust._std.ffi.
 Require CoqOfRust._std.fs.
 Require CoqOfRust._std.future.
@@ -224,13 +225,11 @@ Module std.
   Module arch := _std.arch.
   Module ascii := _std.ascii.
   Module backtrace := _std.backtrace.
-  Module borrow := core.borrow.
   Module char := _std.char.
   Module clone := core.clone.
   Module cmp := core.cmp.
   Module collections := _std.collections.
   Module env := _std.env.
-  Module error := _std.error.
   Module ffi := _std.ffi.
   Module fs := _std.fs.
   Module future := _std.future.

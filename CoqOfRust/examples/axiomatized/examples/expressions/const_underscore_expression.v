@@ -9,10 +9,10 @@ Section Foo.
   
   Global Instance Get_test : Notations.Dot "test" := {
     Notations.dot :=
-      Ref.map (fun x => Some x.(test)) (fun v x => Some (x <| test := v |>));
+      Ref.map (fun α => Some α.(test)) (fun β α => Some (α <| test := β |>));
   }.
   Global Instance Get_AF_test : Notations.DoubleColon t "test" := {
-    Notations.double_colon (x : M.Val t) := x.["test"];
+    Notations.double_colon (α : M.Val t) := α.["test"];
   }.
 End Foo.
 End Foo.
@@ -25,10 +25,10 @@ Section Bar.
   
   Global Instance Get_test : Notations.Dot "test" := {
     Notations.dot :=
-      Ref.map (fun x => Some x.(test)) (fun v x => Some (x <| test := v |>));
+      Ref.map (fun α => Some α.(test)) (fun β α => Some (α <| test := β |>));
   }.
   Global Instance Get_AF_test : Notations.DoubleColon t "test" := {
-    Notations.double_colon (x : M.Val t) := x.["test"];
+    Notations.double_colon (α : M.Val t) := α.["test"];
   }.
 End Bar.
 End Bar.

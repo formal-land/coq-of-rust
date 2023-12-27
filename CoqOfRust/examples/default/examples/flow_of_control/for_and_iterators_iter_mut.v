@@ -67,8 +67,9 @@ Definition main : M unit :=
               let* name := M.alloc name in
               let* α0 : mut_ref (ref str.t) := M.read name in
               let* α1 : mut_ref (ref str.t) := M.read name in
-              let* α2 : M.Val (ref str.t) :=
-                match α1 with
+              let* α2 := M.read α1 in
+              let* α3 : M.Val (ref str.t) :=
+                match α2 with
                 | _ =>
                   let* α0 : ref str.t :=
                     M.read (mk_str "There is a rustacean among us!") in
@@ -77,8 +78,8 @@ Definition main : M unit :=
                   let* α0 : ref str.t := M.read (mk_str "Hello") in
                   M.alloc α0
                 end in
-              let* α3 : ref str.t := M.read α2 in
-              assign (deref α0) α3
+              let* α4 : ref str.t := M.read α3 in
+              assign (deref α0) α4
             end in
           M.alloc tt)
       end in

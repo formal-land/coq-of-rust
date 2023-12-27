@@ -11,24 +11,24 @@ Section Point.
   
   Global Instance Get_x : Notations.Dot "x" := {
     Notations.dot :=
-      Ref.map (fun x' => Some x'.(x)) (fun v x' => Some (x' <| x := v |>));
+      Ref.map (fun α => Some α.(x)) (fun β α => Some (α <| x := β |>));
   }.
   Global Instance Get_AF_x : Notations.DoubleColon t "x" := {
-    Notations.double_colon (x' : M.Val t) := x'.["x"];
+    Notations.double_colon (α : M.Val t) := α.["x"];
   }.
   Global Instance Get_y : Notations.Dot "y" := {
     Notations.dot :=
-      Ref.map (fun x => Some x.(y)) (fun v x => Some (x <| y := v |>));
+      Ref.map (fun α => Some α.(y)) (fun β α => Some (α <| y := β |>));
   }.
   Global Instance Get_AF_y : Notations.DoubleColon t "y" := {
-    Notations.double_colon (x : M.Val t) := x.["y"];
+    Notations.double_colon (α : M.Val t) := α.["y"];
   }.
   Global Instance Get_z : Notations.Dot "z" := {
     Notations.dot :=
-      Ref.map (fun x => Some x.(z)) (fun v x => Some (x <| z := v |>));
+      Ref.map (fun α => Some α.(z)) (fun β α => Some (α <| z := β |>));
   }.
   Global Instance Get_AF_z : Notations.DoubleColon t "z" := {
-    Notations.double_colon (x : M.Val t) := x.["z"];
+    Notations.double_colon (α : M.Val t) := α.["z"];
   }.
 End Point.
 End Point.

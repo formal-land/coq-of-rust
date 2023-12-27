@@ -28,10 +28,10 @@ Section Incrementer.
   
   Global Instance Get_value : Notations.Dot "value" := {
     Notations.dot :=
-      Ref.map (fun x => Some x.(value)) (fun v x => Some (x <| value := v |>));
+      Ref.map (fun α => Some α.(value)) (fun β α => Some (α <| value := β |>));
   }.
   Global Instance Get_AF_value : Notations.DoubleColon t "value" := {
-    Notations.double_colon (x : M.Val t) := x.["value"];
+    Notations.double_colon (α : M.Val t) := α.["value"];
   }.
 End Incrementer.
 End Incrementer.

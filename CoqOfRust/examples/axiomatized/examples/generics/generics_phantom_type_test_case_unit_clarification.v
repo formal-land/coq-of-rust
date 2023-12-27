@@ -130,11 +130,11 @@ Section Length.
   
   Global Instance Get_0 : Notations.Dot "0" := {
     Notations.dot :=
-      Ref.map (fun x => Some x.(x0)) (fun v x => Some (x <| x0 := v |>));
+      Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>));
   }.
   Global Instance Get_1 : Notations.Dot "1" := {
     Notations.dot :=
-      Ref.map (fun x => Some x.(x1)) (fun v x => Some (x <| x1 := v |>));
+      Ref.map (fun α => Some α.(x1)) (fun β α => Some (α <| x1 := β |>));
   }.
 End Length.
 End Length.

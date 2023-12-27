@@ -10,17 +10,17 @@ Section Sheep.
   
   Global Instance Get_naked : Notations.Dot "naked" := {
     Notations.dot :=
-      Ref.map (fun x => Some x.(naked)) (fun v x => Some (x <| naked := v |>));
+      Ref.map (fun α => Some α.(naked)) (fun β α => Some (α <| naked := β |>));
   }.
   Global Instance Get_AF_naked : Notations.DoubleColon t "naked" := {
-    Notations.double_colon (x : M.Val t) := x.["naked"];
+    Notations.double_colon (α : M.Val t) := α.["naked"];
   }.
   Global Instance Get_name : Notations.Dot "name" := {
     Notations.dot :=
-      Ref.map (fun x => Some x.(name)) (fun v x => Some (x <| name := v |>));
+      Ref.map (fun α => Some α.(name)) (fun β α => Some (α <| name := β |>));
   }.
   Global Instance Get_AF_name : Notations.DoubleColon t "name" := {
-    Notations.double_colon (x : M.Val t) := x.["name"];
+    Notations.double_colon (α : M.Val t) := α.["name"];
   }.
 End Sheep.
 End Sheep.
