@@ -93,7 +93,7 @@ Definition sum_odd_numbers (up_to : u32.t) : M u32.t :=
       match α1 with
       | iter =>
         let* iter := M.alloc iter in
-        loop
+        M.loop
           (let* _ : M.Val unit :=
             let* α0 : core.option.Option.t u32.t :=
               M.call
@@ -103,7 +103,7 @@ Definition sum_odd_numbers (up_to : u32.t) : M u32.t :=
                   (borrow_mut iter)) in
             match α0 with
             | core.option.Option.None =>
-              let* α0 : M.Val never.t := Break in
+              let* α0 : M.Val never.t := M.break in
               let* α1 := M.read α0 in
               let* α2 : unit := never_to_any α1 in
               M.alloc α2
@@ -116,7 +116,7 @@ Definition sum_odd_numbers (up_to : u32.t) : M u32.t :=
                   match BinOp.Pure.eq α1 (Integer.of_Z 1) with
                   | _ => M.pure i
                   | _ =>
-                    let* α0 : M.Val never.t := Continue in
+                    let* α0 : M.Val never.t := M.continue in
                     let* α1 := M.read α0 in
                     let* α2 : u32.t := never_to_any α1 in
                     M.alloc α2

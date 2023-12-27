@@ -46,7 +46,7 @@ Definition main : M unit :=
       M.alloc α5 in
     M.alloc tt in
   let* α0 : M.Val unit :=
-    loop
+    M.loop
       (let* _ : M.Val unit :=
         let β : M.Val u32.t := count in
         let* α0 := M.read β in
@@ -71,7 +71,7 @@ Definition main : M unit :=
               let* α5 : unit := M.call (std.io.stdio._print α4) in
               M.alloc α5 in
             M.alloc tt in
-          let* _ : M.Val never.t := Continue in
+          let* _ : M.Val never.t := M.continue in
           let* α0 : M.Val unit := M.alloc tt in
           let* α1 := M.read α0 in
           let* α2 : unit := never_to_any α1 in
@@ -116,7 +116,7 @@ Definition main : M unit :=
             let* α5 : unit := M.call (std.io.stdio._print α4) in
             M.alloc α5 in
           M.alloc tt in
-        let* _ : M.Val never.t := Break in
+        let* _ : M.Val never.t := M.break in
         let* α0 : M.Val unit := M.alloc tt in
         let* α1 := M.read α0 in
         let* α2 : unit := never_to_any α1 in

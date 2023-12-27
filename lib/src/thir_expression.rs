@@ -181,7 +181,11 @@ pub(crate) fn allocate_bindings(bindings: &[String], body: Box<Expr>) -> Box<Exp
             ty: body.ty.clone(),
             kind: ExprKind::Let {
                 is_monadic: false,
-                pattern: Box::new(Pattern::Variable(binding.clone())),
+                pattern: Box::new(Pattern::Binding {
+                    name: binding.clone(),
+                    is_with_ref: false,
+                    pattern: None,
+                }),
                 init: Box::new(Expr {
                     kind: ExprKind::LocalVar(binding.clone()).alloc(None),
                     ty: None,
@@ -443,7 +447,11 @@ fn compile_expr_kind<'a>(
 
             ExprKind::Let {
                 is_monadic: false,
-                pattern: Box::new(Pattern::Variable("β".to_string())),
+                pattern: Box::new(Pattern::Binding {
+                    name: "β".to_string(),
+                    is_with_ref: false,
+                    pattern: None,
+                }),
                 init: Box::new(lhs),
                 body: Box::new(Expr {
                     kind: ExprKind::Call {
@@ -788,14 +796,15 @@ fn compile_stmts<'a>(
                         Some(initializer) => compile_expr(env, thir, initializer),
                         None => Expr::tt(),
                     };
-                    let (init, body) = if matches!(pattern.as_ref(), Pattern::Variable(_)) {
-                        (init.copy(), body)
-                    } else {
-                        (
-                            init.read(),
-                            allocate_bindings_in_pattern(pattern.as_ref(), body),
-                        )
-                    };
+                    let (init, body) =
+                        if matches!(pattern.as_ref(), Pattern::Binding { pattern: None, .. }) {
+                            (init.copy(), body)
+                        } else {
+                            (
+                                init.read(),
+                                allocate_bindings_in_pattern(pattern.as_ref(), body),
+                            )
+                        };
                     let ty = body.ty.clone();
                     Expr {
                         kind: ExprKind::Let {

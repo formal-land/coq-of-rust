@@ -1,16 +1,19 @@
 use crate::path::*;
 use crate::render::*;
-
 use rustc_ast::LitKind;
 
 /// The enum [Pat] represents the patterns which can be matched
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
 pub(crate) enum Pattern {
     Wild,
-    Variable(String),
-    Binding(String, Box<Pattern>),
+    Binding {
+        name: String,
+        is_with_ref: bool,
+        pattern: Option<Box<Pattern>>,
+    },
     StructStruct(Path, Vec<(String, Pattern)>, StructOrVariant),
     StructTuple(Path, Vec<Pattern>, StructOrVariant),
+    Deref(Box<Pattern>),
     Or(Vec<Pattern>),
     Tuple(Vec<Pattern>),
     #[allow(dead_code)]
@@ -26,16 +29,23 @@ impl Pattern {
     /// Returns wether a pattern is a single binding, to know if we need a quote
     /// in the "let" in Coq.
     pub(crate) fn is_single_binding(&self) -> bool {
-        matches!(self, Pattern::Variable(_) | Pattern::Wild)
+        matches!(self, Pattern::Binding { pattern: None, .. } | Pattern::Wild)
     }
 
     pub(crate) fn get_bindings(&self) -> Vec<String> {
         match self {
             Pattern::Wild => vec![],
-            Pattern::Variable(name) => vec![name.clone()],
-            Pattern::Binding(name, pattern) => {
-                vec![vec![name.clone()], pattern.get_bindings()].concat()
-            }
+            Pattern::Binding {
+                name,
+                is_with_ref: _,
+                pattern,
+            } => vec![
+                vec![name.clone()],
+                pattern
+                    .as_ref()
+                    .map_or(vec![], |pattern| pattern.get_bindings()),
+            ]
+            .concat(),
             Pattern::StructStruct(_, fields, _) => fields
                 .iter()
                 .flat_map(|(_, pattern)| pattern.get_bindings())
@@ -43,6 +53,7 @@ impl Pattern {
             Pattern::StructTuple(_, patterns, _) => {
                 patterns.iter().flat_map(Pattern::get_bindings).collect()
             }
+            Pattern::Deref(pattern) => pattern.get_bindings(),
             Pattern::Or(patterns) => optional_insert_vec(
                 patterns.is_empty(),
                 patterns.first().unwrap().get_bindings(),
@@ -69,15 +80,21 @@ impl Pattern {
     pub(crate) fn to_doc(&self, with_paren: bool) -> Doc {
         match self {
             Pattern::Wild => text("_"),
-            Pattern::Variable(name) => text(name),
-            Pattern::Binding(name, pat) => nest([
-                text("("),
-                pat.to_doc(false),
-                text(" as"),
-                line(),
-                text(name),
-                text(")"),
-            ]),
+            Pattern::Binding {
+                name,
+                is_with_ref: _,
+                pattern,
+            } => match pattern {
+                None => text(name),
+                Some(pattern) => nest([
+                    text("("),
+                    pattern.to_doc(false),
+                    text(" as"),
+                    line(),
+                    text(name),
+                    text(")"),
+                ]),
+            },
             Pattern::StructStruct(path, fields, struct_or_variant) => paren(
                 with_paren
                     && matches!(struct_or_variant, StructOrVariant::Variant)
@@ -134,6 +151,7 @@ impl Pattern {
                     ),
                 ]),
             ),
+            Pattern::Deref(pattern) => pattern.to_doc(with_paren),
             Pattern::Or(pats) => paren(
                 with_paren,
                 nest([intersperse(

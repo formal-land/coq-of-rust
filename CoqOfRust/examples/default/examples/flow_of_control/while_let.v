@@ -28,7 +28,7 @@ Definition main : M unit :=
   let* optional : M.Val (core.option.Option.t i32.t) :=
     M.alloc (core.option.Option.Some (Integer.of_Z 0)) in
   let* α0 : M.Val unit :=
-    loop
+    M.loop
       (let* α0 : M.Val bool.t := let_if core.option.Option.Some i := optional in
       let* α1 : bool.t := M.read α0 in
       if α1 then
@@ -83,7 +83,7 @@ Definition main : M unit :=
           M.alloc tt
       else
         let* _ : M.Val unit :=
-          let* α0 : M.Val never.t := Break in
+          let* α0 : M.Val never.t := M.break in
           let* α1 := M.read α0 in
           let* α2 : unit := never_to_any α1 in
           M.alloc α2 in

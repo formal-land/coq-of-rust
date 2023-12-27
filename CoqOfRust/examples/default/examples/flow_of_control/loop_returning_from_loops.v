@@ -21,7 +21,7 @@ Definition main : M unit :=
   let* counter : M.Val i32.t := M.alloc (Integer.of_Z 0) in
   let* result : M.Val i32.t :=
     let* α0 : M.Val i32.t :=
-      loop
+      M.loop
         (let* _ : M.Val unit :=
           let β : M.Val i32.t := counter in
           let* α0 := M.read β in
@@ -32,7 +32,7 @@ Definition main : M unit :=
           M.alloc (BinOp.Pure.eq α0 (Integer.of_Z 10)) in
         let* α2 : bool.t := M.read (use α1) in
         if α2 then
-          let* _ : M.Val never.t := Break in
+          let* _ : M.Val never.t := M.break in
           let* α0 : M.Val unit := M.alloc tt in
           let* α1 := M.read α0 in
           let* α2 : unit := never_to_any α1 in

@@ -301,7 +301,11 @@ fn monadic_let_in_stmt(
                     ty: body.ty.clone(),
                     kind: ExprKind::Let {
                         is_monadic: true,
-                        pattern: Box::new(Pattern::Variable(var_name)),
+                        pattern: Box::new(Pattern::Binding {
+                            name: var_name,
+                            is_with_ref: false,
+                            pattern: None,
+                        }),
                         init: Box::new(e1),
                         body: Box::new(body),
                     },
@@ -763,8 +767,8 @@ impl MatchArm {
 impl LoopControlFlow {
     pub fn to_doc<'a>(self) -> Doc<'a> {
         match self {
-            LoopControlFlow::Break => text("Break"),
-            LoopControlFlow::Continue => text("Continue"),
+            LoopControlFlow::Break => text("M.break"),
+            LoopControlFlow::Continue => text("M.continue"),
         }
     }
 }
@@ -999,12 +1003,9 @@ impl ExprKind {
                     nest([text("else"), hardline(), failure.to_doc(false)]),
                 ]),
             ),
-            ExprKind::Loop {
-                body, /*loop_source*/
-                ..
-            } => paren(
+            ExprKind::Loop { body } => paren(
                 with_paren,
-                nest([text("loop"), line(), paren(true, body.to_doc(with_paren))]),
+                nest([text("M.loop"), line(), paren(true, body.to_doc(with_paren))]),
             ),
             ExprKind::Match { scrutinee, arms } => group([
                 group([

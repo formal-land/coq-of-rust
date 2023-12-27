@@ -27,7 +27,7 @@ fn main() {
 Definition main : M unit :=
   let* n : M.Val i32.t := M.alloc (Integer.of_Z 1) in
   let* α0 : M.Val unit :=
-    loop
+    M.loop
       (let* α0 : i32.t := M.read n in
       let* α1 : M.Val bool.t := M.alloc (BinOp.Pure.lt α0 (Integer.of_Z 101)) in
       let* α2 : bool.t := M.read (use α1) in
@@ -132,7 +132,7 @@ Definition main : M unit :=
         M.alloc tt
       else
         let* _ : M.Val unit :=
-          let* α0 : M.Val never.t := Break in
+          let* α0 : M.Val never.t := M.break in
           let* α1 := M.read α0 in
           let* α2 : unit := never_to_any α1 in
           M.alloc α2 in

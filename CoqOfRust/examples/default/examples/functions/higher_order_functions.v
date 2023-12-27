@@ -74,7 +74,7 @@ Definition main : M unit :=
       match α0 with
       | iter =>
         let* iter := M.alloc iter in
-        loop
+        M.loop
           (let* _ : M.Val unit :=
             let* α0 : core.option.Option.t u32.t :=
               M.call
@@ -84,7 +84,7 @@ Definition main : M unit :=
                   (borrow_mut iter)) in
             match α0 with
             | core.option.Option.None =>
-              let* α0 : M.Val never.t := Break in
+              let* α0 : M.Val never.t := M.break in
               let* α1 := M.read α0 in
               let* α2 : unit := never_to_any α1 in
               M.alloc α2
@@ -100,7 +100,7 @@ Definition main : M unit :=
               let* α2 : M.Val bool.t := M.alloc (BinOp.Pure.ge α0 α1) in
               let* α3 : bool.t := M.read (use α2) in
               if α3 then
-                let* _ : M.Val never.t := Break in
+                let* _ : M.Val never.t := M.break in
                 let* α0 : M.Val unit := M.alloc tt in
                 let* α1 := M.read α0 in
                 let* α2 : unit := never_to_any α1 in

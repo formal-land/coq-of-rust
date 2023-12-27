@@ -64,7 +64,7 @@ Definition main : M unit :=
     let* α0 : u32.t := M.call guessing_game.gen_range in
     M.alloc α0 in
   let* α0 : M.Val unit :=
-    loop
+    M.loop
       (let* _ : M.Val unit :=
         let* _ : M.Val unit :=
           let* α0 : ref str.t := M.read (mk_str "Please input your guess.
@@ -113,7 +113,7 @@ Definition main : M unit :=
             let* num := M.alloc num in
             M.pure num
           | core.result.Result.Err _ =>
-            let* α0 : M.Val never.t := Continue in
+            let* α0 : M.Val never.t := M.continue in
             let* α1 := M.read α0 in
             let* α2 : u32.t := never_to_any α1 in
             M.alloc α2
@@ -186,7 +186,7 @@ Definition main : M unit :=
             let* α5 : unit := M.call (std.io.stdio._print α4) in
             M.alloc α5 in
           M.alloc tt in
-        let* _ : M.Val never.t := Break in
+        let* _ : M.Val never.t := M.break in
         let* α0 : M.Val unit := M.alloc tt in
         let* α1 := M.read α0 in
         let* α2 : unit := never_to_any α1 in

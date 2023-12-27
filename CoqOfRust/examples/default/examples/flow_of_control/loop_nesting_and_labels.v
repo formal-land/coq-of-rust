@@ -25,7 +25,7 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
   let* _ : M.Val unit :=
-    loop
+    M.loop
       (let* _ : M.Val unit :=
         let* _ : M.Val unit :=
           let* α0 : ref str.t := M.read (mk_str "Entered the outer loop
@@ -41,7 +41,7 @@ Definition main : M unit :=
         M.alloc tt in
       let* _ : M.Val unit :=
         let* α0 : M.Val never.t :=
-          loop
+          M.loop
             (let* _ : M.Val unit :=
               let* _ : M.Val unit :=
                 let* α0 : ref str.t :=
@@ -57,7 +57,7 @@ Definition main : M unit :=
                 let* α5 : unit := M.call (std.io.stdio._print α4) in
                 M.alloc α5 in
               M.alloc tt in
-            let* _ : M.Val never.t := Break in
+            let* _ : M.Val never.t := M.break in
             M.alloc tt) in
         let* α1 := M.read α0 in
         let* α2 : unit := never_to_any α1 in

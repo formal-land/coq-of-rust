@@ -610,7 +610,7 @@ Section Impl_subtle_ConstantTimeEq_for_slice_T.
           match α5 with
           | iter =>
             let* iter := M.alloc iter in
-            loop
+            M.loop
               (let* _ : M.Val unit :=
                 let* α0 : core.option.Option.t ((ref T) * (ref T)) :=
                   M.call
@@ -623,7 +623,7 @@ Section Impl_subtle_ConstantTimeEq_for_slice_T.
                       (borrow_mut iter)) in
                 match α0 with
                 | core.option.Option.None =>
-                  let* α0 : M.Val never.t := Break in
+                  let* α0 : M.Val never.t := M.break in
                   let* α1 := M.read α0 in
                   let* α2 : unit := never_to_any α1 in
                   M.alloc α2
@@ -3486,7 +3486,7 @@ Section Impl_subtle_ConstantTimeGreater_for_u8_t.
       M.alloc α3 in
     let* pow : M.Val i32.t := M.alloc (Integer.of_Z 1) in
     let* _ : M.Val unit :=
-      loop
+      M.loop
         (let* α0 : i32.t := M.read pow in
         let* α1 : M.Val bool.t := M.alloc (BinOp.Pure.lt α0 (Integer.of_Z 8)) in
         let* α2 : bool.t := M.read (use α1) in
@@ -3507,7 +3507,7 @@ Section Impl_subtle_ConstantTimeGreater_for_u8_t.
           M.alloc tt
         else
           let* _ : M.Val unit :=
-            let* α0 : M.Val never.t := Break in
+            let* α0 : M.Val never.t := M.break in
             let* α1 := M.read α0 in
             let* α2 : unit := never_to_any α1 in
             M.alloc α2 in
@@ -3521,7 +3521,7 @@ Section Impl_subtle_ConstantTimeGreater_for_u8_t.
       M.alloc (BinOp.Pure.bit_and α0 (UnOp.not α1)) in
     let* pow : M.Val i32.t := M.alloc (Integer.of_Z 1) in
     let* _ : M.Val unit :=
-      loop
+      M.loop
         (let* α0 : i32.t := M.read pow in
         let* α1 : M.Val bool.t := M.alloc (BinOp.Pure.lt α0 (Integer.of_Z 8)) in
         let* α2 : bool.t := M.read (use α1) in
@@ -3542,7 +3542,7 @@ Section Impl_subtle_ConstantTimeGreater_for_u8_t.
           M.alloc tt
         else
           let* _ : M.Val unit :=
-            let* α0 : M.Val never.t := Break in
+            let* α0 : M.Val never.t := M.break in
             let* α1 := M.read α0 in
             let* α2 : unit := never_to_any α1 in
             M.alloc α2 in
@@ -3635,7 +3635,7 @@ Section Impl_subtle_ConstantTimeGreater_for_u16_t.
       M.alloc α3 in
     let* pow : M.Val i32.t := M.alloc (Integer.of_Z 1) in
     let* _ : M.Val unit :=
-      loop
+      M.loop
         (let* α0 : i32.t := M.read pow in
         let* α1 : M.Val bool.t :=
           M.alloc (BinOp.Pure.lt α0 (Integer.of_Z 16)) in
@@ -3657,7 +3657,7 @@ Section Impl_subtle_ConstantTimeGreater_for_u16_t.
           M.alloc tt
         else
           let* _ : M.Val unit :=
-            let* α0 : M.Val never.t := Break in
+            let* α0 : M.Val never.t := M.break in
             let* α1 := M.read α0 in
             let* α2 : unit := never_to_any α1 in
             M.alloc α2 in
@@ -3671,7 +3671,7 @@ Section Impl_subtle_ConstantTimeGreater_for_u16_t.
       M.alloc (BinOp.Pure.bit_and α0 (UnOp.not α1)) in
     let* pow : M.Val i32.t := M.alloc (Integer.of_Z 1) in
     let* _ : M.Val unit :=
-      loop
+      M.loop
         (let* α0 : i32.t := M.read pow in
         let* α1 : M.Val bool.t :=
           M.alloc (BinOp.Pure.lt α0 (Integer.of_Z 16)) in
@@ -3693,7 +3693,7 @@ Section Impl_subtle_ConstantTimeGreater_for_u16_t.
           M.alloc tt
         else
           let* _ : M.Val unit :=
-            let* α0 : M.Val never.t := Break in
+            let* α0 : M.Val never.t := M.break in
             let* α1 := M.read α0 in
             let* α2 : unit := never_to_any α1 in
             M.alloc α2 in
@@ -3785,7 +3785,7 @@ Section Impl_subtle_ConstantTimeGreater_for_u32_t.
       M.alloc α3 in
     let* pow : M.Val i32.t := M.alloc (Integer.of_Z 1) in
     let* _ : M.Val unit :=
-      loop
+      M.loop
         (let* α0 : i32.t := M.read pow in
         let* α1 : M.Val bool.t :=
           M.alloc (BinOp.Pure.lt α0 (Integer.of_Z 32)) in
@@ -3807,7 +3807,7 @@ Section Impl_subtle_ConstantTimeGreater_for_u32_t.
           M.alloc tt
         else
           let* _ : M.Val unit :=
-            let* α0 : M.Val never.t := Break in
+            let* α0 : M.Val never.t := M.break in
             let* α1 := M.read α0 in
             let* α2 : unit := never_to_any α1 in
             M.alloc α2 in
@@ -3821,7 +3821,7 @@ Section Impl_subtle_ConstantTimeGreater_for_u32_t.
       M.alloc (BinOp.Pure.bit_and α0 (UnOp.not α1)) in
     let* pow : M.Val i32.t := M.alloc (Integer.of_Z 1) in
     let* _ : M.Val unit :=
-      loop
+      M.loop
         (let* α0 : i32.t := M.read pow in
         let* α1 : M.Val bool.t :=
           M.alloc (BinOp.Pure.lt α0 (Integer.of_Z 32)) in
@@ -3843,7 +3843,7 @@ Section Impl_subtle_ConstantTimeGreater_for_u32_t.
           M.alloc tt
         else
           let* _ : M.Val unit :=
-            let* α0 : M.Val never.t := Break in
+            let* α0 : M.Val never.t := M.break in
             let* α1 := M.read α0 in
             let* α2 : unit := never_to_any α1 in
             M.alloc α2 in
@@ -3935,7 +3935,7 @@ Section Impl_subtle_ConstantTimeGreater_for_u64_t.
       M.alloc α3 in
     let* pow : M.Val i32.t := M.alloc (Integer.of_Z 1) in
     let* _ : M.Val unit :=
-      loop
+      M.loop
         (let* α0 : i32.t := M.read pow in
         let* α1 : M.Val bool.t :=
           M.alloc (BinOp.Pure.lt α0 (Integer.of_Z 64)) in
@@ -3957,7 +3957,7 @@ Section Impl_subtle_ConstantTimeGreater_for_u64_t.
           M.alloc tt
         else
           let* _ : M.Val unit :=
-            let* α0 : M.Val never.t := Break in
+            let* α0 : M.Val never.t := M.break in
             let* α1 := M.read α0 in
             let* α2 : unit := never_to_any α1 in
             M.alloc α2 in
@@ -3971,7 +3971,7 @@ Section Impl_subtle_ConstantTimeGreater_for_u64_t.
       M.alloc (BinOp.Pure.bit_and α0 (UnOp.not α1)) in
     let* pow : M.Val i32.t := M.alloc (Integer.of_Z 1) in
     let* _ : M.Val unit :=
-      loop
+      M.loop
         (let* α0 : i32.t := M.read pow in
         let* α1 : M.Val bool.t :=
           M.alloc (BinOp.Pure.lt α0 (Integer.of_Z 64)) in
@@ -3993,7 +3993,7 @@ Section Impl_subtle_ConstantTimeGreater_for_u64_t.
           M.alloc tt
         else
           let* _ : M.Val unit :=
-            let* α0 : M.Val never.t := Break in
+            let* α0 : M.Val never.t := M.break in
             let* α1 := M.read α0 in
             let* α2 : unit := never_to_any α1 in
             M.alloc α2 in

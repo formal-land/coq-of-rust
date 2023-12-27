@@ -102,7 +102,7 @@ Definition main : M unit :=
       match α3 with
       | iter =>
         let* iter := M.alloc iter in
-        loop
+        M.loop
           (let* _ : M.Val unit :=
             let* α0 : core.option.Option.t (ref str.t) :=
               M.call
@@ -114,7 +114,7 @@ Definition main : M unit :=
                   (borrow_mut iter)) in
             match α0 with
             | core.option.Option.None =>
-              let* α0 : M.Val never.t := Break in
+              let* α0 : M.Val never.t := M.break in
               let* α1 := M.read α0 in
               let* α2 : unit := never_to_any α1 in
               M.alloc α2
@@ -189,7 +189,7 @@ Definition main : M unit :=
       match α1 with
       | iter =>
         let* iter := M.alloc iter in
-        loop
+        M.loop
           (let* _ : M.Val unit :=
             let* α0 : core.option.Option.t char.t :=
               M.call
@@ -202,7 +202,7 @@ Definition main : M unit :=
                   (borrow_mut iter)) in
             match α0 with
             | core.option.Option.None =>
-              let* α0 : M.Val never.t := Break in
+              let* α0 : M.Val never.t := M.break in
               let* α1 := M.read α0 in
               let* α2 : unit := never_to_any α1 in
               M.alloc α2

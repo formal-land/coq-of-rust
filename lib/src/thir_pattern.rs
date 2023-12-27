@@ -28,14 +28,20 @@ pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Pattern {
         PatKind::Wild => Pattern::Wild,
         PatKind::AscribeUserType { subpattern, .. } => compile_pattern(env, subpattern),
         PatKind::Binding {
-            name, subpattern, ..
+            name,
+            mode,
+            subpattern,
+            ..
         } => {
             let name = name.to_string();
-            match subpattern {
-                None => Pattern::Variable(name),
-                Some(subpattern) => {
-                    Pattern::Binding(name, Box::new(compile_pattern(env, subpattern)))
-                }
+            let is_with_ref = matches!(mode, rustc_middle::thir::BindingMode::ByValue);
+            let pattern = subpattern
+                .as_ref()
+                .map(|subpattern| Box::new(compile_pattern(env, subpattern)));
+            Pattern::Binding {
+                name,
+                is_with_ref,
+                pattern,
             }
         }
         PatKind::Variant {
@@ -101,7 +107,7 @@ pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Pattern {
                 Pattern::StructStruct(path, fields, struct_or_variant)
             }
         }
-        PatKind::Deref { subpattern } => compile_pattern(env, subpattern),
+        PatKind::Deref { subpattern } => Pattern::Deref(Box::new(compile_pattern(env, subpattern))),
         // PatKind::Constant { value } => {
         //     let literal = const_to_lit_kind(*value);
         //     Pattern::Lit(literal)

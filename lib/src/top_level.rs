@@ -759,7 +759,11 @@ fn compile_function_body(
         Box::new(Expr {
             kind: ExprKind::Let {
                 is_monadic: false,
-                pattern: Box::new(Pattern::Variable("return_".to_string())),
+                pattern: Box::new(Pattern::Binding {
+                    name: "return_".to_string(),
+                    is_with_ref: false,
+                    pattern: None,
+                }),
                 init: Box::new(Expr {
                     kind: ExprKind::VarWithTy {
                         path: Path::local("M.return_"),
