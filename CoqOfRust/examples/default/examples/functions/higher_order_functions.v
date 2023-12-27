@@ -155,11 +155,14 @@ Definition main : M unit :=
             (Self := core.ops.range.RangeFrom.t u32.t)
             (Trait := ltac:(refine _)))
           {| core.ops.range.RangeFrom.start := Integer.of_Z 0; |}
-          (fun (n : u32.t) =>
-            (let* n := M.alloc n in
-            let* α0 : u32.t := M.read n in
-            let* α1 : u32.t := M.read n in
-            BinOp.Panic.mul α0 α1) :
+          (fun (α0 : u32.t) =>
+            match α0 with
+            | n =>
+              let* n := M.alloc n in
+              let* α0 : u32.t := M.read n in
+              let* α1 : u32.t := M.read n in
+              BinOp.Panic.mul α0 α1
+            end :
             M u32.t)) in
     let* α1 :
         core.iter.adapters.take_while.TakeWhile.t
@@ -175,11 +178,14 @@ Definition main : M unit :=
                 (u32.t -> M u32.t))
             (Trait := ltac:(refine _)))
           α0
-          (fun (n_squared : ref u32.t) =>
-            (let* n_squared := M.alloc n_squared in
-            let* α0 : u32.t := M.read n_squared in
-            let* α1 : u32.t := M.read upper in
-            M.pure (BinOp.Pure.lt α0 α1)) :
+          (fun (α0 : ref u32.t) =>
+            match α0 with
+            | n_squared =>
+              let* n_squared := M.alloc n_squared in
+              let* α0 : u32.t := M.read n_squared in
+              let* α1 : u32.t := M.read upper in
+              M.pure (BinOp.Pure.lt α0 α1)
+            end :
             M bool.t)) in
     let* α2 :
         core.iter.adapters.filter.Filter.t
@@ -199,10 +205,13 @@ Definition main : M unit :=
                 ((ref u32.t) -> M bool.t))
             (Trait := ltac:(refine _)))
           α1
-          (fun (n_squared : ref u32.t) =>
-            (let* n_squared := M.alloc n_squared in
-            let* α0 : u32.t := M.read n_squared in
-            M.call (higher_order_functions.is_odd α0)) :
+          (fun (α0 : ref u32.t) =>
+            match α0 with
+            | n_squared =>
+              let* n_squared := M.alloc n_squared in
+              let* α0 : u32.t := M.read n_squared in
+              M.call (higher_order_functions.is_odd α0)
+            end :
             M bool.t)) in
     let* α3 : u32.t :=
       M.call

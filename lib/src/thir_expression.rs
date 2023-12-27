@@ -198,9 +198,9 @@ fn allocate_bindings_in_pattern(pattern: &Pattern, body: Box<Expr>) -> Box<Expr>
     allocate_bindings(&bindings, body)
 }
 
-fn compile_match_kind(scrutinee: Expr, arms: Vec<MatchArm>) -> ExprKind {
+fn build_match(scrutinee: Expr, arms: Vec<MatchArm>) -> ExprKind {
     ExprKind::Match {
-        scrutinee: Box::new(scrutinee.read()),
+        scrutinee: Box::new(scrutinee),
         arms: arms
             .iter()
             .map(|MatchArm { pattern, body }| MatchArm {
@@ -402,7 +402,7 @@ fn compile_expr_kind<'a>(
             ExprKind::LetIf { pat, init }
         }
         thir::ExprKind::Match { scrutinee, arms } => {
-            let scrutinee = compile_expr(env, thir, scrutinee);
+            let scrutinee = compile_expr(env, thir, scrutinee).read();
             let arms: Vec<MatchArm> = arms
                 .iter()
                 .map(|arm_id| {
@@ -412,7 +412,7 @@ fn compile_expr_kind<'a>(
                     MatchArm { pattern, body }
                 })
                 .collect();
-            compile_match_kind(scrutinee, arms)
+            build_match(scrutinee, arms)
         }
         thir::ExprKind::Block { block: block_id } => compile_block(env, thir, block_id).kind,
         thir::ExprKind::Assign { lhs, rhs } => {
@@ -652,14 +652,29 @@ fn compile_expr_kind<'a>(
                 })
                 .collect();
             let body = Box::new(compile_expr(env, &thir, &expr_id).read());
-            let body = allocate_bindings(
-                &args
-                    .iter()
-                    .map(|(pattern, _)| pattern.get_bindings())
-                    .collect::<Vec<_>>()
-                    .concat(),
-                body,
-            );
+            let body = args
+                .iter()
+                .enumerate()
+                .rfold(body, |body, (index, (pattern, _))| {
+                    Box::new(Expr {
+                        ty: body.ty.clone(),
+                        kind: build_match(
+                            Expr {
+                                kind: ExprKind::LocalVar(format!("α{index}")),
+                                ty: None,
+                            },
+                            vec![MatchArm {
+                                pattern: pattern.clone(),
+                                body,
+                            }],
+                        ),
+                    })
+                });
+            let args = args
+                .iter()
+                .enumerate()
+                .map(|(index, (_, ty))| (format!("α{index}"), ty.clone()))
+                .collect();
 
             ExprKind::Lambda { args, body }.alloc(Some(ty))
         }
@@ -795,7 +810,7 @@ fn compile_stmts<'a>(
                             init: Box::new(init.copy()),
                             body,
                         },
-                        _ => compile_match_kind(init, vec![MatchArm { pattern, body }]),
+                        _ => build_match(init.read(), vec![MatchArm { pattern, body }]),
                     };
                     Expr { kind, ty }
                 }

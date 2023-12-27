@@ -177,10 +177,13 @@ Definition main : M unit :=
     M.alloc α1 in
   let* double : M.Val (i32.t -> M i32.t) :=
     M.alloc
-      (fun (x : i32.t) =>
-        (let* x := M.alloc x in
-        let* α0 : i32.t := M.read x in
-        BinOp.Panic.mul (Integer.of_Z 2) α0) :
+      (fun (α0 : i32.t) =>
+        match α0 with
+        | x =>
+          let* x := M.alloc x in
+          let* α0 : i32.t := M.read x in
+          BinOp.Panic.mul (Integer.of_Z 2) α0
+        end :
         M i32.t) in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=

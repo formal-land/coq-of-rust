@@ -242,10 +242,13 @@ Definition cook
   M.call
     ((core.option.Option.t combinators_map.Chopped.t)::["map"]
       α0
-      (fun (combinators_map.Chopped.Build_t food : combinators_map.Chopped.t) =>
-        (let* food := M.alloc food in
-        let* α0 : combinators_map.Food.t := M.read food in
-        M.pure (combinators_map.Cooked.Build_t α0)) :
+      (fun (α0 : combinators_map.Chopped.t) =>
+        match α0 with
+        | combinators_map.Chopped.Build_t food =>
+          let* food := M.alloc food in
+          let* α0 : combinators_map.Food.t := M.read food in
+          M.pure (combinators_map.Cooked.Build_t α0)
+        end :
         M combinators_map.Cooked.t)).
 
 (*
@@ -264,27 +267,36 @@ Definition process
     M.call
       ((core.option.Option.t combinators_map.Food.t)::["map"]
         α0
-        (fun (f : combinators_map.Food.t) =>
-          (let* f := M.alloc f in
-          let* α0 : combinators_map.Food.t := M.read f in
-          M.pure (combinators_map.Peeled.Build_t α0)) :
+        (fun (α0 : combinators_map.Food.t) =>
+          match α0 with
+          | f =>
+            let* f := M.alloc f in
+            let* α0 : combinators_map.Food.t := M.read f in
+            M.pure (combinators_map.Peeled.Build_t α0)
+          end :
           M combinators_map.Peeled.t)) in
   let* α2 : core.option.Option.t combinators_map.Chopped.t :=
     M.call
       ((core.option.Option.t combinators_map.Peeled.t)::["map"]
         α1
-        (fun (combinators_map.Peeled.Build_t f : combinators_map.Peeled.t) =>
-          (let* f := M.alloc f in
-          let* α0 : combinators_map.Food.t := M.read f in
-          M.pure (combinators_map.Chopped.Build_t α0)) :
+        (fun (α0 : combinators_map.Peeled.t) =>
+          match α0 with
+          | combinators_map.Peeled.Build_t f =>
+            let* f := M.alloc f in
+            let* α0 : combinators_map.Food.t := M.read f in
+            M.pure (combinators_map.Chopped.Build_t α0)
+          end :
           M combinators_map.Chopped.t)) in
   M.call
     ((core.option.Option.t combinators_map.Chopped.t)::["map"]
       α2
-      (fun (combinators_map.Chopped.Build_t f : combinators_map.Chopped.t) =>
-        (let* f := M.alloc f in
-        let* α0 : combinators_map.Food.t := M.read f in
-        M.pure (combinators_map.Cooked.Build_t α0)) :
+      (fun (α0 : combinators_map.Chopped.t) =>
+        match α0 with
+        | combinators_map.Chopped.Build_t f =>
+          let* f := M.alloc f in
+          let* α0 : combinators_map.Food.t := M.read f in
+          M.pure (combinators_map.Cooked.Build_t α0)
+        end :
         M combinators_map.Cooked.t)).
 
 (*

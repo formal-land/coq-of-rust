@@ -61,10 +61,13 @@ Definition main : M unit :=
               alloc.vec.into_iter.IntoIter.t (ref str.t) alloc.alloc.Global.t)
             (Trait := ltac:(refine _)))
           α1
-          (fun (s : ref str.t) =>
-            (let* s := M.alloc s in
-            let* α0 : ref str.t := M.read s in
-            M.call (str.t::["parse"] α0)) :
+          (fun (α0 : ref str.t) =>
+            match α0 with
+            | s =>
+              let* s := M.alloc s in
+              let* α0 : ref str.t := M.read s in
+              M.call (str.t::["parse"] α0)
+            end :
             M (core.result.Result.t u8.t core.num.error.ParseIntError.t))) in
     let* α3 :
         core.iter.adapters.filter_map.FilterMap.t
@@ -85,28 +88,35 @@ Definition main : M unit :=
                   M (core.result.Result.t u8.t core.num.error.ParseIntError.t)))
             (Trait := ltac:(refine _)))
           α2
-          (fun (r : core.result.Result.t u8.t core.num.error.ParseIntError.t) =>
-            (let* r := M.alloc r in
-            let* α0 :
-                core.result.Result.t u8.t core.num.error.ParseIntError.t :=
-              M.read r in
-            let* α1 : core.result.Result.t u8.t unit :=
-              M.call
-                ((core.result.Result.t
-                      u8.t
-                      core.num.error.ParseIntError.t)::["map_err"]
-                  α0
-                  (fun (e : core.num.error.ParseIntError.t) =>
-                    (let* e := M.alloc e in
-                    let* α0 : core.num.error.ParseIntError.t := M.read e in
-                    M.call
-                      ((alloc.vec.Vec.t
-                            core.num.error.ParseIntError.t
-                            alloc.alloc.Global.t)::["push"]
-                        (borrow_mut errors)
-                        α0)) :
-                    M unit)) in
-            M.call ((core.result.Result.t u8.t unit)::["ok"] α1)) :
+          (fun
+              (α0 : core.result.Result.t u8.t core.num.error.ParseIntError.t) =>
+            match α0 with
+            | r =>
+              let* r := M.alloc r in
+              let* α0 :
+                  core.result.Result.t u8.t core.num.error.ParseIntError.t :=
+                M.read r in
+              let* α1 : core.result.Result.t u8.t unit :=
+                M.call
+                  ((core.result.Result.t
+                        u8.t
+                        core.num.error.ParseIntError.t)::["map_err"]
+                    α0
+                    (fun (α0 : core.num.error.ParseIntError.t) =>
+                      match α0 with
+                      | e =>
+                        let* e := M.alloc e in
+                        let* α0 : core.num.error.ParseIntError.t := M.read e in
+                        M.call
+                          ((alloc.vec.Vec.t
+                                core.num.error.ParseIntError.t
+                                alloc.alloc.Global.t)::["push"]
+                            (borrow_mut errors)
+                            α0)
+                      end :
+                      M unit)) in
+              M.call ((core.result.Result.t u8.t unit)::["ok"] α1)
+            end :
             M (core.option.Option.t u8.t))) in
     let* α4 : alloc.vec.Vec.t u8.t alloc.alloc.Global.t :=
       M.call

@@ -74,10 +74,13 @@ Definition main : M unit :=
               (Self := core.slice.iter.Iter.t i32.t)
               (Trait := ltac:(refine _)))
             (borrow_mut α7)
-            (fun (x : ref i32.t) =>
-              (let* x := M.alloc x in
-              let* α0 : i32.t := M.read x in
-              M.pure (BinOp.Pure.eq α0 (Integer.of_Z 2))) :
+            (fun (α0 : ref i32.t) =>
+              match α0 with
+              | x =>
+                let* x := M.alloc x in
+                let* α0 : i32.t := M.read x in
+                M.pure (BinOp.Pure.eq α0 (Integer.of_Z 2))
+              end :
               M bool.t)) in
       let* α9 : M.Val bool.t := M.alloc α8 in
       let* α10 : core.fmt.rt.Argument.t :=
@@ -118,10 +121,13 @@ Definition main : M unit :=
                 alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t)
               (Trait := ltac:(refine _)))
             (borrow_mut α7)
-            (fun (x : i32.t) =>
-              (let* x := M.alloc x in
-              let* α0 : i32.t := M.read x in
-              M.pure (BinOp.Pure.eq α0 (Integer.of_Z 2))) :
+            (fun (α0 : i32.t) =>
+              match α0 with
+              | x =>
+                let* x := M.alloc x in
+                let* α0 : i32.t := M.read x in
+                M.pure (BinOp.Pure.eq α0 (Integer.of_Z 2))
+              end :
               M bool.t)) in
       let* α9 : M.Val bool.t := M.alloc α8 in
       let* α10 : core.fmt.rt.Argument.t :=
@@ -214,10 +220,13 @@ Definition main : M unit :=
               (Self := core.slice.iter.Iter.t i32.t)
               (Trait := ltac:(refine _)))
             (borrow_mut α8)
-            (fun (x : ref i32.t) =>
-              (let* x := M.alloc x in
-              let* α0 : i32.t := M.read x in
-              M.pure (BinOp.Pure.eq α0 (Integer.of_Z 2))) :
+            (fun (α0 : ref i32.t) =>
+              match α0 with
+              | x =>
+                let* x := M.alloc x in
+                let* α0 : i32.t := M.read x in
+                M.pure (BinOp.Pure.eq α0 (Integer.of_Z 2))
+              end :
               M bool.t)) in
       let* α10 : M.Val bool.t := M.alloc α9 in
       let* α11 : core.fmt.rt.Argument.t :=
@@ -254,11 +263,14 @@ Definition main : M unit :=
               (Self := core.slice.iter.Iter.t i32.t)
               (Trait := ltac:(refine _)))
             (borrow_mut α6)
-            (fun (x : ref i32.t) =>
-              (let* x := M.alloc x in
-              let* α0 : ref i32.t := M.read x in
-              let* α1 : i32.t := M.read (deref α0) in
-              M.pure (BinOp.Pure.eq α1 (Integer.of_Z 2))) :
+            (fun (α0 : ref i32.t) =>
+              match α0 with
+              | x =>
+                let* x := M.alloc x in
+                let* α0 : ref i32.t := M.read x in
+                let* α1 : i32.t := M.read (deref α0) in
+                M.pure (BinOp.Pure.eq α1 (Integer.of_Z 2))
+              end :
               M bool.t)) in
       let* α8 : M.Val bool.t := M.alloc α7 in
       let* α9 : core.fmt.rt.Argument.t :=

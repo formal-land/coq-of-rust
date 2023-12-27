@@ -34,23 +34,29 @@ Definition double_first
       M.call
         ((core.option.Option.t (ref (ref str.t)))::["map"]
           α1
-          (fun (first : ref (ref str.t)) =>
-            (let* first := M.alloc first in
-            let* α0 : ref (ref str.t) := M.read first in
-            let* α1 : ref str.t := M.read (deref α0) in
-            let* α2 :
-                core.result.Result.t i32.t core.num.error.ParseIntError.t :=
-              M.call (str.t::["parse"] α1) in
-            M.call
-              ((core.result.Result.t
-                    i32.t
-                    core.num.error.ParseIntError.t)::["map"]
-                α2
-                (fun (n : i32.t) =>
-                  (let* n := M.alloc n in
-                  let* α0 : i32.t := M.read n in
-                  BinOp.Panic.mul (Integer.of_Z 2) α0) :
-                  M i32.t))) :
+          (fun (α0 : ref (ref str.t)) =>
+            match α0 with
+            | first =>
+              let* first := M.alloc first in
+              let* α0 : ref (ref str.t) := M.read first in
+              let* α1 : ref str.t := M.read (deref α0) in
+              let* α2 :
+                  core.result.Result.t i32.t core.num.error.ParseIntError.t :=
+                M.call (str.t::["parse"] α1) in
+              M.call
+                ((core.result.Result.t
+                      i32.t
+                      core.num.error.ParseIntError.t)::["map"]
+                  α2
+                  (fun (α0 : i32.t) =>
+                    match α0 with
+                    | n =>
+                      let* n := M.alloc n in
+                      let* α0 : i32.t := M.read n in
+                      BinOp.Panic.mul (Integer.of_Z 2) α0
+                    end :
+                    M i32.t))
+            end :
             M (core.result.Result.t i32.t core.num.error.ParseIntError.t))) in
     M.alloc α2 in
   let* α0 :
@@ -68,16 +74,20 @@ Definition double_first
               core.num.error.ParseIntError.t))::["map_or"]
         α0
         (core.result.Result.Ok core.option.Option.None)
-        (fun (r : core.result.Result.t i32.t core.num.error.ParseIntError.t) =>
-          (let* r := M.alloc r in
-          let* α0 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
-            M.read r in
-          M.call
-            ((core.result.Result.t
-                  i32.t
-                  core.num.error.ParseIntError.t)::["map"]
-              α0
-              core.option.Option.Some)) :
+        (fun (α0 : core.result.Result.t i32.t core.num.error.ParseIntError.t) =>
+          match α0 with
+          | r =>
+            let* r := M.alloc r in
+            let* α0 :
+                core.result.Result.t i32.t core.num.error.ParseIntError.t :=
+              M.read r in
+            M.call
+              ((core.result.Result.t
+                    i32.t
+                    core.num.error.ParseIntError.t)::["map"]
+                α0
+                core.option.Option.Some)
+          end :
           M
             (core.result.Result.t
               (core.option.Option.t i32.t)

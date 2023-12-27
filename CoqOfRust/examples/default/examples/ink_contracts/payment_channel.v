@@ -921,12 +921,15 @@ Section Impl_payment_channel_PaymentChannel_t.
                 unit
                 payment_channel.Error.t)::["unwrap_or_else"]
             α0
-            (fun (err : payment_channel.Error.t) =>
-              (let* err := M.alloc err in
-              let* α0 : ref str.t :=
-                M.read (mk_str "recover failed: {err:?}") in
-              let* α1 : never.t := M.call (std.panicking.begin_panic α0) in
-              never_to_any α1) :
+            (fun (α0 : payment_channel.Error.t) =>
+              match α0 with
+              | err =>
+                let* err := M.alloc err in
+                let* α0 : ref str.t :=
+                  M.read (mk_str "recover failed: {err:?}") in
+                let* α1 : never.t := M.call (std.panicking.begin_panic α0) in
+                never_to_any α1
+              end :
               M unit)) in
       M.alloc α1 in
     let* signature_account_id : M.Val (array u8.t) :=
@@ -1123,8 +1126,10 @@ Section Impl_payment_channel_PaymentChannel_t.
           M.call
             ((core.result.Result.t unit payment_channel.Error.t)::["map_err"]
               α9
-              (fun (_ : payment_channel.Error.t) =>
-                (M.pure payment_channel.Error.TransferFailed) :
+              (fun (α0 : payment_channel.Error.t) =>
+                match α0 with
+                | _ => M.pure payment_channel.Error.TransferFailed
+                end :
                 M payment_channel.Error.t)) in
         let* α11 :
             core.ops.control_flow.ControlFlow.t
@@ -1570,8 +1575,10 @@ Section Impl_payment_channel_PaymentChannel_t.
           M.call
             ((core.result.Result.t unit payment_channel.Error.t)::["map_err"]
               α6
-              (fun (_ : payment_channel.Error.t) =>
-                (M.pure payment_channel.Error.TransferFailed) :
+              (fun (α0 : payment_channel.Error.t) =>
+                match α0 with
+                | _ => M.pure payment_channel.Error.TransferFailed
+                end :
                 M payment_channel.Error.t)) in
         let* α8 :
             core.ops.control_flow.ControlFlow.t

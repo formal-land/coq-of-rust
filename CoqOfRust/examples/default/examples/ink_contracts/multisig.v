@@ -2331,8 +2331,10 @@ Section Impl_multisig_Multisig_t.
         M.call
           ((core.result.Result.t unit multisig.Error.t)::["map"]
             α4
-            (fun (_ : unit) =>
-              (M.pure core.option.Option.None) :
+            (fun (α0 : unit) =>
+              match α0 with
+              | _ => M.pure core.option.Option.None
+              end :
               M
                 (core.option.Option.t
                   (alloc.vec.Vec.t u8.t alloc.alloc.Global.t)))) in
@@ -2670,16 +2672,19 @@ Section Impl_multisig_Multisig_t.
             (Self := core.slice.iter.Iter.t multisig.AccountId.t)
             (Trait := ltac:(refine _)))
           (borrow_mut α3)
-          (fun (x : ref multisig.AccountId.t) =>
-            (let* x := M.alloc x in
-            let* α0 : ref multisig.AccountId.t := M.read x in
-            let* α1 : ref multisig.AccountId.t := M.read owner in
-            M.call
-              ((core.cmp.PartialEq.eq
-                  (Self := multisig.AccountId.t)
-                  (Trait := ltac:(refine _)))
-                α0
-                α1)) :
+          (fun (α0 : ref multisig.AccountId.t) =>
+            match α0 with
+            | x =>
+              let* x := M.alloc x in
+              let* α0 : ref multisig.AccountId.t := M.read x in
+              let* α1 : ref multisig.AccountId.t := M.read owner in
+              M.call
+                ((core.cmp.PartialEq.eq
+                    (Self := multisig.AccountId.t)
+                    (Trait := ltac:(refine _)))
+                  α0
+                  α1)
+            end :
             M bool.t)) in
     let* α5 : ref str.t :=
       M.read
@@ -2763,15 +2768,18 @@ Section Impl_multisig_Multisig_t.
                   (Self := core.slice.iter.Iter.t u32.t)
                   (Trait := ltac:(refine _)))
                 (borrow_mut α3)
-                (fun (t : ref u32.t) =>
-                  (let* t := M.alloc t in
-                  let* α0 : M.Val (ref u32.t) := M.alloc (borrow trans_id) in
-                  M.call
-                    ((core.cmp.PartialEq.eq
-                        (Self := ref u32.t)
-                        (Trait := ltac:(refine _)))
-                      (borrow t)
-                      (borrow α0))) :
+                (fun (α0 : ref u32.t) =>
+                  match α0 with
+                  | t =>
+                    let* t := M.alloc t in
+                    let* α0 : M.Val (ref u32.t) := M.alloc (borrow trans_id) in
+                    M.call
+                      ((core.cmp.PartialEq.eq
+                          (Self := ref u32.t)
+                          (Trait := ltac:(refine _)))
+                        (borrow t)
+                        (borrow α0))
+                  end :
                   M bool.t)) in
           let* α5 : ref str.t :=
             M.read

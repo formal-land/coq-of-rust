@@ -1549,10 +1549,13 @@ Section Impl_erc721_Erc721_t.
               M.call
                 ((core.option.Option.t u32.t)::["map"]
                   α2
-                  (fun (c : u32.t) =>
-                    (let* c := M.alloc c in
-                    let* α0 : u32.t := M.read c in
-                    BinOp.Panic.sub α0 (Integer.of_Z 1)) :
+                  (fun (α0 : u32.t) =>
+                    match α0 with
+                    | c =>
+                      let* c := M.alloc c in
+                      let* α0 : u32.t := M.read c in
+                      BinOp.Panic.sub α0 (Integer.of_Z 1)
+                    end :
                     M u32.t)) in
             let* α4 : core.result.Result.t u32.t erc721.Error.t :=
               M.call
@@ -1730,10 +1733,13 @@ Section Impl_erc721_Erc721_t.
               M.call
                 ((core.option.Option.t u32.t)::["map"]
                   α2
-                  (fun (c : u32.t) =>
-                    (let* c := M.alloc c in
-                    let* α0 : u32.t := M.read c in
-                    BinOp.Panic.add α0 (Integer.of_Z 1)) :
+                  (fun (α0 : u32.t) =>
+                    match α0 with
+                    | c =>
+                      let* c := M.alloc c in
+                      let* α0 : u32.t := M.read c in
+                      BinOp.Panic.add α0 (Integer.of_Z 1)
+                    end :
                     M u32.t)) in
             let* α4 : u32.t :=
               M.call
@@ -2339,10 +2345,13 @@ Section Impl_erc721_Erc721_t.
               M.call
                 ((core.option.Option.t u32.t)::["map"]
                   α1
-                  (fun (c : u32.t) =>
-                    (let* c := M.alloc c in
-                    let* α0 : u32.t := M.read c in
-                    BinOp.Panic.sub α0 (Integer.of_Z 1)) :
+                  (fun (α0 : u32.t) =>
+                    match α0 with
+                    | c =>
+                      let* c := M.alloc c in
+                      let* α0 : u32.t := M.read c in
+                      BinOp.Panic.sub α0 (Integer.of_Z 1)
+                    end :
                     M u32.t)) in
             let* α3 : core.result.Result.t u32.t erc721.Error.t :=
               M.call

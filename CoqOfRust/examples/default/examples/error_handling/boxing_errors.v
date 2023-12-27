@@ -153,40 +153,49 @@ Definition double_first
           (ref (ref str.t))
           (alloc.boxed.Box.t dynamic alloc.alloc.Global.t))::["and_then"]
       α2
-      (fun (s : ref (ref str.t)) =>
-        (let* s := M.alloc s in
-        let* α0 : ref (ref str.t) := M.read s in
-        let* α1 : ref str.t := M.read (deref α0) in
-        let* α2 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
-          M.call (str.t::["parse"] α1) in
-        let* α3 :
-            core.result.Result.t
-              i32.t
-              (alloc.boxed.Box.t dynamic alloc.alloc.Global.t) :=
+      (fun (α0 : ref (ref str.t)) =>
+        match α0 with
+        | s =>
+          let* s := M.alloc s in
+          let* α0 : ref (ref str.t) := M.read s in
+          let* α1 : ref str.t := M.read (deref α0) in
+          let* α2 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
+            M.call (str.t::["parse"] α1) in
+          let* α3 :
+              core.result.Result.t
+                i32.t
+                (alloc.boxed.Box.t dynamic alloc.alloc.Global.t) :=
+            M.call
+              ((core.result.Result.t
+                    i32.t
+                    core.num.error.ParseIntError.t)::["map_err"]
+                α2
+                (fun (α0 : core.num.error.ParseIntError.t) =>
+                  match α0 with
+                  | e =>
+                    let* e := M.alloc e in
+                    let* α0 : core.num.error.ParseIntError.t := M.read e in
+                    M.call
+                      ((core.convert.Into.into
+                          (Self := core.num.error.ParseIntError.t)
+                          (Trait := ltac:(refine _)))
+                        α0)
+                  end :
+                  M (alloc.boxed.Box.t dynamic alloc.alloc.Global.t))) in
           M.call
             ((core.result.Result.t
                   i32.t
-                  core.num.error.ParseIntError.t)::["map_err"]
-              α2
-              (fun (e : core.num.error.ParseIntError.t) =>
-                (let* e := M.alloc e in
-                let* α0 : core.num.error.ParseIntError.t := M.read e in
-                M.call
-                  ((core.convert.Into.into
-                      (Self := core.num.error.ParseIntError.t)
-                      (Trait := ltac:(refine _)))
-                    α0)) :
-                M (alloc.boxed.Box.t dynamic alloc.alloc.Global.t))) in
-        M.call
-          ((core.result.Result.t
-                i32.t
-                (alloc.boxed.Box.t dynamic alloc.alloc.Global.t))::["map"]
-            α3
-            (fun (i : i32.t) =>
-              (let* i := M.alloc i in
-              let* α0 : i32.t := M.read i in
-              BinOp.Panic.mul (Integer.of_Z 2) α0) :
-              M i32.t))) :
+                  (alloc.boxed.Box.t dynamic alloc.alloc.Global.t))::["map"]
+              α3
+              (fun (α0 : i32.t) =>
+                match α0 with
+                | i =>
+                  let* i := M.alloc i in
+                  let* α0 : i32.t := M.read i in
+                  BinOp.Panic.mul (Integer.of_Z 2) α0
+                end :
+                M i32.t))
+        end :
         M
           (core.result.Result.t
             i32.t

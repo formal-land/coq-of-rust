@@ -208,20 +208,23 @@ Definition main : M unit :=
                                 (Self := core.str.iter.Chars.t)
                                 (Trait := ltac:(refine _)))
                               α1
-                              (fun (c : char.t) =>
-                                (let* c := M.alloc c in
-                                let* α0 : char.t := M.read c in
-                                let* α1 : core.option.Option.t u32.t :=
+                              (fun (α0 : char.t) =>
+                                match α0 with
+                                | c =>
+                                  let* c := M.alloc c in
+                                  let* α0 : char.t := M.read c in
+                                  let* α1 : core.option.Option.t u32.t :=
+                                    M.call
+                                      (char.t::["to_digit"]
+                                        α0
+                                        (Integer.of_Z 10)) in
+                                  let* α2 : ref str.t :=
+                                    M.read (mk_str "should be a digit") in
                                   M.call
-                                    (char.t::["to_digit"]
-                                      α0
-                                      (Integer.of_Z 10)) in
-                                let* α2 : ref str.t :=
-                                  M.read (mk_str "should be a digit") in
-                                M.call
-                                  ((core.option.Option.t u32.t)::["expect"]
-                                    α1
-                                    α2)) :
+                                    ((core.option.Option.t u32.t)::["expect"]
+                                      α1
+                                      α2)
+                                end :
                                 M u32.t)) in
                         let* α3 : u32.t :=
                           M.call
@@ -311,21 +314,24 @@ Definition main : M unit :=
                 alloc.alloc.Global.t)
             (Trait := ltac:(refine _)))
           α1
-          (fun (c : std.thread.JoinHandle.t u32.t) =>
-            (let* c := M.alloc c in
-            let* α0 : std.thread.JoinHandle.t u32.t := M.read c in
-            let* α1 :
-                core.result.Result.t
-                  u32.t
-                  (alloc.boxed.Box.t dynamic alloc.alloc.Global.t) :=
-              M.call ((std.thread.JoinHandle.t u32.t)::["join"] α0) in
-            M.call
-              ((core.result.Result.t
+          (fun (α0 : std.thread.JoinHandle.t u32.t) =>
+            match α0 with
+            | c =>
+              let* c := M.alloc c in
+              let* α0 : std.thread.JoinHandle.t u32.t := M.read c in
+              let* α1 :
+                  core.result.Result.t
                     u32.t
-                    (alloc.boxed.Box.t
-                      dynamic
-                      alloc.alloc.Global.t))::["unwrap"]
-                α1)) :
+                    (alloc.boxed.Box.t dynamic alloc.alloc.Global.t) :=
+                M.call ((std.thread.JoinHandle.t u32.t)::["join"] α0) in
+              M.call
+                ((core.result.Result.t
+                      u32.t
+                      (alloc.boxed.Box.t
+                        dynamic
+                        alloc.alloc.Global.t))::["unwrap"]
+                  α1)
+            end :
             M u32.t)) in
     let* α3 : u32.t :=
       M.call

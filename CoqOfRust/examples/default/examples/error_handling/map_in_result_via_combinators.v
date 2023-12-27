@@ -22,20 +22,28 @@ Definition multiply
   M.call
     ((core.result.Result.t i32.t core.num.error.ParseIntError.t)::["and_then"]
       α1
-      (fun (first_number : i32.t) =>
-        (let* first_number := M.alloc first_number in
-        let* α0 : ref str.t := M.read second_number_str in
-        let* α1 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
-          M.call (str.t::["parse"] α0) in
-        M.call
-          ((core.result.Result.t i32.t core.num.error.ParseIntError.t)::["map"]
-            α1
-            (fun (second_number : i32.t) =>
-              (let* second_number := M.alloc second_number in
-              let* α0 : i32.t := M.read first_number in
-              let* α1 : i32.t := M.read second_number in
-              BinOp.Panic.mul α0 α1) :
-              M i32.t))) :
+      (fun (α0 : i32.t) =>
+        match α0 with
+        | first_number =>
+          let* first_number := M.alloc first_number in
+          let* α0 : ref str.t := M.read second_number_str in
+          let* α1 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
+            M.call (str.t::["parse"] α0) in
+          M.call
+            ((core.result.Result.t
+                  i32.t
+                  core.num.error.ParseIntError.t)::["map"]
+              α1
+              (fun (α0 : i32.t) =>
+                match α0 with
+                | second_number =>
+                  let* second_number := M.alloc second_number in
+                  let* α0 : i32.t := M.read first_number in
+                  let* α1 : i32.t := M.read second_number in
+                  BinOp.Panic.mul α0 α1
+                end :
+                M i32.t))
+        end :
         M (core.result.Result.t i32.t core.num.error.ParseIntError.t))).
 
 (*

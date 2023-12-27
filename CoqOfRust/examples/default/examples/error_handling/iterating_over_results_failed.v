@@ -47,10 +47,13 @@ Definition main : M unit :=
               alloc.vec.into_iter.IntoIter.t (ref str.t) alloc.alloc.Global.t)
             (Trait := ltac:(refine _)))
           α1
-          (fun (s : ref str.t) =>
-            (let* s := M.alloc s in
-            let* α0 : ref str.t := M.read s in
-            M.call (str.t::["parse"] α0)) :
+          (fun (α0 : ref str.t) =>
+            match α0 with
+            | s =>
+              let* s := M.alloc s in
+              let* α0 : ref str.t := M.read s in
+              M.call (str.t::["parse"] α0)
+            end :
             M (core.result.Result.t i32.t core.num.error.ParseIntError.t))) in
     let* α3 :
         alloc.vec.Vec.t

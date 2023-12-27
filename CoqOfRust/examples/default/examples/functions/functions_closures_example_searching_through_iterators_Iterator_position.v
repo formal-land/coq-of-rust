@@ -52,11 +52,14 @@ Definition main : M unit :=
             (Self := core.slice.iter.Iter.t i32.t)
             (Trait := ltac:(refine _)))
           (borrow_mut α2)
-          (fun (x : ref i32.t) =>
-            (let* x := M.alloc x in
-            let* α0 : i32.t := M.read x in
-            let* α1 : i32.t := BinOp.Panic.rem α0 (Integer.of_Z 2) in
-            M.pure (BinOp.Pure.eq α1 (Integer.of_Z 0))) :
+          (fun (α0 : ref i32.t) =>
+            match α0 with
+            | x =>
+              let* x := M.alloc x in
+              let* α0 : i32.t := M.read x in
+              let* α1 : i32.t := BinOp.Panic.rem α0 (Integer.of_Z 2) in
+              M.pure (BinOp.Pure.eq α1 (Integer.of_Z 0))
+            end :
             M bool.t)) in
     M.alloc α3 in
   let* _ : M.Val unit :=
@@ -112,10 +115,13 @@ Definition main : M unit :=
             (Self := alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t)
             (Trait := ltac:(refine _)))
           (borrow_mut α2)
-          (fun (x : i32.t) =>
-            (let* x := M.alloc x in
-            let* α0 : i32.t := M.read x in
-            M.pure (BinOp.Pure.lt α0 (Integer.of_Z 0))) :
+          (fun (α0 : i32.t) =>
+            match α0 with
+            | x =>
+              let* x := M.alloc x in
+              let* α0 : i32.t := M.read x in
+              M.pure (BinOp.Pure.lt α0 (Integer.of_Z 0))
+            end :
             M bool.t)) in
     M.alloc α3 in
   let* _ : M.Val unit :=
