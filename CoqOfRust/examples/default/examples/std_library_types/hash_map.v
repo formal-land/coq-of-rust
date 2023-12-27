@@ -19,9 +19,8 @@ fn call(number: &str) -> &str {
 Definition call (number : ref str.t) : M (ref str.t) :=
   let* number := M.alloc number in
   let* α0 : ref str.t := M.read number in
-  let* α1 := M.read α0 in
-  let* α2 : M.Val (ref str.t) :=
-    match α1 with
+  let* α1 : M.Val (ref str.t) :=
+    match α0 with
     | _ =>
       let* α0 : ref str.t :=
         M.read
@@ -40,7 +39,7 @@ Definition call (number : ref str.t) : M (ref str.t) :=
       let* α0 : ref str.t := M.read (mk_str "Hi! Who is this again?") in
       M.alloc α0
     end in
-  M.read α2.
+  M.read α1.
 
 (*
 fn main() {

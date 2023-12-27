@@ -26,7 +26,7 @@ impl FreshVars {
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
 pub(crate) struct MatchArm {
     pub(crate) pattern: Rc<Pattern>,
-    pub(crate) body: Expr,
+    pub(crate) body: Box<Expr>,
 }
 
 /// [LoopControlFlow] represents the expressions responsible for
@@ -104,7 +104,7 @@ pub(crate) enum ExprKind {
     },
     Let {
         is_monadic: bool,
-        pattern: Rc<Pattern>,
+        name: Option<String>,
         init: Box<Expr>,
         body: Box<Expr>,
     },
@@ -205,7 +205,7 @@ impl Expr {
             ExprKind::Tuple { elements } => elements.iter().any(Self::has_return),
             ExprKind::Let {
                 is_monadic: _,
-                pattern: _,
+                name: _,
                 init,
                 body,
             } => init.has_return() || body.has_return(),
@@ -269,7 +269,7 @@ fn monadic_let_in_stmt(
         ExprKind::Pure(e) => f(fresh_vars, *e),
         ExprKind::Let {
             is_monadic,
-            pattern,
+            name,
             init,
             body,
         } => {
@@ -279,7 +279,7 @@ fn monadic_let_in_stmt(
                     ty: body.ty.clone(),
                     kind: ExprKind::Let {
                         is_monadic,
-                        pattern,
+                        name,
                         init,
                         body: Box::new(body),
                     },
@@ -301,11 +301,7 @@ fn monadic_let_in_stmt(
                     ty: body.ty.clone(),
                     kind: ExprKind::Let {
                         is_monadic: true,
-                        pattern: Rc::new(Pattern::Binding {
-                            name: var_name,
-                            is_with_ref: false,
-                            pattern: None,
-                        }),
+                        name: Some(var_name),
                         init: Box::new(e1),
                         body: Box::new(body),
                     },
@@ -483,7 +479,7 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Expr) -> (Expr, FreshVa
         ),
         ExprKind::Let {
             is_monadic,
-            pattern,
+            name,
             init,
             body,
         } => {
@@ -499,7 +495,7 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Expr) -> (Expr, FreshVa
                     Some(pure_init) => Expr {
                         kind: ExprKind::Let {
                             is_monadic: false,
-                            pattern,
+                            name,
                             init: pure_init,
                             body,
                         },
@@ -508,7 +504,7 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Expr) -> (Expr, FreshVa
                     None => Expr {
                         kind: ExprKind::Let {
                             is_monadic: true,
-                            pattern,
+                            name,
                             init: Box::new(init),
                             body,
                         },
@@ -571,10 +567,10 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Expr) -> (Expr, FreshVa
                                 .iter()
                                 .map(|MatchArm { pattern, body }| {
                                     let (body, _fresh_vars) =
-                                        mt_expression(FreshVars::new(), body.clone());
+                                        mt_expression(FreshVars::new(), *body.clone());
                                     MatchArm {
                                         pattern: pattern.clone(),
-                                        body,
+                                        body: Box::new(body),
                                     }
                                 })
                                 .collect(),
@@ -720,14 +716,14 @@ fn get_pure_from_stmt(statement: Expr) -> Option<Box<Expr>> {
         } => None,
         ExprKind::Let {
             is_monadic: false,
-            pattern,
+            name,
             init,
             body,
         } => get_pure_from_stmt(*body).map(|body| {
             Box::new(Expr {
                 kind: ExprKind::Let {
                     is_monadic: false,
-                    pattern,
+                    name,
                     init,
                     body,
                 },
@@ -948,7 +944,7 @@ impl ExprKind {
             ),
             ExprKind::Let {
                 is_monadic,
-                pattern,
+                name,
                 init,
                 body,
             } => paren(
@@ -960,9 +956,11 @@ impl ExprKind {
                                 text("let"),
                                 optional_insert(!*is_monadic, text("*")),
                                 line(),
-                                optional_insert(pattern.is_single_binding(), text("'")),
+                                text(match name {
+                                    Some(name) => name,
+                                    None => "_",
+                                }),
                             ]),
-                            pattern.to_doc(false),
                             match &init.ty {
                                 Some(ty) => concat([text(" :"), line(), ty.to_coq().to_doc(false)]),
                                 None => nil(),

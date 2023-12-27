@@ -23,9 +23,8 @@ Section Impl_core_fmt_Debug_for_combinators_and_then_Food_t.
     let* f := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref combinators_and_then.Food.t := M.read self in
-    let* α2 := M.read α1 in
-    let* α3 : M.Val (ref str.t) :=
-      match α2 with
+    let* α2 : M.Val (ref str.t) :=
+      match α1 with
       | combinators_and_then.Food.CordonBleu =>
         let* α0 : ref str.t := M.read (mk_str "CordonBleu") in
         M.alloc α0
@@ -36,8 +35,8 @@ Section Impl_core_fmt_Debug_for_combinators_and_then_Food_t.
         let* α0 : ref str.t := M.read (mk_str "Sushi") in
         M.alloc α0
       end in
-    let* α4 : ref str.t := M.read α3 in
-    M.call (core.fmt.Formatter.t::["write_str"] α0 α4).
+    let* α3 : ref str.t := M.read α2 in
+    M.call (core.fmt.Formatter.t::["write_str"] α0 α3).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
@@ -71,9 +70,8 @@ Section Impl_core_fmt_Debug_for_combinators_and_then_Day_t.
     let* f := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref combinators_and_then.Day.t := M.read self in
-    let* α2 := M.read α1 in
-    let* α3 : M.Val (ref str.t) :=
-      match α2 with
+    let* α2 : M.Val (ref str.t) :=
+      match α1 with
       | combinators_and_then.Day.Monday =>
         let* α0 : ref str.t := M.read (mk_str "Monday") in
         M.alloc α0
@@ -84,8 +82,8 @@ Section Impl_core_fmt_Debug_for_combinators_and_then_Day_t.
         let* α0 : ref str.t := M.read (mk_str "Wednesday") in
         M.alloc α0
       end in
-    let* α4 : ref str.t := M.read α3 in
-    M.call (core.fmt.Formatter.t::["write_str"] α0 α4).
+    let* α3 : ref str.t := M.read α2 in
+    M.call (core.fmt.Formatter.t::["write_str"] α0 α3).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
@@ -274,30 +272,34 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let '(cordon_bleu, steak, sushi) :
-      (combinators_and_then.Food.t * combinators_and_then.Food.t)
-      *
-      combinators_and_then.Food.t :=
-    (combinators_and_then.Food.CordonBleu,
-      combinators_and_then.Food.Steak,
-      combinators_and_then.Food.Sushi) in
-  let* cordon_bleu := M.alloc cordon_bleu in
-  let* steak := M.alloc steak in
-  let* sushi := M.alloc sushi in
-  let* _ : M.Val unit :=
-    let* α0 : combinators_and_then.Food.t := M.read cordon_bleu in
-    let* α1 : unit :=
-      M.call (combinators_and_then.eat α0 combinators_and_then.Day.Monday) in
-    M.alloc α1 in
-  let* _ : M.Val unit :=
-    let* α0 : combinators_and_then.Food.t := M.read steak in
-    let* α1 : unit :=
-      M.call (combinators_and_then.eat α0 combinators_and_then.Day.Tuesday) in
-    M.alloc α1 in
-  let* _ : M.Val unit :=
-    let* α0 : combinators_and_then.Food.t := M.read sushi in
-    let* α1 : unit :=
-      M.call (combinators_and_then.eat α0 combinators_and_then.Day.Wednesday) in
-    M.alloc α1 in
-  let* α0 : M.Val unit := M.alloc tt in
+  let* α0 : M.Val unit :=
+    match
+      (combinators_and_then.Food.CordonBleu,
+        combinators_and_then.Food.Steak,
+        combinators_and_then.Food.Sushi)
+    with
+    | (cordon_bleu, steak, sushi) =>
+      let* cordon_bleu := M.alloc cordon_bleu in
+      let* steak := M.alloc steak in
+      let* sushi := M.alloc sushi in
+      let* _ : M.Val unit :=
+        let* α0 : combinators_and_then.Food.t := M.read cordon_bleu in
+        let* α1 : unit :=
+          M.call
+            (combinators_and_then.eat α0 combinators_and_then.Day.Monday) in
+        M.alloc α1 in
+      let* _ : M.Val unit :=
+        let* α0 : combinators_and_then.Food.t := M.read steak in
+        let* α1 : unit :=
+          M.call
+            (combinators_and_then.eat α0 combinators_and_then.Day.Tuesday) in
+        M.alloc α1 in
+      let* _ : M.Val unit :=
+        let* α0 : combinators_and_then.Food.t := M.read sushi in
+        let* α1 : unit :=
+          M.call
+            (combinators_and_then.eat α0 combinators_and_then.Day.Wednesday) in
+        M.alloc α1 in
+      M.alloc tt
+    end in
   M.read α0.

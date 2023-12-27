@@ -148,13 +148,15 @@ Definition main : M unit :=
             M.alloc α2
           | core.option.Option.Some child =>
             let* child := M.alloc child in
-            let* _ :
+            let* α0 : std.thread.JoinHandle.t unit := M.read child in
+            let* α1 :
                 core.result.Result.t
                   unit
                   (alloc.boxed.Box.t dynamic alloc.alloc.Global.t) :=
-              let* α0 : std.thread.JoinHandle.t unit := M.read child in
               M.call ((std.thread.JoinHandle.t unit)::["join"] α0) in
-            M.alloc tt
+            match α1 with
+            | _ => M.alloc tt
+            end
           end in
         M.alloc tt)
     end in

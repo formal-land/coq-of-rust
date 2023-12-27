@@ -304,8 +304,7 @@ Definition main : M unit :=
                 (Trait := ltac:(refine _)))
               α0
               core.ops.range.RangeFull.Build) in
-        let* α2 := M.read α1 in
-        match α2 with
+        match α1 with
         | _ =>
           let* α0 : i32.t := M.read number in
           let* α1 : unit := M.call (program_arguments_parsing.increase α0) in

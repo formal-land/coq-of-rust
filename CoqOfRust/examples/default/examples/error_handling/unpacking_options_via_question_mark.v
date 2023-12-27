@@ -48,9 +48,14 @@ Section Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job_t.
       (self : ref Self)
       : M unpacking_options_via_question_mark.Job.t :=
     let* self := M.alloc self in
-    let _ : unit := tt in
-    let* α0 : ref unpacking_options_via_question_mark.Job.t := M.read self in
-    M.read (deref α0).
+    let* α0 : M.Val unpacking_options_via_question_mark.Job.t :=
+      match tt with
+      | _ =>
+        let* α0 : ref unpacking_options_via_question_mark.Job.t :=
+          M.read self in
+        M.pure (deref α0)
+      end in
+    M.read α0.
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {
@@ -112,11 +117,17 @@ Section Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumbe
       (self : ref Self)
       : M unpacking_options_via_question_mark.PhoneNumber.t :=
     let* self := M.alloc self in
-    let _ : unit := tt in
-    let _ : unit := tt in
-    let* α0 : ref unpacking_options_via_question_mark.PhoneNumber.t :=
-      M.read self in
-    M.read (deref α0).
+    let* α0 : M.Val unpacking_options_via_question_mark.PhoneNumber.t :=
+      match tt with
+      | _ =>
+        match tt with
+        | _ =>
+          let* α0 : ref unpacking_options_via_question_mark.PhoneNumber.t :=
+            M.read self in
+          M.pure (deref α0)
+        end
+      end in
+    M.read α0.
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {

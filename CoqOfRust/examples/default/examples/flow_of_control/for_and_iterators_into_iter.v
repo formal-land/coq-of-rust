@@ -69,8 +69,7 @@ Definition main : M unit :=
           | core.option.Option.Some name =>
             let* name := M.alloc name in
             let* α0 : ref str.t := M.read name in
-            let* α1 := M.read α0 in
-            match α1 with
+            match α0 with
             | _ =>
               let* _ : M.Val unit :=
                 let* α0 : ref str.t :=

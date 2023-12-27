@@ -265,9 +265,13 @@ Section Impl_core_clone_Clone_for_multisig_AccountId_t.
   *)
   Definition clone (self : ref Self) : M multisig.AccountId.t :=
     let* self := M.alloc self in
-    let _ : unit := tt in
-    let* α0 : ref multisig.AccountId.t := M.read self in
-    M.read (deref α0).
+    let* α0 : M.Val multisig.AccountId.t :=
+      match tt with
+      | _ =>
+        let* α0 : ref multisig.AccountId.t := M.read self in
+        M.pure (deref α0)
+      end in
+    M.read α0.
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {
@@ -349,8 +353,10 @@ Section Impl_core_cmp_Eq_for_multisig_AccountId_t.
   *)
   Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
     let* self := M.alloc self in
-    let _ : unit := tt in
-    let* α0 : M.Val unit := M.alloc tt in
+    let* α0 : M.Val unit :=
+      match tt with
+      | _ => M.alloc tt
+      end in
     M.read α0.
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
@@ -506,9 +512,13 @@ Section Impl_core_clone_Clone_for_multisig_ConfirmationStatus_t.
   *)
   Definition clone (self : ref Self) : M multisig.ConfirmationStatus.t :=
     let* self := M.alloc self in
-    let _ : unit := tt in
-    let* α0 : ref multisig.ConfirmationStatus.t := M.read self in
-    M.read (deref α0).
+    let* α0 : M.Val multisig.ConfirmationStatus.t :=
+      match tt with
+      | _ =>
+        let* α0 : ref multisig.ConfirmationStatus.t := M.read self in
+        M.pure (deref α0)
+      end in
+    M.read α0.
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {

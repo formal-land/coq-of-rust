@@ -32,9 +32,13 @@ Section Impl_core_clone_Clone_for_subtle_Choice_t.
   *)
   Definition clone (self : ref Self) : M subtle.Choice.t :=
     let* self := M.alloc self in
-    let _ : unit := tt in
-    let* α0 : ref subtle.Choice.t := M.read self in
-    M.read (deref α0).
+    let* α0 : M.Val subtle.Choice.t :=
+      match tt with
+      | _ =>
+        let* α0 : ref subtle.Choice.t := M.read self in
+        M.pure (deref α0)
+      end in
+    M.read α0.
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {

@@ -159,9 +159,13 @@ Section Impl_core_clone_Clone_for_mother_AccountId_t.
   *)
   Definition clone (self : ref Self) : M mother.AccountId.t :=
     let* self := M.alloc self in
-    let _ : unit := tt in
-    let* α0 : ref mother.AccountId.t := M.read self in
-    M.read (deref α0).
+    let* α0 : M.Val mother.AccountId.t :=
+      match tt with
+      | _ =>
+        let* α0 : ref mother.AccountId.t := M.read self in
+        M.pure (deref α0)
+      end in
+    M.read α0.
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {
@@ -240,8 +244,10 @@ Section Impl_core_cmp_Eq_for_mother_AccountId_t.
   *)
   Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
     let* self := M.alloc self in
-    let _ : unit := tt in
-    let* α0 : M.Val unit := M.alloc tt in
+    let* α0 : M.Val unit :=
+      match tt with
+      | _ => M.alloc tt
+      end in
     M.read α0.
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
@@ -398,8 +404,10 @@ Section Impl_core_cmp_Eq_for_mother_Bids_t.
   *)
   Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
     let* self := M.alloc self in
-    let _ : unit := tt in
-    let* α0 : M.Val unit := M.alloc tt in
+    let* α0 : M.Val unit :=
+      match tt with
+      | _ => M.alloc tt
+      end in
     M.read α0.
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
@@ -548,14 +556,13 @@ Section Impl_core_clone_Clone_for_mother_Outline_t.
   Definition clone (self : ref Self) : M mother.Outline.t :=
     let* self := M.alloc self in
     let* α0 : ref mother.Outline.t := M.read self in
-    let* α1 := M.read α0 in
-    let* α2 : M.Val mother.Outline.t :=
-      match α1 with
+    let* α1 : M.Val mother.Outline.t :=
+      match α0 with
       | mother.Outline.NoWinner => M.alloc mother.Outline.NoWinner
       | mother.Outline.WinnerDetected => M.alloc mother.Outline.WinnerDetected
       | mother.Outline.PayoutCompleted => M.alloc mother.Outline.PayoutCompleted
       end in
-    M.read α2.
+    M.read α1.
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {
@@ -707,9 +714,13 @@ Section Impl_core_cmp_Eq_for_mother_Status_t.
   *)
   Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
     let* self := M.alloc self in
-    let _ : unit := tt in
-    let _ : unit := tt in
-    let* α0 : M.Val unit := M.alloc tt in
+    let* α0 : M.Val unit :=
+      match tt with
+      | _ =>
+        match tt with
+        | _ => M.alloc tt
+        end
+      end in
     M.read α0.
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
@@ -966,14 +977,28 @@ Section Impl_core_cmp_Eq_for_mother_Auction_t.
   *)
   Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
     let* self := M.alloc self in
-    let _ : unit := tt in
-    let _ : unit := tt in
-    let _ : unit := tt in
-    let _ : unit := tt in
-    let _ : unit := tt in
-    let _ : unit := tt in
-    let _ : unit := tt in
-    let* α0 : M.Val unit := M.alloc tt in
+    let* α0 : M.Val unit :=
+      match tt with
+      | _ =>
+        match tt with
+        | _ =>
+          match tt with
+          | _ =>
+            match tt with
+            | _ =>
+              match tt with
+              | _ =>
+                match tt with
+                | _ =>
+                  match tt with
+                  | _ => M.alloc tt
+                  end
+                end
+              end
+            end
+          end
+        end
+      end in
     M.read α0.
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
@@ -1229,8 +1254,10 @@ Section Impl_core_cmp_Eq_for_mother_Failure_t.
   *)
   Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
     let* self := M.alloc self in
-    let _ : unit := tt in
-    let* α0 : M.Val unit := M.alloc tt in
+    let* α0 : M.Val unit :=
+      match tt with
+      | _ => M.alloc tt
+      end in
     M.read α0.
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :

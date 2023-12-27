@@ -26,9 +26,8 @@ Module checked.
       let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
       let* α1 : ref result_chaining_with_question_mark.checked.MathError.t :=
         M.read self in
-      let* α2 := M.read α1 in
-      let* α3 : M.Val (ref str.t) :=
-        match α2 with
+      let* α2 : M.Val (ref str.t) :=
+        match α1 with
         | result_chaining_with_question_mark.checked.MathError.DivisionByZero =>
           let* α0 : ref str.t := M.read (mk_str "DivisionByZero") in
           M.alloc α0
@@ -43,8 +42,8 @@ Module checked.
           let* α0 : ref str.t := M.read (mk_str "NegativeSquareRoot") in
           M.alloc α0
         end in
-      let* α4 : ref str.t := M.read α3 in
-      M.call (core.fmt.Formatter.t::["write_str"] α0 α4).
+      let* α3 : ref str.t := M.read α2 in
+      M.call (core.fmt.Formatter.t::["write_str"] α0 α3).
     
     Global Instance AssociatedFunction_fmt :
       Notations.DoubleColon Self "fmt" := {
@@ -403,9 +402,8 @@ Section Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathE
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref result_chaining_with_question_mark.checked.MathError.t :=
       M.read self in
-    let* α2 := M.read α1 in
-    let* α3 : M.Val (ref str.t) :=
-      match α2 with
+    let* α2 : M.Val (ref str.t) :=
+      match α1 with
       | result_chaining_with_question_mark.checked.MathError.DivisionByZero =>
         let* α0 : ref str.t := M.read (mk_str "DivisionByZero") in
         M.alloc α0
@@ -420,8 +418,8 @@ Section Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathE
         let* α0 : ref str.t := M.read (mk_str "NegativeSquareRoot") in
         M.alloc α0
       end in
-    let* α4 : ref str.t := M.read α3 in
-    M.call (core.fmt.Formatter.t::["write_str"] α0 α4).
+    let* α3 : ref str.t := M.read α2 in
+    M.call (core.fmt.Formatter.t::["write_str"] α0 α3).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;

@@ -1,3 +1,6 @@
+# recently added
+examples/default/examples/custom_types/enums_type_aliases_v2.v
+examples/default/examples/ink_contracts/trait_erc20.v
 # blacklisting ink smart contracts
 examples/default/examples/ink_contracts/erc1155.v
 examples/default/examples/ink_contracts/erc721.v

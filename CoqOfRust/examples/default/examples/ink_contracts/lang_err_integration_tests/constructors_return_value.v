@@ -51,9 +51,13 @@ Section Impl_core_clone_Clone_for_constructors_return_value_AccountId_t.
       (self : ref Self)
       : M constructors_return_value.AccountId.t :=
     let* self := M.alloc self in
-    let _ : unit := tt in
-    let* α0 : ref constructors_return_value.AccountId.t := M.read self in
-    M.read (deref α0).
+    let* α0 : M.Val constructors_return_value.AccountId.t :=
+      match tt with
+      | _ =>
+        let* α0 : ref constructors_return_value.AccountId.t := M.read self in
+        M.pure (deref α0)
+      end in
+    M.read α0.
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {

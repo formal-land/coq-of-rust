@@ -27,12 +27,6 @@ pub(crate) enum Pattern {
 }
 
 impl Pattern {
-    /// Returns wether a pattern is a single binding, to know if we need a quote
-    /// in the "let" in Coq.
-    pub(crate) fn is_single_binding(&self) -> bool {
-        matches!(self, Pattern::Binding { pattern: None, .. } | Pattern::Wild)
-    }
-
     pub(crate) fn get_bindings(&self) -> Vec<String> {
         match self {
             Pattern::Wild => vec![],

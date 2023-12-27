@@ -27,9 +27,8 @@ Section Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref unpacking_options_and_defaults_via_get_or_insert.Fruit.t :=
       M.read self in
-    let* α2 := M.read α1 in
-    let* α3 : M.Val (ref str.t) :=
-      match α2 with
+    let* α2 : M.Val (ref str.t) :=
+      match α1 with
       | unpacking_options_and_defaults_via_get_or_insert.Fruit.Apple =>
         let* α0 : ref str.t := M.read (mk_str "Apple") in
         M.alloc α0
@@ -46,8 +45,8 @@ Section Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert
         let* α0 : ref str.t := M.read (mk_str "Lemon") in
         M.alloc α0
       end in
-    let* α4 : ref str.t := M.read α3 in
-    M.call (core.fmt.Formatter.t::["write_str"] α0 α4).
+    let* α3 : ref str.t := M.read α2 in
+    M.call (core.fmt.Formatter.t::["write_str"] α0 α3).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;

@@ -132,9 +132,13 @@ Section Impl_core_clone_Clone_for_foreign_function_interface_Complex_t.
   *)
   Definition clone (self : ref Self) : M foreign_function_interface.Complex.t :=
     let* self := M.alloc self in
-    let _ : unit := tt in
-    let* α0 : ref foreign_function_interface.Complex.t := M.read self in
-    M.read (deref α0).
+    let* α0 : M.Val foreign_function_interface.Complex.t :=
+      match tt with
+      | _ =>
+        let* α0 : ref foreign_function_interface.Complex.t := M.read self in
+        M.pure (deref α0)
+      end in
+    M.read α0.
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {

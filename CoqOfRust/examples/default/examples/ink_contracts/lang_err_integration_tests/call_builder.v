@@ -49,9 +49,13 @@ Section Impl_core_clone_Clone_for_call_builder_AccountId_t.
   *)
   Definition clone (self : ref Self) : M call_builder.AccountId.t :=
     let* self := M.alloc self in
-    let _ : unit := tt in
-    let* α0 : ref call_builder.AccountId.t := M.read self in
-    M.read (deref α0).
+    let* α0 : M.Val call_builder.AccountId.t :=
+      match tt with
+      | _ =>
+        let* α0 : ref call_builder.AccountId.t := M.read self in
+        M.pure (deref α0)
+      end in
+    M.read α0.
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {

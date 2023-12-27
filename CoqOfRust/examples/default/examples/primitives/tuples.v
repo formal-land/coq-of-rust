@@ -11,13 +11,17 @@ fn reverse(pair: (i32, bool)) -> (bool, i32) {
 *)
 Definition reverse (pair : i32.t * bool.t) : M (bool.t * i32.t) :=
   let* pair := M.alloc pair in
-  let* '(int_param, bool_param) : i32.t * bool.t := M.read pair in
-  let* int_param := M.alloc int_param in
-  let* bool_param := M.alloc bool_param in
-  let* α0 : bool.t := M.read bool_param in
-  let* α1 : i32.t := M.read int_param in
-  let* α0 : M.Val (bool.t * i32.t) := M.alloc (α0, α1) in
-  M.read α0.
+  let* α0 : i32.t * bool.t := M.read pair in
+  let* α1 : M.Val (bool.t * i32.t) :=
+    match α0 with
+    | (int_param, bool_param) =>
+      let* int_param := M.alloc int_param in
+      let* bool_param := M.alloc bool_param in
+      let* α0 : bool.t := M.read bool_param in
+      let* α1 : i32.t := M.read int_param in
+      M.alloc (α0, α1)
+    end in
+  M.read α1.
 
 Module  Matrix.
 Section Matrix.
@@ -328,69 +332,73 @@ Definition main : M unit :=
     let* α0 : ref str.t := M.read (mk_str "hello") in
     let* α1 : f64.t := M.read UnsupportedLiteral in
     M.alloc (Integer.of_Z 1, α0, α1, true) in
-  let* '(a, b, c, d) : ((i32.t * (ref str.t)) * f64.t) * bool.t :=
-    M.read tuple in
-  let* a := M.alloc a in
-  let* b := M.alloc b in
-  let* c := M.alloc c in
-  let* d := M.alloc d in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "") in
-      let* α1 : ref str.t := M.read (mk_str ", ") in
-      let* α2 : ref str.t := M.read (mk_str ", ") in
-      let* α3 : ref str.t := M.read (mk_str ", ") in
-      let* α4 : ref str.t := M.read (mk_str "
+  let* α0 : ((i32.t * (ref str.t)) * f64.t) * bool.t := M.read tuple in
+  let* α0 : M.Val unit :=
+    match α0 with
+    | (a, b, c, d) =>
+      let* a := M.alloc a in
+      let* b := M.alloc b in
+      let* c := M.alloc c in
+      let* d := M.alloc d in
+      let* _ : M.Val unit :=
+        let* _ : M.Val unit :=
+          let* α0 : ref str.t := M.read (mk_str "") in
+          let* α1 : ref str.t := M.read (mk_str ", ") in
+          let* α2 : ref str.t := M.read (mk_str ", ") in
+          let* α3 : ref str.t := M.read (mk_str ", ") in
+          let* α4 : ref str.t := M.read (mk_str "
 ") in
-      let* α5 : M.Val (array (ref str.t)) := M.alloc [ α0; α1; α2; α3; α4 ] in
-      let* α6 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α5) in
-      let* α7 : ref (slice (ref str.t)) :=
-        M.read (pointer_coercion "Unsize" α6) in
-      let* α8 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow a)) in
-      let* α9 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow b)) in
-      let* α10 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow c)) in
-      let* α11 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow d)) in
-      let* α12 : M.Val (array core.fmt.rt.Argument.t) :=
-        M.alloc [ α8; α9; α10; α11 ] in
-      let* α13 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-        M.alloc (borrow α12) in
-      let* α14 : ref (slice core.fmt.rt.Argument.t) :=
-        M.read (pointer_coercion "Unsize" α13) in
-      let* α15 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_v1"] α7 α14) in
-      let* α16 : unit := M.call (std.io.stdio._print α15) in
-      M.alloc α16 in
-    M.alloc tt in
-  let* matrix : M.Val tuples.Matrix.t :=
-    let* α0 : f32.t := M.read UnsupportedLiteral in
-    let* α1 : f32.t := M.read UnsupportedLiteral in
-    let* α2 : f32.t := M.read UnsupportedLiteral in
-    let* α3 : f32.t := M.read UnsupportedLiteral in
-    M.alloc (tuples.Matrix.Build_t α0 α1 α2 α3) in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "") in
-      let* α1 : ref str.t := M.read (mk_str "
+          let* α5 : M.Val (array (ref str.t)) :=
+            M.alloc [ α0; α1; α2; α3; α4 ] in
+          let* α6 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α5) in
+          let* α7 : ref (slice (ref str.t)) :=
+            M.read (pointer_coercion "Unsize" α6) in
+          let* α8 : core.fmt.rt.Argument.t :=
+            M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow a)) in
+          let* α9 : core.fmt.rt.Argument.t :=
+            M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow b)) in
+          let* α10 : core.fmt.rt.Argument.t :=
+            M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow c)) in
+          let* α11 : core.fmt.rt.Argument.t :=
+            M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow d)) in
+          let* α12 : M.Val (array core.fmt.rt.Argument.t) :=
+            M.alloc [ α8; α9; α10; α11 ] in
+          let* α13 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+            M.alloc (borrow α12) in
+          let* α14 : ref (slice core.fmt.rt.Argument.t) :=
+            M.read (pointer_coercion "Unsize" α13) in
+          let* α15 : core.fmt.Arguments.t :=
+            M.call (core.fmt.Arguments.t::["new_v1"] α7 α14) in
+          let* α16 : unit := M.call (std.io.stdio._print α15) in
+          M.alloc α16 in
+        M.alloc tt in
+      let* matrix : M.Val tuples.Matrix.t :=
+        let* α0 : f32.t := M.read UnsupportedLiteral in
+        let* α1 : f32.t := M.read UnsupportedLiteral in
+        let* α2 : f32.t := M.read UnsupportedLiteral in
+        let* α3 : f32.t := M.read UnsupportedLiteral in
+        M.alloc (tuples.Matrix.Build_t α0 α1 α2 α3) in
+      let* _ : M.Val unit :=
+        let* _ : M.Val unit :=
+          let* α0 : ref str.t := M.read (mk_str "") in
+          let* α1 : ref str.t := M.read (mk_str "
 ") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
-      let* α4 : ref (slice (ref str.t)) :=
-        M.read (pointer_coercion "Unsize" α3) in
-      let* α5 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow matrix)) in
-      let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
-      let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-        M.alloc (borrow α6) in
-      let* α8 : ref (slice core.fmt.rt.Argument.t) :=
-        M.read (pointer_coercion "Unsize" α7) in
-      let* α9 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
-      let* α10 : unit := M.call (std.io.stdio._print α9) in
-      M.alloc α10 in
-    M.alloc tt in
-  let* α0 : M.Val unit := M.alloc tt in
+          let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
+          let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
+          let* α4 : ref (slice (ref str.t)) :=
+            M.read (pointer_coercion "Unsize" α3) in
+          let* α5 : core.fmt.rt.Argument.t :=
+            M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow matrix)) in
+          let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
+          let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+            M.alloc (borrow α6) in
+          let* α8 : ref (slice core.fmt.rt.Argument.t) :=
+            M.read (pointer_coercion "Unsize" α7) in
+          let* α9 : core.fmt.Arguments.t :=
+            M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
+          let* α10 : unit := M.call (std.io.stdio._print α9) in
+          M.alloc α10 in
+        M.alloc tt in
+      M.alloc tt
+    end in
   M.read α0.

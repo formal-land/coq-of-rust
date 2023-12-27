@@ -4,7 +4,6 @@ use crate::env::*;
 use crate::expression::*;
 use crate::header::*;
 use crate::path::*;
-use crate::pattern::*;
 use crate::render::*;
 use crate::reorder::*;
 use crate::ty::*;
@@ -759,11 +758,7 @@ fn compile_function_body(
         Box::new(Expr {
             kind: ExprKind::Let {
                 is_monadic: false,
-                pattern: Rc::new(Pattern::Binding {
-                    name: "return_".to_string(),
-                    is_with_ref: false,
-                    pattern: None,
-                }),
+                name: Some("return_".to_string()),
                 init: Box::new(Expr {
                     kind: ExprKind::VarWithTy {
                         path: Path::local("M.return_"),

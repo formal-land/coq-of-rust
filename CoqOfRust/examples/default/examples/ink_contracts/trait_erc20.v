@@ -160,9 +160,13 @@ Section Impl_core_clone_Clone_for_trait_erc20_AccountId_t.
   *)
   Definition clone (self : ref Self) : M trait_erc20.AccountId.t :=
     let* self := M.alloc self in
-    let _ : unit := tt in
-    let* α0 : ref trait_erc20.AccountId.t := M.read self in
-    M.read (deref α0).
+    let* α0 : M.Val trait_erc20.AccountId.t :=
+      match tt with
+      | _ =>
+        let* α0 : ref trait_erc20.AccountId.t := M.read self in
+        M.pure (deref α0)
+      end in
+    M.read α0.
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {
@@ -226,9 +230,8 @@ Section Impl_core_fmt_Debug_for_trait_erc20_Error_t.
     let* f := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref trait_erc20.Error.t := M.read self in
-    let* α2 := M.read α1 in
-    let* α3 : M.Val (ref str.t) :=
-      match α2 with
+    let* α2 : M.Val (ref str.t) :=
+      match α1 with
       | trait_erc20.Error.InsufficientBalance =>
         let* α0 : ref str.t := M.read (mk_str "InsufficientBalance") in
         M.alloc α0
@@ -236,8 +239,8 @@ Section Impl_core_fmt_Debug_for_trait_erc20_Error_t.
         let* α0 : ref str.t := M.read (mk_str "InsufficientAllowance") in
         M.alloc α0
       end in
-    let* α4 : ref str.t := M.read α3 in
-    M.call (core.fmt.Formatter.t::["write_str"] α0 α4).
+    let* α3 : ref str.t := M.read α2 in
+    M.call (core.fmt.Formatter.t::["write_str"] α0 α3).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
