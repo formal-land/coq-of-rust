@@ -157,7 +157,7 @@ pub(crate) fn get_path_generics<'a>(
         .map(|def_id| env.tcx.generics_of(def_id))
 }
 
-#[derive(Clone, Debug, Eq, Hash, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 pub(crate) enum StructOrVariant {
     Struct,
     Variant,

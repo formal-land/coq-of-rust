@@ -199,14 +199,23 @@ fn allocate_bindings_in_pattern(pattern: &Pattern, body: Box<Expr>) -> Box<Expr>
 }
 
 fn build_match(scrutinee: Expr, arms: Vec<MatchArm>, ty: Option<Rc<CoqType>>) -> ExprKind {
+    let arms_with_flatten_patterns = arms.into_iter().flat_map(|MatchArm { pattern, body }| {
+        pattern
+            .flatten_ors()
+            .into_iter()
+            .map(move |pattern| MatchArm {
+                pattern,
+                body: body.clone(),
+            })
+    });
+
     ExprKind::Call {
         func: Expr::local_var("match_operator"),
         args: vec![
             scrutinee,
             Expr {
                 kind: ExprKind::Array {
-                    elements: arms
-                        .iter()
+                    elements: arms_with_flatten_patterns
                         .map(|MatchArm { pattern, body }| Expr {
                             kind: ExprKind::Lambda {
                                 args: vec![("α".to_string(), None)],
@@ -217,8 +226,8 @@ fn build_match(scrutinee: Expr, arms: Vec<MatchArm>, ty: Option<Rc<CoqType>>) ->
                                             vec![MatchArm {
                                                 pattern: pattern.clone(),
                                                 body: allocate_bindings_in_pattern(
-                                                    pattern,
-                                                    body.clone(),
+                                                    pattern.as_ref(),
+                                                    body,
                                                 ),
                                             }],
                                             if !pattern.is_exhaustive() {

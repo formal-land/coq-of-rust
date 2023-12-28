@@ -687,7 +687,7 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Expr) -> (Expr, FreshVa
         } => monadic_lets(
             fresh_vars,
             fields,
-            Box::new(|fresh_vars, fields| {
+            Box::new(move |fresh_vars, fields| {
                 (
                     pure(Expr {
                         kind: ExprKind::StructTuple {
