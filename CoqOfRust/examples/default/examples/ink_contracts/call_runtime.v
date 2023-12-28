@@ -50,11 +50,17 @@ Section Impl_core_clone_Clone_for_call_runtime_AccountId_t.
   Definition clone (self : ref Self) : M call_runtime.AccountId.t :=
     let* self := M.alloc self in
     let* α0 : M.Val call_runtime.AccountId.t :=
-      match tt with
-      | _ =>
-        let* α0 : ref call_runtime.AccountId.t := M.read self in
-        M.pure (deref α0)
-      end in
+      match_operator
+        tt
+        [
+          fun α =>
+            match α with
+            | _ =>
+              let* α0 : ref call_runtime.AccountId.t := M.read self in
+              M.pure (deref α0)
+            end :
+            M (M.Val call_runtime.AccountId.t)
+        ] in
     M.read α0.
   
   Global Instance AssociatedFunction_clone :
@@ -325,16 +331,27 @@ Section Impl_core_convert_From_call_runtime_EnvError_t_for_call_runtime_RuntimeE
     let* e := M.alloc e in
     let* α0 : call_runtime.EnvError.t := M.read e in
     let* α1 : M.Val call_runtime.RuntimeError.t :=
-      match α0 with
-      | call_runtime.EnvError.CallRuntimeFailed =>
-        M.alloc call_runtime.RuntimeError.CallRuntimeFailed
-      | _ =>
-        let* α0 : ref str.t :=
-          M.read (mk_str "Unexpected error from `pallet-contracts`.") in
-        let* α1 : never.t := M.call (std.panicking.begin_panic α0) in
-        let* α2 : call_runtime.RuntimeError.t := never_to_any α1 in
-        M.alloc α2
-      end in
+      match_operator
+        α0
+        [
+          fun α =>
+            match α with
+            | call_runtime.EnvError.CallRuntimeFailed =>
+              M.alloc call_runtime.RuntimeError.CallRuntimeFailed
+            | _ => M.break_match
+            end :
+            M (M.Val call_runtime.RuntimeError.t);
+          fun α =>
+            match α with
+            | _ =>
+              let* α0 : ref str.t :=
+                M.read (mk_str "Unexpected error from `pallet-contracts`.") in
+              let* α1 : never.t := M.call (std.panicking.begin_panic α0) in
+              let* α2 : call_runtime.RuntimeError.t := never_to_any α1 in
+              M.alloc α2
+            end :
+            M (M.Val call_runtime.RuntimeError.t)
+        ] in
     M.read α1.
   
   Global Instance AssociatedFunction_from :

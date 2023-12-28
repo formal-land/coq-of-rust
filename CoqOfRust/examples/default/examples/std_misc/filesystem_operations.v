@@ -34,32 +34,46 @@ Definition cat
               (Trait := ltac:(refine _)))
             α1) in
       let* α3 : M.Val std.fs.File.t :=
-        match α2 with
-        | core.ops.control_flow.ControlFlow.Break residual =>
-          let* residual := M.alloc residual in
-          let* α0 :
-              core.result.Result.t
-                core.convert.Infallible.t
-                std.io.error.Error.t :=
-            M.read residual in
-          let* α1 :
-              core.result.Result.t alloc.string.String.t std.io.error.Error.t :=
-            M.call
-              ((core.ops.try_trait.FromResidual.from_residual
-                  (Self :=
+        match_operator
+          α2
+          [
+            fun α =>
+              match α with
+              | core.ops.control_flow.ControlFlow.Break residual =>
+                let* residual := M.alloc residual in
+                let* α0 :
+                    core.result.Result.t
+                      core.convert.Infallible.t
+                      std.io.error.Error.t :=
+                  M.read residual in
+                let* α1 :
                     core.result.Result.t
                       alloc.string.String.t
-                      std.io.error.Error.t)
-                  (Trait := ltac:(refine _)))
-                α0) in
-          let* α2 : M.Val never.t := return_ α1 in
-          let* α3 := M.read α2 in
-          let* α4 : std.fs.File.t := never_to_any α3 in
-          M.alloc α4
-        | core.ops.control_flow.ControlFlow.Continue val =>
-          let* val := M.alloc val in
-          M.pure val
-        end in
+                      std.io.error.Error.t :=
+                  M.call
+                    ((core.ops.try_trait.FromResidual.from_residual
+                        (Self :=
+                          core.result.Result.t
+                            alloc.string.String.t
+                            std.io.error.Error.t)
+                        (Trait := ltac:(refine _)))
+                      α0) in
+                let* α2 : M.Val never.t := return_ α1 in
+                let* α3 := M.read α2 in
+                let* α4 : std.fs.File.t := never_to_any α3 in
+                M.alloc α4
+              | _ => M.break_match
+              end :
+              M (M.Val std.fs.File.t);
+            fun α =>
+              match α with
+              | core.ops.control_flow.ControlFlow.Continue val =>
+                let* val := M.alloc val in
+                M.pure val
+              | _ => M.break_match
+              end :
+              M (M.Val std.fs.File.t)
+          ] in
       M.copy α3 in
     let* s : M.Val alloc.string.String.t :=
       let* α0 : alloc.string.String.t :=
@@ -75,15 +89,35 @@ Definition cat
     let* α0 :
         M.Val
           (core.result.Result.t alloc.string.String.t std.io.error.Error.t) :=
-      match α0 with
-      | core.result.Result.Ok _ =>
-        let* α0 : alloc.string.String.t := M.read s in
-        M.alloc (core.result.Result.Ok α0)
-      | core.result.Result.Err e =>
-        let* e := M.alloc e in
-        let* α0 : std.io.error.Error.t := M.read e in
-        M.alloc (core.result.Result.Err α0)
-      end in
+      match_operator
+        α0
+        [
+          fun α =>
+            match α with
+            | core.result.Result.Ok _ =>
+              let* α0 : alloc.string.String.t := M.read s in
+              M.alloc (core.result.Result.Ok α0)
+            | _ => M.break_match
+            end :
+            M
+              (M.Val
+                (core.result.Result.t
+                  alloc.string.String.t
+                  std.io.error.Error.t));
+          fun α =>
+            match α with
+            | core.result.Result.Err e =>
+              let* e := M.alloc e in
+              let* α0 : std.io.error.Error.t := M.read e in
+              M.alloc (core.result.Result.Err α0)
+            | _ => M.break_match
+            end :
+            M
+              (M.Val
+                (core.result.Result.t
+                  alloc.string.String.t
+                  std.io.error.Error.t))
+        ] in
     M.read α0).
 
 (*
@@ -117,28 +151,40 @@ Definition echo
               (Trait := ltac:(refine _)))
             α1) in
       let* α3 : M.Val std.fs.File.t :=
-        match α2 with
-        | core.ops.control_flow.ControlFlow.Break residual =>
-          let* residual := M.alloc residual in
-          let* α0 :
-              core.result.Result.t
-                core.convert.Infallible.t
-                std.io.error.Error.t :=
-            M.read residual in
-          let* α1 : core.result.Result.t unit std.io.error.Error.t :=
-            M.call
-              ((core.ops.try_trait.FromResidual.from_residual
-                  (Self := core.result.Result.t unit std.io.error.Error.t)
-                  (Trait := ltac:(refine _)))
-                α0) in
-          let* α2 : M.Val never.t := return_ α1 in
-          let* α3 := M.read α2 in
-          let* α4 : std.fs.File.t := never_to_any α3 in
-          M.alloc α4
-        | core.ops.control_flow.ControlFlow.Continue val =>
-          let* val := M.alloc val in
-          M.pure val
-        end in
+        match_operator
+          α2
+          [
+            fun α =>
+              match α with
+              | core.ops.control_flow.ControlFlow.Break residual =>
+                let* residual := M.alloc residual in
+                let* α0 :
+                    core.result.Result.t
+                      core.convert.Infallible.t
+                      std.io.error.Error.t :=
+                  M.read residual in
+                let* α1 : core.result.Result.t unit std.io.error.Error.t :=
+                  M.call
+                    ((core.ops.try_trait.FromResidual.from_residual
+                        (Self := core.result.Result.t unit std.io.error.Error.t)
+                        (Trait := ltac:(refine _)))
+                      α0) in
+                let* α2 : M.Val never.t := return_ α1 in
+                let* α3 := M.read α2 in
+                let* α4 : std.fs.File.t := never_to_any α3 in
+                M.alloc α4
+              | _ => M.break_match
+              end :
+              M (M.Val std.fs.File.t);
+            fun α =>
+              match α with
+              | core.ops.control_flow.ControlFlow.Continue val =>
+                let* val := M.alloc val in
+                M.pure val
+              | _ => M.break_match
+              end :
+              M (M.Val std.fs.File.t)
+          ] in
       M.copy α3 in
     let* α0 : ref str.t := M.read s in
     let* α1 : ref (slice u8.t) := M.call (str.t::["as_bytes"] α0) in
@@ -175,13 +221,25 @@ Definition touch
   let* α5 : core.result.Result.t std.fs.File.t std.io.error.Error.t :=
     M.call (std.fs.OpenOptions.t::["open"] (borrow (deref α3)) α4) in
   let* α6 : M.Val (core.result.Result.t unit std.io.error.Error.t) :=
-    match α5 with
-    | core.result.Result.Ok _ => M.alloc (core.result.Result.Ok tt)
-    | core.result.Result.Err e =>
-      let* e := M.alloc e in
-      let* α0 : std.io.error.Error.t := M.read e in
-      M.alloc (core.result.Result.Err α0)
-    end in
+    match_operator
+      α5
+      [
+        fun α =>
+          match α with
+          | core.result.Result.Ok _ => M.alloc (core.result.Result.Ok tt)
+          | _ => M.break_match
+          end :
+          M (M.Val (core.result.Result.t unit std.io.error.Error.t));
+        fun α =>
+          match α with
+          | core.result.Result.Err e =>
+            let* e := M.alloc e in
+            let* α0 : std.io.error.Error.t := M.read e in
+            M.alloc (core.result.Result.Err α0)
+          | _ => M.break_match
+          end :
+          M (M.Val (core.result.Result.t unit std.io.error.Error.t))
+      ] in
   M.read α6.
 
 (*
@@ -267,34 +325,48 @@ Definition main : M unit :=
     let* α0 : ref str.t := M.read (mk_str "a") in
     let* α1 : core.result.Result.t unit std.io.error.Error.t :=
       M.call (std.fs.create_dir α0) in
-    match α1 with
-    | core.result.Result.Err why =>
-      let* why := M.alloc why in
-      let* _ : M.Val unit :=
-        let* α0 : ref str.t := M.read (mk_str "! ") in
-        let* α1 : ref str.t := M.read (mk_str "
+    match_operator
+      α1
+      [
+        fun α =>
+          match α with
+          | core.result.Result.Err why =>
+            let* why := M.alloc why in
+            let* _ : M.Val unit :=
+              let* α0 : ref str.t := M.read (mk_str "! ") in
+              let* α1 : ref str.t := M.read (mk_str "
 ") in
-        let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-        let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
-        let* α4 : ref (slice (ref str.t)) :=
-          M.read (pointer_coercion "Unsize" α3) in
-        let* α5 : std.io.error.ErrorKind.t :=
-          M.call (std.io.error.Error.t::["kind"] (borrow why)) in
-        let* α6 : M.Val std.io.error.ErrorKind.t := M.alloc α5 in
-        let* α7 : core.fmt.rt.Argument.t :=
-          M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow α6)) in
-        let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
-        let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-          M.alloc (borrow α8) in
-        let* α10 : ref (slice core.fmt.rt.Argument.t) :=
-          M.read (pointer_coercion "Unsize" α9) in
-        let* α11 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_v1"] α4 α10) in
-        let* α12 : unit := M.call (std.io.stdio._print α11) in
-        M.alloc α12 in
-      M.alloc tt
-    | core.result.Result.Ok _ => M.alloc tt
-    end in
+              let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
+              let* α3 : M.Val (ref (array (ref str.t))) :=
+                M.alloc (borrow α2) in
+              let* α4 : ref (slice (ref str.t)) :=
+                M.read (pointer_coercion "Unsize" α3) in
+              let* α5 : std.io.error.ErrorKind.t :=
+                M.call (std.io.error.Error.t::["kind"] (borrow why)) in
+              let* α6 : M.Val std.io.error.ErrorKind.t := M.alloc α5 in
+              let* α7 : core.fmt.rt.Argument.t :=
+                M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow α6)) in
+              let* α8 : M.Val (array core.fmt.rt.Argument.t) :=
+                M.alloc [ α7 ] in
+              let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+                M.alloc (borrow α8) in
+              let* α10 : ref (slice core.fmt.rt.Argument.t) :=
+                M.read (pointer_coercion "Unsize" α9) in
+              let* α11 : core.fmt.Arguments.t :=
+                M.call (core.fmt.Arguments.t::["new_v1"] α4 α10) in
+              let* α12 : unit := M.call (std.io.stdio._print α11) in
+              M.alloc α12 in
+            M.alloc tt
+          | _ => M.break_match
+          end :
+          M (M.Val unit);
+        fun α =>
+          match α with
+          | core.result.Result.Ok _ => M.alloc tt
+          | _ => M.break_match
+          end :
+          M (M.Val unit)
+      ] in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "`echo hello > a/b.txt`
@@ -319,39 +391,49 @@ Definition main : M unit :=
         ((core.result.Result.t unit std.io.error.Error.t)::["unwrap_or_else"]
           α3
           (fun (α0 : std.io.error.Error.t) =>
-            match α0 with
-            | why =>
-              let* why := M.alloc why in
-              let* _ : M.Val unit :=
-                let* _ : M.Val unit :=
-                  let* α0 : ref str.t := M.read (mk_str "! ") in
-                  let* α1 : ref str.t := M.read (mk_str "
+            (match_operator
+              α0
+              [
+                fun α =>
+                  match α with
+                  | why =>
+                    let* why := M.alloc why in
+                    let* _ : M.Val unit :=
+                      let* _ : M.Val unit :=
+                        let* α0 : ref str.t := M.read (mk_str "! ") in
+                        let* α1 : ref str.t := M.read (mk_str "
 ") in
-                  let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-                  let* α3 : M.Val (ref (array (ref str.t))) :=
-                    M.alloc (borrow α2) in
-                  let* α4 : ref (slice (ref str.t)) :=
-                    M.read (pointer_coercion "Unsize" α3) in
-                  let* α5 : std.io.error.ErrorKind.t :=
-                    M.call (std.io.error.Error.t::["kind"] (borrow why)) in
-                  let* α6 : M.Val std.io.error.ErrorKind.t := M.alloc α5 in
-                  let* α7 : core.fmt.rt.Argument.t :=
-                    M.call
-                      (core.fmt.rt.Argument.t::["new_debug"] (borrow α6)) in
-                  let* α8 : M.Val (array core.fmt.rt.Argument.t) :=
-                    M.alloc [ α7 ] in
-                  let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-                    M.alloc (borrow α8) in
-                  let* α10 : ref (slice core.fmt.rt.Argument.t) :=
-                    M.read (pointer_coercion "Unsize" α9) in
-                  let* α11 : core.fmt.Arguments.t :=
-                    M.call (core.fmt.Arguments.t::["new_v1"] α4 α10) in
-                  let* α12 : unit := M.call (std.io.stdio._print α11) in
-                  M.alloc α12 in
-                M.alloc tt in
-              let* α0 : M.Val unit := M.alloc tt in
-              M.read α0
-            end :
+                        let* α2 : M.Val (array (ref str.t)) :=
+                          M.alloc [ α0; α1 ] in
+                        let* α3 : M.Val (ref (array (ref str.t))) :=
+                          M.alloc (borrow α2) in
+                        let* α4 : ref (slice (ref str.t)) :=
+                          M.read (pointer_coercion "Unsize" α3) in
+                        let* α5 : std.io.error.ErrorKind.t :=
+                          M.call
+                            (std.io.error.Error.t::["kind"] (borrow why)) in
+                        let* α6 : M.Val std.io.error.ErrorKind.t :=
+                          M.alloc α5 in
+                        let* α7 : core.fmt.rt.Argument.t :=
+                          M.call
+                            (core.fmt.rt.Argument.t::["new_debug"]
+                              (borrow α6)) in
+                        let* α8 : M.Val (array core.fmt.rt.Argument.t) :=
+                          M.alloc [ α7 ] in
+                        let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+                          M.alloc (borrow α8) in
+                        let* α10 : ref (slice core.fmt.rt.Argument.t) :=
+                          M.read (pointer_coercion "Unsize" α9) in
+                        let* α11 : core.fmt.Arguments.t :=
+                          M.call (core.fmt.Arguments.t::["new_v1"] α4 α10) in
+                        let* α12 : unit := M.call (std.io.stdio._print α11) in
+                        M.alloc α12 in
+                      M.alloc tt in
+                    let* α0 : M.Val unit := M.alloc tt in
+                    M.read α0
+                  end :
+                  M unit
+              ]) :
             M unit)) in
     M.alloc α4 in
   let* _ : M.Val unit :=
@@ -376,39 +458,49 @@ Definition main : M unit :=
         ((core.result.Result.t unit std.io.error.Error.t)::["unwrap_or_else"]
           α1
           (fun (α0 : std.io.error.Error.t) =>
-            match α0 with
-            | why =>
-              let* why := M.alloc why in
-              let* _ : M.Val unit :=
-                let* _ : M.Val unit :=
-                  let* α0 : ref str.t := M.read (mk_str "! ") in
-                  let* α1 : ref str.t := M.read (mk_str "
+            (match_operator
+              α0
+              [
+                fun α =>
+                  match α with
+                  | why =>
+                    let* why := M.alloc why in
+                    let* _ : M.Val unit :=
+                      let* _ : M.Val unit :=
+                        let* α0 : ref str.t := M.read (mk_str "! ") in
+                        let* α1 : ref str.t := M.read (mk_str "
 ") in
-                  let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-                  let* α3 : M.Val (ref (array (ref str.t))) :=
-                    M.alloc (borrow α2) in
-                  let* α4 : ref (slice (ref str.t)) :=
-                    M.read (pointer_coercion "Unsize" α3) in
-                  let* α5 : std.io.error.ErrorKind.t :=
-                    M.call (std.io.error.Error.t::["kind"] (borrow why)) in
-                  let* α6 : M.Val std.io.error.ErrorKind.t := M.alloc α5 in
-                  let* α7 : core.fmt.rt.Argument.t :=
-                    M.call
-                      (core.fmt.rt.Argument.t::["new_debug"] (borrow α6)) in
-                  let* α8 : M.Val (array core.fmt.rt.Argument.t) :=
-                    M.alloc [ α7 ] in
-                  let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-                    M.alloc (borrow α8) in
-                  let* α10 : ref (slice core.fmt.rt.Argument.t) :=
-                    M.read (pointer_coercion "Unsize" α9) in
-                  let* α11 : core.fmt.Arguments.t :=
-                    M.call (core.fmt.Arguments.t::["new_v1"] α4 α10) in
-                  let* α12 : unit := M.call (std.io.stdio._print α11) in
-                  M.alloc α12 in
-                M.alloc tt in
-              let* α0 : M.Val unit := M.alloc tt in
-              M.read α0
-            end :
+                        let* α2 : M.Val (array (ref str.t)) :=
+                          M.alloc [ α0; α1 ] in
+                        let* α3 : M.Val (ref (array (ref str.t))) :=
+                          M.alloc (borrow α2) in
+                        let* α4 : ref (slice (ref str.t)) :=
+                          M.read (pointer_coercion "Unsize" α3) in
+                        let* α5 : std.io.error.ErrorKind.t :=
+                          M.call
+                            (std.io.error.Error.t::["kind"] (borrow why)) in
+                        let* α6 : M.Val std.io.error.ErrorKind.t :=
+                          M.alloc α5 in
+                        let* α7 : core.fmt.rt.Argument.t :=
+                          M.call
+                            (core.fmt.rt.Argument.t::["new_debug"]
+                              (borrow α6)) in
+                        let* α8 : M.Val (array core.fmt.rt.Argument.t) :=
+                          M.alloc [ α7 ] in
+                        let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+                          M.alloc (borrow α8) in
+                        let* α10 : ref (slice core.fmt.rt.Argument.t) :=
+                          M.read (pointer_coercion "Unsize" α9) in
+                        let* α11 : core.fmt.Arguments.t :=
+                          M.call (core.fmt.Arguments.t::["new_v1"] α4 α10) in
+                        let* α12 : unit := M.call (std.io.stdio._print α11) in
+                        M.alloc α12 in
+                      M.alloc tt in
+                    let* α0 : M.Val unit := M.alloc tt in
+                    M.read α0
+                  end :
+                  M unit
+              ]) :
             M unit)) in
     M.alloc α2 in
   let* _ : M.Val unit :=
@@ -434,39 +526,49 @@ Definition main : M unit :=
         ((core.result.Result.t unit std.io.error.Error.t)::["unwrap_or_else"]
           α2
           (fun (α0 : std.io.error.Error.t) =>
-            match α0 with
-            | why =>
-              let* why := M.alloc why in
-              let* _ : M.Val unit :=
-                let* _ : M.Val unit :=
-                  let* α0 : ref str.t := M.read (mk_str "! ") in
-                  let* α1 : ref str.t := M.read (mk_str "
+            (match_operator
+              α0
+              [
+                fun α =>
+                  match α with
+                  | why =>
+                    let* why := M.alloc why in
+                    let* _ : M.Val unit :=
+                      let* _ : M.Val unit :=
+                        let* α0 : ref str.t := M.read (mk_str "! ") in
+                        let* α1 : ref str.t := M.read (mk_str "
 ") in
-                  let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-                  let* α3 : M.Val (ref (array (ref str.t))) :=
-                    M.alloc (borrow α2) in
-                  let* α4 : ref (slice (ref str.t)) :=
-                    M.read (pointer_coercion "Unsize" α3) in
-                  let* α5 : std.io.error.ErrorKind.t :=
-                    M.call (std.io.error.Error.t::["kind"] (borrow why)) in
-                  let* α6 : M.Val std.io.error.ErrorKind.t := M.alloc α5 in
-                  let* α7 : core.fmt.rt.Argument.t :=
-                    M.call
-                      (core.fmt.rt.Argument.t::["new_debug"] (borrow α6)) in
-                  let* α8 : M.Val (array core.fmt.rt.Argument.t) :=
-                    M.alloc [ α7 ] in
-                  let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-                    M.alloc (borrow α8) in
-                  let* α10 : ref (slice core.fmt.rt.Argument.t) :=
-                    M.read (pointer_coercion "Unsize" α9) in
-                  let* α11 : core.fmt.Arguments.t :=
-                    M.call (core.fmt.Arguments.t::["new_v1"] α4 α10) in
-                  let* α12 : unit := M.call (std.io.stdio._print α11) in
-                  M.alloc α12 in
-                M.alloc tt in
-              let* α0 : M.Val unit := M.alloc tt in
-              M.read α0
-            end :
+                        let* α2 : M.Val (array (ref str.t)) :=
+                          M.alloc [ α0; α1 ] in
+                        let* α3 : M.Val (ref (array (ref str.t))) :=
+                          M.alloc (borrow α2) in
+                        let* α4 : ref (slice (ref str.t)) :=
+                          M.read (pointer_coercion "Unsize" α3) in
+                        let* α5 : std.io.error.ErrorKind.t :=
+                          M.call
+                            (std.io.error.Error.t::["kind"] (borrow why)) in
+                        let* α6 : M.Val std.io.error.ErrorKind.t :=
+                          M.alloc α5 in
+                        let* α7 : core.fmt.rt.Argument.t :=
+                          M.call
+                            (core.fmt.rt.Argument.t::["new_debug"]
+                              (borrow α6)) in
+                        let* α8 : M.Val (array core.fmt.rt.Argument.t) :=
+                          M.alloc [ α7 ] in
+                        let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+                          M.alloc (borrow α8) in
+                        let* α10 : ref (slice core.fmt.rt.Argument.t) :=
+                          M.read (pointer_coercion "Unsize" α9) in
+                        let* α11 : core.fmt.Arguments.t :=
+                          M.call (core.fmt.Arguments.t::["new_v1"] α4 α10) in
+                        let* α12 : unit := M.call (std.io.stdio._print α11) in
+                        M.alloc α12 in
+                      M.alloc tt in
+                    let* α0 : M.Val unit := M.alloc tt in
+                    M.read α0
+                  end :
+                  M unit
+              ]) :
             M unit)) in
     M.alloc α3 in
   let* _ : M.Val unit :=
@@ -498,40 +600,52 @@ Definition main : M unit :=
                   std.io.error.Error.t)::["unwrap_or_else"]
               α2
               (fun (α0 : std.io.error.Error.t) =>
-                match α0 with
-                | why =>
-                  let* why := M.alloc why in
-                  let* _ : M.Val unit :=
-                    let* _ : M.Val unit :=
-                      let* α0 : ref str.t := M.read (mk_str "! ") in
-                      let* α1 : ref str.t := M.read (mk_str "
+                (match_operator
+                  α0
+                  [
+                    fun α =>
+                      match α with
+                      | why =>
+                        let* why := M.alloc why in
+                        let* _ : M.Val unit :=
+                          let* _ : M.Val unit :=
+                            let* α0 : ref str.t := M.read (mk_str "! ") in
+                            let* α1 : ref str.t := M.read (mk_str "
 ") in
-                      let* α2 : M.Val (array (ref str.t)) :=
-                        M.alloc [ α0; α1 ] in
-                      let* α3 : M.Val (ref (array (ref str.t))) :=
-                        M.alloc (borrow α2) in
-                      let* α4 : ref (slice (ref str.t)) :=
-                        M.read (pointer_coercion "Unsize" α3) in
-                      let* α5 : std.io.error.ErrorKind.t :=
-                        M.call (std.io.error.Error.t::["kind"] (borrow why)) in
-                      let* α6 : M.Val std.io.error.ErrorKind.t := M.alloc α5 in
-                      let* α7 : core.fmt.rt.Argument.t :=
-                        M.call
-                          (core.fmt.rt.Argument.t::["new_debug"] (borrow α6)) in
-                      let* α8 : M.Val (array core.fmt.rt.Argument.t) :=
-                        M.alloc [ α7 ] in
-                      let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-                        M.alloc (borrow α8) in
-                      let* α10 : ref (slice core.fmt.rt.Argument.t) :=
-                        M.read (pointer_coercion "Unsize" α9) in
-                      let* α11 : core.fmt.Arguments.t :=
-                        M.call (core.fmt.Arguments.t::["new_v1"] α4 α10) in
-                      let* α12 : unit := M.call (std.io.stdio._print α11) in
-                      M.alloc α12 in
-                    M.alloc tt in
-                  let* α0 : M.Val unit := M.alloc tt in
-                  M.read α0
-                end :
+                            let* α2 : M.Val (array (ref str.t)) :=
+                              M.alloc [ α0; α1 ] in
+                            let* α3 : M.Val (ref (array (ref str.t))) :=
+                              M.alloc (borrow α2) in
+                            let* α4 : ref (slice (ref str.t)) :=
+                              M.read (pointer_coercion "Unsize" α3) in
+                            let* α5 : std.io.error.ErrorKind.t :=
+                              M.call
+                                (std.io.error.Error.t::["kind"] (borrow why)) in
+                            let* α6 : M.Val std.io.error.ErrorKind.t :=
+                              M.alloc α5 in
+                            let* α7 : core.fmt.rt.Argument.t :=
+                              M.call
+                                (core.fmt.rt.Argument.t::["new_debug"]
+                                  (borrow α6)) in
+                            let* α8 : M.Val (array core.fmt.rt.Argument.t) :=
+                              M.alloc [ α7 ] in
+                            let* α9 :
+                                M.Val (ref (array core.fmt.rt.Argument.t)) :=
+                              M.alloc (borrow α8) in
+                            let* α10 : ref (slice core.fmt.rt.Argument.t) :=
+                              M.read (pointer_coercion "Unsize" α9) in
+                            let* α11 : core.fmt.Arguments.t :=
+                              M.call
+                                (core.fmt.Arguments.t::["new_v1"] α4 α10) in
+                            let* α12 : unit :=
+                              M.call (std.io.stdio._print α11) in
+                            M.alloc α12 in
+                          M.alloc tt in
+                        let* α0 : M.Val unit := M.alloc tt in
+                        M.read α0
+                      end :
+                      M unit
+                  ]) :
                 M unit)) in
         M.alloc α3 in
       M.alloc tt
@@ -555,55 +669,71 @@ Definition main : M unit :=
     let* α1 : ref std.path.Path.t := M.call (std.path.Path.t::["new"] α0) in
     let* α2 : core.result.Result.t alloc.string.String.t std.io.error.Error.t :=
       M.call (filesystem_operations.cat α1) in
-    match α2 with
-    | core.result.Result.Err why =>
-      let* why := M.alloc why in
-      let* _ : M.Val unit :=
-        let* α0 : ref str.t := M.read (mk_str "! ") in
-        let* α1 : ref str.t := M.read (mk_str "
+    match_operator
+      α2
+      [
+        fun α =>
+          match α with
+          | core.result.Result.Err why =>
+            let* why := M.alloc why in
+            let* _ : M.Val unit :=
+              let* α0 : ref str.t := M.read (mk_str "! ") in
+              let* α1 : ref str.t := M.read (mk_str "
 ") in
-        let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-        let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
-        let* α4 : ref (slice (ref str.t)) :=
-          M.read (pointer_coercion "Unsize" α3) in
-        let* α5 : std.io.error.ErrorKind.t :=
-          M.call (std.io.error.Error.t::["kind"] (borrow why)) in
-        let* α6 : M.Val std.io.error.ErrorKind.t := M.alloc α5 in
-        let* α7 : core.fmt.rt.Argument.t :=
-          M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow α6)) in
-        let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
-        let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-          M.alloc (borrow α8) in
-        let* α10 : ref (slice core.fmt.rt.Argument.t) :=
-          M.read (pointer_coercion "Unsize" α9) in
-        let* α11 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_v1"] α4 α10) in
-        let* α12 : unit := M.call (std.io.stdio._print α11) in
-        M.alloc α12 in
-      M.alloc tt
-    | core.result.Result.Ok s =>
-      let* s := M.alloc s in
-      let* _ : M.Val unit :=
-        let* α0 : ref str.t := M.read (mk_str "> ") in
-        let* α1 : ref str.t := M.read (mk_str "
+              let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
+              let* α3 : M.Val (ref (array (ref str.t))) :=
+                M.alloc (borrow α2) in
+              let* α4 : ref (slice (ref str.t)) :=
+                M.read (pointer_coercion "Unsize" α3) in
+              let* α5 : std.io.error.ErrorKind.t :=
+                M.call (std.io.error.Error.t::["kind"] (borrow why)) in
+              let* α6 : M.Val std.io.error.ErrorKind.t := M.alloc α5 in
+              let* α7 : core.fmt.rt.Argument.t :=
+                M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow α6)) in
+              let* α8 : M.Val (array core.fmt.rt.Argument.t) :=
+                M.alloc [ α7 ] in
+              let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+                M.alloc (borrow α8) in
+              let* α10 : ref (slice core.fmt.rt.Argument.t) :=
+                M.read (pointer_coercion "Unsize" α9) in
+              let* α11 : core.fmt.Arguments.t :=
+                M.call (core.fmt.Arguments.t::["new_v1"] α4 α10) in
+              let* α12 : unit := M.call (std.io.stdio._print α11) in
+              M.alloc α12 in
+            M.alloc tt
+          | _ => M.break_match
+          end :
+          M (M.Val unit);
+        fun α =>
+          match α with
+          | core.result.Result.Ok s =>
+            let* s := M.alloc s in
+            let* _ : M.Val unit :=
+              let* α0 : ref str.t := M.read (mk_str "> ") in
+              let* α1 : ref str.t := M.read (mk_str "
 ") in
-        let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-        let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
-        let* α4 : ref (slice (ref str.t)) :=
-          M.read (pointer_coercion "Unsize" α3) in
-        let* α5 : core.fmt.rt.Argument.t :=
-          M.call (core.fmt.rt.Argument.t::["new_display"] (borrow s)) in
-        let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
-        let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-          M.alloc (borrow α6) in
-        let* α8 : ref (slice core.fmt.rt.Argument.t) :=
-          M.read (pointer_coercion "Unsize" α7) in
-        let* α9 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
-        let* α10 : unit := M.call (std.io.stdio._print α9) in
-        M.alloc α10 in
-      M.alloc tt
-    end in
+              let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
+              let* α3 : M.Val (ref (array (ref str.t))) :=
+                M.alloc (borrow α2) in
+              let* α4 : ref (slice (ref str.t)) :=
+                M.read (pointer_coercion "Unsize" α3) in
+              let* α5 : core.fmt.rt.Argument.t :=
+                M.call (core.fmt.rt.Argument.t::["new_display"] (borrow s)) in
+              let* α6 : M.Val (array core.fmt.rt.Argument.t) :=
+                M.alloc [ α5 ] in
+              let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+                M.alloc (borrow α6) in
+              let* α8 : ref (slice core.fmt.rt.Argument.t) :=
+                M.read (pointer_coercion "Unsize" α7) in
+              let* α9 : core.fmt.Arguments.t :=
+                M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
+              let* α10 : unit := M.call (std.io.stdio._print α9) in
+              M.alloc α10 in
+            M.alloc tt
+          | _ => M.break_match
+          end :
+          M (M.Val unit)
+      ] in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "`ls a`
@@ -621,110 +751,162 @@ Definition main : M unit :=
     let* α0 : ref str.t := M.read (mk_str "a") in
     let* α1 : core.result.Result.t std.fs.ReadDir.t std.io.error.Error.t :=
       M.call (std.fs.read_dir α0) in
-    match α1 with
-    | core.result.Result.Err why =>
-      let* why := M.alloc why in
-      let* _ : M.Val unit :=
-        let* α0 : ref str.t := M.read (mk_str "! ") in
-        let* α1 : ref str.t := M.read (mk_str "
+    match_operator
+      α1
+      [
+        fun α =>
+          match α with
+          | core.result.Result.Err why =>
+            let* why := M.alloc why in
+            let* _ : M.Val unit :=
+              let* α0 : ref str.t := M.read (mk_str "! ") in
+              let* α1 : ref str.t := M.read (mk_str "
 ") in
-        let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-        let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
-        let* α4 : ref (slice (ref str.t)) :=
-          M.read (pointer_coercion "Unsize" α3) in
-        let* α5 : std.io.error.ErrorKind.t :=
-          M.call (std.io.error.Error.t::["kind"] (borrow why)) in
-        let* α6 : M.Val std.io.error.ErrorKind.t := M.alloc α5 in
-        let* α7 : core.fmt.rt.Argument.t :=
-          M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow α6)) in
-        let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
-        let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-          M.alloc (borrow α8) in
-        let* α10 : ref (slice core.fmt.rt.Argument.t) :=
-          M.read (pointer_coercion "Unsize" α9) in
-        let* α11 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_v1"] α4 α10) in
-        let* α12 : unit := M.call (std.io.stdio._print α11) in
-        M.alloc α12 in
-      M.alloc tt
-    | core.result.Result.Ok paths =>
-      let* paths := M.alloc paths in
-      let* α0 : std.fs.ReadDir.t := M.read paths in
-      let* α1 : std.fs.ReadDir.t :=
-        M.call
-          ((core.iter.traits.collect.IntoIterator.into_iter
-              (Self := std.fs.ReadDir.t)
-              (Trait := ltac:(refine _)))
-            α0) in
-      let* α2 : M.Val unit :=
-        match α1 with
-        | iter =>
-          let* iter := M.alloc iter in
-          M.loop
-            (let* _ : M.Val unit :=
-              let* α0 :
-                  core.option.Option.t
-                    (core.result.Result.t
-                      std.fs.DirEntry.t
-                      std.io.error.Error.t) :=
-                M.call
-                  ((core.iter.traits.iterator.Iterator.next
-                      (Self := std.fs.ReadDir.t)
-                      (Trait := ltac:(refine _)))
-                    (borrow_mut iter)) in
-              match α0 with
-              | core.option.Option.None =>
-                let* α0 : M.Val never.t := M.break in
-                let* α1 := M.read α0 in
-                let* α2 : unit := never_to_any α1 in
-                M.alloc α2
-              | core.option.Option.Some path =>
-                let* path := M.alloc path in
-                let* _ : M.Val unit :=
-                  let* _ : M.Val unit :=
-                    let* α0 : ref str.t := M.read (mk_str "> ") in
-                    let* α1 : ref str.t := M.read (mk_str "
+              let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
+              let* α3 : M.Val (ref (array (ref str.t))) :=
+                M.alloc (borrow α2) in
+              let* α4 : ref (slice (ref str.t)) :=
+                M.read (pointer_coercion "Unsize" α3) in
+              let* α5 : std.io.error.ErrorKind.t :=
+                M.call (std.io.error.Error.t::["kind"] (borrow why)) in
+              let* α6 : M.Val std.io.error.ErrorKind.t := M.alloc α5 in
+              let* α7 : core.fmt.rt.Argument.t :=
+                M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow α6)) in
+              let* α8 : M.Val (array core.fmt.rt.Argument.t) :=
+                M.alloc [ α7 ] in
+              let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+                M.alloc (borrow α8) in
+              let* α10 : ref (slice core.fmt.rt.Argument.t) :=
+                M.read (pointer_coercion "Unsize" α9) in
+              let* α11 : core.fmt.Arguments.t :=
+                M.call (core.fmt.Arguments.t::["new_v1"] α4 α10) in
+              let* α12 : unit := M.call (std.io.stdio._print α11) in
+              M.alloc α12 in
+            M.alloc tt
+          | _ => M.break_match
+          end :
+          M (M.Val unit);
+        fun α =>
+          match α with
+          | core.result.Result.Ok paths =>
+            let* paths := M.alloc paths in
+            let* α0 : std.fs.ReadDir.t := M.read paths in
+            let* α1 : std.fs.ReadDir.t :=
+              M.call
+                ((core.iter.traits.collect.IntoIterator.into_iter
+                    (Self := std.fs.ReadDir.t)
+                    (Trait := ltac:(refine _)))
+                  α0) in
+            let* α2 : M.Val unit :=
+              match_operator
+                α1
+                [
+                  fun α =>
+                    match α with
+                    | iter =>
+                      let* iter := M.alloc iter in
+                      M.loop
+                        (let* _ : M.Val unit :=
+                          let* α0 :
+                              core.option.Option.t
+                                (core.result.Result.t
+                                  std.fs.DirEntry.t
+                                  std.io.error.Error.t) :=
+                            M.call
+                              ((core.iter.traits.iterator.Iterator.next
+                                  (Self := std.fs.ReadDir.t)
+                                  (Trait := ltac:(refine _)))
+                                (borrow_mut iter)) in
+                          match_operator
+                            α0
+                            [
+                              fun α =>
+                                match α with
+                                | core.option.Option.None =>
+                                  let* α0 : M.Val never.t := M.break in
+                                  let* α1 := M.read α0 in
+                                  let* α2 : unit := never_to_any α1 in
+                                  M.alloc α2
+                                | _ => M.break_match
+                                end :
+                                M (M.Val unit);
+                              fun α =>
+                                match α with
+                                | core.option.Option.Some path =>
+                                  let* path := M.alloc path in
+                                  let* _ : M.Val unit :=
+                                    let* _ : M.Val unit :=
+                                      let* α0 : ref str.t :=
+                                        M.read (mk_str "> ") in
+                                      let* α1 : ref str.t :=
+                                        M.read (mk_str "
 ") in
-                    let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-                    let* α3 : M.Val (ref (array (ref str.t))) :=
-                      M.alloc (borrow α2) in
-                    let* α4 : ref (slice (ref str.t)) :=
-                      M.read (pointer_coercion "Unsize" α3) in
-                    let* α5 :
-                        core.result.Result.t
-                          std.fs.DirEntry.t
-                          std.io.error.Error.t :=
-                      M.read path in
-                    let* α6 : std.fs.DirEntry.t :=
-                      M.call
-                        ((core.result.Result.t
-                              std.fs.DirEntry.t
-                              std.io.error.Error.t)::["unwrap"]
-                          α5) in
-                    let* α7 : M.Val std.fs.DirEntry.t := M.alloc α6 in
-                    let* α8 : std.path.PathBuf.t :=
-                      M.call (std.fs.DirEntry.t::["path"] (borrow α7)) in
-                    let* α9 : M.Val std.path.PathBuf.t := M.alloc α8 in
-                    let* α10 : core.fmt.rt.Argument.t :=
-                      M.call
-                        (core.fmt.rt.Argument.t::["new_debug"] (borrow α9)) in
-                    let* α11 : M.Val (array core.fmt.rt.Argument.t) :=
-                      M.alloc [ α10 ] in
-                    let* α12 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-                      M.alloc (borrow α11) in
-                    let* α13 : ref (slice core.fmt.rt.Argument.t) :=
-                      M.read (pointer_coercion "Unsize" α12) in
-                    let* α14 : core.fmt.Arguments.t :=
-                      M.call (core.fmt.Arguments.t::["new_v1"] α4 α13) in
-                    let* α15 : unit := M.call (std.io.stdio._print α14) in
-                    M.alloc α15 in
-                  M.alloc tt in
-                M.alloc tt
-              end in
-            M.alloc tt)
-        end in
-      M.pure (use α2)
-    end in
+                                      let* α2 : M.Val (array (ref str.t)) :=
+                                        M.alloc [ α0; α1 ] in
+                                      let* α3 :
+                                          M.Val (ref (array (ref str.t))) :=
+                                        M.alloc (borrow α2) in
+                                      let* α4 : ref (slice (ref str.t)) :=
+                                        M.read (pointer_coercion "Unsize" α3) in
+                                      let* α5 :
+                                          core.result.Result.t
+                                            std.fs.DirEntry.t
+                                            std.io.error.Error.t :=
+                                        M.read path in
+                                      let* α6 : std.fs.DirEntry.t :=
+                                        M.call
+                                          ((core.result.Result.t
+                                                std.fs.DirEntry.t
+                                                std.io.error.Error.t)::["unwrap"]
+                                            α5) in
+                                      let* α7 : M.Val std.fs.DirEntry.t :=
+                                        M.alloc α6 in
+                                      let* α8 : std.path.PathBuf.t :=
+                                        M.call
+                                          (std.fs.DirEntry.t::["path"]
+                                            (borrow α7)) in
+                                      let* α9 : M.Val std.path.PathBuf.t :=
+                                        M.alloc α8 in
+                                      let* α10 : core.fmt.rt.Argument.t :=
+                                        M.call
+                                          (core.fmt.rt.Argument.t::["new_debug"]
+                                            (borrow α9)) in
+                                      let* α11 :
+                                          M.Val
+                                            (array core.fmt.rt.Argument.t) :=
+                                        M.alloc [ α10 ] in
+                                      let* α12 :
+                                          M.Val
+                                            (ref
+                                              (array core.fmt.rt.Argument.t)) :=
+                                        M.alloc (borrow α11) in
+                                      let* α13 :
+                                          ref (slice core.fmt.rt.Argument.t) :=
+                                        M.read
+                                          (pointer_coercion "Unsize" α12) in
+                                      let* α14 : core.fmt.Arguments.t :=
+                                        M.call
+                                          (core.fmt.Arguments.t::["new_v1"]
+                                            α4
+                                            α13) in
+                                      let* α15 : unit :=
+                                        M.call (std.io.stdio._print α14) in
+                                      M.alloc α15 in
+                                    M.alloc tt in
+                                  M.alloc tt
+                                | _ => M.break_match
+                                end :
+                                M (M.Val unit)
+                            ] in
+                        M.alloc tt)
+                    end :
+                    M (M.Val unit)
+                ] in
+            M.pure (use α2)
+          | _ => M.break_match
+          end :
+          M (M.Val unit)
+      ] in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "`rm a/c/e.txt`
@@ -747,39 +929,49 @@ Definition main : M unit :=
         ((core.result.Result.t unit std.io.error.Error.t)::["unwrap_or_else"]
           α1
           (fun (α0 : std.io.error.Error.t) =>
-            match α0 with
-            | why =>
-              let* why := M.alloc why in
-              let* _ : M.Val unit :=
-                let* _ : M.Val unit :=
-                  let* α0 : ref str.t := M.read (mk_str "! ") in
-                  let* α1 : ref str.t := M.read (mk_str "
+            (match_operator
+              α0
+              [
+                fun α =>
+                  match α with
+                  | why =>
+                    let* why := M.alloc why in
+                    let* _ : M.Val unit :=
+                      let* _ : M.Val unit :=
+                        let* α0 : ref str.t := M.read (mk_str "! ") in
+                        let* α1 : ref str.t := M.read (mk_str "
 ") in
-                  let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-                  let* α3 : M.Val (ref (array (ref str.t))) :=
-                    M.alloc (borrow α2) in
-                  let* α4 : ref (slice (ref str.t)) :=
-                    M.read (pointer_coercion "Unsize" α3) in
-                  let* α5 : std.io.error.ErrorKind.t :=
-                    M.call (std.io.error.Error.t::["kind"] (borrow why)) in
-                  let* α6 : M.Val std.io.error.ErrorKind.t := M.alloc α5 in
-                  let* α7 : core.fmt.rt.Argument.t :=
-                    M.call
-                      (core.fmt.rt.Argument.t::["new_debug"] (borrow α6)) in
-                  let* α8 : M.Val (array core.fmt.rt.Argument.t) :=
-                    M.alloc [ α7 ] in
-                  let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-                    M.alloc (borrow α8) in
-                  let* α10 : ref (slice core.fmt.rt.Argument.t) :=
-                    M.read (pointer_coercion "Unsize" α9) in
-                  let* α11 : core.fmt.Arguments.t :=
-                    M.call (core.fmt.Arguments.t::["new_v1"] α4 α10) in
-                  let* α12 : unit := M.call (std.io.stdio._print α11) in
-                  M.alloc α12 in
-                M.alloc tt in
-              let* α0 : M.Val unit := M.alloc tt in
-              M.read α0
-            end :
+                        let* α2 : M.Val (array (ref str.t)) :=
+                          M.alloc [ α0; α1 ] in
+                        let* α3 : M.Val (ref (array (ref str.t))) :=
+                          M.alloc (borrow α2) in
+                        let* α4 : ref (slice (ref str.t)) :=
+                          M.read (pointer_coercion "Unsize" α3) in
+                        let* α5 : std.io.error.ErrorKind.t :=
+                          M.call
+                            (std.io.error.Error.t::["kind"] (borrow why)) in
+                        let* α6 : M.Val std.io.error.ErrorKind.t :=
+                          M.alloc α5 in
+                        let* α7 : core.fmt.rt.Argument.t :=
+                          M.call
+                            (core.fmt.rt.Argument.t::["new_debug"]
+                              (borrow α6)) in
+                        let* α8 : M.Val (array core.fmt.rt.Argument.t) :=
+                          M.alloc [ α7 ] in
+                        let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+                          M.alloc (borrow α8) in
+                        let* α10 : ref (slice core.fmt.rt.Argument.t) :=
+                          M.read (pointer_coercion "Unsize" α9) in
+                        let* α11 : core.fmt.Arguments.t :=
+                          M.call (core.fmt.Arguments.t::["new_v1"] α4 α10) in
+                        let* α12 : unit := M.call (std.io.stdio._print α11) in
+                        M.alloc α12 in
+                      M.alloc tt in
+                    let* α0 : M.Val unit := M.alloc tt in
+                    M.read α0
+                  end :
+                  M unit
+              ]) :
             M unit)) in
     M.alloc α2 in
   let* _ : M.Val unit :=
@@ -804,39 +996,49 @@ Definition main : M unit :=
         ((core.result.Result.t unit std.io.error.Error.t)::["unwrap_or_else"]
           α1
           (fun (α0 : std.io.error.Error.t) =>
-            match α0 with
-            | why =>
-              let* why := M.alloc why in
-              let* _ : M.Val unit :=
-                let* _ : M.Val unit :=
-                  let* α0 : ref str.t := M.read (mk_str "! ") in
-                  let* α1 : ref str.t := M.read (mk_str "
+            (match_operator
+              α0
+              [
+                fun α =>
+                  match α with
+                  | why =>
+                    let* why := M.alloc why in
+                    let* _ : M.Val unit :=
+                      let* _ : M.Val unit :=
+                        let* α0 : ref str.t := M.read (mk_str "! ") in
+                        let* α1 : ref str.t := M.read (mk_str "
 ") in
-                  let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-                  let* α3 : M.Val (ref (array (ref str.t))) :=
-                    M.alloc (borrow α2) in
-                  let* α4 : ref (slice (ref str.t)) :=
-                    M.read (pointer_coercion "Unsize" α3) in
-                  let* α5 : std.io.error.ErrorKind.t :=
-                    M.call (std.io.error.Error.t::["kind"] (borrow why)) in
-                  let* α6 : M.Val std.io.error.ErrorKind.t := M.alloc α5 in
-                  let* α7 : core.fmt.rt.Argument.t :=
-                    M.call
-                      (core.fmt.rt.Argument.t::["new_debug"] (borrow α6)) in
-                  let* α8 : M.Val (array core.fmt.rt.Argument.t) :=
-                    M.alloc [ α7 ] in
-                  let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-                    M.alloc (borrow α8) in
-                  let* α10 : ref (slice core.fmt.rt.Argument.t) :=
-                    M.read (pointer_coercion "Unsize" α9) in
-                  let* α11 : core.fmt.Arguments.t :=
-                    M.call (core.fmt.Arguments.t::["new_v1"] α4 α10) in
-                  let* α12 : unit := M.call (std.io.stdio._print α11) in
-                  M.alloc α12 in
-                M.alloc tt in
-              let* α0 : M.Val unit := M.alloc tt in
-              M.read α0
-            end :
+                        let* α2 : M.Val (array (ref str.t)) :=
+                          M.alloc [ α0; α1 ] in
+                        let* α3 : M.Val (ref (array (ref str.t))) :=
+                          M.alloc (borrow α2) in
+                        let* α4 : ref (slice (ref str.t)) :=
+                          M.read (pointer_coercion "Unsize" α3) in
+                        let* α5 : std.io.error.ErrorKind.t :=
+                          M.call
+                            (std.io.error.Error.t::["kind"] (borrow why)) in
+                        let* α6 : M.Val std.io.error.ErrorKind.t :=
+                          M.alloc α5 in
+                        let* α7 : core.fmt.rt.Argument.t :=
+                          M.call
+                            (core.fmt.rt.Argument.t::["new_debug"]
+                              (borrow α6)) in
+                        let* α8 : M.Val (array core.fmt.rt.Argument.t) :=
+                          M.alloc [ α7 ] in
+                        let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+                          M.alloc (borrow α8) in
+                        let* α10 : ref (slice core.fmt.rt.Argument.t) :=
+                          M.read (pointer_coercion "Unsize" α9) in
+                        let* α11 : core.fmt.Arguments.t :=
+                          M.call (core.fmt.Arguments.t::["new_v1"] α4 α10) in
+                        let* α12 : unit := M.call (std.io.stdio._print α11) in
+                        M.alloc α12 in
+                      M.alloc tt in
+                    let* α0 : M.Val unit := M.alloc tt in
+                    M.read α0
+                  end :
+                  M unit
+              ]) :
             M unit)) in
     M.alloc α2 in
   let* α0 : M.Val unit := M.alloc tt in

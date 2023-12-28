@@ -292,82 +292,110 @@ Definition main : M unit :=
     M.alloc tt in
   let* α0 : structures.Point.t := M.read point in
   let* α0 : M.Val unit :=
-    match α0 with
-    | {| structures.Point.x := left_edge; structures.Point.y := top_edge; |} =>
-      let* left_edge := M.alloc left_edge in
-      let* top_edge := M.alloc top_edge in
-      let* _rectangle : M.Val structures.Rectangle.t :=
-        let* α0 : f32.t := M.read left_edge in
-        let* α1 : f32.t := M.read top_edge in
-        let* α2 : structures.Point.t := M.read bottom_right in
-        M.alloc
-          {|
-            structures.Rectangle.top_left :=
-              {| structures.Point.x := α0; structures.Point.y := α1; |};
-            structures.Rectangle.bottom_right := α2;
-          |} in
-      let* _unit : M.Val structures.Unit.t := M.alloc structures.Unit.Build in
-      let* pair : M.Val structures.Pair.t :=
-        let* α0 : f32.t := M.read UnsupportedLiteral in
-        M.alloc (structures.Pair.Build_t (Integer.of_Z 1) α0) in
-      let* _ : M.Val unit :=
-        let* _ : M.Val unit :=
-          let* α0 : ref str.t := M.read (mk_str "pair contains ") in
-          let* α1 : ref str.t := M.read (mk_str " and ") in
-          let* α2 : ref str.t := M.read (mk_str "
+    match_operator
+      α0
+      [
+        fun α =>
+          match α with
+          |
+              {|
+                structures.Point.x := left_edge;
+                structures.Point.y := top_edge;
+              |}
+              =>
+            let* left_edge := M.alloc left_edge in
+            let* top_edge := M.alloc top_edge in
+            let* _rectangle : M.Val structures.Rectangle.t :=
+              let* α0 : f32.t := M.read left_edge in
+              let* α1 : f32.t := M.read top_edge in
+              let* α2 : structures.Point.t := M.read bottom_right in
+              M.alloc
+                {|
+                  structures.Rectangle.top_left :=
+                    {| structures.Point.x := α0; structures.Point.y := α1; |};
+                  structures.Rectangle.bottom_right := α2;
+                |} in
+            let* _unit : M.Val structures.Unit.t :=
+              M.alloc structures.Unit.Build in
+            let* pair : M.Val structures.Pair.t :=
+              let* α0 : f32.t := M.read UnsupportedLiteral in
+              M.alloc (structures.Pair.Build_t (Integer.of_Z 1) α0) in
+            let* _ : M.Val unit :=
+              let* _ : M.Val unit :=
+                let* α0 : ref str.t := M.read (mk_str "pair contains ") in
+                let* α1 : ref str.t := M.read (mk_str " and ") in
+                let* α2 : ref str.t := M.read (mk_str "
 ") in
-          let* α3 : M.Val (array (ref str.t)) := M.alloc [ α0; α1; α2 ] in
-          let* α4 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α3) in
-          let* α5 : ref (slice (ref str.t)) :=
-            M.read (pointer_coercion "Unsize" α4) in
-          let* α6 : core.fmt.rt.Argument.t :=
-            M.call
-              (core.fmt.rt.Argument.t::["new_debug"] (borrow pair.["0"])) in
-          let* α7 : core.fmt.rt.Argument.t :=
-            M.call
-              (core.fmt.rt.Argument.t::["new_debug"] (borrow pair.["1"])) in
-          let* α8 : M.Val (array core.fmt.rt.Argument.t) :=
-            M.alloc [ α6; α7 ] in
-          let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-            M.alloc (borrow α8) in
-          let* α10 : ref (slice core.fmt.rt.Argument.t) :=
-            M.read (pointer_coercion "Unsize" α9) in
-          let* α11 : core.fmt.Arguments.t :=
-            M.call (core.fmt.Arguments.t::["new_v1"] α5 α10) in
-          let* α12 : unit := M.call (std.io.stdio._print α11) in
-          M.alloc α12 in
-        M.alloc tt in
-      let* α0 : structures.Pair.t := M.read pair in
-      match α0 with
-      | structures.Pair.Build_t integer decimal =>
-        let* integer := M.alloc integer in
-        let* decimal := M.alloc decimal in
-        let* _ : M.Val unit :=
-          let* _ : M.Val unit :=
-            let* α0 : ref str.t := M.read (mk_str "pair contains ") in
-            let* α1 : ref str.t := M.read (mk_str " and ") in
-            let* α2 : ref str.t := M.read (mk_str "
+                let* α3 : M.Val (array (ref str.t)) := M.alloc [ α0; α1; α2 ] in
+                let* α4 : M.Val (ref (array (ref str.t))) :=
+                  M.alloc (borrow α3) in
+                let* α5 : ref (slice (ref str.t)) :=
+                  M.read (pointer_coercion "Unsize" α4) in
+                let* α6 : core.fmt.rt.Argument.t :=
+                  M.call
+                    (core.fmt.rt.Argument.t::["new_debug"]
+                      (borrow pair.["0"])) in
+                let* α7 : core.fmt.rt.Argument.t :=
+                  M.call
+                    (core.fmt.rt.Argument.t::["new_debug"]
+                      (borrow pair.["1"])) in
+                let* α8 : M.Val (array core.fmt.rt.Argument.t) :=
+                  M.alloc [ α6; α7 ] in
+                let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+                  M.alloc (borrow α8) in
+                let* α10 : ref (slice core.fmt.rt.Argument.t) :=
+                  M.read (pointer_coercion "Unsize" α9) in
+                let* α11 : core.fmt.Arguments.t :=
+                  M.call (core.fmt.Arguments.t::["new_v1"] α5 α10) in
+                let* α12 : unit := M.call (std.io.stdio._print α11) in
+                M.alloc α12 in
+              M.alloc tt in
+            let* α0 : structures.Pair.t := M.read pair in
+            match_operator
+              α0
+              [
+                fun α =>
+                  match α with
+                  | structures.Pair.Build_t integer decimal =>
+                    let* integer := M.alloc integer in
+                    let* decimal := M.alloc decimal in
+                    let* _ : M.Val unit :=
+                      let* _ : M.Val unit :=
+                        let* α0 : ref str.t :=
+                          M.read (mk_str "pair contains ") in
+                        let* α1 : ref str.t := M.read (mk_str " and ") in
+                        let* α2 : ref str.t := M.read (mk_str "
 ") in
-            let* α3 : M.Val (array (ref str.t)) := M.alloc [ α0; α1; α2 ] in
-            let* α4 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α3) in
-            let* α5 : ref (slice (ref str.t)) :=
-              M.read (pointer_coercion "Unsize" α4) in
-            let* α6 : core.fmt.rt.Argument.t :=
-              M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow integer)) in
-            let* α7 : core.fmt.rt.Argument.t :=
-              M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow decimal)) in
-            let* α8 : M.Val (array core.fmt.rt.Argument.t) :=
-              M.alloc [ α6; α7 ] in
-            let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-              M.alloc (borrow α8) in
-            let* α10 : ref (slice core.fmt.rt.Argument.t) :=
-              M.read (pointer_coercion "Unsize" α9) in
-            let* α11 : core.fmt.Arguments.t :=
-              M.call (core.fmt.Arguments.t::["new_v1"] α5 α10) in
-            let* α12 : unit := M.call (std.io.stdio._print α11) in
-            M.alloc α12 in
-          M.alloc tt in
-        M.alloc tt
-      end
-    end in
+                        let* α3 : M.Val (array (ref str.t)) :=
+                          M.alloc [ α0; α1; α2 ] in
+                        let* α4 : M.Val (ref (array (ref str.t))) :=
+                          M.alloc (borrow α3) in
+                        let* α5 : ref (slice (ref str.t)) :=
+                          M.read (pointer_coercion "Unsize" α4) in
+                        let* α6 : core.fmt.rt.Argument.t :=
+                          M.call
+                            (core.fmt.rt.Argument.t::["new_debug"]
+                              (borrow integer)) in
+                        let* α7 : core.fmt.rt.Argument.t :=
+                          M.call
+                            (core.fmt.rt.Argument.t::["new_debug"]
+                              (borrow decimal)) in
+                        let* α8 : M.Val (array core.fmt.rt.Argument.t) :=
+                          M.alloc [ α6; α7 ] in
+                        let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+                          M.alloc (borrow α8) in
+                        let* α10 : ref (slice core.fmt.rt.Argument.t) :=
+                          M.read (pointer_coercion "Unsize" α9) in
+                        let* α11 : core.fmt.Arguments.t :=
+                          M.call (core.fmt.Arguments.t::["new_v1"] α5 α10) in
+                        let* α12 : unit := M.call (std.io.stdio._print α11) in
+                        M.alloc α12 in
+                      M.alloc tt in
+                    M.alloc tt
+                  end :
+                  M (M.Val unit)
+              ]
+          end :
+          M (M.Val unit)
+      ] in
   M.read α0.

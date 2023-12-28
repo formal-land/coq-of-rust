@@ -76,6 +76,35 @@ impl Pattern {
         }
     }
 
+    /// Whether the pattern is exhaustive with certainty. There are some cases
+    /// where we do not check yet, for example for unions. In these cases, we
+    /// return `false``.
+    pub(crate) fn is_exhaustive(&self) -> bool {
+        match self {
+            Pattern::Wild => true,
+            Pattern::Binding {
+                name: _,
+                is_with_ref: _,
+                pattern,
+            } => pattern
+                .as_ref()
+                .map_or(true, |pattern| pattern.is_exhaustive()),
+            Pattern::StructStruct(_, fields, struct_or_variant) => {
+                matches!(struct_or_variant, StructOrVariant::Struct)
+                    && fields.iter().all(|(_, pattern)| pattern.is_exhaustive())
+            }
+            Pattern::StructTuple(_, patterns, struct_or_variant) => {
+                matches!(struct_or_variant, StructOrVariant::Struct)
+                    && patterns.iter().all(|pattern| pattern.is_exhaustive())
+            }
+            Pattern::Deref(pattern) => pattern.is_exhaustive(),
+            Pattern::Or(_) => false,
+            Pattern::Tuple(patterns) => patterns.iter().all(|pattern| pattern.is_exhaustive()),
+            Pattern::Lit(_) => false,
+            Pattern::Slice { .. } => false,
+        }
+    }
+
     pub(crate) fn to_doc(&self, with_paren: bool) -> Doc {
         match self {
             Pattern::Wild => text("_"),

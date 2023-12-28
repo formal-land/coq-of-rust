@@ -18,41 +18,57 @@ Definition main : M unit :=
   let* number : M.Val u8.t := M.alloc (Integer.of_Z 4) in
   let* α0 : u8.t := M.read number in
   let* α0 : M.Val unit :=
-    match α0 with
-    | i =>
-      let* i := M.alloc i in
-      let* _ : M.Val unit :=
-        let* α0 : ref str.t := M.read (mk_str "Zero
+    match_operator
+      α0
+      [
+        fun α =>
+          match α with
+          | i =>
+            let* i := M.alloc i in
+            let* _ : M.Val unit :=
+              let* α0 : ref str.t := M.read (mk_str "Zero
 ") in
-        let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-        let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
-        let* α3 : ref (slice (ref str.t)) :=
-          M.read (pointer_coercion "Unsize" α2) in
-        let* α4 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_const"] α3) in
-        let* α5 : unit := M.call (std.io.stdio._print α4) in
-        M.alloc α5 in
-      M.alloc tt
-    | i =>
-      let* i := M.alloc i in
-      let* _ : M.Val unit :=
-        let* α0 : ref str.t := M.read (mk_str "Greater than zero
+              let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
+              let* α2 : M.Val (ref (array (ref str.t))) :=
+                M.alloc (borrow α1) in
+              let* α3 : ref (slice (ref str.t)) :=
+                M.read (pointer_coercion "Unsize" α2) in
+              let* α4 : core.fmt.Arguments.t :=
+                M.call (core.fmt.Arguments.t::["new_const"] α3) in
+              let* α5 : unit := M.call (std.io.stdio._print α4) in
+              M.alloc α5 in
+            M.alloc tt
+          end :
+          M (M.Val unit);
+        fun α =>
+          match α with
+          | i =>
+            let* i := M.alloc i in
+            let* _ : M.Val unit :=
+              let* α0 : ref str.t := M.read (mk_str "Greater than zero
 ") in
-        let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-        let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
-        let* α3 : ref (slice (ref str.t)) :=
-          M.read (pointer_coercion "Unsize" α2) in
-        let* α4 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_const"] α3) in
-        let* α5 : unit := M.call (std.io.stdio._print α4) in
-        M.alloc α5 in
-      M.alloc tt
-    | _ =>
-      let* α0 : never.t :=
-        M.call
-          (core.panicking.unreachable_display
-            (borrow (mk_str "Should never happen."))) in
-      let* α1 : unit := never_to_any α0 in
-      M.alloc α1
-    end in
+              let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
+              let* α2 : M.Val (ref (array (ref str.t))) :=
+                M.alloc (borrow α1) in
+              let* α3 : ref (slice (ref str.t)) :=
+                M.read (pointer_coercion "Unsize" α2) in
+              let* α4 : core.fmt.Arguments.t :=
+                M.call (core.fmt.Arguments.t::["new_const"] α3) in
+              let* α5 : unit := M.call (std.io.stdio._print α4) in
+              M.alloc α5 in
+            M.alloc tt
+          end :
+          M (M.Val unit);
+        fun α =>
+          match α with
+          | _ =>
+            let* α0 : never.t :=
+              M.call
+                (core.panicking.unreachable_display
+                  (borrow (mk_str "Should never happen."))) in
+            let* α1 : unit := never_to_any α0 in
+            M.alloc α1
+          end :
+          M (M.Val unit)
+      ] in
   M.read α0.

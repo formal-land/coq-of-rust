@@ -29,23 +29,60 @@ Section Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert
         ref unpacking_options_and_defaults_via_get_or_insert_with.Fruit.t :=
       M.read self in
     let* α2 : M.Val (ref str.t) :=
-      match α1 with
-      | unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Apple =>
-        let* α0 : ref str.t := M.read (mk_str "Apple") in
-        M.alloc α0
-      | unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Orange =>
-        let* α0 : ref str.t := M.read (mk_str "Orange") in
-        M.alloc α0
-      | unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Banana =>
-        let* α0 : ref str.t := M.read (mk_str "Banana") in
-        M.alloc α0
-      | unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Kiwi =>
-        let* α0 : ref str.t := M.read (mk_str "Kiwi") in
-        M.alloc α0
-      | unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Lemon =>
-        let* α0 : ref str.t := M.read (mk_str "Lemon") in
-        M.alloc α0
-      end in
+      match_operator
+        α1
+        [
+          fun α =>
+            match α with
+            |
+                unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Apple
+                =>
+              let* α0 : ref str.t := M.read (mk_str "Apple") in
+              M.alloc α0
+            | _ => M.break_match
+            end :
+            M (M.Val (ref str.t));
+          fun α =>
+            match α with
+            |
+                unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Orange
+                =>
+              let* α0 : ref str.t := M.read (mk_str "Orange") in
+              M.alloc α0
+            | _ => M.break_match
+            end :
+            M (M.Val (ref str.t));
+          fun α =>
+            match α with
+            |
+                unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Banana
+                =>
+              let* α0 : ref str.t := M.read (mk_str "Banana") in
+              M.alloc α0
+            | _ => M.break_match
+            end :
+            M (M.Val (ref str.t));
+          fun α =>
+            match α with
+            |
+                unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Kiwi
+                =>
+              let* α0 : ref str.t := M.read (mk_str "Kiwi") in
+              M.alloc α0
+            | _ => M.break_match
+            end :
+            M (M.Val (ref str.t));
+          fun α =>
+            match α with
+            |
+                unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Lemon
+                =>
+              let* α0 : ref str.t := M.read (mk_str "Lemon") in
+              M.alloc α0
+            | _ => M.break_match
+            end :
+            M (M.Val (ref str.t))
+        ] in
     let* α3 : ref str.t := M.read α2 in
     M.call (core.fmt.Formatter.t::["write_str"] α0 α3).
   

@@ -255,11 +255,18 @@ Section Impl_core_clone_Clone_for_mapping_integration_tests_AccountId_t.
       : M mapping_integration_tests.AccountId.t :=
     let* self := M.alloc self in
     let* α0 : M.Val mapping_integration_tests.AccountId.t :=
-      match tt with
-      | _ =>
-        let* α0 : ref mapping_integration_tests.AccountId.t := M.read self in
-        M.pure (deref α0)
-      end in
+      match_operator
+        tt
+        [
+          fun α =>
+            match α with
+            | _ =>
+              let* α0 : ref mapping_integration_tests.AccountId.t :=
+                M.read self in
+              M.pure (deref α0)
+            end :
+            M (M.Val mapping_integration_tests.AccountId.t)
+        ] in
     M.read α0.
   
   Global Instance AssociatedFunction_clone :

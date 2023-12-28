@@ -37,12 +37,18 @@ Section Impl_core_clone_Clone_for_scoping_rules_borrowing_the_ref_pattern_Point_
       : M scoping_rules_borrowing_the_ref_pattern.Point.t :=
     let* self := M.alloc self in
     let* α0 : M.Val scoping_rules_borrowing_the_ref_pattern.Point.t :=
-      match tt with
-      | _ =>
-        let* α0 : ref scoping_rules_borrowing_the_ref_pattern.Point.t :=
-          M.read self in
-        M.pure (deref α0)
-      end in
+      match_operator
+        tt
+        [
+          fun α =>
+            match α with
+            | _ =>
+              let* α0 : ref scoping_rules_borrowing_the_ref_pattern.Point.t :=
+                M.read self in
+              M.pure (deref α0)
+            end :
+            M (M.Val scoping_rules_borrowing_the_ref_pattern.Point.t)
+        ] in
     M.read α0.
   
   Global Instance AssociatedFunction_clone :
@@ -163,36 +169,48 @@ Definition main : M unit :=
   let* _copy_of_x : M.Val i32.t :=
     let* α0 : scoping_rules_borrowing_the_ref_pattern.Point.t := M.read point in
     let* α1 : M.Val i32.t :=
-      match α0 with
-      |
-          {|
-            scoping_rules_borrowing_the_ref_pattern.Point.x := ref_to_x;
-            scoping_rules_borrowing_the_ref_pattern.Point.y := _;
-          |}
-          =>
-        let* ref_to_x := M.alloc ref_to_x in
-        let* α0 : ref i32.t := M.read ref_to_x in
-        M.pure (deref α0)
-      end in
+      match_operator
+        α0
+        [
+          fun α =>
+            match α with
+            |
+                {|
+                  scoping_rules_borrowing_the_ref_pattern.Point.x := ref_to_x;
+                  scoping_rules_borrowing_the_ref_pattern.Point.y := _;
+                |}
+                =>
+              let* ref_to_x := M.alloc ref_to_x in
+              let* α0 : ref i32.t := M.read ref_to_x in
+              M.pure (deref α0)
+            end :
+            M (M.Val i32.t)
+        ] in
     M.copy α1 in
   let* mutable_point : M.Val scoping_rules_borrowing_the_ref_pattern.Point.t :=
     M.copy point in
   let* _ : M.Val unit :=
     let* α0 : scoping_rules_borrowing_the_ref_pattern.Point.t :=
       M.read mutable_point in
-    match α0 with
-    |
-        {|
-          scoping_rules_borrowing_the_ref_pattern.Point.x := _;
-          scoping_rules_borrowing_the_ref_pattern.Point.y := mut_ref_to_y;
-        |}
-        =>
-      let* mut_ref_to_y := M.alloc mut_ref_to_y in
-      let* _ : M.Val unit :=
-        let* α0 : mut_ref i32.t := M.read mut_ref_to_y in
-        assign (deref α0) (Integer.of_Z 1) in
-      M.alloc tt
-    end in
+    match_operator
+      α0
+      [
+        fun α =>
+          match α with
+          |
+              {|
+                scoping_rules_borrowing_the_ref_pattern.Point.x := _;
+                scoping_rules_borrowing_the_ref_pattern.Point.y := mut_ref_to_y;
+              |}
+              =>
+            let* mut_ref_to_y := M.alloc mut_ref_to_y in
+            let* _ : M.Val unit :=
+              let* α0 : mut_ref i32.t := M.read mut_ref_to_y in
+              assign (deref α0) (Integer.of_Z 1) in
+            M.alloc tt
+          end :
+          M (M.Val unit)
+      ] in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "point is (") in
@@ -255,14 +273,20 @@ Definition main : M unit :=
   let* _ : M.Val unit :=
     let* α0 : (alloc.boxed.Box.t u32.t alloc.alloc.Global.t) * u32.t :=
       M.read mutable_tuple in
-    match α0 with
-    | (_, last) =>
-      let* last := M.alloc last in
-      let* _ : M.Val unit :=
-        let* α0 : mut_ref u32.t := M.read last in
-        assign (deref α0) (Integer.of_Z 2) in
-      M.alloc tt
-    end in
+    match_operator
+      α0
+      [
+        fun α =>
+          match α with
+          | (_, last) =>
+            let* last := M.alloc last in
+            let* _ : M.Val unit :=
+              let* α0 : mut_ref u32.t := M.read last in
+              assign (deref α0) (Integer.of_Z 2) in
+            M.alloc tt
+          end :
+          M (M.Val unit)
+      ] in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "tuple is ") in

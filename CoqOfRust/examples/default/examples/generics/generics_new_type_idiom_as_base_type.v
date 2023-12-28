@@ -29,9 +29,18 @@ Definition main : M unit :=
   let* years_as_primitive_1 : M.Val i64.t := M.copy years.["0"] in
   let* α0 : generics_new_type_idiom_as_base_type.Years.t := M.read years in
   let* α0 : M.Val unit :=
-    match α0 with
-    | generics_new_type_idiom_as_base_type.Years.Build_t years_as_primitive_2 =>
-      let* years_as_primitive_2 := M.alloc years_as_primitive_2 in
-      M.alloc tt
-    end in
+    match_operator
+      α0
+      [
+        fun α =>
+          match α with
+          |
+              generics_new_type_idiom_as_base_type.Years.Build_t
+                years_as_primitive_2
+              =>
+            let* years_as_primitive_2 := M.alloc years_as_primitive_2 in
+            M.alloc tt
+          end :
+          M (M.Val unit)
+      ] in
   M.read α0.

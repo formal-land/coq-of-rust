@@ -1,6 +1,8 @@
 (** * The definition of a Rust monad. *)
 Require Coq.Strings.String.
 
+Local Open Scope list.
+
 Inductive sigS {A : Type} (P : A -> Set) : Set :=
 | existS : forall (x : A), P x -> sigS P.
 Arguments existS {_ _}.
@@ -111,6 +113,8 @@ Module Exception.
   | Continue : t
   (** exceptions for Rust's `break` *)
   | Break : t
+  (** to translate the [match] patterns with (de)references *)
+  | BreakMatch : t
   | Panic : Coq.Strings.String.string -> t.
 End Exception.
 Definition Exception : Set := Exception.t.
@@ -169,6 +173,9 @@ Definition continue {A : Set} : M A :=
 
 Definition break {A : Set} : M A :=
   raise Exception.Break.
+
+Definition break_match {A : Set} : M A :=
+  raise Exception.BreakMatch.
 
 Definition panic {A : Set} (message : Coq.Strings.String.string) : M A :=
   raise (Exception.Panic message).
@@ -271,3 +278,20 @@ Definition loop (body : M unit) : M unit :=
       end)
     (fun result =>
       catch_break (LowM.Pure result)).
+
+Fixpoint match_operator {A B : Set}
+    (scrutinee : A)
+    (arms : list (A -> M B)) :
+    M B :=
+  match arms with
+  | nil => impossible
+  | arm :: arms =>
+    catch
+      (arm scrutinee)
+      (fun exception =>
+        match exception with
+        | Exception.BreakMatch => match_operator scrutinee arms
+        | _ => raise exception
+        end
+      )
+  end.

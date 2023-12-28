@@ -149,39 +149,49 @@ Definition main : M unit :=
             (Trait := ltac:(refine _)))
           α0) in
     let* α2 : M.Val alloc.string.String.t := M.alloc α1 in
-    match (borrow α2, borrow username) with
-    | (left_val, right_val) =>
-      let* left_val := M.alloc left_val in
-      let* right_val := M.alloc right_val in
-      let* α0 : ref alloc.string.String.t := M.read left_val in
-      let* α1 : ref alloc.string.String.t := M.read right_val in
-      let* α2 : bool.t :=
-        M.call
-          ((core.cmp.PartialEq.eq
-              (Self := alloc.string.String.t)
-              (Trait := ltac:(refine _)))
-            α0
-            α1) in
-      let* α3 : M.Val bool.t := M.alloc (UnOp.not α2) in
-      let* α4 : bool.t := M.read (use α3) in
-      if α4 then
-        let* kind : M.Val core.panicking.AssertKind.t :=
-          M.alloc core.panicking.AssertKind.Eq in
-        let* _ : M.Val never.t :=
-          let* α0 : core.panicking.AssertKind.t := M.read kind in
-          let* α1 : ref alloc.string.String.t := M.read left_val in
-          let* α2 : ref alloc.string.String.t := M.read right_val in
-          let* α3 : never.t :=
-            M.call
-              (core.panicking.assert_failed α0 α1 α2 core.option.Option.None) in
-          M.alloc α3 in
-        let* α0 : M.Val unit := M.alloc tt in
-        let* α1 := M.read α0 in
-        let* α2 : unit := never_to_any α1 in
-        M.alloc α2
-      else
-        M.alloc tt
-    end in
+    match_operator
+      (borrow α2, borrow username)
+      [
+        fun α =>
+          match α with
+          | (left_val, right_val) =>
+            let* left_val := M.alloc left_val in
+            let* right_val := M.alloc right_val in
+            let* α0 : ref alloc.string.String.t := M.read left_val in
+            let* α1 : ref alloc.string.String.t := M.read right_val in
+            let* α2 : bool.t :=
+              M.call
+                ((core.cmp.PartialEq.eq
+                    (Self := alloc.string.String.t)
+                    (Trait := ltac:(refine _)))
+                  α0
+                  α1) in
+            let* α3 : M.Val bool.t := M.alloc (UnOp.not α2) in
+            let* α4 : bool.t := M.read (use α3) in
+            if α4 then
+              let* kind : M.Val core.panicking.AssertKind.t :=
+                M.alloc core.panicking.AssertKind.Eq in
+              let* _ : M.Val never.t :=
+                let* α0 : core.panicking.AssertKind.t := M.read kind in
+                let* α1 : ref alloc.string.String.t := M.read left_val in
+                let* α2 : ref alloc.string.String.t := M.read right_val in
+                let* α3 : never.t :=
+                  M.call
+                    (core.panicking.assert_failed
+                      α0
+                      α1
+                      α2
+                      core.option.Option.None) in
+                M.alloc α3 in
+              let* α0 : M.Val unit := M.alloc tt in
+              let* α1 := M.read α0 in
+              let* α2 : unit := never_to_any α1 in
+              M.alloc α2
+            else
+              M.alloc tt
+          end :
+          M (M.Val unit)
+      ] in
   let* age : M.Val u8.t :=
     let* α0 : u8.t :=
       M.call
@@ -192,33 +202,44 @@ Definition main : M unit :=
     M.alloc α0 in
   let* _ : M.Val unit :=
     let* α0 : M.Val u8.t := M.alloc (Integer.of_Z 28) in
-    match (borrow α0, borrow age) with
-    | (left_val, right_val) =>
-      let* left_val := M.alloc left_val in
-      let* right_val := M.alloc right_val in
-      let* α0 : ref u8.t := M.read left_val in
-      let* α1 : u8.t := M.read (deref α0) in
-      let* α2 : ref u8.t := M.read right_val in
-      let* α3 : u8.t := M.read (deref α2) in
-      let* α4 : M.Val bool.t := M.alloc (UnOp.not (BinOp.Pure.eq α1 α3)) in
-      let* α5 : bool.t := M.read (use α4) in
-      if α5 then
-        let* kind : M.Val core.panicking.AssertKind.t :=
-          M.alloc core.panicking.AssertKind.Eq in
-        let* _ : M.Val never.t :=
-          let* α0 : core.panicking.AssertKind.t := M.read kind in
-          let* α1 : ref u8.t := M.read left_val in
-          let* α2 : ref u8.t := M.read right_val in
-          let* α3 : never.t :=
-            M.call
-              (core.panicking.assert_failed α0 α1 α2 core.option.Option.None) in
-          M.alloc α3 in
-        let* α0 : M.Val unit := M.alloc tt in
-        let* α1 := M.read α0 in
-        let* α2 : unit := never_to_any α1 in
-        M.alloc α2
-      else
-        M.alloc tt
-    end in
+    match_operator
+      (borrow α0, borrow age)
+      [
+        fun α =>
+          match α with
+          | (left_val, right_val) =>
+            let* left_val := M.alloc left_val in
+            let* right_val := M.alloc right_val in
+            let* α0 : ref u8.t := M.read left_val in
+            let* α1 : u8.t := M.read (deref α0) in
+            let* α2 : ref u8.t := M.read right_val in
+            let* α3 : u8.t := M.read (deref α2) in
+            let* α4 : M.Val bool.t :=
+              M.alloc (UnOp.not (BinOp.Pure.eq α1 α3)) in
+            let* α5 : bool.t := M.read (use α4) in
+            if α5 then
+              let* kind : M.Val core.panicking.AssertKind.t :=
+                M.alloc core.panicking.AssertKind.Eq in
+              let* _ : M.Val never.t :=
+                let* α0 : core.panicking.AssertKind.t := M.read kind in
+                let* α1 : ref u8.t := M.read left_val in
+                let* α2 : ref u8.t := M.read right_val in
+                let* α3 : never.t :=
+                  M.call
+                    (core.panicking.assert_failed
+                      α0
+                      α1
+                      α2
+                      core.option.Option.None) in
+                M.alloc α3 in
+              let* α0 : M.Val unit := M.alloc tt in
+              let* α1 := M.read α0 in
+              let* α2 : unit := never_to_any α1 in
+              M.alloc α2
+            else
+              M.alloc tt
+          end :
+          M (M.Val unit)
+      ] in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.

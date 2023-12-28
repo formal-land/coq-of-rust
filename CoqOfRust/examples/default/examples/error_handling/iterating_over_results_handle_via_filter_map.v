@@ -46,19 +46,27 @@ Definition main : M unit :=
             (Trait := ltac:(refine _)))
           α1
           (fun (α0 : ref str.t) =>
-            match α0 with
-            | s =>
-              let* s := M.alloc s in
-              let* α0 : ref str.t := M.read s in
-              let* α1 :
-                  core.result.Result.t i32.t core.num.error.ParseIntError.t :=
-                M.call (str.t::["parse"] α0) in
-              M.call
-                ((core.result.Result.t
-                      i32.t
-                      core.num.error.ParseIntError.t)::["ok"]
-                  α1)
-            end :
+            (match_operator
+              α0
+              [
+                fun α =>
+                  match α with
+                  | s =>
+                    let* s := M.alloc s in
+                    let* α0 : ref str.t := M.read s in
+                    let* α1 :
+                        core.result.Result.t
+                          i32.t
+                          core.num.error.ParseIntError.t :=
+                      M.call (str.t::["parse"] α0) in
+                    M.call
+                      ((core.result.Result.t
+                            i32.t
+                            core.num.error.ParseIntError.t)::["ok"]
+                        α1)
+                  end :
+                  M (core.option.Option.t i32.t)
+              ]) :
             M (core.option.Option.t i32.t))) in
     let* α3 : alloc.vec.Vec.t i32.t alloc.alloc.Global.t :=
       M.call

@@ -62,12 +62,18 @@ Definition main : M unit :=
             (Trait := ltac:(refine _)))
           α1
           (fun (α0 : ref str.t) =>
-            match α0 with
-            | s =>
-              let* s := M.alloc s in
-              let* α0 : ref str.t := M.read s in
-              M.call (str.t::["parse"] α0)
-            end :
+            (match_operator
+              α0
+              [
+                fun α =>
+                  match α with
+                  | s =>
+                    let* s := M.alloc s in
+                    let* α0 : ref str.t := M.read s in
+                    M.call (str.t::["parse"] α0)
+                  end :
+                  M (core.result.Result.t u8.t core.num.error.ParseIntError.t)
+              ]) :
             M (core.result.Result.t u8.t core.num.error.ParseIntError.t))) in
     let* α3 :
         core.iter.adapters.filter_map.FilterMap.t
@@ -90,33 +96,48 @@ Definition main : M unit :=
           α2
           (fun
               (α0 : core.result.Result.t u8.t core.num.error.ParseIntError.t) =>
-            match α0 with
-            | r =>
-              let* r := M.alloc r in
-              let* α0 :
-                  core.result.Result.t u8.t core.num.error.ParseIntError.t :=
-                M.read r in
-              let* α1 : core.result.Result.t u8.t unit :=
-                M.call
-                  ((core.result.Result.t
-                        u8.t
-                        core.num.error.ParseIntError.t)::["map_err"]
-                    α0
-                    (fun (α0 : core.num.error.ParseIntError.t) =>
-                      match α0 with
-                      | e =>
-                        let* e := M.alloc e in
-                        let* α0 : core.num.error.ParseIntError.t := M.read e in
-                        M.call
-                          ((alloc.vec.Vec.t
-                                core.num.error.ParseIntError.t
-                                alloc.alloc.Global.t)::["push"]
-                            (borrow_mut errors)
-                            α0)
-                      end :
-                      M unit)) in
-              M.call ((core.result.Result.t u8.t unit)::["ok"] α1)
-            end :
+            (match_operator
+              α0
+              [
+                fun α =>
+                  match α with
+                  | r =>
+                    let* r := M.alloc r in
+                    let* α0 :
+                        core.result.Result.t
+                          u8.t
+                          core.num.error.ParseIntError.t :=
+                      M.read r in
+                    let* α1 : core.result.Result.t u8.t unit :=
+                      M.call
+                        ((core.result.Result.t
+                              u8.t
+                              core.num.error.ParseIntError.t)::["map_err"]
+                          α0
+                          (fun (α0 : core.num.error.ParseIntError.t) =>
+                            (match_operator
+                              α0
+                              [
+                                fun α =>
+                                  match α with
+                                  | e =>
+                                    let* e := M.alloc e in
+                                    let* α0 : core.num.error.ParseIntError.t :=
+                                      M.read e in
+                                    M.call
+                                      ((alloc.vec.Vec.t
+                                            core.num.error.ParseIntError.t
+                                            alloc.alloc.Global.t)::["push"]
+                                        (borrow_mut errors)
+                                        α0)
+                                  end :
+                                  M unit
+                              ]) :
+                            M unit)) in
+                    M.call ((core.result.Result.t u8.t unit)::["ok"] α1)
+                  end :
+                  M (core.option.Option.t u8.t)
+              ]) :
             M (core.option.Option.t u8.t))) in
     let* α4 : alloc.vec.Vec.t u8.t alloc.alloc.Global.t :=
       M.call

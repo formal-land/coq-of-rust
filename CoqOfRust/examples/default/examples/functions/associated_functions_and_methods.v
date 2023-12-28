@@ -135,39 +135,51 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
     let* α1 : associated_functions_and_methods.Point.t :=
       M.read (deref α0).["p1"] in
     let* α2 : M.Val f64.t :=
-      match α1 with
-      |
-          {|
-            associated_functions_and_methods.Point.x := x1;
-            associated_functions_and_methods.Point.y := y1;
-          |}
-          =>
-        let* x1 := M.alloc x1 in
-        let* y1 := M.alloc y1 in
-        let* α0 : ref associated_functions_and_methods.Rectangle.t :=
-          M.read self in
-        let* α1 : associated_functions_and_methods.Point.t :=
-          M.read (deref α0).["p2"] in
-        match α1 with
-        |
-            {|
-              associated_functions_and_methods.Point.x := x2;
-              associated_functions_and_methods.Point.y := y2;
-            |}
-            =>
-          let* x2 := M.alloc x2 in
-          let* y2 := M.alloc y2 in
-          let* α0 : f64.t := M.read x1 in
-          let* α1 : f64.t := M.read x2 in
-          let* α2 : f64.t := BinOp.Panic.sub α0 α1 in
-          let* α3 : f64.t := M.read y1 in
-          let* α4 : f64.t := M.read y2 in
-          let* α5 : f64.t := BinOp.Panic.sub α3 α4 in
-          let* α6 : f64.t := BinOp.Panic.mul α2 α5 in
-          let* α7 : f64.t := M.call (f64.t::["abs"] α6) in
-          M.alloc α7
-        end
-      end in
+      match_operator
+        α1
+        [
+          fun α =>
+            match α with
+            |
+                {|
+                  associated_functions_and_methods.Point.x := x1;
+                  associated_functions_and_methods.Point.y := y1;
+                |}
+                =>
+              let* x1 := M.alloc x1 in
+              let* y1 := M.alloc y1 in
+              let* α0 : ref associated_functions_and_methods.Rectangle.t :=
+                M.read self in
+              let* α1 : associated_functions_and_methods.Point.t :=
+                M.read (deref α0).["p2"] in
+              match_operator
+                α1
+                [
+                  fun α =>
+                    match α with
+                    |
+                        {|
+                          associated_functions_and_methods.Point.x := x2;
+                          associated_functions_and_methods.Point.y := y2;
+                        |}
+                        =>
+                      let* x2 := M.alloc x2 in
+                      let* y2 := M.alloc y2 in
+                      let* α0 : f64.t := M.read x1 in
+                      let* α1 : f64.t := M.read x2 in
+                      let* α2 : f64.t := BinOp.Panic.sub α0 α1 in
+                      let* α3 : f64.t := M.read y1 in
+                      let* α4 : f64.t := M.read y2 in
+                      let* α5 : f64.t := BinOp.Panic.sub α3 α4 in
+                      let* α6 : f64.t := BinOp.Panic.mul α2 α5 in
+                      let* α7 : f64.t := M.call (f64.t::["abs"] α6) in
+                      M.alloc α7
+                    end :
+                    M (M.Val f64.t)
+                ]
+            end :
+            M (M.Val f64.t)
+        ] in
     M.read α2.
   
   Global Instance AssociatedFunction_area :
@@ -189,42 +201,54 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
     let* α1 : associated_functions_and_methods.Point.t :=
       M.read (deref α0).["p1"] in
     let* α2 : M.Val f64.t :=
-      match α1 with
-      |
-          {|
-            associated_functions_and_methods.Point.x := x1;
-            associated_functions_and_methods.Point.y := y1;
-          |}
-          =>
-        let* x1 := M.alloc x1 in
-        let* y1 := M.alloc y1 in
-        let* α0 : ref associated_functions_and_methods.Rectangle.t :=
-          M.read self in
-        let* α1 : associated_functions_and_methods.Point.t :=
-          M.read (deref α0).["p2"] in
-        match α1 with
-        |
-            {|
-              associated_functions_and_methods.Point.x := x2;
-              associated_functions_and_methods.Point.y := y2;
-            |}
-            =>
-          let* x2 := M.alloc x2 in
-          let* y2 := M.alloc y2 in
-          let* α0 : f64.t := M.read UnsupportedLiteral in
-          let* α1 : f64.t := M.read x1 in
-          let* α2 : f64.t := M.read x2 in
-          let* α3 : f64.t := BinOp.Panic.sub α1 α2 in
-          let* α4 : f64.t := M.call (f64.t::["abs"] α3) in
-          let* α5 : f64.t := M.read y1 in
-          let* α6 : f64.t := M.read y2 in
-          let* α7 : f64.t := BinOp.Panic.sub α5 α6 in
-          let* α8 : f64.t := M.call (f64.t::["abs"] α7) in
-          let* α9 : f64.t := BinOp.Panic.add α4 α8 in
-          let* α10 : f64.t := BinOp.Panic.mul α0 α9 in
-          M.alloc α10
-        end
-      end in
+      match_operator
+        α1
+        [
+          fun α =>
+            match α with
+            |
+                {|
+                  associated_functions_and_methods.Point.x := x1;
+                  associated_functions_and_methods.Point.y := y1;
+                |}
+                =>
+              let* x1 := M.alloc x1 in
+              let* y1 := M.alloc y1 in
+              let* α0 : ref associated_functions_and_methods.Rectangle.t :=
+                M.read self in
+              let* α1 : associated_functions_and_methods.Point.t :=
+                M.read (deref α0).["p2"] in
+              match_operator
+                α1
+                [
+                  fun α =>
+                    match α with
+                    |
+                        {|
+                          associated_functions_and_methods.Point.x := x2;
+                          associated_functions_and_methods.Point.y := y2;
+                        |}
+                        =>
+                      let* x2 := M.alloc x2 in
+                      let* y2 := M.alloc y2 in
+                      let* α0 : f64.t := M.read UnsupportedLiteral in
+                      let* α1 : f64.t := M.read x1 in
+                      let* α2 : f64.t := M.read x2 in
+                      let* α3 : f64.t := BinOp.Panic.sub α1 α2 in
+                      let* α4 : f64.t := M.call (f64.t::["abs"] α3) in
+                      let* α5 : f64.t := M.read y1 in
+                      let* α6 : f64.t := M.read y2 in
+                      let* α7 : f64.t := BinOp.Panic.sub α5 α6 in
+                      let* α8 : f64.t := M.call (f64.t::["abs"] α7) in
+                      let* α9 : f64.t := BinOp.Panic.add α4 α8 in
+                      let* α10 : f64.t := BinOp.Panic.mul α0 α9 in
+                      M.alloc α10
+                    end :
+                    M (M.Val f64.t)
+                ]
+            end :
+            M (M.Val f64.t)
+        ] in
     M.read α2.
   
   Global Instance AssociatedFunction_perimeter :
@@ -327,38 +351,49 @@ Section Impl_associated_functions_and_methods_Pair_t.
     let* self := M.alloc self in
     let* α0 : associated_functions_and_methods.Pair.t := M.read self in
     let* α1 : M.Val unit :=
-      match α0 with
-      | associated_functions_and_methods.Pair.Build_t first second =>
-        let* first := M.alloc first in
-        let* second := M.alloc second in
-        let* _ : M.Val unit :=
-          let* _ : M.Val unit :=
-            let* α0 : ref str.t := M.read (mk_str "Destroying Pair(") in
-            let* α1 : ref str.t := M.read (mk_str ", ") in
-            let* α2 : ref str.t := M.read (mk_str ")
+      match_operator
+        α0
+        [
+          fun α =>
+            match α with
+            | associated_functions_and_methods.Pair.Build_t first second =>
+              let* first := M.alloc first in
+              let* second := M.alloc second in
+              let* _ : M.Val unit :=
+                let* _ : M.Val unit :=
+                  let* α0 : ref str.t := M.read (mk_str "Destroying Pair(") in
+                  let* α1 : ref str.t := M.read (mk_str ", ") in
+                  let* α2 : ref str.t := M.read (mk_str ")
 ") in
-            let* α3 : M.Val (array (ref str.t)) := M.alloc [ α0; α1; α2 ] in
-            let* α4 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α3) in
-            let* α5 : ref (slice (ref str.t)) :=
-              M.read (pointer_coercion "Unsize" α4) in
-            let* α6 : core.fmt.rt.Argument.t :=
-              M.call (core.fmt.rt.Argument.t::["new_display"] (borrow first)) in
-            let* α7 : core.fmt.rt.Argument.t :=
-              M.call
-                (core.fmt.rt.Argument.t::["new_display"] (borrow second)) in
-            let* α8 : M.Val (array core.fmt.rt.Argument.t) :=
-              M.alloc [ α6; α7 ] in
-            let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-              M.alloc (borrow α8) in
-            let* α10 : ref (slice core.fmt.rt.Argument.t) :=
-              M.read (pointer_coercion "Unsize" α9) in
-            let* α11 : core.fmt.Arguments.t :=
-              M.call (core.fmt.Arguments.t::["new_v1"] α5 α10) in
-            let* α12 : unit := M.call (std.io.stdio._print α11) in
-            M.alloc α12 in
-          M.alloc tt in
-        M.alloc tt
-      end in
+                  let* α3 : M.Val (array (ref str.t)) :=
+                    M.alloc [ α0; α1; α2 ] in
+                  let* α4 : M.Val (ref (array (ref str.t))) :=
+                    M.alloc (borrow α3) in
+                  let* α5 : ref (slice (ref str.t)) :=
+                    M.read (pointer_coercion "Unsize" α4) in
+                  let* α6 : core.fmt.rt.Argument.t :=
+                    M.call
+                      (core.fmt.rt.Argument.t::["new_display"]
+                        (borrow first)) in
+                  let* α7 : core.fmt.rt.Argument.t :=
+                    M.call
+                      (core.fmt.rt.Argument.t::["new_display"]
+                        (borrow second)) in
+                  let* α8 : M.Val (array core.fmt.rt.Argument.t) :=
+                    M.alloc [ α6; α7 ] in
+                  let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+                    M.alloc (borrow α8) in
+                  let* α10 : ref (slice core.fmt.rt.Argument.t) :=
+                    M.read (pointer_coercion "Unsize" α9) in
+                  let* α11 : core.fmt.Arguments.t :=
+                    M.call (core.fmt.Arguments.t::["new_v1"] α5 α10) in
+                  let* α12 : unit := M.call (std.io.stdio._print α11) in
+                  M.alloc α12 in
+                M.alloc tt in
+              M.alloc tt
+            end :
+            M (M.Val unit)
+        ] in
     M.read α1.
   
   Global Instance AssociatedFunction_destroy :

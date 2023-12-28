@@ -33,11 +33,17 @@ Section Impl_core_clone_Clone_for_subtle_Choice_t.
   Definition clone (self : ref Self) : M subtle.Choice.t :=
     let* self := M.alloc self in
     let* α0 : M.Val subtle.Choice.t :=
-      match tt with
-      | _ =>
-        let* α0 : ref subtle.Choice.t := M.read self in
-        M.pure (deref α0)
-      end in
+      match_operator
+        tt
+        [
+          fun α =>
+            match α with
+            | _ =>
+              let* α0 : ref subtle.Choice.t := M.read self in
+              M.pure (deref α0)
+            end :
+            M (M.Val subtle.Choice.t)
+        ] in
     M.read α0.
   
   Global Instance AssociatedFunction_clone :
@@ -611,49 +617,69 @@ Section Impl_subtle_ConstantTimeEq_for_slice_T.
                 (Trait := ltac:(refine _)))
               α4) in
         let* α6 : M.Val unit :=
-          match α5 with
-          | iter =>
-            let* iter := M.alloc iter in
-            M.loop
-              (let* _ : M.Val unit :=
-                let* α0 : core.option.Option.t ((ref T) * (ref T)) :=
-                  M.call
-                    ((core.iter.traits.iterator.Iterator.next
-                        (Self :=
-                          core.iter.adapters.zip.Zip.t
-                            (core.slice.iter.Iter.t T)
-                            (core.slice.iter.Iter.t T))
-                        (Trait := ltac:(refine _)))
-                      (borrow_mut iter)) in
-                match α0 with
-                | core.option.Option.None =>
-                  let* α0 : M.Val never.t := M.break in
-                  let* α1 := M.read α0 in
-                  let* α2 : unit := never_to_any α1 in
-                  M.alloc α2
-                | core.option.Option.Some (ai, bi) =>
-                  let* ai := M.alloc ai in
-                  let* bi := M.alloc bi in
-                  let* _ : M.Val unit :=
-                    let β : M.Val u8.t := x in
-                    let* α0 := M.read β in
-                    let* α1 : ref T := M.read ai in
-                    let* α2 : ref T := M.read bi in
-                    let* α3 : subtle.Choice.t :=
-                      M.call
-                        ((subtle.ConstantTimeEq.ct_eq
-                            (Self := T)
-                            (Trait := ltac:(refine _)))
-                          α1
-                          α2) in
-                    let* α4 : M.Val subtle.Choice.t := M.alloc α3 in
-                    let* α5 : u8.t :=
-                      M.call (subtle.Choice.t::["unwrap_u8"] (borrow α4)) in
-                    assign β (BinOp.Pure.bit_and α0 α5) in
-                  M.alloc tt
-                end in
-              M.alloc tt)
-          end in
+          match_operator
+            α5
+            [
+              fun α =>
+                match α with
+                | iter =>
+                  let* iter := M.alloc iter in
+                  M.loop
+                    (let* _ : M.Val unit :=
+                      let* α0 : core.option.Option.t ((ref T) * (ref T)) :=
+                        M.call
+                          ((core.iter.traits.iterator.Iterator.next
+                              (Self :=
+                                core.iter.adapters.zip.Zip.t
+                                  (core.slice.iter.Iter.t T)
+                                  (core.slice.iter.Iter.t T))
+                              (Trait := ltac:(refine _)))
+                            (borrow_mut iter)) in
+                      match_operator
+                        α0
+                        [
+                          fun α =>
+                            match α with
+                            | core.option.Option.None =>
+                              let* α0 : M.Val never.t := M.break in
+                              let* α1 := M.read α0 in
+                              let* α2 : unit := never_to_any α1 in
+                              M.alloc α2
+                            | _ => M.break_match
+                            end :
+                            M (M.Val unit);
+                          fun α =>
+                            match α with
+                            | core.option.Option.Some (ai, bi) =>
+                              let* ai := M.alloc ai in
+                              let* bi := M.alloc bi in
+                              let* _ : M.Val unit :=
+                                let β : M.Val u8.t := x in
+                                let* α0 := M.read β in
+                                let* α1 : ref T := M.read ai in
+                                let* α2 : ref T := M.read bi in
+                                let* α3 : subtle.Choice.t :=
+                                  M.call
+                                    ((subtle.ConstantTimeEq.ct_eq
+                                        (Self := T)
+                                        (Trait := ltac:(refine _)))
+                                      α1
+                                      α2) in
+                                let* α4 : M.Val subtle.Choice.t := M.alloc α3 in
+                                let* α5 : u8.t :=
+                                  M.call
+                                    (subtle.Choice.t::["unwrap_u8"]
+                                      (borrow α4)) in
+                                assign β (BinOp.Pure.bit_and α0 α5) in
+                              M.alloc tt
+                            | _ => M.break_match
+                            end :
+                            M (M.Val unit)
+                        ] in
+                    M.alloc tt)
+                end :
+                M (M.Val unit)
+            ] in
         M.pure (use α6) in
       let* α0 : u8.t := M.read x in
       let* α1 : subtle.Choice.t :=
@@ -2857,52 +2883,62 @@ Section Impl_subtle_CtOption_t_T.
         M.call (subtle.Choice.t::["unwrap_u8"] (borrow self.["is_some"])) in
       let* α1 : M.Val u8.t := M.alloc α0 in
       let* α2 : M.Val u8.t := M.alloc (Integer.of_Z 1) in
-      match (borrow α1, borrow α2) with
-      | (left_val, right_val) =>
-        let* left_val := M.alloc left_val in
-        let* right_val := M.alloc right_val in
-        let* α0 : ref u8.t := M.read left_val in
-        let* α1 : u8.t := M.read (deref α0) in
-        let* α2 : ref u8.t := M.read right_val in
-        let* α3 : u8.t := M.read (deref α2) in
-        let* α4 : M.Val bool.t := M.alloc (UnOp.not (BinOp.Pure.eq α1 α3)) in
-        let* α5 : bool.t := M.read (use α4) in
-        if α5 then
-          let* kind : M.Val core.panicking.AssertKind.t :=
-            M.alloc core.panicking.AssertKind.Eq in
-          let* _ : M.Val never.t :=
-            let* α0 : core.panicking.AssertKind.t := M.read kind in
-            let* α1 : ref u8.t := M.read left_val in
-            let* α2 : ref u8.t := M.read right_val in
-            let* α3 : ref str.t := M.read (mk_str "") in
-            let* α4 : M.Val (array (ref str.t)) := M.alloc [ α3 ] in
-            let* α5 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α4) in
-            let* α6 : ref (slice (ref str.t)) :=
-              M.read (pointer_coercion "Unsize" α5) in
-            let* α7 : core.fmt.rt.Argument.t :=
-              M.call (core.fmt.rt.Argument.t::["new_display"] (borrow msg)) in
-            let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
-            let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-              M.alloc (borrow α8) in
-            let* α10 : ref (slice core.fmt.rt.Argument.t) :=
-              M.read (pointer_coercion "Unsize" α9) in
-            let* α11 : core.fmt.Arguments.t :=
-              M.call (core.fmt.Arguments.t::["new_v1"] α6 α10) in
-            let* α12 : never.t :=
-              M.call
-                (core.panicking.assert_failed
-                  α0
-                  α1
-                  α2
-                  (core.option.Option.Some α11)) in
-            M.alloc α12 in
-          let* α0 : M.Val unit := M.alloc tt in
-          let* α1 := M.read α0 in
-          let* α2 : unit := never_to_any α1 in
-          M.alloc α2
-        else
-          M.alloc tt
-      end in
+      match_operator
+        (borrow α1, borrow α2)
+        [
+          fun α =>
+            match α with
+            | (left_val, right_val) =>
+              let* left_val := M.alloc left_val in
+              let* right_val := M.alloc right_val in
+              let* α0 : ref u8.t := M.read left_val in
+              let* α1 : u8.t := M.read (deref α0) in
+              let* α2 : ref u8.t := M.read right_val in
+              let* α3 : u8.t := M.read (deref α2) in
+              let* α4 : M.Val bool.t :=
+                M.alloc (UnOp.not (BinOp.Pure.eq α1 α3)) in
+              let* α5 : bool.t := M.read (use α4) in
+              if α5 then
+                let* kind : M.Val core.panicking.AssertKind.t :=
+                  M.alloc core.panicking.AssertKind.Eq in
+                let* _ : M.Val never.t :=
+                  let* α0 : core.panicking.AssertKind.t := M.read kind in
+                  let* α1 : ref u8.t := M.read left_val in
+                  let* α2 : ref u8.t := M.read right_val in
+                  let* α3 : ref str.t := M.read (mk_str "") in
+                  let* α4 : M.Val (array (ref str.t)) := M.alloc [ α3 ] in
+                  let* α5 : M.Val (ref (array (ref str.t))) :=
+                    M.alloc (borrow α4) in
+                  let* α6 : ref (slice (ref str.t)) :=
+                    M.read (pointer_coercion "Unsize" α5) in
+                  let* α7 : core.fmt.rt.Argument.t :=
+                    M.call
+                      (core.fmt.rt.Argument.t::["new_display"] (borrow msg)) in
+                  let* α8 : M.Val (array core.fmt.rt.Argument.t) :=
+                    M.alloc [ α7 ] in
+                  let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+                    M.alloc (borrow α8) in
+                  let* α10 : ref (slice core.fmt.rt.Argument.t) :=
+                    M.read (pointer_coercion "Unsize" α9) in
+                  let* α11 : core.fmt.Arguments.t :=
+                    M.call (core.fmt.Arguments.t::["new_v1"] α6 α10) in
+                  let* α12 : never.t :=
+                    M.call
+                      (core.panicking.assert_failed
+                        α0
+                        α1
+                        α2
+                        (core.option.Option.Some α11)) in
+                  M.alloc α12 in
+                let* α0 : M.Val unit := M.alloc tt in
+                let* α1 := M.read α0 in
+                let* α2 : unit := never_to_any α1 in
+                M.alloc α2
+              else
+                M.alloc tt
+            end :
+            M (M.Val unit)
+        ] in
     M.read self.["value"].
   
   Global Instance AssociatedFunction_expect :
@@ -2924,38 +2960,45 @@ Section Impl_subtle_CtOption_t_T.
         M.call (subtle.Choice.t::["unwrap_u8"] (borrow self.["is_some"])) in
       let* α1 : M.Val u8.t := M.alloc α0 in
       let* α2 : M.Val u8.t := M.alloc (Integer.of_Z 1) in
-      match (borrow α1, borrow α2) with
-      | (left_val, right_val) =>
-        let* left_val := M.alloc left_val in
-        let* right_val := M.alloc right_val in
-        let* α0 : ref u8.t := M.read left_val in
-        let* α1 : u8.t := M.read (deref α0) in
-        let* α2 : ref u8.t := M.read right_val in
-        let* α3 : u8.t := M.read (deref α2) in
-        let* α4 : M.Val bool.t := M.alloc (UnOp.not (BinOp.Pure.eq α1 α3)) in
-        let* α5 : bool.t := M.read (use α4) in
-        if α5 then
-          let* kind : M.Val core.panicking.AssertKind.t :=
-            M.alloc core.panicking.AssertKind.Eq in
-          let* _ : M.Val never.t :=
-            let* α0 : core.panicking.AssertKind.t := M.read kind in
-            let* α1 : ref u8.t := M.read left_val in
-            let* α2 : ref u8.t := M.read right_val in
-            let* α3 : never.t :=
-              M.call
-                (core.panicking.assert_failed
-                  α0
-                  α1
-                  α2
-                  core.option.Option.None) in
-            M.alloc α3 in
-          let* α0 : M.Val unit := M.alloc tt in
-          let* α1 := M.read α0 in
-          let* α2 : unit := never_to_any α1 in
-          M.alloc α2
-        else
-          M.alloc tt
-      end in
+      match_operator
+        (borrow α1, borrow α2)
+        [
+          fun α =>
+            match α with
+            | (left_val, right_val) =>
+              let* left_val := M.alloc left_val in
+              let* right_val := M.alloc right_val in
+              let* α0 : ref u8.t := M.read left_val in
+              let* α1 : u8.t := M.read (deref α0) in
+              let* α2 : ref u8.t := M.read right_val in
+              let* α3 : u8.t := M.read (deref α2) in
+              let* α4 : M.Val bool.t :=
+                M.alloc (UnOp.not (BinOp.Pure.eq α1 α3)) in
+              let* α5 : bool.t := M.read (use α4) in
+              if α5 then
+                let* kind : M.Val core.panicking.AssertKind.t :=
+                  M.alloc core.panicking.AssertKind.Eq in
+                let* _ : M.Val never.t :=
+                  let* α0 : core.panicking.AssertKind.t := M.read kind in
+                  let* α1 : ref u8.t := M.read left_val in
+                  let* α2 : ref u8.t := M.read right_val in
+                  let* α3 : never.t :=
+                    M.call
+                      (core.panicking.assert_failed
+                        α0
+                        α1
+                        α2
+                        core.option.Option.None) in
+                  M.alloc α3 in
+                let* α0 : M.Val unit := M.alloc tt in
+                let* α1 := M.read α0 in
+                let* α2 : unit := never_to_any α1 in
+                M.alloc α2
+              else
+                M.alloc tt
+            end :
+            M (M.Val unit)
+        ] in
     M.read self.["value"].
   
   Global Instance AssociatedFunction_unwrap :

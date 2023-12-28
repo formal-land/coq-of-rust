@@ -154,39 +154,50 @@ Definition main : M unit :=
             (Trait := ltac:(refine _)))
           (borrow_mut v3)) in
     let* α2 : M.Val (core.option.Option.t i32.t) := M.alloc α1 in
-    match (borrow α0, borrow α2) with
-    | (left_val, right_val) =>
-      let* left_val := M.alloc left_val in
-      let* right_val := M.alloc right_val in
-      let* α0 : ref (core.option.Option.t i32.t) := M.read left_val in
-      let* α1 : ref (core.option.Option.t i32.t) := M.read right_val in
-      let* α2 : bool.t :=
-        M.call
-          ((core.cmp.PartialEq.eq
-              (Self := core.option.Option.t i32.t)
-              (Trait := ltac:(refine _)))
-            α0
-            α1) in
-      let* α3 : M.Val bool.t := M.alloc (UnOp.not α2) in
-      let* α4 : bool.t := M.read (use α3) in
-      if α4 then
-        let* kind : M.Val core.panicking.AssertKind.t :=
-          M.alloc core.panicking.AssertKind.Eq in
-        let* _ : M.Val never.t :=
-          let* α0 : core.panicking.AssertKind.t := M.read kind in
-          let* α1 : ref (core.option.Option.t i32.t) := M.read left_val in
-          let* α2 : ref (core.option.Option.t i32.t) := M.read right_val in
-          let* α3 : never.t :=
-            M.call
-              (core.panicking.assert_failed α0 α1 α2 core.option.Option.None) in
-          M.alloc α3 in
-        let* α0 : M.Val unit := M.alloc tt in
-        let* α1 := M.read α0 in
-        let* α2 : unit := never_to_any α1 in
-        M.alloc α2
-      else
-        M.alloc tt
-    end in
+    match_operator
+      (borrow α0, borrow α2)
+      [
+        fun α =>
+          match α with
+          | (left_val, right_val) =>
+            let* left_val := M.alloc left_val in
+            let* right_val := M.alloc right_val in
+            let* α0 : ref (core.option.Option.t i32.t) := M.read left_val in
+            let* α1 : ref (core.option.Option.t i32.t) := M.read right_val in
+            let* α2 : bool.t :=
+              M.call
+                ((core.cmp.PartialEq.eq
+                    (Self := core.option.Option.t i32.t)
+                    (Trait := ltac:(refine _)))
+                  α0
+                  α1) in
+            let* α3 : M.Val bool.t := M.alloc (UnOp.not α2) in
+            let* α4 : bool.t := M.read (use α3) in
+            if α4 then
+              let* kind : M.Val core.panicking.AssertKind.t :=
+                M.alloc core.panicking.AssertKind.Eq in
+              let* _ : M.Val never.t :=
+                let* α0 : core.panicking.AssertKind.t := M.read kind in
+                let* α1 : ref (core.option.Option.t i32.t) := M.read left_val in
+                let* α2 : ref (core.option.Option.t i32.t) :=
+                  M.read right_val in
+                let* α3 : never.t :=
+                  M.call
+                    (core.panicking.assert_failed
+                      α0
+                      α1
+                      α2
+                      core.option.Option.None) in
+                M.alloc α3 in
+              let* α0 : M.Val unit := M.alloc tt in
+              let* α1 := M.read α0 in
+              let* α2 : unit := never_to_any α1 in
+              M.alloc α2
+            else
+              M.alloc tt
+          end :
+          M (M.Val unit)
+      ] in
   let* _ : M.Val unit :=
     let* α0 : M.Val (core.option.Option.t i32.t) :=
       M.alloc (core.option.Option.Some (Integer.of_Z 2)) in
@@ -197,39 +208,50 @@ Definition main : M unit :=
             (Trait := ltac:(refine _)))
           (borrow_mut v3)) in
     let* α2 : M.Val (core.option.Option.t i32.t) := M.alloc α1 in
-    match (borrow α0, borrow α2) with
-    | (left_val, right_val) =>
-      let* left_val := M.alloc left_val in
-      let* right_val := M.alloc right_val in
-      let* α0 : ref (core.option.Option.t i32.t) := M.read left_val in
-      let* α1 : ref (core.option.Option.t i32.t) := M.read right_val in
-      let* α2 : bool.t :=
-        M.call
-          ((core.cmp.PartialEq.eq
-              (Self := core.option.Option.t i32.t)
-              (Trait := ltac:(refine _)))
-            α0
-            α1) in
-      let* α3 : M.Val bool.t := M.alloc (UnOp.not α2) in
-      let* α4 : bool.t := M.read (use α3) in
-      if α4 then
-        let* kind : M.Val core.panicking.AssertKind.t :=
-          M.alloc core.panicking.AssertKind.Eq in
-        let* _ : M.Val never.t :=
-          let* α0 : core.panicking.AssertKind.t := M.read kind in
-          let* α1 : ref (core.option.Option.t i32.t) := M.read left_val in
-          let* α2 : ref (core.option.Option.t i32.t) := M.read right_val in
-          let* α3 : never.t :=
-            M.call
-              (core.panicking.assert_failed α0 α1 α2 core.option.Option.None) in
-          M.alloc α3 in
-        let* α0 : M.Val unit := M.alloc tt in
-        let* α1 := M.read α0 in
-        let* α2 : unit := never_to_any α1 in
-        M.alloc α2
-      else
-        M.alloc tt
-    end in
+    match_operator
+      (borrow α0, borrow α2)
+      [
+        fun α =>
+          match α with
+          | (left_val, right_val) =>
+            let* left_val := M.alloc left_val in
+            let* right_val := M.alloc right_val in
+            let* α0 : ref (core.option.Option.t i32.t) := M.read left_val in
+            let* α1 : ref (core.option.Option.t i32.t) := M.read right_val in
+            let* α2 : bool.t :=
+              M.call
+                ((core.cmp.PartialEq.eq
+                    (Self := core.option.Option.t i32.t)
+                    (Trait := ltac:(refine _)))
+                  α0
+                  α1) in
+            let* α3 : M.Val bool.t := M.alloc (UnOp.not α2) in
+            let* α4 : bool.t := M.read (use α3) in
+            if α4 then
+              let* kind : M.Val core.panicking.AssertKind.t :=
+                M.alloc core.panicking.AssertKind.Eq in
+              let* _ : M.Val never.t :=
+                let* α0 : core.panicking.AssertKind.t := M.read kind in
+                let* α1 : ref (core.option.Option.t i32.t) := M.read left_val in
+                let* α2 : ref (core.option.Option.t i32.t) :=
+                  M.read right_val in
+                let* α3 : never.t :=
+                  M.call
+                    (core.panicking.assert_failed
+                      α0
+                      α1
+                      α2
+                      core.option.Option.None) in
+                M.alloc α3 in
+              let* α0 : M.Val unit := M.alloc tt in
+              let* α1 := M.read α0 in
+              let* α2 : unit := never_to_any α1 in
+              M.alloc α2
+            else
+              M.alloc tt
+          end :
+          M (M.Val unit)
+      ] in
   let* _ : M.Val unit :=
     let* α0 : M.Val (core.option.Option.t i32.t) :=
       M.alloc (core.option.Option.Some (Integer.of_Z 3)) in
@@ -240,39 +262,50 @@ Definition main : M unit :=
             (Trait := ltac:(refine _)))
           (borrow_mut v3)) in
     let* α2 : M.Val (core.option.Option.t i32.t) := M.alloc α1 in
-    match (borrow α0, borrow α2) with
-    | (left_val, right_val) =>
-      let* left_val := M.alloc left_val in
-      let* right_val := M.alloc right_val in
-      let* α0 : ref (core.option.Option.t i32.t) := M.read left_val in
-      let* α1 : ref (core.option.Option.t i32.t) := M.read right_val in
-      let* α2 : bool.t :=
-        M.call
-          ((core.cmp.PartialEq.eq
-              (Self := core.option.Option.t i32.t)
-              (Trait := ltac:(refine _)))
-            α0
-            α1) in
-      let* α3 : M.Val bool.t := M.alloc (UnOp.not α2) in
-      let* α4 : bool.t := M.read (use α3) in
-      if α4 then
-        let* kind : M.Val core.panicking.AssertKind.t :=
-          M.alloc core.panicking.AssertKind.Eq in
-        let* _ : M.Val never.t :=
-          let* α0 : core.panicking.AssertKind.t := M.read kind in
-          let* α1 : ref (core.option.Option.t i32.t) := M.read left_val in
-          let* α2 : ref (core.option.Option.t i32.t) := M.read right_val in
-          let* α3 : never.t :=
-            M.call
-              (core.panicking.assert_failed α0 α1 α2 core.option.Option.None) in
-          M.alloc α3 in
-        let* α0 : M.Val unit := M.alloc tt in
-        let* α1 := M.read α0 in
-        let* α2 : unit := never_to_any α1 in
-        M.alloc α2
-      else
-        M.alloc tt
-    end in
+    match_operator
+      (borrow α0, borrow α2)
+      [
+        fun α =>
+          match α with
+          | (left_val, right_val) =>
+            let* left_val := M.alloc left_val in
+            let* right_val := M.alloc right_val in
+            let* α0 : ref (core.option.Option.t i32.t) := M.read left_val in
+            let* α1 : ref (core.option.Option.t i32.t) := M.read right_val in
+            let* α2 : bool.t :=
+              M.call
+                ((core.cmp.PartialEq.eq
+                    (Self := core.option.Option.t i32.t)
+                    (Trait := ltac:(refine _)))
+                  α0
+                  α1) in
+            let* α3 : M.Val bool.t := M.alloc (UnOp.not α2) in
+            let* α4 : bool.t := M.read (use α3) in
+            if α4 then
+              let* kind : M.Val core.panicking.AssertKind.t :=
+                M.alloc core.panicking.AssertKind.Eq in
+              let* _ : M.Val never.t :=
+                let* α0 : core.panicking.AssertKind.t := M.read kind in
+                let* α1 : ref (core.option.Option.t i32.t) := M.read left_val in
+                let* α2 : ref (core.option.Option.t i32.t) :=
+                  M.read right_val in
+                let* α3 : never.t :=
+                  M.call
+                    (core.panicking.assert_failed
+                      α0
+                      α1
+                      α2
+                      core.option.Option.None) in
+                M.alloc α3 in
+              let* α0 : M.Val unit := M.alloc tt in
+              let* α1 := M.read α0 in
+              let* α2 : unit := never_to_any α1 in
+              M.alloc α2
+            else
+              M.alloc tt
+          end :
+          M (M.Val unit)
+      ] in
   let* _ : M.Val unit :=
     let* α0 : M.Val (core.option.Option.t i32.t) :=
       M.alloc (core.option.Option.Some (Integer.of_Z 4)) in
@@ -283,39 +316,50 @@ Definition main : M unit :=
             (Trait := ltac:(refine _)))
           (borrow_mut v3)) in
     let* α2 : M.Val (core.option.Option.t i32.t) := M.alloc α1 in
-    match (borrow α0, borrow α2) with
-    | (left_val, right_val) =>
-      let* left_val := M.alloc left_val in
-      let* right_val := M.alloc right_val in
-      let* α0 : ref (core.option.Option.t i32.t) := M.read left_val in
-      let* α1 : ref (core.option.Option.t i32.t) := M.read right_val in
-      let* α2 : bool.t :=
-        M.call
-          ((core.cmp.PartialEq.eq
-              (Self := core.option.Option.t i32.t)
-              (Trait := ltac:(refine _)))
-            α0
-            α1) in
-      let* α3 : M.Val bool.t := M.alloc (UnOp.not α2) in
-      let* α4 : bool.t := M.read (use α3) in
-      if α4 then
-        let* kind : M.Val core.panicking.AssertKind.t :=
-          M.alloc core.panicking.AssertKind.Eq in
-        let* _ : M.Val never.t :=
-          let* α0 : core.panicking.AssertKind.t := M.read kind in
-          let* α1 : ref (core.option.Option.t i32.t) := M.read left_val in
-          let* α2 : ref (core.option.Option.t i32.t) := M.read right_val in
-          let* α3 : never.t :=
-            M.call
-              (core.panicking.assert_failed α0 α1 α2 core.option.Option.None) in
-          M.alloc α3 in
-        let* α0 : M.Val unit := M.alloc tt in
-        let* α1 := M.read α0 in
-        let* α2 : unit := never_to_any α1 in
-        M.alloc α2
-      else
-        M.alloc tt
-    end in
+    match_operator
+      (borrow α0, borrow α2)
+      [
+        fun α =>
+          match α with
+          | (left_val, right_val) =>
+            let* left_val := M.alloc left_val in
+            let* right_val := M.alloc right_val in
+            let* α0 : ref (core.option.Option.t i32.t) := M.read left_val in
+            let* α1 : ref (core.option.Option.t i32.t) := M.read right_val in
+            let* α2 : bool.t :=
+              M.call
+                ((core.cmp.PartialEq.eq
+                    (Self := core.option.Option.t i32.t)
+                    (Trait := ltac:(refine _)))
+                  α0
+                  α1) in
+            let* α3 : M.Val bool.t := M.alloc (UnOp.not α2) in
+            let* α4 : bool.t := M.read (use α3) in
+            if α4 then
+              let* kind : M.Val core.panicking.AssertKind.t :=
+                M.alloc core.panicking.AssertKind.Eq in
+              let* _ : M.Val never.t :=
+                let* α0 : core.panicking.AssertKind.t := M.read kind in
+                let* α1 : ref (core.option.Option.t i32.t) := M.read left_val in
+                let* α2 : ref (core.option.Option.t i32.t) :=
+                  M.read right_val in
+                let* α3 : never.t :=
+                  M.call
+                    (core.panicking.assert_failed
+                      α0
+                      α1
+                      α2
+                      core.option.Option.None) in
+                M.alloc α3 in
+              let* α0 : M.Val unit := M.alloc tt in
+              let* α1 := M.read α0 in
+              let* α2 : unit := never_to_any α1 in
+              M.alloc α2
+            else
+              M.alloc tt
+          end :
+          M (M.Val unit)
+      ] in
   let* _ : M.Val unit :=
     let* α0 : M.Val (core.option.Option.t i32.t) :=
       M.alloc (core.option.Option.Some (Integer.of_Z 5)) in
@@ -326,39 +370,50 @@ Definition main : M unit :=
             (Trait := ltac:(refine _)))
           (borrow_mut v3)) in
     let* α2 : M.Val (core.option.Option.t i32.t) := M.alloc α1 in
-    match (borrow α0, borrow α2) with
-    | (left_val, right_val) =>
-      let* left_val := M.alloc left_val in
-      let* right_val := M.alloc right_val in
-      let* α0 : ref (core.option.Option.t i32.t) := M.read left_val in
-      let* α1 : ref (core.option.Option.t i32.t) := M.read right_val in
-      let* α2 : bool.t :=
-        M.call
-          ((core.cmp.PartialEq.eq
-              (Self := core.option.Option.t i32.t)
-              (Trait := ltac:(refine _)))
-            α0
-            α1) in
-      let* α3 : M.Val bool.t := M.alloc (UnOp.not α2) in
-      let* α4 : bool.t := M.read (use α3) in
-      if α4 then
-        let* kind : M.Val core.panicking.AssertKind.t :=
-          M.alloc core.panicking.AssertKind.Eq in
-        let* _ : M.Val never.t :=
-          let* α0 : core.panicking.AssertKind.t := M.read kind in
-          let* α1 : ref (core.option.Option.t i32.t) := M.read left_val in
-          let* α2 : ref (core.option.Option.t i32.t) := M.read right_val in
-          let* α3 : never.t :=
-            M.call
-              (core.panicking.assert_failed α0 α1 α2 core.option.Option.None) in
-          M.alloc α3 in
-        let* α0 : M.Val unit := M.alloc tt in
-        let* α1 := M.read α0 in
-        let* α2 : unit := never_to_any α1 in
-        M.alloc α2
-      else
-        M.alloc tt
-    end in
+    match_operator
+      (borrow α0, borrow α2)
+      [
+        fun α =>
+          match α with
+          | (left_val, right_val) =>
+            let* left_val := M.alloc left_val in
+            let* right_val := M.alloc right_val in
+            let* α0 : ref (core.option.Option.t i32.t) := M.read left_val in
+            let* α1 : ref (core.option.Option.t i32.t) := M.read right_val in
+            let* α2 : bool.t :=
+              M.call
+                ((core.cmp.PartialEq.eq
+                    (Self := core.option.Option.t i32.t)
+                    (Trait := ltac:(refine _)))
+                  α0
+                  α1) in
+            let* α3 : M.Val bool.t := M.alloc (UnOp.not α2) in
+            let* α4 : bool.t := M.read (use α3) in
+            if α4 then
+              let* kind : M.Val core.panicking.AssertKind.t :=
+                M.alloc core.panicking.AssertKind.Eq in
+              let* _ : M.Val never.t :=
+                let* α0 : core.panicking.AssertKind.t := M.read kind in
+                let* α1 : ref (core.option.Option.t i32.t) := M.read left_val in
+                let* α2 : ref (core.option.Option.t i32.t) :=
+                  M.read right_val in
+                let* α3 : never.t :=
+                  M.call
+                    (core.panicking.assert_failed
+                      α0
+                      α1
+                      α2
+                      core.option.Option.None) in
+                M.alloc α3 in
+              let* α0 : M.Val unit := M.alloc tt in
+              let* α1 := M.read α0 in
+              let* α2 : unit := never_to_any α1 in
+              M.alloc α2
+            else
+              M.alloc tt
+          end :
+          M (M.Val unit)
+      ] in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "all done

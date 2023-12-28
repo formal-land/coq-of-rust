@@ -36,29 +36,44 @@ Definition multiply
               (Trait := ltac:(refine _)))
             α1) in
       let* α3 : M.Val i32.t :=
-        match α2 with
-        | core.ops.control_flow.ControlFlow.Break residual =>
-          let* residual := M.alloc residual in
-          let* α0 :
-              core.result.Result.t
-                core.convert.Infallible.t
-                core.num.error.ParseIntError.t :=
-            M.read residual in
-          let* α1 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
-            M.call
-              ((core.ops.try_trait.FromResidual.from_residual
-                  (Self :=
-                    core.result.Result.t i32.t core.num.error.ParseIntError.t)
-                  (Trait := ltac:(refine _)))
-                α0) in
-          let* α2 : M.Val never.t := return_ α1 in
-          let* α3 := M.read α2 in
-          let* α4 : i32.t := never_to_any α3 in
-          M.alloc α4
-        | core.ops.control_flow.ControlFlow.Continue val =>
-          let* val := M.alloc val in
-          M.pure val
-        end in
+        match_operator
+          α2
+          [
+            fun α =>
+              match α with
+              | core.ops.control_flow.ControlFlow.Break residual =>
+                let* residual := M.alloc residual in
+                let* α0 :
+                    core.result.Result.t
+                      core.convert.Infallible.t
+                      core.num.error.ParseIntError.t :=
+                  M.read residual in
+                let* α1 :
+                    core.result.Result.t i32.t core.num.error.ParseIntError.t :=
+                  M.call
+                    ((core.ops.try_trait.FromResidual.from_residual
+                        (Self :=
+                          core.result.Result.t
+                            i32.t
+                            core.num.error.ParseIntError.t)
+                        (Trait := ltac:(refine _)))
+                      α0) in
+                let* α2 : M.Val never.t := return_ α1 in
+                let* α3 := M.read α2 in
+                let* α4 : i32.t := never_to_any α3 in
+                M.alloc α4
+              | _ => M.break_match
+              end :
+              M (M.Val i32.t);
+            fun α =>
+              match α with
+              | core.ops.control_flow.ControlFlow.Continue val =>
+                let* val := M.alloc val in
+                M.pure val
+              | _ => M.break_match
+              end :
+              M (M.Val i32.t)
+          ] in
       M.copy α3 in
     let* second_number : M.Val i32.t :=
       let* α0 : ref str.t := M.read second_number_str in
@@ -77,29 +92,44 @@ Definition multiply
               (Trait := ltac:(refine _)))
             α1) in
       let* α3 : M.Val i32.t :=
-        match α2 with
-        | core.ops.control_flow.ControlFlow.Break residual =>
-          let* residual := M.alloc residual in
-          let* α0 :
-              core.result.Result.t
-                core.convert.Infallible.t
-                core.num.error.ParseIntError.t :=
-            M.read residual in
-          let* α1 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
-            M.call
-              ((core.ops.try_trait.FromResidual.from_residual
-                  (Self :=
-                    core.result.Result.t i32.t core.num.error.ParseIntError.t)
-                  (Trait := ltac:(refine _)))
-                α0) in
-          let* α2 : M.Val never.t := return_ α1 in
-          let* α3 := M.read α2 in
-          let* α4 : i32.t := never_to_any α3 in
-          M.alloc α4
-        | core.ops.control_flow.ControlFlow.Continue val =>
-          let* val := M.alloc val in
-          M.pure val
-        end in
+        match_operator
+          α2
+          [
+            fun α =>
+              match α with
+              | core.ops.control_flow.ControlFlow.Break residual =>
+                let* residual := M.alloc residual in
+                let* α0 :
+                    core.result.Result.t
+                      core.convert.Infallible.t
+                      core.num.error.ParseIntError.t :=
+                  M.read residual in
+                let* α1 :
+                    core.result.Result.t i32.t core.num.error.ParseIntError.t :=
+                  M.call
+                    ((core.ops.try_trait.FromResidual.from_residual
+                        (Self :=
+                          core.result.Result.t
+                            i32.t
+                            core.num.error.ParseIntError.t)
+                        (Trait := ltac:(refine _)))
+                      α0) in
+                let* α2 : M.Val never.t := return_ α1 in
+                let* α3 := M.read α2 in
+                let* α4 : i32.t := never_to_any α3 in
+                M.alloc α4
+              | _ => M.break_match
+              end :
+              M (M.Val i32.t);
+            fun α =>
+              match α with
+              | core.ops.control_flow.ControlFlow.Continue val =>
+                let* val := M.alloc val in
+                M.pure val
+              | _ => M.break_match
+              end :
+              M (M.Val i32.t)
+          ] in
       M.copy α3 in
     let* α0 : i32.t := M.read first_number in
     let* α1 : i32.t := M.read second_number in
@@ -124,52 +154,68 @@ Definition print
   let* α0 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
     M.read result in
   let* α1 : M.Val unit :=
-    match α0 with
-    | core.result.Result.Ok n =>
-      let* n := M.alloc n in
-      let* _ : M.Val unit :=
-        let* α0 : ref str.t := M.read (mk_str "n is ") in
-        let* α1 : ref str.t := M.read (mk_str "
+    match_operator
+      α0
+      [
+        fun α =>
+          match α with
+          | core.result.Result.Ok n =>
+            let* n := M.alloc n in
+            let* _ : M.Val unit :=
+              let* α0 : ref str.t := M.read (mk_str "n is ") in
+              let* α1 : ref str.t := M.read (mk_str "
 ") in
-        let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-        let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
-        let* α4 : ref (slice (ref str.t)) :=
-          M.read (pointer_coercion "Unsize" α3) in
-        let* α5 : core.fmt.rt.Argument.t :=
-          M.call (core.fmt.rt.Argument.t::["new_display"] (borrow n)) in
-        let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
-        let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-          M.alloc (borrow α6) in
-        let* α8 : ref (slice core.fmt.rt.Argument.t) :=
-          M.read (pointer_coercion "Unsize" α7) in
-        let* α9 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
-        let* α10 : unit := M.call (std.io.stdio._print α9) in
-        M.alloc α10 in
-      M.alloc tt
-    | core.result.Result.Err e =>
-      let* e := M.alloc e in
-      let* _ : M.Val unit :=
-        let* α0 : ref str.t := M.read (mk_str "Error: ") in
-        let* α1 : ref str.t := M.read (mk_str "
+              let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
+              let* α3 : M.Val (ref (array (ref str.t))) :=
+                M.alloc (borrow α2) in
+              let* α4 : ref (slice (ref str.t)) :=
+                M.read (pointer_coercion "Unsize" α3) in
+              let* α5 : core.fmt.rt.Argument.t :=
+                M.call (core.fmt.rt.Argument.t::["new_display"] (borrow n)) in
+              let* α6 : M.Val (array core.fmt.rt.Argument.t) :=
+                M.alloc [ α5 ] in
+              let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+                M.alloc (borrow α6) in
+              let* α8 : ref (slice core.fmt.rt.Argument.t) :=
+                M.read (pointer_coercion "Unsize" α7) in
+              let* α9 : core.fmt.Arguments.t :=
+                M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
+              let* α10 : unit := M.call (std.io.stdio._print α9) in
+              M.alloc α10 in
+            M.alloc tt
+          | _ => M.break_match
+          end :
+          M (M.Val unit);
+        fun α =>
+          match α with
+          | core.result.Result.Err e =>
+            let* e := M.alloc e in
+            let* _ : M.Val unit :=
+              let* α0 : ref str.t := M.read (mk_str "Error: ") in
+              let* α1 : ref str.t := M.read (mk_str "
 ") in
-        let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-        let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
-        let* α4 : ref (slice (ref str.t)) :=
-          M.read (pointer_coercion "Unsize" α3) in
-        let* α5 : core.fmt.rt.Argument.t :=
-          M.call (core.fmt.rt.Argument.t::["new_display"] (borrow e)) in
-        let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
-        let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-          M.alloc (borrow α6) in
-        let* α8 : ref (slice core.fmt.rt.Argument.t) :=
-          M.read (pointer_coercion "Unsize" α7) in
-        let* α9 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
-        let* α10 : unit := M.call (std.io.stdio._print α9) in
-        M.alloc α10 in
-      M.alloc tt
-    end in
+              let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
+              let* α3 : M.Val (ref (array (ref str.t))) :=
+                M.alloc (borrow α2) in
+              let* α4 : ref (slice (ref str.t)) :=
+                M.read (pointer_coercion "Unsize" α3) in
+              let* α5 : core.fmt.rt.Argument.t :=
+                M.call (core.fmt.rt.Argument.t::["new_display"] (borrow e)) in
+              let* α6 : M.Val (array core.fmt.rt.Argument.t) :=
+                M.alloc [ α5 ] in
+              let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+                M.alloc (borrow α6) in
+              let* α8 : ref (slice core.fmt.rt.Argument.t) :=
+                M.read (pointer_coercion "Unsize" α7) in
+              let* α9 : core.fmt.Arguments.t :=
+                M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
+              let* α10 : unit := M.call (std.io.stdio._print α9) in
+              M.alloc α10 in
+            M.alloc tt
+          | _ => M.break_match
+          end :
+          M (M.Val unit)
+      ] in
   M.read α1.
 
 (*

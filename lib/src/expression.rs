@@ -93,8 +93,9 @@ pub(crate) enum ExprKind {
         arg: Box<Expr>,
     },
     Lambda {
-        args: Vec<(String, Rc<CoqType>)>,
+        args: Vec<(String, Option<Rc<CoqType>>)>,
         body: Box<Expr>,
+        is_for_match: bool,
     },
     Array {
         elements: Vec<Expr>,
@@ -175,6 +176,13 @@ impl Expr {
         }
     }
 
+    pub(crate) fn local_var(name: &str) -> Box<Expr> {
+        Box::new(Expr {
+            kind: ExprKind::LocalVar(name.to_string()),
+            ty: None,
+        })
+    }
+
     pub(crate) fn has_return(&self) -> bool {
         match &self.kind {
             ExprKind::Pure(expr) => expr.has_return(),
@@ -200,7 +208,11 @@ impl Expr {
                 from_user: _,
             } => func.has_return() || args.iter().any(Self::has_return),
             ExprKind::MonadicOperator { name: _, arg } => arg.has_return(),
-            ExprKind::Lambda { .. } => false,
+            ExprKind::Lambda {
+                args: _,
+                body,
+                is_for_match,
+            } => *is_for_match && body.has_return(),
             ExprKind::Array { elements } => elements.iter().any(Self::has_return),
             ExprKind::Tuple { elements } => elements.iter().any(Self::has_return),
             ExprKind::Let {
@@ -438,13 +450,18 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Expr) -> (Expr, FreshVa
                 fresh_vars,
             )
         }
-        ExprKind::Lambda { args, body } => {
+        ExprKind::Lambda {
+            args,
+            body,
+            is_for_match,
+        } => {
             let (body, _) = mt_expression(FreshVars::new(), *body);
             (
                 pure(Expr {
                     kind: ExprKind::Lambda {
                         args,
                         body: Box::new(body),
+                        is_for_match,
                     },
                     ty,
                 }),
@@ -882,7 +899,11 @@ impl ExprKind {
             ExprKind::MonadicOperator { name, arg } => {
                 paren(with_paren, nest([text(name), line(), arg.to_doc(true)]))
             }
-            ExprKind::Lambda { args, body } => {
+            ExprKind::Lambda {
+                args,
+                body,
+                is_for_match: _,
+            } => {
                 let body = group([
                     body.to_doc(true),
                     text(" :"),
@@ -903,15 +924,16 @@ impl ExprKind {
                                 text("fun"),
                                 line(),
                                 intersperse(
-                                    args.iter().map(|(name, ty)| {
-                                        nest([
+                                    args.iter().map(|(name, ty)| match ty {
+                                        None => text(name),
+                                        Some(ty) => nest([
                                             text("("),
                                             text(name),
                                             text(" :"),
                                             line(),
                                             ty.to_coq().to_doc(false),
                                             text(")"),
-                                        ])
+                                        ]),
                                     }),
                                     [line()],
                                 ),

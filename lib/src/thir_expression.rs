@@ -198,16 +198,61 @@ fn allocate_bindings_in_pattern(pattern: &Pattern, body: Box<Expr>) -> Box<Expr>
     allocate_bindings(&bindings, body)
 }
 
-fn build_match(scrutinee: Expr, arms: Vec<MatchArm>) -> ExprKind {
-    ExprKind::Match {
-        scrutinee: Box::new(scrutinee),
-        arms: arms
-            .iter()
-            .map(|MatchArm { pattern, body }| MatchArm {
-                pattern: pattern.clone(),
-                body: allocate_bindings_in_pattern(pattern, body.clone()),
-            })
-            .collect(),
+fn build_match(scrutinee: Expr, arms: Vec<MatchArm>, ty: Option<Rc<CoqType>>) -> ExprKind {
+    ExprKind::Call {
+        func: Expr::local_var("match_operator"),
+        args: vec![
+            scrutinee,
+            Expr {
+                kind: ExprKind::Array {
+                    elements: arms
+                        .iter()
+                        .map(|MatchArm { pattern, body }| Expr {
+                            kind: ExprKind::Lambda {
+                                args: vec![("α".to_string(), None)],
+                                body: Box::new(Expr {
+                                    kind: ExprKind::Match {
+                                        scrutinee: Expr::local_var("α"),
+                                        arms: [
+                                            vec![MatchArm {
+                                                pattern: pattern.clone(),
+                                                body: allocate_bindings_in_pattern(
+                                                    pattern,
+                                                    body.clone(),
+                                                ),
+                                            }],
+                                            if !pattern.is_exhaustive() {
+                                                vec![MatchArm {
+                                                    pattern: Rc::new(Pattern::Wild),
+                                                    body: Box::new(Expr {
+                                                        kind: ExprKind::Call {
+                                                            func: Expr::local_var("M.break_match"),
+                                                            args: vec![],
+                                                            purity: Purity::Effectful,
+                                                            from_user: false,
+                                                        },
+                                                        ty: None,
+                                                    }),
+                                                }]
+                                            } else {
+                                                vec![]
+                                            },
+                                        ]
+                                        .concat(),
+                                    },
+                                    ty: ty.clone(),
+                                }),
+                                is_for_match: true,
+                            },
+                            ty: None,
+                        })
+                        .collect(),
+                },
+                ty: None,
+            },
+        ],
+        purity: Purity::Effectful,
+        from_user: false,
     }
 }
 
@@ -412,7 +457,7 @@ fn compile_expr_kind<'a>(
                     MatchArm { pattern, body }
                 })
                 .collect();
-            build_match(scrutinee, arms)
+            build_match(scrutinee, arms, Some(ty.val()))
         }
         thir::ExprKind::Block { block: block_id } => compile_block(env, thir, block_id).kind,
         thir::ExprKind::Assign { lhs, rhs } => {
@@ -656,8 +701,9 @@ fn compile_expr_kind<'a>(
                 .iter()
                 .enumerate()
                 .rfold(body, |body, (index, (pattern, _))| {
+                    let ty = body.ty.clone();
+
                     Box::new(Expr {
-                        ty: body.ty.clone(),
                         kind: build_match(
                             Expr {
                                 kind: ExprKind::LocalVar(format!("α{index}")),
@@ -667,16 +713,23 @@ fn compile_expr_kind<'a>(
                                 pattern: pattern.clone(),
                                 body,
                             }],
+                            ty.clone(),
                         ),
+                        ty,
                     })
                 });
             let args = args
                 .iter()
                 .enumerate()
-                .map(|(index, (_, ty))| (format!("α{index}"), ty.clone()))
+                .map(|(index, (_, ty))| (format!("α{index}"), Some(ty.clone())))
                 .collect();
 
-            ExprKind::Lambda { args, body }.alloc(Some(ty))
+            ExprKind::Lambda {
+                args,
+                body,
+                is_for_match: false,
+            }
+            .alloc(Some(ty))
         }
         thir::ExprKind::Literal { lit, neg } => match lit.node {
             rustc_ast::LitKind::Str(symbol, _) => {
@@ -810,7 +863,7 @@ fn compile_stmts<'a>(
                             init: Box::new(init.copy()),
                             body,
                         },
-                        _ => build_match(init.read(), vec![MatchArm { pattern, body }]),
+                        _ => build_match(init.read(), vec![MatchArm { pattern, body }], ty.clone()),
                     };
                     Expr { kind, ty }
                 }

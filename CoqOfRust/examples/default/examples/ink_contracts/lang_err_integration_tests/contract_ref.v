@@ -50,11 +50,17 @@ Section Impl_core_clone_Clone_for_contract_ref_AccountId_t.
   Definition clone (self : ref Self) : M contract_ref.AccountId.t :=
     let* self := M.alloc self in
     let* α0 : M.Val contract_ref.AccountId.t :=
-      match tt with
-      | _ =>
-        let* α0 : ref contract_ref.AccountId.t := M.read self in
-        M.pure (deref α0)
-      end in
+      match_operator
+        tt
+        [
+          fun α =>
+            match α with
+            | _ =>
+              let* α0 : ref contract_ref.AccountId.t := M.read self in
+              M.pure (deref α0)
+            end :
+            M (M.Val contract_ref.AccountId.t)
+        ] in
     M.read α0.
   
   Global Instance AssociatedFunction_clone :

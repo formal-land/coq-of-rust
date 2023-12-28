@@ -164,11 +164,17 @@ Section Impl_core_clone_Clone_for_erc20_AccountId_t.
   Definition clone (self : ref Self) : M erc20.AccountId.t :=
     let* self := M.alloc self in
     let* α0 : M.Val erc20.AccountId.t :=
-      match tt with
-      | _ =>
-        let* α0 : ref erc20.AccountId.t := M.read self in
-        M.pure (deref α0)
-      end in
+      match_operator
+        tt
+        [
+          fun α =>
+            match α with
+            | _ =>
+              let* α0 : ref erc20.AccountId.t := M.read self in
+              M.pure (deref α0)
+            end :
+            M (M.Val erc20.AccountId.t)
+        ] in
     M.read α0.
   
   Global Instance AssociatedFunction_clone :
@@ -957,26 +963,40 @@ Section Impl_erc20_Erc20_t_2.
                 (Self := core.result.Result.t unit erc20.Error.t)
                 (Trait := ltac:(refine _)))
               α2) in
-        match α3 with
-        | core.ops.control_flow.ControlFlow.Break residual =>
-          let* residual := M.alloc residual in
-          let* α0 :
-              core.result.Result.t core.convert.Infallible.t erc20.Error.t :=
-            M.read residual in
-          let* α1 : core.result.Result.t unit erc20.Error.t :=
-            M.call
-              ((core.ops.try_trait.FromResidual.from_residual
-                  (Self := core.result.Result.t unit erc20.Error.t)
-                  (Trait := ltac:(refine _)))
-                α0) in
-          let* α2 : M.Val never.t := return_ α1 in
-          let* α3 := M.read α2 in
-          let* α4 : unit := never_to_any α3 in
-          M.alloc α4
-        | core.ops.control_flow.ControlFlow.Continue val =>
-          let* val := M.alloc val in
-          M.pure val
-        end in
+        match_operator
+          α3
+          [
+            fun α =>
+              match α with
+              | core.ops.control_flow.ControlFlow.Break residual =>
+                let* residual := M.alloc residual in
+                let* α0 :
+                    core.result.Result.t
+                      core.convert.Infallible.t
+                      erc20.Error.t :=
+                  M.read residual in
+                let* α1 : core.result.Result.t unit erc20.Error.t :=
+                  M.call
+                    ((core.ops.try_trait.FromResidual.from_residual
+                        (Self := core.result.Result.t unit erc20.Error.t)
+                        (Trait := ltac:(refine _)))
+                      α0) in
+                let* α2 : M.Val never.t := return_ α1 in
+                let* α3 := M.read α2 in
+                let* α4 : unit := never_to_any α3 in
+                M.alloc α4
+              | _ => M.break_match
+              end :
+              M (M.Val unit);
+            fun α =>
+              match α with
+              | core.ops.control_flow.ControlFlow.Continue val =>
+                let* val := M.alloc val in
+                M.pure val
+              | _ => M.break_match
+              end :
+              M (M.Val unit)
+          ] in
       let* _ : M.Val unit :=
         let* α0 : mut_ref erc20.Erc20.t := M.read self in
         let* α1 : erc20.AccountId.t := M.read from in

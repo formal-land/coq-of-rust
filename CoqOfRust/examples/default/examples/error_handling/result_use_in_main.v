@@ -24,18 +24,31 @@ Definition main
       let* α1 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
         M.call (str.t::["parse"] α0) in
       let* α2 : M.Val i32.t :=
-        match α1 with
-        | core.result.Result.Ok number =>
-          let* number := M.alloc number in
-          M.pure number
-        | core.result.Result.Err e =>
-          let* e := M.alloc e in
-          let* α0 : core.num.error.ParseIntError.t := M.read e in
-          let* α1 : M.Val never.t := return_ (core.result.Result.Err α0) in
-          let* α2 := M.read α1 in
-          let* α3 : i32.t := never_to_any α2 in
-          M.alloc α3
-        end in
+        match_operator
+          α1
+          [
+            fun α =>
+              match α with
+              | core.result.Result.Ok number =>
+                let* number := M.alloc number in
+                M.pure number
+              | _ => M.break_match
+              end :
+              M (M.Val i32.t);
+            fun α =>
+              match α with
+              | core.result.Result.Err e =>
+                let* e := M.alloc e in
+                let* α0 : core.num.error.ParseIntError.t := M.read e in
+                let* α1 : M.Val never.t :=
+                  return_ (core.result.Result.Err α0) in
+                let* α2 := M.read α1 in
+                let* α3 : i32.t := never_to_any α2 in
+                M.alloc α3
+              | _ => M.break_match
+              end :
+              M (M.Val i32.t)
+          ] in
       M.copy α2 in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=

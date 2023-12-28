@@ -174,31 +174,49 @@ Definition fizzbuzz_to (n : u32.t) : M unit :=
           (Trait := ltac:(refine _)))
         α1) in
   let* α3 : M.Val unit :=
-    match α2 with
-    | iter =>
-      let* iter := M.alloc iter in
-      M.loop
-        (let* _ : M.Val unit :=
-          let* α0 : core.option.Option.t u32.t :=
-            M.call
-              ((core.iter.traits.iterator.Iterator.next
-                  (Self := core.ops.range.RangeInclusive.t u32.t)
-                  (Trait := ltac:(refine _)))
-                (borrow_mut iter)) in
-          match α0 with
-          | core.option.Option.None =>
-            let* α0 : M.Val never.t := M.break in
-            let* α1 := M.read α0 in
-            let* α2 : unit := never_to_any α1 in
-            M.alloc α2
-          | core.option.Option.Some n =>
-            let* n := M.alloc n in
-            let* _ : M.Val unit :=
-              let* α0 : u32.t := M.read n in
-              let* α1 : unit := M.call (functions.fizzbuzz α0) in
-              M.alloc α1 in
-            M.alloc tt
-          end in
-        M.alloc tt)
-    end in
+    match_operator
+      α2
+      [
+        fun α =>
+          match α with
+          | iter =>
+            let* iter := M.alloc iter in
+            M.loop
+              (let* _ : M.Val unit :=
+                let* α0 : core.option.Option.t u32.t :=
+                  M.call
+                    ((core.iter.traits.iterator.Iterator.next
+                        (Self := core.ops.range.RangeInclusive.t u32.t)
+                        (Trait := ltac:(refine _)))
+                      (borrow_mut iter)) in
+                match_operator
+                  α0
+                  [
+                    fun α =>
+                      match α with
+                      | core.option.Option.None =>
+                        let* α0 : M.Val never.t := M.break in
+                        let* α1 := M.read α0 in
+                        let* α2 : unit := never_to_any α1 in
+                        M.alloc α2
+                      | _ => M.break_match
+                      end :
+                      M (M.Val unit);
+                    fun α =>
+                      match α with
+                      | core.option.Option.Some n =>
+                        let* n := M.alloc n in
+                        let* _ : M.Val unit :=
+                          let* α0 : u32.t := M.read n in
+                          let* α1 : unit := M.call (functions.fizzbuzz α0) in
+                          M.alloc α1 in
+                        M.alloc tt
+                      | _ => M.break_match
+                      end :
+                      M (M.Val unit)
+                  ] in
+              M.alloc tt)
+          end :
+          M (M.Val unit)
+      ] in
   M.read (use α3).

@@ -160,11 +160,17 @@ Section Impl_core_clone_Clone_for_mother_AccountId_t.
   Definition clone (self : ref Self) : M mother.AccountId.t :=
     let* self := M.alloc self in
     let* α0 : M.Val mother.AccountId.t :=
-      match tt with
-      | _ =>
-        let* α0 : ref mother.AccountId.t := M.read self in
-        M.pure (deref α0)
-      end in
+      match_operator
+        tt
+        [
+          fun α =>
+            match α with
+            | _ =>
+              let* α0 : ref mother.AccountId.t := M.read self in
+              M.pure (deref α0)
+            end :
+            M (M.Val mother.AccountId.t)
+        ] in
     M.read α0.
   
   Global Instance AssociatedFunction_clone :
@@ -245,9 +251,15 @@ Section Impl_core_cmp_Eq_for_mother_AccountId_t.
   Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
     let* self := M.alloc self in
     let* α0 : M.Val unit :=
-      match tt with
-      | _ => M.alloc tt
-      end in
+      match_operator
+        tt
+        [
+          fun α =>
+            match α with
+            | _ => M.alloc tt
+            end :
+            M (M.Val unit)
+        ] in
     M.read α0.
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
@@ -405,9 +417,15 @@ Section Impl_core_cmp_Eq_for_mother_Bids_t.
   Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
     let* self := M.alloc self in
     let* α0 : M.Val unit :=
-      match tt with
-      | _ => M.alloc tt
-      end in
+      match_operator
+        tt
+        [
+          fun α =>
+            match α with
+            | _ => M.alloc tt
+            end :
+            M (M.Val unit)
+        ] in
     M.read α0.
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
@@ -557,11 +575,30 @@ Section Impl_core_clone_Clone_for_mother_Outline_t.
     let* self := M.alloc self in
     let* α0 : ref mother.Outline.t := M.read self in
     let* α1 : M.Val mother.Outline.t :=
-      match α0 with
-      | mother.Outline.NoWinner => M.alloc mother.Outline.NoWinner
-      | mother.Outline.WinnerDetected => M.alloc mother.Outline.WinnerDetected
-      | mother.Outline.PayoutCompleted => M.alloc mother.Outline.PayoutCompleted
-      end in
+      match_operator
+        α0
+        [
+          fun α =>
+            match α with
+            | mother.Outline.NoWinner => M.alloc mother.Outline.NoWinner
+            | _ => M.break_match
+            end :
+            M (M.Val mother.Outline.t);
+          fun α =>
+            match α with
+            | mother.Outline.WinnerDetected =>
+              M.alloc mother.Outline.WinnerDetected
+            | _ => M.break_match
+            end :
+            M (M.Val mother.Outline.t);
+          fun α =>
+            match α with
+            | mother.Outline.PayoutCompleted =>
+              M.alloc mother.Outline.PayoutCompleted
+            | _ => M.break_match
+            end :
+            M (M.Val mother.Outline.t)
+        ] in
     M.read α1.
   
   Global Instance AssociatedFunction_clone :
@@ -643,41 +680,64 @@ Section Impl_core_cmp_PartialEq_for_mother_Status_t.
     let* α2 : ref mother.Status.t := M.read self in
     let* α3 : ref mother.Status.t := M.read other in
     let* α4 : M.Val bool.t :=
-      match (α2, α3) with
-      |
-          (mother.Status.EndingPeriod __self_0,
-            mother.Status.EndingPeriod __arg1_0)
-          =>
-        let* __self_0 := M.alloc __self_0 in
-        let* __arg1_0 := M.alloc __arg1_0 in
-        let* α0 : ref u32.t := M.read __self_0 in
-        let* α1 : u32.t := M.read (deref α0) in
-        let* α2 : ref u32.t := M.read __arg1_0 in
-        let* α3 : u32.t := M.read (deref α2) in
-        M.alloc (BinOp.Pure.eq α1 α3)
-      | (mother.Status.Ended __self_0, mother.Status.Ended __arg1_0) =>
-        let* __self_0 := M.alloc __self_0 in
-        let* __arg1_0 := M.alloc __arg1_0 in
-        let* α0 : ref mother.Outline.t := M.read __self_0 in
-        let* α1 : ref mother.Outline.t := M.read __arg1_0 in
-        let* α2 : bool.t :=
-          M.call
-            ((core.cmp.PartialEq.eq
-                (Self := mother.Outline.t)
-                (Trait := ltac:(refine _)))
-              α0
-              α1) in
-        M.alloc α2
-      | (mother.Status.RfDelay __self_0, mother.Status.RfDelay __arg1_0) =>
-        let* __self_0 := M.alloc __self_0 in
-        let* __arg1_0 := M.alloc __arg1_0 in
-        let* α0 : ref u32.t := M.read __self_0 in
-        let* α1 : u32.t := M.read (deref α0) in
-        let* α2 : ref u32.t := M.read __arg1_0 in
-        let* α3 : u32.t := M.read (deref α2) in
-        M.alloc (BinOp.Pure.eq α1 α3)
-      | _ => M.alloc true
-      end in
+      match_operator
+        (α2, α3)
+        [
+          fun α =>
+            match α with
+            |
+                (mother.Status.EndingPeriod __self_0,
+                  mother.Status.EndingPeriod __arg1_0)
+                =>
+              let* __self_0 := M.alloc __self_0 in
+              let* __arg1_0 := M.alloc __arg1_0 in
+              let* α0 : ref u32.t := M.read __self_0 in
+              let* α1 : u32.t := M.read (deref α0) in
+              let* α2 : ref u32.t := M.read __arg1_0 in
+              let* α3 : u32.t := M.read (deref α2) in
+              M.alloc (BinOp.Pure.eq α1 α3)
+            | _ => M.break_match
+            end :
+            M (M.Val bool.t);
+          fun α =>
+            match α with
+            | (mother.Status.Ended __self_0, mother.Status.Ended __arg1_0) =>
+              let* __self_0 := M.alloc __self_0 in
+              let* __arg1_0 := M.alloc __arg1_0 in
+              let* α0 : ref mother.Outline.t := M.read __self_0 in
+              let* α1 : ref mother.Outline.t := M.read __arg1_0 in
+              let* α2 : bool.t :=
+                M.call
+                  ((core.cmp.PartialEq.eq
+                      (Self := mother.Outline.t)
+                      (Trait := ltac:(refine _)))
+                    α0
+                    α1) in
+              M.alloc α2
+            | _ => M.break_match
+            end :
+            M (M.Val bool.t);
+          fun α =>
+            match α with
+            |
+                (mother.Status.RfDelay __self_0, mother.Status.RfDelay __arg1_0)
+                =>
+              let* __self_0 := M.alloc __self_0 in
+              let* __arg1_0 := M.alloc __arg1_0 in
+              let* α0 : ref u32.t := M.read __self_0 in
+              let* α1 : u32.t := M.read (deref α0) in
+              let* α2 : ref u32.t := M.read __arg1_0 in
+              let* α3 : u32.t := M.read (deref α2) in
+              M.alloc (BinOp.Pure.eq α1 α3)
+            | _ => M.break_match
+            end :
+            M (M.Val bool.t);
+          fun α =>
+            match α with
+            | _ => M.alloc true
+            end :
+            M (M.Val bool.t)
+        ] in
     let* α5 : bool.t := M.read α4 in
     let* α0 : M.Val bool.t :=
       M.alloc (BinOp.Pure.and (BinOp.Pure.eq α0 α1) α5) in
@@ -715,12 +775,24 @@ Section Impl_core_cmp_Eq_for_mother_Status_t.
   Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
     let* self := M.alloc self in
     let* α0 : M.Val unit :=
-      match tt with
-      | _ =>
-        match tt with
-        | _ => M.alloc tt
-        end
-      end in
+      match_operator
+        tt
+        [
+          fun α =>
+            match α with
+            | _ =>
+              match_operator
+                tt
+                [
+                  fun α =>
+                    match α with
+                    | _ => M.alloc tt
+                    end :
+                    M (M.Val unit)
+                ]
+            end :
+            M (M.Val unit)
+        ] in
     M.read α0.
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
@@ -746,36 +818,67 @@ Section Impl_core_clone_Clone_for_mother_Status_t.
     let* self := M.alloc self in
     let* α0 : ref mother.Status.t := M.read self in
     let* α1 : M.Val mother.Status.t :=
-      match α0 with
-      | mother.Status.NotStarted => M.alloc mother.Status.NotStarted
-      | mother.Status.OpeningPeriod => M.alloc mother.Status.OpeningPeriod
-      | mother.Status.EndingPeriod __self_0 =>
-        let* __self_0 := M.alloc __self_0 in
-        let* α0 : ref u32.t := M.read __self_0 in
-        let* α1 : u32.t :=
-          M.call
-            ((core.clone.Clone.clone (Self := u32.t) (Trait := ltac:(refine _)))
-              α0) in
-        M.alloc (mother.Status.EndingPeriod α1)
-      | mother.Status.Ended __self_0 =>
-        let* __self_0 := M.alloc __self_0 in
-        let* α0 : ref mother.Outline.t := M.read __self_0 in
-        let* α1 : mother.Outline.t :=
-          M.call
-            ((core.clone.Clone.clone
-                (Self := mother.Outline.t)
-                (Trait := ltac:(refine _)))
-              α0) in
-        M.alloc (mother.Status.Ended α1)
-      | mother.Status.RfDelay __self_0 =>
-        let* __self_0 := M.alloc __self_0 in
-        let* α0 : ref u32.t := M.read __self_0 in
-        let* α1 : u32.t :=
-          M.call
-            ((core.clone.Clone.clone (Self := u32.t) (Trait := ltac:(refine _)))
-              α0) in
-        M.alloc (mother.Status.RfDelay α1)
-      end in
+      match_operator
+        α0
+        [
+          fun α =>
+            match α with
+            | mother.Status.NotStarted => M.alloc mother.Status.NotStarted
+            | _ => M.break_match
+            end :
+            M (M.Val mother.Status.t);
+          fun α =>
+            match α with
+            | mother.Status.OpeningPeriod => M.alloc mother.Status.OpeningPeriod
+            | _ => M.break_match
+            end :
+            M (M.Val mother.Status.t);
+          fun α =>
+            match α with
+            | mother.Status.EndingPeriod __self_0 =>
+              let* __self_0 := M.alloc __self_0 in
+              let* α0 : ref u32.t := M.read __self_0 in
+              let* α1 : u32.t :=
+                M.call
+                  ((core.clone.Clone.clone
+                      (Self := u32.t)
+                      (Trait := ltac:(refine _)))
+                    α0) in
+              M.alloc (mother.Status.EndingPeriod α1)
+            | _ => M.break_match
+            end :
+            M (M.Val mother.Status.t);
+          fun α =>
+            match α with
+            | mother.Status.Ended __self_0 =>
+              let* __self_0 := M.alloc __self_0 in
+              let* α0 : ref mother.Outline.t := M.read __self_0 in
+              let* α1 : mother.Outline.t :=
+                M.call
+                  ((core.clone.Clone.clone
+                      (Self := mother.Outline.t)
+                      (Trait := ltac:(refine _)))
+                    α0) in
+              M.alloc (mother.Status.Ended α1)
+            | _ => M.break_match
+            end :
+            M (M.Val mother.Status.t);
+          fun α =>
+            match α with
+            | mother.Status.RfDelay __self_0 =>
+              let* __self_0 := M.alloc __self_0 in
+              let* α0 : ref u32.t := M.read __self_0 in
+              let* α1 : u32.t :=
+                M.call
+                  ((core.clone.Clone.clone
+                      (Self := u32.t)
+                      (Trait := ltac:(refine _)))
+                    α0) in
+              M.alloc (mother.Status.RfDelay α1)
+            | _ => M.break_match
+            end :
+            M (M.Val mother.Status.t)
+        ] in
     M.read α1.
   
   Global Instance AssociatedFunction_clone :
@@ -978,27 +1081,69 @@ Section Impl_core_cmp_Eq_for_mother_Auction_t.
   Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
     let* self := M.alloc self in
     let* α0 : M.Val unit :=
-      match tt with
-      | _ =>
-        match tt with
-        | _ =>
-          match tt with
-          | _ =>
-            match tt with
+      match_operator
+        tt
+        [
+          fun α =>
+            match α with
             | _ =>
-              match tt with
-              | _ =>
-                match tt with
-                | _ =>
-                  match tt with
-                  | _ => M.alloc tt
-                  end
-                end
-              end
-            end
-          end
-        end
-      end in
+              match_operator
+                tt
+                [
+                  fun α =>
+                    match α with
+                    | _ =>
+                      match_operator
+                        tt
+                        [
+                          fun α =>
+                            match α with
+                            | _ =>
+                              match_operator
+                                tt
+                                [
+                                  fun α =>
+                                    match α with
+                                    | _ =>
+                                      match_operator
+                                        tt
+                                        [
+                                          fun α =>
+                                            match α with
+                                            | _ =>
+                                              match_operator
+                                                tt
+                                                [
+                                                  fun α =>
+                                                    match α with
+                                                    | _ =>
+                                                      match_operator
+                                                        tt
+                                                        [
+                                                          fun α =>
+                                                            match α with
+                                                            | _ => M.alloc tt
+                                                            end :
+                                                            M (M.Val unit)
+                                                        ]
+                                                    end :
+                                                    M (M.Val unit)
+                                                ]
+                                            end :
+                                            M (M.Val unit)
+                                        ]
+                                    end :
+                                    M (M.Val unit)
+                                ]
+                            end :
+                            M (M.Val unit)
+                        ]
+                    end :
+                    M (M.Val unit)
+                ]
+            end :
+            M (M.Val unit)
+        ] in
     M.read α0.
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
@@ -1202,22 +1347,35 @@ Section Impl_core_cmp_PartialEq_for_mother_Failure_t.
     let* α2 : ref mother.Failure.t := M.read self in
     let* α3 : ref mother.Failure.t := M.read other in
     let* α4 : M.Val bool.t :=
-      match (α2, α3) with
-      | (mother.Failure.Revert __self_0, mother.Failure.Revert __arg1_0) =>
-        let* __self_0 := M.alloc __self_0 in
-        let* __arg1_0 := M.alloc __arg1_0 in
-        let* α0 : ref alloc.string.String.t := M.read __self_0 in
-        let* α1 : ref alloc.string.String.t := M.read __arg1_0 in
-        let* α2 : bool.t :=
-          M.call
-            ((core.cmp.PartialEq.eq
-                (Self := alloc.string.String.t)
-                (Trait := ltac:(refine _)))
-              α0
-              α1) in
-        M.alloc α2
-      | _ => M.alloc true
-      end in
+      match_operator
+        (α2, α3)
+        [
+          fun α =>
+            match α with
+            |
+                (mother.Failure.Revert __self_0, mother.Failure.Revert __arg1_0)
+                =>
+              let* __self_0 := M.alloc __self_0 in
+              let* __arg1_0 := M.alloc __arg1_0 in
+              let* α0 : ref alloc.string.String.t := M.read __self_0 in
+              let* α1 : ref alloc.string.String.t := M.read __arg1_0 in
+              let* α2 : bool.t :=
+                M.call
+                  ((core.cmp.PartialEq.eq
+                      (Self := alloc.string.String.t)
+                      (Trait := ltac:(refine _)))
+                    α0
+                    α1) in
+              M.alloc α2
+            | _ => M.break_match
+            end :
+            M (M.Val bool.t);
+          fun α =>
+            match α with
+            | _ => M.alloc true
+            end :
+            M (M.Val bool.t)
+        ] in
     let* α5 : bool.t := M.read α4 in
     let* α0 : M.Val bool.t :=
       M.alloc (BinOp.Pure.and (BinOp.Pure.eq α0 α1) α5) in
@@ -1255,9 +1413,15 @@ Section Impl_core_cmp_Eq_for_mother_Failure_t.
   Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
     let* self := M.alloc self in
     let* α0 : M.Val unit :=
-      match tt with
-      | _ => M.alloc tt
-      end in
+      match_operator
+        tt
+        [
+          fun α =>
+            match α with
+            | _ => M.alloc tt
+            end :
+            M (M.Val unit)
+        ] in
     M.read α0.
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
@@ -1568,24 +1732,43 @@ Section Impl_mother_Mother_t.
     let* fail := M.alloc fail in
     let* α0 : core.option.Option.t mother.Failure.t := M.read fail in
     let* α1 : M.Val (core.result.Result.t unit mother.Failure.t) :=
-      match α0 with
-      | core.option.Option.Some (mother.Failure.Revert _) =>
-        let* α0 : ref str.t := M.read (mk_str "Reverting on user demand!") in
-        let* α1 : alloc.string.String.t :=
-          M.call
-            ((alloc.string.ToString.to_string
-                (Self := str.t)
-                (Trait := ltac:(refine _)))
-              α0) in
-        M.alloc (core.result.Result.Err (mother.Failure.Revert α1))
-      | core.option.Option.Some mother.Failure.Panic =>
-        let* α0 : ref str.t := M.read (mk_str "Trapping on user demand!") in
-        let* α1 : never.t := M.call (std.panicking.begin_panic α0) in
-        let* α2 : core.result.Result.t unit mother.Failure.t :=
-          never_to_any α1 in
-        M.alloc α2
-      | core.option.Option.None => M.alloc (core.result.Result.Ok tt)
-      end in
+      match_operator
+        α0
+        [
+          fun α =>
+            match α with
+            | core.option.Option.Some (mother.Failure.Revert _) =>
+              let* α0 : ref str.t :=
+                M.read (mk_str "Reverting on user demand!") in
+              let* α1 : alloc.string.String.t :=
+                M.call
+                  ((alloc.string.ToString.to_string
+                      (Self := str.t)
+                      (Trait := ltac:(refine _)))
+                    α0) in
+              M.alloc (core.result.Result.Err (mother.Failure.Revert α1))
+            | _ => M.break_match
+            end :
+            M (M.Val (core.result.Result.t unit mother.Failure.t));
+          fun α =>
+            match α with
+            | core.option.Option.Some mother.Failure.Panic =>
+              let* α0 : ref str.t :=
+                M.read (mk_str "Trapping on user demand!") in
+              let* α1 : never.t := M.call (std.panicking.begin_panic α0) in
+              let* α2 : core.result.Result.t unit mother.Failure.t :=
+                never_to_any α1 in
+              M.alloc α2
+            | _ => M.break_match
+            end :
+            M (M.Val (core.result.Result.t unit mother.Failure.t));
+          fun α =>
+            match α with
+            | core.option.Option.None => M.alloc (core.result.Result.Ok tt)
+            | _ => M.break_match
+            end :
+            M (M.Val (core.result.Result.t unit mother.Failure.t))
+        ] in
     M.read α1.
   
   Global Instance AssociatedFunction_revert_or_trap :

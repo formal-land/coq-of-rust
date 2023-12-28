@@ -50,11 +50,17 @@ Section Impl_core_clone_Clone_for_call_builder_AccountId_t.
   Definition clone (self : ref Self) : M call_builder.AccountId.t :=
     let* self := M.alloc self in
     let* α0 : M.Val call_builder.AccountId.t :=
-      match tt with
-      | _ =>
-        let* α0 : ref call_builder.AccountId.t := M.read self in
-        M.pure (deref α0)
-      end in
+      match_operator
+        tt
+        [
+          fun α =>
+            match α with
+            | _ =>
+              let* α0 : ref call_builder.AccountId.t := M.read self in
+              M.pure (deref α0)
+            end :
+            M (M.Val call_builder.AccountId.t)
+        ] in
     M.read α0.
   
   Global Instance AssociatedFunction_clone :
@@ -197,35 +203,54 @@ Section Impl_call_builder_CallBuilderTest_t.
     let* α0 : core.result.Result.t unit call_builder.LangError.t :=
       M.read result in
     let* α0 : M.Val (core.option.Option.t call_builder.LangError.t) :=
-      match α0 with
-      | core.result.Result.Ok _ => M.alloc core.option.Option.None
-      |
-          core.result.Result.Err (call_builder.LangError.CouldNotReadInput as e)
-          =>
-        let* e := M.alloc e in
-        let* α0 : call_builder.LangError.t := M.read e in
-        M.alloc (core.option.Option.Some α0)
-      | core.result.Result.Err _ =>
-        let* α0 : ref str.t :=
-          M.read
-            (mk_str
-              "not implemented: No other `LangError` variants exist at the moment.") in
-        let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-        let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
-        let* α3 : ref (slice (ref str.t)) :=
-          M.read (pointer_coercion "Unsize" α2) in
-        let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ ] in
-        let* α5 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-          M.alloc (borrow α4) in
-        let* α6 : ref (slice core.fmt.rt.Argument.t) :=
-          M.read (pointer_coercion "Unsize" α5) in
-        let* α7 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_v1"] α3 α6) in
-        let* α8 : never.t := M.call (core.panicking.panic_fmt α7) in
-        let* α9 : core.option.Option.t call_builder.LangError.t :=
-          never_to_any α8 in
-        M.alloc α9
-      end in
+      match_operator
+        α0
+        [
+          fun α =>
+            match α with
+            | core.result.Result.Ok _ => M.alloc core.option.Option.None
+            | _ => M.break_match
+            end :
+            M (M.Val (core.option.Option.t call_builder.LangError.t));
+          fun α =>
+            match α with
+            |
+                core.result.Result.Err
+                  (call_builder.LangError.CouldNotReadInput as e)
+                =>
+              let* e := M.alloc e in
+              let* α0 : call_builder.LangError.t := M.read e in
+              M.alloc (core.option.Option.Some α0)
+            | _ => M.break_match
+            end :
+            M (M.Val (core.option.Option.t call_builder.LangError.t));
+          fun α =>
+            match α with
+            | core.result.Result.Err _ =>
+              let* α0 : ref str.t :=
+                M.read
+                  (mk_str
+                    "not implemented: No other `LangError` variants exist at the moment.") in
+              let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
+              let* α2 : M.Val (ref (array (ref str.t))) :=
+                M.alloc (borrow α1) in
+              let* α3 : ref (slice (ref str.t)) :=
+                M.read (pointer_coercion "Unsize" α2) in
+              let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ ] in
+              let* α5 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+                M.alloc (borrow α4) in
+              let* α6 : ref (slice core.fmt.rt.Argument.t) :=
+                M.read (pointer_coercion "Unsize" α5) in
+              let* α7 : core.fmt.Arguments.t :=
+                M.call (core.fmt.Arguments.t::["new_v1"] α3 α6) in
+              let* α8 : never.t := M.call (core.panicking.panic_fmt α7) in
+              let* α9 : core.option.Option.t call_builder.LangError.t :=
+                never_to_any α8 in
+              M.alloc α9
+            | _ => M.break_match
+            end :
+            M (M.Val (core.option.Option.t call_builder.LangError.t))
+        ] in
     M.read α0.
   
   Global Instance AssociatedFunction_call :

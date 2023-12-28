@@ -134,39 +134,64 @@ Definition double_first
           defining_an_error_type.DoubleError.t)::["and_then"]
       α2
       (fun (α0 : ref (ref str.t)) =>
-        match α0 with
-        | s =>
-          let* s := M.alloc s in
-          let* α0 : ref (ref str.t) := M.read s in
-          let* α1 : ref str.t := M.read (deref α0) in
-          let* α2 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
-            M.call (str.t::["parse"] α1) in
-          let* α3 :
-              core.result.Result.t i32.t defining_an_error_type.DoubleError.t :=
-            M.call
-              ((core.result.Result.t
-                    i32.t
-                    core.num.error.ParseIntError.t)::["map_err"]
-                α2
-                (fun (α0 : core.num.error.ParseIntError.t) =>
-                  match α0 with
-                  | _ => M.pure defining_an_error_type.DoubleError.Build
-                  end :
-                  M defining_an_error_type.DoubleError.t)) in
-          M.call
-            ((core.result.Result.t
+        (match_operator
+          α0
+          [
+            fun α =>
+              match α with
+              | s =>
+                let* s := M.alloc s in
+                let* α0 : ref (ref str.t) := M.read s in
+                let* α1 : ref str.t := M.read (deref α0) in
+                let* α2 :
+                    core.result.Result.t i32.t core.num.error.ParseIntError.t :=
+                  M.call (str.t::["parse"] α1) in
+                let* α3 :
+                    core.result.Result.t
+                      i32.t
+                      defining_an_error_type.DoubleError.t :=
+                  M.call
+                    ((core.result.Result.t
+                          i32.t
+                          core.num.error.ParseIntError.t)::["map_err"]
+                      α2
+                      (fun (α0 : core.num.error.ParseIntError.t) =>
+                        (match_operator
+                          α0
+                          [
+                            fun α =>
+                              match α with
+                              | _ =>
+                                M.pure defining_an_error_type.DoubleError.Build
+                              end :
+                              M defining_an_error_type.DoubleError.t
+                          ]) :
+                        M defining_an_error_type.DoubleError.t)) in
+                M.call
+                  ((core.result.Result.t
+                        i32.t
+                        defining_an_error_type.DoubleError.t)::["map"]
+                    α3
+                    (fun (α0 : i32.t) =>
+                      (match_operator
+                        α0
+                        [
+                          fun α =>
+                            match α with
+                            | i =>
+                              let* i := M.alloc i in
+                              let* α0 : i32.t := M.read i in
+                              BinOp.Panic.mul (Integer.of_Z 2) α0
+                            end :
+                            M i32.t
+                        ]) :
+                      M i32.t))
+              end :
+              M
+                (core.result.Result.t
                   i32.t
-                  defining_an_error_type.DoubleError.t)::["map"]
-              α3
-              (fun (α0 : i32.t) =>
-                match α0 with
-                | i =>
-                  let* i := M.alloc i in
-                  let* α0 : i32.t := M.read i in
-                  BinOp.Panic.mul (Integer.of_Z 2) α0
-                end :
-                M i32.t))
-        end :
+                  defining_an_error_type.DoubleError.t)
+          ]) :
         M (core.result.Result.t i32.t defining_an_error_type.DoubleError.t))).
 
 (*
@@ -184,52 +209,68 @@ Definition print
   let* α0 : core.result.Result.t i32.t defining_an_error_type.DoubleError.t :=
     M.read result in
   let* α1 : M.Val unit :=
-    match α0 with
-    | core.result.Result.Ok n =>
-      let* n := M.alloc n in
-      let* _ : M.Val unit :=
-        let* α0 : ref str.t := M.read (mk_str "The first doubled is ") in
-        let* α1 : ref str.t := M.read (mk_str "
+    match_operator
+      α0
+      [
+        fun α =>
+          match α with
+          | core.result.Result.Ok n =>
+            let* n := M.alloc n in
+            let* _ : M.Val unit :=
+              let* α0 : ref str.t := M.read (mk_str "The first doubled is ") in
+              let* α1 : ref str.t := M.read (mk_str "
 ") in
-        let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-        let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
-        let* α4 : ref (slice (ref str.t)) :=
-          M.read (pointer_coercion "Unsize" α3) in
-        let* α5 : core.fmt.rt.Argument.t :=
-          M.call (core.fmt.rt.Argument.t::["new_display"] (borrow n)) in
-        let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
-        let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-          M.alloc (borrow α6) in
-        let* α8 : ref (slice core.fmt.rt.Argument.t) :=
-          M.read (pointer_coercion "Unsize" α7) in
-        let* α9 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
-        let* α10 : unit := M.call (std.io.stdio._print α9) in
-        M.alloc α10 in
-      M.alloc tt
-    | core.result.Result.Err e =>
-      let* e := M.alloc e in
-      let* _ : M.Val unit :=
-        let* α0 : ref str.t := M.read (mk_str "Error: ") in
-        let* α1 : ref str.t := M.read (mk_str "
+              let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
+              let* α3 : M.Val (ref (array (ref str.t))) :=
+                M.alloc (borrow α2) in
+              let* α4 : ref (slice (ref str.t)) :=
+                M.read (pointer_coercion "Unsize" α3) in
+              let* α5 : core.fmt.rt.Argument.t :=
+                M.call (core.fmt.rt.Argument.t::["new_display"] (borrow n)) in
+              let* α6 : M.Val (array core.fmt.rt.Argument.t) :=
+                M.alloc [ α5 ] in
+              let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+                M.alloc (borrow α6) in
+              let* α8 : ref (slice core.fmt.rt.Argument.t) :=
+                M.read (pointer_coercion "Unsize" α7) in
+              let* α9 : core.fmt.Arguments.t :=
+                M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
+              let* α10 : unit := M.call (std.io.stdio._print α9) in
+              M.alloc α10 in
+            M.alloc tt
+          | _ => M.break_match
+          end :
+          M (M.Val unit);
+        fun α =>
+          match α with
+          | core.result.Result.Err e =>
+            let* e := M.alloc e in
+            let* _ : M.Val unit :=
+              let* α0 : ref str.t := M.read (mk_str "Error: ") in
+              let* α1 : ref str.t := M.read (mk_str "
 ") in
-        let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-        let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
-        let* α4 : ref (slice (ref str.t)) :=
-          M.read (pointer_coercion "Unsize" α3) in
-        let* α5 : core.fmt.rt.Argument.t :=
-          M.call (core.fmt.rt.Argument.t::["new_display"] (borrow e)) in
-        let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
-        let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-          M.alloc (borrow α6) in
-        let* α8 : ref (slice core.fmt.rt.Argument.t) :=
-          M.read (pointer_coercion "Unsize" α7) in
-        let* α9 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
-        let* α10 : unit := M.call (std.io.stdio._print α9) in
-        M.alloc α10 in
-      M.alloc tt
-    end in
+              let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
+              let* α3 : M.Val (ref (array (ref str.t))) :=
+                M.alloc (borrow α2) in
+              let* α4 : ref (slice (ref str.t)) :=
+                M.read (pointer_coercion "Unsize" α3) in
+              let* α5 : core.fmt.rt.Argument.t :=
+                M.call (core.fmt.rt.Argument.t::["new_display"] (borrow e)) in
+              let* α6 : M.Val (array core.fmt.rt.Argument.t) :=
+                M.alloc [ α5 ] in
+              let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+                M.alloc (borrow α6) in
+              let* α8 : ref (slice core.fmt.rt.Argument.t) :=
+                M.read (pointer_coercion "Unsize" α7) in
+              let* α9 : core.fmt.Arguments.t :=
+                M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
+              let* α10 : unit := M.call (std.io.stdio._print α9) in
+              M.alloc α10 in
+            M.alloc tt
+          | _ => M.break_match
+          end :
+          M (M.Val unit)
+      ] in
   M.read α1.
 
 (*

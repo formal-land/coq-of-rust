@@ -139,150 +139,198 @@ Definition main : M unit :=
             (Trait := ltac:(refine _)))
           α1) in
     let* α3 : M.Val unit :=
-      match α2 with
-      | iter =>
-        let* iter := M.alloc iter in
-        M.loop
-          (let* _ : M.Val unit :=
-            let* α0 : core.option.Option.t (usize.t * (ref str.t)) :=
-              M.call
-                ((core.iter.traits.iterator.Iterator.next
-                    (Self :=
-                      core.iter.adapters.enumerate.Enumerate.t
-                        core.str.iter.SplitWhitespace.t)
-                    (Trait := ltac:(refine _)))
-                  (borrow_mut iter)) in
-            match α0 with
-            | core.option.Option.None =>
-              let* α0 : M.Val never.t := M.break in
-              let* α1 := M.read α0 in
-              let* α2 : unit := never_to_any α1 in
-              M.alloc α2
-            | core.option.Option.Some (i, data_segment) =>
-              let* i := M.alloc i in
-              let* data_segment := M.alloc data_segment in
-              let* _ : M.Val unit :=
-                let* _ : M.Val unit :=
-                  let* α0 : ref str.t := M.read (mk_str "data segment ") in
-                  let* α1 : ref str.t := M.read (mk_str " is "") in
-                  let* α2 : ref str.t := M.read (mk_str ""
-") in
-                  let* α3 : M.Val (array (ref str.t)) :=
-                    M.alloc [ α0; α1; α2 ] in
-                  let* α4 : M.Val (ref (array (ref str.t))) :=
-                    M.alloc (borrow α3) in
-                  let* α5 : ref (slice (ref str.t)) :=
-                    M.read (pointer_coercion "Unsize" α4) in
-                  let* α6 : core.fmt.rt.Argument.t :=
+      match_operator
+        α2
+        [
+          fun α =>
+            match α with
+            | iter =>
+              let* iter := M.alloc iter in
+              M.loop
+                (let* _ : M.Val unit :=
+                  let* α0 : core.option.Option.t (usize.t * (ref str.t)) :=
                     M.call
-                      (core.fmt.rt.Argument.t::["new_display"] (borrow i)) in
-                  let* α7 : core.fmt.rt.Argument.t :=
-                    M.call
-                      (core.fmt.rt.Argument.t::["new_display"]
-                        (borrow data_segment)) in
-                  let* α8 : M.Val (array core.fmt.rt.Argument.t) :=
-                    M.alloc [ α6; α7 ] in
-                  let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-                    M.alloc (borrow α8) in
-                  let* α10 : ref (slice core.fmt.rt.Argument.t) :=
-                    M.read (pointer_coercion "Unsize" α9) in
-                  let* α11 : core.fmt.Arguments.t :=
-                    M.call (core.fmt.Arguments.t::["new_v1"] α5 α10) in
-                  let* α12 : unit := M.call (std.io.stdio._print α11) in
-                  M.alloc α12 in
-                M.alloc tt in
-              let* _ : M.Val unit :=
-                let* α0 : std.thread.JoinHandle.t u32.t :=
-                  M.call
-                    (std.thread.spawn
-                      ((let* result : M.Val u32.t :=
-                        let* α0 : ref str.t := M.read data_segment in
-                        let* α1 : core.str.iter.Chars.t :=
-                          M.call (str.t::["chars"] α0) in
-                        let* α2 :
-                            core.iter.adapters.map.Map.t
-                              core.str.iter.Chars.t
-                              (char.t -> M u32.t) :=
-                          M.call
-                            ((core.iter.traits.iterator.Iterator.map
-                                (Self := core.str.iter.Chars.t)
-                                (Trait := ltac:(refine _)))
-                              α1
-                              (fun (α0 : char.t) =>
-                                match α0 with
-                                | c =>
-                                  let* c := M.alloc c in
-                                  let* α0 : char.t := M.read c in
-                                  let* α1 : core.option.Option.t u32.t :=
-                                    M.call
-                                      (char.t::["to_digit"]
-                                        α0
-                                        (Integer.of_Z 10)) in
-                                  let* α2 : ref str.t :=
-                                    M.read (mk_str "should be a digit") in
-                                  M.call
-                                    ((core.option.Option.t u32.t)::["expect"]
-                                      α1
-                                      α2)
-                                end :
-                                M u32.t)) in
-                        let* α3 : u32.t :=
-                          M.call
-                            ((core.iter.traits.iterator.Iterator.sum
-                                (Self :=
-                                  core.iter.adapters.map.Map.t
-                                    core.str.iter.Chars.t
-                                    (char.t -> M u32.t))
-                                (Trait := ltac:(refine _)))
-                              α2) in
-                        M.alloc α3 in
-                      let* _ : M.Val unit :=
-                        let* _ : M.Val unit :=
-                          let* α0 : ref str.t :=
-                            M.read (mk_str "processed segment ") in
-                          let* α1 : ref str.t := M.read (mk_str ", result=") in
-                          let* α2 : ref str.t := M.read (mk_str "
+                      ((core.iter.traits.iterator.Iterator.next
+                          (Self :=
+                            core.iter.adapters.enumerate.Enumerate.t
+                              core.str.iter.SplitWhitespace.t)
+                          (Trait := ltac:(refine _)))
+                        (borrow_mut iter)) in
+                  match_operator
+                    α0
+                    [
+                      fun α =>
+                        match α with
+                        | core.option.Option.None =>
+                          let* α0 : M.Val never.t := M.break in
+                          let* α1 := M.read α0 in
+                          let* α2 : unit := never_to_any α1 in
+                          M.alloc α2
+                        | _ => M.break_match
+                        end :
+                        M (M.Val unit);
+                      fun α =>
+                        match α with
+                        | core.option.Option.Some (i, data_segment) =>
+                          let* i := M.alloc i in
+                          let* data_segment := M.alloc data_segment in
+                          let* _ : M.Val unit :=
+                            let* _ : M.Val unit :=
+                              let* α0 : ref str.t :=
+                                M.read (mk_str "data segment ") in
+                              let* α1 : ref str.t := M.read (mk_str " is "") in
+                              let* α2 : ref str.t := M.read (mk_str ""
 ") in
-                          let* α3 : M.Val (array (ref str.t)) :=
-                            M.alloc [ α0; α1; α2 ] in
-                          let* α4 : M.Val (ref (array (ref str.t))) :=
-                            M.alloc (borrow α3) in
-                          let* α5 : ref (slice (ref str.t)) :=
-                            M.read (pointer_coercion "Unsize" α4) in
-                          let* α6 : core.fmt.rt.Argument.t :=
-                            M.call
-                              (core.fmt.rt.Argument.t::["new_display"]
-                                (borrow i)) in
-                          let* α7 : core.fmt.rt.Argument.t :=
-                            M.call
-                              (core.fmt.rt.Argument.t::["new_display"]
-                                (borrow result)) in
-                          let* α8 : M.Val (array core.fmt.rt.Argument.t) :=
-                            M.alloc [ α6; α7 ] in
-                          let* α9 :
-                              M.Val (ref (array core.fmt.rt.Argument.t)) :=
-                            M.alloc (borrow α8) in
-                          let* α10 : ref (slice core.fmt.rt.Argument.t) :=
-                            M.read (pointer_coercion "Unsize" α9) in
-                          let* α11 : core.fmt.Arguments.t :=
-                            M.call (core.fmt.Arguments.t::["new_v1"] α5 α10) in
-                          let* α12 : unit := M.call (std.io.stdio._print α11) in
-                          M.alloc α12 in
-                        M.alloc tt in
-                      M.read result) :
-                      M u32.t)) in
-                let* α1 : unit :=
-                  M.call
-                    ((alloc.vec.Vec.t
-                          (std.thread.JoinHandle.t u32.t)
-                          alloc.alloc.Global.t)::["push"]
-                      (borrow_mut children)
-                      α0) in
-                M.alloc α1 in
-              M.alloc tt
-            end in
-          M.alloc tt)
-      end in
+                              let* α3 : M.Val (array (ref str.t)) :=
+                                M.alloc [ α0; α1; α2 ] in
+                              let* α4 : M.Val (ref (array (ref str.t))) :=
+                                M.alloc (borrow α3) in
+                              let* α5 : ref (slice (ref str.t)) :=
+                                M.read (pointer_coercion "Unsize" α4) in
+                              let* α6 : core.fmt.rt.Argument.t :=
+                                M.call
+                                  (core.fmt.rt.Argument.t::["new_display"]
+                                    (borrow i)) in
+                              let* α7 : core.fmt.rt.Argument.t :=
+                                M.call
+                                  (core.fmt.rt.Argument.t::["new_display"]
+                                    (borrow data_segment)) in
+                              let* α8 : M.Val (array core.fmt.rt.Argument.t) :=
+                                M.alloc [ α6; α7 ] in
+                              let* α9 :
+                                  M.Val (ref (array core.fmt.rt.Argument.t)) :=
+                                M.alloc (borrow α8) in
+                              let* α10 : ref (slice core.fmt.rt.Argument.t) :=
+                                M.read (pointer_coercion "Unsize" α9) in
+                              let* α11 : core.fmt.Arguments.t :=
+                                M.call
+                                  (core.fmt.Arguments.t::["new_v1"] α5 α10) in
+                              let* α12 : unit :=
+                                M.call (std.io.stdio._print α11) in
+                              M.alloc α12 in
+                            M.alloc tt in
+                          let* _ : M.Val unit :=
+                            let* α0 : std.thread.JoinHandle.t u32.t :=
+                              M.call
+                                (std.thread.spawn
+                                  ((let* result : M.Val u32.t :=
+                                    let* α0 : ref str.t :=
+                                      M.read data_segment in
+                                    let* α1 : core.str.iter.Chars.t :=
+                                      M.call (str.t::["chars"] α0) in
+                                    let* α2 :
+                                        core.iter.adapters.map.Map.t
+                                          core.str.iter.Chars.t
+                                          (char.t -> M u32.t) :=
+                                      M.call
+                                        ((core.iter.traits.iterator.Iterator.map
+                                            (Self := core.str.iter.Chars.t)
+                                            (Trait := ltac:(refine _)))
+                                          α1
+                                          (fun (α0 : char.t) =>
+                                            (match_operator
+                                              α0
+                                              [
+                                                fun α =>
+                                                  match α with
+                                                  | c =>
+                                                    let* c := M.alloc c in
+                                                    let* α0 : char.t :=
+                                                      M.read c in
+                                                    let* α1 :
+                                                        core.option.Option.t
+                                                          u32.t :=
+                                                      M.call
+                                                        (char.t::["to_digit"]
+                                                          α0
+                                                          (Integer.of_Z 10)) in
+                                                    let* α2 : ref str.t :=
+                                                      M.read
+                                                        (mk_str
+                                                          "should be a digit") in
+                                                    M.call
+                                                      ((core.option.Option.t
+                                                            u32.t)::["expect"]
+                                                        α1
+                                                        α2)
+                                                  end :
+                                                  M u32.t
+                                              ]) :
+                                            M u32.t)) in
+                                    let* α3 : u32.t :=
+                                      M.call
+                                        ((core.iter.traits.iterator.Iterator.sum
+                                            (Self :=
+                                              core.iter.adapters.map.Map.t
+                                                core.str.iter.Chars.t
+                                                (char.t -> M u32.t))
+                                            (Trait := ltac:(refine _)))
+                                          α2) in
+                                    M.alloc α3 in
+                                  let* _ : M.Val unit :=
+                                    let* _ : M.Val unit :=
+                                      let* α0 : ref str.t :=
+                                        M.read (mk_str "processed segment ") in
+                                      let* α1 : ref str.t :=
+                                        M.read (mk_str ", result=") in
+                                      let* α2 : ref str.t :=
+                                        M.read (mk_str "
+") in
+                                      let* α3 : M.Val (array (ref str.t)) :=
+                                        M.alloc [ α0; α1; α2 ] in
+                                      let* α4 :
+                                          M.Val (ref (array (ref str.t))) :=
+                                        M.alloc (borrow α3) in
+                                      let* α5 : ref (slice (ref str.t)) :=
+                                        M.read (pointer_coercion "Unsize" α4) in
+                                      let* α6 : core.fmt.rt.Argument.t :=
+                                        M.call
+                                          (core.fmt.rt.Argument.t::["new_display"]
+                                            (borrow i)) in
+                                      let* α7 : core.fmt.rt.Argument.t :=
+                                        M.call
+                                          (core.fmt.rt.Argument.t::["new_display"]
+                                            (borrow result)) in
+                                      let* α8 :
+                                          M.Val
+                                            (array core.fmt.rt.Argument.t) :=
+                                        M.alloc [ α6; α7 ] in
+                                      let* α9 :
+                                          M.Val
+                                            (ref
+                                              (array core.fmt.rt.Argument.t)) :=
+                                        M.alloc (borrow α8) in
+                                      let* α10 :
+                                          ref (slice core.fmt.rt.Argument.t) :=
+                                        M.read (pointer_coercion "Unsize" α9) in
+                                      let* α11 : core.fmt.Arguments.t :=
+                                        M.call
+                                          (core.fmt.Arguments.t::["new_v1"]
+                                            α5
+                                            α10) in
+                                      let* α12 : unit :=
+                                        M.call (std.io.stdio._print α11) in
+                                      M.alloc α12 in
+                                    M.alloc tt in
+                                  M.read result) :
+                                  M u32.t)) in
+                            let* α1 : unit :=
+                              M.call
+                                ((alloc.vec.Vec.t
+                                      (std.thread.JoinHandle.t u32.t)
+                                      alloc.alloc.Global.t)::["push"]
+                                  (borrow_mut children)
+                                  α0) in
+                            M.alloc α1 in
+                          M.alloc tt
+                        | _ => M.break_match
+                        end :
+                        M (M.Val unit)
+                    ] in
+                M.alloc tt)
+            end :
+            M (M.Val unit)
+        ] in
     M.pure (use α3) in
   let* final_result : M.Val u32.t :=
     let* α0 :
@@ -315,23 +363,29 @@ Definition main : M unit :=
             (Trait := ltac:(refine _)))
           α1
           (fun (α0 : std.thread.JoinHandle.t u32.t) =>
-            match α0 with
-            | c =>
-              let* c := M.alloc c in
-              let* α0 : std.thread.JoinHandle.t u32.t := M.read c in
-              let* α1 :
-                  core.result.Result.t
-                    u32.t
-                    (alloc.boxed.Box.t dynamic alloc.alloc.Global.t) :=
-                M.call ((std.thread.JoinHandle.t u32.t)::["join"] α0) in
-              M.call
-                ((core.result.Result.t
-                      u32.t
-                      (alloc.boxed.Box.t
-                        dynamic
-                        alloc.alloc.Global.t))::["unwrap"]
-                  α1)
-            end :
+            (match_operator
+              α0
+              [
+                fun α =>
+                  match α with
+                  | c =>
+                    let* c := M.alloc c in
+                    let* α0 : std.thread.JoinHandle.t u32.t := M.read c in
+                    let* α1 :
+                        core.result.Result.t
+                          u32.t
+                          (alloc.boxed.Box.t dynamic alloc.alloc.Global.t) :=
+                      M.call ((std.thread.JoinHandle.t u32.t)::["join"] α0) in
+                    M.call
+                      ((core.result.Result.t
+                            u32.t
+                            (alloc.boxed.Box.t
+                              dynamic
+                              alloc.alloc.Global.t))::["unwrap"]
+                        α1)
+                  end :
+                  M u32.t
+              ]) :
             M u32.t)) in
     let* α3 : u32.t :=
       M.call

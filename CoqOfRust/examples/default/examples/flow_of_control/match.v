@@ -58,68 +58,101 @@ Definition main : M unit :=
     M.alloc tt in
   let* _ : M.Val unit :=
     let* α0 : i32.t := M.read number in
-    match α0 with
-    | _ =>
-      let* _ : M.Val unit :=
-        let* α0 : ref str.t := M.read (mk_str "One!
+    match_operator
+      α0
+      [
+        fun α =>
+          match α with
+          | _ =>
+            let* _ : M.Val unit :=
+              let* α0 : ref str.t := M.read (mk_str "One!
 ") in
-        let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-        let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
-        let* α3 : ref (slice (ref str.t)) :=
-          M.read (pointer_coercion "Unsize" α2) in
-        let* α4 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_const"] α3) in
-        let* α5 : unit := M.call (std.io.stdio._print α4) in
-        M.alloc α5 in
-      M.alloc tt
-    | _ | _ | _ | _ | _ =>
-      let* _ : M.Val unit :=
-        let* α0 : ref str.t := M.read (mk_str "This is a prime
+              let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
+              let* α2 : M.Val (ref (array (ref str.t))) :=
+                M.alloc (borrow α1) in
+              let* α3 : ref (slice (ref str.t)) :=
+                M.read (pointer_coercion "Unsize" α2) in
+              let* α4 : core.fmt.Arguments.t :=
+                M.call (core.fmt.Arguments.t::["new_const"] α3) in
+              let* α5 : unit := M.call (std.io.stdio._print α4) in
+              M.alloc α5 in
+            M.alloc tt
+          end :
+          M (M.Val unit);
+        fun α =>
+          match α with
+          | _ | _ | _ | _ | _ =>
+            let* _ : M.Val unit :=
+              let* α0 : ref str.t := M.read (mk_str "This is a prime
 ") in
-        let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-        let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
-        let* α3 : ref (slice (ref str.t)) :=
-          M.read (pointer_coercion "Unsize" α2) in
-        let* α4 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_const"] α3) in
-        let* α5 : unit := M.call (std.io.stdio._print α4) in
-        M.alloc α5 in
-      M.alloc tt
-    | _ =>
-      let* _ : M.Val unit :=
-        let* α0 : ref str.t := M.read (mk_str "A teen
+              let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
+              let* α2 : M.Val (ref (array (ref str.t))) :=
+                M.alloc (borrow α1) in
+              let* α3 : ref (slice (ref str.t)) :=
+                M.read (pointer_coercion "Unsize" α2) in
+              let* α4 : core.fmt.Arguments.t :=
+                M.call (core.fmt.Arguments.t::["new_const"] α3) in
+              let* α5 : unit := M.call (std.io.stdio._print α4) in
+              M.alloc α5 in
+            M.alloc tt
+          | _ => M.break_match
+          end :
+          M (M.Val unit);
+        fun α =>
+          match α with
+          | _ =>
+            let* _ : M.Val unit :=
+              let* α0 : ref str.t := M.read (mk_str "A teen
 ") in
-        let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-        let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
-        let* α3 : ref (slice (ref str.t)) :=
-          M.read (pointer_coercion "Unsize" α2) in
-        let* α4 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_const"] α3) in
-        let* α5 : unit := M.call (std.io.stdio._print α4) in
-        M.alloc α5 in
-      M.alloc tt
-    | _ =>
-      let* _ : M.Val unit :=
-        let* α0 : ref str.t := M.read (mk_str "Ain't special
+              let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
+              let* α2 : M.Val (ref (array (ref str.t))) :=
+                M.alloc (borrow α1) in
+              let* α3 : ref (slice (ref str.t)) :=
+                M.read (pointer_coercion "Unsize" α2) in
+              let* α4 : core.fmt.Arguments.t :=
+                M.call (core.fmt.Arguments.t::["new_const"] α3) in
+              let* α5 : unit := M.call (std.io.stdio._print α4) in
+              M.alloc α5 in
+            M.alloc tt
+          end :
+          M (M.Val unit);
+        fun α =>
+          match α with
+          | _ =>
+            let* _ : M.Val unit :=
+              let* α0 : ref str.t := M.read (mk_str "Ain't special
 ") in
-        let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-        let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
-        let* α3 : ref (slice (ref str.t)) :=
-          M.read (pointer_coercion "Unsize" α2) in
-        let* α4 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_const"] α3) in
-        let* α5 : unit := M.call (std.io.stdio._print α4) in
-        M.alloc α5 in
-      M.alloc tt
-    end in
+              let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
+              let* α2 : M.Val (ref (array (ref str.t))) :=
+                M.alloc (borrow α1) in
+              let* α3 : ref (slice (ref str.t)) :=
+                M.read (pointer_coercion "Unsize" α2) in
+              let* α4 : core.fmt.Arguments.t :=
+                M.call (core.fmt.Arguments.t::["new_const"] α3) in
+              let* α5 : unit := M.call (std.io.stdio._print α4) in
+              M.alloc α5 in
+            M.alloc tt
+          end :
+          M (M.Val unit)
+      ] in
   let* boolean : M.Val bool.t := M.alloc true in
   let* binary : M.Val i32.t :=
     let* α0 : bool.t := M.read boolean in
     let* α1 : M.Val i32.t :=
-      match α0 with
-      | _ => M.alloc (Integer.of_Z 0)
-      | _ => M.alloc (Integer.of_Z 1)
-      end in
+      match_operator
+        α0
+        [
+          fun α =>
+            match α with
+            | _ => M.alloc (Integer.of_Z 0)
+            end :
+            M (M.Val i32.t);
+          fun α =>
+            match α with
+            | _ => M.alloc (Integer.of_Z 1)
+            end :
+            M (M.Val i32.t)
+        ] in
     M.copy α1 in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
