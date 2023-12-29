@@ -48,4 +48,18 @@ Module Result.
   | Err : E -> t T E.
   Arguments Ok {T E} _.
   Arguments Err {T E} _.
+
+  Global Instance Get_Ok_0 {T E : Set} : Notations.Dot "Ok.0" := {
+    Notations.dot :=
+      Ref.map (Big := t T E)
+        (fun α => match α with Ok α0 => Some α0 | _ => None end)
+        (fun β α => match α with Ok _ => Some (Ok β) | _ => None end);
+  }.
+
+  Global Instance Get_Err_0 {T E : Set} : Notations.Dot "Err.0" := {
+    Notations.dot :=
+      Ref.map (Big := t T E)
+        (fun α => match α with Err α0 => Some α0 | _ => None end)
+        (fun β α => match α with Err _ => Some (Err β) | _ => None end);
+  }.
 End Result.

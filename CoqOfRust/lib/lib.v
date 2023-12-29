@@ -514,3 +514,19 @@ Fixpoint repeat_nat {A : Set} (times : nat) (v : A) : list A :=
 (** The repeat operator to create new arrays, like in `[0; 32]`. *)
 Definition repeat {A : Set} (v : A) (times : Z) : list A :=
   repeat_nat (Z.to_nat times) v.
+
+Module Tuple.
+  Module Access.
+    Definition left {A1 A0 : Set} :=
+      Ref.map
+        (Big := A1 * A0)
+        (fun '(x1, _) => Some x1)
+        (fun β '(_, x0) => Some (β, x0)).
+
+    Definition right {A1 A0 : Set} :=
+      Ref.map
+        (Big := A1 * A0)
+        (fun '(_, x0) => Some x0)
+        (fun β '(x1, _) => Some (x1, β)).
+  End Access.
+End Tuple.

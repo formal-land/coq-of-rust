@@ -1,83 +1,171 @@
 use crate::path::*;
 use crate::render::*;
-
+use itertools::Itertools;
 use rustc_ast::LitKind;
+use std::rc::Rc;
+use std::vec;
 
 /// The enum [Pat] represents the patterns which can be matched
-#[derive(Clone, Debug, Eq, Hash, PartialEq)]
+#[derive(Debug, Eq, Hash, PartialEq)]
 pub(crate) enum Pattern {
     Wild,
-    Variable(String),
-    Binding(String, Box<Pattern>),
-    StructStruct(Path, Vec<(String, Pattern)>, StructOrVariant),
-    StructTuple(Path, Vec<Pattern>, StructOrVariant),
-    Or(Vec<Pattern>),
-    Tuple(Vec<Pattern>),
+    Binding {
+        name: String,
+        /// Wether the reference is mutable, if any
+        is_with_ref: Option<bool>,
+        pattern: Option<Rc<Pattern>>,
+    },
+    StructStruct(Path, Vec<(String, Rc<Pattern>)>, StructOrVariant),
+    StructTuple(Path, Vec<Rc<Pattern>>, StructOrVariant),
+    Deref(Rc<Pattern>),
+    Or(Vec<Rc<Pattern>>),
+    Tuple(Vec<Rc<Pattern>>),
     #[allow(dead_code)]
     Lit(LitKind),
     // TODO: modify if necessary to fully implement the case of Slice in compile_pattern below
     Slice {
-        init_patterns: Vec<Pattern>,
-        slice_pattern: Option<Box<Pattern>>,
+        init_patterns: Vec<Rc<Pattern>>,
+        slice_pattern: Option<Rc<Pattern>>,
     },
 }
 
 impl Pattern {
-    /// Returns wether a pattern is a single binding, to know if we need a quote
-    /// in the "let" in Coq.
-    pub(crate) fn is_single_binding(&self) -> bool {
-        matches!(self, Pattern::Variable(_) | Pattern::Wild)
+    /// Because the function from the standard library returns nothing instead
+    /// of an empty iterator when the input is empty.
+    fn multi_cartesian_product_with_empty_case<A: Iterator>(
+        iterator: A,
+    ) -> Vec<Vec<<A::Item as IntoIterator>::Item>>
+    where
+        A: Sized,
+        A::Item: IntoIterator,
+        <A::Item as IntoIterator>::IntoIter: Clone,
+        <A::Item as IntoIterator>::Item: Clone,
+    {
+        let combinations = iterator.multi_cartesian_product().collect::<Vec<_>>();
+        if combinations.is_empty() {
+            vec![vec![]]
+        } else {
+            combinations
+        }
     }
 
-    pub(crate) fn get_bindings(&self) -> Vec<String> {
-        match self {
-            Pattern::Wild => vec![],
-            Pattern::Variable(name) => vec![name.clone()],
-            Pattern::Binding(name, pattern) => {
-                vec![vec![name.clone()], pattern.get_bindings()].concat()
+    pub(crate) fn flatten_ors(self: &Rc<Pattern>) -> Vec<Rc<Pattern>> {
+        match self.as_ref() {
+            Pattern::Wild => vec![self.clone()],
+            Pattern::Binding {
+                name,
+                is_with_ref,
+                pattern,
+            } => match pattern {
+                None => vec![self.clone()],
+                Some(pattern) => pattern
+                    .flatten_ors()
+                    .into_iter()
+                    .map(|pattern| {
+                        Rc::new(Pattern::Binding {
+                            name: name.clone(),
+                            is_with_ref: *is_with_ref,
+                            pattern: Some(pattern),
+                        })
+                    })
+                    .collect(),
+            },
+            Pattern::StructStruct(path, fields, struct_or_variant) => {
+                Pattern::multi_cartesian_product_with_empty_case(fields.iter().map(
+                    |(name, pattern)| {
+                        pattern
+                            .flatten_ors()
+                            .into_iter()
+                            .map(|pattern| (name.clone(), pattern))
+                    },
+                ))
+                .into_iter()
+                .map(|fields| {
+                    Rc::new(Pattern::StructStruct(
+                        path.clone(),
+                        fields,
+                        *struct_or_variant,
+                    ))
+                })
+                .collect()
             }
-            Pattern::StructStruct(_, fields, _) => fields
-                .iter()
-                .flat_map(|(_, pattern)| pattern.get_bindings())
+            Pattern::StructTuple(path, patterns, struct_or_variant) => {
+                Pattern::multi_cartesian_product_with_empty_case(
+                    patterns.iter().map(|pattern| pattern.flatten_ors()),
+                )
+                .into_iter()
+                .map(|patterns| {
+                    Rc::new(Pattern::StructTuple(
+                        path.clone(),
+                        patterns,
+                        *struct_or_variant,
+                    ))
+                })
+                .collect()
+            }
+            Pattern::Deref(pattern) => pattern
+                .flatten_ors()
+                .into_iter()
+                .map(|pattern| Rc::new(Pattern::Deref(pattern)))
                 .collect(),
-            Pattern::StructTuple(_, patterns, _) => {
-                patterns.iter().flat_map(Pattern::get_bindings).collect()
-            }
-            Pattern::Or(patterns) => optional_insert_vec(
-                patterns.is_empty(),
-                patterns.first().unwrap().get_bindings(),
-            ),
-            Pattern::Tuple(patterns) => patterns.iter().flat_map(Pattern::get_bindings).collect(),
-            Pattern::Lit(_) => vec![],
+            Pattern::Or(patterns) => patterns
+                .iter()
+                .flat_map(|pattern| pattern.flatten_ors())
+                .collect(),
+            Pattern::Tuple(patterns) => Pattern::multi_cartesian_product_with_empty_case(
+                patterns.iter().map(|pattern| pattern.flatten_ors()),
+            )
+            .into_iter()
+            .map(|patterns| Rc::new(Pattern::Tuple(patterns)))
+            .collect(),
+            Pattern::Lit(_) => vec![self.clone()],
             Pattern::Slice {
                 init_patterns,
                 slice_pattern,
-            } => vec![
+            } => Pattern::multi_cartesian_product_with_empty_case(
                 init_patterns
                     .iter()
-                    .flat_map(Pattern::get_bindings)
+                    .map(|init_pattern| init_pattern.flatten_ors()),
+            )
+            .into_iter()
+            .flat_map(|init_patterns| match slice_pattern {
+                None => vec![Rc::new(Pattern::Slice {
+                    init_patterns,
+                    slice_pattern: None,
+                })],
+                Some(slice_pattern) => slice_pattern
+                    .flatten_ors()
+                    .into_iter()
+                    .map(|slice_pattern| {
+                        Rc::new(Pattern::Slice {
+                            init_patterns: init_patterns.clone(),
+                            slice_pattern: Some(slice_pattern),
+                        })
+                    })
                     .collect(),
-                match slice_pattern {
-                    None => vec![],
-                    Some(pattern) => pattern.get_bindings(),
-                },
-            ]
-            .concat(),
+            })
+            .collect(),
         }
     }
 
     pub(crate) fn to_doc(&self, with_paren: bool) -> Doc {
         match self {
             Pattern::Wild => text("_"),
-            Pattern::Variable(name) => text(name),
-            Pattern::Binding(name, pat) => nest([
-                text("("),
-                pat.to_doc(false),
-                text(" as"),
-                line(),
-                text(name),
-                text(")"),
-            ]),
+            Pattern::Binding {
+                name,
+                is_with_ref: _,
+                pattern,
+            } => match pattern {
+                None => text(name),
+                Some(pattern) => nest([
+                    text("("),
+                    pattern.to_doc(false),
+                    text(" as"),
+                    line(),
+                    text(name),
+                    text(")"),
+                ]),
+            },
             Pattern::StructStruct(path, fields, struct_or_variant) => paren(
                 with_paren
                     && matches!(struct_or_variant, StructOrVariant::Variant)
@@ -134,6 +222,7 @@ impl Pattern {
                     ),
                 ]),
             ),
+            Pattern::Deref(pattern) => pattern.to_doc(with_paren),
             Pattern::Or(pats) => paren(
                 with_paren,
                 nest([intersperse(

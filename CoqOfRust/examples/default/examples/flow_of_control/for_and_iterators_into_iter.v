@@ -45,73 +45,107 @@ Definition main : M unit :=
             alloc.vec.into_iter.IntoIter.t (ref str.t) alloc.alloc.Global.t)
           (Trait := ltac:(refine _)))
         α1) in
-  let* α3 : M.Val unit :=
-    match α2 with
-    | iter =>
-      let* iter := M.alloc iter in
-      loop
-        (let* _ : M.Val unit :=
-          let* α0 : core.option.Option.t (ref str.t) :=
-            M.call
-              ((core.iter.traits.iterator.Iterator.next
-                  (Self :=
-                    alloc.vec.into_iter.IntoIter.t
-                      (ref str.t)
-                      alloc.alloc.Global.t)
-                  (Trait := ltac:(refine _)))
-                (borrow_mut iter)) in
-          match α0 with
-          | core.option.Option.None =>
-            let* α0 : M.Val never.t := Break in
-            let* α1 := M.read α0 in
-            let* α2 : unit := never_to_any α1 in
-            M.alloc α2
-          | core.option.Option.Some name =>
-            let* name := M.alloc name in
-            let* α0 : ref str.t := M.read name in
-            let* α1 := M.read α0 in
-            match α1 with
-            | _ =>
-              let* _ : M.Val unit :=
-                let* α0 : ref str.t :=
-                  M.read (mk_str "There is a rustacean among us!
+  let* α3 :
+      M.Val (alloc.vec.into_iter.IntoIter.t (ref str.t) alloc.alloc.Global.t) :=
+    M.alloc α2 in
+  let* α4 : M.Val unit :=
+    match_operator
+      α3
+      [
+        fun γ =>
+          (let* iter := M.copy γ in
+          M.loop
+            (let* _ : M.Val unit :=
+              let* α0 : core.option.Option.t (ref str.t) :=
+                M.call
+                  ((core.iter.traits.iterator.Iterator.next
+                      (Self :=
+                        alloc.vec.into_iter.IntoIter.t
+                          (ref str.t)
+                          alloc.alloc.Global.t)
+                      (Trait := ltac:(refine _)))
+                    (borrow_mut iter)) in
+              let* α1 : M.Val (core.option.Option.t (ref str.t)) :=
+                M.alloc α0 in
+              match_operator
+                α1
+                [
+                  fun γ =>
+                    (let* α0 := M.read γ in
+                    match α0 with
+                    | core.option.Option.None =>
+                      let* α0 : M.Val never.t := M.break in
+                      let* α1 := M.read α0 in
+                      let* α2 : unit := never_to_any α1 in
+                      M.alloc α2
+                    | _ => M.break_match
+                    end) :
+                    M (M.Val unit);
+                  fun γ =>
+                    (let* α0 := M.read γ in
+                    match α0 with
+                    | core.option.Option.Some _ =>
+                      let γ0 := γ.["Some.0"] in
+                      let* name := M.copy γ0 in
+                      match_operator
+                        name
+                        [
+                          fun γ =>
+                            (let* _ : M.Val unit :=
+                              let* α0 : ref str.t :=
+                                M.read
+                                  (mk_str "There is a rustacean among us!
 ") in
-                let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-                let* α2 : M.Val (ref (array (ref str.t))) :=
-                  M.alloc (borrow α1) in
-                let* α3 : ref (slice (ref str.t)) :=
-                  M.read (pointer_coercion "Unsize" α2) in
-                let* α4 : core.fmt.Arguments.t :=
-                  M.call (core.fmt.Arguments.t::["new_const"] α3) in
-                let* α5 : unit := M.call (std.io.stdio._print α4) in
-                M.alloc α5 in
-              M.alloc tt
-            | _ =>
-              let* _ : M.Val unit :=
-                let* α0 : ref str.t := M.read (mk_str "Hello ") in
-                let* α1 : ref str.t := M.read (mk_str "
+                              let* α1 : M.Val (array (ref str.t)) :=
+                                M.alloc [ α0 ] in
+                              let* α2 : M.Val (ref (array (ref str.t))) :=
+                                M.alloc (borrow α1) in
+                              let* α3 : ref (slice (ref str.t)) :=
+                                M.read (pointer_coercion "Unsize" α2) in
+                              let* α4 : core.fmt.Arguments.t :=
+                                M.call
+                                  (core.fmt.Arguments.t::["new_const"] α3) in
+                              let* α5 : unit :=
+                                M.call (std.io.stdio._print α4) in
+                              M.alloc α5 in
+                            M.alloc tt) :
+                            M (M.Val unit);
+                          fun γ =>
+                            (let* _ : M.Val unit :=
+                              let* α0 : ref str.t := M.read (mk_str "Hello ") in
+                              let* α1 : ref str.t := M.read (mk_str "
 ") in
-                let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-                let* α3 : M.Val (ref (array (ref str.t))) :=
-                  M.alloc (borrow α2) in
-                let* α4 : ref (slice (ref str.t)) :=
-                  M.read (pointer_coercion "Unsize" α3) in
-                let* α5 : core.fmt.rt.Argument.t :=
-                  M.call
-                    (core.fmt.rt.Argument.t::["new_display"] (borrow name)) in
-                let* α6 : M.Val (array core.fmt.rt.Argument.t) :=
-                  M.alloc [ α5 ] in
-                let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-                  M.alloc (borrow α6) in
-                let* α8 : ref (slice core.fmt.rt.Argument.t) :=
-                  M.read (pointer_coercion "Unsize" α7) in
-                let* α9 : core.fmt.Arguments.t :=
-                  M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
-                let* α10 : unit := M.call (std.io.stdio._print α9) in
-                M.alloc α10 in
-              M.alloc tt
-            end
-          end in
-        M.alloc tt)
-    end in
-  M.read (use α3).
+                              let* α2 : M.Val (array (ref str.t)) :=
+                                M.alloc [ α0; α1 ] in
+                              let* α3 : M.Val (ref (array (ref str.t))) :=
+                                M.alloc (borrow α2) in
+                              let* α4 : ref (slice (ref str.t)) :=
+                                M.read (pointer_coercion "Unsize" α3) in
+                              let* α5 : core.fmt.rt.Argument.t :=
+                                M.call
+                                  (core.fmt.rt.Argument.t::["new_display"]
+                                    (borrow name)) in
+                              let* α6 : M.Val (array core.fmt.rt.Argument.t) :=
+                                M.alloc [ α5 ] in
+                              let* α7 :
+                                  M.Val (ref (array core.fmt.rt.Argument.t)) :=
+                                M.alloc (borrow α6) in
+                              let* α8 : ref (slice core.fmt.rt.Argument.t) :=
+                                M.read (pointer_coercion "Unsize" α7) in
+                              let* α9 : core.fmt.Arguments.t :=
+                                M.call
+                                  (core.fmt.Arguments.t::["new_v1"] α4 α8) in
+                              let* α10 : unit :=
+                                M.call (std.io.stdio._print α9) in
+                              M.alloc α10 in
+                            M.alloc tt) :
+                            M (M.Val unit)
+                        ]
+                    | _ => M.break_match
+                    end) :
+                    M (M.Val unit)
+                ] in
+            M.alloc tt)) :
+          M (M.Val unit)
+      ] in
+  M.read (use α4).

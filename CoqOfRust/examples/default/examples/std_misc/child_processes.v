@@ -37,25 +37,35 @@ Definition main : M unit :=
               std.process.Output.t
               std.io.error.Error.t)::["unwrap_or_else"]
           α5
-          (fun (e : std.io.error.Error.t) =>
-            (let* e := M.alloc e in
-            let* α0 : ref str.t :=
-              M.read (mk_str "failed to execute process: ") in
-            let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-            let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
-            let* α3 : ref (slice (ref str.t)) :=
-              M.read (pointer_coercion "Unsize" α2) in
-            let* α4 : core.fmt.rt.Argument.t :=
-              M.call (core.fmt.rt.Argument.t::["new_display"] (borrow e)) in
-            let* α5 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4 ] in
-            let* α6 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-              M.alloc (borrow α5) in
-            let* α7 : ref (slice core.fmt.rt.Argument.t) :=
-              M.read (pointer_coercion "Unsize" α6) in
-            let* α8 : core.fmt.Arguments.t :=
-              M.call (core.fmt.Arguments.t::["new_v1"] α3 α7) in
-            let* α9 : never.t := M.call (core.panicking.panic_fmt α8) in
-            never_to_any α9) :
+          (fun (α0 : std.io.error.Error.t) =>
+            (let* α0 := M.alloc α0 in
+            match_operator
+              α0
+              [
+                fun γ =>
+                  (let* e := M.copy γ in
+                  let* α0 : ref str.t :=
+                    M.read (mk_str "failed to execute process: ") in
+                  let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
+                  let* α2 : M.Val (ref (array (ref str.t))) :=
+                    M.alloc (borrow α1) in
+                  let* α3 : ref (slice (ref str.t)) :=
+                    M.read (pointer_coercion "Unsize" α2) in
+                  let* α4 : core.fmt.rt.Argument.t :=
+                    M.call
+                      (core.fmt.rt.Argument.t::["new_display"] (borrow e)) in
+                  let* α5 : M.Val (array core.fmt.rt.Argument.t) :=
+                    M.alloc [ α4 ] in
+                  let* α6 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+                    M.alloc (borrow α5) in
+                  let* α7 : ref (slice core.fmt.rt.Argument.t) :=
+                    M.read (pointer_coercion "Unsize" α6) in
+                  let* α8 : core.fmt.Arguments.t :=
+                    M.call (core.fmt.Arguments.t::["new_v1"] α3 α7) in
+                  let* α9 : never.t := M.call (core.panicking.panic_fmt α8) in
+                  never_to_any α9) :
+                  M std.process.Output.t
+              ]) :
             M std.process.Output.t)) in
     M.alloc α6 in
   let* α0 : bool.t :=

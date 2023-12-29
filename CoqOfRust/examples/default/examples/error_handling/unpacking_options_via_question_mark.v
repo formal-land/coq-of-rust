@@ -48,9 +48,18 @@ Section Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job_t.
       (self : ref Self)
       : M unpacking_options_via_question_mark.Job.t :=
     let* self := M.alloc self in
-    let _ : unit := tt in
-    let* α0 : ref unpacking_options_via_question_mark.Job.t := M.read self in
-    M.read (deref α0).
+    let* α0 : M.Val unit := M.alloc tt in
+    let* α1 : M.Val unpacking_options_via_question_mark.Job.t :=
+      match_operator
+        α0
+        [
+          fun γ =>
+            (let* α0 : ref unpacking_options_via_question_mark.Job.t :=
+              M.read self in
+            M.pure (deref α0)) :
+            M (M.Val unpacking_options_via_question_mark.Job.t)
+        ] in
+    M.read α1.
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {
@@ -112,11 +121,26 @@ Section Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumbe
       (self : ref Self)
       : M unpacking_options_via_question_mark.PhoneNumber.t :=
     let* self := M.alloc self in
-    let _ : unit := tt in
-    let _ : unit := tt in
-    let* α0 : ref unpacking_options_via_question_mark.PhoneNumber.t :=
-      M.read self in
-    M.read (deref α0).
+    let* α0 : M.Val unit := M.alloc tt in
+    let* α1 : M.Val unpacking_options_via_question_mark.PhoneNumber.t :=
+      match_operator
+        α0
+        [
+          fun γ =>
+            (let* α0 : M.Val unit := M.alloc tt in
+            match_operator
+              α0
+              [
+                fun γ =>
+                  (let* α0 :
+                      ref unpacking_options_via_question_mark.PhoneNumber.t :=
+                    M.read self in
+                  M.pure (deref α0)) :
+                  M (M.Val unpacking_options_via_question_mark.PhoneNumber.t)
+              ]) :
+            M (M.Val unpacking_options_via_question_mark.PhoneNumber.t)
+        ] in
+    M.read α1.
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {
@@ -172,32 +196,54 @@ Section Impl_unpacking_options_via_question_mark_Person_t.
                 core.option.Option.t unpacking_options_via_question_mark.Job.t)
               (Trait := ltac:(refine _)))
             α1) in
-      let* α3 : M.Val unpacking_options_via_question_mark.Job.t :=
-        match α2 with
-        | core.ops.control_flow.ControlFlow.Break residual =>
-          let* residual := M.alloc residual in
-          let* α0 : core.option.Option.t core.convert.Infallible.t :=
-            M.read residual in
-          let* α1 : core.option.Option.t u8.t :=
-            M.call
-              ((core.ops.try_trait.FromResidual.from_residual
-                  (Self := core.option.Option.t u8.t)
-                  (Trait := ltac:(refine _)))
-                α0) in
-          let* α2 : M.Val never.t := return_ α1 in
-          let* α3 := M.read α2 in
-          let* α4 : unpacking_options_via_question_mark.Job.t :=
-            never_to_any α3 in
-          M.alloc α4
-        | core.ops.control_flow.ControlFlow.Continue val =>
-          let* val := M.alloc val in
-          M.pure val
-        end in
-      let* α4 :
+      let* α3 :
+          M.Val
+            (core.ops.control_flow.ControlFlow.t
+              (core.option.Option.t core.convert.Infallible.t)
+              unpacking_options_via_question_mark.Job.t) :=
+        M.alloc α2 in
+      let* α4 : M.Val unpacking_options_via_question_mark.Job.t :=
+        match_operator
+          α3
+          [
+            fun γ =>
+              (let* α0 := M.read γ in
+              match α0 with
+              | core.ops.control_flow.ControlFlow.Break _ =>
+                let γ0 := γ.["Break.0"] in
+                let* residual := M.copy γ0 in
+                let* α0 : core.option.Option.t core.convert.Infallible.t :=
+                  M.read residual in
+                let* α1 : core.option.Option.t u8.t :=
+                  M.call
+                    ((core.ops.try_trait.FromResidual.from_residual
+                        (Self := core.option.Option.t u8.t)
+                        (Trait := ltac:(refine _)))
+                      α0) in
+                let* α2 : M.Val never.t := return_ α1 in
+                let* α3 := M.read α2 in
+                let* α4 : unpacking_options_via_question_mark.Job.t :=
+                  never_to_any α3 in
+                M.alloc α4
+              | _ => M.break_match
+              end) :
+              M (M.Val unpacking_options_via_question_mark.Job.t);
+            fun γ =>
+              (let* α0 := M.read γ in
+              match α0 with
+              | core.ops.control_flow.ControlFlow.Continue _ =>
+                let γ0 := γ.["Continue.0"] in
+                let* val := M.copy γ0 in
+                M.pure val
+              | _ => M.break_match
+              end) :
+              M (M.Val unpacking_options_via_question_mark.Job.t)
+          ] in
+      let* α5 :
           core.option.Option.t
             unpacking_options_via_question_mark.PhoneNumber.t :=
-        M.read α3.["phone_number"] in
-      let* α5 :
+        M.read α4.["phone_number"] in
+      let* α6 :
           core.ops.control_flow.ControlFlow.t
             (core.option.Option.t core.convert.Infallible.t)
             unpacking_options_via_question_mark.PhoneNumber.t :=
@@ -207,29 +253,51 @@ Section Impl_unpacking_options_via_question_mark_Person_t.
                 core.option.Option.t
                   unpacking_options_via_question_mark.PhoneNumber.t)
               (Trait := ltac:(refine _)))
-            α4) in
-      let* α6 : M.Val unpacking_options_via_question_mark.PhoneNumber.t :=
-        match α5 with
-        | core.ops.control_flow.ControlFlow.Break residual =>
-          let* residual := M.alloc residual in
-          let* α0 : core.option.Option.t core.convert.Infallible.t :=
-            M.read residual in
-          let* α1 : core.option.Option.t u8.t :=
-            M.call
-              ((core.ops.try_trait.FromResidual.from_residual
-                  (Self := core.option.Option.t u8.t)
-                  (Trait := ltac:(refine _)))
-                α0) in
-          let* α2 : M.Val never.t := return_ α1 in
-          let* α3 := M.read α2 in
-          let* α4 : unpacking_options_via_question_mark.PhoneNumber.t :=
-            never_to_any α3 in
-          M.alloc α4
-        | core.ops.control_flow.ControlFlow.Continue val =>
-          let* val := M.alloc val in
-          M.pure val
-        end in
-      M.read α6.["area_code"]).
+            α5) in
+      let* α7 :
+          M.Val
+            (core.ops.control_flow.ControlFlow.t
+              (core.option.Option.t core.convert.Infallible.t)
+              unpacking_options_via_question_mark.PhoneNumber.t) :=
+        M.alloc α6 in
+      let* α8 : M.Val unpacking_options_via_question_mark.PhoneNumber.t :=
+        match_operator
+          α7
+          [
+            fun γ =>
+              (let* α0 := M.read γ in
+              match α0 with
+              | core.ops.control_flow.ControlFlow.Break _ =>
+                let γ0 := γ.["Break.0"] in
+                let* residual := M.copy γ0 in
+                let* α0 : core.option.Option.t core.convert.Infallible.t :=
+                  M.read residual in
+                let* α1 : core.option.Option.t u8.t :=
+                  M.call
+                    ((core.ops.try_trait.FromResidual.from_residual
+                        (Self := core.option.Option.t u8.t)
+                        (Trait := ltac:(refine _)))
+                      α0) in
+                let* α2 : M.Val never.t := return_ α1 in
+                let* α3 := M.read α2 in
+                let* α4 : unpacking_options_via_question_mark.PhoneNumber.t :=
+                  never_to_any α3 in
+                M.alloc α4
+              | _ => M.break_match
+              end) :
+              M (M.Val unpacking_options_via_question_mark.PhoneNumber.t);
+            fun γ =>
+              (let* α0 := M.read γ in
+              match α0 with
+              | core.ops.control_flow.ControlFlow.Continue _ =>
+                let γ0 := γ.["Continue.0"] in
+                let* val := M.copy γ0 in
+                M.pure val
+              | _ => M.break_match
+              end) :
+              M (M.Val unpacking_options_via_question_mark.PhoneNumber.t)
+          ] in
+      M.read α8.["area_code"]).
   
   Global Instance AssociatedFunction_work_phone_area_code :
     Notations.DoubleColon Self "work_phone_area_code" := {
@@ -278,38 +346,57 @@ Definition main : M unit :=
     let* α1 : M.Val (core.option.Option.t u8.t) := M.alloc α0 in
     let* α2 : M.Val (core.option.Option.t u8.t) :=
       M.alloc (core.option.Option.Some (Integer.of_Z 61)) in
-    match (borrow α1, borrow α2) with
-    | (left_val, right_val) =>
-      let* left_val := M.alloc left_val in
-      let* right_val := M.alloc right_val in
-      let* α0 : ref (core.option.Option.t u8.t) := M.read left_val in
-      let* α1 : ref (core.option.Option.t u8.t) := M.read right_val in
-      let* α2 : bool.t :=
-        M.call
-          ((core.cmp.PartialEq.eq
-              (Self := core.option.Option.t u8.t)
-              (Trait := ltac:(refine _)))
-            α0
-            α1) in
-      let* α3 : M.Val bool.t := M.alloc (UnOp.not α2) in
-      let* α4 : bool.t := M.read (use α3) in
-      if α4 then
-        let* kind : M.Val core.panicking.AssertKind.t :=
-          M.alloc core.panicking.AssertKind.Eq in
-        let* _ : M.Val never.t :=
-          let* α0 : core.panicking.AssertKind.t := M.read kind in
-          let* α1 : ref (core.option.Option.t u8.t) := M.read left_val in
-          let* α2 : ref (core.option.Option.t u8.t) := M.read right_val in
-          let* α3 : never.t :=
-            M.call
-              (core.panicking.assert_failed α0 α1 α2 core.option.Option.None) in
-          M.alloc α3 in
-        let* α0 : M.Val unit := M.alloc tt in
-        let* α1 := M.read α0 in
-        let* α2 : unit := never_to_any α1 in
-        M.alloc α2
-      else
-        M.alloc tt
-    end in
+    let* α3 :
+        M.Val
+          ((ref (core.option.Option.t u8.t))
+          *
+          (ref (core.option.Option.t u8.t))) :=
+      M.alloc (borrow α1, borrow α2) in
+    match_operator
+      α3
+      [
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
+          | (_, _) =>
+            let γ0 := Tuple.Access.left γ in
+            let γ1 := Tuple.Access.right γ in
+            let* left_val := M.copy γ0 in
+            let* right_val := M.copy γ1 in
+            let* α0 : ref (core.option.Option.t u8.t) := M.read left_val in
+            let* α1 : ref (core.option.Option.t u8.t) := M.read right_val in
+            let* α2 : bool.t :=
+              M.call
+                ((core.cmp.PartialEq.eq
+                    (Self := core.option.Option.t u8.t)
+                    (Trait := ltac:(refine _)))
+                  α0
+                  α1) in
+            let* α3 : M.Val bool.t := M.alloc (UnOp.not α2) in
+            let* α4 : bool.t := M.read (use α3) in
+            if α4 then
+              let* kind : M.Val core.panicking.AssertKind.t :=
+                M.alloc core.panicking.AssertKind.Eq in
+              let* _ : M.Val never.t :=
+                let* α0 : core.panicking.AssertKind.t := M.read kind in
+                let* α1 : ref (core.option.Option.t u8.t) := M.read left_val in
+                let* α2 : ref (core.option.Option.t u8.t) := M.read right_val in
+                let* α3 : never.t :=
+                  M.call
+                    (core.panicking.assert_failed
+                      α0
+                      α1
+                      α2
+                      core.option.Option.None) in
+                M.alloc α3 in
+              let* α0 : M.Val unit := M.alloc tt in
+              let* α1 := M.read α0 in
+              let* α2 : unit := never_to_any α1 in
+              M.alloc α2
+            else
+              M.alloc tt
+          end) :
+          M (M.Val unit)
+      ] in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.

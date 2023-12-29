@@ -32,7 +32,7 @@ pub(crate) fn compile_type<'a>(env: &Env<'a>, ty: &rustc_middle::ty::Ty<'a>) -> 
                 .collect();
             Rc::new(CoqType::Application {
                 func: Rc::new(CoqType::Path {
-                    path: Box::new(path.suffix_last_with_dot_t()),
+                    path: Rc::new(path.suffix_last_with_dot_t()),
                 }),
                 args,
                 is_alias: false,

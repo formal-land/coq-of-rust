@@ -153,40 +153,66 @@ Definition double_first
           (ref (ref str.t))
           (alloc.boxed.Box.t dynamic alloc.alloc.Global.t))::["and_then"]
       α2
-      (fun (s : ref (ref str.t)) =>
-        (let* s := M.alloc s in
-        let* α0 : ref (ref str.t) := M.read s in
-        let* α1 : ref str.t := M.read (deref α0) in
-        let* α2 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
-          M.call (str.t::["parse"] α1) in
-        let* α3 :
-            core.result.Result.t
-              i32.t
-              (alloc.boxed.Box.t dynamic alloc.alloc.Global.t) :=
-          M.call
-            ((core.result.Result.t
-                  i32.t
-                  core.num.error.ParseIntError.t)::["map_err"]
-              α2
-              (fun (e : core.num.error.ParseIntError.t) =>
-                (let* e := M.alloc e in
-                let* α0 : core.num.error.ParseIntError.t := M.read e in
+      (fun (α0 : ref (ref str.t)) =>
+        (let* α0 := M.alloc α0 in
+        match_operator
+          α0
+          [
+            fun γ =>
+              (let* s := M.copy γ in
+              let* α0 : ref (ref str.t) := M.read s in
+              let* α1 : ref str.t := M.read (deref α0) in
+              let* α2 :
+                  core.result.Result.t i32.t core.num.error.ParseIntError.t :=
+                M.call (str.t::["parse"] α1) in
+              let* α3 :
+                  core.result.Result.t
+                    i32.t
+                    (alloc.boxed.Box.t dynamic alloc.alloc.Global.t) :=
                 M.call
-                  ((core.convert.Into.into
-                      (Self := core.num.error.ParseIntError.t)
-                      (Trait := ltac:(refine _)))
-                    α0)) :
-                M (alloc.boxed.Box.t dynamic alloc.alloc.Global.t))) in
-        M.call
-          ((core.result.Result.t
-                i32.t
-                (alloc.boxed.Box.t dynamic alloc.alloc.Global.t))::["map"]
-            α3
-            (fun (i : i32.t) =>
-              (let* i := M.alloc i in
-              let* α0 : i32.t := M.read i in
-              BinOp.Panic.mul (Integer.of_Z 2) α0) :
-              M i32.t))) :
+                  ((core.result.Result.t
+                        i32.t
+                        core.num.error.ParseIntError.t)::["map_err"]
+                    α2
+                    (fun (α0 : core.num.error.ParseIntError.t) =>
+                      (let* α0 := M.alloc α0 in
+                      match_operator
+                        α0
+                        [
+                          fun γ =>
+                            (let* e := M.copy γ in
+                            let* α0 : core.num.error.ParseIntError.t :=
+                              M.read e in
+                            M.call
+                              ((core.convert.Into.into
+                                  (Self := core.num.error.ParseIntError.t)
+                                  (Trait := ltac:(refine _)))
+                                α0)) :
+                            M (alloc.boxed.Box.t dynamic alloc.alloc.Global.t)
+                        ]) :
+                      M (alloc.boxed.Box.t dynamic alloc.alloc.Global.t))) in
+              M.call
+                ((core.result.Result.t
+                      i32.t
+                      (alloc.boxed.Box.t dynamic alloc.alloc.Global.t))::["map"]
+                  α3
+                  (fun (α0 : i32.t) =>
+                    (let* α0 := M.alloc α0 in
+                    match_operator
+                      α0
+                      [
+                        fun γ =>
+                          (let* i := M.copy γ in
+                          let* α0 : i32.t := M.read i in
+                          BinOp.Panic.mul (Integer.of_Z 2) α0) :
+                          M i32.t
+                      ]) :
+                    M i32.t))) :
+              M
+                (core.result.Result.t
+                  i32.t
+                  (alloc.boxed.Box.t dynamic alloc.alloc.Global.t))
+          ]) :
         M
           (core.result.Result.t
             i32.t
@@ -202,59 +228,74 @@ fn print(result: Result<i32>) {
 *)
 Definition print (result : ltac:(boxing_errors.Result i32.t)) : M unit :=
   let* result := M.alloc result in
-  let* α0 :
-      core.result.Result.t
-        i32.t
-        (alloc.boxed.Box.t dynamic alloc.alloc.Global.t) :=
-    M.read result in
-  let* α1 : M.Val unit :=
-    match α0 with
-    | core.result.Result.Ok n =>
-      let* n := M.alloc n in
-      let* _ : M.Val unit :=
-        let* α0 : ref str.t := M.read (mk_str "The first doubled is ") in
-        let* α1 : ref str.t := M.read (mk_str "
+  let* α0 : M.Val unit :=
+    match_operator
+      result
+      [
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
+          | core.result.Result.Ok _ =>
+            let γ0 := γ.["Ok.0"] in
+            let* n := M.copy γ0 in
+            let* _ : M.Val unit :=
+              let* α0 : ref str.t := M.read (mk_str "The first doubled is ") in
+              let* α1 : ref str.t := M.read (mk_str "
 ") in
-        let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-        let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
-        let* α4 : ref (slice (ref str.t)) :=
-          M.read (pointer_coercion "Unsize" α3) in
-        let* α5 : core.fmt.rt.Argument.t :=
-          M.call (core.fmt.rt.Argument.t::["new_display"] (borrow n)) in
-        let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
-        let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-          M.alloc (borrow α6) in
-        let* α8 : ref (slice core.fmt.rt.Argument.t) :=
-          M.read (pointer_coercion "Unsize" α7) in
-        let* α9 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
-        let* α10 : unit := M.call (std.io.stdio._print α9) in
-        M.alloc α10 in
-      M.alloc tt
-    | core.result.Result.Err e =>
-      let* e := M.alloc e in
-      let* _ : M.Val unit :=
-        let* α0 : ref str.t := M.read (mk_str "Error: ") in
-        let* α1 : ref str.t := M.read (mk_str "
+              let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
+              let* α3 : M.Val (ref (array (ref str.t))) :=
+                M.alloc (borrow α2) in
+              let* α4 : ref (slice (ref str.t)) :=
+                M.read (pointer_coercion "Unsize" α3) in
+              let* α5 : core.fmt.rt.Argument.t :=
+                M.call (core.fmt.rt.Argument.t::["new_display"] (borrow n)) in
+              let* α6 : M.Val (array core.fmt.rt.Argument.t) :=
+                M.alloc [ α5 ] in
+              let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+                M.alloc (borrow α6) in
+              let* α8 : ref (slice core.fmt.rt.Argument.t) :=
+                M.read (pointer_coercion "Unsize" α7) in
+              let* α9 : core.fmt.Arguments.t :=
+                M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
+              let* α10 : unit := M.call (std.io.stdio._print α9) in
+              M.alloc α10 in
+            M.alloc tt
+          | _ => M.break_match
+          end) :
+          M (M.Val unit);
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
+          | core.result.Result.Err _ =>
+            let γ0 := γ.["Err.0"] in
+            let* e := M.copy γ0 in
+            let* _ : M.Val unit :=
+              let* α0 : ref str.t := M.read (mk_str "Error: ") in
+              let* α1 : ref str.t := M.read (mk_str "
 ") in
-        let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-        let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
-        let* α4 : ref (slice (ref str.t)) :=
-          M.read (pointer_coercion "Unsize" α3) in
-        let* α5 : core.fmt.rt.Argument.t :=
-          M.call (core.fmt.rt.Argument.t::["new_display"] (borrow e)) in
-        let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
-        let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-          M.alloc (borrow α6) in
-        let* α8 : ref (slice core.fmt.rt.Argument.t) :=
-          M.read (pointer_coercion "Unsize" α7) in
-        let* α9 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
-        let* α10 : unit := M.call (std.io.stdio._print α9) in
-        M.alloc α10 in
-      M.alloc tt
-    end in
-  M.read α1.
+              let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
+              let* α3 : M.Val (ref (array (ref str.t))) :=
+                M.alloc (borrow α2) in
+              let* α4 : ref (slice (ref str.t)) :=
+                M.read (pointer_coercion "Unsize" α3) in
+              let* α5 : core.fmt.rt.Argument.t :=
+                M.call (core.fmt.rt.Argument.t::["new_display"] (borrow e)) in
+              let* α6 : M.Val (array core.fmt.rt.Argument.t) :=
+                M.alloc [ α5 ] in
+              let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+                M.alloc (borrow α6) in
+              let* α8 : ref (slice core.fmt.rt.Argument.t) :=
+                M.read (pointer_coercion "Unsize" α7) in
+              let* α9 : core.fmt.Arguments.t :=
+                M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
+              let* α10 : unit := M.call (std.io.stdio._print α9) in
+              M.alloc α10 in
+            M.alloc tt
+          | _ => M.break_match
+          end) :
+          M (M.Val unit)
+      ] in
+  M.read α0.
 
 (*
 fn main() {

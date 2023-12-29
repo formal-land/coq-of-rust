@@ -35,19 +35,33 @@ Definition main : M unit :=
   let* outer_var : M.Val i32.t := M.alloc (Integer.of_Z 42) in
   let* closure_annotated : M.Val (i32.t -> M i32.t) :=
     M.alloc
-      (fun (i : i32.t) =>
-        (let* i := M.alloc i in
-        let* α0 : i32.t := M.read i in
-        let* α1 : i32.t := M.read outer_var in
-        BinOp.Panic.add α0 α1) :
+      (fun (α0 : i32.t) =>
+        (let* α0 := M.alloc α0 in
+        match_operator
+          α0
+          [
+            fun γ =>
+              (let* i := M.copy γ in
+              let* α0 : i32.t := M.read i in
+              let* α1 : i32.t := M.read outer_var in
+              BinOp.Panic.add α0 α1) :
+              M i32.t
+          ]) :
         M i32.t) in
   let* closure_inferred : M.Val (i32.t -> M i32.t) :=
     M.alloc
-      (fun (i : i32.t) =>
-        (let* i := M.alloc i in
-        let* α0 : i32.t := M.read i in
-        let* α1 : i32.t := M.read outer_var in
-        BinOp.Panic.add α0 α1) :
+      (fun (α0 : i32.t) =>
+        (let* α0 := M.alloc α0 in
+        match_operator
+          α0
+          [
+            fun γ =>
+              (let* i := M.copy γ in
+              let* α0 : i32.t := M.read i in
+              let* α1 : i32.t := M.read outer_var in
+              BinOp.Panic.add α0 α1) :
+              M i32.t
+          ]) :
         M i32.t) in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=

@@ -48,82 +48,106 @@ Definition main : M unit :=
         scoping_rules_ownership_and_rules_partial_moves.main.Person.name := α1;
         scoping_rules_ownership_and_rules_partial_moves.main.Person.age := α2;
       |} in
-  let* '{|
-        scoping_rules_ownership_and_rules_partial_moves.main.Person.name
-          :=
-          name;
-        scoping_rules_ownership_and_rules_partial_moves.main.Person.age := age;
-      |} :
-      scoping_rules_ownership_and_rules_partial_moves.main.Person.t :=
-    M.read person in
-  let* name := M.alloc name in
-  let* age := M.alloc age in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "The person's age is ") in
-      let* α1 : ref str.t := M.read (mk_str "
+  let* α0 : M.Val unit :=
+    match_operator
+      person
+      [
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
+          |
+              {|
+                scoping_rules_ownership_and_rules_partial_moves.main.Person.name
+                  :=
+                  _;
+                scoping_rules_ownership_and_rules_partial_moves.main.Person.age
+                  :=
+                  _;
+              |}
+              =>
+            let γ0 := γ.["Person.name"] in
+            let γ1 := γ.["Person.age"] in
+            let* name := M.copy γ0 in
+            let* age := M.alloc (borrow_mut γ1) in
+            let* _ : M.Val unit :=
+              let* _ : M.Val unit :=
+                let* α0 : ref str.t := M.read (mk_str "The person's age is ") in
+                let* α1 : ref str.t := M.read (mk_str "
 ") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
-      let* α4 : ref (slice (ref str.t)) :=
-        M.read (pointer_coercion "Unsize" α3) in
-      let* α5 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow age)) in
-      let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
-      let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-        M.alloc (borrow α6) in
-      let* α8 : ref (slice core.fmt.rt.Argument.t) :=
-        M.read (pointer_coercion "Unsize" α7) in
-      let* α9 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
-      let* α10 : unit := M.call (std.io.stdio._print α9) in
-      M.alloc α10 in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "The person's name is ") in
-      let* α1 : ref str.t := M.read (mk_str "
+                let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
+                let* α3 : M.Val (ref (array (ref str.t))) :=
+                  M.alloc (borrow α2) in
+                let* α4 : ref (slice (ref str.t)) :=
+                  M.read (pointer_coercion "Unsize" α3) in
+                let* α5 : core.fmt.rt.Argument.t :=
+                  M.call
+                    (core.fmt.rt.Argument.t::["new_display"] (borrow age)) in
+                let* α6 : M.Val (array core.fmt.rt.Argument.t) :=
+                  M.alloc [ α5 ] in
+                let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+                  M.alloc (borrow α6) in
+                let* α8 : ref (slice core.fmt.rt.Argument.t) :=
+                  M.read (pointer_coercion "Unsize" α7) in
+                let* α9 : core.fmt.Arguments.t :=
+                  M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
+                let* α10 : unit := M.call (std.io.stdio._print α9) in
+                M.alloc α10 in
+              M.alloc tt in
+            let* _ : M.Val unit :=
+              let* _ : M.Val unit :=
+                let* α0 : ref str.t :=
+                  M.read (mk_str "The person's name is ") in
+                let* α1 : ref str.t := M.read (mk_str "
 ") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
-      let* α4 : ref (slice (ref str.t)) :=
-        M.read (pointer_coercion "Unsize" α3) in
-      let* α5 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow name)) in
-      let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
-      let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-        M.alloc (borrow α6) in
-      let* α8 : ref (slice core.fmt.rt.Argument.t) :=
-        M.read (pointer_coercion "Unsize" α7) in
-      let* α9 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
-      let* α10 : unit := M.call (std.io.stdio._print α9) in
-      M.alloc α10 in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t :=
-        M.read (mk_str "The person's age from person struct is ") in
-      let* α1 : ref str.t := M.read (mk_str "
+                let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
+                let* α3 : M.Val (ref (array (ref str.t))) :=
+                  M.alloc (borrow α2) in
+                let* α4 : ref (slice (ref str.t)) :=
+                  M.read (pointer_coercion "Unsize" α3) in
+                let* α5 : core.fmt.rt.Argument.t :=
+                  M.call
+                    (core.fmt.rt.Argument.t::["new_display"] (borrow name)) in
+                let* α6 : M.Val (array core.fmt.rt.Argument.t) :=
+                  M.alloc [ α5 ] in
+                let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+                  M.alloc (borrow α6) in
+                let* α8 : ref (slice core.fmt.rt.Argument.t) :=
+                  M.read (pointer_coercion "Unsize" α7) in
+                let* α9 : core.fmt.Arguments.t :=
+                  M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
+                let* α10 : unit := M.call (std.io.stdio._print α9) in
+                M.alloc α10 in
+              M.alloc tt in
+            let* _ : M.Val unit :=
+              let* _ : M.Val unit :=
+                let* α0 : ref str.t :=
+                  M.read (mk_str "The person's age from person struct is ") in
+                let* α1 : ref str.t := M.read (mk_str "
 ") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
-      let* α4 : ref (slice (ref str.t)) :=
-        M.read (pointer_coercion "Unsize" α3) in
-      let* α5 : core.fmt.rt.Argument.t :=
-        M.call
-          (core.fmt.rt.Argument.t::["new_display"] (borrow person.["age"])) in
-      let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
-      let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-        M.alloc (borrow α6) in
-      let* α8 : ref (slice core.fmt.rt.Argument.t) :=
-        M.read (pointer_coercion "Unsize" α7) in
-      let* α9 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
-      let* α10 : unit := M.call (std.io.stdio._print α9) in
-      M.alloc α10 in
-    M.alloc tt in
-  let* α0 : M.Val unit := M.alloc tt in
+                let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
+                let* α3 : M.Val (ref (array (ref str.t))) :=
+                  M.alloc (borrow α2) in
+                let* α4 : ref (slice (ref str.t)) :=
+                  M.read (pointer_coercion "Unsize" α3) in
+                let* α5 : core.fmt.rt.Argument.t :=
+                  M.call
+                    (core.fmt.rt.Argument.t::["new_display"]
+                      (borrow person.["age"])) in
+                let* α6 : M.Val (array core.fmt.rt.Argument.t) :=
+                  M.alloc [ α5 ] in
+                let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+                  M.alloc (borrow α6) in
+                let* α8 : ref (slice core.fmt.rt.Argument.t) :=
+                  M.read (pointer_coercion "Unsize" α7) in
+                let* α9 : core.fmt.Arguments.t :=
+                  M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
+                let* α10 : unit := M.call (std.io.stdio._print α9) in
+                M.alloc α10 in
+              M.alloc tt in
+            M.alloc tt
+          end) :
+          M (M.Val unit)
+      ] in
   M.read α0.
 
 Module  Person.

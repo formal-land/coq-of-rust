@@ -248,9 +248,17 @@ Section Impl_core_clone_Clone_for_dns_AccountId_t.
   *)
   Definition clone (self : ref Self) : M dns.AccountId.t :=
     let* self := M.alloc self in
-    let _ : unit := tt in
-    let* α0 : ref dns.AccountId.t := M.read self in
-    M.read (deref α0).
+    let* α0 : M.Val unit := M.alloc tt in
+    let* α1 : M.Val dns.AccountId.t :=
+      match_operator
+        α0
+        [
+          fun γ =>
+            (let* α0 : ref dns.AccountId.t := M.read self in
+            M.pure (deref α0)) :
+            M (M.Val dns.AccountId.t)
+        ] in
+    M.read α1.
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {

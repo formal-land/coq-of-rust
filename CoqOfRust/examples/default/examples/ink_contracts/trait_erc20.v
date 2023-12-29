@@ -160,9 +160,17 @@ Section Impl_core_clone_Clone_for_trait_erc20_AccountId_t.
   *)
   Definition clone (self : ref Self) : M trait_erc20.AccountId.t :=
     let* self := M.alloc self in
-    let _ : unit := tt in
-    let* α0 : ref trait_erc20.AccountId.t := M.read self in
-    M.read (deref α0).
+    let* α0 : M.Val unit := M.alloc tt in
+    let* α1 : M.Val trait_erc20.AccountId.t :=
+      match_operator
+        α0
+        [
+          fun γ =>
+            (let* α0 : ref trait_erc20.AccountId.t := M.read self in
+            M.pure (deref α0)) :
+            M (M.Val trait_erc20.AccountId.t)
+        ] in
+    M.read α1.
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {
@@ -225,19 +233,37 @@ Section Impl_core_fmt_Debug_for_trait_erc20_Error_t.
     let* self := M.alloc self in
     let* f := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
-    let* α1 : ref trait_erc20.Error.t := M.read self in
-    let* α2 := M.read α1 in
-    let* α3 : M.Val (ref str.t) :=
-      match α2 with
-      | trait_erc20.Error.InsufficientBalance =>
-        let* α0 : ref str.t := M.read (mk_str "InsufficientBalance") in
-        M.alloc α0
-      | trait_erc20.Error.InsufficientAllowance =>
-        let* α0 : ref str.t := M.read (mk_str "InsufficientAllowance") in
-        M.alloc α0
-      end in
-    let* α4 : ref str.t := M.read α3 in
-    M.call (core.fmt.Formatter.t::["write_str"] α0 α4).
+    let* α1 : M.Val (ref str.t) :=
+      match_operator
+        self
+        [
+          fun γ =>
+            (let* γ :=
+              let* α0 := M.read γ in
+              M.pure (deref α0) in
+            let* α0 := M.read γ in
+            match α0 with
+            | trait_erc20.Error.InsufficientBalance =>
+              let* α0 : ref str.t := M.read (mk_str "InsufficientBalance") in
+              M.alloc α0
+            | _ => M.break_match
+            end) :
+            M (M.Val (ref str.t));
+          fun γ =>
+            (let* γ :=
+              let* α0 := M.read γ in
+              M.pure (deref α0) in
+            let* α0 := M.read γ in
+            match α0 with
+            | trait_erc20.Error.InsufficientAllowance =>
+              let* α0 : ref str.t := M.read (mk_str "InsufficientAllowance") in
+              M.alloc α0
+            | _ => M.break_match
+            end) :
+            M (M.Val (ref str.t))
+        ] in
+    let* α2 : ref str.t := M.read α1 in
+    M.call (core.fmt.Formatter.t::["write_str"] α0 α2).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
@@ -1129,28 +1155,52 @@ Section Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20_t.
                 (Self := core.result.Result.t unit trait_erc20.Error.t)
                 (Trait := ltac:(refine _)))
               α2) in
-        match α3 with
-        | core.ops.control_flow.ControlFlow.Break residual =>
-          let* residual := M.alloc residual in
-          let* α0 :
-              core.result.Result.t
-                core.convert.Infallible.t
-                trait_erc20.Error.t :=
-            M.read residual in
-          let* α1 : core.result.Result.t unit trait_erc20.Error.t :=
-            M.call
-              ((core.ops.try_trait.FromResidual.from_residual
-                  (Self := core.result.Result.t unit trait_erc20.Error.t)
-                  (Trait := ltac:(refine _)))
-                α0) in
-          let* α2 : M.Val never.t := return_ α1 in
-          let* α3 := M.read α2 in
-          let* α4 : unit := never_to_any α3 in
-          M.alloc α4
-        | core.ops.control_flow.ControlFlow.Continue val =>
-          let* val := M.alloc val in
-          M.pure val
-        end in
+        let* α4 :
+            M.Val
+              (core.ops.control_flow.ControlFlow.t
+                (core.result.Result.t
+                  core.convert.Infallible.t
+                  trait_erc20.Error.t)
+                unit) :=
+          M.alloc α3 in
+        match_operator
+          α4
+          [
+            fun γ =>
+              (let* α0 := M.read γ in
+              match α0 with
+              | core.ops.control_flow.ControlFlow.Break _ =>
+                let γ0 := γ.["Break.0"] in
+                let* residual := M.copy γ0 in
+                let* α0 :
+                    core.result.Result.t
+                      core.convert.Infallible.t
+                      trait_erc20.Error.t :=
+                  M.read residual in
+                let* α1 : core.result.Result.t unit trait_erc20.Error.t :=
+                  M.call
+                    ((core.ops.try_trait.FromResidual.from_residual
+                        (Self := core.result.Result.t unit trait_erc20.Error.t)
+                        (Trait := ltac:(refine _)))
+                      α0) in
+                let* α2 : M.Val never.t := return_ α1 in
+                let* α3 := M.read α2 in
+                let* α4 : unit := never_to_any α3 in
+                M.alloc α4
+              | _ => M.break_match
+              end) :
+              M (M.Val unit);
+            fun γ =>
+              (let* α0 := M.read γ in
+              match α0 with
+              | core.ops.control_flow.ControlFlow.Continue _ =>
+                let γ0 := γ.["Continue.0"] in
+                let* val := M.copy γ0 in
+                M.pure val
+              | _ => M.break_match
+              end) :
+              M (M.Val unit)
+          ] in
       let* _ : M.Val unit :=
         let* α0 : mut_ref trait_erc20.Erc20.t := M.read self in
         let* α1 : trait_erc20.AccountId.t := M.read from in

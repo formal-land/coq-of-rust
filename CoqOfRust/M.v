@@ -1,6 +1,8 @@
 (** * The definition of a Rust monad. *)
 Require Coq.Strings.String.
 
+Local Open Scope list.
+
 Inductive sigS {A : Type} (P : A -> Set) : Set :=
 | existS : forall (x : A), P x -> sigS P.
 Arguments existS {_ _}.
@@ -79,11 +81,13 @@ Module LowM.
   | Pure : A -> t A
   | CallPrimitive {B : Set} : Primitive B -> (B -> t A) -> t A
   | Cast {B1 B2 : Set} : B1 -> (B2 -> t A) -> t A
+  | Loop {B : Set} : t B -> (B -> bool) -> (B -> t A) -> t A
   | Impossible : t A
   | Call {B : Set} : t B -> (B -> t A) -> t A.
   Arguments Pure {_}.
   Arguments CallPrimitive {_ _}.
   Arguments Cast {_ _ _}.
+  Arguments Loop {_ _}.
   Arguments Impossible {_}.
   Arguments Call {_ _}.
 
@@ -94,6 +98,7 @@ Module LowM.
       CallPrimitive primitive (fun v => let_ (k v) f)
     | Cast v k =>
       Cast v (fun v' => let_ (k v') f)
+    | Loop body is_break k => Loop body is_break (fun v => let_ (k v) f)
     | Impossible => Impossible
     | Call e k => Call e (fun v => let_ (k v) f)
     end.
@@ -108,6 +113,8 @@ Module Exception.
   | Continue : t
   (** exceptions for Rust's `break` *)
   | Break : t
+  (** to translate the [match] patterns with (de)references *)
+  | BreakMatch : t
   | Panic : Coq.Strings.String.string -> t.
 End Exception.
 Definition Exception : Set := Exception.t.
@@ -167,31 +174,14 @@ Definition continue {A : Set} : M A :=
 Definition break {A : Set} : M A :=
   raise Exception.Break.
 
+Definition break_match {A : Set} : M A :=
+  raise Exception.BreakMatch.
+
 Definition panic {A : Set} (message : Coq.Strings.String.string) : M A :=
   raise (Exception.Panic message).
 
 Definition call {A : Set} (e : M A) : M A :=
   LowM.Call e LowM.Pure.
-
-(* TODO: define for every (A : Set) in (M A) *)
-(** the definition of a function representing the loop construction *)
-(* Definition loop (m : M unit) : M unit :=
-  fix F (fuel : nat) {struct fuel} :=
-    match fuel with
-    | 0 => LowM.Pure (inr Exception.NonTermination)
-    | S fuel' =>
-      let- v := m fuel in
-      match v with
-      (* only Break ends the loop *)
-      | inl tt                 => F fuel'
-      | inr Exception.Continue => F fuel'
-      | inr Exception.Break    => LowM.Pure (inl tt)
-      (* every other exception is kept *)
-      | inr (Exception.Return _)
-      | inr (Exception.Panic _)
-      | inr Exception.NonTermination => LowM.Pure (v)
-      end
-    end. *)
 
 Definition alloc {A : Set} (v : A) : M (Ref A) :=
   let- ref := LowM.CallPrimitive (Primitive.StateAlloc v) LowM.Pure in
@@ -257,3 +247,51 @@ Definition catch_return {A : Set} (body : M A) : M A :=
       | _ => raise exception
       end
     ).
+
+Definition catch_continue (body : M unit) : M unit :=
+  catch
+    body
+    (fun exception =>
+      match exception with
+      | Exception.Continue => pure tt
+      | _ => raise exception
+      end
+    ).
+
+Definition catch_break (body : M unit) : M unit :=
+  catch
+    body
+    (fun exception =>
+      match exception with
+      | Exception.Break => pure tt
+      | _ => raise exception
+      end
+    ).
+
+Definition loop (body : M unit) : M unit :=
+  LowM.Loop
+    (catch_continue body)
+    (fun result =>
+      match result with
+      | inl _ => false
+      | inr _ => true
+      end)
+    (fun result =>
+      catch_break (LowM.Pure result)).
+
+Fixpoint match_operator {A B : Set}
+    (scrutinee : A)
+    (arms : list (A -> M B)) :
+    M B :=
+  match arms with
+  | nil => impossible
+  | arm :: arms =>
+    catch
+      (arm scrutinee)
+      (fun exception =>
+        match exception with
+        | Exception.BreakMatch => match_operator scrutinee arms
+        | _ => raise exception
+        end
+      )
+  end.

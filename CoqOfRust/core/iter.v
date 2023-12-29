@@ -427,8 +427,8 @@ Module traits.
       where
           I: Iterator,
       *)
-      Global Instance I_Iterator (I Item : Set)
-          {H0 : iterator.Iterator.Trait I (Item := Item)} :
+      Global Instance I_Iterator {I Item : Set}
+          (H0 : iterator.Iterator.Trait I (Item := Item)) :
           IntoIterator.Trait I := {
         Item := Item;
         IntoIter := I;
@@ -442,7 +442,7 @@ End traits.
 (*
 impl<'a, T> Iterator for Iter<'a, T>
 *)
-Global Instance I_Iter (T : Set) :
+Global Instance I_Iter {T : Set} :
   traits.iterator.Iterator.Trait (slice.iter.Iter.t T) (Item := T).
 Admitted.
 
@@ -451,9 +451,9 @@ impl<A, B> Iterator for Zip<A, B>where
     A: Iterator,
     B: Iterator,
 *)
-Global Instance I_Zip (A B Item_A Item_B : Set)
-    {H0 : traits.iterator.Iterator.Trait A (Item := Item_A)}
-    {H1 : traits.iterator.Iterator.Trait B (Item := Item_B)} :
-    traits.iterator.Iterator.Trait
-      (adapters.zip.Zip.t A B) (Item := Item_A * Item_B).
+Global Instance I_Zip {A B Item_A Item_B : Set}
+  (H0 : traits.iterator.Iterator.Trait A (Item := Item_A))
+  (H1 : traits.iterator.Iterator.Trait B (Item := Item_B)) :
+  traits.iterator.Iterator.Trait
+    (adapters.zip.Zip.t A B) (Item := Item_A * Item_B).
 Admitted.

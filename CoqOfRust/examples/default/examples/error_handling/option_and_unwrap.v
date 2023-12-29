@@ -13,59 +13,85 @@ fn give_adult(drink: Option<&str>) {
 *)
 Definition give_adult (drink : core.option.Option.t (ref str.t)) : M unit :=
   let* drink := M.alloc drink in
-  let* α0 : core.option.Option.t (ref str.t) := M.read drink in
-  let* α1 : M.Val unit :=
-    match α0 with
-    | core.option.Option.Some _ =>
-      let* _ : M.Val unit :=
-        let* α0 : ref str.t := M.read (mk_str "Yuck! Too sugary.
+  let* α0 : M.Val unit :=
+    match_operator
+      drink
+      [
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
+          | core.option.Option.Some _ =>
+            let γ0 := γ.["Some.0"] in
+            let* _ : M.Val unit :=
+              let* α0 : ref str.t := M.read (mk_str "Yuck! Too sugary.
 ") in
-        let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-        let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
-        let* α3 : ref (slice (ref str.t)) :=
-          M.read (pointer_coercion "Unsize" α2) in
-        let* α4 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_const"] α3) in
-        let* α5 : unit := M.call (std.io.stdio._print α4) in
-        M.alloc α5 in
-      M.alloc tt
-    | core.option.Option.Some inner =>
-      let* inner := M.alloc inner in
-      let* _ : M.Val unit :=
-        let* α0 : ref str.t := M.read (mk_str "") in
-        let* α1 : ref str.t := M.read (mk_str "? How nice.
+              let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
+              let* α2 : M.Val (ref (array (ref str.t))) :=
+                M.alloc (borrow α1) in
+              let* α3 : ref (slice (ref str.t)) :=
+                M.read (pointer_coercion "Unsize" α2) in
+              let* α4 : core.fmt.Arguments.t :=
+                M.call (core.fmt.Arguments.t::["new_const"] α3) in
+              let* α5 : unit := M.call (std.io.stdio._print α4) in
+              M.alloc α5 in
+            M.alloc tt
+          | _ => M.break_match
+          end) :
+          M (M.Val unit);
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
+          | core.option.Option.Some _ =>
+            let γ0 := γ.["Some.0"] in
+            let* inner := M.copy γ0 in
+            let* _ : M.Val unit :=
+              let* α0 : ref str.t := M.read (mk_str "") in
+              let* α1 : ref str.t := M.read (mk_str "? How nice.
 ") in
-        let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-        let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
-        let* α4 : ref (slice (ref str.t)) :=
-          M.read (pointer_coercion "Unsize" α3) in
-        let* α5 : core.fmt.rt.Argument.t :=
-          M.call (core.fmt.rt.Argument.t::["new_display"] (borrow inner)) in
-        let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
-        let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-          M.alloc (borrow α6) in
-        let* α8 : ref (slice core.fmt.rt.Argument.t) :=
-          M.read (pointer_coercion "Unsize" α7) in
-        let* α9 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
-        let* α10 : unit := M.call (std.io.stdio._print α9) in
-        M.alloc α10 in
-      M.alloc tt
-    | core.option.Option.None =>
-      let* _ : M.Val unit :=
-        let* α0 : ref str.t := M.read (mk_str "No drink? Oh well.
+              let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
+              let* α3 : M.Val (ref (array (ref str.t))) :=
+                M.alloc (borrow α2) in
+              let* α4 : ref (slice (ref str.t)) :=
+                M.read (pointer_coercion "Unsize" α3) in
+              let* α5 : core.fmt.rt.Argument.t :=
+                M.call
+                  (core.fmt.rt.Argument.t::["new_display"] (borrow inner)) in
+              let* α6 : M.Val (array core.fmt.rt.Argument.t) :=
+                M.alloc [ α5 ] in
+              let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+                M.alloc (borrow α6) in
+              let* α8 : ref (slice core.fmt.rt.Argument.t) :=
+                M.read (pointer_coercion "Unsize" α7) in
+              let* α9 : core.fmt.Arguments.t :=
+                M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
+              let* α10 : unit := M.call (std.io.stdio._print α9) in
+              M.alloc α10 in
+            M.alloc tt
+          | _ => M.break_match
+          end) :
+          M (M.Val unit);
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
+          | core.option.Option.None =>
+            let* _ : M.Val unit :=
+              let* α0 : ref str.t := M.read (mk_str "No drink? Oh well.
 ") in
-        let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-        let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
-        let* α3 : ref (slice (ref str.t)) :=
-          M.read (pointer_coercion "Unsize" α2) in
-        let* α4 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_const"] α3) in
-        let* α5 : unit := M.call (std.io.stdio._print α4) in
-        M.alloc α5 in
-      M.alloc tt
-    end in
-  M.read α1.
+              let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
+              let* α2 : M.Val (ref (array (ref str.t))) :=
+                M.alloc (borrow α1) in
+              let* α3 : ref (slice (ref str.t)) :=
+                M.read (pointer_coercion "Unsize" α2) in
+              let* α4 : core.fmt.Arguments.t :=
+                M.call (core.fmt.Arguments.t::["new_const"] α3) in
+              let* α5 : unit := M.call (std.io.stdio._print α4) in
+              M.alloc α5 in
+            M.alloc tt
+          | _ => M.break_match
+          end) :
+          M (M.Val unit)
+      ] in
+  M.read α0.
 
 (*
 fn drink(drink: Option<&str>) {

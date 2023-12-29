@@ -234,9 +234,17 @@ Section Impl_core_clone_Clone_for_erc1155_AccountId_t.
   *)
   Definition clone (self : ref Self) : M erc1155.AccountId.t :=
     let* self := M.alloc self in
-    let _ : unit := tt in
-    let* α0 : ref erc1155.AccountId.t := M.read self in
-    M.read (deref α0).
+    let* α0 : M.Val unit := M.alloc tt in
+    let* α1 : M.Val erc1155.AccountId.t :=
+      match_operator
+        α0
+        [
+          fun γ =>
+            (let* α0 : ref erc1155.AccountId.t := M.read self in
+            M.pure (deref α0)) :
+            M (M.Val erc1155.AccountId.t)
+        ] in
+    M.read α1.
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {
@@ -1765,63 +1773,107 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                     (core.slice.iter.Iter.t u128.t))
                 (Trait := ltac:(refine _)))
               α0) in
-        let* α2 : M.Val unit :=
-          match α1 with
-          | iter =>
-            let* iter := M.alloc iter in
-            loop
-              (let* _ : M.Val unit :=
-                let* α0 : core.option.Option.t ((ref u128.t) * (ref u128.t)) :=
-                  M.call
-                    ((core.iter.traits.iterator.Iterator.next
-                        (Self :=
-                          core.iter.adapters.zip.Zip.t
-                            (core.slice.iter.Iter.t u128.t)
-                            (core.slice.iter.Iter.t u128.t))
-                        (Trait := ltac:(refine _)))
-                      (borrow_mut iter)) in
-                match α0 with
-                | core.option.Option.None =>
-                  let* α0 : M.Val never.t := Break in
-                  let* α1 := M.read α0 in
-                  let* α2 : unit := never_to_any α1 in
-                  M.alloc α2
-                | core.option.Option.Some (id, v) =>
-                  let* id := M.alloc id in
-                  let* v := M.alloc v in
-                  let* balance : M.Val u128.t :=
-                    let* α0 : mut_ref erc1155.Contract.t := M.read self in
-                    let* α1 : erc1155.AccountId.t := M.read from in
-                    let* α2 : u128.t := M.read id in
-                    let* α3 : u128.t :=
-                      M.call (balance_of (borrow (deref α0)) α1 α2) in
-                    M.alloc α3 in
-                  let* _ : M.Val unit :=
-                    let* α0 : u128.t := M.read balance in
-                    let* α1 : u128.t := M.read v in
-                    let* α2 : M.Val bool.t :=
-                      M.alloc (UnOp.not (BinOp.Pure.ge α0 α1)) in
-                    let* α3 : bool.t := M.read (use α2) in
-                    if α3 then
-                      let* _ : M.Val never.t :=
-                        let* α0 : erc1155.Error.t :=
-                          M.call
-                            ((core.convert.Into.into
-                                (Self := erc1155.Error.t)
-                                (Trait := ltac:(refine _)))
-                              erc1155.Error.InsufficientBalance) in
-                        return_ (core.result.Result.Err α0) in
-                      let* α0 : M.Val unit := M.alloc tt in
-                      let* α1 := M.read α0 in
-                      let* α2 : unit := never_to_any α1 in
-                      M.alloc α2
-                    else
-                      M.alloc tt in
-                  M.alloc tt
-                end in
-              M.alloc tt)
-          end in
-        M.pure (use α2) in
+        let* α2 :
+            M.Val
+              (core.iter.adapters.zip.Zip.t
+                (core.slice.iter.Iter.t u128.t)
+                (core.slice.iter.Iter.t u128.t)) :=
+          M.alloc α1 in
+        let* α3 : M.Val unit :=
+          match_operator
+            α2
+            [
+              fun γ =>
+                (let* iter := M.copy γ in
+                M.loop
+                  (let* _ : M.Val unit :=
+                    let* α0 :
+                        core.option.Option.t ((ref u128.t) * (ref u128.t)) :=
+                      M.call
+                        ((core.iter.traits.iterator.Iterator.next
+                            (Self :=
+                              core.iter.adapters.zip.Zip.t
+                                (core.slice.iter.Iter.t u128.t)
+                                (core.slice.iter.Iter.t u128.t))
+                            (Trait := ltac:(refine _)))
+                          (borrow_mut iter)) in
+                    let* α1 :
+                        M.Val
+                          (core.option.Option.t
+                            ((ref u128.t) * (ref u128.t))) :=
+                      M.alloc α0 in
+                    match_operator
+                      α1
+                      [
+                        fun γ =>
+                          (let* α0 := M.read γ in
+                          match α0 with
+                          | core.option.Option.None =>
+                            let* α0 : M.Val never.t := M.break in
+                            let* α1 := M.read α0 in
+                            let* α2 : unit := never_to_any α1 in
+                            M.alloc α2
+                          | _ => M.break_match
+                          end) :
+                          M (M.Val unit);
+                        fun γ =>
+                          (let* α0 := M.read γ in
+                          match α0 with
+                          | core.option.Option.Some _ =>
+                            let γ0 := γ.["Some.0"] in
+                            let* α0 := M.read γ0 in
+                            match α0 with
+                            | (_, _) =>
+                              let γ0 := Tuple.Access.left γ0 in
+                              let γ1 := Tuple.Access.right γ0 in
+                              let* γ0 :=
+                                let* α0 := M.read γ0 in
+                                M.pure (deref α0) in
+                              let* id := M.copy γ0 in
+                              let* γ1 :=
+                                let* α0 := M.read γ1 in
+                                M.pure (deref α0) in
+                              let* v := M.copy γ1 in
+                              let* balance : M.Val u128.t :=
+                                let* α0 : mut_ref erc1155.Contract.t :=
+                                  M.read self in
+                                let* α1 : erc1155.AccountId.t := M.read from in
+                                let* α2 : u128.t := M.read id in
+                                let* α3 : u128.t :=
+                                  M.call
+                                    (balance_of (borrow (deref α0)) α1 α2) in
+                                M.alloc α3 in
+                              let* _ : M.Val unit :=
+                                let* α0 : u128.t := M.read balance in
+                                let* α1 : u128.t := M.read v in
+                                let* α2 : M.Val bool.t :=
+                                  M.alloc (UnOp.not (BinOp.Pure.ge α0 α1)) in
+                                let* α3 : bool.t := M.read (use α2) in
+                                if α3 then
+                                  let* _ : M.Val never.t :=
+                                    let* α0 : erc1155.Error.t :=
+                                      M.call
+                                        ((core.convert.Into.into
+                                            (Self := erc1155.Error.t)
+                                            (Trait := ltac:(refine _)))
+                                          erc1155.Error.InsufficientBalance) in
+                                    return_ (core.result.Result.Err α0) in
+                                  let* α0 : M.Val unit := M.alloc tt in
+                                  let* α1 := M.read α0 in
+                                  let* α2 : unit := never_to_any α1 in
+                                  M.alloc α2
+                                else
+                                  M.alloc tt in
+                              M.alloc tt
+                            end
+                          | _ => M.break_match
+                          end) :
+                          M (M.Val unit)
+                      ] in
+                  M.alloc tt)) :
+                M (M.Val unit)
+            ] in
+        M.pure (use α3) in
       let* _ : M.Val unit :=
         let* α0 :
             core.iter.adapters.zip.Zip.t
@@ -1840,50 +1892,93 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                     (core.slice.iter.Iter.t u128.t))
                 (Trait := ltac:(refine _)))
               α0) in
-        let* α2 : M.Val unit :=
-          match α1 with
-          | iter =>
-            let* iter := M.alloc iter in
-            loop
-              (let* _ : M.Val unit :=
-                let* α0 : core.option.Option.t ((ref u128.t) * (ref u128.t)) :=
-                  M.call
-                    ((core.iter.traits.iterator.Iterator.next
-                        (Self :=
-                          core.iter.adapters.zip.Zip.t
-                            (core.slice.iter.Iter.t u128.t)
-                            (core.slice.iter.Iter.t u128.t))
-                        (Trait := ltac:(refine _)))
-                      (borrow_mut iter)) in
-                match α0 with
-                | core.option.Option.None =>
-                  let* α0 : M.Val never.t := Break in
-                  let* α1 := M.read α0 in
-                  let* α2 : unit := never_to_any α1 in
-                  M.alloc α2
-                | core.option.Option.Some (id, v) =>
-                  let* id := M.alloc id in
-                  let* v := M.alloc v in
-                  let* _ : M.Val unit :=
-                    let* α0 : mut_ref erc1155.Contract.t := M.read self in
-                    let* α1 : erc1155.AccountId.t := M.read from in
-                    let* α2 : erc1155.AccountId.t := M.read to in
-                    let* α3 : u128.t := M.read id in
-                    let* α4 : u128.t := M.read v in
-                    let* α5 : unit :=
+        let* α2 :
+            M.Val
+              (core.iter.adapters.zip.Zip.t
+                (core.slice.iter.Iter.t u128.t)
+                (core.slice.iter.Iter.t u128.t)) :=
+          M.alloc α1 in
+        let* α3 : M.Val unit :=
+          match_operator
+            α2
+            [
+              fun γ =>
+                (let* iter := M.copy γ in
+                M.loop
+                  (let* _ : M.Val unit :=
+                    let* α0 :
+                        core.option.Option.t ((ref u128.t) * (ref u128.t)) :=
                       M.call
-                        (erc1155.Contract.t::["perform_transfer"]
-                          α0
-                          α1
-                          α2
-                          α3
-                          α4) in
-                    M.alloc α5 in
-                  M.alloc tt
-                end in
-              M.alloc tt)
-          end in
-        M.pure (use α2) in
+                        ((core.iter.traits.iterator.Iterator.next
+                            (Self :=
+                              core.iter.adapters.zip.Zip.t
+                                (core.slice.iter.Iter.t u128.t)
+                                (core.slice.iter.Iter.t u128.t))
+                            (Trait := ltac:(refine _)))
+                          (borrow_mut iter)) in
+                    let* α1 :
+                        M.Val
+                          (core.option.Option.t
+                            ((ref u128.t) * (ref u128.t))) :=
+                      M.alloc α0 in
+                    match_operator
+                      α1
+                      [
+                        fun γ =>
+                          (let* α0 := M.read γ in
+                          match α0 with
+                          | core.option.Option.None =>
+                            let* α0 : M.Val never.t := M.break in
+                            let* α1 := M.read α0 in
+                            let* α2 : unit := never_to_any α1 in
+                            M.alloc α2
+                          | _ => M.break_match
+                          end) :
+                          M (M.Val unit);
+                        fun γ =>
+                          (let* α0 := M.read γ in
+                          match α0 with
+                          | core.option.Option.Some _ =>
+                            let γ0 := γ.["Some.0"] in
+                            let* α0 := M.read γ0 in
+                            match α0 with
+                            | (_, _) =>
+                              let γ0 := Tuple.Access.left γ0 in
+                              let γ1 := Tuple.Access.right γ0 in
+                              let* γ0 :=
+                                let* α0 := M.read γ0 in
+                                M.pure (deref α0) in
+                              let* id := M.copy γ0 in
+                              let* γ1 :=
+                                let* α0 := M.read γ1 in
+                                M.pure (deref α0) in
+                              let* v := M.copy γ1 in
+                              let* _ : M.Val unit :=
+                                let* α0 : mut_ref erc1155.Contract.t :=
+                                  M.read self in
+                                let* α1 : erc1155.AccountId.t := M.read from in
+                                let* α2 : erc1155.AccountId.t := M.read to in
+                                let* α3 : u128.t := M.read id in
+                                let* α4 : u128.t := M.read v in
+                                let* α5 : unit :=
+                                  M.call
+                                    (erc1155.Contract.t::["perform_transfer"]
+                                      α0
+                                      α1
+                                      α2
+                                      α3
+                                      α4) in
+                                M.alloc α5 in
+                              M.alloc tt
+                            end
+                          | _ => M.break_match
+                          end) :
+                          M (M.Val unit)
+                      ] in
+                  M.alloc tt)) :
+                M (M.Val unit)
+            ] in
+        M.pure (use α3) in
       let* _ : M.Val unit :=
         let* α0 : mut_ref erc1155.Contract.t := M.read self in
         let* α1 : erc1155.AccountId.t := M.read caller in
@@ -1960,81 +2055,145 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                 ref (alloc.vec.Vec.t erc1155.AccountId.t alloc.alloc.Global.t))
               (Trait := ltac:(refine _)))
             (borrow owners)) in
-      let* α1 : M.Val unit :=
-        match α0 with
-        | iter =>
-          let* iter := M.alloc iter in
-          loop
-            (let* _ : M.Val unit :=
-              let* α0 : core.option.Option.t (ref erc1155.AccountId.t) :=
-                M.call
-                  ((core.iter.traits.iterator.Iterator.next
-                      (Self := core.slice.iter.Iter.t erc1155.AccountId.t)
-                      (Trait := ltac:(refine _)))
-                    (borrow_mut iter)) in
-              match α0 with
-              | core.option.Option.None =>
-                let* α0 : M.Val never.t := Break in
-                let* α1 := M.read α0 in
-                let* α2 : unit := never_to_any α1 in
-                M.alloc α2
-              | core.option.Option.Some o =>
-                let* o := M.alloc o in
-                let* α0 : core.slice.iter.Iter.t u128.t :=
-                  M.call
-                    ((core.iter.traits.collect.IntoIterator.into_iter
-                        (Self :=
-                          ref (alloc.vec.Vec.t u128.t alloc.alloc.Global.t))
-                        (Trait := ltac:(refine _)))
-                      (borrow token_ids)) in
-                let* α1 : M.Val unit :=
-                  match α0 with
-                  | iter =>
-                    let* iter := M.alloc iter in
-                    loop
-                      (let* _ : M.Val unit :=
-                        let* α0 : core.option.Option.t (ref u128.t) :=
-                          M.call
-                            ((core.iter.traits.iterator.Iterator.next
-                                (Self := core.slice.iter.Iter.t u128.t)
-                                (Trait := ltac:(refine _)))
-                              (borrow_mut iter)) in
+      let* α1 : M.Val (core.slice.iter.Iter.t erc1155.AccountId.t) :=
+        M.alloc α0 in
+      let* α2 : M.Val unit :=
+        match_operator
+          α1
+          [
+            fun γ =>
+              (let* iter := M.copy γ in
+              M.loop
+                (let* _ : M.Val unit :=
+                  let* α0 : core.option.Option.t (ref erc1155.AccountId.t) :=
+                    M.call
+                      ((core.iter.traits.iterator.Iterator.next
+                          (Self := core.slice.iter.Iter.t erc1155.AccountId.t)
+                          (Trait := ltac:(refine _)))
+                        (borrow_mut iter)) in
+                  let* α1 :
+                      M.Val (core.option.Option.t (ref erc1155.AccountId.t)) :=
+                    M.alloc α0 in
+                  match_operator
+                    α1
+                    [
+                      fun γ =>
+                        (let* α0 := M.read γ in
                         match α0 with
                         | core.option.Option.None =>
-                          let* α0 : M.Val never.t := Break in
+                          let* α0 : M.Val never.t := M.break in
                           let* α1 := M.read α0 in
                           let* α2 : unit := never_to_any α1 in
                           M.alloc α2
-                        | core.option.Option.Some t =>
-                          let* t := M.alloc t in
-                          let* amount : M.Val u128.t :=
-                            let* α0 : ref erc1155.Contract.t := M.read self in
-                            let* α1 : ref erc1155.AccountId.t := M.read o in
-                            let* α2 : erc1155.AccountId.t :=
-                              M.read (deref α1) in
-                            let* α3 : ref u128.t := M.read t in
-                            let* α4 : u128.t := M.read (deref α3) in
-                            let* α5 : u128.t := M.call (balance_of α0 α2 α4) in
-                            M.alloc α5 in
-                          let* _ : M.Val unit :=
-                            let* α0 : u128.t := M.read amount in
-                            let* α1 : unit :=
-                              M.call
-                                ((alloc.vec.Vec.t
-                                      u128.t
-                                      alloc.alloc.Global.t)::["push"]
-                                  (borrow_mut output)
-                                  α0) in
-                            M.alloc α1 in
-                          M.alloc tt
-                        end in
-                      M.alloc tt)
-                  end in
-                M.pure (use α1)
-              end in
-            M.alloc tt)
-        end in
-      M.pure (use α1) in
+                        | _ => M.break_match
+                        end) :
+                        M (M.Val unit);
+                      fun γ =>
+                        (let* α0 := M.read γ in
+                        match α0 with
+                        | core.option.Option.Some _ =>
+                          let γ0 := γ.["Some.0"] in
+                          let* o := M.copy γ0 in
+                          let* α0 : core.slice.iter.Iter.t u128.t :=
+                            M.call
+                              ((core.iter.traits.collect.IntoIterator.into_iter
+                                  (Self :=
+                                    ref
+                                      (alloc.vec.Vec.t
+                                        u128.t
+                                        alloc.alloc.Global.t))
+                                  (Trait := ltac:(refine _)))
+                                (borrow token_ids)) in
+                          let* α1 : M.Val (core.slice.iter.Iter.t u128.t) :=
+                            M.alloc α0 in
+                          let* α2 : M.Val unit :=
+                            match_operator
+                              α1
+                              [
+                                fun γ =>
+                                  (let* iter := M.copy γ in
+                                  M.loop
+                                    (let* _ : M.Val unit :=
+                                      let* α0 :
+                                          core.option.Option.t (ref u128.t) :=
+                                        M.call
+                                          ((core.iter.traits.iterator.Iterator.next
+                                              (Self :=
+                                                core.slice.iter.Iter.t u128.t)
+                                              (Trait := ltac:(refine _)))
+                                            (borrow_mut iter)) in
+                                      let* α1 :
+                                          M.Val
+                                            (core.option.Option.t
+                                              (ref u128.t)) :=
+                                        M.alloc α0 in
+                                      match_operator
+                                        α1
+                                        [
+                                          fun γ =>
+                                            (let* α0 := M.read γ in
+                                            match α0 with
+                                            | core.option.Option.None =>
+                                              let* α0 : M.Val never.t :=
+                                                M.break in
+                                              let* α1 := M.read α0 in
+                                              let* α2 : unit :=
+                                                never_to_any α1 in
+                                              M.alloc α2
+                                            | _ => M.break_match
+                                            end) :
+                                            M (M.Val unit);
+                                          fun γ =>
+                                            (let* α0 := M.read γ in
+                                            match α0 with
+                                            | core.option.Option.Some _ =>
+                                              let γ0 := γ.["Some.0"] in
+                                              let* t := M.copy γ0 in
+                                              let* amount : M.Val u128.t :=
+                                                let* α0 :
+                                                    ref erc1155.Contract.t :=
+                                                  M.read self in
+                                                let* α1 :
+                                                    ref erc1155.AccountId.t :=
+                                                  M.read o in
+                                                let* α2 : erc1155.AccountId.t :=
+                                                  M.read (deref α1) in
+                                                let* α3 : ref u128.t :=
+                                                  M.read t in
+                                                let* α4 : u128.t :=
+                                                  M.read (deref α3) in
+                                                let* α5 : u128.t :=
+                                                  M.call
+                                                    (balance_of α0 α2 α4) in
+                                                M.alloc α5 in
+                                              let* _ : M.Val unit :=
+                                                let* α0 : u128.t :=
+                                                  M.read amount in
+                                                let* α1 : unit :=
+                                                  M.call
+                                                    ((alloc.vec.Vec.t
+                                                          u128.t
+                                                          alloc.alloc.Global.t)::["push"]
+                                                      (borrow_mut output)
+                                                      α0) in
+                                                M.alloc α1 in
+                                              M.alloc tt
+                                            | _ => M.break_match
+                                            end) :
+                                            M (M.Val unit)
+                                        ] in
+                                    M.alloc tt)) :
+                                  M (M.Val unit)
+                              ] in
+                          M.pure (use α2)
+                        | _ => M.break_match
+                        end) :
+                        M (M.Val unit)
+                    ] in
+                M.alloc tt)) :
+              M (M.Val unit)
+          ] in
+      M.pure (use α2) in
     M.read output.
   
   Global Instance AssociatedFunction_balance_of_batch :

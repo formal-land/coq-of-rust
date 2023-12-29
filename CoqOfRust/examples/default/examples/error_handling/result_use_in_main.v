@@ -23,20 +23,40 @@ Definition main
       let* α0 : ref str.t := M.read number_str in
       let* α1 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
         M.call (str.t::["parse"] α0) in
-      let* α2 : M.Val i32.t :=
-        match α1 with
-        | core.result.Result.Ok number =>
-          let* number := M.alloc number in
-          M.pure number
-        | core.result.Result.Err e =>
-          let* e := M.alloc e in
-          let* α0 : core.num.error.ParseIntError.t := M.read e in
-          let* α1 : M.Val never.t := return_ (core.result.Result.Err α0) in
-          let* α2 := M.read α1 in
-          let* α3 : i32.t := never_to_any α2 in
-          M.alloc α3
-        end in
-      M.copy α2 in
+      let* α2 :
+          M.Val (core.result.Result.t i32.t core.num.error.ParseIntError.t) :=
+        M.alloc α1 in
+      let* α3 : M.Val i32.t :=
+        match_operator
+          α2
+          [
+            fun γ =>
+              (let* α0 := M.read γ in
+              match α0 with
+              | core.result.Result.Ok _ =>
+                let γ0 := γ.["Ok.0"] in
+                let* number := M.copy γ0 in
+                M.pure number
+              | _ => M.break_match
+              end) :
+              M (M.Val i32.t);
+            fun γ =>
+              (let* α0 := M.read γ in
+              match α0 with
+              | core.result.Result.Err _ =>
+                let γ0 := γ.["Err.0"] in
+                let* e := M.copy γ0 in
+                let* α0 : core.num.error.ParseIntError.t := M.read e in
+                let* α1 : M.Val never.t :=
+                  return_ (core.result.Result.Err α0) in
+                let* α2 := M.read α1 in
+                let* α3 : i32.t := never_to_any α2 in
+                M.alloc α3
+              | _ => M.break_match
+              end) :
+              M (M.Val i32.t)
+          ] in
+      M.copy α3 in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "") in
