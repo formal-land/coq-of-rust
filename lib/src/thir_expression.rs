@@ -209,7 +209,7 @@ pub(crate) fn allocate_bindings(bindings: &[String], body: Rc<Expr>) -> Rc<Expr>
 }
 
 fn build_inner_match(patterns: Vec<(String, Rc<Pattern>)>, body: Rc<Expr>) -> Rc<Expr> {
-    let default_match_arm = MatchArm {
+    let default_match_arm = Rc::new(MatchArm {
         pattern: Rc::new(Pattern::Wild),
         body: Rc::new(Expr {
             kind: Rc::new(ExprKind::Call {
@@ -220,7 +220,7 @@ fn build_inner_match(patterns: Vec<(String, Rc<Pattern>)>, body: Rc<Expr>) -> Rc
             }),
             ty: None,
         }),
-    };
+    });
 
     patterns
         .into_iter()
@@ -265,7 +265,7 @@ fn build_inner_match(patterns: Vec<(String, Rc<Pattern>)>, body: Rc<Expr>) -> Rc
                 kind: Rc::new(ExprKind::Match {
                     scrutinee: Expr::local_var(&scrutinee).read(),
                     arms: [
-                        vec![MatchArm {
+                        vec![Rc::new(MatchArm {
                             pattern: Rc::new(Pattern::StructStruct(
                                 path.clone(),
                                 fields
@@ -312,7 +312,7 @@ fn build_inner_match(patterns: Vec<(String, Rc<Pattern>)>, body: Rc<Expr>) -> Rc
                                     },
                                 )
                             },
-                        }],
+                        })],
                         match struct_or_variant {
                             StructOrVariant::Struct => vec![],
                             StructOrVariant::Variant => vec![default_match_arm.clone()],
@@ -326,7 +326,7 @@ fn build_inner_match(patterns: Vec<(String, Rc<Pattern>)>, body: Rc<Expr>) -> Rc
                 kind: Rc::new(ExprKind::Match {
                     scrutinee: Expr::local_var(&scrutinee).read(),
                     arms: [
-                        vec![MatchArm {
+                        vec![Rc::new(MatchArm {
                             pattern: Rc::new(Pattern::StructTuple(
                                 path.clone(),
                                 patterns.iter().map(|_| Rc::new(Pattern::Wild)).collect(),
@@ -365,7 +365,7 @@ fn build_inner_match(patterns: Vec<(String, Rc<Pattern>)>, body: Rc<Expr>) -> Rc
                                     })
                                 })
                             },
-                        }],
+                        })],
                         match struct_or_variant {
                             StructOrVariant::Struct => vec![],
                             StructOrVariant::Variant => vec![default_match_arm.clone()],
@@ -396,7 +396,7 @@ fn build_inner_match(patterns: Vec<(String, Rc<Pattern>)>, body: Rc<Expr>) -> Rc
                 ty: body.ty.clone(),
                 kind: Rc::new(ExprKind::Match {
                     scrutinee: Expr::local_var(&scrutinee).read(),
-                    arms: vec![MatchArm {
+                    arms: vec![Rc::new(MatchArm {
                         pattern: Rc::new(Pattern::Tuple(
                             patterns.iter().map(|_| Rc::new(Pattern::Wild)).collect(),
                         )),
@@ -453,7 +453,7 @@ fn build_inner_match(patterns: Vec<(String, Rc<Pattern>)>, body: Rc<Expr>) -> Rc
                                 })
                             })
                         },
-                    }],
+                    })],
                 }),
             }),
             Pattern::Lit(_) => Rc::new(Expr {
@@ -461,10 +461,10 @@ fn build_inner_match(patterns: Vec<(String, Rc<Pattern>)>, body: Rc<Expr>) -> Rc
                 kind: Rc::new(ExprKind::Match {
                     scrutinee: Expr::local_var(&scrutinee).read(),
                     arms: vec![
-                        MatchArm {
+                        Rc::new(MatchArm {
                             pattern: pattern.clone(),
                             body,
-                        },
+                        }),
                         default_match_arm.clone(),
                     ],
                 }),
@@ -477,7 +477,7 @@ fn build_inner_match(patterns: Vec<(String, Rc<Pattern>)>, body: Rc<Expr>) -> Rc
                 kind: Rc::new(ExprKind::Match {
                     scrutinee: Expr::local_var(&scrutinee).read(),
                     arms: vec![
-                        MatchArm {
+                        Rc::new(MatchArm {
                             pattern: Rc::new(Pattern::Slice {
                                 init_patterns: init_patterns
                                     .iter()
@@ -551,7 +551,7 @@ fn build_inner_match(patterns: Vec<(String, Rc<Pattern>)>, body: Rc<Expr>) -> Rc
                                         })
                                     })
                             },
-                        },
+                        }),
                         default_match_arm.clone(),
                     ],
                 }),

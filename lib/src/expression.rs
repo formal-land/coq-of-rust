@@ -22,7 +22,7 @@ impl FreshVars {
 
 /// Struct [MatchArm] represents a pattern-matching branch: [pat] is the
 /// matched pattern and [body] the expression on which it is mapped
-#[derive(Clone, Debug, Eq, Hash, PartialEq)]
+#[derive(Debug, Eq, Hash, PartialEq)]
 pub(crate) struct MatchArm {
     pub(crate) pattern: Rc<Pattern>,
     pub(crate) body: Rc<Expr>,
@@ -42,7 +42,7 @@ pub(crate) enum Purity {
     Effectful,
 }
 
-#[derive(Clone, Debug, Eq, Hash, PartialEq)]
+#[derive(Debug, Eq, Hash, PartialEq)]
 pub(crate) enum Literal {
     Bool(bool),
     Integer { value: u128, neg: bool },
@@ -51,14 +51,14 @@ pub(crate) enum Literal {
     Error,
 }
 
-#[derive(Clone, Debug, Eq, Hash, PartialEq)]
+#[derive(Debug, Eq, Hash, PartialEq)]
 pub(crate) struct Expr {
     pub(crate) kind: Rc<ExprKind>,
     pub(crate) ty: Option<Rc<CoqType>>,
 }
 
 /// Enum [ExprKind] represents the AST of rust terms.
-#[derive(Clone, Debug, Eq, Hash, PartialEq)]
+#[derive(Debug, Eq, Hash, PartialEq)]
 pub(crate) enum ExprKind {
     Pure(Rc<Expr>),
     LocalVar(String),
@@ -122,7 +122,7 @@ pub(crate) enum ExprKind {
     },
     Match {
         scrutinee: Rc<Expr>,
-        arms: Vec<MatchArm>,
+        arms: Vec<Rc<MatchArm>>,
     },
     #[allow(dead_code)]
     IndexedField {
@@ -228,10 +228,7 @@ impl Expr {
             } => condition.has_return() || success.has_return() || failure.has_return(),
             ExprKind::Loop { body } => body.has_return(),
             ExprKind::Match { scrutinee, arms } => {
-                scrutinee.has_return()
-                    || arms
-                        .iter()
-                        .any(|MatchArm { pattern: _, body }| body.has_return())
+                scrutinee.has_return() || arms.iter().any(|arm| arm.body.has_return())
             }
             ExprKind::IndexedField { base, index: _ } => base.has_return(),
             ExprKind::NamedField { base, name: _ } => base.has_return(),
@@ -583,13 +580,13 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Rc<Expr>) -> (Rc<Expr>,
                             scrutinee,
                             arms: arms
                                 .iter()
-                                .map(|MatchArm { pattern, body }| {
+                                .map(|arm| {
                                     let (body, _fresh_vars) =
-                                        mt_expression(FreshVars::new(), body.clone());
-                                    MatchArm {
-                                        pattern: pattern.clone(),
+                                        mt_expression(FreshVars::new(), arm.body.clone());
+                                    Rc::new(MatchArm {
+                                        pattern: arm.pattern.clone(),
                                         body,
-                                    }
+                                    })
                                 })
                                 .collect(),
                         }),
