@@ -107,30 +107,37 @@ Definition main : M unit :=
         let* α1 : ref str.t := M.call (str.t::["trim"] α0) in
         let* α2 : core.result.Result.t u32.t core.num.error.ParseIntError.t :=
           M.call (str.t::["parse"] α1) in
-        let* α3 : M.Val u32.t :=
+        let* α3 :
+            M.Val (core.result.Result.t u32.t core.num.error.ParseIntError.t) :=
+          M.alloc α2 in
+        let* α4 : M.Val u32.t :=
           match_operator
-            α2
+            α3
             [
-              fun α =>
-                match α with
-                | core.result.Result.Ok num =>
-                  let* num := M.alloc num in
+              fun γ =>
+                (let* α0 := M.read γ in
+                match α0 with
+                | core.result.Result.Ok _ =>
+                  let γ0 := γ.["Ok.0"] in
+                  let* num := M.copy γ0 in
                   M.pure num
                 | _ => M.break_match
-                end :
+                end) :
                 M (M.Val u32.t);
-              fun α =>
-                match α with
+              fun γ =>
+                (let* α0 := M.read γ in
+                match α0 with
                 | core.result.Result.Err _ =>
+                  let γ0 := γ.["Err.0"] in
                   let* α0 : M.Val never.t := M.continue in
                   let* α1 := M.read α0 in
                   let* α2 : u32.t := never_to_any α1 in
                   M.alloc α2
                 | _ => M.break_match
-                end :
+                end) :
                 M (M.Val u32.t)
             ] in
-        M.copy α3 in
+        M.copy α4 in
       let* _ : M.Val unit :=
         let* _ : M.Val unit :=
           let* α0 : ref str.t := M.read (mk_str "You guessed: ") in
@@ -157,11 +164,13 @@ Definition main : M unit :=
           ((core.cmp.Ord.cmp (Self := u32.t) (Trait := ltac:(refine _)))
             (borrow guess)
             (borrow secret_number)) in
+      let* α1 : M.Val core.cmp.Ordering.t := M.alloc α0 in
       match_operator
-        α0
+        α1
         [
-          fun α =>
-            match α with
+          fun γ =>
+            (let* α0 := M.read γ in
+            match α0 with
             | core.cmp.Ordering.Less =>
               let* _ : M.Val unit :=
                 let* α0 : ref str.t := M.read (mk_str "Too small!
@@ -177,10 +186,11 @@ Definition main : M unit :=
                 M.alloc α5 in
               M.alloc tt
             | _ => M.break_match
-            end :
+            end) :
             M (M.Val unit);
-          fun α =>
-            match α with
+          fun γ =>
+            (let* α0 := M.read γ in
+            match α0 with
             | core.cmp.Ordering.Greater =>
               let* _ : M.Val unit :=
                 let* α0 : ref str.t := M.read (mk_str "Too big!
@@ -196,10 +206,11 @@ Definition main : M unit :=
                 M.alloc α5 in
               M.alloc tt
             | _ => M.break_match
-            end :
+            end) :
             M (M.Val unit);
-          fun α =>
-            match α with
+          fun γ =>
+            (let* α0 := M.read γ in
+            match α0 with
             | core.cmp.Ordering.Equal =>
               let* _ : M.Val unit :=
                 let* _ : M.Val unit :=
@@ -221,7 +232,7 @@ Definition main : M unit :=
               let* α2 : unit := never_to_any α1 in
               M.alloc α2
             | _ => M.break_match
-            end :
+            end) :
             M (M.Val unit)
         ]) in
   M.read α0.

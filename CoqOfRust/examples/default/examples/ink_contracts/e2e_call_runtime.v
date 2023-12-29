@@ -49,19 +49,17 @@ Section Impl_core_clone_Clone_for_e2e_call_runtime_AccountId_t.
   *)
   Definition clone (self : ref Self) : M e2e_call_runtime.AccountId.t :=
     let* self := M.alloc self in
-    let* α0 : M.Val e2e_call_runtime.AccountId.t :=
+    let* α0 : M.Val unit := M.alloc tt in
+    let* α1 : M.Val e2e_call_runtime.AccountId.t :=
       match_operator
-        tt
+        α0
         [
-          fun α =>
-            match α with
-            | _ =>
-              let* α0 : ref e2e_call_runtime.AccountId.t := M.read self in
-              M.pure (deref α0)
-            end :
+          fun γ =>
+            (let* α0 : ref e2e_call_runtime.AccountId.t := M.read self in
+            M.pure (deref α0)) :
             M (M.Val e2e_call_runtime.AccountId.t)
         ] in
-    M.read α0.
+    M.read α1.
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {

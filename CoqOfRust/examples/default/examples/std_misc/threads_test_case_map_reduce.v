@@ -138,42 +138,56 @@ Definition main : M unit :=
                 core.str.iter.SplitWhitespace.t)
             (Trait := ltac:(refine _)))
           α1) in
-    let* α3 : M.Val unit :=
+    let* α3 :
+        M.Val
+          (core.iter.adapters.enumerate.Enumerate.t
+            core.str.iter.SplitWhitespace.t) :=
+      M.alloc α2 in
+    let* α4 : M.Val unit :=
       match_operator
-        α2
+        α3
         [
-          fun α =>
-            match α with
-            | iter =>
-              let* iter := M.alloc iter in
-              M.loop
-                (let* _ : M.Val unit :=
-                  let* α0 : core.option.Option.t (usize.t * (ref str.t)) :=
-                    M.call
-                      ((core.iter.traits.iterator.Iterator.next
-                          (Self :=
-                            core.iter.adapters.enumerate.Enumerate.t
-                              core.str.iter.SplitWhitespace.t)
-                          (Trait := ltac:(refine _)))
-                        (borrow_mut iter)) in
-                  match_operator
-                    α0
-                    [
-                      fun α =>
-                        match α with
-                        | core.option.Option.None =>
-                          let* α0 : M.Val never.t := M.break in
-                          let* α1 := M.read α0 in
-                          let* α2 : unit := never_to_any α1 in
-                          M.alloc α2
-                        | _ => M.break_match
-                        end :
-                        M (M.Val unit);
-                      fun α =>
-                        match α with
-                        | core.option.Option.Some (i, data_segment) =>
-                          let* i := M.alloc i in
-                          let* data_segment := M.alloc data_segment in
+          fun γ =>
+            (let* iter := M.copy γ in
+            M.loop
+              (let* _ : M.Val unit :=
+                let* α0 : core.option.Option.t (usize.t * (ref str.t)) :=
+                  M.call
+                    ((core.iter.traits.iterator.Iterator.next
+                        (Self :=
+                          core.iter.adapters.enumerate.Enumerate.t
+                            core.str.iter.SplitWhitespace.t)
+                        (Trait := ltac:(refine _)))
+                      (borrow_mut iter)) in
+                let* α1 :
+                    M.Val (core.option.Option.t (usize.t * (ref str.t))) :=
+                  M.alloc α0 in
+                match_operator
+                  α1
+                  [
+                    fun γ =>
+                      (let* α0 := M.read γ in
+                      match α0 with
+                      | core.option.Option.None =>
+                        let* α0 : M.Val never.t := M.break in
+                        let* α1 := M.read α0 in
+                        let* α2 : unit := never_to_any α1 in
+                        M.alloc α2
+                      | _ => M.break_match
+                      end) :
+                      M (M.Val unit);
+                    fun γ =>
+                      (let* α0 := M.read γ in
+                      match α0 with
+                      | core.option.Option.Some _ =>
+                        let γ0 := γ.["Some.0"] in
+                        let* α0 := M.read γ0 in
+                        match α0 with
+                        | (_, _) =>
+                          let γ0 := γ0.["(,)left"] in
+                          let γ1 := γ0.["(,)right"] in
+                          let* i := M.copy γ0 in
+                          let* data_segment := M.copy γ1 in
                           let* _ : M.Val unit :=
                             let* _ : M.Val unit :=
                               let* α0 : ref str.t :=
@@ -228,32 +242,30 @@ Definition main : M unit :=
                                             (Trait := ltac:(refine _)))
                                           α1
                                           (fun (α0 : char.t) =>
-                                            (match_operator
+                                            (let* α0 := M.alloc α0 in
+                                            match_operator
                                               α0
                                               [
-                                                fun α =>
-                                                  match α with
-                                                  | c =>
-                                                    let* c := M.alloc c in
-                                                    let* α0 : char.t :=
-                                                      M.read c in
-                                                    let* α1 :
-                                                        core.option.Option.t
-                                                          u32.t :=
-                                                      M.call
-                                                        (char.t::["to_digit"]
-                                                          α0
-                                                          (Integer.of_Z 10)) in
-                                                    let* α2 : ref str.t :=
-                                                      M.read
-                                                        (mk_str
-                                                          "should be a digit") in
+                                                fun γ =>
+                                                  (let* c := M.copy γ in
+                                                  let* α0 : char.t :=
+                                                    M.read c in
+                                                  let* α1 :
+                                                      core.option.Option.t
+                                                        u32.t :=
                                                     M.call
-                                                      ((core.option.Option.t
-                                                            u32.t)::["expect"]
-                                                        α1
-                                                        α2)
-                                                  end :
+                                                      (char.t::["to_digit"]
+                                                        α0
+                                                        (Integer.of_Z 10)) in
+                                                  let* α2 : ref str.t :=
+                                                    M.read
+                                                      (mk_str
+                                                        "should be a digit") in
+                                                  M.call
+                                                    ((core.option.Option.t
+                                                          u32.t)::["expect"]
+                                                      α1
+                                                      α2)) :
                                                   M u32.t
                                               ]) :
                                             M u32.t)) in
@@ -323,15 +335,15 @@ Definition main : M unit :=
                                   α0) in
                             M.alloc α1 in
                           M.alloc tt
-                        | _ => M.break_match
-                        end :
-                        M (M.Val unit)
-                    ] in
-                M.alloc tt)
-            end :
+                        end
+                      | _ => M.break_match
+                      end) :
+                      M (M.Val unit)
+                  ] in
+              M.alloc tt)) :
             M (M.Val unit)
         ] in
-    M.pure (use α3) in
+    M.pure (use α4) in
   let* final_result : M.Val u32.t :=
     let* α0 :
         alloc.vec.Vec.t (std.thread.JoinHandle.t u32.t) alloc.alloc.Global.t :=
@@ -363,27 +375,25 @@ Definition main : M unit :=
             (Trait := ltac:(refine _)))
           α1
           (fun (α0 : std.thread.JoinHandle.t u32.t) =>
-            (match_operator
+            (let* α0 := M.alloc α0 in
+            match_operator
               α0
               [
-                fun α =>
-                  match α with
-                  | c =>
-                    let* c := M.alloc c in
-                    let* α0 : std.thread.JoinHandle.t u32.t := M.read c in
-                    let* α1 :
-                        core.result.Result.t
+                fun γ =>
+                  (let* c := M.copy γ in
+                  let* α0 : std.thread.JoinHandle.t u32.t := M.read c in
+                  let* α1 :
+                      core.result.Result.t
+                        u32.t
+                        (alloc.boxed.Box.t dynamic alloc.alloc.Global.t) :=
+                    M.call ((std.thread.JoinHandle.t u32.t)::["join"] α0) in
+                  M.call
+                    ((core.result.Result.t
                           u32.t
-                          (alloc.boxed.Box.t dynamic alloc.alloc.Global.t) :=
-                      M.call ((std.thread.JoinHandle.t u32.t)::["join"] α0) in
-                    M.call
-                      ((core.result.Result.t
-                            u32.t
-                            (alloc.boxed.Box.t
-                              dynamic
-                              alloc.alloc.Global.t))::["unwrap"]
-                        α1)
-                  end :
+                          (alloc.boxed.Box.t
+                            dynamic
+                            alloc.alloc.Global.t))::["unwrap"]
+                      α1)) :
                   M u32.t
               ]) :
             M u32.t)) in

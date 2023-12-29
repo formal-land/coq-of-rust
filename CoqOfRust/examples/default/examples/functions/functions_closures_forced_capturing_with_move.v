@@ -36,22 +36,20 @@ Definition main : M unit :=
   let* contains : M.Val ((ref i32.t) -> M bool.t) :=
     M.alloc
       (fun (α0 : ref i32.t) =>
-        (match_operator
+        (let* α0 := M.alloc α0 in
+        match_operator
           α0
           [
-            fun α =>
-              match α with
-              | needle =>
-                let* needle := M.alloc needle in
-                let* α0 : ref (slice i32.t) :=
-                  M.call
-                    ((core.ops.deref.Deref.deref
-                        (Self := alloc.vec.Vec.t i32.t alloc.alloc.Global.t)
-                        (Trait := ltac:(refine _)))
-                      (borrow haystack)) in
-                let* α1 : ref i32.t := M.read needle in
-                M.call ((slice i32.t)::["contains"] α0 α1)
-              end :
+            fun γ =>
+              (let* needle := M.copy γ in
+              let* α0 : ref (slice i32.t) :=
+                M.call
+                  ((core.ops.deref.Deref.deref
+                      (Self := alloc.vec.Vec.t i32.t alloc.alloc.Global.t)
+                      (Trait := ltac:(refine _)))
+                    (borrow haystack)) in
+              let* α1 : ref i32.t := M.read needle in
+              M.call ((slice i32.t)::["contains"] α0 α1)) :
               M bool.t
           ]) :
         M bool.t) in

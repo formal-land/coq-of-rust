@@ -151,24 +151,28 @@ Section Impl_derive_Inches_t.
   *)
   Definition to_centimeters (self : ref Self) : M derive.Centimeters.t :=
     let* self := M.alloc self in
-    let* α0 : ref derive.Inches.t := M.read self in
-    let* α1 : M.Val derive.Centimeters.t :=
+    let* α0 : M.Val derive.Centimeters.t :=
       match_operator
-        α0
+        self
         [
-          fun α =>
-            match α with
-            | derive.Inches.Build_t inches =>
-              let* inches := M.alloc inches in
+          fun γ =>
+            (let* γ :=
+              let* α0 := M.read γ in
+              M.alloc (deref α0) in
+            let* α0 := M.read γ in
+            match α0 with
+            | derive.Inches.Build_t _ =>
+              let γ0 := γ.["Inches.0"] in
+              let* inches := M.copy γ0 in
               let* α0 : i32.t := M.read inches in
               let* α1 : f64.t := cast α0 in
               let* α2 : f64.t := M.read UnsupportedLiteral in
               let* α3 : f64.t := BinOp.Panic.mul α1 α2 in
               M.alloc (derive.Centimeters.Build_t α3)
-            end :
+            end) :
             M (M.Val derive.Centimeters.t)
         ] in
-    M.read α1.
+    M.read α0.
   
   Global Instance AssociatedFunction_to_centimeters :
     Notations.DoubleColon Self "to_centimeters" := {

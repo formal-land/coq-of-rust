@@ -49,19 +49,17 @@ Section Impl_core_clone_Clone_for_call_builder_AccountId_t.
   *)
   Definition clone (self : ref Self) : M call_builder.AccountId.t :=
     let* self := M.alloc self in
-    let* α0 : M.Val call_builder.AccountId.t :=
+    let* α0 : M.Val unit := M.alloc tt in
+    let* α1 : M.Val call_builder.AccountId.t :=
       match_operator
-        tt
+        α0
         [
-          fun α =>
-            match α with
-            | _ =>
-              let* α0 : ref call_builder.AccountId.t := M.read self in
-              M.pure (deref α0)
-            end :
+          fun γ =>
+            (let* α0 : ref call_builder.AccountId.t := M.read self in
+            M.pure (deref α0)) :
             M (M.Val call_builder.AccountId.t)
         ] in
-    M.read α0.
+    M.read α1.
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {
@@ -200,33 +198,40 @@ Section Impl_call_builder_CallBuilderTest_t.
       let* α2 : core.result.Result.t unit call_builder.LangError.t :=
         never_to_any α1 in
       M.alloc α2 in
-    let* α0 : core.result.Result.t unit call_builder.LangError.t :=
-      M.read result in
     let* α0 : M.Val (core.option.Option.t call_builder.LangError.t) :=
       match_operator
-        α0
+        result
         [
-          fun α =>
-            match α with
-            | core.result.Result.Ok _ => M.alloc core.option.Option.None
+          fun γ =>
+            (let* α0 := M.read γ in
+            match α0 with
+            | core.result.Result.Ok _ =>
+              let γ0 := γ.["Ok.0"] in
+              M.alloc core.option.Option.None
             | _ => M.break_match
-            end :
+            end) :
             M (M.Val (core.option.Option.t call_builder.LangError.t));
-          fun α =>
-            match α with
-            |
-                core.result.Result.Err
-                  (call_builder.LangError.CouldNotReadInput as e)
-                =>
-              let* e := M.alloc e in
-              let* α0 : call_builder.LangError.t := M.read e in
-              M.alloc (core.option.Option.Some α0)
-            | _ => M.break_match
-            end :
-            M (M.Val (core.option.Option.t call_builder.LangError.t));
-          fun α =>
-            match α with
+          fun γ =>
+            (let* α0 := M.read γ in
+            match α0 with
             | core.result.Result.Err _ =>
+              let γ0 := γ.["Err.0"] in
+              let* e := M.copy γ0 in
+              let* α0 := M.read γ0 in
+              match α0 with
+              | call_builder.LangError.CouldNotReadInput =>
+                let* α0 : call_builder.LangError.t := M.read e in
+                M.alloc (core.option.Option.Some α0)
+              | _ => M.break_match
+              end
+            | _ => M.break_match
+            end) :
+            M (M.Val (core.option.Option.t call_builder.LangError.t));
+          fun γ =>
+            (let* α0 := M.read γ in
+            match α0 with
+            | core.result.Result.Err _ =>
+              let γ0 := γ.["Err.0"] in
               let* α0 : ref str.t :=
                 M.read
                   (mk_str
@@ -248,7 +253,7 @@ Section Impl_call_builder_CallBuilderTest_t.
                 never_to_any α8 in
               M.alloc α9
             | _ => M.break_match
-            end :
+            end) :
             M (M.Val (core.option.Option.t call_builder.LangError.t))
         ] in
     M.read α0.

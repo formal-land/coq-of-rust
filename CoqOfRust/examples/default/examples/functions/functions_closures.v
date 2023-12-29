@@ -36,34 +36,30 @@ Definition main : M unit :=
   let* closure_annotated : M.Val (i32.t -> M i32.t) :=
     M.alloc
       (fun (α0 : i32.t) =>
-        (match_operator
+        (let* α0 := M.alloc α0 in
+        match_operator
           α0
           [
-            fun α =>
-              match α with
-              | i =>
-                let* i := M.alloc i in
-                let* α0 : i32.t := M.read i in
-                let* α1 : i32.t := M.read outer_var in
-                BinOp.Panic.add α0 α1
-              end :
+            fun γ =>
+              (let* i := M.copy γ in
+              let* α0 : i32.t := M.read i in
+              let* α1 : i32.t := M.read outer_var in
+              BinOp.Panic.add α0 α1) :
               M i32.t
           ]) :
         M i32.t) in
   let* closure_inferred : M.Val (i32.t -> M i32.t) :=
     M.alloc
       (fun (α0 : i32.t) =>
-        (match_operator
+        (let* α0 := M.alloc α0 in
+        match_operator
           α0
           [
-            fun α =>
-              match α with
-              | i =>
-                let* i := M.alloc i in
-                let* α0 : i32.t := M.read i in
-                let* α1 : i32.t := M.read outer_var in
-                BinOp.Panic.add α0 α1
-              end :
+            fun γ =>
+              (let* i := M.copy γ in
+              let* α0 : i32.t := M.read i in
+              let* α1 : i32.t := M.read outer_var in
+              BinOp.Panic.add α0 α1) :
               M i32.t
           ]) :
         M i32.t) in

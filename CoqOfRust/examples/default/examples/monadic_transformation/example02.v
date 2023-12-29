@@ -26,19 +26,12 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
   let* _ : M.Val bool.t :=
+    let* α0 : M.Val i32.t := M.alloc (Integer.of_Z 1) in
     match_operator
-      (Integer.of_Z 1)
+      α0
       [
-        fun α =>
-          match α with
-          | _ => M.alloc false
-          end :
-          M (M.Val bool.t);
-        fun α =>
-          match α with
-          | _ => M.alloc true
-          end :
-          M (M.Val bool.t)
+        fun γ => (M.alloc false) : M (M.Val bool.t);
+        fun γ => (M.alloc true) : M (M.Val bool.t)
       ] in
   let* _ : M.Val i32.t :=
     let* α0 : M.Val bool.t := M.alloc true in

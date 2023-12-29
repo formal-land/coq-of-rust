@@ -48,40 +48,33 @@ Section Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book_t.
       (self : ref Self)
       : M scoping_rules_borrowing_mutablity.Book.t :=
     let* self := M.alloc self in
-    let* α0 : M.Val scoping_rules_borrowing_mutablity.Book.t :=
+    let* α0 : M.Val unit := M.alloc tt in
+    let* α1 : M.Val scoping_rules_borrowing_mutablity.Book.t :=
       match_operator
-        tt
+        α0
         [
-          fun α =>
-            match α with
-            | _ =>
-              match_operator
-                tt
-                [
-                  fun α =>
-                    match α with
-                    | _ =>
-                      match_operator
-                        tt
-                        [
-                          fun α =>
-                            match α with
-                            | _ =>
-                              let* α0 :
-                                  ref
-                                    scoping_rules_borrowing_mutablity.Book.t :=
-                                M.read self in
-                              M.pure (deref α0)
-                            end :
-                            M (M.Val scoping_rules_borrowing_mutablity.Book.t)
-                        ]
-                    end :
-                    M (M.Val scoping_rules_borrowing_mutablity.Book.t)
-                ]
-            end :
+          fun γ =>
+            (let* α0 : M.Val unit := M.alloc tt in
+            match_operator
+              α0
+              [
+                fun γ =>
+                  (let* α0 : M.Val unit := M.alloc tt in
+                  match_operator
+                    α0
+                    [
+                      fun γ =>
+                        (let* α0 :
+                            ref scoping_rules_borrowing_mutablity.Book.t :=
+                          M.read self in
+                        M.pure (deref α0)) :
+                        M (M.Val scoping_rules_borrowing_mutablity.Book.t)
+                    ]) :
+                  M (M.Val scoping_rules_borrowing_mutablity.Book.t)
+              ]) :
             M (M.Val scoping_rules_borrowing_mutablity.Book.t)
         ] in
-    M.read α0.
+    M.read α1.
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {

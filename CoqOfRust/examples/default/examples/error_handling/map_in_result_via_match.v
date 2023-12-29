@@ -22,43 +22,55 @@ Definition multiply
   let* α1 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
     M.call (str.t::["parse"] α0) in
   let* α2 : M.Val (core.result.Result.t i32.t core.num.error.ParseIntError.t) :=
+    M.alloc α1 in
+  let* α3 : M.Val (core.result.Result.t i32.t core.num.error.ParseIntError.t) :=
     match_operator
-      α1
+      α2
       [
-        fun α =>
-          match α with
-          | core.result.Result.Ok first_number =>
-            let* first_number := M.alloc first_number in
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
+          | core.result.Result.Ok _ =>
+            let γ0 := γ.["Ok.0"] in
+            let* first_number := M.copy γ0 in
             let* α0 : ref str.t := M.read second_number_str in
             let* α1 :
                 core.result.Result.t i32.t core.num.error.ParseIntError.t :=
               M.call (str.t::["parse"] α0) in
+            let* α2 :
+                M.Val
+                  (core.result.Result.t i32.t core.num.error.ParseIntError.t) :=
+              M.alloc α1 in
             match_operator
-              α1
+              α2
               [
-                fun α =>
-                  match α with
-                  | core.result.Result.Ok second_number =>
-                    let* second_number := M.alloc second_number in
+                fun γ =>
+                  (let* α0 := M.read γ in
+                  match α0 with
+                  | core.result.Result.Ok _ =>
+                    let γ0 := γ.["Ok.0"] in
+                    let* second_number := M.copy γ0 in
                     let* α0 : i32.t := M.read first_number in
                     let* α1 : i32.t := M.read second_number in
                     let* α2 : i32.t := BinOp.Panic.mul α0 α1 in
                     M.alloc (core.result.Result.Ok α2)
                   | _ => M.break_match
-                  end :
+                  end) :
                   M
                     (M.Val
                       (core.result.Result.t
                         i32.t
                         core.num.error.ParseIntError.t));
-                fun α =>
-                  match α with
-                  | core.result.Result.Err e =>
-                    let* e := M.alloc e in
+                fun γ =>
+                  (let* α0 := M.read γ in
+                  match α0 with
+                  | core.result.Result.Err _ =>
+                    let γ0 := γ.["Err.0"] in
+                    let* e := M.copy γ0 in
                     let* α0 : core.num.error.ParseIntError.t := M.read e in
                     M.alloc (core.result.Result.Err α0)
                   | _ => M.break_match
-                  end :
+                  end) :
                   M
                     (M.Val
                       (core.result.Result.t
@@ -66,19 +78,21 @@ Definition multiply
                         core.num.error.ParseIntError.t))
               ]
           | _ => M.break_match
-          end :
+          end) :
           M (M.Val (core.result.Result.t i32.t core.num.error.ParseIntError.t));
-        fun α =>
-          match α with
-          | core.result.Result.Err e =>
-            let* e := M.alloc e in
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
+          | core.result.Result.Err _ =>
+            let γ0 := γ.["Err.0"] in
+            let* e := M.copy γ0 in
             let* α0 : core.num.error.ParseIntError.t := M.read e in
             M.alloc (core.result.Result.Err α0)
           | _ => M.break_match
-          end :
+          end) :
           M (M.Val (core.result.Result.t i32.t core.num.error.ParseIntError.t))
       ] in
-  M.read α2.
+  M.read α3.
 
 (*
 fn print(result: Result<i32, ParseIntError>) {
@@ -92,16 +106,16 @@ Definition print
     (result : core.result.Result.t i32.t core.num.error.ParseIntError.t)
     : M unit :=
   let* result := M.alloc result in
-  let* α0 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
-    M.read result in
-  let* α1 : M.Val unit :=
+  let* α0 : M.Val unit :=
     match_operator
-      α0
+      result
       [
-        fun α =>
-          match α with
-          | core.result.Result.Ok n =>
-            let* n := M.alloc n in
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
+          | core.result.Result.Ok _ =>
+            let γ0 := γ.["Ok.0"] in
+            let* n := M.copy γ0 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "n is ") in
               let* α1 : ref str.t := M.read (mk_str "
@@ -125,12 +139,14 @@ Definition print
               M.alloc α10 in
             M.alloc tt
           | _ => M.break_match
-          end :
+          end) :
           M (M.Val unit);
-        fun α =>
-          match α with
-          | core.result.Result.Err e =>
-            let* e := M.alloc e in
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
+          | core.result.Result.Err _ =>
+            let γ0 := γ.["Err.0"] in
+            let* e := M.copy γ0 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "Error: ") in
               let* α1 : ref str.t := M.read (mk_str "
@@ -154,10 +170,10 @@ Definition print
               M.alloc α10 in
             M.alloc tt
           | _ => M.break_match
-          end :
+          end) :
           M (M.Val unit)
       ] in
-  M.read α1.
+  M.read α0.
 
 (*
 fn main() {

@@ -52,14 +52,19 @@ Definition main : M unit :=
         ((alloc.vec.Vec.t u32.t alloc.alloc.Global.t)::["as_slice"]
           (borrow some_vector)) in
     let* α1 : M.Val (ref (slice u32.t)) := M.alloc α0 in
+    let* α2 : M.Val ((ref (ref (slice u32.t))) * (ref (ref (slice u32.t)))) :=
+      M.alloc (borrow α1, borrow my_slice) in
     match_operator
-      (borrow α1, borrow my_slice)
+      α2
       [
-        fun α =>
-          match α with
-          | (left_val, right_val) =>
-            let* left_val := M.alloc left_val in
-            let* right_val := M.alloc right_val in
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
+          | (_, _) =>
+            let γ0 := γ.["(,)left"] in
+            let γ1 := γ.["(,)right"] in
+            let* left_val := M.copy γ0 in
+            let* right_val := M.copy γ1 in
             let* α0 : ref (ref (slice u32.t)) := M.read left_val in
             let* α1 : ref (ref (slice u32.t)) := M.read right_val in
             let* α2 : bool.t :=
@@ -92,7 +97,7 @@ Definition main : M unit :=
               M.alloc α2
             else
               M.alloc tt
-          end :
+          end) :
           M (M.Val unit)
       ] in
   let* α0 : M.Val unit := M.alloc tt in

@@ -38,12 +38,12 @@ Definition main : M unit :=
   let* status : M.Val enums_use.Status.t := M.alloc enums_use.Status.Poor in
   let* work : M.Val enums_use.Work.t := M.alloc enums_use.Work.Civilian in
   let* _ : M.Val unit :=
-    let* α0 : enums_use.Status.t := M.read status in
     match_operator
-      α0
+      status
       [
-        fun α =>
-          match α with
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
           | enums_use.Status.Rich =>
             let* _ : M.Val unit :=
               let* α0 : ref str.t :=
@@ -60,10 +60,11 @@ Definition main : M unit :=
               M.alloc α5 in
             M.alloc tt
           | _ => M.break_match
-          end :
+          end) :
           M (M.Val unit);
-        fun α =>
-          match α with
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
           | enums_use.Status.Poor =>
             let* _ : M.Val unit :=
               let* α0 : ref str.t :=
@@ -80,16 +81,16 @@ Definition main : M unit :=
               M.alloc α5 in
             M.alloc tt
           | _ => M.break_match
-          end :
+          end) :
           M (M.Val unit)
       ] in
-  let* α0 : enums_use.Work.t := M.read work in
   let* α0 : M.Val unit :=
     match_operator
-      α0
+      work
       [
-        fun α =>
-          match α with
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
           | enums_use.Work.Civilian =>
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "Civilians work!
@@ -105,10 +106,11 @@ Definition main : M unit :=
               M.alloc α5 in
             M.alloc tt
           | _ => M.break_match
-          end :
+          end) :
           M (M.Val unit);
-        fun α =>
-          match α with
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
           | enums_use.Work.Soldier =>
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "Soldiers fight!
@@ -124,7 +126,7 @@ Definition main : M unit :=
               M.alloc α5 in
             M.alloc tt
           | _ => M.break_match
-          end :
+          end) :
           M (M.Val unit)
       ] in
   M.read α0.

@@ -49,19 +49,17 @@ Section Impl_core_clone_Clone_for_payment_channel_AccountId_t.
   *)
   Definition clone (self : ref Self) : M payment_channel.AccountId.t :=
     let* self := M.alloc self in
-    let* α0 : M.Val payment_channel.AccountId.t :=
+    let* α0 : M.Val unit := M.alloc tt in
+    let* α1 : M.Val payment_channel.AccountId.t :=
       match_operator
-        tt
+        α0
         [
-          fun α =>
-            match α with
-            | _ =>
-              let* α0 : ref payment_channel.AccountId.t := M.read self in
-              M.pure (deref α0)
-            end :
+          fun γ =>
+            (let* α0 : ref payment_channel.AccountId.t := M.read self in
+            M.pure (deref α0)) :
             M (M.Val payment_channel.AccountId.t)
         ] in
-    M.read α0.
+    M.read α1.
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {
@@ -143,17 +141,10 @@ Section Impl_core_cmp_Eq_for_payment_channel_AccountId_t.
   *)
   Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
     let* self := M.alloc self in
-    let* α0 : M.Val unit :=
-      match_operator
-        tt
-        [
-          fun α =>
-            match α with
-            | _ => M.alloc tt
-            end :
-            M (M.Val unit)
-        ] in
-    M.read α0.
+    let* α0 : M.Val unit := M.alloc tt in
+    let* α1 : M.Val unit :=
+      match_operator α0 [ fun γ => (M.alloc tt) : M (M.Val unit) ] in
+    M.read α1.
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
     Notations.DoubleColon Self "assert_receiver_is_total_eq" := {
@@ -934,19 +925,17 @@ Section Impl_payment_channel_PaymentChannel_t.
                 payment_channel.Error.t)::["unwrap_or_else"]
             α0
             (fun (α0 : payment_channel.Error.t) =>
-              (match_operator
+              (let* α0 := M.alloc α0 in
+              match_operator
                 α0
                 [
-                  fun α =>
-                    match α with
-                    | err =>
-                      let* err := M.alloc err in
-                      let* α0 : ref str.t :=
-                        M.read (mk_str "recover failed: {err:?}") in
-                      let* α1 : never.t :=
-                        M.call (std.panicking.begin_panic α0) in
-                      never_to_any α1
-                    end :
+                  fun γ =>
+                    (let* err := M.copy γ in
+                    let* α0 : ref str.t :=
+                      M.read (mk_str "recover failed: {err:?}") in
+                    let* α1 : never.t :=
+                      M.call (std.panicking.begin_panic α0) in
+                    never_to_any α1) :
                     M unit
                 ]) :
               M unit)) in
@@ -1146,13 +1135,12 @@ Section Impl_payment_channel_PaymentChannel_t.
             ((core.result.Result.t unit payment_channel.Error.t)::["map_err"]
               α9
               (fun (α0 : payment_channel.Error.t) =>
-                (match_operator
+                (let* α0 := M.alloc α0 in
+                match_operator
                   α0
                   [
-                    fun α =>
-                      match α with
-                      | _ => M.pure payment_channel.Error.TransferFailed
-                      end :
+                    fun γ =>
+                      (M.pure payment_channel.Error.TransferFailed) :
                       M payment_channel.Error.t
                   ]) :
                 M payment_channel.Error.t)) in
@@ -1167,13 +1155,23 @@ Section Impl_payment_channel_PaymentChannel_t.
                 (Self := core.result.Result.t unit payment_channel.Error.t)
                 (Trait := ltac:(refine _)))
               α10) in
+        let* α12 :
+            M.Val
+              (core.ops.control_flow.ControlFlow.t
+                (core.result.Result.t
+                  core.convert.Infallible.t
+                  payment_channel.Error.t)
+                unit) :=
+          M.alloc α11 in
         match_operator
-          α11
+          α12
           [
-            fun α =>
-              match α with
-              | core.ops.control_flow.ControlFlow.Break residual =>
-                let* residual := M.alloc residual in
+            fun γ =>
+              (let* α0 := M.read γ in
+              match α0 with
+              | core.ops.control_flow.ControlFlow.Break _ =>
+                let γ0 := γ.["Break.0"] in
+                let* residual := M.copy γ0 in
                 let* α0 :
                     core.result.Result.t
                       core.convert.Infallible.t
@@ -1191,15 +1189,17 @@ Section Impl_payment_channel_PaymentChannel_t.
                 let* α4 : unit := never_to_any α3 in
                 M.alloc α4
               | _ => M.break_match
-              end :
+              end) :
               M (M.Val unit);
-            fun α =>
-              match α with
-              | core.ops.control_flow.ControlFlow.Continue val =>
-                let* val := M.alloc val in
+            fun γ =>
+              (let* α0 := M.read γ in
+              match α0 with
+              | core.ops.control_flow.ControlFlow.Continue _ =>
+                let γ0 := γ.["Continue.0"] in
+                let* val := M.copy γ0 in
                 M.pure val
               | _ => M.break_match
-              end :
+              end) :
               M (M.Val unit)
           ] in
       let* α0 : M.Val (core.result.Result.t unit payment_channel.Error.t) :=
@@ -1246,13 +1246,23 @@ Section Impl_payment_channel_PaymentChannel_t.
                 (Self := core.result.Result.t unit payment_channel.Error.t)
                 (Trait := ltac:(refine _)))
               α3) in
+        let* α5 :
+            M.Val
+              (core.ops.control_flow.ControlFlow.t
+                (core.result.Result.t
+                  core.convert.Infallible.t
+                  payment_channel.Error.t)
+                unit) :=
+          M.alloc α4 in
         match_operator
-          α4
+          α5
           [
-            fun α =>
-              match α with
-              | core.ops.control_flow.ControlFlow.Break residual =>
-                let* residual := M.alloc residual in
+            fun γ =>
+              (let* α0 := M.read γ in
+              match α0 with
+              | core.ops.control_flow.ControlFlow.Break _ =>
+                let γ0 := γ.["Break.0"] in
+                let* residual := M.copy γ0 in
                 let* α0 :
                     core.result.Result.t
                       core.convert.Infallible.t
@@ -1270,15 +1280,17 @@ Section Impl_payment_channel_PaymentChannel_t.
                 let* α4 : unit := never_to_any α3 in
                 M.alloc α4
               | _ => M.break_match
-              end :
+              end) :
               M (M.Val unit);
-            fun α =>
-              match α with
-              | core.ops.control_flow.ControlFlow.Continue val =>
-                let* val := M.alloc val in
+            fun γ =>
+              (let* α0 := M.read γ in
+              match α0 with
+              | core.ops.control_flow.ControlFlow.Continue _ =>
+                let γ0 := γ.["Continue.0"] in
+                let* val := M.copy γ0 in
                 M.pure val
               | _ => M.break_match
-              end :
+              end) :
               M (M.Val unit)
           ] in
       let* _ : M.Val unit :=
@@ -1432,16 +1444,16 @@ Section Impl_payment_channel_PaymentChannel_t.
     let return_ := M.return_ (R := ltac:(payment_channel.Result unit)) in
     M.catch_return
       (let* α0 : mut_ref payment_channel.PaymentChannel.t := M.read self in
-      let* α1 : core.option.Option.t u64.t :=
-        M.read (deref α0).["expiration"] in
-      let* α2 : M.Val (core.result.Result.t unit payment_channel.Error.t) :=
+      let* α1 : M.Val (core.result.Result.t unit payment_channel.Error.t) :=
         match_operator
-          α1
+          (deref α0).["expiration"]
           [
-            fun α =>
-              match α with
-              | core.option.Option.Some expiration =>
-                let* expiration := M.alloc expiration in
+            fun γ =>
+              (let* α0 := M.read γ in
+              match α0 with
+              | core.option.Option.Some _ =>
+                let γ0 := γ.["Some.0"] in
+                let* expiration := M.copy γ0 in
                 let* now : M.Val u64.t :=
                   let* α0 : mut_ref payment_channel.PaymentChannel.t :=
                     M.read self in
@@ -1491,18 +1503,19 @@ Section Impl_payment_channel_PaymentChannel_t.
                   M.alloc α5 in
                 M.alloc (core.result.Result.Ok tt)
               | _ => M.break_match
-              end :
+              end) :
               M (M.Val (core.result.Result.t unit payment_channel.Error.t));
-            fun α =>
-              match α with
+            fun γ =>
+              (let* α0 := M.read γ in
+              match α0 with
               | core.option.Option.None =>
                 M.alloc
                   (core.result.Result.Err payment_channel.Error.NotYetExpired)
               | _ => M.break_match
-              end :
+              end) :
               M (M.Val (core.result.Result.t unit payment_channel.Error.t))
           ] in
-      M.read α2).
+      M.read α1).
   
   Global Instance AssociatedFunction_claim_timeout :
     Notations.DoubleColon Self "claim_timeout" := {
@@ -1645,13 +1658,12 @@ Section Impl_payment_channel_PaymentChannel_t.
             ((core.result.Result.t unit payment_channel.Error.t)::["map_err"]
               α6
               (fun (α0 : payment_channel.Error.t) =>
-                (match_operator
+                (let* α0 := M.alloc α0 in
+                match_operator
                   α0
                   [
-                    fun α =>
-                      match α with
-                      | _ => M.pure payment_channel.Error.TransferFailed
-                      end :
+                    fun γ =>
+                      (M.pure payment_channel.Error.TransferFailed) :
                       M payment_channel.Error.t
                   ]) :
                 M payment_channel.Error.t)) in
@@ -1666,13 +1678,23 @@ Section Impl_payment_channel_PaymentChannel_t.
                 (Self := core.result.Result.t unit payment_channel.Error.t)
                 (Trait := ltac:(refine _)))
               α7) in
+        let* α9 :
+            M.Val
+              (core.ops.control_flow.ControlFlow.t
+                (core.result.Result.t
+                  core.convert.Infallible.t
+                  payment_channel.Error.t)
+                unit) :=
+          M.alloc α8 in
         match_operator
-          α8
+          α9
           [
-            fun α =>
-              match α with
-              | core.ops.control_flow.ControlFlow.Break residual =>
-                let* residual := M.alloc residual in
+            fun γ =>
+              (let* α0 := M.read γ in
+              match α0 with
+              | core.ops.control_flow.ControlFlow.Break _ =>
+                let γ0 := γ.["Break.0"] in
+                let* residual := M.copy γ0 in
                 let* α0 :
                     core.result.Result.t
                       core.convert.Infallible.t
@@ -1690,15 +1712,17 @@ Section Impl_payment_channel_PaymentChannel_t.
                 let* α4 : unit := never_to_any α3 in
                 M.alloc α4
               | _ => M.break_match
-              end :
+              end) :
               M (M.Val unit);
-            fun α =>
-              match α with
-              | core.ops.control_flow.ControlFlow.Continue val =>
-                let* val := M.alloc val in
+            fun γ =>
+              (let* α0 := M.read γ in
+              match α0 with
+              | core.ops.control_flow.ControlFlow.Continue _ =>
+                let γ0 := γ.["Continue.0"] in
+                let* val := M.copy γ0 in
                 M.pure val
               | _ => M.break_match
-              end :
+              end) :
               M (M.Val unit)
           ] in
       let* α0 : M.Val (core.result.Result.t unit payment_channel.Error.t) :=

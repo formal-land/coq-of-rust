@@ -11,7 +11,8 @@ pub(crate) enum Pattern {
     Wild,
     Binding {
         name: String,
-        is_with_ref: bool,
+        /// Wether the reference is mutable, if any
+        is_with_ref: Option<bool>,
         pattern: Option<Rc<Pattern>>,
     },
     StructStruct(Path, Vec<(String, Rc<Pattern>)>, StructOrVariant),
@@ -29,84 +30,6 @@ pub(crate) enum Pattern {
 }
 
 impl Pattern {
-    pub(crate) fn get_bindings(&self) -> Vec<String> {
-        match self {
-            Pattern::Wild => vec![],
-            Pattern::Binding {
-                name,
-                is_with_ref: _,
-                pattern,
-            } => vec![
-                vec![name.clone()],
-                pattern
-                    .as_ref()
-                    .map_or(vec![], |pattern| pattern.get_bindings()),
-            ]
-            .concat(),
-            Pattern::StructStruct(_, fields, _) => fields
-                .iter()
-                .flat_map(|(_, pattern)| pattern.get_bindings())
-                .collect(),
-            Pattern::StructTuple(_, patterns, _) => patterns
-                .iter()
-                .flat_map(|pattern| pattern.get_bindings())
-                .collect(),
-            Pattern::Deref(pattern) => pattern.get_bindings(),
-            Pattern::Or(patterns) => optional_insert_vec(
-                patterns.is_empty(),
-                patterns.first().unwrap().get_bindings(),
-            ),
-            Pattern::Tuple(patterns) => patterns
-                .iter()
-                .flat_map(|pattern| pattern.get_bindings())
-                .collect(),
-            Pattern::Lit(_) => vec![],
-            Pattern::Slice {
-                init_patterns,
-                slice_pattern,
-            } => vec![
-                init_patterns
-                    .iter()
-                    .flat_map(|pattern| pattern.get_bindings())
-                    .collect(),
-                match slice_pattern {
-                    None => vec![],
-                    Some(pattern) => pattern.get_bindings(),
-                },
-            ]
-            .concat(),
-        }
-    }
-
-    /// Whether the pattern is exhaustive with certainty. There are some cases
-    /// where we do not check yet, for example for unions. In these cases, we
-    /// return `false``.
-    pub(crate) fn is_exhaustive(&self) -> bool {
-        match self {
-            Pattern::Wild => true,
-            Pattern::Binding {
-                name: _,
-                is_with_ref: _,
-                pattern,
-            } => pattern
-                .as_ref()
-                .map_or(true, |pattern| pattern.is_exhaustive()),
-            Pattern::StructStruct(_, fields, struct_or_variant) => {
-                matches!(struct_or_variant, StructOrVariant::Struct)
-                    && fields.iter().all(|(_, pattern)| pattern.is_exhaustive())
-            }
-            Pattern::StructTuple(_, patterns, struct_or_variant) => {
-                matches!(struct_or_variant, StructOrVariant::Struct)
-                    && patterns.iter().all(|pattern| pattern.is_exhaustive())
-            }
-            Pattern::Deref(pattern) => pattern.is_exhaustive(),
-            Pattern::Or(_) => false,
-            Pattern::Tuple(patterns) => patterns.iter().all(|pattern| pattern.is_exhaustive()),
-            Pattern::Lit(_) => false,
-            Pattern::Slice { .. } => false,
-        }
-    }
-
     /// Because the function from the standard library returns nothing instead
     /// of an empty iterator when the input is empty.
     fn multi_cartesian_product_with_empty_case<A: Iterator>(

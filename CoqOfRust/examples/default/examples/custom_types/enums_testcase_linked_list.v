@@ -98,15 +98,17 @@ Section Impl_enums_testcase_linked_list_List_t.
   Definition len (self : ref Self) : M u32.t :=
     let* self := M.alloc self in
     let* α0 : ref enums_testcase_linked_list.List.t := M.read self in
-    let* α1 : enums_testcase_linked_list.List.t := M.read (deref α0) in
-    let* α2 : M.Val u32.t :=
+    let* α1 : M.Val u32.t :=
       match_operator
-        α1
+        (deref α0)
         [
-          fun α =>
-            match α with
-            | enums_testcase_linked_list.List.Cons _ tail =>
-              let* tail := M.alloc tail in
+          fun γ =>
+            (let* α0 := M.read γ in
+            match α0 with
+            | enums_testcase_linked_list.List.Cons _ _ =>
+              let γ0 := γ.["Cons.0"] in
+              let γ1 := γ.["Cons.1"] in
+              let* tail := M.alloc (borrow_mut γ1) in
               let* α0 :
                   ref
                     (alloc.boxed.Box.t
@@ -125,16 +127,17 @@ Section Impl_enums_testcase_linked_list_List_t.
               let* α3 : u32.t := BinOp.Panic.add (Integer.of_Z 1) α2 in
               M.alloc α3
             | _ => M.break_match
-            end :
+            end) :
             M (M.Val u32.t);
-          fun α =>
-            match α with
+          fun γ =>
+            (let* α0 := M.read γ in
+            match α0 with
             | enums_testcase_linked_list.List.Nil => M.alloc (Integer.of_Z 0)
             | _ => M.break_match
-            end :
+            end) :
             M (M.Val u32.t)
         ] in
-    M.read α2.
+    M.read α1.
   
   Global Instance AssociatedFunction_len : Notations.DoubleColon Self "len" := {
     Notations.double_colon := len;
@@ -157,16 +160,18 @@ Section Impl_enums_testcase_linked_list_List_t.
   Definition stringify (self : ref Self) : M alloc.string.String.t :=
     let* self := M.alloc self in
     let* α0 : ref enums_testcase_linked_list.List.t := M.read self in
-    let* α1 : enums_testcase_linked_list.List.t := M.read (deref α0) in
-    let* α2 : M.Val alloc.string.String.t :=
+    let* α1 : M.Val alloc.string.String.t :=
       match_operator
-        α1
+        (deref α0)
         [
-          fun α =>
-            match α with
-            | enums_testcase_linked_list.List.Cons head tail =>
-              let* head := M.alloc head in
-              let* tail := M.alloc tail in
+          fun γ =>
+            (let* α0 := M.read γ in
+            match α0 with
+            | enums_testcase_linked_list.List.Cons _ _ =>
+              let γ0 := γ.["Cons.0"] in
+              let γ1 := γ.["Cons.1"] in
+              let* head := M.copy γ0 in
+              let* tail := M.alloc (borrow_mut γ1) in
               let* res : M.Val alloc.string.String.t :=
                 let* α0 : ref str.t := M.read (mk_str "") in
                 let* α1 : ref str.t := M.read (mk_str ", ") in
@@ -210,10 +215,11 @@ Section Impl_enums_testcase_linked_list_List_t.
                 M.alloc α15 in
               M.pure res
             | _ => M.break_match
-            end :
+            end) :
             M (M.Val alloc.string.String.t);
-          fun α =>
-            match α with
+          fun γ =>
+            (let* α0 := M.read γ in
+            match α0 with
             | enums_testcase_linked_list.List.Nil =>
               let* res : M.Val alloc.string.String.t :=
                 let* α0 : ref str.t := M.read (mk_str "Nil") in
@@ -229,10 +235,10 @@ Section Impl_enums_testcase_linked_list_List_t.
                 M.alloc α5 in
               M.pure res
             | _ => M.break_match
-            end :
+            end) :
             M (M.Val alloc.string.String.t)
         ] in
-    M.read α2.
+    M.read α1.
   
   Global Instance AssociatedFunction_stringify :
     Notations.DoubleColon Self "stringify" := {

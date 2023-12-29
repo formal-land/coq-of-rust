@@ -25,38 +25,34 @@ Definition double_first
     ((core.option.Option.t (ref (ref str.t)))::["map"]
       α1
       (fun (α0 : ref (ref str.t)) =>
-        (match_operator
+        (let* α0 := M.alloc α0 in
+        match_operator
           α0
           [
-            fun α =>
-              match α with
-              | first =>
-                let* first := M.alloc first in
-                let* α0 : ref (ref str.t) := M.read first in
-                let* α1 : ref str.t := M.read (deref α0) in
-                let* α2 :
-                    core.result.Result.t i32.t core.num.error.ParseIntError.t :=
-                  M.call (str.t::["parse"] α1) in
-                M.call
-                  ((core.result.Result.t
-                        i32.t
-                        core.num.error.ParseIntError.t)::["map"]
-                    α2
-                    (fun (α0 : i32.t) =>
-                      (match_operator
-                        α0
-                        [
-                          fun α =>
-                            match α with
-                            | n =>
-                              let* n := M.alloc n in
-                              let* α0 : i32.t := M.read n in
-                              BinOp.Panic.mul (Integer.of_Z 2) α0
-                            end :
-                            M i32.t
-                        ]) :
-                      M i32.t))
-              end :
+            fun γ =>
+              (let* first := M.copy γ in
+              let* α0 : ref (ref str.t) := M.read first in
+              let* α1 : ref str.t := M.read (deref α0) in
+              let* α2 :
+                  core.result.Result.t i32.t core.num.error.ParseIntError.t :=
+                M.call (str.t::["parse"] α1) in
+              M.call
+                ((core.result.Result.t
+                      i32.t
+                      core.num.error.ParseIntError.t)::["map"]
+                  α2
+                  (fun (α0 : i32.t) =>
+                    (let* α0 := M.alloc α0 in
+                    match_operator
+                      α0
+                      [
+                        fun γ =>
+                          (let* n := M.copy γ in
+                          let* α0 : i32.t := M.read n in
+                          BinOp.Panic.mul (Integer.of_Z 2) α0) :
+                          M i32.t
+                      ]) :
+                    M i32.t))) :
               M (core.result.Result.t i32.t core.num.error.ParseIntError.t)
           ]) :
         M (core.result.Result.t i32.t core.num.error.ParseIntError.t))).

@@ -74,19 +74,17 @@ Section Impl_core_clone_Clone_for_box_stack_heap_Point_t.
   (* #[allow(dead_code)] - function was ignored by the compiler *)
   Definition clone (self : ref Self) : M box_stack_heap.Point.t :=
     let* self := M.alloc self in
-    let* α0 : M.Val box_stack_heap.Point.t :=
+    let* α0 : M.Val unit := M.alloc tt in
+    let* α1 : M.Val box_stack_heap.Point.t :=
       match_operator
-        tt
+        α0
         [
-          fun α =>
-            match α with
-            | _ =>
-              let* α0 : ref box_stack_heap.Point.t := M.read self in
-              M.pure (deref α0)
-            end :
+          fun γ =>
+            (let* α0 : ref box_stack_heap.Point.t := M.read self in
+            M.pure (deref α0)) :
             M (M.Val box_stack_heap.Point.t)
         ] in
-    M.read α0.
+    M.read α1.
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {

@@ -71,13 +71,13 @@ fn inspect(event: WebEvent) {
 *)
 Definition inspect (event : enums.WebEvent.t) : M unit :=
   let* event := M.alloc event in
-  let* α0 : enums.WebEvent.t := M.read event in
-  let* α1 : M.Val unit :=
+  let* α0 : M.Val unit :=
     match_operator
-      α0
+      event
       [
-        fun α =>
-          match α with
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
           | enums.WebEvent.PageLoad =>
             let* _ : M.Val unit :=
               let* α0 : ref str.t :=
@@ -97,10 +97,11 @@ Definition inspect (event : enums.WebEvent.t) : M unit :=
               M.alloc α5 in
             M.alloc tt
           | _ => M.break_match
-          end :
+          end) :
           M (M.Val unit);
-        fun α =>
-          match α with
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
           | enums.WebEvent.PageUnload =>
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "page unloaded
@@ -116,12 +117,14 @@ Definition inspect (event : enums.WebEvent.t) : M unit :=
               M.alloc α5 in
             M.alloc tt
           | _ => M.break_match
-          end :
+          end) :
           M (M.Val unit);
-        fun α =>
-          match α with
-          | enums.WebEvent.KeyPress c =>
-            let* c := M.alloc c in
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
+          | enums.WebEvent.KeyPress _ =>
+            let γ0 := γ.["KeyPress.0"] in
+            let* c := M.copy γ0 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "pressed '") in
               let* α1 : ref str.t := M.read (mk_str "'.
@@ -145,12 +148,14 @@ Definition inspect (event : enums.WebEvent.t) : M unit :=
               M.alloc α10 in
             M.alloc tt
           | _ => M.break_match
-          end :
+          end) :
           M (M.Val unit);
-        fun α =>
-          match α with
-          | enums.WebEvent.Paste s =>
-            let* s := M.alloc s in
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
+          | enums.WebEvent.Paste _ =>
+            let γ0 := γ.["Paste.0"] in
+            let* s := M.copy γ0 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "pasted "") in
               let* α1 : ref str.t := M.read (mk_str "".
@@ -174,17 +179,20 @@ Definition inspect (event : enums.WebEvent.t) : M unit :=
               M.alloc α10 in
             M.alloc tt
           | _ => M.break_match
-          end :
+          end) :
           M (M.Val unit);
-        fun α =>
-          match α with
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
           |
               enums.WebEvent.Click
-              {| enums.WebEvent.Click.x := x; enums.WebEvent.Click.y := y;
+              {| enums.WebEvent.Click.x := _; enums.WebEvent.Click.y := _;
               |}
               =>
-            let* x := M.alloc x in
-            let* y := M.alloc y in
+            let γ0 := γ.["Click.x"] in
+            let γ1 := γ.["Click.y"] in
+            let* x := M.copy γ0 in
+            let* y := M.copy γ1 in
             let* _ : M.Val unit :=
               let* _ : M.Val unit :=
                 let* α0 : ref str.t := M.read (mk_str "clicked at x=") in
@@ -213,10 +221,10 @@ Definition inspect (event : enums.WebEvent.t) : M unit :=
               M.alloc tt in
             M.alloc tt
           | _ => M.break_match
-          end :
+          end) :
           M (M.Val unit)
       ] in
-  M.read α1.
+  M.read α0.
 
 (*
 fn main() {

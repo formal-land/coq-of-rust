@@ -146,10 +146,18 @@ impl Expr {
     }
 }
 
+pub(crate) fn is_mutable_borrow_kind(borrow_kind: &BorrowKind) -> bool {
+    match borrow_kind {
+        BorrowKind::Shared | BorrowKind::Shallow => false,
+        BorrowKind::Unique | BorrowKind::Mut { .. } => true,
+    }
+}
+
 fn compile_borrow(borrow_kind: &BorrowKind, arg: Expr) -> ExprKind {
-    let func = match borrow_kind {
-        BorrowKind::Shared | BorrowKind::Shallow => "borrow".to_string(),
-        BorrowKind::Unique | BorrowKind::Mut { .. } => "borrow_mut".to_string(),
+    let func = if is_mutable_borrow_kind(borrow_kind) {
+        "borrow_mut".to_string()
+    } else {
+        "borrow".to_string()
     };
 
     if let Some(derefed) = arg.match_deref() {
@@ -192,13 +200,353 @@ pub(crate) fn allocate_bindings(bindings: &[String], body: Box<Expr>) -> Box<Exp
     })
 }
 
-/// Allocate all the bindings in the [pattern] to some [M.Val]
-fn allocate_bindings_in_pattern(pattern: &Pattern, body: Box<Expr>) -> Box<Expr> {
-    let bindings = pattern.get_bindings();
-    allocate_bindings(&bindings, body)
+fn build_inner_match(patterns: Vec<(String, Rc<Pattern>)>, body: Box<Expr>) -> Box<Expr> {
+    let default_match_arm = MatchArm {
+        pattern: Rc::new(Pattern::Wild),
+        body: Box::new(Expr {
+            kind: ExprKind::Call {
+                func: Expr::local_var("M.break_match"),
+                args: vec![],
+                purity: Purity::Effectful,
+                from_user: false,
+            },
+            ty: None,
+        }),
+    };
+
+    patterns
+        .into_iter()
+        .rfold(body, |body, (scrutinee, pattern)| match pattern.as_ref() {
+            Pattern::Wild => body,
+            Pattern::Binding {
+                name,
+                is_with_ref,
+                pattern,
+            } => Box::new(Expr {
+                ty: body.ty.clone(),
+                kind: ExprKind::Let {
+                    is_monadic: false,
+                    name: Some(name.clone()),
+                    init: match is_with_ref {
+                        None => Box::new(Expr::local_var(&scrutinee).copy()),
+                        Some(is_with_ref) => {
+                            let func = if *is_with_ref { "borrow" } else { "borrow_mut" };
+
+                            Box::new(Expr {
+                                ty: None,
+                                kind: ExprKind::Call {
+                                    func: Expr::local_var(func),
+                                    args: vec![*Expr::local_var(&scrutinee)],
+                                    purity: Purity::Pure,
+                                    from_user: false,
+                                }
+                                .alloc(None),
+                            })
+                        }
+                    },
+                    body: match pattern {
+                        None => body,
+                        Some(pattern) => {
+                            build_inner_match(vec![(scrutinee, pattern.clone())], body)
+                        }
+                    },
+                },
+            }),
+            Pattern::StructStruct(path, fields, struct_or_variant) => Box::new(Expr {
+                ty: body.ty.clone(),
+                kind: ExprKind::Match {
+                    scrutinee: Box::new(Expr::local_var(&scrutinee).read()),
+                    arms: [
+                        vec![MatchArm {
+                            pattern: Rc::new(Pattern::StructStruct(
+                                path.clone(),
+                                fields
+                                    .iter()
+                                    .map(|(field_name, _)| {
+                                        (field_name.clone(), Rc::new(Pattern::Wild))
+                                    })
+                                    .collect(),
+                                *struct_or_variant,
+                            )),
+                            body: {
+                                let body = build_inner_match(
+                                    fields
+                                        .iter()
+                                        .enumerate()
+                                        .map(|(index, (_, field_pattern))| {
+                                            (format!("γ{index}"), field_pattern.clone())
+                                        })
+                                        .collect(),
+                                    body,
+                                );
+
+                                fields.iter().enumerate().rfold(
+                                    body,
+                                    |body, (index, (field_name, _))| {
+                                        Box::new(Expr {
+                                            ty: body.ty.clone(),
+                                            kind: ExprKind::Let {
+                                                is_monadic: false,
+                                                name: Some(format!("γ{index}")),
+                                                init: Box::new(Expr {
+                                                    ty: None,
+                                                    kind: ExprKind::NamedField {
+                                                        base: Expr::local_var(&scrutinee),
+                                                        name: format!(
+                                                            "{}.{field_name}",
+                                                            path.segments.last().unwrap(),
+                                                        ),
+                                                    },
+                                                }),
+                                                body,
+                                            },
+                                        })
+                                    },
+                                )
+                            },
+                        }],
+                        match struct_or_variant {
+                            StructOrVariant::Struct => vec![],
+                            StructOrVariant::Variant => vec![default_match_arm.clone()],
+                        },
+                    ]
+                    .concat(),
+                },
+            }),
+            Pattern::StructTuple(path, patterns, struct_or_variant) => Box::new(Expr {
+                ty: body.ty.clone(),
+                kind: ExprKind::Match {
+                    scrutinee: Box::new(Expr::local_var(&scrutinee).read()),
+                    arms: [
+                        vec![MatchArm {
+                            pattern: Rc::new(Pattern::StructTuple(
+                                path.clone(),
+                                patterns.iter().map(|_| Rc::new(Pattern::Wild)).collect(),
+                                *struct_or_variant,
+                            )),
+                            body: {
+                                let body = build_inner_match(
+                                    patterns
+                                        .iter()
+                                        .enumerate()
+                                        .map(|(index, pattern)| {
+                                            (format!("γ{index}"), pattern.clone())
+                                        })
+                                        .collect(),
+                                    body,
+                                );
+
+                                patterns.iter().enumerate().rfold(body, |body, (index, _)| {
+                                    Box::new(Expr {
+                                        ty: body.ty.clone(),
+                                        kind: ExprKind::Let {
+                                            is_monadic: false,
+                                            name: Some(format!("γ{index}")),
+                                            init: Box::new(Expr {
+                                                ty: None,
+                                                kind: ExprKind::NamedField {
+                                                    base: Expr::local_var(&scrutinee),
+                                                    name: format!(
+                                                        "{}.{index}",
+                                                        path.segments.last().unwrap(),
+                                                    ),
+                                                },
+                                            }),
+                                            body,
+                                        },
+                                    })
+                                })
+                            },
+                        }],
+                        match struct_or_variant {
+                            StructOrVariant::Struct => vec![],
+                            StructOrVariant::Variant => vec![default_match_arm.clone()],
+                        },
+                    ]
+                    .concat(),
+                },
+            }),
+            Pattern::Deref(pattern) => Box::new(Expr {
+                ty: body.ty.clone(),
+                kind: ExprKind::Let {
+                    is_monadic: false,
+                    name: Some(scrutinee.clone()),
+                    init: Box::new(Expr {
+                        ty: None,
+                        kind: ExprKind::Call {
+                            func: Expr::local_var("deref"),
+                            args: vec![Expr::local_var(&scrutinee).read()],
+                            purity: Purity::Pure,
+                            from_user: false,
+                        }
+                        .alloc(None),
+                    }),
+                    body: build_inner_match(vec![(scrutinee.clone(), pattern.clone())], body),
+                },
+            }),
+            Pattern::Or(_) => panic!("Or pattern should have been flattened"),
+            Pattern::Tuple(patterns) => Box::new(Expr {
+                ty: body.ty.clone(),
+                kind: ExprKind::Match {
+                    scrutinee: Box::new(Expr::local_var(&scrutinee).read()),
+                    arms: vec![MatchArm {
+                        pattern: Rc::new(Pattern::Tuple(
+                            patterns.iter().map(|_| Rc::new(Pattern::Wild)).collect(),
+                        )),
+                        body: {
+                            let body = build_inner_match(
+                                patterns
+                                    .iter()
+                                    .enumerate()
+                                    .map(|(index, pattern)| (format!("γ{index}"), pattern.clone()))
+                                    .collect(),
+                                body,
+                            );
+
+                            patterns.iter().enumerate().rfold(body, |body, (index, _)| {
+                                Box::new(Expr {
+                                    ty: body.ty.clone(),
+                                    kind: ExprKind::Let {
+                                        is_monadic: false,
+                                        name: Some(format!("γ{index}")),
+                                        init: {
+                                            let init = (0..(patterns.len() - 1 - index)).fold(
+                                                Expr::local_var(&scrutinee),
+                                                |init, _| {
+                                                    Box::new(Expr {
+                                                        ty: None,
+                                                        kind: ExprKind::NamedField {
+                                                            base: init,
+                                                            name: format!("(,)left"),
+                                                        },
+                                                    })
+                                                },
+                                            );
+
+                                            if index == 0 {
+                                                init
+                                            } else {
+                                                Box::new(Expr {
+                                                    ty: None,
+                                                    kind: ExprKind::NamedField {
+                                                        base: init,
+                                                        name: format!("(,)right"),
+                                                    },
+                                                })
+                                            }
+                                        },
+                                        body,
+                                    },
+                                })
+                            })
+                        },
+                    }],
+                },
+            }),
+            Pattern::Lit(_) => Box::new(Expr {
+                ty: body.ty.clone(),
+                kind: ExprKind::Match {
+                    scrutinee: Box::new(Expr::local_var(&scrutinee).read()),
+                    arms: vec![
+                        MatchArm {
+                            pattern: pattern.clone(),
+                            body,
+                        },
+                        default_match_arm.clone(),
+                    ],
+                },
+            }),
+            Pattern::Slice {
+                init_patterns,
+                slice_pattern,
+            } => Box::new(Expr {
+                ty: body.ty.clone(),
+                kind: ExprKind::Match {
+                    scrutinee: Box::new(Expr::local_var(&scrutinee).read()),
+                    arms: vec![
+                        MatchArm {
+                            pattern: Rc::new(Pattern::Slice {
+                                init_patterns: init_patterns
+                                    .iter()
+                                    .map(|_| Rc::new(Pattern::Wild))
+                                    .collect(),
+                                slice_pattern: slice_pattern
+                                    .as_ref()
+                                    .map(|_| Rc::new(Pattern::Wild)),
+                            }),
+                            body: {
+                                let body = build_inner_match(
+                                    vec![
+                                        init_patterns
+                                            .iter()
+                                            .enumerate()
+                                            .map(|(index, pattern)| {
+                                                (format!("γ{index}"), pattern.clone())
+                                            })
+                                            .collect(),
+                                        match slice_pattern {
+                                            None => vec![],
+                                            Some(slice_pattern) => {
+                                                vec![("γ".to_string(), slice_pattern.clone())]
+                                            }
+                                        },
+                                    ]
+                                    .concat(),
+                                    body,
+                                );
+
+                                let body = match slice_pattern {
+                                    None => body,
+                                    Some(_) => Box::new(Expr {
+                                        ty: body.ty.clone(),
+                                        kind: ExprKind::Let {
+                                            is_monadic: false,
+                                            name: Some("γ".to_string()),
+                                            init: Box::new(Expr {
+                                                ty: None,
+                                                kind: ExprKind::NamedField {
+                                                    base: Expr::local_var(&scrutinee),
+                                                    name: format!(
+                                                        "[{}].slice",
+                                                        init_patterns.len()
+                                                    ),
+                                                },
+                                            }),
+                                            body,
+                                        },
+                                    }),
+                                };
+
+                                init_patterns
+                                    .iter()
+                                    .enumerate()
+                                    .rfold(body, |body, (index, _)| {
+                                        Box::new(Expr {
+                                            ty: body.ty.clone(),
+                                            kind: ExprKind::Let {
+                                                is_monadic: false,
+                                                name: Some(format!("γ{index}")),
+                                                init: Box::new(Expr {
+                                                    ty: None,
+                                                    kind: ExprKind::NamedField {
+                                                        base: Expr::local_var(&scrutinee),
+                                                        name: format!("[{index}]",),
+                                                    },
+                                                }),
+                                                body,
+                                            },
+                                        })
+                                    })
+                            },
+                        },
+                        default_match_arm.clone(),
+                    ],
+                },
+            }),
+        })
 }
 
-fn build_match(scrutinee: Expr, arms: Vec<MatchArm>, ty: Option<Rc<CoqType>>) -> ExprKind {
+fn build_match(scrutinee: Expr, arms: Vec<MatchArm>, _ty: Option<Rc<CoqType>>) -> ExprKind {
     let arms_with_flatten_patterns = arms.into_iter().flat_map(|MatchArm { pattern, body }| {
         pattern
             .flatten_ors()
@@ -218,39 +566,8 @@ fn build_match(scrutinee: Expr, arms: Vec<MatchArm>, ty: Option<Rc<CoqType>>) ->
                     elements: arms_with_flatten_patterns
                         .map(|MatchArm { pattern, body }| Expr {
                             kind: ExprKind::Lambda {
-                                args: vec![("α".to_string(), None)],
-                                body: Box::new(Expr {
-                                    kind: ExprKind::Match {
-                                        scrutinee: Expr::local_var("α"),
-                                        arms: [
-                                            vec![MatchArm {
-                                                pattern: pattern.clone(),
-                                                body: allocate_bindings_in_pattern(
-                                                    pattern.as_ref(),
-                                                    body,
-                                                ),
-                                            }],
-                                            if !pattern.is_exhaustive() {
-                                                vec![MatchArm {
-                                                    pattern: Rc::new(Pattern::Wild),
-                                                    body: Box::new(Expr {
-                                                        kind: ExprKind::Call {
-                                                            func: Expr::local_var("M.break_match"),
-                                                            args: vec![],
-                                                            purity: Purity::Effectful,
-                                                            from_user: false,
-                                                        },
-                                                        ty: None,
-                                                    }),
-                                                }]
-                                            } else {
-                                                vec![]
-                                            },
-                                        ]
-                                        .concat(),
-                                    },
-                                    ty: ty.clone(),
-                                }),
+                                args: vec![("γ".to_string(), None)],
+                                body: build_inner_match(vec![("γ".to_string(), pattern)], body),
                                 is_for_match: true,
                             },
                             ty: None,
@@ -456,7 +773,7 @@ fn compile_expr_kind<'a>(
             ExprKind::LetIf { pat, init }
         }
         thir::ExprKind::Match { scrutinee, arms } => {
-            let scrutinee = compile_expr(env, thir, scrutinee).read();
+            let scrutinee = compile_expr(env, thir, scrutinee);
             let arms: Vec<MatchArm> = arms
                 .iter()
                 .map(|arm_id| {
@@ -715,7 +1032,7 @@ fn compile_expr_kind<'a>(
                     Box::new(Expr {
                         kind: build_match(
                             Expr {
-                                kind: ExprKind::LocalVar(format!("α{index}")),
+                                kind: ExprKind::LocalVar(format!("α{index}")).alloc(None),
                                 ty: None,
                             },
                             vec![MatchArm {
@@ -872,7 +1189,7 @@ fn compile_stmts<'a>(
                             init: Box::new(init.copy()),
                             body,
                         },
-                        _ => build_match(init.read(), vec![MatchArm { pattern, body }], ty.clone()),
+                        _ => build_match(init, vec![MatchArm { pattern, body }], ty.clone()),
                     };
                     Expr { kind, ty }
                 }

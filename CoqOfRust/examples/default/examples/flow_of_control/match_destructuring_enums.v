@@ -197,13 +197,13 @@ Definition main : M unit :=
       let* α5 : unit := M.call (std.io.stdio._print α4) in
       M.alloc α5 in
     M.alloc tt in
-  let* α0 : match_destructuring_enums.Color.t := M.read color in
   let* α0 : M.Val unit :=
     match_operator
-      α0
+      color
       [
-        fun α =>
-          match α with
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
           | match_destructuring_enums.Color.Red =>
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "The color is Red!
@@ -219,10 +219,11 @@ Definition main : M unit :=
               M.alloc α5 in
             M.alloc tt
           | _ => M.break_match
-          end :
+          end) :
           M (M.Val unit);
-        fun α =>
-          match α with
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
           | match_destructuring_enums.Color.Blue =>
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "The color is Blue!
@@ -238,10 +239,11 @@ Definition main : M unit :=
               M.alloc α5 in
             M.alloc tt
           | _ => M.break_match
-          end :
+          end) :
           M (M.Val unit);
-        fun α =>
-          match α with
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
           | match_destructuring_enums.Color.Green =>
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "The color is Green!
@@ -257,14 +259,18 @@ Definition main : M unit :=
               M.alloc α5 in
             M.alloc tt
           | _ => M.break_match
-          end :
+          end) :
           M (M.Val unit);
-        fun α =>
-          match α with
-          | match_destructuring_enums.Color.RGB r g b =>
-            let* r := M.alloc r in
-            let* g := M.alloc g in
-            let* b := M.alloc b in
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
+          | match_destructuring_enums.Color.RGB _ _ _ =>
+            let γ0 := γ.["RGB.0"] in
+            let γ1 := γ.["RGB.1"] in
+            let γ2 := γ.["RGB.2"] in
+            let* r := M.copy γ0 in
+            let* g := M.copy γ1 in
+            let* b := M.copy γ2 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "Red: ") in
               let* α1 : ref str.t := M.read (mk_str ", green: ") in
@@ -295,14 +301,18 @@ Definition main : M unit :=
               M.alloc α14 in
             M.alloc tt
           | _ => M.break_match
-          end :
+          end) :
           M (M.Val unit);
-        fun α =>
-          match α with
-          | match_destructuring_enums.Color.HSV h s v =>
-            let* h := M.alloc h in
-            let* s := M.alloc s in
-            let* v := M.alloc v in
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
+          | match_destructuring_enums.Color.HSV _ _ _ =>
+            let γ0 := γ.["HSV.0"] in
+            let γ1 := γ.["HSV.1"] in
+            let γ2 := γ.["HSV.2"] in
+            let* h := M.copy γ0 in
+            let* s := M.copy γ1 in
+            let* v := M.copy γ2 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "Hue: ") in
               let* α1 : ref str.t := M.read (mk_str ", saturation: ") in
@@ -333,14 +343,18 @@ Definition main : M unit :=
               M.alloc α14 in
             M.alloc tt
           | _ => M.break_match
-          end :
+          end) :
           M (M.Val unit);
-        fun α =>
-          match α with
-          | match_destructuring_enums.Color.HSL h s l =>
-            let* h := M.alloc h in
-            let* s := M.alloc s in
-            let* l := M.alloc l in
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
+          | match_destructuring_enums.Color.HSL _ _ _ =>
+            let γ0 := γ.["HSL.0"] in
+            let γ1 := γ.["HSL.1"] in
+            let γ2 := γ.["HSL.2"] in
+            let* h := M.copy γ0 in
+            let* s := M.copy γ1 in
+            let* l := M.copy γ2 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "Hue: ") in
               let* α1 : ref str.t := M.read (mk_str ", saturation: ") in
@@ -371,14 +385,18 @@ Definition main : M unit :=
               M.alloc α14 in
             M.alloc tt
           | _ => M.break_match
-          end :
+          end) :
           M (M.Val unit);
-        fun α =>
-          match α with
-          | match_destructuring_enums.Color.CMY c m y =>
-            let* c := M.alloc c in
-            let* m := M.alloc m in
-            let* y := M.alloc y in
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
+          | match_destructuring_enums.Color.CMY _ _ _ =>
+            let γ0 := γ.["CMY.0"] in
+            let γ1 := γ.["CMY.1"] in
+            let γ2 := γ.["CMY.2"] in
+            let* c := M.copy γ0 in
+            let* m := M.copy γ1 in
+            let* y := M.copy γ2 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "Cyan: ") in
               let* α1 : ref str.t := M.read (mk_str ", magenta: ") in
@@ -409,15 +427,20 @@ Definition main : M unit :=
               M.alloc α14 in
             M.alloc tt
           | _ => M.break_match
-          end :
+          end) :
           M (M.Val unit);
-        fun α =>
-          match α with
-          | match_destructuring_enums.Color.CMYK c m y k =>
-            let* c := M.alloc c in
-            let* m := M.alloc m in
-            let* y := M.alloc y in
-            let* k := M.alloc k in
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
+          | match_destructuring_enums.Color.CMYK _ _ _ _ =>
+            let γ0 := γ.["CMYK.0"] in
+            let γ1 := γ.["CMYK.1"] in
+            let γ2 := γ.["CMYK.2"] in
+            let γ3 := γ.["CMYK.3"] in
+            let* c := M.copy γ0 in
+            let* m := M.copy γ1 in
+            let* y := M.copy γ2 in
+            let* k := M.copy γ3 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "Cyan: ") in
               let* α1 : ref str.t := M.read (mk_str ", magenta: ") in
@@ -451,7 +474,7 @@ Definition main : M unit :=
               M.alloc α16 in
             M.alloc tt
           | _ => M.break_match
-          end :
+          end) :
           M (M.Val unit)
       ] in
   M.read α0.

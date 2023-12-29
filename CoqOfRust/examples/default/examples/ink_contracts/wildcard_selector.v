@@ -49,15 +49,19 @@ Section Impl_wildcard_selector_WildcardSelector_t.
               ((array u8.t) * alloc.string.String.t)
               unit)::["unwrap"]
           α0) in
-    let* α2 : M.Val unit :=
+    let* α2 : M.Val ((array u8.t) * alloc.string.String.t) := M.alloc α1 in
+    let* α3 : M.Val unit :=
       match_operator
-        α1
+        α2
         [
-          fun α =>
-            match α with
-            | (_selector, _message) =>
-              let* _selector := M.alloc _selector in
-              let* _message := M.alloc _message in
+          fun γ =>
+            (let* α0 := M.read γ in
+            match α0 with
+            | (_, _) =>
+              let γ0 := γ.["(,)left"] in
+              let γ1 := γ.["(,)right"] in
+              let* _selector := M.copy γ0 in
+              let* _message := M.copy γ1 in
               let* _ : M.Val unit :=
                 let* _ : M.Val unit :=
                   let* α0 : ref str.t :=
@@ -91,10 +95,10 @@ Section Impl_wildcard_selector_WildcardSelector_t.
                   M.alloc α12 in
                 M.alloc tt in
               M.alloc tt
-            end :
+            end) :
             M (M.Val unit)
         ] in
-    M.read α2.
+    M.read α3.
   
   Global Instance AssociatedFunction_wildcard :
     Notations.DoubleColon Self "wildcard" := {

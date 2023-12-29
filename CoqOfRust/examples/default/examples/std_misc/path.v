@@ -74,12 +74,14 @@ Definition main : M unit :=
         (borrow new_path)) in
   let* α1 : core.option.Option.t (ref str.t) :=
     M.call (std.path.Path.t::["to_str"] α0) in
+  let* α2 : M.Val (core.option.Option.t (ref str.t)) := M.alloc α1 in
   let* α0 : M.Val unit :=
     match_operator
-      α1
+      α2
       [
-        fun α =>
-          match α with
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
           | core.option.Option.None =>
             let* α0 : ref str.t :=
               M.read (mk_str "new path is not a valid UTF-8 sequence") in
@@ -87,12 +89,14 @@ Definition main : M unit :=
             let* α2 : unit := never_to_any α1 in
             M.alloc α2
           | _ => M.break_match
-          end :
+          end) :
           M (M.Val unit);
-        fun α =>
-          match α with
-          | core.option.Option.Some s =>
-            let* s := M.alloc s in
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
+          | core.option.Option.Some _ =>
+            let γ0 := γ.["Some.0"] in
+            let* s := M.copy γ0 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "new path is ") in
               let* α1 : ref str.t := M.read (mk_str "
@@ -116,7 +120,7 @@ Definition main : M unit :=
               M.alloc α10 in
             M.alloc tt
           | _ => M.break_match
-          end :
+          end) :
           M (M.Val unit)
       ] in
   M.read α0.

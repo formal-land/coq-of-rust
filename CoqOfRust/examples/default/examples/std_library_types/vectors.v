@@ -268,78 +268,80 @@ Definition main : M unit :=
             (Self := core.slice.iter.Iter.t i32.t)
             (Trait := ltac:(refine _)))
           α1) in
-    let* α3 : M.Val unit :=
+    let* α3 : M.Val (core.slice.iter.Iter.t i32.t) := M.alloc α2 in
+    let* α4 : M.Val unit :=
       match_operator
-        α2
+        α3
         [
-          fun α =>
-            match α with
-            | iter =>
-              let* iter := M.alloc iter in
-              M.loop
-                (let* _ : M.Val unit :=
-                  let* α0 : core.option.Option.t (ref i32.t) :=
-                    M.call
-                      ((core.iter.traits.iterator.Iterator.next
-                          (Self := core.slice.iter.Iter.t i32.t)
-                          (Trait := ltac:(refine _)))
-                        (borrow_mut iter)) in
-                  match_operator
-                    α0
-                    [
-                      fun α =>
-                        match α with
-                        | core.option.Option.None =>
-                          let* α0 : M.Val never.t := M.break in
-                          let* α1 := M.read α0 in
-                          let* α2 : unit := never_to_any α1 in
-                          M.alloc α2
-                        | _ => M.break_match
-                        end :
-                        M (M.Val unit);
-                      fun α =>
-                        match α with
-                        | core.option.Option.Some x =>
-                          let* x := M.alloc x in
+          fun γ =>
+            (let* iter := M.copy γ in
+            M.loop
+              (let* _ : M.Val unit :=
+                let* α0 : core.option.Option.t (ref i32.t) :=
+                  M.call
+                    ((core.iter.traits.iterator.Iterator.next
+                        (Self := core.slice.iter.Iter.t i32.t)
+                        (Trait := ltac:(refine _)))
+                      (borrow_mut iter)) in
+                let* α1 : M.Val (core.option.Option.t (ref i32.t)) :=
+                  M.alloc α0 in
+                match_operator
+                  α1
+                  [
+                    fun γ =>
+                      (let* α0 := M.read γ in
+                      match α0 with
+                      | core.option.Option.None =>
+                        let* α0 : M.Val never.t := M.break in
+                        let* α1 := M.read α0 in
+                        let* α2 : unit := never_to_any α1 in
+                        M.alloc α2
+                      | _ => M.break_match
+                      end) :
+                      M (M.Val unit);
+                    fun γ =>
+                      (let* α0 := M.read γ in
+                      match α0 with
+                      | core.option.Option.Some _ =>
+                        let γ0 := γ.["Some.0"] in
+                        let* x := M.copy γ0 in
+                        let* _ : M.Val unit :=
                           let* _ : M.Val unit :=
-                            let* _ : M.Val unit :=
-                              let* α0 : ref str.t := M.read (mk_str "> ") in
-                              let* α1 : ref str.t := M.read (mk_str "
+                            let* α0 : ref str.t := M.read (mk_str "> ") in
+                            let* α1 : ref str.t := M.read (mk_str "
 ") in
-                              let* α2 : M.Val (array (ref str.t)) :=
-                                M.alloc [ α0; α1 ] in
-                              let* α3 : M.Val (ref (array (ref str.t))) :=
-                                M.alloc (borrow α2) in
-                              let* α4 : ref (slice (ref str.t)) :=
-                                M.read (pointer_coercion "Unsize" α3) in
-                              let* α5 : core.fmt.rt.Argument.t :=
-                                M.call
-                                  (core.fmt.rt.Argument.t::["new_display"]
-                                    (borrow x)) in
-                              let* α6 : M.Val (array core.fmt.rt.Argument.t) :=
-                                M.alloc [ α5 ] in
-                              let* α7 :
-                                  M.Val (ref (array core.fmt.rt.Argument.t)) :=
-                                M.alloc (borrow α6) in
-                              let* α8 : ref (slice core.fmt.rt.Argument.t) :=
-                                M.read (pointer_coercion "Unsize" α7) in
-                              let* α9 : core.fmt.Arguments.t :=
-                                M.call
-                                  (core.fmt.Arguments.t::["new_v1"] α4 α8) in
-                              let* α10 : unit :=
-                                M.call (std.io.stdio._print α9) in
-                              M.alloc α10 in
-                            M.alloc tt in
-                          M.alloc tt
-                        | _ => M.break_match
-                        end :
-                        M (M.Val unit)
-                    ] in
-                M.alloc tt)
-            end :
+                            let* α2 : M.Val (array (ref str.t)) :=
+                              M.alloc [ α0; α1 ] in
+                            let* α3 : M.Val (ref (array (ref str.t))) :=
+                              M.alloc (borrow α2) in
+                            let* α4 : ref (slice (ref str.t)) :=
+                              M.read (pointer_coercion "Unsize" α3) in
+                            let* α5 : core.fmt.rt.Argument.t :=
+                              M.call
+                                (core.fmt.rt.Argument.t::["new_display"]
+                                  (borrow x)) in
+                            let* α6 : M.Val (array core.fmt.rt.Argument.t) :=
+                              M.alloc [ α5 ] in
+                            let* α7 :
+                                M.Val (ref (array core.fmt.rt.Argument.t)) :=
+                              M.alloc (borrow α6) in
+                            let* α8 : ref (slice core.fmt.rt.Argument.t) :=
+                              M.read (pointer_coercion "Unsize" α7) in
+                            let* α9 : core.fmt.Arguments.t :=
+                              M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
+                            let* α10 : unit :=
+                              M.call (std.io.stdio._print α9) in
+                            M.alloc α10 in
+                          M.alloc tt in
+                        M.alloc tt
+                      | _ => M.break_match
+                      end) :
+                      M (M.Val unit)
+                  ] in
+              M.alloc tt)) :
             M (M.Val unit)
         ] in
-    M.pure (use α3) in
+    M.pure (use α4) in
   let* _ : M.Val unit :=
     let* α0 : ref (slice i32.t) :=
       M.call
@@ -367,42 +369,56 @@ Definition main : M unit :=
                 (core.slice.iter.Iter.t i32.t))
             (Trait := ltac:(refine _)))
           α2) in
-    let* α4 : M.Val unit :=
+    let* α4 :
+        M.Val
+          (core.iter.adapters.enumerate.Enumerate.t
+            (core.slice.iter.Iter.t i32.t)) :=
+      M.alloc α3 in
+    let* α5 : M.Val unit :=
       match_operator
-        α3
+        α4
         [
-          fun α =>
-            match α with
-            | iter =>
-              let* iter := M.alloc iter in
-              M.loop
-                (let* _ : M.Val unit :=
-                  let* α0 : core.option.Option.t (usize.t * (ref i32.t)) :=
-                    M.call
-                      ((core.iter.traits.iterator.Iterator.next
-                          (Self :=
-                            core.iter.adapters.enumerate.Enumerate.t
-                              (core.slice.iter.Iter.t i32.t))
-                          (Trait := ltac:(refine _)))
-                        (borrow_mut iter)) in
-                  match_operator
-                    α0
-                    [
-                      fun α =>
-                        match α with
-                        | core.option.Option.None =>
-                          let* α0 : M.Val never.t := M.break in
-                          let* α1 := M.read α0 in
-                          let* α2 : unit := never_to_any α1 in
-                          M.alloc α2
-                        | _ => M.break_match
-                        end :
-                        M (M.Val unit);
-                      fun α =>
-                        match α with
-                        | core.option.Option.Some (i, x) =>
-                          let* i := M.alloc i in
-                          let* x := M.alloc x in
+          fun γ =>
+            (let* iter := M.copy γ in
+            M.loop
+              (let* _ : M.Val unit :=
+                let* α0 : core.option.Option.t (usize.t * (ref i32.t)) :=
+                  M.call
+                    ((core.iter.traits.iterator.Iterator.next
+                        (Self :=
+                          core.iter.adapters.enumerate.Enumerate.t
+                            (core.slice.iter.Iter.t i32.t))
+                        (Trait := ltac:(refine _)))
+                      (borrow_mut iter)) in
+                let* α1 :
+                    M.Val (core.option.Option.t (usize.t * (ref i32.t))) :=
+                  M.alloc α0 in
+                match_operator
+                  α1
+                  [
+                    fun γ =>
+                      (let* α0 := M.read γ in
+                      match α0 with
+                      | core.option.Option.None =>
+                        let* α0 : M.Val never.t := M.break in
+                        let* α1 := M.read α0 in
+                        let* α2 : unit := never_to_any α1 in
+                        M.alloc α2
+                      | _ => M.break_match
+                      end) :
+                      M (M.Val unit);
+                    fun γ =>
+                      (let* α0 := M.read γ in
+                      match α0 with
+                      | core.option.Option.Some _ =>
+                        let γ0 := γ.["Some.0"] in
+                        let* α0 := M.read γ0 in
+                        match α0 with
+                        | (_, _) =>
+                          let γ0 := γ0.["(,)left"] in
+                          let γ1 := γ0.["(,)right"] in
+                          let* i := M.copy γ0 in
+                          let* x := M.copy γ1 in
                           let* _ : M.Val unit :=
                             let* _ : M.Val unit :=
                               let* α0 : ref str.t :=
@@ -440,15 +456,15 @@ Definition main : M unit :=
                               M.alloc α12 in
                             M.alloc tt in
                           M.alloc tt
-                        | _ => M.break_match
-                        end :
-                        M (M.Val unit)
-                    ] in
-                M.alloc tt)
-            end :
+                        end
+                      | _ => M.break_match
+                      end) :
+                      M (M.Val unit)
+                  ] in
+              M.alloc tt)) :
             M (M.Val unit)
         ] in
-    M.pure (use α4) in
+    M.pure (use α5) in
   let* _ : M.Val unit :=
     let* α0 : mut_ref (slice i32.t) :=
       M.call
@@ -464,56 +480,59 @@ Definition main : M unit :=
             (Self := core.slice.iter.IterMut.t i32.t)
             (Trait := ltac:(refine _)))
           α1) in
-    let* α3 : M.Val unit :=
+    let* α3 : M.Val (core.slice.iter.IterMut.t i32.t) := M.alloc α2 in
+    let* α4 : M.Val unit :=
       match_operator
-        α2
+        α3
         [
-          fun α =>
-            match α with
-            | iter =>
-              let* iter := M.alloc iter in
-              M.loop
-                (let* _ : M.Val unit :=
-                  let* α0 : core.option.Option.t (mut_ref i32.t) :=
-                    M.call
-                      ((core.iter.traits.iterator.Iterator.next
-                          (Self := core.slice.iter.IterMut.t i32.t)
-                          (Trait := ltac:(refine _)))
-                        (borrow_mut iter)) in
-                  match_operator
-                    α0
-                    [
-                      fun α =>
-                        match α with
-                        | core.option.Option.None =>
-                          let* α0 : M.Val never.t := M.break in
-                          let* α1 := M.read α0 in
-                          let* α2 : unit := never_to_any α1 in
-                          M.alloc α2
-                        | _ => M.break_match
-                        end :
-                        M (M.Val unit);
-                      fun α =>
-                        match α with
-                        | core.option.Option.Some x =>
-                          let* x := M.alloc x in
-                          let* _ : M.Val unit :=
-                            let* β : M.Val i32.t :=
-                              let* α0 : mut_ref i32.t := M.read x in
-                              M.pure (deref α0) in
-                            let* α0 := M.read β in
-                            let* α1 := BinOp.Panic.mul α0 (Integer.of_Z 3) in
-                            assign β α1 in
-                          M.alloc tt
-                        | _ => M.break_match
-                        end :
-                        M (M.Val unit)
-                    ] in
-                M.alloc tt)
-            end :
+          fun γ =>
+            (let* iter := M.copy γ in
+            M.loop
+              (let* _ : M.Val unit :=
+                let* α0 : core.option.Option.t (mut_ref i32.t) :=
+                  M.call
+                    ((core.iter.traits.iterator.Iterator.next
+                        (Self := core.slice.iter.IterMut.t i32.t)
+                        (Trait := ltac:(refine _)))
+                      (borrow_mut iter)) in
+                let* α1 : M.Val (core.option.Option.t (mut_ref i32.t)) :=
+                  M.alloc α0 in
+                match_operator
+                  α1
+                  [
+                    fun γ =>
+                      (let* α0 := M.read γ in
+                      match α0 with
+                      | core.option.Option.None =>
+                        let* α0 : M.Val never.t := M.break in
+                        let* α1 := M.read α0 in
+                        let* α2 : unit := never_to_any α1 in
+                        M.alloc α2
+                      | _ => M.break_match
+                      end) :
+                      M (M.Val unit);
+                    fun γ =>
+                      (let* α0 := M.read γ in
+                      match α0 with
+                      | core.option.Option.Some _ =>
+                        let γ0 := γ.["Some.0"] in
+                        let* x := M.copy γ0 in
+                        let* _ : M.Val unit :=
+                          let* β : M.Val i32.t :=
+                            let* α0 : mut_ref i32.t := M.read x in
+                            M.pure (deref α0) in
+                          let* α0 := M.read β in
+                          let* α1 := BinOp.Panic.mul α0 (Integer.of_Z 3) in
+                          assign β α1 in
+                        M.alloc tt
+                      | _ => M.break_match
+                      end) :
+                      M (M.Val unit)
+                  ] in
+              M.alloc tt)) :
             M (M.Val unit)
         ] in
-    M.pure (use α3) in
+    M.pure (use α4) in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "Updated vector: ") in

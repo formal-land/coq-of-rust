@@ -152,13 +152,18 @@ Definition main : M unit :=
     let* α2 : ref (slice u8.t) := M.read (pointer_coercion "Unsize" α1) in
     let* α3 : core.result.Result.t (ref str.t) core.str.error.Utf8Error.t :=
       M.call (core.str.converts.from_utf8 α2) in
+    let* α4 :
+        M.Val (core.result.Result.t (ref str.t) core.str.error.Utf8Error.t) :=
+      M.alloc α3 in
     match_operator
-      α3
+      α4
       [
-        fun α =>
-          match α with
-          | core.result.Result.Ok my_str =>
-            let* my_str := M.alloc my_str in
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
+          | core.result.Result.Ok _ =>
+            let γ0 := γ.["Ok.0"] in
+            let* my_str := M.copy γ0 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t :=
                 M.read (mk_str "Conversion successful: '") in
@@ -184,12 +189,14 @@ Definition main : M unit :=
               M.alloc α10 in
             M.alloc tt
           | _ => M.break_match
-          end :
+          end) :
           M (M.Val unit);
-        fun α =>
-          match α with
-          | core.result.Result.Err e =>
-            let* e := M.alloc e in
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
+          | core.result.Result.Err _ =>
+            let γ0 := γ.["Err.0"] in
+            let* e := M.copy γ0 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "Conversion failed: ") in
               let* α1 : ref str.t := M.read (mk_str "
@@ -213,7 +220,7 @@ Definition main : M unit :=
               M.alloc α10 in
             M.alloc tt
           | _ => M.break_match
-          end :
+          end) :
           M (M.Val unit)
       ] in
   let* α0 : M.Val unit := M.alloc tt in

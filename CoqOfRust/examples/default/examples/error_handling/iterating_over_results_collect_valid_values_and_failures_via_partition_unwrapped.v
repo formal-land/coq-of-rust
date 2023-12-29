@@ -49,16 +49,14 @@ Definition main : M unit :=
           (Trait := ltac:(refine _)))
         α1
         (fun (α0 : ref str.t) =>
-          (match_operator
+          (let* α0 := M.alloc α0 in
+          match_operator
             α0
             [
-              fun α =>
-                match α with
-                | s =>
-                  let* s := M.alloc s in
-                  let* α0 : ref str.t := M.read s in
-                  M.call (str.t::["parse"] α0)
-                end :
+              fun γ =>
+                (let* s := M.copy γ in
+                let* α0 : ref str.t := M.read s in
+                M.call (str.t::["parse"] α0)) :
                 M (core.result.Result.t i32.t core.num.error.ParseIntError.t)
             ]) :
           M (core.result.Result.t i32.t core.num.error.ParseIntError.t))) in
@@ -82,15 +80,28 @@ Definition main : M unit :=
         (core.result.Result.t
             i32.t
             core.num.error.ParseIntError.t)::["is_ok"]) in
+  let* α4 :
+      M.Val
+        ((alloc.vec.Vec.t
+          (core.result.Result.t i32.t core.num.error.ParseIntError.t)
+          alloc.alloc.Global.t)
+        *
+        (alloc.vec.Vec.t
+          (core.result.Result.t i32.t core.num.error.ParseIntError.t)
+          alloc.alloc.Global.t)) :=
+    M.alloc α3 in
   let* α0 : M.Val unit :=
     match_operator
-      α3
+      α4
       [
-        fun α =>
-          match α with
-          | (numbers, errors) =>
-            let* numbers := M.alloc numbers in
-            let* errors := M.alloc errors in
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
+          | (_, _) =>
+            let γ0 := γ.["(,)left"] in
+            let γ1 := γ.["(,)right"] in
+            let* numbers := M.copy γ0 in
+            let* errors := M.copy γ1 in
             let* numbers : M.Val (alloc.vec.Vec.t i32.t alloc.alloc.Global.t) :=
               let* α0 :
                   alloc.vec.Vec.t
@@ -257,7 +268,7 @@ Definition main : M unit :=
                 M.alloc α10 in
               M.alloc tt in
             M.alloc tt
-          end :
+          end) :
           M (M.Val unit)
       ] in
   M.read α0.

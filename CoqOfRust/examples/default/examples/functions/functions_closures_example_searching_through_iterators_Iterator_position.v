@@ -53,17 +53,18 @@ Definition main : M unit :=
             (Trait := ltac:(refine _)))
           (borrow_mut α2)
           (fun (α0 : ref i32.t) =>
-            (match_operator
+            (let* α0 := M.alloc α0 in
+            match_operator
               α0
               [
-                fun α =>
-                  match α with
-                  | x =>
-                    let* x := M.alloc x in
-                    let* α0 : i32.t := M.read x in
-                    let* α1 : i32.t := BinOp.Panic.rem α0 (Integer.of_Z 2) in
-                    M.pure (BinOp.Pure.eq α1 (Integer.of_Z 0))
-                  end :
+                fun γ =>
+                  (let* γ :=
+                    let* α0 := M.read γ in
+                    M.alloc (deref α0) in
+                  let* x := M.copy γ in
+                  let* α0 : i32.t := M.read x in
+                  let* α1 : i32.t := BinOp.Panic.rem α0 (Integer.of_Z 2) in
+                  M.pure (BinOp.Pure.eq α1 (Integer.of_Z 0))) :
                   M bool.t
               ]) :
             M bool.t)) in
@@ -71,14 +72,23 @@ Definition main : M unit :=
   let* _ : M.Val unit :=
     let* α0 : M.Val (core.option.Option.t usize.t) :=
       M.alloc (core.option.Option.Some (Integer.of_Z 5)) in
+    let* α1 :
+        M.Val
+          ((ref (core.option.Option.t usize.t))
+          *
+          (ref (core.option.Option.t usize.t))) :=
+      M.alloc (borrow index_of_first_even_number, borrow α0) in
     match_operator
-      (borrow index_of_first_even_number, borrow α0)
+      α1
       [
-        fun α =>
-          match α with
-          | (left_val, right_val) =>
-            let* left_val := M.alloc left_val in
-            let* right_val := M.alloc right_val in
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
+          | (_, _) =>
+            let γ0 := γ.["(,)left"] in
+            let γ1 := γ.["(,)right"] in
+            let* left_val := M.copy γ0 in
+            let* right_val := M.copy γ1 in
             let* α0 : ref (core.option.Option.t usize.t) := M.read left_val in
             let* α1 : ref (core.option.Option.t usize.t) := M.read right_val in
             let* α2 : bool.t :=
@@ -113,7 +123,7 @@ Definition main : M unit :=
               M.alloc α2
             else
               M.alloc tt
-          end :
+          end) :
           M (M.Val unit)
       ] in
   let* index_of_first_negative_number : M.Val (core.option.Option.t usize.t) :=
@@ -134,16 +144,14 @@ Definition main : M unit :=
             (Trait := ltac:(refine _)))
           (borrow_mut α2)
           (fun (α0 : i32.t) =>
-            (match_operator
+            (let* α0 := M.alloc α0 in
+            match_operator
               α0
               [
-                fun α =>
-                  match α with
-                  | x =>
-                    let* x := M.alloc x in
-                    let* α0 : i32.t := M.read x in
-                    M.pure (BinOp.Pure.lt α0 (Integer.of_Z 0))
-                  end :
+                fun γ =>
+                  (let* x := M.copy γ in
+                  let* α0 : i32.t := M.read x in
+                  M.pure (BinOp.Pure.lt α0 (Integer.of_Z 0))) :
                   M bool.t
               ]) :
             M bool.t)) in
@@ -151,14 +159,23 @@ Definition main : M unit :=
   let* _ : M.Val unit :=
     let* α0 : M.Val (core.option.Option.t usize.t) :=
       M.alloc core.option.Option.None in
+    let* α1 :
+        M.Val
+          ((ref (core.option.Option.t usize.t))
+          *
+          (ref (core.option.Option.t usize.t))) :=
+      M.alloc (borrow index_of_first_negative_number, borrow α0) in
     match_operator
-      (borrow index_of_first_negative_number, borrow α0)
+      α1
       [
-        fun α =>
-          match α with
-          | (left_val, right_val) =>
-            let* left_val := M.alloc left_val in
-            let* right_val := M.alloc right_val in
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
+          | (_, _) =>
+            let γ0 := γ.["(,)left"] in
+            let γ1 := γ.["(,)right"] in
+            let* left_val := M.copy γ0 in
+            let* right_val := M.copy γ1 in
             let* α0 : ref (core.option.Option.t usize.t) := M.read left_val in
             let* α1 : ref (core.option.Option.t usize.t) := M.read right_val in
             let* α2 : bool.t :=
@@ -193,7 +210,7 @@ Definition main : M unit :=
               M.alloc α2
             else
               M.alloc tt
-          end :
+          end) :
           M (M.Val unit)
       ] in
   let* α0 : M.Val unit := M.alloc tt in

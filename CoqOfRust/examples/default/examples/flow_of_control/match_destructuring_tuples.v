@@ -45,16 +45,19 @@ Definition main : M unit :=
       let* α10 : unit := M.call (std.io.stdio._print α9) in
       M.alloc α10 in
     M.alloc tt in
-  let* α0 : (i32.t * i32.t) * i32.t := M.read triple in
   let* α0 : M.Val unit :=
     match_operator
-      α0
+      triple
       [
-        fun α =>
-          match α with
-          | (_, y, z) =>
-            let* y := M.alloc y in
-            let* z := M.alloc z in
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
+          | (_, _, _) =>
+            let γ0 := γ.["(,)left"].["(,)left"] in
+            let γ1 := γ.["(,)left"].["(,)right"] in
+            let γ2 := γ.["(,)right"] in
+            let* y := M.copy γ1 in
+            let* z := M.copy γ2 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "First is `0`, `y` is ") in
               let* α1 : ref str.t := M.read (mk_str ", and `z` is ") in
@@ -80,11 +83,13 @@ Definition main : M unit :=
               let* α12 : unit := M.call (std.io.stdio._print α11) in
               M.alloc α12 in
             M.alloc tt
-          end :
+          end) :
           M (M.Val unit);
-        fun α =>
-          match α with
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
           | (_) =>
+            let γ0 := γ in
             let* _ : M.Val unit :=
               let* α0 : ref str.t :=
                 M.read (mk_str "First is `1` and the rest doesn't matter
@@ -99,11 +104,13 @@ Definition main : M unit :=
               let* α5 : unit := M.call (std.io.stdio._print α4) in
               M.alloc α5 in
             M.alloc tt
-          end :
+          end) :
           M (M.Val unit);
-        fun α =>
-          match α with
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
           | (_) =>
+            let γ0 := γ in
             let* _ : M.Val unit :=
               let* α0 : ref str.t :=
                 M.read (mk_str "last is `2` and the rest doesn't matter
@@ -118,11 +125,14 @@ Definition main : M unit :=
               let* α5 : unit := M.call (std.io.stdio._print α4) in
               M.alloc α5 in
             M.alloc tt
-          end :
+          end) :
           M (M.Val unit);
-        fun α =>
-          match α with
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
           | (_, _) =>
+            let γ0 := γ.["(,)left"] in
+            let γ1 := γ.["(,)right"] in
             let* _ : M.Val unit :=
               let* α0 : ref str.t :=
                 M.read
@@ -139,26 +149,22 @@ Definition main : M unit :=
               let* α5 : unit := M.call (std.io.stdio._print α4) in
               M.alloc α5 in
             M.alloc tt
-          end :
+          end) :
           M (M.Val unit);
-        fun α =>
-          match α with
-          | _ =>
-            let* _ : M.Val unit :=
-              let* α0 : ref str.t :=
-                M.read (mk_str "It doesn't matter what they are
+        fun γ =>
+          (let* _ : M.Val unit :=
+            let* α0 : ref str.t :=
+              M.read (mk_str "It doesn't matter what they are
 ") in
-              let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-              let* α2 : M.Val (ref (array (ref str.t))) :=
-                M.alloc (borrow α1) in
-              let* α3 : ref (slice (ref str.t)) :=
-                M.read (pointer_coercion "Unsize" α2) in
-              let* α4 : core.fmt.Arguments.t :=
-                M.call (core.fmt.Arguments.t::["new_const"] α3) in
-              let* α5 : unit := M.call (std.io.stdio._print α4) in
-              M.alloc α5 in
-            M.alloc tt
-          end :
+            let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
+            let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
+            let* α3 : ref (slice (ref str.t)) :=
+              M.read (pointer_coercion "Unsize" α2) in
+            let* α4 : core.fmt.Arguments.t :=
+              M.call (core.fmt.Arguments.t::["new_const"] α3) in
+            let* α5 : unit := M.call (std.io.stdio._print α4) in
+            M.alloc α5 in
+          M.alloc tt) :
           M (M.Val unit)
       ] in
   M.read α0.

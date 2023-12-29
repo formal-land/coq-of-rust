@@ -254,20 +254,18 @@ Section Impl_core_clone_Clone_for_mapping_integration_tests_AccountId_t.
       (self : ref Self)
       : M mapping_integration_tests.AccountId.t :=
     let* self := M.alloc self in
-    let* α0 : M.Val mapping_integration_tests.AccountId.t :=
+    let* α0 : M.Val unit := M.alloc tt in
+    let* α1 : M.Val mapping_integration_tests.AccountId.t :=
       match_operator
-        tt
+        α0
         [
-          fun α =>
-            match α with
-            | _ =>
-              let* α0 : ref mapping_integration_tests.AccountId.t :=
-                M.read self in
-              M.pure (deref α0)
-            end :
+          fun γ =>
+            (let* α0 : ref mapping_integration_tests.AccountId.t :=
+              M.read self in
+            M.pure (deref α0)) :
             M (M.Val mapping_integration_tests.AccountId.t)
         ] in
-    M.read α0.
+    M.read α1.
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {

@@ -234,19 +234,17 @@ Section Impl_core_clone_Clone_for_erc721_AccountId_t.
   *)
   Definition clone (self : ref Self) : M erc721.AccountId.t :=
     let* self := M.alloc self in
-    let* α0 : M.Val erc721.AccountId.t :=
+    let* α0 : M.Val unit := M.alloc tt in
+    let* α1 : M.Val erc721.AccountId.t :=
       match_operator
-        tt
+        α0
         [
-          fun α =>
-            match α with
-            | _ =>
-              let* α0 : ref erc721.AccountId.t := M.read self in
-              M.pure (deref α0)
-            end :
+          fun γ =>
+            (let* α0 : ref erc721.AccountId.t := M.read self in
+            M.pure (deref α0)) :
             M (M.Val erc721.AccountId.t)
         ] in
-    M.read α0.
+    M.read α1.
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {
@@ -1221,13 +1219,21 @@ Section Impl_erc721_Erc721_t.
                 (Self := core.result.Result.t unit erc721.Error.t)
                 (Trait := ltac:(refine _)))
               α3) in
+        let* α5 :
+            M.Val
+              (core.ops.control_flow.ControlFlow.t
+                (core.result.Result.t core.convert.Infallible.t erc721.Error.t)
+                unit) :=
+          M.alloc α4 in
         match_operator
-          α4
+          α5
           [
-            fun α =>
-              match α with
-              | core.ops.control_flow.ControlFlow.Break residual =>
-                let* residual := M.alloc residual in
+            fun γ =>
+              (let* α0 := M.read γ in
+              match α0 with
+              | core.ops.control_flow.ControlFlow.Break _ =>
+                let γ0 := γ.["Break.0"] in
+                let* residual := M.copy γ0 in
                 let* α0 :
                     core.result.Result.t
                       core.convert.Infallible.t
@@ -1244,15 +1250,17 @@ Section Impl_erc721_Erc721_t.
                 let* α4 : unit := never_to_any α3 in
                 M.alloc α4
               | _ => M.break_match
-              end :
+              end) :
               M (M.Val unit);
-            fun α =>
-              match α with
-              | core.ops.control_flow.ControlFlow.Continue val =>
-                let* val := M.alloc val in
+            fun γ =>
+              (let* α0 := M.read γ in
+              match α0 with
+              | core.ops.control_flow.ControlFlow.Continue _ =>
+                let γ0 := γ.["Continue.0"] in
+                let* val := M.copy γ0 in
                 M.pure val
               | _ => M.break_match
-              end :
+              end) :
               M (M.Val unit)
           ] in
       let* α0 : M.Val (core.result.Result.t unit erc721.Error.t) :=
@@ -1465,13 +1473,21 @@ Section Impl_erc721_Erc721_t.
                 (Self := core.result.Result.t unit erc721.Error.t)
                 (Trait := ltac:(refine _)))
               α2) in
+        let* α4 :
+            M.Val
+              (core.ops.control_flow.ControlFlow.t
+                (core.result.Result.t core.convert.Infallible.t erc721.Error.t)
+                unit) :=
+          M.alloc α3 in
         match_operator
-          α3
+          α4
           [
-            fun α =>
-              match α with
-              | core.ops.control_flow.ControlFlow.Break residual =>
-                let* residual := M.alloc residual in
+            fun γ =>
+              (let* α0 := M.read γ in
+              match α0 with
+              | core.ops.control_flow.ControlFlow.Break _ =>
+                let γ0 := γ.["Break.0"] in
+                let* residual := M.copy γ0 in
                 let* α0 :
                     core.result.Result.t
                       core.convert.Infallible.t
@@ -1488,15 +1504,17 @@ Section Impl_erc721_Erc721_t.
                 let* α4 : unit := never_to_any α3 in
                 M.alloc α4
               | _ => M.break_match
-              end :
+              end) :
               M (M.Val unit);
-            fun α =>
-              match α with
-              | core.ops.control_flow.ControlFlow.Continue val =>
-                let* val := M.alloc val in
+            fun γ =>
+              (let* α0 := M.read γ in
+              match α0 with
+              | core.ops.control_flow.ControlFlow.Continue _ =>
+                let γ0 := γ.["Continue.0"] in
+                let* val := M.copy γ0 in
                 M.pure val
               | _ => M.break_match
-              end :
+              end) :
               M (M.Val unit)
           ] in
       let* α0 : M.Val (core.result.Result.t unit erc721.Error.t) :=
@@ -1540,21 +1558,26 @@ Section Impl_erc721_Erc721_t.
     let* id := M.alloc id in
     let return_ := M.return_ (R := core.result.Result.t unit erc721.Error.t) in
     M.catch_return
-      (let* α0 : mut_ref erc721.Erc721.t := M.read self in
-      let* α1 : M.Val (core.result.Result.t unit erc721.Error.t) :=
+      (let* α0 : M.Val (core.result.Result.t unit erc721.Error.t) :=
         match_operator
-          α0
+          self
           [
-            fun α =>
-              match α with
+            fun γ =>
+              (let* γ :=
+                let* α0 := M.read γ in
+                M.alloc (deref α0) in
+              let* α0 := M.read γ in
+              match α0 with
               |
                   {|
-                    erc721.Erc721.token_owner := token_owner;
-                    erc721.Erc721.owned_tokens_count := owned_tokens_count;
+                    erc721.Erc721.token_owner := _;
+                    erc721.Erc721.owned_tokens_count := _;
                   |}
                   =>
-                let* token_owner := M.alloc token_owner in
-                let* owned_tokens_count := M.alloc owned_tokens_count in
+                let γ0 := γ.["Erc721.token_owner"] in
+                let γ1 := γ.["Erc721.owned_tokens_count"] in
+                let* token_owner := M.alloc (borrow γ0) in
+                let* owned_tokens_count := M.alloc (borrow γ1) in
                 let* _ : M.Val unit :=
                   let* α0 :
                       mut_ref (erc721.Mapping.t u32.t erc721.AccountId.t) :=
@@ -1591,16 +1614,14 @@ Section Impl_erc721_Erc721_t.
                       ((core.option.Option.t u32.t)::["map"]
                         α2
                         (fun (α0 : u32.t) =>
-                          (match_operator
+                          (let* α0 := M.alloc α0 in
+                          match_operator
                             α0
                             [
-                              fun α =>
-                                match α with
-                                | c =>
-                                  let* c := M.alloc c in
-                                  let* α0 : u32.t := M.read c in
-                                  BinOp.Panic.sub α0 (Integer.of_Z 1)
-                                end :
+                              fun γ =>
+                                (let* c := M.copy γ in
+                                let* α0 : u32.t := M.read c in
+                                BinOp.Panic.sub α0 (Integer.of_Z 1)) :
                                 M u32.t
                             ]) :
                           M u32.t)) in
@@ -1620,14 +1641,24 @@ Section Impl_erc721_Erc721_t.
                           (Self := core.result.Result.t u32.t erc721.Error.t)
                           (Trait := ltac:(refine _)))
                         α4) in
-                  let* α6 : M.Val u32.t :=
+                  let* α6 :
+                      M.Val
+                        (core.ops.control_flow.ControlFlow.t
+                          (core.result.Result.t
+                            core.convert.Infallible.t
+                            erc721.Error.t)
+                          u32.t) :=
+                    M.alloc α5 in
+                  let* α7 : M.Val u32.t :=
                     match_operator
-                      α5
+                      α6
                       [
-                        fun α =>
-                          match α with
-                          | core.ops.control_flow.ControlFlow.Break residual =>
-                            let* residual := M.alloc residual in
+                        fun γ =>
+                          (let* α0 := M.read γ in
+                          match α0 with
+                          | core.ops.control_flow.ControlFlow.Break _ =>
+                            let γ0 := γ.["Break.0"] in
+                            let* residual := M.copy γ0 in
                             let* α0 :
                                 core.result.Result.t
                                   core.convert.Infallible.t
@@ -1646,18 +1677,20 @@ Section Impl_erc721_Erc721_t.
                             let* α4 : u32.t := never_to_any α3 in
                             M.alloc α4
                           | _ => M.break_match
-                          end :
+                          end) :
                           M (M.Val u32.t);
-                        fun α =>
-                          match α with
-                          | core.ops.control_flow.ControlFlow.Continue val =>
-                            let* val := M.alloc val in
+                        fun γ =>
+                          (let* α0 := M.read γ in
+                          match α0 with
+                          | core.ops.control_flow.ControlFlow.Continue _ =>
+                            let γ0 := γ.["Continue.0"] in
+                            let* val := M.copy γ0 in
                             M.pure val
                           | _ => M.break_match
-                          end :
+                          end) :
                           M (M.Val u32.t)
                       ] in
-                  M.copy α6 in
+                  M.copy α7 in
                 let* _ : M.Val (core.option.Option.t u32.t) :=
                   let* α0 :
                       mut_ref (erc721.Mapping.t erc721.AccountId.t u32.t) :=
@@ -1684,10 +1717,10 @@ Section Impl_erc721_Erc721_t.
                         α1) in
                   M.alloc α2 in
                 M.alloc (core.result.Result.Ok tt)
-              end :
+              end) :
               M (M.Val (core.result.Result.t unit erc721.Error.t))
           ] in
-      M.read α1).
+      M.read α0).
   
   Global Instance AssociatedFunction_remove_token_from :
     Notations.DoubleColon Self "remove_token_from" := {
@@ -1728,21 +1761,26 @@ Section Impl_erc721_Erc721_t.
     let* id := M.alloc id in
     let return_ := M.return_ (R := core.result.Result.t unit erc721.Error.t) in
     M.catch_return
-      (let* α0 : mut_ref erc721.Erc721.t := M.read self in
-      let* α1 : M.Val (core.result.Result.t unit erc721.Error.t) :=
+      (let* α0 : M.Val (core.result.Result.t unit erc721.Error.t) :=
         match_operator
-          α0
+          self
           [
-            fun α =>
-              match α with
+            fun γ =>
+              (let* γ :=
+                let* α0 := M.read γ in
+                M.alloc (deref α0) in
+              let* α0 := M.read γ in
+              match α0 with
               |
                   {|
-                    erc721.Erc721.token_owner := token_owner;
-                    erc721.Erc721.owned_tokens_count := owned_tokens_count;
+                    erc721.Erc721.token_owner := _;
+                    erc721.Erc721.owned_tokens_count := _;
                   |}
                   =>
-                let* token_owner := M.alloc token_owner in
-                let* owned_tokens_count := M.alloc owned_tokens_count in
+                let γ0 := γ.["Erc721.token_owner"] in
+                let γ1 := γ.["Erc721.owned_tokens_count"] in
+                let* token_owner := M.alloc (borrow γ0) in
+                let* owned_tokens_count := M.alloc (borrow γ1) in
                 let* _ : M.Val unit :=
                   let* α0 :
                       mut_ref (erc721.Mapping.t u32.t erc721.AccountId.t) :=
@@ -1807,16 +1845,14 @@ Section Impl_erc721_Erc721_t.
                       ((core.option.Option.t u32.t)::["map"]
                         α2
                         (fun (α0 : u32.t) =>
-                          (match_operator
+                          (let* α0 := M.alloc α0 in
+                          match_operator
                             α0
                             [
-                              fun α =>
-                                match α with
-                                | c =>
-                                  let* c := M.alloc c in
-                                  let* α0 : u32.t := M.read c in
-                                  BinOp.Panic.add α0 (Integer.of_Z 1)
-                                end :
+                              fun γ =>
+                                (let* c := M.copy γ in
+                                let* α0 : u32.t := M.read c in
+                                BinOp.Panic.add α0 (Integer.of_Z 1)) :
                                 M u32.t
                             ]) :
                           M u32.t)) in
@@ -1855,10 +1891,10 @@ Section Impl_erc721_Erc721_t.
                         α3) in
                   M.alloc α4 in
                 M.alloc (core.result.Result.Ok tt)
-              end :
+              end) :
               M (M.Val (core.result.Result.t unit erc721.Error.t))
           ] in
-      M.read α1).
+      M.read α0).
   
   Global Instance AssociatedFunction_add_token_to :
     Notations.DoubleColon Self "add_token_to" := {
@@ -1967,13 +2003,21 @@ Section Impl_erc721_Erc721_t.
                 (Self := core.result.Result.t unit erc721.Error.t)
                 (Trait := ltac:(refine _)))
               α3) in
+        let* α5 :
+            M.Val
+              (core.ops.control_flow.ControlFlow.t
+                (core.result.Result.t core.convert.Infallible.t erc721.Error.t)
+                unit) :=
+          M.alloc α4 in
         match_operator
-          α4
+          α5
           [
-            fun α =>
-              match α with
-              | core.ops.control_flow.ControlFlow.Break residual =>
-                let* residual := M.alloc residual in
+            fun γ =>
+              (let* α0 := M.read γ in
+              match α0 with
+              | core.ops.control_flow.ControlFlow.Break _ =>
+                let γ0 := γ.["Break.0"] in
+                let* residual := M.copy γ0 in
                 let* α0 :
                     core.result.Result.t
                       core.convert.Infallible.t
@@ -1990,15 +2034,17 @@ Section Impl_erc721_Erc721_t.
                 let* α4 : unit := never_to_any α3 in
                 M.alloc α4
               | _ => M.break_match
-              end :
+              end) :
               M (M.Val unit);
-            fun α =>
-              match α with
-              | core.ops.control_flow.ControlFlow.Continue val =>
-                let* val := M.alloc val in
+            fun γ =>
+              (let* α0 := M.read γ in
+              match α0 with
+              | core.ops.control_flow.ControlFlow.Continue _ =>
+                let γ0 := γ.["Continue.0"] in
+                let* val := M.copy γ0 in
                 M.pure val
               | _ => M.break_match
-              end :
+              end) :
               M (M.Val unit)
           ] in
       let* _ : M.Val unit :=
@@ -2016,13 +2062,21 @@ Section Impl_erc721_Erc721_t.
                 (Self := core.result.Result.t unit erc721.Error.t)
                 (Trait := ltac:(refine _)))
               α3) in
+        let* α5 :
+            M.Val
+              (core.ops.control_flow.ControlFlow.t
+                (core.result.Result.t core.convert.Infallible.t erc721.Error.t)
+                unit) :=
+          M.alloc α4 in
         match_operator
-          α4
+          α5
           [
-            fun α =>
-              match α with
-              | core.ops.control_flow.ControlFlow.Break residual =>
-                let* residual := M.alloc residual in
+            fun γ =>
+              (let* α0 := M.read γ in
+              match α0 with
+              | core.ops.control_flow.ControlFlow.Break _ =>
+                let γ0 := γ.["Break.0"] in
+                let* residual := M.copy γ0 in
                 let* α0 :
                     core.result.Result.t
                       core.convert.Infallible.t
@@ -2039,15 +2093,17 @@ Section Impl_erc721_Erc721_t.
                 let* α4 : unit := never_to_any α3 in
                 M.alloc α4
               | _ => M.break_match
-              end :
+              end) :
               M (M.Val unit);
-            fun α =>
-              match α with
-              | core.ops.control_flow.ControlFlow.Continue val =>
-                let* val := M.alloc val in
+            fun γ =>
+              (let* α0 := M.read γ in
+              match α0 with
+              | core.ops.control_flow.ControlFlow.Continue _ =>
+                let γ0 := γ.["Continue.0"] in
+                let* val := M.copy γ0 in
                 M.pure val
               | _ => M.break_match
-              end :
+              end) :
               M (M.Val unit)
           ] in
       let* _ : M.Val unit :=
@@ -2124,13 +2180,21 @@ Section Impl_erc721_Erc721_t.
                 (Self := core.result.Result.t unit erc721.Error.t)
                 (Trait := ltac:(refine _)))
               α2) in
+        let* α4 :
+            M.Val
+              (core.ops.control_flow.ControlFlow.t
+                (core.result.Result.t core.convert.Infallible.t erc721.Error.t)
+                unit) :=
+          M.alloc α3 in
         match_operator
-          α3
+          α4
           [
-            fun α =>
-              match α with
-              | core.ops.control_flow.ControlFlow.Break residual =>
-                let* residual := M.alloc residual in
+            fun γ =>
+              (let* α0 := M.read γ in
+              match α0 with
+              | core.ops.control_flow.ControlFlow.Break _ =>
+                let γ0 := γ.["Break.0"] in
+                let* residual := M.copy γ0 in
                 let* α0 :
                     core.result.Result.t
                       core.convert.Infallible.t
@@ -2147,15 +2211,17 @@ Section Impl_erc721_Erc721_t.
                 let* α4 : unit := never_to_any α3 in
                 M.alloc α4
               | _ => M.break_match
-              end :
+              end) :
               M (M.Val unit);
-            fun α =>
-              match α with
-              | core.ops.control_flow.ControlFlow.Continue val =>
-                let* val := M.alloc val in
+            fun γ =>
+              (let* α0 := M.read γ in
+              match α0 with
+              | core.ops.control_flow.ControlFlow.Continue _ =>
+                let γ0 := γ.["Continue.0"] in
+                let* val := M.copy γ0 in
                 M.pure val
               | _ => M.break_match
-              end :
+              end) :
               M (M.Val unit)
           ] in
       let* α0 : M.Val (core.result.Result.t unit erc721.Error.t) :=
@@ -2209,13 +2275,21 @@ Section Impl_erc721_Erc721_t.
                 (Self := core.result.Result.t unit erc721.Error.t)
                 (Trait := ltac:(refine _)))
               α2) in
+        let* α4 :
+            M.Val
+              (core.ops.control_flow.ControlFlow.t
+                (core.result.Result.t core.convert.Infallible.t erc721.Error.t)
+                unit) :=
+          M.alloc α3 in
         match_operator
-          α3
+          α4
           [
-            fun α =>
-              match α with
-              | core.ops.control_flow.ControlFlow.Break residual =>
-                let* residual := M.alloc residual in
+            fun γ =>
+              (let* α0 := M.read γ in
+              match α0 with
+              | core.ops.control_flow.ControlFlow.Break _ =>
+                let γ0 := γ.["Break.0"] in
+                let* residual := M.copy γ0 in
                 let* α0 :
                     core.result.Result.t
                       core.convert.Infallible.t
@@ -2232,15 +2306,17 @@ Section Impl_erc721_Erc721_t.
                 let* α4 : unit := never_to_any α3 in
                 M.alloc α4
               | _ => M.break_match
-              end :
+              end) :
               M (M.Val unit);
-            fun α =>
-              match α with
-              | core.ops.control_flow.ControlFlow.Continue val =>
-                let* val := M.alloc val in
+            fun γ =>
+              (let* α0 := M.read γ in
+              match α0 with
+              | core.ops.control_flow.ControlFlow.Continue _ =>
+                let γ0 := γ.["Continue.0"] in
+                let* val := M.copy γ0 in
                 M.pure val
               | _ => M.break_match
-              end :
+              end) :
               M (M.Val unit)
           ] in
       let* α0 : M.Val (core.result.Result.t unit erc721.Error.t) :=
@@ -2294,13 +2370,21 @@ Section Impl_erc721_Erc721_t.
                 (Self := core.result.Result.t unit erc721.Error.t)
                 (Trait := ltac:(refine _)))
               α2) in
+        let* α4 :
+            M.Val
+              (core.ops.control_flow.ControlFlow.t
+                (core.result.Result.t core.convert.Infallible.t erc721.Error.t)
+                unit) :=
+          M.alloc α3 in
         match_operator
-          α3
+          α4
           [
-            fun α =>
-              match α with
-              | core.ops.control_flow.ControlFlow.Break residual =>
-                let* residual := M.alloc residual in
+            fun γ =>
+              (let* α0 := M.read γ in
+              match α0 with
+              | core.ops.control_flow.ControlFlow.Break _ =>
+                let γ0 := γ.["Break.0"] in
+                let* residual := M.copy γ0 in
                 let* α0 :
                     core.result.Result.t
                       core.convert.Infallible.t
@@ -2317,15 +2401,17 @@ Section Impl_erc721_Erc721_t.
                 let* α4 : unit := never_to_any α3 in
                 M.alloc α4
               | _ => M.break_match
-              end :
+              end) :
               M (M.Val unit);
-            fun α =>
-              match α with
-              | core.ops.control_flow.ControlFlow.Continue val =>
-                let* val := M.alloc val in
+            fun γ =>
+              (let* α0 := M.read γ in
+              match α0 with
+              | core.ops.control_flow.ControlFlow.Continue _ =>
+                let γ0 := γ.["Continue.0"] in
+                let* val := M.copy γ0 in
                 M.pure val
               | _ => M.break_match
-              end :
+              end) :
               M (M.Val unit)
           ] in
       let* _ : M.Val unit :=
@@ -2407,21 +2493,26 @@ Section Impl_erc721_Erc721_t.
         let* α3 : erc721.AccountId.t :=
           M.call (erc721.Env.t::["caller"] (borrow α2)) in
         M.alloc α3 in
-      let* α0 : mut_ref erc721.Erc721.t := M.read self in
       let* α0 : M.Val (core.result.Result.t unit erc721.Error.t) :=
         match_operator
-          α0
+          self
           [
-            fun α =>
-              match α with
+            fun γ =>
+              (let* γ :=
+                let* α0 := M.read γ in
+                M.alloc (deref α0) in
+              let* α0 := M.read γ in
+              match α0 with
               |
                   {|
-                    erc721.Erc721.token_owner := token_owner;
-                    erc721.Erc721.owned_tokens_count := owned_tokens_count;
+                    erc721.Erc721.token_owner := _;
+                    erc721.Erc721.owned_tokens_count := _;
                   |}
                   =>
-                let* token_owner := M.alloc token_owner in
-                let* owned_tokens_count := M.alloc owned_tokens_count in
+                let γ0 := γ.["Erc721.token_owner"] in
+                let γ1 := γ.["Erc721.owned_tokens_count"] in
+                let* token_owner := M.alloc (borrow γ0) in
+                let* owned_tokens_count := M.alloc (borrow γ1) in
                 let* owner : M.Val erc721.AccountId.t :=
                   let* α0 :
                       mut_ref (erc721.Mapping.t u32.t erc721.AccountId.t) :=
@@ -2451,14 +2542,24 @@ Section Impl_erc721_Erc721_t.
                               erc721.Error.t)
                           (Trait := ltac:(refine _)))
                         α2) in
-                  let* α4 : M.Val erc721.AccountId.t :=
+                  let* α4 :
+                      M.Val
+                        (core.ops.control_flow.ControlFlow.t
+                          (core.result.Result.t
+                            core.convert.Infallible.t
+                            erc721.Error.t)
+                          erc721.AccountId.t) :=
+                    M.alloc α3 in
+                  let* α5 : M.Val erc721.AccountId.t :=
                     match_operator
-                      α3
+                      α4
                       [
-                        fun α =>
-                          match α with
-                          | core.ops.control_flow.ControlFlow.Break residual =>
-                            let* residual := M.alloc residual in
+                        fun γ =>
+                          (let* α0 := M.read γ in
+                          match α0 with
+                          | core.ops.control_flow.ControlFlow.Break _ =>
+                            let γ0 := γ.["Break.0"] in
+                            let* residual := M.copy γ0 in
                             let* α0 :
                                 core.result.Result.t
                                   core.convert.Infallible.t
@@ -2477,18 +2578,20 @@ Section Impl_erc721_Erc721_t.
                             let* α4 : erc721.AccountId.t := never_to_any α3 in
                             M.alloc α4
                           | _ => M.break_match
-                          end :
+                          end) :
                           M (M.Val erc721.AccountId.t);
-                        fun α =>
-                          match α with
-                          | core.ops.control_flow.ControlFlow.Continue val =>
-                            let* val := M.alloc val in
+                        fun γ =>
+                          (let* α0 := M.read γ in
+                          match α0 with
+                          | core.ops.control_flow.ControlFlow.Continue _ =>
+                            let γ0 := γ.["Continue.0"] in
+                            let* val := M.copy γ0 in
                             M.pure val
                           | _ => M.break_match
-                          end :
+                          end) :
                           M (M.Val erc721.AccountId.t)
                       ] in
-                  M.copy α4 in
+                  M.copy α5 in
                 let* _ : M.Val unit :=
                   let* α0 : bool.t :=
                     M.call
@@ -2522,16 +2625,14 @@ Section Impl_erc721_Erc721_t.
                       ((core.option.Option.t u32.t)::["map"]
                         α1
                         (fun (α0 : u32.t) =>
-                          (match_operator
+                          (let* α0 := M.alloc α0 in
+                          match_operator
                             α0
                             [
-                              fun α =>
-                                match α with
-                                | c =>
-                                  let* c := M.alloc c in
-                                  let* α0 : u32.t := M.read c in
-                                  BinOp.Panic.sub α0 (Integer.of_Z 1)
-                                end :
+                              fun γ =>
+                                (let* c := M.copy γ in
+                                let* α0 : u32.t := M.read c in
+                                BinOp.Panic.sub α0 (Integer.of_Z 1)) :
                                 M u32.t
                             ]) :
                           M u32.t)) in
@@ -2551,14 +2652,24 @@ Section Impl_erc721_Erc721_t.
                           (Self := core.result.Result.t u32.t erc721.Error.t)
                           (Trait := ltac:(refine _)))
                         α3) in
-                  let* α5 : M.Val u32.t :=
+                  let* α5 :
+                      M.Val
+                        (core.ops.control_flow.ControlFlow.t
+                          (core.result.Result.t
+                            core.convert.Infallible.t
+                            erc721.Error.t)
+                          u32.t) :=
+                    M.alloc α4 in
+                  let* α6 : M.Val u32.t :=
                     match_operator
-                      α4
+                      α5
                       [
-                        fun α =>
-                          match α with
-                          | core.ops.control_flow.ControlFlow.Break residual =>
-                            let* residual := M.alloc residual in
+                        fun γ =>
+                          (let* α0 := M.read γ in
+                          match α0 with
+                          | core.ops.control_flow.ControlFlow.Break _ =>
+                            let γ0 := γ.["Break.0"] in
+                            let* residual := M.copy γ0 in
                             let* α0 :
                                 core.result.Result.t
                                   core.convert.Infallible.t
@@ -2577,18 +2688,20 @@ Section Impl_erc721_Erc721_t.
                             let* α4 : u32.t := never_to_any α3 in
                             M.alloc α4
                           | _ => M.break_match
-                          end :
+                          end) :
                           M (M.Val u32.t);
-                        fun α =>
-                          match α with
-                          | core.ops.control_flow.ControlFlow.Continue val =>
-                            let* val := M.alloc val in
+                        fun γ =>
+                          (let* α0 := M.read γ in
+                          match α0 with
+                          | core.ops.control_flow.ControlFlow.Continue _ =>
+                            let γ0 := γ.["Continue.0"] in
+                            let* val := M.copy γ0 in
                             M.pure val
                           | _ => M.break_match
-                          end :
+                          end) :
                           M (M.Val u32.t)
                       ] in
-                  M.copy α5 in
+                  M.copy α6 in
                 let* _ : M.Val (core.option.Option.t u32.t) :=
                   let* α0 :
                       mut_ref (erc721.Mapping.t erc721.AccountId.t u32.t) :=
@@ -2638,7 +2751,7 @@ Section Impl_erc721_Erc721_t.
                           |})) in
                   M.alloc α6 in
                 M.alloc (core.result.Result.Ok tt)
-              end :
+              end) :
               M (M.Val (core.result.Result.t unit erc721.Error.t))
           ] in
       M.read α0).

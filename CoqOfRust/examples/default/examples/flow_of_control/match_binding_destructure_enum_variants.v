@@ -26,14 +26,17 @@ fn main() {
 Definition main : M unit :=
   let* α0 : core.option.Option.t u32.t :=
     M.call match_binding_destructure_enum_variants.some_number in
-  let* α1 : M.Val unit :=
+  let* α1 : M.Val (core.option.Option.t u32.t) := M.alloc α0 in
+  let* α2 : M.Val unit :=
     match_operator
-      α0
+      α1
       [
-        fun α =>
-          match α with
-          | core.option.Option.Some (_ as n) =>
-            let* n := M.alloc n in
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
+          | core.option.Option.Some _ =>
+            let γ0 := γ.["Some.0"] in
+            let* n := M.copy γ0 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "The Answer: ") in
               let* α1 : ref str.t := M.read (mk_str "!
@@ -57,12 +60,14 @@ Definition main : M unit :=
               M.alloc α10 in
             M.alloc tt
           | _ => M.break_match
-          end :
+          end) :
           M (M.Val unit);
-        fun α =>
-          match α with
-          | core.option.Option.Some n =>
-            let* n := M.alloc n in
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
+          | core.option.Option.Some _ =>
+            let γ0 := γ.["Some.0"] in
+            let* n := M.copy γ0 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "Not interesting... ") in
               let* α1 : ref str.t := M.read (mk_str "
@@ -86,12 +91,8 @@ Definition main : M unit :=
               M.alloc α10 in
             M.alloc tt
           | _ => M.break_match
-          end :
+          end) :
           M (M.Val unit);
-        fun α =>
-          match α with
-          | _ => M.alloc tt
-          end :
-          M (M.Val unit)
+        fun γ => (M.alloc tt) : M (M.Val unit)
       ] in
-  M.read α1.
+  M.read α2.

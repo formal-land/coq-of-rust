@@ -62,16 +62,14 @@ Definition main : M unit :=
             (Trait := ltac:(refine _)))
           α1
           (fun (α0 : ref str.t) =>
-            (match_operator
+            (let* α0 := M.alloc α0 in
+            match_operator
               α0
               [
-                fun α =>
-                  match α with
-                  | s =>
-                    let* s := M.alloc s in
-                    let* α0 : ref str.t := M.read s in
-                    M.call (str.t::["parse"] α0)
-                  end :
+                fun γ =>
+                  (let* s := M.copy γ in
+                  let* α0 : ref str.t := M.read s in
+                  M.call (str.t::["parse"] α0)) :
                   M (core.result.Result.t u8.t core.num.error.ParseIntError.t)
               ]) :
             M (core.result.Result.t u8.t core.num.error.ParseIntError.t))) in
@@ -96,46 +94,42 @@ Definition main : M unit :=
           α2
           (fun
               (α0 : core.result.Result.t u8.t core.num.error.ParseIntError.t) =>
-            (match_operator
+            (let* α0 := M.alloc α0 in
+            match_operator
               α0
               [
-                fun α =>
-                  match α with
-                  | r =>
-                    let* r := M.alloc r in
-                    let* α0 :
-                        core.result.Result.t
-                          u8.t
-                          core.num.error.ParseIntError.t :=
-                      M.read r in
-                    let* α1 : core.result.Result.t u8.t unit :=
-                      M.call
-                        ((core.result.Result.t
-                              u8.t
-                              core.num.error.ParseIntError.t)::["map_err"]
-                          α0
-                          (fun (α0 : core.num.error.ParseIntError.t) =>
-                            (match_operator
-                              α0
-                              [
-                                fun α =>
-                                  match α with
-                                  | e =>
-                                    let* e := M.alloc e in
-                                    let* α0 : core.num.error.ParseIntError.t :=
-                                      M.read e in
-                                    M.call
-                                      ((alloc.vec.Vec.t
-                                            core.num.error.ParseIntError.t
-                                            alloc.alloc.Global.t)::["push"]
-                                        (borrow_mut errors)
-                                        α0)
-                                  end :
-                                  M unit
-                              ]) :
-                            M unit)) in
-                    M.call ((core.result.Result.t u8.t unit)::["ok"] α1)
-                  end :
+                fun γ =>
+                  (let* r := M.copy γ in
+                  let* α0 :
+                      core.result.Result.t
+                        u8.t
+                        core.num.error.ParseIntError.t :=
+                    M.read r in
+                  let* α1 : core.result.Result.t u8.t unit :=
+                    M.call
+                      ((core.result.Result.t
+                            u8.t
+                            core.num.error.ParseIntError.t)::["map_err"]
+                        α0
+                        (fun (α0 : core.num.error.ParseIntError.t) =>
+                          (let* α0 := M.alloc α0 in
+                          match_operator
+                            α0
+                            [
+                              fun γ =>
+                                (let* e := M.copy γ in
+                                let* α0 : core.num.error.ParseIntError.t :=
+                                  M.read e in
+                                M.call
+                                  ((alloc.vec.Vec.t
+                                        core.num.error.ParseIntError.t
+                                        alloc.alloc.Global.t)::["push"]
+                                    (borrow_mut errors)
+                                    α0)) :
+                                M unit
+                            ]) :
+                          M unit)) in
+                  M.call ((core.result.Result.t u8.t unit)::["ok"] α1)) :
                   M (core.option.Option.t u8.t)
               ]) :
             M (core.option.Option.t u8.t))) in

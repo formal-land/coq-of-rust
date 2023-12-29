@@ -89,77 +89,74 @@ Definition sum_odd_numbers (up_to : u32.t) : M u32.t :=
             core.ops.range.Range.start := Integer.of_Z 0;
             core.ops.range.Range.end_ := α0;
           |}) in
-    let* α2 : M.Val unit :=
+    let* α2 : M.Val (core.ops.range.Range.t u32.t) := M.alloc α1 in
+    let* α3 : M.Val unit :=
       match_operator
-        α1
+        α2
         [
-          fun α =>
-            match α with
-            | iter =>
-              let* iter := M.alloc iter in
-              M.loop
-                (let* _ : M.Val unit :=
-                  let* α0 : core.option.Option.t u32.t :=
-                    M.call
-                      ((core.iter.traits.iterator.Iterator.next
-                          (Self := core.ops.range.Range.t u32.t)
-                          (Trait := ltac:(refine _)))
-                        (borrow_mut iter)) in
-                  match_operator
-                    α0
-                    [
-                      fun α =>
-                        match α with
-                        | core.option.Option.None =>
-                          let* α0 : M.Val never.t := M.break in
-                          let* α1 := M.read α0 in
-                          let* α2 : unit := never_to_any α1 in
-                          M.alloc α2
-                        | _ => M.break_match
-                        end :
-                        M (M.Val unit);
-                      fun α =>
-                        match α with
-                        | core.option.Option.Some i =>
-                          let* i := M.alloc i in
-                          let* addition : M.Val u32.t :=
-                            let* α0 : u32.t := M.read i in
-                            let* α1 : u32.t :=
-                              BinOp.Panic.rem α0 (Integer.of_Z 2) in
-                            let* α2 : M.Val u32.t :=
-                              match_operator
-                                (BinOp.Pure.eq α1 (Integer.of_Z 1))
-                                [
-                                  fun α =>
-                                    match α with
-                                    | _ => M.pure i
-                                    end :
-                                    M (M.Val u32.t);
-                                  fun α =>
-                                    match α with
-                                    | _ =>
-                                      let* α0 : M.Val never.t := M.continue in
-                                      let* α1 := M.read α0 in
-                                      let* α2 : u32.t := never_to_any α1 in
-                                      M.alloc α2
-                                    end :
-                                    M (M.Val u32.t)
-                                ] in
-                            M.copy α2 in
-                          let* _ : M.Val unit :=
-                            let β : M.Val u32.t := acc in
-                            let* α0 := M.read β in
-                            let* α1 : u32.t := M.read addition in
-                            let* α2 := BinOp.Panic.add α0 α1 in
-                            assign β α2 in
-                          M.alloc tt
-                        | _ => M.break_match
-                        end :
-                        M (M.Val unit)
-                    ] in
-                M.alloc tt)
-            end :
+          fun γ =>
+            (let* iter := M.copy γ in
+            M.loop
+              (let* _ : M.Val unit :=
+                let* α0 : core.option.Option.t u32.t :=
+                  M.call
+                    ((core.iter.traits.iterator.Iterator.next
+                        (Self := core.ops.range.Range.t u32.t)
+                        (Trait := ltac:(refine _)))
+                      (borrow_mut iter)) in
+                let* α1 : M.Val (core.option.Option.t u32.t) := M.alloc α0 in
+                match_operator
+                  α1
+                  [
+                    fun γ =>
+                      (let* α0 := M.read γ in
+                      match α0 with
+                      | core.option.Option.None =>
+                        let* α0 : M.Val never.t := M.break in
+                        let* α1 := M.read α0 in
+                        let* α2 : unit := never_to_any α1 in
+                        M.alloc α2
+                      | _ => M.break_match
+                      end) :
+                      M (M.Val unit);
+                    fun γ =>
+                      (let* α0 := M.read γ in
+                      match α0 with
+                      | core.option.Option.Some _ =>
+                        let γ0 := γ.["Some.0"] in
+                        let* i := M.copy γ0 in
+                        let* addition : M.Val u32.t :=
+                          let* α0 : u32.t := M.read i in
+                          let* α1 : u32.t :=
+                            BinOp.Panic.rem α0 (Integer.of_Z 2) in
+                          let* α2 : M.Val bool.t :=
+                            M.alloc (BinOp.Pure.eq α1 (Integer.of_Z 1)) in
+                          let* α3 : M.Val u32.t :=
+                            match_operator
+                              α2
+                              [
+                                fun γ => (M.pure i) : M (M.Val u32.t);
+                                fun γ =>
+                                  (let* α0 : M.Val never.t := M.continue in
+                                  let* α1 := M.read α0 in
+                                  let* α2 : u32.t := never_to_any α1 in
+                                  M.alloc α2) :
+                                  M (M.Val u32.t)
+                              ] in
+                          M.copy α3 in
+                        let* _ : M.Val unit :=
+                          let β : M.Val u32.t := acc in
+                          let* α0 := M.read β in
+                          let* α1 : u32.t := M.read addition in
+                          let* α2 := BinOp.Panic.add α0 α1 in
+                          assign β α2 in
+                        M.alloc tt
+                      | _ => M.break_match
+                      end) :
+                      M (M.Val unit)
+                  ] in
+              M.alloc tt)) :
             M (M.Val unit)
         ] in
-    M.pure (use α2) in
+    M.pure (use α3) in
   M.read acc.

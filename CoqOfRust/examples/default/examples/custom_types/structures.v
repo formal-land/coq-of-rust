@@ -290,21 +290,18 @@ Definition main : M unit :=
       let* α12 : unit := M.call (std.io.stdio._print α11) in
       M.alloc α12 in
     M.alloc tt in
-  let* α0 : structures.Point.t := M.read point in
   let* α0 : M.Val unit :=
     match_operator
-      α0
+      point
       [
-        fun α =>
-          match α with
-          |
-              {|
-                structures.Point.x := left_edge;
-                structures.Point.y := top_edge;
-              |}
-              =>
-            let* left_edge := M.alloc left_edge in
-            let* top_edge := M.alloc top_edge in
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
+          | {| structures.Point.x := _; structures.Point.y := _; |} =>
+            let γ0 := γ.["Point.x"] in
+            let γ1 := γ.["Point.y"] in
+            let* left_edge := M.copy γ0 in
+            let* top_edge := M.copy γ1 in
             let* _rectangle : M.Val structures.Rectangle.t :=
               let* α0 : f32.t := M.read left_edge in
               let* α1 : f32.t := M.read top_edge in
@@ -350,15 +347,17 @@ Definition main : M unit :=
                 let* α12 : unit := M.call (std.io.stdio._print α11) in
                 M.alloc α12 in
               M.alloc tt in
-            let* α0 : structures.Pair.t := M.read pair in
             match_operator
-              α0
+              pair
               [
-                fun α =>
-                  match α with
-                  | structures.Pair.Build_t integer decimal =>
-                    let* integer := M.alloc integer in
-                    let* decimal := M.alloc decimal in
+                fun γ =>
+                  (let* α0 := M.read γ in
+                  match α0 with
+                  | structures.Pair.Build_t _ _ =>
+                    let γ0 := γ.["Pair.0"] in
+                    let γ1 := γ.["Pair.1"] in
+                    let* integer := M.copy γ0 in
+                    let* decimal := M.copy γ1 in
                     let* _ : M.Val unit :=
                       let* _ : M.Val unit :=
                         let* α0 : ref str.t :=
@@ -392,10 +391,10 @@ Definition main : M unit :=
                         M.alloc α12 in
                       M.alloc tt in
                     M.alloc tt
-                  end :
+                  end) :
                   M (M.Val unit)
               ]
-          end :
+          end) :
           M (M.Val unit)
       ] in
   M.read α0.

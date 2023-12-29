@@ -42,15 +42,16 @@ fn main() {
 Definition main : M unit :=
   let* temperature : M.Val match_guards.Temperature.t :=
     M.alloc (match_guards.Temperature.Celsius (Integer.of_Z 35)) in
-  let* α0 : match_guards.Temperature.t := M.read temperature in
   let* α0 : M.Val unit :=
     match_operator
-      α0
+      temperature
       [
-        fun α =>
-          match α with
-          | match_guards.Temperature.Celsius t =>
-            let* t := M.alloc t in
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
+          | match_guards.Temperature.Celsius _ =>
+            let γ0 := γ.["Celsius.0"] in
+            let* t := M.copy γ0 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "") in
               let* α1 : ref str.t := M.read (mk_str "C is above 30 Celsius
@@ -74,12 +75,14 @@ Definition main : M unit :=
               M.alloc α10 in
             M.alloc tt
           | _ => M.break_match
-          end :
+          end) :
           M (M.Val unit);
-        fun α =>
-          match α with
-          | match_guards.Temperature.Celsius t =>
-            let* t := M.alloc t in
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
+          | match_guards.Temperature.Celsius _ =>
+            let γ0 := γ.["Celsius.0"] in
+            let* t := M.copy γ0 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "") in
               let* α1 : ref str.t := M.read (mk_str "C is below 30 Celsius
@@ -103,12 +106,14 @@ Definition main : M unit :=
               M.alloc α10 in
             M.alloc tt
           | _ => M.break_match
-          end :
+          end) :
           M (M.Val unit);
-        fun α =>
-          match α with
-          | match_guards.Temperature.Fahrenheit t =>
-            let* t := M.alloc t in
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
+          | match_guards.Temperature.Fahrenheit _ =>
+            let γ0 := γ.["Fahrenheit.0"] in
+            let* t := M.copy γ0 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "") in
               let* α1 : ref str.t :=
@@ -133,12 +138,14 @@ Definition main : M unit :=
               M.alloc α10 in
             M.alloc tt
           | _ => M.break_match
-          end :
+          end) :
           M (M.Val unit);
-        fun α =>
-          match α with
-          | match_guards.Temperature.Fahrenheit t =>
-            let* t := M.alloc t in
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
+          | match_guards.Temperature.Fahrenheit _ =>
+            let γ0 := γ.["Fahrenheit.0"] in
+            let* t := M.copy γ0 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "") in
               let* α1 : ref str.t :=
@@ -163,7 +170,7 @@ Definition main : M unit :=
               M.alloc α10 in
             M.alloc tt
           | _ => M.break_match
-          end :
+          end) :
           M (M.Val unit)
       ] in
   M.read α0.

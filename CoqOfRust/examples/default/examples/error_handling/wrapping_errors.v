@@ -29,13 +29,16 @@ Section Impl_core_fmt_Debug_for_wrapping_errors_DoubleError_t.
       : M ltac:(core.fmt.Result) :=
     let* self := M.alloc self in
     let* f := M.alloc f in
-    let* α0 : ref wrapping_errors.DoubleError.t := M.read self in
-    let* α1 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=
+    let* α0 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=
       match_operator
-        α0
+        self
         [
-          fun α =>
-            match α with
+          fun γ =>
+            (let* γ :=
+              let* α0 := M.read γ in
+              M.alloc (deref α0) in
+            let* α0 := M.read γ in
+            match α0 with
             | wrapping_errors.DoubleError.EmptyVec =>
               let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
               let* α1 : ref str.t := M.read (mk_str "EmptyVec") in
@@ -43,12 +46,17 @@ Section Impl_core_fmt_Debug_for_wrapping_errors_DoubleError_t.
                 M.call (core.fmt.Formatter.t::["write_str"] α0 α1) in
               M.alloc α2
             | _ => M.break_match
-            end :
+            end) :
             M (M.Val (core.result.Result.t unit core.fmt.Error.t));
-          fun α =>
-            match α with
-            | wrapping_errors.DoubleError.Parse __self_0 =>
-              let* __self_0 := M.alloc __self_0 in
+          fun γ =>
+            (let* γ :=
+              let* α0 := M.read γ in
+              M.alloc (deref α0) in
+            let* α0 := M.read γ in
+            match α0 with
+            | wrapping_errors.DoubleError.Parse _ =>
+              let γ0 := γ.["Parse.0"] in
+              let* __self_0 := M.alloc (borrow_mut γ0) in
               let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
               let* α1 : ref str.t := M.read (mk_str "Parse") in
               let* α2 : M.Val (ref (ref core.num.error.ParseIntError.t)) :=
@@ -62,10 +70,10 @@ Section Impl_core_fmt_Debug_for_wrapping_errors_DoubleError_t.
                     α3) in
               M.alloc α4
             | _ => M.break_match
-            end :
+            end) :
             M (M.Val (core.result.Result.t unit core.fmt.Error.t))
         ] in
-    M.read α1.
+    M.read α0.
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
@@ -98,13 +106,13 @@ Section Impl_core_fmt_Display_for_wrapping_errors_DoubleError_t.
     let* self := M.alloc self in
     let* f := M.alloc f in
     let* α0 : ref wrapping_errors.DoubleError.t := M.read self in
-    let* α1 : wrapping_errors.DoubleError.t := M.read (deref α0) in
-    let* α2 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=
+    let* α1 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=
       match_operator
-        α1
+        (deref α0)
         [
-          fun α =>
-            match α with
+          fun γ =>
+            (let* α0 := M.read γ in
+            match α0 with
             | wrapping_errors.DoubleError.EmptyVec =>
               let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
               let* α1 : ref str.t :=
@@ -121,10 +129,11 @@ Section Impl_core_fmt_Display_for_wrapping_errors_DoubleError_t.
                 M.call (core.fmt.Formatter.t::["write_fmt"] α0 α5) in
               M.alloc α6
             | _ => M.break_match
-            end :
+            end) :
             M (M.Val (core.result.Result.t unit core.fmt.Error.t));
-          fun α =>
-            match α with
+          fun γ =>
+            (let* α0 := M.read γ in
+            match α0 with
             | wrapping_errors.DoubleError.Parse =>
               let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
               let* α1 : ref str.t :=
@@ -141,10 +150,10 @@ Section Impl_core_fmt_Display_for_wrapping_errors_DoubleError_t.
                 M.call (core.fmt.Formatter.t::["write_fmt"] α0 α5) in
               M.alloc α6
             | _ => M.break_match
-            end :
+            end) :
             M (M.Val (core.result.Result.t unit core.fmt.Error.t))
         ] in
-    M.read α2.
+    M.read α1.
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
@@ -176,32 +185,34 @@ Section Impl_core_error_Error_for_wrapping_errors_DoubleError_t.
       : M (core.option.Option.t (ref _ (* dyn *))) :=
     let* self := M.alloc self in
     let* α0 : ref wrapping_errors.DoubleError.t := M.read self in
-    let* α1 : wrapping_errors.DoubleError.t := M.read (deref α0) in
-    let* α2 : M.Val (core.option.Option.t (ref dynamic)) :=
+    let* α1 : M.Val (core.option.Option.t (ref dynamic)) :=
       match_operator
-        α1
+        (deref α0)
         [
-          fun α =>
-            match α with
+          fun γ =>
+            (let* α0 := M.read γ in
+            match α0 with
             | wrapping_errors.DoubleError.EmptyVec =>
               M.alloc core.option.Option.None
             | _ => M.break_match
-            end :
+            end) :
             M (M.Val (core.option.Option.t (ref dynamic)));
-          fun α =>
-            match α with
-            | wrapping_errors.DoubleError.Parse e =>
-              let* e := M.alloc e in
+          fun γ =>
+            (let* α0 := M.read γ in
+            match α0 with
+            | wrapping_errors.DoubleError.Parse _ =>
+              let γ0 := γ.["Parse.0"] in
+              let* e := M.alloc (borrow_mut γ0) in
               let* α0 : ref core.num.error.ParseIntError.t := M.read e in
               let* α1 : M.Val (ref core.num.error.ParseIntError.t) :=
                 M.alloc α0 in
               let* α2 : ref dynamic := M.read (pointer_coercion "Unsize" α1) in
               M.alloc (core.option.Option.Some α2)
             | _ => M.break_match
-            end :
+            end) :
             M (M.Val (core.option.Option.t (ref dynamic)))
         ] in
-    M.read α2.
+    M.read α1.
   
   Global Instance AssociatedFunction_source :
     Notations.DoubleColon Self "source" := {
@@ -293,14 +304,24 @@ Definition double_first
                   wrapping_errors.DoubleError.t)
               (Trait := ltac:(refine _)))
             α2) in
-      let* α4 : M.Val (ref (ref str.t)) :=
+      let* α4 :
+          M.Val
+            (core.ops.control_flow.ControlFlow.t
+              (core.result.Result.t
+                core.convert.Infallible.t
+                wrapping_errors.DoubleError.t)
+              (ref (ref str.t))) :=
+        M.alloc α3 in
+      let* α5 : M.Val (ref (ref str.t)) :=
         match_operator
-          α3
+          α4
           [
-            fun α =>
-              match α with
-              | core.ops.control_flow.ControlFlow.Break residual =>
-                let* residual := M.alloc residual in
+            fun γ =>
+              (let* α0 := M.read γ in
+              match α0 with
+              | core.ops.control_flow.ControlFlow.Break _ =>
+                let γ0 := γ.["Break.0"] in
+                let* residual := M.copy γ0 in
                 let* α0 :
                     core.result.Result.t
                       core.convert.Infallible.t
@@ -321,18 +342,20 @@ Definition double_first
                 let* α4 : ref (ref str.t) := never_to_any α3 in
                 M.alloc α4
               | _ => M.break_match
-              end :
+              end) :
               M (M.Val (ref (ref str.t)));
-            fun α =>
-              match α with
-              | core.ops.control_flow.ControlFlow.Continue val =>
-                let* val := M.alloc val in
+            fun γ =>
+              (let* α0 := M.read γ in
+              match α0 with
+              | core.ops.control_flow.ControlFlow.Continue _ =>
+                let γ0 := γ.["Continue.0"] in
+                let* val := M.copy γ0 in
                 M.pure val
               | _ => M.break_match
-              end :
+              end) :
               M (M.Val (ref (ref str.t)))
           ] in
-      M.copy α4 in
+      M.copy α5 in
     let* parsed : M.Val i32.t :=
       let* α0 : ref (ref str.t) := M.read first in
       let* α1 : ref str.t := M.read (deref α0) in
@@ -350,14 +373,24 @@ Definition double_first
                 core.result.Result.t i32.t core.num.error.ParseIntError.t)
               (Trait := ltac:(refine _)))
             α2) in
-      let* α4 : M.Val i32.t :=
+      let* α4 :
+          M.Val
+            (core.ops.control_flow.ControlFlow.t
+              (core.result.Result.t
+                core.convert.Infallible.t
+                core.num.error.ParseIntError.t)
+              i32.t) :=
+        M.alloc α3 in
+      let* α5 : M.Val i32.t :=
         match_operator
-          α3
+          α4
           [
-            fun α =>
-              match α with
-              | core.ops.control_flow.ControlFlow.Break residual =>
-                let* residual := M.alloc residual in
+            fun γ =>
+              (let* α0 := M.read γ in
+              match α0 with
+              | core.ops.control_flow.ControlFlow.Break _ =>
+                let γ0 := γ.["Break.0"] in
+                let* residual := M.copy γ0 in
                 let* α0 :
                     core.result.Result.t
                       core.convert.Infallible.t
@@ -378,18 +411,20 @@ Definition double_first
                 let* α4 : i32.t := never_to_any α3 in
                 M.alloc α4
               | _ => M.break_match
-              end :
+              end) :
               M (M.Val i32.t);
-            fun α =>
-              match α with
-              | core.ops.control_flow.ControlFlow.Continue val =>
-                let* val := M.alloc val in
+            fun γ =>
+              (let* α0 := M.read γ in
+              match α0 with
+              | core.ops.control_flow.ControlFlow.Continue _ =>
+                let γ0 := γ.["Continue.0"] in
+                let* val := M.copy γ0 in
                 M.pure val
               | _ => M.break_match
-              end :
+              end) :
               M (M.Val i32.t)
           ] in
-      M.copy α4 in
+      M.copy α5 in
     let* α0 : i32.t := M.read parsed in
     let* α1 : i32.t := BinOp.Panic.mul (Integer.of_Z 2) α0 in
     let* α0 :
@@ -412,16 +447,16 @@ fn print(result: Result<i32>) {
 *)
 Definition print (result : ltac:(wrapping_errors.Result i32.t)) : M unit :=
   let* result := M.alloc result in
-  let* α0 : core.result.Result.t i32.t wrapping_errors.DoubleError.t :=
-    M.read result in
-  let* α1 : M.Val unit :=
+  let* α0 : M.Val unit :=
     match_operator
-      α0
+      result
       [
-        fun α =>
-          match α with
-          | core.result.Result.Ok n =>
-            let* n := M.alloc n in
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
+          | core.result.Result.Ok _ =>
+            let γ0 := γ.["Ok.0"] in
+            let* n := M.copy γ0 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "The first doubled is ") in
               let* α1 : ref str.t := M.read (mk_str "
@@ -445,12 +480,14 @@ Definition print (result : ltac:(wrapping_errors.Result i32.t)) : M unit :=
               M.alloc α10 in
             M.alloc tt
           | _ => M.break_match
-          end :
+          end) :
           M (M.Val unit);
-        fun α =>
-          match α with
-          | core.result.Result.Err e =>
-            let* e := M.alloc e in
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
+          | core.result.Result.Err _ =>
+            let γ0 := γ.["Err.0"] in
+            let* e := M.copy γ0 in
             let* _ : M.Val unit :=
               let* _ : M.Val unit :=
                 let* α0 : ref str.t := M.read (mk_str "Error: ") in
@@ -515,10 +552,10 @@ Definition print (result : ltac:(wrapping_errors.Result i32.t)) : M unit :=
             else
               M.alloc tt
           | _ => M.break_match
-          end :
+          end) :
           M (M.Val unit)
       ] in
-  M.read α1.
+  M.read α0.
 
 (*
 fn main() {

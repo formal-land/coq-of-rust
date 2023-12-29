@@ -49,12 +49,14 @@ Definition try_division (dividend : i32.t) (divisor : i32.t) : M unit :=
   let* α1 : i32.t := M.read divisor in
   let* α2 : core.option.Option.t i32.t :=
     M.call (option.checked_division α0 α1) in
-  let* α3 : M.Val unit :=
+  let* α3 : M.Val (core.option.Option.t i32.t) := M.alloc α2 in
+  let* α4 : M.Val unit :=
     match_operator
-      α2
+      α3
       [
-        fun α =>
-          match α with
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
           | core.option.Option.None =>
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "") in
@@ -84,12 +86,14 @@ Definition try_division (dividend : i32.t) (divisor : i32.t) : M unit :=
               M.alloc α12 in
             M.alloc tt
           | _ => M.break_match
-          end :
+          end) :
           M (M.Val unit);
-        fun α =>
-          match α with
-          | core.option.Option.Some quotient =>
-            let* quotient := M.alloc quotient in
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
+          | core.option.Option.Some _ =>
+            let γ0 := γ.["Some.0"] in
+            let* quotient := M.copy γ0 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "") in
               let* α1 : ref str.t := M.read (mk_str " / ") in
@@ -123,10 +127,10 @@ Definition try_division (dividend : i32.t) (divisor : i32.t) : M unit :=
               M.alloc α14 in
             M.alloc tt
           | _ => M.break_match
-          end :
+          end) :
           M (M.Val unit)
       ] in
-  M.read α3.
+  M.read α4.
 
 (*
 fn main() {

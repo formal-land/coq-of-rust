@@ -164,14 +164,24 @@ Definition main : M unit :=
       M.alloc
         (core.result.Result.Ok
           (try_from_and_try_into.EvenNumber.Build_t (Integer.of_Z 8))) in
+    let* α3 :
+        M.Val
+          ((ref (core.result.Result.t try_from_and_try_into.EvenNumber.t unit))
+          *
+          (ref
+            (core.result.Result.t try_from_and_try_into.EvenNumber.t unit))) :=
+      M.alloc (borrow α1, borrow α2) in
     match_operator
-      (borrow α1, borrow α2)
+      α3
       [
-        fun α =>
-          match α with
-          | (left_val, right_val) =>
-            let* left_val := M.alloc left_val in
-            let* right_val := M.alloc right_val in
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
+          | (_, _) =>
+            let γ0 := γ.["(,)left"] in
+            let γ1 := γ.["(,)right"] in
+            let* left_val := M.copy γ0 in
+            let* right_val := M.copy γ1 in
             let* α0 :
                 ref
                   (core.result.Result.t
@@ -227,7 +237,7 @@ Definition main : M unit :=
               M.alloc α2
             else
               M.alloc tt
-          end :
+          end) :
           M (M.Val unit)
       ] in
   let* _ : M.Val unit :=
@@ -243,14 +253,24 @@ Definition main : M unit :=
     let* α2 :
         M.Val (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
       M.alloc (core.result.Result.Err tt) in
+    let* α3 :
+        M.Val
+          ((ref (core.result.Result.t try_from_and_try_into.EvenNumber.t unit))
+          *
+          (ref
+            (core.result.Result.t try_from_and_try_into.EvenNumber.t unit))) :=
+      M.alloc (borrow α1, borrow α2) in
     match_operator
-      (borrow α1, borrow α2)
+      α3
       [
-        fun α =>
-          match α with
-          | (left_val, right_val) =>
-            let* left_val := M.alloc left_val in
-            let* right_val := M.alloc right_val in
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
+          | (_, _) =>
+            let γ0 := γ.["(,)left"] in
+            let γ1 := γ.["(,)right"] in
+            let* left_val := M.copy γ0 in
+            let* right_val := M.copy γ1 in
             let* α0 :
                 ref
                   (core.result.Result.t
@@ -306,7 +326,7 @@ Definition main : M unit :=
               M.alloc α2
             else
               M.alloc tt
-          end :
+          end) :
           M (M.Val unit)
       ] in
   let* result :
@@ -324,14 +344,24 @@ Definition main : M unit :=
       M.alloc
         (core.result.Result.Ok
           (try_from_and_try_into.EvenNumber.Build_t (Integer.of_Z 8))) in
+    let* α1 :
+        M.Val
+          ((ref (core.result.Result.t try_from_and_try_into.EvenNumber.t unit))
+          *
+          (ref
+            (core.result.Result.t try_from_and_try_into.EvenNumber.t unit))) :=
+      M.alloc (borrow result, borrow α0) in
     match_operator
-      (borrow result, borrow α0)
+      α1
       [
-        fun α =>
-          match α with
-          | (left_val, right_val) =>
-            let* left_val := M.alloc left_val in
-            let* right_val := M.alloc right_val in
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
+          | (_, _) =>
+            let γ0 := γ.["(,)left"] in
+            let γ1 := γ.["(,)right"] in
+            let* left_val := M.copy γ0 in
+            let* right_val := M.copy γ1 in
             let* α0 :
                 ref
                   (core.result.Result.t
@@ -387,7 +417,7 @@ Definition main : M unit :=
               M.alloc α2
             else
               M.alloc tt
-          end :
+          end) :
           M (M.Val unit)
       ] in
   let* result :
@@ -403,14 +433,24 @@ Definition main : M unit :=
     let* α0 :
         M.Val (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
       M.alloc (core.result.Result.Err tt) in
+    let* α1 :
+        M.Val
+          ((ref (core.result.Result.t try_from_and_try_into.EvenNumber.t unit))
+          *
+          (ref
+            (core.result.Result.t try_from_and_try_into.EvenNumber.t unit))) :=
+      M.alloc (borrow result, borrow α0) in
     match_operator
-      (borrow result, borrow α0)
+      α1
       [
-        fun α =>
-          match α with
-          | (left_val, right_val) =>
-            let* left_val := M.alloc left_val in
-            let* right_val := M.alloc right_val in
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
+          | (_, _) =>
+            let γ0 := γ.["(,)left"] in
+            let γ1 := γ.["(,)right"] in
+            let* left_val := M.copy γ0 in
+            let* right_val := M.copy γ1 in
             let* α0 :
                 ref
                   (core.result.Result.t
@@ -466,7 +506,7 @@ Definition main : M unit :=
               M.alloc α2
             else
               M.alloc tt
-          end :
+          end) :
           M (M.Val unit)
       ] in
   let* α0 : M.Val unit := M.alloc tt in

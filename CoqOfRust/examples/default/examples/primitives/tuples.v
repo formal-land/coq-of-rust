@@ -11,23 +11,25 @@ fn reverse(pair: (i32, bool)) -> (bool, i32) {
 *)
 Definition reverse (pair : i32.t * bool.t) : M (bool.t * i32.t) :=
   let* pair := M.alloc pair in
-  let* α0 : i32.t * bool.t := M.read pair in
-  let* α1 : M.Val (bool.t * i32.t) :=
+  let* α0 : M.Val (bool.t * i32.t) :=
     match_operator
-      α0
+      pair
       [
-        fun α =>
-          match α with
-          | (int_param, bool_param) =>
-            let* int_param := M.alloc int_param in
-            let* bool_param := M.alloc bool_param in
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
+          | (_, _) =>
+            let γ0 := γ.["(,)left"] in
+            let γ1 := γ.["(,)right"] in
+            let* int_param := M.copy γ0 in
+            let* bool_param := M.copy γ1 in
             let* α0 : bool.t := M.read bool_param in
             let* α1 : i32.t := M.read int_param in
             M.alloc (α0, α1)
-          end :
+          end) :
           M (M.Val (bool.t * i32.t))
       ] in
-  M.read α1.
+  M.read α0.
 
 Module  Matrix.
 Section Matrix.
@@ -338,18 +340,22 @@ Definition main : M unit :=
     let* α0 : ref str.t := M.read (mk_str "hello") in
     let* α1 : f64.t := M.read UnsupportedLiteral in
     M.alloc (Integer.of_Z 1, α0, α1, true) in
-  let* α0 : ((i32.t * (ref str.t)) * f64.t) * bool.t := M.read tuple in
   let* α0 : M.Val unit :=
     match_operator
-      α0
+      tuple
       [
-        fun α =>
-          match α with
-          | (a, b, c, d) =>
-            let* a := M.alloc a in
-            let* b := M.alloc b in
-            let* c := M.alloc c in
-            let* d := M.alloc d in
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
+          | (_, _, _, _) =>
+            let γ0 := γ.["(,)left"].["(,)left"].["(,)left"] in
+            let γ1 := γ.["(,)left"].["(,)left"].["(,)right"] in
+            let γ2 := γ.["(,)left"].["(,)right"] in
+            let γ3 := γ.["(,)right"] in
+            let* a := M.copy γ0 in
+            let* b := M.copy γ1 in
+            let* c := M.copy γ2 in
+            let* d := M.copy γ3 in
             let* _ : M.Val unit :=
               let* _ : M.Val unit :=
                 let* α0 : ref str.t := M.read (mk_str "") in
@@ -414,7 +420,7 @@ Definition main : M unit :=
                 M.alloc α10 in
               M.alloc tt in
             M.alloc tt
-          end :
+          end) :
           M (M.Val unit)
       ] in
   M.read α0.

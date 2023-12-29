@@ -38,14 +38,19 @@ Module tests.
         M.call (unit_testing.add (Integer.of_Z 1) (Integer.of_Z 2)) in
       let* α1 : M.Val i32.t := M.alloc α0 in
       let* α2 : M.Val i32.t := M.alloc (Integer.of_Z 3) in
+      let* α3 : M.Val ((ref i32.t) * (ref i32.t)) :=
+        M.alloc (borrow α1, borrow α2) in
       match_operator
-        (borrow α1, borrow α2)
+        α3
         [
-          fun α =>
-            match α with
-            | (left_val, right_val) =>
-              let* left_val := M.alloc left_val in
-              let* right_val := M.alloc right_val in
+          fun γ =>
+            (let* α0 := M.read γ in
+            match α0 with
+            | (_, _) =>
+              let γ0 := γ.["(,)left"] in
+              let γ1 := γ.["(,)right"] in
+              let* left_val := M.copy γ0 in
+              let* right_val := M.copy γ1 in
               let* α0 : ref i32.t := M.read left_val in
               let* α1 : i32.t := M.read (deref α0) in
               let* α2 : ref i32.t := M.read right_val in
@@ -74,7 +79,7 @@ Module tests.
                 M.alloc α2
               else
                 M.alloc tt
-            end :
+            end) :
             M (M.Val unit)
         ] in
     let* α0 : M.Val unit := M.alloc tt in
@@ -93,14 +98,19 @@ Module tests.
         M.call (unit_testing.bad_add (Integer.of_Z 1) (Integer.of_Z 2)) in
       let* α1 : M.Val i32.t := M.alloc α0 in
       let* α2 : M.Val i32.t := M.alloc (Integer.of_Z 3) in
+      let* α3 : M.Val ((ref i32.t) * (ref i32.t)) :=
+        M.alloc (borrow α1, borrow α2) in
       match_operator
-        (borrow α1, borrow α2)
+        α3
         [
-          fun α =>
-            match α with
-            | (left_val, right_val) =>
-              let* left_val := M.alloc left_val in
-              let* right_val := M.alloc right_val in
+          fun γ =>
+            (let* α0 := M.read γ in
+            match α0 with
+            | (_, _) =>
+              let γ0 := γ.["(,)left"] in
+              let γ1 := γ.["(,)right"] in
+              let* left_val := M.copy γ0 in
+              let* right_val := M.copy γ1 in
               let* α0 : ref i32.t := M.read left_val in
               let* α1 : i32.t := M.read (deref α0) in
               let* α2 : ref i32.t := M.read right_val in
@@ -129,7 +139,7 @@ Module tests.
                 M.alloc α2
               else
                 M.alloc tt
-            end :
+            end) :
             M (M.Val unit)
         ] in
     let* α0 : M.Val unit := M.alloc tt in
@@ -147,14 +157,19 @@ Definition test_add : M unit :=
       M.call (unit_testing.add (Integer.of_Z 1) (Integer.of_Z 2)) in
     let* α1 : M.Val i32.t := M.alloc α0 in
     let* α2 : M.Val i32.t := M.alloc (Integer.of_Z 3) in
+    let* α3 : M.Val ((ref i32.t) * (ref i32.t)) :=
+      M.alloc (borrow α1, borrow α2) in
     match_operator
-      (borrow α1, borrow α2)
+      α3
       [
-        fun α =>
-          match α with
-          | (left_val, right_val) =>
-            let* left_val := M.alloc left_val in
-            let* right_val := M.alloc right_val in
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
+          | (_, _) =>
+            let γ0 := γ.["(,)left"] in
+            let γ1 := γ.["(,)right"] in
+            let* left_val := M.copy γ0 in
+            let* right_val := M.copy γ1 in
             let* α0 : ref i32.t := M.read left_val in
             let* α1 : i32.t := M.read (deref α0) in
             let* α2 : ref i32.t := M.read right_val in
@@ -183,7 +198,7 @@ Definition test_add : M unit :=
               M.alloc α2
             else
               M.alloc tt
-          end :
+          end) :
           M (M.Val unit)
       ] in
   let* α0 : M.Val unit := M.alloc tt in
@@ -202,14 +217,19 @@ Definition test_bad_add : M unit :=
       M.call (unit_testing.bad_add (Integer.of_Z 1) (Integer.of_Z 2)) in
     let* α1 : M.Val i32.t := M.alloc α0 in
     let* α2 : M.Val i32.t := M.alloc (Integer.of_Z 3) in
+    let* α3 : M.Val ((ref i32.t) * (ref i32.t)) :=
+      M.alloc (borrow α1, borrow α2) in
     match_operator
-      (borrow α1, borrow α2)
+      α3
       [
-        fun α =>
-          match α with
-          | (left_val, right_val) =>
-            let* left_val := M.alloc left_val in
-            let* right_val := M.alloc right_val in
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
+          | (_, _) =>
+            let γ0 := γ.["(,)left"] in
+            let γ1 := γ.["(,)right"] in
+            let* left_val := M.copy γ0 in
+            let* right_val := M.copy γ1 in
             let* α0 : ref i32.t := M.read left_val in
             let* α1 : i32.t := M.read (deref α0) in
             let* α2 : ref i32.t := M.read right_val in
@@ -238,7 +258,7 @@ Definition test_bad_add : M unit :=
               M.alloc α2
             else
               M.alloc tt
-          end :
+          end) :
           M (M.Val unit)
       ] in
   let* α0 : M.Val unit := M.alloc tt in

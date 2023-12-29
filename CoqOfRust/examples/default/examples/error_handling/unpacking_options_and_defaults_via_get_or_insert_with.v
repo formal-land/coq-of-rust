@@ -25,66 +25,83 @@ Section Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert
     let* self := M.alloc self in
     let* f := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
-    let* α1 :
-        ref unpacking_options_and_defaults_via_get_or_insert_with.Fruit.t :=
-      M.read self in
-    let* α2 : M.Val (ref str.t) :=
+    let* α1 : M.Val (ref str.t) :=
       match_operator
-        α1
+        self
         [
-          fun α =>
-            match α with
+          fun γ =>
+            (let* γ :=
+              let* α0 := M.read γ in
+              M.alloc (deref α0) in
+            let* α0 := M.read γ in
+            match α0 with
             |
                 unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Apple
                 =>
               let* α0 : ref str.t := M.read (mk_str "Apple") in
               M.alloc α0
             | _ => M.break_match
-            end :
+            end) :
             M (M.Val (ref str.t));
-          fun α =>
-            match α with
+          fun γ =>
+            (let* γ :=
+              let* α0 := M.read γ in
+              M.alloc (deref α0) in
+            let* α0 := M.read γ in
+            match α0 with
             |
                 unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Orange
                 =>
               let* α0 : ref str.t := M.read (mk_str "Orange") in
               M.alloc α0
             | _ => M.break_match
-            end :
+            end) :
             M (M.Val (ref str.t));
-          fun α =>
-            match α with
+          fun γ =>
+            (let* γ :=
+              let* α0 := M.read γ in
+              M.alloc (deref α0) in
+            let* α0 := M.read γ in
+            match α0 with
             |
                 unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Banana
                 =>
               let* α0 : ref str.t := M.read (mk_str "Banana") in
               M.alloc α0
             | _ => M.break_match
-            end :
+            end) :
             M (M.Val (ref str.t));
-          fun α =>
-            match α with
+          fun γ =>
+            (let* γ :=
+              let* α0 := M.read γ in
+              M.alloc (deref α0) in
+            let* α0 := M.read γ in
+            match α0 with
             |
                 unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Kiwi
                 =>
               let* α0 : ref str.t := M.read (mk_str "Kiwi") in
               M.alloc α0
             | _ => M.break_match
-            end :
+            end) :
             M (M.Val (ref str.t));
-          fun α =>
-            match α with
+          fun γ =>
+            (let* γ :=
+              let* α0 := M.read γ in
+              M.alloc (deref α0) in
+            let* α0 := M.read γ in
+            match α0 with
             |
                 unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Lemon
                 =>
               let* α0 : ref str.t := M.read (mk_str "Lemon") in
               M.alloc α0
             | _ => M.break_match
-            end :
+            end) :
             M (M.Val (ref str.t))
         ] in
-    let* α3 : ref str.t := M.read α2 in
-    M.call (core.fmt.Formatter.t::["write_str"] α0 α3).
+    let* α2 : ref str.t := M.read α1 in
+    M.call (core.fmt.Formatter.t::["write_str"] α0 α2).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;

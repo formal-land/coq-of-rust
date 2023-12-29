@@ -36,20 +36,18 @@ Section Impl_core_clone_Clone_for_scoping_rules_borrowing_the_ref_pattern_Point_
       (self : ref Self)
       : M scoping_rules_borrowing_the_ref_pattern.Point.t :=
     let* self := M.alloc self in
-    let* α0 : M.Val scoping_rules_borrowing_the_ref_pattern.Point.t :=
+    let* α0 : M.Val unit := M.alloc tt in
+    let* α1 : M.Val scoping_rules_borrowing_the_ref_pattern.Point.t :=
       match_operator
-        tt
+        α0
         [
-          fun α =>
-            match α with
-            | _ =>
-              let* α0 : ref scoping_rules_borrowing_the_ref_pattern.Point.t :=
-                M.read self in
-              M.pure (deref α0)
-            end :
+          fun γ =>
+            (let* α0 : ref scoping_rules_borrowing_the_ref_pattern.Point.t :=
+              M.read self in
+            M.pure (deref α0)) :
             M (M.Val scoping_rules_borrowing_the_ref_pattern.Point.t)
         ] in
-    M.read α0.
+    M.read α1.
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {
@@ -167,48 +165,51 @@ Definition main : M unit :=
         scoping_rules_borrowing_the_ref_pattern.Point.y := Integer.of_Z 0;
       |} in
   let* _copy_of_x : M.Val i32.t :=
-    let* α0 : scoping_rules_borrowing_the_ref_pattern.Point.t := M.read point in
-    let* α1 : M.Val i32.t :=
+    let* α0 : M.Val i32.t :=
       match_operator
-        α0
+        point
         [
-          fun α =>
-            match α with
+          fun γ =>
+            (let* α0 := M.read γ in
+            match α0 with
             |
                 {|
-                  scoping_rules_borrowing_the_ref_pattern.Point.x := ref_to_x;
+                  scoping_rules_borrowing_the_ref_pattern.Point.x := _;
                   scoping_rules_borrowing_the_ref_pattern.Point.y := _;
                 |}
                 =>
-              let* ref_to_x := M.alloc ref_to_x in
+              let γ0 := γ.["Point.x"] in
+              let γ1 := γ.["Point.y"] in
+              let* ref_to_x := M.alloc (borrow_mut γ0) in
               let* α0 : ref i32.t := M.read ref_to_x in
               M.pure (deref α0)
-            end :
+            end) :
             M (M.Val i32.t)
         ] in
-    M.copy α1 in
+    M.copy α0 in
   let* mutable_point : M.Val scoping_rules_borrowing_the_ref_pattern.Point.t :=
     M.copy point in
   let* _ : M.Val unit :=
-    let* α0 : scoping_rules_borrowing_the_ref_pattern.Point.t :=
-      M.read mutable_point in
     match_operator
-      α0
+      mutable_point
       [
-        fun α =>
-          match α with
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
           |
               {|
                 scoping_rules_borrowing_the_ref_pattern.Point.x := _;
-                scoping_rules_borrowing_the_ref_pattern.Point.y := mut_ref_to_y;
+                scoping_rules_borrowing_the_ref_pattern.Point.y := _;
               |}
               =>
-            let* mut_ref_to_y := M.alloc mut_ref_to_y in
+            let γ0 := γ.["Point.x"] in
+            let γ1 := γ.["Point.y"] in
+            let* mut_ref_to_y := M.alloc (borrow γ1) in
             let* _ : M.Val unit :=
               let* α0 : mut_ref i32.t := M.read mut_ref_to_y in
               assign (deref α0) (Integer.of_Z 1) in
             M.alloc tt
-          end :
+          end) :
           M (M.Val unit)
       ] in
   let* _ : M.Val unit :=
@@ -271,20 +272,21 @@ Definition main : M unit :=
           (Integer.of_Z 5)) in
     M.alloc (α0, Integer.of_Z 3) in
   let* _ : M.Val unit :=
-    let* α0 : (alloc.boxed.Box.t u32.t alloc.alloc.Global.t) * u32.t :=
-      M.read mutable_tuple in
     match_operator
-      α0
+      mutable_tuple
       [
-        fun α =>
-          match α with
-          | (_, last) =>
-            let* last := M.alloc last in
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
+          | (_, _) =>
+            let γ0 := γ.["(,)left"] in
+            let γ1 := γ.["(,)right"] in
+            let* last := M.alloc (borrow γ1) in
             let* _ : M.Val unit :=
               let* α0 : mut_ref u32.t := M.read last in
               assign (deref α0) (Integer.of_Z 2) in
             M.alloc tt
-          end :
+          end) :
           M (M.Val unit)
       ] in
   let* _ : M.Val unit :=

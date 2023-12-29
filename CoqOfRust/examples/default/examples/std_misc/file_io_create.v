@@ -44,14 +44,18 @@ Definition main : M unit :=
   let* file : M.Val std.fs.File.t :=
     let* α0 : core.result.Result.t std.fs.File.t std.io.error.Error.t :=
       M.call (std.fs.File.t::["create"] (borrow path)) in
-    let* α1 : M.Val std.fs.File.t :=
+    let* α1 : M.Val (core.result.Result.t std.fs.File.t std.io.error.Error.t) :=
+      M.alloc α0 in
+    let* α2 : M.Val std.fs.File.t :=
       match_operator
-        α0
+        α1
         [
-          fun α =>
-            match α with
-            | core.result.Result.Err why =>
-              let* why := M.alloc why in
+          fun γ =>
+            (let* α0 := M.read γ in
+            match α0 with
+            | core.result.Result.Err _ =>
+              let γ0 := γ.["Err.0"] in
+              let* why := M.copy γ0 in
               let* α0 : ref str.t := M.read (mk_str "couldn't create ") in
               let* α1 : ref str.t := M.read (mk_str ": ") in
               let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
@@ -76,18 +80,20 @@ Definition main : M unit :=
               let* α12 : std.fs.File.t := never_to_any α11 in
               M.alloc α12
             | _ => M.break_match
-            end :
+            end) :
             M (M.Val std.fs.File.t);
-          fun α =>
-            match α with
-            | core.result.Result.Ok file =>
-              let* file := M.alloc file in
+          fun γ =>
+            (let* α0 := M.read γ in
+            match α0 with
+            | core.result.Result.Ok _ =>
+              let γ0 := γ.["Ok.0"] in
+              let* file := M.copy γ0 in
               M.pure file
             | _ => M.break_match
-            end :
+            end) :
             M (M.Val std.fs.File.t)
         ] in
-    M.copy α1 in
+    M.copy α2 in
   let* α0 : ref (ref str.t) := M.read file_io_create.LOREM_IPSUM in
   let* α1 : ref str.t := M.read (deref α0) in
   let* α2 : ref (slice u8.t) := M.call (str.t::["as_bytes"] α1) in
@@ -98,14 +104,18 @@ Definition main : M unit :=
           (Trait := ltac:(refine _)))
         (borrow_mut file)
         α2) in
+  let* α4 : M.Val (core.result.Result.t unit std.io.error.Error.t) :=
+    M.alloc α3 in
   let* α0 : M.Val unit :=
     match_operator
-      α3
+      α4
       [
-        fun α =>
-          match α with
-          | core.result.Result.Err why =>
-            let* why := M.alloc why in
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
+          | core.result.Result.Err _ =>
+            let γ0 := γ.["Err.0"] in
+            let* why := M.copy γ0 in
             let* α0 : ref str.t := M.read (mk_str "couldn't write to ") in
             let* α1 : ref str.t := M.read (mk_str ": ") in
             let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
@@ -129,11 +139,13 @@ Definition main : M unit :=
             let* α12 : unit := never_to_any α11 in
             M.alloc α12
           | _ => M.break_match
-          end :
+          end) :
           M (M.Val unit);
-        fun α =>
-          match α with
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
           | core.result.Result.Ok _ =>
+            let γ0 := γ.["Ok.0"] in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "successfully wrote to ") in
               let* α1 : ref str.t := M.read (mk_str "
@@ -158,7 +170,7 @@ Definition main : M unit :=
               M.alloc α10 in
             M.alloc tt
           | _ => M.break_match
-          end :
+          end) :
           M (M.Val unit)
       ] in
   M.read α0.

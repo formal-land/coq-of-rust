@@ -20,14 +20,19 @@ Definition main : M unit :=
     M.alloc tt in
   let* _ : M.Val unit :=
     let* α0 : M.Val u64.t := M.alloc (Integer.of_Z 5) in
+    let* α1 : M.Val ((ref u64.t) * (ref u64.t)) :=
+      M.alloc (borrow x, borrow α0) in
     match_operator
-      (borrow x, borrow α0)
+      α1
       [
-        fun α =>
-          match α with
-          | (left_val, right_val) =>
-            let* left_val := M.alloc left_val in
-            let* right_val := M.alloc right_val in
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
+          | (_, _) =>
+            let γ0 := γ.["(,)left"] in
+            let γ1 := γ.["(,)right"] in
+            let* left_val := M.copy γ0 in
+            let* right_val := M.copy γ1 in
             let* α0 : ref u64.t := M.read left_val in
             let* α1 : u64.t := M.read (deref α0) in
             let* α2 : ref u64.t := M.read right_val in
@@ -56,7 +61,7 @@ Definition main : M unit :=
               M.alloc α2
             else
               M.alloc tt
-          end :
+          end) :
           M (M.Val unit)
       ] in
   let* α0 : M.Val unit := M.alloc tt in

@@ -48,26 +48,27 @@ Definition main : M unit :=
         scoping_rules_ownership_and_rules_partial_moves.main.Person.name := α1;
         scoping_rules_ownership_and_rules_partial_moves.main.Person.age := α2;
       |} in
-  let* α0 : scoping_rules_ownership_and_rules_partial_moves.main.Person.t :=
-    M.read person in
   let* α0 : M.Val unit :=
     match_operator
-      α0
+      person
       [
-        fun α =>
-          match α with
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
           |
               {|
                 scoping_rules_ownership_and_rules_partial_moves.main.Person.name
                   :=
-                  name;
+                  _;
                 scoping_rules_ownership_and_rules_partial_moves.main.Person.age
                   :=
-                  age;
+                  _;
               |}
               =>
-            let* name := M.alloc name in
-            let* age := M.alloc age in
+            let γ0 := γ.["Person.name"] in
+            let γ1 := γ.["Person.age"] in
+            let* name := M.copy γ0 in
+            let* age := M.alloc (borrow_mut γ1) in
             let* _ : M.Val unit :=
               let* _ : M.Val unit :=
                 let* α0 : ref str.t := M.read (mk_str "The person's age is ") in
@@ -144,7 +145,7 @@ Definition main : M unit :=
                 M.alloc α10 in
               M.alloc tt in
             M.alloc tt
-          end :
+          end) :
           M (M.Val unit)
       ] in
   M.read α0.

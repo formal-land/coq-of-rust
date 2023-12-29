@@ -52,57 +52,69 @@ Definition main : M unit :=
         match_destructuring_structs.Foo.x := (Integer.of_Z 1, Integer.of_Z 2);
         match_destructuring_structs.Foo.y := Integer.of_Z 3;
       |} in
-  let* α0 : match_destructuring_structs.Foo.t := M.read foo in
   let* α0 : M.Val unit :=
     match_operator
-      α0
+      foo
       [
-        fun α =>
-          match α with
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
           |
               {|
-                match_destructuring_structs.Foo.x := (_, b);
-                match_destructuring_structs.Foo.y := y;
+                match_destructuring_structs.Foo.x := _;
+                match_destructuring_structs.Foo.y := _;
               |}
               =>
-            let* b := M.alloc b in
-            let* y := M.alloc y in
-            let* _ : M.Val unit :=
-              let* α0 : ref str.t := M.read (mk_str "First of x is 1, b = ") in
-              let* α1 : ref str.t := M.read (mk_str ",  y = ") in
-              let* α2 : ref str.t := M.read (mk_str " 
+            let γ0 := γ.["Foo.x"] in
+            let γ1 := γ.["Foo.y"] in
+            let* α0 := M.read γ0 in
+            match α0 with
+            | (_, _) =>
+              let γ0 := γ0.["(,)left"] in
+              let γ1 := γ0.["(,)right"] in
+              let* b := M.copy γ1 in
+              let* y := M.copy γ1 in
+              let* _ : M.Val unit :=
+                let* α0 : ref str.t :=
+                  M.read (mk_str "First of x is 1, b = ") in
+                let* α1 : ref str.t := M.read (mk_str ",  y = ") in
+                let* α2 : ref str.t := M.read (mk_str " 
 ") in
-              let* α3 : M.Val (array (ref str.t)) := M.alloc [ α0; α1; α2 ] in
-              let* α4 : M.Val (ref (array (ref str.t))) :=
-                M.alloc (borrow α3) in
-              let* α5 : ref (slice (ref str.t)) :=
-                M.read (pointer_coercion "Unsize" α4) in
-              let* α6 : core.fmt.rt.Argument.t :=
-                M.call (core.fmt.rt.Argument.t::["new_display"] (borrow b)) in
-              let* α7 : core.fmt.rt.Argument.t :=
-                M.call (core.fmt.rt.Argument.t::["new_display"] (borrow y)) in
-              let* α8 : M.Val (array core.fmt.rt.Argument.t) :=
-                M.alloc [ α6; α7 ] in
-              let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-                M.alloc (borrow α8) in
-              let* α10 : ref (slice core.fmt.rt.Argument.t) :=
-                M.read (pointer_coercion "Unsize" α9) in
-              let* α11 : core.fmt.Arguments.t :=
-                M.call (core.fmt.Arguments.t::["new_v1"] α5 α10) in
-              let* α12 : unit := M.call (std.io.stdio._print α11) in
-              M.alloc α12 in
-            M.alloc tt
-          end :
+                let* α3 : M.Val (array (ref str.t)) := M.alloc [ α0; α1; α2 ] in
+                let* α4 : M.Val (ref (array (ref str.t))) :=
+                  M.alloc (borrow α3) in
+                let* α5 : ref (slice (ref str.t)) :=
+                  M.read (pointer_coercion "Unsize" α4) in
+                let* α6 : core.fmt.rt.Argument.t :=
+                  M.call (core.fmt.rt.Argument.t::["new_display"] (borrow b)) in
+                let* α7 : core.fmt.rt.Argument.t :=
+                  M.call (core.fmt.rt.Argument.t::["new_display"] (borrow y)) in
+                let* α8 : M.Val (array core.fmt.rt.Argument.t) :=
+                  M.alloc [ α6; α7 ] in
+                let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+                  M.alloc (borrow α8) in
+                let* α10 : ref (slice core.fmt.rt.Argument.t) :=
+                  M.read (pointer_coercion "Unsize" α9) in
+                let* α11 : core.fmt.Arguments.t :=
+                  M.call (core.fmt.Arguments.t::["new_v1"] α5 α10) in
+                let* α12 : unit := M.call (std.io.stdio._print α11) in
+                M.alloc α12 in
+              M.alloc tt
+            end
+          end) :
           M (M.Val unit);
-        fun α =>
-          match α with
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
           |
               {|
                 match_destructuring_structs.Foo.y := _;
-                match_destructuring_structs.Foo.x := i;
+                match_destructuring_structs.Foo.x := _;
               |}
               =>
-            let* i := M.alloc i in
+            let γ0 := γ.["Foo.y"] in
+            let γ1 := γ.["Foo.x"] in
+            let* i := M.copy γ1 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "y is 2, i = ") in
               let* α1 : ref str.t := M.read (mk_str "
@@ -125,12 +137,14 @@ Definition main : M unit :=
               let* α10 : unit := M.call (std.io.stdio._print α9) in
               M.alloc α10 in
             M.alloc tt
-          end :
+          end) :
           M (M.Val unit);
-        fun α =>
-          match α with
-          | {| match_destructuring_structs.Foo.y := y; |} =>
-            let* y := M.alloc y in
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
+          | {| match_destructuring_structs.Foo.y := _; |} =>
+            let γ0 := γ.["Foo.y"] in
+            let* y := M.copy γ0 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "y = ") in
               let* α1 : ref str.t :=
@@ -154,7 +168,7 @@ Definition main : M unit :=
               let* α10 : unit := M.call (std.io.stdio._print α9) in
               M.alloc α10 in
             M.alloc tt
-          end :
+          end) :
           M (M.Val unit)
       ] in
   M.read α0.

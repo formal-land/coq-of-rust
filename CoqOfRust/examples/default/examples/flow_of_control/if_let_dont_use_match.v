@@ -23,14 +23,15 @@ Definition main : M unit :=
   let* optional : M.Val (core.option.Option.t i32.t) :=
     M.alloc (core.option.Option.Some (Integer.of_Z 7)) in
   let* _ : M.Val unit :=
-    let* α0 : core.option.Option.t i32.t := M.read optional in
     match_operator
-      α0
+      optional
       [
-        fun α =>
-          match α with
-          | core.option.Option.Some i =>
-            let* i := M.alloc i in
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
+          | core.option.Option.Some _ =>
+            let γ0 := γ.["Some.0"] in
+            let* i := M.copy γ0 in
             let* _ : M.Val unit :=
               let* _ : M.Val unit :=
                 let* α0 : ref str.t :=
@@ -57,13 +58,9 @@ Definition main : M unit :=
               M.alloc tt in
             M.alloc tt
           | _ => M.break_match
-          end :
+          end) :
           M (M.Val unit);
-        fun α =>
-          match α with
-          | _ => M.alloc tt
-          end :
-          M (M.Val unit)
+        fun γ => (M.alloc tt) : M (M.Val unit)
       ] in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.

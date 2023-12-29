@@ -34,14 +34,15 @@ Definition main : M unit :=
     M.alloc (core.option.Option.Some (Integer.of_Z 0)) in
   let* α0 : M.Val unit :=
     M.loop
-      (let* α0 : core.option.Option.t i32.t := M.read optional in
-      match_operator
-        α0
+      (match_operator
+        optional
         [
-          fun α =>
-            match α with
-            | core.option.Option.Some i =>
-              let* i := M.alloc i in
+          fun γ =>
+            (let* α0 := M.read γ in
+            match α0 with
+            | core.option.Option.Some _ =>
+              let γ0 := γ.["Some.0"] in
+              let* i := M.copy γ0 in
               let* α0 : i32.t := M.read i in
               let* α1 : M.Val bool.t :=
                 M.alloc (BinOp.Pure.gt α0 (Integer.of_Z 9)) in
@@ -96,17 +97,14 @@ Definition main : M unit :=
                   assign optional (core.option.Option.Some α1) in
                 M.alloc tt
             | _ => M.break_match
-            end :
+            end) :
             M (M.Val unit);
-          fun α =>
-            match α with
-            | _ =>
-              let* _ : M.Val never.t := M.break in
-              let* α0 : M.Val unit := M.alloc tt in
-              let* α1 := M.read α0 in
-              let* α2 : unit := never_to_any α1 in
-              M.alloc α2
-            end :
+          fun γ =>
+            (let* _ : M.Val never.t := M.break in
+            let* α0 : M.Val unit := M.alloc tt in
+            let* α1 := M.read α0 in
+            let* α2 : unit := never_to_any α1 in
+            M.alloc α2) :
             M (M.Val unit)
         ]) in
   M.read α0.

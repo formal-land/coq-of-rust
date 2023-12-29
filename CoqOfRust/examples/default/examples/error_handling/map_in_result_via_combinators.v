@@ -23,38 +23,34 @@ Definition multiply
     ((core.result.Result.t i32.t core.num.error.ParseIntError.t)::["and_then"]
       α1
       (fun (α0 : i32.t) =>
-        (match_operator
+        (let* α0 := M.alloc α0 in
+        match_operator
           α0
           [
-            fun α =>
-              match α with
-              | first_number =>
-                let* first_number := M.alloc first_number in
-                let* α0 : ref str.t := M.read second_number_str in
-                let* α1 :
-                    core.result.Result.t i32.t core.num.error.ParseIntError.t :=
-                  M.call (str.t::["parse"] α0) in
-                M.call
-                  ((core.result.Result.t
-                        i32.t
-                        core.num.error.ParseIntError.t)::["map"]
-                    α1
-                    (fun (α0 : i32.t) =>
-                      (match_operator
-                        α0
-                        [
-                          fun α =>
-                            match α with
-                            | second_number =>
-                              let* second_number := M.alloc second_number in
-                              let* α0 : i32.t := M.read first_number in
-                              let* α1 : i32.t := M.read second_number in
-                              BinOp.Panic.mul α0 α1
-                            end :
-                            M i32.t
-                        ]) :
-                      M i32.t))
-              end :
+            fun γ =>
+              (let* first_number := M.copy γ in
+              let* α0 : ref str.t := M.read second_number_str in
+              let* α1 :
+                  core.result.Result.t i32.t core.num.error.ParseIntError.t :=
+                M.call (str.t::["parse"] α0) in
+              M.call
+                ((core.result.Result.t
+                      i32.t
+                      core.num.error.ParseIntError.t)::["map"]
+                  α1
+                  (fun (α0 : i32.t) =>
+                    (let* α0 := M.alloc α0 in
+                    match_operator
+                      α0
+                      [
+                        fun γ =>
+                          (let* second_number := M.copy γ in
+                          let* α0 : i32.t := M.read first_number in
+                          let* α1 : i32.t := M.read second_number in
+                          BinOp.Panic.mul α0 α1) :
+                          M i32.t
+                      ]) :
+                    M i32.t))) :
               M (core.result.Result.t i32.t core.num.error.ParseIntError.t)
           ]) :
         M (core.result.Result.t i32.t core.num.error.ParseIntError.t))).
@@ -71,16 +67,16 @@ Definition print
     (result : core.result.Result.t i32.t core.num.error.ParseIntError.t)
     : M unit :=
   let* result := M.alloc result in
-  let* α0 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
-    M.read result in
-  let* α1 : M.Val unit :=
+  let* α0 : M.Val unit :=
     match_operator
-      α0
+      result
       [
-        fun α =>
-          match α with
-          | core.result.Result.Ok n =>
-            let* n := M.alloc n in
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
+          | core.result.Result.Ok _ =>
+            let γ0 := γ.["Ok.0"] in
+            let* n := M.copy γ0 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "n is ") in
               let* α1 : ref str.t := M.read (mk_str "
@@ -104,12 +100,14 @@ Definition print
               M.alloc α10 in
             M.alloc tt
           | _ => M.break_match
-          end :
+          end) :
           M (M.Val unit);
-        fun α =>
-          match α with
-          | core.result.Result.Err e =>
-            let* e := M.alloc e in
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
+          | core.result.Result.Err _ =>
+            let γ0 := γ.["Err.0"] in
+            let* e := M.copy γ0 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "Error: ") in
               let* α1 : ref str.t := M.read (mk_str "
@@ -133,10 +131,10 @@ Definition print
               M.alloc α10 in
             M.alloc tt
           | _ => M.break_match
-          end :
+          end) :
           M (M.Val unit)
       ] in
-  M.read α1.
+  M.read α0.
 
 (*
 fn main() {

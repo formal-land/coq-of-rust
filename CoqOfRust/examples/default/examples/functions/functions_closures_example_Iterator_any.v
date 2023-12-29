@@ -75,16 +75,17 @@ Definition main : M unit :=
               (Trait := ltac:(refine _)))
             (borrow_mut α7)
             (fun (α0 : ref i32.t) =>
-              (match_operator
+              (let* α0 := M.alloc α0 in
+              match_operator
                 α0
                 [
-                  fun α =>
-                    match α with
-                    | x =>
-                      let* x := M.alloc x in
-                      let* α0 : i32.t := M.read x in
-                      M.pure (BinOp.Pure.eq α0 (Integer.of_Z 2))
-                    end :
+                  fun γ =>
+                    (let* γ :=
+                      let* α0 := M.read γ in
+                      M.alloc (deref α0) in
+                    let* x := M.copy γ in
+                    let* α0 : i32.t := M.read x in
+                    M.pure (BinOp.Pure.eq α0 (Integer.of_Z 2))) :
                     M bool.t
                 ]) :
               M bool.t)) in
@@ -128,16 +129,14 @@ Definition main : M unit :=
               (Trait := ltac:(refine _)))
             (borrow_mut α7)
             (fun (α0 : i32.t) =>
-              (match_operator
+              (let* α0 := M.alloc α0 in
+              match_operator
                 α0
                 [
-                  fun α =>
-                    match α with
-                    | x =>
-                      let* x := M.alloc x in
-                      let* α0 : i32.t := M.read x in
-                      M.pure (BinOp.Pure.eq α0 (Integer.of_Z 2))
-                    end :
+                  fun γ =>
+                    (let* x := M.copy γ in
+                    let* α0 : i32.t := M.read x in
+                    M.pure (BinOp.Pure.eq α0 (Integer.of_Z 2))) :
                     M bool.t
                 ]) :
               M bool.t)) in
@@ -233,16 +232,17 @@ Definition main : M unit :=
               (Trait := ltac:(refine _)))
             (borrow_mut α8)
             (fun (α0 : ref i32.t) =>
-              (match_operator
+              (let* α0 := M.alloc α0 in
+              match_operator
                 α0
                 [
-                  fun α =>
-                    match α with
-                    | x =>
-                      let* x := M.alloc x in
-                      let* α0 : i32.t := M.read x in
-                      M.pure (BinOp.Pure.eq α0 (Integer.of_Z 2))
-                    end :
+                  fun γ =>
+                    (let* γ :=
+                      let* α0 := M.read γ in
+                      M.alloc (deref α0) in
+                    let* x := M.copy γ in
+                    let* α0 : i32.t := M.read x in
+                    M.pure (BinOp.Pure.eq α0 (Integer.of_Z 2))) :
                     M bool.t
                 ]) :
               M bool.t)) in
@@ -282,17 +282,15 @@ Definition main : M unit :=
               (Trait := ltac:(refine _)))
             (borrow_mut α6)
             (fun (α0 : ref i32.t) =>
-              (match_operator
+              (let* α0 := M.alloc α0 in
+              match_operator
                 α0
                 [
-                  fun α =>
-                    match α with
-                    | x =>
-                      let* x := M.alloc x in
-                      let* α0 : ref i32.t := M.read x in
-                      let* α1 : i32.t := M.read (deref α0) in
-                      M.pure (BinOp.Pure.eq α1 (Integer.of_Z 2))
-                    end :
+                  fun γ =>
+                    (let* x := M.copy γ in
+                    let* α0 : ref i32.t := M.read x in
+                    let* α1 : i32.t := M.read (deref α0) in
+                    M.pure (BinOp.Pure.eq α1 (Integer.of_Z 2))) :
                     M bool.t
                 ]) :
               M bool.t)) in

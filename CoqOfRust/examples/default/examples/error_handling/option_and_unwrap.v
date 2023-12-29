@@ -13,14 +13,15 @@ fn give_adult(drink: Option<&str>) {
 *)
 Definition give_adult (drink : core.option.Option.t (ref str.t)) : M unit :=
   let* drink := M.alloc drink in
-  let* α0 : core.option.Option.t (ref str.t) := M.read drink in
-  let* α1 : M.Val unit :=
+  let* α0 : M.Val unit :=
     match_operator
-      α0
+      drink
       [
-        fun α =>
-          match α with
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
           | core.option.Option.Some _ =>
+            let γ0 := γ.["Some.0"] in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "Yuck! Too sugary.
 ") in
@@ -35,12 +36,14 @@ Definition give_adult (drink : core.option.Option.t (ref str.t)) : M unit :=
               M.alloc α5 in
             M.alloc tt
           | _ => M.break_match
-          end :
+          end) :
           M (M.Val unit);
-        fun α =>
-          match α with
-          | core.option.Option.Some inner =>
-            let* inner := M.alloc inner in
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
+          | core.option.Option.Some _ =>
+            let γ0 := γ.["Some.0"] in
+            let* inner := M.copy γ0 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "") in
               let* α1 : ref str.t := M.read (mk_str "? How nice.
@@ -65,10 +68,11 @@ Definition give_adult (drink : core.option.Option.t (ref str.t)) : M unit :=
               M.alloc α10 in
             M.alloc tt
           | _ => M.break_match
-          end :
+          end) :
           M (M.Val unit);
-        fun α =>
-          match α with
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
           | core.option.Option.None =>
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "No drink? Oh well.
@@ -84,10 +88,10 @@ Definition give_adult (drink : core.option.Option.t (ref str.t)) : M unit :=
               M.alloc α5 in
             M.alloc tt
           | _ => M.break_match
-          end :
+          end) :
           M (M.Val unit)
       ] in
-  M.read α1.
+  M.read α0.
 
 (*
 fn drink(drink: Option<&str>) {

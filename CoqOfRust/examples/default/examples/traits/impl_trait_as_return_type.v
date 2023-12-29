@@ -154,14 +154,23 @@ Definition main : M unit :=
             (Trait := ltac:(refine _)))
           (borrow_mut v3)) in
     let* α2 : M.Val (core.option.Option.t i32.t) := M.alloc α1 in
+    let* α3 :
+        M.Val
+          ((ref (core.option.Option.t i32.t))
+          *
+          (ref (core.option.Option.t i32.t))) :=
+      M.alloc (borrow α0, borrow α2) in
     match_operator
-      (borrow α0, borrow α2)
+      α3
       [
-        fun α =>
-          match α with
-          | (left_val, right_val) =>
-            let* left_val := M.alloc left_val in
-            let* right_val := M.alloc right_val in
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
+          | (_, _) =>
+            let γ0 := γ.["(,)left"] in
+            let γ1 := γ.["(,)right"] in
+            let* left_val := M.copy γ0 in
+            let* right_val := M.copy γ1 in
             let* α0 : ref (core.option.Option.t i32.t) := M.read left_val in
             let* α1 : ref (core.option.Option.t i32.t) := M.read right_val in
             let* α2 : bool.t :=
@@ -195,7 +204,7 @@ Definition main : M unit :=
               M.alloc α2
             else
               M.alloc tt
-          end :
+          end) :
           M (M.Val unit)
       ] in
   let* _ : M.Val unit :=
@@ -208,14 +217,23 @@ Definition main : M unit :=
             (Trait := ltac:(refine _)))
           (borrow_mut v3)) in
     let* α2 : M.Val (core.option.Option.t i32.t) := M.alloc α1 in
+    let* α3 :
+        M.Val
+          ((ref (core.option.Option.t i32.t))
+          *
+          (ref (core.option.Option.t i32.t))) :=
+      M.alloc (borrow α0, borrow α2) in
     match_operator
-      (borrow α0, borrow α2)
+      α3
       [
-        fun α =>
-          match α with
-          | (left_val, right_val) =>
-            let* left_val := M.alloc left_val in
-            let* right_val := M.alloc right_val in
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
+          | (_, _) =>
+            let γ0 := γ.["(,)left"] in
+            let γ1 := γ.["(,)right"] in
+            let* left_val := M.copy γ0 in
+            let* right_val := M.copy γ1 in
             let* α0 : ref (core.option.Option.t i32.t) := M.read left_val in
             let* α1 : ref (core.option.Option.t i32.t) := M.read right_val in
             let* α2 : bool.t :=
@@ -249,7 +267,7 @@ Definition main : M unit :=
               M.alloc α2
             else
               M.alloc tt
-          end :
+          end) :
           M (M.Val unit)
       ] in
   let* _ : M.Val unit :=
@@ -262,14 +280,23 @@ Definition main : M unit :=
             (Trait := ltac:(refine _)))
           (borrow_mut v3)) in
     let* α2 : M.Val (core.option.Option.t i32.t) := M.alloc α1 in
+    let* α3 :
+        M.Val
+          ((ref (core.option.Option.t i32.t))
+          *
+          (ref (core.option.Option.t i32.t))) :=
+      M.alloc (borrow α0, borrow α2) in
     match_operator
-      (borrow α0, borrow α2)
+      α3
       [
-        fun α =>
-          match α with
-          | (left_val, right_val) =>
-            let* left_val := M.alloc left_val in
-            let* right_val := M.alloc right_val in
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
+          | (_, _) =>
+            let γ0 := γ.["(,)left"] in
+            let γ1 := γ.["(,)right"] in
+            let* left_val := M.copy γ0 in
+            let* right_val := M.copy γ1 in
             let* α0 : ref (core.option.Option.t i32.t) := M.read left_val in
             let* α1 : ref (core.option.Option.t i32.t) := M.read right_val in
             let* α2 : bool.t :=
@@ -303,7 +330,7 @@ Definition main : M unit :=
               M.alloc α2
             else
               M.alloc tt
-          end :
+          end) :
           M (M.Val unit)
       ] in
   let* _ : M.Val unit :=
@@ -316,14 +343,23 @@ Definition main : M unit :=
             (Trait := ltac:(refine _)))
           (borrow_mut v3)) in
     let* α2 : M.Val (core.option.Option.t i32.t) := M.alloc α1 in
+    let* α3 :
+        M.Val
+          ((ref (core.option.Option.t i32.t))
+          *
+          (ref (core.option.Option.t i32.t))) :=
+      M.alloc (borrow α0, borrow α2) in
     match_operator
-      (borrow α0, borrow α2)
+      α3
       [
-        fun α =>
-          match α with
-          | (left_val, right_val) =>
-            let* left_val := M.alloc left_val in
-            let* right_val := M.alloc right_val in
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
+          | (_, _) =>
+            let γ0 := γ.["(,)left"] in
+            let γ1 := γ.["(,)right"] in
+            let* left_val := M.copy γ0 in
+            let* right_val := M.copy γ1 in
             let* α0 : ref (core.option.Option.t i32.t) := M.read left_val in
             let* α1 : ref (core.option.Option.t i32.t) := M.read right_val in
             let* α2 : bool.t :=
@@ -357,7 +393,7 @@ Definition main : M unit :=
               M.alloc α2
             else
               M.alloc tt
-          end :
+          end) :
           M (M.Val unit)
       ] in
   let* _ : M.Val unit :=
@@ -370,14 +406,23 @@ Definition main : M unit :=
             (Trait := ltac:(refine _)))
           (borrow_mut v3)) in
     let* α2 : M.Val (core.option.Option.t i32.t) := M.alloc α1 in
+    let* α3 :
+        M.Val
+          ((ref (core.option.Option.t i32.t))
+          *
+          (ref (core.option.Option.t i32.t))) :=
+      M.alloc (borrow α0, borrow α2) in
     match_operator
-      (borrow α0, borrow α2)
+      α3
       [
-        fun α =>
-          match α with
-          | (left_val, right_val) =>
-            let* left_val := M.alloc left_val in
-            let* right_val := M.alloc right_val in
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
+          | (_, _) =>
+            let γ0 := γ.["(,)left"] in
+            let γ1 := γ.["(,)right"] in
+            let* left_val := M.copy γ0 in
+            let* right_val := M.copy γ1 in
             let* α0 : ref (core.option.Option.t i32.t) := M.read left_val in
             let* α1 : ref (core.option.Option.t i32.t) := M.read right_val in
             let* α2 : bool.t :=
@@ -411,7 +456,7 @@ Definition main : M unit :=
               M.alloc α2
             else
               M.alloc tt
-          end :
+          end) :
           M (M.Val unit)
       ] in
   let* _ : M.Val unit :=

@@ -55,14 +55,19 @@ Definition main : M unit :=
       M.call (std.process.Command.t::["stdout"] α4 α5) in
     let* α7 : core.result.Result.t std.process.Child.t std.io.error.Error.t :=
       M.call (std.process.Command.t::["spawn"] α6) in
-    let* α8 : M.Val std.process.Child.t :=
+    let* α8 :
+        M.Val (core.result.Result.t std.process.Child.t std.io.error.Error.t) :=
+      M.alloc α7 in
+    let* α9 : M.Val std.process.Child.t :=
       match_operator
-        α7
+        α8
         [
-          fun α =>
-            match α with
-            | core.result.Result.Err why =>
-              let* why := M.alloc why in
+          fun γ =>
+            (let* α0 := M.read γ in
+            match α0 with
+            | core.result.Result.Err _ =>
+              let γ0 := γ.["Err.0"] in
+              let* why := M.copy γ0 in
               let* α0 : ref str.t := M.read (mk_str "couldn't spawn wc: ") in
               let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
               let* α2 : M.Val (ref (array (ref str.t))) :=
@@ -83,18 +88,20 @@ Definition main : M unit :=
               let* α10 : std.process.Child.t := never_to_any α9 in
               M.alloc α10
             | _ => M.break_match
-            end :
+            end) :
             M (M.Val std.process.Child.t);
-          fun α =>
-            match α with
-            | core.result.Result.Ok process =>
-              let* process := M.alloc process in
+          fun γ =>
+            (let* α0 := M.read γ in
+            match α0 with
+            | core.result.Result.Ok _ =>
+              let γ0 := γ.["Ok.0"] in
+              let* process := M.copy γ0 in
               M.pure process
             | _ => M.break_match
-            end :
+            end) :
             M (M.Val std.process.Child.t)
         ] in
-    M.copy α8 in
+    M.copy α9 in
   let* _ : M.Val unit :=
     let* α0 : core.option.Option.t std.process.ChildStdin.t :=
       M.read process.["stdin"] in
@@ -111,13 +118,17 @@ Definition main : M unit :=
             (Trait := ltac:(refine _)))
           (borrow_mut α2)
           α5) in
+    let* α7 : M.Val (core.result.Result.t unit std.io.error.Error.t) :=
+      M.alloc α6 in
     match_operator
-      α6
+      α7
       [
-        fun α =>
-          match α with
-          | core.result.Result.Err why =>
-            let* why := M.alloc why in
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
+          | core.result.Result.Err _ =>
+            let γ0 := γ.["Err.0"] in
+            let* why := M.copy γ0 in
             let* α0 : ref str.t :=
               M.read (mk_str "couldn't write to wc stdin: ") in
             let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
@@ -137,11 +148,13 @@ Definition main : M unit :=
             let* α10 : unit := never_to_any α9 in
             M.alloc α10
           | _ => M.break_match
-          end :
+          end) :
           M (M.Val unit);
-        fun α =>
-          match α with
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
           | core.result.Result.Ok _ =>
+            let γ0 := γ.["Ok.0"] in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "sent pangram to wc
 ") in
@@ -156,7 +169,7 @@ Definition main : M unit :=
               M.alloc α5 in
             M.alloc tt
           | _ => M.break_match
-          end :
+          end) :
           M (M.Val unit)
       ] in
   let* s : M.Val alloc.string.String.t :=
@@ -174,14 +187,18 @@ Definition main : M unit :=
           (Trait := ltac:(refine _)))
         (borrow_mut α2)
         (borrow_mut s)) in
+  let* α4 : M.Val (core.result.Result.t usize.t std.io.error.Error.t) :=
+    M.alloc α3 in
   let* α0 : M.Val unit :=
     match_operator
-      α3
+      α4
       [
-        fun α =>
-          match α with
-          | core.result.Result.Err why =>
-            let* why := M.alloc why in
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
+          | core.result.Result.Err _ =>
+            let γ0 := γ.["Err.0"] in
+            let* why := M.copy γ0 in
             let* α0 : ref str.t :=
               M.read (mk_str "couldn't read wc stdout: ") in
             let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
@@ -201,11 +218,13 @@ Definition main : M unit :=
             let* α10 : unit := never_to_any α9 in
             M.alloc α10
           | _ => M.break_match
-          end :
+          end) :
           M (M.Val unit);
-        fun α =>
-          match α with
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
           | core.result.Result.Ok _ =>
+            let γ0 := γ.["Ok.0"] in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "wc responded with:
 ") in
@@ -228,7 +247,7 @@ Definition main : M unit :=
               M.alloc α9 in
             M.alloc tt
           | _ => M.break_match
-          end :
+          end) :
           M (M.Val unit)
       ] in
   M.read α0.

@@ -102,26 +102,17 @@ Section Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account_t.
   *)
   Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
     let* self := M.alloc self in
-    let* α0 : M.Val unit :=
+    let* α0 : M.Val unit := M.alloc tt in
+    let* α1 : M.Val unit :=
       match_operator
-        tt
+        α0
         [
-          fun α =>
-            match α with
-            | _ =>
-              match_operator
-                tt
-                [
-                  fun α =>
-                    match α with
-                    | _ => M.alloc tt
-                    end :
-                    M (M.Val unit)
-                ]
-            end :
+          fun γ =>
+            (let* α0 : M.Val unit := M.alloc tt in
+            match_operator α0 [ fun γ => (M.alloc tt) : M (M.Val unit) ]) :
             M (M.Val unit)
         ] in
-    M.read α0.
+    M.read α1.
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
     Notations.DoubleColon Self "assert_receiver_is_total_eq" := {
@@ -323,14 +314,21 @@ Definition try_logon
             std.collections.hash.map.RandomState.t)::["get"]
         α0
         (borrow logon)) in
+  let* α2 :
+      M.Val
+        (core.option.Option.t
+          (ref hash_map_alternate_or_custom_key_types.AccountInfo.t)) :=
+    M.alloc α1 in
   let* α0 : M.Val unit :=
     match_operator
-      α1
+      α2
       [
-        fun α =>
-          match α with
-          | core.option.Option.Some account_info =>
-            let* account_info := M.alloc account_info in
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
+          | core.option.Option.Some _ =>
+            let γ0 := γ.["Some.0"] in
+            let* account_info := M.copy γ0 in
             let* _ : M.Val unit :=
               let* _ : M.Val unit :=
                 let* α0 : ref str.t := M.read (mk_str "Successful logon!
@@ -403,25 +401,21 @@ Definition try_logon
               M.alloc tt in
             M.alloc tt
           | _ => M.break_match
-          end :
+          end) :
           M (M.Val unit);
-        fun α =>
-          match α with
-          | _ =>
-            let* _ : M.Val unit :=
-              let* α0 : ref str.t := M.read (mk_str "Login failed!
+        fun γ =>
+          (let* _ : M.Val unit :=
+            let* α0 : ref str.t := M.read (mk_str "Login failed!
 ") in
-              let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-              let* α2 : M.Val (ref (array (ref str.t))) :=
-                M.alloc (borrow α1) in
-              let* α3 : ref (slice (ref str.t)) :=
-                M.read (pointer_coercion "Unsize" α2) in
-              let* α4 : core.fmt.Arguments.t :=
-                M.call (core.fmt.Arguments.t::["new_const"] α3) in
-              let* α5 : unit := M.call (std.io.stdio._print α4) in
-              M.alloc α5 in
-            M.alloc tt
-          end :
+            let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
+            let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
+            let* α3 : ref (slice (ref str.t)) :=
+              M.read (pointer_coercion "Unsize" α2) in
+            let* α4 : core.fmt.Arguments.t :=
+              M.call (core.fmt.Arguments.t::["new_const"] α3) in
+            let* α5 : unit := M.call (std.io.stdio._print α4) in
+            M.alloc α5 in
+          M.alloc tt) :
           M (M.Val unit)
       ] in
   M.read α0.

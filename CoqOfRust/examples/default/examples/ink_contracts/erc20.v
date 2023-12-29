@@ -163,19 +163,17 @@ Section Impl_core_clone_Clone_for_erc20_AccountId_t.
   *)
   Definition clone (self : ref Self) : M erc20.AccountId.t :=
     let* self := M.alloc self in
-    let* α0 : M.Val erc20.AccountId.t :=
+    let* α0 : M.Val unit := M.alloc tt in
+    let* α1 : M.Val erc20.AccountId.t :=
       match_operator
-        tt
+        α0
         [
-          fun α =>
-            match α with
-            | _ =>
-              let* α0 : ref erc20.AccountId.t := M.read self in
-              M.pure (deref α0)
-            end :
+          fun γ =>
+            (let* α0 : ref erc20.AccountId.t := M.read self in
+            M.pure (deref α0)) :
             M (M.Val erc20.AccountId.t)
         ] in
-    M.read α0.
+    M.read α1.
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {
@@ -963,13 +961,21 @@ Section Impl_erc20_Erc20_t_2.
                 (Self := core.result.Result.t unit erc20.Error.t)
                 (Trait := ltac:(refine _)))
               α2) in
+        let* α4 :
+            M.Val
+              (core.ops.control_flow.ControlFlow.t
+                (core.result.Result.t core.convert.Infallible.t erc20.Error.t)
+                unit) :=
+          M.alloc α3 in
         match_operator
-          α3
+          α4
           [
-            fun α =>
-              match α with
-              | core.ops.control_flow.ControlFlow.Break residual =>
-                let* residual := M.alloc residual in
+            fun γ =>
+              (let* α0 := M.read γ in
+              match α0 with
+              | core.ops.control_flow.ControlFlow.Break _ =>
+                let γ0 := γ.["Break.0"] in
+                let* residual := M.copy γ0 in
                 let* α0 :
                     core.result.Result.t
                       core.convert.Infallible.t
@@ -986,15 +992,17 @@ Section Impl_erc20_Erc20_t_2.
                 let* α4 : unit := never_to_any α3 in
                 M.alloc α4
               | _ => M.break_match
-              end :
+              end) :
               M (M.Val unit);
-            fun α =>
-              match α with
-              | core.ops.control_flow.ControlFlow.Continue val =>
-                let* val := M.alloc val in
+            fun γ =>
+              (let* α0 := M.read γ in
+              match α0 with
+              | core.ops.control_flow.ControlFlow.Continue _ =>
+                let γ0 := γ.["Continue.0"] in
+                let* val := M.copy γ0 in
                 M.pure val
               | _ => M.break_match
-              end :
+              end) :
               M (M.Val unit)
           ] in
       let* _ : M.Val unit :=

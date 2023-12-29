@@ -35,7 +35,12 @@ pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Rc<Pattern> {
             ..
         } => {
             let name = name.to_string();
-            let is_with_ref = matches!(mode, rustc_middle::thir::BindingMode::ByValue);
+            let is_with_ref = match mode {
+                rustc_middle::thir::BindingMode::ByValue => None,
+                rustc_middle::thir::BindingMode::ByRef(borrow_kind) => {
+                    Some(crate::thir_expression::is_mutable_borrow_kind(borrow_kind))
+                }
+            };
             let pattern = subpattern
                 .as_ref()
                 .map(|subpattern| compile_pattern(env, subpattern));

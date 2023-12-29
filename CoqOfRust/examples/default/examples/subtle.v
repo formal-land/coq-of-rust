@@ -32,19 +32,17 @@ Section Impl_core_clone_Clone_for_subtle_Choice_t.
   *)
   Definition clone (self : ref Self) : M subtle.Choice.t :=
     let* self := M.alloc self in
-    let* α0 : M.Val subtle.Choice.t :=
+    let* α0 : M.Val unit := M.alloc tt in
+    let* α1 : M.Val subtle.Choice.t :=
       match_operator
-        tt
+        α0
         [
-          fun α =>
-            match α with
-            | _ =>
-              let* α0 : ref subtle.Choice.t := M.read self in
-              M.pure (deref α0)
-            end :
+          fun γ =>
+            (let* α0 : ref subtle.Choice.t := M.read self in
+            M.pure (deref α0)) :
             M (M.Val subtle.Choice.t)
         ] in
-    M.read α0.
+    M.read α1.
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {
@@ -616,43 +614,58 @@ Section Impl_subtle_ConstantTimeEq_for_slice_T.
                     (core.slice.iter.Iter.t T))
                 (Trait := ltac:(refine _)))
               α4) in
-        let* α6 : M.Val unit :=
+        let* α6 :
+            M.Val
+              (core.iter.adapters.zip.Zip.t
+                (core.slice.iter.Iter.t T)
+                (core.slice.iter.Iter.t T)) :=
+          M.alloc α5 in
+        let* α7 : M.Val unit :=
           match_operator
-            α5
+            α6
             [
-              fun α =>
-                match α with
-                | iter =>
-                  let* iter := M.alloc iter in
-                  M.loop
-                    (let* _ : M.Val unit :=
-                      let* α0 : core.option.Option.t ((ref T) * (ref T)) :=
-                        M.call
-                          ((core.iter.traits.iterator.Iterator.next
-                              (Self :=
-                                core.iter.adapters.zip.Zip.t
-                                  (core.slice.iter.Iter.t T)
-                                  (core.slice.iter.Iter.t T))
-                              (Trait := ltac:(refine _)))
-                            (borrow_mut iter)) in
-                      match_operator
-                        α0
-                        [
-                          fun α =>
-                            match α with
-                            | core.option.Option.None =>
-                              let* α0 : M.Val never.t := M.break in
-                              let* α1 := M.read α0 in
-                              let* α2 : unit := never_to_any α1 in
-                              M.alloc α2
-                            | _ => M.break_match
-                            end :
-                            M (M.Val unit);
-                          fun α =>
-                            match α with
-                            | core.option.Option.Some (ai, bi) =>
-                              let* ai := M.alloc ai in
-                              let* bi := M.alloc bi in
+              fun γ =>
+                (let* iter := M.copy γ in
+                M.loop
+                  (let* _ : M.Val unit :=
+                    let* α0 : core.option.Option.t ((ref T) * (ref T)) :=
+                      M.call
+                        ((core.iter.traits.iterator.Iterator.next
+                            (Self :=
+                              core.iter.adapters.zip.Zip.t
+                                (core.slice.iter.Iter.t T)
+                                (core.slice.iter.Iter.t T))
+                            (Trait := ltac:(refine _)))
+                          (borrow_mut iter)) in
+                    let* α1 :
+                        M.Val (core.option.Option.t ((ref T) * (ref T))) :=
+                      M.alloc α0 in
+                    match_operator
+                      α1
+                      [
+                        fun γ =>
+                          (let* α0 := M.read γ in
+                          match α0 with
+                          | core.option.Option.None =>
+                            let* α0 : M.Val never.t := M.break in
+                            let* α1 := M.read α0 in
+                            let* α2 : unit := never_to_any α1 in
+                            M.alloc α2
+                          | _ => M.break_match
+                          end) :
+                          M (M.Val unit);
+                        fun γ =>
+                          (let* α0 := M.read γ in
+                          match α0 with
+                          | core.option.Option.Some _ =>
+                            let γ0 := γ.["Some.0"] in
+                            let* α0 := M.read γ0 in
+                            match α0 with
+                            | (_, _) =>
+                              let γ0 := γ0.["(,)left"] in
+                              let γ1 := γ0.["(,)right"] in
+                              let* ai := M.copy γ0 in
+                              let* bi := M.copy γ1 in
                               let* _ : M.Val unit :=
                                 let β : M.Val u8.t := x in
                                 let* α0 := M.read β in
@@ -672,15 +685,15 @@ Section Impl_subtle_ConstantTimeEq_for_slice_T.
                                       (borrow α4)) in
                                 assign β (BinOp.Pure.bit_and α0 α5) in
                               M.alloc tt
-                            | _ => M.break_match
-                            end :
-                            M (M.Val unit)
-                        ] in
-                    M.alloc tt)
-                end :
+                            end
+                          | _ => M.break_match
+                          end) :
+                          M (M.Val unit)
+                      ] in
+                  M.alloc tt)) :
                 M (M.Val unit)
             ] in
-        M.pure (use α6) in
+        M.pure (use α7) in
       let* α0 : u8.t := M.read x in
       let* α1 : subtle.Choice.t :=
         M.call
@@ -2883,14 +2896,19 @@ Section Impl_subtle_CtOption_t_T.
         M.call (subtle.Choice.t::["unwrap_u8"] (borrow self.["is_some"])) in
       let* α1 : M.Val u8.t := M.alloc α0 in
       let* α2 : M.Val u8.t := M.alloc (Integer.of_Z 1) in
+      let* α3 : M.Val ((ref u8.t) * (ref u8.t)) :=
+        M.alloc (borrow α1, borrow α2) in
       match_operator
-        (borrow α1, borrow α2)
+        α3
         [
-          fun α =>
-            match α with
-            | (left_val, right_val) =>
-              let* left_val := M.alloc left_val in
-              let* right_val := M.alloc right_val in
+          fun γ =>
+            (let* α0 := M.read γ in
+            match α0 with
+            | (_, _) =>
+              let γ0 := γ.["(,)left"] in
+              let γ1 := γ.["(,)right"] in
+              let* left_val := M.copy γ0 in
+              let* right_val := M.copy γ1 in
               let* α0 : ref u8.t := M.read left_val in
               let* α1 : u8.t := M.read (deref α0) in
               let* α2 : ref u8.t := M.read right_val in
@@ -2936,7 +2954,7 @@ Section Impl_subtle_CtOption_t_T.
                 M.alloc α2
               else
                 M.alloc tt
-            end :
+            end) :
             M (M.Val unit)
         ] in
     M.read self.["value"].
@@ -2960,14 +2978,19 @@ Section Impl_subtle_CtOption_t_T.
         M.call (subtle.Choice.t::["unwrap_u8"] (borrow self.["is_some"])) in
       let* α1 : M.Val u8.t := M.alloc α0 in
       let* α2 : M.Val u8.t := M.alloc (Integer.of_Z 1) in
+      let* α3 : M.Val ((ref u8.t) * (ref u8.t)) :=
+        M.alloc (borrow α1, borrow α2) in
       match_operator
-        (borrow α1, borrow α2)
+        α3
         [
-          fun α =>
-            match α with
-            | (left_val, right_val) =>
-              let* left_val := M.alloc left_val in
-              let* right_val := M.alloc right_val in
+          fun γ =>
+            (let* α0 := M.read γ in
+            match α0 with
+            | (_, _) =>
+              let γ0 := γ.["(,)left"] in
+              let γ1 := γ.["(,)right"] in
+              let* left_val := M.copy γ0 in
+              let* right_val := M.copy γ1 in
               let* α0 : ref u8.t := M.read left_val in
               let* α1 : u8.t := M.read (deref α0) in
               let* α2 : ref u8.t := M.read right_val in
@@ -2996,7 +3019,7 @@ Section Impl_subtle_CtOption_t_T.
                 M.alloc α2
               else
                 M.alloc tt
-            end :
+            end) :
             M (M.Val unit)
         ] in
     M.read self.["value"].

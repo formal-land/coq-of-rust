@@ -48,16 +48,14 @@ Definition main : M unit :=
             (Trait := ltac:(refine _)))
           α1
           (fun (α0 : ref str.t) =>
-            (match_operator
+            (let* α0 := M.alloc α0 in
+            match_operator
               α0
               [
-                fun α =>
-                  match α with
-                  | s =>
-                    let* s := M.alloc s in
-                    let* α0 : ref str.t := M.read s in
-                    M.call (str.t::["parse"] α0)
-                  end :
+                fun γ =>
+                  (let* s := M.copy γ in
+                  let* α0 : ref str.t := M.read s in
+                  M.call (str.t::["parse"] α0)) :
                   M (core.result.Result.t i32.t core.num.error.ParseIntError.t)
               ]) :
             M (core.result.Result.t i32.t core.num.error.ParseIntError.t))) in
