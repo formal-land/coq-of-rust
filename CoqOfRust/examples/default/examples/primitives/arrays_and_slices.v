@@ -257,7 +257,7 @@ Definition main : M unit :=
           (borrow ys)
           {|
             core.ops.range.Range.start := Integer.of_Z 1;
-            core.ops.range.Range.end := Integer.of_Z 4;
+            core.ops.range.Range._end := Integer.of_Z 4;
           |}) in
     let* α1 : unit := M.call (arrays_and_slices.analyze_slice α0) in
     M.alloc α1 in
@@ -354,7 +354,7 @@ Definition main : M unit :=
           (Trait := ltac:(refine _)))
         {|
           core.ops.range.Range.start := Integer.of_Z 0;
-          core.ops.range.Range.end := α3;
+          core.ops.range.Range._end := α3;
         |}) in
   let* α5 : M.Val unit :=
     match α4 with

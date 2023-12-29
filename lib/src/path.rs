@@ -170,6 +170,12 @@ pub(crate) fn to_valid_coq_name(str: &str) -> String {
         return format!("{}_", str);
     }
 
+    let reserved_struct_names = ["end"];
+
+    if reserved_struct_names.contains(&str) {
+        return format!("_{}", str);
+    }
+
     let str = str::replace(str, "$", "_");
     let str = str::replace(&str, "{{root}}", "CoqOfRust");
     str::replace(&str, "::", ".")

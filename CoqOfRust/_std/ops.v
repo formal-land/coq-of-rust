@@ -82,7 +82,7 @@ pub struct Range<Idx> {
 Module Range.
   Record t (Idx : Set) : Set := { 
     start : Idx;
-    _end : Idx
+    _end : Idx;
   }.
 End Range.
 Definition Range := Range.t.

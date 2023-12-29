@@ -73,7 +73,7 @@ Definition main : M unit :=
             (Trait := ltac:(refine _)))
           {|
             core.ops.range.Range.start := Integer.of_Z 0;
-            core.ops.range.Range.end := α1;
+            core.ops.range.Range._end := α1;
           |}) in
     let* α3 : M.Val unit :=
       match α2 with
@@ -198,7 +198,7 @@ Definition main : M unit :=
             (Trait := ltac:(refine _)))
           {|
             core.ops.range.Range.start := Integer.of_Z 0;
-            core.ops.range.Range.end := α1;
+            core.ops.range.Range._end := α1;
           |}) in
     let* α3 : M.Val unit :=
       match α2 with

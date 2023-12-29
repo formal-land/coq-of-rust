@@ -214,7 +214,7 @@ Definition main : M unit :=
     M.alloc
       {|
         core.ops.range.Range.start := Integer.of_Z 0;
-        core.ops.range.Range.end := Integer.of_Z 3;
+        core.ops.range.Range._end := Integer.of_Z 3;
       |} in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
@@ -364,7 +364,7 @@ Definition main : M unit :=
             (Trait := ltac:(refine _)))
           {|
             core.ops.range.Range.start := Integer.of_Z 0;
-            core.ops.range.Range.end := Integer.of_Z 3;
+            core.ops.range.Range._end := Integer.of_Z 3;
           |}) in
     let* α1 : M.Val unit :=
       match α0 with
