@@ -64,7 +64,7 @@ Definition main : M unit :=
             (Trait := ltac:(refine _)))
           {|
             core.ops.range.Range.start := Integer.of_Z 0;
-            core.ops.range.Range._end := Integer.of_Z 10;
+            core.ops.range.Range.end_ := Integer.of_Z 10;
           |}) in
     M.alloc α0 in
   let* _ : M.Val unit :=

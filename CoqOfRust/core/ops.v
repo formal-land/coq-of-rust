@@ -18,7 +18,7 @@ Module range.
   Module Range.
     Record t (Idx : Set) : Set := { 
       start: Idx;
-      _end: Idx;
+      end_: Idx;
     }.
   End Range.
   Definition Range := Range.t.

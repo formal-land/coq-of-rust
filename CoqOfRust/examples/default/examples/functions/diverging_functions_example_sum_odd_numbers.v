@@ -87,7 +87,7 @@ Definition sum_odd_numbers (up_to : u32.t) : M u32.t :=
             (Trait := ltac:(refine _)))
           {|
             core.ops.range.Range.start := Integer.of_Z 0;
-            core.ops.range.Range._end := α0;
+            core.ops.range.Range.end_ := α0;
           |}) in
     let* α2 : M.Val unit :=
       match α1 with
