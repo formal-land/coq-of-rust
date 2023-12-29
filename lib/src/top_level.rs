@@ -39,7 +39,7 @@ struct HirFnSigAndBody<'a> {
 struct FnSigAndBody {
     args: Vec<(String, Rc<CoqType>)>,
     ret_ty: Rc<CoqType>,
-    body: Option<Box<Expr>>,
+    body: Option<Rc<Expr>>,
 }
 
 #[derive(Debug, Eq, Hash, PartialEq)]
@@ -70,7 +70,7 @@ struct FunDefinition {
 enum ImplItemKind {
     Const {
         ty: Rc<CoqType>,
-        body: Option<Box<Expr>>,
+        body: Option<Rc<Expr>>,
         is_dead_code: bool,
     },
     Definition {
@@ -136,7 +136,7 @@ enum TopLevelItem {
     Const {
         name: String,
         ty: Rc<CoqType>,
-        value: Option<Box<Expr>>,
+        value: Option<Rc<Expr>>,
     },
     Definition {
         name: String,
@@ -391,7 +391,7 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<Rc<To
                 None
             } else {
                 let value = compile_hir_id(env, body_id.hir_id);
-                Some(Box::new(value))
+                Some(value)
             };
             vec![Rc::new(TopLevelItem::Const {
                 name,
@@ -709,7 +709,7 @@ fn compile_impl_item(
             let body = if env.axiomatize {
                 None
             } else {
-                Some(Box::new(compile_hir_id(env, body_id.hir_id)))
+                Some(compile_hir_id(env, body_id.hir_id))
             };
             Rc::new(ImplItemKind::Const {
                 ty,
@@ -748,37 +748,37 @@ fn compile_function_body(
     args: &[(String, Rc<CoqType>)],
     body: &rustc_hir::Body,
     ret_ty: Rc<CoqType>,
-) -> Option<Box<Expr>> {
+) -> Option<Rc<Expr>> {
     if env.axiomatize {
         return None;
     }
     let body = compile_hir_id(env, body.value.hir_id).read();
     let has_return = body.has_return();
     let body = if has_return {
-        Box::new(Expr {
-            kind: ExprKind::Let {
+        Rc::new(Expr {
+            kind: Rc::new(ExprKind::Let {
                 is_monadic: false,
                 name: Some("return_".to_string()),
-                init: Box::new(Expr {
-                    kind: ExprKind::VarWithTy {
+                init: Rc::new(Expr {
+                    kind: Rc::new(ExprKind::VarWithTy {
                         path: Path::local("M.return_"),
                         ty_name: "R".to_string(),
                         ty: ret_ty,
-                    },
+                    }),
                     ty: None,
                 }),
-                body: Box::new(Expr {
-                    kind: ExprKind::MonadicOperator {
+                body: Rc::new(Expr {
+                    kind: Rc::new(ExprKind::MonadicOperator {
                         name: "M.catch_return".to_string(),
-                        arg: Box::new(body),
-                    },
+                        arg: body,
+                    }),
                     ty: None,
                 }),
-            },
+            }),
             ty: None,
         })
     } else {
-        Box::new(body)
+        body
     };
     let body = crate::thir_expression::allocate_bindings(
         &args
@@ -1072,8 +1072,9 @@ fn mt_impl_item(item: Rc<ImplItemKind>) -> Rc<ImplItemKind> {
             let body = match body {
                 None => body.clone(),
                 Some(body) => {
-                    let body = mt_expression(FreshVars::new(), *body.clone()).0;
-                    Some(Box::new(body))
+                    let body = mt_expression(FreshVars::new(), body.clone()).0;
+
+                    Some(body)
                 }
             };
             Rc::new(ImplItemKind::Const {
@@ -1097,8 +1098,8 @@ impl FnSigAndBody {
             body: match &self.body {
                 None => self.body.clone(),
                 Some(body) => {
-                    let (body, _fresh_vars) = mt_expression(FreshVars::new(), *body.clone());
-                    Some(Box::new(body))
+                    let (body, _fresh_vars) = mt_expression(FreshVars::new(), body.clone());
+                    Some(body)
                 }
             },
         })
@@ -1144,8 +1145,8 @@ fn mt_top_level_item(item: Rc<TopLevelItem>) -> Rc<TopLevelItem> {
             value: match value {
                 None => value.clone(),
                 Some(value) => {
-                    let (value, _fresh_vars) = mt_expression(FreshVars::new(), *value.clone());
-                    Some(Box::new(value))
+                    let (value, _fresh_vars) = mt_expression(FreshVars::new(), value.clone());
+                    Some(value)
                 }
             },
         }),
@@ -1428,7 +1429,7 @@ impl FunDefinition {
                                                 .collect::<Vec<_>>(),
                                         ]
                                         .concat(),
-                                        image: Box::new(coq::Expression::Unit),
+                                        image: Rc::new(coq::Expression::Unit),
                                     },
                                 },
                             ))
@@ -1472,7 +1473,7 @@ impl FunDefinition {
                                             ),
                                         ]
                                         .concat(),
-                                        image: Box::new(
+                                        image: Rc::new(
                                             // return type
                                             ret_ty
                                                 // argument types
@@ -1692,7 +1693,7 @@ impl TraitBound {
 
     fn to_coq<'a>(&self, self_ty: coq::Expression<'a>) -> coq::Expression<'a> {
         coq::Expression::Application {
-            func: Box::new(
+            func: Rc::new(
                 coq::Expression::Variable {
                     ident: Path::concat(&[self.name.to_owned(), Path::new(&["Trait"])]),
                     no_implicit: false,
@@ -2450,9 +2451,9 @@ fn struct_field_value<'a>(name: String) -> coq::Expression<'a> {
     coq::Expression::just_name("Ref.map").apply_many(&[
         coq::Expression::Function {
             parameters: vec![coq::Expression::just_name("α")],
-            body: Box::new(coq::Expression::just_name("Some").apply(
+            body: Rc::new(coq::Expression::just_name("Some").apply(
                 &coq::Expression::RecordField {
-                    record: Box::new(coq::Expression::just_name("α")),
+                    record: Rc::new(coq::Expression::just_name("α")),
                     field: name.to_owned(),
                 },
             )),
@@ -2462,11 +2463,11 @@ fn struct_field_value<'a>(name: String) -> coq::Expression<'a> {
                 coq::Expression::just_name("β"),
                 coq::Expression::just_name("α"),
             ],
-            body: Box::new(coq::Expression::just_name("Some").apply(
+            body: Rc::new(coq::Expression::just_name("Some").apply(
                 &coq::Expression::RecordUpdate {
-                    record: Box::new(coq::Expression::just_name("α")),
+                    record: Rc::new(coq::Expression::just_name("α")),
                     field: name,
-                    update: Box::new(coq::Expression::just_name("β")),
+                    update: Rc::new(coq::Expression::just_name("β")),
                 },
             )),
         },
@@ -2487,14 +2488,14 @@ fn enum_struct_field_value<'a>(
     coq::Expression::just_name("Ref.map").apply_many(&[
         coq::Expression::Function {
             parameters: vec![coq::Expression::just_name("α")],
-            body: Box::new(coq::Expression::Match {
-                scrutinee: Box::new(coq::Expression::just_name("α")),
+            body: Rc::new(coq::Expression::Match {
+                scrutinee: Rc::new(coq::Expression::just_name("α")),
                 arms: [
                     vec![(
                         coq::Expression::just_name(constructor_name)
                             .apply(&coq::Expression::just_name("α")),
                         coq::Expression::just_name("Some").apply(&coq::Expression::RecordField {
-                            record: Box::new(coq::Expression::just_name("α")),
+                            record: Rc::new(coq::Expression::just_name("α")),
                             field: format!("{constructor_name}.{field_name}"),
                         }),
                     )],
@@ -2508,8 +2509,8 @@ fn enum_struct_field_value<'a>(
                 coq::Expression::just_name("β"),
                 coq::Expression::just_name("α"),
             ],
-            body: Box::new(coq::Expression::Match {
-                scrutinee: Box::new(coq::Expression::just_name("α")),
+            body: Rc::new(coq::Expression::Match {
+                scrutinee: Rc::new(coq::Expression::just_name("α")),
                 arms: [
                     vec![(
                         coq::Expression::just_name(constructor_name)
@@ -2517,9 +2518,9 @@ fn enum_struct_field_value<'a>(
                         coq::Expression::just_name("Some").apply(
                             &coq::Expression::just_name(constructor_name).apply(
                                 &coq::Expression::RecordUpdate {
-                                    record: Box::new(coq::Expression::just_name("α")),
+                                    record: Rc::new(coq::Expression::just_name("α")),
                                     field: format!("{constructor_name}.{field_name}"),
-                                    update: Box::new(coq::Expression::just_name("β")),
+                                    update: Rc::new(coq::Expression::just_name("β")),
                                 },
                             ),
                         ),
@@ -2547,8 +2548,8 @@ fn enum_tuple_field_value(
     coq::Expression::just_name("Ref.map").apply_many(&[
         coq::Expression::Function {
             parameters: vec![coq::Expression::just_name("α")],
-            body: Box::new(coq::Expression::Match {
-                scrutinee: Box::new(coq::Expression::just_name("α")),
+            body: Rc::new(coq::Expression::Match {
+                scrutinee: Rc::new(coq::Expression::just_name("α")),
                 arms: [
                     vec![(
                         coq::Expression::just_name(constructor_name).apply_many(
@@ -2575,8 +2576,8 @@ fn enum_tuple_field_value(
                 coq::Expression::just_name("β"),
                 coq::Expression::just_name("α"),
             ],
-            body: Box::new(coq::Expression::Match {
-                scrutinee: Box::new(coq::Expression::just_name("α")),
+            body: Rc::new(coq::Expression::Match {
+                scrutinee: Rc::new(coq::Expression::just_name("α")),
                 arms: [
                     vec![(
                         coq::Expression::just_name(constructor_name).apply_many(
@@ -2754,7 +2755,7 @@ impl TypeStructStruct {
                                 //                                               .collect()
                                 //                                       ]
                                 //                                       .concat(),
-                                //                                       image: Box::new(
+                                //                                       image: Rc::new(
                                 //                                           coq::Expression::just_name("t")
                                 //                                               .arrows_from(&[
                                 //                                                   coq::Expression::just_name("A"),
@@ -2846,7 +2847,7 @@ impl TypeStructStruct {
                                                             ]),
                                                             &[struct_projection_pattern()],
                                                             &coq::Expression::NotationsDot {
-                                                                value: Box::new(
+                                                                value: Rc::new(
                                                                     coq::Expression::just_name("α"),
                                                                 ),
                                                                 field: name.to_owned(),

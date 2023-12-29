@@ -12,10 +12,10 @@ use std::rc::Rc;
 pub(crate) enum CoqType {
     Var(String),
     Path {
-        path: Box<Path>,
+        path: Rc<Path>,
     },
     PathInTrait {
-        path: Box<Path>,
+        path: Rc<Path>,
         self_ty: Rc<CoqType>,
     },
     Application {
@@ -44,7 +44,7 @@ impl CoqType {
 
     pub(crate) fn path(segments: &[&str]) -> Rc<CoqType> {
         Rc::new(CoqType::Path {
-            path: Box::new(Path::new(segments)),
+            path: Rc::new(Path::new(segments)),
         })
     }
 
@@ -72,7 +72,7 @@ impl CoqType {
         } = &*self
         {
             if let CoqType::Path { path, .. } = &**func {
-                let Path { segments } = *path.clone();
+                let Path { segments } = path.as_ref();
                 if segments.len() == 1 && args.len() == 1 {
                     let name = segments.first().unwrap();
                     if name == "ref" || name == "mut_ref" {
@@ -179,13 +179,13 @@ pub(crate) fn compile_type(env: &Env, ty: &Ty) -> Rc<CoqType> {
             let coq_path = compile_qpath(env, qpath);
             let func = Rc::new(match self_ty {
                 Some(self_ty) => CoqType::PathInTrait {
-                    path: Box::new(coq_path.clone()),
+                    path: Rc::new(coq_path.clone()),
                     self_ty,
                 },
                 None => match is_variable {
                     Some(name) => CoqType::Var(name),
                     None => CoqType::Path {
-                        path: Box::new(if is_alias {
+                        path: Rc::new(if is_alias {
                             coq_path.clone()
                         } else {
                             coq_path.suffix_last_with_dot_t()
@@ -212,7 +212,7 @@ pub(crate) fn compile_type(env: &Env, ty: &Ty) -> Rc<CoqType> {
                                         segments.push("Default".to_string());
                                         segments.push(name);
                                         Rc::new(CoqType::Path {
-                                            path: Box::new(Path { segments }),
+                                            path: Rc::new(Path { segments }),
                                         })
                                     } else {
                                         Rc::new(CoqType::Infer)
@@ -362,11 +362,11 @@ impl CoqType {
                 no_implicit: false,
             },
             CoqType::Path { path } => coq::Expression::Variable {
-                ident: *path.clone(),
+                ident: path.as_ref().clone(),
                 no_implicit: false,
             },
             CoqType::PathInTrait { path, self_ty } => coq::Expression::Variable {
-                ident: *path.clone(),
+                ident: path.as_ref().clone(),
                 no_implicit: false,
             }
             .apply_many_args(&[
@@ -387,7 +387,7 @@ impl CoqType {
                 if *is_alias {
                     coq::Expression::ModeWrapper {
                         mode: "ltac".to_string(),
-                        expr: Box::new(application),
+                        expr: Rc::new(application),
                     }
                 } else {
                     application

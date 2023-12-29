@@ -3,6 +3,7 @@ use crate::render::{
     self, concat, curly_brackets, group, hardline, intersperse, line, nest, nil, optional_insert,
     optional_insert_vec, optional_insert_with, paren, text, Doc,
 };
+use std::rc::Rc;
 
 #[derive(Clone)]
 /// a list of coq top level items
@@ -129,7 +130,7 @@ pub(crate) enum Expression<'a> {
     /// an (curried) application of a function to some arguments
     Application {
         /// the function that is applied
-        func: Box<Expression<'a>>,
+        func: Rc<Expression<'a>>,
         /// a nonempty list of arguments
         /// (we accept many arguments to control their indentation better,
         ///     the application is curried when it gets printed)
@@ -138,10 +139,10 @@ pub(crate) enum Expression<'a> {
     /// a (curried) function
     Function {
         parameters: Vec<Expression<'a>>,
-        body: Box<Expression<'a>>,
+        body: Rc<Expression<'a>>,
     },
     Match {
-        scrutinee: Box<Expression<'a>>,
+        scrutinee: Rc<Expression<'a>>,
         arms: Vec<(Expression<'a>, Expression<'a>)>,
     },
     /// a (curried) function type
@@ -151,7 +152,7 @@ pub(crate) enum Expression<'a> {
         ///     the type is curried when it gets printed)
         domains: Vec<Expression<'a>>,
         /// the image (range, co-domain) of functions of the type
-        image: Box<Expression<'a>>,
+        image: Rc<Expression<'a>>,
     },
     /// a dependent product of types
     /// (like `forall (x : A), B(x)`)
@@ -159,35 +160,35 @@ pub(crate) enum Expression<'a> {
         /// a list of arguments of `forall`
         args: Vec<ArgDecl<'a>>,
         /// the expression for the resulting type
-        image: Box<Expression<'a>>,
+        image: Rc<Expression<'a>>,
     },
     /// a product of two variables (they can be types or numbers)
     Product {
         /// left hand side
-        lhs: Box<Expression<'a>>,
+        lhs: Rc<Expression<'a>>,
         /// right hand side
-        rhs: Box<Expression<'a>>,
+        rhs: Rc<Expression<'a>>,
     },
     Record {
         fields: Vec<Field<'a>>,
     },
     RecordField {
-        record: Box<Expression<'a>>,
+        record: Rc<Expression<'a>>,
         field: String,
     },
     RecordUpdate {
-        record: Box<Expression<'a>>,
+        record: Rc<Expression<'a>>,
         field: String,
-        update: Box<Expression<'a>>,
+        update: Rc<Expression<'a>>,
     },
     NotationsDot {
-        value: Box<Expression<'a>>,
+        value: Rc<Expression<'a>>,
         field: String,
     },
     /// For example ltac:(...) or constr:(...)
     ModeWrapper {
         mode: String,
-        expr: Box<Expression<'a>>,
+        expr: Rc<Expression<'a>>,
     },
     /// Set constant (the type of our types)
     Set,
@@ -197,7 +198,7 @@ pub(crate) enum Expression<'a> {
         /// a list of arguments of `Sigma`
         args: Vec<ArgDecl<'a>>,
         /// the expression for the resulting type
-        image: Box<Expression<'a>>,
+        image: Rc<Expression<'a>>,
     },
     /// a string
     String(String),
@@ -963,7 +964,7 @@ impl<'a> Expression<'a> {
     /// apply the expression as a function to one argument
     pub(crate) fn apply_arg(&self, name: &Option<String>, arg: &Self) -> Self {
         Expression::Application {
-            func: Box::new(self.clone()),
+            func: Rc::new(self.clone()),
             args: vec![(name.clone(), arg.clone())],
         }
     }
@@ -980,7 +981,7 @@ impl<'a> Expression<'a> {
         }
 
         Expression::Application {
-            func: Box::new(self.to_owned()),
+            func: Rc::new(self.to_owned()),
             args: args.to_vec(),
         }
     }
@@ -998,14 +999,14 @@ impl<'a> Expression<'a> {
     pub(crate) fn arrows_from(&self, domains: &[Self]) -> Self {
         Expression::FunctionType {
             domains: domains.to_owned(),
-            image: Box::new(self.to_owned()),
+            image: Rc::new(self.to_owned()),
         }
     }
 
     pub(crate) fn multiply(lhs: Self, rhs: Self) -> Self {
         Expression::Product {
-            lhs: Box::new(lhs),
-            rhs: Box::new(rhs),
+            lhs: Rc::new(lhs),
+            rhs: Rc::new(rhs),
         }
     }
 
