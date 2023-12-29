@@ -25,7 +25,7 @@ impl ExprKind {
     }
 }
 
-fn path_of_bin_op(bin_op: &BinOp) -> (Path, Purity) {
+fn path_of_bin_op(bin_op: &BinOp, ty_left: &Rc<CoqType>, ty_right: &Rc<CoqType>) -> (Path, Purity) {
     match bin_op {
         BinOp::Add => (Path::new(&["BinOp", "Panic", "add"]), Purity::Effectful),
         BinOp::Sub => (Path::new(&["BinOp", "Panic", "sub"]), Purity::Effectful),
@@ -37,7 +37,15 @@ fn path_of_bin_op(bin_op: &BinOp) -> (Path, Purity) {
         BinOp::BitOr => (Path::new(&["BinOp", "Pure", "bit_or"]), Purity::Pure),
         BinOp::Shl => (Path::new(&["BinOp", "Panic", "shl"]), Purity::Effectful),
         BinOp::Shr => (Path::new(&["BinOp", "Panic", "shr"]), Purity::Effectful),
-        BinOp::Eq => (Path::new(&["BinOp", "Pure", "eq"]), Purity::Pure),
+        BinOp::Eq => {
+            if matches!(ty_left.as_ref(), CoqType::Path { path } if path.segments == ["bool", "t"])
+                && matches!(ty_right.as_ref(), CoqType::Path { path } if path.segments == ["bool", "t"])
+            {
+                (Path::new(&["Bool", "eqb"]), Purity::Pure)
+            } else {
+                (Path::new(&["BinOp", "Pure", "eq"]), Purity::Pure)
+            }
+        }
         BinOp::Ne => (Path::new(&["BinOp", "Pure", "ne"]), Purity::Pure),
         BinOp::Lt => (Path::new(&["BinOp", "Pure", "lt"]), Purity::Pure),
         BinOp::Le => (Path::new(&["BinOp", "Pure", "le"]), Purity::Pure),
@@ -378,8 +386,7 @@ fn build_inner_match(patterns: Vec<(String, Rc<Pattern>)>, body: Box<Expr>) -> B
                             args: vec![Expr::local_var(&scrutinee).read()],
                             purity: Purity::Pure,
                             from_user: false,
-                        }
-                        .alloc(None),
+                        },
                     }),
                     body: build_inner_match(vec![(scrutinee.clone(), pattern.clone())], body),
                 },
@@ -415,9 +422,13 @@ fn build_inner_match(patterns: Vec<(String, Rc<Pattern>)>, body: Box<Expr>) -> B
                                                 |init, _| {
                                                     Box::new(Expr {
                                                         ty: None,
-                                                        kind: ExprKind::NamedField {
-                                                            base: init,
-                                                            name: format!("(,)left"),
+                                                        kind: ExprKind::Call {
+                                                            func: Expr::local_var(
+                                                                "Tuple.Access.left",
+                                                            ),
+                                                            args: vec![*init],
+                                                            purity: Purity::Pure,
+                                                            from_user: false,
                                                         },
                                                     })
                                                 },
@@ -428,9 +439,11 @@ fn build_inner_match(patterns: Vec<(String, Rc<Pattern>)>, body: Box<Expr>) -> B
                                             } else {
                                                 Box::new(Expr {
                                                     ty: None,
-                                                    kind: ExprKind::NamedField {
-                                                        base: init,
-                                                        name: format!("(,)right"),
+                                                    kind: ExprKind::Call {
+                                                        func: Expr::local_var("Tuple.Access.right"),
+                                                        args: vec![*init],
+                                                        purity: Purity::Pure,
+                                                        from_user: false,
                                                     },
                                                 })
                                             }
@@ -665,7 +678,9 @@ fn compile_expr_kind<'a>(
             }
         }
         thir::ExprKind::Binary { op, lhs, rhs } => {
-            let (path, purity) = path_of_bin_op(op);
+            let left_ty = compile_type(env, &thir.exprs.get(*lhs).unwrap().ty);
+            let right_ty = compile_type(env, &thir.exprs.get(*rhs).unwrap().ty);
+            let (path, purity) = path_of_bin_op(op, &left_ty, &right_ty);
             let lhs = compile_expr(env, thir, lhs);
             let rhs = compile_expr(env, thir, rhs);
             ExprKind::Call {
@@ -803,7 +818,9 @@ fn compile_expr_kind<'a>(
             }
         }
         thir::ExprKind::AssignOp { op, lhs, rhs } => {
-            let (path, purity) = path_of_bin_op(op);
+            let left_ty = compile_type(env, &thir.exprs.get(*lhs).unwrap().ty);
+            let right_ty = compile_type(env, &thir.exprs.get(*rhs).unwrap().ty);
+            let (path, purity) = path_of_bin_op(op, &left_ty, &right_ty);
             let lhs = compile_expr(env, thir, lhs);
             let rhs = compile_expr(env, thir, rhs);
 

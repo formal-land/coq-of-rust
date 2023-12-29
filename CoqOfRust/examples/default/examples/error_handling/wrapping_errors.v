@@ -36,7 +36,7 @@ Section Impl_core_fmt_Debug_for_wrapping_errors_DoubleError_t.
           fun γ =>
             (let* γ :=
               let* α0 := M.read γ in
-              M.alloc (deref α0) in
+              M.pure (deref α0) in
             let* α0 := M.read γ in
             match α0 with
             | wrapping_errors.DoubleError.EmptyVec =>
@@ -51,7 +51,7 @@ Section Impl_core_fmt_Debug_for_wrapping_errors_DoubleError_t.
           fun γ =>
             (let* γ :=
               let* α0 := M.read γ in
-              M.alloc (deref α0) in
+              M.pure (deref α0) in
             let* α0 := M.read γ in
             match α0 with
             | wrapping_errors.DoubleError.Parse _ =>

@@ -29,7 +29,7 @@ Section Impl_core_fmt_Debug_for_combinators_and_then_Food_t.
           fun γ =>
             (let* γ :=
               let* α0 := M.read γ in
-              M.alloc (deref α0) in
+              M.pure (deref α0) in
             let* α0 := M.read γ in
             match α0 with
             | combinators_and_then.Food.CordonBleu =>
@@ -41,7 +41,7 @@ Section Impl_core_fmt_Debug_for_combinators_and_then_Food_t.
           fun γ =>
             (let* γ :=
               let* α0 := M.read γ in
-              M.alloc (deref α0) in
+              M.pure (deref α0) in
             let* α0 := M.read γ in
             match α0 with
             | combinators_and_then.Food.Steak =>
@@ -53,7 +53,7 @@ Section Impl_core_fmt_Debug_for_combinators_and_then_Food_t.
           fun γ =>
             (let* γ :=
               let* α0 := M.read γ in
-              M.alloc (deref α0) in
+              M.pure (deref α0) in
             let* α0 := M.read γ in
             match α0 with
             | combinators_and_then.Food.Sushi =>
@@ -104,7 +104,7 @@ Section Impl_core_fmt_Debug_for_combinators_and_then_Day_t.
           fun γ =>
             (let* γ :=
               let* α0 := M.read γ in
-              M.alloc (deref α0) in
+              M.pure (deref α0) in
             let* α0 := M.read γ in
             match α0 with
             | combinators_and_then.Day.Monday =>
@@ -116,7 +116,7 @@ Section Impl_core_fmt_Debug_for_combinators_and_then_Day_t.
           fun γ =>
             (let* γ :=
               let* α0 := M.read γ in
-              M.alloc (deref α0) in
+              M.pure (deref α0) in
             let* α0 := M.read γ in
             match α0 with
             | combinators_and_then.Day.Tuesday =>
@@ -128,7 +128,7 @@ Section Impl_core_fmt_Debug_for_combinators_and_then_Day_t.
           fun γ =>
             (let* γ :=
               let* α0 := M.read γ in
-              M.alloc (deref α0) in
+              M.pure (deref α0) in
             let* α0 := M.read γ in
             match α0 with
             | combinators_and_then.Day.Wednesday =>
@@ -418,9 +418,9 @@ Definition main : M unit :=
           (let* α0 := M.read γ in
           match α0 with
           | (_, _, _) =>
-            let γ0 := γ.["(,)left"].["(,)left"] in
-            let γ1 := γ.["(,)left"].["(,)right"] in
-            let γ2 := γ.["(,)right"] in
+            let γ0 := Tuple.Access.left (Tuple.Access.left γ) in
+            let γ1 := Tuple.Access.right (Tuple.Access.left γ) in
+            let γ2 := Tuple.Access.right γ in
             let* cordon_bleu := M.copy γ0 in
             let* steak := M.copy γ1 in
             let* sushi := M.copy γ2 in

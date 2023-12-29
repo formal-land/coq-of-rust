@@ -19,8 +19,8 @@ Definition reverse (pair : i32.t * bool.t) : M (bool.t * i32.t) :=
           (let* α0 := M.read γ in
           match α0 with
           | (_, _) =>
-            let γ0 := γ.["(,)left"] in
-            let γ1 := γ.["(,)right"] in
+            let γ0 := Tuple.Access.left γ in
+            let γ1 := Tuple.Access.right γ in
             let* int_param := M.copy γ0 in
             let* bool_param := M.copy γ1 in
             let* α0 : bool.t := M.read bool_param in
@@ -348,10 +348,12 @@ Definition main : M unit :=
           (let* α0 := M.read γ in
           match α0 with
           | (_, _, _, _) =>
-            let γ0 := γ.["(,)left"].["(,)left"].["(,)left"] in
-            let γ1 := γ.["(,)left"].["(,)left"].["(,)right"] in
-            let γ2 := γ.["(,)left"].["(,)right"] in
-            let γ3 := γ.["(,)right"] in
+            let γ0 :=
+              Tuple.Access.left (Tuple.Access.left (Tuple.Access.left γ)) in
+            let γ1 :=
+              Tuple.Access.right (Tuple.Access.left (Tuple.Access.left γ)) in
+            let γ2 := Tuple.Access.right (Tuple.Access.left γ) in
+            let γ3 := Tuple.Access.right γ in
             let* a := M.copy γ0 in
             let* b := M.copy γ1 in
             let* c := M.copy γ2 in

@@ -89,7 +89,7 @@ Definition main : M unit :=
                             fun γ =>
                               (let* γ :=
                                 let* α0 := M.read γ in
-                                M.alloc (deref α0) in
+                                M.pure (deref α0) in
                               let* _ : M.Val unit :=
                                 let* α0 : ref str.t :=
                                   M.read

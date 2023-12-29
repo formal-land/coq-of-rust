@@ -60,7 +60,7 @@ Definition main : M unit :=
                 fun γ =>
                   (let* γ :=
                     let* α0 := M.read γ in
-                    M.alloc (deref α0) in
+                    M.pure (deref α0) in
                   let* x := M.copy γ in
                   let* α0 : i32.t := M.read x in
                   let* α1 : i32.t := BinOp.Panic.rem α0 (Integer.of_Z 2) in
@@ -85,8 +85,8 @@ Definition main : M unit :=
           (let* α0 := M.read γ in
           match α0 with
           | (_, _) =>
-            let γ0 := γ.["(,)left"] in
-            let γ1 := γ.["(,)right"] in
+            let γ0 := Tuple.Access.left γ in
+            let γ1 := Tuple.Access.right γ in
             let* left_val := M.copy γ0 in
             let* right_val := M.copy γ1 in
             let* α0 : ref (core.option.Option.t usize.t) := M.read left_val in
@@ -172,8 +172,8 @@ Definition main : M unit :=
           (let* α0 := M.read γ in
           match α0 with
           | (_, _) =>
-            let γ0 := γ.["(,)left"] in
-            let γ1 := γ.["(,)right"] in
+            let γ0 := Tuple.Access.left γ in
+            let γ1 := Tuple.Access.right γ in
             let* left_val := M.copy γ0 in
             let* right_val := M.copy γ1 in
             let* α0 : ref (core.option.Option.t usize.t) := M.read left_val in

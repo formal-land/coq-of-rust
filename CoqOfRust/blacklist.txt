@@ -1,12 +1,3 @@
-# recently added
-examples/default/examples/custom_types/enums_type_aliases_v2.v
-examples/default/examples/ink_contracts/erc20.v
-examples/default/examples/ink_contracts/lang_err_integration_tests/call_builder.v
-examples/default/examples/ink_contracts/payment_channel.v
-examples/default/examples/ink_contracts/Proofs/erc20.v
-examples/default/examples/ink_contracts/Simulations/erc20.v
-examples/default/examples/ink_contracts/trait_erc20.v
-examples/default/examples/ink_contracts/wildcard_selector.v
 # blacklisting ink smart contracts
 examples/default/examples/ink_contracts/erc1155.v
 examples/default/examples/ink_contracts/erc721.v

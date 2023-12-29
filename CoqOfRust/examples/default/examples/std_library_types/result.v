@@ -30,7 +30,7 @@ Module checked.
             fun γ =>
               (let* γ :=
                 let* α0 := M.read γ in
-                M.alloc (deref α0) in
+                M.pure (deref α0) in
               let* α0 := M.read γ in
               match α0 with
               | result.checked.MathError.DivisionByZero =>
@@ -42,7 +42,7 @@ Module checked.
             fun γ =>
               (let* γ :=
                 let* α0 := M.read γ in
-                M.alloc (deref α0) in
+                M.pure (deref α0) in
               let* α0 := M.read γ in
               match α0 with
               | result.checked.MathError.NonPositiveLogarithm =>
@@ -54,7 +54,7 @@ Module checked.
             fun γ =>
               (let* γ :=
                 let* α0 := M.read γ in
-                M.alloc (deref α0) in
+                M.pure (deref α0) in
               let* α0 := M.read γ in
               match α0 with
               | result.checked.MathError.NegativeSquareRoot =>
@@ -189,7 +189,7 @@ Section Impl_core_fmt_Debug_for_result_checked_MathError_t.
           fun γ =>
             (let* γ :=
               let* α0 := M.read γ in
-              M.alloc (deref α0) in
+              M.pure (deref α0) in
             let* α0 := M.read γ in
             match α0 with
             | result.checked.MathError.DivisionByZero =>
@@ -201,7 +201,7 @@ Section Impl_core_fmt_Debug_for_result_checked_MathError_t.
           fun γ =>
             (let* γ :=
               let* α0 := M.read γ in
-              M.alloc (deref α0) in
+              M.pure (deref α0) in
             let* α0 := M.read γ in
             match α0 with
             | result.checked.MathError.NonPositiveLogarithm =>
@@ -213,7 +213,7 @@ Section Impl_core_fmt_Debug_for_result_checked_MathError_t.
           fun γ =>
             (let* γ :=
               let* α0 := M.read γ in
-              M.alloc (deref α0) in
+              M.pure (deref α0) in
             let* α0 := M.read γ in
             match α0 with
             | result.checked.MathError.NegativeSquareRoot =>

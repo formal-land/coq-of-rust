@@ -1824,15 +1824,15 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                             let* α0 := M.read γ0 in
                             match α0 with
                             | (_, _) =>
-                              let γ0 := γ0.["(,)left"] in
-                              let γ1 := γ0.["(,)right"] in
+                              let γ0 := Tuple.Access.left γ0 in
+                              let γ1 := Tuple.Access.right γ0 in
                               let* γ0 :=
                                 let* α0 := M.read γ0 in
-                                M.alloc (deref α0) in
+                                M.pure (deref α0) in
                               let* id := M.copy γ0 in
                               let* γ1 :=
                                 let* α0 := M.read γ1 in
-                                M.alloc (deref α0) in
+                                M.pure (deref α0) in
                               let* v := M.copy γ1 in
                               let* balance : M.Val u128.t :=
                                 let* α0 : mut_ref erc1155.Contract.t :=
@@ -1943,15 +1943,15 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                             let* α0 := M.read γ0 in
                             match α0 with
                             | (_, _) =>
-                              let γ0 := γ0.["(,)left"] in
-                              let γ1 := γ0.["(,)right"] in
+                              let γ0 := Tuple.Access.left γ0 in
+                              let γ1 := Tuple.Access.right γ0 in
                               let* γ0 :=
                                 let* α0 := M.read γ0 in
-                                M.alloc (deref α0) in
+                                M.pure (deref α0) in
                               let* id := M.copy γ0 in
                               let* γ1 :=
                                 let* α0 := M.read γ1 in
-                                M.alloc (deref α0) in
+                                M.pure (deref α0) in
                               let* v := M.copy γ1 in
                               let* _ : M.Val unit :=
                                 let* α0 : mut_ref erc1155.Contract.t :=

@@ -564,7 +564,7 @@ Section Impl_core_clone_Clone_for_mother_Outline_t.
           fun γ =>
             (let* γ :=
               let* α0 := M.read γ in
-              M.alloc (deref α0) in
+              M.pure (deref α0) in
             let* α0 := M.read γ in
             match α0 with
             | mother.Outline.NoWinner => M.alloc mother.Outline.NoWinner
@@ -574,7 +574,7 @@ Section Impl_core_clone_Clone_for_mother_Outline_t.
           fun γ =>
             (let* γ :=
               let* α0 := M.read γ in
-              M.alloc (deref α0) in
+              M.pure (deref α0) in
             let* α0 := M.read γ in
             match α0 with
             | mother.Outline.WinnerDetected =>
@@ -585,7 +585,7 @@ Section Impl_core_clone_Clone_for_mother_Outline_t.
           fun γ =>
             (let* γ :=
               let* α0 := M.read γ in
-              M.alloc (deref α0) in
+              M.pure (deref α0) in
             let* α0 := M.read γ in
             match α0 with
             | mother.Outline.PayoutCompleted =>
@@ -684,11 +684,11 @@ Section Impl_core_cmp_PartialEq_for_mother_Status_t.
             (let* α0 := M.read γ in
             match α0 with
             | (_, _) =>
-              let γ0 := γ.["(,)left"] in
-              let γ1 := γ.["(,)right"] in
+              let γ0 := Tuple.Access.left γ in
+              let γ1 := Tuple.Access.right γ in
               let* γ0 :=
                 let* α0 := M.read γ0 in
-                M.alloc (deref α0) in
+                M.pure (deref α0) in
               let* α0 := M.read γ0 in
               match α0 with
               | mother.Status.EndingPeriod _ =>
@@ -696,7 +696,7 @@ Section Impl_core_cmp_PartialEq_for_mother_Status_t.
                 let* __self_0 := M.alloc (borrow_mut γ0) in
                 let* γ1 :=
                   let* α0 := M.read γ1 in
-                  M.alloc (deref α0) in
+                  M.pure (deref α0) in
                 let* α0 := M.read γ1 in
                 match α0 with
                 | mother.Status.EndingPeriod _ =>
@@ -717,11 +717,11 @@ Section Impl_core_cmp_PartialEq_for_mother_Status_t.
             (let* α0 := M.read γ in
             match α0 with
             | (_, _) =>
-              let γ0 := γ.["(,)left"] in
-              let γ1 := γ.["(,)right"] in
+              let γ0 := Tuple.Access.left γ in
+              let γ1 := Tuple.Access.right γ in
               let* γ0 :=
                 let* α0 := M.read γ0 in
-                M.alloc (deref α0) in
+                M.pure (deref α0) in
               let* α0 := M.read γ0 in
               match α0 with
               | mother.Status.Ended _ =>
@@ -729,7 +729,7 @@ Section Impl_core_cmp_PartialEq_for_mother_Status_t.
                 let* __self_0 := M.alloc (borrow_mut γ0) in
                 let* γ1 :=
                   let* α0 := M.read γ1 in
-                  M.alloc (deref α0) in
+                  M.pure (deref α0) in
                 let* α0 := M.read γ1 in
                 match α0 with
                 | mother.Status.Ended _ =>
@@ -755,11 +755,11 @@ Section Impl_core_cmp_PartialEq_for_mother_Status_t.
             (let* α0 := M.read γ in
             match α0 with
             | (_, _) =>
-              let γ0 := γ.["(,)left"] in
-              let γ1 := γ.["(,)right"] in
+              let γ0 := Tuple.Access.left γ in
+              let γ1 := Tuple.Access.right γ in
               let* γ0 :=
                 let* α0 := M.read γ0 in
-                M.alloc (deref α0) in
+                M.pure (deref α0) in
               let* α0 := M.read γ0 in
               match α0 with
               | mother.Status.RfDelay _ =>
@@ -767,7 +767,7 @@ Section Impl_core_cmp_PartialEq_for_mother_Status_t.
                 let* __self_0 := M.alloc (borrow_mut γ0) in
                 let* γ1 :=
                   let* α0 := M.read γ1 in
-                  M.alloc (deref α0) in
+                  M.pure (deref α0) in
                 let* α0 := M.read γ1 in
                 match α0 with
                 | mother.Status.RfDelay _ =>
@@ -862,7 +862,7 @@ Section Impl_core_clone_Clone_for_mother_Status_t.
           fun γ =>
             (let* γ :=
               let* α0 := M.read γ in
-              M.alloc (deref α0) in
+              M.pure (deref α0) in
             let* α0 := M.read γ in
             match α0 with
             | mother.Status.NotStarted => M.alloc mother.Status.NotStarted
@@ -872,7 +872,7 @@ Section Impl_core_clone_Clone_for_mother_Status_t.
           fun γ =>
             (let* γ :=
               let* α0 := M.read γ in
-              M.alloc (deref α0) in
+              M.pure (deref α0) in
             let* α0 := M.read γ in
             match α0 with
             | mother.Status.OpeningPeriod => M.alloc mother.Status.OpeningPeriod
@@ -882,7 +882,7 @@ Section Impl_core_clone_Clone_for_mother_Status_t.
           fun γ =>
             (let* γ :=
               let* α0 := M.read γ in
-              M.alloc (deref α0) in
+              M.pure (deref α0) in
             let* α0 := M.read γ in
             match α0 with
             | mother.Status.EndingPeriod _ =>
@@ -902,7 +902,7 @@ Section Impl_core_clone_Clone_for_mother_Status_t.
           fun γ =>
             (let* γ :=
               let* α0 := M.read γ in
-              M.alloc (deref α0) in
+              M.pure (deref α0) in
             let* α0 := M.read γ in
             match α0 with
             | mother.Status.Ended _ =>
@@ -922,7 +922,7 @@ Section Impl_core_clone_Clone_for_mother_Status_t.
           fun γ =>
             (let* γ :=
               let* α0 := M.read γ in
-              M.alloc (deref α0) in
+              M.pure (deref α0) in
             let* α0 := M.read γ in
             match α0 with
             | mother.Status.RfDelay _ =>
@@ -1107,7 +1107,7 @@ Section Impl_core_cmp_PartialEq_for_mother_Auction_t.
           (BinOp.Pure.and
             (BinOp.Pure.and (BinOp.Pure.and (BinOp.Pure.and α2 α5) α8) α11)
             α14)
-          (BinOp.Pure.eq α16 α18))
+          (Bool.eqb α16 α18))
         α21).
   
   Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
@@ -1403,11 +1403,11 @@ Section Impl_core_cmp_PartialEq_for_mother_Failure_t.
             (let* α0 := M.read γ in
             match α0 with
             | (_, _) =>
-              let γ0 := γ.["(,)left"] in
-              let γ1 := γ.["(,)right"] in
+              let γ0 := Tuple.Access.left γ in
+              let γ1 := Tuple.Access.right γ in
               let* γ0 :=
                 let* α0 := M.read γ0 in
-                M.alloc (deref α0) in
+                M.pure (deref α0) in
               let* α0 := M.read γ0 in
               match α0 with
               | mother.Failure.Revert _ =>
@@ -1415,7 +1415,7 @@ Section Impl_core_cmp_PartialEq_for_mother_Failure_t.
                 let* __self_0 := M.alloc (borrow_mut γ0) in
                 let* γ1 :=
                   let* α0 := M.read γ1 in
-                  M.alloc (deref α0) in
+                  M.pure (deref α0) in
                 let* α0 := M.read γ1 in
                 match α0 with
                 | mother.Failure.Revert _ =>

@@ -32,7 +32,7 @@ Section Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert
           fun γ =>
             (let* γ :=
               let* α0 := M.read γ in
-              M.alloc (deref α0) in
+              M.pure (deref α0) in
             let* α0 := M.read γ in
             match α0 with
             | unpacking_options_and_defaults_via_get_or_insert.Fruit.Apple =>
@@ -44,7 +44,7 @@ Section Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert
           fun γ =>
             (let* γ :=
               let* α0 := M.read γ in
-              M.alloc (deref α0) in
+              M.pure (deref α0) in
             let* α0 := M.read γ in
             match α0 with
             | unpacking_options_and_defaults_via_get_or_insert.Fruit.Orange =>
@@ -56,7 +56,7 @@ Section Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert
           fun γ =>
             (let* γ :=
               let* α0 := M.read γ in
-              M.alloc (deref α0) in
+              M.pure (deref α0) in
             let* α0 := M.read γ in
             match α0 with
             | unpacking_options_and_defaults_via_get_or_insert.Fruit.Banana =>
@@ -68,7 +68,7 @@ Section Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert
           fun γ =>
             (let* γ :=
               let* α0 := M.read γ in
-              M.alloc (deref α0) in
+              M.pure (deref α0) in
             let* α0 := M.read γ in
             match α0 with
             | unpacking_options_and_defaults_via_get_or_insert.Fruit.Kiwi =>
@@ -80,7 +80,7 @@ Section Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert
           fun γ =>
             (let* γ :=
               let* α0 := M.read γ in
-              M.alloc (deref α0) in
+              M.pure (deref α0) in
             let* α0 := M.read γ in
             match α0 with
             | unpacking_options_and_defaults_via_get_or_insert.Fruit.Lemon =>

@@ -29,7 +29,7 @@ Section Impl_core_fmt_Debug_for_combinators_map_Food_t.
           fun γ =>
             (let* γ :=
               let* α0 := M.read γ in
-              M.alloc (deref α0) in
+              M.pure (deref α0) in
             let* α0 := M.read γ in
             match α0 with
             | combinators_map.Food.Apple =>
@@ -41,7 +41,7 @@ Section Impl_core_fmt_Debug_for_combinators_map_Food_t.
           fun γ =>
             (let* γ :=
               let* α0 := M.read γ in
-              M.alloc (deref α0) in
+              M.pure (deref α0) in
             let* α0 := M.read γ in
             match α0 with
             | combinators_map.Food.Carrot =>
@@ -53,7 +53,7 @@ Section Impl_core_fmt_Debug_for_combinators_map_Food_t.
           fun γ =>
             (let* γ :=
               let* α0 := M.read γ in
-              M.alloc (deref α0) in
+              M.pure (deref α0) in
             let* α0 := M.read γ in
             match α0 with
             | combinators_map.Food.Potato =>

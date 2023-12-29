@@ -212,7 +212,7 @@ Definition main : M unit :=
                 fun γ =>
                   (let* γ :=
                     let* α0 := M.read γ in
-                    M.alloc (deref α0) in
+                    M.pure (deref α0) in
                   let* n_squared := M.copy γ in
                   let* α0 : u32.t := M.read n_squared in
                   let* α1 : u32.t := M.read upper in
@@ -246,7 +246,7 @@ Definition main : M unit :=
                 fun γ =>
                   (let* γ :=
                     let* α0 := M.read γ in
-                    M.alloc (deref α0) in
+                    M.pure (deref α0) in
                   let* n_squared := M.copy γ in
                   let* α0 : u32.t := M.read n_squared in
                   M.call (higher_order_functions.is_odd α0)) :

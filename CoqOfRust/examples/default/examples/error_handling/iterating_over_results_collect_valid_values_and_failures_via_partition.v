@@ -96,8 +96,8 @@ Definition main : M unit :=
           (let* α0 := M.read γ in
           match α0 with
           | (_, _) =>
-            let γ0 := γ.["(,)left"] in
-            let γ1 := γ.["(,)right"] in
+            let γ0 := Tuple.Access.left γ in
+            let γ1 := Tuple.Access.right γ in
             let* numbers := M.copy γ0 in
             let* errors := M.copy γ1 in
             let* _ : M.Val unit :=

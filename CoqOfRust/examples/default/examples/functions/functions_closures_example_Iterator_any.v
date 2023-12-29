@@ -82,7 +82,7 @@ Definition main : M unit :=
                   fun γ =>
                     (let* γ :=
                       let* α0 := M.read γ in
-                      M.alloc (deref α0) in
+                      M.pure (deref α0) in
                     let* x := M.copy γ in
                     let* α0 : i32.t := M.read x in
                     M.pure (BinOp.Pure.eq α0 (Integer.of_Z 2))) :
@@ -239,7 +239,7 @@ Definition main : M unit :=
                   fun γ =>
                     (let* γ :=
                       let* α0 := M.read γ in
-                      M.alloc (deref α0) in
+                      M.pure (deref α0) in
                     let* x := M.copy γ in
                     let* α0 : i32.t := M.read x in
                     M.pure (BinOp.Pure.eq α0 (Integer.of_Z 2))) :

@@ -158,7 +158,7 @@ Section Impl_derive_Inches_t.
           fun γ =>
             (let* γ :=
               let* α0 := M.read γ in
-              M.alloc (deref α0) in
+              M.pure (deref α0) in
             let* α0 := M.read γ in
             match α0 with
             | derive.Inches.Build_t _ =>

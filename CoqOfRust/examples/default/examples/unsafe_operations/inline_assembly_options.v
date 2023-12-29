@@ -35,8 +35,8 @@ Definition main : M unit :=
           (let* α0 := M.read γ in
           match α0 with
           | (_, _) =>
-            let γ0 := γ.["(,)left"] in
-            let γ1 := γ.["(,)right"] in
+            let γ0 := Tuple.Access.left γ in
+            let γ1 := Tuple.Access.right γ in
             let* left_val := M.copy γ0 in
             let* right_val := M.copy γ1 in
             let* α0 : ref u64.t := M.read left_val in

@@ -31,7 +31,7 @@ Module checked.
             fun γ =>
               (let* γ :=
                 let* α0 := M.read γ in
-                M.alloc (deref α0) in
+                M.pure (deref α0) in
               let* α0 := M.read γ in
               match α0 with
               |
@@ -45,7 +45,7 @@ Module checked.
             fun γ =>
               (let* γ :=
                 let* α0 := M.read γ in
-                M.alloc (deref α0) in
+                M.pure (deref α0) in
               let* α0 := M.read γ in
               match α0 with
               |
@@ -59,7 +59,7 @@ Module checked.
             fun γ =>
               (let* γ :=
                 let* α0 := M.read γ in
-                M.alloc (deref α0) in
+                M.pure (deref α0) in
               let* α0 := M.read γ in
               match α0 with
               |
@@ -528,7 +528,7 @@ Section Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathE
           fun γ =>
             (let* γ :=
               let* α0 := M.read γ in
-              M.alloc (deref α0) in
+              M.pure (deref α0) in
             let* α0 := M.read γ in
             match α0 with
             |
@@ -542,7 +542,7 @@ Section Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathE
           fun γ =>
             (let* γ :=
               let* α0 := M.read γ in
-              M.alloc (deref α0) in
+              M.pure (deref α0) in
             let* α0 := M.read γ in
             match α0 with
             |
@@ -556,7 +556,7 @@ Section Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathE
           fun γ =>
             (let* γ :=
               let* α0 := M.read γ in
-              M.alloc (deref α0) in
+              M.pure (deref α0) in
             let* α0 := M.read γ in
             match α0 with
             |
