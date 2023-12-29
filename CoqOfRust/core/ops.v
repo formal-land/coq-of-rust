@@ -4,6 +4,26 @@ Require CoqOfRust.alloc.vec.
 Require CoqOfRust.core.convert.
 Require CoqOfRust.core.result.
 
+(* 
+pub struct Range<Idx> {
+    /// The lower bound of the range (inclusive).
+    #[stable(feature = "rust1", since = "1.0.0")]
+    pub start: Idx,
+    /// The upper bound of the range (exclusive).
+    #[stable(feature = "rust1", since = "1.0.0")]
+    pub end: Idx,
+}
+*)
+Module range.
+  Module Range.
+    Record t (Idx : Set) : Set := { 
+      start: Idx;
+      end_: Idx;
+    }.
+  End Range.
+  Definition Range := Range.t.
+End range.
+
 Module arith.
   Module Add.
     Class Trait (Self : Set) {Rhs : Set} : Type := {

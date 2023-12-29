@@ -82,7 +82,7 @@ pub struct Range<Idx> {
 Module Range.
   Record t (Idx : Set) : Set := { 
     start : Idx;
-    _end : Idx
+    end_ : Idx;
   }.
 End Range.
 Definition Range := Range.t.
@@ -118,7 +118,7 @@ pub struct RangeTo<Idx> {
 *)
 Module RangeTo.
   Record t (Idx : Set) : Set := { 
-    _end : Idx;
+    end_ : Idx;
   }.
 End RangeTo.
 Definition RangeTo := RangeTo.t.
@@ -130,7 +130,7 @@ pub struct RangeToInclusive<Idx> {
 *)
 Module RangeToInclusive.
   Record t (Idx : Set) : Set := { 
-    _end : Idx;
+    end_ : Idx;
   }.
 End RangeToInclusive.
 Definition RangeToInclusive := RangeToInclusive.t.

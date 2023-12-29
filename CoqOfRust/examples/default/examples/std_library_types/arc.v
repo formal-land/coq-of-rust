@@ -37,7 +37,7 @@ Definition main : M unit :=
             (Trait := ltac:(refine _)))
           {|
             core.ops.range.Range.start := Integer.of_Z 0;
-            core.ops.range.Range.end := Integer.of_Z 10;
+            core.ops.range.Range.end_ := Integer.of_Z 10;
           |}) in
     let* α1 : M.Val unit :=
       match α0 with

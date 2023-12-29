@@ -35,14 +35,16 @@ Require CoqOfRust.core.result_types.
 *)
 
 (* pub struct Error { /* private fields */ } *)
-Module Error.
-  Parameter t : Set.
-End Error.
-Definition Error : Set :=
-  M.Val Error.t.
+Module error.
+  (* Definition Error : Set := _std.io.Error. *)
+  Module Error.
+    Parameter t : Set.
+  End Error.
+  Definition Error : Set := Error.t.
+End error.
 
 Definition Result (T : Set) : Set :=
-  core.result_types.Result.t T Error.t.
+  core.result_types.Result.t T _std.io.error.Error.t.
 
 (* pub struct BorrowedBuf<'data> { /* private fields */ } *)
 Module BorrowedBuf.
