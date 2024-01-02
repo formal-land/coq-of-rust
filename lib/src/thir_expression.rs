@@ -737,11 +737,9 @@ fn compile_expr_kind<'a>(
             .alloc(Some(ty))
         }
         thir::ExprKind::Cast { source } => {
-            let func = Rc::new(Expr {
-                kind: Rc::new(ExprKind::LocalVar("cast".to_string())),
-                ty: None,
-            });
+            let func = Expr::local_var("M.cast");
             let source = compile_expr(env, thir, source);
+
             Rc::new(ExprKind::Call {
                 func,
                 args: vec![source.read()],

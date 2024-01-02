@@ -387,11 +387,32 @@ Module deref.
       deref : ref Self -> M (ref Target);
     }.
 
-    Global Instance Method_deref `(Trait) :
-      Notations.Dot "deref" := {
-      Notations.dot := deref;
-    }.
+    Module Impl.
+      Global Instance I_Vec {T A : Set} {H0 : core.alloc.Allocator.Trait A} :
+        Deref.Trait (vec.Vec.t T A) (Target := slice T).
+      Admitted.
+    End Impl.
   End Deref.
+
+  (*
+  pub trait DerefMut: Deref {
+      // Required method
+      fn deref_mut(&mut self) -> &mut Self::Target;
+  }
+  *)
+  Module DerefMut.
+    Class Trait (Self : Set)
+        {Target : Set} {H0 : Deref.Trait Self (Target := Target)} :
+        Set := {
+      deref_mut : mut_ref Self -> M (mut_ref Target);
+    }.
+
+    Module Impl.
+      Global Instance I_Vec {T A : Set} {H0 : core.alloc.Allocator.Trait A} :
+        DerefMut.Trait (vec.Vec.t T A) (Target := _).
+      Admitted.
+    End Impl.
+  End DerefMut.
 End deref.
 
 Module function.

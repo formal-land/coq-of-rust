@@ -1092,6 +1092,13 @@ Section Impl_core_default_Default_for_multisig_Multisig_t.
 End Impl_core_default_Default_for_multisig_Multisig_t.
 End Impl_core_default_Default_for_multisig_Multisig_t.
 
+(*
+fn ensure_requirement_is_valid(owners: u32, requirement: u32) {
+    assert!(0 < requirement && requirement <= owners && owners <= MAX_OWNERS);
+}
+*)
+Parameter ensure_requirement_is_valid : u32.t -> u32.t -> M unit.
+
 Module  Impl_multisig_Multisig_t.
 Section Impl_multisig_Multisig_t.
   Definition Self : Set := multisig.Multisig.t.
@@ -1146,6 +1153,88 @@ Section Impl_multisig_Multisig_t.
   }.
   
   (*
+      fn ensure_confirmed(&self, trans_id: TransactionId) {
+          assert!(
+              self.confirmation_count
+                  .get(&trans_id)
+                  .expect(WRONG_TRANSACTION_ID)
+                  >= self.requirement
+          );
+      }
+  *)
+  Parameter ensure_confirmed :
+      (ref Self) -> ltac:(multisig.TransactionId) -> M unit.
+  
+  Global Instance AssociatedFunction_ensure_confirmed :
+    Notations.DoubleColon Self "ensure_confirmed" := {
+    Notations.double_colon := ensure_confirmed;
+  }.
+  
+  (*
+      fn ensure_transaction_exists(&self, trans_id: TransactionId) {
+          self.transactions
+              .get(&trans_id)
+              .expect(WRONG_TRANSACTION_ID);
+      }
+  *)
+  Parameter ensure_transaction_exists :
+      (ref Self) -> ltac:(multisig.TransactionId) -> M unit.
+  
+  Global Instance AssociatedFunction_ensure_transaction_exists :
+    Notations.DoubleColon Self "ensure_transaction_exists" := {
+    Notations.double_colon := ensure_transaction_exists;
+  }.
+  
+  (*
+      fn ensure_owner(&self, owner: &AccountId) {
+          assert!(self.is_owner.contains(owner));
+      }
+  *)
+  Parameter ensure_owner : (ref Self) -> (ref multisig.AccountId.t) -> M unit.
+  
+  Global Instance AssociatedFunction_ensure_owner :
+    Notations.DoubleColon Self "ensure_owner" := {
+    Notations.double_colon := ensure_owner;
+  }.
+  
+  (*
+      fn ensure_caller_is_owner(&self) {
+          self.ensure_owner(&self.env().caller());
+      }
+  *)
+  Parameter ensure_caller_is_owner : (ref Self) -> M unit.
+  
+  Global Instance AssociatedFunction_ensure_caller_is_owner :
+    Notations.DoubleColon Self "ensure_caller_is_owner" := {
+    Notations.double_colon := ensure_caller_is_owner;
+  }.
+  
+  (*
+      fn ensure_from_wallet(&self) {
+          assert_eq!(self.env().caller(), self.env().account_id());
+      }
+  *)
+  Parameter ensure_from_wallet : (ref Self) -> M unit.
+  
+  Global Instance AssociatedFunction_ensure_from_wallet :
+    Notations.DoubleColon Self "ensure_from_wallet" := {
+    Notations.double_colon := ensure_from_wallet;
+  }.
+  
+  (*
+      fn ensure_no_owner(&self, owner: &AccountId) {
+          assert!(!self.is_owner.contains(owner));
+      }
+  *)
+  Parameter ensure_no_owner :
+      (ref Self) -> (ref multisig.AccountId.t) -> M unit.
+  
+  Global Instance AssociatedFunction_ensure_no_owner :
+    Notations.DoubleColon Self "ensure_no_owner" := {
+    Notations.double_colon := ensure_no_owner;
+  }.
+  
+  (*
       pub fn add_owner(&mut self, new_owner: AccountId) {
           self.ensure_from_wallet();
           self.ensure_no_owner(&new_owner);
@@ -1161,6 +1250,42 @@ Section Impl_multisig_Multisig_t.
   Global Instance AssociatedFunction_add_owner :
     Notations.DoubleColon Self "add_owner" := {
     Notations.double_colon := add_owner;
+  }.
+  
+  (*
+      fn owner_index(&self, owner: &AccountId) -> u32 {
+          self.owners.iter().position(|x| *x == *owner).expect(
+              "This is only called after it was already verified that the id is
+                 actually an owner.",
+          ) as u32
+      }
+  *)
+  Parameter owner_index : (ref Self) -> (ref multisig.AccountId.t) -> M u32.t.
+  
+  Global Instance AssociatedFunction_owner_index :
+    Notations.DoubleColon Self "owner_index" := {
+    Notations.double_colon := owner_index;
+  }.
+  
+  (*
+      fn clean_owner_confirmations(&mut self, owner: &AccountId) {
+          for trans_id in &self.transaction_list.transactions {
+              let key = ( *trans_id, *owner);
+              if self.confirmations.contains(&key) {
+                  self.confirmations.remove(key);
+                  let mut count = self.confirmation_count.get(trans_id).unwrap_or(0 as u32);
+                  count -= 1;
+                  self.confirmation_count.insert( *trans_id, count);
+              }
+          }
+      }
+  *)
+  Parameter clean_owner_confirmations :
+      (mut_ref Self) -> (ref multisig.AccountId.t) -> M unit.
+  
+  Global Instance AssociatedFunction_clean_owner_confirmations :
+    Notations.DoubleColon Self "clean_owner_confirmations" := {
+    Notations.double_colon := clean_owner_confirmations;
   }.
   
   (*
@@ -1229,14 +1354,60 @@ Section Impl_multisig_Multisig_t.
   }.
   
   (*
+      fn confirm_by_caller(
+          &mut self,
+          confirmer: AccountId,
+          transaction: TransactionId,
+      ) -> ConfirmationStatus {
+          let mut count = self
+              .confirmation_count
+              .get(&transaction)
+              .unwrap_or(0 as u32);
+          let key = (transaction, confirmer);
+          let new_confirmation = !self.confirmations.contains(&key);
+          if new_confirmation {
+              count += 1;
+              self.confirmations.insert(key, ());
+              self.confirmation_count.insert(transaction, count);
+          }
+          let status = {
+              if count >= self.requirement {
+                  ConfirmationStatus::Confirmed
+              } else {
+                  ConfirmationStatus::ConfirmationsNeeded(self.requirement - count)
+              }
+          };
+          if new_confirmation {
+              self.env().emit_event(Event::Confirmation(Confirmation {
+                  transaction,
+                  from: confirmer,
+                  status,
+              }));
+          }
+          status
+      }
+  *)
+  Parameter confirm_by_caller :
+      (mut_ref Self) ->
+        multisig.AccountId.t ->
+        ltac:(multisig.TransactionId) ->
+        M multisig.ConfirmationStatus.t.
+  
+  Global Instance AssociatedFunction_confirm_by_caller :
+    Notations.DoubleColon Self "confirm_by_caller" := {
+    Notations.double_colon := confirm_by_caller;
+  }.
+  
+  (*
       pub fn submit_transaction(
           &mut self,
           transaction: Transaction,
       ) -> (TransactionId, ConfirmationStatus) {
           self.ensure_caller_is_owner();
           let trans_id = self.transaction_list.next_id;
-          self.transaction_list.next_id =
-              trans_id.checked_add(1).expect("Transaction ids exhausted.");
+          self.transaction_list.next_id = trans_id
+              .checked_add(1 as u32)
+              .expect("Transaction ids exhausted.");
           self.transactions.insert(trans_id, transaction);
           self.transaction_list.transactions.push(trans_id);
           self.env().emit_event(Event::Submission(Submission {
@@ -1256,6 +1427,36 @@ Section Impl_multisig_Multisig_t.
   Global Instance AssociatedFunction_submit_transaction :
     Notations.DoubleColon Self "submit_transaction" := {
     Notations.double_colon := submit_transaction;
+  }.
+  
+  (*
+      fn take_transaction(&mut self, trans_id: TransactionId) -> Option<Transaction> {
+          let transaction = self.transactions.get(&trans_id);
+          if transaction.is_some() {
+              self.transactions.remove(trans_id);
+              let pos = self
+                  .transaction_list
+                  .transactions
+                  .iter()
+                  .position(|t| t == &trans_id)
+                  .expect("The transaction exists hence it must also be in the list.");
+              self.transaction_list.transactions.swap_remove(pos);
+              for owner in self.owners.iter() {
+                  self.confirmations.remove((trans_id, *owner));
+              }
+              self.confirmation_count.remove(trans_id);
+          }
+          transaction
+      }
+  *)
+  Parameter take_transaction :
+      (mut_ref Self) ->
+        ltac:(multisig.TransactionId) ->
+        M (core.option.Option.t multisig.Transaction.t).
+  
+  Global Instance AssociatedFunction_take_transaction :
+    Notations.DoubleColon Self "take_transaction" := {
+    Notations.double_colon := take_transaction;
   }.
   
   (*
@@ -1396,202 +1597,5 @@ Section Impl_multisig_Multisig_t.
     Notations.DoubleColon Self "eval_transaction" := {
     Notations.double_colon := eval_transaction;
   }.
-  
-  (*
-      fn confirm_by_caller(
-          &mut self,
-          confirmer: AccountId,
-          transaction: TransactionId,
-      ) -> ConfirmationStatus {
-          let mut count = self.confirmation_count.get(&transaction).unwrap_or(0);
-          let key = (transaction, confirmer);
-          let new_confirmation = !self.confirmations.contains(&key);
-          if new_confirmation {
-              count += 1;
-              self.confirmations.insert(key, ());
-              self.confirmation_count.insert(transaction, count);
-          }
-          let status = {
-              if count >= self.requirement {
-                  ConfirmationStatus::Confirmed
-              } else {
-                  ConfirmationStatus::ConfirmationsNeeded(self.requirement - count)
-              }
-          };
-          if new_confirmation {
-              self.env().emit_event(Event::Confirmation(Confirmation {
-                  transaction,
-                  from: confirmer,
-                  status,
-              }));
-          }
-          status
-      }
-  *)
-  Parameter confirm_by_caller :
-      (mut_ref Self) ->
-        multisig.AccountId.t ->
-        ltac:(multisig.TransactionId) ->
-        M multisig.ConfirmationStatus.t.
-  
-  Global Instance AssociatedFunction_confirm_by_caller :
-    Notations.DoubleColon Self "confirm_by_caller" := {
-    Notations.double_colon := confirm_by_caller;
-  }.
-  
-  (*
-      fn owner_index(&self, owner: &AccountId) -> u32 {
-          self.owners.iter().position(|x| *x == *owner).expect(
-              "This is only called after it was already verified that the id is
-                 actually an owner.",
-          ) as u32
-      }
-  *)
-  Parameter owner_index : (ref Self) -> (ref multisig.AccountId.t) -> M u32.t.
-  
-  Global Instance AssociatedFunction_owner_index :
-    Notations.DoubleColon Self "owner_index" := {
-    Notations.double_colon := owner_index;
-  }.
-  
-  (*
-      fn take_transaction(&mut self, trans_id: TransactionId) -> Option<Transaction> {
-          let transaction = self.transactions.get(&trans_id);
-          if transaction.is_some() {
-              self.transactions.remove(trans_id);
-              let pos = self
-                  .transaction_list
-                  .transactions
-                  .iter()
-                  .position(|t| t == &trans_id)
-                  .expect("The transaction exists hence it must also be in the list.");
-              self.transaction_list.transactions.swap_remove(pos);
-              for owner in self.owners.iter() {
-                  self.confirmations.remove((trans_id, *owner));
-              }
-              self.confirmation_count.remove(trans_id);
-          }
-          transaction
-      }
-  *)
-  Parameter take_transaction :
-      (mut_ref Self) ->
-        ltac:(multisig.TransactionId) ->
-        M (core.option.Option.t multisig.Transaction.t).
-  
-  Global Instance AssociatedFunction_take_transaction :
-    Notations.DoubleColon Self "take_transaction" := {
-    Notations.double_colon := take_transaction;
-  }.
-  
-  (*
-      fn clean_owner_confirmations(&mut self, owner: &AccountId) {
-          for trans_id in &self.transaction_list.transactions {
-              let key = ( *trans_id, *owner);
-              if self.confirmations.contains(&key) {
-                  self.confirmations.remove(key);
-                  let mut count = self.confirmation_count.get(trans_id).unwrap_or(0);
-                  count -= 1;
-                  self.confirmation_count.insert( *trans_id, count);
-              }
-          }
-      }
-  *)
-  Parameter clean_owner_confirmations :
-      (mut_ref Self) -> (ref multisig.AccountId.t) -> M unit.
-  
-  Global Instance AssociatedFunction_clean_owner_confirmations :
-    Notations.DoubleColon Self "clean_owner_confirmations" := {
-    Notations.double_colon := clean_owner_confirmations;
-  }.
-  
-  (*
-      fn ensure_confirmed(&self, trans_id: TransactionId) {
-          assert!(
-              self.confirmation_count
-                  .get(&trans_id)
-                  .expect(WRONG_TRANSACTION_ID)
-                  >= self.requirement
-          );
-      }
-  *)
-  Parameter ensure_confirmed :
-      (ref Self) -> ltac:(multisig.TransactionId) -> M unit.
-  
-  Global Instance AssociatedFunction_ensure_confirmed :
-    Notations.DoubleColon Self "ensure_confirmed" := {
-    Notations.double_colon := ensure_confirmed;
-  }.
-  
-  (*
-      fn ensure_transaction_exists(&self, trans_id: TransactionId) {
-          self.transactions
-              .get(&trans_id)
-              .expect(WRONG_TRANSACTION_ID);
-      }
-  *)
-  Parameter ensure_transaction_exists :
-      (ref Self) -> ltac:(multisig.TransactionId) -> M unit.
-  
-  Global Instance AssociatedFunction_ensure_transaction_exists :
-    Notations.DoubleColon Self "ensure_transaction_exists" := {
-    Notations.double_colon := ensure_transaction_exists;
-  }.
-  
-  (*
-      fn ensure_caller_is_owner(&self) {
-          self.ensure_owner(&self.env().caller());
-      }
-  *)
-  Parameter ensure_caller_is_owner : (ref Self) -> M unit.
-  
-  Global Instance AssociatedFunction_ensure_caller_is_owner :
-    Notations.DoubleColon Self "ensure_caller_is_owner" := {
-    Notations.double_colon := ensure_caller_is_owner;
-  }.
-  
-  (*
-      fn ensure_from_wallet(&self) {
-          assert_eq!(self.env().caller(), self.env().account_id());
-      }
-  *)
-  Parameter ensure_from_wallet : (ref Self) -> M unit.
-  
-  Global Instance AssociatedFunction_ensure_from_wallet :
-    Notations.DoubleColon Self "ensure_from_wallet" := {
-    Notations.double_colon := ensure_from_wallet;
-  }.
-  
-  (*
-      fn ensure_owner(&self, owner: &AccountId) {
-          assert!(self.is_owner.contains(owner));
-      }
-  *)
-  Parameter ensure_owner : (ref Self) -> (ref multisig.AccountId.t) -> M unit.
-  
-  Global Instance AssociatedFunction_ensure_owner :
-    Notations.DoubleColon Self "ensure_owner" := {
-    Notations.double_colon := ensure_owner;
-  }.
-  
-  (*
-      fn ensure_no_owner(&self, owner: &AccountId) {
-          assert!(!self.is_owner.contains(owner));
-      }
-  *)
-  Parameter ensure_no_owner :
-      (ref Self) -> (ref multisig.AccountId.t) -> M unit.
-  
-  Global Instance AssociatedFunction_ensure_no_owner :
-    Notations.DoubleColon Self "ensure_no_owner" := {
-    Notations.double_colon := ensure_no_owner;
-  }.
 End Impl_multisig_Multisig_t.
 End Impl_multisig_Multisig_t.
-
-(*
-fn ensure_requirement_is_valid(owners: u32, requirement: u32) {
-    assert!(0 < requirement && requirement <= owners && owners <= MAX_OWNERS);
-}
-*)
-Parameter ensure_requirement_is_valid : u32.t -> u32.t -> M unit.

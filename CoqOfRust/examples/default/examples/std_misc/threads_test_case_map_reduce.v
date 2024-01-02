@@ -385,13 +385,13 @@ Definition main : M unit :=
                   let* α1 :
                       core.result.Result.t
                         u32.t
-                        (alloc.boxed.Box.t dynamic alloc.alloc.Global.t) :=
+                        (alloc.boxed.Box.t _ (* dyn *) alloc.alloc.Global.t) :=
                     M.call ((std.thread.JoinHandle.t u32.t)::["join"] α0) in
                   M.call
                     ((core.result.Result.t
                           u32.t
                           (alloc.boxed.Box.t
-                            dynamic
+                            _ (* dyn *)
                             alloc.alloc.Global.t))::["unwrap"]
                       α1)) :
                   M u32.t

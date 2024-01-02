@@ -46,6 +46,19 @@ Section Impl_Result.
   |}.
 
   (*
+  pub fn map<U, F>(self, op: F) -> Result<U, E>
+  where
+      F: FnOnce(T) -> U,
+  *)
+  Parameter map : forall {U : Set},
+    Self -> (T -> M U) -> M (Result.t U E).
+
+  Global Instance AF_map {U : Set} :
+      Notations.DoubleColon Self "map" := {|
+    Notations.double_colon := map (U := U);
+  |}.
+
+  (*
   pub fn map_err<F, O>(self, op: O) -> Result<T, F>
   where
     O: FnOnce(E) -> F,

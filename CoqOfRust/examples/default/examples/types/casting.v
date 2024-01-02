@@ -86,11 +86,11 @@ Definition main : M unit :=
   let* decimal : M.Val f32.t := M.copy UnsupportedLiteral in
   let* integer : M.Val u8.t :=
     let* α0 : f32.t := M.read decimal in
-    let* α1 : u8.t := cast α0 in
+    let* α1 : u8.t := M.cast α0 in
     M.alloc α1 in
   let* character : M.Val char.t :=
     let* α0 : u8.t := M.read integer in
-    let* α1 : char.t := cast α0 in
+    let* α1 : char.t := M.cast α0 in
     M.alloc α1 in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
@@ -173,7 +173,7 @@ Definition main : M unit :=
       let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
       let* α4 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α3) in
-      let* α5 : u8.t := cast (Integer.of_Z (-1)) in
+      let* α5 : u8.t := M.cast (Integer.of_Z (-1)) in
       let* α6 : M.Val u8.t := M.alloc α5 in
       let* α7 : core.fmt.rt.Argument.t :=
         M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α6)) in
@@ -309,7 +309,7 @@ Definition main : M unit :=
       let* α4 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α3) in
       let* α5 : f32.t := M.read UnsupportedLiteral in
-      let* α6 : u8.t := cast α5 in
+      let* α6 : u8.t := M.cast α5 in
       let* α7 : M.Val u8.t := M.alloc α6 in
       let* α8 : core.fmt.rt.Argument.t :=
         M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α7)) in
@@ -333,7 +333,7 @@ Definition main : M unit :=
       let* α4 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α3) in
       let* α5 : f32.t := M.read UnsupportedLiteral in
-      let* α6 : u8.t := cast α5 in
+      let* α6 : u8.t := M.cast α5 in
       let* α7 : M.Val u8.t := M.alloc α6 in
       let* α8 : core.fmt.rt.Argument.t :=
         M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α7)) in
@@ -357,7 +357,7 @@ Definition main : M unit :=
       let* α4 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α3) in
       let* α5 : f32.t := M.read core.f32.NAN in
-      let* α6 : u8.t := cast α5 in
+      let* α6 : u8.t := M.cast α5 in
       let* α7 : M.Val u8.t := M.alloc α6 in
       let* α8 : core.fmt.rt.Argument.t :=
         M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α7)) in

@@ -205,14 +205,16 @@ Definition main : M unit :=
                       let* α1 :
                           core.result.Result.t
                             unit
-                            (alloc.boxed.Box.t dynamic alloc.alloc.Global.t) :=
+                            (alloc.boxed.Box.t
+                              _ (* dyn *)
+                              alloc.alloc.Global.t) :=
                         M.call ((std.thread.JoinHandle.t unit)::["join"] α0) in
                       let* α2 :
                           M.Val
                             (core.result.Result.t
                               unit
                               (alloc.boxed.Box.t
-                                dynamic
+                                _ (* dyn *)
                                 alloc.alloc.Global.t)) :=
                         M.alloc α1 in
                       match_operator

@@ -76,17 +76,17 @@ Section Impl_core_fmt_Debug_for_tuples_Matrix_t.
     let* α1 : ref str.t := M.read (mk_str "Matrix") in
     let* α2 : ref tuples.Matrix.t := M.read self in
     let* α3 : M.Val (ref f32.t) := M.alloc (borrow (deref α2).["0"]) in
-    let* α4 : ref dynamic := M.read (pointer_coercion "Unsize" α3) in
+    let* α4 : ref _ (* dyn *) := M.read (pointer_coercion "Unsize" α3) in
     let* α5 : ref tuples.Matrix.t := M.read self in
     let* α6 : M.Val (ref f32.t) := M.alloc (borrow (deref α5).["1"]) in
-    let* α7 : ref dynamic := M.read (pointer_coercion "Unsize" α6) in
+    let* α7 : ref _ (* dyn *) := M.read (pointer_coercion "Unsize" α6) in
     let* α8 : ref tuples.Matrix.t := M.read self in
     let* α9 : M.Val (ref f32.t) := M.alloc (borrow (deref α8).["2"]) in
-    let* α10 : ref dynamic := M.read (pointer_coercion "Unsize" α9) in
+    let* α10 : ref _ (* dyn *) := M.read (pointer_coercion "Unsize" α9) in
     let* α11 : ref tuples.Matrix.t := M.read self in
     let* α12 : M.Val (ref f32.t) := M.alloc (borrow (deref α11).["3"]) in
     let* α13 : M.Val (ref (ref f32.t)) := M.alloc (borrow α12) in
-    let* α14 : ref dynamic := M.read (pointer_coercion "Unsize" α13) in
+    let* α14 : ref _ (* dyn *) := M.read (pointer_coercion "Unsize" α13) in
     M.call
       (core.fmt.Formatter.t::["debug_tuple_field4_finish"] α0 α1 α4 α7 α10 α14).
   

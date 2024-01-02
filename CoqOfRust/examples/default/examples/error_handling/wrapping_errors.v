@@ -61,7 +61,8 @@ Section Impl_core_fmt_Debug_for_wrapping_errors_DoubleError_t.
               let* α1 : ref str.t := M.read (mk_str "Parse") in
               let* α2 : M.Val (ref (ref core.num.error.ParseIntError.t)) :=
                 M.alloc (borrow __self_0) in
-              let* α3 : ref dynamic := M.read (pointer_coercion "Unsize" α2) in
+              let* α3 : ref _ (* dyn *) :=
+                M.read (pointer_coercion "Unsize" α2) in
               let* α4 : core.result.Result.t unit core.fmt.Error.t :=
                 M.call
                   (core.fmt.Formatter.t::["debug_tuple_field1_finish"]
@@ -185,7 +186,7 @@ Section Impl_core_error_Error_for_wrapping_errors_DoubleError_t.
       : M (core.option.Option.t (ref _ (* dyn *))) :=
     let* self := M.alloc self in
     let* α0 : ref wrapping_errors.DoubleError.t := M.read self in
-    let* α1 : M.Val (core.option.Option.t (ref dynamic)) :=
+    let* α1 : M.Val (core.option.Option.t (ref _ (* dyn *))) :=
       match_operator
         (deref α0)
         [
@@ -196,7 +197,7 @@ Section Impl_core_error_Error_for_wrapping_errors_DoubleError_t.
               M.alloc core.option.Option.None
             | _ => M.break_match
             end) :
-            M (M.Val (core.option.Option.t (ref dynamic)));
+            M (M.Val (core.option.Option.t (ref _ (* dyn *))));
           fun γ =>
             (let* α0 := M.read γ in
             match α0 with
@@ -206,11 +207,12 @@ Section Impl_core_error_Error_for_wrapping_errors_DoubleError_t.
               let* α0 : ref core.num.error.ParseIntError.t := M.read e in
               let* α1 : M.Val (ref core.num.error.ParseIntError.t) :=
                 M.alloc α0 in
-              let* α2 : ref dynamic := M.read (pointer_coercion "Unsize" α1) in
+              let* α2 : ref _ (* dyn *) :=
+                M.read (pointer_coercion "Unsize" α1) in
               M.alloc (core.option.Option.Some α2)
             | _ => M.break_match
             end) :
-            M (M.Val (core.option.Option.t (ref dynamic)))
+            M (M.Val (core.option.Option.t (ref _ (* dyn *))))
         ] in
     M.read α1.
   
@@ -511,13 +513,13 @@ Definition print (result : ltac:(wrapping_errors.Result i32.t)) : M unit :=
                 let* α10 : unit := M.call (std.io.stdio._print α9) in
                 M.alloc α10 in
               M.alloc tt in
-            let* α0 : core.option.Option.t (ref dynamic) :=
+            let* α0 : core.option.Option.t (ref _ (* dyn *)) :=
               M.call
                 ((core.error.Error.source
                     (Self := wrapping_errors.DoubleError.t)
                     (Trait := ltac:(refine _)))
                   (borrow e)) in
-            let* α1 : M.Val (core.option.Option.t (ref dynamic)) :=
+            let* α1 : M.Val (core.option.Option.t (ref _ (* dyn *))) :=
               M.alloc α0 in
             let* α2 : M.Val bool.t :=
               let_if core.option.Option.Some source := α1 in

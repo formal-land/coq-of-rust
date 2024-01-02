@@ -95,6 +95,18 @@ Module Impl_Option. Section Impl_Option.
     Notations.double_colon := unwrap_or;
   }.
 
+  (* pub const fn is_some(&self) -> bool *)
+  Definition is_some (self : ref Self) : M bool :=
+    let* self := M.read self in
+    match self with
+    | Option.Some _ => M.pure true
+    | Option.None => M.pure false
+    end.
+
+  Global Instance AF_is_some : Notations.DoubleColon Self "is_some" := {
+    Notations.double_colon := is_some;
+  }.
+
   Global Instance I_Default {ℋ : default.Default.Trait T} :
     default.Default.Trait (core.option.Option.t T).
   Admitted.

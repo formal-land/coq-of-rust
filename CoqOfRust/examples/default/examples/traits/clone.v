@@ -140,14 +140,14 @@ Section Impl_core_fmt_Debug_for_clone_Pair_t.
     let* α2 : ref clone.Pair.t := M.read self in
     let* α3 : M.Val (ref (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)) :=
       M.alloc (borrow (deref α2).["0"]) in
-    let* α4 : ref dynamic := M.read (pointer_coercion "Unsize" α3) in
+    let* α4 : ref _ (* dyn *) := M.read (pointer_coercion "Unsize" α3) in
     let* α5 : ref clone.Pair.t := M.read self in
     let* α6 : M.Val (ref (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)) :=
       M.alloc (borrow (deref α5).["1"]) in
     let* α7 :
         M.Val (ref (ref (alloc.boxed.Box.t i32.t alloc.alloc.Global.t))) :=
       M.alloc (borrow α6) in
-    let* α8 : ref dynamic := M.read (pointer_coercion "Unsize" α7) in
+    let* α8 : ref _ (* dyn *) := M.read (pointer_coercion "Unsize" α7) in
     M.call (core.fmt.Formatter.t::["debug_tuple_field2_finish"] α0 α1 α4 α8).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {

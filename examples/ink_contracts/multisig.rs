@@ -214,6 +214,12 @@ pub struct Multisig {
     requirement: u32,
 }
 
+/// Panic if the number of `owners` under a `requirement` violates our
+/// requirement invariant.
+fn ensure_requirement_is_valid(owners: u32, requirement: u32) {
+    assert!(0 < requirement && requirement <= owners && owners <= MAX_OWNERS);
+}
+
 impl Multisig {
     fn init_env() -> Env {
         unimplemented!()
@@ -245,6 +251,44 @@ impl Multisig {
         contract.transaction_list = Default::default();
         contract.requirement = requirement;
         contract
+    }
+
+    /// Panic if transaction `trans_id` is not confirmed by at least
+    /// `self.requirement` owners.
+    fn ensure_confirmed(&self, trans_id: TransactionId) {
+        assert!(
+            self.confirmation_count
+                .get(&trans_id)
+                .expect(WRONG_TRANSACTION_ID)
+                >= self.requirement
+        );
+    }
+
+    /// Panic if the transaction `trans_id` does not exit.
+    fn ensure_transaction_exists(&self, trans_id: TransactionId) {
+        self.transactions
+            .get(&trans_id)
+            .expect(WRONG_TRANSACTION_ID);
+    }
+
+    /// Panic if `owner` is not an owner,
+    fn ensure_owner(&self, owner: &AccountId) {
+        assert!(self.is_owner.contains(owner));
+    }
+
+    /// Panic if the sender is no owner of the wallet.
+    fn ensure_caller_is_owner(&self) {
+        self.ensure_owner(&self.env().caller());
+    }
+
+    /// Panic if the sender is not this wallet.
+    fn ensure_from_wallet(&self) {
+        assert_eq!(self.env().caller(), self.env().account_id());
+    }
+
+    /// Panic if `owner` is an owner.
+    fn ensure_no_owner(&self, owner: &AccountId) {
+        assert!(!self.is_owner.contains(owner));
     }
 
     /// Add a new owner to the contract.
@@ -334,6 +378,29 @@ impl Multisig {
             .emit_event(Event::OwnerAddition(OwnerAddition { owner: new_owner }));
     }
 
+    /// Get the index of `owner` in `self.owners`.
+    /// Panics if `owner` is not found in `self.owners`.
+    fn owner_index(&self, owner: &AccountId) -> u32 {
+        self.owners.iter().position(|x| *x == *owner).expect(
+            "This is only called after it was already verified that the id is
+               actually an owner.",
+        ) as u32
+    }
+
+    /// Remove all confirmation state associated with `owner`.
+    /// Also adjusts the `self.confirmation_count` variable.
+    fn clean_owner_confirmations(&mut self, owner: &AccountId) {
+        for trans_id in &self.transaction_list.transactions {
+            let key = (*trans_id, *owner);
+            if self.confirmations.contains(&key) {
+                self.confirmations.remove(key);
+                let mut count = self.confirmation_count.get(trans_id).unwrap_or(0 as u32);
+                count -= 1;
+                self.confirmation_count.insert(*trans_id, count);
+            }
+        }
+    }
+
     /// Remove an owner from the contract.
     ///
     /// Only callable by the wallet itself. If by doing this the amount of owners
@@ -397,6 +464,42 @@ impl Multisig {
             }));
     }
 
+    /// Set the `transaction` as confirmed by `confirmer`.
+    /// Idempotent operation regarding an already confirmed `transaction`
+    /// by `confirmer`.
+    fn confirm_by_caller(
+        &mut self,
+        confirmer: AccountId,
+        transaction: TransactionId,
+    ) -> ConfirmationStatus {
+        let mut count = self
+            .confirmation_count
+            .get(&transaction)
+            .unwrap_or(0 as u32);
+        let key = (transaction, confirmer);
+        let new_confirmation = !self.confirmations.contains(&key);
+        if new_confirmation {
+            count += 1;
+            self.confirmations.insert(key, ());
+            self.confirmation_count.insert(transaction, count);
+        }
+        let status = {
+            if count >= self.requirement {
+                ConfirmationStatus::Confirmed
+            } else {
+                ConfirmationStatus::ConfirmationsNeeded(self.requirement - count)
+            }
+        };
+        if new_confirmation {
+            self.env().emit_event(Event::Confirmation(Confirmation {
+                transaction,
+                from: confirmer,
+                status,
+            }));
+        }
+        status
+    }
+
     /// Add a new transaction candidate to the contract.
     ///
     /// This also confirms the transaction for the caller. This can be called by any
@@ -407,8 +510,9 @@ impl Multisig {
     ) -> (TransactionId, ConfirmationStatus) {
         self.ensure_caller_is_owner();
         let trans_id = self.transaction_list.next_id;
-        self.transaction_list.next_id =
-            trans_id.checked_add(1).expect("Transaction ids exhausted.");
+        self.transaction_list.next_id = trans_id
+            .checked_add(1 as u32)
+            .expect("Transaction ids exhausted.");
         self.transactions.insert(trans_id, transaction);
         self.transaction_list.transactions.push(trans_id);
         self.env().emit_event(Event::Submission(Submission {
@@ -418,6 +522,27 @@ impl Multisig {
             trans_id,
             self.confirm_by_caller(self.env().caller(), trans_id),
         )
+    }
+
+    /// Remove the transaction identified by `trans_id` from `self.transactions`.
+    /// Also removes all confirmation state associated with it.
+    fn take_transaction(&mut self, trans_id: TransactionId) -> Option<Transaction> {
+        let transaction = self.transactions.get(&trans_id);
+        if transaction.is_some() {
+            self.transactions.remove(trans_id);
+            let pos = self
+                .transaction_list
+                .transactions
+                .iter()
+                .position(|t| t == &trans_id)
+                .expect("The transaction exists hence it must also be in the list.");
+            self.transaction_list.transactions.swap_remove(pos);
+            for owner in self.owners.iter() {
+                self.confirmations.remove((trans_id, *owner));
+            }
+            self.confirmation_count.remove(trans_id);
+        }
+        transaction
     }
 
     /// Remove a transaction from the contract.
@@ -539,125 +664,4 @@ impl Multisig {
         }));
         result
     }
-
-    /// Set the `transaction` as confirmed by `confirmer`.
-    /// Idempotent operation regarding an already confirmed `transaction`
-    /// by `confirmer`.
-    fn confirm_by_caller(
-        &mut self,
-        confirmer: AccountId,
-        transaction: TransactionId,
-    ) -> ConfirmationStatus {
-        let mut count = self.confirmation_count.get(&transaction).unwrap_or(0);
-        let key = (transaction, confirmer);
-        let new_confirmation = !self.confirmations.contains(&key);
-        if new_confirmation {
-            count += 1;
-            self.confirmations.insert(key, ());
-            self.confirmation_count.insert(transaction, count);
-        }
-        let status = {
-            if count >= self.requirement {
-                ConfirmationStatus::Confirmed
-            } else {
-                ConfirmationStatus::ConfirmationsNeeded(self.requirement - count)
-            }
-        };
-        if new_confirmation {
-            self.env().emit_event(Event::Confirmation(Confirmation {
-                transaction,
-                from: confirmer,
-                status,
-            }));
-        }
-        status
-    }
-
-    /// Get the index of `owner` in `self.owners`.
-    /// Panics if `owner` is not found in `self.owners`.
-    fn owner_index(&self, owner: &AccountId) -> u32 {
-        self.owners.iter().position(|x| *x == *owner).expect(
-            "This is only called after it was already verified that the id is
-               actually an owner.",
-        ) as u32
-    }
-
-    /// Remove the transaction identified by `trans_id` from `self.transactions`.
-    /// Also removes all confirmation state associated with it.
-    fn take_transaction(&mut self, trans_id: TransactionId) -> Option<Transaction> {
-        let transaction = self.transactions.get(&trans_id);
-        if transaction.is_some() {
-            self.transactions.remove(trans_id);
-            let pos = self
-                .transaction_list
-                .transactions
-                .iter()
-                .position(|t| t == &trans_id)
-                .expect("The transaction exists hence it must also be in the list.");
-            self.transaction_list.transactions.swap_remove(pos);
-            for owner in self.owners.iter() {
-                self.confirmations.remove((trans_id, *owner));
-            }
-            self.confirmation_count.remove(trans_id);
-        }
-        transaction
-    }
-
-    /// Remove all confirmation state associated with `owner`.
-    /// Also adjusts the `self.confirmation_count` variable.
-    fn clean_owner_confirmations(&mut self, owner: &AccountId) {
-        for trans_id in &self.transaction_list.transactions {
-            let key = (*trans_id, *owner);
-            if self.confirmations.contains(&key) {
-                self.confirmations.remove(key);
-                let mut count = self.confirmation_count.get(trans_id).unwrap_or(0);
-                count -= 1;
-                self.confirmation_count.insert(*trans_id, count);
-            }
-        }
-    }
-
-    /// Panic if transaction `trans_id` is not confirmed by at least
-    /// `self.requirement` owners.
-    fn ensure_confirmed(&self, trans_id: TransactionId) {
-        assert!(
-            self.confirmation_count
-                .get(&trans_id)
-                .expect(WRONG_TRANSACTION_ID)
-                >= self.requirement
-        );
-    }
-
-    /// Panic if the transaction `trans_id` does not exit.
-    fn ensure_transaction_exists(&self, trans_id: TransactionId) {
-        self.transactions
-            .get(&trans_id)
-            .expect(WRONG_TRANSACTION_ID);
-    }
-
-    /// Panic if the sender is no owner of the wallet.
-    fn ensure_caller_is_owner(&self) {
-        self.ensure_owner(&self.env().caller());
-    }
-
-    /// Panic if the sender is not this wallet.
-    fn ensure_from_wallet(&self) {
-        assert_eq!(self.env().caller(), self.env().account_id());
-    }
-
-    /// Panic if `owner` is not an owner,
-    fn ensure_owner(&self, owner: &AccountId) {
-        assert!(self.is_owner.contains(owner));
-    }
-
-    /// Panic if `owner` is an owner.
-    fn ensure_no_owner(&self, owner: &AccountId) {
-        assert!(!self.is_owner.contains(owner));
-    }
-}
-
-/// Panic if the number of `owners` under a `requirement` violates our
-/// requirement invariant.
-fn ensure_requirement_is_valid(owners: u32, requirement: u32) {
-    assert!(0 < requirement && requirement <= owners && owners <= MAX_OWNERS);
 }

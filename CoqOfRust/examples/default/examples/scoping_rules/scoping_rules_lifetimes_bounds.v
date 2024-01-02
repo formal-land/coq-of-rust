@@ -38,7 +38,7 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_t_T.
     let* α2 : ref (scoping_rules_lifetimes_bounds.Ref.t T) := M.read self in
     let* α3 : M.Val (ref (ref T)) := M.alloc (borrow (deref α2).["0"]) in
     let* α4 : M.Val (ref (ref (ref T))) := M.alloc (borrow α3) in
-    let* α5 : ref dynamic := M.read (pointer_coercion "Unsize" α4) in
+    let* α5 : ref _ (* dyn *) := M.read (pointer_coercion "Unsize" α4) in
     M.call (core.fmt.Formatter.t::["debug_tuple_field1_finish"] α0 α1 α5).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {

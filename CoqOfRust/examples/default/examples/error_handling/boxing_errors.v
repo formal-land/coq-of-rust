@@ -138,7 +138,7 @@ Definition double_first
   let* α2 :
       core.result.Result.t
         (ref (ref str.t))
-        (alloc.boxed.Box.t dynamic alloc.alloc.Global.t) :=
+        (alloc.boxed.Box.t _ (* dyn *) alloc.alloc.Global.t) :=
     M.call
       ((core.option.Option.t (ref (ref str.t)))::["ok_or_else"]
         α1
@@ -147,11 +147,11 @@ Definition double_first
               (Self := boxing_errors.EmptyVec.t)
               (Trait := ltac:(refine _)))
             boxing_errors.EmptyVec.Build)) :
-        M (alloc.boxed.Box.t dynamic alloc.alloc.Global.t))) in
+        M (alloc.boxed.Box.t _ (* dyn *) alloc.alloc.Global.t))) in
   M.call
     ((core.result.Result.t
           (ref (ref str.t))
-          (alloc.boxed.Box.t dynamic alloc.alloc.Global.t))::["and_then"]
+          (alloc.boxed.Box.t _ (* dyn *) alloc.alloc.Global.t))::["and_then"]
       α2
       (fun (α0 : ref (ref str.t)) =>
         (let* α0 := M.alloc α0 in
@@ -168,7 +168,7 @@ Definition double_first
               let* α3 :
                   core.result.Result.t
                     i32.t
-                    (alloc.boxed.Box.t dynamic alloc.alloc.Global.t) :=
+                    (alloc.boxed.Box.t _ (* dyn *) alloc.alloc.Global.t) :=
                 M.call
                   ((core.result.Result.t
                         i32.t
@@ -188,13 +188,21 @@ Definition double_first
                                   (Self := core.num.error.ParseIntError.t)
                                   (Trait := ltac:(refine _)))
                                 α0)) :
-                            M (alloc.boxed.Box.t dynamic alloc.alloc.Global.t)
+                            M
+                              (alloc.boxed.Box.t
+                                _ (* dyn *)
+                                alloc.alloc.Global.t)
                         ]) :
-                      M (alloc.boxed.Box.t dynamic alloc.alloc.Global.t))) in
+                      M
+                        (alloc.boxed.Box.t
+                          _ (* dyn *)
+                          alloc.alloc.Global.t))) in
               M.call
                 ((core.result.Result.t
                       i32.t
-                      (alloc.boxed.Box.t dynamic alloc.alloc.Global.t))::["map"]
+                      (alloc.boxed.Box.t
+                        _ (* dyn *)
+                        alloc.alloc.Global.t))::["map"]
                   α3
                   (fun (α0 : i32.t) =>
                     (let* α0 := M.alloc α0 in
@@ -211,12 +219,12 @@ Definition double_first
               M
                 (core.result.Result.t
                   i32.t
-                  (alloc.boxed.Box.t dynamic alloc.alloc.Global.t))
+                  (alloc.boxed.Box.t _ (* dyn *) alloc.alloc.Global.t))
           ]) :
         M
           (core.result.Result.t
             i32.t
-            (alloc.boxed.Box.t dynamic alloc.alloc.Global.t)))).
+            (alloc.boxed.Box.t _ (* dyn *) alloc.alloc.Global.t)))).
 
 (*
 fn print(result: Result<i32>) {
@@ -346,7 +354,7 @@ Definition main : M unit :=
     let* α1 :
         core.result.Result.t
           i32.t
-          (alloc.boxed.Box.t dynamic alloc.alloc.Global.t) :=
+          (alloc.boxed.Box.t _ (* dyn *) alloc.alloc.Global.t) :=
       M.call (boxing_errors.double_first α0) in
     let* α2 : unit := M.call (boxing_errors.print α1) in
     M.alloc α2 in
@@ -356,7 +364,7 @@ Definition main : M unit :=
     let* α1 :
         core.result.Result.t
           i32.t
-          (alloc.boxed.Box.t dynamic alloc.alloc.Global.t) :=
+          (alloc.boxed.Box.t _ (* dyn *) alloc.alloc.Global.t) :=
       M.call (boxing_errors.double_first α0) in
     let* α2 : unit := M.call (boxing_errors.print α1) in
     M.alloc α2 in
@@ -366,7 +374,7 @@ Definition main : M unit :=
     let* α1 :
         core.result.Result.t
           i32.t
-          (alloc.boxed.Box.t dynamic alloc.alloc.Global.t) :=
+          (alloc.boxed.Box.t _ (* dyn *) alloc.alloc.Global.t) :=
       M.call (boxing_errors.double_first α0) in
     let* α2 : unit := M.call (boxing_errors.print α1) in
     M.alloc α2 in

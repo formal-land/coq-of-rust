@@ -66,39 +66,41 @@ Definition comp_sci_student_greeting
     let* α5 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α4) in
     let* α6 : ref (slice (ref str.t)) :=
       M.read (pointer_coercion "Unsize" α5) in
-    let* α7 : ref dynamic := M.read student in
+    let* α7 : ref _ (* dyn *) := M.read student in
     let* α8 : alloc.string.String.t :=
       M.call
-        ((supertraits.Person.name (Self := dynamic) (Trait := ltac:(refine _)))
+        ((supertraits.Person.name
+            (Self := _ (* dyn *))
+            (Trait := ltac:(refine _)))
           α7) in
     let* α9 : M.Val alloc.string.String.t := M.alloc α8 in
     let* α10 : core.fmt.rt.Argument.t :=
       M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α9)) in
-    let* α11 : ref dynamic := M.read student in
+    let* α11 : ref _ (* dyn *) := M.read student in
     let* α12 : alloc.string.String.t :=
       M.call
         ((supertraits.Student.university
-            (Self := dynamic)
+            (Self := _ (* dyn *))
             (Trait := ltac:(refine _)))
           α11) in
     let* α13 : M.Val alloc.string.String.t := M.alloc α12 in
     let* α14 : core.fmt.rt.Argument.t :=
       M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α13)) in
-    let* α15 : ref dynamic := M.read student in
+    let* α15 : ref _ (* dyn *) := M.read student in
     let* α16 : alloc.string.String.t :=
       M.call
         ((supertraits.Programmer.fav_language
-            (Self := dynamic)
+            (Self := _ (* dyn *))
             (Trait := ltac:(refine _)))
           α15) in
     let* α17 : M.Val alloc.string.String.t := M.alloc α16 in
     let* α18 : core.fmt.rt.Argument.t :=
       M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α17)) in
-    let* α19 : ref dynamic := M.read student in
+    let* α19 : ref _ (* dyn *) := M.read student in
     let* α20 : alloc.string.String.t :=
       M.call
         ((supertraits.CompSciStudent.git_username
-            (Self := dynamic)
+            (Self := _ (* dyn *))
             (Trait := ltac:(refine _)))
           α19) in
     let* α21 : M.Val alloc.string.String.t := M.alloc α20 in
