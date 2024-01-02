@@ -49,8 +49,7 @@ fn main() {
 Definition main : M unit :=
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "Guess the number!
-") in
+      let* α0 : ref str.t := M.read (mk_str "Guess the number!\n") in
       let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
       let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
       let* α3 : ref (slice (ref str.t)) :=
@@ -67,8 +66,7 @@ Definition main : M unit :=
     M.loop
       (let* _ : M.Val unit :=
         let* _ : M.Val unit :=
-          let* α0 : ref str.t := M.read (mk_str "Please input your guess.
-") in
+          let* α0 : ref str.t := M.read (mk_str "Please input your guess.\n") in
           let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
           let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
           let* α3 : ref (slice (ref str.t)) :=
@@ -141,8 +139,7 @@ Definition main : M unit :=
       let* _ : M.Val unit :=
         let* _ : M.Val unit :=
           let* α0 : ref str.t := M.read (mk_str "You guessed: ") in
-          let* α1 : ref str.t := M.read (mk_str "
-") in
+          let* α1 : ref str.t := M.read (mk_str "\n") in
           let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
           let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
           let* α4 : ref (slice (ref str.t)) :=
@@ -173,8 +170,7 @@ Definition main : M unit :=
             match α0 with
             | core.cmp.Ordering.Less =>
               let* _ : M.Val unit :=
-                let* α0 : ref str.t := M.read (mk_str "Too small!
-") in
+                let* α0 : ref str.t := M.read (mk_str "Too small!\n") in
                 let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
                 let* α2 : M.Val (ref (array (ref str.t))) :=
                   M.alloc (borrow α1) in
@@ -193,8 +189,7 @@ Definition main : M unit :=
             match α0 with
             | core.cmp.Ordering.Greater =>
               let* _ : M.Val unit :=
-                let* α0 : ref str.t := M.read (mk_str "Too big!
-") in
+                let* α0 : ref str.t := M.read (mk_str "Too big!\n") in
                 let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
                 let* α2 : M.Val (ref (array (ref str.t))) :=
                   M.alloc (borrow α1) in
@@ -214,8 +209,7 @@ Definition main : M unit :=
             | core.cmp.Ordering.Equal =>
               let* _ : M.Val unit :=
                 let* _ : M.Val unit :=
-                  let* α0 : ref str.t := M.read (mk_str "You win!
-") in
+                  let* α0 : ref str.t := M.read (mk_str "You win!\n") in
                   let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
                   let* α2 : M.Val (ref (array (ref str.t))) :=
                     M.alloc (borrow α1) in

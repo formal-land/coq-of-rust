@@ -277,8 +277,7 @@ Definition main : M unit :=
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "Point occupies ") in
-      let* α1 : ref str.t := M.read (mk_str " bytes on the stack
-") in
+      let* α1 : ref str.t := M.read (mk_str " bytes on the stack\n") in
       let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
       let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
       let* α4 : ref (slice (ref str.t)) :=
@@ -300,8 +299,7 @@ Definition main : M unit :=
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "Rectangle occupies ") in
-      let* α1 : ref str.t := M.read (mk_str " bytes on the stack
-") in
+      let* α1 : ref str.t := M.read (mk_str " bytes on the stack\n") in
       let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
       let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
       let* α4 : ref (slice (ref str.t)) :=
@@ -323,8 +321,7 @@ Definition main : M unit :=
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "Boxed point occupies ") in
-      let* α1 : ref str.t := M.read (mk_str " bytes on the stack
-") in
+      let* α1 : ref str.t := M.read (mk_str " bytes on the stack\n") in
       let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
       let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
       let* α4 : ref (slice (ref str.t)) :=
@@ -346,8 +343,7 @@ Definition main : M unit :=
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "Boxed rectangle occupies ") in
-      let* α1 : ref str.t := M.read (mk_str " bytes on the stack
-") in
+      let* α1 : ref str.t := M.read (mk_str " bytes on the stack\n") in
       let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
       let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
       let* α4 : ref (slice (ref str.t)) :=
@@ -370,8 +366,7 @@ Definition main : M unit :=
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "Boxed box occupies ") in
-      let* α1 : ref str.t := M.read (mk_str " bytes on the stack
-") in
+      let* α1 : ref str.t := M.read (mk_str " bytes on the stack\n") in
       let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
       let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
       let* α4 : ref (slice (ref str.t)) :=
@@ -398,8 +393,7 @@ Definition main : M unit :=
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "Unboxed point occupies ") in
-      let* α1 : ref str.t := M.read (mk_str " bytes on the stack
-") in
+      let* α1 : ref str.t := M.read (mk_str " bytes on the stack\n") in
       let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
       let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
       let* α4 : ref (slice (ref str.t)) :=

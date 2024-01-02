@@ -23,8 +23,7 @@ Definition give_adult (drink : core.option.Option.t (ref str.t)) : M unit :=
           | core.option.Option.Some _ =>
             let γ0 := γ.["Some.0"] in
             let* _ : M.Val unit :=
-              let* α0 : ref str.t := M.read (mk_str "Yuck! Too sugary.
-") in
+              let* α0 : ref str.t := M.read (mk_str "Yuck! Too sugary.\n") in
               let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
               let* α2 : M.Val (ref (array (ref str.t))) :=
                 M.alloc (borrow α1) in
@@ -46,8 +45,7 @@ Definition give_adult (drink : core.option.Option.t (ref str.t)) : M unit :=
             let* inner := M.copy γ0 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "") in
-              let* α1 : ref str.t := M.read (mk_str "? How nice.
-") in
+              let* α1 : ref str.t := M.read (mk_str "? How nice.\n") in
               let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
               let* α3 : M.Val (ref (array (ref str.t))) :=
                 M.alloc (borrow α2) in
@@ -75,8 +73,7 @@ Definition give_adult (drink : core.option.Option.t (ref str.t)) : M unit :=
           match α0 with
           | core.option.Option.None =>
             let* _ : M.Val unit :=
-              let* α0 : ref str.t := M.read (mk_str "No drink? Oh well.
-") in
+              let* α0 : ref str.t := M.read (mk_str "No drink? Oh well.\n") in
               let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
               let* α2 : M.Val (ref (array (ref str.t))) :=
                 M.alloc (borrow α1) in
@@ -134,8 +131,7 @@ Definition drink (drink : core.option.Option.t (ref str.t)) : M unit :=
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "I love ") in
-      let* α1 : ref str.t := M.read (mk_str "s!!!!!
-") in
+      let* α1 : ref str.t := M.read (mk_str "s!!!!!\n") in
       let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
       let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
       let* α4 : ref (slice (ref str.t)) :=

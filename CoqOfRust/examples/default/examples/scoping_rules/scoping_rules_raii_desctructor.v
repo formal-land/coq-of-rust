@@ -20,8 +20,7 @@ Section Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop_t.
     let* self := M.alloc self in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
-        let* α0 : ref str.t := M.read (mk_str "ToDrop is being dropped
-") in
+        let* α0 : ref str.t := M.read (mk_str "ToDrop is being dropped\n") in
         let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
         let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
         let* α3 : ref (slice (ref str.t)) :=
@@ -57,8 +56,7 @@ Definition main : M unit :=
     M.alloc scoping_rules_raii_desctructor.ToDrop.Build in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "Made a ToDrop!
-") in
+      let* α0 : ref str.t := M.read (mk_str "Made a ToDrop!\n") in
       let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
       let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
       let* α3 : ref (slice (ref str.t)) :=

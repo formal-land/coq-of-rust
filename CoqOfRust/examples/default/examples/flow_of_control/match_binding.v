@@ -29,8 +29,7 @@ Definition main : M unit :=
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t :=
-        M.read (mk_str "Tell me what type of person you are
-") in
+        M.read (mk_str "Tell me what type of person you are\n") in
       let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
       let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
       let* α3 : ref (slice (ref str.t)) :=
@@ -49,8 +48,7 @@ Definition main : M unit :=
         fun γ =>
           (let* _ : M.Val unit :=
             let* α0 : ref str.t :=
-              M.read (mk_str "I haven't celebrated my first birthday yet
-") in
+              M.read (mk_str "I haven\'t celebrated my first birthday yet\n") in
             let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
             let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
             let* α3 : ref (slice (ref str.t)) :=
@@ -64,9 +62,8 @@ Definition main : M unit :=
         fun γ =>
           (let* n := M.copy γ in
           let* _ : M.Val unit :=
-            let* α0 : ref str.t := M.read (mk_str "I'm a child of age ") in
-            let* α1 : ref str.t := M.read (mk_str "
-") in
+            let* α0 : ref str.t := M.read (mk_str "I\'m a child of age ") in
+            let* α1 : ref str.t := M.read (mk_str "\n") in
             let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
             let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
             let* α4 : ref (slice (ref str.t)) :=
@@ -87,9 +84,8 @@ Definition main : M unit :=
         fun γ =>
           (let* n := M.copy γ in
           let* _ : M.Val unit :=
-            let* α0 : ref str.t := M.read (mk_str "I'm a teen of age ") in
-            let* α1 : ref str.t := M.read (mk_str "
-") in
+            let* α0 : ref str.t := M.read (mk_str "I\'m a teen of age ") in
+            let* α1 : ref str.t := M.read (mk_str "\n") in
             let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
             let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
             let* α4 : ref (slice (ref str.t)) :=
@@ -111,9 +107,8 @@ Definition main : M unit :=
           (let* n := M.copy γ in
           let* _ : M.Val unit :=
             let* α0 : ref str.t :=
-              M.read (mk_str "I'm an old person of age ") in
-            let* α1 : ref str.t := M.read (mk_str "
-") in
+              M.read (mk_str "I\'m an old person of age ") in
+            let* α1 : ref str.t := M.read (mk_str "\n") in
             let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
             let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
             let* α4 : ref (slice (ref str.t)) :=

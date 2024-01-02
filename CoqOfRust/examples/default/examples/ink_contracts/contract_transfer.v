@@ -253,8 +253,7 @@ Section Impl_contract_transfer_GiveMe_t.
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "requested value: ") in
-        let* α1 : ref str.t := M.read (mk_str "
-") in
+        let* α1 : ref str.t := M.read (mk_str "\n") in
         let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
         let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
         let* α4 : ref (slice (ref str.t)) :=
@@ -274,8 +273,7 @@ Section Impl_contract_transfer_GiveMe_t.
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "contract balance: ") in
-        let* α1 : ref str.t := M.read (mk_str "
-") in
+        let* α1 : ref str.t := M.read (mk_str "\n") in
         let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
         let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
         let* α4 : ref (slice (ref str.t)) :=
@@ -339,7 +337,7 @@ Section Impl_contract_transfer_GiveMe_t.
         let* α0 : ref str.t :=
           M.read
             (mk_str
-              "requested transfer failed. this can be the case if the contract does nothave sufficient free funds or if the transfer would have brought thecontract's balance below minimum balance.") in
+              "requested transfer failed. this can be the case if the contract does nothave sufficient free funds or if the transfer would have brought thecontract\'s balance below minimum balance.") in
         let* α1 : never.t := M.call (std.panicking.begin_panic α0) in
         let* α2 : unit := never_to_any α1 in
         M.alloc α2
@@ -363,8 +361,7 @@ Section Impl_contract_transfer_GiveMe_t.
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "received payment: ") in
-        let* α1 : ref str.t := M.read (mk_str "
-") in
+        let* α1 : ref str.t := M.read (mk_str "\n") in
         let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
         let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
         let* α4 : ref (slice (ref str.t)) :=

@@ -27,8 +27,7 @@ Definition main : M unit :=
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "Tell me about ") in
-      let* α1 : ref str.t := M.read (mk_str "
-") in
+      let* α1 : ref str.t := M.read (mk_str "\n") in
       let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
       let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
       let* α4 : ref (slice (ref str.t)) :=
@@ -61,8 +60,7 @@ Definition main : M unit :=
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "First is `0`, `y` is ") in
               let* α1 : ref str.t := M.read (mk_str ", and `z` is ") in
-              let* α2 : ref str.t := M.read (mk_str "
-") in
+              let* α2 : ref str.t := M.read (mk_str "\n") in
               let* α3 : M.Val (array (ref str.t)) := M.alloc [ α0; α1; α2 ] in
               let* α4 : M.Val (ref (array (ref str.t))) :=
                 M.alloc (borrow α3) in
@@ -92,8 +90,7 @@ Definition main : M unit :=
             let γ0 := γ in
             let* _ : M.Val unit :=
               let* α0 : ref str.t :=
-                M.read (mk_str "First is `1` and the rest doesn't matter
-") in
+                M.read (mk_str "First is `1` and the rest doesn\'t matter\n") in
               let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
               let* α2 : M.Val (ref (array (ref str.t))) :=
                 M.alloc (borrow α1) in
@@ -113,8 +110,7 @@ Definition main : M unit :=
             let γ0 := γ in
             let* _ : M.Val unit :=
               let* α0 : ref str.t :=
-                M.read (mk_str "last is `2` and the rest doesn't matter
-") in
+                M.read (mk_str "last is `2` and the rest doesn\'t matter\n") in
               let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
               let* α2 : M.Val (ref (array (ref str.t))) :=
                 M.alloc (borrow α1) in
@@ -137,8 +133,7 @@ Definition main : M unit :=
               let* α0 : ref str.t :=
                 M.read
                   (mk_str
-                    "First is `3`, last is `4`, and the rest doesn't matter
-") in
+                    "First is `3`, last is `4`, and the rest doesn\'t matter\n") in
               let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
               let* α2 : M.Val (ref (array (ref str.t))) :=
                 M.alloc (borrow α1) in
@@ -154,8 +149,7 @@ Definition main : M unit :=
         fun γ =>
           (let* _ : M.Val unit :=
             let* α0 : ref str.t :=
-              M.read (mk_str "It doesn't matter what they are
-") in
+              M.read (mk_str "It doesn\'t matter what they are\n") in
             let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
             let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
             let* α3 : ref (slice (ref str.t)) :=

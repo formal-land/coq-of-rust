@@ -48,7 +48,7 @@ Definition main : M unit :=
             | core.result.Result.Err _ =>
               let γ0 := γ.["Err.0"] in
               let* why := M.copy γ0 in
-              let* α0 : ref str.t := M.read (mk_str "couldn't open ") in
+              let* α0 : ref str.t := M.read (mk_str "couldn\'t open ") in
               let* α1 : ref str.t := M.read (mk_str ": ") in
               let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
               let* α3 : M.Val (ref (array (ref str.t))) :=
@@ -108,7 +108,7 @@ Definition main : M unit :=
           | core.result.Result.Err _ =>
             let γ0 := γ.["Err.0"] in
             let* why := M.copy γ0 in
-            let* α0 : ref str.t := M.read (mk_str "couldn't read ") in
+            let* α0 : ref str.t := M.read (mk_str "couldn\'t read ") in
             let* α1 : ref str.t := M.read (mk_str ": ") in
             let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
             let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
@@ -140,8 +140,7 @@ Definition main : M unit :=
             let γ0 := γ.["Ok.0"] in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "") in
-              let* α1 : ref str.t := M.read (mk_str " contains:
-") in
+              let* α1 : ref str.t := M.read (mk_str " contains:\n") in
               let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
               let* α3 : M.Val (ref (array (ref str.t))) :=
                 M.alloc (borrow α2) in

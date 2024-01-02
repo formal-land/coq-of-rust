@@ -94,8 +94,7 @@ Definition main : M unit :=
                                 let* α0 : ref str.t :=
                                   M.read
                                     (mk_str
-                                      "There is a rustacean among us!
-") in
+                                      "There is a rustacean among us!\n") in
                                 let* α1 : M.Val (array (ref str.t)) :=
                                   M.alloc [ α0 ] in
                                 let* α2 : M.Val (ref (array (ref str.t))) :=
@@ -114,8 +113,7 @@ Definition main : M unit :=
                               (let* _ : M.Val unit :=
                                 let* α0 : ref str.t :=
                                   M.read (mk_str "Hello ") in
-                                let* α1 : ref str.t := M.read (mk_str "
-") in
+                                let* α1 : ref str.t := M.read (mk_str "\n") in
                                 let* α2 : M.Val (array (ref str.t)) :=
                                   M.alloc [ α0; α1 ] in
                                 let* α3 : M.Val (ref (array (ref str.t))) :=
@@ -155,8 +153,7 @@ Definition main : M unit :=
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "names: ") in
-      let* α1 : ref str.t := M.read (mk_str "
-") in
+      let* α1 : ref str.t := M.read (mk_str "\n") in
       let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
       let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
       let* α4 : ref (slice (ref str.t)) :=

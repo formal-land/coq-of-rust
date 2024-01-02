@@ -31,8 +31,7 @@ Section Impl_core_ops_drop_Drop_for_drop_Droppable_t.
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "> Dropping ") in
-        let* α1 : ref str.t := M.read (mk_str "
-") in
+        let* α1 : ref str.t := M.read (mk_str "\n") in
         let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
         let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
         let* α4 : ref (slice (ref str.t)) :=
@@ -115,8 +114,7 @@ Definition main : M unit :=
         M.alloc {| drop.Droppable.name := α0; |} in
       let* _ : M.Val unit :=
         let* _ : M.Val unit :=
-          let* α0 : ref str.t := M.read (mk_str "Exiting block B
-") in
+          let* α0 : ref str.t := M.read (mk_str "Exiting block B\n") in
           let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
           let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
           let* α3 : ref (slice (ref str.t)) :=
@@ -129,8 +127,7 @@ Definition main : M unit :=
       M.alloc tt in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
-        let* α0 : ref str.t := M.read (mk_str "Just exited block B
-") in
+        let* α0 : ref str.t := M.read (mk_str "Just exited block B\n") in
         let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
         let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
         let* α3 : ref (slice (ref str.t)) :=
@@ -142,8 +139,7 @@ Definition main : M unit :=
       M.alloc tt in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
-        let* α0 : ref str.t := M.read (mk_str "Exiting block A
-") in
+        let* α0 : ref str.t := M.read (mk_str "Exiting block A\n") in
         let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
         let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
         let* α3 : ref (slice (ref str.t)) :=
@@ -156,8 +152,7 @@ Definition main : M unit :=
     M.alloc tt in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "Just exited block A
-") in
+      let* α0 : ref str.t := M.read (mk_str "Just exited block A\n") in
       let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
       let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
       let* α3 : ref (slice (ref str.t)) :=
@@ -173,8 +168,7 @@ Definition main : M unit :=
     M.alloc α1 in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "end of the main function
-") in
+      let* α0 : ref str.t := M.read (mk_str "end of the main function\n") in
       let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
       let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
       let* α3 : ref (slice (ref str.t)) :=

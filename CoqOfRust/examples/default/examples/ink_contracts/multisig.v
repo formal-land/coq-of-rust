@@ -2763,8 +2763,7 @@ Section Impl_multisig_Multisig_t.
     let* α5 : ref str.t :=
       M.read
         (mk_str
-          "This is only called after it was already verified that the id is
-               actually an owner.") in
+          "This is only called after it was already verified that the id is\n               actually an owner.") in
     let* α6 : usize.t :=
       M.call ((core.option.Option.t usize.t)::["expect"] α4 α5) in
     cast α6.
@@ -3156,7 +3155,7 @@ Section Impl_multisig_Multisig_t.
         let* α0 : ref str.t :=
           M.read
             (mk_str
-              "assertion failed: self.confirmation_count.get(&trans_id).expect(WRONG_TRANSACTION_ID) >=\n    self.requirement") in
+              "assertion failed: self.confirmation_count.get(&trans_id).expect(WRONG_TRANSACTION_ID) >=\\n    self.requirement") in
         let* α1 : never.t := M.call (core.panicking.panic α0) in
         let* α2 : unit := never_to_any α1 in
         M.alloc α2

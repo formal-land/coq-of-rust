@@ -51,8 +51,7 @@ Definition main : M unit :=
                 let* _ : M.Val unit :=
                   let* _ : M.Val unit :=
                     let* α0 : ref str.t :=
-                      M.read (mk_str "Greater than 9, quit!
-") in
+                      M.read (mk_str "Greater than 9, quit!\n") in
                     let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
                     let* α2 : M.Val (ref (array (ref str.t))) :=
                       M.alloc (borrow α1) in
@@ -70,8 +69,7 @@ Definition main : M unit :=
                 let* _ : M.Val unit :=
                   let* _ : M.Val unit :=
                     let* α0 : ref str.t := M.read (mk_str "`i` is `") in
-                    let* α1 : ref str.t := M.read (mk_str "`. Try again.
-") in
+                    let* α1 : ref str.t := M.read (mk_str "`. Try again.\n") in
                     let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
                     let* α3 : M.Val (ref (array (ref str.t))) :=
                       M.alloc (borrow α2) in

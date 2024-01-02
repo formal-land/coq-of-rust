@@ -84,8 +84,7 @@ Definition inspect (event : enums.WebEvent.t) : M unit :=
                 M.read
                   (mk_str
                     ("page loaded, r" ++
-                      String.String "233" ("f" ++ String.String "233" "
-"))) in
+                      String.String "233" ("f" ++ String.String "233" "\n"))) in
               let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
               let* α2 : M.Val (ref (array (ref str.t))) :=
                 M.alloc (borrow α1) in
@@ -104,8 +103,7 @@ Definition inspect (event : enums.WebEvent.t) : M unit :=
           match α0 with
           | enums.WebEvent.PageUnload =>
             let* _ : M.Val unit :=
-              let* α0 : ref str.t := M.read (mk_str "page unloaded
-") in
+              let* α0 : ref str.t := M.read (mk_str "page unloaded\n") in
               let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
               let* α2 : M.Val (ref (array (ref str.t))) :=
                 M.alloc (borrow α1) in
@@ -126,9 +124,8 @@ Definition inspect (event : enums.WebEvent.t) : M unit :=
             let γ0 := γ.["KeyPress.0"] in
             let* c := M.copy γ0 in
             let* _ : M.Val unit :=
-              let* α0 : ref str.t := M.read (mk_str "pressed '") in
-              let* α1 : ref str.t := M.read (mk_str "'.
-") in
+              let* α0 : ref str.t := M.read (mk_str "pressed \'") in
+              let* α1 : ref str.t := M.read (mk_str "\'.\n") in
               let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
               let* α3 : M.Val (ref (array (ref str.t))) :=
                 M.alloc (borrow α2) in
@@ -157,9 +154,8 @@ Definition inspect (event : enums.WebEvent.t) : M unit :=
             let γ0 := γ.["Paste.0"] in
             let* s := M.copy γ0 in
             let* _ : M.Val unit :=
-              let* α0 : ref str.t := M.read (mk_str "pasted "") in
-              let* α1 : ref str.t := M.read (mk_str "".
-") in
+              let* α0 : ref str.t := M.read (mk_str "pasted \"") in
+              let* α1 : ref str.t := M.read (mk_str "\".\n") in
               let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
               let* α3 : M.Val (ref (array (ref str.t))) :=
                 M.alloc (borrow α2) in
@@ -197,8 +193,7 @@ Definition inspect (event : enums.WebEvent.t) : M unit :=
               let* _ : M.Val unit :=
                 let* α0 : ref str.t := M.read (mk_str "clicked at x=") in
                 let* α1 : ref str.t := M.read (mk_str ", y=") in
-                let* α2 : ref str.t := M.read (mk_str ".
-") in
+                let* α2 : ref str.t := M.read (mk_str ".\n") in
                 let* α3 : M.Val (array (ref str.t)) := M.alloc [ α0; α1; α2 ] in
                 let* α4 : M.Val (ref (array (ref str.t))) :=
                   M.alloc (borrow α3) in

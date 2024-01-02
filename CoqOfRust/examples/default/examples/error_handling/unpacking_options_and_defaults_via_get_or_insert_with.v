@@ -152,8 +152,7 @@ Definition main : M unit :=
       ((let* _ : M.Val unit :=
         let* _ : M.Val unit :=
           let* α0 : ref str.t :=
-            M.read (mk_str "Providing lemon as fallback
-") in
+            M.read (mk_str "Providing lemon as fallback\n") in
           let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
           let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
           let* α3 : ref (slice (ref str.t)) :=
@@ -188,8 +187,7 @@ Definition main : M unit :=
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "my_fruit is: ") in
-      let* α1 : ref str.t := M.read (mk_str "
-") in
+      let* α1 : ref str.t := M.read (mk_str "\n") in
       let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
       let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
       let* α4 : ref (slice (ref str.t)) :=
@@ -211,8 +209,7 @@ Definition main : M unit :=
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "first_available_fruit is: ") in
-      let* α1 : ref str.t := M.read (mk_str "
-") in
+      let* α1 : ref str.t := M.read (mk_str "\n") in
       let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
       let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
       let* α4 : ref (slice (ref str.t)) :=
@@ -257,8 +254,7 @@ Definition main : M unit :=
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "should_be_apple is: ") in
-      let* α1 : ref str.t := M.read (mk_str "
-") in
+      let* α1 : ref str.t := M.read (mk_str "\n") in
       let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
       let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
       let* α4 : ref (slice (ref str.t)) :=
@@ -279,8 +275,7 @@ Definition main : M unit :=
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "my_apple is unchanged: ") in
-      let* α1 : ref str.t := M.read (mk_str "
-") in
+      let* α1 : ref str.t := M.read (mk_str "\n") in
       let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
       let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
       let* α4 : ref (slice (ref str.t)) :=

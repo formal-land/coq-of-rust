@@ -22,8 +22,7 @@ Definition foo {A : Set} (o : core.option.Option.t A) : M unit :=
             let γ0 := γ.["Some.0"] in
             let* _a := M.copy γ0 in
             let* _ : M.Val unit :=
-              let* α0 : ref str.t := M.read (mk_str "some
-") in
+              let* α0 : ref str.t := M.read (mk_str "some\n") in
               let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
               let* α2 : M.Val (ref (array (ref str.t))) :=
                 M.alloc (borrow α1) in
@@ -42,8 +41,7 @@ Definition foo {A : Set} (o : core.option.Option.t A) : M unit :=
           match α0 with
           | core.option.Option.None =>
             let* _ : M.Val unit :=
-              let* α0 : ref str.t := M.read (mk_str "nothing
-") in
+              let* α0 : ref str.t := M.read (mk_str "nothing\n") in
               let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
               let* α2 : M.Val (ref (array (ref str.t))) :=
                 M.alloc (borrow α1) in
@@ -140,8 +138,7 @@ Module tests.
                       | core.option.Option.Some _ =>
                         let γ0 := γ.["Some.0"] in
                         let* _ : M.Val unit :=
-                          let* α0 : ref str.t := M.read (mk_str "Ferris
-") in
+                          let* α0 : ref str.t := M.read (mk_str "Ferris\n") in
                           let* α1 : ref (slice u8.t) :=
                             M.call (str.t::["as_bytes"] α0) in
                           let* α2 :
@@ -251,8 +248,7 @@ Module tests.
                       | core.option.Option.Some _ =>
                         let γ0 := γ.["Some.0"] in
                         let* _ : M.Val unit :=
-                          let* α0 : ref str.t := M.read (mk_str "Corro
-") in
+                          let* α0 : ref str.t := M.read (mk_str "Corro\n") in
                           let* α1 : ref (slice u8.t) :=
                             M.call (str.t::["as_bytes"] α0) in
                           let* α2 :
@@ -363,8 +359,7 @@ Definition test_file : M unit :=
                     | core.option.Option.Some _ =>
                       let γ0 := γ.["Some.0"] in
                       let* _ : M.Val unit :=
-                        let* α0 : ref str.t := M.read (mk_str "Ferris
-") in
+                        let* α0 : ref str.t := M.read (mk_str "Ferris\n") in
                         let* α1 : ref (slice u8.t) :=
                           M.call (str.t::["as_bytes"] α0) in
                         let* α2 :
@@ -474,8 +469,7 @@ Definition test_file_also : M unit :=
                     | core.option.Option.Some _ =>
                       let γ0 := γ.["Some.0"] in
                       let* _ : M.Val unit :=
-                        let* α0 : ref str.t := M.read (mk_str "Corro
-") in
+                        let* α0 : ref str.t := M.read (mk_str "Corro\n") in
                         let* α1 : ref (slice u8.t) :=
                           M.call (str.t::["as_bytes"] α0) in
                         let* α2 :

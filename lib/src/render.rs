@@ -106,7 +106,7 @@ fn string_pieces_to_doc<'a>(with_paren: bool, pieces: &[StringPiece]) -> RcDoc<'
             with_paren && !rest.is_empty(),
             nest([
                 text("\""),
-                text(s.clone()),
+                text(s.escape_default().to_string()),
                 text("\""),
                 optional_insert(
                     rest.is_empty(),

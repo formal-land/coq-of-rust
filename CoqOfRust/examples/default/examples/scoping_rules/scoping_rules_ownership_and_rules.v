@@ -16,8 +16,7 @@ Definition destroy_box
     let* _ : M.Val unit :=
       let* α0 : ref str.t :=
         M.read (mk_str "Destroying a box that contains ") in
-      let* α1 : ref str.t := M.read (mk_str "
-") in
+      let* α1 : ref str.t := M.read (mk_str "\n") in
       let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
       let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
       let* α4 : ref (slice (ref str.t)) :=
@@ -82,8 +81,7 @@ Definition main : M unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "x is ") in
       let* α1 : ref str.t := M.read (mk_str ", and y is ") in
-      let* α2 : ref str.t := M.read (mk_str "
-") in
+      let* α2 : ref str.t := M.read (mk_str "\n") in
       let* α3 : M.Val (array (ref str.t)) := M.alloc [ α0; α1; α2 ] in
       let* α4 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α3) in
       let* α5 : ref (slice (ref str.t)) :=
@@ -111,8 +109,7 @@ Definition main : M unit :=
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "a contains: ") in
-      let* α1 : ref str.t := M.read (mk_str "
-") in
+      let* α1 : ref str.t := M.read (mk_str "\n") in
       let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
       let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
       let* α4 : ref (slice (ref str.t)) :=

@@ -459,8 +459,7 @@ Definition print (result : ltac:(wrapping_errors.Result i32.t)) : M unit :=
             let* n := M.copy γ0 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "The first doubled is ") in
-              let* α1 : ref str.t := M.read (mk_str "
-") in
+              let* α1 : ref str.t := M.read (mk_str "\n") in
               let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
               let* α3 : M.Val (ref (array (ref str.t))) :=
                 M.alloc (borrow α2) in
@@ -491,8 +490,7 @@ Definition print (result : ltac:(wrapping_errors.Result i32.t)) : M unit :=
             let* _ : M.Val unit :=
               let* _ : M.Val unit :=
                 let* α0 : ref str.t := M.read (mk_str "Error: ") in
-                let* α1 : ref str.t := M.read (mk_str "
-") in
+                let* α1 : ref str.t := M.read (mk_str "\n") in
                 let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
                 let* α3 : M.Val (ref (array (ref str.t))) :=
                   M.alloc (borrow α2) in
@@ -526,8 +524,7 @@ Definition print (result : ltac:(wrapping_errors.Result i32.t)) : M unit :=
               let* _ : M.Val unit :=
                 let* _ : M.Val unit :=
                   let* α0 : ref str.t := M.read (mk_str "  Caused by: ") in
-                  let* α1 : ref str.t := M.read (mk_str "
-") in
+                  let* α1 : ref str.t := M.read (mk_str "\n") in
                   let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
                   let* α3 : M.Val (ref (array (ref str.t))) :=
                     M.alloc (borrow α2) in
