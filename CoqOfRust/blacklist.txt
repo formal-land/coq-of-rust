@@ -1,8 +1,3 @@
-# blacklisting ink smart contracts
-examples/default/examples/ink_contracts/erc1155.v
-examples/default/examples/ink_contracts/erc721.v
-examples/default/examples/ink_contracts/multisig.v
-# rest
 _std/iter_type.v
 _std/iter.v
 _std/net.v

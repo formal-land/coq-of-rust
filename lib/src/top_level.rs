@@ -242,11 +242,12 @@ fn compile_fn_sig_and_body(
     env: &mut Env,
     fn_sig_and_body: &HirFnSigAndBody,
     default: &str,
+    is_axiom: bool,
 ) -> Rc<FnSigAndBody> {
     let decl = fn_sig_and_body.fn_sig.decl;
     let args = get_args(env, fn_sig_and_body.body, decl.inputs, default);
     let ret_ty = compile_fn_ret_ty(env, &decl.output);
-    let body = compile_function_body(env, &args, fn_sig_and_body.body, ret_ty.clone());
+    let body = compile_function_body(env, &args, fn_sig_and_body.body, ret_ty.clone(), is_axiom);
 
     Rc::new(FnSigAndBody { args, ret_ty, body })
 }
@@ -283,36 +284,52 @@ fn check_if_test_declaration(ty: &Ty) -> bool {
     false
 }
 
-// Function checks if code block is having any `allow` attributes, and if it does,
-// it returns [true] if one of attributes disables "dead_code" lint.
-// Returns [false] if attribute is related to something else
-fn check_dead_code_lint_in_attributes(tcx: &TyCtxt, item: &Item) -> bool {
-    if tcx.has_attr(item.owner_id.to_def_id(), sym::allow) {
-        for attr in tcx.get_attrs(item.owner_id.to_def_id(), sym::allow) {
-            if let AttrKind::Normal(value) = &attr.kind {
-                if let AttrArgs::Delimited(value2) = &value.item.args {
-                    let into_trees = &value2.tokens.trees();
-                    let in_the_tree = into_trees.look_ahead(0);
-                    match in_the_tree {
-                        Some(res) => {
-                            if let rustc_ast::tokenstream::TokenTree::Token(res2, _) = res {
-                                if let rustc_ast::token::TokenKind::Ident(a, _) = res2.kind {
-                                    // since we can have many attributes on top of each piece of code,
-                                    // when we face "dead_code", we return [true] right away,
-                                    // otherwise we keep looking
-                                    if sym::dead_code == a {
-                                        return true;
-                                    }
+fn check_lint_attribute<'a, Item: Into<rustc_hir::OwnerNode<'a>>>(
+    tcx: &TyCtxt,
+    item: Item,
+    attribute: &str,
+) -> bool {
+    for attr in tcx.get_attrs(item.into().def_id().to_def_id(), sym::allow) {
+        if let AttrKind::Normal(value) = &attr.kind {
+            if let AttrArgs::Delimited(value2) = &value.item.args {
+                let into_trees = &value2.tokens.trees();
+                let in_the_tree = into_trees.look_ahead(0);
+                match in_the_tree {
+                    Some(res) => {
+                        if let rustc_ast::tokenstream::TokenTree::Token(res2, _) = res {
+                            if let rustc_ast::token::TokenKind::Ident(a, _) = res2.kind {
+                                // since we can have many attributes on top of each piece of code,
+                                // when we face the expected attribute, we return [true] right away,
+                                // otherwise we keep looking
+                                if a.to_string() == attribute {
+                                    return true;
                                 }
                             }
                         }
-                        _ => return false,
                     }
+                    _ => return false,
                 }
             }
         }
     }
     false
+}
+
+// Function checks if code block is having any `allow` attributes, and if it does,
+// it returns [true] if one of attributes disables "dead_code" lint.
+// Returns [false] if attribute is related to something else
+fn check_dead_code_lint_in_attributes<'a, Item: Into<rustc_hir::OwnerNode<'a>>>(
+    tcx: &TyCtxt,
+    item: Item,
+) -> bool {
+    check_lint_attribute(tcx, item, "dead_code")
+}
+
+fn check_coq_axiom_lint_in_attributes<'a, Item: Into<rustc_hir::OwnerNode<'a>>>(
+    tcx: &TyCtxt,
+    item: Item,
+) -> bool {
+    check_lint_attribute(tcx, item, "coq_axiom")
 }
 
 /// We deduplicate items while keeping there order. Often, items are duplicated
@@ -405,6 +422,7 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<Rc<To
             }
             let snippet = Rc::new(Snippet::of_span(env, &item.span));
             let is_dead_code = check_dead_code_lint_in_attributes(tcx, item);
+            let is_axiom = check_coq_axiom_lint_in_attributes(tcx, item);
             let fn_sig_and_body = get_hir_fn_sig_and_body(tcx, fn_sig, body_id);
             vec![Rc::new(TopLevelItem::Definition {
                 name,
@@ -415,6 +433,7 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<Rc<To
                     &fn_sig_and_body,
                     "arg",
                     is_dead_code,
+                    is_axiom,
                 ),
             })]
         }
@@ -703,6 +722,7 @@ fn compile_impl_item(
 ) -> Rc<ImplItem> {
     let name = to_valid_coq_name(item.ident.name.as_str());
     let snippet = Rc::new(Snippet::of_span(env, &item.span));
+    let is_axiom = check_coq_axiom_lint_in_attributes(tcx, item);
     let kind = match &item.kind {
         rustc_hir::ImplItemKind::Const(ty, body_id) => {
             let ty = compile_type(env, ty);
@@ -724,6 +744,7 @@ fn compile_impl_item(
                 &get_hir_fn_sig_and_body(tcx, fn_sig, body_id),
                 "Pattern",
                 is_dead_code,
+                is_axiom,
             ),
         }),
         rustc_hir::ImplItemKind::Type(ty) => Rc::new(ImplItemKind::Type {
@@ -748,8 +769,9 @@ fn compile_function_body(
     args: &[(String, Rc<CoqType>)],
     body: &rustc_hir::Body,
     ret_ty: Rc<CoqType>,
+    is_axiom: bool,
 ) -> Option<Rc<Expr>> {
-    if env.axiomatize {
+    if env.axiomatize || is_axiom {
         return None;
     }
     let body = compile_hir_id(env, body.value.hir_id).read();
@@ -993,7 +1015,8 @@ fn compile_trait_item_body(
             TraitFn::Provided(body_id) => {
                 let env_tcx = env.tcx;
                 let fn_sig_and_body = get_hir_fn_sig_and_body(&env_tcx, fn_sig, body_id);
-                let signature_and_body = compile_fn_sig_and_body(env, &fn_sig_and_body, "arg");
+                let signature_and_body =
+                    compile_fn_sig_and_body(env, &fn_sig_and_body, "arg", false);
                 Rc::new(TraitItem::DefinitionWithDefault {
                     ty_params,
                     where_predicates,
@@ -1327,11 +1350,12 @@ impl FunDefinition {
         fn_sig_and_body: &HirFnSigAndBody,
         default: &str,
         is_dead_code: bool,
+        is_axiom: bool,
     ) -> Rc<Self> {
         let tcx = env.tcx;
         let mut dyn_name_gen = DynNameGen::new("T".to_string());
         let FnSigAndBody { args, ret_ty, body } =
-            &*compile_fn_sig_and_body(env, fn_sig_and_body, default);
+            &*compile_fn_sig_and_body(env, fn_sig_and_body, default, is_axiom);
         let args = args.iter().fold(vec![], |result, (string, ty)| {
             let ty = dyn_name_gen.make_dyn_parm(ty.clone());
             vec![result, vec![(string.to_owned(), ty)]].concat()

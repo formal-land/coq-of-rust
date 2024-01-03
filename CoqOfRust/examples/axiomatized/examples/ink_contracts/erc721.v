@@ -934,7 +934,10 @@ Section Impl_erc721_Erc721_t.
               return Err(Error::NotAllowed);
           };
   
-          let count = owned_tokens_count.get(to).map(|c| c + 1).unwrap_or(1);
+          let count = owned_tokens_count
+              .get(to)
+              .map(|c| c + (1 as u32))
+              .unwrap_or(1);
   
           owned_tokens_count.insert( *to, count);
           token_owner.insert(id, *to);
