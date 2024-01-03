@@ -242,7 +242,7 @@ fn build_inner_match(
                     init: match is_with_ref {
                         None => Expr::local_var(&scrutinee).copy(),
                         Some(is_with_ref) => {
-                            let func = if *is_with_ref { "borrow" } else { "borrow_mut" };
+                            let func = if *is_with_ref { "borrow_mut" } else { "borrow" };
 
                             Rc::new(Expr {
                                 ty: None,

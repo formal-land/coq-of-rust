@@ -153,7 +153,7 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either_t.
             match α0 with
             | scoping_rules_lifetimes_structs.Either.Num _ =>
               let γ1_0 := γ.["Num.0"] in
-              let* __self_0 := M.alloc (borrow_mut γ1_0) in
+              let* __self_0 := M.alloc (borrow γ1_0) in
               let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
               let* α1 : ref str.t := M.read (mk_str "Num") in
               let* α2 : M.Val (ref (ref i32.t)) := M.alloc (borrow __self_0) in
@@ -177,7 +177,7 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either_t.
             match α0 with
             | scoping_rules_lifetimes_structs.Either.Ref _ =>
               let γ1_0 := γ.["Ref.0"] in
-              let* __self_0 := M.alloc (borrow_mut γ1_0) in
+              let* __self_0 := M.alloc (borrow γ1_0) in
               let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
               let* α1 : ref str.t := M.read (mk_str "Ref") in
               let* α2 : M.Val (ref (ref (ref i32.t))) :=

@@ -108,7 +108,7 @@ Section Impl_enums_testcase_linked_list_List_t.
             | enums_testcase_linked_list.List.Cons _ _ =>
               let γ0_0 := γ.["Cons.0"] in
               let γ0_1 := γ.["Cons.1"] in
-              let* tail := M.alloc (borrow_mut γ0_1) in
+              let* tail := M.alloc (borrow γ0_1) in
               let* α0 :
                   ref
                     (alloc.boxed.Box.t
@@ -171,7 +171,7 @@ Section Impl_enums_testcase_linked_list_List_t.
               let γ0_0 := γ.["Cons.0"] in
               let γ0_1 := γ.["Cons.1"] in
               let* head := M.copy γ0_0 in
-              let* tail := M.alloc (borrow_mut γ0_1) in
+              let* tail := M.alloc (borrow γ0_1) in
               let* res : M.Val alloc.string.String.t :=
                 let* α0 : ref str.t := M.read (mk_str "") in
                 let* α1 : ref str.t := M.read (mk_str ", ") in

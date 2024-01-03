@@ -56,7 +56,7 @@ Section Impl_core_fmt_Debug_for_wrapping_errors_DoubleError_t.
             match α0 with
             | wrapping_errors.DoubleError.Parse _ =>
               let γ1_0 := γ.["Parse.0"] in
-              let* __self_0 := M.alloc (borrow_mut γ1_0) in
+              let* __self_0 := M.alloc (borrow γ1_0) in
               let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
               let* α1 : ref str.t := M.read (mk_str "Parse") in
               let* α2 : M.Val (ref (ref core.num.error.ParseIntError.t)) :=
@@ -203,7 +203,7 @@ Section Impl_core_error_Error_for_wrapping_errors_DoubleError_t.
             match α0 with
             | wrapping_errors.DoubleError.Parse _ =>
               let γ0_0 := γ.["Parse.0"] in
-              let* e := M.alloc (borrow_mut γ0_0) in
+              let* e := M.alloc (borrow γ0_0) in
               let* α0 : ref core.num.error.ParseIntError.t := M.read e in
               let* α1 : M.Val (ref core.num.error.ParseIntError.t) :=
                 M.alloc α0 in

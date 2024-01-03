@@ -693,7 +693,7 @@ Section Impl_core_cmp_PartialEq_for_mother_Status_t.
               match α0 with
               | mother.Status.EndingPeriod _ =>
                 let γ2_0 := γ0_0.["EndingPeriod.0"] in
-                let* __self_0 := M.alloc (borrow_mut γ2_0) in
+                let* __self_0 := M.alloc (borrow γ2_0) in
                 let* γ0_1 :=
                   let* α0 := M.read γ0_1 in
                   M.pure (deref α0) in
@@ -701,7 +701,7 @@ Section Impl_core_cmp_PartialEq_for_mother_Status_t.
                 match α0 with
                 | mother.Status.EndingPeriod _ =>
                   let γ2_0 := γ0_1.["EndingPeriod.0"] in
-                  let* __arg1_0 := M.alloc (borrow_mut γ2_0) in
+                  let* __arg1_0 := M.alloc (borrow γ2_0) in
                   let* α0 : ref u32.t := M.read __self_0 in
                   let* α1 : u32.t := M.read (deref α0) in
                   let* α2 : ref u32.t := M.read __arg1_0 in
@@ -726,7 +726,7 @@ Section Impl_core_cmp_PartialEq_for_mother_Status_t.
               match α0 with
               | mother.Status.Ended _ =>
                 let γ2_0 := γ0_0.["Ended.0"] in
-                let* __self_0 := M.alloc (borrow_mut γ2_0) in
+                let* __self_0 := M.alloc (borrow γ2_0) in
                 let* γ0_1 :=
                   let* α0 := M.read γ0_1 in
                   M.pure (deref α0) in
@@ -734,7 +734,7 @@ Section Impl_core_cmp_PartialEq_for_mother_Status_t.
                 match α0 with
                 | mother.Status.Ended _ =>
                   let γ2_0 := γ0_1.["Ended.0"] in
-                  let* __arg1_0 := M.alloc (borrow_mut γ2_0) in
+                  let* __arg1_0 := M.alloc (borrow γ2_0) in
                   let* α0 : ref mother.Outline.t := M.read __self_0 in
                   let* α1 : ref mother.Outline.t := M.read __arg1_0 in
                   let* α2 : bool.t :=
@@ -764,7 +764,7 @@ Section Impl_core_cmp_PartialEq_for_mother_Status_t.
               match α0 with
               | mother.Status.RfDelay _ =>
                 let γ2_0 := γ0_0.["RfDelay.0"] in
-                let* __self_0 := M.alloc (borrow_mut γ2_0) in
+                let* __self_0 := M.alloc (borrow γ2_0) in
                 let* γ0_1 :=
                   let* α0 := M.read γ0_1 in
                   M.pure (deref α0) in
@@ -772,7 +772,7 @@ Section Impl_core_cmp_PartialEq_for_mother_Status_t.
                 match α0 with
                 | mother.Status.RfDelay _ =>
                   let γ2_0 := γ0_1.["RfDelay.0"] in
-                  let* __arg1_0 := M.alloc (borrow_mut γ2_0) in
+                  let* __arg1_0 := M.alloc (borrow γ2_0) in
                   let* α0 : ref u32.t := M.read __self_0 in
                   let* α1 : u32.t := M.read (deref α0) in
                   let* α2 : ref u32.t := M.read __arg1_0 in
@@ -887,7 +887,7 @@ Section Impl_core_clone_Clone_for_mother_Status_t.
             match α0 with
             | mother.Status.EndingPeriod _ =>
               let γ1_0 := γ.["EndingPeriod.0"] in
-              let* __self_0 := M.alloc (borrow_mut γ1_0) in
+              let* __self_0 := M.alloc (borrow γ1_0) in
               let* α0 : ref u32.t := M.read __self_0 in
               let* α1 : u32.t :=
                 M.call
@@ -907,7 +907,7 @@ Section Impl_core_clone_Clone_for_mother_Status_t.
             match α0 with
             | mother.Status.Ended _ =>
               let γ1_0 := γ.["Ended.0"] in
-              let* __self_0 := M.alloc (borrow_mut γ1_0) in
+              let* __self_0 := M.alloc (borrow γ1_0) in
               let* α0 : ref mother.Outline.t := M.read __self_0 in
               let* α1 : mother.Outline.t :=
                 M.call
@@ -927,7 +927,7 @@ Section Impl_core_clone_Clone_for_mother_Status_t.
             match α0 with
             | mother.Status.RfDelay _ =>
               let γ1_0 := γ.["RfDelay.0"] in
-              let* __self_0 := M.alloc (borrow_mut γ1_0) in
+              let* __self_0 := M.alloc (borrow γ1_0) in
               let* α0 : ref u32.t := M.read __self_0 in
               let* α1 : u32.t :=
                 M.call
@@ -1412,7 +1412,7 @@ Section Impl_core_cmp_PartialEq_for_mother_Failure_t.
               match α0 with
               | mother.Failure.Revert _ =>
                 let γ2_0 := γ0_0.["Revert.0"] in
-                let* __self_0 := M.alloc (borrow_mut γ2_0) in
+                let* __self_0 := M.alloc (borrow γ2_0) in
                 let* γ0_1 :=
                   let* α0 := M.read γ0_1 in
                   M.pure (deref α0) in
@@ -1420,7 +1420,7 @@ Section Impl_core_cmp_PartialEq_for_mother_Failure_t.
                 match α0 with
                 | mother.Failure.Revert _ =>
                   let γ2_0 := γ0_1.["Revert.0"] in
-                  let* __arg1_0 := M.alloc (borrow_mut γ2_0) in
+                  let* __arg1_0 := M.alloc (borrow γ2_0) in
                   let* α0 : ref alloc.string.String.t := M.read __self_0 in
                   let* α1 : ref alloc.string.String.t := M.read __arg1_0 in
                   let* α2 : bool.t :=

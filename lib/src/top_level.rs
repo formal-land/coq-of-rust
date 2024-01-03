@@ -1116,7 +1116,11 @@ fn mt_impl_item(item: Rc<ImplItemKind>) -> Rc<ImplItemKind> {
 impl FnSigAndBody {
     fn mt(&self) -> Rc<Self> {
         Rc::new(FnSigAndBody {
-            args: self.args.clone(),
+            args: self
+                .args
+                .iter()
+                .map(|(name, ty)| (name.clone(), mt_ty(ty.clone())))
+                .collect(),
             ret_ty: Rc::new(CoqType::Monad(mt_ty(self.ret_ty.clone()))),
             body: match &self.body {
                 None => self.body.clone(),

@@ -496,11 +496,16 @@ Module Eq.
     match goal with H : _ |- _ => apply H end.
   Defined.
 
-  Module Impl_Eq_for_str.
-    Global Instance I : Required.Trait str.t := {
+  Module Impl.
+    Global Instance I_str : Required.Trait str.t := {
       assert_receiver_is_total_eq := Datatypes.None;
     }.
-  End Impl_Eq_for_str.
+
+    Global Instance I_ref {A : Set} {ℋ : Trait A} :
+      Required.Trait (ref A) := {
+      assert_receiver_is_total_eq := Datatypes.None;
+    }.
+  End Impl.
 End Eq.
 
 (* 

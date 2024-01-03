@@ -129,7 +129,7 @@ Definition main : M unit :=
       value
       [
         fun γ =>
-          (let* r := M.alloc (borrow_mut γ) in
+          (let* r := M.alloc (borrow γ) in
           let* _ : M.Val unit :=
             let* α0 : ref str.t :=
               M.read (mk_str "Got a reference to a value: ") in
@@ -158,7 +158,7 @@ Definition main : M unit :=
       mut_value
       [
         fun γ =>
-          (let* m := M.alloc (borrow γ) in
+          (let* m := M.alloc (borrow_mut γ) in
           let* _ : M.Val unit :=
             let* β : M.Val i32.t :=
               let* α0 : mut_ref i32.t := M.read m in
