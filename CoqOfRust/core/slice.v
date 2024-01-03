@@ -139,6 +139,10 @@ Module iter.
   Module Iter.
     Parameter t : Set -> Set.
   End Iter.
+
+  Global Instance Clone_for_Iter {T : Set} {H0 : clone.Clone.Trait T} :
+    clone.Clone.Trait (Iter.t T).
+  Admitted.
 End iter.
 
 (* 

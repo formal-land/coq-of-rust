@@ -1522,8 +1522,8 @@ Section Impl_multisig_Multisig_t.
                         (let* α0 := M.read γ in
                         match α0 with
                         | core.option.Option.Some _ =>
-                          let γ0 := γ.["Some.0"] in
-                          let* owner := M.copy γ0 in
+                          let γ0_0 := γ.["Some.0"] in
+                          let* owner := M.copy γ0_0 in
                           let* _ : M.Val (core.option.Option.t u32.t) :=
                             let* α0 : ref multisig.AccountId.t :=
                               M.read owner in
@@ -1741,10 +1741,10 @@ Section Impl_multisig_Multisig_t.
             (let* α0 := M.read γ in
             match α0 with
             | (_, _) =>
-              let γ0 := Tuple.Access.left γ in
-              let γ1 := Tuple.Access.right γ in
-              let* left_val := M.copy γ0 in
-              let* right_val := M.copy γ1 in
+              let γ0_0 := Tuple.Access.left γ in
+              let γ0_1 := Tuple.Access.right γ in
+              let* left_val := M.copy γ0_0 in
+              let* right_val := M.copy γ0_1 in
               let* α0 : ref multisig.AccountId.t := M.read left_val in
               let* α1 : ref multisig.AccountId.t := M.read right_val in
               let* α2 : bool.t :=
@@ -2032,8 +2032,8 @@ Section Impl_multisig_Multisig_t.
                       (let* α0 := M.read γ in
                       match α0 with
                       | core.option.Option.Some _ =>
-                        let γ0 := γ.["Some.0"] in
-                        let* trans_id := M.copy γ0 in
+                        let γ0_0 := γ.["Some.0"] in
+                        let* trans_id := M.copy γ0_0 in
                         let* key : M.Val (u32.t * multisig.AccountId.t) :=
                           let* α0 : ref u32.t := M.read trans_id in
                           let* α1 : u32.t := M.read (deref α0) in
@@ -2835,8 +2835,8 @@ Section Impl_multisig_Multisig_t.
                             (let* α0 := M.read γ in
                             match α0 with
                             | core.option.Option.Some _ =>
-                              let γ0 := γ.["Some.0"] in
-                              let* owner := M.copy γ0 in
+                              let γ0_0 := γ.["Some.0"] in
+                              let* owner := M.copy γ0_0 in
                               let* _ : M.Val unit :=
                                 let* α0 : mut_ref multisig.Multisig.t :=
                                   M.read self in
@@ -3206,11 +3206,11 @@ Section Impl_multisig_Multisig_t.
               (let* α0 := M.read γ in
               match α0 with
               | core.result.Result.Ok _ =>
-                let γ0 := γ.["Ok.0"] in
-                let* α0 := M.read γ0 in
+                let γ0_0 := γ.["Ok.0"] in
+                let* α0 := M.read γ0_0 in
                 match α0 with
                 | core.result.Result.Ok _ =>
-                  let γ0 := γ0.["Ok.0"] in
+                  let γ1_0 := γ0_0.["Ok.0"] in
                   M.alloc (core.result.Result.Ok tt)
                 | _ => M.break_match
                 end
@@ -3355,12 +3355,12 @@ Section Impl_multisig_Multisig_t.
               (let* α0 := M.read γ in
               match α0 with
               | core.result.Result.Ok _ =>
-                let γ0 := γ.["Ok.0"] in
-                let* α0 := M.read γ0 in
+                let γ0_0 := γ.["Ok.0"] in
+                let* α0 := M.read γ0_0 in
                 match α0 with
                 | core.result.Result.Ok _ =>
-                  let γ0 := γ0.["Ok.0"] in
-                  let* v := M.copy γ0 in
+                  let γ1_0 := γ0_0.["Ok.0"] in
+                  let* v := M.copy γ1_0 in
                   let* α0 : alloc.vec.Vec.t u8.t alloc.alloc.Global.t :=
                     M.read v in
                   M.alloc (core.result.Result.Ok α0)

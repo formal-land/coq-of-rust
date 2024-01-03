@@ -167,6 +167,14 @@ Section Impl_Vec.
     Notations.double_colon := swap_remove;
   }.
 
+  (* pub fn is_empty(&self) -> bool *)
+  Parameter is_empty : ref Self -> M bool.t.
+
+  Global Instance AF_is_empty :
+    Notations.DoubleColon Self "is_empty" := {
+    Notations.double_colon := is_empty;
+  }.
+
   Global Instance I_Default {ℋ_0 : default.Default.Trait T} :
     default.Default.Trait Self.
   Admitted.

@@ -65,10 +65,10 @@ Definition main : M unit :=
                   _;
               |}
               =>
-            let γ0 := γ.["Person.name"] in
-            let γ1 := γ.["Person.age"] in
-            let* name := M.copy γ0 in
-            let* age := M.alloc (borrow_mut γ1) in
+            let γ0_0 := γ.["Person.name"] in
+            let γ0_1 := γ.["Person.age"] in
+            let* name := M.copy γ0_0 in
+            let* age := M.alloc (borrow_mut γ0_1) in
             let* _ : M.Val unit :=
               let* _ : M.Val unit :=
                 let* α0 : ref str.t := M.read (mk_str "The person's age is ") in

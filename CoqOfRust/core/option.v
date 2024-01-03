@@ -107,6 +107,17 @@ Module Impl_Option. Section Impl_Option.
     Notations.double_colon := is_some;
   }.
 
+  (*
+  pub fn map<U, F>(self, f: F) -> Option<U>
+  where
+      F: FnOnce(T) -> U,
+  *)
+  Parameter map : forall {U : Set}, Self -> (T -> M U) -> M (option.Option.t U).
+
+  Global Instance AF_map {U : Set} : Notations.DoubleColon Self "map" := {
+    Notations.double_colon := map (U := U);
+  }.
+
   Global Instance I_Default {ℋ : default.Default.Trait T} :
     default.Default.Trait (core.option.Option.t T).
   Admitted.

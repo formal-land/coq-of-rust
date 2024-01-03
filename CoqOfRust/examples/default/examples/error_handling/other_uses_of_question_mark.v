@@ -150,8 +150,8 @@ Definition double_first
               (let* α0 := M.read γ in
               match α0 with
               | core.ops.control_flow.ControlFlow.Break _ =>
-                let γ0 := γ.["Break.0"] in
-                let* residual := M.copy γ0 in
+                let γ0_0 := γ.["Break.0"] in
+                let* residual := M.copy γ0_0 in
                 let* α0 :
                     core.result.Result.t
                       core.convert.Infallible.t
@@ -182,8 +182,8 @@ Definition double_first
               (let* α0 := M.read γ in
               match α0 with
               | core.ops.control_flow.ControlFlow.Continue _ =>
-                let γ0 := γ.["Continue.0"] in
-                let* val := M.copy γ0 in
+                let γ0_0 := γ.["Continue.0"] in
+                let* val := M.copy γ0_0 in
                 M.pure val
               | _ => M.break_match
               end) :
@@ -223,8 +223,8 @@ Definition double_first
               (let* α0 := M.read γ in
               match α0 with
               | core.ops.control_flow.ControlFlow.Break _ =>
-                let γ0 := γ.["Break.0"] in
-                let* residual := M.copy γ0 in
+                let γ0_0 := γ.["Break.0"] in
+                let* residual := M.copy γ0_0 in
                 let* α0 :
                     core.result.Result.t
                       core.convert.Infallible.t
@@ -255,8 +255,8 @@ Definition double_first
               (let* α0 := M.read γ in
               match α0 with
               | core.ops.control_flow.ControlFlow.Continue _ =>
-                let γ0 := γ.["Continue.0"] in
-                let* val := M.copy γ0 in
+                let γ0_0 := γ.["Continue.0"] in
+                let* val := M.copy γ0_0 in
                 M.pure val
               | _ => M.break_match
               end) :
@@ -293,8 +293,8 @@ Definition print
           (let* α0 := M.read γ in
           match α0 with
           | core.result.Result.Ok _ =>
-            let γ0 := γ.["Ok.0"] in
-            let* n := M.copy γ0 in
+            let γ0_0 := γ.["Ok.0"] in
+            let* n := M.copy γ0_0 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "The first doubled is ") in
               let* α1 : ref str.t := M.read (mk_str "
@@ -324,8 +324,8 @@ Definition print
           (let* α0 := M.read γ in
           match α0 with
           | core.result.Result.Err _ =>
-            let γ0 := γ.["Err.0"] in
-            let* e := M.copy γ0 in
+            let γ0_0 := γ.["Err.0"] in
+            let* e := M.copy γ0_0 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "Error: ") in
               let* α1 : ref str.t := M.read (mk_str "

@@ -65,15 +65,15 @@ Definition main : M unit :=
                 match_destructuring_structs.Foo.y := _;
               |}
               =>
-            let γ0 := γ.["Foo.x"] in
-            let γ1 := γ.["Foo.y"] in
-            let* α0 := M.read γ0 in
+            let γ0_0 := γ.["Foo.x"] in
+            let γ0_1 := γ.["Foo.y"] in
+            let* α0 := M.read γ0_0 in
             match α0 with
             | (_, _) =>
-              let γ0 := Tuple.Access.left γ0 in
-              let γ1 := Tuple.Access.right γ0 in
-              let* b := M.copy γ1 in
-              let* y := M.copy γ1 in
+              let γ1_0 := Tuple.Access.left γ0_0 in
+              let γ1_1 := Tuple.Access.right γ0_0 in
+              let* b := M.copy γ1_1 in
+              let* y := M.copy γ0_1 in
               let* _ : M.Val unit :=
                 let* α0 : ref str.t :=
                   M.read (mk_str "First of x is 1, b = ") in
@@ -112,9 +112,9 @@ Definition main : M unit :=
                 match_destructuring_structs.Foo.x := _;
               |}
               =>
-            let γ0 := γ.["Foo.y"] in
-            let γ1 := γ.["Foo.x"] in
-            let* i := M.copy γ1 in
+            let γ0_0 := γ.["Foo.y"] in
+            let γ0_1 := γ.["Foo.x"] in
+            let* i := M.copy γ0_1 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "y is 2, i = ") in
               let* α1 : ref str.t := M.read (mk_str "
@@ -143,8 +143,8 @@ Definition main : M unit :=
           (let* α0 := M.read γ in
           match α0 with
           | {| match_destructuring_structs.Foo.y := _; |} =>
-            let γ0 := γ.["Foo.y"] in
-            let* y := M.copy γ0 in
+            let γ0_0 := γ.["Foo.y"] in
+            let* y := M.copy γ0_0 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "y = ") in
               let* α1 : ref str.t :=

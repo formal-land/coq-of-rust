@@ -52,11 +52,11 @@ Definition main : M unit :=
           (let* α0 := M.read γ in
           match α0 with
           | [_; _; _] =>
-            let γ0 := γ.["[0]"] in
-            let γ1 := γ.["[1]"] in
-            let γ2 := γ.["[2]"] in
-            let* second := M.copy γ1 in
-            let* third := M.copy γ2 in
+            let γ0_0 := γ.["[0]"] in
+            let γ0_1 := γ.["[1]"] in
+            let γ0_2 := γ.["[2]"] in
+            let* second := M.copy γ0_1 in
+            let* third := M.copy γ0_2 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t :=
                 M.read (mk_str "array[0] = 0, array[1] = ") in
@@ -92,10 +92,10 @@ Definition main : M unit :=
           (let* α0 := M.read γ in
           match α0 with
           | [_; _; _] =>
-            let γ0 := γ.["[0]"] in
-            let γ1 := γ.["[1]"] in
-            let γ2 := γ.["[2]"] in
-            let* third := M.copy γ2 in
+            let γ0_0 := γ.["[0]"] in
+            let γ0_1 := γ.["[1]"] in
+            let γ0_2 := γ.["[2]"] in
+            let* third := M.copy γ0_2 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t :=
                 M.read (mk_str "array[0] = 1, array[2] = ") in
@@ -128,10 +128,10 @@ Definition main : M unit :=
           (let* α0 := M.read γ in
           match α0 with
           | (_:: _:: _) =>
-            let γ0 := γ.["[0]"] in
-            let γ1 := γ.["[1]"] in
-            let γ := γ.["[2].slice"] in
-            let* second := M.copy γ1 in
+            let γ0_0 := γ.["[0]"] in
+            let γ0_1 := γ.["[1]"] in
+            let γ0_slice := γ.["[2].slice"] in
+            let* second := M.copy γ0_1 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t :=
                 M.read (mk_str "array[0] = -1, array[1] = ") in
@@ -164,11 +164,11 @@ Definition main : M unit :=
           (let* α0 := M.read γ in
           match α0 with
           | (_:: _:: _) =>
-            let γ0 := γ.["[0]"] in
-            let γ1 := γ.["[1]"] in
-            let γ := γ.["[2].slice"] in
-            let* second := M.copy γ1 in
-            let* tail := M.copy γ in
+            let γ0_0 := γ.["[0]"] in
+            let γ0_1 := γ.["[1]"] in
+            let γ0_slice := γ.["[2].slice"] in
+            let* second := M.copy γ0_1 in
+            let* tail := M.copy γ0_slice in
             let* _ : M.Val unit :=
               let* α0 : ref str.t :=
                 M.read (mk_str "array[0] = 3, array[1] = ") in

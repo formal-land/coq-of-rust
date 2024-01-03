@@ -145,10 +145,10 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
                   associated_functions_and_methods.Point.y := _;
                 |}
                 =>
-              let γ0 := γ.["Point.x"] in
-              let γ1 := γ.["Point.y"] in
-              let* x1 := M.copy γ0 in
-              let* y1 := M.copy γ1 in
+              let γ0_0 := γ.["Point.x"] in
+              let γ0_1 := γ.["Point.y"] in
+              let* x1 := M.copy γ0_0 in
+              let* y1 := M.copy γ0_1 in
               let* α0 : ref associated_functions_and_methods.Rectangle.t :=
                 M.read self in
               match_operator
@@ -163,10 +163,10 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
                           associated_functions_and_methods.Point.y := _;
                         |}
                         =>
-                      let γ0 := γ.["Point.x"] in
-                      let γ1 := γ.["Point.y"] in
-                      let* x2 := M.copy γ0 in
-                      let* y2 := M.copy γ1 in
+                      let γ0_0 := γ.["Point.x"] in
+                      let γ0_1 := γ.["Point.y"] in
+                      let* x2 := M.copy γ0_0 in
+                      let* y2 := M.copy γ0_1 in
                       let* α0 : f64.t := M.read x1 in
                       let* α1 : f64.t := M.read x2 in
                       let* α2 : f64.t := BinOp.Panic.sub α0 α1 in
@@ -213,10 +213,10 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
                   associated_functions_and_methods.Point.y := _;
                 |}
                 =>
-              let γ0 := γ.["Point.x"] in
-              let γ1 := γ.["Point.y"] in
-              let* x1 := M.copy γ0 in
-              let* y1 := M.copy γ1 in
+              let γ0_0 := γ.["Point.x"] in
+              let γ0_1 := γ.["Point.y"] in
+              let* x1 := M.copy γ0_0 in
+              let* y1 := M.copy γ0_1 in
               let* α0 : ref associated_functions_and_methods.Rectangle.t :=
                 M.read self in
               match_operator
@@ -231,10 +231,10 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
                           associated_functions_and_methods.Point.y := _;
                         |}
                         =>
-                      let γ0 := γ.["Point.x"] in
-                      let γ1 := γ.["Point.y"] in
-                      let* x2 := M.copy γ0 in
-                      let* y2 := M.copy γ1 in
+                      let γ0_0 := γ.["Point.x"] in
+                      let γ0_1 := γ.["Point.y"] in
+                      let* x2 := M.copy γ0_0 in
+                      let* y2 := M.copy γ0_1 in
                       let* α0 : f64.t := M.read UnsupportedLiteral in
                       let* α1 : f64.t := M.read x1 in
                       let* α2 : f64.t := M.read x2 in
@@ -361,10 +361,10 @@ Section Impl_associated_functions_and_methods_Pair_t.
             (let* α0 := M.read γ in
             match α0 with
             | associated_functions_and_methods.Pair.Build_t _ _ =>
-              let γ0 := γ.["Pair.0"] in
-              let γ1 := γ.["Pair.1"] in
-              let* first := M.copy γ0 in
-              let* second := M.copy γ1 in
+              let γ0_0 := γ.["Pair.0"] in
+              let γ0_1 := γ.["Pair.1"] in
+              let* first := M.copy γ0_0 in
+              let* second := M.copy γ0_1 in
               let* _ : M.Val unit :=
                 let* _ : M.Val unit :=
                   let* α0 : ref str.t := M.read (mk_str "Destroying Pair(") in

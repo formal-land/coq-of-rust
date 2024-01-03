@@ -19,10 +19,10 @@ Definition reverse (pair : i32.t * bool.t) : M (bool.t * i32.t) :=
           (let* α0 := M.read γ in
           match α0 with
           | (_, _) =>
-            let γ0 := Tuple.Access.left γ in
-            let γ1 := Tuple.Access.right γ in
-            let* int_param := M.copy γ0 in
-            let* bool_param := M.copy γ1 in
+            let γ0_0 := Tuple.Access.left γ in
+            let γ0_1 := Tuple.Access.right γ in
+            let* int_param := M.copy γ0_0 in
+            let* bool_param := M.copy γ0_1 in
             let* α0 : bool.t := M.read bool_param in
             let* α1 : i32.t := M.read int_param in
             M.alloc (α0, α1)
@@ -348,16 +348,16 @@ Definition main : M unit :=
           (let* α0 := M.read γ in
           match α0 with
           | (_, _, _, _) =>
-            let γ0 :=
+            let γ0_0 :=
               Tuple.Access.left (Tuple.Access.left (Tuple.Access.left γ)) in
-            let γ1 :=
+            let γ0_1 :=
               Tuple.Access.right (Tuple.Access.left (Tuple.Access.left γ)) in
-            let γ2 := Tuple.Access.right (Tuple.Access.left γ) in
-            let γ3 := Tuple.Access.right γ in
-            let* a := M.copy γ0 in
-            let* b := M.copy γ1 in
-            let* c := M.copy γ2 in
-            let* d := M.copy γ3 in
+            let γ0_2 := Tuple.Access.right (Tuple.Access.left γ) in
+            let γ0_3 := Tuple.Access.right γ in
+            let* a := M.copy γ0_0 in
+            let* b := M.copy γ0_1 in
+            let* c := M.copy γ0_2 in
+            let* d := M.copy γ0_3 in
             let* _ : M.Val unit :=
               let* _ : M.Val unit :=
                 let* α0 : ref str.t := M.read (mk_str "") in

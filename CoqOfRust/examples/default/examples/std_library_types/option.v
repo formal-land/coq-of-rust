@@ -92,8 +92,8 @@ Definition try_division (dividend : i32.t) (divisor : i32.t) : M unit :=
           (let* α0 := M.read γ in
           match α0 with
           | core.option.Option.Some _ =>
-            let γ0 := γ.["Some.0"] in
-            let* quotient := M.copy γ0 in
+            let γ0_0 := γ.["Some.0"] in
+            let* quotient := M.copy γ0_0 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "") in
               let* α1 : ref str.t := M.read (mk_str " / ") in

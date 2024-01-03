@@ -178,9 +178,9 @@ Definition main : M unit :=
                   scoping_rules_borrowing_the_ref_pattern.Point.y := _;
                 |}
                 =>
-              let γ0 := γ.["Point.x"] in
-              let γ1 := γ.["Point.y"] in
-              let* ref_to_x := M.alloc (borrow_mut γ0) in
+              let γ0_0 := γ.["Point.x"] in
+              let γ0_1 := γ.["Point.y"] in
+              let* ref_to_x := M.alloc (borrow_mut γ0_0) in
               let* α0 : ref i32.t := M.read ref_to_x in
               M.pure (deref α0)
             end) :
@@ -202,9 +202,9 @@ Definition main : M unit :=
                 scoping_rules_borrowing_the_ref_pattern.Point.y := _;
               |}
               =>
-            let γ0 := γ.["Point.x"] in
-            let γ1 := γ.["Point.y"] in
-            let* mut_ref_to_y := M.alloc (borrow γ1) in
+            let γ0_0 := γ.["Point.x"] in
+            let γ0_1 := γ.["Point.y"] in
+            let* mut_ref_to_y := M.alloc (borrow γ0_1) in
             let* _ : M.Val unit :=
               let* α0 : mut_ref i32.t := M.read mut_ref_to_y in
               assign (deref α0) (Integer.of_Z 1) in
@@ -279,9 +279,9 @@ Definition main : M unit :=
           (let* α0 := M.read γ in
           match α0 with
           | (_, _) =>
-            let γ0 := Tuple.Access.left γ in
-            let γ1 := Tuple.Access.right γ in
-            let* last := M.alloc (borrow γ1) in
+            let γ0_0 := Tuple.Access.left γ in
+            let γ0_1 := Tuple.Access.right γ in
+            let* last := M.alloc (borrow γ0_1) in
             let* _ : M.Val unit :=
               let* α0 : mut_ref u32.t := M.read last in
               assign (deref α0) (Integer.of_Z 2) in

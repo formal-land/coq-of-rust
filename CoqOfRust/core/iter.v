@@ -28,6 +28,11 @@ Module adapters.
     Module Zip.
       Parameter t : Set -> Set -> Set.
     End Zip.
+
+    Global Instance Impl_Zip_Clone {A B : Set}
+      (H0 : clone.Clone.Trait A) (H1 : clone.Clone.Trait B) :
+      clone.Clone.Trait (Zip.t A B).
+    Admitted.
   End zip.
 End adapters.
 
@@ -486,6 +491,19 @@ Module traits.
             (Item := ref T)
             (IntoIter := slice.iter.Iter.t T)
             (H0 := iterator.Iterator.Impl.Iter) := {
+        into_iter := axiom "into_iter";
+      }.
+
+      Global Instance I_Zip {A B Item_A Item_B : Set}
+          (H0_Iter : iterator.Iterator.Trait A (Item := Item_A))
+          (H1_Iter : iterator.Iterator.Trait B (Item := Item_B))
+          (H0 : IntoIterator.Trait A (Item := Item_A) (IntoIter := A))
+          (H1 : IntoIterator.Trait B (Item := Item_B) (IntoIter := B)) :
+          IntoIterator.Trait
+            (adapters.zip.Zip.t A B)
+            (Item := Item_A * Item_B)
+            (IntoIter := adapters.zip.Zip.t A B)
+            (H0 := iterator.Iterator.Impl.Zip _ _) := {
         into_iter := axiom "into_iter";
       }.
     End Impl.

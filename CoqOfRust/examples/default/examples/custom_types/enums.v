@@ -123,8 +123,8 @@ Definition inspect (event : enums.WebEvent.t) : M unit :=
           (let* α0 := M.read γ in
           match α0 with
           | enums.WebEvent.KeyPress _ =>
-            let γ0 := γ.["KeyPress.0"] in
-            let* c := M.copy γ0 in
+            let γ0_0 := γ.["KeyPress.0"] in
+            let* c := M.copy γ0_0 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "pressed '") in
               let* α1 : ref str.t := M.read (mk_str "'.
@@ -154,8 +154,8 @@ Definition inspect (event : enums.WebEvent.t) : M unit :=
           (let* α0 := M.read γ in
           match α0 with
           | enums.WebEvent.Paste _ =>
-            let γ0 := γ.["Paste.0"] in
-            let* s := M.copy γ0 in
+            let γ0_0 := γ.["Paste.0"] in
+            let* s := M.copy γ0_0 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "pasted "") in
               let* α1 : ref str.t := M.read (mk_str "".
@@ -189,10 +189,10 @@ Definition inspect (event : enums.WebEvent.t) : M unit :=
               {| enums.WebEvent.Click.x := _; enums.WebEvent.Click.y := _;
               |}
               =>
-            let γ0 := γ.["Click.x"] in
-            let γ1 := γ.["Click.y"] in
-            let* x := M.copy γ0 in
-            let* y := M.copy γ1 in
+            let γ0_0 := γ.["Click.x"] in
+            let γ0_1 := γ.["Click.y"] in
+            let* x := M.copy γ0_0 in
+            let* y := M.copy γ0_1 in
             let* _ : M.Val unit :=
               let* _ : M.Val unit :=
                 let* α0 : ref str.t := M.read (mk_str "clicked at x=") in

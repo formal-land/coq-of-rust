@@ -98,10 +98,10 @@ Definition main : M unit :=
           (let* α0 := M.read γ in
           match α0 with
           | (_, _) =>
-            let γ0 := Tuple.Access.left γ in
-            let γ1 := Tuple.Access.right γ in
-            let* numbers := M.copy γ0 in
-            let* errors := M.copy γ1 in
+            let γ0_0 := Tuple.Access.left γ in
+            let γ0_1 := Tuple.Access.right γ in
+            let* numbers := M.copy γ0_0 in
+            let* errors := M.copy γ0_1 in
             let* numbers : M.Val (alloc.vec.Vec.t i32.t alloc.alloc.Global.t) :=
               let* α0 :
                   alloc.vec.Vec.t

@@ -53,11 +53,11 @@ Definition main : M unit :=
           (let* α0 := M.read γ in
           match α0 with
           | (_, _, _) =>
-            let γ0 := Tuple.Access.left (Tuple.Access.left γ) in
-            let γ1 := Tuple.Access.right (Tuple.Access.left γ) in
-            let γ2 := Tuple.Access.right γ in
-            let* y := M.copy γ1 in
-            let* z := M.copy γ2 in
+            let γ0_0 := Tuple.Access.left (Tuple.Access.left γ) in
+            let γ0_1 := Tuple.Access.right (Tuple.Access.left γ) in
+            let γ0_2 := Tuple.Access.right γ in
+            let* y := M.copy γ0_1 in
+            let* z := M.copy γ0_2 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "First is `0`, `y` is ") in
               let* α1 : ref str.t := M.read (mk_str ", and `z` is ") in
@@ -89,9 +89,9 @@ Definition main : M unit :=
           (let* α0 := M.read γ in
           match α0 with
           | (_, _, _) =>
-            let γ0 := Tuple.Access.left (Tuple.Access.left γ) in
-            let γ1 := Tuple.Access.right (Tuple.Access.left γ) in
-            let γ2 := Tuple.Access.right γ in
+            let γ0_0 := Tuple.Access.left (Tuple.Access.left γ) in
+            let γ0_1 := Tuple.Access.right (Tuple.Access.left γ) in
+            let γ0_2 := Tuple.Access.right γ in
             let* _ : M.Val unit :=
               let* α0 : ref str.t :=
                 M.read (mk_str "First is `1` and the rest doesn't matter
@@ -112,7 +112,7 @@ Definition main : M unit :=
           (let* α0 := M.read γ in
           match α0 with
           | (_) =>
-            let γ0 := γ in
+            let γ0_0 := γ in
             let* _ : M.Val unit :=
               let* α0 : ref str.t :=
                 M.read (mk_str "last is `2` and the rest doesn't matter
@@ -133,9 +133,9 @@ Definition main : M unit :=
           (let* α0 := M.read γ in
           match α0 with
           | (_, _, _) =>
-            let γ0 := Tuple.Access.left (Tuple.Access.left γ) in
-            let γ1 := Tuple.Access.right (Tuple.Access.left γ) in
-            let γ2 := Tuple.Access.right γ in
+            let γ0_0 := Tuple.Access.left (Tuple.Access.left γ) in
+            let γ0_1 := Tuple.Access.right (Tuple.Access.left γ) in
+            let γ0_2 := Tuple.Access.right γ in
             let* _ : M.Val unit :=
               let* α0 : ref str.t :=
                 M.read

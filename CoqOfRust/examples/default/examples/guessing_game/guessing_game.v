@@ -118,8 +118,8 @@ Definition main : M unit :=
                 (let* α0 := M.read γ in
                 match α0 with
                 | core.result.Result.Ok _ =>
-                  let γ0 := γ.["Ok.0"] in
-                  let* num := M.copy γ0 in
+                  let γ0_0 := γ.["Ok.0"] in
+                  let* num := M.copy γ0_0 in
                   M.pure num
                 | _ => M.break_match
                 end) :
@@ -128,7 +128,7 @@ Definition main : M unit :=
                 (let* α0 := M.read γ in
                 match α0 with
                 | core.result.Result.Err _ =>
-                  let γ0 := γ.["Err.0"] in
+                  let γ0_0 := γ.["Err.0"] in
                   let* α0 : M.Val never.t := M.continue in
                   let* α1 := M.read α0 in
                   let* α2 : u32.t := never_to_any α1 in

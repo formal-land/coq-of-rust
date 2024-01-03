@@ -1820,20 +1820,20 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                           (let* α0 := M.read γ in
                           match α0 with
                           | core.option.Option.Some _ =>
-                            let γ0 := γ.["Some.0"] in
-                            let* α0 := M.read γ0 in
+                            let γ0_0 := γ.["Some.0"] in
+                            let* α0 := M.read γ0_0 in
                             match α0 with
                             | (_, _) =>
-                              let γ0 := Tuple.Access.left γ0 in
-                              let γ1 := Tuple.Access.right γ0 in
-                              let* γ0 :=
-                                let* α0 := M.read γ0 in
+                              let γ1_0 := Tuple.Access.left γ0_0 in
+                              let γ1_1 := Tuple.Access.right γ0_0 in
+                              let* γ1_0 :=
+                                let* α0 := M.read γ1_0 in
                                 M.pure (deref α0) in
-                              let* id := M.copy γ0 in
-                              let* γ1 :=
-                                let* α0 := M.read γ1 in
+                              let* id := M.copy γ1_0 in
+                              let* γ1_1 :=
+                                let* α0 := M.read γ1_1 in
                                 M.pure (deref α0) in
-                              let* v := M.copy γ1 in
+                              let* v := M.copy γ1_1 in
                               let* balance : M.Val u128.t :=
                                 let* α0 : mut_ref erc1155.Contract.t :=
                                   M.read self in
@@ -1939,20 +1939,20 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                           (let* α0 := M.read γ in
                           match α0 with
                           | core.option.Option.Some _ =>
-                            let γ0 := γ.["Some.0"] in
-                            let* α0 := M.read γ0 in
+                            let γ0_0 := γ.["Some.0"] in
+                            let* α0 := M.read γ0_0 in
                             match α0 with
                             | (_, _) =>
-                              let γ0 := Tuple.Access.left γ0 in
-                              let γ1 := Tuple.Access.right γ0 in
-                              let* γ0 :=
-                                let* α0 := M.read γ0 in
+                              let γ1_0 := Tuple.Access.left γ0_0 in
+                              let γ1_1 := Tuple.Access.right γ0_0 in
+                              let* γ1_0 :=
+                                let* α0 := M.read γ1_0 in
                                 M.pure (deref α0) in
-                              let* id := M.copy γ0 in
-                              let* γ1 :=
-                                let* α0 := M.read γ1 in
+                              let* id := M.copy γ1_0 in
+                              let* γ1_1 :=
+                                let* α0 := M.read γ1_1 in
                                 M.pure (deref α0) in
-                              let* v := M.copy γ1 in
+                              let* v := M.copy γ1_1 in
                               let* _ : M.Val unit :=
                                 let* α0 : mut_ref erc1155.Contract.t :=
                                   M.read self in
@@ -2092,8 +2092,8 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                         (let* α0 := M.read γ in
                         match α0 with
                         | core.option.Option.Some _ =>
-                          let γ0 := γ.["Some.0"] in
-                          let* o := M.copy γ0 in
+                          let γ0_0 := γ.["Some.0"] in
+                          let* o := M.copy γ0_0 in
                           let* α0 : core.slice.iter.Iter.t u128.t :=
                             M.call
                               ((core.iter.traits.collect.IntoIterator.into_iter
@@ -2147,8 +2147,8 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                                             (let* α0 := M.read γ in
                                             match α0 with
                                             | core.option.Option.Some _ =>
-                                              let γ0 := γ.["Some.0"] in
-                                              let* t := M.copy γ0 in
+                                              let γ0_0 := γ.["Some.0"] in
+                                              let* t := M.copy γ0_0 in
                                               let* amount : M.Val u128.t :=
                                                 let* α0 :
                                                     ref erc1155.Contract.t :=

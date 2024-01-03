@@ -327,8 +327,8 @@ Definition try_logon
           (let* α0 := M.read γ in
           match α0 with
           | core.option.Option.Some _ =>
-            let γ0 := γ.["Some.0"] in
-            let* account_info := M.copy γ0 in
+            let γ0_0 := γ.["Some.0"] in
+            let* account_info := M.copy γ0_0 in
             let* _ : M.Val unit :=
               let* _ : M.Val unit :=
                 let* α0 : ref str.t := M.read (mk_str "Successful logon!

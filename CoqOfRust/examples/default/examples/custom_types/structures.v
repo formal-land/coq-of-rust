@@ -298,10 +298,10 @@ Definition main : M unit :=
           (let* α0 := M.read γ in
           match α0 with
           | {| structures.Point.x := _; structures.Point.y := _; |} =>
-            let γ0 := γ.["Point.x"] in
-            let γ1 := γ.["Point.y"] in
-            let* left_edge := M.copy γ0 in
-            let* top_edge := M.copy γ1 in
+            let γ0_0 := γ.["Point.x"] in
+            let γ0_1 := γ.["Point.y"] in
+            let* left_edge := M.copy γ0_0 in
+            let* top_edge := M.copy γ0_1 in
             let* _rectangle : M.Val structures.Rectangle.t :=
               let* α0 : f32.t := M.read left_edge in
               let* α1 : f32.t := M.read top_edge in
@@ -354,10 +354,10 @@ Definition main : M unit :=
                   (let* α0 := M.read γ in
                   match α0 with
                   | structures.Pair.Build_t _ _ =>
-                    let γ0 := γ.["Pair.0"] in
-                    let γ1 := γ.["Pair.1"] in
-                    let* integer := M.copy γ0 in
-                    let* decimal := M.copy γ1 in
+                    let γ0_0 := γ.["Pair.0"] in
+                    let γ0_1 := γ.["Pair.1"] in
+                    let* integer := M.copy γ0_0 in
+                    let* decimal := M.copy γ0_1 in
                     let* _ : M.Val unit :=
                       let* _ : M.Val unit :=
                         let* α0 : ref str.t :=

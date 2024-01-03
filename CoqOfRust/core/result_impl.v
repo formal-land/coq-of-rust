@@ -92,3 +92,16 @@ Section Impl_Result.
 End Impl_Result.
 End Impl_Result.
 
+Module  Impl_Option.
+Section Impl_Option.
+  Context {T : Set}.
+  Definition Self : Set := option.Option.t T.
+
+  (* pub fn ok_or<E>(self, err: E) -> Result<T, E> *)
+  Parameter ok_or : forall {E : Set}, Self -> E -> M (Result.t T E).
+
+  Global Instance AF_ok_or {E : Set} : Notations.DoubleColon Self "ok_or" := {
+    Notations.double_colon := ok_or (E := E);
+  }.
+End Impl_Option.
+End Impl_Option.

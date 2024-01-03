@@ -255,7 +255,7 @@ impl Erc721 {
 
         let count = owned_tokens_count
             .get(from)
-            .map(|c| c - 1)
+            .map(|c| c - (1 as u32))
             .ok_or(Error::CannotFetchValue)?;
         owned_tokens_count.insert(*from, count);
         token_owner.remove(id);

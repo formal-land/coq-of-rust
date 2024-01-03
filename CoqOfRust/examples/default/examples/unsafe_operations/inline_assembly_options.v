@@ -35,10 +35,10 @@ Definition main : M unit :=
           (let* α0 := M.read γ in
           match α0 with
           | (_, _) =>
-            let γ0 := Tuple.Access.left γ in
-            let γ1 := Tuple.Access.right γ in
-            let* left_val := M.copy γ0 in
-            let* right_val := M.copy γ1 in
+            let γ0_0 := Tuple.Access.left γ in
+            let γ0_1 := Tuple.Access.right γ in
+            let* left_val := M.copy γ0_0 in
+            let* right_val := M.copy γ0_1 in
             let* α0 : ref u64.t := M.read left_val in
             let* α1 : u64.t := M.read (deref α0) in
             let* α2 : ref u64.t := M.read right_val in

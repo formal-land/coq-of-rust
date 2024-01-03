@@ -247,8 +247,8 @@ Definition cookable_v1
           (let* α0 := M.read γ in
           match α0 with
           | core.option.Option.Some _ =>
-            let γ0 := γ.["Some.0"] in
-            let* food := M.copy γ0 in
+            let γ0_0 := γ.["Some.0"] in
+            let* food := M.copy γ0_0 in
             let* α0 : combinators_and_then.Food.t := M.read food in
             let* α1 : core.option.Option.t combinators_and_then.Food.t :=
               M.call (combinators_and_then.have_ingredients α0) in
@@ -269,8 +269,8 @@ Definition cookable_v1
                   (let* α0 := M.read γ in
                   match α0 with
                   | core.option.Option.Some _ =>
-                    let γ0 := γ.["Some.0"] in
-                    let* food := M.copy γ0 in
+                    let γ0_0 := γ.["Some.0"] in
+                    let* food := M.copy γ0_0 in
                     let* α0 : combinators_and_then.Food.t := M.read food in
                     M.alloc (core.option.Option.Some α0)
                   | _ => M.break_match
@@ -327,8 +327,8 @@ Definition eat
           (let* α0 := M.read γ in
           match α0 with
           | core.option.Option.Some _ =>
-            let γ0 := γ.["Some.0"] in
-            let* food := M.copy γ0 in
+            let γ0_0 := γ.["Some.0"] in
+            let* food := M.copy γ0_0 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "Yay! On ") in
               let* α1 : ref str.t := M.read (mk_str " we get to eat ") in
@@ -418,12 +418,12 @@ Definition main : M unit :=
           (let* α0 := M.read γ in
           match α0 with
           | (_, _, _) =>
-            let γ0 := Tuple.Access.left (Tuple.Access.left γ) in
-            let γ1 := Tuple.Access.right (Tuple.Access.left γ) in
-            let γ2 := Tuple.Access.right γ in
-            let* cordon_bleu := M.copy γ0 in
-            let* steak := M.copy γ1 in
-            let* sushi := M.copy γ2 in
+            let γ0_0 := Tuple.Access.left (Tuple.Access.left γ) in
+            let γ0_1 := Tuple.Access.right (Tuple.Access.left γ) in
+            let γ0_2 := Tuple.Access.right γ in
+            let* cordon_bleu := M.copy γ0_0 in
+            let* steak := M.copy γ0_1 in
+            let* sushi := M.copy γ0_2 in
             let* _ : M.Val unit :=
               let* α0 : combinators_and_then.Food.t := M.read cordon_bleu in
               let* α1 : unit :=

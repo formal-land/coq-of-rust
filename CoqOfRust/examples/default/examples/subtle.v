@@ -658,14 +658,14 @@ Section Impl_subtle_ConstantTimeEq_for_slice_T.
                           (let* α0 := M.read γ in
                           match α0 with
                           | core.option.Option.Some _ =>
-                            let γ0 := γ.["Some.0"] in
-                            let* α0 := M.read γ0 in
+                            let γ0_0 := γ.["Some.0"] in
+                            let* α0 := M.read γ0_0 in
                             match α0 with
                             | (_, _) =>
-                              let γ0 := Tuple.Access.left γ0 in
-                              let γ1 := Tuple.Access.right γ0 in
-                              let* ai := M.copy γ0 in
-                              let* bi := M.copy γ1 in
+                              let γ1_0 := Tuple.Access.left γ0_0 in
+                              let γ1_1 := Tuple.Access.right γ0_0 in
+                              let* ai := M.copy γ1_0 in
+                              let* bi := M.copy γ1_1 in
                               let* _ : M.Val unit :=
                                 let β : M.Val u8.t := x in
                                 let* α0 := M.read β in
@@ -2905,10 +2905,10 @@ Section Impl_subtle_CtOption_t_T.
             (let* α0 := M.read γ in
             match α0 with
             | (_, _) =>
-              let γ0 := Tuple.Access.left γ in
-              let γ1 := Tuple.Access.right γ in
-              let* left_val := M.copy γ0 in
-              let* right_val := M.copy γ1 in
+              let γ0_0 := Tuple.Access.left γ in
+              let γ0_1 := Tuple.Access.right γ in
+              let* left_val := M.copy γ0_0 in
+              let* right_val := M.copy γ0_1 in
               let* α0 : ref u8.t := M.read left_val in
               let* α1 : u8.t := M.read (deref α0) in
               let* α2 : ref u8.t := M.read right_val in
@@ -2987,10 +2987,10 @@ Section Impl_subtle_CtOption_t_T.
             (let* α0 := M.read γ in
             match α0 with
             | (_, _) =>
-              let γ0 := Tuple.Access.left γ in
-              let γ1 := Tuple.Access.right γ in
-              let* left_val := M.copy γ0 in
-              let* right_val := M.copy γ1 in
+              let γ0_0 := Tuple.Access.left γ in
+              let γ0_1 := Tuple.Access.right γ in
+              let* left_val := M.copy γ0_0 in
+              let* right_val := M.copy γ0_1 in
               let* α0 : ref u8.t := M.read left_val in
               let* α1 : u8.t := M.read (deref α0) in
               let* α2 : ref u8.t := M.read right_val in

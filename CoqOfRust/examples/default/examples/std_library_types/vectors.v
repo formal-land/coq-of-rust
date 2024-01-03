@@ -303,8 +303,8 @@ Definition main : M unit :=
                       (let* α0 := M.read γ in
                       match α0 with
                       | core.option.Option.Some _ =>
-                        let γ0 := γ.["Some.0"] in
-                        let* x := M.copy γ0 in
+                        let γ0_0 := γ.["Some.0"] in
+                        let* x := M.copy γ0_0 in
                         let* _ : M.Val unit :=
                           let* _ : M.Val unit :=
                             let* α0 : ref str.t := M.read (mk_str "> ") in
@@ -411,14 +411,14 @@ Definition main : M unit :=
                       (let* α0 := M.read γ in
                       match α0 with
                       | core.option.Option.Some _ =>
-                        let γ0 := γ.["Some.0"] in
-                        let* α0 := M.read γ0 in
+                        let γ0_0 := γ.["Some.0"] in
+                        let* α0 := M.read γ0_0 in
                         match α0 with
                         | (_, _) =>
-                          let γ0 := Tuple.Access.left γ0 in
-                          let γ1 := Tuple.Access.right γ0 in
-                          let* i := M.copy γ0 in
-                          let* x := M.copy γ1 in
+                          let γ1_0 := Tuple.Access.left γ0_0 in
+                          let γ1_1 := Tuple.Access.right γ0_0 in
+                          let* i := M.copy γ1_0 in
+                          let* x := M.copy γ1_1 in
                           let* _ : M.Val unit :=
                             let* _ : M.Val unit :=
                               let* α0 : ref str.t :=
@@ -515,8 +515,8 @@ Definition main : M unit :=
                       (let* α0 := M.read γ in
                       match α0 with
                       | core.option.Option.Some _ =>
-                        let γ0 := γ.["Some.0"] in
-                        let* x := M.copy γ0 in
+                        let γ0_0 := γ.["Some.0"] in
+                        let* x := M.copy γ0_0 in
                         let* _ : M.Val unit :=
                           let* β : M.Val i32.t :=
                             let* α0 : mut_ref i32.t := M.read x in

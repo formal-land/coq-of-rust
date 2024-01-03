@@ -71,6 +71,7 @@ Module PartialEq.
   Global Instance Method_eq `(Trait) : Notations.Dot "eq" := {
     Notations.dot := eq;
   }.
+
   Global Instance Method_ne `(Trait) : Notations.Dot "ne" := {
     Notations.dot x y :=
       let* is_eq := eq x y in
@@ -144,6 +145,11 @@ Module PartialEq.
       core.cmp.PartialEq.Trait
         (core.option.Option.t T)
         (Rhs := core.option.Option.t U).
+    Admitted.
+
+    Global Instance I_array {T U : Set}
+        {ℋ : core.cmp.PartialEq.Trait T (Rhs := U)} :
+      core.cmp.PartialEq.Trait (array T) (Rhs := array U).
     Admitted.
 
     Global Instance I_tuple_2
