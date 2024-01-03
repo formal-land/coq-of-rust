@@ -54,8 +54,8 @@ Definition main : M unit :=
             let* t := M.copy γ0 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "") in
-              let* α1 : ref str.t :=
-                M.read (mk_str "C is above 30 Celsius\n") in
+              let* α1 : ref str.t := M.read (mk_str "C is above 30 Celsius
+") in
               let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
               let* α3 : M.Val (ref (array (ref str.t))) :=
                 M.alloc (borrow α2) in
@@ -85,8 +85,8 @@ Definition main : M unit :=
             let* t := M.copy γ0 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "") in
-              let* α1 : ref str.t :=
-                M.read (mk_str "C is below 30 Celsius\n") in
+              let* α1 : ref str.t := M.read (mk_str "C is below 30 Celsius
+") in
               let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
               let* α3 : M.Val (ref (array (ref str.t))) :=
                 M.alloc (borrow α2) in
@@ -117,7 +117,8 @@ Definition main : M unit :=
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "") in
               let* α1 : ref str.t :=
-                M.read (mk_str "F is above 86 Fahrenheit\n") in
+                M.read (mk_str "F is above 86 Fahrenheit
+") in
               let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
               let* α3 : M.Val (ref (array (ref str.t))) :=
                 M.alloc (borrow α2) in
@@ -148,7 +149,8 @@ Definition main : M unit :=
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "") in
               let* α1 : ref str.t :=
-                M.read (mk_str "F is below 86 Fahrenheit\n") in
+                M.read (mk_str "F is below 86 Fahrenheit
+") in
               let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
               let* α3 : M.Val (ref (array (ref str.t))) :=
                 M.alloc (borrow α2) in

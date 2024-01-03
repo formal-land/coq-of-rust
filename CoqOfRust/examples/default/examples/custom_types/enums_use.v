@@ -47,7 +47,8 @@ Definition main : M unit :=
           | enums_use.Status.Rich =>
             let* _ : M.Val unit :=
               let* α0 : ref str.t :=
-                M.read (mk_str "The rich have lots of money!\n") in
+                M.read (mk_str "The rich have lots of money!
+") in
               let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
               let* α2 : M.Val (ref (array (ref str.t))) :=
                 M.alloc (borrow α1) in
@@ -67,7 +68,8 @@ Definition main : M unit :=
           | enums_use.Status.Poor =>
             let* _ : M.Val unit :=
               let* α0 : ref str.t :=
-                M.read (mk_str "The poor have no money...\n") in
+                M.read (mk_str "The poor have no money...
+") in
               let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
               let* α2 : M.Val (ref (array (ref str.t))) :=
                 M.alloc (borrow α1) in
@@ -91,7 +93,8 @@ Definition main : M unit :=
           match α0 with
           | enums_use.Work.Civilian =>
             let* _ : M.Val unit :=
-              let* α0 : ref str.t := M.read (mk_str "Civilians work!\n") in
+              let* α0 : ref str.t := M.read (mk_str "Civilians work!
+") in
               let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
               let* α2 : M.Val (ref (array (ref str.t))) :=
                 M.alloc (borrow α1) in
@@ -110,7 +113,8 @@ Definition main : M unit :=
           match α0 with
           | enums_use.Work.Soldier =>
             let* _ : M.Val unit :=
-              let* α0 : ref str.t := M.read (mk_str "Soldiers fight!\n") in
+              let* α0 : ref str.t := M.read (mk_str "Soldiers fight!
+") in
               let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
               let* α2 : M.Val (ref (array (ref str.t))) :=
                 M.alloc (borrow α1) in

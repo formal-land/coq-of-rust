@@ -113,7 +113,8 @@ Definition borrow_book
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "I immutably borrowed ") in
       let* α1 : ref str.t := M.read (mk_str " - ") in
-      let* α2 : ref str.t := M.read (mk_str " edition\n") in
+      let* α2 : ref str.t := M.read (mk_str " edition
+") in
       let* α3 : M.Val (array (ref str.t)) := M.alloc [ α0; α1; α2 ] in
       let* α4 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α3) in
       let* α5 : ref (slice (ref str.t)) :=
@@ -158,7 +159,8 @@ Definition new_edition
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "I mutably borrowed ") in
       let* α1 : ref str.t := M.read (mk_str " - ") in
-      let* α2 : ref str.t := M.read (mk_str " edition\n") in
+      let* α2 : ref str.t := M.read (mk_str " edition
+") in
       let* α3 : M.Val (array (ref str.t)) := M.alloc [ α0; α1; α2 ] in
       let* α4 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α3) in
       let* α5 : ref (slice (ref str.t)) :=

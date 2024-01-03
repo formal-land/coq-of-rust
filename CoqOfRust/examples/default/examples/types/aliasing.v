@@ -36,7 +36,8 @@ Definition main : M unit :=
       let* α0 : ref str.t := M.read (mk_str "") in
       let* α1 : ref str.t := M.read (mk_str " nanoseconds + ") in
       let* α2 : ref str.t := M.read (mk_str " inches = ") in
-      let* α3 : ref str.t := M.read (mk_str " unit?\n") in
+      let* α3 : ref str.t := M.read (mk_str " unit?
+") in
       let* α4 : M.Val (array (ref str.t)) := M.alloc [ α0; α1; α2; α3 ] in
       let* α5 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α4) in
       let* α6 : ref (slice (ref str.t)) :=

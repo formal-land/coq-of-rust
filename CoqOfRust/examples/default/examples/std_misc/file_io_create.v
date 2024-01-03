@@ -5,7 +5,13 @@ Definition LOREM_IPSUM : M.Val (ref str.t) :=
   M.run
     (M.pure
       (mk_str
-        "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\ntempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\nquis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\nconsequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\ncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\nproident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n")).
+        "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+")).
 
 (*
 fn main() {
@@ -50,7 +56,7 @@ Definition main : M unit :=
             | core.result.Result.Err _ =>
               let γ0 := γ.["Err.0"] in
               let* why := M.copy γ0 in
-              let* α0 : ref str.t := M.read (mk_str "couldn\'t create ") in
+              let* α0 : ref str.t := M.read (mk_str "couldn't create ") in
               let* α1 : ref str.t := M.read (mk_str ": ") in
               let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
               let* α3 : M.Val (ref (array (ref str.t))) :=
@@ -110,7 +116,7 @@ Definition main : M unit :=
           | core.result.Result.Err _ =>
             let γ0 := γ.["Err.0"] in
             let* why := M.copy γ0 in
-            let* α0 : ref str.t := M.read (mk_str "couldn\'t write to ") in
+            let* α0 : ref str.t := M.read (mk_str "couldn't write to ") in
             let* α1 : ref str.t := M.read (mk_str ": ") in
             let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
             let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
@@ -142,7 +148,8 @@ Definition main : M unit :=
             let γ0 := γ.["Ok.0"] in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "successfully wrote to ") in
-              let* α1 : ref str.t := M.read (mk_str "\n") in
+              let* α1 : ref str.t := M.read (mk_str "
+") in
               let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
               let* α3 : M.Val (ref (array (ref str.t))) :=
                 M.alloc (borrow α2) in

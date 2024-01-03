@@ -11,7 +11,8 @@ Module my_mod.
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
         let* α0 : ref str.t :=
-          M.read (mk_str "called `my_mod::private_function()`\n") in
+          M.read (mk_str "called `my_mod::private_function()`
+") in
         let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
         let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
         let* α3 : ref (slice (ref str.t)) :=
@@ -32,8 +33,8 @@ Module my_mod.
   Definition function : M unit :=
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
-        let* α0 : ref str.t :=
-          M.read (mk_str "called `my_mod::function()`\n") in
+        let* α0 : ref str.t := M.read (mk_str "called `my_mod::function()`
+") in
         let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
         let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
         let* α3 : ref (slice (ref str.t)) :=
@@ -56,7 +57,8 @@ Module my_mod.
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
         let* α0 : ref str.t :=
-          M.read (mk_str "called `my_mod::indirect_access()`, that\n> ") in
+          M.read (mk_str "called `my_mod::indirect_access()`, that
+> ") in
         let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
         let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
         let* α3 : ref (slice (ref str.t)) :=
@@ -82,7 +84,8 @@ Module my_mod.
       let* _ : M.Val unit :=
         let* _ : M.Val unit :=
           let* α0 : ref str.t :=
-            M.read (mk_str "called `my_mod::nested::function()`\n") in
+            M.read (mk_str "called `my_mod::nested::function()`
+") in
           let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
           let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
           let* α3 : ref (slice (ref str.t)) :=
@@ -105,7 +108,8 @@ Module my_mod.
       let* _ : M.Val unit :=
         let* _ : M.Val unit :=
           let* α0 : ref str.t :=
-            M.read (mk_str "called `my_mod::nested::private_function()`\n") in
+            M.read (mk_str "called `my_mod::nested::private_function()`
+") in
           let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
           let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
           let* α3 : ref (slice (ref str.t)) :=
@@ -130,7 +134,8 @@ Module my_mod.
           let* α0 : ref str.t :=
             M.read
               (mk_str
-                "called `my_mod::nested::public_function_in_my_mod()`, that\n> ") in
+                "called `my_mod::nested::public_function_in_my_mod()`, that
+> ") in
           let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
           let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
           let* α3 : ref (slice (ref str.t)) :=
@@ -158,7 +163,8 @@ Module my_mod.
           let* α0 : ref str.t :=
             M.read
               (mk_str
-                "called `my_mod::nested::public_function_in_nested()`\n") in
+                "called `my_mod::nested::public_function_in_nested()`
+") in
           let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
           let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
           let* α3 : ref (slice (ref str.t)) :=
@@ -182,7 +188,8 @@ Module my_mod.
           let* α0 : ref str.t :=
             M.read
               (mk_str
-                "called `my_mod::nested::public_function_in_super_mod()`\n") in
+                "called `my_mod::nested::public_function_in_super_mod()`
+") in
           let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
           let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
           let* α3 : ref (slice (ref str.t)) :=
@@ -210,7 +217,8 @@ Module my_mod.
         let* α0 : ref str.t :=
           M.read
             (mk_str
-              "called `my_mod::call_public_function_in_my_mod()`, that\n> ") in
+              "called `my_mod::call_public_function_in_my_mod()`, that
+> ") in
         let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
         let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
         let* α3 : ref (slice (ref str.t)) :=
@@ -252,7 +260,8 @@ Module my_mod.
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
         let* α0 : ref str.t :=
-          M.read (mk_str "called `my_mod::public_function_in_crate()`\n") in
+          M.read (mk_str "called `my_mod::public_function_in_crate()`
+") in
         let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
         let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
         let* α3 : ref (slice (ref str.t)) :=
@@ -276,7 +285,8 @@ Module my_mod.
       let* _ : M.Val unit :=
         let* _ : M.Val unit :=
           let* α0 : ref str.t :=
-            M.read (mk_str "called `my_mod::private_nested::function()`\n") in
+            M.read (mk_str "called `my_mod::private_nested::function()`
+") in
           let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
           let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
           let* α3 : ref (slice (ref str.t)) :=
@@ -301,7 +311,8 @@ Module my_mod.
           let* α0 : ref str.t :=
             M.read
               (mk_str
-                "called `my_mod::private_nested::restricted_function()`\n") in
+                "called `my_mod::private_nested::restricted_function()`
+") in
           let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
           let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
           let* α3 : ref (slice (ref str.t)) :=
@@ -325,7 +336,8 @@ Definition private_function : M unit :=
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t :=
-        M.read (mk_str "called `my_mod::private_function()`\n") in
+        M.read (mk_str "called `my_mod::private_function()`
+") in
       let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
       let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
       let* α3 : ref (slice (ref str.t)) :=
@@ -346,7 +358,8 @@ Definition private_function : M unit :=
 Definition function : M unit :=
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "called `my_mod::function()`\n") in
+      let* α0 : ref str.t := M.read (mk_str "called `my_mod::function()`
+") in
       let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
       let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
       let* α3 : ref (slice (ref str.t)) :=
@@ -369,7 +382,8 @@ Definition indirect_access : M unit :=
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t :=
-        M.read (mk_str "called `my_mod::indirect_access()`, that\n> ") in
+        M.read (mk_str "called `my_mod::indirect_access()`, that
+> ") in
       let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
       let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
       let* α3 : ref (slice (ref str.t)) :=
@@ -395,7 +409,8 @@ Module nested.
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
         let* α0 : ref str.t :=
-          M.read (mk_str "called `my_mod::nested::function()`\n") in
+          M.read (mk_str "called `my_mod::nested::function()`
+") in
         let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
         let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
         let* α3 : ref (slice (ref str.t)) :=
@@ -418,7 +433,8 @@ Module nested.
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
         let* α0 : ref str.t :=
-          M.read (mk_str "called `my_mod::nested::private_function()`\n") in
+          M.read (mk_str "called `my_mod::nested::private_function()`
+") in
         let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
         let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
         let* α3 : ref (slice (ref str.t)) :=
@@ -443,7 +459,8 @@ Module nested.
         let* α0 : ref str.t :=
           M.read
             (mk_str
-              "called `my_mod::nested::public_function_in_my_mod()`, that\n> ") in
+              "called `my_mod::nested::public_function_in_my_mod()`, that
+> ") in
         let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
         let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
         let* α3 : ref (slice (ref str.t)) :=
@@ -470,7 +487,8 @@ Module nested.
       let* _ : M.Val unit :=
         let* α0 : ref str.t :=
           M.read
-            (mk_str "called `my_mod::nested::public_function_in_nested()`\n") in
+            (mk_str "called `my_mod::nested::public_function_in_nested()`
+") in
         let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
         let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
         let* α3 : ref (slice (ref str.t)) :=
@@ -494,7 +512,8 @@ Module nested.
         let* α0 : ref str.t :=
           M.read
             (mk_str
-              "called `my_mod::nested::public_function_in_super_mod()`\n") in
+              "called `my_mod::nested::public_function_in_super_mod()`
+") in
         let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
         let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
         let* α3 : ref (slice (ref str.t)) :=
@@ -517,7 +536,8 @@ Definition function : M unit :=
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t :=
-        M.read (mk_str "called `my_mod::nested::function()`\n") in
+        M.read (mk_str "called `my_mod::nested::function()`
+") in
       let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
       let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
       let* α3 : ref (slice (ref str.t)) :=
@@ -540,7 +560,8 @@ Definition private_function : M unit :=
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t :=
-        M.read (mk_str "called `my_mod::nested::private_function()`\n") in
+        M.read (mk_str "called `my_mod::nested::private_function()`
+") in
       let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
       let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
       let* α3 : ref (slice (ref str.t)) :=
@@ -565,7 +586,8 @@ Definition public_function_in_my_mod : M unit :=
       let* α0 : ref str.t :=
         M.read
           (mk_str
-            "called `my_mod::nested::public_function_in_my_mod()`, that\n> ") in
+            "called `my_mod::nested::public_function_in_my_mod()`, that
+> ") in
       let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
       let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
       let* α3 : ref (slice (ref str.t)) :=
@@ -592,7 +614,8 @@ Definition public_function_in_nested : M unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t :=
         M.read
-          (mk_str "called `my_mod::nested::public_function_in_nested()`\n") in
+          (mk_str "called `my_mod::nested::public_function_in_nested()`
+") in
       let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
       let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
       let* α3 : ref (slice (ref str.t)) :=
@@ -615,8 +638,8 @@ Definition public_function_in_super_mod : M unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t :=
         M.read
-          (mk_str
-            "called `my_mod::nested::public_function_in_super_mod()`\n") in
+          (mk_str "called `my_mod::nested::public_function_in_super_mod()`
+") in
       let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
       let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
       let* α3 : ref (slice (ref str.t)) :=
@@ -643,7 +666,8 @@ Definition call_public_function_in_my_mod : M unit :=
       let* α0 : ref str.t :=
         M.read
           (mk_str
-            "called `my_mod::call_public_function_in_my_mod()`, that\n> ") in
+            "called `my_mod::call_public_function_in_my_mod()`, that
+> ") in
       let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
       let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
       let* α3 : ref (slice (ref str.t)) :=
@@ -685,7 +709,8 @@ Definition public_function_in_crate : M unit :=
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t :=
-        M.read (mk_str "called `my_mod::public_function_in_crate()`\n") in
+        M.read (mk_str "called `my_mod::public_function_in_crate()`
+") in
       let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
       let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
       let* α3 : ref (slice (ref str.t)) :=
@@ -709,7 +734,8 @@ Module private_nested.
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
         let* α0 : ref str.t :=
-          M.read (mk_str "called `my_mod::private_nested::function()`\n") in
+          M.read (mk_str "called `my_mod::private_nested::function()`
+") in
         let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
         let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
         let* α3 : ref (slice (ref str.t)) :=
@@ -734,7 +760,8 @@ Module private_nested.
         let* α0 : ref str.t :=
           M.read
             (mk_str
-              "called `my_mod::private_nested::restricted_function()`\n") in
+              "called `my_mod::private_nested::restricted_function()`
+") in
         let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
         let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
         let* α3 : ref (slice (ref str.t)) :=
@@ -758,7 +785,8 @@ Definition function : M unit :=
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t :=
-        M.read (mk_str "called `my_mod::private_nested::function()`\n") in
+        M.read (mk_str "called `my_mod::private_nested::function()`
+") in
       let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
       let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
       let* α3 : ref (slice (ref str.t)) :=
@@ -782,7 +810,8 @@ Definition restricted_function : M unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t :=
         M.read
-          (mk_str "called `my_mod::private_nested::restricted_function()`\n") in
+          (mk_str "called `my_mod::private_nested::restricted_function()`
+") in
       let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
       let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
       let* α3 : ref (slice (ref str.t)) :=
@@ -803,7 +832,8 @@ fn function() {
 Definition function : M unit :=
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "called `function()`\n") in
+      let* α0 : ref str.t := M.read (mk_str "called `function()`
+") in
       let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
       let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
       let* α3 : ref (slice (ref str.t)) :=

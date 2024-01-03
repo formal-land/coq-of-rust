@@ -2,7 +2,8 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition PANGRAM : M.Val (ref str.t) :=
-  M.run (M.pure (mk_str "the quick brown fox jumped over the lazy dog\n")).
+  M.run (M.pure (mk_str "the quick brown fox jumped over the lazy dog
+")).
 
 (*
 fn main() {
@@ -67,7 +68,7 @@ Definition main : M unit :=
             | core.result.Result.Err _ =>
               let γ0 := γ.["Err.0"] in
               let* why := M.copy γ0 in
-              let* α0 : ref str.t := M.read (mk_str "couldn\'t spawn wc: ") in
+              let* α0 : ref str.t := M.read (mk_str "couldn't spawn wc: ") in
               let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
               let* α2 : M.Val (ref (array (ref str.t))) :=
                 M.alloc (borrow α1) in
@@ -129,7 +130,7 @@ Definition main : M unit :=
             let γ0 := γ.["Err.0"] in
             let* why := M.copy γ0 in
             let* α0 : ref str.t :=
-              M.read (mk_str "couldn\'t write to wc stdin: ") in
+              M.read (mk_str "couldn't write to wc stdin: ") in
             let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
             let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
             let* α3 : ref (slice (ref str.t)) :=
@@ -155,7 +156,8 @@ Definition main : M unit :=
           | core.result.Result.Ok _ =>
             let γ0 := γ.["Ok.0"] in
             let* _ : M.Val unit :=
-              let* α0 : ref str.t := M.read (mk_str "sent pangram to wc\n") in
+              let* α0 : ref str.t := M.read (mk_str "sent pangram to wc
+") in
               let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
               let* α2 : M.Val (ref (array (ref str.t))) :=
                 M.alloc (borrow α1) in
@@ -198,7 +200,7 @@ Definition main : M unit :=
             let γ0 := γ.["Err.0"] in
             let* why := M.copy γ0 in
             let* α0 : ref str.t :=
-              M.read (mk_str "couldn\'t read wc stdout: ") in
+              M.read (mk_str "couldn't read wc stdout: ") in
             let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
             let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
             let* α3 : ref (slice (ref str.t)) :=
@@ -224,7 +226,8 @@ Definition main : M unit :=
           | core.result.Result.Ok _ =>
             let γ0 := γ.["Ok.0"] in
             let* _ : M.Val unit :=
-              let* α0 : ref str.t := M.read (mk_str "wc responded with:\n") in
+              let* α0 : ref str.t := M.read (mk_str "wc responded with:
+") in
               let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
               let* α2 : M.Val (ref (array (ref str.t))) :=
                 M.alloc (borrow α1) in

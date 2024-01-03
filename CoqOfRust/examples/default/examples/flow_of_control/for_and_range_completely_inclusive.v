@@ -75,7 +75,8 @@ Definition main : M unit :=
                         let* _ : M.Val unit :=
                           let* _ : M.Val unit :=
                             let* α0 : ref str.t :=
-                              M.read (mk_str "fizzbuzz\n") in
+                              M.read (mk_str "fizzbuzz
+") in
                             let* α1 : M.Val (array (ref str.t)) :=
                               M.alloc [ α0 ] in
                             let* α2 : M.Val (ref (array (ref str.t))) :=
@@ -98,7 +99,8 @@ Definition main : M unit :=
                         if α3 then
                           let* _ : M.Val unit :=
                             let* _ : M.Val unit :=
-                              let* α0 : ref str.t := M.read (mk_str "fizz\n") in
+                              let* α0 : ref str.t := M.read (mk_str "fizz
+") in
                               let* α1 : M.Val (array (ref str.t)) :=
                                 M.alloc [ α0 ] in
                               let* α2 : M.Val (ref (array (ref str.t))) :=
@@ -124,7 +126,8 @@ Definition main : M unit :=
                             let* _ : M.Val unit :=
                               let* _ : M.Val unit :=
                                 let* α0 : ref str.t :=
-                                  M.read (mk_str "buzz\n") in
+                                  M.read (mk_str "buzz
+") in
                                 let* α1 : M.Val (array (ref str.t)) :=
                                   M.alloc [ α0 ] in
                                 let* α2 : M.Val (ref (array (ref str.t))) :=
@@ -143,7 +146,8 @@ Definition main : M unit :=
                             let* _ : M.Val unit :=
                               let* _ : M.Val unit :=
                                 let* α0 : ref str.t := M.read (mk_str "") in
-                                let* α1 : ref str.t := M.read (mk_str "\n") in
+                                let* α1 : ref str.t := M.read (mk_str "
+") in
                                 let* α2 : M.Val (array (ref str.t)) :=
                                   M.alloc [ α0; α1 ] in
                                 let* α3 : M.Val (ref (array (ref str.t))) :=

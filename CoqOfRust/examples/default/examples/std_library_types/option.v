@@ -61,7 +61,8 @@ Definition try_division (dividend : i32.t) (divisor : i32.t) : M unit :=
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "") in
               let* α1 : ref str.t := M.read (mk_str " / ") in
-              let* α2 : ref str.t := M.read (mk_str " failed!\n") in
+              let* α2 : ref str.t := M.read (mk_str " failed!
+") in
               let* α3 : M.Val (array (ref str.t)) := M.alloc [ α0; α1; α2 ] in
               let* α4 : M.Val (ref (array (ref str.t))) :=
                 M.alloc (borrow α3) in
@@ -97,7 +98,8 @@ Definition try_division (dividend : i32.t) (divisor : i32.t) : M unit :=
               let* α0 : ref str.t := M.read (mk_str "") in
               let* α1 : ref str.t := M.read (mk_str " / ") in
               let* α2 : ref str.t := M.read (mk_str " = ") in
-              let* α3 : ref str.t := M.read (mk_str "\n") in
+              let* α3 : ref str.t := M.read (mk_str "
+") in
               let* α4 : M.Val (array (ref str.t)) :=
                 M.alloc [ α0; α1; α2; α3 ] in
               let* α5 : M.Val (ref (array (ref str.t))) :=
@@ -173,7 +175,8 @@ Definition main : M unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "") in
       let* α1 : ref str.t := M.read (mk_str " unwraps to ") in
-      let* α2 : ref str.t := M.read (mk_str "\n") in
+      let* α2 : ref str.t := M.read (mk_str "
+") in
       let* α3 : M.Val (array (ref str.t)) := M.alloc [ α0; α1; α2 ] in
       let* α4 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α3) in
       let* α5 : ref (slice (ref str.t)) :=
@@ -200,7 +203,8 @@ Definition main : M unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "") in
       let* α1 : ref str.t := M.read (mk_str " unwraps to ") in
-      let* α2 : ref str.t := M.read (mk_str "\n") in
+      let* α2 : ref str.t := M.read (mk_str "
+") in
       let* α3 : M.Val (array (ref str.t)) := M.alloc [ α0; α1; α2 ] in
       let* α4 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α3) in
       let* α5 : ref (slice (ref str.t)) :=

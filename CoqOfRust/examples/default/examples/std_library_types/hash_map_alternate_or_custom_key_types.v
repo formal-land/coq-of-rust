@@ -237,7 +237,8 @@ Definition try_logon
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "Username: ") in
-      let* α1 : ref str.t := M.read (mk_str "\n") in
+      let* α1 : ref str.t := M.read (mk_str "
+") in
       let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
       let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
       let* α4 : ref (slice (ref str.t)) :=
@@ -257,7 +258,8 @@ Definition try_logon
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "Password: ") in
-      let* α1 : ref str.t := M.read (mk_str "\n") in
+      let* α1 : ref str.t := M.read (mk_str "
+") in
       let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
       let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
       let* α4 : ref (slice (ref str.t)) :=
@@ -276,7 +278,8 @@ Definition try_logon
     M.alloc tt in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "Attempting logon...\n") in
+      let* α0 : ref str.t := M.read (mk_str "Attempting logon...
+") in
       let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
       let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
       let* α3 : ref (slice (ref str.t)) :=
@@ -328,7 +331,8 @@ Definition try_logon
             let* account_info := M.copy γ0 in
             let* _ : M.Val unit :=
               let* _ : M.Val unit :=
-                let* α0 : ref str.t := M.read (mk_str "Successful logon!\n") in
+                let* α0 : ref str.t := M.read (mk_str "Successful logon!
+") in
                 let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
                 let* α2 : M.Val (ref (array (ref str.t))) :=
                   M.alloc (borrow α1) in
@@ -342,7 +346,8 @@ Definition try_logon
             let* _ : M.Val unit :=
               let* _ : M.Val unit :=
                 let* α0 : ref str.t := M.read (mk_str "Name: ") in
-                let* α1 : ref str.t := M.read (mk_str "\n") in
+                let* α1 : ref str.t := M.read (mk_str "
+") in
                 let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
                 let* α3 : M.Val (ref (array (ref str.t))) :=
                   M.alloc (borrow α2) in
@@ -369,7 +374,8 @@ Definition try_logon
             let* _ : M.Val unit :=
               let* _ : M.Val unit :=
                 let* α0 : ref str.t := M.read (mk_str "Email: ") in
-                let* α1 : ref str.t := M.read (mk_str "\n") in
+                let* α1 : ref str.t := M.read (mk_str "
+") in
                 let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
                 let* α3 : M.Val (ref (array (ref str.t))) :=
                   M.alloc (borrow α2) in
@@ -399,7 +405,8 @@ Definition try_logon
           M (M.Val unit);
         fun γ =>
           (let* _ : M.Val unit :=
-            let* α0 : ref str.t := M.read (mk_str "Login failed!\n") in
+            let* α0 : ref str.t := M.read (mk_str "Login failed!
+") in
             let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
             let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
             let* α3 : ref (slice (ref str.t)) :=

@@ -34,7 +34,8 @@ Definition main : M unit :=
   let* count : M.Val u32.t := M.alloc (Integer.of_Z 0) in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "Let\'s count until infinity!\n") in
+      let* α0 : ref str.t := M.read (mk_str "Let's count until infinity!
+") in
       let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
       let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
       let* α3 : ref (slice (ref str.t)) :=
@@ -58,7 +59,8 @@ Definition main : M unit :=
         if α2 then
           let* _ : M.Val unit :=
             let* _ : M.Val unit :=
-              let* α0 : ref str.t := M.read (mk_str "three\n") in
+              let* α0 : ref str.t := M.read (mk_str "three
+") in
               let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
               let* α2 : M.Val (ref (array (ref str.t))) :=
                 M.alloc (borrow α1) in
@@ -79,7 +81,8 @@ Definition main : M unit :=
       let* _ : M.Val unit :=
         let* _ : M.Val unit :=
           let* α0 : ref str.t := M.read (mk_str "") in
-          let* α1 : ref str.t := M.read (mk_str "\n") in
+          let* α1 : ref str.t := M.read (mk_str "
+") in
           let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
           let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
           let* α4 : ref (slice (ref str.t)) :=
@@ -102,7 +105,8 @@ Definition main : M unit :=
       if α2 then
         let* _ : M.Val unit :=
           let* _ : M.Val unit :=
-            let* α0 : ref str.t := M.read (mk_str "OK, that\'s enough\n") in
+            let* α0 : ref str.t := M.read (mk_str "OK, that's enough
+") in
             let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
             let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
             let* α3 : ref (slice (ref str.t)) :=

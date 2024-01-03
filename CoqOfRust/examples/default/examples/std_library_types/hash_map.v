@@ -26,14 +26,16 @@ Definition call (number : ref str.t) : M (ref str.t) :=
           (let* α0 : ref str.t :=
             M.read
               (mk_str
-                "We\'re sorry, the call cannot be completed as dialed. \n            Please hang up and try again.") in
+                "We're sorry, the call cannot be completed as dialed. 
+            Please hang up and try again.") in
           M.alloc α0) :
           M (M.Val (ref str.t));
         fun γ =>
           (let* α0 : ref str.t :=
             M.read
               (mk_str
-                "Hello, this is Mr. Awesome\'s Pizza. My name is Fred.\n            What can I get for you today?") in
+                "Hello, this is Mr. Awesome's Pizza. My name is Fred.
+            What can I get for you today?") in
           M.alloc α0) :
           M (M.Val (ref str.t));
         fun γ =>
@@ -171,7 +173,8 @@ Definition main : M unit :=
             let* number := M.copy γ0 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "Calling Daniel: ") in
-              let* α1 : ref str.t := M.read (mk_str "\n") in
+              let* α1 : ref str.t := M.read (mk_str "
+") in
               let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
               let* α3 : M.Val (ref (array (ref str.t))) :=
                 M.alloc (borrow α2) in
@@ -199,7 +202,8 @@ Definition main : M unit :=
         fun γ =>
           (let* _ : M.Val unit :=
             let* α0 : ref str.t :=
-              M.read (mk_str "Don\'t have Daniel\'s number.\n") in
+              M.read (mk_str "Don't have Daniel's number.
+") in
             let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
             let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
             let* α3 : ref (slice (ref str.t)) :=
@@ -248,7 +252,8 @@ Definition main : M unit :=
             let* number := M.copy γ0 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "Calling Ashley: ") in
-              let* α1 : ref str.t := M.read (mk_str "\n") in
+              let* α1 : ref str.t := M.read (mk_str "
+") in
               let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
               let* α3 : M.Val (ref (array (ref str.t))) :=
                 M.alloc (borrow α2) in
@@ -276,7 +281,8 @@ Definition main : M unit :=
         fun γ =>
           (let* _ : M.Val unit :=
             let* α0 : ref str.t :=
-              M.read (mk_str "Don\'t have Ashley\'s number.\n") in
+              M.read (mk_str "Don't have Ashley's number.
+") in
             let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
             let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
             let* α3 : ref (slice (ref str.t)) :=
@@ -368,7 +374,8 @@ Definition main : M unit :=
                           let* _ : M.Val unit :=
                             let* α0 : ref str.t := M.read (mk_str "Calling ") in
                             let* α1 : ref str.t := M.read (mk_str ": ") in
-                            let* α2 : ref str.t := M.read (mk_str "\n") in
+                            let* α2 : ref str.t := M.read (mk_str "
+") in
                             let* α3 : M.Val (array (ref str.t)) :=
                               M.alloc [ α0; α1; α2 ] in
                             let* α4 : M.Val (ref (array (ref str.t))) :=

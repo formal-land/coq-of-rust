@@ -22,7 +22,8 @@ Definition create_fn : M _ (* OpaqueTy *) :=
     M.alloc
       ((let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "This is a: ") in
-        let* α1 : ref str.t := M.read (mk_str "\n") in
+        let* α1 : ref str.t := M.read (mk_str "
+") in
         let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
         let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
         let* α4 : ref (slice (ref str.t)) :=
@@ -66,7 +67,8 @@ Definition create_fnmut : M _ (* OpaqueTy *) :=
     M.alloc
       ((let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "This is a: ") in
-        let* α1 : ref str.t := M.read (mk_str "\n") in
+        let* α1 : ref str.t := M.read (mk_str "
+") in
         let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
         let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
         let* α4 : ref (slice (ref str.t)) :=
@@ -108,7 +110,8 @@ Definition create_fnonce : M _ (* OpaqueTy *) :=
     M.alloc
       ((let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "This is a: ") in
-        let* α1 : ref str.t := M.read (mk_str "\n") in
+        let* α1 : ref str.t := M.read (mk_str "
+") in
         let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
         let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
         let* α4 : ref (slice (ref str.t)) :=

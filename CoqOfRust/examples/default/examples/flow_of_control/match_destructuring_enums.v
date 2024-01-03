@@ -186,7 +186,8 @@ Definition main : M unit :=
         (Integer.of_Z 40)) in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "What color is it?\n") in
+      let* α0 : ref str.t := M.read (mk_str "What color is it?
+") in
       let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
       let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
       let* α3 : ref (slice (ref str.t)) :=
@@ -205,7 +206,8 @@ Definition main : M unit :=
           match α0 with
           | match_destructuring_enums.Color.Red =>
             let* _ : M.Val unit :=
-              let* α0 : ref str.t := M.read (mk_str "The color is Red!\n") in
+              let* α0 : ref str.t := M.read (mk_str "The color is Red!
+") in
               let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
               let* α2 : M.Val (ref (array (ref str.t))) :=
                 M.alloc (borrow α1) in
@@ -224,7 +226,8 @@ Definition main : M unit :=
           match α0 with
           | match_destructuring_enums.Color.Blue =>
             let* _ : M.Val unit :=
-              let* α0 : ref str.t := M.read (mk_str "The color is Blue!\n") in
+              let* α0 : ref str.t := M.read (mk_str "The color is Blue!
+") in
               let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
               let* α2 : M.Val (ref (array (ref str.t))) :=
                 M.alloc (borrow α1) in
@@ -243,7 +246,8 @@ Definition main : M unit :=
           match α0 with
           | match_destructuring_enums.Color.Green =>
             let* _ : M.Val unit :=
-              let* α0 : ref str.t := M.read (mk_str "The color is Green!\n") in
+              let* α0 : ref str.t := M.read (mk_str "The color is Green!
+") in
               let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
               let* α2 : M.Val (ref (array (ref str.t))) :=
                 M.alloc (borrow α1) in
@@ -271,7 +275,8 @@ Definition main : M unit :=
               let* α0 : ref str.t := M.read (mk_str "Red: ") in
               let* α1 : ref str.t := M.read (mk_str ", green: ") in
               let* α2 : ref str.t := M.read (mk_str ", and blue: ") in
-              let* α3 : ref str.t := M.read (mk_str "!\n") in
+              let* α3 : ref str.t := M.read (mk_str "!
+") in
               let* α4 : M.Val (array (ref str.t)) :=
                 M.alloc [ α0; α1; α2; α3 ] in
               let* α5 : M.Val (ref (array (ref str.t))) :=
@@ -312,7 +317,8 @@ Definition main : M unit :=
               let* α0 : ref str.t := M.read (mk_str "Hue: ") in
               let* α1 : ref str.t := M.read (mk_str ", saturation: ") in
               let* α2 : ref str.t := M.read (mk_str ", value: ") in
-              let* α3 : ref str.t := M.read (mk_str "!\n") in
+              let* α3 : ref str.t := M.read (mk_str "!
+") in
               let* α4 : M.Val (array (ref str.t)) :=
                 M.alloc [ α0; α1; α2; α3 ] in
               let* α5 : M.Val (ref (array (ref str.t))) :=
@@ -353,7 +359,8 @@ Definition main : M unit :=
               let* α0 : ref str.t := M.read (mk_str "Hue: ") in
               let* α1 : ref str.t := M.read (mk_str ", saturation: ") in
               let* α2 : ref str.t := M.read (mk_str ", lightness: ") in
-              let* α3 : ref str.t := M.read (mk_str "!\n") in
+              let* α3 : ref str.t := M.read (mk_str "!
+") in
               let* α4 : M.Val (array (ref str.t)) :=
                 M.alloc [ α0; α1; α2; α3 ] in
               let* α5 : M.Val (ref (array (ref str.t))) :=
@@ -394,7 +401,8 @@ Definition main : M unit :=
               let* α0 : ref str.t := M.read (mk_str "Cyan: ") in
               let* α1 : ref str.t := M.read (mk_str ", magenta: ") in
               let* α2 : ref str.t := M.read (mk_str ", yellow: ") in
-              let* α3 : ref str.t := M.read (mk_str "!\n") in
+              let* α3 : ref str.t := M.read (mk_str "!
+") in
               let* α4 : M.Val (array (ref str.t)) :=
                 M.alloc [ α0; α1; α2; α3 ] in
               let* α5 : M.Val (ref (array (ref str.t))) :=
@@ -438,7 +446,8 @@ Definition main : M unit :=
               let* α1 : ref str.t := M.read (mk_str ", magenta: ") in
               let* α2 : ref str.t := M.read (mk_str ", yellow: ") in
               let* α3 : ref str.t := M.read (mk_str ", key (black): ") in
-              let* α4 : ref str.t := M.read (mk_str "!\n") in
+              let* α4 : ref str.t := M.read (mk_str "!
+") in
               let* α5 : M.Val (array (ref str.t)) :=
                 M.alloc [ α0; α1; α2; α3; α4 ] in
               let* α6 : M.Val (ref (array (ref str.t))) :=

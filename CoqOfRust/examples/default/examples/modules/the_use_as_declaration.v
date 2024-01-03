@@ -9,7 +9,8 @@ fn function() {
 Definition function : M unit :=
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "called `function()`\n") in
+      let* α0 : ref str.t := M.read (mk_str "called `function()`
+") in
       let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
       let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
       let* α3 : ref (slice (ref str.t)) :=
@@ -33,7 +34,8 @@ Module deeply.
       let* _ : M.Val unit :=
         let* _ : M.Val unit :=
           let* α0 : ref str.t :=
-            M.read (mk_str "called `deeply::nested::function()`\n") in
+            M.read (mk_str "called `deeply::nested::function()`
+") in
           let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
           let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
           let* α3 : ref (slice (ref str.t)) :=
@@ -58,7 +60,8 @@ Module nested.
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
         let* α0 : ref str.t :=
-          M.read (mk_str "called `deeply::nested::function()`\n") in
+          M.read (mk_str "called `deeply::nested::function()`
+") in
         let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
         let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
         let* α3 : ref (slice (ref str.t)) :=
@@ -81,7 +84,8 @@ Definition function : M unit :=
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t :=
-        M.read (mk_str "called `deeply::nested::function()`\n") in
+        M.read (mk_str "called `deeply::nested::function()`
+") in
       let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
       let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
       let* α3 : ref (slice (ref str.t)) :=
@@ -122,7 +126,8 @@ Definition main : M unit :=
     M.alloc α0 in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "Entering block\n") in
+      let* α0 : ref str.t := M.read (mk_str "Entering block
+") in
       let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
       let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
       let* α3 : ref (slice (ref str.t)) :=
@@ -138,7 +143,8 @@ Definition main : M unit :=
       M.alloc α0 in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
-        let* α0 : ref str.t := M.read (mk_str "Leaving block\n") in
+        let* α0 : ref str.t := M.read (mk_str "Leaving block
+") in
         let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
         let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
         let* α3 : ref (slice (ref str.t)) :=

@@ -369,7 +369,8 @@ Section Impl_associated_functions_and_methods_Pair_t.
                 let* _ : M.Val unit :=
                   let* α0 : ref str.t := M.read (mk_str "Destroying Pair(") in
                   let* α1 : ref str.t := M.read (mk_str ", ") in
-                  let* α2 : ref str.t := M.read (mk_str ")\n") in
+                  let* α2 : ref str.t := M.read (mk_str ")
+") in
                   let* α3 : M.Val (array (ref str.t)) :=
                     M.alloc [ α0; α1; α2 ] in
                   let* α4 : M.Val (ref (array (ref str.t))) :=
@@ -461,7 +462,8 @@ Definition main : M unit :=
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "Rectangle perimeter: ") in
-      let* α1 : ref str.t := M.read (mk_str "\n") in
+      let* α1 : ref str.t := M.read (mk_str "
+") in
       let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
       let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
       let* α4 : ref (slice (ref str.t)) :=
@@ -486,7 +488,8 @@ Definition main : M unit :=
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "Rectangle area: ") in
-      let* α1 : ref str.t := M.read (mk_str "\n") in
+      let* α1 : ref str.t := M.read (mk_str "
+") in
       let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
       let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
       let* α4 : ref (slice (ref str.t)) :=

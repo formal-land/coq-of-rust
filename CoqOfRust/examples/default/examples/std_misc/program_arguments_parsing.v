@@ -11,7 +11,8 @@ Definition increase (number : i32.t) : M unit :=
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "") in
-      let* α1 : ref str.t := M.read (mk_str "\n") in
+      let* α1 : ref str.t := M.read (mk_str "
+") in
       let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
       let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
       let* α4 : ref (slice (ref str.t)) :=
@@ -44,7 +45,8 @@ Definition decrease (number : i32.t) : M unit :=
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "") in
-      let* α1 : ref str.t := M.read (mk_str "\n") in
+      let* α1 : ref str.t := M.read (mk_str "
+") in
       let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
       let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
       let* α4 : ref (slice (ref str.t)) :=
@@ -84,7 +86,12 @@ Definition help : M unit :=
       let* α0 : ref str.t :=
         M.read
           (mk_str
-            "usage:\nmatch_args <string>\n    Check whether given string is the answer.\nmatch_args {increase|decrease} <integer>\n    Increase or decrease given integer by one.\n") in
+            "usage:
+match_args <string>
+    Check whether given string is the answer.
+match_args {increase|decrease} <integer>
+    Increase or decrease given integer by one.
+") in
       let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
       let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
       let* α3 : ref (slice (ref str.t)) :=
@@ -171,7 +178,8 @@ Definition main : M unit :=
                 let* α0 : ref str.t :=
                   M.read
                     (mk_str
-                      "My name is \'match_args\'. Try passing some arguments!\n") in
+                      "My name is 'match_args'. Try passing some arguments!
+") in
                 let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
                 let* α2 : M.Val (ref (array (ref str.t))) :=
                   M.alloc (borrow α1) in
@@ -218,7 +226,8 @@ Definition main : M unit :=
                     let γ0 := γ.["Ok.0"] in
                     let* _ : M.Val unit :=
                       let* α0 : ref str.t :=
-                        M.read (mk_str "This is the answer!\n") in
+                        M.read (mk_str "This is the answer!
+") in
                       let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
                       let* α2 : M.Val (ref (array (ref str.t))) :=
                         M.alloc (borrow α1) in
@@ -235,7 +244,8 @@ Definition main : M unit :=
                 fun γ =>
                   (let* _ : M.Val unit :=
                     let* α0 : ref str.t :=
-                      M.read (mk_str "This is not the answer.\n") in
+                      M.read (mk_str "This is not the answer.
+") in
                     let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
                     let* α2 : M.Val (ref (array (ref str.t))) :=
                       M.alloc (borrow α1) in
@@ -315,7 +325,8 @@ Definition main : M unit :=
                             let* α0 : ref str.t :=
                               M.read
                                 (mk_str
-                                  "error: second argument not an integer\n") in
+                                  "error: second argument not an integer
+") in
                             let* α1 : M.Val (array (ref str.t)) :=
                               M.alloc [ α0 ] in
                             let* α2 : M.Val (ref (array (ref str.t))) :=
@@ -372,7 +383,8 @@ Definition main : M unit :=
                   (let* _ : M.Val unit :=
                     let* _ : M.Val unit :=
                       let* α0 : ref str.t :=
-                        M.read (mk_str "error: invalid command\n") in
+                        M.read (mk_str "error: invalid command
+") in
                       let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
                       let* α2 : M.Val (ref (array (ref str.t))) :=
                         M.alloc (borrow α1) in

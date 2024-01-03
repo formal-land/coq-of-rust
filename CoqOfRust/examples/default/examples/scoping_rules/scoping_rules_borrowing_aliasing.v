@@ -108,7 +108,8 @@ Definition main : M unit :=
       let* α0 : ref str.t := M.read (mk_str "Point has coordinates: (") in
       let* α1 : ref str.t := M.read (mk_str ", ") in
       let* α2 : ref str.t := M.read (mk_str ", ") in
-      let* α3 : ref str.t := M.read (mk_str ")\n") in
+      let* α3 : ref str.t := M.read (mk_str ")
+") in
       let* α4 : M.Val (array (ref str.t)) := M.alloc [ α0; α1; α2; α3 ] in
       let* α5 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α4) in
       let* α6 : ref (slice (ref str.t)) :=
@@ -141,7 +142,8 @@ Definition main : M unit :=
       let* α0 : ref str.t := M.read (mk_str "Point has coordinates: (") in
       let* α1 : ref str.t := M.read (mk_str ", ") in
       let* α2 : ref str.t := M.read (mk_str ", ") in
-      let* α3 : ref str.t := M.read (mk_str ")\n") in
+      let* α3 : ref str.t := M.read (mk_str ")
+") in
       let* α4 : M.Val (array (ref str.t)) := M.alloc [ α0; α1; α2; α3 ] in
       let* α5 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α4) in
       let* α6 : ref (slice (ref str.t)) :=
@@ -189,7 +191,8 @@ Definition main : M unit :=
       let* α0 : ref str.t := M.read (mk_str "Point has coordinates: (") in
       let* α1 : ref str.t := M.read (mk_str ", ") in
       let* α2 : ref str.t := M.read (mk_str ", ") in
-      let* α3 : ref str.t := M.read (mk_str ")\n") in
+      let* α3 : ref str.t := M.read (mk_str ")
+") in
       let* α4 : M.Val (array (ref str.t)) := M.alloc [ α0; α1; α2; α3 ] in
       let* α5 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α4) in
       let* α6 : ref (slice (ref str.t)) :=
@@ -229,7 +232,8 @@ Definition main : M unit :=
       let* α0 : ref str.t := M.read (mk_str "Point now has coordinates: (") in
       let* α1 : ref str.t := M.read (mk_str ", ") in
       let* α2 : ref str.t := M.read (mk_str ", ") in
-      let* α3 : ref str.t := M.read (mk_str ")\n") in
+      let* α3 : ref str.t := M.read (mk_str ")
+") in
       let* α4 : M.Val (array (ref str.t)) := M.alloc [ α0; α1; α2; α3 ] in
       let* α5 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α4) in
       let* α6 : ref (slice (ref str.t)) :=

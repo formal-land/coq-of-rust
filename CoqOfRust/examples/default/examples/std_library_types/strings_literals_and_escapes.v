@@ -25,13 +25,13 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* byte_escape : M.Val (ref str.t) :=
-    M.copy (mk_str "I\'m writing Rust!") in
+  let* byte_escape : M.Val (ref str.t) := M.copy (mk_str "I'm writing Rust!") in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t :=
-        M.read (mk_str "What are you doing? (\\x3F means ?) ") in
-      let* α1 : ref str.t := M.read (mk_str "\n") in
+        M.read (mk_str "What are you doing? (\x3F means ?) ") in
+      let* α1 : ref str.t := M.read (mk_str "
+") in
       let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
       let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
       let* α4 : ref (slice (ref str.t)) :=
@@ -51,12 +51,13 @@ Definition main : M unit :=
   let* unicode_codepoint : M.Val (ref str.t) :=
     M.copy (mk_str (String.String "29" "")) in
   let* character_name : M.Val (ref str.t) :=
-    M.copy (mk_str "\"DOUBLE-STRUCK CAPITAL R\"") in
+    M.copy (mk_str """DOUBLE-STRUCK CAPITAL R""") in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "Unicode character ") in
       let* α1 : ref str.t := M.read (mk_str " (U+211D) is called ") in
-      let* α2 : ref str.t := M.read (mk_str "\n") in
+      let* α2 : ref str.t := M.read (mk_str "
+") in
       let* α3 : M.Val (array (ref str.t)) := M.alloc [ α0; α1; α2 ] in
       let* α4 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α3) in
       let* α5 : ref (slice (ref str.t)) :=
@@ -81,11 +82,14 @@ Definition main : M unit :=
   let* long_string : M.Val (ref str.t) :=
     M.copy
       (mk_str
-        "String literals\n                        can span multiple lines.\n                        The linebreak and indentation here -><- can be escaped too!") in
+        "String literals
+                        can span multiple lines.
+                        The linebreak and indentation here -><- can be escaped too!") in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "") in
-      let* α1 : ref str.t := M.read (mk_str "\n") in
+      let* α1 : ref str.t := M.read (mk_str "
+") in
       let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
       let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
       let* α4 : ref (slice (ref str.t)) :=

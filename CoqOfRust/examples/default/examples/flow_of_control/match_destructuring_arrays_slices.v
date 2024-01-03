@@ -61,7 +61,8 @@ Definition main : M unit :=
               let* α0 : ref str.t :=
                 M.read (mk_str "array[0] = 0, array[1] = ") in
               let* α1 : ref str.t := M.read (mk_str ", array[2] = ") in
-              let* α2 : ref str.t := M.read (mk_str "\n") in
+              let* α2 : ref str.t := M.read (mk_str "
+") in
               let* α3 : M.Val (array (ref str.t)) := M.alloc [ α0; α1; α2 ] in
               let* α4 : M.Val (ref (array (ref str.t))) :=
                 M.alloc (borrow α3) in
@@ -99,7 +100,8 @@ Definition main : M unit :=
               let* α0 : ref str.t :=
                 M.read (mk_str "array[0] = 1, array[2] = ") in
               let* α1 : ref str.t :=
-                M.read (mk_str " and array[1] was ignored\n") in
+                M.read (mk_str " and array[1] was ignored
+") in
               let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
               let* α3 : M.Val (ref (array (ref str.t))) :=
                 M.alloc (borrow α2) in
@@ -134,7 +136,8 @@ Definition main : M unit :=
               let* α0 : ref str.t :=
                 M.read (mk_str "array[0] = -1, array[1] = ") in
               let* α1 : ref str.t :=
-                M.read (mk_str " and all the other ones were ignored\n") in
+                M.read (mk_str " and all the other ones were ignored
+") in
               let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
               let* α3 : M.Val (ref (array (ref str.t))) :=
                 M.alloc (borrow α2) in
@@ -171,7 +174,8 @@ Definition main : M unit :=
                 M.read (mk_str "array[0] = 3, array[1] = ") in
               let* α1 : ref str.t :=
                 M.read (mk_str " and the other elements were ") in
-              let* α2 : ref str.t := M.read (mk_str "\n") in
+              let* α2 : ref str.t := M.read (mk_str "
+") in
               let* α3 : M.Val (array (ref str.t)) := M.alloc [ α0; α1; α2 ] in
               let* α4 : M.Val (ref (array (ref str.t))) :=
                 M.alloc (borrow α3) in
@@ -201,7 +205,8 @@ Definition main : M unit :=
             let* α0 : ref str.t := M.read (mk_str "array[0] = ") in
             let* α1 : ref str.t := M.read (mk_str ", middle = ") in
             let* α2 : ref str.t := M.read (mk_str ", array[2] = ") in
-            let* α3 : ref str.t := M.read (mk_str "\n") in
+            let* α3 : ref str.t := M.read (mk_str "
+") in
             let* α4 : M.Val (array (ref str.t)) := M.alloc [ α0; α1; α2; α3 ] in
             let* α5 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α4) in
             let* α6 : ref (slice (ref str.t)) :=

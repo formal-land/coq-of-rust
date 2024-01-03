@@ -13,7 +13,8 @@ fn main() {
 Definition main : M unit :=
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "Hello World!\n") in
+      let* α0 : ref str.t := M.read (mk_str "Hello World!
+") in
       let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
       let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
       let* α3 : ref (slice (ref str.t)) :=

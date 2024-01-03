@@ -40,11 +40,12 @@ fn main() {
 Definition main : M unit :=
   let* _ : M.Val unit :=
     let* static_string : M.Val (ref str.t) :=
-      M.copy (mk_str "I\'m in read-only memory") in
+      M.copy (mk_str "I'm in read-only memory") in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "static_string: ") in
-        let* α1 : ref str.t := M.read (mk_str "\n") in
+        let* α1 : ref str.t := M.read (mk_str "
+") in
         let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
         let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
         let* α4 : ref (slice (ref str.t)) :=
@@ -74,7 +75,8 @@ Definition main : M unit :=
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "coerced_static: ") in
-        let* α1 : ref str.t := M.read (mk_str "\n") in
+        let* α1 : ref str.t := M.read (mk_str "
+") in
         let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
         let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
         let* α4 : ref (slice (ref str.t)) :=
@@ -96,7 +98,8 @@ Definition main : M unit :=
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "NUM: ") in
-      let* α1 : ref str.t := M.read (mk_str " stays accessible!\n") in
+      let* α1 : ref str.t := M.read (mk_str " stays accessible!
+") in
       let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
       let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
       let* α4 : ref (slice (ref str.t)) :=

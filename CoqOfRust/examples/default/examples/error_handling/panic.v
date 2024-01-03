@@ -36,7 +36,8 @@ Definition drink (beverage : ref str.t) : M unit :=
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "Some refreshing ") in
-      let* α1 : ref str.t := M.read (mk_str " is all I need.\n") in
+      let* α1 : ref str.t := M.read (mk_str " is all I need.
+") in
       let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
       let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
       let* α4 : ref (slice (ref str.t)) :=

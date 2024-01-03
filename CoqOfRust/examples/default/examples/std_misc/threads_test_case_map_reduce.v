@@ -93,7 +93,14 @@ Definition main : M unit :=
   let* data : M.Val (ref str.t) :=
     M.copy
       (mk_str
-        "86967897737416471853297327050364959\n11861322575564723963297542624962850\n70856234701860851907960690014725639\n38397966707106094172783238747669219\n52380795257888236525459303330302837\n58495327135744041048897885734297812\n69920216438980873548808413720956532\n16278424637452589860345374828574668") in
+        "86967897737416471853297327050364959
+11861322575564723963297542624962850
+70856234701860851907960690014725639
+38397966707106094172783238747669219
+52380795257888236525459303330302837
+58495327135744041048897885734297812
+69920216438980873548808413720956532
+16278424637452589860345374828574668") in
   let* children :
       M.Val
         (alloc.vec.Vec.t
@@ -185,8 +192,9 @@ Definition main : M unit :=
                             let* _ : M.Val unit :=
                               let* α0 : ref str.t :=
                                 M.read (mk_str "data segment ") in
-                              let* α1 : ref str.t := M.read (mk_str " is \"") in
-                              let* α2 : ref str.t := M.read (mk_str "\"\n") in
+                              let* α1 : ref str.t := M.read (mk_str " is """) in
+                              let* α2 : ref str.t := M.read (mk_str """
+") in
                               let* α3 : M.Val (array (ref str.t)) :=
                                 M.alloc [ α0; α1; α2 ] in
                               let* α4 : M.Val (ref (array (ref str.t))) :=
@@ -278,7 +286,8 @@ Definition main : M unit :=
                                       let* α1 : ref str.t :=
                                         M.read (mk_str ", result=") in
                                       let* α2 : ref str.t :=
-                                        M.read (mk_str "\n") in
+                                        M.read (mk_str "
+") in
                                       let* α3 : M.Val (array (ref str.t)) :=
                                         M.alloc [ α0; α1; α2 ] in
                                       let* α4 :
@@ -403,7 +412,8 @@ Definition main : M unit :=
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "Final sum result: ") in
-      let* α1 : ref str.t := M.read (mk_str "\n") in
+      let* α1 : ref str.t := M.read (mk_str "
+") in
       let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
       let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
       let* α4 : ref (slice (ref str.t)) :=

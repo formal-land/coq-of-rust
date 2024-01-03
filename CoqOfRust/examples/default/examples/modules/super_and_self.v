@@ -9,7 +9,8 @@ fn function() {
 Definition function : M unit :=
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "called `function()`\n") in
+      let* α0 : ref str.t := M.read (mk_str "called `function()`
+") in
       let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
       let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
       let* α3 : ref (slice (ref str.t)) :=
@@ -31,7 +32,8 @@ Module cool.
   Definition function : M unit :=
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
-        let* α0 : ref str.t := M.read (mk_str "called `cool::function()`\n") in
+        let* α0 : ref str.t := M.read (mk_str "called `cool::function()`
+") in
         let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
         let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
         let* α3 : ref (slice (ref str.t)) :=
@@ -53,7 +55,8 @@ End cool.
 Definition function : M unit :=
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "called `cool::function()`\n") in
+      let* α0 : ref str.t := M.read (mk_str "called `cool::function()`
+") in
       let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
       let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
       let* α3 : ref (slice (ref str.t)) :=
@@ -75,7 +78,8 @@ Module my.
   Definition function : M unit :=
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
-        let* α0 : ref str.t := M.read (mk_str "called `my::function()`\n") in
+        let* α0 : ref str.t := M.read (mk_str "called `my::function()`
+") in
         let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
         let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
         let* α3 : ref (slice (ref str.t)) :=
@@ -98,7 +102,8 @@ Module my.
       let* _ : M.Val unit :=
         let* _ : M.Val unit :=
           let* α0 : ref str.t :=
-            M.read (mk_str "called `my::cool::function()`\n") in
+            M.read (mk_str "called `my::cool::function()`
+") in
           let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
           let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
           let* α3 : ref (slice (ref str.t)) :=
@@ -141,7 +146,8 @@ Module my.
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
         let* α0 : ref str.t :=
-          M.read (mk_str "called `my::indirect_call()`, that\n> ") in
+          M.read (mk_str "called `my::indirect_call()`, that
+> ") in
         let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
         let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
         let* α3 : ref (slice (ref str.t)) :=
@@ -178,7 +184,8 @@ End my.
 Definition function : M unit :=
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "called `my::function()`\n") in
+      let* α0 : ref str.t := M.read (mk_str "called `my::function()`
+") in
       let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
       let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
       let* α3 : ref (slice (ref str.t)) :=
@@ -202,7 +209,8 @@ Module cool.
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
         let* α0 : ref str.t :=
-          M.read (mk_str "called `my::cool::function()`\n") in
+          M.read (mk_str "called `my::cool::function()`
+") in
         let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
         let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
         let* α3 : ref (slice (ref str.t)) :=
@@ -226,8 +234,8 @@ Import Wrap_cool_1.
 Definition function : M unit :=
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
-      let* α0 : ref str.t :=
-        M.read (mk_str "called `my::cool::function()`\n") in
+      let* α0 : ref str.t := M.read (mk_str "called `my::cool::function()`
+") in
       let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
       let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
       let* α3 : ref (slice (ref str.t)) :=
@@ -269,7 +277,8 @@ Definition indirect_call : M unit :=
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t :=
-        M.read (mk_str "called `my::indirect_call()`, that\n> ") in
+        M.read (mk_str "called `my::indirect_call()`, that
+> ") in
       let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
       let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
       let* α3 : ref (slice (ref str.t)) :=

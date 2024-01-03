@@ -417,7 +417,8 @@ Definition eat
             let* food := M.copy γ0 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "Mmm. I love ") in
-              let* α1 : ref str.t := M.read (mk_str "\n") in
+              let* α1 : ref str.t := M.read (mk_str "
+") in
               let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
               let* α3 : M.Val (ref (array (ref str.t))) :=
                 M.alloc (borrow α2) in
@@ -445,7 +446,8 @@ Definition eat
           | core.option.Option.None =>
             let* _ : M.Val unit :=
               let* α0 : ref str.t :=
-                M.read (mk_str "Oh no! It wasn\'t edible.\n") in
+                M.read (mk_str "Oh no! It wasn't edible.
+") in
               let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
               let* α2 : M.Val (ref (array (ref str.t))) :=
                 M.alloc (borrow α1) in

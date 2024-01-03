@@ -19,11 +19,12 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
   let* raw_str : M.Val (ref str.t) :=
-    M.copy (mk_str "Escapes don\'t work here: \\x3F \\u{211D}") in
+    M.copy (mk_str "Escapes don't work here: \x3F \u{211D}") in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "") in
-      let* α1 : ref str.t := M.read (mk_str "\n") in
+      let* α1 : ref str.t := M.read (mk_str "
+") in
       let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
       let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
       let* α4 : ref (slice (ref str.t)) :=
@@ -41,11 +42,12 @@ Definition main : M unit :=
       M.alloc α10 in
     M.alloc tt in
   let* quotes : M.Val (ref str.t) :=
-    M.copy (mk_str "And then I said: \"There is no escape!\"") in
+    M.copy (mk_str "And then I said: ""There is no escape!""") in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "") in
-      let* α1 : ref str.t := M.read (mk_str "\n") in
+      let* α1 : ref str.t := M.read (mk_str "
+") in
       let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
       let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
       let* α4 : ref (slice (ref str.t)) :=
@@ -63,11 +65,12 @@ Definition main : M unit :=
       M.alloc α10 in
     M.alloc tt in
   let* longer_delimiter : M.Val (ref str.t) :=
-    M.copy (mk_str "A string with \"# in it. And even \"##!") in
+    M.copy (mk_str "A string with ""# in it. And even ""##!") in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "") in
-      let* α1 : ref str.t := M.read (mk_str "\n") in
+      let* α1 : ref str.t := M.read (mk_str "
+") in
       let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
       let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
       let* α4 : ref (slice (ref str.t)) :=
