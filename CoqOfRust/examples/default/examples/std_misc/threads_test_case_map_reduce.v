@@ -192,8 +192,8 @@ Definition main : M unit :=
                             let* _ : M.Val unit :=
                               let* α0 : ref str.t :=
                                 M.read (mk_str "data segment ") in
-                              let* α1 : ref str.t := M.read (mk_str " is "") in
-                              let* α2 : ref str.t := M.read (mk_str ""
+                              let* α1 : ref str.t := M.read (mk_str " is """) in
+                              let* α2 : ref str.t := M.read (mk_str """
 ") in
                               let* α3 : M.Val (array (ref str.t)) :=
                                 M.alloc [ α0; α1; α2 ] in

@@ -42,7 +42,7 @@ Definition main : M unit :=
       M.alloc α10 in
     M.alloc tt in
   let* quotes : M.Val (ref str.t) :=
-    M.copy (mk_str "And then I said: "There is no escape!"") in
+    M.copy (mk_str "And then I said: ""There is no escape!""") in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "") in
@@ -65,7 +65,7 @@ Definition main : M unit :=
       M.alloc α10 in
     M.alloc tt in
   let* longer_delimiter : M.Val (ref str.t) :=
-    M.copy (mk_str "A string with "# in it. And even "##!") in
+    M.copy (mk_str "A string with ""# in it. And even ""##!") in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "") in

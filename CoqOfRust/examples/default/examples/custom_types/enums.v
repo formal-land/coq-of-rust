@@ -157,8 +157,8 @@ Definition inspect (event : enums.WebEvent.t) : M unit :=
             let γ0 := γ.["Paste.0"] in
             let* s := M.copy γ0 in
             let* _ : M.Val unit :=
-              let* α0 : ref str.t := M.read (mk_str "pasted "") in
-              let* α1 : ref str.t := M.read (mk_str "".
+              let* α0 : ref str.t := M.read (mk_str "pasted """) in
+              let* α1 : ref str.t := M.read (mk_str """.
 ") in
               let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
               let* α3 : M.Val (ref (array (ref str.t))) :=

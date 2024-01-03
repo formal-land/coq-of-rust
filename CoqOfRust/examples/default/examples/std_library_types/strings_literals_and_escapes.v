@@ -51,7 +51,7 @@ Definition main : M unit :=
   let* unicode_codepoint : M.Val (ref str.t) :=
     M.copy (mk_str (String.String "29" "")) in
   let* character_name : M.Val (ref str.t) :=
-    M.copy (mk_str ""DOUBLE-STRUCK CAPITAL R"") in
+    M.copy (mk_str """DOUBLE-STRUCK CAPITAL R""") in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "Unicode character ") in
