@@ -731,7 +731,11 @@ impl<'a> IndFieldDef<'a> {
 }
 
 impl<'a> Inductive<'a> {
-    pub(crate) fn new(name: &String, ty_params: &Vec<String>, fields: Vec<IndFieldDef<'a>>) -> Self {
+    pub(crate) fn new(
+        name: &String,
+        ty_params: &Vec<String>,
+        fields: Vec<IndFieldDef<'a>>,
+    ) -> Self {
         Inductive {
             name: name.to_owned(),
             ty_params: ty_params.to_owned(),

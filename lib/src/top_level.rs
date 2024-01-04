@@ -1911,18 +1911,18 @@ impl TopLevelItem {
             .concat();
 
         let module_items = coq::TopLevel::concat(&[coq::TopLevel::new_vec(
-          // Combine all parts into one single vec
-          header
-              .into_iter()
-              .chain(vec![inductive_item].into_iter())
-              .chain(getters.into_iter())
-              .collect(),
+            // Combine all parts into one single vec
+            header
+                .into_iter()
+                .chain(vec![inductive_item].into_iter())
+                .chain(getters.into_iter())
+                .collect(),
         )]);
 
         coq::TopLevel::new(&[coq::TopLevelItem::Module(coq::Module::new(
-          name,
-          false,
-          module_items,
+            name,
+            false,
+            module_items,
         ))])
     }
 
