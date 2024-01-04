@@ -1794,7 +1794,7 @@ impl Snippet {
 
 impl TopLevelItem {
     fn to_coq_enum<'a>(
-        ty_params: &Vec<(String, Option<Rc<CoqType>>)>,
+        ty_params: &[(String, Option<Rc<CoqType>>)],
         variants: &'a Vec<(String, Rc<VariantItem>)>,
     ) -> coq::TopLevel<'a> {
         let header = variants
@@ -1830,7 +1830,7 @@ impl TopLevelItem {
                 .collect::<Vec<_>>(),
             variants
                 .iter()
-                .map(|(s, v)| coq::IndFieldDef::new(&s, v.to_owned()))
+                .map(|(s, v)| coq::IndFieldDef::new(s, v.to_owned()))
                 .collect::<Vec<_>>(),
         ));
 

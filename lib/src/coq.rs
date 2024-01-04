@@ -313,7 +313,7 @@ impl<'a> TopLevel<'a> {
     }
 
     pub(crate) fn new_vec(items: Vec<TopLevelItem<'a>>) -> Self {
-        TopLevel { items: items }
+        TopLevel { items }
     }
 
     pub(crate) fn to_doc(&self) -> Doc<'a> {
@@ -704,7 +704,7 @@ impl<'a> IndFieldDef<'a> {
     pub(crate) fn new(name: &String, item: Rc<VariantItem>) -> Self {
         IndFieldDef {
             name: name.to_owned(),
-            item: item.to_owned(),
+            item,
             _phantom_data: PhantomData,
         }
     }
