@@ -124,12 +124,7 @@ pub(crate) struct ClassFieldDef<'a> {
 
 #[derive(Clone)]
 pub(crate) struct IndFieldDef<'a> {
-    // gy@NOTE: the main purpose of all the definition is to
-    // simulate this type: &Vec<(String, Rc<VariantItem>)>
     name: String,
-    // args: Vec<ArgDecl<'a>>, // Optional
-    // ty: Expression<'a>, // Optional?
-    // is_struct: bool // struct or tuple? *Or more?*
     item: Rc<VariantItem>,
     _phantom_data: std::marker::PhantomData<&'a ()>,
 }
@@ -750,7 +745,6 @@ impl<'a> Inductive<'a> {
                 text("Inductive"),
                 line(),
                 text(self.name.to_owned()),
-                // gy@TODO: Fix the below line
                 concat(self.ty_params.iter().map(|ty_param| {
                     concat([
                         line(),
