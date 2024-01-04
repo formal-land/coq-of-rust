@@ -1794,7 +1794,7 @@ impl Snippet {
 
 impl TopLevelItem {
     fn to_coq_enum<'a>(
-        name: &String,
+        name: &str,
         ty_params: &[(String, Option<Rc<CoqType>>)],
         variants: &'a Vec<(String, Rc<VariantItem>)>,
     ) -> coq::TopLevel<'a> {
