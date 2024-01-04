@@ -9,7 +9,7 @@ use rustc_hir::{BareFnTy, FnDecl, FnRetTy, GenericBound, ItemKind, OpaqueTyOrigi
 use std::rc::Rc;
 
 #[derive(Debug, PartialEq, Eq, Hash)]
-pub(crate) enum CoqType {
+pub enum CoqType {
     Var(String),
     Path {
         path: Rc<Path>,
