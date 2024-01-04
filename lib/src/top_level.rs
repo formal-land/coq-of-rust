@@ -1794,6 +1794,7 @@ impl Snippet {
 
 impl TopLevelItem {
     fn to_coq_enum<'a>(
+        name: &String,
         ty_params: &[(String, Option<Rc<CoqType>>)],
         variants: &'a Vec<(String, Rc<VariantItem>)>,
     ) -> coq::TopLevel<'a> {
@@ -1909,14 +1910,20 @@ impl TopLevelItem {
             .collect::<Vec<_>>()
             .concat();
 
-        coq::TopLevel::concat(&[coq::TopLevel::new_vec(
-            // Combine all parts into one single vec
-            header
-                .into_iter()
-                .chain(vec![inductive_item].into_iter())
-                .chain(getters.into_iter())
-                .collect(),
-        )])
+        let module_items = coq::TopLevel::concat(&[coq::TopLevel::new_vec(
+          // Combine all parts into one single vec
+          header
+              .into_iter()
+              .chain(vec![inductive_item].into_iter())
+              .chain(getters.into_iter())
+              .collect(),
+        )]);
+
+        coq::TopLevel::new(&[coq::TopLevelItem::Module(coq::Module::new(
+          name,
+          false,
+          module_items,
+        ))])
     }
 
     fn to_doc(&self, to_doc_context: ToDocContext) -> Doc {
@@ -1992,12 +1999,7 @@ impl TopLevelItem {
                 ty_params,
                 predicates: _,
                 variants,
-            } => group([coq::TopLevelItem::Module(coq::Module::new(
-                name,
-                false,
-                Self::to_coq_enum(ty_params, variants),
-            ))
-            .to_doc()]),
+            } => Self::to_coq_enum(name, ty_params, variants).to_doc(),
             TopLevelItem::TypeStructStruct(tss) => tss.to_doc(),
             TopLevelItem::TypeStructTuple {
                 name,

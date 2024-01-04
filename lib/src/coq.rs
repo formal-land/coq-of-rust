@@ -133,7 +133,7 @@ pub(crate) struct IndFieldDef<'a> {
 pub(crate) struct Inductive<'a> {
     name: String,
     ty_params: Vec<String>,
-    items: Vec<IndFieldDef<'a>>,
+    fields: Vec<IndFieldDef<'a>>,
 }
 
 #[derive(Clone)]
@@ -731,11 +731,11 @@ impl<'a> IndFieldDef<'a> {
 }
 
 impl<'a> Inductive<'a> {
-    pub(crate) fn new(name: &String, ty_params: &Vec<String>, items: Vec<IndFieldDef<'a>>) -> Self {
+    pub(crate) fn new(name: &String, ty_params: &Vec<String>, fields: Vec<IndFieldDef<'a>>) -> Self {
         Inductive {
             name: name.to_owned(),
             ty_params: ty_params.to_owned(),
-            items: items.to_owned(),
+            fields: fields.to_owned(),
         }
     }
 
@@ -762,7 +762,7 @@ impl<'a> Inductive<'a> {
                 text("Set :="),
             ]),
             hardline(),
-            intersperse(self.items.iter().map(|item| item.field_to_doc()), [line()]),
+            intersperse(self.fields.iter().map(|item| item.field_to_doc()), [line()]),
             text("."),
         ])
     }
