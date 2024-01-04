@@ -6,8 +6,7 @@ Module List.
   |
     Cons
     (_ : u32.t)
-    (_
-      :
+    (_ :
       alloc.boxed.Box.t
         enums_testcase_linked_list.List.t
         alloc.boxed.Box.Default.A)

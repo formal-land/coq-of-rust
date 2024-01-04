@@ -96,7 +96,7 @@ struct TraitBound {
 type TraitTyParamValue = FieldWithDefault<Rc<CoqType>>;
 
 #[derive(Debug, Eq, Hash, PartialEq)]
-enum VariantItem {
+pub enum VariantItem {
     Struct { fields: Vec<(String, Rc<CoqType>)> },
     Tuple { tys: Vec<Rc<CoqType>> },
 }
@@ -1793,6 +1793,132 @@ impl Snippet {
 }
 
 impl TopLevelItem {
+    fn to_coq_enum<'a>(
+        ty_params: &Vec<(String, Option<Rc<CoqType>>)>,
+        variants: &'a Vec<(String, Rc<VariantItem>)>,
+    ) -> coq::TopLevel<'a> {
+        let header = variants
+            .iter()
+            .filter_map(|(name, fields)| match &**fields {
+                VariantItem::Tuple { .. } => None,
+                VariantItem::Struct { fields } => {
+                    Some(coq::TopLevelItem::Module(coq::Module::new(
+                        name,
+                        false,
+                        coq::TopLevel::new(&[coq::TopLevelItem::Record(coq::Record::new(
+                            "t",
+                            &coq::Expression::Set,
+                            &fields
+                                .iter()
+                                .map(|(name, ty)| {
+                                    coq::RecordFieldDef::new(&Some(name.to_owned()), &ty.to_coq())
+                                })
+                                .collect::<Vec<_>>(),
+                        ))]),
+                    )))
+                }
+            })
+            // Insert the lines at the end of each modules
+            .flat_map(|module| vec![module, coq::TopLevelItem::Line])
+            .collect::<Vec<_>>();
+
+        let inductive_item = coq::TopLevelItem::Inductive(coq::Inductive::new(
+            &"t".to_string(),
+            &ty_params
+                .iter()
+                .map(|(name, _)| name.to_owned())
+                .collect::<Vec<_>>(),
+            variants
+                .iter()
+                .map(|(s, v)| coq::IndFieldDef::new(&s, v.to_owned()))
+                .collect::<Vec<_>>(),
+        ));
+
+        let getters = variants
+            .iter()
+            .map(|(name, fields)| match fields.as_ref() {
+                VariantItem::Struct { fields } => fields
+                    .iter()
+                    .map(|(field_name, _)| {
+                        let full_name = format!("{name}.{field_name}");
+                        let full_name_underscore = format!("{name}_{field_name}");
+
+                        [
+                            coq::TopLevelItem::Line,
+                            coq::TopLevelItem::Instance(coq::Instance::new(
+                                &format!("Get_{full_name_underscore}"),
+                                &[],
+                                coq::Expression::Variable {
+                                    ident: Path::new(&["Notations", "Dot"]),
+                                    no_implicit: false,
+                                }
+                                .apply(&coq::Expression::String(full_name)),
+                                &coq::Expression::Record {
+                                    fields: vec![coq::Field::new(
+                                        &Path::new(&["Notations", "dot"]),
+                                        &[],
+                                        &enum_struct_field_value(
+                                            name,
+                                            field_name,
+                                            variants.len() != 1,
+                                        ),
+                                    )],
+                                },
+                                vec![],
+                            )),
+                        ]
+                    })
+                    .collect::<Vec<_>>()
+                    .concat(),
+                VariantItem::Tuple { tys } => tys
+                    .iter()
+                    .enumerate()
+                    .map(|(index, _)| {
+                        let full_name = format!("{name}.{index}");
+                        let full_name_underscore = format!("{name}_{index}");
+
+                        [
+                            coq::TopLevelItem::Line,
+                            coq::TopLevelItem::Instance(coq::Instance::new(
+                                &format!("Get_{full_name_underscore}"),
+                                &[],
+                                coq::Expression::Variable {
+                                    ident: Path::new(&["Notations", "Dot"]),
+                                    no_implicit: false,
+                                }
+                                .apply(&coq::Expression::String(full_name)),
+                                &coq::Expression::Record {
+                                    fields: vec![coq::Field::new(
+                                        &Path::new(&["Notations", "dot"]),
+                                        &[],
+                                        &enum_tuple_field_value(
+                                            name,
+                                            tys.len(),
+                                            index,
+                                            variants.len() != 1,
+                                        ),
+                                    )],
+                                },
+                                vec![],
+                            )),
+                        ]
+                    })
+                    .collect::<Vec<_>>()
+                    .concat(),
+            })
+            .collect::<Vec<_>>()
+            .concat();
+
+        coq::TopLevel::concat(&[coq::TopLevel::new_vec(
+            // Combine all parts into one single vec
+            header
+                .into_iter()
+                .chain(vec![inductive_item].into_iter())
+                .chain(getters.into_iter())
+                .collect(),
+        )])
+    }
+
     fn to_doc(&self, to_doc_context: ToDocContext) -> Doc {
         match self {
             TopLevelItem::Const { name, ty, value } => match value {
@@ -1869,174 +1995,7 @@ impl TopLevelItem {
             } => group([coq::TopLevelItem::Module(coq::Module::new(
                 name,
                 false,
-                coq::TopLevel::concat(&[coq::TopLevel::new(
-                    &[
-                        vec![coq::TopLevelItem::Code(group([
-                            concat(variants.iter().map(|(name, fields)| {
-                                match &**fields {
-                                    VariantItem::Tuple { .. } => nil(),
-                                    VariantItem::Struct { fields } => coq::TopLevel::new(&[
-                                        coq::TopLevelItem::Module(coq::Module::new(
-                                            name,
-                                            false,
-                                            coq::TopLevel::new(&[coq::TopLevelItem::Record(
-                                                coq::Record::new(
-                                                    "t",
-                                                    &coq::Expression::Set,
-                                                    &fields
-                                                        .iter()
-                                                        .map(|(name, ty)| {
-                                                            coq::FieldDef::new(
-                                                                &Some(name.to_owned()),
-                                                                &ty.to_coq(),
-                                                            )
-                                                        })
-                                                        .collect::<Vec<_>>(),
-                                                ),
-                                            )]),
-                                        )),
-                                        coq::TopLevelItem::Line,
-                                        coq::TopLevelItem::Line,
-                                    ])
-                                    .to_doc(),
-                                }
-                            })),
-                            nest([
-                                text("Inductive"),
-                                line(),
-                                text("t"),
-                                concat(ty_params.iter().map(|(name, _)| {
-                                    concat([
-                                        line(),
-                                        nest([
-                                            text("("),
-                                            text(name),
-                                            text(" :"),
-                                            line(),
-                                            text("Set)"),
-                                        ]),
-                                    ])
-                                })),
-                                text(" :"),
-                                line(),
-                                text("Set :="),
-                            ]),
-                            hardline(),
-                            intersperse(
-                                variants.iter().map(|(name, fields)| {
-                                    nest([
-                                        text("|"),
-                                        line(),
-                                        text(name),
-                                        match &**fields {
-                                            VariantItem::Struct { .. } => concat([
-                                                line(),
-                                                nest([
-                                                    text("(_ :"),
-                                                    line(),
-                                                    text(format!("{name}.t")),
-                                                    text(")"),
-                                                ]),
-                                            ]),
-                                            VariantItem::Tuple { tys } => {
-                                                concat(tys.iter().map(|ty| {
-                                                    concat([
-                                                        line(),
-                                                        nest([
-                                                            text("(_"),
-                                                            line(),
-                                                            text(":"),
-                                                            line(),
-                                                            ty.to_coq().to_doc(false),
-                                                            text(")"),
-                                                        ]),
-                                                    ])
-                                                }))
-                                            }
-                                        },
-                                    ])
-                                }),
-                                [line()],
-                            ),
-                            text("."),
-                        ]))],
-                        variants
-                            .iter()
-                            .map(|(name, fields)| match fields.as_ref() {
-                                VariantItem::Struct { fields } => fields
-                                    .iter()
-                                    .map(|(field_name, _)| {
-                                        let full_name = format!("{name}.{field_name}");
-                                        let full_name_underscore = format!("{name}_{field_name}");
-
-                                        [
-                                            coq::TopLevelItem::Line,
-                                            coq::TopLevelItem::Instance(coq::Instance::new(
-                                                &format!("Get_{full_name_underscore}"),
-                                                &[],
-                                                coq::Expression::Variable {
-                                                    ident: Path::new(&["Notations", "Dot"]),
-                                                    no_implicit: false,
-                                                }
-                                                .apply(&coq::Expression::String(full_name)),
-                                                &coq::Expression::Record {
-                                                    fields: vec![coq::Field::new(
-                                                        &Path::new(&["Notations", "dot"]),
-                                                        &[],
-                                                        &enum_struct_field_value(
-                                                            name,
-                                                            field_name,
-                                                            variants.len() != 1,
-                                                        ),
-                                                    )],
-                                                },
-                                                vec![],
-                                            )),
-                                        ]
-                                    })
-                                    .collect::<Vec<_>>()
-                                    .concat(),
-                                VariantItem::Tuple { tys } => tys
-                                    .iter()
-                                    .enumerate()
-                                    .map(|(index, _)| {
-                                        let full_name = format!("{name}.{index}");
-                                        let full_name_underscore = format!("{name}_{index}");
-
-                                        [
-                                            coq::TopLevelItem::Line,
-                                            coq::TopLevelItem::Instance(coq::Instance::new(
-                                                &format!("Get_{full_name_underscore}"),
-                                                &[],
-                                                coq::Expression::Variable {
-                                                    ident: Path::new(&["Notations", "Dot"]),
-                                                    no_implicit: false,
-                                                }
-                                                .apply(&coq::Expression::String(full_name)),
-                                                &coq::Expression::Record {
-                                                    fields: vec![coq::Field::new(
-                                                        &Path::new(&["Notations", "dot"]),
-                                                        &[],
-                                                        &enum_tuple_field_value(
-                                                            name,
-                                                            tys.len(),
-                                                            index,
-                                                            variants.len() != 1,
-                                                        ),
-                                                    )],
-                                                },
-                                                vec![],
-                                            )),
-                                        ]
-                                    })
-                                    .collect::<Vec<_>>()
-                                    .concat(),
-                            })
-                            .collect::<Vec<_>>()
-                            .concat(),
-                    ]
-                    .concat(),
-                )]),
+                Self::to_coq_enum(ty_params, variants),
             ))
             .to_doc()]),
             TopLevelItem::TypeStructStruct(tss) => tss.to_doc(),
@@ -2063,7 +2022,10 @@ impl TopLevelItem {
                                         .iter()
                                         .enumerate()
                                         .map(|(i, ty)| {
-                                            coq::FieldDef::new(&Some(format!("x{i}")), &ty.to_coq())
+                                            coq::RecordFieldDef::new(
+                                                &Some(format!("x{i}")),
+                                                &ty.to_coq(),
+                                            )
                                         })
                                         .collect::<Vec<_>>(),
                                 )),
@@ -2642,7 +2604,7 @@ fn enum_tuple_field_value(
 }
 
 impl TypeStructStruct {
-    fn to_doc(&self) -> Doc {
+    fn to_coq(&self) -> coq::TopLevel {
         let TypeStructStruct {
             name,
             ty_params,
@@ -2783,7 +2745,7 @@ impl TypeStructStruct {
                                 //                                               .collect()
                                 //                                       ]
                                 //                                       .concat(),
-                                //                                       image: Rc::new(
+                                //                                       image: Box::new(
                                 //                                           coq::Expression::just_name("t")
                                 //                                               .arrows_from(&[
                                 //                                                   coq::Expression::just_name("A"),
@@ -2821,7 +2783,10 @@ impl TypeStructStruct {
                                     &fields
                                         .iter()
                                         .map(|(name, ty)| {
-                                            coq::FieldDef::new(&Some(name.to_owned()), &ty.to_coq())
+                                            coq::RecordFieldDef::new(
+                                                &Some(name.to_owned()),
+                                                &ty.to_coq(),
+                                            )
                                         })
                                         .collect::<Vec<_>>(),
                                 ))]),
@@ -2903,7 +2868,10 @@ impl TypeStructStruct {
             ]
             .concat(),
         )
-        .to_doc()
+    }
+
+    fn to_doc(&self) -> Doc {
+        self.to_coq().to_doc()
     }
 }
 
