@@ -207,8 +207,8 @@ Definition fizzbuzz_to (n : u32.t) : M unit :=
                     (let* α0 := M.read γ in
                     match α0 with
                     | core.option.Option.Some _ =>
-                      let γ0 := γ.["Some.0"] in
-                      let* n := M.copy γ0 in
+                      let γ0_0 := γ.["Some.0"] in
+                      let* n := M.copy γ0_0 in
                       let* _ : M.Val unit :=
                         let* α0 : u32.t := M.read n in
                         let* α1 : unit := M.call (functions.fizzbuzz α0) in

@@ -37,7 +37,7 @@ Definition main : M unit :=
       let* α4 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α3) in
       let* α5 : isize.t := M.read 0 in
-      let* α6 : i32.t := cast α5 in
+      let* α6 : i32.t := M.cast α5 in
       let* α7 : M.Val i32.t := M.alloc α6 in
       let* α8 : core.fmt.rt.Argument.t :=
         M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α7)) in
@@ -61,7 +61,7 @@ Definition main : M unit :=
       let* α4 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α3) in
       let* α5 : isize.t := M.read 1 in
-      let* α6 : i32.t := cast α5 in
+      let* α6 : i32.t := M.cast α5 in
       let* α7 : M.Val i32.t := M.alloc α6 in
       let* α8 : core.fmt.rt.Argument.t :=
         M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α7)) in
@@ -87,7 +87,7 @@ Definition main : M unit :=
       let* α5 : isize.t := M.read enums_c_like.Color.Red in
       let* α6 : isize.t := M.read 0 in
       let* α7 : isize.t := BinOp.Panic.add α5 α6 in
-      let* α8 : i32.t := cast α7 in
+      let* α8 : i32.t := M.cast α7 in
       let* α9 : M.Val i32.t := M.alloc α8 in
       let* α10 : core.fmt.rt.Argument.t :=
         M.call (core.fmt.rt.Argument.t::["new_lower_hex"] (borrow α9)) in
@@ -129,7 +129,7 @@ Definition main : M unit :=
       let* α5 : isize.t := M.read enums_c_like.Color.Blue in
       let* α6 : isize.t := M.read 0 in
       let* α7 : isize.t := BinOp.Panic.add α5 α6 in
-      let* α8 : i32.t := cast α7 in
+      let* α8 : i32.t := M.cast α7 in
       let* α9 : M.Val i32.t := M.alloc α8 in
       let* α10 : core.fmt.rt.Argument.t :=
         M.call (core.fmt.rt.Argument.t::["new_lower_hex"] (borrow α9)) in

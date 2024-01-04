@@ -46,6 +46,19 @@ Section Impl_Result.
   |}.
 
   (*
+  pub fn map<U, F>(self, op: F) -> Result<U, E>
+  where
+      F: FnOnce(T) -> U,
+  *)
+  Parameter map : forall {U : Set},
+    Self -> (T -> M U) -> M (Result.t U E).
+
+  Global Instance AF_map {U : Set} :
+      Notations.DoubleColon Self "map" := {|
+    Notations.double_colon := map (U := U);
+  |}.
+
+  (*
   pub fn map_err<F, O>(self, op: O) -> Result<T, F>
   where
     O: FnOnce(E) -> F,
@@ -79,3 +92,16 @@ Section Impl_Result.
 End Impl_Result.
 End Impl_Result.
 
+Module  Impl_Option.
+Section Impl_Option.
+  Context {T : Set}.
+  Definition Self : Set := option.Option.t T.
+
+  (* pub fn ok_or<E>(self, err: E) -> Result<T, E> *)
+  Parameter ok_or : forall {E : Set}, Self -> E -> M (Result.t T E).
+
+  Global Instance AF_ok_or {E : Set} : Notations.DoubleColon Self "ok_or" := {
+    Notations.double_colon := ok_or (E := E);
+  }.
+End Impl_Option.
+End Impl_Option.

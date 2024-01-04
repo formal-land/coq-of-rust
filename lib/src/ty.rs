@@ -458,8 +458,22 @@ impl CoqType {
                 }
                 name
             }
-            CoqType::OpaqueType(_) => todo!(),
-            CoqType::Dyn(_) => todo!(),
+            CoqType::OpaqueType(paths) => {
+                let mut name = "OpaqueType".to_string();
+                for path in paths {
+                    name.push('_');
+                    name.push_str(&path.to_name());
+                }
+                name
+            }
+            CoqType::Dyn(paths) => {
+                let mut name = "Dyn".to_string();
+                for path in paths {
+                    name.push('_');
+                    name.push_str(&path.to_name());
+                }
+                name
+            }
             CoqType::Infer => "inferred_type".to_string(),
             CoqType::Monad(ty) => format!("Monad_{}", ty.to_name()),
             CoqType::Val(ty) => format!("Val_{}", ty.to_name()),

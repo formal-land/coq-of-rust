@@ -248,27 +248,27 @@ Definition catch_return {A : Set} (body : M A) : M A :=
       end
     ).
 
-Definition catch_continue (body : M unit) : M unit :=
+Definition catch_continue (body : M (Val unit)) : M (Val unit) :=
   catch
     body
     (fun exception =>
       match exception with
-      | Exception.Continue => pure tt
+      | Exception.Continue => alloc tt
       | _ => raise exception
       end
     ).
 
-Definition catch_break (body : M unit) : M unit :=
+Definition catch_break (body : M (Val unit)) : M (Val unit) :=
   catch
     body
     (fun exception =>
       match exception with
-      | Exception.Break => pure tt
+      | Exception.Break => alloc tt
       | _ => raise exception
       end
     ).
 
-Definition loop (body : M unit) : M unit :=
+Definition loop (body : M (Val unit)) : M (Val unit) :=
   LowM.Loop
     (catch_continue body)
     (fun result =>

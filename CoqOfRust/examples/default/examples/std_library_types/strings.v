@@ -137,8 +137,8 @@ Definition main : M unit :=
                       (let* α0 := M.read γ in
                       match α0 with
                       | core.option.Option.Some _ =>
-                        let γ0 := γ.["Some.0"] in
-                        let* word := M.copy γ0 in
+                        let γ0_0 := γ.["Some.0"] in
+                        let* word := M.copy γ0_0 in
                         let* _ : M.Val unit :=
                           let* _ : M.Val unit :=
                             let* α0 : ref str.t := M.read (mk_str "> ") in
@@ -251,8 +251,8 @@ Definition main : M unit :=
                       (let* α0 := M.read γ in
                       match α0 with
                       | core.option.Option.Some _ =>
-                        let γ0 := γ.["Some.0"] in
-                        let* c := M.copy γ0 in
+                        let γ0_0 := γ.["Some.0"] in
+                        let* c := M.copy γ0_0 in
                         let* _ : M.Val unit :=
                           let* α0 : char.t := M.read c in
                           let* α1 : unit :=

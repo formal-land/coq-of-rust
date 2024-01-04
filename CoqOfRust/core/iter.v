@@ -1,5 +1,7 @@
 Require Import CoqOfRust.lib.lib.
 
+Require CoqOfRust.alloc.vec.
+Require CoqOfRust.core.alloc.
 Require CoqOfRust.core.array.
 Require CoqOfRust.core.num.
 Require CoqOfRust.core.option.
@@ -26,6 +28,11 @@ Module adapters.
     Module Zip.
       Parameter t : Set -> Set -> Set.
     End Zip.
+
+    Global Instance Impl_Zip_Clone {A B : Set}
+      (H0 : clone.Clone.Trait A) (H1 : clone.Clone.Trait B) :
+      clone.Clone.Trait (Zip.t A B).
+    Admitted.
   End zip.
 End adapters.
 
@@ -316,6 +323,9 @@ Module traits.
             Self -> U ->
             M (adapters.zip.Zip.t Self U_IntoIter)
           );
+          position : option (
+            mut_ref Self -> (Item -> M bool) -> M (option.Option.t usize.t)
+          );
           (* TODO: add other fields *)
         }.
       End Required.
@@ -354,6 +364,9 @@ Module traits.
           forall {U U_IntoIter : Set},
           Self -> U ->
           M (adapters.zip.Zip.t Self U_IntoIter).
+
+        Parameter position :
+          mut_ref Self -> (Item -> M bool) -> M (option.Option.t usize.t).
       End Provided.
       End Provided.
 
@@ -378,6 +391,8 @@ Module traits.
         zip {U U_IntoIter : Set} :
           Self -> U ->
           M (adapters.zip.Zip.t Self U_IntoIter);
+        position :
+          mut_ref Self -> (Item -> M bool) -> M (option.Option.t usize.t);
       }.
 
       Global Instance From_Required (Self Item : Set)
@@ -396,7 +411,29 @@ Module traits.
           Provided.chain (U := U) (U_IntoIter := U_IntoIter);
         zip {U U_IntoIter : Set} :=
           Provided.zip (U := U) (U_IntoIter := U_IntoIter);
+        position := Provided.position;
       }.
+
+      Module Impl.
+        (*
+        impl<'a, T> Iterator for Iter<'a, T>
+        *)
+        Global Instance Iter {T : Set} :
+          traits.iterator.Iterator.Trait (slice.iter.Iter.t T) (Item := ref T).
+        Admitted.
+
+        (*
+        impl<A, B> Iterator for Zip<A, B>where
+          A: Iterator,
+          B: Iterator,
+        *)
+        Global Instance Zip {A B Item_A Item_B : Set}
+          (H0 : traits.iterator.Iterator.Trait A (Item := Item_A))
+          (H1 : traits.iterator.Iterator.Trait B (Item := Item_B)) :
+          traits.iterator.Iterator.Trait
+            (adapters.zip.Zip.t A B) (Item := Item_A * Item_B).
+        Admitted.
+      End Impl.
     End Iterator.
   End iterator.
 
@@ -413,47 +450,62 @@ Module traits.
     Module IntoIterator.
       (** We provide as an additional parameter the class for iterators, as
           there is a mutual dependency. *)
-      Class Trait (Self : Set) : Type := {
-        Item : Set;
-        IntoIter : Set;
-        L0 :: iterator.Iterator.Trait IntoIter (Item := Item);
+      Class Trait (Self : Set)
+          {Item IntoIter : Set}
+          {H0 : iterator.Iterator.Trait IntoIter (Item := Item)} :
+          Set := {
+        Item := Item;
+        IntoIter := IntoIter;
         into_iter : Self -> M (IntoIter);
       }.
     End IntoIterator.
 
     Module Impl.
       (*
+      impl<'a, T, A: Allocator> IntoIterator for &'a Vec<T, A>
+      *)
+      Global Instance I_ref_Vec {T A : Set}
+          (H0 : core.alloc.Allocator.Trait A) :
+          IntoIterator.Trait
+            (ref (vec.Vec.t T A))
+            (Item := ref T)
+            (IntoIter := slice.iter.Iter.t T)
+            (H0 := iterator.Iterator.Impl.Iter) := {
+        into_iter := axiom "into_iter";
+      }.
+
+      (*
       impl<I> IntoIterator for I
       where
           I: Iterator,
       *)
-      Global Instance I_Iterator {I Item : Set}
+      (* Global Instance I_Iterator {I Item : Set}
           (H0 : iterator.Iterator.Trait I (Item := Item)) :
-          IntoIterator.Trait I := {
-        Item := Item;
-        IntoIter := I;
-        L0 := H0;
+          IntoIterator.Trait I (Item := Item) (IntoIter := I) := {
+        into_iter := axiom "into_iter";
+      }. *)
+
+      Global Instance I_slice_Iter {T : Set} :
+          IntoIterator.Trait
+            (slice.iter.Iter.t T)
+            (Item := ref T)
+            (IntoIter := slice.iter.Iter.t T)
+            (H0 := iterator.Iterator.Impl.Iter) := {
+        into_iter := axiom "into_iter";
+      }.
+
+      Global Instance I_Zip {A B Item_A Item_B : Set}
+          (H0_Iter : iterator.Iterator.Trait A (Item := Item_A))
+          (H1_Iter : iterator.Iterator.Trait B (Item := Item_B))
+          (H0 : IntoIterator.Trait A (Item := Item_A) (IntoIter := A))
+          (H1 : IntoIterator.Trait B (Item := Item_B) (IntoIter := B)) :
+          IntoIterator.Trait
+            (adapters.zip.Zip.t A B)
+            (Item := Item_A * Item_B)
+            (IntoIter := adapters.zip.Zip.t A B)
+            (H0 := iterator.Iterator.Impl.Zip _ _) := {
         into_iter := axiom "into_iter";
       }.
     End Impl.
   End collect.
 End traits.
-
-(*
-impl<'a, T> Iterator for Iter<'a, T>
-*)
-Global Instance I_Iter {T : Set} :
-  traits.iterator.Iterator.Trait (slice.iter.Iter.t T) (Item := T).
-Admitted.
-
-(*
-impl<A, B> Iterator for Zip<A, B>where
-    A: Iterator,
-    B: Iterator,
-*)
-Global Instance I_Zip {A B Item_A Item_B : Set}
-  (H0 : traits.iterator.Iterator.Trait A (Item := Item_A))
-  (H1 : traits.iterator.Iterator.Trait B (Item := Item_B)) :
-  traits.iterator.Iterator.Trait
-    (adapters.zip.Zip.t A B) (Item := Item_A * Item_B).
-Admitted.

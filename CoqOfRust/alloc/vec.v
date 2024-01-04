@@ -128,16 +128,51 @@ Section Impl_Vec.
 
   Parameter new : M Self.
 
-  Global Instance AssociatedFunction_new :
+  Global Instance AF_new :
     Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
   }.
 
-  Parameter push : Self -> T -> M unit.
+  Parameter push : mut_ref Self -> T -> M unit.
 
-  Global Instance Method_push :
-    Notations.Dot "push" := {
-    Notations.dot := push;
+  Global Instance AF_push :
+    Notations.DoubleColon Self "push" := {
+    Notations.double_colon := push;
+  }.
+
+  (* pub fn dedup(&mut self) *)
+  Parameter dedup :
+    forall {H0 : core.cmp.PartialEq.Trait T (Rhs := T)},
+    mut_ref Self -> M unit.
+
+  Global Instance AF_dedup {H0 : core.cmp.PartialEq.Trait T} :
+    Notations.DoubleColon Self "dedup" := {
+    Notations.double_colon := dedup (H0 := H0);
+  }.
+
+  (* pub fn len(&self) -> usize *)
+  Parameter len : ref Self -> M usize.t.
+
+  Global Instance AF_len :
+    Notations.DoubleColon Self "len" := {
+    Notations.double_colon := len;
+  }.
+
+  (* pub fn swap_remove(&mut self, index: usize) -> T *)
+  Parameter swap_remove :
+    mut_ref Self -> usize.t -> M T.
+
+  Global Instance AF_swap_remove :
+    Notations.DoubleColon Self "swap_remove" := {
+    Notations.double_colon := swap_remove;
+  }.
+
+  (* pub fn is_empty(&self) -> bool *)
+  Parameter is_empty : ref Self -> M bool.t.
+
+  Global Instance AF_is_empty :
+    Notations.DoubleColon Self "is_empty" := {
+    Notations.double_colon := is_empty;
   }.
 
   Global Instance I_Default {ℋ_0 : default.Default.Trait T} :

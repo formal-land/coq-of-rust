@@ -62,8 +62,8 @@ Definition main : M unit :=
                     (let* α0 := M.read γ in
                     match α0 with
                     | core.option.Option.Some _ =>
-                      let γ0 := γ.["Some.0"] in
-                      let* n := M.copy γ0 in
+                      let γ0_0 := γ.["Some.0"] in
+                      let* n := M.copy γ0_0 in
                       let* α0 : i32.t := M.read n in
                       let* α1 : i32.t := BinOp.Panic.rem α0 (Integer.of_Z 15) in
                       let* α2 : M.Val bool.t :=

@@ -208,7 +208,11 @@ pub(crate) fn allocate_bindings(bindings: &[String], body: Rc<Expr>) -> Rc<Expr>
     })
 }
 
-fn build_inner_match(patterns: Vec<(String, Rc<Pattern>)>, body: Rc<Expr>) -> Rc<Expr> {
+fn build_inner_match(
+    patterns: Vec<(String, Rc<Pattern>)>,
+    body: Rc<Expr>,
+    depth: usize,
+) -> Rc<Expr> {
     let default_match_arm = Rc::new(MatchArm {
         pattern: Rc::new(Pattern::Wild),
         body: Rc::new(Expr {
@@ -238,7 +242,7 @@ fn build_inner_match(patterns: Vec<(String, Rc<Pattern>)>, body: Rc<Expr>) -> Rc
                     init: match is_with_ref {
                         None => Expr::local_var(&scrutinee).copy(),
                         Some(is_with_ref) => {
-                            let func = if *is_with_ref { "borrow" } else { "borrow_mut" };
+                            let func = if *is_with_ref { "borrow_mut" } else { "borrow" };
 
                             Rc::new(Expr {
                                 ty: None,
@@ -255,7 +259,7 @@ fn build_inner_match(patterns: Vec<(String, Rc<Pattern>)>, body: Rc<Expr>) -> Rc
                     body: match pattern {
                         None => body,
                         Some(pattern) => {
-                            build_inner_match(vec![(scrutinee, pattern.clone())], body)
+                            build_inner_match(vec![(scrutinee, pattern.clone())], body, depth + 1)
                         }
                     },
                 }),
@@ -282,10 +286,11 @@ fn build_inner_match(patterns: Vec<(String, Rc<Pattern>)>, body: Rc<Expr>) -> Rc
                                         .iter()
                                         .enumerate()
                                         .map(|(index, (_, field_pattern))| {
-                                            (format!("γ{index}"), field_pattern.clone())
+                                            (format!("γ{depth}_{index}"), field_pattern.clone())
                                         })
                                         .collect(),
                                     body,
+                                    depth + 1,
                                 );
 
                                 fields.iter().enumerate().rfold(
@@ -295,7 +300,7 @@ fn build_inner_match(patterns: Vec<(String, Rc<Pattern>)>, body: Rc<Expr>) -> Rc
                                             ty: body.ty.clone(),
                                             kind: Rc::new(ExprKind::Let {
                                                 is_monadic: false,
-                                                name: Some(format!("γ{index}")),
+                                                name: Some(format!("γ{depth}_{index}")),
                                                 init: Rc::new(Expr {
                                                     ty: None,
                                                     kind: Rc::new(ExprKind::NamedField {
@@ -338,10 +343,11 @@ fn build_inner_match(patterns: Vec<(String, Rc<Pattern>)>, body: Rc<Expr>) -> Rc
                                         .iter()
                                         .enumerate()
                                         .map(|(index, pattern)| {
-                                            (format!("γ{index}"), pattern.clone())
+                                            (format!("γ{depth}_{index}"), pattern.clone())
                                         })
                                         .collect(),
                                     body,
+                                    depth + 1,
                                 );
 
                                 patterns.iter().enumerate().rfold(body, |body, (index, _)| {
@@ -349,7 +355,7 @@ fn build_inner_match(patterns: Vec<(String, Rc<Pattern>)>, body: Rc<Expr>) -> Rc
                                         ty: body.ty.clone(),
                                         kind: Rc::new(ExprKind::Let {
                                             is_monadic: false,
-                                            name: Some(format!("γ{index}")),
+                                            name: Some(format!("γ{depth}_{index}")),
                                             init: Rc::new(Expr {
                                                 ty: None,
                                                 kind: Rc::new(ExprKind::NamedField {
@@ -388,7 +394,11 @@ fn build_inner_match(patterns: Vec<(String, Rc<Pattern>)>, body: Rc<Expr>) -> Rc
                             from_user: false,
                         }),
                     }),
-                    body: build_inner_match(vec![(scrutinee.clone(), pattern.clone())], body),
+                    body: build_inner_match(
+                        vec![(scrutinee.clone(), pattern.clone())],
+                        body,
+                        depth + 1,
+                    ),
                 }),
             }),
             Pattern::Or(_) => panic!("Or pattern should have been flattened"),
@@ -405,9 +415,12 @@ fn build_inner_match(patterns: Vec<(String, Rc<Pattern>)>, body: Rc<Expr>) -> Rc
                                 patterns
                                     .iter()
                                     .enumerate()
-                                    .map(|(index, pattern)| (format!("γ{index}"), pattern.clone()))
+                                    .map(|(index, pattern)| {
+                                        (format!("γ{depth}_{index}"), pattern.clone())
+                                    })
                                     .collect(),
                                 body,
+                                depth + 1,
                             );
 
                             patterns.iter().enumerate().rfold(body, |body, (index, _)| {
@@ -415,7 +428,7 @@ fn build_inner_match(patterns: Vec<(String, Rc<Pattern>)>, body: Rc<Expr>) -> Rc
                                     ty: body.ty.clone(),
                                     kind: Rc::new(ExprKind::Let {
                                         is_monadic: false,
-                                        name: Some(format!("γ{index}")),
+                                        name: Some(format!("γ{depth}_{index}")),
                                         init: {
                                             let init = (0..(patterns.len() - 1 - index)).fold(
                                                 Expr::local_var(&scrutinee),
@@ -494,18 +507,22 @@ fn build_inner_match(patterns: Vec<(String, Rc<Pattern>)>, body: Rc<Expr>) -> Rc
                                             .iter()
                                             .enumerate()
                                             .map(|(index, pattern)| {
-                                                (format!("γ{index}"), pattern.clone())
+                                                (format!("γ{depth}_{index}"), pattern.clone())
                                             })
                                             .collect(),
                                         match slice_pattern {
                                             None => vec![],
                                             Some(slice_pattern) => {
-                                                vec![("γ".to_string(), slice_pattern.clone())]
+                                                vec![(
+                                                    format!("γ{depth}_slice"),
+                                                    slice_pattern.clone(),
+                                                )]
                                             }
                                         },
                                     ]
                                     .concat(),
                                     body,
+                                    depth + 1,
                                 );
 
                                 let body = match slice_pattern {
@@ -514,7 +531,7 @@ fn build_inner_match(patterns: Vec<(String, Rc<Pattern>)>, body: Rc<Expr>) -> Rc
                                         ty: body.ty.clone(),
                                         kind: Rc::new(ExprKind::Let {
                                             is_monadic: false,
-                                            name: Some("γ".to_string()),
+                                            name: Some(format!("γ{depth}_slice")),
                                             init: Rc::new(Expr {
                                                 ty: None,
                                                 kind: Rc::new(ExprKind::NamedField {
@@ -538,7 +555,7 @@ fn build_inner_match(patterns: Vec<(String, Rc<Pattern>)>, body: Rc<Expr>) -> Rc
                                             ty: body.ty.clone(),
                                             kind: Rc::new(ExprKind::Let {
                                                 is_monadic: false,
-                                                name: Some(format!("γ{index}")),
+                                                name: Some(format!("γ{depth}_{index}")),
                                                 init: Rc::new(Expr {
                                                     ty: None,
                                                     kind: Rc::new(ExprKind::NamedField {
@@ -581,7 +598,11 @@ fn build_match(scrutinee: Rc<Expr>, arms: Vec<MatchArm>, _ty: Option<Rc<CoqType>
                             Rc::new(Expr {
                                 kind: Rc::new(ExprKind::Lambda {
                                     args: vec![("γ".to_string(), None)],
-                                    body: build_inner_match(vec![("γ".to_string(), pattern)], body),
+                                    body: build_inner_match(
+                                        vec![("γ".to_string(), pattern)],
+                                        body,
+                                        0,
+                                    ),
                                     is_for_match: true,
                                 }),
                                 ty: None,
@@ -737,11 +758,9 @@ fn compile_expr_kind<'a>(
             .alloc(Some(ty))
         }
         thir::ExprKind::Cast { source } => {
-            let func = Rc::new(Expr {
-                kind: Rc::new(ExprKind::LocalVar("cast".to_string())),
-                ty: None,
-            });
+            let func = Expr::local_var("M.cast");
             let source = compile_expr(env, thir, source);
+
             Rc::new(ExprKind::Call {
                 func,
                 args: vec![source.read()],

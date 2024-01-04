@@ -54,7 +54,7 @@ pub(crate) fn compile_type<'a>(env: &Env<'a>, ty: &rustc_middle::ty::Ty<'a>) -> 
             CoqType::make_ref(mutbl, compile_type(env, ty))
         }
         TyKind::FnPtr(fn_sig) => compile_poly_fn_sig(env, fn_sig),
-        TyKind::Dynamic(_, _, _) => CoqType::path(&["dynamic"]),
+        TyKind::Dynamic(_, _, _) => Rc::new(CoqType::Dyn(vec![])),
         TyKind::FnDef(_, _) => {
             // We consider that for this case the type is not important as an
             // existing function already has a type, so this can be inferred.

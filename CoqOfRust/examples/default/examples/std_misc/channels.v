@@ -62,10 +62,10 @@ Definition main : M unit :=
           (let* α0 := M.read γ in
           match α0 with
           | (_, _) =>
-            let γ0 := Tuple.Access.left γ in
-            let γ1 := Tuple.Access.right γ in
-            let* tx := M.copy γ0 in
-            let* rx := M.copy γ1 in
+            let γ0_0 := Tuple.Access.left γ in
+            let γ0_1 := Tuple.Access.right γ in
+            let* tx := M.copy γ0_0 in
+            let* rx := M.copy γ0_1 in
             let* children :
                 M.Val
                   (alloc.vec.Vec.t
@@ -127,8 +127,8 @@ Definition main : M unit :=
                                 (let* α0 := M.read γ in
                                 match α0 with
                                 | core.option.Option.Some _ =>
-                                  let γ0 := γ.["Some.0"] in
-                                  let* id := M.copy γ0 in
+                                  let γ0_0 := γ.["Some.0"] in
+                                  let* id := M.copy γ0_0 in
                                   let* thread_tx :
                                       M.Val (std.sync.mpsc.Sender.t i32.t) :=
                                     let* α0 : std.sync.mpsc.Sender.t i32.t :=
@@ -249,7 +249,7 @@ Definition main : M unit :=
                     alloc.alloc.Global.t) :=
               let* α0 : ref i32.t := M.read channels.NTHREADS in
               let* α1 : i32.t := M.read (deref α0) in
-              let* α2 : usize.t := cast α1 in
+              let* α2 : usize.t := M.cast α1 in
               let* α3 :
                   alloc.vec.Vec.t
                     (core.result.Result.t i32.t std.sync.mpsc.RecvError.t)
@@ -307,7 +307,7 @@ Definition main : M unit :=
                                 (let* α0 := M.read γ in
                                 match α0 with
                                 | core.option.Option.Some _ =>
-                                  let γ0 := γ.["Some.0"] in
+                                  let γ0_0 := γ.["Some.0"] in
                                   let* _ : M.Val unit :=
                                     let* α0 :
                                         core.result.Result.t
@@ -402,8 +402,8 @@ Definition main : M unit :=
                                 (let* α0 := M.read γ in
                                 match α0 with
                                 | core.option.Option.Some _ =>
-                                  let γ0 := γ.["Some.0"] in
-                                  let* child := M.copy γ0 in
+                                  let γ0_0 := γ.["Some.0"] in
+                                  let* child := M.copy γ0_0 in
                                   let* _ : M.Val unit :=
                                     let* α0 : std.thread.JoinHandle.t unit :=
                                       M.read child in
@@ -411,7 +411,7 @@ Definition main : M unit :=
                                         core.result.Result.t
                                           unit
                                           (alloc.boxed.Box.t
-                                            dynamic
+                                            _ (* dyn *)
                                             alloc.alloc.Global.t) :=
                                       M.call
                                         ((std.thread.JoinHandle.t
@@ -426,7 +426,7 @@ Definition main : M unit :=
                                         ((core.result.Result.t
                                               unit
                                               (alloc.boxed.Box.t
-                                                dynamic
+                                                _ (* dyn *)
                                                 alloc.alloc.Global.t))::["expect"]
                                           α1
                                           α2) in

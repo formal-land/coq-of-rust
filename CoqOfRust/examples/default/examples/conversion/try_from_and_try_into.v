@@ -32,7 +32,7 @@ Section Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber_t.
     let* α2 : ref try_from_and_try_into.EvenNumber.t := M.read self in
     let* α3 : M.Val (ref i32.t) := M.alloc (borrow (deref α2).["0"]) in
     let* α4 : M.Val (ref (ref i32.t)) := M.alloc (borrow α3) in
-    let* α5 : ref dynamic := M.read (pointer_coercion "Unsize" α4) in
+    let* α5 : ref _ (* dyn *) := M.read (pointer_coercion "Unsize" α4) in
     M.call (core.fmt.Formatter.t::["debug_tuple_field1_finish"] α0 α1 α5).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
@@ -178,10 +178,10 @@ Definition main : M unit :=
           (let* α0 := M.read γ in
           match α0 with
           | (_, _) =>
-            let γ0 := Tuple.Access.left γ in
-            let γ1 := Tuple.Access.right γ in
-            let* left_val := M.copy γ0 in
-            let* right_val := M.copy γ1 in
+            let γ0_0 := Tuple.Access.left γ in
+            let γ0_1 := Tuple.Access.right γ in
+            let* left_val := M.copy γ0_0 in
+            let* right_val := M.copy γ0_1 in
             let* α0 :
                 ref
                   (core.result.Result.t
@@ -267,10 +267,10 @@ Definition main : M unit :=
           (let* α0 := M.read γ in
           match α0 with
           | (_, _) =>
-            let γ0 := Tuple.Access.left γ in
-            let γ1 := Tuple.Access.right γ in
-            let* left_val := M.copy γ0 in
-            let* right_val := M.copy γ1 in
+            let γ0_0 := Tuple.Access.left γ in
+            let γ0_1 := Tuple.Access.right γ in
+            let* left_val := M.copy γ0_0 in
+            let* right_val := M.copy γ0_1 in
             let* α0 :
                 ref
                   (core.result.Result.t
@@ -358,10 +358,10 @@ Definition main : M unit :=
           (let* α0 := M.read γ in
           match α0 with
           | (_, _) =>
-            let γ0 := Tuple.Access.left γ in
-            let γ1 := Tuple.Access.right γ in
-            let* left_val := M.copy γ0 in
-            let* right_val := M.copy γ1 in
+            let γ0_0 := Tuple.Access.left γ in
+            let γ0_1 := Tuple.Access.right γ in
+            let* left_val := M.copy γ0_0 in
+            let* right_val := M.copy γ0_1 in
             let* α0 :
                 ref
                   (core.result.Result.t
@@ -447,10 +447,10 @@ Definition main : M unit :=
           (let* α0 := M.read γ in
           match α0 with
           | (_, _) =>
-            let γ0 := Tuple.Access.left γ in
-            let γ1 := Tuple.Access.right γ in
-            let* left_val := M.copy γ0 in
-            let* right_val := M.copy γ1 in
+            let γ0_0 := Tuple.Access.left γ in
+            let γ0_1 := Tuple.Access.right γ in
+            let* left_val := M.copy γ0_0 in
+            let* right_val := M.copy γ0_1 in
             let* α0 :
                 ref
                   (core.result.Result.t

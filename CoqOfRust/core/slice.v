@@ -1,5 +1,6 @@
 Require Import CoqOfRust.lib.lib.
 
+Require Import CoqOfRust.core.cmp.
 Require Import CoqOfRust.core.option.
 
 (* ********STRUCTS******** *)
@@ -138,6 +139,10 @@ Module iter.
   Module Iter.
     Parameter t : Set -> Set.
   End Iter.
+
+  Global Instance Clone_for_Iter {T : Set} {H0 : clone.Clone.Trait T} :
+    clone.Clone.Trait (Iter.t T).
+  Admitted.
 End iter.
 
 (* 
@@ -420,3 +425,46 @@ End SliceIndex.
 [ ] from_raw_parts_mut
 [ ] from_ref
 *)
+
+Module  Impl.
+Section Impl.
+  Context {T : Set}.
+  Context (Self := slice T).
+
+  (*
+  pub fn sort_unstable(&mut self)
+  where
+      T: Ord,
+  *)
+  Parameter sort_unstable :
+    forall {H0 : core.cmp.Ord.Trait T},
+    mut_ref Self -> M unit.
+
+  Global Instance AF_sort_unstable {H0 : core.cmp.Ord.Trait T} :
+      Notations.DoubleColon Self "sort_unstable" := {
+    Notations.double_colon := sort_unstable (H0 := H0);
+  }.
+
+  (* pub fn iter(&self) -> Iter<'_, T> *)
+  Parameter iter :
+    ref Self -> M (iter.Iter.t T).
+
+  Global Instance AF_iter : Notations.DoubleColon Self "iter" := {
+    Notations.double_colon := iter;
+  }.
+
+  (*
+  pub fn contains(&self, x: &T) -> bool
+  where
+      T: PartialEq,
+  *)
+  Parameter contains :
+    forall {H0 : core.cmp.PartialEq.Trait T (Rhs := T)},
+    ref Self -> ref T -> M bool.
+
+  Global Instance AF_contains {H0 : core.cmp.PartialEq.Trait T (Rhs := T)} :
+      Notations.DoubleColon Self "contains" := {
+    Notations.double_colon := contains (H0 := H0);
+  }.
+End Impl.
+End Impl.

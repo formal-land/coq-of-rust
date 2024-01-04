@@ -58,10 +58,10 @@ Section Impl_wildcard_selector_WildcardSelector_t.
             (let* α0 := M.read γ in
             match α0 with
             | (_, _) =>
-              let γ0 := Tuple.Access.left γ in
-              let γ1 := Tuple.Access.right γ in
-              let* _selector := M.copy γ0 in
-              let* _message := M.copy γ1 in
+              let γ0_0 := Tuple.Access.left γ in
+              let γ0_1 := Tuple.Access.right γ in
+              let* _selector := M.copy γ0_0 in
+              let* _message := M.copy γ0_1 in
               let* _ : M.Val unit :=
                 let* _ : M.Val unit :=
                   let* α0 : ref str.t :=

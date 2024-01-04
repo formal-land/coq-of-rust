@@ -846,170 +846,6 @@ Module Impl_Slice.
   End Impl_Slice.
 End Impl_Slice.
 
-(* TODO: this is only a temporary implementation,
-         it needs to be rewritten when all std files will be fixed *)
-Module Impl_Iterator_for_Slice_Iter.
-  Section Impl_Iterator_for_Slice_Iter.
-  Context {A : Set}.
-
-  Definition Self := core.slice.iter.Iter.t A.
-
-  Definition Item := A.
-
-  Parameter next : mut_ref Self -> M (core.option.Option.t A).
-
-  Global Instance Method_next : Notations.Dot "next" := {
-    Notations.dot := next;
-  }.
-  End Impl_Iterator_for_Slice_Iter.
-End Impl_Iterator_for_Slice_Iter.
-
-(* TODO: this is only a temporary implementation,
-         it needs to be rewritten when all std files will be fixed *)
-(* this should be replaced with a generic instance of IntoIterator for Iterator *)
-Module Impl_IntoIterator_for_Slice_Iter.
-  Section Impl_IntoIterator_for_Slice_Iter.
-  Context {A : Set}.
-  Definition I := core.slice.iter.Iter.t A.
-
-  Definition Self := I.
-
-  Definition Item := A.
-  Definition IntoIter := I.
-
-  Parameter into_iter : Self -> M IntoIter.
-
-  Global Instance Method_into_iter :
-    Notations.Dot "into_iter" := {
-    Notations.dot := into_iter;
-  }.
-  End Impl_IntoIterator_for_Slice_Iter.
-End Impl_IntoIterator_for_Slice_Iter.
-
-(* TODO: this is only a temporary implementation,
-         it needs to be rewritten when all std files will be fixed *)
-Module Impl_Iterator_for_Slice_IterMut.
-  Section Impl_Iterator_for_Slice_IterMut.
-  Context {A : Set}.
-
-  Definition Self := core.slice.IterMut.t A.
-
-  Definition Item := A.
-
-  Parameter next : mut_ref Self -> M (core.option.Option.t A).
-
-  Global Instance Method_next : Notations.Dot "next" := {
-    Notations.dot := next;
-  }.
-  End Impl_Iterator_for_Slice_IterMut.
-End Impl_Iterator_for_Slice_IterMut.
-
-(* TODO: this is only a temporary implementation,
-         it needs to be rewritten when all std files will be fixed *)
-(* this should be replaced with a generic instance of IntoIterator for Iterator *)
-Module Impl_IntoIterator_for_Slice_IterMut.
-  Section Impl_IntoIterator_for_Slice_IterMut.
-  Context {A : Set}.
-  Definition I := core.slice.IterMut.t A.
-
-  Definition Self := I.
-
-  Definition Item := A.
-  Definition IntoIter := I.
-
-  Parameter into_iter : Self -> M IntoIter.
-
-  Global Instance Method_into_iter :
-    Notations.Dot "into_iter" := {
-    Notations.dot := into_iter;
-  }.
-  End Impl_IntoIterator_for_Slice_IterMut.
-End Impl_IntoIterator_for_Slice_IterMut.
-
-Module Impl_IntoIter_for_Vec.
-  Section Impl_IntoIter_for_Vec.
-  Context {T (* A *) : Set}.
-(*   Context `{alloc.Allocator.Trait A}. *)
-  Definition Self := alloc.vec.Vec T alloc.vec.Vec.Default.A.
-
-  Definition Item := T.
-  Definition IntoIter := alloc.vec.into_iter.IntoIter T None (* (Some A) *).
-
-  Parameter into_iter : Self -> M IntoIter.
-
-(* TODO: uncomment after fixing iter_type.v *)
-(*   Global Instance IntoIter_for_Vec :
-    std.iter_type.IntoIterator Self Item IntoIter := {
-    into_iter := into_iter;
-  }. *)
-  Global Instance Method_into_iter :
-    Notations.Dot "into_iter" := {
-    Notations.dot := into_iter;
-  }.
-  End Impl_IntoIter_for_Vec.
-End Impl_IntoIter_for_Vec.
-
-(* TODO: this is only a temporary implementation,
-         it needs to be rewritten when all std files will be fixed *)
-Module Impl_Iterator_for_Vec_IntoIter.
-  Section Impl_Iterator_for_Vec_IntoIter.
-  Context {T (* A *) : Set}.
-(*   Context `{alloc.Allocator.Trait A}. *)
-  Definition Self := alloc.vec.into_iter.IntoIter T None (* (Some A) *).
-
-  Definition Item := T.
-
-  Parameter next : mut_ref Self -> M (core.option.Option.t T).
-
-  Global Instance Method_next : Notations.Dot "next" := {
-    Notations.dot := next;
-  }.
-  End Impl_Iterator_for_Vec_IntoIter.
-End Impl_Iterator_for_Vec_IntoIter.
-
-(* TODO: this is only a temporary implementation,
-         it needs to be rewritten when all std files will be fixed *)
-Module Impl_IntoIter_for_Vec_IntoIter.
-  Section Impl_IntoIter_for_Vec_IntoIter.
-  Context {T (* A *) : Set}.
-(*   Context `{alloc.Allocator.Trait A}. *)
-  Definition Self := alloc.vec.into_iter.IntoIter T None (* (Some A) *).
-
-  Definition Item := T.
-  Definition IntoIter := alloc.vec.into_iter.IntoIter T None (* (Some A) *).
-
-  Definition into_iter (self : Self) : M IntoIter := M.pure self.
-
-  Global Instance Method_into_iter :
-    Notations.Dot "into_iter" := {
-    Notations.dot := into_iter;
-  }.
-  End Impl_IntoIter_for_Vec_IntoIter.
-End Impl_IntoIter_for_Vec_IntoIter.
-
-(* TODO: a temporary implementation providing methods,
-         which can be called in Rust on Vec,
-         but only after applying a coercion *)
-Module Temp_Impl_for_Vec.
-  Section Temp_Impl_for_Vec.
-  Context {T : Set}.
-
-  Definition Self := alloc.vec.Vec T alloc.vec.Vec.Default.A.
-
-  Parameter iter : ref Self -> M (core.slice.iter.Iter.t T).
-  Parameter iter_mut :
-    ref Self -> M (core.slice.IterMut.t T).
-
-  Global Instance Method_iter : Notations.Dot "iter" := {
-    Notations.dot := iter;
-  }.
-
-  Global Instance Method_iter_mut : Notations.Dot "iter_mut" := {
-    Notations.dot := iter_mut;
-  }.
-  End Temp_Impl_for_Vec.
-End Temp_Impl_for_Vec.
-
 Module Impl_Debug_for_Vec.
   Section Impl_Debug_for_Vec.
   Context {T A : Set}.
@@ -1122,6 +958,18 @@ Module Impl_Iterator_for_RangeInclusive_Z.
   Admitted.
 (*   Impl_Iterator_for_Range.Method_next (A := Z). *)
 End Impl_Iterator_for_RangeInclusive_Z.
+
+Module CheckedArith.
+  Module u32.
+    (* pub const fn checked_add(self, rhs: Self) -> Option<Self> *)
+    Parameter checked_add : u32.t -> u32.t -> M (core.option.Option.t u32.t).
+
+    Global Instance AF_checked_add :
+      Notations.DoubleColon u32.t "checked_add" := {
+      Notations.double_colon := checked_add;
+    }.
+  End u32.
+End CheckedArith.
 
 (* a hint for eauto to automatically solve Sigma goals *)
 Global Hint Resolve existT : core.

@@ -19,8 +19,8 @@ Definition foo {A : Set} (o : core.option.Option.t A) : M unit :=
           (let* α0 := M.read γ in
           match α0 with
           | core.option.Option.Some _ =>
-            let γ0 := γ.["Some.0"] in
-            let* _a := M.copy γ0 in
+            let γ0_0 := γ.["Some.0"] in
+            let* _a := M.copy γ0_0 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "some
 ") in
@@ -138,7 +138,7 @@ Module tests.
                       (let* α0 := M.read γ in
                       match α0 with
                       | core.option.Option.Some _ =>
-                        let γ0 := γ.["Some.0"] in
+                        let γ0_0 := γ.["Some.0"] in
                         let* _ : M.Val unit :=
                           let* α0 : ref str.t := M.read (mk_str "Ferris
 ") in
@@ -249,7 +249,7 @@ Module tests.
                       (let* α0 := M.read γ in
                       match α0 with
                       | core.option.Option.Some _ =>
-                        let γ0 := γ.["Some.0"] in
+                        let γ0_0 := γ.["Some.0"] in
                         let* _ : M.Val unit :=
                           let* α0 : ref str.t := M.read (mk_str "Corro
 ") in
@@ -361,7 +361,7 @@ Definition test_file : M unit :=
                     (let* α0 := M.read γ in
                     match α0 with
                     | core.option.Option.Some _ =>
-                      let γ0 := γ.["Some.0"] in
+                      let γ0_0 := γ.["Some.0"] in
                       let* _ : M.Val unit :=
                         let* α0 : ref str.t := M.read (mk_str "Ferris
 ") in
@@ -472,7 +472,7 @@ Definition test_file_also : M unit :=
                     (let* α0 := M.read γ in
                     match α0 with
                     | core.option.Option.Some _ =>
-                      let γ0 := γ.["Some.0"] in
+                      let γ0_0 := γ.["Some.0"] in
                       let* _ : M.Val unit :=
                         let* α0 : ref str.t := M.read (mk_str "Corro
 ") in

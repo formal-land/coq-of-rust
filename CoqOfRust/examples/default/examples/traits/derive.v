@@ -125,7 +125,7 @@ Section Impl_core_fmt_Debug_for_derive_Inches_t.
     let* α2 : ref derive.Inches.t := M.read self in
     let* α3 : M.Val (ref i32.t) := M.alloc (borrow (deref α2).["0"]) in
     let* α4 : M.Val (ref (ref i32.t)) := M.alloc (borrow α3) in
-    let* α5 : ref dynamic := M.read (pointer_coercion "Unsize" α4) in
+    let* α5 : ref _ (* dyn *) := M.read (pointer_coercion "Unsize" α4) in
     M.call (core.fmt.Formatter.t::["debug_tuple_field1_finish"] α0 α1 α5).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
@@ -162,10 +162,10 @@ Section Impl_derive_Inches_t.
             let* α0 := M.read γ in
             match α0 with
             | derive.Inches.Build_t _ =>
-              let γ0 := γ.["Inches.0"] in
-              let* inches := M.copy γ0 in
+              let γ1_0 := γ.["Inches.0"] in
+              let* inches := M.copy γ1_0 in
               let* α0 : i32.t := M.read inches in
-              let* α1 : f64.t := cast α0 in
+              let* α1 : f64.t := M.cast α0 in
               let* α2 : f64.t := M.read UnsupportedLiteral in
               let* α3 : f64.t := BinOp.Panic.mul α1 α2 in
               M.alloc (derive.Centimeters.Build_t α3)

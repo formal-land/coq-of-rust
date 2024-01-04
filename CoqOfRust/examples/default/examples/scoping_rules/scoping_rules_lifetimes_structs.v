@@ -32,7 +32,7 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed_t.
     let* α2 : ref scoping_rules_lifetimes_structs.Borrowed.t := M.read self in
     let* α3 : M.Val (ref (ref i32.t)) := M.alloc (borrow (deref α2).["0"]) in
     let* α4 : M.Val (ref (ref (ref i32.t))) := M.alloc (borrow α3) in
-    let* α5 : ref dynamic := M.read (pointer_coercion "Unsize" α4) in
+    let* α5 : ref _ (* dyn *) := M.read (pointer_coercion "Unsize" α4) in
     M.call (core.fmt.Formatter.t::["debug_tuple_field1_finish"] α0 α1 α5).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
@@ -88,13 +88,13 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed_t.
     let* α3 : ref scoping_rules_lifetimes_structs.NamedBorrowed.t :=
       M.read self in
     let* α4 : M.Val (ref (ref i32.t)) := M.alloc (borrow (deref α3).["x"]) in
-    let* α5 : ref dynamic := M.read (pointer_coercion "Unsize" α4) in
+    let* α5 : ref _ (* dyn *) := M.read (pointer_coercion "Unsize" α4) in
     let* α6 : ref str.t := M.read (mk_str "y") in
     let* α7 : ref scoping_rules_lifetimes_structs.NamedBorrowed.t :=
       M.read self in
     let* α8 : M.Val (ref (ref i32.t)) := M.alloc (borrow (deref α7).["y"]) in
     let* α9 : M.Val (ref (ref (ref i32.t))) := M.alloc (borrow α8) in
-    let* α10 : ref dynamic := M.read (pointer_coercion "Unsize" α9) in
+    let* α10 : ref _ (* dyn *) := M.read (pointer_coercion "Unsize" α9) in
     M.call
       (core.fmt.Formatter.t::["debug_struct_field2_finish"] α0 α1 α2 α5 α6 α10).
   
@@ -152,12 +152,13 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either_t.
             let* α0 := M.read γ in
             match α0 with
             | scoping_rules_lifetimes_structs.Either.Num _ =>
-              let γ0 := γ.["Num.0"] in
-              let* __self_0 := M.alloc (borrow_mut γ0) in
+              let γ1_0 := γ.["Num.0"] in
+              let* __self_0 := M.alloc (borrow γ1_0) in
               let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
               let* α1 : ref str.t := M.read (mk_str "Num") in
               let* α2 : M.Val (ref (ref i32.t)) := M.alloc (borrow __self_0) in
-              let* α3 : ref dynamic := M.read (pointer_coercion "Unsize" α2) in
+              let* α3 : ref _ (* dyn *) :=
+                M.read (pointer_coercion "Unsize" α2) in
               let* α4 : core.result.Result.t unit core.fmt.Error.t :=
                 M.call
                   (core.fmt.Formatter.t::["debug_tuple_field1_finish"]
@@ -175,13 +176,14 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either_t.
             let* α0 := M.read γ in
             match α0 with
             | scoping_rules_lifetimes_structs.Either.Ref _ =>
-              let γ0 := γ.["Ref.0"] in
-              let* __self_0 := M.alloc (borrow_mut γ0) in
+              let γ1_0 := γ.["Ref.0"] in
+              let* __self_0 := M.alloc (borrow γ1_0) in
               let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
               let* α1 : ref str.t := M.read (mk_str "Ref") in
               let* α2 : M.Val (ref (ref (ref i32.t))) :=
                 M.alloc (borrow __self_0) in
-              let* α3 : ref dynamic := M.read (pointer_coercion "Unsize" α2) in
+              let* α3 : ref _ (* dyn *) :=
+                M.read (pointer_coercion "Unsize" α2) in
               let* α4 : core.result.Result.t unit core.fmt.Error.t :=
                 M.call
                   (core.fmt.Formatter.t::["debug_tuple_field1_finish"]

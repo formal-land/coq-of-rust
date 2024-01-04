@@ -55,13 +55,14 @@ Section Impl_core_fmt_Debug_for_wrapping_errors_DoubleError_t.
             let* α0 := M.read γ in
             match α0 with
             | wrapping_errors.DoubleError.Parse _ =>
-              let γ0 := γ.["Parse.0"] in
-              let* __self_0 := M.alloc (borrow_mut γ0) in
+              let γ1_0 := γ.["Parse.0"] in
+              let* __self_0 := M.alloc (borrow γ1_0) in
               let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
               let* α1 : ref str.t := M.read (mk_str "Parse") in
               let* α2 : M.Val (ref (ref core.num.error.ParseIntError.t)) :=
                 M.alloc (borrow __self_0) in
-              let* α3 : ref dynamic := M.read (pointer_coercion "Unsize" α2) in
+              let* α3 : ref _ (* dyn *) :=
+                M.read (pointer_coercion "Unsize" α2) in
               let* α4 : core.result.Result.t unit core.fmt.Error.t :=
                 M.call
                   (core.fmt.Formatter.t::["debug_tuple_field1_finish"]
@@ -185,7 +186,7 @@ Section Impl_core_error_Error_for_wrapping_errors_DoubleError_t.
       : M (core.option.Option.t (ref _ (* dyn *))) :=
     let* self := M.alloc self in
     let* α0 : ref wrapping_errors.DoubleError.t := M.read self in
-    let* α1 : M.Val (core.option.Option.t (ref dynamic)) :=
+    let* α1 : M.Val (core.option.Option.t (ref _ (* dyn *))) :=
       match_operator
         (deref α0)
         [
@@ -196,21 +197,22 @@ Section Impl_core_error_Error_for_wrapping_errors_DoubleError_t.
               M.alloc core.option.Option.None
             | _ => M.break_match
             end) :
-            M (M.Val (core.option.Option.t (ref dynamic)));
+            M (M.Val (core.option.Option.t (ref _ (* dyn *))));
           fun γ =>
             (let* α0 := M.read γ in
             match α0 with
             | wrapping_errors.DoubleError.Parse _ =>
-              let γ0 := γ.["Parse.0"] in
-              let* e := M.alloc (borrow_mut γ0) in
+              let γ0_0 := γ.["Parse.0"] in
+              let* e := M.alloc (borrow γ0_0) in
               let* α0 : ref core.num.error.ParseIntError.t := M.read e in
               let* α1 : M.Val (ref core.num.error.ParseIntError.t) :=
                 M.alloc α0 in
-              let* α2 : ref dynamic := M.read (pointer_coercion "Unsize" α1) in
+              let* α2 : ref _ (* dyn *) :=
+                M.read (pointer_coercion "Unsize" α1) in
               M.alloc (core.option.Option.Some α2)
             | _ => M.break_match
             end) :
-            M (M.Val (core.option.Option.t (ref dynamic)))
+            M (M.Val (core.option.Option.t (ref _ (* dyn *))))
         ] in
     M.read α1.
   
@@ -320,8 +322,8 @@ Definition double_first
               (let* α0 := M.read γ in
               match α0 with
               | core.ops.control_flow.ControlFlow.Break _ =>
-                let γ0 := γ.["Break.0"] in
-                let* residual := M.copy γ0 in
+                let γ0_0 := γ.["Break.0"] in
+                let* residual := M.copy γ0_0 in
                 let* α0 :
                     core.result.Result.t
                       core.convert.Infallible.t
@@ -348,8 +350,8 @@ Definition double_first
               (let* α0 := M.read γ in
               match α0 with
               | core.ops.control_flow.ControlFlow.Continue _ =>
-                let γ0 := γ.["Continue.0"] in
-                let* val := M.copy γ0 in
+                let γ0_0 := γ.["Continue.0"] in
+                let* val := M.copy γ0_0 in
                 M.pure val
               | _ => M.break_match
               end) :
@@ -389,8 +391,8 @@ Definition double_first
               (let* α0 := M.read γ in
               match α0 with
               | core.ops.control_flow.ControlFlow.Break _ =>
-                let γ0 := γ.["Break.0"] in
-                let* residual := M.copy γ0 in
+                let γ0_0 := γ.["Break.0"] in
+                let* residual := M.copy γ0_0 in
                 let* α0 :
                     core.result.Result.t
                       core.convert.Infallible.t
@@ -417,8 +419,8 @@ Definition double_first
               (let* α0 := M.read γ in
               match α0 with
               | core.ops.control_flow.ControlFlow.Continue _ =>
-                let γ0 := γ.["Continue.0"] in
-                let* val := M.copy γ0 in
+                let γ0_0 := γ.["Continue.0"] in
+                let* val := M.copy γ0_0 in
                 M.pure val
               | _ => M.break_match
               end) :
@@ -455,8 +457,8 @@ Definition print (result : ltac:(wrapping_errors.Result i32.t)) : M unit :=
           (let* α0 := M.read γ in
           match α0 with
           | core.result.Result.Ok _ =>
-            let γ0 := γ.["Ok.0"] in
-            let* n := M.copy γ0 in
+            let γ0_0 := γ.["Ok.0"] in
+            let* n := M.copy γ0_0 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "The first doubled is ") in
               let* α1 : ref str.t := M.read (mk_str "
@@ -486,8 +488,8 @@ Definition print (result : ltac:(wrapping_errors.Result i32.t)) : M unit :=
           (let* α0 := M.read γ in
           match α0 with
           | core.result.Result.Err _ =>
-            let γ0 := γ.["Err.0"] in
-            let* e := M.copy γ0 in
+            let γ0_0 := γ.["Err.0"] in
+            let* e := M.copy γ0_0 in
             let* _ : M.Val unit :=
               let* _ : M.Val unit :=
                 let* α0 : ref str.t := M.read (mk_str "Error: ") in
@@ -511,13 +513,13 @@ Definition print (result : ltac:(wrapping_errors.Result i32.t)) : M unit :=
                 let* α10 : unit := M.call (std.io.stdio._print α9) in
                 M.alloc α10 in
               M.alloc tt in
-            let* α0 : core.option.Option.t (ref dynamic) :=
+            let* α0 : core.option.Option.t (ref _ (* dyn *)) :=
               M.call
                 ((core.error.Error.source
                     (Self := wrapping_errors.DoubleError.t)
                     (Trait := ltac:(refine _)))
                   (borrow e)) in
-            let* α1 : M.Val (core.option.Option.t (ref dynamic)) :=
+            let* α1 : M.Val (core.option.Option.t (ref _ (* dyn *))) :=
               M.alloc α0 in
             let* α2 : M.Val bool.t :=
               let_if core.option.Option.Some source := α1 in

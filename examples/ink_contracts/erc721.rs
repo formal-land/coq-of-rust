@@ -242,6 +242,8 @@ impl Erc721 {
     }
 
     /// Removes token `id` from the owner.
+    #[allow(unknown_lints)]
+    #[allow(coq_axiom)]
     fn remove_token_from(&mut self, from: &AccountId, id: TokenId) -> Result<(), Error> {
         let Self {
             token_owner,
@@ -255,7 +257,7 @@ impl Erc721 {
 
         let count = owned_tokens_count
             .get(from)
-            .map(|c| c - 1)
+            .map(|c| c - (1 as u32))
             .ok_or(Error::CannotFetchValue)?;
         owned_tokens_count.insert(*from, count);
         token_owner.remove(id);
@@ -264,6 +266,8 @@ impl Erc721 {
     }
 
     /// Adds the token `id` to the `to` AccountID.
+    #[allow(unknown_lints)]
+    #[allow(coq_axiom)]
     fn add_token_to(&mut self, to: &AccountId, id: TokenId) -> Result<(), Error> {
         let Self {
             token_owner,
@@ -279,7 +283,10 @@ impl Erc721 {
             return Err(Error::NotAllowed);
         };
 
-        let count = owned_tokens_count.get(to).map(|c| c + 1).unwrap_or(1);
+        let count = owned_tokens_count
+            .get(to)
+            .map(|c| c + (1 as u32))
+            .unwrap_or(1);
 
         owned_tokens_count.insert(*to, count);
         token_owner.insert(id, *to);
@@ -288,6 +295,8 @@ impl Erc721 {
     }
 
     /// Transfers token `id` `from` the sender to the `to` `AccountId`.
+    #[allow(unknown_lints)]
+    #[allow(coq_axiom)]
     fn transfer_token_from(
         &mut self,
         from: &AccountId,
@@ -343,6 +352,8 @@ impl Erc721 {
     }
 
     /// Deletes an existing token. Only the owner can burn the token.
+    #[allow(unknown_lints)]
+    #[allow(coq_axiom)]
     pub fn burn(&mut self, id: TokenId) -> Result<(), Error> {
         let caller = self.env().caller();
         let Self {

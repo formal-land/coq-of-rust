@@ -19,10 +19,10 @@ Definition reverse (pair : i32.t * bool.t) : M (bool.t * i32.t) :=
           (let* α0 := M.read γ in
           match α0 with
           | (_, _) =>
-            let γ0 := Tuple.Access.left γ in
-            let γ1 := Tuple.Access.right γ in
-            let* int_param := M.copy γ0 in
-            let* bool_param := M.copy γ1 in
+            let γ0_0 := Tuple.Access.left γ in
+            let γ0_1 := Tuple.Access.right γ in
+            let* int_param := M.copy γ0_0 in
+            let* bool_param := M.copy γ0_1 in
             let* α0 : bool.t := M.read bool_param in
             let* α1 : i32.t := M.read int_param in
             M.alloc (α0, α1)
@@ -76,17 +76,17 @@ Section Impl_core_fmt_Debug_for_tuples_Matrix_t.
     let* α1 : ref str.t := M.read (mk_str "Matrix") in
     let* α2 : ref tuples.Matrix.t := M.read self in
     let* α3 : M.Val (ref f32.t) := M.alloc (borrow (deref α2).["0"]) in
-    let* α4 : ref dynamic := M.read (pointer_coercion "Unsize" α3) in
+    let* α4 : ref _ (* dyn *) := M.read (pointer_coercion "Unsize" α3) in
     let* α5 : ref tuples.Matrix.t := M.read self in
     let* α6 : M.Val (ref f32.t) := M.alloc (borrow (deref α5).["1"]) in
-    let* α7 : ref dynamic := M.read (pointer_coercion "Unsize" α6) in
+    let* α7 : ref _ (* dyn *) := M.read (pointer_coercion "Unsize" α6) in
     let* α8 : ref tuples.Matrix.t := M.read self in
     let* α9 : M.Val (ref f32.t) := M.alloc (borrow (deref α8).["2"]) in
-    let* α10 : ref dynamic := M.read (pointer_coercion "Unsize" α9) in
+    let* α10 : ref _ (* dyn *) := M.read (pointer_coercion "Unsize" α9) in
     let* α11 : ref tuples.Matrix.t := M.read self in
     let* α12 : M.Val (ref f32.t) := M.alloc (borrow (deref α11).["3"]) in
     let* α13 : M.Val (ref (ref f32.t)) := M.alloc (borrow α12) in
-    let* α14 : ref dynamic := M.read (pointer_coercion "Unsize" α13) in
+    let* α14 : ref _ (* dyn *) := M.read (pointer_coercion "Unsize" α13) in
     M.call
       (core.fmt.Formatter.t::["debug_tuple_field4_finish"] α0 α1 α4 α7 α10 α14).
   
@@ -348,16 +348,16 @@ Definition main : M unit :=
           (let* α0 := M.read γ in
           match α0 with
           | (_, _, _, _) =>
-            let γ0 :=
+            let γ0_0 :=
               Tuple.Access.left (Tuple.Access.left (Tuple.Access.left γ)) in
-            let γ1 :=
+            let γ0_1 :=
               Tuple.Access.right (Tuple.Access.left (Tuple.Access.left γ)) in
-            let γ2 := Tuple.Access.right (Tuple.Access.left γ) in
-            let γ3 := Tuple.Access.right γ in
-            let* a := M.copy γ0 in
-            let* b := M.copy γ1 in
-            let* c := M.copy γ2 in
-            let* d := M.copy γ3 in
+            let γ0_2 := Tuple.Access.right (Tuple.Access.left γ) in
+            let γ0_3 := Tuple.Access.right γ in
+            let* a := M.copy γ0_0 in
+            let* b := M.copy γ0_1 in
+            let* c := M.copy γ0_2 in
+            let* d := M.copy γ0_3 in
             let* _ : M.Val unit :=
               let* _ : M.Val unit :=
                 let* α0 : ref str.t := M.read (mk_str "") in

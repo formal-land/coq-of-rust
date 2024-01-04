@@ -118,10 +118,10 @@ Module ImplFormatter.
   *)
   Parameter debug_tuple_field1_finish :
     forall {T : Set} `{core.fmt.Debug.Trait T},
-    M.Val (core.fmt.Formatter.t) ->
-    M.Val (ref str.t) ->
-    M.Val T ->
-    M (M.Val ltac:(Result)).
+    mut_ref core.fmt.Formatter.t ->
+    ref str.t ->
+    ref T ->
+    M ltac:(Result).
 
   Global Instance Formatter_debug_tuple_field1_finish
     {T : Set} `{core.fmt.Debug.Trait T} :

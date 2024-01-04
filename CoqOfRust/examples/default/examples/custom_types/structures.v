@@ -44,12 +44,12 @@ Section Impl_core_fmt_Debug_for_structures_Person_t.
     let* α3 : ref structures.Person.t := M.read self in
     let* α4 : M.Val (ref alloc.string.String.t) :=
       M.alloc (borrow (deref α3).["name"]) in
-    let* α5 : ref dynamic := M.read (pointer_coercion "Unsize" α4) in
+    let* α5 : ref _ (* dyn *) := M.read (pointer_coercion "Unsize" α4) in
     let* α6 : ref str.t := M.read (mk_str "age") in
     let* α7 : ref structures.Person.t := M.read self in
     let* α8 : M.Val (ref u8.t) := M.alloc (borrow (deref α7).["age"]) in
     let* α9 : M.Val (ref (ref u8.t)) := M.alloc (borrow α8) in
-    let* α10 : ref dynamic := M.read (pointer_coercion "Unsize" α9) in
+    let* α10 : ref _ (* dyn *) := M.read (pointer_coercion "Unsize" α9) in
     M.call
       (core.fmt.Formatter.t::["debug_struct_field2_finish"] α0 α1 α2 α5 α6 α10).
   
@@ -298,10 +298,10 @@ Definition main : M unit :=
           (let* α0 := M.read γ in
           match α0 with
           | {| structures.Point.x := _; structures.Point.y := _; |} =>
-            let γ0 := γ.["Point.x"] in
-            let γ1 := γ.["Point.y"] in
-            let* left_edge := M.copy γ0 in
-            let* top_edge := M.copy γ1 in
+            let γ0_0 := γ.["Point.x"] in
+            let γ0_1 := γ.["Point.y"] in
+            let* left_edge := M.copy γ0_0 in
+            let* top_edge := M.copy γ0_1 in
             let* _rectangle : M.Val structures.Rectangle.t :=
               let* α0 : f32.t := M.read left_edge in
               let* α1 : f32.t := M.read top_edge in
@@ -354,10 +354,10 @@ Definition main : M unit :=
                   (let* α0 := M.read γ in
                   match α0 with
                   | structures.Pair.Build_t _ _ =>
-                    let γ0 := γ.["Pair.0"] in
-                    let γ1 := γ.["Pair.1"] in
-                    let* integer := M.copy γ0 in
-                    let* decimal := M.copy γ1 in
+                    let γ0_0 := γ.["Pair.0"] in
+                    let γ0_1 := γ.["Pair.1"] in
+                    let* integer := M.copy γ0_0 in
+                    let* decimal := M.copy γ0_1 in
                     let* _ : M.Val unit :=
                       let* _ : M.Val unit :=
                         let* α0 : ref str.t :=

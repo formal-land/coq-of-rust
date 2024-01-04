@@ -78,8 +78,8 @@ Definition print
           (let* α0 := M.read γ in
           match α0 with
           | core.result.Result.Ok _ =>
-            let γ0 := γ.["Ok.0"] in
-            let* n := M.copy γ0 in
+            let γ0_0 := γ.["Ok.0"] in
+            let* n := M.copy γ0_0 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "n is ") in
               let* α1 : ref str.t := M.read (mk_str "
@@ -109,8 +109,8 @@ Definition print
           (let* α0 := M.read γ in
           match α0 with
           | core.result.Result.Err _ =>
-            let γ0 := γ.["Err.0"] in
-            let* e := M.copy γ0 in
+            let γ0_0 := γ.["Err.0"] in
+            let* e := M.copy γ0_0 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "Error: ") in
               let* α1 : ref str.t := M.read (mk_str "

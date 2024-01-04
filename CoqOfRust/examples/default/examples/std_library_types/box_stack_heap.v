@@ -45,12 +45,12 @@ Section Impl_core_fmt_Debug_for_box_stack_heap_Point_t.
     let* α2 : ref str.t := M.read (mk_str "x") in
     let* α3 : ref box_stack_heap.Point.t := M.read self in
     let* α4 : M.Val (ref f64.t) := M.alloc (borrow (deref α3).["x"]) in
-    let* α5 : ref dynamic := M.read (pointer_coercion "Unsize" α4) in
+    let* α5 : ref _ (* dyn *) := M.read (pointer_coercion "Unsize" α4) in
     let* α6 : ref str.t := M.read (mk_str "y") in
     let* α7 : ref box_stack_heap.Point.t := M.read self in
     let* α8 : M.Val (ref f64.t) := M.alloc (borrow (deref α7).["y"]) in
     let* α9 : M.Val (ref (ref f64.t)) := M.alloc (borrow α8) in
-    let* α10 : ref dynamic := M.read (pointer_coercion "Unsize" α9) in
+    let* α10 : ref _ (* dyn *) := M.read (pointer_coercion "Unsize" α9) in
     M.call
       (core.fmt.Formatter.t::["debug_struct_field2_finish"] α0 α1 α2 α5 α6 α10).
   

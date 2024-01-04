@@ -46,8 +46,8 @@ Definition main : M unit :=
             (let* α0 := M.read γ in
             match α0 with
             | core.result.Result.Err _ =>
-              let γ0 := γ.["Err.0"] in
-              let* why := M.copy γ0 in
+              let γ0_0 := γ.["Err.0"] in
+              let* why := M.copy γ0_0 in
               let* α0 : ref str.t := M.read (mk_str "couldn't open ") in
               let* α1 : ref str.t := M.read (mk_str ": ") in
               let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
@@ -78,8 +78,8 @@ Definition main : M unit :=
             (let* α0 := M.read γ in
             match α0 with
             | core.result.Result.Ok _ =>
-              let γ0 := γ.["Ok.0"] in
-              let* file := M.copy γ0 in
+              let γ0_0 := γ.["Ok.0"] in
+              let* file := M.copy γ0_0 in
               M.pure file
             | _ => M.break_match
             end) :
@@ -106,8 +106,8 @@ Definition main : M unit :=
           (let* α0 := M.read γ in
           match α0 with
           | core.result.Result.Err _ =>
-            let γ0 := γ.["Err.0"] in
-            let* why := M.copy γ0 in
+            let γ0_0 := γ.["Err.0"] in
+            let* why := M.copy γ0_0 in
             let* α0 : ref str.t := M.read (mk_str "couldn't read ") in
             let* α1 : ref str.t := M.read (mk_str ": ") in
             let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
@@ -137,7 +137,7 @@ Definition main : M unit :=
           (let* α0 := M.read γ in
           match α0 with
           | core.result.Result.Ok _ =>
-            let γ0 := γ.["Ok.0"] in
+            let γ0_0 := γ.["Ok.0"] in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "") in
               let* α1 : ref str.t := M.read (mk_str " contains:

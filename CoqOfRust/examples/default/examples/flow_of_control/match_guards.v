@@ -50,8 +50,8 @@ Definition main : M unit :=
           (let* α0 := M.read γ in
           match α0 with
           | match_guards.Temperature.Celsius _ =>
-            let γ0 := γ.["Celsius.0"] in
-            let* t := M.copy γ0 in
+            let γ0_0 := γ.["Celsius.0"] in
+            let* t := M.copy γ0_0 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "") in
               let* α1 : ref str.t := M.read (mk_str "C is above 30 Celsius
@@ -81,8 +81,8 @@ Definition main : M unit :=
           (let* α0 := M.read γ in
           match α0 with
           | match_guards.Temperature.Celsius _ =>
-            let γ0 := γ.["Celsius.0"] in
-            let* t := M.copy γ0 in
+            let γ0_0 := γ.["Celsius.0"] in
+            let* t := M.copy γ0_0 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "") in
               let* α1 : ref str.t := M.read (mk_str "C is below 30 Celsius
@@ -112,8 +112,8 @@ Definition main : M unit :=
           (let* α0 := M.read γ in
           match α0 with
           | match_guards.Temperature.Fahrenheit _ =>
-            let γ0 := γ.["Fahrenheit.0"] in
-            let* t := M.copy γ0 in
+            let γ0_0 := γ.["Fahrenheit.0"] in
+            let* t := M.copy γ0_0 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "") in
               let* α1 : ref str.t :=
@@ -144,8 +144,8 @@ Definition main : M unit :=
           (let* α0 := M.read γ in
           match α0 with
           | match_guards.Temperature.Fahrenheit _ =>
-            let γ0 := γ.["Fahrenheit.0"] in
-            let* t := M.copy γ0 in
+            let γ0_0 := γ.["Fahrenheit.0"] in
+            let* t := M.copy γ0_0 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "") in
               let* α1 : ref str.t :=

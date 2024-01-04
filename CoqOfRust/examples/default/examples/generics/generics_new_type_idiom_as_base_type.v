@@ -35,8 +35,8 @@ Definition main : M unit :=
           (let* α0 := M.read γ in
           match α0 with
           | generics_new_type_idiom_as_base_type.Years.Build_t _ =>
-            let γ0 := γ.["Years.0"] in
-            let* years_as_primitive_2 := M.copy γ0 in
+            let γ0_0 := γ.["Years.0"] in
+            let* years_as_primitive_2 := M.copy γ0_0 in
             M.alloc tt
           end) :
           M (M.Val unit)

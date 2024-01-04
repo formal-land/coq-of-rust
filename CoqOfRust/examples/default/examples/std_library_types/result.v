@@ -350,8 +350,8 @@ Definition op (x : f64.t) (y : f64.t) : M f64.t :=
           (let* α0 := M.read γ in
           match α0 with
           | core.result.Result.Err _ =>
-            let γ0 := γ.["Err.0"] in
-            let* why := M.copy γ0 in
+            let γ0_0 := γ.["Err.0"] in
+            let* why := M.copy γ0_0 in
             let* α0 : ref str.t := M.read (mk_str "") in
             let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
             let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
@@ -376,8 +376,8 @@ Definition op (x : f64.t) (y : f64.t) : M f64.t :=
           (let* α0 := M.read γ in
           match α0 with
           | core.result.Result.Ok _ =>
-            let γ0 := γ.["Ok.0"] in
-            let* ratio := M.copy γ0 in
+            let γ0_0 := γ.["Ok.0"] in
+            let* ratio := M.copy γ0_0 in
             let* α0 : f64.t := M.read ratio in
             let* α1 : core.result.Result.t f64.t result.checked.MathError.t :=
               M.call (result.checked.ln α0) in
@@ -391,8 +391,8 @@ Definition op (x : f64.t) (y : f64.t) : M f64.t :=
                   (let* α0 := M.read γ in
                   match α0 with
                   | core.result.Result.Err _ =>
-                    let γ0 := γ.["Err.0"] in
-                    let* why := M.copy γ0 in
+                    let γ0_0 := γ.["Err.0"] in
+                    let* why := M.copy γ0_0 in
                     let* α0 : ref str.t := M.read (mk_str "") in
                     let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
                     let* α2 : M.Val (ref (array (ref str.t))) :=
@@ -420,8 +420,8 @@ Definition op (x : f64.t) (y : f64.t) : M f64.t :=
                   (let* α0 := M.read γ in
                   match α0 with
                   | core.result.Result.Ok _ =>
-                    let γ0 := γ.["Ok.0"] in
-                    let* ln := M.copy γ0 in
+                    let γ0_0 := γ.["Ok.0"] in
+                    let* ln := M.copy γ0_0 in
                     let* α0 : f64.t := M.read ln in
                     let* α1 :
                         core.result.Result.t f64.t result.checked.MathError.t :=
@@ -439,8 +439,8 @@ Definition op (x : f64.t) (y : f64.t) : M f64.t :=
                           (let* α0 := M.read γ in
                           match α0 with
                           | core.result.Result.Err _ =>
-                            let γ0 := γ.["Err.0"] in
-                            let* why := M.copy γ0 in
+                            let γ0_0 := γ.["Err.0"] in
+                            let* why := M.copy γ0_0 in
                             let* α0 : ref str.t := M.read (mk_str "") in
                             let* α1 : M.Val (array (ref str.t)) :=
                               M.alloc [ α0 ] in
@@ -472,8 +472,8 @@ Definition op (x : f64.t) (y : f64.t) : M f64.t :=
                           (let* α0 := M.read γ in
                           match α0 with
                           | core.result.Result.Ok _ =>
-                            let γ0 := γ.["Ok.0"] in
-                            let* sqrt := M.copy γ0 in
+                            let γ0_0 := γ.["Ok.0"] in
+                            let* sqrt := M.copy γ0_0 in
                             M.pure sqrt
                           | _ => M.break_match
                           end) :

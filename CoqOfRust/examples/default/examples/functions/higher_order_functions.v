@@ -104,8 +104,8 @@ Definition main : M unit :=
                       (let* α0 := M.read γ in
                       match α0 with
                       | core.option.Option.Some _ =>
-                        let γ0 := γ.["Some.0"] in
-                        let* n := M.copy γ0 in
+                        let γ0_0 := γ.["Some.0"] in
+                        let* n := M.copy γ0_0 in
                         let* n_squared : M.Val u32.t :=
                           let* α0 : u32.t := M.read n in
                           let* α1 : u32.t := M.read n in
