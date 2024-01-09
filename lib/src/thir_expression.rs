@@ -1137,18 +1137,39 @@ fn compile_expr_kind<'a>(
                         ExprKind::AssociatedFunction { ty, func }
                     }
                     DefKind::Trait => {
+                        let generics = env.tcx.generics_of(def_id);
                         let parent_path = compile_def_id(env, parent);
                         let path = Path::concat(&[
                             parent_path.clone(),
                             Path::local(symbol.unwrap().as_str()),
                         ]);
-                        let self_ty = generic_args.type_at(0);
-                        let self_ty = crate::thir_ty::compile_type(env, &self_ty);
+                        let parent_generics = env.tcx.generics_of(parent);
+                        let tys = vec![
+                            parent_generics
+                                .params
+                                .iter()
+                                .map(|param| param.name.to_string())
+                                .collect::<Vec<_>>(),
+                            generics
+                                .params
+                                .iter()
+                                .map(|param| param.name.to_string())
+                                .collect::<Vec<_>>(),
+                        ]
+                        .concat()
+                        .into_iter()
+                        .zip(generic_args.iter())
+                        .map(|(param, generic_arg)| {
+                            (param, compile_type(env, &generic_arg.expect_ty()))
+                        })
+                        .collect::<Vec<_>>();
+                        // We know that the first type is the `Self` type
+                        let self_ty = &tys.get(0).unwrap().1;
 
                         if Some((parent_path, self_ty.clone())) == env.current_trait_impl {
                             ExprKind::LocalVar(symbol.unwrap().to_string())
                         } else {
-                            ExprKind::VarWithSelfTy { path, self_ty }
+                            ExprKind::VarWithTys { path, tys }
                         }
                     }
                     DefKind::Mod | DefKind::ForeignMod => {
@@ -1172,14 +1193,10 @@ fn compile_expr_kind<'a>(
                 Rc::new(ExprKind::Message(error_message.to_string()))
             }
         },
-        thir::ExprKind::NamedConst { def_id, substs, .. } => {
+        thir::ExprKind::NamedConst { def_id, .. } => {
             let path = compile_def_id(env, *def_id);
-            if substs.is_empty() {
-                return Rc::new(ExprKind::Var(path));
-            }
-            let self_ty = substs.type_at(0);
-            let self_ty = crate::thir_ty::compile_type(env, &self_ty);
-            Rc::new(ExprKind::VarWithSelfTy { path, self_ty })
+
+            Rc::new(ExprKind::Var(path))
         }
         thir::ExprKind::ConstParam { def_id, .. } => {
             Rc::new(ExprKind::Var(compile_def_id(env, *def_id)))

@@ -94,21 +94,23 @@ Section Impl_core_clone_Clone_for_clone_Pair_t.
   *)
   Definition clone (self : ref Self) : M clone.Pair.t :=
     let* self := M.alloc self in
-    let* α0 : ref clone.Pair.t := M.read self in
-    let* α1 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t :=
-      M.call
-        ((core.clone.Clone.clone
-            (Self := alloc.boxed.Box.t i32.t alloc.alloc.Global.t)
-            (Trait := ltac:(refine _)))
-          (borrow (deref α0).["0"])) in
-    let* α2 : ref clone.Pair.t := M.read self in
-    let* α3 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t :=
-      M.call
-        ((core.clone.Clone.clone
-            (Self := alloc.boxed.Box.t i32.t alloc.alloc.Global.t)
-            (Trait := ltac:(refine _)))
-          (borrow (deref α2).["1"])) in
-    M.pure (clone.Pair.Build_t α1 α3).
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.clone.Clone.clone
+          (Self := alloc.boxed.Box.t i32.t alloc.alloc.Global.t)
+          (Trait := ℐ))) in
+    let* α1 : ref clone.Pair.t := M.read self in
+    let* α2 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t :=
+      M.call (α0 (borrow (deref α1).["0"])) in
+    let* α3 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.clone.Clone.clone
+          (Self := alloc.boxed.Box.t i32.t alloc.alloc.Global.t)
+          (Trait := ℐ))) in
+    let* α4 : ref clone.Pair.t := M.read self in
+    let* α5 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t :=
+      M.call (α3 (borrow (deref α4).["1"])) in
+    M.pure (clone.Pair.Build_t α2 α5).
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {
@@ -296,13 +298,11 @@ Definition main : M unit :=
       M.alloc α10 in
     M.alloc tt in
   let* cloned_pair : M.Val clone.Pair.t :=
-    let* α0 : clone.Pair.t :=
-      M.call
-        ((core.clone.Clone.clone
-            (Self := clone.Pair.t)
-            (Trait := ltac:(refine _)))
-          (borrow moved_pair)) in
-    M.alloc α0 in
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.clone.Clone.clone (Self := clone.Pair.t) (Trait := ℐ))) in
+    let* α1 : clone.Pair.t := M.call (α0 (borrow moved_pair)) in
+    M.alloc α1 in
   let* _ : M.Val unit :=
     let* α0 : clone.Pair.t := M.read moved_pair in
     let* α1 : unit := M.call (core.mem.drop α0) in

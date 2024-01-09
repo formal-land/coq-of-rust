@@ -72,14 +72,15 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
   let* color : M.Val alloc.string.String.t :=
-    let* α0 : ref str.t := M.read (mk_str "green") in
-    let* α1 : alloc.string.String.t :=
-      M.call
-        ((core.convert.From.from
-            (Self := alloc.string.String.t)
-            (Trait := ltac:(refine _)))
-          α0) in
-    M.alloc α1 in
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.convert.From.from
+          (Self := alloc.string.String.t)
+          (T := ref str.t)
+          (Trait := ℐ))) in
+    let* α1 : ref str.t := M.read (mk_str "green") in
+    let* α2 : alloc.string.String.t := M.call (α0 α1) in
+    M.alloc α2 in
   let* print : M.Val (unit -> M unit) :=
     M.alloc
       ((let* _ : M.Val unit :=
@@ -105,25 +106,25 @@ Definition main : M unit :=
       M.read α0) :
       M unit) in
   let* _ : M.Val unit :=
-    let* α0 : unit :=
-      M.call
-        ((core.ops.function.Fn.call
-            (Self := unit -> M unit)
-            (Trait := ltac:(refine _)))
-          (borrow print)
-          tt) in
-    M.alloc α0 in
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.ops.function.Fn.call
+          (Self := unit -> M unit)
+          (Args := unit)
+          (Trait := ℐ))) in
+    let* α1 : unit := M.call (α0 (borrow print) tt) in
+    M.alloc α1 in
   let* _reborrow : M.Val (ref alloc.string.String.t) :=
     M.alloc (borrow color) in
   let* _ : M.Val unit :=
-    let* α0 : unit :=
-      M.call
-        ((core.ops.function.Fn.call
-            (Self := unit -> M unit)
-            (Trait := ltac:(refine _)))
-          (borrow print)
-          tt) in
-    M.alloc α0 in
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.ops.function.Fn.call
+          (Self := unit -> M unit)
+          (Args := unit)
+          (Trait := ℐ))) in
+    let* α1 : unit := M.call (α0 (borrow print) tt) in
+    M.alloc α1 in
   let* _color_moved : M.Val alloc.string.String.t := M.copy color in
   let* count : M.Val i32.t := M.alloc (Integer.of_Z 0) in
   let* inc : M.Val (unit -> M unit) :=
@@ -158,23 +159,23 @@ Definition main : M unit :=
       M.read α0) :
       M unit) in
   let* _ : M.Val unit :=
-    let* α0 : unit :=
-      M.call
-        ((core.ops.function.FnMut.call_mut
-            (Self := unit -> M unit)
-            (Trait := ltac:(refine _)))
-          (borrow_mut inc)
-          tt) in
-    M.alloc α0 in
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.ops.function.FnMut.call_mut
+          (Self := unit -> M unit)
+          (Args := unit)
+          (Trait := ℐ))) in
+    let* α1 : unit := M.call (α0 (borrow_mut inc) tt) in
+    M.alloc α1 in
   let* _ : M.Val unit :=
-    let* α0 : unit :=
-      M.call
-        ((core.ops.function.FnMut.call_mut
-            (Self := unit -> M unit)
-            (Trait := ltac:(refine _)))
-          (borrow_mut inc)
-          tt) in
-    M.alloc α0 in
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.ops.function.FnMut.call_mut
+          (Self := unit -> M unit)
+          (Args := unit)
+          (Trait := ℐ))) in
+    let* α1 : unit := M.call (α0 (borrow_mut inc) tt) in
+    M.alloc α1 in
   let* _count_reborrowed : M.Val (mut_ref i32.t) :=
     M.alloc (borrow_mut count) in
   let* movable : M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t) :=
@@ -215,14 +216,14 @@ Definition main : M unit :=
       M.read α0) :
       M unit) in
   let* _ : M.Val unit :=
-    let* α0 : unit -> M unit := M.read consume in
-    let* α1 : unit :=
-      M.call
-        ((core.ops.function.FnOnce.call_once
-            (Self := unit -> M unit)
-            (Trait := ltac:(refine _)))
-          α0
-          tt) in
-    M.alloc α1 in
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.ops.function.FnOnce.call_once
+          (Self := unit -> M unit)
+          (Args := unit)
+          (Trait := ℐ))) in
+    let* α1 : unit -> M unit := M.read consume in
+    let* α2 : unit := M.call (α0 α1 tt) in
+    M.alloc α2 in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.

@@ -72,7 +72,7 @@ Module Primitive.
   | StateRead {Address A : Set} : Address -> t A
   | StateWrite {Address A : Set} : Address -> A -> t unit
   | EnvRead {A : Set} : t A
-  .
+  | InstanceOracle (Trait : Set) : t (Trait).
 End Primitive.
 Definition Primitive : Set -> Set := Primitive.t.
 
@@ -220,6 +220,20 @@ Definition copy {A : Set} (r : Ref A) : M (Ref A) :=
 Definition read_env {Env : Set} : M Env :=
   let- env := LowM.CallPrimitive Primitive.EnvRead LowM.Pure in
   LowM.Pure (inl env).
+
+(** Find the instance of a trait for a method at proof time. *)
+Definition get_method {Trait : Set} {F : Trait -> Set} {Result : Set}
+    (method : forall (I : Trait), F I) :
+    M Result :=
+  let- instance :=
+    LowM.CallPrimitive (Primitive.InstanceOracle Trait) LowM.Pure in
+  cast (method instance).
+
+(** Try first to infer the trait instance, and if unsuccessful, delegate it at
+    proof time. *)
+Ltac get_method method :=
+  exact (M.pure (method _)) ||
+  exact (M.get_method method).
 
 Definition impossible {A : Set} : M A :=
   LowM.Impossible.

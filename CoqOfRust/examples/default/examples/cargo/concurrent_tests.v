@@ -95,33 +95,37 @@ Module tests.
             α5
             α6) in
       M.alloc α7 in
-    let* α0 : core.ops.range.Range.t i32.t :=
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.iter.traits.collect.IntoIterator.into_iter
+          (Self := core.ops.range.Range.t i32.t)
+          (Trait := ℐ))) in
+    let* α1 : core.ops.range.Range.t i32.t :=
       M.call
-        ((core.iter.traits.collect.IntoIterator.into_iter
-            (Self := core.ops.range.Range.t i32.t)
-            (Trait := ltac:(refine _)))
+        (α0
           {|
             core.ops.range.Range.start := Integer.of_Z 0;
             core.ops.range.Range.end_ := Integer.of_Z 5;
           |}) in
-    let* α1 : M.Val (core.ops.range.Range.t i32.t) := M.alloc α0 in
-    let* α2 : M.Val unit :=
+    let* α2 : M.Val (core.ops.range.Range.t i32.t) := M.alloc α1 in
+    let* α3 : M.Val unit :=
       match_operator
-        α1
+        α2
         [
           fun γ =>
             (let* iter := M.copy γ in
             M.loop
               (let* _ : M.Val unit :=
-                let* α0 : core.option.Option.t i32.t :=
-                  M.call
-                    ((core.iter.traits.iterator.Iterator.next
-                        (Self := core.ops.range.Range.t i32.t)
-                        (Trait := ltac:(refine _)))
-                      (borrow_mut iter)) in
-                let* α1 : M.Val (core.option.Option.t i32.t) := M.alloc α0 in
+                let* α0 : _ :=
+                  ltac:(M.get_method (fun ℐ =>
+                    core.iter.traits.iterator.Iterator.next
+                      (Self := core.ops.range.Range.t i32.t)
+                      (Trait := ℐ))) in
+                let* α1 : core.option.Option.t i32.t :=
+                  M.call (α0 (borrow_mut iter)) in
+                let* α2 : M.Val (core.option.Option.t i32.t) := M.alloc α1 in
                 match_operator
-                  α1
+                  α2
                   [
                     fun γ =>
                       (let* α0 := M.read γ in
@@ -140,28 +144,28 @@ Module tests.
                       | core.option.Option.Some _ =>
                         let γ0_0 := γ.["Some.0"] in
                         let* _ : M.Val unit :=
-                          let* α0 : ref str.t := M.read (mk_str "Ferris
+                          let* α0 : _ :=
+                            ltac:(M.get_method (fun ℐ =>
+                              std.io.Write.write_all
+                                (Self := std.fs.File.t)
+                                (Trait := ℐ))) in
+                          let* α1 : ref str.t := M.read (mk_str "Ferris
 ") in
-                          let* α1 : ref (slice u8.t) :=
-                            M.call (str.t::["as_bytes"] α0) in
-                          let* α2 :
+                          let* α2 : ref (slice u8.t) :=
+                            M.call (str.t::["as_bytes"] α1) in
+                          let* α3 :
                               core.result.Result.t unit std.io.error.Error.t :=
-                            M.call
-                              ((std.io.Write.write_all
-                                  (Self := std.fs.File.t)
-                                  (Trait := ltac:(refine _)))
-                                (borrow_mut file)
-                                α1) in
-                          let* α3 : ref str.t :=
+                            M.call (α0 (borrow_mut file) α2) in
+                          let* α4 : ref str.t :=
                             M.read (mk_str "Could not write to ferris.txt") in
-                          let* α4 : unit :=
+                          let* α5 : unit :=
                             M.call
                               ((core.result.Result.t
                                     unit
                                     std.io.error.Error.t)::["expect"]
-                                α2
-                                α3) in
-                          M.alloc α4 in
+                                α3
+                                α4) in
+                          M.alloc α5 in
                         M.alloc tt
                       | _ => M.break_match
                       end) :
@@ -170,7 +174,7 @@ Module tests.
               M.alloc tt)) :
             M (M.Val unit)
         ] in
-    M.read (use α2).
+    M.read (use α3).
   
   (*
       fn test_file_also() {
@@ -206,33 +210,37 @@ Module tests.
             α5
             α6) in
       M.alloc α7 in
-    let* α0 : core.ops.range.Range.t i32.t :=
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.iter.traits.collect.IntoIterator.into_iter
+          (Self := core.ops.range.Range.t i32.t)
+          (Trait := ℐ))) in
+    let* α1 : core.ops.range.Range.t i32.t :=
       M.call
-        ((core.iter.traits.collect.IntoIterator.into_iter
-            (Self := core.ops.range.Range.t i32.t)
-            (Trait := ltac:(refine _)))
+        (α0
           {|
             core.ops.range.Range.start := Integer.of_Z 0;
             core.ops.range.Range.end_ := Integer.of_Z 5;
           |}) in
-    let* α1 : M.Val (core.ops.range.Range.t i32.t) := M.alloc α0 in
-    let* α2 : M.Val unit :=
+    let* α2 : M.Val (core.ops.range.Range.t i32.t) := M.alloc α1 in
+    let* α3 : M.Val unit :=
       match_operator
-        α1
+        α2
         [
           fun γ =>
             (let* iter := M.copy γ in
             M.loop
               (let* _ : M.Val unit :=
-                let* α0 : core.option.Option.t i32.t :=
-                  M.call
-                    ((core.iter.traits.iterator.Iterator.next
-                        (Self := core.ops.range.Range.t i32.t)
-                        (Trait := ltac:(refine _)))
-                      (borrow_mut iter)) in
-                let* α1 : M.Val (core.option.Option.t i32.t) := M.alloc α0 in
+                let* α0 : _ :=
+                  ltac:(M.get_method (fun ℐ =>
+                    core.iter.traits.iterator.Iterator.next
+                      (Self := core.ops.range.Range.t i32.t)
+                      (Trait := ℐ))) in
+                let* α1 : core.option.Option.t i32.t :=
+                  M.call (α0 (borrow_mut iter)) in
+                let* α2 : M.Val (core.option.Option.t i32.t) := M.alloc α1 in
                 match_operator
-                  α1
+                  α2
                   [
                     fun γ =>
                       (let* α0 := M.read γ in
@@ -251,28 +259,28 @@ Module tests.
                       | core.option.Option.Some _ =>
                         let γ0_0 := γ.["Some.0"] in
                         let* _ : M.Val unit :=
-                          let* α0 : ref str.t := M.read (mk_str "Corro
+                          let* α0 : _ :=
+                            ltac:(M.get_method (fun ℐ =>
+                              std.io.Write.write_all
+                                (Self := std.fs.File.t)
+                                (Trait := ℐ))) in
+                          let* α1 : ref str.t := M.read (mk_str "Corro
 ") in
-                          let* α1 : ref (slice u8.t) :=
-                            M.call (str.t::["as_bytes"] α0) in
-                          let* α2 :
+                          let* α2 : ref (slice u8.t) :=
+                            M.call (str.t::["as_bytes"] α1) in
+                          let* α3 :
                               core.result.Result.t unit std.io.error.Error.t :=
-                            M.call
-                              ((std.io.Write.write_all
-                                  (Self := std.fs.File.t)
-                                  (Trait := ltac:(refine _)))
-                                (borrow_mut file)
-                                α1) in
-                          let* α3 : ref str.t :=
+                            M.call (α0 (borrow_mut file) α2) in
+                          let* α4 : ref str.t :=
                             M.read (mk_str "Could not write to ferris.txt") in
-                          let* α4 : unit :=
+                          let* α5 : unit :=
                             M.call
                               ((core.result.Result.t
                                     unit
                                     std.io.error.Error.t)::["expect"]
-                                α2
-                                α3) in
-                          M.alloc α4 in
+                                α3
+                                α4) in
+                          M.alloc α5 in
                         M.alloc tt
                       | _ => M.break_match
                       end) :
@@ -281,7 +289,7 @@ Module tests.
               M.alloc tt)) :
             M (M.Val unit)
         ] in
-    M.read (use α2).
+    M.read (use α3).
 End tests.
 
 (*
@@ -318,33 +326,37 @@ Definition test_file : M unit :=
           α5
           α6) in
     M.alloc α7 in
-  let* α0 : core.ops.range.Range.t i32.t :=
+  let* α0 : _ :=
+    ltac:(M.get_method (fun ℐ =>
+      core.iter.traits.collect.IntoIterator.into_iter
+        (Self := core.ops.range.Range.t i32.t)
+        (Trait := ℐ))) in
+  let* α1 : core.ops.range.Range.t i32.t :=
     M.call
-      ((core.iter.traits.collect.IntoIterator.into_iter
-          (Self := core.ops.range.Range.t i32.t)
-          (Trait := ltac:(refine _)))
+      (α0
         {|
           core.ops.range.Range.start := Integer.of_Z 0;
           core.ops.range.Range.end_ := Integer.of_Z 5;
         |}) in
-  let* α1 : M.Val (core.ops.range.Range.t i32.t) := M.alloc α0 in
-  let* α2 : M.Val unit :=
+  let* α2 : M.Val (core.ops.range.Range.t i32.t) := M.alloc α1 in
+  let* α3 : M.Val unit :=
     match_operator
-      α1
+      α2
       [
         fun γ =>
           (let* iter := M.copy γ in
           M.loop
             (let* _ : M.Val unit :=
-              let* α0 : core.option.Option.t i32.t :=
-                M.call
-                  ((core.iter.traits.iterator.Iterator.next
-                      (Self := core.ops.range.Range.t i32.t)
-                      (Trait := ltac:(refine _)))
-                    (borrow_mut iter)) in
-              let* α1 : M.Val (core.option.Option.t i32.t) := M.alloc α0 in
+              let* α0 : _ :=
+                ltac:(M.get_method (fun ℐ =>
+                  core.iter.traits.iterator.Iterator.next
+                    (Self := core.ops.range.Range.t i32.t)
+                    (Trait := ℐ))) in
+              let* α1 : core.option.Option.t i32.t :=
+                M.call (α0 (borrow_mut iter)) in
+              let* α2 : M.Val (core.option.Option.t i32.t) := M.alloc α1 in
               match_operator
-                α1
+                α2
                 [
                   fun γ =>
                     (let* α0 := M.read γ in
@@ -363,28 +375,28 @@ Definition test_file : M unit :=
                     | core.option.Option.Some _ =>
                       let γ0_0 := γ.["Some.0"] in
                       let* _ : M.Val unit :=
-                        let* α0 : ref str.t := M.read (mk_str "Ferris
+                        let* α0 : _ :=
+                          ltac:(M.get_method (fun ℐ =>
+                            std.io.Write.write_all
+                              (Self := std.fs.File.t)
+                              (Trait := ℐ))) in
+                        let* α1 : ref str.t := M.read (mk_str "Ferris
 ") in
-                        let* α1 : ref (slice u8.t) :=
-                          M.call (str.t::["as_bytes"] α0) in
-                        let* α2 :
+                        let* α2 : ref (slice u8.t) :=
+                          M.call (str.t::["as_bytes"] α1) in
+                        let* α3 :
                             core.result.Result.t unit std.io.error.Error.t :=
-                          M.call
-                            ((std.io.Write.write_all
-                                (Self := std.fs.File.t)
-                                (Trait := ltac:(refine _)))
-                              (borrow_mut file)
-                              α1) in
-                        let* α3 : ref str.t :=
+                          M.call (α0 (borrow_mut file) α2) in
+                        let* α4 : ref str.t :=
                           M.read (mk_str "Could not write to ferris.txt") in
-                        let* α4 : unit :=
+                        let* α5 : unit :=
                           M.call
                             ((core.result.Result.t
                                   unit
                                   std.io.error.Error.t)::["expect"]
-                              α2
-                              α3) in
-                        M.alloc α4 in
+                              α3
+                              α4) in
+                        M.alloc α5 in
                       M.alloc tt
                     | _ => M.break_match
                     end) :
@@ -393,7 +405,7 @@ Definition test_file : M unit :=
             M.alloc tt)) :
           M (M.Val unit)
       ] in
-  M.read (use α2).
+  M.read (use α3).
 
 (*
     fn test_file_also() {
@@ -429,33 +441,37 @@ Definition test_file_also : M unit :=
           α5
           α6) in
     M.alloc α7 in
-  let* α0 : core.ops.range.Range.t i32.t :=
+  let* α0 : _ :=
+    ltac:(M.get_method (fun ℐ =>
+      core.iter.traits.collect.IntoIterator.into_iter
+        (Self := core.ops.range.Range.t i32.t)
+        (Trait := ℐ))) in
+  let* α1 : core.ops.range.Range.t i32.t :=
     M.call
-      ((core.iter.traits.collect.IntoIterator.into_iter
-          (Self := core.ops.range.Range.t i32.t)
-          (Trait := ltac:(refine _)))
+      (α0
         {|
           core.ops.range.Range.start := Integer.of_Z 0;
           core.ops.range.Range.end_ := Integer.of_Z 5;
         |}) in
-  let* α1 : M.Val (core.ops.range.Range.t i32.t) := M.alloc α0 in
-  let* α2 : M.Val unit :=
+  let* α2 : M.Val (core.ops.range.Range.t i32.t) := M.alloc α1 in
+  let* α3 : M.Val unit :=
     match_operator
-      α1
+      α2
       [
         fun γ =>
           (let* iter := M.copy γ in
           M.loop
             (let* _ : M.Val unit :=
-              let* α0 : core.option.Option.t i32.t :=
-                M.call
-                  ((core.iter.traits.iterator.Iterator.next
-                      (Self := core.ops.range.Range.t i32.t)
-                      (Trait := ltac:(refine _)))
-                    (borrow_mut iter)) in
-              let* α1 : M.Val (core.option.Option.t i32.t) := M.alloc α0 in
+              let* α0 : _ :=
+                ltac:(M.get_method (fun ℐ =>
+                  core.iter.traits.iterator.Iterator.next
+                    (Self := core.ops.range.Range.t i32.t)
+                    (Trait := ℐ))) in
+              let* α1 : core.option.Option.t i32.t :=
+                M.call (α0 (borrow_mut iter)) in
+              let* α2 : M.Val (core.option.Option.t i32.t) := M.alloc α1 in
               match_operator
-                α1
+                α2
                 [
                   fun γ =>
                     (let* α0 := M.read γ in
@@ -474,28 +490,28 @@ Definition test_file_also : M unit :=
                     | core.option.Option.Some _ =>
                       let γ0_0 := γ.["Some.0"] in
                       let* _ : M.Val unit :=
-                        let* α0 : ref str.t := M.read (mk_str "Corro
+                        let* α0 : _ :=
+                          ltac:(M.get_method (fun ℐ =>
+                            std.io.Write.write_all
+                              (Self := std.fs.File.t)
+                              (Trait := ℐ))) in
+                        let* α1 : ref str.t := M.read (mk_str "Corro
 ") in
-                        let* α1 : ref (slice u8.t) :=
-                          M.call (str.t::["as_bytes"] α0) in
-                        let* α2 :
+                        let* α2 : ref (slice u8.t) :=
+                          M.call (str.t::["as_bytes"] α1) in
+                        let* α3 :
                             core.result.Result.t unit std.io.error.Error.t :=
-                          M.call
-                            ((std.io.Write.write_all
-                                (Self := std.fs.File.t)
-                                (Trait := ltac:(refine _)))
-                              (borrow_mut file)
-                              α1) in
-                        let* α3 : ref str.t :=
+                          M.call (α0 (borrow_mut file) α2) in
+                        let* α4 : ref str.t :=
                           M.read (mk_str "Could not write to ferris.txt") in
-                        let* α4 : unit :=
+                        let* α5 : unit :=
                           M.call
                             ((core.result.Result.t
                                   unit
                                   std.io.error.Error.t)::["expect"]
-                              α2
-                              α3) in
-                        M.alloc α4 in
+                              α3
+                              α4) in
+                        M.alloc α5 in
                       M.alloc tt
                     | _ => M.break_match
                     end) :
@@ -504,4 +520,4 @@ Definition test_file_also : M unit :=
             M.alloc tt)) :
           M (M.Val unit)
       ] in
-  M.read (use α2).
+  M.read (use α3).

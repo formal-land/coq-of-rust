@@ -155,14 +155,16 @@ Definition main : M unit :=
   M.catch_return
     (let* args :
         M.Val (alloc.vec.Vec.t alloc.string.String.t alloc.alloc.Global.t) :=
-      let* α0 : std.env.Args.t := M.call std.env.args in
-      let* α1 : alloc.vec.Vec.t alloc.string.String.t alloc.alloc.Global.t :=
-        M.call
-          ((core.iter.traits.iterator.Iterator.collect
-              (Self := std.env.Args.t)
-              (Trait := ltac:(refine _)))
-            α0) in
-      M.alloc α1 in
+      let* α0 : _ :=
+        ltac:(M.get_method (fun ℐ =>
+          core.iter.traits.iterator.Iterator.collect
+            (Self := std.env.Args.t)
+            (B := alloc.vec.Vec.t alloc.string.String.t alloc.alloc.Global.t)
+            (Trait := ℐ))) in
+      let* α1 : std.env.Args.t := M.call std.env.args in
+      let* α2 : alloc.vec.Vec.t alloc.string.String.t alloc.alloc.Global.t :=
+        M.call (α0 α1) in
+      M.alloc α2 in
     let* α0 : usize.t :=
       M.call
         ((alloc.vec.Vec.t alloc.string.String.t alloc.alloc.Global.t)::["len"]
@@ -193,31 +195,30 @@ Definition main : M unit :=
             M.alloc tt) :
             M (M.Val unit);
           fun γ =>
-            (let* α0 : ref alloc.string.String.t :=
-              M.call
-                ((core.ops.index.Index.index
-                    (Self :=
-                      alloc.vec.Vec.t
-                        alloc.string.String.t
-                        alloc.alloc.Global.t)
-                    (Trait := ltac:(refine _)))
-                  (borrow args)
-                  (Integer.of_Z 1)) in
-            let* α1 : ref str.t :=
-              M.call
-                ((core.ops.deref.Deref.deref
-                    (Self := alloc.string.String.t)
-                    (Trait := ltac:(refine _)))
-                  α0) in
-            let* α2 :
+            (let* α0 : _ :=
+              ltac:(M.get_method (fun ℐ =>
+                core.ops.deref.Deref.deref
+                  (Self := alloc.string.String.t)
+                  (Trait := ℐ))) in
+            let* α1 : _ :=
+              ltac:(M.get_method (fun ℐ =>
+                core.ops.index.Index.index
+                  (Self :=
+                    alloc.vec.Vec.t alloc.string.String.t alloc.alloc.Global.t)
+                  (Idx := usize.t)
+                  (Trait := ℐ))) in
+            let* α2 : ref alloc.string.String.t :=
+              M.call (α1 (borrow args) (Integer.of_Z 1)) in
+            let* α3 : ref str.t := M.call (α0 α2) in
+            let* α4 :
                 core.result.Result.t i32.t core.num.error.ParseIntError.t :=
-              M.call (str.t::["parse"] α1) in
-            let* α3 :
+              M.call (str.t::["parse"] α3) in
+            let* α5 :
                 M.Val
                   (core.result.Result.t i32.t core.num.error.ParseIntError.t) :=
-              M.alloc α2 in
+              M.alloc α4 in
             match_operator
-              α3
+              α5
               [
                 fun γ =>
                   (let* α0 := M.read γ in
@@ -261,49 +262,51 @@ Definition main : M unit :=
             M (M.Val unit);
           fun γ =>
             (let* cmd : M.Val (ref alloc.string.String.t) :=
-              let* α0 : ref alloc.string.String.t :=
-                M.call
-                  ((core.ops.index.Index.index
-                      (Self :=
-                        alloc.vec.Vec.t
-                          alloc.string.String.t
-                          alloc.alloc.Global.t)
-                      (Trait := ltac:(refine _)))
-                    (borrow args)
-                    (Integer.of_Z 1)) in
-              M.alloc α0 in
+              let* α0 : _ :=
+                ltac:(M.get_method (fun ℐ =>
+                  core.ops.index.Index.index
+                    (Self :=
+                      alloc.vec.Vec.t
+                        alloc.string.String.t
+                        alloc.alloc.Global.t)
+                    (Idx := usize.t)
+                    (Trait := ℐ))) in
+              let* α1 : ref alloc.string.String.t :=
+                M.call (α0 (borrow args) (Integer.of_Z 1)) in
+              M.alloc α1 in
             let* num : M.Val (ref alloc.string.String.t) :=
-              let* α0 : ref alloc.string.String.t :=
-                M.call
-                  ((core.ops.index.Index.index
-                      (Self :=
-                        alloc.vec.Vec.t
-                          alloc.string.String.t
-                          alloc.alloc.Global.t)
-                      (Trait := ltac:(refine _)))
-                    (borrow args)
-                    (Integer.of_Z 2)) in
-              M.alloc α0 in
+              let* α0 : _ :=
+                ltac:(M.get_method (fun ℐ =>
+                  core.ops.index.Index.index
+                    (Self :=
+                      alloc.vec.Vec.t
+                        alloc.string.String.t
+                        alloc.alloc.Global.t)
+                    (Idx := usize.t)
+                    (Trait := ℐ))) in
+              let* α1 : ref alloc.string.String.t :=
+                M.call (α0 (borrow args) (Integer.of_Z 2)) in
+              M.alloc α1 in
             let* number : M.Val i32.t :=
-              let* α0 : ref alloc.string.String.t := M.read num in
-              let* α1 : ref str.t :=
-                M.call
-                  ((core.ops.deref.Deref.deref
-                      (Self := alloc.string.String.t)
-                      (Trait := ltac:(refine _)))
-                    α0) in
-              let* α2 :
-                  core.result.Result.t i32.t core.num.error.ParseIntError.t :=
-                M.call (str.t::["parse"] α1) in
+              let* α0 : _ :=
+                ltac:(M.get_method (fun ℐ =>
+                  core.ops.deref.Deref.deref
+                    (Self := alloc.string.String.t)
+                    (Trait := ℐ))) in
+              let* α1 : ref alloc.string.String.t := M.read num in
+              let* α2 : ref str.t := M.call (α0 α1) in
               let* α3 :
+                  core.result.Result.t i32.t core.num.error.ParseIntError.t :=
+                M.call (str.t::["parse"] α2) in
+              let* α4 :
                   M.Val
                     (core.result.Result.t
                       i32.t
                       core.num.error.ParseIntError.t) :=
-                M.alloc α2 in
-              let* α4 : M.Val i32.t :=
+                M.alloc α3 in
+              let* α5 : M.Val i32.t :=
                 match_operator
-                  α3
+                  α4
                   [
                     fun γ =>
                       (let* α0 := M.read γ in
@@ -354,18 +357,19 @@ Definition main : M unit :=
                       end) :
                       M (M.Val i32.t)
                   ] in
-              M.copy α4 in
-            let* α0 : ref alloc.string.String.t := M.read cmd in
-            let* α1 : ref str.t :=
-              M.call
-                ((core.ops.index.Index.index
-                    (Self := alloc.string.String.t)
-                    (Trait := ltac:(refine _)))
-                  α0
-                  core.ops.range.RangeFull.Build) in
-            let* α2 : M.Val (ref str.t) := M.alloc α1 in
+              M.copy α5 in
+            let* α0 : _ :=
+              ltac:(M.get_method (fun ℐ =>
+                core.ops.index.Index.index
+                  (Self := alloc.string.String.t)
+                  (Idx := core.ops.range.RangeFull.t)
+                  (Trait := ℐ))) in
+            let* α1 : ref alloc.string.String.t := M.read cmd in
+            let* α2 : ref str.t :=
+              M.call (α0 α1 core.ops.range.RangeFull.Build) in
+            let* α3 : M.Val (ref str.t) := M.alloc α2 in
             match_operator
-              α2
+              α3
               [
                 fun γ =>
                   (let* α0 : i32.t := M.read number in

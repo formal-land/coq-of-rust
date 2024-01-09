@@ -31,19 +31,20 @@ Definition read_lines
             α1) in
       M.alloc α2 in
     let* _ : M.Val never.t :=
-      let* α0 : std.fs.File.t := M.read file in
-      let* α1 : std.io.buffered.bufreader.BufReader.t std.fs.File.t :=
+      let* α0 : _ :=
+        ltac:(M.get_method (fun ℐ =>
+          std.io.BufRead.lines
+            (Self := std.io.buffered.bufreader.BufReader.t std.fs.File.t)
+            (Trait := ℐ))) in
+      let* α1 : std.fs.File.t := M.read file in
+      let* α2 : std.io.buffered.bufreader.BufReader.t std.fs.File.t :=
         M.call
-          ((std.io.buffered.bufreader.BufReader.t std.fs.File.t)::["new"] α0) in
-      let* α2 :
+          ((std.io.buffered.bufreader.BufReader.t std.fs.File.t)::["new"] α1) in
+      let* α3 :
           std.io.Lines.t
             (std.io.buffered.bufreader.BufReader.t std.fs.File.t) :=
-        M.call
-          ((std.io.BufRead.lines
-              (Self := std.io.buffered.bufreader.BufReader.t std.fs.File.t)
-              (Trait := ltac:(refine _)))
-            α1) in
-      return_ α2 in
+        M.call (α0 α2) in
+      return_ α3 in
     let* α0 : M.Val unit := M.alloc tt in
     let* α1 := M.read α0 in
     never_to_any α1).
@@ -64,63 +65,62 @@ Definition main : M unit :=
       M.Val
         (std.io.Lines.t
           (std.io.buffered.bufreader.BufReader.t std.fs.File.t)) :=
-    let* α0 : ref str.t := M.read (mk_str "./hosts") in
-    let* α1 : alloc.string.String.t :=
-      M.call
-        ((alloc.string.ToString.to_string
-            (Self := str.t)
-            (Trait := ltac:(refine _)))
-          α0) in
-    let* α2 :
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        alloc.string.ToString.to_string (Self := str.t) (Trait := ℐ))) in
+    let* α1 : ref str.t := M.read (mk_str "./hosts") in
+    let* α2 : alloc.string.String.t := M.call (α0 α1) in
+    let* α3 :
         std.io.Lines.t (std.io.buffered.bufreader.BufReader.t std.fs.File.t) :=
-      M.call (file_io_read_lines.read_lines α1) in
-    M.alloc α2 in
-  let* α0 :
-      std.io.Lines.t (std.io.buffered.bufreader.BufReader.t std.fs.File.t) :=
-    M.read lines in
+      M.call (file_io_read_lines.read_lines α2) in
+    M.alloc α3 in
+  let* α0 : _ :=
+    ltac:(M.get_method (fun ℐ =>
+      core.iter.traits.collect.IntoIterator.into_iter
+        (Self :=
+          std.io.Lines.t (std.io.buffered.bufreader.BufReader.t std.fs.File.t))
+        (Trait := ℐ))) in
   let* α1 :
       std.io.Lines.t (std.io.buffered.bufreader.BufReader.t std.fs.File.t) :=
-    M.call
-      ((core.iter.traits.collect.IntoIterator.into_iter
-          (Self :=
-            std.io.Lines.t
-              (std.io.buffered.bufreader.BufReader.t std.fs.File.t))
-          (Trait := ltac:(refine _)))
-        α0) in
+    M.read lines in
   let* α2 :
+      std.io.Lines.t (std.io.buffered.bufreader.BufReader.t std.fs.File.t) :=
+    M.call (α0 α1) in
+  let* α3 :
       M.Val
         (std.io.Lines.t
           (std.io.buffered.bufreader.BufReader.t std.fs.File.t)) :=
-    M.alloc α1 in
-  let* α3 : M.Val unit :=
+    M.alloc α2 in
+  let* α4 : M.Val unit :=
     match_operator
-      α2
+      α3
       [
         fun γ =>
           (let* iter := M.copy γ in
           M.loop
             (let* _ : M.Val unit :=
-              let* α0 :
+              let* α0 : _ :=
+                ltac:(M.get_method (fun ℐ =>
+                  core.iter.traits.iterator.Iterator.next
+                    (Self :=
+                      std.io.Lines.t
+                        (std.io.buffered.bufreader.BufReader.t std.fs.File.t))
+                    (Trait := ℐ))) in
+              let* α1 :
                   core.option.Option.t
                     (core.result.Result.t
                       alloc.string.String.t
                       std.io.error.Error.t) :=
-                M.call
-                  ((core.iter.traits.iterator.Iterator.next
-                      (Self :=
-                        std.io.Lines.t
-                          (std.io.buffered.bufreader.BufReader.t std.fs.File.t))
-                      (Trait := ltac:(refine _)))
-                    (borrow_mut iter)) in
-              let* α1 :
+                M.call (α0 (borrow_mut iter)) in
+              let* α2 :
                   M.Val
                     (core.option.Option.t
                       (core.result.Result.t
                         alloc.string.String.t
                         std.io.error.Error.t)) :=
-                M.alloc α0 in
+                M.alloc α1 in
               match_operator
-                α1
+                α2
                 [
                   fun γ =>
                     (let* α0 := M.read γ in
@@ -186,4 +186,4 @@ Definition main : M unit :=
             M.alloc tt)) :
           M (M.Val unit)
       ] in
-  M.read (use α3).
+  M.read (use α4).

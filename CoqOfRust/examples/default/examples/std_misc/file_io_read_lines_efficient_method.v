@@ -32,55 +32,57 @@ Definition main : M unit :=
   let* α4 : bool.t := M.read α3 in
   let* α5 : M.Val unit :=
     if α4 then
-      let* α0 :
-          std.io.Lines.t
-            (std.io.buffered.bufreader.BufReader.t std.fs.File.t) :=
-        M.read lines in
+      let* α0 : _ :=
+        ltac:(M.get_method (fun ℐ =>
+          core.iter.traits.collect.IntoIterator.into_iter
+            (Self :=
+              std.io.Lines.t
+                (std.io.buffered.bufreader.BufReader.t std.fs.File.t))
+            (Trait := ℐ))) in
       let* α1 :
           std.io.Lines.t
             (std.io.buffered.bufreader.BufReader.t std.fs.File.t) :=
-        M.call
-          ((core.iter.traits.collect.IntoIterator.into_iter
-              (Self :=
-                std.io.Lines.t
-                  (std.io.buffered.bufreader.BufReader.t std.fs.File.t))
-              (Trait := ltac:(refine _)))
-            α0) in
+        M.read lines in
       let* α2 :
+          std.io.Lines.t
+            (std.io.buffered.bufreader.BufReader.t std.fs.File.t) :=
+        M.call (α0 α1) in
+      let* α3 :
           M.Val
             (std.io.Lines.t
               (std.io.buffered.bufreader.BufReader.t std.fs.File.t)) :=
-        M.alloc α1 in
-      let* α3 : M.Val unit :=
+        M.alloc α2 in
+      let* α4 : M.Val unit :=
         match_operator
-          α2
+          α3
           [
             fun γ =>
               (let* iter := M.copy γ in
               M.loop
                 (let* _ : M.Val unit :=
-                  let* α0 :
+                  let* α0 : _ :=
+                    ltac:(M.get_method (fun ℐ =>
+                      core.iter.traits.iterator.Iterator.next
+                        (Self :=
+                          std.io.Lines.t
+                            (std.io.buffered.bufreader.BufReader.t
+                              std.fs.File.t))
+                        (Trait := ℐ))) in
+                  let* α1 :
                       core.option.Option.t
                         (core.result.Result.t
                           alloc.string.String.t
                           std.io.error.Error.t) :=
-                    M.call
-                      ((core.iter.traits.iterator.Iterator.next
-                          (Self :=
-                            std.io.Lines.t
-                              (std.io.buffered.bufreader.BufReader.t
-                                std.fs.File.t))
-                          (Trait := ltac:(refine _)))
-                        (borrow_mut iter)) in
-                  let* α1 :
+                    M.call (α0 (borrow_mut iter)) in
+                  let* α2 :
                       M.Val
                         (core.option.Option.t
                           (core.result.Result.t
                             alloc.string.String.t
                             std.io.error.Error.t)) :=
-                    M.alloc α0 in
+                    M.alloc α1 in
                   match_operator
-                    α1
+                    α2
                     [
                       fun γ =>
                         (let* α0 := M.read γ in
@@ -144,7 +146,7 @@ Definition main : M unit :=
                 M.alloc tt)) :
               M (M.Val unit)
           ] in
-      M.pure (use α3)
+      M.pure (use α4)
     else
       M.alloc tt in
   M.read α5.
@@ -176,31 +178,32 @@ Definition read_lines
             (std.io.buffered.bufreader.BufReader.t std.fs.File.t)))) in
   M.catch_return
     (let* file : M.Val std.fs.File.t :=
-      let* α0 : P := M.read filename in
-      let* α1 : core.result.Result.t std.fs.File.t std.io.error.Error.t :=
-        M.call (std.fs.File.t::["open"] α0) in
-      let* α2 :
+      let* α0 : _ :=
+        ltac:(M.get_method (fun ℐ =>
+          core.ops.try_trait.Try.branch
+            (Self := core.result.Result.t std.fs.File.t std.io.error.Error.t)
+            (Trait := ℐ))) in
+      let* α1 : P := M.read filename in
+      let* α2 : core.result.Result.t std.fs.File.t std.io.error.Error.t :=
+        M.call (std.fs.File.t::["open"] α1) in
+      let* α3 :
           core.ops.control_flow.ControlFlow.t
             (core.result.Result.t
               core.convert.Infallible.t
               std.io.error.Error.t)
             std.fs.File.t :=
-        M.call
-          ((core.ops.try_trait.Try.branch
-              (Self := core.result.Result.t std.fs.File.t std.io.error.Error.t)
-              (Trait := ltac:(refine _)))
-            α1) in
-      let* α3 :
+        M.call (α0 α2) in
+      let* α4 :
           M.Val
             (core.ops.control_flow.ControlFlow.t
               (core.result.Result.t
                 core.convert.Infallible.t
                 std.io.error.Error.t)
               std.fs.File.t) :=
-        M.alloc α2 in
-      let* α4 : M.Val std.fs.File.t :=
+        M.alloc α3 in
+      let* α5 : M.Val std.fs.File.t :=
         match_operator
-          α3
+          α4
           [
             fun γ =>
               (let* α0 := M.read γ in
@@ -208,30 +211,35 @@ Definition read_lines
               | core.ops.control_flow.ControlFlow.Break _ =>
                 let γ0_0 := γ.["Break.0"] in
                 let* residual := M.copy γ0_0 in
-                let* α0 :
+                let* α0 : _ :=
+                  ltac:(M.get_method (fun ℐ =>
+                    core.ops.try_trait.FromResidual.from_residual
+                      (Self :=
+                        core.result.Result.t
+                          (std.io.Lines.t
+                            (std.io.buffered.bufreader.BufReader.t
+                              std.fs.File.t))
+                          std.io.error.Error.t)
+                      (R :=
+                        core.result.Result.t
+                          core.convert.Infallible.t
+                          std.io.error.Error.t)
+                      (Trait := ℐ))) in
+                let* α1 :
                     core.result.Result.t
                       core.convert.Infallible.t
                       std.io.error.Error.t :=
                   M.read residual in
-                let* α1 :
+                let* α2 :
                     core.result.Result.t
                       (std.io.Lines.t
                         (std.io.buffered.bufreader.BufReader.t std.fs.File.t))
                       std.io.error.Error.t :=
-                  M.call
-                    ((core.ops.try_trait.FromResidual.from_residual
-                        (Self :=
-                          core.result.Result.t
-                            (std.io.Lines.t
-                              (std.io.buffered.bufreader.BufReader.t
-                                std.fs.File.t))
-                            std.io.error.Error.t)
-                        (Trait := ltac:(refine _)))
-                      α0) in
-                let* α2 : M.Val never.t := return_ α1 in
-                let* α3 := M.read α2 in
-                let* α4 : std.fs.File.t := never_to_any α3 in
-                M.alloc α4
+                  M.call (α0 α1) in
+                let* α3 : M.Val never.t := return_ α2 in
+                let* α4 := M.read α3 in
+                let* α5 : std.fs.File.t := never_to_any α4 in
+                M.alloc α5
               | _ => M.break_match
               end) :
               M (M.Val std.fs.File.t);
@@ -246,23 +254,24 @@ Definition read_lines
               end) :
               M (M.Val std.fs.File.t)
           ] in
-      M.copy α4 in
-    let* α0 : std.fs.File.t := M.read file in
-    let* α1 : std.io.buffered.bufreader.BufReader.t std.fs.File.t :=
+      M.copy α5 in
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        std.io.BufRead.lines
+          (Self := std.io.buffered.bufreader.BufReader.t std.fs.File.t)
+          (Trait := ℐ))) in
+    let* α1 : std.fs.File.t := M.read file in
+    let* α2 : std.io.buffered.bufreader.BufReader.t std.fs.File.t :=
       M.call
-        ((std.io.buffered.bufreader.BufReader.t std.fs.File.t)::["new"] α0) in
-    let* α2 :
+        ((std.io.buffered.bufreader.BufReader.t std.fs.File.t)::["new"] α1) in
+    let* α3 :
         std.io.Lines.t (std.io.buffered.bufreader.BufReader.t std.fs.File.t) :=
-      M.call
-        ((std.io.BufRead.lines
-            (Self := std.io.buffered.bufreader.BufReader.t std.fs.File.t)
-            (Trait := ltac:(refine _)))
-          α1) in
+      M.call (α0 α2) in
     let* α0 :
         M.Val
           (core.result.Result.t
             (std.io.Lines.t
               (std.io.buffered.bufreader.BufReader.t std.fs.File.t))
             std.io.error.Error.t) :=
-      M.alloc (core.result.Result.Ok α2) in
+      M.alloc (core.result.Result.Ok α3) in
     M.read α0).

@@ -94,21 +94,19 @@ Definition main : M unit :=
             M (M.Val std.fs.File.t)
         ] in
     M.copy α2 in
-  let* α0 : ref (ref str.t) := M.read file_io_create.LOREM_IPSUM in
-  let* α1 : ref str.t := M.read (deref α0) in
-  let* α2 : ref (slice u8.t) := M.call (str.t::["as_bytes"] α1) in
-  let* α3 : core.result.Result.t unit std.io.error.Error.t :=
-    M.call
-      ((std.io.Write.write_all
-          (Self := std.fs.File.t)
-          (Trait := ltac:(refine _)))
-        (borrow_mut file)
-        α2) in
-  let* α4 : M.Val (core.result.Result.t unit std.io.error.Error.t) :=
-    M.alloc α3 in
+  let* α0 : _ :=
+    ltac:(M.get_method (fun ℐ =>
+      std.io.Write.write_all (Self := std.fs.File.t) (Trait := ℐ))) in
+  let* α1 : ref (ref str.t) := M.read file_io_create.LOREM_IPSUM in
+  let* α2 : ref str.t := M.read (deref α1) in
+  let* α3 : ref (slice u8.t) := M.call (str.t::["as_bytes"] α2) in
+  let* α4 : core.result.Result.t unit std.io.error.Error.t :=
+    M.call (α0 (borrow_mut file) α3) in
+  let* α5 : M.Val (core.result.Result.t unit std.io.error.Error.t) :=
+    M.alloc α4 in
   let* α0 : M.Val unit :=
     match_operator
-      α4
+      α5
       [
         fun γ =>
           (let* α0 := M.read γ in

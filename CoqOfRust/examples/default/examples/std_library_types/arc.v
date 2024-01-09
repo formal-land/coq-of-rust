@@ -30,33 +30,37 @@ Definition main : M unit :=
       M.call ((alloc.sync.Arc.t (ref str.t))::["new"] α0) in
     M.alloc α1 in
   let* _ : M.Val unit :=
-    let* α0 : core.ops.range.Range.t i32.t :=
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.iter.traits.collect.IntoIterator.into_iter
+          (Self := core.ops.range.Range.t i32.t)
+          (Trait := ℐ))) in
+    let* α1 : core.ops.range.Range.t i32.t :=
       M.call
-        ((core.iter.traits.collect.IntoIterator.into_iter
-            (Self := core.ops.range.Range.t i32.t)
-            (Trait := ltac:(refine _)))
+        (α0
           {|
             core.ops.range.Range.start := Integer.of_Z 0;
             core.ops.range.Range.end_ := Integer.of_Z 10;
           |}) in
-    let* α1 : M.Val (core.ops.range.Range.t i32.t) := M.alloc α0 in
-    let* α2 : M.Val unit :=
+    let* α2 : M.Val (core.ops.range.Range.t i32.t) := M.alloc α1 in
+    let* α3 : M.Val unit :=
       match_operator
-        α1
+        α2
         [
           fun γ =>
             (let* iter := M.copy γ in
             M.loop
               (let* _ : M.Val unit :=
-                let* α0 : core.option.Option.t i32.t :=
-                  M.call
-                    ((core.iter.traits.iterator.Iterator.next
-                        (Self := core.ops.range.Range.t i32.t)
-                        (Trait := ltac:(refine _)))
-                      (borrow_mut iter)) in
-                let* α1 : M.Val (core.option.Option.t i32.t) := M.alloc α0 in
+                let* α0 : _ :=
+                  ltac:(M.get_method (fun ℐ =>
+                    core.iter.traits.iterator.Iterator.next
+                      (Self := core.ops.range.Range.t i32.t)
+                      (Trait := ℐ))) in
+                let* α1 : core.option.Option.t i32.t :=
+                  M.call (α0 (borrow_mut iter)) in
+                let* α2 : M.Val (core.option.Option.t i32.t) := M.alloc α1 in
                 match_operator
-                  α1
+                  α2
                   [
                     fun γ =>
                       (let* α0 := M.read γ in
@@ -75,13 +79,14 @@ Definition main : M unit :=
                       | core.option.Option.Some _ =>
                         let γ0_0 := γ.["Some.0"] in
                         let* apple : M.Val (alloc.sync.Arc.t (ref str.t)) :=
-                          let* α0 : alloc.sync.Arc.t (ref str.t) :=
-                            M.call
-                              ((core.clone.Clone.clone
-                                  (Self := alloc.sync.Arc.t (ref str.t))
-                                  (Trait := ltac:(refine _)))
-                                (borrow apple)) in
-                          M.alloc α0 in
+                          let* α0 : _ :=
+                            ltac:(M.get_method (fun ℐ =>
+                              core.clone.Clone.clone
+                                (Self := alloc.sync.Arc.t (ref str.t))
+                                (Trait := ℐ))) in
+                          let* α1 : alloc.sync.Arc.t (ref str.t) :=
+                            M.call (α0 (borrow apple)) in
+                          M.alloc α1 in
                         let* _ : M.Val (std.thread.JoinHandle.t unit) :=
                           let* α0 : std.thread.JoinHandle.t unit :=
                             M.call
@@ -134,7 +139,7 @@ Definition main : M unit :=
               M.alloc tt)) :
             M (M.Val unit)
         ] in
-    M.pure (use α2) in
+    M.pure (use α3) in
   let* _ : M.Val unit :=
     let* α0 : core.time.Duration.t :=
       M.call (core.time.Duration.t::["from_secs"] (Integer.of_Z 1)) in

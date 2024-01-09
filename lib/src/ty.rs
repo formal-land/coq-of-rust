@@ -197,7 +197,7 @@ pub(crate) fn compile_type(env: &Env, ty: &Ty) -> Rc<CoqType> {
                 rustc_hir::QPath::Resolved(_, path) => {
                     if let Some(generics) = get_path_generics(env, path) {
                         let type_params_name_and_default_status =
-                            type_params_name_and_default_status(generics);
+                            get_type_params_name_and_default_status(generics);
                         let ty_params = compile_path_ty_params(env, path);
                         ty_params
                             .iter()

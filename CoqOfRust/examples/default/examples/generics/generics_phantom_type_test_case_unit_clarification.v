@@ -224,26 +224,27 @@ Section Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarifica
       (self : ref Self)
       : M (generics_phantom_type_test_case_unit_clarification.Length.t Unit) :=
     let* self := M.alloc self in
-    let* α0 :
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.clone.Clone.clone (Self := f64.t) (Trait := ℐ))) in
+    let* α1 :
         ref
           (generics_phantom_type_test_case_unit_clarification.Length.t Unit) :=
       M.read self in
-    let* α1 : f64.t :=
-      M.call
-        ((core.clone.Clone.clone (Self := f64.t) (Trait := ltac:(refine _)))
-          (borrow (deref α0).["0"])) in
-    let* α2 :
+    let* α2 : f64.t := M.call (α0 (borrow (deref α1).["0"])) in
+    let* α3 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.clone.Clone.clone
+          (Self := core.marker.PhantomData.t Unit)
+          (Trait := ℐ))) in
+    let* α4 :
         ref
           (generics_phantom_type_test_case_unit_clarification.Length.t Unit) :=
       M.read self in
-    let* α3 : core.marker.PhantomData.t Unit :=
-      M.call
-        ((core.clone.Clone.clone
-            (Self := core.marker.PhantomData.t Unit)
-            (Trait := ltac:(refine _)))
-          (borrow (deref α2).["1"])) in
+    let* α5 : core.marker.PhantomData.t Unit :=
+      M.call (α3 (borrow (deref α4).["1"])) in
     M.pure
-      (generics_phantom_type_test_case_unit_clarification.Length.Build_t α1 α3).
+      (generics_phantom_type_test_case_unit_clarification.Length.Build_t α2 α5).
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {
@@ -364,10 +365,16 @@ Definition main : M unit :=
       M.Val
         (generics_phantom_type_test_case_unit_clarification.Length.t
           generics_phantom_type_test_case_unit_clarification.Inch.t) :=
-    let* α0 :
-        generics_phantom_type_test_case_unit_clarification.Length.t
-          generics_phantom_type_test_case_unit_clarification.Inch.t :=
-      M.read one_foot in
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.ops.arith.Add.add
+          (Self :=
+            generics_phantom_type_test_case_unit_clarification.Length.t
+              generics_phantom_type_test_case_unit_clarification.Inch.t)
+          (Rhs :=
+            generics_phantom_type_test_case_unit_clarification.Length.t
+              generics_phantom_type_test_case_unit_clarification.Inch.t)
+          (Trait := ℐ))) in
     let* α1 :
         generics_phantom_type_test_case_unit_clarification.Length.t
           generics_phantom_type_test_case_unit_clarification.Inch.t :=
@@ -375,23 +382,26 @@ Definition main : M unit :=
     let* α2 :
         generics_phantom_type_test_case_unit_clarification.Length.t
           generics_phantom_type_test_case_unit_clarification.Inch.t :=
-      M.call
-        ((core.ops.arith.Add.add
-            (Self :=
-              generics_phantom_type_test_case_unit_clarification.Length.t
-                generics_phantom_type_test_case_unit_clarification.Inch.t)
-            (Trait := ltac:(refine _)))
-          α0
-          α1) in
-    M.alloc α2 in
+      M.read one_foot in
+    let* α3 :
+        generics_phantom_type_test_case_unit_clarification.Length.t
+          generics_phantom_type_test_case_unit_clarification.Inch.t :=
+      M.call (α0 α1 α2) in
+    M.alloc α3 in
   let* two_meters :
       M.Val
         (generics_phantom_type_test_case_unit_clarification.Length.t
           generics_phantom_type_test_case_unit_clarification.Mm.t) :=
-    let* α0 :
-        generics_phantom_type_test_case_unit_clarification.Length.t
-          generics_phantom_type_test_case_unit_clarification.Mm.t :=
-      M.read one_meter in
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.ops.arith.Add.add
+          (Self :=
+            generics_phantom_type_test_case_unit_clarification.Length.t
+              generics_phantom_type_test_case_unit_clarification.Mm.t)
+          (Rhs :=
+            generics_phantom_type_test_case_unit_clarification.Length.t
+              generics_phantom_type_test_case_unit_clarification.Mm.t)
+          (Trait := ℐ))) in
     let* α1 :
         generics_phantom_type_test_case_unit_clarification.Length.t
           generics_phantom_type_test_case_unit_clarification.Mm.t :=
@@ -399,15 +409,12 @@ Definition main : M unit :=
     let* α2 :
         generics_phantom_type_test_case_unit_clarification.Length.t
           generics_phantom_type_test_case_unit_clarification.Mm.t :=
-      M.call
-        ((core.ops.arith.Add.add
-            (Self :=
-              generics_phantom_type_test_case_unit_clarification.Length.t
-                generics_phantom_type_test_case_unit_clarification.Mm.t)
-            (Trait := ltac:(refine _)))
-          α0
-          α1) in
-    M.alloc α2 in
+      M.read one_meter in
+    let* α3 :
+        generics_phantom_type_test_case_unit_clarification.Length.t
+          generics_phantom_type_test_case_unit_clarification.Mm.t :=
+      M.call (α0 α1 α2) in
+    M.alloc α3 in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "one foot + one_foot = ") in

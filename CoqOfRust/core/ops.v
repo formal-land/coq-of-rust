@@ -382,15 +382,17 @@ End arith.
 
 Module deref.
   Module Deref.
-    Class Trait (Self : Set) {Target : Set} : Set := {
-      Target := Target;
+    Class Trait (Self : Set) : Type := {
+      Target : Set;
       deref : ref Self -> M (ref Target);
     }.
 
     Module Impl.
       Global Instance I_Vec {T A : Set} {H0 : core.alloc.Allocator.Trait A} :
-        Deref.Trait (vec.Vec.t T A) (Target := slice T).
-      Admitted.
+          Deref.Trait (vec.Vec.t T A) := {
+        Target := slice T;
+        deref := axiom "deref";
+      }.
     End Impl.
   End Deref.
 
@@ -401,15 +403,13 @@ Module deref.
   }
   *)
   Module DerefMut.
-    Class Trait (Self : Set)
-        {Target : Set} {H0 : Deref.Trait Self (Target := Target)} :
-        Set := {
-      deref_mut : mut_ref Self -> M (mut_ref Target);
+    Class Trait (Self : Set) {H0 : Deref.Trait Self} : Set := {
+      deref_mut : mut_ref Self -> M (mut_ref H0.(Deref.Target));
     }.
 
     Module Impl.
       Global Instance I_Vec {T A : Set} {H0 : core.alloc.Allocator.Trait A} :
-        DerefMut.Trait (vec.Vec.t T A) (Target := _).
+        DerefMut.Trait (vec.Vec.t T A).
       Admitted.
     End Impl.
   End DerefMut.

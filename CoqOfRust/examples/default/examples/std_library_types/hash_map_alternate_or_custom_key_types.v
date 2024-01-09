@@ -51,25 +51,37 @@ Section Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Accou
       : M bool.t :=
     let* self := M.alloc self in
     let* other := M.alloc other in
-    let* α0 : ref hash_map_alternate_or_custom_key_types.Account.t :=
-      M.read self in
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.cmp.PartialEq.eq
+          (Self := ref str.t)
+          (Rhs := ref str.t)
+          (Trait := ℐ))) in
     let* α1 : ref hash_map_alternate_or_custom_key_types.Account.t :=
-      M.read other in
-    let* α2 : bool.t :=
-      M.call
-        ((core.cmp.PartialEq.eq (Self := ref str.t) (Trait := ltac:(refine _)))
-          (borrow (deref α0).["username"])
-          (borrow (deref α1).["username"])) in
-    let* α3 : ref hash_map_alternate_or_custom_key_types.Account.t :=
       M.read self in
-    let* α4 : ref hash_map_alternate_or_custom_key_types.Account.t :=
+    let* α2 : ref hash_map_alternate_or_custom_key_types.Account.t :=
       M.read other in
-    let* α5 : bool.t :=
+    let* α3 : bool.t :=
       M.call
-        ((core.cmp.PartialEq.eq (Self := ref str.t) (Trait := ltac:(refine _)))
-          (borrow (deref α3).["password"])
-          (borrow (deref α4).["password"])) in
-    M.pure (BinOp.Pure.and α2 α5).
+        (α0
+          (borrow (deref α1).["username"])
+          (borrow (deref α2).["username"])) in
+    let* α4 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.cmp.PartialEq.eq
+          (Self := ref str.t)
+          (Rhs := ref str.t)
+          (Trait := ℐ))) in
+    let* α5 : ref hash_map_alternate_or_custom_key_types.Account.t :=
+      M.read self in
+    let* α6 : ref hash_map_alternate_or_custom_key_types.Account.t :=
+      M.read other in
+    let* α7 : bool.t :=
+      M.call
+        (α4
+          (borrow (deref α5).["password"])
+          (borrow (deref α6).["password"])) in
+    M.pure (BinOp.Pure.and α3 α7).
   
   Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
     Notations.double_colon := eq;
@@ -142,24 +154,22 @@ Section Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account_t
     let* self := M.alloc self in
     let* state := M.alloc state in
     let* _ : M.Val unit :=
-      let* α0 : ref hash_map_alternate_or_custom_key_types.Account.t :=
+      let* α0 : _ :=
+        ltac:(M.get_method (fun ℐ =>
+          core.hash.Hash.hash (Self := ref str.t) (H := __H) (Trait := ℐ))) in
+      let* α1 : ref hash_map_alternate_or_custom_key_types.Account.t :=
         M.read self in
-      let* α1 : mut_ref __H := M.read state in
-      let* α2 : unit :=
-        M.call
-          ((core.hash.Hash.hash (Self := ref str.t) (Trait := ltac:(refine _)))
-            (borrow (deref α0).["username"])
-            α1) in
-      M.alloc α2 in
-    let* α0 : ref hash_map_alternate_or_custom_key_types.Account.t :=
+      let* α2 : mut_ref __H := M.read state in
+      let* α3 : unit := M.call (α0 (borrow (deref α1).["username"]) α2) in
+      M.alloc α3 in
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.hash.Hash.hash (Self := ref str.t) (H := __H) (Trait := ℐ))) in
+    let* α1 : ref hash_map_alternate_or_custom_key_types.Account.t :=
       M.read self in
-    let* α1 : mut_ref __H := M.read state in
-    let* α2 : unit :=
-      M.call
-        ((core.hash.Hash.hash (Self := ref str.t) (Trait := ltac:(refine _)))
-          (borrow (deref α0).["password"])
-          α1) in
-    let* α0 : M.Val unit := M.alloc α2 in
+    let* α2 : mut_ref __H := M.read state in
+    let* α3 : unit := M.call (α0 (borrow (deref α1).["password"]) α2) in
+    let* α0 : M.Val unit := M.alloc α3 in
     M.read α0.
   
   Global Instance AssociatedFunction_hash

@@ -10,14 +10,12 @@ fn create_fn() -> impl Fn() {
 *)
 Definition create_fn : M _ (* OpaqueTy *) :=
   let* text : M.Val alloc.string.String.t :=
-    let* α0 : ref str.t := M.read (mk_str "Fn") in
-    let* α1 : alloc.string.String.t :=
-      M.call
-        ((alloc.borrow.ToOwned.to_owned
-            (Self := str.t)
-            (Trait := ltac:(refine _)))
-          α0) in
-    M.alloc α1 in
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        alloc.borrow.ToOwned.to_owned (Self := str.t) (Trait := ℐ))) in
+    let* α1 : ref str.t := M.read (mk_str "Fn") in
+    let* α2 : alloc.string.String.t := M.call (α0 α1) in
+    M.alloc α2 in
   let* α0 : M.Val (unit -> M unit) :=
     M.alloc
       ((let* _ : M.Val unit :=
@@ -55,14 +53,12 @@ fn create_fnmut() -> impl FnMut() {
 *)
 Definition create_fnmut : M _ (* OpaqueTy *) :=
   let* text : M.Val alloc.string.String.t :=
-    let* α0 : ref str.t := M.read (mk_str "FnMut") in
-    let* α1 : alloc.string.String.t :=
-      M.call
-        ((alloc.borrow.ToOwned.to_owned
-            (Self := str.t)
-            (Trait := ltac:(refine _)))
-          α0) in
-    M.alloc α1 in
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        alloc.borrow.ToOwned.to_owned (Self := str.t) (Trait := ℐ))) in
+    let* α1 : ref str.t := M.read (mk_str "FnMut") in
+    let* α2 : alloc.string.String.t := M.call (α0 α1) in
+    M.alloc α2 in
   let* α0 : M.Val (unit -> M unit) :=
     M.alloc
       ((let* _ : M.Val unit :=
@@ -98,14 +94,12 @@ fn create_fnonce() -> impl FnOnce() {
 *)
 Definition create_fnonce : M _ (* OpaqueTy *) :=
   let* text : M.Val alloc.string.String.t :=
-    let* α0 : ref str.t := M.read (mk_str "FnOnce") in
-    let* α1 : alloc.string.String.t :=
-      M.call
-        ((alloc.borrow.ToOwned.to_owned
-            (Self := str.t)
-            (Trait := ltac:(refine _)))
-          α0) in
-    M.alloc α1 in
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        alloc.borrow.ToOwned.to_owned (Self := str.t) (Trait := ℐ))) in
+    let* α1 : ref str.t := M.read (mk_str "FnOnce") in
+    let* α2 : alloc.string.String.t := M.call (α0 α1) in
+    M.alloc α2 in
   let* α0 : M.Val (unit -> M unit) :=
     M.alloc
       ((let* _ : M.Val unit :=
@@ -158,32 +152,32 @@ Definition main : M unit :=
       M.call functions_closures_as_output_parameters.create_fnonce in
     M.alloc α0 in
   let* _ : M.Val unit :=
-    let* α0 : unit :=
-      M.call
-        ((core.ops.function.Fn.call
-            (Self := type not implemented)
-            (Trait := ltac:(refine _)))
-          (borrow fn_plain)
-          tt) in
-    M.alloc α0 in
-  let* _ : M.Val unit :=
-    let* α0 : unit :=
-      M.call
-        ((core.ops.function.FnMut.call_mut
-            (Self := type not implemented)
-            (Trait := ltac:(refine _)))
-          (borrow_mut fn_mut)
-          tt) in
-    M.alloc α0 in
-  let* _ : M.Val unit :=
-    let* α0 : type not implemented := M.read fn_once in
-    let* α1 : unit :=
-      M.call
-        ((core.ops.function.FnOnce.call_once
-            (Self := type not implemented)
-            (Trait := ltac:(refine _)))
-          α0
-          tt) in
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.ops.function.Fn.call
+          (Self := type not implemented)
+          (Args := unit)
+          (Trait := ℐ))) in
+    let* α1 : unit := M.call (α0 (borrow fn_plain) tt) in
     M.alloc α1 in
+  let* _ : M.Val unit :=
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.ops.function.FnMut.call_mut
+          (Self := type not implemented)
+          (Args := unit)
+          (Trait := ℐ))) in
+    let* α1 : unit := M.call (α0 (borrow_mut fn_mut) tt) in
+    M.alloc α1 in
+  let* _ : M.Val unit :=
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.ops.function.FnOnce.call_once
+          (Self := type not implemented)
+          (Args := unit)
+          (Trait := ℐ))) in
+    let* α1 : type not implemented := M.read fn_once in
+    let* α2 : unit := M.call (α0 α1 tt) in
+    M.alloc α2 in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.

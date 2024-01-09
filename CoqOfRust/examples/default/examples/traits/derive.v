@@ -68,14 +68,15 @@ Section Impl_core_cmp_PartialOrd_for_derive_Centimeters_t.
       : M (core.option.Option.t core.cmp.Ordering.t) :=
     let* self := M.alloc self in
     let* other := M.alloc other in
-    let* α0 : ref derive.Centimeters.t := M.read self in
-    let* α1 : ref derive.Centimeters.t := M.read other in
-    M.call
-      ((core.cmp.PartialOrd.partial_cmp
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.cmp.PartialOrd.partial_cmp
           (Self := f64.t)
-          (Trait := ltac:(refine _)))
-        (borrow (deref α0).["0"])
-        (borrow (deref α1).["0"])).
+          (Rhs := f64.t)
+          (Trait := ℐ))) in
+    let* α1 : ref derive.Centimeters.t := M.read self in
+    let* α2 : ref derive.Centimeters.t := M.read other in
+    M.call (α0 (borrow (deref α1).["0"]) (borrow (deref α2).["0"])).
   
   Global Instance AssociatedFunction_partial_cmp :
     Notations.DoubleColon Self "partial_cmp" := {
@@ -252,25 +253,25 @@ Definition main : M unit :=
     let* α0 : f64.t := M.read UnsupportedLiteral in
     M.alloc (derive.Centimeters.Build_t α0) in
   let* cmp : M.Val (ref str.t) :=
-    let* α0 : derive.Centimeters.t :=
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.cmp.PartialOrd.lt
+          (Self := derive.Centimeters.t)
+          (Rhs := derive.Centimeters.t)
+          (Trait := ℐ))) in
+    let* α1 : derive.Centimeters.t :=
       M.call (derive.Inches.t::["to_centimeters"] (borrow foot)) in
-    let* α1 : M.Val derive.Centimeters.t := M.alloc α0 in
-    let* α2 : bool.t :=
-      M.call
-        ((core.cmp.PartialOrd.lt
-            (Self := derive.Centimeters.t)
-            (Trait := ltac:(refine _)))
-          (borrow α1)
-          (borrow meter)) in
-    let* α3 : M.Val bool.t := M.alloc α2 in
-    let* α4 : bool.t := M.read (use α3) in
-    let* α5 : M.Val (ref str.t) :=
-      if α4 then
+    let* α2 : M.Val derive.Centimeters.t := M.alloc α1 in
+    let* α3 : bool.t := M.call (α0 (borrow α2) (borrow meter)) in
+    let* α4 : M.Val bool.t := M.alloc α3 in
+    let* α5 : bool.t := M.read (use α4) in
+    let* α6 : M.Val (ref str.t) :=
+      if α5 then
         M.pure (mk_str "smaller")
       else
         let* α0 : ref str.t := M.read (mk_str "bigger") in
         M.alloc α0 in
-    M.copy α5 in
+    M.copy α6 in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "One foot is ") in

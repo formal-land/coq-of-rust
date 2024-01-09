@@ -20,32 +20,32 @@ Definition multiply
       (R := core.result.Result.t i32.t core.num.error.ParseIntError.t) in
   M.catch_return
     (let* first_number : M.Val i32.t :=
-      let* α0 : ref str.t := M.read first_number_str in
-      let* α1 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
-        M.call (str.t::["parse"] α0) in
-      let* α2 :
+      let* α0 : _ :=
+        ltac:(M.get_method (fun ℐ =>
+          core.ops.try_trait.Try.branch
+            (Self := core.result.Result.t i32.t core.num.error.ParseIntError.t)
+            (Trait := ℐ))) in
+      let* α1 : ref str.t := M.read first_number_str in
+      let* α2 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
+        M.call (str.t::["parse"] α1) in
+      let* α3 :
           core.ops.control_flow.ControlFlow.t
             (core.result.Result.t
               core.convert.Infallible.t
               core.num.error.ParseIntError.t)
             i32.t :=
-        M.call
-          ((core.ops.try_trait.Try.branch
-              (Self :=
-                core.result.Result.t i32.t core.num.error.ParseIntError.t)
-              (Trait := ltac:(refine _)))
-            α1) in
-      let* α3 :
+        M.call (α0 α2) in
+      let* α4 :
           M.Val
             (core.ops.control_flow.ControlFlow.t
               (core.result.Result.t
                 core.convert.Infallible.t
                 core.num.error.ParseIntError.t)
               i32.t) :=
-        M.alloc α2 in
-      let* α4 : M.Val i32.t :=
+        M.alloc α3 in
+      let* α5 : M.Val i32.t :=
         match_operator
-          α3
+          α4
           [
             fun γ =>
               (let* α0 := M.read γ in
@@ -53,25 +53,30 @@ Definition multiply
               | core.ops.control_flow.ControlFlow.Break _ =>
                 let γ0_0 := γ.["Break.0"] in
                 let* residual := M.copy γ0_0 in
-                let* α0 :
+                let* α0 : _ :=
+                  ltac:(M.get_method (fun ℐ =>
+                    core.ops.try_trait.FromResidual.from_residual
+                      (Self :=
+                        core.result.Result.t
+                          i32.t
+                          core.num.error.ParseIntError.t)
+                      (R :=
+                        core.result.Result.t
+                          core.convert.Infallible.t
+                          core.num.error.ParseIntError.t)
+                      (Trait := ℐ))) in
+                let* α1 :
                     core.result.Result.t
                       core.convert.Infallible.t
                       core.num.error.ParseIntError.t :=
                   M.read residual in
-                let* α1 :
+                let* α2 :
                     core.result.Result.t i32.t core.num.error.ParseIntError.t :=
-                  M.call
-                    ((core.ops.try_trait.FromResidual.from_residual
-                        (Self :=
-                          core.result.Result.t
-                            i32.t
-                            core.num.error.ParseIntError.t)
-                        (Trait := ltac:(refine _)))
-                      α0) in
-                let* α2 : M.Val never.t := return_ α1 in
-                let* α3 := M.read α2 in
-                let* α4 : i32.t := never_to_any α3 in
-                M.alloc α4
+                  M.call (α0 α1) in
+                let* α3 : M.Val never.t := return_ α2 in
+                let* α4 := M.read α3 in
+                let* α5 : i32.t := never_to_any α4 in
+                M.alloc α5
               | _ => M.break_match
               end) :
               M (M.Val i32.t);
@@ -86,34 +91,34 @@ Definition multiply
               end) :
               M (M.Val i32.t)
           ] in
-      M.copy α4 in
+      M.copy α5 in
     let* second_number : M.Val i32.t :=
-      let* α0 : ref str.t := M.read second_number_str in
-      let* α1 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
-        M.call (str.t::["parse"] α0) in
-      let* α2 :
+      let* α0 : _ :=
+        ltac:(M.get_method (fun ℐ =>
+          core.ops.try_trait.Try.branch
+            (Self := core.result.Result.t i32.t core.num.error.ParseIntError.t)
+            (Trait := ℐ))) in
+      let* α1 : ref str.t := M.read second_number_str in
+      let* α2 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
+        M.call (str.t::["parse"] α1) in
+      let* α3 :
           core.ops.control_flow.ControlFlow.t
             (core.result.Result.t
               core.convert.Infallible.t
               core.num.error.ParseIntError.t)
             i32.t :=
-        M.call
-          ((core.ops.try_trait.Try.branch
-              (Self :=
-                core.result.Result.t i32.t core.num.error.ParseIntError.t)
-              (Trait := ltac:(refine _)))
-            α1) in
-      let* α3 :
+        M.call (α0 α2) in
+      let* α4 :
           M.Val
             (core.ops.control_flow.ControlFlow.t
               (core.result.Result.t
                 core.convert.Infallible.t
                 core.num.error.ParseIntError.t)
               i32.t) :=
-        M.alloc α2 in
-      let* α4 : M.Val i32.t :=
+        M.alloc α3 in
+      let* α5 : M.Val i32.t :=
         match_operator
-          α3
+          α4
           [
             fun γ =>
               (let* α0 := M.read γ in
@@ -121,25 +126,30 @@ Definition multiply
               | core.ops.control_flow.ControlFlow.Break _ =>
                 let γ0_0 := γ.["Break.0"] in
                 let* residual := M.copy γ0_0 in
-                let* α0 :
+                let* α0 : _ :=
+                  ltac:(M.get_method (fun ℐ =>
+                    core.ops.try_trait.FromResidual.from_residual
+                      (Self :=
+                        core.result.Result.t
+                          i32.t
+                          core.num.error.ParseIntError.t)
+                      (R :=
+                        core.result.Result.t
+                          core.convert.Infallible.t
+                          core.num.error.ParseIntError.t)
+                      (Trait := ℐ))) in
+                let* α1 :
                     core.result.Result.t
                       core.convert.Infallible.t
                       core.num.error.ParseIntError.t :=
                   M.read residual in
-                let* α1 :
+                let* α2 :
                     core.result.Result.t i32.t core.num.error.ParseIntError.t :=
-                  M.call
-                    ((core.ops.try_trait.FromResidual.from_residual
-                        (Self :=
-                          core.result.Result.t
-                            i32.t
-                            core.num.error.ParseIntError.t)
-                        (Trait := ltac:(refine _)))
-                      α0) in
-                let* α2 : M.Val never.t := return_ α1 in
-                let* α3 := M.read α2 in
-                let* α4 : i32.t := never_to_any α3 in
-                M.alloc α4
+                  M.call (α0 α1) in
+                let* α3 : M.Val never.t := return_ α2 in
+                let* α4 := M.read α3 in
+                let* α5 : i32.t := never_to_any α4 in
+                M.alloc α5
               | _ => M.break_match
               end) :
               M (M.Val i32.t);
@@ -154,7 +164,7 @@ Definition multiply
               end) :
               M (M.Val i32.t)
           ] in
-      M.copy α4 in
+      M.copy α5 in
     let* α0 : i32.t := M.read first_number in
     let* α1 : i32.t := M.read second_number in
     let* α2 : i32.t := BinOp.Panic.mul α0 α1 in

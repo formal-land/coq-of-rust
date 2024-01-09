@@ -41,12 +41,11 @@ Section Impl_incrementer_Incrementer_t.
       }
   *)
   Definition new_default : M Self :=
-    let* α0 : i32.t :=
-      M.call
-        (core.default.Default.default
-          (Self := i32.t)
-          (Trait := ltac:(refine _))) in
-    M.call (incrementer.Incrementer.t::["new"] α0).
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.default.Default.default (Self := i32.t) (Trait := ℐ))) in
+    let* α1 : i32.t := M.call α0 in
+    M.call (incrementer.Incrementer.t::["new"] α1).
   
   Global Instance AssociatedFunction_new_default :
     Notations.DoubleColon Self "new_default" := {

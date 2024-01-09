@@ -83,13 +83,13 @@ Definition main : M unit :=
       M.call ((slice i32.t)::["into_vec"] α2) in
     M.alloc α3 in
   let* _ : M.Val unit :=
-    let* α0 : alloc.vec.Vec.t i32.t alloc.alloc.Global.t := M.read vec in
-    let* α1 : unit :=
-      M.call
-        ((generics_where_clauses.PrintInOption.print_in_option
-            (Self := alloc.vec.Vec.t i32.t alloc.alloc.Global.t)
-            (Trait := ltac:(refine _)))
-          α0) in
-    M.alloc α1 in
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        generics_where_clauses.PrintInOption.print_in_option
+          (Self := alloc.vec.Vec.t i32.t alloc.alloc.Global.t)
+          (Trait := ℐ))) in
+    let* α1 : alloc.vec.Vec.t i32.t alloc.alloc.Global.t := M.read vec in
+    let* α2 : unit := M.call (α0 α1) in
+    M.alloc α2 in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.

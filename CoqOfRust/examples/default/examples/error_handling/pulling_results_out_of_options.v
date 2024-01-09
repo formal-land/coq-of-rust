@@ -13,17 +13,17 @@ Definition double_first
         (core.option.Option.t
           (core.result.Result.t i32.t core.num.error.ParseIntError.t)) :=
   let* vec := M.alloc vec in
-  let* α0 : ref (slice (ref str.t)) :=
-    M.call
-      ((core.ops.deref.Deref.deref
-          (Self := alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t)
-          (Trait := ltac:(refine _)))
-        (borrow vec)) in
-  let* α1 : core.option.Option.t (ref (ref str.t)) :=
-    M.call ((slice (ref str.t))::["first"] α0) in
+  let* α0 : _ :=
+    ltac:(M.get_method (fun ℐ =>
+      core.ops.deref.Deref.deref
+        (Self := alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t)
+        (Trait := ℐ))) in
+  let* α1 : ref (slice (ref str.t)) := M.call (α0 (borrow vec)) in
+  let* α2 : core.option.Option.t (ref (ref str.t)) :=
+    M.call ((slice (ref str.t))::["first"] α1) in
   M.call
     ((core.option.Option.t (ref (ref str.t)))::["map"]
-      α1
+      α2
       (fun (α0 : ref (ref str.t)) =>
         (let* α0 := M.alloc α0 in
         match_operator

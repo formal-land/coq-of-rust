@@ -79,34 +79,38 @@ Definition sum_odd_numbers (up_to : u32.t) : M u32.t :=
   let* up_to := M.alloc up_to in
   let* acc : M.Val u32.t := M.alloc (Integer.of_Z 0) in
   let* _ : M.Val unit :=
-    let* α0 : u32.t := M.read up_to in
-    let* α1 : core.ops.range.Range.t u32.t :=
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.iter.traits.collect.IntoIterator.into_iter
+          (Self := core.ops.range.Range.t u32.t)
+          (Trait := ℐ))) in
+    let* α1 : u32.t := M.read up_to in
+    let* α2 : core.ops.range.Range.t u32.t :=
       M.call
-        ((core.iter.traits.collect.IntoIterator.into_iter
-            (Self := core.ops.range.Range.t u32.t)
-            (Trait := ltac:(refine _)))
+        (α0
           {|
             core.ops.range.Range.start := Integer.of_Z 0;
-            core.ops.range.Range.end_ := α0;
+            core.ops.range.Range.end_ := α1;
           |}) in
-    let* α2 : M.Val (core.ops.range.Range.t u32.t) := M.alloc α1 in
-    let* α3 : M.Val unit :=
+    let* α3 : M.Val (core.ops.range.Range.t u32.t) := M.alloc α2 in
+    let* α4 : M.Val unit :=
       match_operator
-        α2
+        α3
         [
           fun γ =>
             (let* iter := M.copy γ in
             M.loop
               (let* _ : M.Val unit :=
-                let* α0 : core.option.Option.t u32.t :=
-                  M.call
-                    ((core.iter.traits.iterator.Iterator.next
-                        (Self := core.ops.range.Range.t u32.t)
-                        (Trait := ltac:(refine _)))
-                      (borrow_mut iter)) in
-                let* α1 : M.Val (core.option.Option.t u32.t) := M.alloc α0 in
+                let* α0 : _ :=
+                  ltac:(M.get_method (fun ℐ =>
+                    core.iter.traits.iterator.Iterator.next
+                      (Self := core.ops.range.Range.t u32.t)
+                      (Trait := ℐ))) in
+                let* α1 : core.option.Option.t u32.t :=
+                  M.call (α0 (borrow_mut iter)) in
+                let* α2 : M.Val (core.option.Option.t u32.t) := M.alloc α1 in
                 match_operator
-                  α1
+                  α2
                   [
                     fun γ =>
                       (let* α0 := M.read γ in
@@ -158,5 +162,5 @@ Definition sum_odd_numbers (up_to : u32.t) : M u32.t :=
               M.alloc tt)) :
             M (M.Val unit)
         ] in
-    M.pure (use α3) in
+    M.pure (use α4) in
   M.read acc.

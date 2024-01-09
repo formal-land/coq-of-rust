@@ -178,9 +178,11 @@ Definition area
     (t : ref T)
     : M f64.t :=
   let* t := M.alloc t in
-  let* α0 : ref T := M.read t in
-  M.call
-    ((generics_bounds.HasArea.area (Self := T) (Trait := ltac:(refine _))) α0).
+  let* α0 : _ :=
+    ltac:(M.get_method (fun ℐ =>
+      generics_bounds.HasArea.area (Self := T) (Trait := ℐ))) in
+  let* α1 : ref T := M.read t in
+  M.call (α0 α1).
 
 (*
 fn main() {
@@ -232,24 +234,24 @@ Definition main : M unit :=
       let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
       let* α4 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α3) in
-      let* α5 : f64.t :=
-        M.call
-          ((generics_bounds.HasArea.area
-              (Self := generics_bounds.Rectangle.t)
-              (Trait := ltac:(refine _)))
-            (borrow rectangle)) in
-      let* α6 : M.Val f64.t := M.alloc α5 in
-      let* α7 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α6)) in
-      let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
-      let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-        M.alloc (borrow α8) in
-      let* α10 : ref (slice core.fmt.rt.Argument.t) :=
-        M.read (pointer_coercion "Unsize" α9) in
-      let* α11 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_v1"] α4 α10) in
-      let* α12 : unit := M.call (std.io.stdio._print α11) in
-      M.alloc α12 in
+      let* α5 : _ :=
+        ltac:(M.get_method (fun ℐ =>
+          generics_bounds.HasArea.area
+            (Self := generics_bounds.Rectangle.t)
+            (Trait := ℐ))) in
+      let* α6 : f64.t := M.call (α5 (borrow rectangle)) in
+      let* α7 : M.Val f64.t := M.alloc α6 in
+      let* α8 : core.fmt.rt.Argument.t :=
+        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α7)) in
+      let* α9 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α8 ] in
+      let* α10 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+        M.alloc (borrow α9) in
+      let* α11 : ref (slice core.fmt.rt.Argument.t) :=
+        M.read (pointer_coercion "Unsize" α10) in
+      let* α12 : core.fmt.Arguments.t :=
+        M.call (core.fmt.Arguments.t::["new_v1"] α4 α11) in
+      let* α13 : unit := M.call (std.io.stdio._print α12) in
+      M.alloc α13 in
     M.alloc tt in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.

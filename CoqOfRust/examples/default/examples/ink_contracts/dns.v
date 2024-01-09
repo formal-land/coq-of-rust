@@ -43,17 +43,19 @@ Section Impl_core_default_Default_for_dns_Mapping_t_K_V.
   Default
   *)
   Definition default : M (dns.Mapping.t K V) :=
-    let* α0 : core.marker.PhantomData.t K :=
-      M.call
-        (core.default.Default.default
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.default.Default.default
           (Self := core.marker.PhantomData.t K)
-          (Trait := ltac:(refine _))) in
-    let* α1 : core.marker.PhantomData.t V :=
-      M.call
-        (core.default.Default.default
+          (Trait := ℐ))) in
+    let* α1 : core.marker.PhantomData.t K := M.call α0 in
+    let* α2 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.default.Default.default
           (Self := core.marker.PhantomData.t V)
-          (Trait := ltac:(refine _))) in
-    M.pure {| dns.Mapping._key := α0; dns.Mapping._value := α1; |}.
+          (Trait := ℐ))) in
+    let* α3 : core.marker.PhantomData.t V := M.call α2 in
+    M.pure {| dns.Mapping._key := α1; dns.Mapping._value := α3; |}.
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -221,12 +223,11 @@ Section Impl_core_default_Default_for_dns_AccountId_t.
   Default
   *)
   Definition default : M dns.AccountId.t :=
-    let* α0 : u128.t :=
-      M.call
-        (core.default.Default.default
-          (Self := u128.t)
-          (Trait := ltac:(refine _))) in
-    M.pure (dns.AccountId.Build_t α0).
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.default.Default.default (Self := u128.t) (Trait := ℐ))) in
+    let* α1 : u128.t := M.call α0 in
+    M.pure (dns.AccountId.Build_t α1).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -597,9 +598,13 @@ fn zero_address() -> AccountId {
 }
 *)
 Definition zero_address : M dns.AccountId.t :=
-  M.call
-    ((core.convert.Into.into (Self := array u8.t) (Trait := ltac:(refine _)))
-      (repeat (Integer.of_Z 0) 32)).
+  let* α0 : _ :=
+    ltac:(M.get_method (fun ℐ =>
+      core.convert.Into.into
+        (Self := array u8.t)
+        (T := dns.AccountId.t)
+        (Trait := ℐ))) in
+  M.call (α0 (repeat (Integer.of_Z 0) 32)).
 
 Module  Impl_core_default_Default_for_dns_DomainNameService_t.
 Section Impl_core_default_Default_for_dns_DomainNameService_t.
@@ -625,37 +630,35 @@ Section Impl_core_default_Default_for_dns_DomainNameService_t.
         M.call (dns.Mapping.t (array u8.t) dns.AccountId.t)::["new"] in
       M.alloc α0 in
     let* _ : M.Val (core.option.Option.t u32.t) :=
-      let* α0 : array u8.t :=
-        M.call
-          (core.default.Default.default
-            (Self := array u8.t)
-            (Trait := ltac:(refine _))) in
-      let* α1 : dns.AccountId.t := M.call dns.zero_address in
-      let* α2 : core.option.Option.t u32.t :=
+      let* α0 : _ :=
+        ltac:(M.get_method (fun ℐ =>
+          core.default.Default.default (Self := array u8.t) (Trait := ℐ))) in
+      let* α1 : array u8.t := M.call α0 in
+      let* α2 : dns.AccountId.t := M.call dns.zero_address in
+      let* α3 : core.option.Option.t u32.t :=
         M.call
           ((dns.Mapping.t (array u8.t) dns.AccountId.t)::["insert"]
             (borrow_mut name_to_address)
-            α0
-            α1) in
-      M.alloc α2 in
+            α1
+            α2) in
+      M.alloc α3 in
     let* name_to_owner : M.Val (dns.Mapping.t (array u8.t) dns.AccountId.t) :=
       let* α0 : dns.Mapping.t (array u8.t) dns.AccountId.t :=
         M.call (dns.Mapping.t (array u8.t) dns.AccountId.t)::["new"] in
       M.alloc α0 in
     let* _ : M.Val (core.option.Option.t u32.t) :=
-      let* α0 : array u8.t :=
-        M.call
-          (core.default.Default.default
-            (Self := array u8.t)
-            (Trait := ltac:(refine _))) in
-      let* α1 : dns.AccountId.t := M.call dns.zero_address in
-      let* α2 : core.option.Option.t u32.t :=
+      let* α0 : _ :=
+        ltac:(M.get_method (fun ℐ =>
+          core.default.Default.default (Self := array u8.t) (Trait := ℐ))) in
+      let* α1 : array u8.t := M.call α0 in
+      let* α2 : dns.AccountId.t := M.call dns.zero_address in
+      let* α3 : core.option.Option.t u32.t :=
         M.call
           ((dns.Mapping.t (array u8.t) dns.AccountId.t)::["insert"]
             (borrow_mut name_to_owner)
-            α0
-            α1) in
-      M.alloc α2 in
+            α1
+            α2) in
+      M.alloc α3 in
     let* α0 : dns.Mapping.t (array u8.t) dns.AccountId.t :=
       M.read name_to_address in
     let* α1 : dns.Mapping.t (array u8.t) dns.AccountId.t :=
@@ -804,10 +807,12 @@ Section Impl_dns_DomainNameService_t.
       }
   *)
   Definition new : M Self :=
-    M.call
-      (core.default.Default.default
-        (Self := dns.DomainNameService.t)
-        (Trait := ltac:(refine _))).
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.default.Default.default
+          (Self := dns.DomainNameService.t)
+          (Trait := ℐ))) in
+    M.call α0.
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
@@ -971,16 +976,16 @@ Section Impl_dns_DomainNameService_t.
               α1) in
         M.alloc α2 in
       let* _ : M.Val unit :=
-        let* α0 : bool.t :=
-          M.call
-            ((core.cmp.PartialEq.ne
-                (Self := dns.AccountId.t)
-                (Trait := ltac:(refine _)))
-              (borrow caller)
-              (borrow owner)) in
-        let* α1 : M.Val bool.t := M.alloc α0 in
-        let* α2 : bool.t := M.read (use α1) in
-        if α2 then
+        let* α0 : _ :=
+          ltac:(M.get_method (fun ℐ =>
+            core.cmp.PartialEq.ne
+              (Self := dns.AccountId.t)
+              (Rhs := dns.AccountId.t)
+              (Trait := ℐ))) in
+        let* α1 : bool.t := M.call (α0 (borrow caller) (borrow owner)) in
+        let* α2 : M.Val bool.t := M.alloc α1 in
+        let* α3 : bool.t := M.read (use α2) in
+        if α3 then
           let* _ : M.Val never.t :=
             return_ (core.result.Result.Err dns.Error.CallerIsNotOwner) in
           let* α0 : M.Val unit := M.alloc tt in
@@ -1087,16 +1092,16 @@ Section Impl_dns_DomainNameService_t.
               α1) in
         M.alloc α2 in
       let* _ : M.Val unit :=
-        let* α0 : bool.t :=
-          M.call
-            ((core.cmp.PartialEq.ne
-                (Self := dns.AccountId.t)
-                (Trait := ltac:(refine _)))
-              (borrow caller)
-              (borrow owner)) in
-        let* α1 : M.Val bool.t := M.alloc α0 in
-        let* α2 : bool.t := M.read (use α1) in
-        if α2 then
+        let* α0 : _ :=
+          ltac:(M.get_method (fun ℐ =>
+            core.cmp.PartialEq.ne
+              (Self := dns.AccountId.t)
+              (Rhs := dns.AccountId.t)
+              (Trait := ℐ))) in
+        let* α1 : bool.t := M.call (α0 (borrow caller) (borrow owner)) in
+        let* α2 : M.Val bool.t := M.alloc α1 in
+        let* α3 : bool.t := M.read (use α2) in
+        if α3 then
           let* _ : M.Val never.t :=
             return_ (core.result.Result.Err dns.Error.CallerIsNotOwner) in
           let* α0 : M.Val unit := M.alloc tt in

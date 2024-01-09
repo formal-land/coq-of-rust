@@ -103,25 +103,25 @@ Definition main : M unit :=
         ] in
     M.copy α9 in
   let* _ : M.Val unit :=
-    let* α0 : core.option.Option.t std.process.ChildStdin.t :=
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        std.io.Write.write_all
+          (Self := std.process.ChildStdin.t)
+          (Trait := ℐ))) in
+    let* α1 : core.option.Option.t std.process.ChildStdin.t :=
       M.read process.["stdin"] in
-    let* α1 : std.process.ChildStdin.t :=
-      M.call ((core.option.Option.t std.process.ChildStdin.t)::["unwrap"] α0) in
-    let* α2 : M.Val std.process.ChildStdin.t := M.alloc α1 in
-    let* α3 : ref (ref str.t) := M.read child_processes_pipes.PANGRAM in
-    let* α4 : ref str.t := M.read (deref α3) in
-    let* α5 : ref (slice u8.t) := M.call (str.t::["as_bytes"] α4) in
-    let* α6 : core.result.Result.t unit std.io.error.Error.t :=
-      M.call
-        ((std.io.Write.write_all
-            (Self := std.process.ChildStdin.t)
-            (Trait := ltac:(refine _)))
-          (borrow_mut α2)
-          α5) in
-    let* α7 : M.Val (core.result.Result.t unit std.io.error.Error.t) :=
-      M.alloc α6 in
+    let* α2 : std.process.ChildStdin.t :=
+      M.call ((core.option.Option.t std.process.ChildStdin.t)::["unwrap"] α1) in
+    let* α3 : M.Val std.process.ChildStdin.t := M.alloc α2 in
+    let* α4 : ref (ref str.t) := M.read child_processes_pipes.PANGRAM in
+    let* α5 : ref str.t := M.read (deref α4) in
+    let* α6 : ref (slice u8.t) := M.call (str.t::["as_bytes"] α5) in
+    let* α7 : core.result.Result.t unit std.io.error.Error.t :=
+      M.call (α0 (borrow_mut α3) α6) in
+    let* α8 : M.Val (core.result.Result.t unit std.io.error.Error.t) :=
+      M.alloc α7 in
     match_operator
-      α7
+      α8
       [
         fun γ =>
           (let* α0 := M.read γ in
@@ -175,23 +175,23 @@ Definition main : M unit :=
   let* s : M.Val alloc.string.String.t :=
     let* α0 : alloc.string.String.t := M.call alloc.string.String.t::["new"] in
     M.alloc α0 in
-  let* α0 : core.option.Option.t std.process.ChildStdout.t :=
+  let* α0 : _ :=
+    ltac:(M.get_method (fun ℐ =>
+      std.io.Read.read_to_string
+        (Self := std.process.ChildStdout.t)
+        (Trait := ℐ))) in
+  let* α1 : core.option.Option.t std.process.ChildStdout.t :=
     M.read process.["stdout"] in
-  let* α1 : std.process.ChildStdout.t :=
-    M.call ((core.option.Option.t std.process.ChildStdout.t)::["unwrap"] α0) in
-  let* α2 : M.Val std.process.ChildStdout.t := M.alloc α1 in
-  let* α3 : core.result.Result.t usize.t std.io.error.Error.t :=
-    M.call
-      ((std.io.Read.read_to_string
-          (Self := std.process.ChildStdout.t)
-          (Trait := ltac:(refine _)))
-        (borrow_mut α2)
-        (borrow_mut s)) in
-  let* α4 : M.Val (core.result.Result.t usize.t std.io.error.Error.t) :=
-    M.alloc α3 in
+  let* α2 : std.process.ChildStdout.t :=
+    M.call ((core.option.Option.t std.process.ChildStdout.t)::["unwrap"] α1) in
+  let* α3 : M.Val std.process.ChildStdout.t := M.alloc α2 in
+  let* α4 : core.result.Result.t usize.t std.io.error.Error.t :=
+    M.call (α0 (borrow_mut α3) (borrow_mut s)) in
+  let* α5 : M.Val (core.result.Result.t usize.t std.io.error.Error.t) :=
+    M.alloc α4 in
   let* α0 : M.Val unit :=
     match_operator
-      α4
+      α5
       [
         fun γ =>
           (let* α0 := M.read γ in

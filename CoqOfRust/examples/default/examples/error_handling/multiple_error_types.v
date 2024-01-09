@@ -12,17 +12,17 @@ Definition double_first
     : M i32.t :=
   let* vec := M.alloc vec in
   let* first : M.Val (ref (ref str.t)) :=
-    let* α0 : ref (slice (ref str.t)) :=
-      M.call
-        ((core.ops.deref.Deref.deref
-            (Self := alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t)
-            (Trait := ltac:(refine _)))
-          (borrow vec)) in
-    let* α1 : core.option.Option.t (ref (ref str.t)) :=
-      M.call ((slice (ref str.t))::["first"] α0) in
-    let* α2 : ref (ref str.t) :=
-      M.call ((core.option.Option.t (ref (ref str.t)))::["unwrap"] α1) in
-    M.alloc α2 in
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.ops.deref.Deref.deref
+          (Self := alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t)
+          (Trait := ℐ))) in
+    let* α1 : ref (slice (ref str.t)) := M.call (α0 (borrow vec)) in
+    let* α2 : core.option.Option.t (ref (ref str.t)) :=
+      M.call ((slice (ref str.t))::["first"] α1) in
+    let* α3 : ref (ref str.t) :=
+      M.call ((core.option.Option.t (ref (ref str.t)))::["unwrap"] α2) in
+    M.alloc α3 in
   let* α0 : ref (ref str.t) := M.read first in
   let* α1 : ref str.t := M.read (deref α0) in
   let* α2 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=

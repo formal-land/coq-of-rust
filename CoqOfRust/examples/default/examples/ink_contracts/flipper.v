@@ -41,12 +41,11 @@ Section Impl_flipper_Flipper_t.
       }
   *)
   Definition new_default : M Self :=
-    let* α0 : bool.t :=
-      M.call
-        (core.default.Default.default
-          (Self := bool.t)
-          (Trait := ltac:(refine _))) in
-    M.call (flipper.Flipper.t::["new"] α0).
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.default.Default.default (Self := bool.t) (Trait := ℐ))) in
+    let* α1 : bool.t := M.call α0 in
+    M.call (flipper.Flipper.t::["new"] α1).
   
   Global Instance AssociatedFunction_new_default :
     Notations.DoubleColon Self "new_default" := {

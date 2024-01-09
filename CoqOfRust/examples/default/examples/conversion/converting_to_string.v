@@ -75,12 +75,12 @@ Definition main : M unit :=
   let* circle : M.Val converting_to_string.Circle.t :=
     M.alloc {| converting_to_string.Circle.radius := Integer.of_Z 6; |} in
   let* _ : M.Val alloc.string.String.t :=
-    let* α0 : alloc.string.String.t :=
-      M.call
-        ((alloc.string.ToString.to_string
-            (Self := converting_to_string.Circle.t)
-            (Trait := ltac:(refine _)))
-          (borrow circle)) in
-    M.alloc α0 in
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        alloc.string.ToString.to_string
+          (Self := converting_to_string.Circle.t)
+          (Trait := ℐ))) in
+    let* α1 : alloc.string.String.t := M.call (α0 (borrow circle)) in
+    M.alloc α1 in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.

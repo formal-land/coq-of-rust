@@ -119,51 +119,54 @@ Definition main : M unit :=
       M.call (str.t::["split_whitespace"] α0) in
     M.alloc α1 in
   let* _ : M.Val unit :=
-    let* α0 : core.str.iter.SplitWhitespace.t := M.read chunked_data in
-    let* α1 :
-        core.iter.adapters.enumerate.Enumerate.t
-          core.str.iter.SplitWhitespace.t :=
-      M.call
-        ((core.iter.traits.iterator.Iterator.enumerate
-            (Self := core.str.iter.SplitWhitespace.t)
-            (Trait := ltac:(refine _)))
-          α0) in
-    let* α2 :
-        core.iter.adapters.enumerate.Enumerate.t
-          core.str.iter.SplitWhitespace.t :=
-      M.call
-        ((core.iter.traits.collect.IntoIterator.into_iter
-            (Self :=
-              core.iter.adapters.enumerate.Enumerate.t
-                core.str.iter.SplitWhitespace.t)
-            (Trait := ltac:(refine _)))
-          α1) in
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.iter.traits.collect.IntoIterator.into_iter
+          (Self :=
+            core.iter.adapters.enumerate.Enumerate.t
+              core.str.iter.SplitWhitespace.t)
+          (Trait := ℐ))) in
+    let* α1 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.iter.traits.iterator.Iterator.enumerate
+          (Self := core.str.iter.SplitWhitespace.t)
+          (Trait := ℐ))) in
+    let* α2 : core.str.iter.SplitWhitespace.t := M.read chunked_data in
     let* α3 :
+        core.iter.adapters.enumerate.Enumerate.t
+          core.str.iter.SplitWhitespace.t :=
+      M.call (α1 α2) in
+    let* α4 :
+        core.iter.adapters.enumerate.Enumerate.t
+          core.str.iter.SplitWhitespace.t :=
+      M.call (α0 α3) in
+    let* α5 :
         M.Val
           (core.iter.adapters.enumerate.Enumerate.t
             core.str.iter.SplitWhitespace.t) :=
-      M.alloc α2 in
-    let* α4 : M.Val unit :=
+      M.alloc α4 in
+    let* α6 : M.Val unit :=
       match_operator
-        α3
+        α5
         [
           fun γ =>
             (let* iter := M.copy γ in
             M.loop
               (let* _ : M.Val unit :=
-                let* α0 : core.option.Option.t (usize.t * (ref str.t)) :=
-                  M.call
-                    ((core.iter.traits.iterator.Iterator.next
-                        (Self :=
-                          core.iter.adapters.enumerate.Enumerate.t
-                            core.str.iter.SplitWhitespace.t)
-                        (Trait := ltac:(refine _)))
-                      (borrow_mut iter)) in
-                let* α1 :
+                let* α0 : _ :=
+                  ltac:(M.get_method (fun ℐ =>
+                    core.iter.traits.iterator.Iterator.next
+                      (Self :=
+                        core.iter.adapters.enumerate.Enumerate.t
+                          core.str.iter.SplitWhitespace.t)
+                      (Trait := ℐ))) in
+                let* α1 : core.option.Option.t (usize.t * (ref str.t)) :=
+                  M.call (α0 (borrow_mut iter)) in
+                let* α2 :
                     M.Val (core.option.Option.t (usize.t * (ref str.t))) :=
-                  M.alloc α0 in
+                  M.alloc α1 in
                 match_operator
-                  α1
+                  α2
                   [
                     fun γ =>
                       (let* α0 := M.read γ in
@@ -228,19 +231,33 @@ Definition main : M unit :=
                               M.call
                                 (std.thread.spawn
                                   ((let* result : M.Val u32.t :=
-                                    let* α0 : ref str.t :=
+                                    let* α0 : _ :=
+                                      ltac:(M.get_method (fun ℐ =>
+                                        core.iter.traits.iterator.Iterator.sum
+                                          (Self :=
+                                            core.iter.adapters.map.Map.t
+                                              core.str.iter.Chars.t
+                                              (char.t -> M u32.t))
+                                          (S := u32.t)
+                                          (Trait := ℐ))) in
+                                    let* α1 : _ :=
+                                      ltac:(M.get_method (fun ℐ =>
+                                        core.iter.traits.iterator.Iterator.map
+                                          (Self := core.str.iter.Chars.t)
+                                          (B := u32.t)
+                                          (F := char.t -> M u32.t)
+                                          (Trait := ℐ))) in
+                                    let* α2 : ref str.t :=
                                       M.read data_segment in
-                                    let* α1 : core.str.iter.Chars.t :=
-                                      M.call (str.t::["chars"] α0) in
-                                    let* α2 :
+                                    let* α3 : core.str.iter.Chars.t :=
+                                      M.call (str.t::["chars"] α2) in
+                                    let* α4 :
                                         core.iter.adapters.map.Map.t
                                           core.str.iter.Chars.t
                                           (char.t -> M u32.t) :=
                                       M.call
-                                        ((core.iter.traits.iterator.Iterator.map
-                                            (Self := core.str.iter.Chars.t)
-                                            (Trait := ltac:(refine _)))
-                                          α1
+                                        (α1
+                                          α3
                                           (fun (α0 : char.t) =>
                                             (let* α0 := M.alloc α0 in
                                             match_operator
@@ -269,16 +286,8 @@ Definition main : M unit :=
                                                   M u32.t
                                               ]) :
                                             M u32.t)) in
-                                    let* α3 : u32.t :=
-                                      M.call
-                                        ((core.iter.traits.iterator.Iterator.sum
-                                            (Self :=
-                                              core.iter.adapters.map.Map.t
-                                                core.str.iter.Chars.t
-                                                (char.t -> M u32.t))
-                                            (Trait := ltac:(refine _)))
-                                          α2) in
-                                    M.alloc α3 in
+                                    let* α5 : u32.t := M.call (α0 α4) in
+                                    M.alloc α5 in
                                   let* _ : M.Val unit :=
                                     let* _ : M.Val unit :=
                                       let* α0 : ref str.t :=
@@ -343,37 +352,54 @@ Definition main : M unit :=
               M.alloc tt)) :
             M (M.Val unit)
         ] in
-    M.pure (use α4) in
+    M.pure (use α6) in
   let* final_result : M.Val u32.t :=
-    let* α0 :
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.iter.traits.iterator.Iterator.sum
+          (Self :=
+            core.iter.adapters.map.Map.t
+              (alloc.vec.into_iter.IntoIter.t
+                (std.thread.JoinHandle.t u32.t)
+                alloc.alloc.Global.t)
+              ((std.thread.JoinHandle.t u32.t) -> M u32.t))
+          (S := u32.t)
+          (Trait := ℐ))) in
+    let* α1 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.iter.traits.iterator.Iterator.map
+          (Self :=
+            alloc.vec.into_iter.IntoIter.t
+              (std.thread.JoinHandle.t u32.t)
+              alloc.alloc.Global.t)
+          (B := u32.t)
+          (F := (std.thread.JoinHandle.t u32.t) -> M u32.t)
+          (Trait := ℐ))) in
+    let* α2 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.iter.traits.collect.IntoIterator.into_iter
+          (Self :=
+            alloc.vec.Vec.t
+              (std.thread.JoinHandle.t u32.t)
+              alloc.alloc.Global.t)
+          (Trait := ℐ))) in
+    let* α3 :
         alloc.vec.Vec.t (std.thread.JoinHandle.t u32.t) alloc.alloc.Global.t :=
       M.read children in
-    let* α1 :
+    let* α4 :
         alloc.vec.into_iter.IntoIter.t
           (std.thread.JoinHandle.t u32.t)
           alloc.alloc.Global.t :=
-      M.call
-        ((core.iter.traits.collect.IntoIterator.into_iter
-            (Self :=
-              alloc.vec.Vec.t
-                (std.thread.JoinHandle.t u32.t)
-                alloc.alloc.Global.t)
-            (Trait := ltac:(refine _)))
-          α0) in
-    let* α2 :
+      M.call (α2 α3) in
+    let* α5 :
         core.iter.adapters.map.Map.t
           (alloc.vec.into_iter.IntoIter.t
             (std.thread.JoinHandle.t u32.t)
             alloc.alloc.Global.t)
           ((std.thread.JoinHandle.t u32.t) -> M u32.t) :=
       M.call
-        ((core.iter.traits.iterator.Iterator.map
-            (Self :=
-              alloc.vec.into_iter.IntoIter.t
-                (std.thread.JoinHandle.t u32.t)
-                alloc.alloc.Global.t)
-            (Trait := ltac:(refine _)))
-          α1
+        (α1
+          α4
           (fun (α0 : std.thread.JoinHandle.t u32.t) =>
             (let* α0 := M.alloc α0 in
             match_operator
@@ -397,18 +423,8 @@ Definition main : M unit :=
                   M u32.t
               ]) :
             M u32.t)) in
-    let* α3 : u32.t :=
-      M.call
-        ((core.iter.traits.iterator.Iterator.sum
-            (Self :=
-              core.iter.adapters.map.Map.t
-                (alloc.vec.into_iter.IntoIter.t
-                  (std.thread.JoinHandle.t u32.t)
-                  alloc.alloc.Global.t)
-                ((std.thread.JoinHandle.t u32.t) -> M u32.t))
-            (Trait := ltac:(refine _)))
-          α2) in
-    M.alloc α3 in
+    let* α6 : u32.t := M.call (α0 α5) in
+    M.alloc α6 in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "Final sum result: ") in

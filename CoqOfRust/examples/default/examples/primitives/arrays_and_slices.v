@@ -249,18 +249,22 @@ Definition main : M unit :=
       M.alloc α5 in
     M.alloc tt in
   let* _ : M.Val unit :=
-    let* α0 : ref (slice i32.t) :=
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.ops.index.Index.index
+          (Self := array i32.t)
+          (Idx := core.ops.range.Range.t usize.t)
+          (Trait := ℐ))) in
+    let* α1 : ref (slice i32.t) :=
       M.call
-        ((core.ops.index.Index.index
-            (Self := array i32.t)
-            (Trait := ltac:(refine _)))
+        (α0
           (borrow ys)
           {|
             core.ops.range.Range.start := Integer.of_Z 1;
             core.ops.range.Range.end_ := Integer.of_Z 4;
           |}) in
-    let* α1 : unit := M.call (arrays_and_slices.analyze_slice α0) in
-    M.alloc α1 in
+    let* α2 : unit := M.call (arrays_and_slices.analyze_slice α1) in
+    M.alloc α2 in
   let* empty_array : M.Val (array u32.t) := M.alloc [ ] in
   let* _ : M.Val unit :=
     let* α0 : M.Val (ref (array u32.t)) := M.alloc (borrow empty_array) in
@@ -279,18 +283,18 @@ Definition main : M unit :=
             let γ0_1 := Tuple.Access.right γ in
             let* left_val := M.copy γ0_0 in
             let* right_val := M.copy γ0_1 in
-            let* α0 : ref (ref (array u32.t)) := M.read left_val in
-            let* α1 : ref (ref (array u32.t)) := M.read right_val in
-            let* α2 : bool.t :=
-              M.call
-                ((core.cmp.PartialEq.eq
-                    (Self := ref (array u32.t))
-                    (Trait := ltac:(refine _)))
-                  α0
-                  α1) in
-            let* α3 : M.Val bool.t := M.alloc (UnOp.not α2) in
-            let* α4 : bool.t := M.read (use α3) in
-            if α4 then
+            let* α0 : _ :=
+              ltac:(M.get_method (fun ℐ =>
+                core.cmp.PartialEq.eq
+                  (Self := ref (array u32.t))
+                  (Rhs := ref (array u32.t))
+                  (Trait := ℐ))) in
+            let* α1 : ref (ref (array u32.t)) := M.read left_val in
+            let* α2 : ref (ref (array u32.t)) := M.read right_val in
+            let* α3 : bool.t := M.call (α0 α1 α2) in
+            let* α4 : M.Val bool.t := M.alloc (UnOp.not α3) in
+            let* α5 : bool.t := M.read (use α4) in
+            if α5 then
               let* kind : M.Val core.panicking.AssertKind.t :=
                 M.alloc core.panicking.AssertKind.Eq in
               let* _ : M.Val never.t :=
@@ -316,19 +320,20 @@ Definition main : M unit :=
       ] in
   let* _ : M.Val unit :=
     let* α0 : M.Val (ref (array u32.t)) := M.alloc (borrow empty_array) in
-    let* α1 : M.Val (array u32.t) := M.alloc [ ] in
-    let* α2 : ref (slice u32.t) :=
-      M.call
-        ((core.ops.index.Index.index
-            (Self := array u32.t)
-            (Trait := ltac:(refine _)))
-          (borrow α1)
-          core.ops.range.RangeFull.Build) in
-    let* α3 : M.Val (ref (slice u32.t)) := M.alloc α2 in
-    let* α4 : M.Val ((ref (ref (array u32.t))) * (ref (ref (slice u32.t)))) :=
-      M.alloc (borrow α0, borrow α3) in
+    let* α1 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.ops.index.Index.index
+          (Self := array u32.t)
+          (Idx := core.ops.range.RangeFull.t)
+          (Trait := ℐ))) in
+    let* α2 : M.Val (array u32.t) := M.alloc [ ] in
+    let* α3 : ref (slice u32.t) :=
+      M.call (α1 (borrow α2) core.ops.range.RangeFull.Build) in
+    let* α4 : M.Val (ref (slice u32.t)) := M.alloc α3 in
+    let* α5 : M.Val ((ref (ref (array u32.t))) * (ref (ref (slice u32.t)))) :=
+      M.alloc (borrow α0, borrow α4) in
     match_operator
-      α4
+      α5
       [
         fun γ =>
           (let* α0 := M.read γ in
@@ -338,18 +343,18 @@ Definition main : M unit :=
             let γ0_1 := Tuple.Access.right γ in
             let* left_val := M.copy γ0_0 in
             let* right_val := M.copy γ0_1 in
-            let* α0 : ref (ref (array u32.t)) := M.read left_val in
-            let* α1 : ref (ref (slice u32.t)) := M.read right_val in
-            let* α2 : bool.t :=
-              M.call
-                ((core.cmp.PartialEq.eq
-                    (Self := ref (array u32.t))
-                    (Trait := ltac:(refine _)))
-                  α0
-                  α1) in
-            let* α3 : M.Val bool.t := M.alloc (UnOp.not α2) in
-            let* α4 : bool.t := M.read (use α3) in
-            if α4 then
+            let* α0 : _ :=
+              ltac:(M.get_method (fun ℐ =>
+                core.cmp.PartialEq.eq
+                  (Self := ref (array u32.t))
+                  (Rhs := ref (slice u32.t))
+                  (Trait := ℐ))) in
+            let* α1 : ref (ref (array u32.t)) := M.read left_val in
+            let* α2 : ref (ref (slice u32.t)) := M.read right_val in
+            let* α3 : bool.t := M.call (α0 α1 α2) in
+            let* α4 : M.Val bool.t := M.alloc (UnOp.not α3) in
+            let* α5 : bool.t := M.read (use α4) in
+            if α5 then
               let* kind : M.Val core.panicking.AssertKind.t :=
                 M.alloc core.panicking.AssertKind.Eq in
               let* _ : M.Val never.t :=
@@ -373,37 +378,41 @@ Definition main : M unit :=
           end) :
           M (M.Val unit)
       ] in
-  let* α0 : M.Val (ref (array i32.t)) := M.alloc (borrow xs) in
-  let* α1 : ref (slice i32.t) := M.read (pointer_coercion "Unsize" α0) in
-  let* α2 : usize.t := M.call ((slice i32.t)::["len"] α1) in
-  let* α3 : usize.t := BinOp.Panic.add α2 (Integer.of_Z 1) in
-  let* α4 : core.ops.range.Range.t usize.t :=
+  let* α0 : _ :=
+    ltac:(M.get_method (fun ℐ =>
+      core.iter.traits.collect.IntoIterator.into_iter
+        (Self := core.ops.range.Range.t usize.t)
+        (Trait := ℐ))) in
+  let* α1 : M.Val (ref (array i32.t)) := M.alloc (borrow xs) in
+  let* α2 : ref (slice i32.t) := M.read (pointer_coercion "Unsize" α1) in
+  let* α3 : usize.t := M.call ((slice i32.t)::["len"] α2) in
+  let* α4 : usize.t := BinOp.Panic.add α3 (Integer.of_Z 1) in
+  let* α5 : core.ops.range.Range.t usize.t :=
     M.call
-      ((core.iter.traits.collect.IntoIterator.into_iter
-          (Self := core.ops.range.Range.t usize.t)
-          (Trait := ltac:(refine _)))
+      (α0
         {|
           core.ops.range.Range.start := Integer.of_Z 0;
-          core.ops.range.Range.end_ := α3;
+          core.ops.range.Range.end_ := α4;
         |}) in
-  let* α5 : M.Val (core.ops.range.Range.t usize.t) := M.alloc α4 in
-  let* α6 : M.Val unit :=
+  let* α6 : M.Val (core.ops.range.Range.t usize.t) := M.alloc α5 in
+  let* α7 : M.Val unit :=
     match_operator
-      α5
+      α6
       [
         fun γ =>
           (let* iter := M.copy γ in
           M.loop
             (let* _ : M.Val unit :=
-              let* α0 : core.option.Option.t usize.t :=
-                M.call
-                  ((core.iter.traits.iterator.Iterator.next
-                      (Self := core.ops.range.Range.t usize.t)
-                      (Trait := ltac:(refine _)))
-                    (borrow_mut iter)) in
-              let* α1 : M.Val (core.option.Option.t usize.t) := M.alloc α0 in
+              let* α0 : _ :=
+                ltac:(M.get_method (fun ℐ =>
+                  core.iter.traits.iterator.Iterator.next
+                    (Self := core.ops.range.Range.t usize.t)
+                    (Trait := ℐ))) in
+              let* α1 : core.option.Option.t usize.t :=
+                M.call (α0 (borrow_mut iter)) in
+              let* α2 : M.Val (core.option.Option.t usize.t) := M.alloc α1 in
               match_operator
-                α1
+                α2
                 [
                   fun γ =>
                     (let* α0 := M.read γ in
@@ -525,4 +534,4 @@ Definition main : M unit :=
             M.alloc tt)) :
           M (M.Val unit)
       ] in
-  M.read (use α6).
+  M.read (use α7).

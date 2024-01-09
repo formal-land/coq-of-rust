@@ -57,33 +57,37 @@ Definition main : M unit :=
             (Integer.of_Z 4)) in
       M.alloc α0 in
     M.alloc tt in
-  let* α0 : core.ops.range.Range.t u32.t :=
+  let* α0 : _ :=
+    ltac:(M.get_method (fun ℐ =>
+      core.iter.traits.collect.IntoIterator.into_iter
+        (Self := core.ops.range.Range.t u32.t)
+        (Trait := ℐ))) in
+  let* α1 : core.ops.range.Range.t u32.t :=
     M.call
-      ((core.iter.traits.collect.IntoIterator.into_iter
-          (Self := core.ops.range.Range.t u32.t)
-          (Trait := ltac:(refine _)))
+      (α0
         {|
           core.ops.range.Range.start := Integer.of_Z 0;
           core.ops.range.Range.end_ := Integer.of_Z 1000;
         |}) in
-  let* α1 : M.Val (core.ops.range.Range.t u32.t) := M.alloc α0 in
-  let* α2 : M.Val unit :=
+  let* α2 : M.Val (core.ops.range.Range.t u32.t) := M.alloc α1 in
+  let* α3 : M.Val unit :=
     match_operator
-      α1
+      α2
       [
         fun γ =>
           (let* iter := M.copy γ in
           M.loop
             (let* _ : M.Val unit :=
-              let* α0 : core.option.Option.t u32.t :=
-                M.call
-                  ((core.iter.traits.iterator.Iterator.next
-                      (Self := core.ops.range.Range.t u32.t)
-                      (Trait := ltac:(refine _)))
-                    (borrow_mut iter)) in
-              let* α1 : M.Val (core.option.Option.t u32.t) := M.alloc α0 in
+              let* α0 : _ :=
+                ltac:(M.get_method (fun ℐ =>
+                  core.iter.traits.iterator.Iterator.next
+                    (Self := core.ops.range.Range.t u32.t)
+                    (Trait := ℐ))) in
+              let* α1 : core.option.Option.t u32.t :=
+                M.call (α0 (borrow_mut iter)) in
+              let* α2 : M.Val (core.option.Option.t u32.t) := M.alloc α1 in
               match_operator
-                α1
+                α2
                 [
                   fun γ =>
                     (let* α0 := M.read γ in
@@ -113,4 +117,4 @@ Definition main : M unit :=
             M.alloc tt)) :
           M (M.Val unit)
       ] in
-  M.read (use α2).
+  M.read (use α3).

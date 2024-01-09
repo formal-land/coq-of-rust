@@ -112,27 +112,27 @@ Definition double_first
     (vec : alloc.vec.Vec.t (ref str.t) alloc.vec.Vec.Default.A)
     : M ltac:(defining_an_error_type.Result i32.t) :=
   let* vec := M.alloc vec in
-  let* α0 : ref (slice (ref str.t)) :=
-    M.call
-      ((core.ops.deref.Deref.deref
-          (Self := alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t)
-          (Trait := ltac:(refine _)))
-        (borrow vec)) in
-  let* α1 : core.option.Option.t (ref (ref str.t)) :=
-    M.call ((slice (ref str.t))::["first"] α0) in
-  let* α2 :
+  let* α0 : _ :=
+    ltac:(M.get_method (fun ℐ =>
+      core.ops.deref.Deref.deref
+        (Self := alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t)
+        (Trait := ℐ))) in
+  let* α1 : ref (slice (ref str.t)) := M.call (α0 (borrow vec)) in
+  let* α2 : core.option.Option.t (ref (ref str.t)) :=
+    M.call ((slice (ref str.t))::["first"] α1) in
+  let* α3 :
       core.result.Result.t
         (ref (ref str.t))
         defining_an_error_type.DoubleError.t :=
     M.call
       ((core.option.Option.t (ref (ref str.t)))::["ok_or"]
-        α1
+        α2
         defining_an_error_type.DoubleError.Build) in
   M.call
     ((core.result.Result.t
           (ref (ref str.t))
           defining_an_error_type.DoubleError.t)::["and_then"]
-      α2
+      α3
       (fun (α0 : ref (ref str.t)) =>
         (let* α0 := M.alloc α0 in
         match_operator

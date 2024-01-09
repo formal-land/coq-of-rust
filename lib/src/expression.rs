@@ -69,9 +69,9 @@ pub(crate) enum ExprKind {
         ty_name: String,
         ty: Rc<CoqType>,
     },
-    VarWithSelfTy {
+    VarWithTys {
         path: Path,
-        self_ty: Rc<CoqType>,
+        tys: Vec<(String, Rc<CoqType>)>,
     },
     AssociatedFunction {
         ty: Rc<CoqType>,
@@ -193,10 +193,7 @@ impl Expr {
                 ty_name: _,
                 ty: _,
             } => false,
-            ExprKind::VarWithSelfTy {
-                path: _,
-                self_ty: _,
-            } => false,
+            ExprKind::VarWithTys { path: _, tys: _ } => false,
             ExprKind::AssociatedFunction { ty: _, func: _ } => false,
             ExprKind::Literal(_) => false,
             ExprKind::NonHirLiteral(_) => false,
@@ -386,14 +383,17 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Rc<Expr>) -> (Rc<Expr>,
             })),
             fresh_vars,
         ),
-        ExprKind::VarWithSelfTy { path, self_ty } => (
-            pure(Rc::new(Expr {
-                kind: Rc::new(ExprKind::VarWithSelfTy {
+        ExprKind::VarWithTys { path, tys } => (
+            Rc::new(Expr {
+                kind: Rc::new(ExprKind::VarWithTys {
                     path: path.clone(),
-                    self_ty: mt_ty(self_ty.clone()),
+                    tys: tys
+                        .iter()
+                        .map(|(name, ty)| (name.clone(), mt_ty(ty.clone())))
+                        .collect(),
                 }),
                 ty,
-            })),
+            }),
             fresh_vars,
         ),
         ExprKind::AssociatedFunction { .. } => (pure(expr.clone()), fresh_vars),
@@ -853,26 +853,29 @@ impl ExprKind {
                     ]),
                 ]),
             ),
-            ExprKind::VarWithSelfTy { path, self_ty } => paren(
-                with_paren,
+            ExprKind::VarWithTys { path, tys } => nest([
+                text("ltac:(M.get_method (fun ℐ =>"),
+                line(),
                 nest([
                     path.to_doc(),
+                    concat(tys.iter().map(|(name, ty)| {
+                        concat([
+                            line(),
+                            nest([
+                                text("("),
+                                text(name),
+                                text(" :="),
+                                line(),
+                                ty.to_coq().to_doc(false),
+                                text(")"),
+                            ]),
+                        ])
+                    })),
                     line(),
-                    nest([
-                        text("(Self :="),
-                        line(),
-                        self_ty.to_coq().to_doc(false),
-                        text(")"),
-                    ]),
-                    line(),
-                    nest([
-                        text("(Trait :="),
-                        line(),
-                        text("ltac:(refine _)"),
-                        text(")"),
-                    ]),
+                    text("(Trait := ℐ)"),
                 ]),
-            ),
+                text("))"),
+            ]),
             ExprKind::AssociatedFunction { ty, func } => nest([
                 ty.to_coq().to_doc(true),
                 text("::["),

@@ -304,45 +304,47 @@ Definition main : M unit :=
           (borrow_mut contacts)
           (borrow (mk_str "Ashley"))) in
     M.alloc α0 in
-  let* α0 : std.collections.hash.map.Iter.t (ref str.t) (ref str.t) :=
+  let* α0 : _ :=
+    ltac:(M.get_method (fun ℐ =>
+      core.iter.traits.collect.IntoIterator.into_iter
+        (Self := std.collections.hash.map.Iter.t (ref str.t) (ref str.t))
+        (Trait := ℐ))) in
+  let* α1 : std.collections.hash.map.Iter.t (ref str.t) (ref str.t) :=
     M.call
       ((std.collections.hash.map.HashMap.t
             (ref str.t)
             (ref str.t)
             std.collections.hash.map.RandomState.t)::["iter"]
         (borrow contacts)) in
-  let* α1 : std.collections.hash.map.Iter.t (ref str.t) (ref str.t) :=
-    M.call
-      ((core.iter.traits.collect.IntoIterator.into_iter
-          (Self := std.collections.hash.map.Iter.t (ref str.t) (ref str.t))
-          (Trait := ltac:(refine _)))
-        α0) in
-  let* α2 : M.Val (std.collections.hash.map.Iter.t (ref str.t) (ref str.t)) :=
-    M.alloc α1 in
-  let* α3 : M.Val unit :=
+  let* α2 : std.collections.hash.map.Iter.t (ref str.t) (ref str.t) :=
+    M.call (α0 α1) in
+  let* α3 : M.Val (std.collections.hash.map.Iter.t (ref str.t) (ref str.t)) :=
+    M.alloc α2 in
+  let* α4 : M.Val unit :=
     match_operator
-      α2
+      α3
       [
         fun γ =>
           (let* iter := M.copy γ in
           M.loop
             (let* _ : M.Val unit :=
-              let* α0 :
+              let* α0 : _ :=
+                ltac:(M.get_method (fun ℐ =>
+                  core.iter.traits.iterator.Iterator.next
+                    (Self :=
+                      std.collections.hash.map.Iter.t (ref str.t) (ref str.t))
+                    (Trait := ℐ))) in
+              let* α1 :
                   core.option.Option.t
                     ((ref (ref str.t)) * (ref (ref str.t))) :=
-                M.call
-                  ((core.iter.traits.iterator.Iterator.next
-                      (Self :=
-                        std.collections.hash.map.Iter.t (ref str.t) (ref str.t))
-                      (Trait := ltac:(refine _)))
-                    (borrow_mut iter)) in
-              let* α1 :
+                M.call (α0 (borrow_mut iter)) in
+              let* α2 :
                   M.Val
                     (core.option.Option.t
                       ((ref (ref str.t)) * (ref (ref str.t)))) :=
-                M.alloc α0 in
+                M.alloc α1 in
               match_operator
-                α1
+                α2
                 [
                   fun γ =>
                     (let* α0 := M.read γ in
@@ -416,4 +418,4 @@ Definition main : M unit :=
             M.alloc tt)) :
           M (M.Val unit)
       ] in
-  M.read (use α3).
+  M.read (use α4).

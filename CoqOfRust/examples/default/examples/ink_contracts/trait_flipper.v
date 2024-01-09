@@ -39,12 +39,11 @@ Section Impl_trait_flipper_Flipper_t.
       }
   *)
   Definition new : M Self :=
-    let* α0 : bool.t :=
-      M.call
-        (core.default.Default.default
-          (Self := bool.t)
-          (Trait := ltac:(refine _))) in
-    M.pure {| trait_flipper.Flipper.value := α0; |}.
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.default.Default.default (Self := bool.t) (Trait := ℐ))) in
+    let* α1 : bool.t := M.call α0 in
+    M.pure {| trait_flipper.Flipper.value := α1; |}.
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;

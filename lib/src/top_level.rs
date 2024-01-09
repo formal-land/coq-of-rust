@@ -931,7 +931,7 @@ fn get_ty_params_with_default_status(
     generics: &rustc_middle::ty::Generics,
     path: &rustc_hir::Path,
 ) -> Vec<(String, Rc<TraitTyParamValue>)> {
-    let mut type_params_name_and_default_status = type_params_name_and_default_status(generics);
+    let mut type_params_name_and_default_status = get_type_params_name_and_default_status(generics);
     // The first type parameter is always the Self type, that we do not consider as
     // part of the list of type parameters.
     type_params_name_and_default_status.remove(0);
@@ -943,7 +943,7 @@ fn get_ty_params_with_default_status(
 /// takes a list of actual type parameters
 /// and the information about required and default type parameters
 /// and returns a list that combines them
-fn add_default_status_to_ty_params(
+pub(crate) fn add_default_status_to_ty_params(
     ty_params: &[Rc<CoqType>],
     names_and_default_status: &[(String, bool)],
 ) -> Vec<(String, Rc<TraitTyParamValue>)> {
@@ -977,7 +977,7 @@ fn compile_ty_param_value(
 }
 
 /// Get the list of type parameters names and default status (true if it has a default)
-pub(crate) fn type_params_name_and_default_status(
+pub(crate) fn get_type_params_name_and_default_status(
     generics: &rustc_middle::ty::Generics,
 ) -> Vec<(String, bool)> {
     generics

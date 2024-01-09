@@ -197,14 +197,15 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
   let* name : M.Val alloc.string.String.t :=
-    let* α0 : ref str.t := M.read (mk_str "Peter") in
-    let* α1 : alloc.string.String.t :=
-      M.call
-        ((core.convert.From.from
-            (Self := alloc.string.String.t)
-            (Trait := ltac:(refine _)))
-          α0) in
-    M.alloc α1 in
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.convert.From.from
+          (Self := alloc.string.String.t)
+          (T := ref str.t)
+          (Trait := ℐ))) in
+    let* α1 : ref str.t := M.read (mk_str "Peter") in
+    let* α2 : alloc.string.String.t := M.call (α0 α1) in
+    M.alloc α2 in
   let* age : M.Val u8.t := M.alloc (Integer.of_Z 27) in
   let* peter : M.Val structures.Person.t :=
     let* α0 : alloc.string.String.t := M.read name in

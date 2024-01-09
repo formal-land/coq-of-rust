@@ -19,31 +19,32 @@ Definition cat
     M.return_ (R := ltac:(std.io.error.Result alloc.string.String.t)) in
   M.catch_return
     (let* f : M.Val std.fs.File.t :=
-      let* α0 : ref std.path.Path.t := M.read path in
-      let* α1 : core.result.Result.t std.fs.File.t std.io.error.Error.t :=
-        M.call (std.fs.File.t::["open"] α0) in
-      let* α2 :
+      let* α0 : _ :=
+        ltac:(M.get_method (fun ℐ =>
+          core.ops.try_trait.Try.branch
+            (Self := core.result.Result.t std.fs.File.t std.io.error.Error.t)
+            (Trait := ℐ))) in
+      let* α1 : ref std.path.Path.t := M.read path in
+      let* α2 : core.result.Result.t std.fs.File.t std.io.error.Error.t :=
+        M.call (std.fs.File.t::["open"] α1) in
+      let* α3 :
           core.ops.control_flow.ControlFlow.t
             (core.result.Result.t
               core.convert.Infallible.t
               std.io.error.Error.t)
             std.fs.File.t :=
-        M.call
-          ((core.ops.try_trait.Try.branch
-              (Self := core.result.Result.t std.fs.File.t std.io.error.Error.t)
-              (Trait := ltac:(refine _)))
-            α1) in
-      let* α3 :
+        M.call (α0 α2) in
+      let* α4 :
           M.Val
             (core.ops.control_flow.ControlFlow.t
               (core.result.Result.t
                 core.convert.Infallible.t
                 std.io.error.Error.t)
               std.fs.File.t) :=
-        M.alloc α2 in
-      let* α4 : M.Val std.fs.File.t :=
+        M.alloc α3 in
+      let* α5 : M.Val std.fs.File.t :=
         match_operator
-          α3
+          α4
           [
             fun γ =>
               (let* α0 := M.read γ in
@@ -51,27 +52,32 @@ Definition cat
               | core.ops.control_flow.ControlFlow.Break _ =>
                 let γ0_0 := γ.["Break.0"] in
                 let* residual := M.copy γ0_0 in
-                let* α0 :
+                let* α0 : _ :=
+                  ltac:(M.get_method (fun ℐ =>
+                    core.ops.try_trait.FromResidual.from_residual
+                      (Self :=
+                        core.result.Result.t
+                          alloc.string.String.t
+                          std.io.error.Error.t)
+                      (R :=
+                        core.result.Result.t
+                          core.convert.Infallible.t
+                          std.io.error.Error.t)
+                      (Trait := ℐ))) in
+                let* α1 :
                     core.result.Result.t
                       core.convert.Infallible.t
                       std.io.error.Error.t :=
                   M.read residual in
-                let* α1 :
+                let* α2 :
                     core.result.Result.t
                       alloc.string.String.t
                       std.io.error.Error.t :=
-                  M.call
-                    ((core.ops.try_trait.FromResidual.from_residual
-                        (Self :=
-                          core.result.Result.t
-                            alloc.string.String.t
-                            std.io.error.Error.t)
-                        (Trait := ltac:(refine _)))
-                      α0) in
-                let* α2 : M.Val never.t := return_ α1 in
-                let* α3 := M.read α2 in
-                let* α4 : std.fs.File.t := never_to_any α3 in
-                M.alloc α4
+                  M.call (α0 α1) in
+                let* α3 : M.Val never.t := return_ α2 in
+                let* α4 := M.read α3 in
+                let* α5 : std.fs.File.t := never_to_any α4 in
+                M.alloc α5
               | _ => M.break_match
               end) :
               M (M.Val std.fs.File.t);
@@ -86,25 +92,23 @@ Definition cat
               end) :
               M (M.Val std.fs.File.t)
           ] in
-      M.copy α4 in
+      M.copy α5 in
     let* s : M.Val alloc.string.String.t :=
       let* α0 : alloc.string.String.t :=
         M.call alloc.string.String.t::["new"] in
       M.alloc α0 in
-    let* α0 : core.result.Result.t usize.t std.io.error.Error.t :=
-      M.call
-        ((std.io.Read.read_to_string
-            (Self := std.fs.File.t)
-            (Trait := ltac:(refine _)))
-          (borrow_mut f)
-          (borrow_mut s)) in
-    let* α1 : M.Val (core.result.Result.t usize.t std.io.error.Error.t) :=
-      M.alloc α0 in
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        std.io.Read.read_to_string (Self := std.fs.File.t) (Trait := ℐ))) in
+    let* α1 : core.result.Result.t usize.t std.io.error.Error.t :=
+      M.call (α0 (borrow_mut f) (borrow_mut s)) in
+    let* α2 : M.Val (core.result.Result.t usize.t std.io.error.Error.t) :=
+      M.alloc α1 in
     let* α0 :
         M.Val
           (core.result.Result.t alloc.string.String.t std.io.error.Error.t) :=
       match_operator
-        α1
+        α2
         [
           fun γ =>
             (let* α0 := M.read γ in
@@ -154,31 +158,32 @@ Definition echo
   let return_ := M.return_ (R := ltac:(std.io.error.Result unit)) in
   M.catch_return
     (let* f : M.Val std.fs.File.t :=
-      let* α0 : ref std.path.Path.t := M.read path in
-      let* α1 : core.result.Result.t std.fs.File.t std.io.error.Error.t :=
-        M.call (std.fs.File.t::["create"] α0) in
-      let* α2 :
+      let* α0 : _ :=
+        ltac:(M.get_method (fun ℐ =>
+          core.ops.try_trait.Try.branch
+            (Self := core.result.Result.t std.fs.File.t std.io.error.Error.t)
+            (Trait := ℐ))) in
+      let* α1 : ref std.path.Path.t := M.read path in
+      let* α2 : core.result.Result.t std.fs.File.t std.io.error.Error.t :=
+        M.call (std.fs.File.t::["create"] α1) in
+      let* α3 :
           core.ops.control_flow.ControlFlow.t
             (core.result.Result.t
               core.convert.Infallible.t
               std.io.error.Error.t)
             std.fs.File.t :=
-        M.call
-          ((core.ops.try_trait.Try.branch
-              (Self := core.result.Result.t std.fs.File.t std.io.error.Error.t)
-              (Trait := ltac:(refine _)))
-            α1) in
-      let* α3 :
+        M.call (α0 α2) in
+      let* α4 :
           M.Val
             (core.ops.control_flow.ControlFlow.t
               (core.result.Result.t
                 core.convert.Infallible.t
                 std.io.error.Error.t)
               std.fs.File.t) :=
-        M.alloc α2 in
-      let* α4 : M.Val std.fs.File.t :=
+        M.alloc α3 in
+      let* α5 : M.Val std.fs.File.t :=
         match_operator
-          α3
+          α4
           [
             fun γ =>
               (let* α0 := M.read γ in
@@ -186,21 +191,26 @@ Definition echo
               | core.ops.control_flow.ControlFlow.Break _ =>
                 let γ0_0 := γ.["Break.0"] in
                 let* residual := M.copy γ0_0 in
-                let* α0 :
+                let* α0 : _ :=
+                  ltac:(M.get_method (fun ℐ =>
+                    core.ops.try_trait.FromResidual.from_residual
+                      (Self := core.result.Result.t unit std.io.error.Error.t)
+                      (R :=
+                        core.result.Result.t
+                          core.convert.Infallible.t
+                          std.io.error.Error.t)
+                      (Trait := ℐ))) in
+                let* α1 :
                     core.result.Result.t
                       core.convert.Infallible.t
                       std.io.error.Error.t :=
                   M.read residual in
-                let* α1 : core.result.Result.t unit std.io.error.Error.t :=
-                  M.call
-                    ((core.ops.try_trait.FromResidual.from_residual
-                        (Self := core.result.Result.t unit std.io.error.Error.t)
-                        (Trait := ltac:(refine _)))
-                      α0) in
-                let* α2 : M.Val never.t := return_ α1 in
-                let* α3 := M.read α2 in
-                let* α4 : std.fs.File.t := never_to_any α3 in
-                M.alloc α4
+                let* α2 : core.result.Result.t unit std.io.error.Error.t :=
+                  M.call (α0 α1) in
+                let* α3 : M.Val never.t := return_ α2 in
+                let* α4 := M.read α3 in
+                let* α5 : std.fs.File.t := never_to_any α4 in
+                M.alloc α5
               | _ => M.break_match
               end) :
               M (M.Val std.fs.File.t);
@@ -215,18 +225,16 @@ Definition echo
               end) :
               M (M.Val std.fs.File.t)
           ] in
-      M.copy α4 in
-    let* α0 : ref str.t := M.read s in
-    let* α1 : ref (slice u8.t) := M.call (str.t::["as_bytes"] α0) in
-    let* α2 : core.result.Result.t unit std.io.error.Error.t :=
-      M.call
-        ((std.io.Write.write_all
-            (Self := std.fs.File.t)
-            (Trait := ltac:(refine _)))
-          (borrow_mut f)
-          α1) in
+      M.copy α5 in
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        std.io.Write.write_all (Self := std.fs.File.t) (Trait := ℐ))) in
+    let* α1 : ref str.t := M.read s in
+    let* α2 : ref (slice u8.t) := M.call (str.t::["as_bytes"] α1) in
+    let* α3 : core.result.Result.t unit std.io.error.Error.t :=
+      M.call (α0 (borrow_mut f) α2) in
     let* α0 : M.Val (core.result.Result.t unit std.io.error.Error.t) :=
-      M.alloc α2 in
+      M.alloc α3 in
     M.read α0).
 
 (*
@@ -830,41 +838,42 @@ Definition main : M unit :=
           | core.result.Result.Ok _ =>
             let γ0_0 := γ.["Ok.0"] in
             let* paths := M.copy γ0_0 in
-            let* α0 : std.fs.ReadDir.t := M.read paths in
-            let* α1 : std.fs.ReadDir.t :=
-              M.call
-                ((core.iter.traits.collect.IntoIterator.into_iter
-                    (Self := std.fs.ReadDir.t)
-                    (Trait := ltac:(refine _)))
-                  α0) in
-            let* α2 : M.Val std.fs.ReadDir.t := M.alloc α1 in
-            let* α3 : M.Val unit :=
+            let* α0 : _ :=
+              ltac:(M.get_method (fun ℐ =>
+                core.iter.traits.collect.IntoIterator.into_iter
+                  (Self := std.fs.ReadDir.t)
+                  (Trait := ℐ))) in
+            let* α1 : std.fs.ReadDir.t := M.read paths in
+            let* α2 : std.fs.ReadDir.t := M.call (α0 α1) in
+            let* α3 : M.Val std.fs.ReadDir.t := M.alloc α2 in
+            let* α4 : M.Val unit :=
               match_operator
-                α2
+                α3
                 [
                   fun γ =>
                     (let* iter := M.copy γ in
                     M.loop
                       (let* _ : M.Val unit :=
-                        let* α0 :
+                        let* α0 : _ :=
+                          ltac:(M.get_method (fun ℐ =>
+                            core.iter.traits.iterator.Iterator.next
+                              (Self := std.fs.ReadDir.t)
+                              (Trait := ℐ))) in
+                        let* α1 :
                             core.option.Option.t
                               (core.result.Result.t
                                 std.fs.DirEntry.t
                                 std.io.error.Error.t) :=
-                          M.call
-                            ((core.iter.traits.iterator.Iterator.next
-                                (Self := std.fs.ReadDir.t)
-                                (Trait := ltac:(refine _)))
-                              (borrow_mut iter)) in
-                        let* α1 :
+                          M.call (α0 (borrow_mut iter)) in
+                        let* α2 :
                             M.Val
                               (core.option.Option.t
                                 (core.result.Result.t
                                   std.fs.DirEntry.t
                                   std.io.error.Error.t)) :=
-                          M.alloc α0 in
+                          M.alloc α1 in
                         match_operator
-                          α1
+                          α2
                           [
                             fun γ =>
                               (let* α0 := M.read γ in
@@ -947,7 +956,7 @@ Definition main : M unit :=
                       M.alloc tt)) :
                     M (M.Val unit)
                 ] in
-            M.pure (use α3)
+            M.pure (use α4)
           | _ => M.break_match
           end) :
           M (M.Val unit)

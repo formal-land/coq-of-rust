@@ -22,12 +22,11 @@ Section Impl_core_default_Default_for_custom_environment_AccountId_t.
   Default
   *)
   Definition default : M custom_environment.AccountId.t :=
-    let* α0 : u128.t :=
-      M.call
-        (core.default.Default.default
-          (Self := u128.t)
-          (Trait := ltac:(refine _))) in
-    M.pure (custom_environment.AccountId.Build_t α0).
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.default.Default.default (Self := u128.t) (Trait := ℐ))) in
+    let* α1 : u128.t := M.call α0 in
+    M.pure (custom_environment.AccountId.Build_t α1).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -200,38 +199,33 @@ Section Impl_core_default_Default_for_custom_environment_EventWithTopics_t.
   Default
   *)
   Definition default : M custom_environment.EventWithTopics.t :=
-    let* α0 : u128.t :=
-      M.call
-        (core.default.Default.default
-          (Self := u128.t)
-          (Trait := ltac:(refine _))) in
-    let* α1 : u128.t :=
-      M.call
-        (core.default.Default.default
-          (Self := u128.t)
-          (Trait := ltac:(refine _))) in
-    let* α2 : u128.t :=
-      M.call
-        (core.default.Default.default
-          (Self := u128.t)
-          (Trait := ltac:(refine _))) in
-    let* α3 : u128.t :=
-      M.call
-        (core.default.Default.default
-          (Self := u128.t)
-          (Trait := ltac:(refine _))) in
-    let* α4 : u128.t :=
-      M.call
-        (core.default.Default.default
-          (Self := u128.t)
-          (Trait := ltac:(refine _))) in
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.default.Default.default (Self := u128.t) (Trait := ℐ))) in
+    let* α1 : u128.t := M.call α0 in
+    let* α2 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.default.Default.default (Self := u128.t) (Trait := ℐ))) in
+    let* α3 : u128.t := M.call α2 in
+    let* α4 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.default.Default.default (Self := u128.t) (Trait := ℐ))) in
+    let* α5 : u128.t := M.call α4 in
+    let* α6 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.default.Default.default (Self := u128.t) (Trait := ℐ))) in
+    let* α7 : u128.t := M.call α6 in
+    let* α8 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.default.Default.default (Self := u128.t) (Trait := ℐ))) in
+    let* α9 : u128.t := M.call α8 in
     M.pure
       {|
-        custom_environment.EventWithTopics.first_topic := α0;
-        custom_environment.EventWithTopics.second_topic := α1;
-        custom_environment.EventWithTopics.third_topic := α2;
-        custom_environment.EventWithTopics.fourth_topic := α3;
-        custom_environment.EventWithTopics.fifth_topic := α4;
+        custom_environment.EventWithTopics.first_topic := α1;
+        custom_environment.EventWithTopics.second_topic := α3;
+        custom_environment.EventWithTopics.third_topic := α5;
+        custom_environment.EventWithTopics.fourth_topic := α7;
+        custom_environment.EventWithTopics.fifth_topic := α9;
       |}.
   
   Global Instance AssociatedFunction_default :
@@ -337,10 +331,12 @@ Section Impl_custom_environment_Topics_t.
       }
   *)
   Definition new : M Self :=
-    M.call
-      (core.default.Default.default
-        (Self := custom_environment.Topics.t)
-        (Trait := ltac:(refine _))).
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.default.Default.default
+          (Self := custom_environment.Topics.t)
+          (Trait := ℐ))) in
+    M.call α0.
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
@@ -359,17 +355,18 @@ Section Impl_custom_environment_Topics_t.
       let* α1 : custom_environment.Env.t :=
         M.call (custom_environment.Topics.t::["env"] (borrow (deref α0))) in
       let* α2 : M.Val custom_environment.Env.t := M.alloc α1 in
-      let* α3 : custom_environment.EventWithTopics.t :=
-        M.call
-          (core.default.Default.default
+      let* α3 : _ :=
+        ltac:(M.get_method (fun ℐ =>
+          core.default.Default.default
             (Self := custom_environment.EventWithTopics.t)
-            (Trait := ltac:(refine _))) in
-      let* α4 : unit :=
+            (Trait := ℐ))) in
+      let* α4 : custom_environment.EventWithTopics.t := M.call α3 in
+      let* α5 : unit :=
         M.call
           (custom_environment.Env.t::["emit_event"]
             (borrow α2)
-            (custom_environment.Event.EventWithTopics α3)) in
-      M.alloc α4 in
+            (custom_environment.Event.EventWithTopics α4)) in
+      M.alloc α5 in
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   

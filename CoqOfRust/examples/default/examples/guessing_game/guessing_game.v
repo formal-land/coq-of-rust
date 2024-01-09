@@ -98,21 +98,21 @@ Definition main : M unit :=
               α3) in
         M.alloc α4 in
       let* guess : M.Val u32.t :=
-        let* α0 : ref str.t :=
-          M.call
-            ((core.ops.deref.Deref.deref
-                (Self := alloc.string.String.t)
-                (Trait := ltac:(refine _)))
-              (borrow guess)) in
-        let* α1 : ref str.t := M.call (str.t::["trim"] α0) in
-        let* α2 : core.result.Result.t u32.t core.num.error.ParseIntError.t :=
-          M.call (str.t::["parse"] α1) in
-        let* α3 :
+        let* α0 : _ :=
+          ltac:(M.get_method (fun ℐ =>
+            core.ops.deref.Deref.deref
+              (Self := alloc.string.String.t)
+              (Trait := ℐ))) in
+        let* α1 : ref str.t := M.call (α0 (borrow guess)) in
+        let* α2 : ref str.t := M.call (str.t::["trim"] α1) in
+        let* α3 : core.result.Result.t u32.t core.num.error.ParseIntError.t :=
+          M.call (str.t::["parse"] α2) in
+        let* α4 :
             M.Val (core.result.Result.t u32.t core.num.error.ParseIntError.t) :=
-          M.alloc α2 in
-        let* α4 : M.Val u32.t :=
+          M.alloc α3 in
+        let* α5 : M.Val u32.t :=
           match_operator
-            α3
+            α4
             [
               fun γ =>
                 (let* α0 := M.read γ in
@@ -137,7 +137,7 @@ Definition main : M unit :=
                 end) :
                 M (M.Val u32.t)
             ] in
-        M.copy α4 in
+        M.copy α5 in
       let* _ : M.Val unit :=
         let* _ : M.Val unit :=
           let* α0 : ref str.t := M.read (mk_str "You guessed: ") in
@@ -159,14 +159,14 @@ Definition main : M unit :=
           let* α10 : unit := M.call (std.io.stdio._print α9) in
           M.alloc α10 in
         M.alloc tt in
-      let* α0 : core.cmp.Ordering.t :=
-        M.call
-          ((core.cmp.Ord.cmp (Self := u32.t) (Trait := ltac:(refine _)))
-            (borrow guess)
-            (borrow secret_number)) in
-      let* α1 : M.Val core.cmp.Ordering.t := M.alloc α0 in
+      let* α0 : _ :=
+        ltac:(M.get_method (fun ℐ =>
+          core.cmp.Ord.cmp (Self := u32.t) (Trait := ℐ))) in
+      let* α1 : core.cmp.Ordering.t :=
+        M.call (α0 (borrow guess) (borrow secret_number)) in
+      let* α2 : M.Val core.cmp.Ordering.t := M.alloc α1 in
       match_operator
-        α1
+        α2
         [
           fun γ =>
             (let* α0 := M.read γ in

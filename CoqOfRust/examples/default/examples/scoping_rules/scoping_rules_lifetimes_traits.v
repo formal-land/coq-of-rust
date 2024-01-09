@@ -82,12 +82,13 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
   let* b : M.Val scoping_rules_lifetimes_traits.Borrowed.t :=
-    let* α0 : scoping_rules_lifetimes_traits.Borrowed.t :=
-      M.call
-        (core.default.Default.default
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.default.Default.default
           (Self := scoping_rules_lifetimes_traits.Borrowed.t)
-          (Trait := ltac:(refine _))) in
-    M.alloc α0 in
+          (Trait := ℐ))) in
+    let* α1 : scoping_rules_lifetimes_traits.Borrowed.t := M.call α0 in
+    M.alloc α1 in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "b is ") in

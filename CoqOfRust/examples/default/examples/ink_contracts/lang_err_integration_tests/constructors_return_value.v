@@ -22,12 +22,11 @@ Section Impl_core_default_Default_for_constructors_return_value_AccountId_t.
   Default
   *)
   Definition default : M constructors_return_value.AccountId.t :=
-    let* α0 : u128.t :=
-      M.call
-        (core.default.Default.default
-          (Self := u128.t)
-          (Trait := ltac:(refine _))) in
-    M.pure (constructors_return_value.AccountId.Build_t α0).
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.default.Default.default (Self := u128.t) (Trait := ℐ))) in
+    let* α1 : u128.t := M.call α0 in
+    M.pure (constructors_return_value.AccountId.Build_t α1).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -286,21 +285,23 @@ Section Impl_constructors_return_value_ConstructorsReturnValue_t.
     let* α0 : constructors_return_value.ReturnFlags.t :=
       M.call
         (constructors_return_value.ReturnFlags.t::["new_with_reverted"] true) in
-    let* α1 : constructors_return_value.AccountId.t :=
-      M.call
-        ((core.convert.From.from
-            (Self := constructors_return_value.AccountId.t)
-            (Trait := ltac:(refine _)))
-          (repeat (Integer.of_Z 0) 32)) in
-    let* α2 :
+    let* α1 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.convert.From.from
+          (Self := constructors_return_value.AccountId.t)
+          (T := array u8.t)
+          (Trait := ℐ))) in
+    let* α2 : constructors_return_value.AccountId.t :=
+      M.call (α1 (repeat (Integer.of_Z 0) 32)) in
+    let* α3 :
         M.Val
           (core.result.Result.t
             constructors_return_value.AccountId.t
             constructors_return_value.LangError.t) :=
-      M.alloc (core.result.Result.Ok α1) in
-    let* α3 : never.t :=
-      M.call (constructors_return_value.return_value α0 (borrow α2)) in
-    never_to_any α3.
+      M.alloc (core.result.Result.Ok α2) in
+    let* α4 : never.t :=
+      M.call (constructors_return_value.return_value α0 (borrow α3)) in
+    never_to_any α4.
   
   Global Instance AssociatedFunction_revert_new :
     Notations.DoubleColon Self "revert_new" := {
@@ -345,13 +346,15 @@ Section Impl_constructors_return_value_ConstructorsReturnValue_t.
                 constructors_return_value.ConstructorError.t)
               constructors_return_value.LangError.t) :=
         if α0 then
-          let* α0 : constructors_return_value.AccountId.t :=
-            M.call
-              ((core.convert.From.from
-                  (Self := constructors_return_value.AccountId.t)
-                  (Trait := ltac:(refine _)))
-                (repeat (Integer.of_Z 0) 32)) in
-          M.alloc (core.result.Result.Ok (core.result.Result.Ok α0))
+          let* α0 : _ :=
+            ltac:(M.get_method (fun ℐ =>
+              core.convert.From.from
+                (Self := constructors_return_value.AccountId.t)
+                (T := array u8.t)
+                (Trait := ℐ))) in
+          let* α1 : constructors_return_value.AccountId.t :=
+            M.call (α0 (repeat (Integer.of_Z 0) 32)) in
+          M.alloc (core.result.Result.Ok (core.result.Result.Ok α1))
         else
           M.alloc
             (core.result.Result.Err
