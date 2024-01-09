@@ -6,7 +6,7 @@ use std::fmt;
 use std::vec;
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
-pub struct Path {
+pub(crate) struct Path {
     pub(crate) segments: Vec<String>,
 }
 
