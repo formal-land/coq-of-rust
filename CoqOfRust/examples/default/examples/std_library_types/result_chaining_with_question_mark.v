@@ -212,27 +212,109 @@ Module checked.
         (R := ltac:(result_chaining_with_question_mark.checked.MathResult)) in
     M.catch_return
       (let* ratio : M.Val f64.t :=
-        let* α0 : f64.t := M.read x in
-        let* α1 : f64.t := M.read y in
+        let* α0 : _ :=
+          ltac:(M.get_method (fun ℐ =>
+            core.ops.try_trait.Try.branch
+              (Self :=
+                core.result.Result.t
+                  f64.t
+                  result_chaining_with_question_mark.checked.MathError.t)
+              (Trait := ℐ))) in
+        let* α1 : f64.t := M.read x in
+        let* α2 : f64.t := M.read y in
+        let* α3 :
+            core.result.Result.t
+              f64.t
+              result_chaining_with_question_mark.checked.MathError.t :=
+          M.call (result_chaining_with_question_mark.checked.div α1 α2) in
+        let* α4 :
+            core.ops.control_flow.ControlFlow.t
+              (core.result.Result.t
+                core.convert.Infallible.t
+                result_chaining_with_question_mark.checked.MathError.t)
+              f64.t :=
+          M.call (α0 α3) in
+        let* α5 :
+            M.Val
+              (core.ops.control_flow.ControlFlow.t
+                (core.result.Result.t
+                  core.convert.Infallible.t
+                  result_chaining_with_question_mark.checked.MathError.t)
+                f64.t) :=
+          M.alloc α4 in
+        let* α6 : M.Val f64.t :=
+          match_operator
+            α5
+            [
+              fun γ =>
+                (let* α0 := M.read γ in
+                match α0 with
+                | core.ops.control_flow.ControlFlow.Break _ =>
+                  let γ0_0 := γ.["Break.0"] in
+                  let* residual := M.copy γ0_0 in
+                  let* α0 : _ :=
+                    ltac:(M.get_method (fun ℐ =>
+                      core.ops.try_trait.FromResidual.from_residual
+                        (Self :=
+                          core.result.Result.t
+                            f64.t
+                            result_chaining_with_question_mark.checked.MathError.t)
+                        (R :=
+                          core.result.Result.t
+                            core.convert.Infallible.t
+                            result_chaining_with_question_mark.checked.MathError.t)
+                        (Trait := ℐ))) in
+                  let* α1 :
+                      core.result.Result.t
+                        core.convert.Infallible.t
+                        result_chaining_with_question_mark.checked.MathError.t :=
+                    M.read residual in
+                  let* α2 :
+                      core.result.Result.t
+                        f64.t
+                        result_chaining_with_question_mark.checked.MathError.t :=
+                    M.call (α0 α1) in
+                  let* α3 : M.Val never.t := return_ α2 in
+                  let* α4 := M.read α3 in
+                  let* α5 : f64.t := never_to_any α4 in
+                  M.alloc α5
+                | _ => M.break_match
+                end) :
+                M (M.Val f64.t);
+              fun γ =>
+                (let* α0 := M.read γ in
+                match α0 with
+                | core.ops.control_flow.ControlFlow.Continue _ =>
+                  let γ0_0 := γ.["Continue.0"] in
+                  let* val := M.copy γ0_0 in
+                  M.pure val
+                | _ => M.break_match
+                end) :
+                M (M.Val f64.t)
+            ] in
+        M.copy α6 in
+      let* ln : M.Val f64.t :=
+        let* α0 : _ :=
+          ltac:(M.get_method (fun ℐ =>
+            core.ops.try_trait.Try.branch
+              (Self :=
+                core.result.Result.t
+                  f64.t
+                  result_chaining_with_question_mark.checked.MathError.t)
+              (Trait := ℐ))) in
+        let* α1 : f64.t := M.read ratio in
         let* α2 :
             core.result.Result.t
               f64.t
               result_chaining_with_question_mark.checked.MathError.t :=
-          M.call (result_chaining_with_question_mark.checked.div α0 α1) in
+          M.call (result_chaining_with_question_mark.checked.ln α1) in
         let* α3 :
             core.ops.control_flow.ControlFlow.t
               (core.result.Result.t
                 core.convert.Infallible.t
                 result_chaining_with_question_mark.checked.MathError.t)
               f64.t :=
-          M.call
-            ((core.ops.try_trait.Try.branch
-                (Self :=
-                  core.result.Result.t
-                    f64.t
-                    result_chaining_with_question_mark.checked.MathError.t)
-                (Trait := ltac:(refine _)))
-              α2) in
+          M.call (α0 α2) in
         let* α4 :
             M.Val
               (core.ops.control_flow.ControlFlow.t
@@ -251,27 +333,32 @@ Module checked.
                 | core.ops.control_flow.ControlFlow.Break _ =>
                   let γ0_0 := γ.["Break.0"] in
                   let* residual := M.copy γ0_0 in
-                  let* α0 :
+                  let* α0 : _ :=
+                    ltac:(M.get_method (fun ℐ =>
+                      core.ops.try_trait.FromResidual.from_residual
+                        (Self :=
+                          core.result.Result.t
+                            f64.t
+                            result_chaining_with_question_mark.checked.MathError.t)
+                        (R :=
+                          core.result.Result.t
+                            core.convert.Infallible.t
+                            result_chaining_with_question_mark.checked.MathError.t)
+                        (Trait := ℐ))) in
+                  let* α1 :
                       core.result.Result.t
                         core.convert.Infallible.t
                         result_chaining_with_question_mark.checked.MathError.t :=
                     M.read residual in
-                  let* α1 :
+                  let* α2 :
                       core.result.Result.t
                         f64.t
                         result_chaining_with_question_mark.checked.MathError.t :=
-                    M.call
-                      ((core.ops.try_trait.FromResidual.from_residual
-                          (Self :=
-                            core.result.Result.t
-                              f64.t
-                              result_chaining_with_question_mark.checked.MathError.t)
-                          (Trait := ltac:(refine _)))
-                        α0) in
-                  let* α2 : M.Val never.t := return_ α1 in
-                  let* α3 := M.read α2 in
-                  let* α4 : f64.t := never_to_any α3 in
-                  M.alloc α4
+                    M.call (α0 α1) in
+                  let* α3 : M.Val never.t := return_ α2 in
+                  let* α4 := M.read α3 in
+                  let* α5 : f64.t := never_to_any α4 in
+                  M.alloc α5
                 | _ => M.break_match
                 end) :
                 M (M.Val f64.t);
@@ -287,81 +374,6 @@ Module checked.
                 M (M.Val f64.t)
             ] in
         M.copy α5 in
-      let* ln : M.Val f64.t :=
-        let* α0 : f64.t := M.read ratio in
-        let* α1 :
-            core.result.Result.t
-              f64.t
-              result_chaining_with_question_mark.checked.MathError.t :=
-          M.call (result_chaining_with_question_mark.checked.ln α0) in
-        let* α2 :
-            core.ops.control_flow.ControlFlow.t
-              (core.result.Result.t
-                core.convert.Infallible.t
-                result_chaining_with_question_mark.checked.MathError.t)
-              f64.t :=
-          M.call
-            ((core.ops.try_trait.Try.branch
-                (Self :=
-                  core.result.Result.t
-                    f64.t
-                    result_chaining_with_question_mark.checked.MathError.t)
-                (Trait := ltac:(refine _)))
-              α1) in
-        let* α3 :
-            M.Val
-              (core.ops.control_flow.ControlFlow.t
-                (core.result.Result.t
-                  core.convert.Infallible.t
-                  result_chaining_with_question_mark.checked.MathError.t)
-                f64.t) :=
-          M.alloc α2 in
-        let* α4 : M.Val f64.t :=
-          match_operator
-            α3
-            [
-              fun γ =>
-                (let* α0 := M.read γ in
-                match α0 with
-                | core.ops.control_flow.ControlFlow.Break _ =>
-                  let γ0_0 := γ.["Break.0"] in
-                  let* residual := M.copy γ0_0 in
-                  let* α0 :
-                      core.result.Result.t
-                        core.convert.Infallible.t
-                        result_chaining_with_question_mark.checked.MathError.t :=
-                    M.read residual in
-                  let* α1 :
-                      core.result.Result.t
-                        f64.t
-                        result_chaining_with_question_mark.checked.MathError.t :=
-                    M.call
-                      ((core.ops.try_trait.FromResidual.from_residual
-                          (Self :=
-                            core.result.Result.t
-                              f64.t
-                              result_chaining_with_question_mark.checked.MathError.t)
-                          (Trait := ltac:(refine _)))
-                        α0) in
-                  let* α2 : M.Val never.t := return_ α1 in
-                  let* α3 := M.read α2 in
-                  let* α4 : f64.t := never_to_any α3 in
-                  M.alloc α4
-                | _ => M.break_match
-                end) :
-                M (M.Val f64.t);
-              fun γ =>
-                (let* α0 := M.read γ in
-                match α0 with
-                | core.ops.control_flow.ControlFlow.Continue _ =>
-                  let γ0_0 := γ.["Continue.0"] in
-                  let* val := M.copy γ0_0 in
-                  M.pure val
-                | _ => M.break_match
-                end) :
-                M (M.Val f64.t)
-            ] in
-        M.copy α4 in
       let* α0 : f64.t := M.read ln in
       let* α1 :
           core.result.Result.t
@@ -708,27 +720,109 @@ Definition op_
       (R := ltac:(result_chaining_with_question_mark.checked.MathResult)) in
   M.catch_return
     (let* ratio : M.Val f64.t :=
-      let* α0 : f64.t := M.read x in
-      let* α1 : f64.t := M.read y in
+      let* α0 : _ :=
+        ltac:(M.get_method (fun ℐ =>
+          core.ops.try_trait.Try.branch
+            (Self :=
+              core.result.Result.t
+                f64.t
+                result_chaining_with_question_mark.checked.MathError.t)
+            (Trait := ℐ))) in
+      let* α1 : f64.t := M.read x in
+      let* α2 : f64.t := M.read y in
+      let* α3 :
+          core.result.Result.t
+            f64.t
+            result_chaining_with_question_mark.checked.MathError.t :=
+        M.call (result_chaining_with_question_mark.checked.div α1 α2) in
+      let* α4 :
+          core.ops.control_flow.ControlFlow.t
+            (core.result.Result.t
+              core.convert.Infallible.t
+              result_chaining_with_question_mark.checked.MathError.t)
+            f64.t :=
+        M.call (α0 α3) in
+      let* α5 :
+          M.Val
+            (core.ops.control_flow.ControlFlow.t
+              (core.result.Result.t
+                core.convert.Infallible.t
+                result_chaining_with_question_mark.checked.MathError.t)
+              f64.t) :=
+        M.alloc α4 in
+      let* α6 : M.Val f64.t :=
+        match_operator
+          α5
+          [
+            fun γ =>
+              (let* α0 := M.read γ in
+              match α0 with
+              | core.ops.control_flow.ControlFlow.Break _ =>
+                let γ0_0 := γ.["Break.0"] in
+                let* residual := M.copy γ0_0 in
+                let* α0 : _ :=
+                  ltac:(M.get_method (fun ℐ =>
+                    core.ops.try_trait.FromResidual.from_residual
+                      (Self :=
+                        core.result.Result.t
+                          f64.t
+                          result_chaining_with_question_mark.checked.MathError.t)
+                      (R :=
+                        core.result.Result.t
+                          core.convert.Infallible.t
+                          result_chaining_with_question_mark.checked.MathError.t)
+                      (Trait := ℐ))) in
+                let* α1 :
+                    core.result.Result.t
+                      core.convert.Infallible.t
+                      result_chaining_with_question_mark.checked.MathError.t :=
+                  M.read residual in
+                let* α2 :
+                    core.result.Result.t
+                      f64.t
+                      result_chaining_with_question_mark.checked.MathError.t :=
+                  M.call (α0 α1) in
+                let* α3 : M.Val never.t := return_ α2 in
+                let* α4 := M.read α3 in
+                let* α5 : f64.t := never_to_any α4 in
+                M.alloc α5
+              | _ => M.break_match
+              end) :
+              M (M.Val f64.t);
+            fun γ =>
+              (let* α0 := M.read γ in
+              match α0 with
+              | core.ops.control_flow.ControlFlow.Continue _ =>
+                let γ0_0 := γ.["Continue.0"] in
+                let* val := M.copy γ0_0 in
+                M.pure val
+              | _ => M.break_match
+              end) :
+              M (M.Val f64.t)
+          ] in
+      M.copy α6 in
+    let* ln : M.Val f64.t :=
+      let* α0 : _ :=
+        ltac:(M.get_method (fun ℐ =>
+          core.ops.try_trait.Try.branch
+            (Self :=
+              core.result.Result.t
+                f64.t
+                result_chaining_with_question_mark.checked.MathError.t)
+            (Trait := ℐ))) in
+      let* α1 : f64.t := M.read ratio in
       let* α2 :
           core.result.Result.t
             f64.t
             result_chaining_with_question_mark.checked.MathError.t :=
-        M.call (result_chaining_with_question_mark.checked.div α0 α1) in
+        M.call (result_chaining_with_question_mark.checked.ln α1) in
       let* α3 :
           core.ops.control_flow.ControlFlow.t
             (core.result.Result.t
               core.convert.Infallible.t
               result_chaining_with_question_mark.checked.MathError.t)
             f64.t :=
-        M.call
-          ((core.ops.try_trait.Try.branch
-              (Self :=
-                core.result.Result.t
-                  f64.t
-                  result_chaining_with_question_mark.checked.MathError.t)
-              (Trait := ltac:(refine _)))
-            α2) in
+        M.call (α0 α2) in
       let* α4 :
           M.Val
             (core.ops.control_flow.ControlFlow.t
@@ -747,27 +841,32 @@ Definition op_
               | core.ops.control_flow.ControlFlow.Break _ =>
                 let γ0_0 := γ.["Break.0"] in
                 let* residual := M.copy γ0_0 in
-                let* α0 :
+                let* α0 : _ :=
+                  ltac:(M.get_method (fun ℐ =>
+                    core.ops.try_trait.FromResidual.from_residual
+                      (Self :=
+                        core.result.Result.t
+                          f64.t
+                          result_chaining_with_question_mark.checked.MathError.t)
+                      (R :=
+                        core.result.Result.t
+                          core.convert.Infallible.t
+                          result_chaining_with_question_mark.checked.MathError.t)
+                      (Trait := ℐ))) in
+                let* α1 :
                     core.result.Result.t
                       core.convert.Infallible.t
                       result_chaining_with_question_mark.checked.MathError.t :=
                   M.read residual in
-                let* α1 :
+                let* α2 :
                     core.result.Result.t
                       f64.t
                       result_chaining_with_question_mark.checked.MathError.t :=
-                  M.call
-                    ((core.ops.try_trait.FromResidual.from_residual
-                        (Self :=
-                          core.result.Result.t
-                            f64.t
-                            result_chaining_with_question_mark.checked.MathError.t)
-                        (Trait := ltac:(refine _)))
-                      α0) in
-                let* α2 : M.Val never.t := return_ α1 in
-                let* α3 := M.read α2 in
-                let* α4 : f64.t := never_to_any α3 in
-                M.alloc α4
+                  M.call (α0 α1) in
+                let* α3 : M.Val never.t := return_ α2 in
+                let* α4 := M.read α3 in
+                let* α5 : f64.t := never_to_any α4 in
+                M.alloc α5
               | _ => M.break_match
               end) :
               M (M.Val f64.t);
@@ -783,81 +882,6 @@ Definition op_
               M (M.Val f64.t)
           ] in
       M.copy α5 in
-    let* ln : M.Val f64.t :=
-      let* α0 : f64.t := M.read ratio in
-      let* α1 :
-          core.result.Result.t
-            f64.t
-            result_chaining_with_question_mark.checked.MathError.t :=
-        M.call (result_chaining_with_question_mark.checked.ln α0) in
-      let* α2 :
-          core.ops.control_flow.ControlFlow.t
-            (core.result.Result.t
-              core.convert.Infallible.t
-              result_chaining_with_question_mark.checked.MathError.t)
-            f64.t :=
-        M.call
-          ((core.ops.try_trait.Try.branch
-              (Self :=
-                core.result.Result.t
-                  f64.t
-                  result_chaining_with_question_mark.checked.MathError.t)
-              (Trait := ltac:(refine _)))
-            α1) in
-      let* α3 :
-          M.Val
-            (core.ops.control_flow.ControlFlow.t
-              (core.result.Result.t
-                core.convert.Infallible.t
-                result_chaining_with_question_mark.checked.MathError.t)
-              f64.t) :=
-        M.alloc α2 in
-      let* α4 : M.Val f64.t :=
-        match_operator
-          α3
-          [
-            fun γ =>
-              (let* α0 := M.read γ in
-              match α0 with
-              | core.ops.control_flow.ControlFlow.Break _ =>
-                let γ0_0 := γ.["Break.0"] in
-                let* residual := M.copy γ0_0 in
-                let* α0 :
-                    core.result.Result.t
-                      core.convert.Infallible.t
-                      result_chaining_with_question_mark.checked.MathError.t :=
-                  M.read residual in
-                let* α1 :
-                    core.result.Result.t
-                      f64.t
-                      result_chaining_with_question_mark.checked.MathError.t :=
-                  M.call
-                    ((core.ops.try_trait.FromResidual.from_residual
-                        (Self :=
-                          core.result.Result.t
-                            f64.t
-                            result_chaining_with_question_mark.checked.MathError.t)
-                        (Trait := ltac:(refine _)))
-                      α0) in
-                let* α2 : M.Val never.t := return_ α1 in
-                let* α3 := M.read α2 in
-                let* α4 : f64.t := never_to_any α3 in
-                M.alloc α4
-              | _ => M.break_match
-              end) :
-              M (M.Val f64.t);
-            fun γ =>
-              (let* α0 := M.read γ in
-              match α0 with
-              | core.ops.control_flow.ControlFlow.Continue _ =>
-                let γ0_0 := γ.["Continue.0"] in
-                let* val := M.copy γ0_0 in
-                M.pure val
-              | _ => M.break_match
-              end) :
-              M (M.Val f64.t)
-          ] in
-      M.copy α4 in
     let* α0 : f64.t := M.read ln in
     let* α1 :
         core.result.Result.t

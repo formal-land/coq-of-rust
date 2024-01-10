@@ -75,15 +75,15 @@ Definition main : M unit :=
   let* α0 : M.Val unit :=
     if α2 then
       let* s : M.Val (alloc.borrow.Cow.t str.t) :=
-        let* α0 : ref (slice u8.t) :=
-          M.call
-            ((core.ops.deref.Deref.deref
-                (Self := alloc.vec.Vec.t u8.t alloc.alloc.Global.t)
-                (Trait := ltac:(refine _)))
-              (borrow output.["stdout"])) in
-        let* α1 : alloc.borrow.Cow.t str.t :=
-          M.call (alloc.string.String.t::["from_utf8_lossy"] α0) in
-        M.alloc α1 in
+        let* α0 : _ :=
+          ltac:(M.get_method (fun ℐ =>
+            core.ops.deref.Deref.deref
+              (Self := alloc.vec.Vec.t u8.t alloc.alloc.Global.t)
+              (Trait := ℐ))) in
+        let* α1 : ref (slice u8.t) := M.call (α0 (borrow output.["stdout"])) in
+        let* α2 : alloc.borrow.Cow.t str.t :=
+          M.call (alloc.string.String.t::["from_utf8_lossy"] α1) in
+        M.alloc α2 in
       let* _ : M.Val unit :=
         let* _ : M.Val unit :=
           let* α0 : ref str.t :=
@@ -108,15 +108,15 @@ Definition main : M unit :=
       M.alloc tt
     else
       let* s : M.Val (alloc.borrow.Cow.t str.t) :=
-        let* α0 : ref (slice u8.t) :=
-          M.call
-            ((core.ops.deref.Deref.deref
-                (Self := alloc.vec.Vec.t u8.t alloc.alloc.Global.t)
-                (Trait := ltac:(refine _)))
-              (borrow output.["stderr"])) in
-        let* α1 : alloc.borrow.Cow.t str.t :=
-          M.call (alloc.string.String.t::["from_utf8_lossy"] α0) in
-        M.alloc α1 in
+        let* α0 : _ :=
+          ltac:(M.get_method (fun ℐ =>
+            core.ops.deref.Deref.deref
+              (Self := alloc.vec.Vec.t u8.t alloc.alloc.Global.t)
+              (Trait := ℐ))) in
+        let* α1 : ref (slice u8.t) := M.call (α0 (borrow output.["stderr"])) in
+        let* α2 : alloc.borrow.Cow.t str.t :=
+          M.call (alloc.string.String.t::["from_utf8_lossy"] α1) in
+        M.alloc α2 in
       let* _ : M.Val unit :=
         let* _ : M.Val unit :=
           let* α0 : ref str.t :=

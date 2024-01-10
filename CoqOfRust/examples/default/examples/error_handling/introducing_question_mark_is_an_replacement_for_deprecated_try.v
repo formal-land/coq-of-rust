@@ -47,14 +47,15 @@ Definition multiply
                 let γ0_0 := γ.["Err.0"] in
                 let* err := M.copy γ0_0 in
                 let* _ : M.Val never.t :=
-                  let* α0 : core.num.error.ParseIntError.t := M.read err in
-                  let* α1 : core.num.error.ParseIntError.t :=
-                    M.call
-                      ((core.convert.From.from
-                          (Self := core.num.error.ParseIntError.t)
-                          (Trait := ltac:(refine _)))
-                        α0) in
-                  return_ (core.result.Result.Err α1) in
+                  let* α0 : _ :=
+                    ltac:(M.get_method (fun ℐ =>
+                      core.convert.From.from
+                        (Self := core.num.error.ParseIntError.t)
+                        (T := core.num.error.ParseIntError.t)
+                        (Trait := ℐ))) in
+                  let* α1 : core.num.error.ParseIntError.t := M.read err in
+                  let* α2 : core.num.error.ParseIntError.t := M.call (α0 α1) in
+                  return_ (core.result.Result.Err α2) in
                 let* α0 : M.Val unit := M.alloc tt in
                 let* α1 := M.read α0 in
                 let* α2 : i32.t := never_to_any α1 in
@@ -92,14 +93,15 @@ Definition multiply
                 let γ0_0 := γ.["Err.0"] in
                 let* err := M.copy γ0_0 in
                 let* _ : M.Val never.t :=
-                  let* α0 : core.num.error.ParseIntError.t := M.read err in
-                  let* α1 : core.num.error.ParseIntError.t :=
-                    M.call
-                      ((core.convert.From.from
-                          (Self := core.num.error.ParseIntError.t)
-                          (Trait := ltac:(refine _)))
-                        α0) in
-                  return_ (core.result.Result.Err α1) in
+                  let* α0 : _ :=
+                    ltac:(M.get_method (fun ℐ =>
+                      core.convert.From.from
+                        (Self := core.num.error.ParseIntError.t)
+                        (T := core.num.error.ParseIntError.t)
+                        (Trait := ℐ))) in
+                  let* α1 : core.num.error.ParseIntError.t := M.read err in
+                  let* α2 : core.num.error.ParseIntError.t := M.call (α0 α1) in
+                  return_ (core.result.Result.Err α2) in
                 let* α0 : M.Val unit := M.alloc tt in
                 let* α1 := M.read α0 in
                 let* α2 : i32.t := never_to_any α1 in

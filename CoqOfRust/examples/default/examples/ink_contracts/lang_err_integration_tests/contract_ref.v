@@ -22,12 +22,11 @@ Section Impl_core_default_Default_for_contract_ref_AccountId_t.
   Default
   *)
   Definition default : M contract_ref.AccountId.t :=
-    let* α0 : u128.t :=
-      M.call
-        (core.default.Default.default
-          (Self := u128.t)
-          (Trait := ltac:(refine _))) in
-    M.pure (contract_ref.AccountId.Build_t α0).
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.default.Default.default (Self := u128.t) (Trait := ℐ))) in
+    let* α1 : u128.t := M.call α0 in
+    M.pure (contract_ref.AccountId.Build_t α1).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -205,12 +204,11 @@ Section Impl_contract_ref_FlipperRef_t.
       }
   *)
   Definition new_default : M Self :=
-    let* α0 : bool.t :=
-      M.call
-        (core.default.Default.default
-          (Self := bool.t)
-          (Trait := ltac:(refine _))) in
-    M.call (contract_ref.FlipperRef.t::["new"] α0).
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.default.Default.default (Self := bool.t) (Trait := ℐ))) in
+    let* α1 : bool.t := M.call α0 in
+    M.call (contract_ref.FlipperRef.t::["new"] α1).
   
   Global Instance AssociatedFunction_new_default :
     Notations.DoubleColon Self "new_default" := {

@@ -43,20 +43,22 @@ Section Impl_core_default_Default_for_mapping_integration_tests_Mapping_t_K_V.
   Default
   *)
   Definition default : M (mapping_integration_tests.Mapping.t K V) :=
-    let* α0 : core.marker.PhantomData.t K :=
-      M.call
-        (core.default.Default.default
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.default.Default.default
           (Self := core.marker.PhantomData.t K)
-          (Trait := ltac:(refine _))) in
-    let* α1 : core.marker.PhantomData.t V :=
-      M.call
-        (core.default.Default.default
+          (Trait := ℐ))) in
+    let* α1 : core.marker.PhantomData.t K := M.call α0 in
+    let* α2 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.default.Default.default
           (Self := core.marker.PhantomData.t V)
-          (Trait := ltac:(refine _))) in
+          (Trait := ℐ))) in
+    let* α3 : core.marker.PhantomData.t V := M.call α2 in
     M.pure
       {|
-        mapping_integration_tests.Mapping._key := α0;
-        mapping_integration_tests.Mapping._value := α1;
+        mapping_integration_tests.Mapping._key := α1;
+        mapping_integration_tests.Mapping._value := α3;
       |}.
   
   Global Instance AssociatedFunction_default :
@@ -225,12 +227,11 @@ Section Impl_core_default_Default_for_mapping_integration_tests_AccountId_t.
   Default
   *)
   Definition default : M mapping_integration_tests.AccountId.t :=
-    let* α0 : u128.t :=
-      M.call
-        (core.default.Default.default
-          (Self := u128.t)
-          (Trait := ltac:(refine _))) in
-    M.pure (mapping_integration_tests.AccountId.Build_t α0).
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.default.Default.default (Self := u128.t) (Trait := ℐ))) in
+    let* α1 : u128.t := M.call α0 in
+    M.pure (mapping_integration_tests.AccountId.Build_t α1).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -360,18 +361,20 @@ Section Impl_core_default_Default_for_mapping_integration_tests_Mappings_t.
   Default
   *)
   Definition default : M mapping_integration_tests.Mappings.t :=
-    let* α0 :
-        mapping_integration_tests.Mapping.t
-          mapping_integration_tests.AccountId.t
-          u128.t :=
-      M.call
-        (core.default.Default.default
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.default.Default.default
           (Self :=
             mapping_integration_tests.Mapping.t
               mapping_integration_tests.AccountId.t
               u128.t)
-          (Trait := ltac:(refine _))) in
-    M.pure {| mapping_integration_tests.Mappings.balances := α0; |}.
+          (Trait := ℐ))) in
+    let* α1 :
+        mapping_integration_tests.Mapping.t
+          mapping_integration_tests.AccountId.t
+          u128.t :=
+      M.call α0 in
+    M.pure {| mapping_integration_tests.Mappings.balances := α1; |}.
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -429,18 +432,20 @@ Section Impl_mapping_integration_tests_Mappings_t.
           (mapping_integration_tests.Mapping.t
             mapping_integration_tests.AccountId.t
             u128.t) :=
-      let* α0 :
-          mapping_integration_tests.Mapping.t
-            mapping_integration_tests.AccountId.t
-            u128.t :=
-        M.call
-          (core.default.Default.default
+      let* α0 : _ :=
+        ltac:(M.get_method (fun ℐ =>
+          core.default.Default.default
             (Self :=
               mapping_integration_tests.Mapping.t
                 mapping_integration_tests.AccountId.t
                 u128.t)
-            (Trait := ltac:(refine _))) in
-      M.alloc α0 in
+            (Trait := ℐ))) in
+      let* α1 :
+          mapping_integration_tests.Mapping.t
+            mapping_integration_tests.AccountId.t
+            u128.t :=
+        M.call α0 in
+      M.alloc α1 in
     let* α0 :
         mapping_integration_tests.Mapping.t
           mapping_integration_tests.AccountId.t

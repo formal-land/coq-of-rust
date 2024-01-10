@@ -42,25 +42,61 @@ Definition main : M unit :=
             alloc.alloc.Global.t)::["new"] in
     M.alloc α0 in
   let* numbers : M.Val (alloc.vec.Vec.t u8.t alloc.alloc.Global.t) :=
-    let* α0 : alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t :=
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.iter.traits.iterator.Iterator.collect
+          (Self :=
+            core.iter.adapters.filter_map.FilterMap.t
+              (core.iter.adapters.map.Map.t
+                (alloc.vec.into_iter.IntoIter.t
+                  (ref str.t)
+                  alloc.alloc.Global.t)
+                ((ref str.t) ->
+                  M (core.result.Result.t u8.t core.num.error.ParseIntError.t)))
+              ((core.result.Result.t u8.t core.num.error.ParseIntError.t) ->
+                M (core.option.Option.t u8.t)))
+          (B := alloc.vec.Vec.t u8.t alloc.alloc.Global.t)
+          (Trait := ℐ))) in
+    let* α1 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.iter.traits.iterator.Iterator.filter_map
+          (Self :=
+            core.iter.adapters.map.Map.t
+              (alloc.vec.into_iter.IntoIter.t (ref str.t) alloc.alloc.Global.t)
+              ((ref str.t) ->
+                M (core.result.Result.t u8.t core.num.error.ParseIntError.t)))
+          (B := u8.t)
+          (F :=
+            (core.result.Result.t u8.t core.num.error.ParseIntError.t) ->
+              M (core.option.Option.t u8.t))
+          (Trait := ℐ))) in
+    let* α2 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.iter.traits.iterator.Iterator.map
+          (Self :=
+            alloc.vec.into_iter.IntoIter.t (ref str.t) alloc.alloc.Global.t)
+          (B := core.result.Result.t u8.t core.num.error.ParseIntError.t)
+          (F :=
+            (ref str.t) ->
+              M (core.result.Result.t u8.t core.num.error.ParseIntError.t))
+          (Trait := ℐ))) in
+    let* α3 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.iter.traits.collect.IntoIterator.into_iter
+          (Self := alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t)
+          (Trait := ℐ))) in
+    let* α4 : alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t :=
       M.read strings in
-    let* α1 : alloc.vec.into_iter.IntoIter.t (ref str.t) alloc.alloc.Global.t :=
-      M.call
-        ((core.iter.traits.collect.IntoIterator.into_iter
-            (Self := alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t)
-            (Trait := ltac:(refine _)))
-          α0) in
-    let* α2 :
+    let* α5 : alloc.vec.into_iter.IntoIter.t (ref str.t) alloc.alloc.Global.t :=
+      M.call (α3 α4) in
+    let* α6 :
         core.iter.adapters.map.Map.t
           (alloc.vec.into_iter.IntoIter.t (ref str.t) alloc.alloc.Global.t)
           ((ref str.t) ->
             M (core.result.Result.t u8.t core.num.error.ParseIntError.t)) :=
       M.call
-        ((core.iter.traits.iterator.Iterator.map
-            (Self :=
-              alloc.vec.into_iter.IntoIter.t (ref str.t) alloc.alloc.Global.t)
-            (Trait := ltac:(refine _)))
-          α1
+        (α2
+          α5
           (fun (α0 : ref str.t) =>
             (let* α0 := M.alloc α0 in
             match_operator
@@ -73,7 +109,7 @@ Definition main : M unit :=
                   M (core.result.Result.t u8.t core.num.error.ParseIntError.t)
               ]) :
             M (core.result.Result.t u8.t core.num.error.ParseIntError.t))) in
-    let* α3 :
+    let* α7 :
         core.iter.adapters.filter_map.FilterMap.t
           (core.iter.adapters.map.Map.t
             (alloc.vec.into_iter.IntoIter.t (ref str.t) alloc.alloc.Global.t)
@@ -82,16 +118,8 @@ Definition main : M unit :=
           ((core.result.Result.t u8.t core.num.error.ParseIntError.t) ->
             M (core.option.Option.t u8.t)) :=
       M.call
-        ((core.iter.traits.iterator.Iterator.filter_map
-            (Self :=
-              core.iter.adapters.map.Map.t
-                (alloc.vec.into_iter.IntoIter.t
-                  (ref str.t)
-                  alloc.alloc.Global.t)
-                ((ref str.t) ->
-                  M (core.result.Result.t u8.t core.num.error.ParseIntError.t)))
-            (Trait := ltac:(refine _)))
-          α2
+        (α1
+          α6
           (fun
               (α0 : core.result.Result.t u8.t core.num.error.ParseIntError.t) =>
             (let* α0 := M.alloc α0 in
@@ -133,25 +161,8 @@ Definition main : M unit :=
                   M (core.option.Option.t u8.t)
               ]) :
             M (core.option.Option.t u8.t))) in
-    let* α4 : alloc.vec.Vec.t u8.t alloc.alloc.Global.t :=
-      M.call
-        ((core.iter.traits.iterator.Iterator.collect
-            (Self :=
-              core.iter.adapters.filter_map.FilterMap.t
-                (core.iter.adapters.map.Map.t
-                  (alloc.vec.into_iter.IntoIter.t
-                    (ref str.t)
-                    alloc.alloc.Global.t)
-                  ((ref str.t) ->
-                    M
-                      (core.result.Result.t
-                        u8.t
-                        core.num.error.ParseIntError.t)))
-                ((core.result.Result.t u8.t core.num.error.ParseIntError.t) ->
-                  M (core.option.Option.t u8.t)))
-            (Trait := ltac:(refine _)))
-          α3) in
-    M.alloc α4 in
+    let* α8 : alloc.vec.Vec.t u8.t alloc.alloc.Global.t := M.call (α0 α7) in
+    M.alloc α8 in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "Numbers: ") in

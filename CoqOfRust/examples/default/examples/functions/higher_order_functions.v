@@ -64,30 +64,32 @@ Definition main : M unit :=
   let* upper : M.Val u32.t := M.alloc (Integer.of_Z 1000) in
   let* acc : M.Val u32.t := M.alloc (Integer.of_Z 0) in
   let* _ : M.Val unit :=
-    let* α0 : core.ops.range.RangeFrom.t u32.t :=
-      M.call
-        ((core.iter.traits.collect.IntoIterator.into_iter
-            (Self := core.ops.range.RangeFrom.t u32.t)
-            (Trait := ltac:(refine _)))
-          {| core.ops.range.RangeFrom.start := Integer.of_Z 0; |}) in
-    let* α1 : M.Val (core.ops.range.RangeFrom.t u32.t) := M.alloc α0 in
-    let* α2 : M.Val unit :=
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.iter.traits.collect.IntoIterator.into_iter
+          (Self := core.ops.range.RangeFrom.t u32.t)
+          (Trait := ℐ))) in
+    let* α1 : core.ops.range.RangeFrom.t u32.t :=
+      M.call (α0 {| core.ops.range.RangeFrom.start := Integer.of_Z 0; |}) in
+    let* α2 : M.Val (core.ops.range.RangeFrom.t u32.t) := M.alloc α1 in
+    let* α3 : M.Val unit :=
       match_operator
-        α1
+        α2
         [
           fun γ =>
             (let* iter := M.copy γ in
             M.loop
               (let* _ : M.Val unit :=
-                let* α0 : core.option.Option.t u32.t :=
-                  M.call
-                    ((core.iter.traits.iterator.Iterator.next
-                        (Self := core.ops.range.RangeFrom.t u32.t)
-                        (Trait := ltac:(refine _)))
-                      (borrow_mut iter)) in
-                let* α1 : M.Val (core.option.Option.t u32.t) := M.alloc α0 in
+                let* α0 : _ :=
+                  ltac:(M.get_method (fun ℐ =>
+                    core.iter.traits.iterator.Iterator.next
+                      (Self := core.ops.range.RangeFrom.t u32.t)
+                      (Trait := ℐ))) in
+                let* α1 : core.option.Option.t u32.t :=
+                  M.call (α0 (borrow_mut iter)) in
+                let* α2 : M.Val (core.option.Option.t u32.t) := M.alloc α1 in
                 match_operator
-                  α1
+                  α2
                   [
                     fun γ =>
                       (let* α0 := M.read γ in
@@ -145,7 +147,7 @@ Definition main : M unit :=
               M.alloc tt)) :
             M (M.Val unit)
         ] in
-    M.pure (use α2) in
+    M.pure (use α3) in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "imperative style: ") in
@@ -168,14 +170,52 @@ Definition main : M unit :=
       M.alloc α10 in
     M.alloc tt in
   let* sum_of_squared_odd_numbers : M.Val u32.t :=
-    let* α0 :
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.iter.traits.iterator.Iterator.sum
+          (Self :=
+            core.iter.adapters.filter.Filter.t
+              (core.iter.adapters.take_while.TakeWhile.t
+                (core.iter.adapters.map.Map.t
+                  (core.ops.range.RangeFrom.t u32.t)
+                  (u32.t -> M u32.t))
+                ((ref u32.t) -> M bool.t))
+              ((ref u32.t) -> M bool.t))
+          (S := u32.t)
+          (Trait := ℐ))) in
+    let* α1 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.iter.traits.iterator.Iterator.filter
+          (Self :=
+            core.iter.adapters.take_while.TakeWhile.t
+              (core.iter.adapters.map.Map.t
+                (core.ops.range.RangeFrom.t u32.t)
+                (u32.t -> M u32.t))
+              ((ref u32.t) -> M bool.t))
+          (P := (ref u32.t) -> M bool.t)
+          (Trait := ℐ))) in
+    let* α2 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.iter.traits.iterator.Iterator.take_while
+          (Self :=
+            core.iter.adapters.map.Map.t
+              (core.ops.range.RangeFrom.t u32.t)
+              (u32.t -> M u32.t))
+          (P := (ref u32.t) -> M bool.t)
+          (Trait := ℐ))) in
+    let* α3 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.iter.traits.iterator.Iterator.map
+          (Self := core.ops.range.RangeFrom.t u32.t)
+          (B := u32.t)
+          (F := u32.t -> M u32.t)
+          (Trait := ℐ))) in
+    let* α4 :
         core.iter.adapters.map.Map.t
           (core.ops.range.RangeFrom.t u32.t)
           (u32.t -> M u32.t) :=
       M.call
-        ((core.iter.traits.iterator.Iterator.map
-            (Self := core.ops.range.RangeFrom.t u32.t)
-            (Trait := ltac:(refine _)))
+        (α3
           {| core.ops.range.RangeFrom.start := Integer.of_Z 0; |}
           (fun (α0 : u32.t) =>
             (let* α0 := M.alloc α0 in
@@ -190,20 +230,15 @@ Definition main : M unit :=
                   M u32.t
               ]) :
             M u32.t)) in
-    let* α1 :
+    let* α5 :
         core.iter.adapters.take_while.TakeWhile.t
           (core.iter.adapters.map.Map.t
             (core.ops.range.RangeFrom.t u32.t)
             (u32.t -> M u32.t))
           ((ref u32.t) -> M bool.t) :=
       M.call
-        ((core.iter.traits.iterator.Iterator.take_while
-            (Self :=
-              core.iter.adapters.map.Map.t
-                (core.ops.range.RangeFrom.t u32.t)
-                (u32.t -> M u32.t))
-            (Trait := ltac:(refine _)))
-          α0
+        (α2
+          α4
           (fun (α0 : ref u32.t) =>
             (let* α0 := M.alloc α0 in
             match_operator
@@ -220,7 +255,7 @@ Definition main : M unit :=
                   M bool.t
               ]) :
             M bool.t)) in
-    let* α2 :
+    let* α6 :
         core.iter.adapters.filter.Filter.t
           (core.iter.adapters.take_while.TakeWhile.t
             (core.iter.adapters.map.Map.t
@@ -229,15 +264,8 @@ Definition main : M unit :=
             ((ref u32.t) -> M bool.t))
           ((ref u32.t) -> M bool.t) :=
       M.call
-        ((core.iter.traits.iterator.Iterator.filter
-            (Self :=
-              core.iter.adapters.take_while.TakeWhile.t
-                (core.iter.adapters.map.Map.t
-                  (core.ops.range.RangeFrom.t u32.t)
-                  (u32.t -> M u32.t))
-                ((ref u32.t) -> M bool.t))
-            (Trait := ltac:(refine _)))
-          α1
+        (α1
+          α5
           (fun (α0 : ref u32.t) =>
             (let* α0 := M.alloc α0 in
             match_operator
@@ -253,20 +281,8 @@ Definition main : M unit :=
                   M bool.t
               ]) :
             M bool.t)) in
-    let* α3 : u32.t :=
-      M.call
-        ((core.iter.traits.iterator.Iterator.sum
-            (Self :=
-              core.iter.adapters.filter.Filter.t
-                (core.iter.adapters.take_while.TakeWhile.t
-                  (core.iter.adapters.map.Map.t
-                    (core.ops.range.RangeFrom.t u32.t)
-                    (u32.t -> M u32.t))
-                  ((ref u32.t) -> M bool.t))
-                ((ref u32.t) -> M bool.t))
-            (Trait := ltac:(refine _)))
-          α2) in
-    M.alloc α3 in
+    let* α7 : u32.t := M.call (α0 α6) in
+    M.alloc α7 in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "functional style: ") in

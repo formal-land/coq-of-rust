@@ -210,25 +210,23 @@ Section Impl_traits_Sheep_t_2.
             let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
             let* α4 : ref (slice (ref str.t)) :=
               M.read (pointer_coercion "Unsize" α3) in
-            let* α5 : mut_ref traits.Sheep.t := M.read self in
-            let* α6 : ref str.t :=
-              M.call
-                ((traits.Animal.name
-                    (Self := traits.Sheep.t)
-                    (Trait := ltac:(refine _)))
-                  (borrow (deref α5))) in
-            let* α7 : M.Val (ref str.t) := M.alloc α6 in
-            let* α8 : core.fmt.rt.Argument.t :=
-              M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α7)) in
-            let* α9 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α8 ] in
-            let* α10 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-              M.alloc (borrow α9) in
-            let* α11 : ref (slice core.fmt.rt.Argument.t) :=
-              M.read (pointer_coercion "Unsize" α10) in
-            let* α12 : core.fmt.Arguments.t :=
-              M.call (core.fmt.Arguments.t::["new_v1"] α4 α11) in
-            let* α13 : unit := M.call (std.io.stdio._print α12) in
-            M.alloc α13 in
+            let* α5 : _ :=
+              ltac:(M.get_method (fun ℐ =>
+                traits.Animal.name (Self := traits.Sheep.t) (Trait := ℐ))) in
+            let* α6 : mut_ref traits.Sheep.t := M.read self in
+            let* α7 : ref str.t := M.call (α5 (borrow (deref α6))) in
+            let* α8 : M.Val (ref str.t) := M.alloc α7 in
+            let* α9 : core.fmt.rt.Argument.t :=
+              M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α8)) in
+            let* α10 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α9 ] in
+            let* α11 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+              M.alloc (borrow α10) in
+            let* α12 : ref (slice core.fmt.rt.Argument.t) :=
+              M.read (pointer_coercion "Unsize" α11) in
+            let* α13 : core.fmt.Arguments.t :=
+              M.call (core.fmt.Arguments.t::["new_v1"] α4 α12) in
+            let* α14 : unit := M.call (std.io.stdio._print α13) in
+            M.alloc α14 in
           M.alloc tt in
         M.alloc tt
       else
@@ -283,30 +281,26 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
   let* dolly : M.Val traits.Sheep.t :=
-    let* α0 : ref str.t := M.read (mk_str "Dolly") in
-    let* α1 : traits.Sheep.t :=
-      M.call
-        ((traits.Animal.new (Self := traits.Sheep.t) (Trait := ltac:(refine _)))
-          α0) in
-    M.alloc α1 in
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        traits.Animal.new (Self := traits.Sheep.t) (Trait := ℐ))) in
+    let* α1 : ref str.t := M.read (mk_str "Dolly") in
+    let* α2 : traits.Sheep.t := M.call (α0 α1) in
+    M.alloc α2 in
   let* _ : M.Val unit :=
-    let* α0 : unit :=
-      M.call
-        ((traits.Animal.talk
-            (Self := traits.Sheep.t)
-            (Trait := ltac:(refine _)))
-          (borrow dolly)) in
-    M.alloc α0 in
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        traits.Animal.talk (Self := traits.Sheep.t) (Trait := ℐ))) in
+    let* α1 : unit := M.call (α0 (borrow dolly)) in
+    M.alloc α1 in
   let* _ : M.Val unit :=
     let* α0 : unit := M.call (traits.Sheep.t::["shear"] (borrow_mut dolly)) in
     M.alloc α0 in
   let* _ : M.Val unit :=
-    let* α0 : unit :=
-      M.call
-        ((traits.Animal.talk
-            (Self := traits.Sheep.t)
-            (Trait := ltac:(refine _)))
-          (borrow dolly)) in
-    M.alloc α0 in
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        traits.Animal.talk (Self := traits.Sheep.t) (Trait := ℐ))) in
+    let* α1 : unit := M.call (α0 (borrow dolly)) in
+    M.alloc α1 in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.

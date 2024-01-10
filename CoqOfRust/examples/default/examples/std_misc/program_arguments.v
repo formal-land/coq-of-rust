@@ -18,14 +18,16 @@ fn main() {
 Definition main : M unit :=
   let* args :
       M.Val (alloc.vec.Vec.t alloc.string.String.t alloc.alloc.Global.t) :=
-    let* α0 : std.env.Args.t := M.call std.env.args in
-    let* α1 : alloc.vec.Vec.t alloc.string.String.t alloc.alloc.Global.t :=
-      M.call
-        ((core.iter.traits.iterator.Iterator.collect
-            (Self := std.env.Args.t)
-            (Trait := ltac:(refine _)))
-          α0) in
-    M.alloc α1 in
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.iter.traits.iterator.Iterator.collect
+          (Self := std.env.Args.t)
+          (B := alloc.vec.Vec.t alloc.string.String.t alloc.alloc.Global.t)
+          (Trait := ℐ))) in
+    let* α1 : std.env.Args.t := M.call std.env.args in
+    let* α2 : alloc.vec.Vec.t alloc.string.String.t alloc.alloc.Global.t :=
+      M.call (α0 α1) in
+    M.alloc α2 in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "My path is ") in
@@ -35,25 +37,25 @@ Definition main : M unit :=
       let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
       let* α4 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α3) in
-      let* α5 : ref alloc.string.String.t :=
-        M.call
-          ((core.ops.index.Index.index
-              (Self :=
-                alloc.vec.Vec.t alloc.string.String.t alloc.alloc.Global.t)
-              (Trait := ltac:(refine _)))
-            (borrow args)
-            (Integer.of_Z 0)) in
-      let* α6 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] α5) in
-      let* α7 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α6 ] in
-      let* α8 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-        M.alloc (borrow α7) in
-      let* α9 : ref (slice core.fmt.rt.Argument.t) :=
-        M.read (pointer_coercion "Unsize" α8) in
-      let* α10 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_v1"] α4 α9) in
-      let* α11 : unit := M.call (std.io.stdio._print α10) in
-      M.alloc α11 in
+      let* α5 : _ :=
+        ltac:(M.get_method (fun ℐ =>
+          core.ops.index.Index.index
+            (Self := alloc.vec.Vec.t alloc.string.String.t alloc.alloc.Global.t)
+            (Idx := usize.t)
+            (Trait := ℐ))) in
+      let* α6 : ref alloc.string.String.t :=
+        M.call (α5 (borrow args) (Integer.of_Z 0)) in
+      let* α7 : core.fmt.rt.Argument.t :=
+        M.call (core.fmt.rt.Argument.t::["new_display"] α6) in
+      let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
+      let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+        M.alloc (borrow α8) in
+      let* α10 : ref (slice core.fmt.rt.Argument.t) :=
+        M.read (pointer_coercion "Unsize" α9) in
+      let* α11 : core.fmt.Arguments.t :=
+        M.call (core.fmt.Arguments.t::["new_v1"] α4 α10) in
+      let* α12 : unit := M.call (std.io.stdio._print α11) in
+      M.alloc α12 in
     M.alloc tt in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
@@ -73,26 +75,29 @@ Definition main : M unit :=
       let* α8 : M.Val usize.t := M.alloc α7 in
       let* α9 : core.fmt.rt.Argument.t :=
         M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow α8)) in
-      let* α10 : ref (slice alloc.string.String.t) :=
+      let* α10 : _ :=
+        ltac:(M.get_method (fun ℐ =>
+          core.ops.index.Index.index
+            (Self := alloc.vec.Vec.t alloc.string.String.t alloc.alloc.Global.t)
+            (Idx := core.ops.range.RangeFrom.t usize.t)
+            (Trait := ℐ))) in
+      let* α11 : ref (slice alloc.string.String.t) :=
         M.call
-          ((core.ops.index.Index.index
-              (Self :=
-                alloc.vec.Vec.t alloc.string.String.t alloc.alloc.Global.t)
-              (Trait := ltac:(refine _)))
+          (α10
             (borrow args)
             {| core.ops.range.RangeFrom.start := Integer.of_Z 1; |}) in
-      let* α11 : M.Val (ref (slice alloc.string.String.t)) := M.alloc α10 in
-      let* α12 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow α11)) in
-      let* α13 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α9; α12 ] in
-      let* α14 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-        M.alloc (borrow α13) in
-      let* α15 : ref (slice core.fmt.rt.Argument.t) :=
-        M.read (pointer_coercion "Unsize" α14) in
-      let* α16 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_v1"] α5 α15) in
-      let* α17 : unit := M.call (std.io.stdio._print α16) in
-      M.alloc α17 in
+      let* α12 : M.Val (ref (slice alloc.string.String.t)) := M.alloc α11 in
+      let* α13 : core.fmt.rt.Argument.t :=
+        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow α12)) in
+      let* α14 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α9; α13 ] in
+      let* α15 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+        M.alloc (borrow α14) in
+      let* α16 : ref (slice core.fmt.rt.Argument.t) :=
+        M.read (pointer_coercion "Unsize" α15) in
+      let* α17 : core.fmt.Arguments.t :=
+        M.call (core.fmt.Arguments.t::["new_v1"] α5 α16) in
+      let* α18 : unit := M.call (std.io.stdio._print α17) in
+      M.alloc α18 in
     M.alloc tt in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.

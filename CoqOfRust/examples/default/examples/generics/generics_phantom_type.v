@@ -52,23 +52,24 @@ Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_t_A_B.
       : M bool.t :=
     let* self := M.alloc self in
     let* other := M.alloc other in
-    let* α0 : ref (generics_phantom_type.PhantomTuple.t A B) := M.read self in
-    let* α1 : ref (generics_phantom_type.PhantomTuple.t A B) := M.read other in
-    let* α2 : bool.t :=
-      M.call
-        ((core.cmp.PartialEq.eq (Self := A) (Trait := ltac:(refine _)))
-          (borrow (deref α0).["0"])
-          (borrow (deref α1).["0"])) in
-    let* α3 : ref (generics_phantom_type.PhantomTuple.t A B) := M.read self in
-    let* α4 : ref (generics_phantom_type.PhantomTuple.t A B) := M.read other in
-    let* α5 : bool.t :=
-      M.call
-        ((core.cmp.PartialEq.eq
-            (Self := core.marker.PhantomData.t B)
-            (Trait := ltac:(refine _)))
-          (borrow (deref α3).["1"])
-          (borrow (deref α4).["1"])) in
-    M.pure (BinOp.Pure.and α2 α5).
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.cmp.PartialEq.eq (Self := A) (Rhs := A) (Trait := ℐ))) in
+    let* α1 : ref (generics_phantom_type.PhantomTuple.t A B) := M.read self in
+    let* α2 : ref (generics_phantom_type.PhantomTuple.t A B) := M.read other in
+    let* α3 : bool.t :=
+      M.call (α0 (borrow (deref α1).["0"]) (borrow (deref α2).["0"])) in
+    let* α4 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.cmp.PartialEq.eq
+          (Self := core.marker.PhantomData.t B)
+          (Rhs := core.marker.PhantomData.t B)
+          (Trait := ℐ))) in
+    let* α5 : ref (generics_phantom_type.PhantomTuple.t A B) := M.read self in
+    let* α6 : ref (generics_phantom_type.PhantomTuple.t A B) := M.read other in
+    let* α7 : bool.t :=
+      M.call (α4 (borrow (deref α5).["1"]) (borrow (deref α6).["1"])) in
+    M.pure (BinOp.Pure.and α3 α7).
   
   Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
     Notations.double_colon := eq;
@@ -142,23 +143,25 @@ Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_t_A_B.
       : M bool.t :=
     let* self := M.alloc self in
     let* other := M.alloc other in
-    let* α0 : ref (generics_phantom_type.PhantomStruct.t A B) := M.read self in
-    let* α1 : ref (generics_phantom_type.PhantomStruct.t A B) := M.read other in
-    let* α2 : bool.t :=
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.cmp.PartialEq.eq (Self := A) (Rhs := A) (Trait := ℐ))) in
+    let* α1 : ref (generics_phantom_type.PhantomStruct.t A B) := M.read self in
+    let* α2 : ref (generics_phantom_type.PhantomStruct.t A B) := M.read other in
+    let* α3 : bool.t :=
+      M.call (α0 (borrow (deref α1).["first"]) (borrow (deref α2).["first"])) in
+    let* α4 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.cmp.PartialEq.eq
+          (Self := core.marker.PhantomData.t B)
+          (Rhs := core.marker.PhantomData.t B)
+          (Trait := ℐ))) in
+    let* α5 : ref (generics_phantom_type.PhantomStruct.t A B) := M.read self in
+    let* α6 : ref (generics_phantom_type.PhantomStruct.t A B) := M.read other in
+    let* α7 : bool.t :=
       M.call
-        ((core.cmp.PartialEq.eq (Self := A) (Trait := ltac:(refine _)))
-          (borrow (deref α0).["first"])
-          (borrow (deref α1).["first"])) in
-    let* α3 : ref (generics_phantom_type.PhantomStruct.t A B) := M.read self in
-    let* α4 : ref (generics_phantom_type.PhantomStruct.t A B) := M.read other in
-    let* α5 : bool.t :=
-      M.call
-        ((core.cmp.PartialEq.eq
-            (Self := core.marker.PhantomData.t B)
-            (Trait := ltac:(refine _)))
-          (borrow (deref α3).["phantom"])
-          (borrow (deref α4).["phantom"])) in
-    M.pure (BinOp.Pure.and α2 α5).
+        (α4 (borrow (deref α5).["phantom"]) (borrow (deref α6).["phantom"])) in
+    M.pure (BinOp.Pure.and α3 α7).
   
   Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
     Notations.double_colon := eq;

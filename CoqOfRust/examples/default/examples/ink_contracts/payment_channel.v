@@ -22,12 +22,11 @@ Section Impl_core_default_Default_for_payment_channel_AccountId_t.
   Default
   *)
   Definition default : M payment_channel.AccountId.t :=
-    let* α0 : u128.t :=
-      M.call
-        (core.default.Default.default
-          (Self := u128.t)
-          (Trait := ltac:(refine _))) in
-    M.pure (payment_channel.AccountId.Build_t α0).
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.default.Default.default (Self := u128.t) (Trait := ℐ))) in
+    let* α1 : u128.t := M.call α0 in
+    M.pure (payment_channel.AccountId.Build_t α1).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -897,12 +896,11 @@ Section Impl_payment_channel_PaymentChannel_t.
       let* α4 : u128.t := M.read amount in
       M.alloc (α3, α4) in
     let* message : M.Val (array u8.t) :=
-      let* α0 : array u8.t :=
-        M.call
-          (core.default.Default.default
-            (Self := array u8.t)
-            (Trait := ltac:(refine _))) in
-      M.alloc α0 in
+      let* α0 : _ :=
+        ltac:(M.get_method (fun ℐ =>
+          core.default.Default.default (Self := array u8.t) (Trait := ℐ))) in
+      let* α1 : array u8.t := M.call α0 in
+      M.alloc α1 in
     let* _ : M.Val unit :=
       let* α0 : unit :=
         M.call
@@ -943,33 +941,34 @@ Section Impl_payment_channel_PaymentChannel_t.
     let* signature_account_id : M.Val (array u8.t) :=
       M.alloc (repeat (Integer.of_Z 0) 32) in
     let* _ : M.Val unit :=
-      let* α0 : M.Val (ref (array u8.t)) := M.alloc (borrow pub_key) in
-      let* α1 : ref (slice u8.t) := M.read (pointer_coercion "Unsize" α0) in
-      let* α2 : unit :=
-        M.call
-          ((payment_channel.CryptoHash.hash
-              (Self := payment_channel.Blake2x256.t)
-              (Trait := ltac:(refine _)))
-            α1
-            (borrow_mut signature_account_id)) in
-      M.alloc α2 in
-    let* α0 : ref payment_channel.PaymentChannel.t := M.read self in
-    let* α1 : array u8.t := M.read signature_account_id in
-    let* α2 : payment_channel.AccountId.t :=
-      M.call
-        ((core.convert.Into.into
-            (Self := array u8.t)
-            (Trait := ltac:(refine _)))
-          α1) in
-    let* α3 : M.Val payment_channel.AccountId.t := M.alloc α2 in
-    let* α4 : bool.t :=
-      M.call
-        ((core.cmp.PartialEq.eq
-            (Self := payment_channel.AccountId.t)
-            (Trait := ltac:(refine _)))
-          (borrow (deref α0).["recipient"])
-          (borrow α3)) in
-    let* α0 : M.Val bool.t := M.alloc α4 in
+      let* α0 : _ :=
+        ltac:(M.get_method (fun ℐ =>
+          payment_channel.CryptoHash.hash
+            (Self := payment_channel.Blake2x256.t)
+            (Trait := ℐ))) in
+      let* α1 : M.Val (ref (array u8.t)) := M.alloc (borrow pub_key) in
+      let* α2 : ref (slice u8.t) := M.read (pointer_coercion "Unsize" α1) in
+      let* α3 : unit := M.call (α0 α2 (borrow_mut signature_account_id)) in
+      M.alloc α3 in
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.cmp.PartialEq.eq
+          (Self := payment_channel.AccountId.t)
+          (Rhs := payment_channel.AccountId.t)
+          (Trait := ℐ))) in
+    let* α1 : ref payment_channel.PaymentChannel.t := M.read self in
+    let* α2 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.convert.Into.into
+          (Self := array u8.t)
+          (T := payment_channel.AccountId.t)
+          (Trait := ℐ))) in
+    let* α3 : array u8.t := M.read signature_account_id in
+    let* α4 : payment_channel.AccountId.t := M.call (α2 α3) in
+    let* α5 : M.Val payment_channel.AccountId.t := M.alloc α4 in
+    let* α6 : bool.t :=
+      M.call (α0 (borrow (deref α1).["recipient"]) (borrow α5)) in
+    let* α0 : M.Val bool.t := M.alloc α6 in
     M.read α0.
   
   Global Instance AssociatedFunction_is_signature_valid :
@@ -1047,25 +1046,26 @@ Section Impl_payment_channel_PaymentChannel_t.
     let return_ := M.return_ (R := ltac:(payment_channel.Result unit)) in
     M.catch_return
       (let* _ : M.Val unit :=
-        let* α0 : mut_ref payment_channel.PaymentChannel.t := M.read self in
-        let* α1 : payment_channel.Env.t :=
+        let* α0 : _ :=
+          ltac:(M.get_method (fun ℐ =>
+            core.cmp.PartialEq.ne
+              (Self := payment_channel.AccountId.t)
+              (Rhs := payment_channel.AccountId.t)
+              (Trait := ℐ))) in
+        let* α1 : mut_ref payment_channel.PaymentChannel.t := M.read self in
+        let* α2 : payment_channel.Env.t :=
           M.call
-            (payment_channel.PaymentChannel.t::["env"] (borrow (deref α0))) in
-        let* α2 : M.Val payment_channel.Env.t := M.alloc α1 in
-        let* α3 : payment_channel.AccountId.t :=
-          M.call (payment_channel.Env.t::["caller"] (borrow α2)) in
-        let* α4 : M.Val payment_channel.AccountId.t := M.alloc α3 in
-        let* α5 : mut_ref payment_channel.PaymentChannel.t := M.read self in
-        let* α6 : bool.t :=
-          M.call
-            ((core.cmp.PartialEq.ne
-                (Self := payment_channel.AccountId.t)
-                (Trait := ltac:(refine _)))
-              (borrow α4)
-              (borrow (deref α5).["recipient"])) in
-        let* α7 : M.Val bool.t := M.alloc α6 in
-        let* α8 : bool.t := M.read (use α7) in
-        if α8 then
+            (payment_channel.PaymentChannel.t::["env"] (borrow (deref α1))) in
+        let* α3 : M.Val payment_channel.Env.t := M.alloc α2 in
+        let* α4 : payment_channel.AccountId.t :=
+          M.call (payment_channel.Env.t::["caller"] (borrow α3)) in
+        let* α5 : M.Val payment_channel.AccountId.t := M.alloc α4 in
+        let* α6 : mut_ref payment_channel.PaymentChannel.t := M.read self in
+        let* α7 : bool.t :=
+          M.call (α0 (borrow α5) (borrow (deref α6).["recipient"])) in
+        let* α8 : M.Val bool.t := M.alloc α7 in
+        let* α9 : bool.t := M.read (use α8) in
+        if α9 then
           let* _ : M.Val never.t :=
             return_
               (core.result.Result.Err
@@ -1116,24 +1116,29 @@ Section Impl_payment_channel_PaymentChannel_t.
         else
           M.alloc tt in
       let* _ : M.Val unit :=
-        let* α0 : mut_ref payment_channel.PaymentChannel.t := M.read self in
-        let* α1 : payment_channel.Env.t :=
+        let* α0 : _ :=
+          ltac:(M.get_method (fun ℐ =>
+            core.ops.try_trait.Try.branch
+              (Self := core.result.Result.t unit payment_channel.Error.t)
+              (Trait := ℐ))) in
+        let* α1 : mut_ref payment_channel.PaymentChannel.t := M.read self in
+        let* α2 : payment_channel.Env.t :=
           M.call
-            (payment_channel.PaymentChannel.t::["env"] (borrow (deref α0))) in
-        let* α2 : M.Val payment_channel.Env.t := M.alloc α1 in
-        let* α3 : mut_ref payment_channel.PaymentChannel.t := M.read self in
-        let* α4 : payment_channel.AccountId.t :=
-          M.read (deref α3).["recipient"] in
-        let* α5 : u128.t := M.read amount in
-        let* α6 : mut_ref payment_channel.PaymentChannel.t := M.read self in
-        let* α7 : u128.t := M.read (deref α6).["withdrawn"] in
-        let* α8 : u128.t := BinOp.Panic.sub α5 α7 in
-        let* α9 : core.result.Result.t unit payment_channel.Error.t :=
-          M.call (payment_channel.Env.t::["transfer"] (borrow α2) α4 α8) in
+            (payment_channel.PaymentChannel.t::["env"] (borrow (deref α1))) in
+        let* α3 : M.Val payment_channel.Env.t := M.alloc α2 in
+        let* α4 : mut_ref payment_channel.PaymentChannel.t := M.read self in
+        let* α5 : payment_channel.AccountId.t :=
+          M.read (deref α4).["recipient"] in
+        let* α6 : u128.t := M.read amount in
+        let* α7 : mut_ref payment_channel.PaymentChannel.t := M.read self in
+        let* α8 : u128.t := M.read (deref α7).["withdrawn"] in
+        let* α9 : u128.t := BinOp.Panic.sub α6 α8 in
         let* α10 : core.result.Result.t unit payment_channel.Error.t :=
+          M.call (payment_channel.Env.t::["transfer"] (borrow α3) α5 α9) in
+        let* α11 : core.result.Result.t unit payment_channel.Error.t :=
           M.call
             ((core.result.Result.t unit payment_channel.Error.t)::["map_err"]
-              α9
+              α10
               (fun (α0 : payment_channel.Error.t) =>
                 (let* α0 := M.alloc α0 in
                 match_operator
@@ -1144,27 +1149,23 @@ Section Impl_payment_channel_PaymentChannel_t.
                       M payment_channel.Error.t
                   ]) :
                 M payment_channel.Error.t)) in
-        let* α11 :
+        let* α12 :
             core.ops.control_flow.ControlFlow.t
               (core.result.Result.t
                 core.convert.Infallible.t
                 payment_channel.Error.t)
               unit :=
-          M.call
-            ((core.ops.try_trait.Try.branch
-                (Self := core.result.Result.t unit payment_channel.Error.t)
-                (Trait := ltac:(refine _)))
-              α10) in
-        let* α12 :
+          M.call (α0 α11) in
+        let* α13 :
             M.Val
               (core.ops.control_flow.ControlFlow.t
                 (core.result.Result.t
                   core.convert.Infallible.t
                   payment_channel.Error.t)
                 unit) :=
-          M.alloc α11 in
+          M.alloc α12 in
         match_operator
-          α12
+          α13
           [
             fun γ =>
               (let* α0 := M.read γ in
@@ -1172,22 +1173,27 @@ Section Impl_payment_channel_PaymentChannel_t.
               | core.ops.control_flow.ControlFlow.Break _ =>
                 let γ0_0 := γ.["Break.0"] in
                 let* residual := M.copy γ0_0 in
-                let* α0 :
+                let* α0 : _ :=
+                  ltac:(M.get_method (fun ℐ =>
+                    core.ops.try_trait.FromResidual.from_residual
+                      (Self :=
+                        core.result.Result.t unit payment_channel.Error.t)
+                      (R :=
+                        core.result.Result.t
+                          core.convert.Infallible.t
+                          payment_channel.Error.t)
+                      (Trait := ℐ))) in
+                let* α1 :
                     core.result.Result.t
                       core.convert.Infallible.t
                       payment_channel.Error.t :=
                   M.read residual in
-                let* α1 : core.result.Result.t unit payment_channel.Error.t :=
-                  M.call
-                    ((core.ops.try_trait.FromResidual.from_residual
-                        (Self :=
-                          core.result.Result.t unit payment_channel.Error.t)
-                        (Trait := ltac:(refine _)))
-                      α0) in
-                let* α2 : M.Val never.t := return_ α1 in
-                let* α3 := M.read α2 in
-                let* α4 : unit := never_to_any α3 in
-                M.alloc α4
+                let* α2 : core.result.Result.t unit payment_channel.Error.t :=
+                  M.call (α0 α1) in
+                let* α3 : M.Val never.t := return_ α2 in
+                let* α4 := M.read α3 in
+                let* α5 : unit := never_to_any α4 in
+                M.alloc α5
               | _ => M.break_match
               end) :
               M (M.Val unit);
@@ -1230,32 +1236,33 @@ Section Impl_payment_channel_PaymentChannel_t.
     let return_ := M.return_ (R := ltac:(payment_channel.Result unit)) in
     M.catch_return
       (let* _ : M.Val unit :=
-        let* α0 : mut_ref payment_channel.PaymentChannel.t := M.read self in
-        let* α1 : u128.t := M.read amount in
-        let* α2 : array u8.t := M.read signature in
-        let* α3 : core.result.Result.t unit payment_channel.Error.t :=
-          M.call (payment_channel.PaymentChannel.t::["close_inner"] α0 α1 α2) in
-        let* α4 :
+        let* α0 : _ :=
+          ltac:(M.get_method (fun ℐ =>
+            core.ops.try_trait.Try.branch
+              (Self := core.result.Result.t unit payment_channel.Error.t)
+              (Trait := ℐ))) in
+        let* α1 : mut_ref payment_channel.PaymentChannel.t := M.read self in
+        let* α2 : u128.t := M.read amount in
+        let* α3 : array u8.t := M.read signature in
+        let* α4 : core.result.Result.t unit payment_channel.Error.t :=
+          M.call (payment_channel.PaymentChannel.t::["close_inner"] α1 α2 α3) in
+        let* α5 :
             core.ops.control_flow.ControlFlow.t
               (core.result.Result.t
                 core.convert.Infallible.t
                 payment_channel.Error.t)
               unit :=
-          M.call
-            ((core.ops.try_trait.Try.branch
-                (Self := core.result.Result.t unit payment_channel.Error.t)
-                (Trait := ltac:(refine _)))
-              α3) in
-        let* α5 :
+          M.call (α0 α4) in
+        let* α6 :
             M.Val
               (core.ops.control_flow.ControlFlow.t
                 (core.result.Result.t
                   core.convert.Infallible.t
                   payment_channel.Error.t)
                 unit) :=
-          M.alloc α4 in
+          M.alloc α5 in
         match_operator
-          α5
+          α6
           [
             fun γ =>
               (let* α0 := M.read γ in
@@ -1263,22 +1270,27 @@ Section Impl_payment_channel_PaymentChannel_t.
               | core.ops.control_flow.ControlFlow.Break _ =>
                 let γ0_0 := γ.["Break.0"] in
                 let* residual := M.copy γ0_0 in
-                let* α0 :
+                let* α0 : _ :=
+                  ltac:(M.get_method (fun ℐ =>
+                    core.ops.try_trait.FromResidual.from_residual
+                      (Self :=
+                        core.result.Result.t unit payment_channel.Error.t)
+                      (R :=
+                        core.result.Result.t
+                          core.convert.Infallible.t
+                          payment_channel.Error.t)
+                      (Trait := ℐ))) in
+                let* α1 :
                     core.result.Result.t
                       core.convert.Infallible.t
                       payment_channel.Error.t :=
                   M.read residual in
-                let* α1 : core.result.Result.t unit payment_channel.Error.t :=
-                  M.call
-                    ((core.ops.try_trait.FromResidual.from_residual
-                        (Self :=
-                          core.result.Result.t unit payment_channel.Error.t)
-                        (Trait := ltac:(refine _)))
-                      α0) in
-                let* α2 : M.Val never.t := return_ α1 in
-                let* α3 := M.read α2 in
-                let* α4 : unit := never_to_any α3 in
-                M.alloc α4
+                let* α2 : core.result.Result.t unit payment_channel.Error.t :=
+                  M.call (α0 α1) in
+                let* α3 : M.Val never.t := return_ α2 in
+                let* α4 := M.read α3 in
+                let* α5 : unit := never_to_any α4 in
+                M.alloc α5
               | _ => M.break_match
               end) :
               M (M.Val unit);
@@ -1341,25 +1353,26 @@ Section Impl_payment_channel_PaymentChannel_t.
     let return_ := M.return_ (R := ltac:(payment_channel.Result unit)) in
     M.catch_return
       (let* _ : M.Val unit :=
-        let* α0 : mut_ref payment_channel.PaymentChannel.t := M.read self in
-        let* α1 : payment_channel.Env.t :=
+        let* α0 : _ :=
+          ltac:(M.get_method (fun ℐ =>
+            core.cmp.PartialEq.ne
+              (Self := payment_channel.AccountId.t)
+              (Rhs := payment_channel.AccountId.t)
+              (Trait := ℐ))) in
+        let* α1 : mut_ref payment_channel.PaymentChannel.t := M.read self in
+        let* α2 : payment_channel.Env.t :=
           M.call
-            (payment_channel.PaymentChannel.t::["env"] (borrow (deref α0))) in
-        let* α2 : M.Val payment_channel.Env.t := M.alloc α1 in
-        let* α3 : payment_channel.AccountId.t :=
-          M.call (payment_channel.Env.t::["caller"] (borrow α2)) in
-        let* α4 : M.Val payment_channel.AccountId.t := M.alloc α3 in
-        let* α5 : mut_ref payment_channel.PaymentChannel.t := M.read self in
-        let* α6 : bool.t :=
-          M.call
-            ((core.cmp.PartialEq.ne
-                (Self := payment_channel.AccountId.t)
-                (Trait := ltac:(refine _)))
-              (borrow α4)
-              (borrow (deref α5).["sender"])) in
-        let* α7 : M.Val bool.t := M.alloc α6 in
-        let* α8 : bool.t := M.read (use α7) in
-        if α8 then
+            (payment_channel.PaymentChannel.t::["env"] (borrow (deref α1))) in
+        let* α3 : M.Val payment_channel.Env.t := M.alloc α2 in
+        let* α4 : payment_channel.AccountId.t :=
+          M.call (payment_channel.Env.t::["caller"] (borrow α3)) in
+        let* α5 : M.Val payment_channel.AccountId.t := M.alloc α4 in
+        let* α6 : mut_ref payment_channel.PaymentChannel.t := M.read self in
+        let* α7 : bool.t :=
+          M.call (α0 (borrow α5) (borrow (deref α6).["sender"])) in
+        let* α8 : M.Val bool.t := M.alloc α7 in
+        let* α9 : bool.t := M.read (use α8) in
+        if α9 then
           let* _ : M.Val never.t :=
             return_
               (core.result.Result.Err
@@ -1559,25 +1572,26 @@ Section Impl_payment_channel_PaymentChannel_t.
     let return_ := M.return_ (R := ltac:(payment_channel.Result unit)) in
     M.catch_return
       (let* _ : M.Val unit :=
-        let* α0 : mut_ref payment_channel.PaymentChannel.t := M.read self in
-        let* α1 : payment_channel.Env.t :=
+        let* α0 : _ :=
+          ltac:(M.get_method (fun ℐ =>
+            core.cmp.PartialEq.ne
+              (Self := payment_channel.AccountId.t)
+              (Rhs := payment_channel.AccountId.t)
+              (Trait := ℐ))) in
+        let* α1 : mut_ref payment_channel.PaymentChannel.t := M.read self in
+        let* α2 : payment_channel.Env.t :=
           M.call
-            (payment_channel.PaymentChannel.t::["env"] (borrow (deref α0))) in
-        let* α2 : M.Val payment_channel.Env.t := M.alloc α1 in
-        let* α3 : payment_channel.AccountId.t :=
-          M.call (payment_channel.Env.t::["caller"] (borrow α2)) in
-        let* α4 : M.Val payment_channel.AccountId.t := M.alloc α3 in
-        let* α5 : mut_ref payment_channel.PaymentChannel.t := M.read self in
-        let* α6 : bool.t :=
-          M.call
-            ((core.cmp.PartialEq.ne
-                (Self := payment_channel.AccountId.t)
-                (Trait := ltac:(refine _)))
-              (borrow α4)
-              (borrow (deref α5).["recipient"])) in
-        let* α7 : M.Val bool.t := M.alloc α6 in
-        let* α8 : bool.t := M.read (use α7) in
-        if α8 then
+            (payment_channel.PaymentChannel.t::["env"] (borrow (deref α1))) in
+        let* α3 : M.Val payment_channel.Env.t := M.alloc α2 in
+        let* α4 : payment_channel.AccountId.t :=
+          M.call (payment_channel.Env.t::["caller"] (borrow α3)) in
+        let* α5 : M.Val payment_channel.AccountId.t := M.alloc α4 in
+        let* α6 : mut_ref payment_channel.PaymentChannel.t := M.read self in
+        let* α7 : bool.t :=
+          M.call (α0 (borrow α5) (borrow (deref α6).["recipient"])) in
+        let* α8 : M.Val bool.t := M.alloc α7 in
+        let* α9 : bool.t := M.read (use α8) in
+        if α9 then
           let* _ : M.Val never.t :=
             return_
               (core.result.Result.Err
@@ -1642,21 +1656,26 @@ Section Impl_payment_channel_PaymentChannel_t.
         let* α2 := BinOp.Panic.add α0 α1 in
         assign β α2 in
       let* _ : M.Val unit :=
-        let* α0 : mut_ref payment_channel.PaymentChannel.t := M.read self in
-        let* α1 : payment_channel.Env.t :=
+        let* α0 : _ :=
+          ltac:(M.get_method (fun ℐ =>
+            core.ops.try_trait.Try.branch
+              (Self := core.result.Result.t unit payment_channel.Error.t)
+              (Trait := ℐ))) in
+        let* α1 : mut_ref payment_channel.PaymentChannel.t := M.read self in
+        let* α2 : payment_channel.Env.t :=
           M.call
-            (payment_channel.PaymentChannel.t::["env"] (borrow (deref α0))) in
-        let* α2 : M.Val payment_channel.Env.t := M.alloc α1 in
-        let* α3 : mut_ref payment_channel.PaymentChannel.t := M.read self in
-        let* α4 : payment_channel.AccountId.t :=
-          M.read (deref α3).["recipient"] in
-        let* α5 : u128.t := M.read amount_to_withdraw in
-        let* α6 : core.result.Result.t unit payment_channel.Error.t :=
-          M.call (payment_channel.Env.t::["transfer"] (borrow α2) α4 α5) in
+            (payment_channel.PaymentChannel.t::["env"] (borrow (deref α1))) in
+        let* α3 : M.Val payment_channel.Env.t := M.alloc α2 in
+        let* α4 : mut_ref payment_channel.PaymentChannel.t := M.read self in
+        let* α5 : payment_channel.AccountId.t :=
+          M.read (deref α4).["recipient"] in
+        let* α6 : u128.t := M.read amount_to_withdraw in
         let* α7 : core.result.Result.t unit payment_channel.Error.t :=
+          M.call (payment_channel.Env.t::["transfer"] (borrow α3) α5 α6) in
+        let* α8 : core.result.Result.t unit payment_channel.Error.t :=
           M.call
             ((core.result.Result.t unit payment_channel.Error.t)::["map_err"]
-              α6
+              α7
               (fun (α0 : payment_channel.Error.t) =>
                 (let* α0 := M.alloc α0 in
                 match_operator
@@ -1667,27 +1686,23 @@ Section Impl_payment_channel_PaymentChannel_t.
                       M payment_channel.Error.t
                   ]) :
                 M payment_channel.Error.t)) in
-        let* α8 :
+        let* α9 :
             core.ops.control_flow.ControlFlow.t
               (core.result.Result.t
                 core.convert.Infallible.t
                 payment_channel.Error.t)
               unit :=
-          M.call
-            ((core.ops.try_trait.Try.branch
-                (Self := core.result.Result.t unit payment_channel.Error.t)
-                (Trait := ltac:(refine _)))
-              α7) in
-        let* α9 :
+          M.call (α0 α8) in
+        let* α10 :
             M.Val
               (core.ops.control_flow.ControlFlow.t
                 (core.result.Result.t
                   core.convert.Infallible.t
                   payment_channel.Error.t)
                 unit) :=
-          M.alloc α8 in
+          M.alloc α9 in
         match_operator
-          α9
+          α10
           [
             fun γ =>
               (let* α0 := M.read γ in
@@ -1695,22 +1710,27 @@ Section Impl_payment_channel_PaymentChannel_t.
               | core.ops.control_flow.ControlFlow.Break _ =>
                 let γ0_0 := γ.["Break.0"] in
                 let* residual := M.copy γ0_0 in
-                let* α0 :
+                let* α0 : _ :=
+                  ltac:(M.get_method (fun ℐ =>
+                    core.ops.try_trait.FromResidual.from_residual
+                      (Self :=
+                        core.result.Result.t unit payment_channel.Error.t)
+                      (R :=
+                        core.result.Result.t
+                          core.convert.Infallible.t
+                          payment_channel.Error.t)
+                      (Trait := ℐ))) in
+                let* α1 :
                     core.result.Result.t
                       core.convert.Infallible.t
                       payment_channel.Error.t :=
                   M.read residual in
-                let* α1 : core.result.Result.t unit payment_channel.Error.t :=
-                  M.call
-                    ((core.ops.try_trait.FromResidual.from_residual
-                        (Self :=
-                          core.result.Result.t unit payment_channel.Error.t)
-                        (Trait := ltac:(refine _)))
-                      α0) in
-                let* α2 : M.Val never.t := return_ α1 in
-                let* α3 := M.read α2 in
-                let* α4 : unit := never_to_any α3 in
-                M.alloc α4
+                let* α2 : core.result.Result.t unit payment_channel.Error.t :=
+                  M.call (α0 α1) in
+                let* α3 : M.Val never.t := return_ α2 in
+                let* α4 := M.read α3 in
+                let* α5 : unit := never_to_any α4 in
+                M.alloc α5
               | _ => M.break_match
               end) :
               M (M.Val unit);

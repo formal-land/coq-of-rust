@@ -157,27 +157,27 @@ Definition depends_on_trait_impl (u : u32.t) (b : bool.t) : M unit :=
   let* u := M.alloc u in
   let* b := M.alloc b in
   let* _ : M.Val unit :=
-    let* α0 : bool.t := M.read b in
-    let* α1 : M.Val functions_order.OtherType.t :=
-      M.alloc (functions_order.OtherType.Build_t α0) in
-    let* α2 : unit :=
-      M.call
-        ((functions_order.SomeTrait.some_trait_foo
-            (Self := functions_order.OtherType.t)
-            (Trait := ltac:(refine _)))
-          (borrow α1)) in
-    M.alloc α2 in
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        functions_order.SomeTrait.some_trait_foo
+          (Self := functions_order.OtherType.t)
+          (Trait := ℐ))) in
+    let* α1 : bool.t := M.read b in
+    let* α2 : M.Val functions_order.OtherType.t :=
+      M.alloc (functions_order.OtherType.Build_t α1) in
+    let* α3 : unit := M.call (α0 (borrow α2)) in
+    M.alloc α3 in
   let* _ : M.Val unit :=
-    let* α0 : u32.t := M.read u in
-    let* α1 : M.Val functions_order.SomeType.t :=
-      M.alloc (functions_order.SomeType.Build_t α0) in
-    let* α2 : unit :=
-      M.call
-        ((functions_order.SomeTrait.some_trait_foo
-            (Self := functions_order.SomeType.t)
-            (Trait := ltac:(refine _)))
-          (borrow α1)) in
-    M.alloc α2 in
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        functions_order.SomeTrait.some_trait_foo
+          (Self := functions_order.SomeType.t)
+          (Trait := ℐ))) in
+    let* α1 : u32.t := M.read u in
+    let* α2 : M.Val functions_order.SomeType.t :=
+      M.alloc (functions_order.SomeType.Build_t α1) in
+    let* α3 : unit := M.call (α0 (borrow α2)) in
+    M.alloc α3 in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.
 

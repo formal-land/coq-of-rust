@@ -43,17 +43,19 @@ Section Impl_core_default_Default_for_erc721_Mapping_t_K_V.
   Default
   *)
   Definition default : M (erc721.Mapping.t K V) :=
-    let* α0 : core.marker.PhantomData.t K :=
-      M.call
-        (core.default.Default.default
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.default.Default.default
           (Self := core.marker.PhantomData.t K)
-          (Trait := ltac:(refine _))) in
-    let* α1 : core.marker.PhantomData.t V :=
-      M.call
-        (core.default.Default.default
+          (Trait := ℐ))) in
+    let* α1 : core.marker.PhantomData.t K := M.call α0 in
+    let* α2 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.default.Default.default
           (Self := core.marker.PhantomData.t V)
-          (Trait := ltac:(refine _))) in
-    M.pure {| erc721.Mapping._key := α0; erc721.Mapping._value := α1; |}.
+          (Trait := ℐ))) in
+    let* α3 : core.marker.PhantomData.t V := M.call α2 in
+    M.pure {| erc721.Mapping._key := α1; erc721.Mapping._value := α3; |}.
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -207,12 +209,11 @@ Section Impl_core_default_Default_for_erc721_AccountId_t.
   Default
   *)
   Definition default : M erc721.AccountId.t :=
-    let* α0 : u128.t :=
-      M.call
-        (core.default.Default.default
-          (Self := u128.t)
-          (Trait := ltac:(refine _))) in
-    M.pure (erc721.AccountId.Build_t α0).
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.default.Default.default (Self := u128.t) (Trait := ℐ))) in
+    let* α1 : u128.t := M.call α0 in
+    M.pure (erc721.AccountId.Build_t α1).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -416,33 +417,38 @@ Section Impl_core_default_Default_for_erc721_Erc721_t.
   Default
   *)
   Definition default : M erc721.Erc721.t :=
-    let* α0 : erc721.Mapping.t u32.t erc721.AccountId.t :=
-      M.call
-        (core.default.Default.default
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.default.Default.default
           (Self := erc721.Mapping.t u32.t erc721.AccountId.t)
-          (Trait := ltac:(refine _))) in
-    let* α1 : erc721.Mapping.t u32.t erc721.AccountId.t :=
-      M.call
-        (core.default.Default.default
+          (Trait := ℐ))) in
+    let* α1 : erc721.Mapping.t u32.t erc721.AccountId.t := M.call α0 in
+    let* α2 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.default.Default.default
           (Self := erc721.Mapping.t u32.t erc721.AccountId.t)
-          (Trait := ltac:(refine _))) in
-    let* α2 : erc721.Mapping.t erc721.AccountId.t u32.t :=
-      M.call
-        (core.default.Default.default
+          (Trait := ℐ))) in
+    let* α3 : erc721.Mapping.t u32.t erc721.AccountId.t := M.call α2 in
+    let* α4 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.default.Default.default
           (Self := erc721.Mapping.t erc721.AccountId.t u32.t)
-          (Trait := ltac:(refine _))) in
-    let* α3 : erc721.Mapping.t (erc721.AccountId.t * erc721.AccountId.t) unit :=
-      M.call
-        (core.default.Default.default
+          (Trait := ℐ))) in
+    let* α5 : erc721.Mapping.t erc721.AccountId.t u32.t := M.call α4 in
+    let* α6 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.default.Default.default
           (Self :=
             erc721.Mapping.t (erc721.AccountId.t * erc721.AccountId.t) unit)
-          (Trait := ltac:(refine _))) in
+          (Trait := ℐ))) in
+    let* α7 : erc721.Mapping.t (erc721.AccountId.t * erc721.AccountId.t) unit :=
+      M.call α6 in
     M.pure
       {|
-        erc721.Erc721.token_owner := α0;
-        erc721.Erc721.token_approvals := α1;
-        erc721.Erc721.owned_tokens_count := α2;
-        erc721.Erc721.operator_approvals := α3;
+        erc721.Erc721.token_owner := α1;
+        erc721.Erc721.token_approvals := α3;
+        erc721.Erc721.owned_tokens_count := α5;
+        erc721.Erc721.operator_approvals := α7;
       |}.
   
   Global Instance AssociatedFunction_default :
@@ -787,10 +793,10 @@ Section Impl_erc721_Erc721_t.
       }
   *)
   Definition new : M Self :=
-    M.call
-      (core.default.Default.default
-        (Self := erc721.Erc721.t)
-        (Trait := ltac:(refine _))).
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.default.Default.default (Self := erc721.Erc721.t) (Trait := ℐ))) in
+    M.call α0.
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
@@ -929,55 +935,56 @@ Section Impl_erc721_Erc721_t.
       let* α2 : core.option.Option.t erc721.AccountId.t :=
         M.call (erc721.Erc721.t::["owner_of"] α0 α1) in
       M.alloc α2 in
-    let* α0 : erc721.AccountId.t :=
-      M.call
-        ((core.convert.From.from
-            (Self := erc721.AccountId.t)
-            (Trait := ltac:(refine _)))
-          (repeat (Integer.of_Z 0) 32)) in
-    let* α1 : M.Val (core.option.Option.t erc721.AccountId.t) :=
-      M.alloc (core.option.Option.Some α0) in
-    let* α2 : bool.t :=
-      M.call
-        ((core.cmp.PartialEq.ne
-            (Self := core.option.Option.t erc721.AccountId.t)
-            (Trait := ltac:(refine _)))
-          (borrow from)
-          (borrow α1)) in
-    let* α3 : bool.t :=
-      M.call
-        ((core.cmp.PartialEq.eq
-            (Self := core.option.Option.t erc721.AccountId.t)
-            (Trait := ltac:(refine _)))
-          (borrow from)
-          (borrow owner)) in
-    let* α4 : ref erc721.Erc721.t := M.read self in
-    let* α5 : core.option.Option.t erc721.AccountId.t :=
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.cmp.PartialEq.ne
+          (Self := core.option.Option.t erc721.AccountId.t)
+          (Rhs := core.option.Option.t erc721.AccountId.t)
+          (Trait := ℐ))) in
+    let* α1 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.convert.From.from
+          (Self := erc721.AccountId.t)
+          (T := array u8.t)
+          (Trait := ℐ))) in
+    let* α2 : erc721.AccountId.t := M.call (α1 (repeat (Integer.of_Z 0) 32)) in
+    let* α3 : M.Val (core.option.Option.t erc721.AccountId.t) :=
+      M.alloc (core.option.Option.Some α2) in
+    let* α4 : bool.t := M.call (α0 (borrow from) (borrow α3)) in
+    let* α5 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.cmp.PartialEq.eq
+          (Self := core.option.Option.t erc721.AccountId.t)
+          (Rhs := core.option.Option.t erc721.AccountId.t)
+          (Trait := ℐ))) in
+    let* α6 : bool.t := M.call (α5 (borrow from) (borrow owner)) in
+    let* α7 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.cmp.PartialEq.eq
+          (Self := core.option.Option.t erc721.AccountId.t)
+          (Rhs := core.option.Option.t erc721.AccountId.t)
+          (Trait := ℐ))) in
+    let* α8 : ref erc721.Erc721.t := M.read self in
+    let* α9 : core.option.Option.t erc721.AccountId.t :=
       M.call
         ((erc721.Mapping.t u32.t erc721.AccountId.t)::["get"]
-          (borrow (deref α4).["token_approvals"])
+          (borrow (deref α8).["token_approvals"])
           (borrow id)) in
-    let* α6 : M.Val (core.option.Option.t erc721.AccountId.t) := M.alloc α5 in
-    let* α7 : bool.t :=
-      M.call
-        ((core.cmp.PartialEq.eq
-            (Self := core.option.Option.t erc721.AccountId.t)
-            (Trait := ltac:(refine _)))
-          (borrow from)
-          (borrow α6)) in
-    let* α8 : ref erc721.Erc721.t := M.read self in
-    let* α9 : core.option.Option.t erc721.AccountId.t := M.read owner in
-    let* α10 : ref str.t := M.read (mk_str "Error with AccountId") in
-    let* α11 : erc721.AccountId.t :=
-      M.call ((core.option.Option.t erc721.AccountId.t)::["expect"] α9 α10) in
-    let* α12 : core.option.Option.t erc721.AccountId.t := M.read from in
-    let* α13 : ref str.t := M.read (mk_str "Error with AccountId") in
-    let* α14 : erc721.AccountId.t :=
-      M.call ((core.option.Option.t erc721.AccountId.t)::["expect"] α12 α13) in
-    let* α15 : bool.t :=
-      M.call (erc721.Erc721.t::["approved_for_all"] α8 α11 α14) in
+    let* α10 : M.Val (core.option.Option.t erc721.AccountId.t) := M.alloc α9 in
+    let* α11 : bool.t := M.call (α7 (borrow from) (borrow α10)) in
+    let* α12 : ref erc721.Erc721.t := M.read self in
+    let* α13 : core.option.Option.t erc721.AccountId.t := M.read owner in
+    let* α14 : ref str.t := M.read (mk_str "Error with AccountId") in
+    let* α15 : erc721.AccountId.t :=
+      M.call ((core.option.Option.t erc721.AccountId.t)::["expect"] α13 α14) in
+    let* α16 : core.option.Option.t erc721.AccountId.t := M.read from in
+    let* α17 : ref str.t := M.read (mk_str "Error with AccountId") in
+    let* α18 : erc721.AccountId.t :=
+      M.call ((core.option.Option.t erc721.AccountId.t)::["expect"] α16 α17) in
+    let* α19 : bool.t :=
+      M.call (erc721.Erc721.t::["approved_for_all"] α12 α15 α18) in
     let* α0 : M.Val bool.t :=
-      M.alloc (BinOp.Pure.and α2 (BinOp.Pure.or (BinOp.Pure.or α3 α7) α15)) in
+      M.alloc (BinOp.Pure.and α4 (BinOp.Pure.or (BinOp.Pure.or α6 α11) α19)) in
     M.read α0.
   
   Global Instance AssociatedFunction_approved_or_owner :
@@ -1111,16 +1118,16 @@ Section Impl_erc721_Erc721_t.
           M.call (erc721.Env.t::["caller"] (borrow α2)) in
         M.alloc α3 in
       let* _ : M.Val unit :=
-        let* α0 : bool.t :=
-          M.call
-            ((core.cmp.PartialEq.eq
-                (Self := erc721.AccountId.t)
-                (Trait := ltac:(refine _)))
-              (borrow to)
-              (borrow caller)) in
-        let* α1 : M.Val bool.t := M.alloc α0 in
-        let* α2 : bool.t := M.read (use α1) in
-        if α2 then
+        let* α0 : _ :=
+          ltac:(M.get_method (fun ℐ =>
+            core.cmp.PartialEq.eq
+              (Self := erc721.AccountId.t)
+              (Rhs := erc721.AccountId.t)
+              (Trait := ℐ))) in
+        let* α1 : bool.t := M.call (α0 (borrow to) (borrow caller)) in
+        let* α2 : M.Val bool.t := M.alloc α1 in
+        let* α3 : bool.t := M.read (use α2) in
+        if α3 then
           let* _ : M.Val never.t :=
             return_ (core.result.Result.Err erc721.Error.NotAllowed) in
           let* α0 : M.Val unit := M.alloc tt in
@@ -1205,28 +1212,29 @@ Section Impl_erc721_Erc721_t.
     let return_ := M.return_ (R := core.result.Result.t unit erc721.Error.t) in
     M.catch_return
       (let* _ : M.Val unit :=
-        let* α0 : mut_ref erc721.Erc721.t := M.read self in
-        let* α1 : erc721.AccountId.t := M.read to in
-        let* α2 : bool.t := M.read approved in
-        let* α3 : core.result.Result.t unit erc721.Error.t :=
-          M.call (erc721.Erc721.t::["approve_for_all"] α0 α1 α2) in
-        let* α4 :
+        let* α0 : _ :=
+          ltac:(M.get_method (fun ℐ =>
+            core.ops.try_trait.Try.branch
+              (Self := core.result.Result.t unit erc721.Error.t)
+              (Trait := ℐ))) in
+        let* α1 : mut_ref erc721.Erc721.t := M.read self in
+        let* α2 : erc721.AccountId.t := M.read to in
+        let* α3 : bool.t := M.read approved in
+        let* α4 : core.result.Result.t unit erc721.Error.t :=
+          M.call (erc721.Erc721.t::["approve_for_all"] α1 α2 α3) in
+        let* α5 :
             core.ops.control_flow.ControlFlow.t
               (core.result.Result.t core.convert.Infallible.t erc721.Error.t)
               unit :=
-          M.call
-            ((core.ops.try_trait.Try.branch
-                (Self := core.result.Result.t unit erc721.Error.t)
-                (Trait := ltac:(refine _)))
-              α3) in
-        let* α5 :
+          M.call (α0 α4) in
+        let* α6 :
             M.Val
               (core.ops.control_flow.ControlFlow.t
                 (core.result.Result.t core.convert.Infallible.t erc721.Error.t)
                 unit) :=
-          M.alloc α4 in
+          M.alloc α5 in
         match_operator
-          α5
+          α6
           [
             fun γ =>
               (let* α0 := M.read γ in
@@ -1234,21 +1242,26 @@ Section Impl_erc721_Erc721_t.
               | core.ops.control_flow.ControlFlow.Break _ =>
                 let γ0_0 := γ.["Break.0"] in
                 let* residual := M.copy γ0_0 in
-                let* α0 :
+                let* α0 : _ :=
+                  ltac:(M.get_method (fun ℐ =>
+                    core.ops.try_trait.FromResidual.from_residual
+                      (Self := core.result.Result.t unit erc721.Error.t)
+                      (R :=
+                        core.result.Result.t
+                          core.convert.Infallible.t
+                          erc721.Error.t)
+                      (Trait := ℐ))) in
+                let* α1 :
                     core.result.Result.t
                       core.convert.Infallible.t
                       erc721.Error.t :=
                   M.read residual in
-                let* α1 : core.result.Result.t unit erc721.Error.t :=
-                  M.call
-                    ((core.ops.try_trait.FromResidual.from_residual
-                        (Self := core.result.Result.t unit erc721.Error.t)
-                        (Trait := ltac:(refine _)))
-                      α0) in
-                let* α2 : M.Val never.t := return_ α1 in
-                let* α3 := M.read α2 in
-                let* α4 : unit := never_to_any α3 in
-                M.alloc α4
+                let* α2 : core.result.Result.t unit erc721.Error.t :=
+                  M.call (α0 α1) in
+                let* α3 : M.Val never.t := return_ α2 in
+                let* α4 := M.read α3 in
+                let* α5 : unit := never_to_any α4 in
+                M.alloc α5
               | _ => M.break_match
               end) :
               M (M.Val unit);
@@ -1326,29 +1339,29 @@ Section Impl_erc721_Erc721_t.
           M.call (erc721.Erc721.t::["owner_of"] (borrow (deref α0)) α1) in
         M.alloc α2 in
       let* _ : M.Val unit :=
-        let* α0 : erc721.AccountId.t := M.read caller in
-        let* α1 : M.Val (core.option.Option.t erc721.AccountId.t) :=
-          M.alloc (core.option.Option.Some α0) in
-        let* α2 : bool.t :=
+        let* α0 : _ :=
+          ltac:(M.get_method (fun ℐ =>
+            core.cmp.PartialEq.eq
+              (Self := core.option.Option.t erc721.AccountId.t)
+              (Rhs := core.option.Option.t erc721.AccountId.t)
+              (Trait := ℐ))) in
+        let* α1 : erc721.AccountId.t := M.read caller in
+        let* α2 : M.Val (core.option.Option.t erc721.AccountId.t) :=
+          M.alloc (core.option.Option.Some α1) in
+        let* α3 : bool.t := M.call (α0 (borrow owner) (borrow α2)) in
+        let* α4 : mut_ref erc721.Erc721.t := M.read self in
+        let* α5 : core.option.Option.t erc721.AccountId.t := M.read owner in
+        let* α6 : ref str.t := M.read (mk_str "Error with AccountId") in
+        let* α7 : erc721.AccountId.t :=
           M.call
-            ((core.cmp.PartialEq.eq
-                (Self := core.option.Option.t erc721.AccountId.t)
-                (Trait := ltac:(refine _)))
-              (borrow owner)
-              (borrow α1)) in
-        let* α3 : mut_ref erc721.Erc721.t := M.read self in
-        let* α4 : core.option.Option.t erc721.AccountId.t := M.read owner in
-        let* α5 : ref str.t := M.read (mk_str "Error with AccountId") in
-        let* α6 : erc721.AccountId.t :=
+            ((core.option.Option.t erc721.AccountId.t)::["expect"] α5 α6) in
+        let* α8 : erc721.AccountId.t := M.read caller in
+        let* α9 : bool.t :=
           M.call
-            ((core.option.Option.t erc721.AccountId.t)::["expect"] α4 α5) in
-        let* α7 : erc721.AccountId.t := M.read caller in
-        let* α8 : bool.t :=
-          M.call
-            (erc721.Erc721.t::["approved_for_all"] (borrow (deref α3)) α6 α7) in
-        let* α9 : M.Val bool.t := M.alloc (UnOp.not (BinOp.Pure.or α2 α8)) in
-        let* α10 : bool.t := M.read (use α9) in
-        if α10 then
+            (erc721.Erc721.t::["approved_for_all"] (borrow (deref α4)) α7 α8) in
+        let* α10 : M.Val bool.t := M.alloc (UnOp.not (BinOp.Pure.or α3 α9)) in
+        let* α11 : bool.t := M.read (use α10) in
+        if α11 then
           let* _ : M.Val never.t :=
             return_ (core.result.Result.Err erc721.Error.NotAllowed) in
           let* α0 : M.Val unit := M.alloc tt in
@@ -1358,24 +1371,26 @@ Section Impl_erc721_Erc721_t.
         else
           M.alloc tt in
       let* _ : M.Val unit :=
-        let* α0 : ref erc721.AccountId.t := M.read to in
-        let* α1 : erc721.AccountId.t :=
-          M.call
-            ((core.convert.From.from
-                (Self := erc721.AccountId.t)
-                (Trait := ltac:(refine _)))
-              (repeat (Integer.of_Z 0) 32)) in
-        let* α2 : M.Val erc721.AccountId.t := M.alloc α1 in
-        let* α3 : bool.t :=
-          M.call
-            ((core.cmp.PartialEq.eq
-                (Self := erc721.AccountId.t)
-                (Trait := ltac:(refine _)))
-              α0
-              (borrow α2)) in
-        let* α4 : M.Val bool.t := M.alloc α3 in
-        let* α5 : bool.t := M.read (use α4) in
-        if α5 then
+        let* α0 : _ :=
+          ltac:(M.get_method (fun ℐ =>
+            core.cmp.PartialEq.eq
+              (Self := erc721.AccountId.t)
+              (Rhs := erc721.AccountId.t)
+              (Trait := ℐ))) in
+        let* α1 : ref erc721.AccountId.t := M.read to in
+        let* α2 : _ :=
+          ltac:(M.get_method (fun ℐ =>
+            core.convert.From.from
+              (Self := erc721.AccountId.t)
+              (T := array u8.t)
+              (Trait := ℐ))) in
+        let* α3 : erc721.AccountId.t :=
+          M.call (α2 (repeat (Integer.of_Z 0) 32)) in
+        let* α4 : M.Val erc721.AccountId.t := M.alloc α3 in
+        let* α5 : bool.t := M.call (α0 α1 (borrow α4)) in
+        let* α6 : M.Val bool.t := M.alloc α5 in
+        let* α7 : bool.t := M.read (use α6) in
+        if α7 then
           let* _ : M.Val never.t :=
             return_ (core.result.Result.Err erc721.Error.NotAllowed) in
           let* α0 : M.Val unit := M.alloc tt in
@@ -1460,27 +1475,28 @@ Section Impl_erc721_Erc721_t.
     let return_ := M.return_ (R := core.result.Result.t unit erc721.Error.t) in
     M.catch_return
       (let* _ : M.Val unit :=
-        let* α0 : mut_ref erc721.Erc721.t := M.read self in
-        let* α1 : u32.t := M.read id in
-        let* α2 : core.result.Result.t unit erc721.Error.t :=
-          M.call (erc721.Erc721.t::["approve_for"] α0 (borrow to) α1) in
-        let* α3 :
+        let* α0 : _ :=
+          ltac:(M.get_method (fun ℐ =>
+            core.ops.try_trait.Try.branch
+              (Self := core.result.Result.t unit erc721.Error.t)
+              (Trait := ℐ))) in
+        let* α1 : mut_ref erc721.Erc721.t := M.read self in
+        let* α2 : u32.t := M.read id in
+        let* α3 : core.result.Result.t unit erc721.Error.t :=
+          M.call (erc721.Erc721.t::["approve_for"] α1 (borrow to) α2) in
+        let* α4 :
             core.ops.control_flow.ControlFlow.t
               (core.result.Result.t core.convert.Infallible.t erc721.Error.t)
               unit :=
-          M.call
-            ((core.ops.try_trait.Try.branch
-                (Self := core.result.Result.t unit erc721.Error.t)
-                (Trait := ltac:(refine _)))
-              α2) in
-        let* α4 :
+          M.call (α0 α3) in
+        let* α5 :
             M.Val
               (core.ops.control_flow.ControlFlow.t
                 (core.result.Result.t core.convert.Infallible.t erc721.Error.t)
                 unit) :=
-          M.alloc α3 in
+          M.alloc α4 in
         match_operator
-          α4
+          α5
           [
             fun γ =>
               (let* α0 := M.read γ in
@@ -1488,21 +1504,26 @@ Section Impl_erc721_Erc721_t.
               | core.ops.control_flow.ControlFlow.Break _ =>
                 let γ0_0 := γ.["Break.0"] in
                 let* residual := M.copy γ0_0 in
-                let* α0 :
+                let* α0 : _ :=
+                  ltac:(M.get_method (fun ℐ =>
+                    core.ops.try_trait.FromResidual.from_residual
+                      (Self := core.result.Result.t unit erc721.Error.t)
+                      (R :=
+                        core.result.Result.t
+                          core.convert.Infallible.t
+                          erc721.Error.t)
+                      (Trait := ℐ))) in
+                let* α1 :
                     core.result.Result.t
                       core.convert.Infallible.t
                       erc721.Error.t :=
                   M.read residual in
-                let* α1 : core.result.Result.t unit erc721.Error.t :=
-                  M.call
-                    ((core.ops.try_trait.FromResidual.from_residual
-                        (Self := core.result.Result.t unit erc721.Error.t)
-                        (Trait := ltac:(refine _)))
-                      α0) in
-                let* α2 : M.Val never.t := return_ α1 in
-                let* α3 := M.read α2 in
-                let* α4 : unit := never_to_any α3 in
-                M.alloc α4
+                let* α2 : core.result.Result.t unit erc721.Error.t :=
+                  M.call (α0 α1) in
+                let* α3 : M.Val never.t := return_ α2 in
+                let* α4 := M.read α3 in
+                let* α5 : unit := never_to_any α4 in
+                M.alloc α5
               | _ => M.break_match
               end) :
               M (M.Val unit);
@@ -1660,32 +1681,33 @@ Section Impl_erc721_Erc721_t.
           M.call (erc721.Env.t::["caller"] (borrow α2)) in
         M.alloc α3 in
       let* _ : M.Val unit :=
-        let* α0 : mut_ref erc721.Erc721.t := M.read self in
-        let* α1 : u32.t := M.read id in
-        let* α2 : core.result.Result.t unit erc721.Error.t :=
+        let* α0 : _ :=
+          ltac:(M.get_method (fun ℐ =>
+            core.ops.try_trait.Try.branch
+              (Self := core.result.Result.t unit erc721.Error.t)
+              (Trait := ℐ))) in
+        let* α1 : mut_ref erc721.Erc721.t := M.read self in
+        let* α2 : u32.t := M.read id in
+        let* α3 : core.result.Result.t unit erc721.Error.t :=
           M.call
             (erc721.Erc721.t::["transfer_token_from"]
-              α0
+              α1
               (borrow caller)
               (borrow destination)
-              α1) in
-        let* α3 :
+              α2) in
+        let* α4 :
             core.ops.control_flow.ControlFlow.t
               (core.result.Result.t core.convert.Infallible.t erc721.Error.t)
               unit :=
-          M.call
-            ((core.ops.try_trait.Try.branch
-                (Self := core.result.Result.t unit erc721.Error.t)
-                (Trait := ltac:(refine _)))
-              α2) in
-        let* α4 :
+          M.call (α0 α3) in
+        let* α5 :
             M.Val
               (core.ops.control_flow.ControlFlow.t
                 (core.result.Result.t core.convert.Infallible.t erc721.Error.t)
                 unit) :=
-          M.alloc α3 in
+          M.alloc α4 in
         match_operator
-          α4
+          α5
           [
             fun γ =>
               (let* α0 := M.read γ in
@@ -1693,21 +1715,26 @@ Section Impl_erc721_Erc721_t.
               | core.ops.control_flow.ControlFlow.Break _ =>
                 let γ0_0 := γ.["Break.0"] in
                 let* residual := M.copy γ0_0 in
-                let* α0 :
+                let* α0 : _ :=
+                  ltac:(M.get_method (fun ℐ =>
+                    core.ops.try_trait.FromResidual.from_residual
+                      (Self := core.result.Result.t unit erc721.Error.t)
+                      (R :=
+                        core.result.Result.t
+                          core.convert.Infallible.t
+                          erc721.Error.t)
+                      (Trait := ℐ))) in
+                let* α1 :
                     core.result.Result.t
                       core.convert.Infallible.t
                       erc721.Error.t :=
                   M.read residual in
-                let* α1 : core.result.Result.t unit erc721.Error.t :=
-                  M.call
-                    ((core.ops.try_trait.FromResidual.from_residual
-                        (Self := core.result.Result.t unit erc721.Error.t)
-                        (Trait := ltac:(refine _)))
-                      α0) in
-                let* α2 : M.Val never.t := return_ α1 in
-                let* α3 := M.read α2 in
-                let* α4 : unit := never_to_any α3 in
-                M.alloc α4
+                let* α2 : core.result.Result.t unit erc721.Error.t :=
+                  M.call (α0 α1) in
+                let* α3 : M.Val never.t := return_ α2 in
+                let* α4 := M.read α3 in
+                let* α5 : unit := never_to_any α4 in
+                M.alloc α5
               | _ => M.break_match
               end) :
               M (M.Val unit);
@@ -1755,32 +1782,33 @@ Section Impl_erc721_Erc721_t.
     let return_ := M.return_ (R := core.result.Result.t unit erc721.Error.t) in
     M.catch_return
       (let* _ : M.Val unit :=
-        let* α0 : mut_ref erc721.Erc721.t := M.read self in
-        let* α1 : u32.t := M.read id in
-        let* α2 : core.result.Result.t unit erc721.Error.t :=
+        let* α0 : _ :=
+          ltac:(M.get_method (fun ℐ =>
+            core.ops.try_trait.Try.branch
+              (Self := core.result.Result.t unit erc721.Error.t)
+              (Trait := ℐ))) in
+        let* α1 : mut_ref erc721.Erc721.t := M.read self in
+        let* α2 : u32.t := M.read id in
+        let* α3 : core.result.Result.t unit erc721.Error.t :=
           M.call
             (erc721.Erc721.t::["transfer_token_from"]
-              α0
+              α1
               (borrow from)
               (borrow to)
-              α1) in
-        let* α3 :
+              α2) in
+        let* α4 :
             core.ops.control_flow.ControlFlow.t
               (core.result.Result.t core.convert.Infallible.t erc721.Error.t)
               unit :=
-          M.call
-            ((core.ops.try_trait.Try.branch
-                (Self := core.result.Result.t unit erc721.Error.t)
-                (Trait := ltac:(refine _)))
-              α2) in
-        let* α4 :
+          M.call (α0 α3) in
+        let* α5 :
             M.Val
               (core.ops.control_flow.ControlFlow.t
                 (core.result.Result.t core.convert.Infallible.t erc721.Error.t)
                 unit) :=
-          M.alloc α3 in
+          M.alloc α4 in
         match_operator
-          α4
+          α5
           [
             fun γ =>
               (let* α0 := M.read γ in
@@ -1788,21 +1816,26 @@ Section Impl_erc721_Erc721_t.
               | core.ops.control_flow.ControlFlow.Break _ =>
                 let γ0_0 := γ.["Break.0"] in
                 let* residual := M.copy γ0_0 in
-                let* α0 :
+                let* α0 : _ :=
+                  ltac:(M.get_method (fun ℐ =>
+                    core.ops.try_trait.FromResidual.from_residual
+                      (Self := core.result.Result.t unit erc721.Error.t)
+                      (R :=
+                        core.result.Result.t
+                          core.convert.Infallible.t
+                          erc721.Error.t)
+                      (Trait := ℐ))) in
+                let* α1 :
                     core.result.Result.t
                       core.convert.Infallible.t
                       erc721.Error.t :=
                   M.read residual in
-                let* α1 : core.result.Result.t unit erc721.Error.t :=
-                  M.call
-                    ((core.ops.try_trait.FromResidual.from_residual
-                        (Self := core.result.Result.t unit erc721.Error.t)
-                        (Trait := ltac:(refine _)))
-                      α0) in
-                let* α2 : M.Val never.t := return_ α1 in
-                let* α3 := M.read α2 in
-                let* α4 : unit := never_to_any α3 in
-                M.alloc α4
+                let* α2 : core.result.Result.t unit erc721.Error.t :=
+                  M.call (α0 α1) in
+                let* α3 : M.Val never.t := return_ α2 in
+                let* α4 := M.read α3 in
+                let* α5 : unit := never_to_any α4 in
+                M.alloc α5
               | _ => M.break_match
               end) :
               M (M.Val unit);
@@ -1855,27 +1888,28 @@ Section Impl_erc721_Erc721_t.
           M.call (erc721.Env.t::["caller"] (borrow α2)) in
         M.alloc α3 in
       let* _ : M.Val unit :=
-        let* α0 : mut_ref erc721.Erc721.t := M.read self in
-        let* α1 : u32.t := M.read id in
-        let* α2 : core.result.Result.t unit erc721.Error.t :=
-          M.call (erc721.Erc721.t::["add_token_to"] α0 (borrow caller) α1) in
-        let* α3 :
+        let* α0 : _ :=
+          ltac:(M.get_method (fun ℐ =>
+            core.ops.try_trait.Try.branch
+              (Self := core.result.Result.t unit erc721.Error.t)
+              (Trait := ℐ))) in
+        let* α1 : mut_ref erc721.Erc721.t := M.read self in
+        let* α2 : u32.t := M.read id in
+        let* α3 : core.result.Result.t unit erc721.Error.t :=
+          M.call (erc721.Erc721.t::["add_token_to"] α1 (borrow caller) α2) in
+        let* α4 :
             core.ops.control_flow.ControlFlow.t
               (core.result.Result.t core.convert.Infallible.t erc721.Error.t)
               unit :=
-          M.call
-            ((core.ops.try_trait.Try.branch
-                (Self := core.result.Result.t unit erc721.Error.t)
-                (Trait := ltac:(refine _)))
-              α2) in
-        let* α4 :
+          M.call (α0 α3) in
+        let* α5 :
             M.Val
               (core.ops.control_flow.ControlFlow.t
                 (core.result.Result.t core.convert.Infallible.t erc721.Error.t)
                 unit) :=
-          M.alloc α3 in
+          M.alloc α4 in
         match_operator
-          α4
+          α5
           [
             fun γ =>
               (let* α0 := M.read γ in
@@ -1883,21 +1917,26 @@ Section Impl_erc721_Erc721_t.
               | core.ops.control_flow.ControlFlow.Break _ =>
                 let γ0_0 := γ.["Break.0"] in
                 let* residual := M.copy γ0_0 in
-                let* α0 :
+                let* α0 : _ :=
+                  ltac:(M.get_method (fun ℐ =>
+                    core.ops.try_trait.FromResidual.from_residual
+                      (Self := core.result.Result.t unit erc721.Error.t)
+                      (R :=
+                        core.result.Result.t
+                          core.convert.Infallible.t
+                          erc721.Error.t)
+                      (Trait := ℐ))) in
+                let* α1 :
                     core.result.Result.t
                       core.convert.Infallible.t
                       erc721.Error.t :=
                   M.read residual in
-                let* α1 : core.result.Result.t unit erc721.Error.t :=
-                  M.call
-                    ((core.ops.try_trait.FromResidual.from_residual
-                        (Self := core.result.Result.t unit erc721.Error.t)
-                        (Trait := ltac:(refine _)))
-                      α0) in
-                let* α2 : M.Val never.t := return_ α1 in
-                let* α3 := M.read α2 in
-                let* α4 : unit := never_to_any α3 in
-                M.alloc α4
+                let* α2 : core.result.Result.t unit erc721.Error.t :=
+                  M.call (α0 α1) in
+                let* α3 : M.Val never.t := return_ α2 in
+                let* α4 := M.read α3 in
+                let* α5 : unit := never_to_any α4 in
+                M.alloc α5
               | _ => M.break_match
               end) :
               M (M.Val unit);
@@ -1917,25 +1956,27 @@ Section Impl_erc721_Erc721_t.
         let* α1 : erc721.Env.t :=
           M.call (erc721.Erc721.t::["env"] (borrow (deref α0))) in
         let* α2 : M.Val erc721.Env.t := M.alloc α1 in
-        let* α3 : erc721.AccountId.t :=
-          M.call
-            ((core.convert.From.from
-                (Self := erc721.AccountId.t)
-                (Trait := ltac:(refine _)))
-              (repeat (Integer.of_Z 0) 32)) in
-        let* α4 : erc721.AccountId.t := M.read caller in
-        let* α5 : u32.t := M.read id in
-        let* α6 : unit :=
+        let* α3 : _ :=
+          ltac:(M.get_method (fun ℐ =>
+            core.convert.From.from
+              (Self := erc721.AccountId.t)
+              (T := array u8.t)
+              (Trait := ℐ))) in
+        let* α4 : erc721.AccountId.t :=
+          M.call (α3 (repeat (Integer.of_Z 0) 32)) in
+        let* α5 : erc721.AccountId.t := M.read caller in
+        let* α6 : u32.t := M.read id in
+        let* α7 : unit :=
           M.call
             (erc721.Env.t::["emit_event"]
               (borrow α2)
               (erc721.Event.Transfer
                 {|
-                  erc721.Transfer.from := core.option.Option.Some α3;
-                  erc721.Transfer.to := core.option.Option.Some α4;
-                  erc721.Transfer.id := α5;
+                  erc721.Transfer.from := core.option.Option.Some α4;
+                  erc721.Transfer.to := core.option.Option.Some α5;
+                  erc721.Transfer.id := α6;
                 |})) in
-        M.alloc α6 in
+        M.alloc α7 in
       let* α0 : M.Val (core.result.Result.t unit erc721.Error.t) :=
         M.alloc (core.result.Result.Ok tt) in
       M.read α0).

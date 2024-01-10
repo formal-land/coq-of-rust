@@ -486,8 +486,6 @@ impl Erc1155 for Contract {
         Ok(())
     }
 
-    #[allow(unknown_lints)]
-    #[allow(coq_axiom)]
     fn safe_batch_transfer_from(
         &mut self,
         from: AccountId,

@@ -32,39 +32,40 @@ Definition main : M unit :=
       M.call ((slice (ref str.t))::["into_vec"] α5) in
     M.alloc α6 in
   let* _ : M.Val unit :=
-    let* α0 : ref (slice (ref str.t)) :=
-      M.call
-        ((core.ops.deref.Deref.deref
-            (Self := alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t)
-            (Trait := ltac:(refine _)))
-          (borrow names)) in
-    let* α1 : core.slice.iter.Iter.t (ref str.t) :=
-      M.call ((slice (ref str.t))::["iter"] α0) in
-    let* α2 : core.slice.iter.Iter.t (ref str.t) :=
-      M.call
-        ((core.iter.traits.collect.IntoIterator.into_iter
-            (Self := core.slice.iter.Iter.t (ref str.t))
-            (Trait := ltac:(refine _)))
-          α1) in
-    let* α3 : M.Val (core.slice.iter.Iter.t (ref str.t)) := M.alloc α2 in
-    let* α4 : M.Val unit :=
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.iter.traits.collect.IntoIterator.into_iter
+          (Self := core.slice.iter.Iter.t (ref str.t))
+          (Trait := ℐ))) in
+    let* α1 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.ops.deref.Deref.deref
+          (Self := alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t)
+          (Trait := ℐ))) in
+    let* α2 : ref (slice (ref str.t)) := M.call (α1 (borrow names)) in
+    let* α3 : core.slice.iter.Iter.t (ref str.t) :=
+      M.call ((slice (ref str.t))::["iter"] α2) in
+    let* α4 : core.slice.iter.Iter.t (ref str.t) := M.call (α0 α3) in
+    let* α5 : M.Val (core.slice.iter.Iter.t (ref str.t)) := M.alloc α4 in
+    let* α6 : M.Val unit :=
       match_operator
-        α3
+        α5
         [
           fun γ =>
             (let* iter := M.copy γ in
             M.loop
               (let* _ : M.Val unit :=
-                let* α0 : core.option.Option.t (ref (ref str.t)) :=
-                  M.call
-                    ((core.iter.traits.iterator.Iterator.next
-                        (Self := core.slice.iter.Iter.t (ref str.t))
-                        (Trait := ltac:(refine _)))
-                      (borrow_mut iter)) in
-                let* α1 : M.Val (core.option.Option.t (ref (ref str.t))) :=
-                  M.alloc α0 in
+                let* α0 : _ :=
+                  ltac:(M.get_method (fun ℐ =>
+                    core.iter.traits.iterator.Iterator.next
+                      (Self := core.slice.iter.Iter.t (ref str.t))
+                      (Trait := ℐ))) in
+                let* α1 : core.option.Option.t (ref (ref str.t)) :=
+                  M.call (α0 (borrow_mut iter)) in
+                let* α2 : M.Val (core.option.Option.t (ref (ref str.t))) :=
+                  M.alloc α1 in
                 match_operator
-                  α1
+                  α2
                   [
                     fun γ =>
                       (let* α0 := M.read γ in
@@ -151,7 +152,7 @@ Definition main : M unit :=
               M.alloc tt)) :
             M (M.Val unit)
         ] in
-    M.pure (use α4) in
+    M.pure (use α6) in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "names: ") in

@@ -32,12 +32,11 @@ Section Impl_core_default_Default_for_call_builder_delegate_CallBuilderDelegateT
   Default
   *)
   Definition default : M call_builder_delegate.CallBuilderDelegateTest.t :=
-    let* α0 : i32.t :=
-      M.call
-        (core.default.Default.default
-          (Self := i32.t)
-          (Trait := ltac:(refine _))) in
-    M.pure {| call_builder_delegate.CallBuilderDelegateTest.value := α0; |}.
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.default.Default.default (Self := i32.t) (Trait := ℐ))) in
+    let* α1 : i32.t := M.call α0 in
+    M.pure {| call_builder_delegate.CallBuilderDelegateTest.value := α1; |}.
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {

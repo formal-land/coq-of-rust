@@ -56,12 +56,11 @@ Section Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating
   *)
   Definition get (self : ref Self) : M alloc.string.String.t :=
     let* self := M.alloc self in
-    let* α0 : ref disambiguating_overlapping_traits.Form.t := M.read self in
-    M.call
-      ((core.clone.Clone.clone
-          (Self := alloc.string.String.t)
-          (Trait := ltac:(refine _)))
-        (borrow (deref α0).["username"])).
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.clone.Clone.clone (Self := alloc.string.String.t) (Trait := ℐ))) in
+    let* α1 : ref disambiguating_overlapping_traits.Form.t := M.read self in
+    M.call (α0 (borrow (deref α1).["username"])).
   
   Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
     Notations.double_colon := get;
@@ -120,40 +119,36 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
   let* form : M.Val disambiguating_overlapping_traits.Form.t :=
-    let* α0 : ref str.t := M.read (mk_str "rustacean") in
-    let* α1 : alloc.string.String.t :=
-      M.call
-        ((alloc.borrow.ToOwned.to_owned
-            (Self := str.t)
-            (Trait := ltac:(refine _)))
-          α0) in
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        alloc.borrow.ToOwned.to_owned (Self := str.t) (Trait := ℐ))) in
+    let* α1 : ref str.t := M.read (mk_str "rustacean") in
+    let* α2 : alloc.string.String.t := M.call (α0 α1) in
     M.alloc
       {|
-        disambiguating_overlapping_traits.Form.username := α1;
+        disambiguating_overlapping_traits.Form.username := α2;
         disambiguating_overlapping_traits.Form.age := Integer.of_Z 28;
       |} in
   let* username : M.Val alloc.string.String.t :=
-    let* α0 : alloc.string.String.t :=
-      M.call
-        ((disambiguating_overlapping_traits.UsernameWidget.get
-            (Self := disambiguating_overlapping_traits.Form.t)
-            (Trait := ltac:(refine _)))
-          (borrow form)) in
-    M.alloc α0 in
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        disambiguating_overlapping_traits.UsernameWidget.get
+          (Self := disambiguating_overlapping_traits.Form.t)
+          (Trait := ℐ))) in
+    let* α1 : alloc.string.String.t := M.call (α0 (borrow form)) in
+    M.alloc α1 in
   let* _ : M.Val unit :=
-    let* α0 : ref str.t := M.read (mk_str "rustacean") in
-    let* α1 : alloc.string.String.t :=
-      M.call
-        ((alloc.string.ToString.to_string
-            (Self := str.t)
-            (Trait := ltac:(refine _)))
-          α0) in
-    let* α2 : M.Val alloc.string.String.t := M.alloc α1 in
-    let* α3 :
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        alloc.string.ToString.to_string (Self := str.t) (Trait := ℐ))) in
+    let* α1 : ref str.t := M.read (mk_str "rustacean") in
+    let* α2 : alloc.string.String.t := M.call (α0 α1) in
+    let* α3 : M.Val alloc.string.String.t := M.alloc α2 in
+    let* α4 :
         M.Val ((ref alloc.string.String.t) * (ref alloc.string.String.t)) :=
-      M.alloc (borrow α2, borrow username) in
+      M.alloc (borrow α3, borrow username) in
     match_operator
-      α3
+      α4
       [
         fun γ =>
           (let* α0 := M.read γ in
@@ -163,18 +158,18 @@ Definition main : M unit :=
             let γ0_1 := Tuple.Access.right γ in
             let* left_val := M.copy γ0_0 in
             let* right_val := M.copy γ0_1 in
-            let* α0 : ref alloc.string.String.t := M.read left_val in
-            let* α1 : ref alloc.string.String.t := M.read right_val in
-            let* α2 : bool.t :=
-              M.call
-                ((core.cmp.PartialEq.eq
-                    (Self := alloc.string.String.t)
-                    (Trait := ltac:(refine _)))
-                  α0
-                  α1) in
-            let* α3 : M.Val bool.t := M.alloc (UnOp.not α2) in
-            let* α4 : bool.t := M.read (use α3) in
-            if α4 then
+            let* α0 : _ :=
+              ltac:(M.get_method (fun ℐ =>
+                core.cmp.PartialEq.eq
+                  (Self := alloc.string.String.t)
+                  (Rhs := alloc.string.String.t)
+                  (Trait := ℐ))) in
+            let* α1 : ref alloc.string.String.t := M.read left_val in
+            let* α2 : ref alloc.string.String.t := M.read right_val in
+            let* α3 : bool.t := M.call (α0 α1 α2) in
+            let* α4 : M.Val bool.t := M.alloc (UnOp.not α3) in
+            let* α5 : bool.t := M.read (use α4) in
+            if α5 then
               let* kind : M.Val core.panicking.AssertKind.t :=
                 M.alloc core.panicking.AssertKind.Eq in
               let* _ : M.Val never.t :=
@@ -199,13 +194,13 @@ Definition main : M unit :=
           M (M.Val unit)
       ] in
   let* age : M.Val u8.t :=
-    let* α0 : u8.t :=
-      M.call
-        ((disambiguating_overlapping_traits.AgeWidget.get
-            (Self := disambiguating_overlapping_traits.Form.t)
-            (Trait := ltac:(refine _)))
-          (borrow form)) in
-    M.alloc α0 in
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        disambiguating_overlapping_traits.AgeWidget.get
+          (Self := disambiguating_overlapping_traits.Form.t)
+          (Trait := ℐ))) in
+    let* α1 : u8.t := M.call (α0 (borrow form)) in
+    M.alloc α1 in
   let* _ : M.Val unit :=
     let* α0 : M.Val u8.t := M.alloc (Integer.of_Z 28) in
     let* α1 : M.Val ((ref u8.t) * (ref u8.t)) :=

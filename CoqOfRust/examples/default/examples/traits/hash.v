@@ -49,33 +49,31 @@ Section Impl_core_hash_Hash_for_hash_Person_t.
     let* self := M.alloc self in
     let* state := M.alloc state in
     let* _ : M.Val unit :=
-      let* α0 : ref hash.Person.t := M.read self in
-      let* α1 : mut_ref __H := M.read state in
-      let* α2 : unit :=
-        M.call
-          ((core.hash.Hash.hash (Self := u32.t) (Trait := ltac:(refine _)))
-            (borrow (deref α0).["id"])
-            α1) in
-      M.alloc α2 in
+      let* α0 : _ :=
+        ltac:(M.get_method (fun ℐ =>
+          core.hash.Hash.hash (Self := u32.t) (H := __H) (Trait := ℐ))) in
+      let* α1 : ref hash.Person.t := M.read self in
+      let* α2 : mut_ref __H := M.read state in
+      let* α3 : unit := M.call (α0 (borrow (deref α1).["id"]) α2) in
+      M.alloc α3 in
     let* _ : M.Val unit :=
-      let* α0 : ref hash.Person.t := M.read self in
-      let* α1 : mut_ref __H := M.read state in
-      let* α2 : unit :=
-        M.call
-          ((core.hash.Hash.hash
-              (Self := alloc.string.String.t)
-              (Trait := ltac:(refine _)))
-            (borrow (deref α0).["name"])
-            α1) in
-      M.alloc α2 in
-    let* α0 : ref hash.Person.t := M.read self in
-    let* α1 : mut_ref __H := M.read state in
-    let* α2 : unit :=
-      M.call
-        ((core.hash.Hash.hash (Self := u64.t) (Trait := ltac:(refine _)))
-          (borrow (deref α0).["phone"])
-          α1) in
-    let* α0 : M.Val unit := M.alloc α2 in
+      let* α0 : _ :=
+        ltac:(M.get_method (fun ℐ =>
+          core.hash.Hash.hash
+            (Self := alloc.string.String.t)
+            (H := __H)
+            (Trait := ℐ))) in
+      let* α1 : ref hash.Person.t := M.read self in
+      let* α2 : mut_ref __H := M.read state in
+      let* α3 : unit := M.call (α0 (borrow (deref α1).["name"]) α2) in
+      M.alloc α3 in
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.hash.Hash.hash (Self := u64.t) (H := __H) (Trait := ℐ))) in
+    let* α1 : ref hash.Person.t := M.read self in
+    let* α2 : mut_ref __H := M.read state in
+    let* α3 : unit := M.call (α0 (borrow (deref α1).["phone"]) α2) in
+    let* α0 : M.Val unit := M.alloc α3 in
     M.read α0.
   
   Global Instance AssociatedFunction_hash
@@ -111,20 +109,22 @@ Definition calculate_hash
       M.call std.collections.hash.map.DefaultHasher.t::["new"] in
     M.alloc α0 in
   let* _ : M.Val unit :=
-    let* α0 : ref T := M.read t in
-    let* α1 : unit :=
-      M.call
-        ((core.hash.Hash.hash (Self := T) (Trait := ltac:(refine _)))
-          α0
-          (borrow_mut s)) in
-    M.alloc α1 in
-  let* α0 : u64.t :=
-    M.call
-      ((core.hash.Hasher.finish
-          (Self := std.collections.hash.map.DefaultHasher.t)
-          (Trait := ltac:(refine _)))
-        (borrow s)) in
-  let* α0 : M.Val u64.t := M.alloc α0 in
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.hash.Hash.hash
+          (Self := T)
+          (H := std.collections.hash.map.DefaultHasher.t)
+          (Trait := ℐ))) in
+    let* α1 : ref T := M.read t in
+    let* α2 : unit := M.call (α0 α1 (borrow_mut s)) in
+    M.alloc α2 in
+  let* α0 : _ :=
+    ltac:(M.get_method (fun ℐ =>
+      core.hash.Hasher.finish
+        (Self := std.collections.hash.map.DefaultHasher.t)
+        (Trait := ℐ))) in
+  let* α1 : u64.t := M.call (α0 (borrow s)) in
+  let* α0 : M.Val u64.t := M.alloc α1 in
   M.read α0.
 
 (*
@@ -146,31 +146,27 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
   let* person1 : M.Val hash.Person.t :=
-    let* α0 : ref str.t := M.read (mk_str "Janet") in
-    let* α1 : alloc.string.String.t :=
-      M.call
-        ((alloc.string.ToString.to_string
-            (Self := str.t)
-            (Trait := ltac:(refine _)))
-          α0) in
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        alloc.string.ToString.to_string (Self := str.t) (Trait := ℐ))) in
+    let* α1 : ref str.t := M.read (mk_str "Janet") in
+    let* α2 : alloc.string.String.t := M.call (α0 α1) in
     M.alloc
       {|
         hash.Person.id := Integer.of_Z 5;
-        hash.Person.name := α1;
+        hash.Person.name := α2;
         hash.Person.phone := Integer.of_Z 5556667777;
       |} in
   let* person2 : M.Val hash.Person.t :=
-    let* α0 : ref str.t := M.read (mk_str "Bob") in
-    let* α1 : alloc.string.String.t :=
-      M.call
-        ((alloc.string.ToString.to_string
-            (Self := str.t)
-            (Trait := ltac:(refine _)))
-          α0) in
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        alloc.string.ToString.to_string (Self := str.t) (Trait := ℐ))) in
+    let* α1 : ref str.t := M.read (mk_str "Bob") in
+    let* α2 : alloc.string.String.t := M.call (α0 α1) in
     M.alloc
       {|
         hash.Person.id := Integer.of_Z 5;
-        hash.Person.name := α1;
+        hash.Person.name := α2;
         hash.Person.phone := Integer.of_Z 5556667777;
       |} in
   let* _ : M.Val unit :=

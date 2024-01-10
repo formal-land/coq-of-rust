@@ -32,21 +32,22 @@ fn main() {
 Definition main : M unit :=
   let* person :
       M.Val scoping_rules_ownership_and_rules_partial_moves.main.Person.t :=
-    let* α0 : ref str.t := M.read (mk_str "Alice") in
-    let* α1 : alloc.string.String.t :=
-      M.call
-        ((core.convert.From.from
-            (Self := alloc.string.String.t)
-            (Trait := ltac:(refine _)))
-          α0) in
-    let* α2 : alloc.boxed.Box.t u8.t alloc.alloc.Global.t :=
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.convert.From.from
+          (Self := alloc.string.String.t)
+          (T := ref str.t)
+          (Trait := ℐ))) in
+    let* α1 : ref str.t := M.read (mk_str "Alice") in
+    let* α2 : alloc.string.String.t := M.call (α0 α1) in
+    let* α3 : alloc.boxed.Box.t u8.t alloc.alloc.Global.t :=
       M.call
         ((alloc.boxed.Box.t u8.t alloc.alloc.Global.t)::["new"]
           (Integer.of_Z 20)) in
     M.alloc
       {|
-        scoping_rules_ownership_and_rules_partial_moves.main.Person.name := α1;
-        scoping_rules_ownership_and_rules_partial_moves.main.Person.age := α2;
+        scoping_rules_ownership_and_rules_partial_moves.main.Person.name := α2;
+        scoping_rules_ownership_and_rules_partial_moves.main.Person.age := α3;
       |} in
   let* α0 : M.Val unit :=
     match_operator

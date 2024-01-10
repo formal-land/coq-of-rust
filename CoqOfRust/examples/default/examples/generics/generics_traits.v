@@ -67,15 +67,15 @@ Definition main : M unit :=
   let* null : M.Val generics_traits.Null.t :=
     M.alloc generics_traits.Null.Build in
   let* _ : M.Val unit :=
-    let* α0 : generics_traits.Empty.t := M.read empty in
-    let* α1 : generics_traits.Null.t := M.read null in
-    let* α2 : unit :=
-      M.call
-        ((generics_traits.DoubleDrop.double_drop
-            (Self := generics_traits.Empty.t)
-            (Trait := ltac:(refine _)))
-          α0
-          α1) in
-    M.alloc α2 in
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        generics_traits.DoubleDrop.double_drop
+          (Self := generics_traits.Empty.t)
+          (T := generics_traits.Null.t)
+          (Trait := ℐ))) in
+    let* α1 : generics_traits.Empty.t := M.read empty in
+    let* α2 : generics_traits.Null.t := M.read null in
+    let* α3 : unit := M.call (α0 α1 α2) in
+    M.alloc α3 in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.

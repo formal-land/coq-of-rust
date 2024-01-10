@@ -19,15 +19,15 @@ Definition apply
     : M unit :=
   let* f := M.alloc f in
   let* _ : M.Val unit :=
-    let* α0 : F := M.read f in
-    let* α1 : unit :=
-      M.call
-        ((core.ops.function.FnOnce.call_once
-            (Self := F)
-            (Trait := ltac:(refine _)))
-          α0
-          tt) in
-    M.alloc α1 in
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.ops.function.FnOnce.call_once
+          (Self := F)
+          (Args := unit)
+          (Trait := ℐ))) in
+    let* α1 : F := M.read f in
+    let* α2 : unit := M.call (α0 α1 tt) in
+    M.alloc α2 in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.
 
@@ -46,10 +46,10 @@ Definition apply_to_3
     (f : F)
     : M i32.t :=
   let* f := M.alloc f in
-  M.call
-    ((core.ops.function.Fn.call (Self := F) (Trait := ltac:(refine _)))
-      (borrow f)
-      (Integer.of_Z 3)).
+  let* α0 : _ :=
+    ltac:(M.get_method (fun ℐ =>
+      core.ops.function.Fn.call (Self := F) (Args := i32.t) (Trait := ℐ))) in
+  M.call (α0 (borrow f) (Integer.of_Z 3)).
 
 (*
 fn main() {
@@ -90,14 +90,12 @@ fn main() {
 Definition main : M unit :=
   let* greeting : M.Val (ref str.t) := M.copy (mk_str "hello") in
   let* farewell : M.Val alloc.string.String.t :=
-    let* α0 : ref str.t := M.read (mk_str "goodbye") in
-    let* α1 : alloc.string.String.t :=
-      M.call
-        ((alloc.borrow.ToOwned.to_owned
-            (Self := str.t)
-            (Trait := ltac:(refine _)))
-          α0) in
-    M.alloc α1 in
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        alloc.borrow.ToOwned.to_owned (Self := str.t) (Trait := ℐ))) in
+    let* α1 : ref str.t := M.read (mk_str "goodbye") in
+    let* α2 : alloc.string.String.t := M.call (α0 α1) in
+    M.alloc α2 in
   let* diary : M.Val (unit -> M unit) :=
     M.alloc
       ((let* _ : M.Val unit :=

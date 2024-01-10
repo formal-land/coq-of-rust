@@ -82,45 +82,47 @@ Definition main : M unit :=
       M.alloc α5 in
     M.alloc tt in
   let* _ : M.Val unit :=
-    let* α0 : ref str.t := M.read pangram in
-    let* α1 : core.str.iter.SplitWhitespace.t :=
-      M.call (str.t::["split_whitespace"] α0) in
-    let* α2 : core.iter.adapters.rev.Rev.t core.str.iter.SplitWhitespace.t :=
-      M.call
-        ((core.iter.traits.iterator.Iterator.rev
-            (Self := core.str.iter.SplitWhitespace.t)
-            (Trait := ltac:(refine _)))
-          α1) in
-    let* α3 : core.iter.adapters.rev.Rev.t core.str.iter.SplitWhitespace.t :=
-      M.call
-        ((core.iter.traits.collect.IntoIterator.into_iter
-            (Self :=
-              core.iter.adapters.rev.Rev.t core.str.iter.SplitWhitespace.t)
-            (Trait := ltac:(refine _)))
-          α2) in
-    let* α4 :
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.iter.traits.collect.IntoIterator.into_iter
+          (Self := core.iter.adapters.rev.Rev.t core.str.iter.SplitWhitespace.t)
+          (Trait := ℐ))) in
+    let* α1 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.iter.traits.iterator.Iterator.rev
+          (Self := core.str.iter.SplitWhitespace.t)
+          (Trait := ℐ))) in
+    let* α2 : ref str.t := M.read pangram in
+    let* α3 : core.str.iter.SplitWhitespace.t :=
+      M.call (str.t::["split_whitespace"] α2) in
+    let* α4 : core.iter.adapters.rev.Rev.t core.str.iter.SplitWhitespace.t :=
+      M.call (α1 α3) in
+    let* α5 : core.iter.adapters.rev.Rev.t core.str.iter.SplitWhitespace.t :=
+      M.call (α0 α4) in
+    let* α6 :
         M.Val (core.iter.adapters.rev.Rev.t core.str.iter.SplitWhitespace.t) :=
-      M.alloc α3 in
-    let* α5 : M.Val unit :=
+      M.alloc α5 in
+    let* α7 : M.Val unit :=
       match_operator
-        α4
+        α6
         [
           fun γ =>
             (let* iter := M.copy γ in
             M.loop
               (let* _ : M.Val unit :=
-                let* α0 : core.option.Option.t (ref str.t) :=
-                  M.call
-                    ((core.iter.traits.iterator.Iterator.next
-                        (Self :=
-                          core.iter.adapters.rev.Rev.t
-                            core.str.iter.SplitWhitespace.t)
-                        (Trait := ltac:(refine _)))
-                      (borrow_mut iter)) in
-                let* α1 : M.Val (core.option.Option.t (ref str.t)) :=
-                  M.alloc α0 in
+                let* α0 : _ :=
+                  ltac:(M.get_method (fun ℐ =>
+                    core.iter.traits.iterator.Iterator.next
+                      (Self :=
+                        core.iter.adapters.rev.Rev.t
+                          core.str.iter.SplitWhitespace.t)
+                      (Trait := ℐ))) in
+                let* α1 : core.option.Option.t (ref str.t) :=
+                  M.call (α0 (borrow_mut iter)) in
+                let* α2 : M.Val (core.option.Option.t (ref str.t)) :=
+                  M.alloc α1 in
                 match_operator
-                  α1
+                  α2
                   [
                     fun γ =>
                       (let* α0 := M.read γ in
@@ -175,26 +177,27 @@ Definition main : M unit :=
               M.alloc tt)) :
             M (M.Val unit)
         ] in
-    M.pure (use α5) in
+    M.pure (use α7) in
   let* chars : M.Val (alloc.vec.Vec.t char.t alloc.alloc.Global.t) :=
-    let* α0 : ref str.t := M.read pangram in
-    let* α1 : core.str.iter.Chars.t := M.call (str.t::["chars"] α0) in
-    let* α2 : alloc.vec.Vec.t char.t alloc.alloc.Global.t :=
-      M.call
-        ((core.iter.traits.iterator.Iterator.collect
-            (Self := core.str.iter.Chars.t)
-            (Trait := ltac:(refine _)))
-          α1) in
-    M.alloc α2 in
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.iter.traits.iterator.Iterator.collect
+          (Self := core.str.iter.Chars.t)
+          (B := alloc.vec.Vec.t char.t alloc.alloc.Global.t)
+          (Trait := ℐ))) in
+    let* α1 : ref str.t := M.read pangram in
+    let* α2 : core.str.iter.Chars.t := M.call (str.t::["chars"] α1) in
+    let* α3 : alloc.vec.Vec.t char.t alloc.alloc.Global.t := M.call (α0 α2) in
+    M.alloc α3 in
   let* _ : M.Val unit :=
-    let* α0 : mut_ref (slice char.t) :=
-      M.call
-        ((core.ops.deref.DerefMut.deref_mut
-            (Self := alloc.vec.Vec.t char.t alloc.alloc.Global.t)
-            (Trait := ltac:(refine _)))
-          (borrow_mut chars)) in
-    let* α1 : unit := M.call ((slice char.t)::["sort"] α0) in
-    M.alloc α1 in
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.ops.deref.DerefMut.deref_mut
+          (Self := alloc.vec.Vec.t char.t alloc.alloc.Global.t)
+          (Trait := ℐ))) in
+    let* α1 : mut_ref (slice char.t) := M.call (α0 (borrow_mut chars)) in
+    let* α2 : unit := M.call ((slice char.t)::["sort"] α1) in
+    M.alloc α2 in
   let* _ : M.Val unit :=
     let* α0 : unit :=
       M.call
@@ -205,36 +208,38 @@ Definition main : M unit :=
     let* α0 : alloc.string.String.t := M.call alloc.string.String.t::["new"] in
     M.alloc α0 in
   let* _ : M.Val unit :=
-    let* α0 : alloc.vec.Vec.t char.t alloc.alloc.Global.t := M.read chars in
-    let* α1 : alloc.vec.into_iter.IntoIter.t char.t alloc.alloc.Global.t :=
-      M.call
-        ((core.iter.traits.collect.IntoIterator.into_iter
-            (Self := alloc.vec.Vec.t char.t alloc.alloc.Global.t)
-            (Trait := ltac:(refine _)))
-          α0) in
-    let* α2 :
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.iter.traits.collect.IntoIterator.into_iter
+          (Self := alloc.vec.Vec.t char.t alloc.alloc.Global.t)
+          (Trait := ℐ))) in
+    let* α1 : alloc.vec.Vec.t char.t alloc.alloc.Global.t := M.read chars in
+    let* α2 : alloc.vec.into_iter.IntoIter.t char.t alloc.alloc.Global.t :=
+      M.call (α0 α1) in
+    let* α3 :
         M.Val (alloc.vec.into_iter.IntoIter.t char.t alloc.alloc.Global.t) :=
-      M.alloc α1 in
-    let* α3 : M.Val unit :=
+      M.alloc α2 in
+    let* α4 : M.Val unit :=
       match_operator
-        α2
+        α3
         [
           fun γ =>
             (let* iter := M.copy γ in
             M.loop
               (let* _ : M.Val unit :=
-                let* α0 : core.option.Option.t char.t :=
-                  M.call
-                    ((core.iter.traits.iterator.Iterator.next
-                        (Self :=
-                          alloc.vec.into_iter.IntoIter.t
-                            char.t
-                            alloc.alloc.Global.t)
-                        (Trait := ltac:(refine _)))
-                      (borrow_mut iter)) in
-                let* α1 : M.Val (core.option.Option.t char.t) := M.alloc α0 in
+                let* α0 : _ :=
+                  ltac:(M.get_method (fun ℐ =>
+                    core.iter.traits.iterator.Iterator.next
+                      (Self :=
+                        alloc.vec.into_iter.IntoIter.t
+                          char.t
+                          alloc.alloc.Global.t)
+                      (Trait := ℐ))) in
+                let* α1 : core.option.Option.t char.t :=
+                  M.call (α0 (borrow_mut iter)) in
+                let* α2 : M.Val (core.option.Option.t char.t) := M.alloc α1 in
                 match_operator
-                  α1
+                  α2
                   [
                     fun γ =>
                       (let* α0 := M.read γ in
@@ -277,21 +282,21 @@ Definition main : M unit :=
               M.alloc tt)) :
             M (M.Val unit)
         ] in
-    M.pure (use α3) in
+    M.pure (use α4) in
   let* chars_to_trim : M.Val (ref (slice char.t)) :=
     let* α0 : M.Val (array char.t) := M.alloc [ " "%char; ","%char ] in
     let* α1 : M.Val (ref (array char.t)) := M.alloc (borrow α0) in
     M.copy (pointer_coercion "Unsize" α1) in
   let* trimmed_str : M.Val (ref str.t) :=
-    let* α0 : ref str.t :=
-      M.call
-        ((core.ops.deref.Deref.deref
-            (Self := alloc.string.String.t)
-            (Trait := ltac:(refine _)))
-          (borrow string)) in
-    let* α1 : ref (slice char.t) := M.read chars_to_trim in
-    let* α2 : ref str.t := M.call (str.t::["trim_matches"] α0 α1) in
-    M.alloc α2 in
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.ops.deref.Deref.deref
+          (Self := alloc.string.String.t)
+          (Trait := ℐ))) in
+    let* α1 : ref str.t := M.call (α0 (borrow string)) in
+    let* α2 : ref (slice char.t) := M.read chars_to_trim in
+    let* α3 : ref str.t := M.call (str.t::["trim_matches"] α1 α2) in
+    M.alloc α3 in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "Used characters: ") in
@@ -314,25 +319,26 @@ Definition main : M unit :=
       M.alloc α10 in
     M.alloc tt in
   let* alice : M.Val alloc.string.String.t :=
-    let* α0 : ref str.t := M.read (mk_str "I like dogs") in
-    let* α1 : alloc.string.String.t :=
-      M.call
-        ((core.convert.From.from
-            (Self := alloc.string.String.t)
-            (Trait := ltac:(refine _)))
-          α0) in
-    M.alloc α1 in
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.convert.From.from
+          (Self := alloc.string.String.t)
+          (T := ref str.t)
+          (Trait := ℐ))) in
+    let* α1 : ref str.t := M.read (mk_str "I like dogs") in
+    let* α2 : alloc.string.String.t := M.call (α0 α1) in
+    M.alloc α2 in
   let* bob : M.Val alloc.string.String.t :=
-    let* α0 : ref str.t :=
-      M.call
-        ((core.ops.deref.Deref.deref
-            (Self := alloc.string.String.t)
-            (Trait := ltac:(refine _)))
-          (borrow alice)) in
-    let* α1 : ref str.t := M.read (mk_str "dog") in
-    let* α2 : ref str.t := M.read (mk_str "cat") in
-    let* α3 : alloc.string.String.t := M.call (str.t::["replace"] α0 α1 α2) in
-    M.alloc α3 in
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.ops.deref.Deref.deref
+          (Self := alloc.string.String.t)
+          (Trait := ℐ))) in
+    let* α1 : ref str.t := M.call (α0 (borrow alice)) in
+    let* α2 : ref str.t := M.read (mk_str "dog") in
+    let* α3 : ref str.t := M.read (mk_str "cat") in
+    let* α4 : alloc.string.String.t := M.call (str.t::["replace"] α1 α2 α3) in
+    M.alloc α4 in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "Alice says: ") in

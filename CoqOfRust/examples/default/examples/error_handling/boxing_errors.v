@@ -127,32 +127,34 @@ Definition double_first
     (vec : alloc.vec.Vec.t (ref str.t) alloc.vec.Vec.Default.A)
     : M ltac:(boxing_errors.Result i32.t) :=
   let* vec := M.alloc vec in
-  let* α0 : ref (slice (ref str.t)) :=
-    M.call
-      ((core.ops.deref.Deref.deref
-          (Self := alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t)
-          (Trait := ltac:(refine _)))
-        (borrow vec)) in
-  let* α1 : core.option.Option.t (ref (ref str.t)) :=
-    M.call ((slice (ref str.t))::["first"] α0) in
-  let* α2 :
+  let* α0 : _ :=
+    ltac:(M.get_method (fun ℐ =>
+      core.ops.deref.Deref.deref
+        (Self := alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t)
+        (Trait := ℐ))) in
+  let* α1 : ref (slice (ref str.t)) := M.call (α0 (borrow vec)) in
+  let* α2 : core.option.Option.t (ref (ref str.t)) :=
+    M.call ((slice (ref str.t))::["first"] α1) in
+  let* α3 :
       core.result.Result.t
         (ref (ref str.t))
         (alloc.boxed.Box.t _ (* dyn *) alloc.alloc.Global.t) :=
     M.call
       ((core.option.Option.t (ref (ref str.t)))::["ok_or_else"]
-        α1
-        ((M.call
-          ((core.convert.Into.into
+        α2
+        ((let* α0 : _ :=
+          ltac:(M.get_method (fun ℐ =>
+            core.convert.Into.into
               (Self := boxing_errors.EmptyVec.t)
-              (Trait := ltac:(refine _)))
-            boxing_errors.EmptyVec.Build)) :
+              (T := alloc.boxed.Box.t _ (* dyn *) alloc.alloc.Global.t)
+              (Trait := ℐ))) in
+        M.call (α0 boxing_errors.EmptyVec.Build)) :
         M (alloc.boxed.Box.t _ (* dyn *) alloc.alloc.Global.t))) in
   M.call
     ((core.result.Result.t
           (ref (ref str.t))
           (alloc.boxed.Box.t _ (* dyn *) alloc.alloc.Global.t))::["and_then"]
-      α2
+      α3
       (fun (α0 : ref (ref str.t)) =>
         (let* α0 := M.alloc α0 in
         match_operator
@@ -181,13 +183,18 @@ Definition double_first
                         [
                           fun γ =>
                             (let* e := M.copy γ in
-                            let* α0 : core.num.error.ParseIntError.t :=
-                              M.read e in
-                            M.call
-                              ((core.convert.Into.into
+                            let* α0 : _ :=
+                              ltac:(M.get_method (fun ℐ =>
+                                core.convert.Into.into
                                   (Self := core.num.error.ParseIntError.t)
-                                  (Trait := ltac:(refine _)))
-                                α0)) :
+                                  (T :=
+                                    alloc.boxed.Box.t
+                                      _ (* dyn *)
+                                      alloc.alloc.Global.t)
+                                  (Trait := ℐ))) in
+                            let* α1 : core.num.error.ParseIntError.t :=
+                              M.read e in
+                            M.call (α0 α1)) :
                             M
                               (alloc.boxed.Box.t
                                 _ (* dyn *)

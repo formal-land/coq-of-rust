@@ -37,6 +37,40 @@ Module adapters.
 End adapters.
 
 Module traits.
+  Module collect.
+    (*
+    pub trait IntoIterator {
+        type Item;
+        type IntoIter: Iterator<Item = Self::Item>;
+
+        // Required method
+        fn into_iter(self) -> Self::IntoIter;
+    }
+    *)
+    Module IntoIterator.
+      (** We do not mention the [Iterator] trait to avoid
+          a mutual dependency. *)
+      Class Trait (Self : Set) : Type := {
+        Item : Set;
+        IntoIter : Set;
+        into_iter : Self -> M (IntoIter);
+      }.
+    End IntoIterator.
+
+    Module Impl.
+      (*
+      impl<'a, T, A: Allocator> IntoIterator for &'a Vec<T, A>
+      *)
+      Global Instance I_ref_Vec {T A : Set}
+          (H0 : core.alloc.Allocator.Trait A) :
+          IntoIterator.Trait (ref (vec.Vec.t T A)) := {
+        Item := ref T;
+        IntoIter := slice.iter.Iter.t T;
+        into_iter := axiom "into_iter";
+      }.
+    End Impl.
+  End collect.
+
   Module iterator.
     (*
     pub trait Iterator {
@@ -287,8 +321,8 @@ Module traits.
     *)
     Module Iterator.
       Module Required.
-        Class Trait (Self : Set) {Item : Set} : Set := {
-          Item := Item;
+        Class Trait (Self : Set) : Type := {
+          Item : Set;
           next : mut_ref Self -> M (option.Option.t Item);
           (* Provided *)
           next_chunk {N : nat} : option (
@@ -311,17 +345,13 @@ Module traits.
           step_by : option (
             Self -> usize.t -> M (adapters.step_by.StepBy.t Self)
           );
-          (* Here, we do not make explicit the [IntoIterator] trait to avoid a
-             circular dependency. When implementing this method in
-             the [Provided] module, we should use a special axiom to request an
-             implementation of the corresponding trait at runtime. *)
-          chain {U U_IntoIter : Set} : option (
+          chain {U : Set} {H0 : collect.IntoIterator.Trait U} : option (
             Self -> U ->
-            M (adapters.chain.Chain.t Self U_IntoIter)
+            M (adapters.chain.Chain.t Self H0.(collect.IntoIterator.IntoIter))
           );
-          zip {U U_IntoIter : Set} : option (
+          zip {U : Set} {H0 : collect.IntoIterator.Trait U} : option (
             Self -> U ->
-            M (adapters.zip.Zip.t Self U_IntoIter)
+            M (adapters.zip.Zip.t Self H0.(collect.IntoIterator.IntoIter))
           );
           position : option (
             mut_ref Self -> (Item -> M bool) -> M (option.Option.t usize.t)
@@ -332,8 +362,9 @@ Module traits.
 
       Module  Provided.
       Section Provided.
-        Context {Self Item : Set}.
-        Context {H0 : Required.Trait Self (Item := Item)}.
+        Context {Self : Set}.
+        Context {H0 : Required.Trait Self}.
+        Context (Item := H0.(Required.Item)).
 
         Parameter next_chunk :
           forall {N : nat},
@@ -356,22 +387,23 @@ Module traits.
           Self -> usize.t -> M (adapters.step_by.StepBy.t Self).
 
         Parameter chain :
-          forall {U U_IntoIter : Set},
+          forall {U : Set} {H0 : collect.IntoIterator.Trait U},
           Self -> U ->
-          M (adapters.chain.Chain.t Self U_IntoIter).
+          M (adapters.chain.Chain.t Self H0.(collect.IntoIterator.IntoIter)).
 
         Parameter zip :
-          forall {U U_IntoIter : Set},
+          forall {U : Set} {H0 : collect.IntoIterator.Trait U},
           Self -> U ->
-          M (adapters.zip.Zip.t Self U_IntoIter).
+          M (adapters.zip.Zip.t Self H0.(collect.IntoIterator.IntoIter)).
 
         Parameter position :
-          mut_ref Self -> (Item -> M bool) -> M (option.Option.t usize.t).
+          forall {P : Set},
+          mut_ref Self -> P -> M (option.Option.t usize.t).
       End Provided.
       End Provided.
 
-      Class Trait (Self : Set) {Item : Set} : Set := {
-        Item := Item;
+      Class Trait (Self : Set) : Type := {
+        Item : Set;
         next : mut_ref Self -> M (option.Option.t Item);
         (* Provided *)
         next_chunk {N : nat} :
@@ -385,19 +417,18 @@ Module traits.
           M (result.Result.t unit num.NonZeroUsize.t);
         nth : mut_ref Self -> usize.t -> M (option.Option.t Item);
         step_by : Self -> usize.t -> M (adapters.step_by.StepBy.t Self);
-        chain {U U_IntoIter : Set} :
+        chain {U : Set} {H0 : collect.IntoIterator.Trait U} :
           Self -> U ->
-          M (adapters.chain.Chain.t Self U_IntoIter);
-        zip {U U_IntoIter : Set} :
+          M (adapters.chain.Chain.t Self H0.(collect.IntoIterator.IntoIter));
+        zip {U : Set} {H0 : collect.IntoIterator.Trait U} :
           Self -> U ->
-          M (adapters.zip.Zip.t Self U_IntoIter);
-        position :
-          mut_ref Self -> (Item -> M bool) -> M (option.Option.t usize.t);
+          M (adapters.zip.Zip.t Self H0.(collect.IntoIterator.IntoIter));
+        position {P : Set} :
+          mut_ref Self -> P -> M (option.Option.t usize.t);
       }.
 
-      Global Instance From_Required (Self Item : Set)
-          {H0 : Required.Trait Self (Item := Item)} :
-          Trait Self (Item := Item) := {
+      Global Instance From_Required (Self : Set) {H0 : Required.Trait Self} :
+          Trait Self := {
         next := Required.next;
         (* Provided *)
         next_chunk {N : nat} := Provided.next_chunk (N := N);
@@ -407,105 +438,56 @@ Module traits.
         advance_by := Provided.advance_by;
         nth := Provided.nth;
         step_by := Provided.step_by;
-        chain {U U_IntoIter : Set} :=
-          Provided.chain (U := U) (U_IntoIter := U_IntoIter);
-        zip {U U_IntoIter : Set} :=
-          Provided.zip (U := U) (U_IntoIter := U_IntoIter);
-        position := Provided.position;
+        chain {U : Set} {H0 : collect.IntoIterator.Trait U} :=
+          Provided.chain (U := U) (H0 := H0);
+        zip {U : Set} {H0 : collect.IntoIterator.Trait U} :=
+          Provided.zip (U := U) (H0 := H0);
+        position {P : Set} := Provided.position (P := P);
       }.
 
       Module Impl.
         (*
         impl<'a, T> Iterator for Iter<'a, T>
         *)
+        #[refine]
         Global Instance Iter {T : Set} :
-          traits.iterator.Iterator.Trait (slice.iter.Iter.t T) (Item := ref T).
-        Admitted.
+            traits.iterator.Iterator.Trait (slice.iter.Iter.t T) := {
+          Item := ref T;
+        }.
+          all: exact (axiom "Iter").
+        Defined.
 
         (*
         impl<A, B> Iterator for Zip<A, B>where
           A: Iterator,
           B: Iterator,
         *)
+        #[refine]
         Global Instance Zip {A B Item_A Item_B : Set}
-          (H0 : traits.iterator.Iterator.Trait A (Item := Item_A))
-          (H1 : traits.iterator.Iterator.Trait B (Item := Item_B)) :
-          traits.iterator.Iterator.Trait
-            (adapters.zip.Zip.t A B) (Item := Item_A * Item_B).
-        Admitted.
+          (H0 : traits.iterator.Iterator.Trait A)
+          (H1 : traits.iterator.Iterator.Trait B) :
+          traits.iterator.Iterator.Trait (adapters.zip.Zip.t A B) := {
+          Item :=
+            H0.(traits.iterator.Iterator.Item) *
+            H1.(traits.iterator.Iterator.Item);
+        }.
+          all: exact (axiom "Zip").
+        Defined.
       End Impl.
     End Iterator.
   End iterator.
 
-  Module collect.
+  Module Impl.
     (*
-    pub trait IntoIterator {
-        type Item;
-        type IntoIter: Iterator<Item = Self::Item>;
-
-        // Required method
-        fn into_iter(self) -> Self::IntoIter;
-    }
+    impl<I> IntoIterator for I
+    where
+        I: Iterator,
     *)
-    Module IntoIterator.
-      (** We provide as an additional parameter the class for iterators, as
-          there is a mutual dependency. *)
-      Class Trait (Self : Set)
-          {Item IntoIter : Set}
-          {H0 : iterator.Iterator.Trait IntoIter (Item := Item)} :
-          Set := {
-        Item := Item;
-        IntoIter := IntoIter;
-        into_iter : Self -> M (IntoIter);
-      }.
-    End IntoIterator.
-
-    Module Impl.
-      (*
-      impl<'a, T, A: Allocator> IntoIterator for &'a Vec<T, A>
-      *)
-      Global Instance I_ref_Vec {T A : Set}
-          (H0 : core.alloc.Allocator.Trait A) :
-          IntoIterator.Trait
-            (ref (vec.Vec.t T A))
-            (Item := ref T)
-            (IntoIter := slice.iter.Iter.t T)
-            (H0 := iterator.Iterator.Impl.Iter) := {
-        into_iter := axiom "into_iter";
-      }.
-
-      (*
-      impl<I> IntoIterator for I
-      where
-          I: Iterator,
-      *)
-      (* Global Instance I_Iterator {I Item : Set}
-          (H0 : iterator.Iterator.Trait I (Item := Item)) :
-          IntoIterator.Trait I (Item := Item) (IntoIter := I) := {
-        into_iter := axiom "into_iter";
-      }. *)
-
-      Global Instance I_slice_Iter {T : Set} :
-          IntoIterator.Trait
-            (slice.iter.Iter.t T)
-            (Item := ref T)
-            (IntoIter := slice.iter.Iter.t T)
-            (H0 := iterator.Iterator.Impl.Iter) := {
-        into_iter := axiom "into_iter";
-      }.
-
-      Global Instance I_Zip {A B Item_A Item_B : Set}
-          (H0_Iter : iterator.Iterator.Trait A (Item := Item_A))
-          (H1_Iter : iterator.Iterator.Trait B (Item := Item_B))
-          (H0 : IntoIterator.Trait A (Item := Item_A) (IntoIter := A))
-          (H1 : IntoIterator.Trait B (Item := Item_B) (IntoIter := B)) :
-          IntoIterator.Trait
-            (adapters.zip.Zip.t A B)
-            (Item := Item_A * Item_B)
-            (IntoIter := adapters.zip.Zip.t A B)
-            (H0 := iterator.Iterator.Impl.Zip _ _) := {
-        into_iter := axiom "into_iter";
-      }.
-    End Impl.
-  End collect.
+    Global Instance I_Iterator {I : Set} (H0 : iterator.Iterator.Trait I) :
+        collect.IntoIterator.Trait I := {
+      Item := H0.(iterator.Iterator.Item);
+      IntoIter := I;
+      into_iter := axiom "into_iter";
+    }.
+  End Impl.
 End traits.

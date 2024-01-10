@@ -152,26 +152,26 @@ Definition main : M unit :=
       let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
       let* α4 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α3) in
-      let* α5 : alloc.boxed.Box.t _ (* dyn *) alloc.alloc.Global.t :=
+      let* α5 : _ :=
+        ltac:(M.get_method (fun ℐ =>
+          returning_traits_with_dyn.Animal.noise
+            (Self := _ (* dyn *))
+            (Trait := ℐ))) in
+      let* α6 : alloc.boxed.Box.t _ (* dyn *) alloc.alloc.Global.t :=
         M.read animal in
-      let* α6 : ref str.t :=
-        M.call
-          ((returning_traits_with_dyn.Animal.noise
-              (Self := _ (* dyn *))
-              (Trait := ltac:(refine _)))
-            (borrow (deref α5))) in
-      let* α7 : M.Val (ref str.t) := M.alloc α6 in
-      let* α8 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α7)) in
-      let* α9 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α8 ] in
-      let* α10 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-        M.alloc (borrow α9) in
-      let* α11 : ref (slice core.fmt.rt.Argument.t) :=
-        M.read (pointer_coercion "Unsize" α10) in
-      let* α12 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_v1"] α4 α11) in
-      let* α13 : unit := M.call (std.io.stdio._print α12) in
-      M.alloc α13 in
+      let* α7 : ref str.t := M.call (α5 (borrow (deref α6))) in
+      let* α8 : M.Val (ref str.t) := M.alloc α7 in
+      let* α9 : core.fmt.rt.Argument.t :=
+        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α8)) in
+      let* α10 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α9 ] in
+      let* α11 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+        M.alloc (borrow α10) in
+      let* α12 : ref (slice core.fmt.rt.Argument.t) :=
+        M.read (pointer_coercion "Unsize" α11) in
+      let* α13 : core.fmt.Arguments.t :=
+        M.call (core.fmt.Arguments.t::["new_v1"] α4 α12) in
+      let* α14 : unit := M.call (std.io.stdio._print α13) in
+      M.alloc α14 in
     M.alloc tt in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.

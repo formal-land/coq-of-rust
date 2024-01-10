@@ -9,12 +9,15 @@ fn multiply<'a>(first: &'a i32, second: &'a i32) -> i32 {
 Definition multiply (first : ref i32.t) (second : ref i32.t) : M i32.t :=
   let* first := M.alloc first in
   let* second := M.alloc second in
-  let* α0 : ref i32.t := M.read first in
-  let* α1 : ref i32.t := M.read second in
-  M.call
-    ((core.ops.arith.Mul.mul (Self := ref i32.t) (Trait := ltac:(refine _)))
-      α0
-      α1).
+  let* α0 : _ :=
+    ltac:(M.get_method (fun ℐ =>
+      core.ops.arith.Mul.mul
+        (Self := ref i32.t)
+        (Rhs := ref i32.t)
+        (Trait := ℐ))) in
+  let* α1 : ref i32.t := M.read first in
+  let* α2 : ref i32.t := M.read second in
+  M.call (α0 α1 α2).
 
 (*
 fn choose_first<'a: 'b, 'b>(first: &'a i32, _: &'b i32) -> &'b i32 {

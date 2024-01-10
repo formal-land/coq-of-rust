@@ -163,34 +163,35 @@ fn fizzbuzz_to(n: u32) {
 *)
 Definition fizzbuzz_to (n : u32.t) : M unit :=
   let* n := M.alloc n in
-  let* α0 : u32.t := M.read n in
-  let* α1 : core.ops.range.RangeInclusive.t u32.t :=
-    M.call
-      ((core.ops.range.RangeInclusive.t u32.t)::["new"] (Integer.of_Z 1) α0) in
+  let* α0 : _ :=
+    ltac:(M.get_method (fun ℐ =>
+      core.iter.traits.collect.IntoIterator.into_iter
+        (Self := core.ops.range.RangeInclusive.t u32.t)
+        (Trait := ℐ))) in
+  let* α1 : u32.t := M.read n in
   let* α2 : core.ops.range.RangeInclusive.t u32.t :=
     M.call
-      ((core.iter.traits.collect.IntoIterator.into_iter
-          (Self := core.ops.range.RangeInclusive.t u32.t)
-          (Trait := ltac:(refine _)))
-        α1) in
-  let* α3 : M.Val (core.ops.range.RangeInclusive.t u32.t) := M.alloc α2 in
-  let* α4 : M.Val unit :=
+      ((core.ops.range.RangeInclusive.t u32.t)::["new"] (Integer.of_Z 1) α1) in
+  let* α3 : core.ops.range.RangeInclusive.t u32.t := M.call (α0 α2) in
+  let* α4 : M.Val (core.ops.range.RangeInclusive.t u32.t) := M.alloc α3 in
+  let* α5 : M.Val unit :=
     match_operator
-      α3
+      α4
       [
         fun γ =>
           (let* iter := M.copy γ in
           M.loop
             (let* _ : M.Val unit :=
-              let* α0 : core.option.Option.t u32.t :=
-                M.call
-                  ((core.iter.traits.iterator.Iterator.next
-                      (Self := core.ops.range.RangeInclusive.t u32.t)
-                      (Trait := ltac:(refine _)))
-                    (borrow_mut iter)) in
-              let* α1 : M.Val (core.option.Option.t u32.t) := M.alloc α0 in
+              let* α0 : _ :=
+                ltac:(M.get_method (fun ℐ =>
+                  core.iter.traits.iterator.Iterator.next
+                    (Self := core.ops.range.RangeInclusive.t u32.t)
+                    (Trait := ℐ))) in
+              let* α1 : core.option.Option.t u32.t :=
+                M.call (α0 (borrow_mut iter)) in
+              let* α2 : M.Val (core.option.Option.t u32.t) := M.alloc α1 in
               match_operator
-                α1
+                α2
                 [
                   fun γ =>
                     (let* α0 := M.read γ in
@@ -221,4 +222,4 @@ Definition fizzbuzz_to (n : u32.t) : M unit :=
             M.alloc tt)) :
           M (M.Val unit)
       ] in
-  M.read (use α4).
+  M.read (use α5).

@@ -43,17 +43,19 @@ Section Impl_core_default_Default_for_multisig_Mapping_t_K_V.
   Default
   *)
   Definition default : M (multisig.Mapping.t K V) :=
-    let* α0 : core.marker.PhantomData.t K :=
-      M.call
-        (core.default.Default.default
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.default.Default.default
           (Self := core.marker.PhantomData.t K)
-          (Trait := ltac:(refine _))) in
-    let* α1 : core.marker.PhantomData.t V :=
-      M.call
-        (core.default.Default.default
+          (Trait := ℐ))) in
+    let* α1 : core.marker.PhantomData.t K := M.call α0 in
+    let* α2 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.default.Default.default
           (Self := core.marker.PhantomData.t V)
-          (Trait := ltac:(refine _))) in
-    M.pure {| multisig.Mapping._key := α0; multisig.Mapping._value := α1; |}.
+          (Trait := ℐ))) in
+    let* α3 : core.marker.PhantomData.t V := M.call α2 in
+    M.pure {| multisig.Mapping._key := α1; multisig.Mapping._value := α3; |}.
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -207,12 +209,11 @@ Section Impl_core_default_Default_for_multisig_AccountId_t.
   Default
   *)
   Definition default : M multisig.AccountId.t :=
-    let* α0 : u128.t :=
-      M.call
-        (core.default.Default.default
-          (Self := u128.t)
-          (Trait := ltac:(refine _))) in
-    M.pure (multisig.AccountId.Build_t α0).
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.default.Default.default (Self := u128.t) (Trait := ℐ))) in
+    let* α1 : u128.t := M.call α0 in
+    M.pure (multisig.AccountId.Build_t α1).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -387,14 +388,15 @@ Section Impl_core_cmp_PartialOrd_for_multisig_AccountId_t.
       : M (core.option.Option.t core.cmp.Ordering.t) :=
     let* self := M.alloc self in
     let* other := M.alloc other in
-    let* α0 : ref multisig.AccountId.t := M.read self in
-    let* α1 : ref multisig.AccountId.t := M.read other in
-    M.call
-      ((core.cmp.PartialOrd.partial_cmp
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.cmp.PartialOrd.partial_cmp
           (Self := u128.t)
-          (Trait := ltac:(refine _)))
-        (borrow (deref α0).["0"])
-        (borrow (deref α1).["0"])).
+          (Rhs := u128.t)
+          (Trait := ℐ))) in
+    let* α1 : ref multisig.AccountId.t := M.read self in
+    let* α2 : ref multisig.AccountId.t := M.read other in
+    M.call (α0 (borrow (deref α1).["0"]) (borrow (deref α2).["0"])).
   
   Global Instance AssociatedFunction_partial_cmp :
     Notations.DoubleColon Self "partial_cmp" := {
@@ -426,12 +428,12 @@ Section Impl_core_cmp_Ord_for_multisig_AccountId_t.
       : M core.cmp.Ordering.t :=
     let* self := M.alloc self in
     let* other := M.alloc other in
-    let* α0 : ref multisig.AccountId.t := M.read self in
-    let* α1 : ref multisig.AccountId.t := M.read other in
-    M.call
-      ((core.cmp.Ord.cmp (Self := u128.t) (Trait := ltac:(refine _)))
-        (borrow (deref α0).["0"])
-        (borrow (deref α1).["0"])).
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.cmp.Ord.cmp (Self := u128.t) (Trait := ℐ))) in
+    let* α1 : ref multisig.AccountId.t := M.read self in
+    let* α2 : ref multisig.AccountId.t := M.read other in
+    M.call (α0 (borrow (deref α1).["0"]) (borrow (deref α2).["0"])).
   
   Global Instance AssociatedFunction_cmp : Notations.DoubleColon Self "cmp" := {
     Notations.double_colon := cmp;
@@ -624,44 +626,42 @@ Section Impl_core_default_Default_for_multisig_Transaction_t.
   Default
   *)
   Definition default : M multisig.Transaction.t :=
-    let* α0 : multisig.AccountId.t :=
-      M.call
-        (core.default.Default.default
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.default.Default.default
           (Self := multisig.AccountId.t)
-          (Trait := ltac:(refine _))) in
-    let* α1 : array u8.t :=
-      M.call
-        (core.default.Default.default
-          (Self := array u8.t)
-          (Trait := ltac:(refine _))) in
-    let* α2 : alloc.vec.Vec.t u8.t alloc.alloc.Global.t :=
-      M.call
-        (core.default.Default.default
+          (Trait := ℐ))) in
+    let* α1 : multisig.AccountId.t := M.call α0 in
+    let* α2 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.default.Default.default (Self := array u8.t) (Trait := ℐ))) in
+    let* α3 : array u8.t := M.call α2 in
+    let* α4 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.default.Default.default
           (Self := alloc.vec.Vec.t u8.t alloc.alloc.Global.t)
-          (Trait := ltac:(refine _))) in
-    let* α3 : u128.t :=
-      M.call
-        (core.default.Default.default
-          (Self := u128.t)
-          (Trait := ltac:(refine _))) in
-    let* α4 : u64.t :=
-      M.call
-        (core.default.Default.default
-          (Self := u64.t)
-          (Trait := ltac:(refine _))) in
-    let* α5 : bool.t :=
-      M.call
-        (core.default.Default.default
-          (Self := bool.t)
-          (Trait := ltac:(refine _))) in
+          (Trait := ℐ))) in
+    let* α5 : alloc.vec.Vec.t u8.t alloc.alloc.Global.t := M.call α4 in
+    let* α6 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.default.Default.default (Self := u128.t) (Trait := ℐ))) in
+    let* α7 : u128.t := M.call α6 in
+    let* α8 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.default.Default.default (Self := u64.t) (Trait := ℐ))) in
+    let* α9 : u64.t := M.call α8 in
+    let* α10 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.default.Default.default (Self := bool.t) (Trait := ℐ))) in
+    let* α11 : bool.t := M.call α10 in
     M.pure
       {|
-        multisig.Transaction.callee := α0;
-        multisig.Transaction.selector := α1;
-        multisig.Transaction.input := α2;
-        multisig.Transaction.transferred_value := α3;
-        multisig.Transaction.gas_limit := α4;
-        multisig.Transaction.allow_reentry := α5;
+        multisig.Transaction.callee := α1;
+        multisig.Transaction.selector := α3;
+        multisig.Transaction.input := α5;
+        multisig.Transaction.transferred_value := α7;
+        multisig.Transaction.gas_limit := α9;
+        multisig.Transaction.allow_reentry := α11;
       |}.
   
   Global Instance AssociatedFunction_default :
@@ -817,20 +817,20 @@ Section Impl_core_default_Default_for_multisig_Transactions_t.
   Default
   *)
   Definition default : M multisig.Transactions.t :=
-    let* α0 : alloc.vec.Vec.t u32.t alloc.alloc.Global.t :=
-      M.call
-        (core.default.Default.default
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.default.Default.default
           (Self := alloc.vec.Vec.t u32.t alloc.alloc.Global.t)
-          (Trait := ltac:(refine _))) in
-    let* α1 : u32.t :=
-      M.call
-        (core.default.Default.default
-          (Self := u32.t)
-          (Trait := ltac:(refine _))) in
+          (Trait := ℐ))) in
+    let* α1 : alloc.vec.Vec.t u32.t alloc.alloc.Global.t := M.call α0 in
+    let* α2 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.default.Default.default (Self := u32.t) (Trait := ℐ))) in
+    let* α3 : u32.t := M.call α2 in
     M.pure
       {|
-        multisig.Transactions.transactions := α0;
-        multisig.Transactions.next_id := α1;
+        multisig.Transactions.transactions := α1;
+        multisig.Transactions.next_id := α3;
       |}.
   
   Global Instance AssociatedFunction_default :
@@ -1291,50 +1291,57 @@ Section Impl_core_default_Default_for_multisig_Multisig_t.
   Default
   *)
   Definition default : M multisig.Multisig.t :=
-    let* α0 : multisig.Mapping.t (u32.t * multisig.AccountId.t) unit :=
-      M.call
-        (core.default.Default.default
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.default.Default.default
           (Self := multisig.Mapping.t (u32.t * multisig.AccountId.t) unit)
-          (Trait := ltac:(refine _))) in
-    let* α1 : multisig.Mapping.t u32.t u32.t :=
-      M.call
-        (core.default.Default.default
+          (Trait := ℐ))) in
+    let* α1 : multisig.Mapping.t (u32.t * multisig.AccountId.t) unit :=
+      M.call α0 in
+    let* α2 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.default.Default.default
           (Self := multisig.Mapping.t u32.t u32.t)
-          (Trait := ltac:(refine _))) in
-    let* α2 : multisig.Mapping.t u32.t multisig.Transaction.t :=
-      M.call
-        (core.default.Default.default
+          (Trait := ℐ))) in
+    let* α3 : multisig.Mapping.t u32.t u32.t := M.call α2 in
+    let* α4 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.default.Default.default
           (Self := multisig.Mapping.t u32.t multisig.Transaction.t)
-          (Trait := ltac:(refine _))) in
-    let* α3 : multisig.Transactions.t :=
-      M.call
-        (core.default.Default.default
+          (Trait := ℐ))) in
+    let* α5 : multisig.Mapping.t u32.t multisig.Transaction.t := M.call α4 in
+    let* α6 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.default.Default.default
           (Self := multisig.Transactions.t)
-          (Trait := ltac:(refine _))) in
-    let* α4 : alloc.vec.Vec.t multisig.AccountId.t alloc.alloc.Global.t :=
-      M.call
-        (core.default.Default.default
+          (Trait := ℐ))) in
+    let* α7 : multisig.Transactions.t := M.call α6 in
+    let* α8 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.default.Default.default
           (Self := alloc.vec.Vec.t multisig.AccountId.t alloc.alloc.Global.t)
-          (Trait := ltac:(refine _))) in
-    let* α5 : multisig.Mapping.t multisig.AccountId.t unit :=
-      M.call
-        (core.default.Default.default
+          (Trait := ℐ))) in
+    let* α9 : alloc.vec.Vec.t multisig.AccountId.t alloc.alloc.Global.t :=
+      M.call α8 in
+    let* α10 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.default.Default.default
           (Self := multisig.Mapping.t multisig.AccountId.t unit)
-          (Trait := ltac:(refine _))) in
-    let* α6 : u32.t :=
-      M.call
-        (core.default.Default.default
-          (Self := u32.t)
-          (Trait := ltac:(refine _))) in
+          (Trait := ℐ))) in
+    let* α11 : multisig.Mapping.t multisig.AccountId.t unit := M.call α10 in
+    let* α12 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.default.Default.default (Self := u32.t) (Trait := ℐ))) in
+    let* α13 : u32.t := M.call α12 in
     M.pure
       {|
-        multisig.Multisig.confirmations := α0;
-        multisig.Multisig.confirmation_count := α1;
-        multisig.Multisig.transactions := α2;
-        multisig.Multisig.transaction_list := α3;
-        multisig.Multisig.owners := α4;
-        multisig.Multisig.is_owner := α5;
-        multisig.Multisig.requirement := α6;
+        multisig.Multisig.confirmations := α1;
+        multisig.Multisig.confirmation_count := α3;
+        multisig.Multisig.transactions := α5;
+        multisig.Multisig.transaction_list := α7;
+        multisig.Multisig.owners := α9;
+        multisig.Multisig.is_owner := α11;
+        multisig.Multisig.requirement := α13;
       |}.
   
   Global Instance AssociatedFunction_default :
@@ -1443,23 +1450,24 @@ Section Impl_multisig_Multisig_t.
     let* requirement := M.alloc requirement in
     let* owners := M.alloc owners in
     let* contract : M.Val multisig.Multisig.t :=
-      let* α0 : multisig.Multisig.t :=
-        M.call
-          (core.default.Default.default
+      let* α0 : _ :=
+        ltac:(M.get_method (fun ℐ =>
+          core.default.Default.default
             (Self := multisig.Multisig.t)
-            (Trait := ltac:(refine _))) in
-      M.alloc α0 in
-    let* _ : M.Val unit :=
-      let* α0 : mut_ref (slice multisig.AccountId.t) :=
-        M.call
-          ((core.ops.deref.DerefMut.deref_mut
-              (Self :=
-                alloc.vec.Vec.t multisig.AccountId.t alloc.alloc.Global.t)
-              (Trait := ltac:(refine _)))
-            (borrow_mut owners)) in
-      let* α1 : unit :=
-        M.call ((slice multisig.AccountId.t)::["sort_unstable"] α0) in
+            (Trait := ℐ))) in
+      let* α1 : multisig.Multisig.t := M.call α0 in
       M.alloc α1 in
+    let* _ : M.Val unit :=
+      let* α0 : _ :=
+        ltac:(M.get_method (fun ℐ =>
+          core.ops.deref.DerefMut.deref_mut
+            (Self := alloc.vec.Vec.t multisig.AccountId.t alloc.alloc.Global.t)
+            (Trait := ℐ))) in
+      let* α1 : mut_ref (slice multisig.AccountId.t) :=
+        M.call (α0 (borrow_mut owners)) in
+      let* α2 : unit :=
+        M.call ((slice multisig.AccountId.t)::["sort_unstable"] α1) in
+      M.alloc α2 in
     let* _ : M.Val unit :=
       let* α0 : unit :=
         M.call
@@ -1478,34 +1486,36 @@ Section Impl_multisig_Multisig_t.
       let* α3 : unit := M.call (multisig.ensure_requirement_is_valid α1 α2) in
       M.alloc α3 in
     let* _ : M.Val unit :=
-      let* α0 : core.slice.iter.Iter.t multisig.AccountId.t :=
-        M.call
-          ((core.iter.traits.collect.IntoIterator.into_iter
-              (Self :=
-                ref (alloc.vec.Vec.t multisig.AccountId.t alloc.alloc.Global.t))
-              (Trait := ltac:(refine _)))
-            (borrow owners)) in
-      let* α1 : M.Val (core.slice.iter.Iter.t multisig.AccountId.t) :=
-        M.alloc α0 in
-      let* α2 : M.Val unit :=
+      let* α0 : _ :=
+        ltac:(M.get_method (fun ℐ =>
+          core.iter.traits.collect.IntoIterator.into_iter
+            (Self :=
+              ref (alloc.vec.Vec.t multisig.AccountId.t alloc.alloc.Global.t))
+            (Trait := ℐ))) in
+      let* α1 : core.slice.iter.Iter.t multisig.AccountId.t :=
+        M.call (α0 (borrow owners)) in
+      let* α2 : M.Val (core.slice.iter.Iter.t multisig.AccountId.t) :=
+        M.alloc α1 in
+      let* α3 : M.Val unit :=
         match_operator
-          α1
+          α2
           [
             fun γ =>
               (let* iter := M.copy γ in
               M.loop
                 (let* _ : M.Val unit :=
-                  let* α0 : core.option.Option.t (ref multisig.AccountId.t) :=
-                    M.call
-                      ((core.iter.traits.iterator.Iterator.next
-                          (Self := core.slice.iter.Iter.t multisig.AccountId.t)
-                          (Trait := ltac:(refine _)))
-                        (borrow_mut iter)) in
-                  let* α1 :
+                  let* α0 : _ :=
+                    ltac:(M.get_method (fun ℐ =>
+                      core.iter.traits.iterator.Iterator.next
+                        (Self := core.slice.iter.Iter.t multisig.AccountId.t)
+                        (Trait := ℐ))) in
+                  let* α1 : core.option.Option.t (ref multisig.AccountId.t) :=
+                    M.call (α0 (borrow_mut iter)) in
+                  let* α2 :
                       M.Val (core.option.Option.t (ref multisig.AccountId.t)) :=
-                    M.alloc α0 in
+                    M.alloc α1 in
                   match_operator
-                    α1
+                    α2
                     [
                       fun γ =>
                         (let* α0 := M.read γ in
@@ -1546,18 +1556,19 @@ Section Impl_multisig_Multisig_t.
                 M.alloc tt)) :
               M (M.Val unit)
           ] in
-      M.pure (use α2) in
+      M.pure (use α3) in
     let* _ : M.Val unit :=
       let* α0 : alloc.vec.Vec.t multisig.AccountId.t alloc.alloc.Global.t :=
         M.read owners in
       assign contract.["owners"] α0 in
     let* _ : M.Val unit :=
-      let* α0 : multisig.Transactions.t :=
-        M.call
-          (core.default.Default.default
+      let* α0 : _ :=
+        ltac:(M.get_method (fun ℐ =>
+          core.default.Default.default
             (Self := multisig.Transactions.t)
-            (Trait := ltac:(refine _))) in
-      assign contract.["transaction_list"] α0 in
+            (Trait := ℐ))) in
+      let* α1 : multisig.Transactions.t := M.call α0 in
+      assign contract.["transaction_list"] α1 in
     let* _ : M.Val unit :=
       let* α0 : u32.t := M.read requirement in
       assign contract.["requirement"] α0 in
@@ -1745,18 +1756,18 @@ Section Impl_multisig_Multisig_t.
               let γ0_1 := Tuple.Access.right γ in
               let* left_val := M.copy γ0_0 in
               let* right_val := M.copy γ0_1 in
-              let* α0 : ref multisig.AccountId.t := M.read left_val in
-              let* α1 : ref multisig.AccountId.t := M.read right_val in
-              let* α2 : bool.t :=
-                M.call
-                  ((core.cmp.PartialEq.eq
-                      (Self := multisig.AccountId.t)
-                      (Trait := ltac:(refine _)))
-                    α0
-                    α1) in
-              let* α3 : M.Val bool.t := M.alloc (UnOp.not α2) in
-              let* α4 : bool.t := M.read (use α3) in
-              if α4 then
+              let* α0 : _ :=
+                ltac:(M.get_method (fun ℐ =>
+                  core.cmp.PartialEq.eq
+                    (Self := multisig.AccountId.t)
+                    (Rhs := multisig.AccountId.t)
+                    (Trait := ℐ))) in
+              let* α1 : ref multisig.AccountId.t := M.read left_val in
+              let* α2 : ref multisig.AccountId.t := M.read right_val in
+              let* α3 : bool.t := M.call (α0 α1 α2) in
+              let* α4 : M.Val bool.t := M.alloc (UnOp.not α3) in
+              let* α5 : bool.t := M.read (use α4) in
+              if α5 then
                 let* kind : M.Val core.panicking.AssertKind.t :=
                   M.alloc core.panicking.AssertKind.Eq in
                 let* _ : M.Val never.t :=
@@ -1922,23 +1933,28 @@ Section Impl_multisig_Multisig_t.
       : M u32.t :=
     let* self := M.alloc self in
     let* owner := M.alloc owner in
-    let* α0 : ref multisig.Multisig.t := M.read self in
-    let* α1 : ref (slice multisig.AccountId.t) :=
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.iter.traits.iterator.Iterator.position
+          (Self := core.slice.iter.Iter.t multisig.AccountId.t)
+          (P := (ref multisig.AccountId.t) -> M bool.t)
+          (Trait := ℐ))) in
+    let* α1 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.ops.deref.Deref.deref
+          (Self := alloc.vec.Vec.t multisig.AccountId.t alloc.alloc.Global.t)
+          (Trait := ℐ))) in
+    let* α2 : ref multisig.Multisig.t := M.read self in
+    let* α3 : ref (slice multisig.AccountId.t) :=
+      M.call (α1 (borrow (deref α2).["owners"])) in
+    let* α4 : core.slice.iter.Iter.t multisig.AccountId.t :=
+      M.call ((slice multisig.AccountId.t)::["iter"] α3) in
+    let* α5 : M.Val (core.slice.iter.Iter.t multisig.AccountId.t) :=
+      M.alloc α4 in
+    let* α6 : core.option.Option.t usize.t :=
       M.call
-        ((core.ops.deref.Deref.deref
-            (Self := alloc.vec.Vec.t multisig.AccountId.t alloc.alloc.Global.t)
-            (Trait := ltac:(refine _)))
-          (borrow (deref α0).["owners"])) in
-    let* α2 : core.slice.iter.Iter.t multisig.AccountId.t :=
-      M.call ((slice multisig.AccountId.t)::["iter"] α1) in
-    let* α3 : M.Val (core.slice.iter.Iter.t multisig.AccountId.t) :=
-      M.alloc α2 in
-    let* α4 : core.option.Option.t usize.t :=
-      M.call
-        ((core.iter.traits.iterator.Iterator.position
-            (Self := core.slice.iter.Iter.t multisig.AccountId.t)
-            (Trait := ltac:(refine _)))
-          (borrow_mut α3)
+        (α0
+          (borrow_mut α5)
           (fun (α0 : ref multisig.AccountId.t) =>
             (let* α0 := M.alloc α0 in
             match_operator
@@ -1946,25 +1962,26 @@ Section Impl_multisig_Multisig_t.
               [
                 fun γ =>
                   (let* x := M.copy γ in
-                  let* α0 : ref multisig.AccountId.t := M.read x in
-                  let* α1 : ref multisig.AccountId.t := M.read owner in
-                  M.call
-                    ((core.cmp.PartialEq.eq
+                  let* α0 : _ :=
+                    ltac:(M.get_method (fun ℐ =>
+                      core.cmp.PartialEq.eq
                         (Self := multisig.AccountId.t)
-                        (Trait := ltac:(refine _)))
-                      α0
-                      α1)) :
+                        (Rhs := multisig.AccountId.t)
+                        (Trait := ℐ))) in
+                  let* α1 : ref multisig.AccountId.t := M.read x in
+                  let* α2 : ref multisig.AccountId.t := M.read owner in
+                  M.call (α0 α1 α2)) :
                   M bool.t
               ]) :
             M bool.t)) in
-    let* α5 : ref str.t :=
+    let* α7 : ref str.t :=
       M.read
         (mk_str
           "This is only called after it was already verified that the id is
                actually an owner.") in
-    let* α6 : usize.t :=
-      M.call ((core.option.Option.t usize.t)::["expect"] α4 α5) in
-    M.cast α6.
+    let* α8 : usize.t :=
+      M.call ((core.option.Option.t usize.t)::["expect"] α6 α7) in
+    M.cast α8.
   
   Global Instance AssociatedFunction_owner_index :
     Notations.DoubleColon Self "owner_index" := {
@@ -1990,32 +2007,34 @@ Section Impl_multisig_Multisig_t.
       : M unit :=
     let* self := M.alloc self in
     let* owner := M.alloc owner in
-    let* α0 : mut_ref multisig.Multisig.t := M.read self in
-    let* α1 : core.slice.iter.Iter.t u32.t :=
-      M.call
-        ((core.iter.traits.collect.IntoIterator.into_iter
-            (Self := ref (alloc.vec.Vec.t u32.t alloc.alloc.Global.t))
-            (Trait := ltac:(refine _)))
-          (borrow (deref α0).["transaction_list"].["transactions"])) in
-    let* α2 : M.Val (core.slice.iter.Iter.t u32.t) := M.alloc α1 in
-    let* α3 : M.Val unit :=
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.iter.traits.collect.IntoIterator.into_iter
+          (Self := ref (alloc.vec.Vec.t u32.t alloc.alloc.Global.t))
+          (Trait := ℐ))) in
+    let* α1 : mut_ref multisig.Multisig.t := M.read self in
+    let* α2 : core.slice.iter.Iter.t u32.t :=
+      M.call (α0 (borrow (deref α1).["transaction_list"].["transactions"])) in
+    let* α3 : M.Val (core.slice.iter.Iter.t u32.t) := M.alloc α2 in
+    let* α4 : M.Val unit :=
       match_operator
-        α2
+        α3
         [
           fun γ =>
             (let* iter := M.copy γ in
             M.loop
               (let* _ : M.Val unit :=
-                let* α0 : core.option.Option.t (ref u32.t) :=
-                  M.call
-                    ((core.iter.traits.iterator.Iterator.next
-                        (Self := core.slice.iter.Iter.t u32.t)
-                        (Trait := ltac:(refine _)))
-                      (borrow_mut iter)) in
-                let* α1 : M.Val (core.option.Option.t (ref u32.t)) :=
-                  M.alloc α0 in
+                let* α0 : _ :=
+                  ltac:(M.get_method (fun ℐ =>
+                    core.iter.traits.iterator.Iterator.next
+                      (Self := core.slice.iter.Iter.t u32.t)
+                      (Trait := ℐ))) in
+                let* α1 : core.option.Option.t (ref u32.t) :=
+                  M.call (α0 (borrow_mut iter)) in
+                let* α2 : M.Val (core.option.Option.t (ref u32.t)) :=
+                  M.alloc α1 in
                 match_operator
-                  α1
+                  α2
                   [
                     fun γ =>
                       (let* α0 := M.read γ in
@@ -2109,7 +2128,7 @@ Section Impl_multisig_Multisig_t.
               M.alloc tt)) :
             M (M.Val unit)
         ] in
-    M.read (use α3).
+    M.read (use α4).
   
   Global Instance AssociatedFunction_clean_owner_confirmations :
     Notations.DoubleColon Self "clean_owner_confirmations" := {
@@ -2162,15 +2181,14 @@ Section Impl_multisig_Multisig_t.
       let* α3 : u32.t := BinOp.Panic.sub α2 (Integer.of_Z 1) in
       M.alloc α3 in
     let* requirement : M.Val u32.t :=
-      let* α0 : u32.t := M.read len in
-      let* α1 : mut_ref multisig.Multisig.t := M.read self in
-      let* α2 : u32.t := M.read (deref α1).["requirement"] in
-      let* α3 : u32.t :=
-        M.call
-          ((core.cmp.Ord.min (Self := u32.t) (Trait := ltac:(refine _)))
-            α0
-            α2) in
-      M.alloc α3 in
+      let* α0 : _ :=
+        ltac:(M.get_method (fun ℐ =>
+          core.cmp.Ord.min (Self := u32.t) (Trait := ℐ))) in
+      let* α1 : u32.t := M.read len in
+      let* α2 : mut_ref multisig.Multisig.t := M.read self in
+      let* α3 : u32.t := M.read (deref α2).["requirement"] in
+      let* α4 : u32.t := M.call (α0 α1 α3) in
+      M.alloc α4 in
     let* _ : M.Val unit :=
       let* α0 : u32.t := M.read len in
       let* α1 : u32.t := M.read requirement in
@@ -2293,19 +2311,19 @@ Section Impl_multisig_Multisig_t.
             (borrow old_owner)) in
       M.alloc α1 in
     let* _ : M.Val unit :=
-      let* α0 : mut_ref multisig.Multisig.t := M.read self in
-      let* α1 : u32.t := M.read owner_index in
-      let* α2 : usize.t := M.cast α1 in
-      let* α3 : mut_ref multisig.AccountId.t :=
-        M.call
-          ((core.ops.index.IndexMut.index_mut
-              (Self :=
-                alloc.vec.Vec.t multisig.AccountId.t alloc.alloc.Global.t)
-              (Trait := ltac:(refine _)))
-            (borrow_mut (deref α0).["owners"])
-            α2) in
-      let* α4 : multisig.AccountId.t := M.read new_owner in
-      assign (deref α3) α4 in
+      let* α0 : _ :=
+        ltac:(M.get_method (fun ℐ =>
+          core.ops.index.IndexMut.index_mut
+            (Self := alloc.vec.Vec.t multisig.AccountId.t alloc.alloc.Global.t)
+            (Idx := usize.t)
+            (Trait := ℐ))) in
+      let* α1 : mut_ref multisig.Multisig.t := M.read self in
+      let* α2 : u32.t := M.read owner_index in
+      let* α3 : usize.t := M.cast α2 in
+      let* α4 : mut_ref multisig.AccountId.t :=
+        M.call (α0 (borrow_mut (deref α1).["owners"]) α3) in
+      let* α5 : multisig.AccountId.t := M.read new_owner in
+      assign (deref α4) α5 in
     let* _ : M.Val unit :=
       let* α0 : mut_ref multisig.Multisig.t := M.read self in
       let* α1 : multisig.AccountId.t := M.read old_owner in
@@ -2728,22 +2746,28 @@ Section Impl_multisig_Multisig_t.
                 α1) in
           M.alloc α2 in
         let* pos : M.Val usize.t :=
-          let* α0 : mut_ref multisig.Multisig.t := M.read self in
-          let* α1 : ref (slice u32.t) :=
+          let* α0 : _ :=
+            ltac:(M.get_method (fun ℐ =>
+              core.iter.traits.iterator.Iterator.position
+                (Self := core.slice.iter.Iter.t u32.t)
+                (P := (ref u32.t) -> M bool.t)
+                (Trait := ℐ))) in
+          let* α1 : _ :=
+            ltac:(M.get_method (fun ℐ =>
+              core.ops.deref.Deref.deref
+                (Self := alloc.vec.Vec.t u32.t alloc.alloc.Global.t)
+                (Trait := ℐ))) in
+          let* α2 : mut_ref multisig.Multisig.t := M.read self in
+          let* α3 : ref (slice u32.t) :=
             M.call
-              ((core.ops.deref.Deref.deref
-                  (Self := alloc.vec.Vec.t u32.t alloc.alloc.Global.t)
-                  (Trait := ltac:(refine _)))
-                (borrow (deref α0).["transaction_list"].["transactions"])) in
-          let* α2 : core.slice.iter.Iter.t u32.t :=
-            M.call ((slice u32.t)::["iter"] α1) in
-          let* α3 : M.Val (core.slice.iter.Iter.t u32.t) := M.alloc α2 in
-          let* α4 : core.option.Option.t usize.t :=
+              (α1 (borrow (deref α2).["transaction_list"].["transactions"])) in
+          let* α4 : core.slice.iter.Iter.t u32.t :=
+            M.call ((slice u32.t)::["iter"] α3) in
+          let* α5 : M.Val (core.slice.iter.Iter.t u32.t) := M.alloc α4 in
+          let* α6 : core.option.Option.t usize.t :=
             M.call
-              ((core.iter.traits.iterator.Iterator.position
-                  (Self := core.slice.iter.Iter.t u32.t)
-                  (Trait := ltac:(refine _)))
-                (borrow_mut α3)
+              (α0
+                (borrow_mut α5)
                 (fun (α0 : ref u32.t) =>
                   (let* α0 := M.alloc α0 in
                   match_operator
@@ -2751,24 +2775,25 @@ Section Impl_multisig_Multisig_t.
                     [
                       fun γ =>
                         (let* t := M.copy γ in
-                        let* α0 : M.Val (ref u32.t) :=
-                          M.alloc (borrow trans_id) in
-                        M.call
-                          ((core.cmp.PartialEq.eq
+                        let* α0 : _ :=
+                          ltac:(M.get_method (fun ℐ =>
+                            core.cmp.PartialEq.eq
                               (Self := ref u32.t)
-                              (Trait := ltac:(refine _)))
-                            (borrow t)
-                            (borrow α0))) :
+                              (Rhs := ref u32.t)
+                              (Trait := ℐ))) in
+                        let* α1 : M.Val (ref u32.t) :=
+                          M.alloc (borrow trans_id) in
+                        M.call (α0 (borrow t) (borrow α1))) :
                         M bool.t
                     ]) :
                   M bool.t)) in
-          let* α5 : ref str.t :=
+          let* α7 : ref str.t :=
             M.read
               (mk_str
                 "The transaction exists hence it must also be in the list.") in
-          let* α6 : usize.t :=
-            M.call ((core.option.Option.t usize.t)::["expect"] α4 α5) in
-          M.alloc α6 in
+          let* α8 : usize.t :=
+            M.call ((core.option.Option.t usize.t)::["expect"] α6 α7) in
+          M.alloc α8 in
         let* _ : M.Val u32.t :=
           let* α0 : mut_ref multisig.Multisig.t := M.read self in
           let* α1 : usize.t := M.read pos in
@@ -2779,46 +2804,49 @@ Section Impl_multisig_Multisig_t.
                 α1) in
           M.alloc α2 in
         let* _ : M.Val unit :=
-          let* α0 : mut_ref multisig.Multisig.t := M.read self in
-          let* α1 : ref (slice multisig.AccountId.t) :=
-            M.call
-              ((core.ops.deref.Deref.deref
-                  (Self :=
-                    alloc.vec.Vec.t multisig.AccountId.t alloc.alloc.Global.t)
-                  (Trait := ltac:(refine _)))
-                (borrow (deref α0).["owners"])) in
-          let* α2 : core.slice.iter.Iter.t multisig.AccountId.t :=
-            M.call ((slice multisig.AccountId.t)::["iter"] α1) in
-          let* α3 : core.slice.iter.Iter.t multisig.AccountId.t :=
-            M.call
-              ((core.iter.traits.collect.IntoIterator.into_iter
-                  (Self := core.slice.iter.Iter.t multisig.AccountId.t)
-                  (Trait := ltac:(refine _)))
-                α2) in
-          let* α4 : M.Val (core.slice.iter.Iter.t multisig.AccountId.t) :=
-            M.alloc α3 in
-          let* α5 : M.Val unit :=
+          let* α0 : _ :=
+            ltac:(M.get_method (fun ℐ =>
+              core.iter.traits.collect.IntoIterator.into_iter
+                (Self := core.slice.iter.Iter.t multisig.AccountId.t)
+                (Trait := ℐ))) in
+          let* α1 : _ :=
+            ltac:(M.get_method (fun ℐ =>
+              core.ops.deref.Deref.deref
+                (Self :=
+                  alloc.vec.Vec.t multisig.AccountId.t alloc.alloc.Global.t)
+                (Trait := ℐ))) in
+          let* α2 : mut_ref multisig.Multisig.t := M.read self in
+          let* α3 : ref (slice multisig.AccountId.t) :=
+            M.call (α1 (borrow (deref α2).["owners"])) in
+          let* α4 : core.slice.iter.Iter.t multisig.AccountId.t :=
+            M.call ((slice multisig.AccountId.t)::["iter"] α3) in
+          let* α5 : core.slice.iter.Iter.t multisig.AccountId.t :=
+            M.call (α0 α4) in
+          let* α6 : M.Val (core.slice.iter.Iter.t multisig.AccountId.t) :=
+            M.alloc α5 in
+          let* α7 : M.Val unit :=
             match_operator
-              α4
+              α6
               [
                 fun γ =>
                   (let* iter := M.copy γ in
                   M.loop
                     (let* _ : M.Val unit :=
-                      let* α0 :
-                          core.option.Option.t (ref multisig.AccountId.t) :=
-                        M.call
-                          ((core.iter.traits.iterator.Iterator.next
-                              (Self :=
-                                core.slice.iter.Iter.t multisig.AccountId.t)
-                              (Trait := ltac:(refine _)))
-                            (borrow_mut iter)) in
+                      let* α0 : _ :=
+                        ltac:(M.get_method (fun ℐ =>
+                          core.iter.traits.iterator.Iterator.next
+                            (Self :=
+                              core.slice.iter.Iter.t multisig.AccountId.t)
+                            (Trait := ℐ))) in
                       let* α1 :
+                          core.option.Option.t (ref multisig.AccountId.t) :=
+                        M.call (α0 (borrow_mut iter)) in
+                      let* α2 :
                           M.Val
                             (core.option.Option.t (ref multisig.AccountId.t)) :=
-                        M.alloc α0 in
+                        M.alloc α1 in
                       match_operator
-                        α1
+                        α2
                         [
                           fun γ =>
                             (let* α0 := M.read γ in
@@ -2861,7 +2889,7 @@ Section Impl_multisig_Multisig_t.
                     M.alloc tt)) :
                   M (M.Val unit)
               ] in
-          M.pure (use α5) in
+          M.pure (use α7) in
         let* _ : M.Val unit :=
           let* α0 : mut_ref multisig.Multisig.t := M.read self in
           let* α1 : u32.t := M.read trans_id in

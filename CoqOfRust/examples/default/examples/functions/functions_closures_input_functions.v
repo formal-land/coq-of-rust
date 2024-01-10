@@ -13,12 +13,11 @@ Definition call_me
     : M unit :=
   let* f := M.alloc f in
   let* _ : M.Val unit :=
-    let* α0 : unit :=
-      M.call
-        ((core.ops.function.Fn.call (Self := F) (Trait := ltac:(refine _)))
-          (borrow f)
-          tt) in
-    M.alloc α0 in
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.ops.function.Fn.call (Self := F) (Args := unit) (Trait := ℐ))) in
+    let* α1 : unit := M.call (α0 (borrow f) tt) in
+    M.alloc α1 in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.
 

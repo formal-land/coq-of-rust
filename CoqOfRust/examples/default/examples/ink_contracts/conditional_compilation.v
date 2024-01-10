@@ -22,12 +22,11 @@ Section Impl_core_default_Default_for_conditional_compilation_AccountId_t.
   Default
   *)
   Definition default : M conditional_compilation.AccountId.t :=
-    let* α0 : u128.t :=
-      M.call
-        (core.default.Default.default
-          (Self := u128.t)
-          (Trait := ltac:(refine _))) in
-    M.pure (conditional_compilation.AccountId.Build_t α0).
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.default.Default.default (Self := u128.t) (Trait := ℐ))) in
+    let* α1 : u128.t := M.call α0 in
+    M.pure (conditional_compilation.AccountId.Build_t α1).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -315,12 +314,11 @@ Section Impl_conditional_compilation_ConditionalCompilation_t.
       }
   *)
   Definition new : M Self :=
-    let* α0 : bool.t :=
-      M.call
-        (core.default.Default.default
-          (Self := bool.t)
-          (Trait := ltac:(refine _))) in
-    M.pure {| conditional_compilation.ConditionalCompilation.value := α0; |}.
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.default.Default.default (Self := bool.t) (Trait := ℐ))) in
+    let* α1 : bool.t := M.call α0 in
+    M.pure {| conditional_compilation.ConditionalCompilation.value := α1; |}.
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;

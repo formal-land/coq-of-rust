@@ -30,14 +30,14 @@ Definition apply
     : M unit :=
   let* f := M.alloc f in
   let* _ : M.Val unit :=
-    let* α0 : F := M.read f in
-    let* α1 : unit :=
-      M.call
-        ((core.ops.function.FnOnce.call_once
-            (Self := F)
-            (Trait := ltac:(refine _)))
-          α0
-          tt) in
-    M.alloc α1 in
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.ops.function.FnOnce.call_once
+          (Self := F)
+          (Args := unit)
+          (Trait := ℐ))) in
+    let* α1 : F := M.read f in
+    let* α2 : unit := M.call (α0 α1 tt) in
+    M.alloc α2 in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.

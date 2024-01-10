@@ -150,29 +150,31 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
   let* _ : M.Val unit :=
-    let* α0 : core.result.Result.t try_from_and_try_into.EvenNumber.t unit :=
-      M.call
-        ((core.convert.TryFrom.try_from
-            (Self := try_from_and_try_into.EvenNumber.t)
-            (Trait := ltac:(refine _)))
-          (Integer.of_Z 8)) in
-    let* α1 :
-        M.Val (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
-      M.alloc α0 in
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.convert.TryFrom.try_from
+          (Self := try_from_and_try_into.EvenNumber.t)
+          (T := i32.t)
+          (Trait := ℐ))) in
+    let* α1 : core.result.Result.t try_from_and_try_into.EvenNumber.t unit :=
+      M.call (α0 (Integer.of_Z 8)) in
     let* α2 :
+        M.Val (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
+      M.alloc α1 in
+    let* α3 :
         M.Val (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
       M.alloc
         (core.result.Result.Ok
           (try_from_and_try_into.EvenNumber.Build_t (Integer.of_Z 8))) in
-    let* α3 :
+    let* α4 :
         M.Val
           ((ref (core.result.Result.t try_from_and_try_into.EvenNumber.t unit))
           *
           (ref
             (core.result.Result.t try_from_and_try_into.EvenNumber.t unit))) :=
-      M.alloc (borrow α1, borrow α2) in
+      M.alloc (borrow α2, borrow α3) in
     match_operator
-      α3
+      α4
       [
         fun γ =>
           (let* α0 := M.read γ in
@@ -182,31 +184,34 @@ Definition main : M unit :=
             let γ0_1 := Tuple.Access.right γ in
             let* left_val := M.copy γ0_0 in
             let* right_val := M.copy γ0_1 in
-            let* α0 :
-                ref
-                  (core.result.Result.t
-                    try_from_and_try_into.EvenNumber.t
-                    unit) :=
-              M.read left_val in
+            let* α0 : _ :=
+              ltac:(M.get_method (fun ℐ =>
+                core.cmp.PartialEq.eq
+                  (Self :=
+                    core.result.Result.t
+                      try_from_and_try_into.EvenNumber.t
+                      unit)
+                  (Rhs :=
+                    core.result.Result.t
+                      try_from_and_try_into.EvenNumber.t
+                      unit)
+                  (Trait := ℐ))) in
             let* α1 :
                 ref
                   (core.result.Result.t
                     try_from_and_try_into.EvenNumber.t
                     unit) :=
+              M.read left_val in
+            let* α2 :
+                ref
+                  (core.result.Result.t
+                    try_from_and_try_into.EvenNumber.t
+                    unit) :=
               M.read right_val in
-            let* α2 : bool.t :=
-              M.call
-                ((core.cmp.PartialEq.eq
-                    (Self :=
-                      core.result.Result.t
-                        try_from_and_try_into.EvenNumber.t
-                        unit)
-                    (Trait := ltac:(refine _)))
-                  α0
-                  α1) in
-            let* α3 : M.Val bool.t := M.alloc (UnOp.not α2) in
-            let* α4 : bool.t := M.read (use α3) in
-            if α4 then
+            let* α3 : bool.t := M.call (α0 α1 α2) in
+            let* α4 : M.Val bool.t := M.alloc (UnOp.not α3) in
+            let* α5 : bool.t := M.read (use α4) in
+            if α5 then
               let* kind : M.Val core.panicking.AssertKind.t :=
                 M.alloc core.panicking.AssertKind.Eq in
               let* _ : M.Val never.t :=
@@ -241,27 +246,29 @@ Definition main : M unit :=
           M (M.Val unit)
       ] in
   let* _ : M.Val unit :=
-    let* α0 : core.result.Result.t try_from_and_try_into.EvenNumber.t unit :=
-      M.call
-        ((core.convert.TryFrom.try_from
-            (Self := try_from_and_try_into.EvenNumber.t)
-            (Trait := ltac:(refine _)))
-          (Integer.of_Z 5)) in
-    let* α1 :
-        M.Val (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
-      M.alloc α0 in
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.convert.TryFrom.try_from
+          (Self := try_from_and_try_into.EvenNumber.t)
+          (T := i32.t)
+          (Trait := ℐ))) in
+    let* α1 : core.result.Result.t try_from_and_try_into.EvenNumber.t unit :=
+      M.call (α0 (Integer.of_Z 5)) in
     let* α2 :
         M.Val (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
-      M.alloc (core.result.Result.Err tt) in
+      M.alloc α1 in
     let* α3 :
+        M.Val (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
+      M.alloc (core.result.Result.Err tt) in
+    let* α4 :
         M.Val
           ((ref (core.result.Result.t try_from_and_try_into.EvenNumber.t unit))
           *
           (ref
             (core.result.Result.t try_from_and_try_into.EvenNumber.t unit))) :=
-      M.alloc (borrow α1, borrow α2) in
+      M.alloc (borrow α2, borrow α3) in
     match_operator
-      α3
+      α4
       [
         fun γ =>
           (let* α0 := M.read γ in
@@ -271,31 +278,34 @@ Definition main : M unit :=
             let γ0_1 := Tuple.Access.right γ in
             let* left_val := M.copy γ0_0 in
             let* right_val := M.copy γ0_1 in
-            let* α0 :
-                ref
-                  (core.result.Result.t
-                    try_from_and_try_into.EvenNumber.t
-                    unit) :=
-              M.read left_val in
+            let* α0 : _ :=
+              ltac:(M.get_method (fun ℐ =>
+                core.cmp.PartialEq.eq
+                  (Self :=
+                    core.result.Result.t
+                      try_from_and_try_into.EvenNumber.t
+                      unit)
+                  (Rhs :=
+                    core.result.Result.t
+                      try_from_and_try_into.EvenNumber.t
+                      unit)
+                  (Trait := ℐ))) in
             let* α1 :
                 ref
                   (core.result.Result.t
                     try_from_and_try_into.EvenNumber.t
                     unit) :=
+              M.read left_val in
+            let* α2 :
+                ref
+                  (core.result.Result.t
+                    try_from_and_try_into.EvenNumber.t
+                    unit) :=
               M.read right_val in
-            let* α2 : bool.t :=
-              M.call
-                ((core.cmp.PartialEq.eq
-                    (Self :=
-                      core.result.Result.t
-                        try_from_and_try_into.EvenNumber.t
-                        unit)
-                    (Trait := ltac:(refine _)))
-                  α0
-                  α1) in
-            let* α3 : M.Val bool.t := M.alloc (UnOp.not α2) in
-            let* α4 : bool.t := M.read (use α3) in
-            if α4 then
+            let* α3 : bool.t := M.call (α0 α1 α2) in
+            let* α4 : M.Val bool.t := M.alloc (UnOp.not α3) in
+            let* α5 : bool.t := M.read (use α4) in
+            if α5 then
               let* kind : M.Val core.panicking.AssertKind.t :=
                 M.alloc core.panicking.AssertKind.Eq in
               let* _ : M.Val never.t :=
@@ -331,13 +341,15 @@ Definition main : M unit :=
       ] in
   let* result :
       M.Val (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
-    let* α0 : core.result.Result.t try_from_and_try_into.EvenNumber.t unit :=
-      M.call
-        ((core.convert.TryInto.try_into
-            (Self := i32.t)
-            (Trait := ltac:(refine _)))
-          (Integer.of_Z 8)) in
-    M.alloc α0 in
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.convert.TryInto.try_into
+          (Self := i32.t)
+          (T := try_from_and_try_into.EvenNumber.t)
+          (Trait := ℐ))) in
+    let* α1 : core.result.Result.t try_from_and_try_into.EvenNumber.t unit :=
+      M.call (α0 (Integer.of_Z 8)) in
+    M.alloc α1 in
   let* _ : M.Val unit :=
     let* α0 :
         M.Val (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
@@ -362,31 +374,34 @@ Definition main : M unit :=
             let γ0_1 := Tuple.Access.right γ in
             let* left_val := M.copy γ0_0 in
             let* right_val := M.copy γ0_1 in
-            let* α0 :
-                ref
-                  (core.result.Result.t
-                    try_from_and_try_into.EvenNumber.t
-                    unit) :=
-              M.read left_val in
+            let* α0 : _ :=
+              ltac:(M.get_method (fun ℐ =>
+                core.cmp.PartialEq.eq
+                  (Self :=
+                    core.result.Result.t
+                      try_from_and_try_into.EvenNumber.t
+                      unit)
+                  (Rhs :=
+                    core.result.Result.t
+                      try_from_and_try_into.EvenNumber.t
+                      unit)
+                  (Trait := ℐ))) in
             let* α1 :
                 ref
                   (core.result.Result.t
                     try_from_and_try_into.EvenNumber.t
                     unit) :=
+              M.read left_val in
+            let* α2 :
+                ref
+                  (core.result.Result.t
+                    try_from_and_try_into.EvenNumber.t
+                    unit) :=
               M.read right_val in
-            let* α2 : bool.t :=
-              M.call
-                ((core.cmp.PartialEq.eq
-                    (Self :=
-                      core.result.Result.t
-                        try_from_and_try_into.EvenNumber.t
-                        unit)
-                    (Trait := ltac:(refine _)))
-                  α0
-                  α1) in
-            let* α3 : M.Val bool.t := M.alloc (UnOp.not α2) in
-            let* α4 : bool.t := M.read (use α3) in
-            if α4 then
+            let* α3 : bool.t := M.call (α0 α1 α2) in
+            let* α4 : M.Val bool.t := M.alloc (UnOp.not α3) in
+            let* α5 : bool.t := M.read (use α4) in
+            if α5 then
               let* kind : M.Val core.panicking.AssertKind.t :=
                 M.alloc core.panicking.AssertKind.Eq in
               let* _ : M.Val never.t :=
@@ -422,13 +437,15 @@ Definition main : M unit :=
       ] in
   let* result :
       M.Val (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
-    let* α0 : core.result.Result.t try_from_and_try_into.EvenNumber.t unit :=
-      M.call
-        ((core.convert.TryInto.try_into
-            (Self := i32.t)
-            (Trait := ltac:(refine _)))
-          (Integer.of_Z 5)) in
-    M.alloc α0 in
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.convert.TryInto.try_into
+          (Self := i32.t)
+          (T := try_from_and_try_into.EvenNumber.t)
+          (Trait := ℐ))) in
+    let* α1 : core.result.Result.t try_from_and_try_into.EvenNumber.t unit :=
+      M.call (α0 (Integer.of_Z 5)) in
+    M.alloc α1 in
   let* _ : M.Val unit :=
     let* α0 :
         M.Val (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
@@ -451,31 +468,34 @@ Definition main : M unit :=
             let γ0_1 := Tuple.Access.right γ in
             let* left_val := M.copy γ0_0 in
             let* right_val := M.copy γ0_1 in
-            let* α0 :
-                ref
-                  (core.result.Result.t
-                    try_from_and_try_into.EvenNumber.t
-                    unit) :=
-              M.read left_val in
+            let* α0 : _ :=
+              ltac:(M.get_method (fun ℐ =>
+                core.cmp.PartialEq.eq
+                  (Self :=
+                    core.result.Result.t
+                      try_from_and_try_into.EvenNumber.t
+                      unit)
+                  (Rhs :=
+                    core.result.Result.t
+                      try_from_and_try_into.EvenNumber.t
+                      unit)
+                  (Trait := ℐ))) in
             let* α1 :
                 ref
                   (core.result.Result.t
                     try_from_and_try_into.EvenNumber.t
                     unit) :=
+              M.read left_val in
+            let* α2 :
+                ref
+                  (core.result.Result.t
+                    try_from_and_try_into.EvenNumber.t
+                    unit) :=
               M.read right_val in
-            let* α2 : bool.t :=
-              M.call
-                ((core.cmp.PartialEq.eq
-                    (Self :=
-                      core.result.Result.t
-                        try_from_and_try_into.EvenNumber.t
-                        unit)
-                    (Trait := ltac:(refine _)))
-                  α0
-                  α1) in
-            let* α3 : M.Val bool.t := M.alloc (UnOp.not α2) in
-            let* α4 : bool.t := M.read (use α3) in
-            if α4 then
+            let* α3 : bool.t := M.call (α0 α1 α2) in
+            let* α4 : M.Val bool.t := M.alloc (UnOp.not α3) in
+            let* α5 : bool.t := M.read (use α4) in
+            if α5 then
               let* kind : M.Val core.panicking.AssertKind.t :=
                 M.alloc core.panicking.AssertKind.Eq in
               let* _ : M.Val never.t :=

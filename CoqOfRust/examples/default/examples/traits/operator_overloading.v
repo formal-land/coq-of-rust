@@ -198,25 +198,27 @@ Definition main : M unit :=
       let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
       let* α4 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α3) in
-      let* α5 : operator_overloading.FooBar.t :=
+      let* α5 : _ :=
+        ltac:(M.get_method (fun ℐ =>
+          core.ops.arith.Add.add
+            (Self := operator_overloading.Foo.t)
+            (Rhs := operator_overloading.Bar.t)
+            (Trait := ℐ))) in
+      let* α6 : operator_overloading.FooBar.t :=
         M.call
-          ((core.ops.arith.Add.add
-              (Self := operator_overloading.Foo.t)
-              (Trait := ltac:(refine _)))
-            operator_overloading.Foo.Build
-            operator_overloading.Bar.Build) in
-      let* α6 : M.Val operator_overloading.FooBar.t := M.alloc α5 in
-      let* α7 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow α6)) in
-      let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
-      let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-        M.alloc (borrow α8) in
-      let* α10 : ref (slice core.fmt.rt.Argument.t) :=
-        M.read (pointer_coercion "Unsize" α9) in
-      let* α11 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_v1"] α4 α10) in
-      let* α12 : unit := M.call (std.io.stdio._print α11) in
-      M.alloc α12 in
+          (α5 operator_overloading.Foo.Build operator_overloading.Bar.Build) in
+      let* α7 : M.Val operator_overloading.FooBar.t := M.alloc α6 in
+      let* α8 : core.fmt.rt.Argument.t :=
+        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow α7)) in
+      let* α9 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α8 ] in
+      let* α10 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+        M.alloc (borrow α9) in
+      let* α11 : ref (slice core.fmt.rt.Argument.t) :=
+        M.read (pointer_coercion "Unsize" α10) in
+      let* α12 : core.fmt.Arguments.t :=
+        M.call (core.fmt.Arguments.t::["new_v1"] α4 α11) in
+      let* α13 : unit := M.call (std.io.stdio._print α12) in
+      M.alloc α13 in
     M.alloc tt in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
@@ -227,25 +229,27 @@ Definition main : M unit :=
       let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
       let* α4 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α3) in
-      let* α5 : operator_overloading.BarFoo.t :=
+      let* α5 : _ :=
+        ltac:(M.get_method (fun ℐ =>
+          core.ops.arith.Add.add
+            (Self := operator_overloading.Bar.t)
+            (Rhs := operator_overloading.Foo.t)
+            (Trait := ℐ))) in
+      let* α6 : operator_overloading.BarFoo.t :=
         M.call
-          ((core.ops.arith.Add.add
-              (Self := operator_overloading.Bar.t)
-              (Trait := ltac:(refine _)))
-            operator_overloading.Bar.Build
-            operator_overloading.Foo.Build) in
-      let* α6 : M.Val operator_overloading.BarFoo.t := M.alloc α5 in
-      let* α7 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow α6)) in
-      let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
-      let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-        M.alloc (borrow α8) in
-      let* α10 : ref (slice core.fmt.rt.Argument.t) :=
-        M.read (pointer_coercion "Unsize" α9) in
-      let* α11 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_v1"] α4 α10) in
-      let* α12 : unit := M.call (std.io.stdio._print α11) in
-      M.alloc α12 in
+          (α5 operator_overloading.Bar.Build operator_overloading.Foo.Build) in
+      let* α7 : M.Val operator_overloading.BarFoo.t := M.alloc α6 in
+      let* α8 : core.fmt.rt.Argument.t :=
+        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow α7)) in
+      let* α9 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α8 ] in
+      let* α10 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+        M.alloc (borrow α9) in
+      let* α11 : ref (slice core.fmt.rt.Argument.t) :=
+        M.read (pointer_coercion "Unsize" α10) in
+      let* α12 : core.fmt.Arguments.t :=
+        M.call (core.fmt.Arguments.t::["new_v1"] α4 α11) in
+      let* α13 : unit := M.call (std.io.stdio._print α12) in
+      M.alloc α13 in
     M.alloc tt in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.

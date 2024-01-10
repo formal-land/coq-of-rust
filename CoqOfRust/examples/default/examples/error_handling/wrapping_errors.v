@@ -276,47 +276,48 @@ Definition double_first
   let return_ := M.return_ (R := ltac:(wrapping_errors.Result i32.t)) in
   M.catch_return
     (let* first : M.Val (ref (ref str.t)) :=
-      let* α0 : ref (slice (ref str.t)) :=
-        M.call
-          ((core.ops.deref.Deref.deref
-              (Self := alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t)
-              (Trait := ltac:(refine _)))
-            (borrow vec)) in
-      let* α1 : core.option.Option.t (ref (ref str.t)) :=
-        M.call ((slice (ref str.t))::["first"] α0) in
-      let* α2 :
+      let* α0 : _ :=
+        ltac:(M.get_method (fun ℐ =>
+          core.ops.try_trait.Try.branch
+            (Self :=
+              core.result.Result.t
+                (ref (ref str.t))
+                wrapping_errors.DoubleError.t)
+            (Trait := ℐ))) in
+      let* α1 : _ :=
+        ltac:(M.get_method (fun ℐ =>
+          core.ops.deref.Deref.deref
+            (Self := alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t)
+            (Trait := ℐ))) in
+      let* α2 : ref (slice (ref str.t)) := M.call (α1 (borrow vec)) in
+      let* α3 : core.option.Option.t (ref (ref str.t)) :=
+        M.call ((slice (ref str.t))::["first"] α2) in
+      let* α4 :
           core.result.Result.t
             (ref (ref str.t))
             wrapping_errors.DoubleError.t :=
         M.call
           ((core.option.Option.t (ref (ref str.t)))::["ok_or"]
-            α1
+            α3
             wrapping_errors.DoubleError.EmptyVec) in
-      let* α3 :
+      let* α5 :
           core.ops.control_flow.ControlFlow.t
             (core.result.Result.t
               core.convert.Infallible.t
               wrapping_errors.DoubleError.t)
             (ref (ref str.t)) :=
-        M.call
-          ((core.ops.try_trait.Try.branch
-              (Self :=
-                core.result.Result.t
-                  (ref (ref str.t))
-                  wrapping_errors.DoubleError.t)
-              (Trait := ltac:(refine _)))
-            α2) in
-      let* α4 :
+        M.call (α0 α4) in
+      let* α6 :
           M.Val
             (core.ops.control_flow.ControlFlow.t
               (core.result.Result.t
                 core.convert.Infallible.t
                 wrapping_errors.DoubleError.t)
               (ref (ref str.t))) :=
-        M.alloc α3 in
-      let* α5 : M.Val (ref (ref str.t)) :=
+        M.alloc α5 in
+      let* α7 : M.Val (ref (ref str.t)) :=
         match_operator
-          α4
+          α6
           [
             fun γ =>
               (let* α0 := M.read γ in
@@ -324,25 +325,30 @@ Definition double_first
               | core.ops.control_flow.ControlFlow.Break _ =>
                 let γ0_0 := γ.["Break.0"] in
                 let* residual := M.copy γ0_0 in
-                let* α0 :
+                let* α0 : _ :=
+                  ltac:(M.get_method (fun ℐ =>
+                    core.ops.try_trait.FromResidual.from_residual
+                      (Self :=
+                        core.result.Result.t
+                          i32.t
+                          wrapping_errors.DoubleError.t)
+                      (R :=
+                        core.result.Result.t
+                          core.convert.Infallible.t
+                          wrapping_errors.DoubleError.t)
+                      (Trait := ℐ))) in
+                let* α1 :
                     core.result.Result.t
                       core.convert.Infallible.t
                       wrapping_errors.DoubleError.t :=
                   M.read residual in
-                let* α1 :
+                let* α2 :
                     core.result.Result.t i32.t wrapping_errors.DoubleError.t :=
-                  M.call
-                    ((core.ops.try_trait.FromResidual.from_residual
-                        (Self :=
-                          core.result.Result.t
-                            i32.t
-                            wrapping_errors.DoubleError.t)
-                        (Trait := ltac:(refine _)))
-                      α0) in
-                let* α2 : M.Val never.t := return_ α1 in
-                let* α3 := M.read α2 in
-                let* α4 : ref (ref str.t) := never_to_any α3 in
-                M.alloc α4
+                  M.call (α0 α1) in
+                let* α3 : M.Val never.t := return_ α2 in
+                let* α4 := M.read α3 in
+                let* α5 : ref (ref str.t) := never_to_any α4 in
+                M.alloc α5
               | _ => M.break_match
               end) :
               M (M.Val (ref (ref str.t)));
@@ -357,35 +363,35 @@ Definition double_first
               end) :
               M (M.Val (ref (ref str.t)))
           ] in
-      M.copy α5 in
+      M.copy α7 in
     let* parsed : M.Val i32.t :=
-      let* α0 : ref (ref str.t) := M.read first in
-      let* α1 : ref str.t := M.read (deref α0) in
-      let* α2 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
-        M.call (str.t::["parse"] α1) in
-      let* α3 :
+      let* α0 : _ :=
+        ltac:(M.get_method (fun ℐ =>
+          core.ops.try_trait.Try.branch
+            (Self := core.result.Result.t i32.t core.num.error.ParseIntError.t)
+            (Trait := ℐ))) in
+      let* α1 : ref (ref str.t) := M.read first in
+      let* α2 : ref str.t := M.read (deref α1) in
+      let* α3 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
+        M.call (str.t::["parse"] α2) in
+      let* α4 :
           core.ops.control_flow.ControlFlow.t
             (core.result.Result.t
               core.convert.Infallible.t
               core.num.error.ParseIntError.t)
             i32.t :=
-        M.call
-          ((core.ops.try_trait.Try.branch
-              (Self :=
-                core.result.Result.t i32.t core.num.error.ParseIntError.t)
-              (Trait := ltac:(refine _)))
-            α2) in
-      let* α4 :
+        M.call (α0 α3) in
+      let* α5 :
           M.Val
             (core.ops.control_flow.ControlFlow.t
               (core.result.Result.t
                 core.convert.Infallible.t
                 core.num.error.ParseIntError.t)
               i32.t) :=
-        M.alloc α3 in
-      let* α5 : M.Val i32.t :=
+        M.alloc α4 in
+      let* α6 : M.Val i32.t :=
         match_operator
-          α4
+          α5
           [
             fun γ =>
               (let* α0 := M.read γ in
@@ -393,25 +399,30 @@ Definition double_first
               | core.ops.control_flow.ControlFlow.Break _ =>
                 let γ0_0 := γ.["Break.0"] in
                 let* residual := M.copy γ0_0 in
-                let* α0 :
+                let* α0 : _ :=
+                  ltac:(M.get_method (fun ℐ =>
+                    core.ops.try_trait.FromResidual.from_residual
+                      (Self :=
+                        core.result.Result.t
+                          i32.t
+                          wrapping_errors.DoubleError.t)
+                      (R :=
+                        core.result.Result.t
+                          core.convert.Infallible.t
+                          core.num.error.ParseIntError.t)
+                      (Trait := ℐ))) in
+                let* α1 :
                     core.result.Result.t
                       core.convert.Infallible.t
                       core.num.error.ParseIntError.t :=
                   M.read residual in
-                let* α1 :
+                let* α2 :
                     core.result.Result.t i32.t wrapping_errors.DoubleError.t :=
-                  M.call
-                    ((core.ops.try_trait.FromResidual.from_residual
-                        (Self :=
-                          core.result.Result.t
-                            i32.t
-                            wrapping_errors.DoubleError.t)
-                        (Trait := ltac:(refine _)))
-                      α0) in
-                let* α2 : M.Val never.t := return_ α1 in
-                let* α3 := M.read α2 in
-                let* α4 : i32.t := never_to_any α3 in
-                M.alloc α4
+                  M.call (α0 α1) in
+                let* α3 : M.Val never.t := return_ α2 in
+                let* α4 := M.read α3 in
+                let* α5 : i32.t := never_to_any α4 in
+                M.alloc α5
               | _ => M.break_match
               end) :
               M (M.Val i32.t);
@@ -426,7 +437,7 @@ Definition double_first
               end) :
               M (M.Val i32.t)
           ] in
-      M.copy α5 in
+      M.copy α6 in
     let* α0 : i32.t := M.read parsed in
     let* α1 : i32.t := BinOp.Panic.mul (Integer.of_Z 2) α0 in
     let* α0 :
@@ -513,18 +524,19 @@ Definition print (result : ltac:(wrapping_errors.Result i32.t)) : M unit :=
                 let* α10 : unit := M.call (std.io.stdio._print α9) in
                 M.alloc α10 in
               M.alloc tt in
-            let* α0 : core.option.Option.t (ref _ (* dyn *)) :=
-              M.call
-                ((core.error.Error.source
-                    (Self := wrapping_errors.DoubleError.t)
-                    (Trait := ltac:(refine _)))
-                  (borrow e)) in
-            let* α1 : M.Val (core.option.Option.t (ref _ (* dyn *))) :=
-              M.alloc α0 in
-            let* α2 : M.Val bool.t :=
-              let_if core.option.Option.Some source := α1 in
-            let* α3 : bool.t := M.read α2 in
-            if α3 then
+            let* α0 : _ :=
+              ltac:(M.get_method (fun ℐ =>
+                core.error.Error.source
+                  (Self := wrapping_errors.DoubleError.t)
+                  (Trait := ℐ))) in
+            let* α1 : core.option.Option.t (ref _ (* dyn *)) :=
+              M.call (α0 (borrow e)) in
+            let* α2 : M.Val (core.option.Option.t (ref _ (* dyn *))) :=
+              M.alloc α1 in
+            let* α3 : M.Val bool.t :=
+              let_if core.option.Option.Some source := α2 in
+            let* α4 : bool.t := M.read α3 in
+            if α4 then
               let* _ : M.Val unit :=
                 let* _ : M.Val unit :=
                   let* α0 : ref str.t := M.read (mk_str "  Caused by: ") in

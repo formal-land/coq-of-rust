@@ -43,17 +43,19 @@ Section Impl_core_default_Default_for_mother_Mapping_t_K_V.
   Default
   *)
   Definition default : M (mother.Mapping.t K V) :=
-    let* α0 : core.marker.PhantomData.t K :=
-      M.call
-        (core.default.Default.default
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.default.Default.default
           (Self := core.marker.PhantomData.t K)
-          (Trait := ltac:(refine _))) in
-    let* α1 : core.marker.PhantomData.t V :=
-      M.call
-        (core.default.Default.default
+          (Trait := ℐ))) in
+    let* α1 : core.marker.PhantomData.t K := M.call α0 in
+    let* α2 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.default.Default.default
           (Self := core.marker.PhantomData.t V)
-          (Trait := ltac:(refine _))) in
-    M.pure {| mother.Mapping._key := α0; mother.Mapping._value := α1; |}.
+          (Trait := ℐ))) in
+    let* α3 : core.marker.PhantomData.t V := M.call α2 in
+    M.pure {| mother.Mapping._key := α1; mother.Mapping._value := α3; |}.
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -132,12 +134,11 @@ Section Impl_core_default_Default_for_mother_AccountId_t.
   Default
   *)
   Definition default : M mother.AccountId.t :=
-    let* α0 : u128.t :=
-      M.call
-        (core.default.Default.default
-          (Self := u128.t)
-          (Trait := ltac:(refine _))) in
-    M.pure (mother.AccountId.Build_t α0).
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.default.Default.default (Self := u128.t) (Trait := ℐ))) in
+    let* α1 : u128.t := M.call α0 in
+    M.pure (mother.AccountId.Build_t α1).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -315,22 +316,24 @@ Section Impl_core_default_Default_for_mother_Bids_t.
   Default
   *)
   Definition default : M mother.Bids.t :=
-    let* α0 :
-        alloc.vec.Vec.t
-          (alloc.vec.Vec.t
-            (core.option.Option.t (mother.AccountId.t * u128.t))
-            alloc.alloc.Global.t)
-          alloc.alloc.Global.t :=
-      M.call
-        (core.default.Default.default
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.default.Default.default
           (Self :=
             alloc.vec.Vec.t
               (alloc.vec.Vec.t
                 (core.option.Option.t (mother.AccountId.t * u128.t))
                 alloc.alloc.Global.t)
               alloc.alloc.Global.t)
-          (Trait := ltac:(refine _))) in
-    M.pure (mother.Bids.Build_t α0).
+          (Trait := ℐ))) in
+    let* α1 :
+        alloc.vec.Vec.t
+          (alloc.vec.Vec.t
+            (core.option.Option.t (mother.AccountId.t * u128.t))
+            alloc.alloc.Global.t)
+          alloc.alloc.Global.t :=
+      M.call α0 in
+    M.pure (mother.Bids.Build_t α1).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -362,19 +365,25 @@ Section Impl_core_cmp_PartialEq_for_mother_Bids_t.
   Definition eq (self : ref Self) (other : ref mother.Bids.t) : M bool.t :=
     let* self := M.alloc self in
     let* other := M.alloc other in
-    let* α0 : ref mother.Bids.t := M.read self in
-    let* α1 : ref mother.Bids.t := M.read other in
-    M.call
-      ((core.cmp.PartialEq.eq
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.cmp.PartialEq.eq
           (Self :=
             alloc.vec.Vec.t
               (alloc.vec.Vec.t
                 (core.option.Option.t (mother.AccountId.t * u128.t))
                 alloc.alloc.Global.t)
               alloc.alloc.Global.t)
-          (Trait := ltac:(refine _)))
-        (borrow (deref α0).["0"])
-        (borrow (deref α1).["0"])).
+          (Rhs :=
+            alloc.vec.Vec.t
+              (alloc.vec.Vec.t
+                (core.option.Option.t (mother.AccountId.t * u128.t))
+                alloc.alloc.Global.t)
+              alloc.alloc.Global.t)
+          (Trait := ℐ))) in
+    let* α1 : ref mother.Bids.t := M.read self in
+    let* α2 : ref mother.Bids.t := M.read other in
+    M.call (α0 (borrow (deref α1).["0"]) (borrow (deref α2).["0"])).
   
   Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
     Notations.double_colon := eq;
@@ -433,24 +442,25 @@ Section Impl_core_clone_Clone_for_mother_Bids_t.
   *)
   Definition clone (self : ref Self) : M mother.Bids.t :=
     let* self := M.alloc self in
-    let* α0 : ref mother.Bids.t := M.read self in
-    let* α1 :
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.clone.Clone.clone
+          (Self :=
+            alloc.vec.Vec.t
+              (alloc.vec.Vec.t
+                (core.option.Option.t (mother.AccountId.t * u128.t))
+                alloc.alloc.Global.t)
+              alloc.alloc.Global.t)
+          (Trait := ℐ))) in
+    let* α1 : ref mother.Bids.t := M.read self in
+    let* α2 :
         alloc.vec.Vec.t
           (alloc.vec.Vec.t
             (core.option.Option.t (mother.AccountId.t * u128.t))
             alloc.alloc.Global.t)
           alloc.alloc.Global.t :=
-      M.call
-        ((core.clone.Clone.clone
-            (Self :=
-              alloc.vec.Vec.t
-                (alloc.vec.Vec.t
-                  (core.option.Option.t (mother.AccountId.t * u128.t))
-                  alloc.alloc.Global.t)
-                alloc.alloc.Global.t)
-            (Trait := ltac:(refine _)))
-          (borrow (deref α0).["0"])) in
-    M.pure (mother.Bids.Build_t α1).
+      M.call (α0 (borrow (deref α1).["0"])) in
+    M.pure (mother.Bids.Build_t α2).
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {
@@ -735,16 +745,16 @@ Section Impl_core_cmp_PartialEq_for_mother_Status_t.
                 | mother.Status.Ended _ =>
                   let γ2_0 := γ0_1.["Ended.0"] in
                   let* __arg1_0 := M.alloc (borrow γ2_0) in
-                  let* α0 : ref mother.Outline.t := M.read __self_0 in
-                  let* α1 : ref mother.Outline.t := M.read __arg1_0 in
-                  let* α2 : bool.t :=
-                    M.call
-                      ((core.cmp.PartialEq.eq
-                          (Self := mother.Outline.t)
-                          (Trait := ltac:(refine _)))
-                        α0
-                        α1) in
-                  M.alloc α2
+                  let* α0 : _ :=
+                    ltac:(M.get_method (fun ℐ =>
+                      core.cmp.PartialEq.eq
+                        (Self := mother.Outline.t)
+                        (Rhs := mother.Outline.t)
+                        (Trait := ℐ))) in
+                  let* α1 : ref mother.Outline.t := M.read __self_0 in
+                  let* α2 : ref mother.Outline.t := M.read __arg1_0 in
+                  let* α3 : bool.t := M.call (α0 α1 α2) in
+                  M.alloc α3
                 | _ => M.break_match
                 end
               | _ => M.break_match
@@ -888,14 +898,12 @@ Section Impl_core_clone_Clone_for_mother_Status_t.
             | mother.Status.EndingPeriod _ =>
               let γ1_0 := γ.["EndingPeriod.0"] in
               let* __self_0 := M.alloc (borrow γ1_0) in
-              let* α0 : ref u32.t := M.read __self_0 in
-              let* α1 : u32.t :=
-                M.call
-                  ((core.clone.Clone.clone
-                      (Self := u32.t)
-                      (Trait := ltac:(refine _)))
-                    α0) in
-              M.alloc (mother.Status.EndingPeriod α1)
+              let* α0 : _ :=
+                ltac:(M.get_method (fun ℐ =>
+                  core.clone.Clone.clone (Self := u32.t) (Trait := ℐ))) in
+              let* α1 : ref u32.t := M.read __self_0 in
+              let* α2 : u32.t := M.call (α0 α1) in
+              M.alloc (mother.Status.EndingPeriod α2)
             | _ => M.break_match
             end) :
             M (M.Val mother.Status.t);
@@ -908,14 +916,14 @@ Section Impl_core_clone_Clone_for_mother_Status_t.
             | mother.Status.Ended _ =>
               let γ1_0 := γ.["Ended.0"] in
               let* __self_0 := M.alloc (borrow γ1_0) in
-              let* α0 : ref mother.Outline.t := M.read __self_0 in
-              let* α1 : mother.Outline.t :=
-                M.call
-                  ((core.clone.Clone.clone
-                      (Self := mother.Outline.t)
-                      (Trait := ltac:(refine _)))
-                    α0) in
-              M.alloc (mother.Status.Ended α1)
+              let* α0 : _ :=
+                ltac:(M.get_method (fun ℐ =>
+                  core.clone.Clone.clone
+                    (Self := mother.Outline.t)
+                    (Trait := ℐ))) in
+              let* α1 : ref mother.Outline.t := M.read __self_0 in
+              let* α2 : mother.Outline.t := M.call (α0 α1) in
+              M.alloc (mother.Status.Ended α2)
             | _ => M.break_match
             end) :
             M (M.Val mother.Status.t);
@@ -928,14 +936,12 @@ Section Impl_core_clone_Clone_for_mother_Status_t.
             | mother.Status.RfDelay _ =>
               let γ1_0 := γ.["RfDelay.0"] in
               let* __self_0 := M.alloc (borrow γ1_0) in
-              let* α0 : ref u32.t := M.read __self_0 in
-              let* α1 : u32.t :=
-                M.call
-                  ((core.clone.Clone.clone
-                      (Self := u32.t)
-                      (Trait := ltac:(refine _)))
-                    α0) in
-              M.alloc (mother.Status.RfDelay α1)
+              let* α0 : _ :=
+                ltac:(M.get_method (fun ℐ =>
+                  core.clone.Clone.clone (Self := u32.t) (Trait := ℐ))) in
+              let* α1 : ref u32.t := M.read __self_0 in
+              let* α2 : u32.t := M.call (α0 α1) in
+              M.alloc (mother.Status.RfDelay α2)
             | _ => M.break_match
             end) :
             M (M.Val mother.Status.t)
@@ -1045,70 +1051,82 @@ Section Impl_core_cmp_PartialEq_for_mother_Auction_t.
   Definition eq (self : ref Self) (other : ref mother.Auction.t) : M bool.t :=
     let* self := M.alloc self in
     let* other := M.alloc other in
-    let* α0 : ref mother.Auction.t := M.read self in
-    let* α1 : ref mother.Auction.t := M.read other in
-    let* α2 : bool.t :=
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.cmp.PartialEq.eq
+          (Self := alloc.string.String.t)
+          (Rhs := alloc.string.String.t)
+          (Trait := ℐ))) in
+    let* α1 : ref mother.Auction.t := M.read self in
+    let* α2 : ref mother.Auction.t := M.read other in
+    let* α3 : bool.t :=
+      M.call (α0 (borrow (deref α1).["name"]) (borrow (deref α2).["name"])) in
+    let* α4 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.cmp.PartialEq.eq
+          (Self := array u8.t)
+          (Rhs := array u8.t)
+          (Trait := ℐ))) in
+    let* α5 : ref mother.Auction.t := M.read self in
+    let* α6 : ref mother.Auction.t := M.read other in
+    let* α7 : bool.t :=
       M.call
-        ((core.cmp.PartialEq.eq
-            (Self := alloc.string.String.t)
-            (Trait := ltac:(refine _)))
-          (borrow (deref α0).["name"])
-          (borrow (deref α1).["name"])) in
-    let* α3 : ref mother.Auction.t := M.read self in
-    let* α4 : ref mother.Auction.t := M.read other in
-    let* α5 : bool.t :=
-      M.call
-        ((core.cmp.PartialEq.eq (Self := array u8.t) (Trait := ltac:(refine _)))
-          (borrow (deref α3).["subject"])
-          (borrow (deref α4).["subject"])) in
-    let* α6 : ref mother.Auction.t := M.read self in
-    let* α7 : ref mother.Auction.t := M.read other in
-    let* α8 : bool.t :=
-      M.call
-        ((core.cmp.PartialEq.eq
-            (Self := mother.Bids.t)
-            (Trait := ltac:(refine _)))
-          (borrow (deref α6).["bids"])
-          (borrow (deref α7).["bids"])) in
+        (α4 (borrow (deref α5).["subject"]) (borrow (deref α6).["subject"])) in
+    let* α8 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.cmp.PartialEq.eq
+          (Self := mother.Bids.t)
+          (Rhs := mother.Bids.t)
+          (Trait := ℐ))) in
     let* α9 : ref mother.Auction.t := M.read self in
     let* α10 : ref mother.Auction.t := M.read other in
     let* α11 : bool.t :=
+      M.call (α8 (borrow (deref α9).["bids"]) (borrow (deref α10).["bids"])) in
+    let* α12 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.cmp.PartialEq.eq
+          (Self := array u32.t)
+          (Rhs := array u32.t)
+          (Trait := ℐ))) in
+    let* α13 : ref mother.Auction.t := M.read self in
+    let* α14 : ref mother.Auction.t := M.read other in
+    let* α15 : bool.t :=
       M.call
-        ((core.cmp.PartialEq.eq
-            (Self := array u32.t)
-            (Trait := ltac:(refine _)))
-          (borrow (deref α9).["terms"])
-          (borrow (deref α10).["terms"])) in
-    let* α12 : ref mother.Auction.t := M.read self in
-    let* α13 : ref mother.Auction.t := M.read other in
-    let* α14 : bool.t :=
+        (α12 (borrow (deref α13).["terms"]) (borrow (deref α14).["terms"])) in
+    let* α16 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.cmp.PartialEq.eq
+          (Self := mother.Status.t)
+          (Rhs := mother.Status.t)
+          (Trait := ℐ))) in
+    let* α17 : ref mother.Auction.t := M.read self in
+    let* α18 : ref mother.Auction.t := M.read other in
+    let* α19 : bool.t :=
       M.call
-        ((core.cmp.PartialEq.eq
-            (Self := mother.Status.t)
-            (Trait := ltac:(refine _)))
-          (borrow (deref α12).["status"])
-          (borrow (deref α13).["status"])) in
-    let* α15 : ref mother.Auction.t := M.read self in
-    let* α16 : bool.t := M.read (deref α15).["finalized"] in
-    let* α17 : ref mother.Auction.t := M.read other in
-    let* α18 : bool.t := M.read (deref α17).["finalized"] in
-    let* α19 : ref mother.Auction.t := M.read self in
-    let* α20 : ref mother.Auction.t := M.read other in
-    let* α21 : bool.t :=
+        (α16 (borrow (deref α17).["status"]) (borrow (deref α18).["status"])) in
+    let* α20 : ref mother.Auction.t := M.read self in
+    let* α21 : bool.t := M.read (deref α20).["finalized"] in
+    let* α22 : ref mother.Auction.t := M.read other in
+    let* α23 : bool.t := M.read (deref α22).["finalized"] in
+    let* α24 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.cmp.PartialEq.eq
+          (Self := alloc.vec.Vec.t u8.t alloc.alloc.Global.t)
+          (Rhs := alloc.vec.Vec.t u8.t alloc.alloc.Global.t)
+          (Trait := ℐ))) in
+    let* α25 : ref mother.Auction.t := M.read self in
+    let* α26 : ref mother.Auction.t := M.read other in
+    let* α27 : bool.t :=
       M.call
-        ((core.cmp.PartialEq.eq
-            (Self := alloc.vec.Vec.t u8.t alloc.alloc.Global.t)
-            (Trait := ltac:(refine _)))
-          (borrow (deref α19).["vector"])
-          (borrow (deref α20).["vector"])) in
+        (α24 (borrow (deref α25).["vector"]) (borrow (deref α26).["vector"])) in
     M.pure
       (BinOp.Pure.and
         (BinOp.Pure.and
           (BinOp.Pure.and
-            (BinOp.Pure.and (BinOp.Pure.and (BinOp.Pure.and α2 α5) α8) α11)
-            α14)
-          (Bool.eqb α16 α18))
-        α21).
+            (BinOp.Pure.and (BinOp.Pure.and (BinOp.Pure.and α3 α7) α11) α15)
+            α19)
+          (Bool.eqb α21 α23))
+        α27).
   
   Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
     Notations.double_colon := eq;
@@ -1214,62 +1232,55 @@ Section Impl_core_clone_Clone_for_mother_Auction_t.
   *)
   Definition clone (self : ref Self) : M mother.Auction.t :=
     let* self := M.alloc self in
-    let* α0 : ref mother.Auction.t := M.read self in
-    let* α1 : alloc.string.String.t :=
-      M.call
-        ((core.clone.Clone.clone
-            (Self := alloc.string.String.t)
-            (Trait := ltac:(refine _)))
-          (borrow (deref α0).["name"])) in
-    let* α2 : ref mother.Auction.t := M.read self in
-    let* α3 : array u8.t :=
-      M.call
-        ((core.clone.Clone.clone
-            (Self := array u8.t)
-            (Trait := ltac:(refine _)))
-          (borrow (deref α2).["subject"])) in
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.clone.Clone.clone (Self := alloc.string.String.t) (Trait := ℐ))) in
+    let* α1 : ref mother.Auction.t := M.read self in
+    let* α2 : alloc.string.String.t :=
+      M.call (α0 (borrow (deref α1).["name"])) in
+    let* α3 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.clone.Clone.clone (Self := array u8.t) (Trait := ℐ))) in
     let* α4 : ref mother.Auction.t := M.read self in
-    let* α5 : mother.Bids.t :=
-      M.call
-        ((core.clone.Clone.clone
-            (Self := mother.Bids.t)
-            (Trait := ltac:(refine _)))
-          (borrow (deref α4).["bids"])) in
-    let* α6 : ref mother.Auction.t := M.read self in
-    let* α7 : array u32.t :=
-      M.call
-        ((core.clone.Clone.clone
-            (Self := array u32.t)
-            (Trait := ltac:(refine _)))
-          (borrow (deref α6).["terms"])) in
-    let* α8 : ref mother.Auction.t := M.read self in
-    let* α9 : mother.Status.t :=
-      M.call
-        ((core.clone.Clone.clone
-            (Self := mother.Status.t)
-            (Trait := ltac:(refine _)))
-          (borrow (deref α8).["status"])) in
+    let* α5 : array u8.t := M.call (α3 (borrow (deref α4).["subject"])) in
+    let* α6 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.clone.Clone.clone (Self := mother.Bids.t) (Trait := ℐ))) in
+    let* α7 : ref mother.Auction.t := M.read self in
+    let* α8 : mother.Bids.t := M.call (α6 (borrow (deref α7).["bids"])) in
+    let* α9 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.clone.Clone.clone (Self := array u32.t) (Trait := ℐ))) in
     let* α10 : ref mother.Auction.t := M.read self in
-    let* α11 : bool.t :=
-      M.call
-        ((core.clone.Clone.clone (Self := bool.t) (Trait := ltac:(refine _)))
-          (borrow (deref α10).["finalized"])) in
-    let* α12 : ref mother.Auction.t := M.read self in
-    let* α13 : alloc.vec.Vec.t u8.t alloc.alloc.Global.t :=
-      M.call
-        ((core.clone.Clone.clone
-            (Self := alloc.vec.Vec.t u8.t alloc.alloc.Global.t)
-            (Trait := ltac:(refine _)))
-          (borrow (deref α12).["vector"])) in
+    let* α11 : array u32.t := M.call (α9 (borrow (deref α10).["terms"])) in
+    let* α12 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.clone.Clone.clone (Self := mother.Status.t) (Trait := ℐ))) in
+    let* α13 : ref mother.Auction.t := M.read self in
+    let* α14 : mother.Status.t :=
+      M.call (α12 (borrow (deref α13).["status"])) in
+    let* α15 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.clone.Clone.clone (Self := bool.t) (Trait := ℐ))) in
+    let* α16 : ref mother.Auction.t := M.read self in
+    let* α17 : bool.t := M.call (α15 (borrow (deref α16).["finalized"])) in
+    let* α18 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.clone.Clone.clone
+          (Self := alloc.vec.Vec.t u8.t alloc.alloc.Global.t)
+          (Trait := ℐ))) in
+    let* α19 : ref mother.Auction.t := M.read self in
+    let* α20 : alloc.vec.Vec.t u8.t alloc.alloc.Global.t :=
+      M.call (α18 (borrow (deref α19).["vector"])) in
     M.pure
       {|
-        mother.Auction.name := α1;
-        mother.Auction.subject := α3;
-        mother.Auction.bids := α5;
-        mother.Auction.terms := α7;
-        mother.Auction.status := α9;
-        mother.Auction.finalized := α11;
-        mother.Auction.vector := α13;
+        mother.Auction.name := α2;
+        mother.Auction.subject := α5;
+        mother.Auction.bids := α8;
+        mother.Auction.terms := α11;
+        mother.Auction.status := α14;
+        mother.Auction.finalized := α17;
+        mother.Auction.vector := α20;
       |}.
   
   Global Instance AssociatedFunction_clone :
@@ -1302,40 +1313,39 @@ Section Impl_core_default_Default_for_mother_Auction_t.
       }
   *)
   Definition default : M mother.Auction.t :=
-    let* α0 : alloc.string.String.t :=
-      M.call
-        (core.default.Default.default
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.default.Default.default
           (Self := alloc.string.String.t)
-          (Trait := ltac:(refine _))) in
-    let* α1 : array u8.t :=
-      M.call
-        (core.default.Default.default
-          (Self := array u8.t)
-          (Trait := ltac:(refine _))) in
-    let* α2 : mother.Bids.t :=
-      M.call
-        (core.default.Default.default
-          (Self := mother.Bids.t)
-          (Trait := ltac:(refine _))) in
-    let* α3 : array u32.t :=
-      M.call
-        (core.default.Default.default
-          (Self := array u32.t)
-          (Trait := ltac:(refine _))) in
-    let* α4 : alloc.vec.Vec.t u8.t alloc.alloc.Global.t :=
-      M.call
-        (core.default.Default.default
+          (Trait := ℐ))) in
+    let* α1 : alloc.string.String.t := M.call α0 in
+    let* α2 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.default.Default.default (Self := array u8.t) (Trait := ℐ))) in
+    let* α3 : array u8.t := M.call α2 in
+    let* α4 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.default.Default.default (Self := mother.Bids.t) (Trait := ℐ))) in
+    let* α5 : mother.Bids.t := M.call α4 in
+    let* α6 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.default.Default.default (Self := array u32.t) (Trait := ℐ))) in
+    let* α7 : array u32.t := M.call α6 in
+    let* α8 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.default.Default.default
           (Self := alloc.vec.Vec.t u8.t alloc.alloc.Global.t)
-          (Trait := ltac:(refine _))) in
+          (Trait := ℐ))) in
+    let* α9 : alloc.vec.Vec.t u8.t alloc.alloc.Global.t := M.call α8 in
     M.pure
       {|
-        mother.Auction.name := α0;
-        mother.Auction.subject := α1;
-        mother.Auction.bids := α2;
-        mother.Auction.terms := α3;
+        mother.Auction.name := α1;
+        mother.Auction.subject := α3;
+        mother.Auction.bids := α5;
+        mother.Auction.terms := α7;
         mother.Auction.status := mother.Status.OpeningPeriod;
         mother.Auction.finalized := false;
-        mother.Auction.vector := α4;
+        mother.Auction.vector := α9;
       |}.
   
   Global Instance AssociatedFunction_default :
@@ -1421,16 +1431,16 @@ Section Impl_core_cmp_PartialEq_for_mother_Failure_t.
                 | mother.Failure.Revert _ =>
                   let γ2_0 := γ0_1.["Revert.0"] in
                   let* __arg1_0 := M.alloc (borrow γ2_0) in
-                  let* α0 : ref alloc.string.String.t := M.read __self_0 in
-                  let* α1 : ref alloc.string.String.t := M.read __arg1_0 in
-                  let* α2 : bool.t :=
-                    M.call
-                      ((core.cmp.PartialEq.eq
-                          (Self := alloc.string.String.t)
-                          (Trait := ltac:(refine _)))
-                        α0
-                        α1) in
-                  M.alloc α2
+                  let* α0 : _ :=
+                    ltac:(M.get_method (fun ℐ =>
+                      core.cmp.PartialEq.eq
+                        (Self := alloc.string.String.t)
+                        (Rhs := alloc.string.String.t)
+                        (Trait := ℐ))) in
+                  let* α1 : ref alloc.string.String.t := M.read __self_0 in
+                  let* α2 : ref alloc.string.String.t := M.read __arg1_0 in
+                  let* α3 : bool.t := M.call (α0 α1 α2) in
+                  M.alloc α3
                 | _ => M.break_match
                 end
               | _ => M.break_match
@@ -1597,17 +1607,19 @@ Section Impl_core_default_Default_for_mother_Mother_t.
   Default
   *)
   Definition default : M mother.Mother.t :=
-    let* α0 : mother.Auction.t :=
-      M.call
-        (core.default.Default.default
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.default.Default.default
           (Self := mother.Auction.t)
-          (Trait := ltac:(refine _))) in
-    let* α1 : mother.Mapping.t mother.AccountId.t u128.t :=
-      M.call
-        (core.default.Default.default
+          (Trait := ℐ))) in
+    let* α1 : mother.Auction.t := M.call α0 in
+    let* α2 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.default.Default.default
           (Self := mother.Mapping.t mother.AccountId.t u128.t)
-          (Trait := ltac:(refine _))) in
-    M.pure {| mother.Mother.auction := α0; mother.Mother.balances := α1; |}.
+          (Trait := ℐ))) in
+    let* α3 : mother.Mapping.t mother.AccountId.t u128.t := M.call α2 in
+    M.pure {| mother.Mother.auction := α1; mother.Mother.balances := α3; |}.
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -1662,13 +1674,14 @@ Section Impl_mother_Mother_t.
   *)
   Definition new (auction : mother.Auction.t) : M Self :=
     let* auction := M.alloc auction in
-    let* α0 : mother.Mapping.t mother.AccountId.t u128.t :=
-      M.call
-        (core.default.Default.default
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.default.Default.default
           (Self := mother.Mapping.t mother.AccountId.t u128.t)
-          (Trait := ltac:(refine _))) in
-    let* α1 : mother.Auction.t := M.read auction in
-    M.pure {| mother.Mother.balances := α0; mother.Mother.auction := α1; |}.
+          (Trait := ℐ))) in
+    let* α1 : mother.Mapping.t mother.AccountId.t u128.t := M.call α0 in
+    let* α2 : mother.Auction.t := M.read auction in
+    M.pure {| mother.Mother.balances := α1; mother.Mother.auction := α2; |}.
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
@@ -1680,10 +1693,10 @@ Section Impl_mother_Mother_t.
       }
   *)
   Definition new_default : M Self :=
-    M.call
-      (core.default.Default.default
-        (Self := mother.Mother.t)
-        (Trait := ltac:(refine _))).
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.default.Default.default (Self := mother.Mother.t) (Trait := ℐ))) in
+    M.call α0.
   
   Global Instance AssociatedFunction_new_default :
     Notations.DoubleColon Self "new_default" := {
@@ -1706,21 +1719,20 @@ Section Impl_mother_Mother_t.
     let* α0 : bool.t := M.read (use fail) in
     let* α1 : M.Val (core.result.Result.t mother.Mother.t mother.Failure.t) :=
       if α0 then
-        let* α0 : ref str.t := M.read (mk_str "Reverting instantiation") in
-        let* α1 : alloc.string.String.t :=
-          M.call
-            ((alloc.string.ToString.to_string
-                (Self := str.t)
-                (Trait := ltac:(refine _)))
-              α0) in
-        M.alloc (core.result.Result.Err (mother.Failure.Revert α1))
+        let* α0 : _ :=
+          ltac:(M.get_method (fun ℐ =>
+            alloc.string.ToString.to_string (Self := str.t) (Trait := ℐ))) in
+        let* α1 : ref str.t := M.read (mk_str "Reverting instantiation") in
+        let* α2 : alloc.string.String.t := M.call (α0 α1) in
+        M.alloc (core.result.Result.Err (mother.Failure.Revert α2))
       else
-        let* α0 : mother.Mother.t :=
-          M.call
-            (core.default.Default.default
+        let* α0 : _ :=
+          ltac:(M.get_method (fun ℐ =>
+            core.default.Default.default
               (Self := mother.Mother.t)
-              (Trait := ltac:(refine _))) in
-        M.alloc (core.result.Result.Ok α0) in
+              (Trait := ℐ))) in
+        let* α1 : mother.Mother.t := M.call α0 in
+        M.alloc (core.result.Result.Ok α1) in
     M.read α1.
   
   Global Instance AssociatedFunction_failed_new :
@@ -1747,19 +1759,17 @@ Section Impl_mother_Mother_t.
       let* α1 : mother.Env.t :=
         M.call (mother.Mother.t::["env"] (borrow (deref α0))) in
       let* α2 : M.Val mother.Env.t := M.alloc α1 in
-      let* α3 : mother.Auction.t :=
-        M.call
-          ((core.clone.Clone.clone
-              (Self := mother.Auction.t)
-              (Trait := ltac:(refine _)))
-            (borrow auction)) in
-      let* α4 : unit :=
+      let* α3 : _ :=
+        ltac:(M.get_method (fun ℐ =>
+          core.clone.Clone.clone (Self := mother.Auction.t) (Trait := ℐ))) in
+      let* α4 : mother.Auction.t := M.call (α3 (borrow auction)) in
+      let* α5 : unit :=
         M.call
           (mother.Env.t::["emit_event"]
             (borrow α2)
             (mother.Event.AuctionEchoed
-              {| mother.AuctionEchoed.auction := α3; |})) in
-      M.alloc α4 in
+              {| mother.AuctionEchoed.auction := α4; |})) in
+      M.alloc α5 in
     M.read auction.
   
   Global Instance AssociatedFunction_echo_auction :
@@ -1799,15 +1809,15 @@ Section Impl_mother_Mother_t.
               match α0 with
               | mother.Failure.Revert _ =>
                 let γ1_0 := γ0_0.["Revert.0"] in
-                let* α0 : ref str.t :=
+                let* α0 : _ :=
+                  ltac:(M.get_method (fun ℐ =>
+                    alloc.string.ToString.to_string
+                      (Self := str.t)
+                      (Trait := ℐ))) in
+                let* α1 : ref str.t :=
                   M.read (mk_str "Reverting on user demand!") in
-                let* α1 : alloc.string.String.t :=
-                  M.call
-                    ((alloc.string.ToString.to_string
-                        (Self := str.t)
-                        (Trait := ltac:(refine _)))
-                      α0) in
-                M.alloc (core.result.Result.Err (mother.Failure.Revert α1))
+                let* α2 : alloc.string.String.t := M.call (α0 α1) in
+                M.alloc (core.result.Result.Err (mother.Failure.Revert α2))
               | _ => M.break_match
               end
             | _ => M.break_match

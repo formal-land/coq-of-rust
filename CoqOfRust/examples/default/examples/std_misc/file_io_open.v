@@ -89,18 +89,16 @@ Definition main : M unit :=
   let* s : M.Val alloc.string.String.t :=
     let* α0 : alloc.string.String.t := M.call alloc.string.String.t::["new"] in
     M.alloc α0 in
-  let* α0 : core.result.Result.t usize.t std.io.error.Error.t :=
-    M.call
-      ((std.io.Read.read_to_string
-          (Self := std.fs.File.t)
-          (Trait := ltac:(refine _)))
-        (borrow_mut file)
-        (borrow_mut s)) in
-  let* α1 : M.Val (core.result.Result.t usize.t std.io.error.Error.t) :=
-    M.alloc α0 in
+  let* α0 : _ :=
+    ltac:(M.get_method (fun ℐ =>
+      std.io.Read.read_to_string (Self := std.fs.File.t) (Trait := ℐ))) in
+  let* α1 : core.result.Result.t usize.t std.io.error.Error.t :=
+    M.call (α0 (borrow_mut file) (borrow_mut s)) in
+  let* α2 : M.Val (core.result.Result.t usize.t std.io.error.Error.t) :=
+    M.alloc α1 in
   let* α0 : M.Val unit :=
     match_operator
-      α1
+      α2
       [
         fun γ =>
           (let* α0 := M.read γ in

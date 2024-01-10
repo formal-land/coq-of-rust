@@ -22,12 +22,11 @@ Section Impl_core_default_Default_for_call_builder_AccountId_t.
   Default
   *)
   Definition default : M call_builder.AccountId.t :=
-    let* α0 : u128.t :=
-      M.call
-        (core.default.Default.default
-          (Self := u128.t)
-          (Trait := ltac:(refine _))) in
-    M.pure (call_builder.AccountId.Build_t α0).
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.default.Default.default (Self := u128.t) (Trait := ℐ))) in
+    let* α1 : u128.t := M.call α0 in
+    M.pure (call_builder.AccountId.Build_t α1).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -156,10 +155,12 @@ Section Impl_call_builder_CallBuilderTest_t.
       }
   *)
   Definition new : M Self :=
-    M.call
-      (core.default.Default.default
-        (Self := call_builder.CallBuilderTest.t)
-        (Trait := ltac:(refine _))).
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        core.default.Default.default
+          (Self := call_builder.CallBuilderTest.t)
+          (Trait := ℐ))) in
+    M.call α0.
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;

@@ -247,14 +247,12 @@ Definition main : M unit :=
   let* pressed : M.Val enums.WebEvent.t :=
     M.alloc (enums.WebEvent.KeyPress "x"%char) in
   let* pasted : M.Val enums.WebEvent.t :=
-    let* α0 : ref str.t := M.read (mk_str "my text") in
-    let* α1 : alloc.string.String.t :=
-      M.call
-        ((alloc.borrow.ToOwned.to_owned
-            (Self := str.t)
-            (Trait := ltac:(refine _)))
-          α0) in
-    M.alloc (enums.WebEvent.Paste α1) in
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        alloc.borrow.ToOwned.to_owned (Self := str.t) (Trait := ℐ))) in
+    let* α1 : ref str.t := M.read (mk_str "my text") in
+    let* α2 : alloc.string.String.t := M.call (α0 α1) in
+    M.alloc (enums.WebEvent.Paste α2) in
   let* click : M.Val enums.WebEvent.t :=
     M.alloc
       (enums.WebEvent.Click
