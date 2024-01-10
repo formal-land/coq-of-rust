@@ -3,6 +3,8 @@ use crate::render::{
     self, concat, curly_brackets, group, hardline, intersperse, line, nest, nil, optional_insert,
     optional_insert_vec, optional_insert_with, paren, text, Doc,
 };
+use crate::top_level::VariantItem;
+use std::marker::PhantomData;
 use std::rc::Rc;
 
 #[derive(Clone)]
@@ -25,6 +27,7 @@ pub(crate) enum TopLevelItem<'a> {
     Line,
     Module(Module<'a>),
     Record(Record<'a>),
+    Inductive(Inductive<'a>),
 }
 
 #[derive(Clone)]
@@ -57,7 +60,7 @@ pub(crate) struct Definition<'a> {
 pub(crate) struct Record<'a> {
     name: String,
     ty: Expression<'a>,
-    fields: Vec<FieldDef<'a>>,
+    fields: Vec<RecordFieldDef<'a>>,
 }
 
 #[derive(Clone)]
@@ -70,7 +73,7 @@ pub(crate) struct Context<'a> {
 /// a coq typeclass definition
 pub(crate) struct Class<'a> {
     name: String,
-    params: Vec<ArgDecl<'a>>,
+    args: Vec<ArgDecl<'a>>,
     items: Vec<ClassFieldDef<'a>>,
 }
 
@@ -106,7 +109,7 @@ pub(crate) enum DefinitionKind<'a> {
 
 #[derive(Clone)]
 /// a definition of a field in a record definition
-pub(crate) struct FieldDef<'a> {
+pub(crate) struct RecordFieldDef<'a> {
     ident: Option<String>,
     ty: Expression<'a>,
 }
@@ -117,6 +120,20 @@ pub(crate) struct ClassFieldDef<'a> {
     ident: Option<String>,
     args: Vec<ArgDecl<'a>>,
     ty: Expression<'a>,
+}
+
+#[derive(Clone)]
+pub(crate) struct IndFieldDef<'a> {
+    name: String,
+    item: Rc<VariantItem>,
+    _phantom_data: std::marker::PhantomData<&'a ()>,
+}
+
+#[derive(Clone)]
+pub(crate) struct Inductive<'a> {
+    name: String,
+    ty_params: Vec<String>,
+    fields: Vec<IndFieldDef<'a>>,
 }
 
 #[derive(Clone)]
@@ -290,6 +307,10 @@ impl<'a> TopLevel<'a> {
         }
     }
 
+    pub(crate) fn new_vec(items: Vec<TopLevelItem<'a>>) -> Self {
+        TopLevel { items }
+    }
+
     pub(crate) fn to_doc(&self) -> Doc<'a> {
         intersperse(self.items.iter().map(|item| item.to_doc()), [hardline()])
     }
@@ -375,6 +396,7 @@ impl<'a> TopLevelItem<'a> {
             TopLevelItem::Line => nil(),
             TopLevelItem::Module(module) => module.to_doc(),
             TopLevelItem::Record(record) => record.to_doc(),
+            TopLevelItem::Inductive(inductive) => inductive.to_doc(),
         }
     }
 
@@ -566,7 +588,7 @@ impl<'a> Definition<'a> {
 }
 
 impl<'a> Record<'a> {
-    pub(crate) fn new(name: &str, ty: &Expression<'a>, fields: &[FieldDef<'a>]) -> Self {
+    pub(crate) fn new(name: &str, ty: &Expression<'a>, fields: &[RecordFieldDef<'a>]) -> Self {
         Record {
             name: name.to_owned(),
             ty: ty.to_owned(),
@@ -623,10 +645,10 @@ impl<'a> Context<'a> {
 
 impl<'a> Class<'a> {
     /// produces a new coq typeclass definition
-    pub(crate) fn new(name: &str, params: &[ArgDecl<'a>], items: Vec<ClassFieldDef<'a>>) -> Self {
+    pub(crate) fn new(name: &str, args: &[ArgDecl<'a>], items: Vec<ClassFieldDef<'a>>) -> Self {
         Class {
             name: name.to_owned(),
-            params: params.to_owned(),
+            args: args.to_owned(),
             items,
         }
     }
@@ -638,10 +660,10 @@ impl<'a> Class<'a> {
                     text("Class "),
                     text(self.name.to_owned()),
                     optional_insert(
-                        self.params.is_empty(),
+                        self.args.is_empty(),
                         group([
                             line(),
-                            intersperse(self.params.iter().map(|param| param.to_doc()), [line()]),
+                            intersperse(self.args.iter().map(|param| param.to_doc()), [line()]),
                         ]),
                     ),
                     text(" :"),
@@ -669,6 +691,83 @@ impl<'a> Class<'a> {
             ]),
             hardline(),
             text("}."),
+        ])
+    }
+}
+
+impl<'a> IndFieldDef<'a> {
+    pub(crate) fn new(name: &String, item: Rc<VariantItem>) -> Self {
+        IndFieldDef {
+            name: name.to_owned(),
+            item,
+            _phantom_data: PhantomData,
+        }
+    }
+
+    pub(crate) fn field_to_doc(&self) -> Doc<'a> {
+        nest([
+            text("|"),
+            line(),
+            text(self.name.to_owned()),
+            match &*self.item {
+                VariantItem::Struct { .. } => concat([
+                    line(),
+                    nest([
+                        text("(_ :"),
+                        line(),
+                        text(format!("{}.t", self.name.to_owned())),
+                        text(")"),
+                    ]),
+                ]),
+                VariantItem::Tuple { tys } => concat(tys.iter().map(|ty| {
+                    concat([
+                        line(),
+                        nest([text("(_ :"), line(), ty.to_coq().to_doc(false), text(")")]),
+                    ])
+                })),
+            },
+        ])
+    }
+}
+
+impl<'a> Inductive<'a> {
+    pub(crate) fn new(
+        name: &String,
+        ty_params: &Vec<String>,
+        fields: Vec<IndFieldDef<'a>>,
+    ) -> Self {
+        Inductive {
+            name: name.to_owned(),
+            ty_params: ty_params.to_owned(),
+            fields: fields.to_owned(),
+        }
+    }
+
+    pub(crate) fn to_doc(&self) -> Doc<'a> {
+        concat([
+            nest([
+                text("Inductive"),
+                line(),
+                text(self.name.to_owned()),
+                concat(self.ty_params.iter().map(|ty_param| {
+                    concat([
+                        line(),
+                        nest([
+                            text("("),
+                            text(ty_param.to_owned()),
+                            text(" :"),
+                            line(),
+                            text("Set)"),
+                        ]),
+                    ])
+                })),
+                text(" :"),
+                line(),
+                text("Set :="),
+            ]),
+            hardline(),
+            intersperse(self.fields.iter().map(|item| item.field_to_doc()), [line()]),
+            text("."),
         ])
     }
 }
@@ -729,9 +828,9 @@ impl<'a> Instance<'a> {
     }
 }
 
-impl<'a> FieldDef<'a> {
+impl<'a> RecordFieldDef<'a> {
     pub(crate) fn new(ident: &Option<String>, ty: &Expression<'a>) -> Self {
-        FieldDef {
+        RecordFieldDef {
             ident: ident.to_owned(),
             ty: ty.to_owned(),
         }
