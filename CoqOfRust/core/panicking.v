@@ -21,3 +21,8 @@ Parameter assert_failed :
 
 (* pub fn panic_fmt(fmt: Arguments<'_>) -> ! *)
 Parameter panic_fmt : fmt.Arguments.t -> M never.t.
+
+(* pub fn unreachable_display<T: Display>(x: &T) -> ! *)
+Parameter unreachable_display :
+  forall {T : Set} `{fmt.Display.Trait T},
+  ref T -> M never.t.
