@@ -31,7 +31,7 @@ Definition double_first
     M.call
       ((core.result.Result.t i32.t core.num.error.ParseIntError.t)::["unwrap"]
         α2) in
-  let* α4 : i32.t := BinOp.Panic.mul (Integer.of_Z 2) α3 in
+  let* α4 : i32.t := BinOp.Panic.mul ((Integer.of_Z 2) : i32.t) α3 in
   let* α0 : M.Val i32.t := M.alloc α4 in
   M.read α0.
 

@@ -7,10 +7,8 @@ Section AccountId.
     x0 : u128.t;
   }.
   
-  Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>));
-  }.
+  Definition Get_0 :=
+    Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>)).
 End AccountId.
 End AccountId.
 
@@ -89,15 +87,8 @@ Section Env.
     caller : contract_transfer.AccountId.t;
   }.
   
-  Global Instance Get_caller : Notations.Dot "caller" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(caller))
-        (fun β α => Some (α <| caller := β |>));
-  }.
-  Global Instance Get_AF_caller : Notations.DoubleColon t "caller" := {
-    Notations.double_colon (α : M.Val t) := α.["caller"];
-  }.
+  Definition Get_caller :=
+    Ref.map (fun α => Some α.(caller)) (fun β α => Some (α <| caller := β |>)).
 End Env.
 End Env.
 
@@ -113,7 +104,7 @@ Section Impl_contract_transfer_Env_t.
   Definition caller (self : ref Self) : M contract_transfer.AccountId.t :=
     let* self := M.alloc self in
     let* α0 : ref contract_transfer.Env.t := M.read self in
-    M.read (deref α0).["caller"].
+    M.read (contract_transfer.Env.Get_caller (deref α0)).
   
   Global Instance AssociatedFunction_caller :
     Notations.DoubleColon Self "caller" := {
@@ -395,7 +386,7 @@ Section Impl_contract_transfer_GiveMe_t.
       let* α3 : u128.t :=
         M.call (contract_transfer.Env.t::["transferred_value"] (borrow α2)) in
       let* α4 : M.Val bool.t :=
-        M.alloc (UnOp.not (BinOp.Pure.eq α3 (Integer.of_Z 10))) in
+        M.alloc (UnOp.not (BinOp.Pure.eq α3 ((Integer.of_Z 10) : u128.t))) in
       let* α5 : bool.t := M.read (use α4) in
       if α5 then
         let* α0 : ref str.t := M.read (mk_str "payment was not ten") in

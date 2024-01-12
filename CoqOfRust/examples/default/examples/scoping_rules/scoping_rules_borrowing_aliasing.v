@@ -9,27 +9,12 @@ Section Point.
     z : i32.t;
   }.
   
-  Global Instance Get_x : Notations.Dot "x" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(x)) (fun β α => Some (α <| x := β |>));
-  }.
-  Global Instance Get_AF_x : Notations.DoubleColon t "x" := {
-    Notations.double_colon (α : M.Val t) := α.["x"];
-  }.
-  Global Instance Get_y : Notations.Dot "y" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(y)) (fun β α => Some (α <| y := β |>));
-  }.
-  Global Instance Get_AF_y : Notations.DoubleColon t "y" := {
-    Notations.double_colon (α : M.Val t) := α.["y"];
-  }.
-  Global Instance Get_z : Notations.Dot "z" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(z)) (fun β α => Some (α <| z := β |>));
-  }.
-  Global Instance Get_AF_z : Notations.DoubleColon t "z" := {
-    Notations.double_colon (α : M.Val t) := α.["z"];
-  }.
+  Definition Get_x :=
+    Ref.map (fun α => Some α.(x)) (fun β α => Some (α <| x := β |>)).
+  Definition Get_y :=
+    Ref.map (fun α => Some α.(y)) (fun β α => Some (α <| y := β |>)).
+  Definition Get_z :=
+    Ref.map (fun α => Some α.(z)) (fun β α => Some (α <| z := β |>)).
 End Point.
 End Point.
 
@@ -95,9 +80,9 @@ Definition main : M unit :=
   let* point : M.Val scoping_rules_borrowing_aliasing.Point.t :=
     M.alloc
       {|
-        scoping_rules_borrowing_aliasing.Point.x := Integer.of_Z 0;
-        scoping_rules_borrowing_aliasing.Point.y := Integer.of_Z 0;
-        scoping_rules_borrowing_aliasing.Point.z := Integer.of_Z 0;
+        scoping_rules_borrowing_aliasing.Point.x := (Integer.of_Z 0) : i32.t;
+        scoping_rules_borrowing_aliasing.Point.y := (Integer.of_Z 0) : i32.t;
+        scoping_rules_borrowing_aliasing.Point.z := (Integer.of_Z 0) : i32.t;
       |} in
   let* borrowed_point : M.Val (ref scoping_rules_borrowing_aliasing.Point.t) :=
     M.alloc (borrow point) in
@@ -118,14 +103,20 @@ Definition main : M unit :=
         M.read borrowed_point in
       let* α8 : core.fmt.rt.Argument.t :=
         M.call
-          (core.fmt.rt.Argument.t::["new_display"] (borrow (deref α7).["x"])) in
+          (core.fmt.rt.Argument.t::["new_display"]
+            (borrow
+              (scoping_rules_borrowing_aliasing.Point.Get_x (deref α7)))) in
       let* α9 : ref scoping_rules_borrowing_aliasing.Point.t :=
         M.read another_borrow in
       let* α10 : core.fmt.rt.Argument.t :=
         M.call
-          (core.fmt.rt.Argument.t::["new_display"] (borrow (deref α9).["y"])) in
+          (core.fmt.rt.Argument.t::["new_display"]
+            (borrow
+              (scoping_rules_borrowing_aliasing.Point.Get_y (deref α9)))) in
       let* α11 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow point.["z"])) in
+        M.call
+          (core.fmt.rt.Argument.t::["new_display"]
+            (borrow (scoping_rules_borrowing_aliasing.Point.Get_z point))) in
       let* α12 : M.Val (array core.fmt.rt.Argument.t) :=
         M.alloc [ α8; α10; α11 ] in
       let* α13 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -152,14 +143,20 @@ Definition main : M unit :=
         M.read borrowed_point in
       let* α8 : core.fmt.rt.Argument.t :=
         M.call
-          (core.fmt.rt.Argument.t::["new_display"] (borrow (deref α7).["x"])) in
+          (core.fmt.rt.Argument.t::["new_display"]
+            (borrow
+              (scoping_rules_borrowing_aliasing.Point.Get_x (deref α7)))) in
       let* α9 : ref scoping_rules_borrowing_aliasing.Point.t :=
         M.read another_borrow in
       let* α10 : core.fmt.rt.Argument.t :=
         M.call
-          (core.fmt.rt.Argument.t::["new_display"] (borrow (deref α9).["y"])) in
+          (core.fmt.rt.Argument.t::["new_display"]
+            (borrow
+              (scoping_rules_borrowing_aliasing.Point.Get_y (deref α9)))) in
       let* α11 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow point.["z"])) in
+        M.call
+          (core.fmt.rt.Argument.t::["new_display"]
+            (borrow (scoping_rules_borrowing_aliasing.Point.Get_z point))) in
       let* α12 : M.Val (array core.fmt.rt.Argument.t) :=
         M.alloc [ α8; α10; α11 ] in
       let* α13 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -177,15 +174,21 @@ Definition main : M unit :=
   let* _ : M.Val unit :=
     let* α0 : mut_ref scoping_rules_borrowing_aliasing.Point.t :=
       M.read mutable_borrow in
-    assign (deref α0).["x"] (Integer.of_Z 5) in
+    assign
+      (scoping_rules_borrowing_aliasing.Point.Get_x (deref α0))
+      ((Integer.of_Z 5) : i32.t) in
   let* _ : M.Val unit :=
     let* α0 : mut_ref scoping_rules_borrowing_aliasing.Point.t :=
       M.read mutable_borrow in
-    assign (deref α0).["y"] (Integer.of_Z 2) in
+    assign
+      (scoping_rules_borrowing_aliasing.Point.Get_y (deref α0))
+      ((Integer.of_Z 2) : i32.t) in
   let* _ : M.Val unit :=
     let* α0 : mut_ref scoping_rules_borrowing_aliasing.Point.t :=
       M.read mutable_borrow in
-    assign (deref α0).["z"] (Integer.of_Z 1) in
+    assign
+      (scoping_rules_borrowing_aliasing.Point.Get_z (deref α0))
+      ((Integer.of_Z 1) : i32.t) in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "Point has coordinates: (") in
@@ -201,18 +204,23 @@ Definition main : M unit :=
         M.read mutable_borrow in
       let* α8 : core.fmt.rt.Argument.t :=
         M.call
-          (core.fmt.rt.Argument.t::["new_display"] (borrow (deref α7).["x"])) in
+          (core.fmt.rt.Argument.t::["new_display"]
+            (borrow
+              (scoping_rules_borrowing_aliasing.Point.Get_x (deref α7)))) in
       let* α9 : mut_ref scoping_rules_borrowing_aliasing.Point.t :=
         M.read mutable_borrow in
       let* α10 : core.fmt.rt.Argument.t :=
         M.call
-          (core.fmt.rt.Argument.t::["new_display"] (borrow (deref α9).["y"])) in
+          (core.fmt.rt.Argument.t::["new_display"]
+            (borrow
+              (scoping_rules_borrowing_aliasing.Point.Get_y (deref α9)))) in
       let* α11 : mut_ref scoping_rules_borrowing_aliasing.Point.t :=
         M.read mutable_borrow in
       let* α12 : core.fmt.rt.Argument.t :=
         M.call
           (core.fmt.rt.Argument.t::["new_display"]
-            (borrow (deref α11).["z"])) in
+            (borrow
+              (scoping_rules_borrowing_aliasing.Point.Get_z (deref α11)))) in
       let* α13 : M.Val (array core.fmt.rt.Argument.t) :=
         M.alloc [ α8; α10; α12 ] in
       let* α14 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -242,18 +250,23 @@ Definition main : M unit :=
         M.read new_borrowed_point in
       let* α8 : core.fmt.rt.Argument.t :=
         M.call
-          (core.fmt.rt.Argument.t::["new_display"] (borrow (deref α7).["x"])) in
+          (core.fmt.rt.Argument.t::["new_display"]
+            (borrow
+              (scoping_rules_borrowing_aliasing.Point.Get_x (deref α7)))) in
       let* α9 : ref scoping_rules_borrowing_aliasing.Point.t :=
         M.read new_borrowed_point in
       let* α10 : core.fmt.rt.Argument.t :=
         M.call
-          (core.fmt.rt.Argument.t::["new_display"] (borrow (deref α9).["y"])) in
+          (core.fmt.rt.Argument.t::["new_display"]
+            (borrow
+              (scoping_rules_borrowing_aliasing.Point.Get_y (deref α9)))) in
       let* α11 : ref scoping_rules_borrowing_aliasing.Point.t :=
         M.read new_borrowed_point in
       let* α12 : core.fmt.rt.Argument.t :=
         M.call
           (core.fmt.rt.Argument.t::["new_display"]
-            (borrow (deref α11).["z"])) in
+            (borrow
+              (scoping_rules_borrowing_aliasing.Point.Get_z (deref α11)))) in
       let* α13 : M.Val (array core.fmt.rt.Argument.t) :=
         M.alloc [ α8; α10; α12 ] in
       let* α14 : M.Val (ref (array core.fmt.rt.Argument.t)) :=

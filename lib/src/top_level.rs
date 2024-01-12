@@ -1841,31 +1841,19 @@ impl TopLevelItem {
                 VariantItem::Struct { fields } => fields
                     .iter()
                     .map(|(field_name, _)| {
-                        let full_name = format!("{name}.{field_name}");
-                        let full_name_underscore = format!("{name}_{field_name}");
-
                         [
                             coq::TopLevelItem::Line,
-                            coq::TopLevelItem::Instance(coq::Instance::new(
-                                &format!("Get_{full_name_underscore}"),
-                                &[],
-                                coq::Expression::Variable {
-                                    ident: Path::new(&["Notations", "Dot"]),
-                                    no_implicit: false,
-                                }
-                                .apply(&coq::Expression::String(full_name)),
-                                &coq::Expression::Record {
-                                    fields: vec![coq::Field::new(
-                                        &Path::new(&["Notations", "dot"]),
-                                        &[],
-                                        &enum_struct_field_value(
-                                            name,
-                                            field_name,
-                                            variants.len() != 1,
-                                        ),
-                                    )],
+                            coq::TopLevelItem::Definition(coq::Definition::new(
+                                &format!("Get_{name}_{field_name}"),
+                                &coq::DefinitionKind::Alias {
+                                    args: vec![],
+                                    ty: None,
+                                    body: enum_struct_field_value(
+                                        name,
+                                        field_name,
+                                        variants.len() != 1,
+                                    ),
                                 },
-                                vec![],
                             )),
                         ]
                     })
@@ -1875,32 +1863,20 @@ impl TopLevelItem {
                     .iter()
                     .enumerate()
                     .map(|(index, _)| {
-                        let full_name = format!("{name}.{index}");
-                        let full_name_underscore = format!("{name}_{index}");
-
                         [
                             coq::TopLevelItem::Line,
-                            coq::TopLevelItem::Instance(coq::Instance::new(
-                                &format!("Get_{full_name_underscore}"),
-                                &[],
-                                coq::Expression::Variable {
-                                    ident: Path::new(&["Notations", "Dot"]),
-                                    no_implicit: false,
-                                }
-                                .apply(&coq::Expression::String(full_name)),
-                                &coq::Expression::Record {
-                                    fields: vec![coq::Field::new(
-                                        &Path::new(&["Notations", "dot"]),
-                                        &[],
-                                        &enum_tuple_field_value(
-                                            name,
-                                            tys.len(),
-                                            index,
-                                            variants.len() != 1,
-                                        ),
-                                    )],
+                            coq::TopLevelItem::Definition(coq::Definition::new(
+                                &format!("Get_{name}_{index}"),
+                                &coq::DefinitionKind::Alias {
+                                    args: vec![],
+                                    ty: None,
+                                    body: enum_tuple_field_value(
+                                        name,
+                                        tys.len(),
+                                        index,
+                                        variants.len() != 1,
+                                    ),
                                 },
-                                vec![],
                             )),
                         ]
                     })
@@ -2038,24 +2014,13 @@ impl TopLevelItem {
                                     .iter()
                                     .enumerate()
                                     .map(|(i, _)| {
-                                        coq::TopLevelItem::Instance(coq::Instance::new(
+                                        coq::TopLevelItem::Definition(coq::Definition::new(
                                             &format!("Get_{i}"),
-                                            &[],
-                                            coq::Expression::Variable {
-                                                ident: Path::new(&["Notations", "Dot"]),
-                                                no_implicit: false,
-                                            }
-                                            .apply(
-                                                &coq::Expression::just_name(&format!("\"{i}\"")),
-                                            ),
-                                            &coq::Expression::Record {
-                                                fields: vec![coq::Field::new(
-                                                    &Path::new(&["Notations", "dot"]),
-                                                    &[],
-                                                    &struct_field_value(format!("x{i}")),
-                                                )],
+                                            &coq::DefinitionKind::Alias {
+                                                args: vec![],
+                                                ty: None,
+                                                body: struct_field_value(format!("x{i}")),
                                             },
-                                            vec![],
                                         ))
                                     })
                                     .collect::<Vec<_>>(),
@@ -2429,16 +2394,6 @@ impl TopLevelItem {
     }
 }
 
-fn struct_projection_pattern<'a>() -> coq::ArgDecl<'a> {
-    coq::ArgDecl::new(
-        &coq::ArgDeclVar::Simple {
-            idents: vec!["α".to_string()],
-            ty: Some(coq::Expression::just_name("M.Val").apply(&coq::Expression::just_name("t"))),
-        },
-        coq::ArgSpecKind::Explicit,
-    )
-}
-
 fn struct_field_value<'a>(name: String) -> coq::Expression<'a> {
     coq::Expression::just_name("Ref.map").apply_many(&[
         coq::Expression::Function {
@@ -2800,58 +2755,14 @@ impl TypeStructStruct {
                                     &fields
                                         .iter()
                                         .flat_map(|(name, _)| {
-                                            [
-                                                coq::TopLevelItem::Instance(coq::Instance::new(
-                                                    &format!("Get_{name}"),
-                                                    &[],
-                                                    coq::Expression::Variable {
-                                                        ident: Path::new(&["Notations", "Dot"]),
-                                                        no_implicit: false,
-                                                    }
-                                                    .apply(&coq::Expression::String(
-                                                        name.to_owned(),
-                                                    )),
-                                                    &coq::Expression::Record {
-                                                        fields: vec![coq::Field::new(
-                                                            &Path::new(&["Notations", "dot"]),
-                                                            &[],
-                                                            &struct_field_value(name.to_owned()),
-                                                        )],
-                                                    },
-                                                    vec![],
-                                                )),
-                                                coq::TopLevelItem::Instance(coq::Instance::new(
-                                                    &format!("Get_AF_{name}"),
-                                                    &[],
-                                                    coq::Expression::Variable {
-                                                        ident: Path::new(&[
-                                                            "Notations",
-                                                            "DoubleColon",
-                                                        ]),
-                                                        no_implicit: false,
-                                                    }
-                                                    .apply_many(&[
-                                                        coq::Expression::just_name("t"),
-                                                        coq::Expression::String(name.to_owned()),
-                                                    ]),
-                                                    &coq::Expression::Record {
-                                                        fields: vec![coq::Field::new(
-                                                            &Path::new(&[
-                                                                "Notations",
-                                                                "double_colon",
-                                                            ]),
-                                                            &[struct_projection_pattern()],
-                                                            &coq::Expression::NotationsDot {
-                                                                value: Rc::new(
-                                                                    coq::Expression::just_name("α"),
-                                                                ),
-                                                                field: name.to_owned(),
-                                                            },
-                                                        )],
-                                                    },
-                                                    vec![],
-                                                )),
-                                            ]
+                                            [coq::TopLevelItem::Definition(coq::Definition::new(
+                                                &format!("Get_{name}"),
+                                                &coq::DefinitionKind::Alias {
+                                                    args: vec![],
+                                                    ty: None,
+                                                    body: struct_field_value(name.to_owned()),
+                                                },
+                                            ))]
                                         })
                                         .collect::<Vec<_>>(),
                                 ),

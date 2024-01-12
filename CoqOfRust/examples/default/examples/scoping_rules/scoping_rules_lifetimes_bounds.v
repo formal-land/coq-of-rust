@@ -9,10 +9,8 @@ Section Ref.
     x0 : ref T;
   }.
   
-  Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>));
-  }.
+  Definition Get_0 :=
+    Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>)).
 End Ref.
 End Ref.
 
@@ -36,7 +34,8 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_t_T.
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref str.t := M.read (mk_str "Ref") in
     let* α2 : ref (scoping_rules_lifetimes_bounds.Ref.t T) := M.read self in
-    let* α3 : M.Val (ref (ref T)) := M.alloc (borrow (deref α2).["0"]) in
+    let* α3 : M.Val (ref (ref T)) :=
+      M.alloc (borrow (scoping_rules_lifetimes_bounds.Ref.Get_0 (deref α2))) in
     let* α4 : M.Val (ref (ref (ref T))) := M.alloc (borrow α3) in
     let* α5 : ref _ (* dyn *) := M.read (pointer_coercion "Unsize" α4) in
     M.call (core.fmt.Formatter.t::["debug_tuple_field1_finish"] α0 α1 α5).
@@ -134,7 +133,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* x : M.Val i32.t := M.alloc (Integer.of_Z 7) in
+  let* x : M.Val i32.t := M.alloc ((Integer.of_Z 7) : i32.t) in
   let* ref_x : M.Val (scoping_rules_lifetimes_bounds.Ref.t i32.t) :=
     M.alloc (scoping_rules_lifetimes_bounds.Ref.Build_t (borrow x)) in
   let* _ : M.Val unit :=

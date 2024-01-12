@@ -242,8 +242,6 @@ impl Erc721 {
     }
 
     /// Removes token `id` from the owner.
-    #[allow(unknown_lints)]
-    #[allow(coq_axiom)]
     fn remove_token_from(&mut self, from: &AccountId, id: TokenId) -> Result<(), Error> {
         let Self {
             token_owner,

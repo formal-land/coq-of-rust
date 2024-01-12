@@ -97,7 +97,7 @@ Module checked.
     let* x := M.alloc x in
     let* y := M.alloc y in
     let* α0 : f64.t := M.read y in
-    let* α1 : f64.t := M.read UnsupportedLiteral in
+    let* α1 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
     let* α2 : M.Val bool.t := M.alloc (BinOp.Pure.eq α0 α1) in
     let* α3 : bool.t := M.read (use α2) in
     let* α4 : M.Val (core.result.Result.t f64.t result.checked.MathError.t) :=
@@ -122,7 +122,7 @@ Module checked.
   Definition sqrt (x : f64.t) : M ltac:(result.checked.MathResult) :=
     let* x := M.alloc x in
     let* α0 : f64.t := M.read x in
-    let* α1 : f64.t := M.read UnsupportedLiteral in
+    let* α1 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
     let* α2 : M.Val bool.t := M.alloc (BinOp.Pure.lt α0 α1) in
     let* α3 : bool.t := M.read (use α2) in
     let* α4 : M.Val (core.result.Result.t f64.t result.checked.MathError.t) :=
@@ -147,7 +147,7 @@ Module checked.
   Definition ln (x : f64.t) : M ltac:(result.checked.MathResult) :=
     let* x := M.alloc x in
     let* α0 : f64.t := M.read x in
-    let* α1 : f64.t := M.read UnsupportedLiteral in
+    let* α1 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
     let* α2 : M.Val bool.t := M.alloc (BinOp.Pure.le α0 α1) in
     let* α3 : bool.t := M.read (use α2) in
     let* α4 : M.Val (core.result.Result.t f64.t result.checked.MathError.t) :=
@@ -255,7 +255,7 @@ Definition div (x : f64.t) (y : f64.t) : M ltac:(result.checked.MathResult) :=
   let* x := M.alloc x in
   let* y := M.alloc y in
   let* α0 : f64.t := M.read y in
-  let* α1 : f64.t := M.read UnsupportedLiteral in
+  let* α1 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
   let* α2 : M.Val bool.t := M.alloc (BinOp.Pure.eq α0 α1) in
   let* α3 : bool.t := M.read (use α2) in
   let* α4 : M.Val (core.result.Result.t f64.t result.checked.MathError.t) :=
@@ -280,7 +280,7 @@ Definition div (x : f64.t) (y : f64.t) : M ltac:(result.checked.MathResult) :=
 Definition sqrt (x : f64.t) : M ltac:(result.checked.MathResult) :=
   let* x := M.alloc x in
   let* α0 : f64.t := M.read x in
-  let* α1 : f64.t := M.read UnsupportedLiteral in
+  let* α1 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
   let* α2 : M.Val bool.t := M.alloc (BinOp.Pure.lt α0 α1) in
   let* α3 : bool.t := M.read (use α2) in
   let* α4 : M.Val (core.result.Result.t f64.t result.checked.MathError.t) :=
@@ -305,7 +305,7 @@ Definition sqrt (x : f64.t) : M ltac:(result.checked.MathResult) :=
 Definition ln (x : f64.t) : M ltac:(result.checked.MathResult) :=
   let* x := M.alloc x in
   let* α0 : f64.t := M.read x in
-  let* α1 : f64.t := M.read UnsupportedLiteral in
+  let* α1 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
   let* α2 : M.Val bool.t := M.alloc (BinOp.Pure.le α0 α1) in
   let* α3 : bool.t := M.read (use α2) in
   let* α4 : M.Val (core.result.Result.t f64.t result.checked.MathError.t) :=
@@ -350,7 +350,7 @@ Definition op (x : f64.t) (y : f64.t) : M f64.t :=
           (let* α0 := M.read γ in
           match α0 with
           | core.result.Result.Err _ =>
-            let γ0_0 := γ.["Err.0"] in
+            let γ0_0 := core.result.Result.Get_Err_0 γ in
             let* why := M.copy γ0_0 in
             let* α0 : ref str.t := M.read (mk_str "") in
             let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
@@ -376,7 +376,7 @@ Definition op (x : f64.t) (y : f64.t) : M f64.t :=
           (let* α0 := M.read γ in
           match α0 with
           | core.result.Result.Ok _ =>
-            let γ0_0 := γ.["Ok.0"] in
+            let γ0_0 := core.result.Result.Get_Ok_0 γ in
             let* ratio := M.copy γ0_0 in
             let* α0 : f64.t := M.read ratio in
             let* α1 : core.result.Result.t f64.t result.checked.MathError.t :=
@@ -391,7 +391,7 @@ Definition op (x : f64.t) (y : f64.t) : M f64.t :=
                   (let* α0 := M.read γ in
                   match α0 with
                   | core.result.Result.Err _ =>
-                    let γ0_0 := γ.["Err.0"] in
+                    let γ0_0 := core.result.Result.Get_Err_0 γ in
                     let* why := M.copy γ0_0 in
                     let* α0 : ref str.t := M.read (mk_str "") in
                     let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
@@ -420,7 +420,7 @@ Definition op (x : f64.t) (y : f64.t) : M f64.t :=
                   (let* α0 := M.read γ in
                   match α0 with
                   | core.result.Result.Ok _ =>
-                    let γ0_0 := γ.["Ok.0"] in
+                    let γ0_0 := core.result.Result.Get_Ok_0 γ in
                     let* ln := M.copy γ0_0 in
                     let* α0 : f64.t := M.read ln in
                     let* α1 :
@@ -439,7 +439,7 @@ Definition op (x : f64.t) (y : f64.t) : M f64.t :=
                           (let* α0 := M.read γ in
                           match α0 with
                           | core.result.Result.Err _ =>
-                            let γ0_0 := γ.["Err.0"] in
+                            let γ0_0 := core.result.Result.Get_Err_0 γ in
                             let* why := M.copy γ0_0 in
                             let* α0 : ref str.t := M.read (mk_str "") in
                             let* α1 : M.Val (array (ref str.t)) :=
@@ -472,7 +472,7 @@ Definition op (x : f64.t) (y : f64.t) : M f64.t :=
                           (let* α0 := M.read γ in
                           match α0 with
                           | core.result.Result.Ok _ =>
-                            let γ0_0 := γ.["Ok.0"] in
+                            let γ0_0 := core.result.Result.Get_Ok_0 γ in
                             let* sqrt := M.copy γ0_0 in
                             M.pure sqrt
                           | _ => M.break_match
@@ -506,8 +506,8 @@ Definition main : M unit :=
       let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
       let* α4 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α3) in
-      let* α5 : f64.t := M.read UnsupportedLiteral in
-      let* α6 : f64.t := M.read UnsupportedLiteral in
+      let* α5 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
+      let* α6 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
       let* α7 : f64.t := M.call (result.op α5 α6) in
       let* α8 : M.Val f64.t := M.alloc α7 in
       let* α9 : core.fmt.rt.Argument.t :=

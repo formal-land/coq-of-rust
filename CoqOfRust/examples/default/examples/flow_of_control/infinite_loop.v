@@ -31,7 +31,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* count : M.Val u32.t := M.alloc (Integer.of_Z 0) in
+  let* count : M.Val u32.t := M.alloc ((Integer.of_Z 0) : u32.t) in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "Let's count until infinity!
@@ -50,11 +50,12 @@ Definition main : M unit :=
       (let* _ : M.Val unit :=
         let β : M.Val u32.t := count in
         let* α0 := M.read β in
-        let* α1 := BinOp.Panic.add α0 (Integer.of_Z 1) in
+        let* α1 := BinOp.Panic.add α0 ((Integer.of_Z 1) : u32.t) in
         assign β α1 in
       let* _ : M.Val unit :=
         let* α0 : u32.t := M.read count in
-        let* α1 : M.Val bool.t := M.alloc (BinOp.Pure.eq α0 (Integer.of_Z 3)) in
+        let* α1 : M.Val bool.t :=
+          M.alloc (BinOp.Pure.eq α0 ((Integer.of_Z 3) : u32.t)) in
         let* α2 : bool.t := M.read (use α1) in
         if α2 then
           let* _ : M.Val unit :=
@@ -100,7 +101,8 @@ Definition main : M unit :=
           M.alloc α10 in
         M.alloc tt in
       let* α0 : u32.t := M.read count in
-      let* α1 : M.Val bool.t := M.alloc (BinOp.Pure.eq α0 (Integer.of_Z 5)) in
+      let* α1 : M.Val bool.t :=
+        M.alloc (BinOp.Pure.eq α0 ((Integer.of_Z 5) : u32.t)) in
       let* α2 : bool.t := M.read (use α1) in
       if α2 then
         let* _ : M.Val unit :=

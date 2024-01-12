@@ -22,12 +22,13 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* x : M.Val u64.t := M.alloc (Integer.of_Z 4) in
+  let* x : M.Val u64.t := M.alloc ((Integer.of_Z 4) : u64.t) in
   let* _ : M.Val unit :=
     let _ : M.Val unit := InlineAssembly in
     M.alloc tt in
   let* _ : M.Val unit :=
-    let* α0 : u64.t := BinOp.Panic.mul (Integer.of_Z 4) (Integer.of_Z 6) in
+    let* α0 : u64.t :=
+      BinOp.Panic.mul ((Integer.of_Z 4) : u64.t) ((Integer.of_Z 6) : u64.t) in
     let* α1 : M.Val u64.t := M.alloc α0 in
     let* α2 : M.Val ((ref u64.t) * (ref u64.t)) :=
       M.alloc (borrow x, borrow α1) in

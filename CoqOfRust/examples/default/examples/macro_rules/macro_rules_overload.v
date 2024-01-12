@@ -28,13 +28,15 @@ Definition main : M unit :=
         M.call
           (core.fmt.rt.Argument.t::["new_debug"]
             (borrow (mk_str "2i32 * 2 == 4i32"))) in
-      let* α9 : i32.t := BinOp.Panic.add (Integer.of_Z 1) (Integer.of_Z 1) in
-      let* α10 : i32.t := BinOp.Panic.mul (Integer.of_Z 2) (Integer.of_Z 2) in
+      let* α9 : i32.t :=
+        BinOp.Panic.add ((Integer.of_Z 1) : i32.t) ((Integer.of_Z 1) : i32.t) in
+      let* α10 : i32.t :=
+        BinOp.Panic.mul ((Integer.of_Z 2) : i32.t) ((Integer.of_Z 2) : i32.t) in
       let* α11 : M.Val bool.t :=
         M.alloc
           (BinOp.Pure.and
-            (BinOp.Pure.eq α9 (Integer.of_Z 2))
-            (BinOp.Pure.eq α10 (Integer.of_Z 4))) in
+            (BinOp.Pure.eq α9 ((Integer.of_Z 2) : i32.t))
+            (BinOp.Pure.eq α10 ((Integer.of_Z 4) : i32.t))) in
       let* α12 : core.fmt.rt.Argument.t :=
         M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow α11)) in
       let* α13 : M.Val (array core.fmt.rt.Argument.t) :=

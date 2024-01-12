@@ -32,7 +32,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* outer_var : M.Val i32.t := M.alloc (Integer.of_Z 42) in
+  let* outer_var : M.Val i32.t := M.alloc ((Integer.of_Z 42) : i32.t) in
   let* closure_annotated : M.Val (i32.t -> M i32.t) :=
     M.alloc
       (fun (α0 : i32.t) =>
@@ -79,7 +79,7 @@ Definition main : M unit :=
             (Args := i32.t)
             (Trait := ℐ))) in
       let* α6 : i32.t :=
-        M.call (α5 (borrow closure_annotated) (Integer.of_Z 1)) in
+        M.call (α5 (borrow closure_annotated) ((Integer.of_Z 1) : i32.t)) in
       let* α7 : M.Val i32.t := M.alloc α6 in
       let* α8 : core.fmt.rt.Argument.t :=
         M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α7)) in
@@ -109,7 +109,7 @@ Definition main : M unit :=
             (Args := i32.t)
             (Trait := ℐ))) in
       let* α6 : i32.t :=
-        M.call (α5 (borrow closure_inferred) (Integer.of_Z 1)) in
+        M.call (α5 (borrow closure_inferred) ((Integer.of_Z 1) : i32.t)) in
       let* α7 : M.Val i32.t := M.alloc α6 in
       let* α8 : core.fmt.rt.Argument.t :=
         M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α7)) in
@@ -124,7 +124,7 @@ Definition main : M unit :=
       M.alloc α13 in
     M.alloc tt in
   let* one : M.Val (unit -> M i32.t) :=
-    M.alloc ((M.pure (Integer.of_Z 1)) : M i32.t) in
+    M.alloc ((M.pure ((Integer.of_Z 1) : i32.t)) : M i32.t) in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "closure returning one: ") in

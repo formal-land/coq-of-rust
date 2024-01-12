@@ -30,7 +30,7 @@ fn main() {
 Definition main : M unit :=
   let* a_binding : M.Val unit := M.alloc tt in
   let* _ : M.Val unit :=
-    let* x : M.Val i32.t := M.alloc (Integer.of_Z 2) in
+    let* x : M.Val i32.t := M.alloc ((Integer.of_Z 2) : i32.t) in
     let* _ : M.Val unit :=
       let* α0 : i32.t := M.read x in
       let* α1 : i32.t := M.read x in
@@ -59,7 +59,7 @@ Definition main : M unit :=
       M.alloc α10 in
     M.alloc tt in
   let* another_binding : M.Val unit := M.alloc tt in
-  let* _ : M.Val unit := assign another_binding (Integer.of_Z 1) in
+  let* _ : M.Val unit := assign another_binding ((Integer.of_Z 1) : i32.t) in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "another binding: ") in

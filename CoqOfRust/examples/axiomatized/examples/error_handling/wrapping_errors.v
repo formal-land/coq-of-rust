@@ -8,12 +8,10 @@ Module DoubleError.
   | EmptyVec
   | Parse (_ : core.num.error.ParseIntError.t).
   
-  Global Instance Get_Parse_0 : Notations.Dot "Parse.0" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => match α with | Parse α0 => Some α0 | _ => None end)
-        (fun β α => match α with | Parse _ => Some (Parse β) | _ => None end);
-  }.
+  Definition Get_Parse_0 :=
+    Ref.map
+      (fun α => match α with | Parse α0 => Some α0 | _ => None end)
+      (fun β α => match α with | Parse _ => Some (Parse β) | _ => None end).
 End DoubleError.
 
 Module  Impl_core_fmt_Debug_for_wrapping_errors_DoubleError_t.

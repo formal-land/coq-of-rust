@@ -15,7 +15,8 @@ Definition division (dividend : i32.t) (divisor : i32.t) : M i32.t :=
   let* dividend := M.alloc dividend in
   let* divisor := M.alloc divisor in
   let* α0 : i32.t := M.read divisor in
-  let* α1 : M.Val bool.t := M.alloc (BinOp.Pure.eq α0 (Integer.of_Z 0)) in
+  let* α1 : M.Val bool.t :=
+    M.alloc (BinOp.Pure.eq α0 ((Integer.of_Z 0) : i32.t)) in
   let* α2 : bool.t := M.read (use α1) in
   let* α3 : M.Val i32.t :=
     if α2 then
@@ -54,11 +55,14 @@ Definition main : M unit :=
     let* α0 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t :=
       M.call
         ((alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"]
-          (Integer.of_Z 0)) in
+          ((Integer.of_Z 0) : i32.t)) in
     M.alloc α0 in
   let* _ : M.Val i32.t :=
     let* α0 : i32.t :=
-      M.call (panic.division (Integer.of_Z 3) (Integer.of_Z 0)) in
+      M.call
+        (panic.division
+          ((Integer.of_Z 3) : i32.t)
+          ((Integer.of_Z 0) : i32.t)) in
     M.alloc α0 in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=

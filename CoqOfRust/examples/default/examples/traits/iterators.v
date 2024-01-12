@@ -8,20 +8,10 @@ Section Fibonacci.
     next : u32.t;
   }.
   
-  Global Instance Get_curr : Notations.Dot "curr" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(curr)) (fun β α => Some (α <| curr := β |>));
-  }.
-  Global Instance Get_AF_curr : Notations.DoubleColon t "curr" := {
-    Notations.double_colon (α : M.Val t) := α.["curr"];
-  }.
-  Global Instance Get_next : Notations.Dot "next" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(next)) (fun β α => Some (α <| next := β |>));
-  }.
-  Global Instance Get_AF_next : Notations.DoubleColon t "next" := {
-    Notations.double_colon (α : M.Val t) := α.["next"];
-  }.
+  Definition Get_curr :=
+    Ref.map (fun α => Some α.(curr)) (fun β α => Some (α <| curr := β |>)).
+  Definition Get_next :=
+    Ref.map (fun α => Some α.(next)) (fun β α => Some (α <| next := β |>)).
 End Fibonacci.
 End Fibonacci.
 
@@ -50,19 +40,19 @@ Section Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci_t.
     let* self := M.alloc self in
     let* current : M.Val u32.t :=
       let* α0 : mut_ref iterators.Fibonacci.t := M.read self in
-      M.copy (deref α0).["curr"] in
+      M.copy (iterators.Fibonacci.Get_curr (deref α0)) in
     let* _ : M.Val unit :=
       let* α0 : mut_ref iterators.Fibonacci.t := M.read self in
       let* α1 : mut_ref iterators.Fibonacci.t := M.read self in
-      let* α2 : u32.t := M.read (deref α1).["next"] in
-      assign (deref α0).["curr"] α2 in
+      let* α2 : u32.t := M.read (iterators.Fibonacci.Get_next (deref α1)) in
+      assign (iterators.Fibonacci.Get_curr (deref α0)) α2 in
     let* _ : M.Val unit :=
       let* α0 : mut_ref iterators.Fibonacci.t := M.read self in
       let* α1 : u32.t := M.read current in
       let* α2 : mut_ref iterators.Fibonacci.t := M.read self in
-      let* α3 : u32.t := M.read (deref α2).["next"] in
+      let* α3 : u32.t := M.read (iterators.Fibonacci.Get_next (deref α2)) in
       let* α4 : u32.t := BinOp.Panic.add α1 α3 in
-      assign (deref α0).["next"] α4 in
+      assign (iterators.Fibonacci.Get_next (deref α0)) α4 in
     let* α0 : u32.t := M.read current in
     let* α0 : M.Val (core.option.Option.t u32.t) :=
       M.alloc (core.option.Option.Some α0) in
@@ -165,8 +155,8 @@ fn fibonacci() -> Fibonacci {
 Definition fibonacci : M iterators.Fibonacci.t :=
   M.pure
     {|
-      iterators.Fibonacci.curr := Integer.of_Z 0;
-      iterators.Fibonacci.next := Integer.of_Z 1;
+      iterators.Fibonacci.curr := (Integer.of_Z 0) : u32.t;
+      iterators.Fibonacci.next := (Integer.of_Z 1) : u32.t;
     |}.
 
 (*
@@ -213,8 +203,8 @@ Definition main : M unit :=
   let* sequence : M.Val (core.ops.range.Range.t i32.t) :=
     M.alloc
       {|
-        core.ops.range.Range.start := Integer.of_Z 0;
-        core.ops.range.Range.end_ := Integer.of_Z 3;
+        core.ops.range.Range.start := (Integer.of_Z 0) : i32.t;
+        core.ops.range.Range.end_ := (Integer.of_Z 3) : i32.t;
       |} in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
@@ -370,8 +360,8 @@ Definition main : M unit :=
       M.call
         (α0
           {|
-            core.ops.range.Range.start := Integer.of_Z 0;
-            core.ops.range.Range.end_ := Integer.of_Z 3;
+            core.ops.range.Range.start := (Integer.of_Z 0) : i32.t;
+            core.ops.range.Range.end_ := (Integer.of_Z 3) : i32.t;
           |}) in
     let* α2 : M.Val (core.ops.range.Range.t i32.t) := M.alloc α1 in
     let* α3 : M.Val unit :=
@@ -408,7 +398,7 @@ Definition main : M unit :=
                       (let* α0 := M.read γ in
                       match α0 with
                       | core.option.Option.Some _ =>
-                        let γ0_0 := γ.["Some.0"] in
+                        let γ0_0 := core.option.Option.Get_Some_0 γ in
                         let* i := M.copy γ0_0 in
                         let* _ : M.Val unit :=
                           let* _ : M.Val unit :=
@@ -475,7 +465,7 @@ Definition main : M unit :=
           (Trait := ℐ))) in
     let* α2 : iterators.Fibonacci.t := M.call iterators.fibonacci in
     let* α3 : core.iter.adapters.take.Take.t iterators.Fibonacci.t :=
-      M.call (α1 α2 (Integer.of_Z 4)) in
+      M.call (α1 α2 ((Integer.of_Z 4) : usize.t)) in
     let* α4 : core.iter.adapters.take.Take.t iterators.Fibonacci.t :=
       M.call (α0 α3) in
     let* α5 : M.Val (core.iter.adapters.take.Take.t iterators.Fibonacci.t) :=
@@ -515,7 +505,7 @@ Definition main : M unit :=
                       (let* α0 := M.read γ in
                       match α0 with
                       | core.option.Option.Some _ =>
-                        let γ0_0 := γ.["Some.0"] in
+                        let γ0_0 := core.option.Option.Get_Some_0 γ in
                         let* i := M.copy γ0_0 in
                         let* _ : M.Val unit :=
                           let* _ : M.Val unit :=
@@ -589,11 +579,11 @@ Definition main : M unit :=
           (Trait := ℐ))) in
     let* α3 : iterators.Fibonacci.t := M.call iterators.fibonacci in
     let* α4 : core.iter.adapters.skip.Skip.t iterators.Fibonacci.t :=
-      M.call (α2 α3 (Integer.of_Z 4)) in
+      M.call (α2 α3 ((Integer.of_Z 4) : usize.t)) in
     let* α5 :
         core.iter.adapters.take.Take.t
           (core.iter.adapters.skip.Skip.t iterators.Fibonacci.t) :=
-      M.call (α1 α4 (Integer.of_Z 4)) in
+      M.call (α1 α4 ((Integer.of_Z 4) : usize.t)) in
     let* α6 :
         core.iter.adapters.take.Take.t
           (core.iter.adapters.skip.Skip.t iterators.Fibonacci.t) :=
@@ -640,7 +630,7 @@ Definition main : M unit :=
                       (let* α0 := M.read γ in
                       match α0 with
                       | core.option.Option.Some _ =>
-                        let γ0_0 := γ.["Some.0"] in
+                        let γ0_0 := core.option.Option.Get_Some_0 γ in
                         let* i := M.copy γ0_0 in
                         let* _ : M.Val unit :=
                           let* _ : M.Val unit :=
@@ -681,7 +671,12 @@ Definition main : M unit :=
     M.pure (use α8) in
   let* array : M.Val (array u32.t) :=
     M.alloc
-      [ Integer.of_Z 1; Integer.of_Z 3; Integer.of_Z 3; Integer.of_Z 7 ] in
+      [
+        (Integer.of_Z 1) : u32.t;
+        (Integer.of_Z 3) : u32.t;
+        (Integer.of_Z 3) : u32.t;
+        (Integer.of_Z 7) : u32.t
+      ] in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "Iterate the following array ") in
@@ -750,7 +745,7 @@ Definition main : M unit :=
                     (let* α0 := M.read γ in
                     match α0 with
                     | core.option.Option.Some _ =>
-                      let γ0_0 := γ.["Some.0"] in
+                      let γ0_0 := core.option.Option.Get_Some_0 γ in
                       let* i := M.copy γ0_0 in
                       let* _ : M.Val unit :=
                         let* _ : M.Val unit :=

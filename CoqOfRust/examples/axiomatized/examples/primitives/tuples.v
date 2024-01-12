@@ -20,22 +20,14 @@ Section Matrix.
     x3 : f32.t;
   }.
   
-  Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>));
-  }.
-  Global Instance Get_1 : Notations.Dot "1" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(x1)) (fun β α => Some (α <| x1 := β |>));
-  }.
-  Global Instance Get_2 : Notations.Dot "2" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(x2)) (fun β α => Some (α <| x2 := β |>));
-  }.
-  Global Instance Get_3 : Notations.Dot "3" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(x3)) (fun β α => Some (α <| x3 := β |>));
-  }.
+  Definition Get_0 :=
+    Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>)).
+  Definition Get_1 :=
+    Ref.map (fun α => Some α.(x1)) (fun β α => Some (α <| x1 := β |>)).
+  Definition Get_2 :=
+    Ref.map (fun α => Some α.(x2)) (fun β α => Some (α <| x2 := β |>)).
+  Definition Get_3 :=
+    Ref.map (fun α => Some α.(x3)) (fun β α => Some (α <| x3 := β |>)).
 End Matrix.
 End Matrix.
 

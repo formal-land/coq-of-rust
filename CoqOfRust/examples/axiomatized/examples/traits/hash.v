@@ -9,27 +9,12 @@ Section Person.
     phone : u64.t;
   }.
   
-  Global Instance Get_id : Notations.Dot "id" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(id)) (fun β α => Some (α <| id := β |>));
-  }.
-  Global Instance Get_AF_id : Notations.DoubleColon t "id" := {
-    Notations.double_colon (α : M.Val t) := α.["id"];
-  }.
-  Global Instance Get_name : Notations.Dot "name" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(name)) (fun β α => Some (α <| name := β |>));
-  }.
-  Global Instance Get_AF_name : Notations.DoubleColon t "name" := {
-    Notations.double_colon (α : M.Val t) := α.["name"];
-  }.
-  Global Instance Get_phone : Notations.Dot "phone" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(phone)) (fun β α => Some (α <| phone := β |>));
-  }.
-  Global Instance Get_AF_phone : Notations.DoubleColon t "phone" := {
-    Notations.double_colon (α : M.Val t) := α.["phone"];
-  }.
+  Definition Get_id :=
+    Ref.map (fun α => Some α.(id)) (fun β α => Some (α <| id := β |>)).
+  Definition Get_name :=
+    Ref.map (fun α => Some α.(name)) (fun β α => Some (α <| name := β |>)).
+  Definition Get_phone :=
+    Ref.map (fun α => Some α.(phone)) (fun β α => Some (α <| phone := β |>)).
 End Person.
 End Person.
 

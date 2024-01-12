@@ -13,10 +13,8 @@ Section S.
     x0 : generics_functions.A.t;
   }.
   
-  Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>));
-  }.
+  Definition Get_0 :=
+    Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>)).
 End S.
 End S.
 
@@ -28,10 +26,8 @@ Section SGen.
     x0 : T;
   }.
   
-  Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>));
-  }.
+  Definition Get_0 :=
+    Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>)).
 End SGen.
 End SGen.
 
@@ -97,7 +93,7 @@ Definition main : M unit :=
     let* α0 : unit :=
       M.call
         (generics_functions.gen_spec_i32
-          (generics_functions.SGen.Build_t (Integer.of_Z 6))) in
+          (generics_functions.SGen.Build_t ((Integer.of_Z 6) : i32.t))) in
     M.alloc α0 in
   let* _ : M.Val unit :=
     let* α0 : unit :=

@@ -7,10 +7,8 @@ Section AccountId.
     x0 : u128.t;
   }.
   
-  Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>));
-  }.
+  Definition Get_0 :=
+    Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>)).
 End AccountId.
 End AccountId.
 
@@ -118,13 +116,8 @@ Section ConstructorsReturnValue.
     value : bool.t;
   }.
   
-  Global Instance Get_value : Notations.Dot "value" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(value)) (fun β α => Some (α <| value := β |>));
-  }.
-  Global Instance Get_AF_value : Notations.DoubleColon t "value" := {
-    Notations.double_colon (α : M.Val t) := α.["value"];
-  }.
+  Definition Get_value :=
+    Ref.map (fun α => Some α.(value)) (fun β α => Some (α <| value := β |>)).
 End ConstructorsReturnValue.
 End ConstructorsReturnValue.
 
@@ -292,7 +285,7 @@ Section Impl_constructors_return_value_ConstructorsReturnValue_t.
           (T := array u8.t)
           (Trait := ℐ))) in
     let* α2 : constructors_return_value.AccountId.t :=
-      M.call (α1 (repeat (Integer.of_Z 0) 32)) in
+      M.call (α1 (repeat ((Integer.of_Z 0) : u8.t) 32)) in
     let* α3 :
         M.Val
           (core.result.Result.t
@@ -353,7 +346,7 @@ Section Impl_constructors_return_value_ConstructorsReturnValue_t.
                 (T := array u8.t)
                 (Trait := ℐ))) in
           let* α1 : constructors_return_value.AccountId.t :=
-            M.call (α0 (repeat (Integer.of_Z 0) 32)) in
+            M.call (α0 (repeat ((Integer.of_Z 0) : u8.t) 32)) in
           M.alloc (core.result.Result.Ok (core.result.Result.Ok α1))
         else
           M.alloc
@@ -392,7 +385,8 @@ Section Impl_constructors_return_value_ConstructorsReturnValue_t.
     let* self := M.alloc self in
     let* α0 : ref constructors_return_value.ConstructorsReturnValue.t :=
       M.read self in
-    M.read (deref α0).["value"].
+    M.read
+      (constructors_return_value.ConstructorsReturnValue.Get_value (deref α0)).
   
   Global Instance AssociatedFunction_get_value :
     Notations.DoubleColon Self "get_value" := {

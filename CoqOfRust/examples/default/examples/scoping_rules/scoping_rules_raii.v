@@ -14,7 +14,7 @@ Definition create_box : M unit :=
     let* α0 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t :=
       M.call
         ((alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"]
-          (Integer.of_Z 3)) in
+          ((Integer.of_Z 3) : i32.t)) in
     M.alloc α0 in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.
@@ -47,14 +47,14 @@ Definition main : M unit :=
     let* α0 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t :=
       M.call
         ((alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"]
-          (Integer.of_Z 5)) in
+          ((Integer.of_Z 5) : i32.t)) in
     M.alloc α0 in
   let* _ : M.Val unit :=
     let* _box3 : M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t) :=
       let* α0 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t :=
         M.call
           ((alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"]
-            (Integer.of_Z 4)) in
+            ((Integer.of_Z 4) : i32.t)) in
       M.alloc α0 in
     M.alloc tt in
   let* α0 : _ :=
@@ -66,8 +66,8 @@ Definition main : M unit :=
     M.call
       (α0
         {|
-          core.ops.range.Range.start := Integer.of_Z 0;
-          core.ops.range.Range.end_ := Integer.of_Z 1000;
+          core.ops.range.Range.start := (Integer.of_Z 0) : u32.t;
+          core.ops.range.Range.end_ := (Integer.of_Z 1000) : u32.t;
         |}) in
   let* α2 : M.Val (core.ops.range.Range.t u32.t) := M.alloc α1 in
   let* α3 : M.Val unit :=
@@ -104,7 +104,7 @@ Definition main : M unit :=
                     (let* α0 := M.read γ in
                     match α0 with
                     | core.option.Option.Some _ =>
-                      let γ0_0 := γ.["Some.0"] in
+                      let γ0_0 := core.option.Option.Get_Some_0 γ in
                       let* _ : M.Val unit :=
                         let* α0 : unit :=
                           M.call scoping_rules_raii.create_box in

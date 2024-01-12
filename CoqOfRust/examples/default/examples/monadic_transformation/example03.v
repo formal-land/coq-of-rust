@@ -10,11 +10,20 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
   let* _ : M.Val (((i32.t * i32.t) * i32.t) * i32.t) :=
-    M.alloc (Integer.of_Z 1, Integer.of_Z 2, Integer.of_Z 3, Integer.of_Z 4) in
+    M.alloc
+      ((Integer.of_Z 1) : i32.t,
+        (Integer.of_Z 2) : i32.t,
+        (Integer.of_Z 3) : i32.t,
+        (Integer.of_Z 4) : i32.t) in
   let* _ : M.Val (alloc.vec.Vec.t i32.t alloc.alloc.Global.t) :=
     let* α0 : M.Val (array i32.t) :=
       M.alloc
-        [ Integer.of_Z 5; Integer.of_Z 6; Integer.of_Z 7; Integer.of_Z 8 ] in
+        [
+          (Integer.of_Z 5) : i32.t;
+          (Integer.of_Z 6) : i32.t;
+          (Integer.of_Z 7) : i32.t;
+          (Integer.of_Z 8) : i32.t
+        ] in
     let* α1 : M.Val (alloc.boxed.Box.t (array i32.t) alloc.alloc.Global.t) :=
       M.call ((alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α0) in
     let* α2 : alloc.boxed.Box.t (slice i32.t) alloc.alloc.Global.t :=

@@ -13,10 +13,8 @@ Section Single.
     x0 : generics.A.t;
   }.
   
-  Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>));
-  }.
+  Definition Get_0 :=
+    Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>)).
 End Single.
 End Single.
 
@@ -28,10 +26,8 @@ Section SingleGen.
     x0 : T;
   }.
   
-  Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>));
-  }.
+  Definition Get_0 :=
+    Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>)).
 End SingleGen.
 End SingleGen.
 
@@ -60,7 +56,7 @@ Definition main : M unit :=
   let* _t : M.Val (generics.SingleGen.t generics.A.t) :=
     M.alloc (generics.SingleGen.Build_t generics.A.Build) in
   let* _i32 : M.Val (generics.SingleGen.t i32.t) :=
-    M.alloc (generics.SingleGen.Build_t (Integer.of_Z 6)) in
+    M.alloc (generics.SingleGen.Build_t ((Integer.of_Z 6) : i32.t)) in
   let* _char : M.Val (generics.SingleGen.t char.t) :=
     M.alloc (generics.SingleGen.Build_t "a"%char) in
   let* α0 : M.Val unit := M.alloc tt in

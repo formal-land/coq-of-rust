@@ -16,13 +16,6 @@ Require Export CoqOfRust.M.
 Export M.Notations.
 
 Module Notations.
-  (** A class to represent the notation [e1.e2]. This is mainly used to call
-      methods, or access to named or indexed fields of structures. *)
-  Class Dot (name : string) {T : Set} : Set := {
-    dot : T;
-  }.
-  Arguments dot name {T Dot}.
-
   (** A class to represent associated functions (the notation [e1::e2]). The
       kind might be [Set] functions associated to a type, or [Set -> Set] for
       functions associated to a trait. *)
@@ -39,23 +32,11 @@ Module Notations.
   Arguments double_colon_type {Kind} type name {DoubleColonType}.
 End Notations.
 
-(** Note that we revert the arguments in this notation. *)
-Notation "e1 .[ e2 ]" := (Notations.dot e2 e1)
-  (at level 0).
-
 Notation "e1 ::[ e2 ]" := (Notations.double_colon e1 e2)
   (at level 0).
 
 Notation "e1 ::type[ e2 ]" := (Notations.double_colon_type e1 e2)
   (at level 0).
-
-(** A method is also an associated function for its type. *)
-Global Instance AssociatedFunctionFromMethod
-  (type : Set) (name : string) (T : Set)
-  `(Notations.Dot name (T := type -> T)) :
-  Notations.DoubleColon type name (T := type -> T) := {
-  Notations.double_colon := Notations.dot name;
-}.
 
 Definition defaultType (T : option Set) (Default : Set) : Set :=
   match T with

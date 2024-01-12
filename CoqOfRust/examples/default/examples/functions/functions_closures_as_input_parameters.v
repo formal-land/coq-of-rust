@@ -49,7 +49,7 @@ Definition apply_to_3
   let* α0 : _ :=
     ltac:(M.get_method (fun ℐ =>
       core.ops.function.Fn.call (Self := F) (Args := i32.t) (Trait := ℐ))) in
-  M.call (α0 (borrow f) (Integer.of_Z 3)).
+  M.call (α0 (borrow f) ((Integer.of_Z 3) : i32.t)).
 
 (*
 fn main() {
@@ -183,7 +183,7 @@ Definition main : M unit :=
             fun γ =>
               (let* x := M.copy γ in
               let* α0 : i32.t := M.read x in
-              BinOp.Panic.mul (Integer.of_Z 2) α0) :
+              BinOp.Panic.mul ((Integer.of_Z 2) : i32.t) α0) :
               M i32.t
           ]) :
         M i32.t) in

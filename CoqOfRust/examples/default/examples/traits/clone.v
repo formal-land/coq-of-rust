@@ -74,14 +74,10 @@ Section Pair.
     x1 : alloc.boxed.Box.t i32.t alloc.boxed.Box.Default.A;
   }.
   
-  Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>));
-  }.
-  Global Instance Get_1 : Notations.Dot "1" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(x1)) (fun β α => Some (α <| x1 := β |>));
-  }.
+  Definition Get_0 :=
+    Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>)).
+  Definition Get_1 :=
+    Ref.map (fun α => Some α.(x1)) (fun β α => Some (α <| x1 := β |>)).
 End Pair.
 End Pair.
 
@@ -101,7 +97,7 @@ Section Impl_core_clone_Clone_for_clone_Pair_t.
           (Trait := ℐ))) in
     let* α1 : ref clone.Pair.t := M.read self in
     let* α2 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t :=
-      M.call (α0 (borrow (deref α1).["0"])) in
+      M.call (α0 (borrow (clone.Pair.Get_0 (deref α1)))) in
     let* α3 : _ :=
       ltac:(M.get_method (fun ℐ =>
         core.clone.Clone.clone
@@ -109,7 +105,7 @@ Section Impl_core_clone_Clone_for_clone_Pair_t.
           (Trait := ℐ))) in
     let* α4 : ref clone.Pair.t := M.read self in
     let* α5 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t :=
-      M.call (α3 (borrow (deref α4).["1"])) in
+      M.call (α3 (borrow (clone.Pair.Get_1 (deref α4)))) in
     M.pure (clone.Pair.Build_t α2 α5).
   
   Global Instance AssociatedFunction_clone :
@@ -141,11 +137,11 @@ Section Impl_core_fmt_Debug_for_clone_Pair_t.
     let* α1 : ref str.t := M.read (mk_str "Pair") in
     let* α2 : ref clone.Pair.t := M.read self in
     let* α3 : M.Val (ref (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)) :=
-      M.alloc (borrow (deref α2).["0"]) in
+      M.alloc (borrow (clone.Pair.Get_0 (deref α2))) in
     let* α4 : ref _ (* dyn *) := M.read (pointer_coercion "Unsize" α3) in
     let* α5 : ref clone.Pair.t := M.read self in
     let* α6 : M.Val (ref (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)) :=
-      M.alloc (borrow (deref α5).["1"]) in
+      M.alloc (borrow (clone.Pair.Get_1 (deref α5))) in
     let* α7 :
         M.Val (ref (ref (alloc.boxed.Box.t i32.t alloc.alloc.Global.t))) :=
       M.alloc (borrow α6) in
@@ -248,11 +244,11 @@ Definition main : M unit :=
     let* α0 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t :=
       M.call
         ((alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"]
-          (Integer.of_Z 1)) in
+          ((Integer.of_Z 1) : i32.t)) in
     let* α1 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t :=
       M.call
         ((alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"]
-          (Integer.of_Z 2)) in
+          ((Integer.of_Z 2) : i32.t)) in
     M.alloc (clone.Pair.Build_t α0 α1) in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=

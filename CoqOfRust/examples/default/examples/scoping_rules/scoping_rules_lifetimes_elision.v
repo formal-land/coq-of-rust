@@ -94,7 +94,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* x : M.Val i32.t := M.alloc (Integer.of_Z 3) in
+  let* x : M.Val i32.t := M.alloc ((Integer.of_Z 3) : i32.t) in
   let* _ : M.Val unit :=
     let* α0 : unit :=
       M.call (scoping_rules_lifetimes_elision.elided_input (borrow x)) in

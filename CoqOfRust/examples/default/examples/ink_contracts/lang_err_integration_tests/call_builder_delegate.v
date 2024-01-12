@@ -14,13 +14,8 @@ Section CallBuilderDelegateTest.
     value : i32.t;
   }.
   
-  Global Instance Get_value : Notations.Dot "value" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(value)) (fun β α => Some (α <| value := β |>));
-  }.
-  Global Instance Get_AF_value : Notations.DoubleColon t "value" := {
-    Notations.double_colon (α : M.Val t) := α.["value"];
-  }.
+  Definition Get_value :=
+    Ref.map (fun α => Some α.(value)) (fun β α => Some (α <| value := β |>)).
 End CallBuilderDelegateTest.
 End CallBuilderDelegateTest.
 
@@ -121,7 +116,7 @@ Section Impl_call_builder_delegate_CallBuilderDelegateTest_t.
     let* self := M.alloc self in
     let* code_hash := M.alloc code_hash in
     let* selector := M.alloc selector in
-    M.pure (Integer.of_Z 0).
+    M.pure ((Integer.of_Z 0) : i32.t).
   
   Global Instance AssociatedFunction_invoke :
     Notations.DoubleColon Self "invoke" := {

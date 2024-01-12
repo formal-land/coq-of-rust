@@ -18,7 +18,7 @@ Definition increase (number : i32.t) : M unit :=
       let* α4 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α3) in
       let* α5 : i32.t := M.read number in
-      let* α6 : i32.t := BinOp.Panic.add α5 (Integer.of_Z 1) in
+      let* α6 : i32.t := BinOp.Panic.add α5 ((Integer.of_Z 1) : i32.t) in
       let* α7 : M.Val i32.t := M.alloc α6 in
       let* α8 : core.fmt.rt.Argument.t :=
         M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α7)) in
@@ -52,7 +52,7 @@ Definition decrease (number : i32.t) : M unit :=
       let* α4 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α3) in
       let* α5 : i32.t := M.read number in
-      let* α6 : i32.t := BinOp.Panic.sub α5 (Integer.of_Z 1) in
+      let* α6 : i32.t := BinOp.Panic.sub α5 ((Integer.of_Z 1) : i32.t) in
       let* α7 : M.Val i32.t := M.alloc α6 in
       let* α8 : core.fmt.rt.Argument.t :=
         M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α7)) in
@@ -208,7 +208,7 @@ Definition main : M unit :=
                   (Idx := usize.t)
                   (Trait := ℐ))) in
             let* α2 : ref alloc.string.String.t :=
-              M.call (α1 (borrow args) (Integer.of_Z 1)) in
+              M.call (α1 (borrow args) ((Integer.of_Z 1) : usize.t)) in
             let* α3 : ref str.t := M.call (α0 α2) in
             let* α4 :
                 core.result.Result.t i32.t core.num.error.ParseIntError.t :=
@@ -224,7 +224,7 @@ Definition main : M unit :=
                   (let* α0 := M.read γ in
                   match α0 with
                   | core.result.Result.Ok _ =>
-                    let γ0_0 := γ.["Ok.0"] in
+                    let γ0_0 := core.result.Result.Get_Ok_0 γ in
                     let* _ : M.Val unit :=
                       let* α0 : ref str.t :=
                         M.read (mk_str "This is the answer!
@@ -272,7 +272,7 @@ Definition main : M unit :=
                     (Idx := usize.t)
                     (Trait := ℐ))) in
               let* α1 : ref alloc.string.String.t :=
-                M.call (α0 (borrow args) (Integer.of_Z 1)) in
+                M.call (α0 (borrow args) ((Integer.of_Z 1) : usize.t)) in
               M.alloc α1 in
             let* num : M.Val (ref alloc.string.String.t) :=
               let* α0 : _ :=
@@ -285,7 +285,7 @@ Definition main : M unit :=
                     (Idx := usize.t)
                     (Trait := ℐ))) in
               let* α1 : ref alloc.string.String.t :=
-                M.call (α0 (borrow args) (Integer.of_Z 2)) in
+                M.call (α0 (borrow args) ((Integer.of_Z 2) : usize.t)) in
               M.alloc α1 in
             let* number : M.Val i32.t :=
               let* α0 : _ :=
@@ -312,7 +312,7 @@ Definition main : M unit :=
                       (let* α0 := M.read γ in
                       match α0 with
                       | core.result.Result.Ok _ =>
-                        let γ0_0 := γ.["Ok.0"] in
+                        let γ0_0 := core.result.Result.Get_Ok_0 γ in
                         let* n := M.copy γ0_0 in
                         M.pure n
                       | _ => M.break_match
@@ -322,7 +322,7 @@ Definition main : M unit :=
                       (let* α0 := M.read γ in
                       match α0 with
                       | core.result.Result.Err _ =>
-                        let γ0_0 := γ.["Err.0"] in
+                        let γ0_0 := core.result.Result.Get_Err_0 γ in
                         let* _ : M.Val unit :=
                           let* _ : M.Val unit :=
                             let* α0 : ref str.t :=

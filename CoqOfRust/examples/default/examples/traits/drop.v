@@ -7,13 +7,8 @@ Section Droppable.
     name : ref str.t;
   }.
   
-  Global Instance Get_name : Notations.Dot "name" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(name)) (fun β α => Some (α <| name := β |>));
-  }.
-  Global Instance Get_AF_name : Notations.DoubleColon t "name" := {
-    Notations.double_colon (α : M.Val t) := α.["name"];
-  }.
+  Definition Get_name :=
+    Ref.map (fun α => Some α.(name)) (fun β α => Some (α <| name := β |>)).
 End Droppable.
 End Droppable.
 
@@ -41,7 +36,7 @@ Section Impl_core_ops_drop_Drop_for_drop_Droppable_t.
         let* α6 : core.fmt.rt.Argument.t :=
           M.call
             (core.fmt.rt.Argument.t::["new_display"]
-              (borrow (deref α5).["name"])) in
+              (borrow (drop.Droppable.Get_name (deref α5)))) in
         let* α7 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α6 ] in
         let* α8 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
           M.alloc (borrow α7) in

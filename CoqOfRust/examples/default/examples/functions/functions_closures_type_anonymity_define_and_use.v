@@ -37,7 +37,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* x : M.Val i32.t := M.alloc (Integer.of_Z 7) in
+  let* x : M.Val i32.t := M.alloc ((Integer.of_Z 7) : i32.t) in
   let* print : M.Val (unit -> M unit) :=
     M.alloc
       ((let* _ : M.Val unit :=

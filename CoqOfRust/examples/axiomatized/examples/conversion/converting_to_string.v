@@ -7,15 +7,8 @@ Section Circle.
     radius : i32.t;
   }.
   
-  Global Instance Get_radius : Notations.Dot "radius" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(radius))
-        (fun β α => Some (α <| radius := β |>));
-  }.
-  Global Instance Get_AF_radius : Notations.DoubleColon t "radius" := {
-    Notations.double_colon (α : M.Val t) := α.["radius"];
-  }.
+  Definition Get_radius :=
+    Ref.map (fun α => Some α.(radius)) (fun β α => Some (α <| radius := β |>)).
 End Circle.
 End Circle.
 

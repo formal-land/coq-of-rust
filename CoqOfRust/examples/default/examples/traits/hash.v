@@ -9,27 +9,12 @@ Section Person.
     phone : u64.t;
   }.
   
-  Global Instance Get_id : Notations.Dot "id" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(id)) (fun β α => Some (α <| id := β |>));
-  }.
-  Global Instance Get_AF_id : Notations.DoubleColon t "id" := {
-    Notations.double_colon (α : M.Val t) := α.["id"];
-  }.
-  Global Instance Get_name : Notations.Dot "name" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(name)) (fun β α => Some (α <| name := β |>));
-  }.
-  Global Instance Get_AF_name : Notations.DoubleColon t "name" := {
-    Notations.double_colon (α : M.Val t) := α.["name"];
-  }.
-  Global Instance Get_phone : Notations.Dot "phone" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(phone)) (fun β α => Some (α <| phone := β |>));
-  }.
-  Global Instance Get_AF_phone : Notations.DoubleColon t "phone" := {
-    Notations.double_colon (α : M.Val t) := α.["phone"];
-  }.
+  Definition Get_id :=
+    Ref.map (fun α => Some α.(id)) (fun β α => Some (α <| id := β |>)).
+  Definition Get_name :=
+    Ref.map (fun α => Some α.(name)) (fun β α => Some (α <| name := β |>)).
+  Definition Get_phone :=
+    Ref.map (fun α => Some α.(phone)) (fun β α => Some (α <| phone := β |>)).
 End Person.
 End Person.
 
@@ -54,7 +39,8 @@ Section Impl_core_hash_Hash_for_hash_Person_t.
           core.hash.Hash.hash (Self := u32.t) (H := __H) (Trait := ℐ))) in
       let* α1 : ref hash.Person.t := M.read self in
       let* α2 : mut_ref __H := M.read state in
-      let* α3 : unit := M.call (α0 (borrow (deref α1).["id"]) α2) in
+      let* α3 : unit :=
+        M.call (α0 (borrow (hash.Person.Get_id (deref α1))) α2) in
       M.alloc α3 in
     let* _ : M.Val unit :=
       let* α0 : _ :=
@@ -65,14 +51,16 @@ Section Impl_core_hash_Hash_for_hash_Person_t.
             (Trait := ℐ))) in
       let* α1 : ref hash.Person.t := M.read self in
       let* α2 : mut_ref __H := M.read state in
-      let* α3 : unit := M.call (α0 (borrow (deref α1).["name"]) α2) in
+      let* α3 : unit :=
+        M.call (α0 (borrow (hash.Person.Get_name (deref α1))) α2) in
       M.alloc α3 in
     let* α0 : _ :=
       ltac:(M.get_method (fun ℐ =>
         core.hash.Hash.hash (Self := u64.t) (H := __H) (Trait := ℐ))) in
     let* α1 : ref hash.Person.t := M.read self in
     let* α2 : mut_ref __H := M.read state in
-    let* α3 : unit := M.call (α0 (borrow (deref α1).["phone"]) α2) in
+    let* α3 : unit :=
+      M.call (α0 (borrow (hash.Person.Get_phone (deref α1))) α2) in
     let* α0 : M.Val unit := M.alloc α3 in
     M.read α0.
   
@@ -153,9 +141,9 @@ Definition main : M unit :=
     let* α2 : alloc.string.String.t := M.call (α0 α1) in
     M.alloc
       {|
-        hash.Person.id := Integer.of_Z 5;
+        hash.Person.id := (Integer.of_Z 5) : u32.t;
         hash.Person.name := α2;
-        hash.Person.phone := Integer.of_Z 5556667777;
+        hash.Person.phone := (Integer.of_Z 5556667777) : u64.t;
       |} in
   let* person2 : M.Val hash.Person.t :=
     let* α0 : _ :=
@@ -165,9 +153,9 @@ Definition main : M unit :=
     let* α2 : alloc.string.String.t := M.call (α0 α1) in
     M.alloc
       {|
-        hash.Person.id := Integer.of_Z 5;
+        hash.Person.id := (Integer.of_Z 5) : u32.t;
         hash.Person.name := α2;
-        hash.Person.phone := Integer.of_Z 5556667777;
+        hash.Person.phone := (Integer.of_Z 5556667777) : u64.t;
       |} in
   let* _ : M.Val unit :=
     let* α0 : u64.t := M.call (hash.calculate_hash (borrow person1)) in

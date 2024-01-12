@@ -43,7 +43,12 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
   let* array : M.Val (array i32.t) :=
-    M.alloc [ Integer.of_Z 1; Integer.of_Z (-2); Integer.of_Z 6 ] in
+    M.alloc
+      [
+        (Integer.of_Z 1) : i32.t;
+        (Integer.of_Z (-2)) : i32.t;
+        (Integer.of_Z 6) : i32.t
+      ] in
   let* α0 : M.Val unit :=
     match_operator
       array
@@ -52,9 +57,9 @@ Definition main : M unit :=
           (let* α0 := M.read γ in
           match α0 with
           | [_; _; _] =>
-            let γ0_0 := γ.["[0]"] in
-            let γ0_1 := γ.["[1]"] in
-            let γ0_2 := γ.["[2]"] in
+            let γ0_0 := [0] γ in
+            let γ0_1 := [1] γ in
+            let γ0_2 := [2] γ in
             let* second := M.copy γ0_1 in
             let* third := M.copy γ0_2 in
             let* _ : M.Val unit :=
@@ -92,9 +97,9 @@ Definition main : M unit :=
           (let* α0 := M.read γ in
           match α0 with
           | [_; _; _] =>
-            let γ0_0 := γ.["[0]"] in
-            let γ0_1 := γ.["[1]"] in
-            let γ0_2 := γ.["[2]"] in
+            let γ0_0 := [0] γ in
+            let γ0_1 := [1] γ in
+            let γ0_2 := [2] γ in
             let* third := M.copy γ0_2 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t :=
@@ -128,9 +133,9 @@ Definition main : M unit :=
           (let* α0 := M.read γ in
           match α0 with
           | (_:: _:: _) =>
-            let γ0_0 := γ.["[0]"] in
-            let γ0_1 := γ.["[1]"] in
-            let γ0_slice := γ.["[2].slice"] in
+            let γ0_0 := [0] γ in
+            let γ0_1 := [1] γ in
+            let γ0_slice := [2].slice γ in
             let* second := M.copy γ0_1 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t :=
@@ -164,9 +169,9 @@ Definition main : M unit :=
           (let* α0 := M.read γ in
           match α0 with
           | (_:: _:: _) =>
-            let γ0_0 := γ.["[0]"] in
-            let γ0_1 := γ.["[1]"] in
-            let γ0_slice := γ.["[2].slice"] in
+            let γ0_0 := [0] γ in
+            let γ0_1 := [1] γ in
+            let γ0_slice := [2].slice γ in
             let* second := M.copy γ0_1 in
             let* tail := M.copy γ0_slice in
             let* _ : M.Val unit :=

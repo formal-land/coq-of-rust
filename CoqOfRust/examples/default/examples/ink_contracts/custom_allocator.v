@@ -7,13 +7,8 @@ Section CustomAllocator.
     value : alloc.vec.Vec.t bool.t alloc.vec.Vec.Default.A;
   }.
   
-  Global Instance Get_value : Notations.Dot "value" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(value)) (fun β α => Some (α <| value := β |>));
-  }.
-  Global Instance Get_AF_value : Notations.DoubleColon t "value" := {
-    Notations.double_colon (α : M.Val t) := α.["value"];
-  }.
+  Definition Get_value :=
+    Ref.map (fun α => Some α.(value)) (fun β α => Some (α <| value := β |>)).
 End CustomAllocator.
 End CustomAllocator.
 
@@ -77,7 +72,10 @@ Section Impl_custom_allocator_CustomAllocator_t.
             (Trait := ℐ))) in
       let* α1 : mut_ref custom_allocator.CustomAllocator.t := M.read self in
       let* α2 : mut_ref bool.t :=
-        M.call (α0 (borrow_mut (deref α1).["value"]) (Integer.of_Z 0)) in
+        M.call
+          (α0
+            (borrow_mut (custom_allocator.CustomAllocator.Get_value (deref α1)))
+            ((Integer.of_Z 0) : usize.t)) in
       let* α3 : _ :=
         ltac:(M.get_method (fun ℐ =>
           core.ops.index.Index.index
@@ -86,7 +84,10 @@ Section Impl_custom_allocator_CustomAllocator_t.
             (Trait := ℐ))) in
       let* α4 : mut_ref custom_allocator.CustomAllocator.t := M.read self in
       let* α5 : ref bool.t :=
-        M.call (α3 (borrow (deref α4).["value"]) (Integer.of_Z 0)) in
+        M.call
+          (α3
+            (borrow (custom_allocator.CustomAllocator.Get_value (deref α4)))
+            ((Integer.of_Z 0) : usize.t)) in
       let* α6 : bool.t := M.read (deref α5) in
       assign (deref α2) (UnOp.not α6) in
     let* α0 : M.Val unit := M.alloc tt in
@@ -112,7 +113,10 @@ Section Impl_custom_allocator_CustomAllocator_t.
           (Trait := ℐ))) in
     let* α1 : ref custom_allocator.CustomAllocator.t := M.read self in
     let* α2 : ref bool.t :=
-      M.call (α0 (borrow (deref α1).["value"]) (Integer.of_Z 0)) in
+      M.call
+        (α0
+          (borrow (custom_allocator.CustomAllocator.Get_value (deref α1)))
+          ((Integer.of_Z 0) : usize.t)) in
     M.read (deref α2).
   
   Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {

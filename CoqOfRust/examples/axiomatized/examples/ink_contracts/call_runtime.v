@@ -7,10 +7,8 @@ Section AccountId.
     x0 : u128.t;
   }.
   
-  Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>));
-  }.
+  Definition Get_0 :=
+    Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>)).
 End AccountId.
 End AccountId.
 
@@ -72,15 +70,8 @@ Section Env.
     caller : call_runtime.AccountId.t;
   }.
   
-  Global Instance Get_caller : Notations.Dot "caller" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(caller))
-        (fun β α => Some (α <| caller := β |>));
-  }.
-  Global Instance Get_AF_caller : Notations.DoubleColon t "caller" := {
-    Notations.double_colon (α : M.Val t) := α.["caller"];
-  }.
+  Definition Get_caller :=
+    Ref.map (fun α => Some α.(caller)) (fun β α => Some (α <| caller := β |>)).
 End Env.
 End Env.
 
@@ -124,37 +115,31 @@ Module BalancesCall.
   Inductive t : Set :=
   | Transfer (_ : Transfer.t).
   
-  Global Instance Get_Transfer_dest : Notations.Dot "Transfer.dest" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => match α with | Transfer α => Some α.(Transfer.dest) end)
-        (fun β α =>
-          match α with
-          | Transfer α => Some (Transfer (α <| Transfer.dest := β |>))
-          end);
-  }.
+  Definition Get_Transfer_dest :=
+    Ref.map
+      (fun α => match α with | Transfer α => Some α.(Transfer.dest) end)
+      (fun β α =>
+        match α with
+        | Transfer α => Some (Transfer (α <| Transfer.dest := β |>))
+        end).
   
-  Global Instance Get_Transfer_value : Notations.Dot "Transfer.value" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => match α with | Transfer α => Some α.(Transfer.value) end)
-        (fun β α =>
-          match α with
-          | Transfer α => Some (Transfer (α <| Transfer.value := β |>))
-          end);
-  }.
+  Definition Get_Transfer_value :=
+    Ref.map
+      (fun α => match α with | Transfer α => Some α.(Transfer.value) end)
+      (fun β α =>
+        match α with
+        | Transfer α => Some (Transfer (α <| Transfer.value := β |>))
+        end).
 End BalancesCall.
 
 Module RuntimeCall.
   Inductive t : Set :=
   | Balances (_ : call_runtime.BalancesCall.t).
   
-  Global Instance Get_Balances_0 : Notations.Dot "Balances.0" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => match α with | Balances α0 => Some α0 end)
-        (fun β α => match α with | Balances _ => Some (Balances β) end);
-  }.
+  Definition Get_Balances_0 :=
+    Ref.map
+      (fun α => match α with | Balances α0 => Some α0 end)
+      (fun β α => match α with | Balances _ => Some (Balances β) end).
 End RuntimeCall.
 
 Module  RuntimeCaller.

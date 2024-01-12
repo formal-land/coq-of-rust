@@ -7,10 +7,8 @@ Section SomeType.
     x0 : u32.t;
   }.
   
-  Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>));
-  }.
+  Definition Get_0 :=
+    Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>)).
 End SomeType.
 End SomeType.
 
@@ -20,10 +18,8 @@ Section OtherType.
     x0 : bool.t;
   }.
   
-  Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>));
-  }.
+  Definition Get_0 :=
+    Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>)).
 End OtherType.
 End OtherType.
 
@@ -299,7 +295,7 @@ Definition main : M unit :=
     let* α0 : unit :=
       M.call
         (functions_order.SomeType.t::["meth1"]
-          (functions_order.SomeType.Build_t (Integer.of_Z 0))) in
+          (functions_order.SomeType.Build_t ((Integer.of_Z 0) : u32.t))) in
     M.alloc α0 in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.

@@ -35,11 +35,6 @@ Module arith.
     Module Default.
       Definition Rhs (Self : Set) : Set := Self.
     End Default.
-
-    Global Instance Method_add `(Trait) :
-      Notations.Dot "add" := {
-      Notations.dot := add;
-    }.
   End Add.
 
   Module AddAssign.
@@ -51,11 +46,6 @@ Module arith.
     Module Default.
       Definition Rhs (Self : Set) : Set := Self.
     End Default.
-
-    Global Instance Method_add_assign `(Trait) :
-      Notations.Dot "add_assign" := {
-      Notations.dot := add_assign;
-    }.
   End AddAssign.
 
   Module Sub.
@@ -68,11 +58,6 @@ Module arith.
     Module Default.
       Definition Rhs (Self : Set) : Set := Self.
     End Default.
-
-    Global Instance Method_sub `(Trait) :
-      Notations.Dot "sub" := {
-      Notations.dot := sub;
-    }.
   End Sub.
 
   Module SubAssign.
@@ -84,11 +69,6 @@ Module arith.
     Module Default.
       Definition Rhs (Self : Set) : Set := Self.
     End Default.
-
-    Global Instance Method_sub_assign `(Trait) :
-      Notations.Dot "sub_assign" := {
-      Notations.dot := sub_assign;
-    }.
   End SubAssign.
 
   Module Mul.
@@ -101,11 +81,6 @@ Module arith.
     Module Default.
       Definition Rhs (Self : Set) : Set := Self.
     End Default.
-
-    Global Instance Method_mul `(Trait) :
-      Notations.Dot "mul" := {
-      Notations.dot := mul;
-    }.
   End Mul.
 
   Module MulAssign.
@@ -117,11 +92,6 @@ Module arith.
     Module Default.
       Definition Rhs (Self : Set) : Set := Self.
     End Default.
-
-    Global Instance Method_mul_assign `(Trait) :
-      Notations.Dot "mul_assign" := {
-      Notations.dot := mul_assign;
-    }.
   End MulAssign.
 
   Module Div.
@@ -134,11 +104,6 @@ Module arith.
     Module Default.
       Definition Rhs (Self : Set) : Set := Self.
     End Default.
-
-    Global Instance Method_div `(Trait) :
-      Notations.Dot "div" := {
-      Notations.dot := div;
-    }.
   End Div.
 
   Module DivAssign.
@@ -150,11 +115,6 @@ Module arith.
     Module Default.
       Definition Rhs (Self : Set) : Set := Self.
     End Default.
-
-    Global Instance Method_div_assign `(Trait) :
-      Notations.Dot "div_assign" := {
-      Notations.dot := div_assign;
-    }.
   End DivAssign.
 
   Module Rem.
@@ -167,11 +127,6 @@ Module arith.
     Module Default.
       Definition Rhs (Self : Set) : Set := Self.
     End Default.
-
-    Global Instance Method_rem `(Trait) :
-      Notations.Dot "rem" := {
-      Notations.dot := rem;
-    }.
   End Rem.
 
   Module RemAssign.
@@ -183,11 +138,6 @@ Module arith.
     Module Default.
       Definition Rhs (Self : Set) : Set := Self.
     End Default.
-
-    Global Instance Method_rem_assign `(Trait) :
-      Notations.Dot "rem_assign" := {
-      Notations.dot := rem_assign;
-    }.
   End RemAssign.
 
   Module BitXor.
@@ -200,11 +150,6 @@ Module arith.
     Module Default.
       Definition Rhs (Self : Set) : Set := Self.
     End Default.
-
-    Global Instance Method_bitxor `(Trait) :
-      Notations.Dot "bitxor" := {
-      Notations.dot := bitxor;
-    }.
   End BitXor.
 
   Module BitXorAssign.
@@ -216,11 +161,6 @@ Module arith.
     Module Default.
       Definition Rhs (Self : Set) : Set := Self.
     End Default.
-
-    Global Instance Method_bitxor_assign `(Trait) :
-      Notations.Dot "bitxor_assign" := {
-      Notations.dot := bitxor_assign;
-    }.
   End BitXorAssign.
 
   Module BitAnd.
@@ -233,11 +173,6 @@ Module arith.
     Module Default.
       Definition Rhs (Self : Set) : Set := Self.
     End Default.
-
-    Global Instance Method_bitand `(Trait) :
-      Notations.Dot "bitand" := {
-      Notations.dot := bitand;
-    }.
   End BitAnd.
 
   Module BitAndAssign.
@@ -249,11 +184,6 @@ Module arith.
     Module Default.
       Definition Rhs (Self : Set) : Set := Self.
     End Default.
-
-    Global Instance Method_bitand_assign `(Trait) :
-      Notations.Dot "bitand_assign" := {
-      Notations.dot := bitand_assign;
-    }.
   End BitAndAssign.
 
   Module BitOr.
@@ -266,11 +196,6 @@ Module arith.
     Module Default.
       Definition Rhs (Self : Set) : Set := Self.
     End Default.
-
-    Global Instance Method_bitor `(Trait) :
-      Notations.Dot "bitor" := {
-      Notations.dot := bitor;
-    }.
   End BitOr.
 
   Module BitOrAssign.
@@ -282,11 +207,6 @@ Module arith.
     Module Default.
       Definition Rhs (Self : Set) : Set := Self.
     End Default.
-
-    Global Instance Method_bitor_assign `(Trait) :
-      Notations.Dot "bitor_assign" := {
-      Notations.dot := bitor_assign;
-    }.
   End BitOrAssign.
 
   Module Shl.
@@ -299,11 +219,6 @@ Module arith.
     Module Default.
       Definition Rhs (Self : Set) : Set := Self.
     End Default.
-
-    Global Instance Method_shl `(Trait) :
-      Notations.Dot "shl" := {
-      Notations.dot := shl;
-    }.
   End Shl.
 
   Module ShlAssign.
@@ -315,11 +230,6 @@ Module arith.
     Module Default.
       Definition Rhs (Self : Set) : Set := Self.
     End Default.
-
-    Global Instance Method_shl_assign `(Trait) :
-      Notations.Dot "shl_assign" := {
-      Notations.dot := shl_assign;
-    }.
   End ShlAssign.
 
   Module Shr.
@@ -332,11 +242,6 @@ Module arith.
     Module Default.
       Definition Rhs (Self : Set) : Set := Self.
     End Default.
-
-    Global Instance Method_shr `(Trait) :
-      Notations.Dot "shr" := {
-      Notations.dot := shr;
-    }.
   End Shr.
 
   Module ShrAssign.
@@ -348,11 +253,6 @@ Module arith.
     Module Default.
       Definition Rhs (Self : Set) : Set := Self.
     End Default.
-
-    Global Instance Method_shr_assign `(Trait) :
-      Notations.Dot "shr_assign" := {
-      Notations.dot := shr_assign;
-    }.
   End ShrAssign.
 
   Module Neg.
@@ -360,22 +260,12 @@ Module arith.
       Output : Set;
       neg : Self -> M Output;
     }.
-
-    Global Instance Method_neg `(Trait) :
-      Notations.Dot "neg" := {
-      Notations.dot := neg;
-    }.
   End Neg.
 
   Module Not.
     Class Trait (Self : Set) : Type := {
       Output : Set;
       not : M.Val Self -> M (M.Val Output);
-    }.
-
-    Global Instance Method_not `(Trait) :
-      Notations.Dot "not" := {
-      Notations.dot := not;
     }.
   End Not.
 End arith.
@@ -583,10 +473,6 @@ Module Impl_Not_for_bool.
     let* b := M.read b in
     M.alloc (negb b).
 
-  Global Instance Method_not : Notations.Dot "not" := {
-    Notations.dot := not;
-  }.
-
   Global Instance Not_for_bool : arith.Not.Trait bool := {
     not := not;
   }.
@@ -602,11 +488,6 @@ Module drop.
   Module Drop.
     Class Trait (Self : Set) : Set := {
       drop : mut_ref Self -> M unit;
-    }.
-
-    Global Instance Method_drop `(Trait) :
-      Notations.Dot "drop" := {
-      Notations.dot := drop;
     }.
   End Drop.
 End drop.
@@ -625,21 +506,17 @@ Module control_flow.
     Arguments Continue {_ _}.
     Arguments Break {_ _}.
 
-    Global Instance Get_Continue_0 {B C : Set} : Notations.Dot "Continue.0" := {
-      Notations.dot :=
-        Ref.map (Big := t B C)
-          (fun α => match α with | Continue α0 => Some α0 | _ => None end)
-          (fun β α =>
-            match α with | Continue _ => Some (Continue β) | _ => None end);
-    }.
+    Definition Get_Continue_0 {B C : Set} :=
+      Ref.map (Big := t B C)
+        (fun α => match α with | Continue α0 => Some α0 | _ => None end)
+        (fun β α =>
+          match α with | Continue _ => Some (Continue β) | _ => None end).
 
-    Global Instance Get_Break_0 {B C : Set} : Notations.Dot "Break.0" := {
-      Notations.dot :=
-        Ref.map (Big := t B C)
-          (fun α => match α with | Break α0 => Some α0 | _ => None end)
-          (fun β α =>
-            match α with | Break _ => Some (Break β) | _ => None end);
-    }.
+    Definition Get_Break_0 {B C : Set} :=
+      Ref.map (Big := t B C)
+        (fun α => match α with | Break α0 => Some α0 | _ => None end)
+        (fun β α =>
+          match α with | Break _ => Some (Break β) | _ => None end).
   End ControlFlow.
 End control_flow.
 

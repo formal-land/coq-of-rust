@@ -63,7 +63,12 @@ Definition main : M unit :=
           (Self := alloc.vec.Vec.t i32.t alloc.alloc.Global.t)
           (Trait := ℐ))) in
     let* α2 : M.Val (array i32.t) :=
-      M.alloc [ Integer.of_Z 1; Integer.of_Z 2; Integer.of_Z 3 ] in
+      M.alloc
+        [
+          (Integer.of_Z 1) : i32.t;
+          (Integer.of_Z 2) : i32.t;
+          (Integer.of_Z 3) : i32.t
+        ] in
     let* α3 : M.Val (alloc.boxed.Box.t (array i32.t) alloc.alloc.Global.t) :=
       M.call ((alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α2) in
     let* α4 : alloc.boxed.Box.t (slice i32.t) alloc.alloc.Global.t :=
@@ -98,7 +103,12 @@ Definition main : M unit :=
           (Self := alloc.vec.Vec.t i32.t alloc.alloc.Global.t)
           (Trait := ℐ))) in
     let* α2 : M.Val (array i32.t) :=
-      M.alloc [ Integer.of_Z 2; Integer.of_Z 3; Integer.of_Z 4 ] in
+      M.alloc
+        [
+          (Integer.of_Z 2) : i32.t;
+          (Integer.of_Z 3) : i32.t;
+          (Integer.of_Z 4) : i32.t
+        ] in
     let* α3 : M.Val (alloc.boxed.Box.t (array i32.t) alloc.alloc.Global.t) :=
       M.call ((alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α2) in
     let* α4 : alloc.boxed.Box.t (slice i32.t) alloc.alloc.Global.t :=
@@ -120,7 +130,7 @@ Definition main : M unit :=
               i32.t
               std.collections.hash.map.RandomState.t)::["insert"]
           (borrow_mut a)
-          (Integer.of_Z 4)) in
+          ((Integer.of_Z 4) : i32.t)) in
     let* α1 : M.Val bool.t := M.alloc (UnOp.not α0) in
     let* α2 : bool.t := M.read (use α1) in
     if α2 then
@@ -131,7 +141,7 @@ Definition main : M unit :=
     else
       M.alloc tt in
   let* _ : M.Val unit :=
-    let* α0 : M.Val i32.t := M.alloc (Integer.of_Z 4) in
+    let* α0 : M.Val i32.t := M.alloc ((Integer.of_Z 4) : i32.t) in
     let* α1 : bool.t :=
       M.call
         ((std.collections.hash.set.HashSet.t
@@ -156,7 +166,7 @@ Definition main : M unit :=
               i32.t
               std.collections.hash.map.RandomState.t)::["insert"]
           (borrow_mut b)
-          (Integer.of_Z 5)) in
+          ((Integer.of_Z 5) : i32.t)) in
     M.alloc α0 in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=

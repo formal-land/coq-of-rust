@@ -7,12 +7,10 @@ Module Foo.
   | Baz
   | Qux (_ : u32.t).
   
-  Global Instance Get_Qux_0 : Notations.Dot "Qux.0" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => match α with | Qux α0 => Some α0 | _ => None end)
-        (fun β α => match α with | Qux _ => Some (Qux β) | _ => None end);
-  }.
+  Definition Get_Qux_0 :=
+    Ref.map
+      (fun α => match α with | Qux α0 => Some α0 | _ => None end)
+      (fun β α => match α with | Qux _ => Some (Qux β) | _ => None end).
 End Foo.
 
 (*
@@ -52,7 +50,7 @@ Definition main : M unit :=
   let* b : M.Val if_let_match_enum_values.Foo.t :=
     M.alloc if_let_match_enum_values.Foo.Baz in
   let* c : M.Val if_let_match_enum_values.Foo.t :=
-    M.alloc (if_let_match_enum_values.Foo.Qux (Integer.of_Z 100)) in
+    M.alloc (if_let_match_enum_values.Foo.Qux ((Integer.of_Z 100) : u32.t)) in
   let* _ : M.Val unit :=
     let* α0 : M.Val bool.t := let_if if_let_match_enum_values.Foo.Bar := a in
     let* α1 : bool.t := M.read α0 in

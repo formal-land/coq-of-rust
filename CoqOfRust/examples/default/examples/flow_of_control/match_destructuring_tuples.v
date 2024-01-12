@@ -23,7 +23,10 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
   let* triple : M.Val ((i32.t * i32.t) * i32.t) :=
-    M.alloc (Integer.of_Z 0, Integer.of_Z (-2), Integer.of_Z 3) in
+    M.alloc
+      ((Integer.of_Z 0) : i32.t,
+        (Integer.of_Z (-2)) : i32.t,
+        (Integer.of_Z 3) : i32.t) in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "Tell me about ") in

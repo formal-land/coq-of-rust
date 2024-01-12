@@ -26,22 +26,12 @@ Section Form.
     age : u8.t;
   }.
   
-  Global Instance Get_username : Notations.Dot "username" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(username))
-        (fun β α => Some (α <| username := β |>));
-  }.
-  Global Instance Get_AF_username : Notations.DoubleColon t "username" := {
-    Notations.double_colon (α : M.Val t) := α.["username"];
-  }.
-  Global Instance Get_age : Notations.Dot "age" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(age)) (fun β α => Some (α <| age := β |>));
-  }.
-  Global Instance Get_AF_age : Notations.DoubleColon t "age" := {
-    Notations.double_colon (α : M.Val t) := α.["age"];
-  }.
+  Definition Get_username :=
+    Ref.map
+      (fun α => Some α.(username))
+      (fun β α => Some (α <| username := β |>)).
+  Definition Get_age :=
+    Ref.map (fun α => Some α.(age)) (fun β α => Some (α <| age := β |>)).
 End Form.
 End Form.
 

@@ -36,20 +36,10 @@ Section Complex.
     im : f32.t;
   }.
   
-  Global Instance Get_re : Notations.Dot "re" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(re)) (fun β α => Some (α <| re := β |>));
-  }.
-  Global Instance Get_AF_re : Notations.DoubleColon t "re" := {
-    Notations.double_colon (α : M.Val t) := α.["re"];
-  }.
-  Global Instance Get_im : Notations.Dot "im" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(im)) (fun β α => Some (α <| im := β |>));
-  }.
-  Global Instance Get_AF_im : Notations.DoubleColon t "im" := {
-    Notations.double_colon (α : M.Val t) := α.["im"];
-  }.
+  Definition Get_re :=
+    Ref.map (fun α => Some α.(re)) (fun β α => Some (α <| re := β |>)).
+  Definition Get_im :=
+    Ref.map (fun α => Some α.(im)) (fun β α => Some (α <| im := β |>)).
 End Complex.
 End Complex.
 

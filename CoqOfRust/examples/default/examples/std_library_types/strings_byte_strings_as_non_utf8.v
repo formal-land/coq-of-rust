@@ -40,7 +40,8 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
   let* bytestring : M.Val (ref (array u8.t)) :=
-    let* α0 : ref (array u8.t) := M.read UnsupportedLiteral in
+    let* α0 : ref (array u8.t) :=
+      M.read (UnsupportedLiteral : M.Val (ref (array u8.t))) in
     M.alloc α0 in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
@@ -63,7 +64,8 @@ Definition main : M unit :=
       let* α10 : unit := M.call (std.io.stdio._print α9) in
       M.alloc α10 in
     M.alloc tt in
-  let* escaped : M.Val (ref (array u8.t)) := M.copy UnsupportedLiteral in
+  let* escaped : M.Val (ref (array u8.t)) :=
+    M.copy (UnsupportedLiteral : M.Val (ref (array u8.t))) in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "Some escaped bytes: ") in
@@ -85,7 +87,8 @@ Definition main : M unit :=
       let* α10 : unit := M.call (std.io.stdio._print α9) in
       M.alloc α10 in
     M.alloc tt in
-  let* raw_bytestring : M.Val (ref (array u8.t)) := M.copy UnsupportedLiteral in
+  let* raw_bytestring : M.Val (ref (array u8.t)) :=
+    M.copy (UnsupportedLiteral : M.Val (ref (array u8.t))) in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "") in
@@ -144,8 +147,10 @@ Definition main : M unit :=
       M.alloc tt
     else
       M.alloc tt in
-  let* _quotes : M.Val (ref (array u8.t)) := M.copy UnsupportedLiteral in
-  let* shift_jis : M.Val (ref (array u8.t)) := M.copy UnsupportedLiteral in
+  let* _quotes : M.Val (ref (array u8.t)) :=
+    M.copy (UnsupportedLiteral : M.Val (ref (array u8.t))) in
+  let* shift_jis : M.Val (ref (array u8.t)) :=
+    M.copy (UnsupportedLiteral : M.Val (ref (array u8.t))) in
   let* _ : M.Val unit :=
     let* α0 : ref (array u8.t) := M.read shift_jis in
     let* α1 : M.Val (ref (array u8.t)) := M.alloc α0 in
@@ -162,7 +167,7 @@ Definition main : M unit :=
           (let* α0 := M.read γ in
           match α0 with
           | core.result.Result.Ok _ =>
-            let γ0_0 := γ.["Ok.0"] in
+            let γ0_0 := core.result.Result.Get_Ok_0 γ in
             let* my_str := M.copy γ0_0 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t :=
@@ -195,7 +200,7 @@ Definition main : M unit :=
           (let* α0 := M.read γ in
           match α0 with
           | core.result.Result.Err _ =>
-            let γ0_0 := γ.["Err.0"] in
+            let γ0_0 := core.result.Result.Get_Err_0 γ in
             let* e := M.copy γ0_0 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "Conversion failed: ") in

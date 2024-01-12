@@ -25,18 +25,19 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* n : M.Val i32.t := M.alloc (Integer.of_Z 1) in
+  let* n : M.Val i32.t := M.alloc ((Integer.of_Z 1) : i32.t) in
   let* α0 : M.Val unit :=
     M.loop
       (let* α0 : i32.t := M.read n in
-      let* α1 : M.Val bool.t := M.alloc (BinOp.Pure.lt α0 (Integer.of_Z 101)) in
+      let* α1 : M.Val bool.t :=
+        M.alloc (BinOp.Pure.lt α0 ((Integer.of_Z 101) : i32.t)) in
       let* α2 : bool.t := M.read (use α1) in
       if α2 then
         let* _ : M.Val unit :=
           let* α0 : i32.t := M.read n in
-          let* α1 : i32.t := BinOp.Panic.rem α0 (Integer.of_Z 15) in
+          let* α1 : i32.t := BinOp.Panic.rem α0 ((Integer.of_Z 15) : i32.t) in
           let* α2 : M.Val bool.t :=
-            M.alloc (BinOp.Pure.eq α1 (Integer.of_Z 0)) in
+            M.alloc (BinOp.Pure.eq α1 ((Integer.of_Z 0) : i32.t)) in
           let* α3 : bool.t := M.read (use α2) in
           if α3 then
             let* _ : M.Val unit :=
@@ -56,9 +57,9 @@ Definition main : M unit :=
             M.alloc tt
           else
             let* α0 : i32.t := M.read n in
-            let* α1 : i32.t := BinOp.Panic.rem α0 (Integer.of_Z 3) in
+            let* α1 : i32.t := BinOp.Panic.rem α0 ((Integer.of_Z 3) : i32.t) in
             let* α2 : M.Val bool.t :=
-              M.alloc (BinOp.Pure.eq α1 (Integer.of_Z 0)) in
+              M.alloc (BinOp.Pure.eq α1 ((Integer.of_Z 0) : i32.t)) in
             let* α3 : bool.t := M.read (use α2) in
             if α3 then
               let* _ : M.Val unit :=
@@ -78,9 +79,10 @@ Definition main : M unit :=
               M.alloc tt
             else
               let* α0 : i32.t := M.read n in
-              let* α1 : i32.t := BinOp.Panic.rem α0 (Integer.of_Z 5) in
+              let* α1 : i32.t :=
+                BinOp.Panic.rem α0 ((Integer.of_Z 5) : i32.t) in
               let* α2 : M.Val bool.t :=
-                M.alloc (BinOp.Pure.eq α1 (Integer.of_Z 0)) in
+                M.alloc (BinOp.Pure.eq α1 ((Integer.of_Z 0) : i32.t)) in
               let* α3 : bool.t := M.read (use α2) in
               if α3 then
                 let* _ : M.Val unit :=
@@ -127,7 +129,7 @@ Definition main : M unit :=
         let* _ : M.Val unit :=
           let β : M.Val i32.t := n in
           let* α0 := M.read β in
-          let* α1 := BinOp.Panic.add α0 (Integer.of_Z 1) in
+          let* α1 := BinOp.Panic.add α0 ((Integer.of_Z 1) : i32.t) in
           assign β α1 in
         M.alloc tt
       else

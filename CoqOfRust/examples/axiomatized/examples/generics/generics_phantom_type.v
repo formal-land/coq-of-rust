@@ -10,14 +10,10 @@ Section PhantomTuple.
     x1 : core.marker.PhantomData.t B;
   }.
   
-  Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>));
-  }.
-  Global Instance Get_1 : Notations.Dot "1" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(x1)) (fun β α => Some (α <| x1 := β |>));
-  }.
+  Definition Get_0 :=
+    Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>)).
+  Definition Get_1 :=
+    Ref.map (fun α => Some α.(x1)) (fun β α => Some (α <| x1 := β |>)).
 End PhantomTuple.
 End PhantomTuple.
 
@@ -73,22 +69,12 @@ Section PhantomStruct.
     phantom : core.marker.PhantomData.t B;
   }.
   
-  Global Instance Get_first : Notations.Dot "first" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(first)) (fun β α => Some (α <| first := β |>));
-  }.
-  Global Instance Get_AF_first : Notations.DoubleColon t "first" := {
-    Notations.double_colon (α : M.Val t) := α.["first"];
-  }.
-  Global Instance Get_phantom : Notations.Dot "phantom" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(phantom))
-        (fun β α => Some (α <| phantom := β |>));
-  }.
-  Global Instance Get_AF_phantom : Notations.DoubleColon t "phantom" := {
-    Notations.double_colon (α : M.Val t) := α.["phantom"];
-  }.
+  Definition Get_first :=
+    Ref.map (fun α => Some α.(first)) (fun β α => Some (α <| first := β |>)).
+  Definition Get_phantom :=
+    Ref.map
+      (fun α => Some α.(phantom))
+      (fun β α => Some (α <| phantom := β |>)).
 End PhantomStruct.
 End PhantomStruct.
 

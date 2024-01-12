@@ -19,7 +19,7 @@ Definition foo {A : Set} (o : core.option.Option.t A) : M unit :=
           (let* α0 := M.read γ in
           match α0 with
           | core.option.Option.Some _ =>
-            let γ0_0 := γ.["Some.0"] in
+            let γ0_0 := core.option.Option.Get_Some_0 γ in
             let* _a := M.copy γ0_0 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "some
@@ -104,8 +104,8 @@ Module tests.
       M.call
         (α0
           {|
-            core.ops.range.Range.start := Integer.of_Z 0;
-            core.ops.range.Range.end_ := Integer.of_Z 5;
+            core.ops.range.Range.start := (Integer.of_Z 0) : i32.t;
+            core.ops.range.Range.end_ := (Integer.of_Z 5) : i32.t;
           |}) in
     let* α2 : M.Val (core.ops.range.Range.t i32.t) := M.alloc α1 in
     let* α3 : M.Val unit :=
@@ -142,7 +142,7 @@ Module tests.
                       (let* α0 := M.read γ in
                       match α0 with
                       | core.option.Option.Some _ =>
-                        let γ0_0 := γ.["Some.0"] in
+                        let γ0_0 := core.option.Option.Get_Some_0 γ in
                         let* _ : M.Val unit :=
                           let* α0 : _ :=
                             ltac:(M.get_method (fun ℐ =>
@@ -219,8 +219,8 @@ Module tests.
       M.call
         (α0
           {|
-            core.ops.range.Range.start := Integer.of_Z 0;
-            core.ops.range.Range.end_ := Integer.of_Z 5;
+            core.ops.range.Range.start := (Integer.of_Z 0) : i32.t;
+            core.ops.range.Range.end_ := (Integer.of_Z 5) : i32.t;
           |}) in
     let* α2 : M.Val (core.ops.range.Range.t i32.t) := M.alloc α1 in
     let* α3 : M.Val unit :=
@@ -257,7 +257,7 @@ Module tests.
                       (let* α0 := M.read γ in
                       match α0 with
                       | core.option.Option.Some _ =>
-                        let γ0_0 := γ.["Some.0"] in
+                        let γ0_0 := core.option.Option.Get_Some_0 γ in
                         let* _ : M.Val unit :=
                           let* α0 : _ :=
                             ltac:(M.get_method (fun ℐ =>
@@ -335,8 +335,8 @@ Definition test_file : M unit :=
     M.call
       (α0
         {|
-          core.ops.range.Range.start := Integer.of_Z 0;
-          core.ops.range.Range.end_ := Integer.of_Z 5;
+          core.ops.range.Range.start := (Integer.of_Z 0) : i32.t;
+          core.ops.range.Range.end_ := (Integer.of_Z 5) : i32.t;
         |}) in
   let* α2 : M.Val (core.ops.range.Range.t i32.t) := M.alloc α1 in
   let* α3 : M.Val unit :=
@@ -373,7 +373,7 @@ Definition test_file : M unit :=
                     (let* α0 := M.read γ in
                     match α0 with
                     | core.option.Option.Some _ =>
-                      let γ0_0 := γ.["Some.0"] in
+                      let γ0_0 := core.option.Option.Get_Some_0 γ in
                       let* _ : M.Val unit :=
                         let* α0 : _ :=
                           ltac:(M.get_method (fun ℐ =>
@@ -450,8 +450,8 @@ Definition test_file_also : M unit :=
     M.call
       (α0
         {|
-          core.ops.range.Range.start := Integer.of_Z 0;
-          core.ops.range.Range.end_ := Integer.of_Z 5;
+          core.ops.range.Range.start := (Integer.of_Z 0) : i32.t;
+          core.ops.range.Range.end_ := (Integer.of_Z 5) : i32.t;
         |}) in
   let* α2 : M.Val (core.ops.range.Range.t i32.t) := M.alloc α1 in
   let* α3 : M.Val unit :=
@@ -488,7 +488,7 @@ Definition test_file_also : M unit :=
                     (let* α0 := M.read γ in
                     match α0 with
                     | core.option.Option.Some _ =>
-                      let γ0_0 := γ.["Some.0"] in
+                      let γ0_0 := core.option.Option.Get_Some_0 γ in
                       let* _ : M.Val unit :=
                         let* α0 : _ :=
                           ltac:(M.get_method (fun ℐ =>

@@ -16,42 +16,34 @@ Module WebEvent.
   | Paste (_ : alloc.string.String.t)
   | Click (_ : Click.t).
   
-  Global Instance Get_KeyPress_0 : Notations.Dot "KeyPress.0" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => match α with | KeyPress α0 => Some α0 | _ => None end)
-        (fun β α =>
-          match α with | KeyPress _ => Some (KeyPress β) | _ => None end);
-  }.
+  Definition Get_KeyPress_0 :=
+    Ref.map
+      (fun α => match α with | KeyPress α0 => Some α0 | _ => None end)
+      (fun β α =>
+        match α with | KeyPress _ => Some (KeyPress β) | _ => None end).
   
-  Global Instance Get_Paste_0 : Notations.Dot "Paste.0" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => match α with | Paste α0 => Some α0 | _ => None end)
-        (fun β α => match α with | Paste _ => Some (Paste β) | _ => None end);
-  }.
+  Definition Get_Paste_0 :=
+    Ref.map
+      (fun α => match α with | Paste α0 => Some α0 | _ => None end)
+      (fun β α => match α with | Paste _ => Some (Paste β) | _ => None end).
   
-  Global Instance Get_Click_x : Notations.Dot "Click.x" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => match α with | Click α => Some α.(Click.x) | _ => None end)
-        (fun β α =>
-          match α with
-          | Click α => Some (Click (α <| Click.x := β |>))
-          | _ => None
-          end);
-  }.
+  Definition Get_Click_x :=
+    Ref.map
+      (fun α => match α with | Click α => Some α.(Click.x) | _ => None end)
+      (fun β α =>
+        match α with
+        | Click α => Some (Click (α <| Click.x := β |>))
+        | _ => None
+        end).
   
-  Global Instance Get_Click_y : Notations.Dot "Click.y" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => match α with | Click α => Some α.(Click.y) | _ => None end)
-        (fun β α =>
-          match α with
-          | Click α => Some (Click (α <| Click.y := β |>))
-          | _ => None
-          end);
-  }.
+  Definition Get_Click_y :=
+    Ref.map
+      (fun α => match α with | Click α => Some α.(Click.y) | _ => None end)
+      (fun β α =>
+        match α with
+        | Click α => Some (Click (α <| Click.y := β |>))
+        | _ => None
+        end).
 End WebEvent.
 
 (*
@@ -123,7 +115,7 @@ Definition inspect (event : enums.WebEvent.t) : M unit :=
           (let* α0 := M.read γ in
           match α0 with
           | enums.WebEvent.KeyPress _ =>
-            let γ0_0 := γ.["KeyPress.0"] in
+            let γ0_0 := enums.WebEvent.Get_KeyPress_0 γ in
             let* c := M.copy γ0_0 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "pressed '") in
@@ -154,7 +146,7 @@ Definition inspect (event : enums.WebEvent.t) : M unit :=
           (let* α0 := M.read γ in
           match α0 with
           | enums.WebEvent.Paste _ =>
-            let γ0_0 := γ.["Paste.0"] in
+            let γ0_0 := enums.WebEvent.Get_Paste_0 γ in
             let* s := M.copy γ0_0 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "pasted """) in
@@ -189,8 +181,8 @@ Definition inspect (event : enums.WebEvent.t) : M unit :=
               {| enums.WebEvent.Click.x := _; enums.WebEvent.Click.y := _;
               |}
               =>
-            let γ0_0 := γ.["Click.x"] in
-            let γ0_1 := γ.["Click.y"] in
+            let γ0_0 := enums.WebEvent.Get_Click_x γ in
+            let γ0_1 := enums.WebEvent.Get_Click_y γ in
             let* x := M.copy γ0_0 in
             let* y := M.copy γ0_1 in
             let* _ : M.Val unit :=
@@ -257,8 +249,8 @@ Definition main : M unit :=
     M.alloc
       (enums.WebEvent.Click
         {|
-        enums.WebEvent.Click.x := Integer.of_Z 20;
-        enums.WebEvent.Click.y := Integer.of_Z 80;
+        enums.WebEvent.Click.x := (Integer.of_Z 20) : i64.t;
+        enums.WebEvent.Click.y := (Integer.of_Z 80) : i64.t;
       |}) in
   let* load : M.Val enums.WebEvent.t := M.alloc enums.WebEvent.PageLoad in
   let* unload : M.Val enums.WebEvent.t := M.alloc enums.WebEvent.PageUnload in

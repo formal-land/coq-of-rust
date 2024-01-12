@@ -8,20 +8,10 @@ Section Fibonacci.
     next : u32.t;
   }.
   
-  Global Instance Get_curr : Notations.Dot "curr" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(curr)) (fun β α => Some (α <| curr := β |>));
-  }.
-  Global Instance Get_AF_curr : Notations.DoubleColon t "curr" := {
-    Notations.double_colon (α : M.Val t) := α.["curr"];
-  }.
-  Global Instance Get_next : Notations.Dot "next" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(next)) (fun β α => Some (α <| next := β |>));
-  }.
-  Global Instance Get_AF_next : Notations.DoubleColon t "next" := {
-    Notations.double_colon (α : M.Val t) := α.["next"];
-  }.
+  Definition Get_curr :=
+    Ref.map (fun α => Some α.(curr)) (fun β α => Some (α <| curr := β |>)).
+  Definition Get_next :=
+    Ref.map (fun α => Some α.(next)) (fun β α => Some (α <| next := β |>)).
 End Fibonacci.
 End Fibonacci.
 

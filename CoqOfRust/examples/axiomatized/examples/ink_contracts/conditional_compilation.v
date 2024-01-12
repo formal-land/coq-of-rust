@@ -7,10 +7,8 @@ Section AccountId.
     x0 : u128.t;
   }.
   
-  Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>));
-  }.
+  Definition Get_0 :=
+    Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>)).
 End AccountId.
 End AccountId.
 
@@ -74,15 +72,8 @@ Section Env.
     caller : conditional_compilation.AccountId.t;
   }.
   
-  Global Instance Get_caller : Notations.Dot "caller" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(caller))
-        (fun β α => Some (α <| caller := β |>));
-  }.
-  Global Instance Get_AF_caller : Notations.DoubleColon t "caller" := {
-    Notations.double_colon (α : M.Val t) := α.["caller"];
-  }.
+  Definition Get_caller :=
+    Ref.map (fun α => Some α.(caller)) (fun β α => Some (α <| caller := β |>)).
 End Env.
 End Env.
 
@@ -104,22 +95,12 @@ Section Changes.
     by_ : conditional_compilation.AccountId.t;
   }.
   
-  Global Instance Get_new_value : Notations.Dot "new_value" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(new_value))
-        (fun β α => Some (α <| new_value := β |>));
-  }.
-  Global Instance Get_AF_new_value : Notations.DoubleColon t "new_value" := {
-    Notations.double_colon (α : M.Val t) := α.["new_value"];
-  }.
-  Global Instance Get_by_ : Notations.Dot "by_" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(by_)) (fun β α => Some (α <| by_ := β |>));
-  }.
-  Global Instance Get_AF_by_ : Notations.DoubleColon t "by_" := {
-    Notations.double_colon (α : M.Val t) := α.["by_"];
-  }.
+  Definition Get_new_value :=
+    Ref.map
+      (fun α => Some α.(new_value))
+      (fun β α => Some (α <| new_value := β |>)).
+  Definition Get_by_ :=
+    Ref.map (fun α => Some α.(by_)) (fun β α => Some (α <| by_ := β |>)).
 End Changes.
 End Changes.
 
@@ -131,29 +112,14 @@ Section ChangesDated.
     when : ltac:(conditional_compilation.BlockNumber);
   }.
   
-  Global Instance Get_new_value : Notations.Dot "new_value" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(new_value))
-        (fun β α => Some (α <| new_value := β |>));
-  }.
-  Global Instance Get_AF_new_value : Notations.DoubleColon t "new_value" := {
-    Notations.double_colon (α : M.Val t) := α.["new_value"];
-  }.
-  Global Instance Get_by_ : Notations.Dot "by_" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(by_)) (fun β α => Some (α <| by_ := β |>));
-  }.
-  Global Instance Get_AF_by_ : Notations.DoubleColon t "by_" := {
-    Notations.double_colon (α : M.Val t) := α.["by_"];
-  }.
-  Global Instance Get_when : Notations.Dot "when" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(when)) (fun β α => Some (α <| when := β |>));
-  }.
-  Global Instance Get_AF_when : Notations.DoubleColon t "when" := {
-    Notations.double_colon (α : M.Val t) := α.["when"];
-  }.
+  Definition Get_new_value :=
+    Ref.map
+      (fun α => Some α.(new_value))
+      (fun β α => Some (α <| new_value := β |>)).
+  Definition Get_by_ :=
+    Ref.map (fun α => Some α.(by_)) (fun β α => Some (α <| by_ := β |>)).
+  Definition Get_when :=
+    Ref.map (fun α => Some α.(when)) (fun β α => Some (α <| when := β |>)).
 End ChangesDated.
 End ChangesDated.
 
@@ -162,24 +128,16 @@ Module Event.
   | Changes (_ : conditional_compilation.Changes.t)
   | ChangesDated (_ : conditional_compilation.ChangesDated.t).
   
-  Global Instance Get_Changes_0 : Notations.Dot "Changes.0" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => match α with | Changes α0 => Some α0 | _ => None end)
-        (fun β α =>
-          match α with | Changes _ => Some (Changes β) | _ => None end);
-  }.
+  Definition Get_Changes_0 :=
+    Ref.map
+      (fun α => match α with | Changes α0 => Some α0 | _ => None end)
+      (fun β α => match α with | Changes _ => Some (Changes β) | _ => None end).
   
-  Global Instance Get_ChangesDated_0 : Notations.Dot "ChangesDated.0" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => match α with | ChangesDated α0 => Some α0 | _ => None end)
-        (fun β α =>
-          match α with
-          | ChangesDated _ => Some (ChangesDated β)
-          | _ => None
-          end);
-  }.
+  Definition Get_ChangesDated_0 :=
+    Ref.map
+      (fun α => match α with | ChangesDated α0 => Some α0 | _ => None end)
+      (fun β α =>
+        match α with | ChangesDated _ => Some (ChangesDated β) | _ => None end).
 End Event.
 
 Module  Impl_conditional_compilation_Env_t.
@@ -232,13 +190,8 @@ Section ConditionalCompilation.
     value : bool.t;
   }.
   
-  Global Instance Get_value : Notations.Dot "value" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(value)) (fun β α => Some (α <| value := β |>));
-  }.
-  Global Instance Get_AF_value : Notations.DoubleColon t "value" := {
-    Notations.double_colon (α : M.Val t) := α.["value"];
-  }.
+  Definition Get_value :=
+    Ref.map (fun α => Some α.(value)) (fun β α => Some (α <| value := β |>)).
 End ConditionalCompilation.
 End ConditionalCompilation.
 

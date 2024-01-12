@@ -40,22 +40,14 @@ Section Matrix.
     x3 : f32.t;
   }.
   
-  Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>));
-  }.
-  Global Instance Get_1 : Notations.Dot "1" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(x1)) (fun β α => Some (α <| x1 := β |>));
-  }.
-  Global Instance Get_2 : Notations.Dot "2" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(x2)) (fun β α => Some (α <| x2 := β |>));
-  }.
-  Global Instance Get_3 : Notations.Dot "3" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(x3)) (fun β α => Some (α <| x3 := β |>));
-  }.
+  Definition Get_0 :=
+    Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>)).
+  Definition Get_1 :=
+    Ref.map (fun α => Some α.(x1)) (fun β α => Some (α <| x1 := β |>)).
+  Definition Get_2 :=
+    Ref.map (fun α => Some α.(x2)) (fun β α => Some (α <| x2 := β |>)).
+  Definition Get_3 :=
+    Ref.map (fun α => Some α.(x3)) (fun β α => Some (α <| x3 := β |>)).
 End Matrix.
 End Matrix.
 
@@ -75,16 +67,20 @@ Section Impl_core_fmt_Debug_for_tuples_Matrix_t.
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref str.t := M.read (mk_str "Matrix") in
     let* α2 : ref tuples.Matrix.t := M.read self in
-    let* α3 : M.Val (ref f32.t) := M.alloc (borrow (deref α2).["0"]) in
+    let* α3 : M.Val (ref f32.t) :=
+      M.alloc (borrow (tuples.Matrix.Get_0 (deref α2))) in
     let* α4 : ref _ (* dyn *) := M.read (pointer_coercion "Unsize" α3) in
     let* α5 : ref tuples.Matrix.t := M.read self in
-    let* α6 : M.Val (ref f32.t) := M.alloc (borrow (deref α5).["1"]) in
+    let* α6 : M.Val (ref f32.t) :=
+      M.alloc (borrow (tuples.Matrix.Get_1 (deref α5))) in
     let* α7 : ref _ (* dyn *) := M.read (pointer_coercion "Unsize" α6) in
     let* α8 : ref tuples.Matrix.t := M.read self in
-    let* α9 : M.Val (ref f32.t) := M.alloc (borrow (deref α8).["2"]) in
+    let* α9 : M.Val (ref f32.t) :=
+      M.alloc (borrow (tuples.Matrix.Get_2 (deref α8))) in
     let* α10 : ref _ (* dyn *) := M.read (pointer_coercion "Unsize" α9) in
     let* α11 : ref tuples.Matrix.t := M.read self in
-    let* α12 : M.Val (ref f32.t) := M.alloc (borrow (deref α11).["3"]) in
+    let* α12 : M.Val (ref f32.t) :=
+      M.alloc (borrow (tuples.Matrix.Get_3 (deref α11))) in
     let* α13 : M.Val (ref (ref f32.t)) := M.alloc (borrow α12) in
     let* α14 : ref _ (* dyn *) := M.read (pointer_coercion "Unsize" α13) in
     M.call
@@ -159,17 +155,17 @@ Definition main : M unit :=
         char.t)
         *
         bool.t) :=
-    let* α0 : f32.t := M.read UnsupportedLiteral in
-    let* α1 : f64.t := M.read UnsupportedLiteral in
+    let* α0 : f32.t := M.read (UnsupportedLiteral : M.Val f32.t) in
+    let* α1 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
     M.alloc
-      (Integer.of_Z 1,
-        Integer.of_Z 2,
-        Integer.of_Z 3,
-        Integer.of_Z 4,
-        Integer.of_Z (-1),
-        Integer.of_Z (-2),
-        Integer.of_Z (-3),
-        Integer.of_Z (-4),
+      ((Integer.of_Z 1) : u8.t,
+        (Integer.of_Z 2) : u16.t,
+        (Integer.of_Z 3) : u32.t,
+        (Integer.of_Z 4) : u64.t,
+        (Integer.of_Z (-1)) : i8.t,
+        (Integer.of_Z (-2)) : i16.t,
+        (Integer.of_Z (-3)) : i32.t,
+        (Integer.of_Z (-4)) : i64.t,
         α0,
         α1,
         "a"%char,
@@ -221,9 +217,11 @@ Definition main : M unit :=
   let* tuple_of_tuples :
       M.Val ((((u8.t * u16.t) * u32.t) * (u64.t * i8.t)) * i16.t) :=
     M.alloc
-      ((Integer.of_Z 1, Integer.of_Z 2, Integer.of_Z 2),
-        (Integer.of_Z 4, Integer.of_Z (-1)),
-        Integer.of_Z (-2)) in
+      (((Integer.of_Z 1) : u8.t,
+          (Integer.of_Z 2) : u16.t,
+          (Integer.of_Z 2) : u32.t),
+        ((Integer.of_Z 4) : u64.t, (Integer.of_Z (-1)) : i8.t),
+        (Integer.of_Z (-2)) : i16.t) in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "tuple of tuples: ") in
@@ -246,7 +244,8 @@ Definition main : M unit :=
       let* α10 : unit := M.call (std.io.stdio._print α9) in
       M.alloc α10 in
     M.alloc tt in
-  let* pair : M.Val (i32.t * bool.t) := M.alloc (Integer.of_Z 1, true) in
+  let* pair : M.Val (i32.t * bool.t) :=
+    M.alloc ((Integer.of_Z 1) : i32.t, true) in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "pair is ") in
@@ -301,7 +300,7 @@ Definition main : M unit :=
       let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
       let* α4 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α3) in
-      let* α5 : M.Val u32.t := M.alloc (Integer.of_Z 5) in
+      let* α5 : M.Val u32.t := M.alloc ((Integer.of_Z 5) : u32.t) in
       let* α6 : core.fmt.rt.Argument.t :=
         M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow α5)) in
       let* α7 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α6 ] in
@@ -323,7 +322,7 @@ Definition main : M unit :=
       let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
       let* α4 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α3) in
-      let* α5 : M.Val u32.t := M.alloc (Integer.of_Z 5) in
+      let* α5 : M.Val u32.t := M.alloc ((Integer.of_Z 5) : u32.t) in
       let* α6 : core.fmt.rt.Argument.t :=
         M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow α5)) in
       let* α7 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α6 ] in
@@ -338,8 +337,8 @@ Definition main : M unit :=
     M.alloc tt in
   let* tuple : M.Val (((i32.t * (ref str.t)) * f64.t) * bool.t) :=
     let* α0 : ref str.t := M.read (mk_str "hello") in
-    let* α1 : f64.t := M.read UnsupportedLiteral in
-    M.alloc (Integer.of_Z 1, α0, α1, true) in
+    let* α1 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
+    M.alloc ((Integer.of_Z 1) : i32.t, α0, α1, true) in
   let* α0 : M.Val unit :=
     match_operator
       tuple
@@ -392,10 +391,10 @@ Definition main : M unit :=
                 M.alloc α16 in
               M.alloc tt in
             let* matrix : M.Val tuples.Matrix.t :=
-              let* α0 : f32.t := M.read UnsupportedLiteral in
-              let* α1 : f32.t := M.read UnsupportedLiteral in
-              let* α2 : f32.t := M.read UnsupportedLiteral in
-              let* α3 : f32.t := M.read UnsupportedLiteral in
+              let* α0 : f32.t := M.read (UnsupportedLiteral : M.Val f32.t) in
+              let* α1 : f32.t := M.read (UnsupportedLiteral : M.Val f32.t) in
+              let* α2 : f32.t := M.read (UnsupportedLiteral : M.Val f32.t) in
+              let* α3 : f32.t := M.read (UnsupportedLiteral : M.Val f32.t) in
               M.alloc (tuples.Matrix.Build_t α0 α1 α2 α3) in
             let* _ : M.Val unit :=
               let* _ : M.Val unit :=

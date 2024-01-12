@@ -24,9 +24,10 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* long_lived_binding : M.Val i32.t := M.alloc (Integer.of_Z 1) in
+  let* long_lived_binding : M.Val i32.t := M.alloc ((Integer.of_Z 1) : i32.t) in
   let* _ : M.Val unit :=
-    let* short_lived_binding : M.Val i32.t := M.alloc (Integer.of_Z 2) in
+    let* short_lived_binding : M.Val i32.t :=
+      M.alloc ((Integer.of_Z 2) : i32.t) in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
         let* α0 : ref str.t := M.read (mk_str "inner short: ") in

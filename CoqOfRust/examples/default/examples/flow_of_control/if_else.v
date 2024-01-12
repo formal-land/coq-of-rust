@@ -32,10 +32,11 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* n : M.Val i32.t := M.alloc (Integer.of_Z 5) in
+  let* n : M.Val i32.t := M.alloc ((Integer.of_Z 5) : i32.t) in
   let* _ : M.Val unit :=
     let* α0 : i32.t := M.read n in
-    let* α1 : M.Val bool.t := M.alloc (BinOp.Pure.lt α0 (Integer.of_Z 0)) in
+    let* α1 : M.Val bool.t :=
+      M.alloc (BinOp.Pure.lt α0 ((Integer.of_Z 0) : i32.t)) in
     let* α2 : bool.t := M.read (use α1) in
     if α2 then
       let* _ : M.Val unit :=
@@ -61,7 +62,8 @@ Definition main : M unit :=
       M.alloc tt
     else
       let* α0 : i32.t := M.read n in
-      let* α1 : M.Val bool.t := M.alloc (BinOp.Pure.gt α0 (Integer.of_Z 0)) in
+      let* α1 : M.Val bool.t :=
+        M.alloc (BinOp.Pure.gt α0 ((Integer.of_Z 0) : i32.t)) in
       let* α2 : bool.t := M.read (use α1) in
       if α2 then
         let* _ : M.Val unit :=
@@ -113,8 +115,8 @@ Definition main : M unit :=
     let* α2 : M.Val bool.t :=
       M.alloc
         (BinOp.Pure.and
-          (BinOp.Pure.lt α0 (Integer.of_Z 10))
-          (BinOp.Pure.gt α1 (Integer.of_Z (-10)))) in
+          (BinOp.Pure.lt α0 ((Integer.of_Z 10) : i32.t))
+          (BinOp.Pure.gt α1 ((Integer.of_Z (-10)) : i32.t))) in
     let* α3 : bool.t := M.read (use α2) in
     let* α4 : M.Val i32.t :=
       if α3 then
@@ -133,7 +135,7 @@ Definition main : M unit :=
             M.alloc α5 in
           M.alloc tt in
         let* α0 : i32.t := M.read n in
-        let* α1 : i32.t := BinOp.Panic.mul (Integer.of_Z 10) α0 in
+        let* α1 : i32.t := BinOp.Panic.mul ((Integer.of_Z 10) : i32.t) α0 in
         M.alloc α1
       else
         let* _ : M.Val unit :=
@@ -151,7 +153,7 @@ Definition main : M unit :=
             M.alloc α5 in
           M.alloc tt in
         let* α0 : i32.t := M.read n in
-        let* α1 : i32.t := BinOp.Panic.div α0 (Integer.of_Z 2) in
+        let* α1 : i32.t := BinOp.Panic.div α0 ((Integer.of_Z 2) : i32.t) in
         M.alloc α1 in
     M.copy α4 in
   let* _ : M.Val unit :=

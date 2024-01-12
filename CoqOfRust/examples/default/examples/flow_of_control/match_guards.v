@@ -6,21 +6,16 @@ Module Temperature.
   | Celsius (_ : i32.t)
   | Fahrenheit (_ : i32.t).
   
-  Global Instance Get_Celsius_0 : Notations.Dot "Celsius.0" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => match α with | Celsius α0 => Some α0 | _ => None end)
-        (fun β α =>
-          match α with | Celsius _ => Some (Celsius β) | _ => None end);
-  }.
+  Definition Get_Celsius_0 :=
+    Ref.map
+      (fun α => match α with | Celsius α0 => Some α0 | _ => None end)
+      (fun β α => match α with | Celsius _ => Some (Celsius β) | _ => None end).
   
-  Global Instance Get_Fahrenheit_0 : Notations.Dot "Fahrenheit.0" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => match α with | Fahrenheit α0 => Some α0 | _ => None end)
-        (fun β α =>
-          match α with | Fahrenheit _ => Some (Fahrenheit β) | _ => None end);
-  }.
+  Definition Get_Fahrenheit_0 :=
+    Ref.map
+      (fun α => match α with | Fahrenheit α0 => Some α0 | _ => None end)
+      (fun β α =>
+        match α with | Fahrenheit _ => Some (Fahrenheit β) | _ => None end).
 End Temperature.
 
 (*
@@ -41,7 +36,7 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
   let* temperature : M.Val match_guards.Temperature.t :=
-    M.alloc (match_guards.Temperature.Celsius (Integer.of_Z 35)) in
+    M.alloc (match_guards.Temperature.Celsius ((Integer.of_Z 35) : i32.t)) in
   let* α0 : M.Val unit :=
     match_operator
       temperature
@@ -50,7 +45,7 @@ Definition main : M unit :=
           (let* α0 := M.read γ in
           match α0 with
           | match_guards.Temperature.Celsius _ =>
-            let γ0_0 := γ.["Celsius.0"] in
+            let γ0_0 := match_guards.Temperature.Get_Celsius_0 γ in
             let* t := M.copy γ0_0 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "") in
@@ -81,7 +76,7 @@ Definition main : M unit :=
           (let* α0 := M.read γ in
           match α0 with
           | match_guards.Temperature.Celsius _ =>
-            let γ0_0 := γ.["Celsius.0"] in
+            let γ0_0 := match_guards.Temperature.Get_Celsius_0 γ in
             let* t := M.copy γ0_0 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "") in
@@ -112,7 +107,7 @@ Definition main : M unit :=
           (let* α0 := M.read γ in
           match α0 with
           | match_guards.Temperature.Fahrenheit _ =>
-            let γ0_0 := γ.["Fahrenheit.0"] in
+            let γ0_0 := match_guards.Temperature.Get_Fahrenheit_0 γ in
             let* t := M.copy γ0_0 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "") in
@@ -144,7 +139,7 @@ Definition main : M unit :=
           (let* α0 := M.read γ in
           match α0 with
           | match_guards.Temperature.Fahrenheit _ =>
-            let γ0_0 := γ.["Fahrenheit.0"] in
+            let γ0_0 := match_guards.Temperature.Get_Fahrenheit_0 γ in
             let* t := M.copy γ0_0 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "") in

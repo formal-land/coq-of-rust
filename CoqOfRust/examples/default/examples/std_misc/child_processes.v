@@ -69,7 +69,9 @@ Definition main : M unit :=
             M std.process.Output.t)) in
     M.alloc α6 in
   let* α0 : bool.t :=
-    M.call (std.process.ExitStatus.t::["success"] (borrow output.["status"])) in
+    M.call
+      (std.process.ExitStatus.t::["success"]
+        (borrow (std.process.Output.Get_status output))) in
   let* α1 : M.Val bool.t := M.alloc α0 in
   let* α2 : bool.t := M.read (use α1) in
   let* α0 : M.Val unit :=
@@ -80,7 +82,8 @@ Definition main : M unit :=
             core.ops.deref.Deref.deref
               (Self := alloc.vec.Vec.t u8.t alloc.alloc.Global.t)
               (Trait := ℐ))) in
-        let* α1 : ref (slice u8.t) := M.call (α0 (borrow output.["stdout"])) in
+        let* α1 : ref (slice u8.t) :=
+          M.call (α0 (borrow (std.process.Output.Get_stdout output))) in
         let* α2 : alloc.borrow.Cow.t str.t :=
           M.call (alloc.string.String.t::["from_utf8_lossy"] α1) in
         M.alloc α2 in
@@ -113,7 +116,8 @@ Definition main : M unit :=
             core.ops.deref.Deref.deref
               (Self := alloc.vec.Vec.t u8.t alloc.alloc.Global.t)
               (Trait := ℐ))) in
-        let* α1 : ref (slice u8.t) := M.call (α0 (borrow output.["stderr"])) in
+        let* α1 : ref (slice u8.t) :=
+          M.call (α0 (borrow (std.process.Output.Get_stderr output))) in
         let* α2 : alloc.borrow.Cow.t str.t :=
           M.call (alloc.string.String.t::["from_utf8_lossy"] α1) in
         M.alloc α2 in

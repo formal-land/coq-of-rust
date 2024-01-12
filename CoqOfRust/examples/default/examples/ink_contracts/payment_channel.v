@@ -7,10 +7,8 @@ Section AccountId.
     x0 : u128.t;
   }.
   
-  Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>));
-  }.
+  Definition Get_0 :=
+    Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>)).
 End AccountId.
 End AccountId.
 
@@ -104,9 +102,9 @@ Section Impl_core_cmp_PartialEq_for_payment_channel_AccountId_t.
     let* self := M.alloc self in
     let* other := M.alloc other in
     let* α0 : ref payment_channel.AccountId.t := M.read self in
-    let* α1 : u128.t := M.read (deref α0).["0"] in
+    let* α1 : u128.t := M.read (payment_channel.AccountId.Get_0 (deref α0)) in
     let* α2 : ref payment_channel.AccountId.t := M.read other in
-    let* α3 : u128.t := M.read (deref α2).["0"] in
+    let* α3 : u128.t := M.read (payment_channel.AccountId.Get_0 (deref α2)) in
     M.pure (BinOp.Pure.eq α1 α3).
   
   Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
@@ -193,15 +191,8 @@ Section Env.
     caller : payment_channel.AccountId.t;
   }.
   
-  Global Instance Get_caller : Notations.Dot "caller" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(caller))
-        (fun β α => Some (α <| caller := β |>));
-  }.
-  Global Instance Get_AF_caller : Notations.DoubleColon t "caller" := {
-    Notations.double_colon (α : M.Val t) := α.["caller"];
-  }.
+  Definition Get_caller :=
+    Ref.map (fun α => Some α.(caller)) (fun β α => Some (α <| caller := β |>)).
 End Env.
 End Env.
 
@@ -215,52 +206,24 @@ Section PaymentChannel.
     close_duration : ltac:(payment_channel.Timestamp);
   }.
   
-  Global Instance Get_sender : Notations.Dot "sender" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(sender))
-        (fun β α => Some (α <| sender := β |>));
-  }.
-  Global Instance Get_AF_sender : Notations.DoubleColon t "sender" := {
-    Notations.double_colon (α : M.Val t) := α.["sender"];
-  }.
-  Global Instance Get_recipient : Notations.Dot "recipient" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(recipient))
-        (fun β α => Some (α <| recipient := β |>));
-  }.
-  Global Instance Get_AF_recipient : Notations.DoubleColon t "recipient" := {
-    Notations.double_colon (α : M.Val t) := α.["recipient"];
-  }.
-  Global Instance Get_expiration : Notations.Dot "expiration" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(expiration))
-        (fun β α => Some (α <| expiration := β |>));
-  }.
-  Global Instance Get_AF_expiration : Notations.DoubleColon t "expiration" := {
-    Notations.double_colon (α : M.Val t) := α.["expiration"];
-  }.
-  Global Instance Get_withdrawn : Notations.Dot "withdrawn" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(withdrawn))
-        (fun β α => Some (α <| withdrawn := β |>));
-  }.
-  Global Instance Get_AF_withdrawn : Notations.DoubleColon t "withdrawn" := {
-    Notations.double_colon (α : M.Val t) := α.["withdrawn"];
-  }.
-  Global Instance Get_close_duration : Notations.Dot "close_duration" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(close_duration))
-        (fun β α => Some (α <| close_duration := β |>));
-  }.
-  Global Instance Get_AF_close_duration :
-    Notations.DoubleColon t "close_duration" := {
-    Notations.double_colon (α : M.Val t) := α.["close_duration"];
-  }.
+  Definition Get_sender :=
+    Ref.map (fun α => Some α.(sender)) (fun β α => Some (α <| sender := β |>)).
+  Definition Get_recipient :=
+    Ref.map
+      (fun α => Some α.(recipient))
+      (fun β α => Some (α <| recipient := β |>)).
+  Definition Get_expiration :=
+    Ref.map
+      (fun α => Some α.(expiration))
+      (fun β α => Some (α <| expiration := β |>)).
+  Definition Get_withdrawn :=
+    Ref.map
+      (fun α => Some α.(withdrawn))
+      (fun β α => Some (α <| withdrawn := β |>)).
+  Definition Get_close_duration :=
+    Ref.map
+      (fun α => Some α.(close_duration))
+      (fun β α => Some (α <| close_duration := β |>)).
 End PaymentChannel.
 End PaymentChannel.
 
@@ -363,25 +326,14 @@ Section SenderCloseStarted.
     close_duration : ltac:(payment_channel.Timestamp);
   }.
   
-  Global Instance Get_expiration : Notations.Dot "expiration" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(expiration))
-        (fun β α => Some (α <| expiration := β |>));
-  }.
-  Global Instance Get_AF_expiration : Notations.DoubleColon t "expiration" := {
-    Notations.double_colon (α : M.Val t) := α.["expiration"];
-  }.
-  Global Instance Get_close_duration : Notations.Dot "close_duration" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(close_duration))
-        (fun β α => Some (α <| close_duration := β |>));
-  }.
-  Global Instance Get_AF_close_duration :
-    Notations.DoubleColon t "close_duration" := {
-    Notations.double_colon (α : M.Val t) := α.["close_duration"];
-  }.
+  Definition Get_expiration :=
+    Ref.map
+      (fun α => Some α.(expiration))
+      (fun β α => Some (α <| expiration := β |>)).
+  Definition Get_close_duration :=
+    Ref.map
+      (fun α => Some α.(close_duration))
+      (fun β α => Some (α <| close_duration := β |>)).
 End SenderCloseStarted.
 End SenderCloseStarted.
 
@@ -389,16 +341,11 @@ Module Event.
   Inductive t : Set :=
   | SenderCloseStarted (_ : payment_channel.SenderCloseStarted.t).
   
-  Global Instance Get_SenderCloseStarted_0 :
-    Notations.Dot "SenderCloseStarted.0" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => match α with | SenderCloseStarted α0 => Some α0 end)
-        (fun β α =>
-          match α with
-          | SenderCloseStarted _ => Some (SenderCloseStarted β)
-          end);
-  }.
+  Definition Get_SenderCloseStarted_0 :=
+    Ref.map
+      (fun α => match α with | SenderCloseStarted α0 => Some α0 end)
+      (fun β α =>
+        match α with | SenderCloseStarted _ => Some (SenderCloseStarted β) end).
 End Event.
 
 Module  Impl_payment_channel_Env_t.
@@ -413,7 +360,7 @@ Section Impl_payment_channel_Env_t.
   Definition caller (self : ref Self) : M payment_channel.AccountId.t :=
     let* self := M.alloc self in
     let* α0 : ref payment_channel.Env.t := M.read self in
-    M.read (deref α0).["caller"].
+    M.read (payment_channel.Env.Get_caller (deref α0)).
   
   Global Instance AssociatedFunction_caller :
     Notations.DoubleColon Self "caller" := {
@@ -908,7 +855,8 @@ Section Impl_payment_channel_PaymentChannel_t.
             (borrow encodable)
             (borrow_mut message)) in
       M.alloc α0 in
-    let* pub_key : M.Val (array u8.t) := M.alloc (repeat (Integer.of_Z 0) 33) in
+    let* pub_key : M.Val (array u8.t) :=
+      M.alloc (repeat ((Integer.of_Z 0) : u8.t) 33) in
     let* _ : M.Val unit :=
       let* α0 : core.result.Result.t unit payment_channel.Error.t :=
         M.call
@@ -939,7 +887,7 @@ Section Impl_payment_channel_PaymentChannel_t.
               M unit)) in
       M.alloc α1 in
     let* signature_account_id : M.Val (array u8.t) :=
-      M.alloc (repeat (Integer.of_Z 0) 32) in
+      M.alloc (repeat ((Integer.of_Z 0) : u8.t) 32) in
     let* _ : M.Val unit :=
       let* α0 : _ :=
         ltac:(M.get_method (fun ℐ =>
@@ -967,7 +915,10 @@ Section Impl_payment_channel_PaymentChannel_t.
     let* α4 : payment_channel.AccountId.t := M.call (α2 α3) in
     let* α5 : M.Val payment_channel.AccountId.t := M.alloc α4 in
     let* α6 : bool.t :=
-      M.call (α0 (borrow (deref α1).["recipient"]) (borrow α5)) in
+      M.call
+        (α0
+          (borrow (payment_channel.PaymentChannel.Get_recipient (deref α1)))
+          (borrow α5)) in
     let* α0 : M.Val bool.t := M.alloc α6 in
     M.read α0.
   
@@ -1005,7 +956,7 @@ Section Impl_payment_channel_PaymentChannel_t.
         payment_channel.PaymentChannel.sender := α2;
         payment_channel.PaymentChannel.recipient := α3;
         payment_channel.PaymentChannel.expiration := core.option.Option.None;
-        payment_channel.PaymentChannel.withdrawn := Integer.of_Z 0;
+        payment_channel.PaymentChannel.withdrawn := (Integer.of_Z 0) : u128.t;
         payment_channel.PaymentChannel.close_duration := α4;
       |}.
   
@@ -1062,7 +1013,11 @@ Section Impl_payment_channel_PaymentChannel_t.
         let* α5 : M.Val payment_channel.AccountId.t := M.alloc α4 in
         let* α6 : mut_ref payment_channel.PaymentChannel.t := M.read self in
         let* α7 : bool.t :=
-          M.call (α0 (borrow α5) (borrow (deref α6).["recipient"])) in
+          M.call
+            (α0
+              (borrow α5)
+              (borrow
+                (payment_channel.PaymentChannel.Get_recipient (deref α6)))) in
         let* α8 : M.Val bool.t := M.alloc α7 in
         let* α9 : bool.t := M.read (use α8) in
         if α9 then
@@ -1079,7 +1034,8 @@ Section Impl_payment_channel_PaymentChannel_t.
       let* _ : M.Val unit :=
         let* α0 : u128.t := M.read amount in
         let* α1 : mut_ref payment_channel.PaymentChannel.t := M.read self in
-        let* α2 : u128.t := M.read (deref α1).["withdrawn"] in
+        let* α2 : u128.t :=
+          M.read (payment_channel.PaymentChannel.Get_withdrawn (deref α1)) in
         let* α3 : M.Val bool.t := M.alloc (BinOp.Pure.lt α0 α2) in
         let* α4 : bool.t := M.read (use α3) in
         if α4 then
@@ -1128,10 +1084,11 @@ Section Impl_payment_channel_PaymentChannel_t.
         let* α3 : M.Val payment_channel.Env.t := M.alloc α2 in
         let* α4 : mut_ref payment_channel.PaymentChannel.t := M.read self in
         let* α5 : payment_channel.AccountId.t :=
-          M.read (deref α4).["recipient"] in
+          M.read (payment_channel.PaymentChannel.Get_recipient (deref α4)) in
         let* α6 : u128.t := M.read amount in
         let* α7 : mut_ref payment_channel.PaymentChannel.t := M.read self in
-        let* α8 : u128.t := M.read (deref α7).["withdrawn"] in
+        let* α8 : u128.t :=
+          M.read (payment_channel.PaymentChannel.Get_withdrawn (deref α7)) in
         let* α9 : u128.t := BinOp.Panic.sub α6 α8 in
         let* α10 : core.result.Result.t unit payment_channel.Error.t :=
           M.call (payment_channel.Env.t::["transfer"] (borrow α3) α5 α9) in
@@ -1171,7 +1128,7 @@ Section Impl_payment_channel_PaymentChannel_t.
               (let* α0 := M.read γ in
               match α0 with
               | core.ops.control_flow.ControlFlow.Break _ =>
-                let γ0_0 := γ.["Break.0"] in
+                let γ0_0 := core.ops.control_flow.ControlFlow.Get_Break_0 γ in
                 let* residual := M.copy γ0_0 in
                 let* α0 : _ :=
                   ltac:(M.get_method (fun ℐ =>
@@ -1201,7 +1158,8 @@ Section Impl_payment_channel_PaymentChannel_t.
               (let* α0 := M.read γ in
               match α0 with
               | core.ops.control_flow.ControlFlow.Continue _ =>
-                let γ0_0 := γ.["Continue.0"] in
+                let γ0_0 :=
+                  core.ops.control_flow.ControlFlow.Get_Continue_0 γ in
                 let* val := M.copy γ0_0 in
                 M.pure val
               | _ => M.break_match
@@ -1268,7 +1226,7 @@ Section Impl_payment_channel_PaymentChannel_t.
               (let* α0 := M.read γ in
               match α0 with
               | core.ops.control_flow.ControlFlow.Break _ =>
-                let γ0_0 := γ.["Break.0"] in
+                let γ0_0 := core.ops.control_flow.ControlFlow.Get_Break_0 γ in
                 let* residual := M.copy γ0_0 in
                 let* α0 : _ :=
                   ltac:(M.get_method (fun ℐ =>
@@ -1298,7 +1256,8 @@ Section Impl_payment_channel_PaymentChannel_t.
               (let* α0 := M.read γ in
               match α0 with
               | core.ops.control_flow.ControlFlow.Continue _ =>
-                let γ0_0 := γ.["Continue.0"] in
+                let γ0_0 :=
+                  core.ops.control_flow.ControlFlow.Get_Continue_0 γ in
                 let* val := M.copy γ0_0 in
                 M.pure val
               | _ => M.break_match
@@ -1312,7 +1271,8 @@ Section Impl_payment_channel_PaymentChannel_t.
             (payment_channel.PaymentChannel.t::["env"] (borrow (deref α0))) in
         let* α2 : M.Val payment_channel.Env.t := M.alloc α1 in
         let* α3 : mut_ref payment_channel.PaymentChannel.t := M.read self in
-        let* α4 : payment_channel.AccountId.t := M.read (deref α3).["sender"] in
+        let* α4 : payment_channel.AccountId.t :=
+          M.read (payment_channel.PaymentChannel.Get_sender (deref α3)) in
         let* α5 : unit :=
           M.call
             (payment_channel.Env.t::["terminate_contract"] (borrow α2) α4) in
@@ -1369,7 +1329,11 @@ Section Impl_payment_channel_PaymentChannel_t.
         let* α5 : M.Val payment_channel.AccountId.t := M.alloc α4 in
         let* α6 : mut_ref payment_channel.PaymentChannel.t := M.read self in
         let* α7 : bool.t :=
-          M.call (α0 (borrow α5) (borrow (deref α6).["sender"])) in
+          M.call
+            (α0
+              (borrow α5)
+              (borrow
+                (payment_channel.PaymentChannel.Get_sender (deref α6)))) in
         let* α8 : M.Val bool.t := M.alloc α7 in
         let* α9 : bool.t := M.read (use α8) in
         if α9 then
@@ -1395,7 +1359,9 @@ Section Impl_payment_channel_PaymentChannel_t.
       let* expiration : M.Val u64.t :=
         let* α0 : u64.t := M.read now in
         let* α1 : mut_ref payment_channel.PaymentChannel.t := M.read self in
-        let* α2 : u64.t := M.read (deref α1).["close_duration"] in
+        let* α2 : u64.t :=
+          M.read
+            (payment_channel.PaymentChannel.Get_close_duration (deref α1)) in
         let* α3 : u64.t := BinOp.Panic.add α0 α2 in
         M.alloc α3 in
       let* _ : M.Val unit :=
@@ -1406,7 +1372,9 @@ Section Impl_payment_channel_PaymentChannel_t.
         let* α2 : M.Val payment_channel.Env.t := M.alloc α1 in
         let* α3 : u64.t := M.read expiration in
         let* α4 : mut_ref payment_channel.PaymentChannel.t := M.read self in
-        let* α5 : u64.t := M.read (deref α4).["close_duration"] in
+        let* α5 : u64.t :=
+          M.read
+            (payment_channel.PaymentChannel.Get_close_duration (deref α4)) in
         let* α6 : unit :=
           M.call
             (payment_channel.Env.t::["emit_event"]
@@ -1420,7 +1388,9 @@ Section Impl_payment_channel_PaymentChannel_t.
       let* _ : M.Val unit :=
         let* α0 : mut_ref payment_channel.PaymentChannel.t := M.read self in
         let* α1 : u64.t := M.read expiration in
-        assign (deref α0).["expiration"] (core.option.Option.Some α1) in
+        assign
+          (payment_channel.PaymentChannel.Get_expiration (deref α0))
+          (core.option.Option.Some α1) in
       let* α0 : M.Val (core.result.Result.t unit payment_channel.Error.t) :=
         M.alloc (core.result.Result.Ok tt) in
       M.read α0).
@@ -1459,13 +1429,13 @@ Section Impl_payment_channel_PaymentChannel_t.
       (let* α0 : mut_ref payment_channel.PaymentChannel.t := M.read self in
       let* α1 : M.Val (core.result.Result.t unit payment_channel.Error.t) :=
         match_operator
-          (deref α0).["expiration"]
+          (payment_channel.PaymentChannel.Get_expiration (deref α0))
           [
             fun γ =>
               (let* α0 := M.read γ in
               match α0 with
               | core.option.Option.Some _ =>
-                let γ0_0 := γ.["Some.0"] in
+                let γ0_0 := core.option.Option.Get_Some_0 γ in
                 let* expiration := M.copy γ0_0 in
                 let* now : M.Val u64.t :=
                   let* α0 : mut_ref payment_channel.PaymentChannel.t :=
@@ -1507,7 +1477,8 @@ Section Impl_payment_channel_PaymentChannel_t.
                   let* α3 : mut_ref payment_channel.PaymentChannel.t :=
                     M.read self in
                   let* α4 : payment_channel.AccountId.t :=
-                    M.read (deref α3).["sender"] in
+                    M.read
+                      (payment_channel.PaymentChannel.Get_sender (deref α3)) in
                   let* α5 : unit :=
                     M.call
                       (payment_channel.Env.t::["terminate_contract"]
@@ -1588,7 +1559,11 @@ Section Impl_payment_channel_PaymentChannel_t.
         let* α5 : M.Val payment_channel.AccountId.t := M.alloc α4 in
         let* α6 : mut_ref payment_channel.PaymentChannel.t := M.read self in
         let* α7 : bool.t :=
-          M.call (α0 (borrow α5) (borrow (deref α6).["recipient"])) in
+          M.call
+            (α0
+              (borrow α5)
+              (borrow
+                (payment_channel.PaymentChannel.Get_recipient (deref α6)))) in
         let* α8 : M.Val bool.t := M.alloc α7 in
         let* α9 : bool.t := M.read (use α8) in
         if α9 then
@@ -1627,7 +1602,8 @@ Section Impl_payment_channel_PaymentChannel_t.
       let* _ : M.Val unit :=
         let* α0 : u128.t := M.read amount in
         let* α1 : mut_ref payment_channel.PaymentChannel.t := M.read self in
-        let* α2 : u128.t := M.read (deref α1).["withdrawn"] in
+        let* α2 : u128.t :=
+          M.read (payment_channel.PaymentChannel.Get_withdrawn (deref α1)) in
         let* α3 : M.Val bool.t := M.alloc (BinOp.Pure.lt α0 α2) in
         let* α4 : bool.t := M.read (use α3) in
         if α4 then
@@ -1644,13 +1620,14 @@ Section Impl_payment_channel_PaymentChannel_t.
       let* amount_to_withdraw : M.Val u128.t :=
         let* α0 : u128.t := M.read amount in
         let* α1 : mut_ref payment_channel.PaymentChannel.t := M.read self in
-        let* α2 : u128.t := M.read (deref α1).["withdrawn"] in
+        let* α2 : u128.t :=
+          M.read (payment_channel.PaymentChannel.Get_withdrawn (deref α1)) in
         let* α3 : u128.t := BinOp.Panic.sub α0 α2 in
         M.alloc α3 in
       let* _ : M.Val unit :=
         let* β : M.Val u128.t :=
           let* α0 : mut_ref payment_channel.PaymentChannel.t := M.read self in
-          M.pure (deref α0).["withdrawn"] in
+          M.pure (payment_channel.PaymentChannel.Get_withdrawn (deref α0)) in
         let* α0 := M.read β in
         let* α1 : u128.t := M.read amount_to_withdraw in
         let* α2 := BinOp.Panic.add α0 α1 in
@@ -1668,7 +1645,7 @@ Section Impl_payment_channel_PaymentChannel_t.
         let* α3 : M.Val payment_channel.Env.t := M.alloc α2 in
         let* α4 : mut_ref payment_channel.PaymentChannel.t := M.read self in
         let* α5 : payment_channel.AccountId.t :=
-          M.read (deref α4).["recipient"] in
+          M.read (payment_channel.PaymentChannel.Get_recipient (deref α4)) in
         let* α6 : u128.t := M.read amount_to_withdraw in
         let* α7 : core.result.Result.t unit payment_channel.Error.t :=
           M.call (payment_channel.Env.t::["transfer"] (borrow α3) α5 α6) in
@@ -1708,7 +1685,7 @@ Section Impl_payment_channel_PaymentChannel_t.
               (let* α0 := M.read γ in
               match α0 with
               | core.ops.control_flow.ControlFlow.Break _ =>
-                let γ0_0 := γ.["Break.0"] in
+                let γ0_0 := core.ops.control_flow.ControlFlow.Get_Break_0 γ in
                 let* residual := M.copy γ0_0 in
                 let* α0 : _ :=
                   ltac:(M.get_method (fun ℐ =>
@@ -1738,7 +1715,8 @@ Section Impl_payment_channel_PaymentChannel_t.
               (let* α0 := M.read γ in
               match α0 with
               | core.ops.control_flow.ControlFlow.Continue _ =>
-                let γ0_0 := γ.["Continue.0"] in
+                let γ0_0 :=
+                  core.ops.control_flow.ControlFlow.Get_Continue_0 γ in
                 let* val := M.copy γ0_0 in
                 M.pure val
               | _ => M.break_match
@@ -1762,7 +1740,7 @@ Section Impl_payment_channel_PaymentChannel_t.
   Definition get_sender (self : ref Self) : M payment_channel.AccountId.t :=
     let* self := M.alloc self in
     let* α0 : ref payment_channel.PaymentChannel.t := M.read self in
-    M.read (deref α0).["sender"].
+    M.read (payment_channel.PaymentChannel.Get_sender (deref α0)).
   
   Global Instance AssociatedFunction_get_sender :
     Notations.DoubleColon Self "get_sender" := {
@@ -1777,7 +1755,7 @@ Section Impl_payment_channel_PaymentChannel_t.
   Definition get_recipient (self : ref Self) : M payment_channel.AccountId.t :=
     let* self := M.alloc self in
     let* α0 : ref payment_channel.PaymentChannel.t := M.read self in
-    M.read (deref α0).["recipient"].
+    M.read (payment_channel.PaymentChannel.Get_recipient (deref α0)).
   
   Global Instance AssociatedFunction_get_recipient :
     Notations.DoubleColon Self "get_recipient" := {
@@ -1794,7 +1772,7 @@ Section Impl_payment_channel_PaymentChannel_t.
       : M (core.option.Option.t ltac:(payment_channel.Timestamp)) :=
     let* self := M.alloc self in
     let* α0 : ref payment_channel.PaymentChannel.t := M.read self in
-    M.read (deref α0).["expiration"].
+    M.read (payment_channel.PaymentChannel.Get_expiration (deref α0)).
   
   Global Instance AssociatedFunction_get_expiration :
     Notations.DoubleColon Self "get_expiration" := {
@@ -1811,7 +1789,7 @@ Section Impl_payment_channel_PaymentChannel_t.
       : M ltac:(payment_channel.Balance) :=
     let* self := M.alloc self in
     let* α0 : ref payment_channel.PaymentChannel.t := M.read self in
-    M.read (deref α0).["withdrawn"].
+    M.read (payment_channel.PaymentChannel.Get_withdrawn (deref α0)).
   
   Global Instance AssociatedFunction_get_withdrawn :
     Notations.DoubleColon Self "get_withdrawn" := {
@@ -1828,7 +1806,7 @@ Section Impl_payment_channel_PaymentChannel_t.
       : M ltac:(payment_channel.Timestamp) :=
     let* self := M.alloc self in
     let* α0 : ref payment_channel.PaymentChannel.t := M.read self in
-    M.read (deref α0).["close_duration"].
+    M.read (payment_channel.PaymentChannel.Get_close_duration (deref α0)).
   
   Global Instance AssociatedFunction_get_close_duration :
     Notations.DoubleColon Self "get_close_duration" := {

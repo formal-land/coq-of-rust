@@ -10,15 +10,10 @@ Module my.
       contents : T;
     }.
     
-    Global Instance Get_contents : Notations.Dot "contents" := {
-      Notations.dot :=
-        Ref.map
-          (fun α => Some α.(contents))
-          (fun β α => Some (α <| contents := β |>));
-    }.
-    Global Instance Get_AF_contents : Notations.DoubleColon t "contents" := {
-      Notations.double_colon (α : M.Val t) := α.["contents"];
-    }.
+    Definition Get_contents :=
+      Ref.map
+        (fun α => Some α.(contents))
+        (fun β α => Some (α <| contents := β |>)).
   End OpenBox.
   End OpenBox.
   
@@ -30,15 +25,10 @@ Module my.
       contents : T;
     }.
     
-    Global Instance Get_contents : Notations.Dot "contents" := {
-      Notations.dot :=
-        Ref.map
-          (fun α => Some α.(contents))
-          (fun β α => Some (α <| contents := β |>));
-    }.
-    Global Instance Get_AF_contents : Notations.DoubleColon t "contents" := {
-      Notations.double_colon (α : M.Val t) := α.["contents"];
-    }.
+    Definition Get_contents :=
+      Ref.map
+        (fun α => Some α.(contents))
+        (fun β α => Some (α <| contents := β |>)).
   End ClosedBox.
   End ClosedBox.
   
@@ -74,15 +64,10 @@ Section OpenBox.
     contents : T;
   }.
   
-  Global Instance Get_contents : Notations.Dot "contents" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(contents))
-        (fun β α => Some (α <| contents := β |>));
-  }.
-  Global Instance Get_AF_contents : Notations.DoubleColon t "contents" := {
-    Notations.double_colon (α : M.Val t) := α.["contents"];
-  }.
+  Definition Get_contents :=
+    Ref.map
+      (fun α => Some α.(contents))
+      (fun β α => Some (α <| contents := β |>)).
 End OpenBox.
 End OpenBox.
 
@@ -94,15 +79,10 @@ Section ClosedBox.
     contents : T;
   }.
   
-  Global Instance Get_contents : Notations.Dot "contents" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(contents))
-        (fun β α => Some (α <| contents := β |>));
-  }.
-  Global Instance Get_AF_contents : Notations.DoubleColon t "contents" := {
-    Notations.double_colon (α : M.Val t) := α.["contents"];
-  }.
+  Definition Get_contents :=
+    Ref.map
+      (fun α => Some α.(contents))
+      (fun β α => Some (α <| contents := β |>)).
 End ClosedBox.
 End ClosedBox.
 
@@ -170,7 +150,7 @@ Definition main : M unit :=
       let* α5 : core.fmt.rt.Argument.t :=
         M.call
           (core.fmt.rt.Argument.t::["new_display"]
-            (borrow open_box.["contents"])) in
+            (borrow (struct_visibility.my.OpenBox.Get_contents open_box))) in
       let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
       let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
         M.alloc (borrow α6) in

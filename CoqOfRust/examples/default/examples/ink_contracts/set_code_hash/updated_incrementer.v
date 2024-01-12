@@ -7,10 +7,8 @@ Section AccountId.
     x0 : u128.t;
   }.
   
-  Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>));
-  }.
+  Definition Get_0 :=
+    Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>)).
 End AccountId.
 End AccountId.
 
@@ -94,15 +92,8 @@ Section Env.
     caller : updated_incrementer.AccountId.t;
   }.
   
-  Global Instance Get_caller : Notations.Dot "caller" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(caller))
-        (fun β α => Some (α <| caller := β |>));
-  }.
-  Global Instance Get_AF_caller : Notations.DoubleColon t "caller" := {
-    Notations.double_colon (α : M.Val t) := α.["caller"];
-  }.
+  Definition Get_caller :=
+    Ref.map (fun α => Some α.(caller)) (fun β α => Some (α <| caller := β |>)).
 End Env.
 End Env.
 
@@ -139,13 +130,8 @@ Section Incrementer.
     count : u32.t;
   }.
   
-  Global Instance Get_count : Notations.Dot "count" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(count)) (fun β α => Some (α <| count := β |>));
-  }.
-  Global Instance Get_AF_count : Notations.DoubleColon t "count" := {
-    Notations.double_colon (α : M.Val t) := α.["count"];
-  }.
+  Definition Get_count :=
+    Ref.map (fun α => Some α.(count)) (fun β α => Some (α <| count := β |>)).
 End Incrementer.
 End Incrementer.
 
@@ -213,9 +199,9 @@ Section Impl_updated_incrementer_Incrementer_t.
     let* _ : M.Val unit :=
       let* β : M.Val u32.t :=
         let* α0 : mut_ref updated_incrementer.Incrementer.t := M.read self in
-        M.pure (deref α0).["count"] in
+        M.pure (updated_incrementer.Incrementer.Get_count (deref α0)) in
       let* α0 := M.read β in
-      let* α1 := BinOp.Panic.add α0 (Integer.of_Z 4) in
+      let* α1 := BinOp.Panic.add α0 ((Integer.of_Z 4) : u32.t) in
       assign β α1 in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
@@ -233,7 +219,8 @@ Section Impl_updated_incrementer_Incrementer_t.
         let* α6 : core.fmt.rt.Argument.t :=
           M.call
             (core.fmt.rt.Argument.t::["new_display"]
-              (borrow (deref α5).["count"])) in
+              (borrow
+                (updated_incrementer.Incrementer.Get_count (deref α5)))) in
         let* α7 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α6 ] in
         let* α8 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
           M.alloc (borrow α7) in
@@ -259,7 +246,7 @@ Section Impl_updated_incrementer_Incrementer_t.
   Definition get (self : ref Self) : M u32.t :=
     let* self := M.alloc self in
     let* α0 : ref updated_incrementer.Incrementer.t := M.read self in
-    M.read (deref α0).["count"].
+    M.read (updated_incrementer.Incrementer.Get_count (deref α0)).
   
   Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
     Notations.double_colon := get;

@@ -10,29 +10,12 @@ Section Book.
     year : u32.t;
   }.
   
-  Global Instance Get_author : Notations.Dot "author" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(author))
-        (fun β α => Some (α <| author := β |>));
-  }.
-  Global Instance Get_AF_author : Notations.DoubleColon t "author" := {
-    Notations.double_colon (α : M.Val t) := α.["author"];
-  }.
-  Global Instance Get_title : Notations.Dot "title" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(title)) (fun β α => Some (α <| title := β |>));
-  }.
-  Global Instance Get_AF_title : Notations.DoubleColon t "title" := {
-    Notations.double_colon (α : M.Val t) := α.["title"];
-  }.
-  Global Instance Get_year : Notations.Dot "year" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(year)) (fun β α => Some (α <| year := β |>));
-  }.
-  Global Instance Get_AF_year : Notations.DoubleColon t "year" := {
-    Notations.double_colon (α : M.Val t) := α.["year"];
-  }.
+  Definition Get_author :=
+    Ref.map (fun α => Some α.(author)) (fun β α => Some (α <| author := β |>)).
+  Definition Get_title :=
+    Ref.map (fun α => Some α.(title)) (fun β α => Some (α <| title := β |>)).
+  Definition Get_year :=
+    Ref.map (fun α => Some α.(year)) (fun β α => Some (α <| year := β |>)).
 End Book.
 End Book.
 

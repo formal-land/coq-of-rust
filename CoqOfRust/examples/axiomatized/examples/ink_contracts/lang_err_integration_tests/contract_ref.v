@@ -7,10 +7,8 @@ Section AccountId.
     x0 : u128.t;
   }.
   
-  Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>));
-  }.
+  Definition Get_0 :=
+    Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>)).
 End AccountId.
 End AccountId.
 
@@ -74,15 +72,8 @@ Section Env.
     caller : contract_ref.AccountId.t;
   }.
   
-  Global Instance Get_caller : Notations.Dot "caller" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(caller))
-        (fun β α => Some (α <| caller := β |>));
-  }.
-  Global Instance Get_AF_caller : Notations.DoubleColon t "caller" := {
-    Notations.double_colon (α : M.Val t) := α.["caller"];
-  }.
+  Definition Get_caller :=
+    Ref.map (fun α => Some α.(caller)) (fun β α => Some (α <| caller := β |>)).
 End Env.
 End Env.
 
@@ -92,13 +83,8 @@ Section FlipperRef.
     value : bool.t;
   }.
   
-  Global Instance Get_value : Notations.Dot "value" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(value)) (fun β α => Some (α <| value := β |>));
-  }.
-  Global Instance Get_AF_value : Notations.DoubleColon t "value" := {
-    Notations.double_colon (α : M.Val t) := α.["value"];
-  }.
+  Definition Get_value :=
+    Ref.map (fun α => Some α.(value)) (fun β α => Some (α <| value := β |>)).
 End FlipperRef.
 End FlipperRef.
 
@@ -226,15 +212,10 @@ Section ContractRef.
     flipper : contract_ref.FlipperRef.t;
   }.
   
-  Global Instance Get_flipper : Notations.Dot "flipper" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(flipper))
-        (fun β α => Some (α <| flipper := β |>));
-  }.
-  Global Instance Get_AF_flipper : Notations.DoubleColon t "flipper" := {
-    Notations.double_colon (α : M.Val t) := α.["flipper"];
-  }.
+  Definition Get_flipper :=
+    Ref.map
+      (fun α => Some α.(flipper))
+      (fun β α => Some (α <| flipper := β |>)).
 End ContractRef.
 End ContractRef.
 

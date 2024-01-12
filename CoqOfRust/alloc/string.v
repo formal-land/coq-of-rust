@@ -45,11 +45,6 @@ Module ToString.
   Class Trait (Self : Set) : Set := {
     to_string : ref Self -> M String.t;
   }.
-
-  Global Instance Method_to_string `(Trait) :
-    Notations.Dot "to_string" := {
-    Notations.dot := to_string;
-  }.
 End ToString.
 
 (* The String type (Struct std::string::String) and it's methods  *)

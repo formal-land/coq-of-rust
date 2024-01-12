@@ -296,6 +296,22 @@ fn build_inner_match(
                                 fields.iter().enumerate().rfold(
                                     body,
                                     |body, (index, (field_name, _))| {
+                                        let getter_path = match struct_or_variant {
+                                            StructOrVariant::Struct => Path::concat(&[
+                                                path.clone(),
+                                                Path::new(&[format!("Get_{field_name}")]),
+                                            ]),
+                                            StructOrVariant::Variant => Path::concat(&[
+                                                Path::new(
+                                                    &path.segments[0..path.segments.len() - 1],
+                                                ),
+                                                Path::new(&[format!(
+                                                    "Get_{variant}_{field_name}",
+                                                    variant = path.segments.last().unwrap()
+                                                )]),
+                                            ]),
+                                        };
+
                                         Rc::new(Expr {
                                             ty: body.ty.clone(),
                                             kind: Rc::new(ExprKind::Let {
@@ -303,12 +319,16 @@ fn build_inner_match(
                                                 name: Some(format!("γ{depth}_{index}")),
                                                 init: Rc::new(Expr {
                                                     ty: None,
-                                                    kind: Rc::new(ExprKind::NamedField {
-                                                        base: Expr::local_var(&scrutinee),
-                                                        name: format!(
-                                                            "{}.{field_name}",
-                                                            path.segments.last().unwrap(),
-                                                        ),
+                                                    kind: Rc::new(ExprKind::Call {
+                                                        func: Rc::new(Expr {
+                                                            kind: Rc::new(ExprKind::Var(
+                                                                getter_path,
+                                                            )),
+                                                            ty: None,
+                                                        }),
+                                                        args: vec![Expr::local_var(&scrutinee)],
+                                                        purity: Purity::Pure,
+                                                        from_user: false,
                                                     }),
                                                 }),
                                                 body,
@@ -351,6 +371,20 @@ fn build_inner_match(
                                 );
 
                                 patterns.iter().enumerate().rfold(body, |body, (index, _)| {
+                                    let getter_path = match struct_or_variant {
+                                        StructOrVariant::Struct => Path::concat(&[
+                                            path.clone(),
+                                            Path::new(&[format!("Get_{index}")]),
+                                        ]),
+                                        StructOrVariant::Variant => Path::concat(&[
+                                            Path::new(&path.segments[0..path.segments.len() - 1]),
+                                            Path::new(&[format!(
+                                                "Get_{variant}_{index}",
+                                                variant = path.segments.last().unwrap(),
+                                            )]),
+                                        ]),
+                                    };
+
                                     Rc::new(Expr {
                                         ty: body.ty.clone(),
                                         kind: Rc::new(ExprKind::Let {
@@ -358,12 +392,14 @@ fn build_inner_match(
                                             name: Some(format!("γ{depth}_{index}")),
                                             init: Rc::new(Expr {
                                                 ty: None,
-                                                kind: Rc::new(ExprKind::NamedField {
-                                                    base: Expr::local_var(&scrutinee),
-                                                    name: format!(
-                                                        "{}.{index}",
-                                                        path.segments.last().unwrap(),
-                                                    ),
+                                                kind: Rc::new(ExprKind::Call {
+                                                    func: Rc::new(Expr {
+                                                        kind: Rc::new(ExprKind::Var(getter_path)),
+                                                        ty: None,
+                                                    }),
+                                                    args: vec![Expr::local_var(&scrutinee)],
+                                                    purity: Purity::Pure,
+                                                    from_user: false,
                                                 }),
                                             }),
                                             body,
@@ -534,12 +570,14 @@ fn build_inner_match(
                                             name: Some(format!("γ{depth}_slice")),
                                             init: Rc::new(Expr {
                                                 ty: None,
-                                                kind: Rc::new(ExprKind::NamedField {
-                                                    base: Expr::local_var(&scrutinee),
-                                                    name: format!(
+                                                kind: Rc::new(ExprKind::Call {
+                                                    func: Expr::local_var(&format!(
                                                         "[{}].slice",
                                                         init_patterns.len()
-                                                    ),
+                                                    )),
+                                                    args: vec![Expr::local_var(&scrutinee)],
+                                                    purity: Purity::Pure,
+                                                    from_user: false,
                                                 }),
                                             }),
                                             body,
@@ -558,9 +596,13 @@ fn build_inner_match(
                                                 name: Some(format!("γ{depth}_{index}")),
                                                 init: Rc::new(Expr {
                                                     ty: None,
-                                                    kind: Rc::new(ExprKind::NamedField {
-                                                        base: Expr::local_var(&scrutinee),
-                                                        name: format!("[{index}]",),
+                                                    kind: Rc::new(ExprKind::Call {
+                                                        func: Expr::local_var(&format!(
+                                                            "[{index}]"
+                                                        )),
+                                                        args: vec![Expr::local_var(&scrutinee)],
+                                                        purity: Purity::Pure,
+                                                        from_user: false,
                                                     }),
                                                 }),
                                                 body,
@@ -906,7 +948,18 @@ fn compile_expr_kind<'a>(
                 Some(adt_def) => {
                     let variant = adt_def.variant(*variant_index);
                     let name = variant.fields.get(*name).unwrap().name.to_string();
-                    Rc::new(ExprKind::NamedField { base, name })
+                    Rc::new(ExprKind::Call {
+                        func: Rc::new(Expr {
+                            kind: Rc::new(ExprKind::Var(Path::concat(&[
+                                compile_def_id(env, adt_def.did()),
+                                Path::new(&[format!("Get_{name}",)]),
+                            ]))),
+                            ty: None,
+                        }),
+                        args: vec![base],
+                        purity: Purity::Pure,
+                        from_user: false,
+                    })
                 }
                 None => Rc::new(ExprKind::Message("Unknown Field".to_string())),
             }
@@ -1107,20 +1160,23 @@ fn compile_expr_kind<'a>(
         }
         thir::ExprKind::Literal { lit, neg } => match lit.node {
             rustc_ast::LitKind::Str(symbol, _) => {
-                Rc::new(ExprKind::Literal(Literal::String(symbol.to_string())))
+                Rc::new(ExprKind::Literal(Literal::String(symbol.to_string()), None))
             }
             rustc_ast::LitKind::Char(c) => {
-                Rc::new(ExprKind::Literal(Literal::Char(c))).alloc(Some(ty))
+                Rc::new(ExprKind::Literal(Literal::Char(c), None)).alloc(Some(ty))
             }
-            rustc_ast::LitKind::Int(i, _) => Rc::new(ExprKind::Literal(Literal::Integer {
-                value: i,
-                neg: *neg,
-            }))
+            rustc_ast::LitKind::Int(i, _) => Rc::new(ExprKind::Literal(
+                Literal::Integer {
+                    value: i,
+                    neg: *neg,
+                },
+                Some(ty.clone()),
+            ))
             .alloc(Some(ty)),
             rustc_ast::LitKind::Bool(c) => {
-                Rc::new(ExprKind::Literal(Literal::Bool(c))).alloc(Some(ty))
+                Rc::new(ExprKind::Literal(Literal::Bool(c), None)).alloc(Some(ty))
             }
-            _ => Rc::new(ExprKind::Literal(Literal::Error)),
+            _ => Rc::new(ExprKind::Literal(Literal::Error, Some(ty.val()))),
         },
         thir::ExprKind::NonHirLiteral { lit, .. } => Rc::new(ExprKind::NonHirLiteral(*lit)),
         thir::ExprKind::ZstLiteral { .. } => match &expr.ty.kind() {

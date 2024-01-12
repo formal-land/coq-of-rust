@@ -8,24 +8,14 @@ Section Account.
     password : ref str.t;
   }.
   
-  Global Instance Get_username : Notations.Dot "username" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(username))
-        (fun β α => Some (α <| username := β |>));
-  }.
-  Global Instance Get_AF_username : Notations.DoubleColon t "username" := {
-    Notations.double_colon (α : M.Val t) := α.["username"];
-  }.
-  Global Instance Get_password : Notations.Dot "password" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(password))
-        (fun β α => Some (α <| password := β |>));
-  }.
-  Global Instance Get_AF_password : Notations.DoubleColon t "password" := {
-    Notations.double_colon (α : M.Val t) := α.["password"];
-  }.
+  Definition Get_username :=
+    Ref.map
+      (fun α => Some α.(username))
+      (fun β α => Some (α <| username := β |>)).
+  Definition Get_password :=
+    Ref.map
+      (fun α => Some α.(password))
+      (fun β α => Some (α <| password := β |>)).
 End Account.
 End Account.
 
@@ -126,20 +116,10 @@ Section AccountInfo.
     email : ref str.t;
   }.
   
-  Global Instance Get_name : Notations.Dot "name" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(name)) (fun β α => Some (α <| name := β |>));
-  }.
-  Global Instance Get_AF_name : Notations.DoubleColon t "name" := {
-    Notations.double_colon (α : M.Val t) := α.["name"];
-  }.
-  Global Instance Get_email : Notations.Dot "email" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(email)) (fun β α => Some (α <| email := β |>));
-  }.
-  Global Instance Get_AF_email : Notations.DoubleColon t "email" := {
-    Notations.double_colon (α : M.Val t) := α.["email"];
-  }.
+  Definition Get_name :=
+    Ref.map (fun α => Some α.(name)) (fun β α => Some (α <| name := β |>)).
+  Definition Get_email :=
+    Ref.map (fun α => Some α.(email)) (fun β α => Some (α <| email := β |>)).
 End AccountInfo.
 End AccountInfo.
 

@@ -183,7 +183,7 @@ Definition main : M unit :=
                       (let* α0 := M.read γ in
                       match α0 with
                       | core.option.Option.Some _ =>
-                        let γ0_0 := γ.["Some.0"] in
+                        let γ0_0 := core.option.Option.Get_Some_0 γ in
                         let* α0 := M.read γ0_0 in
                         match α0 with
                         | (_, _) =>
@@ -273,7 +273,8 @@ Definition main : M unit :=
                                                     M.call
                                                       (char.t::["to_digit"]
                                                         α0
-                                                        (Integer.of_Z 10)) in
+                                                        ((Integer.of_Z 10) :
+                                                          u32.t)) in
                                                   let* α2 : ref str.t :=
                                                     M.read
                                                       (mk_str

@@ -10,22 +10,10 @@ Section Mapping.
     _value : core.marker.PhantomData.t V;
   }.
   
-  Global Instance Get__key : Notations.Dot "_key" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(_key)) (fun β α => Some (α <| _key := β |>));
-  }.
-  Global Instance Get_AF__key : Notations.DoubleColon t "_key" := {
-    Notations.double_colon (α : M.Val t) := α.["_key"];
-  }.
-  Global Instance Get__value : Notations.Dot "_value" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(_value))
-        (fun β α => Some (α <| _value := β |>));
-  }.
-  Global Instance Get_AF__value : Notations.DoubleColon t "_value" := {
-    Notations.double_colon (α : M.Val t) := α.["_value"];
-  }.
+  Definition Get__key :=
+    Ref.map (fun α => Some α.(_key)) (fun β α => Some (α <| _key := β |>)).
+  Definition Get__value :=
+    Ref.map (fun α => Some α.(_value)) (fun β α => Some (α <| _value := β |>)).
 End Mapping.
 End Mapping.
 
@@ -194,10 +182,8 @@ Section AccountId.
     x0 : u128.t;
   }.
   
-  Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>));
-  }.
+  Definition Get_0 :=
+    Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>)).
 End AccountId.
 End AccountId.
 
@@ -291,9 +277,9 @@ Section Impl_core_cmp_PartialEq_for_erc1155_AccountId_t.
     let* self := M.alloc self in
     let* other := M.alloc other in
     let* α0 : ref erc1155.AccountId.t := M.read self in
-    let* α1 : u128.t := M.read (deref α0).["0"] in
+    let* α1 : u128.t := M.read (erc1155.AccountId.Get_0 (deref α0)) in
     let* α2 : ref erc1155.AccountId.t := M.read other in
-    let* α3 : u128.t := M.read (deref α2).["0"] in
+    let* α3 : u128.t := M.read (erc1155.AccountId.Get_0 (deref α2)) in
     M.pure (BinOp.Pure.eq α1 α3).
   
   Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
@@ -343,15 +329,8 @@ Section Env.
     caller : erc1155.AccountId.t;
   }.
   
-  Global Instance Get_caller : Notations.Dot "caller" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(caller))
-        (fun β α => Some (α <| caller := β |>));
-  }.
-  Global Instance Get_AF_caller : Notations.DoubleColon t "caller" := {
-    Notations.double_colon (α : M.Val t) := α.["caller"];
-  }.
+  Definition Get_caller :=
+    Ref.map (fun α => Some α.(caller)) (fun β α => Some (α <| caller := β |>)).
 End Env.
 End Env.
 
@@ -367,17 +346,26 @@ Definition zero_address : M erc1155.AccountId.t :=
         (Self := array u8.t)
         (T := erc1155.AccountId.t)
         (Trait := ℐ))) in
-  M.call (α0 (repeat (Integer.of_Z 0) 32)).
+  M.call (α0 (repeat ((Integer.of_Z 0) : u8.t) 32)).
 
 Definition ON_ERC_1155_RECEIVED_SELECTOR : M.Val (array u8.t) :=
   M.run
     (M.alloc
-      [ Integer.of_Z 242; Integer.of_Z 58; Integer.of_Z 110; Integer.of_Z 97 ]).
+      [
+        (Integer.of_Z 242) : u8.t;
+        (Integer.of_Z 58) : u8.t;
+        (Integer.of_Z 110) : u8.t;
+        (Integer.of_Z 97) : u8.t
+      ]).
 
 Definition _ON_ERC_1155_BATCH_RECEIVED_SELECTOR : M.Val (array u8.t) :=
   M.run
     (M.alloc
-      [ Integer.of_Z 188; Integer.of_Z 25; Integer.of_Z 124; Integer.of_Z 129
+      [
+        (Integer.of_Z 188) : u8.t;
+        (Integer.of_Z 25) : u8.t;
+        (Integer.of_Z 124) : u8.t;
+        (Integer.of_Z 129) : u8.t
       ]).
 
 Ltac TokenId := exact u128.t.
@@ -550,45 +538,20 @@ Section TransferSingle.
     value : ltac:(erc1155.Balance);
   }.
   
-  Global Instance Get_operator : Notations.Dot "operator" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(operator))
-        (fun β α => Some (α <| operator := β |>));
-  }.
-  Global Instance Get_AF_operator : Notations.DoubleColon t "operator" := {
-    Notations.double_colon (α : M.Val t) := α.["operator"];
-  }.
-  Global Instance Get_from : Notations.Dot "from" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(from)) (fun β α => Some (α <| from := β |>));
-  }.
-  Global Instance Get_AF_from : Notations.DoubleColon t "from" := {
-    Notations.double_colon (α : M.Val t) := α.["from"];
-  }.
-  Global Instance Get_to : Notations.Dot "to" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(to)) (fun β α => Some (α <| to := β |>));
-  }.
-  Global Instance Get_AF_to : Notations.DoubleColon t "to" := {
-    Notations.double_colon (α : M.Val t) := α.["to"];
-  }.
-  Global Instance Get_token_id : Notations.Dot "token_id" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(token_id))
-        (fun β α => Some (α <| token_id := β |>));
-  }.
-  Global Instance Get_AF_token_id : Notations.DoubleColon t "token_id" := {
-    Notations.double_colon (α : M.Val t) := α.["token_id"];
-  }.
-  Global Instance Get_value : Notations.Dot "value" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(value)) (fun β α => Some (α <| value := β |>));
-  }.
-  Global Instance Get_AF_value : Notations.DoubleColon t "value" := {
-    Notations.double_colon (α : M.Val t) := α.["value"];
-  }.
+  Definition Get_operator :=
+    Ref.map
+      (fun α => Some α.(operator))
+      (fun β α => Some (α <| operator := β |>)).
+  Definition Get_from :=
+    Ref.map (fun α => Some α.(from)) (fun β α => Some (α <| from := β |>)).
+  Definition Get_to :=
+    Ref.map (fun α => Some α.(to)) (fun β α => Some (α <| to := β |>)).
+  Definition Get_token_id :=
+    Ref.map
+      (fun α => Some α.(token_id))
+      (fun β α => Some (α <| token_id := β |>)).
+  Definition Get_value :=
+    Ref.map (fun α => Some α.(value)) (fun β α => Some (α <| value := β |>)).
 End TransferSingle.
 End TransferSingle.
 
@@ -600,31 +563,16 @@ Section ApprovalForAll.
     approved : bool.t;
   }.
   
-  Global Instance Get_owner : Notations.Dot "owner" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(owner)) (fun β α => Some (α <| owner := β |>));
-  }.
-  Global Instance Get_AF_owner : Notations.DoubleColon t "owner" := {
-    Notations.double_colon (α : M.Val t) := α.["owner"];
-  }.
-  Global Instance Get_operator : Notations.Dot "operator" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(operator))
-        (fun β α => Some (α <| operator := β |>));
-  }.
-  Global Instance Get_AF_operator : Notations.DoubleColon t "operator" := {
-    Notations.double_colon (α : M.Val t) := α.["operator"];
-  }.
-  Global Instance Get_approved : Notations.Dot "approved" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(approved))
-        (fun β α => Some (α <| approved := β |>));
-  }.
-  Global Instance Get_AF_approved : Notations.DoubleColon t "approved" := {
-    Notations.double_colon (α : M.Val t) := α.["approved"];
-  }.
+  Definition Get_owner :=
+    Ref.map (fun α => Some α.(owner)) (fun β α => Some (α <| owner := β |>)).
+  Definition Get_operator :=
+    Ref.map
+      (fun α => Some α.(operator))
+      (fun β α => Some (α <| operator := β |>)).
+  Definition Get_approved :=
+    Ref.map
+      (fun α => Some α.(approved))
+      (fun β α => Some (α <| approved := β |>)).
 End ApprovalForAll.
 End ApprovalForAll.
 
@@ -635,22 +583,12 @@ Section Uri.
     token_id : ltac:(erc1155.TokenId);
   }.
   
-  Global Instance Get_value : Notations.Dot "value" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(value)) (fun β α => Some (α <| value := β |>));
-  }.
-  Global Instance Get_AF_value : Notations.DoubleColon t "value" := {
-    Notations.double_colon (α : M.Val t) := α.["value"];
-  }.
-  Global Instance Get_token_id : Notations.Dot "token_id" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(token_id))
-        (fun β α => Some (α <| token_id := β |>));
-  }.
-  Global Instance Get_AF_token_id : Notations.DoubleColon t "token_id" := {
-    Notations.double_colon (α : M.Val t) := α.["token_id"];
-  }.
+  Definition Get_value :=
+    Ref.map (fun α => Some α.(value)) (fun β α => Some (α <| value := β |>)).
+  Definition Get_token_id :=
+    Ref.map
+      (fun α => Some α.(token_id))
+      (fun β α => Some (α <| token_id := β |>)).
 End Uri.
 End Uri.
 
@@ -660,34 +598,28 @@ Module Event.
   | ApprovalForAll (_ : erc1155.ApprovalForAll.t)
   | Uri (_ : erc1155.Uri.t).
   
-  Global Instance Get_TransferSingle_0 : Notations.Dot "TransferSingle.0" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => match α with | TransferSingle α0 => Some α0 | _ => None end)
-        (fun β α =>
-          match α with
-          | TransferSingle _ => Some (TransferSingle β)
-          | _ => None
-          end);
-  }.
+  Definition Get_TransferSingle_0 :=
+    Ref.map
+      (fun α => match α with | TransferSingle α0 => Some α0 | _ => None end)
+      (fun β α =>
+        match α with
+        | TransferSingle _ => Some (TransferSingle β)
+        | _ => None
+        end).
   
-  Global Instance Get_ApprovalForAll_0 : Notations.Dot "ApprovalForAll.0" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => match α with | ApprovalForAll α0 => Some α0 | _ => None end)
-        (fun β α =>
-          match α with
-          | ApprovalForAll _ => Some (ApprovalForAll β)
-          | _ => None
-          end);
-  }.
+  Definition Get_ApprovalForAll_0 :=
+    Ref.map
+      (fun α => match α with | ApprovalForAll α0 => Some α0 | _ => None end)
+      (fun β α =>
+        match α with
+        | ApprovalForAll _ => Some (ApprovalForAll β)
+        | _ => None
+        end).
   
-  Global Instance Get_Uri_0 : Notations.Dot "Uri.0" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => match α with | Uri α0 => Some α0 | _ => None end)
-        (fun β α => match α with | Uri _ => Some (Uri β) | _ => None end);
-  }.
+  Definition Get_Uri_0 :=
+    Ref.map
+      (fun α => match α with | Uri α0 => Some α0 | _ => None end)
+      (fun β α => match α with | Uri _ => Some (Uri β) | _ => None end).
 End Event.
 
 Module  Impl_erc1155_Env_t.
@@ -702,7 +634,7 @@ Section Impl_erc1155_Env_t.
   Definition caller (self : ref Self) : M erc1155.AccountId.t :=
     let* self := M.alloc self in
     let* α0 : ref erc1155.Env.t := M.read self in
-    M.read (deref α0).["caller"].
+    M.read (erc1155.Env.Get_caller (deref α0)).
   
   Global Instance AssociatedFunction_caller :
     Notations.DoubleColon Self "caller" := {
@@ -740,34 +672,18 @@ Section Contract.
     token_id_nonce : ltac:(erc1155.TokenId);
   }.
   
-  Global Instance Get_balances : Notations.Dot "balances" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(balances))
-        (fun β α => Some (α <| balances := β |>));
-  }.
-  Global Instance Get_AF_balances : Notations.DoubleColon t "balances" := {
-    Notations.double_colon (α : M.Val t) := α.["balances"];
-  }.
-  Global Instance Get_approvals : Notations.Dot "approvals" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(approvals))
-        (fun β α => Some (α <| approvals := β |>));
-  }.
-  Global Instance Get_AF_approvals : Notations.DoubleColon t "approvals" := {
-    Notations.double_colon (α : M.Val t) := α.["approvals"];
-  }.
-  Global Instance Get_token_id_nonce : Notations.Dot "token_id_nonce" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(token_id_nonce))
-        (fun β α => Some (α <| token_id_nonce := β |>));
-  }.
-  Global Instance Get_AF_token_id_nonce :
-    Notations.DoubleColon t "token_id_nonce" := {
-    Notations.double_colon (α : M.Val t) := α.["token_id_nonce"];
-  }.
+  Definition Get_balances :=
+    Ref.map
+      (fun α => Some α.(balances))
+      (fun β α => Some (α <| balances := β |>)).
+  Definition Get_approvals :=
+    Ref.map
+      (fun α => Some α.(approvals))
+      (fun β α => Some (α <| approvals := β |>)).
+  Definition Get_token_id_nonce :=
+    Ref.map
+      (fun α => Some α.(token_id_nonce))
+      (fun β α => Some (α <| token_id_nonce := β |>)).
 End Contract.
 End Contract.
 
@@ -904,20 +820,21 @@ Section Impl_erc1155_Contract_t.
     let* _ : M.Val unit :=
       let* β : M.Val u128.t :=
         let* α0 : mut_ref erc1155.Contract.t := M.read self in
-        M.pure (deref α0).["token_id_nonce"] in
+        M.pure (erc1155.Contract.Get_token_id_nonce (deref α0)) in
       let* α0 := M.read β in
-      let* α1 := BinOp.Panic.add α0 (Integer.of_Z 1) in
+      let* α1 := BinOp.Panic.add α0 ((Integer.of_Z 1) : u128.t) in
       assign β α1 in
     let* _ : M.Val (core.option.Option.t u32.t) :=
       let* α0 : mut_ref erc1155.Contract.t := M.read self in
       let* α1 : erc1155.AccountId.t := M.read caller in
       let* α2 : mut_ref erc1155.Contract.t := M.read self in
-      let* α3 : u128.t := M.read (deref α2).["token_id_nonce"] in
+      let* α3 : u128.t :=
+        M.read (erc1155.Contract.Get_token_id_nonce (deref α2)) in
       let* α4 : u128.t := M.read value in
       let* α5 : core.option.Option.t u32.t :=
         M.call
           ((erc1155.Mapping.t (erc1155.AccountId.t * u128.t) u128.t)::["insert"]
-            (borrow_mut (deref α0).["balances"])
+            (borrow_mut (erc1155.Contract.Get_balances (deref α0)))
             (α1, α3)
             α4) in
       M.alloc α5 in
@@ -928,7 +845,8 @@ Section Impl_erc1155_Contract_t.
       let* α2 : M.Val erc1155.Env.t := M.alloc α1 in
       let* α3 : erc1155.AccountId.t := M.read caller in
       let* α4 : u128.t := M.read value in
-      let* α5 : M.Val bool.t := M.alloc (BinOp.Pure.eq α4 (Integer.of_Z 0)) in
+      let* α5 : M.Val bool.t :=
+        M.alloc (BinOp.Pure.eq α4 ((Integer.of_Z 0) : u128.t)) in
       let* α6 : bool.t := M.read (use α5) in
       let* α7 : M.Val (core.option.Option.t erc1155.AccountId.t) :=
         if α6 then
@@ -938,7 +856,8 @@ Section Impl_erc1155_Contract_t.
           M.alloc (core.option.Option.Some α0) in
       let* α8 : core.option.Option.t erc1155.AccountId.t := M.read α7 in
       let* α9 : mut_ref erc1155.Contract.t := M.read self in
-      let* α10 : u128.t := M.read (deref α9).["token_id_nonce"] in
+      let* α10 : u128.t :=
+        M.read (erc1155.Contract.Get_token_id_nonce (deref α9)) in
       let* α11 : u128.t := M.read value in
       let* α12 : unit :=
         M.call
@@ -954,7 +873,7 @@ Section Impl_erc1155_Contract_t.
               |})) in
       M.alloc α12 in
     let* α0 : mut_ref erc1155.Contract.t := M.read self in
-    M.read (deref α0).["token_id_nonce"].
+    M.read (erc1155.Contract.Get_token_id_nonce (deref α0)).
   
   Global Instance AssociatedFunction_create :
     Notations.DoubleColon Self "create" := {
@@ -993,7 +912,8 @@ Section Impl_erc1155_Contract_t.
       (let* _ : M.Val unit :=
         let* α0 : u128.t := M.read token_id in
         let* α1 : mut_ref erc1155.Contract.t := M.read self in
-        let* α2 : u128.t := M.read (deref α1).["token_id_nonce"] in
+        let* α2 : u128.t :=
+          M.read (erc1155.Contract.Get_token_id_nonce (deref α1)) in
         let* α3 : M.Val bool.t := M.alloc (UnOp.not (BinOp.Pure.le α0 α2)) in
         let* α4 : bool.t := M.read (use α3) in
         if α4 then
@@ -1031,7 +951,7 @@ Section Impl_erc1155_Contract_t.
             ((erc1155.Mapping.t
                   (erc1155.AccountId.t * u128.t)
                   u128.t)::["insert"]
-              (borrow_mut (deref α0).["balances"])
+              (borrow_mut (erc1155.Contract.Get_balances (deref α0)))
               (α1, α2)
               α3) in
         M.alloc α4 in
@@ -1115,7 +1035,7 @@ Section Impl_erc1155_Contract_t.
       let* α4 : core.option.Option.t u128.t :=
         M.call
           ((erc1155.Mapping.t (erc1155.AccountId.t * u128.t) u128.t)::["get"]
-            (borrow (deref α0).["balances"])
+            (borrow (erc1155.Contract.Get_balances (deref α0)))
             (borrow α3)) in
       let* α5 : ref str.t :=
         M.read
@@ -1137,7 +1057,7 @@ Section Impl_erc1155_Contract_t.
       let* α4 : core.option.Option.t u32.t :=
         M.call
           ((erc1155.Mapping.t (erc1155.AccountId.t * u128.t) u128.t)::["insert"]
-            (borrow_mut (deref α0).["balances"])
+            (borrow_mut (erc1155.Contract.Get_balances (deref α0)))
             (α1, α2)
             α3) in
       M.alloc α4 in
@@ -1149,9 +1069,9 @@ Section Impl_erc1155_Contract_t.
       let* α4 : core.option.Option.t u128.t :=
         M.call
           ((erc1155.Mapping.t (erc1155.AccountId.t * u128.t) u128.t)::["get"]
-            (borrow (deref α0).["balances"])
+            (borrow (erc1155.Contract.Get_balances (deref α0)))
             (borrow α3)) in
-      let* α5 : M.Val u128.t := M.alloc (Integer.of_Z 0) in
+      let* α5 : M.Val u128.t := M.alloc ((Integer.of_Z 0) : u128.t) in
       let* α6 : u128.t := M.read (use α5) in
       let* α7 : u128.t :=
         M.call ((core.option.Option.t u128.t)::["unwrap_or"] α4 α6) in
@@ -1170,7 +1090,7 @@ Section Impl_erc1155_Contract_t.
       let* α4 : core.option.Option.t u32.t :=
         M.call
           ((erc1155.Mapping.t (erc1155.AccountId.t * u128.t) u128.t)::["insert"]
-            (borrow_mut (deref α0).["balances"])
+            (borrow_mut (erc1155.Contract.Get_balances (deref α0)))
             (α1, α2)
             α3) in
       M.alloc α4 in
@@ -1337,7 +1257,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
       ((erc1155.Mapping.t
             (erc1155.AccountId.t * erc1155.AccountId.t)
             unit)::["contains"]
-        (borrow (deref α0).["approvals"])
+        (borrow (erc1155.Contract.Get_approvals (deref α0)))
         (borrow α3)).
   
   Global Instance AssociatedFunction_is_approved_for_all :
@@ -1365,9 +1285,9 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
     let* α4 : core.option.Option.t u128.t :=
       M.call
         ((erc1155.Mapping.t (erc1155.AccountId.t * u128.t) u128.t)::["get"]
-          (borrow (deref α0).["balances"])
+          (borrow (erc1155.Contract.Get_balances (deref α0)))
           (borrow α3)) in
-    let* α5 : M.Val u128.t := M.alloc (Integer.of_Z 0) in
+    let* α5 : M.Val u128.t := M.alloc ((Integer.of_Z 0) : u128.t) in
     let* α6 : u128.t := M.read (use α5) in
     M.call ((core.option.Option.t u128.t)::["unwrap_or"] α4 α6).
   
@@ -1850,7 +1770,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                           (let* α0 := M.read γ in
                           match α0 with
                           | core.option.Option.Some _ =>
-                            let γ0_0 := γ.["Some.0"] in
+                            let γ0_0 := core.option.Option.Get_Some_0 γ in
                             let* α0 := M.read γ0_0 in
                             match α0 with
                             | (_, _) =>
@@ -1975,7 +1895,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                           (let* α0 := M.read γ in
                           match α0 with
                           | core.option.Option.Some _ =>
-                            let γ0_0 := γ.["Some.0"] in
+                            let γ0_0 := core.option.Option.Get_Some_0 γ in
                             let* α0 := M.read γ0_0 in
                             match α0 with
                             | (_, _) =>
@@ -2027,7 +1947,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
               (Idx := usize.t)
               (Trait := ℐ))) in
         let* α5 : ref u128.t :=
-          M.call (α4 (borrow token_ids) (Integer.of_Z 0)) in
+          M.call (α4 (borrow token_ids) ((Integer.of_Z 0) : usize.t)) in
         let* α6 : u128.t := M.read (deref α5) in
         let* α7 : _ :=
           ltac:(M.get_method (fun ℐ =>
@@ -2035,7 +1955,8 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
               (Self := alloc.vec.Vec.t u128.t alloc.alloc.Global.t)
               (Idx := usize.t)
               (Trait := ℐ))) in
-        let* α8 : ref u128.t := M.call (α7 (borrow values) (Integer.of_Z 0)) in
+        let* α8 : ref u128.t :=
+          M.call (α7 (borrow values) ((Integer.of_Z 0) : usize.t)) in
         let* α9 : u128.t := M.read (deref α8) in
         let* α10 : alloc.vec.Vec.t u8.t alloc.alloc.Global.t := M.read data in
         let* α11 : unit :=
@@ -2131,7 +2052,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                         (let* α0 := M.read γ in
                         match α0 with
                         | core.option.Option.Some _ =>
-                          let γ0_0 := γ.["Some.0"] in
+                          let γ0_0 := core.option.Option.Get_Some_0 γ in
                           let* o := M.copy γ0_0 in
                           let* α0 : _ :=
                             ltac:(M.get_method (fun ℐ =>
@@ -2188,7 +2109,9 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                                             (let* α0 := M.read γ in
                                             match α0 with
                                             | core.option.Option.Some _ =>
-                                              let γ0_0 := γ.["Some.0"] in
+                                              let γ0_0 :=
+                                                core.option.Option.Get_Some_0
+                                                  γ in
                                               let* t := M.copy γ0_0 in
                                               let* amount : M.Val u128.t :=
                                                 let* α0 :
@@ -2319,7 +2242,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                 ((erc1155.Mapping.t
                       (erc1155.AccountId.t * erc1155.AccountId.t)
                       unit)::["insert"]
-                  (borrow_mut (deref α0).["approvals"])
+                  (borrow_mut (erc1155.Contract.Get_approvals (deref α0)))
                   (α1, α2)
                   tt) in
             M.alloc α3 in
@@ -2334,7 +2257,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                 ((erc1155.Mapping.t
                       (erc1155.AccountId.t * erc1155.AccountId.t)
                       unit)::["remove"]
-                  (borrow (deref α0).["approvals"])
+                  (borrow (erc1155.Contract.Get_approvals (deref α0)))
                   (α1, α2)) in
             M.alloc α3 in
           M.alloc tt in

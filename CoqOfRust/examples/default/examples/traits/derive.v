@@ -7,10 +7,8 @@ Section Centimeters.
     x0 : f64.t;
   }.
   
-  Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>));
-  }.
+  Definition Get_0 :=
+    Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>)).
 End Centimeters.
 End Centimeters.
 
@@ -37,9 +35,9 @@ Section Impl_core_cmp_PartialEq_for_derive_Centimeters_t.
     let* self := M.alloc self in
     let* other := M.alloc other in
     let* α0 : ref derive.Centimeters.t := M.read self in
-    let* α1 : f64.t := M.read (deref α0).["0"] in
+    let* α1 : f64.t := M.read (derive.Centimeters.Get_0 (deref α0)) in
     let* α2 : ref derive.Centimeters.t := M.read other in
-    let* α3 : f64.t := M.read (deref α2).["0"] in
+    let* α3 : f64.t := M.read (derive.Centimeters.Get_0 (deref α2)) in
     M.pure (BinOp.Pure.eq α1 α3).
   
   Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
@@ -76,7 +74,10 @@ Section Impl_core_cmp_PartialOrd_for_derive_Centimeters_t.
           (Trait := ℐ))) in
     let* α1 : ref derive.Centimeters.t := M.read self in
     let* α2 : ref derive.Centimeters.t := M.read other in
-    M.call (α0 (borrow (deref α1).["0"]) (borrow (deref α2).["0"])).
+    M.call
+      (α0
+        (borrow (derive.Centimeters.Get_0 (deref α1)))
+        (borrow (derive.Centimeters.Get_0 (deref α2)))).
   
   Global Instance AssociatedFunction_partial_cmp :
     Notations.DoubleColon Self "partial_cmp" := {
@@ -101,10 +102,8 @@ Section Inches.
     x0 : i32.t;
   }.
   
-  Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>));
-  }.
+  Definition Get_0 :=
+    Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>)).
 End Inches.
 End Inches.
 
@@ -124,7 +123,8 @@ Section Impl_core_fmt_Debug_for_derive_Inches_t.
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref str.t := M.read (mk_str "Inches") in
     let* α2 : ref derive.Inches.t := M.read self in
-    let* α3 : M.Val (ref i32.t) := M.alloc (borrow (deref α2).["0"]) in
+    let* α3 : M.Val (ref i32.t) :=
+      M.alloc (borrow (derive.Inches.Get_0 (deref α2))) in
     let* α4 : M.Val (ref (ref i32.t)) := M.alloc (borrow α3) in
     let* α5 : ref _ (* dyn *) := M.read (pointer_coercion "Unsize" α4) in
     M.call (core.fmt.Formatter.t::["debug_tuple_field1_finish"] α0 α1 α5).
@@ -163,11 +163,11 @@ Section Impl_derive_Inches_t.
             let* α0 := M.read γ in
             match α0 with
             | derive.Inches.Build_t _ =>
-              let γ1_0 := γ.["Inches.0"] in
+              let γ1_0 := derive.Inches.Get_0 γ in
               let* inches := M.copy γ1_0 in
               let* α0 : i32.t := M.read inches in
               let* α1 : f64.t := M.cast α0 in
-              let* α2 : f64.t := M.read UnsupportedLiteral in
+              let* α2 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
               let* α3 : f64.t := BinOp.Panic.mul α1 α2 in
               M.alloc (derive.Centimeters.Build_t α3)
             end) :
@@ -188,10 +188,8 @@ Section Seconds.
     x0 : i32.t;
   }.
   
-  Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>));
-  }.
+  Definition Get_0 :=
+    Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>)).
 End Seconds.
 End Seconds.
 
@@ -225,9 +223,9 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
   let* _one_second : M.Val derive.Seconds.t :=
-    M.alloc (derive.Seconds.Build_t (Integer.of_Z 1)) in
+    M.alloc (derive.Seconds.Build_t ((Integer.of_Z 1) : i32.t)) in
   let* foot : M.Val derive.Inches.t :=
-    M.alloc (derive.Inches.Build_t (Integer.of_Z 12)) in
+    M.alloc (derive.Inches.Build_t ((Integer.of_Z 12) : i32.t)) in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "One foot equals ") in
@@ -250,7 +248,7 @@ Definition main : M unit :=
       M.alloc α10 in
     M.alloc tt in
   let* meter : M.Val derive.Centimeters.t :=
-    let* α0 : f64.t := M.read UnsupportedLiteral in
+    let* α0 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
     M.alloc (derive.Centimeters.Build_t α0) in
   let* cmp : M.Val (ref str.t) :=
     let* α0 : _ :=

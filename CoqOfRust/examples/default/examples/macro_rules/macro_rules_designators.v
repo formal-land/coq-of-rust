@@ -102,7 +102,8 @@ Definition main : M unit :=
         M.call
           (core.fmt.rt.Argument.t::["new_debug"]
             (borrow (mk_str "1u32 + 1"))) in
-      let* α7 : u32.t := BinOp.Panic.add (Integer.of_Z 1) (Integer.of_Z 1) in
+      let* α7 : u32.t :=
+        BinOp.Panic.add ((Integer.of_Z 1) : u32.t) ((Integer.of_Z 1) : u32.t) in
       let* α8 : M.Val u32.t := M.alloc α7 in
       let* α9 : core.fmt.rt.Argument.t :=
         M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow α8)) in
@@ -130,14 +131,14 @@ Definition main : M unit :=
         M.call
           (core.fmt.rt.Argument.t::["new_debug"]
             (borrow (mk_str "{ let x = 1u32; x * x + 2 * x - 1 }"))) in
-      let* x : M.Val u32.t := M.alloc (Integer.of_Z 1) in
+      let* x : M.Val u32.t := M.alloc ((Integer.of_Z 1) : u32.t) in
       let* α0 : u32.t := M.read x in
       let* α1 : u32.t := M.read x in
       let* α2 : u32.t := BinOp.Panic.mul α0 α1 in
       let* α3 : u32.t := M.read x in
-      let* α4 : u32.t := BinOp.Panic.mul (Integer.of_Z 2) α3 in
+      let* α4 : u32.t := BinOp.Panic.mul ((Integer.of_Z 2) : u32.t) α3 in
       let* α5 : u32.t := BinOp.Panic.add α2 α4 in
-      let* α6 : u32.t := BinOp.Panic.sub α5 (Integer.of_Z 1) in
+      let* α6 : u32.t := BinOp.Panic.sub α5 ((Integer.of_Z 1) : u32.t) in
       let* α7 : M.Val u32.t := M.alloc α6 in
       let* α8 : core.fmt.rt.Argument.t :=
         M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow α7)) in

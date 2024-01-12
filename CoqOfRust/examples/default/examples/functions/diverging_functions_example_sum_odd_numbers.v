@@ -39,7 +39,7 @@ Definition main : M unit :=
       let* α4 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α3) in
       let* α5 : u32.t :=
-        M.call ("unimplemented parent_kind" (Integer.of_Z 9)) in
+        M.call ("unimplemented parent_kind" ((Integer.of_Z 9) : u32.t)) in
       let* α6 : M.Val u32.t := M.alloc α5 in
       let* α7 : core.fmt.rt.Argument.t :=
         M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α6)) in
@@ -77,7 +77,7 @@ Definition main : M unit :=
 *)
 Definition sum_odd_numbers (up_to : u32.t) : M u32.t :=
   let* up_to := M.alloc up_to in
-  let* acc : M.Val u32.t := M.alloc (Integer.of_Z 0) in
+  let* acc : M.Val u32.t := M.alloc ((Integer.of_Z 0) : u32.t) in
   let* _ : M.Val unit :=
     let* α0 : _ :=
       ltac:(M.get_method (fun ℐ =>
@@ -89,7 +89,7 @@ Definition sum_odd_numbers (up_to : u32.t) : M u32.t :=
       M.call
         (α0
           {|
-            core.ops.range.Range.start := Integer.of_Z 0;
+            core.ops.range.Range.start := (Integer.of_Z 0) : u32.t;
             core.ops.range.Range.end_ := α1;
           |}) in
     let* α3 : M.Val (core.ops.range.Range.t u32.t) := M.alloc α2 in
@@ -127,14 +127,15 @@ Definition sum_odd_numbers (up_to : u32.t) : M u32.t :=
                       (let* α0 := M.read γ in
                       match α0 with
                       | core.option.Option.Some _ =>
-                        let γ0_0 := γ.["Some.0"] in
+                        let γ0_0 := core.option.Option.Get_Some_0 γ in
                         let* i := M.copy γ0_0 in
                         let* addition : M.Val u32.t :=
                           let* α0 : u32.t := M.read i in
                           let* α1 : u32.t :=
-                            BinOp.Panic.rem α0 (Integer.of_Z 2) in
+                            BinOp.Panic.rem α0 ((Integer.of_Z 2) : u32.t) in
                           let* α2 : M.Val bool.t :=
-                            M.alloc (BinOp.Pure.eq α1 (Integer.of_Z 1)) in
+                            M.alloc
+                              (BinOp.Pure.eq α1 ((Integer.of_Z 1) : u32.t)) in
                           let* α3 : M.Val u32.t :=
                             match_operator
                               α2

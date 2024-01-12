@@ -6,21 +6,16 @@ Module Temperature.
   | Celsius (_ : i32.t)
   | Fahrenheit (_ : i32.t).
   
-  Global Instance Get_Celsius_0 : Notations.Dot "Celsius.0" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => match α with | Celsius α0 => Some α0 | _ => None end)
-        (fun β α =>
-          match α with | Celsius _ => Some (Celsius β) | _ => None end);
-  }.
+  Definition Get_Celsius_0 :=
+    Ref.map
+      (fun α => match α with | Celsius α0 => Some α0 | _ => None end)
+      (fun β α => match α with | Celsius _ => Some (Celsius β) | _ => None end).
   
-  Global Instance Get_Fahrenheit_0 : Notations.Dot "Fahrenheit.0" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => match α with | Fahrenheit α0 => Some α0 | _ => None end)
-        (fun β α =>
-          match α with | Fahrenheit _ => Some (Fahrenheit β) | _ => None end);
-  }.
+  Definition Get_Fahrenheit_0 :=
+    Ref.map
+      (fun α => match α with | Fahrenheit α0 => Some α0 | _ => None end)
+      (fun β α =>
+        match α with | Fahrenheit _ => Some (Fahrenheit β) | _ => None end).
 End Temperature.
 
 (*

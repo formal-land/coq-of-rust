@@ -39,24 +39,10 @@ Section Rectangle.
     height : f64.t;
   }.
   
-  Global Instance Get_length : Notations.Dot "length" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(length))
-        (fun β α => Some (α <| length := β |>));
-  }.
-  Global Instance Get_AF_length : Notations.DoubleColon t "length" := {
-    Notations.double_colon (α : M.Val t) := α.["length"];
-  }.
-  Global Instance Get_height : Notations.Dot "height" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(height))
-        (fun β α => Some (α <| height := β |>));
-  }.
-  Global Instance Get_AF_height : Notations.DoubleColon t "height" := {
-    Notations.double_colon (α : M.Val t) := α.["height"];
-  }.
+  Definition Get_length :=
+    Ref.map (fun α => Some α.(length)) (fun β α => Some (α <| length := β |>)).
+  Definition Get_height :=
+    Ref.map (fun α => Some α.(height)) (fun β α => Some (α <| height := β |>)).
 End Rectangle.
 End Rectangle.
 
@@ -88,24 +74,10 @@ Section Triangle.
     height : f64.t;
   }.
   
-  Global Instance Get_length : Notations.Dot "length" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(length))
-        (fun β α => Some (α <| length := β |>));
-  }.
-  Global Instance Get_AF_length : Notations.DoubleColon t "length" := {
-    Notations.double_colon (α : M.Val t) := α.["length"];
-  }.
-  Global Instance Get_height : Notations.Dot "height" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(height))
-        (fun β α => Some (α <| height := β |>));
-  }.
-  Global Instance Get_AF_height : Notations.DoubleColon t "height" := {
-    Notations.double_colon (α : M.Val t) := α.["height"];
-  }.
+  Definition Get_length :=
+    Ref.map (fun α => Some α.(length)) (fun β α => Some (α <| length := β |>)).
+  Definition Get_height :=
+    Ref.map (fun α => Some α.(height)) (fun β α => Some (α <| height := β |>)).
 End Triangle.
 End Triangle.
 

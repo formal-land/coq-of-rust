@@ -10,22 +10,10 @@ Section Mapping.
     _value : core.marker.PhantomData.t V;
   }.
   
-  Global Instance Get__key : Notations.Dot "_key" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(_key)) (fun β α => Some (α <| _key := β |>));
-  }.
-  Global Instance Get_AF__key : Notations.DoubleColon t "_key" := {
-    Notations.double_colon (α : M.Val t) := α.["_key"];
-  }.
-  Global Instance Get__value : Notations.Dot "_value" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(_value))
-        (fun β α => Some (α <| _value := β |>));
-  }.
-  Global Instance Get_AF__value : Notations.DoubleColon t "_value" := {
-    Notations.double_colon (α : M.Val t) := α.["_value"];
-  }.
+  Definition Get__key :=
+    Ref.map (fun α => Some α.(_key)) (fun β α => Some (α <| _key := β |>)).
+  Definition Get__value :=
+    Ref.map (fun α => Some α.(_value)) (fun β α => Some (α <| _value := β |>)).
 End Mapping.
 End Mapping.
 
@@ -194,10 +182,8 @@ Section AccountId.
     x0 : u128.t;
   }.
   
-  Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>));
-  }.
+  Definition Get_0 :=
+    Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>)).
 End AccountId.
 End AccountId.
 
@@ -288,9 +274,9 @@ Section Impl_core_cmp_PartialEq_for_erc721_AccountId_t.
     let* self := M.alloc self in
     let* other := M.alloc other in
     let* α0 : ref erc721.AccountId.t := M.read self in
-    let* α1 : u128.t := M.read (deref α0).["0"] in
+    let* α1 : u128.t := M.read (erc721.AccountId.Get_0 (deref α0)) in
     let* α2 : ref erc721.AccountId.t := M.read other in
-    let* α3 : u128.t := M.read (deref α2).["0"] in
+    let* α3 : u128.t := M.read (erc721.AccountId.Get_0 (deref α2)) in
     M.pure (BinOp.Pure.eq α1 α3).
   
   Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
@@ -340,15 +326,8 @@ Section Env.
     caller : erc721.AccountId.t;
   }.
   
-  Global Instance Get_caller : Notations.Dot "caller" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(caller))
-        (fun β α => Some (α <| caller := β |>));
-  }.
-  Global Instance Get_AF_caller : Notations.DoubleColon t "caller" := {
-    Notations.double_colon (α : M.Val t) := α.["caller"];
-  }.
+  Definition Get_caller :=
+    Ref.map (fun α => Some α.(caller)) (fun β α => Some (α <| caller := β |>)).
 End Env.
 End Env.
 
@@ -364,48 +343,22 @@ Section Erc721.
       erc721.Mapping.t (erc721.AccountId.t * erc721.AccountId.t) unit;
   }.
   
-  Global Instance Get_token_owner : Notations.Dot "token_owner" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(token_owner))
-        (fun β α => Some (α <| token_owner := β |>));
-  }.
-  Global Instance Get_AF_token_owner :
-    Notations.DoubleColon t "token_owner" := {
-    Notations.double_colon (α : M.Val t) := α.["token_owner"];
-  }.
-  Global Instance Get_token_approvals : Notations.Dot "token_approvals" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(token_approvals))
-        (fun β α => Some (α <| token_approvals := β |>));
-  }.
-  Global Instance Get_AF_token_approvals :
-    Notations.DoubleColon t "token_approvals" := {
-    Notations.double_colon (α : M.Val t) := α.["token_approvals"];
-  }.
-  Global Instance Get_owned_tokens_count :
-    Notations.Dot "owned_tokens_count" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(owned_tokens_count))
-        (fun β α => Some (α <| owned_tokens_count := β |>));
-  }.
-  Global Instance Get_AF_owned_tokens_count :
-    Notations.DoubleColon t "owned_tokens_count" := {
-    Notations.double_colon (α : M.Val t) := α.["owned_tokens_count"];
-  }.
-  Global Instance Get_operator_approvals :
-    Notations.Dot "operator_approvals" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(operator_approvals))
-        (fun β α => Some (α <| operator_approvals := β |>));
-  }.
-  Global Instance Get_AF_operator_approvals :
-    Notations.DoubleColon t "operator_approvals" := {
-    Notations.double_colon (α : M.Val t) := α.["operator_approvals"];
-  }.
+  Definition Get_token_owner :=
+    Ref.map
+      (fun α => Some α.(token_owner))
+      (fun β α => Some (α <| token_owner := β |>)).
+  Definition Get_token_approvals :=
+    Ref.map
+      (fun α => Some α.(token_approvals))
+      (fun β α => Some (α <| token_approvals := β |>)).
+  Definition Get_owned_tokens_count :=
+    Ref.map
+      (fun α => Some α.(owned_tokens_count))
+      (fun β α => Some (α <| owned_tokens_count := β |>)).
+  Definition Get_operator_approvals :=
+    Ref.map
+      (fun α => Some α.(operator_approvals))
+      (fun β α => Some (α <| operator_approvals := β |>)).
 End Erc721.
 End Erc721.
 
@@ -591,27 +544,12 @@ Section Transfer.
     id : ltac:(erc721.TokenId);
   }.
   
-  Global Instance Get_from : Notations.Dot "from" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(from)) (fun β α => Some (α <| from := β |>));
-  }.
-  Global Instance Get_AF_from : Notations.DoubleColon t "from" := {
-    Notations.double_colon (α : M.Val t) := α.["from"];
-  }.
-  Global Instance Get_to : Notations.Dot "to" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(to)) (fun β α => Some (α <| to := β |>));
-  }.
-  Global Instance Get_AF_to : Notations.DoubleColon t "to" := {
-    Notations.double_colon (α : M.Val t) := α.["to"];
-  }.
-  Global Instance Get_id : Notations.Dot "id" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(id)) (fun β α => Some (α <| id := β |>));
-  }.
-  Global Instance Get_AF_id : Notations.DoubleColon t "id" := {
-    Notations.double_colon (α : M.Val t) := α.["id"];
-  }.
+  Definition Get_from :=
+    Ref.map (fun α => Some α.(from)) (fun β α => Some (α <| from := β |>)).
+  Definition Get_to :=
+    Ref.map (fun α => Some α.(to)) (fun β α => Some (α <| to := β |>)).
+  Definition Get_id :=
+    Ref.map (fun α => Some α.(id)) (fun β α => Some (α <| id := β |>)).
 End Transfer.
 End Transfer.
 
@@ -623,27 +561,12 @@ Section Approval.
     id : ltac:(erc721.TokenId);
   }.
   
-  Global Instance Get_from : Notations.Dot "from" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(from)) (fun β α => Some (α <| from := β |>));
-  }.
-  Global Instance Get_AF_from : Notations.DoubleColon t "from" := {
-    Notations.double_colon (α : M.Val t) := α.["from"];
-  }.
-  Global Instance Get_to : Notations.Dot "to" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(to)) (fun β α => Some (α <| to := β |>));
-  }.
-  Global Instance Get_AF_to : Notations.DoubleColon t "to" := {
-    Notations.double_colon (α : M.Val t) := α.["to"];
-  }.
-  Global Instance Get_id : Notations.Dot "id" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(id)) (fun β α => Some (α <| id := β |>));
-  }.
-  Global Instance Get_AF_id : Notations.DoubleColon t "id" := {
-    Notations.double_colon (α : M.Val t) := α.["id"];
-  }.
+  Definition Get_from :=
+    Ref.map (fun α => Some α.(from)) (fun β α => Some (α <| from := β |>)).
+  Definition Get_to :=
+    Ref.map (fun α => Some α.(to)) (fun β α => Some (α <| to := β |>)).
+  Definition Get_id :=
+    Ref.map (fun α => Some α.(id)) (fun β α => Some (α <| id := β |>)).
 End Approval.
 End Approval.
 
@@ -655,31 +578,16 @@ Section ApprovalForAll.
     approved : bool.t;
   }.
   
-  Global Instance Get_owner : Notations.Dot "owner" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(owner)) (fun β α => Some (α <| owner := β |>));
-  }.
-  Global Instance Get_AF_owner : Notations.DoubleColon t "owner" := {
-    Notations.double_colon (α : M.Val t) := α.["owner"];
-  }.
-  Global Instance Get_operator : Notations.Dot "operator" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(operator))
-        (fun β α => Some (α <| operator := β |>));
-  }.
-  Global Instance Get_AF_operator : Notations.DoubleColon t "operator" := {
-    Notations.double_colon (α : M.Val t) := α.["operator"];
-  }.
-  Global Instance Get_approved : Notations.Dot "approved" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(approved))
-        (fun β α => Some (α <| approved := β |>));
-  }.
-  Global Instance Get_AF_approved : Notations.DoubleColon t "approved" := {
-    Notations.double_colon (α : M.Val t) := α.["approved"];
-  }.
+  Definition Get_owner :=
+    Ref.map (fun α => Some α.(owner)) (fun β α => Some (α <| owner := β |>)).
+  Definition Get_operator :=
+    Ref.map
+      (fun α => Some α.(operator))
+      (fun β α => Some (α <| operator := β |>)).
+  Definition Get_approved :=
+    Ref.map
+      (fun α => Some α.(approved))
+      (fun β α => Some (α <| approved := β |>)).
 End ApprovalForAll.
 End ApprovalForAll.
 
@@ -689,32 +597,26 @@ Module Event.
   | Approval (_ : erc721.Approval.t)
   | ApprovalForAll (_ : erc721.ApprovalForAll.t).
   
-  Global Instance Get_Transfer_0 : Notations.Dot "Transfer.0" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => match α with | Transfer α0 => Some α0 | _ => None end)
-        (fun β α =>
-          match α with | Transfer _ => Some (Transfer β) | _ => None end);
-  }.
+  Definition Get_Transfer_0 :=
+    Ref.map
+      (fun α => match α with | Transfer α0 => Some α0 | _ => None end)
+      (fun β α =>
+        match α with | Transfer _ => Some (Transfer β) | _ => None end).
   
-  Global Instance Get_Approval_0 : Notations.Dot "Approval.0" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => match α with | Approval α0 => Some α0 | _ => None end)
-        (fun β α =>
-          match α with | Approval _ => Some (Approval β) | _ => None end);
-  }.
+  Definition Get_Approval_0 :=
+    Ref.map
+      (fun α => match α with | Approval α0 => Some α0 | _ => None end)
+      (fun β α =>
+        match α with | Approval _ => Some (Approval β) | _ => None end).
   
-  Global Instance Get_ApprovalForAll_0 : Notations.Dot "ApprovalForAll.0" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => match α with | ApprovalForAll α0 => Some α0 | _ => None end)
-        (fun β α =>
-          match α with
-          | ApprovalForAll _ => Some (ApprovalForAll β)
-          | _ => None
-          end);
-  }.
+  Definition Get_ApprovalForAll_0 :=
+    Ref.map
+      (fun α => match α with | ApprovalForAll α0 => Some α0 | _ => None end)
+      (fun β α =>
+        match α with
+        | ApprovalForAll _ => Some (ApprovalForAll β)
+        | _ => None
+        end).
 End Event.
 
 Module  Impl_erc721_Env_t.
@@ -729,7 +631,7 @@ Section Impl_erc721_Env_t.
   Definition caller (self : ref Self) : M erc721.AccountId.t :=
     let* self := M.alloc self in
     let* α0 : ref erc721.Env.t := M.read self in
-    M.read (deref α0).["caller"].
+    M.read (erc721.Env.Get_caller (deref α0)).
   
   Global Instance AssociatedFunction_caller :
     Notations.DoubleColon Self "caller" := {
@@ -818,9 +720,9 @@ Section Impl_erc721_Erc721_t.
     let* α2 : core.option.Option.t u32.t :=
       M.call
         ((erc721.Mapping.t erc721.AccountId.t u32.t)::["get"]
-          (borrow (deref α0).["owned_tokens_count"])
+          (borrow (erc721.Erc721.Get_owned_tokens_count (deref α0)))
           α1) in
-    let* α3 : M.Val u32.t := M.alloc (Integer.of_Z 0) in
+    let* α3 : M.Val u32.t := M.alloc ((Integer.of_Z 0) : u32.t) in
     let* α4 : u32.t := M.read (use α3) in
     M.call ((core.option.Option.t u32.t)::["unwrap_or"] α2 α4).
   
@@ -846,7 +748,7 @@ Section Impl_erc721_Erc721_t.
       let* α2 : unit :=
         M.call
           ((erc721.Mapping.t u32.t erc721.AccountId.t)::["remove"]
-            (borrow (deref α0).["token_approvals"])
+            (borrow (erc721.Erc721.Get_token_approvals (deref α0)))
             α1) in
       M.alloc α2 in
     let* α0 : M.Val unit := M.alloc tt in
@@ -879,7 +781,7 @@ Section Impl_erc721_Erc721_t.
       ((erc721.Mapping.t
             (erc721.AccountId.t * erc721.AccountId.t)
             unit)::["contains"]
-        (borrow (deref α0).["operator_approvals"])
+        (borrow (erc721.Erc721.Get_operator_approvals (deref α0)))
         (borrow α3)).
   
   Global Instance AssociatedFunction_approved_for_all :
@@ -901,7 +803,7 @@ Section Impl_erc721_Erc721_t.
     let* α0 : ref erc721.Erc721.t := M.read self in
     M.call
       ((erc721.Mapping.t u32.t erc721.AccountId.t)::["get"]
-        (borrow (deref α0).["token_owner"])
+        (borrow (erc721.Erc721.Get_token_owner (deref α0)))
         (borrow id)).
   
   Global Instance AssociatedFunction_owner_of :
@@ -947,7 +849,8 @@ Section Impl_erc721_Erc721_t.
           (Self := erc721.AccountId.t)
           (T := array u8.t)
           (Trait := ℐ))) in
-    let* α2 : erc721.AccountId.t := M.call (α1 (repeat (Integer.of_Z 0) 32)) in
+    let* α2 : erc721.AccountId.t :=
+      M.call (α1 (repeat ((Integer.of_Z 0) : u8.t) 32)) in
     let* α3 : M.Val (core.option.Option.t erc721.AccountId.t) :=
       M.alloc (core.option.Option.Some α2) in
     let* α4 : bool.t := M.call (α0 (borrow from) (borrow α3)) in
@@ -968,7 +871,7 @@ Section Impl_erc721_Erc721_t.
     let* α9 : core.option.Option.t erc721.AccountId.t :=
       M.call
         ((erc721.Mapping.t u32.t erc721.AccountId.t)::["get"]
-          (borrow (deref α8).["token_approvals"])
+          (borrow (erc721.Erc721.Get_token_approvals (deref α8)))
           (borrow id)) in
     let* α10 : M.Val (core.option.Option.t erc721.AccountId.t) := M.alloc α9 in
     let* α11 : bool.t := M.call (α7 (borrow from) (borrow α10)) in
@@ -1006,7 +909,7 @@ Section Impl_erc721_Erc721_t.
     let* α0 : ref erc721.Erc721.t := M.read self in
     M.call
       ((erc721.Mapping.t u32.t erc721.AccountId.t)::["contains"]
-        (borrow (deref α0).["token_owner"])
+        (borrow (erc721.Erc721.Get_token_owner (deref α0)))
         (borrow id)).
   
   Global Instance AssociatedFunction_exists_ :
@@ -1047,7 +950,7 @@ Section Impl_erc721_Erc721_t.
     let* α0 : ref erc721.Erc721.t := M.read self in
     M.call
       ((erc721.Mapping.t u32.t erc721.AccountId.t)::["get"]
-        (borrow (deref α0).["token_approvals"])
+        (borrow (erc721.Erc721.Get_token_approvals (deref α0)))
         (borrow id)).
   
   Global Instance AssociatedFunction_get_approved :
@@ -1167,7 +1070,7 @@ Section Impl_erc721_Erc721_t.
                 ((erc721.Mapping.t
                       (erc721.AccountId.t * erc721.AccountId.t)
                       unit)::["insert"]
-                  (borrow_mut (deref α0).["operator_approvals"])
+                  (borrow_mut (erc721.Erc721.Get_operator_approvals (deref α0)))
                   (α1, α2)
                   tt) in
             M.alloc α3 in
@@ -1182,7 +1085,7 @@ Section Impl_erc721_Erc721_t.
                 ((erc721.Mapping.t
                       (erc721.AccountId.t * erc721.AccountId.t)
                       unit)::["remove"]
-                  (borrow (deref α0).["operator_approvals"])
+                  (borrow (erc721.Erc721.Get_operator_approvals (deref α0)))
                   (α1, α2)) in
             M.alloc α3 in
           M.alloc tt in
@@ -1240,7 +1143,7 @@ Section Impl_erc721_Erc721_t.
               (let* α0 := M.read γ in
               match α0 with
               | core.ops.control_flow.ControlFlow.Break _ =>
-                let γ0_0 := γ.["Break.0"] in
+                let γ0_0 := core.ops.control_flow.ControlFlow.Get_Break_0 γ in
                 let* residual := M.copy γ0_0 in
                 let* α0 : _ :=
                   ltac:(M.get_method (fun ℐ =>
@@ -1269,7 +1172,8 @@ Section Impl_erc721_Erc721_t.
               (let* α0 := M.read γ in
               match α0 with
               | core.ops.control_flow.ControlFlow.Continue _ =>
-                let γ0_0 := γ.["Continue.0"] in
+                let γ0_0 :=
+                  core.ops.control_flow.ControlFlow.Get_Continue_0 γ in
                 let* val := M.copy γ0_0 in
                 M.pure val
               | _ => M.break_match
@@ -1385,7 +1289,7 @@ Section Impl_erc721_Erc721_t.
               (T := array u8.t)
               (Trait := ℐ))) in
         let* α3 : erc721.AccountId.t :=
-          M.call (α2 (repeat (Integer.of_Z 0) 32)) in
+          M.call (α2 (repeat ((Integer.of_Z 0) : u8.t) 32)) in
         let* α4 : M.Val erc721.AccountId.t := M.alloc α3 in
         let* α5 : bool.t := M.call (α0 α1 (borrow α4)) in
         let* α6 : M.Val bool.t := M.alloc α5 in
@@ -1404,7 +1308,7 @@ Section Impl_erc721_Erc721_t.
         let* α1 : bool.t :=
           M.call
             ((erc721.Mapping.t u32.t erc721.AccountId.t)::["contains"]
-              (borrow (deref α0).["token_approvals"])
+              (borrow (erc721.Erc721.Get_token_approvals (deref α0)))
               (borrow id)) in
         let* α2 : M.Val bool.t := M.alloc α1 in
         let* α3 : bool.t := M.read (use α2) in
@@ -1424,7 +1328,7 @@ Section Impl_erc721_Erc721_t.
             let* α4 : core.option.Option.t u32.t :=
               M.call
                 ((erc721.Mapping.t u32.t erc721.AccountId.t)::["insert"]
-                  (borrow_mut (deref α0).["token_approvals"])
+                  (borrow_mut (erc721.Erc721.Get_token_approvals (deref α0)))
                   α1
                   α3) in
             M.alloc α4 in
@@ -1502,7 +1406,7 @@ Section Impl_erc721_Erc721_t.
               (let* α0 := M.read γ in
               match α0 with
               | core.ops.control_flow.ControlFlow.Break _ =>
-                let γ0_0 := γ.["Break.0"] in
+                let γ0_0 := core.ops.control_flow.ControlFlow.Get_Break_0 γ in
                 let* residual := M.copy γ0_0 in
                 let* α0 : _ :=
                   ltac:(M.get_method (fun ℐ =>
@@ -1531,7 +1435,8 @@ Section Impl_erc721_Erc721_t.
               (let* α0 := M.read γ in
               match α0 with
               | core.ops.control_flow.ControlFlow.Continue _ =>
-                let γ0_0 := γ.["Continue.0"] in
+                let γ0_0 :=
+                  core.ops.control_flow.ControlFlow.Get_Continue_0 γ in
                 let* val := M.copy γ0_0 in
                 M.pure val
               | _ => M.break_match
@@ -1569,11 +1474,191 @@ Section Impl_erc721_Erc721_t.
           Ok(())
       }
   *)
-  Parameter remove_token_from :
-      (mut_ref Self) ->
-        (ref erc721.AccountId.t) ->
-        ltac:(erc721.TokenId) ->
-        M (core.result.Result.t unit erc721.Error.t).
+  Definition remove_token_from
+      (self : mut_ref Self)
+      (from : ref erc721.AccountId.t)
+      (id : ltac:(erc721.TokenId))
+      : M (core.result.Result.t unit erc721.Error.t) :=
+    let* self := M.alloc self in
+    let* from := M.alloc from in
+    let* id := M.alloc id in
+    let return_ := M.return_ (R := core.result.Result.t unit erc721.Error.t) in
+    M.catch_return
+      (let* α0 : M.Val (core.result.Result.t unit erc721.Error.t) :=
+        match_operator
+          self
+          [
+            fun γ =>
+              (let* γ :=
+                let* α0 := M.read γ in
+                M.pure (deref α0) in
+              let* α0 := M.read γ in
+              match α0 with
+              |
+                  {|
+                    erc721.Erc721.token_owner := _;
+                    erc721.Erc721.owned_tokens_count := _;
+                  |}
+                  =>
+                let γ1_0 := erc721.Erc721.Get_token_owner γ in
+                let γ1_1 := erc721.Erc721.Get_owned_tokens_count γ in
+                let* token_owner := M.alloc (borrow_mut γ1_0) in
+                let* owned_tokens_count := M.alloc (borrow_mut γ1_1) in
+                let* _ : M.Val unit :=
+                  let* α0 :
+                      mut_ref (erc721.Mapping.t u32.t erc721.AccountId.t) :=
+                    M.read token_owner in
+                  let* α1 : bool.t :=
+                    M.call
+                      ((erc721.Mapping.t u32.t erc721.AccountId.t)::["contains"]
+                        (borrow (deref α0))
+                        (borrow id)) in
+                  let* α2 : M.Val bool.t := M.alloc (UnOp.not α1) in
+                  let* α3 : bool.t := M.read (use α2) in
+                  if α3 then
+                    let* _ : M.Val never.t :=
+                      return_
+                        (core.result.Result.Err erc721.Error.TokenNotFound) in
+                    let* α0 : M.Val unit := M.alloc tt in
+                    let* α1 := M.read α0 in
+                    let* α2 : unit := never_to_any α1 in
+                    M.alloc α2
+                  else
+                    M.alloc tt in
+                let* count : M.Val u32.t :=
+                  let* α0 : _ :=
+                    ltac:(M.get_method (fun ℐ =>
+                      core.ops.try_trait.Try.branch
+                        (Self := core.result.Result.t u32.t erc721.Error.t)
+                        (Trait := ℐ))) in
+                  let* α1 :
+                      mut_ref (erc721.Mapping.t erc721.AccountId.t u32.t) :=
+                    M.read owned_tokens_count in
+                  let* α2 : ref erc721.AccountId.t := M.read from in
+                  let* α3 : core.option.Option.t u32.t :=
+                    M.call
+                      ((erc721.Mapping.t erc721.AccountId.t u32.t)::["get"]
+                        (borrow (deref α1))
+                        α2) in
+                  let* α4 : core.option.Option.t u32.t :=
+                    M.call
+                      ((core.option.Option.t u32.t)::["map"]
+                        α3
+                        (fun (α0 : u32.t) =>
+                          (let* α0 := M.alloc α0 in
+                          match_operator
+                            α0
+                            [
+                              fun γ =>
+                                (let* c := M.copy γ in
+                                let* α0 : u32.t := M.read c in
+                                let* α1 : M.Val u32.t :=
+                                  M.alloc ((Integer.of_Z 1) : u32.t) in
+                                let* α2 : u32.t := M.read (use α1) in
+                                BinOp.Panic.sub α0 α2) :
+                                M u32.t
+                            ]) :
+                          M u32.t)) in
+                  let* α5 : core.result.Result.t u32.t erc721.Error.t :=
+                    M.call
+                      ((core.option.Option.t u32.t)::["ok_or"]
+                        α4
+                        erc721.Error.CannotFetchValue) in
+                  let* α6 :
+                      core.ops.control_flow.ControlFlow.t
+                        (core.result.Result.t
+                          core.convert.Infallible.t
+                          erc721.Error.t)
+                        u32.t :=
+                    M.call (α0 α5) in
+                  let* α7 :
+                      M.Val
+                        (core.ops.control_flow.ControlFlow.t
+                          (core.result.Result.t
+                            core.convert.Infallible.t
+                            erc721.Error.t)
+                          u32.t) :=
+                    M.alloc α6 in
+                  let* α8 : M.Val u32.t :=
+                    match_operator
+                      α7
+                      [
+                        fun γ =>
+                          (let* α0 := M.read γ in
+                          match α0 with
+                          | core.ops.control_flow.ControlFlow.Break _ =>
+                            let γ0_0 :=
+                              core.ops.control_flow.ControlFlow.Get_Break_0 γ in
+                            let* residual := M.copy γ0_0 in
+                            let* α0 : _ :=
+                              ltac:(M.get_method (fun ℐ =>
+                                core.ops.try_trait.FromResidual.from_residual
+                                  (Self :=
+                                    core.result.Result.t unit erc721.Error.t)
+                                  (R :=
+                                    core.result.Result.t
+                                      core.convert.Infallible.t
+                                      erc721.Error.t)
+                                  (Trait := ℐ))) in
+                            let* α1 :
+                                core.result.Result.t
+                                  core.convert.Infallible.t
+                                  erc721.Error.t :=
+                              M.read residual in
+                            let* α2 :
+                                core.result.Result.t unit erc721.Error.t :=
+                              M.call (α0 α1) in
+                            let* α3 : M.Val never.t := return_ α2 in
+                            let* α4 := M.read α3 in
+                            let* α5 : u32.t := never_to_any α4 in
+                            M.alloc α5
+                          | _ => M.break_match
+                          end) :
+                          M (M.Val u32.t);
+                        fun γ =>
+                          (let* α0 := M.read γ in
+                          match α0 with
+                          | core.ops.control_flow.ControlFlow.Continue _ =>
+                            let γ0_0 :=
+                              core.ops.control_flow.ControlFlow.Get_Continue_0
+                                γ in
+                            let* val := M.copy γ0_0 in
+                            M.pure val
+                          | _ => M.break_match
+                          end) :
+                          M (M.Val u32.t)
+                      ] in
+                  M.copy α8 in
+                let* _ : M.Val (core.option.Option.t u32.t) :=
+                  let* α0 :
+                      mut_ref (erc721.Mapping.t erc721.AccountId.t u32.t) :=
+                    M.read owned_tokens_count in
+                  let* α1 : ref erc721.AccountId.t := M.read from in
+                  let* α2 : erc721.AccountId.t := M.read (deref α1) in
+                  let* α3 : u32.t := M.read count in
+                  let* α4 : core.option.Option.t u32.t :=
+                    M.call
+                      ((erc721.Mapping.t erc721.AccountId.t u32.t)::["insert"]
+                        α0
+                        α2
+                        α3) in
+                  M.alloc α4 in
+                let* _ : M.Val unit :=
+                  let* α0 :
+                      mut_ref (erc721.Mapping.t u32.t erc721.AccountId.t) :=
+                    M.read token_owner in
+                  let* α1 : u32.t := M.read id in
+                  let* α2 : unit :=
+                    M.call
+                      ((erc721.Mapping.t u32.t erc721.AccountId.t)::["remove"]
+                        (borrow (deref α0))
+                        α1) in
+                  M.alloc α2 in
+                M.alloc (core.result.Result.Ok tt)
+              end) :
+              M (M.Val (core.result.Result.t unit erc721.Error.t))
+          ] in
+      M.read α0).
   
   Global Instance AssociatedFunction_remove_token_from :
     Notations.DoubleColon Self "remove_token_from" := {
@@ -1713,7 +1798,7 @@ Section Impl_erc721_Erc721_t.
               (let* α0 := M.read γ in
               match α0 with
               | core.ops.control_flow.ControlFlow.Break _ =>
-                let γ0_0 := γ.["Break.0"] in
+                let γ0_0 := core.ops.control_flow.ControlFlow.Get_Break_0 γ in
                 let* residual := M.copy γ0_0 in
                 let* α0 : _ :=
                   ltac:(M.get_method (fun ℐ =>
@@ -1742,7 +1827,8 @@ Section Impl_erc721_Erc721_t.
               (let* α0 := M.read γ in
               match α0 with
               | core.ops.control_flow.ControlFlow.Continue _ =>
-                let γ0_0 := γ.["Continue.0"] in
+                let γ0_0 :=
+                  core.ops.control_flow.ControlFlow.Get_Continue_0 γ in
                 let* val := M.copy γ0_0 in
                 M.pure val
               | _ => M.break_match
@@ -1814,7 +1900,7 @@ Section Impl_erc721_Erc721_t.
               (let* α0 := M.read γ in
               match α0 with
               | core.ops.control_flow.ControlFlow.Break _ =>
-                let γ0_0 := γ.["Break.0"] in
+                let γ0_0 := core.ops.control_flow.ControlFlow.Get_Break_0 γ in
                 let* residual := M.copy γ0_0 in
                 let* α0 : _ :=
                   ltac:(M.get_method (fun ℐ =>
@@ -1843,7 +1929,8 @@ Section Impl_erc721_Erc721_t.
               (let* α0 := M.read γ in
               match α0 with
               | core.ops.control_flow.ControlFlow.Continue _ =>
-                let γ0_0 := γ.["Continue.0"] in
+                let γ0_0 :=
+                  core.ops.control_flow.ControlFlow.Get_Continue_0 γ in
                 let* val := M.copy γ0_0 in
                 M.pure val
               | _ => M.break_match
@@ -1915,7 +2002,7 @@ Section Impl_erc721_Erc721_t.
               (let* α0 := M.read γ in
               match α0 with
               | core.ops.control_flow.ControlFlow.Break _ =>
-                let γ0_0 := γ.["Break.0"] in
+                let γ0_0 := core.ops.control_flow.ControlFlow.Get_Break_0 γ in
                 let* residual := M.copy γ0_0 in
                 let* α0 : _ :=
                   ltac:(M.get_method (fun ℐ =>
@@ -1944,7 +2031,8 @@ Section Impl_erc721_Erc721_t.
               (let* α0 := M.read γ in
               match α0 with
               | core.ops.control_flow.ControlFlow.Continue _ =>
-                let γ0_0 := γ.["Continue.0"] in
+                let γ0_0 :=
+                  core.ops.control_flow.ControlFlow.Get_Continue_0 γ in
                 let* val := M.copy γ0_0 in
                 M.pure val
               | _ => M.break_match
@@ -1963,7 +2051,7 @@ Section Impl_erc721_Erc721_t.
               (T := array u8.t)
               (Trait := ℐ))) in
         let* α4 : erc721.AccountId.t :=
-          M.call (α3 (repeat (Integer.of_Z 0) 32)) in
+          M.call (α3 (repeat ((Integer.of_Z 0) : u8.t) 32)) in
         let* α5 : erc721.AccountId.t := M.read caller in
         let* α6 : u32.t := M.read id in
         let* α7 : unit :=

@@ -32,7 +32,12 @@ fn main() {
 Definition main : M unit :=
   let* vec1 : M.Val (alloc.vec.Vec.t i32.t alloc.alloc.Global.t) :=
     let* α0 : M.Val (array i32.t) :=
-      M.alloc [ Integer.of_Z 1; Integer.of_Z 2; Integer.of_Z 3 ] in
+      M.alloc
+        [
+          (Integer.of_Z 1) : i32.t;
+          (Integer.of_Z 2) : i32.t;
+          (Integer.of_Z 3) : i32.t
+        ] in
     let* α1 : M.Val (alloc.boxed.Box.t (array i32.t) alloc.alloc.Global.t) :=
       M.call ((alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α0) in
     let* α2 : alloc.boxed.Box.t (slice i32.t) alloc.alloc.Global.t :=
@@ -42,7 +47,12 @@ Definition main : M unit :=
     M.alloc α3 in
   let* vec2 : M.Val (alloc.vec.Vec.t i32.t alloc.alloc.Global.t) :=
     let* α0 : M.Val (array i32.t) :=
-      M.alloc [ Integer.of_Z 4; Integer.of_Z 5; Integer.of_Z 6 ] in
+      M.alloc
+        [
+          (Integer.of_Z 4) : i32.t;
+          (Integer.of_Z 5) : i32.t;
+          (Integer.of_Z 6) : i32.t
+        ] in
     let* α1 : M.Val (alloc.boxed.Box.t (array i32.t) alloc.alloc.Global.t) :=
       M.call ((alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α0) in
     let* α2 : alloc.boxed.Box.t (slice i32.t) alloc.alloc.Global.t :=
@@ -89,7 +99,7 @@ Definition main : M unit :=
                       M.pure (deref α0) in
                     let* x := M.copy γ in
                     let* α0 : i32.t := M.read x in
-                    M.pure (BinOp.Pure.eq α0 (Integer.of_Z 2))) :
+                    M.pure (BinOp.Pure.eq α0 ((Integer.of_Z 2) : i32.t))) :
                     M bool.t
                 ]) :
               M bool.t)) in
@@ -144,7 +154,7 @@ Definition main : M unit :=
                   fun γ =>
                     (let* x := M.copy γ in
                     let* α0 : i32.t := M.read x in
-                    M.pure (BinOp.Pure.eq α0 (Integer.of_Z 2))) :
+                    M.pure (BinOp.Pure.eq α0 ((Integer.of_Z 2) : i32.t))) :
                     M bool.t
                 ]) :
               M bool.t)) in
@@ -202,7 +212,8 @@ Definition main : M unit :=
             (Self := alloc.vec.Vec.t i32.t alloc.alloc.Global.t)
             (Idx := usize.t)
             (Trait := ℐ))) in
-      let* α6 : ref i32.t := M.call (α5 (borrow vec1) (Integer.of_Z 0)) in
+      let* α6 : ref i32.t :=
+        M.call (α5 (borrow vec1) ((Integer.of_Z 0) : usize.t)) in
       let* α7 : core.fmt.rt.Argument.t :=
         M.call (core.fmt.rt.Argument.t::["new_display"] α6) in
       let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
@@ -216,9 +227,19 @@ Definition main : M unit :=
       M.alloc α12 in
     M.alloc tt in
   let* array1 : M.Val (array i32.t) :=
-    M.alloc [ Integer.of_Z 1; Integer.of_Z 2; Integer.of_Z 3 ] in
+    M.alloc
+      [
+        (Integer.of_Z 1) : i32.t;
+        (Integer.of_Z 2) : i32.t;
+        (Integer.of_Z 3) : i32.t
+      ] in
   let* array2 : M.Val (array i32.t) :=
-    M.alloc [ Integer.of_Z 4; Integer.of_Z 5; Integer.of_Z 6 ] in
+    M.alloc
+      [
+        (Integer.of_Z 4) : i32.t;
+        (Integer.of_Z 5) : i32.t;
+        (Integer.of_Z 6) : i32.t
+      ] in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "2 in array1: ") in
@@ -254,7 +275,7 @@ Definition main : M unit :=
                       M.pure (deref α0) in
                     let* x := M.copy γ in
                     let* α0 : i32.t := M.read x in
-                    M.pure (BinOp.Pure.eq α0 (Integer.of_Z 2))) :
+                    M.pure (BinOp.Pure.eq α0 ((Integer.of_Z 2) : i32.t))) :
                     M bool.t
                 ]) :
               M bool.t)) in
@@ -306,7 +327,7 @@ Definition main : M unit :=
                     (let* x := M.copy γ in
                     let* α0 : ref i32.t := M.read x in
                     let* α1 : i32.t := M.read (deref α0) in
-                    M.pure (BinOp.Pure.eq α1 (Integer.of_Z 2))) :
+                    M.pure (BinOp.Pure.eq α1 ((Integer.of_Z 2) : i32.t))) :
                     M bool.t
                 ]) :
               M bool.t)) in

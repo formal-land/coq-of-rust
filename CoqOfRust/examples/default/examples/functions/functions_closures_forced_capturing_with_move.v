@@ -25,7 +25,12 @@ fn main() {
 Definition main : M unit :=
   let* haystack : M.Val (alloc.vec.Vec.t i32.t alloc.alloc.Global.t) :=
     let* α0 : M.Val (array i32.t) :=
-      M.alloc [ Integer.of_Z 1; Integer.of_Z 2; Integer.of_Z 3 ] in
+      M.alloc
+        [
+          (Integer.of_Z 1) : i32.t;
+          (Integer.of_Z 2) : i32.t;
+          (Integer.of_Z 3) : i32.t
+        ] in
     let* α1 : M.Val (alloc.boxed.Box.t (array i32.t) alloc.alloc.Global.t) :=
       M.call ((alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α0) in
     let* α2 : alloc.boxed.Box.t (slice i32.t) alloc.alloc.Global.t :=
@@ -68,7 +73,7 @@ Definition main : M unit :=
             (Self := (ref i32.t) -> M bool.t)
             (Args := ref i32.t)
             (Trait := ℐ))) in
-      let* α6 : M.Val i32.t := M.alloc (Integer.of_Z 1) in
+      let* α6 : M.Val i32.t := M.alloc ((Integer.of_Z 1) : i32.t) in
       let* α7 : bool.t := M.call (α5 (borrow contains) (borrow α6)) in
       let* α8 : M.Val bool.t := M.alloc α7 in
       let* α9 : core.fmt.rt.Argument.t :=
@@ -98,7 +103,7 @@ Definition main : M unit :=
             (Self := (ref i32.t) -> M bool.t)
             (Args := ref i32.t)
             (Trait := ℐ))) in
-      let* α6 : M.Val i32.t := M.alloc (Integer.of_Z 4) in
+      let* α6 : M.Val i32.t := M.alloc ((Integer.of_Z 4) : i32.t) in
       let* α7 : bool.t := M.call (α5 (borrow contains) (borrow α6)) in
       let* α8 : M.Val bool.t := M.alloc α7 in
       let* α9 : core.fmt.rt.Argument.t :=

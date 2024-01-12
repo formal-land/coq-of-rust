@@ -7,10 +7,8 @@ Section AccountId.
     x0 : u128.t;
   }.
   
-  Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>));
-  }.
+  Definition Get_0 :=
+    Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>)).
 End AccountId.
 End AccountId.
 
@@ -157,15 +155,8 @@ Section Env.
     caller : payment_channel.AccountId.t;
   }.
   
-  Global Instance Get_caller : Notations.Dot "caller" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(caller))
-        (fun β α => Some (α <| caller := β |>));
-  }.
-  Global Instance Get_AF_caller : Notations.DoubleColon t "caller" := {
-    Notations.double_colon (α : M.Val t) := α.["caller"];
-  }.
+  Definition Get_caller :=
+    Ref.map (fun α => Some α.(caller)) (fun β α => Some (α <| caller := β |>)).
 End Env.
 End Env.
 
@@ -179,52 +170,24 @@ Section PaymentChannel.
     close_duration : ltac:(payment_channel.Timestamp);
   }.
   
-  Global Instance Get_sender : Notations.Dot "sender" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(sender))
-        (fun β α => Some (α <| sender := β |>));
-  }.
-  Global Instance Get_AF_sender : Notations.DoubleColon t "sender" := {
-    Notations.double_colon (α : M.Val t) := α.["sender"];
-  }.
-  Global Instance Get_recipient : Notations.Dot "recipient" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(recipient))
-        (fun β α => Some (α <| recipient := β |>));
-  }.
-  Global Instance Get_AF_recipient : Notations.DoubleColon t "recipient" := {
-    Notations.double_colon (α : M.Val t) := α.["recipient"];
-  }.
-  Global Instance Get_expiration : Notations.Dot "expiration" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(expiration))
-        (fun β α => Some (α <| expiration := β |>));
-  }.
-  Global Instance Get_AF_expiration : Notations.DoubleColon t "expiration" := {
-    Notations.double_colon (α : M.Val t) := α.["expiration"];
-  }.
-  Global Instance Get_withdrawn : Notations.Dot "withdrawn" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(withdrawn))
-        (fun β α => Some (α <| withdrawn := β |>));
-  }.
-  Global Instance Get_AF_withdrawn : Notations.DoubleColon t "withdrawn" := {
-    Notations.double_colon (α : M.Val t) := α.["withdrawn"];
-  }.
-  Global Instance Get_close_duration : Notations.Dot "close_duration" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(close_duration))
-        (fun β α => Some (α <| close_duration := β |>));
-  }.
-  Global Instance Get_AF_close_duration :
-    Notations.DoubleColon t "close_duration" := {
-    Notations.double_colon (α : M.Val t) := α.["close_duration"];
-  }.
+  Definition Get_sender :=
+    Ref.map (fun α => Some α.(sender)) (fun β α => Some (α <| sender := β |>)).
+  Definition Get_recipient :=
+    Ref.map
+      (fun α => Some α.(recipient))
+      (fun β α => Some (α <| recipient := β |>)).
+  Definition Get_expiration :=
+    Ref.map
+      (fun α => Some α.(expiration))
+      (fun β α => Some (α <| expiration := β |>)).
+  Definition Get_withdrawn :=
+    Ref.map
+      (fun α => Some α.(withdrawn))
+      (fun β α => Some (α <| withdrawn := β |>)).
+  Definition Get_close_duration :=
+    Ref.map
+      (fun α => Some α.(close_duration))
+      (fun β α => Some (α <| close_duration := β |>)).
 End PaymentChannel.
 End PaymentChannel.
 
@@ -308,25 +271,14 @@ Section SenderCloseStarted.
     close_duration : ltac:(payment_channel.Timestamp);
   }.
   
-  Global Instance Get_expiration : Notations.Dot "expiration" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(expiration))
-        (fun β α => Some (α <| expiration := β |>));
-  }.
-  Global Instance Get_AF_expiration : Notations.DoubleColon t "expiration" := {
-    Notations.double_colon (α : M.Val t) := α.["expiration"];
-  }.
-  Global Instance Get_close_duration : Notations.Dot "close_duration" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(close_duration))
-        (fun β α => Some (α <| close_duration := β |>));
-  }.
-  Global Instance Get_AF_close_duration :
-    Notations.DoubleColon t "close_duration" := {
-    Notations.double_colon (α : M.Val t) := α.["close_duration"];
-  }.
+  Definition Get_expiration :=
+    Ref.map
+      (fun α => Some α.(expiration))
+      (fun β α => Some (α <| expiration := β |>)).
+  Definition Get_close_duration :=
+    Ref.map
+      (fun α => Some α.(close_duration))
+      (fun β α => Some (α <| close_duration := β |>)).
 End SenderCloseStarted.
 End SenderCloseStarted.
 
@@ -334,16 +286,11 @@ Module Event.
   Inductive t : Set :=
   | SenderCloseStarted (_ : payment_channel.SenderCloseStarted.t).
   
-  Global Instance Get_SenderCloseStarted_0 :
-    Notations.Dot "SenderCloseStarted.0" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => match α with | SenderCloseStarted α0 => Some α0 end)
-        (fun β α =>
-          match α with
-          | SenderCloseStarted _ => Some (SenderCloseStarted β)
-          end);
-  }.
+  Definition Get_SenderCloseStarted_0 :=
+    Ref.map
+      (fun α => match α with | SenderCloseStarted α0 => Some α0 end)
+      (fun β α =>
+        match α with | SenderCloseStarted _ => Some (SenderCloseStarted β) end).
 End Event.
 
 Module  Impl_payment_channel_Env_t.

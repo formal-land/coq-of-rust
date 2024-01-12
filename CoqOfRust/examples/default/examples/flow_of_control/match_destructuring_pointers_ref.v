@@ -56,7 +56,7 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
   let* reference : M.Val (ref i32.t) :=
-    let* α0 : M.Val i32.t := M.alloc (Integer.of_Z 4) in
+    let* α0 : M.Val i32.t := M.alloc ((Integer.of_Z 4) : i32.t) in
     M.alloc (borrow α0) in
   let* _ : M.Val unit :=
     match_operator
@@ -120,10 +120,10 @@ Definition main : M unit :=
           M.alloc tt) :
           M (M.Val unit)
       ] in
-  let* _not_a_reference : M.Val i32.t := M.alloc (Integer.of_Z 3) in
-  let* _is_a_reference : M.Val i32.t := M.alloc (Integer.of_Z 3) in
-  let* value : M.Val i32.t := M.alloc (Integer.of_Z 5) in
-  let* mut_value : M.Val i32.t := M.alloc (Integer.of_Z 6) in
+  let* _not_a_reference : M.Val i32.t := M.alloc ((Integer.of_Z 3) : i32.t) in
+  let* _is_a_reference : M.Val i32.t := M.alloc ((Integer.of_Z 3) : i32.t) in
+  let* value : M.Val i32.t := M.alloc ((Integer.of_Z 5) : i32.t) in
+  let* mut_value : M.Val i32.t := M.alloc ((Integer.of_Z 6) : i32.t) in
   let* _ : M.Val unit :=
     match_operator
       value
@@ -164,7 +164,7 @@ Definition main : M unit :=
               let* α0 : mut_ref i32.t := M.read m in
               M.pure (deref α0) in
             let* α0 := M.read β in
-            let* α1 := BinOp.Panic.add α0 (Integer.of_Z 10) in
+            let* α1 := BinOp.Panic.add α0 ((Integer.of_Z 10) : i32.t) in
             assign β α1 in
           let* _ : M.Val unit :=
             let* _ : M.Val unit :=

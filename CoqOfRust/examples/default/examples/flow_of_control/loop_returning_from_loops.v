@@ -18,18 +18,18 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* counter : M.Val i32.t := M.alloc (Integer.of_Z 0) in
+  let* counter : M.Val i32.t := M.alloc ((Integer.of_Z 0) : i32.t) in
   let* result : M.Val i32.t :=
     let* α0 : M.Val i32.t :=
       M.loop
         (let* _ : M.Val unit :=
           let β : M.Val i32.t := counter in
           let* α0 := M.read β in
-          let* α1 := BinOp.Panic.add α0 (Integer.of_Z 1) in
+          let* α1 := BinOp.Panic.add α0 ((Integer.of_Z 1) : i32.t) in
           assign β α1 in
         let* α0 : i32.t := M.read counter in
         let* α1 : M.Val bool.t :=
-          M.alloc (BinOp.Pure.eq α0 (Integer.of_Z 10)) in
+          M.alloc (BinOp.Pure.eq α0 ((Integer.of_Z 10) : i32.t)) in
         let* α2 : bool.t := M.read (use α1) in
         if α2 then
           let* _ : M.Val never.t := M.break in
@@ -41,7 +41,7 @@ Definition main : M unit :=
           M.alloc tt) in
     M.copy α0 in
   let* _ : M.Val unit :=
-    let* α0 : M.Val i32.t := M.alloc (Integer.of_Z 20) in
+    let* α0 : M.Val i32.t := M.alloc ((Integer.of_Z 20) : i32.t) in
     let* α1 : M.Val ((ref i32.t) * (ref i32.t)) :=
       M.alloc (borrow result, borrow α0) in
     match_operator

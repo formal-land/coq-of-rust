@@ -7,13 +7,8 @@ Section Borrowed.
     x : ref i32.t;
   }.
   
-  Global Instance Get_x : Notations.Dot "x" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(x)) (fun β α => Some (α <| x := β |>));
-  }.
-  Global Instance Get_AF_x : Notations.DoubleColon t "x" := {
-    Notations.double_colon (α : M.Val t) := α.["x"];
-  }.
+  Definition Get_x :=
+    Ref.map (fun α => Some α.(x)) (fun β α => Some (α <| x := β |>)).
 End Borrowed.
 End Borrowed.
 
@@ -34,7 +29,9 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed_t.
     let* α1 : ref str.t := M.read (mk_str "Borrowed") in
     let* α2 : ref str.t := M.read (mk_str "x") in
     let* α3 : ref scoping_rules_lifetimes_traits.Borrowed.t := M.read self in
-    let* α4 : M.Val (ref (ref i32.t)) := M.alloc (borrow (deref α3).["x"]) in
+    let* α4 : M.Val (ref (ref i32.t)) :=
+      M.alloc
+        (borrow (scoping_rules_lifetimes_traits.Borrowed.Get_x (deref α3))) in
     let* α5 : M.Val (ref (ref (ref i32.t))) := M.alloc (borrow α4) in
     let* α6 : ref _ (* dyn *) := M.read (pointer_coercion "Unsize" α5) in
     M.call (core.fmt.Formatter.t::["debug_struct_field1_finish"] α0 α1 α2 α6).
@@ -59,7 +56,7 @@ Section Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed_t.
       }
   *)
   Definition default : M Self :=
-    let* α0 : M.Val i32.t := M.alloc (Integer.of_Z 10) in
+    let* α0 : M.Val i32.t := M.alloc ((Integer.of_Z 10) : i32.t) in
     M.pure {| scoping_rules_lifetimes_traits.Borrowed.x := borrow α0; |}.
   
   Global Instance AssociatedFunction_default :

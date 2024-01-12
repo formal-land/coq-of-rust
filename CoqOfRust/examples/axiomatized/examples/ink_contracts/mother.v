@@ -10,22 +10,10 @@ Section Mapping.
     _value : core.marker.PhantomData.t V;
   }.
   
-  Global Instance Get__key : Notations.Dot "_key" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(_key)) (fun β α => Some (α <| _key := β |>));
-  }.
-  Global Instance Get_AF__key : Notations.DoubleColon t "_key" := {
-    Notations.double_colon (α : M.Val t) := α.["_key"];
-  }.
-  Global Instance Get__value : Notations.Dot "_value" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(_value))
-        (fun β α => Some (α <| _value := β |>));
-  }.
-  Global Instance Get_AF__value : Notations.DoubleColon t "_value" := {
-    Notations.double_colon (α : M.Val t) := α.["_value"];
-  }.
+  Definition Get__key :=
+    Ref.map (fun α => Some α.(_key)) (fun β α => Some (α <| _key := β |>)).
+  Definition Get__value :=
+    Ref.map (fun α => Some α.(_value)) (fun β α => Some (α <| _value := β |>)).
 End Mapping.
 End Mapping.
 
@@ -92,10 +80,8 @@ Section AccountId.
     x0 : u128.t;
   }.
   
-  Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>));
-  }.
+  Definition Get_0 :=
+    Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>)).
 End AccountId.
 End AccountId.
 
@@ -222,15 +208,8 @@ Section Env.
     caller : mother.AccountId.t;
   }.
   
-  Global Instance Get_caller : Notations.Dot "caller" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(caller))
-        (fun β α => Some (α <| caller := β |>));
-  }.
-  Global Instance Get_AF_caller : Notations.DoubleColon t "caller" := {
-    Notations.double_colon (α : M.Val t) := α.["caller"];
-  }.
+  Definition Get_caller :=
+    Ref.map (fun α => Some α.(caller)) (fun β α => Some (α <| caller := β |>)).
 End Env.
 End Env.
 
@@ -245,10 +224,8 @@ Section Bids.
         alloc.vec.Vec.Default.A;
   }.
   
-  Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>));
-  }.
+  Definition Get_0 :=
+    Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>)).
 End Bids.
 End Bids.
 
@@ -451,31 +428,21 @@ Module Status.
   | Ended (_ : mother.Outline.t)
   | RfDelay (_ : ltac:(mother.BlockNumber)).
   
-  Global Instance Get_EndingPeriod_0 : Notations.Dot "EndingPeriod.0" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => match α with | EndingPeriod α0 => Some α0 | _ => None end)
-        (fun β α =>
-          match α with
-          | EndingPeriod _ => Some (EndingPeriod β)
-          | _ => None
-          end);
-  }.
+  Definition Get_EndingPeriod_0 :=
+    Ref.map
+      (fun α => match α with | EndingPeriod α0 => Some α0 | _ => None end)
+      (fun β α =>
+        match α with | EndingPeriod _ => Some (EndingPeriod β) | _ => None end).
   
-  Global Instance Get_Ended_0 : Notations.Dot "Ended.0" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => match α with | Ended α0 => Some α0 | _ => None end)
-        (fun β α => match α with | Ended _ => Some (Ended β) | _ => None end);
-  }.
+  Definition Get_Ended_0 :=
+    Ref.map
+      (fun α => match α with | Ended α0 => Some α0 | _ => None end)
+      (fun β α => match α with | Ended _ => Some (Ended β) | _ => None end).
   
-  Global Instance Get_RfDelay_0 : Notations.Dot "RfDelay.0" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => match α with | RfDelay α0 => Some α0 | _ => None end)
-        (fun β α =>
-          match α with | RfDelay _ => Some (RfDelay β) | _ => None end);
-  }.
+  Definition Get_RfDelay_0 :=
+    Ref.map
+      (fun α => match α with | RfDelay α0 => Some α0 | _ => None end)
+      (fun β α => match α with | RfDelay _ => Some (RfDelay β) | _ => None end).
 End Status.
 
 Module  Impl_core_marker_StructuralPartialEq_for_mother_Status_t.
@@ -572,63 +539,24 @@ Section Auction.
     vector : alloc.vec.Vec.t u8.t alloc.vec.Vec.Default.A;
   }.
   
-  Global Instance Get_name : Notations.Dot "name" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(name)) (fun β α => Some (α <| name := β |>));
-  }.
-  Global Instance Get_AF_name : Notations.DoubleColon t "name" := {
-    Notations.double_colon (α : M.Val t) := α.["name"];
-  }.
-  Global Instance Get_subject : Notations.Dot "subject" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(subject))
-        (fun β α => Some (α <| subject := β |>));
-  }.
-  Global Instance Get_AF_subject : Notations.DoubleColon t "subject" := {
-    Notations.double_colon (α : M.Val t) := α.["subject"];
-  }.
-  Global Instance Get_bids : Notations.Dot "bids" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(bids)) (fun β α => Some (α <| bids := β |>));
-  }.
-  Global Instance Get_AF_bids : Notations.DoubleColon t "bids" := {
-    Notations.double_colon (α : M.Val t) := α.["bids"];
-  }.
-  Global Instance Get_terms : Notations.Dot "terms" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(terms)) (fun β α => Some (α <| terms := β |>));
-  }.
-  Global Instance Get_AF_terms : Notations.DoubleColon t "terms" := {
-    Notations.double_colon (α : M.Val t) := α.["terms"];
-  }.
-  Global Instance Get_status : Notations.Dot "status" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(status))
-        (fun β α => Some (α <| status := β |>));
-  }.
-  Global Instance Get_AF_status : Notations.DoubleColon t "status" := {
-    Notations.double_colon (α : M.Val t) := α.["status"];
-  }.
-  Global Instance Get_finalized : Notations.Dot "finalized" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(finalized))
-        (fun β α => Some (α <| finalized := β |>));
-  }.
-  Global Instance Get_AF_finalized : Notations.DoubleColon t "finalized" := {
-    Notations.double_colon (α : M.Val t) := α.["finalized"];
-  }.
-  Global Instance Get_vector : Notations.Dot "vector" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(vector))
-        (fun β α => Some (α <| vector := β |>));
-  }.
-  Global Instance Get_AF_vector : Notations.DoubleColon t "vector" := {
-    Notations.double_colon (α : M.Val t) := α.["vector"];
-  }.
+  Definition Get_name :=
+    Ref.map (fun α => Some α.(name)) (fun β α => Some (α <| name := β |>)).
+  Definition Get_subject :=
+    Ref.map
+      (fun α => Some α.(subject))
+      (fun β α => Some (α <| subject := β |>)).
+  Definition Get_bids :=
+    Ref.map (fun α => Some α.(bids)) (fun β α => Some (α <| bids := β |>)).
+  Definition Get_terms :=
+    Ref.map (fun α => Some α.(terms)) (fun β α => Some (α <| terms := β |>)).
+  Definition Get_status :=
+    Ref.map (fun α => Some α.(status)) (fun β α => Some (α <| status := β |>)).
+  Definition Get_finalized :=
+    Ref.map
+      (fun α => Some α.(finalized))
+      (fun β α => Some (α <| finalized := β |>)).
+  Definition Get_vector :=
+    Ref.map (fun α => Some α.(vector)) (fun β α => Some (α <| vector := β |>)).
 End Auction.
 End Auction.
 
@@ -749,12 +677,10 @@ Module Failure.
   | Revert (_ : alloc.string.String.t)
   | Panic.
   
-  Global Instance Get_Revert_0 : Notations.Dot "Revert.0" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => match α with | Revert α0 => Some α0 | _ => None end)
-        (fun β α => match α with | Revert _ => Some (Revert β) | _ => None end);
-  }.
+  Definition Get_Revert_0 :=
+    Ref.map
+      (fun α => match α with | Revert α0 => Some α0 | _ => None end)
+      (fun β α => match α with | Revert _ => Some (Revert β) | _ => None end).
 End Failure.
 
 Module  Impl_core_marker_StructuralPartialEq_for_mother_Failure_t.
@@ -824,15 +750,10 @@ Section AuctionEchoed.
     auction : mother.Auction.t;
   }.
   
-  Global Instance Get_auction : Notations.Dot "auction" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(auction))
-        (fun β α => Some (α <| auction := β |>));
-  }.
-  Global Instance Get_AF_auction : Notations.DoubleColon t "auction" := {
-    Notations.double_colon (α : M.Val t) := α.["auction"];
-  }.
+  Definition Get_auction :=
+    Ref.map
+      (fun α => Some α.(auction))
+      (fun β α => Some (α <| auction := β |>)).
 End AuctionEchoed.
 End AuctionEchoed.
 
@@ -840,13 +761,10 @@ Module Event.
   Inductive t : Set :=
   | AuctionEchoed (_ : mother.AuctionEchoed.t).
   
-  Global Instance Get_AuctionEchoed_0 : Notations.Dot "AuctionEchoed.0" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => match α with | AuctionEchoed α0 => Some α0 end)
-        (fun β α =>
-          match α with | AuctionEchoed _ => Some (AuctionEchoed β) end);
-  }.
+  Definition Get_AuctionEchoed_0 :=
+    Ref.map
+      (fun α => match α with | AuctionEchoed α0 => Some α0 end)
+      (fun β α => match α with | AuctionEchoed _ => Some (AuctionEchoed β) end).
 End Event.
 
 Module  Impl_mother_Env_t.
@@ -886,24 +804,14 @@ Section Mother.
     balances : mother.Mapping.t mother.AccountId.t ltac:(mother.Balance);
   }.
   
-  Global Instance Get_auction : Notations.Dot "auction" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(auction))
-        (fun β α => Some (α <| auction := β |>));
-  }.
-  Global Instance Get_AF_auction : Notations.DoubleColon t "auction" := {
-    Notations.double_colon (α : M.Val t) := α.["auction"];
-  }.
-  Global Instance Get_balances : Notations.Dot "balances" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(balances))
-        (fun β α => Some (α <| balances := β |>));
-  }.
-  Global Instance Get_AF_balances : Notations.DoubleColon t "balances" := {
-    Notations.double_colon (α : M.Val t) := α.["balances"];
-  }.
+  Definition Get_auction :=
+    Ref.map
+      (fun α => Some α.(auction))
+      (fun β α => Some (α <| auction := β |>)).
+  Definition Get_balances :=
+    Ref.map
+      (fun α => Some α.(balances))
+      (fun β α => Some (α <| balances := β |>)).
 End Mother.
 End Mother.
 

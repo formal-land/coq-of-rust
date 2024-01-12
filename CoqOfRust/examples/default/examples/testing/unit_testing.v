@@ -35,9 +35,12 @@ Module tests.
   Definition test_add : M unit :=
     let* _ : M.Val unit :=
       let* α0 : i32.t :=
-        M.call (unit_testing.add (Integer.of_Z 1) (Integer.of_Z 2)) in
+        M.call
+          (unit_testing.add
+            ((Integer.of_Z 1) : i32.t)
+            ((Integer.of_Z 2) : i32.t)) in
       let* α1 : M.Val i32.t := M.alloc α0 in
-      let* α2 : M.Val i32.t := M.alloc (Integer.of_Z 3) in
+      let* α2 : M.Val i32.t := M.alloc ((Integer.of_Z 3) : i32.t) in
       let* α3 : M.Val ((ref i32.t) * (ref i32.t)) :=
         M.alloc (borrow α1, borrow α2) in
       match_operator
@@ -95,9 +98,12 @@ Module tests.
   Definition test_bad_add : M unit :=
     let* _ : M.Val unit :=
       let* α0 : i32.t :=
-        M.call (unit_testing.bad_add (Integer.of_Z 1) (Integer.of_Z 2)) in
+        M.call
+          (unit_testing.bad_add
+            ((Integer.of_Z 1) : i32.t)
+            ((Integer.of_Z 2) : i32.t)) in
       let* α1 : M.Val i32.t := M.alloc α0 in
-      let* α2 : M.Val i32.t := M.alloc (Integer.of_Z 3) in
+      let* α2 : M.Val i32.t := M.alloc ((Integer.of_Z 3) : i32.t) in
       let* α3 : M.Val ((ref i32.t) * (ref i32.t)) :=
         M.alloc (borrow α1, borrow α2) in
       match_operator
@@ -154,9 +160,12 @@ End tests.
 Definition test_add : M unit :=
   let* _ : M.Val unit :=
     let* α0 : i32.t :=
-      M.call (unit_testing.add (Integer.of_Z 1) (Integer.of_Z 2)) in
+      M.call
+        (unit_testing.add
+          ((Integer.of_Z 1) : i32.t)
+          ((Integer.of_Z 2) : i32.t)) in
     let* α1 : M.Val i32.t := M.alloc α0 in
-    let* α2 : M.Val i32.t := M.alloc (Integer.of_Z 3) in
+    let* α2 : M.Val i32.t := M.alloc ((Integer.of_Z 3) : i32.t) in
     let* α3 : M.Val ((ref i32.t) * (ref i32.t)) :=
       M.alloc (borrow α1, borrow α2) in
     match_operator
@@ -214,9 +223,12 @@ Definition test_add : M unit :=
 Definition test_bad_add : M unit :=
   let* _ : M.Val unit :=
     let* α0 : i32.t :=
-      M.call (unit_testing.bad_add (Integer.of_Z 1) (Integer.of_Z 2)) in
+      M.call
+        (unit_testing.bad_add
+          ((Integer.of_Z 1) : i32.t)
+          ((Integer.of_Z 2) : i32.t)) in
     let* α1 : M.Val i32.t := M.alloc α0 in
-    let* α2 : M.Val i32.t := M.alloc (Integer.of_Z 3) in
+    let* α2 : M.Val i32.t := M.alloc ((Integer.of_Z 3) : i32.t) in
     let* α3 : M.Val ((ref i32.t) * (ref i32.t)) :=
       M.alloc (borrow α1, borrow α2) in
     match_operator

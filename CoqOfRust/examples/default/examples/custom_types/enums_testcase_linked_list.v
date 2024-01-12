@@ -12,21 +12,15 @@ Module List.
         alloc.boxed.Box.Default.A)
   | Nil.
   
-  Global Instance Get_Cons_0 : Notations.Dot "Cons.0" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => match α with | Cons α0 _ => Some α0 | _ => None end)
-        (fun β α =>
-          match α with | Cons _ α1 => Some (Cons β α1) | _ => None end);
-  }.
+  Definition Get_Cons_0 :=
+    Ref.map
+      (fun α => match α with | Cons α0 _ => Some α0 | _ => None end)
+      (fun β α => match α with | Cons _ α1 => Some (Cons β α1) | _ => None end).
   
-  Global Instance Get_Cons_1 : Notations.Dot "Cons.1" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => match α with | Cons _ α1 => Some α1 | _ => None end)
-        (fun β α =>
-          match α with | Cons α0 _ => Some (Cons α0 β) | _ => None end);
-  }.
+  Definition Get_Cons_1 :=
+    Ref.map
+      (fun α => match α with | Cons _ α1 => Some α1 | _ => None end)
+      (fun β α => match α with | Cons α0 _ => Some (Cons α0 β) | _ => None end).
 End List.
 
 Module  Impl_enums_testcase_linked_list_List_t.
@@ -105,8 +99,8 @@ Section Impl_enums_testcase_linked_list_List_t.
             (let* α0 := M.read γ in
             match α0 with
             | enums_testcase_linked_list.List.Cons _ _ =>
-              let γ0_0 := γ.["Cons.0"] in
-              let γ0_1 := γ.["Cons.1"] in
+              let γ0_0 := enums_testcase_linked_list.List.Get_Cons_0 γ in
+              let γ0_1 := enums_testcase_linked_list.List.Get_Cons_1 γ in
               let* tail := M.alloc (borrow γ0_1) in
               let* α0 :
                   ref
@@ -123,7 +117,8 @@ Section Impl_enums_testcase_linked_list_List_t.
                 M.call
                   (enums_testcase_linked_list.List.t::["len"]
                     (borrow (deref α1))) in
-              let* α3 : u32.t := BinOp.Panic.add (Integer.of_Z 1) α2 in
+              let* α3 : u32.t :=
+                BinOp.Panic.add ((Integer.of_Z 1) : u32.t) α2 in
               M.alloc α3
             | _ => M.break_match
             end) :
@@ -131,7 +126,8 @@ Section Impl_enums_testcase_linked_list_List_t.
           fun γ =>
             (let* α0 := M.read γ in
             match α0 with
-            | enums_testcase_linked_list.List.Nil => M.alloc (Integer.of_Z 0)
+            | enums_testcase_linked_list.List.Nil =>
+              M.alloc ((Integer.of_Z 0) : u32.t)
             | _ => M.break_match
             end) :
             M (M.Val u32.t)
@@ -167,8 +163,8 @@ Section Impl_enums_testcase_linked_list_List_t.
             (let* α0 := M.read γ in
             match α0 with
             | enums_testcase_linked_list.List.Cons _ _ =>
-              let γ0_0 := γ.["Cons.0"] in
-              let γ0_1 := γ.["Cons.1"] in
+              let γ0_0 := enums_testcase_linked_list.List.Get_Cons_0 γ in
+              let γ0_1 := enums_testcase_linked_list.List.Get_Cons_1 γ in
               let* head := M.copy γ0_0 in
               let* tail := M.alloc (borrow γ0_1) in
               let* res : M.Val alloc.string.String.t :=
@@ -271,19 +267,25 @@ Definition main : M unit :=
     let* α0 : enums_testcase_linked_list.List.t := M.read list in
     let* α1 : enums_testcase_linked_list.List.t :=
       M.call
-        (enums_testcase_linked_list.List.t::["prepend"] α0 (Integer.of_Z 1)) in
+        (enums_testcase_linked_list.List.t::["prepend"]
+          α0
+          ((Integer.of_Z 1) : u32.t)) in
     assign list α1 in
   let* _ : M.Val unit :=
     let* α0 : enums_testcase_linked_list.List.t := M.read list in
     let* α1 : enums_testcase_linked_list.List.t :=
       M.call
-        (enums_testcase_linked_list.List.t::["prepend"] α0 (Integer.of_Z 2)) in
+        (enums_testcase_linked_list.List.t::["prepend"]
+          α0
+          ((Integer.of_Z 2) : u32.t)) in
     assign list α1 in
   let* _ : M.Val unit :=
     let* α0 : enums_testcase_linked_list.List.t := M.read list in
     let* α1 : enums_testcase_linked_list.List.t :=
       M.call
-        (enums_testcase_linked_list.List.t::["prepend"] α0 (Integer.of_Z 3)) in
+        (enums_testcase_linked_list.List.t::["prepend"]
+          α0
+          ((Integer.of_Z 3) : u32.t)) in
     assign list α1 in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=

@@ -10,29 +10,12 @@ Section Book.
     year : u32.t;
   }.
   
-  Global Instance Get_author : Notations.Dot "author" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(author))
-        (fun β α => Some (α <| author := β |>));
-  }.
-  Global Instance Get_AF_author : Notations.DoubleColon t "author" := {
-    Notations.double_colon (α : M.Val t) := α.["author"];
-  }.
-  Global Instance Get_title : Notations.Dot "title" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(title)) (fun β α => Some (α <| title := β |>));
-  }.
-  Global Instance Get_AF_title : Notations.DoubleColon t "title" := {
-    Notations.double_colon (α : M.Val t) := α.["title"];
-  }.
-  Global Instance Get_year : Notations.Dot "year" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(year)) (fun β α => Some (α <| year := β |>));
-  }.
-  Global Instance Get_AF_year : Notations.DoubleColon t "year" := {
-    Notations.double_colon (α : M.Val t) := α.["year"];
-  }.
+  Definition Get_author :=
+    Ref.map (fun α => Some α.(author)) (fun β α => Some (α <| author := β |>)).
+  Definition Get_title :=
+    Ref.map (fun α => Some α.(title)) (fun β α => Some (α <| title := β |>)).
+  Definition Get_year :=
+    Ref.map (fun α => Some α.(year)) (fun β α => Some (α <| year := β |>)).
 End Book.
 End Book.
 
@@ -123,12 +106,14 @@ Definition borrow_book
       let* α7 : core.fmt.rt.Argument.t :=
         M.call
           (core.fmt.rt.Argument.t::["new_display"]
-            (borrow (deref α6).["title"])) in
+            (borrow
+              (scoping_rules_borrowing_mutablity.Book.Get_title (deref α6)))) in
       let* α8 : ref scoping_rules_borrowing_mutablity.Book.t := M.read book in
       let* α9 : core.fmt.rt.Argument.t :=
         M.call
           (core.fmt.rt.Argument.t::["new_display"]
-            (borrow (deref α8).["year"])) in
+            (borrow
+              (scoping_rules_borrowing_mutablity.Book.Get_year (deref α8)))) in
       let* α10 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7; α9 ] in
       let* α11 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
         M.alloc (borrow α10) in
@@ -154,7 +139,9 @@ Definition new_edition
   let* book := M.alloc book in
   let* _ : M.Val unit :=
     let* α0 : mut_ref scoping_rules_borrowing_mutablity.Book.t := M.read book in
-    assign (deref α0).["year"] (Integer.of_Z 2014) in
+    assign
+      (scoping_rules_borrowing_mutablity.Book.Get_year (deref α0))
+      ((Integer.of_Z 2014) : u32.t) in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "I mutably borrowed ") in
@@ -170,13 +157,15 @@ Definition new_edition
       let* α7 : core.fmt.rt.Argument.t :=
         M.call
           (core.fmt.rt.Argument.t::["new_display"]
-            (borrow (deref α6).["title"])) in
+            (borrow
+              (scoping_rules_borrowing_mutablity.Book.Get_title (deref α6)))) in
       let* α8 : mut_ref scoping_rules_borrowing_mutablity.Book.t :=
         M.read book in
       let* α9 : core.fmt.rt.Argument.t :=
         M.call
           (core.fmt.rt.Argument.t::["new_display"]
-            (borrow (deref α8).["year"])) in
+            (borrow
+              (scoping_rules_borrowing_mutablity.Book.Get_year (deref α8)))) in
       let* α10 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7; α9 ] in
       let* α11 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
         M.alloc (borrow α10) in
@@ -227,7 +216,8 @@ Definition main : M unit :=
       {|
         scoping_rules_borrowing_mutablity.Book.author := α0;
         scoping_rules_borrowing_mutablity.Book.title := α1;
-        scoping_rules_borrowing_mutablity.Book.year := Integer.of_Z 1979;
+        scoping_rules_borrowing_mutablity.Book.year :=
+          (Integer.of_Z 1979) : u32.t;
       |} in
   let* mutabook : M.Val scoping_rules_borrowing_mutablity.Book.t :=
     M.copy immutabook in

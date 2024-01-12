@@ -68,16 +68,6 @@ Module PartialEq.
     Definition Rhs (Self : Set) : Set := Self.
   End Default.
 
-  Global Instance Method_eq `(Trait) : Notations.Dot "eq" := {
-    Notations.dot := eq;
-  }.
-
-  Global Instance Method_ne `(Trait) : Notations.Dot "ne" := {
-    Notations.dot x y :=
-      let* is_eq := eq x y in
-      M.pure (negb is_eq);
-  }.
-
   Module Instances.
     Global Instance I_bool : Trait bool (Rhs := bool).
     Admitted.

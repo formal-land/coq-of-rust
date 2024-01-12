@@ -21,13 +21,8 @@ Section Incrementer.
     count : u32.t;
   }.
   
-  Global Instance Get_count : Notations.Dot "count" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(count)) (fun β α => Some (α <| count := β |>));
-  }.
-  Global Instance Get_AF_count : Notations.DoubleColon t "count" := {
-    Notations.double_colon (α : M.Val t) := α.["count"];
-  }.
+  Definition Get_count :=
+    Ref.map (fun α => Some α.(count)) (fun β α => Some (α <| count := β |>)).
 End Incrementer.
 End Incrementer.
 

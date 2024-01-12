@@ -10,7 +10,8 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
   let* _ : M.Val unit :=
-    let* α0 : unit := M.call (functions.fizzbuzz_to (Integer.of_Z 100)) in
+    let* α0 : unit :=
+      M.call (functions.fizzbuzz_to ((Integer.of_Z 100) : u32.t)) in
     M.alloc α0 in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.
@@ -33,7 +34,8 @@ Definition is_divisible_by (lhs : u32.t) (rhs : u32.t) : M bool.t :=
   M.catch_return
     (let* _ : M.Val unit :=
       let* α0 : u32.t := M.read rhs in
-      let* α1 : M.Val bool.t := M.alloc (BinOp.Pure.eq α0 (Integer.of_Z 0)) in
+      let* α1 : M.Val bool.t :=
+        M.alloc (BinOp.Pure.eq α0 ((Integer.of_Z 0) : u32.t)) in
       let* α2 : bool.t := M.read (use α1) in
       if α2 then
         let* _ : M.Val never.t := return_ false in
@@ -46,7 +48,8 @@ Definition is_divisible_by (lhs : u32.t) (rhs : u32.t) : M bool.t :=
     let* α0 : u32.t := M.read lhs in
     let* α1 : u32.t := M.read rhs in
     let* α2 : u32.t := BinOp.Panic.rem α0 α1 in
-    let* α0 : M.Val bool.t := M.alloc (BinOp.Pure.eq α2 (Integer.of_Z 0)) in
+    let* α0 : M.Val bool.t :=
+      M.alloc (BinOp.Pure.eq α2 ((Integer.of_Z 0) : u32.t)) in
     M.read α0).
 
 (*
@@ -65,7 +68,8 @@ fn fizzbuzz(n: u32) -> () {
 Definition fizzbuzz (n : u32.t) : M unit :=
   let* n := M.alloc n in
   let* α0 : u32.t := M.read n in
-  let* α1 : bool.t := M.call (functions.is_divisible_by α0 (Integer.of_Z 15)) in
+  let* α1 : bool.t :=
+    M.call (functions.is_divisible_by α0 ((Integer.of_Z 15) : u32.t)) in
   let* α2 : M.Val bool.t := M.alloc α1 in
   let* α3 : bool.t := M.read (use α2) in
   let* α4 : M.Val unit :=
@@ -87,7 +91,7 @@ Definition fizzbuzz (n : u32.t) : M unit :=
     else
       let* α0 : u32.t := M.read n in
       let* α1 : bool.t :=
-        M.call (functions.is_divisible_by α0 (Integer.of_Z 3)) in
+        M.call (functions.is_divisible_by α0 ((Integer.of_Z 3) : u32.t)) in
       let* α2 : M.Val bool.t := M.alloc α1 in
       let* α3 : bool.t := M.read (use α2) in
       if α3 then
@@ -108,7 +112,7 @@ Definition fizzbuzz (n : u32.t) : M unit :=
       else
         let* α0 : u32.t := M.read n in
         let* α1 : bool.t :=
-          M.call (functions.is_divisible_by α0 (Integer.of_Z 5)) in
+          M.call (functions.is_divisible_by α0 ((Integer.of_Z 5) : u32.t)) in
         let* α2 : M.Val bool.t := M.alloc α1 in
         let* α3 : bool.t := M.read (use α2) in
         if α3 then
@@ -171,7 +175,9 @@ Definition fizzbuzz_to (n : u32.t) : M unit :=
   let* α1 : u32.t := M.read n in
   let* α2 : core.ops.range.RangeInclusive.t u32.t :=
     M.call
-      ((core.ops.range.RangeInclusive.t u32.t)::["new"] (Integer.of_Z 1) α1) in
+      ((core.ops.range.RangeInclusive.t u32.t)::["new"]
+        ((Integer.of_Z 1) : u32.t)
+        α1) in
   let* α3 : core.ops.range.RangeInclusive.t u32.t := M.call (α0 α2) in
   let* α4 : M.Val (core.ops.range.RangeInclusive.t u32.t) := M.alloc α3 in
   let* α5 : M.Val unit :=
@@ -208,7 +214,7 @@ Definition fizzbuzz_to (n : u32.t) : M unit :=
                     (let* α0 := M.read γ in
                     match α0 with
                     | core.option.Option.Some _ =>
-                      let γ0_0 := γ.["Some.0"] in
+                      let γ0_0 := core.option.Option.Get_Some_0 γ in
                       let* n := M.copy γ0_0 in
                       let* _ : M.Val unit :=
                         let* α0 : u32.t := M.read n in

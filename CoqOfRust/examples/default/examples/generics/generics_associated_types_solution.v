@@ -8,14 +8,10 @@ Section Container.
     x1 : i32.t;
   }.
   
-  Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>));
-  }.
-  Global Instance Get_1 : Notations.Dot "1" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(x1)) (fun β α => Some (α <| x1 := β |>));
-  }.
+  Definition Get_0 :=
+    Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>)).
+  Definition Get_1 :=
+    Ref.map (fun α => Some α.(x1)) (fun β α => Some (α <| x1 := β |>)).
 End Container.
 End Container.
 
@@ -74,7 +70,10 @@ Section Impl_generics_associated_types_solution_Contains_for_generics_associated
           (Trait := ℐ))) in
     let* α1 : ref generics_associated_types_solution.Container.t :=
       M.read self in
-    let* α2 : M.Val (ref i32.t) := M.alloc (borrow (deref α1).["0"]) in
+    let* α2 : M.Val (ref i32.t) :=
+      M.alloc
+        (borrow
+          (generics_associated_types_solution.Container.Get_0 (deref α1))) in
     let* α3 : bool.t := M.call (α0 (borrow α2) (borrow number_1)) in
     let* α4 : _ :=
       ltac:(M.get_method (fun ℐ =>
@@ -84,7 +83,10 @@ Section Impl_generics_associated_types_solution_Contains_for_generics_associated
           (Trait := ℐ))) in
     let* α5 : ref generics_associated_types_solution.Container.t :=
       M.read self in
-    let* α6 : M.Val (ref i32.t) := M.alloc (borrow (deref α5).["1"]) in
+    let* α6 : M.Val (ref i32.t) :=
+      M.alloc
+        (borrow
+          (generics_associated_types_solution.Container.Get_1 (deref α5))) in
     let* α7 : bool.t := M.call (α4 (borrow α6) (borrow number_2)) in
     M.pure (BinOp.Pure.and α3 α7).
   
@@ -102,7 +104,7 @@ Section Impl_generics_associated_types_solution_Contains_for_generics_associated
     let* self := M.alloc self in
     let* α0 : ref generics_associated_types_solution.Container.t :=
       M.read self in
-    M.read (deref α0).["0"].
+    M.read (generics_associated_types_solution.Container.Get_0 (deref α0)).
   
   Global Instance AssociatedFunction_first :
     Notations.DoubleColon Self "first" := {
@@ -118,7 +120,7 @@ Section Impl_generics_associated_types_solution_Contains_for_generics_associated
     let* self := M.alloc self in
     let* α0 : ref generics_associated_types_solution.Container.t :=
       M.read self in
-    M.read (deref α0).["1"].
+    M.read (generics_associated_types_solution.Container.Get_1 (deref α0)).
   
   Global Instance AssociatedFunction_last :
     Notations.DoubleColon Self "last" := {
@@ -134,7 +136,7 @@ Section Impl_generics_associated_types_solution_Contains_for_generics_associated
     let* self := M.alloc self in
     let* α0 : ref generics_associated_types_solution.Container.t :=
       M.read self in
-    M.read (deref α0).["0"].
+    M.read (generics_associated_types_solution.Container.Get_0 (deref α0)).
   
   Global Instance AssociatedFunction_a : Notations.DoubleColon Self "a" := {
     Notations.double_colon := a;
@@ -219,8 +221,8 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* number_1 : M.Val i32.t := M.alloc (Integer.of_Z 3) in
-  let* number_2 : M.Val i32.t := M.alloc (Integer.of_Z 10) in
+  let* number_1 : M.Val i32.t := M.alloc ((Integer.of_Z 3) : i32.t) in
+  let* number_2 : M.Val i32.t := M.alloc ((Integer.of_Z 10) : i32.t) in
   let* container : M.Val generics_associated_types_solution.Container.t :=
     let* α0 : i32.t := M.read number_1 in
     let* α1 : i32.t := M.read number_2 in

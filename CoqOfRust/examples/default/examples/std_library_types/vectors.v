@@ -67,8 +67,8 @@ Definition main : M unit :=
       M.call
         (α0
           {|
-            core.ops.range.Range.start := Integer.of_Z 0;
-            core.ops.range.Range.end_ := Integer.of_Z 10;
+            core.ops.range.Range.start := (Integer.of_Z 0) : i32.t;
+            core.ops.range.Range.end_ := (Integer.of_Z 10) : i32.t;
           |}) in
     M.alloc α1 in
   let* _ : M.Val unit :=
@@ -95,7 +95,12 @@ Definition main : M unit :=
     M.alloc tt in
   let* xs : M.Val (alloc.vec.Vec.t i32.t alloc.alloc.Global.t) :=
     let* α0 : M.Val (array i32.t) :=
-      M.alloc [ Integer.of_Z 1; Integer.of_Z 2; Integer.of_Z 3 ] in
+      M.alloc
+        [
+          (Integer.of_Z 1) : i32.t;
+          (Integer.of_Z 2) : i32.t;
+          (Integer.of_Z 3) : i32.t
+        ] in
     let* α1 : M.Val (alloc.boxed.Box.t (array i32.t) alloc.alloc.Global.t) :=
       M.call ((alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α0) in
     let* α2 : alloc.boxed.Box.t (slice i32.t) alloc.alloc.Global.t :=
@@ -142,7 +147,7 @@ Definition main : M unit :=
       M.call
         ((alloc.vec.Vec.t i32.t alloc.alloc.Global.t)::["push"]
           (borrow_mut xs)
-          (Integer.of_Z 4)) in
+          ((Integer.of_Z 4) : i32.t)) in
     M.alloc α0 in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
@@ -205,7 +210,8 @@ Definition main : M unit :=
             (Self := alloc.vec.Vec.t i32.t alloc.alloc.Global.t)
             (Idx := usize.t)
             (Trait := ℐ))) in
-      let* α6 : ref i32.t := M.call (α5 (borrow xs) (Integer.of_Z 1)) in
+      let* α6 : ref i32.t :=
+        M.call (α5 (borrow xs) ((Integer.of_Z 1) : usize.t)) in
       let* α7 : core.fmt.rt.Argument.t :=
         M.call (core.fmt.rt.Argument.t::["new_display"] α6) in
       let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
@@ -308,7 +314,7 @@ Definition main : M unit :=
                       (let* α0 := M.read γ in
                       match α0 with
                       | core.option.Option.Some _ =>
-                        let γ0_0 := γ.["Some.0"] in
+                        let γ0_0 := core.option.Option.Get_Some_0 γ in
                         let* x := M.copy γ0_0 in
                         let* _ : M.Val unit :=
                           let* _ : M.Val unit :=
@@ -419,7 +425,7 @@ Definition main : M unit :=
                       (let* α0 := M.read γ in
                       match α0 with
                       | core.option.Option.Some _ =>
-                        let γ0_0 := γ.["Some.0"] in
+                        let γ0_0 := core.option.Option.Get_Some_0 γ in
                         let* α0 := M.read γ0_0 in
                         match α0 with
                         | (_, _) =>
@@ -524,14 +530,15 @@ Definition main : M unit :=
                       (let* α0 := M.read γ in
                       match α0 with
                       | core.option.Option.Some _ =>
-                        let γ0_0 := γ.["Some.0"] in
+                        let γ0_0 := core.option.Option.Get_Some_0 γ in
                         let* x := M.copy γ0_0 in
                         let* _ : M.Val unit :=
                           let* β : M.Val i32.t :=
                             let* α0 : mut_ref i32.t := M.read x in
                             M.pure (deref α0) in
                           let* α0 := M.read β in
-                          let* α1 := BinOp.Panic.mul α0 (Integer.of_Z 3) in
+                          let* α1 :=
+                            BinOp.Panic.mul α0 ((Integer.of_Z 3) : i32.t) in
                           assign β α1 in
                         M.alloc tt
                       | _ => M.break_match

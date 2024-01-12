@@ -8,20 +8,10 @@ Section Sheep.
     name : ref str.t;
   }.
   
-  Global Instance Get_naked : Notations.Dot "naked" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(naked)) (fun β α => Some (α <| naked := β |>));
-  }.
-  Global Instance Get_AF_naked : Notations.DoubleColon t "naked" := {
-    Notations.double_colon (α : M.Val t) := α.["naked"];
-  }.
-  Global Instance Get_name : Notations.Dot "name" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(name)) (fun β α => Some (α <| name := β |>));
-  }.
-  Global Instance Get_AF_name : Notations.DoubleColon t "name" := {
-    Notations.double_colon (α : M.Val t) := α.["name"];
-  }.
+  Definition Get_naked :=
+    Ref.map (fun α => Some α.(naked)) (fun β α => Some (α <| naked := β |>)).
+  Definition Get_name :=
+    Ref.map (fun α => Some α.(name)) (fun β α => Some (α <| name := β |>)).
 End Sheep.
 End Sheep.
 
@@ -48,7 +38,7 @@ Section Impl_traits_Sheep_t.
   Definition is_naked (self : ref Self) : M bool.t :=
     let* self := M.alloc self in
     let* α0 : ref traits.Sheep.t := M.read self in
-    M.read (deref α0).["naked"].
+    M.read (traits.Sheep.Get_naked (deref α0)).
   
   Global Instance AssociatedFunction_is_naked :
     Notations.DoubleColon Self "is_naked" := {
@@ -86,7 +76,7 @@ Section Impl_traits_Animal_for_traits_Sheep_t.
   Definition name (self : ref Self) : M (ref str.t) :=
     let* self := M.alloc self in
     let* α0 : ref traits.Sheep.t := M.read self in
-    M.read (deref α0).["name"].
+    M.read (traits.Sheep.Get_name (deref α0)).
   
   Global Instance AssociatedFunction_name :
     Notations.DoubleColon Self "name" := {
@@ -142,7 +132,7 @@ Section Impl_traits_Animal_for_traits_Sheep_t.
         let* α7 : core.fmt.rt.Argument.t :=
           M.call
             (core.fmt.rt.Argument.t::["new_display"]
-              (borrow (deref α6).["name"])) in
+              (borrow (traits.Sheep.Get_name (deref α6)))) in
         let* α8 : ref traits.Sheep.t := M.read self in
         let* α9 : ref str.t := M.call (noise α8) in
         let* α10 : M.Val (ref str.t) := M.alloc α9 in
@@ -243,7 +233,7 @@ Section Impl_traits_Sheep_t_2.
             let* α6 : core.fmt.rt.Argument.t :=
               M.call
                 (core.fmt.rt.Argument.t::["new_display"]
-                  (borrow (deref α5).["name"])) in
+                  (borrow (traits.Sheep.Get_name (deref α5)))) in
             let* α7 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α6 ] in
             let* α8 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
               M.alloc (borrow α7) in
@@ -256,7 +246,7 @@ Section Impl_traits_Sheep_t_2.
           M.alloc tt in
         let* _ : M.Val unit :=
           let* α0 : mut_ref traits.Sheep.t := M.read self in
-          assign (deref α0).["naked"] true in
+          assign (traits.Sheep.Get_naked (deref α0)) true in
         M.alloc tt in
     M.read α4.
   

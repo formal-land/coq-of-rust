@@ -8,20 +8,10 @@ Section Point.
     y : f64.t;
   }.
   
-  Global Instance Get_x : Notations.Dot "x" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(x)) (fun β α => Some (α <| x := β |>));
-  }.
-  Global Instance Get_AF_x : Notations.DoubleColon t "x" := {
-    Notations.double_colon (α : M.Val t) := α.["x"];
-  }.
-  Global Instance Get_y : Notations.Dot "y" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(y)) (fun β α => Some (α <| y := β |>));
-  }.
-  Global Instance Get_AF_y : Notations.DoubleColon t "y" := {
-    Notations.double_colon (α : M.Val t) := α.["y"];
-  }.
+  Definition Get_x :=
+    Ref.map (fun α => Some α.(x)) (fun β α => Some (α <| x := β |>)).
+  Definition Get_y :=
+    Ref.map (fun α => Some α.(y)) (fun β α => Some (α <| y := β |>)).
 End Point.
 End Point.
 
@@ -61,20 +51,10 @@ Section Rectangle.
     p2 : associated_functions_and_methods.Point.t;
   }.
   
-  Global Instance Get_p1 : Notations.Dot "p1" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(p1)) (fun β α => Some (α <| p1 := β |>));
-  }.
-  Global Instance Get_AF_p1 : Notations.DoubleColon t "p1" := {
-    Notations.double_colon (α : M.Val t) := α.["p1"];
-  }.
-  Global Instance Get_p2 : Notations.Dot "p2" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(p2)) (fun β α => Some (α <| p2 := β |>));
-  }.
-  Global Instance Get_AF_p2 : Notations.DoubleColon t "p2" := {
-    Notations.double_colon (α : M.Val t) := α.["p2"];
-  }.
+  Definition Get_p1 :=
+    Ref.map (fun α => Some α.(p1)) (fun β α => Some (α <| p1 := β |>)).
+  Definition Get_p2 :=
+    Ref.map (fun α => Some α.(p2)) (fun β α => Some (α <| p2 := β |>)).
 End Rectangle.
 End Rectangle.
 
@@ -152,14 +132,10 @@ Section Pair.
     x1 : alloc.boxed.Box.t i32.t alloc.boxed.Box.Default.A;
   }.
   
-  Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>));
-  }.
-  Global Instance Get_1 : Notations.Dot "1" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(x1)) (fun β α => Some (α <| x1 := β |>));
-  }.
+  Definition Get_0 :=
+    Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>)).
+  Definition Get_1 :=
+    Ref.map (fun α => Some α.(x1)) (fun β α => Some (α <| x1 := β |>)).
 End Pair.
 End Pair.
 

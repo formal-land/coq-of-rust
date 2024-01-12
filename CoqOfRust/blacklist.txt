@@ -56,7 +56,6 @@ examples/default/examples/custom_types/structures.v
 examples/default/examples/error_handling/aliases_for_result.v
 examples/default/examples/error_handling/boxing_errors.v
 examples/default/examples/error_handling/combinators_and_then.v
-examples/default/examples/error_handling/combinators_map.v
 examples/default/examples/error_handling/defining_an_error_type.v
 examples/default/examples/error_handling/early_returns.v
 examples/default/examples/error_handling/introducing_question_mark_is_an_replacement_for_deprecated_try.v
@@ -81,19 +80,14 @@ examples/default/examples/error_handling/unpacking_options_and_defaults_via_or_e
 examples/default/examples/error_handling/unpacking_options_and_defaults_via_or.v
 examples/default/examples/error_handling/unpacking_options_via_question_mark.v
 examples/default/examples/error_handling/wrapping_errors.v
-examples/default/examples/flow_of_control/for_and_iterators_into_iter.v
 examples/default/examples/flow_of_control/for_and_iterators_iter_mut.v
-examples/default/examples/flow_of_control/for_and_iterators_iter.v
 examples/default/examples/flow_of_control/for_and_range_completely_inclusive.v
 examples/default/examples/flow_of_control/if_let_challenge.v
-examples/default/examples/flow_of_control/if_let_dont_use_match.v
 examples/default/examples/flow_of_control/if_let_match_enum_values.v
 examples/default/examples/flow_of_control/if_let.v
 examples/default/examples/flow_of_control/loop_nesting_and_labels.v
 examples/default/examples/flow_of_control/loop_returning_from_loops.v
-examples/default/examples/flow_of_control/match_binding_destructure_enum_variants.v
 examples/default/examples/flow_of_control/match_destructuring_arrays_slices.v
-examples/default/examples/flow_of_control/match_destructuring_structs.v
 examples/default/examples/flow_of_control/while_let.v
 examples/default/examples/functions/associated_functions_and_methods.v
 examples/default/examples/functions/diverging_functions_example_sum_odd_numbers.v
@@ -115,7 +109,6 @@ examples/default/examples/generics/generics_bounds.v
 examples/default/examples/generics/generics_functions.v
 examples/default/examples/generics/generics_implementation.v
 examples/default/examples/generics/generics_multiple_bounds.v
-examples/default/examples/generics/generics_new_type_idiom_as_base_type.v
 examples/default/examples/generics/generics_phantom_type_test_case_unit_clarification.v
 examples/default/examples/generics/generics_phantom_type.v
 examples/default/examples/generics/generics.v
@@ -130,7 +123,6 @@ examples/default/examples/modules/visibility.v
 examples/default/examples/primitives/arrays_and_slices.v
 examples/default/examples/primitives/literals_operators.v
 examples/default/examples/primitives/tuples.v
-examples/default/examples/scoping_rules/scoping_rules_borrowing_mutablity.v
 examples/default/examples/scoping_rules/scoping_rules_borrowing_the_ref_pattern.v
 examples/default/examples/scoping_rules/scoping_rules_borrowing.v
 examples/default/examples/scoping_rules/scoping_rules_lifetimes_bounds.v
