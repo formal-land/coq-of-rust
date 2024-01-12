@@ -233,10 +233,10 @@ Module ImplArgumentV1.
   }.
 
   Parameter new_display :
-    forall {T : Set} `{Display.Trait T}, ref T -> M Self.
+    forall {T : Set} {H0 : Display.Trait T}, ref T -> M Self.
 
   Global Instance ArgumentV1_new_display
-    {T : Set} `{Display.Trait T} :
+    {T : Set} {H0 : Display.Trait T} :
     Notations.DoubleColon ArgumentV1.t "new_display" := {
     Notations.double_colon := new_display (T := T);
   }.
@@ -369,10 +369,10 @@ Module rt.
   End Argument.
 
   Parameter new_display :
-    forall {T : Set} `{Display.Trait T}, ref T -> M Argument.t.
+    forall {T : Set} {H0 : Display.Trait T}, ref T -> M Argument.t.
 
   Global Instance Argument_new_display
-    {T : Set} `{Display.Trait T} :
+    {T : Set} {H0 : Display.Trait T} :
     Notations.DoubleColon Argument.t "new_display" := {
     Notations.double_colon := new_display (T := T);
   }.
