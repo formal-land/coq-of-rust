@@ -146,17 +146,17 @@ Section Impl_core_clone_Clone_for_mother_AccountId_t.
   *)
   Definition clone (self : ref Self) : M mother.AccountId.t :=
     let* self := M.alloc self in
-    let* α0 : M.Val unit := M.alloc tt in
-    let* α1 : M.Val mother.AccountId.t :=
+    let* α0 : M.Val mother.AccountId.t :=
       match_operator
-        α0
+        (DeclaredButUndefinedVariable
+          (A := core.clone.AssertParamIsClone.t u128.t))
         [
           fun γ =>
             (let* α0 : ref mother.AccountId.t := M.read self in
             M.pure (deref α0)) :
             M (M.Val mother.AccountId.t)
         ] in
-    M.read α1.
+    M.read α0.
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {
@@ -235,10 +235,11 @@ Section Impl_core_cmp_Eq_for_mother_AccountId_t.
   *)
   Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
     let* self := M.alloc self in
-    let* α0 : M.Val unit := M.alloc tt in
-    let* α1 : M.Val unit :=
-      match_operator α0 [ fun γ => (M.alloc tt) : M (M.Val unit) ] in
-    M.read α1.
+    let* α0 : M.Val unit :=
+      match_operator
+        (DeclaredButUndefinedVariable (A := core.cmp.AssertParamIsEq.t u128.t))
+        [ fun γ => (M.alloc tt) : M (M.Val unit) ] in
+    M.read α0.
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
     Notations.DoubleColon Self "assert_receiver_is_total_eq" := {
@@ -396,10 +397,18 @@ Section Impl_core_cmp_Eq_for_mother_Bids_t.
   *)
   Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
     let* self := M.alloc self in
-    let* α0 : M.Val unit := M.alloc tt in
-    let* α1 : M.Val unit :=
-      match_operator α0 [ fun γ => (M.alloc tt) : M (M.Val unit) ] in
-    M.read α1.
+    let* α0 : M.Val unit :=
+      match_operator
+        (DeclaredButUndefinedVariable
+          (A :=
+            core.cmp.AssertParamIsEq.t
+              (alloc.vec.Vec.t
+                (alloc.vec.Vec.t
+                  (core.option.Option.t (mother.AccountId.t * u128.t))
+                  alloc.alloc.Global.t)
+                alloc.alloc.Global.t)))
+        [ fun γ => (M.alloc tt) : M (M.Val unit) ] in
+    M.read α0.
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
     Notations.DoubleColon Self "assert_receiver_is_total_eq" := {
@@ -802,17 +811,18 @@ Section Impl_core_cmp_Eq_for_mother_Status_t.
   *)
   Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
     let* self := M.alloc self in
-    let* α0 : M.Val unit := M.alloc tt in
-    let* α1 : M.Val unit :=
+    let* α0 : M.Val unit :=
       match_operator
-        α0
+        (DeclaredButUndefinedVariable (A := core.cmp.AssertParamIsEq.t u32.t))
         [
           fun γ =>
-            (let* α0 : M.Val unit := M.alloc tt in
-            match_operator α0 [ fun γ => (M.alloc tt) : M (M.Val unit) ]) :
+            (match_operator
+              (DeclaredButUndefinedVariable
+                (A := core.cmp.AssertParamIsEq.t mother.Outline.t))
+              [ fun γ => (M.alloc tt) : M (M.Val unit) ]) :
             M (M.Val unit)
         ] in
-    M.read α1.
+    M.read α0.
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
     Notations.DoubleColon Self "assert_receiver_is_total_eq" := {
@@ -1104,40 +1114,46 @@ Section Impl_core_cmp_Eq_for_mother_Auction_t.
   *)
   Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
     let* self := M.alloc self in
-    let* α0 : M.Val unit := M.alloc tt in
-    let* α1 : M.Val unit :=
+    let* α0 : M.Val unit :=
       match_operator
-        α0
+        (DeclaredButUndefinedVariable
+          (A := core.cmp.AssertParamIsEq.t alloc.string.String.t))
         [
           fun γ =>
-            (let* α0 : M.Val unit := M.alloc tt in
-            match_operator
-              α0
+            (match_operator
+              (DeclaredButUndefinedVariable
+                (A := core.cmp.AssertParamIsEq.t (array u8.t)))
               [
                 fun γ =>
-                  (let* α0 : M.Val unit := M.alloc tt in
-                  match_operator
-                    α0
+                  (match_operator
+                    (DeclaredButUndefinedVariable
+                      (A := core.cmp.AssertParamIsEq.t mother.Bids.t))
                     [
                       fun γ =>
-                        (let* α0 : M.Val unit := M.alloc tt in
-                        match_operator
-                          α0
+                        (match_operator
+                          (DeclaredButUndefinedVariable
+                            (A := core.cmp.AssertParamIsEq.t (array u32.t)))
                           [
                             fun γ =>
-                              (let* α0 : M.Val unit := M.alloc tt in
-                              match_operator
-                                α0
+                              (match_operator
+                                (DeclaredButUndefinedVariable
+                                  (A :=
+                                    core.cmp.AssertParamIsEq.t mother.Status.t))
                                 [
                                   fun γ =>
-                                    (let* α0 : M.Val unit := M.alloc tt in
-                                    match_operator
-                                      α0
+                                    (match_operator
+                                      (DeclaredButUndefinedVariable
+                                        (A :=
+                                          core.cmp.AssertParamIsEq.t bool.t))
                                       [
                                         fun γ =>
-                                          (let* α0 : M.Val unit := M.alloc tt in
-                                          match_operator
-                                            α0
+                                          (match_operator
+                                            (DeclaredButUndefinedVariable
+                                              (A :=
+                                                core.cmp.AssertParamIsEq.t
+                                                  (alloc.vec.Vec.t
+                                                    u8.t
+                                                    alloc.alloc.Global.t)))
                                             [
                                               fun γ =>
                                                 (M.alloc tt) : M (M.Val unit)
@@ -1154,7 +1170,7 @@ Section Impl_core_cmp_Eq_for_mother_Auction_t.
               ]) :
             M (M.Val unit)
         ] in
-    M.read α1.
+    M.read α0.
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
     Notations.DoubleColon Self "assert_receiver_is_total_eq" := {
@@ -1432,10 +1448,12 @@ Section Impl_core_cmp_Eq_for_mother_Failure_t.
   *)
   Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
     let* self := M.alloc self in
-    let* α0 : M.Val unit := M.alloc tt in
-    let* α1 : M.Val unit :=
-      match_operator α0 [ fun γ => (M.alloc tt) : M (M.Val unit) ] in
-    M.read α1.
+    let* α0 : M.Val unit :=
+      match_operator
+        (DeclaredButUndefinedVariable
+          (A := core.cmp.AssertParamIsEq.t alloc.string.String.t))
+        [ fun γ => (M.alloc tt) : M (M.Val unit) ] in
+    M.read α0.
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
     Notations.DoubleColon Self "assert_receiver_is_total_eq" := {

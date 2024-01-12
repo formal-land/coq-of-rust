@@ -87,8 +87,8 @@ End BikeshedIntrinsicFrom.
 
 Parameter size_of_val :
   forall {T : Set},
-  M.Val (ref T) ->
-  M (M.Val usize.t).
+  ref T ->
+  M usize.t.
 
 (* NOTE: Can we translate unions? *)
 (* ********UNIONS******** *)
@@ -99,6 +99,6 @@ Parameter size_of_val :
 (* pub fn drop<T>(_x: T) *)
 Parameter drop :
   forall {T : Set},
-  M.Val T ->
-  M (M.Val unit).
+  T ->
+  M unit.
 

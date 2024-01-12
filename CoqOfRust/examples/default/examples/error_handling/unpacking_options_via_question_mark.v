@@ -37,10 +37,13 @@ Section Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job_t.
       (self : ref Self)
       : M unpacking_options_via_question_mark.Job.t :=
     let* self := M.alloc self in
-    let* α0 : M.Val unit := M.alloc tt in
-    let* α1 : M.Val unpacking_options_via_question_mark.Job.t :=
+    let* α0 : M.Val unpacking_options_via_question_mark.Job.t :=
       match_operator
-        α0
+        (DeclaredButUndefinedVariable
+          (A :=
+            core.clone.AssertParamIsClone.t
+              (core.option.Option.t
+                unpacking_options_via_question_mark.PhoneNumber.t)))
         [
           fun γ =>
             (let* α0 : ref unpacking_options_via_question_mark.Job.t :=
@@ -48,7 +51,7 @@ Section Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job_t.
             M.pure (deref α0)) :
             M (M.Val unpacking_options_via_question_mark.Job.t)
         ] in
-    M.read α1.
+    M.read α0.
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {
@@ -98,15 +101,15 @@ Section Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumbe
       (self : ref Self)
       : M unpacking_options_via_question_mark.PhoneNumber.t :=
     let* self := M.alloc self in
-    let* α0 : M.Val unit := M.alloc tt in
-    let* α1 : M.Val unpacking_options_via_question_mark.PhoneNumber.t :=
+    let* α0 : M.Val unpacking_options_via_question_mark.PhoneNumber.t :=
       match_operator
-        α0
+        (DeclaredButUndefinedVariable
+          (A := core.clone.AssertParamIsClone.t (core.option.Option.t u8.t)))
         [
           fun γ =>
-            (let* α0 : M.Val unit := M.alloc tt in
-            match_operator
-              α0
+            (match_operator
+              (DeclaredButUndefinedVariable
+                (A := core.clone.AssertParamIsClone.t u32.t))
               [
                 fun γ =>
                   (let* α0 :
@@ -117,7 +120,7 @@ Section Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumbe
               ]) :
             M (M.Val unpacking_options_via_question_mark.PhoneNumber.t)
         ] in
-    M.read α1.
+    M.read α0.
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {

@@ -468,3 +468,12 @@ Section Impl.
   }.
 End Impl.
 End Impl.
+
+Module raw.
+  (* pub const unsafe fn from_raw_parts<'a, T>(data: *const T, len: usize) -> &'a [T] *)
+  Parameter from_raw_parts :
+    forall {T : Set},
+    ref T ->
+    usize.t ->
+    M (ref (slice T)).
+End raw.

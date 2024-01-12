@@ -89,6 +89,6 @@ Definition foo (arg : i32.t) : M i32.t :=
 *)
 Definition call_foo (arg : i32.t) : M i32.t :=
   let* arg := M.alloc arg in
-  let* result : M.Val unit := M.alloc tt in
+  let* result := M.copy (DeclaredButUndefinedVariable (A := i32.t)) in
   let _ : M.Val unit := InlineAssembly in
   M.read result.

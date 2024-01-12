@@ -984,19 +984,17 @@ fn compile_expr_kind<'a>(
         }
         thir::ExprKind::AddressOf { mutability, arg } => {
             let func = match mutability {
-                rustc_middle::mir::Mutability::Not => "addr_of".to_string(),
-                rustc_middle::mir::Mutability::Mut => "addr_of_mut".to_string(),
+                rustc_middle::mir::Mutability::Not => "addr_of",
+                rustc_middle::mir::Mutability::Mut => "addr_of_mut",
             };
             let arg = compile_expr(env, thir, arg);
             Rc::new(ExprKind::Call {
-                func: Rc::new(Expr {
-                    kind: Rc::new(ExprKind::LocalVar(func)),
-                    ty: None,
-                }),
+                func: Expr::local_var(func),
                 args: vec![arg],
                 purity: Purity::Pure,
                 from_user: false,
             })
+            .alloc(Some(ty))
         }
         thir::ExprKind::Break { .. } => Rc::new(ExprKind::ControlFlow(LoopControlFlow::Break)),
         thir::ExprKind::Continue { .. } => {
@@ -1302,11 +1300,18 @@ fn compile_stmts<'a>(
                     initializer,
                     ..
                 } => {
-                    let pattern = crate::thir_pattern::compile_pattern(env, pattern);
                     let init = match initializer {
                         Some(initializer) => compile_expr(env, thir, initializer),
-                        None => Expr::tt(),
+                        None => Rc::new(Expr {
+                            kind: Rc::new(ExprKind::VarWithTy {
+                                path: Path::new(&["DeclaredButUndefinedVariable"]),
+                                ty_name: "A".to_string(),
+                                ty: compile_type(env, &pattern.ty),
+                            }),
+                            ty: None,
+                        }),
                     };
+                    let pattern = crate::thir_pattern::compile_pattern(env, pattern);
                     let ty = body.ty.clone();
                     let kind = match pattern.as_ref() {
                         Pattern::Binding {

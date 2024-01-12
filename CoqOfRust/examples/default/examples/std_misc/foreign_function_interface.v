@@ -122,10 +122,10 @@ Section Impl_core_clone_Clone_for_foreign_function_interface_Complex_t.
   *)
   Definition clone (self : ref Self) : M foreign_function_interface.Complex.t :=
     let* self := M.alloc self in
-    let* α0 : M.Val unit := M.alloc tt in
-    let* α1 : M.Val foreign_function_interface.Complex.t :=
+    let* α0 : M.Val foreign_function_interface.Complex.t :=
       match_operator
-        α0
+        (DeclaredButUndefinedVariable
+          (A := core.clone.AssertParamIsClone.t f32.t))
         [
           fun γ =>
             (let* α0 : ref foreign_function_interface.Complex.t :=
@@ -133,7 +133,7 @@ Section Impl_core_clone_Clone_for_foreign_function_interface_Complex_t.
             M.pure (deref α0)) :
             M (M.Val foreign_function_interface.Complex.t)
         ] in
-    M.read α1.
+    M.read α0.
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {

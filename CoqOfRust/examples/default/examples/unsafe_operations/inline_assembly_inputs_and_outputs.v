@@ -14,7 +14,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* x : M.Val unit := M.alloc tt in
+  let* x := M.copy (DeclaredButUndefinedVariable (A := u64.t)) in
   let* _ : M.Val unit :=
     let _ : M.Val unit := InlineAssembly in
     M.alloc tt in

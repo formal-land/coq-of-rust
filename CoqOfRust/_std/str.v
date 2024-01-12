@@ -392,7 +392,7 @@ End FromStr.
 Module FromStr_instances.
   #[refine]
   Global Instance for_bool : FromStr.Trait bool := {
-    Err := str.error.ParseBoolError;
+    Err := str.error.ParseBoolError.t;
   }.
     all: destruct (axiom "FromStr_instances" : Empty_set).
   Defined.

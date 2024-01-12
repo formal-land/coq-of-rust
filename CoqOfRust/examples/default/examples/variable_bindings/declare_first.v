@@ -28,7 +28,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* a_binding : M.Val unit := M.alloc tt in
+  let* a_binding := M.copy (DeclaredButUndefinedVariable (A := i32.t)) in
   let* _ : M.Val unit :=
     let* x : M.Val i32.t := M.alloc ((Integer.of_Z 2) : i32.t) in
     let* _ : M.Val unit :=
@@ -58,7 +58,7 @@ Definition main : M unit :=
       let* α10 : unit := M.call (std.io.stdio._print α9) in
       M.alloc α10 in
     M.alloc tt in
-  let* another_binding : M.Val unit := M.alloc tt in
+  let* another_binding := M.copy (DeclaredButUndefinedVariable (A := i32.t)) in
   let* _ : M.Val unit := assign another_binding ((Integer.of_Z 1) : i32.t) in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=

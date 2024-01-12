@@ -253,17 +253,17 @@ Section Impl_core_clone_Clone_for_multisig_AccountId_t.
   *)
   Definition clone (self : ref Self) : M multisig.AccountId.t :=
     let* self := M.alloc self in
-    let* α0 : M.Val unit := M.alloc tt in
-    let* α1 : M.Val multisig.AccountId.t :=
+    let* α0 : M.Val multisig.AccountId.t :=
       match_operator
-        α0
+        (DeclaredButUndefinedVariable
+          (A := core.clone.AssertParamIsClone.t u128.t))
         [
           fun γ =>
             (let* α0 : ref multisig.AccountId.t := M.read self in
             M.pure (deref α0)) :
             M (M.Val multisig.AccountId.t)
         ] in
-    M.read α1.
+    M.read α0.
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {
@@ -345,10 +345,11 @@ Section Impl_core_cmp_Eq_for_multisig_AccountId_t.
   *)
   Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
     let* self := M.alloc self in
-    let* α0 : M.Val unit := M.alloc tt in
-    let* α1 : M.Val unit :=
-      match_operator α0 [ fun γ => (M.alloc tt) : M (M.Val unit) ] in
-    M.read α1.
+    let* α0 : M.Val unit :=
+      match_operator
+        (DeclaredButUndefinedVariable (A := core.cmp.AssertParamIsEq.t u128.t))
+        [ fun γ => (M.alloc tt) : M (M.Val unit) ] in
+    M.read α0.
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
     Notations.DoubleColon Self "assert_receiver_is_total_eq" := {
@@ -499,17 +500,17 @@ Section Impl_core_clone_Clone_for_multisig_ConfirmationStatus_t.
   *)
   Definition clone (self : ref Self) : M multisig.ConfirmationStatus.t :=
     let* self := M.alloc self in
-    let* α0 : M.Val unit := M.alloc tt in
-    let* α1 : M.Val multisig.ConfirmationStatus.t :=
+    let* α0 : M.Val multisig.ConfirmationStatus.t :=
       match_operator
-        α0
+        (DeclaredButUndefinedVariable
+          (A := core.clone.AssertParamIsClone.t u32.t))
         [
           fun γ =>
             (let* α0 : ref multisig.ConfirmationStatus.t := M.read self in
             M.pure (deref α0)) :
             M (M.Val multisig.ConfirmationStatus.t)
         ] in
-    M.read α1.
+    M.read α0.
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {
