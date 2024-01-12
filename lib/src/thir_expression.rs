@@ -554,12 +554,13 @@ fn build_inner_match(
                                             name: Some(format!("γ{depth}_slice")),
                                             init: Rc::new(Expr {
                                                 ty: None,
-                                                kind: Rc::new(ExprKind::NamedField {
-                                                    base: Expr::local_var(&scrutinee),
-                                                    name: format!(
+                                                kind: Rc::new(ExprKind::Call {
+                                                    func: Expr::local_var(&format!(
                                                         "[{}].slice",
-                                                        init_patterns.len()
-                                                    ),
+                                                        init_patterns.len())),
+                                                    args: vec![Expr::local_var(&scrutinee)],
+                                                    purity: Purity::Pure,
+                                                    from_user: false,
                                                 }),
                                             }),
                                             body,
@@ -578,9 +579,11 @@ fn build_inner_match(
                                                 name: Some(format!("γ{depth}_{index}")),
                                                 init: Rc::new(Expr {
                                                     ty: None,
-                                                    kind: Rc::new(ExprKind::NamedField {
-                                                        base: Expr::local_var(&scrutinee),
-                                                        name: format!("[{index}]",),
+                                                    kind: Rc::new(ExprKind::Call {
+                                                        func: Expr::local_var(&format!("[{index}]")),
+                                                        args: vec![Expr::local_var(&scrutinee)],
+                                                        purity: Purity::Pure,
+                                                        from_user: false,
                                                     }),
                                                 }),
                                                 body,

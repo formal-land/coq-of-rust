@@ -124,15 +124,6 @@ pub(crate) enum ExprKind {
         scrutinee: Rc<Expr>,
         arms: Vec<Rc<MatchArm>>,
     },
-    #[allow(dead_code)]
-    IndexedField {
-        base: Rc<Expr>,
-        index: u32,
-    },
-    NamedField {
-        base: Rc<Expr>,
-        name: String,
-    },
     Index {
         base: Rc<Expr>,
         index: Rc<Expr>,
@@ -227,8 +218,6 @@ impl Expr {
             ExprKind::Match { scrutinee, arms } => {
                 scrutinee.has_return() || arms.iter().any(|arm| arm.body.has_return())
             }
-            ExprKind::IndexedField { base, index: _ } => base.has_return(),
-            ExprKind::NamedField { base, name: _ } => base.has_return(),
             ExprKind::Index { base, index } => base.has_return() || index.has_return(),
             ExprKind::ControlFlow(_) => false,
             ExprKind::StructStruct {
@@ -592,34 +581,6 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Rc<Expr>) -> (Rc<Expr>,
                         }),
                         ty: ty.clone(),
                     }),
-                    fresh_vars,
-                )
-            })
-        }
-        ExprKind::IndexedField { base, index } => {
-            monadic_let(fresh_vars, base.clone(), |fresh_vars, base| {
-                (
-                    pure(Rc::new(Expr {
-                        kind: Rc::new(ExprKind::IndexedField {
-                            base,
-                            index: *index,
-                        }),
-                        ty,
-                    })),
-                    fresh_vars,
-                )
-            })
-        }
-        ExprKind::NamedField { base, name } => {
-            monadic_let(fresh_vars, base.clone(), |fresh_vars, base| {
-                (
-                    pure(Rc::new(Expr {
-                        kind: Rc::new(ExprKind::NamedField {
-                            base,
-                            name: name.clone(),
-                        }),
-                        ty: ty.clone(),
-                    })),
                     fresh_vars,
                 )
             })
@@ -1052,21 +1013,6 @@ impl ExprKind {
                 intersperse(arms.iter().map(|arm| arm.to_doc()), [hardline()]),
                 hardline(),
                 text("end"),
-            ]),
-            ExprKind::IndexedField { base, index } => paren(
-                with_paren,
-                nest([
-                    base.to_doc(true),
-                    text(".["),
-                    text(index.to_string()),
-                    text("]"),
-                ]),
-            ),
-            ExprKind::NamedField { base, name } => nest([
-                base.to_doc(true),
-                text(".["),
-                text(format!("\"{name}\"")),
-                text("]"),
             ]),
             ExprKind::Index { base, index } => {
                 nest([base.to_doc(true), text("["), index.to_doc(false), text("]")])
