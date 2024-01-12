@@ -163,7 +163,7 @@ Section Impl_derive_Inches_t.
             let* α0 := M.read γ in
             match α0 with
             | derive.Inches.Build_t _ =>
-              let γ1_0 := derive.Get_Inches_0 γ in
+              let γ1_0 := derive.Inches.Get_0 γ in
               let* inches := M.copy γ1_0 in
               let* α0 : i32.t := M.read inches in
               let* α1 : f64.t := M.cast α0 in

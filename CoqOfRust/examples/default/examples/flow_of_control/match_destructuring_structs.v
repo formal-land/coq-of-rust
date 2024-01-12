@@ -55,8 +55,8 @@ Definition main : M unit :=
                 match_destructuring_structs.Foo.y := _;
               |}
               =>
-            let γ0_0 := match_destructuring_structs.Get_Foo_x γ in
-            let γ0_1 := match_destructuring_structs.Get_Foo_y γ in
+            let γ0_0 := match_destructuring_structs.Foo.Get_x γ in
+            let γ0_1 := match_destructuring_structs.Foo.Get_y γ in
             let* α0 := M.read γ0_0 in
             match α0 with
             | (_, _) =>
@@ -102,8 +102,8 @@ Definition main : M unit :=
                 match_destructuring_structs.Foo.x := _;
               |}
               =>
-            let γ0_0 := match_destructuring_structs.Get_Foo_y γ in
-            let γ0_1 := match_destructuring_structs.Get_Foo_x γ in
+            let γ0_0 := match_destructuring_structs.Foo.Get_y γ in
+            let γ0_1 := match_destructuring_structs.Foo.Get_x γ in
             let* i := M.copy γ0_1 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "y is 2, i = ") in
@@ -133,7 +133,7 @@ Definition main : M unit :=
           (let* α0 := M.read γ in
           match α0 with
           | {| match_destructuring_structs.Foo.y := _; |} =>
-            let γ0_0 := match_destructuring_structs.Get_Foo_y γ in
+            let γ0_0 := match_destructuring_structs.Foo.Get_y γ in
             let* y := M.copy γ0_0 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "y = ") in

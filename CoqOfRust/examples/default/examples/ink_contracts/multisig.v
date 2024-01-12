@@ -2995,10 +2995,132 @@ Section Impl_multisig_Multisig_t.
           result
       }
   *)
-  Parameter invoke_transaction :
-      (mut_ref Self) ->
-        ltac:(multisig.TransactionId) ->
-        M (core.result.Result.t unit multisig.Error.t).
+  Definition invoke_transaction
+      (self : mut_ref Self)
+      (trans_id : ltac:(multisig.TransactionId))
+      : M (core.result.Result.t unit multisig.Error.t) :=
+    let* self := M.alloc self in
+    let* trans_id := M.alloc trans_id in
+    let* _ : M.Val unit :=
+      let* α0 : mut_ref multisig.Multisig.t := M.read self in
+      let* α1 : u32.t := M.read trans_id in
+      let* α2 : unit :=
+        M.call
+          (multisig.Multisig.t::["ensure_confirmed"] (borrow (deref α0)) α1) in
+      M.alloc α2 in
+    let* t : M.Val multisig.Transaction.t :=
+      let* α0 : mut_ref multisig.Multisig.t := M.read self in
+      let* α1 : u32.t := M.read trans_id in
+      let* α2 : core.option.Option.t multisig.Transaction.t :=
+        M.call (multisig.Multisig.t::["take_transaction"] α0 α1) in
+      let* α3 : ref str.t := M.read multisig.WRONG_TRANSACTION_ID in
+      let* α4 : multisig.Transaction.t :=
+        M.call
+          ((core.option.Option.t multisig.Transaction.t)::["expect"] α2 α3) in
+      M.alloc α4 in
+    let* _ : M.Val unit :=
+      let* α0 : mut_ref multisig.Multisig.t := M.read self in
+      let* α1 : multisig.Env.t :=
+        M.call (multisig.Multisig.t::["env"] (borrow (deref α0))) in
+      let* α2 : M.Val multisig.Env.t := M.alloc α1 in
+      let* α3 : u128.t :=
+        M.call (multisig.Env.t::["transferred_value"] (borrow α2)) in
+      let* α4 : u128.t :=
+        M.read (multisig.Transaction.Get_transferred_value t) in
+      let* α5 : M.Val bool.t := M.alloc (UnOp.not (BinOp.Pure.eq α3 α4)) in
+      let* α6 : bool.t := M.read (use α5) in
+      if α6 then
+        let* α0 : ref str.t :=
+          M.read
+            (mk_str
+              "assertion failed: self.env().transferred_value() == t.transferred_value") in
+        let* α1 : never.t := M.call (core.panicking.panic α0) in
+        let* α2 : unit := never_to_any α1 in
+        M.alloc α2
+      else
+        M.alloc tt in
+    let* result :
+        M.Val
+          (core.result.Result.t
+            (core.result.Result.t
+              (alloc.vec.Vec.t u8.t alloc.alloc.Global.t)
+              unit)
+            unit) :=
+      let* α0 : ref str.t := M.read (mk_str "not yet implemented") in
+      let* α1 : never.t := M.call (core.panicking.panic α0) in
+      let* α2 :
+          core.result.Result.t
+            (core.result.Result.t
+              (alloc.vec.Vec.t u8.t alloc.alloc.Global.t)
+              unit)
+            unit :=
+        never_to_any α1 in
+      M.alloc α2 in
+    let* result : M.Val (core.result.Result.t unit multisig.Error.t) :=
+      let* α0 : M.Val (core.result.Result.t unit multisig.Error.t) :=
+        match_operator
+          result
+          [
+            fun γ =>
+              (let* α0 := M.read γ in
+              match α0 with
+              | core.result.Result.Ok _ =>
+                let γ0_0 := core.result.Result.Get_Ok_0 γ in
+                let* α0 := M.read γ0_0 in
+                match α0 with
+                | core.result.Result.Ok _ =>
+                  let γ1_0 := core.result.Result.Get_Ok_0 γ0_0 in
+                  M.alloc (core.result.Result.Ok tt)
+                | _ => M.break_match
+                end
+              | _ => M.break_match
+              end) :
+              M (M.Val (core.result.Result.t unit multisig.Error.t));
+            fun γ =>
+              (M.alloc
+                (core.result.Result.Err multisig.Error.TransactionFailed)) :
+              M (M.Val (core.result.Result.t unit multisig.Error.t))
+          ] in
+      M.copy α0 in
+    let* _ : M.Val unit :=
+      let* α0 : mut_ref multisig.Multisig.t := M.read self in
+      let* α1 : multisig.Env.t :=
+        M.call (multisig.Multisig.t::["env"] (borrow (deref α0))) in
+      let* α2 : M.Val multisig.Env.t := M.alloc α1 in
+      let* α3 : u32.t := M.read trans_id in
+      let* α4 : core.result.Result.t unit multisig.Error.t := M.read result in
+      let* α5 :
+          core.result.Result.t
+            (core.option.Option.t (alloc.vec.Vec.t u8.t alloc.alloc.Global.t))
+            multisig.Error.t :=
+        M.call
+          ((core.result.Result.t unit multisig.Error.t)::["map"]
+            α4
+            (fun (α0 : unit) =>
+              (let* α0 := M.alloc α0 in
+              match_operator
+                α0
+                [
+                  fun γ =>
+                    (M.pure core.option.Option.None) :
+                    M
+                      (core.option.Option.t
+                        (alloc.vec.Vec.t u8.t alloc.alloc.Global.t))
+                ]) :
+              M
+                (core.option.Option.t
+                  (alloc.vec.Vec.t u8.t alloc.alloc.Global.t)))) in
+      let* α6 : unit :=
+        M.call
+          (multisig.Env.t::["emit_event"]
+            (borrow α2)
+            (multisig.Event.Execution
+              {|
+                multisig.Execution.transaction := α3;
+                multisig.Execution.result := α5;
+              |})) in
+      M.alloc α6 in
+    M.read result.
   
   Global Instance AssociatedFunction_invoke_transaction :
     Notations.DoubleColon Self "invoke_transaction" := {

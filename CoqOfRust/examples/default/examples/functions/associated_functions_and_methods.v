@@ -125,8 +125,8 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
                   associated_functions_and_methods.Point.y := _;
                 |}
                 =>
-              let γ0_0 := associated_functions_and_methods.Get_Point_x γ in
-              let γ0_1 := associated_functions_and_methods.Get_Point_y γ in
+              let γ0_0 := associated_functions_and_methods.Point.Get_x γ in
+              let γ0_1 := associated_functions_and_methods.Point.Get_y γ in
               let* x1 := M.copy γ0_0 in
               let* y1 := M.copy γ0_1 in
               let* α0 : ref associated_functions_and_methods.Rectangle.t :=
@@ -144,9 +144,9 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
                         |}
                         =>
                       let γ0_0 :=
-                        associated_functions_and_methods.Get_Point_x γ in
+                        associated_functions_and_methods.Point.Get_x γ in
                       let γ0_1 :=
-                        associated_functions_and_methods.Get_Point_y γ in
+                        associated_functions_and_methods.Point.Get_y γ in
                       let* x2 := M.copy γ0_0 in
                       let* y2 := M.copy γ0_1 in
                       let* α0 : f64.t := M.read x1 in
@@ -195,8 +195,8 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
                   associated_functions_and_methods.Point.y := _;
                 |}
                 =>
-              let γ0_0 := associated_functions_and_methods.Get_Point_x γ in
-              let γ0_1 := associated_functions_and_methods.Get_Point_y γ in
+              let γ0_0 := associated_functions_and_methods.Point.Get_x γ in
+              let γ0_1 := associated_functions_and_methods.Point.Get_y γ in
               let* x1 := M.copy γ0_0 in
               let* y1 := M.copy γ0_1 in
               let* α0 : ref associated_functions_and_methods.Rectangle.t :=
@@ -214,9 +214,9 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
                         |}
                         =>
                       let γ0_0 :=
-                        associated_functions_and_methods.Get_Point_x γ in
+                        associated_functions_and_methods.Point.Get_x γ in
                       let γ0_1 :=
-                        associated_functions_and_methods.Get_Point_y γ in
+                        associated_functions_and_methods.Point.Get_y γ in
                       let* x2 := M.copy γ0_0 in
                       let* y2 := M.copy γ0_1 in
                       let* α0 : f64.t := M.read UnsupportedLiteral in
@@ -349,8 +349,8 @@ Section Impl_associated_functions_and_methods_Pair_t.
             (let* α0 := M.read γ in
             match α0 with
             | associated_functions_and_methods.Pair.Build_t _ _ =>
-              let γ0_0 := associated_functions_and_methods.Get_Pair_0 γ in
-              let γ0_1 := associated_functions_and_methods.Get_Pair_1 γ in
+              let γ0_0 := associated_functions_and_methods.Pair.Get_0 γ in
+              let γ0_1 := associated_functions_and_methods.Pair.Get_1 γ in
               let* first := M.copy γ0_0 in
               let* second := M.copy γ0_1 in
               let* _ : M.Val unit :=

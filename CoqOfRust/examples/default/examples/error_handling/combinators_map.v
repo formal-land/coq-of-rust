@@ -267,7 +267,7 @@ Definition chop
             let* α0 := M.read γ0_0 in
             match α0 with
             | combinators_map.Peeled.Build_t _ =>
-              let γ1_0 := combinators_map.Get_Peeled_0 γ0_0 in
+              let γ1_0 := combinators_map.Peeled.Get_0 γ0_0 in
               let* food := M.copy γ1_0 in
               let* α0 : combinators_map.Food.t := M.read food in
               M.alloc
@@ -308,7 +308,7 @@ Definition cook
               (let* α0 := M.read γ in
               match α0 with
               | combinators_map.Chopped.Build_t _ =>
-                let γ0_0 := combinators_map.Get_Chopped_0 γ in
+                let γ0_0 := combinators_map.Chopped.Get_0 γ in
                 let* food := M.copy γ0_0 in
                 let* α0 : combinators_map.Food.t := M.read food in
                 M.pure (combinators_map.Cooked.Build_t α0)
@@ -358,7 +358,7 @@ Definition process
                 (let* α0 := M.read γ in
                 match α0 with
                 | combinators_map.Peeled.Build_t _ =>
-                  let γ0_0 := combinators_map.Get_Peeled_0 γ in
+                  let γ0_0 := combinators_map.Peeled.Get_0 γ in
                   let* f := M.copy γ0_0 in
                   let* α0 : combinators_map.Food.t := M.read f in
                   M.pure (combinators_map.Chopped.Build_t α0)
@@ -378,7 +378,7 @@ Definition process
               (let* α0 := M.read γ in
               match α0 with
               | combinators_map.Chopped.Build_t _ =>
-                let γ0_0 := combinators_map.Get_Chopped_0 γ in
+                let γ0_0 := combinators_map.Chopped.Get_0 γ in
                 let* f := M.copy γ0_0 in
                 let* α0 : combinators_map.Food.t := M.read f in
                 M.pure (combinators_map.Cooked.Build_t α0)

@@ -67,10 +67,10 @@ Definition main : M unit :=
               |}
               =>
             let γ0_0 :=
-              scoping_rules_ownership_and_rules_partial_moves.main.Get_Person_name
+              scoping_rules_ownership_and_rules_partial_moves.main.Person.Get_name
                 γ in
             let γ0_1 :=
-              scoping_rules_ownership_and_rules_partial_moves.main.Get_Person_age
+              scoping_rules_ownership_and_rules_partial_moves.main.Person.Get_age
                 γ in
             let* name := M.copy γ0_0 in
             let* age := M.alloc (borrow γ0_1) in

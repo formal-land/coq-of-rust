@@ -296,6 +296,22 @@ fn build_inner_match(
                                 fields.iter().enumerate().rfold(
                                     body,
                                     |body, (index, (field_name, _))| {
+                                        let getter_path = match struct_or_variant {
+                                            StructOrVariant::Struct => Path::concat(&[
+                                                path.clone(),
+                                                Path::new(&[format!("Get_{field_name}")]),
+                                            ]),
+                                            StructOrVariant::Variant => Path::concat(&[
+                                                Path::new(
+                                                    &path.segments[0..path.segments.len() - 1],
+                                                ),
+                                                Path::new(&[format!(
+                                                    "Get_{variant}_{field_name}",
+                                                    variant = path.segments.last().unwrap()
+                                                )]),
+                                            ]),
+                                        };
+
                                         Rc::new(Expr {
                                             ty: body.ty.clone(),
                                             kind: Rc::new(ExprKind::Let {
@@ -306,13 +322,7 @@ fn build_inner_match(
                                                     kind: Rc::new(ExprKind::Call {
                                                         func: Rc::new(Expr {
                                                             kind: Rc::new(ExprKind::Var(
-                                                                Path::concat(&[
-                                                                    Path::new(&path.segments[0..path.segments.len()-1]),
-                                                                    Path::new(&[format!(
-                                                                        "Get_{variant}_{field_name}",
-                                                                        variant=path.segments.last().unwrap()
-                                                                    )]),
-                                                                ]),
+                                                                getter_path,
                                                             )),
                                                             ty: None,
                                                         }),
@@ -361,6 +371,20 @@ fn build_inner_match(
                                 );
 
                                 patterns.iter().enumerate().rfold(body, |body, (index, _)| {
+                                    let getter_path = match struct_or_variant {
+                                        StructOrVariant::Struct => Path::concat(&[
+                                            path.clone(),
+                                            Path::new(&[format!("Get_{index}")]),
+                                        ]),
+                                        StructOrVariant::Variant => Path::concat(&[
+                                            Path::new(&path.segments[0..path.segments.len() - 1]),
+                                            Path::new(&[format!(
+                                                "Get_{variant}_{index}",
+                                                variant = path.segments.last().unwrap(),
+                                            )]),
+                                        ]),
+                                    };
+
                                     Rc::new(Expr {
                                         ty: body.ty.clone(),
                                         kind: Rc::new(ExprKind::Let {
@@ -370,15 +394,7 @@ fn build_inner_match(
                                                 ty: None,
                                                 kind: Rc::new(ExprKind::Call {
                                                     func: Rc::new(Expr {
-                                                        kind: Rc::new(ExprKind::Var(
-                                                            Path::concat(&[
-                                                                Path::new(&path.segments[0..path.segments.len()-1]),
-                                                                Path::new(&[format!(
-                                                                    "Get_{variant}_{index}",
-                                                                    variant=path.segments.last().unwrap()
-                                                                )]),
-                                                            ]),
-                                                        )),
+                                                        kind: Rc::new(ExprKind::Var(getter_path)),
                                                         ty: None,
                                                     }),
                                                     args: vec![Expr::local_var(&scrutinee)],
@@ -557,7 +573,8 @@ fn build_inner_match(
                                                 kind: Rc::new(ExprKind::Call {
                                                     func: Expr::local_var(&format!(
                                                         "[{}].slice",
-                                                        init_patterns.len())),
+                                                        init_patterns.len()
+                                                    )),
                                                     args: vec![Expr::local_var(&scrutinee)],
                                                     purity: Purity::Pure,
                                                     from_user: false,
@@ -580,7 +597,9 @@ fn build_inner_match(
                                                 init: Rc::new(Expr {
                                                     ty: None,
                                                     kind: Rc::new(ExprKind::Call {
-                                                        func: Expr::local_var(&format!("[{index}]")),
+                                                        func: Expr::local_var(&format!(
+                                                            "[{index}]"
+                                                        )),
                                                         args: vec![Expr::local_var(&scrutinee)],
                                                         purity: Purity::Pure,
                                                         from_user: false,

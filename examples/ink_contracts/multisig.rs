@@ -608,8 +608,6 @@ impl Multisig {
     /// Its return value indicates whether the called transaction was successful.
     /// This can be called by anyone.
     #[allow(unreachable_code)]
-    #[allow(unknown_lints)]
-    #[allow(coq_axiom)]
     pub fn invoke_transaction(&mut self, trans_id: TransactionId) -> Result<(), Error> {
         self.ensure_confirmed(trans_id);
         let t = self.take_transaction(trans_id).expect(WRONG_TRANSACTION_ID);

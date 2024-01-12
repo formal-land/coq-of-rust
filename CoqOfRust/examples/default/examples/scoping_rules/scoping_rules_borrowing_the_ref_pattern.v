@@ -169,9 +169,9 @@ Definition main : M unit :=
                 |}
                 =>
               let γ0_0 :=
-                scoping_rules_borrowing_the_ref_pattern.Get_Point_x γ in
+                scoping_rules_borrowing_the_ref_pattern.Point.Get_x γ in
               let γ0_1 :=
-                scoping_rules_borrowing_the_ref_pattern.Get_Point_y γ in
+                scoping_rules_borrowing_the_ref_pattern.Point.Get_y γ in
               let* ref_to_x := M.alloc (borrow γ0_0) in
               let* α0 : ref i32.t := M.read ref_to_x in
               M.pure (deref α0)
@@ -194,8 +194,8 @@ Definition main : M unit :=
                 scoping_rules_borrowing_the_ref_pattern.Point.y := _;
               |}
               =>
-            let γ0_0 := scoping_rules_borrowing_the_ref_pattern.Get_Point_x γ in
-            let γ0_1 := scoping_rules_borrowing_the_ref_pattern.Get_Point_y γ in
+            let γ0_0 := scoping_rules_borrowing_the_ref_pattern.Point.Get_x γ in
+            let γ0_1 := scoping_rules_borrowing_the_ref_pattern.Point.Get_y γ in
             let* mut_ref_to_y := M.alloc (borrow_mut γ0_1) in
             let* _ : M.Val unit :=
               let* α0 : mut_ref i32.t := M.read mut_ref_to_y in

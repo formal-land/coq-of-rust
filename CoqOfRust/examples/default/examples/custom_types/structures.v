@@ -269,8 +269,8 @@ Definition main : M unit :=
           (let* α0 := M.read γ in
           match α0 with
           | {| structures.Point.x := _; structures.Point.y := _; |} =>
-            let γ0_0 := structures.Get_Point_x γ in
-            let γ0_1 := structures.Get_Point_y γ in
+            let γ0_0 := structures.Point.Get_x γ in
+            let γ0_1 := structures.Point.Get_y γ in
             let* left_edge := M.copy γ0_0 in
             let* top_edge := M.copy γ0_1 in
             let* _rectangle : M.Val structures.Rectangle.t :=
@@ -325,8 +325,8 @@ Definition main : M unit :=
                   (let* α0 := M.read γ in
                   match α0 with
                   | structures.Pair.Build_t _ _ =>
-                    let γ0_0 := structures.Get_Pair_0 γ in
-                    let γ0_1 := structures.Get_Pair_1 γ in
+                    let γ0_0 := structures.Pair.Get_0 γ in
+                    let γ0_1 := structures.Pair.Get_1 γ in
                     let* integer := M.copy γ0_0 in
                     let* decimal := M.copy γ0_1 in
                     let* _ : M.Val unit :=
