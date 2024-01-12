@@ -24,8 +24,13 @@ End Infallible.
 (* pub trait FloatToInt<Int>: Sealed + Sized { } *)
 Module FloatToInt.
   Unset Primitive Projections.
-  Class Trait (Self Int : Set) : Set := { }.
+  Class Trait (Self : Set) {Int : Set} : Set := { }.
   Set Primitive Projections.
+
+  Module Impl.
+    Global Instance I_f32_u8 : Trait f32.t (Int := u8.t).
+    Admitted.
+  End Impl.
 End FloatToInt.
 
 (* 

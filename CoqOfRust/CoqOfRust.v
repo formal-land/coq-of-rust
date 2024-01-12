@@ -94,6 +94,7 @@ Require CoqOfRust.core.cmp.
 Require CoqOfRust.core.convert.
 Require CoqOfRust.core.default.
 Require CoqOfRust.core.error.
+Require CoqOfRust.core.f32.
 Require CoqOfRust.core.fmt.
 Require CoqOfRust.core.hash.
 Require CoqOfRust.core.intrinsics.
@@ -120,6 +121,7 @@ Module core.
   Export CoqOfRust.core.convert.
   Export CoqOfRust.core.default.
   Export CoqOfRust.core.error.
+  Export CoqOfRust.core.f32.
   Export CoqOfRust.core.fmt.
   Export CoqOfRust.core.hash.
   Export CoqOfRust.core.intrinsics.
@@ -398,6 +400,28 @@ Module isize_Instances.
   Global Instance IClone : core.clone.Clone.Trait isize.t.
   Admitted.
 End isize_Instances.
+
+Module f32_Instances.
+  Global Instance IDisplay : core.fmt.Display.Trait f32.t.
+  Admitted.
+
+  Global Instance IDebug : core.fmt.Debug.Trait f32.t.
+  Admitted.
+
+  Global Instance IClone : core.clone.Clone.Trait f32.t.
+  Admitted.
+End f32_Instances.
+
+Module f64_Instances.
+  Global Instance IDisplay : core.fmt.Display.Trait f64.t.
+  Admitted.
+
+  Global Instance IDebug : core.fmt.Debug.Trait f64.t.
+  Admitted.
+
+  Global Instance IClone : core.clone.Clone.Trait f64.t.
+  Admitted.
+End f64_Instances.
 
 Module ref_Instances.
   Global Instance IDisplay {T : Set} {_ : core.fmt.Display.Trait T} :

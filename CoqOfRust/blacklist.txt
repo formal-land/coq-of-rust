@@ -171,8 +171,6 @@ examples/default/examples/traits/iterators.v
 examples/default/examples/traits/returning_traits_with_dyn.v
 examples/default/examples/traits/supertraits.v
 examples/default/examples/traits/traits.v
-examples/default/examples/types/casting.v
-examples/default/examples/types/literals.v
 ink/
 ink/erc20.v
 ink/ink_e2e.v

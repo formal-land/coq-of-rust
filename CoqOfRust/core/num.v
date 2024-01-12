@@ -1,4 +1,5 @@
 Require Import CoqOfRust.lib.lib.
+Require core.convert.
 
 (* ********STRUCTS******** *)
 (*
@@ -180,3 +181,22 @@ Module Impl_u32.
     Notations.double_colon := to_le_bytes;
   }.
 End Impl_u32.
+
+Module Impl_f32.
+  Definition Self : Set := f32.t.
+
+  (*
+  pub unsafe fn to_int_unchecked<Int>(self) -> Int
+  where
+      Self: FloatToInt<Int>,
+  *)
+  Parameter to_int_unchecked :
+    forall {Int : Set} {H0 : core.convert.FloatToInt.Trait Self (Int := Int)},
+    Self -> M Int.
+
+  Global Instance AF_to_int_unchecked
+      {Int : Set} {H0 : core.convert.FloatToInt.Trait Self (Int := Int)} :
+      Notations.DoubleColon Self "to_int_unchecked" := {
+    Notations.double_colon := to_int_unchecked;
+  }.
+End Impl_f32.
