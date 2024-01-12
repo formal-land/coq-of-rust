@@ -180,7 +180,6 @@ examples/default/examples/unsafe_operations/inline_assembly_inout.v
 examples/default/examples/unsafe_operations/inline_assembly_inputs_and_outputs_another_example.v
 examples/default/examples/unsafe_operations/inline_assembly_inputs_and_outputs.v
 examples/default/examples/unsafe_operations/inline_assembly_symbol_operands_and_abi_clobbers.v
-examples/default/examples/unsafe_operations/raw_pointers.v
 examples/default/examples/variable_bindings/declare_first.v
 ink/
 ink/erc20.v

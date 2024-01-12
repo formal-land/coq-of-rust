@@ -498,9 +498,10 @@ Definition black_box (input : u8.t) : M u8.t :=
       M.alloc tt
     else
       M.alloc tt in
-  let* α0 : ref u8.t := M.read (use (addr_of input)) in
-  let* α1 : u8.t := M.call (core.ptr.read_volatile α0) in
-  let* α0 : M.Val u8.t := M.alloc α1 in
+  let* α0 : M.Val (ref u8.t) := M.alloc (addr_of input) in
+  let* α1 : ref u8.t := M.read (use α0) in
+  let* α2 : u8.t := M.call (core.ptr.read_volatile α1) in
+  let* α0 : M.Val u8.t := M.alloc α2 in
   M.read α0.
 
 Module  Impl_core_convert_From_u8_t_for_subtle_Choice_t.

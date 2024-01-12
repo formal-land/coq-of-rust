@@ -880,4 +880,10 @@ Definition borrow {A : Set} (v : M.Val A) : ref A :=
 Definition borrow_mut {A : Set} (v : M.Val A) : mut_ref A :=
   v.
 
+Definition addr_of {A : Set} (v : M.Val A) : ref A :=
+  v.
+
+Definition addr_of_mut {A : Set} (v : M.Val A) : mut_ref A :=
+  v.
+
 Parameter UnsupportedLiteral : forall {A : Set}, M.Val A.

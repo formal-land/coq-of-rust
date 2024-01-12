@@ -14,7 +14,7 @@ fn main() {
 Definition main : M unit :=
   let* raw_p : M.Val (ref u32.t) :=
     let* α0 : M.Val u32.t := M.alloc ((Integer.of_Z 10) : u32.t) in
-    M.copy (addr_of α0) in
+    M.alloc (addr_of α0) in
   let* _ : M.Val unit :=
     let* α0 : ref u32.t := M.read raw_p in
     let* α1 : u32.t := M.read (deref α0) in
