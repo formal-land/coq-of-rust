@@ -244,11 +244,11 @@ Definition main : M unit :=
     let* α0 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t :=
       M.call
         ((alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"]
-          (Integer.of_Z 1)) in
+          ((Integer.of_Z 1) : i32.t)) in
     let* α1 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t :=
       M.call
         ((alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"]
-          (Integer.of_Z 2)) in
+          ((Integer.of_Z 2) : i32.t)) in
     M.alloc (clone.Pair.Build_t α0 α1) in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=

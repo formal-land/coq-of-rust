@@ -25,7 +25,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* x : M.Val u32.t := M.alloc (Integer.of_Z 5) in
+  let* x : M.Val u32.t := M.alloc ((Integer.of_Z 5) : u32.t) in
   let* y : M.Val u32.t :=
     let* x_squared : M.Val u32.t :=
       let* α0 : u32.t := M.read x in
@@ -47,7 +47,7 @@ Definition main : M unit :=
   let* z : M.Val unit :=
     let* _ : M.Val u32.t :=
       let* α0 : u32.t := M.read x in
-      let* α1 : u32.t := BinOp.Panic.mul (Integer.of_Z 2) α0 in
+      let* α1 : u32.t := BinOp.Panic.mul ((Integer.of_Z 2) : u32.t) α0 in
       M.alloc α1 in
     let* α0 : M.Val unit := M.alloc tt in
     M.copy α0 in

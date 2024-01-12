@@ -364,7 +364,7 @@ Definition main : M unit :=
       M.Val
         (generics_phantom_type_test_case_unit_clarification.Length.t
           generics_phantom_type_test_case_unit_clarification.Inch.t) :=
-    let* α0 : f64.t := M.read UnsupportedLiteral in
+    let* α0 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
     M.alloc
       (generics_phantom_type_test_case_unit_clarification.Length.Build_t
         α0
@@ -373,7 +373,7 @@ Definition main : M unit :=
       M.Val
         (generics_phantom_type_test_case_unit_clarification.Length.t
           generics_phantom_type_test_case_unit_clarification.Mm.t) :=
-    let* α0 : f64.t := M.read UnsupportedLiteral in
+    let* α0 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
     M.alloc
       (generics_phantom_type_test_case_unit_clarification.Length.Build_t
         α0

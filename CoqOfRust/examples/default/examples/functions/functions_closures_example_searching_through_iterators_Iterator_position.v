@@ -22,12 +22,12 @@ Definition main : M unit :=
     let* α0 : M.Val (array i32.t) :=
       M.alloc
         [
-          Integer.of_Z 1;
-          Integer.of_Z 9;
-          Integer.of_Z 3;
-          Integer.of_Z 3;
-          Integer.of_Z 13;
-          Integer.of_Z 2
+          (Integer.of_Z 1) : i32.t;
+          (Integer.of_Z 9) : i32.t;
+          (Integer.of_Z 3) : i32.t;
+          (Integer.of_Z 3) : i32.t;
+          (Integer.of_Z 13) : i32.t;
+          (Integer.of_Z 2) : i32.t
         ] in
     let* α1 : M.Val (alloc.boxed.Box.t (array i32.t) alloc.alloc.Global.t) :=
       M.call ((alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α0) in
@@ -67,15 +67,16 @@ Definition main : M unit :=
                     M.pure (deref α0) in
                   let* x := M.copy γ in
                   let* α0 : i32.t := M.read x in
-                  let* α1 : i32.t := BinOp.Panic.rem α0 (Integer.of_Z 2) in
-                  M.pure (BinOp.Pure.eq α1 (Integer.of_Z 0))) :
+                  let* α1 : i32.t :=
+                    BinOp.Panic.rem α0 ((Integer.of_Z 2) : i32.t) in
+                  M.pure (BinOp.Pure.eq α1 ((Integer.of_Z 0) : i32.t))) :
                   M bool.t
               ]) :
             M bool.t)) in
     M.alloc α5 in
   let* _ : M.Val unit :=
     let* α0 : M.Val (core.option.Option.t usize.t) :=
-      M.alloc (core.option.Option.Some (Integer.of_Z 5)) in
+      M.alloc (core.option.Option.Some ((Integer.of_Z 5) : usize.t)) in
     let* α1 :
         M.Val
           ((ref (core.option.Option.t usize.t))
@@ -160,7 +161,7 @@ Definition main : M unit :=
                 fun γ =>
                   (let* x := M.copy γ in
                   let* α0 : i32.t := M.read x in
-                  M.pure (BinOp.Pure.lt α0 (Integer.of_Z 0))) :
+                  M.pure (BinOp.Pure.lt α0 ((Integer.of_Z 0) : i32.t))) :
                   M bool.t
               ]) :
             M bool.t)) in

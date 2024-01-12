@@ -141,7 +141,7 @@ Definition new_edition
     let* α0 : mut_ref scoping_rules_borrowing_mutablity.Book.t := M.read book in
     assign
       (scoping_rules_borrowing_mutablity.Book.Get_year (deref α0))
-      (Integer.of_Z 2014) in
+      ((Integer.of_Z 2014) : u32.t) in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "I mutably borrowed ") in
@@ -216,7 +216,8 @@ Definition main : M unit :=
       {|
         scoping_rules_borrowing_mutablity.Book.author := α0;
         scoping_rules_borrowing_mutablity.Book.title := α1;
-        scoping_rules_borrowing_mutablity.Book.year := Integer.of_Z 1979;
+        scoping_rules_borrowing_mutablity.Book.year :=
+          (Integer.of_Z 1979) : u32.t;
       |} in
   let* mutabook : M.Val scoping_rules_borrowing_mutablity.Book.t :=
     M.copy immutabook in

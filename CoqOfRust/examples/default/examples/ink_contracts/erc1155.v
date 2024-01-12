@@ -346,17 +346,26 @@ Definition zero_address : M erc1155.AccountId.t :=
         (Self := array u8.t)
         (T := erc1155.AccountId.t)
         (Trait := ℐ))) in
-  M.call (α0 (repeat (Integer.of_Z 0) 32)).
+  M.call (α0 (repeat ((Integer.of_Z 0) : u8.t) 32)).
 
 Definition ON_ERC_1155_RECEIVED_SELECTOR : M.Val (array u8.t) :=
   M.run
     (M.alloc
-      [ Integer.of_Z 242; Integer.of_Z 58; Integer.of_Z 110; Integer.of_Z 97 ]).
+      [
+        (Integer.of_Z 242) : u8.t;
+        (Integer.of_Z 58) : u8.t;
+        (Integer.of_Z 110) : u8.t;
+        (Integer.of_Z 97) : u8.t
+      ]).
 
 Definition _ON_ERC_1155_BATCH_RECEIVED_SELECTOR : M.Val (array u8.t) :=
   M.run
     (M.alloc
-      [ Integer.of_Z 188; Integer.of_Z 25; Integer.of_Z 124; Integer.of_Z 129
+      [
+        (Integer.of_Z 188) : u8.t;
+        (Integer.of_Z 25) : u8.t;
+        (Integer.of_Z 124) : u8.t;
+        (Integer.of_Z 129) : u8.t
       ]).
 
 Ltac TokenId := exact u128.t.
@@ -813,7 +822,7 @@ Section Impl_erc1155_Contract_t.
         let* α0 : mut_ref erc1155.Contract.t := M.read self in
         M.pure (erc1155.Contract.Get_token_id_nonce (deref α0)) in
       let* α0 := M.read β in
-      let* α1 := BinOp.Panic.add α0 (Integer.of_Z 1) in
+      let* α1 := BinOp.Panic.add α0 ((Integer.of_Z 1) : u128.t) in
       assign β α1 in
     let* _ : M.Val (core.option.Option.t u32.t) :=
       let* α0 : mut_ref erc1155.Contract.t := M.read self in
@@ -836,7 +845,8 @@ Section Impl_erc1155_Contract_t.
       let* α2 : M.Val erc1155.Env.t := M.alloc α1 in
       let* α3 : erc1155.AccountId.t := M.read caller in
       let* α4 : u128.t := M.read value in
-      let* α5 : M.Val bool.t := M.alloc (BinOp.Pure.eq α4 (Integer.of_Z 0)) in
+      let* α5 : M.Val bool.t :=
+        M.alloc (BinOp.Pure.eq α4 ((Integer.of_Z 0) : u128.t)) in
       let* α6 : bool.t := M.read (use α5) in
       let* α7 : M.Val (core.option.Option.t erc1155.AccountId.t) :=
         if α6 then
@@ -1061,7 +1071,7 @@ Section Impl_erc1155_Contract_t.
           ((erc1155.Mapping.t (erc1155.AccountId.t * u128.t) u128.t)::["get"]
             (borrow (erc1155.Contract.Get_balances (deref α0)))
             (borrow α3)) in
-      let* α5 : M.Val u128.t := M.alloc (Integer.of_Z 0) in
+      let* α5 : M.Val u128.t := M.alloc ((Integer.of_Z 0) : u128.t) in
       let* α6 : u128.t := M.read (use α5) in
       let* α7 : u128.t :=
         M.call ((core.option.Option.t u128.t)::["unwrap_or"] α4 α6) in
@@ -1277,7 +1287,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
         ((erc1155.Mapping.t (erc1155.AccountId.t * u128.t) u128.t)::["get"]
           (borrow (erc1155.Contract.Get_balances (deref α0)))
           (borrow α3)) in
-    let* α5 : M.Val u128.t := M.alloc (Integer.of_Z 0) in
+    let* α5 : M.Val u128.t := M.alloc ((Integer.of_Z 0) : u128.t) in
     let* α6 : u128.t := M.read (use α5) in
     M.call ((core.option.Option.t u128.t)::["unwrap_or"] α4 α6).
   
@@ -1937,7 +1947,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
               (Idx := usize.t)
               (Trait := ℐ))) in
         let* α5 : ref u128.t :=
-          M.call (α4 (borrow token_ids) (Integer.of_Z 0)) in
+          M.call (α4 (borrow token_ids) ((Integer.of_Z 0) : usize.t)) in
         let* α6 : u128.t := M.read (deref α5) in
         let* α7 : _ :=
           ltac:(M.get_method (fun ℐ =>
@@ -1945,7 +1955,8 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
               (Self := alloc.vec.Vec.t u128.t alloc.alloc.Global.t)
               (Idx := usize.t)
               (Trait := ℐ))) in
-        let* α8 : ref u128.t := M.call (α7 (borrow values) (Integer.of_Z 0)) in
+        let* α8 : ref u128.t :=
+          M.call (α7 (borrow values) ((Integer.of_Z 0) : usize.t)) in
         let* α9 : u128.t := M.read (deref α8) in
         let* α10 : alloc.vec.Vec.t u8.t alloc.alloc.Global.t := M.read data in
         let* α11 : unit :=

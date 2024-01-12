@@ -1160,20 +1160,23 @@ fn compile_expr_kind<'a>(
         }
         thir::ExprKind::Literal { lit, neg } => match lit.node {
             rustc_ast::LitKind::Str(symbol, _) => {
-                Rc::new(ExprKind::Literal(Literal::String(symbol.to_string())))
+                Rc::new(ExprKind::Literal(Literal::String(symbol.to_string()), None))
             }
             rustc_ast::LitKind::Char(c) => {
-                Rc::new(ExprKind::Literal(Literal::Char(c))).alloc(Some(ty))
+                Rc::new(ExprKind::Literal(Literal::Char(c), None)).alloc(Some(ty))
             }
-            rustc_ast::LitKind::Int(i, _) => Rc::new(ExprKind::Literal(Literal::Integer {
-                value: i,
-                neg: *neg,
-            }))
+            rustc_ast::LitKind::Int(i, _) => Rc::new(ExprKind::Literal(
+                Literal::Integer {
+                    value: i,
+                    neg: *neg,
+                },
+                Some(ty.clone()),
+            ))
             .alloc(Some(ty)),
             rustc_ast::LitKind::Bool(c) => {
-                Rc::new(ExprKind::Literal(Literal::Bool(c))).alloc(Some(ty))
+                Rc::new(ExprKind::Literal(Literal::Bool(c), None)).alloc(Some(ty))
             }
-            _ => Rc::new(ExprKind::Literal(Literal::Error)),
+            _ => Rc::new(ExprKind::Literal(Literal::Error, Some(ty.val()))),
         },
         thir::ExprKind::NonHirLiteral { lit, .. } => Rc::new(ExprKind::NonHirLiteral(*lit)),
         thir::ExprKind::ZstLiteral { .. } => match &expr.ty.kind() {

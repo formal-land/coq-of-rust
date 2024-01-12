@@ -75,7 +75,7 @@ Section Impl_custom_allocator_CustomAllocator_t.
         M.call
           (α0
             (borrow_mut (custom_allocator.CustomAllocator.Get_value (deref α1)))
-            (Integer.of_Z 0)) in
+            ((Integer.of_Z 0) : usize.t)) in
       let* α3 : _ :=
         ltac:(M.get_method (fun ℐ =>
           core.ops.index.Index.index
@@ -87,7 +87,7 @@ Section Impl_custom_allocator_CustomAllocator_t.
         M.call
           (α3
             (borrow (custom_allocator.CustomAllocator.Get_value (deref α4)))
-            (Integer.of_Z 0)) in
+            ((Integer.of_Z 0) : usize.t)) in
       let* α6 : bool.t := M.read (deref α5) in
       assign (deref α2) (UnOp.not α6) in
     let* α0 : M.Val unit := M.alloc tt in
@@ -116,7 +116,7 @@ Section Impl_custom_allocator_CustomAllocator_t.
       M.call
         (α0
           (borrow (custom_allocator.CustomAllocator.Get_value (deref α1)))
-          (Integer.of_Z 0)) in
+          ((Integer.of_Z 0) : usize.t)) in
     M.read (deref α2).
   
   Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {

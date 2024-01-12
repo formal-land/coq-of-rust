@@ -22,7 +22,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* shadowed_binding : M.Val i32.t := M.alloc (Integer.of_Z 1) in
+  let* shadowed_binding : M.Val i32.t := M.alloc ((Integer.of_Z 1) : i32.t) in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
@@ -94,7 +94,7 @@ Definition main : M unit :=
       let* α10 : unit := M.call (std.io.stdio._print α9) in
       M.alloc α10 in
     M.alloc tt in
-  let* shadowed_binding : M.Val i32.t := M.alloc (Integer.of_Z 2) in
+  let* shadowed_binding : M.Val i32.t := M.alloc ((Integer.of_Z 2) : i32.t) in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "shadowed in outer block: ") in

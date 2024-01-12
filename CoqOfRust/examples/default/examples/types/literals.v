@@ -22,11 +22,11 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* x : M.Val u8.t := M.alloc (Integer.of_Z 1) in
-  let* y : M.Val u32.t := M.alloc (Integer.of_Z 2) in
-  let* z : M.Val f32.t := M.copy UnsupportedLiteral in
-  let* i : M.Val i32.t := M.alloc (Integer.of_Z 1) in
-  let* f : M.Val f64.t := M.copy UnsupportedLiteral in
+  let* x : M.Val u8.t := M.alloc ((Integer.of_Z 1) : u8.t) in
+  let* y : M.Val u32.t := M.alloc ((Integer.of_Z 2) : u32.t) in
+  let* z : M.Val f32.t := M.copy (UnsupportedLiteral : M.Val f32.t) in
+  let* i : M.Val i32.t := M.alloc ((Integer.of_Z 1) : i32.t) in
+  let* f : M.Val f64.t := M.copy (UnsupportedLiteral : M.Val f64.t) in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "size of `x` in bytes: ") in

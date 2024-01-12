@@ -26,14 +26,15 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
   let* optional : M.Val (core.option.Option.t i32.t) :=
-    M.alloc (core.option.Option.Some (Integer.of_Z 0)) in
+    M.alloc (core.option.Option.Some ((Integer.of_Z 0) : i32.t)) in
   let* α0 : M.Val unit :=
     M.loop
       (let* α0 : M.Val bool.t := let_if core.option.Option.Some i := optional in
       let* α1 : bool.t := M.read α0 in
       if α1 then
         let* α0 : i32.t := M.read i in
-        let* α1 : M.Val bool.t := M.alloc (BinOp.Pure.gt α0 (Integer.of_Z 9)) in
+        let* α1 : M.Val bool.t :=
+          M.alloc (BinOp.Pure.gt α0 ((Integer.of_Z 9) : i32.t)) in
         let* α2 : bool.t := M.read (use α1) in
         if α2 then
           let* _ : M.Val unit :=
@@ -78,7 +79,7 @@ Definition main : M unit :=
             M.alloc tt in
           let* _ : M.Val unit :=
             let* α0 : i32.t := M.read i in
-            let* α1 : i32.t := BinOp.Panic.add α0 (Integer.of_Z 1) in
+            let* α1 : i32.t := BinOp.Panic.add α0 ((Integer.of_Z 1) : i32.t) in
             assign optional (core.option.Option.Some α1) in
           M.alloc tt
       else

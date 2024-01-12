@@ -221,8 +221,8 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* number_1 : M.Val i32.t := M.alloc (Integer.of_Z 3) in
-  let* number_2 : M.Val i32.t := M.alloc (Integer.of_Z 10) in
+  let* number_1 : M.Val i32.t := M.alloc ((Integer.of_Z 3) : i32.t) in
+  let* number_2 : M.Val i32.t := M.alloc ((Integer.of_Z 10) : i32.t) in
   let* container : M.Val generics_associated_types_solution.Container.t :=
     let* α0 : i32.t := M.read number_1 in
     let* α1 : i32.t := M.read number_2 in

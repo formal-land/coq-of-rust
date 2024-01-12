@@ -15,7 +15,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* number : M.Val u8.t := M.alloc (Integer.of_Z 4) in
+  let* number : M.Val u8.t := M.alloc ((Integer.of_Z 4) : u8.t) in
   let* α0 : M.Val unit :=
     match_operator
       number

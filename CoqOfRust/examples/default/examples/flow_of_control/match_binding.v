@@ -6,7 +6,7 @@ fn age() -> u32 {
     15
 }
 *)
-Definition age : M u32.t := M.pure (Integer.of_Z 15).
+Definition age : M u32.t := M.pure ((Integer.of_Z 15) : u32.t).
 
 (*
 fn main() {

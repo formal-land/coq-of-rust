@@ -149,9 +149,9 @@ Definition main : M unit :=
   let* color : M.Val match_destructuring_enums.Color.t :=
     M.alloc
       (match_destructuring_enums.Color.RGB
-        (Integer.of_Z 122)
-        (Integer.of_Z 17)
-        (Integer.of_Z 40)) in
+        ((Integer.of_Z 122) : u32.t)
+        ((Integer.of_Z 17) : u32.t)
+        ((Integer.of_Z 40) : u32.t)) in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "What color is it?

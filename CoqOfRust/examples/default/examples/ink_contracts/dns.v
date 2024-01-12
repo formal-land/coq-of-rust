@@ -507,7 +507,7 @@ Definition zero_address : M dns.AccountId.t :=
         (Self := array u8.t)
         (T := dns.AccountId.t)
         (Trait := ℐ))) in
-  M.call (α0 (repeat (Integer.of_Z 0) 32)).
+  M.call (α0 (repeat ((Integer.of_Z 0) : u8.t) 32)).
 
 Module  Impl_core_default_Default_for_dns_DomainNameService_t.
 Section Impl_core_default_Default_for_dns_DomainNameService_t.

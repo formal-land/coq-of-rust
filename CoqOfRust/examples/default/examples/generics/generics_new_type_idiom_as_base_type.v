@@ -23,7 +23,8 @@ fn main() {
 Definition main : M unit :=
   let* years : M.Val generics_new_type_idiom_as_base_type.Years.t :=
     M.alloc
-      (generics_new_type_idiom_as_base_type.Years.Build_t (Integer.of_Z 42)) in
+      (generics_new_type_idiom_as_base_type.Years.Build_t
+        ((Integer.of_Z 42) : i64.t)) in
   let* years_as_primitive_1 : M.Val i64.t :=
     M.copy (generics_new_type_idiom_as_base_type.Years.Get_0 years) in
   let* α0 : M.Val unit :=

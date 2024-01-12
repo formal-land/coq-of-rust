@@ -104,8 +104,8 @@ Module tests.
       M.call
         (α0
           {|
-            core.ops.range.Range.start := Integer.of_Z 0;
-            core.ops.range.Range.end_ := Integer.of_Z 5;
+            core.ops.range.Range.start := (Integer.of_Z 0) : i32.t;
+            core.ops.range.Range.end_ := (Integer.of_Z 5) : i32.t;
           |}) in
     let* α2 : M.Val (core.ops.range.Range.t i32.t) := M.alloc α1 in
     let* α3 : M.Val unit :=
@@ -219,8 +219,8 @@ Module tests.
       M.call
         (α0
           {|
-            core.ops.range.Range.start := Integer.of_Z 0;
-            core.ops.range.Range.end_ := Integer.of_Z 5;
+            core.ops.range.Range.start := (Integer.of_Z 0) : i32.t;
+            core.ops.range.Range.end_ := (Integer.of_Z 5) : i32.t;
           |}) in
     let* α2 : M.Val (core.ops.range.Range.t i32.t) := M.alloc α1 in
     let* α3 : M.Val unit :=
@@ -335,8 +335,8 @@ Definition test_file : M unit :=
     M.call
       (α0
         {|
-          core.ops.range.Range.start := Integer.of_Z 0;
-          core.ops.range.Range.end_ := Integer.of_Z 5;
+          core.ops.range.Range.start := (Integer.of_Z 0) : i32.t;
+          core.ops.range.Range.end_ := (Integer.of_Z 5) : i32.t;
         |}) in
   let* α2 : M.Val (core.ops.range.Range.t i32.t) := M.alloc α1 in
   let* α3 : M.Val unit :=
@@ -450,8 +450,8 @@ Definition test_file_also : M unit :=
     M.call
       (α0
         {|
-          core.ops.range.Range.start := Integer.of_Z 0;
-          core.ops.range.Range.end_ := Integer.of_Z 5;
+          core.ops.range.Range.start := (Integer.of_Z 0) : i32.t;
+          core.ops.range.Range.end_ := (Integer.of_Z 5) : i32.t;
         |}) in
   let* α2 : M.Val (core.ops.range.Range.t i32.t) := M.alloc α1 in
   let* α3 : M.Val unit :=

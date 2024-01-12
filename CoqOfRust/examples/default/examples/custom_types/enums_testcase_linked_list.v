@@ -117,7 +117,8 @@ Section Impl_enums_testcase_linked_list_List_t.
                 M.call
                   (enums_testcase_linked_list.List.t::["len"]
                     (borrow (deref α1))) in
-              let* α3 : u32.t := BinOp.Panic.add (Integer.of_Z 1) α2 in
+              let* α3 : u32.t :=
+                BinOp.Panic.add ((Integer.of_Z 1) : u32.t) α2 in
               M.alloc α3
             | _ => M.break_match
             end) :
@@ -125,7 +126,8 @@ Section Impl_enums_testcase_linked_list_List_t.
           fun γ =>
             (let* α0 := M.read γ in
             match α0 with
-            | enums_testcase_linked_list.List.Nil => M.alloc (Integer.of_Z 0)
+            | enums_testcase_linked_list.List.Nil =>
+              M.alloc ((Integer.of_Z 0) : u32.t)
             | _ => M.break_match
             end) :
             M (M.Val u32.t)
@@ -265,19 +267,25 @@ Definition main : M unit :=
     let* α0 : enums_testcase_linked_list.List.t := M.read list in
     let* α1 : enums_testcase_linked_list.List.t :=
       M.call
-        (enums_testcase_linked_list.List.t::["prepend"] α0 (Integer.of_Z 1)) in
+        (enums_testcase_linked_list.List.t::["prepend"]
+          α0
+          ((Integer.of_Z 1) : u32.t)) in
     assign list α1 in
   let* _ : M.Val unit :=
     let* α0 : enums_testcase_linked_list.List.t := M.read list in
     let* α1 : enums_testcase_linked_list.List.t :=
       M.call
-        (enums_testcase_linked_list.List.t::["prepend"] α0 (Integer.of_Z 2)) in
+        (enums_testcase_linked_list.List.t::["prepend"]
+          α0
+          ((Integer.of_Z 2) : u32.t)) in
     assign list α1 in
   let* _ : M.Val unit :=
     let* α0 : enums_testcase_linked_list.List.t := M.read list in
     let* α1 : enums_testcase_linked_list.List.t :=
       M.call
-        (enums_testcase_linked_list.List.t::["prepend"] α0 (Integer.of_Z 3)) in
+        (enums_testcase_linked_list.List.t::["prepend"]
+          α0
+          ((Integer.of_Z 3) : u32.t)) in
     assign list α1 in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=

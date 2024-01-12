@@ -24,7 +24,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* i : M.Val i32.t := M.alloc (Integer.of_Z 3) in
+  let* i : M.Val i32.t := M.alloc ((Integer.of_Z 3) : i32.t) in
   let* _ : M.Val unit :=
     let* borrow1 : M.Val (ref i32.t) := M.alloc (borrow i) in
     let* _ : M.Val unit :=

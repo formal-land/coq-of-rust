@@ -130,8 +130,8 @@ Section Impl_core_convert_From_subtle_Choice_t_for_bool_t.
             M.alloc
               (UnOp.not
                 (BinOp.Pure.bit_or
-                  (BinOp.Pure.eq α0 (Integer.of_Z 0))
-                  (BinOp.Pure.eq α1 (Integer.of_Z 1)))) in
+                  (BinOp.Pure.eq α0 ((Integer.of_Z 0) : u8.t))
+                  (BinOp.Pure.eq α1 ((Integer.of_Z 1) : u8.t)))) in
           let* α3 : bool.t := M.read (use α2) in
           if α3 then
             let* α0 : ref str.t :=
@@ -147,7 +147,8 @@ Section Impl_core_convert_From_subtle_Choice_t_for_bool_t.
       else
         M.alloc tt in
     let* α0 : u8.t := M.read (subtle.Choice.Get_0 source) in
-    let* α0 : M.Val bool.t := M.alloc (BinOp.Pure.ne α0 (Integer.of_Z 0)) in
+    let* α0 : M.Val bool.t :=
+      M.alloc (BinOp.Pure.ne α0 ((Integer.of_Z 0) : u8.t)) in
     M.read α0.
   
   Global Instance AssociatedFunction_from :
@@ -439,7 +440,7 @@ Section Impl_core_ops_bit_Not_for_subtle_Choice_t.
           (T := subtle.Choice.t)
           (Trait := ℐ))) in
     let* α1 : u8.t := M.read (subtle.Choice.Get_0 self) in
-    M.call (α0 (BinOp.Pure.bit_and (Integer.of_Z 1) (UnOp.not α1))).
+    M.call (α0 (BinOp.Pure.bit_and ((Integer.of_Z 1) : u8.t) (UnOp.not α1))).
   
   Global Instance AssociatedFunction_not : Notations.DoubleColon Self "not" := {
     Notations.double_colon := not;
@@ -482,8 +483,8 @@ Definition black_box (input : u8.t) : M u8.t :=
           M.alloc
             (UnOp.not
               (BinOp.Pure.bit_or
-                (BinOp.Pure.eq α0 (Integer.of_Z 0))
-                (BinOp.Pure.eq α1 (Integer.of_Z 1)))) in
+                (BinOp.Pure.eq α0 ((Integer.of_Z 0) : u8.t))
+                (BinOp.Pure.eq α1 ((Integer.of_Z 1) : u8.t)))) in
         let* α3 : bool.t := M.read (use α2) in
         if α3 then
           let* α0 : ref str.t :=
@@ -594,7 +595,8 @@ Section Impl_subtle_ConstantTimeEq_for_slice_T.
                   (Self := subtle.Choice.t)
                   (T := u8.t)
                   (Trait := ℐ))) in
-            let* α1 : subtle.Choice.t := M.call (α0 (Integer.of_Z 0)) in
+            let* α1 : subtle.Choice.t :=
+              M.call (α0 ((Integer.of_Z 0) : u8.t)) in
             return_ α1 in
           let* α0 : M.Val unit := M.alloc tt in
           let* α1 := M.read α0 in
@@ -602,7 +604,7 @@ Section Impl_subtle_ConstantTimeEq_for_slice_T.
           M.alloc α2
         else
           M.alloc tt in
-      let* x : M.Val u8.t := M.alloc (Integer.of_Z 1) in
+      let* x : M.Val u8.t := M.alloc ((Integer.of_Z 1) : u8.t) in
       let* _ : M.Val unit :=
         let* α0 : _ :=
           ltac:(M.get_method (fun ℐ =>
@@ -814,7 +816,8 @@ Section Impl_subtle_ConstantTimeEq_for_u8_t.
       let* α0 : u8.t := M.read x in
       let* α1 : u8.t := M.read x in
       let* α2 : u8.t := M.call (u8.t::["wrapping_neg"] α1) in
-      let* α3 : i32.t := BinOp.Panic.sub (Integer.of_Z 8) (Integer.of_Z 1) in
+      let* α3 : i32.t :=
+        BinOp.Panic.sub ((Integer.of_Z 8) : i32.t) ((Integer.of_Z 1) : i32.t) in
       let* α4 : u8.t := BinOp.Panic.shr (BinOp.Pure.bit_or α0 α2) α3 in
       M.alloc α4 in
     let* α0 : _ :=
@@ -824,7 +827,7 @@ Section Impl_subtle_ConstantTimeEq_for_u8_t.
           (T := subtle.Choice.t)
           (Trait := ℐ))) in
     let* α1 : u8.t := M.read y in
-    let* α2 : M.Val u8.t := M.alloc (Integer.of_Z 1) in
+    let* α2 : M.Val u8.t := M.alloc ((Integer.of_Z 1) : u8.t) in
     let* α3 : u8.t := M.read (use α2) in
     let* α4 : M.Val u8.t := M.alloc (BinOp.Pure.bit_xor α1 α3) in
     let* α5 : u8.t := M.read (use α4) in
@@ -917,7 +920,10 @@ Section Impl_subtle_ConstantTimeEq_for_u16_t.
       let* α0 : u16.t := M.read x in
       let* α1 : u16.t := M.read x in
       let* α2 : u16.t := M.call (u16.t::["wrapping_neg"] α1) in
-      let* α3 : i32.t := BinOp.Panic.sub (Integer.of_Z 16) (Integer.of_Z 1) in
+      let* α3 : i32.t :=
+        BinOp.Panic.sub
+          ((Integer.of_Z 16) : i32.t)
+          ((Integer.of_Z 1) : i32.t) in
       let* α4 : u16.t := BinOp.Panic.shr (BinOp.Pure.bit_or α0 α2) α3 in
       M.alloc α4 in
     let* α0 : _ :=
@@ -927,7 +933,7 @@ Section Impl_subtle_ConstantTimeEq_for_u16_t.
           (T := subtle.Choice.t)
           (Trait := ℐ))) in
     let* α1 : u16.t := M.read y in
-    let* α2 : M.Val u16.t := M.alloc (Integer.of_Z 1) in
+    let* α2 : M.Val u16.t := M.alloc ((Integer.of_Z 1) : u16.t) in
     let* α3 : u16.t := M.read (use α2) in
     let* α4 : u8.t := M.cast (BinOp.Pure.bit_xor α1 α3) in
     let* α5 : subtle.Choice.t := M.call (α0 α4) in
@@ -1019,7 +1025,10 @@ Section Impl_subtle_ConstantTimeEq_for_u32_t.
       let* α0 : u32.t := M.read x in
       let* α1 : u32.t := M.read x in
       let* α2 : u32.t := M.call (u32.t::["wrapping_neg"] α1) in
-      let* α3 : i32.t := BinOp.Panic.sub (Integer.of_Z 32) (Integer.of_Z 1) in
+      let* α3 : i32.t :=
+        BinOp.Panic.sub
+          ((Integer.of_Z 32) : i32.t)
+          ((Integer.of_Z 1) : i32.t) in
       let* α4 : u32.t := BinOp.Panic.shr (BinOp.Pure.bit_or α0 α2) α3 in
       M.alloc α4 in
     let* α0 : _ :=
@@ -1029,7 +1038,7 @@ Section Impl_subtle_ConstantTimeEq_for_u32_t.
           (T := subtle.Choice.t)
           (Trait := ℐ))) in
     let* α1 : u32.t := M.read y in
-    let* α2 : M.Val u32.t := M.alloc (Integer.of_Z 1) in
+    let* α2 : M.Val u32.t := M.alloc ((Integer.of_Z 1) : u32.t) in
     let* α3 : u32.t := M.read (use α2) in
     let* α4 : u8.t := M.cast (BinOp.Pure.bit_xor α1 α3) in
     let* α5 : subtle.Choice.t := M.call (α0 α4) in
@@ -1121,7 +1130,10 @@ Section Impl_subtle_ConstantTimeEq_for_u64_t.
       let* α0 : u64.t := M.read x in
       let* α1 : u64.t := M.read x in
       let* α2 : u64.t := M.call (u64.t::["wrapping_neg"] α1) in
-      let* α3 : i32.t := BinOp.Panic.sub (Integer.of_Z 64) (Integer.of_Z 1) in
+      let* α3 : i32.t :=
+        BinOp.Panic.sub
+          ((Integer.of_Z 64) : i32.t)
+          ((Integer.of_Z 1) : i32.t) in
       let* α4 : u64.t := BinOp.Panic.shr (BinOp.Pure.bit_or α0 α2) α3 in
       M.alloc α4 in
     let* α0 : _ :=
@@ -1131,7 +1143,7 @@ Section Impl_subtle_ConstantTimeEq_for_u64_t.
           (T := subtle.Choice.t)
           (Trait := ℐ))) in
     let* α1 : u64.t := M.read y in
-    let* α2 : M.Val u64.t := M.alloc (Integer.of_Z 1) in
+    let* α2 : M.Val u64.t := M.alloc ((Integer.of_Z 1) : u64.t) in
     let* α3 : u64.t := M.read (use α2) in
     let* α4 : u8.t := M.cast (BinOp.Pure.bit_xor α1 α3) in
     let* α5 : subtle.Choice.t := M.call (α0 α4) in
@@ -1227,8 +1239,8 @@ Section Impl_subtle_ConstantTimeEq_for_usize_t.
       let* α1 : usize.t := M.read x in
       let* α2 : usize.t := M.call (usize.t::["wrapping_neg"] α1) in
       let* α3 : usize.t := M.call core.mem.size_of in
-      let* α4 : usize.t := BinOp.Panic.mul α3 (Integer.of_Z 8) in
-      let* α5 : usize.t := BinOp.Panic.sub α4 (Integer.of_Z 1) in
+      let* α4 : usize.t := BinOp.Panic.mul α3 ((Integer.of_Z 8) : usize.t) in
+      let* α5 : usize.t := BinOp.Panic.sub α4 ((Integer.of_Z 1) : usize.t) in
       let* α6 : usize.t := BinOp.Panic.shr (BinOp.Pure.bit_or α0 α2) α5 in
       M.alloc α6 in
     let* α0 : _ :=
@@ -1238,7 +1250,7 @@ Section Impl_subtle_ConstantTimeEq_for_usize_t.
           (T := subtle.Choice.t)
           (Trait := ℐ))) in
     let* α1 : usize.t := M.read y in
-    let* α2 : M.Val usize.t := M.alloc (Integer.of_Z 1) in
+    let* α2 : M.Val usize.t := M.alloc ((Integer.of_Z 1) : usize.t) in
     let* α3 : usize.t := M.read (use α2) in
     let* α4 : u8.t := M.cast (BinOp.Pure.bit_xor α1 α3) in
     let* α5 : subtle.Choice.t := M.call (α0 α4) in
@@ -2857,7 +2869,8 @@ Section Impl_core_convert_From_subtle_CtOption_t_T_for_core_option_Option_t_T.
       M.call ((subtle.CtOption.t T)::["is_some"] (borrow source)) in
     let* α1 : M.Val subtle.Choice.t := M.alloc α0 in
     let* α2 : u8.t := M.call (subtle.Choice.t::["unwrap_u8"] (borrow α1)) in
-    let* α3 : M.Val bool.t := M.alloc (BinOp.Pure.eq α2 (Integer.of_Z 1)) in
+    let* α3 : M.Val bool.t :=
+      M.alloc (BinOp.Pure.eq α2 ((Integer.of_Z 1) : u8.t)) in
     let* α4 : bool.t := M.read (use α3) in
     let* α5 : M.Val (core.option.Option.t T) :=
       if α4 then
@@ -2923,7 +2936,7 @@ Section Impl_subtle_CtOption_t_T.
           (subtle.Choice.t::["unwrap_u8"]
             (borrow (subtle.CtOption.Get_is_some self))) in
       let* α1 : M.Val u8.t := M.alloc α0 in
-      let* α2 : M.Val u8.t := M.alloc (Integer.of_Z 1) in
+      let* α2 : M.Val u8.t := M.alloc ((Integer.of_Z 1) : u8.t) in
       let* α3 : M.Val ((ref u8.t) * (ref u8.t)) :=
         M.alloc (borrow α1, borrow α2) in
       match_operator
@@ -3007,7 +3020,7 @@ Section Impl_subtle_CtOption_t_T.
           (subtle.Choice.t::["unwrap_u8"]
             (borrow (subtle.CtOption.Get_is_some self))) in
       let* α1 : M.Val u8.t := M.alloc α0 in
-      let* α2 : M.Val u8.t := M.alloc (Integer.of_Z 1) in
+      let* α2 : M.Val u8.t := M.alloc ((Integer.of_Z 1) : u8.t) in
       let* α3 : M.Val ((ref u8.t) * (ref u8.t)) :=
         M.alloc (borrow α1, borrow α2) in
       match_operator
@@ -3584,11 +3597,12 @@ Section Impl_subtle_ConstantTimeGreater_for_u8_t.
       let* α4 : ref u8.t := M.read other in
       let* α5 : u8.t := M.call (α0 α3 α4) in
       M.alloc α5 in
-    let* pow : M.Val i32.t := M.alloc (Integer.of_Z 1) in
+    let* pow : M.Val i32.t := M.alloc ((Integer.of_Z 1) : i32.t) in
     let* _ : M.Val unit :=
       M.loop
         (let* α0 : i32.t := M.read pow in
-        let* α1 : M.Val bool.t := M.alloc (BinOp.Pure.lt α0 (Integer.of_Z 8)) in
+        let* α1 : M.Val bool.t :=
+          M.alloc (BinOp.Pure.lt α0 ((Integer.of_Z 8) : i32.t)) in
         let* α2 : bool.t := M.read (use α1) in
         if α2 then
           let* _ : M.Val unit :=
@@ -3619,11 +3633,12 @@ Section Impl_subtle_ConstantTimeGreater_for_u8_t.
       let* α0 : u8.t := M.read gtb in
       let* α1 : u8.t := M.read ltb in
       M.alloc (BinOp.Pure.bit_and α0 (UnOp.not α1)) in
-    let* pow : M.Val i32.t := M.alloc (Integer.of_Z 1) in
+    let* pow : M.Val i32.t := M.alloc ((Integer.of_Z 1) : i32.t) in
     let* _ : M.Val unit :=
       M.loop
         (let* α0 : i32.t := M.read pow in
-        let* α1 : M.Val bool.t := M.alloc (BinOp.Pure.lt α0 (Integer.of_Z 8)) in
+        let* α1 : M.Val bool.t :=
+          M.alloc (BinOp.Pure.lt α0 ((Integer.of_Z 8) : i32.t)) in
         let* α2 : bool.t := M.read (use α1) in
         if α2 then
           let* _ : M.Val unit :=
@@ -3657,7 +3672,8 @@ Section Impl_subtle_ConstantTimeGreater_for_u8_t.
           (T := u8.t)
           (Trait := ℐ))) in
     let* α1 : u8.t := M.read bit in
-    let* α2 : M.Val u8.t := M.alloc (BinOp.Pure.bit_and α1 (Integer.of_Z 1)) in
+    let* α2 : M.Val u8.t :=
+      M.alloc (BinOp.Pure.bit_and α1 ((Integer.of_Z 1) : u8.t)) in
     let* α3 : u8.t := M.read (use α2) in
     let* α4 : subtle.Choice.t := M.call (α0 α3) in
     let* α0 : M.Val subtle.Choice.t := M.alloc α4 in
@@ -3734,12 +3750,12 @@ Section Impl_subtle_ConstantTimeGreater_for_u16_t.
       let* α4 : ref u16.t := M.read other in
       let* α5 : u16.t := M.call (α0 α3 α4) in
       M.alloc α5 in
-    let* pow : M.Val i32.t := M.alloc (Integer.of_Z 1) in
+    let* pow : M.Val i32.t := M.alloc ((Integer.of_Z 1) : i32.t) in
     let* _ : M.Val unit :=
       M.loop
         (let* α0 : i32.t := M.read pow in
         let* α1 : M.Val bool.t :=
-          M.alloc (BinOp.Pure.lt α0 (Integer.of_Z 16)) in
+          M.alloc (BinOp.Pure.lt α0 ((Integer.of_Z 16) : i32.t)) in
         let* α2 : bool.t := M.read (use α1) in
         if α2 then
           let* _ : M.Val unit :=
@@ -3770,12 +3786,12 @@ Section Impl_subtle_ConstantTimeGreater_for_u16_t.
       let* α0 : u16.t := M.read gtb in
       let* α1 : u16.t := M.read ltb in
       M.alloc (BinOp.Pure.bit_and α0 (UnOp.not α1)) in
-    let* pow : M.Val i32.t := M.alloc (Integer.of_Z 1) in
+    let* pow : M.Val i32.t := M.alloc ((Integer.of_Z 1) : i32.t) in
     let* _ : M.Val unit :=
       M.loop
         (let* α0 : i32.t := M.read pow in
         let* α1 : M.Val bool.t :=
-          M.alloc (BinOp.Pure.lt α0 (Integer.of_Z 16)) in
+          M.alloc (BinOp.Pure.lt α0 ((Integer.of_Z 16) : i32.t)) in
         let* α2 : bool.t := M.read (use α1) in
         if α2 then
           let* _ : M.Val unit :=
@@ -3809,7 +3825,8 @@ Section Impl_subtle_ConstantTimeGreater_for_u16_t.
           (T := u8.t)
           (Trait := ℐ))) in
     let* α1 : u16.t := M.read bit in
-    let* α2 : u8.t := M.cast (BinOp.Pure.bit_and α1 (Integer.of_Z 1)) in
+    let* α2 : u8.t :=
+      M.cast (BinOp.Pure.bit_and α1 ((Integer.of_Z 1) : u16.t)) in
     let* α3 : subtle.Choice.t := M.call (α0 α2) in
     let* α0 : M.Val subtle.Choice.t := M.alloc α3 in
     M.read α0.
@@ -3885,12 +3902,12 @@ Section Impl_subtle_ConstantTimeGreater_for_u32_t.
       let* α4 : ref u32.t := M.read other in
       let* α5 : u32.t := M.call (α0 α3 α4) in
       M.alloc α5 in
-    let* pow : M.Val i32.t := M.alloc (Integer.of_Z 1) in
+    let* pow : M.Val i32.t := M.alloc ((Integer.of_Z 1) : i32.t) in
     let* _ : M.Val unit :=
       M.loop
         (let* α0 : i32.t := M.read pow in
         let* α1 : M.Val bool.t :=
-          M.alloc (BinOp.Pure.lt α0 (Integer.of_Z 32)) in
+          M.alloc (BinOp.Pure.lt α0 ((Integer.of_Z 32) : i32.t)) in
         let* α2 : bool.t := M.read (use α1) in
         if α2 then
           let* _ : M.Val unit :=
@@ -3921,12 +3938,12 @@ Section Impl_subtle_ConstantTimeGreater_for_u32_t.
       let* α0 : u32.t := M.read gtb in
       let* α1 : u32.t := M.read ltb in
       M.alloc (BinOp.Pure.bit_and α0 (UnOp.not α1)) in
-    let* pow : M.Val i32.t := M.alloc (Integer.of_Z 1) in
+    let* pow : M.Val i32.t := M.alloc ((Integer.of_Z 1) : i32.t) in
     let* _ : M.Val unit :=
       M.loop
         (let* α0 : i32.t := M.read pow in
         let* α1 : M.Val bool.t :=
-          M.alloc (BinOp.Pure.lt α0 (Integer.of_Z 32)) in
+          M.alloc (BinOp.Pure.lt α0 ((Integer.of_Z 32) : i32.t)) in
         let* α2 : bool.t := M.read (use α1) in
         if α2 then
           let* _ : M.Val unit :=
@@ -3960,7 +3977,8 @@ Section Impl_subtle_ConstantTimeGreater_for_u32_t.
           (T := u8.t)
           (Trait := ℐ))) in
     let* α1 : u32.t := M.read bit in
-    let* α2 : u8.t := M.cast (BinOp.Pure.bit_and α1 (Integer.of_Z 1)) in
+    let* α2 : u8.t :=
+      M.cast (BinOp.Pure.bit_and α1 ((Integer.of_Z 1) : u32.t)) in
     let* α3 : subtle.Choice.t := M.call (α0 α2) in
     let* α0 : M.Val subtle.Choice.t := M.alloc α3 in
     M.read α0.
@@ -4036,12 +4054,12 @@ Section Impl_subtle_ConstantTimeGreater_for_u64_t.
       let* α4 : ref u64.t := M.read other in
       let* α5 : u64.t := M.call (α0 α3 α4) in
       M.alloc α5 in
-    let* pow : M.Val i32.t := M.alloc (Integer.of_Z 1) in
+    let* pow : M.Val i32.t := M.alloc ((Integer.of_Z 1) : i32.t) in
     let* _ : M.Val unit :=
       M.loop
         (let* α0 : i32.t := M.read pow in
         let* α1 : M.Val bool.t :=
-          M.alloc (BinOp.Pure.lt α0 (Integer.of_Z 64)) in
+          M.alloc (BinOp.Pure.lt α0 ((Integer.of_Z 64) : i32.t)) in
         let* α2 : bool.t := M.read (use α1) in
         if α2 then
           let* _ : M.Val unit :=
@@ -4072,12 +4090,12 @@ Section Impl_subtle_ConstantTimeGreater_for_u64_t.
       let* α0 : u64.t := M.read gtb in
       let* α1 : u64.t := M.read ltb in
       M.alloc (BinOp.Pure.bit_and α0 (UnOp.not α1)) in
-    let* pow : M.Val i32.t := M.alloc (Integer.of_Z 1) in
+    let* pow : M.Val i32.t := M.alloc ((Integer.of_Z 1) : i32.t) in
     let* _ : M.Val unit :=
       M.loop
         (let* α0 : i32.t := M.read pow in
         let* α1 : M.Val bool.t :=
-          M.alloc (BinOp.Pure.lt α0 (Integer.of_Z 64)) in
+          M.alloc (BinOp.Pure.lt α0 ((Integer.of_Z 64) : i32.t)) in
         let* α2 : bool.t := M.read (use α1) in
         if α2 then
           let* _ : M.Val unit :=
@@ -4111,7 +4129,8 @@ Section Impl_subtle_ConstantTimeGreater_for_u64_t.
           (T := u8.t)
           (Trait := ℐ))) in
     let* α1 : u64.t := M.read bit in
-    let* α2 : u8.t := M.cast (BinOp.Pure.bit_and α1 (Integer.of_Z 1)) in
+    let* α2 : u8.t :=
+      M.cast (BinOp.Pure.bit_and α1 ((Integer.of_Z 1) : u64.t)) in
     let* α3 : subtle.Choice.t := M.call (α0 α2) in
     let* α0 : M.Val subtle.Choice.t := M.alloc α3 in
     M.read α0.

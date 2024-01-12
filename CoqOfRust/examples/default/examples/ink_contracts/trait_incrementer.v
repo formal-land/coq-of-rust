@@ -87,7 +87,10 @@ Section Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer_t.
   Definition inc (self : mut_ref Self) : M unit :=
     let* self := M.alloc self in
     let* α0 : mut_ref trait_incrementer.Incrementer.t := M.read self in
-    M.call (trait_incrementer.Incrementer.t::["inc_by"] α0 (Integer.of_Z 1)).
+    M.call
+      (trait_incrementer.Incrementer.t::["inc_by"]
+        α0
+        ((Integer.of_Z 1) : u64.t)).
   
   Global Instance AssociatedFunction_inc : Notations.DoubleColon Self "inc" := {
     Notations.double_colon := inc;
@@ -129,7 +132,7 @@ Section Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer_t.
       let* α0 : mut_ref trait_incrementer.Incrementer.t := M.read self in
       assign
         (trait_incrementer.Incrementer.Get_value (deref α0))
-        (Integer.of_Z 0) in
+        ((Integer.of_Z 0) : u64.t) in
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   

@@ -25,8 +25,8 @@ Section Impl_associated_functions_and_methods_Point_t.
       }
   *)
   Definition origin : M associated_functions_and_methods.Point.t :=
-    let* α0 : f64.t := M.read UnsupportedLiteral in
-    let* α1 : f64.t := M.read UnsupportedLiteral in
+    let* α0 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
+    let* α1 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
     M.pure
       {|
         associated_functions_and_methods.Point.y := α0;
@@ -219,7 +219,8 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
                         associated_functions_and_methods.Point.Get_y γ in
                       let* x2 := M.copy γ0_0 in
                       let* y2 := M.copy γ0_1 in
-                      let* α0 : f64.t := M.read UnsupportedLiteral in
+                      let* α0 : f64.t :=
+                        M.read (UnsupportedLiteral : M.Val f64.t) in
                       let* α1 : f64.t := M.read x1 in
                       let* α2 : f64.t := M.read x2 in
                       let* α3 : f64.t := BinOp.Panic.sub α1 α2 in
@@ -438,8 +439,8 @@ Definition main : M unit :=
   let* rectangle : M.Val associated_functions_and_methods.Rectangle.t :=
     let* α0 : associated_functions_and_methods.Point.t :=
       M.call associated_functions_and_methods.Point.t::["origin"] in
-    let* α1 : f64.t := M.read UnsupportedLiteral in
-    let* α2 : f64.t := M.read UnsupportedLiteral in
+    let* α1 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
+    let* α2 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
     let* α3 : associated_functions_and_methods.Point.t :=
       M.call (associated_functions_and_methods.Point.t::["new"] α1 α2) in
     M.alloc
@@ -502,8 +503,8 @@ Definition main : M unit :=
   let* square : M.Val associated_functions_and_methods.Rectangle.t :=
     let* α0 : associated_functions_and_methods.Point.t :=
       M.call associated_functions_and_methods.Point.t::["origin"] in
-    let* α1 : f64.t := M.read UnsupportedLiteral in
-    let* α2 : f64.t := M.read UnsupportedLiteral in
+    let* α1 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
+    let* α2 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
     let* α3 : associated_functions_and_methods.Point.t :=
       M.call (associated_functions_and_methods.Point.t::["new"] α1 α2) in
     M.alloc
@@ -512,8 +513,8 @@ Definition main : M unit :=
         associated_functions_and_methods.Rectangle.p2 := α3;
       |} in
   let* _ : M.Val unit :=
-    let* α0 : f64.t := M.read UnsupportedLiteral in
-    let* α1 : f64.t := M.read UnsupportedLiteral in
+    let* α0 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
+    let* α1 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
     let* α2 : unit :=
       M.call
         (associated_functions_and_methods.Rectangle.t::["translate"]
@@ -525,11 +526,11 @@ Definition main : M unit :=
     let* α0 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t :=
       M.call
         ((alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"]
-          (Integer.of_Z 1)) in
+          ((Integer.of_Z 1) : i32.t)) in
     let* α1 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t :=
       M.call
         ((alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"]
-          (Integer.of_Z 2)) in
+          ((Integer.of_Z 2) : i32.t)) in
     M.alloc (associated_functions_and_methods.Pair.Build_t α0 α1) in
   let* _ : M.Val unit :=
     let* α0 : associated_functions_and_methods.Pair.t := M.read pair in

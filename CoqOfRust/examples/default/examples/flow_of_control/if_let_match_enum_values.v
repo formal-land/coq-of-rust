@@ -50,7 +50,7 @@ Definition main : M unit :=
   let* b : M.Val if_let_match_enum_values.Foo.t :=
     M.alloc if_let_match_enum_values.Foo.Baz in
   let* c : M.Val if_let_match_enum_values.Foo.t :=
-    M.alloc (if_let_match_enum_values.Foo.Qux (Integer.of_Z 100)) in
+    M.alloc (if_let_match_enum_values.Foo.Qux ((Integer.of_Z 100) : u32.t)) in
   let* _ : M.Val unit :=
     let* α0 : M.Val bool.t := let_if if_let_match_enum_values.Foo.Bar := a in
     let* α1 : bool.t := M.read α0 in

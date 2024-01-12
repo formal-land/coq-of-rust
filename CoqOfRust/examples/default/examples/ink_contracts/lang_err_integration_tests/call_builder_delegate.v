@@ -116,7 +116,7 @@ Section Impl_call_builder_delegate_CallBuilderDelegateTest_t.
     let* self := M.alloc self in
     let* code_hash := M.alloc code_hash in
     let* selector := M.alloc selector in
-    M.pure (Integer.of_Z 0).
+    M.pure ((Integer.of_Z 0) : i32.t).
   
   Global Instance AssociatedFunction_invoke :
     Notations.DoubleColon Self "invoke" := {

@@ -77,7 +77,7 @@ pub(crate) enum ExprKind {
         ty: Rc<CoqType>,
         func: String,
     },
-    Literal(Literal),
+    Literal(Literal, Option<Rc<CoqType>>),
     NonHirLiteral(rustc_middle::ty::ScalarInt),
     Call {
         func: Rc<Expr>,
@@ -186,7 +186,7 @@ impl Expr {
             } => false,
             ExprKind::VarWithTys { path: _, tys: _ } => false,
             ExprKind::AssociatedFunction { ty: _, func: _ } => false,
-            ExprKind::Literal(_) => false,
+            ExprKind::Literal(_, _) => false,
             ExprKind::NonHirLiteral(_) => false,
             ExprKind::Call {
                 func,
@@ -843,7 +843,18 @@ impl ExprKind {
                 text(format!("\"{func}\"")),
                 text("]"),
             ]),
-            ExprKind::Literal(literal) => literal.to_doc(with_paren),
+            ExprKind::Literal(literal, ty) => match ty {
+                None => literal.to_doc(with_paren),
+                Some(ty) => paren(
+                    with_paren,
+                    nest([
+                        literal.to_doc(true),
+                        text(" :"),
+                        line(),
+                        ty.to_coq().to_doc(false),
+                    ]),
+                ),
+            },
             ExprKind::NonHirLiteral(literal) => text(literal.to_string()),
             ExprKind::Call {
                 func,

@@ -24,12 +24,12 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* a : M.Val i32.t := M.alloc (Integer.of_Z 0) in
+  let* a : M.Val i32.t := M.alloc ((Integer.of_Z 0) : i32.t) in
   let* _ : M.Val unit :=
     let _ : M.Val unit := InlineAssembly in
     M.alloc tt in
   let* _ : M.Val unit :=
-    let* α0 : M.Val i32.t := M.alloc (Integer.of_Z 5) in
+    let* α0 : M.Val i32.t := M.alloc ((Integer.of_Z 5) : i32.t) in
     let* α1 : M.Val ((ref i32.t) * (ref i32.t)) :=
       M.alloc (borrow a, borrow α0) in
     match_operator

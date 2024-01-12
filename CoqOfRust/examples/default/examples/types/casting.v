@@ -83,7 +83,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* decimal : M.Val f32.t := M.copy UnsupportedLiteral in
+  let* decimal : M.Val f32.t := M.copy (UnsupportedLiteral : M.Val f32.t) in
   let* integer : M.Val u8.t :=
     let* α0 : f32.t := M.read decimal in
     let* α1 : u8.t := M.cast α0 in
@@ -129,7 +129,7 @@ Definition main : M unit :=
       let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
       let* α4 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α3) in
-      let* α5 : M.Val u16.t := M.alloc (Integer.of_Z 1000) in
+      let* α5 : M.Val u16.t := M.alloc ((Integer.of_Z 1000) : u16.t) in
       let* α6 : core.fmt.rt.Argument.t :=
         M.call (core.fmt.rt.Argument.t::["new_display"] (borrow (use α5))) in
       let* α7 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α6 ] in
@@ -151,7 +151,7 @@ Definition main : M unit :=
       let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
       let* α4 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α3) in
-      let* α5 : M.Val u8.t := M.alloc (Integer.of_Z 1000) in
+      let* α5 : M.Val u8.t := M.alloc ((Integer.of_Z 1000) : u8.t) in
       let* α6 : core.fmt.rt.Argument.t :=
         M.call (core.fmt.rt.Argument.t::["new_display"] (borrow (use α5))) in
       let* α7 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α6 ] in
@@ -173,7 +173,7 @@ Definition main : M unit :=
       let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
       let* α4 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α3) in
-      let* α5 : u8.t := M.cast (Integer.of_Z (-1)) in
+      let* α5 : u8.t := M.cast ((Integer.of_Z (-1)) : i8.t) in
       let* α6 : M.Val u8.t := M.alloc α5 in
       let* α7 : core.fmt.rt.Argument.t :=
         M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α6)) in
@@ -197,7 +197,9 @@ Definition main : M unit :=
       let* α4 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α3) in
       let* α5 : i32.t :=
-        BinOp.Panic.rem (Integer.of_Z 1000) (Integer.of_Z 256) in
+        BinOp.Panic.rem
+          ((Integer.of_Z 1000) : i32.t)
+          ((Integer.of_Z 256) : i32.t) in
       let* α6 : M.Val i32.t := M.alloc α5 in
       let* α7 : core.fmt.rt.Argument.t :=
         M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α6)) in
@@ -220,7 +222,7 @@ Definition main : M unit :=
       let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
       let* α4 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α3) in
-      let* α5 : M.Val i16.t := M.alloc (Integer.of_Z 128) in
+      let* α5 : M.Val i16.t := M.alloc ((Integer.of_Z 128) : i16.t) in
       let* α6 : core.fmt.rt.Argument.t :=
         M.call (core.fmt.rt.Argument.t::["new_display"] (borrow (use α5))) in
       let* α7 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α6 ] in
@@ -242,7 +244,7 @@ Definition main : M unit :=
       let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
       let* α4 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α3) in
-      let* α5 : M.Val i8.t := M.alloc (Integer.of_Z 128) in
+      let* α5 : M.Val i8.t := M.alloc ((Integer.of_Z 128) : i8.t) in
       let* α6 : core.fmt.rt.Argument.t :=
         M.call (core.fmt.rt.Argument.t::["new_display"] (borrow (use α5))) in
       let* α7 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α6 ] in
@@ -264,7 +266,7 @@ Definition main : M unit :=
       let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
       let* α4 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α3) in
-      let* α5 : M.Val u8.t := M.alloc (Integer.of_Z 1000) in
+      let* α5 : M.Val u8.t := M.alloc ((Integer.of_Z 1000) : u8.t) in
       let* α6 : core.fmt.rt.Argument.t :=
         M.call (core.fmt.rt.Argument.t::["new_display"] (borrow (use α5))) in
       let* α7 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α6 ] in
@@ -286,7 +288,7 @@ Definition main : M unit :=
       let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
       let* α4 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α3) in
-      let* α5 : M.Val i8.t := M.alloc (Integer.of_Z 232) in
+      let* α5 : M.Val i8.t := M.alloc ((Integer.of_Z 232) : i8.t) in
       let* α6 : core.fmt.rt.Argument.t :=
         M.call (core.fmt.rt.Argument.t::["new_display"] (borrow (use α5))) in
       let* α7 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α6 ] in
@@ -308,7 +310,7 @@ Definition main : M unit :=
       let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
       let* α4 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α3) in
-      let* α5 : f32.t := M.read UnsupportedLiteral in
+      let* α5 : f32.t := M.read (UnsupportedLiteral : M.Val f32.t) in
       let* α6 : u8.t := M.cast α5 in
       let* α7 : M.Val u8.t := M.alloc α6 in
       let* α8 : core.fmt.rt.Argument.t :=
@@ -332,7 +334,7 @@ Definition main : M unit :=
       let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
       let* α4 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α3) in
-      let* α5 : f32.t := M.read UnsupportedLiteral in
+      let* α5 : f32.t := M.read (UnsupportedLiteral : M.Val f32.t) in
       let* α6 : u8.t := M.cast α5 in
       let* α7 : M.Val u8.t := M.alloc α6 in
       let* α8 : core.fmt.rt.Argument.t :=
@@ -380,7 +382,7 @@ Definition main : M unit :=
       let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
       let* α4 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α3) in
-      let* α5 : f32.t := M.read UnsupportedLiteral in
+      let* α5 : f32.t := M.read (UnsupportedLiteral : M.Val f32.t) in
       let* α6 : u8.t := M.call (f32.t::["to_int_unchecked"] α5) in
       let* α7 : M.Val u8.t := M.alloc α6 in
       let* α8 : core.fmt.rt.Argument.t :=
@@ -404,7 +406,7 @@ Definition main : M unit :=
       let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
       let* α4 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α3) in
-      let* α5 : f32.t := M.read UnsupportedLiteral in
+      let* α5 : f32.t := M.read (UnsupportedLiteral : M.Val f32.t) in
       let* α6 : u8.t := M.call (f32.t::["to_int_unchecked"] α5) in
       let* α7 : M.Val u8.t := M.alloc α6 in
       let* α8 : core.fmt.rt.Argument.t :=

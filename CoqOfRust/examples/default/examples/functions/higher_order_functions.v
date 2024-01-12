@@ -9,8 +9,8 @@ fn is_odd(n: u32) -> bool {
 Definition is_odd (n : u32.t) : M bool.t :=
   let* n := M.alloc n in
   let* α0 : u32.t := M.read n in
-  let* α1 : u32.t := BinOp.Panic.rem α0 (Integer.of_Z 2) in
-  M.pure (BinOp.Pure.eq α1 (Integer.of_Z 1)).
+  let* α1 : u32.t := BinOp.Panic.rem α0 ((Integer.of_Z 2) : u32.t) in
+  M.pure (BinOp.Pure.eq α1 ((Integer.of_Z 1) : u32.t)).
 
 (*
 fn main() {
@@ -61,8 +61,8 @@ Definition main : M unit :=
       let* α5 : unit := M.call (std.io.stdio._print α4) in
       M.alloc α5 in
     M.alloc tt in
-  let* upper : M.Val u32.t := M.alloc (Integer.of_Z 1000) in
-  let* acc : M.Val u32.t := M.alloc (Integer.of_Z 0) in
+  let* upper : M.Val u32.t := M.alloc ((Integer.of_Z 1000) : u32.t) in
+  let* acc : M.Val u32.t := M.alloc ((Integer.of_Z 0) : u32.t) in
   let* _ : M.Val unit :=
     let* α0 : _ :=
       ltac:(M.get_method (fun ℐ =>
@@ -70,7 +70,9 @@ Definition main : M unit :=
           (Self := core.ops.range.RangeFrom.t u32.t)
           (Trait := ℐ))) in
     let* α1 : core.ops.range.RangeFrom.t u32.t :=
-      M.call (α0 {| core.ops.range.RangeFrom.start := Integer.of_Z 0; |}) in
+      M.call
+        (α0
+          {| core.ops.range.RangeFrom.start := (Integer.of_Z 0) : u32.t; |}) in
     let* α2 : M.Val (core.ops.range.RangeFrom.t u32.t) := M.alloc α1 in
     let* α3 : M.Val unit :=
       match_operator
@@ -216,7 +218,7 @@ Definition main : M unit :=
           (u32.t -> M u32.t) :=
       M.call
         (α3
-          {| core.ops.range.RangeFrom.start := Integer.of_Z 0; |}
+          {| core.ops.range.RangeFrom.start := (Integer.of_Z 0) : u32.t; |}
           (fun (α0 : u32.t) =>
             (let* α0 := M.alloc α0 in
             match_operator

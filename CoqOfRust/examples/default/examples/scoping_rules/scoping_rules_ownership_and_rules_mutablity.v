@@ -27,7 +27,7 @@ Definition main : M unit :=
     let* α0 : alloc.boxed.Box.t u32.t alloc.alloc.Global.t :=
       M.call
         ((alloc.boxed.Box.t u32.t alloc.alloc.Global.t)::["new"]
-          (Integer.of_Z 5)) in
+          ((Integer.of_Z 5) : u32.t)) in
     M.alloc α0 in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
@@ -77,7 +77,7 @@ Definition main : M unit :=
   let* _ : M.Val unit :=
     let* α0 : alloc.boxed.Box.t u32.t alloc.alloc.Global.t :=
       M.read mutable_box in
-    assign (deref α0) (Integer.of_Z 4) in
+    assign (deref α0) ((Integer.of_Z 4) : u32.t) in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "mutable_box now contains ") in

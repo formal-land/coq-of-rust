@@ -37,8 +37,9 @@ Definition main : M unit :=
       let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
       let* α4 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α3) in
-      let* α5 : i32.t := BinOp.Panic.add (Integer.of_Z 1) (Integer.of_Z 2) in
-      let* α6 : i32.t := M.call (core.cmp.min α5 (Integer.of_Z 2)) in
+      let* α5 : i32.t :=
+        BinOp.Panic.add ((Integer.of_Z 1) : i32.t) ((Integer.of_Z 2) : i32.t) in
+      let* α6 : i32.t := M.call (core.cmp.min α5 ((Integer.of_Z 2) : i32.t)) in
       let* α7 : M.Val i32.t := M.alloc α6 in
       let* α8 : core.fmt.rt.Argument.t :=
         M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α7)) in
@@ -61,9 +62,10 @@ Definition main : M unit :=
       let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
       let* α4 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α3) in
-      let* α5 : i32.t := BinOp.Panic.mul (Integer.of_Z 2) (Integer.of_Z 3) in
-      let* α6 : i32.t := M.call (core.cmp.min α5 (Integer.of_Z 4)) in
-      let* α7 : i32.t := M.call (core.cmp.min (Integer.of_Z 5) α6) in
+      let* α5 : i32.t :=
+        BinOp.Panic.mul ((Integer.of_Z 2) : i32.t) ((Integer.of_Z 3) : i32.t) in
+      let* α6 : i32.t := M.call (core.cmp.min α5 ((Integer.of_Z 4) : i32.t)) in
+      let* α7 : i32.t := M.call (core.cmp.min ((Integer.of_Z 5) : i32.t) α6) in
       let* α8 : M.Val i32.t := M.alloc α7 in
       let* α9 : core.fmt.rt.Argument.t :=
         M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α8)) in

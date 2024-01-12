@@ -177,7 +177,7 @@ Definition double_first
                         fun γ =>
                           (let* i := M.copy γ in
                           let* α0 : i32.t := M.read i in
-                          BinOp.Panic.mul (Integer.of_Z 2) α0) :
+                          BinOp.Panic.mul ((Integer.of_Z 2) : i32.t) α0) :
                           M i32.t
                       ]) :
                     M i32.t))) :

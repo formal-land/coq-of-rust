@@ -63,7 +63,7 @@ Definition foo (arg : i32.t) : M i32.t :=
       M.alloc α10 in
     M.alloc tt in
   let* α0 : i32.t := M.read arg in
-  let* α1 : i32.t := BinOp.Panic.mul α0 (Integer.of_Z 2) in
+  let* α1 : i32.t := BinOp.Panic.mul α0 ((Integer.of_Z 2) : i32.t) in
   let* α0 : M.Val i32.t := M.alloc α1 in
   M.read α0.
 

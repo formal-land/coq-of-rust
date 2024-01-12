@@ -217,8 +217,8 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* x : M.Val i32.t := M.alloc (Integer.of_Z 18) in
-  let* y : M.Val i32.t := M.alloc (Integer.of_Z 15) in
+  let* x : M.Val i32.t := M.alloc ((Integer.of_Z 18) : i32.t) in
+  let* y : M.Val i32.t := M.alloc ((Integer.of_Z 15) : i32.t) in
   let* single : M.Val scoping_rules_lifetimes_structs.Borrowed.t :=
     M.alloc (scoping_rules_lifetimes_structs.Borrowed.Build_t (borrow x)) in
   let* double : M.Val scoping_rules_lifetimes_structs.NamedBorrowed.t :=

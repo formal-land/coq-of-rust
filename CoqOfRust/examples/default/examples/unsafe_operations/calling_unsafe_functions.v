@@ -20,7 +20,12 @@ Definition main : M unit :=
   let* some_vector : M.Val (alloc.vec.Vec.t u32.t alloc.alloc.Global.t) :=
     let* α0 : M.Val (array u32.t) :=
       M.alloc
-        [ Integer.of_Z 1; Integer.of_Z 2; Integer.of_Z 3; Integer.of_Z 4 ] in
+        [
+          (Integer.of_Z 1) : u32.t;
+          (Integer.of_Z 2) : u32.t;
+          (Integer.of_Z 3) : u32.t;
+          (Integer.of_Z 4) : u32.t
+        ] in
     let* α1 : M.Val (alloc.boxed.Box.t (array u32.t) alloc.alloc.Global.t) :=
       M.call ((alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α0) in
     let* α2 : alloc.boxed.Box.t (slice u32.t) alloc.alloc.Global.t :=

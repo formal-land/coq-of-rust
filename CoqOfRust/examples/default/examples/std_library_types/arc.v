@@ -39,8 +39,8 @@ Definition main : M unit :=
       M.call
         (α0
           {|
-            core.ops.range.Range.start := Integer.of_Z 0;
-            core.ops.range.Range.end_ := Integer.of_Z 10;
+            core.ops.range.Range.start := (Integer.of_Z 0) : i32.t;
+            core.ops.range.Range.end_ := (Integer.of_Z 10) : i32.t;
           |}) in
     let* α2 : M.Val (core.ops.range.Range.t i32.t) := M.alloc α1 in
     let* α3 : M.Val unit :=
@@ -142,7 +142,7 @@ Definition main : M unit :=
     M.pure (use α3) in
   let* _ : M.Val unit :=
     let* α0 : core.time.Duration.t :=
-      M.call (core.time.Duration.t::["from_secs"] (Integer.of_Z 1)) in
+      M.call (core.time.Duration.t::["from_secs"] ((Integer.of_Z 1) : u64.t)) in
     let* α1 : unit := M.call (std.thread.sleep α0) in
     M.alloc α1 in
   let* α0 : M.Val unit := M.alloc tt in

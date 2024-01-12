@@ -51,7 +51,7 @@ Definition main : M unit :=
           (Self := from.Number.t)
           (T := i32.t)
           (Trait := ℐ))) in
-    let* α1 : from.Number.t := M.call (α0 (Integer.of_Z 30)) in
+    let* α1 : from.Number.t := M.call (α0 ((Integer.of_Z 30) : i32.t)) in
     M.alloc α1 in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.

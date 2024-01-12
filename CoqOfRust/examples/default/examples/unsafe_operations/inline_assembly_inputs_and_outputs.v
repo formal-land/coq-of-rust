@@ -19,7 +19,7 @@ Definition main : M unit :=
     let _ : M.Val unit := InlineAssembly in
     M.alloc tt in
   let* _ : M.Val unit :=
-    let* α0 : M.Val u64.t := M.alloc (Integer.of_Z 5) in
+    let* α0 : M.Val u64.t := M.alloc ((Integer.of_Z 5) : u64.t) in
     let* α1 : M.Val ((ref u64.t) * (ref u64.t)) :=
       M.alloc (borrow x, borrow α0) in
     match_operator

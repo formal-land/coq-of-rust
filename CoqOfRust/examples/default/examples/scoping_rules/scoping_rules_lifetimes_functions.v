@@ -44,7 +44,7 @@ Definition add_one (x : mut_ref i32.t) : M unit :=
       let* α0 : mut_ref i32.t := M.read x in
       M.pure (deref α0) in
     let* α0 := M.read β in
-    let* α1 := BinOp.Panic.add α0 (Integer.of_Z 1) in
+    let* α1 := BinOp.Panic.add α0 ((Integer.of_Z 1) : i32.t) in
     assign β α1 in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.
@@ -112,8 +112,8 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* x : M.Val i32.t := M.alloc (Integer.of_Z 7) in
-  let* y : M.Val i32.t := M.alloc (Integer.of_Z 9) in
+  let* x : M.Val i32.t := M.alloc ((Integer.of_Z 7) : i32.t) in
+  let* y : M.Val i32.t := M.alloc ((Integer.of_Z 9) : i32.t) in
   let* _ : M.Val unit :=
     let* α0 : unit :=
       M.call (scoping_rules_lifetimes_functions.print_one (borrow x)) in
@@ -131,7 +131,7 @@ Definition main : M unit :=
     let* α0 : ref i32.t := M.read z in
     let* α1 : unit := M.call (scoping_rules_lifetimes_functions.print_one α0) in
     M.alloc α1 in
-  let* t : M.Val i32.t := M.alloc (Integer.of_Z 3) in
+  let* t : M.Val i32.t := M.alloc ((Integer.of_Z 3) : i32.t) in
   let* _ : M.Val unit :=
     let* α0 : unit :=
       M.call (scoping_rules_lifetimes_functions.add_one (borrow_mut t)) in

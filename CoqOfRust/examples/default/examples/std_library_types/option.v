@@ -19,7 +19,8 @@ Definition checked_division
   let* dividend := M.alloc dividend in
   let* divisor := M.alloc divisor in
   let* α0 : i32.t := M.read divisor in
-  let* α1 : M.Val bool.t := M.alloc (BinOp.Pure.eq α0 (Integer.of_Z 0)) in
+  let* α1 : M.Val bool.t :=
+    M.alloc (BinOp.Pure.eq α0 ((Integer.of_Z 0) : i32.t)) in
   let* α2 : bool.t := M.read (use α1) in
   let* α3 : M.Val (core.option.Option.t i32.t) :=
     if α2 then
@@ -158,18 +159,24 @@ fn main() {
 Definition main : M unit :=
   let* _ : M.Val unit :=
     let* α0 : unit :=
-      M.call (option.try_division (Integer.of_Z 4) (Integer.of_Z 2)) in
+      M.call
+        (option.try_division
+          ((Integer.of_Z 4) : i32.t)
+          ((Integer.of_Z 2) : i32.t)) in
     M.alloc α0 in
   let* _ : M.Val unit :=
     let* α0 : unit :=
-      M.call (option.try_division (Integer.of_Z 1) (Integer.of_Z 0)) in
+      M.call
+        (option.try_division
+          ((Integer.of_Z 1) : i32.t)
+          ((Integer.of_Z 0) : i32.t)) in
     M.alloc α0 in
   let* none : M.Val (core.option.Option.t i32.t) :=
     M.alloc core.option.Option.None in
   let* _equivalent_none : M.Val (core.option.Option.t i32.t) :=
     M.alloc core.option.Option.None in
   let* optional_float : M.Val (core.option.Option.t f32.t) :=
-    let* α0 : f32.t := M.read UnsupportedLiteral in
+    let* α0 : f32.t := M.read (UnsupportedLiteral : M.Val f32.t) in
     M.alloc (core.option.Option.Some α0) in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=

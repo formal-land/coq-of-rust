@@ -151,8 +151,10 @@ Definition main : M unit :=
   let* point : M.Val scoping_rules_borrowing_the_ref_pattern.Point.t :=
     M.alloc
       {|
-        scoping_rules_borrowing_the_ref_pattern.Point.x := Integer.of_Z 0;
-        scoping_rules_borrowing_the_ref_pattern.Point.y := Integer.of_Z 0;
+        scoping_rules_borrowing_the_ref_pattern.Point.x :=
+          (Integer.of_Z 0) : i32.t;
+        scoping_rules_borrowing_the_ref_pattern.Point.y :=
+          (Integer.of_Z 0) : i32.t;
       |} in
   let* _copy_of_x : M.Val i32.t :=
     let* α0 : M.Val i32.t :=
@@ -199,7 +201,7 @@ Definition main : M unit :=
             let* mut_ref_to_y := M.alloc (borrow_mut γ0_1) in
             let* _ : M.Val unit :=
               let* α0 : mut_ref i32.t := M.read mut_ref_to_y in
-              assign (deref α0) (Integer.of_Z 1) in
+              assign (deref α0) ((Integer.of_Z 1) : i32.t) in
             M.alloc tt
           end) :
           M (M.Val unit)
@@ -271,8 +273,8 @@ Definition main : M unit :=
     let* α0 : alloc.boxed.Box.t u32.t alloc.alloc.Global.t :=
       M.call
         ((alloc.boxed.Box.t u32.t alloc.alloc.Global.t)::["new"]
-          (Integer.of_Z 5)) in
-    M.alloc (α0, Integer.of_Z 3) in
+          ((Integer.of_Z 5) : u32.t)) in
+    M.alloc (α0, (Integer.of_Z 3) : u32.t) in
   let* _ : M.Val unit :=
     match_operator
       mutable_tuple
@@ -286,7 +288,7 @@ Definition main : M unit :=
             let* last := M.alloc (borrow_mut γ0_1) in
             let* _ : M.Val unit :=
               let* α0 : mut_ref u32.t := M.read last in
-              assign (deref α0) (Integer.of_Z 2) in
+              assign (deref α0) ((Integer.of_Z 2) : u32.t) in
             M.alloc tt
           end) :
           M (M.Val unit)

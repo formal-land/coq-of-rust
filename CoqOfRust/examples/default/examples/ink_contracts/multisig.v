@@ -454,7 +454,8 @@ Section Env.
 End Env.
 End Env.
 
-Definition MAX_OWNERS : M.Val u32.t := M.run (M.alloc (Integer.of_Z 50)).
+Definition MAX_OWNERS : M.Val u32.t :=
+  M.run (M.alloc ((Integer.of_Z 50) : u32.t)).
 
 Ltac TransactionId := exact u32.t.
 
@@ -1173,7 +1174,7 @@ Definition ensure_requirement_is_valid
         (UnOp.not
           (BinOp.Pure.and
             (BinOp.Pure.and
-              (BinOp.Pure.lt (Integer.of_Z 0) α0)
+              (BinOp.Pure.lt ((Integer.of_Z 0) : u32.t) α0)
               (BinOp.Pure.le α1 α2))
             (BinOp.Pure.le α3 α4))) in
     let* α6 : bool.t := M.read (use α5) in
@@ -1672,7 +1673,7 @@ Section Impl_multisig_Multisig_t.
           ((alloc.vec.Vec.t multisig.AccountId.t alloc.alloc.Global.t)::["len"]
             (borrow (multisig.Multisig.Get_owners (deref α0)))) in
       let* α2 : u32.t := M.cast α1 in
-      let* α3 : u32.t := BinOp.Panic.add α2 (Integer.of_Z 1) in
+      let* α3 : u32.t := BinOp.Panic.add α2 ((Integer.of_Z 1) : u32.t) in
       let* α4 : mut_ref multisig.Multisig.t := M.read self in
       let* α5 : u32.t :=
         M.read (multisig.Multisig.Get_requirement (deref α4)) in
@@ -1901,7 +1902,8 @@ Section Impl_multisig_Multisig_t.
                                     (multisig.Multisig.Get_confirmation_count
                                       (deref α0)))
                                   α1) in
-                            let* α3 : M.Val u32.t := M.alloc (Integer.of_Z 0) in
+                            let* α3 : M.Val u32.t :=
+                              M.alloc ((Integer.of_Z 0) : u32.t) in
                             let* α4 : u32.t := M.read (use α3) in
                             let* α5 : u32.t :=
                               M.call
@@ -1912,7 +1914,8 @@ Section Impl_multisig_Multisig_t.
                           let* _ : M.Val unit :=
                             let β : M.Val u32.t := count in
                             let* α0 := M.read β in
-                            let* α1 := BinOp.Panic.sub α0 (Integer.of_Z 1) in
+                            let* α1 :=
+                              BinOp.Panic.sub α0 ((Integer.of_Z 1) : u32.t) in
                             assign β α1 in
                           let* _ : M.Val (core.option.Option.t u32.t) :=
                             let* α0 : mut_ref multisig.Multisig.t :=
@@ -1989,7 +1992,7 @@ Section Impl_multisig_Multisig_t.
           ((alloc.vec.Vec.t multisig.AccountId.t alloc.alloc.Global.t)::["len"]
             (borrow (multisig.Multisig.Get_owners (deref α0)))) in
       let* α2 : u32.t := M.cast α1 in
-      let* α3 : u32.t := BinOp.Panic.sub α2 (Integer.of_Z 1) in
+      let* α3 : u32.t := BinOp.Panic.sub α2 ((Integer.of_Z 1) : u32.t) in
       M.alloc α3 in
     let* requirement : M.Val u32.t :=
       let* α0 : _ :=
@@ -2304,7 +2307,7 @@ Section Impl_multisig_Multisig_t.
           ((multisig.Mapping.t u32.t u32.t)::["get"]
             (borrow (multisig.Multisig.Get_confirmation_count (deref α0)))
             (borrow transaction)) in
-      let* α2 : M.Val u32.t := M.alloc (Integer.of_Z 0) in
+      let* α2 : M.Val u32.t := M.alloc ((Integer.of_Z 0) : u32.t) in
       let* α3 : u32.t := M.read (use α2) in
       let* α4 : u32.t :=
         M.call ((core.option.Option.t u32.t)::["unwrap_or"] α1 α3) in
@@ -2329,7 +2332,7 @@ Section Impl_multisig_Multisig_t.
         let* _ : M.Val unit :=
           let β : M.Val u32.t := count in
           let* α0 := M.read β in
-          let* α1 := BinOp.Panic.add α0 (Integer.of_Z 1) in
+          let* α1 := BinOp.Panic.add α0 ((Integer.of_Z 1) : u32.t) in
           assign β α1 in
         let* _ : M.Val (core.option.Option.t u32.t) :=
           let* α0 : mut_ref multisig.Multisig.t := M.read self in
@@ -2450,7 +2453,7 @@ Section Impl_multisig_Multisig_t.
     let* _ : M.Val unit :=
       let* α0 : mut_ref multisig.Multisig.t := M.read self in
       let* α1 : u32.t := M.read trans_id in
-      let* α2 : M.Val u32.t := M.alloc (Integer.of_Z 1) in
+      let* α2 : M.Val u32.t := M.alloc ((Integer.of_Z 1) : u32.t) in
       let* α3 : u32.t := M.read (use α2) in
       let* α4 : core.option.Option.t u32.t :=
         M.call (u32.t::["checked_add"] α1 α3) in
@@ -2927,7 +2930,7 @@ Section Impl_multisig_Multisig_t.
         let* _ : M.Val unit :=
           let β : M.Val u32.t := confirmation_count in
           let* α0 := M.read β in
-          let* α1 := BinOp.Panic.sub α0 (Integer.of_Z 1) in
+          let* α1 := BinOp.Panic.sub α0 ((Integer.of_Z 1) : u32.t) in
           assign β α1 in
         let* _ : M.Val (core.option.Option.t u32.t) :=
           let* α0 : mut_ref multisig.Multisig.t := M.read self in

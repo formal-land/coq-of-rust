@@ -84,7 +84,7 @@ Definition random_animal
     : M (alloc.boxed.Box.t _ (* dyn *) alloc.boxed.Box.Default.A) :=
   let* random_number := M.alloc random_number in
   let* α0 : f64.t := M.read random_number in
-  let* α1 : f64.t := M.read UnsupportedLiteral in
+  let* α1 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
   let* α2 : M.Val bool.t := M.alloc (BinOp.Pure.lt α0 α1) in
   let* α3 : bool.t := M.read (use α2) in
   let* α4 : M.Val (alloc.boxed.Box.t _ (* dyn *) alloc.alloc.Global.t) :=
@@ -136,7 +136,8 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* random_number : M.Val f64.t := M.copy UnsupportedLiteral in
+  let* random_number : M.Val f64.t :=
+    M.copy (UnsupportedLiteral : M.Val f64.t) in
   let* animal : M.Val (alloc.boxed.Box.t _ (* dyn *) alloc.alloc.Global.t) :=
     let* α0 : f64.t := M.read random_number in
     let* α1 : alloc.boxed.Box.t _ (* dyn *) alloc.alloc.Global.t :=

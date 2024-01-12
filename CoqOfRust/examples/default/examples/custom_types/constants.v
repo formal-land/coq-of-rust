@@ -3,7 +3,8 @@ Require Import CoqOfRust.CoqOfRust.
 
 Definition LANGUAGE : M.Val (ref str.t) := M.run (M.pure (mk_str "Rust")).
 
-Definition THRESHOLD : M.Val i32.t := M.run (M.alloc (Integer.of_Z 10)).
+Definition THRESHOLD : M.Val i32.t :=
+  M.run (M.alloc ((Integer.of_Z 10) : i32.t)).
 
 (*
 fn is_big(n: i32) -> bool {
@@ -33,7 +34,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* n : M.Val i32.t := M.alloc (Integer.of_Z 16) in
+  let* n : M.Val i32.t := M.alloc ((Integer.of_Z 16) : i32.t) in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "This is ") in

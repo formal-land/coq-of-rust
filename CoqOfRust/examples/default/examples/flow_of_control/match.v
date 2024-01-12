@@ -34,7 +34,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* number : M.Val i32.t := M.alloc (Integer.of_Z 13) in
+  let* number : M.Val i32.t := M.alloc ((Integer.of_Z 13) : i32.t) in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "Tell me about ") in
@@ -179,8 +179,8 @@ Definition main : M unit :=
       match_operator
         boolean
         [
-          fun γ => (M.alloc (Integer.of_Z 0)) : M (M.Val i32.t);
-          fun γ => (M.alloc (Integer.of_Z 1)) : M (M.Val i32.t)
+          fun γ => (M.alloc ((Integer.of_Z 0) : i32.t)) : M (M.Val i32.t);
+          fun γ => (M.alloc ((Integer.of_Z 1) : i32.t)) : M (M.Val i32.t)
         ] in
     M.copy α0 in
   let* _ : M.Val unit :=

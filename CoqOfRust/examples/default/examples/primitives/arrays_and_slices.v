@@ -22,7 +22,7 @@ Definition analyze_slice (slice : ref (slice i32.t)) : M unit :=
       let* α6 : core.fmt.rt.Argument.t :=
         M.call
           (core.fmt.rt.Argument.t::["new_display"]
-            (borrow (deref α5)[M.alloc (Integer.of_Z 0)])) in
+            (borrow (deref α5)[M.alloc ((Integer.of_Z 0) : usize.t)])) in
       let* α7 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α6 ] in
       let* α8 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
         M.alloc (borrow α7) in
@@ -114,13 +114,14 @@ Definition main : M unit :=
   let* xs : M.Val (array i32.t) :=
     M.alloc
       [
-        Integer.of_Z 1;
-        Integer.of_Z 2;
-        Integer.of_Z 3;
-        Integer.of_Z 4;
-        Integer.of_Z 5
+        (Integer.of_Z 1) : i32.t;
+        (Integer.of_Z 2) : i32.t;
+        (Integer.of_Z 3) : i32.t;
+        (Integer.of_Z 4) : i32.t;
+        (Integer.of_Z 5) : i32.t
       ] in
-  let* ys : M.Val (array i32.t) := M.alloc (repeat (Integer.of_Z 0) 500) in
+  let* ys : M.Val (array i32.t) :=
+    M.alloc (repeat ((Integer.of_Z 0) : i32.t) 500) in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "first element of the array: ") in
@@ -133,7 +134,7 @@ Definition main : M unit :=
       let* α5 : core.fmt.rt.Argument.t :=
         M.call
           (core.fmt.rt.Argument.t::["new_display"]
-            (borrow xs[M.alloc (Integer.of_Z 0)])) in
+            (borrow xs[M.alloc ((Integer.of_Z 0) : usize.t)])) in
       let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
       let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
         M.alloc (borrow α6) in
@@ -156,7 +157,7 @@ Definition main : M unit :=
       let* α5 : core.fmt.rt.Argument.t :=
         M.call
           (core.fmt.rt.Argument.t::["new_display"]
-            (borrow xs[M.alloc (Integer.of_Z 1)])) in
+            (borrow xs[M.alloc ((Integer.of_Z 1) : usize.t)])) in
       let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
       let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
         M.alloc (borrow α6) in
@@ -260,8 +261,8 @@ Definition main : M unit :=
         (α0
           (borrow ys)
           {|
-            core.ops.range.Range.start := Integer.of_Z 1;
-            core.ops.range.Range.end_ := Integer.of_Z 4;
+            core.ops.range.Range.start := (Integer.of_Z 1) : usize.t;
+            core.ops.range.Range.end_ := (Integer.of_Z 4) : usize.t;
           |}) in
     let* α2 : unit := M.call (arrays_and_slices.analyze_slice α1) in
     M.alloc α2 in
@@ -386,12 +387,12 @@ Definition main : M unit :=
   let* α1 : M.Val (ref (array i32.t)) := M.alloc (borrow xs) in
   let* α2 : ref (slice i32.t) := M.read (pointer_coercion "Unsize" α1) in
   let* α3 : usize.t := M.call ((slice i32.t)::["len"] α2) in
-  let* α4 : usize.t := BinOp.Panic.add α3 (Integer.of_Z 1) in
+  let* α4 : usize.t := BinOp.Panic.add α3 ((Integer.of_Z 1) : usize.t) in
   let* α5 : core.ops.range.Range.t usize.t :=
     M.call
       (α0
         {|
-          core.ops.range.Range.start := Integer.of_Z 0;
+          core.ops.range.Range.start := (Integer.of_Z 0) : usize.t;
           core.ops.range.Range.end_ := α4;
         |}) in
   let* α6 : M.Val (core.ops.range.Range.t usize.t) := M.alloc α5 in

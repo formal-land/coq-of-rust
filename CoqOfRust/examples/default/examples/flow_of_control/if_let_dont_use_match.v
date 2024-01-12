@@ -21,7 +21,7 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
   let* optional : M.Val (core.option.Option.t i32.t) :=
-    M.alloc (core.option.Option.Some (Integer.of_Z 7)) in
+    M.alloc (core.option.Option.Some ((Integer.of_Z 7) : i32.t)) in
   let* _ : M.Val unit :=
     match_operator
       optional

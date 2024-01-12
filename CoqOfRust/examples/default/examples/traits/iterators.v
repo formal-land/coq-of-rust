@@ -155,8 +155,8 @@ fn fibonacci() -> Fibonacci {
 Definition fibonacci : M iterators.Fibonacci.t :=
   M.pure
     {|
-      iterators.Fibonacci.curr := Integer.of_Z 0;
-      iterators.Fibonacci.next := Integer.of_Z 1;
+      iterators.Fibonacci.curr := (Integer.of_Z 0) : u32.t;
+      iterators.Fibonacci.next := (Integer.of_Z 1) : u32.t;
     |}.
 
 (*
@@ -203,8 +203,8 @@ Definition main : M unit :=
   let* sequence : M.Val (core.ops.range.Range.t i32.t) :=
     M.alloc
       {|
-        core.ops.range.Range.start := Integer.of_Z 0;
-        core.ops.range.Range.end_ := Integer.of_Z 3;
+        core.ops.range.Range.start := (Integer.of_Z 0) : i32.t;
+        core.ops.range.Range.end_ := (Integer.of_Z 3) : i32.t;
       |} in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
@@ -360,8 +360,8 @@ Definition main : M unit :=
       M.call
         (α0
           {|
-            core.ops.range.Range.start := Integer.of_Z 0;
-            core.ops.range.Range.end_ := Integer.of_Z 3;
+            core.ops.range.Range.start := (Integer.of_Z 0) : i32.t;
+            core.ops.range.Range.end_ := (Integer.of_Z 3) : i32.t;
           |}) in
     let* α2 : M.Val (core.ops.range.Range.t i32.t) := M.alloc α1 in
     let* α3 : M.Val unit :=
@@ -465,7 +465,7 @@ Definition main : M unit :=
           (Trait := ℐ))) in
     let* α2 : iterators.Fibonacci.t := M.call iterators.fibonacci in
     let* α3 : core.iter.adapters.take.Take.t iterators.Fibonacci.t :=
-      M.call (α1 α2 (Integer.of_Z 4)) in
+      M.call (α1 α2 ((Integer.of_Z 4) : usize.t)) in
     let* α4 : core.iter.adapters.take.Take.t iterators.Fibonacci.t :=
       M.call (α0 α3) in
     let* α5 : M.Val (core.iter.adapters.take.Take.t iterators.Fibonacci.t) :=
@@ -579,11 +579,11 @@ Definition main : M unit :=
           (Trait := ℐ))) in
     let* α3 : iterators.Fibonacci.t := M.call iterators.fibonacci in
     let* α4 : core.iter.adapters.skip.Skip.t iterators.Fibonacci.t :=
-      M.call (α2 α3 (Integer.of_Z 4)) in
+      M.call (α2 α3 ((Integer.of_Z 4) : usize.t)) in
     let* α5 :
         core.iter.adapters.take.Take.t
           (core.iter.adapters.skip.Skip.t iterators.Fibonacci.t) :=
-      M.call (α1 α4 (Integer.of_Z 4)) in
+      M.call (α1 α4 ((Integer.of_Z 4) : usize.t)) in
     let* α6 :
         core.iter.adapters.take.Take.t
           (core.iter.adapters.skip.Skip.t iterators.Fibonacci.t) :=
@@ -671,7 +671,12 @@ Definition main : M unit :=
     M.pure (use α8) in
   let* array : M.Val (array u32.t) :=
     M.alloc
-      [ Integer.of_Z 1; Integer.of_Z 3; Integer.of_Z 3; Integer.of_Z 7 ] in
+      [
+        (Integer.of_Z 1) : u32.t;
+        (Integer.of_Z 3) : u32.t;
+        (Integer.of_Z 3) : u32.t;
+        (Integer.of_Z 7) : u32.t
+      ] in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "Iterate the following array ") in

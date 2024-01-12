@@ -76,7 +76,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* x : M.Val u32.t := M.alloc (Integer.of_Z 5) in
+  let* x : M.Val u32.t := M.alloc ((Integer.of_Z 5) : u32.t) in
   let* y : M.Val u32.t := M.copy x in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
@@ -106,7 +106,7 @@ Definition main : M unit :=
     let* α0 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t :=
       M.call
         ((alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"]
-          (Integer.of_Z 5)) in
+          ((Integer.of_Z 5) : i32.t)) in
     M.alloc α0 in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=

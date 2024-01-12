@@ -22,14 +22,14 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* a : M.Val u64.t := M.alloc (Integer.of_Z 4) in
-  let* b : M.Val u64.t := M.alloc (Integer.of_Z 4) in
-  let* c : M.Val u64.t := M.alloc (Integer.of_Z 4) in
+  let* a : M.Val u64.t := M.alloc ((Integer.of_Z 4) : u64.t) in
+  let* b : M.Val u64.t := M.alloc ((Integer.of_Z 4) : u64.t) in
+  let* c : M.Val u64.t := M.alloc ((Integer.of_Z 4) : u64.t) in
   let* _ : M.Val unit :=
     let _ : M.Val unit := InlineAssembly in
     M.alloc tt in
   let* _ : M.Val unit :=
-    let* α0 : M.Val u64.t := M.alloc (Integer.of_Z 12) in
+    let* α0 : M.Val u64.t := M.alloc ((Integer.of_Z 12) : u64.t) in
     let* α1 : M.Val ((ref u64.t) * (ref u64.t)) :=
       M.alloc (borrow a, borrow α0) in
     match_operator

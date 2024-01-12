@@ -80,9 +80,9 @@ Definition main : M unit :=
   let* point : M.Val scoping_rules_borrowing_aliasing.Point.t :=
     M.alloc
       {|
-        scoping_rules_borrowing_aliasing.Point.x := Integer.of_Z 0;
-        scoping_rules_borrowing_aliasing.Point.y := Integer.of_Z 0;
-        scoping_rules_borrowing_aliasing.Point.z := Integer.of_Z 0;
+        scoping_rules_borrowing_aliasing.Point.x := (Integer.of_Z 0) : i32.t;
+        scoping_rules_borrowing_aliasing.Point.y := (Integer.of_Z 0) : i32.t;
+        scoping_rules_borrowing_aliasing.Point.z := (Integer.of_Z 0) : i32.t;
       |} in
   let* borrowed_point : M.Val (ref scoping_rules_borrowing_aliasing.Point.t) :=
     M.alloc (borrow point) in
@@ -176,19 +176,19 @@ Definition main : M unit :=
       M.read mutable_borrow in
     assign
       (scoping_rules_borrowing_aliasing.Point.Get_x (deref α0))
-      (Integer.of_Z 5) in
+      ((Integer.of_Z 5) : i32.t) in
   let* _ : M.Val unit :=
     let* α0 : mut_ref scoping_rules_borrowing_aliasing.Point.t :=
       M.read mutable_borrow in
     assign
       (scoping_rules_borrowing_aliasing.Point.Get_y (deref α0))
-      (Integer.of_Z 2) in
+      ((Integer.of_Z 2) : i32.t) in
   let* _ : M.Val unit :=
     let* α0 : mut_ref scoping_rules_borrowing_aliasing.Point.t :=
       M.read mutable_borrow in
     assign
       (scoping_rules_borrowing_aliasing.Point.Get_z (deref α0))
-      (Integer.of_Z 1) in
+      ((Integer.of_Z 1) : i32.t) in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "Point has coordinates: (") in

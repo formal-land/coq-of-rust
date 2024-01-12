@@ -172,7 +172,7 @@ Definition main : M unit :=
     let* α1 : ref str.t := M.read (mk_str "Peter") in
     let* α2 : alloc.string.String.t := M.call (α0 α1) in
     M.alloc α2 in
-  let* age : M.Val u8.t := M.alloc (Integer.of_Z 27) in
+  let* age : M.Val u8.t := M.alloc ((Integer.of_Z 27) : u8.t) in
   let* peter : M.Val structures.Person.t :=
     let* α0 : alloc.string.String.t := M.read name in
     let* α1 : u8.t := M.read age in
@@ -199,8 +199,8 @@ Definition main : M unit :=
       M.alloc α10 in
     M.alloc tt in
   let* point : M.Val structures.Point.t :=
-    let* α0 : f32.t := M.read UnsupportedLiteral in
-    let* α1 : f32.t := M.read UnsupportedLiteral in
+    let* α0 : f32.t := M.read (UnsupportedLiteral : M.Val f32.t) in
+    let* α1 : f32.t := M.read (UnsupportedLiteral : M.Val f32.t) in
     M.alloc {| structures.Point.x := α0; structures.Point.y := α1; |} in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
@@ -231,7 +231,7 @@ Definition main : M unit :=
       M.alloc α12 in
     M.alloc tt in
   let* bottom_right : M.Val structures.Point.t :=
-    let* α0 : f32.t := M.read UnsupportedLiteral in
+    let* α0 : f32.t := M.read (UnsupportedLiteral : M.Val f32.t) in
     M.alloc {| structures.Point.x := α0; |} in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
@@ -286,8 +286,8 @@ Definition main : M unit :=
             let* _unit : M.Val structures.Unit.t :=
               M.alloc structures.Unit.Build in
             let* pair : M.Val structures.Pair.t :=
-              let* α0 : f32.t := M.read UnsupportedLiteral in
-              M.alloc (structures.Pair.Build_t (Integer.of_Z 1) α0) in
+              let* α0 : f32.t := M.read (UnsupportedLiteral : M.Val f32.t) in
+              M.alloc (structures.Pair.Build_t ((Integer.of_Z 1) : i32.t) α0) in
             let* _ : M.Val unit :=
               let* _ : M.Val unit :=
                 let* α0 : ref str.t := M.read (mk_str "pair contains ") in

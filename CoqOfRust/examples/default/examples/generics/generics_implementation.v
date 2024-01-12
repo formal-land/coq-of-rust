@@ -82,10 +82,12 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
   let* x : M.Val generics_implementation.Val.t :=
-    let* α0 : f64.t := M.read UnsupportedLiteral in
+    let* α0 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
     M.alloc {| generics_implementation.Val.val := α0; |} in
   let* y : M.Val (generics_implementation.GenVal.t i32.t) :=
-    M.alloc {| generics_implementation.GenVal.gen_val := Integer.of_Z 3; |} in
+    M.alloc
+      {| generics_implementation.GenVal.gen_val := (Integer.of_Z 3) : i32.t;
+      |} in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "") in

@@ -44,7 +44,7 @@ Definition main : M unit :=
             (Idx := usize.t)
             (Trait := ℐ))) in
       let* α6 : ref alloc.string.String.t :=
-        M.call (α5 (borrow args) (Integer.of_Z 0)) in
+        M.call (α5 (borrow args) ((Integer.of_Z 0) : usize.t)) in
       let* α7 : core.fmt.rt.Argument.t :=
         M.call (core.fmt.rt.Argument.t::["new_display"] α6) in
       let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
@@ -71,7 +71,7 @@ Definition main : M unit :=
         M.call
           ((alloc.vec.Vec.t alloc.string.String.t alloc.alloc.Global.t)::["len"]
             (borrow args)) in
-      let* α7 : usize.t := BinOp.Panic.sub α6 (Integer.of_Z 1) in
+      let* α7 : usize.t := BinOp.Panic.sub α6 ((Integer.of_Z 1) : usize.t) in
       let* α8 : M.Val usize.t := M.alloc α7 in
       let* α9 : core.fmt.rt.Argument.t :=
         M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow α8)) in
@@ -85,7 +85,8 @@ Definition main : M unit :=
         M.call
           (α10
             (borrow args)
-            {| core.ops.range.RangeFrom.start := Integer.of_Z 1; |}) in
+            {| core.ops.range.RangeFrom.start := (Integer.of_Z 1) : usize.t;
+            |}) in
       let* α12 : M.Val (ref (slice alloc.string.String.t)) := M.alloc α11 in
       let* α13 : core.fmt.rt.Argument.t :=
         M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow α12)) in

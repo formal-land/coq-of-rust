@@ -29,7 +29,7 @@ Section Impl_scoping_rules_lifetimes_methods_Owner_t.
           M.read self in
         M.pure (scoping_rules_lifetimes_methods.Owner.Get_0 (deref α0)) in
       let* α0 := M.read β in
-      let* α1 := BinOp.Panic.add α0 (Integer.of_Z 1) in
+      let* α1 := BinOp.Panic.add α0 ((Integer.of_Z 1) : i32.t) in
       assign β α1 in
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
@@ -92,7 +92,9 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
   let* owner : M.Val scoping_rules_lifetimes_methods.Owner.t :=
-    M.alloc (scoping_rules_lifetimes_methods.Owner.Build_t (Integer.of_Z 18)) in
+    M.alloc
+      (scoping_rules_lifetimes_methods.Owner.Build_t
+        ((Integer.of_Z 18) : i32.t)) in
   let* _ : M.Val unit :=
     let* α0 : unit :=
       M.call

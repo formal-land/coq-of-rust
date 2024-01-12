@@ -32,8 +32,8 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
   let* z : M.Val foreign_function_interface.Complex.t :=
-    let* α0 : f32.t := M.read UnsupportedLiteral in
-    let* α1 : f32.t := M.read UnsupportedLiteral in
+    let* α0 : f32.t := M.read (UnsupportedLiteral : M.Val f32.t) in
+    let* α1 : f32.t := M.read (UnsupportedLiteral : M.Val f32.t) in
     M.alloc
       {|
         foreign_function_interface.Complex.re := α0;
@@ -178,7 +178,7 @@ Section Impl_core_fmt_Debug_for_foreign_function_interface_Complex_t.
     let* α0 : ref foreign_function_interface.Complex.t := M.read self in
     let* α1 : f32.t :=
       M.read (foreign_function_interface.Complex.Get_im (deref α0)) in
-    let* α2 : f32.t := M.read UnsupportedLiteral in
+    let* α2 : f32.t := M.read (UnsupportedLiteral : M.Val f32.t) in
     let* α3 : M.Val bool.t := M.alloc (BinOp.Pure.lt α1 α2) in
     let* α4 : bool.t := M.read (use α3) in
     let* α5 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=

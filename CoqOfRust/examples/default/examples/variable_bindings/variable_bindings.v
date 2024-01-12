@@ -25,7 +25,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* an_integer : M.Val u32.t := M.alloc (Integer.of_Z 1) in
+  let* an_integer : M.Val u32.t := M.alloc ((Integer.of_Z 1) : u32.t) in
   let* a_boolean : M.Val bool.t := M.alloc true in
   let* unit_ : M.Val unit := M.alloc tt in
   let* copied_integer : M.Val u32.t := M.copy an_integer in
@@ -93,7 +93,8 @@ Definition main : M unit :=
       let* α10 : unit := M.call (std.io.stdio._print α9) in
       M.alloc α10 in
     M.alloc tt in
-  let* _unused_variable : M.Val u32.t := M.alloc (Integer.of_Z 3) in
-  let* _noisy_unused_variable : M.Val u32.t := M.alloc (Integer.of_Z 2) in
+  let* _unused_variable : M.Val u32.t := M.alloc ((Integer.of_Z 3) : u32.t) in
+  let* _noisy_unused_variable : M.Val u32.t :=
+    M.alloc ((Integer.of_Z 2) : u32.t) in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.

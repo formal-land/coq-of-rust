@@ -120,7 +120,7 @@ Definition main : M unit :=
     M.alloc
       {|
         disambiguating_overlapping_traits.Form.username := α2;
-        disambiguating_overlapping_traits.Form.age := Integer.of_Z 28;
+        disambiguating_overlapping_traits.Form.age := (Integer.of_Z 28) : u8.t;
       |} in
   let* username : M.Val alloc.string.String.t :=
     let* α0 : _ :=
@@ -195,7 +195,7 @@ Definition main : M unit :=
     let* α1 : u8.t := M.call (α0 (borrow form)) in
     M.alloc α1 in
   let* _ : M.Val unit :=
-    let* α0 : M.Val u8.t := M.alloc (Integer.of_Z 28) in
+    let* α0 : M.Val u8.t := M.alloc ((Integer.of_Z 28) : u8.t) in
     let* α1 : M.Val ((ref u8.t) * (ref u8.t)) :=
       M.alloc (borrow α0, borrow age) in
     match_operator

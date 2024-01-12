@@ -128,7 +128,12 @@ fn main() {
 Definition main : M unit :=
   let* v1 : M.Val (alloc.vec.Vec.t i32.t alloc.alloc.Global.t) :=
     let* α0 : M.Val (array i32.t) :=
-      M.alloc [ Integer.of_Z 1; Integer.of_Z 2; Integer.of_Z 3 ] in
+      M.alloc
+        [
+          (Integer.of_Z 1) : i32.t;
+          (Integer.of_Z 2) : i32.t;
+          (Integer.of_Z 3) : i32.t
+        ] in
     let* α1 : M.Val (alloc.boxed.Box.t (array i32.t) alloc.alloc.Global.t) :=
       M.call ((alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α0) in
     let* α2 : alloc.boxed.Box.t (slice i32.t) alloc.alloc.Global.t :=
@@ -138,7 +143,7 @@ Definition main : M unit :=
     M.alloc α3 in
   let* v2 : M.Val (alloc.vec.Vec.t i32.t alloc.alloc.Global.t) :=
     let* α0 : M.Val (array i32.t) :=
-      M.alloc [ Integer.of_Z 4; Integer.of_Z 5 ] in
+      M.alloc [ (Integer.of_Z 4) : i32.t; (Integer.of_Z 5) : i32.t ] in
     let* α1 : M.Val (alloc.boxed.Box.t (array i32.t) alloc.alloc.Global.t) :=
       M.call ((alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α0) in
     let* α2 : alloc.boxed.Box.t (slice i32.t) alloc.alloc.Global.t :=
@@ -154,7 +159,7 @@ Definition main : M unit :=
     M.alloc α2 in
   let* _ : M.Val unit :=
     let* α0 : M.Val (core.option.Option.t i32.t) :=
-      M.alloc (core.option.Option.Some (Integer.of_Z 1)) in
+      M.alloc (core.option.Option.Some ((Integer.of_Z 1) : i32.t)) in
     let* α1 : _ :=
       ltac:(M.get_method (fun ℐ =>
         core.iter.traits.iterator.Iterator.next
@@ -217,7 +222,7 @@ Definition main : M unit :=
       ] in
   let* _ : M.Val unit :=
     let* α0 : M.Val (core.option.Option.t i32.t) :=
-      M.alloc (core.option.Option.Some (Integer.of_Z 2)) in
+      M.alloc (core.option.Option.Some ((Integer.of_Z 2) : i32.t)) in
     let* α1 : _ :=
       ltac:(M.get_method (fun ℐ =>
         core.iter.traits.iterator.Iterator.next
@@ -280,7 +285,7 @@ Definition main : M unit :=
       ] in
   let* _ : M.Val unit :=
     let* α0 : M.Val (core.option.Option.t i32.t) :=
-      M.alloc (core.option.Option.Some (Integer.of_Z 3)) in
+      M.alloc (core.option.Option.Some ((Integer.of_Z 3) : i32.t)) in
     let* α1 : _ :=
       ltac:(M.get_method (fun ℐ =>
         core.iter.traits.iterator.Iterator.next
@@ -343,7 +348,7 @@ Definition main : M unit :=
       ] in
   let* _ : M.Val unit :=
     let* α0 : M.Val (core.option.Option.t i32.t) :=
-      M.alloc (core.option.Option.Some (Integer.of_Z 4)) in
+      M.alloc (core.option.Option.Some ((Integer.of_Z 4) : i32.t)) in
     let* α1 : _ :=
       ltac:(M.get_method (fun ℐ =>
         core.iter.traits.iterator.Iterator.next
@@ -406,7 +411,7 @@ Definition main : M unit :=
       ] in
   let* _ : M.Val unit :=
     let* α0 : M.Val (core.option.Option.t i32.t) :=
-      M.alloc (core.option.Option.Some (Integer.of_Z 5)) in
+      M.alloc (core.option.Option.Some ((Integer.of_Z 5) : i32.t)) in
     let* α1 : _ :=
       ltac:(M.get_method (fun ℐ =>
         core.iter.traits.iterator.Iterator.next

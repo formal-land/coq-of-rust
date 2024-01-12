@@ -386,7 +386,7 @@ Section Impl_contract_transfer_GiveMe_t.
       let* α3 : u128.t :=
         M.call (contract_transfer.Env.t::["transferred_value"] (borrow α2)) in
       let* α4 : M.Val bool.t :=
-        M.alloc (UnOp.not (BinOp.Pure.eq α3 (Integer.of_Z 10))) in
+        M.alloc (UnOp.not (BinOp.Pure.eq α3 ((Integer.of_Z 10) : u128.t))) in
       let* α5 : bool.t := M.read (use α4) in
       if α5 then
         let* α0 : ref str.t := M.read (mk_str "payment was not ten") in

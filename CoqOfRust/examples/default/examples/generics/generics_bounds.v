@@ -183,16 +183,16 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
   let* rectangle : M.Val generics_bounds.Rectangle.t :=
-    let* α0 : f64.t := M.read UnsupportedLiteral in
-    let* α1 : f64.t := M.read UnsupportedLiteral in
+    let* α0 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
+    let* α1 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
     M.alloc
       {|
         generics_bounds.Rectangle.length := α0;
         generics_bounds.Rectangle.height := α1;
       |} in
   let* _triangle : M.Val generics_bounds.Triangle.t :=
-    let* α0 : f64.t := M.read UnsupportedLiteral in
-    let* α1 : f64.t := M.read UnsupportedLiteral in
+    let* α0 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
+    let* α1 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
     M.alloc
       {|
         generics_bounds.Triangle.length := α0;

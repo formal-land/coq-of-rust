@@ -148,7 +148,7 @@ Definition main : M unit :=
       let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
       let* α4 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α3) in
-      let* α5 : M.Val i32.t := M.alloc (Integer.of_Z 69420) in
+      let* α5 : M.Val i32.t := M.alloc ((Integer.of_Z 69420) : i32.t) in
       let* α6 : core.fmt.rt.Argument.t :=
         M.call (core.fmt.rt.Argument.t::["new_binary"] (borrow α5)) in
       let* α7 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α6 ] in
@@ -170,7 +170,7 @@ Definition main : M unit :=
       let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
       let* α4 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α3) in
-      let* α5 : M.Val i32.t := M.alloc (Integer.of_Z 69420) in
+      let* α5 : M.Val i32.t := M.alloc ((Integer.of_Z 69420) : i32.t) in
       let* α6 : core.fmt.rt.Argument.t :=
         M.call (core.fmt.rt.Argument.t::["new_octal"] (borrow α5)) in
       let* α7 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α6 ] in
@@ -192,7 +192,7 @@ Definition main : M unit :=
       let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
       let* α4 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α3) in
-      let* α5 : M.Val i32.t := M.alloc (Integer.of_Z 69420) in
+      let* α5 : M.Val i32.t := M.alloc ((Integer.of_Z 69420) : i32.t) in
       let* α6 : core.fmt.rt.Argument.t :=
         M.call (core.fmt.rt.Argument.t::["new_lower_hex"] (borrow α5)) in
       let* α7 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α6 ] in
@@ -214,7 +214,7 @@ Definition main : M unit :=
       let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
       let* α4 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α3) in
-      let* α5 : M.Val i32.t := M.alloc (Integer.of_Z 69420) in
+      let* α5 : M.Val i32.t := M.alloc ((Integer.of_Z 69420) : i32.t) in
       let* α6 : core.fmt.rt.Argument.t :=
         M.call (core.fmt.rt.Argument.t::["new_upper_hex"] (borrow α5)) in
       let* α7 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α6 ] in
@@ -236,7 +236,7 @@ Definition main : M unit :=
       let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
       let* α4 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α3) in
-      let* α5 : M.Val i32.t := M.alloc (Integer.of_Z 1) in
+      let* α5 : M.Val i32.t := M.alloc ((Integer.of_Z 1) : i32.t) in
       let* α6 : core.fmt.rt.Argument.t :=
         M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α5)) in
       let* α7 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α6 ] in
@@ -247,12 +247,12 @@ Definition main : M unit :=
       let* α10 : core.fmt.rt.Placeholder.t :=
         M.call
           (core.fmt.rt.Placeholder.t::["new"]
-            (Integer.of_Z 0)
+            ((Integer.of_Z 0) : usize.t)
             " "%char
             core.fmt.rt.Alignment.Right
-            (Integer.of_Z 0)
+            ((Integer.of_Z 0) : u32.t)
             core.fmt.rt.Count.Implied
-            (core.fmt.rt.Count.Is (Integer.of_Z 5))) in
+            (core.fmt.rt.Count.Is ((Integer.of_Z 5) : usize.t))) in
       let* α11 : M.Val (array core.fmt.rt.Placeholder.t) := M.alloc [ α10 ] in
       let* α12 : M.Val (ref (array core.fmt.rt.Placeholder.t)) :=
         M.alloc (borrow α11) in
@@ -274,7 +274,7 @@ Definition main : M unit :=
       let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
       let* α4 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α3) in
-      let* α5 : M.Val i32.t := M.alloc (Integer.of_Z 1) in
+      let* α5 : M.Val i32.t := M.alloc ((Integer.of_Z 1) : i32.t) in
       let* α6 : core.fmt.rt.Argument.t :=
         M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α5)) in
       let* α7 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α6 ] in
@@ -285,12 +285,12 @@ Definition main : M unit :=
       let* α10 : core.fmt.rt.Placeholder.t :=
         M.call
           (core.fmt.rt.Placeholder.t::["new"]
-            (Integer.of_Z 0)
+            ((Integer.of_Z 0) : usize.t)
             "0"%char
             core.fmt.rt.Alignment.Left
-            (Integer.of_Z 0)
+            ((Integer.of_Z 0) : u32.t)
             core.fmt.rt.Count.Implied
-            (core.fmt.rt.Count.Is (Integer.of_Z 5))) in
+            (core.fmt.rt.Count.Is ((Integer.of_Z 5) : usize.t))) in
       let* α11 : M.Val (array core.fmt.rt.Placeholder.t) := M.alloc [ α10 ] in
       let* α12 : M.Val (ref (array core.fmt.rt.Placeholder.t)) :=
         M.alloc (borrow α11) in
@@ -312,10 +312,10 @@ Definition main : M unit :=
       let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
       let* α4 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α3) in
-      let* α5 : M.Val i32.t := M.alloc (Integer.of_Z 1) in
+      let* α5 : M.Val i32.t := M.alloc ((Integer.of_Z 1) : i32.t) in
       let* α6 : core.fmt.rt.Argument.t :=
         M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α5)) in
-      let* α7 : M.Val usize.t := M.alloc (Integer.of_Z 5) in
+      let* α7 : M.Val usize.t := M.alloc ((Integer.of_Z 5) : usize.t) in
       let* α8 : core.fmt.rt.Argument.t :=
         M.call (core.fmt.rt.Argument.t::["from_usize"] (borrow α7)) in
       let* α9 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α6; α8 ] in
@@ -326,12 +326,12 @@ Definition main : M unit :=
       let* α12 : core.fmt.rt.Placeholder.t :=
         M.call
           (core.fmt.rt.Placeholder.t::["new"]
-            (Integer.of_Z 0)
+            ((Integer.of_Z 0) : usize.t)
             "0"%char
             core.fmt.rt.Alignment.Right
-            (Integer.of_Z 0)
+            ((Integer.of_Z 0) : u32.t)
             core.fmt.rt.Count.Implied
-            (core.fmt.rt.Count.Param (Integer.of_Z 1))) in
+            (core.fmt.rt.Count.Param ((Integer.of_Z 1) : usize.t))) in
       let* α13 : M.Val (array core.fmt.rt.Placeholder.t) := M.alloc [ α12 ] in
       let* α14 : M.Val (ref (array core.fmt.rt.Placeholder.t)) :=
         M.alloc (borrow α13) in
@@ -362,8 +362,8 @@ Definition main : M unit :=
       let* α8 : unit := M.call (std.io.stdio._print α7) in
       M.alloc α8 in
     M.alloc tt in
-  let* number : M.Val f64.t := M.copy UnsupportedLiteral in
-  let* width : M.Val usize.t := M.alloc (Integer.of_Z 5) in
+  let* number : M.Val f64.t := M.copy (UnsupportedLiteral : M.Val f64.t) in
+  let* width : M.Val usize.t := M.alloc ((Integer.of_Z 5) : usize.t) in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "") in
@@ -385,12 +385,12 @@ Definition main : M unit :=
       let* α10 : core.fmt.rt.Placeholder.t :=
         M.call
           (core.fmt.rt.Placeholder.t::["new"]
-            (Integer.of_Z 0)
+            ((Integer.of_Z 0) : usize.t)
             " "%char
             core.fmt.rt.Alignment.Right
-            (Integer.of_Z 0)
+            ((Integer.of_Z 0) : u32.t)
             core.fmt.rt.Count.Implied
-            (core.fmt.rt.Count.Param (Integer.of_Z 1))) in
+            (core.fmt.rt.Count.Param ((Integer.of_Z 1) : usize.t))) in
       let* α11 : M.Val (array core.fmt.rt.Placeholder.t) := M.alloc [ α10 ] in
       let* α12 : M.Val (ref (array core.fmt.rt.Placeholder.t)) :=
         M.alloc (borrow α11) in

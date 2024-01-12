@@ -285,7 +285,7 @@ Section Impl_constructors_return_value_ConstructorsReturnValue_t.
           (T := array u8.t)
           (Trait := ℐ))) in
     let* α2 : constructors_return_value.AccountId.t :=
-      M.call (α1 (repeat (Integer.of_Z 0) 32)) in
+      M.call (α1 (repeat ((Integer.of_Z 0) : u8.t) 32)) in
     let* α3 :
         M.Val
           (core.result.Result.t
@@ -346,7 +346,7 @@ Section Impl_constructors_return_value_ConstructorsReturnValue_t.
                 (T := array u8.t)
                 (Trait := ℐ))) in
           let* α1 : constructors_return_value.AccountId.t :=
-            M.call (α0 (repeat (Integer.of_Z 0) 32)) in
+            M.call (α0 (repeat ((Integer.of_Z 0) : u8.t) 32)) in
           M.alloc (core.result.Result.Ok (core.result.Result.Ok α1))
         else
           M.alloc

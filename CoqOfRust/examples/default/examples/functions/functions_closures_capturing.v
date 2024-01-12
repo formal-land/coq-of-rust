@@ -126,13 +126,13 @@ Definition main : M unit :=
     let* α1 : unit := M.call (α0 (borrow print) tt) in
     M.alloc α1 in
   let* _color_moved : M.Val alloc.string.String.t := M.copy color in
-  let* count : M.Val i32.t := M.alloc (Integer.of_Z 0) in
+  let* count : M.Val i32.t := M.alloc ((Integer.of_Z 0) : i32.t) in
   let* inc : M.Val (unit -> M unit) :=
     M.alloc
       ((let* _ : M.Val unit :=
         let β : M.Val i32.t := count in
         let* α0 := M.read β in
-        let* α1 := BinOp.Panic.add α0 (Integer.of_Z 1) in
+        let* α1 := BinOp.Panic.add α0 ((Integer.of_Z 1) : i32.t) in
         assign β α1 in
       let* _ : M.Val unit :=
         let* _ : M.Val unit :=
@@ -182,7 +182,7 @@ Definition main : M unit :=
     let* α0 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t :=
       M.call
         ((alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"]
-          (Integer.of_Z 3)) in
+          ((Integer.of_Z 3) : i32.t)) in
     M.alloc α0 in
   let* consume : M.Val (unit -> M unit) :=
     M.alloc

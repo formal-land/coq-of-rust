@@ -37,7 +37,7 @@ Section Impl_generics_new_type_idiom_Years_t.
     let* α0 : ref generics_new_type_idiom.Years.t := M.read self in
     let* α1 : i64.t :=
       M.read (generics_new_type_idiom.Years.Get_0 (deref α0)) in
-    let* α2 : i64.t := BinOp.Panic.mul α1 (Integer.of_Z 365) in
+    let* α2 : i64.t := BinOp.Panic.mul α1 ((Integer.of_Z 365) : i64.t) in
     M.pure (generics_new_type_idiom.Days.Build_t α2).
   
   Global Instance AssociatedFunction_to_days :
@@ -60,7 +60,7 @@ Section Impl_generics_new_type_idiom_Days_t.
     let* self := M.alloc self in
     let* α0 : ref generics_new_type_idiom.Days.t := M.read self in
     let* α1 : i64.t := M.read (generics_new_type_idiom.Days.Get_0 (deref α0)) in
-    let* α2 : i64.t := BinOp.Panic.div α1 (Integer.of_Z 365) in
+    let* α2 : i64.t := BinOp.Panic.div α1 ((Integer.of_Z 365) : i64.t) in
     M.pure (generics_new_type_idiom.Years.Build_t α2).
   
   Global Instance AssociatedFunction_to_years :
@@ -79,7 +79,7 @@ Definition old_enough (age : ref generics_new_type_idiom.Years.t) : M bool.t :=
   let* age := M.alloc age in
   let* α0 : ref generics_new_type_idiom.Years.t := M.read age in
   let* α1 : i64.t := M.read (generics_new_type_idiom.Years.Get_0 (deref α0)) in
-  M.pure (BinOp.Pure.ge α1 (Integer.of_Z 18)).
+  M.pure (BinOp.Pure.ge α1 ((Integer.of_Z 18) : i64.t)).
 
 (*
 fn main() {
@@ -93,7 +93,8 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
   let* age : M.Val generics_new_type_idiom.Years.t :=
-    M.alloc (generics_new_type_idiom.Years.Build_t (Integer.of_Z 5)) in
+    M.alloc
+      (generics_new_type_idiom.Years.Build_t ((Integer.of_Z 5) : i64.t)) in
   let* age_days : M.Val generics_new_type_idiom.Days.t :=
     let* α0 : generics_new_type_idiom.Days.t :=
       M.call (generics_new_type_idiom.Years.t::["to_days"] (borrow age)) in

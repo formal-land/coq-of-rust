@@ -56,7 +56,7 @@ Section Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed_t.
       }
   *)
   Definition default : M Self :=
-    let* α0 : M.Val i32.t := M.alloc (Integer.of_Z 10) in
+    let* α0 : M.Val i32.t := M.alloc ((Integer.of_Z 10) : i32.t) in
     M.pure {| scoping_rules_lifetimes_traits.Borrowed.x := borrow α0; |}.
   
   Global Instance AssociatedFunction_default :

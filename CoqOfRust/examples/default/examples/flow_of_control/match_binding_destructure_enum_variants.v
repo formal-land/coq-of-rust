@@ -7,7 +7,7 @@ fn some_number() -> Option<u32> {
 }
 *)
 Definition some_number : M (core.option.Option.t u32.t) :=
-  M.pure (core.option.Option.Some (Integer.of_Z 42)).
+  M.pure (core.option.Option.Some ((Integer.of_Z 42) : u32.t)).
 
 (*
 fn main() {

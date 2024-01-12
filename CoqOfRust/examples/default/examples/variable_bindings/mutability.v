@@ -20,8 +20,8 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* _immutable_binding : M.Val i32.t := M.alloc (Integer.of_Z 1) in
-  let* mutable_binding : M.Val i32.t := M.alloc (Integer.of_Z 1) in
+  let* _immutable_binding : M.Val i32.t := M.alloc ((Integer.of_Z 1) : i32.t) in
+  let* mutable_binding : M.Val i32.t := M.alloc ((Integer.of_Z 1) : i32.t) in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "Before mutation: ") in
@@ -47,7 +47,7 @@ Definition main : M unit :=
   let* _ : M.Val unit :=
     let β : M.Val i32.t := mutable_binding in
     let* α0 := M.read β in
-    let* α1 := BinOp.Panic.add α0 (Integer.of_Z 1) in
+    let* α1 := BinOp.Panic.add α0 ((Integer.of_Z 1) : i32.t) in
     assign β α1 in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=

@@ -855,7 +855,8 @@ Section Impl_payment_channel_PaymentChannel_t.
             (borrow encodable)
             (borrow_mut message)) in
       M.alloc α0 in
-    let* pub_key : M.Val (array u8.t) := M.alloc (repeat (Integer.of_Z 0) 33) in
+    let* pub_key : M.Val (array u8.t) :=
+      M.alloc (repeat ((Integer.of_Z 0) : u8.t) 33) in
     let* _ : M.Val unit :=
       let* α0 : core.result.Result.t unit payment_channel.Error.t :=
         M.call
@@ -886,7 +887,7 @@ Section Impl_payment_channel_PaymentChannel_t.
               M unit)) in
       M.alloc α1 in
     let* signature_account_id : M.Val (array u8.t) :=
-      M.alloc (repeat (Integer.of_Z 0) 32) in
+      M.alloc (repeat ((Integer.of_Z 0) : u8.t) 32) in
     let* _ : M.Val unit :=
       let* α0 : _ :=
         ltac:(M.get_method (fun ℐ =>
@@ -955,7 +956,7 @@ Section Impl_payment_channel_PaymentChannel_t.
         payment_channel.PaymentChannel.sender := α2;
         payment_channel.PaymentChannel.recipient := α3;
         payment_channel.PaymentChannel.expiration := core.option.Option.None;
-        payment_channel.PaymentChannel.withdrawn := Integer.of_Z 0;
+        payment_channel.PaymentChannel.withdrawn := (Integer.of_Z 0) : u128.t;
         payment_channel.PaymentChannel.close_duration := α4;
       |}.
   

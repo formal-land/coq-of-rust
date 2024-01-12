@@ -141,9 +141,9 @@ Definition main : M unit :=
     let* α2 : alloc.string.String.t := M.call (α0 α1) in
     M.alloc
       {|
-        hash.Person.id := Integer.of_Z 5;
+        hash.Person.id := (Integer.of_Z 5) : u32.t;
         hash.Person.name := α2;
-        hash.Person.phone := Integer.of_Z 5556667777;
+        hash.Person.phone := (Integer.of_Z 5556667777) : u64.t;
       |} in
   let* person2 : M.Val hash.Person.t :=
     let* α0 : _ :=
@@ -153,9 +153,9 @@ Definition main : M unit :=
     let* α2 : alloc.string.String.t := M.call (α0 α1) in
     M.alloc
       {|
-        hash.Person.id := Integer.of_Z 5;
+        hash.Person.id := (Integer.of_Z 5) : u32.t;
         hash.Person.name := α2;
-        hash.Person.phone := Integer.of_Z 5556667777;
+        hash.Person.phone := (Integer.of_Z 5556667777) : u64.t;
       |} in
   let* _ : M.Val unit :=
     let* α0 : u64.t := M.call (hash.calculate_hash (borrow person1)) in

@@ -101,9 +101,9 @@ Definition main : M unit :=
     let* α0 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t :=
       M.call
         ((alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"]
-          (Integer.of_Z 5)) in
+          ((Integer.of_Z 5) : i32.t)) in
     M.alloc α0 in
-  let* stacked_i32 : M.Val i32.t := M.alloc (Integer.of_Z 6) in
+  let* stacked_i32 : M.Val i32.t := M.alloc ((Integer.of_Z 6) : i32.t) in
   let* _ : M.Val unit :=
     let* α0 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t :=
       M.read boxed_i32 in

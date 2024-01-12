@@ -124,8 +124,8 @@ fn origin() -> Point {
 }
 *)
 Definition origin : M box_stack_heap.Point.t :=
-  let* α0 : f64.t := M.read UnsupportedLiteral in
-  let* α1 : f64.t := M.read UnsupportedLiteral in
+  let* α0 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
+  let* α1 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
   M.pure {| box_stack_heap.Point.x := α0; box_stack_heap.Point.y := α1; |}.
 
 (*
@@ -136,8 +136,8 @@ fn boxed_origin() -> Box<Point> {
 *)
 Definition boxed_origin
     : M (alloc.boxed.Box.t box_stack_heap.Point.t alloc.boxed.Box.Default.A) :=
-  let* α0 : f64.t := M.read UnsupportedLiteral in
-  let* α1 : f64.t := M.read UnsupportedLiteral in
+  let* α0 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
+  let* α1 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
   M.call
     ((alloc.boxed.Box.t box_stack_heap.Point.t alloc.alloc.Global.t)::["new"]
       {| box_stack_heap.Point.x := α0; box_stack_heap.Point.y := α1; |}).
@@ -202,8 +202,8 @@ Definition main : M unit :=
     M.alloc α0 in
   let* rectangle : M.Val box_stack_heap.Rectangle.t :=
     let* α0 : box_stack_heap.Point.t := M.call box_stack_heap.origin in
-    let* α1 : f64.t := M.read UnsupportedLiteral in
-    let* α2 : f64.t := M.read UnsupportedLiteral in
+    let* α1 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
+    let* α2 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
     M.alloc
       {|
         box_stack_heap.Rectangle.top_left := α0;
@@ -214,8 +214,8 @@ Definition main : M unit :=
       M.Val
         (alloc.boxed.Box.t box_stack_heap.Rectangle.t alloc.alloc.Global.t) :=
     let* α0 : box_stack_heap.Point.t := M.call box_stack_heap.origin in
-    let* α1 : f64.t := M.read UnsupportedLiteral in
-    let* α2 : f64.t := M.read UnsupportedLiteral in
+    let* α1 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
+    let* α2 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
     let* α3 :
         alloc.boxed.Box.t box_stack_heap.Rectangle.t alloc.alloc.Global.t :=
       M.call

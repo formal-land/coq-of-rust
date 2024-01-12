@@ -93,7 +93,7 @@ Definition main : M unit :=
     let* α0 : unit :=
       M.call
         (generics_functions.gen_spec_i32
-          (generics_functions.SGen.Build_t (Integer.of_Z 6))) in
+          (generics_functions.SGen.Build_t ((Integer.of_Z 6) : i32.t))) in
     M.alloc α0 in
   let* _ : M.Val unit :=
     let* α0 : unit :=

@@ -722,7 +722,7 @@ Section Impl_erc721_Erc721_t.
         ((erc721.Mapping.t erc721.AccountId.t u32.t)::["get"]
           (borrow (erc721.Erc721.Get_owned_tokens_count (deref α0)))
           α1) in
-    let* α3 : M.Val u32.t := M.alloc (Integer.of_Z 0) in
+    let* α3 : M.Val u32.t := M.alloc ((Integer.of_Z 0) : u32.t) in
     let* α4 : u32.t := M.read (use α3) in
     M.call ((core.option.Option.t u32.t)::["unwrap_or"] α2 α4).
   
@@ -849,7 +849,8 @@ Section Impl_erc721_Erc721_t.
           (Self := erc721.AccountId.t)
           (T := array u8.t)
           (Trait := ℐ))) in
-    let* α2 : erc721.AccountId.t := M.call (α1 (repeat (Integer.of_Z 0) 32)) in
+    let* α2 : erc721.AccountId.t :=
+      M.call (α1 (repeat ((Integer.of_Z 0) : u8.t) 32)) in
     let* α3 : M.Val (core.option.Option.t erc721.AccountId.t) :=
       M.alloc (core.option.Option.Some α2) in
     let* α4 : bool.t := M.call (α0 (borrow from) (borrow α3)) in
@@ -1288,7 +1289,7 @@ Section Impl_erc721_Erc721_t.
               (T := array u8.t)
               (Trait := ℐ))) in
         let* α3 : erc721.AccountId.t :=
-          M.call (α2 (repeat (Integer.of_Z 0) 32)) in
+          M.call (α2 (repeat ((Integer.of_Z 0) : u8.t) 32)) in
         let* α4 : M.Val erc721.AccountId.t := M.alloc α3 in
         let* α5 : bool.t := M.call (α0 α1 (borrow α4)) in
         let* α6 : M.Val bool.t := M.alloc α5 in
@@ -1552,7 +1553,7 @@ Section Impl_erc721_Erc721_t.
                                 (let* c := M.copy γ in
                                 let* α0 : u32.t := M.read c in
                                 let* α1 : M.Val u32.t :=
-                                  M.alloc (Integer.of_Z 1) in
+                                  M.alloc ((Integer.of_Z 1) : u32.t) in
                                 let* α2 : u32.t := M.read (use α1) in
                                 BinOp.Panic.sub α0 α2) :
                                 M u32.t
@@ -2050,7 +2051,7 @@ Section Impl_erc721_Erc721_t.
               (T := array u8.t)
               (Trait := ℐ))) in
         let* α4 : erc721.AccountId.t :=
-          M.call (α3 (repeat (Integer.of_Z 0) 32)) in
+          M.call (α3 (repeat ((Integer.of_Z 0) : u8.t) 32)) in
         let* α5 : erc721.AccountId.t := M.read caller in
         let* α6 : u32.t := M.read id in
         let* α7 : unit :=

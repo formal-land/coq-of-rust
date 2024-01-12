@@ -201,7 +201,7 @@ Section Impl_updated_incrementer_Incrementer_t.
         let* α0 : mut_ref updated_incrementer.Incrementer.t := M.read self in
         M.pure (updated_incrementer.Incrementer.Get_count (deref α0)) in
       let* α0 := M.read β in
-      let* α1 := BinOp.Panic.add α0 (Integer.of_Z 4) in
+      let* α1 := BinOp.Panic.add α0 ((Integer.of_Z 4) : u32.t) in
       assign β α1 in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=

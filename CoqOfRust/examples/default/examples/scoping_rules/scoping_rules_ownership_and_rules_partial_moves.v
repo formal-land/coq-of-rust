@@ -43,7 +43,7 @@ Definition main : M unit :=
     let* α3 : alloc.boxed.Box.t u8.t alloc.alloc.Global.t :=
       M.call
         ((alloc.boxed.Box.t u8.t alloc.alloc.Global.t)::["new"]
-          (Integer.of_Z 20)) in
+          ((Integer.of_Z 20) : u8.t)) in
     M.alloc
       {|
         scoping_rules_ownership_and_rules_partial_moves.main.Person.name := α2;

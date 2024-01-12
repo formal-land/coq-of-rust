@@ -99,12 +99,12 @@ Definition main : M unit :=
       let* α14 : core.fmt.rt.Placeholder.t :=
         M.call
           (core.fmt.rt.Placeholder.t::["new"]
-            (Integer.of_Z 0)
+            ((Integer.of_Z 0) : usize.t)
             " "%char
             core.fmt.rt.Alignment.Unknown
-            (Integer.of_Z 8)
+            ((Integer.of_Z 8) : u32.t)
             core.fmt.rt.Count.Implied
-            (core.fmt.rt.Count.Is (Integer.of_Z 6))) in
+            (core.fmt.rt.Count.Is ((Integer.of_Z 6) : usize.t))) in
       let* α15 : M.Val (array core.fmt.rt.Placeholder.t) := M.alloc [ α14 ] in
       let* α16 : M.Val (ref (array core.fmt.rt.Placeholder.t)) :=
         M.alloc (borrow α15) in
@@ -141,12 +141,12 @@ Definition main : M unit :=
       let* α14 : core.fmt.rt.Placeholder.t :=
         M.call
           (core.fmt.rt.Placeholder.t::["new"]
-            (Integer.of_Z 0)
+            ((Integer.of_Z 0) : usize.t)
             " "%char
             core.fmt.rt.Alignment.Unknown
-            (Integer.of_Z 8)
+            ((Integer.of_Z 8) : u32.t)
             core.fmt.rt.Count.Implied
-            (core.fmt.rt.Count.Is (Integer.of_Z 6))) in
+            (core.fmt.rt.Count.Is ((Integer.of_Z 6) : usize.t))) in
       let* α15 : M.Val (array core.fmt.rt.Placeholder.t) := M.alloc [ α14 ] in
       let* α16 : M.Val (ref (array core.fmt.rt.Placeholder.t)) :=
         M.alloc (borrow α15) in

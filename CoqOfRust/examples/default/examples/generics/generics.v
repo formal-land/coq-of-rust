@@ -56,7 +56,7 @@ Definition main : M unit :=
   let* _t : M.Val (generics.SingleGen.t generics.A.t) :=
     M.alloc (generics.SingleGen.Build_t generics.A.Build) in
   let* _i32 : M.Val (generics.SingleGen.t i32.t) :=
-    M.alloc (generics.SingleGen.Build_t (Integer.of_Z 6)) in
+    M.alloc (generics.SingleGen.Build_t ((Integer.of_Z 6) : i32.t)) in
   let* _char : M.Val (generics.SingleGen.t char.t) :=
     M.alloc (generics.SingleGen.Build_t "a"%char) in
   let* α0 : M.Val unit := M.alloc tt in

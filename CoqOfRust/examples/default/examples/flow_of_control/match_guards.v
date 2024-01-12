@@ -36,7 +36,7 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
   let* temperature : M.Val match_guards.Temperature.t :=
-    M.alloc (match_guards.Temperature.Celsius (Integer.of_Z 35)) in
+    M.alloc (match_guards.Temperature.Celsius ((Integer.of_Z 35) : i32.t)) in
   let* α0 : M.Val unit :=
     match_operator
       temperature

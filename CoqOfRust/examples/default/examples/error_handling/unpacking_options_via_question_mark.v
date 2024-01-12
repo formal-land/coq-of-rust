@@ -317,9 +317,9 @@ Definition main : M unit :=
                 core.option.Option.Some
                   {|
                     unpacking_options_via_question_mark.PhoneNumber.area_code :=
-                      core.option.Option.Some (Integer.of_Z 61);
+                      core.option.Option.Some ((Integer.of_Z 61) : u8.t);
                     unpacking_options_via_question_mark.PhoneNumber.number :=
-                      Integer.of_Z 439222222;
+                      (Integer.of_Z 439222222) : u32.t;
                   |};
             |};
       |} in
@@ -330,7 +330,7 @@ Definition main : M unit :=
           (borrow p)) in
     let* α1 : M.Val (core.option.Option.t u8.t) := M.alloc α0 in
     let* α2 : M.Val (core.option.Option.t u8.t) :=
-      M.alloc (core.option.Option.Some (Integer.of_Z 61)) in
+      M.alloc (core.option.Option.Some ((Integer.of_Z 61) : u8.t)) in
     let* α3 :
         M.Val
           ((ref (core.option.Option.t u8.t))

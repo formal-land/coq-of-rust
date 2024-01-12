@@ -15,13 +15,13 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* x : M.Val u64.t := M.alloc (Integer.of_Z 3) in
+  let* x : M.Val u64.t := M.alloc ((Integer.of_Z 3) : u64.t) in
   let* y : M.Val unit := M.alloc tt in
   let* _ : M.Val unit :=
     let _ : M.Val unit := InlineAssembly in
     M.alloc tt in
   let* _ : M.Val unit :=
-    let* α0 : M.Val u64.t := M.alloc (Integer.of_Z 8) in
+    let* α0 : M.Val u64.t := M.alloc ((Integer.of_Z 8) : u64.t) in
     let* α1 : M.Val ((ref u64.t) * (ref u64.t)) :=
       M.alloc (borrow y, borrow α0) in
     match_operator

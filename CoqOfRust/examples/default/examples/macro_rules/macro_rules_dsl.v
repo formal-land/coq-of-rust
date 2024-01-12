@@ -16,7 +16,10 @@ fn main() {
 Definition main : M unit :=
   let* _ : M.Val unit :=
     let* val : M.Val usize.t :=
-      let* α0 : usize.t := BinOp.Panic.add (Integer.of_Z 1) (Integer.of_Z 2) in
+      let* α0 : usize.t :=
+        BinOp.Panic.add
+          ((Integer.of_Z 1) : usize.t)
+          ((Integer.of_Z 2) : usize.t) in
       M.alloc α0 in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=
@@ -41,8 +44,14 @@ Definition main : M unit :=
       M.alloc tt in
     M.alloc tt in
   let* val : M.Val usize.t :=
-    let* α0 : usize.t := BinOp.Panic.add (Integer.of_Z 1) (Integer.of_Z 2) in
-    let* α1 : usize.t := BinOp.Panic.div (Integer.of_Z 3) (Integer.of_Z 4) in
+    let* α0 : usize.t :=
+      BinOp.Panic.add
+        ((Integer.of_Z 1) : usize.t)
+        ((Integer.of_Z 2) : usize.t) in
+    let* α1 : usize.t :=
+      BinOp.Panic.div
+        ((Integer.of_Z 3) : usize.t)
+        ((Integer.of_Z 4) : usize.t) in
     let* α2 : usize.t := BinOp.Panic.mul α0 α1 in
     M.alloc α2 in
   let* _ : M.Val unit :=

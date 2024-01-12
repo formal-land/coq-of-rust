@@ -21,7 +21,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* elem : M.Val u8.t := M.alloc (Integer.of_Z 5) in
+  let* elem : M.Val u8.t := M.alloc ((Integer.of_Z 5) : u8.t) in
   let* vec : M.Val (alloc.vec.Vec.t u8.t alloc.alloc.Global.t) :=
     let* α0 : alloc.vec.Vec.t u8.t alloc.alloc.Global.t :=
       M.call (alloc.vec.Vec.t u8.t alloc.alloc.Global.t)::["new"] in

@@ -295,7 +295,7 @@ Definition main : M unit :=
     let* α0 : unit :=
       M.call
         (functions_order.SomeType.t::["meth1"]
-          (functions_order.SomeType.Build_t (Integer.of_Z 0))) in
+          (functions_order.SomeType.Build_t ((Integer.of_Z 0) : u32.t))) in
     M.alloc α0 in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.

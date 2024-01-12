@@ -39,8 +39,9 @@ Definition main : M unit :=
   let* foo : M.Val match_destructuring_structs.Foo.t :=
     M.alloc
       {|
-        match_destructuring_structs.Foo.x := (Integer.of_Z 1, Integer.of_Z 2);
-        match_destructuring_structs.Foo.y := Integer.of_Z 3;
+        match_destructuring_structs.Foo.x :=
+          ((Integer.of_Z 1) : u32.t, (Integer.of_Z 2) : u32.t);
+        match_destructuring_structs.Foo.y := (Integer.of_Z 3) : u32.t;
       |} in
   let* α0 : M.Val unit :=
     match_operator

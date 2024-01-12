@@ -133,7 +133,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* x : M.Val i32.t := M.alloc (Integer.of_Z 7) in
+  let* x : M.Val i32.t := M.alloc ((Integer.of_Z 7) : i32.t) in
   let* ref_x : M.Val (scoping_rules_lifetimes_bounds.Ref.t i32.t) :=
     M.alloc (scoping_rules_lifetimes_bounds.Ref.Build_t (borrow x)) in
   let* _ : M.Val unit :=

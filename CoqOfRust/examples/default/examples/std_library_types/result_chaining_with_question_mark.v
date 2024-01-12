@@ -107,7 +107,7 @@ Module checked.
     let* x := M.alloc x in
     let* y := M.alloc y in
     let* α0 : f64.t := M.read y in
-    let* α1 : f64.t := M.read UnsupportedLiteral in
+    let* α1 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
     let* α2 : M.Val bool.t := M.alloc (BinOp.Pure.eq α0 α1) in
     let* α3 : bool.t := M.read (use α2) in
     let* α4 :
@@ -140,7 +140,7 @@ Module checked.
       : M ltac:(result_chaining_with_question_mark.checked.MathResult) :=
     let* x := M.alloc x in
     let* α0 : f64.t := M.read x in
-    let* α1 : f64.t := M.read UnsupportedLiteral in
+    let* α1 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
     let* α2 : M.Val bool.t := M.alloc (BinOp.Pure.lt α0 α1) in
     let* α3 : bool.t := M.read (use α2) in
     let* α4 :
@@ -172,7 +172,7 @@ Module checked.
       : M ltac:(result_chaining_with_question_mark.checked.MathResult) :=
     let* x := M.alloc x in
     let* α0 : f64.t := M.read x in
-    let* α1 : f64.t := M.read UnsupportedLiteral in
+    let* α1 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
     let* α2 : M.Val bool.t := M.alloc (BinOp.Pure.le α0 α1) in
     let* α3 : bool.t := M.read (use α2) in
     let* α4 :
@@ -617,7 +617,7 @@ Definition div
   let* x := M.alloc x in
   let* y := M.alloc y in
   let* α0 : f64.t := M.read y in
-  let* α1 : f64.t := M.read UnsupportedLiteral in
+  let* α1 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
   let* α2 : M.Val bool.t := M.alloc (BinOp.Pure.eq α0 α1) in
   let* α3 : bool.t := M.read (use α2) in
   let* α4 :
@@ -650,7 +650,7 @@ Definition sqrt
     : M ltac:(result_chaining_with_question_mark.checked.MathResult) :=
   let* x := M.alloc x in
   let* α0 : f64.t := M.read x in
-  let* α1 : f64.t := M.read UnsupportedLiteral in
+  let* α1 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
   let* α2 : M.Val bool.t := M.alloc (BinOp.Pure.lt α0 α1) in
   let* α3 : bool.t := M.read (use α2) in
   let* α4 :
@@ -682,7 +682,7 @@ Definition ln
     : M ltac:(result_chaining_with_question_mark.checked.MathResult) :=
   let* x := M.alloc x in
   let* α0 : f64.t := M.read x in
-  let* α1 : f64.t := M.read UnsupportedLiteral in
+  let* α1 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
   let* α2 : M.Val bool.t := M.alloc (BinOp.Pure.le α0 α1) in
   let* α3 : bool.t := M.read (use α2) in
   let* α4 :
@@ -1030,8 +1030,8 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
   let* _ : M.Val unit :=
-    let* α0 : f64.t := M.read UnsupportedLiteral in
-    let* α1 : f64.t := M.read UnsupportedLiteral in
+    let* α0 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
+    let* α1 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
     let* α2 : unit :=
       M.call (result_chaining_with_question_mark.checked.op α0 α1) in
     M.alloc α2 in

@@ -167,7 +167,7 @@ Section Impl_derive_Inches_t.
               let* inches := M.copy γ1_0 in
               let* α0 : i32.t := M.read inches in
               let* α1 : f64.t := M.cast α0 in
-              let* α2 : f64.t := M.read UnsupportedLiteral in
+              let* α2 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
               let* α3 : f64.t := BinOp.Panic.mul α1 α2 in
               M.alloc (derive.Centimeters.Build_t α3)
             end) :
@@ -223,9 +223,9 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
   let* _one_second : M.Val derive.Seconds.t :=
-    M.alloc (derive.Seconds.Build_t (Integer.of_Z 1)) in
+    M.alloc (derive.Seconds.Build_t ((Integer.of_Z 1) : i32.t)) in
   let* foot : M.Val derive.Inches.t :=
-    M.alloc (derive.Inches.Build_t (Integer.of_Z 12)) in
+    M.alloc (derive.Inches.Build_t ((Integer.of_Z 12) : i32.t)) in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "One foot equals ") in
@@ -248,7 +248,7 @@ Definition main : M unit :=
       M.alloc α10 in
     M.alloc tt in
   let* meter : M.Val derive.Centimeters.t :=
-    let* α0 : f64.t := M.read UnsupportedLiteral in
+    let* α0 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
     M.alloc (derive.Centimeters.Build_t α0) in
   let* cmp : M.Val (ref str.t) :=
     let* α0 : _ :=

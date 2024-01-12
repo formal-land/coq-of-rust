@@ -93,7 +93,7 @@ Section Impl_set_code_hash_Incrementer_t.
         let* α0 : mut_ref set_code_hash.Incrementer.t := M.read self in
         M.pure (set_code_hash.Incrementer.Get_count (deref α0)) in
       let* α0 := M.read β in
-      let* α1 := BinOp.Panic.add α0 (Integer.of_Z 1) in
+      let* α1 := BinOp.Panic.add α0 ((Integer.of_Z 1) : u32.t) in
       assign β α1 in
     let* _ : M.Val unit :=
       let* _ : M.Val unit :=

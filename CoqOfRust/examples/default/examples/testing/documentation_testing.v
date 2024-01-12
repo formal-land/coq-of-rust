@@ -27,7 +27,8 @@ Definition div (a : i32.t) (b : i32.t) : M i32.t :=
   let* b := M.alloc b in
   let* _ : M.Val unit :=
     let* α0 : i32.t := M.read b in
-    let* α1 : M.Val bool.t := M.alloc (BinOp.Pure.eq α0 (Integer.of_Z 0)) in
+    let* α1 : M.Val bool.t :=
+      M.alloc (BinOp.Pure.eq α0 ((Integer.of_Z 0) : i32.t)) in
     let* α2 : bool.t := M.read (use α1) in
     if α2 then
       let* _ : M.Val unit :=

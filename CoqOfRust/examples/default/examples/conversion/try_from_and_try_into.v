@@ -108,8 +108,9 @@ Section Impl_core_convert_TryFrom_i32_t_for_try_from_and_try_into_EvenNumber_t.
   Definition try_from (value : i32.t) : M (core.result.Result.t Self Error.t) :=
     let* value := M.alloc value in
     let* α0 : i32.t := M.read value in
-    let* α1 : i32.t := BinOp.Panic.rem α0 (Integer.of_Z 2) in
-    let* α2 : M.Val bool.t := M.alloc (BinOp.Pure.eq α1 (Integer.of_Z 0)) in
+    let* α1 : i32.t := BinOp.Panic.rem α0 ((Integer.of_Z 2) : i32.t) in
+    let* α2 : M.Val bool.t :=
+      M.alloc (BinOp.Pure.eq α1 ((Integer.of_Z 0) : i32.t)) in
     let* α3 : bool.t := M.read (use α2) in
     let* α4 :
         M.Val (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
@@ -158,7 +159,7 @@ Definition main : M unit :=
           (T := i32.t)
           (Trait := ℐ))) in
     let* α1 : core.result.Result.t try_from_and_try_into.EvenNumber.t unit :=
-      M.call (α0 (Integer.of_Z 8)) in
+      M.call (α0 ((Integer.of_Z 8) : i32.t)) in
     let* α2 :
         M.Val (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
       M.alloc α1 in
@@ -166,7 +167,8 @@ Definition main : M unit :=
         M.Val (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
       M.alloc
         (core.result.Result.Ok
-          (try_from_and_try_into.EvenNumber.Build_t (Integer.of_Z 8))) in
+          (try_from_and_try_into.EvenNumber.Build_t
+            ((Integer.of_Z 8) : i32.t))) in
     let* α4 :
         M.Val
           ((ref (core.result.Result.t try_from_and_try_into.EvenNumber.t unit))
@@ -254,7 +256,7 @@ Definition main : M unit :=
           (T := i32.t)
           (Trait := ℐ))) in
     let* α1 : core.result.Result.t try_from_and_try_into.EvenNumber.t unit :=
-      M.call (α0 (Integer.of_Z 5)) in
+      M.call (α0 ((Integer.of_Z 5) : i32.t)) in
     let* α2 :
         M.Val (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
       M.alloc α1 in
@@ -349,14 +351,15 @@ Definition main : M unit :=
           (T := try_from_and_try_into.EvenNumber.t)
           (Trait := ℐ))) in
     let* α1 : core.result.Result.t try_from_and_try_into.EvenNumber.t unit :=
-      M.call (α0 (Integer.of_Z 8)) in
+      M.call (α0 ((Integer.of_Z 8) : i32.t)) in
     M.alloc α1 in
   let* _ : M.Val unit :=
     let* α0 :
         M.Val (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
       M.alloc
         (core.result.Result.Ok
-          (try_from_and_try_into.EvenNumber.Build_t (Integer.of_Z 8))) in
+          (try_from_and_try_into.EvenNumber.Build_t
+            ((Integer.of_Z 8) : i32.t))) in
     let* α1 :
         M.Val
           ((ref (core.result.Result.t try_from_and_try_into.EvenNumber.t unit))
@@ -445,7 +448,7 @@ Definition main : M unit :=
           (T := try_from_and_try_into.EvenNumber.t)
           (Trait := ℐ))) in
     let* α1 : core.result.Result.t try_from_and_try_into.EvenNumber.t unit :=
-      M.call (α0 (Integer.of_Z 5)) in
+      M.call (α0 ((Integer.of_Z 5) : i32.t)) in
     M.alloc α1 in
   let* _ : M.Val unit :=
     let* α0 :

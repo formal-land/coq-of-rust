@@ -273,7 +273,8 @@ Definition main : M unit :=
                                                     M.call
                                                       (char.t::["to_digit"]
                                                         α0
-                                                        (Integer.of_Z 10)) in
+                                                        ((Integer.of_Z 10) :
+                                                          u32.t)) in
                                                   let* α2 : ref str.t :=
                                                     M.read
                                                       (mk_str

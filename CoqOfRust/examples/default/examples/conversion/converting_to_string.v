@@ -66,7 +66,8 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
   let* circle : M.Val converting_to_string.Circle.t :=
-    M.alloc {| converting_to_string.Circle.radius := Integer.of_Z 6; |} in
+    M.alloc
+      {| converting_to_string.Circle.radius := (Integer.of_Z 6) : i32.t; |} in
   let* _ : M.Val alloc.string.String.t :=
     let* α0 : _ :=
       ltac:(M.get_method (fun ℐ =>

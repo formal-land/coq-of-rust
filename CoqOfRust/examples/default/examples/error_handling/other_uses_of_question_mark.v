@@ -273,7 +273,7 @@ Definition double_first
           ] in
       M.copy α6 in
     let* α0 : i32.t := M.read parsed in
-    let* α1 : i32.t := BinOp.Panic.mul (Integer.of_Z 2) α0 in
+    let* α1 : i32.t := BinOp.Panic.mul ((Integer.of_Z 2) : i32.t) α0 in
     let* α0 :
         M.Val
           (core.result.Result.t

@@ -49,7 +49,7 @@ Definition double_first
                         fun γ =>
                           (let* n := M.copy γ in
                           let* α0 : i32.t := M.read n in
-                          BinOp.Panic.mul (Integer.of_Z 2) α0) :
+                          BinOp.Panic.mul ((Integer.of_Z 2) : i32.t) α0) :
                           M i32.t
                       ]) :
                     M i32.t))) :
