@@ -10,22 +10,10 @@ Section Mapping.
     _value : core.marker.PhantomData.t V;
   }.
   
-  Global Instance Get__key : Notations.Dot "_key" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(_key)) (fun β α => Some (α <| _key := β |>));
-  }.
-  Global Instance Get_AF__key : Notations.DoubleColon t "_key" := {
-    Notations.double_colon (α : M.Val t) := α.["_key"];
-  }.
-  Global Instance Get__value : Notations.Dot "_value" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(_value))
-        (fun β α => Some (α <| _value := β |>));
-  }.
-  Global Instance Get_AF__value : Notations.DoubleColon t "_value" := {
-    Notations.double_colon (α : M.Val t) := α.["_value"];
-  }.
+  Definition Get__key :=
+    Ref.map (fun α => Some α.(_key)) (fun β α => Some (α <| _key := β |>)).
+  Definition Get__value :=
+    Ref.map (fun α => Some α.(_value)) (fun β α => Some (α <| _value := β |>)).
 End Mapping.
 End Mapping.
 
@@ -119,10 +107,8 @@ Section AccountId.
     x0 : u128.t;
   }.
   
-  Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>));
-  }.
+  Definition Get_0 :=
+    Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>)).
 End AccountId.
 End AccountId.
 
@@ -213,9 +199,9 @@ Section Impl_core_cmp_PartialEq_for_mother_AccountId_t.
     let* self := M.alloc self in
     let* other := M.alloc other in
     let* α0 : ref mother.AccountId.t := M.read self in
-    let* α1 : u128.t := M.read (deref α0).["0"] in
+    let* α1 : u128.t := M.read (mother.AccountId.Get_0 (deref α0)) in
     let* α2 : ref mother.AccountId.t := M.read other in
-    let* α3 : u128.t := M.read (deref α2).["0"] in
+    let* α3 : u128.t := M.read (mother.AccountId.Get_0 (deref α2)) in
     M.pure (BinOp.Pure.eq α1 α3).
   
   Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
@@ -278,15 +264,8 @@ Section Env.
     caller : mother.AccountId.t;
   }.
   
-  Global Instance Get_caller : Notations.Dot "caller" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(caller))
-        (fun β α => Some (α <| caller := β |>));
-  }.
-  Global Instance Get_AF_caller : Notations.DoubleColon t "caller" := {
-    Notations.double_colon (α : M.Val t) := α.["caller"];
-  }.
+  Definition Get_caller :=
+    Ref.map (fun α => Some α.(caller)) (fun β α => Some (α <| caller := β |>)).
 End Env.
 End Env.
 
@@ -301,10 +280,8 @@ Section Bids.
         alloc.vec.Vec.Default.A;
   }.
   
-  Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>));
-  }.
+  Definition Get_0 :=
+    Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>)).
 End Bids.
 End Bids.
 
@@ -383,7 +360,10 @@ Section Impl_core_cmp_PartialEq_for_mother_Bids_t.
           (Trait := ℐ))) in
     let* α1 : ref mother.Bids.t := M.read self in
     let* α2 : ref mother.Bids.t := M.read other in
-    M.call (α0 (borrow (deref α1).["0"]) (borrow (deref α2).["0"])).
+    M.call
+      (α0
+        (borrow (mother.Bids.Get_0 (deref α1)))
+        (borrow (mother.Bids.Get_0 (deref α2)))).
   
   Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
     Notations.double_colon := eq;
@@ -459,7 +439,7 @@ Section Impl_core_clone_Clone_for_mother_Bids_t.
             (core.option.Option.t (mother.AccountId.t * u128.t))
             alloc.alloc.Global.t)
           alloc.alloc.Global.t :=
-      M.call (α0 (borrow (deref α1).["0"])) in
+      M.call (α0 (borrow (mother.Bids.Get_0 (deref α1)))) in
     M.pure (mother.Bids.Build_t α2).
   
   Global Instance AssociatedFunction_clone :
@@ -626,31 +606,21 @@ Module Status.
   | Ended (_ : mother.Outline.t)
   | RfDelay (_ : ltac:(mother.BlockNumber)).
   
-  Global Instance Get_EndingPeriod_0 : Notations.Dot "EndingPeriod.0" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => match α with | EndingPeriod α0 => Some α0 | _ => None end)
-        (fun β α =>
-          match α with
-          | EndingPeriod _ => Some (EndingPeriod β)
-          | _ => None
-          end);
-  }.
+  Definition Get_EndingPeriod_0 :=
+    Ref.map
+      (fun α => match α with | EndingPeriod α0 => Some α0 | _ => None end)
+      (fun β α =>
+        match α with | EndingPeriod _ => Some (EndingPeriod β) | _ => None end).
   
-  Global Instance Get_Ended_0 : Notations.Dot "Ended.0" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => match α with | Ended α0 => Some α0 | _ => None end)
-        (fun β α => match α with | Ended _ => Some (Ended β) | _ => None end);
-  }.
+  Definition Get_Ended_0 :=
+    Ref.map
+      (fun α => match α with | Ended α0 => Some α0 | _ => None end)
+      (fun β α => match α with | Ended _ => Some (Ended β) | _ => None end).
   
-  Global Instance Get_RfDelay_0 : Notations.Dot "RfDelay.0" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => match α with | RfDelay α0 => Some α0 | _ => None end)
-        (fun β α =>
-          match α with | RfDelay _ => Some (RfDelay β) | _ => None end);
-  }.
+  Definition Get_RfDelay_0 :=
+    Ref.map
+      (fun α => match α with | RfDelay α0 => Some α0 | _ => None end)
+      (fun β α => match α with | RfDelay _ => Some (RfDelay β) | _ => None end).
 End Status.
 
 Module  Impl_core_marker_StructuralPartialEq_for_mother_Status_t.
@@ -702,7 +672,7 @@ Section Impl_core_cmp_PartialEq_for_mother_Status_t.
               let* α0 := M.read γ0_0 in
               match α0 with
               | mother.Status.EndingPeriod _ =>
-                let γ2_0 := γ0_0.["EndingPeriod.0"] in
+                let γ2_0 := mother.Status.Get_EndingPeriod_0 γ0_0 in
                 let* __self_0 := M.alloc (borrow γ2_0) in
                 let* γ0_1 :=
                   let* α0 := M.read γ0_1 in
@@ -710,7 +680,7 @@ Section Impl_core_cmp_PartialEq_for_mother_Status_t.
                 let* α0 := M.read γ0_1 in
                 match α0 with
                 | mother.Status.EndingPeriod _ =>
-                  let γ2_0 := γ0_1.["EndingPeriod.0"] in
+                  let γ2_0 := mother.Status.Get_EndingPeriod_0 γ0_1 in
                   let* __arg1_0 := M.alloc (borrow γ2_0) in
                   let* α0 : ref u32.t := M.read __self_0 in
                   let* α1 : u32.t := M.read (deref α0) in
@@ -735,7 +705,7 @@ Section Impl_core_cmp_PartialEq_for_mother_Status_t.
               let* α0 := M.read γ0_0 in
               match α0 with
               | mother.Status.Ended _ =>
-                let γ2_0 := γ0_0.["Ended.0"] in
+                let γ2_0 := mother.Status.Get_Ended_0 γ0_0 in
                 let* __self_0 := M.alloc (borrow γ2_0) in
                 let* γ0_1 :=
                   let* α0 := M.read γ0_1 in
@@ -743,7 +713,7 @@ Section Impl_core_cmp_PartialEq_for_mother_Status_t.
                 let* α0 := M.read γ0_1 in
                 match α0 with
                 | mother.Status.Ended _ =>
-                  let γ2_0 := γ0_1.["Ended.0"] in
+                  let γ2_0 := mother.Status.Get_Ended_0 γ0_1 in
                   let* __arg1_0 := M.alloc (borrow γ2_0) in
                   let* α0 : _ :=
                     ltac:(M.get_method (fun ℐ =>
@@ -773,7 +743,7 @@ Section Impl_core_cmp_PartialEq_for_mother_Status_t.
               let* α0 := M.read γ0_0 in
               match α0 with
               | mother.Status.RfDelay _ =>
-                let γ2_0 := γ0_0.["RfDelay.0"] in
+                let γ2_0 := mother.Status.Get_RfDelay_0 γ0_0 in
                 let* __self_0 := M.alloc (borrow γ2_0) in
                 let* γ0_1 :=
                   let* α0 := M.read γ0_1 in
@@ -781,7 +751,7 @@ Section Impl_core_cmp_PartialEq_for_mother_Status_t.
                 let* α0 := M.read γ0_1 in
                 match α0 with
                 | mother.Status.RfDelay _ =>
-                  let γ2_0 := γ0_1.["RfDelay.0"] in
+                  let γ2_0 := mother.Status.Get_RfDelay_0 γ0_1 in
                   let* __arg1_0 := M.alloc (borrow γ2_0) in
                   let* α0 : ref u32.t := M.read __self_0 in
                   let* α1 : u32.t := M.read (deref α0) in
@@ -896,7 +866,7 @@ Section Impl_core_clone_Clone_for_mother_Status_t.
             let* α0 := M.read γ in
             match α0 with
             | mother.Status.EndingPeriod _ =>
-              let γ1_0 := γ.["EndingPeriod.0"] in
+              let γ1_0 := mother.Status.Get_EndingPeriod_0 γ in
               let* __self_0 := M.alloc (borrow γ1_0) in
               let* α0 : _ :=
                 ltac:(M.get_method (fun ℐ =>
@@ -914,7 +884,7 @@ Section Impl_core_clone_Clone_for_mother_Status_t.
             let* α0 := M.read γ in
             match α0 with
             | mother.Status.Ended _ =>
-              let γ1_0 := γ.["Ended.0"] in
+              let γ1_0 := mother.Status.Get_Ended_0 γ in
               let* __self_0 := M.alloc (borrow γ1_0) in
               let* α0 : _ :=
                 ltac:(M.get_method (fun ℐ =>
@@ -934,7 +904,7 @@ Section Impl_core_clone_Clone_for_mother_Status_t.
             let* α0 := M.read γ in
             match α0 with
             | mother.Status.RfDelay _ =>
-              let γ1_0 := γ.["RfDelay.0"] in
+              let γ1_0 := mother.Status.Get_RfDelay_0 γ in
               let* __self_0 := M.alloc (borrow γ1_0) in
               let* α0 : _ :=
                 ltac:(M.get_method (fun ℐ =>
@@ -972,63 +942,24 @@ Section Auction.
     vector : alloc.vec.Vec.t u8.t alloc.vec.Vec.Default.A;
   }.
   
-  Global Instance Get_name : Notations.Dot "name" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(name)) (fun β α => Some (α <| name := β |>));
-  }.
-  Global Instance Get_AF_name : Notations.DoubleColon t "name" := {
-    Notations.double_colon (α : M.Val t) := α.["name"];
-  }.
-  Global Instance Get_subject : Notations.Dot "subject" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(subject))
-        (fun β α => Some (α <| subject := β |>));
-  }.
-  Global Instance Get_AF_subject : Notations.DoubleColon t "subject" := {
-    Notations.double_colon (α : M.Val t) := α.["subject"];
-  }.
-  Global Instance Get_bids : Notations.Dot "bids" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(bids)) (fun β α => Some (α <| bids := β |>));
-  }.
-  Global Instance Get_AF_bids : Notations.DoubleColon t "bids" := {
-    Notations.double_colon (α : M.Val t) := α.["bids"];
-  }.
-  Global Instance Get_terms : Notations.Dot "terms" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(terms)) (fun β α => Some (α <| terms := β |>));
-  }.
-  Global Instance Get_AF_terms : Notations.DoubleColon t "terms" := {
-    Notations.double_colon (α : M.Val t) := α.["terms"];
-  }.
-  Global Instance Get_status : Notations.Dot "status" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(status))
-        (fun β α => Some (α <| status := β |>));
-  }.
-  Global Instance Get_AF_status : Notations.DoubleColon t "status" := {
-    Notations.double_colon (α : M.Val t) := α.["status"];
-  }.
-  Global Instance Get_finalized : Notations.Dot "finalized" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(finalized))
-        (fun β α => Some (α <| finalized := β |>));
-  }.
-  Global Instance Get_AF_finalized : Notations.DoubleColon t "finalized" := {
-    Notations.double_colon (α : M.Val t) := α.["finalized"];
-  }.
-  Global Instance Get_vector : Notations.Dot "vector" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(vector))
-        (fun β α => Some (α <| vector := β |>));
-  }.
-  Global Instance Get_AF_vector : Notations.DoubleColon t "vector" := {
-    Notations.double_colon (α : M.Val t) := α.["vector"];
-  }.
+  Definition Get_name :=
+    Ref.map (fun α => Some α.(name)) (fun β α => Some (α <| name := β |>)).
+  Definition Get_subject :=
+    Ref.map
+      (fun α => Some α.(subject))
+      (fun β α => Some (α <| subject := β |>)).
+  Definition Get_bids :=
+    Ref.map (fun α => Some α.(bids)) (fun β α => Some (α <| bids := β |>)).
+  Definition Get_terms :=
+    Ref.map (fun α => Some α.(terms)) (fun β α => Some (α <| terms := β |>)).
+  Definition Get_status :=
+    Ref.map (fun α => Some α.(status)) (fun β α => Some (α <| status := β |>)).
+  Definition Get_finalized :=
+    Ref.map
+      (fun α => Some α.(finalized))
+      (fun β α => Some (α <| finalized := β |>)).
+  Definition Get_vector :=
+    Ref.map (fun α => Some α.(vector)) (fun β α => Some (α <| vector := β |>)).
 End Auction.
 End Auction.
 
@@ -1060,7 +991,10 @@ Section Impl_core_cmp_PartialEq_for_mother_Auction_t.
     let* α1 : ref mother.Auction.t := M.read self in
     let* α2 : ref mother.Auction.t := M.read other in
     let* α3 : bool.t :=
-      M.call (α0 (borrow (deref α1).["name"]) (borrow (deref α2).["name"])) in
+      M.call
+        (α0
+          (borrow (mother.Auction.Get_name (deref α1)))
+          (borrow (mother.Auction.Get_name (deref α2)))) in
     let* α4 : _ :=
       ltac:(M.get_method (fun ℐ =>
         core.cmp.PartialEq.eq
@@ -1071,7 +1005,9 @@ Section Impl_core_cmp_PartialEq_for_mother_Auction_t.
     let* α6 : ref mother.Auction.t := M.read other in
     let* α7 : bool.t :=
       M.call
-        (α4 (borrow (deref α5).["subject"]) (borrow (deref α6).["subject"])) in
+        (α4
+          (borrow (mother.Auction.Get_subject (deref α5)))
+          (borrow (mother.Auction.Get_subject (deref α6)))) in
     let* α8 : _ :=
       ltac:(M.get_method (fun ℐ =>
         core.cmp.PartialEq.eq
@@ -1081,7 +1017,10 @@ Section Impl_core_cmp_PartialEq_for_mother_Auction_t.
     let* α9 : ref mother.Auction.t := M.read self in
     let* α10 : ref mother.Auction.t := M.read other in
     let* α11 : bool.t :=
-      M.call (α8 (borrow (deref α9).["bids"]) (borrow (deref α10).["bids"])) in
+      M.call
+        (α8
+          (borrow (mother.Auction.Get_bids (deref α9)))
+          (borrow (mother.Auction.Get_bids (deref α10)))) in
     let* α12 : _ :=
       ltac:(M.get_method (fun ℐ =>
         core.cmp.PartialEq.eq
@@ -1092,7 +1031,9 @@ Section Impl_core_cmp_PartialEq_for_mother_Auction_t.
     let* α14 : ref mother.Auction.t := M.read other in
     let* α15 : bool.t :=
       M.call
-        (α12 (borrow (deref α13).["terms"]) (borrow (deref α14).["terms"])) in
+        (α12
+          (borrow (mother.Auction.Get_terms (deref α13)))
+          (borrow (mother.Auction.Get_terms (deref α14)))) in
     let* α16 : _ :=
       ltac:(M.get_method (fun ℐ =>
         core.cmp.PartialEq.eq
@@ -1103,11 +1044,13 @@ Section Impl_core_cmp_PartialEq_for_mother_Auction_t.
     let* α18 : ref mother.Auction.t := M.read other in
     let* α19 : bool.t :=
       M.call
-        (α16 (borrow (deref α17).["status"]) (borrow (deref α18).["status"])) in
+        (α16
+          (borrow (mother.Auction.Get_status (deref α17)))
+          (borrow (mother.Auction.Get_status (deref α18)))) in
     let* α20 : ref mother.Auction.t := M.read self in
-    let* α21 : bool.t := M.read (deref α20).["finalized"] in
+    let* α21 : bool.t := M.read (mother.Auction.Get_finalized (deref α20)) in
     let* α22 : ref mother.Auction.t := M.read other in
-    let* α23 : bool.t := M.read (deref α22).["finalized"] in
+    let* α23 : bool.t := M.read (mother.Auction.Get_finalized (deref α22)) in
     let* α24 : _ :=
       ltac:(M.get_method (fun ℐ =>
         core.cmp.PartialEq.eq
@@ -1118,7 +1061,9 @@ Section Impl_core_cmp_PartialEq_for_mother_Auction_t.
     let* α26 : ref mother.Auction.t := M.read other in
     let* α27 : bool.t :=
       M.call
-        (α24 (borrow (deref α25).["vector"]) (borrow (deref α26).["vector"])) in
+        (α24
+          (borrow (mother.Auction.Get_vector (deref α25)))
+          (borrow (mother.Auction.Get_vector (deref α26)))) in
     M.pure
       (BinOp.Pure.and
         (BinOp.Pure.and
@@ -1237,33 +1182,37 @@ Section Impl_core_clone_Clone_for_mother_Auction_t.
         core.clone.Clone.clone (Self := alloc.string.String.t) (Trait := ℐ))) in
     let* α1 : ref mother.Auction.t := M.read self in
     let* α2 : alloc.string.String.t :=
-      M.call (α0 (borrow (deref α1).["name"])) in
+      M.call (α0 (borrow (mother.Auction.Get_name (deref α1)))) in
     let* α3 : _ :=
       ltac:(M.get_method (fun ℐ =>
         core.clone.Clone.clone (Self := array u8.t) (Trait := ℐ))) in
     let* α4 : ref mother.Auction.t := M.read self in
-    let* α5 : array u8.t := M.call (α3 (borrow (deref α4).["subject"])) in
+    let* α5 : array u8.t :=
+      M.call (α3 (borrow (mother.Auction.Get_subject (deref α4)))) in
     let* α6 : _ :=
       ltac:(M.get_method (fun ℐ =>
         core.clone.Clone.clone (Self := mother.Bids.t) (Trait := ℐ))) in
     let* α7 : ref mother.Auction.t := M.read self in
-    let* α8 : mother.Bids.t := M.call (α6 (borrow (deref α7).["bids"])) in
+    let* α8 : mother.Bids.t :=
+      M.call (α6 (borrow (mother.Auction.Get_bids (deref α7)))) in
     let* α9 : _ :=
       ltac:(M.get_method (fun ℐ =>
         core.clone.Clone.clone (Self := array u32.t) (Trait := ℐ))) in
     let* α10 : ref mother.Auction.t := M.read self in
-    let* α11 : array u32.t := M.call (α9 (borrow (deref α10).["terms"])) in
+    let* α11 : array u32.t :=
+      M.call (α9 (borrow (mother.Auction.Get_terms (deref α10)))) in
     let* α12 : _ :=
       ltac:(M.get_method (fun ℐ =>
         core.clone.Clone.clone (Self := mother.Status.t) (Trait := ℐ))) in
     let* α13 : ref mother.Auction.t := M.read self in
     let* α14 : mother.Status.t :=
-      M.call (α12 (borrow (deref α13).["status"])) in
+      M.call (α12 (borrow (mother.Auction.Get_status (deref α13)))) in
     let* α15 : _ :=
       ltac:(M.get_method (fun ℐ =>
         core.clone.Clone.clone (Self := bool.t) (Trait := ℐ))) in
     let* α16 : ref mother.Auction.t := M.read self in
-    let* α17 : bool.t := M.call (α15 (borrow (deref α16).["finalized"])) in
+    let* α17 : bool.t :=
+      M.call (α15 (borrow (mother.Auction.Get_finalized (deref α16)))) in
     let* α18 : _ :=
       ltac:(M.get_method (fun ℐ =>
         core.clone.Clone.clone
@@ -1271,7 +1220,7 @@ Section Impl_core_clone_Clone_for_mother_Auction_t.
           (Trait := ℐ))) in
     let* α19 : ref mother.Auction.t := M.read self in
     let* α20 : alloc.vec.Vec.t u8.t alloc.alloc.Global.t :=
-      M.call (α18 (borrow (deref α19).["vector"])) in
+      M.call (α18 (borrow (mother.Auction.Get_vector (deref α19)))) in
     M.pure
       {|
         mother.Auction.name := α2;
@@ -1364,12 +1313,10 @@ Module Failure.
   | Revert (_ : alloc.string.String.t)
   | Panic.
   
-  Global Instance Get_Revert_0 : Notations.Dot "Revert.0" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => match α with | Revert α0 => Some α0 | _ => None end)
-        (fun β α => match α with | Revert _ => Some (Revert β) | _ => None end);
-  }.
+  Definition Get_Revert_0 :=
+    Ref.map
+      (fun α => match α with | Revert α0 => Some α0 | _ => None end)
+      (fun β α => match α with | Revert _ => Some (Revert β) | _ => None end).
 End Failure.
 
 Module  Impl_core_marker_StructuralPartialEq_for_mother_Failure_t.
@@ -1421,7 +1368,7 @@ Section Impl_core_cmp_PartialEq_for_mother_Failure_t.
               let* α0 := M.read γ0_0 in
               match α0 with
               | mother.Failure.Revert _ =>
-                let γ2_0 := γ0_0.["Revert.0"] in
+                let γ2_0 := mother.Failure.Get_Revert_0 γ0_0 in
                 let* __self_0 := M.alloc (borrow γ2_0) in
                 let* γ0_1 :=
                   let* α0 := M.read γ0_1 in
@@ -1429,7 +1376,7 @@ Section Impl_core_cmp_PartialEq_for_mother_Failure_t.
                 let* α0 := M.read γ0_1 in
                 match α0 with
                 | mother.Failure.Revert _ =>
-                  let γ2_0 := γ0_1.["Revert.0"] in
+                  let γ2_0 := mother.Failure.Get_Revert_0 γ0_1 in
                   let* __arg1_0 := M.alloc (borrow γ2_0) in
                   let* α0 : _ :=
                     ltac:(M.get_method (fun ℐ =>
@@ -1508,15 +1455,10 @@ Section AuctionEchoed.
     auction : mother.Auction.t;
   }.
   
-  Global Instance Get_auction : Notations.Dot "auction" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(auction))
-        (fun β α => Some (α <| auction := β |>));
-  }.
-  Global Instance Get_AF_auction : Notations.DoubleColon t "auction" := {
-    Notations.double_colon (α : M.Val t) := α.["auction"];
-  }.
+  Definition Get_auction :=
+    Ref.map
+      (fun α => Some α.(auction))
+      (fun β α => Some (α <| auction := β |>)).
 End AuctionEchoed.
 End AuctionEchoed.
 
@@ -1524,13 +1466,10 @@ Module Event.
   Inductive t : Set :=
   | AuctionEchoed (_ : mother.AuctionEchoed.t).
   
-  Global Instance Get_AuctionEchoed_0 : Notations.Dot "AuctionEchoed.0" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => match α with | AuctionEchoed α0 => Some α0 end)
-        (fun β α =>
-          match α with | AuctionEchoed _ => Some (AuctionEchoed β) end);
-  }.
+  Definition Get_AuctionEchoed_0 :=
+    Ref.map
+      (fun α => match α with | AuctionEchoed α0 => Some α0 end)
+      (fun β α => match α with | AuctionEchoed _ => Some (AuctionEchoed β) end).
 End Event.
 
 Module  Impl_mother_Env_t.
@@ -1545,7 +1484,7 @@ Section Impl_mother_Env_t.
   Definition caller (self : ref Self) : M mother.AccountId.t :=
     let* self := M.alloc self in
     let* α0 : ref mother.Env.t := M.read self in
-    M.read (deref α0).["caller"].
+    M.read (mother.Env.Get_caller (deref α0)).
   
   Global Instance AssociatedFunction_caller :
     Notations.DoubleColon Self "caller" := {
@@ -1578,24 +1517,14 @@ Section Mother.
     balances : mother.Mapping.t mother.AccountId.t ltac:(mother.Balance);
   }.
   
-  Global Instance Get_auction : Notations.Dot "auction" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(auction))
-        (fun β α => Some (α <| auction := β |>));
-  }.
-  Global Instance Get_AF_auction : Notations.DoubleColon t "auction" := {
-    Notations.double_colon (α : M.Val t) := α.["auction"];
-  }.
-  Global Instance Get_balances : Notations.Dot "balances" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(balances))
-        (fun β α => Some (α <| balances := β |>));
-  }.
-  Global Instance Get_AF_balances : Notations.DoubleColon t "balances" := {
-    Notations.double_colon (α : M.Val t) := α.["balances"];
-  }.
+  Definition Get_auction :=
+    Ref.map
+      (fun α => Some α.(auction))
+      (fun β α => Some (α <| auction := β |>)).
+  Definition Get_balances :=
+    Ref.map
+      (fun α => Some α.(balances))
+      (fun β α => Some (α <| balances := β |>)).
 End Mother.
 End Mother.
 
@@ -1804,11 +1733,11 @@ Section Impl_mother_Mother_t.
             (let* α0 := M.read γ in
             match α0 with
             | core.option.Option.Some _ =>
-              let γ0_0 := γ.["Some.0"] in
+              let γ0_0 := core.option.Option.Get_Some_0 γ in
               let* α0 := M.read γ0_0 in
               match α0 with
               | mother.Failure.Revert _ =>
-                let γ1_0 := γ0_0.["Revert.0"] in
+                let γ1_0 := mother.Failure.Get_Revert_0 γ0_0 in
                 let* α0 : _ :=
                   ltac:(M.get_method (fun ℐ =>
                     alloc.string.ToString.to_string
@@ -1827,7 +1756,7 @@ Section Impl_mother_Mother_t.
             (let* α0 := M.read γ in
             match α0 with
             | core.option.Option.Some _ =>
-              let γ0_0 := γ.["Some.0"] in
+              let γ0_0 := core.option.Option.Get_Some_0 γ in
               let* α0 := M.read γ0_0 in
               match α0 with
               | mother.Failure.Panic =>

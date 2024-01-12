@@ -8,20 +8,10 @@ Section Point.
     y : i32.t;
   }.
   
-  Global Instance Get_x : Notations.Dot "x" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(x)) (fun β α => Some (α <| x := β |>));
-  }.
-  Global Instance Get_AF_x : Notations.DoubleColon t "x" := {
-    Notations.double_colon (α : M.Val t) := α.["x"];
-  }.
-  Global Instance Get_y : Notations.Dot "y" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(y)) (fun β α => Some (α <| y := β |>));
-  }.
-  Global Instance Get_AF_y : Notations.DoubleColon t "y" := {
-    Notations.double_colon (α : M.Val t) := α.["y"];
-  }.
+  Definition Get_x :=
+    Ref.map (fun α => Some α.(x)) (fun β α => Some (α <| x := β |>)).
+  Definition Get_y :=
+    Ref.map (fun α => Some α.(y)) (fun β α => Some (α <| y := β |>)).
 End Point.
 End Point.
 
@@ -178,8 +168,10 @@ Definition main : M unit :=
                   scoping_rules_borrowing_the_ref_pattern.Point.y := _;
                 |}
                 =>
-              let γ0_0 := γ.["Point.x"] in
-              let γ0_1 := γ.["Point.y"] in
+              let γ0_0 :=
+                scoping_rules_borrowing_the_ref_pattern.Get_Point_x γ in
+              let γ0_1 :=
+                scoping_rules_borrowing_the_ref_pattern.Get_Point_y γ in
               let* ref_to_x := M.alloc (borrow γ0_0) in
               let* α0 : ref i32.t := M.read ref_to_x in
               M.pure (deref α0)
@@ -202,8 +194,8 @@ Definition main : M unit :=
                 scoping_rules_borrowing_the_ref_pattern.Point.y := _;
               |}
               =>
-            let γ0_0 := γ.["Point.x"] in
-            let γ0_1 := γ.["Point.y"] in
+            let γ0_0 := scoping_rules_borrowing_the_ref_pattern.Get_Point_x γ in
+            let γ0_1 := scoping_rules_borrowing_the_ref_pattern.Get_Point_y γ in
             let* mut_ref_to_y := M.alloc (borrow_mut γ0_1) in
             let* _ : M.Val unit :=
               let* α0 : mut_ref i32.t := M.read mut_ref_to_y in
@@ -223,9 +215,15 @@ Definition main : M unit :=
       let* α5 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α4) in
       let* α6 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow point.["x"])) in
+        M.call
+          (core.fmt.rt.Argument.t::["new_display"]
+            (borrow
+              (scoping_rules_borrowing_the_ref_pattern.Point.Get_x point))) in
       let* α7 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow point.["y"])) in
+        M.call
+          (core.fmt.rt.Argument.t::["new_display"]
+            (borrow
+              (scoping_rules_borrowing_the_ref_pattern.Point.Get_y point))) in
       let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α6; α7 ] in
       let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
         M.alloc (borrow α8) in
@@ -249,11 +247,15 @@ Definition main : M unit :=
       let* α6 : core.fmt.rt.Argument.t :=
         M.call
           (core.fmt.rt.Argument.t::["new_display"]
-            (borrow mutable_point.["x"])) in
+            (borrow
+              (scoping_rules_borrowing_the_ref_pattern.Point.Get_x
+                mutable_point))) in
       let* α7 : core.fmt.rt.Argument.t :=
         M.call
           (core.fmt.rt.Argument.t::["new_display"]
-            (borrow mutable_point.["y"])) in
+            (borrow
+              (scoping_rules_borrowing_the_ref_pattern.Point.Get_y
+                mutable_point))) in
       let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α6; α7 ] in
       let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
         M.alloc (borrow α8) in

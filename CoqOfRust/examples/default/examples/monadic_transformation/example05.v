@@ -7,10 +7,8 @@ Section Foo.
     x0 : u32.t;
   }.
   
-  Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>));
-  }.
+  Definition Get_0 :=
+    Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>)).
 End Foo.
 End Foo.
 
@@ -25,7 +23,7 @@ Section Impl_example05_Foo_t.
   *)
   Definition plus1 (self : Self) : M u32.t :=
     let* self := M.alloc self in
-    let* α0 : u32.t := M.read self.["0"] in
+    let* α0 : u32.t := M.read (example05.Foo.Get_0 self) in
     BinOp.Panic.add α0 (Integer.of_Z 1).
   
   Global Instance AssociatedFunction_plus1 :

@@ -198,10 +198,6 @@ pub(crate) enum Expression<'a> {
         field: String,
         update: Rc<Expression<'a>>,
     },
-    NotationsDot {
-        value: Rc<Expression<'a>>,
-        field: String,
-    },
     /// For example ltac:(...) or constr:(...)
     ModeWrapper {
         mode: String,
@@ -1017,12 +1013,6 @@ impl<'a> Expression<'a> {
                     ]),
                 ]),
             ),
-            Self::NotationsDot { value, field } => concat([
-                value.to_doc(true),
-                text(".[\""),
-                text(field.to_owned()),
-                text("\"]"),
-            ]),
             Self::ModeWrapper { mode, expr } => concat([
                 text(mode.to_owned()),
                 text(":("),

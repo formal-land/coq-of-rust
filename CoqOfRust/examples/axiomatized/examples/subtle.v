@@ -7,10 +7,8 @@ Section Choice.
     x0 : u8.t;
   }.
   
-  Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>));
-  }.
+  Definition Get_0 :=
+    Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>)).
 End Choice.
 End Choice.
 
@@ -1282,22 +1280,12 @@ Section CtOption.
     is_some : subtle.Choice.t;
   }.
   
-  Global Instance Get_value : Notations.Dot "value" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(value)) (fun β α => Some (α <| value := β |>));
-  }.
-  Global Instance Get_AF_value : Notations.DoubleColon t "value" := {
-    Notations.double_colon (α : M.Val t) := α.["value"];
-  }.
-  Global Instance Get_is_some : Notations.Dot "is_some" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(is_some))
-        (fun β α => Some (α <| is_some := β |>));
-  }.
-  Global Instance Get_AF_is_some : Notations.DoubleColon t "is_some" := {
-    Notations.double_colon (α : M.Val t) := α.["is_some"];
-  }.
+  Definition Get_value :=
+    Ref.map (fun α => Some α.(value)) (fun β α => Some (α <| value := β |>)).
+  Definition Get_is_some :=
+    Ref.map
+      (fun α => Some α.(is_some))
+      (fun β α => Some (α <| is_some := β |>)).
 End CtOption.
 End CtOption.
 

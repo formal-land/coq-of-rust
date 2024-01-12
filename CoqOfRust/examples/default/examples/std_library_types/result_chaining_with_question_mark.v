@@ -250,7 +250,7 @@ Module checked.
                 (let* α0 := M.read γ in
                 match α0 with
                 | core.ops.control_flow.ControlFlow.Break _ =>
-                  let γ0_0 := γ.["Break.0"] in
+                  let γ0_0 := core.ops.control_flow.ControlFlow.Get_Break_0 γ in
                   let* residual := M.copy γ0_0 in
                   let* α0 : _ :=
                     ltac:(M.get_method (fun ℐ =>
@@ -285,7 +285,8 @@ Module checked.
                 (let* α0 := M.read γ in
                 match α0 with
                 | core.ops.control_flow.ControlFlow.Continue _ =>
-                  let γ0_0 := γ.["Continue.0"] in
+                  let γ0_0 :=
+                    core.ops.control_flow.ControlFlow.Get_Continue_0 γ in
                   let* val := M.copy γ0_0 in
                   M.pure val
                 | _ => M.break_match
@@ -331,7 +332,7 @@ Module checked.
                 (let* α0 := M.read γ in
                 match α0 with
                 | core.ops.control_flow.ControlFlow.Break _ =>
-                  let γ0_0 := γ.["Break.0"] in
+                  let γ0_0 := core.ops.control_flow.ControlFlow.Get_Break_0 γ in
                   let* residual := M.copy γ0_0 in
                   let* α0 : _ :=
                     ltac:(M.get_method (fun ℐ =>
@@ -366,7 +367,8 @@ Module checked.
                 (let* α0 := M.read γ in
                 match α0 with
                 | core.ops.control_flow.ControlFlow.Continue _ =>
-                  let γ0_0 := γ.["Continue.0"] in
+                  let γ0_0 :=
+                    core.ops.control_flow.ControlFlow.Get_Continue_0 γ in
                   let* val := M.copy γ0_0 in
                   M.pure val
                 | _ => M.break_match
@@ -427,7 +429,7 @@ Module checked.
             (let* α0 := M.read γ in
             match α0 with
             | core.result.Result.Err _ =>
-              let γ0_0 := γ.["Err.0"] in
+              let γ0_0 := core.result.Result.Get_Err_0 γ in
               let* why := M.copy γ0_0 in
               let* α0 : M.Val (ref str.t) :=
                 match_operator
@@ -479,7 +481,7 @@ Module checked.
             (let* α0 := M.read γ in
             match α0 with
             | core.result.Result.Ok _ =>
-              let γ0_0 := γ.["Ok.0"] in
+              let γ0_0 := core.result.Result.Get_Ok_0 γ in
               let* value := M.copy γ0_0 in
               let* _ : M.Val unit :=
                 let* α0 : ref str.t := M.read (mk_str "") in
@@ -758,7 +760,7 @@ Definition op_
               (let* α0 := M.read γ in
               match α0 with
               | core.ops.control_flow.ControlFlow.Break _ =>
-                let γ0_0 := γ.["Break.0"] in
+                let γ0_0 := core.ops.control_flow.ControlFlow.Get_Break_0 γ in
                 let* residual := M.copy γ0_0 in
                 let* α0 : _ :=
                   ltac:(M.get_method (fun ℐ =>
@@ -793,7 +795,8 @@ Definition op_
               (let* α0 := M.read γ in
               match α0 with
               | core.ops.control_flow.ControlFlow.Continue _ =>
-                let γ0_0 := γ.["Continue.0"] in
+                let γ0_0 :=
+                  core.ops.control_flow.ControlFlow.Get_Continue_0 γ in
                 let* val := M.copy γ0_0 in
                 M.pure val
               | _ => M.break_match
@@ -839,7 +842,7 @@ Definition op_
               (let* α0 := M.read γ in
               match α0 with
               | core.ops.control_flow.ControlFlow.Break _ =>
-                let γ0_0 := γ.["Break.0"] in
+                let γ0_0 := core.ops.control_flow.ControlFlow.Get_Break_0 γ in
                 let* residual := M.copy γ0_0 in
                 let* α0 : _ :=
                   ltac:(M.get_method (fun ℐ =>
@@ -874,7 +877,8 @@ Definition op_
               (let* α0 := M.read γ in
               match α0 with
               | core.ops.control_flow.ControlFlow.Continue _ =>
-                let γ0_0 := γ.["Continue.0"] in
+                let γ0_0 :=
+                  core.ops.control_flow.ControlFlow.Get_Continue_0 γ in
                 let* val := M.copy γ0_0 in
                 M.pure val
               | _ => M.break_match
@@ -935,7 +939,7 @@ Definition op (x : f64.t) (y : f64.t) : M unit :=
           (let* α0 := M.read γ in
           match α0 with
           | core.result.Result.Err _ =>
-            let γ0_0 := γ.["Err.0"] in
+            let γ0_0 := core.result.Result.Get_Err_0 γ in
             let* why := M.copy γ0_0 in
             let* α0 : M.Val (ref str.t) :=
               match_operator
@@ -987,7 +991,7 @@ Definition op (x : f64.t) (y : f64.t) : M unit :=
           (let* α0 := M.read γ in
           match α0 with
           | core.result.Result.Ok _ =>
-            let γ0_0 := γ.["Ok.0"] in
+            let γ0_0 := core.result.Result.Get_Ok_0 γ in
             let* value := M.copy γ0_0 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "") in

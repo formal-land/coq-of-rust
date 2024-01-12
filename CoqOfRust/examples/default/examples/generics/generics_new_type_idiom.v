@@ -7,10 +7,8 @@ Section Years.
     x0 : i64.t;
   }.
   
-  Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>));
-  }.
+  Definition Get_0 :=
+    Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>)).
 End Years.
 End Years.
 
@@ -20,10 +18,8 @@ Section Days.
     x0 : i64.t;
   }.
   
-  Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>));
-  }.
+  Definition Get_0 :=
+    Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>)).
 End Days.
 End Days.
 
@@ -39,7 +35,8 @@ Section Impl_generics_new_type_idiom_Years_t.
   Definition to_days (self : ref Self) : M generics_new_type_idiom.Days.t :=
     let* self := M.alloc self in
     let* α0 : ref generics_new_type_idiom.Years.t := M.read self in
-    let* α1 : i64.t := M.read (deref α0).["0"] in
+    let* α1 : i64.t :=
+      M.read (generics_new_type_idiom.Years.Get_0 (deref α0)) in
     let* α2 : i64.t := BinOp.Panic.mul α1 (Integer.of_Z 365) in
     M.pure (generics_new_type_idiom.Days.Build_t α2).
   
@@ -62,7 +59,7 @@ Section Impl_generics_new_type_idiom_Days_t.
   Definition to_years (self : ref Self) : M generics_new_type_idiom.Years.t :=
     let* self := M.alloc self in
     let* α0 : ref generics_new_type_idiom.Days.t := M.read self in
-    let* α1 : i64.t := M.read (deref α0).["0"] in
+    let* α1 : i64.t := M.read (generics_new_type_idiom.Days.Get_0 (deref α0)) in
     let* α2 : i64.t := BinOp.Panic.div α1 (Integer.of_Z 365) in
     M.pure (generics_new_type_idiom.Years.Build_t α2).
   
@@ -81,7 +78,7 @@ fn old_enough(age: &Years) -> bool {
 Definition old_enough (age : ref generics_new_type_idiom.Years.t) : M bool.t :=
   let* age := M.alloc age in
   let* α0 : ref generics_new_type_idiom.Years.t := M.read age in
-  let* α1 : i64.t := M.read (deref α0).["0"] in
+  let* α1 : i64.t := M.read (generics_new_type_idiom.Years.Get_0 (deref α0)) in
   M.pure (BinOp.Pure.ge α1 (Integer.of_Z 18)).
 
 (*

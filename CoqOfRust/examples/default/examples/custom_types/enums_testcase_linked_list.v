@@ -12,21 +12,15 @@ Module List.
         alloc.boxed.Box.Default.A)
   | Nil.
   
-  Global Instance Get_Cons_0 : Notations.Dot "Cons.0" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => match α with | Cons α0 _ => Some α0 | _ => None end)
-        (fun β α =>
-          match α with | Cons _ α1 => Some (Cons β α1) | _ => None end);
-  }.
+  Definition Get_Cons_0 :=
+    Ref.map
+      (fun α => match α with | Cons α0 _ => Some α0 | _ => None end)
+      (fun β α => match α with | Cons _ α1 => Some (Cons β α1) | _ => None end).
   
-  Global Instance Get_Cons_1 : Notations.Dot "Cons.1" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => match α with | Cons _ α1 => Some α1 | _ => None end)
-        (fun β α =>
-          match α with | Cons α0 _ => Some (Cons α0 β) | _ => None end);
-  }.
+  Definition Get_Cons_1 :=
+    Ref.map
+      (fun α => match α with | Cons _ α1 => Some α1 | _ => None end)
+      (fun β α => match α with | Cons α0 _ => Some (Cons α0 β) | _ => None end).
 End List.
 
 Module  Impl_enums_testcase_linked_list_List_t.
@@ -105,8 +99,8 @@ Section Impl_enums_testcase_linked_list_List_t.
             (let* α0 := M.read γ in
             match α0 with
             | enums_testcase_linked_list.List.Cons _ _ =>
-              let γ0_0 := γ.["Cons.0"] in
-              let γ0_1 := γ.["Cons.1"] in
+              let γ0_0 := enums_testcase_linked_list.List.Get_Cons_0 γ in
+              let γ0_1 := enums_testcase_linked_list.List.Get_Cons_1 γ in
               let* tail := M.alloc (borrow γ0_1) in
               let* α0 :
                   ref
@@ -167,8 +161,8 @@ Section Impl_enums_testcase_linked_list_List_t.
             (let* α0 := M.read γ in
             match α0 with
             | enums_testcase_linked_list.List.Cons _ _ =>
-              let γ0_0 := γ.["Cons.0"] in
-              let γ0_1 := γ.["Cons.1"] in
+              let γ0_0 := enums_testcase_linked_list.List.Get_Cons_0 γ in
+              let γ0_1 := enums_testcase_linked_list.List.Get_Cons_1 γ in
               let* head := M.copy γ0_0 in
               let* tail := M.alloc (borrow γ0_1) in
               let* res : M.Val alloc.string.String.t :=

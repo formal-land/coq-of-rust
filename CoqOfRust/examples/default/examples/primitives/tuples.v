@@ -40,22 +40,14 @@ Section Matrix.
     x3 : f32.t;
   }.
   
-  Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>));
-  }.
-  Global Instance Get_1 : Notations.Dot "1" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(x1)) (fun β α => Some (α <| x1 := β |>));
-  }.
-  Global Instance Get_2 : Notations.Dot "2" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(x2)) (fun β α => Some (α <| x2 := β |>));
-  }.
-  Global Instance Get_3 : Notations.Dot "3" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(x3)) (fun β α => Some (α <| x3 := β |>));
-  }.
+  Definition Get_0 :=
+    Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>)).
+  Definition Get_1 :=
+    Ref.map (fun α => Some α.(x1)) (fun β α => Some (α <| x1 := β |>)).
+  Definition Get_2 :=
+    Ref.map (fun α => Some α.(x2)) (fun β α => Some (α <| x2 := β |>)).
+  Definition Get_3 :=
+    Ref.map (fun α => Some α.(x3)) (fun β α => Some (α <| x3 := β |>)).
 End Matrix.
 End Matrix.
 
@@ -75,16 +67,20 @@ Section Impl_core_fmt_Debug_for_tuples_Matrix_t.
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref str.t := M.read (mk_str "Matrix") in
     let* α2 : ref tuples.Matrix.t := M.read self in
-    let* α3 : M.Val (ref f32.t) := M.alloc (borrow (deref α2).["0"]) in
+    let* α3 : M.Val (ref f32.t) :=
+      M.alloc (borrow (tuples.Matrix.Get_0 (deref α2))) in
     let* α4 : ref _ (* dyn *) := M.read (pointer_coercion "Unsize" α3) in
     let* α5 : ref tuples.Matrix.t := M.read self in
-    let* α6 : M.Val (ref f32.t) := M.alloc (borrow (deref α5).["1"]) in
+    let* α6 : M.Val (ref f32.t) :=
+      M.alloc (borrow (tuples.Matrix.Get_1 (deref α5))) in
     let* α7 : ref _ (* dyn *) := M.read (pointer_coercion "Unsize" α6) in
     let* α8 : ref tuples.Matrix.t := M.read self in
-    let* α9 : M.Val (ref f32.t) := M.alloc (borrow (deref α8).["2"]) in
+    let* α9 : M.Val (ref f32.t) :=
+      M.alloc (borrow (tuples.Matrix.Get_2 (deref α8))) in
     let* α10 : ref _ (* dyn *) := M.read (pointer_coercion "Unsize" α9) in
     let* α11 : ref tuples.Matrix.t := M.read self in
-    let* α12 : M.Val (ref f32.t) := M.alloc (borrow (deref α11).["3"]) in
+    let* α12 : M.Val (ref f32.t) :=
+      M.alloc (borrow (tuples.Matrix.Get_3 (deref α11))) in
     let* α13 : M.Val (ref (ref f32.t)) := M.alloc (borrow α12) in
     let* α14 : ref _ (* dyn *) := M.read (pointer_coercion "Unsize" α13) in
     M.call

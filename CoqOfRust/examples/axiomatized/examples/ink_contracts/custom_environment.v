@@ -7,10 +7,8 @@ Section AccountId.
     x0 : u128.t;
   }.
   
-  Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>));
-  }.
+  Definition Get_0 :=
+    Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>)).
 End AccountId.
 End AccountId.
 
@@ -72,15 +70,8 @@ Section Env.
     caller : custom_environment.AccountId.t;
   }.
   
-  Global Instance Get_caller : Notations.Dot "caller" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(caller))
-        (fun β α => Some (α <| caller := β |>));
-  }.
-  Global Instance Get_AF_caller : Notations.DoubleColon t "caller" := {
-    Notations.double_colon (α : M.Val t) := α.["caller"];
-  }.
+  Definition Get_caller :=
+    Ref.map (fun α => Some α.(caller)) (fun β α => Some (α <| caller := β |>)).
 End Env.
 End Env.
 
@@ -120,56 +111,26 @@ Section EventWithTopics.
     fifth_topic : ltac:(custom_environment.Balance);
   }.
   
-  Global Instance Get_first_topic : Notations.Dot "first_topic" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(first_topic))
-        (fun β α => Some (α <| first_topic := β |>));
-  }.
-  Global Instance Get_AF_first_topic :
-    Notations.DoubleColon t "first_topic" := {
-    Notations.double_colon (α : M.Val t) := α.["first_topic"];
-  }.
-  Global Instance Get_second_topic : Notations.Dot "second_topic" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(second_topic))
-        (fun β α => Some (α <| second_topic := β |>));
-  }.
-  Global Instance Get_AF_second_topic :
-    Notations.DoubleColon t "second_topic" := {
-    Notations.double_colon (α : M.Val t) := α.["second_topic"];
-  }.
-  Global Instance Get_third_topic : Notations.Dot "third_topic" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(third_topic))
-        (fun β α => Some (α <| third_topic := β |>));
-  }.
-  Global Instance Get_AF_third_topic :
-    Notations.DoubleColon t "third_topic" := {
-    Notations.double_colon (α : M.Val t) := α.["third_topic"];
-  }.
-  Global Instance Get_fourth_topic : Notations.Dot "fourth_topic" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(fourth_topic))
-        (fun β α => Some (α <| fourth_topic := β |>));
-  }.
-  Global Instance Get_AF_fourth_topic :
-    Notations.DoubleColon t "fourth_topic" := {
-    Notations.double_colon (α : M.Val t) := α.["fourth_topic"];
-  }.
-  Global Instance Get_fifth_topic : Notations.Dot "fifth_topic" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(fifth_topic))
-        (fun β α => Some (α <| fifth_topic := β |>));
-  }.
-  Global Instance Get_AF_fifth_topic :
-    Notations.DoubleColon t "fifth_topic" := {
-    Notations.double_colon (α : M.Val t) := α.["fifth_topic"];
-  }.
+  Definition Get_first_topic :=
+    Ref.map
+      (fun α => Some α.(first_topic))
+      (fun β α => Some (α <| first_topic := β |>)).
+  Definition Get_second_topic :=
+    Ref.map
+      (fun α => Some α.(second_topic))
+      (fun β α => Some (α <| second_topic := β |>)).
+  Definition Get_third_topic :=
+    Ref.map
+      (fun α => Some α.(third_topic))
+      (fun β α => Some (α <| third_topic := β |>)).
+  Definition Get_fourth_topic :=
+    Ref.map
+      (fun α => Some α.(fourth_topic))
+      (fun β α => Some (α <| fourth_topic := β |>)).
+  Definition Get_fifth_topic :=
+    Ref.map
+      (fun α => Some α.(fifth_topic))
+      (fun β α => Some (α <| fifth_topic := β |>)).
 End EventWithTopics.
 End EventWithTopics.
 
@@ -197,13 +158,11 @@ Module Event.
   Inductive t : Set :=
   | EventWithTopics (_ : custom_environment.EventWithTopics.t).
   
-  Global Instance Get_EventWithTopics_0 : Notations.Dot "EventWithTopics.0" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => match α with | EventWithTopics α0 => Some α0 end)
-        (fun β α =>
-          match α with | EventWithTopics _ => Some (EventWithTopics β) end);
-  }.
+  Definition Get_EventWithTopics_0 :=
+    Ref.map
+      (fun α => match α with | EventWithTopics α0 => Some α0 end)
+      (fun β α =>
+        match α with | EventWithTopics _ => Some (EventWithTopics β) end).
 End Event.
 
 Module  Impl_custom_environment_Env_t.

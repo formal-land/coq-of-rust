@@ -10,22 +10,10 @@ Section Mapping.
     _value : core.marker.PhantomData.t V;
   }.
   
-  Global Instance Get__key : Notations.Dot "_key" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(_key)) (fun β α => Some (α <| _key := β |>));
-  }.
-  Global Instance Get_AF__key : Notations.DoubleColon t "_key" := {
-    Notations.double_colon (α : M.Val t) := α.["_key"];
-  }.
-  Global Instance Get__value : Notations.Dot "_value" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(_value))
-        (fun β α => Some (α <| _value := β |>));
-  }.
-  Global Instance Get_AF__value : Notations.DoubleColon t "_value" := {
-    Notations.double_colon (α : M.Val t) := α.["_value"];
-  }.
+  Definition Get__key :=
+    Ref.map (fun α => Some α.(_key)) (fun β α => Some (α <| _key := β |>)).
+  Definition Get__value :=
+    Ref.map (fun α => Some α.(_value)) (fun β α => Some (α <| _value := β |>)).
 End Mapping.
 End Mapping.
 
@@ -212,10 +200,8 @@ Section AccountId.
     x0 : u128.t;
   }.
   
-  Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>));
-  }.
+  Definition Get_0 :=
+    Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>)).
 End AccountId.
 End AccountId.
 
@@ -297,15 +283,8 @@ Section Env.
     caller : mapping_integration_tests.AccountId.t;
   }.
   
-  Global Instance Get_caller : Notations.Dot "caller" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(caller))
-        (fun β α => Some (α <| caller := β |>));
-  }.
-  Global Instance Get_AF_caller : Notations.DoubleColon t "caller" := {
-    Notations.double_colon (α : M.Val t) := α.["caller"];
-  }.
+  Definition Get_caller :=
+    Ref.map (fun α => Some α.(caller)) (fun β α => Some (α <| caller := β |>)).
 End Env.
 End Env.
 
@@ -323,7 +302,7 @@ Section Impl_mapping_integration_tests_Env_t.
       : M mapping_integration_tests.AccountId.t :=
     let* self := M.alloc self in
     let* α0 : ref mapping_integration_tests.Env.t := M.read self in
-    M.read (deref α0).["caller"].
+    M.read (mapping_integration_tests.Env.Get_caller (deref α0)).
   
   Global Instance AssociatedFunction_caller :
     Notations.DoubleColon Self "caller" := {
@@ -341,15 +320,10 @@ Section Mappings.
         ltac:(mapping_integration_tests.Balance);
   }.
   
-  Global Instance Get_balances : Notations.Dot "balances" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(balances))
-        (fun β α => Some (α <| balances := β |>));
-  }.
-  Global Instance Get_AF_balances : Notations.DoubleColon t "balances" := {
-    Notations.double_colon (α : M.Val t) := α.["balances"];
-  }.
+  Definition Get_balances :=
+    Ref.map
+      (fun α => Some α.(balances))
+      (fun β α => Some (α <| balances := β |>)).
 End Mappings.
 End Mappings.
 
@@ -482,7 +456,7 @@ Section Impl_mapping_integration_tests_Mappings_t.
         ((mapping_integration_tests.Mapping.t
               mapping_integration_tests.AccountId.t
               u128.t)::["get"]
-          (borrow (deref α0).["balances"])
+          (borrow (mapping_integration_tests.Mappings.Get_balances (deref α0)))
           (borrow caller)) in
     let* α0 : M.Val (core.option.Option.t u128.t) := M.alloc α1 in
     M.read α0.
@@ -519,7 +493,8 @@ Section Impl_mapping_integration_tests_Mappings_t.
         ((mapping_integration_tests.Mapping.t
               mapping_integration_tests.AccountId.t
               u128.t)::["insert"]
-          (borrow_mut (deref α0).["balances"])
+          (borrow_mut
+            (mapping_integration_tests.Mappings.Get_balances (deref α0)))
           α1
           α2) in
     let* α0 : M.Val (core.option.Option.t u32.t) := M.alloc α3 in
@@ -554,7 +529,7 @@ Section Impl_mapping_integration_tests_Mappings_t.
         ((mapping_integration_tests.Mapping.t
               mapping_integration_tests.AccountId.t
               u128.t)::["size"]
-          (borrow (deref α0).["balances"])
+          (borrow (mapping_integration_tests.Mappings.Get_balances (deref α0)))
           α1) in
     let* α0 : M.Val (core.option.Option.t u32.t) := M.alloc α2 in
     M.read α0.
@@ -585,7 +560,7 @@ Section Impl_mapping_integration_tests_Mappings_t.
         ((mapping_integration_tests.Mapping.t
               mapping_integration_tests.AccountId.t
               u128.t)::["contains"]
-          (borrow (deref α0).["balances"])
+          (borrow (mapping_integration_tests.Mappings.Get_balances (deref α0)))
           (borrow caller)) in
     let* α0 : M.Val bool.t := M.alloc α1 in
     M.read α0.
@@ -618,7 +593,8 @@ Section Impl_mapping_integration_tests_Mappings_t.
           ((mapping_integration_tests.Mapping.t
                 mapping_integration_tests.AccountId.t
                 u128.t)::["remove"]
-            (borrow (deref α0).["balances"])
+            (borrow
+              (mapping_integration_tests.Mappings.Get_balances (deref α0)))
             α1) in
       M.alloc α2 in
     let* α0 : M.Val unit := M.alloc tt in
@@ -653,7 +629,7 @@ Section Impl_mapping_integration_tests_Mappings_t.
         ((mapping_integration_tests.Mapping.t
               mapping_integration_tests.AccountId.t
               u128.t)::["take"]
-          (borrow (deref α0).["balances"])
+          (borrow (mapping_integration_tests.Mappings.Get_balances (deref α0)))
           α1) in
     let* α0 : M.Val (core.option.Option.t u128.t) := M.alloc α2 in
     M.read α0.

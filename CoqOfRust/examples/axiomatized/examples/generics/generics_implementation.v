@@ -7,13 +7,8 @@ Section Val.
     val : f64.t;
   }.
   
-  Global Instance Get_val : Notations.Dot "val" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(val)) (fun β α => Some (α <| val := β |>));
-  }.
-  Global Instance Get_AF_val : Notations.DoubleColon t "val" := {
-    Notations.double_colon (α : M.Val t) := α.["val"];
-  }.
+  Definition Get_val :=
+    Ref.map (fun α => Some α.(val)) (fun β α => Some (α <| val := β |>)).
 End Val.
 End Val.
 
@@ -25,15 +20,10 @@ Section GenVal.
     gen_val : T;
   }.
   
-  Global Instance Get_gen_val : Notations.Dot "gen_val" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(gen_val))
-        (fun β α => Some (α <| gen_val := β |>));
-  }.
-  Global Instance Get_AF_gen_val : Notations.DoubleColon t "gen_val" := {
-    Notations.double_colon (α : M.Val t) := α.["gen_val"];
-  }.
+  Definition Get_gen_val :=
+    Ref.map
+      (fun α => Some α.(gen_val))
+      (fun β α => Some (α <| gen_val := β |>)).
 End GenVal.
 End GenVal.
 

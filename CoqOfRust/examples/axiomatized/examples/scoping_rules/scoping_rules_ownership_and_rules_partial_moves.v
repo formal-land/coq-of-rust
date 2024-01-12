@@ -38,20 +38,10 @@ Section Person.
     age : alloc.boxed.Box.t u8.t alloc.boxed.Box.Default.A;
   }.
   
-  Global Instance Get_name : Notations.Dot "name" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(name)) (fun β α => Some (α <| name := β |>));
-  }.
-  Global Instance Get_AF_name : Notations.DoubleColon t "name" := {
-    Notations.double_colon (α : M.Val t) := α.["name"];
-  }.
-  Global Instance Get_age : Notations.Dot "age" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(age)) (fun β α => Some (α <| age := β |>));
-  }.
-  Global Instance Get_AF_age : Notations.DoubleColon t "age" := {
-    Notations.double_colon (α : M.Val t) := α.["age"];
-  }.
+  Definition Get_name :=
+    Ref.map (fun α => Some α.(name)) (fun β α => Some (α <| name := β |>)).
+  Definition Get_age :=
+    Ref.map (fun α => Some α.(age)) (fun β α => Some (α <| age := β |>)).
 End Person.
 End Person.
 

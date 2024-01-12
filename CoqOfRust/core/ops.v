@@ -625,21 +625,17 @@ Module control_flow.
     Arguments Continue {_ _}.
     Arguments Break {_ _}.
 
-    Global Instance Get_Continue_0 {B C : Set} : Notations.Dot "Continue.0" := {
-      Notations.dot :=
-        Ref.map (Big := t B C)
-          (fun α => match α with | Continue α0 => Some α0 | _ => None end)
-          (fun β α =>
-            match α with | Continue _ => Some (Continue β) | _ => None end);
-    }.
+    Definition Get_Continue_0 {B C : Set} :=
+      Ref.map (Big := t B C)
+        (fun α => match α with | Continue α0 => Some α0 | _ => None end)
+        (fun β α =>
+          match α with | Continue _ => Some (Continue β) | _ => None end).
 
-    Global Instance Get_Break_0 {B C : Set} : Notations.Dot "Break.0" := {
-      Notations.dot :=
-        Ref.map (Big := t B C)
-          (fun α => match α with | Break α0 => Some α0 | _ => None end)
-          (fun β α =>
-            match α with | Break _ => Some (Break β) | _ => None end);
-    }.
+    Definition Get_Break_0 {B C : Set} :=
+      Ref.map (Big := t B C)
+        (fun α => match α with | Break α0 => Some α0 | _ => None end)
+        (fun β α =>
+          match α with | Break _ => Some (Break β) | _ => None end).
   End ControlFlow.
 End control_flow.
 

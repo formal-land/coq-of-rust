@@ -7,13 +7,8 @@ Section CustomAllocator.
     value : alloc.vec.Vec.t bool.t alloc.vec.Vec.Default.A;
   }.
   
-  Global Instance Get_value : Notations.Dot "value" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(value)) (fun β α => Some (α <| value := β |>));
-  }.
-  Global Instance Get_AF_value : Notations.DoubleColon t "value" := {
-    Notations.double_colon (α : M.Val t) := α.["value"];
-  }.
+  Definition Get_value :=
+    Ref.map (fun α => Some α.(value)) (fun β α => Some (α <| value := β |>)).
 End CustomAllocator.
 End CustomAllocator.
 

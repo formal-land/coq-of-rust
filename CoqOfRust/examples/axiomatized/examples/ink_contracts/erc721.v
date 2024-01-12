@@ -10,22 +10,10 @@ Section Mapping.
     _value : core.marker.PhantomData.t V;
   }.
   
-  Global Instance Get__key : Notations.Dot "_key" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(_key)) (fun β α => Some (α <| _key := β |>));
-  }.
-  Global Instance Get_AF__key : Notations.DoubleColon t "_key" := {
-    Notations.double_colon (α : M.Val t) := α.["_key"];
-  }.
-  Global Instance Get__value : Notations.Dot "_value" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(_value))
-        (fun β α => Some (α <| _value := β |>));
-  }.
-  Global Instance Get_AF__value : Notations.DoubleColon t "_value" := {
-    Notations.double_colon (α : M.Val t) := α.["_value"];
-  }.
+  Definition Get__key :=
+    Ref.map (fun α => Some α.(_key)) (fun β α => Some (α <| _key := β |>)).
+  Definition Get__value :=
+    Ref.map (fun α => Some α.(_value)) (fun β α => Some (α <| _value := β |>)).
 End Mapping.
 End Mapping.
 
@@ -140,10 +128,8 @@ Section AccountId.
     x0 : u128.t;
   }.
   
-  Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>));
-  }.
+  Definition Get_0 :=
+    Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>)).
 End AccountId.
 End AccountId.
 
@@ -258,15 +244,8 @@ Section Env.
     caller : erc721.AccountId.t;
   }.
   
-  Global Instance Get_caller : Notations.Dot "caller" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(caller))
-        (fun β α => Some (α <| caller := β |>));
-  }.
-  Global Instance Get_AF_caller : Notations.DoubleColon t "caller" := {
-    Notations.double_colon (α : M.Val t) := α.["caller"];
-  }.
+  Definition Get_caller :=
+    Ref.map (fun α => Some α.(caller)) (fun β α => Some (α <| caller := β |>)).
 End Env.
 End Env.
 
@@ -282,48 +261,22 @@ Section Erc721.
       erc721.Mapping.t (erc721.AccountId.t * erc721.AccountId.t) unit;
   }.
   
-  Global Instance Get_token_owner : Notations.Dot "token_owner" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(token_owner))
-        (fun β α => Some (α <| token_owner := β |>));
-  }.
-  Global Instance Get_AF_token_owner :
-    Notations.DoubleColon t "token_owner" := {
-    Notations.double_colon (α : M.Val t) := α.["token_owner"];
-  }.
-  Global Instance Get_token_approvals : Notations.Dot "token_approvals" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(token_approvals))
-        (fun β α => Some (α <| token_approvals := β |>));
-  }.
-  Global Instance Get_AF_token_approvals :
-    Notations.DoubleColon t "token_approvals" := {
-    Notations.double_colon (α : M.Val t) := α.["token_approvals"];
-  }.
-  Global Instance Get_owned_tokens_count :
-    Notations.Dot "owned_tokens_count" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(owned_tokens_count))
-        (fun β α => Some (α <| owned_tokens_count := β |>));
-  }.
-  Global Instance Get_AF_owned_tokens_count :
-    Notations.DoubleColon t "owned_tokens_count" := {
-    Notations.double_colon (α : M.Val t) := α.["owned_tokens_count"];
-  }.
-  Global Instance Get_operator_approvals :
-    Notations.Dot "operator_approvals" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(operator_approvals))
-        (fun β α => Some (α <| operator_approvals := β |>));
-  }.
-  Global Instance Get_AF_operator_approvals :
-    Notations.DoubleColon t "operator_approvals" := {
-    Notations.double_colon (α : M.Val t) := α.["operator_approvals"];
-  }.
+  Definition Get_token_owner :=
+    Ref.map
+      (fun α => Some α.(token_owner))
+      (fun β α => Some (α <| token_owner := β |>)).
+  Definition Get_token_approvals :=
+    Ref.map
+      (fun α => Some α.(token_approvals))
+      (fun β α => Some (α <| token_approvals := β |>)).
+  Definition Get_owned_tokens_count :=
+    Ref.map
+      (fun α => Some α.(owned_tokens_count))
+      (fun β α => Some (α <| owned_tokens_count := β |>)).
+  Definition Get_operator_approvals :=
+    Ref.map
+      (fun α => Some α.(operator_approvals))
+      (fun β α => Some (α <| operator_approvals := β |>)).
 End Erc721.
 End Erc721.
 
@@ -457,27 +410,12 @@ Section Transfer.
     id : ltac:(erc721.TokenId);
   }.
   
-  Global Instance Get_from : Notations.Dot "from" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(from)) (fun β α => Some (α <| from := β |>));
-  }.
-  Global Instance Get_AF_from : Notations.DoubleColon t "from" := {
-    Notations.double_colon (α : M.Val t) := α.["from"];
-  }.
-  Global Instance Get_to : Notations.Dot "to" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(to)) (fun β α => Some (α <| to := β |>));
-  }.
-  Global Instance Get_AF_to : Notations.DoubleColon t "to" := {
-    Notations.double_colon (α : M.Val t) := α.["to"];
-  }.
-  Global Instance Get_id : Notations.Dot "id" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(id)) (fun β α => Some (α <| id := β |>));
-  }.
-  Global Instance Get_AF_id : Notations.DoubleColon t "id" := {
-    Notations.double_colon (α : M.Val t) := α.["id"];
-  }.
+  Definition Get_from :=
+    Ref.map (fun α => Some α.(from)) (fun β α => Some (α <| from := β |>)).
+  Definition Get_to :=
+    Ref.map (fun α => Some α.(to)) (fun β α => Some (α <| to := β |>)).
+  Definition Get_id :=
+    Ref.map (fun α => Some α.(id)) (fun β α => Some (α <| id := β |>)).
 End Transfer.
 End Transfer.
 
@@ -489,27 +427,12 @@ Section Approval.
     id : ltac:(erc721.TokenId);
   }.
   
-  Global Instance Get_from : Notations.Dot "from" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(from)) (fun β α => Some (α <| from := β |>));
-  }.
-  Global Instance Get_AF_from : Notations.DoubleColon t "from" := {
-    Notations.double_colon (α : M.Val t) := α.["from"];
-  }.
-  Global Instance Get_to : Notations.Dot "to" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(to)) (fun β α => Some (α <| to := β |>));
-  }.
-  Global Instance Get_AF_to : Notations.DoubleColon t "to" := {
-    Notations.double_colon (α : M.Val t) := α.["to"];
-  }.
-  Global Instance Get_id : Notations.Dot "id" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(id)) (fun β α => Some (α <| id := β |>));
-  }.
-  Global Instance Get_AF_id : Notations.DoubleColon t "id" := {
-    Notations.double_colon (α : M.Val t) := α.["id"];
-  }.
+  Definition Get_from :=
+    Ref.map (fun α => Some α.(from)) (fun β α => Some (α <| from := β |>)).
+  Definition Get_to :=
+    Ref.map (fun α => Some α.(to)) (fun β α => Some (α <| to := β |>)).
+  Definition Get_id :=
+    Ref.map (fun α => Some α.(id)) (fun β α => Some (α <| id := β |>)).
 End Approval.
 End Approval.
 
@@ -521,31 +444,16 @@ Section ApprovalForAll.
     approved : bool.t;
   }.
   
-  Global Instance Get_owner : Notations.Dot "owner" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(owner)) (fun β α => Some (α <| owner := β |>));
-  }.
-  Global Instance Get_AF_owner : Notations.DoubleColon t "owner" := {
-    Notations.double_colon (α : M.Val t) := α.["owner"];
-  }.
-  Global Instance Get_operator : Notations.Dot "operator" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(operator))
-        (fun β α => Some (α <| operator := β |>));
-  }.
-  Global Instance Get_AF_operator : Notations.DoubleColon t "operator" := {
-    Notations.double_colon (α : M.Val t) := α.["operator"];
-  }.
-  Global Instance Get_approved : Notations.Dot "approved" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(approved))
-        (fun β α => Some (α <| approved := β |>));
-  }.
-  Global Instance Get_AF_approved : Notations.DoubleColon t "approved" := {
-    Notations.double_colon (α : M.Val t) := α.["approved"];
-  }.
+  Definition Get_owner :=
+    Ref.map (fun α => Some α.(owner)) (fun β α => Some (α <| owner := β |>)).
+  Definition Get_operator :=
+    Ref.map
+      (fun α => Some α.(operator))
+      (fun β α => Some (α <| operator := β |>)).
+  Definition Get_approved :=
+    Ref.map
+      (fun α => Some α.(approved))
+      (fun β α => Some (α <| approved := β |>)).
 End ApprovalForAll.
 End ApprovalForAll.
 
@@ -555,32 +463,26 @@ Module Event.
   | Approval (_ : erc721.Approval.t)
   | ApprovalForAll (_ : erc721.ApprovalForAll.t).
   
-  Global Instance Get_Transfer_0 : Notations.Dot "Transfer.0" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => match α with | Transfer α0 => Some α0 | _ => None end)
-        (fun β α =>
-          match α with | Transfer _ => Some (Transfer β) | _ => None end);
-  }.
+  Definition Get_Transfer_0 :=
+    Ref.map
+      (fun α => match α with | Transfer α0 => Some α0 | _ => None end)
+      (fun β α =>
+        match α with | Transfer _ => Some (Transfer β) | _ => None end).
   
-  Global Instance Get_Approval_0 : Notations.Dot "Approval.0" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => match α with | Approval α0 => Some α0 | _ => None end)
-        (fun β α =>
-          match α with | Approval _ => Some (Approval β) | _ => None end);
-  }.
+  Definition Get_Approval_0 :=
+    Ref.map
+      (fun α => match α with | Approval α0 => Some α0 | _ => None end)
+      (fun β α =>
+        match α with | Approval _ => Some (Approval β) | _ => None end).
   
-  Global Instance Get_ApprovalForAll_0 : Notations.Dot "ApprovalForAll.0" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => match α with | ApprovalForAll α0 => Some α0 | _ => None end)
-        (fun β α =>
-          match α with
-          | ApprovalForAll _ => Some (ApprovalForAll β)
-          | _ => None
-          end);
-  }.
+  Definition Get_ApprovalForAll_0 :=
+    Ref.map
+      (fun α => match α with | ApprovalForAll α0 => Some α0 | _ => None end)
+      (fun β α =>
+        match α with
+        | ApprovalForAll _ => Some (ApprovalForAll β)
+        | _ => None
+        end).
 End Event.
 
 Module  Impl_erc721_Env_t.

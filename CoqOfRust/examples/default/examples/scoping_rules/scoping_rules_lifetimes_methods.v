@@ -7,10 +7,8 @@ Section Owner.
     x0 : i32.t;
   }.
   
-  Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>));
-  }.
+  Definition Get_0 :=
+    Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>)).
 End Owner.
 End Owner.
 
@@ -29,7 +27,7 @@ Section Impl_scoping_rules_lifetimes_methods_Owner_t.
       let* β : M.Val i32.t :=
         let* α0 : mut_ref scoping_rules_lifetimes_methods.Owner.t :=
           M.read self in
-        M.pure (deref α0).["0"] in
+        M.pure (scoping_rules_lifetimes_methods.Owner.Get_0 (deref α0)) in
       let* α0 := M.read β in
       let* α1 := BinOp.Panic.add α0 (Integer.of_Z 1) in
       assign β α1 in
@@ -61,7 +59,8 @@ Section Impl_scoping_rules_lifetimes_methods_Owner_t.
         let* α6 : core.fmt.rt.Argument.t :=
           M.call
             (core.fmt.rt.Argument.t::["new_display"]
-              (borrow (deref α5).["0"])) in
+              (borrow
+                (scoping_rules_lifetimes_methods.Owner.Get_0 (deref α5)))) in
         let* α7 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α6 ] in
         let* α8 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
           M.alloc (borrow α7) in

@@ -10,22 +10,10 @@ Section Mapping.
     _value : core.marker.PhantomData.t V;
   }.
   
-  Global Instance Get__key : Notations.Dot "_key" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(_key)) (fun β α => Some (α <| _key := β |>));
-  }.
-  Global Instance Get_AF__key : Notations.DoubleColon t "_key" := {
-    Notations.double_colon (α : M.Val t) := α.["_key"];
-  }.
-  Global Instance Get__value : Notations.Dot "_value" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(_value))
-        (fun β α => Some (α <| _value := β |>));
-  }.
-  Global Instance Get_AF__value : Notations.DoubleColon t "_value" := {
-    Notations.double_colon (α : M.Val t) := α.["_value"];
-  }.
+  Definition Get__key :=
+    Ref.map (fun α => Some α.(_key)) (fun β α => Some (α <| _key := β |>)).
+  Definition Get__value :=
+    Ref.map (fun α => Some α.(_value)) (fun β α => Some (α <| _value := β |>)).
 End Mapping.
 End Mapping.
 
@@ -151,10 +139,8 @@ Section AccountId.
     x0 : u128.t;
   }.
   
-  Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>));
-  }.
+  Definition Get_0 :=
+    Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>)).
 End AccountId.
 End AccountId.
 
@@ -216,15 +202,8 @@ Section Env.
     caller : mapping_integration_tests.AccountId.t;
   }.
   
-  Global Instance Get_caller : Notations.Dot "caller" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(caller))
-        (fun β α => Some (α <| caller := β |>));
-  }.
-  Global Instance Get_AF_caller : Notations.DoubleColon t "caller" := {
-    Notations.double_colon (α : M.Val t) := α.["caller"];
-  }.
+  Definition Get_caller :=
+    Ref.map (fun α => Some α.(caller)) (fun β α => Some (α <| caller := β |>)).
 End Env.
 End Env.
 
@@ -255,15 +234,10 @@ Section Mappings.
         ltac:(mapping_integration_tests.Balance);
   }.
   
-  Global Instance Get_balances : Notations.Dot "balances" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(balances))
-        (fun β α => Some (α <| balances := β |>));
-  }.
-  Global Instance Get_AF_balances : Notations.DoubleColon t "balances" := {
-    Notations.double_colon (α : M.Val t) := α.["balances"];
-  }.
+  Definition Get_balances :=
+    Ref.map
+      (fun α => Some α.(balances))
+      (fun β α => Some (α <| balances := β |>)).
 End Mappings.
 End Mappings.
 

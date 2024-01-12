@@ -247,7 +247,7 @@ Definition cookable_v1
           (let* α0 := M.read γ in
           match α0 with
           | core.option.Option.Some _ =>
-            let γ0_0 := γ.["Some.0"] in
+            let γ0_0 := core.option.Option.Get_Some_0 γ in
             let* food := M.copy γ0_0 in
             let* α0 : combinators_and_then.Food.t := M.read food in
             let* α1 : core.option.Option.t combinators_and_then.Food.t :=
@@ -269,7 +269,7 @@ Definition cookable_v1
                   (let* α0 := M.read γ in
                   match α0 with
                   | core.option.Option.Some _ =>
-                    let γ0_0 := γ.["Some.0"] in
+                    let γ0_0 := core.option.Option.Get_Some_0 γ in
                     let* food := M.copy γ0_0 in
                     let* α0 : combinators_and_then.Food.t := M.read food in
                     M.alloc (core.option.Option.Some α0)
@@ -327,7 +327,7 @@ Definition eat
           (let* α0 := M.read γ in
           match α0 with
           | core.option.Option.Some _ =>
-            let γ0_0 := γ.["Some.0"] in
+            let γ0_0 := core.option.Option.Get_Some_0 γ in
             let* food := M.copy γ0_0 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "Yay! On ") in

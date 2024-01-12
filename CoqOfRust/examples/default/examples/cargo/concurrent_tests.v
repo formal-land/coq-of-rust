@@ -19,7 +19,7 @@ Definition foo {A : Set} (o : core.option.Option.t A) : M unit :=
           (let* α0 := M.read γ in
           match α0 with
           | core.option.Option.Some _ =>
-            let γ0_0 := γ.["Some.0"] in
+            let γ0_0 := core.option.Option.Get_Some_0 γ in
             let* _a := M.copy γ0_0 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "some
@@ -142,7 +142,7 @@ Module tests.
                       (let* α0 := M.read γ in
                       match α0 with
                       | core.option.Option.Some _ =>
-                        let γ0_0 := γ.["Some.0"] in
+                        let γ0_0 := core.option.Option.Get_Some_0 γ in
                         let* _ : M.Val unit :=
                           let* α0 : _ :=
                             ltac:(M.get_method (fun ℐ =>
@@ -257,7 +257,7 @@ Module tests.
                       (let* α0 := M.read γ in
                       match α0 with
                       | core.option.Option.Some _ =>
-                        let γ0_0 := γ.["Some.0"] in
+                        let γ0_0 := core.option.Option.Get_Some_0 γ in
                         let* _ : M.Val unit :=
                           let* α0 : _ :=
                             ltac:(M.get_method (fun ℐ =>
@@ -373,7 +373,7 @@ Definition test_file : M unit :=
                     (let* α0 := M.read γ in
                     match α0 with
                     | core.option.Option.Some _ =>
-                      let γ0_0 := γ.["Some.0"] in
+                      let γ0_0 := core.option.Option.Get_Some_0 γ in
                       let* _ : M.Val unit :=
                         let* α0 : _ :=
                           ltac:(M.get_method (fun ℐ =>
@@ -488,7 +488,7 @@ Definition test_file_also : M unit :=
                     (let* α0 := M.read γ in
                     match α0 with
                     | core.option.Option.Some _ =>
-                      let γ0_0 := γ.["Some.0"] in
+                      let γ0_0 := core.option.Option.Get_Some_0 γ in
                       let* _ : M.Val unit :=
                         let* α0 : _ :=
                           ltac:(M.get_method (fun ℐ =>

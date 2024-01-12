@@ -106,20 +106,10 @@ Section Complex.
     im : f32.t;
   }.
   
-  Global Instance Get_re : Notations.Dot "re" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(re)) (fun β α => Some (α <| re := β |>));
-  }.
-  Global Instance Get_AF_re : Notations.DoubleColon t "re" := {
-    Notations.double_colon (α : M.Val t) := α.["re"];
-  }.
-  Global Instance Get_im : Notations.Dot "im" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(im)) (fun β α => Some (α <| im := β |>));
-  }.
-  Global Instance Get_AF_im : Notations.DoubleColon t "im" := {
-    Notations.double_colon (α : M.Val t) := α.["im"];
-  }.
+  Definition Get_re :=
+    Ref.map (fun α => Some α.(re)) (fun β α => Some (α <| re := β |>)).
+  Definition Get_im :=
+    Ref.map (fun α => Some α.(im)) (fun β α => Some (α <| im := β |>)).
 End Complex.
 End Complex.
 
@@ -186,7 +176,8 @@ Section Impl_core_fmt_Debug_for_foreign_function_interface_Complex_t.
     let* self := M.alloc self in
     let* f := M.alloc f in
     let* α0 : ref foreign_function_interface.Complex.t := M.read self in
-    let* α1 : f32.t := M.read (deref α0).["im"] in
+    let* α1 : f32.t :=
+      M.read (foreign_function_interface.Complex.Get_im (deref α0)) in
     let* α2 : f32.t := M.read UnsupportedLiteral in
     let* α3 : M.Val bool.t := M.alloc (BinOp.Pure.lt α1 α2) in
     let* α4 : bool.t := M.read (use α3) in
@@ -204,9 +195,11 @@ Section Impl_core_fmt_Debug_for_foreign_function_interface_Complex_t.
         let* α8 : core.fmt.rt.Argument.t :=
           M.call
             (core.fmt.rt.Argument.t::["new_display"]
-              (borrow (deref α7).["re"])) in
+              (borrow
+                (foreign_function_interface.Complex.Get_re (deref α7)))) in
         let* α9 : ref foreign_function_interface.Complex.t := M.read self in
-        let* α10 : f32.t := M.read (deref α9).["im"] in
+        let* α10 : f32.t :=
+          M.read (foreign_function_interface.Complex.Get_im (deref α9)) in
         let* α11 : f32.t := UnOp.neg α10 in
         let* α12 : M.Val f32.t := M.alloc α11 in
         let* α13 : core.fmt.rt.Argument.t :=
@@ -235,12 +228,14 @@ Section Impl_core_fmt_Debug_for_foreign_function_interface_Complex_t.
         let* α8 : core.fmt.rt.Argument.t :=
           M.call
             (core.fmt.rt.Argument.t::["new_display"]
-              (borrow (deref α7).["re"])) in
+              (borrow
+                (foreign_function_interface.Complex.Get_re (deref α7)))) in
         let* α9 : ref foreign_function_interface.Complex.t := M.read self in
         let* α10 : core.fmt.rt.Argument.t :=
           M.call
             (core.fmt.rt.Argument.t::["new_display"]
-              (borrow (deref α9).["im"])) in
+              (borrow
+                (foreign_function_interface.Complex.Get_im (deref α9)))) in
         let* α11 : M.Val (array core.fmt.rt.Argument.t) :=
           M.alloc [ α8; α10 ] in
         let* α12 : M.Val (ref (array core.fmt.rt.Argument.t)) :=

@@ -7,10 +7,8 @@ Section AccountId.
     x0 : u128.t;
   }.
   
-  Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>));
-  }.
+  Definition Get_0 :=
+    Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>)).
 End AccountId.
 End AccountId.
 
@@ -94,13 +92,8 @@ Section ConstructorsReturnValue.
     value : bool.t;
   }.
   
-  Global Instance Get_value : Notations.Dot "value" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(value)) (fun β α => Some (α <| value := β |>));
-  }.
-  Global Instance Get_AF_value : Notations.DoubleColon t "value" := {
-    Notations.double_colon (α : M.Val t) := α.["value"];
-  }.
+  Definition Get_value :=
+    Ref.map (fun α => Some α.(value)) (fun β α => Some (α <| value := β |>)).
 End ConstructorsReturnValue.
 End ConstructorsReturnValue.
 

@@ -9,27 +9,12 @@ Section Point.
     z : i32.t;
   }.
   
-  Global Instance Get_x : Notations.Dot "x" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(x)) (fun β α => Some (α <| x := β |>));
-  }.
-  Global Instance Get_AF_x : Notations.DoubleColon t "x" := {
-    Notations.double_colon (α : M.Val t) := α.["x"];
-  }.
-  Global Instance Get_y : Notations.Dot "y" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(y)) (fun β α => Some (α <| y := β |>));
-  }.
-  Global Instance Get_AF_y : Notations.DoubleColon t "y" := {
-    Notations.double_colon (α : M.Val t) := α.["y"];
-  }.
-  Global Instance Get_z : Notations.Dot "z" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(z)) (fun β α => Some (α <| z := β |>));
-  }.
-  Global Instance Get_AF_z : Notations.DoubleColon t "z" := {
-    Notations.double_colon (α : M.Val t) := α.["z"];
-  }.
+  Definition Get_x :=
+    Ref.map (fun α => Some α.(x)) (fun β α => Some (α <| x := β |>)).
+  Definition Get_y :=
+    Ref.map (fun α => Some α.(y)) (fun β α => Some (α <| y := β |>)).
+  Definition Get_z :=
+    Ref.map (fun α => Some α.(z)) (fun β α => Some (α <| z := β |>)).
 End Point.
 End Point.
 

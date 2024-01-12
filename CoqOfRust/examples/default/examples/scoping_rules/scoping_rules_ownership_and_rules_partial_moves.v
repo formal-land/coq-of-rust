@@ -66,8 +66,12 @@ Definition main : M unit :=
                   _;
               |}
               =>
-            let γ0_0 := γ.["Person.name"] in
-            let γ0_1 := γ.["Person.age"] in
+            let γ0_0 :=
+              scoping_rules_ownership_and_rules_partial_moves.main.Get_Person_name
+                γ in
+            let γ0_1 :=
+              scoping_rules_ownership_and_rules_partial_moves.main.Get_Person_age
+                γ in
             let* name := M.copy γ0_0 in
             let* age := M.alloc (borrow γ0_1) in
             let* _ : M.Val unit :=
@@ -133,7 +137,9 @@ Definition main : M unit :=
                 let* α5 : core.fmt.rt.Argument.t :=
                   M.call
                     (core.fmt.rt.Argument.t::["new_display"]
-                      (borrow person.["age"])) in
+                      (borrow
+                        (scoping_rules_ownership_and_rules_partial_moves.main.Person.Get_age
+                          person))) in
                 let* α6 : M.Val (array core.fmt.rt.Argument.t) :=
                   M.alloc [ α5 ] in
                 let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -158,20 +164,10 @@ Section Person.
     age : alloc.boxed.Box.t u8.t alloc.boxed.Box.Default.A;
   }.
   
-  Global Instance Get_name : Notations.Dot "name" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(name)) (fun β α => Some (α <| name := β |>));
-  }.
-  Global Instance Get_AF_name : Notations.DoubleColon t "name" := {
-    Notations.double_colon (α : M.Val t) := α.["name"];
-  }.
-  Global Instance Get_age : Notations.Dot "age" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(age)) (fun β α => Some (α <| age := β |>));
-  }.
-  Global Instance Get_AF_age : Notations.DoubleColon t "age" := {
-    Notations.double_colon (α : M.Val t) := α.["age"];
-  }.
+  Definition Get_name :=
+    Ref.map (fun α => Some α.(name)) (fun β α => Some (α <| name := β |>)).
+  Definition Get_age :=
+    Ref.map (fun α => Some α.(age)) (fun β α => Some (α <| age := β |>)).
 End Person.
 End Person.
 
@@ -196,14 +192,20 @@ Section Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_
         ref scoping_rules_ownership_and_rules_partial_moves.main.Person.t :=
       M.read self in
     let* α4 : M.Val (ref alloc.string.String.t) :=
-      M.alloc (borrow (deref α3).["name"]) in
+      M.alloc
+        (borrow
+          (scoping_rules_ownership_and_rules_partial_moves.main.Person.Get_name
+            (deref α3))) in
     let* α5 : ref _ (* dyn *) := M.read (pointer_coercion "Unsize" α4) in
     let* α6 : ref str.t := M.read (mk_str "age") in
     let* α7 :
         ref scoping_rules_ownership_and_rules_partial_moves.main.Person.t :=
       M.read self in
     let* α8 : M.Val (ref (alloc.boxed.Box.t u8.t alloc.alloc.Global.t)) :=
-      M.alloc (borrow (deref α7).["age"]) in
+      M.alloc
+        (borrow
+          (scoping_rules_ownership_and_rules_partial_moves.main.Person.Get_age
+            (deref α7))) in
     let* α9 : M.Val (ref (ref (alloc.boxed.Box.t u8.t alloc.alloc.Global.t))) :=
       M.alloc (borrow α8) in
     let* α10 : ref _ (* dyn *) := M.read (pointer_coercion "Unsize" α9) in

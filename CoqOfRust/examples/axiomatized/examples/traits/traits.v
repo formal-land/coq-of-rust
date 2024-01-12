@@ -8,20 +8,10 @@ Section Sheep.
     name : ref str.t;
   }.
   
-  Global Instance Get_naked : Notations.Dot "naked" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(naked)) (fun β α => Some (α <| naked := β |>));
-  }.
-  Global Instance Get_AF_naked : Notations.DoubleColon t "naked" := {
-    Notations.double_colon (α : M.Val t) := α.["naked"];
-  }.
-  Global Instance Get_name : Notations.Dot "name" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(name)) (fun β α => Some (α <| name := β |>));
-  }.
-  Global Instance Get_AF_name : Notations.DoubleColon t "name" := {
-    Notations.double_colon (α : M.Val t) := α.["name"];
-  }.
+  Definition Get_naked :=
+    Ref.map (fun α => Some α.(naked)) (fun β α => Some (α <| naked := β |>)).
+  Definition Get_name :=
+    Ref.map (fun α => Some α.(name)) (fun β α => Some (α <| name := β |>)).
 End Sheep.
 End Sheep.
 

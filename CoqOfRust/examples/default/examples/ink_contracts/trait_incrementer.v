@@ -26,13 +26,8 @@ Section Incrementer.
     value : u64.t;
   }.
   
-  Global Instance Get_value : Notations.Dot "value" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(value)) (fun β α => Some (α <| value := β |>));
-  }.
-  Global Instance Get_AF_value : Notations.DoubleColon t "value" := {
-    Notations.double_colon (α : M.Val t) := α.["value"];
-  }.
+  Definition Get_value :=
+    Ref.map (fun α => Some α.(value)) (fun β α => Some (α <| value := β |>)).
 End Incrementer.
 End Incrementer.
 
@@ -65,7 +60,7 @@ Section Impl_trait_incrementer_Incrementer_t.
     let* _ : M.Val unit :=
       let* β : M.Val u64.t :=
         let* α0 : mut_ref trait_incrementer.Incrementer.t := M.read self in
-        M.pure (deref α0).["value"] in
+        M.pure (trait_incrementer.Incrementer.Get_value (deref α0)) in
       let* α0 := M.read β in
       let* α1 : u64.t := M.read delta in
       let* α2 := BinOp.Panic.add α0 α1 in
@@ -106,7 +101,7 @@ Section Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer_t.
   Definition get (self : ref Self) : M u64.t :=
     let* self := M.alloc self in
     let* α0 : ref trait_incrementer.Incrementer.t := M.read self in
-    M.read (deref α0).["value"].
+    M.read (trait_incrementer.Incrementer.Get_value (deref α0)).
   
   Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
     Notations.double_colon := get;
@@ -132,7 +127,9 @@ Section Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer_t.
     let* self := M.alloc self in
     let* _ : M.Val unit :=
       let* α0 : mut_ref trait_incrementer.Incrementer.t := M.read self in
-      assign (deref α0).["value"] (Integer.of_Z 0) in
+      assign
+        (trait_incrementer.Incrementer.Get_value (deref α0))
+        (Integer.of_Z 0) in
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   

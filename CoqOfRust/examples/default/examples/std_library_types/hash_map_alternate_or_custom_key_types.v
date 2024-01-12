@@ -8,24 +8,14 @@ Section Account.
     password : ref str.t;
   }.
   
-  Global Instance Get_username : Notations.Dot "username" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(username))
-        (fun β α => Some (α <| username := β |>));
-  }.
-  Global Instance Get_AF_username : Notations.DoubleColon t "username" := {
-    Notations.double_colon (α : M.Val t) := α.["username"];
-  }.
-  Global Instance Get_password : Notations.Dot "password" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(password))
-        (fun β α => Some (α <| password := β |>));
-  }.
-  Global Instance Get_AF_password : Notations.DoubleColon t "password" := {
-    Notations.double_colon (α : M.Val t) := α.["password"];
-  }.
+  Definition Get_username :=
+    Ref.map
+      (fun α => Some α.(username))
+      (fun β α => Some (α <| username := β |>)).
+  Definition Get_password :=
+    Ref.map
+      (fun α => Some α.(password))
+      (fun β α => Some (α <| password := β |>)).
 End Account.
 End Account.
 
@@ -64,8 +54,12 @@ Section Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Accou
     let* α3 : bool.t :=
       M.call
         (α0
-          (borrow (deref α1).["username"])
-          (borrow (deref α2).["username"])) in
+          (borrow
+            (hash_map_alternate_or_custom_key_types.Account.Get_username
+              (deref α1)))
+          (borrow
+            (hash_map_alternate_or_custom_key_types.Account.Get_username
+              (deref α2)))) in
     let* α4 : _ :=
       ltac:(M.get_method (fun ℐ =>
         core.cmp.PartialEq.eq
@@ -79,8 +73,12 @@ Section Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Accou
     let* α7 : bool.t :=
       M.call
         (α4
-          (borrow (deref α5).["password"])
-          (borrow (deref α6).["password"])) in
+          (borrow
+            (hash_map_alternate_or_custom_key_types.Account.Get_password
+              (deref α5)))
+          (borrow
+            (hash_map_alternate_or_custom_key_types.Account.Get_password
+              (deref α6)))) in
     M.pure (BinOp.Pure.and α3 α7).
   
   Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
@@ -160,7 +158,13 @@ Section Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account_t
       let* α1 : ref hash_map_alternate_or_custom_key_types.Account.t :=
         M.read self in
       let* α2 : mut_ref __H := M.read state in
-      let* α3 : unit := M.call (α0 (borrow (deref α1).["username"]) α2) in
+      let* α3 : unit :=
+        M.call
+          (α0
+            (borrow
+              (hash_map_alternate_or_custom_key_types.Account.Get_username
+                (deref α1)))
+            α2) in
       M.alloc α3 in
     let* α0 : _ :=
       ltac:(M.get_method (fun ℐ =>
@@ -168,7 +172,13 @@ Section Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account_t
     let* α1 : ref hash_map_alternate_or_custom_key_types.Account.t :=
       M.read self in
     let* α2 : mut_ref __H := M.read state in
-    let* α3 : unit := M.call (α0 (borrow (deref α1).["password"]) α2) in
+    let* α3 : unit :=
+      M.call
+        (α0
+          (borrow
+            (hash_map_alternate_or_custom_key_types.Account.Get_password
+              (deref α1)))
+          α2) in
     let* α0 : M.Val unit := M.alloc α3 in
     M.read α0.
   
@@ -194,20 +204,10 @@ Section AccountInfo.
     email : ref str.t;
   }.
   
-  Global Instance Get_name : Notations.Dot "name" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(name)) (fun β α => Some (α <| name := β |>));
-  }.
-  Global Instance Get_AF_name : Notations.DoubleColon t "name" := {
-    Notations.double_colon (α : M.Val t) := α.["name"];
-  }.
-  Global Instance Get_email : Notations.Dot "email" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(email)) (fun β α => Some (α <| email := β |>));
-  }.
-  Global Instance Get_AF_email : Notations.DoubleColon t "email" := {
-    Notations.double_colon (α : M.Val t) := α.["email"];
-  }.
+  Definition Get_name :=
+    Ref.map (fun α => Some α.(name)) (fun β α => Some (α <| name := β |>)).
+  Definition Get_email :=
+    Ref.map (fun α => Some α.(email)) (fun β α => Some (α <| email := β |>)).
 End AccountInfo.
 End AccountInfo.
 
@@ -337,7 +337,7 @@ Definition try_logon
           (let* α0 := M.read γ in
           match α0 with
           | core.option.Option.Some _ =>
-            let γ0_0 := γ.["Some.0"] in
+            let γ0_0 := core.option.Option.Get_Some_0 γ in
             let* account_info := M.copy γ0_0 in
             let* _ : M.Val unit :=
               let* _ : M.Val unit :=
@@ -369,7 +369,9 @@ Definition try_logon
                 let* α6 : core.fmt.rt.Argument.t :=
                   M.call
                     (core.fmt.rt.Argument.t::["new_display"]
-                      (borrow (deref α5).["name"])) in
+                      (borrow
+                        (hash_map_alternate_or_custom_key_types.AccountInfo.Get_name
+                          (deref α5)))) in
                 let* α7 : M.Val (array core.fmt.rt.Argument.t) :=
                   M.alloc [ α6 ] in
                 let* α8 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -397,7 +399,9 @@ Definition try_logon
                 let* α6 : core.fmt.rt.Argument.t :=
                   M.call
                     (core.fmt.rt.Argument.t::["new_display"]
-                      (borrow (deref α5).["email"])) in
+                      (borrow
+                        (hash_map_alternate_or_custom_key_types.AccountInfo.Get_email
+                          (deref α5)))) in
                 let* α7 : M.Val (array core.fmt.rt.Argument.t) :=
                   M.alloc [ α6 ] in
                 let* α8 : M.Val (ref (array core.fmt.rt.Argument.t)) :=

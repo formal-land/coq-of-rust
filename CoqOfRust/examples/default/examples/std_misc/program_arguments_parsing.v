@@ -224,7 +224,7 @@ Definition main : M unit :=
                   (let* α0 := M.read γ in
                   match α0 with
                   | core.result.Result.Ok _ =>
-                    let γ0_0 := γ.["Ok.0"] in
+                    let γ0_0 := core.result.Result.Get_Ok_0 γ in
                     let* _ : M.Val unit :=
                       let* α0 : ref str.t :=
                         M.read (mk_str "This is the answer!
@@ -312,7 +312,7 @@ Definition main : M unit :=
                       (let* α0 := M.read γ in
                       match α0 with
                       | core.result.Result.Ok _ =>
-                        let γ0_0 := γ.["Ok.0"] in
+                        let γ0_0 := core.result.Result.Get_Ok_0 γ in
                         let* n := M.copy γ0_0 in
                         M.pure n
                       | _ => M.break_match
@@ -322,7 +322,7 @@ Definition main : M unit :=
                       (let* α0 := M.read γ in
                       match α0 with
                       | core.result.Result.Err _ =>
-                        let γ0_0 := γ.["Err.0"] in
+                        let γ0_0 := core.result.Result.Get_Err_0 γ in
                         let* _ : M.Val unit :=
                           let* _ : M.Val unit :=
                             let* α0 : ref str.t :=

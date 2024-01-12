@@ -46,7 +46,7 @@ Definition main : M unit :=
             (let* α0 := M.read γ in
             match α0 with
             | core.result.Result.Err _ =>
-              let γ0_0 := γ.["Err.0"] in
+              let γ0_0 := core.result.Result.Get_Err_0 γ in
               let* why := M.copy γ0_0 in
               let* α0 : ref str.t := M.read (mk_str "couldn't open ") in
               let* α1 : ref str.t := M.read (mk_str ": ") in
@@ -78,7 +78,7 @@ Definition main : M unit :=
             (let* α0 := M.read γ in
             match α0 with
             | core.result.Result.Ok _ =>
-              let γ0_0 := γ.["Ok.0"] in
+              let γ0_0 := core.result.Result.Get_Ok_0 γ in
               let* file := M.copy γ0_0 in
               M.pure file
             | _ => M.break_match
@@ -104,7 +104,7 @@ Definition main : M unit :=
           (let* α0 := M.read γ in
           match α0 with
           | core.result.Result.Err _ =>
-            let γ0_0 := γ.["Err.0"] in
+            let γ0_0 := core.result.Result.Get_Err_0 γ in
             let* why := M.copy γ0_0 in
             let* α0 : ref str.t := M.read (mk_str "couldn't read ") in
             let* α1 : ref str.t := M.read (mk_str ": ") in
@@ -135,7 +135,7 @@ Definition main : M unit :=
           (let* α0 := M.read γ in
           match α0 with
           | core.result.Result.Ok _ =>
-            let γ0_0 := γ.["Ok.0"] in
+            let γ0_0 := core.result.Result.Get_Ok_0 γ in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "") in
               let* α1 : ref str.t := M.read (mk_str " contains:

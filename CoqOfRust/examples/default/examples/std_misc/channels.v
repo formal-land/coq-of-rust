@@ -131,7 +131,7 @@ Definition main : M unit :=
                                 (let* α0 := M.read γ in
                                 match α0 with
                                 | core.option.Option.Some _ =>
-                                  let γ0_0 := γ.["Some.0"] in
+                                  let γ0_0 := core.option.Option.Get_Some_0 γ in
                                   let* id := M.copy γ0_0 in
                                   let* thread_tx :
                                       M.Val (std.sync.mpsc.Sender.t i32.t) :=
@@ -315,7 +315,7 @@ Definition main : M unit :=
                                 (let* α0 := M.read γ in
                                 match α0 with
                                 | core.option.Option.Some _ =>
-                                  let γ0_0 := γ.["Some.0"] in
+                                  let γ0_0 := core.option.Option.Get_Some_0 γ in
                                   let* _ : M.Val unit :=
                                     let* α0 :
                                         core.result.Result.t
@@ -412,7 +412,7 @@ Definition main : M unit :=
                                 (let* α0 := M.read γ in
                                 match α0 with
                                 | core.option.Option.Some _ =>
-                                  let γ0_0 := γ.["Some.0"] in
+                                  let γ0_0 := core.option.Option.Get_Some_0 γ in
                                   let* child := M.copy γ0_0 in
                                   let* _ : M.Val unit :=
                                     let* α0 : std.thread.JoinHandle.t unit :=

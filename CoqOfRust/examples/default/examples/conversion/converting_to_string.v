@@ -7,15 +7,8 @@ Section Circle.
     radius : i32.t;
   }.
   
-  Global Instance Get_radius : Notations.Dot "radius" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(radius))
-        (fun β α => Some (α <| radius := β |>));
-  }.
-  Global Instance Get_AF_radius : Notations.DoubleColon t "radius" := {
-    Notations.double_colon (α : M.Val t) := α.["radius"];
-  }.
+  Definition Get_radius :=
+    Ref.map (fun α => Some α.(radius)) (fun β α => Some (α <| radius := β |>)).
 End Circle.
 End Circle.
 
@@ -44,7 +37,7 @@ Section Impl_core_fmt_Display_for_converting_to_string_Circle_t.
     let* α6 : core.fmt.rt.Argument.t :=
       M.call
         (core.fmt.rt.Argument.t::["new_display"]
-          (borrow (deref α5).["radius"])) in
+          (borrow (converting_to_string.Circle.Get_radius (deref α5)))) in
     let* α7 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α6 ] in
     let* α8 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
       M.alloc (borrow α7) in

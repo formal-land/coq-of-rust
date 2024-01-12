@@ -104,7 +104,7 @@ Definition main : M unit :=
                     (let* α0 := M.read γ in
                     match α0 with
                     | core.option.Option.Some _ =>
-                      let γ0_0 := γ.["Some.0"] in
+                      let γ0_0 := core.option.Option.Get_Some_0 γ in
                       let* _ : M.Val unit :=
                         let* α0 : unit :=
                           M.call scoping_rules_raii.create_box in

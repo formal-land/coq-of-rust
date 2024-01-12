@@ -7,10 +7,8 @@ Section Years.
     x0 : i64.t;
   }.
   
-  Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>));
-  }.
+  Definition Get_0 :=
+    Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>)).
 End Years.
 End Years.
 
@@ -26,7 +24,8 @@ Definition main : M unit :=
   let* years : M.Val generics_new_type_idiom_as_base_type.Years.t :=
     M.alloc
       (generics_new_type_idiom_as_base_type.Years.Build_t (Integer.of_Z 42)) in
-  let* years_as_primitive_1 : M.Val i64.t := M.copy years.["0"] in
+  let* years_as_primitive_1 : M.Val i64.t :=
+    M.copy (generics_new_type_idiom_as_base_type.Years.Get_0 years) in
   let* α0 : M.Val unit :=
     match_operator
       years
@@ -35,7 +34,7 @@ Definition main : M unit :=
           (let* α0 := M.read γ in
           match α0 with
           | generics_new_type_idiom_as_base_type.Years.Build_t _ =>
-            let γ0_0 := γ.["Years.0"] in
+            let γ0_0 := generics_new_type_idiom_as_base_type.Get_Years_0 γ in
             let* years_as_primitive_2 := M.copy γ0_0 in
             M.alloc tt
           end) :

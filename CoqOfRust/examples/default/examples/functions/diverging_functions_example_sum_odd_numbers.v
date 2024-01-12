@@ -127,7 +127,7 @@ Definition sum_odd_numbers (up_to : u32.t) : M u32.t :=
                       (let* α0 := M.read γ in
                       match α0 with
                       | core.option.Option.Some _ =>
-                        let γ0_0 := γ.["Some.0"] in
+                        let γ0_0 := core.option.Option.Get_Some_0 γ in
                         let* i := M.copy γ0_0 in
                         let* addition : M.Val u32.t :=
                           let* α0 : u32.t := M.read i in

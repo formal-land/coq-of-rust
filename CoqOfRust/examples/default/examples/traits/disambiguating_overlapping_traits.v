@@ -26,22 +26,12 @@ Section Form.
     age : u8.t;
   }.
   
-  Global Instance Get_username : Notations.Dot "username" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(username))
-        (fun β α => Some (α <| username := β |>));
-  }.
-  Global Instance Get_AF_username : Notations.DoubleColon t "username" := {
-    Notations.double_colon (α : M.Val t) := α.["username"];
-  }.
-  Global Instance Get_age : Notations.Dot "age" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(age)) (fun β α => Some (α <| age := β |>));
-  }.
-  Global Instance Get_AF_age : Notations.DoubleColon t "age" := {
-    Notations.double_colon (α : M.Val t) := α.["age"];
-  }.
+  Definition Get_username :=
+    Ref.map
+      (fun α => Some α.(username))
+      (fun β α => Some (α <| username := β |>)).
+  Definition Get_age :=
+    Ref.map (fun α => Some α.(age)) (fun β α => Some (α <| age := β |>)).
 End Form.
 End Form.
 
@@ -60,7 +50,10 @@ Section Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating
       ltac:(M.get_method (fun ℐ =>
         core.clone.Clone.clone (Self := alloc.string.String.t) (Trait := ℐ))) in
     let* α1 : ref disambiguating_overlapping_traits.Form.t := M.read self in
-    M.call (α0 (borrow (deref α1).["username"])).
+    M.call
+      (α0
+        (borrow
+          (disambiguating_overlapping_traits.Form.Get_username (deref α1)))).
   
   Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
     Notations.double_colon := get;
@@ -85,7 +78,7 @@ Section Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_over
   Definition get (self : ref Self) : M u8.t :=
     let* self := M.alloc self in
     let* α0 : ref disambiguating_overlapping_traits.Form.t := M.read self in
-    M.read (deref α0).["age"].
+    M.read (disambiguating_overlapping_traits.Form.Get_age (deref α0)).
   
   Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
     Notations.double_colon := get;

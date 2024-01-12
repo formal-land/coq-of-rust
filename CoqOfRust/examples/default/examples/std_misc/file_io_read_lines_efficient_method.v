@@ -99,7 +99,7 @@ Definition main : M unit :=
                         (let* α0 := M.read γ in
                         match α0 with
                         | core.option.Option.Some _ =>
-                          let γ0_0 := γ.["Some.0"] in
+                          let γ0_0 := core.option.Option.Get_Some_0 γ in
                           let* line := M.copy γ0_0 in
                           let* α0 : M.Val bool.t :=
                             let_if core.result.Result.Ok ip := line in
@@ -209,7 +209,7 @@ Definition read_lines
               (let* α0 := M.read γ in
               match α0 with
               | core.ops.control_flow.ControlFlow.Break _ =>
-                let γ0_0 := γ.["Break.0"] in
+                let γ0_0 := core.ops.control_flow.ControlFlow.Get_Break_0 γ in
                 let* residual := M.copy γ0_0 in
                 let* α0 : _ :=
                   ltac:(M.get_method (fun ℐ =>
@@ -247,7 +247,8 @@ Definition read_lines
               (let* α0 := M.read γ in
               match α0 with
               | core.ops.control_flow.ControlFlow.Continue _ =>
-                let γ0_0 := γ.["Continue.0"] in
+                let γ0_0 :=
+                  core.ops.control_flow.ControlFlow.Get_Continue_0 γ in
                 let* val := M.copy γ0_0 in
                 M.pure val
               | _ => M.break_match

@@ -88,7 +88,7 @@ Definition main : M unit :=
                     (let* α0 := M.read γ in
                     match α0 with
                     | core.option.Option.Some _ =>
-                      let γ0_0 := γ.["Some.0"] in
+                      let γ0_0 := core.option.Option.Get_Some_0 γ in
                       let* name := M.copy γ0_0 in
                       match_operator
                         name

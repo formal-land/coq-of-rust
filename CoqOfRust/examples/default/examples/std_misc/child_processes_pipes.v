@@ -66,7 +66,7 @@ Definition main : M unit :=
             (let* α0 := M.read γ in
             match α0 with
             | core.result.Result.Err _ =>
-              let γ0_0 := γ.["Err.0"] in
+              let γ0_0 := core.result.Result.Get_Err_0 γ in
               let* why := M.copy γ0_0 in
               let* α0 : ref str.t := M.read (mk_str "couldn't spawn wc: ") in
               let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
@@ -94,7 +94,7 @@ Definition main : M unit :=
             (let* α0 := M.read γ in
             match α0 with
             | core.result.Result.Ok _ =>
-              let γ0_0 := γ.["Ok.0"] in
+              let γ0_0 := core.result.Result.Get_Ok_0 γ in
               let* process := M.copy γ0_0 in
               M.pure process
             | _ => M.break_match
@@ -109,7 +109,7 @@ Definition main : M unit :=
           (Self := std.process.ChildStdin.t)
           (Trait := ℐ))) in
     let* α1 : core.option.Option.t std.process.ChildStdin.t :=
-      M.read process.["stdin"] in
+      M.read (std.process.Child.Get_stdin process) in
     let* α2 : std.process.ChildStdin.t :=
       M.call ((core.option.Option.t std.process.ChildStdin.t)::["unwrap"] α1) in
     let* α3 : M.Val std.process.ChildStdin.t := M.alloc α2 in
@@ -127,7 +127,7 @@ Definition main : M unit :=
           (let* α0 := M.read γ in
           match α0 with
           | core.result.Result.Err _ =>
-            let γ0_0 := γ.["Err.0"] in
+            let γ0_0 := core.result.Result.Get_Err_0 γ in
             let* why := M.copy γ0_0 in
             let* α0 : ref str.t :=
               M.read (mk_str "couldn't write to wc stdin: ") in
@@ -154,7 +154,7 @@ Definition main : M unit :=
           (let* α0 := M.read γ in
           match α0 with
           | core.result.Result.Ok _ =>
-            let γ0_0 := γ.["Ok.0"] in
+            let γ0_0 := core.result.Result.Get_Ok_0 γ in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "sent pangram to wc
 ") in
@@ -181,7 +181,7 @@ Definition main : M unit :=
         (Self := std.process.ChildStdout.t)
         (Trait := ℐ))) in
   let* α1 : core.option.Option.t std.process.ChildStdout.t :=
-    M.read process.["stdout"] in
+    M.read (std.process.Child.Get_stdout process) in
   let* α2 : std.process.ChildStdout.t :=
     M.call ((core.option.Option.t std.process.ChildStdout.t)::["unwrap"] α1) in
   let* α3 : M.Val std.process.ChildStdout.t := M.alloc α2 in
@@ -197,7 +197,7 @@ Definition main : M unit :=
           (let* α0 := M.read γ in
           match α0 with
           | core.result.Result.Err _ =>
-            let γ0_0 := γ.["Err.0"] in
+            let γ0_0 := core.result.Result.Get_Err_0 γ in
             let* why := M.copy γ0_0 in
             let* α0 : ref str.t :=
               M.read (mk_str "couldn't read wc stdout: ") in
@@ -224,7 +224,7 @@ Definition main : M unit :=
           (let* α0 := M.read γ in
           match α0 with
           | core.result.Result.Ok _ =>
-            let γ0_0 := γ.["Ok.0"] in
+            let γ0_0 := core.result.Result.Get_Ok_0 γ in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "wc responded with:
 ") in

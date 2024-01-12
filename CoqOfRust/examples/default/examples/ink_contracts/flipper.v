@@ -7,13 +7,8 @@ Section Flipper.
     value : bool.t;
   }.
   
-  Global Instance Get_value : Notations.Dot "value" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(value)) (fun β α => Some (α <| value := β |>));
-  }.
-  Global Instance Get_AF_value : Notations.DoubleColon t "value" := {
-    Notations.double_colon (α : M.Val t) := α.["value"];
-  }.
+  Definition Get_value :=
+    Ref.map (fun α => Some α.(value)) (fun β α => Some (α <| value := β |>)).
 End Flipper.
 End Flipper.
 
@@ -62,8 +57,8 @@ Section Impl_flipper_Flipper_t.
     let* _ : M.Val unit :=
       let* α0 : mut_ref flipper.Flipper.t := M.read self in
       let* α1 : mut_ref flipper.Flipper.t := M.read self in
-      let* α2 : bool.t := M.read (deref α1).["value"] in
-      assign (deref α0).["value"] (UnOp.not α2) in
+      let* α2 : bool.t := M.read (flipper.Flipper.Get_value (deref α1)) in
+      assign (flipper.Flipper.Get_value (deref α0)) (UnOp.not α2) in
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
@@ -80,7 +75,7 @@ Section Impl_flipper_Flipper_t.
   Definition get (self : ref Self) : M bool.t :=
     let* self := M.alloc self in
     let* α0 : ref flipper.Flipper.t := M.read self in
-    M.read (deref α0).["value"].
+    M.read (flipper.Flipper.Get_value (deref α0)).
   
   Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
     Notations.double_colon := get;

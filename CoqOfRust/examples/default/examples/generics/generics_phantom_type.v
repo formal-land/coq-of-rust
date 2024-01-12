@@ -10,14 +10,10 @@ Section PhantomTuple.
     x1 : core.marker.PhantomData.t B;
   }.
   
-  Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>));
-  }.
-  Global Instance Get_1 : Notations.Dot "1" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(x1)) (fun β α => Some (α <| x1 := β |>));
-  }.
+  Definition Get_0 :=
+    Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>)).
+  Definition Get_1 :=
+    Ref.map (fun α => Some α.(x1)) (fun β α => Some (α <| x1 := β |>)).
 End PhantomTuple.
 End PhantomTuple.
 
@@ -58,7 +54,10 @@ Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_t_A_B.
     let* α1 : ref (generics_phantom_type.PhantomTuple.t A B) := M.read self in
     let* α2 : ref (generics_phantom_type.PhantomTuple.t A B) := M.read other in
     let* α3 : bool.t :=
-      M.call (α0 (borrow (deref α1).["0"]) (borrow (deref α2).["0"])) in
+      M.call
+        (α0
+          (borrow (generics_phantom_type.PhantomTuple.Get_0 (deref α1)))
+          (borrow (generics_phantom_type.PhantomTuple.Get_0 (deref α2)))) in
     let* α4 : _ :=
       ltac:(M.get_method (fun ℐ =>
         core.cmp.PartialEq.eq
@@ -68,7 +67,10 @@ Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_t_A_B.
     let* α5 : ref (generics_phantom_type.PhantomTuple.t A B) := M.read self in
     let* α6 : ref (generics_phantom_type.PhantomTuple.t A B) := M.read other in
     let* α7 : bool.t :=
-      M.call (α4 (borrow (deref α5).["1"]) (borrow (deref α6).["1"])) in
+      M.call
+        (α4
+          (borrow (generics_phantom_type.PhantomTuple.Get_1 (deref α5)))
+          (borrow (generics_phantom_type.PhantomTuple.Get_1 (deref α6)))) in
     M.pure (BinOp.Pure.and α3 α7).
   
   Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
@@ -93,22 +95,12 @@ Section PhantomStruct.
     phantom : core.marker.PhantomData.t B;
   }.
   
-  Global Instance Get_first : Notations.Dot "first" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(first)) (fun β α => Some (α <| first := β |>));
-  }.
-  Global Instance Get_AF_first : Notations.DoubleColon t "first" := {
-    Notations.double_colon (α : M.Val t) := α.["first"];
-  }.
-  Global Instance Get_phantom : Notations.Dot "phantom" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(phantom))
-        (fun β α => Some (α <| phantom := β |>));
-  }.
-  Global Instance Get_AF_phantom : Notations.DoubleColon t "phantom" := {
-    Notations.double_colon (α : M.Val t) := α.["phantom"];
-  }.
+  Definition Get_first :=
+    Ref.map (fun α => Some α.(first)) (fun β α => Some (α <| first := β |>)).
+  Definition Get_phantom :=
+    Ref.map
+      (fun α => Some α.(phantom))
+      (fun β α => Some (α <| phantom := β |>)).
 End PhantomStruct.
 End PhantomStruct.
 
@@ -149,7 +141,11 @@ Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_t_A_B.
     let* α1 : ref (generics_phantom_type.PhantomStruct.t A B) := M.read self in
     let* α2 : ref (generics_phantom_type.PhantomStruct.t A B) := M.read other in
     let* α3 : bool.t :=
-      M.call (α0 (borrow (deref α1).["first"]) (borrow (deref α2).["first"])) in
+      M.call
+        (α0
+          (borrow (generics_phantom_type.PhantomStruct.Get_first (deref α1)))
+          (borrow
+            (generics_phantom_type.PhantomStruct.Get_first (deref α2)))) in
     let* α4 : _ :=
       ltac:(M.get_method (fun ℐ =>
         core.cmp.PartialEq.eq
@@ -160,7 +156,10 @@ Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_t_A_B.
     let* α6 : ref (generics_phantom_type.PhantomStruct.t A B) := M.read other in
     let* α7 : bool.t :=
       M.call
-        (α4 (borrow (deref α5).["phantom"]) (borrow (deref α6).["phantom"])) in
+        (α4
+          (borrow (generics_phantom_type.PhantomStruct.Get_phantom (deref α5)))
+          (borrow
+            (generics_phantom_type.PhantomStruct.Get_phantom (deref α6)))) in
     M.pure (BinOp.Pure.and α3 α7).
   
   Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {

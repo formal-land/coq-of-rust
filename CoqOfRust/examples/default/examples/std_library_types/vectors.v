@@ -308,7 +308,7 @@ Definition main : M unit :=
                       (let* α0 := M.read γ in
                       match α0 with
                       | core.option.Option.Some _ =>
-                        let γ0_0 := γ.["Some.0"] in
+                        let γ0_0 := core.option.Option.Get_Some_0 γ in
                         let* x := M.copy γ0_0 in
                         let* _ : M.Val unit :=
                           let* _ : M.Val unit :=
@@ -419,7 +419,7 @@ Definition main : M unit :=
                       (let* α0 := M.read γ in
                       match α0 with
                       | core.option.Option.Some _ =>
-                        let γ0_0 := γ.["Some.0"] in
+                        let γ0_0 := core.option.Option.Get_Some_0 γ in
                         let* α0 := M.read γ0_0 in
                         match α0 with
                         | (_, _) =>
@@ -524,7 +524,7 @@ Definition main : M unit :=
                       (let* α0 := M.read γ in
                       match α0 with
                       | core.option.Option.Some _ =>
-                        let γ0_0 := γ.["Some.0"] in
+                        let γ0_0 := core.option.Option.Get_Some_0 γ in
                         let* x := M.copy γ0_0 in
                         let* _ : M.Val unit :=
                           let* β : M.Val i32.t :=

@@ -7,13 +7,8 @@ Section Borrowed.
     x : ref i32.t;
   }.
   
-  Global Instance Get_x : Notations.Dot "x" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(x)) (fun β α => Some (α <| x := β |>));
-  }.
-  Global Instance Get_AF_x : Notations.DoubleColon t "x" := {
-    Notations.double_colon (α : M.Val t) := α.["x"];
-  }.
+  Definition Get_x :=
+    Ref.map (fun α => Some α.(x)) (fun β α => Some (α <| x := β |>)).
 End Borrowed.
 End Borrowed.
 

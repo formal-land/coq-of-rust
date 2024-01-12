@@ -82,10 +82,8 @@ Section Peeled.
     x0 : combinators_map.Food.t;
   }.
   
-  Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>));
-  }.
+  Definition Get_0 :=
+    Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>)).
 End Peeled.
 End Peeled.
 
@@ -106,7 +104,7 @@ Section Impl_core_fmt_Debug_for_combinators_map_Peeled_t.
     let* α1 : ref str.t := M.read (mk_str "Peeled") in
     let* α2 : ref combinators_map.Peeled.t := M.read self in
     let* α3 : M.Val (ref combinators_map.Food.t) :=
-      M.alloc (borrow (deref α2).["0"]) in
+      M.alloc (borrow (combinators_map.Peeled.Get_0 (deref α2))) in
     let* α4 : M.Val (ref (ref combinators_map.Food.t)) := M.alloc (borrow α3) in
     let* α5 : ref _ (* dyn *) := M.read (pointer_coercion "Unsize" α4) in
     M.call (core.fmt.Formatter.t::["debug_tuple_field1_finish"] α0 α1 α5).
@@ -127,10 +125,8 @@ Section Chopped.
     x0 : combinators_map.Food.t;
   }.
   
-  Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>));
-  }.
+  Definition Get_0 :=
+    Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>)).
 End Chopped.
 End Chopped.
 
@@ -151,7 +147,7 @@ Section Impl_core_fmt_Debug_for_combinators_map_Chopped_t.
     let* α1 : ref str.t := M.read (mk_str "Chopped") in
     let* α2 : ref combinators_map.Chopped.t := M.read self in
     let* α3 : M.Val (ref combinators_map.Food.t) :=
-      M.alloc (borrow (deref α2).["0"]) in
+      M.alloc (borrow (combinators_map.Chopped.Get_0 (deref α2))) in
     let* α4 : M.Val (ref (ref combinators_map.Food.t)) := M.alloc (borrow α3) in
     let* α5 : ref _ (* dyn *) := M.read (pointer_coercion "Unsize" α4) in
     M.call (core.fmt.Formatter.t::["debug_tuple_field1_finish"] α0 α1 α5).
@@ -172,10 +168,8 @@ Section Cooked.
     x0 : combinators_map.Food.t;
   }.
   
-  Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>));
-  }.
+  Definition Get_0 :=
+    Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>)).
 End Cooked.
 End Cooked.
 
@@ -196,7 +190,7 @@ Section Impl_core_fmt_Debug_for_combinators_map_Cooked_t.
     let* α1 : ref str.t := M.read (mk_str "Cooked") in
     let* α2 : ref combinators_map.Cooked.t := M.read self in
     let* α3 : M.Val (ref combinators_map.Food.t) :=
-      M.alloc (borrow (deref α2).["0"]) in
+      M.alloc (borrow (combinators_map.Cooked.Get_0 (deref α2))) in
     let* α4 : M.Val (ref (ref combinators_map.Food.t)) := M.alloc (borrow α3) in
     let* α5 : ref _ (* dyn *) := M.read (pointer_coercion "Unsize" α4) in
     M.call (core.fmt.Formatter.t::["debug_tuple_field1_finish"] α0 α1 α5).
@@ -231,7 +225,7 @@ Definition peel
           (let* α0 := M.read γ in
           match α0 with
           | core.option.Option.Some _ =>
-            let γ0_0 := γ.["Some.0"] in
+            let γ0_0 := core.option.Option.Get_Some_0 γ in
             let* food := M.copy γ0_0 in
             let* α0 : combinators_map.Food.t := M.read food in
             M.alloc
@@ -269,11 +263,11 @@ Definition chop
           (let* α0 := M.read γ in
           match α0 with
           | core.option.Option.Some _ =>
-            let γ0_0 := γ.["Some.0"] in
+            let γ0_0 := core.option.Option.Get_Some_0 γ in
             let* α0 := M.read γ0_0 in
             match α0 with
             | combinators_map.Peeled.Build_t _ =>
-              let γ1_0 := γ0_0.["Peeled.0"] in
+              let γ1_0 := combinators_map.Get_Peeled_0 γ0_0 in
               let* food := M.copy γ1_0 in
               let* α0 : combinators_map.Food.t := M.read food in
               M.alloc
@@ -314,7 +308,7 @@ Definition cook
               (let* α0 := M.read γ in
               match α0 with
               | combinators_map.Chopped.Build_t _ =>
-                let γ0_0 := γ.["Chopped.0"] in
+                let γ0_0 := combinators_map.Get_Chopped_0 γ in
                 let* food := M.copy γ0_0 in
                 let* α0 : combinators_map.Food.t := M.read food in
                 M.pure (combinators_map.Cooked.Build_t α0)
@@ -364,7 +358,7 @@ Definition process
                 (let* α0 := M.read γ in
                 match α0 with
                 | combinators_map.Peeled.Build_t _ =>
-                  let γ0_0 := γ.["Peeled.0"] in
+                  let γ0_0 := combinators_map.Get_Peeled_0 γ in
                   let* f := M.copy γ0_0 in
                   let* α0 : combinators_map.Food.t := M.read f in
                   M.pure (combinators_map.Chopped.Build_t α0)
@@ -384,7 +378,7 @@ Definition process
               (let* α0 := M.read γ in
               match α0 with
               | combinators_map.Chopped.Build_t _ =>
-                let γ0_0 := γ.["Chopped.0"] in
+                let γ0_0 := combinators_map.Get_Chopped_0 γ in
                 let* f := M.copy γ0_0 in
                 let* α0 : combinators_map.Food.t := M.read f in
                 M.pure (combinators_map.Cooked.Build_t α0)
@@ -413,7 +407,7 @@ Definition eat
           (let* α0 := M.read γ in
           match α0 with
           | core.option.Option.Some _ =>
-            let γ0_0 := γ.["Some.0"] in
+            let γ0_0 := core.option.Option.Get_Some_0 γ in
             let* food := M.copy γ0_0 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "Mmm. I love ") in

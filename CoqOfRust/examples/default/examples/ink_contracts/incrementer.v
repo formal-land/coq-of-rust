@@ -7,13 +7,8 @@ Section Incrementer.
     value : i32.t;
   }.
   
-  Global Instance Get_value : Notations.Dot "value" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(value)) (fun β α => Some (α <| value := β |>));
-  }.
-  Global Instance Get_AF_value : Notations.DoubleColon t "value" := {
-    Notations.double_colon (α : M.Val t) := α.["value"];
-  }.
+  Definition Get_value :=
+    Ref.map (fun α => Some α.(value)) (fun β α => Some (α <| value := β |>)).
 End Incrementer.
 End Incrementer.
 
@@ -63,7 +58,7 @@ Section Impl_incrementer_Incrementer_t.
     let* _ : M.Val unit :=
       let* β : M.Val i32.t :=
         let* α0 : mut_ref incrementer.Incrementer.t := M.read self in
-        M.pure (deref α0).["value"] in
+        M.pure (incrementer.Incrementer.Get_value (deref α0)) in
       let* α0 := M.read β in
       let* α1 : i32.t := M.read by_ in
       let* α2 := BinOp.Panic.add α0 α1 in
@@ -83,7 +78,7 @@ Section Impl_incrementer_Incrementer_t.
   Definition get (self : ref Self) : M i32.t :=
     let* self := M.alloc self in
     let* α0 : ref incrementer.Incrementer.t := M.read self in
-    M.read (deref α0).["value"].
+    M.read (incrementer.Incrementer.Get_value (deref α0)).
   
   Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
     Notations.double_colon := get;

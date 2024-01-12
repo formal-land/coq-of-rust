@@ -7,13 +7,8 @@ Section Person.
     job : core.option.Option.t unpacking_options_via_question_mark.Job.t;
   }.
   
-  Global Instance Get_job : Notations.Dot "job" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(job)) (fun β α => Some (α <| job := β |>));
-  }.
-  Global Instance Get_AF_job : Notations.DoubleColon t "job" := {
-    Notations.double_colon (α : M.Val t) := α.["job"];
-  }.
+  Definition Get_job :=
+    Ref.map (fun α => Some α.(job)) (fun β α => Some (α <| job := β |>)).
 End Person.
 End Person.
 
@@ -24,16 +19,10 @@ Section Job.
       core.option.Option.t unpacking_options_via_question_mark.PhoneNumber.t;
   }.
   
-  Global Instance Get_phone_number : Notations.Dot "phone_number" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(phone_number))
-        (fun β α => Some (α <| phone_number := β |>));
-  }.
-  Global Instance Get_AF_phone_number :
-    Notations.DoubleColon t "phone_number" := {
-    Notations.double_colon (α : M.Val t) := α.["phone_number"];
-  }.
+  Definition Get_phone_number :=
+    Ref.map
+      (fun α => Some α.(phone_number))
+      (fun β α => Some (α <| phone_number := β |>)).
 End Job.
 End Job.
 
@@ -89,24 +78,12 @@ Section PhoneNumber.
     number : u32.t;
   }.
   
-  Global Instance Get_area_code : Notations.Dot "area_code" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(area_code))
-        (fun β α => Some (α <| area_code := β |>));
-  }.
-  Global Instance Get_AF_area_code : Notations.DoubleColon t "area_code" := {
-    Notations.double_colon (α : M.Val t) := α.["area_code"];
-  }.
-  Global Instance Get_number : Notations.Dot "number" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(number))
-        (fun β α => Some (α <| number := β |>));
-  }.
-  Global Instance Get_AF_number : Notations.DoubleColon t "number" := {
-    Notations.double_colon (α : M.Val t) := α.["number"];
-  }.
+  Definition Get_area_code :=
+    Ref.map
+      (fun α => Some α.(area_code))
+      (fun β α => Some (α <| area_code := β |>)).
+  Definition Get_number :=
+    Ref.map (fun α => Some α.(number)) (fun β α => Some (α <| number := β |>)).
 End PhoneNumber.
 End PhoneNumber.
 
@@ -198,7 +175,8 @@ Section Impl_unpacking_options_via_question_mark_Person_t.
         M.read self in
       let* α3 :
           core.option.Option.t unpacking_options_via_question_mark.Job.t :=
-        M.read (deref α2).["job"] in
+        M.read
+          (unpacking_options_via_question_mark.Person.Get_job (deref α2)) in
       let* α4 :
           core.ops.control_flow.ControlFlow.t
             (core.option.Option.t core.convert.Infallible.t)
@@ -218,7 +196,7 @@ Section Impl_unpacking_options_via_question_mark_Person_t.
               (let* α0 := M.read γ in
               match α0 with
               | core.ops.control_flow.ControlFlow.Break _ =>
-                let γ0_0 := γ.["Break.0"] in
+                let γ0_0 := core.ops.control_flow.ControlFlow.Get_Break_0 γ in
                 let* residual := M.copy γ0_0 in
                 let* α0 : _ :=
                   ltac:(M.get_method (fun ℐ =>
@@ -241,7 +219,8 @@ Section Impl_unpacking_options_via_question_mark_Person_t.
               (let* α0 := M.read γ in
               match α0 with
               | core.ops.control_flow.ControlFlow.Continue _ =>
-                let γ0_0 := γ.["Continue.0"] in
+                let γ0_0 :=
+                  core.ops.control_flow.ControlFlow.Get_Continue_0 γ in
                 let* val := M.copy γ0_0 in
                 M.pure val
               | _ => M.break_match
@@ -251,7 +230,7 @@ Section Impl_unpacking_options_via_question_mark_Person_t.
       let* α7 :
           core.option.Option.t
             unpacking_options_via_question_mark.PhoneNumber.t :=
-        M.read α6.["phone_number"] in
+        M.read (unpacking_options_via_question_mark.Job.Get_phone_number α6) in
       let* α8 :
           core.ops.control_flow.ControlFlow.t
             (core.option.Option.t core.convert.Infallible.t)
@@ -271,7 +250,7 @@ Section Impl_unpacking_options_via_question_mark_Person_t.
               (let* α0 := M.read γ in
               match α0 with
               | core.ops.control_flow.ControlFlow.Break _ =>
-                let γ0_0 := γ.["Break.0"] in
+                let γ0_0 := core.ops.control_flow.ControlFlow.Get_Break_0 γ in
                 let* residual := M.copy γ0_0 in
                 let* α0 : _ :=
                   ltac:(M.get_method (fun ℐ =>
@@ -294,14 +273,16 @@ Section Impl_unpacking_options_via_question_mark_Person_t.
               (let* α0 := M.read γ in
               match α0 with
               | core.ops.control_flow.ControlFlow.Continue _ =>
-                let γ0_0 := γ.["Continue.0"] in
+                let γ0_0 :=
+                  core.ops.control_flow.ControlFlow.Get_Continue_0 γ in
                 let* val := M.copy γ0_0 in
                 M.pure val
               | _ => M.break_match
               end) :
               M (M.Val unpacking_options_via_question_mark.PhoneNumber.t)
           ] in
-      M.read α10.["area_code"]).
+      M.read
+        (unpacking_options_via_question_mark.PhoneNumber.Get_area_code α10)).
   
   Global Instance AssociatedFunction_work_phone_area_code :
     Notations.DoubleColon Self "work_phone_area_code" := {

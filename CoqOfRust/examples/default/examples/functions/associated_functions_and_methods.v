@@ -8,20 +8,10 @@ Section Point.
     y : f64.t;
   }.
   
-  Global Instance Get_x : Notations.Dot "x" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(x)) (fun β α => Some (α <| x := β |>));
-  }.
-  Global Instance Get_AF_x : Notations.DoubleColon t "x" := {
-    Notations.double_colon (α : M.Val t) := α.["x"];
-  }.
-  Global Instance Get_y : Notations.Dot "y" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(y)) (fun β α => Some (α <| y := β |>));
-  }.
-  Global Instance Get_AF_y : Notations.DoubleColon t "y" := {
-    Notations.double_colon (α : M.Val t) := α.["y"];
-  }.
+  Definition Get_x :=
+    Ref.map (fun α => Some α.(x)) (fun β α => Some (α <| x := β |>)).
+  Definition Get_y :=
+    Ref.map (fun α => Some α.(y)) (fun β α => Some (α <| y := β |>)).
 End Point.
 End Point.
 
@@ -80,20 +70,10 @@ Section Rectangle.
     p2 : associated_functions_and_methods.Point.t;
   }.
   
-  Global Instance Get_p1 : Notations.Dot "p1" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(p1)) (fun β α => Some (α <| p1 := β |>));
-  }.
-  Global Instance Get_AF_p1 : Notations.DoubleColon t "p1" := {
-    Notations.double_colon (α : M.Val t) := α.["p1"];
-  }.
-  Global Instance Get_p2 : Notations.Dot "p2" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(p2)) (fun β α => Some (α <| p2 := β |>));
-  }.
-  Global Instance Get_AF_p2 : Notations.DoubleColon t "p2" := {
-    Notations.double_colon (α : M.Val t) := α.["p2"];
-  }.
+  Definition Get_p1 :=
+    Ref.map (fun α => Some α.(p1)) (fun β α => Some (α <| p1 := β |>)).
+  Definition Get_p2 :=
+    Ref.map (fun α => Some α.(p2)) (fun β α => Some (α <| p2 := β |>)).
 End Rectangle.
 End Rectangle.
 
@@ -111,7 +91,7 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
       : M associated_functions_and_methods.Point.t :=
     let* self := M.alloc self in
     let* α0 : ref associated_functions_and_methods.Rectangle.t := M.read self in
-    M.read (deref α0).["p1"].
+    M.read (associated_functions_and_methods.Rectangle.Get_p1 (deref α0)).
   
   Global Instance AssociatedFunction_get_p1 :
     Notations.DoubleColon Self "get_p1" := {
@@ -134,7 +114,7 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
     let* α0 : ref associated_functions_and_methods.Rectangle.t := M.read self in
     let* α1 : M.Val f64.t :=
       match_operator
-        (deref α0).["p1"]
+        (associated_functions_and_methods.Rectangle.Get_p1 (deref α0))
         [
           fun γ =>
             (let* α0 := M.read γ in
@@ -145,14 +125,14 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
                   associated_functions_and_methods.Point.y := _;
                 |}
                 =>
-              let γ0_0 := γ.["Point.x"] in
-              let γ0_1 := γ.["Point.y"] in
+              let γ0_0 := associated_functions_and_methods.Get_Point_x γ in
+              let γ0_1 := associated_functions_and_methods.Get_Point_y γ in
               let* x1 := M.copy γ0_0 in
               let* y1 := M.copy γ0_1 in
               let* α0 : ref associated_functions_and_methods.Rectangle.t :=
                 M.read self in
               match_operator
-                (deref α0).["p2"]
+                (associated_functions_and_methods.Rectangle.Get_p2 (deref α0))
                 [
                   fun γ =>
                     (let* α0 := M.read γ in
@@ -163,8 +143,10 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
                           associated_functions_and_methods.Point.y := _;
                         |}
                         =>
-                      let γ0_0 := γ.["Point.x"] in
-                      let γ0_1 := γ.["Point.y"] in
+                      let γ0_0 :=
+                        associated_functions_and_methods.Get_Point_x γ in
+                      let γ0_1 :=
+                        associated_functions_and_methods.Get_Point_y γ in
                       let* x2 := M.copy γ0_0 in
                       let* y2 := M.copy γ0_1 in
                       let* α0 : f64.t := M.read x1 in
@@ -202,7 +184,7 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
     let* α0 : ref associated_functions_and_methods.Rectangle.t := M.read self in
     let* α1 : M.Val f64.t :=
       match_operator
-        (deref α0).["p1"]
+        (associated_functions_and_methods.Rectangle.Get_p1 (deref α0))
         [
           fun γ =>
             (let* α0 := M.read γ in
@@ -213,14 +195,14 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
                   associated_functions_and_methods.Point.y := _;
                 |}
                 =>
-              let γ0_0 := γ.["Point.x"] in
-              let γ0_1 := γ.["Point.y"] in
+              let γ0_0 := associated_functions_and_methods.Get_Point_x γ in
+              let γ0_1 := associated_functions_and_methods.Get_Point_y γ in
               let* x1 := M.copy γ0_0 in
               let* y1 := M.copy γ0_1 in
               let* α0 : ref associated_functions_and_methods.Rectangle.t :=
                 M.read self in
               match_operator
-                (deref α0).["p2"]
+                (associated_functions_and_methods.Rectangle.Get_p2 (deref α0))
                 [
                   fun γ =>
                     (let* α0 := M.read γ in
@@ -231,8 +213,10 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
                           associated_functions_and_methods.Point.y := _;
                         |}
                         =>
-                      let γ0_0 := γ.["Point.x"] in
-                      let γ0_1 := γ.["Point.y"] in
+                      let γ0_0 :=
+                        associated_functions_and_methods.Get_Point_x γ in
+                      let γ0_1 :=
+                        associated_functions_and_methods.Get_Point_y γ in
                       let* x2 := M.copy γ0_0 in
                       let* y2 := M.copy γ0_1 in
                       let* α0 : f64.t := M.read UnsupportedLiteral in
@@ -277,7 +261,9 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
       let* β : M.Val f64.t :=
         let* α0 : mut_ref associated_functions_and_methods.Rectangle.t :=
           M.read self in
-        M.pure (deref α0).["p1"].["x"] in
+        M.pure
+          (associated_functions_and_methods.Point.Get_x
+            (associated_functions_and_methods.Rectangle.Get_p1 (deref α0))) in
       let* α0 := M.read β in
       let* α1 : f64.t := M.read x in
       let* α2 := BinOp.Panic.add α0 α1 in
@@ -286,7 +272,9 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
       let* β : M.Val f64.t :=
         let* α0 : mut_ref associated_functions_and_methods.Rectangle.t :=
           M.read self in
-        M.pure (deref α0).["p2"].["x"] in
+        M.pure
+          (associated_functions_and_methods.Point.Get_x
+            (associated_functions_and_methods.Rectangle.Get_p2 (deref α0))) in
       let* α0 := M.read β in
       let* α1 : f64.t := M.read x in
       let* α2 := BinOp.Panic.add α0 α1 in
@@ -295,7 +283,9 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
       let* β : M.Val f64.t :=
         let* α0 : mut_ref associated_functions_and_methods.Rectangle.t :=
           M.read self in
-        M.pure (deref α0).["p1"].["y"] in
+        M.pure
+          (associated_functions_and_methods.Point.Get_y
+            (associated_functions_and_methods.Rectangle.Get_p1 (deref α0))) in
       let* α0 := M.read β in
       let* α1 : f64.t := M.read y in
       let* α2 := BinOp.Panic.add α0 α1 in
@@ -304,7 +294,9 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
       let* β : M.Val f64.t :=
         let* α0 : mut_ref associated_functions_and_methods.Rectangle.t :=
           M.read self in
-        M.pure (deref α0).["p2"].["y"] in
+        M.pure
+          (associated_functions_and_methods.Point.Get_y
+            (associated_functions_and_methods.Rectangle.Get_p2 (deref α0))) in
       let* α0 := M.read β in
       let* α1 : f64.t := M.read y in
       let* α2 := BinOp.Panic.add α0 α1 in
@@ -326,14 +318,10 @@ Section Pair.
     x1 : alloc.boxed.Box.t i32.t alloc.boxed.Box.Default.A;
   }.
   
-  Global Instance Get_0 : Notations.Dot "0" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>));
-  }.
-  Global Instance Get_1 : Notations.Dot "1" := {
-    Notations.dot :=
-      Ref.map (fun α => Some α.(x1)) (fun β α => Some (α <| x1 := β |>));
-  }.
+  Definition Get_0 :=
+    Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>)).
+  Definition Get_1 :=
+    Ref.map (fun α => Some α.(x1)) (fun β α => Some (α <| x1 := β |>)).
 End Pair.
 End Pair.
 
@@ -361,8 +349,8 @@ Section Impl_associated_functions_and_methods_Pair_t.
             (let* α0 := M.read γ in
             match α0 with
             | associated_functions_and_methods.Pair.Build_t _ _ =>
-              let γ0_0 := γ.["Pair.0"] in
-              let γ0_1 := γ.["Pair.1"] in
+              let γ0_0 := associated_functions_and_methods.Get_Pair_0 γ in
+              let γ0_1 := associated_functions_and_methods.Get_Pair_1 γ in
               let* first := M.copy γ0_0 in
               let* second := M.copy γ0_1 in
               let* _ : M.Val unit :=

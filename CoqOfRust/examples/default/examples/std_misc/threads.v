@@ -82,7 +82,7 @@ Definition main : M unit :=
                       (let* α0 := M.read γ in
                       match α0 with
                       | core.option.Option.Some _ =>
-                        let γ0_0 := γ.["Some.0"] in
+                        let γ0_0 := core.option.Option.Get_Some_0 γ in
                         let* i := M.copy γ0_0 in
                         let* _ : M.Val unit :=
                           let* α0 : std.thread.JoinHandle.t unit :=
@@ -205,7 +205,7 @@ Definition main : M unit :=
                     (let* α0 := M.read γ in
                     match α0 with
                     | core.option.Option.Some _ =>
-                      let γ0_0 := γ.["Some.0"] in
+                      let γ0_0 := core.option.Option.Get_Some_0 γ in
                       let* child := M.copy γ0_0 in
                       let* α0 : std.thread.JoinHandle.t unit := M.read child in
                       let* α1 :

@@ -22,9 +22,11 @@ Section Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle_t.
   Definition area (self : ref Self) : M f64.t :=
     let* self := M.alloc self in
     let* α0 : ref generics_bounds.Rectangle.t := M.read self in
-    let* α1 : f64.t := M.read (deref α0).["length"] in
+    let* α1 : f64.t :=
+      M.read (generics_bounds.Rectangle.Get_length (deref α0)) in
     let* α2 : ref generics_bounds.Rectangle.t := M.read self in
-    let* α3 : f64.t := M.read (deref α2).["height"] in
+    let* α3 : f64.t :=
+      M.read (generics_bounds.Rectangle.Get_height (deref α2)) in
     BinOp.Panic.mul α1 α3.
   
   Global Instance AssociatedFunction_area :
@@ -45,24 +47,10 @@ Section Rectangle.
     height : f64.t;
   }.
   
-  Global Instance Get_length : Notations.Dot "length" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(length))
-        (fun β α => Some (α <| length := β |>));
-  }.
-  Global Instance Get_AF_length : Notations.DoubleColon t "length" := {
-    Notations.double_colon (α : M.Val t) := α.["length"];
-  }.
-  Global Instance Get_height : Notations.Dot "height" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(height))
-        (fun β α => Some (α <| height := β |>));
-  }.
-  Global Instance Get_AF_height : Notations.DoubleColon t "height" := {
-    Notations.double_colon (α : M.Val t) := α.["height"];
-  }.
+  Definition Get_length :=
+    Ref.map (fun α => Some α.(length)) (fun β α => Some (α <| length := β |>)).
+  Definition Get_height :=
+    Ref.map (fun α => Some α.(height)) (fun β α => Some (α <| height := β |>)).
 End Rectangle.
 End Rectangle.
 
@@ -83,11 +71,13 @@ Section Impl_core_fmt_Debug_for_generics_bounds_Rectangle_t.
     let* α1 : ref str.t := M.read (mk_str "Rectangle") in
     let* α2 : ref str.t := M.read (mk_str "length") in
     let* α3 : ref generics_bounds.Rectangle.t := M.read self in
-    let* α4 : M.Val (ref f64.t) := M.alloc (borrow (deref α3).["length"]) in
+    let* α4 : M.Val (ref f64.t) :=
+      M.alloc (borrow (generics_bounds.Rectangle.Get_length (deref α3))) in
     let* α5 : ref _ (* dyn *) := M.read (pointer_coercion "Unsize" α4) in
     let* α6 : ref str.t := M.read (mk_str "height") in
     let* α7 : ref generics_bounds.Rectangle.t := M.read self in
-    let* α8 : M.Val (ref f64.t) := M.alloc (borrow (deref α7).["height"]) in
+    let* α8 : M.Val (ref f64.t) :=
+      M.alloc (borrow (generics_bounds.Rectangle.Get_height (deref α7))) in
     let* α9 : M.Val (ref (ref f64.t)) := M.alloc (borrow α8) in
     let* α10 : ref _ (* dyn *) := M.read (pointer_coercion "Unsize" α9) in
     M.call
@@ -111,24 +101,10 @@ Section Triangle.
     height : f64.t;
   }.
   
-  Global Instance Get_length : Notations.Dot "length" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(length))
-        (fun β α => Some (α <| length := β |>));
-  }.
-  Global Instance Get_AF_length : Notations.DoubleColon t "length" := {
-    Notations.double_colon (α : M.Val t) := α.["length"];
-  }.
-  Global Instance Get_height : Notations.Dot "height" := {
-    Notations.dot :=
-      Ref.map
-        (fun α => Some α.(height))
-        (fun β α => Some (α <| height := β |>));
-  }.
-  Global Instance Get_AF_height : Notations.DoubleColon t "height" := {
-    Notations.double_colon (α : M.Val t) := α.["height"];
-  }.
+  Definition Get_length :=
+    Ref.map (fun α => Some α.(length)) (fun β α => Some (α <| length := β |>)).
+  Definition Get_height :=
+    Ref.map (fun α => Some α.(height)) (fun β α => Some (α <| height := β |>)).
 End Triangle.
 End Triangle.
 

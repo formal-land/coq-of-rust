@@ -45,20 +45,18 @@ Module Option.
   Arguments None {_}.
   Arguments Some {_}.
 
-  Global Instance Get_Some_0 {T : Set} : Notations.Dot "Some.0" := {
-      Notations.dot :=
-        Ref.map (Big := t T)
-          (fun α =>
-            match α with
-            | Some α0 => Datatypes.Some α0
-            | _ => Datatypes.None
-            end)
-          (fun β α =>
-            match α with
-            | Some _ => Datatypes.Some (Some β)
-            | _ => Datatypes.None
-            end);
-    }.
+  Definition Get_Some_0 {T : Set} :=
+    Ref.map (Big := t T)
+      (fun α =>
+        match α with
+        | Some α0 => Datatypes.Some α0
+        | _ => Datatypes.None
+        end)
+      (fun β α =>
+        match α with
+        | Some _ => Datatypes.Some (Some β)
+        | _ => Datatypes.None
+        end).
 End Option.
 
 Module Impl_Option. Section Impl_Option.

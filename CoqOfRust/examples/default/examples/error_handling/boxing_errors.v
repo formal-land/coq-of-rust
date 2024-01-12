@@ -251,7 +251,7 @@ Definition print (result : ltac:(boxing_errors.Result i32.t)) : M unit :=
           (let* α0 := M.read γ in
           match α0 with
           | core.result.Result.Ok _ =>
-            let γ0_0 := γ.["Ok.0"] in
+            let γ0_0 := core.result.Result.Get_Ok_0 γ in
             let* n := M.copy γ0_0 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "The first doubled is ") in
@@ -282,7 +282,7 @@ Definition print (result : ltac:(boxing_errors.Result i32.t)) : M unit :=
           (let* α0 := M.read γ in
           match α0 with
           | core.result.Result.Err _ =>
-            let γ0_0 := γ.["Err.0"] in
+            let γ0_0 := core.result.Result.Get_Err_0 γ in
             let* e := M.copy γ0_0 in
             let* _ : M.Val unit :=
               let* α0 : ref str.t := M.read (mk_str "Error: ") in
