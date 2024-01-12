@@ -887,3 +887,5 @@ Definition addr_of_mut {A : Set} (v : M.Val A) : mut_ref A :=
   v.
 
 Parameter UnsupportedLiteral : forall {A : Set}, M.Val A.
+
+Parameter DeclaredButUndefinedVariable : forall {A : Set}, M.Val A.

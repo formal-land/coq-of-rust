@@ -112,17 +112,19 @@ Section Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account_t.
   *)
   Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
     let* self := M.alloc self in
-    let* α0 : M.Val unit := M.alloc tt in
-    let* α1 : M.Val unit :=
+    let* α0 : M.Val unit :=
       match_operator
-        α0
+        (DeclaredButUndefinedVariable
+          (A := core.cmp.AssertParamIsEq.t (ref str.t)))
         [
           fun γ =>
-            (let* α0 : M.Val unit := M.alloc tt in
-            match_operator α0 [ fun γ => (M.alloc tt) : M (M.Val unit) ]) :
+            (match_operator
+              (DeclaredButUndefinedVariable
+                (A := core.cmp.AssertParamIsEq.t (ref str.t)))
+              [ fun γ => (M.alloc tt) : M (M.Val unit) ]) :
             M (M.Val unit)
         ] in
-    M.read α1.
+    M.read α0.
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
     Notations.DoubleColon Self "assert_receiver_is_total_eq" := {

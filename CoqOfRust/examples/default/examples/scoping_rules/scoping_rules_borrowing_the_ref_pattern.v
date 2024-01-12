@@ -26,10 +26,10 @@ Section Impl_core_clone_Clone_for_scoping_rules_borrowing_the_ref_pattern_Point_
       (self : ref Self)
       : M scoping_rules_borrowing_the_ref_pattern.Point.t :=
     let* self := M.alloc self in
-    let* α0 : M.Val unit := M.alloc tt in
-    let* α1 : M.Val scoping_rules_borrowing_the_ref_pattern.Point.t :=
+    let* α0 : M.Val scoping_rules_borrowing_the_ref_pattern.Point.t :=
       match_operator
-        α0
+        (DeclaredButUndefinedVariable
+          (A := core.clone.AssertParamIsClone.t i32.t))
         [
           fun γ =>
             (let* α0 : ref scoping_rules_borrowing_the_ref_pattern.Point.t :=
@@ -37,7 +37,7 @@ Section Impl_core_clone_Clone_for_scoping_rules_borrowing_the_ref_pattern_Point_
             M.pure (deref α0)) :
             M (M.Val scoping_rules_borrowing_the_ref_pattern.Point.t)
         ] in
-    M.read α1.
+    M.read α0.
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {

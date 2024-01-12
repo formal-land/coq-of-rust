@@ -175,6 +175,22 @@ Section Impl_Vec.
     Notations.double_colon := is_empty;
   }.
 
+  (* pub fn as_ptr(&self) -> *const T *)
+  Parameter as_ptr : ref Self -> M (ref T).
+
+  Global Instance AF_as_ptr :
+    Notations.DoubleColon Self "as_ptr" := {
+    Notations.double_colon := as_ptr;
+  }.
+
+  (* pub fn as_slice(&self) -> &[T] *)
+  Parameter as_slice : ref Self -> M (ref (slice T)).
+
+  Global Instance AF_as_slice :
+    Notations.DoubleColon Self "as_slice" := {
+    Notations.double_colon := as_slice;
+  }.
+
   Global Instance I_Default {ℋ_0 : default.Default.Trait T} :
     default.Default.Trait Self.
   Admitted.

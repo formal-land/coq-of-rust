@@ -173,14 +173,6 @@ examples/default/examples/traits/supertraits.v
 examples/default/examples/traits/traits.v
 examples/default/examples/types/casting.v
 examples/default/examples/types/literals.v
-examples/default/examples/unsafe_operations/calling_unsafe_functions.v
-examples/default/examples/unsafe_operations/inline_assembly_clobbered_registers.v
-examples/default/examples/unsafe_operations/inline_assembly_inlateout_mul.v
-examples/default/examples/unsafe_operations/inline_assembly_inout.v
-examples/default/examples/unsafe_operations/inline_assembly_inputs_and_outputs_another_example.v
-examples/default/examples/unsafe_operations/inline_assembly_inputs_and_outputs.v
-examples/default/examples/unsafe_operations/inline_assembly_symbol_operands_and_abi_clobbers.v
-examples/default/examples/variable_bindings/declare_first.v
 ink/
 ink/erc20.v
 ink/ink_e2e.v

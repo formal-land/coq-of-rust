@@ -46,17 +46,17 @@ Section Impl_core_clone_Clone_for_payment_channel_AccountId_t.
   *)
   Definition clone (self : ref Self) : M payment_channel.AccountId.t :=
     let* self := M.alloc self in
-    let* α0 : M.Val unit := M.alloc tt in
-    let* α1 : M.Val payment_channel.AccountId.t :=
+    let* α0 : M.Val payment_channel.AccountId.t :=
       match_operator
-        α0
+        (DeclaredButUndefinedVariable
+          (A := core.clone.AssertParamIsClone.t u128.t))
         [
           fun γ =>
             (let* α0 : ref payment_channel.AccountId.t := M.read self in
             M.pure (deref α0)) :
             M (M.Val payment_channel.AccountId.t)
         ] in
-    M.read α1.
+    M.read α0.
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {
@@ -138,10 +138,11 @@ Section Impl_core_cmp_Eq_for_payment_channel_AccountId_t.
   *)
   Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
     let* self := M.alloc self in
-    let* α0 : M.Val unit := M.alloc tt in
-    let* α1 : M.Val unit :=
-      match_operator α0 [ fun γ => (M.alloc tt) : M (M.Val unit) ] in
-    M.read α1.
+    let* α0 : M.Val unit :=
+      match_operator
+        (DeclaredButUndefinedVariable (A := core.cmp.AssertParamIsEq.t u128.t))
+        [ fun γ => (M.alloc tt) : M (M.Val unit) ] in
+    M.read α0.
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
     Notations.DoubleColon Self "assert_receiver_is_total_eq" := {

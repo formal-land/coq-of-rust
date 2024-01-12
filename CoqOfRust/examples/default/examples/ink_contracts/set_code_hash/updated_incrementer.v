@@ -46,17 +46,17 @@ Section Impl_core_clone_Clone_for_updated_incrementer_AccountId_t.
   *)
   Definition clone (self : ref Self) : M updated_incrementer.AccountId.t :=
     let* self := M.alloc self in
-    let* α0 : M.Val unit := M.alloc tt in
-    let* α1 : M.Val updated_incrementer.AccountId.t :=
+    let* α0 : M.Val updated_incrementer.AccountId.t :=
       match_operator
-        α0
+        (DeclaredButUndefinedVariable
+          (A := core.clone.AssertParamIsClone.t u128.t))
         [
           fun γ =>
             (let* α0 : ref updated_incrementer.AccountId.t := M.read self in
             M.pure (deref α0)) :
             M (M.Val updated_incrementer.AccountId.t)
         ] in
-    M.read α1.
+    M.read α0.
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {

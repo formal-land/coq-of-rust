@@ -621,6 +621,10 @@ Module Ord.
   End Instances.
 End Ord.
 
+Module AssertParamIsEq.
+  Parameter t : Set -> Set.
+End AssertParamIsEq.
+
 (* ********FUNCTIONS******** *)
 (* 
 [ ] max

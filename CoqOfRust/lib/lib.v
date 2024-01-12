@@ -317,8 +317,8 @@ Module BinOp.
     Parameter div : forall {A : Set}, A -> A -> A + string.
     Parameter rem : forall {A : Set}, A -> A -> A + string.
     
-    Parameter shl : forall {A : Set}, A -> A -> A + string.
-    Parameter shr : forall {A : Set}, A -> A -> A + string.
+    Parameter shl : forall {A : Set}, A -> i32.t -> A + string.
+    Parameter shr : forall {A : Set}, A -> i32.t -> A + string.
   End Error.
 
   Module Panic.
@@ -343,8 +343,8 @@ Module BinOp.
     Parameter div : forall {A : Set}, A -> A -> M A.
     Parameter rem : forall {A : Set}, A -> A -> M A.
     
-    Parameter shl : forall {A : Set}, A -> A -> M A.
-    Parameter shr : forall {A : Set}, A -> A -> M A.
+    Parameter shl : forall {A : Set}, A -> i32.t -> M A.
+    Parameter shr : forall {A : Set}, A -> i32.t -> M A.
   End Panic.
 
   Module Wrap.
@@ -369,8 +369,8 @@ Module BinOp.
     Parameter div : forall {A : Set}, A -> A -> A.
     Parameter rem : forall {A : Set}, A -> A -> A.
     
-    Parameter shl : forall {A : Set}, A -> A -> A.
-    Parameter shr : forall {A : Set}, A -> A -> A.
+    Parameter shl : forall {A : Set}, A -> i32.t -> A.
+    Parameter shr : forall {A : Set}, A -> i32.t -> A.
   End Wrap.
 
   Module Optimistic.
@@ -395,8 +395,8 @@ Module BinOp.
     Parameter div : forall {A : Set}, A -> A -> A.
     Parameter rem : forall {A : Set}, A -> A -> A.
     
-    Parameter shl : forall {A : Set}, A -> A -> A.
-    Parameter shr : forall {A : Set}, A -> A -> A.
+    Parameter shl : forall {A : Set}, A -> i32.t -> A.
+    Parameter shr : forall {A : Set}, A -> i32.t -> A.
   End Optimistic.
 End BinOp.
 

@@ -1300,11 +1300,18 @@ fn compile_stmts<'a>(
                     initializer,
                     ..
                 } => {
-                    let pattern = crate::thir_pattern::compile_pattern(env, pattern);
                     let init = match initializer {
                         Some(initializer) => compile_expr(env, thir, initializer),
-                        None => Expr::tt(),
+                        None => Rc::new(Expr {
+                            kind: Rc::new(ExprKind::VarWithTy {
+                                path: Path::new(&["DeclaredButUndefinedVariable"]),
+                                ty_name: "A".to_string(),
+                                ty: compile_type(env, &pattern.ty),
+                            }),
+                            ty: None,
+                        }),
                     };
+                    let pattern = crate::thir_pattern::compile_pattern(env, pattern);
                     let ty = body.ty.clone();
                     let kind = match pattern.as_ref() {
                         Pattern::Binding {

@@ -50,3 +50,7 @@ Module Clone.
     clone_from := Provided.clone_from;
   }.
 End Clone.
+
+Module AssertParamIsClone.
+  Parameter t : Set -> Set.
+End AssertParamIsClone.

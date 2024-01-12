@@ -46,17 +46,17 @@ Section Impl_core_clone_Clone_for_contract_terminate_AccountId_t.
   *)
   Definition clone (self : ref Self) : M contract_terminate.AccountId.t :=
     let* self := M.alloc self in
-    let* α0 : M.Val unit := M.alloc tt in
-    let* α1 : M.Val contract_terminate.AccountId.t :=
+    let* α0 : M.Val contract_terminate.AccountId.t :=
       match_operator
-        α0
+        (DeclaredButUndefinedVariable
+          (A := core.clone.AssertParamIsClone.t u128.t))
         [
           fun γ =>
             (let* α0 : ref contract_terminate.AccountId.t := M.read self in
             M.pure (deref α0)) :
             M (M.Val contract_terminate.AccountId.t)
         ] in
-    M.read α1.
+    M.read α0.
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {
