@@ -66,18 +66,8 @@ Module ImplDebugTuple.
     forall {T : Set} `{Debug.Trait T},
       mut_ref Self -> ref T -> M (mut_ref DebugTuple.t).
 
-  Global Instance Method_field {T : Set} `{Debug.Trait T} :
-    Notations.Dot "field" := {
-    Notations.dot := field;
-  }.
-
   (** finish(&mut self) -> Result<(), Error> *)
   Parameter finish : mut_ref Self -> M ltac:(Result).
-
-  Global Instance Method_finish :
-    Notations.Dot "finish" := {
-    Notations.dot := finish;
-  }.
 End ImplDebugTuple.
 
 Module ImplFormatter.
@@ -103,11 +93,6 @@ Module ImplFormatter.
   Parameter debug_tuple_new :
     forall (fmt : mut_ref Formatter.t) (name : ref str.t),
       M DebugTuple.t.
-
-  Global Instance Method_debug_tuple :
-    Notations.Dot "debug_tuple_new" := {
-    Notations.dot := debug_tuple_new;
-  }.
 
   (*
   pub fn debug_tuple_field1_finish<'b>(&'b mut self, name: &str, value1: &dyn Debug) -> Result {
