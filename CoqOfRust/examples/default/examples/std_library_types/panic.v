@@ -20,13 +20,8 @@ Definition division (dividend : i32.t) (divisor : i32.t) : M i32.t :=
   let* α2 : bool.t := M.read (use α1) in
   let* α3 : M.Val i32.t :=
     if α2 then
-      let* _ : M.Val unit :=
-        let* α0 : ref str.t := M.read (mk_str "division by zero") in
-        let* α1 : never.t := M.call (std.panicking.begin_panic α0) in
-        let* α2 : unit := never_to_any α1 in
-        M.alloc α2 in
-      let* α0 : M.Val unit := M.alloc tt in
-      let* α1 := M.read α0 in
+      let* α0 : ref str.t := M.read (mk_str "division by zero") in
+      let* α1 : never.t := M.call (std.panicking.begin_panic α0) in
       let* α2 : i32.t := never_to_any α1 in
       M.alloc α2
     else

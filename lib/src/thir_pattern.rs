@@ -2,7 +2,7 @@ use crate::env::*;
 use crate::path::*;
 use crate::pattern::*;
 use rustc_middle::thir::{Pat, PatKind};
-use rustc_type_ir::sty::TyKind;
+use rustc_type_ir::TyKind;
 use std::rc::Rc;
 
 // fn const_to_lit_kind(constant: rustc_middle::mir::ConstantKind) -> rustc_ast::LitKind {
@@ -178,5 +178,6 @@ pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Rc<Pattern> {
         PatKind::Or { pats } => Rc::new(Pattern::Or(
             pats.iter().map(|pat| compile_pattern(env, pat)).collect(),
         )),
+        PatKind::InlineConstant { .. } | PatKind::Never | PatKind::Error(_) => todo!(),
     }
 }

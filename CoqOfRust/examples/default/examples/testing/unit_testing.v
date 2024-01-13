@@ -64,19 +64,17 @@ Module tests.
               if α5 then
                 let* kind : M.Val core.panicking.AssertKind.t :=
                   M.alloc core.panicking.AssertKind.Eq in
-                let* _ : M.Val never.t :=
-                  let* α0 : core.panicking.AssertKind.t := M.read kind in
-                  let* α1 : ref i32.t := M.read left_val in
-                  let* α2 : ref i32.t := M.read right_val in
-                  let* α3 : never.t :=
-                    M.call
-                      (core.panicking.assert_failed
-                        α0
-                        α1
-                        α2
-                        core.option.Option.None) in
-                  M.alloc α3 in
-                let* α0 : M.Val unit := M.alloc tt in
+                let* α0 : core.panicking.AssertKind.t := M.read kind in
+                let* α1 : ref i32.t := M.read left_val in
+                let* α2 : ref i32.t := M.read right_val in
+                let* α3 : never.t :=
+                  M.call
+                    (core.panicking.assert_failed
+                      α0
+                      α1
+                      α2
+                      core.option.Option.None) in
+                let* α0 : M.Val never.t := M.alloc α3 in
                 let* α1 := M.read α0 in
                 let* α2 : unit := never_to_any α1 in
                 M.alloc α2
@@ -127,19 +125,17 @@ Module tests.
               if α5 then
                 let* kind : M.Val core.panicking.AssertKind.t :=
                   M.alloc core.panicking.AssertKind.Eq in
-                let* _ : M.Val never.t :=
-                  let* α0 : core.panicking.AssertKind.t := M.read kind in
-                  let* α1 : ref i32.t := M.read left_val in
-                  let* α2 : ref i32.t := M.read right_val in
-                  let* α3 : never.t :=
-                    M.call
-                      (core.panicking.assert_failed
-                        α0
-                        α1
-                        α2
-                        core.option.Option.None) in
-                  M.alloc α3 in
-                let* α0 : M.Val unit := M.alloc tt in
+                let* α0 : core.panicking.AssertKind.t := M.read kind in
+                let* α1 : ref i32.t := M.read left_val in
+                let* α2 : ref i32.t := M.read right_val in
+                let* α3 : never.t :=
+                  M.call
+                    (core.panicking.assert_failed
+                      α0
+                      α1
+                      α2
+                      core.option.Option.None) in
+                let* α0 : M.Val never.t := M.alloc α3 in
                 let* α1 := M.read α0 in
                 let* α2 : unit := never_to_any α1 in
                 M.alloc α2
@@ -189,19 +185,17 @@ Definition test_add : M unit :=
             if α5 then
               let* kind : M.Val core.panicking.AssertKind.t :=
                 M.alloc core.panicking.AssertKind.Eq in
-              let* _ : M.Val never.t :=
-                let* α0 : core.panicking.AssertKind.t := M.read kind in
-                let* α1 : ref i32.t := M.read left_val in
-                let* α2 : ref i32.t := M.read right_val in
-                let* α3 : never.t :=
-                  M.call
-                    (core.panicking.assert_failed
-                      α0
-                      α1
-                      α2
-                      core.option.Option.None) in
-                M.alloc α3 in
-              let* α0 : M.Val unit := M.alloc tt in
+              let* α0 : core.panicking.AssertKind.t := M.read kind in
+              let* α1 : ref i32.t := M.read left_val in
+              let* α2 : ref i32.t := M.read right_val in
+              let* α3 : never.t :=
+                M.call
+                  (core.panicking.assert_failed
+                    α0
+                    α1
+                    α2
+                    core.option.Option.None) in
+              let* α0 : M.Val never.t := M.alloc α3 in
               let* α1 := M.read α0 in
               let* α2 : unit := never_to_any α1 in
               M.alloc α2
@@ -252,19 +246,17 @@ Definition test_bad_add : M unit :=
             if α5 then
               let* kind : M.Val core.panicking.AssertKind.t :=
                 M.alloc core.panicking.AssertKind.Eq in
-              let* _ : M.Val never.t :=
-                let* α0 : core.panicking.AssertKind.t := M.read kind in
-                let* α1 : ref i32.t := M.read left_val in
-                let* α2 : ref i32.t := M.read right_val in
-                let* α3 : never.t :=
-                  M.call
-                    (core.panicking.assert_failed
-                      α0
-                      α1
-                      α2
-                      core.option.Option.None) in
-                M.alloc α3 in
-              let* α0 : M.Val unit := M.alloc tt in
+              let* α0 : core.panicking.AssertKind.t := M.read kind in
+              let* α1 : ref i32.t := M.read left_val in
+              let* α2 : ref i32.t := M.read right_val in
+              let* α3 : never.t :=
+                M.call
+                  (core.panicking.assert_failed
+                    α0
+                    α1
+                    α2
+                    core.option.Option.None) in
+              let* α0 : M.Val never.t := M.alloc α3 in
               let* α1 := M.read α0 in
               let* α2 : unit := never_to_any α1 in
               M.alloc α2

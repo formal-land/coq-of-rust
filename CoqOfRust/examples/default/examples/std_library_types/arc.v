@@ -24,10 +24,11 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* apple : M.Val (alloc.sync.Arc.t (ref str.t)) :=
+  let* apple : M.Val (alloc.sync.Arc.t (ref str.t) alloc.alloc.Global.t) :=
     let* α0 : ref str.t := M.read (mk_str "the same apple") in
-    let* α1 : alloc.sync.Arc.t (ref str.t) :=
-      M.call ((alloc.sync.Arc.t (ref str.t))::["new"] α0) in
+    let* α1 : alloc.sync.Arc.t (ref str.t) alloc.alloc.Global.t :=
+      M.call
+        ((alloc.sync.Arc.t (ref str.t) alloc.alloc.Global.t)::["new"] α0) in
     M.alloc α1 in
   let* _ : M.Val unit :=
     let* α0 : _ :=
@@ -78,13 +79,23 @@ Definition main : M unit :=
                       match α0 with
                       | core.option.Option.Some _ =>
                         let γ0_0 := core.option.Option.Get_Some_0 γ in
-                        let* apple : M.Val (alloc.sync.Arc.t (ref str.t)) :=
+                        let* apple :
+                            M.Val
+                              (alloc.sync.Arc.t
+                                (ref str.t)
+                                alloc.alloc.Global.t) :=
                           let* α0 : _ :=
                             ltac:(M.get_method (fun ℐ =>
                               core.clone.Clone.clone
-                                (Self := alloc.sync.Arc.t (ref str.t))
+                                (Self :=
+                                  alloc.sync.Arc.t
+                                    (ref str.t)
+                                    alloc.alloc.Global.t)
                                 (Trait := ℐ))) in
-                          let* α1 : alloc.sync.Arc.t (ref str.t) :=
+                          let* α1 :
+                              alloc.sync.Arc.t
+                                (ref str.t)
+                                alloc.alloc.Global.t :=
                             M.call (α0 (borrow apple)) in
                           M.alloc α1 in
                         let* _ : M.Val (std.thread.JoinHandle.t unit) :=

@@ -917,20 +917,18 @@ Section Impl_erc1155_Contract_t.
         let* α3 : M.Val bool.t := M.alloc (UnOp.not (BinOp.Pure.le α0 α2)) in
         let* α4 : bool.t := M.read (use α3) in
         if α4 then
-          let* _ : M.Val never.t :=
-            let* α0 : _ :=
-              ltac:(M.get_method (fun ℐ =>
-                core.convert.Into.into
-                  (Self := erc1155.Error.t)
-                  (T := erc1155.Error.t)
-                  (Trait := ℐ))) in
-            let* α1 : erc1155.Error.t :=
-              M.call (α0 erc1155.Error.UnexistentToken) in
-            return_ (core.result.Result.Err α1) in
-          let* α0 : M.Val unit := M.alloc tt in
-          let* α1 := M.read α0 in
-          let* α2 : unit := never_to_any α1 in
-          M.alloc α2
+          let* α0 : _ :=
+            ltac:(M.get_method (fun ℐ =>
+              core.convert.Into.into
+                (Self := erc1155.Error.t)
+                (T := erc1155.Error.t)
+                (Trait := ℐ))) in
+          let* α1 : erc1155.Error.t :=
+            M.call (α0 erc1155.Error.UnexistentToken) in
+          let* α2 : M.Val never.t := return_ (core.result.Result.Err α1) in
+          let* α3 := M.read α2 in
+          let* α4 : unit := never_to_any α3 in
+          M.alloc α4
         else
           M.alloc tt in
       let* caller : M.Val erc1155.AccountId.t :=
@@ -1365,20 +1363,18 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
             let* α4 : M.Val bool.t := M.alloc (UnOp.not α3) in
             let* α5 : bool.t := M.read (use α4) in
             if α5 then
-              let* _ : M.Val never.t :=
-                let* α0 : _ :=
-                  ltac:(M.get_method (fun ℐ =>
-                    core.convert.Into.into
-                      (Self := erc1155.Error.t)
-                      (T := erc1155.Error.t)
-                      (Trait := ℐ))) in
-                let* α1 : erc1155.Error.t :=
-                  M.call (α0 erc1155.Error.NotApproved) in
-                return_ (core.result.Result.Err α1) in
-              let* α0 : M.Val unit := M.alloc tt in
-              let* α1 := M.read α0 in
-              let* α2 : unit := never_to_any α1 in
-              M.alloc α2
+              let* α0 : _ :=
+                ltac:(M.get_method (fun ℐ =>
+                  core.convert.Into.into
+                    (Self := erc1155.Error.t)
+                    (T := erc1155.Error.t)
+                    (Trait := ℐ))) in
+              let* α1 : erc1155.Error.t :=
+                M.call (α0 erc1155.Error.NotApproved) in
+              let* α2 : M.Val never.t := return_ (core.result.Result.Err α1) in
+              let* α3 := M.read α2 in
+              let* α4 : unit := never_to_any α3 in
+              M.alloc α4
             else
               M.alloc tt in
           M.alloc tt
@@ -1397,20 +1393,18 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
         let* α4 : M.Val bool.t := M.alloc (UnOp.not α3) in
         let* α5 : bool.t := M.read (use α4) in
         if α5 then
-          let* _ : M.Val never.t :=
-            let* α0 : _ :=
-              ltac:(M.get_method (fun ℐ =>
-                core.convert.Into.into
-                  (Self := erc1155.Error.t)
-                  (T := erc1155.Error.t)
-                  (Trait := ℐ))) in
-            let* α1 : erc1155.Error.t :=
-              M.call (α0 erc1155.Error.ZeroAddressTransfer) in
-            return_ (core.result.Result.Err α1) in
-          let* α0 : M.Val unit := M.alloc tt in
-          let* α1 := M.read α0 in
-          let* α2 : unit := never_to_any α1 in
-          M.alloc α2
+          let* α0 : _ :=
+            ltac:(M.get_method (fun ℐ =>
+              core.convert.Into.into
+                (Self := erc1155.Error.t)
+                (T := erc1155.Error.t)
+                (Trait := ℐ))) in
+          let* α1 : erc1155.Error.t :=
+            M.call (α0 erc1155.Error.ZeroAddressTransfer) in
+          let* α2 : M.Val never.t := return_ (core.result.Result.Err α1) in
+          let* α3 := M.read α2 in
+          let* α4 : unit := never_to_any α3 in
+          M.alloc α4
         else
           M.alloc tt in
       let* balance : M.Val u128.t :=
@@ -1425,20 +1419,18 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
         let* α2 : M.Val bool.t := M.alloc (UnOp.not (BinOp.Pure.ge α0 α1)) in
         let* α3 : bool.t := M.read (use α2) in
         if α3 then
-          let* _ : M.Val never.t :=
-            let* α0 : _ :=
-              ltac:(M.get_method (fun ℐ =>
-                core.convert.Into.into
-                  (Self := erc1155.Error.t)
-                  (T := erc1155.Error.t)
-                  (Trait := ℐ))) in
-            let* α1 : erc1155.Error.t :=
-              M.call (α0 erc1155.Error.InsufficientBalance) in
-            return_ (core.result.Result.Err α1) in
-          let* α0 : M.Val unit := M.alloc tt in
-          let* α1 := M.read α0 in
-          let* α2 : unit := never_to_any α1 in
-          M.alloc α2
+          let* α0 : _ :=
+            ltac:(M.get_method (fun ℐ =>
+              core.convert.Into.into
+                (Self := erc1155.Error.t)
+                (T := erc1155.Error.t)
+                (Trait := ℐ))) in
+          let* α1 : erc1155.Error.t :=
+            M.call (α0 erc1155.Error.InsufficientBalance) in
+          let* α2 : M.Val never.t := return_ (core.result.Result.Err α1) in
+          let* α3 := M.read α2 in
+          let* α4 : unit := never_to_any α3 in
+          M.alloc α4
         else
           M.alloc tt in
       let* _ : M.Val unit :=
@@ -1562,20 +1554,18 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
             let* α4 : M.Val bool.t := M.alloc (UnOp.not α3) in
             let* α5 : bool.t := M.read (use α4) in
             if α5 then
-              let* _ : M.Val never.t :=
-                let* α0 : _ :=
-                  ltac:(M.get_method (fun ℐ =>
-                    core.convert.Into.into
-                      (Self := erc1155.Error.t)
-                      (T := erc1155.Error.t)
-                      (Trait := ℐ))) in
-                let* α1 : erc1155.Error.t :=
-                  M.call (α0 erc1155.Error.NotApproved) in
-                return_ (core.result.Result.Err α1) in
-              let* α0 : M.Val unit := M.alloc tt in
-              let* α1 := M.read α0 in
-              let* α2 : unit := never_to_any α1 in
-              M.alloc α2
+              let* α0 : _ :=
+                ltac:(M.get_method (fun ℐ =>
+                  core.convert.Into.into
+                    (Self := erc1155.Error.t)
+                    (T := erc1155.Error.t)
+                    (Trait := ℐ))) in
+              let* α1 : erc1155.Error.t :=
+                M.call (α0 erc1155.Error.NotApproved) in
+              let* α2 : M.Val never.t := return_ (core.result.Result.Err α1) in
+              let* α3 := M.read α2 in
+              let* α4 : unit := never_to_any α3 in
+              M.alloc α4
             else
               M.alloc tt in
           M.alloc tt
@@ -1594,20 +1584,18 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
         let* α4 : M.Val bool.t := M.alloc (UnOp.not α3) in
         let* α5 : bool.t := M.read (use α4) in
         if α5 then
-          let* _ : M.Val never.t :=
-            let* α0 : _ :=
-              ltac:(M.get_method (fun ℐ =>
-                core.convert.Into.into
-                  (Self := erc1155.Error.t)
-                  (T := erc1155.Error.t)
-                  (Trait := ℐ))) in
-            let* α1 : erc1155.Error.t :=
-              M.call (α0 erc1155.Error.ZeroAddressTransfer) in
-            return_ (core.result.Result.Err α1) in
-          let* α0 : M.Val unit := M.alloc tt in
-          let* α1 := M.read α0 in
-          let* α2 : unit := never_to_any α1 in
-          M.alloc α2
+          let* α0 : _ :=
+            ltac:(M.get_method (fun ℐ =>
+              core.convert.Into.into
+                (Self := erc1155.Error.t)
+                (T := erc1155.Error.t)
+                (Trait := ℐ))) in
+          let* α1 : erc1155.Error.t :=
+            M.call (α0 erc1155.Error.ZeroAddressTransfer) in
+          let* α2 : M.Val never.t := return_ (core.result.Result.Err α1) in
+          let* α3 := M.read α2 in
+          let* α4 : unit := never_to_any α3 in
+          M.alloc α4
         else
           M.alloc tt in
       let* _ : M.Val unit :=
@@ -1618,20 +1606,18 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
         let* α1 : M.Val bool.t := M.alloc (UnOp.not (UnOp.not α0)) in
         let* α2 : bool.t := M.read (use α1) in
         if α2 then
-          let* _ : M.Val never.t :=
-            let* α0 : _ :=
-              ltac:(M.get_method (fun ℐ =>
-                core.convert.Into.into
-                  (Self := erc1155.Error.t)
-                  (T := erc1155.Error.t)
-                  (Trait := ℐ))) in
-            let* α1 : erc1155.Error.t :=
-              M.call (α0 erc1155.Error.BatchTransferMismatch) in
-            return_ (core.result.Result.Err α1) in
-          let* α0 : M.Val unit := M.alloc tt in
-          let* α1 := M.read α0 in
-          let* α2 : unit := never_to_any α1 in
-          M.alloc α2
+          let* α0 : _ :=
+            ltac:(M.get_method (fun ℐ =>
+              core.convert.Into.into
+                (Self := erc1155.Error.t)
+                (T := erc1155.Error.t)
+                (Trait := ℐ))) in
+          let* α1 : erc1155.Error.t :=
+            M.call (α0 erc1155.Error.BatchTransferMismatch) in
+          let* α2 : M.Val never.t := return_ (core.result.Result.Err α1) in
+          let* α3 := M.read α2 in
+          let* α4 : unit := never_to_any α3 in
+          M.alloc α4
         else
           M.alloc tt in
       let* _ : M.Val unit :=
@@ -1646,20 +1632,18 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
         let* α2 : M.Val bool.t := M.alloc (UnOp.not (BinOp.Pure.eq α0 α1)) in
         let* α3 : bool.t := M.read (use α2) in
         if α3 then
-          let* _ : M.Val never.t :=
-            let* α0 : _ :=
-              ltac:(M.get_method (fun ℐ =>
-                core.convert.Into.into
-                  (Self := erc1155.Error.t)
-                  (T := erc1155.Error.t)
-                  (Trait := ℐ))) in
-            let* α1 : erc1155.Error.t :=
-              M.call (α0 erc1155.Error.BatchTransferMismatch) in
-            return_ (core.result.Result.Err α1) in
-          let* α0 : M.Val unit := M.alloc tt in
-          let* α1 := M.read α0 in
-          let* α2 : unit := never_to_any α1 in
-          M.alloc α2
+          let* α0 : _ :=
+            ltac:(M.get_method (fun ℐ =>
+              core.convert.Into.into
+                (Self := erc1155.Error.t)
+                (T := erc1155.Error.t)
+                (Trait := ℐ))) in
+          let* α1 : erc1155.Error.t :=
+            M.call (α0 erc1155.Error.BatchTransferMismatch) in
+          let* α2 : M.Val never.t := return_ (core.result.Result.Err α1) in
+          let* α3 := M.read α2 in
+          let* α4 : unit := never_to_any α3 in
+          M.alloc α4
         else
           M.alloc tt in
       let* transfers :
@@ -1800,22 +1784,20 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                                   M.alloc (UnOp.not (BinOp.Pure.ge α0 α1)) in
                                 let* α3 : bool.t := M.read (use α2) in
                                 if α3 then
-                                  let* _ : M.Val never.t :=
-                                    let* α0 : _ :=
-                                      ltac:(M.get_method (fun ℐ =>
-                                        core.convert.Into.into
-                                          (Self := erc1155.Error.t)
-                                          (T := erc1155.Error.t)
-                                          (Trait := ℐ))) in
-                                    let* α1 : erc1155.Error.t :=
-                                      M.call
-                                        (α0
-                                          erc1155.Error.InsufficientBalance) in
+                                  let* α0 : _ :=
+                                    ltac:(M.get_method (fun ℐ =>
+                                      core.convert.Into.into
+                                        (Self := erc1155.Error.t)
+                                        (T := erc1155.Error.t)
+                                        (Trait := ℐ))) in
+                                  let* α1 : erc1155.Error.t :=
+                                    M.call
+                                      (α0 erc1155.Error.InsufficientBalance) in
+                                  let* α2 : M.Val never.t :=
                                     return_ (core.result.Result.Err α1) in
-                                  let* α0 : M.Val unit := M.alloc tt in
-                                  let* α1 := M.read α0 in
-                                  let* α2 : unit := never_to_any α1 in
-                                  M.alloc α2
+                                  let* α3 := M.read α2 in
+                                  let* α4 : unit := never_to_any α3 in
+                                  M.alloc α4
                                 else
                                   M.alloc tt in
                               M.alloc tt
@@ -2214,20 +2196,17 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
         let* α2 : M.Val bool.t := M.alloc (UnOp.not α1) in
         let* α3 : bool.t := M.read (use α2) in
         if α3 then
-          let* _ : M.Val never.t :=
-            let* α0 : _ :=
-              ltac:(M.get_method (fun ℐ =>
-                core.convert.Into.into
-                  (Self := erc1155.Error.t)
-                  (T := erc1155.Error.t)
-                  (Trait := ℐ))) in
-            let* α1 : erc1155.Error.t :=
-              M.call (α0 erc1155.Error.SelfApproval) in
-            return_ (core.result.Result.Err α1) in
-          let* α0 : M.Val unit := M.alloc tt in
-          let* α1 := M.read α0 in
-          let* α2 : unit := never_to_any α1 in
-          M.alloc α2
+          let* α0 : _ :=
+            ltac:(M.get_method (fun ℐ =>
+              core.convert.Into.into
+                (Self := erc1155.Error.t)
+                (T := erc1155.Error.t)
+                (Trait := ℐ))) in
+          let* α1 : erc1155.Error.t := M.call (α0 erc1155.Error.SelfApproval) in
+          let* α2 : M.Val never.t := return_ (core.result.Result.Err α1) in
+          let* α3 := M.read α2 in
+          let* α4 : unit := never_to_any α3 in
+          M.alloc α4
         else
           M.alloc tt in
       let* _ : M.Val unit :=
@@ -2349,15 +2328,17 @@ Section Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract_t.
     let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
     let* α3 : ref (slice (ref str.t)) :=
       M.read (pointer_coercion "Unsize" α2) in
-    let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ ] in
-    let* α5 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-      M.alloc (borrow α4) in
-    let* α6 : ref (slice core.fmt.rt.Argument.t) :=
-      M.read (pointer_coercion "Unsize" α5) in
-    let* α7 : core.fmt.Arguments.t :=
-      M.call (core.fmt.Arguments.t::["new_v1"] α3 α6) in
-    let* α8 : never.t := M.call (core.panicking.panic_fmt α7) in
-    never_to_any α8.
+    let* α4 : array core.fmt.rt.Argument.t :=
+      M.call core.fmt.rt.Argument.t::["none"] in
+    let* α5 : M.Val (array core.fmt.rt.Argument.t) := M.alloc α4 in
+    let* α6 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+      M.alloc (borrow α5) in
+    let* α7 : ref (slice core.fmt.rt.Argument.t) :=
+      M.read (pointer_coercion "Unsize" α6) in
+    let* α8 : core.fmt.Arguments.t :=
+      M.call (core.fmt.Arguments.t::["new_v1"] α3 α7) in
+    let* α9 : never.t := M.call (core.panicking.panic_fmt α8) in
+    never_to_any α9.
   
   Global Instance AssociatedFunction_on_received :
     Notations.DoubleColon Self "on_received" := {
@@ -2411,15 +2392,17 @@ Section Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract_t.
     let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
     let* α3 : ref (slice (ref str.t)) :=
       M.read (pointer_coercion "Unsize" α2) in
-    let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ ] in
-    let* α5 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-      M.alloc (borrow α4) in
-    let* α6 : ref (slice core.fmt.rt.Argument.t) :=
-      M.read (pointer_coercion "Unsize" α5) in
-    let* α7 : core.fmt.Arguments.t :=
-      M.call (core.fmt.Arguments.t::["new_v1"] α3 α6) in
-    let* α8 : never.t := M.call (core.panicking.panic_fmt α7) in
-    never_to_any α8.
+    let* α4 : array core.fmt.rt.Argument.t :=
+      M.call core.fmt.rt.Argument.t::["none"] in
+    let* α5 : M.Val (array core.fmt.rt.Argument.t) := M.alloc α4 in
+    let* α6 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+      M.alloc (borrow α5) in
+    let* α7 : ref (slice core.fmt.rt.Argument.t) :=
+      M.read (pointer_coercion "Unsize" α6) in
+    let* α8 : core.fmt.Arguments.t :=
+      M.call (core.fmt.Arguments.t::["new_v1"] α3 α7) in
+    let* α9 : never.t := M.call (core.panicking.panic_fmt α8) in
+    never_to_any α9.
   
   Global Instance AssociatedFunction_on_batch_received :
     Notations.DoubleColon Self "on_batch_received" := {

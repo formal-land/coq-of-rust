@@ -30,22 +30,19 @@ Definition read_lines
           ((core.result.Result.t std.fs.File.t std.io.error.Error.t)::["unwrap"]
             α1) in
       M.alloc α2 in
-    let* _ : M.Val never.t :=
-      let* α0 : _ :=
-        ltac:(M.get_method (fun ℐ =>
-          std.io.BufRead.lines
-            (Self := std.io.buffered.bufreader.BufReader.t std.fs.File.t)
-            (Trait := ℐ))) in
-      let* α1 : std.fs.File.t := M.read file in
-      let* α2 : std.io.buffered.bufreader.BufReader.t std.fs.File.t :=
-        M.call
-          ((std.io.buffered.bufreader.BufReader.t std.fs.File.t)::["new"] α1) in
-      let* α3 :
-          std.io.Lines.t
-            (std.io.buffered.bufreader.BufReader.t std.fs.File.t) :=
-        M.call (α0 α2) in
-      return_ α3 in
-    let* α0 : M.Val unit := M.alloc tt in
+    let* α0 : _ :=
+      ltac:(M.get_method (fun ℐ =>
+        std.io.BufRead.lines
+          (Self := std.io.buffered.bufreader.BufReader.t std.fs.File.t)
+          (Trait := ℐ))) in
+    let* α1 : std.fs.File.t := M.read file in
+    let* α2 : std.io.buffered.bufreader.BufReader.t std.fs.File.t :=
+      M.call
+        ((std.io.buffered.bufreader.BufReader.t std.fs.File.t)::["new"] α1) in
+    let* α3 :
+        std.io.Lines.t (std.io.buffered.bufreader.BufReader.t std.fs.File.t) :=
+      M.call (α0 α2) in
+    let* α0 : M.Val never.t := return_ α3 in
     let* α1 := M.read α0 in
     never_to_any α1).
 

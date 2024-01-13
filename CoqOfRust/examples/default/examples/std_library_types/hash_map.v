@@ -85,17 +85,17 @@ Definition main : M unit :=
         (std.collections.hash.map.HashMap.t
           (ref str.t)
           (ref str.t)
-          std.collections.hash.map.RandomState.t) :=
+          std.hash.random.RandomState.t) :=
     let* α0 :
         std.collections.hash.map.HashMap.t
           (ref str.t)
           (ref str.t)
-          std.collections.hash.map.RandomState.t :=
+          std.hash.random.RandomState.t :=
       M.call
         (std.collections.hash.map.HashMap.t
             (ref str.t)
             (ref str.t)
-            std.collections.hash.map.RandomState.t)::["new"] in
+            std.hash.random.RandomState.t)::["new"] in
     M.alloc α0 in
   let* _ : M.Val (core.option.Option.t (ref str.t)) :=
     let* α0 : ref str.t := M.read (mk_str "Daniel") in
@@ -105,7 +105,7 @@ Definition main : M unit :=
         ((std.collections.hash.map.HashMap.t
               (ref str.t)
               (ref str.t)
-              std.collections.hash.map.RandomState.t)::["insert"]
+              std.hash.random.RandomState.t)::["insert"]
           (borrow_mut contacts)
           α0
           α1) in
@@ -118,7 +118,7 @@ Definition main : M unit :=
         ((std.collections.hash.map.HashMap.t
               (ref str.t)
               (ref str.t)
-              std.collections.hash.map.RandomState.t)::["insert"]
+              std.hash.random.RandomState.t)::["insert"]
           (borrow_mut contacts)
           α0
           α1) in
@@ -131,7 +131,7 @@ Definition main : M unit :=
         ((std.collections.hash.map.HashMap.t
               (ref str.t)
               (ref str.t)
-              std.collections.hash.map.RandomState.t)::["insert"]
+              std.hash.random.RandomState.t)::["insert"]
           (borrow_mut contacts)
           α0
           α1) in
@@ -144,7 +144,7 @@ Definition main : M unit :=
         ((std.collections.hash.map.HashMap.t
               (ref str.t)
               (ref str.t)
-              std.collections.hash.map.RandomState.t)::["insert"]
+              std.hash.random.RandomState.t)::["insert"]
           (borrow_mut contacts)
           α0
           α1) in
@@ -155,7 +155,7 @@ Definition main : M unit :=
         ((std.collections.hash.map.HashMap.t
               (ref str.t)
               (ref str.t)
-              std.collections.hash.map.RandomState.t)::["get"]
+              std.hash.random.RandomState.t)::["get"]
           (borrow contacts)
           (borrow (mk_str "Daniel"))) in
     let* α1 : M.Val (core.option.Option.t (ref (ref str.t))) := M.alloc α0 in
@@ -223,7 +223,7 @@ Definition main : M unit :=
         ((std.collections.hash.map.HashMap.t
               (ref str.t)
               (ref str.t)
-              std.collections.hash.map.RandomState.t)::["insert"]
+              std.hash.random.RandomState.t)::["insert"]
           (borrow_mut contacts)
           α0
           α1) in
@@ -234,7 +234,7 @@ Definition main : M unit :=
         ((std.collections.hash.map.HashMap.t
               (ref str.t)
               (ref str.t)
-              std.collections.hash.map.RandomState.t)::["get"]
+              std.hash.random.RandomState.t)::["get"]
           (borrow contacts)
           (borrow (mk_str "Ashley"))) in
     let* α1 : M.Val (core.option.Option.t (ref (ref str.t))) := M.alloc α0 in
@@ -300,7 +300,7 @@ Definition main : M unit :=
         ((std.collections.hash.map.HashMap.t
               (ref str.t)
               (ref str.t)
-              std.collections.hash.map.RandomState.t)::["remove"]
+              std.hash.random.RandomState.t)::["remove"]
           (borrow_mut contacts)
           (borrow (mk_str "Ashley"))) in
     M.alloc α0 in
@@ -314,7 +314,7 @@ Definition main : M unit :=
       ((std.collections.hash.map.HashMap.t
             (ref str.t)
             (ref str.t)
-            std.collections.hash.map.RandomState.t)::["iter"]
+            std.hash.random.RandomState.t)::["iter"]
         (borrow contacts)) in
   let* α2 : std.collections.hash.map.Iter.t (ref str.t) (ref str.t) :=
     M.call (α0 α1) in

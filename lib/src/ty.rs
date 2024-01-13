@@ -246,7 +246,7 @@ pub(crate) fn compile_type(env: &Env, ty: &Ty) -> Rc<CoqType> {
                                         GenericBound::Trait(p_trait_ref, _) => {
                                             Some(compile_path(env, p_trait_ref.trait_ref.path))
                                         }
-                                        GenericBound::LangItemTrait(..) => {
+                                        GenericBound::LangItemTrait{..} => {
                                             env.tcx
                                                 .sess
                                                 .struct_span_warn(
@@ -258,7 +258,7 @@ pub(crate) fn compile_type(env: &Env, ty: &Ty) -> Rc<CoqType> {
                                             None
                                         }
                                         // we ignore lifetimes
-                                        GenericBound::Outlives(..) => None
+                                        GenericBound::Outlives(..) => None,
                                     })
                                     .collect(),
                             ))

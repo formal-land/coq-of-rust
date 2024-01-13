@@ -644,9 +644,8 @@ Section Impl_erc20_Erc20_t_2.
         let* α2 : M.Val bool.t := M.alloc (BinOp.Pure.lt α0 α1) in
         let* α3 : bool.t := M.read (use α2) in
         if α3 then
-          let* _ : M.Val never.t :=
+          let* α0 : M.Val never.t :=
             return_ (core.result.Result.Err erc20.Error.InsufficientBalance) in
-          let* α0 : M.Val unit := M.alloc tt in
           let* α1 := M.read α0 in
           let* α2 : unit := never_to_any α1 in
           M.alloc α2
@@ -868,10 +867,9 @@ Section Impl_erc20_Erc20_t_2.
         let* α2 : M.Val bool.t := M.alloc (BinOp.Pure.lt α0 α1) in
         let* α3 : bool.t := M.read (use α2) in
         if α3 then
-          let* _ : M.Val never.t :=
+          let* α0 : M.Val never.t :=
             return_
               (core.result.Result.Err erc20.Error.InsufficientAllowance) in
-          let* α0 : M.Val unit := M.alloc tt in
           let* α1 := M.read α0 in
           let* α2 : unit := never_to_any α1 in
           M.alloc α2

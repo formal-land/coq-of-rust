@@ -314,7 +314,7 @@ Definition try_logon
         (std.collections.hash.map.HashMap.t
           hash_map_alternate_or_custom_key_types.Account.t
           hash_map_alternate_or_custom_key_types.AccountInfo.t
-          std.collections.hash.map.RandomState.t) :=
+          std.hash.random.RandomState.t) :=
     M.read accounts in
   let* α1 :
       core.option.Option.t
@@ -323,7 +323,7 @@ Definition try_logon
       ((std.collections.hash.map.HashMap.t
             hash_map_alternate_or_custom_key_types.Account.t
             hash_map_alternate_or_custom_key_types.AccountInfo.t
-            std.collections.hash.map.RandomState.t)::["get"]
+            std.hash.random.RandomState.t)::["get"]
         α0
         (borrow logon)) in
   let* α2 :
@@ -464,17 +464,17 @@ Definition main : M unit :=
         (std.collections.hash.map.HashMap.t
           hash_map_alternate_or_custom_key_types.Account.t
           hash_map_alternate_or_custom_key_types.AccountInfo.t
-          std.collections.hash.map.RandomState.t) :=
+          std.hash.random.RandomState.t) :=
     let* α0 :
         std.collections.hash.map.HashMap.t
           hash_map_alternate_or_custom_key_types.Account.t
           hash_map_alternate_or_custom_key_types.AccountInfo.t
-          std.collections.hash.map.RandomState.t :=
+          std.hash.random.RandomState.t :=
       M.call
         (std.collections.hash.map.HashMap.t
             hash_map_alternate_or_custom_key_types.Account.t
             hash_map_alternate_or_custom_key_types.AccountInfo.t
-            std.collections.hash.map.RandomState.t)::["new"] in
+            std.hash.random.RandomState.t)::["new"] in
     M.alloc α0 in
   let* account : M.Val hash_map_alternate_or_custom_key_types.Account.t :=
     let* α0 : ref str.t := M.read (mk_str "j.everyman") in
@@ -508,7 +508,7 @@ Definition main : M unit :=
         ((std.collections.hash.map.HashMap.t
               hash_map_alternate_or_custom_key_types.Account.t
               hash_map_alternate_or_custom_key_types.AccountInfo.t
-              std.collections.hash.map.RandomState.t)::["insert"]
+              std.hash.random.RandomState.t)::["insert"]
           (borrow_mut accounts)
           α0
           α1) in

@@ -2,7 +2,7 @@ use crate::env::*;
 use crate::path::*;
 use crate::ty::*;
 use rustc_middle::ty::GenericArgKind;
-use rustc_type_ir::sty::TyKind;
+use rustc_type_ir::TyKind;
 use std::rc::Rc;
 
 fn compile_poly_fn_sig<'a>(env: &Env<'a>, sig: &rustc_middle::ty::PolyFnSig<'a>) -> Rc<CoqType> {

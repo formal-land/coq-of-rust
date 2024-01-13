@@ -47,7 +47,7 @@ Definition main : M unit :=
       M.Val
         (std.collections.hash.set.HashSet.t
           i32.t
-          std.collections.hash.map.RandomState.t) :=
+          std.hash.random.RandomState.t) :=
     let* α0 : _ :=
       ltac:(M.get_method (fun ℐ =>
         core.iter.traits.iterator.Iterator.collect
@@ -55,7 +55,7 @@ Definition main : M unit :=
           (B :=
             std.collections.hash.set.HashSet.t
               i32.t
-              std.collections.hash.map.RandomState.t)
+              std.hash.random.RandomState.t)
           (Trait := ℐ))) in
     let* α1 : _ :=
       ltac:(M.get_method (fun ℐ =>
@@ -80,14 +80,14 @@ Definition main : M unit :=
     let* α7 :
         std.collections.hash.set.HashSet.t
           i32.t
-          std.collections.hash.map.RandomState.t :=
+          std.hash.random.RandomState.t :=
       M.call (α0 α6) in
     M.alloc α7 in
   let* b :
       M.Val
         (std.collections.hash.set.HashSet.t
           i32.t
-          std.collections.hash.map.RandomState.t) :=
+          std.hash.random.RandomState.t) :=
     let* α0 : _ :=
       ltac:(M.get_method (fun ℐ =>
         core.iter.traits.iterator.Iterator.collect
@@ -95,7 +95,7 @@ Definition main : M unit :=
           (B :=
             std.collections.hash.set.HashSet.t
               i32.t
-              std.collections.hash.map.RandomState.t)
+              std.hash.random.RandomState.t)
           (Trait := ℐ))) in
     let* α1 : _ :=
       ltac:(M.get_method (fun ℐ =>
@@ -120,7 +120,7 @@ Definition main : M unit :=
     let* α7 :
         std.collections.hash.set.HashSet.t
           i32.t
-          std.collections.hash.map.RandomState.t :=
+          std.hash.random.RandomState.t :=
       M.call (α0 α6) in
     M.alloc α7 in
   let* _ : M.Val unit :=
@@ -128,7 +128,7 @@ Definition main : M unit :=
       M.call
         ((std.collections.hash.set.HashSet.t
               i32.t
-              std.collections.hash.map.RandomState.t)::["insert"]
+              std.hash.random.RandomState.t)::["insert"]
           (borrow_mut a)
           ((Integer.of_Z 4) : i32.t)) in
     let* α1 : M.Val bool.t := M.alloc (UnOp.not α0) in
@@ -146,7 +146,7 @@ Definition main : M unit :=
       M.call
         ((std.collections.hash.set.HashSet.t
               i32.t
-              std.collections.hash.map.RandomState.t)::["contains"]
+              std.hash.random.RandomState.t)::["contains"]
           (borrow a)
           (borrow α0)) in
     let* α2 : M.Val bool.t := M.alloc (UnOp.not α1) in
@@ -164,7 +164,7 @@ Definition main : M unit :=
       M.call
         ((std.collections.hash.set.HashSet.t
               i32.t
-              std.collections.hash.map.RandomState.t)::["insert"]
+              std.hash.random.RandomState.t)::["insert"]
           (borrow_mut b)
           ((Integer.of_Z 5) : i32.t)) in
     M.alloc α0 in
@@ -225,17 +225,17 @@ Definition main : M unit :=
             (Self :=
               std.collections.hash.set.Union.t
                 i32.t
-                std.collections.hash.map.RandomState.t)
+                std.hash.random.RandomState.t)
             (B := alloc.vec.Vec.t (ref i32.t) alloc.alloc.Global.t)
             (Trait := ℐ))) in
       let* α6 :
           std.collections.hash.set.Union.t
             i32.t
-            std.collections.hash.map.RandomState.t :=
+            std.hash.random.RandomState.t :=
         M.call
           ((std.collections.hash.set.HashSet.t
                 i32.t
-                std.collections.hash.map.RandomState.t)::["union"]
+                std.hash.random.RandomState.t)::["union"]
             (borrow a)
             (borrow b)) in
       let* α7 : alloc.vec.Vec.t (ref i32.t) alloc.alloc.Global.t :=
@@ -269,17 +269,17 @@ Definition main : M unit :=
             (Self :=
               std.collections.hash.set.Difference.t
                 i32.t
-                std.collections.hash.map.RandomState.t)
+                std.hash.random.RandomState.t)
             (B := alloc.vec.Vec.t (ref i32.t) alloc.alloc.Global.t)
             (Trait := ℐ))) in
       let* α6 :
           std.collections.hash.set.Difference.t
             i32.t
-            std.collections.hash.map.RandomState.t :=
+            std.hash.random.RandomState.t :=
         M.call
           ((std.collections.hash.set.HashSet.t
                 i32.t
-                std.collections.hash.map.RandomState.t)::["difference"]
+                std.hash.random.RandomState.t)::["difference"]
             (borrow a)
             (borrow b)) in
       let* α7 : alloc.vec.Vec.t (ref i32.t) alloc.alloc.Global.t :=
@@ -313,17 +313,17 @@ Definition main : M unit :=
             (Self :=
               std.collections.hash.set.Intersection.t
                 i32.t
-                std.collections.hash.map.RandomState.t)
+                std.hash.random.RandomState.t)
             (B := alloc.vec.Vec.t (ref i32.t) alloc.alloc.Global.t)
             (Trait := ℐ))) in
       let* α6 :
           std.collections.hash.set.Intersection.t
             i32.t
-            std.collections.hash.map.RandomState.t :=
+            std.hash.random.RandomState.t :=
         M.call
           ((std.collections.hash.set.HashSet.t
                 i32.t
-                std.collections.hash.map.RandomState.t)::["intersection"]
+                std.hash.random.RandomState.t)::["intersection"]
             (borrow a)
             (borrow b)) in
       let* α7 : alloc.vec.Vec.t (ref i32.t) alloc.alloc.Global.t :=
@@ -357,17 +357,17 @@ Definition main : M unit :=
             (Self :=
               std.collections.hash.set.SymmetricDifference.t
                 i32.t
-                std.collections.hash.map.RandomState.t)
+                std.hash.random.RandomState.t)
             (B := alloc.vec.Vec.t (ref i32.t) alloc.alloc.Global.t)
             (Trait := ℐ))) in
       let* α6 :
           std.collections.hash.set.SymmetricDifference.t
             i32.t
-            std.collections.hash.map.RandomState.t :=
+            std.hash.random.RandomState.t :=
         M.call
           ((std.collections.hash.set.HashSet.t
                 i32.t
-                std.collections.hash.map.RandomState.t)::["symmetric_difference"]
+                std.hash.random.RandomState.t)::["symmetric_difference"]
             (borrow a)
             (borrow b)) in
       let* α7 : alloc.vec.Vec.t (ref i32.t) alloc.alloc.Global.t :=

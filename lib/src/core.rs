@@ -1,7 +1,9 @@
 use crate::top_level::*;
 use rustc_errors::registry;
-use rustc_session::config::{self, CheckCfg};
+use rustc_session::config;
 use std::path::PathBuf;
+use std::sync::atomic::AtomicBool;
+use std::sync::Arc;
 use std::{fs, path, process, str};
 use walkdir::WalkDir;
 
@@ -90,8 +92,8 @@ fn create_translation_to_coq(opts: &CliOptions) -> String {
         .unwrap();
     let sysroot = str::from_utf8(&out.stdout).unwrap().trim();
     let config = rustc_interface::Config {
-        crate_cfg: rustc_hash::FxHashSet::default(),
-        crate_check_cfg: CheckCfg::default(),
+        crate_cfg: vec![],
+        crate_check_cfg: vec![],
         file_loader: None,
         input: config::Input::File(input_file_name),
         lint_caps: rustc_hash::FxHashMap::default(),
@@ -109,6 +111,10 @@ fn create_translation_to_coq(opts: &CliOptions) -> String {
         parse_sess_created: None,
         register_lints: None,
         registry: registry::Registry::new(rustc_error_codes::DIAGNOSTICS),
+        expanded_args: vec![],
+        ice_file: None,
+        hash_untracked_state: None,
+        using_internal_features: Arc::new(AtomicBool::new(false)),
     };
     println!("Starting to translate {filename:?}...");
     let now = std::time::Instant::now();

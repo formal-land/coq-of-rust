@@ -121,8 +121,7 @@ Definition main : M unit :=
                           M.alloc (BinOp.Pure.ge α0 α1) in
                         let* α3 : bool.t := M.read (use α2) in
                         if α3 then
-                          let* _ : M.Val never.t := M.break in
-                          let* α0 : M.Val unit := M.alloc tt in
+                          let* α0 : M.Val never.t := M.break in
                           let* α1 := M.read α0 in
                           let* α2 : unit := never_to_any α1 in
                           M.alloc α2

@@ -589,20 +589,17 @@ Section Impl_subtle_ConstantTimeEq_for_slice_T.
         let* α3 : M.Val bool.t := M.alloc (BinOp.Pure.ne α0 α2) in
         let* α4 : bool.t := M.read (use α3) in
         if α4 then
-          let* _ : M.Val never.t :=
-            let* α0 : _ :=
-              ltac:(M.get_method (fun ℐ =>
-                core.convert.From.from
-                  (Self := subtle.Choice.t)
-                  (T := u8.t)
-                  (Trait := ℐ))) in
-            let* α1 : subtle.Choice.t :=
-              M.call (α0 ((Integer.of_Z 0) : u8.t)) in
-            return_ α1 in
-          let* α0 : M.Val unit := M.alloc tt in
-          let* α1 := M.read α0 in
-          let* α2 : unit := never_to_any α1 in
-          M.alloc α2
+          let* α0 : _ :=
+            ltac:(M.get_method (fun ℐ =>
+              core.convert.From.from
+                (Self := subtle.Choice.t)
+                (T := u8.t)
+                (Trait := ℐ))) in
+          let* α1 : subtle.Choice.t := M.call (α0 ((Integer.of_Z 0) : u8.t)) in
+          let* α2 : M.Val never.t := return_ α1 in
+          let* α3 := M.read α2 in
+          let* α4 : unit := never_to_any α3 in
+          M.alloc α4
         else
           M.alloc tt in
       let* x : M.Val u8.t := M.alloc ((Integer.of_Z 1) : u8.t) in
@@ -2961,36 +2958,34 @@ Section Impl_subtle_CtOption_t_T.
               if α5 then
                 let* kind : M.Val core.panicking.AssertKind.t :=
                   M.alloc core.panicking.AssertKind.Eq in
-                let* _ : M.Val never.t :=
-                  let* α0 : core.panicking.AssertKind.t := M.read kind in
-                  let* α1 : ref u8.t := M.read left_val in
-                  let* α2 : ref u8.t := M.read right_val in
-                  let* α3 : ref str.t := M.read (mk_str "") in
-                  let* α4 : M.Val (array (ref str.t)) := M.alloc [ α3 ] in
-                  let* α5 : M.Val (ref (array (ref str.t))) :=
-                    M.alloc (borrow α4) in
-                  let* α6 : ref (slice (ref str.t)) :=
-                    M.read (pointer_coercion "Unsize" α5) in
-                  let* α7 : core.fmt.rt.Argument.t :=
-                    M.call
-                      (core.fmt.rt.Argument.t::["new_display"] (borrow msg)) in
-                  let* α8 : M.Val (array core.fmt.rt.Argument.t) :=
-                    M.alloc [ α7 ] in
-                  let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-                    M.alloc (borrow α8) in
-                  let* α10 : ref (slice core.fmt.rt.Argument.t) :=
-                    M.read (pointer_coercion "Unsize" α9) in
-                  let* α11 : core.fmt.Arguments.t :=
-                    M.call (core.fmt.Arguments.t::["new_v1"] α6 α10) in
-                  let* α12 : never.t :=
-                    M.call
-                      (core.panicking.assert_failed
-                        α0
-                        α1
-                        α2
-                        (core.option.Option.Some α11)) in
-                  M.alloc α12 in
-                let* α0 : M.Val unit := M.alloc tt in
+                let* α0 : core.panicking.AssertKind.t := M.read kind in
+                let* α1 : ref u8.t := M.read left_val in
+                let* α2 : ref u8.t := M.read right_val in
+                let* α3 : ref str.t := M.read (mk_str "") in
+                let* α4 : M.Val (array (ref str.t)) := M.alloc [ α3 ] in
+                let* α5 : M.Val (ref (array (ref str.t))) :=
+                  M.alloc (borrow α4) in
+                let* α6 : ref (slice (ref str.t)) :=
+                  M.read (pointer_coercion "Unsize" α5) in
+                let* α7 : core.fmt.rt.Argument.t :=
+                  M.call
+                    (core.fmt.rt.Argument.t::["new_display"] (borrow msg)) in
+                let* α8 : M.Val (array core.fmt.rt.Argument.t) :=
+                  M.alloc [ α7 ] in
+                let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+                  M.alloc (borrow α8) in
+                let* α10 : ref (slice core.fmt.rt.Argument.t) :=
+                  M.read (pointer_coercion "Unsize" α9) in
+                let* α11 : core.fmt.Arguments.t :=
+                  M.call (core.fmt.Arguments.t::["new_v1"] α6 α10) in
+                let* α12 : never.t :=
+                  M.call
+                    (core.panicking.assert_failed
+                      α0
+                      α1
+                      α2
+                      (core.option.Option.Some α11)) in
+                let* α0 : M.Val never.t := M.alloc α12 in
                 let* α1 := M.read α0 in
                 let* α2 : unit := never_to_any α1 in
                 M.alloc α2
@@ -3045,19 +3040,17 @@ Section Impl_subtle_CtOption_t_T.
               if α5 then
                 let* kind : M.Val core.panicking.AssertKind.t :=
                   M.alloc core.panicking.AssertKind.Eq in
-                let* _ : M.Val never.t :=
-                  let* α0 : core.panicking.AssertKind.t := M.read kind in
-                  let* α1 : ref u8.t := M.read left_val in
-                  let* α2 : ref u8.t := M.read right_val in
-                  let* α3 : never.t :=
-                    M.call
-                      (core.panicking.assert_failed
-                        α0
-                        α1
-                        α2
-                        core.option.Option.None) in
-                  M.alloc α3 in
-                let* α0 : M.Val unit := M.alloc tt in
+                let* α0 : core.panicking.AssertKind.t := M.read kind in
+                let* α1 : ref u8.t := M.read left_val in
+                let* α2 : ref u8.t := M.read right_val in
+                let* α3 : never.t :=
+                  M.call
+                    (core.panicking.assert_failed
+                      α0
+                      α1
+                      α2
+                      core.option.Option.None) in
+                let* α0 : M.Val never.t := M.alloc α3 in
                 let* α1 := M.read α0 in
                 let* α2 : unit := never_to_any α1 in
                 M.alloc α2
