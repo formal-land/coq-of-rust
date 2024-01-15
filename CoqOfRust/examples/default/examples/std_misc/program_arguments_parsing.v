@@ -346,10 +346,8 @@ Definition main : M unit :=
                           let* α0 : unit :=
                             M.call program_arguments_parsing.help in
                           M.alloc α0 in
-                        let* _ : M.Val never.t :=
-                          let* α0 : M.Val unit := M.alloc tt in
-                          return_ α0 in
                         let* α0 : M.Val unit := M.alloc tt in
+                        let* α0 : M.Val never.t := return_ α0 in
                         let* α1 := M.read α0 in
                         let* α2 : i32.t := never_to_any α1 in
                         M.alloc α2

@@ -17,11 +17,5 @@ Definition main : M unit := M.pure tt.
     }
 *)
 Definition foo : M never.t :=
-  let* _ : M.Val unit :=
-    let* α0 : ref str.t := M.read (mk_str "This call never returns.") in
-    let* α1 : never.t := M.call (std.panicking.begin_panic α0) in
-    let* α2 : unit := never_to_any α1 in
-    M.alloc α2 in
-  let* α0 : M.Val unit := M.alloc tt in
-  let* α1 := M.read α0 in
-  never_to_any α1.
+  let* α0 : ref str.t := M.read (mk_str "This call never returns.") in
+  M.call (std.panicking.begin_panic α0).

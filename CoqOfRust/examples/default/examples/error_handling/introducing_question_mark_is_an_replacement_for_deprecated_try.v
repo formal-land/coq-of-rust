@@ -46,20 +46,19 @@ Definition multiply
               | core.result.Result.Err _ =>
                 let γ0_0 := core.result.Result.Get_Err_0 γ in
                 let* err := M.copy γ0_0 in
-                let* _ : M.Val never.t :=
-                  let* α0 : _ :=
-                    ltac:(M.get_method (fun ℐ =>
-                      core.convert.From.from
-                        (Self := core.num.error.ParseIntError.t)
-                        (T := core.num.error.ParseIntError.t)
-                        (Trait := ℐ))) in
-                  let* α1 : core.num.error.ParseIntError.t := M.read err in
-                  let* α2 : core.num.error.ParseIntError.t := M.call (α0 α1) in
+                let* α0 : _ :=
+                  ltac:(M.get_method (fun ℐ =>
+                    core.convert.From.from
+                      (Self := core.num.error.ParseIntError.t)
+                      (T := core.num.error.ParseIntError.t)
+                      (Trait := ℐ))) in
+                let* α1 : core.num.error.ParseIntError.t := M.read err in
+                let* α2 : core.num.error.ParseIntError.t := M.call (α0 α1) in
+                let* α3 : M.Val never.t :=
                   return_ (core.result.Result.Err α2) in
-                let* α0 : M.Val unit := M.alloc tt in
-                let* α1 := M.read α0 in
-                let* α2 : i32.t := never_to_any α1 in
-                M.alloc α2
+                let* α4 := M.read α3 in
+                let* α5 : i32.t := never_to_any α4 in
+                M.alloc α5
               | _ => M.break_match
               end) :
               M (M.Val i32.t)
@@ -92,20 +91,19 @@ Definition multiply
               | core.result.Result.Err _ =>
                 let γ0_0 := core.result.Result.Get_Err_0 γ in
                 let* err := M.copy γ0_0 in
-                let* _ : M.Val never.t :=
-                  let* α0 : _ :=
-                    ltac:(M.get_method (fun ℐ =>
-                      core.convert.From.from
-                        (Self := core.num.error.ParseIntError.t)
-                        (T := core.num.error.ParseIntError.t)
-                        (Trait := ℐ))) in
-                  let* α1 : core.num.error.ParseIntError.t := M.read err in
-                  let* α2 : core.num.error.ParseIntError.t := M.call (α0 α1) in
+                let* α0 : _ :=
+                  ltac:(M.get_method (fun ℐ =>
+                    core.convert.From.from
+                      (Self := core.num.error.ParseIntError.t)
+                      (T := core.num.error.ParseIntError.t)
+                      (Trait := ℐ))) in
+                let* α1 : core.num.error.ParseIntError.t := M.read err in
+                let* α2 : core.num.error.ParseIntError.t := M.call (α0 α1) in
+                let* α3 : M.Val never.t :=
                   return_ (core.result.Result.Err α2) in
-                let* α0 : M.Val unit := M.alloc tt in
-                let* α1 := M.read α0 in
-                let* α2 : i32.t := never_to_any α1 in
-                M.alloc α2
+                let* α4 := M.read α3 in
+                let* α5 : i32.t := never_to_any α4 in
+                M.alloc α5
               | _ => M.break_match
               end) :
               M (M.Val i32.t)

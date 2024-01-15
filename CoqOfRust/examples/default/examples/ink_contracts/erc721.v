@@ -1031,9 +1031,8 @@ Section Impl_erc721_Erc721_t.
         let* α2 : M.Val bool.t := M.alloc α1 in
         let* α3 : bool.t := M.read (use α2) in
         if α3 then
-          let* _ : M.Val never.t :=
+          let* α0 : M.Val never.t :=
             return_ (core.result.Result.Err erc721.Error.NotAllowed) in
-          let* α0 : M.Val unit := M.alloc tt in
           let* α1 := M.read α0 in
           let* α2 : unit := never_to_any α1 in
           M.alloc α2
@@ -1266,9 +1265,8 @@ Section Impl_erc721_Erc721_t.
         let* α10 : M.Val bool.t := M.alloc (UnOp.not (BinOp.Pure.or α3 α9)) in
         let* α11 : bool.t := M.read (use α10) in
         if α11 then
-          let* _ : M.Val never.t :=
+          let* α0 : M.Val never.t :=
             return_ (core.result.Result.Err erc721.Error.NotAllowed) in
-          let* α0 : M.Val unit := M.alloc tt in
           let* α1 := M.read α0 in
           let* α2 : unit := never_to_any α1 in
           M.alloc α2
@@ -1295,9 +1293,8 @@ Section Impl_erc721_Erc721_t.
         let* α6 : M.Val bool.t := M.alloc α5 in
         let* α7 : bool.t := M.read (use α6) in
         if α7 then
-          let* _ : M.Val never.t :=
+          let* α0 : M.Val never.t :=
             return_ (core.result.Result.Err erc721.Error.NotAllowed) in
-          let* α0 : M.Val unit := M.alloc tt in
           let* α1 := M.read α0 in
           let* α2 : unit := never_to_any α1 in
           M.alloc α2
@@ -1313,9 +1310,8 @@ Section Impl_erc721_Erc721_t.
         let* α2 : M.Val bool.t := M.alloc α1 in
         let* α3 : bool.t := M.read (use α2) in
         if α3 then
-          let* _ : M.Val never.t :=
+          let* α0 : M.Val never.t :=
             return_ (core.result.Result.Err erc721.Error.CannotInsert) in
-          let* α0 : M.Val unit := M.alloc tt in
           let* α1 := M.read α0 in
           let* α2 : unit := never_to_any α1 in
           M.alloc α2
@@ -1516,10 +1512,9 @@ Section Impl_erc721_Erc721_t.
                   let* α2 : M.Val bool.t := M.alloc (UnOp.not α1) in
                   let* α3 : bool.t := M.read (use α2) in
                   if α3 then
-                    let* _ : M.Val never.t :=
+                    let* α0 : M.Val never.t :=
                       return_
                         (core.result.Result.Err erc721.Error.TokenNotFound) in
-                    let* α0 : M.Val unit := M.alloc tt in
                     let* α1 := M.read α0 in
                     let* α2 : unit := never_to_any α1 in
                     M.alloc α2

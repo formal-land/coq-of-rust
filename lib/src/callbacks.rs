@@ -1,12 +1,9 @@
-use std::fs::File;
-use std::io::Write;
-
+use crate::options::Options;
+use crate::top_level::*;
 use rustc_driver::{Callbacks, Compilation};
 use rustc_interface::{interface::Compiler, Queries};
-
-use crate::options::Options;
-
-use crate::top_level::*;
+use std::fs::File;
+use std::io::Write;
 
 pub struct ToCoq {
     opts: Options,
@@ -50,7 +47,7 @@ impl Callbacks for ToCoq {
         let mut file = File::create(format!("{crate_name}.v")).unwrap();
         file.write_all(coq_output.as_bytes()).unwrap();
 
-        compiler.session().abort_if_errors();
+        compiler.sess.abort_if_errors();
 
         if self.opts.in_cargo {
             Compilation::Continue

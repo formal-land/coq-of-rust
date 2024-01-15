@@ -209,8 +209,8 @@ pub struct TopLevel(Vec<Rc<TopLevelItem>>);
 fn emit_warning_with_note(env: &Env, span: &rustc_span::Span, warning_msg: &str, note_msg: &str) {
     env.tcx
         .sess
-        .struct_span_warn(*span, warning_msg)
-        .note(note_msg)
+        .struct_span_warn(*span, warning_msg.to_string())
+        .note(note_msg.to_string())
         .emit();
 }
 
@@ -395,7 +395,7 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<Rc<To
     match &item.kind {
         ItemKind::ExternCrate(_) => vec![],
         ItemKind::Use(..) => vec![],
-        ItemKind::Static(ty, _, body_id) | ItemKind::Const(ty, body_id) => {
+        ItemKind::Static(ty, _, body_id) | ItemKind::Const(ty, _, body_id) => {
             if check_if_test_declaration(ty) {
                 return vec![];
             }
@@ -552,7 +552,7 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<Rc<To
         }
         ItemKind::Union(_, _) => vec![Rc::new(TopLevelItem::Error("Union".to_string()))],
         ItemKind::Trait(_, _, generics, generic_bounds, items) => {
-            let predicates = vec![
+            let predicates = [
                 get_where_predicates(tcx, env, generics),
                 compile_generic_bounds(tcx, env, generic_bounds)
                     .into_iter()
@@ -1295,7 +1295,7 @@ impl DynNameGen {
             .collect::<String>();
         let full_name = format!("Dyn{}", self.name);
         // Collect the current path to be associated
-        let predicates = vec![self.predicates.clone(), vec![(path, full_name.clone())]].concat();
+        let predicates = [self.predicates.clone(), vec![(path, full_name.clone())]].concat();
         self.predicates = predicates;
         self.name = next_letter;
         full_name
@@ -1362,15 +1362,15 @@ impl FunDefinition {
             &*compile_fn_sig_and_body(env, fn_sig_and_body, default, is_axiom);
         let args = args.iter().fold(vec![], |result, (string, ty)| {
             let ty = dyn_name_gen.make_dyn_parm(ty.clone());
-            vec![result, vec![(string.to_owned(), ty)]].concat()
+            [result, vec![(string.to_owned(), ty)]].concat()
         });
-        let ty_params = vec![
+        let ty_params = [
             get_ty_params_names(env, generics),
             dyn_name_gen.get_type_parm_list(),
         ]
         .concat();
 
-        let where_predicates = vec![
+        let where_predicates = [
             get_where_predicates(&tcx, env, generics),
             dyn_name_gen.get_predicates(),
         ]
@@ -1796,7 +1796,7 @@ impl TopLevelItem {
     fn to_coq_enum<'a>(
         name: &str,
         ty_params: &[(String, Option<Rc<CoqType>>)],
-        variants: &'a Vec<(String, Rc<VariantItem>)>,
+        variants: &'a [(String, Rc<VariantItem>)],
     ) -> coq::TopLevel<'a> {
         let header = variants
             .iter()
@@ -1890,8 +1890,8 @@ impl TopLevelItem {
             // Combine all parts into one single vec
             header
                 .into_iter()
-                .chain(vec![inductive_item].into_iter())
-                .chain(getters.into_iter())
+                .chain(vec![inductive_item])
+                .chain(getters)
                 .collect(),
         )]);
 
@@ -2125,7 +2125,7 @@ impl TopLevelItem {
                         )
                     })
                     .collect::<Vec<_>>(),
-                &vec![
+                &[
                     predicates
                         .iter()
                         .map(|predicate| {
@@ -2335,16 +2335,14 @@ impl TopLevelItem {
                                                     &match optional_item {
                                                         Some(ImplItemKind::Definition { definition, ..}) => {
                                                             let FunDefinition {ty_params, where_predicates, ..} = &**definition;
-                                                            vec![
-                                                              optional_insert_vec(
+                                                            [optional_insert_vec(
                                                                 ty_params.is_empty(),
                                                                 vec![coq::ArgDecl::of_ty_params(ty_params, coq::ArgSpecKind::Implicit)]
                                                               ),
                                                               optional_insert_vec(
                                                                 where_predicates.is_empty(),
                                                                 vec![WherePredicate::vec_to_coq(where_predicates)]
-                                                              )
-                                                            ].concat()
+                                                              )].concat()
                                                         }
                                                         _ => vec![],
                                                     },

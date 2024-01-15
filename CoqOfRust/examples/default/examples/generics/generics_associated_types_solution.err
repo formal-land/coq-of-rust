@@ -1,63 +1,54 @@
 type Alias(
     Projection,
     AliasTy {
-        substs: [
-            C,
+        args: [
+        C/#0,
         ],
-        def_id: DefId(0:8 ~ generics_associated_types_solution[9850]::Contains::A),
+        def_id: DefId(0:8 ~ generics_associated_types_solution[abe1]::Contains::A),
     },
 ) not yet handled
 type Alias(
     Projection,
     AliasTy {
-        substs: [
-            C,
+        args: [
+        C/#0,
         ],
-        def_id: DefId(0:8 ~ generics_associated_types_solution[9850]::Contains::A),
+        def_id: DefId(0:8 ~ generics_associated_types_solution[abe1]::Contains::A),
     },
 ) not yet handled
 type Alias(
     Projection,
     AliasTy {
-        substs: [
-            C,
+        args: [
+        C/#0,
         ],
-        def_id: DefId(0:8 ~ generics_associated_types_solution[9850]::Contains::A),
+        def_id: DefId(0:8 ~ generics_associated_types_solution[abe1]::Contains::A),
     },
 ) not yet handled
 type Alias(
     Projection,
     AliasTy {
-        substs: [
-            C,
+        args: [
+        C/#0,
         ],
-        def_id: DefId(0:8 ~ generics_associated_types_solution[9850]::Contains::A),
+        def_id: DefId(0:8 ~ generics_associated_types_solution[abe1]::Contains::A),
     },
 ) not yet handled
 type Alias(
     Projection,
     AliasTy {
-        substs: [
-            C,
+        args: [
+        C/#0,
         ],
-        def_id: DefId(0:8 ~ generics_associated_types_solution[9850]::Contains::A),
+        def_id: DefId(0:8 ~ generics_associated_types_solution[abe1]::Contains::A),
     },
 ) not yet handled
 type Alias(
     Projection,
     AliasTy {
-        substs: [
-            C,
+        args: [
+        C/#0,
         ],
-        def_id: DefId(0:8 ~ generics_associated_types_solution[9850]::Contains::A),
-    },
-) not yet handled
-type Alias(
-    Projection,
-    AliasTy {
-        substs: [
-            C,
-        ],
-        def_id: DefId(0:8 ~ generics_associated_types_solution[9850]::Contains::A),
+        def_id: DefId(0:8 ~ generics_associated_types_solution[abe1]::Contains::A),
     },
 ) not yet handled

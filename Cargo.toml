@@ -1,3 +1,4 @@
 [workspace]
 members = ["lib", "cli"]
 exclude = ["ink/integration-tests/erc20"]
+resolver = "2"

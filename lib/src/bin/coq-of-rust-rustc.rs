@@ -1,6 +1,7 @@
 #![feature(rustc_private)]
 
 extern crate rustc_driver;
+extern crate rustc_session;
 
 use clap::*;
 use coq_of_rust_lib::{
@@ -14,7 +15,10 @@ struct DefaultCallbacks;
 impl rustc_driver::Callbacks for DefaultCallbacks {}
 
 fn main() {
-    rustc_driver::init_rustc_env_logger();
+    let handler =
+        rustc_session::EarlyErrorHandler::new(rustc_session::config::ErrorOutputType::default());
+
+    rustc_driver::init_rustc_env_logger(&handler);
     setup_plugin();
 }
 

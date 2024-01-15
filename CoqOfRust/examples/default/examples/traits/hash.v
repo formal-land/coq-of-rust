@@ -92,16 +92,16 @@ Definition calculate_hash
     (t : ref T)
     : M u64.t :=
   let* t := M.alloc t in
-  let* s : M.Val std.collections.hash.map.DefaultHasher.t :=
-    let* α0 : std.collections.hash.map.DefaultHasher.t :=
-      M.call std.collections.hash.map.DefaultHasher.t::["new"] in
+  let* s : M.Val std.hash.random.DefaultHasher.t :=
+    let* α0 : std.hash.random.DefaultHasher.t :=
+      M.call std.hash.random.DefaultHasher.t::["new"] in
     M.alloc α0 in
   let* _ : M.Val unit :=
     let* α0 : _ :=
       ltac:(M.get_method (fun ℐ =>
         core.hash.Hash.hash
           (Self := T)
-          (H := std.collections.hash.map.DefaultHasher.t)
+          (H := std.hash.random.DefaultHasher.t)
           (Trait := ℐ))) in
     let* α1 : ref T := M.read t in
     let* α2 : unit := M.call (α0 α1 (borrow_mut s)) in
@@ -109,7 +109,7 @@ Definition calculate_hash
   let* α0 : _ :=
     ltac:(M.get_method (fun ℐ =>
       core.hash.Hasher.finish
-        (Self := std.collections.hash.map.DefaultHasher.t)
+        (Self := std.hash.random.DefaultHasher.t)
         (Trait := ℐ))) in
   let* α1 : u64.t := M.call (α0 (borrow s)) in
   let* α0 : M.Val u64.t := M.alloc α1 in

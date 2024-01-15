@@ -370,4 +370,12 @@ Module rt.
     Notations.DoubleColon Argument.t "new_debug" := {
     Notations.double_colon := new_debug (T := T);
   }.
+
+  (* pub fn none() -> [Self; 0] *)
+  Parameter none : M (array Argument.t).
+
+  Global Instance Argument_none :
+    Notations.DoubleColon Argument.t "none" := {
+    Notations.double_colon := none;
+  }.
 End rt.

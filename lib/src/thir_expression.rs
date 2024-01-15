@@ -52,6 +52,7 @@ fn path_of_bin_op(bin_op: &BinOp, ty_left: &Rc<CoqType>, ty_right: &Rc<CoqType>)
         BinOp::Ge => (Path::new(&["BinOp", "Pure", "ge"]), Purity::Pure),
         BinOp::Gt => (Path::new(&["BinOp", "Pure", "gt"]), Purity::Pure),
         BinOp::Offset => (Path::new(&["BinOp", "Pure", "offset"]), Purity::Pure),
+        _ => todo!(),
     }
 }
 
@@ -77,7 +78,7 @@ impl Expr {
         {
             if let ExprKind::LocalVar(func) = func.kind.as_ref() {
                 if name_in.contains(&func.as_str()) && args.len() == 1 {
-                    return Some(args.get(0).unwrap().clone());
+                    return Some(args.first().unwrap().clone());
                 }
             }
         }
@@ -156,8 +157,9 @@ impl Expr {
 
 pub(crate) fn is_mutable_borrow_kind(borrow_kind: &BorrowKind) -> bool {
     match borrow_kind {
-        BorrowKind::Shared | BorrowKind::Shallow => false,
-        BorrowKind::Unique | BorrowKind::Mut { .. } => true,
+        BorrowKind::Shared => false,
+        BorrowKind::Mut { .. } => true,
+        BorrowKind::Fake => todo!(),
     }
 }
 
@@ -538,7 +540,7 @@ fn build_inner_match(
                             }),
                             body: {
                                 let body = build_inner_match(
-                                    vec![
+                                    [
                                         init_patterns
                                             .iter()
                                             .enumerate()
@@ -830,7 +832,7 @@ fn compile_expr_kind<'a>(
             })
             .alloc(Some(ty))
         }
-        thir::ExprKind::Pointer { source, cast } => {
+        thir::ExprKind::PointerCoercion { source, cast } => {
             let func = Rc::new(Expr {
                 kind: Rc::new(ExprKind::LocalVar("pointer_coercion".to_string())),
                 ty: None,
@@ -856,7 +858,9 @@ fn compile_expr_kind<'a>(
             let init = compile_expr(env, thir, expr);
             Rc::new(ExprKind::LetIf { pat, init })
         }
-        thir::ExprKind::Match { scrutinee, arms } => {
+        thir::ExprKind::Match {
+            scrutinee, arms, ..
+        } => {
             let scrutinee = compile_expr(env, thir, scrutinee);
             let arms: Vec<MatchArm> = arms
                 .iter()
@@ -1005,6 +1009,12 @@ fn compile_expr_kind<'a>(
                 Some(value) => compile_expr(env, thir, value).read(),
                 None => Expr::tt(),
             };
+
+            Rc::new(ExprKind::Return(value))
+        }
+        rustc_middle::thir::ExprKind::Become { value } => {
+            let value = compile_expr(env, thir, value).read();
+
             Rc::new(ExprKind::Return(value))
         }
         thir::ExprKind::ConstBlock { did, .. } => Rc::new(ExprKind::Var(compile_def_id(env, *did))),
@@ -1182,10 +1192,11 @@ fn compile_expr_kind<'a>(
                 let key = env.tcx.def_key(def_id);
                 let symbol = key.get_opt_name();
                 let parent = env.tcx.opt_parent(*def_id).unwrap();
-                let parent_kind = env.tcx.opt_def_kind(parent).unwrap();
+                let parent_kind = env.tcx.def_kind(parent);
                 Rc::new(match parent_kind {
                     DefKind::Impl { .. } => {
-                        let parent_type = env.tcx.type_of(parent).subst(env.tcx, generic_args);
+                        let parent_type =
+                            env.tcx.type_of(parent).instantiate(env.tcx, generic_args);
                         let ty = compile_type(env, &parent_type);
                         let func = symbol.unwrap().to_string();
                         ExprKind::AssociatedFunction { ty, func }
@@ -1198,7 +1209,7 @@ fn compile_expr_kind<'a>(
                             Path::local(symbol.unwrap().as_str()),
                         ]);
                         let parent_generics = env.tcx.generics_of(parent);
-                        let tys = vec![
+                        let tys = [
                             parent_generics
                                 .params
                                 .iter()
@@ -1213,12 +1224,15 @@ fn compile_expr_kind<'a>(
                         .concat()
                         .into_iter()
                         .zip(generic_args.iter())
-                        .map(|(param, generic_arg)| {
-                            (param, compile_type(env, &generic_arg.expect_ty()))
+                        .filter_map(|(param, generic_arg)| {
+                            generic_arg
+                                .as_type()
+                                .as_ref()
+                                .map(|ty| (param, compile_type(env, ty)))
                         })
                         .collect::<Vec<_>>();
                         // We know that the first type is the `Self` type
-                        let self_ty = &tys.get(0).unwrap().1;
+                        let self_ty = &tys.first().unwrap().1;
 
                         if Some((parent_path, self_ty.clone())) == env.current_trait_impl {
                             ExprKind::LocalVar(symbol.unwrap().to_string())
@@ -1311,6 +1325,7 @@ fn compile_stmts<'a>(
                             ty: None,
                         }),
                     };
+
                     let pattern = crate::thir_pattern::compile_pattern(env, pattern);
                     let ty = body.ty.clone();
                     let kind = match pattern.as_ref() {
@@ -1330,6 +1345,13 @@ fn compile_stmts<'a>(
                 }
                 thir::StmtKind::Expr { expr: expr_id, .. } => {
                     let init = compile_expr(env, thir, expr_id);
+                    let init_ty = &thir.exprs.get(*expr_id).unwrap().ty;
+
+                    // Special case with the [never] type
+                    if let TyKind::Never = init_ty.kind() {
+                        return init;
+                    }
+
                     let ty = body.ty.clone();
                     Rc::new(Expr {
                         kind: Rc::new(ExprKind::Let {

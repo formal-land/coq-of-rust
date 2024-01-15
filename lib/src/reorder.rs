@@ -2,6 +2,7 @@
 use crate::configuration::*;
 use crate::env::*;
 use itertools::Itertools;
+use rustc_hir::intravisit::Map;
 use rustc_hir::{HirId, Impl, ImplItemRef, Item, ItemId, ItemKind, Node, QPath, Ty, TyKind};
 use rustc_middle::ty::TyCtxt;
 use std::string::ToString;

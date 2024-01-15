@@ -60,10 +60,13 @@ Definition main : M unit :=
       let* α5 : unit := M.call (std.io.stdio._print α4) in
       M.alloc α5 in
     M.alloc tt in
-  let* rc_a : M.Val (alloc.rc.Rc.t alloc.string.String.t) :=
+  let* rc_a :
+      M.Val (alloc.rc.Rc.t alloc.string.String.t alloc.alloc.Global.t) :=
     let* α0 : alloc.string.String.t := M.read rc_examples in
-    let* α1 : alloc.rc.Rc.t alloc.string.String.t :=
-      M.call ((alloc.rc.Rc.t alloc.string.String.t)::["new"] α0) in
+    let* α1 : alloc.rc.Rc.t alloc.string.String.t alloc.alloc.Global.t :=
+      M.call
+        ((alloc.rc.Rc.t alloc.string.String.t alloc.alloc.Global.t)::["new"]
+          α0) in
     M.alloc α1 in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
@@ -76,7 +79,9 @@ Definition main : M unit :=
         M.read (pointer_coercion "Unsize" α3) in
       let* α5 : usize.t :=
         M.call
-          ((alloc.rc.Rc.t alloc.string.String.t)::["strong_count"]
+          ((alloc.rc.Rc.t
+                alloc.string.String.t
+                alloc.alloc.Global.t)::["strong_count"]
             (borrow rc_a)) in
       let* α6 : M.Val usize.t := M.alloc α5 in
       let* α7 : core.fmt.rt.Argument.t :=
@@ -106,13 +111,14 @@ Definition main : M unit :=
         let* α5 : unit := M.call (std.io.stdio._print α4) in
         M.alloc α5 in
       M.alloc tt in
-    let* rc_b : M.Val (alloc.rc.Rc.t alloc.string.String.t) :=
+    let* rc_b :
+        M.Val (alloc.rc.Rc.t alloc.string.String.t alloc.alloc.Global.t) :=
       let* α0 : _ :=
         ltac:(M.get_method (fun ℐ =>
           core.clone.Clone.clone
-            (Self := alloc.rc.Rc.t alloc.string.String.t)
+            (Self := alloc.rc.Rc.t alloc.string.String.t alloc.alloc.Global.t)
             (Trait := ℐ))) in
-      let* α1 : alloc.rc.Rc.t alloc.string.String.t :=
+      let* α1 : alloc.rc.Rc.t alloc.string.String.t alloc.alloc.Global.t :=
         M.call (α0 (borrow rc_a)) in
       M.alloc α1 in
     let* _ : M.Val unit :=
@@ -126,7 +132,9 @@ Definition main : M unit :=
           M.read (pointer_coercion "Unsize" α3) in
         let* α5 : usize.t :=
           M.call
-            ((alloc.rc.Rc.t alloc.string.String.t)::["strong_count"]
+            ((alloc.rc.Rc.t
+                  alloc.string.String.t
+                  alloc.alloc.Global.t)::["strong_count"]
               (borrow rc_b)) in
         let* α6 : M.Val usize.t := M.alloc α5 in
         let* α7 : core.fmt.rt.Argument.t :=
@@ -152,7 +160,9 @@ Definition main : M unit :=
           M.read (pointer_coercion "Unsize" α3) in
         let* α5 : usize.t :=
           M.call
-            ((alloc.rc.Rc.t alloc.string.String.t)::["strong_count"]
+            ((alloc.rc.Rc.t
+                  alloc.string.String.t
+                  alloc.alloc.Global.t)::["strong_count"]
               (borrow rc_a)) in
         let* α6 : M.Val usize.t := M.alloc α5 in
         let* α7 : core.fmt.rt.Argument.t :=
@@ -179,8 +189,8 @@ Definition main : M unit :=
         let* α5 : _ :=
           ltac:(M.get_method (fun ℐ =>
             core.cmp.PartialEq.eq
-              (Self := alloc.rc.Rc.t alloc.string.String.t)
-              (Rhs := alloc.rc.Rc.t alloc.string.String.t)
+              (Self := alloc.rc.Rc.t alloc.string.String.t alloc.alloc.Global.t)
+              (Rhs := alloc.rc.Rc.t alloc.string.String.t alloc.alloc.Global.t)
               (Trait := ℐ))) in
         let* α6 : bool.t := M.call (α5 (borrow rc_a) (borrow rc_b)) in
         let* α7 : M.Val bool.t := M.alloc α6 in
@@ -209,7 +219,7 @@ Definition main : M unit :=
         let* α5 : _ :=
           ltac:(M.get_method (fun ℐ =>
             core.ops.deref.Deref.deref
-              (Self := alloc.rc.Rc.t alloc.string.String.t)
+              (Self := alloc.rc.Rc.t alloc.string.String.t alloc.alloc.Global.t)
               (Trait := ℐ))) in
         let* α6 : ref alloc.string.String.t := M.call (α5 (borrow rc_a)) in
         let* α7 : usize.t := M.call (alloc.string.String.t::["len"] α6) in
@@ -273,7 +283,9 @@ Definition main : M unit :=
         M.read (pointer_coercion "Unsize" α3) in
       let* α5 : usize.t :=
         M.call
-          ((alloc.rc.Rc.t alloc.string.String.t)::["strong_count"]
+          ((alloc.rc.Rc.t
+                alloc.string.String.t
+                alloc.alloc.Global.t)::["strong_count"]
             (borrow rc_a)) in
       let* α6 : M.Val usize.t := M.alloc α5 in
       let* α7 : core.fmt.rt.Argument.t :=

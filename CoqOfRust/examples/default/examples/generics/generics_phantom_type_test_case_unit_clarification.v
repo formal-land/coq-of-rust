@@ -20,8 +20,11 @@ Section Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificati
       : M ltac:(core.fmt.Result) :=
     let* self := M.alloc self in
     let* f := M.alloc f in
-    let* α0 : never.t := M.call core.intrinsics.unreachable in
-    never_to_any α0.
+    let* α0 : ref generics_phantom_type_test_case_unit_clarification.Inch.t :=
+      M.read self in
+    let* α1 : M.Val never.t := match_operator (deref α0) [ ] in
+    let* α2 := M.read α1 in
+    never_to_any α2.
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
@@ -90,8 +93,11 @@ Section Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificati
       : M ltac:(core.fmt.Result) :=
     let* self := M.alloc self in
     let* f := M.alloc f in
-    let* α0 : never.t := M.call core.intrinsics.unreachable in
-    never_to_any α0.
+    let* α0 : ref generics_phantom_type_test_case_unit_clarification.Mm.t :=
+      M.read self in
+    let* α1 : M.Val never.t := match_operator (deref α0) [ ] in
+    let* α2 := M.read α1 in
+    never_to_any α2.
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;

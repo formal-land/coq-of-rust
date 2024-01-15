@@ -761,9 +761,8 @@ Section Impl_dns_DomainNameService_t.
         let* α2 : M.Val bool.t := M.alloc α1 in
         let* α3 : bool.t := M.read (use α2) in
         if α3 then
-          let* _ : M.Val never.t :=
+          let* α0 : M.Val never.t :=
             return_ (core.result.Result.Err dns.Error.NameAlreadyExists) in
-          let* α0 : M.Val unit := M.alloc tt in
           let* α1 := M.read α0 in
           let* α2 : unit := never_to_any α1 in
           M.alloc α2
@@ -890,9 +889,8 @@ Section Impl_dns_DomainNameService_t.
         let* α2 : M.Val bool.t := M.alloc α1 in
         let* α3 : bool.t := M.read (use α2) in
         if α3 then
-          let* _ : M.Val never.t :=
+          let* α0 : M.Val never.t :=
             return_ (core.result.Result.Err dns.Error.CallerIsNotOwner) in
-          let* α0 : M.Val unit := M.alloc tt in
           let* α1 := M.read α0 in
           let* α2 : unit := never_to_any α1 in
           M.alloc α2
@@ -1007,9 +1005,8 @@ Section Impl_dns_DomainNameService_t.
         let* α2 : M.Val bool.t := M.alloc α1 in
         let* α3 : bool.t := M.read (use α2) in
         if α3 then
-          let* _ : M.Val never.t :=
+          let* α0 : M.Val never.t :=
             return_ (core.result.Result.Err dns.Error.CallerIsNotOwner) in
-          let* α0 : M.Val unit := M.alloc tt in
           let* α1 := M.read α0 in
           let* α2 : unit := never_to_any α1 in
           M.alloc α2

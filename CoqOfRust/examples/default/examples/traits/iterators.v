@@ -92,6 +92,7 @@ Section Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci_t.
     core.iter.traits.iterator.Iterator.scan := Datatypes.None;
     core.iter.traits.iterator.Iterator.flat_map := Datatypes.None;
     core.iter.traits.iterator.Iterator.flatten := Datatypes.None;
+    core.iter.traits.iterator.Iterator.map_windows := Datatypes.None;
     core.iter.traits.iterator.Iterator.fuse := Datatypes.None;
     core.iter.traits.iterator.Iterator.inspect := Datatypes.None;
     core.iter.traits.iterator.Iterator.by_ref := Datatypes.None;

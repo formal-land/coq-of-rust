@@ -38,8 +38,7 @@ Definition is_divisible_by (lhs : u32.t) (rhs : u32.t) : M bool.t :=
         M.alloc (BinOp.Pure.eq α0 ((Integer.of_Z 0) : u32.t)) in
       let* α2 : bool.t := M.read (use α1) in
       if α2 then
-        let* _ : M.Val never.t := return_ false in
-        let* α0 : M.Val unit := M.alloc tt in
+        let* α0 : M.Val never.t := return_ false in
         let* α1 := M.read α0 in
         let* α2 : unit := never_to_any α1 in
         M.alloc α2

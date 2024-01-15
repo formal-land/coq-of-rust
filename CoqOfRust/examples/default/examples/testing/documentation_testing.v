@@ -31,13 +31,8 @@ Definition div (a : i32.t) (b : i32.t) : M i32.t :=
       M.alloc (BinOp.Pure.eq α0 ((Integer.of_Z 0) : i32.t)) in
     let* α2 : bool.t := M.read (use α1) in
     if α2 then
-      let* _ : M.Val unit :=
-        let* α0 : ref str.t := M.read (mk_str "Divide-by-zero error") in
-        let* α1 : never.t := M.call (std.panicking.begin_panic α0) in
-        let* α2 : unit := never_to_any α1 in
-        M.alloc α2 in
-      let* α0 : M.Val unit := M.alloc tt in
-      let* α1 := M.read α0 in
+      let* α0 : ref str.t := M.read (mk_str "Divide-by-zero error") in
+      let* α1 : never.t := M.call (std.panicking.begin_panic α0) in
       let* α2 : unit := never_to_any α1 in
       M.alloc α2
     else

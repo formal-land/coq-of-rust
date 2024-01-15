@@ -142,7 +142,7 @@ pub(crate) fn compile_qpath(env: &Env, qpath: &QPath) -> Path {
                 },
             }
         }
-        QPath::LangItem(_, _, _) => Path::local("LangItem"),
+        QPath::LangItem(_, _) => Path::local("LangItem"),
     }
 }
 

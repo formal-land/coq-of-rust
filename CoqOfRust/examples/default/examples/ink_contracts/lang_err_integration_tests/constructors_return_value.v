@@ -203,9 +203,7 @@ Definition return_value
   let* return_flags := M.alloc return_flags in
   let* return_value := M.alloc return_value in
   let* α0 : ref str.t := M.read (mk_str "not implemented") in
-  let* α1 : never.t := M.call (core.panicking.panic α0) in
-  let* α2 : never.t := never_to_any α1 in
-  never_to_any α2.
+  M.call (core.panicking.panic α0).
 
 Module  Impl_constructors_return_value_ConstructorsReturnValue_t.
 Section Impl_constructors_return_value_ConstructorsReturnValue_t.

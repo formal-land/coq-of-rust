@@ -226,8 +226,7 @@ Definition main : M unit :=
                   let* α5 : unit := M.call (std.io.stdio._print α4) in
                   M.alloc α5 in
                 M.alloc tt in
-              let* _ : M.Val never.t := M.break in
-              let* α0 : M.Val unit := M.alloc tt in
+              let* α0 : M.Val never.t := M.break in
               let* α1 := M.read α0 in
               let* α2 : unit := never_to_any α1 in
               M.alloc α2

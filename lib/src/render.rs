@@ -159,7 +159,7 @@ pub(crate) fn literal_to_doc(with_paren: bool, literal: &LitKind, neg: bool) -> 
         LitKind::Bool(b) => wrap_in_alloc(RcDoc::text(format!("{b}"))),
         LitKind::Char(c) => wrap_in_alloc(RcDoc::text(format!("\"{c}\"%char"))),
         LitKind::Byte(b) => RcDoc::text(format!("{b}")),
-        LitKind::ByteStr(b, _) => RcDoc::text(format!("{b:?}")),
+        LitKind::ByteStr(b, _) | LitKind::CStr(b, _) => RcDoc::text(format!("{b:?}")),
         LitKind::Err => RcDoc::text("Err"),
     }
 }
