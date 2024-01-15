@@ -160,7 +160,7 @@ pub(crate) fn get_path_generics<'a>(
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 pub(crate) enum StructOrVariant {
     Struct,
-    Variant,
+    Variant { nb_cases: usize },
 }
 
 pub(crate) fn to_valid_coq_name(str: &str) -> String {

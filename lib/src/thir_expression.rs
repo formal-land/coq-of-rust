@@ -312,7 +312,7 @@ fn build_inner_match(
                                                 path.clone(),
                                                 Path::new(&[format!("Get_{field_name}")]),
                                             ]),
-                                            StructOrVariant::Variant => Path::concat(&[
+                                            StructOrVariant::Variant { .. } => Path::concat(&[
                                                 Path::new(
                                                     &path.segments[0..path.segments.len() - 1],
                                                 ),
@@ -350,8 +350,10 @@ fn build_inner_match(
                             },
                         })],
                         match struct_or_variant {
-                            StructOrVariant::Struct => vec![],
-                            StructOrVariant::Variant => vec![default_match_arm.clone()],
+                            StructOrVariant::Struct | StructOrVariant::Variant { nb_cases: 1 } => {
+                                vec![]
+                            }
+                            StructOrVariant::Variant { .. } => vec![default_match_arm.clone()],
                         },
                     ]
                     .concat(),
@@ -387,7 +389,7 @@ fn build_inner_match(
                                             path.clone(),
                                             Path::new(&[format!("Get_{index}")]),
                                         ]),
-                                        StructOrVariant::Variant => Path::concat(&[
+                                        StructOrVariant::Variant { .. } => Path::concat(&[
                                             Path::new(&path.segments[0..path.segments.len() - 1]),
                                             Path::new(&[format!(
                                                 "Get_{variant}_{index}",
@@ -420,8 +422,10 @@ fn build_inner_match(
                             },
                         })],
                         match struct_or_variant {
-                            StructOrVariant::Struct => vec![],
-                            StructOrVariant::Variant => vec![default_match_arm.clone()],
+                            StructOrVariant::Struct | StructOrVariant::Variant { nb_cases: 1 } => {
+                                vec![]
+                            }
+                            StructOrVariant::Variant { .. } => vec![default_match_arm.clone()],
                         },
                     ]
                     .concat(),
@@ -671,6 +675,23 @@ fn build_match(scrutinee: Rc<Expr>, arms: Vec<MatchArm>, _ty: Option<Rc<CoqType>
     })
 }
 
+fn get_let_if<'a>(
+    env: &mut Env<'a>,
+    thir: &rustc_middle::thir::Thir<'a>,
+    expr_id: &rustc_middle::thir::ExprId,
+) -> Option<(Rc<Pattern>, Rc<Expr>)> {
+    let expr = thir.exprs.get(*expr_id).unwrap();
+
+    match &expr.kind {
+        thir::ExprKind::Scope { value, .. } => get_let_if(env, thir, value),
+        thir::ExprKind::Let { expr, pat, .. } => Some((
+            crate::thir_pattern::compile_pattern(env, pat),
+            compile_expr(env, thir, expr),
+        )),
+        _ => None,
+    }
+}
+
 fn compile_expr_kind<'a>(
     env: &mut Env<'a>,
     thir: &rustc_middle::thir::Thir<'a>,
@@ -702,12 +723,31 @@ fn compile_expr_kind<'a>(
             else_opt,
             ..
         } => {
-            let condition = compile_expr(env, thir, cond).read();
             let success = compile_expr(env, thir, then);
             let failure = match else_opt {
                 Some(else_expr) => compile_expr(env, thir, else_expr),
                 None => Expr::tt(),
             };
+
+            if let Some((pattern, expr)) = get_let_if(env, thir, cond) {
+                return build_match(
+                    expr,
+                    vec![
+                        MatchArm {
+                            pattern,
+                            body: success,
+                        },
+                        MatchArm {
+                            pattern: Rc::new(Pattern::Wild),
+                            body: failure,
+                        },
+                    ],
+                    Some(ty),
+                );
+            }
+
+            let condition = compile_expr(env, thir, cond).read();
+
             Rc::new(ExprKind::If {
                 condition,
                 success,
@@ -862,11 +902,9 @@ fn compile_expr_kind<'a>(
             let body = compile_expr(env, thir, body);
             Rc::new(ExprKind::Loop { body })
         }
-        thir::ExprKind::Let { expr, pat } => {
-            let pat = crate::thir_pattern::compile_pattern(env, pat);
-            let init = compile_expr(env, thir, expr);
-            Rc::new(ExprKind::LetIf { pat, init })
-        }
+        thir::ExprKind::Let { .. } => Rc::new(ExprKind::Message(
+            "`if let` expected into an `if`".to_string(),
+        )),
         thir::ExprKind::Match {
             scrutinee, arms, ..
         } => {
@@ -1088,7 +1126,9 @@ fn compile_expr_kind<'a>(
                     .iter()
                     .all(|(name, _)| name.starts_with(|c: char| c.is_ascii_digit()));
             let struct_or_variant = if adt_def.is_enum() {
-                StructOrVariant::Variant
+                StructOrVariant::Variant {
+                    nb_cases: adt_def.variants().len(),
+                }
             } else {
                 StructOrVariant::Struct
             };

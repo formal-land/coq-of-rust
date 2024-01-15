@@ -168,19 +168,19 @@ impl Pattern {
             },
             Pattern::StructStruct(path, fields, struct_or_variant) => paren(
                 with_paren
-                    && matches!(struct_or_variant, StructOrVariant::Variant)
+                    && matches!(struct_or_variant, StructOrVariant::Variant { .. })
                     && !fields.is_empty(),
                 group([
                     match struct_or_variant {
                         StructOrVariant::Struct => nil(),
-                        StructOrVariant::Variant => path.to_doc(),
+                        StructOrVariant::Variant { .. } => path.to_doc(),
                     },
                     optional_insert(
                         fields.is_empty(),
                         concat([
                             match struct_or_variant {
                                 StructOrVariant::Struct => nil(),
-                                StructOrVariant::Variant => line(),
+                                StructOrVariant::Variant { .. } => line(),
                             },
                             nest([
                                 text("{|"),
@@ -212,7 +212,7 @@ impl Pattern {
                 nest([
                     path.to_doc(),
                     match struct_or_variant {
-                        StructOrVariant::Variant => nil(),
+                        StructOrVariant::Variant { .. } => nil(),
                         StructOrVariant::Struct => text(".Build_t"),
                     },
                     concat(
