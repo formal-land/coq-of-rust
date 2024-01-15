@@ -71,6 +71,13 @@ Module Impl_Option. Section Impl_Option.
     Notations.double_colon := expect;
   }.
 
+  (* pub fn unwrap(self) -> T *)
+  Parameter unwrap : Self -> M T.
+
+  Global Instance AF_unwrap : Notations.DoubleColon Self "unwrap" := {
+    Notations.double_colon := unwrap;
+  }.
+
   Definition unwrap_or_default {H0 : core.default.Default.Trait T}
       (self : Self) : M T :=
     match self with

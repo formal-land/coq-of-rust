@@ -269,6 +269,14 @@ Module Eq.
   Global Instance I_char : C char.t := {
     eq := Coq.Strings.Ascii.eqb;
   }.
+
+  Global Instance I_f32 : C f32.t := {
+    eq _ := axiom "eq_f32";
+  }.
+
+  Global Instance I_f64 : C f64.t := {
+    eq _ := axiom "eq_f64";
+  }.
 End Eq.
 
 Module UnOp.
