@@ -30,7 +30,12 @@ Section Impl_Result.
 
   Definition Self : Set := Result.t T E.
 
-  Parameter expect : Self -> string -> M T.
+  (*
+  pub fn expect(self, msg: &str) -> T
+  where
+      E: Debug,
+  *)
+  Parameter expect : Self -> ref str.t -> M T.
 
   Global Instance AF_expect : Notations.DoubleColon Self "expect" := {|
     Notations.double_colon := expect;

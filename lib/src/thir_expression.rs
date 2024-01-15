@@ -25,6 +25,15 @@ impl ExprKind {
     }
 }
 
+impl Expr {
+    pub(crate) fn alloc(self: Rc<Self>) -> Rc<Self> {
+        Rc::new(Expr {
+            kind: self.kind.clone().alloc(self.ty.clone()),
+            ty: None,
+        })
+    }
+}
+
 fn path_of_bin_op(bin_op: &BinOp, ty_left: &Rc<CoqType>, ty_right: &Rc<CoqType>) -> (Path, Purity) {
     match bin_op {
         BinOp::Add => (Path::new(&["BinOp", "Panic", "add"]), Purity::Effectful),
@@ -1332,7 +1341,7 @@ fn compile_stmts<'a>(
                         Pattern::Binding {
                             name,
                             pattern: None,
-                            ..
+                            is_with_ref: None,
                         } => Rc::new(ExprKind::Let {
                             is_monadic: false,
                             name: Some(name.clone()),

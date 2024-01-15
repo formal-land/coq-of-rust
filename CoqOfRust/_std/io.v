@@ -87,15 +87,16 @@ pub trait Write {
 }
 *)
 Module Write.
-  Class Trait (Self : Set) : Set := { 
-    write : mut_ref Self -> ref (slice u8.t) -> Result usize.t;
-    flush : mut_ref Self -> Result unit;
-    write_vectored : mut_ref Self -> ref (slice IoSlice) -> Result usize.t;
-    is_write_vectored : mut_ref Self -> bool;
-    write_all : mut_ref Self -> ref (slice u8.t) -> Result unit;
-    write_all_vectored : mut_ref Self -> mut_ref (slice IoSlice) -> Result unit;
-    write_fmt : mut_ref Self -> fmt.Arguments.t -> Result unit;
-    by_ref : mut_ref Self -> mut_ref Self;
+  Class Trait (Self : Set) : Set := {
+    write : mut_ref Self -> ref (slice u8.t) -> M (Result usize.t);
+    flush : mut_ref Self -> M (Result unit);
+    write_vectored : mut_ref Self -> ref (slice IoSlice) -> M (Result usize.t);
+    is_write_vectored : mut_ref Self -> M bool;
+    write_all : mut_ref Self -> ref (slice u8.t) -> M (Result unit);
+    write_all_vectored :
+      mut_ref Self -> mut_ref (slice IoSlice) -> M (Result unit);
+    write_fmt : mut_ref Self -> fmt.Arguments.t -> M (Result unit);
+    by_ref : mut_ref Self -> M (mut_ref Self);
   }.
 End Write.
 

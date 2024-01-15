@@ -410,11 +410,18 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<Rc<To
                 let value = compile_hir_id(env, body_id.hir_id);
                 Some(value)
             };
-            vec![Rc::new(TopLevelItem::Const {
-                name,
-                ty: compile_type(env, ty).val(),
-                value,
-            })]
+            let ty = compile_type(env, ty);
+
+            let (value, ty) = if let ItemKind::Static(_, mutability, _) = &item.kind {
+                (
+                    value.map(|value| value.alloc()),
+                    CoqType::make_ref(mutability, ty).val(),
+                )
+            } else {
+                (value, ty.val())
+            };
+
+            vec![Rc::new(TopLevelItem::Const { name, ty, value })]
         }
         ItemKind::Fn(fn_sig, generics, body_id) => {
             if check_if_is_test_main_function(tcx, body_id) {
