@@ -14,7 +14,6 @@ examples/axiomatized/examples/functions/functions_closures_as_output_parameters.
 examples/axiomatized/examples/functions/functions_closures_input_functions.v
 examples/axiomatized/examples/functions/functions_closures_type_anonymity_define_and_use.v
 examples/axiomatized/examples/generics/generics_associated_types_solution.v
-examples/axiomatized/examples/generics/generics_bounds.v
 examples/axiomatized/examples/generics/generics_functions.v
 examples/axiomatized/examples/generics/generics_implementation.v
 examples/axiomatized/examples/generics/generics_phantom_type_test_case_unit_clarification.v

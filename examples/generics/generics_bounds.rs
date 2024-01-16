@@ -5,12 +5,6 @@ trait HasArea {
     fn area(&self) -> f64;
 }
 
-impl HasArea for Rectangle {
-    fn area(&self) -> f64 {
-        self.length * self.height
-    }
-}
-
 #[derive(Debug)]
 struct Rectangle {
     length: f64,
@@ -20,6 +14,12 @@ struct Rectangle {
 struct Triangle {
     length: f64,
     height: f64,
+}
+
+impl HasArea for Rectangle {
+    fn area(&self) -> f64 {
+        self.length * self.height
+    }
 }
 
 // The generic `T` must implement `Debug`. Regardless
