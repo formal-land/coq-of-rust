@@ -36,7 +36,7 @@ Section Impl_core_fmt_Display_for_converting_to_string_Circle_t.
     let* α5 : ref converting_to_string.Circle.t := M.read self in
     let* α6 : core.fmt.rt.Argument.t :=
       M.call
-        (core.fmt.rt.Argument.t::["new_display"]
+        (impl core.fmt.rt.Argument.t "new_display"
           (borrow (converting_to_string.Circle.Get_radius (deref α5)))) in
     let* α7 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α6 ] in
     let* α8 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -44,12 +44,10 @@ Section Impl_core_fmt_Display_for_converting_to_string_Circle_t.
     let* α9 : ref (slice core.fmt.rt.Argument.t) :=
       M.read (pointer_coercion "Unsize" α8) in
     let* α10 : core.fmt.Arguments.t :=
-      M.call (core.fmt.Arguments.t::["new_v1"] α4 α9) in
-    M.call (core.fmt.Formatter.t::["write_fmt"] α0 α10).
+      M.call (impl core.fmt.Arguments.t "new_v1" α4 α9) in
+    M.call (impl core.fmt.Formatter.t "write_fmt" α0 α10).
   
-  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
-    Notations.double_colon := fmt;
-  }.
+  Axiom fmt_is_impl : impl Self "fmt" = fmt.
   
   Global Instance ℐ : core.fmt.Display.Trait Self := {
     core.fmt.Display.fmt := fmt;

@@ -55,7 +55,7 @@ Definition main : M unit :=
               let* α3 : ref (slice (ref str.t)) :=
                 M.read (pointer_coercion "Unsize" α2) in
               let* α4 : core.fmt.Arguments.t :=
-                M.call (core.fmt.Arguments.t::["new_const"] α3) in
+                M.call (impl core.fmt.Arguments.t "new_const" α3) in
               let* α5 : unit := M.call (std.io.stdio._print α4) in
               M.alloc α5 in
             M.alloc tt
@@ -76,7 +76,7 @@ Definition main : M unit :=
               let* α3 : ref (slice (ref str.t)) :=
                 M.read (pointer_coercion "Unsize" α2) in
               let* α4 : core.fmt.Arguments.t :=
-                M.call (core.fmt.Arguments.t::["new_const"] α3) in
+                M.call (impl core.fmt.Arguments.t "new_const" α3) in
               let* α5 : unit := M.call (std.io.stdio._print α4) in
               M.alloc α5 in
             M.alloc tt
@@ -101,7 +101,7 @@ Definition main : M unit :=
               let* α3 : ref (slice (ref str.t)) :=
                 M.read (pointer_coercion "Unsize" α2) in
               let* α4 : core.fmt.Arguments.t :=
-                M.call (core.fmt.Arguments.t::["new_const"] α3) in
+                M.call (impl core.fmt.Arguments.t "new_const" α3) in
               let* α5 : unit := M.call (std.io.stdio._print α4) in
               M.alloc α5 in
             M.alloc tt
@@ -121,7 +121,7 @@ Definition main : M unit :=
               let* α3 : ref (slice (ref str.t)) :=
                 M.read (pointer_coercion "Unsize" α2) in
               let* α4 : core.fmt.Arguments.t :=
-                M.call (core.fmt.Arguments.t::["new_const"] α3) in
+                M.call (impl core.fmt.Arguments.t "new_const" α3) in
               let* α5 : unit := M.call (std.io.stdio._print α4) in
               M.alloc α5 in
             M.alloc tt

@@ -49,7 +49,7 @@ Definition main : M unit :=
   let* _x : M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t) :=
     let* α0 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t :=
       M.call
-        ((alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"]
+        (impl (alloc.boxed.Box.t i32.t alloc.alloc.Global.t) "new"
           ((Integer.of_Z 0) : i32.t)) in
     M.alloc α0 in
   let* _ : M.Val i32.t :=
@@ -68,7 +68,7 @@ Definition main : M unit :=
       let* α3 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α2) in
       let* α4 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_const"] α3) in
+        M.call (impl core.fmt.Arguments.t "new_const" α3) in
       let* α5 : unit := M.call (std.io.stdio._print α4) in
       M.alloc α5 in
     M.alloc tt in

@@ -20,14 +20,14 @@ Definition eat_box_i32
       let* α4 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α3) in
       let* α5 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow boxed_i32)) in
+        M.call (impl core.fmt.rt.Argument.t "new_display" (borrow boxed_i32)) in
       let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
       let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
         M.alloc (borrow α6) in
       let* α8 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α7) in
       let* α9 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
+        M.call (impl core.fmt.Arguments.t "new_v1" α4 α8) in
       let* α10 : unit := M.call (std.io.stdio._print α9) in
       M.alloc α10 in
     M.alloc tt in
@@ -52,14 +52,14 @@ Definition borrow_i32 (borrowed_i32 : ref i32.t) : M unit :=
         M.read (pointer_coercion "Unsize" α3) in
       let* α5 : core.fmt.rt.Argument.t :=
         M.call
-          (core.fmt.rt.Argument.t::["new_display"] (borrow borrowed_i32)) in
+          (impl core.fmt.rt.Argument.t "new_display" (borrow borrowed_i32)) in
       let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
       let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
         M.alloc (borrow α6) in
       let* α8 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α7) in
       let* α9 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
+        M.call (impl core.fmt.Arguments.t "new_v1" α4 α8) in
       let* α10 : unit := M.call (std.io.stdio._print α9) in
       M.alloc α10 in
     M.alloc tt in
@@ -100,7 +100,7 @@ Definition main : M unit :=
   let* boxed_i32 : M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t) :=
     let* α0 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t :=
       M.call
-        ((alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"]
+        (impl (alloc.boxed.Box.t i32.t alloc.alloc.Global.t) "new"
           ((Integer.of_Z 5) : i32.t)) in
     M.alloc α0 in
   let* stacked_i32 : M.Val i32.t := M.alloc ((Integer.of_Z 6) : i32.t) in

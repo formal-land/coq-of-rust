@@ -45,10 +45,7 @@ Section Impl_core_default_Default_for_set_code_hash_Incrementer_t.
     let* α1 : u32.t := M.call α0 in
     M.pure {| set_code_hash.Incrementer.count := α1; |}.
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -73,9 +70,7 @@ Section Impl_set_code_hash_Incrementer_t.
           (Trait := ℐ))) in
     M.call α0.
   
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
-    Notations.double_colon := new;
-  }.
+  Axiom new_is_impl : impl Self "new" = new.
   
   (*
       pub fn inc(&mut self) {
@@ -109,7 +104,7 @@ Section Impl_set_code_hash_Incrementer_t.
         let* α5 : mut_ref set_code_hash.Incrementer.t := M.read self in
         let* α6 : core.fmt.rt.Argument.t :=
           M.call
-            (core.fmt.rt.Argument.t::["new_display"]
+            (impl core.fmt.rt.Argument.t "new_display"
               (borrow (set_code_hash.Incrementer.Get_count (deref α5)))) in
         let* α7 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α6 ] in
         let* α8 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -117,16 +112,14 @@ Section Impl_set_code_hash_Incrementer_t.
         let* α9 : ref (slice core.fmt.rt.Argument.t) :=
           M.read (pointer_coercion "Unsize" α8) in
         let* α10 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_v1"] α4 α9) in
+          M.call (impl core.fmt.Arguments.t "new_v1" α4 α9) in
         let* α11 : unit := M.call (std.io.stdio._print α10) in
         M.alloc α11 in
       M.alloc tt in
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
-  Global Instance AssociatedFunction_inc : Notations.DoubleColon Self "inc" := {
-    Notations.double_colon := inc;
-  }.
+  Axiom inc_is_impl : impl Self "inc" = inc.
   
   (*
       pub fn get(&self) -> u32 {
@@ -138,9 +131,7 @@ Section Impl_set_code_hash_Incrementer_t.
     let* α0 : ref set_code_hash.Incrementer.t := M.read self in
     M.read (set_code_hash.Incrementer.Get_count (deref α0)).
   
-  Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
-    Notations.double_colon := get;
-  }.
+  Axiom get_is_impl : impl Self "get" = get.
   
   (*
       pub fn set_code(&mut self, code_hash: [u8; 32]) {
@@ -158,7 +149,9 @@ Section Impl_set_code_hash_Incrementer_t.
         M.call (set_code_hash.set_code_hash (borrow code_hash)) in
       let* α1 : unit :=
         M.call
-          ((core.result.Result.t unit set_code_hash.Error.t)::["unwrap_or_else"]
+          (impl
+              (core.result.Result.t unit set_code_hash.Error.t)
+              "unwrap_or_else"
             α0
             (fun (α0 : set_code_hash.Error.t) =>
               (let* α0 := M.alloc α0 in
@@ -188,23 +181,20 @@ Section Impl_set_code_hash_Incrementer_t.
         let* α4 : ref (slice (ref str.t)) :=
           M.read (pointer_coercion "Unsize" α3) in
         let* α5 : core.fmt.rt.Argument.t :=
-          M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow code_hash)) in
+          M.call (impl core.fmt.rt.Argument.t "new_debug" (borrow code_hash)) in
         let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
         let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
           M.alloc (borrow α6) in
         let* α8 : ref (slice core.fmt.rt.Argument.t) :=
           M.read (pointer_coercion "Unsize" α7) in
         let* α9 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
+          M.call (impl core.fmt.Arguments.t "new_v1" α4 α8) in
         let* α10 : unit := M.call (std.io.stdio._print α9) in
         M.alloc α10 in
       M.alloc tt in
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
-  Global Instance AssociatedFunction_set_code :
-    Notations.DoubleColon Self "set_code" := {
-    Notations.double_colon := set_code;
-  }.
+  Axiom set_code_is_impl : impl Self "set_code" = set_code.
 End Impl_set_code_hash_Incrementer_t.
 End Impl_set_code_hash_Incrementer_t.

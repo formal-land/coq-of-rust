@@ -22,11 +22,11 @@ Definition main : M unit :=
         M.read (pointer_coercion "Unsize" α5) in
       let* α7 : core.fmt.rt.Argument.t :=
         M.call
-          (core.fmt.rt.Argument.t::["new_debug"]
+          (impl core.fmt.rt.Argument.t "new_debug"
             (borrow (mk_str "1i32 + 1 == 2i32"))) in
       let* α8 : core.fmt.rt.Argument.t :=
         M.call
-          (core.fmt.rt.Argument.t::["new_debug"]
+          (impl core.fmt.rt.Argument.t "new_debug"
             (borrow (mk_str "2i32 * 2 == 4i32"))) in
       let* α9 : i32.t :=
         BinOp.Panic.add ((Integer.of_Z 1) : i32.t) ((Integer.of_Z 1) : i32.t) in
@@ -38,7 +38,7 @@ Definition main : M unit :=
             (BinOp.Pure.eq α9 ((Integer.of_Z 2) : i32.t))
             (BinOp.Pure.eq α10 ((Integer.of_Z 4) : i32.t))) in
       let* α12 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow α11)) in
+        M.call (impl core.fmt.rt.Argument.t "new_debug" (borrow α11)) in
       let* α13 : M.Val (array core.fmt.rt.Argument.t) :=
         M.alloc [ α7; α8; α12 ] in
       let* α14 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -46,7 +46,7 @@ Definition main : M unit :=
       let* α15 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α14) in
       let* α16 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_v1"] α6 α15) in
+        M.call (impl core.fmt.Arguments.t "new_v1" α6 α15) in
       let* α17 : unit := M.call (std.io.stdio._print α16) in
       M.alloc α17 in
     M.alloc tt in
@@ -63,13 +63,13 @@ Definition main : M unit :=
         M.read (pointer_coercion "Unsize" α5) in
       let* α7 : core.fmt.rt.Argument.t :=
         M.call
-          (core.fmt.rt.Argument.t::["new_debug"] (borrow (mk_str "true"))) in
+          (impl core.fmt.rt.Argument.t "new_debug" (borrow (mk_str "true"))) in
       let* α8 : core.fmt.rt.Argument.t :=
         M.call
-          (core.fmt.rt.Argument.t::["new_debug"] (borrow (mk_str "false"))) in
+          (impl core.fmt.rt.Argument.t "new_debug" (borrow (mk_str "false"))) in
       let* α9 : M.Val bool.t := M.alloc (BinOp.Pure.or true false) in
       let* α10 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow α9)) in
+        M.call (impl core.fmt.rt.Argument.t "new_debug" (borrow α9)) in
       let* α11 : M.Val (array core.fmt.rt.Argument.t) :=
         M.alloc [ α7; α8; α10 ] in
       let* α12 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -77,7 +77,7 @@ Definition main : M unit :=
       let* α13 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α12) in
       let* α14 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_v1"] α6 α13) in
+        M.call (impl core.fmt.Arguments.t "new_v1" α6 α13) in
       let* α15 : unit := M.call (std.io.stdio._print α14) in
       M.alloc α15 in
     M.alloc tt in

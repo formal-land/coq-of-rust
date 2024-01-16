@@ -25,10 +25,7 @@ Section Impl_generics_where_clauses_PrintInOption_for_T.
   *)
   Parameter print_in_option : Self -> M unit.
   
-  Global Instance AssociatedFunction_print_in_option :
-    Notations.DoubleColon Self "print_in_option" := {
-    Notations.double_colon := print_in_option;
-  }.
+  Axiom print_in_option_is_impl : impl Self "print_in_option" = print_in_option.
   
   Global Instance ℐ : generics_where_clauses.PrintInOption.Trait Self := {
     generics_where_clauses.PrintInOption.print_in_option := print_in_option;

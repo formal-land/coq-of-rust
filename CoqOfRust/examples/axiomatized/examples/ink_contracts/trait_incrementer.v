@@ -42,9 +42,7 @@ Section Impl_trait_incrementer_Incrementer_t.
   *)
   Parameter new : u64.t -> M Self.
   
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
-    Notations.double_colon := new;
-  }.
+  Axiom new_is_impl : impl Self "new" = new.
   
   (*
       pub fn inc_by(&mut self, delta: u64) {
@@ -53,10 +51,7 @@ Section Impl_trait_incrementer_Incrementer_t.
   *)
   Parameter inc_by : (mut_ref Self) -> u64.t -> M unit.
   
-  Global Instance AssociatedFunction_inc_by :
-    Notations.DoubleColon Self "inc_by" := {
-    Notations.double_colon := inc_by;
-  }.
+  Axiom inc_by_is_impl : impl Self "inc_by" = inc_by.
 End Impl_trait_incrementer_Incrementer_t.
 End Impl_trait_incrementer_Incrementer_t.
 
@@ -71,9 +66,7 @@ Section Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer_t.
   *)
   Parameter inc : (mut_ref Self) -> M unit.
   
-  Global Instance AssociatedFunction_inc : Notations.DoubleColon Self "inc" := {
-    Notations.double_colon := inc;
-  }.
+  Axiom inc_is_impl : impl Self "inc" = inc.
   
   (*
       fn get(&self) -> u64 {
@@ -82,9 +75,7 @@ Section Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer_t.
   *)
   Parameter get : (ref Self) -> M u64.t.
   
-  Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
-    Notations.double_colon := get;
-  }.
+  Axiom get_is_impl : impl Self "get" = get.
   
   Global Instance ℐ : trait_incrementer.Increment.Trait Self := {
     trait_incrementer.Increment.inc := inc;
@@ -104,10 +95,7 @@ Section Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer_t.
   *)
   Parameter reset : (mut_ref Self) -> M unit.
   
-  Global Instance AssociatedFunction_reset :
-    Notations.DoubleColon Self "reset" := {
-    Notations.double_colon := reset;
-  }.
+  Axiom reset_is_impl : impl Self "reset" = reset.
   
   Global Instance ℐ : trait_incrementer.Reset.Trait Self := {
     trait_incrementer.Reset.reset := reset;

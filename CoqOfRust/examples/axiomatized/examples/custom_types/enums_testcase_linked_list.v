@@ -35,9 +35,7 @@ Section Impl_enums_testcase_linked_list_List_t.
   *)
   Parameter new : M enums_testcase_linked_list.List.t.
   
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
-    Notations.double_colon := new;
-  }.
+  Axiom new_is_impl : impl Self "new" = new.
   
   (*
       fn prepend(self, elem: u32) -> List {
@@ -47,10 +45,7 @@ Section Impl_enums_testcase_linked_list_List_t.
   *)
   Parameter prepend : Self -> u32.t -> M enums_testcase_linked_list.List.t.
   
-  Global Instance AssociatedFunction_prepend :
-    Notations.DoubleColon Self "prepend" := {
-    Notations.double_colon := prepend;
-  }.
+  Axiom prepend_is_impl : impl Self "prepend" = prepend.
   
   (*
       fn len(&self) -> u32 {
@@ -72,9 +67,7 @@ Section Impl_enums_testcase_linked_list_List_t.
   *)
   Parameter len : (ref Self) -> M u32.t.
   
-  Global Instance AssociatedFunction_len : Notations.DoubleColon Self "len" := {
-    Notations.double_colon := len;
-  }.
+  Axiom len_is_impl : impl Self "len" = len.
   
   (*
       fn stringify(&self) -> String {
@@ -92,10 +85,7 @@ Section Impl_enums_testcase_linked_list_List_t.
   *)
   Parameter stringify : (ref Self) -> M alloc.string.String.t.
   
-  Global Instance AssociatedFunction_stringify :
-    Notations.DoubleColon Self "stringify" := {
-    Notations.double_colon := stringify;
-  }.
+  Axiom stringify_is_impl : impl Self "stringify" = stringify.
 End Impl_enums_testcase_linked_list_List_t.
 End Impl_enums_testcase_linked_list_List_t.
 

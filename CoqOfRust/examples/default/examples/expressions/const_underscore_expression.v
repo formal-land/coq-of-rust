@@ -45,10 +45,7 @@ Section Impl_const_underscore_expression_BarTrait_for_const_underscore_expressio
     let* self := M.alloc self in
     M.read (const_underscore_expression.Bar.Get_test self).
   
-  Global Instance AssociatedFunction_show :
-    Notations.DoubleColon Self "show" := {
-    Notations.double_colon := show;
-  }.
+  Axiom show_is_impl : impl Self "show" = show.
   
   Global Instance ℐ : const_underscore_expression.BarTrait.Trait Self := {
     const_underscore_expression.BarTrait.show := show;

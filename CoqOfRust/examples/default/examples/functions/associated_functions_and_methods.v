@@ -33,10 +33,7 @@ Section Impl_associated_functions_and_methods_Point_t.
         associated_functions_and_methods.Point.x := α1;
       |}.
   
-  Global Instance AssociatedFunction_origin :
-    Notations.DoubleColon Self "origin" := {
-    Notations.double_colon := origin;
-  }.
+  Axiom origin_is_impl : impl Self "origin" = origin.
   
   (*
       fn new(x: f64, y: f64) -> Point {
@@ -57,9 +54,7 @@ Section Impl_associated_functions_and_methods_Point_t.
         associated_functions_and_methods.Point.y := α1;
       |}.
   
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
-    Notations.double_colon := new;
-  }.
+  Axiom new_is_impl : impl Self "new" = new.
 End Impl_associated_functions_and_methods_Point_t.
 End Impl_associated_functions_and_methods_Point_t.
 
@@ -93,10 +88,7 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
     let* α0 : ref associated_functions_and_methods.Rectangle.t := M.read self in
     M.read (associated_functions_and_methods.Rectangle.Get_p1 (deref α0)).
   
-  Global Instance AssociatedFunction_get_p1 :
-    Notations.DoubleColon Self "get_p1" := {
-    Notations.double_colon := get_p1;
-  }.
+  Axiom get_p1_is_impl : impl Self "get_p1" = get_p1.
   
   (*
       fn area(&self) -> f64 {
@@ -156,7 +148,7 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
                       let* α4 : f64.t := M.read y2 in
                       let* α5 : f64.t := BinOp.Panic.sub α3 α4 in
                       let* α6 : f64.t := BinOp.Panic.mul α2 α5 in
-                      let* α7 : f64.t := M.call (f64.t::["abs"] α6) in
+                      let* α7 : f64.t := M.call (impl f64.t "abs" α6) in
                       M.alloc α7
                     end) :
                     M (M.Val f64.t)
@@ -166,10 +158,7 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
         ] in
     M.read α1.
   
-  Global Instance AssociatedFunction_area :
-    Notations.DoubleColon Self "area" := {
-    Notations.double_colon := area;
-  }.
+  Axiom area_is_impl : impl Self "area" = area.
   
   (*
       fn perimeter(&self) -> f64 {
@@ -224,11 +213,11 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
                       let* α1 : f64.t := M.read x1 in
                       let* α2 : f64.t := M.read x2 in
                       let* α3 : f64.t := BinOp.Panic.sub α1 α2 in
-                      let* α4 : f64.t := M.call (f64.t::["abs"] α3) in
+                      let* α4 : f64.t := M.call (impl f64.t "abs" α3) in
                       let* α5 : f64.t := M.read y1 in
                       let* α6 : f64.t := M.read y2 in
                       let* α7 : f64.t := BinOp.Panic.sub α5 α6 in
-                      let* α8 : f64.t := M.call (f64.t::["abs"] α7) in
+                      let* α8 : f64.t := M.call (impl f64.t "abs" α7) in
                       let* α9 : f64.t := BinOp.Panic.add α4 α8 in
                       let* α10 : f64.t := BinOp.Panic.mul α0 α9 in
                       M.alloc α10
@@ -240,10 +229,7 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
         ] in
     M.read α1.
   
-  Global Instance AssociatedFunction_perimeter :
-    Notations.DoubleColon Self "perimeter" := {
-    Notations.double_colon := perimeter;
-  }.
+  Axiom perimeter_is_impl : impl Self "perimeter" = perimeter.
   
   (*
       fn translate(&mut self, x: f64, y: f64) {
@@ -305,10 +291,7 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
-  Global Instance AssociatedFunction_translate :
-    Notations.DoubleColon Self "translate" := {
-    Notations.double_colon := translate;
-  }.
+  Axiom translate_is_impl : impl Self "translate" = translate.
 End Impl_associated_functions_and_methods_Rectangle_t.
 End Impl_associated_functions_and_methods_Rectangle_t.
 
@@ -368,11 +351,11 @@ Section Impl_associated_functions_and_methods_Pair_t.
                     M.read (pointer_coercion "Unsize" α4) in
                   let* α6 : core.fmt.rt.Argument.t :=
                     M.call
-                      (core.fmt.rt.Argument.t::["new_display"]
+                      (impl core.fmt.rt.Argument.t "new_display"
                         (borrow first)) in
                   let* α7 : core.fmt.rt.Argument.t :=
                     M.call
-                      (core.fmt.rt.Argument.t::["new_display"]
+                      (impl core.fmt.rt.Argument.t "new_display"
                         (borrow second)) in
                   let* α8 : M.Val (array core.fmt.rt.Argument.t) :=
                     M.alloc [ α6; α7 ] in
@@ -381,7 +364,7 @@ Section Impl_associated_functions_and_methods_Pair_t.
                   let* α10 : ref (slice core.fmt.rt.Argument.t) :=
                     M.read (pointer_coercion "Unsize" α9) in
                   let* α11 : core.fmt.Arguments.t :=
-                    M.call (core.fmt.Arguments.t::["new_v1"] α5 α10) in
+                    M.call (impl core.fmt.Arguments.t "new_v1" α5 α10) in
                   let* α12 : unit := M.call (std.io.stdio._print α11) in
                   M.alloc α12 in
                 M.alloc tt in
@@ -391,10 +374,7 @@ Section Impl_associated_functions_and_methods_Pair_t.
         ] in
     M.read α0.
   
-  Global Instance AssociatedFunction_destroy :
-    Notations.DoubleColon Self "destroy" := {
-    Notations.double_colon := destroy;
-  }.
+  Axiom destroy_is_impl : impl Self "destroy" = destroy.
 End Impl_associated_functions_and_methods_Pair_t.
 End Impl_associated_functions_and_methods_Pair_t.
 
@@ -438,11 +418,11 @@ fn main() {
 Definition main : M unit :=
   let* rectangle : M.Val associated_functions_and_methods.Rectangle.t :=
     let* α0 : associated_functions_and_methods.Point.t :=
-      M.call associated_functions_and_methods.Point.t::["origin"] in
+      M.call (impl associated_functions_and_methods.Point.t "origin") in
     let* α1 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
     let* α2 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
     let* α3 : associated_functions_and_methods.Point.t :=
-      M.call (associated_functions_and_methods.Point.t::["new"] α1 α2) in
+      M.call (impl associated_functions_and_methods.Point.t "new" α1 α2) in
     M.alloc
       {|
         associated_functions_and_methods.Rectangle.p1 := α0;
@@ -459,18 +439,18 @@ Definition main : M unit :=
         M.read (pointer_coercion "Unsize" α3) in
       let* α5 : f64.t :=
         M.call
-          (associated_functions_and_methods.Rectangle.t::["perimeter"]
+          (impl associated_functions_and_methods.Rectangle.t "perimeter"
             (borrow rectangle)) in
       let* α6 : M.Val f64.t := M.alloc α5 in
       let* α7 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α6)) in
+        M.call (impl core.fmt.rt.Argument.t "new_display" (borrow α6)) in
       let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
       let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
         M.alloc (borrow α8) in
       let* α10 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α9) in
       let* α11 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_v1"] α4 α10) in
+        M.call (impl core.fmt.Arguments.t "new_v1" α4 α10) in
       let* α12 : unit := M.call (std.io.stdio._print α11) in
       M.alloc α12 in
     M.alloc tt in
@@ -485,28 +465,28 @@ Definition main : M unit :=
         M.read (pointer_coercion "Unsize" α3) in
       let* α5 : f64.t :=
         M.call
-          (associated_functions_and_methods.Rectangle.t::["area"]
+          (impl associated_functions_and_methods.Rectangle.t "area"
             (borrow rectangle)) in
       let* α6 : M.Val f64.t := M.alloc α5 in
       let* α7 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α6)) in
+        M.call (impl core.fmt.rt.Argument.t "new_display" (borrow α6)) in
       let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
       let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
         M.alloc (borrow α8) in
       let* α10 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α9) in
       let* α11 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_v1"] α4 α10) in
+        M.call (impl core.fmt.Arguments.t "new_v1" α4 α10) in
       let* α12 : unit := M.call (std.io.stdio._print α11) in
       M.alloc α12 in
     M.alloc tt in
   let* square : M.Val associated_functions_and_methods.Rectangle.t :=
     let* α0 : associated_functions_and_methods.Point.t :=
-      M.call associated_functions_and_methods.Point.t::["origin"] in
+      M.call (impl associated_functions_and_methods.Point.t "origin") in
     let* α1 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
     let* α2 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
     let* α3 : associated_functions_and_methods.Point.t :=
-      M.call (associated_functions_and_methods.Point.t::["new"] α1 α2) in
+      M.call (impl associated_functions_and_methods.Point.t "new" α1 α2) in
     M.alloc
       {|
         associated_functions_and_methods.Rectangle.p1 := α0;
@@ -517,7 +497,7 @@ Definition main : M unit :=
     let* α1 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
     let* α2 : unit :=
       M.call
-        (associated_functions_and_methods.Rectangle.t::["translate"]
+        (impl associated_functions_and_methods.Rectangle.t "translate"
           (borrow_mut square)
           α0
           α1) in
@@ -525,17 +505,17 @@ Definition main : M unit :=
   let* pair : M.Val associated_functions_and_methods.Pair.t :=
     let* α0 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t :=
       M.call
-        ((alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"]
+        (impl (alloc.boxed.Box.t i32.t alloc.alloc.Global.t) "new"
           ((Integer.of_Z 1) : i32.t)) in
     let* α1 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t :=
       M.call
-        ((alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"]
+        (impl (alloc.boxed.Box.t i32.t alloc.alloc.Global.t) "new"
           ((Integer.of_Z 2) : i32.t)) in
     M.alloc (associated_functions_and_methods.Pair.Build_t α0 α1) in
   let* _ : M.Val unit :=
     let* α0 : associated_functions_and_methods.Pair.t := M.read pair in
     let* α1 : unit :=
-      M.call (associated_functions_and_methods.Pair.t::["destroy"] α0) in
+      M.call (impl associated_functions_and_methods.Pair.t "destroy" α0) in
     M.alloc α1 in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.

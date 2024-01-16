@@ -21,10 +21,7 @@ Section Impl_core_default_Default_for_contract_ref_AccountId_t.
   *)
   Parameter default : M contract_ref.AccountId.t.
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -41,10 +38,7 @@ Section Impl_core_clone_Clone_for_contract_ref_AccountId_t.
   *)
   Parameter clone : (ref Self) -> M contract_ref.AccountId.t.
   
-  Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon Self "clone" := {
-    Notations.double_colon := clone;
-  }.
+  Axiom clone_is_impl : impl Self "clone" = clone.
   
   Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
@@ -104,9 +98,7 @@ Section Impl_core_fmt_Debug_for_contract_ref_FlipperError_t.
   Parameter fmt :
       (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
   
-  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
-    Notations.double_colon := fmt;
-  }.
+  Axiom fmt_is_impl : impl Self "fmt" = fmt.
   
   Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
@@ -125,10 +117,7 @@ Section Impl_contract_ref_FlipperRef_t.
   *)
   Parameter init_env : M contract_ref.Env.t.
   
-  Global Instance AssociatedFunction_init_env :
-    Notations.DoubleColon Self "init_env" := {
-    Notations.double_colon := init_env;
-  }.
+  Axiom init_env_is_impl : impl Self "init_env" = init_env.
   
   (*
       fn env(&self) -> Env {
@@ -137,9 +126,7 @@ Section Impl_contract_ref_FlipperRef_t.
   *)
   Parameter env : (ref Self) -> M contract_ref.Env.t.
   
-  Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
-    Notations.double_colon := env;
-  }.
+  Axiom env_is_impl : impl Self "env" = env.
   
   (*
       pub fn new(init_value: bool) -> Self {
@@ -148,9 +135,7 @@ Section Impl_contract_ref_FlipperRef_t.
   *)
   Parameter new : bool.t -> M Self.
   
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
-    Notations.double_colon := new;
-  }.
+  Axiom new_is_impl : impl Self "new" = new.
   
   (*
       pub fn new_default() -> Self {
@@ -159,10 +144,7 @@ Section Impl_contract_ref_FlipperRef_t.
   *)
   Parameter new_default : M Self.
   
-  Global Instance AssociatedFunction_new_default :
-    Notations.DoubleColon Self "new_default" := {
-    Notations.double_colon := new_default;
-  }.
+  Axiom new_default_is_impl : impl Self "new_default" = new_default.
   
   (*
       pub fn try_new(succeed: bool) -> Result<Self, FlipperError> {
@@ -176,10 +158,7 @@ Section Impl_contract_ref_FlipperRef_t.
   Parameter try_new :
       bool.t -> M (core.result.Result.t Self contract_ref.FlipperError.t).
   
-  Global Instance AssociatedFunction_try_new :
-    Notations.DoubleColon Self "try_new" := {
-    Notations.double_colon := try_new;
-  }.
+  Axiom try_new_is_impl : impl Self "try_new" = try_new.
   
   (*
       pub fn flip(&mut self) {
@@ -188,10 +167,7 @@ Section Impl_contract_ref_FlipperRef_t.
   *)
   Parameter flip : (mut_ref Self) -> M unit.
   
-  Global Instance AssociatedFunction_flip :
-    Notations.DoubleColon Self "flip" := {
-    Notations.double_colon := flip;
-  }.
+  Axiom flip_is_impl : impl Self "flip" = flip.
   
   (*
       pub fn get(&self) -> bool {
@@ -200,9 +176,7 @@ Section Impl_contract_ref_FlipperRef_t.
   *)
   Parameter get : (ref Self) -> M bool.t.
   
-  Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
-    Notations.double_colon := get;
-  }.
+  Axiom get_is_impl : impl Self "get" = get.
 End Impl_contract_ref_FlipperRef_t.
 End Impl_contract_ref_FlipperRef_t.
 
@@ -237,9 +211,7 @@ Section Impl_contract_ref_ContractRef_t.
   *)
   Parameter new : u32.t -> ltac:(contract_ref.Hash) -> M Self.
   
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
-    Notations.double_colon := new;
-  }.
+  Axiom new_is_impl : impl Self "new" = new.
   
   (*
       pub fn try_new(version: u32, flipper_code_hash: Hash, succeed: bool) -> Self {
@@ -261,10 +233,7 @@ Section Impl_contract_ref_ContractRef_t.
   *)
   Parameter try_new : u32.t -> ltac:(contract_ref.Hash) -> bool.t -> M Self.
   
-  Global Instance AssociatedFunction_try_new :
-    Notations.DoubleColon Self "try_new" := {
-    Notations.double_colon := try_new;
-  }.
+  Axiom try_new_is_impl : impl Self "try_new" = try_new.
   
   (*
       pub fn flip(&mut self) {
@@ -273,10 +242,7 @@ Section Impl_contract_ref_ContractRef_t.
   *)
   Parameter flip : (mut_ref Self) -> M unit.
   
-  Global Instance AssociatedFunction_flip :
-    Notations.DoubleColon Self "flip" := {
-    Notations.double_colon := flip;
-  }.
+  Axiom flip_is_impl : impl Self "flip" = flip.
   
   (*
       pub fn get(&mut self) -> bool {
@@ -285,8 +251,6 @@ Section Impl_contract_ref_ContractRef_t.
   *)
   Parameter get : (mut_ref Self) -> M bool.t.
   
-  Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
-    Notations.double_colon := get;
-  }.
+  Axiom get_is_impl : impl Self "get" = get.
 End Impl_contract_ref_ContractRef_t.
 End Impl_contract_ref_ContractRef_t.

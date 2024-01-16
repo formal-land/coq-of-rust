@@ -26,10 +26,7 @@ Section Impl_core_default_Default_for_updated_incrementer_AccountId_t.
     let* α1 : u128.t := M.call α0 in
     M.pure (updated_incrementer.AccountId.Build_t α1).
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -58,10 +55,7 @@ Section Impl_core_clone_Clone_for_updated_incrementer_AccountId_t.
         ] in
     M.read α0.
   
-  Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon Self "clone" := {
-    Notations.double_colon := clone;
-  }.
+  Axiom clone_is_impl : impl Self "clone" = clone.
   
   Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
@@ -117,10 +111,9 @@ Section Impl_updated_incrementer_Env_t.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_set_code_hash {E : Set} :
-    Notations.DoubleColon Self "set_code_hash" := {
-    Notations.double_colon := set_code_hash (E := E);
-  }.
+  Axiom set_code_hash_is_impl :
+      forall {E : Set},
+      impl Self "set_code_hash" = set_code_hash (E := E).
 End Impl_updated_incrementer_Env_t.
 End Impl_updated_incrementer_Env_t.
 
@@ -149,10 +142,7 @@ Section Impl_updated_incrementer_Incrementer_t.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_init_env :
-    Notations.DoubleColon Self "init_env" := {
-    Notations.double_colon := init_env;
-  }.
+  Axiom init_env_is_impl : impl Self "init_env" = init_env.
   
   (*
       fn env(&self) -> Env {
@@ -161,11 +151,9 @@ Section Impl_updated_incrementer_Incrementer_t.
   *)
   Definition env (self : ref Self) : M updated_incrementer.Env.t :=
     let* self := M.alloc self in
-    M.call updated_incrementer.Incrementer.t::["init_env"].
+    M.call (impl updated_incrementer.Incrementer.t "init_env").
   
-  Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
-    Notations.double_colon := env;
-  }.
+  Axiom env_is_impl : impl Self "env" = env.
   
   (*
       pub fn new() -> Self {
@@ -181,9 +169,7 @@ Section Impl_updated_incrementer_Incrementer_t.
               "Constructors are not called when upgrading using `set_code_hash`."))) in
     never_to_any α0.
   
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
-    Notations.double_colon := new;
-  }.
+  Axiom new_is_impl : impl Self "new" = new.
   
   (*
       pub fn inc(&mut self) {
@@ -218,7 +204,7 @@ Section Impl_updated_incrementer_Incrementer_t.
         let* α5 : mut_ref updated_incrementer.Incrementer.t := M.read self in
         let* α6 : core.fmt.rt.Argument.t :=
           M.call
-            (core.fmt.rt.Argument.t::["new_display"]
+            (impl core.fmt.rt.Argument.t "new_display"
               (borrow
                 (updated_incrementer.Incrementer.Get_count (deref α5)))) in
         let* α7 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α6 ] in
@@ -227,16 +213,14 @@ Section Impl_updated_incrementer_Incrementer_t.
         let* α9 : ref (slice core.fmt.rt.Argument.t) :=
           M.read (pointer_coercion "Unsize" α8) in
         let* α10 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_v1"] α4 α9) in
+          M.call (impl core.fmt.Arguments.t "new_v1" α4 α9) in
         let* α11 : unit := M.call (std.io.stdio._print α10) in
         M.alloc α11 in
       M.alloc tt in
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
-  Global Instance AssociatedFunction_inc : Notations.DoubleColon Self "inc" := {
-    Notations.double_colon := inc;
-  }.
+  Axiom inc_is_impl : impl Self "inc" = inc.
   
   (*
       pub fn get(&self) -> u32 {
@@ -248,9 +232,7 @@ Section Impl_updated_incrementer_Incrementer_t.
     let* α0 : ref updated_incrementer.Incrementer.t := M.read self in
     M.read (updated_incrementer.Incrementer.Get_count (deref α0)).
   
-  Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
-    Notations.double_colon := get;
-  }.
+  Axiom get_is_impl : impl Self "get" = get.
   
   (*
       pub fn set_code(&mut self, code_hash: Hash) {
@@ -270,18 +252,18 @@ Section Impl_updated_incrementer_Incrementer_t.
       let* α0 : mut_ref updated_incrementer.Incrementer.t := M.read self in
       let* α1 : updated_incrementer.Env.t :=
         M.call
-          (updated_incrementer.Incrementer.t::["env"] (borrow (deref α0))) in
+          (impl updated_incrementer.Incrementer.t "env" (borrow (deref α0))) in
       let* α2 : M.Val updated_incrementer.Env.t := M.alloc α1 in
       let* α3 : core.result.Result.t unit updated_incrementer.Error.t :=
         M.call
-          (updated_incrementer.Env.t::["set_code_hash"]
+          (impl updated_incrementer.Env.t "set_code_hash"
             (borrow α2)
             (borrow code_hash)) in
       let* α4 : unit :=
         M.call
-          ((core.result.Result.t
-                unit
-                updated_incrementer.Error.t)::["unwrap_or_else"]
+          (impl
+              (core.result.Result.t unit updated_incrementer.Error.t)
+              "unwrap_or_else"
             α3
             (fun (α0 : updated_incrementer.Error.t) =>
               (let* α0 := M.alloc α0 in
@@ -311,23 +293,20 @@ Section Impl_updated_incrementer_Incrementer_t.
         let* α4 : ref (slice (ref str.t)) :=
           M.read (pointer_coercion "Unsize" α3) in
         let* α5 : core.fmt.rt.Argument.t :=
-          M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow code_hash)) in
+          M.call (impl core.fmt.rt.Argument.t "new_debug" (borrow code_hash)) in
         let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
         let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
           M.alloc (borrow α6) in
         let* α8 : ref (slice core.fmt.rt.Argument.t) :=
           M.read (pointer_coercion "Unsize" α7) in
         let* α9 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
+          M.call (impl core.fmt.Arguments.t "new_v1" α4 α8) in
         let* α10 : unit := M.call (std.io.stdio._print α9) in
         M.alloc α10 in
       M.alloc tt in
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
-  Global Instance AssociatedFunction_set_code :
-    Notations.DoubleColon Self "set_code" := {
-    Notations.double_colon := set_code;
-  }.
+  Axiom set_code_is_impl : impl Self "set_code" = set_code.
 End Impl_updated_incrementer_Incrementer_t.
 End Impl_updated_incrementer_Incrementer_t.

@@ -28,7 +28,7 @@ Definition main : M unit :=
     let* α0 : ref str.t := M.read (mk_str "the same apple") in
     let* α1 : alloc.sync.Arc.t (ref str.t) alloc.alloc.Global.t :=
       M.call
-        ((alloc.sync.Arc.t (ref str.t) alloc.alloc.Global.t)::["new"] α0) in
+        (impl (alloc.sync.Arc.t (ref str.t) alloc.alloc.Global.t) "new" α0) in
     M.alloc α1 in
   let* _ : M.Val unit :=
     let* α0 : _ :=
@@ -116,7 +116,7 @@ Definition main : M unit :=
                                       M.read (pointer_coercion "Unsize" α3) in
                                     let* α5 : core.fmt.rt.Argument.t :=
                                       M.call
-                                        (core.fmt.rt.Argument.t::["new_debug"]
+                                        (impl core.fmt.rt.Argument.t "new_debug"
                                           (borrow apple)) in
                                     let* α6 :
                                         M.Val (array core.fmt.rt.Argument.t) :=
@@ -131,7 +131,7 @@ Definition main : M unit :=
                                       M.read (pointer_coercion "Unsize" α7) in
                                     let* α9 : core.fmt.Arguments.t :=
                                       M.call
-                                        (core.fmt.Arguments.t::["new_v1"]
+                                        (impl core.fmt.Arguments.t "new_v1"
                                           α4
                                           α8) in
                                     let* α10 : unit :=
@@ -153,7 +153,8 @@ Definition main : M unit :=
     M.pure (use α3) in
   let* _ : M.Val unit :=
     let* α0 : core.time.Duration.t :=
-      M.call (core.time.Duration.t::["from_secs"] ((Integer.of_Z 1) : u64.t)) in
+      M.call
+        (impl core.time.Duration.t "from_secs" ((Integer.of_Z 1) : u64.t)) in
     let* α1 : unit := M.call (std.thread.sleep α0) in
     M.alloc α1 in
   let* α0 : M.Val unit := M.alloc tt in

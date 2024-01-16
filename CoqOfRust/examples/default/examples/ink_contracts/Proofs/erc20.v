@@ -221,6 +221,9 @@ Lemma run_env (env : erc20.Env.t) (storage : erc20.Erc20.t) :
   | state }}.
 Proof.
   run_symbolic.
+  pose proof (H := erc20.Impl_erc20_Erc20_t.init_env_is_impl).
+  unfold erc20.Impl_erc20_Erc20_t.Self in H.
+  rewrite H.
   eapply Run.Call. {
     run_symbolic.
   }

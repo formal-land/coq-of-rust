@@ -23,10 +23,7 @@ Section Impl_example05_Foo_t.
   *)
   Parameter plus1 : Self -> M u32.t.
   
-  Global Instance AssociatedFunction_plus1 :
-    Notations.DoubleColon Self "plus1" := {
-    Notations.double_colon := plus1;
-  }.
+  Axiom plus1_is_impl : impl Self "plus1" = plus1.
 End Impl_example05_Foo_t.
 End Impl_example05_Foo_t.
 

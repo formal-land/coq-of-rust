@@ -97,10 +97,7 @@ Section Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType_t.
   *)
   Definition some_fn : M unit := M.pure tt.
   
-  Global Instance AssociatedFunction_some_fn :
-    Notations.DoubleColon Self "some_fn" := {
-    Notations.double_colon := some_fn;
-  }.
+  Axiom some_fn_is_impl : impl Self "some_fn" = some_fn.
   
   Global Instance ℐ : traits_parms.SomeTrait.Trait Self := {
     traits_parms.SomeTrait.SomeType := SomeType;

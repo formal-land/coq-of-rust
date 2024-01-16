@@ -26,10 +26,7 @@ Section Impl_core_default_Default_for_e2e_call_runtime_AccountId_t.
     let* α1 : u128.t := M.call α0 in
     M.pure (e2e_call_runtime.AccountId.Build_t α1).
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -58,10 +55,7 @@ Section Impl_core_clone_Clone_for_e2e_call_runtime_AccountId_t.
         ] in
     M.read α0.
   
-  Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon Self "clone" := {
-    Notations.double_colon := clone;
-  }.
+  Axiom clone_is_impl : impl Self "clone" = clone.
   
   Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
@@ -107,10 +101,7 @@ Section Impl_e2e_call_runtime_Env_t.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_balance :
-    Notations.DoubleColon Self "balance" := {
-    Notations.double_colon := balance;
-  }.
+  Axiom balance_is_impl : impl Self "balance" = balance.
 End Impl_e2e_call_runtime_Env_t.
 End Impl_e2e_call_runtime_Env_t.
 
@@ -130,10 +121,7 @@ Section Impl_core_default_Default_for_e2e_call_runtime_Contract_t.
   Definition default : M e2e_call_runtime.Contract.t :=
     M.pure e2e_call_runtime.Contract.Build.
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -155,10 +143,7 @@ Section Impl_e2e_call_runtime_Contract_t.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_init_env :
-    Notations.DoubleColon Self "init_env" := {
-    Notations.double_colon := init_env;
-  }.
+  Axiom init_env_is_impl : impl Self "init_env" = init_env.
   
   (*
       fn env(&self) -> Env {
@@ -167,11 +152,9 @@ Section Impl_e2e_call_runtime_Contract_t.
   *)
   Definition env (self : ref Self) : M e2e_call_runtime.Env.t :=
     let* self := M.alloc self in
-    M.call e2e_call_runtime.Contract.t::["init_env"].
+    M.call (impl e2e_call_runtime.Contract.t "init_env").
   
-  Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
-    Notations.double_colon := env;
-  }.
+  Axiom env_is_impl : impl Self "env" = env.
   
   (*
       pub fn new() -> Self {
@@ -180,9 +163,7 @@ Section Impl_e2e_call_runtime_Contract_t.
   *)
   Definition new : M Self := M.pure e2e_call_runtime.Contract.Build.
   
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
-    Notations.double_colon := new;
-  }.
+  Axiom new_is_impl : impl Self "new" = new.
   
   (*
       pub fn get_contract_balance(&self) -> Balance {
@@ -195,13 +176,11 @@ Section Impl_e2e_call_runtime_Contract_t.
     let* self := M.alloc self in
     let* α0 : ref e2e_call_runtime.Contract.t := M.read self in
     let* α1 : e2e_call_runtime.Env.t :=
-      M.call (e2e_call_runtime.Contract.t::["env"] α0) in
+      M.call (impl e2e_call_runtime.Contract.t "env" α0) in
     let* α2 : M.Val e2e_call_runtime.Env.t := M.alloc α1 in
-    M.call (e2e_call_runtime.Env.t::["balance"] (borrow α2)).
+    M.call (impl e2e_call_runtime.Env.t "balance" (borrow α2)).
   
-  Global Instance AssociatedFunction_get_contract_balance :
-    Notations.DoubleColon Self "get_contract_balance" := {
-    Notations.double_colon := get_contract_balance;
-  }.
+  Axiom get_contract_balance_is_impl :
+      impl Self "get_contract_balance" = get_contract_balance.
 End Impl_e2e_call_runtime_Contract_t.
 End Impl_e2e_call_runtime_Contract_t.

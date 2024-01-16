@@ -71,10 +71,7 @@ Section Impl_generics_associated_types_problem_Contains_i32_t_i32_t_for_generics
     let* α7 : bool.t := M.call (α4 (borrow α6) (borrow number_2)) in
     M.pure (BinOp.Pure.and α3 α7).
   
-  Global Instance AssociatedFunction_contains :
-    Notations.DoubleColon Self "contains" := {
-    Notations.double_colon := contains;
-  }.
+  Axiom contains_is_impl : impl Self "contains" = contains.
   
   (*
       fn first(&self) -> i32 {
@@ -87,10 +84,7 @@ Section Impl_generics_associated_types_problem_Contains_i32_t_i32_t_for_generics
       M.read self in
     M.read (generics_associated_types_problem.Container.Get_0 (deref α0)).
   
-  Global Instance AssociatedFunction_first :
-    Notations.DoubleColon Self "first" := {
-    Notations.double_colon := first;
-  }.
+  Axiom first_is_impl : impl Self "first" = first.
   
   (*
       fn last(&self) -> i32 {
@@ -103,10 +97,7 @@ Section Impl_generics_associated_types_problem_Contains_i32_t_i32_t_for_generics
       M.read self in
     M.read (generics_associated_types_problem.Container.Get_1 (deref α0)).
   
-  Global Instance AssociatedFunction_last :
-    Notations.DoubleColon Self "last" := {
-    Notations.double_colon := last;
-  }.
+  Axiom last_is_impl : impl Self "last" = last.
   
   Global Instance ℐ :
     generics_associated_types_problem.Contains.Trait Self
@@ -193,10 +184,10 @@ Definition main : M unit :=
         M.read (pointer_coercion "Unsize" α5) in
       let* α7 : M.Val (ref i32.t) := M.alloc (borrow number_1) in
       let* α8 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α7)) in
+        M.call (impl core.fmt.rt.Argument.t "new_display" (borrow α7)) in
       let* α9 : M.Val (ref i32.t) := M.alloc (borrow number_2) in
       let* α10 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α9)) in
+        M.call (impl core.fmt.rt.Argument.t "new_display" (borrow α9)) in
       let* α11 : _ :=
         ltac:(M.get_method (fun ℐ =>
           generics_associated_types_problem.Contains.contains
@@ -208,7 +199,7 @@ Definition main : M unit :=
         M.call (α11 (borrow container) (borrow number_1) (borrow number_2)) in
       let* α13 : M.Val bool.t := M.alloc α12 in
       let* α14 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α13)) in
+        M.call (impl core.fmt.rt.Argument.t "new_display" (borrow α13)) in
       let* α15 : M.Val (array core.fmt.rt.Argument.t) :=
         M.alloc [ α8; α10; α14 ] in
       let* α16 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -216,7 +207,7 @@ Definition main : M unit :=
       let* α17 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α16) in
       let* α18 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_v1"] α6 α17) in
+        M.call (impl core.fmt.Arguments.t "new_v1" α6 α17) in
       let* α19 : unit := M.call (std.io.stdio._print α18) in
       M.alloc α19 in
     M.alloc tt in
@@ -239,14 +230,14 @@ Definition main : M unit :=
       let* α6 : i32.t := M.call (α5 (borrow container)) in
       let* α7 : M.Val i32.t := M.alloc α6 in
       let* α8 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α7)) in
+        M.call (impl core.fmt.rt.Argument.t "new_display" (borrow α7)) in
       let* α9 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α8 ] in
       let* α10 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
         M.alloc (borrow α9) in
       let* α11 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α10) in
       let* α12 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_v1"] α4 α11) in
+        M.call (impl core.fmt.Arguments.t "new_v1" α4 α11) in
       let* α13 : unit := M.call (std.io.stdio._print α12) in
       M.alloc α13 in
     M.alloc tt in
@@ -269,14 +260,14 @@ Definition main : M unit :=
       let* α6 : i32.t := M.call (α5 (borrow container)) in
       let* α7 : M.Val i32.t := M.alloc α6 in
       let* α8 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α7)) in
+        M.call (impl core.fmt.rt.Argument.t "new_display" (borrow α7)) in
       let* α9 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α8 ] in
       let* α10 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
         M.alloc (borrow α9) in
       let* α11 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α10) in
       let* α12 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_v1"] α4 α11) in
+        M.call (impl core.fmt.Arguments.t "new_v1" α4 α11) in
       let* α13 : unit := M.call (std.io.stdio._print α12) in
       M.alloc α13 in
     M.alloc tt in
@@ -294,14 +285,14 @@ Definition main : M unit :=
           (generics_associated_types_problem.difference (borrow container)) in
       let* α6 : M.Val i32.t := M.alloc α5 in
       let* α7 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α6)) in
+        M.call (impl core.fmt.rt.Argument.t "new_display" (borrow α6)) in
       let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
       let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
         M.alloc (borrow α8) in
       let* α10 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α9) in
       let* α11 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_v1"] α4 α10) in
+        M.call (impl core.fmt.Arguments.t "new_v1" α4 α10) in
       let* α12 : unit := M.call (std.io.stdio._print α11) in
       M.alloc α12 in
     M.alloc tt in

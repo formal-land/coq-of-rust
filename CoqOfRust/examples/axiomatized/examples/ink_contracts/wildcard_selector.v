@@ -25,9 +25,7 @@ Section Impl_wildcard_selector_WildcardSelector_t.
   *)
   Parameter new : M Self.
   
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
-    Notations.double_colon := new;
-  }.
+  Axiom new_is_impl : impl Self "new" = new.
   
   (*
       pub fn wildcard(&mut self) {
@@ -37,10 +35,7 @@ Section Impl_wildcard_selector_WildcardSelector_t.
   *)
   Parameter wildcard : (mut_ref Self) -> M unit.
   
-  Global Instance AssociatedFunction_wildcard :
-    Notations.DoubleColon Self "wildcard" := {
-    Notations.double_colon := wildcard;
-  }.
+  Axiom wildcard_is_impl : impl Self "wildcard" = wildcard.
   
   (*
       pub fn wildcard_complement(&mut self, _message: String) {
@@ -50,9 +45,7 @@ Section Impl_wildcard_selector_WildcardSelector_t.
   Parameter wildcard_complement :
       (mut_ref Self) -> alloc.string.String.t -> M unit.
   
-  Global Instance AssociatedFunction_wildcard_complement :
-    Notations.DoubleColon Self "wildcard_complement" := {
-    Notations.double_colon := wildcard_complement;
-  }.
+  Axiom wildcard_complement_is_impl :
+      impl Self "wildcard_complement" = wildcard_complement.
 End Impl_wildcard_selector_WildcardSelector_t.
 End Impl_wildcard_selector_WildcardSelector_t.

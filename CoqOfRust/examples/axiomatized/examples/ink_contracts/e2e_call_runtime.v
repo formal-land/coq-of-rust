@@ -21,10 +21,7 @@ Section Impl_core_default_Default_for_e2e_call_runtime_AccountId_t.
   *)
   Parameter default : M e2e_call_runtime.AccountId.t.
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -41,10 +38,7 @@ Section Impl_core_clone_Clone_for_e2e_call_runtime_AccountId_t.
   *)
   Parameter clone : (ref Self) -> M e2e_call_runtime.AccountId.t.
   
-  Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon Self "clone" := {
-    Notations.double_colon := clone;
-  }.
+  Axiom clone_is_impl : impl Self "clone" = clone.
   
   Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
@@ -86,10 +80,7 @@ Section Impl_e2e_call_runtime_Env_t.
   *)
   Parameter balance : (ref Self) -> M ltac:(e2e_call_runtime.Balance).
   
-  Global Instance AssociatedFunction_balance :
-    Notations.DoubleColon Self "balance" := {
-    Notations.double_colon := balance;
-  }.
+  Axiom balance_is_impl : impl Self "balance" = balance.
 End Impl_e2e_call_runtime_Env_t.
 End Impl_e2e_call_runtime_Env_t.
 
@@ -108,10 +99,7 @@ Section Impl_core_default_Default_for_e2e_call_runtime_Contract_t.
   *)
   Parameter default : M e2e_call_runtime.Contract.t.
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -130,10 +118,7 @@ Section Impl_e2e_call_runtime_Contract_t.
   *)
   Parameter init_env : M e2e_call_runtime.Env.t.
   
-  Global Instance AssociatedFunction_init_env :
-    Notations.DoubleColon Self "init_env" := {
-    Notations.double_colon := init_env;
-  }.
+  Axiom init_env_is_impl : impl Self "init_env" = init_env.
   
   (*
       fn env(&self) -> Env {
@@ -142,9 +127,7 @@ Section Impl_e2e_call_runtime_Contract_t.
   *)
   Parameter env : (ref Self) -> M e2e_call_runtime.Env.t.
   
-  Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
-    Notations.double_colon := env;
-  }.
+  Axiom env_is_impl : impl Self "env" = env.
   
   (*
       pub fn new() -> Self {
@@ -153,9 +136,7 @@ Section Impl_e2e_call_runtime_Contract_t.
   *)
   Parameter new : M Self.
   
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
-    Notations.double_colon := new;
-  }.
+  Axiom new_is_impl : impl Self "new" = new.
   
   (*
       pub fn get_contract_balance(&self) -> Balance {
@@ -165,9 +146,7 @@ Section Impl_e2e_call_runtime_Contract_t.
   Parameter get_contract_balance :
       (ref Self) -> M ltac:(e2e_call_runtime.Balance).
   
-  Global Instance AssociatedFunction_get_contract_balance :
-    Notations.DoubleColon Self "get_contract_balance" := {
-    Notations.double_colon := get_contract_balance;
-  }.
+  Axiom get_contract_balance_is_impl :
+      impl Self "get_contract_balance" = get_contract_balance.
 End Impl_e2e_call_runtime_Contract_t.
 End Impl_e2e_call_runtime_Contract_t.

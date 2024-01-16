@@ -33,10 +33,7 @@ Section Impl_core_default_Default_for_call_builder_delegate_CallBuilderDelegateT
     let* α1 : i32.t := M.call α0 in
     M.pure {| call_builder_delegate.CallBuilderDelegateTest.value := α1; |}.
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -58,9 +55,7 @@ Section Impl_call_builder_delegate_CallBuilderDelegateTest_t.
     let* α0 : i32.t := M.read value in
     M.pure {| call_builder_delegate.CallBuilderDelegateTest.value := α0; |}.
   
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
-    Notations.double_colon := new;
-  }.
+  Axiom new_is_impl : impl Self "new" = new.
   
   (*
       pub fn delegate(&mut self, code_hash: Hash, selector: [u8; 4]) -> Option<LangError> {
@@ -91,10 +86,7 @@ Section Impl_call_builder_delegate_CallBuilderDelegateTest_t.
     let* selector := M.alloc selector in
     M.pure core.option.Option.None.
   
-  Global Instance AssociatedFunction_delegate :
-    Notations.DoubleColon Self "delegate" := {
-    Notations.double_colon := delegate;
-  }.
+  Axiom delegate_is_impl : impl Self "delegate" = delegate.
   
   (*
       pub fn invoke(&mut self, code_hash: Hash, selector: [u8; 4]) -> i32 {
@@ -118,9 +110,6 @@ Section Impl_call_builder_delegate_CallBuilderDelegateTest_t.
     let* selector := M.alloc selector in
     M.pure ((Integer.of_Z 0) : i32.t).
   
-  Global Instance AssociatedFunction_invoke :
-    Notations.DoubleColon Self "invoke" := {
-    Notations.double_colon := invoke;
-  }.
+  Axiom invoke_is_impl : impl Self "invoke" = invoke.
 End Impl_call_builder_delegate_CallBuilderDelegateTest_t.
 End Impl_call_builder_delegate_CallBuilderDelegateTest_t.

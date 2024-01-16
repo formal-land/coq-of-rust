@@ -32,10 +32,7 @@ Section Impl_core_default_Default_for_mapping_integration_tests_Mapping_t_K_V.
   *)
   Parameter default : M (mapping_integration_tests.Mapping.t K V).
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -56,10 +53,7 @@ Section Impl_mapping_integration_tests_Mapping_t_K_V.
   *)
   Parameter contains : (ref Self) -> (ref K) -> M bool.t.
   
-  Global Instance AssociatedFunction_contains :
-    Notations.DoubleColon Self "contains" := {
-    Notations.double_colon := contains;
-  }.
+  Axiom contains_is_impl : impl Self "contains" = contains.
   
   (*
       fn get(&self, _key: &K) -> Option<V> {
@@ -68,9 +62,7 @@ Section Impl_mapping_integration_tests_Mapping_t_K_V.
   *)
   Parameter get : (ref Self) -> (ref K) -> M (core.option.Option.t V).
   
-  Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
-    Notations.double_colon := get;
-  }.
+  Axiom get_is_impl : impl Self "get" = get.
   
   (*
       fn insert(&mut self, _key: K, _value: V) -> Option<u32> {
@@ -79,10 +71,7 @@ Section Impl_mapping_integration_tests_Mapping_t_K_V.
   *)
   Parameter insert : (mut_ref Self) -> K -> V -> M (core.option.Option.t u32.t).
   
-  Global Instance AssociatedFunction_insert :
-    Notations.DoubleColon Self "insert" := {
-    Notations.double_colon := insert;
-  }.
+  Axiom insert_is_impl : impl Self "insert" = insert.
   
   (*
       fn new() -> Mapping<K, V> {
@@ -91,9 +80,7 @@ Section Impl_mapping_integration_tests_Mapping_t_K_V.
   *)
   Parameter new : M (mapping_integration_tests.Mapping.t K V).
   
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
-    Notations.double_colon := new;
-  }.
+  Axiom new_is_impl : impl Self "new" = new.
   
   (*
       fn remove(&self, _key: K) {
@@ -102,10 +89,7 @@ Section Impl_mapping_integration_tests_Mapping_t_K_V.
   *)
   Parameter remove : (ref Self) -> K -> M unit.
   
-  Global Instance AssociatedFunction_remove :
-    Notations.DoubleColon Self "remove" := {
-    Notations.double_colon := remove;
-  }.
+  Axiom remove_is_impl : impl Self "remove" = remove.
   
   (*
       fn size(&self, _key: K) -> Option<u32> {
@@ -114,10 +98,7 @@ Section Impl_mapping_integration_tests_Mapping_t_K_V.
   *)
   Parameter size : (ref Self) -> K -> M (core.option.Option.t u32.t).
   
-  Global Instance AssociatedFunction_size :
-    Notations.DoubleColon Self "size" := {
-    Notations.double_colon := size;
-  }.
+  Axiom size_is_impl : impl Self "size" = size.
   
   (*
       fn take(&self, _key: K) -> Option<V> {
@@ -126,10 +107,7 @@ Section Impl_mapping_integration_tests_Mapping_t_K_V.
   *)
   Parameter take : (ref Self) -> K -> M (core.option.Option.t V).
   
-  Global Instance AssociatedFunction_take :
-    Notations.DoubleColon Self "take" := {
-    Notations.double_colon := take;
-  }.
+  Axiom take_is_impl : impl Self "take" = take.
 End Impl_mapping_integration_tests_Mapping_t_K_V.
 End Impl_mapping_integration_tests_Mapping_t_K_V.
 
@@ -153,10 +131,7 @@ Section Impl_core_default_Default_for_mapping_integration_tests_AccountId_t.
   *)
   Parameter default : M mapping_integration_tests.AccountId.t.
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -173,10 +148,7 @@ Section Impl_core_clone_Clone_for_mapping_integration_tests_AccountId_t.
   *)
   Parameter clone : (ref Self) -> M mapping_integration_tests.AccountId.t.
   
-  Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon Self "clone" := {
-    Notations.double_colon := clone;
-  }.
+  Axiom clone_is_impl : impl Self "clone" = clone.
   
   Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
@@ -218,10 +190,7 @@ Section Impl_mapping_integration_tests_Env_t.
   *)
   Parameter caller : (ref Self) -> M mapping_integration_tests.AccountId.t.
   
-  Global Instance AssociatedFunction_caller :
-    Notations.DoubleColon Self "caller" := {
-    Notations.double_colon := caller;
-  }.
+  Axiom caller_is_impl : impl Self "caller" = caller.
 End Impl_mapping_integration_tests_Env_t.
 End Impl_mapping_integration_tests_Env_t.
 
@@ -250,10 +219,7 @@ Section Impl_core_default_Default_for_mapping_integration_tests_Mappings_t.
   *)
   Parameter default : M mapping_integration_tests.Mappings.t.
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -272,10 +238,7 @@ Section Impl_mapping_integration_tests_Mappings_t.
   *)
   Parameter init_env : M mapping_integration_tests.Env.t.
   
-  Global Instance AssociatedFunction_init_env :
-    Notations.DoubleColon Self "init_env" := {
-    Notations.double_colon := init_env;
-  }.
+  Axiom init_env_is_impl : impl Self "init_env" = init_env.
   
   (*
       fn env() -> Env {
@@ -284,9 +247,7 @@ Section Impl_mapping_integration_tests_Mappings_t.
   *)
   Parameter env : M mapping_integration_tests.Env.t.
   
-  Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
-    Notations.double_colon := env;
-  }.
+  Axiom env_is_impl : impl Self "env" = env.
   
   (*
       pub fn new() -> Self {
@@ -296,9 +257,7 @@ Section Impl_mapping_integration_tests_Mappings_t.
   *)
   Parameter new : M Self.
   
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
-    Notations.double_colon := new;
-  }.
+  Axiom new_is_impl : impl Self "new" = new.
   
   (*
       pub fn get_balance(&self) -> Option<Balance> {
@@ -310,10 +269,7 @@ Section Impl_mapping_integration_tests_Mappings_t.
       (ref Self) ->
         M (core.option.Option.t ltac:(mapping_integration_tests.Balance)).
   
-  Global Instance AssociatedFunction_get_balance :
-    Notations.DoubleColon Self "get_balance" := {
-    Notations.double_colon := get_balance;
-  }.
+  Axiom get_balance_is_impl : impl Self "get_balance" = get_balance.
   
   (*
       pub fn insert_balance(&mut self, value: Balance) -> Option<u32> {
@@ -326,10 +282,7 @@ Section Impl_mapping_integration_tests_Mappings_t.
         ltac:(mapping_integration_tests.Balance) ->
         M (core.option.Option.t u32.t).
   
-  Global Instance AssociatedFunction_insert_balance :
-    Notations.DoubleColon Self "insert_balance" := {
-    Notations.double_colon := insert_balance;
-  }.
+  Axiom insert_balance_is_impl : impl Self "insert_balance" = insert_balance.
   
   (*
       pub fn size_balance(&mut self) -> Option<u32> {
@@ -339,10 +292,7 @@ Section Impl_mapping_integration_tests_Mappings_t.
   *)
   Parameter size_balance : (mut_ref Self) -> M (core.option.Option.t u32.t).
   
-  Global Instance AssociatedFunction_size_balance :
-    Notations.DoubleColon Self "size_balance" := {
-    Notations.double_colon := size_balance;
-  }.
+  Axiom size_balance_is_impl : impl Self "size_balance" = size_balance.
   
   (*
       pub fn contains_balance(&self) -> bool {
@@ -352,10 +302,8 @@ Section Impl_mapping_integration_tests_Mappings_t.
   *)
   Parameter contains_balance : (ref Self) -> M bool.t.
   
-  Global Instance AssociatedFunction_contains_balance :
-    Notations.DoubleColon Self "contains_balance" := {
-    Notations.double_colon := contains_balance;
-  }.
+  Axiom contains_balance_is_impl :
+      impl Self "contains_balance" = contains_balance.
   
   (*
       pub fn remove_balance(&mut self) {
@@ -365,10 +313,7 @@ Section Impl_mapping_integration_tests_Mappings_t.
   *)
   Parameter remove_balance : (mut_ref Self) -> M unit.
   
-  Global Instance AssociatedFunction_remove_balance :
-    Notations.DoubleColon Self "remove_balance" := {
-    Notations.double_colon := remove_balance;
-  }.
+  Axiom remove_balance_is_impl : impl Self "remove_balance" = remove_balance.
   
   (*
       pub fn take_balance(&mut self) -> Option<Balance> {
@@ -380,9 +325,6 @@ Section Impl_mapping_integration_tests_Mappings_t.
       (mut_ref Self) ->
         M (core.option.Option.t ltac:(mapping_integration_tests.Balance)).
   
-  Global Instance AssociatedFunction_take_balance :
-    Notations.DoubleColon Self "take_balance" := {
-    Notations.double_colon := take_balance;
-  }.
+  Axiom take_balance_is_impl : impl Self "take_balance" = take_balance.
 End Impl_mapping_integration_tests_Mappings_t.
 End Impl_mapping_integration_tests_Mappings_t.

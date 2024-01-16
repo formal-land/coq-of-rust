@@ -72,12 +72,9 @@ Module checked.
               M (M.Val (ref str.t))
           ] in
       let* α2 : ref str.t := M.read α1 in
-      M.call (core.fmt.Formatter.t::["write_str"] α0 α2).
+      M.call (impl core.fmt.Formatter.t "write_str" α0 α2).
     
-    Global Instance AssociatedFunction_fmt :
-      Notations.DoubleColon Self "fmt" := {
-      Notations.double_colon := fmt;
-    }.
+    Axiom fmt_is_impl : impl Self "fmt" = fmt.
     
     Global Instance ℐ : core.fmt.Debug.Trait Self := {
       core.fmt.Debug.fmt := fmt;
@@ -154,7 +151,7 @@ Module checked.
             result_chaining_with_question_mark.checked.MathError.NegativeSquareRoot)
       else
         let* α0 : f64.t := M.read x in
-        let* α1 : f64.t := M.call (f64.t::["sqrt"] α0) in
+        let* α1 : f64.t := M.call (impl f64.t "sqrt" α0) in
         M.alloc (core.result.Result.Ok α1) in
     M.read α4.
   
@@ -186,7 +183,7 @@ Module checked.
             result_chaining_with_question_mark.checked.MathError.NonPositiveLogarithm)
       else
         let* α0 : f64.t := M.read x in
-        let* α1 : f64.t := M.call (f64.t::["ln"] α0) in
+        let* α1 : f64.t := M.call (impl f64.t "ln" α0) in
         M.alloc (core.result.Result.Ok α1) in
     M.read α4.
   
@@ -494,7 +491,8 @@ Module checked.
                   M.read (pointer_coercion "Unsize" α3) in
                 let* α5 : core.fmt.rt.Argument.t :=
                   M.call
-                    (core.fmt.rt.Argument.t::["new_display"] (borrow value)) in
+                    (impl core.fmt.rt.Argument.t "new_display"
+                      (borrow value)) in
                 let* α6 : M.Val (array core.fmt.rt.Argument.t) :=
                   M.alloc [ α5 ] in
                 let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -502,7 +500,7 @@ Module checked.
                 let* α8 : ref (slice core.fmt.rt.Argument.t) :=
                   M.read (pointer_coercion "Unsize" α7) in
                 let* α9 : core.fmt.Arguments.t :=
-                  M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
+                  M.call (impl core.fmt.Arguments.t "new_v1" α4 α8) in
                 let* α10 : unit := M.call (std.io.stdio._print α9) in
                 M.alloc α10 in
               M.alloc tt
@@ -583,11 +581,9 @@ Section Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathE
             M (M.Val (ref str.t))
         ] in
     let* α2 : ref str.t := M.read α1 in
-    M.call (core.fmt.Formatter.t::["write_str"] α0 α2).
+    M.call (impl core.fmt.Formatter.t "write_str" α0 α2).
   
-  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
-    Notations.double_colon := fmt;
-  }.
+  Axiom fmt_is_impl : impl Self "fmt" = fmt.
   
   Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
@@ -664,7 +660,7 @@ Definition sqrt
           result_chaining_with_question_mark.checked.MathError.NegativeSquareRoot)
     else
       let* α0 : f64.t := M.read x in
-      let* α1 : f64.t := M.call (f64.t::["sqrt"] α0) in
+      let* α1 : f64.t := M.call (impl f64.t "sqrt" α0) in
       M.alloc (core.result.Result.Ok α1) in
   M.read α4.
 
@@ -696,7 +692,7 @@ Definition ln
           result_chaining_with_question_mark.checked.MathError.NonPositiveLogarithm)
     else
       let* α0 : f64.t := M.read x in
-      let* α1 : f64.t := M.call (f64.t::["ln"] α0) in
+      let* α1 : f64.t := M.call (impl f64.t "ln" α0) in
       M.alloc (core.result.Result.Ok α1) in
   M.read α4.
 
@@ -1004,7 +1000,7 @@ Definition op (x : f64.t) (y : f64.t) : M unit :=
                 M.read (pointer_coercion "Unsize" α3) in
               let* α5 : core.fmt.rt.Argument.t :=
                 M.call
-                  (core.fmt.rt.Argument.t::["new_display"] (borrow value)) in
+                  (impl core.fmt.rt.Argument.t "new_display" (borrow value)) in
               let* α6 : M.Val (array core.fmt.rt.Argument.t) :=
                 M.alloc [ α5 ] in
               let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -1012,7 +1008,7 @@ Definition op (x : f64.t) (y : f64.t) : M unit :=
               let* α8 : ref (slice core.fmt.rt.Argument.t) :=
                 M.read (pointer_coercion "Unsize" α7) in
               let* α9 : core.fmt.Arguments.t :=
-                M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
+                M.call (impl core.fmt.Arguments.t "new_v1" α4 α8) in
               let* α10 : unit := M.call (std.io.stdio._print α9) in
               M.alloc α10 in
             M.alloc tt

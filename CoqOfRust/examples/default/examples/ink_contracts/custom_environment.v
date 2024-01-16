@@ -26,10 +26,7 @@ Section Impl_core_default_Default_for_custom_environment_AccountId_t.
     let* α1 : u128.t := M.call α0 in
     M.pure (custom_environment.AccountId.Build_t α1).
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -58,10 +55,7 @@ Section Impl_core_clone_Clone_for_custom_environment_AccountId_t.
         ] in
     M.read α0.
   
-  Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon Self "clone" := {
-    Notations.double_colon := clone;
-  }.
+  Axiom clone_is_impl : impl Self "clone" = clone.
   
   Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
@@ -108,10 +102,7 @@ Section Impl_core_default_Default_for_custom_environment_Topics_t.
   Definition default : M custom_environment.Topics.t :=
     M.pure custom_environment.Topics.Build.
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -189,10 +180,7 @@ Section Impl_core_default_Default_for_custom_environment_EventWithTopics_t.
         custom_environment.EventWithTopics.fifth_topic := α9;
       |}.
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -225,10 +213,7 @@ Section Impl_custom_environment_Env_t.
     let* α0 : ref custom_environment.Env.t := M.read self in
     M.read (custom_environment.Env.Get_caller (deref α0)).
   
-  Global Instance AssociatedFunction_caller :
-    Notations.DoubleColon Self "caller" := {
-    Notations.double_colon := caller;
-  }.
+  Axiom caller_is_impl : impl Self "caller" = caller.
   
   (*
       fn emit_event(&self, _event: Event) {
@@ -245,10 +230,7 @@ Section Impl_custom_environment_Env_t.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_emit_event :
-    Notations.DoubleColon Self "emit_event" := {
-    Notations.double_colon := emit_event;
-  }.
+  Axiom emit_event_is_impl : impl Self "emit_event" = emit_event.
 End Impl_custom_environment_Env_t.
 End Impl_custom_environment_Env_t.
 
@@ -266,10 +248,7 @@ Section Impl_custom_environment_Topics_t.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_init_env :
-    Notations.DoubleColon Self "init_env" := {
-    Notations.double_colon := init_env;
-  }.
+  Axiom init_env_is_impl : impl Self "init_env" = init_env.
   
   (*
       fn env(&self) -> Env {
@@ -278,11 +257,9 @@ Section Impl_custom_environment_Topics_t.
   *)
   Definition env (self : ref Self) : M custom_environment.Env.t :=
     let* self := M.alloc self in
-    M.call custom_environment.Topics.t::["init_env"].
+    M.call (impl custom_environment.Topics.t "init_env").
   
-  Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
-    Notations.double_colon := env;
-  }.
+  Axiom env_is_impl : impl Self "env" = env.
   
   (*
       pub fn new() -> Self {
@@ -297,9 +274,7 @@ Section Impl_custom_environment_Topics_t.
           (Trait := ℐ))) in
     M.call α0.
   
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
-    Notations.double_colon := new;
-  }.
+  Axiom new_is_impl : impl Self "new" = new.
   
   (*
       pub fn trigger(&mut self) {
@@ -312,7 +287,7 @@ Section Impl_custom_environment_Topics_t.
     let* _ : M.Val unit :=
       let* α0 : mut_ref custom_environment.Topics.t := M.read self in
       let* α1 : custom_environment.Env.t :=
-        M.call (custom_environment.Topics.t::["env"] (borrow (deref α0))) in
+        M.call (impl custom_environment.Topics.t "env" (borrow (deref α0))) in
       let* α2 : M.Val custom_environment.Env.t := M.alloc α1 in
       let* α3 : _ :=
         ltac:(M.get_method (fun ℐ =>
@@ -322,16 +297,13 @@ Section Impl_custom_environment_Topics_t.
       let* α4 : custom_environment.EventWithTopics.t := M.call α3 in
       let* α5 : unit :=
         M.call
-          (custom_environment.Env.t::["emit_event"]
+          (impl custom_environment.Env.t "emit_event"
             (borrow α2)
             (custom_environment.Event.EventWithTopics α4)) in
       M.alloc α5 in
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
-  Global Instance AssociatedFunction_trigger :
-    Notations.DoubleColon Self "trigger" := {
-    Notations.double_colon := trigger;
-  }.
+  Axiom trigger_is_impl : impl Self "trigger" = trigger.
 End Impl_custom_environment_Topics_t.
 End Impl_custom_environment_Topics_t.

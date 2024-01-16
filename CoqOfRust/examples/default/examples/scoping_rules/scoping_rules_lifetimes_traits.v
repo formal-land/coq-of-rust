@@ -34,11 +34,9 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed_t.
         (borrow (scoping_rules_lifetimes_traits.Borrowed.Get_x (deref α3))) in
     let* α5 : M.Val (ref (ref (ref i32.t))) := M.alloc (borrow α4) in
     let* α6 : ref _ (* dyn *) := M.read (pointer_coercion "Unsize" α5) in
-    M.call (core.fmt.Formatter.t::["debug_struct_field1_finish"] α0 α1 α2 α6).
+    M.call (impl core.fmt.Formatter.t "debug_struct_field1_finish" α0 α1 α2 α6).
   
-  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
-    Notations.double_colon := fmt;
-  }.
+  Axiom fmt_is_impl : impl Self "fmt" = fmt.
   
   Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
@@ -59,10 +57,7 @@ Section Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed_t.
     let* α0 : M.Val i32.t := M.alloc ((Integer.of_Z 10) : i32.t) in
     M.pure {| scoping_rules_lifetimes_traits.Borrowed.x := borrow α0; |}.
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -96,14 +91,14 @@ Definition main : M unit :=
       let* α4 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α3) in
       let* α5 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow b)) in
+        M.call (impl core.fmt.rt.Argument.t "new_debug" (borrow b)) in
       let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
       let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
         M.alloc (borrow α6) in
       let* α8 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α7) in
       let* α9 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
+        M.call (impl core.fmt.Arguments.t "new_v1" α4 α8) in
       let* α10 : unit := M.call (std.io.stdio._print α9) in
       M.alloc α10 in
     M.alloc tt in

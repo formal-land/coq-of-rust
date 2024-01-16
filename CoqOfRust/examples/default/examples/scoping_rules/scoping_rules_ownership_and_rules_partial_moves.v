@@ -42,7 +42,7 @@ Definition main : M unit :=
     let* α2 : alloc.string.String.t := M.call (α0 α1) in
     let* α3 : alloc.boxed.Box.t u8.t alloc.alloc.Global.t :=
       M.call
-        ((alloc.boxed.Box.t u8.t alloc.alloc.Global.t)::["new"]
+        (impl (alloc.boxed.Box.t u8.t alloc.alloc.Global.t) "new"
           ((Integer.of_Z 20) : u8.t)) in
     M.alloc
       {|
@@ -86,7 +86,7 @@ Definition main : M unit :=
                   M.read (pointer_coercion "Unsize" α3) in
                 let* α5 : core.fmt.rt.Argument.t :=
                   M.call
-                    (core.fmt.rt.Argument.t::["new_display"] (borrow age)) in
+                    (impl core.fmt.rt.Argument.t "new_display" (borrow age)) in
                 let* α6 : M.Val (array core.fmt.rt.Argument.t) :=
                   M.alloc [ α5 ] in
                 let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -94,7 +94,7 @@ Definition main : M unit :=
                 let* α8 : ref (slice core.fmt.rt.Argument.t) :=
                   M.read (pointer_coercion "Unsize" α7) in
                 let* α9 : core.fmt.Arguments.t :=
-                  M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
+                  M.call (impl core.fmt.Arguments.t "new_v1" α4 α8) in
                 let* α10 : unit := M.call (std.io.stdio._print α9) in
                 M.alloc α10 in
               M.alloc tt in
@@ -111,7 +111,7 @@ Definition main : M unit :=
                   M.read (pointer_coercion "Unsize" α3) in
                 let* α5 : core.fmt.rt.Argument.t :=
                   M.call
-                    (core.fmt.rt.Argument.t::["new_display"] (borrow name)) in
+                    (impl core.fmt.rt.Argument.t "new_display" (borrow name)) in
                 let* α6 : M.Val (array core.fmt.rt.Argument.t) :=
                   M.alloc [ α5 ] in
                 let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -119,7 +119,7 @@ Definition main : M unit :=
                 let* α8 : ref (slice core.fmt.rt.Argument.t) :=
                   M.read (pointer_coercion "Unsize" α7) in
                 let* α9 : core.fmt.Arguments.t :=
-                  M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
+                  M.call (impl core.fmt.Arguments.t "new_v1" α4 α8) in
                 let* α10 : unit := M.call (std.io.stdio._print α9) in
                 M.alloc α10 in
               M.alloc tt in
@@ -136,7 +136,7 @@ Definition main : M unit :=
                   M.read (pointer_coercion "Unsize" α3) in
                 let* α5 : core.fmt.rt.Argument.t :=
                   M.call
-                    (core.fmt.rt.Argument.t::["new_display"]
+                    (impl core.fmt.rt.Argument.t "new_display"
                       (borrow
                         (scoping_rules_ownership_and_rules_partial_moves.main.Person.Get_age
                           person))) in
@@ -147,7 +147,7 @@ Definition main : M unit :=
                 let* α8 : ref (slice core.fmt.rt.Argument.t) :=
                   M.read (pointer_coercion "Unsize" α7) in
                 let* α9 : core.fmt.Arguments.t :=
-                  M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
+                  M.call (impl core.fmt.Arguments.t "new_v1" α4 α8) in
                 let* α10 : unit := M.call (std.io.stdio._print α9) in
                 M.alloc α10 in
               M.alloc tt in
@@ -210,11 +210,15 @@ Section Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_
       M.alloc (borrow α8) in
     let* α10 : ref _ (* dyn *) := M.read (pointer_coercion "Unsize" α9) in
     M.call
-      (core.fmt.Formatter.t::["debug_struct_field2_finish"] α0 α1 α2 α5 α6 α10).
+      (impl core.fmt.Formatter.t "debug_struct_field2_finish"
+        α0
+        α1
+        α2
+        α5
+        α6
+        α10).
   
-  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
-    Notations.double_colon := fmt;
-  }.
+  Axiom fmt_is_impl : impl Self "fmt" = fmt.
   
   Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;

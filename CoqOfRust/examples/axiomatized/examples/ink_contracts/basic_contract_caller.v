@@ -21,10 +21,7 @@ Section Impl_core_default_Default_for_basic_contract_caller_AccountId_t.
   *)
   Parameter default : M basic_contract_caller.AccountId.t.
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -41,10 +38,7 @@ Section Impl_core_clone_Clone_for_basic_contract_caller_AccountId_t.
   *)
   Parameter clone : (ref Self) -> M basic_contract_caller.AccountId.t.
   
-  Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon Self "clone" := {
-    Notations.double_colon := clone;
-  }.
+  Axiom clone_is_impl : impl Self "clone" = clone.
   
   Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
@@ -91,9 +85,7 @@ Section Impl_basic_contract_caller_OtherContract_t.
   *)
   Parameter new : bool.t -> M Self.
   
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
-    Notations.double_colon := new;
-  }.
+  Axiom new_is_impl : impl Self "new" = new.
   
   (*
       pub fn flip(&mut self) {
@@ -102,10 +94,7 @@ Section Impl_basic_contract_caller_OtherContract_t.
   *)
   Parameter flip : (mut_ref Self) -> M unit.
   
-  Global Instance AssociatedFunction_flip :
-    Notations.DoubleColon Self "flip" := {
-    Notations.double_colon := flip;
-  }.
+  Axiom flip_is_impl : impl Self "flip" = flip.
   
   (*
       pub fn get(&self) -> bool {
@@ -114,9 +103,7 @@ Section Impl_basic_contract_caller_OtherContract_t.
   *)
   Parameter get : (ref Self) -> M bool.t.
   
-  Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
-    Notations.double_colon := get;
-  }.
+  Axiom get_is_impl : impl Self "get" = get.
 End Impl_basic_contract_caller_OtherContract_t.
 End Impl_basic_contract_caller_OtherContract_t.
 
@@ -151,9 +138,7 @@ Section Impl_basic_contract_caller_BasicContractCaller_t.
   *)
   Parameter new : ltac:(basic_contract_caller.Hash) -> M Self.
   
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
-    Notations.double_colon := new;
-  }.
+  Axiom new_is_impl : impl Self "new" = new.
   
   (*
       pub fn flip_and_get(&mut self) -> bool {
@@ -163,9 +148,6 @@ Section Impl_basic_contract_caller_BasicContractCaller_t.
   *)
   Parameter flip_and_get : (mut_ref Self) -> M bool.t.
   
-  Global Instance AssociatedFunction_flip_and_get :
-    Notations.DoubleColon Self "flip_and_get" := {
-    Notations.double_colon := flip_and_get;
-  }.
+  Axiom flip_and_get_is_impl : impl Self "flip_and_get" = flip_and_get.
 End Impl_basic_contract_caller_BasicContractCaller_t.
 End Impl_basic_contract_caller_BasicContractCaller_t.

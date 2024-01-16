@@ -34,11 +34,9 @@ Section Impl_core_fmt_Debug_for_operator_overloading_FooBar_t.
     let* f := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref str.t := M.read (mk_str "FooBar") in
-    M.call (core.fmt.Formatter.t::["write_str"] α0 α1).
+    M.call (impl core.fmt.Formatter.t "write_str" α0 α1).
   
-  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
-    Notations.double_colon := fmt;
-  }.
+  Axiom fmt_is_impl : impl Self "fmt" = fmt.
   
   Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
@@ -67,11 +65,9 @@ Section Impl_core_fmt_Debug_for_operator_overloading_BarFoo_t.
     let* f := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref str.t := M.read (mk_str "BarFoo") in
-    M.call (core.fmt.Formatter.t::["write_str"] α0 α1).
+    M.call (impl core.fmt.Formatter.t "write_str" α0 α1).
   
-  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
-    Notations.double_colon := fmt;
-  }.
+  Axiom fmt_is_impl : impl Self "fmt" = fmt.
   
   Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
@@ -110,7 +106,7 @@ Section Impl_core_ops_arith_Add_operator_overloading_Bar_t_for_operator_overload
         let* α3 : ref (slice (ref str.t)) :=
           M.read (pointer_coercion "Unsize" α2) in
         let* α4 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_const"] α3) in
+          M.call (impl core.fmt.Arguments.t "new_const" α3) in
         let* α5 : unit := M.call (std.io.stdio._print α4) in
         M.alloc α5 in
       M.alloc tt in
@@ -118,9 +114,7 @@ Section Impl_core_ops_arith_Add_operator_overloading_Bar_t_for_operator_overload
       M.alloc operator_overloading.FooBar.Build in
     M.read α0.
   
-  Global Instance AssociatedFunction_add : Notations.DoubleColon Self "add" := {
-    Notations.double_colon := add;
-  }.
+  Axiom add_is_impl : impl Self "add" = add.
   
   Global Instance ℐ :
     core.ops.arith.Add.Trait Self (Rhs := operator_overloading.Bar.t) := {
@@ -161,7 +155,7 @@ Section Impl_core_ops_arith_Add_operator_overloading_Foo_t_for_operator_overload
         let* α3 : ref (slice (ref str.t)) :=
           M.read (pointer_coercion "Unsize" α2) in
         let* α4 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_const"] α3) in
+          M.call (impl core.fmt.Arguments.t "new_const" α3) in
         let* α5 : unit := M.call (std.io.stdio._print α4) in
         M.alloc α5 in
       M.alloc tt in
@@ -169,9 +163,7 @@ Section Impl_core_ops_arith_Add_operator_overloading_Foo_t_for_operator_overload
       M.alloc operator_overloading.BarFoo.Build in
     M.read α0.
   
-  Global Instance AssociatedFunction_add : Notations.DoubleColon Self "add" := {
-    Notations.double_colon := add;
-  }.
+  Axiom add_is_impl : impl Self "add" = add.
   
   Global Instance ℐ :
     core.ops.arith.Add.Trait Self (Rhs := operator_overloading.Foo.t) := {
@@ -209,14 +201,14 @@ Definition main : M unit :=
           (α5 operator_overloading.Foo.Build operator_overloading.Bar.Build) in
       let* α7 : M.Val operator_overloading.FooBar.t := M.alloc α6 in
       let* α8 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow α7)) in
+        M.call (impl core.fmt.rt.Argument.t "new_debug" (borrow α7)) in
       let* α9 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α8 ] in
       let* α10 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
         M.alloc (borrow α9) in
       let* α11 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α10) in
       let* α12 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_v1"] α4 α11) in
+        M.call (impl core.fmt.Arguments.t "new_v1" α4 α11) in
       let* α13 : unit := M.call (std.io.stdio._print α12) in
       M.alloc α13 in
     M.alloc tt in
@@ -240,14 +232,14 @@ Definition main : M unit :=
           (α5 operator_overloading.Bar.Build operator_overloading.Foo.Build) in
       let* α7 : M.Val operator_overloading.BarFoo.t := M.alloc α6 in
       let* α8 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow α7)) in
+        M.call (impl core.fmt.rt.Argument.t "new_debug" (borrow α7)) in
       let* α9 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α8 ] in
       let* α10 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
         M.alloc (borrow α9) in
       let* α11 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α10) in
       let* α12 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_v1"] α4 α11) in
+        M.call (impl core.fmt.Arguments.t "new_v1" α4 α11) in
       let* α13 : unit := M.call (std.io.stdio._print α12) in
       M.alloc α13 in
     M.alloc tt in

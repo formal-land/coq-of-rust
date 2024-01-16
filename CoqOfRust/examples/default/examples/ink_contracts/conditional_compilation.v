@@ -26,10 +26,7 @@ Section Impl_core_default_Default_for_conditional_compilation_AccountId_t.
     let* α1 : u128.t := M.call α0 in
     M.pure (conditional_compilation.AccountId.Build_t α1).
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -58,10 +55,7 @@ Section Impl_core_clone_Clone_for_conditional_compilation_AccountId_t.
         ] in
     M.read α0.
   
-  Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon Self "clone" := {
-    Notations.double_colon := clone;
-  }.
+  Axiom clone_is_impl : impl Self "clone" = clone.
   
   Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
@@ -171,10 +165,7 @@ Section Impl_conditional_compilation_Env_t.
     let* α0 : ref conditional_compilation.Env.t := M.read self in
     M.read (conditional_compilation.Env.Get_caller (deref α0)).
   
-  Global Instance AssociatedFunction_caller :
-    Notations.DoubleColon Self "caller" := {
-    Notations.double_colon := caller;
-  }.
+  Axiom caller_is_impl : impl Self "caller" = caller.
   
   (*
       fn emit_event(&self, _event: Event) {
@@ -191,10 +182,7 @@ Section Impl_conditional_compilation_Env_t.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_emit_event :
-    Notations.DoubleColon Self "emit_event" := {
-    Notations.double_colon := emit_event;
-  }.
+  Axiom emit_event_is_impl : impl Self "emit_event" = emit_event.
   
   (*
       fn block_number(&self) -> BlockNumber {
@@ -209,10 +197,7 @@ Section Impl_conditional_compilation_Env_t.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_block_number :
-    Notations.DoubleColon Self "block_number" := {
-    Notations.double_colon := block_number;
-  }.
+  Axiom block_number_is_impl : impl Self "block_number" = block_number.
 End Impl_conditional_compilation_Env_t.
 End Impl_conditional_compilation_Env_t.
 
@@ -241,10 +226,7 @@ Section Impl_conditional_compilation_ConditionalCompilation_t.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_init_env :
-    Notations.DoubleColon Self "init_env" := {
-    Notations.double_colon := init_env;
-  }.
+  Axiom init_env_is_impl : impl Self "init_env" = init_env.
   
   (*
       fn env(&self) -> Env {
@@ -253,11 +235,9 @@ Section Impl_conditional_compilation_ConditionalCompilation_t.
   *)
   Definition env (self : ref Self) : M conditional_compilation.Env.t :=
     let* self := M.alloc self in
-    M.call conditional_compilation.ConditionalCompilation.t::["init_env"].
+    M.call (impl conditional_compilation.ConditionalCompilation.t "init_env").
   
-  Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
-    Notations.double_colon := env;
-  }.
+  Axiom env_is_impl : impl Self "env" = env.
   
   (*
       pub fn new() -> Self {
@@ -273,9 +253,7 @@ Section Impl_conditional_compilation_ConditionalCompilation_t.
     let* α1 : bool.t := M.call α0 in
     M.pure {| conditional_compilation.ConditionalCompilation.value := α1; |}.
   
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
-    Notations.double_colon := new;
-  }.
+  Axiom new_is_impl : impl Self "new" = new.
   
   (*
       pub fn new_foo(value: bool) -> Self {
@@ -287,10 +265,7 @@ Section Impl_conditional_compilation_ConditionalCompilation_t.
     let* α0 : bool.t := M.read value in
     M.pure {| conditional_compilation.ConditionalCompilation.value := α0; |}.
   
-  Global Instance AssociatedFunction_new_foo :
-    Notations.DoubleColon Self "new_foo" := {
-    Notations.double_colon := new_foo;
-  }.
+  Axiom new_foo_is_impl : impl Self "new_foo" = new_foo.
   
   (*
       pub fn new_bar(value: bool) -> Self {
@@ -302,10 +277,7 @@ Section Impl_conditional_compilation_ConditionalCompilation_t.
     let* α0 : bool.t := M.read value in
     M.pure {| conditional_compilation.ConditionalCompilation.value := α0; |}.
   
-  Global Instance AssociatedFunction_new_bar :
-    Notations.DoubleColon Self "new_bar" := {
-    Notations.double_colon := new_bar;
-  }.
+  Axiom new_bar_is_impl : impl Self "new_bar" = new_bar.
   
   (*
       pub fn new_foo_bar(value: bool) -> Self {
@@ -317,10 +289,7 @@ Section Impl_conditional_compilation_ConditionalCompilation_t.
     let* α0 : bool.t := M.read value in
     M.pure {| conditional_compilation.ConditionalCompilation.value := α0; |}.
   
-  Global Instance AssociatedFunction_new_foo_bar :
-    Notations.DoubleColon Self "new_foo_bar" := {
-    Notations.double_colon := new_foo_bar;
-  }.
+  Axiom new_foo_bar_is_impl : impl Self "new_foo_bar" = new_foo_bar.
   
   (*
       pub fn inherent_flip_foo(&mut self) {
@@ -348,14 +317,16 @@ Section Impl_conditional_compilation_ConditionalCompilation_t.
         (UnOp.not α2) in
     let* caller : M.Val conditional_compilation.AccountId.t :=
       let* α0 : conditional_compilation.Env.t :=
-        M.call conditional_compilation.ConditionalCompilation.t::["init_env"] in
+        M.call
+          (impl conditional_compilation.ConditionalCompilation.t "init_env") in
       let* α1 : M.Val conditional_compilation.Env.t := M.alloc α0 in
       let* α2 : conditional_compilation.AccountId.t :=
-        M.call (conditional_compilation.Env.t::["caller"] (borrow α1)) in
+        M.call (impl conditional_compilation.Env.t "caller" (borrow α1)) in
       M.alloc α2 in
     let* _ : M.Val unit :=
       let* α0 : conditional_compilation.Env.t :=
-        M.call conditional_compilation.ConditionalCompilation.t::["init_env"] in
+        M.call
+          (impl conditional_compilation.ConditionalCompilation.t "init_env") in
       let* α1 : M.Val conditional_compilation.Env.t := M.alloc α0 in
       let* α2 : mut_ref conditional_compilation.ConditionalCompilation.t :=
         M.read self in
@@ -366,7 +337,7 @@ Section Impl_conditional_compilation_ConditionalCompilation_t.
       let* α4 : conditional_compilation.AccountId.t := M.read caller in
       let* α5 : unit :=
         M.call
-          (conditional_compilation.Env.t::["emit_event"]
+          (impl conditional_compilation.Env.t "emit_event"
             (borrow α1)
             (conditional_compilation.Event.Changes
               {|
@@ -377,10 +348,8 @@ Section Impl_conditional_compilation_ConditionalCompilation_t.
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
-  Global Instance AssociatedFunction_inherent_flip_foo :
-    Notations.DoubleColon Self "inherent_flip_foo" := {
-    Notations.double_colon := inherent_flip_foo;
-  }.
+  Axiom inherent_flip_foo_is_impl :
+      impl Self "inherent_flip_foo" = inherent_flip_foo.
   
   (*
       pub fn inherent_flip_bar(&mut self) {
@@ -398,17 +367,20 @@ Section Impl_conditional_compilation_ConditionalCompilation_t.
     let* self := M.alloc self in
     let* caller : M.Val conditional_compilation.AccountId.t :=
       let* α0 : conditional_compilation.Env.t :=
-        M.call conditional_compilation.ConditionalCompilation.t::["init_env"] in
+        M.call
+          (impl conditional_compilation.ConditionalCompilation.t "init_env") in
       let* α1 : M.Val conditional_compilation.Env.t := M.alloc α0 in
       let* α2 : conditional_compilation.AccountId.t :=
-        M.call (conditional_compilation.Env.t::["caller"] (borrow α1)) in
+        M.call (impl conditional_compilation.Env.t "caller" (borrow α1)) in
       M.alloc α2 in
     let* block_number : M.Val u32.t :=
       let* α0 : conditional_compilation.Env.t :=
-        M.call conditional_compilation.ConditionalCompilation.t::["init_env"] in
+        M.call
+          (impl conditional_compilation.ConditionalCompilation.t "init_env") in
       let* α1 : M.Val conditional_compilation.Env.t := M.alloc α0 in
       let* α2 : u32.t :=
-        M.call (conditional_compilation.Env.t::["block_number"] (borrow α1)) in
+        M.call
+          (impl conditional_compilation.Env.t "block_number" (borrow α1)) in
       M.alloc α2 in
     let* _ : M.Val unit :=
       let* α0 : mut_ref conditional_compilation.ConditionalCompilation.t :=
@@ -424,7 +396,8 @@ Section Impl_conditional_compilation_ConditionalCompilation_t.
         (UnOp.not α2) in
     let* _ : M.Val unit :=
       let* α0 : conditional_compilation.Env.t :=
-        M.call conditional_compilation.ConditionalCompilation.t::["init_env"] in
+        M.call
+          (impl conditional_compilation.ConditionalCompilation.t "init_env") in
       let* α1 : M.Val conditional_compilation.Env.t := M.alloc α0 in
       let* α2 : mut_ref conditional_compilation.ConditionalCompilation.t :=
         M.read self in
@@ -436,7 +409,7 @@ Section Impl_conditional_compilation_ConditionalCompilation_t.
       let* α5 : u32.t := M.read block_number in
       let* α6 : unit :=
         M.call
-          (conditional_compilation.Env.t::["emit_event"]
+          (impl conditional_compilation.Env.t "emit_event"
             (borrow α1)
             (conditional_compilation.Event.ChangesDated
               {|
@@ -448,10 +421,8 @@ Section Impl_conditional_compilation_ConditionalCompilation_t.
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
-  Global Instance AssociatedFunction_inherent_flip_bar :
-    Notations.DoubleColon Self "inherent_flip_bar" := {
-    Notations.double_colon := inherent_flip_bar;
-  }.
+  Axiom inherent_flip_bar_is_impl :
+      impl Self "inherent_flip_bar" = inherent_flip_bar.
 End Impl_conditional_compilation_ConditionalCompilation_t.
 End Impl_conditional_compilation_ConditionalCompilation_t.
 
@@ -481,10 +452,7 @@ Section Impl_conditional_compilation_Flip_for_conditional_compilation_Conditiona
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
-  Global Instance AssociatedFunction_flip :
-    Notations.DoubleColon Self "flip" := {
-    Notations.double_colon := flip;
-  }.
+  Axiom flip_is_impl : impl Self "flip" = flip.
   
   (*
       fn get(&self) -> bool {
@@ -498,9 +466,7 @@ Section Impl_conditional_compilation_Flip_for_conditional_compilation_Conditiona
     M.read
       (conditional_compilation.ConditionalCompilation.Get_value (deref α0)).
   
-  Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
-    Notations.double_colon := get;
-  }.
+  Axiom get_is_impl : impl Self "get" = get.
   
   (*
       fn push_foo(&mut self, value: bool) {
@@ -517,20 +483,22 @@ Section Impl_conditional_compilation_Flip_for_conditional_compilation_Conditiona
     let* value := M.alloc value in
     let* caller : M.Val conditional_compilation.AccountId.t :=
       let* α0 : conditional_compilation.Env.t :=
-        M.call conditional_compilation.ConditionalCompilation.t::["init_env"] in
+        M.call
+          (impl conditional_compilation.ConditionalCompilation.t "init_env") in
       let* α1 : M.Val conditional_compilation.Env.t := M.alloc α0 in
       let* α2 : conditional_compilation.AccountId.t :=
-        M.call (conditional_compilation.Env.t::["caller"] (borrow α1)) in
+        M.call (impl conditional_compilation.Env.t "caller" (borrow α1)) in
       M.alloc α2 in
     let* _ : M.Val unit :=
       let* α0 : conditional_compilation.Env.t :=
-        M.call conditional_compilation.ConditionalCompilation.t::["init_env"] in
+        M.call
+          (impl conditional_compilation.ConditionalCompilation.t "init_env") in
       let* α1 : M.Val conditional_compilation.Env.t := M.alloc α0 in
       let* α2 : bool.t := M.read value in
       let* α3 : conditional_compilation.AccountId.t := M.read caller in
       let* α4 : unit :=
         M.call
-          (conditional_compilation.Env.t::["emit_event"]
+          (impl conditional_compilation.Env.t "emit_event"
             (borrow α1)
             (conditional_compilation.Event.Changes
               {|
@@ -548,10 +516,7 @@ Section Impl_conditional_compilation_Flip_for_conditional_compilation_Conditiona
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
-  Global Instance AssociatedFunction_push_foo :
-    Notations.DoubleColon Self "push_foo" := {
-    Notations.double_colon := push_foo;
-  }.
+  Axiom push_foo_is_impl : impl Self "push_foo" = push_foo.
   
   Global Instance ℐ : conditional_compilation.Flip.Trait Self := {
     conditional_compilation.Flip.flip := flip;

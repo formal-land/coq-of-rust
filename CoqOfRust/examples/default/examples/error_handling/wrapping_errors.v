@@ -41,7 +41,7 @@ Section Impl_core_fmt_Debug_for_wrapping_errors_DoubleError_t.
               let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
               let* α1 : ref str.t := M.read (mk_str "EmptyVec") in
               let* α2 : core.result.Result.t unit core.fmt.Error.t :=
-                M.call (core.fmt.Formatter.t::["write_str"] α0 α1) in
+                M.call (impl core.fmt.Formatter.t "write_str" α0 α1) in
               M.alloc α2
             | _ => M.break_match
             end) :
@@ -63,7 +63,7 @@ Section Impl_core_fmt_Debug_for_wrapping_errors_DoubleError_t.
                 M.read (pointer_coercion "Unsize" α2) in
               let* α4 : core.result.Result.t unit core.fmt.Error.t :=
                 M.call
-                  (core.fmt.Formatter.t::["debug_tuple_field1_finish"]
+                  (impl core.fmt.Formatter.t "debug_tuple_field1_finish"
                     α0
                     α1
                     α3) in
@@ -74,9 +74,7 @@ Section Impl_core_fmt_Debug_for_wrapping_errors_DoubleError_t.
         ] in
     M.read α0.
   
-  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
-    Notations.double_colon := fmt;
-  }.
+  Axiom fmt_is_impl : impl Self "fmt" = fmt.
   
   Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
@@ -123,9 +121,9 @@ Section Impl_core_fmt_Display_for_wrapping_errors_DoubleError_t.
               let* α4 : ref (slice (ref str.t)) :=
                 M.read (pointer_coercion "Unsize" α3) in
               let* α5 : core.fmt.Arguments.t :=
-                M.call (core.fmt.Arguments.t::["new_const"] α4) in
+                M.call (impl core.fmt.Arguments.t "new_const" α4) in
               let* α6 : core.result.Result.t unit core.fmt.Error.t :=
-                M.call (core.fmt.Formatter.t::["write_fmt"] α0 α5) in
+                M.call (impl core.fmt.Formatter.t "write_fmt" α0 α5) in
               M.alloc α6
             | _ => M.break_match
             end) :
@@ -144,9 +142,9 @@ Section Impl_core_fmt_Display_for_wrapping_errors_DoubleError_t.
               let* α4 : ref (slice (ref str.t)) :=
                 M.read (pointer_coercion "Unsize" α3) in
               let* α5 : core.fmt.Arguments.t :=
-                M.call (core.fmt.Arguments.t::["new_const"] α4) in
+                M.call (impl core.fmt.Arguments.t "new_const" α4) in
               let* α6 : core.result.Result.t unit core.fmt.Error.t :=
-                M.call (core.fmt.Formatter.t::["write_fmt"] α0 α5) in
+                M.call (impl core.fmt.Formatter.t "write_fmt" α0 α5) in
               M.alloc α6
             | _ => M.break_match
             end) :
@@ -154,9 +152,7 @@ Section Impl_core_fmt_Display_for_wrapping_errors_DoubleError_t.
         ] in
     M.read α1.
   
-  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
-    Notations.double_colon := fmt;
-  }.
+  Axiom fmt_is_impl : impl Self "fmt" = fmt.
   
   Global Instance ℐ : core.fmt.Display.Trait Self := {
     core.fmt.Display.fmt := fmt;
@@ -214,10 +210,7 @@ Section Impl_core_error_Error_for_wrapping_errors_DoubleError_t.
         ] in
     M.read α1.
   
-  Global Instance AssociatedFunction_source :
-    Notations.DoubleColon Self "source" := {
-    Notations.double_colon := source;
-  }.
+  Axiom source_is_impl : impl Self "source" = source.
   
   Global Instance ℐ : core.error.Error.Required.Trait Self := {
     core.error.Error.source := Datatypes.Some source;
@@ -245,10 +238,7 @@ Section Impl_core_convert_From_core_num_error_ParseIntError_t_for_wrapping_error
     let* α0 : core.num.error.ParseIntError.t := M.read err in
     M.pure (wrapping_errors.DoubleError.Parse α0).
   
-  Global Instance AssociatedFunction_from :
-    Notations.DoubleColon Self "from" := {
-    Notations.double_colon := from;
-  }.
+  Axiom from_is_impl : impl Self "from" = from.
   
   Global Instance ℐ :
     core.convert.From.Trait Self (T := core.num.error.ParseIntError.t) := {
@@ -289,13 +279,13 @@ Definition double_first
             (Trait := ℐ))) in
       let* α2 : ref (slice (ref str.t)) := M.call (α1 (borrow vec)) in
       let* α3 : core.option.Option.t (ref (ref str.t)) :=
-        M.call ((slice (ref str.t))::["first"] α2) in
+        M.call (impl (slice (ref str.t)) "first" α2) in
       let* α4 :
           core.result.Result.t
             (ref (ref str.t))
             wrapping_errors.DoubleError.t :=
         M.call
-          ((core.option.Option.t (ref (ref str.t)))::["ok_or"]
+          (impl (core.option.Option.t (ref (ref str.t))) "ok_or"
             α3
             wrapping_errors.DoubleError.EmptyVec) in
       let* α5 :
@@ -372,7 +362,7 @@ Definition double_first
       let* α1 : ref (ref str.t) := M.read first in
       let* α2 : ref str.t := M.read (deref α1) in
       let* α3 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
-        M.call (str.t::["parse"] α2) in
+        M.call (impl str.t "parse" α2) in
       let* α4 :
           core.ops.control_flow.ControlFlow.t
             (core.result.Result.t
@@ -480,7 +470,7 @@ Definition print (result : ltac:(wrapping_errors.Result i32.t)) : M unit :=
               let* α4 : ref (slice (ref str.t)) :=
                 M.read (pointer_coercion "Unsize" α3) in
               let* α5 : core.fmt.rt.Argument.t :=
-                M.call (core.fmt.rt.Argument.t::["new_display"] (borrow n)) in
+                M.call (impl core.fmt.rt.Argument.t "new_display" (borrow n)) in
               let* α6 : M.Val (array core.fmt.rt.Argument.t) :=
                 M.alloc [ α5 ] in
               let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -488,7 +478,7 @@ Definition print (result : ltac:(wrapping_errors.Result i32.t)) : M unit :=
               let* α8 : ref (slice core.fmt.rt.Argument.t) :=
                 M.read (pointer_coercion "Unsize" α7) in
               let* α9 : core.fmt.Arguments.t :=
-                M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
+                M.call (impl core.fmt.Arguments.t "new_v1" α4 α8) in
               let* α10 : unit := M.call (std.io.stdio._print α9) in
               M.alloc α10 in
             M.alloc tt
@@ -512,7 +502,8 @@ Definition print (result : ltac:(wrapping_errors.Result i32.t)) : M unit :=
                 let* α4 : ref (slice (ref str.t)) :=
                   M.read (pointer_coercion "Unsize" α3) in
                 let* α5 : core.fmt.rt.Argument.t :=
-                  M.call (core.fmt.rt.Argument.t::["new_display"] (borrow e)) in
+                  M.call
+                    (impl core.fmt.rt.Argument.t "new_display" (borrow e)) in
                 let* α6 : M.Val (array core.fmt.rt.Argument.t) :=
                   M.alloc [ α5 ] in
                 let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -520,7 +511,7 @@ Definition print (result : ltac:(wrapping_errors.Result i32.t)) : M unit :=
                 let* α8 : ref (slice core.fmt.rt.Argument.t) :=
                   M.read (pointer_coercion "Unsize" α7) in
                 let* α9 : core.fmt.Arguments.t :=
-                  M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
+                  M.call (impl core.fmt.Arguments.t "new_v1" α4 α8) in
                 let* α10 : unit := M.call (std.io.stdio._print α9) in
                 M.alloc α10 in
               M.alloc tt in
@@ -556,7 +547,7 @@ Definition print (result : ltac:(wrapping_errors.Result i32.t)) : M unit :=
                           M.read (pointer_coercion "Unsize" α3) in
                         let* α5 : core.fmt.rt.Argument.t :=
                           M.call
-                            (core.fmt.rt.Argument.t::["new_display"]
+                            (impl core.fmt.rt.Argument.t "new_display"
                               (borrow source)) in
                         let* α6 : M.Val (array core.fmt.rt.Argument.t) :=
                           M.alloc [ α5 ] in
@@ -565,7 +556,7 @@ Definition print (result : ltac:(wrapping_errors.Result i32.t)) : M unit :=
                         let* α8 : ref (slice core.fmt.rt.Argument.t) :=
                           M.read (pointer_coercion "Unsize" α7) in
                         let* α9 : core.fmt.Arguments.t :=
-                          M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
+                          M.call (impl core.fmt.Arguments.t "new_v1" α4 α8) in
                         let* α10 : unit := M.call (std.io.stdio._print α9) in
                         M.alloc α10 in
                       M.alloc tt in
@@ -605,11 +596,11 @@ Definition main : M unit :=
     let* α5 : alloc.boxed.Box.t (slice (ref str.t)) alloc.alloc.Global.t :=
       M.read (pointer_coercion "Unsize" α4) in
     let* α6 : alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t :=
-      M.call ((slice (ref str.t))::["into_vec"] α5) in
+      M.call (impl (slice (ref str.t)) "into_vec" α5) in
     M.alloc α6 in
   let* empty : M.Val (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t) :=
     let* α0 : alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t :=
-      M.call (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t)::["new"] in
+      M.call (impl (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t) "new") in
     M.alloc α0 in
   let* strings : M.Val (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t) :=
     let* α0 : ref str.t := M.read (mk_str "tofu") in
@@ -622,7 +613,7 @@ Definition main : M unit :=
     let* α5 : alloc.boxed.Box.t (slice (ref str.t)) alloc.alloc.Global.t :=
       M.read (pointer_coercion "Unsize" α4) in
     let* α6 : alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t :=
-      M.call ((slice (ref str.t))::["into_vec"] α5) in
+      M.call (impl (slice (ref str.t)) "into_vec" α5) in
     M.alloc α6 in
   let* _ : M.Val unit :=
     let* α0 : alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t :=

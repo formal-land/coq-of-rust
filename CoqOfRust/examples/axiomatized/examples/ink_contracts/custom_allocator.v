@@ -25,9 +25,7 @@ Section Impl_custom_allocator_CustomAllocator_t.
   *)
   Parameter new : bool.t -> M Self.
   
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
-    Notations.double_colon := new;
-  }.
+  Axiom new_is_impl : impl Self "new" = new.
   
   (*
       pub fn default() -> Self {
@@ -36,10 +34,7 @@ Section Impl_custom_allocator_CustomAllocator_t.
   *)
   Parameter default : M Self.
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   (*
       pub fn flip(&mut self) {
@@ -48,10 +43,7 @@ Section Impl_custom_allocator_CustomAllocator_t.
   *)
   Parameter flip : (mut_ref Self) -> M unit.
   
-  Global Instance AssociatedFunction_flip :
-    Notations.DoubleColon Self "flip" := {
-    Notations.double_colon := flip;
-  }.
+  Axiom flip_is_impl : impl Self "flip" = flip.
   
   (*
       pub fn get(&self) -> bool {
@@ -60,8 +52,6 @@ Section Impl_custom_allocator_CustomAllocator_t.
   *)
   Parameter get : (ref Self) -> M bool.t.
   
-  Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
-    Notations.double_colon := get;
-  }.
+  Axiom get_is_impl : impl Self "get" = get.
 End Impl_custom_allocator_CustomAllocator_t.
 End Impl_custom_allocator_CustomAllocator_t.

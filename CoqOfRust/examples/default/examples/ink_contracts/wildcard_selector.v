@@ -28,9 +28,7 @@ Section Impl_wildcard_selector_WildcardSelector_t.
   *)
   Definition new : M Self := M.pure wildcard_selector.WildcardSelector.Build.
   
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
-    Notations.double_colon := new;
-  }.
+  Axiom new_is_impl : impl Self "new" = new.
   
   (*
       pub fn wildcard(&mut self) {
@@ -45,9 +43,9 @@ Section Impl_wildcard_selector_WildcardSelector_t.
       M.call wildcard_selector.decode_input in
     let* α1 : (array u8.t) * alloc.string.String.t :=
       M.call
-        ((core.result.Result.t
-              ((array u8.t) * alloc.string.String.t)
-              unit)::["unwrap"]
+        (impl
+            (core.result.Result.t ((array u8.t) * alloc.string.String.t) unit)
+            "unwrap"
           α0) in
     let* α2 : M.Val ((array u8.t) * alloc.string.String.t) := M.alloc α1 in
     let* α3 : M.Val unit :=
@@ -77,11 +75,11 @@ Section Impl_wildcard_selector_WildcardSelector_t.
                     M.read (pointer_coercion "Unsize" α4) in
                   let* α6 : core.fmt.rt.Argument.t :=
                     M.call
-                      (core.fmt.rt.Argument.t::["new_debug"]
+                      (impl core.fmt.rt.Argument.t "new_debug"
                         (borrow _selector)) in
                   let* α7 : core.fmt.rt.Argument.t :=
                     M.call
-                      (core.fmt.rt.Argument.t::["new_display"]
+                      (impl core.fmt.rt.Argument.t "new_display"
                         (borrow _message)) in
                   let* α8 : M.Val (array core.fmt.rt.Argument.t) :=
                     M.alloc [ α6; α7 ] in
@@ -90,7 +88,7 @@ Section Impl_wildcard_selector_WildcardSelector_t.
                   let* α10 : ref (slice core.fmt.rt.Argument.t) :=
                     M.read (pointer_coercion "Unsize" α9) in
                   let* α11 : core.fmt.Arguments.t :=
-                    M.call (core.fmt.Arguments.t::["new_v1"] α5 α10) in
+                    M.call (impl core.fmt.Arguments.t "new_v1" α5 α10) in
                   let* α12 : unit := M.call (std.io.stdio._print α11) in
                   M.alloc α12 in
                 M.alloc tt in
@@ -100,10 +98,7 @@ Section Impl_wildcard_selector_WildcardSelector_t.
         ] in
     M.read α3.
   
-  Global Instance AssociatedFunction_wildcard :
-    Notations.DoubleColon Self "wildcard" := {
-    Notations.double_colon := wildcard;
-  }.
+  Axiom wildcard_is_impl : impl Self "wildcard" = wildcard.
   
   (*
       pub fn wildcard_complement(&mut self, _message: String) {
@@ -127,23 +122,22 @@ Section Impl_wildcard_selector_WildcardSelector_t.
         let* α4 : ref (slice (ref str.t)) :=
           M.read (pointer_coercion "Unsize" α3) in
         let* α5 : core.fmt.rt.Argument.t :=
-          M.call (core.fmt.rt.Argument.t::["new_display"] (borrow _message)) in
+          M.call
+            (impl core.fmt.rt.Argument.t "new_display" (borrow _message)) in
         let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
         let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
           M.alloc (borrow α6) in
         let* α8 : ref (slice core.fmt.rt.Argument.t) :=
           M.read (pointer_coercion "Unsize" α7) in
         let* α9 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
+          M.call (impl core.fmt.Arguments.t "new_v1" α4 α8) in
         let* α10 : unit := M.call (std.io.stdio._print α9) in
         M.alloc α10 in
       M.alloc tt in
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
-  Global Instance AssociatedFunction_wildcard_complement :
-    Notations.DoubleColon Self "wildcard_complement" := {
-    Notations.double_colon := wildcard_complement;
-  }.
+  Axiom wildcard_complement_is_impl :
+      impl Self "wildcard_complement" = wildcard_complement.
 End Impl_wildcard_selector_WildcardSelector_t.
 End Impl_wildcard_selector_WildcardSelector_t.

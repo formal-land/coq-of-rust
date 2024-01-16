@@ -26,10 +26,7 @@ Section Impl_core_default_Default_for_contract_transfer_AccountId_t.
     let* α1 : u128.t := M.call α0 in
     M.pure (contract_transfer.AccountId.Build_t α1).
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -58,10 +55,7 @@ Section Impl_core_clone_Clone_for_contract_transfer_AccountId_t.
         ] in
     M.read α0.
   
-  Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon Self "clone" := {
-    Notations.double_colon := clone;
-  }.
+  Axiom clone_is_impl : impl Self "clone" = clone.
   
   Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
@@ -106,10 +100,7 @@ Section Impl_contract_transfer_Env_t.
     let* α0 : ref contract_transfer.Env.t := M.read self in
     M.read (contract_transfer.Env.Get_caller (deref α0)).
   
-  Global Instance AssociatedFunction_caller :
-    Notations.DoubleColon Self "caller" := {
-    Notations.double_colon := caller;
-  }.
+  Axiom caller_is_impl : impl Self "caller" = caller.
   
   (*
       fn balance(&self) -> Balance {
@@ -122,10 +113,7 @@ Section Impl_contract_transfer_Env_t.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_balance :
-    Notations.DoubleColon Self "balance" := {
-    Notations.double_colon := balance;
-  }.
+  Axiom balance_is_impl : impl Self "balance" = balance.
   
   (*
       fn transfer(&mut self, _to: AccountId, _value: Balance) -> Result<(), ()> {
@@ -144,10 +132,7 @@ Section Impl_contract_transfer_Env_t.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_transfer :
-    Notations.DoubleColon Self "transfer" := {
-    Notations.double_colon := transfer;
-  }.
+  Axiom transfer_is_impl : impl Self "transfer" = transfer.
   
   (*
       fn transferred_value(&self) -> Balance {
@@ -162,10 +147,8 @@ Section Impl_contract_transfer_Env_t.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_transferred_value :
-    Notations.DoubleColon Self "transferred_value" := {
-    Notations.double_colon := transferred_value;
-  }.
+  Axiom transferred_value_is_impl :
+      impl Self "transferred_value" = transferred_value.
 End Impl_contract_transfer_Env_t.
 End Impl_contract_transfer_Env_t.
 
@@ -189,10 +172,7 @@ Section Impl_contract_transfer_GiveMe_t.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_init_env :
-    Notations.DoubleColon Self "init_env" := {
-    Notations.double_colon := init_env;
-  }.
+  Axiom init_env_is_impl : impl Self "init_env" = init_env.
   
   (*
       fn env(&self) -> Env {
@@ -201,11 +181,9 @@ Section Impl_contract_transfer_GiveMe_t.
   *)
   Definition env (self : ref Self) : M contract_transfer.Env.t :=
     let* self := M.alloc self in
-    M.call contract_transfer.GiveMe.t::["init_env"].
+    M.call (impl contract_transfer.GiveMe.t "init_env").
   
-  Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
-    Notations.double_colon := env;
-  }.
+  Axiom env_is_impl : impl Self "env" = env.
   
   (*
       pub fn new() -> Self {
@@ -214,9 +192,7 @@ Section Impl_contract_transfer_GiveMe_t.
   *)
   Definition new : M Self := M.pure contract_transfer.GiveMe.Build.
   
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
-    Notations.double_colon := new;
-  }.
+  Axiom new_is_impl : impl Self "new" = new.
   
   (*
       pub fn give_me(&mut self, value: Balance) {
@@ -250,14 +226,14 @@ Section Impl_contract_transfer_GiveMe_t.
         let* α4 : ref (slice (ref str.t)) :=
           M.read (pointer_coercion "Unsize" α3) in
         let* α5 : core.fmt.rt.Argument.t :=
-          M.call (core.fmt.rt.Argument.t::["new_display"] (borrow value)) in
+          M.call (impl core.fmt.rt.Argument.t "new_display" (borrow value)) in
         let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
         let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
           M.alloc (borrow α6) in
         let* α8 : ref (slice core.fmt.rt.Argument.t) :=
           M.read (pointer_coercion "Unsize" α7) in
         let* α9 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
+          M.call (impl core.fmt.Arguments.t "new_v1" α4 α8) in
         let* α10 : unit := M.call (std.io.stdio._print α9) in
         M.alloc α10 in
       M.alloc tt in
@@ -272,20 +248,20 @@ Section Impl_contract_transfer_GiveMe_t.
           M.read (pointer_coercion "Unsize" α3) in
         let* α5 : mut_ref contract_transfer.GiveMe.t := M.read self in
         let* α6 : contract_transfer.Env.t :=
-          M.call (contract_transfer.GiveMe.t::["env"] (borrow (deref α5))) in
+          M.call (impl contract_transfer.GiveMe.t "env" (borrow (deref α5))) in
         let* α7 : M.Val contract_transfer.Env.t := M.alloc α6 in
         let* α8 : u128.t :=
-          M.call (contract_transfer.Env.t::["balance"] (borrow α7)) in
+          M.call (impl contract_transfer.Env.t "balance" (borrow α7)) in
         let* α9 : M.Val u128.t := M.alloc α8 in
         let* α10 : core.fmt.rt.Argument.t :=
-          M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α9)) in
+          M.call (impl core.fmt.rt.Argument.t "new_display" (borrow α9)) in
         let* α11 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α10 ] in
         let* α12 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
           M.alloc (borrow α11) in
         let* α13 : ref (slice core.fmt.rt.Argument.t) :=
           M.read (pointer_coercion "Unsize" α12) in
         let* α14 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_v1"] α4 α13) in
+          M.call (impl core.fmt.Arguments.t "new_v1" α4 α13) in
         let* α15 : unit := M.call (std.io.stdio._print α14) in
         M.alloc α15 in
       M.alloc tt in
@@ -293,10 +269,10 @@ Section Impl_contract_transfer_GiveMe_t.
       let* α0 : u128.t := M.read value in
       let* α1 : mut_ref contract_transfer.GiveMe.t := M.read self in
       let* α2 : contract_transfer.Env.t :=
-        M.call (contract_transfer.GiveMe.t::["env"] (borrow (deref α1))) in
+        M.call (impl contract_transfer.GiveMe.t "env" (borrow (deref α1))) in
       let* α3 : M.Val contract_transfer.Env.t := M.alloc α2 in
       let* α4 : u128.t :=
-        M.call (contract_transfer.Env.t::["balance"] (borrow α3)) in
+        M.call (impl contract_transfer.Env.t "balance" (borrow α3)) in
       let* α5 : M.Val bool.t := M.alloc (UnOp.not (BinOp.Pure.le α0 α4)) in
       let* α6 : bool.t := M.read (use α5) in
       if α6 then
@@ -308,20 +284,20 @@ Section Impl_contract_transfer_GiveMe_t.
         M.alloc tt in
     let* α0 : mut_ref contract_transfer.GiveMe.t := M.read self in
     let* α1 : contract_transfer.Env.t :=
-      M.call (contract_transfer.GiveMe.t::["env"] (borrow (deref α0))) in
+      M.call (impl contract_transfer.GiveMe.t "env" (borrow (deref α0))) in
     let* α2 : M.Val contract_transfer.Env.t := M.alloc α1 in
     let* α3 : mut_ref contract_transfer.GiveMe.t := M.read self in
     let* α4 : contract_transfer.Env.t :=
-      M.call (contract_transfer.GiveMe.t::["env"] (borrow (deref α3))) in
+      M.call (impl contract_transfer.GiveMe.t "env" (borrow (deref α3))) in
     let* α5 : M.Val contract_transfer.Env.t := M.alloc α4 in
     let* α6 : contract_transfer.AccountId.t :=
-      M.call (contract_transfer.Env.t::["caller"] (borrow α5)) in
+      M.call (impl contract_transfer.Env.t "caller" (borrow α5)) in
     let* α7 : u128.t := M.read value in
     let* α8 : core.result.Result.t unit unit :=
-      M.call (contract_transfer.Env.t::["transfer"] (borrow_mut α2) α6 α7) in
+      M.call (impl contract_transfer.Env.t "transfer" (borrow_mut α2) α6 α7) in
     let* α9 : M.Val (core.result.Result.t unit unit) := M.alloc α8 in
     let* α10 : bool.t :=
-      M.call ((core.result.Result.t unit unit)::["is_err"] (borrow α9)) in
+      M.call (impl (core.result.Result.t unit unit) "is_err" (borrow α9)) in
     let* α11 : M.Val bool.t := M.alloc α10 in
     let* α12 : bool.t := M.read (use α11) in
     let* α0 : M.Val unit :=
@@ -337,10 +313,7 @@ Section Impl_contract_transfer_GiveMe_t.
         M.alloc tt in
     M.read α0.
   
-  Global Instance AssociatedFunction_give_me :
-    Notations.DoubleColon Self "give_me" := {
-    Notations.double_colon := give_me;
-  }.
+  Axiom give_me_is_impl : impl Self "give_me" = give_me.
   
   (*
       pub fn was_it_ten(&self) {
@@ -361,30 +334,31 @@ Section Impl_contract_transfer_GiveMe_t.
           M.read (pointer_coercion "Unsize" α3) in
         let* α5 : ref contract_transfer.GiveMe.t := M.read self in
         let* α6 : contract_transfer.Env.t :=
-          M.call (contract_transfer.GiveMe.t::["env"] α5) in
+          M.call (impl contract_transfer.GiveMe.t "env" α5) in
         let* α7 : M.Val contract_transfer.Env.t := M.alloc α6 in
         let* α8 : u128.t :=
-          M.call (contract_transfer.Env.t::["transferred_value"] (borrow α7)) in
+          M.call
+            (impl contract_transfer.Env.t "transferred_value" (borrow α7)) in
         let* α9 : M.Val u128.t := M.alloc α8 in
         let* α10 : core.fmt.rt.Argument.t :=
-          M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α9)) in
+          M.call (impl core.fmt.rt.Argument.t "new_display" (borrow α9)) in
         let* α11 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α10 ] in
         let* α12 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
           M.alloc (borrow α11) in
         let* α13 : ref (slice core.fmt.rt.Argument.t) :=
           M.read (pointer_coercion "Unsize" α12) in
         let* α14 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_v1"] α4 α13) in
+          M.call (impl core.fmt.Arguments.t "new_v1" α4 α13) in
         let* α15 : unit := M.call (std.io.stdio._print α14) in
         M.alloc α15 in
       M.alloc tt in
     let* _ : M.Val unit :=
       let* α0 : ref contract_transfer.GiveMe.t := M.read self in
       let* α1 : contract_transfer.Env.t :=
-        M.call (contract_transfer.GiveMe.t::["env"] α0) in
+        M.call (impl contract_transfer.GiveMe.t "env" α0) in
       let* α2 : M.Val contract_transfer.Env.t := M.alloc α1 in
       let* α3 : u128.t :=
-        M.call (contract_transfer.Env.t::["transferred_value"] (borrow α2)) in
+        M.call (impl contract_transfer.Env.t "transferred_value" (borrow α2)) in
       let* α4 : M.Val bool.t :=
         M.alloc (UnOp.not (BinOp.Pure.eq α3 ((Integer.of_Z 10) : u128.t))) in
       let* α5 : bool.t := M.read (use α4) in
@@ -398,9 +372,6 @@ Section Impl_contract_transfer_GiveMe_t.
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
-  Global Instance AssociatedFunction_was_it_ten :
-    Notations.DoubleColon Self "was_it_ten" := {
-    Notations.double_colon := was_it_ten;
-  }.
+  Axiom was_it_ten_is_impl : impl Self "was_it_ten" = was_it_ten.
 End Impl_contract_transfer_GiveMe_t.
 End Impl_contract_transfer_GiveMe_t.

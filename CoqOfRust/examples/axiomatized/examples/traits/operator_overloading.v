@@ -29,9 +29,7 @@ Section Impl_core_fmt_Debug_for_operator_overloading_FooBar_t.
   Parameter fmt :
       (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
   
-  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
-    Notations.double_colon := fmt;
-  }.
+  Axiom fmt_is_impl : impl Self "fmt" = fmt.
   
   Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
@@ -55,9 +53,7 @@ Section Impl_core_fmt_Debug_for_operator_overloading_BarFoo_t.
   Parameter fmt :
       (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
   
-  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
-    Notations.double_colon := fmt;
-  }.
+  Axiom fmt_is_impl : impl Self "fmt" = fmt.
   
   Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
@@ -84,9 +80,7 @@ Section Impl_core_ops_arith_Add_operator_overloading_Bar_t_for_operator_overload
   Parameter add :
       Self -> operator_overloading.Bar.t -> M operator_overloading.FooBar.t.
   
-  Global Instance AssociatedFunction_add : Notations.DoubleColon Self "add" := {
-    Notations.double_colon := add;
-  }.
+  Axiom add_is_impl : impl Self "add" = add.
   
   Global Instance ℐ :
     core.ops.arith.Add.Trait Self (Rhs := operator_overloading.Bar.t) := {
@@ -115,9 +109,7 @@ Section Impl_core_ops_arith_Add_operator_overloading_Foo_t_for_operator_overload
   Parameter add :
       Self -> operator_overloading.Foo.t -> M operator_overloading.BarFoo.t.
   
-  Global Instance AssociatedFunction_add : Notations.DoubleColon Self "add" := {
-    Notations.double_colon := add;
-  }.
+  Axiom add_is_impl : impl Self "add" = add.
   
   Global Instance ℐ :
     core.ops.arith.Add.Trait Self (Rhs := operator_overloading.Foo.t) := {

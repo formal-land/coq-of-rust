@@ -32,10 +32,7 @@ Section Impl_core_default_Default_for_erc721_Mapping_t_K_V.
   *)
   Parameter default : M (erc721.Mapping.t K V).
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -56,10 +53,7 @@ Section Impl_erc721_Mapping_t_K_V.
   *)
   Parameter contains : (ref Self) -> (ref K) -> M bool.t.
   
-  Global Instance AssociatedFunction_contains :
-    Notations.DoubleColon Self "contains" := {
-    Notations.double_colon := contains;
-  }.
+  Axiom contains_is_impl : impl Self "contains" = contains.
   
   (*
       fn get(&self, _key: &K) -> Option<V> {
@@ -68,9 +62,7 @@ Section Impl_erc721_Mapping_t_K_V.
   *)
   Parameter get : (ref Self) -> (ref K) -> M (core.option.Option.t V).
   
-  Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
-    Notations.double_colon := get;
-  }.
+  Axiom get_is_impl : impl Self "get" = get.
   
   (*
       fn insert(&mut self, _key: K, _value: V) -> Option<u32> {
@@ -79,10 +71,7 @@ Section Impl_erc721_Mapping_t_K_V.
   *)
   Parameter insert : (mut_ref Self) -> K -> V -> M (core.option.Option.t u32.t).
   
-  Global Instance AssociatedFunction_insert :
-    Notations.DoubleColon Self "insert" := {
-    Notations.double_colon := insert;
-  }.
+  Axiom insert_is_impl : impl Self "insert" = insert.
   
   (*
       fn remove(&self, _key: K) {
@@ -91,10 +80,7 @@ Section Impl_erc721_Mapping_t_K_V.
   *)
   Parameter remove : (ref Self) -> K -> M unit.
   
-  Global Instance AssociatedFunction_remove :
-    Notations.DoubleColon Self "remove" := {
-    Notations.double_colon := remove;
-  }.
+  Axiom remove_is_impl : impl Self "remove" = remove.
   
   (*
       fn size(&self, _key: K) -> Option<u32> {
@@ -103,10 +89,7 @@ Section Impl_erc721_Mapping_t_K_V.
   *)
   Parameter size : (ref Self) -> K -> M (core.option.Option.t u32.t).
   
-  Global Instance AssociatedFunction_size :
-    Notations.DoubleColon Self "size" := {
-    Notations.double_colon := size;
-  }.
+  Axiom size_is_impl : impl Self "size" = size.
   
   (*
       fn take(&self, _key: K) -> Option<V> {
@@ -115,10 +98,7 @@ Section Impl_erc721_Mapping_t_K_V.
   *)
   Parameter take : (ref Self) -> K -> M (core.option.Option.t V).
   
-  Global Instance AssociatedFunction_take :
-    Notations.DoubleColon Self "take" := {
-    Notations.double_colon := take;
-  }.
+  Axiom take_is_impl : impl Self "take" = take.
 End Impl_erc721_Mapping_t_K_V.
 End Impl_erc721_Mapping_t_K_V.
 
@@ -142,10 +122,7 @@ Section Impl_core_default_Default_for_erc721_AccountId_t.
   *)
   Parameter default : M erc721.AccountId.t.
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -162,10 +139,7 @@ Section Impl_core_clone_Clone_for_erc721_AccountId_t.
   *)
   Parameter clone : (ref Self) -> M erc721.AccountId.t.
   
-  Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon Self "clone" := {
-    Notations.double_colon := clone;
-  }.
+  Axiom clone_is_impl : impl Self "clone" = clone.
   
   Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
@@ -201,9 +175,7 @@ Section Impl_core_cmp_PartialEq_for_erc721_AccountId_t.
   *)
   Parameter eq : (ref Self) -> (ref erc721.AccountId.t) -> M bool.t.
   
-  Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
-    Notations.double_colon := eq;
-  }.
+  Axiom eq_is_impl : impl Self "eq" = eq.
   
   Global Instance ℐ :
     core.cmp.PartialEq.Required.Trait Self
@@ -225,10 +197,7 @@ Section Impl_core_convert_From_array_u8_t_for_erc721_AccountId_t.
   *)
   Parameter from : (array u8.t) -> M Self.
   
-  Global Instance AssociatedFunction_from :
-    Notations.DoubleColon Self "from" := {
-    Notations.double_colon := from;
-  }.
+  Axiom from_is_impl : impl Self "from" = from.
   
   Global Instance ℐ : core.convert.From.Trait Self (T := array u8.t) := {
     core.convert.From.from := from;
@@ -289,10 +258,7 @@ Section Impl_core_default_Default_for_erc721_Erc721_t.
   *)
   Parameter default : M erc721.Erc721.t.
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -329,9 +295,7 @@ Section Impl_core_cmp_PartialEq_for_erc721_Error_t.
   *)
   Parameter eq : (ref Self) -> (ref erc721.Error.t) -> M bool.t.
   
-  Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
-    Notations.double_colon := eq;
-  }.
+  Axiom eq_is_impl : impl Self "eq" = eq.
   
   Global Instance ℐ :
     core.cmp.PartialEq.Required.Trait Self
@@ -360,10 +324,8 @@ Section Impl_core_cmp_Eq_for_erc721_Error_t.
   *)
   Parameter assert_receiver_is_total_eq : (ref Self) -> M unit.
   
-  Global Instance AssociatedFunction_assert_receiver_is_total_eq :
-    Notations.DoubleColon Self "assert_receiver_is_total_eq" := {
-    Notations.double_colon := assert_receiver_is_total_eq;
-  }.
+  Axiom assert_receiver_is_total_eq_is_impl :
+      impl Self "assert_receiver_is_total_eq" = assert_receiver_is_total_eq.
   
   Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
     core.cmp.Eq.assert_receiver_is_total_eq :=
@@ -381,10 +343,7 @@ Section Impl_core_clone_Clone_for_erc721_Error_t.
   *)
   Parameter clone : (ref Self) -> M erc721.Error.t.
   
-  Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon Self "clone" := {
-    Notations.double_colon := clone;
-  }.
+  Axiom clone_is_impl : impl Self "clone" = clone.
   
   Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
@@ -496,10 +455,7 @@ Section Impl_erc721_Env_t.
   *)
   Parameter caller : (ref Self) -> M erc721.AccountId.t.
   
-  Global Instance AssociatedFunction_caller :
-    Notations.DoubleColon Self "caller" := {
-    Notations.double_colon := caller;
-  }.
+  Axiom caller_is_impl : impl Self "caller" = caller.
   
   (*
       fn emit_event(&self, _event: Event) {
@@ -508,10 +464,7 @@ Section Impl_erc721_Env_t.
   *)
   Parameter emit_event : (ref Self) -> erc721.Event.t -> M unit.
   
-  Global Instance AssociatedFunction_emit_event :
-    Notations.DoubleColon Self "emit_event" := {
-    Notations.double_colon := emit_event;
-  }.
+  Axiom emit_event_is_impl : impl Self "emit_event" = emit_event.
 End Impl_erc721_Env_t.
 End Impl_erc721_Env_t.
 
@@ -526,10 +479,7 @@ Section Impl_erc721_Erc721_t.
   *)
   Parameter init_env : M erc721.Env.t.
   
-  Global Instance AssociatedFunction_init_env :
-    Notations.DoubleColon Self "init_env" := {
-    Notations.double_colon := init_env;
-  }.
+  Axiom init_env_is_impl : impl Self "init_env" = init_env.
   
   (*
       fn env(&self) -> Env {
@@ -538,9 +488,7 @@ Section Impl_erc721_Erc721_t.
   *)
   Parameter env : (ref Self) -> M erc721.Env.t.
   
-  Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
-    Notations.double_colon := env;
-  }.
+  Axiom env_is_impl : impl Self "env" = env.
   
   (*
       pub fn new() -> Self {
@@ -549,9 +497,7 @@ Section Impl_erc721_Erc721_t.
   *)
   Parameter new : M Self.
   
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
-    Notations.double_colon := new;
-  }.
+  Axiom new_is_impl : impl Self "new" = new.
   
   (*
       fn balance_of_or_zero(&self, of: &AccountId) -> u32 {
@@ -561,10 +507,8 @@ Section Impl_erc721_Erc721_t.
   Parameter balance_of_or_zero :
       (ref Self) -> (ref erc721.AccountId.t) -> M u32.t.
   
-  Global Instance AssociatedFunction_balance_of_or_zero :
-    Notations.DoubleColon Self "balance_of_or_zero" := {
-    Notations.double_colon := balance_of_or_zero;
-  }.
+  Axiom balance_of_or_zero_is_impl :
+      impl Self "balance_of_or_zero" = balance_of_or_zero.
   
   (*
       fn clear_approval(&mut self, id: TokenId) {
@@ -573,10 +517,7 @@ Section Impl_erc721_Erc721_t.
   *)
   Parameter clear_approval : (mut_ref Self) -> ltac:(erc721.TokenId) -> M unit.
   
-  Global Instance AssociatedFunction_clear_approval :
-    Notations.DoubleColon Self "clear_approval" := {
-    Notations.double_colon := clear_approval;
-  }.
+  Axiom clear_approval_is_impl : impl Self "clear_approval" = clear_approval.
   
   (*
       fn approved_for_all(&self, owner: AccountId, operator: AccountId) -> bool {
@@ -586,10 +527,8 @@ Section Impl_erc721_Erc721_t.
   Parameter approved_for_all :
       (ref Self) -> erc721.AccountId.t -> erc721.AccountId.t -> M bool.t.
   
-  Global Instance AssociatedFunction_approved_for_all :
-    Notations.DoubleColon Self "approved_for_all" := {
-    Notations.double_colon := approved_for_all;
-  }.
+  Axiom approved_for_all_is_impl :
+      impl Self "approved_for_all" = approved_for_all.
   
   (*
       pub fn owner_of(&self, id: TokenId) -> Option<AccountId> {
@@ -601,10 +540,7 @@ Section Impl_erc721_Erc721_t.
         ltac:(erc721.TokenId) ->
         M (core.option.Option.t erc721.AccountId.t).
   
-  Global Instance AssociatedFunction_owner_of :
-    Notations.DoubleColon Self "owner_of" := {
-    Notations.double_colon := owner_of;
-  }.
+  Axiom owner_of_is_impl : impl Self "owner_of" = owner_of.
   
   (*
       fn approved_or_owner(&self, from: Option<AccountId>, id: TokenId) -> bool {
@@ -624,10 +560,8 @@ Section Impl_erc721_Erc721_t.
         ltac:(erc721.TokenId) ->
         M bool.t.
   
-  Global Instance AssociatedFunction_approved_or_owner :
-    Notations.DoubleColon Self "approved_or_owner" := {
-    Notations.double_colon := approved_or_owner;
-  }.
+  Axiom approved_or_owner_is_impl :
+      impl Self "approved_or_owner" = approved_or_owner.
   
   (*
       fn exists(&self, id: TokenId) -> bool {
@@ -636,10 +570,7 @@ Section Impl_erc721_Erc721_t.
   *)
   Parameter exists_ : (ref Self) -> ltac:(erc721.TokenId) -> M bool.t.
   
-  Global Instance AssociatedFunction_exists_ :
-    Notations.DoubleColon Self "exists_" := {
-    Notations.double_colon := exists_;
-  }.
+  Axiom exists__is_impl : impl Self "exists_" = exists_.
   
   (*
       pub fn balance_of(&self, owner: AccountId) -> u32 {
@@ -648,10 +579,7 @@ Section Impl_erc721_Erc721_t.
   *)
   Parameter balance_of : (ref Self) -> erc721.AccountId.t -> M u32.t.
   
-  Global Instance AssociatedFunction_balance_of :
-    Notations.DoubleColon Self "balance_of" := {
-    Notations.double_colon := balance_of;
-  }.
+  Axiom balance_of_is_impl : impl Self "balance_of" = balance_of.
   
   (*
       pub fn get_approved(&self, id: TokenId) -> Option<AccountId> {
@@ -663,10 +591,7 @@ Section Impl_erc721_Erc721_t.
         ltac:(erc721.TokenId) ->
         M (core.option.Option.t erc721.AccountId.t).
   
-  Global Instance AssociatedFunction_get_approved :
-    Notations.DoubleColon Self "get_approved" := {
-    Notations.double_colon := get_approved;
-  }.
+  Axiom get_approved_is_impl : impl Self "get_approved" = get_approved.
   
   (*
       pub fn is_approved_for_all(&self, owner: AccountId, operator: AccountId) -> bool {
@@ -676,10 +601,8 @@ Section Impl_erc721_Erc721_t.
   Parameter is_approved_for_all :
       (ref Self) -> erc721.AccountId.t -> erc721.AccountId.t -> M bool.t.
   
-  Global Instance AssociatedFunction_is_approved_for_all :
-    Notations.DoubleColon Self "is_approved_for_all" := {
-    Notations.double_colon := is_approved_for_all;
-  }.
+  Axiom is_approved_for_all_is_impl :
+      impl Self "is_approved_for_all" = is_approved_for_all.
   
   (*
       fn approve_for_all(&mut self, to: AccountId, approved: bool) -> Result<(), Error> {
@@ -708,10 +631,7 @@ Section Impl_erc721_Erc721_t.
         bool.t ->
         M (core.result.Result.t unit erc721.Error.t).
   
-  Global Instance AssociatedFunction_approve_for_all :
-    Notations.DoubleColon Self "approve_for_all" := {
-    Notations.double_colon := approve_for_all;
-  }.
+  Axiom approve_for_all_is_impl : impl Self "approve_for_all" = approve_for_all.
   
   (*
       pub fn set_approval_for_all(&mut self, to: AccountId, approved: bool) -> Result<(), Error> {
@@ -725,10 +645,8 @@ Section Impl_erc721_Erc721_t.
         bool.t ->
         M (core.result.Result.t unit erc721.Error.t).
   
-  Global Instance AssociatedFunction_set_approval_for_all :
-    Notations.DoubleColon Self "set_approval_for_all" := {
-    Notations.double_colon := set_approval_for_all;
-  }.
+  Axiom set_approval_for_all_is_impl :
+      impl Self "set_approval_for_all" = set_approval_for_all.
   
   (*
       fn approve_for(&mut self, to: &AccountId, id: TokenId) -> Result<(), Error> {
@@ -765,10 +683,7 @@ Section Impl_erc721_Erc721_t.
         ltac:(erc721.TokenId) ->
         M (core.result.Result.t unit erc721.Error.t).
   
-  Global Instance AssociatedFunction_approve_for :
-    Notations.DoubleColon Self "approve_for" := {
-    Notations.double_colon := approve_for;
-  }.
+  Axiom approve_for_is_impl : impl Self "approve_for" = approve_for.
   
   (*
       pub fn approve(&mut self, to: AccountId, id: TokenId) -> Result<(), Error> {
@@ -782,10 +697,7 @@ Section Impl_erc721_Erc721_t.
         ltac:(erc721.TokenId) ->
         M (core.result.Result.t unit erc721.Error.t).
   
-  Global Instance AssociatedFunction_approve :
-    Notations.DoubleColon Self "approve" := {
-    Notations.double_colon := approve;
-  }.
+  Axiom approve_is_impl : impl Self "approve" = approve.
   
   (*
       fn remove_token_from(&mut self, from: &AccountId, id: TokenId) -> Result<(), Error> {
@@ -815,10 +727,8 @@ Section Impl_erc721_Erc721_t.
         ltac:(erc721.TokenId) ->
         M (core.result.Result.t unit erc721.Error.t).
   
-  Global Instance AssociatedFunction_remove_token_from :
-    Notations.DoubleColon Self "remove_token_from" := {
-    Notations.double_colon := remove_token_from;
-  }.
+  Axiom remove_token_from_is_impl :
+      impl Self "remove_token_from" = remove_token_from.
   
   (*
       fn add_token_to(&mut self, to: &AccountId, id: TokenId) -> Result<(), Error> {
@@ -853,10 +763,7 @@ Section Impl_erc721_Erc721_t.
         ltac:(erc721.TokenId) ->
         M (core.result.Result.t unit erc721.Error.t).
   
-  Global Instance AssociatedFunction_add_token_to :
-    Notations.DoubleColon Self "add_token_to" := {
-    Notations.double_colon := add_token_to;
-  }.
+  Axiom add_token_to_is_impl : impl Self "add_token_to" = add_token_to.
   
   (*
       fn transfer_token_from(
@@ -890,10 +797,8 @@ Section Impl_erc721_Erc721_t.
         ltac:(erc721.TokenId) ->
         M (core.result.Result.t unit erc721.Error.t).
   
-  Global Instance AssociatedFunction_transfer_token_from :
-    Notations.DoubleColon Self "transfer_token_from" := {
-    Notations.double_colon := transfer_token_from;
-  }.
+  Axiom transfer_token_from_is_impl :
+      impl Self "transfer_token_from" = transfer_token_from.
   
   (*
       pub fn transfer(&mut self, destination: AccountId, id: TokenId) -> Result<(), Error> {
@@ -908,10 +813,7 @@ Section Impl_erc721_Erc721_t.
         ltac:(erc721.TokenId) ->
         M (core.result.Result.t unit erc721.Error.t).
   
-  Global Instance AssociatedFunction_transfer :
-    Notations.DoubleColon Self "transfer" := {
-    Notations.double_colon := transfer;
-  }.
+  Axiom transfer_is_impl : impl Self "transfer" = transfer.
   
   (*
       pub fn transfer_from(
@@ -931,10 +833,7 @@ Section Impl_erc721_Erc721_t.
         ltac:(erc721.TokenId) ->
         M (core.result.Result.t unit erc721.Error.t).
   
-  Global Instance AssociatedFunction_transfer_from :
-    Notations.DoubleColon Self "transfer_from" := {
-    Notations.double_colon := transfer_from;
-  }.
+  Axiom transfer_from_is_impl : impl Self "transfer_from" = transfer_from.
   
   (*
       pub fn mint(&mut self, id: TokenId) -> Result<(), Error> {
@@ -953,10 +852,7 @@ Section Impl_erc721_Erc721_t.
         ltac:(erc721.TokenId) ->
         M (core.result.Result.t unit erc721.Error.t).
   
-  Global Instance AssociatedFunction_mint :
-    Notations.DoubleColon Self "mint" := {
-    Notations.double_colon := mint;
-  }.
+  Axiom mint_is_impl : impl Self "mint" = mint.
   
   (*
       pub fn burn(&mut self, id: TokenId) -> Result<(), Error> {
@@ -993,9 +889,6 @@ Section Impl_erc721_Erc721_t.
         ltac:(erc721.TokenId) ->
         M (core.result.Result.t unit erc721.Error.t).
   
-  Global Instance AssociatedFunction_burn :
-    Notations.DoubleColon Self "burn" := {
-    Notations.double_colon := burn;
-  }.
+  Axiom burn_is_impl : impl Self "burn" = burn.
 End Impl_erc721_Erc721_t.
 End Impl_erc721_Erc721_t.

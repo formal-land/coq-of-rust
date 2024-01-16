@@ -37,10 +37,7 @@ Section Impl_traits_Sheep_t.
   *)
   Parameter is_naked : (ref Self) -> M bool.t.
   
-  Global Instance AssociatedFunction_is_naked :
-    Notations.DoubleColon Self "is_naked" := {
-    Notations.double_colon := is_naked;
-  }.
+  Axiom is_naked_is_impl : impl Self "is_naked" = is_naked.
 End Impl_traits_Sheep_t.
 End Impl_traits_Sheep_t.
 
@@ -58,9 +55,7 @@ Section Impl_traits_Animal_for_traits_Sheep_t.
   *)
   Parameter new : (ref str.t) -> M traits.Sheep.t.
   
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
-    Notations.double_colon := new;
-  }.
+  Axiom new_is_impl : impl Self "new" = new.
   
   (*
       fn name(&self) -> &'static str {
@@ -69,10 +64,7 @@ Section Impl_traits_Animal_for_traits_Sheep_t.
   *)
   Parameter name : (ref Self) -> M (ref str.t).
   
-  Global Instance AssociatedFunction_name :
-    Notations.DoubleColon Self "name" := {
-    Notations.double_colon := name;
-  }.
+  Axiom name_is_impl : impl Self "name" = name.
   
   (*
       fn noise(&self) -> &'static str {
@@ -85,10 +77,7 @@ Section Impl_traits_Animal_for_traits_Sheep_t.
   *)
   Parameter noise : (ref Self) -> M (ref str.t).
   
-  Global Instance AssociatedFunction_noise :
-    Notations.DoubleColon Self "noise" := {
-    Notations.double_colon := noise;
-  }.
+  Axiom noise_is_impl : impl Self "noise" = noise.
   
   (*
       fn talk(&self) {
@@ -98,10 +87,7 @@ Section Impl_traits_Animal_for_traits_Sheep_t.
   *)
   Parameter talk : (ref Self) -> M unit.
   
-  Global Instance AssociatedFunction_talk :
-    Notations.DoubleColon Self "talk" := {
-    Notations.double_colon := talk;
-  }.
+  Axiom talk_is_impl : impl Self "talk" = talk.
   
   Global Instance ℐ : traits.Animal.Required.Trait Self := {
     traits.Animal.new := new;
@@ -130,10 +116,7 @@ Section Impl_traits_Sheep_t_2.
   *)
   Parameter shear : (mut_ref Self) -> M unit.
   
-  Global Instance AssociatedFunction_shear :
-    Notations.DoubleColon Self "shear" := {
-    Notations.double_colon := shear;
-  }.
+  Axiom shear_is_impl : impl Self "shear" = shear.
 End Impl_traits_Sheep_t_2.
 End Impl_traits_Sheep_t_2.
 

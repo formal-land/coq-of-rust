@@ -27,11 +27,6 @@ where
 Module DrainFilter.
   Parameter t : forall (T F A : Set), Set.
 End DrainFilter.
-Definition DrainFilter (T F : Set) (A : option Set)
-  `{Allocator.Trait (defaultType A alloc.Global.t)} 
-  `{FnMut.Trait F (mut_ref T -> bool)}
-  : Set :=
-  DrainFilter.t T F (defaultType A alloc.Global.t).
   (* 
   let A_type := (defaultType A Global) in
   let traits 
@@ -50,8 +45,6 @@ where
 Module Drain.
   Parameter t : forall (T A : Set), Set.
 End Drain.
-Definition Drain (T : Set) (A : option Set) : Set :=
-  Drain.t T (defaultType A alloc.Global.t).
   (* 
   let A_type := (defaultType A Global) in
   let traits 
@@ -71,8 +64,6 @@ Module into_iter.
   Module IntoIter.
     Parameter t : forall (T A : Set), Set.
   End IntoIter.
-  Definition IntoIter (T : Set) (A : option Set) :=
-    IntoIter.t T (defaultType A alloc.Global.t).
     (* 
     let A_type := (defaultType A Global) in
     let traits 
@@ -94,8 +85,6 @@ where
 Module Splice.
   Parameter t : forall (I A : Set), Set.
 End Splice.
-Definition Splice (I : Set) (A : option Set) :=
-  Splice.t I (defaultType A alloc.Global.t).
 
 (* BUGGED: same as above *)
 (* 

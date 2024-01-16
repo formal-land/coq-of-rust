@@ -24,9 +24,7 @@ Section Impl_core_fmt_Debug_for_wrapping_errors_DoubleError_t.
   Parameter fmt :
       (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
   
-  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
-    Notations.double_colon := fmt;
-  }.
+  Axiom fmt_is_impl : impl Self "fmt" = fmt.
   
   Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
@@ -51,9 +49,7 @@ Section Impl_core_fmt_Display_for_wrapping_errors_DoubleError_t.
   Parameter fmt :
       (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
   
-  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
-    Notations.double_colon := fmt;
-  }.
+  Axiom fmt_is_impl : impl Self "fmt" = fmt.
   
   Global Instance ℐ : core.fmt.Display.Trait Self := {
     core.fmt.Display.fmt := fmt;
@@ -78,10 +74,7 @@ Section Impl_core_error_Error_for_wrapping_errors_DoubleError_t.
   *)
   Parameter source : (ref Self) -> M (core.option.Option.t (ref _ (* dyn *))).
   
-  Global Instance AssociatedFunction_source :
-    Notations.DoubleColon Self "source" := {
-    Notations.double_colon := source;
-  }.
+  Axiom source_is_impl : impl Self "source" = source.
   
   Global Instance ℐ : core.error.Error.Required.Trait Self := {
     core.error.Error.source := Datatypes.Some source;
@@ -105,10 +98,7 @@ Section Impl_core_convert_From_core_num_error_ParseIntError_t_for_wrapping_error
   Parameter from :
       core.num.error.ParseIntError.t -> M wrapping_errors.DoubleError.t.
   
-  Global Instance AssociatedFunction_from :
-    Notations.DoubleColon Self "from" := {
-    Notations.double_colon := from;
-  }.
+  Axiom from_is_impl : impl Self "from" = from.
   
   Global Instance ℐ :
     core.convert.From.Trait Self (T := core.num.error.ParseIntError.t) := {

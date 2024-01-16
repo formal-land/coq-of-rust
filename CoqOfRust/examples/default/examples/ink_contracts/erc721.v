@@ -45,10 +45,7 @@ Section Impl_core_default_Default_for_erc721_Mapping_t_K_V.
     let* α3 : core.marker.PhantomData.t V := M.call α2 in
     M.pure {| erc721.Mapping._key := α1; erc721.Mapping._value := α3; |}.
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -74,10 +71,7 @@ Section Impl_erc721_Mapping_t_K_V.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_contains :
-    Notations.DoubleColon Self "contains" := {
-    Notations.double_colon := contains;
-  }.
+  Axiom contains_is_impl : impl Self "contains" = contains.
   
   (*
       fn get(&self, _key: &K) -> Option<V> {
@@ -94,9 +88,7 @@ Section Impl_erc721_Mapping_t_K_V.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
-    Notations.double_colon := get;
-  }.
+  Axiom get_is_impl : impl Self "get" = get.
   
   (*
       fn insert(&mut self, _key: K, _value: V) -> Option<u32> {
@@ -115,10 +107,7 @@ Section Impl_erc721_Mapping_t_K_V.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_insert :
-    Notations.DoubleColon Self "insert" := {
-    Notations.double_colon := insert;
-  }.
+  Axiom insert_is_impl : impl Self "insert" = insert.
   
   (*
       fn remove(&self, _key: K) {
@@ -132,10 +121,7 @@ Section Impl_erc721_Mapping_t_K_V.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_remove :
-    Notations.DoubleColon Self "remove" := {
-    Notations.double_colon := remove;
-  }.
+  Axiom remove_is_impl : impl Self "remove" = remove.
   
   (*
       fn size(&self, _key: K) -> Option<u32> {
@@ -152,10 +138,7 @@ Section Impl_erc721_Mapping_t_K_V.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_size :
-    Notations.DoubleColon Self "size" := {
-    Notations.double_colon := size;
-  }.
+  Axiom size_is_impl : impl Self "size" = size.
   
   (*
       fn take(&self, _key: K) -> Option<V> {
@@ -169,10 +152,7 @@ Section Impl_erc721_Mapping_t_K_V.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_take :
-    Notations.DoubleColon Self "take" := {
-    Notations.double_colon := take;
-  }.
+  Axiom take_is_impl : impl Self "take" = take.
 End Impl_erc721_Mapping_t_K_V.
 End Impl_erc721_Mapping_t_K_V.
 
@@ -201,10 +181,7 @@ Section Impl_core_default_Default_for_erc721_AccountId_t.
     let* α1 : u128.t := M.call α0 in
     M.pure (erc721.AccountId.Build_t α1).
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -233,10 +210,7 @@ Section Impl_core_clone_Clone_for_erc721_AccountId_t.
         ] in
     M.read α0.
   
-  Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon Self "clone" := {
-    Notations.double_colon := clone;
-  }.
+  Axiom clone_is_impl : impl Self "clone" = clone.
   
   Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
@@ -279,9 +253,7 @@ Section Impl_core_cmp_PartialEq_for_erc721_AccountId_t.
     let* α3 : u128.t := M.read (erc721.AccountId.Get_0 (deref α2)) in
     M.pure (BinOp.Pure.eq α1 α3).
   
-  Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
-    Notations.double_colon := eq;
-  }.
+  Axiom eq_is_impl : impl Self "eq" = eq.
   
   Global Instance ℐ :
     core.cmp.PartialEq.Required.Trait Self
@@ -307,10 +279,7 @@ Section Impl_core_convert_From_array_u8_t_for_erc721_AccountId_t.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_from :
-    Notations.DoubleColon Self "from" := {
-    Notations.double_colon := from;
-  }.
+  Axiom from_is_impl : impl Self "from" = from.
   
   Global Instance ℐ : core.convert.From.Trait Self (T := array u8.t) := {
     core.convert.From.from := from;
@@ -404,10 +373,7 @@ Section Impl_core_default_Default_for_erc721_Erc721_t.
         erc721.Erc721.operator_approvals := α7;
       |}.
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -458,9 +424,7 @@ Section Impl_core_cmp_PartialEq_for_erc721_Error_t.
     let* α0 : M.Val bool.t := M.alloc (BinOp.Pure.eq α0 α1) in
     M.read α0.
   
-  Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
-    Notations.double_colon := eq;
-  }.
+  Axiom eq_is_impl : impl Self "eq" = eq.
   
   Global Instance ℐ :
     core.cmp.PartialEq.Required.Trait Self
@@ -491,10 +455,8 @@ Section Impl_core_cmp_Eq_for_erc721_Error_t.
     let* self := M.alloc self in
     M.pure tt.
   
-  Global Instance AssociatedFunction_assert_receiver_is_total_eq :
-    Notations.DoubleColon Self "assert_receiver_is_total_eq" := {
-    Notations.double_colon := assert_receiver_is_total_eq;
-  }.
+  Axiom assert_receiver_is_total_eq_is_impl :
+      impl Self "assert_receiver_is_total_eq" = assert_receiver_is_total_eq.
   
   Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
     core.cmp.Eq.assert_receiver_is_total_eq :=
@@ -515,10 +477,7 @@ Section Impl_core_clone_Clone_for_erc721_Error_t.
     let* α0 : ref erc721.Error.t := M.read self in
     M.read (deref α0).
   
-  Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon Self "clone" := {
-    Notations.double_colon := clone;
-  }.
+  Axiom clone_is_impl : impl Self "clone" = clone.
   
   Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
@@ -633,10 +592,7 @@ Section Impl_erc721_Env_t.
     let* α0 : ref erc721.Env.t := M.read self in
     M.read (erc721.Env.Get_caller (deref α0)).
   
-  Global Instance AssociatedFunction_caller :
-    Notations.DoubleColon Self "caller" := {
-    Notations.double_colon := caller;
-  }.
+  Axiom caller_is_impl : impl Self "caller" = caller.
   
   (*
       fn emit_event(&self, _event: Event) {
@@ -650,10 +606,7 @@ Section Impl_erc721_Env_t.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_emit_event :
-    Notations.DoubleColon Self "emit_event" := {
-    Notations.double_colon := emit_event;
-  }.
+  Axiom emit_event_is_impl : impl Self "emit_event" = emit_event.
 End Impl_erc721_Env_t.
 End Impl_erc721_Env_t.
 
@@ -671,10 +624,7 @@ Section Impl_erc721_Erc721_t.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_init_env :
-    Notations.DoubleColon Self "init_env" := {
-    Notations.double_colon := init_env;
-  }.
+  Axiom init_env_is_impl : impl Self "init_env" = init_env.
   
   (*
       fn env(&self) -> Env {
@@ -683,11 +633,9 @@ Section Impl_erc721_Erc721_t.
   *)
   Definition env (self : ref Self) : M erc721.Env.t :=
     let* self := M.alloc self in
-    M.call erc721.Erc721.t::["init_env"].
+    M.call (impl erc721.Erc721.t "init_env").
   
-  Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
-    Notations.double_colon := env;
-  }.
+  Axiom env_is_impl : impl Self "env" = env.
   
   (*
       pub fn new() -> Self {
@@ -700,9 +648,7 @@ Section Impl_erc721_Erc721_t.
         core.default.Default.default (Self := erc721.Erc721.t) (Trait := ℐ))) in
     M.call α0.
   
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
-    Notations.double_colon := new;
-  }.
+  Axiom new_is_impl : impl Self "new" = new.
   
   (*
       fn balance_of_or_zero(&self, of: &AccountId) -> u32 {
@@ -719,17 +665,15 @@ Section Impl_erc721_Erc721_t.
     let* α1 : ref erc721.AccountId.t := M.read of in
     let* α2 : core.option.Option.t u32.t :=
       M.call
-        ((erc721.Mapping.t erc721.AccountId.t u32.t)::["get"]
+        (impl (erc721.Mapping.t erc721.AccountId.t u32.t) "get"
           (borrow (erc721.Erc721.Get_owned_tokens_count (deref α0)))
           α1) in
     let* α3 : M.Val u32.t := M.alloc ((Integer.of_Z 0) : u32.t) in
     let* α4 : u32.t := M.read (use α3) in
-    M.call ((core.option.Option.t u32.t)::["unwrap_or"] α2 α4).
+    M.call (impl (core.option.Option.t u32.t) "unwrap_or" α2 α4).
   
-  Global Instance AssociatedFunction_balance_of_or_zero :
-    Notations.DoubleColon Self "balance_of_or_zero" := {
-    Notations.double_colon := balance_of_or_zero;
-  }.
+  Axiom balance_of_or_zero_is_impl :
+      impl Self "balance_of_or_zero" = balance_of_or_zero.
   
   (*
       fn clear_approval(&mut self, id: TokenId) {
@@ -747,17 +691,14 @@ Section Impl_erc721_Erc721_t.
       let* α1 : u32.t := M.read id in
       let* α2 : unit :=
         M.call
-          ((erc721.Mapping.t u32.t erc721.AccountId.t)::["remove"]
+          (impl (erc721.Mapping.t u32.t erc721.AccountId.t) "remove"
             (borrow (erc721.Erc721.Get_token_approvals (deref α0)))
             α1) in
       M.alloc α2 in
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
-  Global Instance AssociatedFunction_clear_approval :
-    Notations.DoubleColon Self "clear_approval" := {
-    Notations.double_colon := clear_approval;
-  }.
+  Axiom clear_approval_is_impl : impl Self "clear_approval" = clear_approval.
   
   (*
       fn approved_for_all(&self, owner: AccountId, operator: AccountId) -> bool {
@@ -778,16 +719,14 @@ Section Impl_erc721_Erc721_t.
     let* α3 : M.Val (erc721.AccountId.t * erc721.AccountId.t) :=
       M.alloc (α1, α2) in
     M.call
-      ((erc721.Mapping.t
-            (erc721.AccountId.t * erc721.AccountId.t)
-            unit)::["contains"]
+      (impl
+          (erc721.Mapping.t (erc721.AccountId.t * erc721.AccountId.t) unit)
+          "contains"
         (borrow (erc721.Erc721.Get_operator_approvals (deref α0)))
         (borrow α3)).
   
-  Global Instance AssociatedFunction_approved_for_all :
-    Notations.DoubleColon Self "approved_for_all" := {
-    Notations.double_colon := approved_for_all;
-  }.
+  Axiom approved_for_all_is_impl :
+      impl Self "approved_for_all" = approved_for_all.
   
   (*
       pub fn owner_of(&self, id: TokenId) -> Option<AccountId> {
@@ -802,14 +741,11 @@ Section Impl_erc721_Erc721_t.
     let* id := M.alloc id in
     let* α0 : ref erc721.Erc721.t := M.read self in
     M.call
-      ((erc721.Mapping.t u32.t erc721.AccountId.t)::["get"]
+      (impl (erc721.Mapping.t u32.t erc721.AccountId.t) "get"
         (borrow (erc721.Erc721.Get_token_owner (deref α0)))
         (borrow id)).
   
-  Global Instance AssociatedFunction_owner_of :
-    Notations.DoubleColon Self "owner_of" := {
-    Notations.double_colon := owner_of;
-  }.
+  Axiom owner_of_is_impl : impl Self "owner_of" = owner_of.
   
   (*
       fn approved_or_owner(&self, from: Option<AccountId>, id: TokenId) -> bool {
@@ -835,7 +771,7 @@ Section Impl_erc721_Erc721_t.
       let* α0 : ref erc721.Erc721.t := M.read self in
       let* α1 : u32.t := M.read id in
       let* α2 : core.option.Option.t erc721.AccountId.t :=
-        M.call (erc721.Erc721.t::["owner_of"] α0 α1) in
+        M.call (impl erc721.Erc721.t "owner_of" α0 α1) in
       M.alloc α2 in
     let* α0 : _ :=
       ltac:(M.get_method (fun ℐ =>
@@ -870,7 +806,7 @@ Section Impl_erc721_Erc721_t.
     let* α8 : ref erc721.Erc721.t := M.read self in
     let* α9 : core.option.Option.t erc721.AccountId.t :=
       M.call
-        ((erc721.Mapping.t u32.t erc721.AccountId.t)::["get"]
+        (impl (erc721.Mapping.t u32.t erc721.AccountId.t) "get"
           (borrow (erc721.Erc721.Get_token_approvals (deref α8)))
           (borrow id)) in
     let* α10 : M.Val (core.option.Option.t erc721.AccountId.t) := M.alloc α9 in
@@ -879,21 +815,21 @@ Section Impl_erc721_Erc721_t.
     let* α13 : core.option.Option.t erc721.AccountId.t := M.read owner in
     let* α14 : ref str.t := M.read (mk_str "Error with AccountId") in
     let* α15 : erc721.AccountId.t :=
-      M.call ((core.option.Option.t erc721.AccountId.t)::["expect"] α13 α14) in
+      M.call
+        (impl (core.option.Option.t erc721.AccountId.t) "expect" α13 α14) in
     let* α16 : core.option.Option.t erc721.AccountId.t := M.read from in
     let* α17 : ref str.t := M.read (mk_str "Error with AccountId") in
     let* α18 : erc721.AccountId.t :=
-      M.call ((core.option.Option.t erc721.AccountId.t)::["expect"] α16 α17) in
+      M.call
+        (impl (core.option.Option.t erc721.AccountId.t) "expect" α16 α17) in
     let* α19 : bool.t :=
-      M.call (erc721.Erc721.t::["approved_for_all"] α12 α15 α18) in
+      M.call (impl erc721.Erc721.t "approved_for_all" α12 α15 α18) in
     let* α0 : M.Val bool.t :=
       M.alloc (BinOp.Pure.and α4 (BinOp.Pure.or (BinOp.Pure.or α6 α11) α19)) in
     M.read α0.
   
-  Global Instance AssociatedFunction_approved_or_owner :
-    Notations.DoubleColon Self "approved_or_owner" := {
-    Notations.double_colon := approved_or_owner;
-  }.
+  Axiom approved_or_owner_is_impl :
+      impl Self "approved_or_owner" = approved_or_owner.
   
   (*
       fn exists(&self, id: TokenId) -> bool {
@@ -908,14 +844,11 @@ Section Impl_erc721_Erc721_t.
     let* id := M.alloc id in
     let* α0 : ref erc721.Erc721.t := M.read self in
     M.call
-      ((erc721.Mapping.t u32.t erc721.AccountId.t)::["contains"]
+      (impl (erc721.Mapping.t u32.t erc721.AccountId.t) "contains"
         (borrow (erc721.Erc721.Get_token_owner (deref α0)))
         (borrow id)).
   
-  Global Instance AssociatedFunction_exists_ :
-    Notations.DoubleColon Self "exists_" := {
-    Notations.double_colon := exists_;
-  }.
+  Axiom exists__is_impl : impl Self "exists_" = exists_.
   
   (*
       pub fn balance_of(&self, owner: AccountId) -> u32 {
@@ -929,12 +862,9 @@ Section Impl_erc721_Erc721_t.
     let* self := M.alloc self in
     let* owner := M.alloc owner in
     let* α0 : ref erc721.Erc721.t := M.read self in
-    M.call (erc721.Erc721.t::["balance_of_or_zero"] α0 (borrow owner)).
+    M.call (impl erc721.Erc721.t "balance_of_or_zero" α0 (borrow owner)).
   
-  Global Instance AssociatedFunction_balance_of :
-    Notations.DoubleColon Self "balance_of" := {
-    Notations.double_colon := balance_of;
-  }.
+  Axiom balance_of_is_impl : impl Self "balance_of" = balance_of.
   
   (*
       pub fn get_approved(&self, id: TokenId) -> Option<AccountId> {
@@ -949,14 +879,11 @@ Section Impl_erc721_Erc721_t.
     let* id := M.alloc id in
     let* α0 : ref erc721.Erc721.t := M.read self in
     M.call
-      ((erc721.Mapping.t u32.t erc721.AccountId.t)::["get"]
+      (impl (erc721.Mapping.t u32.t erc721.AccountId.t) "get"
         (borrow (erc721.Erc721.Get_token_approvals (deref α0)))
         (borrow id)).
   
-  Global Instance AssociatedFunction_get_approved :
-    Notations.DoubleColon Self "get_approved" := {
-    Notations.double_colon := get_approved;
-  }.
+  Axiom get_approved_is_impl : impl Self "get_approved" = get_approved.
   
   (*
       pub fn is_approved_for_all(&self, owner: AccountId, operator: AccountId) -> bool {
@@ -974,12 +901,10 @@ Section Impl_erc721_Erc721_t.
     let* α0 : ref erc721.Erc721.t := M.read self in
     let* α1 : erc721.AccountId.t := M.read owner in
     let* α2 : erc721.AccountId.t := M.read operator in
-    M.call (erc721.Erc721.t::["approved_for_all"] α0 α1 α2).
+    M.call (impl erc721.Erc721.t "approved_for_all" α0 α1 α2).
   
-  Global Instance AssociatedFunction_is_approved_for_all :
-    Notations.DoubleColon Self "is_approved_for_all" := {
-    Notations.double_colon := is_approved_for_all;
-  }.
+  Axiom is_approved_for_all_is_impl :
+      impl Self "is_approved_for_all" = is_approved_for_all.
   
   (*
       fn approve_for_all(&mut self, to: AccountId, approved: bool) -> Result<(), Error> {
@@ -1015,10 +940,10 @@ Section Impl_erc721_Erc721_t.
       (let* caller : M.Val erc721.AccountId.t :=
         let* α0 : mut_ref erc721.Erc721.t := M.read self in
         let* α1 : erc721.Env.t :=
-          M.call (erc721.Erc721.t::["env"] (borrow (deref α0))) in
+          M.call (impl erc721.Erc721.t "env" (borrow (deref α0))) in
         let* α2 : M.Val erc721.Env.t := M.alloc α1 in
         let* α3 : erc721.AccountId.t :=
-          M.call (erc721.Env.t::["caller"] (borrow α2)) in
+          M.call (impl erc721.Env.t "caller" (borrow α2)) in
         M.alloc α3 in
       let* _ : M.Val unit :=
         let* α0 : _ :=
@@ -1041,14 +966,14 @@ Section Impl_erc721_Erc721_t.
       let* _ : M.Val unit :=
         let* α0 : mut_ref erc721.Erc721.t := M.read self in
         let* α1 : erc721.Env.t :=
-          M.call (erc721.Erc721.t::["env"] (borrow (deref α0))) in
+          M.call (impl erc721.Erc721.t "env" (borrow (deref α0))) in
         let* α2 : M.Val erc721.Env.t := M.alloc α1 in
         let* α3 : erc721.AccountId.t := M.read caller in
         let* α4 : erc721.AccountId.t := M.read to in
         let* α5 : bool.t := M.read approved in
         let* α6 : unit :=
           M.call
-            (erc721.Env.t::["emit_event"]
+            (impl erc721.Env.t "emit_event"
               (borrow α2)
               (erc721.Event.ApprovalForAll
                 {|
@@ -1066,9 +991,11 @@ Section Impl_erc721_Erc721_t.
             let* α2 : erc721.AccountId.t := M.read to in
             let* α3 : core.option.Option.t u32.t :=
               M.call
-                ((erc721.Mapping.t
+                (impl
+                    (erc721.Mapping.t
                       (erc721.AccountId.t * erc721.AccountId.t)
-                      unit)::["insert"]
+                      unit)
+                    "insert"
                   (borrow_mut (erc721.Erc721.Get_operator_approvals (deref α0)))
                   (α1, α2)
                   tt) in
@@ -1081,9 +1008,11 @@ Section Impl_erc721_Erc721_t.
             let* α2 : erc721.AccountId.t := M.read to in
             let* α3 : unit :=
               M.call
-                ((erc721.Mapping.t
+                (impl
+                    (erc721.Mapping.t
                       (erc721.AccountId.t * erc721.AccountId.t)
-                      unit)::["remove"]
+                      unit)
+                    "remove"
                   (borrow (erc721.Erc721.Get_operator_approvals (deref α0)))
                   (α1, α2)) in
             M.alloc α3 in
@@ -1092,10 +1021,7 @@ Section Impl_erc721_Erc721_t.
         M.alloc (core.result.Result.Ok tt) in
       M.read α0).
   
-  Global Instance AssociatedFunction_approve_for_all :
-    Notations.DoubleColon Self "approve_for_all" := {
-    Notations.double_colon := approve_for_all;
-  }.
+  Axiom approve_for_all_is_impl : impl Self "approve_for_all" = approve_for_all.
   
   (*
       pub fn set_approval_for_all(&mut self, to: AccountId, approved: bool) -> Result<(), Error> {
@@ -1123,7 +1049,7 @@ Section Impl_erc721_Erc721_t.
         let* α2 : erc721.AccountId.t := M.read to in
         let* α3 : bool.t := M.read approved in
         let* α4 : core.result.Result.t unit erc721.Error.t :=
-          M.call (erc721.Erc721.t::["approve_for_all"] α1 α2 α3) in
+          M.call (impl erc721.Erc721.t "approve_for_all" α1 α2 α3) in
         let* α5 :
             core.ops.control_flow.ControlFlow.t
               (core.result.Result.t core.convert.Infallible.t erc721.Error.t)
@@ -1183,10 +1109,8 @@ Section Impl_erc721_Erc721_t.
         M.alloc (core.result.Result.Ok tt) in
       M.read α0).
   
-  Global Instance AssociatedFunction_set_approval_for_all :
-    Notations.DoubleColon Self "set_approval_for_all" := {
-    Notations.double_colon := set_approval_for_all;
-  }.
+  Axiom set_approval_for_all_is_impl :
+      impl Self "set_approval_for_all" = set_approval_for_all.
   
   (*
       fn approve_for(&mut self, to: &AccountId, id: TokenId) -> Result<(), Error> {
@@ -1230,16 +1154,16 @@ Section Impl_erc721_Erc721_t.
       (let* caller : M.Val erc721.AccountId.t :=
         let* α0 : mut_ref erc721.Erc721.t := M.read self in
         let* α1 : erc721.Env.t :=
-          M.call (erc721.Erc721.t::["env"] (borrow (deref α0))) in
+          M.call (impl erc721.Erc721.t "env" (borrow (deref α0))) in
         let* α2 : M.Val erc721.Env.t := M.alloc α1 in
         let* α3 : erc721.AccountId.t :=
-          M.call (erc721.Env.t::["caller"] (borrow α2)) in
+          M.call (impl erc721.Env.t "caller" (borrow α2)) in
         M.alloc α3 in
       let* owner : M.Val (core.option.Option.t erc721.AccountId.t) :=
         let* α0 : mut_ref erc721.Erc721.t := M.read self in
         let* α1 : u32.t := M.read id in
         let* α2 : core.option.Option.t erc721.AccountId.t :=
-          M.call (erc721.Erc721.t::["owner_of"] (borrow (deref α0)) α1) in
+          M.call (impl erc721.Erc721.t "owner_of" (borrow (deref α0)) α1) in
         M.alloc α2 in
       let* _ : M.Val unit :=
         let* α0 : _ :=
@@ -1257,11 +1181,14 @@ Section Impl_erc721_Erc721_t.
         let* α6 : ref str.t := M.read (mk_str "Error with AccountId") in
         let* α7 : erc721.AccountId.t :=
           M.call
-            ((core.option.Option.t erc721.AccountId.t)::["expect"] α5 α6) in
+            (impl (core.option.Option.t erc721.AccountId.t) "expect" α5 α6) in
         let* α8 : erc721.AccountId.t := M.read caller in
         let* α9 : bool.t :=
           M.call
-            (erc721.Erc721.t::["approved_for_all"] (borrow (deref α4)) α7 α8) in
+            (impl erc721.Erc721.t "approved_for_all"
+              (borrow (deref α4))
+              α7
+              α8) in
         let* α10 : M.Val bool.t := M.alloc (UnOp.not (BinOp.Pure.or α3 α9)) in
         let* α11 : bool.t := M.read (use α10) in
         if α11 then
@@ -1304,7 +1231,7 @@ Section Impl_erc721_Erc721_t.
         let* α0 : mut_ref erc721.Erc721.t := M.read self in
         let* α1 : bool.t :=
           M.call
-            ((erc721.Mapping.t u32.t erc721.AccountId.t)::["contains"]
+            (impl (erc721.Mapping.t u32.t erc721.AccountId.t) "contains"
               (borrow (erc721.Erc721.Get_token_approvals (deref α0)))
               (borrow id)) in
         let* α2 : M.Val bool.t := M.alloc α1 in
@@ -1323,7 +1250,7 @@ Section Impl_erc721_Erc721_t.
             let* α3 : erc721.AccountId.t := M.read (deref α2) in
             let* α4 : core.option.Option.t u32.t :=
               M.call
-                ((erc721.Mapping.t u32.t erc721.AccountId.t)::["insert"]
+                (impl (erc721.Mapping.t u32.t erc721.AccountId.t) "insert"
                   (borrow_mut (erc721.Erc721.Get_token_approvals (deref α0)))
                   α1
                   α3) in
@@ -1332,7 +1259,7 @@ Section Impl_erc721_Erc721_t.
       let* _ : M.Val unit :=
         let* α0 : mut_ref erc721.Erc721.t := M.read self in
         let* α1 : erc721.Env.t :=
-          M.call (erc721.Erc721.t::["env"] (borrow (deref α0))) in
+          M.call (impl erc721.Erc721.t "env" (borrow (deref α0))) in
         let* α2 : M.Val erc721.Env.t := M.alloc α1 in
         let* α3 : erc721.AccountId.t := M.read caller in
         let* α4 : ref erc721.AccountId.t := M.read to in
@@ -1340,7 +1267,7 @@ Section Impl_erc721_Erc721_t.
         let* α6 : u32.t := M.read id in
         let* α7 : unit :=
           M.call
-            (erc721.Env.t::["emit_event"]
+            (impl erc721.Env.t "emit_event"
               (borrow α2)
               (erc721.Event.Approval
                 {|
@@ -1353,10 +1280,7 @@ Section Impl_erc721_Erc721_t.
         M.alloc (core.result.Result.Ok tt) in
       M.read α0).
   
-  Global Instance AssociatedFunction_approve_for :
-    Notations.DoubleColon Self "approve_for" := {
-    Notations.double_colon := approve_for;
-  }.
+  Axiom approve_for_is_impl : impl Self "approve_for" = approve_for.
   
   (*
       pub fn approve(&mut self, to: AccountId, id: TokenId) -> Result<(), Error> {
@@ -1383,7 +1307,7 @@ Section Impl_erc721_Erc721_t.
         let* α1 : mut_ref erc721.Erc721.t := M.read self in
         let* α2 : u32.t := M.read id in
         let* α3 : core.result.Result.t unit erc721.Error.t :=
-          M.call (erc721.Erc721.t::["approve_for"] α1 (borrow to) α2) in
+          M.call (impl erc721.Erc721.t "approve_for" α1 (borrow to) α2) in
         let* α4 :
             core.ops.control_flow.ControlFlow.t
               (core.result.Result.t core.convert.Infallible.t erc721.Error.t)
@@ -1443,10 +1367,7 @@ Section Impl_erc721_Erc721_t.
         M.alloc (core.result.Result.Ok tt) in
       M.read α0).
   
-  Global Instance AssociatedFunction_approve :
-    Notations.DoubleColon Self "approve" := {
-    Notations.double_colon := approve;
-  }.
+  Axiom approve_is_impl : impl Self "approve" = approve.
   
   (*
       fn remove_token_from(&mut self, from: &AccountId, id: TokenId) -> Result<(), Error> {
@@ -1506,7 +1427,9 @@ Section Impl_erc721_Erc721_t.
                     M.read token_owner in
                   let* α1 : bool.t :=
                     M.call
-                      ((erc721.Mapping.t u32.t erc721.AccountId.t)::["contains"]
+                      (impl
+                          (erc721.Mapping.t u32.t erc721.AccountId.t)
+                          "contains"
                         (borrow (deref α0))
                         (borrow id)) in
                   let* α2 : M.Val bool.t := M.alloc (UnOp.not α1) in
@@ -1532,12 +1455,12 @@ Section Impl_erc721_Erc721_t.
                   let* α2 : ref erc721.AccountId.t := M.read from in
                   let* α3 : core.option.Option.t u32.t :=
                     M.call
-                      ((erc721.Mapping.t erc721.AccountId.t u32.t)::["get"]
+                      (impl (erc721.Mapping.t erc721.AccountId.t u32.t) "get"
                         (borrow (deref α1))
                         α2) in
                   let* α4 : core.option.Option.t u32.t :=
                     M.call
-                      ((core.option.Option.t u32.t)::["map"]
+                      (impl (core.option.Option.t u32.t) "map"
                         α3
                         (fun (α0 : u32.t) =>
                           (let* α0 := M.alloc α0 in
@@ -1556,7 +1479,7 @@ Section Impl_erc721_Erc721_t.
                           M u32.t)) in
                   let* α5 : core.result.Result.t u32.t erc721.Error.t :=
                     M.call
-                      ((core.option.Option.t u32.t)::["ok_or"]
+                      (impl (core.option.Option.t u32.t) "ok_or"
                         α4
                         erc721.Error.CannotFetchValue) in
                   let* α6 :
@@ -1633,7 +1556,7 @@ Section Impl_erc721_Erc721_t.
                   let* α3 : u32.t := M.read count in
                   let* α4 : core.option.Option.t u32.t :=
                     M.call
-                      ((erc721.Mapping.t erc721.AccountId.t u32.t)::["insert"]
+                      (impl (erc721.Mapping.t erc721.AccountId.t u32.t) "insert"
                         α0
                         α2
                         α3) in
@@ -1645,7 +1568,7 @@ Section Impl_erc721_Erc721_t.
                   let* α1 : u32.t := M.read id in
                   let* α2 : unit :=
                     M.call
-                      ((erc721.Mapping.t u32.t erc721.AccountId.t)::["remove"]
+                      (impl (erc721.Mapping.t u32.t erc721.AccountId.t) "remove"
                         (borrow (deref α0))
                         α1) in
                   M.alloc α2 in
@@ -1655,10 +1578,8 @@ Section Impl_erc721_Erc721_t.
           ] in
       M.read α0).
   
-  Global Instance AssociatedFunction_remove_token_from :
-    Notations.DoubleColon Self "remove_token_from" := {
-    Notations.double_colon := remove_token_from;
-  }.
+  Axiom remove_token_from_is_impl :
+      impl Self "remove_token_from" = remove_token_from.
   
   (*
       fn add_token_to(&mut self, to: &AccountId, id: TokenId) -> Result<(), Error> {
@@ -1693,10 +1614,7 @@ Section Impl_erc721_Erc721_t.
         ltac:(erc721.TokenId) ->
         M (core.result.Result.t unit erc721.Error.t).
   
-  Global Instance AssociatedFunction_add_token_to :
-    Notations.DoubleColon Self "add_token_to" := {
-    Notations.double_colon := add_token_to;
-  }.
+  Axiom add_token_to_is_impl : impl Self "add_token_to" = add_token_to.
   
   (*
       fn transfer_token_from(
@@ -1730,10 +1648,8 @@ Section Impl_erc721_Erc721_t.
         ltac:(erc721.TokenId) ->
         M (core.result.Result.t unit erc721.Error.t).
   
-  Global Instance AssociatedFunction_transfer_token_from :
-    Notations.DoubleColon Self "transfer_token_from" := {
-    Notations.double_colon := transfer_token_from;
-  }.
+  Axiom transfer_token_from_is_impl :
+      impl Self "transfer_token_from" = transfer_token_from.
   
   (*
       pub fn transfer(&mut self, destination: AccountId, id: TokenId) -> Result<(), Error> {
@@ -1755,10 +1671,10 @@ Section Impl_erc721_Erc721_t.
       (let* caller : M.Val erc721.AccountId.t :=
         let* α0 : mut_ref erc721.Erc721.t := M.read self in
         let* α1 : erc721.Env.t :=
-          M.call (erc721.Erc721.t::["env"] (borrow (deref α0))) in
+          M.call (impl erc721.Erc721.t "env" (borrow (deref α0))) in
         let* α2 : M.Val erc721.Env.t := M.alloc α1 in
         let* α3 : erc721.AccountId.t :=
-          M.call (erc721.Env.t::["caller"] (borrow α2)) in
+          M.call (impl erc721.Env.t "caller" (borrow α2)) in
         M.alloc α3 in
       let* _ : M.Val unit :=
         let* α0 : _ :=
@@ -1770,7 +1686,7 @@ Section Impl_erc721_Erc721_t.
         let* α2 : u32.t := M.read id in
         let* α3 : core.result.Result.t unit erc721.Error.t :=
           M.call
-            (erc721.Erc721.t::["transfer_token_from"]
+            (impl erc721.Erc721.t "transfer_token_from"
               α1
               (borrow caller)
               (borrow destination)
@@ -1834,10 +1750,7 @@ Section Impl_erc721_Erc721_t.
         M.alloc (core.result.Result.Ok tt) in
       M.read α0).
   
-  Global Instance AssociatedFunction_transfer :
-    Notations.DoubleColon Self "transfer" := {
-    Notations.double_colon := transfer;
-  }.
+  Axiom transfer_is_impl : impl Self "transfer" = transfer.
   
   (*
       pub fn transfer_from(
@@ -1872,7 +1785,7 @@ Section Impl_erc721_Erc721_t.
         let* α2 : u32.t := M.read id in
         let* α3 : core.result.Result.t unit erc721.Error.t :=
           M.call
-            (erc721.Erc721.t::["transfer_token_from"]
+            (impl erc721.Erc721.t "transfer_token_from"
               α1
               (borrow from)
               (borrow to)
@@ -1936,10 +1849,7 @@ Section Impl_erc721_Erc721_t.
         M.alloc (core.result.Result.Ok tt) in
       M.read α0).
   
-  Global Instance AssociatedFunction_transfer_from :
-    Notations.DoubleColon Self "transfer_from" := {
-    Notations.double_colon := transfer_from;
-  }.
+  Axiom transfer_from_is_impl : impl Self "transfer_from" = transfer_from.
   
   (*
       pub fn mint(&mut self, id: TokenId) -> Result<(), Error> {
@@ -1964,10 +1874,10 @@ Section Impl_erc721_Erc721_t.
       (let* caller : M.Val erc721.AccountId.t :=
         let* α0 : mut_ref erc721.Erc721.t := M.read self in
         let* α1 : erc721.Env.t :=
-          M.call (erc721.Erc721.t::["env"] (borrow (deref α0))) in
+          M.call (impl erc721.Erc721.t "env" (borrow (deref α0))) in
         let* α2 : M.Val erc721.Env.t := M.alloc α1 in
         let* α3 : erc721.AccountId.t :=
-          M.call (erc721.Env.t::["caller"] (borrow α2)) in
+          M.call (impl erc721.Env.t "caller" (borrow α2)) in
         M.alloc α3 in
       let* _ : M.Val unit :=
         let* α0 : _ :=
@@ -1978,7 +1888,7 @@ Section Impl_erc721_Erc721_t.
         let* α1 : mut_ref erc721.Erc721.t := M.read self in
         let* α2 : u32.t := M.read id in
         let* α3 : core.result.Result.t unit erc721.Error.t :=
-          M.call (erc721.Erc721.t::["add_token_to"] α1 (borrow caller) α2) in
+          M.call (impl erc721.Erc721.t "add_token_to" α1 (borrow caller) α2) in
         let* α4 :
             core.ops.control_flow.ControlFlow.t
               (core.result.Result.t core.convert.Infallible.t erc721.Error.t)
@@ -2037,7 +1947,7 @@ Section Impl_erc721_Erc721_t.
       let* _ : M.Val unit :=
         let* α0 : mut_ref erc721.Erc721.t := M.read self in
         let* α1 : erc721.Env.t :=
-          M.call (erc721.Erc721.t::["env"] (borrow (deref α0))) in
+          M.call (impl erc721.Erc721.t "env" (borrow (deref α0))) in
         let* α2 : M.Val erc721.Env.t := M.alloc α1 in
         let* α3 : _ :=
           ltac:(M.get_method (fun ℐ =>
@@ -2051,7 +1961,7 @@ Section Impl_erc721_Erc721_t.
         let* α6 : u32.t := M.read id in
         let* α7 : unit :=
           M.call
-            (erc721.Env.t::["emit_event"]
+            (impl erc721.Env.t "emit_event"
               (borrow α2)
               (erc721.Event.Transfer
                 {|
@@ -2064,10 +1974,7 @@ Section Impl_erc721_Erc721_t.
         M.alloc (core.result.Result.Ok tt) in
       M.read α0).
   
-  Global Instance AssociatedFunction_mint :
-    Notations.DoubleColon Self "mint" := {
-    Notations.double_colon := mint;
-  }.
+  Axiom mint_is_impl : impl Self "mint" = mint.
   
   (*
       pub fn burn(&mut self, id: TokenId) -> Result<(), Error> {
@@ -2104,9 +2011,6 @@ Section Impl_erc721_Erc721_t.
         ltac:(erc721.TokenId) ->
         M (core.result.Result.t unit erc721.Error.t).
   
-  Global Instance AssociatedFunction_burn :
-    Notations.DoubleColon Self "burn" := {
-    Notations.double_colon := burn;
-  }.
+  Axiom burn_is_impl : impl Self "burn" = burn.
 End Impl_erc721_Erc721_t.
 End Impl_erc721_Erc721_t.

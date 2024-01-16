@@ -18,7 +18,7 @@ Module my_mod.
         let* α3 : ref (slice (ref str.t)) :=
           M.read (pointer_coercion "Unsize" α2) in
         let* α4 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_const"] α3) in
+          M.call (impl core.fmt.Arguments.t "new_const" α3) in
         let* α5 : unit := M.call (std.io.stdio._print α4) in
         M.alloc α5 in
       M.alloc tt in
@@ -40,7 +40,7 @@ Module my_mod.
         let* α3 : ref (slice (ref str.t)) :=
           M.read (pointer_coercion "Unsize" α2) in
         let* α4 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_const"] α3) in
+          M.call (impl core.fmt.Arguments.t "new_const" α3) in
         let* α5 : unit := M.call (std.io.stdio._print α4) in
         M.alloc α5 in
       M.alloc tt in
@@ -64,7 +64,7 @@ Module my_mod.
         let* α3 : ref (slice (ref str.t)) :=
           M.read (pointer_coercion "Unsize" α2) in
         let* α4 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_const"] α3) in
+          M.call (impl core.fmt.Arguments.t "new_const" α3) in
         let* α5 : unit := M.call (std.io.stdio._print α4) in
         M.alloc α5 in
       M.alloc tt in
@@ -91,7 +91,7 @@ Module my_mod.
           let* α3 : ref (slice (ref str.t)) :=
             M.read (pointer_coercion "Unsize" α2) in
           let* α4 : core.fmt.Arguments.t :=
-            M.call (core.fmt.Arguments.t::["new_const"] α3) in
+            M.call (impl core.fmt.Arguments.t "new_const" α3) in
           let* α5 : unit := M.call (std.io.stdio._print α4) in
           M.alloc α5 in
         M.alloc tt in
@@ -115,7 +115,7 @@ Module my_mod.
           let* α3 : ref (slice (ref str.t)) :=
             M.read (pointer_coercion "Unsize" α2) in
           let* α4 : core.fmt.Arguments.t :=
-            M.call (core.fmt.Arguments.t::["new_const"] α3) in
+            M.call (impl core.fmt.Arguments.t "new_const" α3) in
           let* α5 : unit := M.call (std.io.stdio._print α4) in
           M.alloc α5 in
         M.alloc tt in
@@ -141,7 +141,7 @@ Module my_mod.
           let* α3 : ref (slice (ref str.t)) :=
             M.read (pointer_coercion "Unsize" α2) in
           let* α4 : core.fmt.Arguments.t :=
-            M.call (core.fmt.Arguments.t::["new_const"] α3) in
+            M.call (impl core.fmt.Arguments.t "new_const" α3) in
           let* α5 : unit := M.call (std.io.stdio._print α4) in
           M.alloc α5 in
         M.alloc tt in
@@ -170,7 +170,7 @@ Module my_mod.
           let* α3 : ref (slice (ref str.t)) :=
             M.read (pointer_coercion "Unsize" α2) in
           let* α4 : core.fmt.Arguments.t :=
-            M.call (core.fmt.Arguments.t::["new_const"] α3) in
+            M.call (impl core.fmt.Arguments.t "new_const" α3) in
           let* α5 : unit := M.call (std.io.stdio._print α4) in
           M.alloc α5 in
         M.alloc tt in
@@ -195,7 +195,7 @@ Module my_mod.
           let* α3 : ref (slice (ref str.t)) :=
             M.read (pointer_coercion "Unsize" α2) in
           let* α4 : core.fmt.Arguments.t :=
-            M.call (core.fmt.Arguments.t::["new_const"] α3) in
+            M.call (impl core.fmt.Arguments.t "new_const" α3) in
           let* α5 : unit := M.call (std.io.stdio._print α4) in
           M.alloc α5 in
         M.alloc tt in
@@ -224,7 +224,7 @@ Module my_mod.
         let* α3 : ref (slice (ref str.t)) :=
           M.read (pointer_coercion "Unsize" α2) in
         let* α4 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_const"] α3) in
+          M.call (impl core.fmt.Arguments.t "new_const" α3) in
         let* α5 : unit := M.call (std.io.stdio._print α4) in
         M.alloc α5 in
       M.alloc tt in
@@ -240,7 +240,7 @@ Module my_mod.
         let* α3 : ref (slice (ref str.t)) :=
           M.read (pointer_coercion "Unsize" α2) in
         let* α4 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_const"] α3) in
+          M.call (impl core.fmt.Arguments.t "new_const" α3) in
         let* α5 : unit := M.call (std.io.stdio._print α4) in
         M.alloc α5 in
       M.alloc tt in
@@ -267,7 +267,7 @@ Module my_mod.
         let* α3 : ref (slice (ref str.t)) :=
           M.read (pointer_coercion "Unsize" α2) in
         let* α4 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_const"] α3) in
+          M.call (impl core.fmt.Arguments.t "new_const" α3) in
         let* α5 : unit := M.call (std.io.stdio._print α4) in
         M.alloc α5 in
       M.alloc tt in
@@ -292,7 +292,7 @@ Module my_mod.
           let* α3 : ref (slice (ref str.t)) :=
             M.read (pointer_coercion "Unsize" α2) in
           let* α4 : core.fmt.Arguments.t :=
-            M.call (core.fmt.Arguments.t::["new_const"] α3) in
+            M.call (impl core.fmt.Arguments.t "new_const" α3) in
           let* α5 : unit := M.call (std.io.stdio._print α4) in
           M.alloc α5 in
         M.alloc tt in
@@ -318,7 +318,7 @@ Module my_mod.
           let* α3 : ref (slice (ref str.t)) :=
             M.read (pointer_coercion "Unsize" α2) in
           let* α4 : core.fmt.Arguments.t :=
-            M.call (core.fmt.Arguments.t::["new_const"] α3) in
+            M.call (impl core.fmt.Arguments.t "new_const" α3) in
           let* α5 : unit := M.call (std.io.stdio._print α4) in
           M.alloc α5 in
         M.alloc tt in
@@ -343,7 +343,7 @@ Definition private_function : M unit :=
       let* α3 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α2) in
       let* α4 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_const"] α3) in
+        M.call (impl core.fmt.Arguments.t "new_const" α3) in
       let* α5 : unit := M.call (std.io.stdio._print α4) in
       M.alloc α5 in
     M.alloc tt in
@@ -365,7 +365,7 @@ Definition function : M unit :=
       let* α3 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α2) in
       let* α4 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_const"] α3) in
+        M.call (impl core.fmt.Arguments.t "new_const" α3) in
       let* α5 : unit := M.call (std.io.stdio._print α4) in
       M.alloc α5 in
     M.alloc tt in
@@ -389,7 +389,7 @@ Definition indirect_access : M unit :=
       let* α3 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α2) in
       let* α4 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_const"] α3) in
+        M.call (impl core.fmt.Arguments.t "new_const" α3) in
       let* α5 : unit := M.call (std.io.stdio._print α4) in
       M.alloc α5 in
     M.alloc tt in
@@ -416,7 +416,7 @@ Module nested.
         let* α3 : ref (slice (ref str.t)) :=
           M.read (pointer_coercion "Unsize" α2) in
         let* α4 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_const"] α3) in
+          M.call (impl core.fmt.Arguments.t "new_const" α3) in
         let* α5 : unit := M.call (std.io.stdio._print α4) in
         M.alloc α5 in
       M.alloc tt in
@@ -440,7 +440,7 @@ Module nested.
         let* α3 : ref (slice (ref str.t)) :=
           M.read (pointer_coercion "Unsize" α2) in
         let* α4 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_const"] α3) in
+          M.call (impl core.fmt.Arguments.t "new_const" α3) in
         let* α5 : unit := M.call (std.io.stdio._print α4) in
         M.alloc α5 in
       M.alloc tt in
@@ -466,7 +466,7 @@ Module nested.
         let* α3 : ref (slice (ref str.t)) :=
           M.read (pointer_coercion "Unsize" α2) in
         let* α4 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_const"] α3) in
+          M.call (impl core.fmt.Arguments.t "new_const" α3) in
         let* α5 : unit := M.call (std.io.stdio._print α4) in
         M.alloc α5 in
       M.alloc tt in
@@ -494,7 +494,7 @@ Module nested.
         let* α3 : ref (slice (ref str.t)) :=
           M.read (pointer_coercion "Unsize" α2) in
         let* α4 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_const"] α3) in
+          M.call (impl core.fmt.Arguments.t "new_const" α3) in
         let* α5 : unit := M.call (std.io.stdio._print α4) in
         M.alloc α5 in
       M.alloc tt in
@@ -519,7 +519,7 @@ Module nested.
         let* α3 : ref (slice (ref str.t)) :=
           M.read (pointer_coercion "Unsize" α2) in
         let* α4 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_const"] α3) in
+          M.call (impl core.fmt.Arguments.t "new_const" α3) in
         let* α5 : unit := M.call (std.io.stdio._print α4) in
         M.alloc α5 in
       M.alloc tt in
@@ -543,7 +543,7 @@ Definition function : M unit :=
       let* α3 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α2) in
       let* α4 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_const"] α3) in
+        M.call (impl core.fmt.Arguments.t "new_const" α3) in
       let* α5 : unit := M.call (std.io.stdio._print α4) in
       M.alloc α5 in
     M.alloc tt in
@@ -567,7 +567,7 @@ Definition private_function : M unit :=
       let* α3 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α2) in
       let* α4 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_const"] α3) in
+        M.call (impl core.fmt.Arguments.t "new_const" α3) in
       let* α5 : unit := M.call (std.io.stdio._print α4) in
       M.alloc α5 in
     M.alloc tt in
@@ -593,7 +593,7 @@ Definition public_function_in_my_mod : M unit :=
       let* α3 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α2) in
       let* α4 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_const"] α3) in
+        M.call (impl core.fmt.Arguments.t "new_const" α3) in
       let* α5 : unit := M.call (std.io.stdio._print α4) in
       M.alloc α5 in
     M.alloc tt in
@@ -621,7 +621,7 @@ Definition public_function_in_nested : M unit :=
       let* α3 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α2) in
       let* α4 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_const"] α3) in
+        M.call (impl core.fmt.Arguments.t "new_const" α3) in
       let* α5 : unit := M.call (std.io.stdio._print α4) in
       M.alloc α5 in
     M.alloc tt in
@@ -645,7 +645,7 @@ Definition public_function_in_super_mod : M unit :=
       let* α3 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α2) in
       let* α4 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_const"] α3) in
+        M.call (impl core.fmt.Arguments.t "new_const" α3) in
       let* α5 : unit := M.call (std.io.stdio._print α4) in
       M.alloc α5 in
     M.alloc tt in
@@ -673,7 +673,7 @@ Definition call_public_function_in_my_mod : M unit :=
       let* α3 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α2) in
       let* α4 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_const"] α3) in
+        M.call (impl core.fmt.Arguments.t "new_const" α3) in
       let* α5 : unit := M.call (std.io.stdio._print α4) in
       M.alloc α5 in
     M.alloc tt in
@@ -689,7 +689,7 @@ Definition call_public_function_in_my_mod : M unit :=
       let* α3 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α2) in
       let* α4 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_const"] α3) in
+        M.call (impl core.fmt.Arguments.t "new_const" α3) in
       let* α5 : unit := M.call (std.io.stdio._print α4) in
       M.alloc α5 in
     M.alloc tt in
@@ -716,7 +716,7 @@ Definition public_function_in_crate : M unit :=
       let* α3 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α2) in
       let* α4 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_const"] α3) in
+        M.call (impl core.fmt.Arguments.t "new_const" α3) in
       let* α5 : unit := M.call (std.io.stdio._print α4) in
       M.alloc α5 in
     M.alloc tt in
@@ -741,7 +741,7 @@ Module private_nested.
         let* α3 : ref (slice (ref str.t)) :=
           M.read (pointer_coercion "Unsize" α2) in
         let* α4 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_const"] α3) in
+          M.call (impl core.fmt.Arguments.t "new_const" α3) in
         let* α5 : unit := M.call (std.io.stdio._print α4) in
         M.alloc α5 in
       M.alloc tt in
@@ -767,7 +767,7 @@ Module private_nested.
         let* α3 : ref (slice (ref str.t)) :=
           M.read (pointer_coercion "Unsize" α2) in
         let* α4 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_const"] α3) in
+          M.call (impl core.fmt.Arguments.t "new_const" α3) in
         let* α5 : unit := M.call (std.io.stdio._print α4) in
         M.alloc α5 in
       M.alloc tt in
@@ -792,7 +792,7 @@ Definition function : M unit :=
       let* α3 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α2) in
       let* α4 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_const"] α3) in
+        M.call (impl core.fmt.Arguments.t "new_const" α3) in
       let* α5 : unit := M.call (std.io.stdio._print α4) in
       M.alloc α5 in
     M.alloc tt in
@@ -817,7 +817,7 @@ Definition restricted_function : M unit :=
       let* α3 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α2) in
       let* α4 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_const"] α3) in
+        M.call (impl core.fmt.Arguments.t "new_const" α3) in
       let* α5 : unit := M.call (std.io.stdio._print α4) in
       M.alloc α5 in
     M.alloc tt in
@@ -839,7 +839,7 @@ Definition function : M unit :=
       let* α3 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α2) in
       let* α4 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_const"] α3) in
+        M.call (impl core.fmt.Arguments.t "new_const" α3) in
       let* α5 : unit := M.call (std.io.stdio._print α4) in
       M.alloc α5 in
     M.alloc tt in

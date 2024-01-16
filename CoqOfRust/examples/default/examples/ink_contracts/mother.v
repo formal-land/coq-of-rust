@@ -45,10 +45,7 @@ Section Impl_core_default_Default_for_mother_Mapping_t_K_V.
     let* α3 : core.marker.PhantomData.t V := M.call α2 in
     M.pure {| mother.Mapping._key := α1; mother.Mapping._value := α3; |}.
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -77,9 +74,7 @@ Section Impl_mother_Mapping_t_K_V.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
-    Notations.double_colon := get;
-  }.
+  Axiom get_is_impl : impl Self "get" = get.
   
   (*
       fn insert(&mut self, _key: K, _value: V) {
@@ -94,10 +89,7 @@ Section Impl_mother_Mapping_t_K_V.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_insert :
-    Notations.DoubleColon Self "insert" := {
-    Notations.double_colon := insert;
-  }.
+  Axiom insert_is_impl : impl Self "insert" = insert.
 End Impl_mother_Mapping_t_K_V.
 End Impl_mother_Mapping_t_K_V.
 
@@ -126,10 +118,7 @@ Section Impl_core_default_Default_for_mother_AccountId_t.
     let* α1 : u128.t := M.call α0 in
     M.pure (mother.AccountId.Build_t α1).
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -158,10 +147,7 @@ Section Impl_core_clone_Clone_for_mother_AccountId_t.
         ] in
     M.read α0.
   
-  Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon Self "clone" := {
-    Notations.double_colon := clone;
-  }.
+  Axiom clone_is_impl : impl Self "clone" = clone.
   
   Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
@@ -204,9 +190,7 @@ Section Impl_core_cmp_PartialEq_for_mother_AccountId_t.
     let* α3 : u128.t := M.read (mother.AccountId.Get_0 (deref α2)) in
     M.pure (BinOp.Pure.eq α1 α3).
   
-  Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
-    Notations.double_colon := eq;
-  }.
+  Axiom eq_is_impl : impl Self "eq" = eq.
   
   Global Instance ℐ :
     core.cmp.PartialEq.Required.Trait Self
@@ -241,10 +225,8 @@ Section Impl_core_cmp_Eq_for_mother_AccountId_t.
         [ fun γ => (M.alloc tt) : M (M.Val unit) ] in
     M.read α0.
   
-  Global Instance AssociatedFunction_assert_receiver_is_total_eq :
-    Notations.DoubleColon Self "assert_receiver_is_total_eq" := {
-    Notations.double_colon := assert_receiver_is_total_eq;
-  }.
+  Axiom assert_receiver_is_total_eq_is_impl :
+      impl Self "assert_receiver_is_total_eq" = assert_receiver_is_total_eq.
   
   Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
     core.cmp.Eq.assert_receiver_is_total_eq :=
@@ -313,10 +295,7 @@ Section Impl_core_default_Default_for_mother_Bids_t.
       M.call α0 in
     M.pure (mother.Bids.Build_t α1).
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -366,9 +345,7 @@ Section Impl_core_cmp_PartialEq_for_mother_Bids_t.
         (borrow (mother.Bids.Get_0 (deref α1)))
         (borrow (mother.Bids.Get_0 (deref α2)))).
   
-  Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
-    Notations.double_colon := eq;
-  }.
+  Axiom eq_is_impl : impl Self "eq" = eq.
   
   Global Instance ℐ :
     core.cmp.PartialEq.Required.Trait Self
@@ -410,10 +387,8 @@ Section Impl_core_cmp_Eq_for_mother_Bids_t.
         [ fun γ => (M.alloc tt) : M (M.Val unit) ] in
     M.read α0.
   
-  Global Instance AssociatedFunction_assert_receiver_is_total_eq :
-    Notations.DoubleColon Self "assert_receiver_is_total_eq" := {
-    Notations.double_colon := assert_receiver_is_total_eq;
-  }.
+  Axiom assert_receiver_is_total_eq_is_impl :
+      impl Self "assert_receiver_is_total_eq" = assert_receiver_is_total_eq.
   
   Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
     core.cmp.Eq.assert_receiver_is_total_eq :=
@@ -451,10 +426,7 @@ Section Impl_core_clone_Clone_for_mother_Bids_t.
       M.call (α0 (borrow (mother.Bids.Get_0 (deref α1)))) in
     M.pure (mother.Bids.Build_t α2).
   
-  Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon Self "clone" := {
-    Notations.double_colon := clone;
-  }.
+  Axiom clone_is_impl : impl Self "clone" = clone.
   
   Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
@@ -502,9 +474,7 @@ Section Impl_core_cmp_PartialEq_for_mother_Outline_t.
     let* α0 : M.Val bool.t := M.alloc (BinOp.Pure.eq α0 α1) in
     M.read α0.
   
-  Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
-    Notations.double_colon := eq;
-  }.
+  Axiom eq_is_impl : impl Self "eq" = eq.
   
   Global Instance ℐ :
     core.cmp.PartialEq.Required.Trait Self
@@ -535,10 +505,8 @@ Section Impl_core_cmp_Eq_for_mother_Outline_t.
     let* self := M.alloc self in
     M.pure tt.
   
-  Global Instance AssociatedFunction_assert_receiver_is_total_eq :
-    Notations.DoubleColon Self "assert_receiver_is_total_eq" := {
-    Notations.double_colon := assert_receiver_is_total_eq;
-  }.
+  Axiom assert_receiver_is_total_eq_is_impl :
+      impl Self "assert_receiver_is_total_eq" = assert_receiver_is_total_eq.
   
   Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
     core.cmp.Eq.assert_receiver_is_total_eq :=
@@ -595,10 +563,7 @@ Section Impl_core_clone_Clone_for_mother_Outline_t.
         ] in
     M.read α0.
   
-  Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon Self "clone" := {
-    Notations.double_colon := clone;
-  }.
+  Axiom clone_is_impl : impl Self "clone" = clone.
   
   Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
@@ -780,9 +745,7 @@ Section Impl_core_cmp_PartialEq_for_mother_Status_t.
       M.alloc (BinOp.Pure.and (BinOp.Pure.eq α0 α1) α6) in
     M.read α0.
   
-  Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
-    Notations.double_colon := eq;
-  }.
+  Axiom eq_is_impl : impl Self "eq" = eq.
   
   Global Instance ℐ :
     core.cmp.PartialEq.Required.Trait Self
@@ -824,10 +787,8 @@ Section Impl_core_cmp_Eq_for_mother_Status_t.
         ] in
     M.read α0.
   
-  Global Instance AssociatedFunction_assert_receiver_is_total_eq :
-    Notations.DoubleColon Self "assert_receiver_is_total_eq" := {
-    Notations.double_colon := assert_receiver_is_total_eq;
-  }.
+  Axiom assert_receiver_is_total_eq_is_impl :
+      impl Self "assert_receiver_is_total_eq" = assert_receiver_is_total_eq.
   
   Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
     core.cmp.Eq.assert_receiver_is_total_eq :=
@@ -928,10 +889,7 @@ Section Impl_core_clone_Clone_for_mother_Status_t.
         ] in
     M.read α0.
   
-  Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon Self "clone" := {
-    Notations.double_colon := clone;
-  }.
+  Axiom clone_is_impl : impl Self "clone" = clone.
   
   Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
@@ -1083,9 +1041,7 @@ Section Impl_core_cmp_PartialEq_for_mother_Auction_t.
           (Bool.eqb α21 α23))
         α27).
   
-  Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
-    Notations.double_colon := eq;
-  }.
+  Axiom eq_is_impl : impl Self "eq" = eq.
   
   Global Instance ℐ :
     core.cmp.PartialEq.Required.Trait Self
@@ -1172,10 +1128,8 @@ Section Impl_core_cmp_Eq_for_mother_Auction_t.
         ] in
     M.read α0.
   
-  Global Instance AssociatedFunction_assert_receiver_is_total_eq :
-    Notations.DoubleColon Self "assert_receiver_is_total_eq" := {
-    Notations.double_colon := assert_receiver_is_total_eq;
-  }.
+  Axiom assert_receiver_is_total_eq_is_impl :
+      impl Self "assert_receiver_is_total_eq" = assert_receiver_is_total_eq.
   
   Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
     core.cmp.Eq.assert_receiver_is_total_eq :=
@@ -1248,10 +1202,7 @@ Section Impl_core_clone_Clone_for_mother_Auction_t.
         mother.Auction.vector := α20;
       |}.
   
-  Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon Self "clone" := {
-    Notations.double_colon := clone;
-  }.
+  Axiom clone_is_impl : impl Self "clone" = clone.
   
   Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
@@ -1313,10 +1264,7 @@ Section Impl_core_default_Default_for_mother_Auction_t.
         mother.Auction.vector := α9;
       |}.
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -1417,9 +1365,7 @@ Section Impl_core_cmp_PartialEq_for_mother_Failure_t.
       M.alloc (BinOp.Pure.and (BinOp.Pure.eq α0 α1) α6) in
     M.read α0.
   
-  Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
-    Notations.double_colon := eq;
-  }.
+  Axiom eq_is_impl : impl Self "eq" = eq.
   
   Global Instance ℐ :
     core.cmp.PartialEq.Required.Trait Self
@@ -1455,10 +1401,8 @@ Section Impl_core_cmp_Eq_for_mother_Failure_t.
         [ fun γ => (M.alloc tt) : M (M.Val unit) ] in
     M.read α0.
   
-  Global Instance AssociatedFunction_assert_receiver_is_total_eq :
-    Notations.DoubleColon Self "assert_receiver_is_total_eq" := {
-    Notations.double_colon := assert_receiver_is_total_eq;
-  }.
+  Axiom assert_receiver_is_total_eq_is_impl :
+      impl Self "assert_receiver_is_total_eq" = assert_receiver_is_total_eq.
   
   Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
     core.cmp.Eq.assert_receiver_is_total_eq :=
@@ -1504,10 +1448,7 @@ Section Impl_mother_Env_t.
     let* α0 : ref mother.Env.t := M.read self in
     M.read (mother.Env.Get_caller (deref α0)).
   
-  Global Instance AssociatedFunction_caller :
-    Notations.DoubleColon Self "caller" := {
-    Notations.double_colon := caller;
-  }.
+  Axiom caller_is_impl : impl Self "caller" = caller.
   
   (*
       fn emit_event(&self, _event: Event) {
@@ -1521,10 +1462,7 @@ Section Impl_mother_Env_t.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_emit_event :
-    Notations.DoubleColon Self "emit_event" := {
-    Notations.double_colon := emit_event;
-  }.
+  Axiom emit_event_is_impl : impl Self "emit_event" = emit_event.
 End Impl_mother_Env_t.
 End Impl_mother_Env_t.
 
@@ -1568,10 +1506,7 @@ Section Impl_core_default_Default_for_mother_Mother_t.
     let* α3 : mother.Mapping.t mother.AccountId.t u128.t := M.call α2 in
     M.pure {| mother.Mother.auction := α1; mother.Mother.balances := α3; |}.
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -1593,10 +1528,7 @@ Section Impl_mother_Mother_t.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_init_env :
-    Notations.DoubleColon Self "init_env" := {
-    Notations.double_colon := init_env;
-  }.
+  Axiom init_env_is_impl : impl Self "init_env" = init_env.
   
   (*
       fn env(&self) -> Env {
@@ -1605,11 +1537,9 @@ Section Impl_mother_Mother_t.
   *)
   Definition env (self : ref Self) : M mother.Env.t :=
     let* self := M.alloc self in
-    M.call mother.Mother.t::["init_env"].
+    M.call (impl mother.Mother.t "init_env").
   
-  Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
-    Notations.double_colon := env;
-  }.
+  Axiom env_is_impl : impl Self "env" = env.
   
   (*
       pub fn new(auction: Auction) -> Self {
@@ -1630,9 +1560,7 @@ Section Impl_mother_Mother_t.
     let* α2 : mother.Auction.t := M.read auction in
     M.pure {| mother.Mother.balances := α1; mother.Mother.auction := α2; |}.
   
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
-    Notations.double_colon := new;
-  }.
+  Axiom new_is_impl : impl Self "new" = new.
   
   (*
       pub fn new_default() -> Self {
@@ -1645,10 +1573,7 @@ Section Impl_mother_Mother_t.
         core.default.Default.default (Self := mother.Mother.t) (Trait := ℐ))) in
     M.call α0.
   
-  Global Instance AssociatedFunction_new_default :
-    Notations.DoubleColon Self "new_default" := {
-    Notations.double_colon := new_default;
-  }.
+  Axiom new_default_is_impl : impl Self "new_default" = new_default.
   
   (*
       pub fn failed_new(fail: bool) -> Result<Self, Failure> {
@@ -1682,10 +1607,7 @@ Section Impl_mother_Mother_t.
         M.alloc (core.result.Result.Ok α1) in
     M.read α1.
   
-  Global Instance AssociatedFunction_failed_new :
-    Notations.DoubleColon Self "failed_new" := {
-    Notations.double_colon := failed_new;
-  }.
+  Axiom failed_new_is_impl : impl Self "failed_new" = failed_new.
   
   (*
       pub fn echo_auction(&mut self, auction: Auction) -> Auction {
@@ -1704,7 +1626,7 @@ Section Impl_mother_Mother_t.
     let* _ : M.Val unit :=
       let* α0 : mut_ref mother.Mother.t := M.read self in
       let* α1 : mother.Env.t :=
-        M.call (mother.Mother.t::["env"] (borrow (deref α0))) in
+        M.call (impl mother.Mother.t "env" (borrow (deref α0))) in
       let* α2 : M.Val mother.Env.t := M.alloc α1 in
       let* α3 : _ :=
         ltac:(M.get_method (fun ℐ =>
@@ -1712,17 +1634,14 @@ Section Impl_mother_Mother_t.
       let* α4 : mother.Auction.t := M.call (α3 (borrow auction)) in
       let* α5 : unit :=
         M.call
-          (mother.Env.t::["emit_event"]
+          (impl mother.Env.t "emit_event"
             (borrow α2)
             (mother.Event.AuctionEchoed
               {| mother.AuctionEchoed.auction := α4; |})) in
       M.alloc α5 in
     M.read auction.
   
-  Global Instance AssociatedFunction_echo_auction :
-    Notations.DoubleColon Self "echo_auction" := {
-    Notations.double_colon := echo_auction;
-  }.
+  Axiom echo_auction_is_impl : impl Self "echo_auction" = echo_auction.
   
   (*
       pub fn revert_or_trap(&mut self, fail: Option<Failure>) -> Result<(), Failure> {
@@ -1799,10 +1718,7 @@ Section Impl_mother_Mother_t.
         ] in
     M.read α0.
   
-  Global Instance AssociatedFunction_revert_or_trap :
-    Notations.DoubleColon Self "revert_or_trap" := {
-    Notations.double_colon := revert_or_trap;
-  }.
+  Axiom revert_or_trap_is_impl : impl Self "revert_or_trap" = revert_or_trap.
   
   (*
       pub fn debug_log(&mut self, _message: String) {
@@ -1825,23 +1741,21 @@ Section Impl_mother_Mother_t.
         let* α4 : ref (slice (ref str.t)) :=
           M.read (pointer_coercion "Unsize" α3) in
         let* α5 : core.fmt.rt.Argument.t :=
-          M.call (core.fmt.rt.Argument.t::["new_display"] (borrow _message)) in
+          M.call
+            (impl core.fmt.rt.Argument.t "new_display" (borrow _message)) in
         let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
         let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
           M.alloc (borrow α6) in
         let* α8 : ref (slice core.fmt.rt.Argument.t) :=
           M.read (pointer_coercion "Unsize" α7) in
         let* α9 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
+          M.call (impl core.fmt.Arguments.t "new_v1" α4 α8) in
         let* α10 : unit := M.call (std.io.stdio._print α9) in
         M.alloc α10 in
       M.alloc tt in
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
-  Global Instance AssociatedFunction_debug_log :
-    Notations.DoubleColon Self "debug_log" := {
-    Notations.double_colon := debug_log;
-  }.
+  Axiom debug_log_is_impl : impl Self "debug_log" = debug_log.
 End Impl_mother_Mother_t.
 End Impl_mother_Mother_t.

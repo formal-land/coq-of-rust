@@ -45,10 +45,7 @@ Module my.
     *)
     Parameter new : T -> M (struct_visibility.my.ClosedBox.t T).
     
-    Global Instance AssociatedFunction_new :
-      Notations.DoubleColon Self "new" := {
-      Notations.double_colon := new;
-    }.
+    Axiom new_is_impl : impl Self "new" = new.
   End Impl_struct_visibility_my_ClosedBox_t_T.
   End Impl_struct_visibility_my_ClosedBox_t_T.
 End my.
@@ -96,9 +93,7 @@ Section Impl_struct_visibility_my_ClosedBox_t_T_2.
   *)
   Parameter new : T -> M (struct_visibility.my.ClosedBox.t T).
   
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
-    Notations.double_colon := new;
-  }.
+  Axiom new_is_impl : impl Self "new" = new.
 End Impl_struct_visibility_my_ClosedBox_t_T_2.
 End Impl_struct_visibility_my_ClosedBox_t_T_2.
 

@@ -53,10 +53,7 @@ Section Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job_t.
         ] in
     M.read α0.
   
-  Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon Self "clone" := {
-    Notations.double_colon := clone;
-  }.
+  Axiom clone_is_impl : impl Self "clone" = clone.
   
   Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
@@ -122,10 +119,7 @@ Section Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumbe
         ] in
     M.read α0.
   
-  Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon Self "clone" := {
-    Notations.double_colon := clone;
-  }.
+  Axiom clone_is_impl : impl Self "clone" = clone.
   
   Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
@@ -287,10 +281,8 @@ Section Impl_unpacking_options_via_question_mark_Person_t.
       M.read
         (unpacking_options_via_question_mark.PhoneNumber.Get_area_code α10)).
   
-  Global Instance AssociatedFunction_work_phone_area_code :
-    Notations.DoubleColon Self "work_phone_area_code" := {
-    Notations.double_colon := work_phone_area_code;
-  }.
+  Axiom work_phone_area_code_is_impl :
+      impl Self "work_phone_area_code" = work_phone_area_code.
 End Impl_unpacking_options_via_question_mark_Person_t.
 End Impl_unpacking_options_via_question_mark_Person_t.
 
@@ -329,7 +321,9 @@ Definition main : M unit :=
   let* _ : M.Val unit :=
     let* α0 : core.option.Option.t u8.t :=
       M.call
-        (unpacking_options_via_question_mark.Person.t::["work_phone_area_code"]
+        (impl
+            unpacking_options_via_question_mark.Person.t
+            "work_phone_area_code"
           (borrow p)) in
     let* α1 : M.Val (core.option.Option.t u8.t) := M.alloc α0 in
     let* α2 : M.Val (core.option.Option.t u8.t) :=

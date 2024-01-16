@@ -21,14 +21,14 @@ Definition increase (number : i32.t) : M unit :=
       let* α6 : i32.t := BinOp.Panic.add α5 ((Integer.of_Z 1) : i32.t) in
       let* α7 : M.Val i32.t := M.alloc α6 in
       let* α8 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α7)) in
+        M.call (impl core.fmt.rt.Argument.t "new_display" (borrow α7)) in
       let* α9 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α8 ] in
       let* α10 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
         M.alloc (borrow α9) in
       let* α11 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α10) in
       let* α12 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_v1"] α4 α11) in
+        M.call (impl core.fmt.Arguments.t "new_v1" α4 α11) in
       let* α13 : unit := M.call (std.io.stdio._print α12) in
       M.alloc α13 in
     M.alloc tt in
@@ -55,14 +55,14 @@ Definition decrease (number : i32.t) : M unit :=
       let* α6 : i32.t := BinOp.Panic.sub α5 ((Integer.of_Z 1) : i32.t) in
       let* α7 : M.Val i32.t := M.alloc α6 in
       let* α8 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α7)) in
+        M.call (impl core.fmt.rt.Argument.t "new_display" (borrow α7)) in
       let* α9 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α8 ] in
       let* α10 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
         M.alloc (borrow α9) in
       let* α11 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α10) in
       let* α12 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_v1"] α4 α11) in
+        M.call (impl core.fmt.Arguments.t "new_v1" α4 α11) in
       let* α13 : unit := M.call (std.io.stdio._print α12) in
       M.alloc α13 in
     M.alloc tt in
@@ -97,7 +97,7 @@ match_args {increase|decrease} <integer>
       let* α3 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α2) in
       let* α4 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_const"] α3) in
+        M.call (impl core.fmt.Arguments.t "new_const" α3) in
       let* α5 : unit := M.call (std.io.stdio._print α4) in
       M.alloc α5 in
     M.alloc tt in
@@ -167,7 +167,7 @@ Definition main : M unit :=
       M.alloc α2 in
     let* α0 : usize.t :=
       M.call
-        ((alloc.vec.Vec.t alloc.string.String.t alloc.alloc.Global.t)::["len"]
+        (impl (alloc.vec.Vec.t alloc.string.String.t alloc.alloc.Global.t) "len"
           (borrow args)) in
     let* α1 : M.Val usize.t := M.alloc α0 in
     let* α0 : M.Val unit :=
@@ -188,7 +188,7 @@ Definition main : M unit :=
                 let* α3 : ref (slice (ref str.t)) :=
                   M.read (pointer_coercion "Unsize" α2) in
                 let* α4 : core.fmt.Arguments.t :=
-                  M.call (core.fmt.Arguments.t::["new_const"] α3) in
+                  M.call (impl core.fmt.Arguments.t "new_const" α3) in
                 let* α5 : unit := M.call (std.io.stdio._print α4) in
                 M.alloc α5 in
               M.alloc tt in
@@ -212,7 +212,7 @@ Definition main : M unit :=
             let* α3 : ref str.t := M.call (α0 α2) in
             let* α4 :
                 core.result.Result.t i32.t core.num.error.ParseIntError.t :=
-              M.call (str.t::["parse"] α3) in
+              M.call (impl str.t "parse" α3) in
             let* α5 :
                 M.Val
                   (core.result.Result.t i32.t core.num.error.ParseIntError.t) :=
@@ -235,7 +235,7 @@ Definition main : M unit :=
                       let* α3 : ref (slice (ref str.t)) :=
                         M.read (pointer_coercion "Unsize" α2) in
                       let* α4 : core.fmt.Arguments.t :=
-                        M.call (core.fmt.Arguments.t::["new_const"] α3) in
+                        M.call (impl core.fmt.Arguments.t "new_const" α3) in
                       let* α5 : unit := M.call (std.io.stdio._print α4) in
                       M.alloc α5 in
                     M.alloc tt
@@ -253,7 +253,7 @@ Definition main : M unit :=
                     let* α3 : ref (slice (ref str.t)) :=
                       M.read (pointer_coercion "Unsize" α2) in
                     let* α4 : core.fmt.Arguments.t :=
-                      M.call (core.fmt.Arguments.t::["new_const"] α3) in
+                      M.call (impl core.fmt.Arguments.t "new_const" α3) in
                     let* α5 : unit := M.call (std.io.stdio._print α4) in
                     M.alloc α5 in
                   M.alloc tt) :
@@ -297,7 +297,7 @@ Definition main : M unit :=
               let* α2 : ref str.t := M.call (α0 α1) in
               let* α3 :
                   core.result.Result.t i32.t core.num.error.ParseIntError.t :=
-                M.call (str.t::["parse"] α2) in
+                M.call (impl str.t "parse" α2) in
               let* α4 :
                   M.Val
                     (core.result.Result.t
@@ -337,7 +337,8 @@ Definition main : M unit :=
                             let* α3 : ref (slice (ref str.t)) :=
                               M.read (pointer_coercion "Unsize" α2) in
                             let* α4 : core.fmt.Arguments.t :=
-                              M.call (core.fmt.Arguments.t::["new_const"] α3) in
+                              M.call
+                                (impl core.fmt.Arguments.t "new_const" α3) in
                             let* α5 : unit :=
                               M.call (std.io.stdio._eprint α4) in
                             M.alloc α5 in
@@ -393,7 +394,7 @@ Definition main : M unit :=
                       let* α3 : ref (slice (ref str.t)) :=
                         M.read (pointer_coercion "Unsize" α2) in
                       let* α4 : core.fmt.Arguments.t :=
-                        M.call (core.fmt.Arguments.t::["new_const"] α3) in
+                        M.call (impl core.fmt.Arguments.t "new_const" α3) in
                       let* α5 : unit := M.call (std.io.stdio._eprint α4) in
                       M.alloc α5 in
                     M.alloc tt in

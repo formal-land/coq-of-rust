@@ -51,11 +51,15 @@ Section Impl_core_fmt_Debug_for_generics_bounds_Rectangle_t.
     let* α9 : M.Val (ref (ref f64.t)) := M.alloc (borrow α8) in
     let* α10 : ref _ (* dyn *) := M.read (pointer_coercion "Unsize" α9) in
     M.call
-      (core.fmt.Formatter.t::["debug_struct_field2_finish"] α0 α1 α2 α5 α6 α10).
+      (impl core.fmt.Formatter.t "debug_struct_field2_finish"
+        α0
+        α1
+        α2
+        α5
+        α6
+        α10).
   
-  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
-    Notations.double_colon := fmt;
-  }.
+  Axiom fmt_is_impl : impl Self "fmt" = fmt.
   
   Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
@@ -97,10 +101,7 @@ Section Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle_t.
       M.read (generics_bounds.Rectangle.Get_height (deref α2)) in
     BinOp.Panic.mul α1 α3.
   
-  Global Instance AssociatedFunction_area :
-    Notations.DoubleColon Self "area" := {
-    Notations.double_colon := area;
-  }.
+  Axiom area_is_impl : impl Self "area" = area.
   
   Global Instance ℐ : generics_bounds.HasArea.Trait Self := {
     generics_bounds.HasArea.area := area;
@@ -129,14 +130,14 @@ Definition print_debug
       let* α4 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α3) in
       let* α5 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow t)) in
+        M.call (impl core.fmt.rt.Argument.t "new_debug" (borrow t)) in
       let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
       let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
         M.alloc (borrow α6) in
       let* α8 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α7) in
       let* α9 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
+        M.call (impl core.fmt.Arguments.t "new_v1" α4 α8) in
       let* α10 : unit := M.call (std.io.stdio._print α9) in
       M.alloc α10 in
     M.alloc tt in
@@ -218,14 +219,14 @@ Definition main : M unit :=
       let* α6 : f64.t := M.call (α5 (borrow rectangle)) in
       let* α7 : M.Val f64.t := M.alloc α6 in
       let* α8 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α7)) in
+        M.call (impl core.fmt.rt.Argument.t "new_display" (borrow α7)) in
       let* α9 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α8 ] in
       let* α10 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
         M.alloc (borrow α9) in
       let* α11 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α10) in
       let* α12 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_v1"] α4 α11) in
+        M.call (impl core.fmt.Arguments.t "new_v1" α4 α11) in
       let* α13 : unit := M.call (std.io.stdio._print α12) in
       M.alloc α13 in
     M.alloc tt in

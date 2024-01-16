@@ -1672,14 +1672,44 @@ impl ImplItemKind {
             ImplItemKind::Definition { definition, .. } => coq::TopLevel::new(&[
                 coq::TopLevelItem::Code(definition.to_doc(name, None)),
                 coq::TopLevelItem::Line,
-                Self::class_instance_to_coq(
-                    "AssociatedFunction",
-                    name,
-                    Some(&definition.ty_params),
-                    Some(&definition.where_predicates),
-                    "Notations.DoubleColon Self",
-                    "Notations.double_colon",
-                ),
+                coq::TopLevelItem::Definition(coq::Definition::new(
+                    &format!("{name}_is_impl"),
+                    &coq::DefinitionKind::Axiom {
+                        ty: coq::Expression::PiType {
+                            args: if definition.ty_params.is_empty() {
+                                vec![]
+                            } else {
+                                vec![coq::ArgDecl::new(
+                                    &coq::ArgDeclVar::Simple {
+                                        idents: definition.ty_params.clone(),
+                                        ty: Some(coq::Expression::Set),
+                                    },
+                                    coq::ArgSpecKind::Implicit,
+                                )]
+                            },
+                            image: Rc::new(coq::Expression::Equality {
+                                lhs: Rc::new(coq::Expression::just_name("impl").apply_many(&[
+                                    coq::Expression::just_name("Self"),
+                                    coq::Expression::String(name.to_string()),
+                                ])),
+                                rhs: Rc::new(
+                                    coq::Expression::just_name(name).apply_many_args(
+                                        &definition
+                                            .ty_params
+                                            .iter()
+                                            .map(|ty_param| {
+                                                (
+                                                    Some(ty_param.clone()),
+                                                    coq::Expression::just_name(ty_param),
+                                                )
+                                            })
+                                            .collect::<Vec<_>>(),
+                                    ),
+                                ),
+                            }),
+                        },
+                    },
+                )),
             ]),
             ImplItemKind::Type { ty } => {
                 coq::TopLevel::new(&[coq::TopLevelItem::Definition(coq::Definition::new(

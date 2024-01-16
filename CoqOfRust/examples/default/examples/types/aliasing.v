@@ -43,15 +43,16 @@ Definition main : M unit :=
       let* α6 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α5) in
       let* α7 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow nanoseconds)) in
+        M.call
+          (impl core.fmt.rt.Argument.t "new_display" (borrow nanoseconds)) in
       let* α8 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow inches)) in
+        M.call (impl core.fmt.rt.Argument.t "new_display" (borrow inches)) in
       let* α9 : u64.t := M.read nanoseconds in
       let* α10 : u64.t := M.read inches in
       let* α11 : u64.t := BinOp.Panic.add α9 α10 in
       let* α12 : M.Val u64.t := M.alloc α11 in
       let* α13 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α12)) in
+        M.call (impl core.fmt.rt.Argument.t "new_display" (borrow α12)) in
       let* α14 : M.Val (array core.fmt.rt.Argument.t) :=
         M.alloc [ α7; α8; α13 ] in
       let* α15 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -59,7 +60,7 @@ Definition main : M unit :=
       let* α16 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α15) in
       let* α17 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_v1"] α6 α16) in
+        M.call (impl core.fmt.Arguments.t "new_v1" α6 α16) in
       let* α18 : unit := M.call (std.io.stdio._print α17) in
       M.alloc α18 in
     M.alloc tt in

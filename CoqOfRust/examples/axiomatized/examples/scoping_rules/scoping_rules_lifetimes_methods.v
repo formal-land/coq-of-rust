@@ -23,10 +23,7 @@ Section Impl_scoping_rules_lifetimes_methods_Owner_t.
   *)
   Parameter add_one : (mut_ref Self) -> M unit.
   
-  Global Instance AssociatedFunction_add_one :
-    Notations.DoubleColon Self "add_one" := {
-    Notations.double_colon := add_one;
-  }.
+  Axiom add_one_is_impl : impl Self "add_one" = add_one.
   
   (*
       fn print<'a>(&'a self) {
@@ -35,10 +32,7 @@ Section Impl_scoping_rules_lifetimes_methods_Owner_t.
   *)
   Parameter print : (ref Self) -> M unit.
   
-  Global Instance AssociatedFunction_print :
-    Notations.DoubleColon Self "print" := {
-    Notations.double_colon := print;
-  }.
+  Axiom print_is_impl : impl Self "print" = print.
 End Impl_scoping_rules_lifetimes_methods_Owner_t.
 End Impl_scoping_rules_lifetimes_methods_Owner_t.
 

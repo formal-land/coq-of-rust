@@ -45,9 +45,7 @@ Section Impl_trait_incrementer_Incrementer_t.
     let* α0 : u64.t := M.read init_value in
     M.pure {| trait_incrementer.Incrementer.value := α0; |}.
   
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
-    Notations.double_colon := new;
-  }.
+  Axiom new_is_impl : impl Self "new" = new.
   
   (*
       pub fn inc_by(&mut self, delta: u64) {
@@ -68,10 +66,7 @@ Section Impl_trait_incrementer_Incrementer_t.
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
-  Global Instance AssociatedFunction_inc_by :
-    Notations.DoubleColon Self "inc_by" := {
-    Notations.double_colon := inc_by;
-  }.
+  Axiom inc_by_is_impl : impl Self "inc_by" = inc_by.
 End Impl_trait_incrementer_Incrementer_t.
 End Impl_trait_incrementer_Incrementer_t.
 
@@ -88,13 +83,11 @@ Section Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer_t.
     let* self := M.alloc self in
     let* α0 : mut_ref trait_incrementer.Incrementer.t := M.read self in
     M.call
-      (trait_incrementer.Incrementer.t::["inc_by"]
+      (impl trait_incrementer.Incrementer.t "inc_by"
         α0
         ((Integer.of_Z 1) : u64.t)).
   
-  Global Instance AssociatedFunction_inc : Notations.DoubleColon Self "inc" := {
-    Notations.double_colon := inc;
-  }.
+  Axiom inc_is_impl : impl Self "inc" = inc.
   
   (*
       fn get(&self) -> u64 {
@@ -106,9 +99,7 @@ Section Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer_t.
     let* α0 : ref trait_incrementer.Incrementer.t := M.read self in
     M.read (trait_incrementer.Incrementer.Get_value (deref α0)).
   
-  Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
-    Notations.double_colon := get;
-  }.
+  Axiom get_is_impl : impl Self "get" = get.
   
   Global Instance ℐ : trait_incrementer.Increment.Trait Self := {
     trait_incrementer.Increment.inc := inc;
@@ -136,10 +127,7 @@ Section Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer_t.
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
-  Global Instance AssociatedFunction_reset :
-    Notations.DoubleColon Self "reset" := {
-    Notations.double_colon := reset;
-  }.
+  Axiom reset_is_impl : impl Self "reset" = reset.
   
   Global Instance ℐ : trait_incrementer.Reset.Trait Self := {
     trait_incrementer.Reset.reset := reset;

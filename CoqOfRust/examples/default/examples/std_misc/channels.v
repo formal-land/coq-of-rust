@@ -79,9 +79,11 @@ Definition main : M unit :=
                     (std.thread.JoinHandle.t unit)
                     alloc.alloc.Global.t :=
                 M.call
-                  (alloc.vec.Vec.t
+                  (impl
+                    (alloc.vec.Vec.t
                       (std.thread.JoinHandle.t unit)
-                      alloc.alloc.Global.t)::["new"] in
+                      alloc.alloc.Global.t)
+                    "new") in
               M.alloc α0 in
             let* _ : M.Val unit :=
               let* α0 : _ :=
@@ -159,16 +161,20 @@ Definition main : M unit :=
                                                   (std.sync.mpsc.SendError.t
                                                     i32.t) :=
                                               M.call
-                                                ((std.sync.mpsc.Sender.t
-                                                      i32.t)::["send"]
+                                                (impl
+                                                    (std.sync.mpsc.Sender.t
+                                                      i32.t)
+                                                    "send"
                                                   (borrow thread_tx)
                                                   α0) in
                                             let* α2 : unit :=
                                               M.call
-                                                ((core.result.Result.t
+                                                (impl
+                                                    (core.result.Result.t
                                                       unit
                                                       (std.sync.mpsc.SendError.t
-                                                        i32.t))::["unwrap"]
+                                                        i32.t))
+                                                    "unwrap"
                                                   α1) in
                                             M.alloc α2 in
                                           let* _ : M.Val unit :=
@@ -194,7 +200,9 @@ Definition main : M unit :=
                                               let* α5 :
                                                   core.fmt.rt.Argument.t :=
                                                 M.call
-                                                  (core.fmt.rt.Argument.t::["new_display"]
+                                                  (impl
+                                                      core.fmt.rt.Argument.t
+                                                      "new_display"
                                                     (borrow id)) in
                                               let* α6 :
                                                   M.Val
@@ -217,7 +225,9 @@ Definition main : M unit :=
                                                     α7) in
                                               let* α9 : core.fmt.Arguments.t :=
                                                 M.call
-                                                  (core.fmt.Arguments.t::["new_v1"]
+                                                  (impl
+                                                      core.fmt.Arguments.t
+                                                      "new_v1"
                                                     α4
                                                     α8) in
                                               let* α10 : unit :=
@@ -234,9 +244,11 @@ Definition main : M unit :=
                                       M.read child in
                                     let* α1 : unit :=
                                       M.call
-                                        ((alloc.vec.Vec.t
+                                        (impl
+                                            (alloc.vec.Vec.t
                                               (std.thread.JoinHandle.t unit)
-                                              alloc.alloc.Global.t)::["push"]
+                                              alloc.alloc.Global.t)
+                                            "push"
                                           (borrow_mut children)
                                           α0) in
                                     M.alloc α1 in
@@ -262,9 +274,11 @@ Definition main : M unit :=
                     (core.result.Result.t i32.t std.sync.mpsc.RecvError.t)
                     alloc.alloc.Global.t :=
                 M.call
-                  ((alloc.vec.Vec.t
+                  (impl
+                      (alloc.vec.Vec.t
                         (core.result.Result.t i32.t std.sync.mpsc.RecvError.t)
-                        alloc.alloc.Global.t)::["with_capacity"]
+                        alloc.alloc.Global.t)
+                      "with_capacity"
                     α2) in
               M.alloc α3 in
             let* _ : M.Val unit :=
@@ -325,16 +339,19 @@ Definition main : M unit :=
                                           i32.t
                                           std.sync.mpsc.RecvError.t :=
                                       M.call
-                                        ((std.sync.mpsc.Receiver.t
-                                              i32.t)::["recv"]
+                                        (impl
+                                            (std.sync.mpsc.Receiver.t i32.t)
+                                            "recv"
                                           (borrow rx)) in
                                     let* α1 : unit :=
                                       M.call
-                                        ((alloc.vec.Vec.t
+                                        (impl
+                                            (alloc.vec.Vec.t
                                               (core.result.Result.t
                                                 i32.t
                                                 std.sync.mpsc.RecvError.t)
-                                              alloc.alloc.Global.t)::["push"]
+                                              alloc.alloc.Global.t)
+                                            "push"
                                           (borrow_mut ids)
                                           α0) in
                                     M.alloc α1 in
@@ -427,8 +444,9 @@ Definition main : M unit :=
                                             _ (* dyn *)
                                             alloc.alloc.Global.t) :=
                                       M.call
-                                        ((std.thread.JoinHandle.t
-                                              unit)::["join"]
+                                        (impl
+                                            (std.thread.JoinHandle.t unit)
+                                            "join"
                                           α0) in
                                     let* α2 : ref str.t :=
                                       M.read
@@ -436,11 +454,13 @@ Definition main : M unit :=
                                           "oops! the child thread panicked") in
                                     let* α3 : unit :=
                                       M.call
-                                        ((core.result.Result.t
+                                        (impl
+                                            (core.result.Result.t
                                               unit
                                               (alloc.boxed.Box.t
                                                 _ (* dyn *)
-                                                alloc.alloc.Global.t))::["expect"]
+                                                alloc.alloc.Global.t))
+                                            "expect"
                                           α1
                                           α2) in
                                     M.alloc α3 in
@@ -464,7 +484,8 @@ Definition main : M unit :=
                 let* α4 : ref (slice (ref str.t)) :=
                   M.read (pointer_coercion "Unsize" α3) in
                 let* α5 : core.fmt.rt.Argument.t :=
-                  M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow ids)) in
+                  M.call
+                    (impl core.fmt.rt.Argument.t "new_debug" (borrow ids)) in
                 let* α6 : M.Val (array core.fmt.rt.Argument.t) :=
                   M.alloc [ α5 ] in
                 let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -472,7 +493,7 @@ Definition main : M unit :=
                 let* α8 : ref (slice core.fmt.rt.Argument.t) :=
                   M.read (pointer_coercion "Unsize" α7) in
                 let* α9 : core.fmt.Arguments.t :=
-                  M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
+                  M.call (impl core.fmt.Arguments.t "new_v1" α4 α8) in
                 let* α10 : unit := M.call (std.io.stdio._print α9) in
                 M.alloc α10 in
               M.alloc tt in

@@ -38,10 +38,7 @@ Section Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci_t.
   *)
   Parameter next : (mut_ref Self) -> M (core.option.Option.t Item.t).
   
-  Global Instance AssociatedFunction_next :
-    Notations.DoubleColon Self "next" := {
-    Notations.double_colon := next;
-  }.
+  Axiom next_is_impl : impl Self "next" = next.
   
   Global Instance ℐ :
     core.iter.traits.iterator.Iterator.Required.Trait Self := {

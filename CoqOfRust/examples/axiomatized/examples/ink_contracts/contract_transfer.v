@@ -21,10 +21,7 @@ Section Impl_core_default_Default_for_contract_transfer_AccountId_t.
   *)
   Parameter default : M contract_transfer.AccountId.t.
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -41,10 +38,7 @@ Section Impl_core_clone_Clone_for_contract_transfer_AccountId_t.
   *)
   Parameter clone : (ref Self) -> M contract_transfer.AccountId.t.
   
-  Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon Self "clone" := {
-    Notations.double_colon := clone;
-  }.
+  Axiom clone_is_impl : impl Self "clone" = clone.
   
   Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
@@ -86,10 +80,7 @@ Section Impl_contract_transfer_Env_t.
   *)
   Parameter caller : (ref Self) -> M contract_transfer.AccountId.t.
   
-  Global Instance AssociatedFunction_caller :
-    Notations.DoubleColon Self "caller" := {
-    Notations.double_colon := caller;
-  }.
+  Axiom caller_is_impl : impl Self "caller" = caller.
   
   (*
       fn balance(&self) -> Balance {
@@ -98,10 +89,7 @@ Section Impl_contract_transfer_Env_t.
   *)
   Parameter balance : (ref Self) -> M ltac:(contract_transfer.Balance).
   
-  Global Instance AssociatedFunction_balance :
-    Notations.DoubleColon Self "balance" := {
-    Notations.double_colon := balance;
-  }.
+  Axiom balance_is_impl : impl Self "balance" = balance.
   
   (*
       fn transfer(&mut self, _to: AccountId, _value: Balance) -> Result<(), ()> {
@@ -114,10 +102,7 @@ Section Impl_contract_transfer_Env_t.
         ltac:(contract_transfer.Balance) ->
         M (core.result.Result.t unit unit).
   
-  Global Instance AssociatedFunction_transfer :
-    Notations.DoubleColon Self "transfer" := {
-    Notations.double_colon := transfer;
-  }.
+  Axiom transfer_is_impl : impl Self "transfer" = transfer.
   
   (*
       fn transferred_value(&self) -> Balance {
@@ -127,10 +112,8 @@ Section Impl_contract_transfer_Env_t.
   Parameter transferred_value :
       (ref Self) -> M ltac:(contract_transfer.Balance).
   
-  Global Instance AssociatedFunction_transferred_value :
-    Notations.DoubleColon Self "transferred_value" := {
-    Notations.double_colon := transferred_value;
-  }.
+  Axiom transferred_value_is_impl :
+      impl Self "transferred_value" = transferred_value.
 End Impl_contract_transfer_Env_t.
 End Impl_contract_transfer_Env_t.
 
@@ -151,10 +134,7 @@ Section Impl_contract_transfer_GiveMe_t.
   *)
   Parameter init_env : M contract_transfer.Env.t.
   
-  Global Instance AssociatedFunction_init_env :
-    Notations.DoubleColon Self "init_env" := {
-    Notations.double_colon := init_env;
-  }.
+  Axiom init_env_is_impl : impl Self "init_env" = init_env.
   
   (*
       fn env(&self) -> Env {
@@ -163,9 +143,7 @@ Section Impl_contract_transfer_GiveMe_t.
   *)
   Parameter env : (ref Self) -> M contract_transfer.Env.t.
   
-  Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
-    Notations.double_colon := env;
-  }.
+  Axiom env_is_impl : impl Self "env" = env.
   
   (*
       pub fn new() -> Self {
@@ -174,9 +152,7 @@ Section Impl_contract_transfer_GiveMe_t.
   *)
   Parameter new : M Self.
   
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
-    Notations.double_colon := new;
-  }.
+  Axiom new_is_impl : impl Self "new" = new.
   
   (*
       pub fn give_me(&mut self, value: Balance) {
@@ -197,10 +173,7 @@ Section Impl_contract_transfer_GiveMe_t.
   Parameter give_me :
       (mut_ref Self) -> ltac:(contract_transfer.Balance) -> M unit.
   
-  Global Instance AssociatedFunction_give_me :
-    Notations.DoubleColon Self "give_me" := {
-    Notations.double_colon := give_me;
-  }.
+  Axiom give_me_is_impl : impl Self "give_me" = give_me.
   
   (*
       pub fn was_it_ten(&self) {
@@ -210,9 +183,6 @@ Section Impl_contract_transfer_GiveMe_t.
   *)
   Parameter was_it_ten : (ref Self) -> M unit.
   
-  Global Instance AssociatedFunction_was_it_ten :
-    Notations.DoubleColon Self "was_it_ten" := {
-    Notations.double_colon := was_it_ten;
-  }.
+  Axiom was_it_ten_is_impl : impl Self "was_it_ten" = was_it_ten.
 End Impl_contract_transfer_GiveMe_t.
 End Impl_contract_transfer_GiveMe_t.

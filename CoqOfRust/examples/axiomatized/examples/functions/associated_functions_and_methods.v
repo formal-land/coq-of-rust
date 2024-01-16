@@ -26,10 +26,7 @@ Section Impl_associated_functions_and_methods_Point_t.
   *)
   Parameter origin : M associated_functions_and_methods.Point.t.
   
-  Global Instance AssociatedFunction_origin :
-    Notations.DoubleColon Self "origin" := {
-    Notations.double_colon := origin;
-  }.
+  Axiom origin_is_impl : impl Self "origin" = origin.
   
   (*
       fn new(x: f64, y: f64) -> Point {
@@ -38,9 +35,7 @@ Section Impl_associated_functions_and_methods_Point_t.
   *)
   Parameter new : f64.t -> f64.t -> M associated_functions_and_methods.Point.t.
   
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
-    Notations.double_colon := new;
-  }.
+  Axiom new_is_impl : impl Self "new" = new.
 End Impl_associated_functions_and_methods_Point_t.
 End Impl_associated_functions_and_methods_Point_t.
 
@@ -69,10 +64,7 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
   *)
   Parameter get_p1 : (ref Self) -> M associated_functions_and_methods.Point.t.
   
-  Global Instance AssociatedFunction_get_p1 :
-    Notations.DoubleColon Self "get_p1" := {
-    Notations.double_colon := get_p1;
-  }.
+  Axiom get_p1_is_impl : impl Self "get_p1" = get_p1.
   
   (*
       fn area(&self) -> f64 {
@@ -87,10 +79,7 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
   *)
   Parameter area : (ref Self) -> M f64.t.
   
-  Global Instance AssociatedFunction_area :
-    Notations.DoubleColon Self "area" := {
-    Notations.double_colon := area;
-  }.
+  Axiom area_is_impl : impl Self "area" = area.
   
   (*
       fn perimeter(&self) -> f64 {
@@ -102,10 +91,7 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
   *)
   Parameter perimeter : (ref Self) -> M f64.t.
   
-  Global Instance AssociatedFunction_perimeter :
-    Notations.DoubleColon Self "perimeter" := {
-    Notations.double_colon := perimeter;
-  }.
+  Axiom perimeter_is_impl : impl Self "perimeter" = perimeter.
   
   (*
       fn translate(&mut self, x: f64, y: f64) {
@@ -118,10 +104,7 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
   *)
   Parameter translate : (mut_ref Self) -> f64.t -> f64.t -> M unit.
   
-  Global Instance AssociatedFunction_translate :
-    Notations.DoubleColon Self "translate" := {
-    Notations.double_colon := translate;
-  }.
+  Axiom translate_is_impl : impl Self "translate" = translate.
 End Impl_associated_functions_and_methods_Rectangle_t.
 End Impl_associated_functions_and_methods_Rectangle_t.
 
@@ -155,10 +138,7 @@ Section Impl_associated_functions_and_methods_Pair_t.
   *)
   Parameter destroy : Self -> M unit.
   
-  Global Instance AssociatedFunction_destroy :
-    Notations.DoubleColon Self "destroy" := {
-    Notations.double_colon := destroy;
-  }.
+  Axiom destroy_is_impl : impl Self "destroy" = destroy.
 End Impl_associated_functions_and_methods_Pair_t.
 End Impl_associated_functions_and_methods_Pair_t.
 

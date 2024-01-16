@@ -64,11 +64,9 @@ Section Impl_core_fmt_Debug_for_combinators_map_Food_t.
             M (M.Val (ref str.t))
         ] in
     let* α2 : ref str.t := M.read α1 in
-    M.call (core.fmt.Formatter.t::["write_str"] α0 α2).
+    M.call (impl core.fmt.Formatter.t "write_str" α0 α2).
   
-  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
-    Notations.double_colon := fmt;
-  }.
+  Axiom fmt_is_impl : impl Self "fmt" = fmt.
   
   Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
@@ -107,11 +105,9 @@ Section Impl_core_fmt_Debug_for_combinators_map_Peeled_t.
       M.alloc (borrow (combinators_map.Peeled.Get_0 (deref α2))) in
     let* α4 : M.Val (ref (ref combinators_map.Food.t)) := M.alloc (borrow α3) in
     let* α5 : ref _ (* dyn *) := M.read (pointer_coercion "Unsize" α4) in
-    M.call (core.fmt.Formatter.t::["debug_tuple_field1_finish"] α0 α1 α5).
+    M.call (impl core.fmt.Formatter.t "debug_tuple_field1_finish" α0 α1 α5).
   
-  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
-    Notations.double_colon := fmt;
-  }.
+  Axiom fmt_is_impl : impl Self "fmt" = fmt.
   
   Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
@@ -150,11 +146,9 @@ Section Impl_core_fmt_Debug_for_combinators_map_Chopped_t.
       M.alloc (borrow (combinators_map.Chopped.Get_0 (deref α2))) in
     let* α4 : M.Val (ref (ref combinators_map.Food.t)) := M.alloc (borrow α3) in
     let* α5 : ref _ (* dyn *) := M.read (pointer_coercion "Unsize" α4) in
-    M.call (core.fmt.Formatter.t::["debug_tuple_field1_finish"] α0 α1 α5).
+    M.call (impl core.fmt.Formatter.t "debug_tuple_field1_finish" α0 α1 α5).
   
-  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
-    Notations.double_colon := fmt;
-  }.
+  Axiom fmt_is_impl : impl Self "fmt" = fmt.
   
   Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
@@ -193,11 +187,9 @@ Section Impl_core_fmt_Debug_for_combinators_map_Cooked_t.
       M.alloc (borrow (combinators_map.Cooked.Get_0 (deref α2))) in
     let* α4 : M.Val (ref (ref combinators_map.Food.t)) := M.alloc (borrow α3) in
     let* α5 : ref _ (* dyn *) := M.read (pointer_coercion "Unsize" α4) in
-    M.call (core.fmt.Formatter.t::["debug_tuple_field1_finish"] α0 α1 α5).
+    M.call (impl core.fmt.Formatter.t "debug_tuple_field1_finish" α0 α1 α5).
   
-  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
-    Notations.double_colon := fmt;
-  }.
+  Axiom fmt_is_impl : impl Self "fmt" = fmt.
   
   Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
@@ -297,7 +289,7 @@ Definition cook
   let* chopped := M.alloc chopped in
   let* α0 : core.option.Option.t combinators_map.Chopped.t := M.read chopped in
   M.call
-    ((core.option.Option.t combinators_map.Chopped.t)::["map"]
+    (impl (core.option.Option.t combinators_map.Chopped.t) "map"
       α0
       (fun (α0 : combinators_map.Chopped.t) =>
         (let* α0 := M.alloc α0 in
@@ -331,7 +323,7 @@ Definition process
   let* α0 : core.option.Option.t combinators_map.Food.t := M.read food in
   let* α1 : core.option.Option.t combinators_map.Peeled.t :=
     M.call
-      ((core.option.Option.t combinators_map.Food.t)::["map"]
+      (impl (core.option.Option.t combinators_map.Food.t) "map"
         α0
         (fun (α0 : combinators_map.Food.t) =>
           (let* α0 := M.alloc α0 in
@@ -347,7 +339,7 @@ Definition process
           M combinators_map.Peeled.t)) in
   let* α2 : core.option.Option.t combinators_map.Chopped.t :=
     M.call
-      ((core.option.Option.t combinators_map.Peeled.t)::["map"]
+      (impl (core.option.Option.t combinators_map.Peeled.t) "map"
         α1
         (fun (α0 : combinators_map.Peeled.t) =>
           (let* α0 := M.alloc α0 in
@@ -367,7 +359,7 @@ Definition process
             ]) :
           M combinators_map.Chopped.t)) in
   M.call
-    ((core.option.Option.t combinators_map.Chopped.t)::["map"]
+    (impl (core.option.Option.t combinators_map.Chopped.t) "map"
       α2
       (fun (α0 : combinators_map.Chopped.t) =>
         (let* α0 := M.alloc α0 in
@@ -419,7 +411,8 @@ Definition eat
               let* α4 : ref (slice (ref str.t)) :=
                 M.read (pointer_coercion "Unsize" α3) in
               let* α5 : core.fmt.rt.Argument.t :=
-                M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow food)) in
+                M.call
+                  (impl core.fmt.rt.Argument.t "new_debug" (borrow food)) in
               let* α6 : M.Val (array core.fmt.rt.Argument.t) :=
                 M.alloc [ α5 ] in
               let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -427,7 +420,7 @@ Definition eat
               let* α8 : ref (slice core.fmt.rt.Argument.t) :=
                 M.read (pointer_coercion "Unsize" α7) in
               let* α9 : core.fmt.Arguments.t :=
-                M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
+                M.call (impl core.fmt.Arguments.t "new_v1" α4 α8) in
               let* α10 : unit := M.call (std.io.stdio._print α9) in
               M.alloc α10 in
             M.alloc tt
@@ -448,7 +441,7 @@ Definition eat
               let* α3 : ref (slice (ref str.t)) :=
                 M.read (pointer_coercion "Unsize" α2) in
               let* α4 : core.fmt.Arguments.t :=
-                M.call (core.fmt.Arguments.t::["new_const"] α3) in
+                M.call (impl core.fmt.Arguments.t "new_const" α3) in
               let* α5 : unit := M.call (std.io.stdio._print α4) in
               M.alloc α5 in
             M.alloc tt

@@ -21,10 +21,7 @@ Section Impl_core_default_Default_for_updated_incrementer_AccountId_t.
   *)
   Parameter default : M updated_incrementer.AccountId.t.
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -41,10 +38,7 @@ Section Impl_core_clone_Clone_for_updated_incrementer_AccountId_t.
   *)
   Parameter clone : (ref Self) -> M updated_incrementer.AccountId.t.
   
-  Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon Self "clone" := {
-    Notations.double_colon := clone;
-  }.
+  Axiom clone_is_impl : impl Self "clone" = clone.
   
   Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
@@ -95,10 +89,9 @@ Section Impl_updated_incrementer_Env_t.
         (ref E) ->
         M (core.result.Result.t unit updated_incrementer.Error.t).
   
-  Global Instance AssociatedFunction_set_code_hash {E : Set} :
-    Notations.DoubleColon Self "set_code_hash" := {
-    Notations.double_colon := set_code_hash (E := E);
-  }.
+  Axiom set_code_hash_is_impl :
+      forall {E : Set},
+      impl Self "set_code_hash" = set_code_hash (E := E).
 End Impl_updated_incrementer_Env_t.
 End Impl_updated_incrementer_Env_t.
 
@@ -124,10 +117,7 @@ Section Impl_updated_incrementer_Incrementer_t.
   *)
   Parameter init_env : M updated_incrementer.Env.t.
   
-  Global Instance AssociatedFunction_init_env :
-    Notations.DoubleColon Self "init_env" := {
-    Notations.double_colon := init_env;
-  }.
+  Axiom init_env_is_impl : impl Self "init_env" = init_env.
   
   (*
       fn env(&self) -> Env {
@@ -136,9 +126,7 @@ Section Impl_updated_incrementer_Incrementer_t.
   *)
   Parameter env : (ref Self) -> M updated_incrementer.Env.t.
   
-  Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
-    Notations.double_colon := env;
-  }.
+  Axiom env_is_impl : impl Self "env" = env.
   
   (*
       pub fn new() -> Self {
@@ -147,9 +135,7 @@ Section Impl_updated_incrementer_Incrementer_t.
   *)
   Parameter new : M Self.
   
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
-    Notations.double_colon := new;
-  }.
+  Axiom new_is_impl : impl Self "new" = new.
   
   (*
       pub fn inc(&mut self) {
@@ -162,9 +148,7 @@ Section Impl_updated_incrementer_Incrementer_t.
   *)
   Parameter inc : (mut_ref Self) -> M unit.
   
-  Global Instance AssociatedFunction_inc : Notations.DoubleColon Self "inc" := {
-    Notations.double_colon := inc;
-  }.
+  Axiom inc_is_impl : impl Self "inc" = inc.
   
   (*
       pub fn get(&self) -> u32 {
@@ -173,9 +157,7 @@ Section Impl_updated_incrementer_Incrementer_t.
   *)
   Parameter get : (ref Self) -> M u32.t.
   
-  Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
-    Notations.double_colon := get;
-  }.
+  Axiom get_is_impl : impl Self "get" = get.
   
   (*
       pub fn set_code(&mut self, code_hash: Hash) {
@@ -188,9 +170,6 @@ Section Impl_updated_incrementer_Incrementer_t.
   Parameter set_code :
       (mut_ref Self) -> ltac:(updated_incrementer.Hash) -> M unit.
   
-  Global Instance AssociatedFunction_set_code :
-    Notations.DoubleColon Self "set_code" := {
-    Notations.double_colon := set_code;
-  }.
+  Axiom set_code_is_impl : impl Self "set_code" = set_code.
 End Impl_updated_incrementer_Incrementer_t.
 End Impl_updated_incrementer_Incrementer_t.

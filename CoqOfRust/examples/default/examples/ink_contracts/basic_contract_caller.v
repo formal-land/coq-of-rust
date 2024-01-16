@@ -26,10 +26,7 @@ Section Impl_core_default_Default_for_basic_contract_caller_AccountId_t.
     let* α1 : u128.t := M.call α0 in
     M.pure (basic_contract_caller.AccountId.Build_t α1).
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -58,10 +55,7 @@ Section Impl_core_clone_Clone_for_basic_contract_caller_AccountId_t.
         ] in
     M.read α0.
   
-  Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon Self "clone" := {
-    Notations.double_colon := clone;
-  }.
+  Axiom clone_is_impl : impl Self "clone" = clone.
   
   Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
@@ -111,9 +105,7 @@ Section Impl_basic_contract_caller_OtherContract_t.
     let* α0 : bool.t := M.read init_value in
     M.pure {| basic_contract_caller.OtherContract.value := α0; |}.
   
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
-    Notations.double_colon := new;
-  }.
+  Axiom new_is_impl : impl Self "new" = new.
   
   (*
       pub fn flip(&mut self) {
@@ -133,10 +125,7 @@ Section Impl_basic_contract_caller_OtherContract_t.
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
-  Global Instance AssociatedFunction_flip :
-    Notations.DoubleColon Self "flip" := {
-    Notations.double_colon := flip;
-  }.
+  Axiom flip_is_impl : impl Self "flip" = flip.
   
   (*
       pub fn get(&self) -> bool {
@@ -148,9 +137,7 @@ Section Impl_basic_contract_caller_OtherContract_t.
     let* α0 : ref basic_contract_caller.OtherContract.t := M.read self in
     M.read (basic_contract_caller.OtherContract.Get_value (deref α0)).
   
-  Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
-    Notations.double_colon := get;
-  }.
+  Axiom get_is_impl : impl Self "get" = get.
 End Impl_basic_contract_caller_OtherContract_t.
 End Impl_basic_contract_caller_OtherContract_t.
 
@@ -198,9 +185,7 @@ Section Impl_basic_contract_caller_BasicContractCaller_t.
         {| basic_contract_caller.BasicContractCaller.other_contract := α0; |} in
     M.read α0.
   
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
-    Notations.double_colon := new;
-  }.
+  Axiom new_is_impl : impl Self "new" = new.
   
   (*
       pub fn flip_and_get(&mut self) -> bool {
@@ -215,7 +200,7 @@ Section Impl_basic_contract_caller_BasicContractCaller_t.
         M.read self in
       let* α1 : unit :=
         M.call
-          (basic_contract_caller.OtherContract.t::["flip"]
+          (impl basic_contract_caller.OtherContract.t "flip"
             (borrow_mut
               (basic_contract_caller.BasicContractCaller.Get_other_contract
                 (deref α0)))) in
@@ -224,16 +209,13 @@ Section Impl_basic_contract_caller_BasicContractCaller_t.
       M.read self in
     let* α1 : bool.t :=
       M.call
-        (basic_contract_caller.OtherContract.t::["get"]
+        (impl basic_contract_caller.OtherContract.t "get"
           (borrow
             (basic_contract_caller.BasicContractCaller.Get_other_contract
               (deref α0)))) in
     let* α0 : M.Val bool.t := M.alloc α1 in
     M.read α0.
   
-  Global Instance AssociatedFunction_flip_and_get :
-    Notations.DoubleColon Self "flip_and_get" := {
-    Notations.double_colon := flip_and_get;
-  }.
+  Axiom flip_and_get_is_impl : impl Self "flip_and_get" = flip_and_get.
 End Impl_basic_contract_caller_BasicContractCaller_t.
 End Impl_basic_contract_caller_BasicContractCaller_t.

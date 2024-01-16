@@ -39,10 +39,7 @@ Section Impl_core_clone_Clone_for_scoping_rules_borrowing_the_ref_pattern_Point_
         ] in
     M.read α0.
   
-  Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon Self "clone" := {
-    Notations.double_colon := clone;
-  }.
+  Axiom clone_is_impl : impl Self "clone" = clone.
   
   Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
@@ -143,7 +140,8 @@ Definition main : M unit :=
               let* α8 : char.t := M.read (deref α7) in
               let* α9 : M.Val bool.t := M.alloc (BinOp.Pure.eq α6 α8) in
               let* α10 : core.fmt.rt.Argument.t :=
-                M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α9)) in
+                M.call
+                  (impl core.fmt.rt.Argument.t "new_display" (borrow α9)) in
               let* α11 : M.Val (array core.fmt.rt.Argument.t) :=
                 M.alloc [ α10 ] in
               let* α12 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -151,7 +149,7 @@ Definition main : M unit :=
               let* α13 : ref (slice core.fmt.rt.Argument.t) :=
                 M.read (pointer_coercion "Unsize" α12) in
               let* α14 : core.fmt.Arguments.t :=
-                M.call (core.fmt.Arguments.t::["new_v1"] α4 α13) in
+                M.call (impl core.fmt.Arguments.t "new_v1" α4 α13) in
               let* α15 : unit := M.call (std.io.stdio._print α14) in
               M.alloc α15 in
             M.alloc tt in
@@ -229,13 +227,13 @@ Definition main : M unit :=
                 M.read (pointer_coercion "Unsize" α4) in
               let* α6 : core.fmt.rt.Argument.t :=
                 M.call
-                  (core.fmt.rt.Argument.t::["new_display"]
+                  (impl core.fmt.rt.Argument.t "new_display"
                     (borrow
                       (scoping_rules_borrowing_the_ref_pattern.Point.Get_x
                         point))) in
               let* α7 : core.fmt.rt.Argument.t :=
                 M.call
-                  (core.fmt.rt.Argument.t::["new_display"]
+                  (impl core.fmt.rt.Argument.t "new_display"
                     (borrow
                       (scoping_rules_borrowing_the_ref_pattern.Point.Get_y
                         point))) in
@@ -246,7 +244,7 @@ Definition main : M unit :=
               let* α10 : ref (slice core.fmt.rt.Argument.t) :=
                 M.read (pointer_coercion "Unsize" α9) in
               let* α11 : core.fmt.Arguments.t :=
-                M.call (core.fmt.Arguments.t::["new_v1"] α5 α10) in
+                M.call (impl core.fmt.Arguments.t "new_v1" α5 α10) in
               let* α12 : unit := M.call (std.io.stdio._print α11) in
               M.alloc α12 in
             M.alloc tt in
@@ -263,13 +261,13 @@ Definition main : M unit :=
                 M.read (pointer_coercion "Unsize" α4) in
               let* α6 : core.fmt.rt.Argument.t :=
                 M.call
-                  (core.fmt.rt.Argument.t::["new_display"]
+                  (impl core.fmt.rt.Argument.t "new_display"
                     (borrow
                       (scoping_rules_borrowing_the_ref_pattern.Point.Get_x
                         mutable_point))) in
               let* α7 : core.fmt.rt.Argument.t :=
                 M.call
-                  (core.fmt.rt.Argument.t::["new_display"]
+                  (impl core.fmt.rt.Argument.t "new_display"
                     (borrow
                       (scoping_rules_borrowing_the_ref_pattern.Point.Get_y
                         mutable_point))) in
@@ -280,7 +278,7 @@ Definition main : M unit :=
               let* α10 : ref (slice core.fmt.rt.Argument.t) :=
                 M.read (pointer_coercion "Unsize" α9) in
               let* α11 : core.fmt.Arguments.t :=
-                M.call (core.fmt.Arguments.t::["new_v1"] α5 α10) in
+                M.call (impl core.fmt.Arguments.t "new_v1" α5 α10) in
               let* α12 : unit := M.call (std.io.stdio._print α11) in
               M.alloc α12 in
             M.alloc tt in
@@ -288,7 +286,7 @@ Definition main : M unit :=
               M.Val ((alloc.boxed.Box.t u32.t alloc.alloc.Global.t) * u32.t) :=
             let* α0 : alloc.boxed.Box.t u32.t alloc.alloc.Global.t :=
               M.call
-                ((alloc.boxed.Box.t u32.t alloc.alloc.Global.t)::["new"]
+                (impl (alloc.boxed.Box.t u32.t alloc.alloc.Global.t) "new"
                   ((Integer.of_Z 5) : u32.t)) in
             M.alloc (α0, (Integer.of_Z 3) : u32.t) in
           let* _ : M.Val unit :=
@@ -321,7 +319,7 @@ Definition main : M unit :=
                 M.read (pointer_coercion "Unsize" α3) in
               let* α5 : core.fmt.rt.Argument.t :=
                 M.call
-                  (core.fmt.rt.Argument.t::["new_debug"]
+                  (impl core.fmt.rt.Argument.t "new_debug"
                     (borrow mutable_tuple)) in
               let* α6 : M.Val (array core.fmt.rt.Argument.t) :=
                 M.alloc [ α5 ] in
@@ -330,7 +328,7 @@ Definition main : M unit :=
               let* α8 : ref (slice core.fmt.rt.Argument.t) :=
                 M.read (pointer_coercion "Unsize" α7) in
               let* α9 : core.fmt.Arguments.t :=
-                M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
+                M.call (impl core.fmt.Arguments.t "new_v1" α4 α8) in
               let* α10 : unit := M.call (std.io.stdio._print α9) in
               M.alloc α10 in
             M.alloc tt in

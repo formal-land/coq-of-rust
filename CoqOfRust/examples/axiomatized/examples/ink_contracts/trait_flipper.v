@@ -35,9 +35,7 @@ Section Impl_trait_flipper_Flipper_t.
   *)
   Parameter new : M Self.
   
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
-    Notations.double_colon := new;
-  }.
+  Axiom new_is_impl : impl Self "new" = new.
 End Impl_trait_flipper_Flipper_t.
 End Impl_trait_flipper_Flipper_t.
 
@@ -52,10 +50,7 @@ Section Impl_trait_flipper_Flip_for_trait_flipper_Flipper_t.
   *)
   Parameter flip : (mut_ref Self) -> M unit.
   
-  Global Instance AssociatedFunction_flip :
-    Notations.DoubleColon Self "flip" := {
-    Notations.double_colon := flip;
-  }.
+  Axiom flip_is_impl : impl Self "flip" = flip.
   
   (*
       fn get(&self) -> bool {
@@ -64,9 +59,7 @@ Section Impl_trait_flipper_Flip_for_trait_flipper_Flipper_t.
   *)
   Parameter get : (ref Self) -> M bool.t.
   
-  Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
-    Notations.double_colon := get;
-  }.
+  Axiom get_is_impl : impl Self "get" = get.
   
   Global Instance ℐ : trait_flipper.Flip.Trait Self := {
     trait_flipper.Flip.flip := flip;

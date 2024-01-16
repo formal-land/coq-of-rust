@@ -45,10 +45,7 @@ Section Impl_core_default_Default_for_dns_Mapping_t_K_V.
     let* α3 : core.marker.PhantomData.t V := M.call α2 in
     M.pure {| dns.Mapping._key := α1; dns.Mapping._value := α3; |}.
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -74,10 +71,7 @@ Section Impl_dns_Mapping_t_K_V.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_contains :
-    Notations.DoubleColon Self "contains" := {
-    Notations.double_colon := contains;
-  }.
+  Axiom contains_is_impl : impl Self "contains" = contains.
   
   (*
       fn get(&self, _key: &K) -> Option<V> {
@@ -94,9 +88,7 @@ Section Impl_dns_Mapping_t_K_V.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
-    Notations.double_colon := get;
-  }.
+  Axiom get_is_impl : impl Self "get" = get.
   
   (*
       fn insert(&mut self, _key: K, _value: V) -> Option<u32> {
@@ -115,10 +107,7 @@ Section Impl_dns_Mapping_t_K_V.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_insert :
-    Notations.DoubleColon Self "insert" := {
-    Notations.double_colon := insert;
-  }.
+  Axiom insert_is_impl : impl Self "insert" = insert.
   
   (*
       fn new() -> Mapping<K, V> {
@@ -130,9 +119,7 @@ Section Impl_dns_Mapping_t_K_V.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
-    Notations.double_colon := new;
-  }.
+  Axiom new_is_impl : impl Self "new" = new.
   
   (*
       fn remove(&self, _key: K) {
@@ -146,10 +133,7 @@ Section Impl_dns_Mapping_t_K_V.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_remove :
-    Notations.DoubleColon Self "remove" := {
-    Notations.double_colon := remove;
-  }.
+  Axiom remove_is_impl : impl Self "remove" = remove.
   
   (*
       fn size(&self, _key: K) -> Option<u32> {
@@ -166,10 +150,7 @@ Section Impl_dns_Mapping_t_K_V.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_size :
-    Notations.DoubleColon Self "size" := {
-    Notations.double_colon := size;
-  }.
+  Axiom size_is_impl : impl Self "size" = size.
   
   (*
       fn take(&self, _key: K) -> Option<V> {
@@ -183,10 +164,7 @@ Section Impl_dns_Mapping_t_K_V.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_take :
-    Notations.DoubleColon Self "take" := {
-    Notations.double_colon := take;
-  }.
+  Axiom take_is_impl : impl Self "take" = take.
 End Impl_dns_Mapping_t_K_V.
 End Impl_dns_Mapping_t_K_V.
 
@@ -215,10 +193,7 @@ Section Impl_core_default_Default_for_dns_AccountId_t.
     let* α1 : u128.t := M.call α0 in
     M.pure (dns.AccountId.Build_t α1).
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -247,10 +222,7 @@ Section Impl_core_clone_Clone_for_dns_AccountId_t.
         ] in
     M.read α0.
   
-  Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon Self "clone" := {
-    Notations.double_colon := clone;
-  }.
+  Axiom clone_is_impl : impl Self "clone" = clone.
   
   Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
@@ -293,9 +265,7 @@ Section Impl_core_cmp_PartialEq_for_dns_AccountId_t.
     let* α3 : u128.t := M.read (dns.AccountId.Get_0 (deref α2)) in
     M.pure (BinOp.Pure.eq α1 α3).
   
-  Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
-    Notations.double_colon := eq;
-  }.
+  Axiom eq_is_impl : impl Self "eq" = eq.
   
   Global Instance ℐ :
     core.cmp.PartialEq.Required.Trait Self
@@ -321,10 +291,7 @@ Section Impl_core_convert_From_array_u8_t_for_dns_AccountId_t.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_from :
-    Notations.DoubleColon Self "from" := {
-    Notations.double_colon := from;
-  }.
+  Axiom from_is_impl : impl Self "from" = from.
   
   Global Instance ℐ : core.convert.From.Trait Self (T := array u8.t) := {
     core.convert.From.from := from;
@@ -448,10 +415,7 @@ Section Impl_dns_Env_t.
     let* α0 : ref dns.Env.t := M.read self in
     M.read (dns.Env.Get_caller (deref α0)).
   
-  Global Instance AssociatedFunction_caller :
-    Notations.DoubleColon Self "caller" := {
-    Notations.double_colon := caller;
-  }.
+  Axiom caller_is_impl : impl Self "caller" = caller.
   
   (*
       fn emit_event(&self, _event: Event) {
@@ -465,10 +429,7 @@ Section Impl_dns_Env_t.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_emit_event :
-    Notations.DoubleColon Self "emit_event" := {
-    Notations.double_colon := emit_event;
-  }.
+  Axiom emit_event_is_impl : impl Self "emit_event" = emit_event.
 End Impl_dns_Env_t.
 End Impl_dns_Env_t.
 
@@ -530,7 +491,7 @@ Section Impl_core_default_Default_for_dns_DomainNameService_t.
   Definition default : M Self :=
     let* name_to_address : M.Val (dns.Mapping.t (array u8.t) dns.AccountId.t) :=
       let* α0 : dns.Mapping.t (array u8.t) dns.AccountId.t :=
-        M.call (dns.Mapping.t (array u8.t) dns.AccountId.t)::["new"] in
+        M.call (impl (dns.Mapping.t (array u8.t) dns.AccountId.t) "new") in
       M.alloc α0 in
     let* _ : M.Val (core.option.Option.t u32.t) :=
       let* α0 : _ :=
@@ -540,14 +501,14 @@ Section Impl_core_default_Default_for_dns_DomainNameService_t.
       let* α2 : dns.AccountId.t := M.call dns.zero_address in
       let* α3 : core.option.Option.t u32.t :=
         M.call
-          ((dns.Mapping.t (array u8.t) dns.AccountId.t)::["insert"]
+          (impl (dns.Mapping.t (array u8.t) dns.AccountId.t) "insert"
             (borrow_mut name_to_address)
             α1
             α2) in
       M.alloc α3 in
     let* name_to_owner : M.Val (dns.Mapping.t (array u8.t) dns.AccountId.t) :=
       let* α0 : dns.Mapping.t (array u8.t) dns.AccountId.t :=
-        M.call (dns.Mapping.t (array u8.t) dns.AccountId.t)::["new"] in
+        M.call (impl (dns.Mapping.t (array u8.t) dns.AccountId.t) "new") in
       M.alloc α0 in
     let* _ : M.Val (core.option.Option.t u32.t) :=
       let* α0 : _ :=
@@ -557,7 +518,7 @@ Section Impl_core_default_Default_for_dns_DomainNameService_t.
       let* α2 : dns.AccountId.t := M.call dns.zero_address in
       let* α3 : core.option.Option.t u32.t :=
         M.call
-          ((dns.Mapping.t (array u8.t) dns.AccountId.t)::["insert"]
+          (impl (dns.Mapping.t (array u8.t) dns.AccountId.t) "insert"
             (borrow_mut name_to_owner)
             α1
             α2) in
@@ -576,10 +537,7 @@ Section Impl_core_default_Default_for_dns_DomainNameService_t.
         |} in
     M.read α0.
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -625,9 +583,7 @@ Section Impl_core_cmp_PartialEq_for_dns_Error_t.
     let* α0 : M.Val bool.t := M.alloc (BinOp.Pure.eq α0 α1) in
     M.read α0.
   
-  Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
-    Notations.double_colon := eq;
-  }.
+  Axiom eq_is_impl : impl Self "eq" = eq.
   
   Global Instance ℐ :
     core.cmp.PartialEq.Required.Trait Self
@@ -658,10 +614,8 @@ Section Impl_core_cmp_Eq_for_dns_Error_t.
     let* self := M.alloc self in
     M.pure tt.
   
-  Global Instance AssociatedFunction_assert_receiver_is_total_eq :
-    Notations.DoubleColon Self "assert_receiver_is_total_eq" := {
-    Notations.double_colon := assert_receiver_is_total_eq;
-  }.
+  Axiom assert_receiver_is_total_eq_is_impl :
+      impl Self "assert_receiver_is_total_eq" = assert_receiver_is_total_eq.
   
   Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
     core.cmp.Eq.assert_receiver_is_total_eq :=
@@ -686,10 +640,7 @@ Section Impl_dns_DomainNameService_t.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_init_env :
-    Notations.DoubleColon Self "init_env" := {
-    Notations.double_colon := init_env;
-  }.
+  Axiom init_env_is_impl : impl Self "init_env" = init_env.
   
   (*
       fn env(&self) -> Env {
@@ -698,11 +649,9 @@ Section Impl_dns_DomainNameService_t.
   *)
   Definition env (self : ref Self) : M dns.Env.t :=
     let* self := M.alloc self in
-    M.call dns.DomainNameService.t::["init_env"].
+    M.call (impl dns.DomainNameService.t "init_env").
   
-  Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
-    Notations.double_colon := env;
-  }.
+  Axiom env_is_impl : impl Self "env" = env.
   
   (*
       pub fn new() -> Self {
@@ -717,9 +666,7 @@ Section Impl_dns_DomainNameService_t.
           (Trait := ℐ))) in
     M.call α0.
   
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
-    Notations.double_colon := new;
-  }.
+  Axiom new_is_impl : impl Self "new" = new.
   
   (*
       pub fn register(&mut self, name: Hash) -> Result<()> {
@@ -746,16 +693,16 @@ Section Impl_dns_DomainNameService_t.
       (let* caller : M.Val dns.AccountId.t :=
         let* α0 : mut_ref dns.DomainNameService.t := M.read self in
         let* α1 : dns.Env.t :=
-          M.call (dns.DomainNameService.t::["env"] (borrow (deref α0))) in
+          M.call (impl dns.DomainNameService.t "env" (borrow (deref α0))) in
         let* α2 : M.Val dns.Env.t := M.alloc α1 in
         let* α3 : dns.AccountId.t :=
-          M.call (dns.Env.t::["caller"] (borrow α2)) in
+          M.call (impl dns.Env.t "caller" (borrow α2)) in
         M.alloc α3 in
       let* _ : M.Val unit :=
         let* α0 : mut_ref dns.DomainNameService.t := M.read self in
         let* α1 : bool.t :=
           M.call
-            ((dns.Mapping.t (array u8.t) dns.AccountId.t)::["contains"]
+            (impl (dns.Mapping.t (array u8.t) dns.AccountId.t) "contains"
               (borrow (dns.DomainNameService.Get_name_to_owner (deref α0)))
               (borrow name)) in
         let* α2 : M.Val bool.t := M.alloc α1 in
@@ -774,7 +721,7 @@ Section Impl_dns_DomainNameService_t.
         let* α2 : dns.AccountId.t := M.read caller in
         let* α3 : core.option.Option.t u32.t :=
           M.call
-            ((dns.Mapping.t (array u8.t) dns.AccountId.t)::["insert"]
+            (impl (dns.Mapping.t (array u8.t) dns.AccountId.t) "insert"
               (borrow_mut (dns.DomainNameService.Get_name_to_owner (deref α0)))
               α1
               α2) in
@@ -782,13 +729,13 @@ Section Impl_dns_DomainNameService_t.
       let* _ : M.Val unit :=
         let* α0 : mut_ref dns.DomainNameService.t := M.read self in
         let* α1 : dns.Env.t :=
-          M.call (dns.DomainNameService.t::["env"] (borrow (deref α0))) in
+          M.call (impl dns.DomainNameService.t "env" (borrow (deref α0))) in
         let* α2 : M.Val dns.Env.t := M.alloc α1 in
         let* α3 : array u8.t := M.read name in
         let* α4 : dns.AccountId.t := M.read caller in
         let* α5 : unit :=
           M.call
-            (dns.Env.t::["emit_event"]
+            (impl dns.Env.t "emit_event"
               (borrow α2)
               (dns.Event.Register
                 {| dns.Register.name := α3; dns.Register.from := α4; |})) in
@@ -797,10 +744,7 @@ Section Impl_dns_DomainNameService_t.
         M.alloc (core.result.Result.Ok tt) in
       M.read α0).
   
-  Global Instance AssociatedFunction_register :
-    Notations.DoubleColon Self "register" := {
-    Notations.double_colon := register;
-  }.
+  Axiom register_is_impl : impl Self "register" = register.
   
   (*
       fn get_owner_or_default(&self, name: Hash) -> AccountId {
@@ -818,18 +762,16 @@ Section Impl_dns_DomainNameService_t.
     let* α0 : ref dns.DomainNameService.t := M.read self in
     let* α1 : core.option.Option.t dns.AccountId.t :=
       M.call
-        ((dns.Mapping.t (array u8.t) dns.AccountId.t)::["get"]
+        (impl (dns.Mapping.t (array u8.t) dns.AccountId.t) "get"
           (borrow (dns.DomainNameService.Get_name_to_owner (deref α0)))
           (borrow name)) in
     let* α2 : ref dns.DomainNameService.t := M.read self in
     let* α3 : dns.AccountId.t :=
       M.read (dns.DomainNameService.Get_default_address (deref α2)) in
-    M.call ((core.option.Option.t dns.AccountId.t)::["unwrap_or"] α1 α3).
+    M.call (impl (core.option.Option.t dns.AccountId.t) "unwrap_or" α1 α3).
   
-  Global Instance AssociatedFunction_get_owner_or_default :
-    Notations.DoubleColon Self "get_owner_or_default" := {
-    Notations.double_colon := get_owner_or_default;
-  }.
+  Axiom get_owner_or_default_is_impl :
+      impl Self "get_owner_or_default" = get_owner_or_default.
   
   (*
       pub fn set_address(&mut self, name: Hash, new_address: AccountId) -> Result<()> {
@@ -864,17 +806,17 @@ Section Impl_dns_DomainNameService_t.
       (let* caller : M.Val dns.AccountId.t :=
         let* α0 : mut_ref dns.DomainNameService.t := M.read self in
         let* α1 : dns.Env.t :=
-          M.call (dns.DomainNameService.t::["env"] (borrow (deref α0))) in
+          M.call (impl dns.DomainNameService.t "env" (borrow (deref α0))) in
         let* α2 : M.Val dns.Env.t := M.alloc α1 in
         let* α3 : dns.AccountId.t :=
-          M.call (dns.Env.t::["caller"] (borrow α2)) in
+          M.call (impl dns.Env.t "caller" (borrow α2)) in
         M.alloc α3 in
       let* owner : M.Val dns.AccountId.t :=
         let* α0 : mut_ref dns.DomainNameService.t := M.read self in
         let* α1 : array u8.t := M.read name in
         let* α2 : dns.AccountId.t :=
           M.call
-            (dns.DomainNameService.t::["get_owner_or_default"]
+            (impl dns.DomainNameService.t "get_owner_or_default"
               (borrow (deref α0))
               α1) in
         M.alloc α2 in
@@ -900,7 +842,7 @@ Section Impl_dns_DomainNameService_t.
         let* α0 : mut_ref dns.DomainNameService.t := M.read self in
         let* α1 : core.option.Option.t dns.AccountId.t :=
           M.call
-            ((dns.Mapping.t (array u8.t) dns.AccountId.t)::["get"]
+            (impl (dns.Mapping.t (array u8.t) dns.AccountId.t) "get"
               (borrow (dns.DomainNameService.Get_name_to_address (deref α0)))
               (borrow name)) in
         M.alloc α1 in
@@ -910,7 +852,7 @@ Section Impl_dns_DomainNameService_t.
         let* α2 : dns.AccountId.t := M.read new_address in
         let* α3 : core.option.Option.t u32.t :=
           M.call
-            ((dns.Mapping.t (array u8.t) dns.AccountId.t)::["insert"]
+            (impl (dns.Mapping.t (array u8.t) dns.AccountId.t) "insert"
               (borrow_mut
                 (dns.DomainNameService.Get_name_to_address (deref α0)))
               α1
@@ -919,7 +861,7 @@ Section Impl_dns_DomainNameService_t.
       let* _ : M.Val unit :=
         let* α0 : mut_ref dns.DomainNameService.t := M.read self in
         let* α1 : dns.Env.t :=
-          M.call (dns.DomainNameService.t::["env"] (borrow (deref α0))) in
+          M.call (impl dns.DomainNameService.t "env" (borrow (deref α0))) in
         let* α2 : M.Val dns.Env.t := M.alloc α1 in
         let* α3 : array u8.t := M.read name in
         let* α4 : dns.AccountId.t := M.read caller in
@@ -927,7 +869,7 @@ Section Impl_dns_DomainNameService_t.
         let* α6 : dns.AccountId.t := M.read new_address in
         let* α7 : unit :=
           M.call
-            (dns.Env.t::["emit_event"]
+            (impl dns.Env.t "emit_event"
               (borrow α2)
               (dns.Event.SetAddress
                 {|
@@ -941,10 +883,7 @@ Section Impl_dns_DomainNameService_t.
         M.alloc (core.result.Result.Ok tt) in
       M.read α0).
   
-  Global Instance AssociatedFunction_set_address :
-    Notations.DoubleColon Self "set_address" := {
-    Notations.double_colon := set_address;
-  }.
+  Axiom set_address_is_impl : impl Self "set_address" = set_address.
   
   (*
       pub fn transfer(&mut self, name: Hash, to: AccountId) -> Result<()> {
@@ -980,17 +919,17 @@ Section Impl_dns_DomainNameService_t.
       (let* caller : M.Val dns.AccountId.t :=
         let* α0 : mut_ref dns.DomainNameService.t := M.read self in
         let* α1 : dns.Env.t :=
-          M.call (dns.DomainNameService.t::["env"] (borrow (deref α0))) in
+          M.call (impl dns.DomainNameService.t "env" (borrow (deref α0))) in
         let* α2 : M.Val dns.Env.t := M.alloc α1 in
         let* α3 : dns.AccountId.t :=
-          M.call (dns.Env.t::["caller"] (borrow α2)) in
+          M.call (impl dns.Env.t "caller" (borrow α2)) in
         M.alloc α3 in
       let* owner : M.Val dns.AccountId.t :=
         let* α0 : mut_ref dns.DomainNameService.t := M.read self in
         let* α1 : array u8.t := M.read name in
         let* α2 : dns.AccountId.t :=
           M.call
-            (dns.DomainNameService.t::["get_owner_or_default"]
+            (impl dns.DomainNameService.t "get_owner_or_default"
               (borrow (deref α0))
               α1) in
         M.alloc α2 in
@@ -1016,7 +955,7 @@ Section Impl_dns_DomainNameService_t.
         let* α0 : mut_ref dns.DomainNameService.t := M.read self in
         let* α1 : core.option.Option.t dns.AccountId.t :=
           M.call
-            ((dns.Mapping.t (array u8.t) dns.AccountId.t)::["get"]
+            (impl (dns.Mapping.t (array u8.t) dns.AccountId.t) "get"
               (borrow (dns.DomainNameService.Get_name_to_owner (deref α0)))
               (borrow name)) in
         M.alloc α1 in
@@ -1026,7 +965,7 @@ Section Impl_dns_DomainNameService_t.
         let* α2 : dns.AccountId.t := M.read to in
         let* α3 : core.option.Option.t u32.t :=
           M.call
-            ((dns.Mapping.t (array u8.t) dns.AccountId.t)::["insert"]
+            (impl (dns.Mapping.t (array u8.t) dns.AccountId.t) "insert"
               (borrow_mut (dns.DomainNameService.Get_name_to_owner (deref α0)))
               α1
               α2) in
@@ -1034,7 +973,7 @@ Section Impl_dns_DomainNameService_t.
       let* _ : M.Val unit :=
         let* α0 : mut_ref dns.DomainNameService.t := M.read self in
         let* α1 : dns.Env.t :=
-          M.call (dns.DomainNameService.t::["env"] (borrow (deref α0))) in
+          M.call (impl dns.DomainNameService.t "env" (borrow (deref α0))) in
         let* α2 : M.Val dns.Env.t := M.alloc α1 in
         let* α3 : array u8.t := M.read name in
         let* α4 : dns.AccountId.t := M.read caller in
@@ -1042,7 +981,7 @@ Section Impl_dns_DomainNameService_t.
         let* α6 : dns.AccountId.t := M.read to in
         let* α7 : unit :=
           M.call
-            (dns.Env.t::["emit_event"]
+            (impl dns.Env.t "emit_event"
               (borrow α2)
               (dns.Event.Transfer
                 {|
@@ -1056,10 +995,7 @@ Section Impl_dns_DomainNameService_t.
         M.alloc (core.result.Result.Ok tt) in
       M.read α0).
   
-  Global Instance AssociatedFunction_transfer :
-    Notations.DoubleColon Self "transfer" := {
-    Notations.double_colon := transfer;
-  }.
+  Axiom transfer_is_impl : impl Self "transfer" = transfer.
   
   (*
       fn get_address_or_default(&self, name: Hash) -> AccountId {
@@ -1077,18 +1013,16 @@ Section Impl_dns_DomainNameService_t.
     let* α0 : ref dns.DomainNameService.t := M.read self in
     let* α1 : core.option.Option.t dns.AccountId.t :=
       M.call
-        ((dns.Mapping.t (array u8.t) dns.AccountId.t)::["get"]
+        (impl (dns.Mapping.t (array u8.t) dns.AccountId.t) "get"
           (borrow (dns.DomainNameService.Get_name_to_address (deref α0)))
           (borrow name)) in
     let* α2 : ref dns.DomainNameService.t := M.read self in
     let* α3 : dns.AccountId.t :=
       M.read (dns.DomainNameService.Get_default_address (deref α2)) in
-    M.call ((core.option.Option.t dns.AccountId.t)::["unwrap_or"] α1 α3).
+    M.call (impl (core.option.Option.t dns.AccountId.t) "unwrap_or" α1 α3).
   
-  Global Instance AssociatedFunction_get_address_or_default :
-    Notations.DoubleColon Self "get_address_or_default" := {
-    Notations.double_colon := get_address_or_default;
-  }.
+  Axiom get_address_or_default_is_impl :
+      impl Self "get_address_or_default" = get_address_or_default.
   
   (*
       pub fn get_address(&self, name: Hash) -> AccountId {
@@ -1103,12 +1037,9 @@ Section Impl_dns_DomainNameService_t.
     let* name := M.alloc name in
     let* α0 : ref dns.DomainNameService.t := M.read self in
     let* α1 : array u8.t := M.read name in
-    M.call (dns.DomainNameService.t::["get_address_or_default"] α0 α1).
+    M.call (impl dns.DomainNameService.t "get_address_or_default" α0 α1).
   
-  Global Instance AssociatedFunction_get_address :
-    Notations.DoubleColon Self "get_address" := {
-    Notations.double_colon := get_address;
-  }.
+  Axiom get_address_is_impl : impl Self "get_address" = get_address.
   
   (*
       pub fn get_owner(&self, name: Hash) -> AccountId {
@@ -1123,11 +1054,8 @@ Section Impl_dns_DomainNameService_t.
     let* name := M.alloc name in
     let* α0 : ref dns.DomainNameService.t := M.read self in
     let* α1 : array u8.t := M.read name in
-    M.call (dns.DomainNameService.t::["get_owner_or_default"] α0 α1).
+    M.call (impl dns.DomainNameService.t "get_owner_or_default" α0 α1).
   
-  Global Instance AssociatedFunction_get_owner :
-    Notations.DoubleColon Self "get_owner" := {
-    Notations.double_colon := get_owner;
-  }.
+  Axiom get_owner_is_impl : impl Self "get_owner" = get_owner.
 End Impl_dns_DomainNameService_t.
 End Impl_dns_DomainNameService_t.

@@ -23,9 +23,7 @@ Section Impl_incrementer_Incrementer_t.
   *)
   Parameter new : i32.t -> M Self.
   
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
-    Notations.double_colon := new;
-  }.
+  Axiom new_is_impl : impl Self "new" = new.
   
   (*
       pub fn new_default() -> Self {
@@ -34,10 +32,7 @@ Section Impl_incrementer_Incrementer_t.
   *)
   Parameter new_default : M Self.
   
-  Global Instance AssociatedFunction_new_default :
-    Notations.DoubleColon Self "new_default" := {
-    Notations.double_colon := new_default;
-  }.
+  Axiom new_default_is_impl : impl Self "new_default" = new_default.
   
   (*
       pub fn inc(&mut self, by: i32) {
@@ -46,9 +41,7 @@ Section Impl_incrementer_Incrementer_t.
   *)
   Parameter inc : (mut_ref Self) -> i32.t -> M unit.
   
-  Global Instance AssociatedFunction_inc : Notations.DoubleColon Self "inc" := {
-    Notations.double_colon := inc;
-  }.
+  Axiom inc_is_impl : impl Self "inc" = inc.
   
   (*
       pub fn get(&self) -> i32 {
@@ -57,8 +50,6 @@ Section Impl_incrementer_Incrementer_t.
   *)
   Parameter get : (ref Self) -> M i32.t.
   
-  Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
-    Notations.double_colon := get;
-  }.
+  Axiom get_is_impl : impl Self "get" = get.
 End Impl_incrementer_Incrementer_t.
 End Impl_incrementer_Incrementer_t.

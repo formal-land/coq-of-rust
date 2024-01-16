@@ -34,9 +34,7 @@ Section Impl_core_fmt_Debug_for_generics_bounds_Rectangle_t.
   Parameter fmt :
       (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
   
-  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
-    Notations.double_colon := fmt;
-  }.
+  Axiom fmt_is_impl : impl Self "fmt" = fmt.
   
   Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
@@ -70,10 +68,7 @@ Section Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle_t.
   *)
   Parameter area : (ref Self) -> M f64.t.
   
-  Global Instance AssociatedFunction_area :
-    Notations.DoubleColon Self "area" := {
-    Notations.double_colon := area;
-  }.
+  Axiom area_is_impl : impl Self "area" = area.
   
   Global Instance ℐ : generics_bounds.HasArea.Trait Self := {
     generics_bounds.HasArea.area := area;

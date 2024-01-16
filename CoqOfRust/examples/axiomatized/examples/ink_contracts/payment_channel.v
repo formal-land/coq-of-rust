@@ -21,10 +21,7 @@ Section Impl_core_default_Default_for_payment_channel_AccountId_t.
   *)
   Parameter default : M payment_channel.AccountId.t.
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -41,10 +38,7 @@ Section Impl_core_clone_Clone_for_payment_channel_AccountId_t.
   *)
   Parameter clone : (ref Self) -> M payment_channel.AccountId.t.
   
-  Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon Self "clone" := {
-    Notations.double_colon := clone;
-  }.
+  Axiom clone_is_impl : impl Self "clone" = clone.
   
   Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
@@ -80,9 +74,7 @@ Section Impl_core_cmp_PartialEq_for_payment_channel_AccountId_t.
   *)
   Parameter eq : (ref Self) -> (ref payment_channel.AccountId.t) -> M bool.t.
   
-  Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
-    Notations.double_colon := eq;
-  }.
+  Axiom eq_is_impl : impl Self "eq" = eq.
   
   Global Instance ℐ :
     core.cmp.PartialEq.Required.Trait Self
@@ -111,10 +103,8 @@ Section Impl_core_cmp_Eq_for_payment_channel_AccountId_t.
   *)
   Parameter assert_receiver_is_total_eq : (ref Self) -> M unit.
   
-  Global Instance AssociatedFunction_assert_receiver_is_total_eq :
-    Notations.DoubleColon Self "assert_receiver_is_total_eq" := {
-    Notations.double_colon := assert_receiver_is_total_eq;
-  }.
+  Axiom assert_receiver_is_total_eq_is_impl :
+      impl Self "assert_receiver_is_total_eq" = assert_receiver_is_total_eq.
   
   Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
     core.cmp.Eq.assert_receiver_is_total_eq :=
@@ -134,10 +124,7 @@ Section Impl_core_convert_From_array_u8_t_for_payment_channel_AccountId_t.
   *)
   Parameter from : (array u8.t) -> M Self.
   
-  Global Instance AssociatedFunction_from :
-    Notations.DoubleColon Self "from" := {
-    Notations.double_colon := from;
-  }.
+  Axiom from_is_impl : impl Self "from" = from.
   
   Global Instance ℐ : core.convert.From.Trait Self (T := array u8.t) := {
     core.convert.From.from := from;
@@ -219,9 +206,7 @@ Section Impl_core_cmp_PartialEq_for_payment_channel_Error_t.
   *)
   Parameter eq : (ref Self) -> (ref payment_channel.Error.t) -> M bool.t.
   
-  Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
-    Notations.double_colon := eq;
-  }.
+  Axiom eq_is_impl : impl Self "eq" = eq.
   
   Global Instance ℐ :
     core.cmp.PartialEq.Required.Trait Self
@@ -250,10 +235,8 @@ Section Impl_core_cmp_Eq_for_payment_channel_Error_t.
   *)
   Parameter assert_receiver_is_total_eq : (ref Self) -> M unit.
   
-  Global Instance AssociatedFunction_assert_receiver_is_total_eq :
-    Notations.DoubleColon Self "assert_receiver_is_total_eq" := {
-    Notations.double_colon := assert_receiver_is_total_eq;
-  }.
+  Axiom assert_receiver_is_total_eq_is_impl :
+      impl Self "assert_receiver_is_total_eq" = assert_receiver_is_total_eq.
   
   Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
     core.cmp.Eq.assert_receiver_is_total_eq :=
@@ -304,10 +287,7 @@ Section Impl_payment_channel_Env_t.
   *)
   Parameter caller : (ref Self) -> M payment_channel.AccountId.t.
   
-  Global Instance AssociatedFunction_caller :
-    Notations.DoubleColon Self "caller" := {
-    Notations.double_colon := caller;
-  }.
+  Axiom caller_is_impl : impl Self "caller" = caller.
   
   (*
       fn emit_event(&self, _event: Event) {
@@ -316,10 +296,7 @@ Section Impl_payment_channel_Env_t.
   *)
   Parameter emit_event : (ref Self) -> payment_channel.Event.t -> M unit.
   
-  Global Instance AssociatedFunction_emit_event :
-    Notations.DoubleColon Self "emit_event" := {
-    Notations.double_colon := emit_event;
-  }.
+  Axiom emit_event_is_impl : impl Self "emit_event" = emit_event.
   
   (*
       fn terminate_contract(&self, sender: AccountId) {
@@ -329,10 +306,8 @@ Section Impl_payment_channel_Env_t.
   Parameter terminate_contract :
       (ref Self) -> payment_channel.AccountId.t -> M unit.
   
-  Global Instance AssociatedFunction_terminate_contract :
-    Notations.DoubleColon Self "terminate_contract" := {
-    Notations.double_colon := terminate_contract;
-  }.
+  Axiom terminate_contract_is_impl :
+      impl Self "terminate_contract" = terminate_contract.
   
   (*
       fn transfer(&self, recipient: AccountId, amount: Balance) -> Result<()> {
@@ -345,10 +320,7 @@ Section Impl_payment_channel_Env_t.
         ltac:(payment_channel.Balance) ->
         M ltac:(payment_channel.Result unit).
   
-  Global Instance AssociatedFunction_transfer :
-    Notations.DoubleColon Self "transfer" := {
-    Notations.double_colon := transfer;
-  }.
+  Axiom transfer_is_impl : impl Self "transfer" = transfer.
   
   (*
       fn block_timestamp(&self) -> Timestamp {
@@ -357,10 +329,7 @@ Section Impl_payment_channel_Env_t.
   *)
   Parameter block_timestamp : (ref Self) -> M ltac:(payment_channel.Timestamp).
   
-  Global Instance AssociatedFunction_block_timestamp :
-    Notations.DoubleColon Self "block_timestamp" := {
-    Notations.double_colon := block_timestamp;
-  }.
+  Axiom block_timestamp_is_impl : impl Self "block_timestamp" = block_timestamp.
   
   (*
       fn balance(&self) -> Balance {
@@ -369,10 +338,7 @@ Section Impl_payment_channel_Env_t.
   *)
   Parameter balance : (ref Self) -> M ltac:(payment_channel.Balance).
   
-  Global Instance AssociatedFunction_balance :
-    Notations.DoubleColon Self "balance" := {
-    Notations.double_colon := balance;
-  }.
+  Axiom balance_is_impl : impl Self "balance" = balance.
   
   (*
       fn account_id(&self) -> AccountId {
@@ -381,10 +347,7 @@ Section Impl_payment_channel_Env_t.
   *)
   Parameter account_id : (ref Self) -> M payment_channel.AccountId.t.
   
-  Global Instance AssociatedFunction_account_id :
-    Notations.DoubleColon Self "account_id" := {
-    Notations.double_colon := account_id;
-  }.
+  Axiom account_id_is_impl : impl Self "account_id" = account_id.
 End Impl_payment_channel_Env_t.
 End Impl_payment_channel_Env_t.
 
@@ -550,10 +513,7 @@ Section Impl_payment_channel_CryptoHash_for_payment_channel_Sha2x256_t.
         ->
         M unit.
   
-  Global Instance AssociatedFunction_hash :
-    Notations.DoubleColon Self "hash" := {
-    Notations.double_colon := hash;
-  }.
+  Axiom hash_is_impl : impl Self "hash" = hash.
   
   Global Instance ℐ : payment_channel.CryptoHash.Trait Self := {
     payment_channel.CryptoHash.hash := hash;
@@ -579,10 +539,7 @@ Section Impl_payment_channel_CryptoHash_for_payment_channel_Keccak256_t.
         ->
         M unit.
   
-  Global Instance AssociatedFunction_hash :
-    Notations.DoubleColon Self "hash" := {
-    Notations.double_colon := hash;
-  }.
+  Axiom hash_is_impl : impl Self "hash" = hash.
   
   Global Instance ℐ : payment_channel.CryptoHash.Trait Self := {
     payment_channel.CryptoHash.hash := hash;
@@ -608,10 +565,7 @@ Section Impl_payment_channel_CryptoHash_for_payment_channel_Blake2x256_t.
         ->
         M unit.
   
-  Global Instance AssociatedFunction_hash :
-    Notations.DoubleColon Self "hash" := {
-    Notations.double_colon := hash;
-  }.
+  Axiom hash_is_impl : impl Self "hash" = hash.
   
   Global Instance ℐ : payment_channel.CryptoHash.Trait Self := {
     payment_channel.CryptoHash.hash := hash;
@@ -637,10 +591,7 @@ Section Impl_payment_channel_CryptoHash_for_payment_channel_Blake2x128_t.
         ->
         M unit.
   
-  Global Instance AssociatedFunction_hash :
-    Notations.DoubleColon Self "hash" := {
-    Notations.double_colon := hash;
-  }.
+  Axiom hash_is_impl : impl Self "hash" = hash.
   
   Global Instance ℐ : payment_channel.CryptoHash.Trait Self := {
     payment_channel.CryptoHash.hash := hash;
@@ -659,10 +610,7 @@ Section Impl_payment_channel_PaymentChannel_t.
   *)
   Parameter init_env : M payment_channel.Env.t.
   
-  Global Instance AssociatedFunction_init_env :
-    Notations.DoubleColon Self "init_env" := {
-    Notations.double_colon := init_env;
-  }.
+  Axiom init_env_is_impl : impl Self "init_env" = init_env.
   
   (*
       fn env(&self) -> Env {
@@ -671,9 +619,7 @@ Section Impl_payment_channel_PaymentChannel_t.
   *)
   Parameter env : (ref Self) -> M payment_channel.Env.t.
   
-  Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
-    Notations.double_colon := env;
-  }.
+  Axiom env_is_impl : impl Self "env" = env.
   
   (*
       fn is_signature_valid(&self, amount: Balance, signature: [u8; 65]) -> bool {
@@ -693,10 +639,8 @@ Section Impl_payment_channel_PaymentChannel_t.
   Parameter is_signature_valid :
       (ref Self) -> ltac:(payment_channel.Balance) -> (array u8.t) -> M bool.t.
   
-  Global Instance AssociatedFunction_is_signature_valid :
-    Notations.DoubleColon Self "is_signature_valid" := {
-    Notations.double_colon := is_signature_valid;
-  }.
+  Axiom is_signature_valid_is_impl :
+      impl Self "is_signature_valid" = is_signature_valid.
   
   (*
       pub fn new(recipient: AccountId, close_duration: Timestamp) -> Self {
@@ -712,9 +656,7 @@ Section Impl_payment_channel_PaymentChannel_t.
   Parameter new :
       payment_channel.AccountId.t -> ltac:(payment_channel.Timestamp) -> M Self.
   
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
-    Notations.double_colon := new;
-  }.
+  Axiom new_is_impl : impl Self "new" = new.
   
   (*
       fn close_inner(&mut self, amount: Balance, signature: [u8; 65]) -> Result<()> {
@@ -744,10 +686,7 @@ Section Impl_payment_channel_PaymentChannel_t.
         (array u8.t) ->
         M ltac:(payment_channel.Result unit).
   
-  Global Instance AssociatedFunction_close_inner :
-    Notations.DoubleColon Self "close_inner" := {
-    Notations.double_colon := close_inner;
-  }.
+  Axiom close_inner_is_impl : impl Self "close_inner" = close_inner.
   
   (*
       pub fn close(&mut self, amount: Balance, signature: [u8; 65]) -> Result<()> {
@@ -763,10 +702,7 @@ Section Impl_payment_channel_PaymentChannel_t.
         (array u8.t) ->
         M ltac:(payment_channel.Result unit).
   
-  Global Instance AssociatedFunction_close :
-    Notations.DoubleColon Self "close" := {
-    Notations.double_colon := close;
-  }.
+  Axiom close_is_impl : impl Self "close" = close.
   
   (*
       pub fn start_sender_close(&mut self) -> Result<()> {
@@ -791,10 +727,8 @@ Section Impl_payment_channel_PaymentChannel_t.
   Parameter start_sender_close :
       (mut_ref Self) -> M ltac:(payment_channel.Result unit).
   
-  Global Instance AssociatedFunction_start_sender_close :
-    Notations.DoubleColon Self "start_sender_close" := {
-    Notations.double_colon := start_sender_close;
-  }.
+  Axiom start_sender_close_is_impl :
+      impl Self "start_sender_close" = start_sender_close.
   
   (*
       pub fn claim_timeout(&mut self) -> Result<()> {
@@ -819,10 +753,7 @@ Section Impl_payment_channel_PaymentChannel_t.
   Parameter claim_timeout :
       (mut_ref Self) -> M ltac:(payment_channel.Result unit).
   
-  Global Instance AssociatedFunction_claim_timeout :
-    Notations.DoubleColon Self "claim_timeout" := {
-    Notations.double_colon := claim_timeout;
-  }.
+  Axiom claim_timeout_is_impl : impl Self "claim_timeout" = claim_timeout.
   
   (*
       pub fn withdraw(&mut self, amount: Balance, signature: [u8; 65]) -> Result<()> {
@@ -856,10 +787,7 @@ Section Impl_payment_channel_PaymentChannel_t.
         (array u8.t) ->
         M ltac:(payment_channel.Result unit).
   
-  Global Instance AssociatedFunction_withdraw :
-    Notations.DoubleColon Self "withdraw" := {
-    Notations.double_colon := withdraw;
-  }.
+  Axiom withdraw_is_impl : impl Self "withdraw" = withdraw.
   
   (*
       pub fn get_sender(&self) -> AccountId {
@@ -868,10 +796,7 @@ Section Impl_payment_channel_PaymentChannel_t.
   *)
   Parameter get_sender : (ref Self) -> M payment_channel.AccountId.t.
   
-  Global Instance AssociatedFunction_get_sender :
-    Notations.DoubleColon Self "get_sender" := {
-    Notations.double_colon := get_sender;
-  }.
+  Axiom get_sender_is_impl : impl Self "get_sender" = get_sender.
   
   (*
       pub fn get_recipient(&self) -> AccountId {
@@ -880,10 +805,7 @@ Section Impl_payment_channel_PaymentChannel_t.
   *)
   Parameter get_recipient : (ref Self) -> M payment_channel.AccountId.t.
   
-  Global Instance AssociatedFunction_get_recipient :
-    Notations.DoubleColon Self "get_recipient" := {
-    Notations.double_colon := get_recipient;
-  }.
+  Axiom get_recipient_is_impl : impl Self "get_recipient" = get_recipient.
   
   (*
       pub fn get_expiration(&self) -> Option<Timestamp> {
@@ -893,10 +815,7 @@ Section Impl_payment_channel_PaymentChannel_t.
   Parameter get_expiration :
       (ref Self) -> M (core.option.Option.t ltac:(payment_channel.Timestamp)).
   
-  Global Instance AssociatedFunction_get_expiration :
-    Notations.DoubleColon Self "get_expiration" := {
-    Notations.double_colon := get_expiration;
-  }.
+  Axiom get_expiration_is_impl : impl Self "get_expiration" = get_expiration.
   
   (*
       pub fn get_withdrawn(&self) -> Balance {
@@ -905,10 +824,7 @@ Section Impl_payment_channel_PaymentChannel_t.
   *)
   Parameter get_withdrawn : (ref Self) -> M ltac:(payment_channel.Balance).
   
-  Global Instance AssociatedFunction_get_withdrawn :
-    Notations.DoubleColon Self "get_withdrawn" := {
-    Notations.double_colon := get_withdrawn;
-  }.
+  Axiom get_withdrawn_is_impl : impl Self "get_withdrawn" = get_withdrawn.
   
   (*
       pub fn get_close_duration(&self) -> Timestamp {
@@ -918,10 +834,8 @@ Section Impl_payment_channel_PaymentChannel_t.
   Parameter get_close_duration :
       (ref Self) -> M ltac:(payment_channel.Timestamp).
   
-  Global Instance AssociatedFunction_get_close_duration :
-    Notations.DoubleColon Self "get_close_duration" := {
-    Notations.double_colon := get_close_duration;
-  }.
+  Axiom get_close_duration_is_impl :
+      impl Self "get_close_duration" = get_close_duration.
   
   (*
       pub fn get_balance(&self) -> Balance {
@@ -930,9 +844,6 @@ Section Impl_payment_channel_PaymentChannel_t.
   *)
   Parameter get_balance : (ref Self) -> M ltac:(payment_channel.Balance).
   
-  Global Instance AssociatedFunction_get_balance :
-    Notations.DoubleColon Self "get_balance" := {
-    Notations.double_colon := get_balance;
-  }.
+  Axiom get_balance_is_impl : impl Self "get_balance" = get_balance.
 End Impl_payment_channel_PaymentChannel_t.
 End Impl_payment_channel_PaymentChannel_t.

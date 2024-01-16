@@ -41,10 +41,7 @@ Section Impl_generics_implementation_Val_t.
     let* α0 : ref generics_implementation.Val.t := M.read self in
     M.pure (borrow (generics_implementation.Val.Get_val (deref α0))).
   
-  Global Instance AssociatedFunction_value :
-    Notations.DoubleColon Self "value" := {
-    Notations.double_colon := value;
-  }.
+  Axiom value_is_impl : impl Self "value" = value.
 End Impl_generics_implementation_Val_t.
 End Impl_generics_implementation_Val_t.
 
@@ -64,10 +61,7 @@ Section Impl_generics_implementation_GenVal_t_T.
     let* α0 : ref (generics_implementation.GenVal.t T) := M.read self in
     M.pure (borrow (generics_implementation.GenVal.Get_gen_val (deref α0))).
   
-  Global Instance AssociatedFunction_value :
-    Notations.DoubleColon Self "value" := {
-    Notations.double_colon := value;
-  }.
+  Axiom value_is_impl : impl Self "value" = value.
 End Impl_generics_implementation_GenVal_t_T.
 End Impl_generics_implementation_GenVal_t_T.
 
@@ -99,23 +93,23 @@ Definition main : M unit :=
       let* α5 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α4) in
       let* α6 : ref f64.t :=
-        M.call (generics_implementation.Val.t::["value"] (borrow x)) in
+        M.call (impl generics_implementation.Val.t "value" (borrow x)) in
       let* α7 : M.Val (ref f64.t) := M.alloc α6 in
       let* α8 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α7)) in
+        M.call (impl core.fmt.rt.Argument.t "new_display" (borrow α7)) in
       let* α9 : ref i32.t :=
         M.call
-          ((generics_implementation.GenVal.t i32.t)::["value"] (borrow y)) in
+          (impl (generics_implementation.GenVal.t i32.t) "value" (borrow y)) in
       let* α10 : M.Val (ref i32.t) := M.alloc α9 in
       let* α11 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α10)) in
+        M.call (impl core.fmt.rt.Argument.t "new_display" (borrow α10)) in
       let* α12 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α8; α11 ] in
       let* α13 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
         M.alloc (borrow α12) in
       let* α14 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α13) in
       let* α15 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_v1"] α5 α14) in
+        M.call (impl core.fmt.Arguments.t "new_v1" α5 α14) in
       let* α16 : unit := M.call (std.io.stdio._print α15) in
       M.alloc α16 in
     M.alloc tt in

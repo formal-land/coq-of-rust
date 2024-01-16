@@ -74,7 +74,7 @@ Definition main : M unit :=
     let* α4 : alloc.boxed.Box.t (slice i32.t) alloc.alloc.Global.t :=
       M.read (pointer_coercion "Unsize" α3) in
     let* α5 : alloc.vec.Vec.t i32.t alloc.alloc.Global.t :=
-      M.call ((slice i32.t)::["into_vec"] α4) in
+      M.call (impl (slice i32.t) "into_vec" α4) in
     let* α6 : alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t :=
       M.call (α1 α5) in
     let* α7 :
@@ -114,7 +114,7 @@ Definition main : M unit :=
     let* α4 : alloc.boxed.Box.t (slice i32.t) alloc.alloc.Global.t :=
       M.read (pointer_coercion "Unsize" α3) in
     let* α5 : alloc.vec.Vec.t i32.t alloc.alloc.Global.t :=
-      M.call ((slice i32.t)::["into_vec"] α4) in
+      M.call (impl (slice i32.t) "into_vec" α4) in
     let* α6 : alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t :=
       M.call (α1 α5) in
     let* α7 :
@@ -126,9 +126,11 @@ Definition main : M unit :=
   let* _ : M.Val unit :=
     let* α0 : bool.t :=
       M.call
-        ((std.collections.hash.set.HashSet.t
+        (impl
+            (std.collections.hash.set.HashSet.t
               i32.t
-              std.hash.random.RandomState.t)::["insert"]
+              std.hash.random.RandomState.t)
+            "insert"
           (borrow_mut a)
           ((Integer.of_Z 4) : i32.t)) in
     let* α1 : M.Val bool.t := M.alloc (UnOp.not α0) in
@@ -144,9 +146,11 @@ Definition main : M unit :=
     let* α0 : M.Val i32.t := M.alloc ((Integer.of_Z 4) : i32.t) in
     let* α1 : bool.t :=
       M.call
-        ((std.collections.hash.set.HashSet.t
+        (impl
+            (std.collections.hash.set.HashSet.t
               i32.t
-              std.hash.random.RandomState.t)::["contains"]
+              std.hash.random.RandomState.t)
+            "contains"
           (borrow a)
           (borrow α0)) in
     let* α2 : M.Val bool.t := M.alloc (UnOp.not α1) in
@@ -162,9 +166,11 @@ Definition main : M unit :=
   let* _ : M.Val bool.t :=
     let* α0 : bool.t :=
       M.call
-        ((std.collections.hash.set.HashSet.t
+        (impl
+            (std.collections.hash.set.HashSet.t
               i32.t
-              std.hash.random.RandomState.t)::["insert"]
+              std.hash.random.RandomState.t)
+            "insert"
           (borrow_mut b)
           ((Integer.of_Z 5) : i32.t)) in
     M.alloc α0 in
@@ -178,14 +184,14 @@ Definition main : M unit :=
       let* α4 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α3) in
       let* α5 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow a)) in
+        M.call (impl core.fmt.rt.Argument.t "new_debug" (borrow a)) in
       let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
       let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
         M.alloc (borrow α6) in
       let* α8 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α7) in
       let* α9 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
+        M.call (impl core.fmt.Arguments.t "new_v1" α4 α8) in
       let* α10 : unit := M.call (std.io.stdio._print α9) in
       M.alloc α10 in
     M.alloc tt in
@@ -199,14 +205,14 @@ Definition main : M unit :=
       let* α4 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α3) in
       let* α5 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow b)) in
+        M.call (impl core.fmt.rt.Argument.t "new_debug" (borrow b)) in
       let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
       let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
         M.alloc (borrow α6) in
       let* α8 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α7) in
       let* α9 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
+        M.call (impl core.fmt.Arguments.t "new_v1" α4 α8) in
       let* α10 : unit := M.call (std.io.stdio._print α9) in
       M.alloc α10 in
     M.alloc tt in
@@ -233,9 +239,11 @@ Definition main : M unit :=
             i32.t
             std.hash.random.RandomState.t :=
         M.call
-          ((std.collections.hash.set.HashSet.t
+          (impl
+              (std.collections.hash.set.HashSet.t
                 i32.t
-                std.hash.random.RandomState.t)::["union"]
+                std.hash.random.RandomState.t)
+              "union"
             (borrow a)
             (borrow b)) in
       let* α7 : alloc.vec.Vec.t (ref i32.t) alloc.alloc.Global.t :=
@@ -243,14 +251,14 @@ Definition main : M unit :=
       let* α8 : M.Val (alloc.vec.Vec.t (ref i32.t) alloc.alloc.Global.t) :=
         M.alloc α7 in
       let* α9 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow α8)) in
+        M.call (impl core.fmt.rt.Argument.t "new_debug" (borrow α8)) in
       let* α10 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α9 ] in
       let* α11 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
         M.alloc (borrow α10) in
       let* α12 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α11) in
       let* α13 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_v1"] α4 α12) in
+        M.call (impl core.fmt.Arguments.t "new_v1" α4 α12) in
       let* α14 : unit := M.call (std.io.stdio._print α13) in
       M.alloc α14 in
     M.alloc tt in
@@ -277,9 +285,11 @@ Definition main : M unit :=
             i32.t
             std.hash.random.RandomState.t :=
         M.call
-          ((std.collections.hash.set.HashSet.t
+          (impl
+              (std.collections.hash.set.HashSet.t
                 i32.t
-                std.hash.random.RandomState.t)::["difference"]
+                std.hash.random.RandomState.t)
+              "difference"
             (borrow a)
             (borrow b)) in
       let* α7 : alloc.vec.Vec.t (ref i32.t) alloc.alloc.Global.t :=
@@ -287,14 +297,14 @@ Definition main : M unit :=
       let* α8 : M.Val (alloc.vec.Vec.t (ref i32.t) alloc.alloc.Global.t) :=
         M.alloc α7 in
       let* α9 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow α8)) in
+        M.call (impl core.fmt.rt.Argument.t "new_debug" (borrow α8)) in
       let* α10 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α9 ] in
       let* α11 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
         M.alloc (borrow α10) in
       let* α12 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α11) in
       let* α13 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_v1"] α4 α12) in
+        M.call (impl core.fmt.Arguments.t "new_v1" α4 α12) in
       let* α14 : unit := M.call (std.io.stdio._print α13) in
       M.alloc α14 in
     M.alloc tt in
@@ -321,9 +331,11 @@ Definition main : M unit :=
             i32.t
             std.hash.random.RandomState.t :=
         M.call
-          ((std.collections.hash.set.HashSet.t
+          (impl
+              (std.collections.hash.set.HashSet.t
                 i32.t
-                std.hash.random.RandomState.t)::["intersection"]
+                std.hash.random.RandomState.t)
+              "intersection"
             (borrow a)
             (borrow b)) in
       let* α7 : alloc.vec.Vec.t (ref i32.t) alloc.alloc.Global.t :=
@@ -331,14 +343,14 @@ Definition main : M unit :=
       let* α8 : M.Val (alloc.vec.Vec.t (ref i32.t) alloc.alloc.Global.t) :=
         M.alloc α7 in
       let* α9 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow α8)) in
+        M.call (impl core.fmt.rt.Argument.t "new_debug" (borrow α8)) in
       let* α10 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α9 ] in
       let* α11 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
         M.alloc (borrow α10) in
       let* α12 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α11) in
       let* α13 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_v1"] α4 α12) in
+        M.call (impl core.fmt.Arguments.t "new_v1" α4 α12) in
       let* α14 : unit := M.call (std.io.stdio._print α13) in
       M.alloc α14 in
     M.alloc tt in
@@ -365,9 +377,11 @@ Definition main : M unit :=
             i32.t
             std.hash.random.RandomState.t :=
         M.call
-          ((std.collections.hash.set.HashSet.t
+          (impl
+              (std.collections.hash.set.HashSet.t
                 i32.t
-                std.hash.random.RandomState.t)::["symmetric_difference"]
+                std.hash.random.RandomState.t)
+              "symmetric_difference"
             (borrow a)
             (borrow b)) in
       let* α7 : alloc.vec.Vec.t (ref i32.t) alloc.alloc.Global.t :=
@@ -375,14 +389,14 @@ Definition main : M unit :=
       let* α8 : M.Val (alloc.vec.Vec.t (ref i32.t) alloc.alloc.Global.t) :=
         M.alloc α7 in
       let* α9 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow α8)) in
+        M.call (impl core.fmt.rt.Argument.t "new_debug" (borrow α8)) in
       let* α10 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α9 ] in
       let* α11 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
         M.alloc (borrow α10) in
       let* α12 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α11) in
       let* α13 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_v1"] α4 α12) in
+        M.call (impl core.fmt.Arguments.t "new_v1" α4 α12) in
       let* α14 : unit := M.call (std.io.stdio._print α13) in
       M.alloc α14 in
     M.alloc tt in

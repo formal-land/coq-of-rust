@@ -26,9 +26,7 @@ Section Impl_flipper_Flipper_t.
     let* α0 : bool.t := M.read init_value in
     M.pure {| flipper.Flipper.value := α0; |}.
   
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
-    Notations.double_colon := new;
-  }.
+  Axiom new_is_impl : impl Self "new" = new.
   
   (*
       pub fn new_default() -> Self {
@@ -40,12 +38,9 @@ Section Impl_flipper_Flipper_t.
       ltac:(M.get_method (fun ℐ =>
         core.default.Default.default (Self := bool.t) (Trait := ℐ))) in
     let* α1 : bool.t := M.call α0 in
-    M.call (flipper.Flipper.t::["new"] α1).
+    M.call (impl flipper.Flipper.t "new" α1).
   
-  Global Instance AssociatedFunction_new_default :
-    Notations.DoubleColon Self "new_default" := {
-    Notations.double_colon := new_default;
-  }.
+  Axiom new_default_is_impl : impl Self "new_default" = new_default.
   
   (*
       pub fn flip(&mut self) {
@@ -62,10 +57,7 @@ Section Impl_flipper_Flipper_t.
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
-  Global Instance AssociatedFunction_flip :
-    Notations.DoubleColon Self "flip" := {
-    Notations.double_colon := flip;
-  }.
+  Axiom flip_is_impl : impl Self "flip" = flip.
   
   (*
       pub fn get(&self) -> bool {
@@ -77,8 +69,6 @@ Section Impl_flipper_Flipper_t.
     let* α0 : ref flipper.Flipper.t := M.read self in
     M.read (flipper.Flipper.Get_value (deref α0)).
   
-  Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
-    Notations.double_colon := get;
-  }.
+  Axiom get_is_impl : impl Self "get" = get.
 End Impl_flipper_Flipper_t.
 End Impl_flipper_Flipper_t.

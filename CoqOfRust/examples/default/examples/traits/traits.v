@@ -40,10 +40,7 @@ Section Impl_traits_Sheep_t.
     let* α0 : ref traits.Sheep.t := M.read self in
     M.read (traits.Sheep.Get_naked (deref α0)).
   
-  Global Instance AssociatedFunction_is_naked :
-    Notations.DoubleColon Self "is_naked" := {
-    Notations.double_colon := is_naked;
-  }.
+  Axiom is_naked_is_impl : impl Self "is_naked" = is_naked.
 End Impl_traits_Sheep_t.
 End Impl_traits_Sheep_t.
 
@@ -64,9 +61,7 @@ Section Impl_traits_Animal_for_traits_Sheep_t.
     let* α0 : ref str.t := M.read name in
     M.pure {| traits.Sheep.name := α0; traits.Sheep.naked := false; |}.
   
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
-    Notations.double_colon := new;
-  }.
+  Axiom new_is_impl : impl Self "new" = new.
   
   (*
       fn name(&self) -> &'static str {
@@ -78,10 +73,7 @@ Section Impl_traits_Animal_for_traits_Sheep_t.
     let* α0 : ref traits.Sheep.t := M.read self in
     M.read (traits.Sheep.Get_name (deref α0)).
   
-  Global Instance AssociatedFunction_name :
-    Notations.DoubleColon Self "name" := {
-    Notations.double_colon := name;
-  }.
+  Axiom name_is_impl : impl Self "name" = name.
   
   (*
       fn noise(&self) -> &'static str {
@@ -95,7 +87,7 @@ Section Impl_traits_Animal_for_traits_Sheep_t.
   Definition noise (self : ref Self) : M (ref str.t) :=
     let* self := M.alloc self in
     let* α0 : ref traits.Sheep.t := M.read self in
-    let* α1 : bool.t := M.call (traits.Sheep.t::["is_naked"] α0) in
+    let* α1 : bool.t := M.call (impl traits.Sheep.t "is_naked" α0) in
     let* α2 : M.Val bool.t := M.alloc α1 in
     let* α3 : bool.t := M.read (use α2) in
     let* α4 : M.Val (ref str.t) :=
@@ -105,10 +97,7 @@ Section Impl_traits_Animal_for_traits_Sheep_t.
         M.pure (mk_str "baaaaah!") in
     M.read α4.
   
-  Global Instance AssociatedFunction_noise :
-    Notations.DoubleColon Self "noise" := {
-    Notations.double_colon := noise;
-  }.
+  Axiom noise_is_impl : impl Self "noise" = noise.
   
   (*
       fn talk(&self) {
@@ -131,13 +120,13 @@ Section Impl_traits_Animal_for_traits_Sheep_t.
         let* α6 : ref traits.Sheep.t := M.read self in
         let* α7 : core.fmt.rt.Argument.t :=
           M.call
-            (core.fmt.rt.Argument.t::["new_display"]
+            (impl core.fmt.rt.Argument.t "new_display"
               (borrow (traits.Sheep.Get_name (deref α6)))) in
         let* α8 : ref traits.Sheep.t := M.read self in
         let* α9 : ref str.t := M.call (noise α8) in
         let* α10 : M.Val (ref str.t) := M.alloc α9 in
         let* α11 : core.fmt.rt.Argument.t :=
-          M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α10)) in
+          M.call (impl core.fmt.rt.Argument.t "new_display" (borrow α10)) in
         let* α12 : M.Val (array core.fmt.rt.Argument.t) :=
           M.alloc [ α7; α11 ] in
         let* α13 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -145,17 +134,14 @@ Section Impl_traits_Animal_for_traits_Sheep_t.
         let* α14 : ref (slice core.fmt.rt.Argument.t) :=
           M.read (pointer_coercion "Unsize" α13) in
         let* α15 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_v1"] α5 α14) in
+          M.call (impl core.fmt.Arguments.t "new_v1" α5 α14) in
         let* α16 : unit := M.call (std.io.stdio._print α15) in
         M.alloc α16 in
       M.alloc tt in
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
-  Global Instance AssociatedFunction_talk :
-    Notations.DoubleColon Self "talk" := {
-    Notations.double_colon := talk;
-  }.
+  Axiom talk_is_impl : impl Self "talk" = talk.
   
   Global Instance ℐ : traits.Animal.Required.Trait Self := {
     traits.Animal.new := new;
@@ -186,7 +172,7 @@ Section Impl_traits_Sheep_t_2.
     let* self := M.alloc self in
     let* α0 : mut_ref traits.Sheep.t := M.read self in
     let* α1 : bool.t :=
-      M.call (traits.Sheep.t::["is_naked"] (borrow (deref α0))) in
+      M.call (impl traits.Sheep.t "is_naked" (borrow (deref α0))) in
     let* α2 : M.Val bool.t := M.alloc α1 in
     let* α3 : bool.t := M.read (use α2) in
     let* α4 : M.Val unit :=
@@ -207,14 +193,14 @@ Section Impl_traits_Sheep_t_2.
             let* α7 : ref str.t := M.call (α5 (borrow (deref α6))) in
             let* α8 : M.Val (ref str.t) := M.alloc α7 in
             let* α9 : core.fmt.rt.Argument.t :=
-              M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α8)) in
+              M.call (impl core.fmt.rt.Argument.t "new_display" (borrow α8)) in
             let* α10 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α9 ] in
             let* α11 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
               M.alloc (borrow α10) in
             let* α12 : ref (slice core.fmt.rt.Argument.t) :=
               M.read (pointer_coercion "Unsize" α11) in
             let* α13 : core.fmt.Arguments.t :=
-              M.call (core.fmt.Arguments.t::["new_v1"] α4 α12) in
+              M.call (impl core.fmt.Arguments.t "new_v1" α4 α12) in
             let* α14 : unit := M.call (std.io.stdio._print α13) in
             M.alloc α14 in
           M.alloc tt in
@@ -232,7 +218,7 @@ Section Impl_traits_Sheep_t_2.
             let* α5 : mut_ref traits.Sheep.t := M.read self in
             let* α6 : core.fmt.rt.Argument.t :=
               M.call
-                (core.fmt.rt.Argument.t::["new_display"]
+                (impl core.fmt.rt.Argument.t "new_display"
                   (borrow (traits.Sheep.Get_name (deref α5)))) in
             let* α7 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α6 ] in
             let* α8 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -240,7 +226,7 @@ Section Impl_traits_Sheep_t_2.
             let* α9 : ref (slice core.fmt.rt.Argument.t) :=
               M.read (pointer_coercion "Unsize" α8) in
             let* α10 : core.fmt.Arguments.t :=
-              M.call (core.fmt.Arguments.t::["new_v1"] α4 α9) in
+              M.call (impl core.fmt.Arguments.t "new_v1" α4 α9) in
             let* α11 : unit := M.call (std.io.stdio._print α10) in
             M.alloc α11 in
           M.alloc tt in
@@ -250,10 +236,7 @@ Section Impl_traits_Sheep_t_2.
         M.alloc tt in
     M.read α4.
   
-  Global Instance AssociatedFunction_shear :
-    Notations.DoubleColon Self "shear" := {
-    Notations.double_colon := shear;
-  }.
+  Axiom shear_is_impl : impl Self "shear" = shear.
 End Impl_traits_Sheep_t_2.
 End Impl_traits_Sheep_t_2.
 
@@ -284,7 +267,7 @@ Definition main : M unit :=
     let* α1 : unit := M.call (α0 (borrow dolly)) in
     M.alloc α1 in
   let* _ : M.Val unit :=
-    let* α0 : unit := M.call (traits.Sheep.t::["shear"] (borrow_mut dolly)) in
+    let* α0 : unit := M.call (impl traits.Sheep.t "shear" (borrow_mut dolly)) in
     M.alloc α0 in
   let* _ : M.Val unit :=
     let* α0 : _ :=

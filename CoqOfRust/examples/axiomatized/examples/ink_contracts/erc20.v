@@ -32,10 +32,7 @@ Section Impl_core_default_Default_for_erc20_Mapping_t_K_V.
   *)
   Parameter default : M (erc20.Mapping.t K V).
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -56,9 +53,7 @@ Section Impl_erc20_Mapping_t_K_V.
   *)
   Parameter get : (ref Self) -> (ref K) -> M (core.option.Option.t V).
   
-  Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
-    Notations.double_colon := get;
-  }.
+  Axiom get_is_impl : impl Self "get" = get.
   
   (*
       fn insert(&mut self, _key: K, _value: V) {
@@ -67,10 +62,7 @@ Section Impl_erc20_Mapping_t_K_V.
   *)
   Parameter insert : (mut_ref Self) -> K -> V -> M unit.
   
-  Global Instance AssociatedFunction_insert :
-    Notations.DoubleColon Self "insert" := {
-    Notations.double_colon := insert;
-  }.
+  Axiom insert_is_impl : impl Self "insert" = insert.
 End Impl_erc20_Mapping_t_K_V.
 End Impl_erc20_Mapping_t_K_V.
 
@@ -94,10 +86,7 @@ Section Impl_core_default_Default_for_erc20_AccountId_t.
   *)
   Parameter default : M erc20.AccountId.t.
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -114,10 +103,7 @@ Section Impl_core_clone_Clone_for_erc20_AccountId_t.
   *)
   Parameter clone : (ref Self) -> M erc20.AccountId.t.
   
-  Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon Self "clone" := {
-    Notations.double_colon := clone;
-  }.
+  Axiom clone_is_impl : impl Self "clone" = clone.
   
   Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
@@ -183,10 +169,7 @@ Section Impl_core_default_Default_for_erc20_Erc20_t.
   *)
   Parameter default : M erc20.Erc20.t.
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -267,10 +250,7 @@ Section Impl_erc20_Env_t.
   *)
   Parameter caller : (ref Self) -> M erc20.AccountId.t.
   
-  Global Instance AssociatedFunction_caller :
-    Notations.DoubleColon Self "caller" := {
-    Notations.double_colon := caller;
-  }.
+  Axiom caller_is_impl : impl Self "caller" = caller.
   
   (*
       fn emit_event(&self, _event: Event) {
@@ -279,10 +259,7 @@ Section Impl_erc20_Env_t.
   *)
   Parameter emit_event : (ref Self) -> erc20.Event.t -> M unit.
   
-  Global Instance AssociatedFunction_emit_event :
-    Notations.DoubleColon Self "emit_event" := {
-    Notations.double_colon := emit_event;
-  }.
+  Axiom emit_event_is_impl : impl Self "emit_event" = emit_event.
 End Impl_erc20_Env_t.
 End Impl_erc20_Env_t.
 
@@ -297,10 +274,7 @@ Section Impl_erc20_Erc20_t.
   *)
   Parameter init_env : M erc20.Env.t.
   
-  Global Instance AssociatedFunction_init_env :
-    Notations.DoubleColon Self "init_env" := {
-    Notations.double_colon := init_env;
-  }.
+  Axiom init_env_is_impl : impl Self "init_env" = init_env.
   
   (*
       fn env(&self) -> Env {
@@ -309,9 +283,7 @@ Section Impl_erc20_Erc20_t.
   *)
   Parameter env : (ref Self) -> M erc20.Env.t.
   
-  Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
-    Notations.double_colon := env;
-  }.
+  Axiom env_is_impl : impl Self "env" = env.
 End Impl_erc20_Erc20_t.
 End Impl_erc20_Erc20_t.
 
@@ -338,9 +310,7 @@ Section Impl_erc20_Erc20_t_2.
   *)
   Parameter new : ltac:(erc20.Balance) -> M Self.
   
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
-    Notations.double_colon := new;
-  }.
+  Axiom new_is_impl : impl Self "new" = new.
   
   (*
       fn total_supply(&self) -> Balance {
@@ -349,10 +319,7 @@ Section Impl_erc20_Erc20_t_2.
   *)
   Parameter total_supply : (ref Self) -> M ltac:(erc20.Balance).
   
-  Global Instance AssociatedFunction_total_supply :
-    Notations.DoubleColon Self "total_supply" := {
-    Notations.double_colon := total_supply;
-  }.
+  Axiom total_supply_is_impl : impl Self "total_supply" = total_supply.
   
   (*
       fn balance_of_impl(&self, owner: &AccountId) -> Balance {
@@ -362,10 +329,7 @@ Section Impl_erc20_Erc20_t_2.
   Parameter balance_of_impl :
       (ref Self) -> (ref erc20.AccountId.t) -> M ltac:(erc20.Balance).
   
-  Global Instance AssociatedFunction_balance_of_impl :
-    Notations.DoubleColon Self "balance_of_impl" := {
-    Notations.double_colon := balance_of_impl;
-  }.
+  Axiom balance_of_impl_is_impl : impl Self "balance_of_impl" = balance_of_impl.
   
   (*
       fn balance_of(&self, owner: AccountId) -> Balance {
@@ -375,10 +339,7 @@ Section Impl_erc20_Erc20_t_2.
   Parameter balance_of :
       (ref Self) -> erc20.AccountId.t -> M ltac:(erc20.Balance).
   
-  Global Instance AssociatedFunction_balance_of :
-    Notations.DoubleColon Self "balance_of" := {
-    Notations.double_colon := balance_of;
-  }.
+  Axiom balance_of_is_impl : impl Self "balance_of" = balance_of.
   
   (*
       fn allowance_impl(&self, owner: &AccountId, spender: &AccountId) -> Balance {
@@ -391,10 +352,7 @@ Section Impl_erc20_Erc20_t_2.
         (ref erc20.AccountId.t) ->
         M ltac:(erc20.Balance).
   
-  Global Instance AssociatedFunction_allowance_impl :
-    Notations.DoubleColon Self "allowance_impl" := {
-    Notations.double_colon := allowance_impl;
-  }.
+  Axiom allowance_impl_is_impl : impl Self "allowance_impl" = allowance_impl.
   
   (*
       fn allowance(&self, owner: AccountId, spender: AccountId) -> Balance {
@@ -407,10 +365,7 @@ Section Impl_erc20_Erc20_t_2.
         erc20.AccountId.t ->
         M ltac:(erc20.Balance).
   
-  Global Instance AssociatedFunction_allowance :
-    Notations.DoubleColon Self "allowance" := {
-    Notations.double_colon := allowance;
-  }.
+  Axiom allowance_is_impl : impl Self "allowance" = allowance.
   
   (*
       fn transfer_from_to(&mut self, from: &AccountId, to: &AccountId, value: Balance) -> Result<()> {
@@ -437,10 +392,8 @@ Section Impl_erc20_Erc20_t_2.
         ltac:(erc20.Balance) ->
         M ltac:(erc20.Result unit).
   
-  Global Instance AssociatedFunction_transfer_from_to :
-    Notations.DoubleColon Self "transfer_from_to" := {
-    Notations.double_colon := transfer_from_to;
-  }.
+  Axiom transfer_from_to_is_impl :
+      impl Self "transfer_from_to" = transfer_from_to.
   
   (*
       fn transfer(&mut self, to: AccountId, value: Balance) -> Result<()> {
@@ -454,10 +407,7 @@ Section Impl_erc20_Erc20_t_2.
         ltac:(erc20.Balance) ->
         M ltac:(erc20.Result unit).
   
-  Global Instance AssociatedFunction_transfer :
-    Notations.DoubleColon Self "transfer" := {
-    Notations.double_colon := transfer;
-  }.
+  Axiom transfer_is_impl : impl Self "transfer" = transfer.
   
   (*
       fn approve(&mut self, spender: AccountId, value: Balance) -> Result<()> {
@@ -477,10 +427,7 @@ Section Impl_erc20_Erc20_t_2.
         ltac:(erc20.Balance) ->
         M ltac:(erc20.Result unit).
   
-  Global Instance AssociatedFunction_approve :
-    Notations.DoubleColon Self "approve" := {
-    Notations.double_colon := approve;
-  }.
+  Axiom approve_is_impl : impl Self "approve" = approve.
   
   (*
       fn transfer_from(&mut self, from: AccountId, to: AccountId, value: Balance) -> Result<()> {
@@ -501,9 +448,6 @@ Section Impl_erc20_Erc20_t_2.
         ltac:(erc20.Balance) ->
         M ltac:(erc20.Result unit).
   
-  Global Instance AssociatedFunction_transfer_from :
-    Notations.DoubleColon Self "transfer_from" := {
-    Notations.double_colon := transfer_from;
-  }.
+  Axiom transfer_from_is_impl : impl Self "transfer_from" = transfer_from.
 End Impl_erc20_Erc20_t_2.
 End Impl_erc20_Erc20_t_2.

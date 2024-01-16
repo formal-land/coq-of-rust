@@ -23,10 +23,7 @@ Section Impl_core_ops_drop_Drop_for_drop_Droppable_t.
   *)
   Parameter drop : (mut_ref Self) -> M unit.
   
-  Global Instance AssociatedFunction_drop :
-    Notations.DoubleColon Self "drop" := {
-    Notations.double_colon := drop;
-  }.
+  Axiom drop_is_impl : impl Self "drop" = drop.
   
   Global Instance ℐ : core.ops.drop.Drop.Trait Self := {
     core.ops.drop.Drop.drop := drop;

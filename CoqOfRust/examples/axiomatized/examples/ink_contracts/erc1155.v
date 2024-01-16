@@ -32,10 +32,7 @@ Section Impl_core_default_Default_for_erc1155_Mapping_t_K_V.
   *)
   Parameter default : M (erc1155.Mapping.t K V).
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -56,10 +53,7 @@ Section Impl_erc1155_Mapping_t_K_V.
   *)
   Parameter contains : (ref Self) -> (ref K) -> M bool.t.
   
-  Global Instance AssociatedFunction_contains :
-    Notations.DoubleColon Self "contains" := {
-    Notations.double_colon := contains;
-  }.
+  Axiom contains_is_impl : impl Self "contains" = contains.
   
   (*
       fn get(&self, _key: &K) -> Option<V> {
@@ -68,9 +62,7 @@ Section Impl_erc1155_Mapping_t_K_V.
   *)
   Parameter get : (ref Self) -> (ref K) -> M (core.option.Option.t V).
   
-  Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
-    Notations.double_colon := get;
-  }.
+  Axiom get_is_impl : impl Self "get" = get.
   
   (*
       fn insert(&mut self, _key: K, _value: V) -> Option<u32> {
@@ -79,10 +71,7 @@ Section Impl_erc1155_Mapping_t_K_V.
   *)
   Parameter insert : (mut_ref Self) -> K -> V -> M (core.option.Option.t u32.t).
   
-  Global Instance AssociatedFunction_insert :
-    Notations.DoubleColon Self "insert" := {
-    Notations.double_colon := insert;
-  }.
+  Axiom insert_is_impl : impl Self "insert" = insert.
   
   (*
       fn remove(&self, _key: K) {
@@ -91,10 +80,7 @@ Section Impl_erc1155_Mapping_t_K_V.
   *)
   Parameter remove : (ref Self) -> K -> M unit.
   
-  Global Instance AssociatedFunction_remove :
-    Notations.DoubleColon Self "remove" := {
-    Notations.double_colon := remove;
-  }.
+  Axiom remove_is_impl : impl Self "remove" = remove.
   
   (*
       fn size(&self, _key: K) -> Option<u32> {
@@ -103,10 +89,7 @@ Section Impl_erc1155_Mapping_t_K_V.
   *)
   Parameter size : (ref Self) -> K -> M (core.option.Option.t u32.t).
   
-  Global Instance AssociatedFunction_size :
-    Notations.DoubleColon Self "size" := {
-    Notations.double_colon := size;
-  }.
+  Axiom size_is_impl : impl Self "size" = size.
   
   (*
       fn take(&self, _key: K) -> Option<V> {
@@ -115,10 +98,7 @@ Section Impl_erc1155_Mapping_t_K_V.
   *)
   Parameter take : (ref Self) -> K -> M (core.option.Option.t V).
   
-  Global Instance AssociatedFunction_take :
-    Notations.DoubleColon Self "take" := {
-    Notations.double_colon := take;
-  }.
+  Axiom take_is_impl : impl Self "take" = take.
 End Impl_erc1155_Mapping_t_K_V.
 End Impl_erc1155_Mapping_t_K_V.
 
@@ -142,10 +122,7 @@ Section Impl_core_default_Default_for_erc1155_AccountId_t.
   *)
   Parameter default : M erc1155.AccountId.t.
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -162,10 +139,7 @@ Section Impl_core_clone_Clone_for_erc1155_AccountId_t.
   *)
   Parameter clone : (ref Self) -> M erc1155.AccountId.t.
   
-  Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon Self "clone" := {
-    Notations.double_colon := clone;
-  }.
+  Axiom clone_is_impl : impl Self "clone" = clone.
   
   Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
@@ -201,9 +175,7 @@ Section Impl_core_cmp_PartialEq_for_erc1155_AccountId_t.
   *)
   Parameter eq : (ref Self) -> (ref erc1155.AccountId.t) -> M bool.t.
   
-  Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
-    Notations.double_colon := eq;
-  }.
+  Axiom eq_is_impl : impl Self "eq" = eq.
   
   Global Instance ℐ :
     core.cmp.PartialEq.Required.Trait Self
@@ -225,10 +197,7 @@ Section Impl_core_convert_From_array_u8_t_for_erc1155_AccountId_t.
   *)
   Parameter from : (array u8.t) -> M Self.
   
-  Global Instance AssociatedFunction_from :
-    Notations.DoubleColon Self "from" := {
-    Notations.double_colon := from;
-  }.
+  Axiom from_is_impl : impl Self "from" = from.
   
   Global Instance ℐ : core.convert.From.Trait Self (T := array u8.t) := {
     core.convert.From.from := from;
@@ -290,9 +259,7 @@ Section Impl_core_cmp_PartialEq_for_erc1155_Error_t.
   *)
   Parameter eq : (ref Self) -> (ref erc1155.Error.t) -> M bool.t.
   
-  Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
-    Notations.double_colon := eq;
-  }.
+  Axiom eq_is_impl : impl Self "eq" = eq.
   
   Global Instance ℐ :
     core.cmp.PartialEq.Required.Trait Self
@@ -321,10 +288,8 @@ Section Impl_core_cmp_Eq_for_erc1155_Error_t.
   *)
   Parameter assert_receiver_is_total_eq : (ref Self) -> M unit.
   
-  Global Instance AssociatedFunction_assert_receiver_is_total_eq :
-    Notations.DoubleColon Self "assert_receiver_is_total_eq" := {
-    Notations.double_colon := assert_receiver_is_total_eq;
-  }.
+  Axiom assert_receiver_is_total_eq_is_impl :
+      impl Self "assert_receiver_is_total_eq" = assert_receiver_is_total_eq.
   
   Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
     core.cmp.Eq.assert_receiver_is_total_eq :=
@@ -509,10 +474,7 @@ Section Impl_erc1155_Env_t.
   *)
   Parameter caller : (ref Self) -> M erc1155.AccountId.t.
   
-  Global Instance AssociatedFunction_caller :
-    Notations.DoubleColon Self "caller" := {
-    Notations.double_colon := caller;
-  }.
+  Axiom caller_is_impl : impl Self "caller" = caller.
   
   (*
       fn emit_event(&self, _event: Event) {
@@ -521,10 +483,7 @@ Section Impl_erc1155_Env_t.
   *)
   Parameter emit_event : (ref Self) -> erc1155.Event.t -> M unit.
   
-  Global Instance AssociatedFunction_emit_event :
-    Notations.DoubleColon Self "emit_event" := {
-    Notations.double_colon := emit_event;
-  }.
+  Axiom emit_event_is_impl : impl Self "emit_event" = emit_event.
 End Impl_erc1155_Env_t.
 End Impl_erc1155_Env_t.
 
@@ -564,10 +523,7 @@ Section Impl_core_default_Default_for_erc1155_Contract_t.
   *)
   Parameter default : M erc1155.Contract.t.
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -586,10 +542,7 @@ Section Impl_erc1155_Contract_t.
   *)
   Parameter init_env : M erc1155.Env.t.
   
-  Global Instance AssociatedFunction_init_env :
-    Notations.DoubleColon Self "init_env" := {
-    Notations.double_colon := init_env;
-  }.
+  Axiom init_env_is_impl : impl Self "init_env" = init_env.
   
   (*
       fn env(&self) -> Env {
@@ -598,9 +551,7 @@ Section Impl_erc1155_Contract_t.
   *)
   Parameter env : (ref Self) -> M erc1155.Env.t.
   
-  Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
-    Notations.double_colon := env;
-  }.
+  Axiom env_is_impl : impl Self "env" = env.
   
   (*
       pub fn new() -> Self {
@@ -609,9 +560,7 @@ Section Impl_erc1155_Contract_t.
   *)
   Parameter new : M Self.
   
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
-    Notations.double_colon := new;
-  }.
+  Axiom new_is_impl : impl Self "new" = new.
   
   (*
       pub fn create(&mut self, value: Balance) -> TokenId {
@@ -637,10 +586,7 @@ Section Impl_erc1155_Contract_t.
   Parameter create :
       (mut_ref Self) -> ltac:(erc1155.Balance) -> M ltac:(erc1155.TokenId).
   
-  Global Instance AssociatedFunction_create :
-    Notations.DoubleColon Self "create" := {
-    Notations.double_colon := create;
-  }.
+  Axiom create_is_impl : impl Self "create" = create.
   
   (*
       pub fn mint(&mut self, token_id: TokenId, value: Balance) -> Result<()> {
@@ -667,10 +613,7 @@ Section Impl_erc1155_Contract_t.
         ltac:(erc1155.Balance) ->
         M ltac:(erc1155.Result unit).
   
-  Global Instance AssociatedFunction_mint :
-    Notations.DoubleColon Self "mint" := {
-    Notations.double_colon := mint;
-  }.
+  Axiom mint_is_impl : impl Self "mint" = mint.
   
   (*
       fn perform_transfer(
@@ -709,10 +652,8 @@ Section Impl_erc1155_Contract_t.
         ltac:(erc1155.Balance) ->
         M unit.
   
-  Global Instance AssociatedFunction_perform_transfer :
-    Notations.DoubleColon Self "perform_transfer" := {
-    Notations.double_colon := perform_transfer;
-  }.
+  Axiom perform_transfer_is_impl :
+      impl Self "perform_transfer" = perform_transfer.
   
   (*
       fn transfer_acceptance_check(
@@ -797,10 +738,8 @@ Section Impl_erc1155_Contract_t.
         (alloc.vec.Vec.t u8.t alloc.vec.Vec.Default.A) ->
         M unit.
   
-  Global Instance AssociatedFunction_transfer_acceptance_check :
-    Notations.DoubleColon Self "transfer_acceptance_check" := {
-    Notations.double_colon := transfer_acceptance_check;
-  }.
+  Axiom transfer_acceptance_check_is_impl :
+      impl Self "transfer_acceptance_check" = transfer_acceptance_check.
 End Impl_erc1155_Contract_t.
 End Impl_erc1155_Contract_t.
 
@@ -816,10 +755,8 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
   Parameter is_approved_for_all :
       (ref Self) -> erc1155.AccountId.t -> erc1155.AccountId.t -> M bool.t.
   
-  Global Instance AssociatedFunction_is_approved_for_all :
-    Notations.DoubleColon Self "is_approved_for_all" := {
-    Notations.double_colon := is_approved_for_all;
-  }.
+  Axiom is_approved_for_all_is_impl :
+      impl Self "is_approved_for_all" = is_approved_for_all.
   
   (*
       fn balance_of(&self, owner: AccountId, token_id: TokenId) -> Balance {
@@ -832,10 +769,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
         ltac:(erc1155.TokenId) ->
         M ltac:(erc1155.Balance).
   
-  Global Instance AssociatedFunction_balance_of :
-    Notations.DoubleColon Self "balance_of" := {
-    Notations.double_colon := balance_of;
-  }.
+  Axiom balance_of_is_impl : impl Self "balance_of" = balance_of.
   
   (*
       fn safe_transfer_from(
@@ -871,10 +805,8 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
         (alloc.vec.Vec.t u8.t alloc.vec.Vec.Default.A) ->
         M ltac:(erc1155.Result unit).
   
-  Global Instance AssociatedFunction_safe_transfer_from :
-    Notations.DoubleColon Self "safe_transfer_from" := {
-    Notations.double_colon := safe_transfer_from;
-  }.
+  Axiom safe_transfer_from_is_impl :
+      impl Self "safe_transfer_from" = safe_transfer_from.
   
   (*
       fn safe_batch_transfer_from(
@@ -923,10 +855,8 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
         (alloc.vec.Vec.t u8.t alloc.vec.Vec.Default.A) ->
         M ltac:(erc1155.Result unit).
   
-  Global Instance AssociatedFunction_safe_batch_transfer_from :
-    Notations.DoubleColon Self "safe_batch_transfer_from" := {
-    Notations.double_colon := safe_batch_transfer_from;
-  }.
+  Axiom safe_batch_transfer_from_is_impl :
+      impl Self "safe_batch_transfer_from" = safe_batch_transfer_from.
   
   (*
       fn balance_of_batch(&self, owners: Vec<AccountId>, token_ids: Vec<TokenId>) -> Vec<Balance> {
@@ -946,10 +876,8 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
         (alloc.vec.Vec.t ltac:(erc1155.TokenId) alloc.vec.Vec.Default.A) ->
         M (alloc.vec.Vec.t ltac:(erc1155.Balance) alloc.vec.Vec.Default.A).
   
-  Global Instance AssociatedFunction_balance_of_batch :
-    Notations.DoubleColon Self "balance_of_batch" := {
-    Notations.double_colon := balance_of_batch;
-  }.
+  Axiom balance_of_batch_is_impl :
+      impl Self "balance_of_batch" = balance_of_batch.
   
   (*
       fn set_approval_for_all(&mut self, operator: AccountId, approved: bool) -> Result<()> {
@@ -977,10 +905,8 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
         bool.t ->
         M ltac:(erc1155.Result unit).
   
-  Global Instance AssociatedFunction_set_approval_for_all :
-    Notations.DoubleColon Self "set_approval_for_all" := {
-    Notations.double_colon := set_approval_for_all;
-  }.
+  Axiom set_approval_for_all_is_impl :
+      impl Self "set_approval_for_all" = set_approval_for_all.
   
   Global Instance ℐ : erc1155.Erc1155.Trait Self := {
     erc1155.Erc1155.is_approved_for_all := is_approved_for_all;
@@ -1029,10 +955,7 @@ Section Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract_t.
         (alloc.vec.Vec.t u8.t alloc.vec.Vec.Default.A) ->
         M (alloc.vec.Vec.t u8.t alloc.vec.Vec.Default.A).
   
-  Global Instance AssociatedFunction_on_received :
-    Notations.DoubleColon Self "on_received" := {
-    Notations.double_colon := on_received;
-  }.
+  Axiom on_received_is_impl : impl Self "on_received" = on_received.
   
   (*
       fn on_batch_received(
@@ -1066,10 +989,8 @@ Section Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract_t.
         (alloc.vec.Vec.t u8.t alloc.vec.Vec.Default.A) ->
         M (alloc.vec.Vec.t u8.t alloc.vec.Vec.Default.A).
   
-  Global Instance AssociatedFunction_on_batch_received :
-    Notations.DoubleColon Self "on_batch_received" := {
-    Notations.double_colon := on_batch_received;
-  }.
+  Axiom on_batch_received_is_impl :
+      impl Self "on_batch_received" = on_batch_received.
   
   Global Instance ℐ : erc1155.Erc1155TokenReceiver.Trait Self := {
     erc1155.Erc1155TokenReceiver.on_received := on_received;

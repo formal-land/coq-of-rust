@@ -46,10 +46,7 @@ Section Impl_core_default_Default_for_trait_erc20_Mapping_t_K_V.
     M.pure
       {| trait_erc20.Mapping._key := α1; trait_erc20.Mapping._value := α3; |}.
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -78,9 +75,7 @@ Section Impl_trait_erc20_Mapping_t_K_V.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
-    Notations.double_colon := get;
-  }.
+  Axiom get_is_impl : impl Self "get" = get.
   
   (*
       fn insert(&mut self, _key: K, _value: V) {
@@ -95,10 +90,7 @@ Section Impl_trait_erc20_Mapping_t_K_V.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_insert :
-    Notations.DoubleColon Self "insert" := {
-    Notations.double_colon := insert;
-  }.
+  Axiom insert_is_impl : impl Self "insert" = insert.
 End Impl_trait_erc20_Mapping_t_K_V.
 End Impl_trait_erc20_Mapping_t_K_V.
 
@@ -127,10 +119,7 @@ Section Impl_core_default_Default_for_trait_erc20_AccountId_t.
     let* α1 : u128.t := M.call α0 in
     M.pure (trait_erc20.AccountId.Build_t α1).
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -159,10 +148,7 @@ Section Impl_core_clone_Clone_for_trait_erc20_AccountId_t.
         ] in
     M.read α0.
   
-  Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon Self "clone" := {
-    Notations.double_colon := clone;
-  }.
+  Axiom clone_is_impl : impl Self "clone" = clone.
   
   Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
@@ -243,11 +229,9 @@ Section Impl_core_fmt_Debug_for_trait_erc20_Error_t.
             M (M.Val (ref str.t))
         ] in
     let* α2 : ref str.t := M.read α1 in
-    M.call (core.fmt.Formatter.t::["write_str"] α0 α2).
+    M.call (impl core.fmt.Formatter.t "write_str" α0 α2).
   
-  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
-    Notations.double_colon := fmt;
-  }.
+  Axiom fmt_is_impl : impl Self "fmt" = fmt.
   
   Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
@@ -290,9 +274,7 @@ Section Impl_core_cmp_PartialEq_for_trait_erc20_Error_t.
     let* α0 : M.Val bool.t := M.alloc (BinOp.Pure.eq α0 α1) in
     M.read α0.
   
-  Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
-    Notations.double_colon := eq;
-  }.
+  Axiom eq_is_impl : impl Self "eq" = eq.
   
   Global Instance ℐ :
     core.cmp.PartialEq.Required.Trait Self
@@ -323,10 +305,8 @@ Section Impl_core_cmp_Eq_for_trait_erc20_Error_t.
     let* self := M.alloc self in
     M.pure tt.
   
-  Global Instance AssociatedFunction_assert_receiver_is_total_eq :
-    Notations.DoubleColon Self "assert_receiver_is_total_eq" := {
-    Notations.double_colon := assert_receiver_is_total_eq;
-  }.
+  Axiom assert_receiver_is_total_eq_is_impl :
+      impl Self "assert_receiver_is_total_eq" = assert_receiver_is_total_eq.
   
   Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
     core.cmp.Eq.assert_receiver_is_total_eq :=
@@ -435,10 +415,7 @@ Section Impl_core_default_Default_for_trait_erc20_Erc20_t.
         trait_erc20.Erc20.allowances := α5;
       |}.
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -514,10 +491,7 @@ Section Impl_trait_erc20_Env_t.
     let* α0 : ref trait_erc20.Env.t := M.read self in
     M.read (trait_erc20.Env.Get_caller (deref α0)).
   
-  Global Instance AssociatedFunction_caller :
-    Notations.DoubleColon Self "caller" := {
-    Notations.double_colon := caller;
-  }.
+  Axiom caller_is_impl : impl Self "caller" = caller.
   
   (*
       fn emit_event(&self, _event: Event) {
@@ -534,10 +508,7 @@ Section Impl_trait_erc20_Env_t.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_emit_event :
-    Notations.DoubleColon Self "emit_event" := {
-    Notations.double_colon := emit_event;
-  }.
+  Axiom emit_event_is_impl : impl Self "emit_event" = emit_event.
 End Impl_trait_erc20_Env_t.
 End Impl_trait_erc20_Env_t.
 
@@ -555,10 +526,7 @@ Section Impl_trait_erc20_Erc20_t.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_init_env :
-    Notations.DoubleColon Self "init_env" := {
-    Notations.double_colon := init_env;
-  }.
+  Axiom init_env_is_impl : impl Self "init_env" = init_env.
   
   (*
       fn env(&self) -> Env {
@@ -567,11 +535,9 @@ Section Impl_trait_erc20_Erc20_t.
   *)
   Definition env (self : ref Self) : M trait_erc20.Env.t :=
     let* self := M.alloc self in
-    M.call trait_erc20.Erc20.t::["init_env"].
+    M.call (impl trait_erc20.Erc20.t "init_env").
   
-  Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
-    Notations.double_colon := env;
-  }.
+  Axiom env_is_impl : impl Self "env" = env.
   
   (*
       pub fn new(total_supply: Balance) -> Self {
@@ -603,29 +569,31 @@ Section Impl_trait_erc20_Erc20_t.
         M.call α0 in
       M.alloc α1 in
     let* caller : M.Val trait_erc20.AccountId.t :=
-      let* α0 : trait_erc20.Env.t := M.call trait_erc20.Erc20.t::["init_env"] in
+      let* α0 : trait_erc20.Env.t :=
+        M.call (impl trait_erc20.Erc20.t "init_env") in
       let* α1 : M.Val trait_erc20.Env.t := M.alloc α0 in
       let* α2 : trait_erc20.AccountId.t :=
-        M.call (trait_erc20.Env.t::["caller"] (borrow α1)) in
+        M.call (impl trait_erc20.Env.t "caller" (borrow α1)) in
       M.alloc α2 in
     let* _ : M.Val unit :=
       let* α0 : trait_erc20.AccountId.t := M.read caller in
       let* α1 : u128.t := M.read total_supply in
       let* α2 : unit :=
         M.call
-          ((trait_erc20.Mapping.t trait_erc20.AccountId.t u128.t)::["insert"]
+          (impl (trait_erc20.Mapping.t trait_erc20.AccountId.t u128.t) "insert"
             (borrow_mut balances)
             α0
             α1) in
       M.alloc α2 in
     let* _ : M.Val unit :=
-      let* α0 : trait_erc20.Env.t := M.call trait_erc20.Erc20.t::["init_env"] in
+      let* α0 : trait_erc20.Env.t :=
+        M.call (impl trait_erc20.Erc20.t "init_env") in
       let* α1 : M.Val trait_erc20.Env.t := M.alloc α0 in
       let* α2 : trait_erc20.AccountId.t := M.read caller in
       let* α3 : u128.t := M.read total_supply in
       let* α4 : unit :=
         M.call
-          (trait_erc20.Env.t::["emit_event"]
+          (impl trait_erc20.Env.t "emit_event"
             (borrow α1)
             (trait_erc20.Event.Transfer
               {|
@@ -659,9 +627,7 @@ Section Impl_trait_erc20_Erc20_t.
         |} in
     M.read α0.
   
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
-    Notations.double_colon := new;
-  }.
+  Axiom new_is_impl : impl Self "new" = new.
   
   (*
       fn balance_of_impl(&self, owner: &AccountId) -> Balance {
@@ -678,15 +644,12 @@ Section Impl_trait_erc20_Erc20_t.
     let* α1 : ref trait_erc20.AccountId.t := M.read owner in
     let* α2 : core.option.Option.t u128.t :=
       M.call
-        ((trait_erc20.Mapping.t trait_erc20.AccountId.t u128.t)::["get"]
+        (impl (trait_erc20.Mapping.t trait_erc20.AccountId.t u128.t) "get"
           (borrow (trait_erc20.Erc20.Get_balances (deref α0)))
           α1) in
-    M.call ((core.option.Option.t u128.t)::["unwrap_or_default"] α2).
+    M.call (impl (core.option.Option.t u128.t) "unwrap_or_default" α2).
   
-  Global Instance AssociatedFunction_balance_of_impl :
-    Notations.DoubleColon Self "balance_of_impl" := {
-    Notations.double_colon := balance_of_impl;
-  }.
+  Axiom balance_of_impl_is_impl : impl Self "balance_of_impl" = balance_of_impl.
   
   (*
       fn allowance_impl(&self, owner: &AccountId, spender: &AccountId) -> Balance {
@@ -710,17 +673,16 @@ Section Impl_trait_erc20_Erc20_t.
       M.alloc (α2, α4) in
     let* α6 : core.option.Option.t u128.t :=
       M.call
-        ((trait_erc20.Mapping.t
+        (impl
+            (trait_erc20.Mapping.t
               (trait_erc20.AccountId.t * trait_erc20.AccountId.t)
-              u128.t)::["get"]
+              u128.t)
+            "get"
           (borrow (trait_erc20.Erc20.Get_allowances (deref α0)))
           (borrow α5)) in
-    M.call ((core.option.Option.t u128.t)::["unwrap_or_default"] α6).
+    M.call (impl (core.option.Option.t u128.t) "unwrap_or_default" α6).
   
-  Global Instance AssociatedFunction_allowance_impl :
-    Notations.DoubleColon Self "allowance_impl" := {
-    Notations.double_colon := allowance_impl;
-  }.
+  Axiom allowance_impl_is_impl : impl Self "allowance_impl" = allowance_impl.
   
   (*
       fn transfer_from_to(&mut self, from: &AccountId, to: &AccountId, value: Balance) -> Result<()> {
@@ -757,7 +719,9 @@ Section Impl_trait_erc20_Erc20_t.
         let* α1 : ref trait_erc20.AccountId.t := M.read from in
         let* α2 : u128.t :=
           M.call
-            (trait_erc20.Erc20.t::["balance_of_impl"] (borrow (deref α0)) α1) in
+            (impl trait_erc20.Erc20.t "balance_of_impl"
+              (borrow (deref α0))
+              α1) in
         M.alloc α2 in
       let* _ : M.Val unit :=
         let* α0 : u128.t := M.read from_balance in
@@ -782,7 +746,9 @@ Section Impl_trait_erc20_Erc20_t.
         let* α5 : u128.t := BinOp.Panic.sub α3 α4 in
         let* α6 : unit :=
           M.call
-            ((trait_erc20.Mapping.t trait_erc20.AccountId.t u128.t)::["insert"]
+            (impl
+                (trait_erc20.Mapping.t trait_erc20.AccountId.t u128.t)
+                "insert"
               (borrow_mut (trait_erc20.Erc20.Get_balances (deref α0)))
               α2
               α5) in
@@ -792,7 +758,9 @@ Section Impl_trait_erc20_Erc20_t.
         let* α1 : ref trait_erc20.AccountId.t := M.read to in
         let* α2 : u128.t :=
           M.call
-            (trait_erc20.Erc20.t::["balance_of_impl"] (borrow (deref α0)) α1) in
+            (impl trait_erc20.Erc20.t "balance_of_impl"
+              (borrow (deref α0))
+              α1) in
         M.alloc α2 in
       let* _ : M.Val unit :=
         let* α0 : mut_ref trait_erc20.Erc20.t := M.read self in
@@ -803,7 +771,9 @@ Section Impl_trait_erc20_Erc20_t.
         let* α5 : u128.t := BinOp.Panic.add α3 α4 in
         let* α6 : unit :=
           M.call
-            ((trait_erc20.Mapping.t trait_erc20.AccountId.t u128.t)::["insert"]
+            (impl
+                (trait_erc20.Mapping.t trait_erc20.AccountId.t u128.t)
+                "insert"
               (borrow_mut (trait_erc20.Erc20.Get_balances (deref α0)))
               α2
               α5) in
@@ -811,7 +781,7 @@ Section Impl_trait_erc20_Erc20_t.
       let* _ : M.Val unit :=
         let* α0 : mut_ref trait_erc20.Erc20.t := M.read self in
         let* α1 : trait_erc20.Env.t :=
-          M.call (trait_erc20.Erc20.t::["env"] (borrow (deref α0))) in
+          M.call (impl trait_erc20.Erc20.t "env" (borrow (deref α0))) in
         let* α2 : M.Val trait_erc20.Env.t := M.alloc α1 in
         let* α3 : ref trait_erc20.AccountId.t := M.read from in
         let* α4 : trait_erc20.AccountId.t := M.read (deref α3) in
@@ -820,7 +790,7 @@ Section Impl_trait_erc20_Erc20_t.
         let* α7 : u128.t := M.read value in
         let* α8 : unit :=
           M.call
-            (trait_erc20.Env.t::["emit_event"]
+            (impl trait_erc20.Env.t "emit_event"
               (borrow α2)
               (trait_erc20.Event.Transfer
                 {|
@@ -833,10 +803,8 @@ Section Impl_trait_erc20_Erc20_t.
         M.alloc (core.result.Result.Ok tt) in
       M.read α0).
   
-  Global Instance AssociatedFunction_transfer_from_to :
-    Notations.DoubleColon Self "transfer_from_to" := {
-    Notations.double_colon := transfer_from_to;
-  }.
+  Axiom transfer_from_to_is_impl :
+      impl Self "transfer_from_to" = transfer_from_to.
 End Impl_trait_erc20_Erc20_t.
 End Impl_trait_erc20_Erc20_t.
 
@@ -854,10 +822,7 @@ Section Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20_t.
     let* α0 : ref trait_erc20.Erc20.t := M.read self in
     M.read (trait_erc20.Erc20.Get_total_supply (deref α0)).
   
-  Global Instance AssociatedFunction_total_supply :
-    Notations.DoubleColon Self "total_supply" := {
-    Notations.double_colon := total_supply;
-  }.
+  Axiom total_supply_is_impl : impl Self "total_supply" = total_supply.
   
   (*
       fn balance_of(&self, owner: AccountId) -> Balance {
@@ -871,12 +836,9 @@ Section Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20_t.
     let* self := M.alloc self in
     let* owner := M.alloc owner in
     let* α0 : ref trait_erc20.Erc20.t := M.read self in
-    M.call (trait_erc20.Erc20.t::["balance_of_impl"] α0 (borrow owner)).
+    M.call (impl trait_erc20.Erc20.t "balance_of_impl" α0 (borrow owner)).
   
-  Global Instance AssociatedFunction_balance_of :
-    Notations.DoubleColon Self "balance_of" := {
-    Notations.double_colon := balance_of;
-  }.
+  Axiom balance_of_is_impl : impl Self "balance_of" = balance_of.
   
   (*
       fn allowance(&self, owner: AccountId, spender: AccountId) -> Balance {
@@ -893,15 +855,12 @@ Section Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20_t.
     let* spender := M.alloc spender in
     let* α0 : ref trait_erc20.Erc20.t := M.read self in
     M.call
-      (trait_erc20.Erc20.t::["allowance_impl"]
+      (impl trait_erc20.Erc20.t "allowance_impl"
         α0
         (borrow owner)
         (borrow spender)).
   
-  Global Instance AssociatedFunction_allowance :
-    Notations.DoubleColon Self "allowance" := {
-    Notations.double_colon := allowance;
-  }.
+  Axiom allowance_is_impl : impl Self "allowance" = allowance.
   
   (*
       fn transfer(&mut self, to: AccountId, value: Balance) -> Result<()> {
@@ -920,16 +879,16 @@ Section Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20_t.
     let* from : M.Val trait_erc20.AccountId.t :=
       let* α0 : mut_ref trait_erc20.Erc20.t := M.read self in
       let* α1 : trait_erc20.Env.t :=
-        M.call (trait_erc20.Erc20.t::["env"] (borrow (deref α0))) in
+        M.call (impl trait_erc20.Erc20.t "env" (borrow (deref α0))) in
       let* α2 : M.Val trait_erc20.Env.t := M.alloc α1 in
       let* α3 : trait_erc20.AccountId.t :=
-        M.call (trait_erc20.Env.t::["caller"] (borrow α2)) in
+        M.call (impl trait_erc20.Env.t "caller" (borrow α2)) in
       M.alloc α3 in
     let* α0 : mut_ref trait_erc20.Erc20.t := M.read self in
     let* α1 : u128.t := M.read value in
     let* α2 : core.result.Result.t unit trait_erc20.Error.t :=
       M.call
-        (trait_erc20.Erc20.t::["transfer_from_to"]
+        (impl trait_erc20.Erc20.t "transfer_from_to"
           α0
           (borrow from)
           (borrow to)
@@ -938,10 +897,7 @@ Section Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20_t.
       M.alloc α2 in
     M.read α0.
   
-  Global Instance AssociatedFunction_transfer :
-    Notations.DoubleColon Self "transfer" := {
-    Notations.double_colon := transfer;
-  }.
+  Axiom transfer_is_impl : impl Self "transfer" = transfer.
   
   (*
       fn approve(&mut self, spender: AccountId, value: Balance) -> Result<()> {
@@ -966,10 +922,10 @@ Section Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20_t.
     let* owner : M.Val trait_erc20.AccountId.t :=
       let* α0 : mut_ref trait_erc20.Erc20.t := M.read self in
       let* α1 : trait_erc20.Env.t :=
-        M.call (trait_erc20.Erc20.t::["env"] (borrow (deref α0))) in
+        M.call (impl trait_erc20.Erc20.t "env" (borrow (deref α0))) in
       let* α2 : M.Val trait_erc20.Env.t := M.alloc α1 in
       let* α3 : trait_erc20.AccountId.t :=
-        M.call (trait_erc20.Env.t::["caller"] (borrow α2)) in
+        M.call (impl trait_erc20.Env.t "caller" (borrow α2)) in
       M.alloc α3 in
     let* _ : M.Val unit :=
       let* α0 : mut_ref trait_erc20.Erc20.t := M.read self in
@@ -978,9 +934,11 @@ Section Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20_t.
       let* α3 : u128.t := M.read value in
       let* α4 : unit :=
         M.call
-          ((trait_erc20.Mapping.t
+          (impl
+              (trait_erc20.Mapping.t
                 (trait_erc20.AccountId.t * trait_erc20.AccountId.t)
-                u128.t)::["insert"]
+                u128.t)
+              "insert"
             (borrow_mut (trait_erc20.Erc20.Get_allowances (deref α0)))
             (α1, α2)
             α3) in
@@ -988,14 +946,14 @@ Section Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20_t.
     let* _ : M.Val unit :=
       let* α0 : mut_ref trait_erc20.Erc20.t := M.read self in
       let* α1 : trait_erc20.Env.t :=
-        M.call (trait_erc20.Erc20.t::["env"] (borrow (deref α0))) in
+        M.call (impl trait_erc20.Erc20.t "env" (borrow (deref α0))) in
       let* α2 : M.Val trait_erc20.Env.t := M.alloc α1 in
       let* α3 : trait_erc20.AccountId.t := M.read owner in
       let* α4 : trait_erc20.AccountId.t := M.read spender in
       let* α5 : u128.t := M.read value in
       let* α6 : unit :=
         M.call
-          (trait_erc20.Env.t::["emit_event"]
+          (impl trait_erc20.Env.t "emit_event"
             (borrow α2)
             (trait_erc20.Event.Approval
               {|
@@ -1008,10 +966,7 @@ Section Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20_t.
       M.alloc (core.result.Result.Ok tt) in
     M.read α0.
   
-  Global Instance AssociatedFunction_approve :
-    Notations.DoubleColon Self "approve" := {
-    Notations.double_colon := approve;
-  }.
+  Axiom approve_is_impl : impl Self "approve" = approve.
   
   (*
       fn transfer_from(&mut self, from: AccountId, to: AccountId, value: Balance) -> Result<()> {
@@ -1040,16 +995,16 @@ Section Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20_t.
       (let* caller : M.Val trait_erc20.AccountId.t :=
         let* α0 : mut_ref trait_erc20.Erc20.t := M.read self in
         let* α1 : trait_erc20.Env.t :=
-          M.call (trait_erc20.Erc20.t::["env"] (borrow (deref α0))) in
+          M.call (impl trait_erc20.Erc20.t "env" (borrow (deref α0))) in
         let* α2 : M.Val trait_erc20.Env.t := M.alloc α1 in
         let* α3 : trait_erc20.AccountId.t :=
-          M.call (trait_erc20.Env.t::["caller"] (borrow α2)) in
+          M.call (impl trait_erc20.Env.t "caller" (borrow α2)) in
         M.alloc α3 in
       let* allowance : M.Val u128.t :=
         let* α0 : mut_ref trait_erc20.Erc20.t := M.read self in
         let* α1 : u128.t :=
           M.call
-            (trait_erc20.Erc20.t::["allowance_impl"]
+            (impl trait_erc20.Erc20.t "allowance_impl"
               (borrow (deref α0))
               (borrow from)
               (borrow caller)) in
@@ -1079,7 +1034,7 @@ Section Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20_t.
         let* α2 : u128.t := M.read value in
         let* α3 : core.result.Result.t unit trait_erc20.Error.t :=
           M.call
-            (trait_erc20.Erc20.t::["transfer_from_to"]
+            (impl trait_erc20.Erc20.t "transfer_from_to"
               α1
               (borrow from)
               (borrow to)
@@ -1152,9 +1107,11 @@ Section Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20_t.
         let* α5 : u128.t := BinOp.Panic.sub α3 α4 in
         let* α6 : unit :=
           M.call
-            ((trait_erc20.Mapping.t
+            (impl
+                (trait_erc20.Mapping.t
                   (trait_erc20.AccountId.t * trait_erc20.AccountId.t)
-                  u128.t)::["insert"]
+                  u128.t)
+                "insert"
               (borrow_mut (trait_erc20.Erc20.Get_allowances (deref α0)))
               (α1, α2)
               α5) in
@@ -1163,10 +1120,7 @@ Section Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20_t.
         M.alloc (core.result.Result.Ok tt) in
       M.read α0).
   
-  Global Instance AssociatedFunction_transfer_from :
-    Notations.DoubleColon Self "transfer_from" := {
-    Notations.double_colon := transfer_from;
-  }.
+  Axiom transfer_from_is_impl : impl Self "transfer_from" = transfer_from.
   
   Global Instance ℐ : trait_erc20.BaseErc20.Trait Self := {
     trait_erc20.BaseErc20.total_supply := total_supply;

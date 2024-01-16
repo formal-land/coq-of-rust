@@ -28,11 +28,9 @@ Section Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec_t.
     let* f := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref str.t := M.read (mk_str "EmptyVec") in
-    M.call (core.fmt.Formatter.t::["write_str"] α0 α1).
+    M.call (impl core.fmt.Formatter.t "write_str" α0 α1).
   
-  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
-    Notations.double_colon := fmt;
-  }.
+  Axiom fmt_is_impl : impl Self "fmt" = fmt.
   
   Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
@@ -62,12 +60,10 @@ Section Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec_t.
     let* α4 : ref (slice (ref str.t)) :=
       M.read (pointer_coercion "Unsize" α3) in
     let* α5 : core.fmt.Arguments.t :=
-      M.call (core.fmt.Arguments.t::["new_const"] α4) in
-    M.call (core.fmt.Formatter.t::["write_fmt"] α0 α5).
+      M.call (impl core.fmt.Arguments.t "new_const" α4) in
+    M.call (impl core.fmt.Formatter.t "write_fmt" α0 α5).
   
-  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
-    Notations.double_colon := fmt;
-  }.
+  Axiom fmt_is_impl : impl Self "fmt" = fmt.
   
   Global Instance ℐ : core.fmt.Display.Trait Self := {
     core.fmt.Display.fmt := fmt;
@@ -119,13 +115,13 @@ Definition double_first
             (Trait := ℐ))) in
       let* α2 : ref (slice (ref str.t)) := M.call (α1 (borrow vec)) in
       let* α3 : core.option.Option.t (ref (ref str.t)) :=
-        M.call ((slice (ref str.t))::["first"] α2) in
+        M.call (impl (slice (ref str.t)) "first" α2) in
       let* α4 :
           core.result.Result.t
             (ref (ref str.t))
             other_uses_of_question_mark.EmptyVec.t :=
         M.call
-          ((core.option.Option.t (ref (ref str.t)))::["ok_or"]
+          (impl (core.option.Option.t (ref (ref str.t))) "ok_or"
             α3
             other_uses_of_question_mark.EmptyVec.Build) in
       let* α5 :
@@ -204,7 +200,7 @@ Definition double_first
       let* α1 : ref (ref str.t) := M.read first in
       let* α2 : ref str.t := M.read (deref α1) in
       let* α3 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
-        M.call (str.t::["parse"] α2) in
+        M.call (impl str.t "parse" α2) in
       let* α4 :
           core.ops.control_flow.ControlFlow.t
             (core.result.Result.t
@@ -314,7 +310,7 @@ Definition print
               let* α4 : ref (slice (ref str.t)) :=
                 M.read (pointer_coercion "Unsize" α3) in
               let* α5 : core.fmt.rt.Argument.t :=
-                M.call (core.fmt.rt.Argument.t::["new_display"] (borrow n)) in
+                M.call (impl core.fmt.rt.Argument.t "new_display" (borrow n)) in
               let* α6 : M.Val (array core.fmt.rt.Argument.t) :=
                 M.alloc [ α5 ] in
               let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -322,7 +318,7 @@ Definition print
               let* α8 : ref (slice core.fmt.rt.Argument.t) :=
                 M.read (pointer_coercion "Unsize" α7) in
               let* α9 : core.fmt.Arguments.t :=
-                M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
+                M.call (impl core.fmt.Arguments.t "new_v1" α4 α8) in
               let* α10 : unit := M.call (std.io.stdio._print α9) in
               M.alloc α10 in
             M.alloc tt
@@ -345,7 +341,7 @@ Definition print
               let* α4 : ref (slice (ref str.t)) :=
                 M.read (pointer_coercion "Unsize" α3) in
               let* α5 : core.fmt.rt.Argument.t :=
-                M.call (core.fmt.rt.Argument.t::["new_display"] (borrow e)) in
+                M.call (impl core.fmt.rt.Argument.t "new_display" (borrow e)) in
               let* α6 : M.Val (array core.fmt.rt.Argument.t) :=
                 M.alloc [ α5 ] in
               let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -353,7 +349,7 @@ Definition print
               let* α8 : ref (slice core.fmt.rt.Argument.t) :=
                 M.read (pointer_coercion "Unsize" α7) in
               let* α9 : core.fmt.Arguments.t :=
-                M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
+                M.call (impl core.fmt.Arguments.t "new_v1" α4 α8) in
               let* α10 : unit := M.call (std.io.stdio._print α9) in
               M.alloc α10 in
             M.alloc tt
@@ -387,11 +383,11 @@ Definition main : M unit :=
     let* α5 : alloc.boxed.Box.t (slice (ref str.t)) alloc.alloc.Global.t :=
       M.read (pointer_coercion "Unsize" α4) in
     let* α6 : alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t :=
-      M.call ((slice (ref str.t))::["into_vec"] α5) in
+      M.call (impl (slice (ref str.t)) "into_vec" α5) in
     M.alloc α6 in
   let* empty : M.Val (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t) :=
     let* α0 : alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t :=
-      M.call (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t)::["new"] in
+      M.call (impl (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t) "new") in
     M.alloc α0 in
   let* strings : M.Val (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t) :=
     let* α0 : ref str.t := M.read (mk_str "tofu") in
@@ -404,7 +400,7 @@ Definition main : M unit :=
     let* α5 : alloc.boxed.Box.t (slice (ref str.t)) alloc.alloc.Global.t :=
       M.read (pointer_coercion "Unsize" α4) in
     let* α6 : alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t :=
-      M.call ((slice (ref str.t))::["into_vec"] α5) in
+      M.call (impl (slice (ref str.t)) "into_vec" α5) in
     M.alloc α6 in
   let* _ : M.Val unit :=
     let* α0 : alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t :=
