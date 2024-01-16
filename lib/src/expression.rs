@@ -108,10 +108,6 @@ pub(crate) enum ExprKind {
         init: Rc<Expr>,
         body: Rc<Expr>,
     },
-    LetIf {
-        pat: Rc<Pattern>,
-        init: Rc<Expr>,
-    },
     If {
         condition: Rc<Expr>,
         success: Rc<Expr>,
@@ -208,7 +204,6 @@ impl Expr {
                 init,
                 body,
             } => init.has_return() || body.has_return(),
-            ExprKind::LetIf { pat: _, init } => init.has_return(),
             ExprKind::If {
                 condition,
                 success,
@@ -517,20 +512,6 @@ pub(crate) fn mt_expression(fresh_vars: FreshVars, expr: Rc<Expr>) -> (Rc<Expr>,
                 },
                 fresh_vars,
             )
-        }
-        ExprKind::LetIf { pat, init } => {
-            monadic_let(fresh_vars, init.clone(), |fresh_vars, init| {
-                (
-                    Rc::new(Expr {
-                        kind: Rc::new(ExprKind::LetIf {
-                            pat: pat.clone(),
-                            init,
-                        }),
-                        ty: ty.clone(),
-                    }),
-                    fresh_vars,
-                )
-            })
         }
         ExprKind::If {
             condition,
@@ -984,15 +965,6 @@ impl ExprKind {
                     body.to_doc(false),
                 ]),
             ),
-            ExprKind::LetIf { pat, init } => group([
-                text("let_if"),
-                line(),
-                pat.to_doc(false),
-                line(),
-                text(":="),
-                line(),
-                init.to_doc(false),
-            ]),
             ExprKind::If {
                 condition,
                 success,
@@ -1035,13 +1007,13 @@ impl ExprKind {
                 base,
                 struct_or_variant,
             } => paren(
-                with_paren && matches!(struct_or_variant, StructOrVariant::Variant),
+                with_paren && matches!(struct_or_variant, StructOrVariant::Variant { .. }),
                 group([
                     group([
                         nest([
                             match struct_or_variant {
                                 StructOrVariant::Struct => nil(),
-                                StructOrVariant::Variant => concat([path.to_doc(), line()]),
+                                StructOrVariant::Variant { .. } => concat([path.to_doc(), line()]),
                             },
                             text("{|"),
                             line(),
@@ -1079,7 +1051,7 @@ impl ExprKind {
                     path.to_doc(),
                     match struct_or_variant {
                         StructOrVariant::Struct => text(".Build_t"),
-                        StructOrVariant::Variant => nil(),
+                        StructOrVariant::Variant { .. } => nil(),
                     },
                     concat(fields.iter().map(|arg| concat([line(), arg.to_doc(true)]))),
                 ]),
@@ -1091,7 +1063,7 @@ impl ExprKind {
                 path.to_doc(),
                 match struct_or_variant {
                     StructOrVariant::Struct => text(".Build"),
-                    StructOrVariant::Variant => nil(),
+                    StructOrVariant::Variant { .. } => nil(),
                 },
             ]),
             ExprKind::Use(expr) => {

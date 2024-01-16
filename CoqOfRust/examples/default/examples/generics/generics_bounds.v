@@ -10,36 +10,6 @@ Section HasArea.
 End HasArea.
 End HasArea.
 
-Module  Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle_t.
-Section Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle_t.
-  Definition Self : Set := generics_bounds.Rectangle.t.
-  
-  (*
-      fn area(&self) -> f64 {
-          self.length * self.height
-      }
-  *)
-  Definition area (self : ref Self) : M f64.t :=
-    let* self := M.alloc self in
-    let* α0 : ref generics_bounds.Rectangle.t := M.read self in
-    let* α1 : f64.t :=
-      M.read (generics_bounds.Rectangle.Get_length (deref α0)) in
-    let* α2 : ref generics_bounds.Rectangle.t := M.read self in
-    let* α3 : f64.t :=
-      M.read (generics_bounds.Rectangle.Get_height (deref α2)) in
-    BinOp.Panic.mul α1 α3.
-  
-  Global Instance AssociatedFunction_area :
-    Notations.DoubleColon Self "area" := {
-    Notations.double_colon := area;
-  }.
-  
-  Global Instance ℐ : generics_bounds.HasArea.Trait Self := {
-    generics_bounds.HasArea.area := area;
-  }.
-End Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle_t.
-End Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle_t.
-
 Module  Rectangle.
 Section Rectangle.
   Record t : Set := {
@@ -107,6 +77,36 @@ Section Triangle.
     Ref.map (fun α => Some α.(height)) (fun β α => Some (α <| height := β |>)).
 End Triangle.
 End Triangle.
+
+Module  Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle_t.
+Section Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle_t.
+  Definition Self : Set := generics_bounds.Rectangle.t.
+  
+  (*
+      fn area(&self) -> f64 {
+          self.length * self.height
+      }
+  *)
+  Definition area (self : ref Self) : M f64.t :=
+    let* self := M.alloc self in
+    let* α0 : ref generics_bounds.Rectangle.t := M.read self in
+    let* α1 : f64.t :=
+      M.read (generics_bounds.Rectangle.Get_length (deref α0)) in
+    let* α2 : ref generics_bounds.Rectangle.t := M.read self in
+    let* α3 : f64.t :=
+      M.read (generics_bounds.Rectangle.Get_height (deref α2)) in
+    BinOp.Panic.mul α1 α3.
+  
+  Global Instance AssociatedFunction_area :
+    Notations.DoubleColon Self "area" := {
+    Notations.double_colon := area;
+  }.
+  
+  Global Instance ℐ : generics_bounds.HasArea.Trait Self := {
+    generics_bounds.HasArea.area := area;
+  }.
+End Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle_t.
+End Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle_t.
 
 (*
 fn print_debug<T: Debug>(t: &T) {

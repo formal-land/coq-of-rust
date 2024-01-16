@@ -61,7 +61,7 @@ Module Impl_OpenOptions.
 
   Parameter new : M Self.
 
-  Global Instance AssociatedFunction_new :
+  Global Instance AF_new :
     Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
   }.
@@ -69,24 +69,59 @@ Module Impl_OpenOptions.
   Parameter read :
     mut_ref Self -> bool -> M (mut_ref Self).
 
+  Global Instance AF_read :
+    Notations.DoubleColon Self "read" := {
+    Notations.double_colon := read;
+  }.
+
   Parameter write :
     mut_ref Self -> bool -> M (mut_ref Self).
+
+  Global Instance AF_write :
+    Notations.DoubleColon Self "write" := {
+    Notations.double_colon := write;
+  }.
 
   Parameter append :
     mut_ref Self -> bool -> M (mut_ref Self).
 
+  Global Instance AF_append :
+    Notations.DoubleColon Self "append" := {
+    Notations.double_colon := append;
+  }.
+
   Parameter truncate :
     mut_ref Self -> bool -> M (mut_ref Self).
+
+  Global Instance AF_truncate :
+    Notations.DoubleColon Self "truncate" := {
+    Notations.double_colon := truncate;
+  }.
 
   Parameter create :
     mut_ref Self -> bool -> M (mut_ref Self).
 
+  Global Instance AF_create :
+    Notations.DoubleColon Self "create" := {
+    Notations.double_colon := create;
+  }.
+
   Parameter create_new :
     mut_ref Self -> bool -> M (mut_ref Self).
+
+  Global Instance AF_create_new :
+    Notations.DoubleColon Self "create_new" := {
+    Notations.double_colon := create_new;
+  }.
 
   Parameter open :
     forall {P : Set} (*`{core.convert.AsRef.Trait P _std.path.Path}*),
     ref Self -> P -> M (_std.io.Result File.t).
+
+  Global Instance AF_open {P : Set} :
+    Notations.DoubleColon Self "open" := {
+    Notations.double_colon := open (P := P);
+  }.
 End Impl_OpenOptions.
 
 (* pub struct Permissions(_); *)

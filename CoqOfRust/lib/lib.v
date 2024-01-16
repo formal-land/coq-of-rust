@@ -255,6 +255,30 @@ Module Integer.
   }.
 End Integer.
 
+Module Eq.
+  (** Class for values that can be compared with the primitive equality
+      operator. *)
+  Class C (Self : Set) : Set := {
+    eq : Self -> Self -> bool;
+  }.
+
+  Global Instance I_Integer {Self : Set} `{Integer.C Self} : C Self := {
+    eq v1 v2 := Z.eqb (Integer.to_Z v1) (Integer.to_Z v2);
+  }.
+
+  Global Instance I_char : C char.t := {
+    eq := Coq.Strings.Ascii.eqb;
+  }.
+
+  Global Instance I_f32 : C f32.t := {
+    eq _ := axiom "eq_f32";
+  }.
+
+  Global Instance I_f64 : C f64.t := {
+    eq _ := axiom "eq_f64";
+  }.
+End Eq.
+
 Module UnOp.
   Parameter not : bool -> bool.
   Parameter neg : forall {A : Set}, A -> M A.
@@ -266,19 +290,19 @@ Module BinOp.
     Parameter bit_and : forall {A : Set}, A -> A -> A.
     Parameter bit_or : forall {A : Set}, A -> A -> A.
 
+    Definition eq {A : Set} `{Eq.C A} : A -> A -> bool.t :=
+      Eq.eq.
+
+    Definition ne {A : Set} `{Eq.C A} : A -> A -> bool.t :=
+      fun v1 v2 => negb (eq v1 v2).
+
     Definition make_comparison {A : Set} `{Integer.C A}
-      (bin_op : Z -> Z -> bool)
-      (v1 v2 : A) :
-      bool.t :=
-    let z1 := Integer.to_Z v1 in
-    let z2 := Integer.to_Z v2 in
-    bin_op z1 z2.
-
-    Definition eq {A : Set} `{Integer.C A} : A -> A -> bool.t :=
-      make_comparison Z.eqb.
-
-    Definition ne {A : Set} `{Integer.C A} : A -> A -> bool.t :=
-      make_comparison (fun z1 z2 => negb (Z.eqb z1 z2)).
+        (bin_op : Z -> Z -> bool)
+        (v1 v2 : A) :
+        bool.t :=
+      let z1 := Integer.to_Z v1 in
+      let z2 := Integer.to_Z v2 in
+      bin_op z1 z2.
 
     Definition lt {A : Set} `{Integer.C A} : A -> A -> bool.t :=
       make_comparison Z.ltb.

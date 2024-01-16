@@ -120,33 +120,46 @@ Definition main : M unit :=
     let* α4 :
         M.Val (core.result.Result.t (ref str.t) core.str.error.Utf8Error.t) :=
       M.alloc α3 in
-    let* α5 : M.Val bool.t := let_if core.result.Result.Ok my_str := α4 in
-    let* α6 : bool.t := M.read α5 in
-    if α6 then
-      let* _ : M.Val unit :=
-        let* _ : M.Val unit :=
-          let* α0 : ref str.t := M.read (mk_str "And the same as text: '") in
-          let* α1 : ref str.t := M.read (mk_str "'
+    match_operator
+      α4
+      [
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
+          | core.result.Result.Ok _ =>
+            let γ0_0 := core.result.Result.Get_Ok_0 γ in
+            let* my_str := M.copy γ0_0 in
+            let* _ : M.Val unit :=
+              let* _ : M.Val unit :=
+                let* α0 : ref str.t :=
+                  M.read (mk_str "And the same as text: '") in
+                let* α1 : ref str.t := M.read (mk_str "'
 ") in
-          let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-          let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
-          let* α4 : ref (slice (ref str.t)) :=
-            M.read (pointer_coercion "Unsize" α3) in
-          let* α5 : core.fmt.rt.Argument.t :=
-            M.call (core.fmt.rt.Argument.t::["new_display"] (borrow my_str)) in
-          let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
-          let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-            M.alloc (borrow α6) in
-          let* α8 : ref (slice core.fmt.rt.Argument.t) :=
-            M.read (pointer_coercion "Unsize" α7) in
-          let* α9 : core.fmt.Arguments.t :=
-            M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
-          let* α10 : unit := M.call (std.io.stdio._print α9) in
-          M.alloc α10 in
-        M.alloc tt in
-      M.alloc tt
-    else
-      M.alloc tt in
+                let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
+                let* α3 : M.Val (ref (array (ref str.t))) :=
+                  M.alloc (borrow α2) in
+                let* α4 : ref (slice (ref str.t)) :=
+                  M.read (pointer_coercion "Unsize" α3) in
+                let* α5 : core.fmt.rt.Argument.t :=
+                  M.call
+                    (core.fmt.rt.Argument.t::["new_display"] (borrow my_str)) in
+                let* α6 : M.Val (array core.fmt.rt.Argument.t) :=
+                  M.alloc [ α5 ] in
+                let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
+                  M.alloc (borrow α6) in
+                let* α8 : ref (slice core.fmt.rt.Argument.t) :=
+                  M.read (pointer_coercion "Unsize" α7) in
+                let* α9 : core.fmt.Arguments.t :=
+                  M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
+                let* α10 : unit := M.call (std.io.stdio._print α9) in
+                M.alloc α10 in
+              M.alloc tt in
+            M.alloc tt
+          | _ => M.break_match
+          end) :
+          M (M.Val unit);
+        fun γ => (M.alloc tt) : M (M.Val unit)
+      ] in
   let* _quotes : M.Val (ref (array u8.t)) :=
     M.copy (UnsupportedLiteral : M.Val (ref (array u8.t))) in
   let* shift_jis : M.Val (ref (array u8.t)) :=

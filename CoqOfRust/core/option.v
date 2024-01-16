@@ -71,6 +71,13 @@ Module Impl_Option. Section Impl_Option.
     Notations.double_colon := expect;
   }.
 
+  (* pub fn unwrap(self) -> T *)
+  Parameter unwrap : Self -> M T.
+
+  Global Instance AF_unwrap : Notations.DoubleColon Self "unwrap" := {
+    Notations.double_colon := unwrap;
+  }.
+
   Definition unwrap_or_default {H0 : core.default.Default.Trait T}
       (self : Self) : M T :=
     match self with
@@ -114,6 +121,28 @@ Module Impl_Option. Section Impl_Option.
 
   Global Instance AF_map {U : Set} : Notations.DoubleColon Self "map" := {
     Notations.double_colon := map (U := U);
+  }.
+
+  (*
+  pub fn and_then<U, F>(self, f: F) -> Option<U>
+  where
+      F: FnOnce(T) -> Option<U>,
+  *)
+  Parameter and_then :
+    forall {U : Set},
+    Self -> (T -> M (option.Option.t U)) -> M (option.Option.t U).
+
+  Global Instance AF_and_then {U : Set} :
+    Notations.DoubleColon Self "and_then" := {
+    Notations.double_colon := and_then (U := U);
+  }.
+
+  (* pub fn get_or_insert(&mut self, value: T) -> &mut T *)
+  Parameter get_or_insert : mut_ref Self -> T -> M (mut_ref T).
+
+  Global Instance AF_get_or_insert :
+      Notations.DoubleColon Self "get_or_insert" := {
+    Notations.double_colon := get_or_insert;
   }.
 
   Global Instance I_Default {ℋ : default.Default.Trait T} :

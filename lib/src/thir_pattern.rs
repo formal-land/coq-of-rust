@@ -61,7 +61,9 @@ pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Rc<Pattern> {
                 compile_def_id(env, adt_def.did()),
                 Path::local(variant.name.as_str()),
             ]);
-            let struct_or_variant = StructOrVariant::Variant;
+            let struct_or_variant = StructOrVariant::Variant {
+                nb_cases: adt_def.variants().len(),
+            };
             let fields: Vec<_> = subpatterns
                 .iter()
                 .map(|field| {

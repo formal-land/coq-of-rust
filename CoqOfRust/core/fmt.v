@@ -348,6 +348,68 @@ Module Impl_Write_for_Formatter.
 End Impl_Write_for_Formatter.
 
 Module rt.
+  (*
+  pub enum Alignment {
+      Left,
+      Right,
+      Center,
+      Unknown,
+  }
+  *)
+  Module Alignment.
+    Inductive t : Set :=
+    | Left
+    | Right
+    | Center
+    | Unknown
+    .
+  End Alignment.
+
+  (*
+  pub enum Count {
+      /// Specified with a literal number, stores the value
+      Is(usize),
+      /// Specified using `$` and `*` syntaxes, stores the index into `args`
+      Param(usize),
+      /// Not specified
+      Implied,
+  }
+  *)
+  Module Count.
+    Inductive t : Set :=
+    | Is : usize.t -> t
+    | Param : usize.t -> t
+    | Implied
+    .
+  End Count.
+
+  Module Placeholder.
+    Parameter t : Set.
+
+    Module Impl.
+      Definition Self : Set := t.
+
+      (*
+      pub const fn new(
+          position: usize,
+          fill: char,
+          align: Alignment,
+          flags: u32,
+          precision: Count,
+          width: Count,
+      ) -> Self
+      *)
+      Parameter new :
+        usize.t -> char.t -> Alignment.t -> u32.t -> Count.t -> Count.t ->
+        M Self.
+
+      Global Instance Placeholder_new :
+        Notations.DoubleColon t "new" := {
+        Notations.double_colon := new;
+      }.
+    End Impl.
+  End Placeholder.
+
   Module Argument.
     (* TODO: check if this definition is correct for the current Rust version *)
     Definition t : Set := ArgumentV1.t.
@@ -378,4 +440,9 @@ Module rt.
     Notations.DoubleColon Argument.t "none" := {
     Notations.double_colon := none;
   }.
+
+  (* pub struct UnsafeArg *)
+  Module UnsafeArg.
+    Parameter t : Set.
+  End UnsafeArg.
 End rt.
