@@ -76,9 +76,8 @@ pub(crate) fn compile_type<'a>(env: &Env<'a>, ty: &rustc_middle::ty::Ty<'a>) -> 
             Rc::new(CoqType::Dyn(traits))
         }
         TyKind::FnDef(_, _) => {
-            // We consider that for this case the type is not important as an
-            // existing function already has a type, so this can be inferred.
-            Rc::new(CoqType::Infer)
+            let fn_sig = ty.fn_sig(env.tcx);
+            compile_poly_fn_sig(env, &fn_sig)
         }
         TyKind::Closure(_, generic_args) => {
             let fn_sig = generic_args.as_closure().sig();
@@ -90,7 +89,10 @@ pub(crate) fn compile_type<'a>(env: &Env<'a>, ty: &rustc_middle::ty::Ty<'a>) -> 
         TyKind::Tuple(tys) => Rc::new(CoqType::Tuple(
             tys.iter().map(|ty| compile_type(env, &ty)).collect(),
         )),
-        // Alias(AliasKind, AliasTy<'tcx>),
+        TyKind::Alias(_, _) => {
+            // These types are generally too complex to represent in Coq.
+            Rc::new(CoqType::Infer)
+        }
         TyKind::Param(param) => Rc::new(CoqType::Var(param.name.to_string())),
         // Bound(DebruijnIndex, BoundTy),
         // Placeholder(Placeholder<BoundTy>),

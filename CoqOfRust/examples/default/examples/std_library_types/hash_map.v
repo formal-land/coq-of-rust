@@ -292,7 +292,7 @@ Definition main : M unit :=
           (borrow_mut contacts)
           (borrow (mk_str "Ashley"))) in
     M.alloc α0 in
-  let* α0 : _ :=
+  let* α0 : (std.collections.hash.map.Iter.t (ref str.t) (ref str.t)) -> M _ :=
     ltac:(M.get_method (fun ℐ =>
       core.iter.traits.collect.IntoIterator.into_iter
         (Self := std.collections.hash.map.Iter.t (ref str.t) (ref str.t))
@@ -316,7 +316,11 @@ Definition main : M unit :=
           (let* iter := M.copy γ in
           M.loop
             (let* _ : M.Val unit :=
-              let* α0 : _ :=
+              let* α0 :
+                  (mut_ref
+                      (std.collections.hash.map.Iter.t (ref str.t) (ref str.t)))
+                    ->
+                    M (core.option.Option.t _) :=
                 ltac:(M.get_method (fun ℐ =>
                   core.iter.traits.iterator.Iterator.next
                     (Self :=

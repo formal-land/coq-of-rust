@@ -238,21 +238,17 @@ Module ImplArgumentV1.
     Notations.double_colon := new (T := T);
   }.
 
-  Parameter new_display :
-    forall {T : Set} {H0 : Display.Trait T}, ref T -> M Self.
+  Parameter new_display : forall {T : Set}, ref T -> M Self.
 
-  Global Instance ArgumentV1_new_display
-    {T : Set} {H0 : Display.Trait T} :
-    Notations.DoubleColon ArgumentV1.t "new_display" := {
+  Global Instance ArgumentV1_new_display {T : Set}  :
+      Notations.DoubleColon ArgumentV1.t "new_display" := {
     Notations.double_colon := new_display (T := T);
   }.
 
-  Parameter new_debug :
-    forall {T : Set} `{Debug.Trait T}, ref T -> M Self.
+  Parameter new_debug : forall {T : Set}, ref T -> M Self.
 
-  Global Instance ArgumentV1_new_debug
-    {T : Set} `{Debug.Trait T} :
-    Notations.DoubleColon ArgumentV1.t "new_debug" := {
+  Global Instance ArgumentV1_new_debug {T : Set} :
+      Notations.DoubleColon ArgumentV1.t "new_debug" := {
     Notations.double_colon := new_debug (T := T);
   }.
 

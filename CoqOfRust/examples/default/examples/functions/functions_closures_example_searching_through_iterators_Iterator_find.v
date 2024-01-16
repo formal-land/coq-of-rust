@@ -63,7 +63,7 @@ Definition main : M unit :=
       M.call ((slice i32.t)::["into_vec"] (pointer_coercion "Unsize" α2)) in
     M.alloc α3 in
   let* iter : M.Val (core.slice.iter.Iter.t i32.t) :=
-    let* α0 : _ :=
+    let* α0 : (ref (alloc.vec.Vec.t i32.t alloc.alloc.Global.t)) -> M (ref _) :=
       ltac:(M.get_method (fun ℐ =>
         core.ops.deref.Deref.deref
           (Self := alloc.vec.Vec.t i32.t alloc.alloc.Global.t)
@@ -74,7 +74,7 @@ Definition main : M unit :=
     M.alloc α2 in
   let* into_iter :
       M.Val (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t) :=
-    let* α0 : _ :=
+    let* α0 : (alloc.vec.Vec.t i32.t alloc.alloc.Global.t) -> M _ :=
       ltac:(M.get_method (fun ℐ =>
         core.iter.traits.collect.IntoIterator.into_iter
           (Self := alloc.vec.Vec.t i32.t alloc.alloc.Global.t)
@@ -89,7 +89,10 @@ Definition main : M unit :=
       let* α1 : ref str.t := M.read (mk_str "
 ") in
       let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : _ :=
+      let* α3 :
+          (mut_ref (core.slice.iter.Iter.t i32.t)) ->
+            ((ref (ref i32.t)) -> M bool.t) ->
+            M (core.option.Option.t _) :=
         ltac:(M.get_method (fun ℐ =>
           core.iter.traits.iterator.Iterator.find
             (Self := core.slice.iter.Iter.t i32.t)
@@ -135,7 +138,11 @@ Definition main : M unit :=
       let* α1 : ref str.t := M.read (mk_str "
 ") in
       let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : _ :=
+      let* α3 :
+          (mut_ref (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t))
+            ->
+            ((ref i32.t) -> M bool.t) ->
+            M (core.option.Option.t _) :=
         ltac:(M.get_method (fun ℐ =>
           core.iter.traits.iterator.Iterator.find
             (Self := alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t)
@@ -192,7 +199,10 @@ Definition main : M unit :=
       let* α1 : ref str.t := M.read (mk_str "
 ") in
       let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : _ :=
+      let* α3 :
+          (mut_ref (core.slice.iter.Iter.t i32.t)) ->
+            ((ref (ref i32.t)) -> M bool.t) ->
+            M (core.option.Option.t _) :=
         ltac:(M.get_method (fun ℐ =>
           core.iter.traits.iterator.Iterator.find
             (Self := core.slice.iter.Iter.t i32.t)
@@ -243,13 +253,16 @@ Definition main : M unit :=
       let* α1 : ref str.t := M.read (mk_str "
 ") in
       let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : _ :=
+      let* α3 :
+          (mut_ref (core.slice.iter.Iter.t i32.t)) ->
+            ((ref (ref i32.t)) -> M bool.t) ->
+            M (core.option.Option.t _) :=
         ltac:(M.get_method (fun ℐ =>
           core.iter.traits.iterator.Iterator.find
             (Self := core.slice.iter.Iter.t i32.t)
             (P := (ref (ref i32.t)) -> M bool.t)
             (Trait := ℐ))) in
-      let* α4 : _ :=
+      let* α4 : (ref (array i32.t)) -> M _ :=
         ltac:(M.get_method (fun ℐ =>
           core.iter.traits.collect.IntoIterator.into_iter
             (Self := ref (array i32.t))

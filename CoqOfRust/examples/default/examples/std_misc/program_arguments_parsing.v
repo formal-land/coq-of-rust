@@ -146,7 +146,9 @@ Definition main : M unit :=
   M.catch_return
     (let* args :
         M.Val (alloc.vec.Vec.t alloc.string.String.t alloc.alloc.Global.t) :=
-      let* α0 : _ :=
+      let* α0 :
+          std.env.Args.t ->
+            M (alloc.vec.Vec.t alloc.string.String.t alloc.alloc.Global.t) :=
         ltac:(M.get_method (fun ℐ =>
           core.iter.traits.iterator.Iterator.collect
             (Self := std.env.Args.t)
@@ -184,12 +186,19 @@ Definition main : M unit :=
             M.alloc tt) :
             M (M.Val unit);
           fun γ =>
-            (let* α0 : _ :=
+            (let* α0 : (ref alloc.string.String.t) -> M (ref _) :=
               ltac:(M.get_method (fun ℐ =>
                 core.ops.deref.Deref.deref
                   (Self := alloc.string.String.t)
                   (Trait := ℐ))) in
-            let* α1 : _ :=
+            let* α1 :
+                (ref
+                    (alloc.vec.Vec.t
+                      alloc.string.String.t
+                      alloc.alloc.Global.t))
+                  ->
+                  usize.t ->
+                  M (ref _) :=
               ltac:(M.get_method (fun ℐ =>
                 core.ops.index.Index.index
                   (Self :=
@@ -247,7 +256,14 @@ Definition main : M unit :=
             M (M.Val unit);
           fun γ =>
             (let* cmd : M.Val (ref alloc.string.String.t) :=
-              let* α0 : _ :=
+              let* α0 :
+                  (ref
+                      (alloc.vec.Vec.t
+                        alloc.string.String.t
+                        alloc.alloc.Global.t))
+                    ->
+                    usize.t ->
+                    M (ref _) :=
                 ltac:(M.get_method (fun ℐ =>
                   core.ops.index.Index.index
                     (Self :=
@@ -260,7 +276,14 @@ Definition main : M unit :=
                 M.call (α0 (borrow args) ((Integer.of_Z 1) : usize.t)) in
               M.alloc α1 in
             let* num : M.Val (ref alloc.string.String.t) :=
-              let* α0 : _ :=
+              let* α0 :
+                  (ref
+                      (alloc.vec.Vec.t
+                        alloc.string.String.t
+                        alloc.alloc.Global.t))
+                    ->
+                    usize.t ->
+                    M (ref _) :=
                 ltac:(M.get_method (fun ℐ =>
                   core.ops.index.Index.index
                     (Self :=
@@ -273,7 +296,7 @@ Definition main : M unit :=
                 M.call (α0 (borrow args) ((Integer.of_Z 2) : usize.t)) in
               M.alloc α1 in
             let* number : M.Val i32.t :=
-              let* α0 : _ :=
+              let* α0 : (ref alloc.string.String.t) -> M (ref _) :=
                 ltac:(M.get_method (fun ℐ =>
                   core.ops.deref.Deref.deref
                     (Self := alloc.string.String.t)
@@ -339,7 +362,10 @@ Definition main : M unit :=
                       M (M.Val i32.t)
                   ] in
               M.copy α5 in
-            let* α0 : _ :=
+            let* α0 :
+                (ref alloc.string.String.t) ->
+                  core.ops.range.RangeFull.t ->
+                  M (ref _) :=
               ltac:(M.get_method (fun ℐ =>
                 core.ops.index.Index.index
                   (Self := alloc.string.String.t)

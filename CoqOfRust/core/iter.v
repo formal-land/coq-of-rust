@@ -16,6 +16,18 @@ Module adapters.
     End Chain.
   End chain.
 
+  Module filter_map.
+    Module FilterMap.
+      Parameter t : Set -> Set -> Set.
+    End FilterMap.
+  End filter_map.
+
+  Module map.
+    Module Map.
+      Parameter t : Set -> Set -> Set.
+    End Map.
+  End map.
+
   Module step_by.
     (* pub struct StepBy<I> { /* private fields */ } *)
     Module StepBy.
@@ -91,65 +103,65 @@ Module traits.
           where Self: Sized { ... }
         fn advance_by(&mut self, n: usize) -> Result<(), NonZeroUsize> { ... }
         fn nth(&mut self, n: usize) -> Option<Self::Item> { ... }
-        fn step_by(self, step: usize) -> StepBy<Self> ⓘ
+        fn step_by(self, step: usize) -> StepBy<Self>
           where Self: Sized { ... }
-        fn chain<U>(self, other: U) -> Chain<Self, U::IntoIter> ⓘ
+        fn chain<U>(self, other: U) -> Chain<Self, U::IntoIter>
           where Self: Sized,
                 U: IntoIterator<Item = Self::Item> { ... }
-        fn zip<U>(self, other: U) -> Zip<Self, U::IntoIter> ⓘ
+        fn zip<U>(self, other: U) -> Zip<Self, U::IntoIter>
           where Self: Sized,
                 U: IntoIterator { ... }
-        fn intersperse(self, separator: Self::Item) -> Intersperse<Self> ⓘ
+        fn intersperse(self, separator: Self::Item) -> Intersperse<Self>
           where Self: Sized,
                 Self::Item: Clone { ... }
-        fn intersperse_with<G>(self, separator: G) -> IntersperseWith<Self, G> ⓘ
+        fn intersperse_with<G>(self, separator: G) -> IntersperseWith<Self, G>
           where Self: Sized,
                 G: FnMut() -> Self::Item { ... }
-        fn map<B, F>(self, f: F) -> Map<Self, F> ⓘ
+        fn map<B, F>(self, f: F) -> Map<Self, F>
           where Self: Sized,
                 F: FnMut(Self::Item) -> B { ... }
         fn for_each<F>(self, f: F)
           where Self: Sized,
                 F: FnMut(Self::Item) { ... }
-        fn filter<P>(self, predicate: P) -> Filter<Self, P> ⓘ
+        fn filter<P>(self, predicate: P) -> Filter<Self, P>
           where Self: Sized,
                 P: FnMut(&Self::Item) -> bool { ... }
-        fn filter_map<B, F>(self, f: F) -> FilterMap<Self, F> ⓘ
+        fn filter_map<B, F>(self, f: F) -> FilterMap<Self, F>
           where Self: Sized,
                 F: FnMut(Self::Item) -> Option<B> { ... }
-        fn enumerate(self) -> Enumerate<Self> ⓘ
+        fn enumerate(self) -> Enumerate<Self>
           where Self: Sized { ... }
-        fn peekable(self) -> Peekable<Self> ⓘ
+        fn peekable(self) -> Peekable<Self>
           where Self: Sized { ... }
-        fn skip_while<P>(self, predicate: P) -> SkipWhile<Self, P> ⓘ
+        fn skip_while<P>(self, predicate: P) -> SkipWhile<Self, P>
           where Self: Sized,
                 P: FnMut(&Self::Item) -> bool { ... }
-        fn take_while<P>(self, predicate: P) -> TakeWhile<Self, P> ⓘ
+        fn take_while<P>(self, predicate: P) -> TakeWhile<Self, P>
           where Self: Sized,
                 P: FnMut(&Self::Item) -> bool { ... }
-        fn map_while<B, P>(self, predicate: P) -> MapWhile<Self, P> ⓘ
+        fn map_while<B, P>(self, predicate: P) -> MapWhile<Self, P>
           where Self: Sized,
                 P: FnMut(Self::Item) -> Option<B> { ... }
-        fn skip(self, n: usize) -> Skip<Self> ⓘ
+        fn skip(self, n: usize) -> Skip<Self>
           where Self: Sized { ... }
-        fn take(self, n: usize) -> Take<Self> ⓘ
+        fn take(self, n: usize) -> Take<Self>
           where Self: Sized { ... }
-        fn scan<St, B, F>(self, initial_state: St, f: F) -> Scan<Self, St, F> ⓘ
+        fn scan<St, B, F>(self, initial_state: St, f: F) -> Scan<Self, St, F>
           where Self: Sized,
                 F: FnMut(&mut St, Self::Item) -> Option<B> { ... }
-        fn flat_map<U, F>(self, f: F) -> FlatMap<Self, U, F> ⓘ
+        fn flat_map<U, F>(self, f: F) -> FlatMap<Self, U, F>
           where Self: Sized,
                 U: IntoIterator,
                 F: FnMut(Self::Item) -> U { ... }
-        fn flatten(self) -> Flatten<Self> ⓘ
+        fn flatten(self) -> Flatten<Self>
           where Self: Sized,
                 Self::Item: IntoIterator { ... }
-        fn map_windows<F, R, const N: usize>(self, f: F) -> MapWindows<Self, F, N> ⓘ
+        fn map_windows<F, R, const N: usize>(self, f: F) -> MapWindows<Self, F, N>
           where Self: Sized,
                 F: FnMut(&[Self::Item; N]) -> R { ... }
-        fn fuse(self) -> Fuse<Self> ⓘ
+        fn fuse(self) -> Fuse<Self>
           where Self: Sized { ... }
-        fn inspect<F>(self, f: F) -> Inspect<Self, F> ⓘ
+        fn inspect<F>(self, f: F) -> Inspect<Self, F>
           where Self: Sized,
                 F: FnMut(&Self::Item) { ... }
         fn by_ref(&mut self) -> &mut Self
@@ -241,21 +253,21 @@ Module traits.
         fn min_by<F>(self, compare: F) -> Option<Self::Item>
           where Self: Sized,
                 F: FnMut(&Self::Item, &Self::Item) -> Ordering { ... }
-        fn rev(self) -> Rev<Self> ⓘ
+        fn rev(self) -> Rev<Self>
           where Self: Sized + DoubleEndedIterator { ... }
         fn unzip<A, B, FromA, FromB>(self) -> (FromA, FromB)
           where FromA: Default + Extend<A>,
                 FromB: Default + Extend<B>,
                 Self: Sized + Iterator<Item = (A, B)> { ... }
-        fn copied<'a, T>(self) -> Copied<Self> ⓘ
+        fn copied<'a, T>(self) -> Copied<Self>
           where Self: Sized + Iterator<Item = &'a T>,
                 T: Copy + 'a { ... }
-        fn cloned<'a, T>(self) -> Cloned<Self> ⓘ
+        fn cloned<'a, T>(self) -> Cloned<Self>
           where Self: Sized + Iterator<Item = &'a T>,
                 T: Clone + 'a { ... }
-        fn cycle(self) -> Cycle<Self> ⓘ
+        fn cycle(self) -> Cycle<Self>
           where Self: Sized + Clone { ... }
-        fn array_chunks<const N: usize>(self) -> ArrayChunks<Self, N> ⓘ
+        fn array_chunks<const N: usize>(self) -> ArrayChunks<Self, N>
           where Self: Sized { ... }
         fn sum<S>(self) -> S
           where Self: Sized,
@@ -356,6 +368,18 @@ Module traits.
           position : option (
             mut_ref Self -> (Item -> M bool) -> M (option.Option.t usize.t)
           );
+          partition {B F : Set} : option (
+            Self -> F -> M (B * B)
+          );
+          map {B F : Set} : option (
+            Self -> F -> M (adapters.map.Map.t Self F)
+          );
+          collect {B : Set} : option (
+            Self -> M B
+          );
+          filter_map {B F : Set} : option (
+            Self -> F -> M (adapters.filter_map.FilterMap.t Self F)
+          );
           (* TODO: add other fields *)
         }.
       End Required.
@@ -399,6 +423,22 @@ Module traits.
         Parameter position :
           forall {P : Set},
           mut_ref Self -> P -> M (option.Option.t usize.t).
+
+        Parameter partition :
+          forall {B F : Set},
+          Self -> F -> M (B * B).
+
+        Parameter map :
+          forall {B F : Set},
+          Self -> F -> M (adapters.map.Map.t Self F).
+
+        Parameter collect :
+          forall {B : Set},
+          Self -> M B.
+
+        Parameter filter_map :
+          forall {B F : Set},
+          Self -> F -> M (adapters.filter_map.FilterMap.t Self F).
       End Provided.
       End Provided.
 
@@ -425,6 +465,14 @@ Module traits.
           M (adapters.zip.Zip.t Self H0.(collect.IntoIterator.IntoIter));
         position {P : Set} :
           mut_ref Self -> P -> M (option.Option.t usize.t);
+        partition {B F : Set} :
+          Self -> F -> M (B * B);
+        map {B F : Set} :
+          Self -> F -> M (adapters.map.Map.t Self F);
+        collect {B : Set} :
+          Self -> M B;
+        filter_map {B F : Set} :
+          Self -> F -> M (adapters.filter_map.FilterMap.t Self F);
       }.
 
       Global Instance From_Required (Self : Set) {H0 : Required.Trait Self} :
@@ -443,6 +491,10 @@ Module traits.
         zip {U : Set} {H0 : collect.IntoIterator.Trait U} :=
           Provided.zip (U := U) (H0 := H0);
         position {P : Set} := Provided.position (P := P);
+        partition {B F : Set} := Provided.partition (B := B) (F := F);
+        map {B F : Set} := Provided.map (B := B) (F := F);
+        collect {B : Set} := Provided.collect (B := B);
+        filter_map {B F : Set} := Provided.filter_map (B := B) (F := F);
       }.
 
       Module Impl.

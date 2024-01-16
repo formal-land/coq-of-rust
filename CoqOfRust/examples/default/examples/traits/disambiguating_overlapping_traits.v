@@ -46,7 +46,7 @@ Section Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating
   *)
   Definition get (self : ref Self) : M alloc.string.String.t :=
     let* self := M.alloc self in
-    let* α0 : _ :=
+    let* α0 : (ref alloc.string.String.t) -> M alloc.string.String.t :=
       ltac:(M.get_method (fun ℐ =>
         core.clone.Clone.clone (Self := alloc.string.String.t) (Trait := ℐ))) in
     let* α1 : ref disambiguating_overlapping_traits.Form.t := M.read self in
@@ -112,7 +112,7 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
   let* form : M.Val disambiguating_overlapping_traits.Form.t :=
-    let* α0 : _ :=
+    let* α0 : (ref str.t) -> M _ :=
       ltac:(M.get_method (fun ℐ =>
         alloc.borrow.ToOwned.to_owned (Self := str.t) (Trait := ℐ))) in
     let* α1 : ref str.t := M.read (mk_str "rustacean") in
@@ -123,7 +123,9 @@ Definition main : M unit :=
         disambiguating_overlapping_traits.Form.age := (Integer.of_Z 28) : u8.t;
       |} in
   let* username : M.Val alloc.string.String.t :=
-    let* α0 : _ :=
+    let* α0 :
+        (ref disambiguating_overlapping_traits.Form.t) ->
+          M alloc.string.String.t :=
       ltac:(M.get_method (fun ℐ =>
         disambiguating_overlapping_traits.UsernameWidget.get
           (Self := disambiguating_overlapping_traits.Form.t)
@@ -131,7 +133,7 @@ Definition main : M unit :=
     let* α1 : alloc.string.String.t := M.call (α0 (borrow form)) in
     M.alloc α1 in
   let* _ : M.Val unit :=
-    let* α0 : _ :=
+    let* α0 : (ref str.t) -> M alloc.string.String.t :=
       ltac:(M.get_method (fun ℐ =>
         alloc.string.ToString.to_string (Self := str.t) (Trait := ℐ))) in
     let* α1 : ref str.t := M.read (mk_str "rustacean") in
@@ -151,7 +153,10 @@ Definition main : M unit :=
             let γ0_1 := Tuple.Access.right γ in
             let* left_val := M.copy γ0_0 in
             let* right_val := M.copy γ0_1 in
-            let* α0 : _ :=
+            let* α0 :
+                (ref alloc.string.String.t) ->
+                  (ref alloc.string.String.t) ->
+                  M bool.t :=
               ltac:(M.get_method (fun ℐ =>
                 core.cmp.PartialEq.eq
                   (Self := alloc.string.String.t)
@@ -185,7 +190,7 @@ Definition main : M unit :=
           M (M.Val unit)
       ] in
   let* age : M.Val u8.t :=
-    let* α0 : _ :=
+    let* α0 : (ref disambiguating_overlapping_traits.Form.t) -> M u8.t :=
       ltac:(M.get_method (fun ℐ =>
         disambiguating_overlapping_traits.AgeWidget.get
           (Self := disambiguating_overlapping_traits.Form.t)

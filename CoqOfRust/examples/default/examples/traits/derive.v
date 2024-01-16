@@ -66,7 +66,10 @@ Section Impl_core_cmp_PartialOrd_for_derive_Centimeters_t.
       : M (core.option.Option.t core.cmp.Ordering.t) :=
     let* self := M.alloc self in
     let* other := M.alloc other in
-    let* α0 : _ :=
+    let* α0 :
+        (ref f64.t) ->
+          (ref f64.t) ->
+          M (core.option.Option.t core.cmp.Ordering.t) :=
       ltac:(M.get_method (fun ℐ =>
         core.cmp.PartialOrd.partial_cmp
           (Self := f64.t)
@@ -248,7 +251,8 @@ Definition main : M unit :=
     let* α0 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
     M.alloc (derive.Centimeters.Build_t α0) in
   let* cmp : M.Val (ref str.t) :=
-    let* α0 : _ :=
+    let* α0 :
+        (ref derive.Centimeters.t) -> (ref derive.Centimeters.t) -> M bool.t :=
       ltac:(M.get_method (fun ℐ =>
         core.cmp.PartialOrd.lt
           (Self := derive.Centimeters.t)

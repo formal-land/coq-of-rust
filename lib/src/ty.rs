@@ -319,7 +319,12 @@ pub(crate) fn compile_type(env: &Env, ty: &Ty) -> Rc<CoqType> {
         TyKind::TraitObject(ptrait_refs, _, _) => Rc::new(CoqType::Dyn(
             ptrait_refs
                 .iter()
-                .map(|ptrait_ref| compile_path(env, ptrait_ref.trait_ref.path))
+                .map(|ptrait_ref| {
+                    Path::concat(&[
+                        compile_path(env, ptrait_ref.trait_ref.path),
+                        Path::local("Trait"),
+                    ])
+                })
                 .collect(),
         )),
         TyKind::Typeof(_) => CoqType::var("Typeof"),

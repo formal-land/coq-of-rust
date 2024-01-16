@@ -38,7 +38,7 @@ Definition main : M unit :=
     let* α1 : std.path.Display.t := M.call (std.path.Path.t::["display"] α0) in
     M.alloc α1 in
   let* new_path : M.Val std.path.PathBuf.t :=
-    let* α0 : _ :=
+    let* α0 : (ref std.path.PathBuf.t) -> M (ref _) :=
       ltac:(M.get_method (fun ℐ =>
         core.ops.deref.Deref.deref
           (Self := std.path.PathBuf.t)
@@ -66,7 +66,7 @@ Definition main : M unit :=
     let* α1 : unit :=
       M.call (std.path.PathBuf.t::["set_file_name"] (borrow_mut new_path) α0) in
     M.alloc α1 in
-  let* α0 : _ :=
+  let* α0 : (ref std.path.PathBuf.t) -> M (ref _) :=
     ltac:(M.get_method (fun ℐ =>
       core.ops.deref.Deref.deref (Self := std.path.PathBuf.t) (Trait := ℐ))) in
   let* α1 : ref std.path.Path.t := M.call (α0 (borrow new_path)) in

@@ -192,7 +192,7 @@ Section Impl_traits_Sheep_t_2.
             let* α1 : ref str.t := M.read (mk_str " is already naked...
 ") in
             let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-            let* α3 : _ :=
+            let* α3 : (ref traits.Sheep.t) -> M (ref str.t) :=
               ltac:(M.get_method (fun ℐ =>
                 traits.Animal.name (Self := traits.Sheep.t) (Trait := ℐ))) in
             let* α4 : mut_ref traits.Sheep.t := M.read self in
@@ -258,14 +258,14 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
   let* dolly : M.Val traits.Sheep.t :=
-    let* α0 : _ :=
+    let* α0 : (ref str.t) -> M traits.Sheep.t :=
       ltac:(M.get_method (fun ℐ =>
         traits.Animal.new (Self := traits.Sheep.t) (Trait := ℐ))) in
     let* α1 : ref str.t := M.read (mk_str "Dolly") in
     let* α2 : traits.Sheep.t := M.call (α0 α1) in
     M.alloc α2 in
   let* _ : M.Val unit :=
-    let* α0 : _ :=
+    let* α0 : (ref traits.Sheep.t) -> M unit :=
       ltac:(M.get_method (fun ℐ =>
         traits.Animal.talk (Self := traits.Sheep.t) (Trait := ℐ))) in
     let* α1 : unit := M.call (α0 (borrow dolly)) in
@@ -274,7 +274,7 @@ Definition main : M unit :=
     let* α0 : unit := M.call (traits.Sheep.t::["shear"] (borrow_mut dolly)) in
     M.alloc α0 in
   let* _ : M.Val unit :=
-    let* α0 : _ :=
+    let* α0 : (ref traits.Sheep.t) -> M unit :=
       ltac:(M.get_method (fun ℐ =>
         traits.Animal.talk (Self := traits.Sheep.t) (Trait := ℐ))) in
     let* α1 : unit := M.call (α0 (borrow dolly)) in

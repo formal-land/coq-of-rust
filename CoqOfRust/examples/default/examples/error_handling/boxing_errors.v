@@ -5,7 +5,9 @@ Ltac Result T :=
   exact
     (core.result.Result.t
       T
-      (alloc.boxed.Box.t (dyn [core.error.Error]) alloc.boxed.Box.Default.A)).
+      (alloc.boxed.Box.t
+        (dyn [core.error.Error.Trait])
+        alloc.boxed.Box.Default.A)).
 
 Module  EmptyVec.
 Section EmptyVec.
@@ -126,7 +128,8 @@ Definition double_first
     (vec : alloc.vec.Vec.t (ref str.t) alloc.vec.Vec.Default.A)
     : M ltac:(boxing_errors.Result i32.t) :=
   let* vec := M.alloc vec in
-  let* α0 : _ :=
+  let* α0 :
+      (ref (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t)) -> M (ref _) :=
     ltac:(M.get_method (fun ℐ =>
       core.ops.deref.Deref.deref
         (Self := alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t)
@@ -143,7 +146,12 @@ Definition double_first
     M.call
       ((core.option.Option.t (ref (ref str.t)))::["ok_or_else"]
         α2
-        ((let* α0 : _ :=
+        ((let* α0 :
+            boxing_errors.EmptyVec.t ->
+              M
+                (alloc.boxed.Box.t
+                  (dyn [core.error.Error.Trait])
+                  alloc.alloc.Global.t) :=
           ltac:(M.get_method (fun ℐ =>
             core.convert.Into.into
               (Self := boxing_errors.EmptyVec.t)
@@ -194,7 +202,12 @@ Definition double_first
                         [
                           fun γ =>
                             (let* e := M.copy γ in
-                            let* α0 : _ :=
+                            let* α0 :
+                                core.num.error.ParseIntError.t ->
+                                  M
+                                    (alloc.boxed.Box.t
+                                      (dyn [core.error.Error.Trait])
+                                      alloc.alloc.Global.t) :=
                               ltac:(M.get_method (fun ℐ =>
                                 core.convert.Into.into
                                   (Self := core.num.error.ParseIntError.t)

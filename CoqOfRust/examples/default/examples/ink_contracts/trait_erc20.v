@@ -31,13 +31,13 @@ Section Impl_core_default_Default_for_trait_erc20_Mapping_t_K_V.
   Default
   *)
   Definition default : M (trait_erc20.Mapping.t K V) :=
-    let* α0 : _ :=
+    let* α0 : M (core.marker.PhantomData.t K) :=
       ltac:(M.get_method (fun ℐ =>
         core.default.Default.default
           (Self := core.marker.PhantomData.t K)
           (Trait := ℐ))) in
     let* α1 : core.marker.PhantomData.t K := M.call α0 in
-    let* α2 : _ :=
+    let* α2 : M (core.marker.PhantomData.t V) :=
       ltac:(M.get_method (fun ℐ =>
         core.default.Default.default
           (Self := core.marker.PhantomData.t V)
@@ -121,7 +121,7 @@ Section Impl_core_default_Default_for_trait_erc20_AccountId_t.
   Default
   *)
   Definition default : M trait_erc20.AccountId.t :=
-    let* α0 : _ :=
+    let* α0 : M u128.t :=
       ltac:(M.get_method (fun ℐ =>
         core.default.Default.default (Self := u128.t) (Trait := ℐ))) in
     let* α1 : u128.t := M.call α0 in
@@ -404,18 +404,22 @@ Section Impl_core_default_Default_for_trait_erc20_Erc20_t.
   Default
   *)
   Definition default : M trait_erc20.Erc20.t :=
-    let* α0 : _ :=
+    let* α0 : M u128.t :=
       ltac:(M.get_method (fun ℐ =>
         core.default.Default.default (Self := u128.t) (Trait := ℐ))) in
     let* α1 : u128.t := M.call α0 in
-    let* α2 : _ :=
+    let* α2 : M (trait_erc20.Mapping.t trait_erc20.AccountId.t u128.t) :=
       ltac:(M.get_method (fun ℐ =>
         core.default.Default.default
           (Self := trait_erc20.Mapping.t trait_erc20.AccountId.t u128.t)
           (Trait := ℐ))) in
     let* α3 : trait_erc20.Mapping.t trait_erc20.AccountId.t u128.t :=
       M.call α2 in
-    let* α4 : _ :=
+    let* α4 :
+        M
+            (trait_erc20.Mapping.t
+              (trait_erc20.AccountId.t * trait_erc20.AccountId.t)
+              u128.t) :=
       ltac:(M.get_method (fun ℐ =>
         core.default.Default.default
           (Self :=
@@ -594,7 +598,7 @@ Section Impl_trait_erc20_Erc20_t.
     let* total_supply := M.alloc total_supply in
     let* balances :
         M.Val (trait_erc20.Mapping.t trait_erc20.AccountId.t u128.t) :=
-      let* α0 : _ :=
+      let* α0 : M (trait_erc20.Mapping.t trait_erc20.AccountId.t u128.t) :=
         ltac:(M.get_method (fun ℐ =>
           core.default.Default.default
             (Self := trait_erc20.Mapping.t trait_erc20.AccountId.t u128.t)
@@ -637,7 +641,11 @@ Section Impl_trait_erc20_Erc20_t.
     let* α0 : u128.t := M.read total_supply in
     let* α1 : trait_erc20.Mapping.t trait_erc20.AccountId.t u128.t :=
       M.read balances in
-    let* α2 : _ :=
+    let* α2 :
+        M
+            (trait_erc20.Mapping.t
+              (trait_erc20.AccountId.t * trait_erc20.AccountId.t)
+              u128.t) :=
       ltac:(M.get_method (fun ℐ =>
         core.default.Default.default
           (Self :=
@@ -1070,7 +1078,9 @@ Section Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20_t.
         else
           M.alloc tt in
       let* _ : M.Val unit :=
-        let* α0 : _ :=
+        let* α0 :
+            (core.result.Result.t unit trait_erc20.Error.t) ->
+              M (core.ops.control_flow.ControlFlow.t _ _) :=
           ltac:(M.get_method (fun ℐ =>
             core.ops.try_trait.Try.branch
               (Self := core.result.Result.t unit trait_erc20.Error.t)
@@ -1108,7 +1118,12 @@ Section Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20_t.
               | core.ops.control_flow.ControlFlow.Break _ =>
                 let γ0_0 := core.ops.control_flow.ControlFlow.Get_Break_0 γ in
                 let* residual := M.copy γ0_0 in
-                let* α0 : _ :=
+                let* α0 :
+                    (core.result.Result.t
+                        core.convert.Infallible.t
+                        trait_erc20.Error.t)
+                      ->
+                      M (core.result.Result.t unit trait_erc20.Error.t) :=
                   ltac:(M.get_method (fun ℐ =>
                     core.ops.try_trait.FromResidual.from_residual
                       (Self := core.result.Result.t unit trait_erc20.Error.t)

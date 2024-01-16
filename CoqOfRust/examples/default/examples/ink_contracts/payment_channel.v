@@ -20,7 +20,7 @@ Section Impl_core_default_Default_for_payment_channel_AccountId_t.
   Default
   *)
   Definition default : M payment_channel.AccountId.t :=
-    let* α0 : _ :=
+    let* α0 : M u128.t :=
       ltac:(M.get_method (fun ℐ =>
         core.default.Default.default (Self := u128.t) (Trait := ℐ))) in
     let* α1 : u128.t := M.call α0 in
@@ -844,7 +844,7 @@ Section Impl_payment_channel_PaymentChannel_t.
       let* α4 : u128.t := M.read amount in
       M.alloc (α3, α4) in
     let* message : M.Val (array u8.t) :=
-      let* α0 : _ :=
+      let* α0 : M (array u8.t) :=
         ltac:(M.get_method (fun ℐ =>
           core.default.Default.default (Self := array u8.t) (Trait := ℐ))) in
       let* α1 : array u8.t := M.call α0 in
@@ -890,7 +890,7 @@ Section Impl_payment_channel_PaymentChannel_t.
     let* signature_account_id : M.Val (array u8.t) :=
       M.alloc (repeat ((Integer.of_Z 0) : u8.t) 32) in
     let* _ : M.Val unit :=
-      let* α0 : _ :=
+      let* α0 : (ref (slice u8.t)) -> (mut_ref _) -> M unit :=
         ltac:(M.get_method (fun ℐ =>
           payment_channel.CryptoHash.hash
             (Self := payment_channel.Blake2x256.t)
@@ -901,14 +901,17 @@ Section Impl_payment_channel_PaymentChannel_t.
             (pointer_coercion "Unsize" (borrow pub_key))
             (borrow_mut signature_account_id)) in
       M.alloc α1 in
-    let* α0 : _ :=
+    let* α0 :
+        (ref payment_channel.AccountId.t) ->
+          (ref payment_channel.AccountId.t) ->
+          M bool.t :=
       ltac:(M.get_method (fun ℐ =>
         core.cmp.PartialEq.eq
           (Self := payment_channel.AccountId.t)
           (Rhs := payment_channel.AccountId.t)
           (Trait := ℐ))) in
     let* α1 : ref payment_channel.PaymentChannel.t := M.read self in
-    let* α2 : _ :=
+    let* α2 : (array u8.t) -> M payment_channel.AccountId.t :=
       ltac:(M.get_method (fun ℐ =>
         core.convert.Into.into
           (Self := array u8.t)
@@ -1000,7 +1003,10 @@ Section Impl_payment_channel_PaymentChannel_t.
     let return_ := M.return_ (R := ltac:(payment_channel.Result unit)) in
     M.catch_return
       (let* _ : M.Val unit :=
-        let* α0 : _ :=
+        let* α0 :
+            (ref payment_channel.AccountId.t) ->
+              (ref payment_channel.AccountId.t) ->
+              M bool.t :=
           ltac:(M.get_method (fun ℐ =>
             core.cmp.PartialEq.ne
               (Self := payment_channel.AccountId.t)
@@ -1072,7 +1078,9 @@ Section Impl_payment_channel_PaymentChannel_t.
         else
           M.alloc tt in
       let* _ : M.Val unit :=
-        let* α0 : _ :=
+        let* α0 :
+            (core.result.Result.t unit payment_channel.Error.t) ->
+              M (core.ops.control_flow.ControlFlow.t _ _) :=
           ltac:(M.get_method (fun ℐ =>
             core.ops.try_trait.Try.branch
               (Self := core.result.Result.t unit payment_channel.Error.t)
@@ -1130,7 +1138,12 @@ Section Impl_payment_channel_PaymentChannel_t.
               | core.ops.control_flow.ControlFlow.Break _ =>
                 let γ0_0 := core.ops.control_flow.ControlFlow.Get_Break_0 γ in
                 let* residual := M.copy γ0_0 in
-                let* α0 : _ :=
+                let* α0 :
+                    (core.result.Result.t
+                        core.convert.Infallible.t
+                        payment_channel.Error.t)
+                      ->
+                      M (core.result.Result.t unit payment_channel.Error.t) :=
                   ltac:(M.get_method (fun ℐ =>
                     core.ops.try_trait.FromResidual.from_residual
                       (Self :=
@@ -1194,7 +1207,9 @@ Section Impl_payment_channel_PaymentChannel_t.
     let return_ := M.return_ (R := ltac:(payment_channel.Result unit)) in
     M.catch_return
       (let* _ : M.Val unit :=
-        let* α0 : _ :=
+        let* α0 :
+            (core.result.Result.t unit payment_channel.Error.t) ->
+              M (core.ops.control_flow.ControlFlow.t _ _) :=
           ltac:(M.get_method (fun ℐ =>
             core.ops.try_trait.Try.branch
               (Self := core.result.Result.t unit payment_channel.Error.t)
@@ -1228,7 +1243,12 @@ Section Impl_payment_channel_PaymentChannel_t.
               | core.ops.control_flow.ControlFlow.Break _ =>
                 let γ0_0 := core.ops.control_flow.ControlFlow.Get_Break_0 γ in
                 let* residual := M.copy γ0_0 in
-                let* α0 : _ :=
+                let* α0 :
+                    (core.result.Result.t
+                        core.convert.Infallible.t
+                        payment_channel.Error.t)
+                      ->
+                      M (core.result.Result.t unit payment_channel.Error.t) :=
                   ltac:(M.get_method (fun ℐ =>
                     core.ops.try_trait.FromResidual.from_residual
                       (Self :=
@@ -1313,7 +1333,10 @@ Section Impl_payment_channel_PaymentChannel_t.
     let return_ := M.return_ (R := ltac:(payment_channel.Result unit)) in
     M.catch_return
       (let* _ : M.Val unit :=
-        let* α0 : _ :=
+        let* α0 :
+            (ref payment_channel.AccountId.t) ->
+              (ref payment_channel.AccountId.t) ->
+              M bool.t :=
           ltac:(M.get_method (fun ℐ =>
             core.cmp.PartialEq.ne
               (Self := payment_channel.AccountId.t)
@@ -1541,7 +1564,10 @@ Section Impl_payment_channel_PaymentChannel_t.
     let return_ := M.return_ (R := ltac:(payment_channel.Result unit)) in
     M.catch_return
       (let* _ : M.Val unit :=
-        let* α0 : _ :=
+        let* α0 :
+            (ref payment_channel.AccountId.t) ->
+              (ref payment_channel.AccountId.t) ->
+              M bool.t :=
           ltac:(M.get_method (fun ℐ =>
             core.cmp.PartialEq.ne
               (Self := payment_channel.AccountId.t)
@@ -1628,7 +1654,9 @@ Section Impl_payment_channel_PaymentChannel_t.
         let* α2 := BinOp.Panic.add α0 α1 in
         assign β α2 in
       let* _ : M.Val unit :=
-        let* α0 : _ :=
+        let* α0 :
+            (core.result.Result.t unit payment_channel.Error.t) ->
+              M (core.ops.control_flow.ControlFlow.t _ _) :=
           ltac:(M.get_method (fun ℐ =>
             core.ops.try_trait.Try.branch
               (Self := core.result.Result.t unit payment_channel.Error.t)
@@ -1682,7 +1710,12 @@ Section Impl_payment_channel_PaymentChannel_t.
               | core.ops.control_flow.ControlFlow.Break _ =>
                 let γ0_0 := core.ops.control_flow.ControlFlow.Get_Break_0 γ in
                 let* residual := M.copy γ0_0 in
-                let* α0 : _ :=
+                let* α0 :
+                    (core.result.Result.t
+                        core.convert.Infallible.t
+                        payment_channel.Error.t)
+                      ->
+                      M (core.result.Result.t unit payment_channel.Error.t) :=
                   ltac:(M.get_method (fun ℐ =>
                     core.ops.try_trait.FromResidual.from_residual
                       (Self :=

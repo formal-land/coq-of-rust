@@ -57,7 +57,9 @@ fn main() {
 Definition main : M unit :=
   let* collected_iterator :
       M.Val (alloc.vec.Vec.t i32.t alloc.alloc.Global.t) :=
-    let* α0 : _ :=
+    let* α0 :
+        (core.ops.range.Range.t i32.t) ->
+          M (alloc.vec.Vec.t i32.t alloc.alloc.Global.t) :=
       ltac:(M.get_method (fun ℐ =>
         core.iter.traits.iterator.Iterator.collect
           (Self := core.ops.range.Range.t i32.t)
@@ -184,7 +186,10 @@ Definition main : M unit :=
       let* α1 : ref str.t := M.read (mk_str "
 ") in
       let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : _ :=
+      let* α3 :
+          (ref (alloc.vec.Vec.t i32.t alloc.alloc.Global.t)) ->
+            usize.t ->
+            M (ref _) :=
         ltac:(M.get_method (fun ℐ =>
           core.ops.index.Index.index
             (Self := alloc.vec.Vec.t i32.t alloc.alloc.Global.t)
@@ -238,12 +243,12 @@ Definition main : M unit :=
       M.alloc α3 in
     M.alloc tt in
   let* _ : M.Val unit :=
-    let* α0 : _ :=
+    let* α0 : (core.slice.iter.Iter.t i32.t) -> M _ :=
       ltac:(M.get_method (fun ℐ =>
         core.iter.traits.collect.IntoIterator.into_iter
           (Self := core.slice.iter.Iter.t i32.t)
           (Trait := ℐ))) in
-    let* α1 : _ :=
+    let* α1 : (ref (alloc.vec.Vec.t i32.t alloc.alloc.Global.t)) -> M (ref _) :=
       ltac:(M.get_method (fun ℐ =>
         core.ops.deref.Deref.deref
           (Self := alloc.vec.Vec.t i32.t alloc.alloc.Global.t)
@@ -261,7 +266,9 @@ Definition main : M unit :=
             (let* iter := M.copy γ in
             M.loop
               (let* _ : M.Val unit :=
-                let* α0 : _ :=
+                let* α0 :
+                    (mut_ref (core.slice.iter.Iter.t i32.t)) ->
+                      M (core.option.Option.t _) :=
                   ltac:(M.get_method (fun ℐ =>
                     core.iter.traits.iterator.Iterator.next
                       (Self := core.slice.iter.Iter.t i32.t)
@@ -321,19 +328,27 @@ Definition main : M unit :=
         ] in
     M.pure (use α6) in
   let* _ : M.Val unit :=
-    let* α0 : _ :=
+    let* α0 :
+        (core.iter.adapters.enumerate.Enumerate.t
+            (core.slice.iter.Iter.t i32.t))
+          ->
+          M _ :=
       ltac:(M.get_method (fun ℐ =>
         core.iter.traits.collect.IntoIterator.into_iter
           (Self :=
             core.iter.adapters.enumerate.Enumerate.t
               (core.slice.iter.Iter.t i32.t))
           (Trait := ℐ))) in
-    let* α1 : _ :=
+    let* α1 :
+        (core.slice.iter.Iter.t i32.t) ->
+          M
+            (core.iter.adapters.enumerate.Enumerate.t
+              (core.slice.iter.Iter.t i32.t)) :=
       ltac:(M.get_method (fun ℐ =>
         core.iter.traits.iterator.Iterator.enumerate
           (Self := core.slice.iter.Iter.t i32.t)
           (Trait := ℐ))) in
-    let* α2 : _ :=
+    let* α2 : (ref (alloc.vec.Vec.t i32.t alloc.alloc.Global.t)) -> M (ref _) :=
       ltac:(M.get_method (fun ℐ =>
         core.ops.deref.Deref.deref
           (Self := alloc.vec.Vec.t i32.t alloc.alloc.Global.t)
@@ -362,7 +377,12 @@ Definition main : M unit :=
             (let* iter := M.copy γ in
             M.loop
               (let* _ : M.Val unit :=
-                let* α0 : _ :=
+                let* α0 :
+                    (mut_ref
+                        (core.iter.adapters.enumerate.Enumerate.t
+                          (core.slice.iter.Iter.t i32.t)))
+                      ->
+                      M (core.option.Option.t _) :=
                   ltac:(M.get_method (fun ℐ =>
                     core.iter.traits.iterator.Iterator.next
                       (Self :=
@@ -440,12 +460,14 @@ Definition main : M unit :=
         ] in
     M.pure (use α8) in
   let* _ : M.Val unit :=
-    let* α0 : _ :=
+    let* α0 : (core.slice.iter.IterMut.t i32.t) -> M _ :=
       ltac:(M.get_method (fun ℐ =>
         core.iter.traits.collect.IntoIterator.into_iter
           (Self := core.slice.iter.IterMut.t i32.t)
           (Trait := ℐ))) in
-    let* α1 : _ :=
+    let* α1 :
+        (mut_ref (alloc.vec.Vec.t i32.t alloc.alloc.Global.t)) ->
+          M (mut_ref _) :=
       ltac:(M.get_method (fun ℐ =>
         core.ops.deref.DerefMut.deref_mut
           (Self := alloc.vec.Vec.t i32.t alloc.alloc.Global.t)
@@ -463,7 +485,9 @@ Definition main : M unit :=
             (let* iter := M.copy γ in
             M.loop
               (let* _ : M.Val unit :=
-                let* α0 : _ :=
+                let* α0 :
+                    (mut_ref (core.slice.iter.IterMut.t i32.t)) ->
+                      M (core.option.Option.t _) :=
                   ltac:(M.get_method (fun ℐ =>
                     core.iter.traits.iterator.Iterator.next
                       (Self := core.slice.iter.IterMut.t i32.t)

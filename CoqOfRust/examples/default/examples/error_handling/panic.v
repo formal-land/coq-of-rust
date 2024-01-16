@@ -14,7 +14,7 @@ fn drink(beverage: &str) {
 Definition drink (beverage : ref str.t) : M unit :=
   let* beverage := M.alloc beverage in
   let* _ : M.Val unit :=
-    let* α0 : _ :=
+    let* α0 : (ref (ref str.t)) -> (ref (ref str.t)) -> M bool.t :=
       ltac:(M.get_method (fun ℐ =>
         core.cmp.PartialEq.eq
           (Self := ref str.t)

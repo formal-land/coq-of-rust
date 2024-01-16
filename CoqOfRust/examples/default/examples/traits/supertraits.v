@@ -53,7 +53,7 @@ fn comp_sci_student_greeting(student: &dyn CompSciStudent) -> String {
 *)
 Definition comp_sci_student_greeting
     {DynT : Set}
-    {ℋ_0 : supertraits.CompSciStudent.Trait DynT}
+    {ℋ_0 : supertraits.CompSciStudent.Trait.Trait DynT}
     (student : ref DynT)
     : M alloc.string.String.t :=
   let* student := M.alloc student in
@@ -63,7 +63,9 @@ Definition comp_sci_student_greeting
     let* α2 : ref str.t := M.read (mk_str ". My favorite language is ") in
     let* α3 : ref str.t := M.read (mk_str ". My Git username is ") in
     let* α4 : M.Val (array (ref str.t)) := M.alloc [ α0; α1; α2; α3 ] in
-    let* α5 : _ :=
+    let* α5 :
+        (ref (dyn [supertraits.CompSciStudent.Trait])) ->
+          M alloc.string.String.t :=
       ltac:(M.get_method (fun ℐ =>
         supertraits.Person.name
           (Self := dyn [supertraits.CompSciStudent.Trait])
@@ -73,7 +75,9 @@ Definition comp_sci_student_greeting
     let* α8 : M.Val alloc.string.String.t := M.alloc α7 in
     let* α9 : core.fmt.rt.Argument.t :=
       M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α8)) in
-    let* α10 : _ :=
+    let* α10 :
+        (ref (dyn [supertraits.CompSciStudent.Trait])) ->
+          M alloc.string.String.t :=
       ltac:(M.get_method (fun ℐ =>
         supertraits.Student.university
           (Self := dyn [supertraits.CompSciStudent.Trait])
@@ -83,7 +87,9 @@ Definition comp_sci_student_greeting
     let* α13 : M.Val alloc.string.String.t := M.alloc α12 in
     let* α14 : core.fmt.rt.Argument.t :=
       M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α13)) in
-    let* α15 : _ :=
+    let* α15 :
+        (ref (dyn [supertraits.CompSciStudent.Trait])) ->
+          M alloc.string.String.t :=
       ltac:(M.get_method (fun ℐ =>
         supertraits.Programmer.fav_language
           (Self := dyn [supertraits.CompSciStudent.Trait])
@@ -93,7 +99,9 @@ Definition comp_sci_student_greeting
     let* α18 : M.Val alloc.string.String.t := M.alloc α17 in
     let* α19 : core.fmt.rt.Argument.t :=
       M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α18)) in
-    let* α20 : _ :=
+    let* α20 :
+        (ref (dyn [supertraits.CompSciStudent.Trait])) ->
+          M alloc.string.String.t :=
       ltac:(M.get_method (fun ℐ =>
         supertraits.CompSciStudent.git_username
           (Self := dyn [supertraits.CompSciStudent.Trait])

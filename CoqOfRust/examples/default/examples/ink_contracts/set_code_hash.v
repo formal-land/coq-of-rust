@@ -39,7 +39,7 @@ Section Impl_core_default_Default_for_set_code_hash_Incrementer_t.
   Default
   *)
   Definition default : M set_code_hash.Incrementer.t :=
-    let* α0 : _ :=
+    let* α0 : M u32.t :=
       ltac:(M.get_method (fun ℐ =>
         core.default.Default.default (Self := u32.t) (Trait := ℐ))) in
     let* α1 : u32.t := M.call α0 in
@@ -66,7 +66,7 @@ Section Impl_set_code_hash_Incrementer_t.
       }
   *)
   Definition new : M Self :=
-    let* α0 : _ :=
+    let* α0 : M set_code_hash.Incrementer.t :=
       ltac:(M.get_method (fun ℐ =>
         core.default.Default.default
           (Self := set_code_hash.Incrementer.t)

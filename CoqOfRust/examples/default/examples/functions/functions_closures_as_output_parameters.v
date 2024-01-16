@@ -10,7 +10,7 @@ fn create_fn() -> impl Fn() {
 *)
 Definition create_fn : M _ (* OpaqueTy *) :=
   let* text : M.Val alloc.string.String.t :=
-    let* α0 : _ :=
+    let* α0 : (ref str.t) -> M _ :=
       ltac:(M.get_method (fun ℐ =>
         alloc.borrow.ToOwned.to_owned (Self := str.t) (Trait := ℐ))) in
     let* α1 : ref str.t := M.read (mk_str "Fn") in
@@ -49,7 +49,7 @@ fn create_fnmut() -> impl FnMut() {
 *)
 Definition create_fnmut : M _ (* OpaqueTy *) :=
   let* text : M.Val alloc.string.String.t :=
-    let* α0 : _ :=
+    let* α0 : (ref str.t) -> M _ :=
       ltac:(M.get_method (fun ℐ =>
         alloc.borrow.ToOwned.to_owned (Self := str.t) (Trait := ℐ))) in
     let* α1 : ref str.t := M.read (mk_str "FnMut") in
@@ -86,7 +86,7 @@ fn create_fnonce() -> impl FnOnce() {
 *)
 Definition create_fnonce : M _ (* OpaqueTy *) :=
   let* text : M.Val alloc.string.String.t :=
-    let* α0 : _ :=
+    let* α0 : (ref str.t) -> M _ :=
       ltac:(M.get_method (fun ℐ =>
         alloc.borrow.ToOwned.to_owned (Self := str.t) (Trait := ℐ))) in
     let* α1 : ref str.t := M.read (mk_str "FnOnce") in
@@ -127,44 +127,40 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* fn_plain : M.Val type not implemented :=
-    let* α0 : type not implemented :=
-      M.call functions_closures_as_output_parameters.create_fn in
+  let* fn_plain : M.Val _ :=
+    let* α0 : _ := M.call functions_closures_as_output_parameters.create_fn in
     M.alloc α0 in
-  let* fn_mut : M.Val type not implemented :=
-    let* α0 : type not implemented :=
+  let* fn_mut : M.Val _ :=
+    let* α0 : _ :=
       M.call functions_closures_as_output_parameters.create_fnmut in
     M.alloc α0 in
-  let* fn_once : M.Val type not implemented :=
-    let* α0 : type not implemented :=
+  let* fn_once : M.Val _ :=
+    let* α0 : _ :=
       M.call functions_closures_as_output_parameters.create_fnonce in
     M.alloc α0 in
   let* _ : M.Val unit :=
-    let* α0 : _ :=
+    let* α0 : (ref _) -> unit -> M _ :=
       ltac:(M.get_method (fun ℐ =>
-        core.ops.function.Fn.call
-          (Self := type not implemented)
-          (Args := unit)
-          (Trait := ℐ))) in
+        core.ops.function.Fn.call (Self := _) (Args := unit) (Trait := ℐ))) in
     let* α1 : unit := M.call (α0 (borrow fn_plain) tt) in
     M.alloc α1 in
   let* _ : M.Val unit :=
-    let* α0 : _ :=
+    let* α0 : (mut_ref _) -> unit -> M _ :=
       ltac:(M.get_method (fun ℐ =>
         core.ops.function.FnMut.call_mut
-          (Self := type not implemented)
+          (Self := _)
           (Args := unit)
           (Trait := ℐ))) in
     let* α1 : unit := M.call (α0 (borrow_mut fn_mut) tt) in
     M.alloc α1 in
   let* _ : M.Val unit :=
-    let* α0 : _ :=
+    let* α0 : _ -> unit -> M _ :=
       ltac:(M.get_method (fun ℐ =>
         core.ops.function.FnOnce.call_once
-          (Self := type not implemented)
+          (Self := _)
           (Args := unit)
           (Trait := ℐ))) in
-    let* α1 : type not implemented := M.read fn_once in
+    let* α1 : _ := M.read fn_once in
     let* α2 : unit := M.call (α0 α1 tt) in
     M.alloc α2 in
   let* α0 : M.Val unit := M.alloc tt in

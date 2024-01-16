@@ -75,7 +75,7 @@ Definition sum_odd_numbers (up_to : u32.t) : M u32.t :=
   let* up_to := M.alloc up_to in
   let* acc : M.Val u32.t := M.alloc ((Integer.of_Z 0) : u32.t) in
   let* _ : M.Val unit :=
-    let* α0 : _ :=
+    let* α0 : (core.ops.range.Range.t u32.t) -> M _ :=
       ltac:(M.get_method (fun ℐ =>
         core.iter.traits.collect.IntoIterator.into_iter
           (Self := core.ops.range.Range.t u32.t)
@@ -97,7 +97,9 @@ Definition sum_odd_numbers (up_to : u32.t) : M u32.t :=
             (let* iter := M.copy γ in
             M.loop
               (let* _ : M.Val unit :=
-                let* α0 : _ :=
+                let* α0 :
+                    (mut_ref (core.ops.range.Range.t u32.t)) ->
+                      M (core.option.Option.t _) :=
                   ltac:(M.get_method (fun ℐ =>
                     core.iter.traits.iterator.Iterator.next
                       (Self := core.ops.range.Range.t u32.t)

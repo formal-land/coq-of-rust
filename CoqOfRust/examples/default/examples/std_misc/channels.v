@@ -84,7 +84,7 @@ Definition main : M unit :=
                       alloc.alloc.Global.t)::["new"] in
               M.alloc α0 in
             let* _ : M.Val unit :=
-              let* α0 : _ :=
+              let* α0 : (core.ops.range.Range.t i32.t) -> M _ :=
                 ltac:(M.get_method (fun ℐ =>
                   core.iter.traits.collect.IntoIterator.into_iter
                     (Self := core.ops.range.Range.t i32.t)
@@ -107,7 +107,9 @@ Definition main : M unit :=
                       (let* iter := M.copy γ in
                       M.loop
                         (let* _ : M.Val unit :=
-                          let* α0 : _ :=
+                          let* α0 :
+                              (mut_ref (core.ops.range.Range.t i32.t)) ->
+                                M (core.option.Option.t _) :=
                             ltac:(M.get_method (fun ℐ =>
                               core.iter.traits.iterator.Iterator.next
                                 (Self := core.ops.range.Range.t i32.t)
@@ -138,7 +140,9 @@ Definition main : M unit :=
                                   let* id := M.copy γ0_0 in
                                   let* thread_tx :
                                       M.Val (std.sync.mpsc.Sender.t i32.t) :=
-                                    let* α0 : _ :=
+                                    let* α0 :
+                                        (ref (std.sync.mpsc.Sender.t i32.t)) ->
+                                          M (std.sync.mpsc.Sender.t i32.t) :=
                                       ltac:(M.get_method (fun ℐ =>
                                         core.clone.Clone.clone
                                           (Self := std.sync.mpsc.Sender.t i32.t)
@@ -247,7 +251,7 @@ Definition main : M unit :=
                     (rust_cast α1)) in
               M.alloc α2 in
             let* _ : M.Val unit :=
-              let* α0 : _ :=
+              let* α0 : (core.ops.range.Range.t i32.t) -> M _ :=
                 ltac:(M.get_method (fun ℐ =>
                   core.iter.traits.collect.IntoIterator.into_iter
                     (Self := core.ops.range.Range.t i32.t)
@@ -270,7 +274,9 @@ Definition main : M unit :=
                       (let* iter := M.copy γ in
                       M.loop
                         (let* _ : M.Val unit :=
-                          let* α0 : _ :=
+                          let* α0 :
+                              (mut_ref (core.ops.range.Range.t i32.t)) ->
+                                M (core.option.Option.t _) :=
                             ltac:(M.get_method (fun ℐ =>
                               core.iter.traits.iterator.Iterator.next
                                 (Self := core.ops.range.Range.t i32.t)
@@ -327,7 +333,12 @@ Definition main : M unit :=
                   ] in
               M.pure (use α5) in
             let* _ : M.Val unit :=
-              let* α0 : _ :=
+              let* α0 :
+                  (alloc.vec.Vec.t
+                      (std.thread.JoinHandle.t unit)
+                      alloc.alloc.Global.t)
+                    ->
+                    M _ :=
                 ltac:(M.get_method (fun ℐ =>
                   core.iter.traits.collect.IntoIterator.into_iter
                     (Self :=
@@ -359,7 +370,13 @@ Definition main : M unit :=
                       (let* iter := M.copy γ in
                       M.loop
                         (let* _ : M.Val unit :=
-                          let* α0 : _ :=
+                          let* α0 :
+                              (mut_ref
+                                  (alloc.vec.into_iter.IntoIter.t
+                                    (std.thread.JoinHandle.t unit)
+                                    alloc.alloc.Global.t))
+                                ->
+                                M (core.option.Option.t _) :=
                             ltac:(M.get_method (fun ℐ =>
                               core.iter.traits.iterator.Iterator.next
                                 (Self :=

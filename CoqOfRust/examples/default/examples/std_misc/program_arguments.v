@@ -18,7 +18,9 @@ fn main() {
 Definition main : M unit :=
   let* args :
       M.Val (alloc.vec.Vec.t alloc.string.String.t alloc.alloc.Global.t) :=
-    let* α0 : _ :=
+    let* α0 :
+        std.env.Args.t ->
+          M (alloc.vec.Vec.t alloc.string.String.t alloc.alloc.Global.t) :=
       ltac:(M.get_method (fun ℐ =>
         core.iter.traits.iterator.Iterator.collect
           (Self := std.env.Args.t)
@@ -34,7 +36,10 @@ Definition main : M unit :=
       let* α1 : ref str.t := M.read (mk_str ".
 ") in
       let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : _ :=
+      let* α3 :
+          (ref (alloc.vec.Vec.t alloc.string.String.t alloc.alloc.Global.t)) ->
+            usize.t ->
+            M (ref _) :=
         ltac:(M.get_method (fun ℐ =>
           core.ops.index.Index.index
             (Self := alloc.vec.Vec.t alloc.string.String.t alloc.alloc.Global.t)
@@ -68,7 +73,10 @@ Definition main : M unit :=
       let* α6 : M.Val usize.t := M.alloc α5 in
       let* α7 : core.fmt.rt.Argument.t :=
         M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow α6)) in
-      let* α8 : _ :=
+      let* α8 :
+          (ref (alloc.vec.Vec.t alloc.string.String.t alloc.alloc.Global.t)) ->
+            (core.ops.range.RangeFrom.t usize.t) ->
+            M (ref _) :=
         ltac:(M.get_method (fun ℐ =>
           core.ops.index.Index.index
             (Self := alloc.vec.Vec.t alloc.string.String.t alloc.alloc.Global.t)

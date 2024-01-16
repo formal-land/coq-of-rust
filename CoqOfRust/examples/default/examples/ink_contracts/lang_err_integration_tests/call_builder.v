@@ -20,7 +20,7 @@ Section Impl_core_default_Default_for_call_builder_AccountId_t.
   Default
   *)
   Definition default : M call_builder.AccountId.t :=
-    let* α0 : _ :=
+    let* α0 : M u128.t :=
       ltac:(M.get_method (fun ℐ =>
         core.default.Default.default (Self := u128.t) (Trait := ℐ))) in
     let* α1 : u128.t := M.call α0 in
@@ -153,7 +153,7 @@ Section Impl_call_builder_CallBuilderTest_t.
       }
   *)
   Definition new : M Self :=
-    let* α0 : _ :=
+    let* α0 : M call_builder.CallBuilderTest.t :=
       ltac:(M.get_method (fun ℐ =>
         core.default.Default.default
           (Self := call_builder.CallBuilderTest.t)

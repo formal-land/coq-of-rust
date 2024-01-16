@@ -43,7 +43,7 @@ Section Impl_generics_associated_types_problem_Contains_i32_t_i32_t_for_generics
     let* self := M.alloc self in
     let* number_1 := M.alloc number_1 in
     let* number_2 := M.alloc number_2 in
-    let* α0 : _ :=
+    let* α0 : (ref (ref i32.t)) -> (ref (ref i32.t)) -> M bool.t :=
       ltac:(M.get_method (fun ℐ =>
         core.cmp.PartialEq.eq
           (Self := ref i32.t)
@@ -56,7 +56,7 @@ Section Impl_generics_associated_types_problem_Contains_i32_t_i32_t_for_generics
         (borrow
           (generics_associated_types_problem.Container.Get_0 (deref α1))) in
     let* α3 : bool.t := M.call (α0 (borrow α2) (borrow number_1)) in
-    let* α4 : _ :=
+    let* α4 : (ref (ref i32.t)) -> (ref (ref i32.t)) -> M bool.t :=
       ltac:(M.get_method (fun ℐ =>
         core.cmp.PartialEq.eq
           (Self := ref i32.t)
@@ -133,7 +133,7 @@ Definition difference
     (container : ref C)
     : M i32.t :=
   let* container := M.alloc container in
-  let* α0 : _ :=
+  let* α0 : (ref C) -> M i32.t :=
     ltac:(M.get_method (fun ℐ =>
       generics_associated_types_problem.Contains.last
         (Self := C)
@@ -142,7 +142,7 @@ Definition difference
         (Trait := ℐ))) in
   let* α1 : ref C := M.read container in
   let* α2 : i32.t := M.call (α0 α1) in
-  let* α3 : _ :=
+  let* α3 : (ref C) -> M i32.t :=
     ltac:(M.get_method (fun ℐ =>
       generics_associated_types_problem.Contains.first
         (Self := C)
@@ -194,7 +194,11 @@ Definition main : M unit :=
       let* α7 : M.Val (ref i32.t) := M.alloc (borrow number_2) in
       let* α8 : core.fmt.rt.Argument.t :=
         M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α7)) in
-      let* α9 : _ :=
+      let* α9 :
+          (ref generics_associated_types_problem.Container.t) ->
+            (ref i32.t) ->
+            (ref i32.t) ->
+            M bool.t :=
         ltac:(M.get_method (fun ℐ =>
           generics_associated_types_problem.Contains.contains
             (Self := generics_associated_types_problem.Container.t)
@@ -222,7 +226,8 @@ Definition main : M unit :=
       let* α1 : ref str.t := M.read (mk_str "
 ") in
       let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : _ :=
+      let* α3 :
+          (ref generics_associated_types_problem.Container.t) -> M i32.t :=
         ltac:(M.get_method (fun ℐ =>
           generics_associated_types_problem.Contains.first
             (Self := generics_associated_types_problem.Container.t)
@@ -248,7 +253,8 @@ Definition main : M unit :=
       let* α1 : ref str.t := M.read (mk_str "
 ") in
       let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : _ :=
+      let* α3 :
+          (ref generics_associated_types_problem.Container.t) -> M i32.t :=
         ltac:(M.get_method (fun ℐ =>
           generics_associated_types_problem.Contains.last
             (Self := generics_associated_types_problem.Container.t)

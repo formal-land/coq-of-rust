@@ -153,7 +153,7 @@ Definition depends_on_trait_impl (u : u32.t) (b : bool.t) : M unit :=
   let* u := M.alloc u in
   let* b := M.alloc b in
   let* _ : M.Val unit :=
-    let* α0 : _ :=
+    let* α0 : (ref functions_order.OtherType.t) -> M unit :=
       ltac:(M.get_method (fun ℐ =>
         functions_order.SomeTrait.some_trait_foo
           (Self := functions_order.OtherType.t)
@@ -164,7 +164,7 @@ Definition depends_on_trait_impl (u : u32.t) (b : bool.t) : M unit :=
     let* α3 : unit := M.call (α0 (borrow α2)) in
     M.alloc α3 in
   let* _ : M.Val unit :=
-    let* α0 : _ :=
+    let* α0 : (ref functions_order.SomeType.t) -> M unit :=
       ltac:(M.get_method (fun ℐ =>
         functions_order.SomeTrait.some_trait_foo
           (Self := functions_order.SomeType.t)

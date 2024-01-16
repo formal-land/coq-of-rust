@@ -193,7 +193,8 @@ Definition main : M unit :=
       let* α1 : ref str.t := M.read (mk_str "
 ") in
       let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : _ :=
+      let* α3 :
+          operator_overloading.Foo.t -> operator_overloading.Bar.t -> M _ :=
         ltac:(M.get_method (fun ℐ =>
           core.ops.arith.Add.add
             (Self := operator_overloading.Foo.t)
@@ -220,7 +221,8 @@ Definition main : M unit :=
       let* α1 : ref str.t := M.read (mk_str "
 ") in
       let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : _ :=
+      let* α3 :
+          operator_overloading.Bar.t -> operator_overloading.Foo.t -> M _ :=
         ltac:(M.get_method (fun ℐ =>
           core.ops.arith.Add.add
             (Self := operator_overloading.Bar.t)

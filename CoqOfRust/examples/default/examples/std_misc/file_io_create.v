@@ -89,7 +89,10 @@ Definition main : M unit :=
             M (M.Val std.fs.File.t)
         ] in
     M.copy α2 in
-  let* α0 : _ :=
+  let* α0 :
+      (mut_ref std.fs.File.t) ->
+        (ref (slice u8.t)) ->
+        M (core.result.Result.t unit std.io.error.Error.t) :=
     ltac:(M.get_method (fun ℐ =>
       std.io.Write.write_all (Self := std.fs.File.t) (Trait := ℐ))) in
   let* α1 : ref (ref str.t) := M.read file_io_create.LOREM_IPSUM in

@@ -72,7 +72,7 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
   let* color : M.Val alloc.string.String.t :=
-    let* α0 : _ :=
+    let* α0 : (ref str.t) -> M alloc.string.String.t :=
       ltac:(M.get_method (fun ℐ =>
         core.convert.From.from
           (Self := alloc.string.String.t)
@@ -102,7 +102,7 @@ Definition main : M unit :=
       M.read α0) :
       M unit) in
   let* _ : M.Val unit :=
-    let* α0 : _ :=
+    let* α0 : (ref (unit -> M unit)) -> unit -> M _ :=
       ltac:(M.get_method (fun ℐ =>
         core.ops.function.Fn.call
           (Self := unit -> M unit)
@@ -113,7 +113,7 @@ Definition main : M unit :=
   let* _reborrow : M.Val (ref alloc.string.String.t) :=
     M.alloc (borrow color) in
   let* _ : M.Val unit :=
-    let* α0 : _ :=
+    let* α0 : (ref (unit -> M unit)) -> unit -> M _ :=
       ltac:(M.get_method (fun ℐ =>
         core.ops.function.Fn.call
           (Self := unit -> M unit)
@@ -151,7 +151,7 @@ Definition main : M unit :=
       M.read α0) :
       M unit) in
   let* _ : M.Val unit :=
-    let* α0 : _ :=
+    let* α0 : (mut_ref (unit -> M unit)) -> unit -> M _ :=
       ltac:(M.get_method (fun ℐ =>
         core.ops.function.FnMut.call_mut
           (Self := unit -> M unit)
@@ -160,7 +160,7 @@ Definition main : M unit :=
     let* α1 : unit := M.call (α0 (borrow_mut inc) tt) in
     M.alloc α1 in
   let* _ : M.Val unit :=
-    let* α0 : _ :=
+    let* α0 : (mut_ref (unit -> M unit)) -> unit -> M _ :=
       ltac:(M.get_method (fun ℐ =>
         core.ops.function.FnMut.call_mut
           (Self := unit -> M unit)
@@ -204,7 +204,7 @@ Definition main : M unit :=
       M.read α0) :
       M unit) in
   let* _ : M.Val unit :=
-    let* α0 : _ :=
+    let* α0 : (unit -> M unit) -> unit -> M _ :=
       ltac:(M.get_method (fun ℐ =>
         core.ops.function.FnOnce.call_once
           (Self := unit -> M unit)

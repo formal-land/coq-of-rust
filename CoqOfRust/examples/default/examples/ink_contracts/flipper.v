@@ -36,7 +36,7 @@ Section Impl_flipper_Flipper_t.
       }
   *)
   Definition new_default : M Self :=
-    let* α0 : _ :=
+    let* α0 : M bool.t :=
       ltac:(M.get_method (fun ℐ =>
         core.default.Default.default (Self := bool.t) (Trait := ℐ))) in
     let* α1 : bool.t := M.call α0 in

@@ -20,7 +20,9 @@ Definition multiply
       (R := core.result.Result.t i32.t core.num.error.ParseIntError.t) in
   M.catch_return
     (let* first_number : M.Val i32.t :=
-      let* α0 : _ :=
+      let* α0 :
+          (core.result.Result.t i32.t core.num.error.ParseIntError.t) ->
+            M (core.ops.control_flow.ControlFlow.t _ _) :=
         ltac:(M.get_method (fun ℐ =>
           core.ops.try_trait.Try.branch
             (Self := core.result.Result.t i32.t core.num.error.ParseIntError.t)
@@ -53,7 +55,15 @@ Definition multiply
               | core.ops.control_flow.ControlFlow.Break _ =>
                 let γ0_0 := core.ops.control_flow.ControlFlow.Get_Break_0 γ in
                 let* residual := M.copy γ0_0 in
-                let* α0 : _ :=
+                let* α0 :
+                    (core.result.Result.t
+                        core.convert.Infallible.t
+                        core.num.error.ParseIntError.t)
+                      ->
+                      M
+                        (core.result.Result.t
+                          i32.t
+                          core.num.error.ParseIntError.t) :=
                   ltac:(M.get_method (fun ℐ =>
                     core.ops.try_trait.FromResidual.from_residual
                       (Self :=
@@ -94,7 +104,9 @@ Definition multiply
           ] in
       M.copy α5 in
     let* second_number : M.Val i32.t :=
-      let* α0 : _ :=
+      let* α0 :
+          (core.result.Result.t i32.t core.num.error.ParseIntError.t) ->
+            M (core.ops.control_flow.ControlFlow.t _ _) :=
         ltac:(M.get_method (fun ℐ =>
           core.ops.try_trait.Try.branch
             (Self := core.result.Result.t i32.t core.num.error.ParseIntError.t)
@@ -127,7 +139,15 @@ Definition multiply
               | core.ops.control_flow.ControlFlow.Break _ =>
                 let γ0_0 := core.ops.control_flow.ControlFlow.Get_Break_0 γ in
                 let* residual := M.copy γ0_0 in
-                let* α0 : _ :=
+                let* α0 :
+                    (core.result.Result.t
+                        core.convert.Infallible.t
+                        core.num.error.ParseIntError.t)
+                      ->
+                      M
+                        (core.result.Result.t
+                          i32.t
+                          core.num.error.ParseIntError.t) :=
                   ltac:(M.get_method (fun ℐ =>
                     core.ops.try_trait.FromResidual.from_residual
                       (Self :=

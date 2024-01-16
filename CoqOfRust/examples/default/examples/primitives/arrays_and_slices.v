@@ -225,7 +225,8 @@ Definition main : M unit :=
       M.alloc α3 in
     M.alloc tt in
   let* _ : M.Val unit :=
-    let* α0 : _ :=
+    let* α0 :
+        (ref (array i32.t)) -> (core.ops.range.Range.t usize.t) -> M (ref _) :=
       ltac:(M.get_method (fun ℐ =>
         core.ops.index.Index.index
           (Self := array i32.t)
@@ -259,7 +260,10 @@ Definition main : M unit :=
             let γ0_1 := Tuple.Access.right γ in
             let* left_val := M.copy γ0_0 in
             let* right_val := M.copy γ0_1 in
-            let* α0 : _ :=
+            let* α0 :
+                (ref (ref (array u32.t))) ->
+                  (ref (ref (array u32.t))) ->
+                  M bool.t :=
               ltac:(M.get_method (fun ℐ =>
                 core.cmp.PartialEq.eq
                   (Self := ref (array u32.t))
@@ -294,7 +298,7 @@ Definition main : M unit :=
       ] in
   let* _ : M.Val unit :=
     let* α0 : M.Val (ref (array u32.t)) := M.alloc (borrow empty_array) in
-    let* α1 : _ :=
+    let* α1 : (ref (array u32.t)) -> core.ops.range.RangeFull.t -> M (ref _) :=
       ltac:(M.get_method (fun ℐ =>
         core.ops.index.Index.index
           (Self := array u32.t)
@@ -317,7 +321,10 @@ Definition main : M unit :=
             let γ0_1 := Tuple.Access.right γ in
             let* left_val := M.copy γ0_0 in
             let* right_val := M.copy γ0_1 in
-            let* α0 : _ :=
+            let* α0 :
+                (ref (ref (array u32.t))) ->
+                  (ref (ref (slice u32.t))) ->
+                  M bool.t :=
               ltac:(M.get_method (fun ℐ =>
                 core.cmp.PartialEq.eq
                   (Self := ref (array u32.t))
@@ -350,7 +357,7 @@ Definition main : M unit :=
           end) :
           M (M.Val unit)
       ] in
-  let* α0 : _ :=
+  let* α0 : (core.ops.range.Range.t usize.t) -> M _ :=
     ltac:(M.get_method (fun ℐ =>
       core.iter.traits.collect.IntoIterator.into_iter
         (Self := core.ops.range.Range.t usize.t)
@@ -374,7 +381,9 @@ Definition main : M unit :=
           (let* iter := M.copy γ in
           M.loop
             (let* _ : M.Val unit :=
-              let* α0 : _ :=
+              let* α0 :
+                  (mut_ref (core.ops.range.Range.t usize.t)) ->
+                    M (core.option.Option.t _) :=
                 ltac:(M.get_method (fun ℐ =>
                   core.iter.traits.iterator.Iterator.next
                     (Self := core.ops.range.Range.t usize.t)

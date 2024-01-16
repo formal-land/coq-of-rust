@@ -70,7 +70,10 @@ Definition main : M unit :=
             let γ0_1 := Tuple.Access.right γ in
             let* left_val := M.copy γ0_0 in
             let* right_val := M.copy γ0_1 in
-            let* α0 : _ :=
+            let* α0 :
+                (ref (ref (slice u32.t))) ->
+                  (ref (ref (slice u32.t))) ->
+                  M bool.t :=
               ltac:(M.get_method (fun ℐ =>
                 core.cmp.PartialEq.eq
                   (Self := ref (slice u32.t))

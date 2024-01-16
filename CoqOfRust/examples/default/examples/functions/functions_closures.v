@@ -69,7 +69,7 @@ Definition main : M unit :=
       let* α1 : ref str.t := M.read (mk_str "
 ") in
       let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : _ :=
+      let* α3 : (ref (i32.t -> M i32.t)) -> i32.t -> M _ :=
         ltac:(M.get_method (fun ℐ =>
           core.ops.function.Fn.call
             (Self := i32.t -> M i32.t)
@@ -95,7 +95,7 @@ Definition main : M unit :=
       let* α1 : ref str.t := M.read (mk_str "
 ") in
       let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : _ :=
+      let* α3 : (ref (i32.t -> M i32.t)) -> i32.t -> M _ :=
         ltac:(M.get_method (fun ℐ =>
           core.ops.function.Fn.call
             (Self := i32.t -> M i32.t)
@@ -123,7 +123,7 @@ Definition main : M unit :=
       let* α1 : ref str.t := M.read (mk_str "
 ") in
       let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : _ :=
+      let* α3 : (ref (unit -> M i32.t)) -> unit -> M _ :=
         ltac:(M.get_method (fun ℐ =>
           core.ops.function.Fn.call
             (Self := unit -> M i32.t)

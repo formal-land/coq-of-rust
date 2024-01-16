@@ -30,7 +30,11 @@ Definition read_lines
           ((core.result.Result.t std.fs.File.t std.io.error.Error.t)::["unwrap"]
             α1) in
       M.alloc α2 in
-    let* α0 : _ :=
+    let* α0 :
+        (std.io.buffered.bufreader.BufReader.t std.fs.File.t) ->
+          M
+            (std.io.Lines.t
+              (std.io.buffered.bufreader.BufReader.t std.fs.File.t)) :=
       ltac:(M.get_method (fun ℐ =>
         std.io.BufRead.lines
           (Self := std.io.buffered.bufreader.BufReader.t std.fs.File.t)
@@ -62,7 +66,7 @@ Definition main : M unit :=
       M.Val
         (std.io.Lines.t
           (std.io.buffered.bufreader.BufReader.t std.fs.File.t)) :=
-    let* α0 : _ :=
+    let* α0 : (ref str.t) -> M alloc.string.String.t :=
       ltac:(M.get_method (fun ℐ =>
         alloc.string.ToString.to_string (Self := str.t) (Trait := ℐ))) in
     let* α1 : ref str.t := M.read (mk_str "./hosts") in
@@ -71,7 +75,9 @@ Definition main : M unit :=
         std.io.Lines.t (std.io.buffered.bufreader.BufReader.t std.fs.File.t) :=
       M.call (file_io_read_lines.read_lines α2) in
     M.alloc α3 in
-  let* α0 : _ :=
+  let* α0 :
+      (std.io.Lines.t (std.io.buffered.bufreader.BufReader.t std.fs.File.t)) ->
+        M _ :=
     ltac:(M.get_method (fun ℐ =>
       core.iter.traits.collect.IntoIterator.into_iter
         (Self :=
@@ -96,7 +102,12 @@ Definition main : M unit :=
           (let* iter := M.copy γ in
           M.loop
             (let* _ : M.Val unit :=
-              let* α0 : _ :=
+              let* α0 :
+                  (mut_ref
+                      (std.io.Lines.t
+                        (std.io.buffered.bufreader.BufReader.t std.fs.File.t)))
+                    ->
+                    M (core.option.Option.t _) :=
                 ltac:(M.get_method (fun ℐ =>
                   core.iter.traits.iterator.Iterator.next
                     (Self :=

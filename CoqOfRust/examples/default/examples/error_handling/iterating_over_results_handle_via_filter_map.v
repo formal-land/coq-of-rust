@@ -28,7 +28,12 @@ Definition main : M unit :=
         ((slice (ref str.t))::["into_vec"] (pointer_coercion "Unsize" α5)) in
     M.alloc α6 in
   let* numbers : M.Val (alloc.vec.Vec.t i32.t alloc.alloc.Global.t) :=
-    let* α0 : _ :=
+    let* α0 :
+        (core.iter.adapters.filter_map.FilterMap.t
+            (alloc.vec.into_iter.IntoIter.t (ref str.t) alloc.alloc.Global.t)
+            ((ref str.t) -> M (core.option.Option.t i32.t)))
+          ->
+          M (alloc.vec.Vec.t i32.t alloc.alloc.Global.t) :=
       ltac:(M.get_method (fun ℐ =>
         core.iter.traits.iterator.Iterator.collect
           (Self :=
@@ -37,7 +42,13 @@ Definition main : M unit :=
               ((ref str.t) -> M (core.option.Option.t i32.t)))
           (B := alloc.vec.Vec.t i32.t alloc.alloc.Global.t)
           (Trait := ℐ))) in
-    let* α1 : _ :=
+    let* α1 :
+        (alloc.vec.into_iter.IntoIter.t (ref str.t) alloc.alloc.Global.t) ->
+          ((ref str.t) -> M (core.option.Option.t i32.t)) ->
+          M
+            (core.iter.adapters.filter_map.FilterMap.t
+              (alloc.vec.into_iter.IntoIter.t (ref str.t) alloc.alloc.Global.t)
+              ((ref str.t) -> M (core.option.Option.t i32.t))) :=
       ltac:(M.get_method (fun ℐ =>
         core.iter.traits.iterator.Iterator.filter_map
           (Self :=
@@ -45,7 +56,7 @@ Definition main : M unit :=
           (B := i32.t)
           (F := (ref str.t) -> M (core.option.Option.t i32.t))
           (Trait := ℐ))) in
-    let* α2 : _ :=
+    let* α2 : (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t) -> M _ :=
       ltac:(M.get_method (fun ℐ =>
         core.iter.traits.collect.IntoIterator.into_iter
           (Self := alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t)

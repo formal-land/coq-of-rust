@@ -96,7 +96,7 @@ Definition main : M unit :=
               α3) in
         M.alloc α4 in
       let* guess : M.Val u32.t :=
-        let* α0 : _ :=
+        let* α0 : (ref alloc.string.String.t) -> M (ref _) :=
           ltac:(M.get_method (fun ℐ =>
             core.ops.deref.Deref.deref
               (Self := alloc.string.String.t)
@@ -153,7 +153,7 @@ Definition main : M unit :=
           let* α6 : unit := M.call (std.io.stdio._print α5) in
           M.alloc α6 in
         M.alloc tt in
-      let* α0 : _ :=
+      let* α0 : (ref u32.t) -> (ref u32.t) -> M core.cmp.Ordering.t :=
         ltac:(M.get_method (fun ℐ =>
           core.cmp.Ord.cmp (Self := u32.t) (Trait := ℐ))) in
       let* α1 : core.cmp.Ordering.t :=

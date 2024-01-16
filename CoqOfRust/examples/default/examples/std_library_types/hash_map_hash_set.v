@@ -48,7 +48,12 @@ Definition main : M unit :=
         (std.collections.hash.set.HashSet.t
           i32.t
           std.hash.random.RandomState.t) :=
-    let* α0 : _ :=
+    let* α0 :
+        (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t) ->
+          M
+            (std.collections.hash.set.HashSet.t
+              i32.t
+              std.hash.random.RandomState.t) :=
       ltac:(M.get_method (fun ℐ =>
         core.iter.traits.iterator.Iterator.collect
           (Self := alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t)
@@ -57,7 +62,7 @@ Definition main : M unit :=
               i32.t
               std.hash.random.RandomState.t)
           (Trait := ℐ))) in
-    let* α1 : _ :=
+    let* α1 : (alloc.vec.Vec.t i32.t alloc.alloc.Global.t) -> M _ :=
       ltac:(M.get_method (fun ℐ =>
         core.iter.traits.collect.IntoIterator.into_iter
           (Self := alloc.vec.Vec.t i32.t alloc.alloc.Global.t)
@@ -88,7 +93,12 @@ Definition main : M unit :=
         (std.collections.hash.set.HashSet.t
           i32.t
           std.hash.random.RandomState.t) :=
-    let* α0 : _ :=
+    let* α0 :
+        (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t) ->
+          M
+            (std.collections.hash.set.HashSet.t
+              i32.t
+              std.hash.random.RandomState.t) :=
       ltac:(M.get_method (fun ℐ =>
         core.iter.traits.iterator.Iterator.collect
           (Self := alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t)
@@ -97,7 +107,7 @@ Definition main : M unit :=
               i32.t
               std.hash.random.RandomState.t)
           (Trait := ℐ))) in
-    let* α1 : _ :=
+    let* α1 : (alloc.vec.Vec.t i32.t alloc.alloc.Global.t) -> M _ :=
       ltac:(M.get_method (fun ℐ =>
         core.iter.traits.collect.IntoIterator.into_iter
           (Self := alloc.vec.Vec.t i32.t alloc.alloc.Global.t)
@@ -208,7 +218,10 @@ Definition main : M unit :=
       let* α1 : ref str.t := M.read (mk_str "
 ") in
       let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : _ :=
+      let* α3 :
+          (std.collections.hash.set.Union.t i32.t std.hash.random.RandomState.t)
+            ->
+            M (alloc.vec.Vec.t (ref i32.t) alloc.alloc.Global.t) :=
         ltac:(M.get_method (fun ℐ =>
           core.iter.traits.iterator.Iterator.collect
             (Self :=
@@ -248,7 +261,12 @@ Definition main : M unit :=
       let* α1 : ref str.t := M.read (mk_str "
 ") in
       let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : _ :=
+      let* α3 :
+          (std.collections.hash.set.Difference.t
+              i32.t
+              std.hash.random.RandomState.t)
+            ->
+            M (alloc.vec.Vec.t (ref i32.t) alloc.alloc.Global.t) :=
         ltac:(M.get_method (fun ℐ =>
           core.iter.traits.iterator.Iterator.collect
             (Self :=
@@ -288,7 +306,12 @@ Definition main : M unit :=
       let* α1 : ref str.t := M.read (mk_str "
 ") in
       let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : _ :=
+      let* α3 :
+          (std.collections.hash.set.Intersection.t
+              i32.t
+              std.hash.random.RandomState.t)
+            ->
+            M (alloc.vec.Vec.t (ref i32.t) alloc.alloc.Global.t) :=
         ltac:(M.get_method (fun ℐ =>
           core.iter.traits.iterator.Iterator.collect
             (Self :=
@@ -328,7 +351,12 @@ Definition main : M unit :=
       let* α1 : ref str.t := M.read (mk_str "
 ") in
       let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : _ :=
+      let* α3 :
+          (std.collections.hash.set.SymmetricDifference.t
+              i32.t
+              std.hash.random.RandomState.t)
+            ->
+            M (alloc.vec.Vec.t (ref i32.t) alloc.alloc.Global.t) :=
         ltac:(M.get_method (fun ℐ =>
           core.iter.traits.iterator.Iterator.collect
             (Self :=

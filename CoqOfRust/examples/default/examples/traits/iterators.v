@@ -226,7 +226,9 @@ Definition main : M unit :=
       let* α1 : ref str.t := M.read (mk_str "
 ") in
       let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : _ :=
+      let* α3 :
+          (mut_ref (core.ops.range.Range.t i32.t)) ->
+            M (core.option.Option.t _) :=
         ltac:(M.get_method (fun ℐ =>
           core.iter.traits.iterator.Iterator.next
             (Self := core.ops.range.Range.t i32.t)
@@ -251,7 +253,9 @@ Definition main : M unit :=
       let* α1 : ref str.t := M.read (mk_str "
 ") in
       let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : _ :=
+      let* α3 :
+          (mut_ref (core.ops.range.Range.t i32.t)) ->
+            M (core.option.Option.t _) :=
         ltac:(M.get_method (fun ℐ =>
           core.iter.traits.iterator.Iterator.next
             (Self := core.ops.range.Range.t i32.t)
@@ -276,7 +280,9 @@ Definition main : M unit :=
       let* α1 : ref str.t := M.read (mk_str "
 ") in
       let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : _ :=
+      let* α3 :
+          (mut_ref (core.ops.range.Range.t i32.t)) ->
+            M (core.option.Option.t _) :=
         ltac:(M.get_method (fun ℐ =>
           core.iter.traits.iterator.Iterator.next
             (Self := core.ops.range.Range.t i32.t)
@@ -301,7 +307,9 @@ Definition main : M unit :=
       let* α1 : ref str.t := M.read (mk_str "
 ") in
       let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : _ :=
+      let* α3 :
+          (mut_ref (core.ops.range.Range.t i32.t)) ->
+            M (core.option.Option.t _) :=
         ltac:(M.get_method (fun ℐ =>
           core.iter.traits.iterator.Iterator.next
             (Self := core.ops.range.Range.t i32.t)
@@ -334,7 +342,7 @@ Definition main : M unit :=
       M.alloc α3 in
     M.alloc tt in
   let* _ : M.Val unit :=
-    let* α0 : _ :=
+    let* α0 : (core.ops.range.Range.t i32.t) -> M _ :=
       ltac:(M.get_method (fun ℐ =>
         core.iter.traits.collect.IntoIterator.into_iter
           (Self := core.ops.range.Range.t i32.t)
@@ -355,7 +363,9 @@ Definition main : M unit :=
             (let* iter := M.copy γ in
             M.loop
               (let* _ : M.Val unit :=
-                let* α0 : _ :=
+                let* α0 :
+                    (mut_ref (core.ops.range.Range.t i32.t)) ->
+                      M (core.option.Option.t _) :=
                   ltac:(M.get_method (fun ℐ =>
                     core.iter.traits.iterator.Iterator.next
                       (Self := core.ops.range.Range.t i32.t)
@@ -428,12 +438,15 @@ Definition main : M unit :=
       M.alloc α3 in
     M.alloc tt in
   let* _ : M.Val unit :=
-    let* α0 : _ :=
+    let* α0 : (core.iter.adapters.take.Take.t iterators.Fibonacci.t) -> M _ :=
       ltac:(M.get_method (fun ℐ =>
         core.iter.traits.collect.IntoIterator.into_iter
           (Self := core.iter.adapters.take.Take.t iterators.Fibonacci.t)
           (Trait := ℐ))) in
-    let* α1 : _ :=
+    let* α1 :
+        iterators.Fibonacci.t ->
+          usize.t ->
+          M (core.iter.adapters.take.Take.t iterators.Fibonacci.t) :=
       ltac:(M.get_method (fun ℐ =>
         core.iter.traits.iterator.Iterator.take
           (Self := iterators.Fibonacci.t)
@@ -453,7 +466,11 @@ Definition main : M unit :=
             (let* iter := M.copy γ in
             M.loop
               (let* _ : M.Val unit :=
-                let* α0 : _ :=
+                let* α0 :
+                    (mut_ref
+                        (core.iter.adapters.take.Take.t iterators.Fibonacci.t))
+                      ->
+                      M (core.option.Option.t _) :=
                   ltac:(M.get_method (fun ℐ =>
                     core.iter.traits.iterator.Iterator.next
                       (Self :=
@@ -527,19 +544,31 @@ Definition main : M unit :=
       M.alloc α3 in
     M.alloc tt in
   let* _ : M.Val unit :=
-    let* α0 : _ :=
+    let* α0 :
+        (core.iter.adapters.take.Take.t
+            (core.iter.adapters.skip.Skip.t iterators.Fibonacci.t))
+          ->
+          M _ :=
       ltac:(M.get_method (fun ℐ =>
         core.iter.traits.collect.IntoIterator.into_iter
           (Self :=
             core.iter.adapters.take.Take.t
               (core.iter.adapters.skip.Skip.t iterators.Fibonacci.t))
           (Trait := ℐ))) in
-    let* α1 : _ :=
+    let* α1 :
+        (core.iter.adapters.skip.Skip.t iterators.Fibonacci.t) ->
+          usize.t ->
+          M
+            (core.iter.adapters.take.Take.t
+              (core.iter.adapters.skip.Skip.t iterators.Fibonacci.t)) :=
       ltac:(M.get_method (fun ℐ =>
         core.iter.traits.iterator.Iterator.take
           (Self := core.iter.adapters.skip.Skip.t iterators.Fibonacci.t)
           (Trait := ℐ))) in
-    let* α2 : _ :=
+    let* α2 :
+        iterators.Fibonacci.t ->
+          usize.t ->
+          M (core.iter.adapters.skip.Skip.t iterators.Fibonacci.t) :=
       ltac:(M.get_method (fun ℐ =>
         core.iter.traits.iterator.Iterator.skip
           (Self := iterators.Fibonacci.t)
@@ -568,7 +597,13 @@ Definition main : M unit :=
             (let* iter := M.copy γ in
             M.loop
               (let* _ : M.Val unit :=
-                let* α0 : _ :=
+                let* α0 :
+                    (mut_ref
+                        (core.iter.adapters.take.Take.t
+                          (core.iter.adapters.skip.Skip.t
+                            iterators.Fibonacci.t)))
+                      ->
+                      M (core.option.Option.t _) :=
                   ltac:(M.get_method (fun ℐ =>
                     core.iter.traits.iterator.Iterator.next
                       (Self :=
@@ -655,7 +690,7 @@ Definition main : M unit :=
       let* α7 : unit := M.call (std.io.stdio._print α6) in
       M.alloc α7 in
     M.alloc tt in
-  let* α0 : _ :=
+  let* α0 : (core.slice.iter.Iter.t u32.t) -> M _ :=
     ltac:(M.get_method (fun ℐ =>
       core.iter.traits.collect.IntoIterator.into_iter
         (Self := core.slice.iter.Iter.t u32.t)
@@ -673,7 +708,9 @@ Definition main : M unit :=
           (let* iter := M.copy γ in
           M.loop
             (let* _ : M.Val unit :=
-              let* α0 : _ :=
+              let* α0 :
+                  (mut_ref (core.slice.iter.Iter.t u32.t)) ->
+                    M (core.option.Option.t _) :=
                 ltac:(M.get_method (fun ℐ =>
                   core.iter.traits.iterator.Iterator.next
                     (Self := core.slice.iter.Iter.t u32.t)

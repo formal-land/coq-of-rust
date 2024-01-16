@@ -190,7 +190,8 @@ Definition main : M unit :=
       M.read twenty in
     let* α1 : unit := M.call (map_in_result_via_match.print α0) in
     M.alloc α1 in
-  let* tt : M.Val (core.result.Result.t i32.t core.num.error.ParseIntError.t) :=
+  let* tt_ :
+      M.Val (core.result.Result.t i32.t core.num.error.ParseIntError.t) :=
     let* α0 : ref str.t := M.read (mk_str "t") in
     let* α1 : ref str.t := M.read (mk_str "2") in
     let* α2 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
@@ -198,7 +199,7 @@ Definition main : M unit :=
     M.alloc α2 in
   let* _ : M.Val unit :=
     let* α0 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
-      M.read tt in
+      M.read tt_ in
     let* α1 : unit := M.call (map_in_result_via_match.print α0) in
     M.alloc α1 in
   let* α0 : M.Val unit := M.alloc tt in

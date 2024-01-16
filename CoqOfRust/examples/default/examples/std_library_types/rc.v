@@ -41,7 +41,7 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
   let* rc_examples : M.Val alloc.string.String.t :=
-    let* α0 : _ :=
+    let* α0 : (ref str.t) -> M alloc.string.String.t :=
       ltac:(M.get_method (fun ℐ =>
         alloc.string.ToString.to_string (Self := str.t) (Trait := ℐ))) in
     let* α1 : ref str.t := M.read (mk_str "Rc examples") in
@@ -107,7 +107,9 @@ Definition main : M unit :=
       M.alloc tt in
     let* rc_b :
         M.Val (alloc.rc.Rc.t alloc.string.String.t alloc.alloc.Global.t) :=
-      let* α0 : _ :=
+      let* α0 :
+          (ref (alloc.rc.Rc.t alloc.string.String.t alloc.alloc.Global.t)) ->
+            M (alloc.rc.Rc.t alloc.string.String.t alloc.alloc.Global.t) :=
         ltac:(M.get_method (fun ℐ =>
           core.clone.Clone.clone
             (Self := alloc.rc.Rc.t alloc.string.String.t alloc.alloc.Global.t)
@@ -169,7 +171,11 @@ Definition main : M unit :=
         let* α1 : ref str.t := M.read (mk_str "
 ") in
         let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-        let* α3 : _ :=
+        let* α3 :
+            (ref (alloc.rc.Rc.t alloc.string.String.t alloc.alloc.Global.t)) ->
+              (ref (alloc.rc.Rc.t alloc.string.String.t alloc.alloc.Global.t))
+              ->
+              M bool.t :=
           ltac:(M.get_method (fun ℐ =>
             core.cmp.PartialEq.eq
               (Self := alloc.rc.Rc.t alloc.string.String.t alloc.alloc.Global.t)
@@ -195,7 +201,9 @@ Definition main : M unit :=
         let* α1 : ref str.t := M.read (mk_str "
 ") in
         let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-        let* α3 : _ :=
+        let* α3 :
+            (ref (alloc.rc.Rc.t alloc.string.String.t alloc.alloc.Global.t)) ->
+              M (ref _) :=
           ltac:(M.get_method (fun ℐ =>
             core.ops.deref.Deref.deref
               (Self := alloc.rc.Rc.t alloc.string.String.t alloc.alloc.Global.t)

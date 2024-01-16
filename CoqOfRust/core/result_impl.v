@@ -94,6 +94,45 @@ Section Impl_Result.
       Notations.DoubleColon Self "unwrap_or_else" := {|
     Notations.double_colon := unwrap_or_else;
   |}.
+
+  (*
+  pub fn and_then<U, F>(self, op: F) -> Result<U, E>
+  where
+      F: FnOnce(T) -> Result<U, E>,
+  *)
+  Parameter and_then : forall {U : Set},
+    Self -> (T -> M (Result.t U E)) -> M (Result.t U E).
+
+  Global Instance AF_and_then {U : Set} :
+      Notations.DoubleColon Self "and_then" := {|
+    Notations.double_colon := and_then (U := U);
+  |}.
+
+  (*
+  pub fn unwrap_err(self) -> E
+  where
+      T: Debug,
+  *)
+  Parameter unwrap_err : Self -> M E.
+
+  Global Instance AF_unwrap_err :
+      Notations.DoubleColon Self "unwrap_err" := {|
+    Notations.double_colon := unwrap_err;
+  |}.
+
+  (* pub const fn is_ok(&self) -> bool *)
+  Parameter is_ok : ref Self -> M bool.
+
+  Global Instance AF_is_ok : Notations.DoubleColon Self "is_ok" := {|
+    Notations.double_colon := is_ok;
+  |}.
+
+  (* pub fn ok(self) -> Option<T> *)
+  Parameter ok : Self -> M (option.Option.t T).
+
+  Global Instance AF_ok : Notations.DoubleColon Self "ok" := {|
+    Notations.double_colon := ok;
+  |}.
 End Impl_Result.
 End Impl_Result.
 
@@ -107,6 +146,18 @@ Section Impl_Option.
 
   Global Instance AF_ok_or {E : Set} : Notations.DoubleColon Self "ok_or" := {
     Notations.double_colon := ok_or (E := E);
+  }.
+
+  (*
+  pub fn ok_or_else<E, F>(self, err: F) -> Result<T, E>
+  where
+      F: FnOnce() -> E,
+  *)
+  Parameter ok_or_else : forall {E : Set}, Self -> M E -> M (Result.t T E).
+
+  Global Instance AF_ok_or_else {E : Set} :
+      Notations.DoubleColon Self "ok_or_else" := {
+    Notations.double_colon := ok_or_else (E := E);
   }.
 End Impl_Option.
 End Impl_Option.

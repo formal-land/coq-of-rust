@@ -173,7 +173,7 @@ Section Impl_core_error_Error_for_wrapping_errors_DoubleError_t.
   *)
   Definition source
       (self : ref Self)
-      : M (core.option.Option.t (ref (dyn [core.error.Error]))) :=
+      : M (core.option.Option.t (ref (dyn [core.error.Error.Trait]))) :=
     let* self := M.alloc self in
     let* α0 : ref wrapping_errors.DoubleError.t := M.read self in
     let* α1 :
@@ -267,7 +267,10 @@ Definition double_first
   let return_ := M.return_ (R := ltac:(wrapping_errors.Result i32.t)) in
   M.catch_return
     (let* first : M.Val (ref (ref str.t)) :=
-      let* α0 : _ :=
+      let* α0 :
+          (core.result.Result.t (ref (ref str.t)) wrapping_errors.DoubleError.t)
+            ->
+            M (core.ops.control_flow.ControlFlow.t _ _) :=
         ltac:(M.get_method (fun ℐ =>
           core.ops.try_trait.Try.branch
             (Self :=
@@ -275,7 +278,9 @@ Definition double_first
                 (ref (ref str.t))
                 wrapping_errors.DoubleError.t)
             (Trait := ℐ))) in
-      let* α1 : _ :=
+      let* α1 :
+          (ref (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t)) ->
+            M (ref _) :=
         ltac:(M.get_method (fun ℐ =>
           core.ops.deref.Deref.deref
             (Self := alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t)
@@ -316,7 +321,15 @@ Definition double_first
               | core.ops.control_flow.ControlFlow.Break _ =>
                 let γ0_0 := core.ops.control_flow.ControlFlow.Get_Break_0 γ in
                 let* residual := M.copy γ0_0 in
-                let* α0 : _ :=
+                let* α0 :
+                    (core.result.Result.t
+                        core.convert.Infallible.t
+                        wrapping_errors.DoubleError.t)
+                      ->
+                      M
+                        (core.result.Result.t
+                          i32.t
+                          wrapping_errors.DoubleError.t) :=
                   ltac:(M.get_method (fun ℐ =>
                     core.ops.try_trait.FromResidual.from_residual
                       (Self :=
@@ -357,7 +370,9 @@ Definition double_first
           ] in
       M.copy α7 in
     let* parsed : M.Val i32.t :=
-      let* α0 : _ :=
+      let* α0 :
+          (core.result.Result.t i32.t core.num.error.ParseIntError.t) ->
+            M (core.ops.control_flow.ControlFlow.t _ _) :=
         ltac:(M.get_method (fun ℐ =>
           core.ops.try_trait.Try.branch
             (Self := core.result.Result.t i32.t core.num.error.ParseIntError.t)
@@ -391,7 +406,15 @@ Definition double_first
               | core.ops.control_flow.ControlFlow.Break _ =>
                 let γ0_0 := core.ops.control_flow.ControlFlow.Get_Break_0 γ in
                 let* residual := M.copy γ0_0 in
-                let* α0 : _ :=
+                let* α0 :
+                    (core.result.Result.t
+                        core.convert.Infallible.t
+                        core.num.error.ParseIntError.t)
+                      ->
+                      M
+                        (core.result.Result.t
+                          i32.t
+                          wrapping_errors.DoubleError.t) :=
                   ltac:(M.get_method (fun ℐ =>
                     core.ops.try_trait.FromResidual.from_residual
                       (Self :=
@@ -507,7 +530,11 @@ Definition print (result : ltac:(wrapping_errors.Result i32.t)) : M unit :=
                 let* α6 : unit := M.call (std.io.stdio._print α5) in
                 M.alloc α6 in
               M.alloc tt in
-            let* α0 : _ :=
+            let* α0 :
+                (ref wrapping_errors.DoubleError.t) ->
+                  M
+                    (core.option.Option.t
+                      (ref (dyn [core.error.Error.Trait]))) :=
               ltac:(M.get_method (fun ℐ =>
                 core.error.Error.source
                   (Self := wrapping_errors.DoubleError.t)

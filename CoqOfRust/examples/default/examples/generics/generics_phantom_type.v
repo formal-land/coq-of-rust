@@ -48,7 +48,7 @@ Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_t_A_B.
       : M bool.t :=
     let* self := M.alloc self in
     let* other := M.alloc other in
-    let* α0 : _ :=
+    let* α0 : (ref A) -> (ref A) -> M bool.t :=
       ltac:(M.get_method (fun ℐ =>
         core.cmp.PartialEq.eq (Self := A) (Rhs := A) (Trait := ℐ))) in
     let* α1 : ref (generics_phantom_type.PhantomTuple.t A B) := M.read self in
@@ -58,7 +58,10 @@ Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_t_A_B.
         (α0
           (borrow (generics_phantom_type.PhantomTuple.Get_0 (deref α1)))
           (borrow (generics_phantom_type.PhantomTuple.Get_0 (deref α2)))) in
-    let* α4 : _ :=
+    let* α4 :
+        (ref (core.marker.PhantomData.t B)) ->
+          (ref (core.marker.PhantomData.t B)) ->
+          M bool.t :=
       ltac:(M.get_method (fun ℐ =>
         core.cmp.PartialEq.eq
           (Self := core.marker.PhantomData.t B)
@@ -135,7 +138,7 @@ Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_t_A_B.
       : M bool.t :=
     let* self := M.alloc self in
     let* other := M.alloc other in
-    let* α0 : _ :=
+    let* α0 : (ref A) -> (ref A) -> M bool.t :=
       ltac:(M.get_method (fun ℐ =>
         core.cmp.PartialEq.eq (Self := A) (Rhs := A) (Trait := ℐ))) in
     let* α1 : ref (generics_phantom_type.PhantomStruct.t A B) := M.read self in
@@ -146,7 +149,10 @@ Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_t_A_B.
           (borrow (generics_phantom_type.PhantomStruct.Get_first (deref α1)))
           (borrow
             (generics_phantom_type.PhantomStruct.Get_first (deref α2)))) in
-    let* α4 : _ :=
+    let* α4 :
+        (ref (core.marker.PhantomData.t B)) ->
+          (ref (core.marker.PhantomData.t B)) ->
+          M bool.t :=
       ltac:(M.get_method (fun ℐ =>
         core.cmp.PartialEq.eq
           (Self := core.marker.PhantomData.t B)

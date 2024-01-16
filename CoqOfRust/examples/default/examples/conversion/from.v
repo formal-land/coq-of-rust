@@ -45,7 +45,7 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
   let* _ : M.Val from.Number.t :=
-    let* α0 : _ :=
+    let* α0 : i32.t -> M from.Number.t :=
       ltac:(M.get_method (fun ℐ =>
         core.convert.From.from
           (Self := from.Number.t)

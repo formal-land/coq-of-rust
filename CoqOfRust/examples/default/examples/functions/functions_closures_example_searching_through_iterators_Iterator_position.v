@@ -37,13 +37,16 @@ Definition main : M unit :=
       M.call ((slice i32.t)::["into_vec"] (pointer_coercion "Unsize" α2)) in
     M.alloc α3 in
   let* index_of_first_even_number : M.Val (core.option.Option.t usize.t) :=
-    let* α0 : _ :=
+    let* α0 :
+        (mut_ref (core.slice.iter.Iter.t i32.t)) ->
+          ((ref i32.t) -> M bool.t) ->
+          M (core.option.Option.t usize.t) :=
       ltac:(M.get_method (fun ℐ =>
         core.iter.traits.iterator.Iterator.position
           (Self := core.slice.iter.Iter.t i32.t)
           (P := (ref i32.t) -> M bool.t)
           (Trait := ℐ))) in
-    let* α1 : _ :=
+    let* α1 : (ref (alloc.vec.Vec.t i32.t alloc.alloc.Global.t)) -> M (ref _) :=
       ltac:(M.get_method (fun ℐ =>
         core.ops.deref.Deref.deref
           (Self := alloc.vec.Vec.t i32.t alloc.alloc.Global.t)
@@ -94,7 +97,10 @@ Definition main : M unit :=
             let γ0_1 := Tuple.Access.right γ in
             let* left_val := M.copy γ0_0 in
             let* right_val := M.copy γ0_1 in
-            let* α0 : _ :=
+            let* α0 :
+                (ref (core.option.Option.t usize.t)) ->
+                  (ref (core.option.Option.t usize.t)) ->
+                  M bool.t :=
               ltac:(M.get_method (fun ℐ =>
                 core.cmp.PartialEq.eq
                   (Self := core.option.Option.t usize.t)
@@ -129,13 +135,16 @@ Definition main : M unit :=
           M (M.Val unit)
       ] in
   let* index_of_first_negative_number : M.Val (core.option.Option.t usize.t) :=
-    let* α0 : _ :=
+    let* α0 :
+        (mut_ref (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t)) ->
+          (i32.t -> M bool.t) ->
+          M (core.option.Option.t usize.t) :=
       ltac:(M.get_method (fun ℐ =>
         core.iter.traits.iterator.Iterator.position
           (Self := alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t)
           (P := i32.t -> M bool.t)
           (Trait := ℐ))) in
-    let* α1 : _ :=
+    let* α1 : (alloc.vec.Vec.t i32.t alloc.alloc.Global.t) -> M _ :=
       ltac:(M.get_method (fun ℐ =>
         core.iter.traits.collect.IntoIterator.into_iter
           (Self := alloc.vec.Vec.t i32.t alloc.alloc.Global.t)
@@ -183,7 +192,10 @@ Definition main : M unit :=
             let γ0_1 := Tuple.Access.right γ in
             let* left_val := M.copy γ0_0 in
             let* right_val := M.copy γ0_1 in
-            let* α0 : _ :=
+            let* α0 :
+                (ref (core.option.Option.t usize.t)) ->
+                  (ref (core.option.Option.t usize.t)) ->
+                  M bool.t :=
               ltac:(M.get_method (fun ℐ =>
                 core.cmp.PartialEq.eq
                   (Self := core.option.Option.t usize.t)

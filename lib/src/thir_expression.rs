@@ -1303,8 +1303,8 @@ fn compile_expr_kind<'a>(
                     }
                     DefKind::Variant => ExprKind::Constructor(compile_def_id(env, *def_id)),
                     _ => {
-                        println!("unimplemented parent_kind: {:#?}", parent_kind);
-                        println!("expression: {:#?}", expr);
+                        eprintln!("unimplemented parent_kind: {:#?}", parent_kind);
+                        eprintln!("expression: {:#?}", expr);
                         ExprKind::Message("unimplemented parent_kind".to_string())
                     }
                 })
@@ -1320,7 +1320,6 @@ fn compile_expr_kind<'a>(
             }
         },
         thir::ExprKind::NamedConst { def_id, .. } => {
-            println!("expr kind: {:#?}", expr.kind);
             let path = compile_def_id(env, *def_id);
             let expr = Rc::new(ExprKind::Var(path));
             let parent = env.tcx.opt_parent(*def_id).unwrap();

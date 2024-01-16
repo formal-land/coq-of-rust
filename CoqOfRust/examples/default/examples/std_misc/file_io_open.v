@@ -84,7 +84,10 @@ Definition main : M unit :=
   let* s : M.Val alloc.string.String.t :=
     let* α0 : alloc.string.String.t := M.call alloc.string.String.t::["new"] in
     M.alloc α0 in
-  let* α0 : _ :=
+  let* α0 :
+      (mut_ref std.fs.File.t) ->
+        (mut_ref alloc.string.String.t) ->
+        M (core.result.Result.t usize.t std.io.error.Error.t) :=
     ltac:(M.get_method (fun ℐ =>
       std.io.Read.read_to_string (Self := std.fs.File.t) (Trait := ℐ))) in
   let* α1 : core.result.Result.t usize.t std.io.error.Error.t :=

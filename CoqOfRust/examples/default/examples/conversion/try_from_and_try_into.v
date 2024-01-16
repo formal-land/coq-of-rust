@@ -154,7 +154,9 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
   let* _ : M.Val unit :=
-    let* α0 : _ :=
+    let* α0 :
+        i32.t ->
+          M (core.result.Result.t try_from_and_try_into.EvenNumber.t _) :=
       ltac:(M.get_method (fun ℐ =>
         core.convert.TryFrom.try_from
           (Self := try_from_and_try_into.EvenNumber.t)
@@ -189,7 +191,18 @@ Definition main : M unit :=
             let γ0_1 := Tuple.Access.right γ in
             let* left_val := M.copy γ0_0 in
             let* right_val := M.copy γ0_1 in
-            let* α0 : _ :=
+            let* α0 :
+                (ref
+                    (core.result.Result.t
+                      try_from_and_try_into.EvenNumber.t
+                      unit))
+                  ->
+                  (ref
+                    (core.result.Result.t
+                      try_from_and_try_into.EvenNumber.t
+                      unit))
+                  ->
+                  M bool.t :=
               ltac:(M.get_method (fun ℐ =>
                 core.cmp.PartialEq.eq
                   (Self :=
@@ -249,7 +262,9 @@ Definition main : M unit :=
           M (M.Val unit)
       ] in
   let* _ : M.Val unit :=
-    let* α0 : _ :=
+    let* α0 :
+        i32.t ->
+          M (core.result.Result.t try_from_and_try_into.EvenNumber.t _) :=
       ltac:(M.get_method (fun ℐ =>
         core.convert.TryFrom.try_from
           (Self := try_from_and_try_into.EvenNumber.t)
@@ -281,7 +296,18 @@ Definition main : M unit :=
             let γ0_1 := Tuple.Access.right γ in
             let* left_val := M.copy γ0_0 in
             let* right_val := M.copy γ0_1 in
-            let* α0 : _ :=
+            let* α0 :
+                (ref
+                    (core.result.Result.t
+                      try_from_and_try_into.EvenNumber.t
+                      unit))
+                  ->
+                  (ref
+                    (core.result.Result.t
+                      try_from_and_try_into.EvenNumber.t
+                      unit))
+                  ->
+                  M bool.t :=
               ltac:(M.get_method (fun ℐ =>
                 core.cmp.PartialEq.eq
                   (Self :=
@@ -342,7 +368,9 @@ Definition main : M unit :=
       ] in
   let* result :
       M.Val (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
-    let* α0 : _ :=
+    let* α0 :
+        i32.t ->
+          M (core.result.Result.t try_from_and_try_into.EvenNumber.t _) :=
       ltac:(M.get_method (fun ℐ =>
         core.convert.TryInto.try_into
           (Self := i32.t)
@@ -376,7 +404,18 @@ Definition main : M unit :=
             let γ0_1 := Tuple.Access.right γ in
             let* left_val := M.copy γ0_0 in
             let* right_val := M.copy γ0_1 in
-            let* α0 : _ :=
+            let* α0 :
+                (ref
+                    (core.result.Result.t
+                      try_from_and_try_into.EvenNumber.t
+                      unit))
+                  ->
+                  (ref
+                    (core.result.Result.t
+                      try_from_and_try_into.EvenNumber.t
+                      unit))
+                  ->
+                  M bool.t :=
               ltac:(M.get_method (fun ℐ =>
                 core.cmp.PartialEq.eq
                   (Self :=
@@ -437,7 +476,9 @@ Definition main : M unit :=
       ] in
   let* result :
       M.Val (core.result.Result.t try_from_and_try_into.EvenNumber.t unit) :=
-    let* α0 : _ :=
+    let* α0 :
+        i32.t ->
+          M (core.result.Result.t try_from_and_try_into.EvenNumber.t _) :=
       ltac:(M.get_method (fun ℐ =>
         core.convert.TryInto.try_into
           (Self := i32.t)
@@ -468,7 +509,18 @@ Definition main : M unit :=
             let γ0_1 := Tuple.Access.right γ in
             let* left_val := M.copy γ0_0 in
             let* right_val := M.copy γ0_1 in
-            let* α0 : _ :=
+            let* α0 :
+                (ref
+                    (core.result.Result.t
+                      try_from_and_try_into.EvenNumber.t
+                      unit))
+                  ->
+                  (ref
+                    (core.result.Result.t
+                      try_from_and_try_into.EvenNumber.t
+                      unit))
+                  ->
+                  M bool.t :=
               ltac:(M.get_method (fun ℐ =>
                 core.cmp.PartialEq.eq
                   (Self :=

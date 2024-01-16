@@ -153,7 +153,7 @@ Definition area
     (t : ref T)
     : M f64.t :=
   let* t := M.alloc t in
-  let* α0 : _ :=
+  let* α0 : (ref T) -> M f64.t :=
     ltac:(M.get_method (fun ℐ =>
       generics_bounds.HasArea.area (Self := T) (Trait := ℐ))) in
   let* α1 : ref T := M.read t in
@@ -206,7 +206,7 @@ Definition main : M unit :=
       let* α1 : ref str.t := M.read (mk_str "
 ") in
       let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : _ :=
+      let* α3 : (ref generics_bounds.Rectangle.t) -> M f64.t :=
         ltac:(M.get_method (fun ℐ =>
           generics_bounds.HasArea.area
             (Self := generics_bounds.Rectangle.t)

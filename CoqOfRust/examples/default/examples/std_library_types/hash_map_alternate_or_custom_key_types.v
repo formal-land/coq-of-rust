@@ -41,7 +41,7 @@ Section Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Accou
       : M bool.t :=
     let* self := M.alloc self in
     let* other := M.alloc other in
-    let* α0 : _ :=
+    let* α0 : (ref (ref str.t)) -> (ref (ref str.t)) -> M bool.t :=
       ltac:(M.get_method (fun ℐ =>
         core.cmp.PartialEq.eq
           (Self := ref str.t)
@@ -60,7 +60,7 @@ Section Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Accou
           (borrow
             (hash_map_alternate_or_custom_key_types.Account.Get_username
               (deref α2)))) in
-    let* α4 : _ :=
+    let* α4 : (ref (ref str.t)) -> (ref (ref str.t)) -> M bool.t :=
       ltac:(M.get_method (fun ℐ =>
         core.cmp.PartialEq.eq
           (Self := ref str.t)
@@ -154,7 +154,7 @@ Section Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account_t
     let* self := M.alloc self in
     let* state := M.alloc state in
     let* _ : M.Val unit :=
-      let* α0 : _ :=
+      let* α0 : (ref (ref str.t)) -> (mut_ref __H) -> M unit :=
         ltac:(M.get_method (fun ℐ =>
           core.hash.Hash.hash (Self := ref str.t) (H := __H) (Trait := ℐ))) in
       let* α1 : ref hash_map_alternate_or_custom_key_types.Account.t :=
@@ -168,7 +168,7 @@ Section Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account_t
                 (deref α1)))
             α2) in
       M.alloc α3 in
-    let* α0 : _ :=
+    let* α0 : (ref (ref str.t)) -> (mut_ref __H) -> M unit :=
       ltac:(M.get_method (fun ℐ =>
         core.hash.Hash.hash (Self := ref str.t) (H := __H) (Trait := ℐ))) in
     let* α1 : ref hash_map_alternate_or_custom_key_types.Account.t :=

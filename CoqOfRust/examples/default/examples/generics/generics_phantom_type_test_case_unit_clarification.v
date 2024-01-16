@@ -233,7 +233,7 @@ Section Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarifica
       (self : ref Self)
       : M (generics_phantom_type_test_case_unit_clarification.Length.t Unit) :=
     let* self := M.alloc self in
-    let* α0 : _ :=
+    let* α0 : (ref f64.t) -> M f64.t :=
       ltac:(M.get_method (fun ℐ =>
         core.clone.Clone.clone (Self := f64.t) (Trait := ℐ))) in
     let* α1 :
@@ -246,7 +246,9 @@ Section Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarifica
           (borrow
             (generics_phantom_type_test_case_unit_clarification.Length.Get_0
               (deref α1)))) in
-    let* α3 : _ :=
+    let* α3 :
+        (ref (core.marker.PhantomData.t Unit)) ->
+          M (core.marker.PhantomData.t Unit) :=
       ltac:(M.get_method (fun ℐ =>
         core.clone.Clone.clone
           (Self := core.marker.PhantomData.t Unit)
@@ -388,7 +390,14 @@ Definition main : M unit :=
       M.Val
         (generics_phantom_type_test_case_unit_clarification.Length.t
           generics_phantom_type_test_case_unit_clarification.Inch.t) :=
-    let* α0 : _ :=
+    let* α0 :
+        (generics_phantom_type_test_case_unit_clarification.Length.t
+            generics_phantom_type_test_case_unit_clarification.Inch.t)
+          ->
+          (generics_phantom_type_test_case_unit_clarification.Length.t
+            generics_phantom_type_test_case_unit_clarification.Inch.t)
+          ->
+          M _ :=
       ltac:(M.get_method (fun ℐ =>
         core.ops.arith.Add.add
           (Self :=
@@ -415,7 +424,14 @@ Definition main : M unit :=
       M.Val
         (generics_phantom_type_test_case_unit_clarification.Length.t
           generics_phantom_type_test_case_unit_clarification.Mm.t) :=
-    let* α0 : _ :=
+    let* α0 :
+        (generics_phantom_type_test_case_unit_clarification.Length.t
+            generics_phantom_type_test_case_unit_clarification.Mm.t)
+          ->
+          (generics_phantom_type_test_case_unit_clarification.Length.t
+            generics_phantom_type_test_case_unit_clarification.Mm.t)
+          ->
+          M _ :=
       ltac:(M.get_method (fun ℐ =>
         core.ops.arith.Add.add
           (Self :=

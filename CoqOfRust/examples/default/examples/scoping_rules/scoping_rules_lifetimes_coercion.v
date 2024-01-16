@@ -9,7 +9,7 @@ fn multiply<'a>(first: &'a i32, second: &'a i32) -> i32 {
 Definition multiply (first : ref i32.t) (second : ref i32.t) : M i32.t :=
   let* first := M.alloc first in
   let* second := M.alloc second in
-  let* α0 : _ :=
+  let* α0 : (ref i32.t) -> (ref i32.t) -> M _ :=
     ltac:(M.get_method (fun ℐ =>
       core.ops.arith.Mul.mul
         (Self := ref i32.t)

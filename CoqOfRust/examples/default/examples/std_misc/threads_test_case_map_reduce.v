@@ -119,14 +119,22 @@ Definition main : M unit :=
       M.call (str.t::["split_whitespace"] α0) in
     M.alloc α1 in
   let* _ : M.Val unit :=
-    let* α0 : _ :=
+    let* α0 :
+        (core.iter.adapters.enumerate.Enumerate.t
+            core.str.iter.SplitWhitespace.t)
+          ->
+          M _ :=
       ltac:(M.get_method (fun ℐ =>
         core.iter.traits.collect.IntoIterator.into_iter
           (Self :=
             core.iter.adapters.enumerate.Enumerate.t
               core.str.iter.SplitWhitespace.t)
           (Trait := ℐ))) in
-    let* α1 : _ :=
+    let* α1 :
+        core.str.iter.SplitWhitespace.t ->
+          M
+            (core.iter.adapters.enumerate.Enumerate.t
+              core.str.iter.SplitWhitespace.t) :=
       ltac:(M.get_method (fun ℐ =>
         core.iter.traits.iterator.Iterator.enumerate
           (Self := core.str.iter.SplitWhitespace.t)
@@ -153,7 +161,12 @@ Definition main : M unit :=
             (let* iter := M.copy γ in
             M.loop
               (let* _ : M.Val unit :=
-                let* α0 : _ :=
+                let* α0 :
+                    (mut_ref
+                        (core.iter.adapters.enumerate.Enumerate.t
+                          core.str.iter.SplitWhitespace.t))
+                      ->
+                      M (core.option.Option.t _) :=
                   ltac:(M.get_method (fun ℐ =>
                     core.iter.traits.iterator.Iterator.next
                       (Self :=
@@ -224,7 +237,12 @@ Definition main : M unit :=
                               M.call
                                 (std.thread.spawn
                                   ((let* result : M.Val u32.t :=
-                                    let* α0 : _ :=
+                                    let* α0 :
+                                        (core.iter.adapters.map.Map.t
+                                            core.str.iter.Chars.t
+                                            (char.t -> M u32.t))
+                                          ->
+                                          M u32.t :=
                                       ltac:(M.get_method (fun ℐ =>
                                         core.iter.traits.iterator.Iterator.sum
                                           (Self :=
@@ -233,7 +251,13 @@ Definition main : M unit :=
                                               (char.t -> M u32.t))
                                           (S := u32.t)
                                           (Trait := ℐ))) in
-                                    let* α1 : _ :=
+                                    let* α1 :
+                                        core.str.iter.Chars.t ->
+                                          (char.t -> M u32.t) ->
+                                          M
+                                            (core.iter.adapters.map.Map.t
+                                              core.str.iter.Chars.t
+                                              (char.t -> M u32.t)) :=
                                       ltac:(M.get_method (fun ℐ =>
                                         core.iter.traits.iterator.Iterator.map
                                           (Self := core.str.iter.Chars.t)
@@ -339,7 +363,14 @@ Definition main : M unit :=
         ] in
     M.pure (use α6) in
   let* final_result : M.Val u32.t :=
-    let* α0 : _ :=
+    let* α0 :
+        (core.iter.adapters.map.Map.t
+            (alloc.vec.into_iter.IntoIter.t
+              (std.thread.JoinHandle.t u32.t)
+              alloc.alloc.Global.t)
+            ((std.thread.JoinHandle.t u32.t) -> M u32.t))
+          ->
+          M u32.t :=
       ltac:(M.get_method (fun ℐ =>
         core.iter.traits.iterator.Iterator.sum
           (Self :=
@@ -350,7 +381,18 @@ Definition main : M unit :=
               ((std.thread.JoinHandle.t u32.t) -> M u32.t))
           (S := u32.t)
           (Trait := ℐ))) in
-    let* α1 : _ :=
+    let* α1 :
+        (alloc.vec.into_iter.IntoIter.t
+            (std.thread.JoinHandle.t u32.t)
+            alloc.alloc.Global.t)
+          ->
+          ((std.thread.JoinHandle.t u32.t) -> M u32.t) ->
+          M
+            (core.iter.adapters.map.Map.t
+              (alloc.vec.into_iter.IntoIter.t
+                (std.thread.JoinHandle.t u32.t)
+                alloc.alloc.Global.t)
+              ((std.thread.JoinHandle.t u32.t) -> M u32.t)) :=
       ltac:(M.get_method (fun ℐ =>
         core.iter.traits.iterator.Iterator.map
           (Self :=
@@ -360,7 +402,10 @@ Definition main : M unit :=
           (B := u32.t)
           (F := (std.thread.JoinHandle.t u32.t) -> M u32.t)
           (Trait := ℐ))) in
-    let* α2 : _ :=
+    let* α2 :
+        (alloc.vec.Vec.t (std.thread.JoinHandle.t u32.t) alloc.alloc.Global.t)
+          ->
+          M _ :=
       ltac:(M.get_method (fun ℐ =>
         core.iter.traits.collect.IntoIterator.into_iter
           (Self :=

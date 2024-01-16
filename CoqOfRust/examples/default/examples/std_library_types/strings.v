@@ -77,12 +77,15 @@ Definition main : M unit :=
       M.alloc α3 in
     M.alloc tt in
   let* _ : M.Val unit :=
-    let* α0 : _ :=
+    let* α0 :
+        (core.iter.adapters.rev.Rev.t core.str.iter.SplitWhitespace.t) -> M _ :=
       ltac:(M.get_method (fun ℐ =>
         core.iter.traits.collect.IntoIterator.into_iter
           (Self := core.iter.adapters.rev.Rev.t core.str.iter.SplitWhitespace.t)
           (Trait := ℐ))) in
-    let* α1 : _ :=
+    let* α1 :
+        core.str.iter.SplitWhitespace.t ->
+          M (core.iter.adapters.rev.Rev.t core.str.iter.SplitWhitespace.t) :=
       ltac:(M.get_method (fun ℐ =>
         core.iter.traits.iterator.Iterator.rev
           (Self := core.str.iter.SplitWhitespace.t)
@@ -105,7 +108,12 @@ Definition main : M unit :=
             (let* iter := M.copy γ in
             M.loop
               (let* _ : M.Val unit :=
-                let* α0 : _ :=
+                let* α0 :
+                    (mut_ref
+                        (core.iter.adapters.rev.Rev.t
+                          core.str.iter.SplitWhitespace.t))
+                      ->
+                      M (core.option.Option.t _) :=
                   ltac:(M.get_method (fun ℐ =>
                     core.iter.traits.iterator.Iterator.next
                       (Self :=
@@ -167,7 +175,9 @@ Definition main : M unit :=
         ] in
     M.pure (use α7) in
   let* chars : M.Val (alloc.vec.Vec.t char.t alloc.alloc.Global.t) :=
-    let* α0 : _ :=
+    let* α0 :
+        core.str.iter.Chars.t ->
+          M (alloc.vec.Vec.t char.t alloc.alloc.Global.t) :=
       ltac:(M.get_method (fun ℐ =>
         core.iter.traits.iterator.Iterator.collect
           (Self := core.str.iter.Chars.t)
@@ -178,7 +188,9 @@ Definition main : M unit :=
     let* α3 : alloc.vec.Vec.t char.t alloc.alloc.Global.t := M.call (α0 α2) in
     M.alloc α3 in
   let* _ : M.Val unit :=
-    let* α0 : _ :=
+    let* α0 :
+        (mut_ref (alloc.vec.Vec.t char.t alloc.alloc.Global.t)) ->
+          M (mut_ref _) :=
       ltac:(M.get_method (fun ℐ =>
         core.ops.deref.DerefMut.deref_mut
           (Self := alloc.vec.Vec.t char.t alloc.alloc.Global.t)
@@ -196,7 +208,7 @@ Definition main : M unit :=
     let* α0 : alloc.string.String.t := M.call alloc.string.String.t::["new"] in
     M.alloc α0 in
   let* _ : M.Val unit :=
-    let* α0 : _ :=
+    let* α0 : (alloc.vec.Vec.t char.t alloc.alloc.Global.t) -> M _ :=
       ltac:(M.get_method (fun ℐ =>
         core.iter.traits.collect.IntoIterator.into_iter
           (Self := alloc.vec.Vec.t char.t alloc.alloc.Global.t)
@@ -215,7 +227,13 @@ Definition main : M unit :=
             (let* iter := M.copy γ in
             M.loop
               (let* _ : M.Val unit :=
-                let* α0 : _ :=
+                let* α0 :
+                    (mut_ref
+                        (alloc.vec.into_iter.IntoIter.t
+                          char.t
+                          alloc.alloc.Global.t))
+                      ->
+                      M (core.option.Option.t _) :=
                   ltac:(M.get_method (fun ℐ =>
                     core.iter.traits.iterator.Iterator.next
                       (Self :=
@@ -275,7 +293,7 @@ Definition main : M unit :=
     let* α0 : M.Val (array char.t) := M.alloc [ " "%char; ","%char ] in
     M.alloc (pointer_coercion "Unsize" (borrow α0)) in
   let* trimmed_str : M.Val (ref str.t) :=
-    let* α0 : _ :=
+    let* α0 : (ref alloc.string.String.t) -> M (ref _) :=
       ltac:(M.get_method (fun ℐ =>
         core.ops.deref.Deref.deref
           (Self := alloc.string.String.t)
@@ -302,7 +320,7 @@ Definition main : M unit :=
       M.alloc α6 in
     M.alloc tt in
   let* alice : M.Val alloc.string.String.t :=
-    let* α0 : _ :=
+    let* α0 : (ref str.t) -> M alloc.string.String.t :=
       ltac:(M.get_method (fun ℐ =>
         core.convert.From.from
           (Self := alloc.string.String.t)
@@ -312,7 +330,7 @@ Definition main : M unit :=
     let* α2 : alloc.string.String.t := M.call (α0 α1) in
     M.alloc α2 in
   let* bob : M.Val alloc.string.String.t :=
-    let* α0 : _ :=
+    let* α0 : (ref alloc.string.String.t) -> M (ref _) :=
       ltac:(M.get_method (fun ℐ =>
         core.ops.deref.Deref.deref
           (Self := alloc.string.String.t)

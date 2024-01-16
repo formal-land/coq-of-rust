@@ -65,7 +65,7 @@ Definition main : M unit :=
     M.alloc
       {| converting_to_string.Circle.radius := (Integer.of_Z 6) : i32.t; |} in
   let* _ : M.Val alloc.string.String.t :=
-    let* α0 : _ :=
+    let* α0 : (ref converting_to_string.Circle.t) -> M alloc.string.String.t :=
       ltac:(M.get_method (fun ℐ =>
         alloc.string.ToString.to_string
           (Self := converting_to_string.Circle.t)

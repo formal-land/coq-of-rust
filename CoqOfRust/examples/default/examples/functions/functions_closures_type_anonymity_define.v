@@ -30,7 +30,7 @@ Definition apply
     : M unit :=
   let* f := M.alloc f in
   let* _ : M.Val unit :=
-    let* α0 : _ :=
+    let* α0 : F -> unit -> M _ :=
       ltac:(M.get_method (fun ℐ =>
         core.ops.function.FnOnce.call_once
           (Self := F)

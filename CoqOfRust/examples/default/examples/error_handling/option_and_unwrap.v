@@ -103,7 +103,7 @@ Definition drink (drink : core.option.Option.t (ref str.t)) : M unit :=
       M.call ((core.option.Option.t (ref str.t))::["unwrap"] α0) in
     M.alloc α1 in
   let* _ : M.Val unit :=
-    let* α0 : _ :=
+    let* α0 : (ref (ref str.t)) -> (ref (ref str.t)) -> M bool.t :=
       ltac:(M.get_method (fun ℐ =>
         core.cmp.PartialEq.eq
           (Self := ref str.t)

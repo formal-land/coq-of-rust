@@ -47,7 +47,9 @@ Definition main : M unit :=
           [
             fun γ =>
               (let* needle := M.copy γ in
-              let* α0 : _ :=
+              let* α0 :
+                  (ref (alloc.vec.Vec.t i32.t alloc.alloc.Global.t)) ->
+                    M (ref _) :=
                 ltac:(M.get_method (fun ℐ =>
                   core.ops.deref.Deref.deref
                     (Self := alloc.vec.Vec.t i32.t alloc.alloc.Global.t)
@@ -64,7 +66,7 @@ Definition main : M unit :=
       let* α1 : ref str.t := M.read (mk_str "
 ") in
       let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : _ :=
+      let* α3 : (ref ((ref i32.t) -> M bool.t)) -> (ref i32.t) -> M _ :=
         ltac:(M.get_method (fun ℐ =>
           core.ops.function.Fn.call
             (Self := (ref i32.t) -> M bool.t)
@@ -90,7 +92,7 @@ Definition main : M unit :=
       let* α1 : ref str.t := M.read (mk_str "
 ") in
       let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : _ :=
+      let* α3 : (ref ((ref i32.t) -> M bool.t)) -> (ref i32.t) -> M _ :=
         ltac:(M.get_method (fun ℐ =>
           core.ops.function.Fn.call
             (Self := (ref i32.t) -> M bool.t)

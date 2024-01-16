@@ -79,7 +79,7 @@ Parameter random_animal :
     f64.t ->
       M
         (alloc.boxed.Box.t
-          (dyn [returning_traits_with_dyn.Animal])
+          (dyn [returning_traits_with_dyn.Animal.Trait])
           alloc.boxed.Box.Default.A).
 
 (*

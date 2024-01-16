@@ -32,7 +32,7 @@ fn main() {
 Definition main : M unit :=
   let* person :
       M.Val scoping_rules_ownership_and_rules_partial_moves.main.Person.t :=
-    let* α0 : _ :=
+    let* α0 : (ref str.t) -> M alloc.string.String.t :=
       ltac:(M.get_method (fun ℐ =>
         core.convert.From.from
           (Self := alloc.string.String.t)

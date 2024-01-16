@@ -20,7 +20,7 @@ Section Impl_core_default_Default_for_constructors_return_value_AccountId_t.
   Default
   *)
   Definition default : M constructors_return_value.AccountId.t :=
-    let* α0 : _ :=
+    let* α0 : M u128.t :=
       ltac:(M.get_method (fun ℐ =>
         core.default.Default.default (Self := u128.t) (Trait := ℐ))) in
     let* α1 : u128.t := M.call α0 in
@@ -276,7 +276,7 @@ Section Impl_constructors_return_value_ConstructorsReturnValue_t.
     let* α0 : constructors_return_value.ReturnFlags.t :=
       M.call
         (constructors_return_value.ReturnFlags.t::["new_with_reverted"] true) in
-    let* α1 : _ :=
+    let* α1 : (array u8.t) -> M constructors_return_value.AccountId.t :=
       ltac:(M.get_method (fun ℐ =>
         core.convert.From.from
           (Self := constructors_return_value.AccountId.t)
@@ -337,7 +337,7 @@ Section Impl_constructors_return_value_ConstructorsReturnValue_t.
                 constructors_return_value.ConstructorError.t)
               constructors_return_value.LangError.t) :=
         if α0 then
-          let* α0 : _ :=
+          let* α0 : (array u8.t) -> M constructors_return_value.AccountId.t :=
             ltac:(M.get_method (fun ℐ =>
               core.convert.From.from
                 (Self := constructors_return_value.AccountId.t)

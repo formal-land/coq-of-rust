@@ -90,7 +90,9 @@ Section Impl_core_clone_Clone_for_clone_Pair_t.
   *)
   Definition clone (self : ref Self) : M clone.Pair.t :=
     let* self := M.alloc self in
-    let* α0 : _ :=
+    let* α0 :
+        (ref (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)) ->
+          M (alloc.boxed.Box.t i32.t alloc.alloc.Global.t) :=
       ltac:(M.get_method (fun ℐ =>
         core.clone.Clone.clone
           (Self := alloc.boxed.Box.t i32.t alloc.alloc.Global.t)
@@ -98,7 +100,9 @@ Section Impl_core_clone_Clone_for_clone_Pair_t.
     let* α1 : ref clone.Pair.t := M.read self in
     let* α2 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t :=
       M.call (α0 (borrow (clone.Pair.Get_0 (deref α1)))) in
-    let* α3 : _ :=
+    let* α3 :
+        (ref (alloc.boxed.Box.t i32.t alloc.alloc.Global.t)) ->
+          M (alloc.boxed.Box.t i32.t alloc.alloc.Global.t) :=
       ltac:(M.get_method (fun ℐ =>
         core.clone.Clone.clone
           (Self := alloc.boxed.Box.t i32.t alloc.alloc.Global.t)
@@ -276,7 +280,7 @@ Definition main : M unit :=
       M.alloc α6 in
     M.alloc tt in
   let* cloned_pair : M.Val clone.Pair.t :=
-    let* α0 : _ :=
+    let* α0 : (ref clone.Pair.t) -> M clone.Pair.t :=
       ltac:(M.get_method (fun ℐ =>
         core.clone.Clone.clone (Self := clone.Pair.t) (Trait := ℐ))) in
     let* α1 : clone.Pair.t := M.call (α0 (borrow moved_pair)) in

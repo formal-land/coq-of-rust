@@ -19,7 +19,7 @@ Definition apply
     : M unit :=
   let* f := M.alloc f in
   let* _ : M.Val unit :=
-    let* α0 : _ :=
+    let* α0 : F -> unit -> M _ :=
       ltac:(M.get_method (fun ℐ =>
         core.ops.function.FnOnce.call_once
           (Self := F)
@@ -46,7 +46,7 @@ Definition apply_to_3
     (f : F)
     : M i32.t :=
   let* f := M.alloc f in
-  let* α0 : _ :=
+  let* α0 : (ref F) -> i32.t -> M _ :=
     ltac:(M.get_method (fun ℐ =>
       core.ops.function.Fn.call (Self := F) (Args := i32.t) (Trait := ℐ))) in
   M.call (α0 (borrow f) ((Integer.of_Z 3) : i32.t)).
@@ -90,7 +90,7 @@ fn main() {
 Definition main : M unit :=
   let* greeting : M.Val (ref str.t) := M.copy (mk_str "hello") in
   let* farewell : M.Val alloc.string.String.t :=
-    let* α0 : _ :=
+    let* α0 : (ref str.t) -> M _ :=
       ltac:(M.get_method (fun ℐ =>
         alloc.borrow.ToOwned.to_owned (Self := str.t) (Trait := ℐ))) in
     let* α1 : ref str.t := M.read (mk_str "goodbye") in

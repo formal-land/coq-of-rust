@@ -72,7 +72,8 @@ Definition main : M unit :=
   let* α0 : M.Val unit :=
     if α2 then
       let* s : M.Val (alloc.borrow.Cow.t str.t) :=
-        let* α0 : _ :=
+        let* α0 :
+            (ref (alloc.vec.Vec.t u8.t alloc.alloc.Global.t)) -> M (ref _) :=
           ltac:(M.get_method (fun ℐ =>
             core.ops.deref.Deref.deref
               (Self := alloc.vec.Vec.t u8.t alloc.alloc.Global.t)
@@ -102,7 +103,8 @@ Definition main : M unit :=
       M.alloc tt
     else
       let* s : M.Val (alloc.borrow.Cow.t str.t) :=
-        let* α0 : _ :=
+        let* α0 :
+            (ref (alloc.vec.Vec.t u8.t alloc.alloc.Global.t)) -> M (ref _) :=
           ltac:(M.get_method (fun ℐ =>
             core.ops.deref.Deref.deref
               (Self := alloc.vec.Vec.t u8.t alloc.alloc.Global.t)

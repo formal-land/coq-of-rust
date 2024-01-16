@@ -77,7 +77,8 @@ Section Impl_core_error_Error_for_wrapping_errors_DoubleError_t.
       }
   *)
   Parameter source :
-      (ref Self) -> M (core.option.Option.t (ref (dyn [core.error.Error]))).
+      (ref Self) ->
+        M (core.option.Option.t (ref (dyn [core.error.Error.Trait]))).
   
   Global Instance AssociatedFunction_source :
     Notations.DoubleColon Self "source" := {

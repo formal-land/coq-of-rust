@@ -84,7 +84,7 @@ Definition random_animal
     :
       M
         (alloc.boxed.Box.t
-          (dyn [returning_traits_with_dyn.Animal])
+          (dyn [returning_traits_with_dyn.Animal.Trait])
           alloc.boxed.Box.Default.A) :=
   let* random_number := M.alloc random_number in
   let* α0 : f64.t := M.read random_number in
@@ -158,7 +158,9 @@ Definition main : M unit :=
       let* α1 : ref str.t := M.read (mk_str "
 ") in
       let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : _ :=
+      let* α3 :
+          (ref (dyn [returning_traits_with_dyn.Animal.Trait])) ->
+            M (ref str.t) :=
         ltac:(M.get_method (fun ℐ =>
           returning_traits_with_dyn.Animal.noise
             (Self := dyn [returning_traits_with_dyn.Animal.Trait])

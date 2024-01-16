@@ -34,7 +34,7 @@ pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Rc<Pattern> {
             subpattern,
             ..
         } => {
-            let name = name.to_string();
+            let name = to_valid_coq_name(name.as_str());
             let is_with_ref = match mode {
                 rustc_middle::thir::BindingMode::ByValue => None,
                 rustc_middle::thir::BindingMode::ByRef(borrow_kind) => {

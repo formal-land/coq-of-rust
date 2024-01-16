@@ -98,7 +98,10 @@ Definition main : M unit :=
         ] in
     M.copy α9 in
   let* _ : M.Val unit :=
-    let* α0 : _ :=
+    let* α0 :
+        (mut_ref std.process.ChildStdin.t) ->
+          (ref (slice u8.t)) ->
+          M (core.result.Result.t unit std.io.error.Error.t) :=
       ltac:(M.get_method (fun ℐ =>
         std.io.Write.write_all
           (Self := std.process.ChildStdin.t)
@@ -164,7 +167,10 @@ Definition main : M unit :=
   let* s : M.Val alloc.string.String.t :=
     let* α0 : alloc.string.String.t := M.call alloc.string.String.t::["new"] in
     M.alloc α0 in
-  let* α0 : _ :=
+  let* α0 :
+      (mut_ref std.process.ChildStdout.t) ->
+        (mut_ref alloc.string.String.t) ->
+        M (core.result.Result.t usize.t std.io.error.Error.t) :=
     ltac:(M.get_method (fun ℐ =>
       std.io.Read.read_to_string
         (Self := std.process.ChildStdout.t)

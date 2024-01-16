@@ -31,7 +31,7 @@ Definition main : M unit :=
         ((alloc.sync.Arc.t (ref str.t) alloc.alloc.Global.t)::["new"] α0) in
     M.alloc α1 in
   let* _ : M.Val unit :=
-    let* α0 : _ :=
+    let* α0 : (core.ops.range.Range.t i32.t) -> M _ :=
       ltac:(M.get_method (fun ℐ =>
         core.iter.traits.collect.IntoIterator.into_iter
           (Self := core.ops.range.Range.t i32.t)
@@ -52,7 +52,9 @@ Definition main : M unit :=
             (let* iter := M.copy γ in
             M.loop
               (let* _ : M.Val unit :=
-                let* α0 : _ :=
+                let* α0 :
+                    (mut_ref (core.ops.range.Range.t i32.t)) ->
+                      M (core.option.Option.t _) :=
                   ltac:(M.get_method (fun ℐ =>
                     core.iter.traits.iterator.Iterator.next
                       (Self := core.ops.range.Range.t i32.t)
@@ -84,7 +86,16 @@ Definition main : M unit :=
                               (alloc.sync.Arc.t
                                 (ref str.t)
                                 alloc.alloc.Global.t) :=
-                          let* α0 : _ :=
+                          let* α0 :
+                              (ref
+                                  (alloc.sync.Arc.t
+                                    (ref str.t)
+                                    alloc.alloc.Global.t))
+                                ->
+                                M
+                                  (alloc.sync.Arc.t
+                                    (ref str.t)
+                                    alloc.alloc.Global.t) :=
                             ltac:(M.get_method (fun ℐ =>
                               core.clone.Clone.clone
                                 (Self :=

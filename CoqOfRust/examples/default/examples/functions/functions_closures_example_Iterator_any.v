@@ -66,13 +66,17 @@ Definition main : M unit :=
       let* α1 : ref str.t := M.read (mk_str "
 ") in
       let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : _ :=
+      let* α3 :
+          (mut_ref (core.slice.iter.Iter.t i32.t)) ->
+            ((ref i32.t) -> M bool.t) ->
+            M bool.t :=
         ltac:(M.get_method (fun ℐ =>
           core.iter.traits.iterator.Iterator.any
             (Self := core.slice.iter.Iter.t i32.t)
             (F := (ref i32.t) -> M bool.t)
             (Trait := ℐ))) in
-      let* α4 : _ :=
+      let* α4 :
+          (ref (alloc.vec.Vec.t i32.t alloc.alloc.Global.t)) -> M (ref _) :=
         ltac:(M.get_method (fun ℐ =>
           core.ops.deref.Deref.deref
             (Self := alloc.vec.Vec.t i32.t alloc.alloc.Global.t)
@@ -118,13 +122,17 @@ Definition main : M unit :=
       let* α1 : ref str.t := M.read (mk_str "
 ") in
       let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : _ :=
+      let* α3 :
+          (mut_ref (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t))
+            ->
+            (i32.t -> M bool.t) ->
+            M bool.t :=
         ltac:(M.get_method (fun ℐ =>
           core.iter.traits.iterator.Iterator.any
             (Self := alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t)
             (F := i32.t -> M bool.t)
             (Trait := ℐ))) in
-      let* α4 : _ :=
+      let* α4 : (alloc.vec.Vec.t i32.t alloc.alloc.Global.t) -> M _ :=
         ltac:(M.get_method (fun ℐ =>
           core.iter.traits.collect.IntoIterator.into_iter
             (Self := alloc.vec.Vec.t i32.t alloc.alloc.Global.t)
@@ -191,7 +199,10 @@ Definition main : M unit :=
       let* α1 : ref str.t := M.read (mk_str "
 ") in
       let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : _ :=
+      let* α3 :
+          (ref (alloc.vec.Vec.t i32.t alloc.alloc.Global.t)) ->
+            usize.t ->
+            M (ref _) :=
         ltac:(M.get_method (fun ℐ =>
           core.ops.index.Index.index
             (Self := alloc.vec.Vec.t i32.t alloc.alloc.Global.t)
@@ -230,7 +241,10 @@ Definition main : M unit :=
       let* α1 : ref str.t := M.read (mk_str "
 ") in
       let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : _ :=
+      let* α3 :
+          (mut_ref (core.slice.iter.Iter.t i32.t)) ->
+            ((ref i32.t) -> M bool.t) ->
+            M bool.t :=
         ltac:(M.get_method (fun ℐ =>
           core.iter.traits.iterator.Iterator.any
             (Self := core.slice.iter.Iter.t i32.t)
@@ -278,13 +292,16 @@ Definition main : M unit :=
       let* α1 : ref str.t := M.read (mk_str "
 ") in
       let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : _ :=
+      let* α3 :
+          (mut_ref (core.slice.iter.Iter.t i32.t)) ->
+            ((ref i32.t) -> M bool.t) ->
+            M bool.t :=
         ltac:(M.get_method (fun ℐ =>
           core.iter.traits.iterator.Iterator.any
             (Self := core.slice.iter.Iter.t i32.t)
             (F := (ref i32.t) -> M bool.t)
             (Trait := ℐ))) in
-      let* α4 : _ :=
+      let* α4 : (ref (array i32.t)) -> M _ :=
         ltac:(M.get_method (fun ℐ =>
           core.iter.traits.collect.IntoIterator.into_iter
             (Self := ref (array i32.t))

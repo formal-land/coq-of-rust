@@ -27,7 +27,7 @@ Section Impl_core_default_Default_for_call_builder_delegate_CallBuilderDelegateT
   Default
   *)
   Definition default : M call_builder_delegate.CallBuilderDelegateTest.t :=
-    let* α0 : _ :=
+    let* α0 : M i32.t :=
       ltac:(M.get_method (fun ℐ =>
         core.default.Default.default (Self := i32.t) (Trait := ℐ))) in
     let* α1 : i32.t := M.call α0 in

@@ -466,6 +466,13 @@ Section Impl.
       Notations.DoubleColon Self "contains" := {
     Notations.double_colon := contains (H0 := H0);
   }.
+
+  (* pub const fn first(&self) -> Option<&T> *)
+  Parameter first : ref Self -> M (Option.t (ref T)).
+
+  Global Instance AF_first : Notations.DoubleColon Self "first" := {
+    Notations.double_colon := first;
+  }.
 End Impl.
 End Impl.
 

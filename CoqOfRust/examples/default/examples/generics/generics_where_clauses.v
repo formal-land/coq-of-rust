@@ -84,7 +84,7 @@ Definition main : M unit :=
       M.call ((slice i32.t)::["into_vec"] (pointer_coercion "Unsize" α2)) in
     M.alloc α3 in
   let* _ : M.Val unit :=
-    let* α0 : _ :=
+    let* α0 : (alloc.vec.Vec.t i32.t alloc.alloc.Global.t) -> M unit :=
       ltac:(M.get_method (fun ℐ =>
         generics_where_clauses.PrintInOption.print_in_option
           (Self := alloc.vec.Vec.t i32.t alloc.alloc.Global.t)

@@ -33,12 +33,13 @@ Definition main : M unit :=
         ((slice (ref str.t))::["into_vec"] (pointer_coercion "Unsize" α5)) in
     M.alloc α6 in
   let* _ : M.Val unit :=
-    let* α0 : _ :=
+    let* α0 : (core.slice.iter.Iter.t (ref str.t)) -> M _ :=
       ltac:(M.get_method (fun ℐ =>
         core.iter.traits.collect.IntoIterator.into_iter
           (Self := core.slice.iter.Iter.t (ref str.t))
           (Trait := ℐ))) in
-    let* α1 : _ :=
+    let* α1 :
+        (ref (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t)) -> M (ref _) :=
       ltac:(M.get_method (fun ℐ =>
         core.ops.deref.Deref.deref
           (Self := alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t)
@@ -56,7 +57,9 @@ Definition main : M unit :=
             (let* iter := M.copy γ in
             M.loop
               (let* _ : M.Val unit :=
-                let* α0 : _ :=
+                let* α0 :
+                    (mut_ref (core.slice.iter.Iter.t (ref str.t))) ->
+                      M (core.option.Option.t _) :=
                   ltac:(M.get_method (fun ℐ =>
                     core.iter.traits.iterator.Iterator.next
                       (Self := core.slice.iter.Iter.t (ref str.t))

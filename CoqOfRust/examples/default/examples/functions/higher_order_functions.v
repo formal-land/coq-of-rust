@@ -63,7 +63,7 @@ Definition main : M unit :=
   let* upper : M.Val u32.t := M.alloc ((Integer.of_Z 1000) : u32.t) in
   let* acc : M.Val u32.t := M.alloc ((Integer.of_Z 0) : u32.t) in
   let* _ : M.Val unit :=
-    let* α0 : _ :=
+    let* α0 : (core.ops.range.RangeFrom.t u32.t) -> M _ :=
       ltac:(M.get_method (fun ℐ =>
         core.iter.traits.collect.IntoIterator.into_iter
           (Self := core.ops.range.RangeFrom.t u32.t)
@@ -81,7 +81,9 @@ Definition main : M unit :=
             (let* iter := M.copy γ in
             M.loop
               (let* _ : M.Val unit :=
-                let* α0 : _ :=
+                let* α0 :
+                    (mut_ref (core.ops.range.RangeFrom.t u32.t)) ->
+                      M (core.option.Option.t _) :=
                   ltac:(M.get_method (fun ℐ =>
                     core.iter.traits.iterator.Iterator.next
                       (Self := core.ops.range.RangeFrom.t u32.t)
@@ -166,7 +168,16 @@ Definition main : M unit :=
       M.alloc α6 in
     M.alloc tt in
   let* sum_of_squared_odd_numbers : M.Val u32.t :=
-    let* α0 : _ :=
+    let* α0 :
+        (core.iter.adapters.filter.Filter.t
+            (core.iter.adapters.take_while.TakeWhile.t
+              (core.iter.adapters.map.Map.t
+                (core.ops.range.RangeFrom.t u32.t)
+                (u32.t -> M u32.t))
+              ((ref u32.t) -> M bool.t))
+            ((ref u32.t) -> M bool.t))
+          ->
+          M u32.t :=
       ltac:(M.get_method (fun ℐ =>
         core.iter.traits.iterator.Iterator.sum
           (Self :=
@@ -179,7 +190,22 @@ Definition main : M unit :=
               ((ref u32.t) -> M bool.t))
           (S := u32.t)
           (Trait := ℐ))) in
-    let* α1 : _ :=
+    let* α1 :
+        (core.iter.adapters.take_while.TakeWhile.t
+            (core.iter.adapters.map.Map.t
+              (core.ops.range.RangeFrom.t u32.t)
+              (u32.t -> M u32.t))
+            ((ref u32.t) -> M bool.t))
+          ->
+          ((ref u32.t) -> M bool.t) ->
+          M
+            (core.iter.adapters.filter.Filter.t
+              (core.iter.adapters.take_while.TakeWhile.t
+                (core.iter.adapters.map.Map.t
+                  (core.ops.range.RangeFrom.t u32.t)
+                  (u32.t -> M u32.t))
+                ((ref u32.t) -> M bool.t))
+              ((ref u32.t) -> M bool.t)) :=
       ltac:(M.get_method (fun ℐ =>
         core.iter.traits.iterator.Iterator.filter
           (Self :=
@@ -190,7 +216,18 @@ Definition main : M unit :=
               ((ref u32.t) -> M bool.t))
           (P := (ref u32.t) -> M bool.t)
           (Trait := ℐ))) in
-    let* α2 : _ :=
+    let* α2 :
+        (core.iter.adapters.map.Map.t
+            (core.ops.range.RangeFrom.t u32.t)
+            (u32.t -> M u32.t))
+          ->
+          ((ref u32.t) -> M bool.t) ->
+          M
+            (core.iter.adapters.take_while.TakeWhile.t
+              (core.iter.adapters.map.Map.t
+                (core.ops.range.RangeFrom.t u32.t)
+                (u32.t -> M u32.t))
+              ((ref u32.t) -> M bool.t)) :=
       ltac:(M.get_method (fun ℐ =>
         core.iter.traits.iterator.Iterator.take_while
           (Self :=
@@ -199,7 +236,13 @@ Definition main : M unit :=
               (u32.t -> M u32.t))
           (P := (ref u32.t) -> M bool.t)
           (Trait := ℐ))) in
-    let* α3 : _ :=
+    let* α3 :
+        (core.ops.range.RangeFrom.t u32.t) ->
+          (u32.t -> M u32.t) ->
+          M
+            (core.iter.adapters.map.Map.t
+              (core.ops.range.RangeFrom.t u32.t)
+              (u32.t -> M u32.t)) :=
       ltac:(M.get_method (fun ℐ =>
         core.iter.traits.iterator.Iterator.map
           (Self := core.ops.range.RangeFrom.t u32.t)

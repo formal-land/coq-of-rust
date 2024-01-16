@@ -46,7 +46,9 @@ Definition multiply
               | core.result.Result.Err _ =>
                 let γ0_0 := core.result.Result.Get_Err_0 γ in
                 let* err := M.copy γ0_0 in
-                let* α0 : _ :=
+                let* α0 :
+                    core.num.error.ParseIntError.t ->
+                      M core.num.error.ParseIntError.t :=
                   ltac:(M.get_method (fun ℐ =>
                     core.convert.From.from
                       (Self := core.num.error.ParseIntError.t)
@@ -91,7 +93,9 @@ Definition multiply
               | core.result.Result.Err _ =>
                 let γ0_0 := core.result.Result.Get_Err_0 γ in
                 let* err := M.copy γ0_0 in
-                let* α0 : _ :=
+                let* α0 :
+                    core.num.error.ParseIntError.t ->
+                      M core.num.error.ParseIntError.t :=
                   ltac:(M.get_method (fun ℐ =>
                     core.convert.From.from
                       (Self := core.num.error.ParseIntError.t)

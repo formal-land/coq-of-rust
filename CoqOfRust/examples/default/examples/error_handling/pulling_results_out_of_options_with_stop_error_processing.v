@@ -20,7 +20,8 @@ Definition double_first
       M.Val
         (core.option.Option.t
           (core.result.Result.t i32.t core.num.error.ParseIntError.t)) :=
-    let* α0 : _ :=
+    let* α0 :
+        (ref (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t)) -> M (ref _) :=
       ltac:(M.get_method (fun ℐ =>
         core.ops.deref.Deref.deref
           (Self := alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t)
