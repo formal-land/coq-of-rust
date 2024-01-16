@@ -22,9 +22,7 @@ Section Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber_t.
   Parameter fmt :
       (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
   
-  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
-    Notations.double_colon := fmt;
-  }.
+  Axiom fmt_is_impl : impl Self "fmt" = fmt.
   
   Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
@@ -51,9 +49,7 @@ Section Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber_t.
   Parameter eq :
       (ref Self) -> (ref try_from_and_try_into.EvenNumber.t) -> M bool.t.
   
-  Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
-    Notations.double_colon := eq;
-  }.
+  Axiom eq_is_impl : impl Self "eq" = eq.
   
   Global Instance ℐ :
     core.cmp.PartialEq.Required.Trait Self
@@ -84,10 +80,7 @@ Section Impl_core_convert_TryFrom_i32_t_for_try_from_and_try_into_EvenNumber_t.
   *)
   Parameter try_from : i32.t -> M (core.result.Result.t Self Error.t).
   
-  Global Instance AssociatedFunction_try_from :
-    Notations.DoubleColon Self "try_from" := {
-    Notations.double_colon := try_from;
-  }.
+  Axiom try_from_is_impl : impl Self "try_from" = try_from.
   
   Global Instance ℐ : core.convert.TryFrom.Trait Self (T := i32.t) := {
     core.convert.TryFrom.Error := Error;

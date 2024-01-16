@@ -29,7 +29,7 @@ Definition main : M unit :=
     let* α2 : alloc.boxed.Box.t (slice i32.t) alloc.alloc.Global.t :=
       M.read (pointer_coercion "Unsize" α1) in
     let* α3 : alloc.vec.Vec.t i32.t alloc.alloc.Global.t :=
-      M.call ((slice i32.t)::["into_vec"] α2) in
+      M.call (impl (slice i32.t) "into_vec" α2) in
     M.alloc α3 in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.

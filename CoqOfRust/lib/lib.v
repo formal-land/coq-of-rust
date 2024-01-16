@@ -38,11 +38,7 @@ Notation "e1 ::[ e2 ]" := (Notations.double_colon e1 e2)
 Notation "e1 ::type[ e2 ]" := (Notations.double_colon_type e1 e2)
   (at level 0).
 
-Definition defaultType (T : option Set) (Default : Set) : Set :=
-  match T with
-  | Some T => T
-  | None => Default
-  end.
+Parameter impl : forall {A : Set}, Set -> string -> A.
 
 Parameter axiom : forall {A : Set}, A.
 

@@ -32,10 +32,7 @@ Section Impl_core_default_Default_for_dns_Mapping_t_K_V.
   *)
   Parameter default : M (dns.Mapping.t K V).
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -56,10 +53,7 @@ Section Impl_dns_Mapping_t_K_V.
   *)
   Parameter contains : (ref Self) -> (ref K) -> M bool.t.
   
-  Global Instance AssociatedFunction_contains :
-    Notations.DoubleColon Self "contains" := {
-    Notations.double_colon := contains;
-  }.
+  Axiom contains_is_impl : impl Self "contains" = contains.
   
   (*
       fn get(&self, _key: &K) -> Option<V> {
@@ -68,9 +62,7 @@ Section Impl_dns_Mapping_t_K_V.
   *)
   Parameter get : (ref Self) -> (ref K) -> M (core.option.Option.t V).
   
-  Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
-    Notations.double_colon := get;
-  }.
+  Axiom get_is_impl : impl Self "get" = get.
   
   (*
       fn insert(&mut self, _key: K, _value: V) -> Option<u32> {
@@ -79,10 +71,7 @@ Section Impl_dns_Mapping_t_K_V.
   *)
   Parameter insert : (mut_ref Self) -> K -> V -> M (core.option.Option.t u32.t).
   
-  Global Instance AssociatedFunction_insert :
-    Notations.DoubleColon Self "insert" := {
-    Notations.double_colon := insert;
-  }.
+  Axiom insert_is_impl : impl Self "insert" = insert.
   
   (*
       fn new() -> Mapping<K, V> {
@@ -91,9 +80,7 @@ Section Impl_dns_Mapping_t_K_V.
   *)
   Parameter new : M (dns.Mapping.t K V).
   
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
-    Notations.double_colon := new;
-  }.
+  Axiom new_is_impl : impl Self "new" = new.
   
   (*
       fn remove(&self, _key: K) {
@@ -102,10 +89,7 @@ Section Impl_dns_Mapping_t_K_V.
   *)
   Parameter remove : (ref Self) -> K -> M unit.
   
-  Global Instance AssociatedFunction_remove :
-    Notations.DoubleColon Self "remove" := {
-    Notations.double_colon := remove;
-  }.
+  Axiom remove_is_impl : impl Self "remove" = remove.
   
   (*
       fn size(&self, _key: K) -> Option<u32> {
@@ -114,10 +98,7 @@ Section Impl_dns_Mapping_t_K_V.
   *)
   Parameter size : (ref Self) -> K -> M (core.option.Option.t u32.t).
   
-  Global Instance AssociatedFunction_size :
-    Notations.DoubleColon Self "size" := {
-    Notations.double_colon := size;
-  }.
+  Axiom size_is_impl : impl Self "size" = size.
   
   (*
       fn take(&self, _key: K) -> Option<V> {
@@ -126,10 +107,7 @@ Section Impl_dns_Mapping_t_K_V.
   *)
   Parameter take : (ref Self) -> K -> M (core.option.Option.t V).
   
-  Global Instance AssociatedFunction_take :
-    Notations.DoubleColon Self "take" := {
-    Notations.double_colon := take;
-  }.
+  Axiom take_is_impl : impl Self "take" = take.
 End Impl_dns_Mapping_t_K_V.
 End Impl_dns_Mapping_t_K_V.
 
@@ -153,10 +131,7 @@ Section Impl_core_default_Default_for_dns_AccountId_t.
   *)
   Parameter default : M dns.AccountId.t.
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -173,10 +148,7 @@ Section Impl_core_clone_Clone_for_dns_AccountId_t.
   *)
   Parameter clone : (ref Self) -> M dns.AccountId.t.
   
-  Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon Self "clone" := {
-    Notations.double_colon := clone;
-  }.
+  Axiom clone_is_impl : impl Self "clone" = clone.
   
   Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
@@ -212,9 +184,7 @@ Section Impl_core_cmp_PartialEq_for_dns_AccountId_t.
   *)
   Parameter eq : (ref Self) -> (ref dns.AccountId.t) -> M bool.t.
   
-  Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
-    Notations.double_colon := eq;
-  }.
+  Axiom eq_is_impl : impl Self "eq" = eq.
   
   Global Instance ℐ :
     core.cmp.PartialEq.Required.Trait Self
@@ -236,10 +206,7 @@ Section Impl_core_convert_From_array_u8_t_for_dns_AccountId_t.
   *)
   Parameter from : (array u8.t) -> M Self.
   
-  Global Instance AssociatedFunction_from :
-    Notations.DoubleColon Self "from" := {
-    Notations.double_colon := from;
-  }.
+  Axiom from_is_impl : impl Self "from" = from.
   
   Global Instance ℐ : core.convert.From.Trait Self (T := array u8.t) := {
     core.convert.From.from := from;
@@ -360,10 +327,7 @@ Section Impl_dns_Env_t.
   *)
   Parameter caller : (ref Self) -> M dns.AccountId.t.
   
-  Global Instance AssociatedFunction_caller :
-    Notations.DoubleColon Self "caller" := {
-    Notations.double_colon := caller;
-  }.
+  Axiom caller_is_impl : impl Self "caller" = caller.
   
   (*
       fn emit_event(&self, _event: Event) {
@@ -372,10 +336,7 @@ Section Impl_dns_Env_t.
   *)
   Parameter emit_event : (ref Self) -> dns.Event.t -> M unit.
   
-  Global Instance AssociatedFunction_emit_event :
-    Notations.DoubleColon Self "emit_event" := {
-    Notations.double_colon := emit_event;
-  }.
+  Axiom emit_event_is_impl : impl Self "emit_event" = emit_event.
 End Impl_dns_Env_t.
 End Impl_dns_Env_t.
 
@@ -429,10 +390,7 @@ Section Impl_core_default_Default_for_dns_DomainNameService_t.
   *)
   Parameter default : M Self.
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -464,9 +422,7 @@ Section Impl_core_cmp_PartialEq_for_dns_Error_t.
   *)
   Parameter eq : (ref Self) -> (ref dns.Error.t) -> M bool.t.
   
-  Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
-    Notations.double_colon := eq;
-  }.
+  Axiom eq_is_impl : impl Self "eq" = eq.
   
   Global Instance ℐ :
     core.cmp.PartialEq.Required.Trait Self
@@ -495,10 +451,8 @@ Section Impl_core_cmp_Eq_for_dns_Error_t.
   *)
   Parameter assert_receiver_is_total_eq : (ref Self) -> M unit.
   
-  Global Instance AssociatedFunction_assert_receiver_is_total_eq :
-    Notations.DoubleColon Self "assert_receiver_is_total_eq" := {
-    Notations.double_colon := assert_receiver_is_total_eq;
-  }.
+  Axiom assert_receiver_is_total_eq_is_impl :
+      impl Self "assert_receiver_is_total_eq" = assert_receiver_is_total_eq.
   
   Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
     core.cmp.Eq.assert_receiver_is_total_eq :=
@@ -520,10 +474,7 @@ Section Impl_dns_DomainNameService_t.
   *)
   Parameter init_env : M dns.Env.t.
   
-  Global Instance AssociatedFunction_init_env :
-    Notations.DoubleColon Self "init_env" := {
-    Notations.double_colon := init_env;
-  }.
+  Axiom init_env_is_impl : impl Self "init_env" = init_env.
   
   (*
       fn env(&self) -> Env {
@@ -532,9 +483,7 @@ Section Impl_dns_DomainNameService_t.
   *)
   Parameter env : (ref Self) -> M dns.Env.t.
   
-  Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
-    Notations.double_colon := env;
-  }.
+  Axiom env_is_impl : impl Self "env" = env.
   
   (*
       pub fn new() -> Self {
@@ -543,9 +492,7 @@ Section Impl_dns_DomainNameService_t.
   *)
   Parameter new : M Self.
   
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
-    Notations.double_colon := new;
-  }.
+  Axiom new_is_impl : impl Self "new" = new.
   
   (*
       pub fn register(&mut self, name: Hash) -> Result<()> {
@@ -564,10 +511,7 @@ Section Impl_dns_DomainNameService_t.
   Parameter register :
       (mut_ref Self) -> ltac:(dns.Hash) -> M ltac:(dns.Result unit).
   
-  Global Instance AssociatedFunction_register :
-    Notations.DoubleColon Self "register" := {
-    Notations.double_colon := register;
-  }.
+  Axiom register_is_impl : impl Self "register" = register.
   
   (*
       fn get_owner_or_default(&self, name: Hash) -> AccountId {
@@ -579,10 +523,8 @@ Section Impl_dns_DomainNameService_t.
   Parameter get_owner_or_default :
       (ref Self) -> ltac:(dns.Hash) -> M dns.AccountId.t.
   
-  Global Instance AssociatedFunction_get_owner_or_default :
-    Notations.DoubleColon Self "get_owner_or_default" := {
-    Notations.double_colon := get_owner_or_default;
-  }.
+  Axiom get_owner_or_default_is_impl :
+      impl Self "get_owner_or_default" = get_owner_or_default.
   
   (*
       pub fn set_address(&mut self, name: Hash, new_address: AccountId) -> Result<()> {
@@ -610,10 +552,7 @@ Section Impl_dns_DomainNameService_t.
         dns.AccountId.t ->
         M ltac:(dns.Result unit).
   
-  Global Instance AssociatedFunction_set_address :
-    Notations.DoubleColon Self "set_address" := {
-    Notations.double_colon := set_address;
-  }.
+  Axiom set_address_is_impl : impl Self "set_address" = set_address.
   
   (*
       pub fn transfer(&mut self, name: Hash, to: AccountId) -> Result<()> {
@@ -642,10 +581,7 @@ Section Impl_dns_DomainNameService_t.
         dns.AccountId.t ->
         M ltac:(dns.Result unit).
   
-  Global Instance AssociatedFunction_transfer :
-    Notations.DoubleColon Self "transfer" := {
-    Notations.double_colon := transfer;
-  }.
+  Axiom transfer_is_impl : impl Self "transfer" = transfer.
   
   (*
       fn get_address_or_default(&self, name: Hash) -> AccountId {
@@ -657,10 +593,8 @@ Section Impl_dns_DomainNameService_t.
   Parameter get_address_or_default :
       (ref Self) -> ltac:(dns.Hash) -> M dns.AccountId.t.
   
-  Global Instance AssociatedFunction_get_address_or_default :
-    Notations.DoubleColon Self "get_address_or_default" := {
-    Notations.double_colon := get_address_or_default;
-  }.
+  Axiom get_address_or_default_is_impl :
+      impl Self "get_address_or_default" = get_address_or_default.
   
   (*
       pub fn get_address(&self, name: Hash) -> AccountId {
@@ -669,10 +603,7 @@ Section Impl_dns_DomainNameService_t.
   *)
   Parameter get_address : (ref Self) -> ltac:(dns.Hash) -> M dns.AccountId.t.
   
-  Global Instance AssociatedFunction_get_address :
-    Notations.DoubleColon Self "get_address" := {
-    Notations.double_colon := get_address;
-  }.
+  Axiom get_address_is_impl : impl Self "get_address" = get_address.
   
   (*
       pub fn get_owner(&self, name: Hash) -> AccountId {
@@ -681,9 +612,6 @@ Section Impl_dns_DomainNameService_t.
   *)
   Parameter get_owner : (ref Self) -> ltac:(dns.Hash) -> M dns.AccountId.t.
   
-  Global Instance AssociatedFunction_get_owner :
-    Notations.DoubleColon Self "get_owner" := {
-    Notations.double_colon := get_owner;
-  }.
+  Axiom get_owner_is_impl : impl Self "get_owner" = get_owner.
 End Impl_dns_DomainNameService_t.
 End Impl_dns_DomainNameService_t.

@@ -49,10 +49,7 @@ Section Impl_core_default_Default_for_mapping_integration_tests_Mapping_t_K_V.
         mapping_integration_tests.Mapping._value := α3;
       |}.
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -78,10 +75,7 @@ Section Impl_mapping_integration_tests_Mapping_t_K_V.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_contains :
-    Notations.DoubleColon Self "contains" := {
-    Notations.double_colon := contains;
-  }.
+  Axiom contains_is_impl : impl Self "contains" = contains.
   
   (*
       fn get(&self, _key: &K) -> Option<V> {
@@ -98,9 +92,7 @@ Section Impl_mapping_integration_tests_Mapping_t_K_V.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
-    Notations.double_colon := get;
-  }.
+  Axiom get_is_impl : impl Self "get" = get.
   
   (*
       fn insert(&mut self, _key: K, _value: V) -> Option<u32> {
@@ -119,10 +111,7 @@ Section Impl_mapping_integration_tests_Mapping_t_K_V.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_insert :
-    Notations.DoubleColon Self "insert" := {
-    Notations.double_colon := insert;
-  }.
+  Axiom insert_is_impl : impl Self "insert" = insert.
   
   (*
       fn new() -> Mapping<K, V> {
@@ -134,9 +123,7 @@ Section Impl_mapping_integration_tests_Mapping_t_K_V.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
-    Notations.double_colon := new;
-  }.
+  Axiom new_is_impl : impl Self "new" = new.
   
   (*
       fn remove(&self, _key: K) {
@@ -150,10 +137,7 @@ Section Impl_mapping_integration_tests_Mapping_t_K_V.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_remove :
-    Notations.DoubleColon Self "remove" := {
-    Notations.double_colon := remove;
-  }.
+  Axiom remove_is_impl : impl Self "remove" = remove.
   
   (*
       fn size(&self, _key: K) -> Option<u32> {
@@ -170,10 +154,7 @@ Section Impl_mapping_integration_tests_Mapping_t_K_V.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_size :
-    Notations.DoubleColon Self "size" := {
-    Notations.double_colon := size;
-  }.
+  Axiom size_is_impl : impl Self "size" = size.
   
   (*
       fn take(&self, _key: K) -> Option<V> {
@@ -187,10 +168,7 @@ Section Impl_mapping_integration_tests_Mapping_t_K_V.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_take :
-    Notations.DoubleColon Self "take" := {
-    Notations.double_colon := take;
-  }.
+  Axiom take_is_impl : impl Self "take" = take.
 End Impl_mapping_integration_tests_Mapping_t_K_V.
 End Impl_mapping_integration_tests_Mapping_t_K_V.
 
@@ -219,10 +197,7 @@ Section Impl_core_default_Default_for_mapping_integration_tests_AccountId_t.
     let* α1 : u128.t := M.call α0 in
     M.pure (mapping_integration_tests.AccountId.Build_t α1).
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -254,10 +229,7 @@ Section Impl_core_clone_Clone_for_mapping_integration_tests_AccountId_t.
         ] in
     M.read α0.
   
-  Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon Self "clone" := {
-    Notations.double_colon := clone;
-  }.
+  Axiom clone_is_impl : impl Self "clone" = clone.
   
   Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
@@ -304,10 +276,7 @@ Section Impl_mapping_integration_tests_Env_t.
     let* α0 : ref mapping_integration_tests.Env.t := M.read self in
     M.read (mapping_integration_tests.Env.Get_caller (deref α0)).
   
-  Global Instance AssociatedFunction_caller :
-    Notations.DoubleColon Self "caller" := {
-    Notations.double_colon := caller;
-  }.
+  Axiom caller_is_impl : impl Self "caller" = caller.
 End Impl_mapping_integration_tests_Env_t.
 End Impl_mapping_integration_tests_Env_t.
 
@@ -350,10 +319,7 @@ Section Impl_core_default_Default_for_mapping_integration_tests_Mappings_t.
       M.call α0 in
     M.pure {| mapping_integration_tests.Mappings.balances := α1; |}.
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -375,10 +341,7 @@ Section Impl_mapping_integration_tests_Mappings_t.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_init_env :
-    Notations.DoubleColon Self "init_env" := {
-    Notations.double_colon := init_env;
-  }.
+  Axiom init_env_is_impl : impl Self "init_env" = init_env.
   
   (*
       fn env() -> Env {
@@ -390,9 +353,7 @@ Section Impl_mapping_integration_tests_Mappings_t.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
-    Notations.double_colon := env;
-  }.
+  Axiom env_is_impl : impl Self "env" = env.
   
   (*
       pub fn new() -> Self {
@@ -429,9 +390,7 @@ Section Impl_mapping_integration_tests_Mappings_t.
       M.alloc {| mapping_integration_tests.Mappings.balances := α0; |} in
     M.read α0.
   
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
-    Notations.double_colon := new;
-  }.
+  Axiom new_is_impl : impl Self "new" = new.
   
   (*
       pub fn get_balance(&self) -> Option<Balance> {
@@ -445,26 +404,25 @@ Section Impl_mapping_integration_tests_Mappings_t.
     let* self := M.alloc self in
     let* caller : M.Val mapping_integration_tests.AccountId.t :=
       let* α0 : mapping_integration_tests.Env.t :=
-        M.call mapping_integration_tests.Mappings.t::["env"] in
+        M.call (impl mapping_integration_tests.Mappings.t "env") in
       let* α1 : M.Val mapping_integration_tests.Env.t := M.alloc α0 in
       let* α2 : mapping_integration_tests.AccountId.t :=
-        M.call (mapping_integration_tests.Env.t::["caller"] (borrow α1)) in
+        M.call (impl mapping_integration_tests.Env.t "caller" (borrow α1)) in
       M.alloc α2 in
     let* α0 : ref mapping_integration_tests.Mappings.t := M.read self in
     let* α1 : core.option.Option.t u128.t :=
       M.call
-        ((mapping_integration_tests.Mapping.t
+        (impl
+            (mapping_integration_tests.Mapping.t
               mapping_integration_tests.AccountId.t
-              u128.t)::["get"]
+              u128.t)
+            "get"
           (borrow (mapping_integration_tests.Mappings.Get_balances (deref α0)))
           (borrow caller)) in
     let* α0 : M.Val (core.option.Option.t u128.t) := M.alloc α1 in
     M.read α0.
   
-  Global Instance AssociatedFunction_get_balance :
-    Notations.DoubleColon Self "get_balance" := {
-    Notations.double_colon := get_balance;
-  }.
+  Axiom get_balance_is_impl : impl Self "get_balance" = get_balance.
   
   (*
       pub fn insert_balance(&mut self, value: Balance) -> Option<u32> {
@@ -480,19 +438,21 @@ Section Impl_mapping_integration_tests_Mappings_t.
     let* value := M.alloc value in
     let* caller : M.Val mapping_integration_tests.AccountId.t :=
       let* α0 : mapping_integration_tests.Env.t :=
-        M.call mapping_integration_tests.Mappings.t::["env"] in
+        M.call (impl mapping_integration_tests.Mappings.t "env") in
       let* α1 : M.Val mapping_integration_tests.Env.t := M.alloc α0 in
       let* α2 : mapping_integration_tests.AccountId.t :=
-        M.call (mapping_integration_tests.Env.t::["caller"] (borrow α1)) in
+        M.call (impl mapping_integration_tests.Env.t "caller" (borrow α1)) in
       M.alloc α2 in
     let* α0 : mut_ref mapping_integration_tests.Mappings.t := M.read self in
     let* α1 : mapping_integration_tests.AccountId.t := M.read caller in
     let* α2 : u128.t := M.read value in
     let* α3 : core.option.Option.t u32.t :=
       M.call
-        ((mapping_integration_tests.Mapping.t
+        (impl
+            (mapping_integration_tests.Mapping.t
               mapping_integration_tests.AccountId.t
-              u128.t)::["insert"]
+              u128.t)
+            "insert"
           (borrow_mut
             (mapping_integration_tests.Mappings.Get_balances (deref α0)))
           α1
@@ -500,10 +460,7 @@ Section Impl_mapping_integration_tests_Mappings_t.
     let* α0 : M.Val (core.option.Option.t u32.t) := M.alloc α3 in
     M.read α0.
   
-  Global Instance AssociatedFunction_insert_balance :
-    Notations.DoubleColon Self "insert_balance" := {
-    Notations.double_colon := insert_balance;
-  }.
+  Axiom insert_balance_is_impl : impl Self "insert_balance" = insert_balance.
   
   (*
       pub fn size_balance(&mut self) -> Option<u32> {
@@ -517,27 +474,26 @@ Section Impl_mapping_integration_tests_Mappings_t.
     let* self := M.alloc self in
     let* caller : M.Val mapping_integration_tests.AccountId.t :=
       let* α0 : mapping_integration_tests.Env.t :=
-        M.call mapping_integration_tests.Mappings.t::["env"] in
+        M.call (impl mapping_integration_tests.Mappings.t "env") in
       let* α1 : M.Val mapping_integration_tests.Env.t := M.alloc α0 in
       let* α2 : mapping_integration_tests.AccountId.t :=
-        M.call (mapping_integration_tests.Env.t::["caller"] (borrow α1)) in
+        M.call (impl mapping_integration_tests.Env.t "caller" (borrow α1)) in
       M.alloc α2 in
     let* α0 : mut_ref mapping_integration_tests.Mappings.t := M.read self in
     let* α1 : mapping_integration_tests.AccountId.t := M.read caller in
     let* α2 : core.option.Option.t u32.t :=
       M.call
-        ((mapping_integration_tests.Mapping.t
+        (impl
+            (mapping_integration_tests.Mapping.t
               mapping_integration_tests.AccountId.t
-              u128.t)::["size"]
+              u128.t)
+            "size"
           (borrow (mapping_integration_tests.Mappings.Get_balances (deref α0)))
           α1) in
     let* α0 : M.Val (core.option.Option.t u32.t) := M.alloc α2 in
     M.read α0.
   
-  Global Instance AssociatedFunction_size_balance :
-    Notations.DoubleColon Self "size_balance" := {
-    Notations.double_colon := size_balance;
-  }.
+  Axiom size_balance_is_impl : impl Self "size_balance" = size_balance.
   
   (*
       pub fn contains_balance(&self) -> bool {
@@ -549,26 +505,26 @@ Section Impl_mapping_integration_tests_Mappings_t.
     let* self := M.alloc self in
     let* caller : M.Val mapping_integration_tests.AccountId.t :=
       let* α0 : mapping_integration_tests.Env.t :=
-        M.call mapping_integration_tests.Mappings.t::["env"] in
+        M.call (impl mapping_integration_tests.Mappings.t "env") in
       let* α1 : M.Val mapping_integration_tests.Env.t := M.alloc α0 in
       let* α2 : mapping_integration_tests.AccountId.t :=
-        M.call (mapping_integration_tests.Env.t::["caller"] (borrow α1)) in
+        M.call (impl mapping_integration_tests.Env.t "caller" (borrow α1)) in
       M.alloc α2 in
     let* α0 : ref mapping_integration_tests.Mappings.t := M.read self in
     let* α1 : bool.t :=
       M.call
-        ((mapping_integration_tests.Mapping.t
+        (impl
+            (mapping_integration_tests.Mapping.t
               mapping_integration_tests.AccountId.t
-              u128.t)::["contains"]
+              u128.t)
+            "contains"
           (borrow (mapping_integration_tests.Mappings.Get_balances (deref α0)))
           (borrow caller)) in
     let* α0 : M.Val bool.t := M.alloc α1 in
     M.read α0.
   
-  Global Instance AssociatedFunction_contains_balance :
-    Notations.DoubleColon Self "contains_balance" := {
-    Notations.double_colon := contains_balance;
-  }.
+  Axiom contains_balance_is_impl :
+      impl Self "contains_balance" = contains_balance.
   
   (*
       pub fn remove_balance(&mut self) {
@@ -580,19 +536,21 @@ Section Impl_mapping_integration_tests_Mappings_t.
     let* self := M.alloc self in
     let* caller : M.Val mapping_integration_tests.AccountId.t :=
       let* α0 : mapping_integration_tests.Env.t :=
-        M.call mapping_integration_tests.Mappings.t::["env"] in
+        M.call (impl mapping_integration_tests.Mappings.t "env") in
       let* α1 : M.Val mapping_integration_tests.Env.t := M.alloc α0 in
       let* α2 : mapping_integration_tests.AccountId.t :=
-        M.call (mapping_integration_tests.Env.t::["caller"] (borrow α1)) in
+        M.call (impl mapping_integration_tests.Env.t "caller" (borrow α1)) in
       M.alloc α2 in
     let* _ : M.Val unit :=
       let* α0 : mut_ref mapping_integration_tests.Mappings.t := M.read self in
       let* α1 : mapping_integration_tests.AccountId.t := M.read caller in
       let* α2 : unit :=
         M.call
-          ((mapping_integration_tests.Mapping.t
+          (impl
+              (mapping_integration_tests.Mapping.t
                 mapping_integration_tests.AccountId.t
-                u128.t)::["remove"]
+                u128.t)
+              "remove"
             (borrow
               (mapping_integration_tests.Mappings.Get_balances (deref α0)))
             α1) in
@@ -600,10 +558,7 @@ Section Impl_mapping_integration_tests_Mappings_t.
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
-  Global Instance AssociatedFunction_remove_balance :
-    Notations.DoubleColon Self "remove_balance" := {
-    Notations.double_colon := remove_balance;
-  }.
+  Axiom remove_balance_is_impl : impl Self "remove_balance" = remove_balance.
   
   (*
       pub fn take_balance(&mut self) -> Option<Balance> {
@@ -617,26 +572,25 @@ Section Impl_mapping_integration_tests_Mappings_t.
     let* self := M.alloc self in
     let* caller : M.Val mapping_integration_tests.AccountId.t :=
       let* α0 : mapping_integration_tests.Env.t :=
-        M.call mapping_integration_tests.Mappings.t::["env"] in
+        M.call (impl mapping_integration_tests.Mappings.t "env") in
       let* α1 : M.Val mapping_integration_tests.Env.t := M.alloc α0 in
       let* α2 : mapping_integration_tests.AccountId.t :=
-        M.call (mapping_integration_tests.Env.t::["caller"] (borrow α1)) in
+        M.call (impl mapping_integration_tests.Env.t "caller" (borrow α1)) in
       M.alloc α2 in
     let* α0 : mut_ref mapping_integration_tests.Mappings.t := M.read self in
     let* α1 : mapping_integration_tests.AccountId.t := M.read caller in
     let* α2 : core.option.Option.t u128.t :=
       M.call
-        ((mapping_integration_tests.Mapping.t
+        (impl
+            (mapping_integration_tests.Mapping.t
               mapping_integration_tests.AccountId.t
-              u128.t)::["take"]
+              u128.t)
+            "take"
           (borrow (mapping_integration_tests.Mappings.Get_balances (deref α0)))
           α1) in
     let* α0 : M.Val (core.option.Option.t u128.t) := M.alloc α2 in
     M.read α0.
   
-  Global Instance AssociatedFunction_take_balance :
-    Notations.DoubleColon Self "take_balance" := {
-    Notations.double_colon := take_balance;
-  }.
+  Axiom take_balance_is_impl : impl Self "take_balance" = take_balance.
 End Impl_mapping_integration_tests_Mappings_t.
 End Impl_mapping_integration_tests_Mappings_t.

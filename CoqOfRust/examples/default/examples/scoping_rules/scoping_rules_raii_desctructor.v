@@ -27,17 +27,14 @@ Section Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop_t.
         let* α3 : ref (slice (ref str.t)) :=
           M.read (pointer_coercion "Unsize" α2) in
         let* α4 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_const"] α3) in
+          M.call (impl core.fmt.Arguments.t "new_const" α3) in
         let* α5 : unit := M.call (std.io.stdio._print α4) in
         M.alloc α5 in
       M.alloc tt in
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
-  Global Instance AssociatedFunction_drop :
-    Notations.DoubleColon Self "drop" := {
-    Notations.double_colon := drop;
-  }.
+  Axiom drop_is_impl : impl Self "drop" = drop.
   
   Global Instance ℐ : core.ops.drop.Drop.Trait Self := {
     core.ops.drop.Drop.drop := drop;
@@ -64,7 +61,7 @@ Definition main : M unit :=
       let* α3 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α2) in
       let* α4 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_const"] α3) in
+        M.call (impl core.fmt.Arguments.t "new_const" α3) in
       let* α5 : unit := M.call (std.io.stdio._print α4) in
       M.alloc α5 in
     M.alloc tt in

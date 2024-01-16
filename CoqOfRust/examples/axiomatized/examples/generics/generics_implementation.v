@@ -38,10 +38,7 @@ Section Impl_generics_implementation_Val_t.
   *)
   Parameter value : (ref Self) -> M (ref f64.t).
   
-  Global Instance AssociatedFunction_value :
-    Notations.DoubleColon Self "value" := {
-    Notations.double_colon := value;
-  }.
+  Axiom value_is_impl : impl Self "value" = value.
 End Impl_generics_implementation_Val_t.
 End Impl_generics_implementation_Val_t.
 
@@ -58,10 +55,7 @@ Section Impl_generics_implementation_GenVal_t_T.
   *)
   Parameter value : (ref Self) -> M (ref T).
   
-  Global Instance AssociatedFunction_value :
-    Notations.DoubleColon Self "value" := {
-    Notations.double_colon := value;
-  }.
+  Axiom value_is_impl : impl Self "value" = value.
 End Impl_generics_implementation_GenVal_t_T.
 End Impl_generics_implementation_GenVal_t_T.
 

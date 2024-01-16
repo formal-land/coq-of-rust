@@ -28,7 +28,7 @@ Definition main : M unit :=
     let* α5 : alloc.boxed.Box.t (slice (ref str.t)) alloc.alloc.Global.t :=
       M.read (pointer_coercion "Unsize" α4) in
     let* α6 : alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t :=
-      M.call ((slice (ref str.t))::["into_vec"] α5) in
+      M.call (impl (slice (ref str.t)) "into_vec" α5) in
     M.alloc α6 in
   let* _ : M.Val unit :=
     let* α0 : _ :=
@@ -43,7 +43,7 @@ Definition main : M unit :=
           (Trait := ℐ))) in
     let* α2 : mut_ref (slice (ref str.t)) := M.call (α1 (borrow_mut names)) in
     let* α3 : core.slice.iter.IterMut.t (ref str.t) :=
-      M.call ((slice (ref str.t))::["iter_mut"] α2) in
+      M.call (impl (slice (ref str.t)) "iter_mut" α2) in
     let* α4 : core.slice.iter.IterMut.t (ref str.t) := M.call (α0 α3) in
     let* α5 : M.Val (core.slice.iter.IterMut.t (ref str.t)) := M.alloc α4 in
     let* α6 : M.Val unit :=
@@ -123,14 +123,14 @@ Definition main : M unit :=
       let* α4 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α3) in
       let* α5 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow names)) in
+        M.call (impl core.fmt.rt.Argument.t "new_debug" (borrow names)) in
       let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
       let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
         M.alloc (borrow α6) in
       let* α8 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α7) in
       let* α9 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
+        M.call (impl core.fmt.Arguments.t "new_v1" α4 α8) in
       let* α10 : unit := M.call (std.io.stdio._print α9) in
       M.alloc α10 in
     M.alloc tt in

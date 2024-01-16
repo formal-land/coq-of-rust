@@ -239,12 +239,16 @@ pub trait Generator<R = ()> {
 }
 *)
 Module Generator.
-  Class Trait (Self : Set) (R : option Set) (Yield Return : Set) : Set := {
-    R := defaultType R unit;
+  Class Trait (Self : Set) {R Yield Return : Set} : Set := {
+    R := R;
     Yield := Yield;
     Return := Return;
     resume : Pin (mut_ref Self) -> R -> GeneratorState Yield Return;
   }.
+
+  Module Default.
+    Definition R : Set := unit.
+  End Default.
 End Generator.
 
 (* 

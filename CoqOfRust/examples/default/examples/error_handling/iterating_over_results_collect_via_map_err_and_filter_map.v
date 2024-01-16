@@ -29,7 +29,7 @@ Definition main : M unit :=
     let* α7 : alloc.boxed.Box.t (slice (ref str.t)) alloc.alloc.Global.t :=
       M.read (pointer_coercion "Unsize" α6) in
     let* α8 : alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t :=
-      M.call ((slice (ref str.t))::["into_vec"] α7) in
+      M.call (impl (slice (ref str.t)) "into_vec" α7) in
     M.alloc α8 in
   let* errors :
       M.Val
@@ -37,9 +37,9 @@ Definition main : M unit :=
     let* α0 :
         alloc.vec.Vec.t core.num.error.ParseIntError.t alloc.alloc.Global.t :=
       M.call
-        (alloc.vec.Vec.t
-            core.num.error.ParseIntError.t
-            alloc.alloc.Global.t)::["new"] in
+        (impl
+          (alloc.vec.Vec.t core.num.error.ParseIntError.t alloc.alloc.Global.t)
+          "new") in
     M.alloc α0 in
   let* numbers : M.Val (alloc.vec.Vec.t u8.t alloc.alloc.Global.t) :=
     let* α0 : _ :=
@@ -105,7 +105,7 @@ Definition main : M unit :=
                 fun γ =>
                   (let* s := M.copy γ in
                   let* α0 : ref str.t := M.read s in
-                  M.call (str.t::["parse"] α0)) :
+                  M.call (impl str.t "parse" α0)) :
                   M (core.result.Result.t u8.t core.num.error.ParseIntError.t)
               ]) :
             M (core.result.Result.t u8.t core.num.error.ParseIntError.t))) in
@@ -135,9 +135,11 @@ Definition main : M unit :=
                     M.read r in
                   let* α1 : core.result.Result.t u8.t unit :=
                     M.call
-                      ((core.result.Result.t
+                      (impl
+                          (core.result.Result.t
                             u8.t
-                            core.num.error.ParseIntError.t)::["map_err"]
+                            core.num.error.ParseIntError.t)
+                          "map_err"
                         α0
                         (fun (α0 : core.num.error.ParseIntError.t) =>
                           (let* α0 := M.alloc α0 in
@@ -149,15 +151,17 @@ Definition main : M unit :=
                                 let* α0 : core.num.error.ParseIntError.t :=
                                   M.read e in
                                 M.call
-                                  ((alloc.vec.Vec.t
+                                  (impl
+                                      (alloc.vec.Vec.t
                                         core.num.error.ParseIntError.t
-                                        alloc.alloc.Global.t)::["push"]
+                                        alloc.alloc.Global.t)
+                                      "push"
                                     (borrow_mut errors)
                                     α0)) :
                                 M unit
                             ]) :
                           M unit)) in
-                  M.call ((core.result.Result.t u8.t unit)::["ok"] α1)) :
+                  M.call (impl (core.result.Result.t u8.t unit) "ok" α1)) :
                   M (core.option.Option.t u8.t)
               ]) :
             M (core.option.Option.t u8.t))) in
@@ -173,14 +177,14 @@ Definition main : M unit :=
       let* α4 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α3) in
       let* α5 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow numbers)) in
+        M.call (impl core.fmt.rt.Argument.t "new_debug" (borrow numbers)) in
       let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
       let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
         M.alloc (borrow α6) in
       let* α8 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α7) in
       let* α9 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
+        M.call (impl core.fmt.Arguments.t "new_v1" α4 α8) in
       let* α10 : unit := M.call (std.io.stdio._print α9) in
       M.alloc α10 in
     M.alloc tt in
@@ -194,14 +198,14 @@ Definition main : M unit :=
       let* α4 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α3) in
       let* α5 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow errors)) in
+        M.call (impl core.fmt.rt.Argument.t "new_debug" (borrow errors)) in
       let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
       let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
         M.alloc (borrow α6) in
       let* α8 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α7) in
       let* α9 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
+        M.call (impl core.fmt.Arguments.t "new_v1" α4 α8) in
       let* α10 : unit := M.call (std.io.stdio._print α9) in
       M.alloc α10 in
     M.alloc tt in

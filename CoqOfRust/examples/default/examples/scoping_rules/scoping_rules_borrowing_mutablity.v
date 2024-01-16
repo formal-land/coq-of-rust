@@ -59,10 +59,7 @@ Section Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book_t.
         ] in
     M.read α0.
   
-  Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon Self "clone" := {
-    Notations.double_colon := clone;
-  }.
+  Axiom clone_is_impl : impl Self "clone" = clone.
   
   Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
@@ -105,13 +102,13 @@ Definition borrow_book
       let* α6 : ref scoping_rules_borrowing_mutablity.Book.t := M.read book in
       let* α7 : core.fmt.rt.Argument.t :=
         M.call
-          (core.fmt.rt.Argument.t::["new_display"]
+          (impl core.fmt.rt.Argument.t "new_display"
             (borrow
               (scoping_rules_borrowing_mutablity.Book.Get_title (deref α6)))) in
       let* α8 : ref scoping_rules_borrowing_mutablity.Book.t := M.read book in
       let* α9 : core.fmt.rt.Argument.t :=
         M.call
-          (core.fmt.rt.Argument.t::["new_display"]
+          (impl core.fmt.rt.Argument.t "new_display"
             (borrow
               (scoping_rules_borrowing_mutablity.Book.Get_year (deref α8)))) in
       let* α10 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7; α9 ] in
@@ -120,7 +117,7 @@ Definition borrow_book
       let* α12 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α11) in
       let* α13 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_v1"] α5 α12) in
+        M.call (impl core.fmt.Arguments.t "new_v1" α5 α12) in
       let* α14 : unit := M.call (std.io.stdio._print α13) in
       M.alloc α14 in
     M.alloc tt in
@@ -156,14 +153,14 @@ Definition new_edition
         M.read book in
       let* α7 : core.fmt.rt.Argument.t :=
         M.call
-          (core.fmt.rt.Argument.t::["new_display"]
+          (impl core.fmt.rt.Argument.t "new_display"
             (borrow
               (scoping_rules_borrowing_mutablity.Book.Get_title (deref α6)))) in
       let* α8 : mut_ref scoping_rules_borrowing_mutablity.Book.t :=
         M.read book in
       let* α9 : core.fmt.rt.Argument.t :=
         M.call
-          (core.fmt.rt.Argument.t::["new_display"]
+          (impl core.fmt.rt.Argument.t "new_display"
             (borrow
               (scoping_rules_borrowing_mutablity.Book.Get_year (deref α8)))) in
       let* α10 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7; α9 ] in
@@ -172,7 +169,7 @@ Definition new_edition
       let* α12 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α11) in
       let* α13 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_v1"] α5 α12) in
+        M.call (impl core.fmt.Arguments.t "new_v1" α5 α12) in
       let* α14 : unit := M.call (std.io.stdio._print α13) in
       M.alloc α14 in
     M.alloc tt in

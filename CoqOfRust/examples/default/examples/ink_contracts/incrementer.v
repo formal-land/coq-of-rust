@@ -26,9 +26,7 @@ Section Impl_incrementer_Incrementer_t.
     let* α0 : i32.t := M.read init_value in
     M.pure {| incrementer.Incrementer.value := α0; |}.
   
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
-    Notations.double_colon := new;
-  }.
+  Axiom new_is_impl : impl Self "new" = new.
   
   (*
       pub fn new_default() -> Self {
@@ -40,12 +38,9 @@ Section Impl_incrementer_Incrementer_t.
       ltac:(M.get_method (fun ℐ =>
         core.default.Default.default (Self := i32.t) (Trait := ℐ))) in
     let* α1 : i32.t := M.call α0 in
-    M.call (incrementer.Incrementer.t::["new"] α1).
+    M.call (impl incrementer.Incrementer.t "new" α1).
   
-  Global Instance AssociatedFunction_new_default :
-    Notations.DoubleColon Self "new_default" := {
-    Notations.double_colon := new_default;
-  }.
+  Axiom new_default_is_impl : impl Self "new_default" = new_default.
   
   (*
       pub fn inc(&mut self, by: i32) {
@@ -66,9 +61,7 @@ Section Impl_incrementer_Incrementer_t.
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
-  Global Instance AssociatedFunction_inc : Notations.DoubleColon Self "inc" := {
-    Notations.double_colon := inc;
-  }.
+  Axiom inc_is_impl : impl Self "inc" = inc.
   
   (*
       pub fn get(&self) -> i32 {
@@ -80,8 +73,6 @@ Section Impl_incrementer_Incrementer_t.
     let* α0 : ref incrementer.Incrementer.t := M.read self in
     M.read (incrementer.Incrementer.Get_value (deref α0)).
   
-  Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
-    Notations.double_colon := get;
-  }.
+  Axiom get_is_impl : impl Self "get" = get.
 End Impl_incrementer_Incrementer_t.
 End Impl_incrementer_Incrementer_t.

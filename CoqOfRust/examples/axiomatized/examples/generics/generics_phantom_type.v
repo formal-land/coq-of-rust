@@ -47,9 +47,7 @@ Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_t_A_B.
         (ref (generics_phantom_type.PhantomTuple.t A B)) ->
         M bool.t.
   
-  Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
-    Notations.double_colon := eq;
-  }.
+  Axiom eq_is_impl : impl Self "eq" = eq.
   
   Global Instance ℐ :
     core.cmp.PartialEq.Required.Trait Self
@@ -108,9 +106,7 @@ Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_t_A_B.
         (ref (generics_phantom_type.PhantomStruct.t A B)) ->
         M bool.t.
   
-  Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
-    Notations.double_colon := eq;
-  }.
+  Axiom eq_is_impl : impl Self "eq" = eq.
   
   Global Instance ℐ :
     core.cmp.PartialEq.Required.Trait Self

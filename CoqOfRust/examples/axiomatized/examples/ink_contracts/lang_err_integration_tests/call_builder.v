@@ -21,10 +21,7 @@ Section Impl_core_default_Default_for_call_builder_AccountId_t.
   *)
   Parameter default : M call_builder.AccountId.t.
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -41,10 +38,7 @@ Section Impl_core_clone_Clone_for_call_builder_AccountId_t.
   *)
   Parameter clone : (ref Self) -> M call_builder.AccountId.t.
   
-  Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon Self "clone" := {
-    Notations.double_colon := clone;
-  }.
+  Axiom clone_is_impl : impl Self "clone" = clone.
   
   Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
@@ -89,9 +83,7 @@ Section Impl_call_builder_Selector_t.
   *)
   Parameter new : (array u8.t) -> M Self.
   
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
-    Notations.double_colon := new;
-  }.
+  Axiom new_is_impl : impl Self "new" = new.
 End Impl_call_builder_Selector_t.
 End Impl_call_builder_Selector_t.
 
@@ -110,10 +102,7 @@ Section Impl_core_default_Default_for_call_builder_CallBuilderTest_t.
   *)
   Parameter default : M call_builder.CallBuilderTest.t.
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -132,9 +121,7 @@ Section Impl_call_builder_CallBuilderTest_t.
   *)
   Parameter new : M Self.
   
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
-    Notations.double_colon := new;
-  }.
+  Axiom new_is_impl : impl Self "new" = new.
   
   (*
       pub fn call(&mut self, address: AccountId, selector: [u8; 4]) -> Option<LangError> {
@@ -161,10 +148,7 @@ Section Impl_call_builder_CallBuilderTest_t.
         (array u8.t) ->
         M (core.option.Option.t call_builder.LangError.t).
   
-  Global Instance AssociatedFunction_call :
-    Notations.DoubleColon Self "call" := {
-    Notations.double_colon := call;
-  }.
+  Axiom call_is_impl : impl Self "call" = call.
   
   (*
       pub fn invoke(&mut self, address: AccountId, selector: [u8; 4]) {
@@ -180,10 +164,7 @@ Section Impl_call_builder_CallBuilderTest_t.
   Parameter invoke :
       (mut_ref Self) -> call_builder.AccountId.t -> (array u8.t) -> M unit.
   
-  Global Instance AssociatedFunction_invoke :
-    Notations.DoubleColon Self "invoke" := {
-    Notations.double_colon := invoke;
-  }.
+  Axiom invoke_is_impl : impl Self "invoke" = invoke.
   
   (*
       pub fn call_instantiate(
@@ -222,10 +203,8 @@ Section Impl_call_builder_CallBuilderTest_t.
         bool.t ->
         M (core.option.Option.t call_builder.LangError.t).
   
-  Global Instance AssociatedFunction_call_instantiate :
-    Notations.DoubleColon Self "call_instantiate" := {
-    Notations.double_colon := call_instantiate;
-  }.
+  Axiom call_instantiate_is_impl :
+      impl Self "call_instantiate" = call_instantiate.
   
   (*
       pub fn call_instantiate_fallible(
@@ -261,9 +240,7 @@ Section Impl_call_builder_CallBuilderTest_t.
         bool.t ->
         M (core.option.Option.t unit).
   
-  Global Instance AssociatedFunction_call_instantiate_fallible :
-    Notations.DoubleColon Self "call_instantiate_fallible" := {
-    Notations.double_colon := call_instantiate_fallible;
-  }.
+  Axiom call_instantiate_fallible_is_impl :
+      impl Self "call_instantiate_fallible" = call_instantiate_fallible.
 End Impl_call_builder_CallBuilderTest_t.
 End Impl_call_builder_CallBuilderTest_t.

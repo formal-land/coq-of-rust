@@ -29,12 +29,7 @@ Section Impl_core_hash_Hash_for_hash_Person_t.
       forall {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H},
       (ref Self) -> (mut_ref __H) -> M unit.
   
-  Global Instance AssociatedFunction_hash
-      {__H : Set}
-      {ℋ_0 : core.hash.Hasher.Trait __H} :
-    Notations.DoubleColon Self "hash" := {
-    Notations.double_colon := hash (__H := __H);
-  }.
+  Axiom hash_is_impl : forall {__H : Set}, impl Self "hash" = hash (__H := __H).
   
   Global Instance ℐ : core.hash.Hash.Required.Trait Self := {
     core.hash.Hash.hash {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H} :=

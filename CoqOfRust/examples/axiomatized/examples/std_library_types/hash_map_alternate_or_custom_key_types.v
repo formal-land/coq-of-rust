@@ -40,9 +40,7 @@ Section Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Accou
         (ref hash_map_alternate_or_custom_key_types.Account.t) ->
         M bool.t.
   
-  Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
-    Notations.double_colon := eq;
-  }.
+  Axiom eq_is_impl : impl Self "eq" = eq.
   
   Global Instance ℐ :
     core.cmp.PartialEq.Required.Trait Self
@@ -71,10 +69,8 @@ Section Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account_t.
   *)
   Parameter assert_receiver_is_total_eq : (ref Self) -> M unit.
   
-  Global Instance AssociatedFunction_assert_receiver_is_total_eq :
-    Notations.DoubleColon Self "assert_receiver_is_total_eq" := {
-    Notations.double_colon := assert_receiver_is_total_eq;
-  }.
+  Axiom assert_receiver_is_total_eq_is_impl :
+      impl Self "assert_receiver_is_total_eq" = assert_receiver_is_total_eq.
   
   Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
     core.cmp.Eq.assert_receiver_is_total_eq :=
@@ -94,12 +90,7 @@ Section Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account_t
       forall {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H},
       (ref Self) -> (mut_ref __H) -> M unit.
   
-  Global Instance AssociatedFunction_hash
-      {__H : Set}
-      {ℋ_0 : core.hash.Hasher.Trait __H} :
-    Notations.DoubleColon Self "hash" := {
-    Notations.double_colon := hash (__H := __H);
-  }.
+  Axiom hash_is_impl : forall {__H : Set}, impl Self "hash" = hash (__H := __H).
   
   Global Instance ℐ : core.hash.Hash.Required.Trait Self := {
     core.hash.Hash.hash {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H} :=

@@ -81,9 +81,7 @@ Section Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Accou
               (deref α6)))) in
     M.pure (BinOp.Pure.and α3 α7).
   
-  Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
-    Notations.double_colon := eq;
-  }.
+  Axiom eq_is_impl : impl Self "eq" = eq.
   
   Global Instance ℐ :
     core.cmp.PartialEq.Required.Trait Self
@@ -126,10 +124,8 @@ Section Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account_t.
         ] in
     M.read α0.
   
-  Global Instance AssociatedFunction_assert_receiver_is_total_eq :
-    Notations.DoubleColon Self "assert_receiver_is_total_eq" := {
-    Notations.double_colon := assert_receiver_is_total_eq;
-  }.
+  Axiom assert_receiver_is_total_eq_is_impl :
+      impl Self "assert_receiver_is_total_eq" = assert_receiver_is_total_eq.
   
   Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
     core.cmp.Eq.assert_receiver_is_total_eq :=
@@ -184,12 +180,7 @@ Section Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account_t
     let* α0 : M.Val unit := M.alloc α3 in
     M.read α0.
   
-  Global Instance AssociatedFunction_hash
-      {__H : Set}
-      {ℋ_0 : core.hash.Hasher.Trait __H} :
-    Notations.DoubleColon Self "hash" := {
-    Notations.double_colon := hash (__H := __H);
-  }.
+  Axiom hash_is_impl : forall {__H : Set}, impl Self "hash" = hash (__H := __H).
   
   Global Instance ℐ : core.hash.Hash.Required.Trait Self := {
     core.hash.Hash.hash {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H} :=
@@ -256,14 +247,14 @@ Definition try_logon
       let* α4 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α3) in
       let* α5 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow username)) in
+        M.call (impl core.fmt.rt.Argument.t "new_display" (borrow username)) in
       let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
       let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
         M.alloc (borrow α6) in
       let* α8 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α7) in
       let* α9 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
+        M.call (impl core.fmt.Arguments.t "new_v1" α4 α8) in
       let* α10 : unit := M.call (std.io.stdio._print α9) in
       M.alloc α10 in
     M.alloc tt in
@@ -277,14 +268,14 @@ Definition try_logon
       let* α4 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α3) in
       let* α5 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow password)) in
+        M.call (impl core.fmt.rt.Argument.t "new_display" (borrow password)) in
       let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
       let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
         M.alloc (borrow α6) in
       let* α8 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α7) in
       let* α9 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
+        M.call (impl core.fmt.Arguments.t "new_v1" α4 α8) in
       let* α10 : unit := M.call (std.io.stdio._print α9) in
       M.alloc α10 in
     M.alloc tt in
@@ -297,7 +288,7 @@ Definition try_logon
       let* α3 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α2) in
       let* α4 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_const"] α3) in
+        M.call (impl core.fmt.Arguments.t "new_const" α3) in
       let* α5 : unit := M.call (std.io.stdio._print α4) in
       M.alloc α5 in
     M.alloc tt in
@@ -320,10 +311,12 @@ Definition try_logon
       core.option.Option.t
         (ref hash_map_alternate_or_custom_key_types.AccountInfo.t) :=
     M.call
-      ((std.collections.hash.map.HashMap.t
+      (impl
+          (std.collections.hash.map.HashMap.t
             hash_map_alternate_or_custom_key_types.Account.t
             hash_map_alternate_or_custom_key_types.AccountInfo.t
-            std.hash.random.RandomState.t)::["get"]
+            std.hash.random.RandomState.t)
+          "get"
         α0
         (borrow logon)) in
   let* α2 :
@@ -351,7 +344,7 @@ Definition try_logon
                 let* α3 : ref (slice (ref str.t)) :=
                   M.read (pointer_coercion "Unsize" α2) in
                 let* α4 : core.fmt.Arguments.t :=
-                  M.call (core.fmt.Arguments.t::["new_const"] α3) in
+                  M.call (impl core.fmt.Arguments.t "new_const" α3) in
                 let* α5 : unit := M.call (std.io.stdio._print α4) in
                 M.alloc α5 in
               M.alloc tt in
@@ -370,7 +363,7 @@ Definition try_logon
                   M.read account_info in
                 let* α6 : core.fmt.rt.Argument.t :=
                   M.call
-                    (core.fmt.rt.Argument.t::["new_display"]
+                    (impl core.fmt.rt.Argument.t "new_display"
                       (borrow
                         (hash_map_alternate_or_custom_key_types.AccountInfo.Get_name
                           (deref α5)))) in
@@ -381,7 +374,7 @@ Definition try_logon
                 let* α9 : ref (slice core.fmt.rt.Argument.t) :=
                   M.read (pointer_coercion "Unsize" α8) in
                 let* α10 : core.fmt.Arguments.t :=
-                  M.call (core.fmt.Arguments.t::["new_v1"] α4 α9) in
+                  M.call (impl core.fmt.Arguments.t "new_v1" α4 α9) in
                 let* α11 : unit := M.call (std.io.stdio._print α10) in
                 M.alloc α11 in
               M.alloc tt in
@@ -400,7 +393,7 @@ Definition try_logon
                   M.read account_info in
                 let* α6 : core.fmt.rt.Argument.t :=
                   M.call
-                    (core.fmt.rt.Argument.t::["new_display"]
+                    (impl core.fmt.rt.Argument.t "new_display"
                       (borrow
                         (hash_map_alternate_or_custom_key_types.AccountInfo.Get_email
                           (deref α5)))) in
@@ -411,7 +404,7 @@ Definition try_logon
                 let* α9 : ref (slice core.fmt.rt.Argument.t) :=
                   M.read (pointer_coercion "Unsize" α8) in
                 let* α10 : core.fmt.Arguments.t :=
-                  M.call (core.fmt.Arguments.t::["new_v1"] α4 α9) in
+                  M.call (impl core.fmt.Arguments.t "new_v1" α4 α9) in
                 let* α11 : unit := M.call (std.io.stdio._print α10) in
                 M.alloc α11 in
               M.alloc tt in
@@ -428,7 +421,7 @@ Definition try_logon
             let* α3 : ref (slice (ref str.t)) :=
               M.read (pointer_coercion "Unsize" α2) in
             let* α4 : core.fmt.Arguments.t :=
-              M.call (core.fmt.Arguments.t::["new_const"] α3) in
+              M.call (impl core.fmt.Arguments.t "new_const" α3) in
             let* α5 : unit := M.call (std.io.stdio._print α4) in
             M.alloc α5 in
           M.alloc tt) :
@@ -471,10 +464,12 @@ Definition main : M unit :=
           hash_map_alternate_or_custom_key_types.AccountInfo.t
           std.hash.random.RandomState.t :=
       M.call
-        (std.collections.hash.map.HashMap.t
+        (impl
+          (std.collections.hash.map.HashMap.t
             hash_map_alternate_or_custom_key_types.Account.t
             hash_map_alternate_or_custom_key_types.AccountInfo.t
-            std.hash.random.RandomState.t)::["new"] in
+            std.hash.random.RandomState.t)
+          "new") in
     M.alloc α0 in
   let* account : M.Val hash_map_alternate_or_custom_key_types.Account.t :=
     let* α0 : ref str.t := M.read (mk_str "j.everyman") in
@@ -505,10 +500,12 @@ Definition main : M unit :=
         core.option.Option.t
           hash_map_alternate_or_custom_key_types.AccountInfo.t :=
       M.call
-        ((std.collections.hash.map.HashMap.t
+        (impl
+            (std.collections.hash.map.HashMap.t
               hash_map_alternate_or_custom_key_types.Account.t
               hash_map_alternate_or_custom_key_types.AccountInfo.t
-              std.hash.random.RandomState.t)::["insert"]
+              std.hash.random.RandomState.t)
+            "insert"
           (borrow_mut accounts)
           α0
           α1) in

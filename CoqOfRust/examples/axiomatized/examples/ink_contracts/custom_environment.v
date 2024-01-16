@@ -21,10 +21,7 @@ Section Impl_core_default_Default_for_custom_environment_AccountId_t.
   *)
   Parameter default : M custom_environment.AccountId.t.
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -41,10 +38,7 @@ Section Impl_core_clone_Clone_for_custom_environment_AccountId_t.
   *)
   Parameter clone : (ref Self) -> M custom_environment.AccountId.t.
   
-  Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon Self "clone" := {
-    Notations.double_colon := clone;
-  }.
+  Axiom clone_is_impl : impl Self "clone" = clone.
   
   Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
@@ -90,10 +84,7 @@ Section Impl_core_default_Default_for_custom_environment_Topics_t.
   *)
   Parameter default : M custom_environment.Topics.t.
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -143,10 +134,7 @@ Section Impl_core_default_Default_for_custom_environment_EventWithTopics_t.
   *)
   Parameter default : M custom_environment.EventWithTopics.t.
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -176,10 +164,7 @@ Section Impl_custom_environment_Env_t.
   *)
   Parameter caller : (ref Self) -> M custom_environment.AccountId.t.
   
-  Global Instance AssociatedFunction_caller :
-    Notations.DoubleColon Self "caller" := {
-    Notations.double_colon := caller;
-  }.
+  Axiom caller_is_impl : impl Self "caller" = caller.
   
   (*
       fn emit_event(&self, _event: Event) {
@@ -188,10 +173,7 @@ Section Impl_custom_environment_Env_t.
   *)
   Parameter emit_event : (ref Self) -> custom_environment.Event.t -> M unit.
   
-  Global Instance AssociatedFunction_emit_event :
-    Notations.DoubleColon Self "emit_event" := {
-    Notations.double_colon := emit_event;
-  }.
+  Axiom emit_event_is_impl : impl Self "emit_event" = emit_event.
 End Impl_custom_environment_Env_t.
 End Impl_custom_environment_Env_t.
 
@@ -206,10 +188,7 @@ Section Impl_custom_environment_Topics_t.
   *)
   Parameter init_env : M custom_environment.Env.t.
   
-  Global Instance AssociatedFunction_init_env :
-    Notations.DoubleColon Self "init_env" := {
-    Notations.double_colon := init_env;
-  }.
+  Axiom init_env_is_impl : impl Self "init_env" = init_env.
   
   (*
       fn env(&self) -> Env {
@@ -218,9 +197,7 @@ Section Impl_custom_environment_Topics_t.
   *)
   Parameter env : (ref Self) -> M custom_environment.Env.t.
   
-  Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
-    Notations.double_colon := env;
-  }.
+  Axiom env_is_impl : impl Self "env" = env.
   
   (*
       pub fn new() -> Self {
@@ -229,9 +206,7 @@ Section Impl_custom_environment_Topics_t.
   *)
   Parameter new : M Self.
   
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
-    Notations.double_colon := new;
-  }.
+  Axiom new_is_impl : impl Self "new" = new.
   
   (*
       pub fn trigger(&mut self) {
@@ -241,9 +216,6 @@ Section Impl_custom_environment_Topics_t.
   *)
   Parameter trigger : (mut_ref Self) -> M unit.
   
-  Global Instance AssociatedFunction_trigger :
-    Notations.DoubleColon Self "trigger" := {
-    Notations.double_colon := trigger;
-  }.
+  Axiom trigger_is_impl : impl Self "trigger" = trigger.
 End Impl_custom_environment_Topics_t.
 End Impl_custom_environment_Topics_t.

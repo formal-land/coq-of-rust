@@ -34,10 +34,7 @@ Section Impl_functions_order_SomeType_t.
     let* self := M.alloc self in
     M.pure tt.
   
-  Global Instance AssociatedFunction_meth2 :
-    Notations.DoubleColon Self "meth2" := {
-    Notations.double_colon := meth2;
-  }.
+  Axiom meth2_is_impl : impl Self "meth2" = meth2.
   
   (*
       pub fn meth1(self) {
@@ -48,15 +45,12 @@ Section Impl_functions_order_SomeType_t.
     let* self := M.alloc self in
     let* _ : M.Val unit :=
       let* α0 : functions_order.SomeType.t := M.read self in
-      let* α1 : unit := M.call (functions_order.SomeType.t::["meth2"] α0) in
+      let* α1 : unit := M.call (impl functions_order.SomeType.t "meth2" α0) in
       M.alloc α1 in
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
-  Global Instance AssociatedFunction_meth1 :
-    Notations.DoubleColon Self "meth1" := {
-    Notations.double_colon := meth1;
-  }.
+  Axiom meth1_is_impl : impl Self "meth1" = meth1.
 End Impl_functions_order_SomeType_t.
 End Impl_functions_order_SomeType_t.
 
@@ -81,10 +75,7 @@ Section Impl_functions_order_SomeTrait_for_functions_order_SomeType_t.
     let* self := M.alloc self in
     M.pure tt.
   
-  Global Instance AssociatedFunction_some_trait_bar :
-    Notations.DoubleColon Self "some_trait_bar" := {
-    Notations.double_colon := some_trait_bar;
-  }.
+  Axiom some_trait_bar_is_impl : impl Self "some_trait_bar" = some_trait_bar.
   
   (*
       fn some_trait_foo(&self) {
@@ -96,10 +87,7 @@ Section Impl_functions_order_SomeTrait_for_functions_order_SomeType_t.
     let* α0 : ref functions_order.SomeType.t := M.read self in
     M.call (some_trait_bar α0).
   
-  Global Instance AssociatedFunction_some_trait_foo :
-    Notations.DoubleColon Self "some_trait_foo" := {
-    Notations.double_colon := some_trait_foo;
-  }.
+  Axiom some_trait_foo_is_impl : impl Self "some_trait_foo" = some_trait_foo.
   
   Global Instance ℐ : functions_order.SomeTrait.Trait Self := {
     functions_order.SomeTrait.some_trait_bar := some_trait_bar;
@@ -119,10 +107,7 @@ Section Impl_functions_order_SomeTrait_for_functions_order_OtherType_t.
     let* self := M.alloc self in
     M.pure tt.
   
-  Global Instance AssociatedFunction_some_trait_foo :
-    Notations.DoubleColon Self "some_trait_foo" := {
-    Notations.double_colon := some_trait_foo;
-  }.
+  Axiom some_trait_foo_is_impl : impl Self "some_trait_foo" = some_trait_foo.
   
   (*
       fn some_trait_bar(&self) {}
@@ -131,10 +116,7 @@ Section Impl_functions_order_SomeTrait_for_functions_order_OtherType_t.
     let* self := M.alloc self in
     M.pure tt.
   
-  Global Instance AssociatedFunction_some_trait_bar :
-    Notations.DoubleColon Self "some_trait_bar" := {
-    Notations.double_colon := some_trait_bar;
-  }.
+  Axiom some_trait_bar_is_impl : impl Self "some_trait_bar" = some_trait_bar.
   
   Global Instance ℐ : functions_order.SomeTrait.Trait Self := {
     functions_order.SomeTrait.some_trait_foo := some_trait_foo;
@@ -294,7 +276,7 @@ Definition main : M unit :=
   let* _ : M.Val unit :=
     let* α0 : unit :=
       M.call
-        (functions_order.SomeType.t::["meth1"]
+        (impl functions_order.SomeType.t "meth1"
           (functions_order.SomeType.Build_t ((Integer.of_Z 0) : u32.t))) in
     M.alloc α0 in
   let* α0 : M.Val unit := M.alloc tt in

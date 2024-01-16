@@ -30,7 +30,7 @@ Definition foo {A : Set} (o : core.option.Option.t A) : M unit :=
               let* α3 : ref (slice (ref str.t)) :=
                 M.read (pointer_coercion "Unsize" α2) in
               let* α4 : core.fmt.Arguments.t :=
-                M.call (core.fmt.Arguments.t::["new_const"] α3) in
+                M.call (impl core.fmt.Arguments.t "new_const" α3) in
               let* α5 : unit := M.call (std.io.stdio._print α4) in
               M.alloc α5 in
             M.alloc tt
@@ -50,7 +50,7 @@ Definition foo {A : Set} (o : core.option.Option.t A) : M unit :=
               let* α3 : ref (slice (ref str.t)) :=
                 M.read (pointer_coercion "Unsize" α2) in
               let* α4 : core.fmt.Arguments.t :=
-                M.call (core.fmt.Arguments.t::["new_const"] α3) in
+                M.call (impl core.fmt.Arguments.t "new_const" α3) in
               let* α5 : unit := M.call (std.io.stdio._print α4) in
               M.alloc α5 in
             M.alloc tt
@@ -79,19 +79,22 @@ Module tests.
   *)
   Definition test_file : M unit :=
     let* file : M.Val std.fs.File.t :=
-      let* α0 : std.fs.OpenOptions.t := M.call std.fs.OpenOptions.t::["new"] in
+      let* α0 : std.fs.OpenOptions.t :=
+        M.call (impl std.fs.OpenOptions.t "new") in
       let* α1 : M.Val std.fs.OpenOptions.t := M.alloc α0 in
       let* α2 : mut_ref std.fs.OpenOptions.t :=
-        M.call (std.fs.OpenOptions.t::["append"] (borrow_mut α1) true) in
+        M.call (impl std.fs.OpenOptions.t "append" (borrow_mut α1) true) in
       let* α3 : mut_ref std.fs.OpenOptions.t :=
-        M.call (std.fs.OpenOptions.t::["create"] α2 true) in
+        M.call (impl std.fs.OpenOptions.t "create" α2 true) in
       let* α4 : ref str.t := M.read (mk_str "ferris.txt") in
       let* α5 : core.result.Result.t std.fs.File.t std.io.error.Error.t :=
-        M.call (std.fs.OpenOptions.t::["open"] (borrow (deref α3)) α4) in
+        M.call (impl std.fs.OpenOptions.t "open" (borrow (deref α3)) α4) in
       let* α6 : ref str.t := M.read (mk_str "Failed to open ferris.txt") in
       let* α7 : std.fs.File.t :=
         M.call
-          ((core.result.Result.t std.fs.File.t std.io.error.Error.t)::["expect"]
+          (impl
+              (core.result.Result.t std.fs.File.t std.io.error.Error.t)
+              "expect"
             α5
             α6) in
       M.alloc α7 in
@@ -152,7 +155,7 @@ Module tests.
                           let* α1 : ref str.t := M.read (mk_str "Ferris
 ") in
                           let* α2 : ref (slice u8.t) :=
-                            M.call (str.t::["as_bytes"] α1) in
+                            M.call (impl str.t "as_bytes" α1) in
                           let* α3 :
                               core.result.Result.t unit std.io.error.Error.t :=
                             M.call (α0 (borrow_mut file) α2) in
@@ -160,9 +163,11 @@ Module tests.
                             M.read (mk_str "Could not write to ferris.txt") in
                           let* α5 : unit :=
                             M.call
-                              ((core.result.Result.t
+                              (impl
+                                  (core.result.Result.t
                                     unit
-                                    std.io.error.Error.t)::["expect"]
+                                    std.io.error.Error.t)
+                                  "expect"
                                 α3
                                 α4) in
                           M.alloc α5 in
@@ -194,19 +199,22 @@ Module tests.
   *)
   Definition test_file_also : M unit :=
     let* file : M.Val std.fs.File.t :=
-      let* α0 : std.fs.OpenOptions.t := M.call std.fs.OpenOptions.t::["new"] in
+      let* α0 : std.fs.OpenOptions.t :=
+        M.call (impl std.fs.OpenOptions.t "new") in
       let* α1 : M.Val std.fs.OpenOptions.t := M.alloc α0 in
       let* α2 : mut_ref std.fs.OpenOptions.t :=
-        M.call (std.fs.OpenOptions.t::["append"] (borrow_mut α1) true) in
+        M.call (impl std.fs.OpenOptions.t "append" (borrow_mut α1) true) in
       let* α3 : mut_ref std.fs.OpenOptions.t :=
-        M.call (std.fs.OpenOptions.t::["create"] α2 true) in
+        M.call (impl std.fs.OpenOptions.t "create" α2 true) in
       let* α4 : ref str.t := M.read (mk_str "ferris.txt") in
       let* α5 : core.result.Result.t std.fs.File.t std.io.error.Error.t :=
-        M.call (std.fs.OpenOptions.t::["open"] (borrow (deref α3)) α4) in
+        M.call (impl std.fs.OpenOptions.t "open" (borrow (deref α3)) α4) in
       let* α6 : ref str.t := M.read (mk_str "Failed to open ferris.txt") in
       let* α7 : std.fs.File.t :=
         M.call
-          ((core.result.Result.t std.fs.File.t std.io.error.Error.t)::["expect"]
+          (impl
+              (core.result.Result.t std.fs.File.t std.io.error.Error.t)
+              "expect"
             α5
             α6) in
       M.alloc α7 in
@@ -267,7 +275,7 @@ Module tests.
                           let* α1 : ref str.t := M.read (mk_str "Corro
 ") in
                           let* α2 : ref (slice u8.t) :=
-                            M.call (str.t::["as_bytes"] α1) in
+                            M.call (impl str.t "as_bytes" α1) in
                           let* α3 :
                               core.result.Result.t unit std.io.error.Error.t :=
                             M.call (α0 (borrow_mut file) α2) in
@@ -275,9 +283,11 @@ Module tests.
                             M.read (mk_str "Could not write to ferris.txt") in
                           let* α5 : unit :=
                             M.call
-                              ((core.result.Result.t
+                              (impl
+                                  (core.result.Result.t
                                     unit
-                                    std.io.error.Error.t)::["expect"]
+                                    std.io.error.Error.t)
+                                  "expect"
                                 α3
                                 α4) in
                           M.alloc α5 in
@@ -310,19 +320,20 @@ End tests.
 *)
 Definition test_file : M unit :=
   let* file : M.Val std.fs.File.t :=
-    let* α0 : std.fs.OpenOptions.t := M.call std.fs.OpenOptions.t::["new"] in
+    let* α0 : std.fs.OpenOptions.t :=
+      M.call (impl std.fs.OpenOptions.t "new") in
     let* α1 : M.Val std.fs.OpenOptions.t := M.alloc α0 in
     let* α2 : mut_ref std.fs.OpenOptions.t :=
-      M.call (std.fs.OpenOptions.t::["append"] (borrow_mut α1) true) in
+      M.call (impl std.fs.OpenOptions.t "append" (borrow_mut α1) true) in
     let* α3 : mut_ref std.fs.OpenOptions.t :=
-      M.call (std.fs.OpenOptions.t::["create"] α2 true) in
+      M.call (impl std.fs.OpenOptions.t "create" α2 true) in
     let* α4 : ref str.t := M.read (mk_str "ferris.txt") in
     let* α5 : core.result.Result.t std.fs.File.t std.io.error.Error.t :=
-      M.call (std.fs.OpenOptions.t::["open"] (borrow (deref α3)) α4) in
+      M.call (impl std.fs.OpenOptions.t "open" (borrow (deref α3)) α4) in
     let* α6 : ref str.t := M.read (mk_str "Failed to open ferris.txt") in
     let* α7 : std.fs.File.t :=
       M.call
-        ((core.result.Result.t std.fs.File.t std.io.error.Error.t)::["expect"]
+        (impl (core.result.Result.t std.fs.File.t std.io.error.Error.t) "expect"
           α5
           α6) in
     M.alloc α7 in
@@ -383,7 +394,7 @@ Definition test_file : M unit :=
                         let* α1 : ref str.t := M.read (mk_str "Ferris
 ") in
                         let* α2 : ref (slice u8.t) :=
-                          M.call (str.t::["as_bytes"] α1) in
+                          M.call (impl str.t "as_bytes" α1) in
                         let* α3 :
                             core.result.Result.t unit std.io.error.Error.t :=
                           M.call (α0 (borrow_mut file) α2) in
@@ -391,9 +402,9 @@ Definition test_file : M unit :=
                           M.read (mk_str "Could not write to ferris.txt") in
                         let* α5 : unit :=
                           M.call
-                            ((core.result.Result.t
-                                  unit
-                                  std.io.error.Error.t)::["expect"]
+                            (impl
+                                (core.result.Result.t unit std.io.error.Error.t)
+                                "expect"
                               α3
                               α4) in
                         M.alloc α5 in
@@ -425,19 +436,20 @@ Definition test_file : M unit :=
 *)
 Definition test_file_also : M unit :=
   let* file : M.Val std.fs.File.t :=
-    let* α0 : std.fs.OpenOptions.t := M.call std.fs.OpenOptions.t::["new"] in
+    let* α0 : std.fs.OpenOptions.t :=
+      M.call (impl std.fs.OpenOptions.t "new") in
     let* α1 : M.Val std.fs.OpenOptions.t := M.alloc α0 in
     let* α2 : mut_ref std.fs.OpenOptions.t :=
-      M.call (std.fs.OpenOptions.t::["append"] (borrow_mut α1) true) in
+      M.call (impl std.fs.OpenOptions.t "append" (borrow_mut α1) true) in
     let* α3 : mut_ref std.fs.OpenOptions.t :=
-      M.call (std.fs.OpenOptions.t::["create"] α2 true) in
+      M.call (impl std.fs.OpenOptions.t "create" α2 true) in
     let* α4 : ref str.t := M.read (mk_str "ferris.txt") in
     let* α5 : core.result.Result.t std.fs.File.t std.io.error.Error.t :=
-      M.call (std.fs.OpenOptions.t::["open"] (borrow (deref α3)) α4) in
+      M.call (impl std.fs.OpenOptions.t "open" (borrow (deref α3)) α4) in
     let* α6 : ref str.t := M.read (mk_str "Failed to open ferris.txt") in
     let* α7 : std.fs.File.t :=
       M.call
-        ((core.result.Result.t std.fs.File.t std.io.error.Error.t)::["expect"]
+        (impl (core.result.Result.t std.fs.File.t std.io.error.Error.t) "expect"
           α5
           α6) in
     M.alloc α7 in
@@ -498,7 +510,7 @@ Definition test_file_also : M unit :=
                         let* α1 : ref str.t := M.read (mk_str "Corro
 ") in
                         let* α2 : ref (slice u8.t) :=
-                          M.call (str.t::["as_bytes"] α1) in
+                          M.call (impl str.t "as_bytes" α1) in
                         let* α3 :
                             core.result.Result.t unit std.io.error.Error.t :=
                           M.call (α0 (borrow_mut file) α2) in
@@ -506,9 +518,9 @@ Definition test_file_also : M unit :=
                           M.read (mk_str "Could not write to ferris.txt") in
                         let* α5 : unit :=
                           M.call
-                            ((core.result.Result.t
-                                  unit
-                                  std.io.error.Error.t)::["expect"]
+                            (impl
+                                (core.result.Result.t unit std.io.error.Error.t)
+                                "expect"
                               α3
                               α4) in
                         M.alloc α5 in

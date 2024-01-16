@@ -138,7 +138,9 @@ Definition main : M unit :=
                                                   α3) in
                                             let* α5 : core.fmt.rt.Argument.t :=
                                               M.call
-                                                (core.fmt.rt.Argument.t::["new_display"]
+                                                (impl
+                                                    core.fmt.rt.Argument.t
+                                                    "new_display"
                                                   (borrow ip)) in
                                             let* α6 :
                                                 M.Val
@@ -161,7 +163,9 @@ Definition main : M unit :=
                                                   α7) in
                                             let* α9 : core.fmt.Arguments.t :=
                                               M.call
-                                                (core.fmt.Arguments.t::["new_v1"]
+                                                (impl
+                                                    core.fmt.Arguments.t
+                                                    "new_v1"
                                                   α4
                                                   α8) in
                                             let* α10 : unit :=
@@ -223,7 +227,7 @@ Definition read_lines
             (Trait := ℐ))) in
       let* α1 : P := M.read filename in
       let* α2 : core.result.Result.t std.fs.File.t std.io.error.Error.t :=
-        M.call (std.fs.File.t::["open"] α1) in
+        M.call (impl std.fs.File.t "open" α1) in
       let* α3 :
           core.ops.control_flow.ControlFlow.t
             (core.result.Result.t
@@ -302,7 +306,7 @@ Definition read_lines
     let* α1 : std.fs.File.t := M.read file in
     let* α2 : std.io.buffered.bufreader.BufReader.t std.fs.File.t :=
       M.call
-        ((std.io.buffered.bufreader.BufReader.t std.fs.File.t)::["new"] α1) in
+        (impl (std.io.buffered.bufreader.BufReader.t std.fs.File.t) "new" α1) in
     let* α3 :
         std.io.Lines.t (std.io.buffered.bufreader.BufReader.t std.fs.File.t) :=
       M.call (α0 α2) in

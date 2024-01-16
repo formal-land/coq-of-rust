@@ -32,10 +32,7 @@ Section Impl_functions_order_SomeType_t.
   *)
   Parameter meth2 : Self -> M unit.
   
-  Global Instance AssociatedFunction_meth2 :
-    Notations.DoubleColon Self "meth2" := {
-    Notations.double_colon := meth2;
-  }.
+  Axiom meth2_is_impl : impl Self "meth2" = meth2.
   
   (*
       pub fn meth1(self) {
@@ -44,10 +41,7 @@ Section Impl_functions_order_SomeType_t.
   *)
   Parameter meth1 : Self -> M unit.
   
-  Global Instance AssociatedFunction_meth1 :
-    Notations.DoubleColon Self "meth1" := {
-    Notations.double_colon := meth1;
-  }.
+  Axiom meth1_is_impl : impl Self "meth1" = meth1.
 End Impl_functions_order_SomeType_t.
 End Impl_functions_order_SomeType_t.
 
@@ -70,10 +64,7 @@ Section Impl_functions_order_SomeTrait_for_functions_order_SomeType_t.
   *)
   Parameter some_trait_bar : (ref Self) -> M unit.
   
-  Global Instance AssociatedFunction_some_trait_bar :
-    Notations.DoubleColon Self "some_trait_bar" := {
-    Notations.double_colon := some_trait_bar;
-  }.
+  Axiom some_trait_bar_is_impl : impl Self "some_trait_bar" = some_trait_bar.
   
   (*
       fn some_trait_foo(&self) {
@@ -82,10 +73,7 @@ Section Impl_functions_order_SomeTrait_for_functions_order_SomeType_t.
   *)
   Parameter some_trait_foo : (ref Self) -> M unit.
   
-  Global Instance AssociatedFunction_some_trait_foo :
-    Notations.DoubleColon Self "some_trait_foo" := {
-    Notations.double_colon := some_trait_foo;
-  }.
+  Axiom some_trait_foo_is_impl : impl Self "some_trait_foo" = some_trait_foo.
   
   Global Instance ℐ : functions_order.SomeTrait.Trait Self := {
     functions_order.SomeTrait.some_trait_bar := some_trait_bar;
@@ -103,20 +91,14 @@ Section Impl_functions_order_SomeTrait_for_functions_order_OtherType_t.
   *)
   Parameter some_trait_foo : (ref Self) -> M unit.
   
-  Global Instance AssociatedFunction_some_trait_foo :
-    Notations.DoubleColon Self "some_trait_foo" := {
-    Notations.double_colon := some_trait_foo;
-  }.
+  Axiom some_trait_foo_is_impl : impl Self "some_trait_foo" = some_trait_foo.
   
   (*
       fn some_trait_bar(&self) {}
   *)
   Parameter some_trait_bar : (ref Self) -> M unit.
   
-  Global Instance AssociatedFunction_some_trait_bar :
-    Notations.DoubleColon Self "some_trait_bar" := {
-    Notations.double_colon := some_trait_bar;
-  }.
+  Axiom some_trait_bar_is_impl : impl Self "some_trait_bar" = some_trait_bar.
   
   Global Instance ℐ : functions_order.SomeTrait.Trait Self := {
     functions_order.SomeTrait.some_trait_foo := some_trait_foo;

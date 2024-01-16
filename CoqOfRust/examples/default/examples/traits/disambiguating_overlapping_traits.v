@@ -55,9 +55,7 @@ Section Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating
         (borrow
           (disambiguating_overlapping_traits.Form.Get_username (deref α1)))).
   
-  Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
-    Notations.double_colon := get;
-  }.
+  Axiom get_is_impl : impl Self "get" = get.
   
   Global Instance ℐ :
     disambiguating_overlapping_traits.UsernameWidget.Trait Self := {
@@ -80,9 +78,7 @@ Section Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_over
     let* α0 : ref disambiguating_overlapping_traits.Form.t := M.read self in
     M.read (disambiguating_overlapping_traits.Form.Get_age (deref α0)).
   
-  Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
-    Notations.double_colon := get;
-  }.
+  Axiom get_is_impl : impl Self "get" = get.
   
   Global Instance ℐ :
     disambiguating_overlapping_traits.AgeWidget.Trait Self := {

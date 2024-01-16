@@ -38,24 +38,21 @@ Section Impl_generics_where_clauses_PrintInOption_for_T.
         let* α6 : M.Val (core.option.Option.t T) :=
           M.alloc (core.option.Option.Some α5) in
         let* α7 : core.fmt.rt.Argument.t :=
-          M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow α6)) in
+          M.call (impl core.fmt.rt.Argument.t "new_debug" (borrow α6)) in
         let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
         let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
           M.alloc (borrow α8) in
         let* α10 : ref (slice core.fmt.rt.Argument.t) :=
           M.read (pointer_coercion "Unsize" α9) in
         let* α11 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_v1"] α4 α10) in
+          M.call (impl core.fmt.Arguments.t "new_v1" α4 α10) in
         let* α12 : unit := M.call (std.io.stdio._print α11) in
         M.alloc α12 in
       M.alloc tt in
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
-  Global Instance AssociatedFunction_print_in_option :
-    Notations.DoubleColon Self "print_in_option" := {
-    Notations.double_colon := print_in_option;
-  }.
+  Axiom print_in_option_is_impl : impl Self "print_in_option" = print_in_option.
   
   Global Instance ℐ : generics_where_clauses.PrintInOption.Trait Self := {
     generics_where_clauses.PrintInOption.print_in_option := print_in_option;
@@ -85,7 +82,7 @@ Definition main : M unit :=
     let* α2 : alloc.boxed.Box.t (slice i32.t) alloc.alloc.Global.t :=
       M.read (pointer_coercion "Unsize" α1) in
     let* α3 : alloc.vec.Vec.t i32.t alloc.alloc.Global.t :=
-      M.call ((slice i32.t)::["into_vec"] α2) in
+      M.call (impl (slice i32.t) "into_vec" α2) in
     M.alloc α3 in
   let* _ : M.Val unit :=
     let* α0 : _ :=

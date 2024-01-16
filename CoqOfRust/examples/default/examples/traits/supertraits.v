@@ -73,7 +73,7 @@ Definition comp_sci_student_greeting
     let* α9 : alloc.string.String.t := M.call (α7 α8) in
     let* α10 : M.Val alloc.string.String.t := M.alloc α9 in
     let* α11 : core.fmt.rt.Argument.t :=
-      M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α10)) in
+      M.call (impl core.fmt.rt.Argument.t "new_display" (borrow α10)) in
     let* α12 : _ :=
       ltac:(M.get_method (fun ℐ =>
         supertraits.Student.university (Self := _ (* dyn *)) (Trait := ℐ))) in
@@ -81,7 +81,7 @@ Definition comp_sci_student_greeting
     let* α14 : alloc.string.String.t := M.call (α12 α13) in
     let* α15 : M.Val alloc.string.String.t := M.alloc α14 in
     let* α16 : core.fmt.rt.Argument.t :=
-      M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α15)) in
+      M.call (impl core.fmt.rt.Argument.t "new_display" (borrow α15)) in
     let* α17 : _ :=
       ltac:(M.get_method (fun ℐ =>
         supertraits.Programmer.fav_language
@@ -91,7 +91,7 @@ Definition comp_sci_student_greeting
     let* α19 : alloc.string.String.t := M.call (α17 α18) in
     let* α20 : M.Val alloc.string.String.t := M.alloc α19 in
     let* α21 : core.fmt.rt.Argument.t :=
-      M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α20)) in
+      M.call (impl core.fmt.rt.Argument.t "new_display" (borrow α20)) in
     let* α22 : _ :=
       ltac:(M.get_method (fun ℐ =>
         supertraits.CompSciStudent.git_username
@@ -101,7 +101,7 @@ Definition comp_sci_student_greeting
     let* α24 : alloc.string.String.t := M.call (α22 α23) in
     let* α25 : M.Val alloc.string.String.t := M.alloc α24 in
     let* α26 : core.fmt.rt.Argument.t :=
-      M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α25)) in
+      M.call (impl core.fmt.rt.Argument.t "new_display" (borrow α25)) in
     let* α27 : M.Val (array core.fmt.rt.Argument.t) :=
       M.alloc [ α11; α16; α21; α26 ] in
     let* α28 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -109,7 +109,7 @@ Definition comp_sci_student_greeting
     let* α29 : ref (slice core.fmt.rt.Argument.t) :=
       M.read (pointer_coercion "Unsize" α28) in
     let* α30 : core.fmt.Arguments.t :=
-      M.call (core.fmt.Arguments.t::["new_v1"] α6 α29) in
+      M.call (impl core.fmt.Arguments.t "new_v1" α6 α29) in
     let* α31 : alloc.string.String.t := M.call (alloc.fmt.format α30) in
     M.alloc α31 in
   M.read res.

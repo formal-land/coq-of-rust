@@ -26,9 +26,7 @@ Section Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificati
     let* α2 := M.read α1 in
     never_to_any α2.
   
-  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
-    Notations.double_colon := fmt;
-  }.
+  Axiom fmt_is_impl : impl Self "fmt" = fmt.
   
   Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
@@ -52,10 +50,7 @@ Section Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarifica
       M.read self in
     M.read (deref α0).
   
-  Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon Self "clone" := {
-    Notations.double_colon := clone;
-  }.
+  Axiom clone_is_impl : impl Self "clone" = clone.
   
   Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
@@ -99,9 +94,7 @@ Section Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificati
     let* α2 := M.read α1 in
     never_to_any α2.
   
-  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
-    Notations.double_colon := fmt;
-  }.
+  Axiom fmt_is_impl : impl Self "fmt" = fmt.
   
   Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
@@ -125,10 +118,7 @@ Section Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarifica
       M.read self in
     M.read (deref α0).
   
-  Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon Self "clone" := {
-    Notations.double_colon := clone;
-  }.
+  Axiom clone_is_impl : impl Self "clone" = clone.
   
   Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
@@ -205,11 +195,9 @@ Section Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificati
     let* α7 : M.Val (ref (ref (core.marker.PhantomData.t Unit))) :=
       M.alloc (borrow α6) in
     let* α8 : ref _ (* dyn *) := M.read (pointer_coercion "Unsize" α7) in
-    M.call (core.fmt.Formatter.t::["debug_tuple_field2_finish"] α0 α1 α4 α8).
+    M.call (impl core.fmt.Formatter.t "debug_tuple_field2_finish" α0 α1 α4 α8).
   
-  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
-    Notations.double_colon := fmt;
-  }.
+  Axiom fmt_is_impl : impl Self "fmt" = fmt.
   
   Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
@@ -264,10 +252,7 @@ Section Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarifica
     M.pure
       (generics_phantom_type_test_case_unit_clarification.Length.Build_t α2 α5).
   
-  Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon Self "clone" := {
-    Notations.double_colon := clone;
-  }.
+  Axiom clone_is_impl : impl Self "clone" = clone.
   
   Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
@@ -328,9 +313,7 @@ Section Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarifi
         α2
         core.marker.PhantomData.Build).
   
-  Global Instance AssociatedFunction_add : Notations.DoubleColon Self "add" := {
-    Notations.double_colon := add;
-  }.
+  Axiom add_is_impl : impl Self "add" = add.
   
   Global Instance ℐ :
     core.ops.arith.Add.Trait Self
@@ -449,7 +432,7 @@ Definition main : M unit :=
         M.read (pointer_coercion "Unsize" α3) in
       let* α5 : core.fmt.rt.Argument.t :=
         M.call
-          (core.fmt.rt.Argument.t::["new_debug"]
+          (impl core.fmt.rt.Argument.t "new_debug"
             (borrow
               (generics_phantom_type_test_case_unit_clarification.Length.Get_0
                 two_feet))) in
@@ -459,7 +442,7 @@ Definition main : M unit :=
       let* α8 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α7) in
       let* α9 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
+        M.call (impl core.fmt.Arguments.t "new_v1" α4 α8) in
       let* α10 : unit := M.call (std.io.stdio._print α9) in
       M.alloc α10 in
     M.alloc tt in
@@ -474,7 +457,7 @@ Definition main : M unit :=
         M.read (pointer_coercion "Unsize" α3) in
       let* α5 : core.fmt.rt.Argument.t :=
         M.call
-          (core.fmt.rt.Argument.t::["new_debug"]
+          (impl core.fmt.rt.Argument.t "new_debug"
             (borrow
               (generics_phantom_type_test_case_unit_clarification.Length.Get_0
                 two_meters))) in
@@ -484,7 +467,7 @@ Definition main : M unit :=
       let* α8 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α7) in
       let* α9 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
+        M.call (impl core.fmt.Arguments.t "new_v1" α4 α8) in
       let* α10 : unit := M.call (std.io.stdio._print α9) in
       M.alloc α10 in
     M.alloc tt in

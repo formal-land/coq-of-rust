@@ -818,12 +818,18 @@ impl ExprKind {
                 ]),
                 text("))"),
             ]),
-            ExprKind::AssociatedFunction { ty, func } => nest([
-                ty.to_coq().to_doc(true),
-                text("::["),
-                text(format!("\"{func}\"")),
-                text("]"),
-            ]),
+            ExprKind::AssociatedFunction { ty, func } => paren(
+                with_paren,
+                nest([
+                    text("impl"),
+                    line(),
+                    ty.to_coq().to_doc(true),
+                    line(),
+                    text("\""),
+                    text(func),
+                    text("\""),
+                ]),
+            ),
             ExprKind::Literal(literal, ty) => match ty {
                 None => literal.to_doc(with_paren),
                 Some(ty) => paren(
@@ -844,13 +850,15 @@ impl ExprKind {
                 from_user,
             } => {
                 let inner_with_paren = with_paren || *from_user;
+                let is_func_impl =
+                    matches!(func.kind.as_ref(), ExprKind::AssociatedFunction { .. });
                 let inner_application = optional_insert_with(
                     args.is_empty(),
                     func.to_doc(inner_with_paren),
                     paren(
                         inner_with_paren,
                         nest([
-                            func.to_doc(true),
+                            func.to_doc(!is_func_impl),
                             concat(args.iter().map(|arg| concat([line(), arg.to_doc(true)]))),
                         ]),
                     ),

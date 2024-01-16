@@ -90,11 +90,9 @@ Section Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_Fruit_t.
             M (M.Val (ref str.t))
         ] in
     let* α2 : ref str.t := M.read α1 in
-    M.call (core.fmt.Formatter.t::["write_str"] α0 α2).
+    M.call (impl core.fmt.Formatter.t "write_str" α0 α2).
   
-  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
-    Notations.double_colon := fmt;
-  }.
+  Axiom fmt_is_impl : impl Self "fmt" = fmt.
   
   Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
@@ -149,8 +147,9 @@ Definition main : M unit :=
     let* α2 :
         core.option.Option.t unpacking_options_and_defaults_via_or.Fruit.t :=
       M.call
-        ((core.option.Option.t
-              unpacking_options_and_defaults_via_or.Fruit.t)::["or"]
+        (impl
+            (core.option.Option.t unpacking_options_and_defaults_via_or.Fruit.t)
+            "or"
           α0
           α1) in
     let* α3 :
@@ -159,8 +158,9 @@ Definition main : M unit :=
     let* α4 :
         core.option.Option.t unpacking_options_and_defaults_via_or.Fruit.t :=
       M.call
-        ((core.option.Option.t
-              unpacking_options_and_defaults_via_or.Fruit.t)::["or"]
+        (impl
+            (core.option.Option.t unpacking_options_and_defaults_via_or.Fruit.t)
+            "or"
           α2
           α3) in
     M.alloc α4 in
@@ -175,7 +175,7 @@ Definition main : M unit :=
         M.read (pointer_coercion "Unsize" α3) in
       let* α5 : core.fmt.rt.Argument.t :=
         M.call
-          (core.fmt.rt.Argument.t::["new_debug"]
+          (impl core.fmt.rt.Argument.t "new_debug"
             (borrow first_available_fruit)) in
       let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
       let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -183,7 +183,7 @@ Definition main : M unit :=
       let* α8 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α7) in
       let* α9 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
+        M.call (impl core.fmt.Arguments.t "new_v1" α4 α8) in
       let* α10 : unit := M.call (std.io.stdio._print α9) in
       M.alloc α10 in
     M.alloc tt in

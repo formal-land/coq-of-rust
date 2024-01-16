@@ -26,10 +26,7 @@ Section Impl_core_default_Default_for_payment_channel_AccountId_t.
     let* α1 : u128.t := M.call α0 in
     M.pure (payment_channel.AccountId.Build_t α1).
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -58,10 +55,7 @@ Section Impl_core_clone_Clone_for_payment_channel_AccountId_t.
         ] in
     M.read α0.
   
-  Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon Self "clone" := {
-    Notations.double_colon := clone;
-  }.
+  Axiom clone_is_impl : impl Self "clone" = clone.
   
   Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
@@ -107,9 +101,7 @@ Section Impl_core_cmp_PartialEq_for_payment_channel_AccountId_t.
     let* α3 : u128.t := M.read (payment_channel.AccountId.Get_0 (deref α2)) in
     M.pure (BinOp.Pure.eq α1 α3).
   
-  Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
-    Notations.double_colon := eq;
-  }.
+  Axiom eq_is_impl : impl Self "eq" = eq.
   
   Global Instance ℐ :
     core.cmp.PartialEq.Required.Trait Self
@@ -144,10 +136,8 @@ Section Impl_core_cmp_Eq_for_payment_channel_AccountId_t.
         [ fun γ => (M.alloc tt) : M (M.Val unit) ] in
     M.read α0.
   
-  Global Instance AssociatedFunction_assert_receiver_is_total_eq :
-    Notations.DoubleColon Self "assert_receiver_is_total_eq" := {
-    Notations.double_colon := assert_receiver_is_total_eq;
-  }.
+  Axiom assert_receiver_is_total_eq_is_impl :
+      impl Self "assert_receiver_is_total_eq" = assert_receiver_is_total_eq.
   
   Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
     core.cmp.Eq.assert_receiver_is_total_eq :=
@@ -171,10 +161,7 @@ Section Impl_core_convert_From_array_u8_t_for_payment_channel_AccountId_t.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_from :
-    Notations.DoubleColon Self "from" := {
-    Notations.double_colon := from;
-  }.
+  Axiom from_is_impl : impl Self "from" = from.
   
   Global Instance ℐ : core.convert.From.Trait Self (T := array u8.t) := {
     core.convert.From.from := from;
@@ -273,9 +260,7 @@ Section Impl_core_cmp_PartialEq_for_payment_channel_Error_t.
     let* α0 : M.Val bool.t := M.alloc (BinOp.Pure.eq α0 α1) in
     M.read α0.
   
-  Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
-    Notations.double_colon := eq;
-  }.
+  Axiom eq_is_impl : impl Self "eq" = eq.
   
   Global Instance ℐ :
     core.cmp.PartialEq.Required.Trait Self
@@ -306,10 +291,8 @@ Section Impl_core_cmp_Eq_for_payment_channel_Error_t.
     let* self := M.alloc self in
     M.pure tt.
   
-  Global Instance AssociatedFunction_assert_receiver_is_total_eq :
-    Notations.DoubleColon Self "assert_receiver_is_total_eq" := {
-    Notations.double_colon := assert_receiver_is_total_eq;
-  }.
+  Axiom assert_receiver_is_total_eq_is_impl :
+      impl Self "assert_receiver_is_total_eq" = assert_receiver_is_total_eq.
   
   Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
     core.cmp.Eq.assert_receiver_is_total_eq :=
@@ -363,10 +346,7 @@ Section Impl_payment_channel_Env_t.
     let* α0 : ref payment_channel.Env.t := M.read self in
     M.read (payment_channel.Env.Get_caller (deref α0)).
   
-  Global Instance AssociatedFunction_caller :
-    Notations.DoubleColon Self "caller" := {
-    Notations.double_colon := caller;
-  }.
+  Axiom caller_is_impl : impl Self "caller" = caller.
   
   (*
       fn emit_event(&self, _event: Event) {
@@ -383,10 +363,7 @@ Section Impl_payment_channel_Env_t.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_emit_event :
-    Notations.DoubleColon Self "emit_event" := {
-    Notations.double_colon := emit_event;
-  }.
+  Axiom emit_event_is_impl : impl Self "emit_event" = emit_event.
   
   (*
       fn terminate_contract(&self, sender: AccountId) {
@@ -403,10 +380,8 @@ Section Impl_payment_channel_Env_t.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_terminate_contract :
-    Notations.DoubleColon Self "terminate_contract" := {
-    Notations.double_colon := terminate_contract;
-  }.
+  Axiom terminate_contract_is_impl :
+      impl Self "terminate_contract" = terminate_contract.
   
   (*
       fn transfer(&self, recipient: AccountId, amount: Balance) -> Result<()> {
@@ -425,10 +400,7 @@ Section Impl_payment_channel_Env_t.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_transfer :
-    Notations.DoubleColon Self "transfer" := {
-    Notations.double_colon := transfer;
-  }.
+  Axiom transfer_is_impl : impl Self "transfer" = transfer.
   
   (*
       fn block_timestamp(&self) -> Timestamp {
@@ -443,10 +415,7 @@ Section Impl_payment_channel_Env_t.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_block_timestamp :
-    Notations.DoubleColon Self "block_timestamp" := {
-    Notations.double_colon := block_timestamp;
-  }.
+  Axiom block_timestamp_is_impl : impl Self "block_timestamp" = block_timestamp.
   
   (*
       fn balance(&self) -> Balance {
@@ -459,10 +428,7 @@ Section Impl_payment_channel_Env_t.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_balance :
-    Notations.DoubleColon Self "balance" := {
-    Notations.double_colon := balance;
-  }.
+  Axiom balance_is_impl : impl Self "balance" = balance.
   
   (*
       fn account_id(&self) -> AccountId {
@@ -475,10 +441,7 @@ Section Impl_payment_channel_Env_t.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_account_id :
-    Notations.DoubleColon Self "account_id" := {
-    Notations.double_colon := account_id;
-  }.
+  Axiom account_id_is_impl : impl Self "account_id" = account_id.
 End Impl_payment_channel_Env_t.
 End Impl_payment_channel_Env_t.
 
@@ -663,10 +626,7 @@ Section Impl_payment_channel_CryptoHash_for_payment_channel_Sha2x256_t.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_hash :
-    Notations.DoubleColon Self "hash" := {
-    Notations.double_colon := hash;
-  }.
+  Axiom hash_is_impl : impl Self "hash" = hash.
   
   Global Instance ℐ : payment_channel.CryptoHash.Trait Self := {
     payment_channel.CryptoHash.hash := hash;
@@ -698,10 +658,7 @@ Section Impl_payment_channel_CryptoHash_for_payment_channel_Keccak256_t.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_hash :
-    Notations.DoubleColon Self "hash" := {
-    Notations.double_colon := hash;
-  }.
+  Axiom hash_is_impl : impl Self "hash" = hash.
   
   Global Instance ℐ : payment_channel.CryptoHash.Trait Self := {
     payment_channel.CryptoHash.hash := hash;
@@ -733,10 +690,7 @@ Section Impl_payment_channel_CryptoHash_for_payment_channel_Blake2x256_t.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_hash :
-    Notations.DoubleColon Self "hash" := {
-    Notations.double_colon := hash;
-  }.
+  Axiom hash_is_impl : impl Self "hash" = hash.
   
   Global Instance ℐ : payment_channel.CryptoHash.Trait Self := {
     payment_channel.CryptoHash.hash := hash;
@@ -768,10 +722,7 @@ Section Impl_payment_channel_CryptoHash_for_payment_channel_Blake2x128_t.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_hash :
-    Notations.DoubleColon Self "hash" := {
-    Notations.double_colon := hash;
-  }.
+  Axiom hash_is_impl : impl Self "hash" = hash.
   
   Global Instance ℐ : payment_channel.CryptoHash.Trait Self := {
     payment_channel.CryptoHash.hash := hash;
@@ -793,10 +744,7 @@ Section Impl_payment_channel_PaymentChannel_t.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_init_env :
-    Notations.DoubleColon Self "init_env" := {
-    Notations.double_colon := init_env;
-  }.
+  Axiom init_env_is_impl : impl Self "init_env" = init_env.
   
   (*
       fn env(&self) -> Env {
@@ -805,11 +753,9 @@ Section Impl_payment_channel_PaymentChannel_t.
   *)
   Definition env (self : ref Self) : M payment_channel.Env.t :=
     let* self := M.alloc self in
-    M.call payment_channel.PaymentChannel.t::["init_env"].
+    M.call (impl payment_channel.PaymentChannel.t "init_env").
   
-  Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
-    Notations.double_colon := env;
-  }.
+  Axiom env_is_impl : impl Self "env" = env.
   
   (*
       fn is_signature_valid(&self, amount: Balance, signature: [u8; 65]) -> bool {
@@ -837,10 +783,10 @@ Section Impl_payment_channel_PaymentChannel_t.
     let* encodable : M.Val (payment_channel.AccountId.t * u128.t) :=
       let* α0 : ref payment_channel.PaymentChannel.t := M.read self in
       let* α1 : payment_channel.Env.t :=
-        M.call (payment_channel.PaymentChannel.t::["env"] α0) in
+        M.call (impl payment_channel.PaymentChannel.t "env" α0) in
       let* α2 : M.Val payment_channel.Env.t := M.alloc α1 in
       let* α3 : payment_channel.AccountId.t :=
-        M.call (payment_channel.Env.t::["account_id"] (borrow α2)) in
+        M.call (impl payment_channel.Env.t "account_id" (borrow α2)) in
       let* α4 : u128.t := M.read amount in
       M.alloc (α3, α4) in
     let* message : M.Val (array u8.t) :=
@@ -867,9 +813,9 @@ Section Impl_payment_channel_PaymentChannel_t.
             (borrow_mut pub_key)) in
       let* α1 : unit :=
         M.call
-          ((core.result.Result.t
-                unit
-                payment_channel.Error.t)::["unwrap_or_else"]
+          (impl
+              (core.result.Result.t unit payment_channel.Error.t)
+              "unwrap_or_else"
             α0
             (fun (α0 : payment_channel.Error.t) =>
               (let* α0 := M.alloc α0 in
@@ -923,10 +869,8 @@ Section Impl_payment_channel_PaymentChannel_t.
     let* α0 : M.Val bool.t := M.alloc α6 in
     M.read α0.
   
-  Global Instance AssociatedFunction_is_signature_valid :
-    Notations.DoubleColon Self "is_signature_valid" := {
-    Notations.double_colon := is_signature_valid;
-  }.
+  Axiom is_signature_valid_is_impl :
+      impl Self "is_signature_valid" = is_signature_valid.
   
   (*
       pub fn new(recipient: AccountId, close_duration: Timestamp) -> Self {
@@ -946,10 +890,10 @@ Section Impl_payment_channel_PaymentChannel_t.
     let* recipient := M.alloc recipient in
     let* close_duration := M.alloc close_duration in
     let* α0 : payment_channel.Env.t :=
-      M.call payment_channel.PaymentChannel.t::["init_env"] in
+      M.call (impl payment_channel.PaymentChannel.t "init_env") in
     let* α1 : M.Val payment_channel.Env.t := M.alloc α0 in
     let* α2 : payment_channel.AccountId.t :=
-      M.call (payment_channel.Env.t::["caller"] (borrow α1)) in
+      M.call (impl payment_channel.Env.t "caller" (borrow α1)) in
     let* α3 : payment_channel.AccountId.t := M.read recipient in
     let* α4 : u64.t := M.read close_duration in
     M.pure
@@ -961,9 +905,7 @@ Section Impl_payment_channel_PaymentChannel_t.
         payment_channel.PaymentChannel.close_duration := α4;
       |}.
   
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
-    Notations.double_colon := new;
-  }.
+  Axiom new_is_impl : impl Self "new" = new.
   
   (*
       fn close_inner(&mut self, amount: Balance, signature: [u8; 65]) -> Result<()> {
@@ -1007,10 +949,10 @@ Section Impl_payment_channel_PaymentChannel_t.
         let* α1 : mut_ref payment_channel.PaymentChannel.t := M.read self in
         let* α2 : payment_channel.Env.t :=
           M.call
-            (payment_channel.PaymentChannel.t::["env"] (borrow (deref α1))) in
+            (impl payment_channel.PaymentChannel.t "env" (borrow (deref α1))) in
         let* α3 : M.Val payment_channel.Env.t := M.alloc α2 in
         let* α4 : payment_channel.AccountId.t :=
-          M.call (payment_channel.Env.t::["caller"] (borrow α3)) in
+          M.call (impl payment_channel.Env.t "caller" (borrow α3)) in
         let* α5 : M.Val payment_channel.AccountId.t := M.alloc α4 in
         let* α6 : mut_ref payment_channel.PaymentChannel.t := M.read self in
         let* α7 : bool.t :=
@@ -1054,7 +996,7 @@ Section Impl_payment_channel_PaymentChannel_t.
         let* α2 : array u8.t := M.read signature in
         let* α3 : bool.t :=
           M.call
-            (payment_channel.PaymentChannel.t::["is_signature_valid"]
+            (impl payment_channel.PaymentChannel.t "is_signature_valid"
               (borrow (deref α0))
               α1
               α2) in
@@ -1078,7 +1020,7 @@ Section Impl_payment_channel_PaymentChannel_t.
         let* α1 : mut_ref payment_channel.PaymentChannel.t := M.read self in
         let* α2 : payment_channel.Env.t :=
           M.call
-            (payment_channel.PaymentChannel.t::["env"] (borrow (deref α1))) in
+            (impl payment_channel.PaymentChannel.t "env" (borrow (deref α1))) in
         let* α3 : M.Val payment_channel.Env.t := M.alloc α2 in
         let* α4 : mut_ref payment_channel.PaymentChannel.t := M.read self in
         let* α5 : payment_channel.AccountId.t :=
@@ -1089,10 +1031,10 @@ Section Impl_payment_channel_PaymentChannel_t.
           M.read (payment_channel.PaymentChannel.Get_withdrawn (deref α7)) in
         let* α9 : u128.t := BinOp.Panic.sub α6 α8 in
         let* α10 : core.result.Result.t unit payment_channel.Error.t :=
-          M.call (payment_channel.Env.t::["transfer"] (borrow α3) α5 α9) in
+          M.call (impl payment_channel.Env.t "transfer" (borrow α3) α5 α9) in
         let* α11 : core.result.Result.t unit payment_channel.Error.t :=
           M.call
-            ((core.result.Result.t unit payment_channel.Error.t)::["map_err"]
+            (impl (core.result.Result.t unit payment_channel.Error.t) "map_err"
               α10
               (fun (α0 : payment_channel.Error.t) =>
                 (let* α0 := M.alloc α0 in
@@ -1168,10 +1110,7 @@ Section Impl_payment_channel_PaymentChannel_t.
         M.alloc (core.result.Result.Ok tt) in
       M.read α0).
   
-  Global Instance AssociatedFunction_close_inner :
-    Notations.DoubleColon Self "close_inner" := {
-    Notations.double_colon := close_inner;
-  }.
+  Axiom close_inner_is_impl : impl Self "close_inner" = close_inner.
   
   (*
       pub fn close(&mut self, amount: Balance, signature: [u8; 65]) -> Result<()> {
@@ -1201,7 +1140,8 @@ Section Impl_payment_channel_PaymentChannel_t.
         let* α2 : u128.t := M.read amount in
         let* α3 : array u8.t := M.read signature in
         let* α4 : core.result.Result.t unit payment_channel.Error.t :=
-          M.call (payment_channel.PaymentChannel.t::["close_inner"] α1 α2 α3) in
+          M.call
+            (impl payment_channel.PaymentChannel.t "close_inner" α1 α2 α3) in
         let* α5 :
             core.ops.control_flow.ControlFlow.t
               (core.result.Result.t
@@ -1266,23 +1206,20 @@ Section Impl_payment_channel_PaymentChannel_t.
         let* α0 : mut_ref payment_channel.PaymentChannel.t := M.read self in
         let* α1 : payment_channel.Env.t :=
           M.call
-            (payment_channel.PaymentChannel.t::["env"] (borrow (deref α0))) in
+            (impl payment_channel.PaymentChannel.t "env" (borrow (deref α0))) in
         let* α2 : M.Val payment_channel.Env.t := M.alloc α1 in
         let* α3 : mut_ref payment_channel.PaymentChannel.t := M.read self in
         let* α4 : payment_channel.AccountId.t :=
           M.read (payment_channel.PaymentChannel.Get_sender (deref α3)) in
         let* α5 : unit :=
           M.call
-            (payment_channel.Env.t::["terminate_contract"] (borrow α2) α4) in
+            (impl payment_channel.Env.t "terminate_contract" (borrow α2) α4) in
         M.alloc α5 in
       let* α0 : M.Val (core.result.Result.t unit payment_channel.Error.t) :=
         M.alloc (core.result.Result.Ok tt) in
       M.read α0).
   
-  Global Instance AssociatedFunction_close :
-    Notations.DoubleColon Self "close" := {
-    Notations.double_colon := close;
-  }.
+  Axiom close_is_impl : impl Self "close" = close.
   
   (*
       pub fn start_sender_close(&mut self) -> Result<()> {
@@ -1320,10 +1257,10 @@ Section Impl_payment_channel_PaymentChannel_t.
         let* α1 : mut_ref payment_channel.PaymentChannel.t := M.read self in
         let* α2 : payment_channel.Env.t :=
           M.call
-            (payment_channel.PaymentChannel.t::["env"] (borrow (deref α1))) in
+            (impl payment_channel.PaymentChannel.t "env" (borrow (deref α1))) in
         let* α3 : M.Val payment_channel.Env.t := M.alloc α2 in
         let* α4 : payment_channel.AccountId.t :=
-          M.call (payment_channel.Env.t::["caller"] (borrow α3)) in
+          M.call (impl payment_channel.Env.t "caller" (borrow α3)) in
         let* α5 : M.Val payment_channel.AccountId.t := M.alloc α4 in
         let* α6 : mut_ref payment_channel.PaymentChannel.t := M.read self in
         let* α7 : bool.t :=
@@ -1348,10 +1285,10 @@ Section Impl_payment_channel_PaymentChannel_t.
         let* α0 : mut_ref payment_channel.PaymentChannel.t := M.read self in
         let* α1 : payment_channel.Env.t :=
           M.call
-            (payment_channel.PaymentChannel.t::["env"] (borrow (deref α0))) in
+            (impl payment_channel.PaymentChannel.t "env" (borrow (deref α0))) in
         let* α2 : M.Val payment_channel.Env.t := M.alloc α1 in
         let* α3 : u64.t :=
-          M.call (payment_channel.Env.t::["block_timestamp"] (borrow α2)) in
+          M.call (impl payment_channel.Env.t "block_timestamp" (borrow α2)) in
         M.alloc α3 in
       let* expiration : M.Val u64.t :=
         let* α0 : u64.t := M.read now in
@@ -1365,7 +1302,7 @@ Section Impl_payment_channel_PaymentChannel_t.
         let* α0 : mut_ref payment_channel.PaymentChannel.t := M.read self in
         let* α1 : payment_channel.Env.t :=
           M.call
-            (payment_channel.PaymentChannel.t::["env"] (borrow (deref α0))) in
+            (impl payment_channel.PaymentChannel.t "env" (borrow (deref α0))) in
         let* α2 : M.Val payment_channel.Env.t := M.alloc α1 in
         let* α3 : u64.t := M.read expiration in
         let* α4 : mut_ref payment_channel.PaymentChannel.t := M.read self in
@@ -1374,7 +1311,7 @@ Section Impl_payment_channel_PaymentChannel_t.
             (payment_channel.PaymentChannel.Get_close_duration (deref α4)) in
         let* α6 : unit :=
           M.call
-            (payment_channel.Env.t::["emit_event"]
+            (impl payment_channel.Env.t "emit_event"
               (borrow α2)
               (payment_channel.Event.SenderCloseStarted
                 {|
@@ -1392,10 +1329,8 @@ Section Impl_payment_channel_PaymentChannel_t.
         M.alloc (core.result.Result.Ok tt) in
       M.read α0).
   
-  Global Instance AssociatedFunction_start_sender_close :
-    Notations.DoubleColon Self "start_sender_close" := {
-    Notations.double_colon := start_sender_close;
-  }.
+  Axiom start_sender_close_is_impl :
+      impl Self "start_sender_close" = start_sender_close.
   
   (*
       pub fn claim_timeout(&mut self) -> Result<()> {
@@ -1439,12 +1374,12 @@ Section Impl_payment_channel_PaymentChannel_t.
                     M.read self in
                   let* α1 : payment_channel.Env.t :=
                     M.call
-                      (payment_channel.PaymentChannel.t::["env"]
+                      (impl payment_channel.PaymentChannel.t "env"
                         (borrow (deref α0))) in
                   let* α2 : M.Val payment_channel.Env.t := M.alloc α1 in
                   let* α3 : u64.t :=
                     M.call
-                      (payment_channel.Env.t::["block_timestamp"]
+                      (impl payment_channel.Env.t "block_timestamp"
                         (borrow α2)) in
                   M.alloc α3 in
                 let* _ : M.Val unit :=
@@ -1467,7 +1402,7 @@ Section Impl_payment_channel_PaymentChannel_t.
                     M.read self in
                   let* α1 : payment_channel.Env.t :=
                     M.call
-                      (payment_channel.PaymentChannel.t::["env"]
+                      (impl payment_channel.PaymentChannel.t "env"
                         (borrow (deref α0))) in
                   let* α2 : M.Val payment_channel.Env.t := M.alloc α1 in
                   let* α3 : mut_ref payment_channel.PaymentChannel.t :=
@@ -1477,7 +1412,7 @@ Section Impl_payment_channel_PaymentChannel_t.
                       (payment_channel.PaymentChannel.Get_sender (deref α3)) in
                   let* α5 : unit :=
                     M.call
-                      (payment_channel.Env.t::["terminate_contract"]
+                      (impl payment_channel.Env.t "terminate_contract"
                         (borrow α2)
                         α4) in
                   M.alloc α5 in
@@ -1497,10 +1432,7 @@ Section Impl_payment_channel_PaymentChannel_t.
           ] in
       M.read α1).
   
-  Global Instance AssociatedFunction_claim_timeout :
-    Notations.DoubleColon Self "claim_timeout" := {
-    Notations.double_colon := claim_timeout;
-  }.
+  Axiom claim_timeout_is_impl : impl Self "claim_timeout" = claim_timeout.
   
   (*
       pub fn withdraw(&mut self, amount: Balance, signature: [u8; 65]) -> Result<()> {
@@ -1548,10 +1480,10 @@ Section Impl_payment_channel_PaymentChannel_t.
         let* α1 : mut_ref payment_channel.PaymentChannel.t := M.read self in
         let* α2 : payment_channel.Env.t :=
           M.call
-            (payment_channel.PaymentChannel.t::["env"] (borrow (deref α1))) in
+            (impl payment_channel.PaymentChannel.t "env" (borrow (deref α1))) in
         let* α3 : M.Val payment_channel.Env.t := M.alloc α2 in
         let* α4 : payment_channel.AccountId.t :=
-          M.call (payment_channel.Env.t::["caller"] (borrow α3)) in
+          M.call (impl payment_channel.Env.t "caller" (borrow α3)) in
         let* α5 : M.Val payment_channel.AccountId.t := M.alloc α4 in
         let* α6 : mut_ref payment_channel.PaymentChannel.t := M.read self in
         let* α7 : bool.t :=
@@ -1578,7 +1510,7 @@ Section Impl_payment_channel_PaymentChannel_t.
         let* α2 : array u8.t := M.read signature in
         let* α3 : bool.t :=
           M.call
-            (payment_channel.PaymentChannel.t::["is_signature_valid"]
+            (impl payment_channel.PaymentChannel.t "is_signature_valid"
               (borrow (deref α0))
               α1
               α2) in
@@ -1634,17 +1566,17 @@ Section Impl_payment_channel_PaymentChannel_t.
         let* α1 : mut_ref payment_channel.PaymentChannel.t := M.read self in
         let* α2 : payment_channel.Env.t :=
           M.call
-            (payment_channel.PaymentChannel.t::["env"] (borrow (deref α1))) in
+            (impl payment_channel.PaymentChannel.t "env" (borrow (deref α1))) in
         let* α3 : M.Val payment_channel.Env.t := M.alloc α2 in
         let* α4 : mut_ref payment_channel.PaymentChannel.t := M.read self in
         let* α5 : payment_channel.AccountId.t :=
           M.read (payment_channel.PaymentChannel.Get_recipient (deref α4)) in
         let* α6 : u128.t := M.read amount_to_withdraw in
         let* α7 : core.result.Result.t unit payment_channel.Error.t :=
-          M.call (payment_channel.Env.t::["transfer"] (borrow α3) α5 α6) in
+          M.call (impl payment_channel.Env.t "transfer" (borrow α3) α5 α6) in
         let* α8 : core.result.Result.t unit payment_channel.Error.t :=
           M.call
-            ((core.result.Result.t unit payment_channel.Error.t)::["map_err"]
+            (impl (core.result.Result.t unit payment_channel.Error.t) "map_err"
               α7
               (fun (α0 : payment_channel.Error.t) =>
                 (let* α0 := M.alloc α0 in
@@ -1720,10 +1652,7 @@ Section Impl_payment_channel_PaymentChannel_t.
         M.alloc (core.result.Result.Ok tt) in
       M.read α0).
   
-  Global Instance AssociatedFunction_withdraw :
-    Notations.DoubleColon Self "withdraw" := {
-    Notations.double_colon := withdraw;
-  }.
+  Axiom withdraw_is_impl : impl Self "withdraw" = withdraw.
   
   (*
       pub fn get_sender(&self) -> AccountId {
@@ -1735,10 +1664,7 @@ Section Impl_payment_channel_PaymentChannel_t.
     let* α0 : ref payment_channel.PaymentChannel.t := M.read self in
     M.read (payment_channel.PaymentChannel.Get_sender (deref α0)).
   
-  Global Instance AssociatedFunction_get_sender :
-    Notations.DoubleColon Self "get_sender" := {
-    Notations.double_colon := get_sender;
-  }.
+  Axiom get_sender_is_impl : impl Self "get_sender" = get_sender.
   
   (*
       pub fn get_recipient(&self) -> AccountId {
@@ -1750,10 +1676,7 @@ Section Impl_payment_channel_PaymentChannel_t.
     let* α0 : ref payment_channel.PaymentChannel.t := M.read self in
     M.read (payment_channel.PaymentChannel.Get_recipient (deref α0)).
   
-  Global Instance AssociatedFunction_get_recipient :
-    Notations.DoubleColon Self "get_recipient" := {
-    Notations.double_colon := get_recipient;
-  }.
+  Axiom get_recipient_is_impl : impl Self "get_recipient" = get_recipient.
   
   (*
       pub fn get_expiration(&self) -> Option<Timestamp> {
@@ -1767,10 +1690,7 @@ Section Impl_payment_channel_PaymentChannel_t.
     let* α0 : ref payment_channel.PaymentChannel.t := M.read self in
     M.read (payment_channel.PaymentChannel.Get_expiration (deref α0)).
   
-  Global Instance AssociatedFunction_get_expiration :
-    Notations.DoubleColon Self "get_expiration" := {
-    Notations.double_colon := get_expiration;
-  }.
+  Axiom get_expiration_is_impl : impl Self "get_expiration" = get_expiration.
   
   (*
       pub fn get_withdrawn(&self) -> Balance {
@@ -1784,10 +1704,7 @@ Section Impl_payment_channel_PaymentChannel_t.
     let* α0 : ref payment_channel.PaymentChannel.t := M.read self in
     M.read (payment_channel.PaymentChannel.Get_withdrawn (deref α0)).
   
-  Global Instance AssociatedFunction_get_withdrawn :
-    Notations.DoubleColon Self "get_withdrawn" := {
-    Notations.double_colon := get_withdrawn;
-  }.
+  Axiom get_withdrawn_is_impl : impl Self "get_withdrawn" = get_withdrawn.
   
   (*
       pub fn get_close_duration(&self) -> Timestamp {
@@ -1801,10 +1718,8 @@ Section Impl_payment_channel_PaymentChannel_t.
     let* α0 : ref payment_channel.PaymentChannel.t := M.read self in
     M.read (payment_channel.PaymentChannel.Get_close_duration (deref α0)).
   
-  Global Instance AssociatedFunction_get_close_duration :
-    Notations.DoubleColon Self "get_close_duration" := {
-    Notations.double_colon := get_close_duration;
-  }.
+  Axiom get_close_duration_is_impl :
+      impl Self "get_close_duration" = get_close_duration.
   
   (*
       pub fn get_balance(&self) -> Balance {
@@ -1815,13 +1730,10 @@ Section Impl_payment_channel_PaymentChannel_t.
     let* self := M.alloc self in
     let* α0 : ref payment_channel.PaymentChannel.t := M.read self in
     let* α1 : payment_channel.Env.t :=
-      M.call (payment_channel.PaymentChannel.t::["env"] α0) in
+      M.call (impl payment_channel.PaymentChannel.t "env" α0) in
     let* α2 : M.Val payment_channel.Env.t := M.alloc α1 in
-    M.call (payment_channel.Env.t::["balance"] (borrow α2)).
+    M.call (impl payment_channel.Env.t "balance" (borrow α2)).
   
-  Global Instance AssociatedFunction_get_balance :
-    Notations.DoubleColon Self "get_balance" := {
-    Notations.double_colon := get_balance;
-  }.
+  Axiom get_balance_is_impl : impl Self "get_balance" = get_balance.
 End Impl_payment_channel_PaymentChannel_t.
 End Impl_payment_channel_PaymentChannel_t.

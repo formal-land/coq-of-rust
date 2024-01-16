@@ -63,8 +63,6 @@ Section Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers_t.
         ] in
     M.read α0.
   
-  Global Instance AssociatedFunction_run : Notations.DoubleColon Self "run" := {
-    Notations.double_colon := run;
-  }.
+  Axiom run_is_impl : impl Self "run" = run.
 End Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers_t.
 End Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers_t.

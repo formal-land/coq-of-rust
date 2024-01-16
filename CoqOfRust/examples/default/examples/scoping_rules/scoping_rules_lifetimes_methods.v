@@ -34,10 +34,7 @@ Section Impl_scoping_rules_lifetimes_methods_Owner_t.
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
-  Global Instance AssociatedFunction_add_one :
-    Notations.DoubleColon Self "add_one" := {
-    Notations.double_colon := add_one;
-  }.
+  Axiom add_one_is_impl : impl Self "add_one" = add_one.
   
   (*
       fn print<'a>(&'a self) {
@@ -58,7 +55,7 @@ Section Impl_scoping_rules_lifetimes_methods_Owner_t.
         let* α5 : ref scoping_rules_lifetimes_methods.Owner.t := M.read self in
         let* α6 : core.fmt.rt.Argument.t :=
           M.call
-            (core.fmt.rt.Argument.t::["new_display"]
+            (impl core.fmt.rt.Argument.t "new_display"
               (borrow
                 (scoping_rules_lifetimes_methods.Owner.Get_0 (deref α5)))) in
         let* α7 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α6 ] in
@@ -67,17 +64,14 @@ Section Impl_scoping_rules_lifetimes_methods_Owner_t.
         let* α9 : ref (slice core.fmt.rt.Argument.t) :=
           M.read (pointer_coercion "Unsize" α8) in
         let* α10 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_v1"] α4 α9) in
+          M.call (impl core.fmt.Arguments.t "new_v1" α4 α9) in
         let* α11 : unit := M.call (std.io.stdio._print α10) in
         M.alloc α11 in
       M.alloc tt in
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
-  Global Instance AssociatedFunction_print :
-    Notations.DoubleColon Self "print" := {
-    Notations.double_colon := print;
-  }.
+  Axiom print_is_impl : impl Self "print" = print.
 End Impl_scoping_rules_lifetimes_methods_Owner_t.
 End Impl_scoping_rules_lifetimes_methods_Owner_t.
 
@@ -98,13 +92,13 @@ Definition main : M unit :=
   let* _ : M.Val unit :=
     let* α0 : unit :=
       M.call
-        (scoping_rules_lifetimes_methods.Owner.t::["add_one"]
+        (impl scoping_rules_lifetimes_methods.Owner.t "add_one"
           (borrow_mut owner)) in
     M.alloc α0 in
   let* _ : M.Val unit :=
     let* α0 : unit :=
       M.call
-        (scoping_rules_lifetimes_methods.Owner.t::["print"] (borrow owner)) in
+        (impl scoping_rules_lifetimes_methods.Owner.t "print" (borrow owner)) in
     M.alloc α0 in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.

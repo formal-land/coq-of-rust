@@ -24,9 +24,7 @@ Section Impl_core_fmt_Display_for_converting_to_string_Circle_t.
   Parameter fmt :
       (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
   
-  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
-    Notations.double_colon := fmt;
-  }.
+  Axiom fmt_is_impl : impl Self "fmt" = fmt.
   
   Global Instance ℐ : core.fmt.Display.Trait Self := {
     core.fmt.Display.fmt := fmt;

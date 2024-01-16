@@ -13,7 +13,7 @@ Definition create_box : M unit :=
   let* _box1 : M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t) :=
     let* α0 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t :=
       M.call
-        ((alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"]
+        (impl (alloc.boxed.Box.t i32.t alloc.alloc.Global.t) "new"
           ((Integer.of_Z 3) : i32.t)) in
     M.alloc α0 in
   let* α0 : M.Val unit := M.alloc tt in
@@ -46,14 +46,14 @@ Definition main : M unit :=
   let* _box2 : M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t) :=
     let* α0 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t :=
       M.call
-        ((alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"]
+        (impl (alloc.boxed.Box.t i32.t alloc.alloc.Global.t) "new"
           ((Integer.of_Z 5) : i32.t)) in
     M.alloc α0 in
   let* _ : M.Val unit :=
     let* _box3 : M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t) :=
       let* α0 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t :=
         M.call
-          ((alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"]
+          (impl (alloc.boxed.Box.t i32.t alloc.alloc.Global.t) "new"
             ((Integer.of_Z 4) : i32.t)) in
       M.alloc α0 in
     M.alloc tt in

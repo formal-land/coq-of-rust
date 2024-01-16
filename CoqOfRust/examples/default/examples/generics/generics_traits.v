@@ -36,10 +36,7 @@ Section Impl_generics_traits_DoubleDrop_T_for_U.
     let* Pattern := M.alloc Pattern in
     M.pure tt.
   
-  Global Instance AssociatedFunction_double_drop :
-    Notations.DoubleColon Self "double_drop" := {
-    Notations.double_colon := double_drop;
-  }.
+  Axiom double_drop_is_impl : impl Self "double_drop" = double_drop.
   
   Global Instance ℐ : generics_traits.DoubleDrop.Trait Self (T := T) := {
     generics_traits.DoubleDrop.double_drop := double_drop;

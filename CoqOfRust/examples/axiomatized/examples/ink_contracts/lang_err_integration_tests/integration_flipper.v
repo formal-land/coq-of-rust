@@ -28,9 +28,7 @@ Section Impl_core_fmt_Debug_for_integration_flipper_FlipperError_t.
   Parameter fmt :
       (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
   
-  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
-    Notations.double_colon := fmt;
-  }.
+  Axiom fmt_is_impl : impl Self "fmt" = fmt.
   
   Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
@@ -49,9 +47,7 @@ Section Impl_integration_flipper_Flipper_t.
   *)
   Parameter new : bool.t -> M Self.
   
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
-    Notations.double_colon := new;
-  }.
+  Axiom new_is_impl : impl Self "new" = new.
   
   (*
       pub fn new_default() -> Self {
@@ -60,10 +56,7 @@ Section Impl_integration_flipper_Flipper_t.
   *)
   Parameter new_default : M Self.
   
-  Global Instance AssociatedFunction_new_default :
-    Notations.DoubleColon Self "new_default" := {
-    Notations.double_colon := new_default;
-  }.
+  Axiom new_default_is_impl : impl Self "new_default" = new_default.
   
   (*
       pub fn try_new(succeed: bool) -> Result<Self, FlipperError> {
@@ -78,10 +71,7 @@ Section Impl_integration_flipper_Flipper_t.
       bool.t ->
         M (core.result.Result.t Self integration_flipper.FlipperError.t).
   
-  Global Instance AssociatedFunction_try_new :
-    Notations.DoubleColon Self "try_new" := {
-    Notations.double_colon := try_new;
-  }.
+  Axiom try_new_is_impl : impl Self "try_new" = try_new.
   
   (*
       pub fn flip(&mut self) {
@@ -90,10 +80,7 @@ Section Impl_integration_flipper_Flipper_t.
   *)
   Parameter flip : (mut_ref Self) -> M unit.
   
-  Global Instance AssociatedFunction_flip :
-    Notations.DoubleColon Self "flip" := {
-    Notations.double_colon := flip;
-  }.
+  Axiom flip_is_impl : impl Self "flip" = flip.
   
   (*
       pub fn get(&self) -> bool {
@@ -102,9 +89,7 @@ Section Impl_integration_flipper_Flipper_t.
   *)
   Parameter get : (ref Self) -> M bool.t.
   
-  Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
-    Notations.double_colon := get;
-  }.
+  Axiom get_is_impl : impl Self "get" = get.
   
   (*
       pub fn err_flip(&mut self) -> Result<(), ()> {
@@ -114,9 +99,6 @@ Section Impl_integration_flipper_Flipper_t.
   *)
   Parameter err_flip : (mut_ref Self) -> M (core.result.Result.t unit unit).
   
-  Global Instance AssociatedFunction_err_flip :
-    Notations.DoubleColon Self "err_flip" := {
-    Notations.double_colon := err_flip;
-  }.
+  Axiom err_flip_is_impl : impl Self "err_flip" = err_flip.
 End Impl_integration_flipper_Flipper_t.
 End Impl_integration_flipper_Flipper_t.

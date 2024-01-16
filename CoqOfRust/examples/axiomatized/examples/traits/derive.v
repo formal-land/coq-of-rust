@@ -30,9 +30,7 @@ Section Impl_core_cmp_PartialEq_for_derive_Centimeters_t.
   *)
   Parameter eq : (ref Self) -> (ref derive.Centimeters.t) -> M bool.t.
   
-  Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
-    Notations.double_colon := eq;
-  }.
+  Axiom eq_is_impl : impl Self "eq" = eq.
   
   Global Instance ℐ :
     core.cmp.PartialEq.Required.Trait Self
@@ -55,10 +53,7 @@ Section Impl_core_cmp_PartialOrd_for_derive_Centimeters_t.
         (ref derive.Centimeters.t) ->
         M (core.option.Option.t core.cmp.Ordering.t).
   
-  Global Instance AssociatedFunction_partial_cmp :
-    Notations.DoubleColon Self "partial_cmp" := {
-    Notations.double_colon := partial_cmp;
-  }.
+  Axiom partial_cmp_is_impl : impl Self "partial_cmp" = partial_cmp.
   
   Global Instance ℐ :
     core.cmp.PartialOrd.Required.Trait Self
@@ -93,9 +88,7 @@ Section Impl_core_fmt_Debug_for_derive_Inches_t.
   Parameter fmt :
       (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
   
-  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
-    Notations.double_colon := fmt;
-  }.
+  Axiom fmt_is_impl : impl Self "fmt" = fmt.
   
   Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
@@ -116,10 +109,7 @@ Section Impl_derive_Inches_t.
   *)
   Parameter to_centimeters : (ref Self) -> M derive.Centimeters.t.
   
-  Global Instance AssociatedFunction_to_centimeters :
-    Notations.DoubleColon Self "to_centimeters" := {
-    Notations.double_colon := to_centimeters;
-  }.
+  Axiom to_centimeters_is_impl : impl Self "to_centimeters" = to_centimeters.
 End Impl_derive_Inches_t.
 End Impl_derive_Inches_t.
 

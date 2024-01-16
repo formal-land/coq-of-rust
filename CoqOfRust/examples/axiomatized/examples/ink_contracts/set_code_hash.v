@@ -35,10 +35,7 @@ Section Impl_core_default_Default_for_set_code_hash_Incrementer_t.
   *)
   Parameter default : M set_code_hash.Incrementer.t.
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -57,9 +54,7 @@ Section Impl_set_code_hash_Incrementer_t.
   *)
   Parameter new : M Self.
   
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
-    Notations.double_colon := new;
-  }.
+  Axiom new_is_impl : impl Self "new" = new.
   
   (*
       pub fn inc(&mut self) {
@@ -72,9 +67,7 @@ Section Impl_set_code_hash_Incrementer_t.
   *)
   Parameter inc : (mut_ref Self) -> M unit.
   
-  Global Instance AssociatedFunction_inc : Notations.DoubleColon Self "inc" := {
-    Notations.double_colon := inc;
-  }.
+  Axiom inc_is_impl : impl Self "inc" = inc.
   
   (*
       pub fn get(&self) -> u32 {
@@ -83,9 +76,7 @@ Section Impl_set_code_hash_Incrementer_t.
   *)
   Parameter get : (ref Self) -> M u32.t.
   
-  Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
-    Notations.double_colon := get;
-  }.
+  Axiom get_is_impl : impl Self "get" = get.
   
   (*
       pub fn set_code(&mut self, code_hash: [u8; 32]) {
@@ -97,9 +88,6 @@ Section Impl_set_code_hash_Incrementer_t.
   *)
   Parameter set_code : (mut_ref Self) -> (array u8.t) -> M unit.
   
-  Global Instance AssociatedFunction_set_code :
-    Notations.DoubleColon Self "set_code" := {
-    Notations.double_colon := set_code;
-  }.
+  Axiom set_code_is_impl : impl Self "set_code" = set_code.
 End Impl_set_code_hash_Incrementer_t.
 End Impl_set_code_hash_Incrementer_t.

@@ -17,9 +17,7 @@ Section Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificati
   Parameter fmt :
       (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
   
-  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
-    Notations.double_colon := fmt;
-  }.
+  Axiom fmt_is_impl : impl Self "fmt" = fmt.
   
   Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
@@ -38,10 +36,7 @@ Section Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarifica
   Parameter clone :
       (ref Self) -> M generics_phantom_type_test_case_unit_clarification.Inch.t.
   
-  Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon Self "clone" := {
-    Notations.double_colon := clone;
-  }.
+  Axiom clone_is_impl : impl Self "clone" = clone.
   
   Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
@@ -76,9 +71,7 @@ Section Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificati
   Parameter fmt :
       (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
   
-  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
-    Notations.double_colon := fmt;
-  }.
+  Axiom fmt_is_impl : impl Self "fmt" = fmt.
   
   Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
@@ -97,10 +90,7 @@ Section Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarifica
   Parameter clone :
       (ref Self) -> M generics_phantom_type_test_case_unit_clarification.Mm.t.
   
-  Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon Self "clone" := {
-    Notations.double_colon := clone;
-  }.
+  Axiom clone_is_impl : impl Self "clone" = clone.
   
   Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
@@ -150,9 +140,7 @@ Section Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificati
   Parameter fmt :
       (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
   
-  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
-    Notations.double_colon := fmt;
-  }.
+  Axiom fmt_is_impl : impl Self "fmt" = fmt.
   
   Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
@@ -176,10 +164,7 @@ Section Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarifica
       (ref Self) ->
         M (generics_phantom_type_test_case_unit_clarification.Length.t Unit).
   
-  Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon Self "clone" := {
-    Notations.double_colon := clone;
-  }.
+  Axiom clone_is_impl : impl Self "clone" = clone.
   
   Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
@@ -226,9 +211,7 @@ Section Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarifi
         (generics_phantom_type_test_case_unit_clarification.Length.t Unit) ->
         M (generics_phantom_type_test_case_unit_clarification.Length.t Unit).
   
-  Global Instance AssociatedFunction_add : Notations.DoubleColon Self "add" := {
-    Notations.double_colon := add;
-  }.
+  Axiom add_is_impl : impl Self "add" = add.
   
   Global Instance ℐ :
     core.ops.arith.Add.Trait Self

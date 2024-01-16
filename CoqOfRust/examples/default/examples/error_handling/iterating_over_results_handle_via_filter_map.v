@@ -24,7 +24,7 @@ Definition main : M unit :=
     let* α5 : alloc.boxed.Box.t (slice (ref str.t)) alloc.alloc.Global.t :=
       M.read (pointer_coercion "Unsize" α4) in
     let* α6 : alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t :=
-      M.call ((slice (ref str.t))::["into_vec"] α5) in
+      M.call (impl (slice (ref str.t)) "into_vec" α5) in
     M.alloc α6 in
   let* numbers : M.Val (alloc.vec.Vec.t i32.t alloc.alloc.Global.t) :=
     let* α0 : _ :=
@@ -72,11 +72,13 @@ Definition main : M unit :=
                       core.result.Result.t
                         i32.t
                         core.num.error.ParseIntError.t :=
-                    M.call (str.t::["parse"] α0) in
+                    M.call (impl str.t "parse" α0) in
                   M.call
-                    ((core.result.Result.t
+                    (impl
+                        (core.result.Result.t
                           i32.t
-                          core.num.error.ParseIntError.t)::["ok"]
+                          core.num.error.ParseIntError.t)
+                        "ok"
                       α1)) :
                   M (core.option.Option.t i32.t)
               ]) :
@@ -93,14 +95,14 @@ Definition main : M unit :=
       let* α4 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α3) in
       let* α5 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow numbers)) in
+        M.call (impl core.fmt.rt.Argument.t "new_debug" (borrow numbers)) in
       let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
       let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
         M.alloc (borrow α6) in
       let* α8 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α7) in
       let* α9 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
+        M.call (impl core.fmt.Arguments.t "new_v1" α4 α8) in
       let* α10 : unit := M.call (std.io.stdio._print α9) in
       M.alloc α10 in
     M.alloc tt in

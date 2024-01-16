@@ -40,9 +40,7 @@ Section Impl_core_cmp_PartialEq_for_derive_Centimeters_t.
     let* α3 : f64.t := M.read (derive.Centimeters.Get_0 (deref α2)) in
     M.pure (BinOp.Pure.eq α1 α3).
   
-  Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
-    Notations.double_colon := eq;
-  }.
+  Axiom eq_is_impl : impl Self "eq" = eq.
   
   Global Instance ℐ :
     core.cmp.PartialEq.Required.Trait Self
@@ -79,10 +77,7 @@ Section Impl_core_cmp_PartialOrd_for_derive_Centimeters_t.
         (borrow (derive.Centimeters.Get_0 (deref α1)))
         (borrow (derive.Centimeters.Get_0 (deref α2)))).
   
-  Global Instance AssociatedFunction_partial_cmp :
-    Notations.DoubleColon Self "partial_cmp" := {
-    Notations.double_colon := partial_cmp;
-  }.
+  Axiom partial_cmp_is_impl : impl Self "partial_cmp" = partial_cmp.
   
   Global Instance ℐ :
     core.cmp.PartialOrd.Required.Trait Self
@@ -127,11 +122,9 @@ Section Impl_core_fmt_Debug_for_derive_Inches_t.
       M.alloc (borrow (derive.Inches.Get_0 (deref α2))) in
     let* α4 : M.Val (ref (ref i32.t)) := M.alloc (borrow α3) in
     let* α5 : ref _ (* dyn *) := M.read (pointer_coercion "Unsize" α4) in
-    M.call (core.fmt.Formatter.t::["debug_tuple_field1_finish"] α0 α1 α5).
+    M.call (impl core.fmt.Formatter.t "debug_tuple_field1_finish" α0 α1 α5).
   
-  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
-    Notations.double_colon := fmt;
-  }.
+  Axiom fmt_is_impl : impl Self "fmt" = fmt.
   
   Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
@@ -175,10 +168,7 @@ Section Impl_derive_Inches_t.
         ] in
     M.read α0.
   
-  Global Instance AssociatedFunction_to_centimeters :
-    Notations.DoubleColon Self "to_centimeters" := {
-    Notations.double_colon := to_centimeters;
-  }.
+  Axiom to_centimeters_is_impl : impl Self "to_centimeters" = to_centimeters.
 End Impl_derive_Inches_t.
 End Impl_derive_Inches_t.
 
@@ -236,14 +226,14 @@ Definition main : M unit :=
       let* α4 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α3) in
       let* α5 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow foot)) in
+        M.call (impl core.fmt.rt.Argument.t "new_debug" (borrow foot)) in
       let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
       let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
         M.alloc (borrow α6) in
       let* α8 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α7) in
       let* α9 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
+        M.call (impl core.fmt.Arguments.t "new_v1" α4 α8) in
       let* α10 : unit := M.call (std.io.stdio._print α9) in
       M.alloc α10 in
     M.alloc tt in
@@ -258,7 +248,7 @@ Definition main : M unit :=
           (Rhs := derive.Centimeters.t)
           (Trait := ℐ))) in
     let* α1 : derive.Centimeters.t :=
-      M.call (derive.Inches.t::["to_centimeters"] (borrow foot)) in
+      M.call (impl derive.Inches.t "to_centimeters" (borrow foot)) in
     let* α2 : M.Val derive.Centimeters.t := M.alloc α1 in
     let* α3 : bool.t := M.call (α0 (borrow α2) (borrow meter)) in
     let* α4 : M.Val bool.t := M.alloc α3 in
@@ -280,14 +270,14 @@ Definition main : M unit :=
       let* α4 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α3) in
       let* α5 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow cmp)) in
+        M.call (impl core.fmt.rt.Argument.t "new_display" (borrow cmp)) in
       let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
       let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
         M.alloc (borrow α6) in
       let* α8 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α7) in
       let* α9 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
+        M.call (impl core.fmt.Arguments.t "new_v1" α4 α8) in
       let* α10 : unit := M.call (std.io.stdio._print α9) in
       M.alloc α10 in
     M.alloc tt in

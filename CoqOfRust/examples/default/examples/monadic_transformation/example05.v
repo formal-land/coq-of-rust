@@ -26,10 +26,7 @@ Section Impl_example05_Foo_t.
     let* α0 : u32.t := M.read (example05.Foo.Get_0 self) in
     BinOp.Panic.add α0 ((Integer.of_Z 1) : u32.t).
   
-  Global Instance AssociatedFunction_plus1 :
-    Notations.DoubleColon Self "plus1" := {
-    Notations.double_colon := plus1;
-  }.
+  Axiom plus1_is_impl : impl Self "plus1" = plus1.
 End Impl_example05_Foo_t.
 End Impl_example05_Foo_t.
 
@@ -45,7 +42,7 @@ Definition main : M unit :=
     M.alloc (example05.Foo.Build_t ((Integer.of_Z 0) : u32.t)) in
   let* _ : M.Val u32.t :=
     let* α0 : example05.Foo.t := M.read foo in
-    let* α1 : u32.t := M.call (example05.Foo.t::["plus1"] α0) in
+    let* α1 : u32.t := M.call (impl example05.Foo.t "plus1" α0) in
     M.alloc α1 in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.

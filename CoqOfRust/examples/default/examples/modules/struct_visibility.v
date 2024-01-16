@@ -48,10 +48,7 @@ Module my.
       let* α0 : T := M.read contents in
       M.pure {| struct_visibility.my.ClosedBox.contents := α0; |}.
     
-    Global Instance AssociatedFunction_new :
-      Notations.DoubleColon Self "new" := {
-      Notations.double_colon := new;
-    }.
+    Axiom new_is_impl : impl Self "new" = new.
   End Impl_struct_visibility_my_ClosedBox_t_T.
   End Impl_struct_visibility_my_ClosedBox_t_T.
 End my.
@@ -102,9 +99,7 @@ Section Impl_struct_visibility_my_ClosedBox_t_T_2.
     let* α0 : T := M.read contents in
     M.pure {| struct_visibility.my.ClosedBox.contents := α0; |}.
   
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
-    Notations.double_colon := new;
-  }.
+  Axiom new_is_impl : impl Self "new" = new.
 End Impl_struct_visibility_my_ClosedBox_t_T_2.
 End Impl_struct_visibility_my_ClosedBox_t_T_2.
 
@@ -149,7 +144,7 @@ Definition main : M unit :=
         M.read (pointer_coercion "Unsize" α3) in
       let* α5 : core.fmt.rt.Argument.t :=
         M.call
-          (core.fmt.rt.Argument.t::["new_display"]
+          (impl core.fmt.rt.Argument.t "new_display"
             (borrow (struct_visibility.my.OpenBox.Get_contents open_box))) in
       let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
       let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -157,14 +152,14 @@ Definition main : M unit :=
       let* α8 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α7) in
       let* α9 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
+        M.call (impl core.fmt.Arguments.t "new_v1" α4 α8) in
       let* α10 : unit := M.call (std.io.stdio._print α9) in
       M.alloc α10 in
     M.alloc tt in
   let* _closed_box : M.Val (struct_visibility.my.ClosedBox.t (ref str.t)) :=
     let* α0 : ref str.t := M.read (mk_str "classified information") in
     let* α1 : struct_visibility.my.ClosedBox.t (ref str.t) :=
-      M.call ((struct_visibility.my.ClosedBox.t (ref str.t))::["new"] α0) in
+      M.call (impl (struct_visibility.my.ClosedBox.t (ref str.t)) "new" α0) in
     M.alloc α1 in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.

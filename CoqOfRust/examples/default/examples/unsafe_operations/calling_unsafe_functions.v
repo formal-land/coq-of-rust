@@ -31,18 +31,18 @@ Definition main : M unit :=
     let* α2 : alloc.boxed.Box.t (slice u32.t) alloc.alloc.Global.t :=
       M.read (pointer_coercion "Unsize" α1) in
     let* α3 : alloc.vec.Vec.t u32.t alloc.alloc.Global.t :=
-      M.call ((slice u32.t)::["into_vec"] α2) in
+      M.call (impl (slice u32.t) "into_vec" α2) in
     M.alloc α3 in
   let* pointer : M.Val (ref u32.t) :=
     let* α0 : ref u32.t :=
       M.call
-        ((alloc.vec.Vec.t u32.t alloc.alloc.Global.t)::["as_ptr"]
+        (impl (alloc.vec.Vec.t u32.t alloc.alloc.Global.t) "as_ptr"
           (borrow some_vector)) in
     M.alloc α0 in
   let* length : M.Val usize.t :=
     let* α0 : usize.t :=
       M.call
-        ((alloc.vec.Vec.t u32.t alloc.alloc.Global.t)::["len"]
+        (impl (alloc.vec.Vec.t u32.t alloc.alloc.Global.t) "len"
           (borrow some_vector)) in
     M.alloc α0 in
   let* my_slice : M.Val (ref (slice u32.t)) :=
@@ -54,7 +54,7 @@ Definition main : M unit :=
   let* _ : M.Val unit :=
     let* α0 : ref (slice u32.t) :=
       M.call
-        ((alloc.vec.Vec.t u32.t alloc.alloc.Global.t)::["as_slice"]
+        (impl (alloc.vec.Vec.t u32.t alloc.alloc.Global.t) "as_slice"
           (borrow some_vector)) in
     let* α1 : M.Val (ref (slice u32.t)) := M.alloc α0 in
     let* α2 : M.Val ((ref (ref (slice u32.t))) * (ref (ref (slice u32.t)))) :=

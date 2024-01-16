@@ -100,6 +100,9 @@ pub(crate) enum DefinitionKind<'a> {
     /// an opaque constant
     /// (using `Parameter`)
     Assumption { ty: Expression<'a> },
+    /// a Coq axiom
+    /// (using `Axiom`)
+    Axiom { ty: Expression<'a> },
     /// a definition with an `exact` tactic
     Ltac {
         args: Vec<String>,
@@ -178,6 +181,10 @@ pub(crate) enum Expression<'a> {
         args: Vec<ArgDecl<'a>>,
         /// the expression for the resulting type
         image: Rc<Expression<'a>>,
+    },
+    Equality {
+        lhs: Rc<Expression<'a>>,
+        rhs: Rc<Expression<'a>>,
     },
     /// a product of two variables (they can be types or numbers)
     Product {
@@ -566,6 +573,11 @@ impl<'a> Definition<'a> {
                     text(self.name.to_owned()),
                     line(),
                 ]),
+                nest([text(":"), line(), ty.to_doc(false)]),
+                text("."),
+            ]),
+            DefinitionKind::Axiom { ty } => nest([
+                nest([text("Axiom"), line(), text(self.name.to_owned()), line()]),
                 nest([text(":"), line(), ty.to_doc(false)]),
                 text("."),
             ]),
@@ -967,6 +979,16 @@ impl<'a> Expression<'a> {
                         image.to_doc(false),
                     ]),
                 ),
+            ),
+            Self::Equality { lhs, rhs } => paren(
+                with_paren,
+                nest([
+                    lhs.to_doc(false),
+                    line(),
+                    text("="),
+                    line(),
+                    rhs.to_doc(false),
+                ]),
             ),
             Self::Product { lhs, rhs } => paren(
                 with_paren,

@@ -64,11 +64,9 @@ Section Impl_core_fmt_Debug_for_combinators_and_then_Food_t.
             M (M.Val (ref str.t))
         ] in
     let* α2 : ref str.t := M.read α1 in
-    M.call (core.fmt.Formatter.t::["write_str"] α0 α2).
+    M.call (impl core.fmt.Formatter.t "write_str" α0 α2).
   
-  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
-    Notations.double_colon := fmt;
-  }.
+  Axiom fmt_is_impl : impl Self "fmt" = fmt.
   
   Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
@@ -139,11 +137,9 @@ Section Impl_core_fmt_Debug_for_combinators_and_then_Day_t.
             M (M.Val (ref str.t))
         ] in
     let* α2 : ref str.t := M.read α1 in
-    M.call (core.fmt.Formatter.t::["write_str"] α0 α2).
+    M.call (impl core.fmt.Formatter.t "write_str" α0 α2).
   
-  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
-    Notations.double_colon := fmt;
-  }.
+  Axiom fmt_is_impl : impl Self "fmt" = fmt.
   
   Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
@@ -296,7 +292,7 @@ Definition cookable_v2
   let* α1 : core.option.Option.t combinators_and_then.Food.t :=
     M.call (combinators_and_then.have_recipe α0) in
   M.call
-    ((core.option.Option.t combinators_and_then.Food.t)::["and_then"]
+    (impl (core.option.Option.t combinators_and_then.Food.t) "and_then"
       α1
       combinators_and_then.have_ingredients).
 
@@ -340,9 +336,10 @@ Definition eat
               let* α5 : ref (slice (ref str.t)) :=
                 M.read (pointer_coercion "Unsize" α4) in
               let* α6 : core.fmt.rt.Argument.t :=
-                M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow day)) in
+                M.call (impl core.fmt.rt.Argument.t "new_debug" (borrow day)) in
               let* α7 : core.fmt.rt.Argument.t :=
-                M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow food)) in
+                M.call
+                  (impl core.fmt.rt.Argument.t "new_debug" (borrow food)) in
               let* α8 : M.Val (array core.fmt.rt.Argument.t) :=
                 M.alloc [ α6; α7 ] in
               let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -350,7 +347,7 @@ Definition eat
               let* α10 : ref (slice core.fmt.rt.Argument.t) :=
                 M.read (pointer_coercion "Unsize" α9) in
               let* α11 : core.fmt.Arguments.t :=
-                M.call (core.fmt.Arguments.t::["new_v1"] α5 α10) in
+                M.call (impl core.fmt.Arguments.t "new_v1" α5 α10) in
               let* α12 : unit := M.call (std.io.stdio._print α11) in
               M.alloc α12 in
             M.alloc tt
@@ -372,7 +369,7 @@ Definition eat
               let* α4 : ref (slice (ref str.t)) :=
                 M.read (pointer_coercion "Unsize" α3) in
               let* α5 : core.fmt.rt.Argument.t :=
-                M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow day)) in
+                M.call (impl core.fmt.rt.Argument.t "new_debug" (borrow day)) in
               let* α6 : M.Val (array core.fmt.rt.Argument.t) :=
                 M.alloc [ α5 ] in
               let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -380,7 +377,7 @@ Definition eat
               let* α8 : ref (slice core.fmt.rt.Argument.t) :=
                 M.read (pointer_coercion "Unsize" α7) in
               let* α9 : core.fmt.Arguments.t :=
-                M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
+                M.call (impl core.fmt.Arguments.t "new_v1" α4 α8) in
               let* α10 : unit := M.call (std.io.stdio._print α9) in
               M.alloc α10 in
             M.alloc tt

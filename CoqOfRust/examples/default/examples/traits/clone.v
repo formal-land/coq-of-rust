@@ -22,11 +22,9 @@ Section Impl_core_fmt_Debug_for_clone_Unit_t.
     let* f := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref str.t := M.read (mk_str "Unit") in
-    M.call (core.fmt.Formatter.t::["write_str"] α0 α1).
+    M.call (impl core.fmt.Formatter.t "write_str" α0 α1).
   
-  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
-    Notations.double_colon := fmt;
-  }.
+  Axiom fmt_is_impl : impl Self "fmt" = fmt.
   
   Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
@@ -46,10 +44,7 @@ Section Impl_core_clone_Clone_for_clone_Unit_t.
     let* α0 : ref clone.Unit.t := M.read self in
     M.read (deref α0).
   
-  Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon Self "clone" := {
-    Notations.double_colon := clone;
-  }.
+  Axiom clone_is_impl : impl Self "clone" = clone.
   
   Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
@@ -108,10 +103,7 @@ Section Impl_core_clone_Clone_for_clone_Pair_t.
       M.call (α3 (borrow (clone.Pair.Get_1 (deref α4)))) in
     M.pure (clone.Pair.Build_t α2 α5).
   
-  Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon Self "clone" := {
-    Notations.double_colon := clone;
-  }.
+  Axiom clone_is_impl : impl Self "clone" = clone.
   
   Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
@@ -146,11 +138,9 @@ Section Impl_core_fmt_Debug_for_clone_Pair_t.
         M.Val (ref (ref (alloc.boxed.Box.t i32.t alloc.alloc.Global.t))) :=
       M.alloc (borrow α6) in
     let* α8 : ref _ (* dyn *) := M.read (pointer_coercion "Unsize" α7) in
-    M.call (core.fmt.Formatter.t::["debug_tuple_field2_finish"] α0 α1 α4 α8).
+    M.call (impl core.fmt.Formatter.t "debug_tuple_field2_finish" α0 α1 α4 α8).
   
-  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
-    Notations.double_colon := fmt;
-  }.
+  Axiom fmt_is_impl : impl Self "fmt" = fmt.
   
   Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
@@ -208,14 +198,14 @@ Definition main : M unit :=
       let* α4 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α3) in
       let* α5 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow unit)) in
+        M.call (impl core.fmt.rt.Argument.t "new_debug" (borrow unit)) in
       let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
       let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
         M.alloc (borrow α6) in
       let* α8 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α7) in
       let* α9 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
+        M.call (impl core.fmt.Arguments.t "new_v1" α4 α8) in
       let* α10 : unit := M.call (std.io.stdio._print α9) in
       M.alloc α10 in
     M.alloc tt in
@@ -229,25 +219,25 @@ Definition main : M unit :=
       let* α4 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α3) in
       let* α5 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow copied_unit)) in
+        M.call (impl core.fmt.rt.Argument.t "new_debug" (borrow copied_unit)) in
       let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
       let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
         M.alloc (borrow α6) in
       let* α8 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α7) in
       let* α9 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
+        M.call (impl core.fmt.Arguments.t "new_v1" α4 α8) in
       let* α10 : unit := M.call (std.io.stdio._print α9) in
       M.alloc α10 in
     M.alloc tt in
   let* pair : M.Val clone.Pair.t :=
     let* α0 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t :=
       M.call
-        ((alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"]
+        (impl (alloc.boxed.Box.t i32.t alloc.alloc.Global.t) "new"
           ((Integer.of_Z 1) : i32.t)) in
     let* α1 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t :=
       M.call
-        ((alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"]
+        (impl (alloc.boxed.Box.t i32.t alloc.alloc.Global.t) "new"
           ((Integer.of_Z 2) : i32.t)) in
     M.alloc (clone.Pair.Build_t α0 α1) in
   let* _ : M.Val unit :=
@@ -260,14 +250,14 @@ Definition main : M unit :=
       let* α4 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α3) in
       let* α5 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow pair)) in
+        M.call (impl core.fmt.rt.Argument.t "new_debug" (borrow pair)) in
       let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
       let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
         M.alloc (borrow α6) in
       let* α8 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α7) in
       let* α9 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
+        M.call (impl core.fmt.Arguments.t "new_v1" α4 α8) in
       let* α10 : unit := M.call (std.io.stdio._print α9) in
       M.alloc α10 in
     M.alloc tt in
@@ -282,14 +272,14 @@ Definition main : M unit :=
       let* α4 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α3) in
       let* α5 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow moved_pair)) in
+        M.call (impl core.fmt.rt.Argument.t "new_debug" (borrow moved_pair)) in
       let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
       let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
         M.alloc (borrow α6) in
       let* α8 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α7) in
       let* α9 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
+        M.call (impl core.fmt.Arguments.t "new_v1" α4 α8) in
       let* α10 : unit := M.call (std.io.stdio._print α9) in
       M.alloc α10 in
     M.alloc tt in
@@ -313,14 +303,14 @@ Definition main : M unit :=
       let* α4 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α3) in
       let* α5 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow cloned_pair)) in
+        M.call (impl core.fmt.rt.Argument.t "new_debug" (borrow cloned_pair)) in
       let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
       let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
         M.alloc (borrow α6) in
       let* α8 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α7) in
       let* α9 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
+        M.call (impl core.fmt.Arguments.t "new_v1" α4 α8) in
       let* α10 : unit := M.call (std.io.stdio._print α9) in
       M.alloc α10 in
     M.alloc tt in

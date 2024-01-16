@@ -64,12 +64,7 @@ Section Impl_core_hash_Hash_for_hash_Person_t.
     let* α0 : M.Val unit := M.alloc α3 in
     M.read α0.
   
-  Global Instance AssociatedFunction_hash
-      {__H : Set}
-      {ℋ_0 : core.hash.Hasher.Trait __H} :
-    Notations.DoubleColon Self "hash" := {
-    Notations.double_colon := hash (__H := __H);
-  }.
+  Axiom hash_is_impl : forall {__H : Set}, impl Self "hash" = hash (__H := __H).
   
   Global Instance ℐ : core.hash.Hash.Required.Trait Self := {
     core.hash.Hash.hash {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H} :=
@@ -94,7 +89,7 @@ Definition calculate_hash
   let* t := M.alloc t in
   let* s : M.Val std.hash.random.DefaultHasher.t :=
     let* α0 : std.hash.random.DefaultHasher.t :=
-      M.call std.hash.random.DefaultHasher.t::["new"] in
+      M.call (impl std.hash.random.DefaultHasher.t "new") in
     M.alloc α0 in
   let* _ : M.Val unit :=
     let* α0 : _ :=

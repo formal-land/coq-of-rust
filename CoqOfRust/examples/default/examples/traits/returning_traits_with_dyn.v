@@ -35,10 +35,7 @@ Section Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Shee
     let* self := M.alloc self in
     M.read (mk_str "baaaaah!").
   
-  Global Instance AssociatedFunction_noise :
-    Notations.DoubleColon Self "noise" := {
-    Notations.double_colon := noise;
-  }.
+  Axiom noise_is_impl : impl Self "noise" = noise.
   
   Global Instance ℐ : returning_traits_with_dyn.Animal.Trait Self := {
     returning_traits_with_dyn.Animal.noise := noise;
@@ -59,10 +56,7 @@ Section Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow_
     let* self := M.alloc self in
     M.read (mk_str "moooooo!").
   
-  Global Instance AssociatedFunction_noise :
-    Notations.DoubleColon Self "noise" := {
-    Notations.double_colon := noise;
-  }.
+  Axiom noise_is_impl : impl Self "noise" = noise.
   
   Global Instance ℐ : returning_traits_with_dyn.Animal.Trait Self := {
     returning_traits_with_dyn.Animal.noise := noise;
@@ -94,9 +88,11 @@ Definition random_animal
             returning_traits_with_dyn.Sheep.t
             alloc.alloc.Global.t :=
         M.call
-          ((alloc.boxed.Box.t
+          (impl
+              (alloc.boxed.Box.t
                 returning_traits_with_dyn.Sheep.t
-                alloc.alloc.Global.t)::["new"]
+                alloc.alloc.Global.t)
+              "new"
             returning_traits_with_dyn.Sheep.Build) in
       let* α1 :
           M.Val
@@ -111,9 +107,11 @@ Definition random_animal
             returning_traits_with_dyn.Cow.t
             alloc.alloc.Global.t :=
         M.call
-          ((alloc.boxed.Box.t
+          (impl
+              (alloc.boxed.Box.t
                 returning_traits_with_dyn.Cow.t
-                alloc.alloc.Global.t)::["new"]
+                alloc.alloc.Global.t)
+              "new"
             returning_traits_with_dyn.Cow.Build) in
       let* α1 :
           M.Val
@@ -163,14 +161,14 @@ Definition main : M unit :=
       let* α7 : ref str.t := M.call (α5 (borrow (deref α6))) in
       let* α8 : M.Val (ref str.t) := M.alloc α7 in
       let* α9 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α8)) in
+        M.call (impl core.fmt.rt.Argument.t "new_display" (borrow α8)) in
       let* α10 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α9 ] in
       let* α11 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
         M.alloc (borrow α10) in
       let* α12 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α11) in
       let* α13 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_v1"] α4 α12) in
+        M.call (impl core.fmt.Arguments.t "new_v1" α4 α12) in
       let* α14 : unit := M.call (std.io.stdio._print α13) in
       M.alloc α14 in
     M.alloc tt in

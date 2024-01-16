@@ -33,10 +33,7 @@ Section Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Shee
   *)
   Parameter noise : (ref Self) -> M (ref str.t).
   
-  Global Instance AssociatedFunction_noise :
-    Notations.DoubleColon Self "noise" := {
-    Notations.double_colon := noise;
-  }.
+  Axiom noise_is_impl : impl Self "noise" = noise.
   
   Global Instance ℐ : returning_traits_with_dyn.Animal.Trait Self := {
     returning_traits_with_dyn.Animal.noise := noise;
@@ -55,10 +52,7 @@ Section Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow_
   *)
   Parameter noise : (ref Self) -> M (ref str.t).
   
-  Global Instance AssociatedFunction_noise :
-    Notations.DoubleColon Self "noise" := {
-    Notations.double_colon := noise;
-  }.
+  Axiom noise_is_impl : impl Self "noise" = noise.
   
   Global Instance ℐ : returning_traits_with_dyn.Animal.Trait Self := {
     returning_traits_with_dyn.Animal.noise := noise;

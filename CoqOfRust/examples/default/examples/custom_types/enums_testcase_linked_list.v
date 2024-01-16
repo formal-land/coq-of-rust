@@ -36,9 +36,7 @@ Section Impl_enums_testcase_linked_list_List_t.
   Definition new : M enums_testcase_linked_list.List.t :=
     M.pure enums_testcase_linked_list.List.Nil.
   
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
-    Notations.double_colon := new;
-  }.
+  Axiom new_is_impl : impl Self "new" = new.
   
   (*
       fn prepend(self, elem: u32) -> List {
@@ -59,16 +57,15 @@ Section Impl_enums_testcase_linked_list_List_t.
           enums_testcase_linked_list.List.t
           alloc.alloc.Global.t :=
       M.call
-        ((alloc.boxed.Box.t
+        (impl
+            (alloc.boxed.Box.t
               enums_testcase_linked_list.List.t
-              alloc.alloc.Global.t)::["new"]
+              alloc.alloc.Global.t)
+            "new"
           α1) in
     M.pure (enums_testcase_linked_list.List.Cons α0 α2).
   
-  Global Instance AssociatedFunction_prepend :
-    Notations.DoubleColon Self "prepend" := {
-    Notations.double_colon := prepend;
-  }.
+  Axiom prepend_is_impl : impl Self "prepend" = prepend.
   
   (*
       fn len(&self) -> u32 {
@@ -115,7 +112,7 @@ Section Impl_enums_testcase_linked_list_List_t.
                 M.read (deref α0) in
               let* α2 : u32.t :=
                 M.call
-                  (enums_testcase_linked_list.List.t::["len"]
+                  (impl enums_testcase_linked_list.List.t "len"
                     (borrow (deref α1))) in
               let* α3 : u32.t :=
                 BinOp.Panic.add ((Integer.of_Z 1) : u32.t) α2 in
@@ -134,9 +131,7 @@ Section Impl_enums_testcase_linked_list_List_t.
         ] in
     M.read α1.
   
-  Global Instance AssociatedFunction_len : Notations.DoubleColon Self "len" := {
-    Notations.double_colon := len;
-  }.
+  Axiom len_is_impl : impl Self "len" = len.
   
   (*
       fn stringify(&self) -> String {
@@ -177,7 +172,7 @@ Section Impl_enums_testcase_linked_list_List_t.
                   M.read (pointer_coercion "Unsize" α3) in
                 let* α5 : core.fmt.rt.Argument.t :=
                   M.call
-                    (core.fmt.rt.Argument.t::["new_display"] (borrow head)) in
+                    (impl core.fmt.rt.Argument.t "new_display" (borrow head)) in
                 let* α6 :
                     ref
                       (alloc.boxed.Box.t
@@ -191,12 +186,12 @@ Section Impl_enums_testcase_linked_list_List_t.
                   M.read (deref α6) in
                 let* α8 : alloc.string.String.t :=
                   M.call
-                    (enums_testcase_linked_list.List.t::["stringify"]
+                    (impl enums_testcase_linked_list.List.t "stringify"
                       (borrow (deref α7))) in
                 let* α9 : M.Val alloc.string.String.t := M.alloc α8 in
                 let* α10 : core.fmt.rt.Argument.t :=
                   M.call
-                    (core.fmt.rt.Argument.t::["new_display"] (borrow α9)) in
+                    (impl core.fmt.rt.Argument.t "new_display" (borrow α9)) in
                 let* α11 : M.Val (array core.fmt.rt.Argument.t) :=
                   M.alloc [ α5; α10 ] in
                 let* α12 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -204,7 +199,7 @@ Section Impl_enums_testcase_linked_list_List_t.
                 let* α13 : ref (slice core.fmt.rt.Argument.t) :=
                   M.read (pointer_coercion "Unsize" α12) in
                 let* α14 : core.fmt.Arguments.t :=
-                  M.call (core.fmt.Arguments.t::["new_v1"] α4 α13) in
+                  M.call (impl core.fmt.Arguments.t "new_v1" α4 α13) in
                 let* α15 : alloc.string.String.t :=
                   M.call (alloc.fmt.format α14) in
                 M.alloc α15 in
@@ -224,7 +219,7 @@ Section Impl_enums_testcase_linked_list_List_t.
                 let* α3 : ref (slice (ref str.t)) :=
                   M.read (pointer_coercion "Unsize" α2) in
                 let* α4 : core.fmt.Arguments.t :=
-                  M.call (core.fmt.Arguments.t::["new_const"] α3) in
+                  M.call (impl core.fmt.Arguments.t "new_const" α3) in
                 let* α5 : alloc.string.String.t :=
                   M.call (alloc.fmt.format α4) in
                 M.alloc α5 in
@@ -235,10 +230,7 @@ Section Impl_enums_testcase_linked_list_List_t.
         ] in
     M.read α1.
   
-  Global Instance AssociatedFunction_stringify :
-    Notations.DoubleColon Self "stringify" := {
-    Notations.double_colon := stringify;
-  }.
+  Axiom stringify_is_impl : impl Self "stringify" = stringify.
 End Impl_enums_testcase_linked_list_List_t.
 End Impl_enums_testcase_linked_list_List_t.
 
@@ -261,13 +253,13 @@ fn main() {
 Definition main : M unit :=
   let* list : M.Val enums_testcase_linked_list.List.t :=
     let* α0 : enums_testcase_linked_list.List.t :=
-      M.call enums_testcase_linked_list.List.t::["new"] in
+      M.call (impl enums_testcase_linked_list.List.t "new") in
     M.alloc α0 in
   let* _ : M.Val unit :=
     let* α0 : enums_testcase_linked_list.List.t := M.read list in
     let* α1 : enums_testcase_linked_list.List.t :=
       M.call
-        (enums_testcase_linked_list.List.t::["prepend"]
+        (impl enums_testcase_linked_list.List.t "prepend"
           α0
           ((Integer.of_Z 1) : u32.t)) in
     assign list α1 in
@@ -275,7 +267,7 @@ Definition main : M unit :=
     let* α0 : enums_testcase_linked_list.List.t := M.read list in
     let* α1 : enums_testcase_linked_list.List.t :=
       M.call
-        (enums_testcase_linked_list.List.t::["prepend"]
+        (impl enums_testcase_linked_list.List.t "prepend"
           α0
           ((Integer.of_Z 2) : u32.t)) in
     assign list α1 in
@@ -283,7 +275,7 @@ Definition main : M unit :=
     let* α0 : enums_testcase_linked_list.List.t := M.read list in
     let* α1 : enums_testcase_linked_list.List.t :=
       M.call
-        (enums_testcase_linked_list.List.t::["prepend"]
+        (impl enums_testcase_linked_list.List.t "prepend"
           α0
           ((Integer.of_Z 3) : u32.t)) in
     assign list α1 in
@@ -297,17 +289,17 @@ Definition main : M unit :=
       let* α4 : ref (slice (ref str.t)) :=
         M.read (pointer_coercion "Unsize" α3) in
       let* α5 : u32.t :=
-        M.call (enums_testcase_linked_list.List.t::["len"] (borrow list)) in
+        M.call (impl enums_testcase_linked_list.List.t "len" (borrow list)) in
       let* α6 : M.Val u32.t := M.alloc α5 in
       let* α7 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α6)) in
+        M.call (impl core.fmt.rt.Argument.t "new_display" (borrow α6)) in
       let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
       let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
         M.alloc (borrow α8) in
       let* α10 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α9) in
       let* α11 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_v1"] α4 α10) in
+        M.call (impl core.fmt.Arguments.t "new_v1" α4 α10) in
       let* α12 : unit := M.call (std.io.stdio._print α11) in
       M.alloc α12 in
     M.alloc tt in
@@ -322,17 +314,17 @@ Definition main : M unit :=
         M.read (pointer_coercion "Unsize" α3) in
       let* α5 : alloc.string.String.t :=
         M.call
-          (enums_testcase_linked_list.List.t::["stringify"] (borrow list)) in
+          (impl enums_testcase_linked_list.List.t "stringify" (borrow list)) in
       let* α6 : M.Val alloc.string.String.t := M.alloc α5 in
       let* α7 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α6)) in
+        M.call (impl core.fmt.rt.Argument.t "new_display" (borrow α6)) in
       let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
       let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
         M.alloc (borrow α8) in
       let* α10 : ref (slice core.fmt.rt.Argument.t) :=
         M.read (pointer_coercion "Unsize" α9) in
       let* α11 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_v1"] α4 α10) in
+        M.call (impl core.fmt.Arguments.t "new_v1" α4 α10) in
       let* α12 : unit := M.call (std.io.stdio._print α11) in
       M.alloc α12 in
     M.alloc tt in

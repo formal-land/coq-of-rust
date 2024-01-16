@@ -21,10 +21,7 @@ Section Impl_core_default_Default_for_call_runtime_AccountId_t.
   *)
   Parameter default : M call_runtime.AccountId.t.
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -41,10 +38,7 @@ Section Impl_core_clone_Clone_for_call_runtime_AccountId_t.
   *)
   Parameter clone : (ref Self) -> M call_runtime.AccountId.t.
   
-  Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon Self "clone" := {
-    Notations.double_colon := clone;
-  }.
+  Axiom clone_is_impl : impl Self "clone" = clone.
   
   Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
@@ -92,10 +86,7 @@ Section Impl_core_convert_From_call_runtime_AccountId_t_for_call_runtime_MultiAd
   *)
   Parameter from : call_runtime.AccountId.t -> M Self.
   
-  Global Instance AssociatedFunction_from :
-    Notations.DoubleColon Self "from" := {
-    Notations.double_colon := from;
-  }.
+  Axiom from_is_impl : impl Self "from" = from.
   
   Global Instance ℐ :
     core.convert.From.Trait Self (T := call_runtime.AccountId.t) := {
@@ -157,10 +148,7 @@ Section Impl_core_default_Default_for_call_runtime_RuntimeCaller_t.
   *)
   Parameter default : M call_runtime.RuntimeCaller.t.
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -183,9 +171,7 @@ Section Impl_core_fmt_Debug_for_call_runtime_RuntimeError_t.
   Parameter fmt :
       (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
   
-  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
-    Notations.double_colon := fmt;
-  }.
+  Axiom fmt_is_impl : impl Self "fmt" = fmt.
   
   Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
@@ -211,9 +197,7 @@ Section Impl_core_cmp_PartialEq_for_call_runtime_RuntimeError_t.
   *)
   Parameter eq : (ref Self) -> (ref call_runtime.RuntimeError.t) -> M bool.t.
   
-  Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
-    Notations.double_colon := eq;
-  }.
+  Axiom eq_is_impl : impl Self "eq" = eq.
   
   Global Instance ℐ :
     core.cmp.PartialEq.Required.Trait Self
@@ -242,10 +226,8 @@ Section Impl_core_cmp_Eq_for_call_runtime_RuntimeError_t.
   *)
   Parameter assert_receiver_is_total_eq : (ref Self) -> M unit.
   
-  Global Instance AssociatedFunction_assert_receiver_is_total_eq :
-    Notations.DoubleColon Self "assert_receiver_is_total_eq" := {
-    Notations.double_colon := assert_receiver_is_total_eq;
-  }.
+  Axiom assert_receiver_is_total_eq_is_impl :
+      impl Self "assert_receiver_is_total_eq" = assert_receiver_is_total_eq.
   
   Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
     core.cmp.Eq.assert_receiver_is_total_eq :=
@@ -274,10 +256,7 @@ Section Impl_core_convert_From_call_runtime_EnvError_t_for_call_runtime_RuntimeE
   *)
   Parameter from : call_runtime.EnvError.t -> M Self.
   
-  Global Instance AssociatedFunction_from :
-    Notations.DoubleColon Self "from" := {
-    Notations.double_colon := from;
-  }.
+  Axiom from_is_impl : impl Self "from" = from.
   
   Global Instance ℐ :
     core.convert.From.Trait Self (T := call_runtime.EnvError.t) := {
@@ -301,10 +280,9 @@ Section Impl_call_runtime_Env_t.
         (ref Call) ->
         M (core.result.Result.t unit call_runtime.EnvError.t).
   
-  Global Instance AssociatedFunction_call_runtime {Call : Set} :
-    Notations.DoubleColon Self "call_runtime" := {
-    Notations.double_colon := call_runtime (Call := Call);
-  }.
+  Axiom call_runtime_is_impl :
+      forall {Call : Set},
+      impl Self "call_runtime" = call_runtime (Call := Call).
 End Impl_call_runtime_Env_t.
 End Impl_call_runtime_Env_t.
 
@@ -319,10 +297,7 @@ Section Impl_call_runtime_RuntimeCaller_t.
   *)
   Parameter init_env : M call_runtime.Env.t.
   
-  Global Instance AssociatedFunction_init_env :
-    Notations.DoubleColon Self "init_env" := {
-    Notations.double_colon := init_env;
-  }.
+  Axiom init_env_is_impl : impl Self "init_env" = init_env.
   
   (*
       fn env(&self) -> Env {
@@ -331,9 +306,7 @@ Section Impl_call_runtime_RuntimeCaller_t.
   *)
   Parameter env : (ref Self) -> M call_runtime.Env.t.
   
-  Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
-    Notations.double_colon := env;
-  }.
+  Axiom env_is_impl : impl Self "env" = env.
   
   (*
       pub fn new() -> Self {
@@ -342,9 +315,7 @@ Section Impl_call_runtime_RuntimeCaller_t.
   *)
   Parameter new : M Self.
   
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
-    Notations.double_colon := new;
-  }.
+  Axiom new_is_impl : impl Self "new" = new.
   
   (*
       pub fn transfer_through_runtime(
@@ -366,10 +337,8 @@ Section Impl_call_runtime_RuntimeCaller_t.
         ltac:(call_runtime.Balance) ->
         M (core.result.Result.t unit call_runtime.RuntimeError.t).
   
-  Global Instance AssociatedFunction_transfer_through_runtime :
-    Notations.DoubleColon Self "transfer_through_runtime" := {
-    Notations.double_colon := transfer_through_runtime;
-  }.
+  Axiom transfer_through_runtime_is_impl :
+      impl Self "transfer_through_runtime" = transfer_through_runtime.
   
   (*
       pub fn call_nonexistent_extrinsic(&mut self) -> Result<(), RuntimeError> {
@@ -380,9 +349,7 @@ Section Impl_call_runtime_RuntimeCaller_t.
       (mut_ref Self) ->
         M (core.result.Result.t unit call_runtime.RuntimeError.t).
   
-  Global Instance AssociatedFunction_call_nonexistent_extrinsic :
-    Notations.DoubleColon Self "call_nonexistent_extrinsic" := {
-    Notations.double_colon := call_nonexistent_extrinsic;
-  }.
+  Axiom call_nonexistent_extrinsic_is_impl :
+      impl Self "call_nonexistent_extrinsic" = call_nonexistent_extrinsic.
 End Impl_call_runtime_RuntimeCaller_t.
 End Impl_call_runtime_RuntimeCaller_t.

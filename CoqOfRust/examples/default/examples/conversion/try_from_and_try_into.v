@@ -32,11 +32,9 @@ Section Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber_t.
       M.alloc (borrow (try_from_and_try_into.EvenNumber.Get_0 (deref α2))) in
     let* α4 : M.Val (ref (ref i32.t)) := M.alloc (borrow α3) in
     let* α5 : ref _ (* dyn *) := M.read (pointer_coercion "Unsize" α4) in
-    M.call (core.fmt.Formatter.t::["debug_tuple_field1_finish"] α0 α1 α5).
+    M.call (impl core.fmt.Formatter.t "debug_tuple_field1_finish" α0 α1 α5).
   
-  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
-    Notations.double_colon := fmt;
-  }.
+  Axiom fmt_is_impl : impl Self "fmt" = fmt.
   
   Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
@@ -74,9 +72,7 @@ Section Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber_t.
       M.read (try_from_and_try_into.EvenNumber.Get_0 (deref α2)) in
     M.pure (BinOp.Pure.eq α1 α3).
   
-  Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
-    Notations.double_colon := eq;
-  }.
+  Axiom eq_is_impl : impl Self "eq" = eq.
   
   Global Instance ℐ :
     core.cmp.PartialEq.Required.Trait Self
@@ -122,10 +118,7 @@ Section Impl_core_convert_TryFrom_i32_t_for_try_from_and_try_into_EvenNumber_t.
         M.alloc (core.result.Result.Err tt) in
     M.read α4.
   
-  Global Instance AssociatedFunction_try_from :
-    Notations.DoubleColon Self "try_from" := {
-    Notations.double_colon := try_from;
-  }.
+  Axiom try_from_is_impl : impl Self "try_from" = try_from.
   
   Global Instance ℐ : core.convert.TryFrom.Trait Self (T := i32.t) := {
     core.convert.TryFrom.Error := Error;

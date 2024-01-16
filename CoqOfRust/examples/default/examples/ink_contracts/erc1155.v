@@ -45,10 +45,7 @@ Section Impl_core_default_Default_for_erc1155_Mapping_t_K_V.
     let* α3 : core.marker.PhantomData.t V := M.call α2 in
     M.pure {| erc1155.Mapping._key := α1; erc1155.Mapping._value := α3; |}.
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -74,10 +71,7 @@ Section Impl_erc1155_Mapping_t_K_V.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_contains :
-    Notations.DoubleColon Self "contains" := {
-    Notations.double_colon := contains;
-  }.
+  Axiom contains_is_impl : impl Self "contains" = contains.
   
   (*
       fn get(&self, _key: &K) -> Option<V> {
@@ -94,9 +88,7 @@ Section Impl_erc1155_Mapping_t_K_V.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
-    Notations.double_colon := get;
-  }.
+  Axiom get_is_impl : impl Self "get" = get.
   
   (*
       fn insert(&mut self, _key: K, _value: V) -> Option<u32> {
@@ -115,10 +107,7 @@ Section Impl_erc1155_Mapping_t_K_V.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_insert :
-    Notations.DoubleColon Self "insert" := {
-    Notations.double_colon := insert;
-  }.
+  Axiom insert_is_impl : impl Self "insert" = insert.
   
   (*
       fn remove(&self, _key: K) {
@@ -132,10 +121,7 @@ Section Impl_erc1155_Mapping_t_K_V.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_remove :
-    Notations.DoubleColon Self "remove" := {
-    Notations.double_colon := remove;
-  }.
+  Axiom remove_is_impl : impl Self "remove" = remove.
   
   (*
       fn size(&self, _key: K) -> Option<u32> {
@@ -152,10 +138,7 @@ Section Impl_erc1155_Mapping_t_K_V.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_size :
-    Notations.DoubleColon Self "size" := {
-    Notations.double_colon := size;
-  }.
+  Axiom size_is_impl : impl Self "size" = size.
   
   (*
       fn take(&self, _key: K) -> Option<V> {
@@ -169,10 +152,7 @@ Section Impl_erc1155_Mapping_t_K_V.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_take :
-    Notations.DoubleColon Self "take" := {
-    Notations.double_colon := take;
-  }.
+  Axiom take_is_impl : impl Self "take" = take.
 End Impl_erc1155_Mapping_t_K_V.
 End Impl_erc1155_Mapping_t_K_V.
 
@@ -201,10 +181,7 @@ Section Impl_core_default_Default_for_erc1155_AccountId_t.
     let* α1 : u128.t := M.call α0 in
     M.pure (erc1155.AccountId.Build_t α1).
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -233,10 +210,7 @@ Section Impl_core_clone_Clone_for_erc1155_AccountId_t.
         ] in
     M.read α0.
   
-  Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon Self "clone" := {
-    Notations.double_colon := clone;
-  }.
+  Axiom clone_is_impl : impl Self "clone" = clone.
   
   Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
@@ -282,9 +256,7 @@ Section Impl_core_cmp_PartialEq_for_erc1155_AccountId_t.
     let* α3 : u128.t := M.read (erc1155.AccountId.Get_0 (deref α2)) in
     M.pure (BinOp.Pure.eq α1 α3).
   
-  Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
-    Notations.double_colon := eq;
-  }.
+  Axiom eq_is_impl : impl Self "eq" = eq.
   
   Global Instance ℐ :
     core.cmp.PartialEq.Required.Trait Self
@@ -310,10 +282,7 @@ Section Impl_core_convert_From_array_u8_t_for_erc1155_AccountId_t.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_from :
-    Notations.DoubleColon Self "from" := {
-    Notations.double_colon := from;
-  }.
+  Axiom from_is_impl : impl Self "from" = from.
   
   Global Instance ℐ : core.convert.From.Trait Self (T := array u8.t) := {
     core.convert.From.from := from;
@@ -412,9 +381,7 @@ Section Impl_core_cmp_PartialEq_for_erc1155_Error_t.
     let* α0 : M.Val bool.t := M.alloc (BinOp.Pure.eq α0 α1) in
     M.read α0.
   
-  Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
-    Notations.double_colon := eq;
-  }.
+  Axiom eq_is_impl : impl Self "eq" = eq.
   
   Global Instance ℐ :
     core.cmp.PartialEq.Required.Trait Self
@@ -445,10 +412,8 @@ Section Impl_core_cmp_Eq_for_erc1155_Error_t.
     let* self := M.alloc self in
     M.pure tt.
   
-  Global Instance AssociatedFunction_assert_receiver_is_total_eq :
-    Notations.DoubleColon Self "assert_receiver_is_total_eq" := {
-    Notations.double_colon := assert_receiver_is_total_eq;
-  }.
+  Axiom assert_receiver_is_total_eq_is_impl :
+      impl Self "assert_receiver_is_total_eq" = assert_receiver_is_total_eq.
   
   Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
     core.cmp.Eq.assert_receiver_is_total_eq :=
@@ -636,10 +601,7 @@ Section Impl_erc1155_Env_t.
     let* α0 : ref erc1155.Env.t := M.read self in
     M.read (erc1155.Env.Get_caller (deref α0)).
   
-  Global Instance AssociatedFunction_caller :
-    Notations.DoubleColon Self "caller" := {
-    Notations.double_colon := caller;
-  }.
+  Axiom caller_is_impl : impl Self "caller" = caller.
   
   (*
       fn emit_event(&self, _event: Event) {
@@ -653,10 +615,7 @@ Section Impl_erc1155_Env_t.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_emit_event :
-    Notations.DoubleColon Self "emit_event" := {
-    Notations.double_colon := emit_event;
-  }.
+  Axiom emit_event_is_impl : impl Self "emit_event" = emit_event.
 End Impl_erc1155_Env_t.
 End Impl_erc1155_Env_t.
 
@@ -722,10 +681,7 @@ Section Impl_core_default_Default_for_erc1155_Contract_t.
         erc1155.Contract.token_id_nonce := α5;
       |}.
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -747,10 +703,7 @@ Section Impl_erc1155_Contract_t.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_init_env :
-    Notations.DoubleColon Self "init_env" := {
-    Notations.double_colon := init_env;
-  }.
+  Axiom init_env_is_impl : impl Self "init_env" = init_env.
   
   (*
       fn env(&self) -> Env {
@@ -759,11 +712,9 @@ Section Impl_erc1155_Contract_t.
   *)
   Definition env (self : ref Self) : M erc1155.Env.t :=
     let* self := M.alloc self in
-    M.call erc1155.Contract.t::["init_env"].
+    M.call (impl erc1155.Contract.t "init_env").
   
-  Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
-    Notations.double_colon := env;
-  }.
+  Axiom env_is_impl : impl Self "env" = env.
   
   (*
       pub fn new() -> Self {
@@ -778,9 +729,7 @@ Section Impl_erc1155_Contract_t.
           (Trait := ℐ))) in
     M.call α0.
   
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
-    Notations.double_colon := new;
-  }.
+  Axiom new_is_impl : impl Self "new" = new.
   
   (*
       pub fn create(&mut self, value: Balance) -> TokenId {
@@ -812,10 +761,10 @@ Section Impl_erc1155_Contract_t.
     let* caller : M.Val erc1155.AccountId.t :=
       let* α0 : mut_ref erc1155.Contract.t := M.read self in
       let* α1 : erc1155.Env.t :=
-        M.call (erc1155.Contract.t::["env"] (borrow (deref α0))) in
+        M.call (impl erc1155.Contract.t "env" (borrow (deref α0))) in
       let* α2 : M.Val erc1155.Env.t := M.alloc α1 in
       let* α3 : erc1155.AccountId.t :=
-        M.call (erc1155.Env.t::["caller"] (borrow α2)) in
+        M.call (impl erc1155.Env.t "caller" (borrow α2)) in
       M.alloc α3 in
     let* _ : M.Val unit :=
       let* β : M.Val u128.t :=
@@ -833,7 +782,9 @@ Section Impl_erc1155_Contract_t.
       let* α4 : u128.t := M.read value in
       let* α5 : core.option.Option.t u32.t :=
         M.call
-          ((erc1155.Mapping.t (erc1155.AccountId.t * u128.t) u128.t)::["insert"]
+          (impl
+              (erc1155.Mapping.t (erc1155.AccountId.t * u128.t) u128.t)
+              "insert"
             (borrow_mut (erc1155.Contract.Get_balances (deref α0)))
             (α1, α3)
             α4) in
@@ -841,7 +792,7 @@ Section Impl_erc1155_Contract_t.
     let* _ : M.Val unit :=
       let* α0 : mut_ref erc1155.Contract.t := M.read self in
       let* α1 : erc1155.Env.t :=
-        M.call (erc1155.Contract.t::["env"] (borrow (deref α0))) in
+        M.call (impl erc1155.Contract.t "env" (borrow (deref α0))) in
       let* α2 : M.Val erc1155.Env.t := M.alloc α1 in
       let* α3 : erc1155.AccountId.t := M.read caller in
       let* α4 : u128.t := M.read value in
@@ -861,7 +812,7 @@ Section Impl_erc1155_Contract_t.
       let* α11 : u128.t := M.read value in
       let* α12 : unit :=
         M.call
-          (erc1155.Env.t::["emit_event"]
+          (impl erc1155.Env.t "emit_event"
             (borrow α2)
             (erc1155.Event.TransferSingle
               {|
@@ -875,10 +826,7 @@ Section Impl_erc1155_Contract_t.
     let* α0 : mut_ref erc1155.Contract.t := M.read self in
     M.read (erc1155.Contract.Get_token_id_nonce (deref α0)).
   
-  Global Instance AssociatedFunction_create :
-    Notations.DoubleColon Self "create" := {
-    Notations.double_colon := create;
-  }.
+  Axiom create_is_impl : impl Self "create" = create.
   
   (*
       pub fn mint(&mut self, token_id: TokenId, value: Balance) -> Result<()> {
@@ -934,10 +882,10 @@ Section Impl_erc1155_Contract_t.
       let* caller : M.Val erc1155.AccountId.t :=
         let* α0 : mut_ref erc1155.Contract.t := M.read self in
         let* α1 : erc1155.Env.t :=
-          M.call (erc1155.Contract.t::["env"] (borrow (deref α0))) in
+          M.call (impl erc1155.Contract.t "env" (borrow (deref α0))) in
         let* α2 : M.Val erc1155.Env.t := M.alloc α1 in
         let* α3 : erc1155.AccountId.t :=
-          M.call (erc1155.Env.t::["caller"] (borrow α2)) in
+          M.call (impl erc1155.Env.t "caller" (borrow α2)) in
         M.alloc α3 in
       let* _ : M.Val (core.option.Option.t u32.t) :=
         let* α0 : mut_ref erc1155.Contract.t := M.read self in
@@ -946,9 +894,9 @@ Section Impl_erc1155_Contract_t.
         let* α3 : u128.t := M.read value in
         let* α4 : core.option.Option.t u32.t :=
           M.call
-            ((erc1155.Mapping.t
-                  (erc1155.AccountId.t * u128.t)
-                  u128.t)::["insert"]
+            (impl
+                (erc1155.Mapping.t (erc1155.AccountId.t * u128.t) u128.t)
+                "insert"
               (borrow_mut (erc1155.Contract.Get_balances (deref α0)))
               (α1, α2)
               α3) in
@@ -956,7 +904,7 @@ Section Impl_erc1155_Contract_t.
       let* _ : M.Val unit :=
         let* α0 : mut_ref erc1155.Contract.t := M.read self in
         let* α1 : erc1155.Env.t :=
-          M.call (erc1155.Contract.t::["env"] (borrow (deref α0))) in
+          M.call (impl erc1155.Contract.t "env" (borrow (deref α0))) in
         let* α2 : M.Val erc1155.Env.t := M.alloc α1 in
         let* α3 : erc1155.AccountId.t := M.read caller in
         let* α4 : erc1155.AccountId.t := M.read caller in
@@ -964,7 +912,7 @@ Section Impl_erc1155_Contract_t.
         let* α6 : u128.t := M.read value in
         let* α7 : unit :=
           M.call
-            (erc1155.Env.t::["emit_event"]
+            (impl erc1155.Env.t "emit_event"
               (borrow α2)
               (erc1155.Event.TransferSingle
                 {|
@@ -979,10 +927,7 @@ Section Impl_erc1155_Contract_t.
         M.alloc (core.result.Result.Ok tt) in
       M.read α0).
   
-  Global Instance AssociatedFunction_mint :
-    Notations.DoubleColon Self "mint" := {
-    Notations.double_colon := mint;
-  }.
+  Axiom mint_is_impl : impl Self "mint" = mint.
   
   (*
       fn perform_transfer(
@@ -1032,14 +977,14 @@ Section Impl_erc1155_Contract_t.
       let* α3 : M.Val (erc1155.AccountId.t * u128.t) := M.alloc (α1, α2) in
       let* α4 : core.option.Option.t u128.t :=
         M.call
-          ((erc1155.Mapping.t (erc1155.AccountId.t * u128.t) u128.t)::["get"]
+          (impl (erc1155.Mapping.t (erc1155.AccountId.t * u128.t) u128.t) "get"
             (borrow (erc1155.Contract.Get_balances (deref α0)))
             (borrow α3)) in
       let* α5 : ref str.t :=
         M.read
           (mk_str "Caller should have ensured that `from` holds `token_id`.") in
       let* α6 : u128.t :=
-        M.call ((core.option.Option.t u128.t)::["expect"] α4 α5) in
+        M.call (impl (core.option.Option.t u128.t) "expect" α4 α5) in
       M.alloc α6 in
     let* _ : M.Val unit :=
       let β : M.Val u128.t := sender_balance in
@@ -1054,7 +999,9 @@ Section Impl_erc1155_Contract_t.
       let* α3 : u128.t := M.read sender_balance in
       let* α4 : core.option.Option.t u32.t :=
         M.call
-          ((erc1155.Mapping.t (erc1155.AccountId.t * u128.t) u128.t)::["insert"]
+          (impl
+              (erc1155.Mapping.t (erc1155.AccountId.t * u128.t) u128.t)
+              "insert"
             (borrow_mut (erc1155.Contract.Get_balances (deref α0)))
             (α1, α2)
             α3) in
@@ -1066,13 +1013,13 @@ Section Impl_erc1155_Contract_t.
       let* α3 : M.Val (erc1155.AccountId.t * u128.t) := M.alloc (α1, α2) in
       let* α4 : core.option.Option.t u128.t :=
         M.call
-          ((erc1155.Mapping.t (erc1155.AccountId.t * u128.t) u128.t)::["get"]
+          (impl (erc1155.Mapping.t (erc1155.AccountId.t * u128.t) u128.t) "get"
             (borrow (erc1155.Contract.Get_balances (deref α0)))
             (borrow α3)) in
       let* α5 : M.Val u128.t := M.alloc ((Integer.of_Z 0) : u128.t) in
       let* α6 : u128.t := M.read (use α5) in
       let* α7 : u128.t :=
-        M.call ((core.option.Option.t u128.t)::["unwrap_or"] α4 α6) in
+        M.call (impl (core.option.Option.t u128.t) "unwrap_or" α4 α6) in
       M.alloc α7 in
     let* _ : M.Val unit :=
       let β : M.Val u128.t := recipient_balance in
@@ -1087,7 +1034,9 @@ Section Impl_erc1155_Contract_t.
       let* α3 : u128.t := M.read recipient_balance in
       let* α4 : core.option.Option.t u32.t :=
         M.call
-          ((erc1155.Mapping.t (erc1155.AccountId.t * u128.t) u128.t)::["insert"]
+          (impl
+              (erc1155.Mapping.t (erc1155.AccountId.t * u128.t) u128.t)
+              "insert"
             (borrow_mut (erc1155.Contract.Get_balances (deref α0)))
             (α1, α2)
             α3) in
@@ -1095,15 +1044,15 @@ Section Impl_erc1155_Contract_t.
     let* caller : M.Val erc1155.AccountId.t :=
       let* α0 : mut_ref erc1155.Contract.t := M.read self in
       let* α1 : erc1155.Env.t :=
-        M.call (erc1155.Contract.t::["env"] (borrow (deref α0))) in
+        M.call (impl erc1155.Contract.t "env" (borrow (deref α0))) in
       let* α2 : M.Val erc1155.Env.t := M.alloc α1 in
       let* α3 : erc1155.AccountId.t :=
-        M.call (erc1155.Env.t::["caller"] (borrow α2)) in
+        M.call (impl erc1155.Env.t "caller" (borrow α2)) in
       M.alloc α3 in
     let* _ : M.Val unit :=
       let* α0 : mut_ref erc1155.Contract.t := M.read self in
       let* α1 : erc1155.Env.t :=
-        M.call (erc1155.Contract.t::["env"] (borrow (deref α0))) in
+        M.call (impl erc1155.Contract.t "env" (borrow (deref α0))) in
       let* α2 : M.Val erc1155.Env.t := M.alloc α1 in
       let* α3 : erc1155.AccountId.t := M.read caller in
       let* α4 : erc1155.AccountId.t := M.read from in
@@ -1112,7 +1061,7 @@ Section Impl_erc1155_Contract_t.
       let* α7 : u128.t := M.read value in
       let* α8 : unit :=
         M.call
-          (erc1155.Env.t::["emit_event"]
+          (impl erc1155.Env.t "emit_event"
             (borrow α2)
             (erc1155.Event.TransferSingle
               {|
@@ -1126,10 +1075,8 @@ Section Impl_erc1155_Contract_t.
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
-  Global Instance AssociatedFunction_perform_transfer :
-    Notations.DoubleColon Self "perform_transfer" := {
-    Notations.double_colon := perform_transfer;
-  }.
+  Axiom perform_transfer_is_impl :
+      impl Self "perform_transfer" = perform_transfer.
   
   (*
       fn transfer_acceptance_check(
@@ -1222,10 +1169,8 @@ Section Impl_erc1155_Contract_t.
     let* data := M.alloc data in
     M.pure tt.
   
-  Global Instance AssociatedFunction_transfer_acceptance_check :
-    Notations.DoubleColon Self "transfer_acceptance_check" := {
-    Notations.double_colon := transfer_acceptance_check;
-  }.
+  Axiom transfer_acceptance_check_is_impl :
+      impl Self "transfer_acceptance_check" = transfer_acceptance_check.
 End Impl_erc1155_Contract_t.
 End Impl_erc1155_Contract_t.
 
@@ -1252,16 +1197,14 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
     let* α3 : M.Val (erc1155.AccountId.t * erc1155.AccountId.t) :=
       M.alloc (α1, α2) in
     M.call
-      ((erc1155.Mapping.t
-            (erc1155.AccountId.t * erc1155.AccountId.t)
-            unit)::["contains"]
+      (impl
+          (erc1155.Mapping.t (erc1155.AccountId.t * erc1155.AccountId.t) unit)
+          "contains"
         (borrow (erc1155.Contract.Get_approvals (deref α0)))
         (borrow α3)).
   
-  Global Instance AssociatedFunction_is_approved_for_all :
-    Notations.DoubleColon Self "is_approved_for_all" := {
-    Notations.double_colon := is_approved_for_all;
-  }.
+  Axiom is_approved_for_all_is_impl :
+      impl Self "is_approved_for_all" = is_approved_for_all.
   
   (*
       fn balance_of(&self, owner: AccountId, token_id: TokenId) -> Balance {
@@ -1282,17 +1225,14 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
     let* α3 : M.Val (erc1155.AccountId.t * u128.t) := M.alloc (α1, α2) in
     let* α4 : core.option.Option.t u128.t :=
       M.call
-        ((erc1155.Mapping.t (erc1155.AccountId.t * u128.t) u128.t)::["get"]
+        (impl (erc1155.Mapping.t (erc1155.AccountId.t * u128.t) u128.t) "get"
           (borrow (erc1155.Contract.Get_balances (deref α0)))
           (borrow α3)) in
     let* α5 : M.Val u128.t := M.alloc ((Integer.of_Z 0) : u128.t) in
     let* α6 : u128.t := M.read (use α5) in
-    M.call ((core.option.Option.t u128.t)::["unwrap_or"] α4 α6).
+    M.call (impl (core.option.Option.t u128.t) "unwrap_or" α4 α6).
   
-  Global Instance AssociatedFunction_balance_of :
-    Notations.DoubleColon Self "balance_of" := {
-    Notations.double_colon := balance_of;
-  }.
+  Axiom balance_of_is_impl : impl Self "balance_of" = balance_of.
   
   (*
       fn safe_transfer_from(
@@ -1338,10 +1278,10 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
       (let* caller : M.Val erc1155.AccountId.t :=
         let* α0 : mut_ref erc1155.Contract.t := M.read self in
         let* α1 : erc1155.Env.t :=
-          M.call (erc1155.Contract.t::["env"] (borrow (deref α0))) in
+          M.call (impl erc1155.Contract.t "env" (borrow (deref α0))) in
         let* α2 : M.Val erc1155.Env.t := M.alloc α1 in
         let* α3 : erc1155.AccountId.t :=
-          M.call (erc1155.Env.t::["caller"] (borrow α2)) in
+          M.call (impl erc1155.Env.t "caller" (borrow α2)) in
         M.alloc α3 in
       let* _ : M.Val unit :=
         let* α0 : _ :=
@@ -1440,7 +1380,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
         let* α3 : u128.t := M.read token_id in
         let* α4 : u128.t := M.read value in
         let* α5 : unit :=
-          M.call (erc1155.Contract.t::["perform_transfer"] α0 α1 α2 α3 α4) in
+          M.call (impl erc1155.Contract.t "perform_transfer" α0 α1 α2 α3 α4) in
         M.alloc α5 in
       let* _ : M.Val unit :=
         let* α0 : mut_ref erc1155.Contract.t := M.read self in
@@ -1452,7 +1392,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
         let* α6 : alloc.vec.Vec.t u8.t alloc.alloc.Global.t := M.read data in
         let* α7 : unit :=
           M.call
-            (erc1155.Contract.t::["transfer_acceptance_check"]
+            (impl erc1155.Contract.t "transfer_acceptance_check"
               α0
               α1
               α2
@@ -1465,10 +1405,8 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
         M.alloc (core.result.Result.Ok tt) in
       M.read α0).
   
-  Global Instance AssociatedFunction_safe_transfer_from :
-    Notations.DoubleColon Self "safe_transfer_from" := {
-    Notations.double_colon := safe_transfer_from;
-  }.
+  Axiom safe_transfer_from_is_impl :
+      impl Self "safe_transfer_from" = safe_transfer_from.
   
   (*
       fn safe_batch_transfer_from(
@@ -1529,10 +1467,10 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
       (let* caller : M.Val erc1155.AccountId.t :=
         let* α0 : mut_ref erc1155.Contract.t := M.read self in
         let* α1 : erc1155.Env.t :=
-          M.call (erc1155.Contract.t::["env"] (borrow (deref α0))) in
+          M.call (impl erc1155.Contract.t "env" (borrow (deref α0))) in
         let* α2 : M.Val erc1155.Env.t := M.alloc α1 in
         let* α3 : erc1155.AccountId.t :=
-          M.call (erc1155.Env.t::["caller"] (borrow α2)) in
+          M.call (impl erc1155.Env.t "caller" (borrow α2)) in
         M.alloc α3 in
       let* _ : M.Val unit :=
         let* α0 : _ :=
@@ -1601,7 +1539,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
       let* _ : M.Val unit :=
         let* α0 : bool.t :=
           M.call
-            ((alloc.vec.Vec.t u128.t alloc.alloc.Global.t)::["is_empty"]
+            (impl (alloc.vec.Vec.t u128.t alloc.alloc.Global.t) "is_empty"
               (borrow token_ids)) in
         let* α1 : M.Val bool.t := M.alloc (UnOp.not (UnOp.not α0)) in
         let* α2 : bool.t := M.read (use α1) in
@@ -1623,11 +1561,11 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
       let* _ : M.Val unit :=
         let* α0 : usize.t :=
           M.call
-            ((alloc.vec.Vec.t u128.t alloc.alloc.Global.t)::["len"]
+            (impl (alloc.vec.Vec.t u128.t alloc.alloc.Global.t) "len"
               (borrow token_ids)) in
         let* α1 : usize.t :=
           M.call
-            ((alloc.vec.Vec.t u128.t alloc.alloc.Global.t)::["len"]
+            (impl (alloc.vec.Vec.t u128.t alloc.alloc.Global.t) "len"
               (borrow values)) in
         let* α2 : M.Val bool.t := M.alloc (UnOp.not (BinOp.Pure.eq α0 α1)) in
         let* α3 : bool.t := M.read (use α2) in
@@ -1664,7 +1602,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
               (Trait := ℐ))) in
         let* α2 : ref (slice u128.t) := M.call (α1 (borrow token_ids)) in
         let* α3 : core.slice.iter.Iter.t u128.t :=
-          M.call ((slice u128.t)::["iter"] α2) in
+          M.call (impl (slice u128.t) "iter" α2) in
         let* α4 : _ :=
           ltac:(M.get_method (fun ℐ =>
             core.ops.deref.Deref.deref
@@ -1672,7 +1610,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
               (Trait := ℐ))) in
         let* α5 : ref (slice u128.t) := M.call (α4 (borrow values)) in
         let* α6 : core.slice.iter.Iter.t u128.t :=
-          M.call ((slice u128.t)::["iter"] α5) in
+          M.call (impl (slice u128.t) "iter" α5) in
         let* α7 :
             core.iter.adapters.zip.Zip.t
               (core.slice.iter.Iter.t u128.t)
@@ -1900,7 +1838,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                                 let* α4 : u128.t := M.read v in
                                 let* α5 : unit :=
                                   M.call
-                                    (erc1155.Contract.t::["perform_transfer"]
+                                    (impl erc1155.Contract.t "perform_transfer"
                                       α0
                                       α1
                                       α2
@@ -1943,7 +1881,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
         let* α10 : alloc.vec.Vec.t u8.t alloc.alloc.Global.t := M.read data in
         let* α11 : unit :=
           M.call
-            (erc1155.Contract.t::["transfer_acceptance_check"]
+            (impl erc1155.Contract.t "transfer_acceptance_check"
               α0
               α1
               α2
@@ -1956,10 +1894,8 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
         M.alloc (core.result.Result.Ok tt) in
       M.read α0).
   
-  Global Instance AssociatedFunction_safe_batch_transfer_from :
-    Notations.DoubleColon Self "safe_batch_transfer_from" := {
-    Notations.double_colon := safe_batch_transfer_from;
-  }.
+  Axiom safe_batch_transfer_from_is_impl :
+      impl Self "safe_batch_transfer_from" = safe_batch_transfer_from.
   
   (*
       fn balance_of_batch(&self, owners: Vec<AccountId>, token_ids: Vec<TokenId>) -> Vec<Balance> {
@@ -1985,7 +1921,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
     let* token_ids := M.alloc token_ids in
     let* output : M.Val (alloc.vec.Vec.t u128.t alloc.alloc.Global.t) :=
       let* α0 : alloc.vec.Vec.t u128.t alloc.alloc.Global.t :=
-        M.call (alloc.vec.Vec.t u128.t alloc.alloc.Global.t)::["new"] in
+        M.call (impl (alloc.vec.Vec.t u128.t alloc.alloc.Global.t) "new") in
       M.alloc α0 in
     let* _ : M.Val unit :=
       let* α0 : _ :=
@@ -2117,9 +2053,11 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                                                   M.read amount in
                                                 let* α1 : unit :=
                                                   M.call
-                                                    ((alloc.vec.Vec.t
+                                                    (impl
+                                                        (alloc.vec.Vec.t
                                                           u128.t
-                                                          alloc.alloc.Global.t)::["push"]
+                                                          alloc.alloc.Global.t)
+                                                        "push"
                                                       (borrow_mut output)
                                                       α0) in
                                                 M.alloc α1 in
@@ -2142,10 +2080,8 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
       M.pure (use α3) in
     M.read output.
   
-  Global Instance AssociatedFunction_balance_of_batch :
-    Notations.DoubleColon Self "balance_of_batch" := {
-    Notations.double_colon := balance_of_batch;
-  }.
+  Axiom balance_of_batch_is_impl :
+      impl Self "balance_of_batch" = balance_of_batch.
   
   (*
       fn set_approval_for_all(&mut self, operator: AccountId, approved: bool) -> Result<()> {
@@ -2180,10 +2116,10 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
       (let* caller : M.Val erc1155.AccountId.t :=
         let* α0 : mut_ref erc1155.Contract.t := M.read self in
         let* α1 : erc1155.Env.t :=
-          M.call (erc1155.Contract.t::["env"] (borrow (deref α0))) in
+          M.call (impl erc1155.Contract.t "env" (borrow (deref α0))) in
         let* α2 : M.Val erc1155.Env.t := M.alloc α1 in
         let* α3 : erc1155.AccountId.t :=
-          M.call (erc1155.Env.t::["caller"] (borrow α2)) in
+          M.call (impl erc1155.Env.t "caller" (borrow α2)) in
         M.alloc α3 in
       let* _ : M.Val unit :=
         let* α0 : _ :=
@@ -2218,9 +2154,11 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
             let* α2 : erc1155.AccountId.t := M.read operator in
             let* α3 : core.option.Option.t u32.t :=
               M.call
-                ((erc1155.Mapping.t
+                (impl
+                    (erc1155.Mapping.t
                       (erc1155.AccountId.t * erc1155.AccountId.t)
-                      unit)::["insert"]
+                      unit)
+                    "insert"
                   (borrow_mut (erc1155.Contract.Get_approvals (deref α0)))
                   (α1, α2)
                   tt) in
@@ -2233,9 +2171,11 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
             let* α2 : erc1155.AccountId.t := M.read operator in
             let* α3 : unit :=
               M.call
-                ((erc1155.Mapping.t
+                (impl
+                    (erc1155.Mapping.t
                       (erc1155.AccountId.t * erc1155.AccountId.t)
-                      unit)::["remove"]
+                      unit)
+                    "remove"
                   (borrow (erc1155.Contract.Get_approvals (deref α0)))
                   (α1, α2)) in
             M.alloc α3 in
@@ -2243,14 +2183,14 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
       let* _ : M.Val unit :=
         let* α0 : mut_ref erc1155.Contract.t := M.read self in
         let* α1 : erc1155.Env.t :=
-          M.call (erc1155.Contract.t::["env"] (borrow (deref α0))) in
+          M.call (impl erc1155.Contract.t "env" (borrow (deref α0))) in
         let* α2 : M.Val erc1155.Env.t := M.alloc α1 in
         let* α3 : erc1155.AccountId.t := M.read caller in
         let* α4 : erc1155.AccountId.t := M.read operator in
         let* α5 : bool.t := M.read approved in
         let* α6 : unit :=
           M.call
-            (erc1155.Env.t::["emit_event"]
+            (impl erc1155.Env.t "emit_event"
               (borrow α2)
               (erc1155.Event.ApprovalForAll
                 {|
@@ -2263,10 +2203,8 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
         M.alloc (core.result.Result.Ok tt) in
       M.read α0).
   
-  Global Instance AssociatedFunction_set_approval_for_all :
-    Notations.DoubleColon Self "set_approval_for_all" := {
-    Notations.double_colon := set_approval_for_all;
-  }.
+  Axiom set_approval_for_all_is_impl :
+      impl Self "set_approval_for_all" = set_approval_for_all.
   
   Global Instance ℐ : erc1155.Erc1155.Trait Self := {
     erc1155.Erc1155.is_approved_for_all := is_approved_for_all;
@@ -2329,21 +2267,18 @@ Section Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract_t.
     let* α3 : ref (slice (ref str.t)) :=
       M.read (pointer_coercion "Unsize" α2) in
     let* α4 : array core.fmt.rt.Argument.t :=
-      M.call core.fmt.rt.Argument.t::["none"] in
+      M.call (impl core.fmt.rt.Argument.t "none") in
     let* α5 : M.Val (array core.fmt.rt.Argument.t) := M.alloc α4 in
     let* α6 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
       M.alloc (borrow α5) in
     let* α7 : ref (slice core.fmt.rt.Argument.t) :=
       M.read (pointer_coercion "Unsize" α6) in
     let* α8 : core.fmt.Arguments.t :=
-      M.call (core.fmt.Arguments.t::["new_v1"] α3 α7) in
+      M.call (impl core.fmt.Arguments.t "new_v1" α3 α7) in
     let* α9 : never.t := M.call (core.panicking.panic_fmt α8) in
     never_to_any α9.
   
-  Global Instance AssociatedFunction_on_received :
-    Notations.DoubleColon Self "on_received" := {
-    Notations.double_colon := on_received;
-  }.
+  Axiom on_received_is_impl : impl Self "on_received" = on_received.
   
   (*
       fn on_batch_received(
@@ -2393,21 +2328,19 @@ Section Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract_t.
     let* α3 : ref (slice (ref str.t)) :=
       M.read (pointer_coercion "Unsize" α2) in
     let* α4 : array core.fmt.rt.Argument.t :=
-      M.call core.fmt.rt.Argument.t::["none"] in
+      M.call (impl core.fmt.rt.Argument.t "none") in
     let* α5 : M.Val (array core.fmt.rt.Argument.t) := M.alloc α4 in
     let* α6 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
       M.alloc (borrow α5) in
     let* α7 : ref (slice core.fmt.rt.Argument.t) :=
       M.read (pointer_coercion "Unsize" α6) in
     let* α8 : core.fmt.Arguments.t :=
-      M.call (core.fmt.Arguments.t::["new_v1"] α3 α7) in
+      M.call (impl core.fmt.Arguments.t "new_v1" α3 α7) in
     let* α9 : never.t := M.call (core.panicking.panic_fmt α8) in
     never_to_any α9.
   
-  Global Instance AssociatedFunction_on_batch_received :
-    Notations.DoubleColon Self "on_batch_received" := {
-    Notations.double_colon := on_batch_received;
-  }.
+  Axiom on_batch_received_is_impl :
+      impl Self "on_batch_received" = on_batch_received.
   
   Global Instance ℐ : erc1155.Erc1155TokenReceiver.Trait Self := {
     erc1155.Erc1155TokenReceiver.on_received := on_received;

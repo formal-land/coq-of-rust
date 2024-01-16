@@ -56,10 +56,7 @@ Section Impl_generics_associated_types_solution_Contains_for_generics_associated
   *)
   Parameter contains : (ref Self) -> (ref i32.t) -> (ref i32.t) -> M bool.t.
   
-  Global Instance AssociatedFunction_contains :
-    Notations.DoubleColon Self "contains" := {
-    Notations.double_colon := contains;
-  }.
+  Axiom contains_is_impl : impl Self "contains" = contains.
   
   (*
       fn first(&self) -> i32 {
@@ -68,10 +65,7 @@ Section Impl_generics_associated_types_solution_Contains_for_generics_associated
   *)
   Parameter first : (ref Self) -> M i32.t.
   
-  Global Instance AssociatedFunction_first :
-    Notations.DoubleColon Self "first" := {
-    Notations.double_colon := first;
-  }.
+  Axiom first_is_impl : impl Self "first" = first.
   
   (*
       fn last(&self) -> i32 {
@@ -80,10 +74,7 @@ Section Impl_generics_associated_types_solution_Contains_for_generics_associated
   *)
   Parameter last : (ref Self) -> M i32.t.
   
-  Global Instance AssociatedFunction_last :
-    Notations.DoubleColon Self "last" := {
-    Notations.double_colon := last;
-  }.
+  Axiom last_is_impl : impl Self "last" = last.
   
   (*
       fn a(&self) -> i32 {
@@ -92,9 +83,7 @@ Section Impl_generics_associated_types_solution_Contains_for_generics_associated
   *)
   Parameter a : (ref Self) -> M i32.t.
   
-  Global Instance AssociatedFunction_a : Notations.DoubleColon Self "a" := {
-    Notations.double_colon := a;
-  }.
+  Axiom a_is_impl : impl Self "a" = a.
   
   Global Instance ℐ :
     generics_associated_types_solution.Contains.Trait Self := {

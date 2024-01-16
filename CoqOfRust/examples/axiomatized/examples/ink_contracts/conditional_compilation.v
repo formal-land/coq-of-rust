@@ -21,10 +21,7 @@ Section Impl_core_default_Default_for_conditional_compilation_AccountId_t.
   *)
   Parameter default : M conditional_compilation.AccountId.t.
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -41,10 +38,7 @@ Section Impl_core_clone_Clone_for_conditional_compilation_AccountId_t.
   *)
   Parameter clone : (ref Self) -> M conditional_compilation.AccountId.t.
   
-  Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon Self "clone" := {
-    Notations.double_colon := clone;
-  }.
+  Axiom clone_is_impl : impl Self "clone" = clone.
   
   Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
@@ -151,10 +145,7 @@ Section Impl_conditional_compilation_Env_t.
   *)
   Parameter caller : (ref Self) -> M conditional_compilation.AccountId.t.
   
-  Global Instance AssociatedFunction_caller :
-    Notations.DoubleColon Self "caller" := {
-    Notations.double_colon := caller;
-  }.
+  Axiom caller_is_impl : impl Self "caller" = caller.
   
   (*
       fn emit_event(&self, _event: Event) {
@@ -164,10 +155,7 @@ Section Impl_conditional_compilation_Env_t.
   Parameter emit_event :
       (ref Self) -> conditional_compilation.Event.t -> M unit.
   
-  Global Instance AssociatedFunction_emit_event :
-    Notations.DoubleColon Self "emit_event" := {
-    Notations.double_colon := emit_event;
-  }.
+  Axiom emit_event_is_impl : impl Self "emit_event" = emit_event.
   
   (*
       fn block_number(&self) -> BlockNumber {
@@ -177,10 +165,7 @@ Section Impl_conditional_compilation_Env_t.
   Parameter block_number :
       (ref Self) -> M ltac:(conditional_compilation.BlockNumber).
   
-  Global Instance AssociatedFunction_block_number :
-    Notations.DoubleColon Self "block_number" := {
-    Notations.double_colon := block_number;
-  }.
+  Axiom block_number_is_impl : impl Self "block_number" = block_number.
 End Impl_conditional_compilation_Env_t.
 End Impl_conditional_compilation_Env_t.
 
@@ -206,10 +191,7 @@ Section Impl_conditional_compilation_ConditionalCompilation_t.
   *)
   Parameter init_env : M conditional_compilation.Env.t.
   
-  Global Instance AssociatedFunction_init_env :
-    Notations.DoubleColon Self "init_env" := {
-    Notations.double_colon := init_env;
-  }.
+  Axiom init_env_is_impl : impl Self "init_env" = init_env.
   
   (*
       fn env(&self) -> Env {
@@ -218,9 +200,7 @@ Section Impl_conditional_compilation_ConditionalCompilation_t.
   *)
   Parameter env : (ref Self) -> M conditional_compilation.Env.t.
   
-  Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
-    Notations.double_colon := env;
-  }.
+  Axiom env_is_impl : impl Self "env" = env.
   
   (*
       pub fn new() -> Self {
@@ -231,9 +211,7 @@ Section Impl_conditional_compilation_ConditionalCompilation_t.
   *)
   Parameter new : M Self.
   
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
-    Notations.double_colon := new;
-  }.
+  Axiom new_is_impl : impl Self "new" = new.
   
   (*
       pub fn new_foo(value: bool) -> Self {
@@ -242,10 +220,7 @@ Section Impl_conditional_compilation_ConditionalCompilation_t.
   *)
   Parameter new_foo : bool.t -> M Self.
   
-  Global Instance AssociatedFunction_new_foo :
-    Notations.DoubleColon Self "new_foo" := {
-    Notations.double_colon := new_foo;
-  }.
+  Axiom new_foo_is_impl : impl Self "new_foo" = new_foo.
   
   (*
       pub fn new_bar(value: bool) -> Self {
@@ -254,10 +229,7 @@ Section Impl_conditional_compilation_ConditionalCompilation_t.
   *)
   Parameter new_bar : bool.t -> M Self.
   
-  Global Instance AssociatedFunction_new_bar :
-    Notations.DoubleColon Self "new_bar" := {
-    Notations.double_colon := new_bar;
-  }.
+  Axiom new_bar_is_impl : impl Self "new_bar" = new_bar.
   
   (*
       pub fn new_foo_bar(value: bool) -> Self {
@@ -266,10 +238,7 @@ Section Impl_conditional_compilation_ConditionalCompilation_t.
   *)
   Parameter new_foo_bar : bool.t -> M Self.
   
-  Global Instance AssociatedFunction_new_foo_bar :
-    Notations.DoubleColon Self "new_foo_bar" := {
-    Notations.double_colon := new_foo_bar;
-  }.
+  Axiom new_foo_bar_is_impl : impl Self "new_foo_bar" = new_foo_bar.
   
   (*
       pub fn inherent_flip_foo(&mut self) {
@@ -283,10 +252,8 @@ Section Impl_conditional_compilation_ConditionalCompilation_t.
   *)
   Parameter inherent_flip_foo : (mut_ref Self) -> M unit.
   
-  Global Instance AssociatedFunction_inherent_flip_foo :
-    Notations.DoubleColon Self "inherent_flip_foo" := {
-    Notations.double_colon := inherent_flip_foo;
-  }.
+  Axiom inherent_flip_foo_is_impl :
+      impl Self "inherent_flip_foo" = inherent_flip_foo.
   
   (*
       pub fn inherent_flip_bar(&mut self) {
@@ -302,10 +269,8 @@ Section Impl_conditional_compilation_ConditionalCompilation_t.
   *)
   Parameter inherent_flip_bar : (mut_ref Self) -> M unit.
   
-  Global Instance AssociatedFunction_inherent_flip_bar :
-    Notations.DoubleColon Self "inherent_flip_bar" := {
-    Notations.double_colon := inherent_flip_bar;
-  }.
+  Axiom inherent_flip_bar_is_impl :
+      impl Self "inherent_flip_bar" = inherent_flip_bar.
 End Impl_conditional_compilation_ConditionalCompilation_t.
 End Impl_conditional_compilation_ConditionalCompilation_t.
 
@@ -320,10 +285,7 @@ Section Impl_conditional_compilation_Flip_for_conditional_compilation_Conditiona
   *)
   Parameter flip : (mut_ref Self) -> M unit.
   
-  Global Instance AssociatedFunction_flip :
-    Notations.DoubleColon Self "flip" := {
-    Notations.double_colon := flip;
-  }.
+  Axiom flip_is_impl : impl Self "flip" = flip.
   
   (*
       fn get(&self) -> bool {
@@ -332,9 +294,7 @@ Section Impl_conditional_compilation_Flip_for_conditional_compilation_Conditiona
   *)
   Parameter get : (ref Self) -> M bool.t.
   
-  Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
-    Notations.double_colon := get;
-  }.
+  Axiom get_is_impl : impl Self "get" = get.
   
   (*
       fn push_foo(&mut self, value: bool) {
@@ -348,10 +308,7 @@ Section Impl_conditional_compilation_Flip_for_conditional_compilation_Conditiona
   *)
   Parameter push_foo : (mut_ref Self) -> bool.t -> M unit.
   
-  Global Instance AssociatedFunction_push_foo :
-    Notations.DoubleColon Self "push_foo" := {
-    Notations.double_colon := push_foo;
-  }.
+  Axiom push_foo_is_impl : impl Self "push_foo" = push_foo.
   
   Global Instance ℐ : conditional_compilation.Flip.Trait Self := {
     conditional_compilation.Flip.flip := flip;

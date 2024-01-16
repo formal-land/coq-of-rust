@@ -34,7 +34,7 @@ Definition main : M unit :=
     let* α2 : alloc.boxed.Box.t (slice i32.t) alloc.alloc.Global.t :=
       M.read (pointer_coercion "Unsize" α1) in
     let* α3 : alloc.vec.Vec.t i32.t alloc.alloc.Global.t :=
-      M.call ((slice i32.t)::["into_vec"] α2) in
+      M.call (impl (slice i32.t) "into_vec" α2) in
     M.alloc α3 in
   let* index_of_first_even_number : M.Val (core.option.Option.t usize.t) :=
     let* α0 : _ :=
@@ -50,7 +50,7 @@ Definition main : M unit :=
           (Trait := ℐ))) in
     let* α2 : ref (slice i32.t) := M.call (α1 (borrow vec)) in
     let* α3 : core.slice.iter.Iter.t i32.t :=
-      M.call ((slice i32.t)::["iter"] α2) in
+      M.call (impl (slice i32.t) "iter" α2) in
     let* α4 : M.Val (core.slice.iter.Iter.t i32.t) := M.alloc α3 in
     let* α5 : core.option.Option.t usize.t :=
       M.call

@@ -32,12 +32,10 @@ Section Impl_custom_allocator_CustomAllocator_t.
     let* α3 : alloc.boxed.Box.t (slice bool.t) alloc.alloc.Global.t :=
       M.read (pointer_coercion "Unsize" α2) in
     let* α4 : alloc.vec.Vec.t bool.t alloc.alloc.Global.t :=
-      M.call ((slice bool.t)::["into_vec"] α3) in
+      M.call (impl (slice bool.t) "into_vec" α3) in
     M.pure {| custom_allocator.CustomAllocator.value := α4; |}.
   
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
-    Notations.double_colon := new;
-  }.
+  Axiom new_is_impl : impl Self "new" = new.
   
   (*
       pub fn default() -> Self {
@@ -49,12 +47,9 @@ Section Impl_custom_allocator_CustomAllocator_t.
       ltac:(M.get_method (fun ℐ =>
         core.default.Default.default (Self := bool.t) (Trait := ℐ))) in
     let* α1 : bool.t := M.call α0 in
-    M.call (custom_allocator.CustomAllocator.t::["new"] α1).
+    M.call (impl custom_allocator.CustomAllocator.t "new" α1).
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   (*
       pub fn flip(&mut self) {
@@ -93,10 +88,7 @@ Section Impl_custom_allocator_CustomAllocator_t.
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
-  Global Instance AssociatedFunction_flip :
-    Notations.DoubleColon Self "flip" := {
-    Notations.double_colon := flip;
-  }.
+  Axiom flip_is_impl : impl Self "flip" = flip.
   
   (*
       pub fn get(&self) -> bool {
@@ -119,8 +111,6 @@ Section Impl_custom_allocator_CustomAllocator_t.
           ((Integer.of_Z 0) : usize.t)) in
     M.read (deref α2).
   
-  Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
-    Notations.double_colon := get;
-  }.
+  Axiom get_is_impl : impl Self "get" = get.
 End Impl_custom_allocator_CustomAllocator_t.
 End Impl_custom_allocator_CustomAllocator_t.

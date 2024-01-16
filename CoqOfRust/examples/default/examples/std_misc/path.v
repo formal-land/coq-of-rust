@@ -31,11 +31,12 @@ fn main() {
 Definition main : M unit :=
   let* path : M.Val (ref std.path.Path.t) :=
     let* α0 : ref str.t := M.read (mk_str ".") in
-    let* α1 : ref std.path.Path.t := M.call (std.path.Path.t::["new"] α0) in
+    let* α1 : ref std.path.Path.t := M.call (impl std.path.Path.t "new" α0) in
     M.alloc α1 in
   let* _display : M.Val std.path.Display.t :=
     let* α0 : ref std.path.Path.t := M.read path in
-    let* α1 : std.path.Display.t := M.call (std.path.Path.t::["display"] α0) in
+    let* α1 : std.path.Display.t :=
+      M.call (impl std.path.Path.t "display" α0) in
     M.alloc α1 in
   let* new_path : M.Val std.path.PathBuf.t :=
     let* α0 : _ :=
@@ -45,33 +46,36 @@ Definition main : M unit :=
           (Trait := ℐ))) in
     let* α1 : ref std.path.Path.t := M.read path in
     let* α2 : ref str.t := M.read (mk_str "a") in
-    let* α3 : std.path.PathBuf.t := M.call (std.path.Path.t::["join"] α1 α2) in
+    let* α3 : std.path.PathBuf.t :=
+      M.call (impl std.path.Path.t "join" α1 α2) in
     let* α4 : M.Val std.path.PathBuf.t := M.alloc α3 in
     let* α5 : ref std.path.Path.t := M.call (α0 (borrow α4)) in
     let* α6 : ref str.t := M.read (mk_str "b") in
-    let* α7 : std.path.PathBuf.t := M.call (std.path.Path.t::["join"] α5 α6) in
+    let* α7 : std.path.PathBuf.t :=
+      M.call (impl std.path.Path.t "join" α5 α6) in
     M.alloc α7 in
   let* _ : M.Val unit :=
     let* α0 : ref str.t := M.read (mk_str "c") in
     let* α1 : unit :=
-      M.call (std.path.PathBuf.t::["push"] (borrow_mut new_path) α0) in
+      M.call (impl std.path.PathBuf.t "push" (borrow_mut new_path) α0) in
     M.alloc α1 in
   let* _ : M.Val unit :=
     let* α0 : ref str.t := M.read (mk_str "myfile.tar.gz") in
     let* α1 : unit :=
-      M.call (std.path.PathBuf.t::["push"] (borrow_mut new_path) α0) in
+      M.call (impl std.path.PathBuf.t "push" (borrow_mut new_path) α0) in
     M.alloc α1 in
   let* _ : M.Val unit :=
     let* α0 : ref str.t := M.read (mk_str "package.tgz") in
     let* α1 : unit :=
-      M.call (std.path.PathBuf.t::["set_file_name"] (borrow_mut new_path) α0) in
+      M.call
+        (impl std.path.PathBuf.t "set_file_name" (borrow_mut new_path) α0) in
     M.alloc α1 in
   let* α0 : _ :=
     ltac:(M.get_method (fun ℐ =>
       core.ops.deref.Deref.deref (Self := std.path.PathBuf.t) (Trait := ℐ))) in
   let* α1 : ref std.path.Path.t := M.call (α0 (borrow new_path)) in
   let* α2 : core.option.Option.t (ref str.t) :=
-    M.call (std.path.Path.t::["to_str"] α1) in
+    M.call (impl std.path.Path.t "to_str" α1) in
   let* α3 : M.Val (core.option.Option.t (ref str.t)) := M.alloc α2 in
   let* α0 : M.Val unit :=
     match_operator
@@ -105,7 +109,7 @@ Definition main : M unit :=
               let* α4 : ref (slice (ref str.t)) :=
                 M.read (pointer_coercion "Unsize" α3) in
               let* α5 : core.fmt.rt.Argument.t :=
-                M.call (core.fmt.rt.Argument.t::["new_display"] (borrow s)) in
+                M.call (impl core.fmt.rt.Argument.t "new_display" (borrow s)) in
               let* α6 : M.Val (array core.fmt.rt.Argument.t) :=
                 M.alloc [ α5 ] in
               let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -113,7 +117,7 @@ Definition main : M unit :=
               let* α8 : ref (slice core.fmt.rt.Argument.t) :=
                 M.read (pointer_coercion "Unsize" α7) in
               let* α9 : core.fmt.Arguments.t :=
-                M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
+                M.call (impl core.fmt.Arguments.t "new_v1" α4 α8) in
               let* α10 : unit := M.call (std.io.stdio._print α9) in
               M.alloc α10 in
             M.alloc tt

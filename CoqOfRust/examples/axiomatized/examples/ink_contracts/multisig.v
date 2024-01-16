@@ -32,10 +32,7 @@ Section Impl_core_default_Default_for_multisig_Mapping_t_K_V.
   *)
   Parameter default : M (multisig.Mapping.t K V).
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -56,10 +53,7 @@ Section Impl_multisig_Mapping_t_K_V.
   *)
   Parameter contains : (ref Self) -> (ref K) -> M bool.t.
   
-  Global Instance AssociatedFunction_contains :
-    Notations.DoubleColon Self "contains" := {
-    Notations.double_colon := contains;
-  }.
+  Axiom contains_is_impl : impl Self "contains" = contains.
   
   (*
       fn get(&self, _key: &K) -> Option<V> {
@@ -68,9 +62,7 @@ Section Impl_multisig_Mapping_t_K_V.
   *)
   Parameter get : (ref Self) -> (ref K) -> M (core.option.Option.t V).
   
-  Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
-    Notations.double_colon := get;
-  }.
+  Axiom get_is_impl : impl Self "get" = get.
   
   (*
       fn insert(&mut self, _key: K, _value: V) -> Option<u32> {
@@ -79,10 +71,7 @@ Section Impl_multisig_Mapping_t_K_V.
   *)
   Parameter insert : (mut_ref Self) -> K -> V -> M (core.option.Option.t u32.t).
   
-  Global Instance AssociatedFunction_insert :
-    Notations.DoubleColon Self "insert" := {
-    Notations.double_colon := insert;
-  }.
+  Axiom insert_is_impl : impl Self "insert" = insert.
   
   (*
       fn remove(&self, _key: K) {
@@ -91,10 +80,7 @@ Section Impl_multisig_Mapping_t_K_V.
   *)
   Parameter remove : (ref Self) -> K -> M unit.
   
-  Global Instance AssociatedFunction_remove :
-    Notations.DoubleColon Self "remove" := {
-    Notations.double_colon := remove;
-  }.
+  Axiom remove_is_impl : impl Self "remove" = remove.
   
   (*
       fn size(&self, _key: K) -> Option<u32> {
@@ -103,10 +89,7 @@ Section Impl_multisig_Mapping_t_K_V.
   *)
   Parameter size : (ref Self) -> K -> M (core.option.Option.t u32.t).
   
-  Global Instance AssociatedFunction_size :
-    Notations.DoubleColon Self "size" := {
-    Notations.double_colon := size;
-  }.
+  Axiom size_is_impl : impl Self "size" = size.
   
   (*
       fn take(&self, _key: K) -> Option<V> {
@@ -115,10 +98,7 @@ Section Impl_multisig_Mapping_t_K_V.
   *)
   Parameter take : (ref Self) -> K -> M (core.option.Option.t V).
   
-  Global Instance AssociatedFunction_take :
-    Notations.DoubleColon Self "take" := {
-    Notations.double_colon := take;
-  }.
+  Axiom take_is_impl : impl Self "take" = take.
 End Impl_multisig_Mapping_t_K_V.
 End Impl_multisig_Mapping_t_K_V.
 
@@ -142,10 +122,7 @@ Section Impl_core_default_Default_for_multisig_AccountId_t.
   *)
   Parameter default : M multisig.AccountId.t.
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -163,9 +140,7 @@ Section Impl_core_fmt_Debug_for_multisig_AccountId_t.
   Parameter fmt :
       (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
   
-  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
-    Notations.double_colon := fmt;
-  }.
+  Axiom fmt_is_impl : impl Self "fmt" = fmt.
   
   Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
@@ -182,10 +157,7 @@ Section Impl_core_clone_Clone_for_multisig_AccountId_t.
   *)
   Parameter clone : (ref Self) -> M multisig.AccountId.t.
   
-  Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon Self "clone" := {
-    Notations.double_colon := clone;
-  }.
+  Axiom clone_is_impl : impl Self "clone" = clone.
   
   Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
@@ -221,9 +193,7 @@ Section Impl_core_cmp_PartialEq_for_multisig_AccountId_t.
   *)
   Parameter eq : (ref Self) -> (ref multisig.AccountId.t) -> M bool.t.
   
-  Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
-    Notations.double_colon := eq;
-  }.
+  Axiom eq_is_impl : impl Self "eq" = eq.
   
   Global Instance ℐ :
     core.cmp.PartialEq.Required.Trait Self
@@ -252,10 +222,8 @@ Section Impl_core_cmp_Eq_for_multisig_AccountId_t.
   *)
   Parameter assert_receiver_is_total_eq : (ref Self) -> M unit.
   
-  Global Instance AssociatedFunction_assert_receiver_is_total_eq :
-    Notations.DoubleColon Self "assert_receiver_is_total_eq" := {
-    Notations.double_colon := assert_receiver_is_total_eq;
-  }.
+  Axiom assert_receiver_is_total_eq_is_impl :
+      impl Self "assert_receiver_is_total_eq" = assert_receiver_is_total_eq.
   
   Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
     core.cmp.Eq.assert_receiver_is_total_eq :=
@@ -276,10 +244,7 @@ Section Impl_core_cmp_PartialOrd_for_multisig_AccountId_t.
         (ref multisig.AccountId.t) ->
         M (core.option.Option.t core.cmp.Ordering.t).
   
-  Global Instance AssociatedFunction_partial_cmp :
-    Notations.DoubleColon Self "partial_cmp" := {
-    Notations.double_colon := partial_cmp;
-  }.
+  Axiom partial_cmp_is_impl : impl Self "partial_cmp" = partial_cmp.
   
   Global Instance ℐ :
     core.cmp.PartialOrd.Required.Trait Self
@@ -303,9 +268,7 @@ Section Impl_core_cmp_Ord_for_multisig_AccountId_t.
   Parameter cmp :
       (ref Self) -> (ref multisig.AccountId.t) -> M core.cmp.Ordering.t.
   
-  Global Instance AssociatedFunction_cmp : Notations.DoubleColon Self "cmp" := {
-    Notations.double_colon := cmp;
-  }.
+  Axiom cmp_is_impl : impl Self "cmp" = cmp.
   
   Global Instance ℐ : core.cmp.Ord.Required.Trait Self := {
     core.cmp.Ord.cmp := cmp;
@@ -371,10 +334,7 @@ Section Impl_core_clone_Clone_for_multisig_ConfirmationStatus_t.
   *)
   Parameter clone : (ref Self) -> M multisig.ConfirmationStatus.t.
   
-  Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon Self "clone" := {
-    Notations.double_colon := clone;
-  }.
+  Axiom clone_is_impl : impl Self "clone" = clone.
   
   Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
@@ -435,10 +395,7 @@ Section Impl_core_default_Default_for_multisig_Transaction_t.
   *)
   Parameter default : M multisig.Transaction.t.
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -460,10 +417,7 @@ Section Impl_core_clone_Clone_for_multisig_Error_t.
   *)
   Parameter clone : (ref Self) -> M multisig.Error.t.
   
-  Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon Self "clone" := {
-    Notations.double_colon := clone;
-  }.
+  Axiom clone_is_impl : impl Self "clone" = clone.
   
   Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
@@ -499,9 +453,7 @@ Section Impl_core_cmp_PartialEq_for_multisig_Error_t.
   *)
   Parameter eq : (ref Self) -> (ref multisig.Error.t) -> M bool.t.
   
-  Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
-    Notations.double_colon := eq;
-  }.
+  Axiom eq_is_impl : impl Self "eq" = eq.
   
   Global Instance ℐ :
     core.cmp.PartialEq.Required.Trait Self
@@ -530,10 +482,8 @@ Section Impl_core_cmp_Eq_for_multisig_Error_t.
   *)
   Parameter assert_receiver_is_total_eq : (ref Self) -> M unit.
   
-  Global Instance AssociatedFunction_assert_receiver_is_total_eq :
-    Notations.DoubleColon Self "assert_receiver_is_total_eq" := {
-    Notations.double_colon := assert_receiver_is_total_eq;
-  }.
+  Axiom assert_receiver_is_total_eq_is_impl :
+      impl Self "assert_receiver_is_total_eq" = assert_receiver_is_total_eq.
   
   Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
     core.cmp.Eq.assert_receiver_is_total_eq :=
@@ -570,10 +520,7 @@ Section Impl_core_default_Default_for_multisig_Transactions_t.
   *)
   Parameter default : M multisig.Transactions.t.
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -773,10 +720,7 @@ Section Impl_multisig_Env_t.
   *)
   Parameter caller : (ref Self) -> M multisig.AccountId.t.
   
-  Global Instance AssociatedFunction_caller :
-    Notations.DoubleColon Self "caller" := {
-    Notations.double_colon := caller;
-  }.
+  Axiom caller_is_impl : impl Self "caller" = caller.
   
   (*
       fn emit_event(&self, _event: Event) {
@@ -785,10 +729,7 @@ Section Impl_multisig_Env_t.
   *)
   Parameter emit_event : (ref Self) -> multisig.Event.t -> M unit.
   
-  Global Instance AssociatedFunction_emit_event :
-    Notations.DoubleColon Self "emit_event" := {
-    Notations.double_colon := emit_event;
-  }.
+  Axiom emit_event_is_impl : impl Self "emit_event" = emit_event.
   
   (*
       fn transferred_value(&self) -> Balance {
@@ -797,10 +738,8 @@ Section Impl_multisig_Env_t.
   *)
   Parameter transferred_value : (ref Self) -> M ltac:(multisig.Balance).
   
-  Global Instance AssociatedFunction_transferred_value :
-    Notations.DoubleColon Self "transferred_value" := {
-    Notations.double_colon := transferred_value;
-  }.
+  Axiom transferred_value_is_impl :
+      impl Self "transferred_value" = transferred_value.
   
   (*
       fn account_id(&self) -> AccountId {
@@ -809,10 +748,7 @@ Section Impl_multisig_Env_t.
   *)
   Parameter account_id : (ref Self) -> M multisig.AccountId.t.
   
-  Global Instance AssociatedFunction_account_id :
-    Notations.DoubleColon Self "account_id" := {
-    Notations.double_colon := account_id;
-  }.
+  Axiom account_id_is_impl : impl Self "account_id" = account_id.
 End Impl_multisig_Env_t.
 End Impl_multisig_Env_t.
 
@@ -870,10 +806,7 @@ Section Impl_core_default_Default_for_multisig_Multisig_t.
   *)
   Parameter default : M multisig.Multisig.t.
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -899,10 +832,7 @@ Section Impl_multisig_Multisig_t.
   *)
   Parameter init_env : M multisig.Env.t.
   
-  Global Instance AssociatedFunction_init_env :
-    Notations.DoubleColon Self "init_env" := {
-    Notations.double_colon := init_env;
-  }.
+  Axiom init_env_is_impl : impl Self "init_env" = init_env.
   
   (*
       fn env(&self) -> Env {
@@ -911,9 +841,7 @@ Section Impl_multisig_Multisig_t.
   *)
   Parameter env : (ref Self) -> M multisig.Env.t.
   
-  Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
-    Notations.double_colon := env;
-  }.
+  Axiom env_is_impl : impl Self "env" = env.
   
   (*
       pub fn new(requirement: u32, mut owners: Vec<AccountId>) -> Self {
@@ -937,9 +865,7 @@ Section Impl_multisig_Multisig_t.
         (alloc.vec.Vec.t multisig.AccountId.t alloc.vec.Vec.Default.A) ->
         M Self.
   
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
-    Notations.double_colon := new;
-  }.
+  Axiom new_is_impl : impl Self "new" = new.
   
   (*
       fn ensure_confirmed(&self, trans_id: TransactionId) {
@@ -954,10 +880,8 @@ Section Impl_multisig_Multisig_t.
   Parameter ensure_confirmed :
       (ref Self) -> ltac:(multisig.TransactionId) -> M unit.
   
-  Global Instance AssociatedFunction_ensure_confirmed :
-    Notations.DoubleColon Self "ensure_confirmed" := {
-    Notations.double_colon := ensure_confirmed;
-  }.
+  Axiom ensure_confirmed_is_impl :
+      impl Self "ensure_confirmed" = ensure_confirmed.
   
   (*
       fn ensure_transaction_exists(&self, trans_id: TransactionId) {
@@ -969,10 +893,8 @@ Section Impl_multisig_Multisig_t.
   Parameter ensure_transaction_exists :
       (ref Self) -> ltac:(multisig.TransactionId) -> M unit.
   
-  Global Instance AssociatedFunction_ensure_transaction_exists :
-    Notations.DoubleColon Self "ensure_transaction_exists" := {
-    Notations.double_colon := ensure_transaction_exists;
-  }.
+  Axiom ensure_transaction_exists_is_impl :
+      impl Self "ensure_transaction_exists" = ensure_transaction_exists.
   
   (*
       fn ensure_owner(&self, owner: &AccountId) {
@@ -981,10 +903,7 @@ Section Impl_multisig_Multisig_t.
   *)
   Parameter ensure_owner : (ref Self) -> (ref multisig.AccountId.t) -> M unit.
   
-  Global Instance AssociatedFunction_ensure_owner :
-    Notations.DoubleColon Self "ensure_owner" := {
-    Notations.double_colon := ensure_owner;
-  }.
+  Axiom ensure_owner_is_impl : impl Self "ensure_owner" = ensure_owner.
   
   (*
       fn ensure_caller_is_owner(&self) {
@@ -993,10 +912,8 @@ Section Impl_multisig_Multisig_t.
   *)
   Parameter ensure_caller_is_owner : (ref Self) -> M unit.
   
-  Global Instance AssociatedFunction_ensure_caller_is_owner :
-    Notations.DoubleColon Self "ensure_caller_is_owner" := {
-    Notations.double_colon := ensure_caller_is_owner;
-  }.
+  Axiom ensure_caller_is_owner_is_impl :
+      impl Self "ensure_caller_is_owner" = ensure_caller_is_owner.
   
   (*
       fn ensure_from_wallet(&self) {
@@ -1005,10 +922,8 @@ Section Impl_multisig_Multisig_t.
   *)
   Parameter ensure_from_wallet : (ref Self) -> M unit.
   
-  Global Instance AssociatedFunction_ensure_from_wallet :
-    Notations.DoubleColon Self "ensure_from_wallet" := {
-    Notations.double_colon := ensure_from_wallet;
-  }.
+  Axiom ensure_from_wallet_is_impl :
+      impl Self "ensure_from_wallet" = ensure_from_wallet.
   
   (*
       fn ensure_no_owner(&self, owner: &AccountId) {
@@ -1018,10 +933,7 @@ Section Impl_multisig_Multisig_t.
   Parameter ensure_no_owner :
       (ref Self) -> (ref multisig.AccountId.t) -> M unit.
   
-  Global Instance AssociatedFunction_ensure_no_owner :
-    Notations.DoubleColon Self "ensure_no_owner" := {
-    Notations.double_colon := ensure_no_owner;
-  }.
+  Axiom ensure_no_owner_is_impl : impl Self "ensure_no_owner" = ensure_no_owner.
   
   (*
       pub fn add_owner(&mut self, new_owner: AccountId) {
@@ -1036,10 +948,7 @@ Section Impl_multisig_Multisig_t.
   *)
   Parameter add_owner : (mut_ref Self) -> multisig.AccountId.t -> M unit.
   
-  Global Instance AssociatedFunction_add_owner :
-    Notations.DoubleColon Self "add_owner" := {
-    Notations.double_colon := add_owner;
-  }.
+  Axiom add_owner_is_impl : impl Self "add_owner" = add_owner.
   
   (*
       fn owner_index(&self, owner: &AccountId) -> u32 {
@@ -1051,10 +960,7 @@ Section Impl_multisig_Multisig_t.
   *)
   Parameter owner_index : (ref Self) -> (ref multisig.AccountId.t) -> M u32.t.
   
-  Global Instance AssociatedFunction_owner_index :
-    Notations.DoubleColon Self "owner_index" := {
-    Notations.double_colon := owner_index;
-  }.
+  Axiom owner_index_is_impl : impl Self "owner_index" = owner_index.
   
   (*
       fn clean_owner_confirmations(&mut self, owner: &AccountId) {
@@ -1072,10 +978,8 @@ Section Impl_multisig_Multisig_t.
   Parameter clean_owner_confirmations :
       (mut_ref Self) -> (ref multisig.AccountId.t) -> M unit.
   
-  Global Instance AssociatedFunction_clean_owner_confirmations :
-    Notations.DoubleColon Self "clean_owner_confirmations" := {
-    Notations.double_colon := clean_owner_confirmations;
-  }.
+  Axiom clean_owner_confirmations_is_impl :
+      impl Self "clean_owner_confirmations" = clean_owner_confirmations.
   
   (*
       pub fn remove_owner(&mut self, owner: AccountId) {
@@ -1095,10 +999,7 @@ Section Impl_multisig_Multisig_t.
   *)
   Parameter remove_owner : (mut_ref Self) -> multisig.AccountId.t -> M unit.
   
-  Global Instance AssociatedFunction_remove_owner :
-    Notations.DoubleColon Self "remove_owner" := {
-    Notations.double_colon := remove_owner;
-  }.
+  Axiom remove_owner_is_impl : impl Self "remove_owner" = remove_owner.
   
   (*
       pub fn replace_owner(&mut self, old_owner: AccountId, new_owner: AccountId) {
@@ -1119,10 +1020,7 @@ Section Impl_multisig_Multisig_t.
   Parameter replace_owner :
       (mut_ref Self) -> multisig.AccountId.t -> multisig.AccountId.t -> M unit.
   
-  Global Instance AssociatedFunction_replace_owner :
-    Notations.DoubleColon Self "replace_owner" := {
-    Notations.double_colon := replace_owner;
-  }.
+  Axiom replace_owner_is_impl : impl Self "replace_owner" = replace_owner.
   
   (*
       pub fn change_requirement(&mut self, new_requirement: u32) {
@@ -1137,10 +1035,8 @@ Section Impl_multisig_Multisig_t.
   *)
   Parameter change_requirement : (mut_ref Self) -> u32.t -> M unit.
   
-  Global Instance AssociatedFunction_change_requirement :
-    Notations.DoubleColon Self "change_requirement" := {
-    Notations.double_colon := change_requirement;
-  }.
+  Axiom change_requirement_is_impl :
+      impl Self "change_requirement" = change_requirement.
   
   (*
       fn confirm_by_caller(
@@ -1182,10 +1078,8 @@ Section Impl_multisig_Multisig_t.
         ltac:(multisig.TransactionId) ->
         M multisig.ConfirmationStatus.t.
   
-  Global Instance AssociatedFunction_confirm_by_caller :
-    Notations.DoubleColon Self "confirm_by_caller" := {
-    Notations.double_colon := confirm_by_caller;
-  }.
+  Axiom confirm_by_caller_is_impl :
+      impl Self "confirm_by_caller" = confirm_by_caller.
   
   (*
       pub fn submit_transaction(
@@ -1213,10 +1107,8 @@ Section Impl_multisig_Multisig_t.
         multisig.Transaction.t ->
         M (ltac:(multisig.TransactionId) * multisig.ConfirmationStatus.t).
   
-  Global Instance AssociatedFunction_submit_transaction :
-    Notations.DoubleColon Self "submit_transaction" := {
-    Notations.double_colon := submit_transaction;
-  }.
+  Axiom submit_transaction_is_impl :
+      impl Self "submit_transaction" = submit_transaction.
   
   (*
       fn take_transaction(&mut self, trans_id: TransactionId) -> Option<Transaction> {
@@ -1243,10 +1135,8 @@ Section Impl_multisig_Multisig_t.
         ltac:(multisig.TransactionId) ->
         M (core.option.Option.t multisig.Transaction.t).
   
-  Global Instance AssociatedFunction_take_transaction :
-    Notations.DoubleColon Self "take_transaction" := {
-    Notations.double_colon := take_transaction;
-  }.
+  Axiom take_transaction_is_impl :
+      impl Self "take_transaction" = take_transaction.
   
   (*
       pub fn cancel_transaction(&mut self, trans_id: TransactionId) {
@@ -1261,10 +1151,8 @@ Section Impl_multisig_Multisig_t.
   Parameter cancel_transaction :
       (mut_ref Self) -> ltac:(multisig.TransactionId) -> M unit.
   
-  Global Instance AssociatedFunction_cancel_transaction :
-    Notations.DoubleColon Self "cancel_transaction" := {
-    Notations.double_colon := cancel_transaction;
-  }.
+  Axiom cancel_transaction_is_impl :
+      impl Self "cancel_transaction" = cancel_transaction.
   
   (*
       pub fn confirm_transaction(&mut self, trans_id: TransactionId) -> ConfirmationStatus {
@@ -1278,10 +1166,8 @@ Section Impl_multisig_Multisig_t.
         ltac:(multisig.TransactionId) ->
         M multisig.ConfirmationStatus.t.
   
-  Global Instance AssociatedFunction_confirm_transaction :
-    Notations.DoubleColon Self "confirm_transaction" := {
-    Notations.double_colon := confirm_transaction;
-  }.
+  Axiom confirm_transaction_is_impl :
+      impl Self "confirm_transaction" = confirm_transaction.
   
   (*
       pub fn revoke_confirmation(&mut self, trans_id: TransactionId) {
@@ -1306,10 +1192,8 @@ Section Impl_multisig_Multisig_t.
   Parameter revoke_confirmation :
       (mut_ref Self) -> ltac:(multisig.TransactionId) -> M unit.
   
-  Global Instance AssociatedFunction_revoke_confirmation :
-    Notations.DoubleColon Self "revoke_confirmation" := {
-    Notations.double_colon := revoke_confirmation;
-  }.
+  Axiom revoke_confirmation_is_impl :
+      impl Self "revoke_confirmation" = revoke_confirmation.
   
   (*
       pub fn invoke_transaction(&mut self, trans_id: TransactionId) -> Result<(), Error> {
@@ -1343,10 +1227,8 @@ Section Impl_multisig_Multisig_t.
         ltac:(multisig.TransactionId) ->
         M (core.result.Result.t unit multisig.Error.t).
   
-  Global Instance AssociatedFunction_invoke_transaction :
-    Notations.DoubleColon Self "invoke_transaction" := {
-    Notations.double_colon := invoke_transaction;
-  }.
+  Axiom invoke_transaction_is_impl :
+      impl Self "invoke_transaction" = invoke_transaction.
   
   (*
       pub fn eval_transaction(&mut self, trans_id: TransactionId) -> Result<Vec<u8>, Error> {
@@ -1382,9 +1264,7 @@ Section Impl_multisig_Multisig_t.
             (alloc.vec.Vec.t u8.t alloc.vec.Vec.Default.A)
             multisig.Error.t).
   
-  Global Instance AssociatedFunction_eval_transaction :
-    Notations.DoubleColon Self "eval_transaction" := {
-    Notations.double_colon := eval_transaction;
-  }.
+  Axiom eval_transaction_is_impl :
+      impl Self "eval_transaction" = eval_transaction.
 End Impl_multisig_Multisig_t.
 End Impl_multisig_Multisig_t.

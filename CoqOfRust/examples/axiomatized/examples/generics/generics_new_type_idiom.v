@@ -34,10 +34,7 @@ Section Impl_generics_new_type_idiom_Years_t.
   *)
   Parameter to_days : (ref Self) -> M generics_new_type_idiom.Days.t.
   
-  Global Instance AssociatedFunction_to_days :
-    Notations.DoubleColon Self "to_days" := {
-    Notations.double_colon := to_days;
-  }.
+  Axiom to_days_is_impl : impl Self "to_days" = to_days.
 End Impl_generics_new_type_idiom_Years_t.
 End Impl_generics_new_type_idiom_Years_t.
 
@@ -52,10 +49,7 @@ Section Impl_generics_new_type_idiom_Days_t.
   *)
   Parameter to_years : (ref Self) -> M generics_new_type_idiom.Years.t.
   
-  Global Instance AssociatedFunction_to_years :
-    Notations.DoubleColon Self "to_years" := {
-    Notations.double_colon := to_years;
-  }.
+  Axiom to_years_is_impl : impl Self "to_years" = to_years.
 End Impl_generics_new_type_idiom_Days_t.
 End Impl_generics_new_type_idiom_Days_t.
 

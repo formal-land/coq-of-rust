@@ -26,10 +26,7 @@ Section Impl_core_convert_From_i32_t_for_into_Number_t.
     let* α0 : i32.t := M.read item in
     M.pure {| into.Number.value := α0; |}.
   
-  Global Instance AssociatedFunction_from :
-    Notations.DoubleColon Self "from" := {
-    Notations.double_colon := from;
-  }.
+  Axiom from_is_impl : impl Self "from" = from.
   
   Global Instance ℐ : core.convert.From.Trait Self (T := i32.t) := {
     core.convert.From.from := from;

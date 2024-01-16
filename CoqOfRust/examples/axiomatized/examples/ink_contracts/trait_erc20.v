@@ -32,10 +32,7 @@ Section Impl_core_default_Default_for_trait_erc20_Mapping_t_K_V.
   *)
   Parameter default : M (trait_erc20.Mapping.t K V).
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -56,9 +53,7 @@ Section Impl_trait_erc20_Mapping_t_K_V.
   *)
   Parameter get : (ref Self) -> (ref K) -> M (core.option.Option.t V).
   
-  Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
-    Notations.double_colon := get;
-  }.
+  Axiom get_is_impl : impl Self "get" = get.
   
   (*
       fn insert(&mut self, _key: K, _value: V) {
@@ -67,10 +62,7 @@ Section Impl_trait_erc20_Mapping_t_K_V.
   *)
   Parameter insert : (mut_ref Self) -> K -> V -> M unit.
   
-  Global Instance AssociatedFunction_insert :
-    Notations.DoubleColon Self "insert" := {
-    Notations.double_colon := insert;
-  }.
+  Axiom insert_is_impl : impl Self "insert" = insert.
 End Impl_trait_erc20_Mapping_t_K_V.
 End Impl_trait_erc20_Mapping_t_K_V.
 
@@ -94,10 +86,7 @@ Section Impl_core_default_Default_for_trait_erc20_AccountId_t.
   *)
   Parameter default : M trait_erc20.AccountId.t.
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -114,10 +103,7 @@ Section Impl_core_clone_Clone_for_trait_erc20_AccountId_t.
   *)
   Parameter clone : (ref Self) -> M trait_erc20.AccountId.t.
   
-  Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon Self "clone" := {
-    Notations.double_colon := clone;
-  }.
+  Axiom clone_is_impl : impl Self "clone" = clone.
   
   Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
@@ -164,9 +150,7 @@ Section Impl_core_fmt_Debug_for_trait_erc20_Error_t.
   Parameter fmt :
       (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
   
-  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
-    Notations.double_colon := fmt;
-  }.
+  Axiom fmt_is_impl : impl Self "fmt" = fmt.
   
   Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
@@ -192,9 +176,7 @@ Section Impl_core_cmp_PartialEq_for_trait_erc20_Error_t.
   *)
   Parameter eq : (ref Self) -> (ref trait_erc20.Error.t) -> M bool.t.
   
-  Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
-    Notations.double_colon := eq;
-  }.
+  Axiom eq_is_impl : impl Self "eq" = eq.
   
   Global Instance ℐ :
     core.cmp.PartialEq.Required.Trait Self
@@ -223,10 +205,8 @@ Section Impl_core_cmp_Eq_for_trait_erc20_Error_t.
   *)
   Parameter assert_receiver_is_total_eq : (ref Self) -> M unit.
   
-  Global Instance AssociatedFunction_assert_receiver_is_total_eq :
-    Notations.DoubleColon Self "assert_receiver_is_total_eq" := {
-    Notations.double_colon := assert_receiver_is_total_eq;
-  }.
+  Axiom assert_receiver_is_total_eq_is_impl :
+      impl Self "assert_receiver_is_total_eq" = assert_receiver_is_total_eq.
   
   Global Instance ℐ : core.cmp.Eq.Required.Trait Self := {
     core.cmp.Eq.assert_receiver_is_total_eq :=
@@ -305,10 +285,7 @@ Section Impl_core_default_Default_for_trait_erc20_Erc20_t.
   *)
   Parameter default : M trait_erc20.Erc20.t.
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -381,10 +358,7 @@ Section Impl_trait_erc20_Env_t.
   *)
   Parameter caller : (ref Self) -> M trait_erc20.AccountId.t.
   
-  Global Instance AssociatedFunction_caller :
-    Notations.DoubleColon Self "caller" := {
-    Notations.double_colon := caller;
-  }.
+  Axiom caller_is_impl : impl Self "caller" = caller.
   
   (*
       fn emit_event(&self, _event: Event) {
@@ -393,10 +367,7 @@ Section Impl_trait_erc20_Env_t.
   *)
   Parameter emit_event : (ref Self) -> trait_erc20.Event.t -> M unit.
   
-  Global Instance AssociatedFunction_emit_event :
-    Notations.DoubleColon Self "emit_event" := {
-    Notations.double_colon := emit_event;
-  }.
+  Axiom emit_event_is_impl : impl Self "emit_event" = emit_event.
 End Impl_trait_erc20_Env_t.
 End Impl_trait_erc20_Env_t.
 
@@ -411,10 +382,7 @@ Section Impl_trait_erc20_Erc20_t.
   *)
   Parameter init_env : M trait_erc20.Env.t.
   
-  Global Instance AssociatedFunction_init_env :
-    Notations.DoubleColon Self "init_env" := {
-    Notations.double_colon := init_env;
-  }.
+  Axiom init_env_is_impl : impl Self "init_env" = init_env.
   
   (*
       fn env(&self) -> Env {
@@ -423,9 +391,7 @@ Section Impl_trait_erc20_Erc20_t.
   *)
   Parameter env : (ref Self) -> M trait_erc20.Env.t.
   
-  Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
-    Notations.double_colon := env;
-  }.
+  Axiom env_is_impl : impl Self "env" = env.
   
   (*
       pub fn new(total_supply: Balance) -> Self {
@@ -446,9 +412,7 @@ Section Impl_trait_erc20_Erc20_t.
   *)
   Parameter new : ltac:(trait_erc20.Balance) -> M Self.
   
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
-    Notations.double_colon := new;
-  }.
+  Axiom new_is_impl : impl Self "new" = new.
   
   (*
       fn balance_of_impl(&self, owner: &AccountId) -> Balance {
@@ -460,10 +424,7 @@ Section Impl_trait_erc20_Erc20_t.
         (ref trait_erc20.AccountId.t) ->
         M ltac:(trait_erc20.Balance).
   
-  Global Instance AssociatedFunction_balance_of_impl :
-    Notations.DoubleColon Self "balance_of_impl" := {
-    Notations.double_colon := balance_of_impl;
-  }.
+  Axiom balance_of_impl_is_impl : impl Self "balance_of_impl" = balance_of_impl.
   
   (*
       fn allowance_impl(&self, owner: &AccountId, spender: &AccountId) -> Balance {
@@ -476,10 +437,7 @@ Section Impl_trait_erc20_Erc20_t.
         (ref trait_erc20.AccountId.t) ->
         M ltac:(trait_erc20.Balance).
   
-  Global Instance AssociatedFunction_allowance_impl :
-    Notations.DoubleColon Self "allowance_impl" := {
-    Notations.double_colon := allowance_impl;
-  }.
+  Axiom allowance_impl_is_impl : impl Self "allowance_impl" = allowance_impl.
   
   (*
       fn transfer_from_to(&mut self, from: &AccountId, to: &AccountId, value: Balance) -> Result<()> {
@@ -506,10 +464,8 @@ Section Impl_trait_erc20_Erc20_t.
         ltac:(trait_erc20.Balance) ->
         M ltac:(trait_erc20.Result unit).
   
-  Global Instance AssociatedFunction_transfer_from_to :
-    Notations.DoubleColon Self "transfer_from_to" := {
-    Notations.double_colon := transfer_from_to;
-  }.
+  Axiom transfer_from_to_is_impl :
+      impl Self "transfer_from_to" = transfer_from_to.
 End Impl_trait_erc20_Erc20_t.
 End Impl_trait_erc20_Erc20_t.
 
@@ -524,10 +480,7 @@ Section Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20_t.
   *)
   Parameter total_supply : (ref Self) -> M ltac:(trait_erc20.Balance).
   
-  Global Instance AssociatedFunction_total_supply :
-    Notations.DoubleColon Self "total_supply" := {
-    Notations.double_colon := total_supply;
-  }.
+  Axiom total_supply_is_impl : impl Self "total_supply" = total_supply.
   
   (*
       fn balance_of(&self, owner: AccountId) -> Balance {
@@ -537,10 +490,7 @@ Section Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20_t.
   Parameter balance_of :
       (ref Self) -> trait_erc20.AccountId.t -> M ltac:(trait_erc20.Balance).
   
-  Global Instance AssociatedFunction_balance_of :
-    Notations.DoubleColon Self "balance_of" := {
-    Notations.double_colon := balance_of;
-  }.
+  Axiom balance_of_is_impl : impl Self "balance_of" = balance_of.
   
   (*
       fn allowance(&self, owner: AccountId, spender: AccountId) -> Balance {
@@ -553,10 +503,7 @@ Section Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20_t.
         trait_erc20.AccountId.t ->
         M ltac:(trait_erc20.Balance).
   
-  Global Instance AssociatedFunction_allowance :
-    Notations.DoubleColon Self "allowance" := {
-    Notations.double_colon := allowance;
-  }.
+  Axiom allowance_is_impl : impl Self "allowance" = allowance.
   
   (*
       fn transfer(&mut self, to: AccountId, value: Balance) -> Result<()> {
@@ -570,10 +517,7 @@ Section Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20_t.
         ltac:(trait_erc20.Balance) ->
         M ltac:(trait_erc20.Result unit).
   
-  Global Instance AssociatedFunction_transfer :
-    Notations.DoubleColon Self "transfer" := {
-    Notations.double_colon := transfer;
-  }.
+  Axiom transfer_is_impl : impl Self "transfer" = transfer.
   
   (*
       fn approve(&mut self, spender: AccountId, value: Balance) -> Result<()> {
@@ -593,10 +537,7 @@ Section Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20_t.
         ltac:(trait_erc20.Balance) ->
         M ltac:(trait_erc20.Result unit).
   
-  Global Instance AssociatedFunction_approve :
-    Notations.DoubleColon Self "approve" := {
-    Notations.double_colon := approve;
-  }.
+  Axiom approve_is_impl : impl Self "approve" = approve.
   
   (*
       fn transfer_from(&mut self, from: AccountId, to: AccountId, value: Balance) -> Result<()> {
@@ -617,10 +558,7 @@ Section Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20_t.
         ltac:(trait_erc20.Balance) ->
         M ltac:(trait_erc20.Result unit).
   
-  Global Instance AssociatedFunction_transfer_from :
-    Notations.DoubleColon Self "transfer_from" := {
-    Notations.double_colon := transfer_from;
-  }.
+  Axiom transfer_from_is_impl : impl Self "transfer_from" = transfer_from.
   
   Global Instance ℐ : trait_erc20.BaseErc20.Trait Self := {
     trait_erc20.BaseErc20.total_supply := total_supply;

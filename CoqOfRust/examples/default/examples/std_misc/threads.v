@@ -30,9 +30,9 @@ Definition main : M unit :=
     let* α0 :
         alloc.vec.Vec.t (std.thread.JoinHandle.t unit) alloc.alloc.Global.t :=
       M.call
-        (alloc.vec.Vec.t
-            (std.thread.JoinHandle.t unit)
-            alloc.alloc.Global.t)::["new"] in
+        (impl
+          (alloc.vec.Vec.t (std.thread.JoinHandle.t unit) alloc.alloc.Global.t)
+          "new") in
     M.alloc α0 in
   let* _ : M.Val unit :=
     let* α0 : _ :=
@@ -105,7 +105,9 @@ Definition main : M unit :=
                                       M.read (pointer_coercion "Unsize" α3) in
                                     let* α5 : core.fmt.rt.Argument.t :=
                                       M.call
-                                        (core.fmt.rt.Argument.t::["new_display"]
+                                        (impl
+                                            core.fmt.rt.Argument.t
+                                            "new_display"
                                           (borrow i)) in
                                     let* α6 :
                                         M.Val (array core.fmt.rt.Argument.t) :=
@@ -120,7 +122,7 @@ Definition main : M unit :=
                                       M.read (pointer_coercion "Unsize" α7) in
                                     let* α9 : core.fmt.Arguments.t :=
                                       M.call
-                                        (core.fmt.Arguments.t::["new_v1"]
+                                        (impl core.fmt.Arguments.t "new_v1"
                                           α4
                                           α8) in
                                     let* α10 : unit :=
@@ -132,9 +134,11 @@ Definition main : M unit :=
                                 M unit)) in
                           let* α1 : unit :=
                             M.call
-                              ((alloc.vec.Vec.t
+                              (impl
+                                  (alloc.vec.Vec.t
                                     (std.thread.JoinHandle.t unit)
-                                    alloc.alloc.Global.t)::["push"]
+                                    alloc.alloc.Global.t)
+                                  "push"
                                 (borrow_mut children)
                                 α0) in
                           M.alloc α1 in
@@ -215,7 +219,8 @@ Definition main : M unit :=
                             (alloc.boxed.Box.t
                               _ (* dyn *)
                               alloc.alloc.Global.t) :=
-                        M.call ((std.thread.JoinHandle.t unit)::["join"] α0) in
+                        M.call
+                          (impl (std.thread.JoinHandle.t unit) "join" α0) in
                       let* α2 :
                           M.Val
                             (core.result.Result.t

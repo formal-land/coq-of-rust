@@ -26,10 +26,7 @@ Section Impl_core_default_Default_for_constructors_return_value_AccountId_t.
     let* α1 : u128.t := M.call α0 in
     M.pure (constructors_return_value.AccountId.Build_t α1).
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -61,10 +58,7 @@ Section Impl_core_clone_Clone_for_constructors_return_value_AccountId_t.
         ] in
     M.read α0.
   
-  Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon Self "clone" := {
-    Notations.double_colon := clone;
-  }.
+  Axiom clone_is_impl : impl Self "clone" = clone.
   
   Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
@@ -97,10 +91,7 @@ Section Impl_core_convert_From_array_u8_t_for_constructors_return_value_AccountI
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_from :
-    Notations.DoubleColon Self "from" := {
-    Notations.double_colon := from;
-  }.
+  Axiom from_is_impl : impl Self "from" = from.
   
   Global Instance ℐ : core.convert.From.Trait Self (T := array u8.t) := {
     core.convert.From.from := from;
@@ -150,11 +141,9 @@ Section Impl_core_fmt_Debug_for_constructors_return_value_ConstructorError_t.
     let* f := M.alloc f in
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref str.t := M.read (mk_str "ConstructorError") in
-    M.call (core.fmt.Formatter.t::["write_str"] α0 α1).
+    M.call (impl core.fmt.Formatter.t "write_str" α0 α1).
   
-  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
-    Notations.double_colon := fmt;
-  }.
+  Axiom fmt_is_impl : impl Self "fmt" = fmt.
   
   Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
@@ -183,10 +172,8 @@ Section Impl_constructors_return_value_ReturnFlags_t.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_new_with_reverted :
-    Notations.DoubleColon Self "new_with_reverted" := {
-    Notations.double_colon := new_with_reverted;
-  }.
+  Axiom new_with_reverted_is_impl :
+      impl Self "new_with_reverted" = new_with_reverted.
 End Impl_constructors_return_value_ReturnFlags_t.
 End Impl_constructors_return_value_ReturnFlags_t.
 
@@ -219,9 +206,7 @@ Section Impl_constructors_return_value_ConstructorsReturnValue_t.
     let* α0 : bool.t := M.read init_value in
     M.pure {| constructors_return_value.ConstructorsReturnValue.value := α0; |}.
   
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
-    Notations.double_colon := new;
-  }.
+  Axiom new_is_impl : impl Self "new" = new.
   
   (*
       pub fn try_new(succeed: bool) -> Result<Self, ConstructorError> {
@@ -249,7 +234,7 @@ Section Impl_constructors_return_value_ConstructorsReturnValue_t.
       if α0 then
         let* α0 : constructors_return_value.ConstructorsReturnValue.t :=
           M.call
-            (constructors_return_value.ConstructorsReturnValue.t::["new"]
+            (impl constructors_return_value.ConstructorsReturnValue.t "new"
               true) in
         M.alloc (core.result.Result.Ok α0)
       else
@@ -258,10 +243,7 @@ Section Impl_constructors_return_value_ConstructorsReturnValue_t.
             constructors_return_value.ConstructorError.Build) in
     M.read α1.
   
-  Global Instance AssociatedFunction_try_new :
-    Notations.DoubleColon Self "try_new" := {
-    Notations.double_colon := try_new;
-  }.
+  Axiom try_new_is_impl : impl Self "try_new" = try_new.
   
   (*
       pub fn revert_new(_init_value: bool) -> Self {
@@ -275,7 +257,8 @@ Section Impl_constructors_return_value_ConstructorsReturnValue_t.
     let* _init_value := M.alloc _init_value in
     let* α0 : constructors_return_value.ReturnFlags.t :=
       M.call
-        (constructors_return_value.ReturnFlags.t::["new_with_reverted"] true) in
+        (impl constructors_return_value.ReturnFlags.t "new_with_reverted"
+          true) in
     let* α1 : _ :=
       ltac:(M.get_method (fun ℐ =>
         core.convert.From.from
@@ -294,10 +277,7 @@ Section Impl_constructors_return_value_ConstructorsReturnValue_t.
       M.call (constructors_return_value.return_value α0 (borrow α3)) in
     never_to_any α4.
   
-  Global Instance AssociatedFunction_revert_new :
-    Notations.DoubleColon Self "revert_new" := {
-    Notations.double_colon := revert_new;
-  }.
+  Axiom revert_new_is_impl : impl Self "revert_new" = revert_new.
   
   (*
       pub fn try_revert_new(init_value: bool) -> Result<Self, ConstructorError> {
@@ -353,7 +333,8 @@ Section Impl_constructors_return_value_ConstructorsReturnValue_t.
       M.copy α1 in
     let* α0 : constructors_return_value.ReturnFlags.t :=
       M.call
-        (constructors_return_value.ReturnFlags.t::["new_with_reverted"] true) in
+        (impl constructors_return_value.ReturnFlags.t "new_with_reverted"
+          true) in
     let* α1 : never.t :=
       M.call (constructors_return_value.return_value α0 (borrow value)) in
     let* α2 :
@@ -369,10 +350,7 @@ Section Impl_constructors_return_value_ConstructorsReturnValue_t.
       M.alloc α2 in
     M.read α0.
   
-  Global Instance AssociatedFunction_try_revert_new :
-    Notations.DoubleColon Self "try_revert_new" := {
-    Notations.double_colon := try_revert_new;
-  }.
+  Axiom try_revert_new_is_impl : impl Self "try_revert_new" = try_revert_new.
   
   (*
       pub fn get_value(&self) -> bool {
@@ -386,9 +364,6 @@ Section Impl_constructors_return_value_ConstructorsReturnValue_t.
     M.read
       (constructors_return_value.ConstructorsReturnValue.Get_value (deref α0)).
   
-  Global Instance AssociatedFunction_get_value :
-    Notations.DoubleColon Self "get_value" := {
-    Notations.double_colon := get_value;
-  }.
+  Axiom get_value_is_impl : impl Self "get_value" = get_value.
 End Impl_constructors_return_value_ConstructorsReturnValue_t.
 End Impl_constructors_return_value_ConstructorsReturnValue_t.

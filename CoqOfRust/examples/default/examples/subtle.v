@@ -42,10 +42,7 @@ Section Impl_core_clone_Clone_for_subtle_Choice_t.
         ] in
     M.read α0.
   
-  Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon Self "clone" := {
-    Notations.double_colon := clone;
-  }.
+  Axiom clone_is_impl : impl Self "clone" = clone.
   
   Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
@@ -74,11 +71,9 @@ Section Impl_core_fmt_Debug_for_subtle_Choice_t.
       M.alloc (borrow (subtle.Choice.Get_0 (deref α2))) in
     let* α4 : M.Val (ref (ref u8.t)) := M.alloc (borrow α3) in
     let* α5 : ref _ (* dyn *) := M.read (pointer_coercion "Unsize" α4) in
-    M.call (core.fmt.Formatter.t::["debug_tuple_field1_finish"] α0 α1 α5).
+    M.call (impl core.fmt.Formatter.t "debug_tuple_field1_finish" α0 α1 α5).
   
-  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
-    Notations.double_colon := fmt;
-  }.
+  Axiom fmt_is_impl : impl Self "fmt" = fmt.
   
   Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
@@ -100,10 +95,7 @@ Section Impl_subtle_Choice_t.
     let* α0 : ref subtle.Choice.t := M.read self in
     M.read (subtle.Choice.Get_0 (deref α0)).
   
-  Global Instance AssociatedFunction_unwrap_u8 :
-    Notations.DoubleColon Self "unwrap_u8" := {
-    Notations.double_colon := unwrap_u8;
-  }.
+  Axiom unwrap_u8_is_impl : impl Self "unwrap_u8" = unwrap_u8.
 End Impl_subtle_Choice_t.
 End Impl_subtle_Choice_t.
 
@@ -151,10 +143,7 @@ Section Impl_core_convert_From_subtle_Choice_t_for_bool_t.
       M.alloc (BinOp.Pure.ne α0 ((Integer.of_Z 0) : u8.t)) in
     M.read α0.
   
-  Global Instance AssociatedFunction_from :
-    Notations.DoubleColon Self "from" := {
-    Notations.double_colon := from;
-  }.
+  Axiom from_is_impl : impl Self "from" = from.
   
   Global Instance ℐ : core.convert.From.Trait Self (T := subtle.Choice.t) := {
     core.convert.From.from := from;
@@ -189,10 +178,7 @@ Section Impl_core_ops_bit_BitAnd_for_subtle_Choice_t.
     let* α2 : u8.t := M.read (subtle.Choice.Get_0 rhs) in
     M.call (α0 (BinOp.Pure.bit_and α1 α2)).
   
-  Global Instance AssociatedFunction_bitand :
-    Notations.DoubleColon Self "bitand" := {
-    Notations.double_colon := bitand;
-  }.
+  Axiom bitand_is_impl : impl Self "bitand" = bitand.
   
   Global Instance ℐ :
     core.ops.bit.BitAnd.Trait Self
@@ -234,10 +220,7 @@ Section Impl_core_ops_bit_BitAndAssign_for_subtle_Choice_t.
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
-  Global Instance AssociatedFunction_bitand_assign :
-    Notations.DoubleColon Self "bitand_assign" := {
-    Notations.double_colon := bitand_assign;
-  }.
+  Axiom bitand_assign_is_impl : impl Self "bitand_assign" = bitand_assign.
   
   Global Instance ℐ :
     core.ops.bit.BitAndAssign.Trait Self
@@ -274,10 +257,7 @@ Section Impl_core_ops_bit_BitOr_for_subtle_Choice_t.
     let* α2 : u8.t := M.read (subtle.Choice.Get_0 rhs) in
     M.call (α0 (BinOp.Pure.bit_or α1 α2)).
   
-  Global Instance AssociatedFunction_bitor :
-    Notations.DoubleColon Self "bitor" := {
-    Notations.double_colon := bitor;
-  }.
+  Axiom bitor_is_impl : impl Self "bitor" = bitor.
   
   Global Instance ℐ :
     core.ops.bit.BitOr.Trait Self
@@ -319,10 +299,7 @@ Section Impl_core_ops_bit_BitOrAssign_for_subtle_Choice_t.
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
-  Global Instance AssociatedFunction_bitor_assign :
-    Notations.DoubleColon Self "bitor_assign" := {
-    Notations.double_colon := bitor_assign;
-  }.
+  Axiom bitor_assign_is_impl : impl Self "bitor_assign" = bitor_assign.
   
   Global Instance ℐ :
     core.ops.bit.BitOrAssign.Trait Self
@@ -359,10 +336,7 @@ Section Impl_core_ops_bit_BitXor_for_subtle_Choice_t.
     let* α2 : u8.t := M.read (subtle.Choice.Get_0 rhs) in
     M.call (α0 (BinOp.Pure.bit_xor α1 α2)).
   
-  Global Instance AssociatedFunction_bitxor :
-    Notations.DoubleColon Self "bitxor" := {
-    Notations.double_colon := bitxor;
-  }.
+  Axiom bitxor_is_impl : impl Self "bitxor" = bitxor.
   
   Global Instance ℐ :
     core.ops.bit.BitXor.Trait Self
@@ -404,10 +378,7 @@ Section Impl_core_ops_bit_BitXorAssign_for_subtle_Choice_t.
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
-  Global Instance AssociatedFunction_bitxor_assign :
-    Notations.DoubleColon Self "bitxor_assign" := {
-    Notations.double_colon := bitxor_assign;
-  }.
+  Axiom bitxor_assign_is_impl : impl Self "bitxor_assign" = bitxor_assign.
   
   Global Instance ℐ :
     core.ops.bit.BitXorAssign.Trait Self
@@ -442,9 +413,7 @@ Section Impl_core_ops_bit_Not_for_subtle_Choice_t.
     let* α1 : u8.t := M.read (subtle.Choice.Get_0 self) in
     M.call (α0 (BinOp.Pure.bit_and ((Integer.of_Z 1) : u8.t) (UnOp.not α1))).
   
-  Global Instance AssociatedFunction_not : Notations.DoubleColon Self "not" := {
-    Notations.double_colon := not;
-  }.
+  Axiom not_is_impl : impl Self "not" = not.
   
   Global Instance ℐ : core.ops.bit.Not.Trait Self := {
     core.ops.bit.Not.Output := Output;
@@ -521,10 +490,7 @@ Section Impl_core_convert_From_u8_t_for_subtle_Choice_t.
     let* α1 : u8.t := M.call (subtle.black_box α0) in
     M.pure (subtle.Choice.Build_t α1).
   
-  Global Instance AssociatedFunction_from :
-    Notations.DoubleColon Self "from" := {
-    Notations.double_colon := from;
-  }.
+  Axiom from_is_impl : impl Self "from" = from.
   
   Global Instance ℐ : core.convert.From.Trait Self (T := u8.t) := {
     core.convert.From.from := from;
@@ -580,12 +546,12 @@ Section Impl_subtle_ConstantTimeEq_for_slice_T.
     M.catch_return
       (let* len : M.Val usize.t :=
         let* α0 : ref (slice T) := M.read self in
-        let* α1 : usize.t := M.call ((slice T)::["len"] α0) in
+        let* α1 : usize.t := M.call (impl (slice T) "len" α0) in
         M.alloc α1 in
       let* _ : M.Val unit :=
         let* α0 : usize.t := M.read len in
         let* α1 : ref (slice T) := M.read _rhs in
-        let* α2 : usize.t := M.call ((slice T)::["len"] α1) in
+        let* α2 : usize.t := M.call (impl (slice T) "len" α1) in
         let* α3 : M.Val bool.t := M.alloc (BinOp.Pure.ne α0 α2) in
         let* α4 : bool.t := M.read (use α3) in
         if α4 then
@@ -619,9 +585,11 @@ Section Impl_subtle_ConstantTimeEq_for_slice_T.
               (U := core.slice.iter.Iter.t T)
               (Trait := ℐ))) in
         let* α2 : ref (slice T) := M.read self in
-        let* α3 : core.slice.iter.Iter.t T := M.call ((slice T)::["iter"] α2) in
+        let* α3 : core.slice.iter.Iter.t T :=
+          M.call (impl (slice T) "iter" α2) in
         let* α4 : ref (slice T) := M.read _rhs in
-        let* α5 : core.slice.iter.Iter.t T := M.call ((slice T)::["iter"] α4) in
+        let* α5 : core.slice.iter.Iter.t T :=
+          M.call (impl (slice T) "iter" α4) in
         let* α6 :
             core.iter.adapters.zip.Zip.t
               (core.slice.iter.Iter.t T)
@@ -700,7 +668,7 @@ Section Impl_subtle_ConstantTimeEq_for_slice_T.
                                 let* α5 : M.Val subtle.Choice.t := M.alloc α4 in
                                 let* α6 : u8.t :=
                                   M.call
-                                    (subtle.Choice.t::["unwrap_u8"]
+                                    (impl subtle.Choice.t "unwrap_u8"
                                       (borrow α5)) in
                                 assign β (BinOp.Pure.bit_and α0 α6) in
                               M.alloc tt
@@ -724,10 +692,7 @@ Section Impl_subtle_ConstantTimeEq_for_slice_T.
       let* α0 : M.Val subtle.Choice.t := M.alloc α2 in
       M.read α0).
   
-  Global Instance AssociatedFunction_ct_eq :
-    Notations.DoubleColon Self "ct_eq" := {
-    Notations.double_colon := ct_eq;
-  }.
+  Axiom ct_eq_is_impl : impl Self "ct_eq" = ct_eq.
   
   Global Instance ℐ : subtle.ConstantTimeEq.Required.Trait Self := {
     subtle.ConstantTimeEq.ct_eq := ct_eq;
@@ -767,10 +732,7 @@ Section Impl_subtle_ConstantTimeEq_for_subtle_Choice_t.
     let* α6 : subtle.Choice.t := M.call (α1 α3 α5) in
     M.call (α0 α6).
   
-  Global Instance AssociatedFunction_ct_eq :
-    Notations.DoubleColon Self "ct_eq" := {
-    Notations.double_colon := ct_eq;
-  }.
+  Axiom ct_eq_is_impl : impl Self "ct_eq" = ct_eq.
   
   Global Instance ℐ : subtle.ConstantTimeEq.Required.Trait Self := {
     subtle.ConstantTimeEq.ct_eq := ct_eq;
@@ -813,7 +775,7 @@ Section Impl_subtle_ConstantTimeEq_for_u8_t.
     let* y : M.Val u8.t :=
       let* α0 : u8.t := M.read x in
       let* α1 : u8.t := M.read x in
-      let* α2 : u8.t := M.call (u8.t::["wrapping_neg"] α1) in
+      let* α2 : u8.t := M.call (impl u8.t "wrapping_neg" α1) in
       let* α3 : i32.t :=
         BinOp.Panic.sub ((Integer.of_Z 8) : i32.t) ((Integer.of_Z 1) : i32.t) in
       let* α4 : u8.t := BinOp.Panic.shr (BinOp.Pure.bit_or α0 α2) α3 in
@@ -833,10 +795,7 @@ Section Impl_subtle_ConstantTimeEq_for_u8_t.
     let* α0 : M.Val subtle.Choice.t := M.alloc α6 in
     M.read α0.
   
-  Global Instance AssociatedFunction_ct_eq :
-    Notations.DoubleColon Self "ct_eq" := {
-    Notations.double_colon := ct_eq;
-  }.
+  Axiom ct_eq_is_impl : impl Self "ct_eq" = ct_eq.
   
   Global Instance ℐ : subtle.ConstantTimeEq.Required.Trait Self := {
     subtle.ConstantTimeEq.ct_eq := ct_eq;
@@ -871,10 +830,7 @@ Section Impl_subtle_ConstantTimeEq_for_i8_t.
     let* α8 : M.Val u8.t := M.alloc α7 in
     M.call (α0 (borrow α4) (borrow α8)).
   
-  Global Instance AssociatedFunction_ct_eq :
-    Notations.DoubleColon Self "ct_eq" := {
-    Notations.double_colon := ct_eq;
-  }.
+  Axiom ct_eq_is_impl : impl Self "ct_eq" = ct_eq.
   
   Global Instance ℐ : subtle.ConstantTimeEq.Required.Trait Self := {
     subtle.ConstantTimeEq.ct_eq := ct_eq;
@@ -917,7 +873,7 @@ Section Impl_subtle_ConstantTimeEq_for_u16_t.
     let* y : M.Val u16.t :=
       let* α0 : u16.t := M.read x in
       let* α1 : u16.t := M.read x in
-      let* α2 : u16.t := M.call (u16.t::["wrapping_neg"] α1) in
+      let* α2 : u16.t := M.call (impl u16.t "wrapping_neg" α1) in
       let* α3 : i32.t :=
         BinOp.Panic.sub
           ((Integer.of_Z 16) : i32.t)
@@ -938,10 +894,7 @@ Section Impl_subtle_ConstantTimeEq_for_u16_t.
     let* α0 : M.Val subtle.Choice.t := M.alloc α5 in
     M.read α0.
   
-  Global Instance AssociatedFunction_ct_eq :
-    Notations.DoubleColon Self "ct_eq" := {
-    Notations.double_colon := ct_eq;
-  }.
+  Axiom ct_eq_is_impl : impl Self "ct_eq" = ct_eq.
   
   Global Instance ℐ : subtle.ConstantTimeEq.Required.Trait Self := {
     subtle.ConstantTimeEq.ct_eq := ct_eq;
@@ -976,10 +929,7 @@ Section Impl_subtle_ConstantTimeEq_for_i16_t.
     let* α8 : M.Val u16.t := M.alloc α7 in
     M.call (α0 (borrow α4) (borrow α8)).
   
-  Global Instance AssociatedFunction_ct_eq :
-    Notations.DoubleColon Self "ct_eq" := {
-    Notations.double_colon := ct_eq;
-  }.
+  Axiom ct_eq_is_impl : impl Self "ct_eq" = ct_eq.
   
   Global Instance ℐ : subtle.ConstantTimeEq.Required.Trait Self := {
     subtle.ConstantTimeEq.ct_eq := ct_eq;
@@ -1022,7 +972,7 @@ Section Impl_subtle_ConstantTimeEq_for_u32_t.
     let* y : M.Val u32.t :=
       let* α0 : u32.t := M.read x in
       let* α1 : u32.t := M.read x in
-      let* α2 : u32.t := M.call (u32.t::["wrapping_neg"] α1) in
+      let* α2 : u32.t := M.call (impl u32.t "wrapping_neg" α1) in
       let* α3 : i32.t :=
         BinOp.Panic.sub
           ((Integer.of_Z 32) : i32.t)
@@ -1043,10 +993,7 @@ Section Impl_subtle_ConstantTimeEq_for_u32_t.
     let* α0 : M.Val subtle.Choice.t := M.alloc α5 in
     M.read α0.
   
-  Global Instance AssociatedFunction_ct_eq :
-    Notations.DoubleColon Self "ct_eq" := {
-    Notations.double_colon := ct_eq;
-  }.
+  Axiom ct_eq_is_impl : impl Self "ct_eq" = ct_eq.
   
   Global Instance ℐ : subtle.ConstantTimeEq.Required.Trait Self := {
     subtle.ConstantTimeEq.ct_eq := ct_eq;
@@ -1081,10 +1028,7 @@ Section Impl_subtle_ConstantTimeEq_for_i32_t.
     let* α8 : M.Val u32.t := M.alloc α7 in
     M.call (α0 (borrow α4) (borrow α8)).
   
-  Global Instance AssociatedFunction_ct_eq :
-    Notations.DoubleColon Self "ct_eq" := {
-    Notations.double_colon := ct_eq;
-  }.
+  Axiom ct_eq_is_impl : impl Self "ct_eq" = ct_eq.
   
   Global Instance ℐ : subtle.ConstantTimeEq.Required.Trait Self := {
     subtle.ConstantTimeEq.ct_eq := ct_eq;
@@ -1127,7 +1071,7 @@ Section Impl_subtle_ConstantTimeEq_for_u64_t.
     let* y : M.Val u64.t :=
       let* α0 : u64.t := M.read x in
       let* α1 : u64.t := M.read x in
-      let* α2 : u64.t := M.call (u64.t::["wrapping_neg"] α1) in
+      let* α2 : u64.t := M.call (impl u64.t "wrapping_neg" α1) in
       let* α3 : i32.t :=
         BinOp.Panic.sub
           ((Integer.of_Z 64) : i32.t)
@@ -1148,10 +1092,7 @@ Section Impl_subtle_ConstantTimeEq_for_u64_t.
     let* α0 : M.Val subtle.Choice.t := M.alloc α5 in
     M.read α0.
   
-  Global Instance AssociatedFunction_ct_eq :
-    Notations.DoubleColon Self "ct_eq" := {
-    Notations.double_colon := ct_eq;
-  }.
+  Axiom ct_eq_is_impl : impl Self "ct_eq" = ct_eq.
   
   Global Instance ℐ : subtle.ConstantTimeEq.Required.Trait Self := {
     subtle.ConstantTimeEq.ct_eq := ct_eq;
@@ -1186,10 +1127,7 @@ Section Impl_subtle_ConstantTimeEq_for_i64_t.
     let* α8 : M.Val u64.t := M.alloc α7 in
     M.call (α0 (borrow α4) (borrow α8)).
   
-  Global Instance AssociatedFunction_ct_eq :
-    Notations.DoubleColon Self "ct_eq" := {
-    Notations.double_colon := ct_eq;
-  }.
+  Axiom ct_eq_is_impl : impl Self "ct_eq" = ct_eq.
   
   Global Instance ℐ : subtle.ConstantTimeEq.Required.Trait Self := {
     subtle.ConstantTimeEq.ct_eq := ct_eq;
@@ -1235,7 +1173,7 @@ Section Impl_subtle_ConstantTimeEq_for_usize_t.
     let* y : M.Val usize.t :=
       let* α0 : usize.t := M.read x in
       let* α1 : usize.t := M.read x in
-      let* α2 : usize.t := M.call (usize.t::["wrapping_neg"] α1) in
+      let* α2 : usize.t := M.call (impl usize.t "wrapping_neg" α1) in
       let* α3 : usize.t := M.call core.mem.size_of in
       let* α4 : usize.t := BinOp.Panic.mul α3 ((Integer.of_Z 8) : usize.t) in
       let* α5 : usize.t := BinOp.Panic.sub α4 ((Integer.of_Z 1) : usize.t) in
@@ -1255,10 +1193,7 @@ Section Impl_subtle_ConstantTimeEq_for_usize_t.
     let* α0 : M.Val subtle.Choice.t := M.alloc α5 in
     M.read α0.
   
-  Global Instance AssociatedFunction_ct_eq :
-    Notations.DoubleColon Self "ct_eq" := {
-    Notations.double_colon := ct_eq;
-  }.
+  Axiom ct_eq_is_impl : impl Self "ct_eq" = ct_eq.
   
   Global Instance ℐ : subtle.ConstantTimeEq.Required.Trait Self := {
     subtle.ConstantTimeEq.ct_eq := ct_eq;
@@ -1296,10 +1231,7 @@ Section Impl_subtle_ConstantTimeEq_for_isize_t.
     let* α8 : M.Val usize.t := M.alloc α7 in
     M.call (α0 (borrow α4) (borrow α8)).
   
-  Global Instance AssociatedFunction_ct_eq :
-    Notations.DoubleColon Self "ct_eq" := {
-    Notations.double_colon := ct_eq;
-  }.
+  Axiom ct_eq_is_impl : impl Self "ct_eq" = ct_eq.
   
   Global Instance ℐ : subtle.ConstantTimeEq.Required.Trait Self := {
     subtle.ConstantTimeEq.ct_eq := ct_eq;
@@ -1340,7 +1272,7 @@ Section Impl_subtle_ConditionallySelectable_for_u8_t.
     let* choice := M.alloc choice in
     let* mask : M.Val u8.t :=
       let* α0 : u8.t :=
-        M.call (subtle.Choice.t::["unwrap_u8"] (borrow choice)) in
+        M.call (impl subtle.Choice.t "unwrap_u8" (borrow choice)) in
       let* α1 : i8.t := M.cast α0 in
       let* α2 : i8.t := UnOp.neg α1 in
       let* α3 : u8.t := M.cast α2 in
@@ -1366,10 +1298,8 @@ Section Impl_subtle_ConditionallySelectable_for_u8_t.
     let* α0 : M.Val u8.t := M.alloc α7 in
     M.read α0.
   
-  Global Instance AssociatedFunction_conditional_select :
-    Notations.DoubleColon Self "conditional_select" := {
-    Notations.double_colon := conditional_select;
-  }.
+  Axiom conditional_select_is_impl :
+      impl Self "conditional_select" = conditional_select.
   
   (*
               fn conditional_assign(&mut self, other: &Self, choice: Choice) {
@@ -1389,7 +1319,7 @@ Section Impl_subtle_ConditionallySelectable_for_u8_t.
     let* choice := M.alloc choice in
     let* mask : M.Val u8.t :=
       let* α0 : u8.t :=
-        M.call (subtle.Choice.t::["unwrap_u8"] (borrow choice)) in
+        M.call (impl subtle.Choice.t "unwrap_u8" (borrow choice)) in
       let* α1 : i8.t := M.cast α0 in
       let* α2 : i8.t := UnOp.neg α1 in
       let* α3 : u8.t := M.cast α2 in
@@ -1412,10 +1342,8 @@ Section Impl_subtle_ConditionallySelectable_for_u8_t.
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
-  Global Instance AssociatedFunction_conditional_assign :
-    Notations.DoubleColon Self "conditional_assign" := {
-    Notations.double_colon := conditional_assign;
-  }.
+  Axiom conditional_assign_is_impl :
+      impl Self "conditional_assign" = conditional_assign.
   
   (*
               fn conditional_swap(a: &mut Self, b: &mut Self, choice: Choice) {
@@ -1437,7 +1365,7 @@ Section Impl_subtle_ConditionallySelectable_for_u8_t.
     let* choice := M.alloc choice in
     let* mask : M.Val u8.t :=
       let* α0 : u8.t :=
-        M.call (subtle.Choice.t::["unwrap_u8"] (borrow choice)) in
+        M.call (impl subtle.Choice.t "unwrap_u8" (borrow choice)) in
       let* α1 : i8.t := M.cast α0 in
       let* α2 : i8.t := UnOp.neg α1 in
       let* α3 : u8.t := M.cast α2 in
@@ -1466,10 +1394,8 @@ Section Impl_subtle_ConditionallySelectable_for_u8_t.
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
-  Global Instance AssociatedFunction_conditional_swap :
-    Notations.DoubleColon Self "conditional_swap" := {
-    Notations.double_colon := conditional_swap;
-  }.
+  Axiom conditional_swap_is_impl :
+      impl Self "conditional_swap" = conditional_swap.
   
   Global Instance ℐ : subtle.ConditionallySelectable.Required.Trait Self := {
     subtle.ConditionallySelectable.conditional_select := conditional_select;
@@ -1503,7 +1429,7 @@ Section Impl_subtle_ConditionallySelectable_for_i8_t.
     let* choice := M.alloc choice in
     let* mask : M.Val i8.t :=
       let* α0 : u8.t :=
-        M.call (subtle.Choice.t::["unwrap_u8"] (borrow choice)) in
+        M.call (impl subtle.Choice.t "unwrap_u8" (borrow choice)) in
       let* α1 : i8.t := M.cast α0 in
       let* α2 : i8.t := UnOp.neg α1 in
       let* α3 : M.Val i8.t := M.alloc α2 in
@@ -1529,10 +1455,8 @@ Section Impl_subtle_ConditionallySelectable_for_i8_t.
     let* α0 : M.Val i8.t := M.alloc α7 in
     M.read α0.
   
-  Global Instance AssociatedFunction_conditional_select :
-    Notations.DoubleColon Self "conditional_select" := {
-    Notations.double_colon := conditional_select;
-  }.
+  Axiom conditional_select_is_impl :
+      impl Self "conditional_select" = conditional_select.
   
   (*
               fn conditional_assign(&mut self, other: &Self, choice: Choice) {
@@ -1552,7 +1476,7 @@ Section Impl_subtle_ConditionallySelectable_for_i8_t.
     let* choice := M.alloc choice in
     let* mask : M.Val i8.t :=
       let* α0 : u8.t :=
-        M.call (subtle.Choice.t::["unwrap_u8"] (borrow choice)) in
+        M.call (impl subtle.Choice.t "unwrap_u8" (borrow choice)) in
       let* α1 : i8.t := M.cast α0 in
       let* α2 : i8.t := UnOp.neg α1 in
       let* α3 : M.Val i8.t := M.alloc α2 in
@@ -1575,10 +1499,8 @@ Section Impl_subtle_ConditionallySelectable_for_i8_t.
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
-  Global Instance AssociatedFunction_conditional_assign :
-    Notations.DoubleColon Self "conditional_assign" := {
-    Notations.double_colon := conditional_assign;
-  }.
+  Axiom conditional_assign_is_impl :
+      impl Self "conditional_assign" = conditional_assign.
   
   (*
               fn conditional_swap(a: &mut Self, b: &mut Self, choice: Choice) {
@@ -1600,7 +1522,7 @@ Section Impl_subtle_ConditionallySelectable_for_i8_t.
     let* choice := M.alloc choice in
     let* mask : M.Val i8.t :=
       let* α0 : u8.t :=
-        M.call (subtle.Choice.t::["unwrap_u8"] (borrow choice)) in
+        M.call (impl subtle.Choice.t "unwrap_u8" (borrow choice)) in
       let* α1 : i8.t := M.cast α0 in
       let* α2 : i8.t := UnOp.neg α1 in
       let* α3 : M.Val i8.t := M.alloc α2 in
@@ -1629,10 +1551,8 @@ Section Impl_subtle_ConditionallySelectable_for_i8_t.
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
-  Global Instance AssociatedFunction_conditional_swap :
-    Notations.DoubleColon Self "conditional_swap" := {
-    Notations.double_colon := conditional_swap;
-  }.
+  Axiom conditional_swap_is_impl :
+      impl Self "conditional_swap" = conditional_swap.
   
   Global Instance ℐ : subtle.ConditionallySelectable.Required.Trait Self := {
     subtle.ConditionallySelectable.conditional_select := conditional_select;
@@ -1666,7 +1586,7 @@ Section Impl_subtle_ConditionallySelectable_for_u16_t.
     let* choice := M.alloc choice in
     let* mask : M.Val u16.t :=
       let* α0 : u8.t :=
-        M.call (subtle.Choice.t::["unwrap_u8"] (borrow choice)) in
+        M.call (impl subtle.Choice.t "unwrap_u8" (borrow choice)) in
       let* α1 : i16.t := M.cast α0 in
       let* α2 : i16.t := UnOp.neg α1 in
       let* α3 : u16.t := M.cast α2 in
@@ -1692,10 +1612,8 @@ Section Impl_subtle_ConditionallySelectable_for_u16_t.
     let* α0 : M.Val u16.t := M.alloc α7 in
     M.read α0.
   
-  Global Instance AssociatedFunction_conditional_select :
-    Notations.DoubleColon Self "conditional_select" := {
-    Notations.double_colon := conditional_select;
-  }.
+  Axiom conditional_select_is_impl :
+      impl Self "conditional_select" = conditional_select.
   
   (*
               fn conditional_assign(&mut self, other: &Self, choice: Choice) {
@@ -1715,7 +1633,7 @@ Section Impl_subtle_ConditionallySelectable_for_u16_t.
     let* choice := M.alloc choice in
     let* mask : M.Val u16.t :=
       let* α0 : u8.t :=
-        M.call (subtle.Choice.t::["unwrap_u8"] (borrow choice)) in
+        M.call (impl subtle.Choice.t "unwrap_u8" (borrow choice)) in
       let* α1 : i16.t := M.cast α0 in
       let* α2 : i16.t := UnOp.neg α1 in
       let* α3 : u16.t := M.cast α2 in
@@ -1738,10 +1656,8 @@ Section Impl_subtle_ConditionallySelectable_for_u16_t.
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
-  Global Instance AssociatedFunction_conditional_assign :
-    Notations.DoubleColon Self "conditional_assign" := {
-    Notations.double_colon := conditional_assign;
-  }.
+  Axiom conditional_assign_is_impl :
+      impl Self "conditional_assign" = conditional_assign.
   
   (*
               fn conditional_swap(a: &mut Self, b: &mut Self, choice: Choice) {
@@ -1763,7 +1679,7 @@ Section Impl_subtle_ConditionallySelectable_for_u16_t.
     let* choice := M.alloc choice in
     let* mask : M.Val u16.t :=
       let* α0 : u8.t :=
-        M.call (subtle.Choice.t::["unwrap_u8"] (borrow choice)) in
+        M.call (impl subtle.Choice.t "unwrap_u8" (borrow choice)) in
       let* α1 : i16.t := M.cast α0 in
       let* α2 : i16.t := UnOp.neg α1 in
       let* α3 : u16.t := M.cast α2 in
@@ -1792,10 +1708,8 @@ Section Impl_subtle_ConditionallySelectable_for_u16_t.
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
-  Global Instance AssociatedFunction_conditional_swap :
-    Notations.DoubleColon Self "conditional_swap" := {
-    Notations.double_colon := conditional_swap;
-  }.
+  Axiom conditional_swap_is_impl :
+      impl Self "conditional_swap" = conditional_swap.
   
   Global Instance ℐ : subtle.ConditionallySelectable.Required.Trait Self := {
     subtle.ConditionallySelectable.conditional_select := conditional_select;
@@ -1829,7 +1743,7 @@ Section Impl_subtle_ConditionallySelectable_for_i16_t.
     let* choice := M.alloc choice in
     let* mask : M.Val i16.t :=
       let* α0 : u8.t :=
-        M.call (subtle.Choice.t::["unwrap_u8"] (borrow choice)) in
+        M.call (impl subtle.Choice.t "unwrap_u8" (borrow choice)) in
       let* α1 : i16.t := M.cast α0 in
       let* α2 : i16.t := UnOp.neg α1 in
       let* α3 : M.Val i16.t := M.alloc α2 in
@@ -1855,10 +1769,8 @@ Section Impl_subtle_ConditionallySelectable_for_i16_t.
     let* α0 : M.Val i16.t := M.alloc α7 in
     M.read α0.
   
-  Global Instance AssociatedFunction_conditional_select :
-    Notations.DoubleColon Self "conditional_select" := {
-    Notations.double_colon := conditional_select;
-  }.
+  Axiom conditional_select_is_impl :
+      impl Self "conditional_select" = conditional_select.
   
   (*
               fn conditional_assign(&mut self, other: &Self, choice: Choice) {
@@ -1878,7 +1790,7 @@ Section Impl_subtle_ConditionallySelectable_for_i16_t.
     let* choice := M.alloc choice in
     let* mask : M.Val i16.t :=
       let* α0 : u8.t :=
-        M.call (subtle.Choice.t::["unwrap_u8"] (borrow choice)) in
+        M.call (impl subtle.Choice.t "unwrap_u8" (borrow choice)) in
       let* α1 : i16.t := M.cast α0 in
       let* α2 : i16.t := UnOp.neg α1 in
       let* α3 : M.Val i16.t := M.alloc α2 in
@@ -1901,10 +1813,8 @@ Section Impl_subtle_ConditionallySelectable_for_i16_t.
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
-  Global Instance AssociatedFunction_conditional_assign :
-    Notations.DoubleColon Self "conditional_assign" := {
-    Notations.double_colon := conditional_assign;
-  }.
+  Axiom conditional_assign_is_impl :
+      impl Self "conditional_assign" = conditional_assign.
   
   (*
               fn conditional_swap(a: &mut Self, b: &mut Self, choice: Choice) {
@@ -1926,7 +1836,7 @@ Section Impl_subtle_ConditionallySelectable_for_i16_t.
     let* choice := M.alloc choice in
     let* mask : M.Val i16.t :=
       let* α0 : u8.t :=
-        M.call (subtle.Choice.t::["unwrap_u8"] (borrow choice)) in
+        M.call (impl subtle.Choice.t "unwrap_u8" (borrow choice)) in
       let* α1 : i16.t := M.cast α0 in
       let* α2 : i16.t := UnOp.neg α1 in
       let* α3 : M.Val i16.t := M.alloc α2 in
@@ -1955,10 +1865,8 @@ Section Impl_subtle_ConditionallySelectable_for_i16_t.
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
-  Global Instance AssociatedFunction_conditional_swap :
-    Notations.DoubleColon Self "conditional_swap" := {
-    Notations.double_colon := conditional_swap;
-  }.
+  Axiom conditional_swap_is_impl :
+      impl Self "conditional_swap" = conditional_swap.
   
   Global Instance ℐ : subtle.ConditionallySelectable.Required.Trait Self := {
     subtle.ConditionallySelectable.conditional_select := conditional_select;
@@ -1992,7 +1900,7 @@ Section Impl_subtle_ConditionallySelectable_for_u32_t.
     let* choice := M.alloc choice in
     let* mask : M.Val u32.t :=
       let* α0 : u8.t :=
-        M.call (subtle.Choice.t::["unwrap_u8"] (borrow choice)) in
+        M.call (impl subtle.Choice.t "unwrap_u8" (borrow choice)) in
       let* α1 : i32.t := M.cast α0 in
       let* α2 : i32.t := UnOp.neg α1 in
       let* α3 : u32.t := M.cast α2 in
@@ -2018,10 +1926,8 @@ Section Impl_subtle_ConditionallySelectable_for_u32_t.
     let* α0 : M.Val u32.t := M.alloc α7 in
     M.read α0.
   
-  Global Instance AssociatedFunction_conditional_select :
-    Notations.DoubleColon Self "conditional_select" := {
-    Notations.double_colon := conditional_select;
-  }.
+  Axiom conditional_select_is_impl :
+      impl Self "conditional_select" = conditional_select.
   
   (*
               fn conditional_assign(&mut self, other: &Self, choice: Choice) {
@@ -2041,7 +1947,7 @@ Section Impl_subtle_ConditionallySelectable_for_u32_t.
     let* choice := M.alloc choice in
     let* mask : M.Val u32.t :=
       let* α0 : u8.t :=
-        M.call (subtle.Choice.t::["unwrap_u8"] (borrow choice)) in
+        M.call (impl subtle.Choice.t "unwrap_u8" (borrow choice)) in
       let* α1 : i32.t := M.cast α0 in
       let* α2 : i32.t := UnOp.neg α1 in
       let* α3 : u32.t := M.cast α2 in
@@ -2064,10 +1970,8 @@ Section Impl_subtle_ConditionallySelectable_for_u32_t.
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
-  Global Instance AssociatedFunction_conditional_assign :
-    Notations.DoubleColon Self "conditional_assign" := {
-    Notations.double_colon := conditional_assign;
-  }.
+  Axiom conditional_assign_is_impl :
+      impl Self "conditional_assign" = conditional_assign.
   
   (*
               fn conditional_swap(a: &mut Self, b: &mut Self, choice: Choice) {
@@ -2089,7 +1993,7 @@ Section Impl_subtle_ConditionallySelectable_for_u32_t.
     let* choice := M.alloc choice in
     let* mask : M.Val u32.t :=
       let* α0 : u8.t :=
-        M.call (subtle.Choice.t::["unwrap_u8"] (borrow choice)) in
+        M.call (impl subtle.Choice.t "unwrap_u8" (borrow choice)) in
       let* α1 : i32.t := M.cast α0 in
       let* α2 : i32.t := UnOp.neg α1 in
       let* α3 : u32.t := M.cast α2 in
@@ -2118,10 +2022,8 @@ Section Impl_subtle_ConditionallySelectable_for_u32_t.
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
-  Global Instance AssociatedFunction_conditional_swap :
-    Notations.DoubleColon Self "conditional_swap" := {
-    Notations.double_colon := conditional_swap;
-  }.
+  Axiom conditional_swap_is_impl :
+      impl Self "conditional_swap" = conditional_swap.
   
   Global Instance ℐ : subtle.ConditionallySelectable.Required.Trait Self := {
     subtle.ConditionallySelectable.conditional_select := conditional_select;
@@ -2155,7 +2057,7 @@ Section Impl_subtle_ConditionallySelectable_for_i32_t.
     let* choice := M.alloc choice in
     let* mask : M.Val i32.t :=
       let* α0 : u8.t :=
-        M.call (subtle.Choice.t::["unwrap_u8"] (borrow choice)) in
+        M.call (impl subtle.Choice.t "unwrap_u8" (borrow choice)) in
       let* α1 : i32.t := M.cast α0 in
       let* α2 : i32.t := UnOp.neg α1 in
       let* α3 : M.Val i32.t := M.alloc α2 in
@@ -2181,10 +2083,8 @@ Section Impl_subtle_ConditionallySelectable_for_i32_t.
     let* α0 : M.Val i32.t := M.alloc α7 in
     M.read α0.
   
-  Global Instance AssociatedFunction_conditional_select :
-    Notations.DoubleColon Self "conditional_select" := {
-    Notations.double_colon := conditional_select;
-  }.
+  Axiom conditional_select_is_impl :
+      impl Self "conditional_select" = conditional_select.
   
   (*
               fn conditional_assign(&mut self, other: &Self, choice: Choice) {
@@ -2204,7 +2104,7 @@ Section Impl_subtle_ConditionallySelectable_for_i32_t.
     let* choice := M.alloc choice in
     let* mask : M.Val i32.t :=
       let* α0 : u8.t :=
-        M.call (subtle.Choice.t::["unwrap_u8"] (borrow choice)) in
+        M.call (impl subtle.Choice.t "unwrap_u8" (borrow choice)) in
       let* α1 : i32.t := M.cast α0 in
       let* α2 : i32.t := UnOp.neg α1 in
       let* α3 : M.Val i32.t := M.alloc α2 in
@@ -2227,10 +2127,8 @@ Section Impl_subtle_ConditionallySelectable_for_i32_t.
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
-  Global Instance AssociatedFunction_conditional_assign :
-    Notations.DoubleColon Self "conditional_assign" := {
-    Notations.double_colon := conditional_assign;
-  }.
+  Axiom conditional_assign_is_impl :
+      impl Self "conditional_assign" = conditional_assign.
   
   (*
               fn conditional_swap(a: &mut Self, b: &mut Self, choice: Choice) {
@@ -2252,7 +2150,7 @@ Section Impl_subtle_ConditionallySelectable_for_i32_t.
     let* choice := M.alloc choice in
     let* mask : M.Val i32.t :=
       let* α0 : u8.t :=
-        M.call (subtle.Choice.t::["unwrap_u8"] (borrow choice)) in
+        M.call (impl subtle.Choice.t "unwrap_u8" (borrow choice)) in
       let* α1 : i32.t := M.cast α0 in
       let* α2 : i32.t := UnOp.neg α1 in
       let* α3 : M.Val i32.t := M.alloc α2 in
@@ -2281,10 +2179,8 @@ Section Impl_subtle_ConditionallySelectable_for_i32_t.
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
-  Global Instance AssociatedFunction_conditional_swap :
-    Notations.DoubleColon Self "conditional_swap" := {
-    Notations.double_colon := conditional_swap;
-  }.
+  Axiom conditional_swap_is_impl :
+      impl Self "conditional_swap" = conditional_swap.
   
   Global Instance ℐ : subtle.ConditionallySelectable.Required.Trait Self := {
     subtle.ConditionallySelectable.conditional_select := conditional_select;
@@ -2318,7 +2214,7 @@ Section Impl_subtle_ConditionallySelectable_for_u64_t.
     let* choice := M.alloc choice in
     let* mask : M.Val u64.t :=
       let* α0 : u8.t :=
-        M.call (subtle.Choice.t::["unwrap_u8"] (borrow choice)) in
+        M.call (impl subtle.Choice.t "unwrap_u8" (borrow choice)) in
       let* α1 : i64.t := M.cast α0 in
       let* α2 : i64.t := UnOp.neg α1 in
       let* α3 : u64.t := M.cast α2 in
@@ -2344,10 +2240,8 @@ Section Impl_subtle_ConditionallySelectable_for_u64_t.
     let* α0 : M.Val u64.t := M.alloc α7 in
     M.read α0.
   
-  Global Instance AssociatedFunction_conditional_select :
-    Notations.DoubleColon Self "conditional_select" := {
-    Notations.double_colon := conditional_select;
-  }.
+  Axiom conditional_select_is_impl :
+      impl Self "conditional_select" = conditional_select.
   
   (*
               fn conditional_assign(&mut self, other: &Self, choice: Choice) {
@@ -2367,7 +2261,7 @@ Section Impl_subtle_ConditionallySelectable_for_u64_t.
     let* choice := M.alloc choice in
     let* mask : M.Val u64.t :=
       let* α0 : u8.t :=
-        M.call (subtle.Choice.t::["unwrap_u8"] (borrow choice)) in
+        M.call (impl subtle.Choice.t "unwrap_u8" (borrow choice)) in
       let* α1 : i64.t := M.cast α0 in
       let* α2 : i64.t := UnOp.neg α1 in
       let* α3 : u64.t := M.cast α2 in
@@ -2390,10 +2284,8 @@ Section Impl_subtle_ConditionallySelectable_for_u64_t.
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
-  Global Instance AssociatedFunction_conditional_assign :
-    Notations.DoubleColon Self "conditional_assign" := {
-    Notations.double_colon := conditional_assign;
-  }.
+  Axiom conditional_assign_is_impl :
+      impl Self "conditional_assign" = conditional_assign.
   
   (*
               fn conditional_swap(a: &mut Self, b: &mut Self, choice: Choice) {
@@ -2415,7 +2307,7 @@ Section Impl_subtle_ConditionallySelectable_for_u64_t.
     let* choice := M.alloc choice in
     let* mask : M.Val u64.t :=
       let* α0 : u8.t :=
-        M.call (subtle.Choice.t::["unwrap_u8"] (borrow choice)) in
+        M.call (impl subtle.Choice.t "unwrap_u8" (borrow choice)) in
       let* α1 : i64.t := M.cast α0 in
       let* α2 : i64.t := UnOp.neg α1 in
       let* α3 : u64.t := M.cast α2 in
@@ -2444,10 +2336,8 @@ Section Impl_subtle_ConditionallySelectable_for_u64_t.
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
-  Global Instance AssociatedFunction_conditional_swap :
-    Notations.DoubleColon Self "conditional_swap" := {
-    Notations.double_colon := conditional_swap;
-  }.
+  Axiom conditional_swap_is_impl :
+      impl Self "conditional_swap" = conditional_swap.
   
   Global Instance ℐ : subtle.ConditionallySelectable.Required.Trait Self := {
     subtle.ConditionallySelectable.conditional_select := conditional_select;
@@ -2481,7 +2371,7 @@ Section Impl_subtle_ConditionallySelectable_for_i64_t.
     let* choice := M.alloc choice in
     let* mask : M.Val i64.t :=
       let* α0 : u8.t :=
-        M.call (subtle.Choice.t::["unwrap_u8"] (borrow choice)) in
+        M.call (impl subtle.Choice.t "unwrap_u8" (borrow choice)) in
       let* α1 : i64.t := M.cast α0 in
       let* α2 : i64.t := UnOp.neg α1 in
       let* α3 : M.Val i64.t := M.alloc α2 in
@@ -2507,10 +2397,8 @@ Section Impl_subtle_ConditionallySelectable_for_i64_t.
     let* α0 : M.Val i64.t := M.alloc α7 in
     M.read α0.
   
-  Global Instance AssociatedFunction_conditional_select :
-    Notations.DoubleColon Self "conditional_select" := {
-    Notations.double_colon := conditional_select;
-  }.
+  Axiom conditional_select_is_impl :
+      impl Self "conditional_select" = conditional_select.
   
   (*
               fn conditional_assign(&mut self, other: &Self, choice: Choice) {
@@ -2530,7 +2418,7 @@ Section Impl_subtle_ConditionallySelectable_for_i64_t.
     let* choice := M.alloc choice in
     let* mask : M.Val i64.t :=
       let* α0 : u8.t :=
-        M.call (subtle.Choice.t::["unwrap_u8"] (borrow choice)) in
+        M.call (impl subtle.Choice.t "unwrap_u8" (borrow choice)) in
       let* α1 : i64.t := M.cast α0 in
       let* α2 : i64.t := UnOp.neg α1 in
       let* α3 : M.Val i64.t := M.alloc α2 in
@@ -2553,10 +2441,8 @@ Section Impl_subtle_ConditionallySelectable_for_i64_t.
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
-  Global Instance AssociatedFunction_conditional_assign :
-    Notations.DoubleColon Self "conditional_assign" := {
-    Notations.double_colon := conditional_assign;
-  }.
+  Axiom conditional_assign_is_impl :
+      impl Self "conditional_assign" = conditional_assign.
   
   (*
               fn conditional_swap(a: &mut Self, b: &mut Self, choice: Choice) {
@@ -2578,7 +2464,7 @@ Section Impl_subtle_ConditionallySelectable_for_i64_t.
     let* choice := M.alloc choice in
     let* mask : M.Val i64.t :=
       let* α0 : u8.t :=
-        M.call (subtle.Choice.t::["unwrap_u8"] (borrow choice)) in
+        M.call (impl subtle.Choice.t "unwrap_u8" (borrow choice)) in
       let* α1 : i64.t := M.cast α0 in
       let* α2 : i64.t := UnOp.neg α1 in
       let* α3 : M.Val i64.t := M.alloc α2 in
@@ -2607,10 +2493,8 @@ Section Impl_subtle_ConditionallySelectable_for_i64_t.
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
-  Global Instance AssociatedFunction_conditional_swap :
-    Notations.DoubleColon Self "conditional_swap" := {
-    Notations.double_colon := conditional_swap;
-  }.
+  Axiom conditional_swap_is_impl :
+      impl Self "conditional_swap" = conditional_swap.
   
   Global Instance ℐ : subtle.ConditionallySelectable.Required.Trait Self := {
     subtle.ConditionallySelectable.conditional_select := conditional_select;
@@ -2655,10 +2539,8 @@ Section Impl_subtle_ConditionallySelectable_for_subtle_Choice_t.
           α3) in
     M.pure (subtle.Choice.Build_t α4).
   
-  Global Instance AssociatedFunction_conditional_select :
-    Notations.DoubleColon Self "conditional_select" := {
-    Notations.double_colon := conditional_select;
-  }.
+  Axiom conditional_select_is_impl :
+      impl Self "conditional_select" = conditional_select.
   
   Global Instance ℐ : subtle.ConditionallySelectable.Required.Trait Self := {
     subtle.ConditionallySelectable.conditional_select := conditional_select;
@@ -2722,10 +2604,8 @@ Section Impl_subtle_ConditionallyNegatable_for_T.
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
-  Global Instance AssociatedFunction_conditional_negate :
-    Notations.DoubleColon Self "conditional_negate" := {
-    Notations.double_colon := conditional_negate;
-  }.
+  Axiom conditional_negate_is_impl :
+      impl Self "conditional_negate" = conditional_negate.
   
   Global Instance ℐ : subtle.ConditionallyNegatable.Trait Self := {
     subtle.ConditionallyNegatable.conditional_negate := conditional_negate;
@@ -2778,10 +2658,7 @@ Section Impl_core_clone_Clone_for_subtle_CtOption_t_T.
       M.call (α3 (borrow (subtle.CtOption.Get_is_some (deref α4)))) in
     M.pure {| subtle.CtOption.value := α2; subtle.CtOption.is_some := α5; |}.
   
-  Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon Self "clone" := {
-    Notations.double_colon := clone;
-  }.
+  Axiom clone_is_impl : impl Self "clone" = clone.
   
   Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
@@ -2834,11 +2711,15 @@ Section Impl_core_fmt_Debug_for_subtle_CtOption_t_T.
     let* α9 : M.Val (ref (ref subtle.Choice.t)) := M.alloc (borrow α8) in
     let* α10 : ref _ (* dyn *) := M.read (pointer_coercion "Unsize" α9) in
     M.call
-      (core.fmt.Formatter.t::["debug_struct_field2_finish"] α0 α1 α2 α5 α6 α10).
+      (impl core.fmt.Formatter.t "debug_struct_field2_finish"
+        α0
+        α1
+        α2
+        α5
+        α6
+        α10).
   
-  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
-    Notations.double_colon := fmt;
-  }.
+  Axiom fmt_is_impl : impl Self "fmt" = fmt.
   
   Global Instance ℐ : core.fmt.Debug.Trait Self := {
     core.fmt.Debug.fmt := fmt;
@@ -2864,9 +2745,9 @@ Section Impl_core_convert_From_subtle_CtOption_t_T_for_core_option_Option_t_T.
   Definition from (source : subtle.CtOption.t T) : M (core.option.Option.t T) :=
     let* source := M.alloc source in
     let* α0 : subtle.Choice.t :=
-      M.call ((subtle.CtOption.t T)::["is_some"] (borrow source)) in
+      M.call (impl (subtle.CtOption.t T) "is_some" (borrow source)) in
     let* α1 : M.Val subtle.Choice.t := M.alloc α0 in
-    let* α2 : u8.t := M.call (subtle.Choice.t::["unwrap_u8"] (borrow α1)) in
+    let* α2 : u8.t := M.call (impl subtle.Choice.t "unwrap_u8" (borrow α1)) in
     let* α3 : M.Val bool.t :=
       M.alloc (BinOp.Pure.eq α2 ((Integer.of_Z 1) : u8.t)) in
     let* α4 : bool.t := M.read (use α3) in
@@ -2878,10 +2759,7 @@ Section Impl_core_convert_From_subtle_CtOption_t_T_for_core_option_Option_t_T.
         M.alloc core.option.Option.None in
     M.read α5.
   
-  Global Instance AssociatedFunction_from :
-    Notations.DoubleColon Self "from" := {
-    Notations.double_colon := from;
-  }.
+  Axiom from_is_impl : impl Self "from" = from.
   
   Global Instance ℐ :
     core.convert.From.Trait Self (T := subtle.CtOption.t T) := {
@@ -2914,9 +2792,7 @@ Section Impl_subtle_CtOption_t_T.
     let* α1 : subtle.Choice.t := M.read is_some in
     M.pure {| subtle.CtOption.value := α0; subtle.CtOption.is_some := α1; |}.
   
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
-    Notations.double_colon := new;
-  }.
+  Axiom new_is_impl : impl Self "new" = new.
   
   (*
       pub fn expect(self, msg: &str) -> T {
@@ -2931,7 +2807,7 @@ Section Impl_subtle_CtOption_t_T.
     let* _ : M.Val unit :=
       let* α0 : u8.t :=
         M.call
-          (subtle.Choice.t::["unwrap_u8"]
+          (impl subtle.Choice.t "unwrap_u8"
             (borrow (subtle.CtOption.Get_is_some self))) in
       let* α1 : M.Val u8.t := M.alloc α0 in
       let* α2 : M.Val u8.t := M.alloc ((Integer.of_Z 1) : u8.t) in
@@ -2969,7 +2845,7 @@ Section Impl_subtle_CtOption_t_T.
                   M.read (pointer_coercion "Unsize" α5) in
                 let* α7 : core.fmt.rt.Argument.t :=
                   M.call
-                    (core.fmt.rt.Argument.t::["new_display"] (borrow msg)) in
+                    (impl core.fmt.rt.Argument.t "new_display" (borrow msg)) in
                 let* α8 : M.Val (array core.fmt.rt.Argument.t) :=
                   M.alloc [ α7 ] in
                 let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
@@ -2977,7 +2853,7 @@ Section Impl_subtle_CtOption_t_T.
                 let* α10 : ref (slice core.fmt.rt.Argument.t) :=
                   M.read (pointer_coercion "Unsize" α9) in
                 let* α11 : core.fmt.Arguments.t :=
-                  M.call (core.fmt.Arguments.t::["new_v1"] α6 α10) in
+                  M.call (impl core.fmt.Arguments.t "new_v1" α6 α10) in
                 let* α12 : never.t :=
                   M.call
                     (core.panicking.assert_failed
@@ -2996,10 +2872,7 @@ Section Impl_subtle_CtOption_t_T.
         ] in
     M.read (subtle.CtOption.Get_value self).
   
-  Global Instance AssociatedFunction_expect :
-    Notations.DoubleColon Self "expect" := {
-    Notations.double_colon := expect;
-  }.
+  Axiom expect_is_impl : impl Self "expect" = expect.
   
   (*
       pub fn unwrap(self) -> T {
@@ -3013,7 +2886,7 @@ Section Impl_subtle_CtOption_t_T.
     let* _ : M.Val unit :=
       let* α0 : u8.t :=
         M.call
-          (subtle.Choice.t::["unwrap_u8"]
+          (impl subtle.Choice.t "unwrap_u8"
             (borrow (subtle.CtOption.Get_is_some self))) in
       let* α1 : M.Val u8.t := M.alloc α0 in
       let* α2 : M.Val u8.t := M.alloc ((Integer.of_Z 1) : u8.t) in
@@ -3061,10 +2934,7 @@ Section Impl_subtle_CtOption_t_T.
         ] in
     M.read (subtle.CtOption.Get_value self).
   
-  Global Instance AssociatedFunction_unwrap :
-    Notations.DoubleColon Self "unwrap" := {
-    Notations.double_colon := unwrap;
-  }.
+  Axiom unwrap_is_impl : impl Self "unwrap" = unwrap.
   
   (*
       pub fn unwrap_or(self, def: T) -> T
@@ -3089,11 +2959,7 @@ Section Impl_subtle_CtOption_t_T.
     let* α1 : subtle.Choice.t := M.read (subtle.CtOption.Get_is_some self) in
     M.call (α0 (borrow def) (borrow (subtle.CtOption.Get_value self)) α1).
   
-  Global Instance AssociatedFunction_unwrap_or
-      {ℋ_0 : subtle.ConditionallySelectable.Trait T} :
-    Notations.DoubleColon Self "unwrap_or" := {
-    Notations.double_colon := unwrap_or;
-  }.
+  Axiom unwrap_or_is_impl : impl Self "unwrap_or" = unwrap_or.
   
   (*
       pub fn unwrap_or_else<F>(self, f: F) -> T
@@ -3130,13 +2996,9 @@ Section Impl_subtle_CtOption_t_T.
     let* α5 : subtle.Choice.t := M.read (subtle.CtOption.Get_is_some self) in
     M.call (α0 (borrow α4) (borrow (subtle.CtOption.Get_value self)) α5).
   
-  Global Instance AssociatedFunction_unwrap_or_else
-      {F : Set}
-      {ℋ_0 : subtle.ConditionallySelectable.Trait T}
-      {ℋ_1 : core.ops.function.FnOnce.Trait F (Args := unit)} :
-    Notations.DoubleColon Self "unwrap_or_else" := {
-    Notations.double_colon := unwrap_or_else (F := F);
-  }.
+  Axiom unwrap_or_else_is_impl :
+      forall {F : Set},
+      impl Self "unwrap_or_else" = unwrap_or_else (F := F).
   
   (*
       pub fn is_some(&self) -> Choice {
@@ -3148,10 +3010,7 @@ Section Impl_subtle_CtOption_t_T.
     let* α0 : ref (subtle.CtOption.t T) := M.read self in
     M.read (subtle.CtOption.Get_is_some (deref α0)).
   
-  Global Instance AssociatedFunction_is_some :
-    Notations.DoubleColon Self "is_some" := {
-    Notations.double_colon := is_some;
-  }.
+  Axiom is_some_is_impl : impl Self "is_some" = is_some.
   
   (*
       pub fn is_none(&self) -> Choice {
@@ -3168,10 +3027,7 @@ Section Impl_subtle_CtOption_t_T.
       M.read (subtle.CtOption.Get_is_some (deref α1)) in
     M.call (α0 α2).
   
-  Global Instance AssociatedFunction_is_none :
-    Notations.DoubleColon Self "is_none" := {
-    Notations.double_colon := is_none;
-  }.
+  Axiom is_none_is_impl : impl Self "is_none" = is_none.
   
   (*
       pub fn map<U, F>(self, f: F) -> CtOption<U>
@@ -3221,16 +3077,11 @@ Section Impl_subtle_CtOption_t_T.
       M.call (α2 (borrow α5) (borrow (subtle.CtOption.Get_value self)) α6) in
     let* α8 : U := M.call (α0 α1 (α7)) in
     let* α9 : subtle.Choice.t := M.read (subtle.CtOption.Get_is_some self) in
-    M.call ((subtle.CtOption.t U)::["new"] α8 α9).
+    M.call (impl (subtle.CtOption.t U) "new" α8 α9).
   
-  Global Instance AssociatedFunction_map
-      {U F : Set}
-      {ℋ_0 : core.default.Default.Trait T}
-      {ℋ_1 : subtle.ConditionallySelectable.Trait T}
-      {ℋ_2 : core.ops.function.FnOnce.Trait F (Args := T)} :
-    Notations.DoubleColon Self "map" := {
-    Notations.double_colon := map (U := U) (F := F);
-  }.
+  Axiom map_is_impl :
+      forall {U F : Set},
+      impl Self "map" = map (U := U) (F := F).
   
   (*
       pub fn and_then<U, F>(self, f: F) -> CtOption<U>
@@ -3294,14 +3145,9 @@ Section Impl_subtle_CtOption_t_T.
       M.alloc α2 in
     M.read tmp.
   
-  Global Instance AssociatedFunction_and_then
-      {U F : Set}
-      {ℋ_0 : core.default.Default.Trait T}
-      {ℋ_1 : subtle.ConditionallySelectable.Trait T}
-      {ℋ_2 : core.ops.function.FnOnce.Trait F (Args := T)} :
-    Notations.DoubleColon Self "and_then" := {
-    Notations.double_colon := and_then (U := U) (F := F);
-  }.
+  Axiom and_then_is_impl :
+      forall {U F : Set},
+      impl Self "and_then" = and_then (U := U) (F := F).
   
   (*
       pub fn or_else<F>(self, f: F) -> CtOption<T>
@@ -3326,7 +3172,7 @@ Section Impl_subtle_CtOption_t_T.
     let* f := M.alloc f in
     let* is_none : M.Val subtle.Choice.t :=
       let* α0 : subtle.Choice.t :=
-        M.call ((subtle.CtOption.t T)::["is_none"] (borrow self)) in
+        M.call (impl (subtle.CtOption.t T) "is_none" (borrow self)) in
       M.alloc α0 in
     let* f : M.Val (subtle.CtOption.t T) :=
       let* α0 : _ :=
@@ -3348,13 +3194,9 @@ Section Impl_subtle_CtOption_t_T.
     let* α0 : M.Val (subtle.CtOption.t T) := M.alloc α2 in
     M.read α0.
   
-  Global Instance AssociatedFunction_or_else
-      {F : Set}
-      {ℋ_0 : subtle.ConditionallySelectable.Trait T}
-      {ℋ_1 : core.ops.function.FnOnce.Trait F (Args := unit)} :
-    Notations.DoubleColon Self "or_else" := {
-    Notations.double_colon := or_else (F := F);
-  }.
+  Axiom or_else_is_impl :
+      forall {F : Set},
+      impl Self "or_else" = or_else (F := F).
 End Impl_subtle_CtOption_t_T.
 End Impl_subtle_CtOption_t_T.
 
@@ -3410,12 +3252,10 @@ Section Impl_subtle_ConditionallySelectable_for_subtle_CtOption_t_T.
           (borrow (subtle.CtOption.Get_is_some (deref α6)))
           (borrow (subtle.CtOption.Get_is_some (deref α7)))
           α8) in
-    M.call ((subtle.CtOption.t T)::["new"] α4 α9).
+    M.call (impl (subtle.CtOption.t T) "new" α4 α9).
   
-  Global Instance AssociatedFunction_conditional_select :
-    Notations.DoubleColon Self "conditional_select" := {
-    Notations.double_colon := conditional_select;
-  }.
+  Axiom conditional_select_is_impl :
+      impl Self "conditional_select" = conditional_select.
   
   Global Instance ℐ : subtle.ConditionallySelectable.Required.Trait Self := {
     subtle.ConditionallySelectable.conditional_select := conditional_select;
@@ -3450,12 +3290,12 @@ Section Impl_subtle_ConstantTimeEq_for_subtle_CtOption_t_T.
     let* a : M.Val subtle.Choice.t :=
       let* α0 : ref (subtle.CtOption.t T) := M.read self in
       let* α1 : subtle.Choice.t :=
-        M.call ((subtle.CtOption.t T)::["is_some"] α0) in
+        M.call (impl (subtle.CtOption.t T) "is_some" α0) in
       M.alloc α1 in
     let* b : M.Val subtle.Choice.t :=
       let* α0 : ref (subtle.CtOption.t T) := M.read rhs in
       let* α1 : subtle.Choice.t :=
-        M.call ((subtle.CtOption.t T)::["is_some"] α0) in
+        M.call (impl (subtle.CtOption.t T) "is_some" α0) in
       M.alloc α1 in
     let* α0 : _ :=
       ltac:(M.get_method (fun ℐ =>
@@ -3510,10 +3350,7 @@ Section Impl_subtle_ConstantTimeEq_for_subtle_CtOption_t_T.
     let* α0 : M.Val subtle.Choice.t := M.alloc α19 in
     M.read α0.
   
-  Global Instance AssociatedFunction_ct_eq :
-    Notations.DoubleColon Self "ct_eq" := {
-    Notations.double_colon := ct_eq;
-  }.
+  Axiom ct_eq_is_impl : impl Self "ct_eq" = ct_eq.
   
   Global Instance ℐ : subtle.ConstantTimeEq.Required.Trait Self := {
     subtle.ConstantTimeEq.ct_eq := ct_eq;
@@ -3673,10 +3510,7 @@ Section Impl_subtle_ConstantTimeGreater_for_u8_t.
     let* α0 : M.Val subtle.Choice.t := M.alloc α4 in
     M.read α0.
   
-  Global Instance AssociatedFunction_ct_gt :
-    Notations.DoubleColon Self "ct_gt" := {
-    Notations.double_colon := ct_gt;
-  }.
+  Axiom ct_gt_is_impl : impl Self "ct_gt" = ct_gt.
   
   Global Instance ℐ : subtle.ConstantTimeGreater.Trait Self := {
     subtle.ConstantTimeGreater.ct_gt := ct_gt;
@@ -3825,10 +3659,7 @@ Section Impl_subtle_ConstantTimeGreater_for_u16_t.
     let* α0 : M.Val subtle.Choice.t := M.alloc α3 in
     M.read α0.
   
-  Global Instance AssociatedFunction_ct_gt :
-    Notations.DoubleColon Self "ct_gt" := {
-    Notations.double_colon := ct_gt;
-  }.
+  Axiom ct_gt_is_impl : impl Self "ct_gt" = ct_gt.
   
   Global Instance ℐ : subtle.ConstantTimeGreater.Trait Self := {
     subtle.ConstantTimeGreater.ct_gt := ct_gt;
@@ -3977,10 +3808,7 @@ Section Impl_subtle_ConstantTimeGreater_for_u32_t.
     let* α0 : M.Val subtle.Choice.t := M.alloc α3 in
     M.read α0.
   
-  Global Instance AssociatedFunction_ct_gt :
-    Notations.DoubleColon Self "ct_gt" := {
-    Notations.double_colon := ct_gt;
-  }.
+  Axiom ct_gt_is_impl : impl Self "ct_gt" = ct_gt.
   
   Global Instance ℐ : subtle.ConstantTimeGreater.Trait Self := {
     subtle.ConstantTimeGreater.ct_gt := ct_gt;
@@ -4129,10 +3957,7 @@ Section Impl_subtle_ConstantTimeGreater_for_u64_t.
     let* α0 : M.Val subtle.Choice.t := M.alloc α3 in
     M.read α0.
   
-  Global Instance AssociatedFunction_ct_gt :
-    Notations.DoubleColon Self "ct_gt" := {
-    Notations.double_colon := ct_gt;
-  }.
+  Axiom ct_gt_is_impl : impl Self "ct_gt" = ct_gt.
   
   Global Instance ℐ : subtle.ConstantTimeGreater.Trait Self := {
     subtle.ConstantTimeGreater.ct_gt := ct_gt;

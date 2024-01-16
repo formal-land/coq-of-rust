@@ -23,9 +23,7 @@ Section Impl_flipper_Flipper_t.
   *)
   Parameter new : bool.t -> M Self.
   
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
-    Notations.double_colon := new;
-  }.
+  Axiom new_is_impl : impl Self "new" = new.
   
   (*
       pub fn new_default() -> Self {
@@ -34,10 +32,7 @@ Section Impl_flipper_Flipper_t.
   *)
   Parameter new_default : M Self.
   
-  Global Instance AssociatedFunction_new_default :
-    Notations.DoubleColon Self "new_default" := {
-    Notations.double_colon := new_default;
-  }.
+  Axiom new_default_is_impl : impl Self "new_default" = new_default.
   
   (*
       pub fn flip(&mut self) {
@@ -46,10 +41,7 @@ Section Impl_flipper_Flipper_t.
   *)
   Parameter flip : (mut_ref Self) -> M unit.
   
-  Global Instance AssociatedFunction_flip :
-    Notations.DoubleColon Self "flip" := {
-    Notations.double_colon := flip;
-  }.
+  Axiom flip_is_impl : impl Self "flip" = flip.
   
   (*
       pub fn get(&self) -> bool {
@@ -58,8 +50,6 @@ Section Impl_flipper_Flipper_t.
   *)
   Parameter get : (ref Self) -> M bool.t.
   
-  Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
-    Notations.double_colon := get;
-  }.
+  Axiom get_is_impl : impl Self "get" = get.
 End Impl_flipper_Flipper_t.
 End Impl_flipper_Flipper_t.

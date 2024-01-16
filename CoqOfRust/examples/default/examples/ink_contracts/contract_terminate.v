@@ -26,10 +26,7 @@ Section Impl_core_default_Default_for_contract_terminate_AccountId_t.
     let* α1 : u128.t := M.call α0 in
     M.pure (contract_terminate.AccountId.Build_t α1).
   
-  Global Instance AssociatedFunction_default :
-    Notations.DoubleColon Self "default" := {
-    Notations.double_colon := default;
-  }.
+  Axiom default_is_impl : impl Self "default" = default.
   
   Global Instance ℐ : core.default.Default.Trait Self := {
     core.default.Default.default := default;
@@ -58,10 +55,7 @@ Section Impl_core_clone_Clone_for_contract_terminate_AccountId_t.
         ] in
     M.read α0.
   
-  Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon Self "clone" := {
-    Notations.double_colon := clone;
-  }.
+  Axiom clone_is_impl : impl Self "clone" = clone.
   
   Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
@@ -104,10 +98,7 @@ Section Impl_contract_terminate_Env_t.
     let* α0 : ref contract_terminate.Env.t := M.read self in
     M.read (contract_terminate.Env.Get_caller (deref α0)).
   
-  Global Instance AssociatedFunction_caller :
-    Notations.DoubleColon Self "caller" := {
-    Notations.double_colon := caller;
-  }.
+  Axiom caller_is_impl : impl Self "caller" = caller.
   
   (*
       fn terminate_contract(&self, _account: AccountId) {
@@ -124,10 +115,8 @@ Section Impl_contract_terminate_Env_t.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_terminate_contract :
-    Notations.DoubleColon Self "terminate_contract" := {
-    Notations.double_colon := terminate_contract;
-  }.
+  Axiom terminate_contract_is_impl :
+      impl Self "terminate_contract" = terminate_contract.
 End Impl_contract_terminate_Env_t.
 End Impl_contract_terminate_Env_t.
 
@@ -151,10 +140,7 @@ Section Impl_contract_terminate_JustTerminate_t.
     let* α1 : never.t := M.call (core.panicking.panic α0) in
     never_to_any α1.
   
-  Global Instance AssociatedFunction_init_env :
-    Notations.DoubleColon Self "init_env" := {
-    Notations.double_colon := init_env;
-  }.
+  Axiom init_env_is_impl : impl Self "init_env" = init_env.
   
   (*
       fn env(&self) -> Env {
@@ -163,11 +149,9 @@ Section Impl_contract_terminate_JustTerminate_t.
   *)
   Definition env (self : ref Self) : M contract_terminate.Env.t :=
     let* self := M.alloc self in
-    M.call contract_terminate.JustTerminate.t::["init_env"].
+    M.call (impl contract_terminate.JustTerminate.t "init_env").
   
-  Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
-    Notations.double_colon := env;
-  }.
+  Axiom env_is_impl : impl Self "env" = env.
   
   (*
       pub fn new() -> Self {
@@ -176,9 +160,7 @@ Section Impl_contract_terminate_JustTerminate_t.
   *)
   Definition new : M Self := M.pure contract_terminate.JustTerminate.Build.
   
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
-    Notations.double_colon := new;
-  }.
+  Axiom new_is_impl : impl Self "new" = new.
   
   (*
       pub fn terminate_me(&mut self) {
@@ -191,25 +173,22 @@ Section Impl_contract_terminate_JustTerminate_t.
       let* α0 : mut_ref contract_terminate.JustTerminate.t := M.read self in
       let* α1 : contract_terminate.Env.t :=
         M.call
-          (contract_terminate.JustTerminate.t::["env"] (borrow (deref α0))) in
+          (impl contract_terminate.JustTerminate.t "env" (borrow (deref α0))) in
       let* α2 : M.Val contract_terminate.Env.t := M.alloc α1 in
       let* α3 : mut_ref contract_terminate.JustTerminate.t := M.read self in
       let* α4 : contract_terminate.Env.t :=
         M.call
-          (contract_terminate.JustTerminate.t::["env"] (borrow (deref α3))) in
+          (impl contract_terminate.JustTerminate.t "env" (borrow (deref α3))) in
       let* α5 : M.Val contract_terminate.Env.t := M.alloc α4 in
       let* α6 : contract_terminate.AccountId.t :=
-        M.call (contract_terminate.Env.t::["caller"] (borrow α5)) in
+        M.call (impl contract_terminate.Env.t "caller" (borrow α5)) in
       let* α7 : unit :=
         M.call
-          (contract_terminate.Env.t::["terminate_contract"] (borrow α2) α6) in
+          (impl contract_terminate.Env.t "terminate_contract" (borrow α2) α6) in
       M.alloc α7 in
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
   
-  Global Instance AssociatedFunction_terminate_me :
-    Notations.DoubleColon Self "terminate_me" := {
-    Notations.double_colon := terminate_me;
-  }.
+  Axiom terminate_me_is_impl : impl Self "terminate_me" = terminate_me.
 End Impl_contract_terminate_JustTerminate_t.
 End Impl_contract_terminate_JustTerminate_t.

@@ -25,10 +25,7 @@ Section Impl_core_clone_Clone_for_scoping_rules_borrowing_the_ref_pattern_Point_
   Parameter clone :
       (ref Self) -> M scoping_rules_borrowing_the_ref_pattern.Point.t.
   
-  Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon Self "clone" := {
-    Notations.double_colon := clone;
-  }.
+  Axiom clone_is_impl : impl Self "clone" = clone.
   
   Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
     core.clone.Clone.clone := clone;
