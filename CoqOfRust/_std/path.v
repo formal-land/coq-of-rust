@@ -1,6 +1,7 @@
 Require Import CoqOfRust.lib.lib.
 
 Require Import CoqOfRust._std.ffi.
+Require CoqOfRust.core.option.
 
 (* ********STRUCTS******** *)
 (*
@@ -34,15 +35,66 @@ Module Iter.
   Parameter t : Set.
 End Iter.
 
-(* pub struct Path { /* private fields */ } *)
-Module Path.
-  Parameter t : Set.
-End Path.
-
 (* pub struct PathBuf { /* private fields */ } *)
 Module PathBuf.
   Parameter t : Set.
+
+  Module Impl.
+    Definition Self : Set := t.
+
+    (* pub fn push<P: AsRef<Path>>(&mut self, path: P) *)
+    Parameter push : forall {P : Set}, mut_ref Self -> P -> M unit.
+
+    Global Instance AF_push {P : Set} : Notations.DoubleColon Self "push" := {
+      Notations.double_colon := push (P := P);
+    }.
+
+    (* pub fn set_file_name<S: AsRef<OsStr>>(&mut self, file_name: S) *)
+    Parameter set_file_name : forall {S : Set}, mut_ref Self -> S -> M unit.
+
+    Global Instance AF_set_file_name {S : Set} :
+        Notations.DoubleColon Self "set_file_name" := {
+      Notations.double_colon := set_file_name (S := S);
+    }.
+  End Impl.
 End PathBuf.
+
+(* pub struct Path { /* private fields */ } *)
+Module Path.
+  Parameter t : Set.
+
+  Module Impl.
+    Definition Self : Set := t.
+
+    (* pub fn new<S: AsRef<OsStr> + ?Sized>(s: &S) -> &Path *)
+    Parameter new : forall {S : Set}, ref S -> M (ref t).
+
+    Global Instance AF_new {S : Set} : Notations.DoubleColon Self "new" := {
+      Notations.double_colon := new (S := S);
+    }.
+
+    (* pub fn display(&self) -> Display<'_> *)
+    Parameter display : ref Self -> M Display.t.
+
+    Global Instance AF_display : Notations.DoubleColon Self "display" := {
+      Notations.double_colon := display;
+    }.
+
+    (* pub fn join<P: AsRef<Path>>(&self, path: P) -> PathBuf *)
+    Parameter join : forall {P : Set}, ref Self -> P -> M PathBuf.t.
+
+    Global Instance AF_join {P : Set} : Notations.DoubleColon Self "join" := {
+      Notations.double_colon := join (P := P);
+    }.
+
+    (* pub fn to_str(&self) -> Option<&str> *)
+    Parameter to_str : ref Self -> M (option.Option.t (ref str.t)).
+
+    Global Instance AF_to_str : Notations.DoubleColon Self "to_str" := {
+      Notations.double_colon := to_str;
+    }.
+  End Impl.
+End Path.
 
 (* pub struct PrefixComponent<'a> { /* private fields */ } *)
 Module PrefixComponent.

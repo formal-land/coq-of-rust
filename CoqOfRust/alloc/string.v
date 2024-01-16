@@ -34,6 +34,17 @@ End FromUtf16Error.
 (* pub struct String { /* private fields */ } *)
 Module String.
   Definition t : Set := str.t.
+
+  Module Impl.
+    Definition Self : Set := t.
+
+    (* pub const fn new() -> String *)
+    Parameter new : M t.
+
+    Global Instance AF_new : Notations.DoubleColon Self "new" := {
+      Notations.double_colon := new;
+    }.
+  End Impl.
 End String.
 
 (* ********TRAITS******** *)

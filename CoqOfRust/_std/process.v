@@ -1,7 +1,8 @@
 Require Import CoqOfRust.lib.lib.
 
-Require Import CoqOfRust.core.option.
-Require Import CoqOfRust.alloc.vec.
+Require CoqOfRust.alloc.vec.
+Require CoqOfRust.core.option.
+Require CoqOfRust._std.io.
 
 (* ********STRUCTS******** *)
 (* 
@@ -39,6 +40,11 @@ Module ChildStderr.
   Parameter t : Set.
 End ChildStderr.
 
+(* pub struct ExitStatus(_); *)
+Module ExitStatus.
+  Parameter t : Set.
+End ExitStatus.
+
 (* 
 pub struct Child {
     pub stdin: Option<ChildStdin>,
@@ -49,10 +55,22 @@ pub struct Child {
 *)
 Module Child.
   Record t : Set := {
-    stdin : Option.t ChildStdin.t;
-    stdout : Option.t ChildStdout.t;
-    stderr : Option.t ChildStderr.t;
+    stdin : option.Option.t ChildStdin.t;
+    stdout : option.Option.t ChildStdout.t;
+    stderr : option.Option.t ChildStderr.t;
   }.
+
+  Module Impl.
+    Definition Self : Set := t.
+
+    (* pub fn wait(&mut self) -> Result<ExitStatus> *)
+    Parameter wait : mut_ref Self -> M (_std.io.Result ExitStatus.t).
+
+    Global Instance AF_wait :
+      Notations.DoubleColon Self "wait" := {
+      Notations.double_colon := wait;
+    }.
+  End Impl.
 End Child.
 
 (* pub struct ExitCode(_); *)
@@ -63,6 +81,34 @@ End ExitCode.
 (* pub struct Command { /* private fields */ } *)
 Module Command.
   Parameter t : Set.
+
+  Module Impl.
+    Definition Self : Set := t.
+
+    (* pub fn arg<S: AsRef<OsStr>>(&mut self, arg: S) -> &mut Command *)
+    Parameter arg : forall {S : Set}, mut_ref Self -> S -> M (mut_ref t).
+
+    Global Instance AF_arg {S : Set} :
+      Notations.DoubleColon Self "arg" := {
+      Notations.double_colon := arg (S := S);
+    }.
+
+    (* pub fn new<S: AsRef<OsStr>>(program: S) -> Command *)
+    Parameter new : forall {S : Set}, S -> M t.
+
+    Global Instance AF_new {S : Set} :
+      Notations.DoubleColon Self "new" := {
+      Notations.double_colon := new (S := S);
+    }.
+
+    (* pub fn spawn(&mut self) -> Result<Child> *)
+    Parameter spawn : mut_ref Self -> M (_std.io.Result Child.t).
+
+    Global Instance AF_spawn :
+      Notations.DoubleColon Self "spawn" := {
+      Notations.double_colon := spawn;
+    }.
+  End Impl.
 End Command.
 
 (* pub struct CommandArgs<'a> { /* private fields */ } *)
@@ -75,11 +121,6 @@ Module CommandEnvs.
   Parameter t : Set.
 End CommandEnvs.
 
-(* pub struct ExitStatus(_); *)
-Module ExitStatus.
-  Parameter t : Set.
-End ExitStatus.
-
 (* 
 pub struct Output {
     pub status: ExitStatus,
@@ -90,8 +131,8 @@ pub struct Output {
 Module Output.
   Record t : Set := {
     status : ExitStatus.t;
-    stdout : Vec u8.t Vec.Default.A;
-    stderr : Vec u8.t Vec.Default.A;
+    stdout : vec.Vec u8.t vec.Vec.Default.A;
+    stderr : vec.Vec u8.t vec.Vec.Default.A;
   }.
 End Output.
 
@@ -112,7 +153,7 @@ pub trait Termination {
 *)
 Module Termination.
   Class Trait (Self : Set) : Set := { 
-    report : M.Val Self -> M (M.Val ExitCode.t);
+    report : Self -> M ExitCode.t;
   }.
 End Termination.
 

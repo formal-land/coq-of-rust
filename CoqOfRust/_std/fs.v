@@ -34,12 +34,34 @@ End DirEntry.
 (* pub struct File { /* private fields */ } *)
 Module File.
   Parameter t : Set.
-End File.
 
-Module Impl_Write_for_File.
-  Global Instance I : _std.io.Write.Trait File.t.
-  Admitted.
-End Impl_Write_for_File.
+  Module Impl.
+    Definition Self : Set := t.
+
+    (* pub fn create<P: AsRef<Path>>(path: P) -> Result<File> *)
+    Parameter create :
+      forall {P : Set},
+      P -> M (_std.io.Result t).
+
+    Global Instance AF_create {P : Set} :
+      Notations.DoubleColon Self "create" := {
+      Notations.double_colon := create (P := P);
+    }.
+
+    (* pub fn open<P: AsRef<Path>>(path: P) -> Result<File> *)
+    Parameter open :
+      forall {P : Set},
+      P -> M (_std.io.Result t).
+
+    Global Instance AF_open {P : Set} :
+      Notations.DoubleColon Self "open" := {
+      Notations.double_colon := open (P := P);
+    }.
+
+    Global Instance I_Write : _std.io.Write.Trait Self.
+    Admitted.
+  End Impl.
+End File.
 
 (* pub struct FileType(_); *)
 Module FileType.

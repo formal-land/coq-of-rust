@@ -157,6 +157,13 @@ Module Impl_Option. Section Impl_Option.
     Notations.double_colon := get_or_insert;
   }.
 
+  (* pub fn or(self, optb: Option<T>) -> Option<T> *)
+  Parameter or : Self -> option.Option.t T -> M (option.Option.t T).
+
+  Global Instance AF_or : Notations.DoubleColon Self "or" := {
+    Notations.double_colon := or;
+  }.
+
   Global Instance I_Default {ℋ : default.Default.Trait T} :
     default.Default.Trait (core.option.Option.t T).
   Admitted.
