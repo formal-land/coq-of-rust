@@ -434,7 +434,7 @@ Module rt.
         M Argument.t.
 
       Global Instance AF_new {T : Set} :
-        Notations.DoubleColon Argument.t "new" := {
+        Notations.DoubleColon Self "new" := {
         Notations.double_colon := new (T := T);
       }.
 
@@ -444,7 +444,7 @@ Module rt.
         ref T -> M Argument.t.
 
       Global Instance AF_new_binary {T : Set} :
-        Notations.DoubleColon Argument.t "new_binary" := {
+        Notations.DoubleColon Self "new_binary" := {
         Notations.double_colon := new_binary (T := T);
       }.
 
@@ -454,7 +454,7 @@ Module rt.
         ref T -> M Argument.t.
 
       Global Instance AF_new_debug {T : Set} :
-        Notations.DoubleColon Argument.t "new_debug" := {
+        Notations.DoubleColon Self "new_debug" := {
         Notations.double_colon := new_debug (T := T);
       }.
 
@@ -464,7 +464,7 @@ Module rt.
         ref T -> M Argument.t.
 
       Global Instance AF_new_display {T : Set} :
-        Notations.DoubleColon Argument.t "new_display" := {
+        Notations.DoubleColon Self "new_display" := {
         Notations.double_colon := new_display (T := T);
       }.
 
@@ -474,7 +474,7 @@ Module rt.
         ref T -> M Argument.t.
 
       Global Instance AF_new_lower_exp {T : Set} :
-        Notations.DoubleColon Argument.t "new_lower_exp" := {
+        Notations.DoubleColon Self "new_lower_exp" := {
         Notations.double_colon := new_lower_exp (T := T);
       }.
 
@@ -484,7 +484,7 @@ Module rt.
         ref T -> M Argument.t.
 
       Global Instance AF_new_lower_hex {T : Set} :
-        Notations.DoubleColon Argument.t "new_lower_hex" := {
+        Notations.DoubleColon Self "new_lower_hex" := {
         Notations.double_colon := new_lower_hex (T := T);
       }.
 
@@ -494,7 +494,7 @@ Module rt.
         ref T -> M Argument.t.
 
       Global Instance AF_new_octal {T : Set} :
-        Notations.DoubleColon Argument.t "new_octal" := {
+        Notations.DoubleColon Self "new_octal" := {
         Notations.double_colon := new_octal (T := T);
       }.
 
@@ -504,7 +504,7 @@ Module rt.
         ref T -> M Argument.t.
 
       Global Instance AF_new_pointer {T : Set} :
-        Notations.DoubleColon Argument.t "new_pointer" := {
+        Notations.DoubleColon Self "new_pointer" := {
         Notations.double_colon := new_pointer (T := T);
       }.
 
@@ -514,7 +514,7 @@ Module rt.
         ref T -> M Argument.t.
 
       Global Instance AF_new_upper_exp {T : Set} :
-        Notations.DoubleColon Argument.t "new_upper_exp" := {
+        Notations.DoubleColon Self "new_upper_exp" := {
         Notations.double_colon := new_upper_exp (T := T);
       }.
 
@@ -524,7 +524,7 @@ Module rt.
         ref T -> M Argument.t.
 
       Global Instance AF_new_upper_hex {T : Set} :
-        Notations.DoubleColon Argument.t "new_upper_hex" := {
+        Notations.DoubleColon Self "new_upper_hex" := {
         Notations.double_colon := new_upper_hex (T := T);
       }.
 
@@ -532,7 +532,7 @@ Module rt.
       Parameter none : M (array Argument.t).
 
       Global Instance AF_none :
-        Notations.DoubleColon Argument.t "none" := {
+        Notations.DoubleColon Self "none" := {
         Notations.double_colon := none;
       }.
 
@@ -540,7 +540,7 @@ Module rt.
       Parameter from_usize : ref usize.t -> M Argument.t.
 
       Global Instance AF_from_usize :
-        Notations.DoubleColon Argument.t "from_usize" := {
+        Notations.DoubleColon Self "from_usize" := {
         Notations.double_colon := from_usize;
       }.
     End Impl.

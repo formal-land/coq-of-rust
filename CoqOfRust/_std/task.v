@@ -1,5 +1,6 @@
 Require Import CoqOfRust.lib.lib.
-Require Import CoqOfRust._std.sync.
+
+Require CoqOfRust.alloc.sync.
 
 (* ********STRUCTS******** *)
 (* 
@@ -69,9 +70,9 @@ pub trait Wake {
 }
 *)
 Module Wake.
-  Class Trait (Self : Set) : Set := { 
-    wake : Arc Self -> unit;
+  Class Trait (Self : Set) : Set := {
+    wake : sync.Arc.t Self sync.Arc.Default.A-> M unit;
 
-    wake_by_ref : ref (Arc Self) -> unit;
+    wake_by_ref : ref (sync.Arc.t Self sync.Arc.Default.A) -> M unit;
   }.
 End Wake.

@@ -1,5 +1,7 @@
 Require Import CoqOfRust.lib.lib.
 
+Require CoqOfRust.core.time.
+
 (* ********STRUCTS******** *)
 (* 
 [x] AccessError
@@ -16,51 +18,43 @@ Require Import CoqOfRust.lib.lib.
 Module AccessError.
   Inductive t : Set := Build.
 End AccessError.
-Definition AccessError := AccessError.t.
 
 (* pub struct Builder { /* private fields */ } *)
 Module Builder.
   Parameter t : Set.
 End Builder.
-Definition Builder := Builder.t.
 
 (* pub struct JoinHandle<T>(_); *)
 Module JoinHandle.
   Parameter t : Set -> Set.
 End JoinHandle.
-Definition JoinHandle := JoinHandle.t.
 
 Module local.
   (* pub struct LocalKey<T: 'static> { /* private fields */ } *)
   Module LocalKey.
     Parameter t : Set -> Set.
   End LocalKey.
-  Definition LocalKey := LocalKey.t.
 End local.
 
 (* pub struct Scope<'scope, 'env: 'scope> { /* private fields */ } *)
 Module Scope.
   Parameter t : Set.
 End Scope.
-Definition Scope := Scope.t.
 
 (* pub struct ScopedJoinHandle<'scope, T>(_); *)
 Module ScopedJoinHandle.
   Parameter t : Set -> Set.
 End ScopedJoinHandle.
-Definition ScopedJoinHandle := ScopedJoinHandle.t.
 
 (* pub struct Thread { /* private fields */ } *)
 Module Thread.
   Parameter t : Set.
 End Thread.
-Definition Thread := Thread.t.
 
 (* pub struct ThreadId(_); *)
 Module ThreadId.
   Parameter t : Set.
 End ThreadId.
-Definition ThreadId := ThreadId.t.
 
 (* ********FUNCTIONS******** *)
 (* 
@@ -76,6 +70,17 @@ Definition ThreadId := ThreadId.t.
 [ ] spawn
 [ ] yield_now	
 *)
+
+(* pub fn sleep(dur: Duration) *)
+Parameter sleep : time.Duration.t -> M unit.
+
+(*
+pub fn spawn<F, T>(f: F) -> JoinHandle<T>
+where
+    F: FnOnce() -> T + Send + 'static,
+    T: Send + 'static,
+*)
+Parameter spawn : forall {T : Set}, M T -> M (JoinHandle.t T).
 
 (* ********TYPE DEFINITIONS******** *)
 (* 

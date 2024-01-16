@@ -54,6 +54,7 @@ Require CoqOfRust.alloc.boxed.
 Require CoqOfRust.alloc.collections.
 Require CoqOfRust.alloc.fmt.
 Require CoqOfRust.alloc.string.
+Require CoqOfRust.alloc.sync.
 Require CoqOfRust.alloc.vec.
 
 Module alloc.
@@ -63,6 +64,7 @@ Module alloc.
   Export CoqOfRust.alloc.collections.
   Export CoqOfRust.alloc.fmt.
   Export CoqOfRust.alloc.string.
+  Export CoqOfRust.alloc.sync.
   Export CoqOfRust.alloc.vec.
 End alloc.
 
@@ -107,6 +109,7 @@ Require CoqOfRust.core.primitive.
 Require CoqOfRust.core.result.
 Require CoqOfRust.core.slice.
 Require CoqOfRust.core.str.
+Require CoqOfRust.core.time.
 
 Module core.
   Export CoqOfRust.core.alloc.
@@ -134,6 +137,7 @@ Module core.
   Export CoqOfRust.core.result.
   Export CoqOfRust.core.slice.
   Export CoqOfRust.core.str.
+  Export CoqOfRust.core.time.
 End core.
 
 Require CoqOfRust._std.arch.
@@ -165,10 +169,8 @@ Require Import CoqOfRust._std.ptr.
 Require Import CoqOfRust._std.rc.
 Require Import CoqOfRust._std.simd.
 Require Import CoqOfRust._std.str.
-Require Import CoqOfRust._std.sync.
 Require Import CoqOfRust._std.task.
 Require Import CoqOfRust._std.thread.
-Require Import CoqOfRust._std.time.
 
 Module std.
   Module arch := _std.arch.
@@ -199,10 +201,8 @@ Module std.
   Module rc := _std.rc.
   Module simd := _std.simd.
   Module str := _std.str.
-  Module sync := _std.sync.
   Module task := _std.task.
   Module thread := _std.thread.
-  Module time := _std.time.
 End std.
 
 (*** std instances *)
