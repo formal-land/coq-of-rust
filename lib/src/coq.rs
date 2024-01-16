@@ -1097,6 +1097,10 @@ impl<'a> Expression<'a> {
     }
 
     pub(crate) fn arrows_from(&self, domains: &[Self]) -> Self {
+        if domains.is_empty() {
+            return self.to_owned();
+        }
+
         Expression::FunctionType {
             domains: domains.to_owned(),
             image: Rc::new(self.to_owned()),

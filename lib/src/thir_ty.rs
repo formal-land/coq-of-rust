@@ -13,6 +13,7 @@ fn compile_poly_fn_sig<'a>(env: &Env<'a>, sig: &rustc_middle::ty::PolyFnSig<'a>)
         .map(|ty| compile_type(env, ty))
         .collect::<Vec<_>>();
     let ret = compile_type(env, &sig.output());
+
     Rc::new(CoqType::Function { args, ret })
 }
 

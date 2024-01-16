@@ -337,9 +337,9 @@ Section Impl_core_default_Default_for_mapping_integration_tests_Mappings_t.
   Definition default : M mapping_integration_tests.Mappings.t :=
     let* α0 :
         M
-            (mapping_integration_tests.Mapping.t
-              mapping_integration_tests.AccountId.t
-              u128.t) :=
+          (mapping_integration_tests.Mapping.t
+            mapping_integration_tests.AccountId.t
+            u128.t) :=
       ltac:(M.get_method (fun ℐ =>
         core.default.Default.default
           (Self :=
@@ -412,9 +412,9 @@ Section Impl_mapping_integration_tests_Mappings_t.
             u128.t) :=
       let* α0 :
           M
-              (mapping_integration_tests.Mapping.t
-                mapping_integration_tests.AccountId.t
-                u128.t) :=
+            (mapping_integration_tests.Mapping.t
+              mapping_integration_tests.AccountId.t
+              u128.t) :=
         ltac:(M.get_method (fun ℐ =>
           core.default.Default.default
             (Self :=

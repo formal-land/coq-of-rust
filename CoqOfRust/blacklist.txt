@@ -47,8 +47,6 @@ examples/axiomatized/examples/traits/traits.v
 examples/default/examples/custom_types/enums_c_like.v
 examples/default/examples/custom_types/enums_testcase_linked_list.v
 examples/default/examples/error_handling/pulling_results_out_of_options_with_stop_error_processing.v
-examples/default/examples/error_handling/pulling_results_out_of_options.v
-examples/default/examples/error_handling/result_use_in_main.v
 examples/default/examples/error_handling/unpacking_options_and_defaults_via_get_or_insert_with.v
 examples/default/examples/error_handling/unpacking_options_and_defaults_via_or_else.v
 examples/default/examples/error_handling/unpacking_options_and_defaults_via_or.v

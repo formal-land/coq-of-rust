@@ -704,9 +704,9 @@ Section Impl_core_default_Default_for_erc1155_Contract_t.
       M.call α0 in
     let* α2 :
         M
-            (erc1155.Mapping.t
-              (erc1155.AccountId.t * erc1155.AccountId.t)
-              unit) :=
+          (erc1155.Mapping.t
+            (erc1155.AccountId.t * erc1155.AccountId.t)
+            unit) :=
       ltac:(M.get_method (fun ℐ =>
         core.default.Default.default
           (Self :=

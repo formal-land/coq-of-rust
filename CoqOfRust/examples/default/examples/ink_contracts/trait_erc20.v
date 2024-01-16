@@ -417,9 +417,9 @@ Section Impl_core_default_Default_for_trait_erc20_Erc20_t.
       M.call α2 in
     let* α4 :
         M
-            (trait_erc20.Mapping.t
-              (trait_erc20.AccountId.t * trait_erc20.AccountId.t)
-              u128.t) :=
+          (trait_erc20.Mapping.t
+            (trait_erc20.AccountId.t * trait_erc20.AccountId.t)
+            u128.t) :=
       ltac:(M.get_method (fun ℐ =>
         core.default.Default.default
           (Self :=
@@ -643,9 +643,9 @@ Section Impl_trait_erc20_Erc20_t.
       M.read balances in
     let* α2 :
         M
-            (trait_erc20.Mapping.t
-              (trait_erc20.AccountId.t * trait_erc20.AccountId.t)
-              u128.t) :=
+          (trait_erc20.Mapping.t
+            (trait_erc20.AccountId.t * trait_erc20.AccountId.t)
+            u128.t) :=
       ltac:(M.get_method (fun ℐ =>
         core.default.Default.default
           (Self :=

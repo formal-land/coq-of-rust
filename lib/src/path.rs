@@ -86,7 +86,7 @@ pub(crate) fn compile_def_id(env: &Env, def_id: rustc_hir::def_id::DefId) -> Pat
             .filter_map(|item| match item.data.get_opt_name() {
                 Some(name) => Some(name.to_string()),
                 None => match &item.data {
-                    DefPathData::Impl | DefPathData::ForeignMod => None,
+                    DefPathData::Ctor | DefPathData::ForeignMod | DefPathData::Impl => None,
                     _ => Some(item.data.to_string()),
                 },
             })

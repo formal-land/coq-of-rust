@@ -100,7 +100,7 @@ Definition double_first
                         i32.t
                         core.num.error.ParseIntError.t)::["map"]
                     α0
-                    core.option.Option.Some.{{constructor}})) :
+                    core.option.Option.Some)) :
                 M
                   (core.result.Result.t
                     (core.option.Option.t i32.t)

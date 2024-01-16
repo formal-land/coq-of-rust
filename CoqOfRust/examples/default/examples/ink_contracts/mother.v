@@ -296,11 +296,11 @@ Section Impl_core_default_Default_for_mother_Bids_t.
   Definition default : M mother.Bids.t :=
     let* α0 :
         M
+          (alloc.vec.Vec.t
             (alloc.vec.Vec.t
-              (alloc.vec.Vec.t
-                (core.option.Option.t (mother.AccountId.t * u128.t))
-                alloc.alloc.Global.t)
-              alloc.alloc.Global.t) :=
+              (core.option.Option.t (mother.AccountId.t * u128.t))
+              alloc.alloc.Global.t)
+            alloc.alloc.Global.t) :=
       ltac:(M.get_method (fun ℐ =>
         core.default.Default.default
           (Self :=

@@ -124,6 +124,18 @@ Module Impl_Option. Section Impl_Option.
   }.
 
   (*
+  pub fn map_or<U, F>(self, default: U, f: F) -> U
+  where
+      F: FnOnce(T) -> U,
+  *)
+  Parameter map_or : forall {U : Set}, Self -> U -> (T -> M U) -> M U.
+
+  Global Instance AF_map_or {U : Set} :
+    Notations.DoubleColon Self "map_or" := {
+    Notations.double_colon := map_or (U := U);
+  }.
+
+  (*
   pub fn and_then<U, F>(self, f: F) -> Option<U>
   where
       F: FnOnce(T) -> Option<U>,
