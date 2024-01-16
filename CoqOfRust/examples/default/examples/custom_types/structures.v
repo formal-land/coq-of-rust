@@ -227,7 +227,8 @@ Definition main : M unit :=
     M.alloc tt in
   let* bottom_right : M.Val structures.Point.t :=
     let* α0 : f32.t := M.read (UnsupportedLiteral : M.Val f32.t) in
-    M.alloc {| structures.Point.x := α0; |} in
+    let* α1 : structures.Point.t := M.read point in
+    M.alloc (α1 <| structures.Point.x := α0 |>) in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "second point: (") in

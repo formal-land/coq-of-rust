@@ -1109,6 +1109,7 @@ fn compile_expr_kind<'a>(
                 adt_def,
                 variant_index,
                 fields,
+                base,
                 ..
             } = &**adt_expr;
             let variant = adt_def.variant(*variant_index);
@@ -1133,6 +1134,10 @@ fn compile_expr_kind<'a>(
             } else {
                 StructOrVariant::Struct
             };
+            let base = base
+                .as_ref()
+                .map(|base| compile_expr(env, thir, &base.base).read());
+
             if fields.is_empty() {
                 return Rc::new(ExprKind::StructUnit {
                     path,
@@ -1140,6 +1145,7 @@ fn compile_expr_kind<'a>(
                 })
                 .alloc(Some(ty));
             }
+
             if is_a_tuple {
                 let fields = fields.into_iter().map(|(_, pattern)| pattern).collect();
                 Rc::new(ExprKind::StructTuple {
@@ -1152,7 +1158,7 @@ fn compile_expr_kind<'a>(
                 Rc::new(ExprKind::StructStruct {
                     path,
                     fields,
-                    base: None,
+                    base,
                     struct_or_variant,
                 })
                 .alloc(Some(ty))

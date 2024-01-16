@@ -46,7 +46,6 @@ examples/axiomatized/examples/traits/traits_parms.v
 examples/axiomatized/examples/traits/traits.v
 examples/default/examples/custom_types/enums_c_like.v
 examples/default/examples/custom_types/enums_testcase_linked_list.v
-examples/default/examples/custom_types/structures.v
 examples/default/examples/error_handling/aliases_for_result.v
 examples/default/examples/error_handling/boxing_errors.v
 examples/default/examples/error_handling/defining_an_error_type.v

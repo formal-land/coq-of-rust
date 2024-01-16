@@ -1006,9 +1006,9 @@ impl ExprKind {
                 fields,
                 base,
                 struct_or_variant,
-            } => paren(
-                with_paren && matches!(struct_or_variant, StructOrVariant::Variant { .. }),
-                group([
+            } => match base {
+                None => paren(
+                    with_paren && matches!(struct_or_variant, StructOrVariant::Variant { .. }),
                     group([
                         nest([
                             match struct_or_variant {
@@ -1035,12 +1035,32 @@ impl ExprKind {
                         line(),
                         text("|}"),
                     ]),
-                    match base {
-                        Some(base) => nest([line(), text("with"), line(), base.to_doc(false)]),
-                        None => nil(),
-                    },
-                ]),
-            ),
+                ),
+                Some(base) => paren(
+                    with_paren && !fields.is_empty(),
+                    nest([
+                        base.to_doc(true),
+                        concat(fields.iter().map(|(name, expr)| {
+                            concat([
+                                line(),
+                                group([
+                                    nest([
+                                        text("<| "),
+                                        path.to_doc(),
+                                        text("."),
+                                        text(name),
+                                        text(" :="),
+                                        line(),
+                                        expr.to_doc(false),
+                                    ]),
+                                    line(),
+                                    text("|>"),
+                                ]),
+                            ])
+                        })),
+                    ]),
+                ),
+            },
             ExprKind::StructTuple {
                 path,
                 fields,
