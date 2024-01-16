@@ -535,3 +535,14 @@ Module Tuple.
         (fun β '(x1, _) => Some (x1, β)).
   End Access.
 End Tuple.
+
+(** This function is different from the [M.cast] operator of the monad. This
+    function is explicitely called in the Rust AST, and should take two types
+    that are actually different but convertible, like different kinds of
+    integers. *)
+Parameter rust_cast : forall {A B : Set}, A -> B.
+
+(** The special type [dyn], that takes a list of traits as parameter. This type
+    is defined as opaque, and operations on it (mainly conversions to and from)
+    will be defined separately. *)
+Parameter dyn : list (Set -> Set) -> Set.

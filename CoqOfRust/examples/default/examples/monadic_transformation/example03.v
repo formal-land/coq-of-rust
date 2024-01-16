@@ -26,10 +26,10 @@ Definition main : M unit :=
         ] in
     let* α1 : M.Val (alloc.boxed.Box.t (array i32.t) alloc.alloc.Global.t) :=
       M.call ((alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α0) in
-    let* α2 : alloc.boxed.Box.t (slice i32.t) alloc.alloc.Global.t :=
-      M.read (pointer_coercion "Unsize" α1) in
+    let* α2 : alloc.boxed.Box.t (array i32.t) alloc.alloc.Global.t :=
+      M.read α1 in
     let* α3 : alloc.vec.Vec.t i32.t alloc.alloc.Global.t :=
-      M.call ((slice i32.t)::["into_vec"] α2) in
+      M.call ((slice i32.t)::["into_vec"] (pointer_coercion "Unsize" α2)) in
     M.alloc α3 in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.

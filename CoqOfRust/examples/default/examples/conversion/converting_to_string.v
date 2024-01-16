@@ -30,22 +30,18 @@ Section Impl_core_fmt_Display_for_converting_to_string_Circle_t.
     let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
     let* α1 : ref str.t := M.read (mk_str "Circle of radius ") in
     let* α2 : M.Val (array (ref str.t)) := M.alloc [ α1 ] in
-    let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
-    let* α4 : ref (slice (ref str.t)) :=
-      M.read (pointer_coercion "Unsize" α3) in
-    let* α5 : ref converting_to_string.Circle.t := M.read self in
-    let* α6 : core.fmt.rt.Argument.t :=
+    let* α3 : ref converting_to_string.Circle.t := M.read self in
+    let* α4 : core.fmt.rt.Argument.t :=
       M.call
         (core.fmt.rt.Argument.t::["new_display"]
-          (borrow (converting_to_string.Circle.Get_radius (deref α5)))) in
-    let* α7 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α6 ] in
-    let* α8 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-      M.alloc (borrow α7) in
-    let* α9 : ref (slice core.fmt.rt.Argument.t) :=
-      M.read (pointer_coercion "Unsize" α8) in
-    let* α10 : core.fmt.Arguments.t :=
-      M.call (core.fmt.Arguments.t::["new_v1"] α4 α9) in
-    M.call (core.fmt.Formatter.t::["write_fmt"] α0 α10).
+          (borrow (converting_to_string.Circle.Get_radius (deref α3)))) in
+    let* α5 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4 ] in
+    let* α6 : core.fmt.Arguments.t :=
+      M.call
+        (core.fmt.Arguments.t::["new_v1"]
+          (pointer_coercion "Unsize" (borrow α2))
+          (pointer_coercion "Unsize" (borrow α5))) in
+    M.call (core.fmt.Formatter.t::["write_fmt"] α0 α6).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;

@@ -123,18 +123,39 @@ Module ImplFormatter.
   ) -> Result
   *)
   Parameter debug_tuple_field2_finish :
-    forall {T1 T2 : Set}
-      `{core.fmt.Debug.Trait T1} `{core.fmt.Debug.Trait T2},
-    M.Val (mut_ref Formatter.t) ->
-    M.Val (ref str.t) ->
-    M.Val (ref T1) ->
-    M.Val (ref T2) ->
-    M (M.Val ltac:(Result)).
+    mut_ref Self ->
+    ref str.t ->
+    ref (dyn [fmt.Debug.Trait]) ->
+    ref (dyn [fmt.Debug.Trait]) ->
+    M (ltac:(Result)).
 
-  Global Instance Formatter_debug_tuple_field2_finish {T1 T2 : Set}
-     `{core.fmt.Debug.Trait T1} `{core.fmt.Debug.Trait T2} :
-      Notations.DoubleColon core.fmt.Formatter.t "debug_tuple_field2_finish" := {
-    Notations.double_colon := debug_tuple_field2_finish (T1 := T1) (T2 := T2);
+  Global Instance AF_debug_tuple_field2_finish :
+      Notations.DoubleColon Self "debug_tuple_field2_finish" := {
+    Notations.double_colon := debug_tuple_field2_finish;
+  }.
+
+  (*
+  pub fn debug_struct_field2_finish<'b>(
+      &'b mut self,
+      name: &str,
+      name1: &str,
+      value1: &dyn Debug,
+      name2: &str,
+      value2: &dyn Debug,
+  ) -> Result
+  *)
+  Parameter debug_struct_field2_finish :
+    mut_ref Self ->
+    ref str.t ->
+    ref str.t ->
+    ref (dyn [fmt.Debug.Trait]) ->
+    ref str.t ->
+    ref (dyn [fmt.Debug.Trait]) ->
+    M (ltac:(Result)).
+
+  Global Instance AF_debug_struct_field2_finish :
+      Notations.DoubleColon Self "debug_struct_field2_finish" := {
+    Notations.double_colon := debug_struct_field2_finish;
   }.
 End ImplFormatter.
 

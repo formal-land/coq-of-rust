@@ -895,10 +895,12 @@ Section Impl_payment_channel_PaymentChannel_t.
           payment_channel.CryptoHash.hash
             (Self := payment_channel.Blake2x256.t)
             (Trait := ℐ))) in
-      let* α1 : M.Val (ref (array u8.t)) := M.alloc (borrow pub_key) in
-      let* α2 : ref (slice u8.t) := M.read (pointer_coercion "Unsize" α1) in
-      let* α3 : unit := M.call (α0 α2 (borrow_mut signature_account_id)) in
-      M.alloc α3 in
+      let* α1 : unit :=
+        M.call
+          (α0
+            (pointer_coercion "Unsize" (borrow pub_key))
+            (borrow_mut signature_account_id)) in
+      M.alloc α1 in
     let* α0 : _ :=
       ltac:(M.get_method (fun ℐ =>
         core.cmp.PartialEq.eq

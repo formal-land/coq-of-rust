@@ -230,9 +230,11 @@ Section Impl_core_fmt_Debug_for_multisig_AccountId_t.
     let* α2 : ref multisig.AccountId.t := M.read self in
     let* α3 : M.Val (ref u128.t) :=
       M.alloc (borrow (multisig.AccountId.Get_0 (deref α2))) in
-    let* α4 : M.Val (ref (ref u128.t)) := M.alloc (borrow α3) in
-    let* α5 : ref _ (* dyn *) := M.read (pointer_coercion "Unsize" α4) in
-    M.call (core.fmt.Formatter.t::["debug_tuple_field1_finish"] α0 α1 α5).
+    M.call
+      (core.fmt.Formatter.t::["debug_tuple_field1_finish"]
+        α0
+        α1
+        (pointer_coercion "Unsize" (borrow α3))).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
@@ -1279,10 +1281,10 @@ Section Impl_multisig_Multisig_t.
         M.call
           ((alloc.vec.Vec.t multisig.AccountId.t alloc.alloc.Global.t)::["len"]
             (borrow owners)) in
-      let* α1 : u32.t := M.cast α0 in
-      let* α2 : u32.t := M.read requirement in
-      let* α3 : unit := M.call (multisig.ensure_requirement_is_valid α1 α2) in
-      M.alloc α3 in
+      let* α1 : u32.t := M.read requirement in
+      let* α2 : unit :=
+        M.call (multisig.ensure_requirement_is_valid (rust_cast α0) α1) in
+      M.alloc α2 in
     let* _ : M.Val unit :=
       let* α0 : _ :=
         ltac:(M.get_method (fun ℐ =>
@@ -1672,13 +1674,13 @@ Section Impl_multisig_Multisig_t.
         M.call
           ((alloc.vec.Vec.t multisig.AccountId.t alloc.alloc.Global.t)::["len"]
             (borrow (multisig.Multisig.Get_owners (deref α0)))) in
-      let* α2 : u32.t := M.cast α1 in
-      let* α3 : u32.t := BinOp.Panic.add α2 ((Integer.of_Z 1) : u32.t) in
-      let* α4 : mut_ref multisig.Multisig.t := M.read self in
-      let* α5 : u32.t :=
-        M.read (multisig.Multisig.Get_requirement (deref α4)) in
-      let* α6 : unit := M.call (multisig.ensure_requirement_is_valid α3 α5) in
-      M.alloc α6 in
+      let* α2 : u32.t :=
+        BinOp.Panic.add (rust_cast α1) ((Integer.of_Z 1) : u32.t) in
+      let* α3 : mut_ref multisig.Multisig.t := M.read self in
+      let* α4 : u32.t :=
+        M.read (multisig.Multisig.Get_requirement (deref α3)) in
+      let* α5 : unit := M.call (multisig.ensure_requirement_is_valid α2 α4) in
+      M.alloc α5 in
     let* _ : M.Val (core.option.Option.t u32.t) :=
       let* α0 : mut_ref multisig.Multisig.t := M.read self in
       let* α1 : multisig.AccountId.t := M.read new_owner in
@@ -1781,7 +1783,7 @@ Section Impl_multisig_Multisig_t.
                actually an owner.") in
     let* α8 : usize.t :=
       M.call ((core.option.Option.t usize.t)::["expect"] α6 α7) in
-    M.cast α8.
+    M.pure (rust_cast α8).
   
   Global Instance AssociatedFunction_owner_index :
     Notations.DoubleColon Self "owner_index" := {
@@ -1991,9 +1993,9 @@ Section Impl_multisig_Multisig_t.
         M.call
           ((alloc.vec.Vec.t multisig.AccountId.t alloc.alloc.Global.t)::["len"]
             (borrow (multisig.Multisig.Get_owners (deref α0)))) in
-      let* α2 : u32.t := M.cast α1 in
-      let* α3 : u32.t := BinOp.Panic.sub α2 ((Integer.of_Z 1) : u32.t) in
-      M.alloc α3 in
+      let* α2 : u32.t :=
+        BinOp.Panic.sub (rust_cast α1) ((Integer.of_Z 1) : u32.t) in
+      M.alloc α2 in
     let* requirement : M.Val u32.t :=
       let* α0 : _ :=
         ltac:(M.get_method (fun ℐ =>
@@ -2016,8 +2018,7 @@ Section Impl_multisig_Multisig_t.
           (multisig.Multisig.t::["owner_index"]
             (borrow (deref α0))
             (borrow owner)) in
-      let* α2 : usize.t := M.cast α1 in
-      M.alloc α2 in
+      M.alloc (rust_cast α1) in
     let* _ : M.Val multisig.AccountId.t :=
       let* α0 : mut_ref multisig.Multisig.t := M.read self in
       let* α1 : usize.t := M.read owner_index in
@@ -2134,11 +2135,13 @@ Section Impl_multisig_Multisig_t.
             (Trait := ℐ))) in
       let* α1 : mut_ref multisig.Multisig.t := M.read self in
       let* α2 : u32.t := M.read owner_index in
-      let* α3 : usize.t := M.cast α2 in
-      let* α4 : mut_ref multisig.AccountId.t :=
-        M.call (α0 (borrow_mut (multisig.Multisig.Get_owners (deref α1))) α3) in
-      let* α5 : multisig.AccountId.t := M.read new_owner in
-      assign (deref α4) α5 in
+      let* α3 : mut_ref multisig.AccountId.t :=
+        M.call
+          (α0
+            (borrow_mut (multisig.Multisig.Get_owners (deref α1)))
+            (rust_cast α2)) in
+      let* α4 : multisig.AccountId.t := M.read new_owner in
+      assign (deref α3) α4 in
     let* _ : M.Val unit :=
       let* α0 : mut_ref multisig.Multisig.t := M.read self in
       let* α1 : multisig.AccountId.t := M.read old_owner in
@@ -2229,10 +2232,10 @@ Section Impl_multisig_Multisig_t.
         M.call
           ((alloc.vec.Vec.t multisig.AccountId.t alloc.alloc.Global.t)::["len"]
             (borrow (multisig.Multisig.Get_owners (deref α0)))) in
-      let* α2 : u32.t := M.cast α1 in
-      let* α3 : u32.t := M.read new_requirement in
-      let* α4 : unit := M.call (multisig.ensure_requirement_is_valid α2 α3) in
-      M.alloc α4 in
+      let* α2 : u32.t := M.read new_requirement in
+      let* α3 : unit :=
+        M.call (multisig.ensure_requirement_is_valid (rust_cast α1) α2) in
+      M.alloc α3 in
     let* _ : M.Val unit :=
       let* α0 : mut_ref multisig.Multisig.t := M.read self in
       let* α1 : u32.t := M.read new_requirement in

@@ -44,8 +44,6 @@ examples/axiomatized/examples/traits/returning_traits_with_dyn.v
 examples/axiomatized/examples/traits/supertraits.v
 examples/axiomatized/examples/traits/traits_parms.v
 examples/axiomatized/examples/traits/traits.v
-examples/default/examples/conversion/parsing_a_string.v
-examples/default/examples/conversion/try_from_and_try_into.v
 examples/default/examples/custom_types/enums_c_like.v
 examples/default/examples/custom_types/enums_testcase_linked_list.v
 examples/default/examples/custom_types/structures.v

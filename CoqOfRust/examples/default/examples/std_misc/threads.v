@@ -99,33 +99,25 @@ Definition main : M unit :=
 ") in
                                     let* α2 : M.Val (array (ref str.t)) :=
                                       M.alloc [ α0; α1 ] in
-                                    let* α3 : M.Val (ref (array (ref str.t))) :=
-                                      M.alloc (borrow α2) in
-                                    let* α4 : ref (slice (ref str.t)) :=
-                                      M.read (pointer_coercion "Unsize" α3) in
-                                    let* α5 : core.fmt.rt.Argument.t :=
+                                    let* α3 : core.fmt.rt.Argument.t :=
                                       M.call
                                         (core.fmt.rt.Argument.t::["new_display"]
                                           (borrow i)) in
-                                    let* α6 :
+                                    let* α4 :
                                         M.Val (array core.fmt.rt.Argument.t) :=
-                                      M.alloc [ α5 ] in
-                                    let* α7 :
-                                        M.Val
-                                          (ref
-                                            (array core.fmt.rt.Argument.t)) :=
-                                      M.alloc (borrow α6) in
-                                    let* α8 :
-                                        ref (slice core.fmt.rt.Argument.t) :=
-                                      M.read (pointer_coercion "Unsize" α7) in
-                                    let* α9 : core.fmt.Arguments.t :=
+                                      M.alloc [ α3 ] in
+                                    let* α5 : core.fmt.Arguments.t :=
                                       M.call
                                         (core.fmt.Arguments.t::["new_v1"]
-                                          α4
-                                          α8) in
-                                    let* α10 : unit :=
-                                      M.call (std.io.stdio._print α9) in
-                                    M.alloc α10 in
+                                          (pointer_coercion
+                                            "Unsize"
+                                            (borrow α2))
+                                          (pointer_coercion
+                                            "Unsize"
+                                            (borrow α4))) in
+                                    let* α6 : unit :=
+                                      M.call (std.io.stdio._print α5) in
+                                    M.alloc α6 in
                                   M.alloc tt in
                                 let* α0 : M.Val unit := M.alloc tt in
                                 M.read α0) :
@@ -213,7 +205,7 @@ Definition main : M unit :=
                           core.result.Result.t
                             unit
                             (alloc.boxed.Box.t
-                              _ (* dyn *)
+                              (dyn [core.any.Any.Trait])
                               alloc.alloc.Global.t) :=
                         M.call ((std.thread.JoinHandle.t unit)::["join"] α0) in
                       let* α2 :
@@ -221,7 +213,7 @@ Definition main : M unit :=
                             (core.result.Result.t
                               unit
                               (alloc.boxed.Box.t
-                                _ (* dyn *)
+                                (dyn [core.any.Any.Trait])
                                 alloc.alloc.Global.t)) :=
                         M.alloc α1 in
                       match_operator

@@ -198,6 +198,9 @@ pub(crate) enum Expression<'a> {
         field: String,
         update: Rc<Expression<'a>>,
     },
+    List {
+        exprs: Vec<Expression<'a>>,
+    },
     /// For example ltac:(...) or constr:(...)
     ModeWrapper {
         mode: String,
@@ -1013,6 +1016,14 @@ impl<'a> Expression<'a> {
                     ]),
                 ]),
             ),
+            Self::List { exprs } => nest([
+                text("["),
+                intersperse(
+                    exprs.iter().map(|expr| expr.to_doc(false)),
+                    [text(";"), line()],
+                ),
+                text("]"),
+            ]),
             Self::ModeWrapper { mode, expr } => concat([
                 text(mode.to_owned()),
                 text(":("),

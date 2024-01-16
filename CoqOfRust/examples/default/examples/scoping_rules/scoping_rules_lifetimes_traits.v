@@ -32,9 +32,12 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed_t.
     let* α4 : M.Val (ref (ref i32.t)) :=
       M.alloc
         (borrow (scoping_rules_lifetimes_traits.Borrowed.Get_x (deref α3))) in
-    let* α5 : M.Val (ref (ref (ref i32.t))) := M.alloc (borrow α4) in
-    let* α6 : ref _ (* dyn *) := M.read (pointer_coercion "Unsize" α5) in
-    M.call (core.fmt.Formatter.t::["debug_struct_field1_finish"] α0 α1 α2 α6).
+    M.call
+      (core.fmt.Formatter.t::["debug_struct_field1_finish"]
+        α0
+        α1
+        α2
+        (pointer_coercion "Unsize" (borrow α4))).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
@@ -92,20 +95,16 @@ Definition main : M unit :=
       let* α1 : ref str.t := M.read (mk_str "
 ") in
       let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
-      let* α4 : ref (slice (ref str.t)) :=
-        M.read (pointer_coercion "Unsize" α3) in
-      let* α5 : core.fmt.rt.Argument.t :=
+      let* α3 : core.fmt.rt.Argument.t :=
         M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow b)) in
-      let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
-      let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-        M.alloc (borrow α6) in
-      let* α8 : ref (slice core.fmt.rt.Argument.t) :=
-        M.read (pointer_coercion "Unsize" α7) in
-      let* α9 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
-      let* α10 : unit := M.call (std.io.stdio._print α9) in
-      M.alloc α10 in
+      let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
+      let* α5 : core.fmt.Arguments.t :=
+        M.call
+          (core.fmt.Arguments.t::["new_v1"]
+            (pointer_coercion "Unsize" (borrow α2))
+            (pointer_coercion "Unsize" (borrow α4))) in
+      let* α6 : unit := M.call (std.io.stdio._print α5) in
+      M.alloc α6 in
     M.alloc tt in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.

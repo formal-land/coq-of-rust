@@ -30,9 +30,11 @@ Section Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber_t.
     let* α2 : ref try_from_and_try_into.EvenNumber.t := M.read self in
     let* α3 : M.Val (ref i32.t) :=
       M.alloc (borrow (try_from_and_try_into.EvenNumber.Get_0 (deref α2))) in
-    let* α4 : M.Val (ref (ref i32.t)) := M.alloc (borrow α3) in
-    let* α5 : ref _ (* dyn *) := M.read (pointer_coercion "Unsize" α4) in
-    M.call (core.fmt.Formatter.t::["debug_tuple_field1_finish"] α0 α1 α5).
+    M.call
+      (core.fmt.Formatter.t::["debug_tuple_field1_finish"]
+        α0
+        α1
+        (pointer_coercion "Unsize" (borrow α3))).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
@@ -105,7 +107,7 @@ Section Impl_core_convert_TryFrom_i32_t_for_try_from_and_try_into_EvenNumber_t.
           }
       }
   *)
-  Definition try_from (value : i32.t) : M (core.result.Result.t Self Error.t) :=
+  Definition try_from (value : i32.t) : M (core.result.Result.t Self Error) :=
     let* value := M.alloc value in
     let* α0 : i32.t := M.read value in
     let* α1 : i32.t := BinOp.Panic.rem α0 ((Integer.of_Z 2) : i32.t) in

@@ -1,7 +1,10 @@
 use crate::env::*;
 use crate::render::*;
-use rustc_hir::def::{DefKind, Res};
-use rustc_hir::QPath;
+use rustc_hir::{
+    def::{DefKind, Res},
+    definitions::DefPathData,
+    QPath,
+};
 use std::fmt;
 use std::vec;
 
@@ -80,8 +83,14 @@ pub(crate) fn compile_def_id(env: &Env, def_id: rustc_hir::def_id::DefId) -> Pat
         path_items
             .data
             .iter()
-            .filter_map(|item| item.data.get_opt_name())
-            .map(|name| to_valid_coq_name(name.as_str())),
+            .filter_map(|item| match item.data.get_opt_name() {
+                Some(name) => Some(name.to_string()),
+                None => match &item.data {
+                    DefPathData::Impl | DefPathData::ForeignMod => None,
+                    _ => Some(item.data.to_string()),
+                },
+            })
+            .map(|name| to_valid_coq_name(&name)),
     );
     Path { segments }
 }

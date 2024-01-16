@@ -5,7 +5,7 @@ Ltac Result T :=
   exact
     (core.result.Result.t
       T
-      (alloc.boxed.Box.t _ (* dyn *) alloc.boxed.Box.Default.A)).
+      (alloc.boxed.Box.t (dyn [core.error.Error]) alloc.boxed.Box.Default.A)).
 
 Module  EmptyVec.
 Section EmptyVec.

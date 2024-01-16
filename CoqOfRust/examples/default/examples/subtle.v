@@ -72,9 +72,11 @@ Section Impl_core_fmt_Debug_for_subtle_Choice_t.
     let* α2 : ref subtle.Choice.t := M.read self in
     let* α3 : M.Val (ref u8.t) :=
       M.alloc (borrow (subtle.Choice.Get_0 (deref α2))) in
-    let* α4 : M.Val (ref (ref u8.t)) := M.alloc (borrow α3) in
-    let* α5 : ref _ (* dyn *) := M.read (pointer_coercion "Unsize" α4) in
-    M.call (core.fmt.Formatter.t::["debug_tuple_field1_finish"] α0 α1 α5).
+    M.call
+      (core.fmt.Formatter.t::["debug_tuple_field1_finish"]
+        α0
+        α1
+        (pointer_coercion "Unsize" (borrow α3))).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
@@ -863,13 +865,11 @@ Section Impl_subtle_ConstantTimeEq_for_i8_t.
         subtle.ConstantTimeEq.ct_eq (Self := u8.t) (Trait := ℐ))) in
     let* α1 : ref i8.t := M.read self in
     let* α2 : i8.t := M.read (deref α1) in
-    let* α3 : u8.t := M.cast α2 in
-    let* α4 : M.Val u8.t := M.alloc α3 in
-    let* α5 : ref i8.t := M.read other in
-    let* α6 : i8.t := M.read (deref α5) in
-    let* α7 : u8.t := M.cast α6 in
-    let* α8 : M.Val u8.t := M.alloc α7 in
-    M.call (α0 (borrow α4) (borrow α8)).
+    let* α3 : M.Val u8.t := M.alloc (rust_cast α2) in
+    let* α4 : ref i8.t := M.read other in
+    let* α5 : i8.t := M.read (deref α4) in
+    let* α6 : M.Val u8.t := M.alloc (rust_cast α5) in
+    M.call (α0 (borrow α3) (borrow α6)).
   
   Global Instance AssociatedFunction_ct_eq :
     Notations.DoubleColon Self "ct_eq" := {
@@ -933,9 +933,9 @@ Section Impl_subtle_ConstantTimeEq_for_u16_t.
     let* α1 : u16.t := M.read y in
     let* α2 : M.Val u16.t := M.alloc ((Integer.of_Z 1) : u16.t) in
     let* α3 : u16.t := M.read (use α2) in
-    let* α4 : u8.t := M.cast (BinOp.Pure.bit_xor α1 α3) in
-    let* α5 : subtle.Choice.t := M.call (α0 α4) in
-    let* α0 : M.Val subtle.Choice.t := M.alloc α5 in
+    let* α4 : subtle.Choice.t :=
+      M.call (α0 (rust_cast (BinOp.Pure.bit_xor α1 α3))) in
+    let* α0 : M.Val subtle.Choice.t := M.alloc α4 in
     M.read α0.
   
   Global Instance AssociatedFunction_ct_eq :
@@ -968,13 +968,11 @@ Section Impl_subtle_ConstantTimeEq_for_i16_t.
         subtle.ConstantTimeEq.ct_eq (Self := u16.t) (Trait := ℐ))) in
     let* α1 : ref i16.t := M.read self in
     let* α2 : i16.t := M.read (deref α1) in
-    let* α3 : u16.t := M.cast α2 in
-    let* α4 : M.Val u16.t := M.alloc α3 in
-    let* α5 : ref i16.t := M.read other in
-    let* α6 : i16.t := M.read (deref α5) in
-    let* α7 : u16.t := M.cast α6 in
-    let* α8 : M.Val u16.t := M.alloc α7 in
-    M.call (α0 (borrow α4) (borrow α8)).
+    let* α3 : M.Val u16.t := M.alloc (rust_cast α2) in
+    let* α4 : ref i16.t := M.read other in
+    let* α5 : i16.t := M.read (deref α4) in
+    let* α6 : M.Val u16.t := M.alloc (rust_cast α5) in
+    M.call (α0 (borrow α3) (borrow α6)).
   
   Global Instance AssociatedFunction_ct_eq :
     Notations.DoubleColon Self "ct_eq" := {
@@ -1038,9 +1036,9 @@ Section Impl_subtle_ConstantTimeEq_for_u32_t.
     let* α1 : u32.t := M.read y in
     let* α2 : M.Val u32.t := M.alloc ((Integer.of_Z 1) : u32.t) in
     let* α3 : u32.t := M.read (use α2) in
-    let* α4 : u8.t := M.cast (BinOp.Pure.bit_xor α1 α3) in
-    let* α5 : subtle.Choice.t := M.call (α0 α4) in
-    let* α0 : M.Val subtle.Choice.t := M.alloc α5 in
+    let* α4 : subtle.Choice.t :=
+      M.call (α0 (rust_cast (BinOp.Pure.bit_xor α1 α3))) in
+    let* α0 : M.Val subtle.Choice.t := M.alloc α4 in
     M.read α0.
   
   Global Instance AssociatedFunction_ct_eq :
@@ -1073,13 +1071,11 @@ Section Impl_subtle_ConstantTimeEq_for_i32_t.
         subtle.ConstantTimeEq.ct_eq (Self := u32.t) (Trait := ℐ))) in
     let* α1 : ref i32.t := M.read self in
     let* α2 : i32.t := M.read (deref α1) in
-    let* α3 : u32.t := M.cast α2 in
-    let* α4 : M.Val u32.t := M.alloc α3 in
-    let* α5 : ref i32.t := M.read other in
-    let* α6 : i32.t := M.read (deref α5) in
-    let* α7 : u32.t := M.cast α6 in
-    let* α8 : M.Val u32.t := M.alloc α7 in
-    M.call (α0 (borrow α4) (borrow α8)).
+    let* α3 : M.Val u32.t := M.alloc (rust_cast α2) in
+    let* α4 : ref i32.t := M.read other in
+    let* α5 : i32.t := M.read (deref α4) in
+    let* α6 : M.Val u32.t := M.alloc (rust_cast α5) in
+    M.call (α0 (borrow α3) (borrow α6)).
   
   Global Instance AssociatedFunction_ct_eq :
     Notations.DoubleColon Self "ct_eq" := {
@@ -1143,9 +1139,9 @@ Section Impl_subtle_ConstantTimeEq_for_u64_t.
     let* α1 : u64.t := M.read y in
     let* α2 : M.Val u64.t := M.alloc ((Integer.of_Z 1) : u64.t) in
     let* α3 : u64.t := M.read (use α2) in
-    let* α4 : u8.t := M.cast (BinOp.Pure.bit_xor α1 α3) in
-    let* α5 : subtle.Choice.t := M.call (α0 α4) in
-    let* α0 : M.Val subtle.Choice.t := M.alloc α5 in
+    let* α4 : subtle.Choice.t :=
+      M.call (α0 (rust_cast (BinOp.Pure.bit_xor α1 α3))) in
+    let* α0 : M.Val subtle.Choice.t := M.alloc α4 in
     M.read α0.
   
   Global Instance AssociatedFunction_ct_eq :
@@ -1178,13 +1174,11 @@ Section Impl_subtle_ConstantTimeEq_for_i64_t.
         subtle.ConstantTimeEq.ct_eq (Self := u64.t) (Trait := ℐ))) in
     let* α1 : ref i64.t := M.read self in
     let* α2 : i64.t := M.read (deref α1) in
-    let* α3 : u64.t := M.cast α2 in
-    let* α4 : M.Val u64.t := M.alloc α3 in
-    let* α5 : ref i64.t := M.read other in
-    let* α6 : i64.t := M.read (deref α5) in
-    let* α7 : u64.t := M.cast α6 in
-    let* α8 : M.Val u64.t := M.alloc α7 in
-    M.call (α0 (borrow α4) (borrow α8)).
+    let* α3 : M.Val u64.t := M.alloc (rust_cast α2) in
+    let* α4 : ref i64.t := M.read other in
+    let* α5 : i64.t := M.read (deref α4) in
+    let* α6 : M.Val u64.t := M.alloc (rust_cast α5) in
+    M.call (α0 (borrow α3) (borrow α6)).
   
   Global Instance AssociatedFunction_ct_eq :
     Notations.DoubleColon Self "ct_eq" := {
@@ -1250,9 +1244,9 @@ Section Impl_subtle_ConstantTimeEq_for_usize_t.
     let* α1 : usize.t := M.read y in
     let* α2 : M.Val usize.t := M.alloc ((Integer.of_Z 1) : usize.t) in
     let* α3 : usize.t := M.read (use α2) in
-    let* α4 : u8.t := M.cast (BinOp.Pure.bit_xor α1 α3) in
-    let* α5 : subtle.Choice.t := M.call (α0 α4) in
-    let* α0 : M.Val subtle.Choice.t := M.alloc α5 in
+    let* α4 : subtle.Choice.t :=
+      M.call (α0 (rust_cast (BinOp.Pure.bit_xor α1 α3))) in
+    let* α0 : M.Val subtle.Choice.t := M.alloc α4 in
     M.read α0.
   
   Global Instance AssociatedFunction_ct_eq :
@@ -1288,13 +1282,11 @@ Section Impl_subtle_ConstantTimeEq_for_isize_t.
         subtle.ConstantTimeEq.ct_eq (Self := usize.t) (Trait := ℐ))) in
     let* α1 : ref isize.t := M.read self in
     let* α2 : isize.t := M.read (deref α1) in
-    let* α3 : usize.t := M.cast α2 in
-    let* α4 : M.Val usize.t := M.alloc α3 in
-    let* α5 : ref isize.t := M.read other in
-    let* α6 : isize.t := M.read (deref α5) in
-    let* α7 : usize.t := M.cast α6 in
-    let* α8 : M.Val usize.t := M.alloc α7 in
-    M.call (α0 (borrow α4) (borrow α8)).
+    let* α3 : M.Val usize.t := M.alloc (rust_cast α2) in
+    let* α4 : ref isize.t := M.read other in
+    let* α5 : isize.t := M.read (deref α4) in
+    let* α6 : M.Val usize.t := M.alloc (rust_cast α5) in
+    M.call (α0 (borrow α3) (borrow α6)).
   
   Global Instance AssociatedFunction_ct_eq :
     Notations.DoubleColon Self "ct_eq" := {
@@ -1341,10 +1333,8 @@ Section Impl_subtle_ConditionallySelectable_for_u8_t.
     let* mask : M.Val u8.t :=
       let* α0 : u8.t :=
         M.call (subtle.Choice.t::["unwrap_u8"] (borrow choice)) in
-      let* α1 : i8.t := M.cast α0 in
-      let* α2 : i8.t := UnOp.neg α1 in
-      let* α3 : u8.t := M.cast α2 in
-      M.alloc α3 in
+      let* α1 : i8.t := UnOp.neg (rust_cast α0) in
+      M.alloc (rust_cast α1) in
     let* α0 : _ :=
       ltac:(M.get_method (fun ℐ =>
         core.ops.bit.BitXor.bitxor
@@ -1390,10 +1380,8 @@ Section Impl_subtle_ConditionallySelectable_for_u8_t.
     let* mask : M.Val u8.t :=
       let* α0 : u8.t :=
         M.call (subtle.Choice.t::["unwrap_u8"] (borrow choice)) in
-      let* α1 : i8.t := M.cast α0 in
-      let* α2 : i8.t := UnOp.neg α1 in
-      let* α3 : u8.t := M.cast α2 in
-      M.alloc α3 in
+      let* α1 : i8.t := UnOp.neg (rust_cast α0) in
+      M.alloc (rust_cast α1) in
     let* _ : M.Val unit :=
       let* β : M.Val u8.t :=
         let* α0 : mut_ref u8.t := M.read self in
@@ -1438,10 +1426,8 @@ Section Impl_subtle_ConditionallySelectable_for_u8_t.
     let* mask : M.Val u8.t :=
       let* α0 : u8.t :=
         M.call (subtle.Choice.t::["unwrap_u8"] (borrow choice)) in
-      let* α1 : i8.t := M.cast α0 in
-      let* α2 : i8.t := UnOp.neg α1 in
-      let* α3 : u8.t := M.cast α2 in
-      M.alloc α3 in
+      let* α1 : i8.t := UnOp.neg (rust_cast α0) in
+      M.alloc (rust_cast α1) in
     let* t : M.Val u8.t :=
       let* α0 : u8.t := M.read mask in
       let* α1 : mut_ref u8.t := M.read a in
@@ -1504,10 +1490,9 @@ Section Impl_subtle_ConditionallySelectable_for_i8_t.
     let* mask : M.Val i8.t :=
       let* α0 : u8.t :=
         M.call (subtle.Choice.t::["unwrap_u8"] (borrow choice)) in
-      let* α1 : i8.t := M.cast α0 in
-      let* α2 : i8.t := UnOp.neg α1 in
-      let* α3 : M.Val i8.t := M.alloc α2 in
-      M.copy (use α3) in
+      let* α1 : i8.t := UnOp.neg (rust_cast α0) in
+      let* α2 : M.Val i8.t := M.alloc α1 in
+      M.copy (use α2) in
     let* α0 : _ :=
       ltac:(M.get_method (fun ℐ =>
         core.ops.bit.BitXor.bitxor
@@ -1553,10 +1538,9 @@ Section Impl_subtle_ConditionallySelectable_for_i8_t.
     let* mask : M.Val i8.t :=
       let* α0 : u8.t :=
         M.call (subtle.Choice.t::["unwrap_u8"] (borrow choice)) in
-      let* α1 : i8.t := M.cast α0 in
-      let* α2 : i8.t := UnOp.neg α1 in
-      let* α3 : M.Val i8.t := M.alloc α2 in
-      M.copy (use α3) in
+      let* α1 : i8.t := UnOp.neg (rust_cast α0) in
+      let* α2 : M.Val i8.t := M.alloc α1 in
+      M.copy (use α2) in
     let* _ : M.Val unit :=
       let* β : M.Val i8.t :=
         let* α0 : mut_ref i8.t := M.read self in
@@ -1601,10 +1585,9 @@ Section Impl_subtle_ConditionallySelectable_for_i8_t.
     let* mask : M.Val i8.t :=
       let* α0 : u8.t :=
         M.call (subtle.Choice.t::["unwrap_u8"] (borrow choice)) in
-      let* α1 : i8.t := M.cast α0 in
-      let* α2 : i8.t := UnOp.neg α1 in
-      let* α3 : M.Val i8.t := M.alloc α2 in
-      M.copy (use α3) in
+      let* α1 : i8.t := UnOp.neg (rust_cast α0) in
+      let* α2 : M.Val i8.t := M.alloc α1 in
+      M.copy (use α2) in
     let* t : M.Val i8.t :=
       let* α0 : i8.t := M.read mask in
       let* α1 : mut_ref i8.t := M.read a in
@@ -1667,10 +1650,8 @@ Section Impl_subtle_ConditionallySelectable_for_u16_t.
     let* mask : M.Val u16.t :=
       let* α0 : u8.t :=
         M.call (subtle.Choice.t::["unwrap_u8"] (borrow choice)) in
-      let* α1 : i16.t := M.cast α0 in
-      let* α2 : i16.t := UnOp.neg α1 in
-      let* α3 : u16.t := M.cast α2 in
-      M.alloc α3 in
+      let* α1 : i16.t := UnOp.neg (rust_cast α0) in
+      M.alloc (rust_cast α1) in
     let* α0 : _ :=
       ltac:(M.get_method (fun ℐ =>
         core.ops.bit.BitXor.bitxor
@@ -1716,10 +1697,8 @@ Section Impl_subtle_ConditionallySelectable_for_u16_t.
     let* mask : M.Val u16.t :=
       let* α0 : u8.t :=
         M.call (subtle.Choice.t::["unwrap_u8"] (borrow choice)) in
-      let* α1 : i16.t := M.cast α0 in
-      let* α2 : i16.t := UnOp.neg α1 in
-      let* α3 : u16.t := M.cast α2 in
-      M.alloc α3 in
+      let* α1 : i16.t := UnOp.neg (rust_cast α0) in
+      M.alloc (rust_cast α1) in
     let* _ : M.Val unit :=
       let* β : M.Val u16.t :=
         let* α0 : mut_ref u16.t := M.read self in
@@ -1764,10 +1743,8 @@ Section Impl_subtle_ConditionallySelectable_for_u16_t.
     let* mask : M.Val u16.t :=
       let* α0 : u8.t :=
         M.call (subtle.Choice.t::["unwrap_u8"] (borrow choice)) in
-      let* α1 : i16.t := M.cast α0 in
-      let* α2 : i16.t := UnOp.neg α1 in
-      let* α3 : u16.t := M.cast α2 in
-      M.alloc α3 in
+      let* α1 : i16.t := UnOp.neg (rust_cast α0) in
+      M.alloc (rust_cast α1) in
     let* t : M.Val u16.t :=
       let* α0 : u16.t := M.read mask in
       let* α1 : mut_ref u16.t := M.read a in
@@ -1830,10 +1807,9 @@ Section Impl_subtle_ConditionallySelectable_for_i16_t.
     let* mask : M.Val i16.t :=
       let* α0 : u8.t :=
         M.call (subtle.Choice.t::["unwrap_u8"] (borrow choice)) in
-      let* α1 : i16.t := M.cast α0 in
-      let* α2 : i16.t := UnOp.neg α1 in
-      let* α3 : M.Val i16.t := M.alloc α2 in
-      M.copy (use α3) in
+      let* α1 : i16.t := UnOp.neg (rust_cast α0) in
+      let* α2 : M.Val i16.t := M.alloc α1 in
+      M.copy (use α2) in
     let* α0 : _ :=
       ltac:(M.get_method (fun ℐ =>
         core.ops.bit.BitXor.bitxor
@@ -1879,10 +1855,9 @@ Section Impl_subtle_ConditionallySelectable_for_i16_t.
     let* mask : M.Val i16.t :=
       let* α0 : u8.t :=
         M.call (subtle.Choice.t::["unwrap_u8"] (borrow choice)) in
-      let* α1 : i16.t := M.cast α0 in
-      let* α2 : i16.t := UnOp.neg α1 in
-      let* α3 : M.Val i16.t := M.alloc α2 in
-      M.copy (use α3) in
+      let* α1 : i16.t := UnOp.neg (rust_cast α0) in
+      let* α2 : M.Val i16.t := M.alloc α1 in
+      M.copy (use α2) in
     let* _ : M.Val unit :=
       let* β : M.Val i16.t :=
         let* α0 : mut_ref i16.t := M.read self in
@@ -1927,10 +1902,9 @@ Section Impl_subtle_ConditionallySelectable_for_i16_t.
     let* mask : M.Val i16.t :=
       let* α0 : u8.t :=
         M.call (subtle.Choice.t::["unwrap_u8"] (borrow choice)) in
-      let* α1 : i16.t := M.cast α0 in
-      let* α2 : i16.t := UnOp.neg α1 in
-      let* α3 : M.Val i16.t := M.alloc α2 in
-      M.copy (use α3) in
+      let* α1 : i16.t := UnOp.neg (rust_cast α0) in
+      let* α2 : M.Val i16.t := M.alloc α1 in
+      M.copy (use α2) in
     let* t : M.Val i16.t :=
       let* α0 : i16.t := M.read mask in
       let* α1 : mut_ref i16.t := M.read a in
@@ -1993,10 +1967,8 @@ Section Impl_subtle_ConditionallySelectable_for_u32_t.
     let* mask : M.Val u32.t :=
       let* α0 : u8.t :=
         M.call (subtle.Choice.t::["unwrap_u8"] (borrow choice)) in
-      let* α1 : i32.t := M.cast α0 in
-      let* α2 : i32.t := UnOp.neg α1 in
-      let* α3 : u32.t := M.cast α2 in
-      M.alloc α3 in
+      let* α1 : i32.t := UnOp.neg (rust_cast α0) in
+      M.alloc (rust_cast α1) in
     let* α0 : _ :=
       ltac:(M.get_method (fun ℐ =>
         core.ops.bit.BitXor.bitxor
@@ -2042,10 +2014,8 @@ Section Impl_subtle_ConditionallySelectable_for_u32_t.
     let* mask : M.Val u32.t :=
       let* α0 : u8.t :=
         M.call (subtle.Choice.t::["unwrap_u8"] (borrow choice)) in
-      let* α1 : i32.t := M.cast α0 in
-      let* α2 : i32.t := UnOp.neg α1 in
-      let* α3 : u32.t := M.cast α2 in
-      M.alloc α3 in
+      let* α1 : i32.t := UnOp.neg (rust_cast α0) in
+      M.alloc (rust_cast α1) in
     let* _ : M.Val unit :=
       let* β : M.Val u32.t :=
         let* α0 : mut_ref u32.t := M.read self in
@@ -2090,10 +2060,8 @@ Section Impl_subtle_ConditionallySelectable_for_u32_t.
     let* mask : M.Val u32.t :=
       let* α0 : u8.t :=
         M.call (subtle.Choice.t::["unwrap_u8"] (borrow choice)) in
-      let* α1 : i32.t := M.cast α0 in
-      let* α2 : i32.t := UnOp.neg α1 in
-      let* α3 : u32.t := M.cast α2 in
-      M.alloc α3 in
+      let* α1 : i32.t := UnOp.neg (rust_cast α0) in
+      M.alloc (rust_cast α1) in
     let* t : M.Val u32.t :=
       let* α0 : u32.t := M.read mask in
       let* α1 : mut_ref u32.t := M.read a in
@@ -2156,10 +2124,9 @@ Section Impl_subtle_ConditionallySelectable_for_i32_t.
     let* mask : M.Val i32.t :=
       let* α0 : u8.t :=
         M.call (subtle.Choice.t::["unwrap_u8"] (borrow choice)) in
-      let* α1 : i32.t := M.cast α0 in
-      let* α2 : i32.t := UnOp.neg α1 in
-      let* α3 : M.Val i32.t := M.alloc α2 in
-      M.copy (use α3) in
+      let* α1 : i32.t := UnOp.neg (rust_cast α0) in
+      let* α2 : M.Val i32.t := M.alloc α1 in
+      M.copy (use α2) in
     let* α0 : _ :=
       ltac:(M.get_method (fun ℐ =>
         core.ops.bit.BitXor.bitxor
@@ -2205,10 +2172,9 @@ Section Impl_subtle_ConditionallySelectable_for_i32_t.
     let* mask : M.Val i32.t :=
       let* α0 : u8.t :=
         M.call (subtle.Choice.t::["unwrap_u8"] (borrow choice)) in
-      let* α1 : i32.t := M.cast α0 in
-      let* α2 : i32.t := UnOp.neg α1 in
-      let* α3 : M.Val i32.t := M.alloc α2 in
-      M.copy (use α3) in
+      let* α1 : i32.t := UnOp.neg (rust_cast α0) in
+      let* α2 : M.Val i32.t := M.alloc α1 in
+      M.copy (use α2) in
     let* _ : M.Val unit :=
       let* β : M.Val i32.t :=
         let* α0 : mut_ref i32.t := M.read self in
@@ -2253,10 +2219,9 @@ Section Impl_subtle_ConditionallySelectable_for_i32_t.
     let* mask : M.Val i32.t :=
       let* α0 : u8.t :=
         M.call (subtle.Choice.t::["unwrap_u8"] (borrow choice)) in
-      let* α1 : i32.t := M.cast α0 in
-      let* α2 : i32.t := UnOp.neg α1 in
-      let* α3 : M.Val i32.t := M.alloc α2 in
-      M.copy (use α3) in
+      let* α1 : i32.t := UnOp.neg (rust_cast α0) in
+      let* α2 : M.Val i32.t := M.alloc α1 in
+      M.copy (use α2) in
     let* t : M.Val i32.t :=
       let* α0 : i32.t := M.read mask in
       let* α1 : mut_ref i32.t := M.read a in
@@ -2319,10 +2284,8 @@ Section Impl_subtle_ConditionallySelectable_for_u64_t.
     let* mask : M.Val u64.t :=
       let* α0 : u8.t :=
         M.call (subtle.Choice.t::["unwrap_u8"] (borrow choice)) in
-      let* α1 : i64.t := M.cast α0 in
-      let* α2 : i64.t := UnOp.neg α1 in
-      let* α3 : u64.t := M.cast α2 in
-      M.alloc α3 in
+      let* α1 : i64.t := UnOp.neg (rust_cast α0) in
+      M.alloc (rust_cast α1) in
     let* α0 : _ :=
       ltac:(M.get_method (fun ℐ =>
         core.ops.bit.BitXor.bitxor
@@ -2368,10 +2331,8 @@ Section Impl_subtle_ConditionallySelectable_for_u64_t.
     let* mask : M.Val u64.t :=
       let* α0 : u8.t :=
         M.call (subtle.Choice.t::["unwrap_u8"] (borrow choice)) in
-      let* α1 : i64.t := M.cast α0 in
-      let* α2 : i64.t := UnOp.neg α1 in
-      let* α3 : u64.t := M.cast α2 in
-      M.alloc α3 in
+      let* α1 : i64.t := UnOp.neg (rust_cast α0) in
+      M.alloc (rust_cast α1) in
     let* _ : M.Val unit :=
       let* β : M.Val u64.t :=
         let* α0 : mut_ref u64.t := M.read self in
@@ -2416,10 +2377,8 @@ Section Impl_subtle_ConditionallySelectable_for_u64_t.
     let* mask : M.Val u64.t :=
       let* α0 : u8.t :=
         M.call (subtle.Choice.t::["unwrap_u8"] (borrow choice)) in
-      let* α1 : i64.t := M.cast α0 in
-      let* α2 : i64.t := UnOp.neg α1 in
-      let* α3 : u64.t := M.cast α2 in
-      M.alloc α3 in
+      let* α1 : i64.t := UnOp.neg (rust_cast α0) in
+      M.alloc (rust_cast α1) in
     let* t : M.Val u64.t :=
       let* α0 : u64.t := M.read mask in
       let* α1 : mut_ref u64.t := M.read a in
@@ -2482,10 +2441,9 @@ Section Impl_subtle_ConditionallySelectable_for_i64_t.
     let* mask : M.Val i64.t :=
       let* α0 : u8.t :=
         M.call (subtle.Choice.t::["unwrap_u8"] (borrow choice)) in
-      let* α1 : i64.t := M.cast α0 in
-      let* α2 : i64.t := UnOp.neg α1 in
-      let* α3 : M.Val i64.t := M.alloc α2 in
-      M.copy (use α3) in
+      let* α1 : i64.t := UnOp.neg (rust_cast α0) in
+      let* α2 : M.Val i64.t := M.alloc α1 in
+      M.copy (use α2) in
     let* α0 : _ :=
       ltac:(M.get_method (fun ℐ =>
         core.ops.bit.BitXor.bitxor
@@ -2531,10 +2489,9 @@ Section Impl_subtle_ConditionallySelectable_for_i64_t.
     let* mask : M.Val i64.t :=
       let* α0 : u8.t :=
         M.call (subtle.Choice.t::["unwrap_u8"] (borrow choice)) in
-      let* α1 : i64.t := M.cast α0 in
-      let* α2 : i64.t := UnOp.neg α1 in
-      let* α3 : M.Val i64.t := M.alloc α2 in
-      M.copy (use α3) in
+      let* α1 : i64.t := UnOp.neg (rust_cast α0) in
+      let* α2 : M.Val i64.t := M.alloc α1 in
+      M.copy (use α2) in
     let* _ : M.Val unit :=
       let* β : M.Val i64.t :=
         let* α0 : mut_ref i64.t := M.read self in
@@ -2579,10 +2536,9 @@ Section Impl_subtle_ConditionallySelectable_for_i64_t.
     let* mask : M.Val i64.t :=
       let* α0 : u8.t :=
         M.call (subtle.Choice.t::["unwrap_u8"] (borrow choice)) in
-      let* α1 : i64.t := M.cast α0 in
-      let* α2 : i64.t := UnOp.neg α1 in
-      let* α3 : M.Val i64.t := M.alloc α2 in
-      M.copy (use α3) in
+      let* α1 : i64.t := UnOp.neg (rust_cast α0) in
+      let* α2 : M.Val i64.t := M.alloc α1 in
+      M.copy (use α2) in
     let* t : M.Val i64.t :=
       let* α0 : i64.t := M.read mask in
       let* α1 : mut_ref i64.t := M.read a in
@@ -2824,17 +2780,20 @@ Section Impl_core_fmt_Debug_for_subtle_CtOption_t_T.
     let* α1 : ref str.t := M.read (mk_str "CtOption") in
     let* α2 : ref str.t := M.read (mk_str "value") in
     let* α3 : ref (subtle.CtOption.t T) := M.read self in
-    let* α4 : M.Val (ref T) :=
-      M.alloc (borrow (subtle.CtOption.Get_value (deref α3))) in
-    let* α5 : ref _ (* dyn *) := M.read (pointer_coercion "Unsize" α4) in
-    let* α6 : ref str.t := M.read (mk_str "is_some") in
-    let* α7 : ref (subtle.CtOption.t T) := M.read self in
-    let* α8 : M.Val (ref subtle.Choice.t) :=
-      M.alloc (borrow (subtle.CtOption.Get_is_some (deref α7))) in
-    let* α9 : M.Val (ref (ref subtle.Choice.t)) := M.alloc (borrow α8) in
-    let* α10 : ref _ (* dyn *) := M.read (pointer_coercion "Unsize" α9) in
+    let* α4 : ref str.t := M.read (mk_str "is_some") in
+    let* α5 : ref (subtle.CtOption.t T) := M.read self in
+    let* α6 : M.Val (ref subtle.Choice.t) :=
+      M.alloc (borrow (subtle.CtOption.Get_is_some (deref α5))) in
     M.call
-      (core.fmt.Formatter.t::["debug_struct_field2_finish"] α0 α1 α2 α5 α6 α10).
+      (core.fmt.Formatter.t::["debug_struct_field2_finish"]
+        α0
+        α1
+        α2
+        (pointer_coercion
+          "Unsize"
+          (borrow (subtle.CtOption.Get_value (deref α3))))
+        α4
+        (pointer_coercion "Unsize" (borrow α6))).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
@@ -2963,29 +2922,24 @@ Section Impl_subtle_CtOption_t_T.
                 let* α2 : ref u8.t := M.read right_val in
                 let* α3 : ref str.t := M.read (mk_str "") in
                 let* α4 : M.Val (array (ref str.t)) := M.alloc [ α3 ] in
-                let* α5 : M.Val (ref (array (ref str.t))) :=
-                  M.alloc (borrow α4) in
-                let* α6 : ref (slice (ref str.t)) :=
-                  M.read (pointer_coercion "Unsize" α5) in
-                let* α7 : core.fmt.rt.Argument.t :=
+                let* α5 : core.fmt.rt.Argument.t :=
                   M.call
                     (core.fmt.rt.Argument.t::["new_display"] (borrow msg)) in
-                let* α8 : M.Val (array core.fmt.rt.Argument.t) :=
-                  M.alloc [ α7 ] in
-                let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-                  M.alloc (borrow α8) in
-                let* α10 : ref (slice core.fmt.rt.Argument.t) :=
-                  M.read (pointer_coercion "Unsize" α9) in
-                let* α11 : core.fmt.Arguments.t :=
-                  M.call (core.fmt.Arguments.t::["new_v1"] α6 α10) in
-                let* α12 : never.t :=
+                let* α6 : M.Val (array core.fmt.rt.Argument.t) :=
+                  M.alloc [ α5 ] in
+                let* α7 : core.fmt.Arguments.t :=
+                  M.call
+                    (core.fmt.Arguments.t::["new_v1"]
+                      (pointer_coercion "Unsize" (borrow α4))
+                      (pointer_coercion "Unsize" (borrow α6))) in
+                let* α8 : never.t :=
                   M.call
                     (core.panicking.assert_failed
                       α0
                       α1
                       α2
-                      (core.option.Option.Some α11)) in
-                let* α0 : M.Val never.t := M.alloc α12 in
+                      (core.option.Option.Some α7)) in
+                let* α0 : M.Val never.t := M.alloc α8 in
                 let* α1 := M.read α0 in
                 let* α2 : unit := never_to_any α1 in
                 M.alloc α2
@@ -3819,10 +3773,10 @@ Section Impl_subtle_ConstantTimeGreater_for_u16_t.
           (T := u8.t)
           (Trait := ℐ))) in
     let* α1 : u16.t := M.read bit in
-    let* α2 : u8.t :=
-      M.cast (BinOp.Pure.bit_and α1 ((Integer.of_Z 1) : u16.t)) in
-    let* α3 : subtle.Choice.t := M.call (α0 α2) in
-    let* α0 : M.Val subtle.Choice.t := M.alloc α3 in
+    let* α2 : subtle.Choice.t :=
+      M.call
+        (α0 (rust_cast (BinOp.Pure.bit_and α1 ((Integer.of_Z 1) : u16.t)))) in
+    let* α0 : M.Val subtle.Choice.t := M.alloc α2 in
     M.read α0.
   
   Global Instance AssociatedFunction_ct_gt :
@@ -3971,10 +3925,10 @@ Section Impl_subtle_ConstantTimeGreater_for_u32_t.
           (T := u8.t)
           (Trait := ℐ))) in
     let* α1 : u32.t := M.read bit in
-    let* α2 : u8.t :=
-      M.cast (BinOp.Pure.bit_and α1 ((Integer.of_Z 1) : u32.t)) in
-    let* α3 : subtle.Choice.t := M.call (α0 α2) in
-    let* α0 : M.Val subtle.Choice.t := M.alloc α3 in
+    let* α2 : subtle.Choice.t :=
+      M.call
+        (α0 (rust_cast (BinOp.Pure.bit_and α1 ((Integer.of_Z 1) : u32.t)))) in
+    let* α0 : M.Val subtle.Choice.t := M.alloc α2 in
     M.read α0.
   
   Global Instance AssociatedFunction_ct_gt :
@@ -4123,10 +4077,10 @@ Section Impl_subtle_ConstantTimeGreater_for_u64_t.
           (T := u8.t)
           (Trait := ℐ))) in
     let* α1 : u64.t := M.read bit in
-    let* α2 : u8.t :=
-      M.cast (BinOp.Pure.bit_and α1 ((Integer.of_Z 1) : u64.t)) in
-    let* α3 : subtle.Choice.t := M.call (α0 α2) in
-    let* α0 : M.Val subtle.Choice.t := M.alloc α3 in
+    let* α2 : subtle.Choice.t :=
+      M.call
+        (α0 (rust_cast (BinOp.Pure.bit_and α1 ((Integer.of_Z 1) : u64.t)))) in
+    let* α0 : M.Val subtle.Choice.t := M.alloc α2 in
     M.read α0.
   
   Global Instance AssociatedFunction_ct_gt :

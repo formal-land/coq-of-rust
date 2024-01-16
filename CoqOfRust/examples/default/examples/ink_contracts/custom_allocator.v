@@ -29,10 +29,10 @@ Section Impl_custom_allocator_CustomAllocator_t.
     let* α1 : M.Val (array bool.t) := M.alloc [ α0 ] in
     let* α2 : M.Val (alloc.boxed.Box.t (array bool.t) alloc.alloc.Global.t) :=
       M.call ((alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α1) in
-    let* α3 : alloc.boxed.Box.t (slice bool.t) alloc.alloc.Global.t :=
-      M.read (pointer_coercion "Unsize" α2) in
+    let* α3 : alloc.boxed.Box.t (array bool.t) alloc.alloc.Global.t :=
+      M.read α2 in
     let* α4 : alloc.vec.Vec.t bool.t alloc.alloc.Global.t :=
-      M.call ((slice bool.t)::["into_vec"] α3) in
+      M.call ((slice bool.t)::["into_vec"] (pointer_coercion "Unsize" α3)) in
     M.pure {| custom_allocator.CustomAllocator.value := α4; |}.
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {

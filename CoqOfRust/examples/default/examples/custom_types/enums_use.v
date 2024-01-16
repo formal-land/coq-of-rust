@@ -50,14 +50,12 @@ Definition main : M unit :=
                 M.read (mk_str "The rich have lots of money!
 ") in
               let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-              let* α2 : M.Val (ref (array (ref str.t))) :=
-                M.alloc (borrow α1) in
-              let* α3 : ref (slice (ref str.t)) :=
-                M.read (pointer_coercion "Unsize" α2) in
-              let* α4 : core.fmt.Arguments.t :=
-                M.call (core.fmt.Arguments.t::["new_const"] α3) in
-              let* α5 : unit := M.call (std.io.stdio._print α4) in
-              M.alloc α5 in
+              let* α2 : core.fmt.Arguments.t :=
+                M.call
+                  (core.fmt.Arguments.t::["new_const"]
+                    (pointer_coercion "Unsize" (borrow α1))) in
+              let* α3 : unit := M.call (std.io.stdio._print α2) in
+              M.alloc α3 in
             M.alloc tt
           | _ => M.break_match
           end) :
@@ -71,14 +69,12 @@ Definition main : M unit :=
                 M.read (mk_str "The poor have no money...
 ") in
               let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-              let* α2 : M.Val (ref (array (ref str.t))) :=
-                M.alloc (borrow α1) in
-              let* α3 : ref (slice (ref str.t)) :=
-                M.read (pointer_coercion "Unsize" α2) in
-              let* α4 : core.fmt.Arguments.t :=
-                M.call (core.fmt.Arguments.t::["new_const"] α3) in
-              let* α5 : unit := M.call (std.io.stdio._print α4) in
-              M.alloc α5 in
+              let* α2 : core.fmt.Arguments.t :=
+                M.call
+                  (core.fmt.Arguments.t::["new_const"]
+                    (pointer_coercion "Unsize" (borrow α1))) in
+              let* α3 : unit := M.call (std.io.stdio._print α2) in
+              M.alloc α3 in
             M.alloc tt
           | _ => M.break_match
           end) :
@@ -96,14 +92,12 @@ Definition main : M unit :=
               let* α0 : ref str.t := M.read (mk_str "Civilians work!
 ") in
               let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-              let* α2 : M.Val (ref (array (ref str.t))) :=
-                M.alloc (borrow α1) in
-              let* α3 : ref (slice (ref str.t)) :=
-                M.read (pointer_coercion "Unsize" α2) in
-              let* α4 : core.fmt.Arguments.t :=
-                M.call (core.fmt.Arguments.t::["new_const"] α3) in
-              let* α5 : unit := M.call (std.io.stdio._print α4) in
-              M.alloc α5 in
+              let* α2 : core.fmt.Arguments.t :=
+                M.call
+                  (core.fmt.Arguments.t::["new_const"]
+                    (pointer_coercion "Unsize" (borrow α1))) in
+              let* α3 : unit := M.call (std.io.stdio._print α2) in
+              M.alloc α3 in
             M.alloc tt
           | _ => M.break_match
           end) :
@@ -116,14 +110,12 @@ Definition main : M unit :=
               let* α0 : ref str.t := M.read (mk_str "Soldiers fight!
 ") in
               let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-              let* α2 : M.Val (ref (array (ref str.t))) :=
-                M.alloc (borrow α1) in
-              let* α3 : ref (slice (ref str.t)) :=
-                M.read (pointer_coercion "Unsize" α2) in
-              let* α4 : core.fmt.Arguments.t :=
-                M.call (core.fmt.Arguments.t::["new_const"] α3) in
-              let* α5 : unit := M.call (std.io.stdio._print α4) in
-              M.alloc α5 in
+              let* α2 : core.fmt.Arguments.t :=
+                M.call
+                  (core.fmt.Arguments.t::["new_const"]
+                    (pointer_coercion "Unsize" (borrow α1))) in
+              let* α3 : unit := M.call (std.io.stdio._print α2) in
+              M.alloc α3 in
             M.alloc tt
           | _ => M.break_match
           end) :

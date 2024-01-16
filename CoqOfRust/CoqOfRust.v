@@ -43,10 +43,7 @@ Definition defaultType (T : option Set) (Default : Set) : Set :=
 
 Parameter axiom : forall {A : Set}, A.
 
-Parameter cast : forall {A : Set}, A -> forall (B : Set), B.
-
-Definition pointer_coercion {T : Set} (cast : string) (x : T) : T :=
-  x.
+Parameter pointer_coercion : forall {A B : Set}, string -> A -> B.
 
 (** We replace assembly blocks by a value of type unit. *)
 Parameter InlineAssembly : M.Val unit.

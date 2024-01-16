@@ -54,7 +54,27 @@ pub(crate) fn compile_type<'a>(env: &Env<'a>, ty: &rustc_middle::ty::Ty<'a>) -> 
             CoqType::make_ref(mutbl, compile_type(env, ty))
         }
         TyKind::FnPtr(fn_sig) => compile_poly_fn_sig(env, fn_sig),
-        TyKind::Dynamic(_, _, _) => Rc::new(CoqType::Dyn(vec![])),
+        TyKind::Dynamic(existential_predicates, _, _) => {
+            let traits = existential_predicates
+                .iter()
+                .filter_map(
+                    |existential_predicate| match existential_predicate.no_bound_vars() {
+                        None => Some(Path::local("existential predicate with variables")),
+                        Some(existential_predicate) => match existential_predicate {
+                            rustc_middle::ty::ExistentialPredicate::Trait(
+                                existential_trait_ref,
+                            ) => Some(Path::concat(&[
+                                compile_def_id(env, existential_trait_ref.def_id),
+                                Path::local("Trait"),
+                            ])),
+                            _ => None,
+                        },
+                    },
+                )
+                .collect();
+
+            Rc::new(CoqType::Dyn(traits))
+        }
         TyKind::FnDef(_, _) => {
             // We consider that for this case the type is not important as an
             // existing function already has a type, so this can be inferred.
