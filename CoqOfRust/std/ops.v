@@ -1,5 +1,5 @@
 Require Import CoqOfRust.lib.lib.
-Require Import CoqOfRust._std.pin.
+Require Import CoqOfRust.std.pin.
 Require Import CoqOfRust.core.cmp.
 Require Import CoqOfRust.core.marker.
 

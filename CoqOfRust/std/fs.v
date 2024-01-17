@@ -1,7 +1,7 @@
 Require Import CoqOfRust.lib.lib.
 Require CoqOfRust.core.convert.
-Require CoqOfRust._std.io.
-Require CoqOfRust._std.path.
+Require CoqOfRust.std.io.
+Require CoqOfRust.std.path.
 
 (* ********STRUCTS******** *)
 (*
@@ -41,7 +41,7 @@ Module File.
     (* pub fn create<P: AsRef<Path>>(path: P) -> Result<File> *)
     Parameter create :
       forall {P : Set},
-      P -> M (_std.io.Result t).
+      P -> M (std.io.Result t).
 
     Global Instance AF_create {P : Set} :
       Notations.DoubleColon Self "create" := {
@@ -51,14 +51,14 @@ Module File.
     (* pub fn open<P: AsRef<Path>>(path: P) -> Result<File> *)
     Parameter open :
       forall {P : Set},
-      P -> M (_std.io.Result t).
+      P -> M (std.io.Result t).
 
     Global Instance AF_open {P : Set} :
       Notations.DoubleColon Self "open" := {
       Notations.double_colon := open (P := P);
     }.
 
-    Global Instance I_Write : _std.io.Write.Trait Self.
+    Global Instance I_Write : std.io.Write.Trait Self.
     Admitted.
   End Impl.
 End File.
@@ -137,8 +137,8 @@ Module Impl_OpenOptions.
   }.
 
   Parameter open :
-    forall {P : Set} (*`{core.convert.AsRef.Trait P _std.path.Path}*),
-    ref Self -> P -> M (_std.io.Result File.t).
+    forall {P : Set} (*`{core.convert.AsRef.Trait P std.path.Path}*),
+    ref Self -> P -> M (std.io.Result File.t).
 
   Global Instance AF_open {P : Set} :
     Notations.DoubleColon Self "open" := {

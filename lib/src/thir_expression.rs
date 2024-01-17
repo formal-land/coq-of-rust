@@ -708,7 +708,7 @@ fn compile_expr_kind<'a>(
             Rc::new(ExprKind::Call {
                 func: Rc::new(Expr {
                     kind: Rc::new(ExprKind::LocalVar(
-                        "(alloc.boxed.Box _ alloc.boxed.Box.Default.A)::[\"new\"]".to_string(),
+                        "(alloc.boxed.Box.t _ alloc.boxed.Box.Default.A)::[\"new\"]".to_string(),
                     )),
                     ty: None,
                 }),

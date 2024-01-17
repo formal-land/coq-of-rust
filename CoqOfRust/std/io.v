@@ -36,39 +36,34 @@ Require CoqOfRust.core.result_types.
 
 (* pub struct Error { /* private fields */ } *)
 Module error.
-  (* Definition Error : Set := _std.io.Error. *)
+  (* Definition Error : Set := std.io.Error. *)
   Module Error.
     Parameter t : Set.
   End Error.
-  Definition Error : Set := Error.t.
 End error.
 
 Definition Result (T : Set) : Set :=
-  core.result_types.Result.t T _std.io.error.Error.t.
+  core.result_types.Result.t T std.io.error.Error.t.
 
 (* pub struct BorrowedBuf<'data> { /* private fields */ } *)
 Module BorrowedBuf.
   Parameter t : Set.
 End BorrowedBuf.
-Definition BorrowedBuf := BorrowedBuf.t.
 
 (* pub struct BorrowedCursor<'a> { /* private fields */ } *)
 Module BorrowedCursor.
   Parameter t : Set.
 End BorrowedCursor.
-Definition BorrowedCursor := BorrowedCursor.t.
 
 (* pub struct BufReader<R> { /* private fields */ } *)
 Module BufReader.
   Parameter t : Set -> Set.
 End BufReader.
-Definition BufReader := BufReader.t.
 
 (* pub struct IoSlice<'a>(_); *)
 Module IoSlice.
   Parameter t : Set.
 End IoSlice.
-Definition IoSlice := IoSlice.t.
 
 (* 
 pub trait Write {
@@ -90,11 +85,11 @@ Module Write.
   Class Trait (Self : Set) : Set := {
     write : mut_ref Self -> ref (slice u8.t) -> M (Result usize.t);
     flush : mut_ref Self -> M (Result unit);
-    write_vectored : mut_ref Self -> ref (slice IoSlice) -> M (Result usize.t);
+    write_vectored : mut_ref Self -> ref (slice IoSlice.t) -> M (Result usize.t);
     is_write_vectored : mut_ref Self -> M bool;
     write_all : mut_ref Self -> ref (slice u8.t) -> M (Result unit);
     write_all_vectored :
-      mut_ref Self -> mut_ref (slice IoSlice) -> M (Result unit);
+      mut_ref Self -> mut_ref (slice IoSlice.t) -> M (Result unit);
     write_fmt : mut_ref Self -> fmt.Arguments.t -> M (Result unit);
     by_ref : mut_ref Self -> M (mut_ref Self);
   }.
@@ -170,11 +165,6 @@ End Stderr.
 Module StderrLock.
   Parameter t : Set.
 End StderrLock.
-
-(* pub struct Stdin { /* private fields */ } *)
-Module Stdin.
-  Parameter t : Set.
-End Stdin.
 
 (* pub struct StdinLock<'a> { /* private fields */ } *)
 Module StdinLock.
@@ -365,8 +355,8 @@ Module Read.
     read_to_end : mut_ref Self -> mut_ref (slice u8.t) -> Result usize.t;
     read_to_string : mut_ref Self -> mut_ref alloc.string.String.t -> Result usize.t;
     read_exact : mut_ref Self -> mut_ref (slice u8.t) -> Result unit;
-    read_buf : mut_ref Self -> BorrowedCursor -> Result unit;
-    read_buf_exact : mut_ref Self -> BorrowedCursor -> Result unit;
+    read_buf : mut_ref Self -> BorrowedCursor.t -> Result unit;
+    read_buf_exact : mut_ref Self -> BorrowedCursor.t -> Result unit;
     by_ref : mut_ref Self -> mut_ref Self;
     bytes : Self -> Bytes.t Self;
     chain {R : Set} : Self -> R -> Chain.t Self R;
@@ -443,4 +433,27 @@ End Seek.
 
 Module stdio.
   Parameter _print : fmt.Arguments.t -> M unit.
+
+  (* pub fn _eprint(args: fmt::Arguments<'_>) *)
+  Parameter _eprint : fmt.Arguments.t -> M unit.
+
+  (* pub struct Stdin { /* private fields */ } *)
+  Module Stdin.
+    Parameter t : Set.
+
+    Module Impl.
+      Definition Self : Set := t.
+
+      (* pub fn read_line(&self, buf: &mut String) -> Result<usize> *)
+      Parameter read_line :
+        ref t -> mut_ref string.String.t -> M (Result usize.t).
+
+      Global Instance AF_read_line : Notations.DoubleColon Self "read_line" := {
+        Notations.double_colon := read_line;
+      }.
+    End Impl.
+  End Stdin.
+
+  (* pub fn stdin() -> Stdin *)
+  Parameter stdin : M Stdin.t.
 End stdio.

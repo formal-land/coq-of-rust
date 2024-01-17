@@ -1,8 +1,8 @@
 Require Import CoqOfRust.lib.lib.
-Require Import CoqOfRust._std.result.
-Require Import CoqOfRust._std.process.
-Require Import CoqOfRust._std.vec.
-Require Import CoqOfRust._std.fs.
+Require Import CoqOfRust.std.result.
+Require Import CoqOfRust.std.process.
+Require Import CoqOfRust.std.vec.
+Require Import CoqOfRust.std.fs.
 
 
 (* ********MODULES******** *)

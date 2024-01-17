@@ -85,10 +85,5 @@ where
 }
 *)
 Module Cow.
-  Inductive t (B : Set) `{ToOwned.Trait B} : Set := 
-  | Borrowed : ref B -> t B
-  | Owned : ToOwned.Owned -> t B
-  .
+  Parameter t : Set -> Set.
 End Cow.
-Definition Cow := Cow.t.
-

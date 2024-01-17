@@ -16,6 +16,27 @@ Module adapters.
     End Chain.
   End chain.
 
+  Module cycle.
+    (* pub struct Cycle<I> { /* private fields */ } *)
+    Module Cycle.
+      Parameter t : Set -> Set.
+    End Cycle.
+  End cycle.
+
+  Module enumerate.
+    (* pub struct Enumerate<I> { /* private fields */ } *)
+    Module Enumerate.
+      Parameter t : Set -> Set.
+    End Enumerate.
+  End enumerate.
+
+  Module filter.
+    (* pub struct Filter<I, P> { /* private fields */ } *)
+    Module Filter.
+      Parameter t : Set -> Set -> Set.
+    End Filter.
+  End filter.
+
   Module filter_map.
     Module FilterMap.
       Parameter t : Set -> Set -> Set.
@@ -28,12 +49,26 @@ Module adapters.
     End Map.
   End map.
 
+  Module rev.
+    (* pub struct Rev<T> { /* private fields */ } *)
+    Module Rev.
+      Parameter t : Set -> Set.
+    End Rev.
+  End rev.
+
   Module step_by.
     (* pub struct StepBy<I> { /* private fields */ } *)
     Module StepBy.
       Parameter t : Set -> Set.
     End StepBy.
   End step_by.
+
+  Module take_while.
+    (* pub struct TakeWhile<I, P> { /* private fields */ } *)
+    Module TakeWhile.
+      Parameter t : Set -> Set -> Set.
+    End TakeWhile.
+  End take_while.
 
   Module zip.
     (* pub struct Zip<A, B> { /* private fields */ } *)
@@ -380,6 +415,16 @@ Module traits.
           filter_map {B F : Set} : option (
             Self -> F -> M (adapters.filter_map.FilterMap.t Self F)
           );
+          enumerate : option (
+            Self -> M (adapters.enumerate.Enumerate.t Self)
+          );
+          rev : option (Self -> M (adapters.rev.Rev.t Self));
+          cycle : option (Self -> M (adapters.cycle.Cycle.t Self));
+          any {F : Set} : option (mut_ref Self -> F -> M bool);
+          sum {S : Set} : Self -> M S;
+          filter {P : Set} : Self -> P -> M (adapters.filter.Filter.t Self P);
+          take_while {P : Set} :
+            Self -> P -> M (adapters.take_while.TakeWhile.t Self P);
           (* TODO: add other fields *)
         }.
       End Required.
@@ -439,6 +484,29 @@ Module traits.
         Parameter filter_map :
           forall {B F : Set},
           Self -> F -> M (adapters.filter_map.FilterMap.t Self F).
+
+        Parameter enumerate :
+          Self -> M (adapters.enumerate.Enumerate.t Self).
+
+        Parameter rev : Self -> M (adapters.rev.Rev.t Self).
+
+        Parameter cycle : Self -> M (adapters.cycle.Cycle.t Self).
+
+        Parameter any :
+          forall {F : Set},
+          mut_ref Self -> F -> M bool.
+
+        Parameter sum :
+          forall {S : Set},
+          Self -> M S.
+
+        Parameter filter :
+          forall {P : Set},
+          Self -> P -> M (adapters.filter.Filter.t Self P).
+
+        Parameter take_while :
+          forall {P : Set},
+          Self -> P -> M (adapters.take_while.TakeWhile.t Self P).
       End Provided.
       End Provided.
 
@@ -473,6 +541,15 @@ Module traits.
           Self -> M B;
         filter_map {B F : Set} :
           Self -> F -> M (adapters.filter_map.FilterMap.t Self F);
+        enumerate :
+          Self -> M (adapters.enumerate.Enumerate.t Self);
+        rev : Self -> M (adapters.rev.Rev.t Self);
+        cycle : Self -> M (adapters.cycle.Cycle.t Self);
+        any {F : Set} : mut_ref Self -> F -> M bool;
+        sum {S : Set} : Self -> M S;
+        filter {P : Set} : Self -> P -> M (adapters.filter.Filter.t Self P);
+        take_while {P : Set} :
+          Self -> P -> M (adapters.take_while.TakeWhile.t Self P);
       }.
 
       Global Instance From_Required (Self : Set) {H0 : Required.Trait Self} :
@@ -495,6 +572,13 @@ Module traits.
         map {B F : Set} := Provided.map (B := B) (F := F);
         collect {B : Set} := Provided.collect (B := B);
         filter_map {B F : Set} := Provided.filter_map (B := B) (F := F);
+        enumerate := Provided.enumerate;
+        rev := Provided.rev;
+        cycle := Provided.cycle;
+        any {F : Set} := Provided.any (F := F);
+        sum {S : Set} := Provided.sum (S := S);
+        filter {P : Set} := Provided.filter (P := P);
+        take_while {P : Set} := Provided.take_while (P := P);
       }.
 
       Module Impl.

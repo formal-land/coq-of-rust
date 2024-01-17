@@ -664,7 +664,7 @@ Definition main : M unit :=
             M (M.Val unit)
         ] in
     M.pure (use α8) in
-  let* array : M.Val (array u32.t) :=
+  let* array_ : M.Val (array u32.t) :=
     M.alloc
       [
         (Integer.of_Z 1) : u32.t;
@@ -678,7 +678,7 @@ Definition main : M unit :=
       let* α1 : ref str.t := M.read (mk_str "
 ") in
       let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : M.Val (ref (array u32.t)) := M.alloc (borrow array) in
+      let* α3 : M.Val (ref (array u32.t)) := M.alloc (borrow array_) in
       let* α4 : core.fmt.rt.Argument.t :=
         M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow α3)) in
       let* α5 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4 ] in
@@ -697,7 +697,7 @@ Definition main : M unit :=
         (Trait := ℐ))) in
   let* α1 : core.slice.iter.Iter.t u32.t :=
     M.call
-      ((slice u32.t)::["iter"] (pointer_coercion "Unsize" (borrow array))) in
+      ((slice u32.t)::["iter"] (pointer_coercion "Unsize" (borrow array_))) in
   let* α2 : core.slice.iter.Iter.t u32.t := M.call (α0 α1) in
   let* α3 : M.Val (core.slice.iter.Iter.t u32.t) := M.alloc α2 in
   let* α4 : M.Val unit :=

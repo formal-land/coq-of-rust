@@ -13,21 +13,25 @@ where
          T: ?Sized;
 *)
 Module Box.
-  Definition t (T A : Set) : Set := T.
+  Definition t (T A : Set) : Set := M.Ref T.
 
   Module Default.
     Definition A : Set := alloc.Global.t.
   End Default.
+
+  Module  Impl.
+  Section Impl.
+    Context {T : Set}.
+
+    Definition Self : Set := Box.t T alloc.Global.t.
+
+    Parameter new :
+      T -> M (Box.t T alloc.Global.t).
+
+    Global Instance Method_Box_new :
+        Notations.DoubleColon Self "new" := {
+      Notations.double_colon := new;
+    }.
+  End Impl.
+  End Impl.
 End Box.
-Definition Box (T : Set) (*(A : option Set)
-  `{Allocator.Trait (defaultType A Global)}*)
-  := Box.t T (*(defaultType A Global)*).
-
-Parameter new :
-  forall {T : Set},
-  T -> M (Box T alloc.Global.t).
-
-Global Instance Method_Box_new {T : Set} :
-  Notations.DoubleColon (Box T alloc.Global.t) "new" := {
-  Notations.double_colon (x : T) := new x;
-}.

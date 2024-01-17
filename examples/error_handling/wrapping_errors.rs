@@ -3,8 +3,6 @@ use std::error::Error;
 use std::fmt;
 use std::num::ParseIntError;
 
-type Result<T> = std::result::Result<T, DoubleError>;
-
 #[derive(Debug)]
 enum DoubleError {
     EmptyVec,
@@ -12,6 +10,8 @@ enum DoubleError {
     // Supplying extra info requires adding more data to the type.
     Parse(ParseIntError),
 }
+
+type Result<T> = std::result::Result<T, DoubleError>;
 
 impl fmt::Display for DoubleError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

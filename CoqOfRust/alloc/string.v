@@ -1,4 +1,6 @@
 Require Import CoqOfRust.lib.lib.
+
+Require CoqOfRust.alloc.borrow.
 Require CoqOfRust.core.convert.
 Require CoqOfRust.core.fmt.
 
@@ -43,6 +45,35 @@ Module String.
 
     Global Instance AF_new : Notations.DoubleColon Self "new" := {
       Notations.double_colon := new;
+    }.
+
+    (* pub fn len(&self) -> usize *)
+    Parameter len : ref Self -> M usize.t.
+
+    Global Instance AF_len : Notations.DoubleColon Self "len" := {
+      Notations.double_colon := len;
+    }.
+
+    (* pub fn push(&mut self, ch: char) *)
+    Parameter push : ref Self -> char.t -> M unit.
+
+    Global Instance AF_push : Notations.DoubleColon Self "push" := {
+      Notations.double_colon := push;
+    }.
+
+    (* pub fn push_str(&mut self, string: &str) *)
+    Parameter push_str : ref Self -> ref str.t -> M unit.
+
+    Global Instance AF_push_str : Notations.DoubleColon Self "push_str" := {
+      Notations.double_colon := push_str;
+    }.
+
+    (* pub fn from_utf8_lossy(v: &[u8]) -> Cow<'_, str> *)
+    Parameter from_utf8_lossy : ref (slice u8.t) -> M (borrow.Cow.t str.t).
+
+    Global Instance AF_from_utf8_lossy :
+        Notations.DoubleColon Self "from_utf8_lossy" := {
+      Notations.double_colon := from_utf8_lossy;
     }.
   End Impl.
 End String.

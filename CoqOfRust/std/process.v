@@ -2,7 +2,7 @@ Require Import CoqOfRust.lib.lib.
 
 Require CoqOfRust.alloc.vec.
 Require CoqOfRust.core.option.
-Require CoqOfRust._std.io.
+Require CoqOfRust.std.io.
 
 (* ********STRUCTS******** *)
 (* 
@@ -43,6 +43,18 @@ End ChildStderr.
 (* pub struct ExitStatus(_); *)
 Module ExitStatus.
   Parameter t : Set.
+
+  Module Impl.
+    Definition Self : Set := t.
+
+    (* pub fn success(&self) -> bool *)
+    Parameter success : ref Self -> M bool.
+
+    Global Instance AF_success :
+      Notations.DoubleColon Self "success" := {
+      Notations.double_colon := success;
+    }.
+  End Impl.
 End ExitStatus.
 
 (* 
@@ -60,11 +72,18 @@ Module Child.
     stderr : option.Option.t ChildStderr.t;
   }.
 
+  Definition Get_stdin :=
+    Ref.map (fun α => Some α.(stdin)) (fun β α => Some (α <| stdin := β |>)).
+  Definition Get_stdout :=
+    Ref.map (fun α => Some α.(stdout)) (fun β α => Some (α <| stdout := β |>)).
+  Definition Get_stderr :=
+    Ref.map (fun α => Some α.(stderr)) (fun β α => Some (α <| stderr := β |>)).
+
   Module Impl.
     Definition Self : Set := t.
 
     (* pub fn wait(&mut self) -> Result<ExitStatus> *)
-    Parameter wait : mut_ref Self -> M (_std.io.Result ExitStatus.t).
+    Parameter wait : mut_ref Self -> M (std.io.Result ExitStatus.t).
 
     Global Instance AF_wait :
       Notations.DoubleColon Self "wait" := {
@@ -77,6 +96,28 @@ End Child.
 Module ExitCode.
   Parameter t : Set.
 End ExitCode.
+
+(* 
+pub struct Output {
+    pub status: ExitStatus,
+    pub stdout: Vec<u8>,
+    pub stderr: Vec<u8>,
+}
+*)
+Module Output.
+  Record t : Set := {
+    status : ExitStatus.t;
+    stdout : vec.Vec u8.t vec.Vec.Default.A;
+    stderr : vec.Vec u8.t vec.Vec.Default.A;
+  }.
+
+  Definition Get_status :=
+    Ref.map (fun α => Some α.(status)) (fun β α => Some (α <| status := β |>)).
+  Definition Get_stdout :=
+    Ref.map (fun α => Some α.(stdout)) (fun β α => Some (α <| stdout := β |>)).
+  Definition Get_stderr :=
+    Ref.map (fun α => Some α.(stderr)) (fun β α => Some (α <| stderr := β |>)).
+End Output.
 
 (* pub struct Command { /* private fields */ } *)
 Module Command.
@@ -102,11 +143,35 @@ Module Command.
     }.
 
     (* pub fn spawn(&mut self) -> Result<Child> *)
-    Parameter spawn : mut_ref Self -> M (_std.io.Result Child.t).
+    Parameter spawn : mut_ref Self -> M (std.io.Result Child.t).
 
     Global Instance AF_spawn :
       Notations.DoubleColon Self "spawn" := {
       Notations.double_colon := spawn;
+    }.
+
+    (* pub fn stdin<T: Into<Stdio>>(&mut self, cfg: T) -> &mut Command *)
+    Parameter stdin : forall {T : Set}, mut_ref Self -> T -> M (mut_ref t).
+
+    Global Instance AF_stdin {T : Set} :
+      Notations.DoubleColon Self "stdin" := {
+      Notations.double_colon := stdin (T := T);
+    }.
+
+    (* pub fn stdout<T: Into<Stdio>>(&mut self, cfg: T) -> &mut Command *)
+    Parameter stdout : forall {T : Set}, mut_ref Self -> T -> M (mut_ref t).
+
+    Global Instance AF_stdout {T : Set} :
+      Notations.DoubleColon Self "stdout" := {
+      Notations.double_colon := stdout (T := T);
+    }.
+
+    (* pub fn output(&mut self) -> Result<Output> *)
+    Parameter output : mut_ref Self -> M (std.io.Result Output.t).
+
+    Global Instance AF_output :
+      Notations.DoubleColon Self "output" := {
+      Notations.double_colon := output;
     }.
   End Impl.
 End Command.
@@ -121,24 +186,21 @@ Module CommandEnvs.
   Parameter t : Set.
 End CommandEnvs.
 
-(* 
-pub struct Output {
-    pub status: ExitStatus,
-    pub stdout: Vec<u8>,
-    pub stderr: Vec<u8>,
-}
-*)
-Module Output.
-  Record t : Set := {
-    status : ExitStatus.t;
-    stdout : vec.Vec u8.t vec.Vec.Default.A;
-    stderr : vec.Vec u8.t vec.Vec.Default.A;
-  }.
-End Output.
-
 (* pub struct Stdio(_); *)
 Module Stdio.
   Parameter t : Set.
+
+  Module Impl.
+    Definition Self : Set := t.
+
+    (* pub fn piped() -> Stdio *)
+    Parameter piped : M t.
+
+    Global Instance AF_piped :
+      Notations.DoubleColon Self "piped" := {
+      Notations.double_colon := piped;
+    }.
+  End Impl.
 End Stdio.
  
 

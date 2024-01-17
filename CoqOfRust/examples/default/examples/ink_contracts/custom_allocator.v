@@ -28,7 +28,7 @@ Section Impl_custom_allocator_CustomAllocator_t.
     let* α0 : bool.t := M.read init_value in
     let* α1 : M.Val (array bool.t) := M.alloc [ α0 ] in
     let* α2 : M.Val (alloc.boxed.Box.t (array bool.t) alloc.alloc.Global.t) :=
-      M.call ((alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α1) in
+      M.call ((alloc.boxed.Box.t _ alloc.boxed.Box.Default.A)::["new"] α1) in
     let* α3 : alloc.boxed.Box.t (array bool.t) alloc.alloc.Global.t :=
       M.read α2 in
     let* α4 : alloc.vec.Vec.t bool.t alloc.alloc.Global.t :=

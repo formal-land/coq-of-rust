@@ -2,21 +2,6 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (*
-fn main() {
-    // We can use this function here, and define it somewhere later
-    fizzbuzz_to(100);
-}
-*)
-(* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
-  let* _ : M.Val unit :=
-    let* α0 : unit :=
-      M.call (functions.fizzbuzz_to ((Integer.of_Z 100) : u32.t)) in
-    M.alloc α0 in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
-
-(*
 fn is_divisible_by(lhs: u32, rhs: u32) -> bool {
     // Corner case, early return
     if rhs == 0 {
@@ -221,3 +206,18 @@ Definition fizzbuzz_to (n : u32.t) : M unit :=
           M (M.Val unit)
       ] in
   M.read (use α5).
+
+(*
+fn main() {
+    // We can use this function here, and define it somewhere later
+    fizzbuzz_to(100);
+}
+*)
+(* #[allow(dead_code)] - function was ignored by the compiler *)
+Definition main : M unit :=
+  let* _ : M.Val unit :=
+    let* α0 : unit :=
+      M.call (functions.fizzbuzz_to ((Integer.of_Z 100) : u32.t)) in
+    M.alloc α0 in
+  let* α0 : M.Val unit := M.alloc tt in
+  M.read α0.

@@ -42,7 +42,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* array : M.Val (array i32.t) :=
+  let* array_ : M.Val (array i32.t) :=
     M.alloc
       [
         (Integer.of_Z 1) : i32.t;
@@ -51,7 +51,7 @@ Definition main : M unit :=
       ] in
   let* α0 : M.Val unit :=
     match_operator
-      array
+      array_
       [
         fun γ =>
           (let* α0 := M.read γ in

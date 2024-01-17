@@ -1,5 +1,7 @@
 Require Import CoqOfRust.lib.lib.
 
+Require Import CoqOfRust.alloc.boxed.
+Require Import CoqOfRust.alloc.vec.
 Require Import CoqOfRust.core.cmp.
 Require Import CoqOfRust.core.option.
 
@@ -472,6 +474,20 @@ Section Impl.
 
   Global Instance AF_first : Notations.DoubleColon Self "first" := {
     Notations.double_colon := first;
+  }.
+
+  (*
+  pub fn into_vec<A>(self: Box<[T], A>) -> Vec<T, A>
+  where
+      A: Allocator,
+  *)
+  Parameter into_vec :
+    forall {A : Set},
+    boxed.Box.t (slice T) A -> M (vec.Vec.t T A).
+
+  Global Instance AF_into_vec {A : Set} :
+      Notations.DoubleColon Self "into_vec" := {
+    Notations.double_colon := into_vec (A := A);
   }.
 End Impl.
 End Impl.

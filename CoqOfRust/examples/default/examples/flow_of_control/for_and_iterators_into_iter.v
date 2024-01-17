@@ -25,7 +25,7 @@ Definition main : M unit :=
     let* α3 : M.Val (array (ref str.t)) := M.alloc [ α0; α1; α2 ] in
     let* α4 :
         M.Val (alloc.boxed.Box.t (array (ref str.t)) alloc.alloc.Global.t) :=
-      M.call ((alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α3) in
+      M.call ((alloc.boxed.Box.t _ alloc.boxed.Box.Default.A)::["new"] α3) in
     let* α5 : alloc.boxed.Box.t (array (ref str.t)) alloc.alloc.Global.t :=
       M.read α4 in
     let* α6 : alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t :=

@@ -16,6 +16,7 @@ Section PhantomTuple.
     Ref.map (fun α => Some α.(x1)) (fun β α => Some (α <| x1 := β |>)).
 End PhantomTuple.
 End PhantomTuple.
+Arguments PhantomTuple.t : clear implicits.
 
 Module  Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomTuple_t_A_B.
 Section Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomTuple_t_A_B.

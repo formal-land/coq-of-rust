@@ -1,14 +1,14 @@
 Require Import CoqOfRust.lib.lib.
 
-Require Import CoqOfRust._std.option.
+Require Import CoqOfRust.std.option.
 
-Require Import CoqOfRust._std.result.
+Require Import CoqOfRust.std.result.
 
 (* TODO: After the following file is implemented, check all occurences of IntoIter in this file. *)
-Require Import CoqOfRust._std.array.
-Require Import CoqOfRust._std.marker.
-Require Import CoqOfRust._std.clone.
-Require Import CoqOfRust._std.cmp.
+Require Import CoqOfRust.std.array.
+Require Import CoqOfRust.std.marker.
+Require Import CoqOfRust.std.clone.
+Require Import CoqOfRust.std.cmp.
 
 
 (* ********TRAITS******** *)

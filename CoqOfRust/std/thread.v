@@ -1,6 +1,20 @@
 Require Import CoqOfRust.lib.lib.
 
+Require CoqOfRust.alloc.boxed.
+Require CoqOfRust.core.any.
+Require CoqOfRust.core.result.
 Require CoqOfRust.core.time.
+
+(* ********TYPE DEFINITIONS******** *)
+(* 
+[ ] Result
+*)
+
+Ltac Result T :=
+  exact (result.Result.t
+    T
+    (boxed.Box.t (dyn [core.any.Any.Trait]) boxed.Box.Default.A)
+  ).
 
 (* ********STRUCTS******** *)
 (* 
@@ -27,6 +41,21 @@ End Builder.
 (* pub struct JoinHandle<T>(_); *)
 Module JoinHandle.
   Parameter t : Set -> Set.
+
+  Module  Impl.
+  Section Impl.
+    Context {T : Set}.
+
+    Definition Self : Set := t T.
+
+    (* pub fn join(self) -> Result<T> *)
+    Parameter join : Self -> M (ltac:(Result T)).
+
+    Global Instance AF_join : Notations.DoubleColon Self "join" := {
+      Notations.double_colon := join;
+    }.
+  End Impl.
+  End Impl.
 End JoinHandle.
 
 Module local.
@@ -81,8 +110,3 @@ where
     T: Send + 'static,
 *)
 Parameter spawn : forall {T : Set}, M T -> M (JoinHandle.t T).
-
-(* ********TYPE DEFINITIONS******** *)
-(* 
-[ ] Result
-*)

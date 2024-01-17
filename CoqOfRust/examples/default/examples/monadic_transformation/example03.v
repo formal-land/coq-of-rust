@@ -25,7 +25,7 @@ Definition main : M unit :=
           (Integer.of_Z 8) : i32.t
         ] in
     let* α1 : M.Val (alloc.boxed.Box.t (array i32.t) alloc.alloc.Global.t) :=
-      M.call ((alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α0) in
+      M.call ((alloc.boxed.Box.t _ alloc.boxed.Box.Default.A)::["new"] α0) in
     let* α2 : alloc.boxed.Box.t (array i32.t) alloc.alloc.Global.t :=
       M.read α1 in
     let* α3 : alloc.vec.Vec.t i32.t alloc.alloc.Global.t :=

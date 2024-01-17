@@ -119,7 +119,7 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
   let* string : M.Val (ref str.t) := M.copy (mk_str "words") in
-  let* array : M.Val (array i32.t) :=
+  let* array_ : M.Val (array i32.t) :=
     M.alloc
       [
         (Integer.of_Z 1) : i32.t;
@@ -135,7 +135,7 @@ Definition main : M unit :=
           (Integer.of_Z 3) : i32.t
         ] in
     let* α1 : M.Val (alloc.boxed.Box.t (array i32.t) alloc.alloc.Global.t) :=
-      M.call ((alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α0) in
+      M.call ((alloc.boxed.Box.t _ alloc.boxed.Box.Default.A)::["new"] α0) in
     let* α2 : alloc.boxed.Box.t (array i32.t) alloc.alloc.Global.t :=
       M.read α1 in
     let* α3 : alloc.vec.Vec.t i32.t alloc.alloc.Global.t :=
@@ -148,7 +148,7 @@ Definition main : M unit :=
   let* _ : M.Val unit :=
     let* α0 : unit :=
       M.call
-        (generics_multiple_bounds.compare_types (borrow array) (borrow vec)) in
+        (generics_multiple_bounds.compare_types (borrow array_) (borrow vec)) in
     M.alloc α0 in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.

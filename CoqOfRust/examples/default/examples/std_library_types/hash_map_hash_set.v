@@ -75,7 +75,7 @@ Definition main : M unit :=
           (Integer.of_Z 3) : i32.t
         ] in
     let* α3 : M.Val (alloc.boxed.Box.t (array i32.t) alloc.alloc.Global.t) :=
-      M.call ((alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α2) in
+      M.call ((alloc.boxed.Box.t _ alloc.boxed.Box.Default.A)::["new"] α2) in
     let* α4 : alloc.boxed.Box.t (array i32.t) alloc.alloc.Global.t :=
       M.read α3 in
     let* α5 : alloc.vec.Vec.t i32.t alloc.alloc.Global.t :=
@@ -120,7 +120,7 @@ Definition main : M unit :=
           (Integer.of_Z 4) : i32.t
         ] in
     let* α3 : M.Val (alloc.boxed.Box.t (array i32.t) alloc.alloc.Global.t) :=
-      M.call ((alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α2) in
+      M.call ((alloc.boxed.Box.t _ alloc.boxed.Box.Default.A)::["new"] α2) in
     let* α4 : alloc.boxed.Box.t (array i32.t) alloc.alloc.Global.t :=
       M.read α3 in
     let* α5 : alloc.vec.Vec.t i32.t alloc.alloc.Global.t :=

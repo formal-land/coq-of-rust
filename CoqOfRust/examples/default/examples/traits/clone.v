@@ -198,8 +198,8 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* unit : M.Val clone.Unit.t := M.alloc clone.Unit.Build in
-  let* copied_unit : M.Val clone.Unit.t := M.copy unit in
+  let* unit_ : M.Val clone.Unit.t := M.alloc clone.Unit.Build in
+  let* copied_unit : M.Val clone.Unit.t := M.copy unit_ in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "original: ") in
@@ -207,7 +207,7 @@ Definition main : M unit :=
 ") in
       let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
       let* α3 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow unit)) in
+        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow unit_)) in
       let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
       let* α5 : core.fmt.Arguments.t :=
         M.call

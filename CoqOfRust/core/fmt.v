@@ -16,9 +16,12 @@ Module Alignment.
   .
 End Alignment.
 
-Parameter Error : Set.
+(* pub struct Error; *)
+Module Error.
+  Parameter t : Set.
+End Error.
 
-Ltac Result := refine (result.Result.t unit Error).
+Ltac Result := refine (result.Result.t unit Error.t).
 
 Module Arguments.
   Parameter t : Set.
@@ -132,6 +135,52 @@ Module ImplFormatter.
   Global Instance AF_debug_tuple_field2_finish :
       Notations.DoubleColon Self "debug_tuple_field2_finish" := {
     Notations.double_colon := debug_tuple_field2_finish;
+  }.
+
+  (*
+  pub fn debug_tuple_field3_finish<'b>(
+      &'b mut self,
+      name: &str,
+      value1: &dyn Debug,
+      value2: &dyn Debug,
+      value3: &dyn Debug
+  ) -> Result
+  *)
+  Parameter debug_tuple_field3_finish :
+    mut_ref Self ->
+    ref str.t ->
+    ref (dyn [fmt.Debug.Trait]) ->
+    ref (dyn [fmt.Debug.Trait]) ->
+    ref (dyn [fmt.Debug.Trait]) ->
+    M (ltac:(Result)).
+
+  Global Instance AF_debug_tuple_field3_finish :
+      Notations.DoubleColon Self "debug_tuple_field3_finish" := {
+    Notations.double_colon := debug_tuple_field3_finish;
+  }.
+
+  (*
+  pub fn debug_tuple_field4_finish<'b>(
+      &'b mut self,
+      name: &str,
+      value1: &dyn Debug,
+      value2: &dyn Debug,
+      value3: &dyn Debug,
+      value4: &dyn Debug
+  ) -> Result
+  *)
+  Parameter debug_tuple_field4_finish :
+    mut_ref Self ->
+    ref str.t ->
+    ref (dyn [fmt.Debug.Trait]) ->
+    ref (dyn [fmt.Debug.Trait]) ->
+    ref (dyn [fmt.Debug.Trait]) ->
+    ref (dyn [fmt.Debug.Trait]) ->
+    M (ltac:(Result)).
+
+  Global Instance AF_debug_tuple_field4_finish :
+      Notations.DoubleColon Self "debug_tuple_field4_finish" := {
+    Notations.double_colon := debug_tuple_field4_finish;
   }.
 
   (*

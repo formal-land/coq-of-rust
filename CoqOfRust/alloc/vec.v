@@ -2,8 +2,8 @@ Require Import CoqOfRust.lib.lib.
 
 Require Import CoqOfRust.core.alloc.
 Require Import CoqOfRust.core.cmp.
-(* Require Import CoqOfRust._std.iter. *)
-Require Import CoqOfRust._std.ops.
+(* Require Import CoqOfRust.std.iter. *)
+Require Import CoqOfRust.std.ops.
 
 (* ********STRUCTS******** *)
 (* 
@@ -70,18 +70,11 @@ Module into_iter.
   *)
   Module IntoIter.
     Parameter t : forall (T A : Set), Set.
-  End IntoIter.
-  Definition IntoIter (T : Set) (A : option Set) :=
-    IntoIter.t T (defaultType A alloc.Global.t).
-    (* 
-    let A_type := (defaultType A Global) in
-    let traits 
-      `{Allocator.Trait A_type} 
-      := unit in
-      IntoIter.t T A_type. *)
 
-  (* BUGGED: same as above *)
-  (* BUGGED: Iterator dependency *)
+    Module Default.
+      Definition A : Set := alloc.Global.t.
+    End Default.
+  End IntoIter.
 End into_iter.
 
 (* 
@@ -189,6 +182,14 @@ Section Impl_Vec.
   Global Instance AF_as_slice :
     Notations.DoubleColon Self "as_slice" := {
     Notations.double_colon := as_slice;
+  }.
+
+  (* pub fn with_capacity(capacity: usize) -> Vec<T> *)
+  Parameter with_capacity : usize.t -> M (Vec.t T Vec.Default.A).
+
+  Global Instance AF_with_capacity :
+    Notations.DoubleColon Self "with_capacity" := {
+    Notations.double_colon := with_capacity;
   }.
 
   Global Instance I_Default {ℋ_0 : default.Default.Trait T} :
