@@ -1779,6 +1779,12 @@ impl Snippet {
     }
 
     fn to_coq(&self) -> Vec<coq::TopLevelItem> {
+        let nb_quotes = self
+            .0
+            .iter()
+            .map(|line| line.chars().filter(|c| *c == '"').count())
+            .sum::<usize>();
+
         optional_insert_vec(
             self.0.is_empty(),
             [
@@ -1792,6 +1798,11 @@ impl Snippet {
                         ))
                     })
                     .collect(),
+                if nb_quotes % 2 == 0 {
+                    vec![]
+                } else {
+                    vec![coq::TopLevelItem::Code(text("\""))]
+                },
                 vec![coq::TopLevelItem::Code(text("*)"))],
             ]
             .concat(),

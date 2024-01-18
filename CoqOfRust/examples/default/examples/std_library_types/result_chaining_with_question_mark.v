@@ -212,7 +212,12 @@ Module checked.
         (R := ltac:(result_chaining_with_question_mark.checked.MathResult)) in
     M.catch_return
       (let* ratio : M.Val f64.t :=
-        let* α0 : _ :=
+        let* α0 :
+            (core.result.Result.t
+                f64.t
+                result_chaining_with_question_mark.checked.MathError.t)
+              ->
+              M (core.ops.control_flow.ControlFlow.t _ _) :=
           ltac:(M.get_method (fun ℐ =>
             core.ops.try_trait.Try.branch
               (Self :=
@@ -252,7 +257,15 @@ Module checked.
                 | core.ops.control_flow.ControlFlow.Break _ =>
                   let γ0_0 := core.ops.control_flow.ControlFlow.Get_Break_0 γ in
                   let* residual := M.copy γ0_0 in
-                  let* α0 : _ :=
+                  let* α0 :
+                      (core.result.Result.t
+                          core.convert.Infallible.t
+                          result_chaining_with_question_mark.checked.MathError.t)
+                        ->
+                        M
+                          (core.result.Result.t
+                            f64.t
+                            result_chaining_with_question_mark.checked.MathError.t) :=
                     ltac:(M.get_method (fun ℐ =>
                       core.ops.try_trait.FromResidual.from_residual
                         (Self :=
@@ -295,7 +308,12 @@ Module checked.
             ] in
         M.copy α6 in
       let* ln : M.Val f64.t :=
-        let* α0 : _ :=
+        let* α0 :
+            (core.result.Result.t
+                f64.t
+                result_chaining_with_question_mark.checked.MathError.t)
+              ->
+              M (core.ops.control_flow.ControlFlow.t _ _) :=
           ltac:(M.get_method (fun ℐ =>
             core.ops.try_trait.Try.branch
               (Self :=
@@ -334,7 +352,15 @@ Module checked.
                 | core.ops.control_flow.ControlFlow.Break _ =>
                   let γ0_0 := core.ops.control_flow.ControlFlow.Get_Break_0 γ in
                   let* residual := M.copy γ0_0 in
-                  let* α0 : _ :=
+                  let* α0 :
+                      (core.result.Result.t
+                          core.convert.Infallible.t
+                          result_chaining_with_question_mark.checked.MathError.t)
+                        ->
+                        M
+                          (core.result.Result.t
+                            f64.t
+                            result_chaining_with_question_mark.checked.MathError.t) :=
                     ltac:(M.get_method (fun ℐ =>
                       core.ops.try_trait.FromResidual.from_residual
                         (Self :=
@@ -488,23 +514,18 @@ Module checked.
                 let* α1 : ref str.t := M.read (mk_str "
 ") in
                 let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-                let* α3 : M.Val (ref (array (ref str.t))) :=
-                  M.alloc (borrow α2) in
-                let* α4 : ref (slice (ref str.t)) :=
-                  M.read (pointer_coercion "Unsize" α3) in
-                let* α5 : core.fmt.rt.Argument.t :=
+                let* α3 : core.fmt.rt.Argument.t :=
                   M.call
                     (core.fmt.rt.Argument.t::["new_display"] (borrow value)) in
-                let* α6 : M.Val (array core.fmt.rt.Argument.t) :=
-                  M.alloc [ α5 ] in
-                let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-                  M.alloc (borrow α6) in
-                let* α8 : ref (slice core.fmt.rt.Argument.t) :=
-                  M.read (pointer_coercion "Unsize" α7) in
-                let* α9 : core.fmt.Arguments.t :=
-                  M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
-                let* α10 : unit := M.call (std.io.stdio._print α9) in
-                M.alloc α10 in
+                let* α4 : M.Val (array core.fmt.rt.Argument.t) :=
+                  M.alloc [ α3 ] in
+                let* α5 : core.fmt.Arguments.t :=
+                  M.call
+                    (core.fmt.Arguments.t::["new_v1"]
+                      (pointer_coercion "Unsize" (borrow α2))
+                      (pointer_coercion "Unsize" (borrow α4))) in
+                let* α6 : unit := M.call (std.io.stdio._print α5) in
+                M.alloc α6 in
               M.alloc tt
             | _ => M.break_match
             end) :
@@ -722,7 +743,12 @@ Definition op_
       (R := ltac:(result_chaining_with_question_mark.checked.MathResult)) in
   M.catch_return
     (let* ratio : M.Val f64.t :=
-      let* α0 : _ :=
+      let* α0 :
+          (core.result.Result.t
+              f64.t
+              result_chaining_with_question_mark.checked.MathError.t)
+            ->
+            M (core.ops.control_flow.ControlFlow.t _ _) :=
         ltac:(M.get_method (fun ℐ =>
           core.ops.try_trait.Try.branch
             (Self :=
@@ -762,7 +788,15 @@ Definition op_
               | core.ops.control_flow.ControlFlow.Break _ =>
                 let γ0_0 := core.ops.control_flow.ControlFlow.Get_Break_0 γ in
                 let* residual := M.copy γ0_0 in
-                let* α0 : _ :=
+                let* α0 :
+                    (core.result.Result.t
+                        core.convert.Infallible.t
+                        result_chaining_with_question_mark.checked.MathError.t)
+                      ->
+                      M
+                        (core.result.Result.t
+                          f64.t
+                          result_chaining_with_question_mark.checked.MathError.t) :=
                   ltac:(M.get_method (fun ℐ =>
                     core.ops.try_trait.FromResidual.from_residual
                       (Self :=
@@ -805,7 +839,12 @@ Definition op_
           ] in
       M.copy α6 in
     let* ln : M.Val f64.t :=
-      let* α0 : _ :=
+      let* α0 :
+          (core.result.Result.t
+              f64.t
+              result_chaining_with_question_mark.checked.MathError.t)
+            ->
+            M (core.ops.control_flow.ControlFlow.t _ _) :=
         ltac:(M.get_method (fun ℐ =>
           core.ops.try_trait.Try.branch
             (Self :=
@@ -844,7 +883,15 @@ Definition op_
               | core.ops.control_flow.ControlFlow.Break _ =>
                 let γ0_0 := core.ops.control_flow.ControlFlow.Get_Break_0 γ in
                 let* residual := M.copy γ0_0 in
-                let* α0 : _ :=
+                let* α0 :
+                    (core.result.Result.t
+                        core.convert.Infallible.t
+                        result_chaining_with_question_mark.checked.MathError.t)
+                      ->
+                      M
+                        (core.result.Result.t
+                          f64.t
+                          result_chaining_with_question_mark.checked.MathError.t) :=
                   ltac:(M.get_method (fun ℐ =>
                     core.ops.try_trait.FromResidual.from_residual
                       (Self :=
@@ -998,23 +1045,18 @@ Definition op (x : f64.t) (y : f64.t) : M unit :=
               let* α1 : ref str.t := M.read (mk_str "
 ") in
               let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-              let* α3 : M.Val (ref (array (ref str.t))) :=
-                M.alloc (borrow α2) in
-              let* α4 : ref (slice (ref str.t)) :=
-                M.read (pointer_coercion "Unsize" α3) in
-              let* α5 : core.fmt.rt.Argument.t :=
+              let* α3 : core.fmt.rt.Argument.t :=
                 M.call
                   (core.fmt.rt.Argument.t::["new_display"] (borrow value)) in
-              let* α6 : M.Val (array core.fmt.rt.Argument.t) :=
-                M.alloc [ α5 ] in
-              let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-                M.alloc (borrow α6) in
-              let* α8 : ref (slice core.fmt.rt.Argument.t) :=
-                M.read (pointer_coercion "Unsize" α7) in
-              let* α9 : core.fmt.Arguments.t :=
-                M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
-              let* α10 : unit := M.call (std.io.stdio._print α9) in
-              M.alloc α10 in
+              let* α4 : M.Val (array core.fmt.rt.Argument.t) :=
+                M.alloc [ α3 ] in
+              let* α5 : core.fmt.Arguments.t :=
+                M.call
+                  (core.fmt.Arguments.t::["new_v1"]
+                    (pointer_coercion "Unsize" (borrow α2))
+                    (pointer_coercion "Unsize" (borrow α4))) in
+              let* α6 : unit := M.call (std.io.stdio._print α5) in
+              M.alloc α6 in
             M.alloc tt
           | _ => M.break_match
           end) :

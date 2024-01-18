@@ -161,14 +161,20 @@ Section Impl_unpacking_options_via_question_mark_Person_t.
     let* self := M.alloc self in
     let return_ := M.return_ (R := core.option.Option.t u8.t) in
     M.catch_return
-      (let* α0 : _ :=
+      (let* α0 :
+          (core.option.Option.t
+              unpacking_options_via_question_mark.PhoneNumber.t)
+            ->
+            M (core.ops.control_flow.ControlFlow.t _ _) :=
         ltac:(M.get_method (fun ℐ =>
           core.ops.try_trait.Try.branch
             (Self :=
               core.option.Option.t
                 unpacking_options_via_question_mark.PhoneNumber.t)
             (Trait := ℐ))) in
-      let* α1 : _ :=
+      let* α1 :
+          (core.option.Option.t unpacking_options_via_question_mark.Job.t) ->
+            M (core.ops.control_flow.ControlFlow.t _ _) :=
         ltac:(M.get_method (fun ℐ =>
           core.ops.try_trait.Try.branch
             (Self :=
@@ -201,7 +207,9 @@ Section Impl_unpacking_options_via_question_mark_Person_t.
               | core.ops.control_flow.ControlFlow.Break _ =>
                 let γ0_0 := core.ops.control_flow.ControlFlow.Get_Break_0 γ in
                 let* residual := M.copy γ0_0 in
-                let* α0 : _ :=
+                let* α0 :
+                    (core.option.Option.t core.convert.Infallible.t) ->
+                      M (core.option.Option.t u8.t) :=
                   ltac:(M.get_method (fun ℐ =>
                     core.ops.try_trait.FromResidual.from_residual
                       (Self := core.option.Option.t u8.t)
@@ -255,7 +263,9 @@ Section Impl_unpacking_options_via_question_mark_Person_t.
               | core.ops.control_flow.ControlFlow.Break _ =>
                 let γ0_0 := core.ops.control_flow.ControlFlow.Get_Break_0 γ in
                 let* residual := M.copy γ0_0 in
-                let* α0 : _ :=
+                let* α0 :
+                    (core.option.Option.t core.convert.Infallible.t) ->
+                      M (core.option.Option.t u8.t) :=
                   ltac:(M.get_method (fun ℐ =>
                     core.ops.try_trait.FromResidual.from_residual
                       (Self := core.option.Option.t u8.t)
@@ -351,7 +361,10 @@ Definition main : M unit :=
             let γ0_1 := Tuple.Access.right γ in
             let* left_val := M.copy γ0_0 in
             let* right_val := M.copy γ0_1 in
-            let* α0 : _ :=
+            let* α0 :
+                (ref (core.option.Option.t u8.t)) ->
+                  (ref (core.option.Option.t u8.t)) ->
+                  M bool.t :=
               ltac:(M.get_method (fun ℐ =>
                 core.cmp.PartialEq.eq
                   (Self := core.option.Option.t u8.t)

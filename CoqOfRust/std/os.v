@@ -1,8 +1,10 @@
 Require Import CoqOfRust.lib.lib.
-Require Import CoqOfRust._std.result.
-Require Import CoqOfRust._std.process.
-Require Import CoqOfRust._std.vec.
-Require Import CoqOfRust._std.fs.
+
+Require CoqOfRust.alloc.vec.
+Require CoqOfRust.core.result.
+Require CoqOfRust.std.fs.
+Require CoqOfRust.std.io.
+Require CoqOfRust.std.process.
 
 
 (* ********MODULES******** *)
@@ -24,15 +26,21 @@ Module fd.
 
   (* pub struct BorrowedFd<'fd> { /* private fields */ } *)
   Module BorrowedFd.
-    Record t : Set := { }.
+    Parameter t : Set.
   End BorrowedFd.
-  Definition BorrowedFd := BorrowedFd.t.
   
   (* pub struct OwnedFd { /* private fields */ } *)
   Module OwnedFd.
-    Record t : Set := { }.
+    Parameter t : Set.
   End OwnedFd.
-  Definition OwnedFd := OwnedFd.t.
+
+  (* ********TYPE DEFINITIONS******** *)
+  (*
+  [ ] RawFd
+  *)
+
+  (* pub type RawFd = c_int; *)
+  Ltac RawFd := exact i32.t.
 
   (* ********TRAITS******** *)
   (*
@@ -49,8 +57,8 @@ Module fd.
   }
   *)
   Module AsFd.
-    Class Trait (Self : Set) : Set := { 
-      as_fd : ref Self -> BorrowedFd;
+    Class Trait (Self : Set) : Set := {
+      as_fd : ref Self -> M BorrowedFd.t;
     }.
   End AsFd.
 
@@ -61,8 +69,8 @@ Module fd.
   }
   *)
   Module AsRawFd.
-    Class Trait (Self : Set) : Set := { 
-      as_raw_fd : ref Self -> RawFd;
+    Class Trait (Self : Set) : Set := {
+      as_raw_fd : ref Self -> M ltac:(RawFd);
     }.
   End AsRawFd.
 
@@ -73,8 +81,8 @@ Module fd.
   }
   *)
   Module FromRawFd.
-    Class Trait (Self : Set) : Set := { 
-      from_raw_fd : RawFd -> Self;
+    Class Trait (Self : Set) : Set := {
+      from_raw_fd : ltac:(RawFd) -> M Self;
     }.
   End FromRawFd.
 
@@ -85,161 +93,11 @@ Module fd.
   }
   *)
   Module IntoRawFd.
-    Class Trait (Self : Set) : Set := { 
-      into_raw_fd : Self -> RawFd;
+    Class Trait (Self : Set) : Set := {
+      into_raw_fd : Self -> M ltac:(RawFd);
     }.
   End IntoRawFd.
-
-  (* ********TYPE DEFINITIONS******** *)
-  (*
-  [ ] RawFd
-  *)
 End fd.
-
-Module linux.
-  (* ********MODULES******** *)
-  (*
-  [x] process
-  [x] fs
-  [x] net
-  [x] raw(Deprecated)
-  *)
-  Module process.
-    (* ********STRUCTS******** *)
-    (*
-    [x] PidFd
-    *)
-
-    (* pub struct PidFd { /* private fields */ } *)
-    Module PidFd.
-      Record t : Set := { }.
-    End PidFd.
-    Definition PidFd := PidFd.t.
-    
-    (* ********TRAITS******** *)
-    (*
-    [x] ChildExt
-    [x] CommandExt
-    *)
-
-    (* 
-    pub trait ChildExt: Sealed {
-        // Required methods
-        fn pidfd(&self) -> Result<&PidFd>;
-        fn take_pidfd(&mut self) -> Result<PidFd>;
-    }
-    *)
-    Module ChildExt.
-      Class Trait (Self : Set) : Set := { 
-        pidfd : ref Self -> Result (ref PidFd);
-        take_pidfd : mut_ref Self -> Result PidFd;
-      }.
-    End ChildExt.
-
-    (* 
-    pub trait CommandExt: Sealed {
-        // Required method
-        fn create_pidfd(&mut self, val: bool) -> &mut Command;
-    }
-    *)
-    Module CommandExt.
-      Class Trait (Self : Set) : Set := { 
-        create_pidfd : mut_ref Self -> bool -> mut_ref Command;
-      }.
-    End CommandExt.
-
-  End process.
-  
-  Module fs.
-    (* ********TRAITS******** *)
-    (*
-    [x] MetadataExt
-    *)
-    (* 
-    pub trait MetadataExt {
-        // Required methods
-        fn as_raw_stat(&self) -> &stat;
-        fn st_dev(&self) -> u64;
-        fn st_ino(&self) -> u64;
-        fn st_mode(&self) -> u32;
-        fn st_nlink(&self) -> u64;
-        fn st_uid(&self) -> u32;
-        fn st_gid(&self) -> u32;
-        fn st_rdev(&self) -> u64;
-        fn st_size(&self) -> u64;
-        fn st_atime(&self) -> i64;
-        fn st_atime_nsec(&self) -> i64;
-        fn st_mtime(&self) -> i64;
-        fn st_mtime_nsec(&self) -> i64;
-        fn st_ctime(&self) -> i64;
-        fn st_ctime_nsec(&self) -> i64;
-        fn st_blksize(&self) -> u64;
-        fn st_blocks(&self) -> u64;
-    }
-    *)
-    Module MetadataExt.
-      Class Trait (Self : Set) : Set := { 
-        as_raw_stat : ref Self -> stat;
-        st_dev : ref Self -> u64;
-        st_ino : ref Self -> u64;
-        st_mode : ref Self -> u32;
-        st_nlink : ref Self -> u64;
-        st_uid : ref Self -> u32;
-        st_gid : ref Self -> u32;
-        st_rdev : ref Self -> u64;
-        st_size : ref Self -> u64;
-        st_atime : ref Self -> i64;
-        st_atime_nsec : ref Self -> i64;
-        st_mtime : ref Self -> i64;
-        st_mtime_nsec : ref Self -> i64;
-        st_ctime : ref Self -> i64;
-        st_ctime_nsec : ref Self -> i64;
-        st_blksize : ref Self -> u64;
-        st_blocks : ref Self -> u64;
-      }.
-    End MetadataExt.
-
-  End fs.
-  
-  Module net.
-    (* ********TRAITS******** *)
-    (*
-    [x] TcpStreamExt
-    [x] SocketAddrExt
-    *)
-
-    (* 
-    pub trait TcpStreamExt: Sealed {
-        // Required methods
-        fn set_quickack(&self, quickack: bool) -> Result<()>;
-        fn quickack(&self) -> Result<bool>;
-    }
-    *)
-    Module TcpStreamExt.
-      Class Trait (Self : Set) : Set := { 
-        set_quickack : ref Self -> bool -> Result unit;
-        quickack : ref Self -> Result bool;
-      }.
-    End TcpStreamExt.
-    
-    (* 
-    pub trait SocketAddrExt: Sealed {
-        // Required methods
-        fn from_abstract_name<N>(name: N) -> Result<SocketAddr>
-          where N: AsRef<[u8]>;
-        fn as_abstract_name(&self) -> Option<&[u8]>;
-    }
-    *)
-    Module SocketAddrExt.
-      Class Trait (Self : Set) : Set := { 
-        from_abstract_name (N : Set) `{AsRef.Trait N (slice u8)} : N -> Result SocketAddr;
-        as_abstract_name : ref Self -> Option (ref (slice u8));
-      }.
-    End SocketAddrExt.
-    
-    
-  End net.
-End linux.
 
 Module raw.
   (* ********TYPE DEFINITIONS******** *)
@@ -300,9 +158,9 @@ Module unix.
     }
     *)
     Module OsStrExt.
-      Class Trait (Self : Set) : Set := { 
-        from_bytes : ref (slice u8) -> ref Self;
-        as_bytes : ref Self -> ref (slice u8);
+      Class Trait (Self : Set) : Set := {
+        from_bytes : ref (slice u8.t) -> M (ref Self);
+        as_bytes : ref Self -> M (ref (slice u8.t));
       }.
     End OsStrExt.
 
@@ -314,9 +172,9 @@ Module unix.
     }
     *)
     Module OsStringExt.
-      Class Trait (Self : Set) : Set := { 
-        from_vec : Vec u8 -> Self;
-        into_vec : Self -> Vec u8;
+      Class Trait (Self : Set) : Set := {
+        from_vec : vec.Vec u8.t vec.Vec.Default.A -> M Self;
+        into_vec : Self -> M (vec.Vec u8.t vec.Vec.Default.A);
       }.
     End OsStringExt.
 
@@ -343,8 +201,8 @@ Module unix.
     }
     *)
     Module DirEntryExt2.
-      Class Trait (Self : Set) : Set := { 
-        file_name_ref : ref Self -> ref OsStr;
+      Class Trait (Self : Set) : Set := {
+        file_name_ref : ref Self -> ref ffi.os_str.OsStr.t;
       }.
     End DirEntryExt2.
 
@@ -355,8 +213,8 @@ Module unix.
     }
     *)
     Module DirBuilderExt.
-      Class Trait (Self : Set) : Set := { 
-        mode : mut_ref -> u32 -> mut_ref Self;
+      Class Trait (Self : Set) : Set := {
+        mode : mut_ref Self -> u32.t -> M (mut_ref Self);
       }.
     End DirBuilderExt.
     
@@ -368,8 +226,8 @@ Module unix.
     }
     *)
     Module DirEntryExt.
-      Class Trait (Self : Set) : Set := { 
-        ino : ref Self -> u64;
+      Class Trait (Self : Set) : Set := {
+        ino : ref Self -> M u64.t;
       }.
     End DirEntryExt.
 
@@ -395,13 +253,19 @@ Module unix.
     }
     *)
     Module FileExt.
-      Class Trait (Self : Set) : Set := { 
-        read_at : ref Self -> mut_ref (slice u8) : u64 -> Result usize;
-        write_at : ref Self -> ref (slice u8) : u64 -> Result usize;
-        read_vectored_at : ref Self -> mut_ref (slice IoSliceMut) : u64 -> Result usize;
-        read_exact_at : ref Self -> mut_ref u8 -> u64 -> Result unit;
-        write_vectored_at : ref Self -> ref (slice IoSlice) : u64 -> Result usize;
-        write_all_at : ref Self -> ref (slice u8) : u64 -> Result unit;
+      Class Trait (Self : Set) : Set := {
+        read_at :
+          ref Self -> mut_ref (slice u8.t) -> u64.t -> ltac:(io.error.Result usize.t);
+        write_at :
+          ref Self -> ref (slice u8.t) -> u64.t -> ltac:(io.error.Result usize.t);
+        read_vectored_at :
+          ref Self -> mut_ref (slice io.IoSliceMut.t) -> u64.t -> ltac:(io.error.Result usize.t);
+        read_exact_at :
+          ref Self -> mut_ref u8.t -> u64.t -> ltac:(io.error.Result unit);
+        write_vectored_at :
+          ref Self -> ref (slice io.IoSlice.t) -> u64.t -> ltac:(io.error.Result usize.t);
+        write_all_at :
+          ref Self -> ref (slice u8.t) -> u64.t -> ltac:(io.error.Result unit);
       }.
     End FileExt.
 
@@ -415,7 +279,7 @@ Module unix.
     }
     *)
     Module FileTypeExt.
-      Class Trait (Self : Set) : Set := { 
+      Class Trait (Self : Set) : Set := {
         is_block_device : ref Self -> bool;
         is_char_device : ref Self -> bool;
         is_fifo : ref Self -> bool;
@@ -445,24 +309,23 @@ Module unix.
     }
     *)
     Module MetadataExt.
-      Class Trait (Self : Set) : Set := { 
-        dev : ref Self -> u64;
-        ino : ref Self -> u64;
-        mode : ref Self -> u32;
-        nlink : ref Self -> u64;
-        uid : ref Self -> u32;
-        gid : ref Self -> u32;
-        rdev : ref Self -> u64;
-        size : ref Self -> u64;
-        atime : ref Self -> i64;
-        atime_nsec : ref Self -> i64;
-        mtime : ref Self -> i64;
-        mtime_nsec : ref Self -> i64;
-        ctime : ref Self -> i64;
-        ctime_nsec : ref Self -> i64;
-        blksize : ref Self -> u64;
-        blocks : ref Self -> u64;
-      
+      Class Trait (Self : Set) : Set := {
+        dev : ref Self -> M u64.t;
+        ino : ref Self -> M u64.t;
+        mode : ref Self -> M u32.t;
+        nlink : ref Self -> M u64.t;
+        uid : ref Self -> M u32.t;
+        gid : ref Self -> M u32.t;
+        rdev : ref Self -> M u64.t;
+        size : ref Self -> M u64.t;
+        atime : ref Self -> M i64.t;
+        atime_nsec : ref Self -> M i64.t;
+        mtime : ref Self -> M i64.t;
+        mtime_nsec : ref Self -> M i64.t;
+        ctime : ref Self -> M i64.t;
+        ctime_nsec : ref Self -> M i64.t;
+        blksize : ref Self -> M u64.t;
+        blocks : ref Self -> M u64.t;
       }.
     End MetadataExt.
 
@@ -474,9 +337,9 @@ Module unix.
     }
     *)
     Module OpenOptionsExt.
-      Class Trait (Self : Set) : Set := { 
-        mode : mut_ref Self -> u32 -> mut_ref Self;
-        custom_flags : mut_ref Self -> i32 -> mut_ref Self;
+      Class Trait (Self : Set) : Set := {
+        mode : mut_ref Self -> u32.t -> M (mut_ref Self);
+        custom_flags : mut_ref Self -> i32.t -> M (mut_ref Self);
       }.
     End OpenOptionsExt.
 
@@ -489,10 +352,10 @@ Module unix.
     }
     *)
     Module PermissionsExt.
-      Class Trait (Self : Set) : Set := { 
-        mode : ref Self -> u32;
-        set_mode : mut_ref Self -> u32 -> unit;
-        from_mode : u32 -> Self;
+      Class Trait (Self : Set) : Set := {
+        mode : ref Self -> M u32.t;
+        set_mode : mut_ref Self -> u32.t -> M unit;
+        from_mode : u32.t -> M Self;
       }.
     End PermissionsExt.
 
@@ -502,10 +365,18 @@ Module unix.
     [ ] fchown
     [ ] lchown
     [ ] chroot
-    [ ] symlink
+    [x] symlink
     *)
-    
-    
+
+    (*
+    pub fn symlink<P: AsRef<Path>, Q: AsRef<Path>>(
+        original: P,
+        link: Q
+    ) -> Result<()>
+    *)
+    Parameter symlink :
+      forall {P Q : Set},
+      P -> Q -> M ltac:(io.error.Result unit).
   End fs.
   
   Module io.
@@ -538,63 +409,53 @@ Module unix.
 
     (* pub struct Messages<'a> { /* private fields */ } *)
     Module Messages.
-      Record t : Set := { }.
+      Parameter t : Set.
     End Messages.
-    Definition Messages := Messages.t.
 
     (* pub struct ScmCredentials<'a>(_); *)
     Module ScmCredentials.
-      Record t : Set := { }.
+      Parameter t : Set.
     End ScmCredentials.
-    Definition ScmCredentials := ScmCredentials.t.
     
     (* pub struct ScmRights<'a>(_); *)
     Module ScmRights.
-      Record t : Set := { }.
+      Parameter t : Set.
     End ScmRights.
-    Definition ScmRights := ScmRights.t.
     
     (* pub struct SocketAncillary<'a> { /* private fields */ } *)
     Module SocketAncillary.
-      Record t : Set := { }.
+      Parameter t : Set.
     End SocketAncillary.
-    Definition SocketAncillary := SocketAncillary.t.
     
     (* pub struct SocketCred(_); *)
     Module SocketCred.
-      Record t : Set := { }.
+      Parameter t : Set.
     End SocketCred.
-    Definition SocketCred := SocketCred.t.
     
     (* pub struct Incoming<'a> { /* private fields */ } *)
     Module Incoming.
-      Record t : Set := { }.
+      Parameter t : Set.
     End Incoming.
-    Definition Incoming := Incoming.t.
     
     (* pub struct SocketAddr { /* private fields */ } *)
     Module SocketAddr.
-      Record t : Set := { }.
+      Parameter t : Set.
     End SocketAddr.
-    Definition SocketAddr := SocketAddr.t.
     
     (* pub struct UnixDatagram(_); *)
     Module UnixDatagram.
-      Record t : Set := { }.
+      Parameter t : Set.
     End UnixDatagram.
-    Definition UnixDatagram := UnixDatagram.t.
     
     (* pub struct UnixListener(_); *)
     Module UnixListener.
-      Record t : Set := { }.
+      Parameter t : Set.
     End UnixListener.
-    Definition UnixListener := UnixListener.t.
     
     (* pub struct UnixStream(_); *)
     Module UnixStream.
-      Record t : Set := { }.
+      Parameter t : Set.
     End UnixStream.
-    Definition UnixStream := UnixStream.t.
     
     (* ********ENUMS******** *)
     (*
@@ -614,7 +475,6 @@ Module unix.
       | ScmCredentials
       .
     End AncillaryData.
-    Definition AncillaryData := AncillaryData.t.
 
     (* BUGGED: unusual enum structure *)
     (* 
@@ -629,8 +489,6 @@ Module unix.
     Module AncillaryError.
       Inductive t : Set := .
     End AncillaryError.
-    Definition AncillaryError := AncillaryError.t.
-
   End net.
   
   Module prelude.
@@ -684,21 +542,17 @@ Module unix.
     }
     *)
     Module CommandExt.
-      Class Trait (Self : Set) : Set := { 
-        uid : mut_ref Self -> u32 -> mut_ref Command;
-        gid : mut_ref Self -> u32 -> mut_ref Command;
-        groups : mut_ref Self -> ref (slice u32) -> mut_ref Command;
-        pre_exec (F : Set) 
-          `{Send.Trait F}
-          `{Sync.Trait F}
-        : mut_ref Self -> F -> mut_ref Command;
-        exec : mut_ref Self -> Error;
-        arg0 (S : Set) `{AsRef.Trait S OsStr} : mut_ref Self -> S -> mut_ref Command;
-        process_group : mut_ref Self -> i32 -> mut_ref Command;
-        before_exec (F : Set) 
-          `{Send.Trait F}
-          `{Sync.Trait F}
-        mut_ref Self -> F -> mut_ref Command;
+      Class Trait (Self : Set) : Set := {
+        uid : mut_ref Self -> u32.t -> mut_ref process.Command.t;
+        gid : mut_ref Self -> u32.t -> mut_ref process.Command.t;
+        groups : mut_ref Self -> ref (slice u32.t) -> mut_ref process.Command.t;
+        pre_exec (F : Set) :
+          mut_ref Self -> F -> mut_ref process.Command.t;
+        exec : mut_ref Self -> M io.error.Error.t;
+        arg0 {S : Set} : mut_ref Self -> S -> mut_ref process.Command.t;
+        process_group : mut_ref Self -> i32.t -> mut_ref process.Command.t;
+        before_exec {F : Set} :
+          mut_ref Self -> F -> M (mut_ref process.Command.t);
       }.
     End CommandExt.
 
@@ -714,13 +568,13 @@ Module unix.
     }
     *)
     Module ExitStatusExt.
-      Class Trait (Self : Set) : Set := { 
-        from_raw : i32 -> Self;
-        signal : ref Self -> Option i32;
+      Class Trait (Self : Set) : Set := {
+        from_raw : i32.t -> Self;
+        signal : ref Self -> option.Option.t i32.t;
         core_dumped : ref Self -> bool;
-        stopped_signal : ref Self -> Option i32;
+        stopped_signal : ref Self -> option.Option.t i32.t;
         continued : ref Self -> bool;
-        into_raw : Self -> i32;
+        into_raw : Self -> i32.t;
       }.
     End ExitStatusExt.
     
@@ -750,7 +604,7 @@ Module unix.
     }
     *)
     Module JoinHandleExt.
-      Class Trait (Self : Set) : Set := { 
+      Class Trait (Self : Set) : Set := {
         as_pthread_t : ref Self -> RawPthread;
         into_pthread_t : Self -> RawPthread;
       }.
@@ -762,8 +616,160 @@ Module unix.
     *)
     
   End thread.
-  
 End unix.
+
+Module linux.
+  (* ********MODULES******** *)
+  (*
+  [x] process
+  [x] fs
+  [x] net
+  [x] raw(Deprecated)
+  *)
+  Module process.
+    (* ********STRUCTS******** *)
+    (*
+    [x] PidFd
+    *)
+
+    (* pub struct PidFd { /* private fields */ } *)
+    Module PidFd.
+      Parameter t : Set.
+    End PidFd.
+    
+    (* ********TRAITS******** *)
+    (*
+    [x] ChildExt
+    [x] CommandExt
+    *)
+
+    (* 
+    pub trait ChildExt: Sealed {
+        // Required methods
+        fn pidfd(&self) -> Result<&PidFd>;
+        fn take_pidfd(&mut self) -> Result<PidFd>;
+    }
+    *)
+    Module ChildExt.
+      Class Trait (Self : Set) : Set := {
+        pidfd : ref Self -> M ltac:(io.error.Result (ref PidFd.t));
+        take_pidfd : mut_ref Self -> M ltac:(io.error.Result PidFd.t);
+      }.
+    End ChildExt.
+
+    (* 
+    pub trait CommandExt: Sealed {
+        // Required method
+        fn create_pidfd(&mut self, val: bool) -> &mut Command;
+    }
+    *)
+    Module CommandExt.
+      Class Trait (Self : Set) : Set := {
+        create_pidfd : mut_ref Self -> bool -> M (mut_ref process.Command.t);
+      }.
+    End CommandExt.
+
+  End process.
+
+  Module raw.
+    (*
+    pub struct stat {
+        ...
+    }
+    *)
+    Module stat.
+      Parameter t : Set.
+    End stat.
+  End raw.
+
+  Module fs.
+    (* ********TRAITS******** *)
+    (*
+    [x] MetadataExt
+    *)
+    (* 
+    pub trait MetadataExt {
+        // Required methods
+        fn as_raw_stat(&self) -> &stat;
+        fn st_dev(&self) -> u64;
+        fn st_ino(&self) -> u64;
+        fn st_mode(&self) -> u32;
+        fn st_nlink(&self) -> u64;
+        fn st_uid(&self) -> u32;
+        fn st_gid(&self) -> u32;
+        fn st_rdev(&self) -> u64;
+        fn st_size(&self) -> u64;
+        fn st_atime(&self) -> i64;
+        fn st_atime_nsec(&self) -> i64;
+        fn st_mtime(&self) -> i64;
+        fn st_mtime_nsec(&self) -> i64;
+        fn st_ctime(&self) -> i64;
+        fn st_ctime_nsec(&self) -> i64;
+        fn st_blksize(&self) -> u64;
+        fn st_blocks(&self) -> u64;
+    }
+    *)
+    Module MetadataExt.
+      Class Trait (Self : Set) : Set := {
+        as_raw_stat : ref Self -> M (ref raw.stat.t);
+        st_dev : ref Self -> M u64.t;
+        st_ino : ref Self -> M u64.t;
+        st_mode : ref Self -> M u32.t;
+        st_nlink : ref Self -> M u64.t;
+        st_uid : ref Self -> M u32.t;
+        st_gid : ref Self -> M u32.t;
+        st_rdev : ref Self -> M u64.t;
+        st_size : ref Self -> M u64.t;
+        st_atime : ref Self -> M i64.t;
+        st_atime_nsec : ref Self -> M i64.t;
+        st_mtime : ref Self -> M i64.t;
+        st_mtime_nsec : ref Self -> M i64.t;
+        st_ctime : ref Self -> M i64.t;
+        st_ctime_nsec : ref Self -> M i64.t;
+        st_blksize : ref Self -> M u64.t;
+        st_blocks : ref Self -> M u64.t;
+      }.
+    End MetadataExt.
+
+  End fs.
+  
+  Module net.
+    (* ********TRAITS******** *)
+    (*
+    [x] TcpStreamExt
+    [x] SocketAddrExt
+    *)
+
+    (* 
+    pub trait TcpStreamExt: Sealed {
+        // Required methods
+        fn set_quickack(&self, quickack: bool) -> Result<()>;
+        fn quickack(&self) -> Result<bool>;
+    }
+    *)
+    Module TcpStreamExt.
+      Class Trait (Self : Set) : Set := {
+        set_quickack : ref Self -> bool -> M ltac:(io.error.Result unit);
+        quickack : ref Self -> M ltac:(io.error.Result bool);
+      }.
+    End TcpStreamExt.
+    
+    (* 
+    pub trait SocketAddrExt: Sealed {
+        // Required methods
+        fn from_abstract_name<N>(name: N) -> Result<SocketAddr>
+          where N: AsRef<[u8]>;
+        fn as_abstract_name(&self) -> Option<&[u8]>;
+    }
+    *)
+    Module SocketAddrExt.
+      Class Trait (Self : Set) : Set := {
+        from_abstract_name {N : Set} : N -> M ltac:(io.error.Result unix.net.SocketAddr.t);
+        as_abstract_name : ref Self -> M (option.Option.t (ref (slice u8.t)));
+      }.
+    End SocketAddrExt.
+  End net.
+End linux.
 
 Module wasi.
   (* ********MODULES******** *)
@@ -792,7 +798,7 @@ Module wasi.
     *)
     Module DirEntryExt.
       Class Trait (Self : Set) : Set := {
-        ino : ref Self -> u64;
+        ino : ref Self -> M u64.t;
       }.
     End DirEntryExt.
     
@@ -803,7 +809,7 @@ Module wasi.
     }
     *)
     Module FileExt.
-      Class Trait (Self : Set) : Set := { 
+      Class Trait (Self : Set) : Set := {
         (* 
         fn read_vectored_at(
             &self,
@@ -811,7 +817,7 @@ Module wasi.
             offset: u64
         ) -> Result<usize>;
         *)
-        read_vectored_at : ref Self -> mut_ref (slice IoSliceMut) -> u64 -> Result usize;
+        read_vectored_at : ref Self -> mut_ref (slice io.IoSliceMut.t) -> u64.t -> M ltac:(io.error.Result usize.t);
 
         (* 
         fn write_vectored_at(
@@ -820,7 +826,7 @@ Module wasi.
             offset: u64
         ) -> Result<usize>;
         *)
-        write_vectored_at : ref Self -> mut_ref (slice IoSliceMut) -> u64 -> Result usize;
+        write_vectored_at : ref Self -> mut_ref (slice io.IoSliceMut.t) -> u64.t -> M ltac:(io.error.Result usize.t);
 
         (* 
         fn tell(&self) -> Result<u64>;
@@ -831,13 +837,13 @@ Module wasi.
         fn create_directory<P: AsRef<Path>>(&self, dir: P) -> Result<()>;
         fn read_link<P: AsRef<Path>>(&self, path: P) -> Result<PathBuf>;
         *)
-        tell : ref Self -> Result u64;
-        fdstat_set_flags : ref Self -> u16 -> Result unit;
-        fdstat_set_rights : ref Self -> u64 -> u64 -> Result unit;
-        advise : ref Self -> u64 -> u64 -> u8 -> Result unit;
-        allocate : ref Self -> u64 -> u64 -> Result unit;
-        create_directory (P : Set) `{AsRef.Trait P Path} : ref Self -> P -> Result unit;
-        read_link (P : Set) `{AsRef.Trait P Path}: ref Self -> P -> Result PathBuf;
+        tell : ref Self -> M ltac:(io.error.Result u64.t);
+        fdstat_set_flags : ref Self -> u16.t -> M ltac:(io.error.Result unit);
+        fdstat_set_rights : ref Self -> u64.t -> u64.t -> M ltac:(io.error.Result unit);
+        advise : ref Self -> u64.t -> u64.t -> u8.t -> M ltac:(io.error.Result unit);
+        allocate : ref Self -> u64.t -> u64.t -> M ltac:(io.error.Result unit);
+        create_directory {P : Set} : ref Self -> P -> M ltac:(io.error.Result unit);
+        read_link {P : Set} : ref Self -> P -> M ltac:(io.error.Result path.PathBuf.t);
 
       (* 
       fn metadata_at<P: AsRef<Path>>(
@@ -846,14 +852,14 @@ Module wasi.
           path: P
       ) -> Result<Metadata>;
       *)
-      metadata_at (P : Set) `{AsRef.Trait P Path}: ref Self -> u32 -> P -> Result Metadata;
+      metadata_at {P : Set} : ref Self -> u32.t -> P -> M ltac:(io.error.Result fs.Metadata.t);
 
       (* 
       fn remove_file<P: AsRef<Path>>(&self, path: P) -> Result<()>;
       fn remove_directory<P: AsRef<Path>>(&self, path: P) -> Result<()>;
       *)
-      remove_file (P : Set) `{AsRef.Trait P Path} : ref Self -> P -> Result unit;
-      remove_directory (P : Set) `{AsRef.Trait P Path} : ref Self -> P -> Result unit;
+      remove_file {P : Set} : ref Self -> P -> M ltac:(io.error.Result unit);
+      remove_directory {P : Set} : ref Self -> P -> M ltac:(io.error.Result unit);
 
       (* 
       fn read_at(&self, buf: &mut [u8], offset: u64) -> Result<usize> { ... }
@@ -861,10 +867,10 @@ Module wasi.
       fn write_at(&self, buf: &[u8], offset: u64) -> Result<usize> { ... }
       fn write_all_at(&self, buf: &[u8], offset: u64) -> Result<()> { ... }
       *)
-      read_at : ref Self -> mut_ref (slice u8) -> u64 -> Result usize;
-      read_exact_at : ref Self -> mut_ref (slice u8) -> u64 -> Result unit;
-      write_at : ref Self -> ref (slice u8) -> u64 -> Result usize;
-      write_all_at : ref Self -> ref (slice u8) -> u64 -> Result unit;
+      read_at : ref Self -> mut_ref (slice u8.t) -> u64.t -> M ltac:(io.error.Result usize.t);
+      read_exact_at : ref Self -> mut_ref (slice u8.t) -> u64.t -> M ltac:(io.error.Result unit);
+      write_at : ref Self -> ref (slice u8.t) -> u64.t -> M ltac:(io.error.Result usize.t);
+      write_all_at : ref Self -> ref (slice u8.t) -> u64.t -> M ltac:(io.error.Result unit);
     }.
     End FileExt.
     
@@ -882,12 +888,12 @@ Module wasi.
     }
     *)
     Module FileTypeExt.
-      Class Trait (Self : Set) : Set := { 
-        is_block_device : ref Self -> bool;
-        is_char_device : ref Self -> bool;
-        is_socket_dgram : ref Self -> bool;
-        is_socket_stream : ref Self -> bool;
-        is_socket : ref Self -> bool;
+      Class Trait (Self : Set) : Set := {
+        is_block_device : ref Self -> M bool;
+        is_char_device : ref Self -> M bool;
+        is_socket_dgram : ref Self -> M bool;
+        is_socket_stream : ref Self -> M bool;
+        is_socket : ref Self -> M bool;
       }.
     End FileTypeExt.
     
@@ -905,14 +911,14 @@ Module wasi.
     }
     *)
     Module MetadataExt.
-      Class Trait (Self : Set) : Set := { 
-        dev: ref Self -> u64;
-        ino: ref Self -> u64;
-        nlink: ref Self -> u64;
-        size: ref Self -> u64;
-        atim: ref Self -> u64;
-        mtim: ref Self -> u64;
-        ctim: ref Self -> u64;
+      Class Trait (Self : Set) : Set := {
+        dev: ref Self -> M u64.t;
+        ino: ref Self -> M u64.t;
+        nlink: ref Self -> M u64.t;
+        size: ref Self -> M u64.t;
+        atim: ref Self -> M u64.t;
+        mtim: ref Self -> M u64.t;
+        ctim: ref Self -> M u64.t;
       }.
     End MetadataExt.
 
@@ -931,16 +937,16 @@ Module wasi.
     }
     *)
     Module OpenOptionsExt.
-      Class Trait (Self : Set) : Set := { 
-        lookup_flags : mut_ref Self -> u32 -> mut_ref Self;
-        directory : mut_ref Self -> bool -> mut_ref Self;
-        dsync : mut_ref Self -> bool -> mut_ref Self;
-        nonblock : mut_ref Self -> bool -> mut_ref Self;
-        rsync : mut_ref Self -> bool -> mut_ref Self;
-        sync : mut_ref Self -> bool -> mut_ref Self;
-        fs_rights_base : mut_ref Self -> u64 -> mut_ref Self;
-        fs_rights_inheriting : mut_ref Self -> u64 -> mut_ref Self;
-        open_at (P : Set) `{AsRef.Trait P Path} : mut_ref Self -> ref File -> P -> Result File;
+      Class Trait (Self : Set) : Set := {
+        lookup_flags : mut_ref Self -> u32.t -> M (mut_ref Self);
+        directory : mut_ref Self -> bool -> M (mut_ref Self);
+        dsync : mut_ref Self -> bool -> M (mut_ref Self);
+        nonblock : mut_ref Self -> bool -> M (mut_ref Self);
+        rsync : mut_ref Self -> bool -> M (mut_ref Self);
+        sync : mut_ref Self -> bool -> M (mut_ref Self);
+        fs_rights_base : mut_ref Self -> u64.t -> M (mut_ref Self);
+        fs_rights_inheriting : mut_ref Self -> u64.t -> M (mut_ref Self);
+        open_at {P : Set} : mut_ref Self -> ref fs.File.t -> P -> M ltac:(io.error.Result fs.File.t);
       }.
     End OpenOptionsExt.
 
@@ -951,8 +957,6 @@ Module wasi.
     [ ] symlink
     [ ] symlink_path
     *)
-    
-    
   End fs.
   
   Module net.
@@ -967,8 +971,8 @@ Module wasi.
     }
     *)
     Module TcpListenerExt.
-      Class Trait (Self : Set) : Set := { 
-        sock_accept : ref Self -> u16 -> Result u32;
+      Class Trait (Self : Set) : Set := {
+        sock_accept : ref Self -> u16.t -> M ltac:(io.error.Result u32.t);
       }.
     End TcpListenerExt.
 
@@ -989,9 +993,9 @@ Module wasi.
     }
     *)
     Module OsStrExt.
-      Class Trait (Self : Set) : Set := { 
-        from_bytes : ref (slice u8) -> ref Self;
-        as_bytes : ref Self -> ref (slice u8);
+      Class Trait (Self : Set) : Set := {
+        from_bytes : ref (slice u8.t) -> ref Self;
+        as_bytes : ref Self -> ref (slice u8.t);
       }.
     End OsStrExt.
 
@@ -1003,9 +1007,9 @@ Module wasi.
     }
     *)
     Module OsStringExt.
-      Class Trait (Self : Set) : Set := { 
-        from_vec : Vec u8 -> Self;
-        into_vec : Self -> Vec u8;
+      Class Trait (Self : Set) : Set := {
+        from_vec : vec.Vec u8.t vec.Vec.Default.A -> Self;
+        into_vec : Self -> vec.Vec u8.t vec.Vec.Default.A;
       }.
     End OsStringExt.
     
@@ -1060,9 +1064,8 @@ Module windows.
 
     (* pub struct EncodeWide<'a> { /* private fields */ } *)
     Module EncodeWide.
-      Record t : Set := { }.
+      Parameter t : Set.
     End EncodeWide.
-    Definition EncodeWide := EncodeWide.t.
     
     (* ********TRAITS******** *)
     (*
@@ -1077,8 +1080,8 @@ Module windows.
     }
     *)
     Module OsStrExt.
-      Class Trait (Self : Set) : Set := { 
-        encode_wide : ref Self -> EncodeWide;
+      Class Trait (Self : Set) : Set := {
+        encode_wide : ref Self -> M EncodeWide.t;
       }.
     End OsStrExt.
     
@@ -1089,8 +1092,8 @@ Module windows.
     }
     *)
     Module OsStringExt.
-      Class Trait (Self : Set) : Set := { 
-        from_wide : ref (slice u16) -> Self;
+      Class Trait (Self : Set) : Set := {
+        from_wide : ref (slice u16.t) -> M Self;
       }.
     End OsStringExt.
     
@@ -1114,9 +1117,9 @@ Module windows.
     }
     *)
     Module FileExt.
-      Class Trait (Self : Set) : Set := { 
-        seek_read : ref Self -> ref_mut (slice u8) -> u64 -> Result usize;
-        seek_write : ref Self -> ref (slice u8) -> u64 -> Result usize;
+      Class Trait (Self : Set) : Set := {
+        seek_read : ref Self -> mut_ref (slice u8.t) -> u64.t -> M ltac:(io.error.Result usize.t);
+        seek_write : ref Self -> ref (slice u8.t) -> u64.t -> M ltac:(io.error.Result usize.t);
       }.
     End FileExt.
 
@@ -1149,14 +1152,14 @@ Module windows.
     *)
     Module MetadataExt.
       Class Trait (Self : Set) : Set := {
-        file_attributes : ref Self -> u32;
-        creation_time : ref Self -> u64;
-        last_access_time : ref Self -> u64;
-        last_write_time : ref Self -> u64;
-        file_size : ref Self -> u64;
-        volume_serial_number: ref Self -> Option u32;
-        number_of_links: ref Self -> Option u32;
-        file_index: ref Self -> Option u64;
+        file_attributes : ref Self -> u32.t;
+        creation_time : ref Self -> u64.t;
+        last_access_time : ref Self -> u64.t;
+        last_write_time : ref Self -> u64.t;
+        file_size : ref Self -> u64.t;
+        volume_serial_number: ref Self -> option.Option.t u32.t;
+        number_of_links: ref Self -> option.Option.t u32.t;
+        file_index: ref Self -> option.Option.t u64.t;
       }.
     End MetadataExt.
     
@@ -1172,11 +1175,11 @@ Module windows.
     *)
     Module OpenOptionsExt.
       Class Trait (Self : Set) : Set := {
-        access_mode : mut_ref Self -> u32 -> mut_ref Self;
-        share_mode : mut_ref Self -> u32 -> mut_ref Self;
-        custom_flags : mut_ref Self -> u32 -> mut_ref Self;
-        attributes : mut_ref Self -> u32 -> mut_ref Self;
-        security_qos_flags : mut_ref Self -> u32 -> mut_ref Self;
+        access_mode : mut_ref Self -> u32.t -> mut_ref Self;
+        share_mode : mut_ref Self -> u32.t -> mut_ref Self;
+        custom_flags : mut_ref Self -> u32.t -> mut_ref Self;
+        attributes : mut_ref Self -> u32.t -> mut_ref Self;
+        security_qos_flags : mut_ref Self -> u32.t -> mut_ref Self;
       }.
     End OpenOptionsExt.
 
@@ -1206,66 +1209,70 @@ Module windows.
     pub struct BorrowedHandle<'handle> { /* private fields */ } 
     *)
     Module BorrowedHandle.
-      Record t : Set := { }.
+      Parameter t : Set.
     End BorrowedHandle.
-    Definition BorrowedHandle := BorrowedHandle.t.
     
     (* 
     #[repr(transparent)]
     pub struct BorrowedSocket<'socket> { /* private fields */ }
     *)
     Module BorrowedSocket.
-      Record t : Set := { }.
+      Parameter t : Set.
     End BorrowedSocket.
-    Definition BorrowedSocket := BorrowedSocket.t.
     
     (* 
     #[repr(transparent)]
     pub struct HandleOrInvalid(_);
     *)
     Module HandleOrInvalid.
-      Record t : Set := { }.
+      Parameter t : Set.
     End HandleOrInvalid.
-    Definition HandleOrInvalid := HandleOrInvalid.t.
     
     (* 
     #[repr(transparent)]
     pub struct HandleOrNull(_);
     *)
     Module HandleOrNull.
-      Record t : Set := { }.
+      Parameter t : Set.
     End HandleOrNull.
-    Definition HandleOrNull := HandleOrNull.t.
     
     (* pub struct InvalidHandleError(_); *)
     Module InvalidHandleError.
-      Record t : Set := { }.
+      Parameter t : Set.
     End InvalidHandleError.
-    Definition InvalidHandleError := InvalidHandleError.t.
     
     (* pub struct NullHandleError(_); *)
     Module NullHandleError.
-      Record t : Set := { }.
+      Parameter t : Set.
     End NullHandleError.
-    Definition NullHandleError := NullHandleError.t.
     
     (* 
     #[repr(transparent)]
     pub struct OwnedHandle { /* private fields */ }
     *)
     Module OwnedHandle.
-      Record t : Set := { }.
+      Parameter t : Set.
     End OwnedHandle.
-    Definition OwnedHandle := OwnedHandle.t.
     
     (* 
     #[repr(transparent)]
     pub struct OwnedSocket { /* private fields */ }
     *)
     Module OwnedSocket.
-      Record t : Set := { }.
+      Parameter t : Set.
     End OwnedSocket.
-    Definition OwnedSocket := OwnedSocket.t.
+
+    (* ********TYPE DEFINITIONS******** *)
+    (*
+    [ ] RawHandle
+    [ ] RawSocket
+    *)
+
+    Parameter RawHandle : Set.
+    Ltac RawHandle := exact RawHandle.
+
+    Parameter RawSocket : Set.
+    Ltac RawSocket := exact RawSocket.
 
     (* ********TRAITS******** *)
     (*
@@ -1287,7 +1294,7 @@ Module windows.
     *)
     Module AsHandle.
       Class Trait (Self : Set) : Set := {
-        as_handle : ref Self -> BorrowedHandle;
+        as_handle : ref Self -> M BorrowedHandle.t;
       }.
     End AsHandle.
 
@@ -1299,7 +1306,7 @@ Module windows.
     *)
     Module AsRawHandle.
       Class Trait (Self : Set) : Set := {
-        as_raw_handle : ref Self -> RawHandle;
+        as_raw_handle : ref Self -> M ltac:(RawHandle);
       }.
     End AsRawHandle.
 
@@ -1311,7 +1318,7 @@ Module windows.
     *)
     Module AsRawSocket.
       Class Trait (Self : Set) : Set := {
-        as_raw_socket : ref Self -> RawSocket;
+        as_raw_socket : ref Self -> M ltac:(RawSocket);
       }.
     End AsRawSocket.
 
@@ -1323,7 +1330,7 @@ Module windows.
     *)
     Module AsSocket.
       Class Trait (Self : Set) : Set := {
-        as_socket : ref Self -> BorrowedSocket;
+        as_socket : ref Self -> M BorrowedSocket.t;
       }.
     End AsSocket.
     
@@ -1335,7 +1342,7 @@ Module windows.
     *)
     Module FromRawHandle.
       Class Trait (Self : Set) : Set := {
-        from_raw_handle : RawHandle -> Self;
+        from_raw_handle : M ltac:(RawHandle) -> Self;
       }.
     End FromRawHandle.
 
@@ -1374,13 +1381,6 @@ Module windows.
         into_raw_socket : Self -> RawSocket;
       }.
     End IntoRawSocket.
-    
-    (* ********TYPE DEFINITIONS******** *)
-    (*
-    [ ] RawHandle
-    [ ] RawSocket
-    *)
-    
   End io.
   
   Module prelude.
@@ -1427,7 +1427,7 @@ Module windows.
     *)
     Module ChildExt.
       Class Trait (Self : Set) : Set := {
-        main_thread_handle : ref Self -> BorrowedHandle;
+        main_thread_handle : ref Self -> M io.BorrowedHandle.t;
       }.
     End ChildExt.
 
@@ -1439,7 +1439,7 @@ Module windows.
     *)
     Module ExitCodeExt.
       Class Trait (Self : Set) : Set := {
-        from_raw : u32 -> Self;
+        from_raw : u32.t -> M Self;
       }.
     End ExitCodeExt.
 
@@ -1457,10 +1457,10 @@ Module windows.
     *)
     Module CommandExt.
       Class Trait (Self : Set) : Set := {
-        creation_flags : mut_ref Self -> u32 -> mut_ref Command;
-        force_quotes : mut_ref Self -> bool -> mut_ref Command;
-        raw_arg (S : Set) `{AsRef.Trait S OsStr} : mut_ref Self -> S -> mut_ref Command;
-        async_pipes : mut_ref Self -> bool -> mut_ref Command;
+        creation_flags : mut_ref Self -> u32.t -> mut_ref process.Command.t;
+        force_quotes : mut_ref Self -> bool -> mut_ref process.Command.t;
+        raw_arg {S : Set} : mut_ref Self -> S -> mut_ref process.Command.t;
+        async_pipes : mut_ref Self -> bool -> mut_ref process.Command.t;
       }.
     End CommandExt.
 
@@ -1472,7 +1472,7 @@ Module windows.
     *)
     Module ExitStatusExt.
       Class Trait (Self : Set) : Set := {
-      from_raw : u32 -> Self;
+      from_raw : u32.t -> Self;
       }.
     End ExitStatusExt.
     

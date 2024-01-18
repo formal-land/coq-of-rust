@@ -53,7 +53,7 @@ fn comp_sci_student_greeting(student: &dyn CompSciStudent) -> String {
 *)
 Definition comp_sci_student_greeting
     {DynT : Set}
-    {ℋ_0 : supertraits.CompSciStudent.Trait DynT}
+    {ℋ_0 : supertraits.CompSciStudent.Trait.Trait DynT}
     (student : ref DynT)
     : M alloc.string.String.t :=
   let* student := M.alloc student in
@@ -63,55 +63,63 @@ Definition comp_sci_student_greeting
     let* α2 : ref str.t := M.read (mk_str ". My favorite language is ") in
     let* α3 : ref str.t := M.read (mk_str ". My Git username is ") in
     let* α4 : M.Val (array (ref str.t)) := M.alloc [ α0; α1; α2; α3 ] in
-    let* α5 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α4) in
-    let* α6 : ref (slice (ref str.t)) :=
-      M.read (pointer_coercion "Unsize" α5) in
-    let* α7 : _ :=
+    let* α5 :
+        (ref (dyn [supertraits.CompSciStudent.Trait])) ->
+          M alloc.string.String.t :=
       ltac:(M.get_method (fun ℐ =>
-        supertraits.Person.name (Self := _ (* dyn *)) (Trait := ℐ))) in
-    let* α8 : ref _ (* dyn *) := M.read student in
-    let* α9 : alloc.string.String.t := M.call (α7 α8) in
-    let* α10 : M.Val alloc.string.String.t := M.alloc α9 in
-    let* α11 : core.fmt.rt.Argument.t :=
-      M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α10)) in
-    let* α12 : _ :=
+        supertraits.Person.name
+          (Self := dyn [supertraits.CompSciStudent.Trait])
+          (Trait := ℐ))) in
+    let* α6 : ref (dyn [supertraits.CompSciStudent.Trait]) := M.read student in
+    let* α7 : alloc.string.String.t := M.call (α5 α6) in
+    let* α8 : M.Val alloc.string.String.t := M.alloc α7 in
+    let* α9 : core.fmt.rt.Argument.t :=
+      M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α8)) in
+    let* α10 :
+        (ref (dyn [supertraits.CompSciStudent.Trait])) ->
+          M alloc.string.String.t :=
       ltac:(M.get_method (fun ℐ =>
-        supertraits.Student.university (Self := _ (* dyn *)) (Trait := ℐ))) in
-    let* α13 : ref _ (* dyn *) := M.read student in
-    let* α14 : alloc.string.String.t := M.call (α12 α13) in
-    let* α15 : M.Val alloc.string.String.t := M.alloc α14 in
-    let* α16 : core.fmt.rt.Argument.t :=
-      M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α15)) in
-    let* α17 : _ :=
+        supertraits.Student.university
+          (Self := dyn [supertraits.CompSciStudent.Trait])
+          (Trait := ℐ))) in
+    let* α11 : ref (dyn [supertraits.CompSciStudent.Trait]) := M.read student in
+    let* α12 : alloc.string.String.t := M.call (α10 α11) in
+    let* α13 : M.Val alloc.string.String.t := M.alloc α12 in
+    let* α14 : core.fmt.rt.Argument.t :=
+      M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α13)) in
+    let* α15 :
+        (ref (dyn [supertraits.CompSciStudent.Trait])) ->
+          M alloc.string.String.t :=
       ltac:(M.get_method (fun ℐ =>
         supertraits.Programmer.fav_language
-          (Self := _ (* dyn *))
+          (Self := dyn [supertraits.CompSciStudent.Trait])
           (Trait := ℐ))) in
-    let* α18 : ref _ (* dyn *) := M.read student in
-    let* α19 : alloc.string.String.t := M.call (α17 α18) in
-    let* α20 : M.Val alloc.string.String.t := M.alloc α19 in
-    let* α21 : core.fmt.rt.Argument.t :=
-      M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α20)) in
-    let* α22 : _ :=
+    let* α16 : ref (dyn [supertraits.CompSciStudent.Trait]) := M.read student in
+    let* α17 : alloc.string.String.t := M.call (α15 α16) in
+    let* α18 : M.Val alloc.string.String.t := M.alloc α17 in
+    let* α19 : core.fmt.rt.Argument.t :=
+      M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α18)) in
+    let* α20 :
+        (ref (dyn [supertraits.CompSciStudent.Trait])) ->
+          M alloc.string.String.t :=
       ltac:(M.get_method (fun ℐ =>
         supertraits.CompSciStudent.git_username
-          (Self := _ (* dyn *))
+          (Self := dyn [supertraits.CompSciStudent.Trait])
           (Trait := ℐ))) in
-    let* α23 : ref _ (* dyn *) := M.read student in
-    let* α24 : alloc.string.String.t := M.call (α22 α23) in
-    let* α25 : M.Val alloc.string.String.t := M.alloc α24 in
-    let* α26 : core.fmt.rt.Argument.t :=
-      M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α25)) in
-    let* α27 : M.Val (array core.fmt.rt.Argument.t) :=
-      M.alloc [ α11; α16; α21; α26 ] in
-    let* α28 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-      M.alloc (borrow α27) in
-    let* α29 : ref (slice core.fmt.rt.Argument.t) :=
-      M.read (pointer_coercion "Unsize" α28) in
-    let* α30 : core.fmt.Arguments.t :=
-      M.call (core.fmt.Arguments.t::["new_v1"] α6 α29) in
-    let* α31 : alloc.string.String.t := M.call (alloc.fmt.format α30) in
-    M.alloc α31 in
+    let* α21 : ref (dyn [supertraits.CompSciStudent.Trait]) := M.read student in
+    let* α22 : alloc.string.String.t := M.call (α20 α21) in
+    let* α23 : M.Val alloc.string.String.t := M.alloc α22 in
+    let* α24 : core.fmt.rt.Argument.t :=
+      M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α23)) in
+    let* α25 : M.Val (array core.fmt.rt.Argument.t) :=
+      M.alloc [ α9; α14; α19; α24 ] in
+    let* α26 : core.fmt.Arguments.t :=
+      M.call
+        (core.fmt.Arguments.t::["new_v1"]
+          (pointer_coercion "Unsize" (borrow α4))
+          (pointer_coercion "Unsize" (borrow α25))) in
+    let* α27 : alloc.string.String.t := M.call (alloc.fmt.format α26) in
+    M.alloc α27 in
   M.read res.
 
 (*

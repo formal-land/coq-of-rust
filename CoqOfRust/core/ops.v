@@ -21,7 +21,43 @@ Module range.
       end_: Idx;
     }.
   End Range.
-  Definition Range := Range.t.
+
+  (* pub struct RangeInclusive<Idx> { /* private fields */ } *)
+  Module RangeInclusive.
+    Parameter t : Set -> Set.
+
+    Module  Impl.
+    Section Impl.
+      Context {Idx : Set}.
+
+      Definition Self : Set := t Idx.
+
+      (* pub const fn new(start: Idx, end: Idx) -> Self *)
+      Parameter new : Idx -> Idx -> M Self.
+
+      Global Instance AF_new : Notations.DoubleColon Self "new" := {
+        Notations.double_colon := new;
+      }.
+    End Impl.
+    End Impl.
+  End RangeInclusive.
+
+  (*
+  pub struct RangeFrom<Idx> {
+      pub start: Idx,
+  }
+  *)
+  Module RangeFrom.
+    Record t {Idx : Set} : Set := {
+      start : Idx;
+    }.
+    Arguments t : clear implicits.
+  End RangeFrom.
+
+  (* pub struct RangeFull; *)
+  Module RangeFull.
+    Inductive t : Set := Build.
+  End RangeFull.
 End range.
 
 Module arith.

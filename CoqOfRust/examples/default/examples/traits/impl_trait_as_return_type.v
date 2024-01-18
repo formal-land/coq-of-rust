@@ -24,7 +24,16 @@ Definition combine_vecs_explicit_return_type
               alloc.vec.into_iter.IntoIter.Default.A))) :=
   let* v := M.alloc v in
   let* u := M.alloc u in
-  let* α0 : _ :=
+  let* α0 :
+      (core.iter.adapters.chain.Chain.t
+          (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t)
+          (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t))
+        ->
+        M
+          (core.iter.adapters.cycle.Cycle.t
+            (core.iter.adapters.chain.Chain.t
+              (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t)
+              (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t))) :=
     ltac:(M.get_method (fun ℐ =>
       core.iter.traits.iterator.Iterator.cycle
         (Self :=
@@ -32,13 +41,19 @@ Definition combine_vecs_explicit_return_type
             (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t)
             (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t))
         (Trait := ℐ))) in
-  let* α1 : _ :=
+  let* α1 :
+      (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t) ->
+        (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t) ->
+        M
+          (core.iter.adapters.chain.Chain.t
+            (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t)
+            _) :=
     ltac:(M.get_method (fun ℐ =>
       core.iter.traits.iterator.Iterator.chain
         (Self := alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t)
         (U := alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t)
         (Trait := ℐ))) in
-  let* α2 : _ :=
+  let* α2 : (alloc.vec.Vec.t i32.t alloc.alloc.Global.t) -> M _ :=
     ltac:(M.get_method (fun ℐ =>
       core.iter.traits.collect.IntoIterator.into_iter
         (Self := alloc.vec.Vec.t i32.t alloc.alloc.Global.t)
@@ -46,7 +61,7 @@ Definition combine_vecs_explicit_return_type
   let* α3 : alloc.vec.Vec.t i32.t alloc.alloc.Global.t := M.read v in
   let* α4 : alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t :=
     M.call (α2 α3) in
-  let* α5 : _ :=
+  let* α5 : (alloc.vec.Vec.t i32.t alloc.alloc.Global.t) -> M _ :=
     ltac:(M.get_method (fun ℐ =>
       core.iter.traits.collect.IntoIterator.into_iter
         (Self := alloc.vec.Vec.t i32.t alloc.alloc.Global.t)
@@ -72,7 +87,16 @@ Definition combine_vecs
     : M _ (* OpaqueTy *) :=
   let* v := M.alloc v in
   let* u := M.alloc u in
-  let* α0 : _ :=
+  let* α0 :
+      (core.iter.adapters.chain.Chain.t
+          (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t)
+          (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t))
+        ->
+        M
+          (core.iter.adapters.cycle.Cycle.t
+            (core.iter.adapters.chain.Chain.t
+              (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t)
+              (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t))) :=
     ltac:(M.get_method (fun ℐ =>
       core.iter.traits.iterator.Iterator.cycle
         (Self :=
@@ -80,13 +104,19 @@ Definition combine_vecs
             (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t)
             (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t))
         (Trait := ℐ))) in
-  let* α1 : _ :=
+  let* α1 :
+      (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t) ->
+        (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t) ->
+        M
+          (core.iter.adapters.chain.Chain.t
+            (alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t)
+            _) :=
     ltac:(M.get_method (fun ℐ =>
       core.iter.traits.iterator.Iterator.chain
         (Self := alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t)
         (U := alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t)
         (Trait := ℐ))) in
-  let* α2 : _ :=
+  let* α2 : (alloc.vec.Vec.t i32.t alloc.alloc.Global.t) -> M _ :=
     ltac:(M.get_method (fun ℐ =>
       core.iter.traits.collect.IntoIterator.into_iter
         (Self := alloc.vec.Vec.t i32.t alloc.alloc.Global.t)
@@ -94,7 +124,7 @@ Definition combine_vecs
   let* α3 : alloc.vec.Vec.t i32.t alloc.alloc.Global.t := M.read v in
   let* α4 : alloc.vec.into_iter.IntoIter.t i32.t alloc.alloc.Global.t :=
     M.call (α2 α3) in
-  let* α5 : _ :=
+  let* α5 : (alloc.vec.Vec.t i32.t alloc.alloc.Global.t) -> M _ :=
     ltac:(M.get_method (fun ℐ =>
       core.iter.traits.collect.IntoIterator.into_iter
         (Self := alloc.vec.Vec.t i32.t alloc.alloc.Global.t)
@@ -135,36 +165,33 @@ Definition main : M unit :=
           (Integer.of_Z 3) : i32.t
         ] in
     let* α1 : M.Val (alloc.boxed.Box.t (array i32.t) alloc.alloc.Global.t) :=
-      M.call ((alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α0) in
-    let* α2 : alloc.boxed.Box.t (slice i32.t) alloc.alloc.Global.t :=
-      M.read (pointer_coercion "Unsize" α1) in
+      M.call ((alloc.boxed.Box.t _ alloc.boxed.Box.Default.A)::["new"] α0) in
+    let* α2 : alloc.boxed.Box.t (array i32.t) alloc.alloc.Global.t :=
+      M.read α1 in
     let* α3 : alloc.vec.Vec.t i32.t alloc.alloc.Global.t :=
-      M.call ((slice i32.t)::["into_vec"] α2) in
+      M.call ((slice i32.t)::["into_vec"] (pointer_coercion "Unsize" α2)) in
     M.alloc α3 in
   let* v2 : M.Val (alloc.vec.Vec.t i32.t alloc.alloc.Global.t) :=
     let* α0 : M.Val (array i32.t) :=
       M.alloc [ (Integer.of_Z 4) : i32.t; (Integer.of_Z 5) : i32.t ] in
     let* α1 : M.Val (alloc.boxed.Box.t (array i32.t) alloc.alloc.Global.t) :=
-      M.call ((alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α0) in
-    let* α2 : alloc.boxed.Box.t (slice i32.t) alloc.alloc.Global.t :=
-      M.read (pointer_coercion "Unsize" α1) in
+      M.call ((alloc.boxed.Box.t _ alloc.boxed.Box.Default.A)::["new"] α0) in
+    let* α2 : alloc.boxed.Box.t (array i32.t) alloc.alloc.Global.t :=
+      M.read α1 in
     let* α3 : alloc.vec.Vec.t i32.t alloc.alloc.Global.t :=
-      M.call ((slice i32.t)::["into_vec"] α2) in
+      M.call ((slice i32.t)::["into_vec"] (pointer_coercion "Unsize" α2)) in
     M.alloc α3 in
-  let* v3 : M.Val type not implemented :=
+  let* v3 : M.Val _ :=
     let* α0 : alloc.vec.Vec.t i32.t alloc.alloc.Global.t := M.read v1 in
     let* α1 : alloc.vec.Vec.t i32.t alloc.alloc.Global.t := M.read v2 in
-    let* α2 : type not implemented :=
-      M.call (impl_trait_as_return_type.combine_vecs α0 α1) in
+    let* α2 : _ := M.call (impl_trait_as_return_type.combine_vecs α0 α1) in
     M.alloc α2 in
   let* _ : M.Val unit :=
     let* α0 : M.Val (core.option.Option.t i32.t) :=
       M.alloc (core.option.Option.Some ((Integer.of_Z 1) : i32.t)) in
-    let* α1 : _ :=
+    let* α1 : (mut_ref _) -> M (core.option.Option.t _) :=
       ltac:(M.get_method (fun ℐ =>
-        core.iter.traits.iterator.Iterator.next
-          (Self := type not implemented)
-          (Trait := ℐ))) in
+        core.iter.traits.iterator.Iterator.next (Self := _) (Trait := ℐ))) in
     let* α2 : core.option.Option.t i32.t := M.call (α1 (borrow_mut v3)) in
     let* α3 : M.Val (core.option.Option.t i32.t) := M.alloc α2 in
     let* α4 :
@@ -184,7 +211,10 @@ Definition main : M unit :=
             let γ0_1 := Tuple.Access.right γ in
             let* left_val := M.copy γ0_0 in
             let* right_val := M.copy γ0_1 in
-            let* α0 : _ :=
+            let* α0 :
+                (ref (core.option.Option.t i32.t)) ->
+                  (ref (core.option.Option.t i32.t)) ->
+                  M bool.t :=
               ltac:(M.get_method (fun ℐ =>
                 core.cmp.PartialEq.eq
                   (Self := core.option.Option.t i32.t)
@@ -220,11 +250,9 @@ Definition main : M unit :=
   let* _ : M.Val unit :=
     let* α0 : M.Val (core.option.Option.t i32.t) :=
       M.alloc (core.option.Option.Some ((Integer.of_Z 2) : i32.t)) in
-    let* α1 : _ :=
+    let* α1 : (mut_ref _) -> M (core.option.Option.t _) :=
       ltac:(M.get_method (fun ℐ =>
-        core.iter.traits.iterator.Iterator.next
-          (Self := type not implemented)
-          (Trait := ℐ))) in
+        core.iter.traits.iterator.Iterator.next (Self := _) (Trait := ℐ))) in
     let* α2 : core.option.Option.t i32.t := M.call (α1 (borrow_mut v3)) in
     let* α3 : M.Val (core.option.Option.t i32.t) := M.alloc α2 in
     let* α4 :
@@ -244,7 +272,10 @@ Definition main : M unit :=
             let γ0_1 := Tuple.Access.right γ in
             let* left_val := M.copy γ0_0 in
             let* right_val := M.copy γ0_1 in
-            let* α0 : _ :=
+            let* α0 :
+                (ref (core.option.Option.t i32.t)) ->
+                  (ref (core.option.Option.t i32.t)) ->
+                  M bool.t :=
               ltac:(M.get_method (fun ℐ =>
                 core.cmp.PartialEq.eq
                   (Self := core.option.Option.t i32.t)
@@ -280,11 +311,9 @@ Definition main : M unit :=
   let* _ : M.Val unit :=
     let* α0 : M.Val (core.option.Option.t i32.t) :=
       M.alloc (core.option.Option.Some ((Integer.of_Z 3) : i32.t)) in
-    let* α1 : _ :=
+    let* α1 : (mut_ref _) -> M (core.option.Option.t _) :=
       ltac:(M.get_method (fun ℐ =>
-        core.iter.traits.iterator.Iterator.next
-          (Self := type not implemented)
-          (Trait := ℐ))) in
+        core.iter.traits.iterator.Iterator.next (Self := _) (Trait := ℐ))) in
     let* α2 : core.option.Option.t i32.t := M.call (α1 (borrow_mut v3)) in
     let* α3 : M.Val (core.option.Option.t i32.t) := M.alloc α2 in
     let* α4 :
@@ -304,7 +333,10 @@ Definition main : M unit :=
             let γ0_1 := Tuple.Access.right γ in
             let* left_val := M.copy γ0_0 in
             let* right_val := M.copy γ0_1 in
-            let* α0 : _ :=
+            let* α0 :
+                (ref (core.option.Option.t i32.t)) ->
+                  (ref (core.option.Option.t i32.t)) ->
+                  M bool.t :=
               ltac:(M.get_method (fun ℐ =>
                 core.cmp.PartialEq.eq
                   (Self := core.option.Option.t i32.t)
@@ -340,11 +372,9 @@ Definition main : M unit :=
   let* _ : M.Val unit :=
     let* α0 : M.Val (core.option.Option.t i32.t) :=
       M.alloc (core.option.Option.Some ((Integer.of_Z 4) : i32.t)) in
-    let* α1 : _ :=
+    let* α1 : (mut_ref _) -> M (core.option.Option.t _) :=
       ltac:(M.get_method (fun ℐ =>
-        core.iter.traits.iterator.Iterator.next
-          (Self := type not implemented)
-          (Trait := ℐ))) in
+        core.iter.traits.iterator.Iterator.next (Self := _) (Trait := ℐ))) in
     let* α2 : core.option.Option.t i32.t := M.call (α1 (borrow_mut v3)) in
     let* α3 : M.Val (core.option.Option.t i32.t) := M.alloc α2 in
     let* α4 :
@@ -364,7 +394,10 @@ Definition main : M unit :=
             let γ0_1 := Tuple.Access.right γ in
             let* left_val := M.copy γ0_0 in
             let* right_val := M.copy γ0_1 in
-            let* α0 : _ :=
+            let* α0 :
+                (ref (core.option.Option.t i32.t)) ->
+                  (ref (core.option.Option.t i32.t)) ->
+                  M bool.t :=
               ltac:(M.get_method (fun ℐ =>
                 core.cmp.PartialEq.eq
                   (Self := core.option.Option.t i32.t)
@@ -400,11 +433,9 @@ Definition main : M unit :=
   let* _ : M.Val unit :=
     let* α0 : M.Val (core.option.Option.t i32.t) :=
       M.alloc (core.option.Option.Some ((Integer.of_Z 5) : i32.t)) in
-    let* α1 : _ :=
+    let* α1 : (mut_ref _) -> M (core.option.Option.t _) :=
       ltac:(M.get_method (fun ℐ =>
-        core.iter.traits.iterator.Iterator.next
-          (Self := type not implemented)
-          (Trait := ℐ))) in
+        core.iter.traits.iterator.Iterator.next (Self := _) (Trait := ℐ))) in
     let* α2 : core.option.Option.t i32.t := M.call (α1 (borrow_mut v3)) in
     let* α3 : M.Val (core.option.Option.t i32.t) := M.alloc α2 in
     let* α4 :
@@ -424,7 +455,10 @@ Definition main : M unit :=
             let γ0_1 := Tuple.Access.right γ in
             let* left_val := M.copy γ0_0 in
             let* right_val := M.copy γ0_1 in
-            let* α0 : _ :=
+            let* α0 :
+                (ref (core.option.Option.t i32.t)) ->
+                  (ref (core.option.Option.t i32.t)) ->
+                  M bool.t :=
               ltac:(M.get_method (fun ℐ =>
                 core.cmp.PartialEq.eq
                   (Self := core.option.Option.t i32.t)
@@ -462,13 +496,12 @@ Definition main : M unit :=
       let* α0 : ref str.t := M.read (mk_str "all done
 ") in
       let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-      let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
-      let* α3 : ref (slice (ref str.t)) :=
-        M.read (pointer_coercion "Unsize" α2) in
-      let* α4 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_const"] α3) in
-      let* α5 : unit := M.call (std.io.stdio._print α4) in
-      M.alloc α5 in
+      let* α2 : core.fmt.Arguments.t :=
+        M.call
+          (core.fmt.Arguments.t::["new_const"]
+            (pointer_coercion "Unsize" (borrow α1))) in
+      let* α3 : unit := M.call (std.io.stdio._print α2) in
+      M.alloc α3 in
     M.alloc tt in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.

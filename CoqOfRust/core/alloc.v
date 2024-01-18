@@ -3,7 +3,7 @@ Require Import CoqOfRust.lib.lib.
 Require CoqOfRust.alloc.alloc.
 Require CoqOfRust.core.marker.
 Require Import CoqOfRust.core.result_types.
-Require CoqOfRust._std.ptr.
+Require CoqOfRust.std.ptr.
 
 (* *******STRUCTS******** *)
 (* 

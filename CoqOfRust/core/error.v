@@ -100,6 +100,6 @@ Module Report.
   Module Default.
     Parameter dyn_Error : Set.
 
-    Definition E : Set := boxed.Box dyn_Error boxed.Box.Default.A.
+    Definition E : Set := boxed.Box.t dyn_Error boxed.Box.Default.A.
   End Default.
 End Report.

@@ -72,7 +72,7 @@ fn main() {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
   let* color : M.Val alloc.string.String.t :=
-    let* α0 : _ :=
+    let* α0 : (ref str.t) -> M alloc.string.String.t :=
       ltac:(M.get_method (fun ℐ =>
         core.convert.From.from
           (Self := alloc.string.String.t)
@@ -88,25 +88,21 @@ Definition main : M unit :=
         let* α1 : ref str.t := M.read (mk_str "
 ") in
         let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-        let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
-        let* α4 : ref (slice (ref str.t)) :=
-          M.read (pointer_coercion "Unsize" α3) in
-        let* α5 : core.fmt.rt.Argument.t :=
+        let* α3 : core.fmt.rt.Argument.t :=
           M.call (core.fmt.rt.Argument.t::["new_display"] (borrow color)) in
-        let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
-        let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-          M.alloc (borrow α6) in
-        let* α8 : ref (slice core.fmt.rt.Argument.t) :=
-          M.read (pointer_coercion "Unsize" α7) in
-        let* α9 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
-        let* α10 : unit := M.call (std.io.stdio._print α9) in
-        M.alloc α10 in
+        let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
+        let* α5 : core.fmt.Arguments.t :=
+          M.call
+            (core.fmt.Arguments.t::["new_v1"]
+              (pointer_coercion "Unsize" (borrow α2))
+              (pointer_coercion "Unsize" (borrow α4))) in
+        let* α6 : unit := M.call (std.io.stdio._print α5) in
+        M.alloc α6 in
       let* α0 : M.Val unit := M.alloc tt in
       M.read α0) :
       M unit) in
   let* _ : M.Val unit :=
-    let* α0 : _ :=
+    let* α0 : (ref (unit -> M unit)) -> unit -> M _ :=
       ltac:(M.get_method (fun ℐ =>
         core.ops.function.Fn.call
           (Self := unit -> M unit)
@@ -117,7 +113,7 @@ Definition main : M unit :=
   let* _reborrow : M.Val (ref alloc.string.String.t) :=
     M.alloc (borrow color) in
   let* _ : M.Val unit :=
-    let* α0 : _ :=
+    let* α0 : (ref (unit -> M unit)) -> unit -> M _ :=
       ltac:(M.get_method (fun ℐ =>
         core.ops.function.Fn.call
           (Self := unit -> M unit)
@@ -140,26 +136,22 @@ Definition main : M unit :=
           let* α1 : ref str.t := M.read (mk_str "
 ") in
           let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-          let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
-          let* α4 : ref (slice (ref str.t)) :=
-            M.read (pointer_coercion "Unsize" α3) in
-          let* α5 : core.fmt.rt.Argument.t :=
+          let* α3 : core.fmt.rt.Argument.t :=
             M.call (core.fmt.rt.Argument.t::["new_display"] (borrow count)) in
-          let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
-          let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-            M.alloc (borrow α6) in
-          let* α8 : ref (slice core.fmt.rt.Argument.t) :=
-            M.read (pointer_coercion "Unsize" α7) in
-          let* α9 : core.fmt.Arguments.t :=
-            M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
-          let* α10 : unit := M.call (std.io.stdio._print α9) in
-          M.alloc α10 in
+          let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
+          let* α5 : core.fmt.Arguments.t :=
+            M.call
+              (core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion "Unsize" (borrow α2))
+                (pointer_coercion "Unsize" (borrow α4))) in
+          let* α6 : unit := M.call (std.io.stdio._print α5) in
+          M.alloc α6 in
         M.alloc tt in
       let* α0 : M.Val unit := M.alloc tt in
       M.read α0) :
       M unit) in
   let* _ : M.Val unit :=
-    let* α0 : _ :=
+    let* α0 : (mut_ref (unit -> M unit)) -> unit -> M _ :=
       ltac:(M.get_method (fun ℐ =>
         core.ops.function.FnMut.call_mut
           (Self := unit -> M unit)
@@ -168,7 +160,7 @@ Definition main : M unit :=
     let* α1 : unit := M.call (α0 (borrow_mut inc) tt) in
     M.alloc α1 in
   let* _ : M.Val unit :=
-    let* α0 : _ :=
+    let* α0 : (mut_ref (unit -> M unit)) -> unit -> M _ :=
       ltac:(M.get_method (fun ℐ =>
         core.ops.function.FnMut.call_mut
           (Self := unit -> M unit)
@@ -192,20 +184,16 @@ Definition main : M unit :=
           let* α1 : ref str.t := M.read (mk_str "
 ") in
           let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-          let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
-          let* α4 : ref (slice (ref str.t)) :=
-            M.read (pointer_coercion "Unsize" α3) in
-          let* α5 : core.fmt.rt.Argument.t :=
+          let* α3 : core.fmt.rt.Argument.t :=
             M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow movable)) in
-          let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
-          let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-            M.alloc (borrow α6) in
-          let* α8 : ref (slice core.fmt.rt.Argument.t) :=
-            M.read (pointer_coercion "Unsize" α7) in
-          let* α9 : core.fmt.Arguments.t :=
-            M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
-          let* α10 : unit := M.call (std.io.stdio._print α9) in
-          M.alloc α10 in
+          let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
+          let* α5 : core.fmt.Arguments.t :=
+            M.call
+              (core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion "Unsize" (borrow α2))
+                (pointer_coercion "Unsize" (borrow α4))) in
+          let* α6 : unit := M.call (std.io.stdio._print α5) in
+          M.alloc α6 in
         M.alloc tt in
       let* _ : M.Val unit :=
         let* α0 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t :=
@@ -216,7 +204,7 @@ Definition main : M unit :=
       M.read α0) :
       M unit) in
   let* _ : M.Val unit :=
-    let* α0 : _ :=
+    let* α0 : (unit -> M unit) -> unit -> M _ :=
       ltac:(M.get_method (fun ℐ =>
         core.ops.function.FnOnce.call_once
           (Self := unit -> M unit)

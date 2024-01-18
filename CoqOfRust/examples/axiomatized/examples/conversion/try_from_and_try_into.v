@@ -82,7 +82,7 @@ Section Impl_core_convert_TryFrom_i32_t_for_try_from_and_try_into_EvenNumber_t.
           }
       }
   *)
-  Parameter try_from : i32.t -> M (core.result.Result.t Self Error.t).
+  Parameter try_from : i32.t -> M (core.result.Result.t Self Error).
   
   Global Instance AssociatedFunction_try_from :
     Notations.DoubleColon Self "try_from" := {

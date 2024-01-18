@@ -1,5 +1,5 @@
 Require Import CoqOfRust.lib.lib.
-(* Require Import CoqOfRust._std.iter. *)
+(* Require Import CoqOfRust.std.iter. *)
 
 
 (* ********STRUCTS******** *)

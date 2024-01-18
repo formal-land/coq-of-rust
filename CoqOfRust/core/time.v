@@ -12,32 +12,39 @@ Require Import CoqOfRust.lib.lib.
 (* pub struct Duration { /* private fields */ } *)
 Module Duration.
   Parameter t : Set.
+
+  Module Impl.
+    Definition Self : Set := t.
+
+    (* pub const fn from_secs(secs: u64) -> Duration *)
+    Parameter from_secs : u64.t -> M t.
+
+    Global Instance AF_from_secs :
+      Notations.DoubleColon Self "from_secs" := {
+      Notations.double_colon := from_secs;
+    }.
+  End Impl.
 End Duration.
-Definition Duration := Duration.t.
 
 (* pub struct Instant(_); *)
 Module Instant.
   Parameter t : Set.
 End Instant.
-Definition Instant := Instant.t.
 
 (* pub struct SystemTime(_); *)
 Module SystemTime.
   Parameter t : Set.
 End SystemTime.
-Definition SystemTime := SystemTime.t.
 
 (* pub struct SystemTimeError(_); *)
 Module SystemTimeError.
   Parameter t : Set.
 End SystemTimeError.
-Definition SystemTimeError := SystemTimeError.t.
 
 (* pub struct TryFromFloatSecsError { /* private fields */ } *)
 Module TryFromFloatSecsError.
   Parameter t : Set.
 End TryFromFloatSecsError.
-Definition TryFromFloatSecsError := TryFromFloatSecsError.t.
 
 (* ********CONSTANTS******** *)
 (* 

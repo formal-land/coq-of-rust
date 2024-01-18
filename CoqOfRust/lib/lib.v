@@ -1,6 +1,7 @@
 Require Export Coq.Strings.Ascii.
 Require Export Coq.Strings.String.
 Require Export Coq.ZArith.ZArith.
+Require Export CoqOfRust.RecordUpdate.
 
 (* Global settings for files importing this file *)
 Global Set Primitive Projections.
@@ -271,11 +272,11 @@ Module Eq.
   }.
 
   Global Instance I_f32 : C f32.t := {
-    eq _ := axiom "eq_f32";
+    eq := axiom "eq_f32";
   }.
 
   Global Instance I_f64 : C f64.t := {
-    eq _ := axiom "eq_f64";
+    eq := axiom "eq_f64";
   }.
 End Eq.
 
@@ -296,25 +297,89 @@ Module BinOp.
     Definition ne {A : Set} `{Eq.C A} : A -> A -> bool.t :=
       fun v1 v2 => negb (eq v1 v2).
 
-    Definition make_comparison {A : Set} `{Integer.C A}
-        (bin_op : Z -> Z -> bool)
-        (v1 v2 : A) :
-        bool.t :=
-      let z1 := Integer.to_Z v1 in
-      let z2 := Integer.to_Z v2 in
-      bin_op z1 z2.
+    Module Lt.
+      Class C (Self : Set) : Set := {
+        lt : Self -> Self -> bool.t;
+      }.
 
-    Definition lt {A : Set} `{Integer.C A} : A -> A -> bool.t :=
-      make_comparison Z.ltb.
+      Global Instance I_Integer {Self : Set} `{Integer.C Self} : C Self := {
+        lt v1 v2 := Z.ltb (Integer.to_Z v1) (Integer.to_Z v2);
+      }.
 
-    Definition le {A : Set} `{Integer.C A} : A -> A -> bool.t :=
-      make_comparison Z.leb.
+      Global Instance I_f32 : C f32.t := {
+        lt := axiom "lt_f32";
+      }.
 
-    Definition ge {A : Set} `{Integer.C A} : A -> A -> bool.t :=
-      make_comparison Z.geb.
+      Global Instance I_f64 : C f64.t := {
+        lt := axiom "lt_f64";
+      }.
+    End Lt.
 
-    Definition gt {A : Set} `{Integer.C A} : A -> A -> bool.t :=
-      make_comparison Z.gtb.
+    Definition lt {A : Set} `{Lt.C A} : A -> A -> bool.t :=
+      Lt.lt.
+
+    Module Le.
+      Class C (Self : Set) : Set := {
+        le : Self -> Self -> bool.t;
+      }.
+
+      Global Instance I_Integer {Self : Set} `{Integer.C Self} : C Self := {
+        le v1 v2 := Z.leb (Integer.to_Z v1) (Integer.to_Z v2);
+      }.
+
+      Global Instance I_f32 : C f32.t := {
+        le := axiom "le_f32";
+      }.
+
+      Global Instance I_f64 : C f64.t := {
+        le := axiom "le_f64";
+      }.
+    End Le.
+
+    Definition le {A : Set} `{Le.C A} : A -> A -> bool.t :=
+      Le.le.
+
+    Module Ge.
+      Class C (Self : Set) : Set := {
+        ge : Self -> Self -> bool.t;
+      }.
+
+      Global Instance I_Integer {Self : Set} `{Integer.C Self} : C Self := {
+        ge v1 v2 := Z.geb (Integer.to_Z v1) (Integer.to_Z v2);
+      }.
+
+      Global Instance I_f32 : C f32.t := {
+        ge := axiom "ge_f32";
+      }.
+
+      Global Instance I_f64 : C f64.t := {
+        ge := axiom "ge_f64";
+      }.
+    End Ge.
+
+    Definition ge {A : Set} `{Ge.C A} : A -> A -> bool.t :=
+      Ge.ge.
+
+    Module Gt.
+      Class C (Self : Set) : Set := {
+        gt : Self -> Self -> bool.t;
+      }.
+
+      Global Instance I_Integer {Self : Set} `{Integer.C Self} : C Self := {
+        gt v1 v2 := Z.gtb (Integer.to_Z v1) (Integer.to_Z v2);
+      }.
+
+      Global Instance I_f32 : C f32.t := {
+        gt := axiom "gt_f32";
+      }.
+
+      Global Instance I_f64 : C f64.t := {
+        gt := axiom "gt_f64";
+      }.
+    End Gt.
+
+    Definition gt {A : Set} `{Gt.C A} : A -> A -> bool.t :=
+      Gt.gt.
 
     Parameter and : forall {A : Set}, A -> A -> bool.t.
     Parameter or : forall {A : Set}, A -> A -> bool.t.
@@ -355,14 +420,68 @@ Module BinOp.
       | inr err => M.panic err
       end.
 
-    Definition add {A : Set} `{Integer.C A} (v1 v2 : A) : M A :=
-      make_arithmetic Z.add v1 v2.
+    Module Add.
+      Class C (Self : Set) : Set := {
+        add : Self -> Self -> M Self;
+      }.
 
-    Definition sub {A : Set} `{Integer.C A} (v1 v2 : A) : M A :=
-      make_arithmetic Z.sub v1 v2.
+      Global Instance I_Integer {Self : Set} `{Integer.C Self} : C Self := {
+        add := make_arithmetic Z.add;
+      }.
 
-    Definition mul {A : Set} `{Integer.C A} (v1 v2 : A) : M A :=
-      make_arithmetic Z.mul v1 v2.
+      Global Instance I_f32 : C f32.t := {
+        add := axiom "add_f32";
+      }.
+
+      Global Instance I_f64 : C f64.t := {
+        add := axiom "add_f64";
+      }.
+    End Add.
+
+    Definition add {A : Set} `{Add.C A} : A -> A -> M A :=
+      Add.add.
+
+    Module Sub.
+      Class C (Self : Set) : Set := {
+        sub : Self -> Self -> M Self;
+      }.
+
+      Global Instance I_Integer {Self : Set} `{Integer.C Self} : C Self := {
+        sub := make_arithmetic Z.sub;
+      }.
+
+      Global Instance I_f32 : C f32.t := {
+        sub := axiom "sub_f32";
+      }.
+
+      Global Instance I_f64 : C f64.t := {
+        sub := axiom "sub_f64";
+      }.
+    End Sub.
+
+    Definition sub {A : Set} `{Sub.C A} : A -> A -> M A :=
+      Sub.sub.
+
+    Module Mul.
+      Class C (Self : Set) : Set := {
+        mul : Self -> Self -> M Self;
+      }.
+
+      Global Instance I_Integer {Self : Set} `{Integer.C Self} : C Self := {
+        mul := make_arithmetic Z.mul;
+      }.
+
+      Global Instance I_f32 : C f32.t := {
+        mul := axiom "mul_f32";
+      }.
+
+      Global Instance I_f64 : C f64.t := {
+        mul := axiom "mul_f64";
+      }.
+    End Mul.
+
+    Definition mul {A : Set} `{Mul.C A} : A -> A -> M A :=
+      Mul.mul.
 
     Parameter div : forall {A : Set}, A -> A -> M A.
     Parameter rem : forall {A : Set}, A -> A -> M A.
@@ -535,3 +654,14 @@ Module Tuple.
         (fun β '(x1, _) => Some (x1, β)).
   End Access.
 End Tuple.
+
+(** This function is different from the [M.cast] operator of the monad. This
+    function is explicitely called in the Rust AST, and should take two types
+    that are actually different but convertible, like different kinds of
+    integers. *)
+Parameter rust_cast : forall {A B : Set}, A -> B.
+
+(** The special type [dyn], that takes a list of traits as parameter. This type
+    is defined as opaque, and operations on it (mainly conversions to and from)
+    will be defined separately. *)
+Parameter dyn : list (Set -> Set) -> Set.

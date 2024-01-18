@@ -12,7 +12,7 @@ Module AssertKind.
 End AssertKind.
 
 Parameter assert_failed :
-  forall {T U : Set} `{fmt.Debug.Trait T} `{fmt.Debug.Trait U},
+  forall {T U : Set},
   AssertKind.t ->
   ref T ->
   ref U ->
@@ -25,4 +25,9 @@ Parameter panic_fmt : fmt.Arguments.t -> M never.t.
 (* pub fn unreachable_display<T: Display>(x: &T) -> ! *)
 Parameter unreachable_display :
   forall {T : Set} `{fmt.Display.Trait T},
+  ref T -> M never.t.
+
+(* pub fn panic_display<T: Display>(x: &T) -> ! *)
+Parameter panic_display :
+  forall {T : Set},
   ref T -> M never.t.

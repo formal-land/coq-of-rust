@@ -20,7 +20,7 @@ Section Impl_core_default_Default_for_updated_incrementer_AccountId_t.
   Default
   *)
   Definition default : M updated_incrementer.AccountId.t :=
-    let* α0 : _ :=
+    let* α0 : M u128.t :=
       ltac:(M.get_method (fun ℐ =>
         core.default.Default.default (Self := u128.t) (Trait := ℐ))) in
     let* α1 : u128.t := M.call α0 in
@@ -212,24 +212,20 @@ Section Impl_updated_incrementer_Incrementer_t.
               ", it was modified using the updated `new_incrementer` code.
 ") in
         let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-        let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
-        let* α4 : ref (slice (ref str.t)) :=
-          M.read (pointer_coercion "Unsize" α3) in
-        let* α5 : mut_ref updated_incrementer.Incrementer.t := M.read self in
-        let* α6 : core.fmt.rt.Argument.t :=
+        let* α3 : mut_ref updated_incrementer.Incrementer.t := M.read self in
+        let* α4 : core.fmt.rt.Argument.t :=
           M.call
             (core.fmt.rt.Argument.t::["new_display"]
               (borrow
-                (updated_incrementer.Incrementer.Get_count (deref α5)))) in
-        let* α7 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α6 ] in
-        let* α8 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-          M.alloc (borrow α7) in
-        let* α9 : ref (slice core.fmt.rt.Argument.t) :=
-          M.read (pointer_coercion "Unsize" α8) in
-        let* α10 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_v1"] α4 α9) in
-        let* α11 : unit := M.call (std.io.stdio._print α10) in
-        M.alloc α11 in
+                (updated_incrementer.Incrementer.Get_count (deref α3)))) in
+        let* α5 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4 ] in
+        let* α6 : core.fmt.Arguments.t :=
+          M.call
+            (core.fmt.Arguments.t::["new_v1"]
+              (pointer_coercion "Unsize" (borrow α2))
+              (pointer_coercion "Unsize" (borrow α5))) in
+        let* α7 : unit := M.call (std.io.stdio._print α6) in
+        M.alloc α7 in
       M.alloc tt in
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
@@ -307,20 +303,16 @@ Section Impl_updated_incrementer_Incrementer_t.
         let* α1 : ref str.t := M.read (mk_str ".
 ") in
         let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-        let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
-        let* α4 : ref (slice (ref str.t)) :=
-          M.read (pointer_coercion "Unsize" α3) in
-        let* α5 : core.fmt.rt.Argument.t :=
+        let* α3 : core.fmt.rt.Argument.t :=
           M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow code_hash)) in
-        let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
-        let* α7 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-          M.alloc (borrow α6) in
-        let* α8 : ref (slice core.fmt.rt.Argument.t) :=
-          M.read (pointer_coercion "Unsize" α7) in
-        let* α9 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_v1"] α4 α8) in
-        let* α10 : unit := M.call (std.io.stdio._print α9) in
-        M.alloc α10 in
+        let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
+        let* α5 : core.fmt.Arguments.t :=
+          M.call
+            (core.fmt.Arguments.t::["new_v1"]
+              (pointer_coercion "Unsize" (borrow α2))
+              (pointer_coercion "Unsize" (borrow α4))) in
+        let* α6 : unit := M.call (std.io.stdio._print α5) in
+        M.alloc α6 in
       M.alloc tt in
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.

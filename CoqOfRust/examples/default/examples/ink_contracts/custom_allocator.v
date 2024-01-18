@@ -28,11 +28,11 @@ Section Impl_custom_allocator_CustomAllocator_t.
     let* α0 : bool.t := M.read init_value in
     let* α1 : M.Val (array bool.t) := M.alloc [ α0 ] in
     let* α2 : M.Val (alloc.boxed.Box.t (array bool.t) alloc.alloc.Global.t) :=
-      M.call ((alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α1) in
-    let* α3 : alloc.boxed.Box.t (slice bool.t) alloc.alloc.Global.t :=
-      M.read (pointer_coercion "Unsize" α2) in
+      M.call ((alloc.boxed.Box.t _ alloc.boxed.Box.Default.A)::["new"] α1) in
+    let* α3 : alloc.boxed.Box.t (array bool.t) alloc.alloc.Global.t :=
+      M.read α2 in
     let* α4 : alloc.vec.Vec.t bool.t alloc.alloc.Global.t :=
-      M.call ((slice bool.t)::["into_vec"] α3) in
+      M.call ((slice bool.t)::["into_vec"] (pointer_coercion "Unsize" α3)) in
     M.pure {| custom_allocator.CustomAllocator.value := α4; |}.
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
@@ -45,7 +45,7 @@ Section Impl_custom_allocator_CustomAllocator_t.
       }
   *)
   Definition default : M Self :=
-    let* α0 : _ :=
+    let* α0 : M bool.t :=
       ltac:(M.get_method (fun ℐ =>
         core.default.Default.default (Self := bool.t) (Trait := ℐ))) in
     let* α1 : bool.t := M.call α0 in
@@ -64,7 +64,10 @@ Section Impl_custom_allocator_CustomAllocator_t.
   Definition flip (self : mut_ref Self) : M unit :=
     let* self := M.alloc self in
     let* _ : M.Val unit :=
-      let* α0 : _ :=
+      let* α0 :
+          (mut_ref (alloc.vec.Vec.t bool.t alloc.alloc.Global.t)) ->
+            usize.t ->
+            M (mut_ref _) :=
         ltac:(M.get_method (fun ℐ =>
           core.ops.index.IndexMut.index_mut
             (Self := alloc.vec.Vec.t bool.t alloc.alloc.Global.t)
@@ -76,7 +79,10 @@ Section Impl_custom_allocator_CustomAllocator_t.
           (α0
             (borrow_mut (custom_allocator.CustomAllocator.Get_value (deref α1)))
             ((Integer.of_Z 0) : usize.t)) in
-      let* α3 : _ :=
+      let* α3 :
+          (ref (alloc.vec.Vec.t bool.t alloc.alloc.Global.t)) ->
+            usize.t ->
+            M (ref _) :=
         ltac:(M.get_method (fun ℐ =>
           core.ops.index.Index.index
             (Self := alloc.vec.Vec.t bool.t alloc.alloc.Global.t)
@@ -105,7 +111,10 @@ Section Impl_custom_allocator_CustomAllocator_t.
   *)
   Definition get (self : ref Self) : M bool.t :=
     let* self := M.alloc self in
-    let* α0 : _ :=
+    let* α0 :
+        (ref (alloc.vec.Vec.t bool.t alloc.alloc.Global.t)) ->
+          usize.t ->
+          M (ref _) :=
       ltac:(M.get_method (fun ℐ =>
         core.ops.index.Index.index
           (Self := alloc.vec.Vec.t bool.t alloc.alloc.Global.t)

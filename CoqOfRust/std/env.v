@@ -1,5 +1,5 @@
 Require Import CoqOfRust.lib.lib.
-Require CoqOfRust._std.ffi.
+Require CoqOfRust.std.ffi.
 
 (* ********MODULES******** *)
 (*
@@ -34,37 +34,31 @@ End consts.
 Module Args.
   Parameter t : Set.
 End Args.
-Definition Args := Args.t.
 
 (* pub struct ArgsOs { /* private fields */ } *)
 Module ArgsOs.
   Parameter t : Set.
 End ArgsOs.
-Definition ArgsOs := ArgsOs.t.
 
 (* pub struct JoinPathsError { /* private fields */ } *)
 Module JoinPathsError.
   Parameter t : Set.
 End JoinPathsError.
-Definition JoinPathsError := JoinPathsError.t.
 
 (* pub struct SplitPaths<'a> { /* private fields */ } *)
 Module SplitPaths.
   Parameter t : Set.
 End SplitPaths.
-Definition SplitPaths := SplitPaths.t.
 
 (* pub struct Vars { /* private fields */ } *)
 Module Vars.
   Parameter t : Set.
 End Vars.
-Definition Vars := Vars.t.
 
 (* pub struct VarsOs { /* private fields */ } *)
 Module VarsOs.
   Parameter t : Set.
 End VarsOs.
-Definition VarsOs := VarsOs.t.
 
 (* ********ENUMS******** *)
 (*
@@ -80,7 +74,9 @@ pub enum VarError {
 Module VarError.
   Inductive t : Set := 
   | NotPresent : t
-  | NotUnicode : ffi.os_str.OsString -> t
+  | NotUnicode : ffi.os_str.OsString.t -> t
   .
 End VarError.
-Definition VarError := VarError.t.
+
+(* pub fn args() -> Args *)
+Parameter args : M Args.t.

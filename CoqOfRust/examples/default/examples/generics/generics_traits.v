@@ -67,7 +67,7 @@ Definition main : M unit :=
   let* null : M.Val generics_traits.Null.t :=
     M.alloc generics_traits.Null.Build in
   let* _ : M.Val unit :=
-    let* α0 : _ :=
+    let* α0 : generics_traits.Empty.t -> generics_traits.Null.t -> M unit :=
       ltac:(M.get_method (fun ℐ =>
         generics_traits.DoubleDrop.double_drop
           (Self := generics_traits.Empty.t)

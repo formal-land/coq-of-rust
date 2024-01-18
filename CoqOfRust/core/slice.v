@@ -1,5 +1,7 @@
 Require Import CoqOfRust.lib.lib.
 
+Require Import CoqOfRust.alloc.boxed.
+Require Import CoqOfRust.alloc.vec.
 Require Import CoqOfRust.core.cmp.
 Require Import CoqOfRust.core.option.
 
@@ -143,6 +145,15 @@ Module iter.
   Global Instance Clone_for_Iter {T : Set} {H0 : clone.Clone.Trait T} :
     clone.Clone.Trait (Iter.t T).
   Admitted.
+
+  (*
+  pub struct IterMut<'a, T>
+  where
+      T: 'a,{ /* private fields */ }
+  *)
+  Module IterMut.
+    Parameter t : Set -> Set.
+  End IterMut.
 End iter.
 
 (* 
@@ -465,6 +476,35 @@ Section Impl.
   Global Instance AF_contains {H0 : core.cmp.PartialEq.Trait T (Rhs := T)} :
       Notations.DoubleColon Self "contains" := {
     Notations.double_colon := contains (H0 := H0);
+  }.
+
+  (* pub const fn first(&self) -> Option<&T> *)
+  Parameter first : ref Self -> M (Option.t (ref T)).
+
+  Global Instance AF_first : Notations.DoubleColon Self "first" := {
+    Notations.double_colon := first;
+  }.
+
+  (*
+  pub fn into_vec<A>(self: Box<[T], A>) -> Vec<T, A>
+  where
+      A: Allocator,
+  *)
+  Parameter into_vec :
+    forall {A : Set},
+    boxed.Box.t (slice T) A -> M (vec.Vec.t T A).
+
+  Global Instance AF_into_vec {A : Set} :
+      Notations.DoubleColon Self "into_vec" := {
+    Notations.double_colon := into_vec (A := A);
+  }.
+
+  (* pub fn iter_mut(&mut self) -> IterMut<'_, T> *)
+  Parameter iter_mut :
+    mut_ref Self -> M (iter.IterMut.t T).
+
+  Global Instance AF_iter_mut : Notations.DoubleColon Self "iter_mut" := {
+    Notations.double_colon := iter_mut;
   }.
 End Impl.
 End Impl.

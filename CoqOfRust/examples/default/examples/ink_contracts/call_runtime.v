@@ -20,7 +20,7 @@ Section Impl_core_default_Default_for_call_runtime_AccountId_t.
   Default
   *)
   Definition default : M call_runtime.AccountId.t :=
-    let* α0 : _ :=
+    let* α0 : M u128.t :=
       ltac:(M.get_method (fun ℐ =>
         core.default.Default.default (Self := u128.t) (Trait := ℐ))) in
     let* α1 : u128.t := M.call α0 in
@@ -410,7 +410,7 @@ Section Impl_call_runtime_RuntimeCaller_t.
       }
   *)
   Definition new : M Self :=
-    let* α0 : _ :=
+    let* α0 : M call_runtime.RuntimeCaller.t :=
       ltac:(M.get_method (fun ℐ =>
         core.default.Default.default
           (Self := call_runtime.RuntimeCaller.t)
@@ -447,7 +447,9 @@ Section Impl_call_runtime_RuntimeCaller_t.
     let* α1 : call_runtime.Env.t :=
       M.call (call_runtime.RuntimeCaller.t::["env"] (borrow (deref α0))) in
     let* α2 : M.Val call_runtime.Env.t := M.alloc α1 in
-    let* α3 : _ :=
+    let* α3 :
+        call_runtime.AccountId.t ->
+          M (call_runtime.MultiAddress.t call_runtime.AccountId.t unit) :=
       ltac:(M.get_method (fun ℐ =>
         core.convert.Into.into
           (Self := call_runtime.AccountId.t)
@@ -467,7 +469,7 @@ Section Impl_call_runtime_RuntimeCaller_t.
           |})) in
     let* α8 : core.result.Result.t unit call_runtime.EnvError.t :=
       M.call (call_runtime.Env.t::["call_runtime"] (borrow α2) (borrow α7)) in
-    let* α9 : _ :=
+    let* α9 : call_runtime.EnvError.t -> M call_runtime.RuntimeError.t :=
       ltac:(M.get_method (fun ℐ =>
         core.convert.Into.into
           (Self := call_runtime.EnvError.t)
@@ -497,7 +499,7 @@ Section Impl_call_runtime_RuntimeCaller_t.
     let* α3 : M.Val unit := M.alloc tt in
     let* α4 : core.result.Result.t unit call_runtime.EnvError.t :=
       M.call (call_runtime.Env.t::["call_runtime"] (borrow α2) (borrow α3)) in
-    let* α5 : _ :=
+    let* α5 : call_runtime.EnvError.t -> M call_runtime.RuntimeError.t :=
       ltac:(M.get_method (fun ℐ =>
         core.convert.Into.into
           (Self := call_runtime.EnvError.t)

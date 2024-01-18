@@ -43,10 +43,7 @@ Definition defaultType (T : option Set) (Default : Set) : Set :=
 
 Parameter axiom : forall {A : Set}, A.
 
-Parameter cast : forall {A : Set}, A -> forall (B : Set), B.
-
-Definition pointer_coercion {T : Set} (cast : string) (x : T) : T :=
-  x.
+Parameter pointer_coercion : forall {A B : Set}, string -> A -> B.
 
 (** We replace assembly blocks by a value of type unit. *)
 Parameter InlineAssembly : M.Val unit.
@@ -56,7 +53,11 @@ Require CoqOfRust.alloc.borrow.
 Require CoqOfRust.alloc.boxed.
 Require CoqOfRust.alloc.collections.
 Require CoqOfRust.alloc.fmt.
+Require CoqOfRust.alloc.rc.
+Require CoqOfRust.alloc.slice.
+Require CoqOfRust.alloc.str.
 Require CoqOfRust.alloc.string.
+Require CoqOfRust.alloc.sync.
 Require CoqOfRust.alloc.vec.
 
 Module alloc.
@@ -65,7 +66,11 @@ Module alloc.
   Export CoqOfRust.alloc.boxed.
   Export CoqOfRust.alloc.collections.
   Export CoqOfRust.alloc.fmt.
+  Export CoqOfRust.alloc.rc.
+  Export CoqOfRust.alloc.slice.
+  Export CoqOfRust.alloc.str.
   Export CoqOfRust.alloc.string.
+  Export CoqOfRust.alloc.sync.
   Export CoqOfRust.alloc.vec.
 End alloc.
 
@@ -89,6 +94,7 @@ Require CoqOfRust.core.alloc.
 Require CoqOfRust.core.any.
 Require CoqOfRust.core.array.
 Require CoqOfRust.core.cell.
+Require CoqOfRust.core.char.
 Require CoqOfRust.core.clone.
 Require CoqOfRust.core.cmp.
 Require CoqOfRust.core.convert.
@@ -110,12 +116,14 @@ Require CoqOfRust.core.primitive.
 Require CoqOfRust.core.result.
 Require CoqOfRust.core.slice.
 Require CoqOfRust.core.str.
+Require CoqOfRust.core.time.
 
 Module core.
   Export CoqOfRust.core.alloc.
   Export CoqOfRust.core.any.
   Export CoqOfRust.core.array.
   Export CoqOfRust.core.cell.
+  Export CoqOfRust.core.char.
   Export CoqOfRust.core.clone.
   Export CoqOfRust.core.cmp.
   Export CoqOfRust.core.convert.
@@ -137,75 +145,74 @@ Module core.
   Export CoqOfRust.core.result.
   Export CoqOfRust.core.slice.
   Export CoqOfRust.core.str.
+  Export CoqOfRust.core.time.
 End core.
 
-Require CoqOfRust._std.arch.
-Require CoqOfRust._std.ascii.
-Require CoqOfRust._std.assert_matches.
-Require CoqOfRust._std.async_iter.
-Require CoqOfRust._std.backtrace.
-Require CoqOfRust._std.char.
-Require CoqOfRust._std.collections.
-Require CoqOfRust._std.env.
-Require CoqOfRust._std.ffi.
-Require CoqOfRust._std.fs.
-Require CoqOfRust._std.future.
-Require CoqOfRust._std.hint.
-Require CoqOfRust._std.intrinsics.
-Require CoqOfRust._std.io.
-(* Require CoqOfRust._std.iter. *)
-(* Require Import CoqOfRust._std.iter_type. *)
-(* Require Import CoqOfRust._std.net. *)
-Require Import CoqOfRust._std.ops.
-(* Require Import CoqOfRust._std.os. *)
-Require Import CoqOfRust._std.panic.
-Require Import CoqOfRust._std.panicking.
-Require Import CoqOfRust._std.path.
-Require Import CoqOfRust._std.pin.
-Require Import CoqOfRust._std.prelude.
-Require Import CoqOfRust._std.process.
-Require Import CoqOfRust._std.ptr.
-Require Import CoqOfRust._std.rc.
-Require Import CoqOfRust._std.simd.
-Require Import CoqOfRust._std.str.
-Require Import CoqOfRust._std.sync.
-Require Import CoqOfRust._std.task.
-Require Import CoqOfRust._std.thread.
-Require Import CoqOfRust._std.time.
+Require CoqOfRust.std.arch.
+Require CoqOfRust.std.ascii.
+Require CoqOfRust.std.assert_matches.
+Require CoqOfRust.std.async_iter.
+Require CoqOfRust.std.backtrace.
+Require CoqOfRust.std.char.
+Require CoqOfRust.std.collections.
+Require CoqOfRust.std.env.
+Require CoqOfRust.std.f64.
+Require CoqOfRust.std.ffi.
+Require CoqOfRust.std.fs.
+Require CoqOfRust.std.future.
+Require CoqOfRust.std.hash.
+Require CoqOfRust.std.hint.
+Require CoqOfRust.std.intrinsics.
+Require CoqOfRust.std.io.
+(* Require CoqOfRust.std.iter. *)
+(* Require CoqOfRust.std.iter_type. *)
+(* Require CoqOfRust.std.net. *)
+Require CoqOfRust.std.ops.
+Require CoqOfRust.std.os.
+Require CoqOfRust.std.panic.
+Require CoqOfRust.std.panicking.
+Require CoqOfRust.std.path.
+Require CoqOfRust.std.pin.
+Require CoqOfRust.std.prelude.
+Require CoqOfRust.std.process.
+Require CoqOfRust.std.ptr.
+Require CoqOfRust.std.simd.
+Require CoqOfRust.std.str.
+Require CoqOfRust.std.sync.
+Require CoqOfRust.std.task.
+Require CoqOfRust.std.thread.
 
 Module std.
-  Module arch := _std.arch.
-  Module ascii := _std.ascii.
-  Module backtrace := _std.backtrace.
-  Module char := _std.char.
-  Module clone := core.clone.
-  Module cmp := core.cmp.
-  Module collections := _std.collections.
-  Module env := _std.env.
-  Module ffi := _std.ffi.
-  Module fs := _std.fs.
-  Module future := _std.future.
-  Module hint := _std.hint.
-  Module intrinsics := _std.intrinsics.
-  Module io := _std.io.
-  (* Module iter := _std.iter. *)
-  (* Module net := _std.net. *)
-  Module ops := _std.ops.
-  (* Module os := _std.os. *)
-  Module panic := _std.panic.
-  Module panicking := _std.panicking.
-  Module path := _std.path.
-  Module pin := _std.pin.
-  Module prelude := _std.prelude.
-  Module process := _std.process.
-  Module ptr := _std.ptr.
-  Module rc := _std.rc.
-  Module simd := _std.simd.
-  Module str := _std.str.
-  Module sync := _std.sync.
-  Module task := _std.task.
-  Module thread := _std.thread.
-  Module time := _std.time.
+  Export CoqOfRust.std.arch.
+  Export CoqOfRust.std.ascii.
+  Export CoqOfRust.std.backtrace.
+  Export CoqOfRust.std.char.
+  Export CoqOfRust.std.collections.
+  Export CoqOfRust.std.env.
+  Export CoqOfRust.std.f64.
+  Export CoqOfRust.std.ffi.
+  Export CoqOfRust.std.fs.
+  Export CoqOfRust.std.future.
+  Export CoqOfRust.std.hash.
+  Export CoqOfRust.std.hint.
+  Export CoqOfRust.std.intrinsics.
+  Export CoqOfRust.std.io.
+  (* Export CoqOfRust.std.iter. *)
+  (* Export CoqOfRust.std.net. *)
+  Export CoqOfRust.std.ops.
+  Export CoqOfRust.std.os.
+  Export CoqOfRust.std.panic.
+  Export CoqOfRust.std.panicking.
+  Export CoqOfRust.std.path.
+  Export CoqOfRust.std.pin.
+  Export CoqOfRust.std.prelude.
+  Export CoqOfRust.std.process.
+  Export CoqOfRust.std.ptr.
+  Export CoqOfRust.std.simd.
+  Export CoqOfRust.std.str.
+  Export CoqOfRust.std.sync.
+  Export CoqOfRust.std.task.
+  Export CoqOfRust.std.thread.
 End std.
 
 (*** std instances *)
@@ -745,59 +752,16 @@ Module Impl_RangeInclusive.
   Section Impl_RangeInclusive.
   Context {Idx : Set}.
 
-  Definition Self := RangeInclusive Idx.
+  Definition Self := ops.RangeInclusive Idx.
 
   Parameter new : Idx -> Idx -> M Self.
 
   Global Instance RangeInclusive_new :
-    Notations.DoubleColon RangeInclusive "new" := {
+    Notations.DoubleColon ops.RangeInclusive "new" := {
     Notations.double_colon := new;
   }.
   End Impl_RangeInclusive.
 End Impl_RangeInclusive.
-
-Module Impl_Slice.
-  (* TODO: is it the right place for this module? *)
-  Module hack.
-    Parameter t : Set.
-
-    (* defined only for A = Global *)
-    Parameter into_vec :
-      forall {T (* A *) : Set}
-      (* `{(* core. *) alloc.Allocator.Trait A} *)
-      (b : alloc.boxed.Box (slice T) alloc.boxed.Box.Default.A),
-        M (alloc.vec.Vec T alloc.vec.Vec.Default.A).
-  End hack.
-  Definition hack := hack.t.
-
-  Module hack_notations.
-    Global Instance hack_into_vec
-      {T (* A *) : Set} (* `{(* core. *) alloc.Allocator.Trait A} *) :
-      Notations.DoubleColon hack "into_vec" := {
-      Notations.double_colon (b : alloc.boxed.Box (slice T) alloc.boxed.Box.Default.A) :=
-        hack.into_vec (T := T) (* (A := A) *) b;
-    }.
-  End hack_notations.
-
-  Section Impl_Slice.
-    Context {T : Set}.
-
-    Definition Self := slice T.
-
-    Definition into_vec
-      {A : Set}
-      {H1 : alloc.Allocator.Trait A}
-      (self : alloc.boxed.Box Self A) :
-      M (alloc.vec.Vec T A).
-    Admitted.
-
-    Global Instance Method_into_vec
-        {A : Set} {H1 : alloc.Allocator.Trait A} :
-        Notations.DoubleColon (alloc.boxed.Box Self A) "into_vec" := {
-      Notations.double_colon := into_vec (A := A);
-    }.
-  End Impl_Slice.
-End Impl_Slice.
 
 Module Impl_Debug_for_Vec.
   Section Impl_Debug_for_Vec.
@@ -818,7 +782,7 @@ Section Impl_Iterator_for_Range.
   Context {A : Set}.
 (*   Context `{std.iter_type.Step.Trait A}. *)
 
-  Definition Self := Range A.
+  Definition Self := ops.Range A.
 
   Definition Item := A.
 
@@ -832,7 +796,7 @@ End Impl_Iterator_for_Range.
 Module  Impl_IntoIterator_for_Range.
 Section Impl_IntoIterator_for_Range.
   Context {A : Set}.
-  Definition I := Range A.
+  Definition I := ops.Range A.
 
   Definition Self := I.
 
@@ -851,7 +815,7 @@ Section Impl_Iterator_for_RangeInclusive.
   Context {A : Set}.
 (*   Context `{std.iter_type.Step.Trait A}. *)
 
-  Definition Self := RangeInclusive A.
+  Definition Self := ops.RangeInclusive A.
 
   Definition Item := A.
 
@@ -865,7 +829,7 @@ End Impl_Iterator_for_RangeInclusive.
 Module  Impl_IntoIterator_for_RangeInclusive.
 Section Impl_IntoIterator_for_RangeInclusive.
   Context {A : Set}.
-  Definition I := RangeInclusive A.
+  Definition I := ops.RangeInclusive A.
 
   Definition Self := I.
 

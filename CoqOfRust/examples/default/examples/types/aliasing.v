@@ -39,29 +39,25 @@ Definition main : M unit :=
       let* α3 : ref str.t := M.read (mk_str " unit?
 ") in
       let* α4 : M.Val (array (ref str.t)) := M.alloc [ α0; α1; α2; α3 ] in
-      let* α5 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α4) in
-      let* α6 : ref (slice (ref str.t)) :=
-        M.read (pointer_coercion "Unsize" α5) in
-      let* α7 : core.fmt.rt.Argument.t :=
+      let* α5 : core.fmt.rt.Argument.t :=
         M.call (core.fmt.rt.Argument.t::["new_display"] (borrow nanoseconds)) in
-      let* α8 : core.fmt.rt.Argument.t :=
+      let* α6 : core.fmt.rt.Argument.t :=
         M.call (core.fmt.rt.Argument.t::["new_display"] (borrow inches)) in
-      let* α9 : u64.t := M.read nanoseconds in
-      let* α10 : u64.t := M.read inches in
-      let* α11 : u64.t := BinOp.Panic.add α9 α10 in
-      let* α12 : M.Val u64.t := M.alloc α11 in
-      let* α13 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α12)) in
-      let* α14 : M.Val (array core.fmt.rt.Argument.t) :=
-        M.alloc [ α7; α8; α13 ] in
-      let* α15 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-        M.alloc (borrow α14) in
-      let* α16 : ref (slice core.fmt.rt.Argument.t) :=
-        M.read (pointer_coercion "Unsize" α15) in
-      let* α17 : core.fmt.Arguments.t :=
-        M.call (core.fmt.Arguments.t::["new_v1"] α6 α16) in
-      let* α18 : unit := M.call (std.io.stdio._print α17) in
-      M.alloc α18 in
+      let* α7 : u64.t := M.read nanoseconds in
+      let* α8 : u64.t := M.read inches in
+      let* α9 : u64.t := BinOp.Panic.add α7 α8 in
+      let* α10 : M.Val u64.t := M.alloc α9 in
+      let* α11 : core.fmt.rt.Argument.t :=
+        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α10)) in
+      let* α12 : M.Val (array core.fmt.rt.Argument.t) :=
+        M.alloc [ α5; α6; α11 ] in
+      let* α13 : core.fmt.Arguments.t :=
+        M.call
+          (core.fmt.Arguments.t::["new_v1"]
+            (pointer_coercion "Unsize" (borrow α4))
+            (pointer_coercion "Unsize" (borrow α12))) in
+      let* α14 : unit := M.call (std.io.stdio._print α13) in
+      M.alloc α14 in
     M.alloc tt in
   let* α0 : M.Val unit := M.alloc tt in
   M.read α0.

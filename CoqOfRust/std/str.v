@@ -456,12 +456,12 @@ Module Impl_str.
   Definition Self : Set := str.t.
 
   Parameter parse :
-    forall {F : Set} {H0 : FromStr.Trait F},
+    forall {F Error : Set},
     ref Self ->
-    M (core.result.Result.t F (FromStr.Err (Trait := H0))).
+    M (core.result.Result.t F Error).
 
-  Global Instance AssociatedFunction_parse {F : Set} {H0 : FromStr.Trait F} :
+  Global Instance AssociatedFunction_parse {F Error : Set} :
     Notations.DoubleColon Self "parse" := {
-    Notations.double_colon := parse (F := F);
+    Notations.double_colon := parse (F := F) (Error := Error);
   }.
 End Impl_str.

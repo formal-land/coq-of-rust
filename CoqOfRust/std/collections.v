@@ -1,8 +1,9 @@
 Require Import CoqOfRust.lib.lib.
-Require Import CoqOfRust.core.alloc.
-Require Import CoqOfRust.core.clone.
-Require Import CoqOfRust.core.cmp.
 
+Require CoqOfRust.core.alloc.
+Require CoqOfRust.core.clone.
+Require CoqOfRust.core.cmp.
+Require CoqOfRust.std.hash.
 
 (* ********MODULES******** *)
 (* 
@@ -102,8 +103,8 @@ Module btree_set.
   *)
   Module DrainFilter.
     Parameter t : forall (T F A : Set) 
-      `{Allocator.Trait A}
-      `{Clone.Trait A},
+      `{alloc.Allocator.Trait A}
+      `{clone.Clone.Trait A},
       Set.
   End DrainFilter.
 
@@ -115,8 +116,8 @@ Module btree_set.
   *)
   Module BTreeSet.
     Parameter t : forall (T A : Set) 
-      `{Allocator.Trait A}
-      `{Clone.Trait A},
+      `{alloc.Allocator.Trait A}
+      `{clone.Clone.Trait A},
       Set.
   End BTreeSet.
 
@@ -129,8 +130,8 @@ Module btree_set.
   *)
   Module Difference.
     Parameter t : forall (T A : Set) 
-      `{Allocator.Trait A}
-      `{Clone.Trait A},
+      `{alloc.Allocator.Trait A}
+      `{clone.Clone.Trait A},
       Set.
   End Difference.
 
@@ -143,8 +144,8 @@ Module btree_set.
   *)
   Module Intersection.
     Parameter t : forall (T A : Set) 
-      `{Allocator.Trait A}
-      `{Clone.Trait A},
+      `{alloc.Allocator.Trait A}
+      `{clone.Clone.Trait A},
       Set.
   End Intersection.
 
@@ -156,8 +157,8 @@ Module btree_set.
   *)
   Module IntoIter.
     Parameter t : forall (T A : Set) 
-      `{Allocator.Trait A}
-      `{Clone.Trait A},
+      `{alloc.Allocator.Trait A}
+      `{clone.Clone.Trait A},
       Set.
   End IntoIter.
   
@@ -292,20 +293,6 @@ Module map.
     Parameter t : Set -> Set -> Set.
   End Drain.
   
-  (* pub struct RandomState { /* private fields */ } *)
-  Module RandomState.
-    Parameter t : Set.
-  End RandomState.
-
-  (* pub struct HashMap<K, V, S = RandomState> { /* private fields */ } *)
-  Module HashMap.
-    Parameter t : Set -> Set -> Set -> Set.
-
-    Module Default.
-      Definition S : Set := RandomState.t.
-    End Default.
-  End HashMap.
-
   (* pub struct IntoIter<K, V> { /* private fields */ } *)
   Module IntoIter.
     Parameter t : Set -> Set -> Set.
@@ -330,7 +317,81 @@ Module map.
   Module IterMut.
     Parameter t : Set -> Set -> Set.
   End IterMut.
-  
+
+  (* pub struct HashMap<K, V, S = RandomState> { /* private fields */ } *)
+  Module HashMap.
+    Parameter t : Set -> Set -> Set -> Set.
+
+    Module Default.
+      Definition S : Set := hash.random.RandomState.t.
+    End Default.
+
+    Module  Impl_K_V.
+    Section Impl_K_V.
+      Context {K V : Set}.
+
+      Definition Self : Set := t K V Default.S.
+
+      (* pub fn new() -> HashMap<K, V, RandomState> *)
+      Parameter new : M Self.
+
+      Global Instance AF_new : Notations.DoubleColon Self "new" := {
+        Notations.double_colon := new;
+      }.
+    End Impl_K_V.
+    End Impl_K_V.
+
+    Module  Impl_K_V_S.
+    Section Impl_K_V_S.
+      Context {K V S : Set}.
+
+      Definition Self : Set := t K V S.
+
+      (*
+      pub fn get<Q>(&self, k: &Q) -> Option<&V>
+      where
+          K: Borrow<Q>,
+          Q: Hash + Eq + ?Sized,
+      *)
+      Parameter get : forall {Q : Set},
+        ref Self -> ref Q -> M (option.Option.t (ref V)).
+
+      Global Instance AF_get {Q : Set} :
+          Notations.DoubleColon Self "get" := {
+        Notations.double_colon := get (Q := Q);
+      }.
+
+      (* pub fn insert(&mut self, k: K, v: V) -> Option<V> *)
+      Parameter insert : mut_ref Self -> K -> V -> M (option.Option.t V).
+
+      Global Instance AF_insert : Notations.DoubleColon Self "insert" := {
+        Notations.double_colon := insert
+      }.
+
+      (* pub fn iter(&self) -> Iter<'_, K, V> *)
+      Parameter iter : ref Self -> M (Iter.t K V).
+
+      Global Instance AF_iter : Notations.DoubleColon Self "iter" := {
+        Notations.double_colon := iter
+      }.
+
+      (*
+      pub fn remove<Q>(&mut self, k: &Q) -> Option<V>
+      where
+          K: Borrow<Q>,
+          Q: Hash + Eq + ?Sized,
+      *)
+      Parameter remove : forall {Q : Set},
+        mut_ref Self -> ref Q -> M (option.Option.t V).
+
+      Global Instance AF_remove {Q : Set} :
+          Notations.DoubleColon Self "remove" := {
+        Notations.double_colon := remove (Q := Q);
+      }.
+    End Impl_K_V_S.
+    End Impl_K_V_S.
+  End HashMap.
+
   (* pub struct Keys<'a, K: 'a, V: 'a> { /* private fields */ } *)
   Module Keys.
     Parameter t : Set -> Set -> Set.
@@ -545,7 +606,7 @@ Module vec_deque.
   { /* private fields */ }
   *)
   Module Drain.
-    Parameter t : forall (T A : Set) `{Allocator.Trait A}, Set.
+    Parameter t : forall (T A : Set) `{alloc.Allocator.Trait A}, Set.
   End Drain.
 
   (* 
@@ -555,7 +616,7 @@ Module vec_deque.
   { /* private fields */ }
   *)
   Module IntoIter.
-    Parameter t : forall (T A : Set) `{Allocator.Trait A}, Set.
+    Parameter t : forall (T A : Set) `{alloc.Allocator.Trait A}, Set.
   End IntoIter.
 
   (* 
@@ -585,7 +646,7 @@ Module vec_deque.
   { /* private fields */ }
   *)
   Module VecDeque.
-    Parameter t : forall (T A : Set) `{Allocator.Trait A}, Set.
+    Parameter t : forall (T A : Set) `{alloc.Allocator.Trait A}, Set.
   End VecDeque.
 End vec_deque.
 
@@ -609,8 +670,8 @@ where
 *)
 Module BTreeMap.
   Parameter t : forall (K V A : Set)
-    `{Allocator.Trait A}
-    `{Clone.Trait A},
+    `{alloc.Allocator.Trait A}
+    `{clone.Clone.Trait A},
     Set.
 End BTreeMap.
 
@@ -622,8 +683,8 @@ where
 *)
 Module BTreeSet.
   Parameter t : forall (T A : Set)
-    `{Allocator.Trait A}
-    `{Clone.Trait A},
+    `{alloc.Allocator.Trait A}
+    `{clone.Clone.Trait A},
     Set.
 End BTreeSet.
 

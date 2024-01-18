@@ -25,14 +25,12 @@ Definition foo {A : Set} (o : core.option.Option.t A) : M unit :=
               let* α0 : ref str.t := M.read (mk_str "some
 ") in
               let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-              let* α2 : M.Val (ref (array (ref str.t))) :=
-                M.alloc (borrow α1) in
-              let* α3 : ref (slice (ref str.t)) :=
-                M.read (pointer_coercion "Unsize" α2) in
-              let* α4 : core.fmt.Arguments.t :=
-                M.call (core.fmt.Arguments.t::["new_const"] α3) in
-              let* α5 : unit := M.call (std.io.stdio._print α4) in
-              M.alloc α5 in
+              let* α2 : core.fmt.Arguments.t :=
+                M.call
+                  (core.fmt.Arguments.t::["new_const"]
+                    (pointer_coercion "Unsize" (borrow α1))) in
+              let* α3 : unit := M.call (std.io.stdio._print α2) in
+              M.alloc α3 in
             M.alloc tt
           | _ => M.break_match
           end) :
@@ -45,14 +43,12 @@ Definition foo {A : Set} (o : core.option.Option.t A) : M unit :=
               let* α0 : ref str.t := M.read (mk_str "nothing
 ") in
               let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-              let* α2 : M.Val (ref (array (ref str.t))) :=
-                M.alloc (borrow α1) in
-              let* α3 : ref (slice (ref str.t)) :=
-                M.read (pointer_coercion "Unsize" α2) in
-              let* α4 : core.fmt.Arguments.t :=
-                M.call (core.fmt.Arguments.t::["new_const"] α3) in
-              let* α5 : unit := M.call (std.io.stdio._print α4) in
-              M.alloc α5 in
+              let* α2 : core.fmt.Arguments.t :=
+                M.call
+                  (core.fmt.Arguments.t::["new_const"]
+                    (pointer_coercion "Unsize" (borrow α1))) in
+              let* α3 : unit := M.call (std.io.stdio._print α2) in
+              M.alloc α3 in
             M.alloc tt
           | _ => M.break_match
           end) :
@@ -95,7 +91,7 @@ Module tests.
             α5
             α6) in
       M.alloc α7 in
-    let* α0 : _ :=
+    let* α0 : (core.ops.range.Range.t i32.t) -> M _ :=
       ltac:(M.get_method (fun ℐ =>
         core.iter.traits.collect.IntoIterator.into_iter
           (Self := core.ops.range.Range.t i32.t)
@@ -116,7 +112,9 @@ Module tests.
             (let* iter := M.copy γ in
             M.loop
               (let* _ : M.Val unit :=
-                let* α0 : _ :=
+                let* α0 :
+                    (mut_ref (core.ops.range.Range.t i32.t)) ->
+                      M (core.option.Option.t _) :=
                   ltac:(M.get_method (fun ℐ =>
                     core.iter.traits.iterator.Iterator.next
                       (Self := core.ops.range.Range.t i32.t)
@@ -144,7 +142,13 @@ Module tests.
                       | core.option.Option.Some _ =>
                         let γ0_0 := core.option.Option.Get_Some_0 γ in
                         let* _ : M.Val unit :=
-                          let* α0 : _ :=
+                          let* α0 :
+                              (mut_ref std.fs.File.t) ->
+                                (ref (slice u8.t)) ->
+                                M
+                                  (core.result.Result.t
+                                    unit
+                                    std.io.error.Error.t) :=
                             ltac:(M.get_method (fun ℐ =>
                               std.io.Write.write_all
                                 (Self := std.fs.File.t)
@@ -210,7 +214,7 @@ Module tests.
             α5
             α6) in
       M.alloc α7 in
-    let* α0 : _ :=
+    let* α0 : (core.ops.range.Range.t i32.t) -> M _ :=
       ltac:(M.get_method (fun ℐ =>
         core.iter.traits.collect.IntoIterator.into_iter
           (Self := core.ops.range.Range.t i32.t)
@@ -231,7 +235,9 @@ Module tests.
             (let* iter := M.copy γ in
             M.loop
               (let* _ : M.Val unit :=
-                let* α0 : _ :=
+                let* α0 :
+                    (mut_ref (core.ops.range.Range.t i32.t)) ->
+                      M (core.option.Option.t _) :=
                   ltac:(M.get_method (fun ℐ =>
                     core.iter.traits.iterator.Iterator.next
                       (Self := core.ops.range.Range.t i32.t)
@@ -259,7 +265,13 @@ Module tests.
                       | core.option.Option.Some _ =>
                         let γ0_0 := core.option.Option.Get_Some_0 γ in
                         let* _ : M.Val unit :=
-                          let* α0 : _ :=
+                          let* α0 :
+                              (mut_ref std.fs.File.t) ->
+                                (ref (slice u8.t)) ->
+                                M
+                                  (core.result.Result.t
+                                    unit
+                                    std.io.error.Error.t) :=
                             ltac:(M.get_method (fun ℐ =>
                               std.io.Write.write_all
                                 (Self := std.fs.File.t)
@@ -326,7 +338,7 @@ Definition test_file : M unit :=
           α5
           α6) in
     M.alloc α7 in
-  let* α0 : _ :=
+  let* α0 : (core.ops.range.Range.t i32.t) -> M _ :=
     ltac:(M.get_method (fun ℐ =>
       core.iter.traits.collect.IntoIterator.into_iter
         (Self := core.ops.range.Range.t i32.t)
@@ -347,7 +359,9 @@ Definition test_file : M unit :=
           (let* iter := M.copy γ in
           M.loop
             (let* _ : M.Val unit :=
-              let* α0 : _ :=
+              let* α0 :
+                  (mut_ref (core.ops.range.Range.t i32.t)) ->
+                    M (core.option.Option.t _) :=
                 ltac:(M.get_method (fun ℐ =>
                   core.iter.traits.iterator.Iterator.next
                     (Self := core.ops.range.Range.t i32.t)
@@ -375,7 +389,13 @@ Definition test_file : M unit :=
                     | core.option.Option.Some _ =>
                       let γ0_0 := core.option.Option.Get_Some_0 γ in
                       let* _ : M.Val unit :=
-                        let* α0 : _ :=
+                        let* α0 :
+                            (mut_ref std.fs.File.t) ->
+                              (ref (slice u8.t)) ->
+                              M
+                                (core.result.Result.t
+                                  unit
+                                  std.io.error.Error.t) :=
                           ltac:(M.get_method (fun ℐ =>
                             std.io.Write.write_all
                               (Self := std.fs.File.t)
@@ -441,7 +461,7 @@ Definition test_file_also : M unit :=
           α5
           α6) in
     M.alloc α7 in
-  let* α0 : _ :=
+  let* α0 : (core.ops.range.Range.t i32.t) -> M _ :=
     ltac:(M.get_method (fun ℐ =>
       core.iter.traits.collect.IntoIterator.into_iter
         (Self := core.ops.range.Range.t i32.t)
@@ -462,7 +482,9 @@ Definition test_file_also : M unit :=
           (let* iter := M.copy γ in
           M.loop
             (let* _ : M.Val unit :=
-              let* α0 : _ :=
+              let* α0 :
+                  (mut_ref (core.ops.range.Range.t i32.t)) ->
+                    M (core.option.Option.t _) :=
                 ltac:(M.get_method (fun ℐ =>
                   core.iter.traits.iterator.Iterator.next
                     (Self := core.ops.range.Range.t i32.t)
@@ -490,7 +512,13 @@ Definition test_file_also : M unit :=
                     | core.option.Option.Some _ =>
                       let γ0_0 := core.option.Option.Get_Some_0 γ in
                       let* _ : M.Val unit :=
-                        let* α0 : _ :=
+                        let* α0 :
+                            (mut_ref std.fs.File.t) ->
+                              (ref (slice u8.t)) ->
+                              M
+                                (core.result.Result.t
+                                  unit
+                                  std.io.error.Error.t) :=
                           ltac:(M.get_method (fun ℐ =>
                             std.io.Write.write_all
                               (Self := std.fs.File.t)

@@ -708,7 +708,7 @@ fn compile_expr_kind<'a>(
             Rc::new(ExprKind::Call {
                 func: Rc::new(Expr {
                     kind: Rc::new(ExprKind::LocalVar(
-                        "(alloc.boxed.Box _ alloc.boxed.Box.Default.A)::[\"new\"]".to_string(),
+                        "(alloc.boxed.Box.t _ alloc.boxed.Box.Default.A)::[\"new\"]".to_string(),
                     )),
                     ty: None,
                 }),
@@ -851,13 +851,13 @@ fn compile_expr_kind<'a>(
             .alloc(Some(ty))
         }
         thir::ExprKind::Cast { source } => {
-            let func = Expr::local_var("M.cast");
+            let func = Expr::local_var("rust_cast");
             let source = compile_expr(env, thir, source);
 
             Rc::new(ExprKind::Call {
                 func,
                 args: vec![source.read()],
-                purity: Purity::Effectful,
+                purity: Purity::Pure,
                 from_user: false,
             })
             .alloc(Some(ty))
@@ -886,7 +886,7 @@ fn compile_expr_kind<'a>(
                 kind: Rc::new(ExprKind::LocalVar("pointer_coercion".to_string())),
                 ty: None,
             });
-            let source = compile_expr(env, thir, source);
+            let source = compile_expr(env, thir, source).read();
             let cast = Rc::new(Expr {
                 kind: Rc::new(ExprKind::Message(format!("{cast:?}"))),
                 ty: None,
@@ -897,6 +897,7 @@ fn compile_expr_kind<'a>(
                 purity: Purity::Pure,
                 from_user: false,
             })
+            .alloc(Some(ty))
         }
         thir::ExprKind::Loop { body, .. } => {
             let body = compile_expr(env, thir, body);
@@ -1108,6 +1109,7 @@ fn compile_expr_kind<'a>(
                 adt_def,
                 variant_index,
                 fields,
+                base,
                 ..
             } = &**adt_expr;
             let variant = adt_def.variant(*variant_index);
@@ -1132,6 +1134,10 @@ fn compile_expr_kind<'a>(
             } else {
                 StructOrVariant::Struct
             };
+            let base = base
+                .as_ref()
+                .map(|base| compile_expr(env, thir, &base.base).read());
+
             if fields.is_empty() {
                 return Rc::new(ExprKind::StructUnit {
                     path,
@@ -1139,6 +1145,7 @@ fn compile_expr_kind<'a>(
                 })
                 .alloc(Some(ty));
             }
+
             if is_a_tuple {
                 let fields = fields.into_iter().map(|(_, pattern)| pattern).collect();
                 Rc::new(ExprKind::StructTuple {
@@ -1151,7 +1158,7 @@ fn compile_expr_kind<'a>(
                 Rc::new(ExprKind::StructStruct {
                     path,
                     fields,
-                    base: None,
+                    base,
                     struct_or_variant,
                 })
                 .alloc(Some(ty))
@@ -1235,7 +1242,9 @@ fn compile_expr_kind<'a>(
             }
             _ => Rc::new(ExprKind::Literal(Literal::Error, Some(ty.val()))),
         },
-        thir::ExprKind::NonHirLiteral { lit, .. } => Rc::new(ExprKind::NonHirLiteral(*lit)),
+        thir::ExprKind::NonHirLiteral { lit, .. } => {
+            Rc::new(ExprKind::NonHirLiteral(*lit)).alloc(Some(ty))
+        }
         thir::ExprKind::ZstLiteral { .. } => match &expr.ty.kind() {
             TyKind::FnDef(def_id, generic_args) => {
                 let key = env.tcx.def_key(def_id);
@@ -1294,8 +1303,8 @@ fn compile_expr_kind<'a>(
                     }
                     DefKind::Variant => ExprKind::Constructor(compile_def_id(env, *def_id)),
                     _ => {
-                        println!("unimplemented parent_kind: {:#?}", parent_kind);
-                        println!("expression: {:#?}", expr);
+                        eprintln!("unimplemented parent_kind: {:#?}", parent_kind);
+                        eprintln!("expression: {:#?}", expr);
                         ExprKind::Message("unimplemented parent_kind".to_string())
                     }
                 })
@@ -1312,8 +1321,15 @@ fn compile_expr_kind<'a>(
         },
         thir::ExprKind::NamedConst { def_id, .. } => {
             let path = compile_def_id(env, *def_id);
+            let expr = Rc::new(ExprKind::Var(path));
+            let parent = env.tcx.opt_parent(*def_id).unwrap();
+            let parent_kind = env.tcx.def_kind(parent);
 
-            Rc::new(ExprKind::Var(path))
+            if matches!(parent_kind, DefKind::Variant) {
+                return expr.alloc(Some(ty));
+            }
+
+            expr
         }
         thir::ExprKind::ConstParam { def_id, .. } => {
             Rc::new(ExprKind::Var(compile_def_id(env, *def_id)))

@@ -121,7 +121,7 @@ fn string_pieces_to_doc<'a>(with_paren: bool, pieces: &[StringPiece]) -> RcDoc<'
                 text("String.String"),
                 line(),
                 text("\""),
-                text(format!("{}", *c as u8)),
+                text(format!("{:03}", *c as u8)),
                 text("\""),
                 line(),
                 string_pieces_to_doc(true, rest),

@@ -2,15 +2,6 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (*
-fn main() {
-    // We can use this function here, and define it somewhere later
-    fizzbuzz_to(100);
-}
-*)
-(* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M unit.
-
-(*
 fn is_divisible_by(lhs: u32, rhs: u32) -> bool {
     // Corner case, early return
     if rhs == 0 {
@@ -46,3 +37,12 @@ fn fizzbuzz_to(n: u32) {
 }
 *)
 Parameter fizzbuzz_to : u32.t -> M unit.
+
+(*
+fn main() {
+    // We can use this function here, and define it somewhere later
+    fizzbuzz_to(100);
+}
+*)
+(* #[allow(dead_code)] - function was ignored by the compiler *)
+Parameter main : M unit.

@@ -150,6 +150,15 @@ pub(crate) fn compile_type(env: &Env, ty: &Ty) -> Rc<CoqType> {
             tys.iter().map(|ty| compile_type(env, ty)).collect(),
         )),
         TyKind::Path(qpath) => {
+            // When the [qpath] is a `Self::A`
+            if let rustc_hir::QPath::TypeRelative(ty, segment) = qpath {
+                if let TyKind::Path(rustc_hir::QPath::Resolved(_, ty_path)) = &ty.kind {
+                    if let Res::SelfTyAlias { .. } = ty_path.res {
+                        return Rc::new(CoqType::Var(segment.ident.to_string()));
+                    }
+                }
+            }
+
             let is_alias = match qpath {
                 rustc_hir::QPath::Resolved(_, path) => {
                     matches!(path.res, Res::Def(DefKind::TyAlias, _))
@@ -310,7 +319,12 @@ pub(crate) fn compile_type(env: &Env, ty: &Ty) -> Rc<CoqType> {
         TyKind::TraitObject(ptrait_refs, _, _) => Rc::new(CoqType::Dyn(
             ptrait_refs
                 .iter()
-                .map(|ptrait_ref| compile_path(env, ptrait_ref.trait_ref.path))
+                .map(|ptrait_ref| {
+                    Path::concat(&[
+                        compile_path(env, ptrait_ref.trait_ref.path),
+                        Path::local("Trait"),
+                    ])
+                })
                 .collect(),
         )),
         TyKind::Typeof(_) => CoqType::var("Typeof"),
@@ -403,10 +417,17 @@ impl CoqType {
                 ident: Path::new(&["_ (* OpaqueTy *)"]),
                 no_implicit: false,
             },
-            CoqType::Dyn(_) => coq::Expression::Variable {
-                ident: Path::new(&["_ (* dyn *)"]),
-                no_implicit: false,
-            },
+            CoqType::Dyn(traits) => {
+                coq::Expression::just_name("dyn").apply(&coq::Expression::List {
+                    exprs: traits
+                        .iter()
+                        .map(|trait_name| coq::Expression::Variable {
+                            ident: trait_name.clone(),
+                            no_implicit: false,
+                        })
+                        .collect(),
+                })
+            }
             CoqType::Infer => coq::Expression::Wild,
             CoqType::Monad(ty) => coq::Expression::Variable {
                 ident: Path::new(&["M"]),

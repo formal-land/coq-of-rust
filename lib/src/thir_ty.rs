@@ -13,6 +13,7 @@ fn compile_poly_fn_sig<'a>(env: &Env<'a>, sig: &rustc_middle::ty::PolyFnSig<'a>)
         .map(|ty| compile_type(env, ty))
         .collect::<Vec<_>>();
     let ret = compile_type(env, &sig.output());
+
     Rc::new(CoqType::Function { args, ret })
 }
 
@@ -54,11 +55,30 @@ pub(crate) fn compile_type<'a>(env: &Env<'a>, ty: &rustc_middle::ty::Ty<'a>) -> 
             CoqType::make_ref(mutbl, compile_type(env, ty))
         }
         TyKind::FnPtr(fn_sig) => compile_poly_fn_sig(env, fn_sig),
-        TyKind::Dynamic(_, _, _) => Rc::new(CoqType::Dyn(vec![])),
+        TyKind::Dynamic(existential_predicates, _, _) => {
+            let traits = existential_predicates
+                .iter()
+                .filter_map(
+                    |existential_predicate| match existential_predicate.no_bound_vars() {
+                        None => Some(Path::local("existential predicate with variables")),
+                        Some(existential_predicate) => match existential_predicate {
+                            rustc_middle::ty::ExistentialPredicate::Trait(
+                                existential_trait_ref,
+                            ) => Some(Path::concat(&[
+                                compile_def_id(env, existential_trait_ref.def_id),
+                                Path::local("Trait"),
+                            ])),
+                            _ => None,
+                        },
+                    },
+                )
+                .collect();
+
+            Rc::new(CoqType::Dyn(traits))
+        }
         TyKind::FnDef(_, _) => {
-            // We consider that for this case the type is not important as an
-            // existing function already has a type, so this can be inferred.
-            Rc::new(CoqType::Infer)
+            let fn_sig = ty.fn_sig(env.tcx);
+            compile_poly_fn_sig(env, &fn_sig)
         }
         TyKind::Closure(_, generic_args) => {
             let fn_sig = generic_args.as_closure().sig();
@@ -70,7 +90,10 @@ pub(crate) fn compile_type<'a>(env: &Env<'a>, ty: &rustc_middle::ty::Ty<'a>) -> 
         TyKind::Tuple(tys) => Rc::new(CoqType::Tuple(
             tys.iter().map(|ty| compile_type(env, &ty)).collect(),
         )),
-        // Alias(AliasKind, AliasTy<'tcx>),
+        TyKind::Alias(_, _) => {
+            // These types are generally too complex to represent in Coq.
+            Rc::new(CoqType::Infer)
+        }
         TyKind::Param(param) => Rc::new(CoqType::Var(param.name.to_string())),
         // Bound(DebruijnIndex, BoundTy),
         // Placeholder(Placeholder<BoundTy>),

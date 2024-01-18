@@ -20,7 +20,7 @@ Section Impl_core_default_Default_for_basic_contract_caller_AccountId_t.
   Default
   *)
   Definition default : M basic_contract_caller.AccountId.t :=
-    let* α0 : _ :=
+    let* α0 : M u128.t :=
       ltac:(M.get_method (fun ℐ =>
         core.default.Default.default (Self := u128.t) (Trait := ℐ))) in
     let* α1 : u128.t := M.call α0 in

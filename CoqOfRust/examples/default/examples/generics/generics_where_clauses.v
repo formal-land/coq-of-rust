@@ -31,23 +31,19 @@ Section Impl_generics_where_clauses_PrintInOption_for_T.
         let* α1 : ref str.t := M.read (mk_str "
 ") in
         let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-        let* α3 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α2) in
-        let* α4 : ref (slice (ref str.t)) :=
-          M.read (pointer_coercion "Unsize" α3) in
-        let* α5 : T := M.read self in
-        let* α6 : M.Val (core.option.Option.t T) :=
-          M.alloc (core.option.Option.Some α5) in
-        let* α7 : core.fmt.rt.Argument.t :=
-          M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow α6)) in
-        let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
-        let* α9 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-          M.alloc (borrow α8) in
-        let* α10 : ref (slice core.fmt.rt.Argument.t) :=
-          M.read (pointer_coercion "Unsize" α9) in
-        let* α11 : core.fmt.Arguments.t :=
-          M.call (core.fmt.Arguments.t::["new_v1"] α4 α10) in
-        let* α12 : unit := M.call (std.io.stdio._print α11) in
-        M.alloc α12 in
+        let* α3 : T := M.read self in
+        let* α4 : M.Val (core.option.Option.t T) :=
+          M.alloc (core.option.Option.Some α3) in
+        let* α5 : core.fmt.rt.Argument.t :=
+          M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow α4)) in
+        let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
+        let* α7 : core.fmt.Arguments.t :=
+          M.call
+            (core.fmt.Arguments.t::["new_v1"]
+              (pointer_coercion "Unsize" (borrow α2))
+              (pointer_coercion "Unsize" (borrow α6))) in
+        let* α8 : unit := M.call (std.io.stdio._print α7) in
+        M.alloc α8 in
       M.alloc tt in
     let* α0 : M.Val unit := M.alloc tt in
     M.read α0.
@@ -81,14 +77,14 @@ Definition main : M unit :=
           (Integer.of_Z 3) : i32.t
         ] in
     let* α1 : M.Val (alloc.boxed.Box.t (array i32.t) alloc.alloc.Global.t) :=
-      M.call ((alloc.boxed.Box _ alloc.boxed.Box.Default.A)::["new"] α0) in
-    let* α2 : alloc.boxed.Box.t (slice i32.t) alloc.alloc.Global.t :=
-      M.read (pointer_coercion "Unsize" α1) in
+      M.call ((alloc.boxed.Box.t _ alloc.boxed.Box.Default.A)::["new"] α0) in
+    let* α2 : alloc.boxed.Box.t (array i32.t) alloc.alloc.Global.t :=
+      M.read α1 in
     let* α3 : alloc.vec.Vec.t i32.t alloc.alloc.Global.t :=
-      M.call ((slice i32.t)::["into_vec"] α2) in
+      M.call ((slice i32.t)::["into_vec"] (pointer_coercion "Unsize" α2)) in
     M.alloc α3 in
   let* _ : M.Val unit :=
-    let* α0 : _ :=
+    let* α0 : (alloc.vec.Vec.t i32.t alloc.alloc.Global.t) -> M unit :=
       ltac:(M.get_method (fun ℐ =>
         generics_where_clauses.PrintInOption.print_in_option
           (Self := alloc.vec.Vec.t i32.t alloc.alloc.Global.t)

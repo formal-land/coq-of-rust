@@ -106,10 +106,7 @@ Module AccountId.
     x = y.
   Proof.
     destruct x as [[x]], y as [[y]].
-    unfold
-      eqb,
-      BinOp.Pure.eq,
-      BinOp.Pure.make_comparison.
+    unfold eqb.
     cbn; intros.
     now replace x with y by lia.
   Qed.
@@ -119,10 +116,7 @@ Module AccountId.
     x <> y.
   Proof.
     destruct x as [[x]], y as [[y]].
-    unfold
-      eqb,
-      BinOp.Pure.eq,
-      BinOp.Pure.make_comparison.
+    unfold eqb.
     cbn; intros.
     intro; assert (x = y) by congruence.
     lia.
@@ -375,15 +369,15 @@ Lemma sub_eq_optimistic (v1 v2 : u128.t) :
     M.pure (BinOp.Optimistic.sub v1 v2).
 Proof.
   unfold Integer.Valid.t.
-  unfold
-    BinOp.Panic.sub,
-    BinOp.Panic.make_arithmetic,
-    BinOp.Error.make_arithmetic,
-    Integer.normalize_error.
-  unfold
-    BinOp.Pure.lt,
-    BinOp.Pure.make_comparison.
-  simpl.
+  repeat (
+    unfold
+      BinOp.Pure.lt,
+      BinOp.Panic.sub,
+      BinOp.Panic.make_arithmetic,
+      BinOp.Error.make_arithmetic,
+      Integer.normalize_error;
+    cbn
+  ).
   intros; destruct v1, v2.
   repeat (destruct (_ <? _) eqn:? in |- *; [lia|]).
   reflexivity.
@@ -445,7 +439,7 @@ Proof.
     apply run_balance_of_impl.
   }
   run_symbolic.
-  destruct (_ <u128 _) eqn:H_lt; simpl.
+  destruct (_ <? _) eqn:H_lt; simpl.
   { run_symbolic. }
   { run_symbolic.
     rewrite sub_eq_optimistic;

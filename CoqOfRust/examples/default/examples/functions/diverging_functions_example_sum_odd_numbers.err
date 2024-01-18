@@ -1,3 +1,18 @@
+unimplemented parent_kind: Fn
+expression: Expr {
+    kind: ZstLiteral {
+        user_ty: None,
+    },
+    ty: FnDef(
+        DefId(0:4 ~ diverging_functions_example_sum_odd_numbers[39b3]::main::sum_odd_numbers),
+        [
+        ],
+    ),
+    temp_lifetime: Some(
+        Node(27),
+    ),
+    span: examples/functions/diverging_functions_example_sum_odd_numbers.rs:21:9: 21:24 (#0),
+}
 warning: Constants in patterns are not yet supported.
  --> examples/functions/diverging_functions_example_sum_odd_numbers.rs:9:17
   |

@@ -31,13 +31,13 @@ Section Impl_core_default_Default_for_erc1155_Mapping_t_K_V.
   Default
   *)
   Definition default : M (erc1155.Mapping.t K V) :=
-    let* α0 : _ :=
+    let* α0 : M (core.marker.PhantomData.t K) :=
       ltac:(M.get_method (fun ℐ =>
         core.default.Default.default
           (Self := core.marker.PhantomData.t K)
           (Trait := ℐ))) in
     let* α1 : core.marker.PhantomData.t K := M.call α0 in
-    let* α2 : _ :=
+    let* α2 : M (core.marker.PhantomData.t V) :=
       ltac:(M.get_method (fun ℐ =>
         core.default.Default.default
           (Self := core.marker.PhantomData.t V)
@@ -195,7 +195,7 @@ Section Impl_core_default_Default_for_erc1155_AccountId_t.
   Default
   *)
   Definition default : M erc1155.AccountId.t :=
-    let* α0 : _ :=
+    let* α0 : M u128.t :=
       ltac:(M.get_method (fun ℐ =>
         core.default.Default.default (Self := u128.t) (Trait := ℐ))) in
     let* α1 : u128.t := M.call α0 in
@@ -340,7 +340,7 @@ fn zero_address() -> AccountId {
 }
 *)
 Definition zero_address : M erc1155.AccountId.t :=
-  let* α0 : _ :=
+  let* α0 : (array u8.t) -> M erc1155.AccountId.t :=
     ltac:(M.get_method (fun ℐ =>
       core.convert.Into.into
         (Self := array u8.t)
@@ -695,14 +695,18 @@ Section Impl_core_default_Default_for_erc1155_Contract_t.
   Default
   *)
   Definition default : M erc1155.Contract.t :=
-    let* α0 : _ :=
+    let* α0 : M (erc1155.Mapping.t (erc1155.AccountId.t * u128.t) u128.t) :=
       ltac:(M.get_method (fun ℐ =>
         core.default.Default.default
           (Self := erc1155.Mapping.t (erc1155.AccountId.t * u128.t) u128.t)
           (Trait := ℐ))) in
     let* α1 : erc1155.Mapping.t (erc1155.AccountId.t * u128.t) u128.t :=
       M.call α0 in
-    let* α2 : _ :=
+    let* α2 :
+        M
+          (erc1155.Mapping.t
+            (erc1155.AccountId.t * erc1155.AccountId.t)
+            unit) :=
       ltac:(M.get_method (fun ℐ =>
         core.default.Default.default
           (Self :=
@@ -711,7 +715,7 @@ Section Impl_core_default_Default_for_erc1155_Contract_t.
     let* α3 :
         erc1155.Mapping.t (erc1155.AccountId.t * erc1155.AccountId.t) unit :=
       M.call α2 in
-    let* α4 : _ :=
+    let* α4 : M u128.t :=
       ltac:(M.get_method (fun ℐ =>
         core.default.Default.default (Self := u128.t) (Trait := ℐ))) in
     let* α5 : u128.t := M.call α4 in
@@ -771,7 +775,7 @@ Section Impl_erc1155_Contract_t.
       }
   *)
   Definition new : M Self :=
-    let* α0 : _ :=
+    let* α0 : M erc1155.Contract.t :=
       ltac:(M.get_method (fun ℐ =>
         core.default.Default.default
           (Self := erc1155.Contract.t)
@@ -917,7 +921,7 @@ Section Impl_erc1155_Contract_t.
         let* α3 : M.Val bool.t := M.alloc (UnOp.not (BinOp.Pure.le α0 α2)) in
         let* α4 : bool.t := M.read (use α3) in
         if α4 then
-          let* α0 : _ :=
+          let* α0 : erc1155.Error.t -> M erc1155.Error.t :=
             ltac:(M.get_method (fun ℐ =>
               core.convert.Into.into
                 (Self := erc1155.Error.t)
@@ -1344,7 +1348,10 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
           M.call (erc1155.Env.t::["caller"] (borrow α2)) in
         M.alloc α3 in
       let* _ : M.Val unit :=
-        let* α0 : _ :=
+        let* α0 :
+            (ref erc1155.AccountId.t) ->
+              (ref erc1155.AccountId.t) ->
+              M bool.t :=
           ltac:(M.get_method (fun ℐ =>
             core.cmp.PartialEq.ne
               (Self := erc1155.AccountId.t)
@@ -1363,7 +1370,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
             let* α4 : M.Val bool.t := M.alloc (UnOp.not α3) in
             let* α5 : bool.t := M.read (use α4) in
             if α5 then
-              let* α0 : _ :=
+              let* α0 : erc1155.Error.t -> M erc1155.Error.t :=
                 ltac:(M.get_method (fun ℐ =>
                   core.convert.Into.into
                     (Self := erc1155.Error.t)
@@ -1381,7 +1388,10 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
         else
           M.alloc tt in
       let* _ : M.Val unit :=
-        let* α0 : _ :=
+        let* α0 :
+            (ref erc1155.AccountId.t) ->
+              (ref erc1155.AccountId.t) ->
+              M bool.t :=
           ltac:(M.get_method (fun ℐ =>
             core.cmp.PartialEq.ne
               (Self := erc1155.AccountId.t)
@@ -1393,7 +1403,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
         let* α4 : M.Val bool.t := M.alloc (UnOp.not α3) in
         let* α5 : bool.t := M.read (use α4) in
         if α5 then
-          let* α0 : _ :=
+          let* α0 : erc1155.Error.t -> M erc1155.Error.t :=
             ltac:(M.get_method (fun ℐ =>
               core.convert.Into.into
                 (Self := erc1155.Error.t)
@@ -1419,7 +1429,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
         let* α2 : M.Val bool.t := M.alloc (UnOp.not (BinOp.Pure.ge α0 α1)) in
         let* α3 : bool.t := M.read (use α2) in
         if α3 then
-          let* α0 : _ :=
+          let* α0 : erc1155.Error.t -> M erc1155.Error.t :=
             ltac:(M.get_method (fun ℐ =>
               core.convert.Into.into
                 (Self := erc1155.Error.t)
@@ -1535,7 +1545,10 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
           M.call (erc1155.Env.t::["caller"] (borrow α2)) in
         M.alloc α3 in
       let* _ : M.Val unit :=
-        let* α0 : _ :=
+        let* α0 :
+            (ref erc1155.AccountId.t) ->
+              (ref erc1155.AccountId.t) ->
+              M bool.t :=
           ltac:(M.get_method (fun ℐ =>
             core.cmp.PartialEq.ne
               (Self := erc1155.AccountId.t)
@@ -1554,7 +1567,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
             let* α4 : M.Val bool.t := M.alloc (UnOp.not α3) in
             let* α5 : bool.t := M.read (use α4) in
             if α5 then
-              let* α0 : _ :=
+              let* α0 : erc1155.Error.t -> M erc1155.Error.t :=
                 ltac:(M.get_method (fun ℐ =>
                   core.convert.Into.into
                     (Self := erc1155.Error.t)
@@ -1572,7 +1585,10 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
         else
           M.alloc tt in
       let* _ : M.Val unit :=
-        let* α0 : _ :=
+        let* α0 :
+            (ref erc1155.AccountId.t) ->
+              (ref erc1155.AccountId.t) ->
+              M bool.t :=
           ltac:(M.get_method (fun ℐ =>
             core.cmp.PartialEq.ne
               (Self := erc1155.AccountId.t)
@@ -1584,7 +1600,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
         let* α4 : M.Val bool.t := M.alloc (UnOp.not α3) in
         let* α5 : bool.t := M.read (use α4) in
         if α5 then
-          let* α0 : _ :=
+          let* α0 : erc1155.Error.t -> M erc1155.Error.t :=
             ltac:(M.get_method (fun ℐ =>
               core.convert.Into.into
                 (Self := erc1155.Error.t)
@@ -1606,7 +1622,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
         let* α1 : M.Val bool.t := M.alloc (UnOp.not (UnOp.not α0)) in
         let* α2 : bool.t := M.read (use α1) in
         if α2 then
-          let* α0 : _ :=
+          let* α0 : erc1155.Error.t -> M erc1155.Error.t :=
             ltac:(M.get_method (fun ℐ =>
               core.convert.Into.into
                 (Self := erc1155.Error.t)
@@ -1632,7 +1648,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
         let* α2 : M.Val bool.t := M.alloc (UnOp.not (BinOp.Pure.eq α0 α1)) in
         let* α3 : bool.t := M.read (use α2) in
         if α3 then
-          let* α0 : _ :=
+          let* α0 : erc1155.Error.t -> M erc1155.Error.t :=
             ltac:(M.get_method (fun ℐ =>
               core.convert.Into.into
                 (Self := erc1155.Error.t)
@@ -1651,13 +1667,20 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
             (core.iter.adapters.zip.Zip.t
               (core.slice.iter.Iter.t u128.t)
               (core.slice.iter.Iter.t u128.t)) :=
-        let* α0 : _ :=
+        let* α0 :
+            (core.slice.iter.Iter.t u128.t) ->
+              (core.slice.iter.Iter.t u128.t) ->
+              M
+                (core.iter.adapters.zip.Zip.t
+                  (core.slice.iter.Iter.t u128.t)
+                  _) :=
           ltac:(M.get_method (fun ℐ =>
             core.iter.traits.iterator.Iterator.zip
               (Self := core.slice.iter.Iter.t u128.t)
               (U := core.slice.iter.Iter.t u128.t)
               (Trait := ℐ))) in
-        let* α1 : _ :=
+        let* α1 :
+            (ref (alloc.vec.Vec.t u128.t alloc.alloc.Global.t)) -> M (ref _) :=
           ltac:(M.get_method (fun ℐ =>
             core.ops.deref.Deref.deref
               (Self := alloc.vec.Vec.t u128.t alloc.alloc.Global.t)
@@ -1665,7 +1688,8 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
         let* α2 : ref (slice u128.t) := M.call (α1 (borrow token_ids)) in
         let* α3 : core.slice.iter.Iter.t u128.t :=
           M.call ((slice u128.t)::["iter"] α2) in
-        let* α4 : _ :=
+        let* α4 :
+            (ref (alloc.vec.Vec.t u128.t alloc.alloc.Global.t)) -> M (ref _) :=
           ltac:(M.get_method (fun ℐ =>
             core.ops.deref.Deref.deref
               (Self := alloc.vec.Vec.t u128.t alloc.alloc.Global.t)
@@ -1680,7 +1704,12 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
           M.call (α0 α3 α6) in
         M.alloc α7 in
       let* _ : M.Val unit :=
-        let* α0 : _ :=
+        let* α0 :
+            (core.iter.adapters.zip.Zip.t
+                (core.slice.iter.Iter.t u128.t)
+                (core.slice.iter.Iter.t u128.t))
+              ->
+              M _ :=
           ltac:(M.get_method (fun ℐ =>
             core.iter.traits.collect.IntoIterator.into_iter
               (Self :=
@@ -1688,7 +1717,16 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                   (core.slice.iter.Iter.t u128.t)
                   (core.slice.iter.Iter.t u128.t))
               (Trait := ℐ))) in
-        let* α1 : _ :=
+        let* α1 :
+            (ref
+                (core.iter.adapters.zip.Zip.t
+                  (core.slice.iter.Iter.t u128.t)
+                  (core.slice.iter.Iter.t u128.t)))
+              ->
+              M
+                (core.iter.adapters.zip.Zip.t
+                  (core.slice.iter.Iter.t u128.t)
+                  (core.slice.iter.Iter.t u128.t)) :=
           ltac:(M.get_method (fun ℐ =>
             core.clone.Clone.clone
               (Self :=
@@ -1720,7 +1758,13 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                 (let* iter := M.copy γ in
                 M.loop
                   (let* _ : M.Val unit :=
-                    let* α0 : _ :=
+                    let* α0 :
+                        (mut_ref
+                            (core.iter.adapters.zip.Zip.t
+                              (core.slice.iter.Iter.t u128.t)
+                              (core.slice.iter.Iter.t u128.t)))
+                          ->
+                          M (core.option.Option.t _) :=
                       ltac:(M.get_method (fun ℐ =>
                         core.iter.traits.iterator.Iterator.next
                           (Self :=
@@ -1784,7 +1828,8 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                                   M.alloc (UnOp.not (BinOp.Pure.ge α0 α1)) in
                                 let* α3 : bool.t := M.read (use α2) in
                                 if α3 then
-                                  let* α0 : _ :=
+                                  let* α0 :
+                                      erc1155.Error.t -> M erc1155.Error.t :=
                                     ltac:(M.get_method (fun ℐ =>
                                       core.convert.Into.into
                                         (Self := erc1155.Error.t)
@@ -1811,7 +1856,12 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
             ] in
         M.pure (use α5) in
       let* _ : M.Val unit :=
-        let* α0 : _ :=
+        let* α0 :
+            (core.iter.adapters.zip.Zip.t
+                (core.slice.iter.Iter.t u128.t)
+                (core.slice.iter.Iter.t u128.t))
+              ->
+              M _ :=
           ltac:(M.get_method (fun ℐ =>
             core.iter.traits.collect.IntoIterator.into_iter
               (Self :=
@@ -1843,7 +1893,13 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                 (let* iter := M.copy γ in
                 M.loop
                   (let* _ : M.Val unit :=
-                    let* α0 : _ :=
+                    let* α0 :
+                        (mut_ref
+                            (core.iter.adapters.zip.Zip.t
+                              (core.slice.iter.Iter.t u128.t)
+                              (core.slice.iter.Iter.t u128.t)))
+                          ->
+                          M (core.option.Option.t _) :=
                       ltac:(M.get_method (fun ℐ =>
                         core.iter.traits.iterator.Iterator.next
                           (Self :=
@@ -1922,7 +1978,10 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
         let* α1 : erc1155.AccountId.t := M.read caller in
         let* α2 : erc1155.AccountId.t := M.read from in
         let* α3 : erc1155.AccountId.t := M.read to in
-        let* α4 : _ :=
+        let* α4 :
+            (ref (alloc.vec.Vec.t u128.t alloc.alloc.Global.t)) ->
+              usize.t ->
+              M (ref _) :=
           ltac:(M.get_method (fun ℐ =>
             core.ops.index.Index.index
               (Self := alloc.vec.Vec.t u128.t alloc.alloc.Global.t)
@@ -1931,7 +1990,10 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
         let* α5 : ref u128.t :=
           M.call (α4 (borrow token_ids) ((Integer.of_Z 0) : usize.t)) in
         let* α6 : u128.t := M.read (deref α5) in
-        let* α7 : _ :=
+        let* α7 :
+            (ref (alloc.vec.Vec.t u128.t alloc.alloc.Global.t)) ->
+              usize.t ->
+              M (ref _) :=
           ltac:(M.get_method (fun ℐ =>
             core.ops.index.Index.index
               (Self := alloc.vec.Vec.t u128.t alloc.alloc.Global.t)
@@ -1988,7 +2050,9 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
         M.call (alloc.vec.Vec.t u128.t alloc.alloc.Global.t)::["new"] in
       M.alloc α0 in
     let* _ : M.Val unit :=
-      let* α0 : _ :=
+      let* α0 :
+          (ref (alloc.vec.Vec.t erc1155.AccountId.t alloc.alloc.Global.t)) ->
+            M _ :=
         ltac:(M.get_method (fun ℐ =>
           core.iter.traits.collect.IntoIterator.into_iter
             (Self :=
@@ -2006,7 +2070,9 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
               (let* iter := M.copy γ in
               M.loop
                 (let* _ : M.Val unit :=
-                  let* α0 : _ :=
+                  let* α0 :
+                      (mut_ref (core.slice.iter.Iter.t erc1155.AccountId.t)) ->
+                        M (core.option.Option.t _) :=
                     ltac:(M.get_method (fun ℐ =>
                       core.iter.traits.iterator.Iterator.next
                         (Self := core.slice.iter.Iter.t erc1155.AccountId.t)
@@ -2036,7 +2102,11 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                         | core.option.Option.Some _ =>
                           let γ0_0 := core.option.Option.Get_Some_0 γ in
                           let* o := M.copy γ0_0 in
-                          let* α0 : _ :=
+                          let* α0 :
+                              (ref
+                                  (alloc.vec.Vec.t u128.t alloc.alloc.Global.t))
+                                ->
+                                M _ :=
                             ltac:(M.get_method (fun ℐ =>
                               core.iter.traits.collect.IntoIterator.into_iter
                                 (Self :=
@@ -2057,7 +2127,11 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                                   (let* iter := M.copy γ in
                                   M.loop
                                     (let* _ : M.Val unit :=
-                                      let* α0 : _ :=
+                                      let* α0 :
+                                          (mut_ref
+                                              (core.slice.iter.Iter.t u128.t))
+                                            ->
+                                            M (core.option.Option.t _) :=
                                         ltac:(M.get_method (fun ℐ =>
                                           core.iter.traits.iterator.Iterator.next
                                             (Self :=
@@ -2186,7 +2260,10 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
           M.call (erc1155.Env.t::["caller"] (borrow α2)) in
         M.alloc α3 in
       let* _ : M.Val unit :=
-        let* α0 : _ :=
+        let* α0 :
+            (ref erc1155.AccountId.t) ->
+              (ref erc1155.AccountId.t) ->
+              M bool.t :=
           ltac:(M.get_method (fun ℐ =>
             core.cmp.PartialEq.ne
               (Self := erc1155.AccountId.t)
@@ -2196,7 +2273,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
         let* α2 : M.Val bool.t := M.alloc (UnOp.not α1) in
         let* α3 : bool.t := M.read (use α2) in
         if α3 then
-          let* α0 : _ :=
+          let* α0 : erc1155.Error.t -> M erc1155.Error.t :=
             ltac:(M.get_method (fun ℐ =>
               core.convert.Into.into
                 (Self := erc1155.Error.t)
@@ -2325,20 +2402,16 @@ Section Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract_t.
         (mk_str
           "not implemented: This smart contract does not accept token transfer.") in
     let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-    let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
-    let* α3 : ref (slice (ref str.t)) :=
-      M.read (pointer_coercion "Unsize" α2) in
-    let* α4 : array core.fmt.rt.Argument.t :=
+    let* α2 : array core.fmt.rt.Argument.t :=
       M.call core.fmt.rt.Argument.t::["none"] in
-    let* α5 : M.Val (array core.fmt.rt.Argument.t) := M.alloc α4 in
-    let* α6 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-      M.alloc (borrow α5) in
-    let* α7 : ref (slice core.fmt.rt.Argument.t) :=
-      M.read (pointer_coercion "Unsize" α6) in
-    let* α8 : core.fmt.Arguments.t :=
-      M.call (core.fmt.Arguments.t::["new_v1"] α3 α7) in
-    let* α9 : never.t := M.call (core.panicking.panic_fmt α8) in
-    never_to_any α9.
+    let* α3 : M.Val (array core.fmt.rt.Argument.t) := M.alloc α2 in
+    let* α4 : core.fmt.Arguments.t :=
+      M.call
+        (core.fmt.Arguments.t::["new_v1"]
+          (pointer_coercion "Unsize" (borrow α1))
+          (pointer_coercion "Unsize" (borrow α3))) in
+    let* α5 : never.t := M.call (core.panicking.panic_fmt α4) in
+    never_to_any α5.
   
   Global Instance AssociatedFunction_on_received :
     Notations.DoubleColon Self "on_received" := {
@@ -2389,20 +2462,16 @@ Section Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract_t.
         (mk_str
           "not implemented: This smart contract does not accept batch token transfers.") in
     let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-    let* α2 : M.Val (ref (array (ref str.t))) := M.alloc (borrow α1) in
-    let* α3 : ref (slice (ref str.t)) :=
-      M.read (pointer_coercion "Unsize" α2) in
-    let* α4 : array core.fmt.rt.Argument.t :=
+    let* α2 : array core.fmt.rt.Argument.t :=
       M.call core.fmt.rt.Argument.t::["none"] in
-    let* α5 : M.Val (array core.fmt.rt.Argument.t) := M.alloc α4 in
-    let* α6 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-      M.alloc (borrow α5) in
-    let* α7 : ref (slice core.fmt.rt.Argument.t) :=
-      M.read (pointer_coercion "Unsize" α6) in
-    let* α8 : core.fmt.Arguments.t :=
-      M.call (core.fmt.Arguments.t::["new_v1"] α3 α7) in
-    let* α9 : never.t := M.call (core.panicking.panic_fmt α8) in
-    never_to_any α9.
+    let* α3 : M.Val (array core.fmt.rt.Argument.t) := M.alloc α2 in
+    let* α4 : core.fmt.Arguments.t :=
+      M.call
+        (core.fmt.Arguments.t::["new_v1"]
+          (pointer_coercion "Unsize" (borrow α1))
+          (pointer_coercion "Unsize" (borrow α3))) in
+    let* α5 : never.t := M.call (core.panicking.panic_fmt α4) in
+    never_to_any α5.
   
   Global Instance AssociatedFunction_on_batch_received :
     Notations.DoubleColon Self "on_batch_received" := {

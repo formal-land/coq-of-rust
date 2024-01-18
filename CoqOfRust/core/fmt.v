@@ -16,9 +16,12 @@ Module Alignment.
   .
 End Alignment.
 
-Parameter Error : Set.
+(* pub struct Error; *)
+Module Error.
+  Parameter t : Set.
+End Error.
 
-Ltac Result := refine (result.Result.t unit Error).
+Ltac Result := refine (result.Result.t unit Error.t).
 
 Module Arguments.
   Parameter t : Set.
@@ -123,18 +126,105 @@ Module ImplFormatter.
   ) -> Result
   *)
   Parameter debug_tuple_field2_finish :
-    forall {T1 T2 : Set}
-      `{core.fmt.Debug.Trait T1} `{core.fmt.Debug.Trait T2},
-    M.Val (mut_ref Formatter.t) ->
-    M.Val (ref str.t) ->
-    M.Val (ref T1) ->
-    M.Val (ref T2) ->
-    M (M.Val ltac:(Result)).
+    mut_ref Self ->
+    ref str.t ->
+    ref (dyn [fmt.Debug.Trait]) ->
+    ref (dyn [fmt.Debug.Trait]) ->
+    M (ltac:(Result)).
 
-  Global Instance Formatter_debug_tuple_field2_finish {T1 T2 : Set}
-     `{core.fmt.Debug.Trait T1} `{core.fmt.Debug.Trait T2} :
-      Notations.DoubleColon core.fmt.Formatter.t "debug_tuple_field2_finish" := {
-    Notations.double_colon := debug_tuple_field2_finish (T1 := T1) (T2 := T2);
+  Global Instance AF_debug_tuple_field2_finish :
+      Notations.DoubleColon Self "debug_tuple_field2_finish" := {
+    Notations.double_colon := debug_tuple_field2_finish;
+  }.
+
+  (*
+  pub fn debug_tuple_field3_finish<'b>(
+      &'b mut self,
+      name: &str,
+      value1: &dyn Debug,
+      value2: &dyn Debug,
+      value3: &dyn Debug
+  ) -> Result
+  *)
+  Parameter debug_tuple_field3_finish :
+    mut_ref Self ->
+    ref str.t ->
+    ref (dyn [fmt.Debug.Trait]) ->
+    ref (dyn [fmt.Debug.Trait]) ->
+    ref (dyn [fmt.Debug.Trait]) ->
+    M (ltac:(Result)).
+
+  Global Instance AF_debug_tuple_field3_finish :
+      Notations.DoubleColon Self "debug_tuple_field3_finish" := {
+    Notations.double_colon := debug_tuple_field3_finish;
+  }.
+
+  (*
+  pub fn debug_tuple_field4_finish<'b>(
+      &'b mut self,
+      name: &str,
+      value1: &dyn Debug,
+      value2: &dyn Debug,
+      value3: &dyn Debug,
+      value4: &dyn Debug
+  ) -> Result
+  *)
+  Parameter debug_tuple_field4_finish :
+    mut_ref Self ->
+    ref str.t ->
+    ref (dyn [fmt.Debug.Trait]) ->
+    ref (dyn [fmt.Debug.Trait]) ->
+    ref (dyn [fmt.Debug.Trait]) ->
+    ref (dyn [fmt.Debug.Trait]) ->
+    M (ltac:(Result)).
+
+  Global Instance AF_debug_tuple_field4_finish :
+      Notations.DoubleColon Self "debug_tuple_field4_finish" := {
+    Notations.double_colon := debug_tuple_field4_finish;
+  }.
+
+  (*
+  pub fn debug_struct_field1_finish<'b>(
+      &'b mut self,
+      name: &str,
+      name1: &str,
+      value1: &dyn Debug
+  ) -> Result
+  *)
+  Parameter debug_struct_field1_finish :
+    mut_ref Self ->
+    ref str.t ->
+    ref str.t ->
+    ref (dyn [fmt.Debug.Trait]) ->
+    M (ltac:(Result)).
+
+  Global Instance AF_debug_struct_field1_finish :
+      Notations.DoubleColon Self "debug_struct_field1_finish" := {
+    Notations.double_colon := debug_struct_field1_finish;
+  }.
+
+  (*
+  pub fn debug_struct_field2_finish<'b>(
+      &'b mut self,
+      name: &str,
+      name1: &str,
+      value1: &dyn Debug,
+      name2: &str,
+      value2: &dyn Debug,
+  ) -> Result
+  *)
+  Parameter debug_struct_field2_finish :
+    mut_ref Self ->
+    ref str.t ->
+    ref str.t ->
+    ref (dyn [fmt.Debug.Trait]) ->
+    ref str.t ->
+    ref (dyn [fmt.Debug.Trait]) ->
+    M (ltac:(Result)).
+
+  Global Instance AF_debug_struct_field2_finish :
+      Notations.DoubleColon Self "debug_struct_field2_finish" := {
+    Notations.double_colon := debug_struct_field2_finish;
   }.
 End ImplFormatter.
 
@@ -217,104 +307,69 @@ Module ImplArgumentV1.
     Notations.double_colon := new (T := T);
   }.
 
-  Parameter new_display :
-    forall {T : Set} {H0 : Display.Trait T}, ref T -> M Self.
+  Parameter new_display : forall {T : Set}, ref T -> M Self.
 
-  Global Instance ArgumentV1_new_display
-    {T : Set} {H0 : Display.Trait T} :
-    Notations.DoubleColon ArgumentV1.t "new_display" := {
+  Global Instance ArgumentV1_new_display {T : Set}  :
+      Notations.DoubleColon ArgumentV1.t "new_display" := {
     Notations.double_colon := new_display (T := T);
   }.
 
-  Parameter new_debug :
-    forall {T : Set} `{Debug.Trait T}, ref T -> M Self.
+  Parameter new_debug : forall {T : Set}, ref T -> M Self.
 
-  Global Instance ArgumentV1_new_debug
-    {T : Set} `{Debug.Trait T} :
-    Notations.DoubleColon ArgumentV1.t "new_debug" := {
+  Global Instance ArgumentV1_new_debug {T : Set} :
+      Notations.DoubleColon ArgumentV1.t "new_debug" := {
     Notations.double_colon := new_debug (T := T);
   }.
 
-  Parameter new_octal :
-    forall {T : Set} `{Octal.Trait T}, ref T -> M Self.
+  Parameter new_octal : forall {T : Set}, ref T -> M Self.
 
-  Global Instance ArgumentV1_new_octal
-    {T : Set} `{Octal.Trait T} :
+  Global Instance ArgumentV1_new_octal {T : Set} :
     Notations.DoubleColon ArgumentV1.t "new_octal" := {
     Notations.double_colon := new_octal (T := T);
   }.
 
-  Parameter new_lower_hex :
-    forall {T : Set} `{LowerHex.Trait T}, ref T -> M Self.
+  Parameter new_lower_hex : forall {T : Set}, ref T -> M Self.
 
-  Global Instance ArgumentV1_new_lower_hex
-    {T : Set} `{LowerHex.Trait T} :
+  Global Instance ArgumentV1_new_lower_hex {T : Set} :
     Notations.DoubleColon ArgumentV1.t "new_lower_hex" := {
     Notations.double_colon := new_lower_hex (T := T);
   }.
 
-  Parameter new_upper_hex :
-    forall {T : Set} `{UpperHex.Trait T}, ref T -> M Self.
+  Parameter new_upper_hex : forall {T : Set}, ref T -> M Self.
 
-  Global Instance ArgumentV1_new_upper_hex
-    {T : Set} `{UpperHex.Trait T} :
+  Global Instance ArgumentV1_new_upper_hex {T : Set} :
     Notations.DoubleColon ArgumentV1.t "new_upper_hex" := {
     Notations.double_colon := new_upper_hex (T := T);
   }.
 
-  Parameter new_pointer :
-    forall {T : Set} `{Pointer.Trait T}, ref T -> M Self.
+  Parameter new_pointer : forall {T : Set}, ref T -> M Self.
 
-  Global Instance ArgumentV1_new_pointer
-    {T : Set} `{Pointer.Trait T} :
+  Global Instance ArgumentV1_new_pointer {T : Set} :
     Notations.DoubleColon ArgumentV1.t "new_pointer" := {
     Notations.double_colon := new_pointer (T := T);
   }.
 
-  Parameter new_binary :
-    forall {T : Set} `{Binary.Trait T}, ref T -> M Self.
+  Parameter new_binary : forall {T : Set}, ref T -> M Self.
 
-  Global Instance ArgumentV1_new_binary
-    {T : Set} `{Binary.Trait T} :
+  Global Instance ArgumentV1_new_binary {T : Set}  :
     Notations.DoubleColon ArgumentV1.t "new_binary" := {
     Notations.double_colon := new_binary (T := T);
   }.
 
-  Parameter new_lower_exp :
-    forall {T : Set} `{LowerExp.Trait T}, ref T -> M Self.
+  Parameter new_lower_exp : forall {T : Set}, ref T -> M Self.
 
-  Global Instance ArgumentV1_new_lower_exp
-    {T : Set} `{LowerExp.Trait T} :
+  Global Instance ArgumentV1_new_lower_exp {T : Set} :
     Notations.DoubleColon ArgumentV1.t "new_lower_exp" := {
     Notations.double_colon := new_lower_exp (T := T);
   }.
 
-  Parameter new_upper_exp :
-    forall {T : Set} `{UpperExp.Trait T}, ref T -> M Self.
+  Parameter new_upper_exp : forall {T : Set}, ref T -> M Self.
 
-  Global Instance ArgumentV1_new_upper_exp
-    {T : Set} `{UpperExp.Trait T} :
+  Global Instance ArgumentV1_new_upper_exp {T : Set} :
     Notations.DoubleColon ArgumentV1.t "new_upper_exp" := {
     Notations.double_colon := new_upper_exp (T := T);
   }.
 End ImplArgumentV1.
-
-Module ImplArguments.
-  Parameter new_const : ref (slice (ref str.t)) -> M Arguments.t.
-
-  Global Instance Arguments_new_const :
-    Notations.DoubleColon Arguments.t "new_const" := {
-    Notations.double_colon := new_const;
-  }.
-
-  Parameter new_v1 :
-    ref (slice (ref str.t)) -> ref (slice ArgumentV1.t) -> M Arguments.t.
-
-  Global Instance Arguments_new_v1 :
-    Notations.DoubleColon Arguments.t "new_v1" := {
-    Notations.double_colon := new_v1;
-  }.
-End ImplArguments.
 
 Module Impl_Write_for_Formatter.
   Definition Self : Set := Formatter.t.
@@ -411,38 +466,188 @@ Module rt.
   End Placeholder.
 
   Module Argument.
-    (* TODO: check if this definition is correct for the current Rust version *)
-    Definition t : Set := ArgumentV1.t.
+    Parameter t : Set.
+
+    Module Impl.
+      Definition Self : Set := t.
+
+      (*
+      fn new<'b, T>(
+          x: &'b T,
+          f: fn(_: &T, _: &mut Formatter<'_>) -> Result
+      ) -> Argument<'b>
+      *)
+      Parameter new :
+        forall {T : Set},
+        ref T -> (ref T -> mut_ref Formatter.t -> M ltac:(Result)) ->
+        M Argument.t.
+
+      Global Instance AF_new {T : Set} :
+        Notations.DoubleColon Self "new" := {
+        Notations.double_colon := new (T := T);
+      }.
+
+      (* pub fn new_binary<'b, T: Binary>(x: &'b T) -> Argument<'_> *)
+      Parameter new_binary :
+        forall {T : Set},
+        ref T -> M Argument.t.
+
+      Global Instance AF_new_binary {T : Set} :
+        Notations.DoubleColon Self "new_binary" := {
+        Notations.double_colon := new_binary (T := T);
+      }.
+
+      (* pub fn new_debug<'b, T: Debug>(x: &'b T) -> Argument<'_> *)
+      Parameter new_debug :
+        forall {T : Set},
+        ref T -> M Argument.t.
+
+      Global Instance AF_new_debug {T : Set} :
+        Notations.DoubleColon Self "new_debug" := {
+        Notations.double_colon := new_debug (T := T);
+      }.
+
+      (* pub fn new_display<'b, T: Display>(x: &'b T) -> Argument<'_> *)
+      Parameter new_display :
+        forall {T : Set},
+        ref T -> M Argument.t.
+
+      Global Instance AF_new_display {T : Set} :
+        Notations.DoubleColon Self "new_display" := {
+        Notations.double_colon := new_display (T := T);
+      }.
+
+      (* pub fn new_lower_exp<'b, T: LowerExp>(x: &'b T) -> Argument<'_> *)
+      Parameter new_lower_exp :
+        forall {T : Set},
+        ref T -> M Argument.t.
+
+      Global Instance AF_new_lower_exp {T : Set} :
+        Notations.DoubleColon Self "new_lower_exp" := {
+        Notations.double_colon := new_lower_exp (T := T);
+      }.
+
+      (* pub fn new_lower_hex<'b, T: LowerHex>(x: &'b T) -> Argument<'_> *)
+      Parameter new_lower_hex :
+        forall {T : Set},
+        ref T -> M Argument.t.
+
+      Global Instance AF_new_lower_hex {T : Set} :
+        Notations.DoubleColon Self "new_lower_hex" := {
+        Notations.double_colon := new_lower_hex (T := T);
+      }.
+
+      (* pub fn new_octal<'b, T: Octal>(x: &'b T) -> Argument<'_> *)
+      Parameter new_octal :
+        forall {T : Set},
+        ref T -> M Argument.t.
+
+      Global Instance AF_new_octal {T : Set} :
+        Notations.DoubleColon Self "new_octal" := {
+        Notations.double_colon := new_octal (T := T);
+      }.
+
+      (* pub fn new_pointer<'b, T: Pointer>(x: &'b T) -> Argument<'_> *)
+      Parameter new_pointer :
+        forall {T : Set},
+        ref T -> M Argument.t.
+
+      Global Instance AF_new_pointer {T : Set} :
+        Notations.DoubleColon Self "new_pointer" := {
+        Notations.double_colon := new_pointer (T := T);
+      }.
+
+      (* pub fn new_upper_exp<'b, T: UpperExp>(x: &'b T) -> Argument<'_> *)
+      Parameter new_upper_exp :
+        forall {T : Set},
+        ref T -> M Argument.t.
+
+      Global Instance AF_new_upper_exp {T : Set} :
+        Notations.DoubleColon Self "new_upper_exp" := {
+        Notations.double_colon := new_upper_exp (T := T);
+      }.
+
+      (* pub fn new_upper_hex<'b, T: UpperHex>(x: &'b T) -> Argument<'_> *)
+      Parameter new_upper_hex :
+        forall {T : Set},
+        ref T -> M Argument.t.
+
+      Global Instance AF_new_upper_hex {T : Set} :
+        Notations.DoubleColon Self "new_upper_hex" := {
+        Notations.double_colon := new_upper_hex (T := T);
+      }.
+
+      (* pub fn none() -> [Self; 0] *)
+      Parameter none : M (array Argument.t).
+
+      Global Instance AF_none :
+        Notations.DoubleColon Self "none" := {
+        Notations.double_colon := none;
+      }.
+
+      (* pub fn from_usize(x: &usize) -> Argument<'_> *)
+      Parameter from_usize : ref usize.t -> M Argument.t.
+
+      Global Instance AF_from_usize :
+        Notations.DoubleColon Self "from_usize" := {
+        Notations.double_colon := from_usize;
+      }.
+    End Impl.
   End Argument.
-
-  Parameter new_display :
-    forall {T : Set} {H0 : Display.Trait T}, ref T -> M Argument.t.
-
-  Global Instance Argument_new_display
-    {T : Set} {H0 : Display.Trait T} :
-    Notations.DoubleColon Argument.t "new_display" := {
-    Notations.double_colon := new_display (T := T);
-  }.
-
-  Parameter new_debug :
-    forall {T : Set} `{Debug.Trait T}, ref T -> M Argument.t.
-
-  Global Instance Argument_new_debug
-    {T : Set} `{Debug.Trait T} :
-    Notations.DoubleColon Argument.t "new_debug" := {
-    Notations.double_colon := new_debug (T := T);
-  }.
-
-  (* pub fn none() -> [Self; 0] *)
-  Parameter none : M (array Argument.t).
-
-  Global Instance Argument_none :
-    Notations.DoubleColon Argument.t "none" := {
-    Notations.double_colon := none;
-  }.
 
   (* pub struct UnsafeArg *)
   Module UnsafeArg.
     Parameter t : Set.
+
+    Module Impl.
+      Definition Self : Set := t.
+
+      (* pub unsafe fn new() -> Self *)
+      Parameter new : M Self.
+
+      Global Instance AF_new :
+        Notations.DoubleColon t "new" := {
+        Notations.double_colon := new;
+      }.
+    End Impl.
   End UnsafeArg.
 End rt.
+
+Module ImplArguments.
+  Definition Self : Set := Arguments.t.
+
+  Parameter new_const : ref (slice (ref str.t)) -> M Self.
+
+  Global Instance Arguments_new_const :
+    Notations.DoubleColon Self "new_const" := {
+    Notations.double_colon := new_const;
+  }.
+
+  Parameter new_v1 :
+    ref (slice (ref str.t)) -> ref (slice rt.Argument.t) -> M Self.
+
+  Global Instance Arguments_new_v1 :
+    Notations.DoubleColon Self "new_v1" := {
+    Notations.double_colon := new_v1;
+  }.
+
+  (*
+  pub fn new_v1_formatted(
+      pieces: &'a [&'static str],
+      args: &'a [Argument<'a>],
+      fmt: &'a [Placeholder],
+      _unsafe_arg: UnsafeArg
+  ) -> Arguments<'a>
+  *)
+  Parameter new_v1_formatted :
+    ref (slice (ref str.t)) ->
+    ref (slice rt.Argument.t) ->
+    ref (slice rt.Placeholder.t) ->
+    rt.UnsafeArg.t ->
+    M Arguments.t.
+
+  Global Instance AF_new_v1_formatted :
+    Notations.DoubleColon Self "new_v1_formatted" := {
+    Notations.double_colon := new_v1_formatted;
+  }.
+End ImplArguments.

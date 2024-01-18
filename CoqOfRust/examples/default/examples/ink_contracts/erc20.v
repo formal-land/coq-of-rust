@@ -35,13 +35,13 @@ Section Impl_core_default_Default_for_erc20_Mapping_t_K_V.
   Default
   *)
   Definition default : M (erc20.Mapping.t K V) :=
-    let* α0 : _ :=
+    let* α0 : M (core.marker.PhantomData.t K) :=
       ltac:(M.get_method (fun ℐ =>
         core.default.Default.default
           (Self := core.marker.PhantomData.t K)
           (Trait := ℐ))) in
     let* α1 : core.marker.PhantomData.t K := M.call α0 in
-    let* α2 : _ :=
+    let* α2 : M (core.marker.PhantomData.t V) :=
       ltac:(M.get_method (fun ℐ =>
         core.default.Default.default
           (Self := core.marker.PhantomData.t V)
@@ -124,7 +124,7 @@ Section Impl_core_default_Default_for_erc20_AccountId_t.
   Default
   *)
   Definition default : M erc20.AccountId.t :=
-    let* α0 : _ :=
+    let* α0 : M u128.t :=
       ltac:(M.get_method (fun ℐ =>
         core.default.Default.default (Self := u128.t) (Trait := ℐ))) in
     let* α1 : u128.t := M.call α0 in
@@ -230,17 +230,18 @@ Section Impl_core_default_Default_for_erc20_Erc20_t.
   Default
   *)
   Definition default : M erc20.Erc20.t :=
-    let* α0 : _ :=
+    let* α0 : M u128.t :=
       ltac:(M.get_method (fun ℐ =>
         core.default.Default.default (Self := u128.t) (Trait := ℐ))) in
     let* α1 : u128.t := M.call α0 in
-    let* α2 : _ :=
+    let* α2 : M (erc20.Mapping.t erc20.AccountId.t u128.t) :=
       ltac:(M.get_method (fun ℐ =>
         core.default.Default.default
           (Self := erc20.Mapping.t erc20.AccountId.t u128.t)
           (Trait := ℐ))) in
     let* α3 : erc20.Mapping.t erc20.AccountId.t u128.t := M.call α2 in
-    let* α4 : _ :=
+    let* α4 :
+        M (erc20.Mapping.t (erc20.AccountId.t * erc20.AccountId.t) u128.t) :=
       ltac:(M.get_method (fun ℐ =>
         core.default.Default.default
           (Self :=
@@ -425,7 +426,7 @@ Section Impl_erc20_Erc20_t_2.
   Definition new (total_supply : ltac:(erc20.Balance)) : M Self :=
     let* total_supply := M.alloc total_supply in
     let* balances : M.Val (erc20.Mapping.t erc20.AccountId.t u128.t) :=
-      let* α0 : _ :=
+      let* α0 : M (erc20.Mapping.t erc20.AccountId.t u128.t) :=
         ltac:(M.get_method (fun ℐ =>
           core.default.Default.default
             (Self := erc20.Mapping.t erc20.AccountId.t u128.t)
@@ -466,7 +467,8 @@ Section Impl_erc20_Erc20_t_2.
       M.alloc α4 in
     let* α0 : u128.t := M.read total_supply in
     let* α1 : erc20.Mapping.t erc20.AccountId.t u128.t := M.read balances in
-    let* α2 : _ :=
+    let* α2 :
+        M (erc20.Mapping.t (erc20.AccountId.t * erc20.AccountId.t) u128.t) :=
       ltac:(M.get_method (fun ℐ =>
         core.default.Default.default
           (Self :=
@@ -876,7 +878,9 @@ Section Impl_erc20_Erc20_t_2.
         else
           M.alloc tt in
       let* _ : M.Val unit :=
-        let* α0 : _ :=
+        let* α0 :
+            (core.result.Result.t unit erc20.Error.t) ->
+              M (core.ops.control_flow.ControlFlow.t _ _) :=
           ltac:(M.get_method (fun ℐ =>
             core.ops.try_trait.Try.branch
               (Self := core.result.Result.t unit erc20.Error.t)
@@ -910,7 +914,12 @@ Section Impl_erc20_Erc20_t_2.
               | core.ops.control_flow.ControlFlow.Break _ =>
                 let γ0_0 := core.ops.control_flow.ControlFlow.Get_Break_0 γ in
                 let* residual := M.copy γ0_0 in
-                let* α0 : _ :=
+                let* α0 :
+                    (core.result.Result.t
+                        core.convert.Infallible.t
+                        erc20.Error.t)
+                      ->
+                      M (core.result.Result.t unit erc20.Error.t) :=
                   ltac:(M.get_method (fun ℐ =>
                     core.ops.try_trait.FromResidual.from_residual
                       (Self := core.result.Result.t unit erc20.Error.t)

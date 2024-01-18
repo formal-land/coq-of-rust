@@ -20,7 +20,7 @@ Section Impl_core_default_Default_for_call_builder_AccountId_t.
   Default
   *)
   Definition default : M call_builder.AccountId.t :=
-    let* α0 : _ :=
+    let* α0 : M u128.t :=
       ltac:(M.get_method (fun ℐ =>
         core.default.Default.default (Self := u128.t) (Trait := ℐ))) in
     let* α1 : u128.t := M.call α0 in
@@ -153,7 +153,7 @@ Section Impl_call_builder_CallBuilderTest_t.
       }
   *)
   Definition new : M Self :=
-    let* α0 : _ :=
+    let* α0 : M call_builder.CallBuilderTest.t :=
       ltac:(M.get_method (fun ℐ =>
         core.default.Default.default
           (Self := call_builder.CallBuilderTest.t)
@@ -236,23 +236,18 @@ Section Impl_call_builder_CallBuilderTest_t.
                   (mk_str
                     "not implemented: No other `LangError` variants exist at the moment.") in
               let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-              let* α2 : M.Val (ref (array (ref str.t))) :=
-                M.alloc (borrow α1) in
-              let* α3 : ref (slice (ref str.t)) :=
-                M.read (pointer_coercion "Unsize" α2) in
-              let* α4 : array core.fmt.rt.Argument.t :=
+              let* α2 : array core.fmt.rt.Argument.t :=
                 M.call core.fmt.rt.Argument.t::["none"] in
-              let* α5 : M.Val (array core.fmt.rt.Argument.t) := M.alloc α4 in
-              let* α6 : M.Val (ref (array core.fmt.rt.Argument.t)) :=
-                M.alloc (borrow α5) in
-              let* α7 : ref (slice core.fmt.rt.Argument.t) :=
-                M.read (pointer_coercion "Unsize" α6) in
-              let* α8 : core.fmt.Arguments.t :=
-                M.call (core.fmt.Arguments.t::["new_v1"] α3 α7) in
-              let* α9 : never.t := M.call (core.panicking.panic_fmt α8) in
-              let* α10 : core.option.Option.t call_builder.LangError.t :=
-                never_to_any α9 in
-              M.alloc α10
+              let* α3 : M.Val (array core.fmt.rt.Argument.t) := M.alloc α2 in
+              let* α4 : core.fmt.Arguments.t :=
+                M.call
+                  (core.fmt.Arguments.t::["new_v1"]
+                    (pointer_coercion "Unsize" (borrow α1))
+                    (pointer_coercion "Unsize" (borrow α3))) in
+              let* α5 : never.t := M.call (core.panicking.panic_fmt α4) in
+              let* α6 : core.option.Option.t call_builder.LangError.t :=
+                never_to_any α5 in
+              M.alloc α6
             | _ => M.break_match
             end) :
             M (M.Val (core.option.Option.t call_builder.LangError.t))
