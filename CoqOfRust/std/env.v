@@ -74,7 +74,7 @@ pub enum VarError {
 Module VarError.
   Inductive t : Set := 
   | NotPresent : t
-  | NotUnicode : ffi.os_str.OsString -> t
+  | NotUnicode : ffi.os_str.OsString.t -> t
   .
 End VarError.
 

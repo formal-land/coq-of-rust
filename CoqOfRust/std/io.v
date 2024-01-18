@@ -34,16 +34,35 @@ Require CoqOfRust.core.result_types.
 [x] WriterPanicked
 *)
 
-(* pub struct Error { /* private fields */ } *)
 Module error.
-  (* Definition Error : Set := std.io.Error. *)
+  (*
+  pub enum ErrorKind {
+      ...
+  }
+  *)
+  Module ErrorKind.
+    Parameter t : Set.
+  End ErrorKind.
+
+  (* pub struct Error { /* private fields */ } *)
   Module Error.
     Parameter t : Set.
-  End Error.
-End error.
 
-Definition Result (T : Set) : Set :=
-  core.result_types.Result.t T std.io.error.Error.t.
+    Module Impl.
+      Definition Self : Set := t.
+
+      (* pub fn kind(&self) -> ErrorKind *)
+      Parameter kind : ref Self -> M ErrorKind.t.
+
+      Global Instance AF_kind : Notations.DoubleColon Self "kind" := {
+        Notations.double_colon := kind;
+      }.
+    End Impl.
+  End Error.
+
+  Ltac Result T :=
+    exact (result.Result.t T Error.t).
+End error.
 
 (* pub struct BorrowedBuf<'data> { /* private fields */ } *)
 Module BorrowedBuf.
@@ -83,14 +102,14 @@ pub trait Write {
 *)
 Module Write.
   Class Trait (Self : Set) : Set := {
-    write : mut_ref Self -> ref (slice u8.t) -> M (Result usize.t);
-    flush : mut_ref Self -> M (Result unit);
-    write_vectored : mut_ref Self -> ref (slice IoSlice.t) -> M (Result usize.t);
+    write : mut_ref Self -> ref (slice u8.t) -> M ltac:(error.Result usize.t);
+    flush : mut_ref Self -> M ltac:(error.Result unit);
+    write_vectored : mut_ref Self -> ref (slice IoSlice.t) -> M ltac:(error.Result usize.t);
     is_write_vectored : mut_ref Self -> M bool;
-    write_all : mut_ref Self -> ref (slice u8.t) -> M (Result unit);
+    write_all : mut_ref Self -> ref (slice u8.t) -> M ltac:(error.Result unit);
     write_all_vectored :
-      mut_ref Self -> mut_ref (slice IoSlice.t) -> M (Result unit);
-    write_fmt : mut_ref Self -> fmt.Arguments.t -> M (Result unit);
+      mut_ref Self -> mut_ref (slice IoSlice.t) -> M ltac:(error.Result unit);
+    write_fmt : mut_ref Self -> fmt.Arguments.t -> M ltac:(error.Result unit);
     by_ref : mut_ref Self -> M (mut_ref Self);
   }.
 End Write.
@@ -339,28 +358,28 @@ pub trait Read {
     fn read_buf_exact(&mut self, cursor: BorrowedCursor<'_>) -> Result<()> { ... }
     fn by_ref(&mut self) -> &mut Self
        where Self: Sized { ... }
-    fn bytes(self) -> Bytes<Self> ⓘ
+    fn bytes(self) -> Bytes<Self>
        where Self: Sized { ... }
-    fn chain<R: Read>(self, next: R) -> Chain<Self, R> ⓘ
+    fn chain<R: Read>(self, next: R) -> Chain<Self, R>
        where Self: Sized { ... }
-    fn take(self, limit: u64) -> Take<Self> ⓘ
+    fn take(self, limit: u64) -> Take<Self>
        where Self: Sized { ... }
 }
 *)
 Module Read.
-  Class Trait (Self : Set) : Set := { 
-    read : mut_ref Self -> mut_ref (slice u8.t) -> Result usize.t;
-    read_vectored : mut_ref Self -> mut_ref (slice IoSliceMut.t) -> Result usize.t;
+  Class Trait (Self : Set) : Set := {
+    read : mut_ref Self -> mut_ref (slice u8.t) -> M ltac:(error.Result usize.t);
+    read_vectored : mut_ref Self -> mut_ref (slice IoSliceMut.t) -> M ltac:(error.Result usize.t);
     is_read_vectored : ref Self -> bool;
-    read_to_end : mut_ref Self -> mut_ref (slice u8.t) -> Result usize.t;
-    read_to_string : mut_ref Self -> mut_ref alloc.string.String.t -> Result usize.t;
-    read_exact : mut_ref Self -> mut_ref (slice u8.t) -> Result unit;
-    read_buf : mut_ref Self -> BorrowedCursor.t -> Result unit;
-    read_buf_exact : mut_ref Self -> BorrowedCursor.t -> Result unit;
-    by_ref : mut_ref Self -> mut_ref Self;
-    bytes : Self -> Bytes.t Self;
-    chain {R : Set} : Self -> R -> Chain.t Self R;
-    take : Self -> u64.t -> Take.t Self;
+    read_to_end : mut_ref Self -> mut_ref (slice u8.t) -> M ltac:(error.Result usize.t);
+    read_to_string : mut_ref Self -> mut_ref alloc.string.String.t -> M ltac:(error.Result usize.t);
+    read_exact : mut_ref Self -> mut_ref (slice u8.t) -> M ltac:(error.Result unit);
+    read_buf : mut_ref Self -> BorrowedCursor.t -> M ltac:(error.Result unit);
+    read_buf_exact : mut_ref Self -> BorrowedCursor.t -> M ltac:(error.Result unit);
+    by_ref : mut_ref Self -> M (mut_ref Self);
+    bytes : Self -> M (Bytes.t Self);
+    chain {R : Set} : Self -> R -> M (Chain.t Self R);
+    take : Self -> u64.t -> M (Take.t Self);
   }.
 End Read.
 
@@ -381,15 +400,15 @@ pub trait BufRead: Read {
 }
 *)
 Module BufRead.
-  Class Trait (Self : Set) `{Read.Trait Self}: Set := { 
-    fill_buf : mut_ref Self -> Result (ref (slice u8.t));
-    consume : mut_ref Self -> usize.t -> unit;
-    has_data_left : mut_ref Self -> Result bool;
+  Class Trait (Self : Set) `{Read.Trait Self}: Set := {
+    fill_buf : mut_ref Self -> M ltac:(error.Result (ref (slice u8.t)));
+    consume : mut_ref Self -> usize.t -> M unit;
+    has_data_left : mut_ref Self -> M ltac:(error.Result bool);
     read_until :
-      mut_ref Self -> u8.t -> mut_ref (vec.Vec u8.t vec.Vec.Default.A) -> Result usize.t;
-    read_line : mut_ref Self -> mut_ref alloc.string.String.t -> Result usize.t;
-    split : Self -> u8.t -> Split.t Self;
-    lines : mut_ref Self -> Lines.t Self;
+      mut_ref Self -> u8.t -> mut_ref (vec.Vec u8.t vec.Vec.Default.A) -> M ltac:(error.Result usize.t);
+    read_line : mut_ref Self -> mut_ref alloc.string.String.t -> M ltac:(error.Result usize.t);
+    split : Self -> u8.t -> M (Split.t Self);
+    lines : mut_ref Self -> M (Lines.t Self);
   }.
 End BufRead.
 
@@ -405,11 +424,11 @@ pub trait Seek {
 }
 *)
 Module Seek.
-  Class Trait (Self : Set) : Set := { 
-    seek : mut_ref Self -> SeekFrom.t -> Result u64.t;
-    rewind : mut_ref Self -> Result unit;
-    stream_len : mut_ref Self -> Result u64.t;
-    stream_position : mut_ref Self -> Result u64.t;
+  Class Trait (Self : Set) : Set := {
+    seek : mut_ref Self -> SeekFrom.t -> M ltac:(error.Result u64.t);
+    rewind : mut_ref Self -> M ltac:(error.Result unit);
+    stream_len : mut_ref Self -> M ltac:(error.Result u64.t);
+    stream_position : mut_ref Self -> M ltac:(error.Result u64.t);
   }.
 End Seek.
 
@@ -446,7 +465,7 @@ Module stdio.
 
       (* pub fn read_line(&self, buf: &mut String) -> Result<usize> *)
       Parameter read_line :
-        ref t -> mut_ref string.String.t -> M (Result usize.t).
+        ref t -> mut_ref string.String.t -> M ltac:(error.Result usize.t).
 
       Global Instance AF_read_line : Notations.DoubleColon Self "read_line" := {
         Notations.double_colon := read_line;

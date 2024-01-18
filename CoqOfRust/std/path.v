@@ -128,7 +128,7 @@ Module Component.
   | RootDir : t
   | CurDir : t
   | ParentDir : t
-  | Normal : ref OsStr -> t
+  | Normal : ref os_str.OsStr.t -> t
   .
 End Component.
 
@@ -144,11 +144,11 @@ pub enum Prefix<'a> {
 *)
 Module Prefix.
   Inductive t : Set := 
-  | Verbatim : ref OsStr -> t
-  | VerbatimUNC : ref OsStr -> ref OsStr -> t
+  | Verbatim : ref os_str.OsStr.t -> t
+  | VerbatimUNC : ref os_str.OsStr.t -> ref os_str.OsStr.t -> t
   | VerbatimDisk : u8.t -> t
-  | DeviceNS : ref OsStr -> t
-  | UNC : ref OsStr -> ref OsStr -> t
+  | DeviceNS : ref os_str.OsStr.t -> t
+  | UNC : ref os_str.OsStr.t -> ref os_str.OsStr.t -> t
   | Disk : u8.t -> t
   .
 End Prefix.

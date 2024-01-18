@@ -1,7 +1,6 @@
 std/iter_type.v
 std/iter.v
 std/net.v
-std/os.v
 examples/axiomatized
 examples/axiomatized/examples/conversion/try_from_and_try_into.v
 examples/axiomatized/examples/custom_types/enums_testcase_linked_list.v
@@ -90,9 +89,8 @@ examples/default/examples/std_library_types/strings_raw_string_literals.v
 examples/default/examples/std_library_types/vectors.v
 examples/default/examples/std_misc/file_io_read_lines_efficient_method.v
 examples/default/examples/std_misc/file_io_read_lines.v
-examples/default/examples/std_misc/filesystem_operations.v
 examples/default/examples/std_misc/foreign_function_interface.v
-examples/default/examples/std_misc/program_arguments_parsing.
+examples/default/examples/std_misc/program_arguments_parsing.v
 examples/default/examples/subtle.v
 examples/default/examples/test0.v
 examples/default/examples/traits/hash.v

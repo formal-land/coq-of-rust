@@ -29,6 +29,18 @@ End DirBuilder.
 (* pub struct DirEntry(_); *)
 Module DirEntry.
   Parameter t : Set.
+
+  Module Impl.
+    Definition Self : Set := t.
+
+    (* pub fn path(&self) -> PathBuf *)
+    Parameter path : ref Self -> M path.PathBuf.t.
+
+    Global Instance AF_path :
+      Notations.DoubleColon Self "path" := {
+      Notations.double_colon := path;
+    }.
+  End Impl.
 End DirEntry.
 
 (* pub struct File { /* private fields */ } *)
@@ -41,7 +53,7 @@ Module File.
     (* pub fn create<P: AsRef<Path>>(path: P) -> Result<File> *)
     Parameter create :
       forall {P : Set},
-      P -> M (std.io.Result t).
+      P -> M ltac:(std.io.error.Result t).
 
     Global Instance AF_create {P : Set} :
       Notations.DoubleColon Self "create" := {
@@ -51,7 +63,7 @@ Module File.
     (* pub fn open<P: AsRef<Path>>(path: P) -> Result<File> *)
     Parameter open :
       forall {P : Set},
-      P -> M (std.io.Result t).
+      P -> M ltac:(std.io.error.Result t).
 
     Global Instance AF_open {P : Set} :
       Notations.DoubleColon Self "open" := {
@@ -137,8 +149,8 @@ Module Impl_OpenOptions.
   }.
 
   Parameter open :
-    forall {P : Set} (*`{core.convert.AsRef.Trait P std.path.Path}*),
-    ref Self -> P -> M (std.io.Result File.t).
+    forall {P : Set},
+    ref Self -> P -> M ltac:(std.io.error.Result File.t).
 
   Global Instance AF_open {P : Set} :
     Notations.DoubleColon Self "open" := {
@@ -161,20 +173,45 @@ End ReadDir.
 [ ] try_exists
 [ ] canonicalize
 [ ] copy
-[ ] create_dir
-[ ] create_dir_all
+[x] create_dir
+[x] create_dir_all
 [ ] hard_link
 [ ] metadata
 [ ] read
-[ ] read_dir
+[x] read_dir
 [ ] read_link
 [ ] read_to_string
-[ ] remove_dir
+[x] remove_dir
 [ ] remove_dir_all
-[ ] remove_file
+[x] remove_file
 [ ] rename
 [ ] set_permissions
 [x] soft_link(Deprecated)
 [ ] symlink_metadata
 [ ] write
 *)
+
+(* pub fn create_dir<P: AsRef<Path>>(path: P) -> Result<()> *)
+Parameter create_dir :
+  forall {P : Set},
+  P -> M ltac:(std.io.error.Result unit).
+
+(* pub fn create_dir_all<P: AsRef<Path>>(path: P) -> Result<()> *)
+Parameter create_dir_all :
+  forall {P : Set},
+  P -> M ltac:(std.io.error.Result unit).
+
+(* pub fn read_dir<P: AsRef<Path>>(path: P) -> Result<ReadDir> *)
+Parameter read_dir :
+  forall {P : Set},
+  P -> M ltac:(std.io.error.Result ReadDir.t).
+
+(* pub fn remove_dir<P: AsRef<Path>>(path: P) -> Result<()> *)
+Parameter remove_dir :
+  forall {P : Set},
+  P -> M ltac:(std.io.error.Result unit).
+
+(* pub fn remove_file<P: AsRef<Path>>(path: P) -> Result<()> *)
+Parameter remove_file :
+  forall {P : Set},
+  P -> M ltac:(std.io.error.Result unit).

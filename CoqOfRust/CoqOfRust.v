@@ -168,7 +168,7 @@ Require CoqOfRust.std.io.
 (* Require CoqOfRust.std.iter_type. *)
 (* Require CoqOfRust.std.net. *)
 Require CoqOfRust.std.ops.
-(* Require CoqOfRust.std.os. *)
+Require CoqOfRust.std.os.
 Require CoqOfRust.std.panic.
 Require CoqOfRust.std.panicking.
 Require CoqOfRust.std.path.
@@ -200,7 +200,7 @@ Module std.
   (* Export CoqOfRust.std.iter. *)
   (* Export CoqOfRust.std.net. *)
   Export CoqOfRust.std.ops.
-  (* Export CoqOfRust.std.os. *)
+  Export CoqOfRust.std.os.
   Export CoqOfRust.std.panic.
   Export CoqOfRust.std.panicking.
   Export CoqOfRust.std.path.

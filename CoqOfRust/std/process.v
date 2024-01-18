@@ -83,7 +83,7 @@ Module Child.
     Definition Self : Set := t.
 
     (* pub fn wait(&mut self) -> Result<ExitStatus> *)
-    Parameter wait : mut_ref Self -> M (std.io.Result ExitStatus.t).
+    Parameter wait : mut_ref Self -> M ltac:(std.io.error.Result ExitStatus.t).
 
     Global Instance AF_wait :
       Notations.DoubleColon Self "wait" := {
@@ -143,7 +143,7 @@ Module Command.
     }.
 
     (* pub fn spawn(&mut self) -> Result<Child> *)
-    Parameter spawn : mut_ref Self -> M (std.io.Result Child.t).
+    Parameter spawn : mut_ref Self -> M ltac:(std.io.error.Result Child.t).
 
     Global Instance AF_spawn :
       Notations.DoubleColon Self "spawn" := {
@@ -167,7 +167,7 @@ Module Command.
     }.
 
     (* pub fn output(&mut self) -> Result<Output> *)
-    Parameter output : mut_ref Self -> M (std.io.Result Output.t).
+    Parameter output : mut_ref Self -> M ltac:(std.io.error.Result Output.t).
 
     Global Instance AF_output :
       Notations.DoubleColon Self "output" := {
