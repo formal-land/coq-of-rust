@@ -41,6 +41,7 @@ fn main() {
         println!("I don't like letters. Let's go with an emoticon :)!");
     }
 }
+"
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=

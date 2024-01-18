@@ -145,6 +145,15 @@ Module iter.
   Global Instance Clone_for_Iter {T : Set} {H0 : clone.Clone.Trait T} :
     clone.Clone.Trait (Iter.t T).
   Admitted.
+
+  (*
+  pub struct IterMut<'a, T>
+  where
+      T: 'a,{ /* private fields */ }
+  *)
+  Module IterMut.
+    Parameter t : Set -> Set.
+  End IterMut.
 End iter.
 
 (* 
@@ -488,6 +497,14 @@ Section Impl.
   Global Instance AF_into_vec {A : Set} :
       Notations.DoubleColon Self "into_vec" := {
     Notations.double_colon := into_vec (A := A);
+  }.
+
+  (* pub fn iter_mut(&mut self) -> IterMut<'_, T> *)
+  Parameter iter_mut :
+    mut_ref Self -> M (iter.IterMut.t T).
+
+  Global Instance AF_iter_mut : Notations.DoubleColon Self "iter_mut" := {
+    Notations.double_colon := iter_mut;
   }.
 End Impl.
 End Impl.

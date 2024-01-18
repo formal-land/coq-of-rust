@@ -192,6 +192,14 @@ Section Impl_Vec.
     Notations.double_colon := with_capacity;
   }.
 
+  (* pub fn pop(&mut self) -> Option<T> *)
+  Parameter pop : mut_ref Self -> M (option.Option.t T).
+
+  Global Instance AF_pop :
+    Notations.DoubleColon Self "pop" := {
+    Notations.double_colon := pop;
+  }.
+
   Global Instance I_Default {ℋ_0 : default.Default.Trait T} :
     default.Default.Trait Self.
   Admitted.

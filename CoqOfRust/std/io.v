@@ -74,10 +74,29 @@ Module BorrowedCursor.
   Parameter t : Set.
 End BorrowedCursor.
 
-(* pub struct BufReader<R> { /* private fields */ } *)
-Module BufReader.
-  Parameter t : Set -> Set.
-End BufReader.
+Module buffered.
+  Module bufreader.
+    (* pub struct BufReader<R> { /* private fields */ } *)
+    Module BufReader.
+      Parameter t : Set -> Set.
+
+      Module  Impl.
+      Section Impl.
+        Context {R : Set}.
+
+        Definition Self : Set := t R.
+
+        (* pub fn new(inner: R) -> BufReader<R> *)
+        Parameter new : R -> M (t R).
+
+        Global Instance AF_new : Notations.DoubleColon Self "new" := {
+          Notations.double_colon := new;
+        }.
+      End Impl.
+      End Impl.
+    End BufReader.
+  End bufreader.
+End buffered.
 
 (* pub struct IoSlice<'a>(_); *)
 Module IoSlice.
@@ -400,7 +419,7 @@ pub trait BufRead: Read {
 }
 *)
 Module BufRead.
-  Class Trait (Self : Set) `{Read.Trait Self}: Set := {
+  Class Trait (Self : Set) : Set := {
     fill_buf : mut_ref Self -> M ltac:(error.Result (ref (slice u8.t)));
     consume : mut_ref Self -> usize.t -> M unit;
     has_data_left : mut_ref Self -> M ltac:(error.Result bool);
@@ -408,7 +427,7 @@ Module BufRead.
       mut_ref Self -> u8.t -> mut_ref (vec.Vec u8.t vec.Vec.Default.A) -> M ltac:(error.Result usize.t);
     read_line : mut_ref Self -> mut_ref alloc.string.String.t -> M ltac:(error.Result usize.t);
     split : Self -> u8.t -> M (Split.t Self);
-    lines : mut_ref Self -> M (Lines.t Self);
+    lines : Self -> M (Lines.t Self);
   }.
 End BufRead.
 

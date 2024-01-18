@@ -84,11 +84,7 @@ examples/default/examples/primitives/tuples.v
 examples/default/examples/scoping_rules/scoping_rules_lifetimes_bounds.v
 examples/default/examples/scoping_rules/scoping_rules_ownership_and_rules_partial_moves.v
 examples/default/examples/std_library_types/hash_map_hash_set.v
-examples/default/examples/std_library_types/strings_literals_and_escapes.v
-examples/default/examples/std_library_types/strings_raw_string_literals.v
-examples/default/examples/std_library_types/vectors.v
 examples/default/examples/std_misc/file_io_read_lines_efficient_method.v
-examples/default/examples/std_misc/file_io_read_lines.v
 examples/default/examples/std_misc/foreign_function_interface.v
 examples/default/examples/std_misc/program_arguments_parsing.v
 examples/default/examples/subtle.v

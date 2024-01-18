@@ -45,7 +45,7 @@ Definition main : M unit :=
       M.alloc α6 in
     M.alloc tt in
   let* unicode_codepoint : M.Val (ref str.t) :=
-    M.copy (mk_str (String.String "29" "")) in
+    M.copy (mk_str (String.String "029" "")) in
   let* character_name : M.Val (ref str.t) :=
     M.copy (mk_str """DOUBLE-STRUCK CAPITAL R""") in
   let* _ : M.Val unit :=

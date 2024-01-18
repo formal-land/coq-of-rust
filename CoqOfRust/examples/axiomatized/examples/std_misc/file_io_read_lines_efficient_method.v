@@ -2,22 +2,6 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (*
-fn main() {
-    // File hosts must exist in current path before this produces output
-    if let Ok(lines) = read_lines("./hosts") {
-        // Consumes the iterator, returns an (Optional) String
-        for line in lines {
-            if let Ok(ip) = line {
-                println!("{}", ip);
-            }
-        }
-    }
-}
-*)
-(* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M unit.
-
-(*
 fn read_lines<P>(filename: P) -> io::Result<io::Lines<io::BufReader<File>>>
 where
     P: AsRef<Path>,
@@ -33,3 +17,19 @@ Parameter read_lines :
         ltac:(std.io.error.Result
           (std.io.Lines.t
             (std.io.buffered.bufreader.BufReader.t std.fs.File.t))).
+
+(*
+fn main() {
+    // File hosts must exist in current path before this produces output
+    if let Ok(lines) = read_lines("./hosts") {
+        // Consumes the iterator, returns an (Optional) String
+        for line in lines {
+            if let Ok(ip) = line {
+                println!("{}", ip);
+            }
+        }
+    }
+}
+*)
+(* #[allow(dead_code)] - function was ignored by the compiler *)
+Parameter main : M unit.
