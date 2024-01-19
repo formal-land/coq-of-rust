@@ -13,6 +13,10 @@ Module Color.
   | Red
   | Green
   | Blue.
+  
+  Definition Red_discriminant : isize.t := Integer.of_Z 16711680.
+  Definition Green_discriminant : isize.t := Integer.of_Z 65280.
+  Definition Blue_discriminant : isize.t := Integer.of_Z 255.
 End Color.
 
 (*

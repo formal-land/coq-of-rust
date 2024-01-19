@@ -79,6 +79,7 @@ pub(crate) fn compile_def_id(env: &Env, def_id: rustc_hir::def_id::DefId) -> Pat
     let crate_name: String = env.tcx.crate_name(def_id.krate).to_string();
     let path_items = env.tcx.def_path(def_id);
     let mut segments = vec![crate_name];
+
     segments.extend(
         path_items
             .data
@@ -86,12 +87,21 @@ pub(crate) fn compile_def_id(env: &Env, def_id: rustc_hir::def_id::DefId) -> Pat
             .filter_map(|item| match item.data.get_opt_name() {
                 Some(name) => Some(name.to_string()),
                 None => match &item.data {
-                    DefPathData::Ctor | DefPathData::ForeignMod | DefPathData::Impl => None,
+                    DefPathData::AnonConst
+                    | DefPathData::Ctor
+                    | DefPathData::ForeignMod
+                    | DefPathData::Impl => None,
                     _ => Some(item.data.to_string()),
                 },
             })
             .map(|name| to_valid_coq_name(&name)),
     );
+
+    if path_items.data.last().unwrap().data == DefPathData::AnonConst {
+        let last_segment = segments.pop().unwrap();
+        segments.push(format!("{}{}", last_segment, "_discriminant"));
+    }
+
     Path { segments }
 }
 

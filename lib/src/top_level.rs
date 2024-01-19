@@ -152,7 +152,7 @@ enum TopLevelItem {
         name: String,
         ty_params: Vec<(String, Option<Rc<CoqType>>)>,
         predicates: Vec<Rc<WherePredicate>>,
-        variants: Vec<(String, Rc<VariantItem>)>,
+        variants: Vec<(String, Rc<VariantItem>, Option<u128>)>,
     },
     TypeStructStruct(TypeStructStruct),
     TypeStructTuple {
@@ -510,7 +510,23 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<Rc<To
                             }
                             VariantData::Unit(_, _) => VariantItem::Tuple { tys: vec![] },
                         };
-                        (name, Rc::new(fields))
+                        let discriminant = match &variant.disr_expr {
+                            None => None,
+                            Some(annon_const) => {
+                                let body = env.tcx.hir().body(annon_const.body);
+                                let value = body.value;
+
+                                match value.kind {
+                                    rustc_hir::ExprKind::Lit(rustc_span::source_map::Spanned {
+                                        node: rustc_ast::ast::LitKind::Int(discriminant, _),
+                                        ..
+                                    }) => Some(*discriminant),
+                                    _ => None,
+                                }
+                            }
+                        };
+
+                        (name, Rc::new(fields), discriminant)
                     })
                     .collect(),
             })]
@@ -1814,11 +1830,11 @@ impl TopLevelItem {
     fn to_coq_enum<'a>(
         name: &str,
         ty_params: &[(String, Option<Rc<CoqType>>)],
-        variants: &'a [(String, Rc<VariantItem>)],
+        variants: &'a [(String, Rc<VariantItem>, Option<u128>)],
     ) -> coq::TopLevel<'a> {
         let header = variants
             .iter()
-            .filter_map(|(name, fields)| match &**fields {
+            .filter_map(|(name, fields, _)| match fields.as_ref() {
                 VariantItem::Tuple { .. } => None,
                 VariantItem::Struct { fields } => {
                     Some(coq::TopLevelItem::Module(coq::Module::new(
@@ -1849,13 +1865,31 @@ impl TopLevelItem {
                 .collect::<Vec<_>>(),
             variants
                 .iter()
-                .map(|(s, v)| coq::IndFieldDef::new(s, v.to_owned()))
+                .map(|(name, fields, _)| coq::IndFieldDef::new(name, fields.clone()))
                 .collect::<Vec<_>>(),
         ));
 
+        // Explicit values for the discriminants
+        let disciminants = variants
+            .iter()
+            .filter_map(|(name, _, discriminant)| {
+                discriminant.as_ref().map(|discriminant| {
+                    coq::TopLevelItem::Definition(coq::Definition::new(
+                        &format!("{name}_discriminant"),
+                        &coq::DefinitionKind::Alias {
+                            args: vec![],
+                            ty: Some(coq::Expression::just_name("isize.t")),
+                            body: coq::Expression::just_name("Integer.of_Z")
+                                .apply(&coq::Expression::just_name(&format!("{discriminant}"))),
+                        },
+                    ))
+                })
+            })
+            .collect::<Vec<_>>();
+
         let getters = variants
             .iter()
-            .map(|(name, fields)| match fields.as_ref() {
+            .map(|(name, fields, _)| match fields.as_ref() {
                 VariantItem::Struct { fields } => fields
                     .iter()
                     .map(|(field_name, _)| {
@@ -1909,6 +1943,12 @@ impl TopLevelItem {
             header
                 .into_iter()
                 .chain(vec![inductive_item])
+                .chain(if disciminants.is_empty() {
+                    vec![]
+                } else {
+                    vec![coq::TopLevelItem::Line]
+                })
+                .chain(disciminants)
                 .chain(getters)
                 .collect(),
         )]);

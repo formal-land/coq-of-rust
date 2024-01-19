@@ -13,6 +13,10 @@ Module Color.
   | Red
   | Green
   | Blue.
+  
+  Definition Red_discriminant : isize.t := Integer.of_Z 16711680.
+  Definition Green_discriminant : isize.t := Integer.of_Z 65280.
+  Definition Blue_discriminant : isize.t := Integer.of_Z 255.
 End Color.
 
 (*
@@ -33,7 +37,8 @@ Definition main : M unit :=
       let* α1 : ref str.t := M.read (mk_str "
 ") in
       let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : M.Val i32.t := M.alloc (rust_cast 0) in
+      let* α3 : M.Val i32.t :=
+        M.alloc (rust_cast ((Integer.of_Z 0) : isize.t)) in
       let* α4 : core.fmt.rt.Argument.t :=
         M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α3)) in
       let* α5 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4 ] in
@@ -51,7 +56,8 @@ Definition main : M unit :=
       let* α1 : ref str.t := M.read (mk_str "
 ") in
       let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : M.Val i32.t := M.alloc (rust_cast 1) in
+      let* α3 : M.Val i32.t :=
+        M.alloc (rust_cast ((Integer.of_Z 1) : isize.t)) in
       let* α4 : core.fmt.rt.Argument.t :=
         M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α3)) in
       let* α5 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4 ] in
@@ -70,7 +76,9 @@ Definition main : M unit :=
 ") in
       let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
       let* α3 : isize.t :=
-        BinOp.Panic.add enums_c_like.Color.Red.{{constant}} 0 in
+        BinOp.Panic.add
+          enums_c_like.Color.Red_discriminant
+          ((Integer.of_Z 0) : isize.t) in
       let* α4 : M.Val i32.t := M.alloc (rust_cast α3) in
       let* α5 : core.fmt.rt.Argument.t :=
         M.call (core.fmt.rt.Argument.t::["new_lower_hex"] (borrow α4)) in
@@ -104,7 +112,9 @@ Definition main : M unit :=
 ") in
       let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
       let* α3 : isize.t :=
-        BinOp.Panic.add enums_c_like.Color.Blue.{{constant}} 0 in
+        BinOp.Panic.add
+          enums_c_like.Color.Blue_discriminant
+          ((Integer.of_Z 0) : isize.t) in
       let* α4 : M.Val i32.t := M.alloc (rust_cast α3) in
       let* α5 : core.fmt.rt.Argument.t :=
         M.call (core.fmt.rt.Argument.t::["new_lower_hex"] (borrow α4)) in

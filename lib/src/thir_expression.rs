@@ -1242,9 +1242,14 @@ fn compile_expr_kind<'a>(
             }
             _ => Rc::new(ExprKind::Literal(Literal::Error, Some(ty.val()))),
         },
-        thir::ExprKind::NonHirLiteral { lit, .. } => {
-            Rc::new(ExprKind::NonHirLiteral(*lit)).alloc(Some(ty))
-        }
+        thir::ExprKind::NonHirLiteral { lit, .. } => Rc::new(ExprKind::Literal(
+            Literal::Integer {
+                value: lit.try_to_uint(lit.size()).unwrap(),
+                neg: false,
+            },
+            Some(ty.clone()),
+        ))
+        .alloc(Some(ty)),
         thir::ExprKind::ZstLiteral { .. } => match &expr.ty.kind() {
             TyKind::FnDef(def_id, generic_args) => {
                 let key = env.tcx.def_key(def_id);

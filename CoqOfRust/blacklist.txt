@@ -45,7 +45,6 @@ examples/axiomatized/examples/rust_book/traits/traits.v
 examples/axiomatized/examples/subtle.v
 examples/axiomatized/examples/test0.v
 examples/default/examples/ink_contracts/Proofs/erc20.v
-examples/default/examples/rust_book/custom_types/enums_c_like.v
 examples/default/examples/rust_book/custom_types/enums_testcase_linked_list.v
 examples/default/examples/rust_book/error_handling/pulling_results_out_of_options_with_stop_error_processing.v
 examples/default/examples/rust_book/error_handling/unpacking_options_and_defaults_via_get_or_insert_with.v
