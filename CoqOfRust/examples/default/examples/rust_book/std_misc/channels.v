@@ -155,63 +155,80 @@ Definition main : M unit :=
                                     let* α0 : std.thread.JoinHandle.t unit :=
                                       M.call
                                         (std.thread.spawn
-                                          ((let* _ : M.Val unit :=
-                                            let* α0 : i32.t := M.read id in
-                                            let* α1 :
-                                                core.result.Result.t
-                                                  unit
-                                                  (std.sync.mpsc.SendError.t
-                                                    i32.t) :=
-                                              M.call
-                                                ((std.sync.mpsc.Sender.t
-                                                      i32.t)::["send"]
-                                                  (borrow thread_tx)
-                                                  α0) in
-                                            let* α2 : unit :=
-                                              M.call
-                                                ((core.result.Result.t
-                                                      unit
-                                                      (std.sync.mpsc.SendError.t
-                                                        i32.t))::["unwrap"]
-                                                  α1) in
-                                            M.alloc α2 in
-                                          let* _ : M.Val unit :=
-                                            let* _ : M.Val unit :=
-                                              let* α0 : ref str.t :=
-                                                M.read (mk_str "thread ") in
-                                              let* α1 : ref str.t :=
-                                                M.read (mk_str " finished
+                                          (fun (α0 : unit) =>
+                                            (let* α0 := M.alloc α0 in
+                                            match_operator
+                                              α0
+                                              [
+                                                fun γ =>
+                                                  (let* _ : M.Val unit :=
+                                                    let* α0 : i32.t :=
+                                                      M.read id in
+                                                    let* α1 :
+                                                        core.result.Result.t
+                                                          unit
+                                                          (std.sync.mpsc.SendError.t
+                                                            i32.t) :=
+                                                      M.call
+                                                        ((std.sync.mpsc.Sender.t
+                                                              i32.t)::["send"]
+                                                          (borrow thread_tx)
+                                                          α0) in
+                                                    let* α2 : unit :=
+                                                      M.call
+                                                        ((core.result.Result.t
+                                                              unit
+                                                              (std.sync.mpsc.SendError.t
+                                                                i32.t))::["unwrap"]
+                                                          α1) in
+                                                    M.alloc α2 in
+                                                  let* _ : M.Val unit :=
+                                                    let* _ : M.Val unit :=
+                                                      let* α0 : ref str.t :=
+                                                        M.read
+                                                          (mk_str "thread ") in
+                                                      let* α1 : ref str.t :=
+                                                        M.read
+                                                          (mk_str
+                                                            " finished
 ") in
-                                              let* α2 :
-                                                  M.Val (array (ref str.t)) :=
-                                                M.alloc [ α0; α1 ] in
-                                              let* α3 :
-                                                  core.fmt.rt.Argument.t :=
-                                                M.call
-                                                  (core.fmt.rt.Argument.t::["new_display"]
-                                                    (borrow id)) in
-                                              let* α4 :
-                                                  M.Val
-                                                    (array
-                                                      core.fmt.rt.Argument.t) :=
-                                                M.alloc [ α3 ] in
-                                              let* α5 : core.fmt.Arguments.t :=
-                                                M.call
-                                                  (core.fmt.Arguments.t::["new_v1"]
-                                                    (pointer_coercion
-                                                      "Unsize"
-                                                      (borrow α2))
-                                                    (pointer_coercion
-                                                      "Unsize"
-                                                      (borrow α4))) in
-                                              let* α6 : unit :=
-                                                M.call
-                                                  (std.io.stdio._print α5) in
-                                              M.alloc α6 in
-                                            M.alloc tt in
-                                          let* α0 : M.Val unit := M.alloc tt in
-                                          M.read α0) :
-                                          M unit)) in
+                                                      let* α2 :
+                                                          M.Val
+                                                            (array
+                                                              (ref str.t)) :=
+                                                        M.alloc [ α0; α1 ] in
+                                                      let* α3 :
+                                                          core.fmt.rt.Argument.t :=
+                                                        M.call
+                                                          (core.fmt.rt.Argument.t::["new_display"]
+                                                            (borrow id)) in
+                                                      let* α4 :
+                                                          M.Val
+                                                            (array
+                                                              core.fmt.rt.Argument.t) :=
+                                                        M.alloc [ α3 ] in
+                                                      let* α5 :
+                                                          core.fmt.Arguments.t :=
+                                                        M.call
+                                                          (core.fmt.Arguments.t::["new_v1"]
+                                                            (pointer_coercion
+                                                              "Unsize"
+                                                              (borrow α2))
+                                                            (pointer_coercion
+                                                              "Unsize"
+                                                              (borrow α4))) in
+                                                      let* α6 : unit :=
+                                                        M.call
+                                                          (std.io.stdio._print
+                                                            α5) in
+                                                      M.alloc α6 in
+                                                    M.alloc tt in
+                                                  let* α0 : M.Val unit :=
+                                                    M.alloc tt in
+                                                  M.read α0) :
+                                                  M unit
+                                              ]) :
+                                            M unit)) in
                                     M.alloc α0 in
                                   let* _ : M.Val unit :=
                                     let* α0 : std.thread.JoinHandle.t unit :=

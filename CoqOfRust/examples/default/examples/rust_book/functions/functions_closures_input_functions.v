@@ -55,19 +55,27 @@ fn main() {
 Definition main : M unit :=
   let* closure : M.Val (unit -> M unit) :=
     M.alloc
-      ((let* _ : M.Val unit :=
-        let* α0 : ref str.t := M.read (mk_str "I'm a closure!
+      (fun (α0 : unit) =>
+        (let* α0 := M.alloc α0 in
+        match_operator
+          α0
+          [
+            fun γ =>
+              (let* _ : M.Val unit :=
+                let* α0 : ref str.t := M.read (mk_str "I'm a closure!
 ") in
-        let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-        let* α2 : core.fmt.Arguments.t :=
-          M.call
-            (core.fmt.Arguments.t::["new_const"]
-              (pointer_coercion "Unsize" (borrow α1))) in
-        let* α3 : unit := M.call (std.io.stdio._print α2) in
-        M.alloc α3 in
-      let* α0 : M.Val unit := M.alloc tt in
-      M.read α0) :
-      M unit) in
+                let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
+                let* α2 : core.fmt.Arguments.t :=
+                  M.call
+                    (core.fmt.Arguments.t::["new_const"]
+                      (pointer_coercion "Unsize" (borrow α1))) in
+                let* α3 : unit := M.call (std.io.stdio._print α2) in
+                M.alloc α3 in
+              let* α0 : M.Val unit := M.alloc tt in
+              M.read α0) :
+              M unit
+          ]) :
+        M unit) in
   let* _ : M.Val unit :=
     let* α0 : unit -> M unit := M.read closure in
     let* α1 : unit := M.call (functions_closures_input_functions.call_me α0) in

@@ -149,25 +149,34 @@ Definition main : M unit :=
         (unit ->
           M unpacking_options_and_defaults_via_get_or_insert_with.Fruit.t) :=
     M.alloc
-      ((let* _ : M.Val unit :=
-        let* _ : M.Val unit :=
-          let* α0 : ref str.t :=
-            M.read (mk_str "Providing lemon as fallback
+      (fun (α0 : unit) =>
+        (let* α0 := M.alloc α0 in
+        match_operator
+          α0
+          [
+            fun γ =>
+              (let* _ : M.Val unit :=
+                let* _ : M.Val unit :=
+                  let* α0 : ref str.t :=
+                    M.read (mk_str "Providing lemon as fallback
 ") in
-          let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-          let* α2 : core.fmt.Arguments.t :=
-            M.call
-              (core.fmt.Arguments.t::["new_const"]
-                (pointer_coercion "Unsize" (borrow α1))) in
-          let* α3 : unit := M.call (std.io.stdio._print α2) in
-          M.alloc α3 in
-        M.alloc tt in
-      let* α0 :
-          M.Val unpacking_options_and_defaults_via_get_or_insert_with.Fruit.t :=
-        M.alloc
-          unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Lemon in
-      M.read α0) :
-      M unpacking_options_and_defaults_via_get_or_insert_with.Fruit.t) in
+                  let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
+                  let* α2 : core.fmt.Arguments.t :=
+                    M.call
+                      (core.fmt.Arguments.t::["new_const"]
+                        (pointer_coercion "Unsize" (borrow α1))) in
+                  let* α3 : unit := M.call (std.io.stdio._print α2) in
+                  M.alloc α3 in
+                M.alloc tt in
+              let* α0 :
+                  M.Val
+                    unpacking_options_and_defaults_via_get_or_insert_with.Fruit.t :=
+                M.alloc
+                  unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Lemon in
+              M.read α0) :
+              M unpacking_options_and_defaults_via_get_or_insert_with.Fruit.t
+          ]) :
+        M unpacking_options_and_defaults_via_get_or_insert_with.Fruit.t) in
   let* first_available_fruit :
       M.Val
         (mut_ref

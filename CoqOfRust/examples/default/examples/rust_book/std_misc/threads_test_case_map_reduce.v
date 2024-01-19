@@ -236,114 +236,131 @@ Definition main : M unit :=
                             let* α0 : std.thread.JoinHandle.t u32.t :=
                               M.call
                                 (std.thread.spawn
-                                  ((let* result : M.Val u32.t :=
-                                    let* α0 :
-                                        (core.iter.adapters.map.Map.t
-                                            core.str.iter.Chars.t
-                                            (char.t -> M u32.t))
-                                          ->
-                                          M u32.t :=
-                                      ltac:(M.get_method (fun ℐ =>
-                                        core.iter.traits.iterator.Iterator.sum
-                                          (Self :=
-                                            core.iter.adapters.map.Map.t
-                                              core.str.iter.Chars.t
-                                              (char.t -> M u32.t))
-                                          (S := u32.t)
-                                          (Trait := ℐ))) in
-                                    let* α1 :
-                                        core.str.iter.Chars.t ->
-                                          (char.t -> M u32.t) ->
-                                          M
-                                            (core.iter.adapters.map.Map.t
-                                              core.str.iter.Chars.t
-                                              (char.t -> M u32.t)) :=
-                                      ltac:(M.get_method (fun ℐ =>
-                                        core.iter.traits.iterator.Iterator.map
-                                          (Self := core.str.iter.Chars.t)
-                                          (B := u32.t)
-                                          (F := char.t -> M u32.t)
-                                          (Trait := ℐ))) in
-                                    let* α2 : ref str.t :=
-                                      M.read data_segment in
-                                    let* α3 : core.str.iter.Chars.t :=
-                                      M.call (str.t::["chars"] α2) in
-                                    let* α4 :
-                                        core.iter.adapters.map.Map.t
-                                          core.str.iter.Chars.t
-                                          (char.t -> M u32.t) :=
-                                      M.call
-                                        (α1
-                                          α3
-                                          (fun (α0 : char.t) =>
-                                            (let* α0 := M.alloc α0 in
-                                            match_operator
-                                              α0
-                                              [
-                                                fun γ =>
-                                                  (let* c := M.copy γ in
-                                                  let* α0 : char.t :=
-                                                    M.read c in
-                                                  let* α1 :
-                                                      core.option.Option.t
-                                                        u32.t :=
-                                                    M.call
-                                                      (char.t::["to_digit"]
-                                                        α0
-                                                        ((Integer.of_Z 10) :
-                                                          u32.t)) in
-                                                  let* α2 : ref str.t :=
-                                                    M.read
-                                                      (mk_str
-                                                        "should be a digit") in
-                                                  M.call
-                                                    ((core.option.Option.t
-                                                          u32.t)::["expect"]
-                                                      α1
-                                                      α2)) :
-                                                  M u32.t
-                                              ]) :
-                                            M u32.t)) in
-                                    let* α5 : u32.t := M.call (α0 α4) in
-                                    M.alloc α5 in
-                                  let* _ : M.Val unit :=
-                                    let* _ : M.Val unit :=
-                                      let* α0 : ref str.t :=
-                                        M.read (mk_str "processed segment ") in
-                                      let* α1 : ref str.t :=
-                                        M.read (mk_str ", result=") in
-                                      let* α2 : ref str.t :=
-                                        M.read (mk_str "
+                                  (fun (α0 : unit) =>
+                                    (let* α0 := M.alloc α0 in
+                                    match_operator
+                                      α0
+                                      [
+                                        fun γ =>
+                                          (let* result : M.Val u32.t :=
+                                            let* α0 :
+                                                (core.iter.adapters.map.Map.t
+                                                    core.str.iter.Chars.t
+                                                    (char.t -> M u32.t))
+                                                  ->
+                                                  M u32.t :=
+                                              ltac:(M.get_method (fun ℐ =>
+                                                core.iter.traits.iterator.Iterator.sum
+                                                  (Self :=
+                                                    core.iter.adapters.map.Map.t
+                                                      core.str.iter.Chars.t
+                                                      (char.t -> M u32.t))
+                                                  (S := u32.t)
+                                                  (Trait := ℐ))) in
+                                            let* α1 :
+                                                core.str.iter.Chars.t ->
+                                                  (char.t -> M u32.t) ->
+                                                  M
+                                                    (core.iter.adapters.map.Map.t
+                                                      core.str.iter.Chars.t
+                                                      (char.t -> M u32.t)) :=
+                                              ltac:(M.get_method (fun ℐ =>
+                                                core.iter.traits.iterator.Iterator.map
+                                                  (Self :=
+                                                    core.str.iter.Chars.t)
+                                                  (B := u32.t)
+                                                  (F := char.t -> M u32.t)
+                                                  (Trait := ℐ))) in
+                                            let* α2 : ref str.t :=
+                                              M.read data_segment in
+                                            let* α3 : core.str.iter.Chars.t :=
+                                              M.call (str.t::["chars"] α2) in
+                                            let* α4 :
+                                                core.iter.adapters.map.Map.t
+                                                  core.str.iter.Chars.t
+                                                  (char.t -> M u32.t) :=
+                                              M.call
+                                                (α1
+                                                  α3
+                                                  (fun (α0 : char.t) =>
+                                                    (let* α0 := M.alloc α0 in
+                                                    match_operator
+                                                      α0
+                                                      [
+                                                        fun γ =>
+                                                          (let* c := M.copy γ in
+                                                          let* α0 : char.t :=
+                                                            M.read c in
+                                                          let* α1 :
+                                                              core.option.Option.t
+                                                                u32.t :=
+                                                            M.call
+                                                              (char.t::["to_digit"]
+                                                                α0
+                                                                ((Integer.of_Z
+                                                                    10) :
+                                                                  u32.t)) in
+                                                          let* α2 : ref str.t :=
+                                                            M.read
+                                                              (mk_str
+                                                                "should be a digit") in
+                                                          M.call
+                                                            ((core.option.Option.t
+                                                                  u32.t)::["expect"]
+                                                              α1
+                                                              α2)) :
+                                                          M u32.t
+                                                      ]) :
+                                                    M u32.t)) in
+                                            let* α5 : u32.t := M.call (α0 α4) in
+                                            M.alloc α5 in
+                                          let* _ : M.Val unit :=
+                                            let* _ : M.Val unit :=
+                                              let* α0 : ref str.t :=
+                                                M.read
+                                                  (mk_str
+                                                    "processed segment ") in
+                                              let* α1 : ref str.t :=
+                                                M.read (mk_str ", result=") in
+                                              let* α2 : ref str.t :=
+                                                M.read (mk_str "
 ") in
-                                      let* α3 : M.Val (array (ref str.t)) :=
-                                        M.alloc [ α0; α1; α2 ] in
-                                      let* α4 : core.fmt.rt.Argument.t :=
-                                        M.call
-                                          (core.fmt.rt.Argument.t::["new_display"]
-                                            (borrow i)) in
-                                      let* α5 : core.fmt.rt.Argument.t :=
-                                        M.call
-                                          (core.fmt.rt.Argument.t::["new_display"]
-                                            (borrow result)) in
-                                      let* α6 :
-                                          M.Val
-                                            (array core.fmt.rt.Argument.t) :=
-                                        M.alloc [ α4; α5 ] in
-                                      let* α7 : core.fmt.Arguments.t :=
-                                        M.call
-                                          (core.fmt.Arguments.t::["new_v1"]
-                                            (pointer_coercion
-                                              "Unsize"
-                                              (borrow α3))
-                                            (pointer_coercion
-                                              "Unsize"
-                                              (borrow α6))) in
-                                      let* α8 : unit :=
-                                        M.call (std.io.stdio._print α7) in
-                                      M.alloc α8 in
-                                    M.alloc tt in
-                                  M.read result) :
-                                  M u32.t)) in
+                                              let* α3 :
+                                                  M.Val (array (ref str.t)) :=
+                                                M.alloc [ α0; α1; α2 ] in
+                                              let* α4 :
+                                                  core.fmt.rt.Argument.t :=
+                                                M.call
+                                                  (core.fmt.rt.Argument.t::["new_display"]
+                                                    (borrow i)) in
+                                              let* α5 :
+                                                  core.fmt.rt.Argument.t :=
+                                                M.call
+                                                  (core.fmt.rt.Argument.t::["new_display"]
+                                                    (borrow result)) in
+                                              let* α6 :
+                                                  M.Val
+                                                    (array
+                                                      core.fmt.rt.Argument.t) :=
+                                                M.alloc [ α4; α5 ] in
+                                              let* α7 : core.fmt.Arguments.t :=
+                                                M.call
+                                                  (core.fmt.Arguments.t::["new_v1"]
+                                                    (pointer_coercion
+                                                      "Unsize"
+                                                      (borrow α3))
+                                                    (pointer_coercion
+                                                      "Unsize"
+                                                      (borrow α6))) in
+                                              let* α8 : unit :=
+                                                M.call
+                                                  (std.io.stdio._print α7) in
+                                              M.alloc α8 in
+                                            M.alloc tt in
+                                          M.read result) :
+                                          M u32.t
+                                      ]) :
+                                    M u32.t)) in
                             let* α1 : unit :=
                               M.call
                                 ((alloc.vec.Vec.t

@@ -116,7 +116,13 @@ Definition main : M unit :=
       M.alloc α9 in
     M.alloc tt in
   let* one : M.Val (unit -> M i32.t) :=
-    M.alloc ((M.pure ((Integer.of_Z 1) : i32.t)) : M i32.t) in
+    M.alloc
+      (fun (α0 : unit) =>
+        (let* α0 := M.alloc α0 in
+        match_operator
+          α0
+          [ fun γ => (M.pure ((Integer.of_Z 1) : i32.t)) : M i32.t ]) :
+        M i32.t) in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
       let* α0 : ref str.t := M.read (mk_str "closure returning one: ") in

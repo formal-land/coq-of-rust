@@ -78,10 +78,12 @@ pub(crate) fn compile_type<'a>(env: &Env<'a>, ty: &rustc_middle::ty::Ty<'a>) -> 
         }
         TyKind::FnDef(_, _) => {
             let fn_sig = ty.fn_sig(env.tcx);
+
             compile_poly_fn_sig(env, &fn_sig)
         }
         TyKind::Closure(_, generic_args) => {
             let fn_sig = generic_args.as_closure().sig();
+
             compile_poly_fn_sig(env, &fn_sig)
         }
         // Generator(DefId, &'tcx List<GenericArg<'tcx>>, Movability),

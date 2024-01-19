@@ -18,24 +18,34 @@ Definition create_fn : M _ (* OpaqueTy *) :=
     M.alloc α2 in
   let* α0 : M.Val (unit -> M unit) :=
     M.alloc
-      ((let* _ : M.Val unit :=
-        let* α0 : ref str.t := M.read (mk_str "This is a: ") in
-        let* α1 : ref str.t := M.read (mk_str "
+      (fun (α0 : unit) =>
+        (let* α0 := M.alloc α0 in
+        match_operator
+          α0
+          [
+            fun γ =>
+              (let* _ : M.Val unit :=
+                let* α0 : ref str.t := M.read (mk_str "This is a: ") in
+                let* α1 : ref str.t := M.read (mk_str "
 ") in
-        let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-        let* α3 : core.fmt.rt.Argument.t :=
-          M.call (core.fmt.rt.Argument.t::["new_display"] (borrow text)) in
-        let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
-        let* α5 : core.fmt.Arguments.t :=
-          M.call
-            (core.fmt.Arguments.t::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α4))) in
-        let* α6 : unit := M.call (std.io.stdio._print α5) in
-        M.alloc α6 in
-      let* α0 : M.Val unit := M.alloc tt in
-      M.read α0) :
-      M unit) in
+                let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
+                let* α3 : core.fmt.rt.Argument.t :=
+                  M.call
+                    (core.fmt.rt.Argument.t::["new_display"] (borrow text)) in
+                let* α4 : M.Val (array core.fmt.rt.Argument.t) :=
+                  M.alloc [ α3 ] in
+                let* α5 : core.fmt.Arguments.t :=
+                  M.call
+                    (core.fmt.Arguments.t::["new_v1"]
+                      (pointer_coercion "Unsize" (borrow α2))
+                      (pointer_coercion "Unsize" (borrow α4))) in
+                let* α6 : unit := M.call (std.io.stdio._print α5) in
+                M.alloc α6 in
+              let* α0 : M.Val unit := M.alloc tt in
+              M.read α0) :
+              M unit
+          ]) :
+        M unit) in
   M.read α0.
 
 Error OpaqueTy.
@@ -57,24 +67,34 @@ Definition create_fnmut : M _ (* OpaqueTy *) :=
     M.alloc α2 in
   let* α0 : M.Val (unit -> M unit) :=
     M.alloc
-      ((let* _ : M.Val unit :=
-        let* α0 : ref str.t := M.read (mk_str "This is a: ") in
-        let* α1 : ref str.t := M.read (mk_str "
+      (fun (α0 : unit) =>
+        (let* α0 := M.alloc α0 in
+        match_operator
+          α0
+          [
+            fun γ =>
+              (let* _ : M.Val unit :=
+                let* α0 : ref str.t := M.read (mk_str "This is a: ") in
+                let* α1 : ref str.t := M.read (mk_str "
 ") in
-        let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-        let* α3 : core.fmt.rt.Argument.t :=
-          M.call (core.fmt.rt.Argument.t::["new_display"] (borrow text)) in
-        let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
-        let* α5 : core.fmt.Arguments.t :=
-          M.call
-            (core.fmt.Arguments.t::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α4))) in
-        let* α6 : unit := M.call (std.io.stdio._print α5) in
-        M.alloc α6 in
-      let* α0 : M.Val unit := M.alloc tt in
-      M.read α0) :
-      M unit) in
+                let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
+                let* α3 : core.fmt.rt.Argument.t :=
+                  M.call
+                    (core.fmt.rt.Argument.t::["new_display"] (borrow text)) in
+                let* α4 : M.Val (array core.fmt.rt.Argument.t) :=
+                  M.alloc [ α3 ] in
+                let* α5 : core.fmt.Arguments.t :=
+                  M.call
+                    (core.fmt.Arguments.t::["new_v1"]
+                      (pointer_coercion "Unsize" (borrow α2))
+                      (pointer_coercion "Unsize" (borrow α4))) in
+                let* α6 : unit := M.call (std.io.stdio._print α5) in
+                M.alloc α6 in
+              let* α0 : M.Val unit := M.alloc tt in
+              M.read α0) :
+              M unit
+          ]) :
+        M unit) in
   M.read α0.
 
 (*
@@ -94,24 +114,34 @@ Definition create_fnonce : M _ (* OpaqueTy *) :=
     M.alloc α2 in
   let* α0 : M.Val (unit -> M unit) :=
     M.alloc
-      ((let* _ : M.Val unit :=
-        let* α0 : ref str.t := M.read (mk_str "This is a: ") in
-        let* α1 : ref str.t := M.read (mk_str "
+      (fun (α0 : unit) =>
+        (let* α0 := M.alloc α0 in
+        match_operator
+          α0
+          [
+            fun γ =>
+              (let* _ : M.Val unit :=
+                let* α0 : ref str.t := M.read (mk_str "This is a: ") in
+                let* α1 : ref str.t := M.read (mk_str "
 ") in
-        let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-        let* α3 : core.fmt.rt.Argument.t :=
-          M.call (core.fmt.rt.Argument.t::["new_display"] (borrow text)) in
-        let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
-        let* α5 : core.fmt.Arguments.t :=
-          M.call
-            (core.fmt.Arguments.t::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α4))) in
-        let* α6 : unit := M.call (std.io.stdio._print α5) in
-        M.alloc α6 in
-      let* α0 : M.Val unit := M.alloc tt in
-      M.read α0) :
-      M unit) in
+                let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
+                let* α3 : core.fmt.rt.Argument.t :=
+                  M.call
+                    (core.fmt.rt.Argument.t::["new_display"] (borrow text)) in
+                let* α4 : M.Val (array core.fmt.rt.Argument.t) :=
+                  M.alloc [ α3 ] in
+                let* α5 : core.fmt.Arguments.t :=
+                  M.call
+                    (core.fmt.Arguments.t::["new_v1"]
+                      (pointer_coercion "Unsize" (borrow α2))
+                      (pointer_coercion "Unsize" (borrow α4))) in
+                let* α6 : unit := M.call (std.io.stdio._print α5) in
+                M.alloc α6 in
+              let* α0 : M.Val unit := M.alloc tt in
+              M.read α0) :
+              M unit
+          ]) :
+        M unit) in
   M.read α0.
 
 (*

@@ -146,25 +146,36 @@ Definition double_first
     M.call
       ((core.option.Option.t (ref (ref str.t)))::["ok_or_else"]
         α2
-        ((let* α0 :
-            boxing_errors.EmptyVec.t ->
-              M
-                (alloc.boxed.Box.t
-                  (dyn [core.error.Error.Trait])
-                  alloc.alloc.Global.t) :=
-          ltac:(M.get_method (fun ℐ =>
-            core.convert.Into.into
-              (Self := boxing_errors.EmptyVec.t)
-              (T :=
-                alloc.boxed.Box.t
-                  (dyn [core.error.Error.Trait])
-                  alloc.alloc.Global.t)
-              (Trait := ℐ))) in
-        M.call (α0 boxing_errors.EmptyVec.Build)) :
-        M
-          (alloc.boxed.Box.t
-            (dyn [core.error.Error.Trait])
-            alloc.alloc.Global.t))) in
+        (fun (α0 : unit) =>
+          (let* α0 := M.alloc α0 in
+          match_operator
+            α0
+            [
+              fun γ =>
+                (let* α0 :
+                    boxing_errors.EmptyVec.t ->
+                      M
+                        (alloc.boxed.Box.t
+                          (dyn [core.error.Error.Trait])
+                          alloc.alloc.Global.t) :=
+                  ltac:(M.get_method (fun ℐ =>
+                    core.convert.Into.into
+                      (Self := boxing_errors.EmptyVec.t)
+                      (T :=
+                        alloc.boxed.Box.t
+                          (dyn [core.error.Error.Trait])
+                          alloc.alloc.Global.t)
+                      (Trait := ℐ))) in
+                M.call (α0 boxing_errors.EmptyVec.Build)) :
+                M
+                  (alloc.boxed.Box.t
+                    (dyn [core.error.Error.Trait])
+                    alloc.alloc.Global.t)
+            ]) :
+          M
+            (alloc.boxed.Box.t
+              (dyn [core.error.Error.Trait])
+              alloc.alloc.Global.t))) in
   M.call
     ((core.result.Result.t
           (ref (ref str.t))

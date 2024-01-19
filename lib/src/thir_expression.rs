@@ -1187,6 +1187,11 @@ fn compile_expr_kind<'a>(
                     None => None,
                 })
                 .collect();
+            let args = if args.is_empty() {
+                vec![(Rc::new(Pattern::Wild), CoqType::unit())]
+            } else {
+                args
+            };
             let body = compile_expr(env, &thir, &expr_id).read();
             let body = args
                 .iter()

@@ -157,6 +157,20 @@ Module Impl_Option. Section Impl_Option.
     Notations.double_colon := get_or_insert;
   }.
 
+  (*
+  pub fn get_or_insert_with<F>(&mut self, f: F) -> &mut T
+  where
+      F: FnOnce() -> T,
+  *)
+  Parameter get_or_insert_with :
+    forall {F : Set},
+    mut_ref Self -> F -> M (mut_ref T).
+
+  Global Instance AF_get_or_insert_with {F : Set} :
+      Notations.DoubleColon Self "get_or_insert_with" := {
+    Notations.double_colon := get_or_insert_with (F := F);
+  }.
+
   (* pub fn or(self, optb: Option<T>) -> Option<T> *)
   Parameter or : Self -> option.Option.t T -> M (option.Option.t T).
 

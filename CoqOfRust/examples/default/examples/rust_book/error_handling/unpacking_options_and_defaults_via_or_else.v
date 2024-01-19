@@ -144,30 +144,40 @@ Definition main : M unit :=
             (core.option.Option.t
               unpacking_options_and_defaults_via_or_else.Fruit.t)) :=
     M.alloc
-      ((let* _ : M.Val unit :=
-        let* _ : M.Val unit :=
-          let* α0 : ref str.t :=
-            M.read (mk_str "Providing kiwi as fallback
+      (fun (α0 : unit) =>
+        (let* α0 := M.alloc α0 in
+        match_operator
+          α0
+          [
+            fun γ =>
+              (let* _ : M.Val unit :=
+                let* _ : M.Val unit :=
+                  let* α0 : ref str.t :=
+                    M.read (mk_str "Providing kiwi as fallback
 ") in
-          let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-          let* α2 : core.fmt.Arguments.t :=
-            M.call
-              (core.fmt.Arguments.t::["new_const"]
-                (pointer_coercion "Unsize" (borrow α1))) in
-          let* α3 : unit := M.call (std.io.stdio._print α2) in
-          M.alloc α3 in
-        M.alloc tt in
-      let* α0 :
-          M.Val
-            (core.option.Option.t
-              unpacking_options_and_defaults_via_or_else.Fruit.t) :=
-        M.alloc
-          (core.option.Option.Some
-            unpacking_options_and_defaults_via_or_else.Fruit.Kiwi) in
-      M.read α0) :
-      M
-        (core.option.Option.t
-          unpacking_options_and_defaults_via_or_else.Fruit.t)) in
+                  let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
+                  let* α2 : core.fmt.Arguments.t :=
+                    M.call
+                      (core.fmt.Arguments.t::["new_const"]
+                        (pointer_coercion "Unsize" (borrow α1))) in
+                  let* α3 : unit := M.call (std.io.stdio._print α2) in
+                  M.alloc α3 in
+                M.alloc tt in
+              let* α0 :
+                  M.Val
+                    (core.option.Option.t
+                      unpacking_options_and_defaults_via_or_else.Fruit.t) :=
+                M.alloc
+                  (core.option.Option.Some
+                    unpacking_options_and_defaults_via_or_else.Fruit.Kiwi) in
+              M.read α0) :
+              M
+                (core.option.Option.t
+                  unpacking_options_and_defaults_via_or_else.Fruit.t)
+          ]) :
+        M
+          (core.option.Option.t
+            unpacking_options_and_defaults_via_or_else.Fruit.t)) in
   let* get_lemon_as_fallback :
       M.Val
         (unit ->
@@ -175,30 +185,40 @@ Definition main : M unit :=
             (core.option.Option.t
               unpacking_options_and_defaults_via_or_else.Fruit.t)) :=
     M.alloc
-      ((let* _ : M.Val unit :=
-        let* _ : M.Val unit :=
-          let* α0 : ref str.t :=
-            M.read (mk_str "Providing lemon as fallback
+      (fun (α0 : unit) =>
+        (let* α0 := M.alloc α0 in
+        match_operator
+          α0
+          [
+            fun γ =>
+              (let* _ : M.Val unit :=
+                let* _ : M.Val unit :=
+                  let* α0 : ref str.t :=
+                    M.read (mk_str "Providing lemon as fallback
 ") in
-          let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-          let* α2 : core.fmt.Arguments.t :=
-            M.call
-              (core.fmt.Arguments.t::["new_const"]
-                (pointer_coercion "Unsize" (borrow α1))) in
-          let* α3 : unit := M.call (std.io.stdio._print α2) in
-          M.alloc α3 in
-        M.alloc tt in
-      let* α0 :
-          M.Val
-            (core.option.Option.t
-              unpacking_options_and_defaults_via_or_else.Fruit.t) :=
-        M.alloc
-          (core.option.Option.Some
-            unpacking_options_and_defaults_via_or_else.Fruit.Lemon) in
-      M.read α0) :
-      M
-        (core.option.Option.t
-          unpacking_options_and_defaults_via_or_else.Fruit.t)) in
+                  let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
+                  let* α2 : core.fmt.Arguments.t :=
+                    M.call
+                      (core.fmt.Arguments.t::["new_const"]
+                        (pointer_coercion "Unsize" (borrow α1))) in
+                  let* α3 : unit := M.call (std.io.stdio._print α2) in
+                  M.alloc α3 in
+                M.alloc tt in
+              let* α0 :
+                  M.Val
+                    (core.option.Option.t
+                      unpacking_options_and_defaults_via_or_else.Fruit.t) :=
+                M.alloc
+                  (core.option.Option.Some
+                    unpacking_options_and_defaults_via_or_else.Fruit.Lemon) in
+              M.read α0) :
+              M
+                (core.option.Option.t
+                  unpacking_options_and_defaults_via_or_else.Fruit.t)
+          ]) :
+        M
+          (core.option.Option.t
+            unpacking_options_and_defaults_via_or_else.Fruit.t)) in
   let* first_available_fruit :
       M.Val
         (core.option.Option.t
