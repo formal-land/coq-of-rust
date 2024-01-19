@@ -55,12 +55,12 @@ Section Impl_Result.
   where
       F: FnOnce(T) -> U,
   *)
-  Parameter map : forall {U : Set},
-    Self -> (T -> M U) -> M (Result.t U E).
+  Parameter map : forall {U F : Set},
+    Self -> F -> M (Result.t U E).
 
-  Global Instance AF_map {U : Set} :
+  Global Instance AF_map {U F : Set} :
       Notations.DoubleColon Self "map" := {|
-    Notations.double_colon := map (U := U);
+    Notations.double_colon := map (U := U) (F := F);
   |}.
 
   (*

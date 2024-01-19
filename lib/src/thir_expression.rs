@@ -1055,7 +1055,7 @@ fn compile_expr_kind<'a>(
         thir::ExprKind::Return { value } => {
             let value = match value {
                 Some(value) => compile_expr(env, thir, value).read(),
-                None => Expr::tt(),
+                None => Expr::tt().read(),
             };
 
             Rc::new(ExprKind::Return(value))

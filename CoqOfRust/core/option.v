@@ -128,11 +128,11 @@ Module Impl_Option. Section Impl_Option.
   where
       F: FnOnce(T) -> U,
   *)
-  Parameter map_or : forall {U : Set}, Self -> U -> (T -> M U) -> M U.
+  Parameter map_or : forall {U F : Set}, Self -> U -> F -> M U.
 
-  Global Instance AF_map_or {U : Set} :
+  Global Instance AF_map_or {U F : Set} :
     Notations.DoubleColon Self "map_or" := {
-    Notations.double_colon := map_or (U := U);
+    Notations.double_colon := map_or (U := U) (F := F);
   }.
 
   (*
@@ -176,6 +176,17 @@ Module Impl_Option. Section Impl_Option.
 
   Global Instance AF_or : Notations.DoubleColon Self "or" := {
     Notations.double_colon := or;
+  }.
+
+  (*
+  pub fn or_else<F>(self, f: F) -> Option<T>
+  where
+      F: FnOnce() -> Option<T>,
+  *)
+  Parameter or_else : forall {F : Set}, Self -> F -> M Self.
+
+  Global Instance AF_or_else {F : Set} : Notations.DoubleColon Self "or_else" := {
+    Notations.double_colon := or_else (F := F);
   }.
 
   Global Instance I_Default {ℋ : default.Default.Trait T} :

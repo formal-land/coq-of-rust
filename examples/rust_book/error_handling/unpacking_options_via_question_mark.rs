@@ -1,5 +1,7 @@
-struct Person {
-    job: Option<Job>,
+#[derive(Clone, Copy)]
+struct PhoneNumber {
+    area_code: Option<u8>,
+    number: u32,
 }
 
 #[derive(Clone, Copy)]
@@ -7,10 +9,8 @@ struct Job {
     phone_number: Option<PhoneNumber>,
 }
 
-#[derive(Clone, Copy)]
-struct PhoneNumber {
-    area_code: Option<u8>,
-    number: u32,
+struct Person {
+    job: Option<Job>,
 }
 
 impl Person {

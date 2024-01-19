@@ -47,9 +47,6 @@ examples/axiomatized/examples/test0.v
 examples/default/examples/ink_contracts/Proofs/erc20.v
 examples/default/examples/rust_book/custom_types/enums_testcase_linked_list.v
 examples/default/examples/rust_book/error_handling/pulling_results_out_of_options_with_stop_error_processing.v
-#examples/default/examples/rust_book/error_handling/unpacking_options_and_defaults_via_get_or_insert_with.v
-examples/default/examples/rust_book/error_handling/unpacking_options_and_defaults_via_or_else.v
-examples/default/examples/rust_book/error_handling/unpacking_options_via_question_mark.v
 examples/default/examples/rust_book/error_handling/wrapping_errors.v
 examples/default/examples/rust_book/flow_of_control/for_and_iterators_iter_mut.v
 examples/default/examples/rust_book/flow_of_control/loop_nesting_and_labels.v
@@ -86,7 +83,6 @@ examples/default/examples/rust_book/scoping_rules/scoping_rules_ownership_and_ru
 examples/default/examples/rust_book/std_library_types/hash_map_hash_set.v
 examples/default/examples/rust_book/std_misc/file_io_read_lines_efficient_method.v
 examples/default/examples/rust_book/std_misc/foreign_function_interface.v
-examples/default/examples/rust_book/std_misc/program_arguments_parsing.v
 examples/default/examples/rust_book/traits/hash.v
 examples/default/examples/rust_book/traits/impl_trait_as_return_type.v
 examples/default/examples/rust_book/traits/iterators.v
