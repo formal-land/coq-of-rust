@@ -55,12 +55,12 @@ Section Impl_Result.
   where
       F: FnOnce(T) -> U,
   *)
-  Parameter map : forall {U : Set},
-    Self -> (T -> M U) -> M (Result.t U E).
+  Parameter map : forall {U F : Set},
+    Self -> F -> M (Result.t U E).
 
-  Global Instance AF_map {U : Set} :
+  Global Instance AF_map {U F : Set} :
       Notations.DoubleColon Self "map" := {|
-    Notations.double_colon := map (U := U);
+    Notations.double_colon := map (U := U) (F := F);
   |}.
 
   (*
@@ -153,11 +153,11 @@ Section Impl_Option.
   where
       F: FnOnce() -> E,
   *)
-  Parameter ok_or_else : forall {E : Set}, Self -> M E -> M (Result.t T E).
+  Parameter ok_or_else : forall {E F : Set}, Self -> F -> M (Result.t T E).
 
-  Global Instance AF_ok_or_else {E : Set} :
+  Global Instance AF_ok_or_else {E F : Set} :
       Notations.DoubleColon Self "ok_or_else" := {
-    Notations.double_colon := ok_or_else (E := E);
+    Notations.double_colon := ok_or_else (E := E) (F := F);
   }.
 End Impl_Option.
 End Impl_Option.

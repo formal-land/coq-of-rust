@@ -109,4 +109,6 @@ where
     F: FnOnce() -> T + Send + 'static,
     T: Send + 'static,
 *)
-Parameter spawn : forall {T : Set}, M T -> M (JoinHandle.t T).
+Parameter spawn :
+  forall {F T : Set},
+  F -> M (JoinHandle.t T).

@@ -1055,7 +1055,7 @@ fn compile_expr_kind<'a>(
         thir::ExprKind::Return { value } => {
             let value = match value {
                 Some(value) => compile_expr(env, thir, value).read(),
-                None => Expr::tt(),
+                None => Expr::tt().read(),
             };
 
             Rc::new(ExprKind::Return(value))
@@ -1187,6 +1187,11 @@ fn compile_expr_kind<'a>(
                     None => None,
                 })
                 .collect();
+            let args = if args.is_empty() {
+                vec![(Rc::new(Pattern::Wild), CoqType::unit())]
+            } else {
+                args
+            };
             let body = compile_expr(env, &thir, &expr_id).read();
             let body = args
                 .iter()
@@ -1242,9 +1247,14 @@ fn compile_expr_kind<'a>(
             }
             _ => Rc::new(ExprKind::Literal(Literal::Error, Some(ty.val()))),
         },
-        thir::ExprKind::NonHirLiteral { lit, .. } => {
-            Rc::new(ExprKind::NonHirLiteral(*lit)).alloc(Some(ty))
-        }
+        thir::ExprKind::NonHirLiteral { lit, .. } => Rc::new(ExprKind::Literal(
+            Literal::Integer {
+                value: lit.try_to_uint(lit.size()).unwrap(),
+                neg: false,
+            },
+            Some(ty.clone()),
+        ))
+        .alloc(Some(ty)),
         thir::ExprKind::ZstLiteral { .. } => match &expr.ty.kind() {
             TyKind::FnDef(def_id, generic_args) => {
                 let key = env.tcx.def_key(def_id);

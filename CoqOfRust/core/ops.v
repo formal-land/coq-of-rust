@@ -343,16 +343,15 @@ End deref.
 
 Module function.
   Module FnOnce.
-    Class Trait (Self : Set) {Args : Set} : Type := {
+    Class Trait (Self : Set) {Args : Set} {Output : Set} : Set := {
       Output : Set;
       call_once : Self -> Args -> M Output;
     }.
   End FnOnce.
 
   Module FnMut.
-    Class Trait (Self : Set) {Args : Set} : Type := {
-      L0 :: FnOnce.Trait Self (Args := Args);
-      call_mut : mut_ref Self -> Args -> M FnOnce.Output;
+    Class Trait (Self : Set) {Args : Set} {FnOnce_Output : Set} : Set := {
+      call_mut : mut_ref Self -> Args -> M FnOnce_Output;
     }.
   End FnMut.
 End function.

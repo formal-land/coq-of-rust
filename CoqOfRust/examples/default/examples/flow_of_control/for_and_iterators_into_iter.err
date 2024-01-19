@@ -1,8 +1,0 @@
-warning: Constants in patterns are not yet supported.
- --> examples/flow_of_control/for_and_iterators_into_iter.rs:6:13
-  |
-6 |             "Ferris" => println!("There is a rustacean among us!"),
-  |             ^^^^^^^^
-
-warning: 1 warning emitted
-

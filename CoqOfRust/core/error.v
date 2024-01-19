@@ -68,10 +68,10 @@ Module Error.
   Class Trait (Self : Set) : Set := {
     L0 :: fmt.Debug.Trait Self;
     L1 :: fmt.Display.Trait Self;
-    source {A : Set} : ref Self -> M (option.Option.t (ref A));
+    source : ref Self -> M (option.Option.t (ref (dyn [])));
     type_id : ref Self -> private.Internal.t -> M any.TypeId.t;
     description : ref Self -> M (ref str.t);
-    cause {A : Set} : ref Self -> M (option.Option.t (ref A));
+    cause : ref Self -> M (option.Option.t (ref (dyn [])));
     provide : ref Self -> mut_ref any.Demand.t -> M unit;
   }.
 
@@ -80,10 +80,10 @@ Module Error.
     Trait Self := {
     L0 := Required.L0;
     L1 := Required.L1;
-    source {A : Set} := Provided.source (A := A);
+    source := Provided.source;
     type_id := Provided.type_id;
     description := Provided.description;
-    cause {A : Set} := Provided.cause (A := A);
+    cause := Provided.cause;
     provide := Provided.provide;
   }.
 End Error.
