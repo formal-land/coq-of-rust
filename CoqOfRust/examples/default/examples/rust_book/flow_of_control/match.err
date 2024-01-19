@@ -1,53 +1,53 @@
 warning: Constants in patterns are not yet supported.
-  --> examples/flow_of_control/match.rs:23:9
+  --> examples/rust_book/flow_of_control/match.rs:23:9
    |
 23 |         false => 0,
    |         ^^^^^
 
 warning: Constants in patterns are not yet supported.
-  --> examples/flow_of_control/match.rs:24:9
+  --> examples/rust_book/flow_of_control/match.rs:24:9
    |
 24 |         true => 1,
    |         ^^^^
 
 warning: Constants in patterns are not yet supported.
- --> examples/flow_of_control/match.rs:8:9
+ --> examples/rust_book/flow_of_control/match.rs:8:9
   |
 8 |         1 => println!("One!"),
   |         ^
 
 warning: Constants in patterns are not yet supported.
-  --> examples/flow_of_control/match.rs:10:9
+  --> examples/rust_book/flow_of_control/match.rs:10:9
    |
 10 |         2 | 3 | 5 | 7 | 11 => println!("This is a prime"),
    |         ^
 
 warning: Constants in patterns are not yet supported.
-  --> examples/flow_of_control/match.rs:10:13
+  --> examples/rust_book/flow_of_control/match.rs:10:13
    |
 10 |         2 | 3 | 5 | 7 | 11 => println!("This is a prime"),
    |             ^
 
 warning: Constants in patterns are not yet supported.
-  --> examples/flow_of_control/match.rs:10:17
+  --> examples/rust_book/flow_of_control/match.rs:10:17
    |
 10 |         2 | 3 | 5 | 7 | 11 => println!("This is a prime"),
    |                 ^
 
 warning: Constants in patterns are not yet supported.
-  --> examples/flow_of_control/match.rs:10:21
+  --> examples/rust_book/flow_of_control/match.rs:10:21
    |
 10 |         2 | 3 | 5 | 7 | 11 => println!("This is a prime"),
    |                     ^
 
 warning: Constants in patterns are not yet supported.
-  --> examples/flow_of_control/match.rs:10:25
+  --> examples/rust_book/flow_of_control/match.rs:10:25
    |
 10 |         2 | 3 | 5 | 7 | 11 => println!("This is a prime"),
    |                         ^^
 
 warning: Ranges in patterns are not yet supported.
-  --> examples/flow_of_control/match.rs:13:9
+  --> examples/rust_book/flow_of_control/match.rs:13:9
    |
 13 |         13..=19 => println!("A teen"),
    |         ^^^^^^^

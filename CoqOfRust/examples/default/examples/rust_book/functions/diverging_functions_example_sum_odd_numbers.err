@@ -11,16 +11,16 @@ expression: Expr {
     temp_lifetime: Some(
         Node(27),
     ),
-    span: examples/functions/diverging_functions_example_sum_odd_numbers.rs:21:9: 21:24 (#0),
+    span: examples/rust_book/functions/diverging_functions_example_sum_odd_numbers.rs:21:9: 21:24 (#0),
 }
 warning: Constants in patterns are not yet supported.
- --> examples/functions/diverging_functions_example_sum_odd_numbers.rs:9:17
+ --> examples/rust_book/functions/diverging_functions_example_sum_odd_numbers.rs:9:17
   |
 9 |                 true => i,
   |                 ^^^^
 
 warning: Constants in patterns are not yet supported.
-  --> examples/functions/diverging_functions_example_sum_odd_numbers.rs:13:17
+  --> examples/rust_book/functions/diverging_functions_example_sum_odd_numbers.rs:13:17
    |
 13 |                 false => continue,
    |                 ^^^^^

@@ -28,16 +28,6 @@ Section Impl_functions_order_SomeType_t.
   Definition Self : Set := functions_order.SomeType.t.
   
   (*
-      fn meth2(self) {}
-  *)
-  Parameter meth2 : Self -> M unit.
-  
-  Global Instance AssociatedFunction_meth2 :
-    Notations.DoubleColon Self "meth2" := {
-    Notations.double_colon := meth2;
-  }.
-  
-  (*
       pub fn meth1(self) {
           self.meth2();
       }
@@ -48,8 +38,26 @@ Section Impl_functions_order_SomeType_t.
     Notations.DoubleColon Self "meth1" := {
     Notations.double_colon := meth1;
   }.
+  
+  (*
+      fn meth2(self) {}
+  *)
+  Parameter meth2 : Self -> M unit.
+  
+  Global Instance AssociatedFunction_meth2 :
+    Notations.DoubleColon Self "meth2" := {
+    Notations.double_colon := meth2;
+  }.
 End Impl_functions_order_SomeType_t.
 End Impl_functions_order_SomeType_t.
+
+(*
+fn depends_on_trait_impl(u: u32, b: bool) {
+    OtherType(b).some_trait_foo();
+    SomeType(u).some_trait_foo();
+}
+*)
+Parameter depends_on_trait_impl : u32.t -> bool.t -> M unit.
 
 Module  SomeTrait.
 Section SomeTrait.
@@ -66,16 +74,6 @@ Section Impl_functions_order_SomeTrait_for_functions_order_SomeType_t.
   Definition Self : Set := functions_order.SomeType.t.
   
   (*
-      fn some_trait_bar(&self) {}
-  *)
-  Parameter some_trait_bar : (ref Self) -> M unit.
-  
-  Global Instance AssociatedFunction_some_trait_bar :
-    Notations.DoubleColon Self "some_trait_bar" := {
-    Notations.double_colon := some_trait_bar;
-  }.
-  
-  (*
       fn some_trait_foo(&self) {
           self.some_trait_bar()
       }
@@ -87,9 +85,19 @@ Section Impl_functions_order_SomeTrait_for_functions_order_SomeType_t.
     Notations.double_colon := some_trait_foo;
   }.
   
+  (*
+      fn some_trait_bar(&self) {}
+  *)
+  Parameter some_trait_bar : (ref Self) -> M unit.
+  
+  Global Instance AssociatedFunction_some_trait_bar :
+    Notations.DoubleColon Self "some_trait_bar" := {
+    Notations.double_colon := some_trait_bar;
+  }.
+  
   Global Instance ℐ : functions_order.SomeTrait.Trait Self := {
-    functions_order.SomeTrait.some_trait_bar := some_trait_bar;
     functions_order.SomeTrait.some_trait_foo := some_trait_foo;
+    functions_order.SomeTrait.some_trait_bar := some_trait_bar;
   }.
 End Impl_functions_order_SomeTrait_for_functions_order_SomeType_t.
 End Impl_functions_order_SomeTrait_for_functions_order_SomeType_t.
@@ -125,20 +133,7 @@ Section Impl_functions_order_SomeTrait_for_functions_order_OtherType_t.
 End Impl_functions_order_SomeTrait_for_functions_order_OtherType_t.
 End Impl_functions_order_SomeTrait_for_functions_order_OtherType_t.
 
-(*
-fn depends_on_trait_impl(u: u32, b: bool) {
-    OtherType(b).some_trait_foo();
-    SomeType(u).some_trait_foo();
-}
-*)
-Parameter depends_on_trait_impl : u32.t -> bool.t -> M unit.
-
 Module inner_mod.
-  (*
-      fn tar() {}
-  *)
-  Parameter tar : M unit.
-  
   (*
       pub fn bar() {
           // functions_order::inner_mod::bar
@@ -147,18 +142,23 @@ Module inner_mod.
   *)
   Parameter bar : M unit.
   
+  (*
+      fn tar() {}
+  *)
+  Parameter tar : M unit.
+  
   Module nested_mod.
-    (*
-            fn tack() {}
-    *)
-    Parameter tack : M unit.
-    
     (*
             pub fn tick() {
                 tack();
             }
     *)
     Parameter tick : M unit.
+    
+    (*
+            fn tack() {}
+    *)
+    Parameter tack : M unit.
   End nested_mod.
 End inner_mod.
 
@@ -177,16 +177,16 @@ Parameter tar : M unit.
 
 Module nested_mod.
   (*
-          fn tack() {}
-  *)
-  Parameter tack : M unit.
-  
-  (*
           pub fn tick() {
               tack();
           }
   *)
   Parameter tick : M unit.
+  
+  (*
+          fn tack() {}
+  *)
+  Parameter tack : M unit.
 End nested_mod.
 
 (*
@@ -202,11 +202,6 @@ Parameter tick : M unit.
 Parameter tack : M unit.
 
 (*
-fn foo() {}
-*)
-Parameter foo : M unit.
-
-(*
 fn main() {
     // functions_order::main
     foo();
@@ -216,3 +211,8 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : M unit.
+
+(*
+fn foo() {}
+*)
+Parameter foo : M unit.

@@ -1,5 +1,5 @@
 warning: formatting may not be suitable for sub-register argument
-  --> examples/unsafe_operations/inline_assembly_labels.rs:8:18
+  --> examples/rust_book/unsafe_operations/inline_assembly_labels.rs:8:18
    |
 8  |             "mov {0}, 10",
    |                  ^^^

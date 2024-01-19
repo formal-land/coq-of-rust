@@ -1,11 +1,11 @@
 warning: Constants in patterns are not yet supported.
-  --> examples/flow_of_control/match_destructuring_structs.rs:11:19
+  --> examples/rust_book/flow_of_control/match_destructuring_structs.rs:11:19
    |
 11 |         Foo { x: (1, b), y } => println!("First of x is 1, b = {},  y = {} ", b, y),
    |                   ^
 
 warning: Constants in patterns are not yet supported.
-  --> examples/flow_of_control/match_destructuring_structs.rs:15:18
+  --> examples/rust_book/flow_of_control/match_destructuring_structs.rs:15:18
    |
 15 |         Foo { y: 2, x: i } => println!("y is 2, i = {:?}", i),
    |                  ^

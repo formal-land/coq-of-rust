@@ -1,29 +1,29 @@
 warning: Constants in patterns are not yet supported.
- --> examples/flow_of_control/match_destructuring_arrays_slices.rs:7:10
+ --> examples/rust_book/flow_of_control/match_destructuring_arrays_slices.rs:7:10
   |
 7 |         [0, second, third] => println!("array[0] = 0, array[1] = {}, array[2] = {}", second, third),
   |          ^
 
 warning: Constants in patterns are not yet supported.
-  --> examples/flow_of_control/match_destructuring_arrays_slices.rs:10:10
+  --> examples/rust_book/flow_of_control/match_destructuring_arrays_slices.rs:10:10
    |
 10 |         [1, _, third] => println!(
    |          ^
 
 warning: Constants in patterns are not yet supported.
-  --> examples/flow_of_control/match_destructuring_arrays_slices.rs:16:10
+  --> examples/rust_book/flow_of_control/match_destructuring_arrays_slices.rs:16:10
    |
 16 |         [-1, second, ..] => println!(
    |          ^^
 
 warning: Constants in patterns are not yet supported.
-  --> examples/flow_of_control/match_destructuring_arrays_slices.rs:25:10
+  --> examples/rust_book/flow_of_control/match_destructuring_arrays_slices.rs:25:10
    |
 25 |         [3, second, tail @ ..] => println!(
    |          ^
 
 warning: Destructuring after slice patterns is not supported.
-  --> examples/flow_of_control/match_destructuring_arrays_slices.rs:32:9
+  --> examples/rust_book/flow_of_control/match_destructuring_arrays_slices.rs:32:9
    |
 32 |         [first, middle @ .., last] => println!(
    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^
