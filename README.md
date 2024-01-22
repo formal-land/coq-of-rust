@@ -19,13 +19,15 @@ See our blog post [Verifying an ERC-20 smart contract in Rust](https://formal.la
 - [Contributing](#contributing)
 
 ## Example
-At the heart of `coq-of-rust` is the translation of Rust programs to the [proof system Coq 🐓](https://coq.inria.fr/). Once some Rust code is translated to Coq, it can then be verified using standard proof techniques. Here is an example of a Rust function translated to Coq:
+At the heart of `coq-of-rust` is the translation of Rust programs to the [proof system Coq 🐓](https://coq.inria.fr/). Once some Rust code is translated to Coq, it can then be verified using standard proof techniques.
+
+Here is an example of a Rust function:
 ```rust
 fn add_one(x: u32) -> u32 {
     x + 1
 }
 ```
-This translates in Coq to:
+Running `coq-of-rust`, it translates in Coq to:
 ```coq
 Definition add_one (x : u32.t) : M u32.t :=
   let* x := M.alloc x in
