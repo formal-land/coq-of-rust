@@ -2,7 +2,7 @@
 
 > Formal verification tool for Rust 🦀
 
-Made by [🌲&nbsp;Formal Land](https://formal.land/)
+Made with [🌲&nbsp;Formal Land](https://formal.land/)
 
 Formal verification enables the making of software without bugs by showing that it follows a precise specification and covers all execution cases.
 
