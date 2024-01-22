@@ -8,6 +8,8 @@ Formal verification enables the making of software without bugs by showing that 
 
 See our blog post [Verifying an ERC-20 smart contract in Rust](https://formal.land/blog/2023/12/13/rust-verify-erc-20-smart-contract) to have an example of formally verified Rust code using&nbsp;`coq-of-rust`.
 
+The development of `coq-of-rust` was mainly funded by the crypto-currency&nbsp;[Aleph Zero](https://alephzero.org/), for the development of safer smart contracts, that we thanks for the support.
+
 ## Table of Contents
 
 - [Rationale](#rationale)
