@@ -707,9 +707,10 @@ pub(crate) fn compile_hir_id(env: &mut Env, hir_id: rustc_hir::hir_id::HirId) ->
     let Ok((thir, expr_id)) = thir else {
         panic!("thir failed to compile");
     };
-    let thir = thir.borrow();
+    // let thir = thir.borrow();
 
-    crate::thir_expression::compile_expr(env, &thir, &expr_id)
+    // crate::thir_expression::compile_expr(env, &thir, &expr_id)
+    Expr::local_var("foo")
 }
 
 impl MatchArm {
