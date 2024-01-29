@@ -4,6 +4,7 @@ use crate::pattern::*;
 use crate::render::*;
 use crate::ty::*;
 use core::panic;
+use rustc_middle::query::plumbing::IntoQueryParam;
 use std::rc::Rc;
 
 /// Struct [FreshVars] represents a set of fresh variables
@@ -701,15 +702,39 @@ fn get_pure_from_stmt(statement: Rc<Expr>) -> Option<Rc<Expr>> {
     }
 }
 
-pub(crate) fn compile_hir_id(env: &mut Env, hir_id: rustc_hir::hir_id::HirId) -> Rc<Expr> {
-    let local_def_id = hir_id.owner.def_id;
+pub(crate) fn apply_on_thir<'a, F, A>(
+    env: &Env<'a>,
+    local_def_id: impl IntoQueryParam<rustc_span::def_id::LocalDefId>,
+    f: F,
+) -> Result<A, String>
+where
+    F: FnOnce(&rustc_middle::thir::Thir<'a>, &rustc_middle::thir::ExprId) -> A,
+{
     let thir = env.tcx.thir_body(local_def_id);
     let Ok((thir, expr_id)) = thir else {
-        panic!("thir failed to compile");
+        return Result::Err("thir failed to compile".to_string());
     };
-    let thir = thir.borrow();
+    let result = std::panic::catch_unwind(panic::AssertUnwindSafe(|| thir.borrow()));
 
-    crate::thir_expression::compile_expr(env, &thir, &expr_id)
+    match result {
+        Ok(thir) => Result::Ok(f(&thir, &expr_id)),
+        Err(error) => Result::Err(format!("thir failed to compile: {:?}", error)),
+    }
+}
+
+pub(crate) fn compile_hir_id(env: &Env, hir_id: rustc_hir::hir_id::HirId) -> Rc<Expr> {
+    let local_def_id = hir_id.owner.def_id;
+    let result = apply_on_thir(env, local_def_id, |thir, expr_id| {
+        crate::thir_expression::compile_expr(env, thir, expr_id)
+    });
+
+    match result {
+        Ok(expr) => expr,
+        Err(error) => Rc::new(Expr {
+            kind: Rc::new(ExprKind::Message(error)),
+            ty: None,
+        }),
+    }
 }
 
 impl MatchArm {

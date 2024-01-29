@@ -66,7 +66,7 @@ fn path_of_bin_op(bin_op: &BinOp, ty_left: &Rc<CoqType>, ty_right: &Rc<CoqType>)
 }
 
 pub(crate) fn compile_expr<'a>(
-    env: &mut Env<'a>,
+    env: &Env<'a>,
     thir: &rustc_middle::thir::Thir<'a>,
     expr_id: &rustc_middle::thir::ExprId,
 ) -> Rc<Expr> {
@@ -676,7 +676,7 @@ fn build_match(scrutinee: Rc<Expr>, arms: Vec<MatchArm>, _ty: Option<Rc<CoqType>
 }
 
 fn get_let_if<'a>(
-    env: &mut Env<'a>,
+    env: &Env<'a>,
     thir: &rustc_middle::thir::Thir<'a>,
     expr_id: &rustc_middle::thir::ExprId,
 ) -> Option<(Rc<Pattern>, Rc<Expr>)> {
@@ -693,7 +693,7 @@ fn get_let_if<'a>(
 }
 
 fn compile_expr_kind<'a>(
-    env: &mut Env<'a>,
+    env: &Env<'a>,
     thir: &rustc_middle::thir::Thir<'a>,
     expr_id: &rustc_middle::thir::ExprId,
 ) -> Rc<ExprKind> {
@@ -1169,63 +1169,67 @@ fn compile_expr_kind<'a>(
             compile_expr_kind(env, thir, source)
         }
         thir::ExprKind::Closure(closure) => {
-            let rustc_middle::thir::ClosureExpr { closure_id, .. } = &**closure;
-            let thir = env.tcx.thir_body(closure_id);
-            let Ok((thir, expr_id)) = thir else {
-                panic!("thir failed to compile");
-            };
-            let thir = thir.borrow();
-            let args: Vec<(Rc<Pattern>, Rc<CoqType>)> = thir
-                .params
-                .iter()
-                .filter_map(|param| match &param.pat {
-                    Some(pattern) => {
-                        let pattern = crate::thir_pattern::compile_pattern(env, pattern.as_ref());
-                        let ty = compile_type(env, &param.ty);
-                        Some((pattern, ty))
-                    }
-                    None => None,
-                })
-                .collect();
-            let args = if args.is_empty() {
-                vec![(Rc::new(Pattern::Wild), CoqType::unit())]
-            } else {
-                args
-            };
-            let body = compile_expr(env, &thir, &expr_id).read();
-            let body = args
-                .iter()
-                .enumerate()
-                .rfold(body, |body, (index, (pattern, _))| {
-                    let ty = body.ty.clone();
-
-                    Rc::new(Expr {
-                        kind: build_match(
-                            Rc::new(Expr {
-                                kind: Rc::new(ExprKind::LocalVar(format!("α{index}"))).alloc(None),
-                                ty: None,
-                            }),
-                            vec![MatchArm {
-                                pattern: pattern.clone(),
-                                body,
-                            }],
-                            ty.clone(),
-                        ),
-                        ty,
+            let rustc_middle::thir::ClosureExpr { closure_id, .. } = closure.as_ref();
+            let result = apply_on_thir(env, closure_id, |thir, expr_id| {
+                let args: Vec<(Rc<Pattern>, Rc<CoqType>)> = thir
+                    .params
+                    .iter()
+                    .filter_map(|param| match &param.pat {
+                        Some(pattern) => {
+                            let pattern =
+                                crate::thir_pattern::compile_pattern(env, pattern.as_ref());
+                            let ty = compile_type(env, &param.ty);
+                            Some((pattern, ty))
+                        }
+                        None => None,
                     })
-                });
-            let args = args
-                .iter()
-                .enumerate()
-                .map(|(index, (_, ty))| (format!("α{index}"), Some(ty.clone())))
-                .collect();
+                    .collect();
+                let args = if args.is_empty() {
+                    vec![(Rc::new(Pattern::Wild), CoqType::unit())]
+                } else {
+                    args
+                };
+                let body = compile_expr(env, thir, expr_id).read();
+                let body = args
+                    .iter()
+                    .enumerate()
+                    .rfold(body, |body, (index, (pattern, _))| {
+                        let ty = body.ty.clone();
 
-            Rc::new(ExprKind::Lambda {
-                args,
-                body,
-                is_for_match: false,
-            })
-            .alloc(Some(ty))
+                        Rc::new(Expr {
+                            kind: build_match(
+                                Rc::new(Expr {
+                                    kind: Rc::new(ExprKind::LocalVar(format!("α{index}")))
+                                        .alloc(None),
+                                    ty: None,
+                                }),
+                                vec![MatchArm {
+                                    pattern: pattern.clone(),
+                                    body,
+                                }],
+                                ty.clone(),
+                            ),
+                            ty,
+                        })
+                    });
+                let args = args
+                    .iter()
+                    .enumerate()
+                    .map(|(index, (_, ty))| (format!("α{index}"), Some(ty.clone())))
+                    .collect();
+
+                Rc::new(ExprKind::Lambda {
+                    args,
+                    body,
+                    is_for_match: false,
+                })
+                .alloc(Some(ty))
+            });
+
+            match result {
+                Ok(expr) => expr,
+                Err(error) => Rc::new(ExprKind::Message(error)),
+            }
         }
         thir::ExprKind::Literal { lit, neg } => match lit.node {
             rustc_ast::LitKind::Str(symbol, _) => {
@@ -1369,7 +1373,7 @@ fn compile_expr_kind<'a>(
 }
 
 fn compile_stmts<'a>(
-    env: &mut Env<'a>,
+    env: &Env<'a>,
     thir: &rustc_middle::thir::Thir<'a>,
     stmt_ids: &[rustc_middle::thir::StmtId],
     expr_id: Option<rustc_middle::thir::ExprId>,
@@ -1444,7 +1448,7 @@ fn compile_stmts<'a>(
 }
 
 fn compile_block<'a>(
-    env: &mut Env<'a>,
+    env: &Env<'a>,
     thir: &rustc_middle::thir::Thir<'a>,
     block_id: &rustc_middle::thir::BlockId,
 ) -> Rc<Expr> {
