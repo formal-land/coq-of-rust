@@ -63,7 +63,6 @@ jobs:
           endGroup
           startGroup "Compile Coq translations"
             cd CoqOfRust
-            ./configure.sh
             python ./make_and_detect_warnings.py
             cd ..
           endGroup
