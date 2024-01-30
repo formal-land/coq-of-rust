@@ -1,0 +1,24 @@
+opam-version: "2.0"
+name: "coq-of-rust"
+version: "0.1"
+synopsis: "Coq of Rust"
+description: """
+Formal verification for Rust by translation to the proof system Coq
+"""
+maintainer: "Guillaume Claret <dev@clarus.me>"
+authors: [
+  "Guillaume Claret <dev@clarus.me>"
+]
+license: "AGPL-3.0"
+homepage: "https://formal.land/docs/coq-of-rust/introduction"
+bug-reports: "https://github.com/formal-land/coq-of-rust/issues"
+dev-repo: "git+https://github.com/formal-land/coq-of-rust.git"
+depends: [
+  "ocaml" {>= "4.08"}
+  "coq" {>= "8.18"}
+  "coq-hammer" {>= "1.3.2+8.18"}
+]
+build: [
+  ["./configure.sh"]
+  [make]
+]
