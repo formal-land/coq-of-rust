@@ -27,7 +27,7 @@ jobs:
             source "$HOME/.cargo/env"
             cargo --version
             sudo ln -s `which python3` /usr/bin/python
-            opam install -y coq-hammer
+            opam install -y --deps-only CoqOfRust/coq-of-rust.opam
           endGroup
           startGroup "Build"
             sudo chown -R $(whoami) .
