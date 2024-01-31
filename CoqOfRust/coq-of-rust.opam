@@ -7,7 +7,7 @@ Formal verification for Rust by translation to the proof system Coq
 """
 maintainer: "Guillaume Claret <dev@clarus.me>"
 authors: [
-  "Guillaume Claret <dev@clarus.me>"
+  "Formal Land <contact@formal.land>"
 ]
 license: "AGPL-3.0"
 homepage: "https://formal.land/docs/coq-of-rust/introduction"
