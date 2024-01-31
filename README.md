@@ -50,7 +50,7 @@ The tool `coq-of-rust` translates Rust programs to the battle-tested formal veri
 ## Prerequisites
 
 - Rust
-- Coq (version 8.14 or newer)
+- Coq (see [coq-of-rust.opam](./CoqOfRust/coq-of-rust.opam))
 
 ## Install
 
