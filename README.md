@@ -85,7 +85,6 @@ Compile the Coq files:
 
 ```sh
 cd CoqOfRust
-./configure.sh
 make
 ```
 
