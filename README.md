@@ -12,11 +12,12 @@ The development of `coq-of-rust` was mainly funded by the crypto-currency&nbsp;[
 
 ## Table of Contents
 
+- [Example](#example)
 - [Rationale](#rationale)
 - [Prerequisites](#prerequisites)
-- [Details](#details)
-- [Features](#features)
-- [Limitations](#limitations)
+- [Installation](#install)
+- [Features](#language-features)
+- [Contact](#contact)
 - [Alternative Projects](#alternative-projects)
 - [Contributing](#contributing)
 
