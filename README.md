@@ -12,11 +12,12 @@ The development of `coq-of-rust` was mainly funded by the crypto-currency&nbsp;[
 
 ## Table of Contents
 
+- [Example](#example)
 - [Rationale](#rationale)
 - [Prerequisites](#prerequisites)
-- [Details](#details)
-- [Features](#features)
-- [Limitations](#limitations)
+- [Installation](#install)
+- [Features](#language-features)
+- [Contact](#contact)
 - [Alternative Projects](#alternative-projects)
 - [Contributing](#contributing)
 
@@ -50,45 +51,15 @@ The tool `coq-of-rust` translates Rust programs to the battle-tested formal veri
 ## Prerequisites
 
 - Rust
-- Coq (version 8.14 or newer)
+- Coq (see [coq-of-rust.opam](./CoqOfRust/coq-of-rust.opam))
 
 ## Install
 
-From the root of this repository, install `coq-of-rust` with:
-
-```sh
-cargo install --path lib/
-```
-
-Then, in any Rust project, generate a `Crate.v` file with the Coq translation of the crate:
-
-```sh
-cargo coq-of-rust
-```
-
-## Details
-The translation works at the level of the [THIR](https://rustc-dev-guide.rust-lang.org/thir.html) intermediate representation of Rust.
-
-Translate the test files (but show the error/warning messages):
-
-```sh
-cargo run --bin coq-of-rust -- translate --path examples
-```
-
-Update the snapshots of the translations of the test files, including the error messages:
-
-```sh
-python run_tests.py
-```
-
-Compile the Coq files:
-
-```sh
-cd CoqOfRust
-make
-```
+See the [build tutorial](./docs/BUILD.md) for detailed instructions on building and installing `coq-of-rust`.
 
 ## Language features
+The translation works at the level of the [THIR](https://rustc-dev-guide.rust-lang.org/thir.html) intermediate representation of Rust.
+
 We support 80% of the Rust examples from the [Rust Book by Examples](https://doc.rust-lang.org/rust-by-example/). This includes:
 
 - basic control structures (like&nbsp;`if` and&nbsp;`match`)
