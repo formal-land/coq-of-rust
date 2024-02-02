@@ -1,5 +1,22 @@
 # Installation and Build Tutorial
 
+This tutorial provides an introduction to how to build `coq-of-rust`.
+The first part of the tutorial describes two possible ways to build
+the Rust to Coq translator (implemented in Rust): as a cargo plugin or
+as a standalone executable. The second part of the tutorial describes
+how to install dependencies and build the Coq implementation of Rust
+shallow embedding and facilities to verify Rust programs. After you
+successfully built `coq-of-rust` you can take a look at our [user
+guide](./GUIDE.md)
+
+## Table of Contents
+
+- [Rust](#rust)
+  - [Cargo plugin](#cargo-plugin)
+  - [Standalone executable](#standalone-executable)
+  - [Tests](#tests)
+- [Coq](#coq)
+
 ## Rust
 
 ### Cargo plugin
@@ -19,11 +36,8 @@ translation of the crate using this command:
 cargo coq-of-rust
 ```
 
-Sometimes the execution of the above command might result with an
-error related to Rust library versions mismatch. In that case, copy
-the `rust-toolchain` config file (which can be found in the root of
-this repository) to the root of the Rust project you want to generate
-the translation of.
+See the `coq-of-rust` [user guide](./GUIDE.md) for more details about
+using `coq-of-rust`.
 
 ### Standalone executable
 
@@ -32,15 +46,11 @@ standalone executable. This method has an advantage of supporting the
 translation of individual files, while the cargo plugin only supports
 the translation of the whole crates.
 
-For example, the following command would build `coq-of-rust` as a
-standalone executable an use it to translate one of the test examples:
+The following command would build `coq-of-rust` as a standalone
+executable (in release mode):
 ```sh
-cargo run --bin coq-of-rust -- translate --path examples/rust_book/hello_world/hello_world.rs
+cargo build --bin coq-of-rust --release
 ```
-
-Note that the standalone executable and the cargo plugin versions of
-`coq-of-rust` support different sets of command line options. Run
-`coq-of-rust` with `--help` option to see what options are supported.
 
 Using `coq-of-rust` as a standalone executable is intended for testing
 purposes. We generally recommend to use the cargo plugin instead.
@@ -70,6 +80,11 @@ run the following commands.
 Create a new opam switch:
 ```sh
 opam switch create coq-of-rust ocaml.5.1.0
+```
+
+Update shell environment to use the new switch:
+```sh
+eval $(opam env --switch=coq-of-rust)
 ```
 
 Add the repository with Coq packages:

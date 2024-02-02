@@ -15,7 +15,7 @@ The development of `coq-of-rust` was mainly funded by the crypto-currency&nbsp;[
 - [Example](#example)
 - [Rationale](#rationale)
 - [Prerequisites](#prerequisites)
-- [Installation](#install)
+- [Installation and User Guide](#installation-and-user-guide)
 - [Features](#language-features)
 - [Contact](#contact)
 - [Alternative Projects](#alternative-projects)
@@ -53,9 +53,9 @@ The tool `coq-of-rust` translates Rust programs to the battle-tested formal veri
 - Rust
 - Coq (see [coq-of-rust.opam](./CoqOfRust/coq-of-rust.opam))
 
-## Install
+## Installation and User Guide
 
-See the [build tutorial](./docs/BUILD.md) for detailed instructions on building and installing `coq-of-rust`.
+The [build tutorial](./docs/BUILD.md) provides detailed instructions on building and installing `coq-of-rust`, while the [user tutorial](./docs/GUIDE.md) provides an introduction to the `coq-of-rust` command line interface and the list of supported options.
 
 ## Language features
 The translation works at the level of the [THIR](https://rustc-dev-guide.rust-lang.org/thir.html) intermediate representation of Rust.

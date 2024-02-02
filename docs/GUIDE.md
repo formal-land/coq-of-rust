@@ -1,0 +1,86 @@
+# User Tutorial
+
+This tutorial provides some examples and tips for using `coq-of-rust`
+as well as a list of supported command line options and their
+description. The first part of the tutorial describes the cargo plugin
+version of `coq-of-rust`, while the second part describes the
+standalone executable version. Note that this two versions of
+`coq-of-rust` support different sets of command line options. See our
+[build tutorial](./BUILD.md) for instructions on how to build either
+of those versions of `coq-of-rust`.
+
+## Table of Contents
+
+- [Cargo plugin](#cargo-plugin)
+  - [Inteface](#interface-0)
+  - [Example](#example-0)
+  - [Tips](#tips-0)
+- [Standalone executable](#standalone-executable)
+  - [Inteface](#interface-1)
+  - [Example](#example-1)
+  - [Tips](#tips-1)
+
+## Cargo plugin
+
+### Example
+
+In any Rust project, generate a `Crate.v` file with the Coq
+translation of the crate using this command:
+```sh
+cargo coq-of-rust
+```
+
+### Tips
+
+Sometimes the execution of the above command might result with an
+error related to Rust library versions mismatch. In that case, copy
+the `rust-toolchain` config file (which can be found in the root of
+this repository) to the root of the Rust project you want to generate
+the translation of.
+
+### Interface
+
+Usage: `coq-of-rust [OPTIONS] [-- <RUST_FLAGS>...]`
+
+Arguments:
+  `[RUST_FLAGS]...`
+
+Options:
+- `--axiomatize`
+  Axiomatize the definitions
+- `--axiomatize-public`
+  Axiomatize the definitions with everything as public
+- `--configuration-file <CONFIGURATION_FILE>`
+  Path to a configuration file `[default: coq-of-rust-config.json]`
+- `--generate-reorder`
+  Generate the reoder section of configuration file in the stdout
+- `-h`, `--help`
+  Print help
+
+## standalone executable
+
+### Example
+
+The following command can be used to translate one of the
+`coq-of-rust` test examples:
+```sh
+./coq-of-rust translate --path examples/rust_book/hello_world/hello_world.rs
+```
+
+### Tips
+
+Using `coq-of-rust` as a standalone executable is intended for testing
+purposes. We generally recommend to use the cargo plugin instead.
+
+### Interface
+
+Usage: `coq-of-rust [OPTIONS] <COMMAND>`
+
+Commands:
+- `translate` Translate rust files to coq files
+- `help`      Print this message or the help of the given subcommand(s)
+
+Options:
+- `-d`, `--debug...` Turn debugging information on
+- `-h`, `--help`     Print help
+- `-V`, `--version`  Print version
