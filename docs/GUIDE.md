@@ -90,7 +90,7 @@ Options:
 Usage: `coq-of-rust translate [OPTIONS] --path <PATH>`
 
 Options:
-- `-p`, `--path <PATH>`           Sets a path to rust project
+- `-p`, `--path <PATH>`           Sets a path to rust file
 - `--axiomatize`                  Axiomatize the definitions
 - `--axiomatize-public`           Axiomatize the definitions with everything as public
 - `--generate-reorder`            Generate the "reorder" section of the configuration file

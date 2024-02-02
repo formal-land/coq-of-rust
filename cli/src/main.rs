@@ -7,7 +7,7 @@ use clap::{Parser, Subcommand};
 
 #[derive(Args)]
 struct Translate {
-    /// Sets a path to rust project
+    /// Sets a path to rust file
     #[arg(short, long, value_name = "PATH", value_parser = is_valid_path)]
     path: PathBuf,
     /// Axiomatize the definitions
