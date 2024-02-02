@@ -65,6 +65,11 @@ Create a new opam switch:
 opam switch create coq-of-rust ocaml.5.1.0
 ```
 
+Update shell environment to use the new switch:
+```sh
+eval $(opam env --switch=coq-of-rust)
+```
+
 Add the repository with Coq packages:
 ```sh
 opam repo add coq-released https://coq.inria.fr/opam/released
