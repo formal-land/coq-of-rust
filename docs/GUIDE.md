@@ -12,13 +12,13 @@ of those versions of `coq-of-rust`.
 ## Table of Contents
 
 - [Cargo plugin](#cargo-plugin)
-  - [Inteface](#interface-0)
   - [Example](#example-0)
   - [Tips](#tips-0)
+  - [Inteface](#interface-0)
 - [Standalone executable](#standalone-executable)
-  - [Inteface](#interface-1)
   - [Example](#example-1)
   - [Tips](#tips-1)
+  - [Inteface](#interface-1)
 
 ## Cargo plugin
 
