@@ -1,5 +1,22 @@
 # Installation and Build Tutorial
 
+This tutorial provides an introduction to how to build `coq-of-rust`.
+The first part of the tutorial describes two possible ways to build
+the Rust to Coq translator (implemented in Rust): as a cargo plugin or
+as a standalone executable. The second part of the tutorial describes
+how to install dependencies and build the Coq implementation of Rust
+shallow embedding and facilities to verify Rust programs. After you
+successfully built `coq-of-rust` you can take a look at our [user
+guide](./GUIDE.md)
+
+## Table of Contents
+
+- [Rust](#rust)
+  - [Cargo plugin](#cargo-plugin)
+  - [Standalone executable](#standalone-executable)
+  - [Tests](#tests)
+- [Coq](#coq)
+
 ## Rust
 
 ### Cargo plugin
