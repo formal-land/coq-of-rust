@@ -84,3 +84,16 @@ Options:
 - `-d`, `--debug...` Turn debugging information on
 - `-h`, `--help`     Print help
 - `-V`, `--version`  Print version
+
+#### Translate subcommand
+
+Usage: `coq-of-rust translate [OPTIONS] --path <PATH>`
+
+Options:
+- `-p`, `--path <PATH>`           Sets a path to rust project
+- `--axiomatize`                  Axiomatize the definitions
+- `--axiomatize-public`           Axiomatize the definitions with everything as public
+- `--generate-reorder`            Generate the "reorder" section of the configuration file
+- `--output-path <output_path>`   Output path where to place the translation `[default: coq_translation]`
+- `--configuration-file <config>` Configuration file path `[default: coq-of-rust-config.json]`
+- `-h`, `--help`                  Print help
