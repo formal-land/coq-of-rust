@@ -4,7 +4,7 @@
   "impl_ignore_axioms": [
   ],
   "reorder": {
-    "examples/functions/functions_order.rs": {
+    "examples/rust_book/functions/functions_order.rs": {
       "top_level": {
       	"depends_on_trait_impl": { "move": "down", "after": "Impl_SomeTrait_for_OtherType" },
         "foo": { "move": "up", "before": "main" }
