@@ -3,9 +3,6 @@ std/iter.v
 std/net.v
 examples/axiomatized/examples/rust_book/conversion/try_from_and_try_into.v
 examples/axiomatized/examples/rust_book/custom_types/enums_testcase_linked_list.v
-examples/axiomatized/examples/rust_book/error_handling/boxing_errors.v
-examples/axiomatized/examples/rust_book/error_handling/other_uses_of_question_mark.v
-examples/axiomatized/examples/rust_book/error_handling/unpacking_options_via_question_mark.v
 examples/axiomatized/examples/rust_book/error_handling/wrapping_errors.v
 examples/axiomatized/examples/rust_book/expressions/const_underscore_expression.v
 examples/axiomatized/examples/rust_book/functions/functions_closures_as_input_parameters.v
@@ -27,11 +24,7 @@ examples/axiomatized/examples/rust_book/modules/visibility.v
 examples/axiomatized/examples/rust_book/scoping_rules/scoping_rules_lifetimes_bounds.v
 examples/axiomatized/examples/rust_book/scoping_rules/scoping_rules_ownership_and_rules_partial_moves.v
 examples/axiomatized/examples/rust_book/scoping_rules/scoping_rules_raii_desctructor.v
-examples/axiomatized/examples/rust_book/std_library_types/hash_map_alternate_or_custom_key_types.v
-examples/axiomatized/examples/rust_book/std_library_types/strings_raw_string_literals.v
 examples/axiomatized/examples/rust_book/std_misc/file_io_read_lines_efficient_method.v
-examples/axiomatized/examples/rust_book/std_misc/file_io_read_lines.v
-examples/axiomatized/examples/rust_book/std_misc/filesystem_operations.v
 examples/axiomatized/examples/rust_book/std_misc/foreign_function_interface.v
 examples/axiomatized/examples/rust_book/traits/disambiguating_overlapping_traits.v
 examples/axiomatized/examples/rust_book/traits/hash.v
@@ -59,7 +52,6 @@ examples/default/examples/rust_book/functions/functions_closures_capturing.v
 examples/default/examples/rust_book/functions/functions_closures_example_searching_through_iterators_Iterator_find.v
 examples/default/examples/rust_book/functions/functions_closures_forced_capturing_with_move.v
 examples/default/examples/rust_book/functions/functions_closures_input_functions.v
-examples/default/examples/rust_book/functions/functions_closures_type_anonymity_define_and_use.v
 examples/default/examples/rust_book/functions/functions_closures_type_anonymity_define_and_use.v
 examples/default/examples/rust_book/functions/functions_closures_type_anonymity_define.v
 examples/default/examples/rust_book/functions/functions_closures.v
