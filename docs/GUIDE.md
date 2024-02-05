@@ -12,13 +12,13 @@ of those versions of `coq-of-rust`.
 ## Table of Contents
 
 - [Cargo plugin](#cargo-plugin)
-  - [Inteface](#interface-0)
   - [Example](#example-0)
   - [Tips](#tips-0)
+  - [Inteface](#interface-0)
 - [Standalone executable](#standalone-executable)
-  - [Inteface](#interface-1)
   - [Example](#example-1)
   - [Tips](#tips-1)
+  - [Inteface](#interface-1)
 
 ## Cargo plugin
 
@@ -84,3 +84,16 @@ Options:
 - `-d`, `--debug...` Turn debugging information on
 - `-h`, `--help`     Print help
 - `-V`, `--version`  Print version
+
+#### Translate subcommand
+
+Usage: `coq-of-rust translate [OPTIONS] --path <PATH>`
+
+Options:
+- `-p`, `--path <PATH>`           Sets a path to rust file
+- `--axiomatize`                  Axiomatize the definitions
+- `--axiomatize-public`           Axiomatize the definitions with everything as public
+- `--generate-reorder`            Generate the "reorder" section of the configuration file
+- `--output-path <output_path>`   Output path where to place the translation `[default: coq_translation]`
+- `--configuration-file <config>` Configuration file path `[default: coq-of-rust-config.json]`
+- `-h`, `--help`                  Print help
