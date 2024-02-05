@@ -4,10 +4,10 @@ VFILES := $(shell find -L . -name "*.v" | grep -v -f blacklist.txt | sort)
 
 default: all
 
-CoqMakefile:
+CoqMakefile: blacklist.txt
 	coq_makefile -f _CoqProject -o $@ $(VFILES)
 
-MAKECOQ := $(MAKE) -f CoqMakefile
+MAKECOQ := +$(MAKE) -f CoqMakefile
 
 %.vo: CoqMakefile %.v
 	$(MAKECOQ) $@
