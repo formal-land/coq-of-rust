@@ -163,45 +163,6 @@ Module inner_mod.
 End inner_mod.
 
 (*
-    pub fn bar() {
-        // functions_order::inner_mod::bar
-        tar();
-    }
-*)
-Parameter bar : M unit.
-
-(*
-    fn tar() {}
-*)
-Parameter tar : M unit.
-
-Module nested_mod.
-  (*
-          fn tack() {}
-  *)
-  Parameter tack : M unit.
-  
-  (*
-          pub fn tick() {
-              tack();
-          }
-  *)
-  Parameter tick : M unit.
-End nested_mod.
-
-(*
-        pub fn tick() {
-            tack();
-        }
-*)
-Parameter tick : M unit.
-
-(*
-        fn tack() {}
-*)
-Parameter tack : M unit.
-
-(*
 fn foo() {}
 *)
 Parameter foo : M unit.

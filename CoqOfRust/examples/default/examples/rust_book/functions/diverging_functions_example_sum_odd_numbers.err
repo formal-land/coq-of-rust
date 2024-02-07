@@ -1,3 +1,15 @@
+warning: Constants in patterns are not yet supported.
+ --> examples/rust_book/functions/diverging_functions_example_sum_odd_numbers.rs:9:17
+  |
+9 |                 true => i,
+  |                 ^^^^
+
+warning: Constants in patterns are not yet supported.
+  --> examples/rust_book/functions/diverging_functions_example_sum_odd_numbers.rs:13:17
+   |
+13 |                 false => continue,
+   |                 ^^^^^
+
 unimplemented parent_kind: Fn
 expression: Expr {
     kind: ZstLiteral {
@@ -13,17 +25,5 @@ expression: Expr {
     ),
     span: examples/rust_book/functions/diverging_functions_example_sum_odd_numbers.rs:21:9: 21:24 (#0),
 }
-warning: Constants in patterns are not yet supported.
- --> examples/rust_book/functions/diverging_functions_example_sum_odd_numbers.rs:9:17
-  |
-9 |                 true => i,
-  |                 ^^^^
-
-warning: Constants in patterns are not yet supported.
-  --> examples/rust_book/functions/diverging_functions_example_sum_odd_numbers.rs:13:17
-   |
-13 |                 false => continue,
-   |                 ^^^^^
-
 warning: 2 warnings emitted
 
