@@ -16,9 +16,6 @@ Module  Impl_core_fmt_Debug_for_wrapping_errors_DoubleError_t.
 Section Impl_core_fmt_Debug_for_wrapping_errors_DoubleError_t.
   Definition Self : Set := wrapping_errors.DoubleError.t.
   
-  (*
-  Debug
-  *)
   Parameter fmt :
       (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
   
@@ -38,16 +35,6 @@ Module  Impl_core_fmt_Display_for_wrapping_errors_DoubleError_t.
 Section Impl_core_fmt_Display_for_wrapping_errors_DoubleError_t.
   Definition Self : Set := wrapping_errors.DoubleError.t.
   
-  (*
-      fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-          match *self {
-              DoubleError::EmptyVec => write!(f, "please use a vector with at least one element"),
-              // The wrapped error contains additional information and is available
-              // via the source() method.
-              DoubleError::Parse(..) => write!(f, "the provided string could not be parsed as int"),
-          }
-      }
-  *)
   Parameter fmt :
       (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
   
@@ -65,17 +52,6 @@ Module  Impl_core_error_Error_for_wrapping_errors_DoubleError_t.
 Section Impl_core_error_Error_for_wrapping_errors_DoubleError_t.
   Definition Self : Set := wrapping_errors.DoubleError.t.
   
-  (*
-      fn source(&self) -> Option<&(dyn error::Error + 'static)> {
-          match *self {
-              DoubleError::EmptyVec => None,
-              // The cause is the underlying implementation error type. Is implicitly
-              // cast to the trait object `&error::Error`. This works because the
-              // underlying type already implements the `Error` trait.
-              DoubleError::Parse(ref e) => Some(e),
-          }
-      }
-  *)
   Parameter source :
       (ref Self) ->
         M (core.option.Option.t (ref (dyn [core.error.Error.Trait]))).
@@ -99,11 +75,6 @@ Module  Impl_core_convert_From_core_num_error_ParseIntError_t_for_wrapping_error
 Section Impl_core_convert_From_core_num_error_ParseIntError_t_for_wrapping_errors_DoubleError_t.
   Definition Self : Set := wrapping_errors.DoubleError.t.
   
-  (*
-      fn from(err: ParseIntError) -> DoubleError {
-          DoubleError::Parse(err)
-      }
-  *)
   Parameter from :
       core.num.error.ParseIntError.t -> M wrapping_errors.DoubleError.t.
   
@@ -119,45 +90,11 @@ Section Impl_core_convert_From_core_num_error_ParseIntError_t_for_wrapping_error
 End Impl_core_convert_From_core_num_error_ParseIntError_t_for_wrapping_errors_DoubleError_t.
 End Impl_core_convert_From_core_num_error_ParseIntError_t_for_wrapping_errors_DoubleError_t.
 
-(*
-fn double_first(vec: Vec<&str>) -> Result<i32> {
-    let first = vec.first().ok_or(DoubleError::EmptyVec)?;
-    // Here we implicitly use the `ParseIntError` implementation of `From` (which
-    // we defined above) in order to create a `DoubleError`.
-    let parsed = first.parse::<i32>()?;
-
-    Ok(2 * parsed)
-}
-*)
 Parameter double_first :
     (alloc.vec.Vec.t (ref str.t) alloc.vec.Vec.Default.A) ->
       M ltac:(wrapping_errors.Result i32.t).
 
-(*
-fn print(result: Result<i32>) {
-    match result {
-        Ok(n) => println!("The first doubled is {}", n),
-        Err(e) => {
-            println!("Error: {}", e);
-            if let Some(source) = e.source() {
-                println!("  Caused by: {}", source);
-            }
-        }
-    }
-}
-*)
 Parameter print : ltac:(wrapping_errors.Result i32.t) -> M unit.
 
-(*
-fn main() {
-    let numbers = vec!["42", "93", "18"];
-    let empty = vec![];
-    let strings = vec!["tofu", "93", "18"];
-
-    print(double_first(numbers));
-    print(double_first(empty));
-    print(double_first(strings));
-}
-*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : M unit.

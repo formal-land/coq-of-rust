@@ -16,9 +16,6 @@ Module  Impl_core_default_Default_for_conditional_compilation_AccountId_t.
 Section Impl_core_default_Default_for_conditional_compilation_AccountId_t.
   Definition Self : Set := conditional_compilation.AccountId.t.
   
-  (*
-  Default
-  *)
   Parameter default : M conditional_compilation.AccountId.t.
   
   Global Instance AssociatedFunction_default :
@@ -36,9 +33,6 @@ Module  Impl_core_clone_Clone_for_conditional_compilation_AccountId_t.
 Section Impl_core_clone_Clone_for_conditional_compilation_AccountId_t.
   Definition Self : Set := conditional_compilation.AccountId.t.
   
-  (*
-  Clone
-  *)
   Parameter clone : (ref Self) -> M conditional_compilation.AccountId.t.
   
   Global Instance AssociatedFunction_clone :
@@ -144,11 +138,6 @@ Module  Impl_conditional_compilation_Env_t.
 Section Impl_conditional_compilation_Env_t.
   Definition Self : Set := conditional_compilation.Env.t.
   
-  (*
-      fn caller(&self) -> AccountId {
-          self.caller
-      }
-  *)
   Parameter caller : (ref Self) -> M conditional_compilation.AccountId.t.
   
   Global Instance AssociatedFunction_caller :
@@ -156,11 +145,6 @@ Section Impl_conditional_compilation_Env_t.
     Notations.double_colon := caller;
   }.
   
-  (*
-      fn emit_event(&self, _event: Event) {
-          unimplemented!()
-      }
-  *)
   Parameter emit_event :
       (ref Self) -> conditional_compilation.Event.t -> M unit.
   
@@ -169,11 +153,6 @@ Section Impl_conditional_compilation_Env_t.
     Notations.double_colon := emit_event;
   }.
   
-  (*
-      fn block_number(&self) -> BlockNumber {
-          unimplemented!()
-      }
-  *)
   Parameter block_number :
       (ref Self) -> M ltac:(conditional_compilation.BlockNumber).
   
@@ -199,11 +178,6 @@ Module  Impl_conditional_compilation_ConditionalCompilation_t.
 Section Impl_conditional_compilation_ConditionalCompilation_t.
   Definition Self : Set := conditional_compilation.ConditionalCompilation.t.
   
-  (*
-      fn init_env() -> Env {
-          unimplemented!()
-      }
-  *)
   Parameter init_env : M conditional_compilation.Env.t.
   
   Global Instance AssociatedFunction_init_env :
@@ -211,35 +185,18 @@ Section Impl_conditional_compilation_ConditionalCompilation_t.
     Notations.double_colon := init_env;
   }.
   
-  (*
-      fn env(&self) -> Env {
-          Self::init_env()
-      }
-  *)
   Parameter env : (ref Self) -> M conditional_compilation.Env.t.
   
   Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
     Notations.double_colon := env;
   }.
   
-  (*
-      pub fn new() -> Self {
-          Self {
-              value: Default::default(),
-          }
-      }
-  *)
   Parameter new : M Self.
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
   }.
   
-  (*
-      pub fn new_foo(value: bool) -> Self {
-          Self { value }
-      }
-  *)
   Parameter new_foo : bool.t -> M Self.
   
   Global Instance AssociatedFunction_new_foo :
@@ -247,11 +204,6 @@ Section Impl_conditional_compilation_ConditionalCompilation_t.
     Notations.double_colon := new_foo;
   }.
   
-  (*
-      pub fn new_bar(value: bool) -> Self {
-          Self { value }
-      }
-  *)
   Parameter new_bar : bool.t -> M Self.
   
   Global Instance AssociatedFunction_new_bar :
@@ -259,11 +211,6 @@ Section Impl_conditional_compilation_ConditionalCompilation_t.
     Notations.double_colon := new_bar;
   }.
   
-  (*
-      pub fn new_foo_bar(value: bool) -> Self {
-          Self { value }
-      }
-  *)
   Parameter new_foo_bar : bool.t -> M Self.
   
   Global Instance AssociatedFunction_new_foo_bar :
@@ -271,16 +218,6 @@ Section Impl_conditional_compilation_ConditionalCompilation_t.
     Notations.double_colon := new_foo_bar;
   }.
   
-  (*
-      pub fn inherent_flip_foo(&mut self) {
-          self.value = !self.value;
-          let caller = Self::init_env().caller();
-          Self::init_env().emit_event(Event::Changes(Changes {
-              new_value: self.value,
-              by: caller,
-          }));
-      }
-  *)
   Parameter inherent_flip_foo : (mut_ref Self) -> M unit.
   
   Global Instance AssociatedFunction_inherent_flip_foo :
@@ -288,18 +225,6 @@ Section Impl_conditional_compilation_ConditionalCompilation_t.
     Notations.double_colon := inherent_flip_foo;
   }.
   
-  (*
-      pub fn inherent_flip_bar(&mut self) {
-          let caller = Self::init_env().caller();
-          let block_number = Self::init_env().block_number();
-          self.value = !self.value;
-          Self::init_env().emit_event(Event::ChangesDated(ChangesDated {
-              new_value: self.value,
-              by: caller,
-              when: block_number,
-          }));
-      }
-  *)
   Parameter inherent_flip_bar : (mut_ref Self) -> M unit.
   
   Global Instance AssociatedFunction_inherent_flip_bar :
@@ -313,11 +238,6 @@ Module  Impl_conditional_compilation_Flip_for_conditional_compilation_Conditiona
 Section Impl_conditional_compilation_Flip_for_conditional_compilation_ConditionalCompilation_t.
   Definition Self : Set := conditional_compilation.ConditionalCompilation.t.
   
-  (*
-      fn flip(&mut self) {
-          self.value = !self.value;
-      }
-  *)
   Parameter flip : (mut_ref Self) -> M unit.
   
   Global Instance AssociatedFunction_flip :
@@ -325,27 +245,12 @@ Section Impl_conditional_compilation_Flip_for_conditional_compilation_Conditiona
     Notations.double_colon := flip;
   }.
   
-  (*
-      fn get(&self) -> bool {
-          self.value
-      }
-  *)
   Parameter get : (ref Self) -> M bool.t.
   
   Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
     Notations.double_colon := get;
   }.
   
-  (*
-      fn push_foo(&mut self, value: bool) {
-          let caller = Self::init_env().caller();
-          Self::init_env().emit_event(Event::Changes(Changes {
-              new_value: value,
-              by: caller,
-          }));
-          self.value = value;
-      }
-  *)
   Parameter push_foo : (mut_ref Self) -> bool.t -> M unit.
   
   Global Instance AssociatedFunction_push_foo :

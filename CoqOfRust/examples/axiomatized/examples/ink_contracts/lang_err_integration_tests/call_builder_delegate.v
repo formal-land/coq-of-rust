@@ -23,9 +23,6 @@ Module  Impl_core_default_Default_for_call_builder_delegate_CallBuilderDelegateT
 Section Impl_core_default_Default_for_call_builder_delegate_CallBuilderDelegateTest_t.
   Definition Self : Set := call_builder_delegate.CallBuilderDelegateTest.t.
   
-  (*
-  Default
-  *)
   Parameter default : M call_builder_delegate.CallBuilderDelegateTest.t.
   
   Global Instance AssociatedFunction_default :
@@ -43,36 +40,12 @@ Module  Impl_call_builder_delegate_CallBuilderDelegateTest_t.
 Section Impl_call_builder_delegate_CallBuilderDelegateTest_t.
   Definition Self : Set := call_builder_delegate.CallBuilderDelegateTest.t.
   
-  (*
-      pub fn new(value: i32) -> Self {
-          Self { value }
-      }
-  *)
   Parameter new : i32.t -> M Self.
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
   }.
   
-  (*
-      pub fn delegate(&mut self, code_hash: Hash, selector: [u8; 4]) -> Option<LangError> {
-          // let result = build_call::<DefaultEnvironment>()
-          //     .delegate(code_hash)
-          //     .exec_input(ExecutionInput::new(Selector::new(selector)))
-          //     .returns::<bool>()
-          //     .try_invoke()
-          //     .expect("Error from the Contracts pallet.");
-  
-          // match result {
-          //     Ok(_) => None,
-          //     Err(e @ ink::LangError::CouldNotReadInput) => Some(e),
-          //     Err(_) => {
-          //         unimplemented!("No other `LangError` variants exist at the moment.")
-          //     }
-          // }
-          None
-      }
-  *)
   Parameter delegate :
       (mut_ref Self) ->
         ltac:(call_builder_delegate.Hash) ->
@@ -84,18 +57,6 @@ Section Impl_call_builder_delegate_CallBuilderDelegateTest_t.
     Notations.double_colon := delegate;
   }.
   
-  (*
-      pub fn invoke(&mut self, code_hash: Hash, selector: [u8; 4]) -> i32 {
-          // use ink::env::call::build_call;
-  
-          // build_call::<DefaultEnvironment>()
-          //     .delegate(code_hash)
-          //     .exec_input(ExecutionInput::new(Selector::new(selector)))
-          //     .returns::<i32>()
-          //     .invoke()
-          0
-      }
-  *)
   Parameter invoke :
       (mut_ref Self) ->
         ltac:(call_builder_delegate.Hash) ->

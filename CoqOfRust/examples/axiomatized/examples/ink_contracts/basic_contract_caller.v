@@ -16,9 +16,6 @@ Module  Impl_core_default_Default_for_basic_contract_caller_AccountId_t.
 Section Impl_core_default_Default_for_basic_contract_caller_AccountId_t.
   Definition Self : Set := basic_contract_caller.AccountId.t.
   
-  (*
-  Default
-  *)
   Parameter default : M basic_contract_caller.AccountId.t.
   
   Global Instance AssociatedFunction_default :
@@ -36,9 +33,6 @@ Module  Impl_core_clone_Clone_for_basic_contract_caller_AccountId_t.
 Section Impl_core_clone_Clone_for_basic_contract_caller_AccountId_t.
   Definition Self : Set := basic_contract_caller.AccountId.t.
   
-  (*
-  Clone
-  *)
   Parameter clone : (ref Self) -> M basic_contract_caller.AccountId.t.
   
   Global Instance AssociatedFunction_clone :
@@ -84,22 +78,12 @@ Module  Impl_basic_contract_caller_OtherContract_t.
 Section Impl_basic_contract_caller_OtherContract_t.
   Definition Self : Set := basic_contract_caller.OtherContract.t.
   
-  (*
-      pub fn new(init_value: bool) -> Self {
-          Self { value: init_value }
-      }
-  *)
   Parameter new : bool.t -> M Self.
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
   }.
   
-  (*
-      pub fn flip(&mut self) {
-          self.value = !self.value;
-      }
-  *)
   Parameter flip : (mut_ref Self) -> M unit.
   
   Global Instance AssociatedFunction_flip :
@@ -107,11 +91,6 @@ Section Impl_basic_contract_caller_OtherContract_t.
     Notations.double_colon := flip;
   }.
   
-  (*
-      pub fn get(&self) -> bool {
-          self.value
-      }
-  *)
   Parameter get : (ref Self) -> M bool.t.
   
   Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
@@ -137,30 +116,12 @@ Module  Impl_basic_contract_caller_BasicContractCaller_t.
 Section Impl_basic_contract_caller_BasicContractCaller_t.
   Definition Self : Set := basic_contract_caller.BasicContractCaller.t.
   
-  (*
-      pub fn new(other_contract_code_hash: Hash) -> Self {
-          // let other_contract = OtherContract::new(true)
-          //     .code_hash(other_contract_code_hash)
-          //     .endowment(0)
-          //     .salt_bytes([0xDE, 0xAD, 0xBE, 0xEF])
-          //     .instantiate();
-          let other_contract = todo!();
-  
-          Self { other_contract }
-      }
-  *)
   Parameter new : ltac:(basic_contract_caller.Hash) -> M Self.
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
   }.
   
-  (*
-      pub fn flip_and_get(&mut self) -> bool {
-          self.other_contract.flip();
-          self.other_contract.get()
-      }
-  *)
   Parameter flip_and_get : (mut_ref Self) -> M bool.t.
   
   Global Instance AssociatedFunction_flip_and_get :

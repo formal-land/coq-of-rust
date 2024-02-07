@@ -11,9 +11,6 @@ Section Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificati
   Definition Self : Set :=
     generics_phantom_type_test_case_unit_clarification.Inch.t.
   
-  (*
-  Debug
-  *)
   Parameter fmt :
       (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
   
@@ -32,9 +29,6 @@ Section Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarifica
   Definition Self : Set :=
     generics_phantom_type_test_case_unit_clarification.Inch.t.
   
-  (*
-  Clone
-  *)
   Parameter clone :
       (ref Self) -> M generics_phantom_type_test_case_unit_clarification.Inch.t.
   
@@ -70,9 +64,6 @@ Section Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificati
   Definition Self : Set :=
     generics_phantom_type_test_case_unit_clarification.Mm.t.
   
-  (*
-  Debug
-  *)
   Parameter fmt :
       (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
   
@@ -91,9 +82,6 @@ Section Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarifica
   Definition Self : Set :=
     generics_phantom_type_test_case_unit_clarification.Mm.t.
   
-  (*
-  Clone
-  *)
   Parameter clone :
       (ref Self) -> M generics_phantom_type_test_case_unit_clarification.Mm.t.
   
@@ -144,9 +132,6 @@ Section Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificati
   Definition Self : Set :=
     generics_phantom_type_test_case_unit_clarification.Length.t Unit.
   
-  (*
-  Debug
-  *)
   Parameter fmt :
       (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
   
@@ -169,9 +154,6 @@ Section Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarifica
   Definition Self : Set :=
     generics_phantom_type_test_case_unit_clarification.Length.t Unit.
   
-  (*
-  Clone
-  *)
   Parameter clone :
       (ref Self) ->
         M (generics_phantom_type_test_case_unit_clarification.Length.t Unit).
@@ -209,18 +191,9 @@ Section Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarifi
   Definition Self : Set :=
     generics_phantom_type_test_case_unit_clarification.Length.t Unit.
   
-  (*
-      type Output = Length<Unit>;
-  *)
   Definition Output : Set :=
     generics_phantom_type_test_case_unit_clarification.Length.t Unit.
   
-  (*
-      fn add(self, rhs: Length<Unit>) -> Length<Unit> {
-          // `+` calls the `Add` implementation for `f64`.
-          Length(self.0 + rhs.0, PhantomData)
-      }
-  *)
   Parameter add :
       Self ->
         (generics_phantom_type_test_case_unit_clarification.Length.t Unit) ->
@@ -239,28 +212,5 @@ Section Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarifi
 End Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarification_Length_t_Unit.
 End Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarification_Length_t_Unit.
 
-(*
-fn main() {
-    // Specifies `one_foot` to have phantom type parameter `Inch`.
-    let one_foot: Length<Inch> = Length(12.0, PhantomData);
-    // `one_meter` has phantom type parameter `Mm`.
-    let one_meter: Length<Mm> = Length(1000.0, PhantomData);
-
-    // `+` calls the `add()` method we implemented for `Length<Unit>`.
-    //
-    // Since `Length` implements `Copy`, `add()` does not consume
-    // `one_foot` and `one_meter` but copies them into `self` and `rhs`.
-    let two_feet = one_foot + one_foot;
-    let two_meters = one_meter + one_meter;
-
-    // Addition works.
-    println!("one foot + one_foot = {:?} in", two_feet.0);
-    println!("one meter + one_meter = {:?} mm", two_meters.0);
-
-    // Nonsensical operations fail as they should:
-    // Compile-time Error: type mismatch.
-    //let one_feter = one_foot + one_meter;
-}
-*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : M unit.

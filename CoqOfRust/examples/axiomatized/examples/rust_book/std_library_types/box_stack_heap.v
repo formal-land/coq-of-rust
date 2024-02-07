@@ -20,9 +20,6 @@ Module  Impl_core_fmt_Debug_for_box_stack_heap_Point_t.
 Section Impl_core_fmt_Debug_for_box_stack_heap_Point_t.
   Definition Self : Set := box_stack_heap.Point.t.
   
-  (*
-  Debug
-  *)
   (* #[allow(dead_code)] - function was ignored by the compiler *)
   Parameter fmt :
       (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
@@ -41,9 +38,6 @@ Module  Impl_core_clone_Clone_for_box_stack_heap_Point_t.
 Section Impl_core_clone_Clone_for_box_stack_heap_Point_t.
   Definition Self : Set := box_stack_heap.Point.t.
   
-  (*
-  Clone
-  *)
   (* #[allow(dead_code)] - function was ignored by the compiler *)
   Parameter clone : (ref Self) -> M box_stack_heap.Point.t.
   
@@ -87,74 +81,10 @@ Section Rectangle.
 End Rectangle.
 End Rectangle.
 
-(*
-fn origin() -> Point {
-    Point { x: 0.0, y: 0.0 }
-}
-*)
 Parameter origin : M box_stack_heap.Point.t.
 
-(*
-fn boxed_origin() -> Box<Point> {
-    // Allocate this point on the heap, and return a pointer to it
-    Box::new(Point { x: 0.0, y: 0.0 })
-}
-*)
 Parameter boxed_origin :
     M (alloc.boxed.Box.t box_stack_heap.Point.t alloc.boxed.Box.Default.A).
 
-(*
-fn main() {
-    // (all the type annotations are superfluous)
-    // Stack allocated variables
-    let point: Point = origin();
-    let rectangle: Rectangle = Rectangle {
-        top_left: origin(),
-        bottom_right: Point { x: 3.0, y: -4.0 },
-    };
-
-    // Heap allocated rectangle
-    let boxed_rectangle: Box<Rectangle> = Box::new(Rectangle {
-        top_left: origin(),
-        bottom_right: Point { x: 3.0, y: -4.0 },
-    });
-
-    // The output of functions can be boxed
-    let boxed_point: Box<Point> = Box::new(origin());
-
-    // Double indirection
-    let box_in_a_box: Box<Box<Point>> = Box::new(boxed_origin());
-
-    println!(
-        "Point occupies {} bytes on the stack",
-        mem::size_of_val(&point)
-    );
-    println!(
-        "Rectangle occupies {} bytes on the stack",
-        mem::size_of_val(&rectangle)
-    );
-
-    // box size == pointer size
-    println!(
-        "Boxed point occupies {} bytes on the stack",
-        mem::size_of_val(&boxed_point)
-    );
-    println!(
-        "Boxed rectangle occupies {} bytes on the stack",
-        mem::size_of_val(&boxed_rectangle)
-    );
-    println!(
-        "Boxed box occupies {} bytes on the stack",
-        mem::size_of_val(&box_in_a_box)
-    );
-
-    // Copy the data contained in `boxed_point` into `unboxed_point`
-    let unboxed_point: Point = *boxed_point;
-    println!(
-        "Unboxed point occupies {} bytes on the stack",
-        mem::size_of_val(&unboxed_point)
-    );
-}
-*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : M unit.

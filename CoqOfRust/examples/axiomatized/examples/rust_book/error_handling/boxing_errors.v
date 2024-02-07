@@ -19,9 +19,6 @@ Module  Impl_core_fmt_Debug_for_boxing_errors_EmptyVec_t.
 Section Impl_core_fmt_Debug_for_boxing_errors_EmptyVec_t.
   Definition Self : Set := boxing_errors.EmptyVec.t.
   
-  (*
-  Debug
-  *)
   Parameter fmt :
       (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
   
@@ -39,9 +36,6 @@ Module  Impl_core_clone_Clone_for_boxing_errors_EmptyVec_t.
 Section Impl_core_clone_Clone_for_boxing_errors_EmptyVec_t.
   Definition Self : Set := boxing_errors.EmptyVec.t.
   
-  (*
-  Clone
-  *)
   Parameter clone : (ref Self) -> M boxing_errors.EmptyVec.t.
   
   Global Instance AssociatedFunction_clone :
@@ -60,11 +54,6 @@ Module  Impl_core_fmt_Display_for_boxing_errors_EmptyVec_t.
 Section Impl_core_fmt_Display_for_boxing_errors_EmptyVec_t.
   Definition Self : Set := boxing_errors.EmptyVec.t.
   
-  (*
-      fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-          write!(f, "invalid first item to double")
-      }
-  *)
   Parameter fmt :
       (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
   
@@ -92,41 +81,11 @@ Section Impl_core_error_Error_for_boxing_errors_EmptyVec_t.
 End Impl_core_error_Error_for_boxing_errors_EmptyVec_t.
 End Impl_core_error_Error_for_boxing_errors_EmptyVec_t.
 
-(*
-fn double_first(vec: Vec<&str>) -> Result<i32> {
-    vec.first()
-        .ok_or_else(|| EmptyVec.into()) // Converts to Box
-        .and_then(|s| {
-            s.parse::<i32>()
-                .map_err(|e| e.into()) // Converts to Box
-                .map(|i| 2 * i)
-        })
-}
-*)
 Parameter double_first :
     (alloc.vec.Vec.t (ref str.t) alloc.vec.Vec.Default.A) ->
       M ltac:(boxing_errors.Result i32.t).
 
-(*
-fn print(result: Result<i32>) {
-    match result {
-        Ok(n) => println!("The first doubled is {}", n),
-        Err(e) => println!("Error: {}", e),
-    }
-}
-*)
 Parameter print : ltac:(boxing_errors.Result i32.t) -> M unit.
 
-(*
-fn main() {
-    let numbers = vec!["42", "93", "18"];
-    let empty = vec![];
-    let strings = vec!["tofu", "93", "18"];
-
-    print(double_first(numbers));
-    print(double_first(empty));
-    print(double_first(strings));
-}
-*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : M unit.

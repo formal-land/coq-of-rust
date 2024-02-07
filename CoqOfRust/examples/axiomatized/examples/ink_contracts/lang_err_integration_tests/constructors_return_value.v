@@ -16,9 +16,6 @@ Module  Impl_core_default_Default_for_constructors_return_value_AccountId_t.
 Section Impl_core_default_Default_for_constructors_return_value_AccountId_t.
   Definition Self : Set := constructors_return_value.AccountId.t.
   
-  (*
-  Default
-  *)
   Parameter default : M constructors_return_value.AccountId.t.
   
   Global Instance AssociatedFunction_default :
@@ -36,9 +33,6 @@ Module  Impl_core_clone_Clone_for_constructors_return_value_AccountId_t.
 Section Impl_core_clone_Clone_for_constructors_return_value_AccountId_t.
   Definition Self : Set := constructors_return_value.AccountId.t.
   
-  (*
-  Clone
-  *)
   Parameter clone : (ref Self) -> M constructors_return_value.AccountId.t.
   
   Global Instance AssociatedFunction_clone :
@@ -66,11 +60,6 @@ Module  Impl_core_convert_From_array_u8_t_for_constructors_return_value_AccountI
 Section Impl_core_convert_From_array_u8_t_for_constructors_return_value_AccountId_t.
   Definition Self : Set := constructors_return_value.AccountId.t.
   
-  (*
-      fn from(_value: [u8; 32]) -> Self {
-          unimplemented!()
-      }
-  *)
   Parameter from : (array u8.t) -> M Self.
   
   Global Instance AssociatedFunction_from :
@@ -115,9 +104,6 @@ Module  Impl_core_fmt_Debug_for_constructors_return_value_ConstructorError_t.
 Section Impl_core_fmt_Debug_for_constructors_return_value_ConstructorError_t.
   Definition Self : Set := constructors_return_value.ConstructorError.t.
   
-  (*
-  Debug
-  *)
   Parameter fmt :
       (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
   
@@ -141,11 +127,6 @@ Module  Impl_constructors_return_value_ReturnFlags_t.
 Section Impl_constructors_return_value_ReturnFlags_t.
   Definition Self : Set := constructors_return_value.ReturnFlags.t.
   
-  (*
-      fn new_with_reverted(has_reverted: bool) -> Self {
-          unimplemented!()
-      }
-  *)
   Parameter new_with_reverted : bool.t -> M Self.
   
   Global Instance AssociatedFunction_new_with_reverted :
@@ -155,11 +136,6 @@ Section Impl_constructors_return_value_ReturnFlags_t.
 End Impl_constructors_return_value_ReturnFlags_t.
 End Impl_constructors_return_value_ReturnFlags_t.
 
-(*
-fn return_value<R>(return_flags: ReturnFlags, return_value: &R) -> ! {
-    unimplemented!()
-}
-*)
 Parameter return_value :
     forall {R : Set},
     constructors_return_value.ReturnFlags.t -> (ref R) -> M never.t.
@@ -168,26 +144,12 @@ Module  Impl_constructors_return_value_ConstructorsReturnValue_t.
 Section Impl_constructors_return_value_ConstructorsReturnValue_t.
   Definition Self : Set := constructors_return_value.ConstructorsReturnValue.t.
   
-  (*
-      pub fn new(init_value: bool) -> Self {
-          Self { value: init_value }
-      }
-  *)
   Parameter new : bool.t -> M Self.
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
   }.
   
-  (*
-      pub fn try_new(succeed: bool) -> Result<Self, ConstructorError> {
-          if succeed {
-              Ok(Self::new(true))
-          } else {
-              Err(ConstructorError)
-          }
-      }
-  *)
   Parameter try_new :
       bool.t ->
         M
@@ -200,14 +162,6 @@ Section Impl_constructors_return_value_ConstructorsReturnValue_t.
     Notations.double_colon := try_new;
   }.
   
-  (*
-      pub fn revert_new(_init_value: bool) -> Self {
-          return_value::<ConstructorResult<AccountId>>(
-              ReturnFlags::new_with_reverted(true),
-              &Ok(AccountId::from([0u8; 32])),
-          )
-      }
-  *)
   Parameter revert_new : bool.t -> M Self.
   
   Global Instance AssociatedFunction_revert_new :
@@ -215,20 +169,6 @@ Section Impl_constructors_return_value_ConstructorsReturnValue_t.
     Notations.double_colon := revert_new;
   }.
   
-  (*
-      pub fn try_revert_new(init_value: bool) -> Result<Self, ConstructorError> {
-          let value = if init_value {
-              Ok(Ok(AccountId::from([0u8; 32])))
-          } else {
-              Err(LangError::CouldNotReadInput)
-          };
-  
-          return_value::<ConstructorResult<Result<AccountId, ConstructorError>>>(
-              ReturnFlags::new_with_reverted(true),
-              &value,
-          )
-      }
-  *)
   Parameter try_revert_new :
       bool.t ->
         M
@@ -241,11 +181,6 @@ Section Impl_constructors_return_value_ConstructorsReturnValue_t.
     Notations.double_colon := try_revert_new;
   }.
   
-  (*
-      pub fn get_value(&self) -> bool {
-          self.value
-      }
-  *)
   Parameter get_value : (ref Self) -> M bool.t.
   
   Global Instance AssociatedFunction_get_value :

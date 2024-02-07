@@ -39,11 +39,6 @@ Module  Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating
 Section Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_overlapping_traits_Form_t.
   Definition Self : Set := disambiguating_overlapping_traits.Form.t.
   
-  (*
-      fn get(&self) -> String {
-          self.username.clone()
-      }
-  *)
   Parameter get : (ref Self) -> M alloc.string.String.t.
   
   Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
@@ -61,11 +56,6 @@ Module  Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_over
 Section Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form_t.
   Definition Self : Set := disambiguating_overlapping_traits.Form.t.
   
-  (*
-      fn get(&self) -> u8 {
-          self.age
-      }
-  *)
   Parameter get : (ref Self) -> M u8.t.
   
   Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
@@ -79,23 +69,5 @@ Section Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_over
 End Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form_t.
 End Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form_t.
 
-(*
-fn main() {
-    let form = Form {
-        username: "rustacean".to_owned(),
-        age: 28,
-    };
-
-    // If you uncomment this line, you'll get an error saying
-    // "multiple `get` found". Because, after all, there are multiple methods
-    // named `get`.
-    // println!("{}", form.get());
-
-    let username = <Form as UsernameWidget>::get(&form);
-    assert_eq!(("rustacean".to_string()), username);
-    let age = <Form as AgeWidget>::get(&form);
-    assert_eq!(28, age);
-}
-*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : M unit.

@@ -27,9 +27,6 @@ Section Impl_core_default_Default_for_mapping_integration_tests_Mapping_t_K_V.
   
   Definition Self : Set := mapping_integration_tests.Mapping.t K V.
   
-  (*
-  Default
-  *)
   Parameter default : M (mapping_integration_tests.Mapping.t K V).
   
   Global Instance AssociatedFunction_default :
@@ -49,11 +46,6 @@ Section Impl_mapping_integration_tests_Mapping_t_K_V.
   
   Definition Self : Set := mapping_integration_tests.Mapping.t K V.
   
-  (*
-      fn contains(&self, _key: &K) -> bool {
-          unimplemented!()
-      }
-  *)
   Parameter contains : (ref Self) -> (ref K) -> M bool.t.
   
   Global Instance AssociatedFunction_contains :
@@ -61,22 +53,12 @@ Section Impl_mapping_integration_tests_Mapping_t_K_V.
     Notations.double_colon := contains;
   }.
   
-  (*
-      fn get(&self, _key: &K) -> Option<V> {
-          unimplemented!()
-      }
-  *)
   Parameter get : (ref Self) -> (ref K) -> M (core.option.Option.t V).
   
   Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
     Notations.double_colon := get;
   }.
   
-  (*
-      fn insert(&mut self, _key: K, _value: V) -> Option<u32> {
-          unimplemented!()
-      }
-  *)
   Parameter insert : (mut_ref Self) -> K -> V -> M (core.option.Option.t u32.t).
   
   Global Instance AssociatedFunction_insert :
@@ -84,22 +66,12 @@ Section Impl_mapping_integration_tests_Mapping_t_K_V.
     Notations.double_colon := insert;
   }.
   
-  (*
-      fn new() -> Mapping<K, V> {
-          unimplemented!()
-      }
-  *)
   Parameter new : M (mapping_integration_tests.Mapping.t K V).
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
   }.
   
-  (*
-      fn remove(&self, _key: K) {
-          unimplemented!()
-      }
-  *)
   Parameter remove : (ref Self) -> K -> M unit.
   
   Global Instance AssociatedFunction_remove :
@@ -107,11 +79,6 @@ Section Impl_mapping_integration_tests_Mapping_t_K_V.
     Notations.double_colon := remove;
   }.
   
-  (*
-      fn size(&self, _key: K) -> Option<u32> {
-          unimplemented!()
-      }
-  *)
   Parameter size : (ref Self) -> K -> M (core.option.Option.t u32.t).
   
   Global Instance AssociatedFunction_size :
@@ -119,11 +86,6 @@ Section Impl_mapping_integration_tests_Mapping_t_K_V.
     Notations.double_colon := size;
   }.
   
-  (*
-      fn take(&self, _key: K) -> Option<V> {
-          unimplemented!()
-      }
-  *)
   Parameter take : (ref Self) -> K -> M (core.option.Option.t V).
   
   Global Instance AssociatedFunction_take :
@@ -148,9 +110,6 @@ Module  Impl_core_default_Default_for_mapping_integration_tests_AccountId_t.
 Section Impl_core_default_Default_for_mapping_integration_tests_AccountId_t.
   Definition Self : Set := mapping_integration_tests.AccountId.t.
   
-  (*
-  Default
-  *)
   Parameter default : M mapping_integration_tests.AccountId.t.
   
   Global Instance AssociatedFunction_default :
@@ -168,9 +127,6 @@ Module  Impl_core_clone_Clone_for_mapping_integration_tests_AccountId_t.
 Section Impl_core_clone_Clone_for_mapping_integration_tests_AccountId_t.
   Definition Self : Set := mapping_integration_tests.AccountId.t.
   
-  (*
-  Clone
-  *)
   Parameter clone : (ref Self) -> M mapping_integration_tests.AccountId.t.
   
   Global Instance AssociatedFunction_clone :
@@ -211,11 +167,6 @@ Module  Impl_mapping_integration_tests_Env_t.
 Section Impl_mapping_integration_tests_Env_t.
   Definition Self : Set := mapping_integration_tests.Env.t.
   
-  (*
-      fn caller(&self) -> AccountId {
-          self.caller
-      }
-  *)
   Parameter caller : (ref Self) -> M mapping_integration_tests.AccountId.t.
   
   Global Instance AssociatedFunction_caller :
@@ -245,9 +196,6 @@ Module  Impl_core_default_Default_for_mapping_integration_tests_Mappings_t.
 Section Impl_core_default_Default_for_mapping_integration_tests_Mappings_t.
   Definition Self : Set := mapping_integration_tests.Mappings.t.
   
-  (*
-  Default
-  *)
   Parameter default : M mapping_integration_tests.Mappings.t.
   
   Global Instance AssociatedFunction_default :
@@ -265,11 +213,6 @@ Module  Impl_mapping_integration_tests_Mappings_t.
 Section Impl_mapping_integration_tests_Mappings_t.
   Definition Self : Set := mapping_integration_tests.Mappings.t.
   
-  (*
-      fn init_env() -> Env {
-          unimplemented!()
-      }
-  *)
   Parameter init_env : M mapping_integration_tests.Env.t.
   
   Global Instance AssociatedFunction_init_env :
@@ -277,35 +220,18 @@ Section Impl_mapping_integration_tests_Mappings_t.
     Notations.double_colon := init_env;
   }.
   
-  (*
-      fn env() -> Env {
-          unimplemented!()
-      }
-  *)
   Parameter env : M mapping_integration_tests.Env.t.
   
   Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
     Notations.double_colon := env;
   }.
   
-  (*
-      pub fn new() -> Self {
-          let balances = Mapping::default();
-          Self { balances }
-      }
-  *)
   Parameter new : M Self.
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
   }.
   
-  (*
-      pub fn get_balance(&self) -> Option<Balance> {
-          let caller = Self::env().caller();
-          self.balances.get(&caller)
-      }
-  *)
   Parameter get_balance :
       (ref Self) ->
         M (core.option.Option.t ltac:(mapping_integration_tests.Balance)).
@@ -315,12 +241,6 @@ Section Impl_mapping_integration_tests_Mappings_t.
     Notations.double_colon := get_balance;
   }.
   
-  (*
-      pub fn insert_balance(&mut self, value: Balance) -> Option<u32> {
-          let caller = Self::env().caller();
-          self.balances.insert(caller, value)
-      }
-  *)
   Parameter insert_balance :
       (mut_ref Self) ->
         ltac:(mapping_integration_tests.Balance) ->
@@ -331,12 +251,6 @@ Section Impl_mapping_integration_tests_Mappings_t.
     Notations.double_colon := insert_balance;
   }.
   
-  (*
-      pub fn size_balance(&mut self) -> Option<u32> {
-          let caller = Self::env().caller();
-          self.balances.size(caller)
-      }
-  *)
   Parameter size_balance : (mut_ref Self) -> M (core.option.Option.t u32.t).
   
   Global Instance AssociatedFunction_size_balance :
@@ -344,12 +258,6 @@ Section Impl_mapping_integration_tests_Mappings_t.
     Notations.double_colon := size_balance;
   }.
   
-  (*
-      pub fn contains_balance(&self) -> bool {
-          let caller = Self::env().caller();
-          self.balances.contains(&caller)
-      }
-  *)
   Parameter contains_balance : (ref Self) -> M bool.t.
   
   Global Instance AssociatedFunction_contains_balance :
@@ -357,12 +265,6 @@ Section Impl_mapping_integration_tests_Mappings_t.
     Notations.double_colon := contains_balance;
   }.
   
-  (*
-      pub fn remove_balance(&mut self) {
-          let caller = Self::env().caller();
-          self.balances.remove(caller);
-      }
-  *)
   Parameter remove_balance : (mut_ref Self) -> M unit.
   
   Global Instance AssociatedFunction_remove_balance :
@@ -370,12 +272,6 @@ Section Impl_mapping_integration_tests_Mappings_t.
     Notations.double_colon := remove_balance;
   }.
   
-  (*
-      pub fn take_balance(&mut self) -> Option<Balance> {
-          let caller = Self::env().caller();
-          self.balances.take(caller)
-      }
-  *)
   Parameter take_balance :
       (mut_ref Self) ->
         M (core.option.Option.t ltac:(mapping_integration_tests.Balance)).

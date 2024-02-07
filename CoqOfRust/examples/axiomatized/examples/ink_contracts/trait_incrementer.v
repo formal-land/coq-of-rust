@@ -35,22 +35,12 @@ Module  Impl_trait_incrementer_Incrementer_t.
 Section Impl_trait_incrementer_Incrementer_t.
   Definition Self : Set := trait_incrementer.Incrementer.t.
   
-  (*
-      pub fn new(init_value: u64) -> Self {
-          Self { value: init_value }
-      }
-  *)
   Parameter new : u64.t -> M Self.
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
   }.
   
-  (*
-      pub fn inc_by(&mut self, delta: u64) {
-          self.value += delta;
-      }
-  *)
   Parameter inc_by : (mut_ref Self) -> u64.t -> M unit.
   
   Global Instance AssociatedFunction_inc_by :
@@ -64,22 +54,12 @@ Module  Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer_t.
 Section Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer_t.
   Definition Self : Set := trait_incrementer.Incrementer.t.
   
-  (*
-      fn inc(&mut self) {
-          self.inc_by(1)
-      }
-  *)
   Parameter inc : (mut_ref Self) -> M unit.
   
   Global Instance AssociatedFunction_inc : Notations.DoubleColon Self "inc" := {
     Notations.double_colon := inc;
   }.
   
-  (*
-      fn get(&self) -> u64 {
-          self.value
-      }
-  *)
   Parameter get : (ref Self) -> M u64.t.
   
   Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
@@ -97,11 +77,6 @@ Module  Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer_t.
 Section Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer_t.
   Definition Self : Set := trait_incrementer.Incrementer.t.
   
-  (*
-      fn reset(&mut self) {
-          self.value = 0;
-      }
-  *)
   Parameter reset : (mut_ref Self) -> M unit.
   
   Global Instance AssociatedFunction_reset :

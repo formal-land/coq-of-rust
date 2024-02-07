@@ -46,38 +46,7 @@ Module WebEvent.
         end).
 End WebEvent.
 
-(*
-fn inspect(event: WebEvent) {
-    match event {
-        WebEvent::PageLoad => println!("page loaded, réfé"),
-        WebEvent::PageUnload => println!("page unloaded"),
-        // Destructure `c` from inside the `enum`.
-        WebEvent::KeyPress(c) => println!("pressed '{}'.", c),
-        WebEvent::Paste(s) => println!("pasted \"{}\".", s),
-        // Destructure `Click` into `x` and `y`.
-        WebEvent::Click { x, y } => {
-            println!("clicked at x={}, y={}.", x, y);
-        }
-    }
-}
-*)
 Parameter inspect : enums.WebEvent.t -> M unit.
 
-(*
-fn main() {
-    let pressed = WebEvent::KeyPress('x');
-    // `to_owned()` creates an owned `String` from a string slice.
-    let pasted = WebEvent::Paste("my text".to_owned());
-    let click = WebEvent::Click { x: 20, y: 80 };
-    let load = WebEvent::PageLoad;
-    let unload = WebEvent::PageUnload;
-
-    inspect(pressed);
-    inspect(pasted);
-    inspect(click);
-    inspect(load);
-    inspect(unload);
-}
-*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : M unit.

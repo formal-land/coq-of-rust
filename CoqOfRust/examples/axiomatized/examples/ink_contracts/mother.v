@@ -27,9 +27,6 @@ Section Impl_core_default_Default_for_mother_Mapping_t_K_V.
   
   Definition Self : Set := mother.Mapping.t K V.
   
-  (*
-  Default
-  *)
   Parameter default : M (mother.Mapping.t K V).
   
   Global Instance AssociatedFunction_default :
@@ -49,22 +46,12 @@ Section Impl_mother_Mapping_t_K_V.
   
   Definition Self : Set := mother.Mapping.t K V.
   
-  (*
-      fn get(&self, _key: &K) -> Option<V> {
-          unimplemented!()
-      }
-  *)
   Parameter get : (ref Self) -> (ref K) -> M (core.option.Option.t V).
   
   Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
     Notations.double_colon := get;
   }.
   
-  (*
-      fn insert(&mut self, _key: K, _value: V) {
-          unimplemented!()
-      }
-  *)
   Parameter insert : (mut_ref Self) -> K -> V -> M unit.
   
   Global Instance AssociatedFunction_insert :
@@ -89,9 +76,6 @@ Module  Impl_core_default_Default_for_mother_AccountId_t.
 Section Impl_core_default_Default_for_mother_AccountId_t.
   Definition Self : Set := mother.AccountId.t.
   
-  (*
-  Default
-  *)
   Parameter default : M mother.AccountId.t.
   
   Global Instance AssociatedFunction_default :
@@ -109,9 +93,6 @@ Module  Impl_core_clone_Clone_for_mother_AccountId_t.
 Section Impl_core_clone_Clone_for_mother_AccountId_t.
   Definition Self : Set := mother.AccountId.t.
   
-  (*
-  Clone
-  *)
   Parameter clone : (ref Self) -> M mother.AccountId.t.
   
   Global Instance AssociatedFunction_clone :
@@ -148,9 +129,6 @@ Module  Impl_core_cmp_PartialEq_for_mother_AccountId_t.
 Section Impl_core_cmp_PartialEq_for_mother_AccountId_t.
   Definition Self : Set := mother.AccountId.t.
   
-  (*
-  PartialEq
-  *)
   Parameter eq : (ref Self) -> (ref mother.AccountId.t) -> M bool.t.
   
   Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
@@ -179,9 +157,6 @@ Module  Impl_core_cmp_Eq_for_mother_AccountId_t.
 Section Impl_core_cmp_Eq_for_mother_AccountId_t.
   Definition Self : Set := mother.AccountId.t.
   
-  (*
-  Eq
-  *)
   Parameter assert_receiver_is_total_eq : (ref Self) -> M unit.
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
@@ -233,9 +208,6 @@ Module  Impl_core_default_Default_for_mother_Bids_t.
 Section Impl_core_default_Default_for_mother_Bids_t.
   Definition Self : Set := mother.Bids.t.
   
-  (*
-  Default
-  *)
   Parameter default : M mother.Bids.t.
   
   Global Instance AssociatedFunction_default :
@@ -262,9 +234,6 @@ Module  Impl_core_cmp_PartialEq_for_mother_Bids_t.
 Section Impl_core_cmp_PartialEq_for_mother_Bids_t.
   Definition Self : Set := mother.Bids.t.
   
-  (*
-  PartialEq
-  *)
   Parameter eq : (ref Self) -> (ref mother.Bids.t) -> M bool.t.
   
   Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
@@ -293,9 +262,6 @@ Module  Impl_core_cmp_Eq_for_mother_Bids_t.
 Section Impl_core_cmp_Eq_for_mother_Bids_t.
   Definition Self : Set := mother.Bids.t.
   
-  (*
-  Eq
-  *)
   Parameter assert_receiver_is_total_eq : (ref Self) -> M unit.
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
@@ -314,9 +280,6 @@ Module  Impl_core_clone_Clone_for_mother_Bids_t.
 Section Impl_core_clone_Clone_for_mother_Bids_t.
   Definition Self : Set := mother.Bids.t.
   
-  (*
-  Clone
-  *)
   Parameter clone : (ref Self) -> M mother.Bids.t.
   
   Global Instance AssociatedFunction_clone :
@@ -351,9 +314,6 @@ Module  Impl_core_cmp_PartialEq_for_mother_Outline_t.
 Section Impl_core_cmp_PartialEq_for_mother_Outline_t.
   Definition Self : Set := mother.Outline.t.
   
-  (*
-  PartialEq
-  *)
   Parameter eq : (ref Self) -> (ref mother.Outline.t) -> M bool.t.
   
   Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
@@ -382,9 +342,6 @@ Module  Impl_core_cmp_Eq_for_mother_Outline_t.
 Section Impl_core_cmp_Eq_for_mother_Outline_t.
   Definition Self : Set := mother.Outline.t.
   
-  (*
-  Eq
-  *)
   Parameter assert_receiver_is_total_eq : (ref Self) -> M unit.
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
@@ -403,9 +360,6 @@ Module  Impl_core_clone_Clone_for_mother_Outline_t.
 Section Impl_core_clone_Clone_for_mother_Outline_t.
   Definition Self : Set := mother.Outline.t.
   
-  (*
-  Clone
-  *)
   Parameter clone : (ref Self) -> M mother.Outline.t.
   
   Global Instance AssociatedFunction_clone :
@@ -458,9 +412,6 @@ Module  Impl_core_cmp_PartialEq_for_mother_Status_t.
 Section Impl_core_cmp_PartialEq_for_mother_Status_t.
   Definition Self : Set := mother.Status.t.
   
-  (*
-  PartialEq
-  *)
   Parameter eq : (ref Self) -> (ref mother.Status.t) -> M bool.t.
   
   Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
@@ -489,9 +440,6 @@ Module  Impl_core_cmp_Eq_for_mother_Status_t.
 Section Impl_core_cmp_Eq_for_mother_Status_t.
   Definition Self : Set := mother.Status.t.
   
-  (*
-  Eq
-  *)
   Parameter assert_receiver_is_total_eq : (ref Self) -> M unit.
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
@@ -510,9 +458,6 @@ Module  Impl_core_clone_Clone_for_mother_Status_t.
 Section Impl_core_clone_Clone_for_mother_Status_t.
   Definition Self : Set := mother.Status.t.
   
-  (*
-  Clone
-  *)
   Parameter clone : (ref Self) -> M mother.Status.t.
   
   Global Instance AssociatedFunction_clone :
@@ -573,9 +518,6 @@ Module  Impl_core_cmp_PartialEq_for_mother_Auction_t.
 Section Impl_core_cmp_PartialEq_for_mother_Auction_t.
   Definition Self : Set := mother.Auction.t.
   
-  (*
-  PartialEq
-  *)
   Parameter eq : (ref Self) -> (ref mother.Auction.t) -> M bool.t.
   
   Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
@@ -604,9 +546,6 @@ Module  Impl_core_cmp_Eq_for_mother_Auction_t.
 Section Impl_core_cmp_Eq_for_mother_Auction_t.
   Definition Self : Set := mother.Auction.t.
   
-  (*
-  Eq
-  *)
   Parameter assert_receiver_is_total_eq : (ref Self) -> M unit.
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
@@ -625,9 +564,6 @@ Module  Impl_core_clone_Clone_for_mother_Auction_t.
 Section Impl_core_clone_Clone_for_mother_Auction_t.
   Definition Self : Set := mother.Auction.t.
   
-  (*
-  Clone
-  *)
   Parameter clone : (ref Self) -> M mother.Auction.t.
   
   Global Instance AssociatedFunction_clone :
@@ -646,19 +582,6 @@ Module  Impl_core_default_Default_for_mother_Auction_t.
 Section Impl_core_default_Default_for_mother_Auction_t.
   Definition Self : Set := mother.Auction.t.
   
-  (*
-      fn default() -> Auction {
-          Auction {
-              name: String::default(),
-              subject: Hash::default(),
-              bids: Bids::default(),
-              terms: <[BlockNumber; 3]>::default(),
-              status: Status::OpeningPeriod,
-              finalized: false,
-              vector: <Vec<u8>>::default(),
-          }
-      }
-  *)
   Parameter default : M mother.Auction.t.
   
   Global Instance AssociatedFunction_default :
@@ -696,9 +619,6 @@ Module  Impl_core_cmp_PartialEq_for_mother_Failure_t.
 Section Impl_core_cmp_PartialEq_for_mother_Failure_t.
   Definition Self : Set := mother.Failure.t.
   
-  (*
-  PartialEq
-  *)
   Parameter eq : (ref Self) -> (ref mother.Failure.t) -> M bool.t.
   
   Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
@@ -727,9 +647,6 @@ Module  Impl_core_cmp_Eq_for_mother_Failure_t.
 Section Impl_core_cmp_Eq_for_mother_Failure_t.
   Definition Self : Set := mother.Failure.t.
   
-  (*
-  Eq
-  *)
   Parameter assert_receiver_is_total_eq : (ref Self) -> M unit.
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
@@ -771,11 +688,6 @@ Module  Impl_mother_Env_t.
 Section Impl_mother_Env_t.
   Definition Self : Set := mother.Env.t.
   
-  (*
-      fn caller(&self) -> AccountId {
-          self.caller
-      }
-  *)
   Parameter caller : (ref Self) -> M mother.AccountId.t.
   
   Global Instance AssociatedFunction_caller :
@@ -783,11 +695,6 @@ Section Impl_mother_Env_t.
     Notations.double_colon := caller;
   }.
   
-  (*
-      fn emit_event(&self, _event: Event) {
-          unimplemented!()
-      }
-  *)
   Parameter emit_event : (ref Self) -> mother.Event.t -> M unit.
   
   Global Instance AssociatedFunction_emit_event :
@@ -819,9 +726,6 @@ Module  Impl_core_default_Default_for_mother_Mother_t.
 Section Impl_core_default_Default_for_mother_Mother_t.
   Definition Self : Set := mother.Mother.t.
   
-  (*
-  Default
-  *)
   Parameter default : M mother.Mother.t.
   
   Global Instance AssociatedFunction_default :
@@ -839,11 +743,6 @@ Module  Impl_mother_Mother_t.
 Section Impl_mother_Mother_t.
   Definition Self : Set := mother.Mother.t.
   
-  (*
-      fn init_env() -> Env {
-          unimplemented!()
-      }
-  *)
   Parameter init_env : M mother.Env.t.
   
   Global Instance AssociatedFunction_init_env :
@@ -851,36 +750,18 @@ Section Impl_mother_Mother_t.
     Notations.double_colon := init_env;
   }.
   
-  (*
-      fn env(&self) -> Env {
-          Self::init_env()
-      }
-  *)
   Parameter env : (ref Self) -> M mother.Env.t.
   
   Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
     Notations.double_colon := env;
   }.
   
-  (*
-      pub fn new(auction: Auction) -> Self {
-          Self {
-              balances: Default::default(),
-              auction,
-          }
-      }
-  *)
   Parameter new : mother.Auction.t -> M Self.
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
   }.
   
-  (*
-      pub fn new_default() -> Self {
-          Default::default()
-      }
-  *)
   Parameter new_default : M Self.
   
   Global Instance AssociatedFunction_new_default :
@@ -888,15 +769,6 @@ Section Impl_mother_Mother_t.
     Notations.double_colon := new_default;
   }.
   
-  (*
-      pub fn failed_new(fail: bool) -> Result<Self, Failure> {
-          if fail {
-              Err(Failure::Revert("Reverting instantiation".to_string()))
-          } else {
-              Ok(Default::default())
-          }
-      }
-  *)
   Parameter failed_new :
       bool.t -> M (core.result.Result.t Self mother.Failure.t).
   
@@ -905,14 +777,6 @@ Section Impl_mother_Mother_t.
     Notations.double_colon := failed_new;
   }.
   
-  (*
-      pub fn echo_auction(&mut self, auction: Auction) -> Auction {
-          self.env().emit_event(Event::AuctionEchoed(AuctionEchoed {
-              auction: auction.clone(),
-          }));
-          auction
-      }
-  *)
   Parameter echo_auction :
       (mut_ref Self) -> mother.Auction.t -> M mother.Auction.t.
   
@@ -921,19 +785,6 @@ Section Impl_mother_Mother_t.
     Notations.double_colon := echo_auction;
   }.
   
-  (*
-      pub fn revert_or_trap(&mut self, fail: Option<Failure>) -> Result<(), Failure> {
-          match fail {
-              Some(Failure::Revert(_)) => {
-                  Err(Failure::Revert("Reverting on user demand!".to_string()))
-              }
-              Some(Failure::Panic) => {
-                  panic!("Trapping on user demand!")
-              }
-              None => Ok(()),
-          }
-      }
-  *)
   Parameter revert_or_trap :
       (mut_ref Self) ->
         (core.option.Option.t mother.Failure.t) ->
@@ -944,11 +795,6 @@ Section Impl_mother_Mother_t.
     Notations.double_colon := revert_or_trap;
   }.
   
-  (*
-      pub fn debug_log(&mut self, _message: String) {
-          println!("debug_log: {}", _message);
-      }
-  *)
   Parameter debug_log : (mut_ref Self) -> alloc.string.String.t -> M unit.
   
   Global Instance AssociatedFunction_debug_log :

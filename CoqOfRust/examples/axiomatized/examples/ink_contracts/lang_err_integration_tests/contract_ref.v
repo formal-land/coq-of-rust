@@ -16,9 +16,6 @@ Module  Impl_core_default_Default_for_contract_ref_AccountId_t.
 Section Impl_core_default_Default_for_contract_ref_AccountId_t.
   Definition Self : Set := contract_ref.AccountId.t.
   
-  (*
-  Default
-  *)
   Parameter default : M contract_ref.AccountId.t.
   
   Global Instance AssociatedFunction_default :
@@ -36,9 +33,6 @@ Module  Impl_core_clone_Clone_for_contract_ref_AccountId_t.
 Section Impl_core_clone_Clone_for_contract_ref_AccountId_t.
   Definition Self : Set := contract_ref.AccountId.t.
   
-  (*
-  Clone
-  *)
   Parameter clone : (ref Self) -> M contract_ref.AccountId.t.
   
   Global Instance AssociatedFunction_clone :
@@ -98,9 +92,6 @@ Module  Impl_core_fmt_Debug_for_contract_ref_FlipperError_t.
 Section Impl_core_fmt_Debug_for_contract_ref_FlipperError_t.
   Definition Self : Set := contract_ref.FlipperError.t.
   
-  (*
-  Debug
-  *)
   Parameter fmt :
       (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
   
@@ -118,11 +109,6 @@ Module  Impl_contract_ref_FlipperRef_t.
 Section Impl_contract_ref_FlipperRef_t.
   Definition Self : Set := contract_ref.FlipperRef.t.
   
-  (*
-      fn init_env() -> Env {
-          unimplemented!()
-      }
-  *)
   Parameter init_env : M contract_ref.Env.t.
   
   Global Instance AssociatedFunction_init_env :
@@ -130,33 +116,18 @@ Section Impl_contract_ref_FlipperRef_t.
     Notations.double_colon := init_env;
   }.
   
-  (*
-      fn env(&self) -> Env {
-          Self::init_env()
-      }
-  *)
   Parameter env : (ref Self) -> M contract_ref.Env.t.
   
   Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
     Notations.double_colon := env;
   }.
   
-  (*
-      pub fn new(init_value: bool) -> Self {
-          Self { value: init_value }
-      }
-  *)
   Parameter new : bool.t -> M Self.
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
   }.
   
-  (*
-      pub fn new_default() -> Self {
-          Self::new(Default::default())
-      }
-  *)
   Parameter new_default : M Self.
   
   Global Instance AssociatedFunction_new_default :
@@ -164,15 +135,6 @@ Section Impl_contract_ref_FlipperRef_t.
     Notations.double_colon := new_default;
   }.
   
-  (*
-      pub fn try_new(succeed: bool) -> Result<Self, FlipperError> {
-          if succeed {
-              Ok(Self::new(true))
-          } else {
-              Err(FlipperError)
-          }
-      }
-  *)
   Parameter try_new :
       bool.t -> M (core.result.Result.t Self contract_ref.FlipperError.t).
   
@@ -181,11 +143,6 @@ Section Impl_contract_ref_FlipperRef_t.
     Notations.double_colon := try_new;
   }.
   
-  (*
-      pub fn flip(&mut self) {
-          self.value = !self.value;
-      }
-  *)
   Parameter flip : (mut_ref Self) -> M unit.
   
   Global Instance AssociatedFunction_flip :
@@ -193,11 +150,6 @@ Section Impl_contract_ref_FlipperRef_t.
     Notations.double_colon := flip;
   }.
   
-  (*
-      pub fn get(&self) -> bool {
-          self.value
-      }
-  *)
   Parameter get : (ref Self) -> M bool.t.
   
   Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
@@ -223,42 +175,12 @@ Module  Impl_contract_ref_ContractRef_t.
 Section Impl_contract_ref_ContractRef_t.
   Definition Self : Set := contract_ref.ContractRef.t.
   
-  (*
-      pub fn new(version: u32, flipper_code_hash: Hash) -> Self {
-          let salt = version.to_le_bytes();
-          let flipper = FlipperRef::new_default();
-          // .endowment(0)
-          // .code_hash(flipper_code_hash)
-          // .salt_bytes(salt)
-          // .instantiate();
-  
-          Self { flipper }
-      }
-  *)
   Parameter new : u32.t -> ltac:(contract_ref.Hash) -> M Self.
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
   }.
   
-  (*
-      pub fn try_new(version: u32, flipper_code_hash: Hash, succeed: bool) -> Self {
-          let salt = version.to_le_bytes();
-          let flipper = FlipperRef::try_new(succeed).unwrap();
-          // .endowment(0)
-          // .code_hash(flipper_code_hash)
-          // .salt_bytes(salt)
-          // .instantiate()
-          // .unwrap_or_else(|error| {
-          //     panic!(
-          //         "Received an error from the Flipper constructor while instantiating \
-          //              Flipper {error:?}"
-          //     )
-          // });
-  
-          Self { flipper }
-      }
-  *)
   Parameter try_new : u32.t -> ltac:(contract_ref.Hash) -> bool.t -> M Self.
   
   Global Instance AssociatedFunction_try_new :
@@ -266,11 +188,6 @@ Section Impl_contract_ref_ContractRef_t.
     Notations.double_colon := try_new;
   }.
   
-  (*
-      pub fn flip(&mut self) {
-          self.flipper.flip();
-      }
-  *)
   Parameter flip : (mut_ref Self) -> M unit.
   
   Global Instance AssociatedFunction_flip :
@@ -278,11 +195,6 @@ Section Impl_contract_ref_ContractRef_t.
     Notations.double_colon := flip;
   }.
   
-  (*
-      pub fn get(&mut self) -> bool {
-          self.flipper.get()
-      }
-  *)
   Parameter get : (mut_ref Self) -> M bool.t.
   
   Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {

@@ -27,9 +27,6 @@ Section Impl_core_default_Default_for_erc721_Mapping_t_K_V.
   
   Definition Self : Set := erc721.Mapping.t K V.
   
-  (*
-  Default
-  *)
   Parameter default : M (erc721.Mapping.t K V).
   
   Global Instance AssociatedFunction_default :
@@ -49,11 +46,6 @@ Section Impl_erc721_Mapping_t_K_V.
   
   Definition Self : Set := erc721.Mapping.t K V.
   
-  (*
-      fn contains(&self, _key: &K) -> bool {
-          unimplemented!()
-      }
-  *)
   Parameter contains : (ref Self) -> (ref K) -> M bool.t.
   
   Global Instance AssociatedFunction_contains :
@@ -61,22 +53,12 @@ Section Impl_erc721_Mapping_t_K_V.
     Notations.double_colon := contains;
   }.
   
-  (*
-      fn get(&self, _key: &K) -> Option<V> {
-          unimplemented!()
-      }
-  *)
   Parameter get : (ref Self) -> (ref K) -> M (core.option.Option.t V).
   
   Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
     Notations.double_colon := get;
   }.
   
-  (*
-      fn insert(&mut self, _key: K, _value: V) -> Option<u32> {
-          unimplemented!()
-      }
-  *)
   Parameter insert : (mut_ref Self) -> K -> V -> M (core.option.Option.t u32.t).
   
   Global Instance AssociatedFunction_insert :
@@ -84,11 +66,6 @@ Section Impl_erc721_Mapping_t_K_V.
     Notations.double_colon := insert;
   }.
   
-  (*
-      fn remove(&self, _key: K) {
-          unimplemented!()
-      }
-  *)
   Parameter remove : (ref Self) -> K -> M unit.
   
   Global Instance AssociatedFunction_remove :
@@ -96,11 +73,6 @@ Section Impl_erc721_Mapping_t_K_V.
     Notations.double_colon := remove;
   }.
   
-  (*
-      fn size(&self, _key: K) -> Option<u32> {
-          unimplemented!()
-      }
-  *)
   Parameter size : (ref Self) -> K -> M (core.option.Option.t u32.t).
   
   Global Instance AssociatedFunction_size :
@@ -108,11 +80,6 @@ Section Impl_erc721_Mapping_t_K_V.
     Notations.double_colon := size;
   }.
   
-  (*
-      fn take(&self, _key: K) -> Option<V> {
-          unimplemented!()
-      }
-  *)
   Parameter take : (ref Self) -> K -> M (core.option.Option.t V).
   
   Global Instance AssociatedFunction_take :
@@ -137,9 +104,6 @@ Module  Impl_core_default_Default_for_erc721_AccountId_t.
 Section Impl_core_default_Default_for_erc721_AccountId_t.
   Definition Self : Set := erc721.AccountId.t.
   
-  (*
-  Default
-  *)
   Parameter default : M erc721.AccountId.t.
   
   Global Instance AssociatedFunction_default :
@@ -157,9 +121,6 @@ Module  Impl_core_clone_Clone_for_erc721_AccountId_t.
 Section Impl_core_clone_Clone_for_erc721_AccountId_t.
   Definition Self : Set := erc721.AccountId.t.
   
-  (*
-  Clone
-  *)
   Parameter clone : (ref Self) -> M erc721.AccountId.t.
   
   Global Instance AssociatedFunction_clone :
@@ -196,9 +157,6 @@ Module  Impl_core_cmp_PartialEq_for_erc721_AccountId_t.
 Section Impl_core_cmp_PartialEq_for_erc721_AccountId_t.
   Definition Self : Set := erc721.AccountId.t.
   
-  (*
-  PartialEq
-  *)
   Parameter eq : (ref Self) -> (ref erc721.AccountId.t) -> M bool.t.
   
   Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
@@ -218,11 +176,6 @@ Module  Impl_core_convert_From_array_u8_t_for_erc721_AccountId_t.
 Section Impl_core_convert_From_array_u8_t_for_erc721_AccountId_t.
   Definition Self : Set := erc721.AccountId.t.
   
-  (*
-      fn from(_value: [u8; 32]) -> Self {
-          unimplemented!()
-      }
-  *)
   Parameter from : (array u8.t) -> M Self.
   
   Global Instance AssociatedFunction_from :
@@ -284,9 +237,6 @@ Module  Impl_core_default_Default_for_erc721_Erc721_t.
 Section Impl_core_default_Default_for_erc721_Erc721_t.
   Definition Self : Set := erc721.Erc721.t.
   
-  (*
-  Default
-  *)
   Parameter default : M erc721.Erc721.t.
   
   Global Instance AssociatedFunction_default :
@@ -324,9 +274,6 @@ Module  Impl_core_cmp_PartialEq_for_erc721_Error_t.
 Section Impl_core_cmp_PartialEq_for_erc721_Error_t.
   Definition Self : Set := erc721.Error.t.
   
-  (*
-  PartialEq
-  *)
   Parameter eq : (ref Self) -> (ref erc721.Error.t) -> M bool.t.
   
   Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
@@ -355,9 +302,6 @@ Module  Impl_core_cmp_Eq_for_erc721_Error_t.
 Section Impl_core_cmp_Eq_for_erc721_Error_t.
   Definition Self : Set := erc721.Error.t.
   
-  (*
-  Eq
-  *)
   Parameter assert_receiver_is_total_eq : (ref Self) -> M unit.
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
@@ -376,9 +320,6 @@ Module  Impl_core_clone_Clone_for_erc721_Error_t.
 Section Impl_core_clone_Clone_for_erc721_Error_t.
   Definition Self : Set := erc721.Error.t.
   
-  (*
-  Clone
-  *)
   Parameter clone : (ref Self) -> M erc721.Error.t.
   
   Global Instance AssociatedFunction_clone :
@@ -489,11 +430,6 @@ Module  Impl_erc721_Env_t.
 Section Impl_erc721_Env_t.
   Definition Self : Set := erc721.Env.t.
   
-  (*
-      fn caller(&self) -> AccountId {
-          self.caller
-      }
-  *)
   Parameter caller : (ref Self) -> M erc721.AccountId.t.
   
   Global Instance AssociatedFunction_caller :
@@ -501,11 +437,6 @@ Section Impl_erc721_Env_t.
     Notations.double_colon := caller;
   }.
   
-  (*
-      fn emit_event(&self, _event: Event) {
-          unimplemented!()
-      }
-  *)
   Parameter emit_event : (ref Self) -> erc721.Event.t -> M unit.
   
   Global Instance AssociatedFunction_emit_event :
@@ -519,11 +450,6 @@ Module  Impl_erc721_Erc721_t.
 Section Impl_erc721_Erc721_t.
   Definition Self : Set := erc721.Erc721.t.
   
-  (*
-      fn init_env() -> Env {
-          unimplemented!()
-      }
-  *)
   Parameter init_env : M erc721.Env.t.
   
   Global Instance AssociatedFunction_init_env :
@@ -531,33 +457,18 @@ Section Impl_erc721_Erc721_t.
     Notations.double_colon := init_env;
   }.
   
-  (*
-      fn env(&self) -> Env {
-          Self::init_env()
-      }
-  *)
   Parameter env : (ref Self) -> M erc721.Env.t.
   
   Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
     Notations.double_colon := env;
   }.
   
-  (*
-      pub fn new() -> Self {
-          Default::default()
-      }
-  *)
   Parameter new : M Self.
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
   }.
   
-  (*
-      fn balance_of_or_zero(&self, of: &AccountId) -> u32 {
-          self.owned_tokens_count.get(of).unwrap_or(0 as u32)
-      }
-  *)
   Parameter balance_of_or_zero :
       (ref Self) -> (ref erc721.AccountId.t) -> M u32.t.
   
@@ -566,11 +477,6 @@ Section Impl_erc721_Erc721_t.
     Notations.double_colon := balance_of_or_zero;
   }.
   
-  (*
-      fn clear_approval(&mut self, id: TokenId) {
-          self.token_approvals.remove(id);
-      }
-  *)
   Parameter clear_approval : (mut_ref Self) -> ltac:(erc721.TokenId) -> M unit.
   
   Global Instance AssociatedFunction_clear_approval :
@@ -578,11 +484,6 @@ Section Impl_erc721_Erc721_t.
     Notations.double_colon := clear_approval;
   }.
   
-  (*
-      fn approved_for_all(&self, owner: AccountId, operator: AccountId) -> bool {
-          self.operator_approvals.contains(&(owner, operator))
-      }
-  *)
   Parameter approved_for_all :
       (ref Self) -> erc721.AccountId.t -> erc721.AccountId.t -> M bool.t.
   
@@ -591,11 +492,6 @@ Section Impl_erc721_Erc721_t.
     Notations.double_colon := approved_for_all;
   }.
   
-  (*
-      pub fn owner_of(&self, id: TokenId) -> Option<AccountId> {
-          self.token_owner.get(&id)
-      }
-  *)
   Parameter owner_of :
       (ref Self) ->
         ltac:(erc721.TokenId) ->
@@ -606,18 +502,6 @@ Section Impl_erc721_Erc721_t.
     Notations.double_colon := owner_of;
   }.
   
-  (*
-      fn approved_or_owner(&self, from: Option<AccountId>, id: TokenId) -> bool {
-          let owner = self.owner_of(id);
-          from != Some(AccountId::from([0x0; 32]))
-              && (from == owner
-                  || from == self.token_approvals.get(&id)
-                  || self.approved_for_all(
-                      owner.expect("Error with AccountId"),
-                      from.expect("Error with AccountId"),
-                  ))
-      }
-  *)
   Parameter approved_or_owner :
       (ref Self) ->
         (core.option.Option.t erc721.AccountId.t) ->
@@ -629,11 +513,6 @@ Section Impl_erc721_Erc721_t.
     Notations.double_colon := approved_or_owner;
   }.
   
-  (*
-      fn exists(&self, id: TokenId) -> bool {
-          self.token_owner.contains(&id)
-      }
-  *)
   Parameter exists_ : (ref Self) -> ltac:(erc721.TokenId) -> M bool.t.
   
   Global Instance AssociatedFunction_exists_ :
@@ -641,11 +520,6 @@ Section Impl_erc721_Erc721_t.
     Notations.double_colon := exists_;
   }.
   
-  (*
-      pub fn balance_of(&self, owner: AccountId) -> u32 {
-          self.balance_of_or_zero(&owner)
-      }
-  *)
   Parameter balance_of : (ref Self) -> erc721.AccountId.t -> M u32.t.
   
   Global Instance AssociatedFunction_balance_of :
@@ -653,11 +527,6 @@ Section Impl_erc721_Erc721_t.
     Notations.double_colon := balance_of;
   }.
   
-  (*
-      pub fn get_approved(&self, id: TokenId) -> Option<AccountId> {
-          self.token_approvals.get(&id)
-      }
-  *)
   Parameter get_approved :
       (ref Self) ->
         ltac:(erc721.TokenId) ->
@@ -668,11 +537,6 @@ Section Impl_erc721_Erc721_t.
     Notations.double_colon := get_approved;
   }.
   
-  (*
-      pub fn is_approved_for_all(&self, owner: AccountId, operator: AccountId) -> bool {
-          self.approved_for_all(owner, operator)
-      }
-  *)
   Parameter is_approved_for_all :
       (ref Self) -> erc721.AccountId.t -> erc721.AccountId.t -> M bool.t.
   
@@ -681,27 +545,6 @@ Section Impl_erc721_Erc721_t.
     Notations.double_colon := is_approved_for_all;
   }.
   
-  (*
-      fn approve_for_all(&mut self, to: AccountId, approved: bool) -> Result<(), Error> {
-          let caller = self.env().caller();
-          if to == caller {
-              return Err(Error::NotAllowed);
-          }
-          self.env().emit_event(Event::ApprovalForAll(ApprovalForAll {
-              owner: caller,
-              operator: to,
-              approved,
-          }));
-  
-          if approved {
-              self.operator_approvals.insert((caller, to), ());
-          } else {
-              self.operator_approvals.remove((caller, to));
-          }
-  
-          Ok(())
-      }
-  *)
   Parameter approve_for_all :
       (mut_ref Self) ->
         erc721.AccountId.t ->
@@ -713,12 +556,6 @@ Section Impl_erc721_Erc721_t.
     Notations.double_colon := approve_for_all;
   }.
   
-  (*
-      pub fn set_approval_for_all(&mut self, to: AccountId, approved: bool) -> Result<(), Error> {
-          self.approve_for_all(to, approved)?;
-          Ok(())
-      }
-  *)
   Parameter set_approval_for_all :
       (mut_ref Self) ->
         erc721.AccountId.t ->
@@ -730,35 +567,6 @@ Section Impl_erc721_Erc721_t.
     Notations.double_colon := set_approval_for_all;
   }.
   
-  (*
-      fn approve_for(&mut self, to: &AccountId, id: TokenId) -> Result<(), Error> {
-          let caller = self.env().caller();
-          let owner = self.owner_of(id);
-          if !(owner == Some(caller)
-              || self.approved_for_all(owner.expect("Error with AccountId"), caller))
-          {
-              return Err(Error::NotAllowed);
-          };
-  
-          if *to == AccountId::from([0x0; 32]) {
-              return Err(Error::NotAllowed);
-          };
-  
-          if self.token_approvals.contains(&id) {
-              return Err(Error::CannotInsert);
-          } else {
-              self.token_approvals.insert(id, *to);
-          }
-  
-          self.env().emit_event(Event::Approval(Approval {
-              from: caller,
-              to: *to,
-              id,
-          }));
-  
-          Ok(())
-      }
-  *)
   Parameter approve_for :
       (mut_ref Self) ->
         (ref erc721.AccountId.t) ->
@@ -770,12 +578,6 @@ Section Impl_erc721_Erc721_t.
     Notations.double_colon := approve_for;
   }.
   
-  (*
-      pub fn approve(&mut self, to: AccountId, id: TokenId) -> Result<(), Error> {
-          self.approve_for(&to, id)?;
-          Ok(())
-      }
-  *)
   Parameter approve :
       (mut_ref Self) ->
         erc721.AccountId.t ->
@@ -787,28 +589,6 @@ Section Impl_erc721_Erc721_t.
     Notations.double_colon := approve;
   }.
   
-  (*
-      fn remove_token_from(&mut self, from: &AccountId, id: TokenId) -> Result<(), Error> {
-          let Self {
-              token_owner,
-              owned_tokens_count,
-              ..
-          } = self;
-  
-          if !token_owner.contains(&id) {
-              return Err(Error::TokenNotFound);
-          }
-  
-          let count = owned_tokens_count
-              .get(from)
-              .map(|c| c - (1 as u32))
-              .ok_or(Error::CannotFetchValue)?;
-          owned_tokens_count.insert( *from, count);
-          token_owner.remove(id);
-  
-          Ok(())
-      }
-  *)
   Parameter remove_token_from :
       (mut_ref Self) ->
         (ref erc721.AccountId.t) ->
@@ -820,33 +600,6 @@ Section Impl_erc721_Erc721_t.
     Notations.double_colon := remove_token_from;
   }.
   
-  (*
-      fn add_token_to(&mut self, to: &AccountId, id: TokenId) -> Result<(), Error> {
-          let Self {
-              token_owner,
-              owned_tokens_count,
-              ..
-          } = self;
-  
-          if token_owner.contains(&id) {
-              return Err(Error::TokenExists);
-          }
-  
-          if *to == AccountId::from([0x0; 32]) {
-              return Err(Error::NotAllowed);
-          };
-  
-          let count = owned_tokens_count
-              .get(to)
-              .map(|c| c + (1 as u32))
-              .unwrap_or(1);
-  
-          owned_tokens_count.insert( *to, count);
-          token_owner.insert(id, *to);
-  
-          Ok(())
-      }
-  *)
   Parameter add_token_to :
       (mut_ref Self) ->
         (ref erc721.AccountId.t) ->
@@ -858,31 +611,6 @@ Section Impl_erc721_Erc721_t.
     Notations.double_colon := add_token_to;
   }.
   
-  (*
-      fn transfer_token_from(
-          &mut self,
-          from: &AccountId,
-          to: &AccountId,
-          id: TokenId,
-      ) -> Result<(), Error> {
-          let caller = self.env().caller();
-          if !self.exists(id) {
-              return Err(Error::TokenNotFound);
-          };
-          if !self.approved_or_owner(Some(caller), id) {
-              return Err(Error::NotApproved);
-          };
-          self.clear_approval(id);
-          self.remove_token_from(from, id)?;
-          self.add_token_to(to, id)?;
-          self.env().emit_event(Event::Transfer(Transfer {
-              from: Some( *from),
-              to: Some( *to),
-              id,
-          }));
-          Ok(())
-      }
-  *)
   Parameter transfer_token_from :
       (mut_ref Self) ->
         (ref erc721.AccountId.t) ->
@@ -895,13 +623,6 @@ Section Impl_erc721_Erc721_t.
     Notations.double_colon := transfer_token_from;
   }.
   
-  (*
-      pub fn transfer(&mut self, destination: AccountId, id: TokenId) -> Result<(), Error> {
-          let caller = self.env().caller();
-          self.transfer_token_from(&caller, &destination, id)?;
-          Ok(())
-      }
-  *)
   Parameter transfer :
       (mut_ref Self) ->
         erc721.AccountId.t ->
@@ -913,17 +634,6 @@ Section Impl_erc721_Erc721_t.
     Notations.double_colon := transfer;
   }.
   
-  (*
-      pub fn transfer_from(
-          &mut self,
-          from: AccountId,
-          to: AccountId,
-          id: TokenId,
-      ) -> Result<(), Error> {
-          self.transfer_token_from(&from, &to, id)?;
-          Ok(())
-      }
-  *)
   Parameter transfer_from :
       (mut_ref Self) ->
         erc721.AccountId.t ->
@@ -936,18 +646,6 @@ Section Impl_erc721_Erc721_t.
     Notations.double_colon := transfer_from;
   }.
   
-  (*
-      pub fn mint(&mut self, id: TokenId) -> Result<(), Error> {
-          let caller = self.env().caller();
-          self.add_token_to(&caller, id)?;
-          self.env().emit_event(Event::Transfer(Transfer {
-              from: Some(AccountId::from([0x0; 32])),
-              to: Some(caller),
-              id,
-          }));
-          Ok(())
-      }
-  *)
   Parameter mint :
       (mut_ref Self) ->
         ltac:(erc721.TokenId) ->
@@ -958,36 +656,6 @@ Section Impl_erc721_Erc721_t.
     Notations.double_colon := mint;
   }.
   
-  (*
-      pub fn burn(&mut self, id: TokenId) -> Result<(), Error> {
-          let caller = self.env().caller();
-          let Self {
-              token_owner,
-              owned_tokens_count,
-              ..
-          } = self;
-  
-          let owner = token_owner.get(&id).ok_or(Error::TokenNotFound)?;
-          if owner != caller {
-              return Err(Error::NotOwner);
-          };
-  
-          let count = owned_tokens_count
-              .get(&caller)
-              .map(|c| c - 1)
-              .ok_or(Error::CannotFetchValue)?;
-          owned_tokens_count.insert(caller, count);
-          token_owner.remove(id);
-  
-          self.env().emit_event(Event::Transfer(Transfer {
-              from: Some(caller),
-              to: Some(AccountId::from([0x0; 32])),
-              id,
-          }));
-  
-          Ok(())
-      }
-  *)
   Parameter burn :
       (mut_ref Self) ->
         ltac:(erc721.TokenId) ->

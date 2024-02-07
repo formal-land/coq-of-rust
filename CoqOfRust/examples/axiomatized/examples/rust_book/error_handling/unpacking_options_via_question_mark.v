@@ -21,9 +21,6 @@ Module  Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumbe
 Section Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber_t.
   Definition Self : Set := unpacking_options_via_question_mark.PhoneNumber.t.
   
-  (*
-  Clone
-  *)
   Parameter clone :
       (ref Self) -> M unpacking_options_via_question_mark.PhoneNumber.t.
   
@@ -66,9 +63,6 @@ Module  Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job_t.
 Section Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job_t.
   Definition Self : Set := unpacking_options_via_question_mark.Job.t.
   
-  (*
-  Clone
-  *)
   Parameter clone : (ref Self) -> M unpacking_options_via_question_mark.Job.t.
   
   Global Instance AssociatedFunction_clone :
@@ -107,14 +101,6 @@ Module  Impl_unpacking_options_via_question_mark_Person_t.
 Section Impl_unpacking_options_via_question_mark_Person_t.
   Definition Self : Set := unpacking_options_via_question_mark.Person.t.
   
-  (*
-      fn work_phone_area_code(&self) -> Option<u8> {
-          // This would need many nested `match` statements without the `?` operator.
-          // It would take a lot more code - try writing it yourself and see which
-          // is easier.
-          self.job?.phone_number?.area_code
-      }
-  *)
   Parameter work_phone_area_code : (ref Self) -> M (core.option.Option.t u8.t).
   
   Global Instance AssociatedFunction_work_phone_area_code :
@@ -124,19 +110,5 @@ Section Impl_unpacking_options_via_question_mark_Person_t.
 End Impl_unpacking_options_via_question_mark_Person_t.
 End Impl_unpacking_options_via_question_mark_Person_t.
 
-(*
-fn main() {
-    let p = Person {
-        job: Some(Job {
-            phone_number: Some(PhoneNumber {
-                area_code: Some(61),
-                number: 439222222,
-            }),
-        }),
-    };
-
-    assert_eq!(p.work_phone_area_code(), Some(61));
-}
-*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : M unit.

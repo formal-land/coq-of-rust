@@ -26,13 +26,6 @@ Module  Impl_trait_flipper_Flipper_t.
 Section Impl_trait_flipper_Flipper_t.
   Definition Self : Set := trait_flipper.Flipper.t.
   
-  (*
-      pub fn new() -> Self {
-          Self {
-              value: Default::default(),
-          }
-      }
-  *)
   Parameter new : M Self.
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
@@ -45,11 +38,6 @@ Module  Impl_trait_flipper_Flip_for_trait_flipper_Flipper_t.
 Section Impl_trait_flipper_Flip_for_trait_flipper_Flipper_t.
   Definition Self : Set := trait_flipper.Flipper.t.
   
-  (*
-      fn flip(&mut self) {
-          self.value = !self.value;
-      }
-  *)
   Parameter flip : (mut_ref Self) -> M unit.
   
   Global Instance AssociatedFunction_flip :
@@ -57,11 +45,6 @@ Section Impl_trait_flipper_Flip_for_trait_flipper_Flipper_t.
     Notations.double_colon := flip;
   }.
   
-  (*
-      fn get(&self) -> bool {
-          self.value
-      }
-  *)
   Parameter get : (ref Self) -> M bool.t.
   
   Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {

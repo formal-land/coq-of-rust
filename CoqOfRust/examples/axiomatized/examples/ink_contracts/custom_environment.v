@@ -16,9 +16,6 @@ Module  Impl_core_default_Default_for_custom_environment_AccountId_t.
 Section Impl_core_default_Default_for_custom_environment_AccountId_t.
   Definition Self : Set := custom_environment.AccountId.t.
   
-  (*
-  Default
-  *)
   Parameter default : M custom_environment.AccountId.t.
   
   Global Instance AssociatedFunction_default :
@@ -36,9 +33,6 @@ Module  Impl_core_clone_Clone_for_custom_environment_AccountId_t.
 Section Impl_core_clone_Clone_for_custom_environment_AccountId_t.
   Definition Self : Set := custom_environment.AccountId.t.
   
-  (*
-  Clone
-  *)
   Parameter clone : (ref Self) -> M custom_environment.AccountId.t.
   
   Global Instance AssociatedFunction_clone :
@@ -85,9 +79,6 @@ Module  Impl_core_default_Default_for_custom_environment_Topics_t.
 Section Impl_core_default_Default_for_custom_environment_Topics_t.
   Definition Self : Set := custom_environment.Topics.t.
   
-  (*
-  Default
-  *)
   Parameter default : M custom_environment.Topics.t.
   
   Global Instance AssociatedFunction_default :
@@ -138,9 +129,6 @@ Module  Impl_core_default_Default_for_custom_environment_EventWithTopics_t.
 Section Impl_core_default_Default_for_custom_environment_EventWithTopics_t.
   Definition Self : Set := custom_environment.EventWithTopics.t.
   
-  (*
-  Default
-  *)
   Parameter default : M custom_environment.EventWithTopics.t.
   
   Global Instance AssociatedFunction_default :
@@ -169,11 +157,6 @@ Module  Impl_custom_environment_Env_t.
 Section Impl_custom_environment_Env_t.
   Definition Self : Set := custom_environment.Env.t.
   
-  (*
-      fn caller(&self) -> AccountId {
-          self.caller
-      }
-  *)
   Parameter caller : (ref Self) -> M custom_environment.AccountId.t.
   
   Global Instance AssociatedFunction_caller :
@@ -181,11 +164,6 @@ Section Impl_custom_environment_Env_t.
     Notations.double_colon := caller;
   }.
   
-  (*
-      fn emit_event(&self, _event: Event) {
-          unimplemented!()
-      }
-  *)
   Parameter emit_event : (ref Self) -> custom_environment.Event.t -> M unit.
   
   Global Instance AssociatedFunction_emit_event :
@@ -199,11 +177,6 @@ Module  Impl_custom_environment_Topics_t.
 Section Impl_custom_environment_Topics_t.
   Definition Self : Set := custom_environment.Topics.t.
   
-  (*
-      fn init_env() -> Env {
-          unimplemented!()
-      }
-  *)
   Parameter init_env : M custom_environment.Env.t.
   
   Global Instance AssociatedFunction_init_env :
@@ -211,34 +184,18 @@ Section Impl_custom_environment_Topics_t.
     Notations.double_colon := init_env;
   }.
   
-  (*
-      fn env(&self) -> Env {
-          Self::init_env()
-      }
-  *)
   Parameter env : (ref Self) -> M custom_environment.Env.t.
   
   Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
     Notations.double_colon := env;
   }.
   
-  (*
-      pub fn new() -> Self {
-          Default::default()
-      }
-  *)
   Parameter new : M Self.
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
   }.
   
-  (*
-      pub fn trigger(&mut self) {
-          self.env()
-              .emit_event(Event::EventWithTopics(EventWithTopics::default()));
-      }
-  *)
   Parameter trigger : (mut_ref Self) -> M unit.
   
   Global Instance AssociatedFunction_trigger :

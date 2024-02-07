@@ -16,9 +16,6 @@ Module  Impl_core_default_Default_for_contract_transfer_AccountId_t.
 Section Impl_core_default_Default_for_contract_transfer_AccountId_t.
   Definition Self : Set := contract_transfer.AccountId.t.
   
-  (*
-  Default
-  *)
   Parameter default : M contract_transfer.AccountId.t.
   
   Global Instance AssociatedFunction_default :
@@ -36,9 +33,6 @@ Module  Impl_core_clone_Clone_for_contract_transfer_AccountId_t.
 Section Impl_core_clone_Clone_for_contract_transfer_AccountId_t.
   Definition Self : Set := contract_transfer.AccountId.t.
   
-  (*
-  Clone
-  *)
   Parameter clone : (ref Self) -> M contract_transfer.AccountId.t.
   
   Global Instance AssociatedFunction_clone :
@@ -79,11 +73,6 @@ Module  Impl_contract_transfer_Env_t.
 Section Impl_contract_transfer_Env_t.
   Definition Self : Set := contract_transfer.Env.t.
   
-  (*
-      fn caller(&self) -> AccountId {
-          self.caller
-      }
-  *)
   Parameter caller : (ref Self) -> M contract_transfer.AccountId.t.
   
   Global Instance AssociatedFunction_caller :
@@ -91,11 +80,6 @@ Section Impl_contract_transfer_Env_t.
     Notations.double_colon := caller;
   }.
   
-  (*
-      fn balance(&self) -> Balance {
-          unimplemented!()
-      }
-  *)
   Parameter balance : (ref Self) -> M ltac:(contract_transfer.Balance).
   
   Global Instance AssociatedFunction_balance :
@@ -103,11 +87,6 @@ Section Impl_contract_transfer_Env_t.
     Notations.double_colon := balance;
   }.
   
-  (*
-      fn transfer(&mut self, _to: AccountId, _value: Balance) -> Result<(), ()> {
-          unimplemented!()
-      }
-  *)
   Parameter transfer :
       (mut_ref Self) ->
         contract_transfer.AccountId.t ->
@@ -119,11 +98,6 @@ Section Impl_contract_transfer_Env_t.
     Notations.double_colon := transfer;
   }.
   
-  (*
-      fn transferred_value(&self) -> Balance {
-          unimplemented!()
-      }
-  *)
   Parameter transferred_value :
       (ref Self) -> M ltac:(contract_transfer.Balance).
   
@@ -144,11 +118,6 @@ Module  Impl_contract_transfer_GiveMe_t.
 Section Impl_contract_transfer_GiveMe_t.
   Definition Self : Set := contract_transfer.GiveMe.t.
   
-  (*
-      fn init_env() -> Env {
-          unimplemented!()
-      }
-  *)
   Parameter init_env : M contract_transfer.Env.t.
   
   Global Instance AssociatedFunction_init_env :
@@ -156,44 +125,18 @@ Section Impl_contract_transfer_GiveMe_t.
     Notations.double_colon := init_env;
   }.
   
-  (*
-      fn env(&self) -> Env {
-          Self::init_env()
-      }
-  *)
   Parameter env : (ref Self) -> M contract_transfer.Env.t.
   
   Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
     Notations.double_colon := env;
   }.
   
-  (*
-      pub fn new() -> Self {
-          Self {}
-      }
-  *)
   Parameter new : M Self.
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
   }.
   
-  (*
-      pub fn give_me(&mut self, value: Balance) {
-          println!("requested value: {}", value);
-          println!("contract balance: {}", self.env().balance());
-  
-          assert!(value <= self.env().balance(), "insufficient funds!");
-  
-          if self.env().transfer(self.env().caller(), value).is_err() {
-              panic!(
-                  "requested transfer failed. this can be the case if the contract does not\
-                   have sufficient free funds or if the transfer would have brought the\
-                   contract's balance below minimum balance."
-              )
-          }
-      }
-  *)
   Parameter give_me :
       (mut_ref Self) -> ltac:(contract_transfer.Balance) -> M unit.
   
@@ -202,12 +145,6 @@ Section Impl_contract_transfer_GiveMe_t.
     Notations.double_colon := give_me;
   }.
   
-  (*
-      pub fn was_it_ten(&self) {
-          println!("received payment: {}", self.env().transferred_value());
-          assert!(self.env().transferred_value() == 10, "payment was not ten");
-      }
-  *)
   Parameter was_it_ten : (ref Self) -> M unit.
   
   Global Instance AssociatedFunction_was_it_ten :

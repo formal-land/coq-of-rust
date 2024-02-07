@@ -6,16 +6,5 @@ Module Foo.
   | Bar.
 End Foo.
 
-(*
-fn main() {
-    let a = Foo::Bar;
-
-    // Variable a matches Foo::Bar
-    if let Foo::Bar = a {
-        // ^-- this causes a compile-time error. Use `if let` instead.
-        println!("a is foobar");
-    }
-}
-*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : M unit.

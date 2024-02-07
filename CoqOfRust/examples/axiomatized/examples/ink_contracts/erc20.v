@@ -27,9 +27,6 @@ Section Impl_core_default_Default_for_erc20_Mapping_t_K_V.
   
   Definition Self : Set := erc20.Mapping.t K V.
   
-  (*
-  Default
-  *)
   Parameter default : M (erc20.Mapping.t K V).
   
   Global Instance AssociatedFunction_default :
@@ -49,22 +46,12 @@ Section Impl_erc20_Mapping_t_K_V.
   
   Definition Self : Set := erc20.Mapping.t K V.
   
-  (*
-      fn get(&self, _key: &K) -> Option<V> {
-          unimplemented!()
-      }
-  *)
   Parameter get : (ref Self) -> (ref K) -> M (core.option.Option.t V).
   
   Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
     Notations.double_colon := get;
   }.
   
-  (*
-      fn insert(&mut self, _key: K, _value: V) {
-          unimplemented!()
-      }
-  *)
   Parameter insert : (mut_ref Self) -> K -> V -> M unit.
   
   Global Instance AssociatedFunction_insert :
@@ -89,9 +76,6 @@ Module  Impl_core_default_Default_for_erc20_AccountId_t.
 Section Impl_core_default_Default_for_erc20_AccountId_t.
   Definition Self : Set := erc20.AccountId.t.
   
-  (*
-  Default
-  *)
   Parameter default : M erc20.AccountId.t.
   
   Global Instance AssociatedFunction_default :
@@ -109,9 +93,6 @@ Module  Impl_core_clone_Clone_for_erc20_AccountId_t.
 Section Impl_core_clone_Clone_for_erc20_AccountId_t.
   Definition Self : Set := erc20.AccountId.t.
   
-  (*
-  Clone
-  *)
   Parameter clone : (ref Self) -> M erc20.AccountId.t.
   
   Global Instance AssociatedFunction_clone :
@@ -178,9 +159,6 @@ Module  Impl_core_default_Default_for_erc20_Erc20_t.
 Section Impl_core_default_Default_for_erc20_Erc20_t.
   Definition Self : Set := erc20.Erc20.t.
   
-  (*
-  Default
-  *)
   Parameter default : M erc20.Erc20.t.
   
   Global Instance AssociatedFunction_default :
@@ -260,11 +238,6 @@ Module  Impl_erc20_Env_t.
 Section Impl_erc20_Env_t.
   Definition Self : Set := erc20.Env.t.
   
-  (*
-      fn caller(&self) -> AccountId {
-          self.caller
-      }
-  *)
   Parameter caller : (ref Self) -> M erc20.AccountId.t.
   
   Global Instance AssociatedFunction_caller :
@@ -272,11 +245,6 @@ Section Impl_erc20_Env_t.
     Notations.double_colon := caller;
   }.
   
-  (*
-      fn emit_event(&self, _event: Event) {
-          unimplemented!()
-      }
-  *)
   Parameter emit_event : (ref Self) -> erc20.Event.t -> M unit.
   
   Global Instance AssociatedFunction_emit_event :
@@ -290,11 +258,6 @@ Module  Impl_erc20_Erc20_t.
 Section Impl_erc20_Erc20_t.
   Definition Self : Set := erc20.Erc20.t.
   
-  (*
-      fn init_env() -> Env {
-          unimplemented!()
-      }
-  *)
   Parameter init_env : M erc20.Env.t.
   
   Global Instance AssociatedFunction_init_env :
@@ -302,11 +265,6 @@ Section Impl_erc20_Erc20_t.
     Notations.double_colon := init_env;
   }.
   
-  (*
-      fn env(&self) -> Env {
-          Self::init_env()
-      }
-  *)
   Parameter env : (ref Self) -> M erc20.Env.t.
   
   Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
@@ -319,34 +277,12 @@ Module  Impl_erc20_Erc20_t_2.
 Section Impl_erc20_Erc20_t_2.
   Definition Self : Set := erc20.Erc20.t.
   
-  (*
-      fn new(total_supply: Balance) -> Self {
-          let mut balances = Mapping::default();
-          let caller = Self::init_env().caller();
-          balances.insert(caller, total_supply);
-          Self::init_env().emit_event(Event::Transfer(Transfer {
-              from: None,
-              to: Some(caller),
-              value: total_supply,
-          }));
-          Self {
-              total_supply,
-              balances,
-              allowances: Default::default(),
-          }
-      }
-  *)
   Parameter new : ltac:(erc20.Balance) -> M Self.
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
   }.
   
-  (*
-      fn total_supply(&self) -> Balance {
-          self.total_supply
-      }
-  *)
   Parameter total_supply : (ref Self) -> M ltac:(erc20.Balance).
   
   Global Instance AssociatedFunction_total_supply :
@@ -354,11 +290,6 @@ Section Impl_erc20_Erc20_t_2.
     Notations.double_colon := total_supply;
   }.
   
-  (*
-      fn balance_of_impl(&self, owner: &AccountId) -> Balance {
-          self.balances.get(owner).unwrap_or_default()
-      }
-  *)
   Parameter balance_of_impl :
       (ref Self) -> (ref erc20.AccountId.t) -> M ltac:(erc20.Balance).
   
@@ -367,11 +298,6 @@ Section Impl_erc20_Erc20_t_2.
     Notations.double_colon := balance_of_impl;
   }.
   
-  (*
-      fn balance_of(&self, owner: AccountId) -> Balance {
-          self.balance_of_impl(&owner)
-      }
-  *)
   Parameter balance_of :
       (ref Self) -> erc20.AccountId.t -> M ltac:(erc20.Balance).
   
@@ -380,11 +306,6 @@ Section Impl_erc20_Erc20_t_2.
     Notations.double_colon := balance_of;
   }.
   
-  (*
-      fn allowance_impl(&self, owner: &AccountId, spender: &AccountId) -> Balance {
-          self.allowances.get(&( *owner, *spender)).unwrap_or_default()
-      }
-  *)
   Parameter allowance_impl :
       (ref Self) ->
         (ref erc20.AccountId.t) ->
@@ -396,11 +317,6 @@ Section Impl_erc20_Erc20_t_2.
     Notations.double_colon := allowance_impl;
   }.
   
-  (*
-      fn allowance(&self, owner: AccountId, spender: AccountId) -> Balance {
-          self.allowance_impl(&owner, &spender)
-      }
-  *)
   Parameter allowance :
       (ref Self) ->
         erc20.AccountId.t ->
@@ -412,24 +328,6 @@ Section Impl_erc20_Erc20_t_2.
     Notations.double_colon := allowance;
   }.
   
-  (*
-      fn transfer_from_to(&mut self, from: &AccountId, to: &AccountId, value: Balance) -> Result<()> {
-          let from_balance = self.balance_of_impl(from);
-          if from_balance < value {
-              return Err(Error::InsufficientBalance);
-          }
-  
-          self.balances.insert( *from, from_balance - value);
-          let to_balance = self.balance_of_impl(to);
-          self.balances.insert( *to, to_balance + value);
-          self.env().emit_event(Event::Transfer(Transfer {
-              from: Some( *from),
-              to: Some( *to),
-              value,
-          }));
-          Ok(())
-      }
-  *)
   Parameter transfer_from_to :
       (mut_ref Self) ->
         (ref erc20.AccountId.t) ->
@@ -442,12 +340,6 @@ Section Impl_erc20_Erc20_t_2.
     Notations.double_colon := transfer_from_to;
   }.
   
-  (*
-      fn transfer(&mut self, to: AccountId, value: Balance) -> Result<()> {
-          let from = self.env().caller();
-          self.transfer_from_to(&from, &to, value)
-      }
-  *)
   Parameter transfer :
       (mut_ref Self) ->
         erc20.AccountId.t ->
@@ -459,18 +351,6 @@ Section Impl_erc20_Erc20_t_2.
     Notations.double_colon := transfer;
   }.
   
-  (*
-      fn approve(&mut self, spender: AccountId, value: Balance) -> Result<()> {
-          let owner = self.env().caller();
-          self.allowances.insert((owner, spender), value);
-          self.env().emit_event(Event::Approval(Approval {
-              owner,
-              spender,
-              value,
-          }));
-          Ok(())
-      }
-  *)
   Parameter approve :
       (mut_ref Self) ->
         erc20.AccountId.t ->
@@ -482,18 +362,6 @@ Section Impl_erc20_Erc20_t_2.
     Notations.double_colon := approve;
   }.
   
-  (*
-      fn transfer_from(&mut self, from: AccountId, to: AccountId, value: Balance) -> Result<()> {
-          let caller = self.env().caller();
-          let allowance = self.allowance_impl(&from, &caller);
-          if allowance < value {
-              return Err(Error::InsufficientAllowance);
-          }
-          self.transfer_from_to(&from, &to, value)?;
-          self.allowances.insert((from, caller), allowance - value);
-          Ok(())
-      }
-  *)
   Parameter transfer_from :
       (mut_ref Self) ->
         erc20.AccountId.t ->

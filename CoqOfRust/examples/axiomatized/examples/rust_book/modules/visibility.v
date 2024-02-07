@@ -2,149 +2,39 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module my_mod.
-  (*
-      fn private_function() {
-          println!("called `my_mod::private_function()`");
-      }
-  *)
   Parameter private_function : M unit.
   
-  (*
-      pub fn function() {
-          println!("called `my_mod::function()`");
-      }
-  *)
   Parameter function : M unit.
   
-  (*
-      pub fn indirect_access() {
-          print!("called `my_mod::indirect_access()`, that\n> ");
-          private_function();
-      }
-  *)
   Parameter indirect_access : M unit.
   
   Module nested.
-    (*
-            pub fn function() {
-                println!("called `my_mod::nested::function()`");
-            }
-    *)
     Parameter function : M unit.
     
-    (*
-            fn private_function() {
-                println!("called `my_mod::nested::private_function()`");
-            }
-    *)
     (* #[allow(dead_code)] - function was ignored by the compiler *)
     Parameter private_function : M unit.
     
-    (*
-            pub(in crate::my_mod) fn public_function_in_my_mod() {
-                print!("called `my_mod::nested::public_function_in_my_mod()`, that\n> ");
-                public_function_in_nested();
-            }
-    *)
     Parameter public_function_in_my_mod : M unit.
     
-    (*
-            pub(self) fn public_function_in_nested() {
-                println!("called `my_mod::nested::public_function_in_nested()`");
-            }
-    *)
     Parameter public_function_in_nested : M unit.
     
-    (*
-            pub(super) fn public_function_in_super_mod() {
-                println!("called `my_mod::nested::public_function_in_super_mod()`");
-            }
-    *)
     Parameter public_function_in_super_mod : M unit.
   End nested.
   
-  (*
-      pub fn call_public_function_in_my_mod() {
-          print!("called `my_mod::call_public_function_in_my_mod()`, that\n> ");
-          nested::public_function_in_my_mod();
-          print!("> ");
-          nested::public_function_in_super_mod();
-      }
-  *)
   Parameter call_public_function_in_my_mod : M unit.
   
-  (*
-      pub(crate) fn public_function_in_crate() {
-          println!("called `my_mod::public_function_in_crate()`");
-      }
-  *)
   Parameter public_function_in_crate : M unit.
   
   Module private_nested.
-    (*
-            pub fn function() {
-                println!("called `my_mod::private_nested::function()`");
-            }
-    *)
     (* #[allow(dead_code)] - function was ignored by the compiler *)
     Parameter function : M unit.
     
-    (*
-            pub(crate) fn restricted_function() {
-                println!("called `my_mod::private_nested::restricted_function()`");
-            }
-    *)
     (* #[allow(dead_code)] - function was ignored by the compiler *)
     Parameter restricted_function : M unit.
   End private_nested.
 End my_mod.
 
-(*
-fn function() {
-    println!("called `function()`");
-}
-*)
 Parameter function : M unit.
 
-(*
-fn main() {
-    // Modules allow disambiguation between items that have the same name.
-    function();
-    my_mod::function();
-
-    // Public items, including those inside nested modules, can be
-    // accessed from outside the parent module.
-    my_mod::indirect_access();
-    my_mod::nested::function();
-    my_mod::call_public_function_in_my_mod();
-
-    // pub(crate) items can be called from anywhere in the same crate
-    my_mod::public_function_in_crate();
-
-    // pub(in path) items can only be called from within the module specified
-    // Error! function `public_function_in_my_mod` is private
-    //my_mod::nested::public_function_in_my_mod();
-    // TODO ^ Try uncommenting this line
-
-    // Private items of a module cannot be directly accessed, even if
-    // nested in a public module:
-
-    // Error! `private_function` is private
-    //my_mod::private_function();
-    // TODO ^ Try uncommenting this line
-
-    // Error! `private_function` is private
-    //my_mod::nested::private_function();
-    // TODO ^ Try uncommenting this line
-
-    // Error! `private_nested` is a private module
-    //my_mod::private_nested::function();
-    // TODO ^ Try uncommenting this line
-
-    // Error! `private_nested` is a private module
-    //my_mod::private_nested::restricted_function();
-    // TODO ^ Try uncommenting this line
-}
-*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : M unit.
