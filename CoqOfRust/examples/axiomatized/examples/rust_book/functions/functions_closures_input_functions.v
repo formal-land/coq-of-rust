@@ -6,9 +6,7 @@ fn call_me<F: Fn()>(f: F) {
     f();
 }
 *)
-Parameter call_me :
-    forall {F : Set} {ℋ_0 : core.ops.function.Fn.Trait F (Args := unit)},
-    F -> M unit.
+Parameter call_me : forall {F : Set}, F -> M unit.
 
 (*
 fn function() {

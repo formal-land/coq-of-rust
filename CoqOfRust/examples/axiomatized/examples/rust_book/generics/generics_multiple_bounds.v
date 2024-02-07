@@ -7,12 +7,7 @@ fn compare_prints<T: Debug + Display>(t: &T) {
     println!("Display: `{}`", t);
 }
 *)
-Parameter compare_prints :
-    forall
-      {T : Set}
-      {ℋ_0 : core.fmt.Debug.Trait T}
-      {ℋ_1 : core.fmt.Display.Trait T},
-    (ref T) -> M unit.
+Parameter compare_prints : forall {T : Set}, (ref T) -> M unit.
 
 (*
 fn compare_types<T: Debug, U: Debug>(t: &T, u: &U) {
@@ -20,12 +15,7 @@ fn compare_types<T: Debug, U: Debug>(t: &T, u: &U) {
     println!("u: `{:?}`", u);
 }
 *)
-Parameter compare_types :
-    forall
-      {T U : Set}
-      {ℋ_0 : core.fmt.Debug.Trait T}
-      {ℋ_1 : core.fmt.Debug.Trait U},
-    (ref T) -> (ref U) -> M unit.
+Parameter compare_types : forall {T U : Set}, (ref T) -> (ref U) -> M unit.
 
 (*
 fn main() {

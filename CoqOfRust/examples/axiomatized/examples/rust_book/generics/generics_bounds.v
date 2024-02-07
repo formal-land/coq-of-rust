@@ -86,18 +86,14 @@ fn print_debug<T: Debug>(t: &T) {
     println!("{:?}", t);
 }
 *)
-Parameter print_debug :
-    forall {T : Set} {ℋ_0 : core.fmt.Debug.Trait T},
-    (ref T) -> M unit.
+Parameter print_debug : forall {T : Set}, (ref T) -> M unit.
 
 (*
 fn area<T: HasArea>(t: &T) -> f64 {
     t.area()
 }
 *)
-Parameter area :
-    forall {T : Set} {ℋ_0 : generics_bounds.HasArea.Trait T},
-    (ref T) -> M f64.t.
+Parameter area : forall {T : Set}, (ref T) -> M f64.t.
 
 (*
 fn main() {

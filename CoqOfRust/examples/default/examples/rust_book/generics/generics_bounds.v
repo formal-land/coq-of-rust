@@ -116,11 +116,7 @@ fn print_debug<T: Debug>(t: &T) {
     println!("{:?}", t);
 }
 *)
-Definition print_debug
-    {T : Set}
-    {ℋ_0 : core.fmt.Debug.Trait T}
-    (t : ref T)
-    : M unit :=
+Definition print_debug {T : Set} (t : ref T) : M unit :=
   let* t := M.alloc t in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
@@ -147,11 +143,7 @@ fn area<T: HasArea>(t: &T) -> f64 {
     t.area()
 }
 *)
-Definition area
-    {T : Set}
-    {ℋ_0 : generics_bounds.HasArea.Trait T}
-    (t : ref T)
-    : M f64.t :=
+Definition area {T : Set} (t : ref T) : M f64.t :=
   let* t := M.alloc t in
   let* α0 : (ref T) -> M f64.t :=
     ltac:(M.get_method (fun ℐ =>

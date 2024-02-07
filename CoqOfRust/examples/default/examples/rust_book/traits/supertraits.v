@@ -53,7 +53,6 @@ fn comp_sci_student_greeting(student: &dyn CompSciStudent) -> String {
 *)
 Definition comp_sci_student_greeting
     {DynT : Set}
-    {ℋ_0 : supertraits.CompSciStudent.Trait.Trait DynT}
     (student : ref DynT)
     : M alloc.string.String.t :=
   let* student := M.alloc student in

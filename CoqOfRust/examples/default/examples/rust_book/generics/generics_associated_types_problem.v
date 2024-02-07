@@ -127,11 +127,7 @@ where
     container.last() - container.first()
 }
 *)
-Definition difference
-    {A B C : Set}
-    {ℋ_0 : generics_associated_types_problem.Contains.Trait C (A := A) (B := B)}
-    (container : ref C)
-    : M i32.t :=
+Definition difference {A B C : Set} (container : ref C) : M i32.t :=
   let* container := M.alloc container in
   let* α0 : (ref C) -> M i32.t :=
     ltac:(M.get_method (fun ℐ =>

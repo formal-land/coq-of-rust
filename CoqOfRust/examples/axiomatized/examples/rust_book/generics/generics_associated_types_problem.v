@@ -85,12 +85,7 @@ where
     container.last() - container.first()
 }
 *)
-Parameter difference :
-    forall
-      {A B C : Set}
-      {ℋ_0 :
-        generics_associated_types_problem.Contains.Trait C (A := A) (B := B)},
-    (ref C) -> M i32.t.
+Parameter difference : forall {A B C : Set}, (ref C) -> M i32.t.
 
 (*
 fn main() {

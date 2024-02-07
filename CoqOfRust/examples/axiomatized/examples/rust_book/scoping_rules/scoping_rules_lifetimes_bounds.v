@@ -46,7 +46,7 @@ where
     println!("`print`: t is {:?}", t);
 }
 *)
-Parameter print : forall {T : Set} {ℋ_0 : core.fmt.Debug.Trait T}, T -> M unit.
+Parameter print : forall {T : Set}, T -> M unit.
 
 (*
 fn print_ref<'a, T>(t: &'a T)
@@ -56,9 +56,7 @@ where
     println!("`print_ref`: t is {:?}", t);
 }
 *)
-Parameter print_ref :
-    forall {T : Set} {ℋ_0 : core.fmt.Debug.Trait T},
-    (ref T) -> M unit.
+Parameter print_ref : forall {T : Set}, (ref T) -> M unit.
 
 (*
 fn main() {

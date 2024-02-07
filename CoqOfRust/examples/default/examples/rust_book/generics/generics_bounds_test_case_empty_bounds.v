@@ -61,11 +61,7 @@ fn red<T: Red>(_: &T) -> &'static str {
     "red"
 }
 *)
-Definition red
-    {T : Set}
-    {ℋ_0 : generics_bounds_test_case_empty_bounds.Red.Trait T}
-    (arg : ref T)
-    : M (ref str.t) :=
+Definition red {T : Set} (arg : ref T) : M (ref str.t) :=
   let* arg := M.alloc arg in
   M.read (mk_str "red").
 
@@ -74,11 +70,7 @@ fn blue<T: Blue>(_: &T) -> &'static str {
     "blue"
 }
 *)
-Definition blue
-    {T : Set}
-    {ℋ_0 : generics_bounds_test_case_empty_bounds.Blue.Trait T}
-    (arg : ref T)
-    : M (ref str.t) :=
+Definition blue {T : Set} (arg : ref T) : M (ref str.t) :=
   let* arg := M.alloc arg in
   M.read (mk_str "blue").
 

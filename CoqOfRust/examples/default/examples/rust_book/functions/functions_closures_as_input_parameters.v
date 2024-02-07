@@ -12,11 +12,7 @@ where
     f();
 }
 *)
-Definition apply
-    {F : Set}
-    {ℋ_0 : core.ops.function.FnOnce.Trait F (Args := unit)}
-    (f : F)
-    : M unit :=
+Definition apply {F : Set} (f : F) : M unit :=
   let* f := M.alloc f in
   let* _ : M.Val unit :=
     let* α0 : F -> unit -> M _ :=
@@ -40,11 +36,7 @@ where
     f(3)
 }
 *)
-Definition apply_to_3
-    {F : Set}
-    {ℋ_0 : core.ops.function.Fn.Trait F (Args := i32.t)}
-    (f : F)
-    : M i32.t :=
+Definition apply_to_3 {F : Set} (f : F) : M i32.t :=
   let* f := M.alloc f in
   let* α0 : (ref F) -> i32.t -> M _ :=
     ltac:(M.get_method (fun ℐ =>

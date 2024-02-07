@@ -9,9 +9,7 @@ where
     f();
 }
 *)
-Parameter apply :
-    forall {F : Set} {ℋ_0 : core.ops.function.Fn.Trait F (Args := unit)},
-    F -> M unit.
+Parameter apply : forall {F : Set}, F -> M unit.
 
 (*
 fn main() {

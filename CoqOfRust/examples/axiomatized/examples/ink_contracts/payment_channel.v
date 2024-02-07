@@ -428,12 +428,12 @@ where
 }
 *)
 Parameter hash_encoded :
-    forall {H T : Set} {ℋ_0 : payment_channel.CryptoHash.Trait H},
+    forall {H T : Set},
     (ref T) ->
       (mut_ref
         (payment_channel.HashOutput.Type_
           (Self := H)
-          (Trait := ℋ_0.(CryptoHash.ℒ_0))))
+          (Trait := ltac:(refine _))))
       ->
       M unit.
 

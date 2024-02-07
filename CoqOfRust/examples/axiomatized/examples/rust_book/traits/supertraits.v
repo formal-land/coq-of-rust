@@ -52,7 +52,7 @@ fn comp_sci_student_greeting(student: &dyn CompSciStudent) -> String {
 }
 *)
 Parameter comp_sci_student_greeting :
-    forall {DynT : Set} {ℋ_0 : supertraits.CompSciStudent.Trait.Trait DynT},
+    forall {DynT : Set},
     (ref DynT) -> M alloc.string.String.t.
 
 (*

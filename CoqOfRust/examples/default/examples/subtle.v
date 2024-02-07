@@ -3043,11 +3043,7 @@ Section Impl_subtle_CtOption_t_T.
           T::conditional_select(&def, &self.value, self.is_some)
       }
   *)
-  Definition unwrap_or
-      {ℋ_0 : subtle.ConditionallySelectable.Trait T}
-      (self : Self)
-      (def : T)
-      : M T :=
+  Definition unwrap_or (self : Self) (def : T) : M T :=
     let* self := M.alloc self in
     let* def := M.alloc def in
     let* α0 : (ref T) -> (ref T) -> subtle.Choice.t -> M T :=
@@ -3058,8 +3054,7 @@ Section Impl_subtle_CtOption_t_T.
     let* α1 : subtle.Choice.t := M.read (subtle.CtOption.Get_is_some self) in
     M.call (α0 (borrow def) (borrow (subtle.CtOption.Get_value self)) α1).
   
-  Global Instance AssociatedFunction_unwrap_or
-      {ℋ_0 : subtle.ConditionallySelectable.Trait T} :
+  Global Instance AssociatedFunction_unwrap_or :
     Notations.DoubleColon Self "unwrap_or" := {
     Notations.double_colon := unwrap_or;
   }.
@@ -3073,13 +3068,7 @@ Section Impl_subtle_CtOption_t_T.
           T::conditional_select(&f(), &self.value, self.is_some)
       }
   *)
-  Definition unwrap_or_else
-      {F : Set}
-      {ℋ_0 : subtle.ConditionallySelectable.Trait T}
-      {ℋ_1 : core.ops.function.FnOnce.Trait F (Args := unit)}
-      (self : Self)
-      (f : F)
-      : M T :=
+  Definition unwrap_or_else {F : Set} (self : Self) (f : F) : M T :=
     let* self := M.alloc self in
     let* f := M.alloc f in
     let* α0 : (ref T) -> (ref T) -> subtle.Choice.t -> M T :=
@@ -3099,10 +3088,7 @@ Section Impl_subtle_CtOption_t_T.
     let* α5 : subtle.Choice.t := M.read (subtle.CtOption.Get_is_some self) in
     M.call (α0 (borrow α4) (borrow (subtle.CtOption.Get_value self)) α5).
   
-  Global Instance AssociatedFunction_unwrap_or_else
-      {F : Set}
-      {ℋ_0 : subtle.ConditionallySelectable.Trait T}
-      {ℋ_1 : core.ops.function.FnOnce.Trait F (Args := unit)} :
+  Global Instance AssociatedFunction_unwrap_or_else {F : Set} :
     Notations.DoubleColon Self "unwrap_or_else" := {
     Notations.double_colon := unwrap_or_else (F := F);
   }.
@@ -3158,14 +3144,7 @@ Section Impl_subtle_CtOption_t_T.
           )
       }
   *)
-  Definition map
-      {U F : Set}
-      {ℋ_0 : core.default.Default.Trait T}
-      {ℋ_1 : subtle.ConditionallySelectable.Trait T}
-      {ℋ_2 : core.ops.function.FnOnce.Trait F (Args := T)}
-      (self : Self)
-      (f : F)
-      : M (subtle.CtOption.t U) :=
+  Definition map {U F : Set} (self : Self) (f : F) : M (subtle.CtOption.t U) :=
     let* self := M.alloc self in
     let* f := M.alloc f in
     let* α0 : F -> T -> M _ :=
@@ -3192,11 +3171,7 @@ Section Impl_subtle_CtOption_t_T.
     let* α9 : subtle.Choice.t := M.read (subtle.CtOption.Get_is_some self) in
     M.call ((subtle.CtOption.t U)::["new"] α8 α9).
   
-  Global Instance AssociatedFunction_map
-      {U F : Set}
-      {ℋ_0 : core.default.Default.Trait T}
-      {ℋ_1 : subtle.ConditionallySelectable.Trait T}
-      {ℋ_2 : core.ops.function.FnOnce.Trait F (Args := T)} :
+  Global Instance AssociatedFunction_map {U F : Set} :
     Notations.DoubleColon Self "map" := {
     Notations.double_colon := map (U := U) (F := F);
   }.
@@ -3219,9 +3194,6 @@ Section Impl_subtle_CtOption_t_T.
   *)
   Definition and_then
       {U F : Set}
-      {ℋ_0 : core.default.Default.Trait T}
-      {ℋ_1 : subtle.ConditionallySelectable.Trait T}
-      {ℋ_2 : core.ops.function.FnOnce.Trait F (Args := T)}
       (self : Self)
       (f : F)
       : M (subtle.CtOption.t U) :=
@@ -3263,11 +3235,7 @@ Section Impl_subtle_CtOption_t_T.
       M.alloc α2 in
     M.read tmp.
   
-  Global Instance AssociatedFunction_and_then
-      {U F : Set}
-      {ℋ_0 : core.default.Default.Trait T}
-      {ℋ_1 : subtle.ConditionallySelectable.Trait T}
-      {ℋ_2 : core.ops.function.FnOnce.Trait F (Args := T)} :
+  Global Instance AssociatedFunction_and_then {U F : Set} :
     Notations.DoubleColon Self "and_then" := {
     Notations.double_colon := and_then (U := U) (F := F);
   }.
@@ -3286,8 +3254,6 @@ Section Impl_subtle_CtOption_t_T.
   *)
   Definition or_else
       {F : Set}
-      {ℋ_0 : subtle.ConditionallySelectable.Trait T}
-      {ℋ_1 : core.ops.function.FnOnce.Trait F (Args := unit)}
       (self : Self)
       (f : F)
       : M (subtle.CtOption.t T) :=
@@ -3321,10 +3287,7 @@ Section Impl_subtle_CtOption_t_T.
     let* α0 : M.Val (subtle.CtOption.t T) := M.alloc α2 in
     M.read α0.
   
-  Global Instance AssociatedFunction_or_else
-      {F : Set}
-      {ℋ_0 : subtle.ConditionallySelectable.Trait T}
-      {ℋ_1 : core.ops.function.FnOnce.Trait F (Args := unit)} :
+  Global Instance AssociatedFunction_or_else {F : Set} :
     Notations.DoubleColon Self "or_else" := {
     Notations.double_colon := or_else (F := F);
   }.

@@ -113,22 +113,14 @@ fn difference<C: Contains>(container: &C) -> i32 {
     container.last() - container.first()
 }
 *)
-Parameter difference :
-    forall
-      {C : Set}
-      {ℋ_0 : generics_associated_types_solution.Contains.Trait C},
-    (ref C) -> M i32.t.
+Parameter difference : forall {C : Set}, (ref C) -> M i32.t.
 
 (*
 fn get_a<C: Contains>(container: &C) -> C::A {
     container.a()
 }
 *)
-Parameter get_a :
-    forall
-      {C : Set}
-      {ℋ_0 : generics_associated_types_solution.Contains.Trait C},
-    (ref C) -> M C::type["A"].t.
+Parameter get_a : forall {C : Set}, (ref C) -> M C::type["A"].t.
 
 (*
 fn main() {

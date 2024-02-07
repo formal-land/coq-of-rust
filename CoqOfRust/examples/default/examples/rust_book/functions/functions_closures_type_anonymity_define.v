@@ -23,11 +23,7 @@ Definition main : M unit := M.pure tt.
         f();
     }
 *)
-Definition apply
-    {F : Set}
-    {ℋ_0 : core.ops.function.FnOnce.Trait F (Args := unit)}
-    (f : F)
-    : M unit :=
+Definition apply {F : Set} (f : F) : M unit :=
   let* f := M.alloc f in
   let* _ : M.Val unit :=
     let* α0 : F -> unit -> M _ :=
