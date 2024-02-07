@@ -27,6 +27,8 @@ Parameter create_fnmut_ret_ty :
     unit.
 Parameter create_fnmut : M _ (* OpaqueTy *).
 
+Error OpaqueTy.
+
 (*
 fn create_fnonce() -> impl FnOnce() {
     let text = "FnOnce".to_owned();
@@ -38,6 +40,8 @@ Parameter create_fnonce_ret_ty :
     Sigma (Ty : Set) `(core.ops.function.FnOnce.Trait Ty),
     unit.
 Parameter create_fnonce : M _ (* OpaqueTy *).
+
+Error OpaqueTy.
 
 (*
 fn main() {

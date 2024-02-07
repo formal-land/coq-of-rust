@@ -332,12 +332,6 @@ fn check_coq_axiom_lint_in_attributes<'a, Item: Into<rustc_hir::OwnerNode<'a>>>(
     check_lint_attribute(tcx, item, "coq_axiom")
 }
 
-/// We deduplicate items while keeping there order. Often, items are duplicated
-/// due to module imports or such.
-fn deduplicate_top_level_items(items: Vec<Rc<TopLevelItem>>) -> Vec<Rc<TopLevelItem>> {
-    items.into_iter().unique().collect()
-}
-
 fn is_top_level_item_public(tcx: &TyCtxt, env: &Env, item: &Item) -> bool {
     let def_id = item.owner_id.to_def_id();
     let ignore_impls = env.configuration.impl_ignore_axioms.contains(&env.file);
@@ -369,28 +363,24 @@ fn is_not_empty_trait(predicate: &WherePredicate) -> bool {
     !is_sized_trait(segments)
 }
 
-/// [compile_top_level_item] compiles hir [Item]s into coq-of-rust (optional)
-/// items.
-/// - See https://doc.rust-lang.org/stable/nightly-rustc/rustc_hir/struct.Item.html
-///   and the doc for [TopLevelItem]
-/// - [rustc_middle::hir::map::Map] is intuitively the type for hir environments
-/// - Method [body] allows retrievient the body of an identifier [body_id] in an
-///   hir environment [hir]
-// @TODO: the argument `tcx` is included in `env` and should thus be removed
-fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<Rc<TopLevelItem>> {
+fn get_item_ids_for_parent(tcx: &TyCtxt, expected_parent: rustc_hir::def_id::DefId) -> Vec<ItemId> {
+    tcx.hir()
+        .items()
+        .filter(|item_id| {
+            let def_id = item_id.owner_id.to_def_id();
+            let parent = tcx.opt_parent(def_id).unwrap();
+
+            parent == expected_parent
+        })
+        .collect()
+}
+
+fn compile_top_level_item_without_local_items(
+    tcx: &TyCtxt,
+    env: &mut Env,
+    item: &Item,
+) -> Vec<Rc<TopLevelItem>> {
     let name = to_valid_coq_name(item.ident.name.as_str());
-    if env.axiomatize && !env.axiomatize_public {
-        let is_public = is_top_level_item_public(tcx, env, item);
-        if !is_public {
-            // Do not generate anything if the item is not public and we are
-            // axiomatizing the definitions (for a library). Also, still
-            // generate the modules, since they may contain public items.
-            match &item.kind {
-                ItemKind::Mod(_) => {}
-                _ => return vec![],
-            }
-        }
-    }
 
     match &item.kind {
         ItemKind::ExternCrate(_) => vec![],
@@ -427,10 +417,12 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<Rc<To
             if check_if_is_test_main_function(tcx, body_id) {
                 return vec![];
             }
+
             let snippet = Rc::new(Snippet::of_span(env, &item.span));
             let is_dead_code = check_dead_code_lint_in_attributes(tcx, item);
             let is_axiom = check_coq_axiom_lint_in_attributes(tcx, item);
             let fn_sig_and_body = get_hir_fn_sig_and_body(tcx, fn_sig, body_id);
+
             vec![Rc::new(TopLevelItem::Definition {
                 name,
                 snippet,
@@ -450,19 +442,14 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<Rc<To
             let context = get_full_name(tcx, item.hir_id());
             let mut items: Vec<ItemId> = module.item_ids.to_vec();
             reorder_definitions_inplace(tcx, env, &context, &mut items);
-            let items = deduplicate_top_level_items(
-                items
-                    .iter()
-                    .flat_map(|item_id| {
-                        let item = tcx.hir().item(*item_id);
-                        compile_top_level_item(tcx, env, item)
-                    })
-                    .collect(),
-            );
-            // We remove empty modules in the translation
-            if items.is_empty() {
-                return vec![];
-            }
+            let items: Vec<_> = items
+                .iter()
+                .flat_map(|item_id| {
+                    let item = tcx.hir().item(*item_id);
+                    compile_top_level_item(tcx, env, item)
+                })
+                .collect();
+
             vec![Rc::new(TopLevelItem::Module {
                 name,
                 body: Rc::new(TopLevel(items)),
@@ -709,6 +696,49 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<Rc<To
             }
         }
     }
+}
+
+/// [compile_top_level_item] compiles hir [Item]s into coq-of-rust (optional)
+/// items.
+/// - See https://doc.rust-lang.org/stable/nightly-rustc/rustc_hir/struct.Item.html
+///   and the doc for [TopLevelItem]
+/// - [rustc_middle::hir::map::Map] is intuitively the type for hir environments
+/// - Method [body] allows retrievient the body of an identifier [body_id] in an
+///   hir environment [hir]
+// @TODO: the argument `tcx` is included in `env` and should thus be removed
+fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<Rc<TopLevelItem>> {
+    if env.axiomatize && !env.axiomatize_public {
+        let is_public = is_top_level_item_public(tcx, env, item);
+        if !is_public {
+            // Do not generate anything if the item is not public and we are
+            // axiomatizing the definitions (for a library). Also, still
+            // generate the modules, since they may contain public items.
+            match &item.kind {
+                ItemKind::Mod(_) => {}
+                _ => return vec![],
+            }
+        }
+    }
+
+    // Sometimes there can be local items, for example a struct defined in the
+    // body of a function. For modules, we make an exception as modules are
+    // expected to have items. We will concatenate the local items directly after
+    // the item's translation.
+    let local_item_ids = match &item.kind {
+        ItemKind::Mod(_) => vec![],
+        _ => get_item_ids_for_parent(tcx, item.item_id().owner_id.to_def_id()),
+    };
+    let local_items = local_item_ids
+        .into_iter()
+        .flat_map(|item_id| {
+            let item = tcx.hir().item(item_id);
+            compile_top_level_item(tcx, env, item)
+        })
+        .collect();
+
+    let items = compile_top_level_item_without_local_items(tcx, env, item);
+
+    [items, local_items].concat()
 }
 
 /// returns a pair of function signature and its body
@@ -1072,18 +1102,16 @@ fn compile_top_level(tcx: &TyCtxt, opts: TopLevelOptions) -> Rc<TopLevel> {
         current_trait_impl: None,
     };
 
-    let mut results: Vec<ItemId> = tcx.hir().items().collect();
+    let mut results = get_item_ids_for_parent(tcx, rustc_hir::def_id::CRATE_DEF_ID.into());
     reorder_definitions_inplace(tcx, &mut env, "top_level", &mut results);
 
-    let results = deduplicate_top_level_items(
-        results
-            .iter()
-            .flat_map(|item_id| {
-                let item = tcx.hir().item(*item_id);
-                compile_top_level_item(tcx, &mut env, item)
-            })
-            .collect(),
-    );
+    let results = results
+        .iter()
+        .flat_map(|item_id| {
+            let item = tcx.hir().item(*item_id);
+            compile_top_level_item(tcx, &mut env, item)
+        })
+        .collect();
 
     if opts.generate_reorder {
         let json = serde_json::json!({ "reorder": HashMap::from([(env.file.to_string(), env.reorder_map)])});

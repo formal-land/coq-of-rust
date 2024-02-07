@@ -217,60 +217,6 @@ Module inner_mod.
 End inner_mod.
 
 (*
-    pub fn bar() {
-        // functions_order::inner_mod::bar
-        tar();
-    }
-*)
-Definition bar : M unit :=
-  let* _ : M.Val unit :=
-    let* α0 : unit := M.call functions_order.inner_mod.tar in
-    M.alloc α0 in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
-
-(*
-    fn tar() {}
-*)
-Definition tar : M unit := M.pure tt.
-
-Module nested_mod.
-  (*
-          fn tack() {}
-  *)
-  Definition tack : M unit := M.pure tt.
-  
-  (*
-          pub fn tick() {
-              tack();
-          }
-  *)
-  Definition tick : M unit :=
-    let* _ : M.Val unit :=
-      let* α0 : unit := M.call functions_order.inner_mod.nested_mod.tack in
-      M.alloc α0 in
-    let* α0 : M.Val unit := M.alloc tt in
-    M.read α0.
-End nested_mod.
-
-(*
-        pub fn tick() {
-            tack();
-        }
-*)
-Definition tick : M unit :=
-  let* _ : M.Val unit :=
-    let* α0 : unit := M.call functions_order.inner_mod.nested_mod.tack in
-    M.alloc α0 in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
-
-(*
-        fn tack() {}
-*)
-Definition tack : M unit := M.pure tt.
-
-(*
 fn foo() {}
 *)
 Definition foo : M unit := M.pure tt.

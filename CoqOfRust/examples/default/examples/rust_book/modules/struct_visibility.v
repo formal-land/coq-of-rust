@@ -56,58 +56,6 @@ Module my.
   End Impl_struct_visibility_my_ClosedBox_t_T.
 End my.
 
-Module  OpenBox.
-Section OpenBox.
-  Context (T : Set).
-  
-  Record t : Set := {
-    contents : T;
-  }.
-  
-  Definition Get_contents :=
-    Ref.map
-      (fun α => Some α.(contents))
-      (fun β α => Some (α <| contents := β |>)).
-End OpenBox.
-End OpenBox.
-
-Module  ClosedBox.
-Section ClosedBox.
-  Context (T : Set).
-  
-  Record t : Set := {
-    contents : T;
-  }.
-  
-  Definition Get_contents :=
-    Ref.map
-      (fun α => Some α.(contents))
-      (fun β α => Some (α <| contents := β |>)).
-End ClosedBox.
-End ClosedBox.
-
-Module  Impl_struct_visibility_my_ClosedBox_t_T_2.
-Section Impl_struct_visibility_my_ClosedBox_t_T_2.
-  Context {T : Set}.
-  
-  Definition Self : Set := struct_visibility.my.ClosedBox.t T.
-  
-  (*
-          pub fn new(contents: T) -> ClosedBox<T> {
-              ClosedBox { contents: contents }
-          }
-  *)
-  Definition new (contents : T) : M (struct_visibility.my.ClosedBox.t T) :=
-    let* contents := M.alloc contents in
-    let* α0 : T := M.read contents in
-    M.pure {| struct_visibility.my.ClosedBox.contents := α0; |}.
-  
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
-    Notations.double_colon := new;
-  }.
-End Impl_struct_visibility_my_ClosedBox_t_T_2.
-End Impl_struct_visibility_my_ClosedBox_t_T_2.
-
 (*
 fn main() {
     // Public structs with public fields can be constructed as usual

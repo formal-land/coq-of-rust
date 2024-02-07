@@ -23,7 +23,7 @@ impl GetHirId for ImplItemRef {
     }
 }
 
-pub fn get_name(tcx: &TyCtxt, a_id: HirId) -> String {
+pub(crate) fn get_name(tcx: &TyCtxt, a_id: HirId) -> String {
     let a_name = tcx.hir().ident(a_id).as_str().to_string();
     if a_name.is_empty() {
         let a_node_opt = tcx.hir().find(a_id);
@@ -38,7 +38,7 @@ pub fn get_name(tcx: &TyCtxt, a_id: HirId) -> String {
 
 /// Given a HirId returns the name of the context/scope
 /// where such item is. Example top_level::inner_mod::other_mod
-pub(crate) fn get_context_name(tcx: &TyCtxt, id: HirId) -> String {
+fn get_context_name(tcx: &TyCtxt, id: HirId) -> String {
     let name = tcx
         .hir()
         .parent_iter(id)
@@ -58,11 +58,11 @@ pub(crate) fn get_context_name(tcx: &TyCtxt, id: HirId) -> String {
     }
 }
 
-pub fn get_full_name(tcx: &TyCtxt, id: HirId) -> String {
+pub(crate) fn get_full_name(tcx: &TyCtxt, id: HirId) -> String {
     format!("{}::{}", get_context_name(tcx, id), get_name(tcx, id))
 }
 
-pub fn vec_move<T>(v: &mut Vec<T>, src: usize, dst: usize) {
+fn vec_move<T>(v: &mut Vec<T>, src: usize, dst: usize) {
     let x = v.remove(src);
     v.insert(dst, x);
 }

@@ -48,52 +48,6 @@ Module deeply.
   End nested.
 End deeply.
 
-Module nested.
-  (*
-          pub fn function() {
-              println!("called `deeply::nested::function()`");
-          }
-  *)
-  Definition function : M unit :=
-    let* _ : M.Val unit :=
-      let* _ : M.Val unit :=
-        let* α0 : ref str.t :=
-          M.read (mk_str "called `deeply::nested::function()`
-") in
-        let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-        let* α2 : core.fmt.Arguments.t :=
-          M.call
-            (core.fmt.Arguments.t::["new_const"]
-              (pointer_coercion "Unsize" (borrow α1))) in
-        let* α3 : unit := M.call (std.io.stdio._print α2) in
-        M.alloc α3 in
-      M.alloc tt in
-    let* α0 : M.Val unit := M.alloc tt in
-    M.read α0.
-End nested.
-
-(*
-        pub fn function() {
-            println!("called `deeply::nested::function()`");
-        }
-*)
-Definition function : M unit :=
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t :=
-        M.read (mk_str "called `deeply::nested::function()`
-") in
-      let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-      let* α2 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_const"]
-            (pointer_coercion "Unsize" (borrow α1))) in
-      let* α3 : unit := M.call (std.io.stdio._print α2) in
-      M.alloc α3 in
-    M.alloc tt in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
-
 (*
 fn main() {
     // Easier access to `deeply::nested::function`

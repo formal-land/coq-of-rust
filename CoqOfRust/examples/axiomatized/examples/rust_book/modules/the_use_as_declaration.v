@@ -19,22 +19,6 @@ Module deeply.
   End nested.
 End deeply.
 
-Module nested.
-  (*
-          pub fn function() {
-              println!("called `deeply::nested::function()`");
-          }
-  *)
-  Parameter function : M unit.
-End nested.
-
-(*
-        pub fn function() {
-            println!("called `deeply::nested::function()`");
-        }
-*)
-Parameter function : M unit.
-
 (*
 fn main() {
     // Easier access to `deeply::nested::function`

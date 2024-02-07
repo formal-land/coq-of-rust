@@ -33,19 +33,3 @@ Module tests.
   *)
   Parameter test_bad_add : M unit.
 End tests.
-
-(*
-    fn test_add() {
-        assert_eq!(add(1, 2), 3);
-    }
-*)
-Parameter test_add : M unit.
-
-(*
-    fn test_bad_add() {
-        // This assert would fire and test will fail.
-        // Please note, that private functions can be tested too!
-        assert_eq!(bad_add(1, 2), 3);
-    }
-*)
-Parameter test_bad_add : M unit.
