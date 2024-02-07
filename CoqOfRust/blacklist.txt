@@ -37,7 +37,10 @@ examples/axiomatized/examples/rust_book/traits/traits_parms.v
 examples/axiomatized/examples/rust_book/traits/traits.v
 examples/axiomatized/examples/subtle.v
 examples/axiomatized/examples/test0.v
+examples/axiomatized/examples/ink_contracts/payment_channel.v
+examples/default/examples/ink_contracts/payment_channel.v
 examples/default/examples/ink_contracts/Proofs/erc20.v
+examples/default/examples/rust_book/generics/generics_associated_types_problem.v
 examples/default/examples/rust_book/custom_types/enums_testcase_linked_list.v
 examples/default/examples/rust_book/error_handling/pulling_results_out_of_options_with_stop_error_processing.v
 examples/default/examples/rust_book/error_handling/wrapping_errors.v
