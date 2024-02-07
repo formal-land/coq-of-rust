@@ -73,13 +73,9 @@ Section Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle_t.
 End Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle_t.
 End Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle_t.
 
-Parameter print_debug :
-    forall {T : Set} {ℋ_0 : core.fmt.Debug.Trait T},
-    (ref T) -> M unit.
+Parameter print_debug : forall {T : Set}, (ref T) -> M unit.
 
-Parameter area :
-    forall {T : Set} {ℋ_0 : generics_bounds.HasArea.Trait T},
-    (ref T) -> M f64.t.
+Parameter area : forall {T : Set}, (ref T) -> M f64.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : M unit.

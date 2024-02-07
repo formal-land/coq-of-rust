@@ -56,15 +56,9 @@ Section Impl_generics_bounds_test_case_empty_bounds_Blue_for_generics_bounds_tes
 End Impl_generics_bounds_test_case_empty_bounds_Blue_for_generics_bounds_test_case_empty_bounds_BlueJay_t.
 End Impl_generics_bounds_test_case_empty_bounds_Blue_for_generics_bounds_test_case_empty_bounds_BlueJay_t.
 
-Parameter red :
-    forall {T : Set} {ℋ_0 : generics_bounds_test_case_empty_bounds.Red.Trait T},
-    (ref T) -> M (ref str.t).
+Parameter red : forall {T : Set}, (ref T) -> M (ref str.t).
 
-Parameter blue :
-    forall
-      {T : Set}
-      {ℋ_0 : generics_bounds_test_case_empty_bounds.Blue.Trait T},
-    (ref T) -> M (ref str.t).
+Parameter blue : forall {T : Set}, (ref T) -> M (ref str.t).
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : M unit.

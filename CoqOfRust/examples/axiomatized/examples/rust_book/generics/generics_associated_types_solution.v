@@ -82,17 +82,9 @@ Section Impl_generics_associated_types_solution_Contains_for_generics_associated
 End Impl_generics_associated_types_solution_Contains_for_generics_associated_types_solution_Container_t.
 End Impl_generics_associated_types_solution_Contains_for_generics_associated_types_solution_Container_t.
 
-Parameter difference :
-    forall
-      {C : Set}
-      {ℋ_0 : generics_associated_types_solution.Contains.Trait C},
-    (ref C) -> M i32.t.
+Parameter difference : forall {C : Set}, (ref C) -> M i32.t.
 
-Parameter get_a :
-    forall
-      {C : Set}
-      {ℋ_0 : generics_associated_types_solution.Contains.Trait C},
-    (ref C) -> M C::type["A"].t.
+Parameter get_a : forall {C : Set}, (ref C) -> M C::type["A"].t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : M unit.

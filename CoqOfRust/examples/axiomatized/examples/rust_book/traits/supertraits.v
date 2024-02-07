@@ -41,7 +41,7 @@ End CompSciStudent.
 End CompSciStudent.
 
 Parameter comp_sci_student_greeting :
-    forall {DynT : Set} {ℋ_0 : supertraits.CompSciStudent.Trait.Trait DynT},
+    forall {DynT : Set},
     (ref DynT) -> M alloc.string.String.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)

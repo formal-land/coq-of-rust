@@ -61,7 +61,6 @@ enum TraitItem {
 #[derive(Debug, Eq, Hash, PartialEq)]
 struct FunDefinition {
     ty_params: Vec<String>,
-    where_predicates: Vec<Rc<WherePredicate>>,
     signature_and_body: Rc<FnSigAndBody>,
     is_dead_code: bool,
 }
@@ -1352,21 +1351,6 @@ impl DynNameGen {
         full_name
     }
 
-    fn get_predicates(&self) -> Vec<Rc<WherePredicate>> {
-        self.predicates
-            .iter()
-            .map(|(path, dyn_name)| {
-                Rc::new(WherePredicate {
-                    bound: Rc::new(TraitBound {
-                        name: path.clone(),
-                        ty_params: vec![],
-                    }),
-                    ty: Rc::new(CoqType::Var(dyn_name.clone())),
-                })
-            })
-            .collect()
-    }
-
     fn get_type_parm_list(&self) -> Vec<String> {
         self.predicates
             .iter()
@@ -1407,7 +1391,6 @@ impl FunDefinition {
         is_dead_code: bool,
         is_axiom: bool,
     ) -> Rc<Self> {
-        let tcx = env.tcx;
         let mut dyn_name_gen = DynNameGen::new("T".to_string());
         let FnSigAndBody { args, ret_ty, body } =
             &*compile_fn_sig_and_body(env, fn_sig_and_body, default, is_axiom);
@@ -1421,11 +1404,6 @@ impl FunDefinition {
         ]
         .concat();
 
-        let where_predicates = [
-            get_where_predicates(&tcx, env, generics),
-            dyn_name_gen.get_predicates(),
-        ]
-        .concat();
         let signature_and_body = Rc::new(FnSigAndBody {
             args,
             ret_ty: ret_ty.clone(),
@@ -1434,7 +1412,6 @@ impl FunDefinition {
 
         Rc::new(FunDefinition {
             ty_params,
-            where_predicates,
             signature_and_body,
             is_dead_code,
         })
@@ -1443,7 +1420,6 @@ impl FunDefinition {
     fn mt(&self) -> Rc<Self> {
         Rc::new(FunDefinition {
             ty_params: self.ty_params.clone(),
-            where_predicates: self.where_predicates.clone(),
             signature_and_body: self.signature_and_body.mt(),
             is_dead_code: self.is_dead_code,
         })
@@ -1543,13 +1519,6 @@ impl FunDefinition {
                                                     coq::ArgSpecKind::Implicit,
                                                 )],
                                             ),
-                                            // where predicates types
-                                            optional_insert_vec(
-                                                self.where_predicates.is_empty(),
-                                                vec![WherePredicate::vec_to_coq(
-                                                    &self.where_predicates,
-                                                )],
-                                            ),
                                         ]
                                         .concat(),
                                         image: Rc::new(
@@ -1582,11 +1551,6 @@ impl FunDefinition {
                                         &self.ty_params,
                                         coq::ArgSpecKind::Implicit,
                                     )],
-                                ),
-                                // where predicates types
-                                optional_insert_vec(
-                                    self.where_predicates.is_empty(),
-                                    vec![WherePredicate::vec_to_coq(&self.where_predicates)],
                                 ),
                                 // argument types
                                 self.signature_and_body
@@ -1625,7 +1589,6 @@ impl ImplItemKind {
         instance_prefix: &'a str,
         name: &'a str,
         ty_params: Option<&'a [String]>,
-        where_predicates: Option<&'a [Rc<WherePredicate>]>,
         class_name: &'a str,
         method_name: &'a str,
     ) -> coq::TopLevelItem<'a> {
@@ -1637,11 +1600,6 @@ impl ImplItemKind {
             },
             coq::ArgSpecKind::Implicit,
         );
-        // where predicates types
-        let where_predicates = match where_predicates {
-            None | Some([]) => WherePredicate::vec_to_coq(&[]),
-            Some(where_predicates) => WherePredicate::vec_to_coq(where_predicates),
-        };
 
         let body = coq::Expression::just_name(name);
         let entry = match ty_params {
@@ -1661,7 +1619,7 @@ impl ImplItemKind {
 
         coq::TopLevelItem::Instance(coq::Instance::new(
             &format!("{instance_prefix}_{name}"),
-            &[ty_params_arg, where_predicates],
+            &[ty_params_arg],
             coq::Expression::just_name(class_name)
                 .apply(&coq::Expression::just_name(format!("\"{name}\"").as_str())),
             &coq::Expression::Record {
@@ -1708,7 +1666,6 @@ impl ImplItemKind {
                     "AssociatedFunction",
                     name,
                     None,
-                    None,
                     "Notations.DoubleColon Self",
                     "Notations.double_colon",
                 ),
@@ -1720,7 +1677,6 @@ impl ImplItemKind {
                     "AssociatedFunction",
                     name,
                     Some(&definition.ty_params),
-                    Some(&definition.where_predicates),
                     "Notations.DoubleColon Self",
                     "Notations.double_colon",
                 ),
@@ -2425,14 +2381,10 @@ impl TopLevelItem {
                                                     &Path::concat(&[of_trait.to_owned(), Path::new(&[name])]),
                                                     &match optional_item {
                                                         Some(ImplItemKind::Definition { definition, ..}) => {
-                                                            let FunDefinition {ty_params, where_predicates, ..} = &**definition;
+                                                            let FunDefinition {ty_params, ..} = &**definition;
                                                             [optional_insert_vec(
                                                                 ty_params.is_empty(),
                                                                 vec![coq::ArgDecl::of_ty_params(ty_params, coq::ArgSpecKind::Implicit)]
-                                                              ),
-                                                              optional_insert_vec(
-                                                                where_predicates.is_empty(),
-                                                                vec![WherePredicate::vec_to_coq(where_predicates)]
                                                               )].concat()
                                                         }
                                                         _ => vec![],

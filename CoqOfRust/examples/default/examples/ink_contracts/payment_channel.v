@@ -523,7 +523,6 @@ where
 *)
 Definition hash_encoded
     {H T : Set}
-    {ℋ_0 : payment_channel.CryptoHash.Trait H}
     (input : ref T)
     (output
       :

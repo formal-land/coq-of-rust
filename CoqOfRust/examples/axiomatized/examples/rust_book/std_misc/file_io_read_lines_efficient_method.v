@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Parameter read_lines :
-    forall {P : Set} {ℋ_0 : core.convert.AsRef.Trait P (T := std.path.Path.t)},
+    forall {P : Set},
     P ->
       M
         ltac:(std.io.error.Result

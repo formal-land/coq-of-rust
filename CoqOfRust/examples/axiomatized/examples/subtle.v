@@ -962,27 +962,16 @@ Section Impl_subtle_CtOption_t_T.
     Notations.double_colon := unwrap;
   }.
   
-  Parameter unwrap_or :
-      forall {ℋ_0 : subtle.ConditionallySelectable.Trait T},
-      Self -> T -> M T.
+  Parameter unwrap_or : Self -> T -> M T.
   
-  Global Instance AssociatedFunction_unwrap_or
-      {ℋ_0 : subtle.ConditionallySelectable.Trait T} :
+  Global Instance AssociatedFunction_unwrap_or :
     Notations.DoubleColon Self "unwrap_or" := {
     Notations.double_colon := unwrap_or;
   }.
   
-  Parameter unwrap_or_else :
-      forall
-        {F : Set}
-        {ℋ_0 : subtle.ConditionallySelectable.Trait T}
-        {ℋ_1 : core.ops.function.FnOnce.Trait F (Args := unit)},
-      Self -> F -> M T.
+  Parameter unwrap_or_else : forall {F : Set}, Self -> F -> M T.
   
-  Global Instance AssociatedFunction_unwrap_or_else
-      {F : Set}
-      {ℋ_0 : subtle.ConditionallySelectable.Trait T}
-      {ℋ_1 : core.ops.function.FnOnce.Trait F (Args := unit)} :
+  Global Instance AssociatedFunction_unwrap_or_else {F : Set} :
     Notations.DoubleColon Self "unwrap_or_else" := {
     Notations.double_colon := unwrap_or_else (F := F);
   }.
@@ -1001,51 +990,23 @@ Section Impl_subtle_CtOption_t_T.
     Notations.double_colon := is_none;
   }.
   
-  Parameter map :
-      forall
-        {U F : Set}
-        {ℋ_0 : core.default.Default.Trait T}
-        {ℋ_1 : subtle.ConditionallySelectable.Trait T}
-        {ℋ_2 : core.ops.function.FnOnce.Trait F (Args := T)},
-      Self -> F -> M (subtle.CtOption.t U).
+  Parameter map : forall {U F : Set}, Self -> F -> M (subtle.CtOption.t U).
   
-  Global Instance AssociatedFunction_map
-      {U F : Set}
-      {ℋ_0 : core.default.Default.Trait T}
-      {ℋ_1 : subtle.ConditionallySelectable.Trait T}
-      {ℋ_2 : core.ops.function.FnOnce.Trait F (Args := T)} :
+  Global Instance AssociatedFunction_map {U F : Set} :
     Notations.DoubleColon Self "map" := {
     Notations.double_colon := map (U := U) (F := F);
   }.
   
-  Parameter and_then :
-      forall
-        {U F : Set}
-        {ℋ_0 : core.default.Default.Trait T}
-        {ℋ_1 : subtle.ConditionallySelectable.Trait T}
-        {ℋ_2 : core.ops.function.FnOnce.Trait F (Args := T)},
-      Self -> F -> M (subtle.CtOption.t U).
+  Parameter and_then : forall {U F : Set}, Self -> F -> M (subtle.CtOption.t U).
   
-  Global Instance AssociatedFunction_and_then
-      {U F : Set}
-      {ℋ_0 : core.default.Default.Trait T}
-      {ℋ_1 : subtle.ConditionallySelectable.Trait T}
-      {ℋ_2 : core.ops.function.FnOnce.Trait F (Args := T)} :
+  Global Instance AssociatedFunction_and_then {U F : Set} :
     Notations.DoubleColon Self "and_then" := {
     Notations.double_colon := and_then (U := U) (F := F);
   }.
   
-  Parameter or_else :
-      forall
-        {F : Set}
-        {ℋ_0 : subtle.ConditionallySelectable.Trait T}
-        {ℋ_1 : core.ops.function.FnOnce.Trait F (Args := unit)},
-      Self -> F -> M (subtle.CtOption.t T).
+  Parameter or_else : forall {F : Set}, Self -> F -> M (subtle.CtOption.t T).
   
-  Global Instance AssociatedFunction_or_else
-      {F : Set}
-      {ℋ_0 : subtle.ConditionallySelectable.Trait T}
-      {ℋ_1 : core.ops.function.FnOnce.Trait F (Args := unit)} :
+  Global Instance AssociatedFunction_or_else {F : Set} :
     Notations.DoubleColon Self "or_else" := {
     Notations.double_colon := or_else (F := F);
   }.
