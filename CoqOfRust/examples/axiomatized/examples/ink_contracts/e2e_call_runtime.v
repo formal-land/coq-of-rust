@@ -16,9 +16,6 @@ Module  Impl_core_default_Default_for_e2e_call_runtime_AccountId_t.
 Section Impl_core_default_Default_for_e2e_call_runtime_AccountId_t.
   Definition Self : Set := e2e_call_runtime.AccountId.t.
   
-  (*
-  Default
-  *)
   Parameter default : M e2e_call_runtime.AccountId.t.
   
   Global Instance AssociatedFunction_default :
@@ -36,9 +33,6 @@ Module  Impl_core_clone_Clone_for_e2e_call_runtime_AccountId_t.
 Section Impl_core_clone_Clone_for_e2e_call_runtime_AccountId_t.
   Definition Self : Set := e2e_call_runtime.AccountId.t.
   
-  (*
-  Clone
-  *)
   Parameter clone : (ref Self) -> M e2e_call_runtime.AccountId.t.
   
   Global Instance AssociatedFunction_clone :
@@ -79,11 +73,6 @@ Module  Impl_e2e_call_runtime_Env_t.
 Section Impl_e2e_call_runtime_Env_t.
   Definition Self : Set := e2e_call_runtime.Env.t.
   
-  (*
-      fn balance(&self) -> Balance {
-          unimplemented!()
-      }
-  *)
   Parameter balance : (ref Self) -> M ltac:(e2e_call_runtime.Balance).
   
   Global Instance AssociatedFunction_balance :
@@ -103,9 +92,6 @@ Module  Impl_core_default_Default_for_e2e_call_runtime_Contract_t.
 Section Impl_core_default_Default_for_e2e_call_runtime_Contract_t.
   Definition Self : Set := e2e_call_runtime.Contract.t.
   
-  (*
-  Default
-  *)
   Parameter default : M e2e_call_runtime.Contract.t.
   
   Global Instance AssociatedFunction_default :
@@ -123,11 +109,6 @@ Module  Impl_e2e_call_runtime_Contract_t.
 Section Impl_e2e_call_runtime_Contract_t.
   Definition Self : Set := e2e_call_runtime.Contract.t.
   
-  (*
-      fn init_env() -> Env {
-          unimplemented!()
-      }
-  *)
   Parameter init_env : M e2e_call_runtime.Env.t.
   
   Global Instance AssociatedFunction_init_env :
@@ -135,33 +116,18 @@ Section Impl_e2e_call_runtime_Contract_t.
     Notations.double_colon := init_env;
   }.
   
-  (*
-      fn env(&self) -> Env {
-          Self::init_env()
-      }
-  *)
   Parameter env : (ref Self) -> M e2e_call_runtime.Env.t.
   
   Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
     Notations.double_colon := env;
   }.
   
-  (*
-      pub fn new() -> Self {
-          Self {}
-      }
-  *)
   Parameter new : M Self.
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
   }.
   
-  (*
-      pub fn get_contract_balance(&self) -> Balance {
-          self.env().balance()
-      }
-  *)
   Parameter get_contract_balance :
       (ref Self) -> M ltac:(e2e_call_runtime.Balance).
   

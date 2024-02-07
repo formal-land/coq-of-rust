@@ -27,9 +27,6 @@ Section Impl_core_default_Default_for_erc1155_Mapping_t_K_V.
   
   Definition Self : Set := erc1155.Mapping.t K V.
   
-  (*
-  Default
-  *)
   Parameter default : M (erc1155.Mapping.t K V).
   
   Global Instance AssociatedFunction_default :
@@ -49,11 +46,6 @@ Section Impl_erc1155_Mapping_t_K_V.
   
   Definition Self : Set := erc1155.Mapping.t K V.
   
-  (*
-      fn contains(&self, _key: &K) -> bool {
-          unimplemented!()
-      }
-  *)
   Parameter contains : (ref Self) -> (ref K) -> M bool.t.
   
   Global Instance AssociatedFunction_contains :
@@ -61,22 +53,12 @@ Section Impl_erc1155_Mapping_t_K_V.
     Notations.double_colon := contains;
   }.
   
-  (*
-      fn get(&self, _key: &K) -> Option<V> {
-          unimplemented!()
-      }
-  *)
   Parameter get : (ref Self) -> (ref K) -> M (core.option.Option.t V).
   
   Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
     Notations.double_colon := get;
   }.
   
-  (*
-      fn insert(&mut self, _key: K, _value: V) -> Option<u32> {
-          unimplemented!()
-      }
-  *)
   Parameter insert : (mut_ref Self) -> K -> V -> M (core.option.Option.t u32.t).
   
   Global Instance AssociatedFunction_insert :
@@ -84,11 +66,6 @@ Section Impl_erc1155_Mapping_t_K_V.
     Notations.double_colon := insert;
   }.
   
-  (*
-      fn remove(&self, _key: K) {
-          unimplemented!()
-      }
-  *)
   Parameter remove : (ref Self) -> K -> M unit.
   
   Global Instance AssociatedFunction_remove :
@@ -96,11 +73,6 @@ Section Impl_erc1155_Mapping_t_K_V.
     Notations.double_colon := remove;
   }.
   
-  (*
-      fn size(&self, _key: K) -> Option<u32> {
-          unimplemented!()
-      }
-  *)
   Parameter size : (ref Self) -> K -> M (core.option.Option.t u32.t).
   
   Global Instance AssociatedFunction_size :
@@ -108,11 +80,6 @@ Section Impl_erc1155_Mapping_t_K_V.
     Notations.double_colon := size;
   }.
   
-  (*
-      fn take(&self, _key: K) -> Option<V> {
-          unimplemented!()
-      }
-  *)
   Parameter take : (ref Self) -> K -> M (core.option.Option.t V).
   
   Global Instance AssociatedFunction_take :
@@ -137,9 +104,6 @@ Module  Impl_core_default_Default_for_erc1155_AccountId_t.
 Section Impl_core_default_Default_for_erc1155_AccountId_t.
   Definition Self : Set := erc1155.AccountId.t.
   
-  (*
-  Default
-  *)
   Parameter default : M erc1155.AccountId.t.
   
   Global Instance AssociatedFunction_default :
@@ -157,9 +121,6 @@ Module  Impl_core_clone_Clone_for_erc1155_AccountId_t.
 Section Impl_core_clone_Clone_for_erc1155_AccountId_t.
   Definition Self : Set := erc1155.AccountId.t.
   
-  (*
-  Clone
-  *)
   Parameter clone : (ref Self) -> M erc1155.AccountId.t.
   
   Global Instance AssociatedFunction_clone :
@@ -196,9 +157,6 @@ Module  Impl_core_cmp_PartialEq_for_erc1155_AccountId_t.
 Section Impl_core_cmp_PartialEq_for_erc1155_AccountId_t.
   Definition Self : Set := erc1155.AccountId.t.
   
-  (*
-  PartialEq
-  *)
   Parameter eq : (ref Self) -> (ref erc1155.AccountId.t) -> M bool.t.
   
   Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
@@ -218,11 +176,6 @@ Module  Impl_core_convert_From_array_u8_t_for_erc1155_AccountId_t.
 Section Impl_core_convert_From_array_u8_t_for_erc1155_AccountId_t.
   Definition Self : Set := erc1155.AccountId.t.
   
-  (*
-      fn from(_v: [u8; 32]) -> Self {
-          unimplemented!()
-      }
-  *)
   Parameter from : (array u8.t) -> M Self.
   
   Global Instance AssociatedFunction_from :
@@ -249,11 +202,6 @@ Section Env.
 End Env.
 End Env.
 
-(*
-fn zero_address() -> AccountId {
-    [0u8; 32].into()
-}
-*)
 Parameter zero_address : M erc1155.AccountId.t.
 
 Parameter ON_ERC_1155_RECEIVED_SELECTOR : M.Val (array u8.t).
@@ -285,9 +233,6 @@ Module  Impl_core_cmp_PartialEq_for_erc1155_Error_t.
 Section Impl_core_cmp_PartialEq_for_erc1155_Error_t.
   Definition Self : Set := erc1155.Error.t.
   
-  (*
-  PartialEq
-  *)
   Parameter eq : (ref Self) -> (ref erc1155.Error.t) -> M bool.t.
   
   Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
@@ -316,9 +261,6 @@ Module  Impl_core_cmp_Eq_for_erc1155_Error_t.
 Section Impl_core_cmp_Eq_for_erc1155_Error_t.
   Definition Self : Set := erc1155.Error.t.
   
-  (*
-  Eq
-  *)
   Parameter assert_receiver_is_total_eq : (ref Self) -> M unit.
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
@@ -502,11 +444,6 @@ Module  Impl_erc1155_Env_t.
 Section Impl_erc1155_Env_t.
   Definition Self : Set := erc1155.Env.t.
   
-  (*
-      fn caller(&self) -> AccountId {
-          self.caller
-      }
-  *)
   Parameter caller : (ref Self) -> M erc1155.AccountId.t.
   
   Global Instance AssociatedFunction_caller :
@@ -514,11 +451,6 @@ Section Impl_erc1155_Env_t.
     Notations.double_colon := caller;
   }.
   
-  (*
-      fn emit_event(&self, _event: Event) {
-          unimplemented!()
-      }
-  *)
   Parameter emit_event : (ref Self) -> erc1155.Event.t -> M unit.
   
   Global Instance AssociatedFunction_emit_event :
@@ -559,9 +491,6 @@ Module  Impl_core_default_Default_for_erc1155_Contract_t.
 Section Impl_core_default_Default_for_erc1155_Contract_t.
   Definition Self : Set := erc1155.Contract.t.
   
-  (*
-  Default
-  *)
   Parameter default : M erc1155.Contract.t.
   
   Global Instance AssociatedFunction_default :
@@ -579,11 +508,6 @@ Module  Impl_erc1155_Contract_t.
 Section Impl_erc1155_Contract_t.
   Definition Self : Set := erc1155.Contract.t.
   
-  (*
-      fn init_env() -> Env {
-          unimplemented!()
-      }
-  *)
   Parameter init_env : M erc1155.Env.t.
   
   Global Instance AssociatedFunction_init_env :
@@ -591,49 +515,18 @@ Section Impl_erc1155_Contract_t.
     Notations.double_colon := init_env;
   }.
   
-  (*
-      fn env(&self) -> Env {
-          Self::init_env()
-      }
-  *)
   Parameter env : (ref Self) -> M erc1155.Env.t.
   
   Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
     Notations.double_colon := env;
   }.
   
-  (*
-      pub fn new() -> Self {
-          Default::default()
-      }
-  *)
   Parameter new : M Self.
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
   }.
   
-  (*
-      pub fn create(&mut self, value: Balance) -> TokenId {
-          let caller = self.env().caller();
-  
-          // Given that TokenId is a `u128` the likelihood of this overflowing is pretty
-          // slim.
-          self.token_id_nonce += 1;
-          self.balances.insert((caller, self.token_id_nonce), value);
-  
-          // Emit transfer event but with mint semantics
-          self.env().emit_event(Event::TransferSingle(TransferSingle {
-              operator: Some(caller),
-              from: None,
-              to: if value == 0 { None } else { Some(caller) },
-              token_id: self.token_id_nonce,
-              value,
-          }));
-  
-          self.token_id_nonce
-      }
-  *)
   Parameter create :
       (mut_ref Self) -> ltac:(erc1155.Balance) -> M ltac:(erc1155.TokenId).
   
@@ -642,25 +535,6 @@ Section Impl_erc1155_Contract_t.
     Notations.double_colon := create;
   }.
   
-  (*
-      pub fn mint(&mut self, token_id: TokenId, value: Balance) -> Result<()> {
-          ensure!(token_id <= self.token_id_nonce, Error::UnexistentToken);
-  
-          let caller = self.env().caller();
-          self.balances.insert((caller, token_id), value);
-  
-          // Emit transfer event but with mint semantics
-          self.env().emit_event(Event::TransferSingle(TransferSingle {
-              operator: Some(caller),
-              from: None,
-              to: Some(caller),
-              token_id,
-              value,
-          }));
-  
-          Ok(())
-      }
-  *)
   Parameter mint :
       (mut_ref Self) ->
         ltac:(erc1155.TokenId) ->
@@ -672,35 +546,6 @@ Section Impl_erc1155_Contract_t.
     Notations.double_colon := mint;
   }.
   
-  (*
-      fn perform_transfer(
-          &mut self,
-          from: AccountId,
-          to: AccountId,
-          token_id: TokenId,
-          value: Balance,
-      ) {
-          let mut sender_balance = self
-              .balances
-              .get(&(from, token_id))
-              .expect("Caller should have ensured that `from` holds `token_id`.");
-          sender_balance -= value;
-          self.balances.insert((from, token_id), sender_balance);
-  
-          let mut recipient_balance = self.balances.get(&(to, token_id)).unwrap_or(0 as u128);
-          recipient_balance += value;
-          self.balances.insert((to, token_id), recipient_balance);
-  
-          let caller = self.env().caller();
-          self.env().emit_event(Event::TransferSingle(TransferSingle {
-              operator: Some(caller),
-              from: Some(from),
-              to: Some(to),
-              token_id,
-              value,
-          }));
-      }
-  *)
   Parameter perform_transfer :
       (mut_ref Self) ->
         erc1155.AccountId.t ->
@@ -714,79 +559,6 @@ Section Impl_erc1155_Contract_t.
     Notations.double_colon := perform_transfer;
   }.
   
-  (*
-      fn transfer_acceptance_check(
-          &mut self,
-          caller: AccountId,
-          from: AccountId,
-          to: AccountId,
-          token_id: TokenId,
-          value: Balance,
-          data: Vec<u8>,
-      ) {
-          // This is disabled during tests due to the use of `invoke_contract()` not
-          // being supported (tests end up panicking).
-          #[cfg(not(test))]
-          {
-              use ink::env::call::{build_call, ExecutionInput, Selector};
-  
-              // If our recipient is a smart contract we need to see if they accept or
-              // reject this transfer. If they reject it we need to revert the call.
-              let result = build_call::<Environment>()
-                  .call(to)
-                  .gas_limit(5000)
-                  .exec_input(
-                      ExecutionInput::new(Selector::new(ON_ERC_1155_RECEIVED_SELECTOR))
-                          .push_arg(caller)
-                          .push_arg(from)
-                          .push_arg(token_id)
-                          .push_arg(value)
-                          .push_arg(data),
-                  )
-                  .returns::<Vec<u8>>()
-                  .params()
-                  .try_invoke();
-  
-              match result {
-                  Ok(v) => {
-                      ink::env::debug_println!(
-                          "Received return value \"{:?}\" from contract {:?}",
-                          v.clone()
-                              .expect("Call should be valid, don't expect a `LangError`."),
-                          from
-                      );
-                      assert_eq!(
-                          v.clone()
-                              .expect("Call should be valid, don't expect a `LangError`."),
-                          &ON_ERC_1155_RECEIVED_SELECTOR[..],
-                          "The recipient contract at {to:?} does not accept token transfers.\n
-                              Expected: {ON_ERC_1155_RECEIVED_SELECTOR:?}, Got {v:?}"
-                      )
-                  }
-                  Err(e) => {
-                      match e {
-                          ink::env::Error::CodeNotFound | ink::env::Error::NotCallable => {
-                              // Our recipient wasn't a smart contract, so there's
-                              // nothing more for
-                              // us to do
-                              ink::env::debug_println!(
-                                  "Recipient at {:?} from is not a smart contract ({:?})",
-                                  from,
-                                  e
-                              );
-                          }
-                          _ => {
-                              // We got some sort of error from the call to our
-                              // recipient smart
-                              // contract, and as such we must revert this call
-                              panic!("Got error \"{e:?}\" while trying to call {from:?}")
-                          }
-                      }
-                  }
-              }
-          }
-      }
-  *)
   Parameter transfer_acceptance_check :
       (mut_ref Self) ->
         erc1155.AccountId.t ->
@@ -808,11 +580,6 @@ Module  Impl_erc1155_Erc1155_for_erc1155_Contract_t.
 Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
   Definition Self : Set := erc1155.Contract.t.
   
-  (*
-      fn is_approved_for_all(&self, owner: AccountId, operator: AccountId) -> bool {
-          self.approvals.contains(&(owner, operator))
-      }
-  *)
   Parameter is_approved_for_all :
       (ref Self) -> erc1155.AccountId.t -> erc1155.AccountId.t -> M bool.t.
   
@@ -821,11 +588,6 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
     Notations.double_colon := is_approved_for_all;
   }.
   
-  (*
-      fn balance_of(&self, owner: AccountId, token_id: TokenId) -> Balance {
-          self.balances.get(&(owner, token_id)).unwrap_or(0 as u128)
-      }
-  *)
   Parameter balance_of :
       (ref Self) ->
         erc1155.AccountId.t ->
@@ -837,31 +599,6 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
     Notations.double_colon := balance_of;
   }.
   
-  (*
-      fn safe_transfer_from(
-          &mut self,
-          from: AccountId,
-          to: AccountId,
-          token_id: TokenId,
-          value: Balance,
-          data: Vec<u8>,
-      ) -> Result<()> {
-          let caller = self.env().caller();
-          if caller != from {
-              ensure!(self.is_approved_for_all(from, caller), Error::NotApproved);
-          }
-  
-          ensure!(to != zero_address(), Error::ZeroAddressTransfer);
-  
-          let balance = self.balance_of(from, token_id);
-          ensure!(balance >= value, Error::InsufficientBalance);
-  
-          self.perform_transfer(from, to, token_id, value);
-          self.transfer_acceptance_check(caller, from, to, token_id, value, data);
-  
-          Ok(())
-      }
-  *)
   Parameter safe_transfer_from :
       (mut_ref Self) ->
         erc1155.AccountId.t ->
@@ -876,44 +613,6 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
     Notations.double_colon := safe_transfer_from;
   }.
   
-  (*
-      fn safe_batch_transfer_from(
-          &mut self,
-          from: AccountId,
-          to: AccountId,
-          token_ids: Vec<TokenId>,
-          values: Vec<Balance>,
-          data: Vec<u8>,
-      ) -> Result<()> {
-          let caller = self.env().caller();
-          if caller != from {
-              ensure!(self.is_approved_for_all(from, caller), Error::NotApproved);
-          }
-  
-          ensure!(to != zero_address(), Error::ZeroAddressTransfer);
-          ensure!(!token_ids.is_empty(), Error::BatchTransferMismatch);
-          ensure!(
-              token_ids.len() == values.len(),
-              Error::BatchTransferMismatch,
-          );
-  
-          let transfers = token_ids.iter().zip(values.iter());
-          for (&id, &v) in transfers.clone() {
-              let balance = self.balance_of(from, id);
-              ensure!(balance >= v, Error::InsufficientBalance);
-          }
-  
-          for (&id, &v) in transfers {
-              self.perform_transfer(from, to, id, v);
-          }
-  
-          // Can use the any token ID/value here, we really just care about knowing if
-          // `to` is a smart contract which accepts transfers
-          self.transfer_acceptance_check(caller, from, to, token_ids[0], values[0], data);
-  
-          Ok(())
-      }
-  *)
   Parameter safe_batch_transfer_from :
       (mut_ref Self) ->
         erc1155.AccountId.t ->
@@ -928,18 +627,6 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
     Notations.double_colon := safe_batch_transfer_from;
   }.
   
-  (*
-      fn balance_of_batch(&self, owners: Vec<AccountId>, token_ids: Vec<TokenId>) -> Vec<Balance> {
-          let mut output = Vec::new();
-          for o in &owners {
-              for t in &token_ids {
-                  let amount = self.balance_of( *o, *t);
-                  output.push(amount);
-              }
-          }
-          output
-      }
-  *)
   Parameter balance_of_batch :
       (ref Self) ->
         (alloc.vec.Vec.t erc1155.AccountId.t alloc.vec.Vec.Default.A) ->
@@ -951,26 +638,6 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
     Notations.double_colon := balance_of_batch;
   }.
   
-  (*
-      fn set_approval_for_all(&mut self, operator: AccountId, approved: bool) -> Result<()> {
-          let caller = self.env().caller();
-          ensure!(operator != caller, Error::SelfApproval);
-  
-          if approved {
-              self.approvals.insert((caller, operator), ());
-          } else {
-              self.approvals.remove((caller, operator));
-          }
-  
-          self.env().emit_event(Event::ApprovalForAll(ApprovalForAll {
-              owner: caller,
-              operator,
-              approved,
-          }));
-  
-          Ok(())
-      }
-  *)
   Parameter set_approval_for_all :
       (mut_ref Self) ->
         erc1155.AccountId.t ->
@@ -997,29 +664,6 @@ Module  Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract_t.
 Section Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract_t.
   Definition Self : Set := erc1155.Contract.t.
   
-  (*
-      fn on_received(
-          &mut self,
-          _operator: AccountId,
-          _from: AccountId,
-          _token_id: TokenId,
-          _value: Balance,
-          _data: Vec<u8>,
-      ) -> Vec<u8> {
-          // The ERC-1155 standard dictates that if a contract does not accept token
-          // transfers directly to the contract, then the contract must
-          // revert.
-          //
-          // This prevents a user from unintentionally transferring tokens to a smart
-          // contract and getting their funds stuck without any sort of
-          // recovery mechanism.
-          //
-          // Note that the choice of whether or not to accept tokens is implementation
-          // specific, and we've decided to not accept them in this
-          // implementation.
-          unimplemented!("This smart contract does not accept token transfer.")
-      }
-  *)
   Parameter on_received :
       (mut_ref Self) ->
         erc1155.AccountId.t ->
@@ -1034,29 +678,6 @@ Section Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract_t.
     Notations.double_colon := on_received;
   }.
   
-  (*
-      fn on_batch_received(
-          &mut self,
-          _operator: AccountId,
-          _from: AccountId,
-          _token_ids: Vec<TokenId>,
-          _values: Vec<Balance>,
-          _data: Vec<u8>,
-      ) -> Vec<u8> {
-          // The ERC-1155 standard dictates that if a contract does not accept token
-          // transfers directly to the contract, then the contract must
-          // revert.
-          //
-          // This prevents a user from unintentionally transferring tokens to a smart
-          // contract and getting their funds stuck without any sort of
-          // recovery mechanism.
-          //
-          // Note that the choice of whether or not to accept tokens is implementation
-          // specific, and we've decided to not accept them in this
-          // implementation.
-          unimplemented!("This smart contract does not accept batch token transfers.")
-      }
-  *)
   Parameter on_batch_received :
       (mut_ref Self) ->
         erc1155.AccountId.t ->

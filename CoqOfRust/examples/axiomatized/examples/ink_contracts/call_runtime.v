@@ -16,9 +16,6 @@ Module  Impl_core_default_Default_for_call_runtime_AccountId_t.
 Section Impl_core_default_Default_for_call_runtime_AccountId_t.
   Definition Self : Set := call_runtime.AccountId.t.
   
-  (*
-  Default
-  *)
   Parameter default : M call_runtime.AccountId.t.
   
   Global Instance AssociatedFunction_default :
@@ -36,9 +33,6 @@ Module  Impl_core_clone_Clone_for_call_runtime_AccountId_t.
 Section Impl_core_clone_Clone_for_call_runtime_AccountId_t.
   Definition Self : Set := call_runtime.AccountId.t.
   
-  (*
-  Clone
-  *)
   Parameter clone : (ref Self) -> M call_runtime.AccountId.t.
   
   Global Instance AssociatedFunction_clone :
@@ -85,11 +79,6 @@ Section Impl_core_convert_From_call_runtime_AccountId_t_for_call_runtime_MultiAd
   Definition Self : Set :=
     call_runtime.MultiAddress.t call_runtime.AccountId.t unit.
   
-  (*
-      fn from(_value: AccountId) -> Self {
-          unimplemented!()
-      }
-  *)
   Parameter from : call_runtime.AccountId.t -> M Self.
   
   Global Instance AssociatedFunction_from :
@@ -152,9 +141,6 @@ Module  Impl_core_default_Default_for_call_runtime_RuntimeCaller_t.
 Section Impl_core_default_Default_for_call_runtime_RuntimeCaller_t.
   Definition Self : Set := call_runtime.RuntimeCaller.t.
   
-  (*
-  Default
-  *)
   Parameter default : M call_runtime.RuntimeCaller.t.
   
   Global Instance AssociatedFunction_default :
@@ -177,9 +163,6 @@ Module  Impl_core_fmt_Debug_for_call_runtime_RuntimeError_t.
 Section Impl_core_fmt_Debug_for_call_runtime_RuntimeError_t.
   Definition Self : Set := call_runtime.RuntimeError.t.
   
-  (*
-  Debug
-  *)
   Parameter fmt :
       (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
   
@@ -206,9 +189,6 @@ Module  Impl_core_cmp_PartialEq_for_call_runtime_RuntimeError_t.
 Section Impl_core_cmp_PartialEq_for_call_runtime_RuntimeError_t.
   Definition Self : Set := call_runtime.RuntimeError.t.
   
-  (*
-  PartialEq
-  *)
   Parameter eq : (ref Self) -> (ref call_runtime.RuntimeError.t) -> M bool.t.
   
   Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
@@ -237,9 +217,6 @@ Module  Impl_core_cmp_Eq_for_call_runtime_RuntimeError_t.
 Section Impl_core_cmp_Eq_for_call_runtime_RuntimeError_t.
   Definition Self : Set := call_runtime.RuntimeError.t.
   
-  (*
-  Eq
-  *)
   Parameter assert_receiver_is_total_eq : (ref Self) -> M unit.
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
@@ -264,14 +241,6 @@ Module  Impl_core_convert_From_call_runtime_EnvError_t_for_call_runtime_RuntimeE
 Section Impl_core_convert_From_call_runtime_EnvError_t_for_call_runtime_RuntimeError_t.
   Definition Self : Set := call_runtime.RuntimeError.t.
   
-  (*
-      fn from(e: EnvError) -> Self {
-          match e {
-              EnvError::CallRuntimeFailed => RuntimeError::CallRuntimeFailed,
-              _ => panic!("Unexpected error from `pallet-contracts`."),
-          }
-      }
-  *)
   Parameter from : call_runtime.EnvError.t -> M Self.
   
   Global Instance AssociatedFunction_from :
@@ -290,11 +259,6 @@ Module  Impl_call_runtime_Env_t.
 Section Impl_call_runtime_Env_t.
   Definition Self : Set := call_runtime.Env.t.
   
-  (*
-      fn call_runtime<Call>(&self, _call: &Call) -> Result<(), EnvError> {
-          unimplemented!()
-      }
-  *)
   Parameter call_runtime :
       forall {Call : Set},
       (ref Self) ->
@@ -312,11 +276,6 @@ Module  Impl_call_runtime_RuntimeCaller_t.
 Section Impl_call_runtime_RuntimeCaller_t.
   Definition Self : Set := call_runtime.RuntimeCaller.t.
   
-  (*
-      fn init_env() -> Env {
-          unimplemented!()
-      }
-  *)
   Parameter init_env : M call_runtime.Env.t.
   
   Global Instance AssociatedFunction_init_env :
@@ -324,42 +283,18 @@ Section Impl_call_runtime_RuntimeCaller_t.
     Notations.double_colon := init_env;
   }.
   
-  (*
-      fn env(&self) -> Env {
-          Self::init_env()
-      }
-  *)
   Parameter env : (ref Self) -> M call_runtime.Env.t.
   
   Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
     Notations.double_colon := env;
   }.
   
-  (*
-      pub fn new() -> Self {
-          Default::default()
-      }
-  *)
   Parameter new : M Self.
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
   }.
   
-  (*
-      pub fn transfer_through_runtime(
-          &mut self,
-          receiver: AccountId,
-          value: Balance,
-      ) -> Result<(), RuntimeError> {
-          self.env()
-              .call_runtime(&RuntimeCall::Balances(BalancesCall::Transfer {
-                  dest: receiver.into(),
-                  value,
-              }))
-              .map_err(Into::into)
-      }
-  *)
   Parameter transfer_through_runtime :
       (mut_ref Self) ->
         call_runtime.AccountId.t ->
@@ -371,11 +306,6 @@ Section Impl_call_runtime_RuntimeCaller_t.
     Notations.double_colon := transfer_through_runtime;
   }.
   
-  (*
-      pub fn call_nonexistent_extrinsic(&mut self) -> Result<(), RuntimeError> {
-          self.env().call_runtime(&()).map_err(Into::into)
-      }
-  *)
   Parameter call_nonexistent_extrinsic :
       (mut_ref Self) ->
         M (core.result.Result.t unit call_runtime.RuntimeError.t).

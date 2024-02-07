@@ -16,9 +16,6 @@ Module  Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber_t.
 Section Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber_t.
   Definition Self : Set := try_from_and_try_into.EvenNumber.t.
   
-  (*
-  Debug
-  *)
   Parameter fmt :
       (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
   
@@ -45,9 +42,6 @@ Module  Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber_t.
 Section Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber_t.
   Definition Self : Set := try_from_and_try_into.EvenNumber.t.
   
-  (*
-  PartialEq
-  *)
   Parameter eq :
       (ref Self) -> (ref try_from_and_try_into.EvenNumber.t) -> M bool.t.
   
@@ -68,20 +62,8 @@ Module  Impl_core_convert_TryFrom_i32_t_for_try_from_and_try_into_EvenNumber_t.
 Section Impl_core_convert_TryFrom_i32_t_for_try_from_and_try_into_EvenNumber_t.
   Definition Self : Set := try_from_and_try_into.EvenNumber.t.
   
-  (*
-      type Error = ();
-  *)
   Definition Error : Set := unit.
   
-  (*
-      fn try_from(value: i32) -> Result<Self, Self::Error> {
-          if value % 2 == 0 {
-              Ok(EvenNumber(value))
-          } else {
-              Err(())
-          }
-      }
-  *)
   Parameter try_from : i32.t -> M (core.result.Result.t Self Error).
   
   Global Instance AssociatedFunction_try_from :
@@ -96,20 +78,5 @@ Section Impl_core_convert_TryFrom_i32_t_for_try_from_and_try_into_EvenNumber_t.
 End Impl_core_convert_TryFrom_i32_t_for_try_from_and_try_into_EvenNumber_t.
 End Impl_core_convert_TryFrom_i32_t_for_try_from_and_try_into_EvenNumber_t.
 
-(*
-fn main() {
-    // TryFrom
-
-    assert_eq!(EvenNumber::try_from(8), Ok(EvenNumber(8)));
-    assert_eq!(EvenNumber::try_from(5), Err(()));
-
-    // TryInto
-
-    let result: Result<EvenNumber, ()> = 8i32.try_into();
-    assert_eq!(result, Ok(EvenNumber(8)));
-    let result: Result<EvenNumber, ()> = 5i32.try_into();
-    assert_eq!(result, Err(()));
-}
-*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : M unit.

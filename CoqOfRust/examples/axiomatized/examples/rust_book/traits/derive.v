@@ -25,9 +25,6 @@ Module  Impl_core_cmp_PartialEq_for_derive_Centimeters_t.
 Section Impl_core_cmp_PartialEq_for_derive_Centimeters_t.
   Definition Self : Set := derive.Centimeters.t.
   
-  (*
-  PartialEq
-  *)
   Parameter eq : (ref Self) -> (ref derive.Centimeters.t) -> M bool.t.
   
   Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
@@ -47,9 +44,6 @@ Module  Impl_core_cmp_PartialOrd_for_derive_Centimeters_t.
 Section Impl_core_cmp_PartialOrd_for_derive_Centimeters_t.
   Definition Self : Set := derive.Centimeters.t.
   
-  (*
-  PartialOrd
-  *)
   Parameter partial_cmp :
       (ref Self) ->
         (ref derive.Centimeters.t) ->
@@ -87,9 +81,6 @@ Module  Impl_core_fmt_Debug_for_derive_Inches_t.
 Section Impl_core_fmt_Debug_for_derive_Inches_t.
   Definition Self : Set := derive.Inches.t.
   
-  (*
-  Debug
-  *)
   Parameter fmt :
       (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
   
@@ -107,13 +98,6 @@ Module  Impl_derive_Inches_t.
 Section Impl_derive_Inches_t.
   Definition Self : Set := derive.Inches.t.
   
-  (*
-      fn to_centimeters(&self) -> Centimeters {
-          let &Inches(inches) = self;
-  
-          Centimeters(inches as f64 * 2.54)
-      }
-  *)
   Parameter to_centimeters : (ref Self) -> M derive.Centimeters.t.
   
   Global Instance AssociatedFunction_to_centimeters :
@@ -134,32 +118,5 @@ Section Seconds.
 End Seconds.
 End Seconds.
 
-(*
-fn main() {
-    let _one_second = Seconds(1);
-
-    // Error: `Seconds` can't be printed; it doesn't implement the `Debug` trait
-    //println!("One second looks like: {:?}", _one_second);
-    // TODO ^ Try uncommenting this line
-
-    // Error: `Seconds` can't be compared; it doesn't implement the `PartialEq` trait
-    //let _this_is_true = (_one_second == _one_second);
-    // TODO ^ Try uncommenting this line
-
-    let foot = Inches(12);
-
-    println!("One foot equals {:?}", foot);
-
-    let meter = Centimeters(100.0);
-
-    let cmp = if foot.to_centimeters() < meter {
-        "smaller"
-    } else {
-        "bigger"
-    };
-
-    println!("One foot is {} than one meter.", cmp);
-}
-*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : M unit.

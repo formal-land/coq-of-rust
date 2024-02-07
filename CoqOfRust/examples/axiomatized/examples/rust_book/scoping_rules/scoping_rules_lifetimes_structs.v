@@ -16,9 +16,6 @@ Module  Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed_t.
 Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed_t.
   Definition Self : Set := scoping_rules_lifetimes_structs.Borrowed.t.
   
-  (*
-  Debug
-  *)
   Parameter fmt :
       (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
   
@@ -50,9 +47,6 @@ Module  Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed_t.
 Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed_t.
   Definition Self : Set := scoping_rules_lifetimes_structs.NamedBorrowed.t.
   
-  (*
-  Debug
-  *)
   Parameter fmt :
       (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
   
@@ -86,9 +80,6 @@ Module  Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either_t.
 Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either_t.
   Definition Self : Set := scoping_rules_lifetimes_structs.Either.t.
   
-  (*
-  Debug
-  *)
   Parameter fmt :
       (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
   
@@ -102,21 +93,5 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either_t.
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either_t.
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either_t.
 
-(*
-fn main() {
-    let x = 18;
-    let y = 15;
-
-    let single = Borrowed(&x);
-    let double = NamedBorrowed { x: &x, y: &y };
-    let reference = Either::Ref(&x);
-    let number = Either::Num(y);
-
-    println!("x is borrowed in {:?}", single);
-    println!("x and y are borrowed in {:?}", double);
-    println!("x is borrowed in {:?}", reference);
-    println!("y is *not* borrowed in {:?}", number);
-}
-*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : M unit.

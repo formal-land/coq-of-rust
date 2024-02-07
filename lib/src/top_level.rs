@@ -118,14 +118,14 @@ struct Snippet(Vec<String>);
 #[derive(Debug, Eq, Hash, PartialEq)]
 struct ImplItem {
     name: String,
-    snippet: Rc<Snippet>,
+    snippet: Option<Rc<Snippet>>,
     kind: Rc<ImplItemKind>,
 }
 
 #[derive(Debug, Eq, Hash, PartialEq)]
 struct TraitImplItem {
     name: String,
-    snippet: Rc<Snippet>,
+    snippet: Option<Rc<Snippet>>,
     kind: Rc<FieldWithDefault<Rc<ImplItemKind>>>,
 }
 
@@ -140,7 +140,7 @@ enum TopLevelItem {
     },
     Definition {
         name: String,
-        snippet: Rc<Snippet>,
+        snippet: Option<Rc<Snippet>>,
         definition: Rc<FunDefinition>,
     },
     TypeAlias {
@@ -418,7 +418,7 @@ fn compile_top_level_item_without_local_items(
                 return vec![];
             }
 
-            let snippet = Rc::new(Snippet::of_span(env, &item.span));
+            let snippet = Snippet::of_span(env, &item.span);
             let is_dead_code = check_dead_code_lint_in_attributes(tcx, item);
             let is_axiom = check_coq_axiom_lint_in_attributes(tcx, item);
             let fn_sig_and_body = get_hir_fn_sig_and_body(tcx, fn_sig, body_id);
@@ -658,7 +658,7 @@ fn compile_top_level_item_without_local_items(
                                     let kind = Rc::new(FieldWithDefault::Default);
                                     Rc::new(TraitImplItem {
                                         name: default_item_name.clone(),
-                                        snippet: Rc::new(Snippet(vec![])),
+                                        snippet: None,
                                         kind,
                                     })
                                 }),
@@ -774,7 +774,7 @@ fn compile_impl_item(
     is_dead_code: bool,
 ) -> Rc<ImplItem> {
     let name = to_valid_coq_name(item.ident.name.as_str());
-    let snippet = Rc::new(Snippet::of_span(env, &item.span));
+    let snippet = Snippet::of_span(env, &item.span);
     let is_axiom = check_coq_axiom_lint_in_attributes(tcx, item);
     let kind = match &item.kind {
         rustc_hir::ImplItemKind::Const(ty, body_id) => {
@@ -1449,7 +1449,7 @@ impl FunDefinition {
         })
     }
 
-    fn to_coq<'a>(&'a self, name: &'a str, snippet: Option<&'a Snippet>) -> coq::TopLevel<'a> {
+    fn to_coq<'a>(&'a self, name: &'a str, snippet: &'a Option<Rc<Snippet>>) -> coq::TopLevel<'a> {
         coq::TopLevel::new(
             &[
                 match snippet {
@@ -1615,7 +1615,7 @@ impl FunDefinition {
         )
     }
 
-    fn to_doc<'a>(&'a self, name: &'a str, snippet: Option<&'a Snippet>) -> Doc<'a> {
+    fn to_doc<'a>(&'a self, name: &'a str, snippet: &'a Option<Rc<Snippet>>) -> Doc<'a> {
         self.to_coq(name, snippet).to_doc()
     }
 }
@@ -1714,7 +1714,7 @@ impl ImplItemKind {
                 ),
             ])]),
             ImplItemKind::Definition { definition, .. } => coq::TopLevel::new(&[
-                coq::TopLevelItem::Code(definition.to_doc(name, None)),
+                coq::TopLevelItem::Code(definition.to_doc(name, &None)),
                 coq::TopLevelItem::Line,
                 Self::class_instance_to_coq(
                     "AssociatedFunction",
@@ -1806,7 +1806,11 @@ struct ToDocContext {
 }
 
 impl Snippet {
-    fn of_span(env: &Env, span: &rustc_span::Span) -> Self {
+    fn of_span(env: &Env, span: &rustc_span::Span) -> Option<Rc<Self>> {
+        if env.axiomatize {
+            return None;
+        }
+
         let source_map = env.tcx.sess.source_map();
         let snippet = match (
             source_map.span_to_margin(*span),
@@ -1819,7 +1823,7 @@ impl Snippet {
             _ => vec!["Rust source not found".to_string()],
         };
 
-        Snippet(snippet)
+        Some(Rc::new(Snippet(snippet)))
     }
 
     fn to_coq(&self) -> Vec<coq::TopLevelItem> {
@@ -1829,28 +1833,23 @@ impl Snippet {
             .map(|line| line.chars().filter(|c| *c == '"').count())
             .sum::<usize>();
 
-        optional_insert_vec(
-            self.0.is_empty(),
-            [
-                vec![coq::TopLevelItem::Code(text("(*"))],
-                self.0
-                    .iter()
-                    // We do this replace to avoid messing up with the Coq comments
-                    .map(|line| {
-                        coq::TopLevelItem::Code(text(
-                            line.replace("(*", "( *").replace("*)", "* )"),
-                        ))
-                    })
-                    .collect(),
-                if nb_quotes % 2 == 0 {
-                    vec![]
-                } else {
-                    vec![coq::TopLevelItem::Code(text("\""))]
-                },
-                vec![coq::TopLevelItem::Code(text("*)"))],
-            ]
-            .concat(),
-        )
+        [
+            vec![coq::TopLevelItem::Code(text("(*"))],
+            self.0
+                .iter()
+                // We do this replace to avoid messing up with the Coq comments
+                .map(|line| {
+                    coq::TopLevelItem::Code(text(line.replace("(*", "( *").replace("*)", "* )")))
+                })
+                .collect(),
+            if nb_quotes % 2 == 0 {
+                vec![]
+            } else {
+                vec![coq::TopLevelItem::Code(text("\""))]
+            },
+            vec![coq::TopLevelItem::Code(text("*)"))],
+        ]
+        .concat()
     }
 }
 
@@ -2016,7 +2015,7 @@ impl TopLevelItem {
                 name,
                 snippet,
                 definition,
-            } => definition.to_doc(name, Some(snippet)),
+            } => definition.to_doc(name, snippet),
             TopLevelItem::Module {
                 name,
                 body,
@@ -2181,7 +2180,10 @@ impl TopLevelItem {
                                         } = &**item;
                                         [
                                             vec![coq::TopLevelItem::Line],
-                                            snippet.to_coq(),
+                                            match snippet {
+                                                None => vec![],
+                                                Some(snippet) => snippet.to_coq(),
+                                            },
                                             vec![coq::TopLevelItem::Code(concat([
                                                 kind.to_doc(name)
                                             ]))],
@@ -2365,7 +2367,10 @@ impl TopLevelItem {
                                     .filter_map(|item|
                                         Into::<Option<&ImplItemKind>>::into(&*item.kind).map(|kind: &ImplItemKind|
                                             [
-                                                item.snippet.to_coq(),
+                                                match &item.snippet {
+                                                    None => vec![],
+                                                    Some(snippet) => snippet.to_coq(),
+                                                },
                                                 vec![
                                                     coq::TopLevelItem::Code(kind.to_doc(item.name.as_str())),
                                                     coq::TopLevelItem::Line,

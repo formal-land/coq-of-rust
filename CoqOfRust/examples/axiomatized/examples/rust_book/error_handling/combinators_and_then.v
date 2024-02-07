@@ -12,9 +12,6 @@ Module  Impl_core_fmt_Debug_for_combinators_and_then_Food_t.
 Section Impl_core_fmt_Debug_for_combinators_and_then_Food_t.
   Definition Self : Set := combinators_and_then.Food.t.
   
-  (*
-  Debug
-  *)
   Parameter fmt :
       (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
   
@@ -39,9 +36,6 @@ Module  Impl_core_fmt_Debug_for_combinators_and_then_Day_t.
 Section Impl_core_fmt_Debug_for_combinators_and_then_Day_t.
   Definition Self : Set := combinators_and_then.Day.t.
   
-  (*
-  Debug
-  *)
   Parameter fmt :
       (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
   
@@ -55,73 +49,24 @@ Section Impl_core_fmt_Debug_for_combinators_and_then_Day_t.
 End Impl_core_fmt_Debug_for_combinators_and_then_Day_t.
 End Impl_core_fmt_Debug_for_combinators_and_then_Day_t.
 
-(*
-fn have_ingredients(food: Food) -> Option<Food> {
-    match food {
-        Food::Sushi => None,
-        _ => Some(food),
-    }
-}
-*)
 Parameter have_ingredients :
     combinators_and_then.Food.t ->
       M (core.option.Option.t combinators_and_then.Food.t).
 
-(*
-fn have_recipe(food: Food) -> Option<Food> {
-    match food {
-        Food::CordonBleu => None,
-        _ => Some(food),
-    }
-}
-*)
 Parameter have_recipe :
     combinators_and_then.Food.t ->
       M (core.option.Option.t combinators_and_then.Food.t).
 
-(*
-fn cookable_v1(food: Food) -> Option<Food> {
-    match have_recipe(food) {
-        None => None,
-        Some(food) => match have_ingredients(food) {
-            None => None,
-            Some(food) => Some(food),
-        },
-    }
-}
-*)
 Parameter cookable_v1 :
     combinators_and_then.Food.t ->
       M (core.option.Option.t combinators_and_then.Food.t).
 
-(*
-fn cookable_v2(food: Food) -> Option<Food> {
-    have_recipe(food).and_then(have_ingredients)
-}
-*)
 Parameter cookable_v2 :
     combinators_and_then.Food.t ->
       M (core.option.Option.t combinators_and_then.Food.t).
 
-(*
-fn eat(food: Food, day: Day) {
-    match cookable_v2(food) {
-        Some(food) => println!("Yay! On {:?} we get to eat {:?}.", day, food),
-        None => println!("Oh no. We don't get to eat on {:?}?", day),
-    }
-}
-*)
 Parameter eat :
     combinators_and_then.Food.t -> combinators_and_then.Day.t -> M unit.
 
-(*
-fn main() {
-    let (cordon_bleu, steak, sushi) = (Food::CordonBleu, Food::Steak, Food::Sushi);
-
-    eat(cordon_bleu, Day::Monday);
-    eat(steak, Day::Tuesday);
-    eat(sushi, Day::Wednesday);
-}
-*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : M unit.

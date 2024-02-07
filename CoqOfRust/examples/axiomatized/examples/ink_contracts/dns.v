@@ -27,9 +27,6 @@ Section Impl_core_default_Default_for_dns_Mapping_t_K_V.
   
   Definition Self : Set := dns.Mapping.t K V.
   
-  (*
-  Default
-  *)
   Parameter default : M (dns.Mapping.t K V).
   
   Global Instance AssociatedFunction_default :
@@ -49,11 +46,6 @@ Section Impl_dns_Mapping_t_K_V.
   
   Definition Self : Set := dns.Mapping.t K V.
   
-  (*
-      fn contains(&self, _key: &K) -> bool {
-          unimplemented!()
-      }
-  *)
   Parameter contains : (ref Self) -> (ref K) -> M bool.t.
   
   Global Instance AssociatedFunction_contains :
@@ -61,22 +53,12 @@ Section Impl_dns_Mapping_t_K_V.
     Notations.double_colon := contains;
   }.
   
-  (*
-      fn get(&self, _key: &K) -> Option<V> {
-          unimplemented!()
-      }
-  *)
   Parameter get : (ref Self) -> (ref K) -> M (core.option.Option.t V).
   
   Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
     Notations.double_colon := get;
   }.
   
-  (*
-      fn insert(&mut self, _key: K, _value: V) -> Option<u32> {
-          unimplemented!()
-      }
-  *)
   Parameter insert : (mut_ref Self) -> K -> V -> M (core.option.Option.t u32.t).
   
   Global Instance AssociatedFunction_insert :
@@ -84,22 +66,12 @@ Section Impl_dns_Mapping_t_K_V.
     Notations.double_colon := insert;
   }.
   
-  (*
-      fn new() -> Mapping<K, V> {
-          unimplemented!()
-      }
-  *)
   Parameter new : M (dns.Mapping.t K V).
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
   }.
   
-  (*
-      fn remove(&self, _key: K) {
-          unimplemented!()
-      }
-  *)
   Parameter remove : (ref Self) -> K -> M unit.
   
   Global Instance AssociatedFunction_remove :
@@ -107,11 +79,6 @@ Section Impl_dns_Mapping_t_K_V.
     Notations.double_colon := remove;
   }.
   
-  (*
-      fn size(&self, _key: K) -> Option<u32> {
-          unimplemented!()
-      }
-  *)
   Parameter size : (ref Self) -> K -> M (core.option.Option.t u32.t).
   
   Global Instance AssociatedFunction_size :
@@ -119,11 +86,6 @@ Section Impl_dns_Mapping_t_K_V.
     Notations.double_colon := size;
   }.
   
-  (*
-      fn take(&self, _key: K) -> Option<V> {
-          unimplemented!()
-      }
-  *)
   Parameter take : (ref Self) -> K -> M (core.option.Option.t V).
   
   Global Instance AssociatedFunction_take :
@@ -148,9 +110,6 @@ Module  Impl_core_default_Default_for_dns_AccountId_t.
 Section Impl_core_default_Default_for_dns_AccountId_t.
   Definition Self : Set := dns.AccountId.t.
   
-  (*
-  Default
-  *)
   Parameter default : M dns.AccountId.t.
   
   Global Instance AssociatedFunction_default :
@@ -168,9 +127,6 @@ Module  Impl_core_clone_Clone_for_dns_AccountId_t.
 Section Impl_core_clone_Clone_for_dns_AccountId_t.
   Definition Self : Set := dns.AccountId.t.
   
-  (*
-  Clone
-  *)
   Parameter clone : (ref Self) -> M dns.AccountId.t.
   
   Global Instance AssociatedFunction_clone :
@@ -207,9 +163,6 @@ Module  Impl_core_cmp_PartialEq_for_dns_AccountId_t.
 Section Impl_core_cmp_PartialEq_for_dns_AccountId_t.
   Definition Self : Set := dns.AccountId.t.
   
-  (*
-  PartialEq
-  *)
   Parameter eq : (ref Self) -> (ref dns.AccountId.t) -> M bool.t.
   
   Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
@@ -229,11 +182,6 @@ Module  Impl_core_convert_From_array_u8_t_for_dns_AccountId_t.
 Section Impl_core_convert_From_array_u8_t_for_dns_AccountId_t.
   Definition Self : Set := dns.AccountId.t.
   
-  (*
-      fn from(_value: [u8; 32]) -> Self {
-          unimplemented!()
-      }
-  *)
   Parameter from : (array u8.t) -> M Self.
   
   Global Instance AssociatedFunction_from :
@@ -353,11 +301,6 @@ Module  Impl_dns_Env_t.
 Section Impl_dns_Env_t.
   Definition Self : Set := dns.Env.t.
   
-  (*
-      fn caller(&self) -> AccountId {
-          self.caller
-      }
-  *)
   Parameter caller : (ref Self) -> M dns.AccountId.t.
   
   Global Instance AssociatedFunction_caller :
@@ -365,11 +308,6 @@ Section Impl_dns_Env_t.
     Notations.double_colon := caller;
   }.
   
-  (*
-      fn emit_event(&self, _event: Event) {
-          unimplemented!()
-      }
-  *)
   Parameter emit_event : (ref Self) -> dns.Event.t -> M unit.
   
   Global Instance AssociatedFunction_emit_event :
@@ -402,31 +340,12 @@ Section DomainNameService.
 End DomainNameService.
 End DomainNameService.
 
-(*
-fn zero_address() -> AccountId {
-    [0u8; 32].into()
-}
-*)
 Parameter zero_address : M dns.AccountId.t.
 
 Module  Impl_core_default_Default_for_dns_DomainNameService_t.
 Section Impl_core_default_Default_for_dns_DomainNameService_t.
   Definition Self : Set := dns.DomainNameService.t.
   
-  (*
-      fn default() -> Self {
-          let mut name_to_address = Mapping::new();
-          name_to_address.insert(Hash::default(), zero_address());
-          let mut name_to_owner = Mapping::new();
-          name_to_owner.insert(Hash::default(), zero_address());
-  
-          Self {
-              name_to_address,
-              name_to_owner,
-              default_address: zero_address(),
-          }
-      }
-  *)
   Parameter default : M Self.
   
   Global Instance AssociatedFunction_default :
@@ -459,9 +378,6 @@ Module  Impl_core_cmp_PartialEq_for_dns_Error_t.
 Section Impl_core_cmp_PartialEq_for_dns_Error_t.
   Definition Self : Set := dns.Error.t.
   
-  (*
-  PartialEq
-  *)
   Parameter eq : (ref Self) -> (ref dns.Error.t) -> M bool.t.
   
   Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
@@ -490,9 +406,6 @@ Module  Impl_core_cmp_Eq_for_dns_Error_t.
 Section Impl_core_cmp_Eq_for_dns_Error_t.
   Definition Self : Set := dns.Error.t.
   
-  (*
-  Eq
-  *)
   Parameter assert_receiver_is_total_eq : (ref Self) -> M unit.
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
@@ -513,11 +426,6 @@ Module  Impl_dns_DomainNameService_t.
 Section Impl_dns_DomainNameService_t.
   Definition Self : Set := dns.DomainNameService.t.
   
-  (*
-      fn init_env() -> Env {
-          unimplemented!()
-      }
-  *)
   Parameter init_env : M dns.Env.t.
   
   Global Instance AssociatedFunction_init_env :
@@ -525,42 +433,18 @@ Section Impl_dns_DomainNameService_t.
     Notations.double_colon := init_env;
   }.
   
-  (*
-      fn env(&self) -> Env {
-          Self::init_env()
-      }
-  *)
   Parameter env : (ref Self) -> M dns.Env.t.
   
   Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
     Notations.double_colon := env;
   }.
   
-  (*
-      pub fn new() -> Self {
-          Default::default()
-      }
-  *)
   Parameter new : M Self.
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
   }.
   
-  (*
-      pub fn register(&mut self, name: Hash) -> Result<()> {
-          let caller = self.env().caller();
-          if self.name_to_owner.contains(&name) {
-              return Err(Error::NameAlreadyExists);
-          }
-  
-          self.name_to_owner.insert(name, caller);
-          self.env()
-              .emit_event(Event::Register(Register { name, from: caller }));
-  
-          Ok(())
-      }
-  *)
   Parameter register :
       (mut_ref Self) -> ltac:(dns.Hash) -> M ltac:(dns.Result unit).
   
@@ -569,13 +453,6 @@ Section Impl_dns_DomainNameService_t.
     Notations.double_colon := register;
   }.
   
-  (*
-      fn get_owner_or_default(&self, name: Hash) -> AccountId {
-          self.name_to_owner
-              .get(&name)
-              .unwrap_or(self.default_address)
-      }
-  *)
   Parameter get_owner_or_default :
       (ref Self) -> ltac:(dns.Hash) -> M dns.AccountId.t.
   
@@ -584,26 +461,6 @@ Section Impl_dns_DomainNameService_t.
     Notations.double_colon := get_owner_or_default;
   }.
   
-  (*
-      pub fn set_address(&mut self, name: Hash, new_address: AccountId) -> Result<()> {
-          let caller = self.env().caller();
-          let owner = self.get_owner_or_default(name);
-          if caller != owner {
-              return Err(Error::CallerIsNotOwner);
-          }
-  
-          let old_address = self.name_to_address.get(&name);
-          self.name_to_address.insert(name, new_address);
-  
-          self.env().emit_event(Event::SetAddress(SetAddress {
-              name,
-              from: caller,
-              old_address,
-              new_address,
-          }));
-          Ok(())
-      }
-  *)
   Parameter set_address :
       (mut_ref Self) ->
         ltac:(dns.Hash) ->
@@ -615,27 +472,6 @@ Section Impl_dns_DomainNameService_t.
     Notations.double_colon := set_address;
   }.
   
-  (*
-      pub fn transfer(&mut self, name: Hash, to: AccountId) -> Result<()> {
-          let caller = self.env().caller();
-          let owner = self.get_owner_or_default(name);
-          if caller != owner {
-              return Err(Error::CallerIsNotOwner);
-          }
-  
-          let old_owner = self.name_to_owner.get(&name);
-          self.name_to_owner.insert(name, to);
-  
-          self.env().emit_event(Event::Transfer(Transfer {
-              name,
-              from: caller,
-              old_owner,
-              new_owner: to,
-          }));
-  
-          Ok(())
-      }
-  *)
   Parameter transfer :
       (mut_ref Self) ->
         ltac:(dns.Hash) ->
@@ -647,13 +483,6 @@ Section Impl_dns_DomainNameService_t.
     Notations.double_colon := transfer;
   }.
   
-  (*
-      fn get_address_or_default(&self, name: Hash) -> AccountId {
-          self.name_to_address
-              .get(&name)
-              .unwrap_or(self.default_address)
-      }
-  *)
   Parameter get_address_or_default :
       (ref Self) -> ltac:(dns.Hash) -> M dns.AccountId.t.
   
@@ -662,11 +491,6 @@ Section Impl_dns_DomainNameService_t.
     Notations.double_colon := get_address_or_default;
   }.
   
-  (*
-      pub fn get_address(&self, name: Hash) -> AccountId {
-          self.get_address_or_default(name)
-      }
-  *)
   Parameter get_address : (ref Self) -> ltac:(dns.Hash) -> M dns.AccountId.t.
   
   Global Instance AssociatedFunction_get_address :
@@ -674,11 +498,6 @@ Section Impl_dns_DomainNameService_t.
     Notations.double_colon := get_address;
   }.
   
-  (*
-      pub fn get_owner(&self, name: Hash) -> AccountId {
-          self.get_owner_or_default(name)
-      }
-  *)
   Parameter get_owner : (ref Self) -> ltac:(dns.Hash) -> M dns.AccountId.t.
   
   Global Instance AssociatedFunction_get_owner :

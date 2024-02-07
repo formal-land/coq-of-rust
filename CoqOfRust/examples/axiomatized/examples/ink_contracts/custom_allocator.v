@@ -16,24 +16,12 @@ Module  Impl_custom_allocator_CustomAllocator_t.
 Section Impl_custom_allocator_CustomAllocator_t.
   Definition Self : Set := custom_allocator.CustomAllocator.t.
   
-  (*
-      pub fn new(init_value: bool) -> Self {
-          Self {
-              value: vec![init_value],
-          }
-      }
-  *)
   Parameter new : bool.t -> M Self.
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
   }.
   
-  (*
-      pub fn default() -> Self {
-          Self::new(Default::default())
-      }
-  *)
   Parameter default : M Self.
   
   Global Instance AssociatedFunction_default :
@@ -41,11 +29,6 @@ Section Impl_custom_allocator_CustomAllocator_t.
     Notations.double_colon := default;
   }.
   
-  (*
-      pub fn flip(&mut self) {
-          self.value[0] = !self.value[0];
-      }
-  *)
   Parameter flip : (mut_ref Self) -> M unit.
   
   Global Instance AssociatedFunction_flip :
@@ -53,11 +36,6 @@ Section Impl_custom_allocator_CustomAllocator_t.
     Notations.double_colon := flip;
   }.
   
-  (*
-      pub fn get(&self) -> bool {
-          self.value[0]
-      }
-  *)
   Parameter get : (ref Self) -> M bool.t.
   
   Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {

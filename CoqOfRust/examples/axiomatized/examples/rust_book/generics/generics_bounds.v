@@ -28,9 +28,6 @@ Module  Impl_core_fmt_Debug_for_generics_bounds_Rectangle_t.
 Section Impl_core_fmt_Debug_for_generics_bounds_Rectangle_t.
   Definition Self : Set := generics_bounds.Rectangle.t.
   
-  (*
-  Debug
-  *)
   Parameter fmt :
       (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
   
@@ -63,11 +60,6 @@ Module  Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle_t.
 Section Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle_t.
   Definition Self : Set := generics_bounds.Rectangle.t.
   
-  (*
-      fn area(&self) -> f64 {
-          self.length * self.height
-      }
-  *)
   Parameter area : (ref Self) -> M f64.t.
   
   Global Instance AssociatedFunction_area :
@@ -81,43 +73,13 @@ Section Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle_t.
 End Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle_t.
 End Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle_t.
 
-(*
-fn print_debug<T: Debug>(t: &T) {
-    println!("{:?}", t);
-}
-*)
 Parameter print_debug :
     forall {T : Set} {ℋ_0 : core.fmt.Debug.Trait T},
     (ref T) -> M unit.
 
-(*
-fn area<T: HasArea>(t: &T) -> f64 {
-    t.area()
-}
-*)
 Parameter area :
     forall {T : Set} {ℋ_0 : generics_bounds.HasArea.Trait T},
     (ref T) -> M f64.t.
 
-(*
-fn main() {
-    let rectangle = Rectangle {
-        length: 3.0,
-        height: 4.0,
-    };
-    let _triangle = Triangle {
-        length: 3.0,
-        height: 4.0,
-    };
-
-    print_debug(&rectangle);
-    println!("Area: {}", rectangle.area());
-
-    //print_debug(&_triangle);
-    //println!("Area: {}", _triangle.area());
-    // ^ TODO: Try uncommenting these.
-    // | Error: Does not implement either `Debug` or `HasArea`.
-}
-*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : M unit.

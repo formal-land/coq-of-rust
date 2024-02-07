@@ -40,23 +40,9 @@ Section CompSciStudent.
 End CompSciStudent.
 End CompSciStudent.
 
-(*
-fn comp_sci_student_greeting(student: &dyn CompSciStudent) -> String {
-    format!(
-        "My name is {} and I attend {}. My favorite language is {}. My Git username is {}",
-        student.name(),
-        student.university(),
-        student.fav_language(),
-        student.git_username()
-    )
-}
-*)
 Parameter comp_sci_student_greeting :
     forall {DynT : Set} {ℋ_0 : supertraits.CompSciStudent.Trait.Trait DynT},
     (ref DynT) -> M alloc.string.String.t.
 
-(*
-fn main() {}
-*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : M unit.

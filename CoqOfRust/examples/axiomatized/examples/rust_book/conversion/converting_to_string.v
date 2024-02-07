@@ -16,11 +16,6 @@ Module  Impl_core_fmt_Display_for_converting_to_string_Circle_t.
 Section Impl_core_fmt_Display_for_converting_to_string_Circle_t.
   Definition Self : Set := converting_to_string.Circle.t.
   
-  (*
-      fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-          write!(f, "Circle of radius {}", self.radius)
-      }
-  *)
   Parameter fmt :
       (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
   
@@ -34,11 +29,5 @@ Section Impl_core_fmt_Display_for_converting_to_string_Circle_t.
 End Impl_core_fmt_Display_for_converting_to_string_Circle_t.
 End Impl_core_fmt_Display_for_converting_to_string_Circle_t.
 
-(*
-fn main() {
-    let circle = Circle { radius: 6 };
-    circle.to_string();
-}
-*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : M unit.

@@ -3,26 +3,10 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module foo.
   Module gre.
-    (*
-            pub fn f_foo_gre() {
-                println!("foo::gre::bar");
-            }
-    *)
     Parameter f_foo_gre : M unit.
   End gre.
   
-  (*
-      pub fn f_foo() {
-          println!("foo::bar");
-          gre::f_foo_gre();
-      }
-  *)
   Parameter f_foo : M unit.
 End foo.
 
-(*
-fn f() {
-    foo::f_foo();
-}
-*)
 Parameter f : M unit.

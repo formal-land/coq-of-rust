@@ -36,11 +36,6 @@ Module  Impl_const_underscore_expression_BarTrait_for_const_underscore_expressio
 Section Impl_const_underscore_expression_BarTrait_for_const_underscore_expression_Bar_t.
   Definition Self : Set := const_underscore_expression.Bar.t.
   
-  (*
-          fn show(self: Self) -> String {
-              self.test
-          }
-  *)
   Parameter show : Self -> M alloc.string.String.t.
   
   Global Instance AssociatedFunction_show :

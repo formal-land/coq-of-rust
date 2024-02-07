@@ -27,9 +27,6 @@ Section Impl_core_default_Default_for_multisig_Mapping_t_K_V.
   
   Definition Self : Set := multisig.Mapping.t K V.
   
-  (*
-  Default
-  *)
   Parameter default : M (multisig.Mapping.t K V).
   
   Global Instance AssociatedFunction_default :
@@ -49,11 +46,6 @@ Section Impl_multisig_Mapping_t_K_V.
   
   Definition Self : Set := multisig.Mapping.t K V.
   
-  (*
-      fn contains(&self, _key: &K) -> bool {
-          unimplemented!()
-      }
-  *)
   Parameter contains : (ref Self) -> (ref K) -> M bool.t.
   
   Global Instance AssociatedFunction_contains :
@@ -61,22 +53,12 @@ Section Impl_multisig_Mapping_t_K_V.
     Notations.double_colon := contains;
   }.
   
-  (*
-      fn get(&self, _key: &K) -> Option<V> {
-          unimplemented!()
-      }
-  *)
   Parameter get : (ref Self) -> (ref K) -> M (core.option.Option.t V).
   
   Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
     Notations.double_colon := get;
   }.
   
-  (*
-      fn insert(&mut self, _key: K, _value: V) -> Option<u32> {
-          unimplemented!()
-      }
-  *)
   Parameter insert : (mut_ref Self) -> K -> V -> M (core.option.Option.t u32.t).
   
   Global Instance AssociatedFunction_insert :
@@ -84,11 +66,6 @@ Section Impl_multisig_Mapping_t_K_V.
     Notations.double_colon := insert;
   }.
   
-  (*
-      fn remove(&self, _key: K) {
-          unimplemented!()
-      }
-  *)
   Parameter remove : (ref Self) -> K -> M unit.
   
   Global Instance AssociatedFunction_remove :
@@ -96,11 +73,6 @@ Section Impl_multisig_Mapping_t_K_V.
     Notations.double_colon := remove;
   }.
   
-  (*
-      fn size(&self, _key: K) -> Option<u32> {
-          unimplemented!()
-      }
-  *)
   Parameter size : (ref Self) -> K -> M (core.option.Option.t u32.t).
   
   Global Instance AssociatedFunction_size :
@@ -108,11 +80,6 @@ Section Impl_multisig_Mapping_t_K_V.
     Notations.double_colon := size;
   }.
   
-  (*
-      fn take(&self, _key: K) -> Option<V> {
-          unimplemented!()
-      }
-  *)
   Parameter take : (ref Self) -> K -> M (core.option.Option.t V).
   
   Global Instance AssociatedFunction_take :
@@ -137,9 +104,6 @@ Module  Impl_core_default_Default_for_multisig_AccountId_t.
 Section Impl_core_default_Default_for_multisig_AccountId_t.
   Definition Self : Set := multisig.AccountId.t.
   
-  (*
-  Default
-  *)
   Parameter default : M multisig.AccountId.t.
   
   Global Instance AssociatedFunction_default :
@@ -157,9 +121,6 @@ Module  Impl_core_fmt_Debug_for_multisig_AccountId_t.
 Section Impl_core_fmt_Debug_for_multisig_AccountId_t.
   Definition Self : Set := multisig.AccountId.t.
   
-  (*
-  Debug
-  *)
   Parameter fmt :
       (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
   
@@ -177,9 +138,6 @@ Module  Impl_core_clone_Clone_for_multisig_AccountId_t.
 Section Impl_core_clone_Clone_for_multisig_AccountId_t.
   Definition Self : Set := multisig.AccountId.t.
   
-  (*
-  Clone
-  *)
   Parameter clone : (ref Self) -> M multisig.AccountId.t.
   
   Global Instance AssociatedFunction_clone :
@@ -216,9 +174,6 @@ Module  Impl_core_cmp_PartialEq_for_multisig_AccountId_t.
 Section Impl_core_cmp_PartialEq_for_multisig_AccountId_t.
   Definition Self : Set := multisig.AccountId.t.
   
-  (*
-  PartialEq
-  *)
   Parameter eq : (ref Self) -> (ref multisig.AccountId.t) -> M bool.t.
   
   Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
@@ -247,9 +202,6 @@ Module  Impl_core_cmp_Eq_for_multisig_AccountId_t.
 Section Impl_core_cmp_Eq_for_multisig_AccountId_t.
   Definition Self : Set := multisig.AccountId.t.
   
-  (*
-  Eq
-  *)
   Parameter assert_receiver_is_total_eq : (ref Self) -> M unit.
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
@@ -268,9 +220,6 @@ Module  Impl_core_cmp_PartialOrd_for_multisig_AccountId_t.
 Section Impl_core_cmp_PartialOrd_for_multisig_AccountId_t.
   Definition Self : Set := multisig.AccountId.t.
   
-  (*
-  PartialOrd
-  *)
   Parameter partial_cmp :
       (ref Self) ->
         (ref multisig.AccountId.t) ->
@@ -297,9 +246,6 @@ Module  Impl_core_cmp_Ord_for_multisig_AccountId_t.
 Section Impl_core_cmp_Ord_for_multisig_AccountId_t.
   Definition Self : Set := multisig.AccountId.t.
   
-  (*
-  Ord
-  *)
   Parameter cmp :
       (ref Self) -> (ref multisig.AccountId.t) -> M core.cmp.Ordering.t.
   
@@ -366,9 +312,6 @@ Module  Impl_core_clone_Clone_for_multisig_ConfirmationStatus_t.
 Section Impl_core_clone_Clone_for_multisig_ConfirmationStatus_t.
   Definition Self : Set := multisig.ConfirmationStatus.t.
   
-  (*
-  Clone
-  *)
   Parameter clone : (ref Self) -> M multisig.ConfirmationStatus.t.
   
   Global Instance AssociatedFunction_clone :
@@ -430,9 +373,6 @@ Module  Impl_core_default_Default_for_multisig_Transaction_t.
 Section Impl_core_default_Default_for_multisig_Transaction_t.
   Definition Self : Set := multisig.Transaction.t.
   
-  (*
-  Default
-  *)
   Parameter default : M multisig.Transaction.t.
   
   Global Instance AssociatedFunction_default :
@@ -455,9 +395,6 @@ Module  Impl_core_clone_Clone_for_multisig_Error_t.
 Section Impl_core_clone_Clone_for_multisig_Error_t.
   Definition Self : Set := multisig.Error.t.
   
-  (*
-  Clone
-  *)
   Parameter clone : (ref Self) -> M multisig.Error.t.
   
   Global Instance AssociatedFunction_clone :
@@ -494,9 +431,6 @@ Module  Impl_core_cmp_PartialEq_for_multisig_Error_t.
 Section Impl_core_cmp_PartialEq_for_multisig_Error_t.
   Definition Self : Set := multisig.Error.t.
   
-  (*
-  PartialEq
-  *)
   Parameter eq : (ref Self) -> (ref multisig.Error.t) -> M bool.t.
   
   Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
@@ -525,9 +459,6 @@ Module  Impl_core_cmp_Eq_for_multisig_Error_t.
 Section Impl_core_cmp_Eq_for_multisig_Error_t.
   Definition Self : Set := multisig.Error.t.
   
-  (*
-  Eq
-  *)
   Parameter assert_receiver_is_total_eq : (ref Self) -> M unit.
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
@@ -565,9 +496,6 @@ Module  Impl_core_default_Default_for_multisig_Transactions_t.
 Section Impl_core_default_Default_for_multisig_Transactions_t.
   Definition Self : Set := multisig.Transactions.t.
   
-  (*
-  Default
-  *)
   Parameter default : M multisig.Transactions.t.
   
   Global Instance AssociatedFunction_default :
@@ -766,11 +694,6 @@ Module  Impl_multisig_Env_t.
 Section Impl_multisig_Env_t.
   Definition Self : Set := multisig.Env.t.
   
-  (*
-      fn caller(&self) -> AccountId {
-          self.caller
-      }
-  *)
   Parameter caller : (ref Self) -> M multisig.AccountId.t.
   
   Global Instance AssociatedFunction_caller :
@@ -778,11 +701,6 @@ Section Impl_multisig_Env_t.
     Notations.double_colon := caller;
   }.
   
-  (*
-      fn emit_event(&self, _event: Event) {
-          unimplemented!()
-      }
-  *)
   Parameter emit_event : (ref Self) -> multisig.Event.t -> M unit.
   
   Global Instance AssociatedFunction_emit_event :
@@ -790,11 +708,6 @@ Section Impl_multisig_Env_t.
     Notations.double_colon := emit_event;
   }.
   
-  (*
-      fn transferred_value(&self) -> Balance {
-          unimplemented!()
-      }
-  *)
   Parameter transferred_value : (ref Self) -> M ltac:(multisig.Balance).
   
   Global Instance AssociatedFunction_transferred_value :
@@ -802,11 +715,6 @@ Section Impl_multisig_Env_t.
     Notations.double_colon := transferred_value;
   }.
   
-  (*
-      fn account_id(&self) -> AccountId {
-          unimplemented!()
-      }
-  *)
   Parameter account_id : (ref Self) -> M multisig.AccountId.t.
   
   Global Instance AssociatedFunction_account_id :
@@ -865,9 +773,6 @@ Module  Impl_core_default_Default_for_multisig_Multisig_t.
 Section Impl_core_default_Default_for_multisig_Multisig_t.
   Definition Self : Set := multisig.Multisig.t.
   
-  (*
-  Default
-  *)
   Parameter default : M multisig.Multisig.t.
   
   Global Instance AssociatedFunction_default :
@@ -881,22 +786,12 @@ Section Impl_core_default_Default_for_multisig_Multisig_t.
 End Impl_core_default_Default_for_multisig_Multisig_t.
 End Impl_core_default_Default_for_multisig_Multisig_t.
 
-(*
-fn ensure_requirement_is_valid(owners: u32, requirement: u32) {
-    assert!(0 < requirement && requirement <= owners && owners <= MAX_OWNERS);
-}
-*)
 Parameter ensure_requirement_is_valid : u32.t -> u32.t -> M unit.
 
 Module  Impl_multisig_Multisig_t.
 Section Impl_multisig_Multisig_t.
   Definition Self : Set := multisig.Multisig.t.
   
-  (*
-      fn init_env() -> Env {
-          unimplemented!()
-      }
-  *)
   Parameter init_env : M multisig.Env.t.
   
   Global Instance AssociatedFunction_init_env :
@@ -904,34 +799,12 @@ Section Impl_multisig_Multisig_t.
     Notations.double_colon := init_env;
   }.
   
-  (*
-      fn env(&self) -> Env {
-          Self::init_env()
-      }
-  *)
   Parameter env : (ref Self) -> M multisig.Env.t.
   
   Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
     Notations.double_colon := env;
   }.
   
-  (*
-      pub fn new(requirement: u32, mut owners: Vec<AccountId>) -> Self {
-          let mut contract = Multisig::default();
-          owners.sort_unstable();
-          owners.dedup();
-          ensure_requirement_is_valid(owners.len() as u32, requirement);
-  
-          for owner in &owners {
-              contract.is_owner.insert( *owner, ());
-          }
-  
-          contract.owners = owners;
-          contract.transaction_list = Default::default();
-          contract.requirement = requirement;
-          contract
-      }
-  *)
   Parameter new :
       u32.t ->
         (alloc.vec.Vec.t multisig.AccountId.t alloc.vec.Vec.Default.A) ->
@@ -941,16 +814,6 @@ Section Impl_multisig_Multisig_t.
     Notations.double_colon := new;
   }.
   
-  (*
-      fn ensure_confirmed(&self, trans_id: TransactionId) {
-          assert!(
-              self.confirmation_count
-                  .get(&trans_id)
-                  .expect(WRONG_TRANSACTION_ID)
-                  >= self.requirement
-          );
-      }
-  *)
   Parameter ensure_confirmed :
       (ref Self) -> ltac:(multisig.TransactionId) -> M unit.
   
@@ -959,13 +822,6 @@ Section Impl_multisig_Multisig_t.
     Notations.double_colon := ensure_confirmed;
   }.
   
-  (*
-      fn ensure_transaction_exists(&self, trans_id: TransactionId) {
-          self.transactions
-              .get(&trans_id)
-              .expect(WRONG_TRANSACTION_ID);
-      }
-  *)
   Parameter ensure_transaction_exists :
       (ref Self) -> ltac:(multisig.TransactionId) -> M unit.
   
@@ -974,11 +830,6 @@ Section Impl_multisig_Multisig_t.
     Notations.double_colon := ensure_transaction_exists;
   }.
   
-  (*
-      fn ensure_owner(&self, owner: &AccountId) {
-          assert!(self.is_owner.contains(owner));
-      }
-  *)
   Parameter ensure_owner : (ref Self) -> (ref multisig.AccountId.t) -> M unit.
   
   Global Instance AssociatedFunction_ensure_owner :
@@ -986,11 +837,6 @@ Section Impl_multisig_Multisig_t.
     Notations.double_colon := ensure_owner;
   }.
   
-  (*
-      fn ensure_caller_is_owner(&self) {
-          self.ensure_owner(&self.env().caller());
-      }
-  *)
   Parameter ensure_caller_is_owner : (ref Self) -> M unit.
   
   Global Instance AssociatedFunction_ensure_caller_is_owner :
@@ -998,11 +844,6 @@ Section Impl_multisig_Multisig_t.
     Notations.double_colon := ensure_caller_is_owner;
   }.
   
-  (*
-      fn ensure_from_wallet(&self) {
-          assert_eq!(self.env().caller(), self.env().account_id());
-      }
-  *)
   Parameter ensure_from_wallet : (ref Self) -> M unit.
   
   Global Instance AssociatedFunction_ensure_from_wallet :
@@ -1010,11 +851,6 @@ Section Impl_multisig_Multisig_t.
     Notations.double_colon := ensure_from_wallet;
   }.
   
-  (*
-      fn ensure_no_owner(&self, owner: &AccountId) {
-          assert!(!self.is_owner.contains(owner));
-      }
-  *)
   Parameter ensure_no_owner :
       (ref Self) -> (ref multisig.AccountId.t) -> M unit.
   
@@ -1023,17 +859,6 @@ Section Impl_multisig_Multisig_t.
     Notations.double_colon := ensure_no_owner;
   }.
   
-  (*
-      pub fn add_owner(&mut self, new_owner: AccountId) {
-          self.ensure_from_wallet();
-          self.ensure_no_owner(&new_owner);
-          ensure_requirement_is_valid(self.owners.len() as u32 + 1, self.requirement);
-          self.is_owner.insert(new_owner, ());
-          self.owners.push(new_owner);
-          self.env()
-              .emit_event(Event::OwnerAddition(OwnerAddition { owner: new_owner }));
-      }
-  *)
   Parameter add_owner : (mut_ref Self) -> multisig.AccountId.t -> M unit.
   
   Global Instance AssociatedFunction_add_owner :
@@ -1041,14 +866,6 @@ Section Impl_multisig_Multisig_t.
     Notations.double_colon := add_owner;
   }.
   
-  (*
-      fn owner_index(&self, owner: &AccountId) -> u32 {
-          self.owners.iter().position(|x| *x == *owner).expect(
-              "This is only called after it was already verified that the id is
-                 actually an owner.",
-          ) as u32
-      }
-  *)
   Parameter owner_index : (ref Self) -> (ref multisig.AccountId.t) -> M u32.t.
   
   Global Instance AssociatedFunction_owner_index :
@@ -1056,19 +873,6 @@ Section Impl_multisig_Multisig_t.
     Notations.double_colon := owner_index;
   }.
   
-  (*
-      fn clean_owner_confirmations(&mut self, owner: &AccountId) {
-          for trans_id in &self.transaction_list.transactions {
-              let key = ( *trans_id, *owner);
-              if self.confirmations.contains(&key) {
-                  self.confirmations.remove(key);
-                  let mut count = self.confirmation_count.get(trans_id).unwrap_or(0 as u32);
-                  count -= 1;
-                  self.confirmation_count.insert( *trans_id, count);
-              }
-          }
-      }
-  *)
   Parameter clean_owner_confirmations :
       (mut_ref Self) -> (ref multisig.AccountId.t) -> M unit.
   
@@ -1077,22 +881,6 @@ Section Impl_multisig_Multisig_t.
     Notations.double_colon := clean_owner_confirmations;
   }.
   
-  (*
-      pub fn remove_owner(&mut self, owner: AccountId) {
-          self.ensure_from_wallet();
-          self.ensure_owner(&owner);
-          let len = self.owners.len() as u32 - 1;
-          let requirement = u32::min(len, self.requirement);
-          ensure_requirement_is_valid(len, requirement);
-          let owner_index = self.owner_index(&owner) as usize;
-          self.owners.swap_remove(owner_index);
-          self.is_owner.remove(owner);
-          self.requirement = requirement;
-          self.clean_owner_confirmations(&owner);
-          self.env()
-              .emit_event(Event::OwnerRemoval(OwnerRemoval { owner }));
-      }
-  *)
   Parameter remove_owner : (mut_ref Self) -> multisig.AccountId.t -> M unit.
   
   Global Instance AssociatedFunction_remove_owner :
@@ -1100,22 +888,6 @@ Section Impl_multisig_Multisig_t.
     Notations.double_colon := remove_owner;
   }.
   
-  (*
-      pub fn replace_owner(&mut self, old_owner: AccountId, new_owner: AccountId) {
-          self.ensure_from_wallet();
-          self.ensure_owner(&old_owner);
-          self.ensure_no_owner(&new_owner);
-          let owner_index = self.owner_index(&old_owner);
-          self.owners[owner_index as usize] = new_owner;
-          self.is_owner.remove(old_owner);
-          self.is_owner.insert(new_owner, ());
-          self.clean_owner_confirmations(&old_owner);
-          self.env()
-              .emit_event(Event::OwnerRemoval(OwnerRemoval { owner: old_owner }));
-          self.env()
-              .emit_event(Event::OwnerAddition(OwnerAddition { owner: new_owner }));
-      }
-  *)
   Parameter replace_owner :
       (mut_ref Self) -> multisig.AccountId.t -> multisig.AccountId.t -> M unit.
   
@@ -1124,17 +896,6 @@ Section Impl_multisig_Multisig_t.
     Notations.double_colon := replace_owner;
   }.
   
-  (*
-      pub fn change_requirement(&mut self, new_requirement: u32) {
-          self.ensure_from_wallet();
-          ensure_requirement_is_valid(self.owners.len() as u32, new_requirement);
-          self.requirement = new_requirement;
-          self.env()
-              .emit_event(Event::RequirementChange(RequirementChange {
-                  new_requirement,
-              }));
-      }
-  *)
   Parameter change_requirement : (mut_ref Self) -> u32.t -> M unit.
   
   Global Instance AssociatedFunction_change_requirement :
@@ -1142,40 +903,6 @@ Section Impl_multisig_Multisig_t.
     Notations.double_colon := change_requirement;
   }.
   
-  (*
-      fn confirm_by_caller(
-          &mut self,
-          confirmer: AccountId,
-          transaction: TransactionId,
-      ) -> ConfirmationStatus {
-          let mut count = self
-              .confirmation_count
-              .get(&transaction)
-              .unwrap_or(0 as u32);
-          let key = (transaction, confirmer);
-          let new_confirmation = !self.confirmations.contains(&key);
-          if new_confirmation {
-              count += 1;
-              self.confirmations.insert(key, ());
-              self.confirmation_count.insert(transaction, count);
-          }
-          let status = {
-              if count >= self.requirement {
-                  ConfirmationStatus::Confirmed
-              } else {
-                  ConfirmationStatus::ConfirmationsNeeded(self.requirement - count)
-              }
-          };
-          if new_confirmation {
-              self.env().emit_event(Event::Confirmation(Confirmation {
-                  transaction,
-                  from: confirmer,
-                  status,
-              }));
-          }
-          status
-      }
-  *)
   Parameter confirm_by_caller :
       (mut_ref Self) ->
         multisig.AccountId.t ->
@@ -1187,27 +914,6 @@ Section Impl_multisig_Multisig_t.
     Notations.double_colon := confirm_by_caller;
   }.
   
-  (*
-      pub fn submit_transaction(
-          &mut self,
-          transaction: Transaction,
-      ) -> (TransactionId, ConfirmationStatus) {
-          self.ensure_caller_is_owner();
-          let trans_id = self.transaction_list.next_id;
-          self.transaction_list.next_id = trans_id
-              .checked_add(1 as u32)
-              .expect("Transaction ids exhausted.");
-          self.transactions.insert(trans_id, transaction);
-          self.transaction_list.transactions.push(trans_id);
-          self.env().emit_event(Event::Submission(Submission {
-              transaction: trans_id,
-          }));
-          (
-              trans_id,
-              self.confirm_by_caller(self.env().caller(), trans_id),
-          )
-      }
-  *)
   Parameter submit_transaction :
       (mut_ref Self) ->
         multisig.Transaction.t ->
@@ -1218,26 +924,6 @@ Section Impl_multisig_Multisig_t.
     Notations.double_colon := submit_transaction;
   }.
   
-  (*
-      fn take_transaction(&mut self, trans_id: TransactionId) -> Option<Transaction> {
-          let transaction = self.transactions.get(&trans_id);
-          if transaction.is_some() {
-              self.transactions.remove(trans_id);
-              let pos = self
-                  .transaction_list
-                  .transactions
-                  .iter()
-                  .position(|t| t == &trans_id)
-                  .expect("The transaction exists hence it must also be in the list.");
-              self.transaction_list.transactions.swap_remove(pos);
-              for owner in self.owners.iter() {
-                  self.confirmations.remove((trans_id, *owner));
-              }
-              self.confirmation_count.remove(trans_id);
-          }
-          transaction
-      }
-  *)
   Parameter take_transaction :
       (mut_ref Self) ->
         ltac:(multisig.TransactionId) ->
@@ -1248,16 +934,6 @@ Section Impl_multisig_Multisig_t.
     Notations.double_colon := take_transaction;
   }.
   
-  (*
-      pub fn cancel_transaction(&mut self, trans_id: TransactionId) {
-          self.ensure_from_wallet();
-          if self.take_transaction(trans_id).is_some() {
-              self.env().emit_event(Event::Cancellation(Cancellation {
-                  transaction: trans_id,
-              }));
-          }
-      }
-  *)
   Parameter cancel_transaction :
       (mut_ref Self) -> ltac:(multisig.TransactionId) -> M unit.
   
@@ -1266,13 +942,6 @@ Section Impl_multisig_Multisig_t.
     Notations.double_colon := cancel_transaction;
   }.
   
-  (*
-      pub fn confirm_transaction(&mut self, trans_id: TransactionId) -> ConfirmationStatus {
-          self.ensure_caller_is_owner();
-          self.ensure_transaction_exists(trans_id);
-          self.confirm_by_caller(self.env().caller(), trans_id)
-      }
-  *)
   Parameter confirm_transaction :
       (mut_ref Self) ->
         ltac:(multisig.TransactionId) ->
@@ -1283,26 +952,6 @@ Section Impl_multisig_Multisig_t.
     Notations.double_colon := confirm_transaction;
   }.
   
-  (*
-      pub fn revoke_confirmation(&mut self, trans_id: TransactionId) {
-          self.ensure_caller_is_owner();
-          let caller = self.env().caller();
-          if self.confirmations.contains(&(trans_id, caller)) {
-              self.confirmations.remove((trans_id, caller));
-              let mut confirmation_count = self
-                  .confirmation_count
-                  .get(&trans_id)
-                  .expect("There is a entry in `self.confirmations`. Hence a count must exit.");
-              // Will not underflow as there is at least one confirmation
-              confirmation_count -= 1;
-              self.confirmation_count.insert(trans_id, confirmation_count);
-              self.env().emit_event(Event::Revocation(Revocation {
-                  transaction: trans_id,
-                  from: caller,
-              }));
-          }
-      }
-  *)
   Parameter revoke_confirmation :
       (mut_ref Self) -> ltac:(multisig.TransactionId) -> M unit.
   
@@ -1311,33 +960,6 @@ Section Impl_multisig_Multisig_t.
     Notations.double_colon := revoke_confirmation;
   }.
   
-  (*
-      pub fn invoke_transaction(&mut self, trans_id: TransactionId) -> Result<(), Error> {
-          self.ensure_confirmed(trans_id);
-          let t = self.take_transaction(trans_id).expect(WRONG_TRANSACTION_ID);
-          assert!(self.env().transferred_value() == t.transferred_value);
-          // let result = build_call()
-          //     .call(t.callee)
-          //     .gas_limit(t.gas_limit)
-          //     .transferred_value(t.transferred_value)
-          //     .call_flags(CallFlags::default().set_allow_reentry(t.allow_reentry))
-          //     .exec_input(ExecutionInput::new(t.selector.into()).push_arg(CallInput(&t.input)))
-          //     .returns::<()>()
-          //     .try_invoke();
-          let result: Result<Result<Vec<u8>, ()>, ()> = todo!();
-  
-          let result = match result {
-              Ok(Ok(_)) => Ok(()),
-              _ => Err(Error::TransactionFailed),
-          };
-  
-          self.env().emit_event(Event::Execution(Execution {
-              transaction: trans_id,
-              result: result.map(|_| None),
-          }));
-          result
-      }
-  *)
   Parameter invoke_transaction :
       (mut_ref Self) ->
         ltac:(multisig.TransactionId) ->
@@ -1348,32 +970,6 @@ Section Impl_multisig_Multisig_t.
     Notations.double_colon := invoke_transaction;
   }.
   
-  (*
-      pub fn eval_transaction(&mut self, trans_id: TransactionId) -> Result<Vec<u8>, Error> {
-          self.ensure_confirmed(trans_id);
-          let t = self.take_transaction(trans_id).expect(WRONG_TRANSACTION_ID);
-          // let result = build_call()
-          //     .call(t.callee)
-          //     .gas_limit(t.gas_limit)
-          //     .transferred_value(t.transferred_value)
-          //     .call_flags(CallFlags::default().set_allow_reentry(t.allow_reentry))
-          //     .exec_input(ExecutionInput::new(t.selector.into()).push_arg(CallInput(&t.input)))
-          //     .returns::<Vec<u8>>()
-          //     .try_invoke();
-          let result: Result<Result<Vec<u8>, ()>, ()> = todo!();
-  
-          let result = match result {
-              Ok(Ok(v)) => Ok(v),
-              _ => Err(Error::TransactionFailed),
-          };
-  
-          self.env().emit_event(Event::Execution(Execution {
-              transaction: trans_id,
-              result: result.clone().map(Some),
-          }));
-          result
-      }
-  *)
   Parameter eval_transaction :
       (mut_ref Self) ->
         ltac:(multisig.TransactionId) ->

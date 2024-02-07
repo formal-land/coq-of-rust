@@ -16,11 +16,6 @@ Module  Impl_core_convert_From_i32_t_for_into_Number_t.
 Section Impl_core_convert_From_i32_t_for_into_Number_t.
   Definition Self : Set := into.Number.t.
   
-  (*
-      fn from(item: i32) -> Self {
-          Number { value: item }
-      }
-  *)
   Parameter from : i32.t -> M Self.
   
   Global Instance AssociatedFunction_from :
@@ -34,10 +29,5 @@ Section Impl_core_convert_From_i32_t_for_into_Number_t.
 End Impl_core_convert_From_i32_t_for_into_Number_t.
 End Impl_core_convert_From_i32_t_for_into_Number_t.
 
-(*
-fn main() {
-    <i32 as std::convert::Into<Number>>::into(5);
-}
-*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : M unit.

@@ -12,14 +12,6 @@ Section Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers_t.
   Definition Self : Set :=
     enums_type_aliases_v2.VeryVerboseEnumOfThingsToDoWithNumbers.t.
   
-  (*
-      fn run(&self, x: i32, y: i32) -> i32 {
-          match self {
-              Self::Add => x + y,
-              Self::Subtract => x - y,
-          }
-      }
-  *)
   Parameter run : (ref Self) -> i32.t -> i32.t -> M i32.t.
   
   Global Instance AssociatedFunction_run : Notations.DoubleColon Self "run" := {

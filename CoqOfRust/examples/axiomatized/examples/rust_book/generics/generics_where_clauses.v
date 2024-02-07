@@ -18,11 +18,6 @@ Section Impl_generics_where_clauses_PrintInOption_for_T.
   
   Definition Self : Set := T.
   
-  (*
-      fn print_in_option(self) {
-          println!("{:?}", Some(self));
-      }
-  *)
   Parameter print_in_option : Self -> M unit.
   
   Global Instance AssociatedFunction_print_in_option :
@@ -36,12 +31,5 @@ Section Impl_generics_where_clauses_PrintInOption_for_T.
 End Impl_generics_where_clauses_PrintInOption_for_T.
 End Impl_generics_where_clauses_PrintInOption_for_T.
 
-(*
-fn main() {
-    let vec = vec![1, 2, 3];
-
-    vec.print_in_option();
-}
-*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : M unit.

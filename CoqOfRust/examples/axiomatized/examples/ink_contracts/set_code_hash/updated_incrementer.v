@@ -16,9 +16,6 @@ Module  Impl_core_default_Default_for_updated_incrementer_AccountId_t.
 Section Impl_core_default_Default_for_updated_incrementer_AccountId_t.
   Definition Self : Set := updated_incrementer.AccountId.t.
   
-  (*
-  Default
-  *)
   Parameter default : M updated_incrementer.AccountId.t.
   
   Global Instance AssociatedFunction_default :
@@ -36,9 +33,6 @@ Module  Impl_core_clone_Clone_for_updated_incrementer_AccountId_t.
 Section Impl_core_clone_Clone_for_updated_incrementer_AccountId_t.
   Definition Self : Set := updated_incrementer.AccountId.t.
   
-  (*
-  Clone
-  *)
   Parameter clone : (ref Self) -> M updated_incrementer.AccountId.t.
   
   Global Instance AssociatedFunction_clone :
@@ -84,11 +78,6 @@ Module  Impl_updated_incrementer_Env_t.
 Section Impl_updated_incrementer_Env_t.
   Definition Self : Set := updated_incrementer.Env.t.
   
-  (*
-      fn set_code_hash<E>(&self, code_hash: &E) -> Result<(), Error> {
-          unimplemented!()
-      }
-  *)
   Parameter set_code_hash :
       forall {E : Set},
       (ref Self) ->
@@ -117,11 +106,6 @@ Module  Impl_updated_incrementer_Incrementer_t.
 Section Impl_updated_incrementer_Incrementer_t.
   Definition Self : Set := updated_incrementer.Incrementer.t.
   
-  (*
-      fn init_env() -> Env {
-          unimplemented!()
-      }
-  *)
   Parameter init_env : M updated_incrementer.Env.t.
   
   Global Instance AssociatedFunction_init_env :
@@ -129,62 +113,30 @@ Section Impl_updated_incrementer_Incrementer_t.
     Notations.double_colon := init_env;
   }.
   
-  (*
-      fn env(&self) -> Env {
-          Self::init_env()
-      }
-  *)
   Parameter env : (ref Self) -> M updated_incrementer.Env.t.
   
   Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
     Notations.double_colon := env;
   }.
   
-  (*
-      pub fn new() -> Self {
-          unreachable!("Constructors are not called when upgrading using `set_code_hash`.")
-      }
-  *)
   Parameter new : M Self.
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
   }.
   
-  (*
-      pub fn inc(&mut self) {
-          self.count += 4;
-          println!(
-              "The new count is {}, it was modified using the updated `new_incrementer` code.",
-              self.count
-          );
-      }
-  *)
   Parameter inc : (mut_ref Self) -> M unit.
   
   Global Instance AssociatedFunction_inc : Notations.DoubleColon Self "inc" := {
     Notations.double_colon := inc;
   }.
   
-  (*
-      pub fn get(&self) -> u32 {
-          self.count
-      }
-  *)
   Parameter get : (ref Self) -> M u32.t.
   
   Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
     Notations.double_colon := get;
   }.
   
-  (*
-      pub fn set_code(&mut self, code_hash: Hash) {
-          self.env().set_code_hash(&code_hash).unwrap_or_else(|err| {
-              panic!("Failed to `set_code_hash` to {code_hash:?} due to {err:?}")
-          });
-          println!("Switched code hash to {:?}.", code_hash);
-      }
-  *)
   Parameter set_code :
       (mut_ref Self) -> ltac:(updated_incrementer.Hash) -> M unit.
   

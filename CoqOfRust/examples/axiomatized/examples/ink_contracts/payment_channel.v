@@ -16,9 +16,6 @@ Module  Impl_core_default_Default_for_payment_channel_AccountId_t.
 Section Impl_core_default_Default_for_payment_channel_AccountId_t.
   Definition Self : Set := payment_channel.AccountId.t.
   
-  (*
-  Default
-  *)
   Parameter default : M payment_channel.AccountId.t.
   
   Global Instance AssociatedFunction_default :
@@ -36,9 +33,6 @@ Module  Impl_core_clone_Clone_for_payment_channel_AccountId_t.
 Section Impl_core_clone_Clone_for_payment_channel_AccountId_t.
   Definition Self : Set := payment_channel.AccountId.t.
   
-  (*
-  Clone
-  *)
   Parameter clone : (ref Self) -> M payment_channel.AccountId.t.
   
   Global Instance AssociatedFunction_clone :
@@ -75,9 +69,6 @@ Module  Impl_core_cmp_PartialEq_for_payment_channel_AccountId_t.
 Section Impl_core_cmp_PartialEq_for_payment_channel_AccountId_t.
   Definition Self : Set := payment_channel.AccountId.t.
   
-  (*
-  PartialEq
-  *)
   Parameter eq : (ref Self) -> (ref payment_channel.AccountId.t) -> M bool.t.
   
   Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
@@ -106,9 +97,6 @@ Module  Impl_core_cmp_Eq_for_payment_channel_AccountId_t.
 Section Impl_core_cmp_Eq_for_payment_channel_AccountId_t.
   Definition Self : Set := payment_channel.AccountId.t.
   
-  (*
-  Eq
-  *)
   Parameter assert_receiver_is_total_eq : (ref Self) -> M unit.
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
@@ -127,11 +115,6 @@ Module  Impl_core_convert_From_array_u8_t_for_payment_channel_AccountId_t.
 Section Impl_core_convert_From_array_u8_t_for_payment_channel_AccountId_t.
   Definition Self : Set := payment_channel.AccountId.t.
   
-  (*
-      fn from(value: [u8; 32]) -> Self {
-          unimplemented!()
-      }
-  *)
   Parameter from : (array u8.t) -> M Self.
   
   Global Instance AssociatedFunction_from :
@@ -214,9 +197,6 @@ Module  Impl_core_cmp_PartialEq_for_payment_channel_Error_t.
 Section Impl_core_cmp_PartialEq_for_payment_channel_Error_t.
   Definition Self : Set := payment_channel.Error.t.
   
-  (*
-  PartialEq
-  *)
   Parameter eq : (ref Self) -> (ref payment_channel.Error.t) -> M bool.t.
   
   Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
@@ -245,9 +225,6 @@ Module  Impl_core_cmp_Eq_for_payment_channel_Error_t.
 Section Impl_core_cmp_Eq_for_payment_channel_Error_t.
   Definition Self : Set := payment_channel.Error.t.
   
-  (*
-  Eq
-  *)
   Parameter assert_receiver_is_total_eq : (ref Self) -> M unit.
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
@@ -297,11 +274,6 @@ Module  Impl_payment_channel_Env_t.
 Section Impl_payment_channel_Env_t.
   Definition Self : Set := payment_channel.Env.t.
   
-  (*
-      fn caller(&self) -> AccountId {
-          self.caller
-      }
-  *)
   Parameter caller : (ref Self) -> M payment_channel.AccountId.t.
   
   Global Instance AssociatedFunction_caller :
@@ -309,11 +281,6 @@ Section Impl_payment_channel_Env_t.
     Notations.double_colon := caller;
   }.
   
-  (*
-      fn emit_event(&self, _event: Event) {
-          unimplemented!()
-      }
-  *)
   Parameter emit_event : (ref Self) -> payment_channel.Event.t -> M unit.
   
   Global Instance AssociatedFunction_emit_event :
@@ -321,11 +288,6 @@ Section Impl_payment_channel_Env_t.
     Notations.double_colon := emit_event;
   }.
   
-  (*
-      fn terminate_contract(&self, sender: AccountId) {
-          unimplemented!()
-      }
-  *)
   Parameter terminate_contract :
       (ref Self) -> payment_channel.AccountId.t -> M unit.
   
@@ -334,11 +296,6 @@ Section Impl_payment_channel_Env_t.
     Notations.double_colon := terminate_contract;
   }.
   
-  (*
-      fn transfer(&self, recipient: AccountId, amount: Balance) -> Result<()> {
-          unimplemented!()
-      }
-  *)
   Parameter transfer :
       (ref Self) ->
         payment_channel.AccountId.t ->
@@ -350,11 +307,6 @@ Section Impl_payment_channel_Env_t.
     Notations.double_colon := transfer;
   }.
   
-  (*
-      fn block_timestamp(&self) -> Timestamp {
-          unimplemented!()
-      }
-  *)
   Parameter block_timestamp : (ref Self) -> M ltac:(payment_channel.Timestamp).
   
   Global Instance AssociatedFunction_block_timestamp :
@@ -362,11 +314,6 @@ Section Impl_payment_channel_Env_t.
     Notations.double_colon := block_timestamp;
   }.
   
-  (*
-      fn balance(&self) -> Balance {
-          unimplemented!()
-      }
-  *)
   Parameter balance : (ref Self) -> M ltac:(payment_channel.Balance).
   
   Global Instance AssociatedFunction_balance :
@@ -374,11 +321,6 @@ Section Impl_payment_channel_Env_t.
     Notations.double_colon := balance;
   }.
   
-  (*
-      fn account_id(&self) -> AccountId {
-          unimplemented!()
-      }
-  *)
   Parameter account_id : (ref Self) -> M payment_channel.AccountId.t.
   
   Global Instance AssociatedFunction_account_id :
@@ -419,14 +361,6 @@ Section CryptoHash.
 End CryptoHash.
 End CryptoHash.
 
-(*
-pub fn hash_encoded<H, T>(input: &T, output: &mut <H as HashOutput>::Type)
-where
-    H: CryptoHash,
-{
-    unimplemented!()
-}
-*)
 Parameter hash_encoded :
     forall {H T : Set} {ℋ_0 : payment_channel.CryptoHash.Trait H},
     (ref T) ->
@@ -437,15 +371,6 @@ Parameter hash_encoded :
       ->
       M unit.
 
-(*
-pub fn ecdsa_recover(
-    signature: &[u8; 65],
-    message_hash: &[u8; 32],
-    output: &mut [u8; 33],
-) -> Result<()> {
-    unimplemented!()
-}
-*)
 Parameter ecdsa_recover :
     (ref (array u8.t)) ->
       (ref (array u8.t)) ->
@@ -476,9 +401,6 @@ Module  Impl_payment_channel_HashOutput_for_payment_channel_Sha2x256_t.
 Section Impl_payment_channel_HashOutput_for_payment_channel_Sha2x256_t.
   Definition Self : Set := payment_channel.Sha2x256.t.
   
-  (*
-      type Type = [u8; 32];
-  *)
   Definition Type_ : Set := array u8.t.
   
   Global Instance ℐ : payment_channel.HashOutput.Trait Self := {
@@ -491,9 +413,6 @@ Module  Impl_payment_channel_HashOutput_for_payment_channel_Keccak256_t.
 Section Impl_payment_channel_HashOutput_for_payment_channel_Keccak256_t.
   Definition Self : Set := payment_channel.Keccak256.t.
   
-  (*
-      type Type = [u8; 32];
-  *)
   Definition Type_ : Set := array u8.t.
   
   Global Instance ℐ : payment_channel.HashOutput.Trait Self := {
@@ -506,9 +425,6 @@ Module  Impl_payment_channel_HashOutput_for_payment_channel_Blake2x256_t.
 Section Impl_payment_channel_HashOutput_for_payment_channel_Blake2x256_t.
   Definition Self : Set := payment_channel.Blake2x256.t.
   
-  (*
-      type Type = [u8; 32];
-  *)
   Definition Type_ : Set := array u8.t.
   
   Global Instance ℐ : payment_channel.HashOutput.Trait Self := {
@@ -521,9 +437,6 @@ Module  Impl_payment_channel_HashOutput_for_payment_channel_Blake2x128_t.
 Section Impl_payment_channel_HashOutput_for_payment_channel_Blake2x128_t.
   Definition Self : Set := payment_channel.Blake2x128.t.
   
-  (*
-      type Type = [u8; 16];
-  *)
   Definition Type_ : Set := array u8.t.
   
   Global Instance ℐ : payment_channel.HashOutput.Trait Self := {
@@ -536,11 +449,6 @@ Module  Impl_payment_channel_CryptoHash_for_payment_channel_Sha2x256_t.
 Section Impl_payment_channel_CryptoHash_for_payment_channel_Sha2x256_t.
   Definition Self : Set := payment_channel.Sha2x256.t.
   
-  (*
-      fn hash(input: &[u8], output: &mut <Self as HashOutput>::Type) {
-          unimplemented!()
-      }
-  *)
   Parameter hash :
       (ref (slice u8.t)) ->
         (mut_ref
@@ -565,11 +473,6 @@ Module  Impl_payment_channel_CryptoHash_for_payment_channel_Keccak256_t.
 Section Impl_payment_channel_CryptoHash_for_payment_channel_Keccak256_t.
   Definition Self : Set := payment_channel.Keccak256.t.
   
-  (*
-      fn hash(input: &[u8], output: &mut <Self as HashOutput>::Type) {
-          unimplemented!()
-      }
-  *)
   Parameter hash :
       (ref (slice u8.t)) ->
         (mut_ref
@@ -594,11 +497,6 @@ Module  Impl_payment_channel_CryptoHash_for_payment_channel_Blake2x256_t.
 Section Impl_payment_channel_CryptoHash_for_payment_channel_Blake2x256_t.
   Definition Self : Set := payment_channel.Blake2x256.t.
   
-  (*
-      fn hash(input: &[u8], output: &mut <Self as HashOutput>::Type) {
-          unimplemented!()
-      }
-  *)
   Parameter hash :
       (ref (slice u8.t)) ->
         (mut_ref
@@ -623,11 +521,6 @@ Module  Impl_payment_channel_CryptoHash_for_payment_channel_Blake2x128_t.
 Section Impl_payment_channel_CryptoHash_for_payment_channel_Blake2x128_t.
   Definition Self : Set := payment_channel.Blake2x128.t.
   
-  (*
-      fn hash(input: &[u8], output: &mut <Self as HashOutput>::Type) {
-          unimplemented!()
-      }
-  *)
   Parameter hash :
       (ref (slice u8.t)) ->
         (mut_ref
@@ -652,11 +545,6 @@ Module  Impl_payment_channel_PaymentChannel_t.
 Section Impl_payment_channel_PaymentChannel_t.
   Definition Self : Set := payment_channel.PaymentChannel.t.
   
-  (*
-      fn init_env() -> Env {
-          unimplemented!()
-      }
-  *)
   Parameter init_env : M payment_channel.Env.t.
   
   Global Instance AssociatedFunction_init_env :
@@ -664,32 +552,12 @@ Section Impl_payment_channel_PaymentChannel_t.
     Notations.double_colon := init_env;
   }.
   
-  (*
-      fn env(&self) -> Env {
-          Self::init_env()
-      }
-  *)
   Parameter env : (ref Self) -> M payment_channel.Env.t.
   
   Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
     Notations.double_colon := env;
   }.
   
-  (*
-      fn is_signature_valid(&self, amount: Balance, signature: [u8; 65]) -> bool {
-          let encodable = (self.env().account_id(), amount);
-          let mut message = <Sha2x256 as HashOutput>::Type::default();
-          hash_encoded::<Sha2x256, _>(&encodable, &mut message);
-  
-          let mut pub_key = [0; 33];
-          ecdsa_recover(&signature, &message, &mut pub_key)
-              .unwrap_or_else(|err| panic!("recover failed: {err:?}"));
-          let mut signature_account_id = [0; 32];
-          <Blake2x256 as CryptoHash>::hash(&pub_key, &mut signature_account_id);
-  
-          self.recipient == signature_account_id.into()
-      }
-  *)
   Parameter is_signature_valid :
       (ref Self) -> ltac:(payment_channel.Balance) -> (array u8.t) -> M bool.t.
   
@@ -698,17 +566,6 @@ Section Impl_payment_channel_PaymentChannel_t.
     Notations.double_colon := is_signature_valid;
   }.
   
-  (*
-      pub fn new(recipient: AccountId, close_duration: Timestamp) -> Self {
-          Self {
-              sender: Self::init_env().caller(),
-              recipient,
-              expiration: None,
-              withdrawn: 0,
-              close_duration,
-          }
-      }
-  *)
   Parameter new :
       payment_channel.AccountId.t -> ltac:(payment_channel.Timestamp) -> M Self.
   
@@ -716,28 +573,6 @@ Section Impl_payment_channel_PaymentChannel_t.
     Notations.double_colon := new;
   }.
   
-  (*
-      fn close_inner(&mut self, amount: Balance, signature: [u8; 65]) -> Result<()> {
-          if self.env().caller() != self.recipient {
-              return Err(Error::CallerIsNotRecipient);
-          }
-  
-          if amount < self.withdrawn {
-              return Err(Error::AmountIsLessThanWithdrawn);
-          }
-  
-          // Signature validation
-          if !self.is_signature_valid(amount, signature) {
-              return Err(Error::InvalidSignature);
-          }
-  
-          self.env()
-              .transfer(self.recipient, amount - self.withdrawn)
-              .map_err(|_| Error::TransferFailed)?;
-  
-          Ok(())
-      }
-  *)
   Parameter close_inner :
       (mut_ref Self) ->
         ltac:(payment_channel.Balance) ->
@@ -749,14 +584,6 @@ Section Impl_payment_channel_PaymentChannel_t.
     Notations.double_colon := close_inner;
   }.
   
-  (*
-      pub fn close(&mut self, amount: Balance, signature: [u8; 65]) -> Result<()> {
-          self.close_inner(amount, signature)?;
-          self.env().terminate_contract(self.sender);
-  
-          Ok(())
-      }
-  *)
   Parameter close :
       (mut_ref Self) ->
         ltac:(payment_channel.Balance) ->
@@ -768,26 +595,6 @@ Section Impl_payment_channel_PaymentChannel_t.
     Notations.double_colon := close;
   }.
   
-  (*
-      pub fn start_sender_close(&mut self) -> Result<()> {
-          if self.env().caller() != self.sender {
-              return Err(Error::CallerIsNotSender);
-          }
-  
-          let now = self.env().block_timestamp();
-          let expiration = now + self.close_duration;
-  
-          self.env()
-              .emit_event(Event::SenderCloseStarted(SenderCloseStarted {
-                  expiration,
-                  close_duration: self.close_duration,
-              }));
-  
-          self.expiration = Some(expiration);
-  
-          Ok(())
-      }
-  *)
   Parameter start_sender_close :
       (mut_ref Self) -> M ltac:(payment_channel.Result unit).
   
@@ -796,26 +603,6 @@ Section Impl_payment_channel_PaymentChannel_t.
     Notations.double_colon := start_sender_close;
   }.
   
-  (*
-      pub fn claim_timeout(&mut self) -> Result<()> {
-          match self.expiration {
-              Some(expiration) => {
-                  // expiration is set. Check if it's reached and if so, release the
-                  // funds and terminate the contract.
-                  let now = self.env().block_timestamp();
-                  if now < expiration {
-                      return Err(Error::NotYetExpired);
-                  }
-  
-                  self.env().terminate_contract(self.sender);
-  
-                  Ok(())
-              }
-  
-              None => Err(Error::NotYetExpired),
-          }
-      }
-  *)
   Parameter claim_timeout :
       (mut_ref Self) -> M ltac:(payment_channel.Result unit).
   
@@ -824,32 +611,6 @@ Section Impl_payment_channel_PaymentChannel_t.
     Notations.double_colon := claim_timeout;
   }.
   
-  (*
-      pub fn withdraw(&mut self, amount: Balance, signature: [u8; 65]) -> Result<()> {
-          if self.env().caller() != self.recipient {
-              return Err(Error::CallerIsNotRecipient);
-          }
-  
-          // Signature validation
-          if !self.is_signature_valid(amount, signature) {
-              return Err(Error::InvalidSignature);
-          }
-  
-          // Make sure there's something to withdraw (guards against underflow)
-          if amount < self.withdrawn {
-              return Err(Error::AmountIsLessThanWithdrawn);
-          }
-  
-          let amount_to_withdraw = amount - self.withdrawn;
-          self.withdrawn += amount_to_withdraw;
-  
-          self.env()
-              .transfer(self.recipient, amount_to_withdraw)
-              .map_err(|_| Error::TransferFailed)?;
-  
-          Ok(())
-      }
-  *)
   Parameter withdraw :
       (mut_ref Self) ->
         ltac:(payment_channel.Balance) ->
@@ -861,11 +622,6 @@ Section Impl_payment_channel_PaymentChannel_t.
     Notations.double_colon := withdraw;
   }.
   
-  (*
-      pub fn get_sender(&self) -> AccountId {
-          self.sender
-      }
-  *)
   Parameter get_sender : (ref Self) -> M payment_channel.AccountId.t.
   
   Global Instance AssociatedFunction_get_sender :
@@ -873,11 +629,6 @@ Section Impl_payment_channel_PaymentChannel_t.
     Notations.double_colon := get_sender;
   }.
   
-  (*
-      pub fn get_recipient(&self) -> AccountId {
-          self.recipient
-      }
-  *)
   Parameter get_recipient : (ref Self) -> M payment_channel.AccountId.t.
   
   Global Instance AssociatedFunction_get_recipient :
@@ -885,11 +636,6 @@ Section Impl_payment_channel_PaymentChannel_t.
     Notations.double_colon := get_recipient;
   }.
   
-  (*
-      pub fn get_expiration(&self) -> Option<Timestamp> {
-          self.expiration
-      }
-  *)
   Parameter get_expiration :
       (ref Self) -> M (core.option.Option.t ltac:(payment_channel.Timestamp)).
   
@@ -898,11 +644,6 @@ Section Impl_payment_channel_PaymentChannel_t.
     Notations.double_colon := get_expiration;
   }.
   
-  (*
-      pub fn get_withdrawn(&self) -> Balance {
-          self.withdrawn
-      }
-  *)
   Parameter get_withdrawn : (ref Self) -> M ltac:(payment_channel.Balance).
   
   Global Instance AssociatedFunction_get_withdrawn :
@@ -910,11 +651,6 @@ Section Impl_payment_channel_PaymentChannel_t.
     Notations.double_colon := get_withdrawn;
   }.
   
-  (*
-      pub fn get_close_duration(&self) -> Timestamp {
-          self.close_duration
-      }
-  *)
   Parameter get_close_duration :
       (ref Self) -> M ltac:(payment_channel.Timestamp).
   
@@ -923,11 +659,6 @@ Section Impl_payment_channel_PaymentChannel_t.
     Notations.double_colon := get_close_duration;
   }.
   
-  (*
-      pub fn get_balance(&self) -> Balance {
-          self.env().balance()
-      }
-  *)
   Parameter get_balance : (ref Self) -> M ltac:(payment_channel.Balance).
   
   Global Instance AssociatedFunction_get_balance :

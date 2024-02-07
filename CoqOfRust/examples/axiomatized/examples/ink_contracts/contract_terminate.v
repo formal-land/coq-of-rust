@@ -16,9 +16,6 @@ Module  Impl_core_default_Default_for_contract_terminate_AccountId_t.
 Section Impl_core_default_Default_for_contract_terminate_AccountId_t.
   Definition Self : Set := contract_terminate.AccountId.t.
   
-  (*
-  Default
-  *)
   Parameter default : M contract_terminate.AccountId.t.
   
   Global Instance AssociatedFunction_default :
@@ -36,9 +33,6 @@ Module  Impl_core_clone_Clone_for_contract_terminate_AccountId_t.
 Section Impl_core_clone_Clone_for_contract_terminate_AccountId_t.
   Definition Self : Set := contract_terminate.AccountId.t.
   
-  (*
-  Clone
-  *)
   Parameter clone : (ref Self) -> M contract_terminate.AccountId.t.
   
   Global Instance AssociatedFunction_clone :
@@ -77,11 +71,6 @@ Module  Impl_contract_terminate_Env_t.
 Section Impl_contract_terminate_Env_t.
   Definition Self : Set := contract_terminate.Env.t.
   
-  (*
-      fn caller(&self) -> AccountId {
-          self.caller
-      }
-  *)
   Parameter caller : (ref Self) -> M contract_terminate.AccountId.t.
   
   Global Instance AssociatedFunction_caller :
@@ -89,11 +78,6 @@ Section Impl_contract_terminate_Env_t.
     Notations.double_colon := caller;
   }.
   
-  (*
-      fn terminate_contract(&self, _account: AccountId) {
-          unimplemented!()
-      }
-  *)
   Parameter terminate_contract :
       (ref Self) -> contract_terminate.AccountId.t -> M unit.
   
@@ -114,11 +98,6 @@ Module  Impl_contract_terminate_JustTerminate_t.
 Section Impl_contract_terminate_JustTerminate_t.
   Definition Self : Set := contract_terminate.JustTerminate.t.
   
-  (*
-      fn init_env() -> Env {
-          unimplemented!()
-      }
-  *)
   Parameter init_env : M contract_terminate.Env.t.
   
   Global Instance AssociatedFunction_init_env :
@@ -126,33 +105,18 @@ Section Impl_contract_terminate_JustTerminate_t.
     Notations.double_colon := init_env;
   }.
   
-  (*
-      fn env(&self) -> Env {
-          Self::init_env()
-      }
-  *)
   Parameter env : (ref Self) -> M contract_terminate.Env.t.
   
   Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
     Notations.double_colon := env;
   }.
   
-  (*
-      pub fn new() -> Self {
-          Self {}
-      }
-  *)
   Parameter new : M Self.
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
   }.
   
-  (*
-      pub fn terminate_me(&mut self) {
-          self.env().terminate_contract(self.env().caller());
-      }
-  *)
   Parameter terminate_me : (mut_ref Self) -> M unit.
   
   Global Instance AssociatedFunction_terminate_me :

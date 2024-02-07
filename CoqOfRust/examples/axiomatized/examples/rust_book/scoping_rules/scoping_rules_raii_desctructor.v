@@ -11,11 +11,6 @@ Module  Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop_t.
 Section Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop_t.
   Definition Self : Set := scoping_rules_raii_desctructor.ToDrop.t.
   
-  (*
-      fn drop(&mut self) {
-          println!("ToDrop is being dropped");
-      }
-  *)
   Parameter drop : (mut_ref Self) -> M unit.
   
   Global Instance AssociatedFunction_drop :
@@ -29,11 +24,5 @@ Section Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop_t.
 End Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop_t.
 End Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop_t.
 
-(*
-fn main() {
-    let x = ToDrop;
-    println!("Made a ToDrop!");
-}
-*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : M unit.

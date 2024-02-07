@@ -30,11 +30,6 @@ Module  Impl_generics_associated_types_problem_Contains_i32_t_i32_t_for_generics
 Section Impl_generics_associated_types_problem_Contains_i32_t_i32_t_for_generics_associated_types_problem_Container_t.
   Definition Self : Set := generics_associated_types_problem.Container.t.
   
-  (*
-      fn contains(&self, number_1: &i32, number_2: &i32) -> bool {
-          (&self.0 == number_1) && (&self.1 == number_2)
-      }
-  *)
   Parameter contains : (ref Self) -> (ref i32.t) -> (ref i32.t) -> M bool.t.
   
   Global Instance AssociatedFunction_contains :
@@ -42,11 +37,6 @@ Section Impl_generics_associated_types_problem_Contains_i32_t_i32_t_for_generics
     Notations.double_colon := contains;
   }.
   
-  (*
-      fn first(&self) -> i32 {
-          self.0
-      }
-  *)
   Parameter first : (ref Self) -> M i32.t.
   
   Global Instance AssociatedFunction_first :
@@ -54,11 +44,6 @@ Section Impl_generics_associated_types_problem_Contains_i32_t_i32_t_for_generics
     Notations.double_colon := first;
   }.
   
-  (*
-      fn last(&self) -> i32 {
-          self.1
-      }
-  *)
   Parameter last : (ref Self) -> M i32.t.
   
   Global Instance AssociatedFunction_last :
@@ -77,14 +62,6 @@ Section Impl_generics_associated_types_problem_Contains_i32_t_i32_t_for_generics
 End Impl_generics_associated_types_problem_Contains_i32_t_i32_t_for_generics_associated_types_problem_Container_t.
 End Impl_generics_associated_types_problem_Contains_i32_t_i32_t_for_generics_associated_types_problem_Container_t.
 
-(*
-fn difference<A, B, C>(container: &C) -> i32
-where
-    C: Contains<A, B>,
-{
-    container.last() - container.first()
-}
-*)
 Parameter difference :
     forall
       {A B C : Set}
@@ -92,24 +69,5 @@ Parameter difference :
         generics_associated_types_problem.Contains.Trait C (A := A) (B := B)},
     (ref C) -> M i32.t.
 
-(*
-fn main() {
-    let number_1 = 3;
-    let number_2 = 10;
-
-    let container = Container(number_1, number_2);
-
-    println!(
-        "Does container contain {} and {}: {}",
-        &number_1,
-        &number_2,
-        container.contains(&number_1, &number_2)
-    );
-    println!("First number: {}", container.first());
-    println!("Last number: {}", container.last());
-
-    println!("The difference is: {}", difference(&container));
-}
-*)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : M unit.
