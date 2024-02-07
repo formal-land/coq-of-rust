@@ -94,10 +94,10 @@ pub trait Hash {
 Module Hash.
   Module Required.
     Class Trait (Self : Set) : Set := {
-      hash {H : Set} {H0 : Hasher.Trait H} : ref Self -> mut_ref H -> M unit;
+      hash {H : Set} : ref Self -> mut_ref H -> M unit;
       hash_slice :
         Datatypes.option (
-          forall (H : Set) (H0 : Hasher.Trait H),
+          forall (H : Set),
           ref (slice Self) -> mut_ref H -> M unit
         );
     }.
@@ -105,22 +105,21 @@ Module Hash.
 
   Module Provided.
     Parameter hash_slice :
-      forall {Self : Set} {H0 : Required.Trait Self},
-      forall {H : Set} {H0 : Hasher.Trait H},
+      forall {Self : Set} {H : Set},
       ref (slice Self) -> mut_ref H -> M unit.
   End Provided.
 
   Class Trait (Self : Set) : Set := {
-    hash {H : Set} {H0 : Hasher.Trait H} : ref Self -> mut_ref H -> M unit;
-    hash_slice {H : Set} {H0 : Hasher.Trait H} :
+    hash {H : Set} : ref Self -> mut_ref H -> M unit;
+    hash_slice {H : Set} :
       ref (slice Self) -> mut_ref H -> M unit;
   }.
 
   Global Instance From_Required {Self : Set}
       {H0 : Required.Trait Self} :
       Trait Self := {
-    hash {H : Set} {H0 : Hasher.Trait H} := Required.hash (H := H);
-    hash_slice {H : Set} {H0 : Hasher.Trait H} := Provided.hash_slice (H := H);
+    hash {H : Set} := Required.hash (H := H);
+    hash_slice {H : Set} := Provided.hash_slice (H := H);
   }.
 End Hash.
 
@@ -145,8 +144,6 @@ Module BuilHasher.
       Hasher := Hasher;
       build_hasher : ref Self -> Hasher;
       hash_one (T : Set) 
-        `{Hash.Trait T}
-        `{Hasher.Trait Hasher}
         : ref Self -> T -> u64.t;
   }.
 End BuilHasher.
