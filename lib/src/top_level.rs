@@ -332,12 +332,6 @@ fn check_coq_axiom_lint_in_attributes<'a, Item: Into<rustc_hir::OwnerNode<'a>>>(
     check_lint_attribute(tcx, item, "coq_axiom")
 }
 
-/// We deduplicate items while keeping there order. Often, items are duplicated
-/// due to module imports or such.
-fn deduplicate_top_level_items(items: Vec<Rc<TopLevelItem>>) -> Vec<Rc<TopLevelItem>> {
-    items.into_iter().unique().collect()
-}
-
 fn is_top_level_item_public(tcx: &TyCtxt, env: &Env, item: &Item) -> bool {
     let def_id = item.owner_id.to_def_id();
     let ignore_impls = env.configuration.impl_ignore_axioms.contains(&env.file);
@@ -448,19 +442,14 @@ fn compile_top_level_item_without_local_items(
             let context = get_full_name(tcx, item.hir_id());
             let mut items: Vec<ItemId> = module.item_ids.to_vec();
             reorder_definitions_inplace(tcx, env, &context, &mut items);
-            let items = deduplicate_top_level_items(
-                items
-                    .iter()
-                    .flat_map(|item_id| {
-                        let item = tcx.hir().item(*item_id);
-                        compile_top_level_item(tcx, env, item)
-                    })
-                    .collect(),
-            );
-            // We remove empty modules in the translation
-            if items.is_empty() {
-                return vec![];
-            }
+            let items: Vec<_> = items
+                .iter()
+                .flat_map(|item_id| {
+                    let item = tcx.hir().item(*item_id);
+                    compile_top_level_item(tcx, env, item)
+                })
+                .collect();
+
             vec![Rc::new(TopLevelItem::Module {
                 name,
                 body: Rc::new(TopLevel(items)),
@@ -1116,15 +1105,13 @@ fn compile_top_level(tcx: &TyCtxt, opts: TopLevelOptions) -> Rc<TopLevel> {
     let mut results = get_item_ids_for_parent(tcx, rustc_hir::def_id::CRATE_DEF_ID.into());
     reorder_definitions_inplace(tcx, &mut env, "top_level", &mut results);
 
-    let results = deduplicate_top_level_items(
-        results
-            .iter()
-            .flat_map(|item_id| {
-                let item = tcx.hir().item(*item_id);
-                compile_top_level_item(tcx, &mut env, item)
-            })
-            .collect(),
-    );
+    let results = results
+        .iter()
+        .flat_map(|item_id| {
+            let item = tcx.hir().item(*item_id);
+            compile_top_level_item(tcx, &mut env, item)
+        })
+        .collect();
 
     if opts.generate_reorder {
         let json = serde_json::json!({ "reorder": HashMap::from([(env.file.to_string(), env.reorder_map)])});

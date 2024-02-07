@@ -97,6 +97,8 @@ Definition create_fnmut : M _ (* OpaqueTy *) :=
         M unit) in
   M.read α0.
 
+Error OpaqueTy.
+
 (*
 fn create_fnonce() -> impl FnOnce() {
     let text = "FnOnce".to_owned();
@@ -143,6 +145,8 @@ Definition create_fnonce : M _ (* OpaqueTy *) :=
           ]) :
         M unit) in
   M.read α0.
+
+Error OpaqueTy.
 
 (*
 fn main() {
