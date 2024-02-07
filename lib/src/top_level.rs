@@ -78,7 +78,6 @@ enum ImplItemKind {
     },
 }
 
-
 #[derive(Debug, Eq, Hash, PartialEq)]
 struct TraitBound {
     name: Path,
@@ -549,8 +548,7 @@ fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<Rc<To
                     .map(|item| {
                         let item = tcx.hir().trait_item(item.id);
                         let ty_params = get_ty_params_names(env, item.generics);
-                        let body =
-                            compile_trait_item_body(tcx, env, ty_params, item);
+                        let body = compile_trait_item_body(tcx, env, ty_params, item);
                         (to_valid_coq_name(item.ident.name.as_str()), body)
                     })
                     .collect(),
@@ -1069,10 +1067,7 @@ impl FnSigAndBody {
 
 fn mt_trait_item(body: Rc<TraitItem>) -> Rc<TraitItem> {
     match &*body {
-        TraitItem::Definition {
-            ty_params,
-            ty,
-        } => Rc::new(TraitItem::Definition {
+        TraitItem::Definition { ty_params, ty } => Rc::new(TraitItem::Definition {
             ty_params: ty_params.clone(),
             ty: mt_ty(ty.clone()),
         }),
@@ -2027,51 +2022,45 @@ impl TopLevelItem {
                         )
                     })
                     .collect::<Vec<_>>(),
-                &[
-                    body.iter()
-                        .map(|(name, item)| match &**item {
-                            TraitItem::Definition {
-                                ty_params,
-                                ty,
-                            } => vec![coq::ClassFieldDef::new(
-                                &Some(name.to_owned()),
-                                &[
-                                    optional_insert_vec(
-                                        ty_params.is_empty(),
-                                        vec![coq::ArgDecl::new(
-                                            &coq::ArgDeclVar::Simple {
-                                                idents: ty_params.to_owned(),
-                                                ty: Some(coq::Expression::Set),
-                                            },
-                                            coq::ArgSpecKind::Implicit,
-                                        )],
-                                    ),
-                                ]
-                                .concat(),
-                                &ty.to_coq(),
-                            )],
-                            TraitItem::DefinitionWithDefault { .. } => vec![],
-                            TraitItem::Type(bounds) => [
-                                vec![coq::ClassFieldDef::new(
-                                    &Some(name.to_owned()),
-                                    &[],
-                                    &coq::Expression::Set,
+                &[body
+                    .iter()
+                    .map(|(name, item)| match &**item {
+                        TraitItem::Definition { ty_params, ty } => vec![coq::ClassFieldDef::new(
+                            &Some(name.to_owned()),
+                            &[optional_insert_vec(
+                                ty_params.is_empty(),
+                                vec![coq::ArgDecl::new(
+                                    &coq::ArgDeclVar::Simple {
+                                        idents: ty_params.to_owned(),
+                                        ty: Some(coq::Expression::Set),
+                                    },
+                                    coq::ArgSpecKind::Implicit,
                                 )],
-                                bounds
-                                    .iter()
-                                    .map(|bound| {
-                                        coq::ClassFieldDef::new(
-                                            &None,
-                                            &[],
-                                            &bound.to_coq(coq::Expression::just_name(name)),
-                                        )
-                                    })
-                                    .collect::<Vec<_>>(),
-                            ]
+                            )]
                             .concat(),
-                        })
+                            &ty.to_coq(),
+                        )],
+                        TraitItem::DefinitionWithDefault { .. } => vec![],
+                        TraitItem::Type(bounds) => [
+                            vec![coq::ClassFieldDef::new(
+                                &Some(name.to_owned()),
+                                &[],
+                                &coq::Expression::Set,
+                            )],
+                            bounds
+                                .iter()
+                                .map(|bound| {
+                                    coq::ClassFieldDef::new(
+                                        &None,
+                                        &[],
+                                        &bound.to_coq(coq::Expression::just_name(name)),
+                                    )
+                                })
+                                .collect::<Vec<_>>(),
+                        ]
                         .concat(),
-                ]
+                    })
+                    .concat()]
                 .concat(),
                 &body
                     .iter()
