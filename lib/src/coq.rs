@@ -266,8 +266,6 @@ pub(crate) enum ArgDeclVar<'a> {
         /// a type of the identifiers
         ty: Expression<'a>,
     },
-    /// a declaration of traits
-    Traits { traits: Vec<Expression<'a>> },
     /// a destructured argument
     #[allow(dead_code)]
     Destructured { pattern: Expression<'a> },
@@ -1160,7 +1158,6 @@ impl<'a> ArgDecl<'a> {
         match self.decl.to_owned() {
             ArgDeclVar::Simple { idents, .. } => idents.is_empty(),
             ArgDeclVar::Generalized { .. } => false, // ty would always be exist
-            ArgDeclVar::Traits { traits } => traits.is_empty(),
             ArgDeclVar::Destructured { .. } => false,
         }
     }
@@ -1203,17 +1200,6 @@ impl<'a> ArgDecl<'a> {
                     ty.to_doc(false),
                 ])),
             ]),
-            ArgDeclVar::Traits { traits } => intersperse(
-                traits.iter().enumerate().map(|(i, r#trait)| {
-                    brackets(nest([
-                        text(format!("ℋ_{i}")),
-                        text(" :"),
-                        line(),
-                        r#trait.to_doc(false),
-                    ]))
-                }),
-                [line()],
-            ),
             ArgDeclVar::Destructured { pattern } => {
                 group([text("'"), brackets(pattern.to_doc(false))])
             }

@@ -14,8 +14,6 @@ Module  Impl_generics_where_clauses_PrintInOption_for_T.
 Section Impl_generics_where_clauses_PrintInOption_for_T.
   Context {T : Set}.
   
-  Context {ℋ_0 : core.fmt.Debug.Trait (core.option.Option.t T)}.
-  
   Definition Self : Set := T.
   
   (*
