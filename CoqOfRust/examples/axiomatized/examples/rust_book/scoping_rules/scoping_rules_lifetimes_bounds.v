@@ -18,8 +18,6 @@ Module  Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_t_T.
 Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_t_T.
   Context {T : Set}.
   
-  Context {ℋ_0 : core.fmt.Debug.Trait T}.
-  
   Definition Self : Set := scoping_rules_lifetimes_bounds.Ref.t T.
   
   Parameter fmt :

@@ -547,8 +547,6 @@ Module  Impl_subtle_ConstantTimeEq_for_slice_T.
 Section Impl_subtle_ConstantTimeEq_for_slice_T.
   Context {T : Set}.
   
-  Context {ℋ_0 : subtle.ConstantTimeEq.Trait T}.
-  
   Definition Self : Set := slice T.
   
   (*
@@ -1318,7 +1316,6 @@ End Impl_subtle_ConstantTimeEq_for_isize_t.
 Module  ConditionallySelectable.
 Section ConditionallySelectable.
   Class Trait (Self : Set) : Type := {
-    ℒ_0 :: core.marker.Copy.Trait Self;
     conditional_select : (ref Self) -> (ref Self) -> subtle.Choice.t -> M Self;
   }.
   
@@ -2652,10 +2649,6 @@ Module  Impl_subtle_ConditionallyNegatable_for_T.
 Section Impl_subtle_ConditionallyNegatable_for_T.
   Context {T : Set}.
   
-  Context
-    {ℋ_0 : subtle.ConditionallySelectable.Trait T}
-    {ℋ_1 : core.ops.arith.Neg.Trait (ref T)}.
-  
   Definition Self : Set := T.
   
   (*
@@ -2726,8 +2719,6 @@ Module  Impl_core_clone_Clone_for_subtle_CtOption_t_T.
 Section Impl_core_clone_Clone_for_subtle_CtOption_t_T.
   Context {T : Set}.
   
-  Context {ℋ_0 : core.clone.Clone.Trait T}.
-  
   Definition Self : Set := subtle.CtOption.t T.
   
   (*
@@ -2765,8 +2756,6 @@ Module  Impl_core_marker_Copy_for_subtle_CtOption_t_T.
 Section Impl_core_marker_Copy_for_subtle_CtOption_t_T.
   Context {T : Set}.
   
-  Context {ℋ_0 : core.marker.Copy.Trait T}.
-  
   Definition Self : Set := subtle.CtOption.t T.
   
   Global Instance ℐ : core.marker.Copy.Trait Self := {
@@ -2777,8 +2766,6 @@ End Impl_core_marker_Copy_for_subtle_CtOption_t_T.
 Module  Impl_core_fmt_Debug_for_subtle_CtOption_t_T.
 Section Impl_core_fmt_Debug_for_subtle_CtOption_t_T.
   Context {T : Set}.
-  
-  Context {ℋ_0 : core.fmt.Debug.Trait T}.
   
   Definition Self : Set := subtle.CtOption.t T.
   
@@ -3298,8 +3285,6 @@ Module  Impl_subtle_ConditionallySelectable_for_subtle_CtOption_t_T.
 Section Impl_subtle_ConditionallySelectable_for_subtle_CtOption_t_T.
   Context {T : Set}.
   
-  Context {ℋ_0 : subtle.ConditionallySelectable.Trait T}.
-  
   Definition Self : Set := subtle.CtOption.t T.
   
   (*
@@ -3368,8 +3353,6 @@ End Impl_subtle_ConditionallySelectable_for_subtle_CtOption_t_T.
 Module  Impl_subtle_ConstantTimeEq_for_subtle_CtOption_t_T.
 Section Impl_subtle_ConstantTimeEq_for_subtle_CtOption_t_T.
   Context {T : Set}.
-  
-  Context {ℋ_0 : subtle.ConstantTimeEq.Trait T}.
   
   Definition Self : Set := subtle.CtOption.t T.
   
@@ -4082,11 +4065,10 @@ End Impl_subtle_ConstantTimeGreater_for_u64_t.
 
 Module  ConstantTimeLess.
 Section ConstantTimeLess.
+  Unset Primitive Projections.
   Class Trait (Self : Set) : Type := {
-    ℒ_0 :: subtle.ConstantTimeEq.Trait Self;
-    ℒ_1 :: subtle.ConstantTimeGreater.Trait Self;
   }.
-  
+  Global Set Primitive Projections.
 End ConstantTimeLess.
 End ConstantTimeLess.
 
