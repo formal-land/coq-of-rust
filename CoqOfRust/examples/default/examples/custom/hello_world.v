@@ -53,7 +53,8 @@ Definition main : M unit :=
       let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
       let* α3 : core.fmt.rt.Argument.t :=
         M.call
-          (core.fmt.rt.Argument.t::["new_display"] (borrow test0.message)) in
+          (core.fmt.rt.Argument.t::["new_display"]
+            (borrow hello_world.message)) in
       let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
       let* α5 : core.fmt.Arguments.t :=
         M.call

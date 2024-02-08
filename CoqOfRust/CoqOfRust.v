@@ -113,6 +113,7 @@ Require CoqOfRust.core.option.
 Require CoqOfRust.core.panic.
 Require CoqOfRust.core.panicking.
 Require CoqOfRust.core.primitive.
+Require CoqOfRust.core.ptr.
 Require CoqOfRust.core.result.
 Require CoqOfRust.core.slice.
 Require CoqOfRust.core.str.
@@ -142,6 +143,7 @@ Module core.
   Export CoqOfRust.core.panic.
   Export CoqOfRust.core.panicking.
   Export CoqOfRust.core.primitive.
+  Export CoqOfRust.core.ptr.
   Export CoqOfRust.core.result.
   Export CoqOfRust.core.slice.
   Export CoqOfRust.core.str.
@@ -175,7 +177,6 @@ Require CoqOfRust.std.path.
 Require CoqOfRust.std.pin.
 Require CoqOfRust.std.prelude.
 Require CoqOfRust.std.process.
-Require CoqOfRust.std.ptr.
 Require CoqOfRust.std.simd.
 Require CoqOfRust.std.str.
 Require CoqOfRust.std.sync.
@@ -207,7 +208,6 @@ Module std.
   Export CoqOfRust.std.pin.
   Export CoqOfRust.std.prelude.
   Export CoqOfRust.std.process.
-  Export CoqOfRust.std.ptr.
   Export CoqOfRust.std.simd.
   Export CoqOfRust.std.str.
   Export CoqOfRust.std.sync.
