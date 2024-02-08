@@ -13,7 +13,6 @@ End Person.
 Module  Student.
 Section Student.
   Class Trait (Self : Set) : Type := {
-    ℒ_0 :: supertraits.Person.Trait Self;
     university : (ref Self) -> M alloc.string.String.t;
   }.
   
@@ -32,8 +31,6 @@ End Programmer.
 Module  CompSciStudent.
 Section CompSciStudent.
   Class Trait (Self : Set) : Type := {
-    ℒ_0 :: supertraits.Programmer.Trait Self;
-    ℒ_1 :: supertraits.Student.Trait Self;
     git_username : (ref Self) -> M alloc.string.String.t;
   }.
   
@@ -53,7 +50,6 @@ fn comp_sci_student_greeting(student: &dyn CompSciStudent) -> String {
 *)
 Definition comp_sci_student_greeting
     {DynT : Set}
-    {ℋ_0 : supertraits.CompSciStudent.Trait.Trait DynT}
     (student : ref DynT)
     : M alloc.string.String.t :=
   let* student := M.alloc student in

@@ -21,10 +21,6 @@ Module  Impl_core_default_Default_for_mapping_integration_tests_Mapping_t_K_V.
 Section Impl_core_default_Default_for_mapping_integration_tests_Mapping_t_K_V.
   Context {K V : Set}.
   
-  Context
-    {ℋ_0 : core.default.Default.Trait K}
-    {ℋ_1 : core.default.Default.Trait V}.
-  
   Definition Self : Set := mapping_integration_tests.Mapping.t K V.
   
   Parameter default : M (mapping_integration_tests.Mapping.t K V).

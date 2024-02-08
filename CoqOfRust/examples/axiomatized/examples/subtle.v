@@ -260,8 +260,6 @@ Module  Impl_subtle_ConstantTimeEq_for_slice_T.
 Section Impl_subtle_ConstantTimeEq_for_slice_T.
   Context {T : Set}.
   
-  Context {ℋ_0 : subtle.ConstantTimeEq.Trait T}.
-  
   Definition Self : Set := slice T.
   
   Parameter ct_eq : (ref Self) -> (ref (slice T)) -> M subtle.Choice.t.
@@ -479,7 +477,6 @@ End Impl_subtle_ConstantTimeEq_for_isize_t.
 Module  ConditionallySelectable.
 Section ConditionallySelectable.
   Class Trait (Self : Set) : Type := {
-    ℒ_0 :: core.marker.Copy.Trait Self;
     conditional_select : (ref Self) -> (ref Self) -> subtle.Choice.t -> M Self;
   }.
   
@@ -823,10 +820,6 @@ Module  Impl_subtle_ConditionallyNegatable_for_T.
 Section Impl_subtle_ConditionallyNegatable_for_T.
   Context {T : Set}.
   
-  Context
-    {ℋ_0 : subtle.ConditionallySelectable.Trait T}
-    {ℋ_1 : core.ops.arith.Neg.Trait (ref T)}.
-  
   Definition Self : Set := T.
   
   Parameter conditional_negate : (mut_ref Self) -> subtle.Choice.t -> M unit.
@@ -864,8 +857,6 @@ Module  Impl_core_clone_Clone_for_subtle_CtOption_t_T.
 Section Impl_core_clone_Clone_for_subtle_CtOption_t_T.
   Context {T : Set}.
   
-  Context {ℋ_0 : core.clone.Clone.Trait T}.
-  
   Definition Self : Set := subtle.CtOption.t T.
   
   Parameter clone : (ref Self) -> M (subtle.CtOption.t T).
@@ -886,8 +877,6 @@ Module  Impl_core_marker_Copy_for_subtle_CtOption_t_T.
 Section Impl_core_marker_Copy_for_subtle_CtOption_t_T.
   Context {T : Set}.
   
-  Context {ℋ_0 : core.marker.Copy.Trait T}.
-  
   Definition Self : Set := subtle.CtOption.t T.
   
   Global Instance ℐ : core.marker.Copy.Trait Self := {
@@ -898,8 +887,6 @@ End Impl_core_marker_Copy_for_subtle_CtOption_t_T.
 Module  Impl_core_fmt_Debug_for_subtle_CtOption_t_T.
 Section Impl_core_fmt_Debug_for_subtle_CtOption_t_T.
   Context {T : Set}.
-  
-  Context {ℋ_0 : core.fmt.Debug.Trait T}.
   
   Definition Self : Set := subtle.CtOption.t T.
   
@@ -962,27 +949,16 @@ Section Impl_subtle_CtOption_t_T.
     Notations.double_colon := unwrap;
   }.
   
-  Parameter unwrap_or :
-      forall {ℋ_0 : subtle.ConditionallySelectable.Trait T},
-      Self -> T -> M T.
+  Parameter unwrap_or : Self -> T -> M T.
   
-  Global Instance AssociatedFunction_unwrap_or
-      {ℋ_0 : subtle.ConditionallySelectable.Trait T} :
+  Global Instance AssociatedFunction_unwrap_or :
     Notations.DoubleColon Self "unwrap_or" := {
     Notations.double_colon := unwrap_or;
   }.
   
-  Parameter unwrap_or_else :
-      forall
-        {F : Set}
-        {ℋ_0 : subtle.ConditionallySelectable.Trait T}
-        {ℋ_1 : core.ops.function.FnOnce.Trait F (Args := unit)},
-      Self -> F -> M T.
+  Parameter unwrap_or_else : forall {F : Set}, Self -> F -> M T.
   
-  Global Instance AssociatedFunction_unwrap_or_else
-      {F : Set}
-      {ℋ_0 : subtle.ConditionallySelectable.Trait T}
-      {ℋ_1 : core.ops.function.FnOnce.Trait F (Args := unit)} :
+  Global Instance AssociatedFunction_unwrap_or_else {F : Set} :
     Notations.DoubleColon Self "unwrap_or_else" := {
     Notations.double_colon := unwrap_or_else (F := F);
   }.
@@ -1001,51 +977,23 @@ Section Impl_subtle_CtOption_t_T.
     Notations.double_colon := is_none;
   }.
   
-  Parameter map :
-      forall
-        {U F : Set}
-        {ℋ_0 : core.default.Default.Trait T}
-        {ℋ_1 : subtle.ConditionallySelectable.Trait T}
-        {ℋ_2 : core.ops.function.FnOnce.Trait F (Args := T)},
-      Self -> F -> M (subtle.CtOption.t U).
+  Parameter map : forall {U F : Set}, Self -> F -> M (subtle.CtOption.t U).
   
-  Global Instance AssociatedFunction_map
-      {U F : Set}
-      {ℋ_0 : core.default.Default.Trait T}
-      {ℋ_1 : subtle.ConditionallySelectable.Trait T}
-      {ℋ_2 : core.ops.function.FnOnce.Trait F (Args := T)} :
+  Global Instance AssociatedFunction_map {U F : Set} :
     Notations.DoubleColon Self "map" := {
     Notations.double_colon := map (U := U) (F := F);
   }.
   
-  Parameter and_then :
-      forall
-        {U F : Set}
-        {ℋ_0 : core.default.Default.Trait T}
-        {ℋ_1 : subtle.ConditionallySelectable.Trait T}
-        {ℋ_2 : core.ops.function.FnOnce.Trait F (Args := T)},
-      Self -> F -> M (subtle.CtOption.t U).
+  Parameter and_then : forall {U F : Set}, Self -> F -> M (subtle.CtOption.t U).
   
-  Global Instance AssociatedFunction_and_then
-      {U F : Set}
-      {ℋ_0 : core.default.Default.Trait T}
-      {ℋ_1 : subtle.ConditionallySelectable.Trait T}
-      {ℋ_2 : core.ops.function.FnOnce.Trait F (Args := T)} :
+  Global Instance AssociatedFunction_and_then {U F : Set} :
     Notations.DoubleColon Self "and_then" := {
     Notations.double_colon := and_then (U := U) (F := F);
   }.
   
-  Parameter or_else :
-      forall
-        {F : Set}
-        {ℋ_0 : subtle.ConditionallySelectable.Trait T}
-        {ℋ_1 : core.ops.function.FnOnce.Trait F (Args := unit)},
-      Self -> F -> M (subtle.CtOption.t T).
+  Parameter or_else : forall {F : Set}, Self -> F -> M (subtle.CtOption.t T).
   
-  Global Instance AssociatedFunction_or_else
-      {F : Set}
-      {ℋ_0 : subtle.ConditionallySelectable.Trait T}
-      {ℋ_1 : core.ops.function.FnOnce.Trait F (Args := unit)} :
+  Global Instance AssociatedFunction_or_else {F : Set} :
     Notations.DoubleColon Self "or_else" := {
     Notations.double_colon := or_else (F := F);
   }.
@@ -1055,8 +1003,6 @@ End Impl_subtle_CtOption_t_T.
 Module  Impl_subtle_ConditionallySelectable_for_subtle_CtOption_t_T.
 Section Impl_subtle_ConditionallySelectable_for_subtle_CtOption_t_T.
   Context {T : Set}.
-  
-  Context {ℋ_0 : subtle.ConditionallySelectable.Trait T}.
   
   Definition Self : Set := subtle.CtOption.t T.
   
@@ -1079,8 +1025,6 @@ End Impl_subtle_ConditionallySelectable_for_subtle_CtOption_t_T.
 Module  Impl_subtle_ConstantTimeEq_for_subtle_CtOption_t_T.
 Section Impl_subtle_ConstantTimeEq_for_subtle_CtOption_t_T.
   Context {T : Set}.
-  
-  Context {ℋ_0 : subtle.ConstantTimeEq.Trait T}.
   
   Definition Self : Set := subtle.CtOption.t T.
   
@@ -1178,11 +1122,10 @@ End Impl_subtle_ConstantTimeGreater_for_u64_t.
 
 Module  ConstantTimeLess.
 Section ConstantTimeLess.
+  Unset Primitive Projections.
   Class Trait (Self : Set) : Type := {
-    ℒ_0 :: subtle.ConstantTimeEq.Trait Self;
-    ℒ_1 :: subtle.ConstantTimeGreater.Trait Self;
   }.
-  
+  Global Set Primitive Projections.
 End ConstantTimeLess.
 End ConstantTimeLess.
 

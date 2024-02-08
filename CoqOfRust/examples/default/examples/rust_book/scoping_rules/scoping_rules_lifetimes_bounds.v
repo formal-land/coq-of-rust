@@ -18,8 +18,6 @@ Module  Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_t_T.
 Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_t_T.
   Context {T : Set}.
   
-  Context {ℋ_0 : core.fmt.Debug.Trait T}.
-  
   Definition Self : Set := scoping_rules_lifetimes_bounds.Ref.t T.
   
   (*
@@ -60,7 +58,7 @@ where
     println!("`print`: t is {:?}", t);
 }
 *)
-Definition print {T : Set} {ℋ_0 : core.fmt.Debug.Trait T} (t : T) : M unit :=
+Definition print {T : Set} (t : T) : M unit :=
   let* t := M.alloc t in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=
@@ -90,11 +88,7 @@ where
     println!("`print_ref`: t is {:?}", t);
 }
 *)
-Definition print_ref
-    {T : Set}
-    {ℋ_0 : core.fmt.Debug.Trait T}
-    (t : ref T)
-    : M unit :=
+Definition print_ref {T : Set} (t : ref T) : M unit :=
   let* t := M.alloc t in
   let* _ : M.Val unit :=
     let* _ : M.Val unit :=

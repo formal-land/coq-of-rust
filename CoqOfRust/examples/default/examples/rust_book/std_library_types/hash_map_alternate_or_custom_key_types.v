@@ -147,7 +147,6 @@ Section Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account_t
   *)
   Definition hash
       {__H : Set}
-      {ℋ_0 : core.hash.Hasher.Trait __H}
       (self : ref Self)
       (state : mut_ref __H)
       : M unit :=
@@ -184,16 +183,13 @@ Section Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account_t
     let* α0 : M.Val unit := M.alloc α3 in
     M.read α0.
   
-  Global Instance AssociatedFunction_hash
-      {__H : Set}
-      {ℋ_0 : core.hash.Hasher.Trait __H} :
+  Global Instance AssociatedFunction_hash {__H : Set} :
     Notations.DoubleColon Self "hash" := {
     Notations.double_colon := hash (__H := __H);
   }.
   
   Global Instance ℐ : core.hash.Hash.Required.Trait Self := {
-    core.hash.Hash.hash {__H : Set} {ℋ_0 : core.hash.Hasher.Trait __H} :=
-      hash (__H := __H);
+    core.hash.Hash.hash {__H : Set} := hash (__H := __H);
     core.hash.Hash.hash_slice := Datatypes.None;
   }.
 End Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account_t.

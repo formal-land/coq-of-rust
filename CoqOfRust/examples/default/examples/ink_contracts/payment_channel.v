@@ -499,7 +499,6 @@ End HashOutput.
 Module  CryptoHash.
 Section CryptoHash.
   Class Trait (Self : Set) : Type := {
-    ℒ_0 :: payment_channel.HashOutput.Trait Self;
     hash :
       (ref (slice u8.t)) ->
         (mut_ref
@@ -523,7 +522,6 @@ where
 *)
 Definition hash_encoded
     {H T : Set}
-    {ℋ_0 : payment_channel.CryptoHash.Trait H}
     (input : ref T)
     (output
       :

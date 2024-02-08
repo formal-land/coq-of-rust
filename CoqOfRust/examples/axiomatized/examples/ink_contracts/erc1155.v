@@ -21,10 +21,6 @@ Module  Impl_core_default_Default_for_erc1155_Mapping_t_K_V.
 Section Impl_core_default_Default_for_erc1155_Mapping_t_K_V.
   Context {K V : Set}.
   
-  Context
-    {ℋ_0 : core.default.Default.Trait K}
-    {ℋ_1 : core.default.Default.Trait V}.
-  
   Definition Self : Set := erc1155.Mapping.t K V.
   
   Parameter default : M (erc1155.Mapping.t K V).

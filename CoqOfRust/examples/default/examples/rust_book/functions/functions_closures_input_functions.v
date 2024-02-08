@@ -6,11 +6,7 @@ fn call_me<F: Fn()>(f: F) {
     f();
 }
 *)
-Definition call_me
-    {F : Set}
-    {ℋ_0 : core.ops.function.Fn.Trait F (Args := unit)}
-    (f : F)
-    : M unit :=
+Definition call_me {F : Set} (f : F) : M unit :=
   let* f := M.alloc f in
   let* _ : M.Val unit :=
     let* α0 : (ref F) -> unit -> M _ :=

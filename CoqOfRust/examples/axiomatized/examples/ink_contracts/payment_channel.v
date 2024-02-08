@@ -347,7 +347,6 @@ End HashOutput.
 Module  CryptoHash.
 Section CryptoHash.
   Class Trait (Self : Set) : Type := {
-    ℒ_0 :: payment_channel.HashOutput.Trait Self;
     hash :
       (ref (slice u8.t)) ->
         (mut_ref
@@ -362,12 +361,12 @@ End CryptoHash.
 End CryptoHash.
 
 Parameter hash_encoded :
-    forall {H T : Set} {ℋ_0 : payment_channel.CryptoHash.Trait H},
+    forall {H T : Set},
     (ref T) ->
       (mut_ref
         (payment_channel.HashOutput.Type_
           (Self := H)
-          (Trait := ℋ_0.(CryptoHash.ℒ_0))))
+          (Trait := ltac:(refine _))))
       ->
       M unit.
 

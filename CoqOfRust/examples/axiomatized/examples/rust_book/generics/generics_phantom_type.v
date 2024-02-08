@@ -32,11 +32,6 @@ Module  Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_t_A_B.
 Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_t_A_B.
   Context {A B : Set}.
   
-  Context
-    {ℋ_0 : core.cmp.PartialEq.Trait A (Rhs := core.cmp.PartialEq.Default.Rhs A)}
-    {ℋ_1 :
-      core.cmp.PartialEq.Trait B (Rhs := core.cmp.PartialEq.Default.Rhs B)}.
-  
   Definition Self : Set := generics_phantom_type.PhantomTuple.t A B.
   
   Parameter eq :
@@ -89,11 +84,6 @@ End Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomStruct
 Module  Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_t_A_B.
 Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_t_A_B.
   Context {A B : Set}.
-  
-  Context
-    {ℋ_0 : core.cmp.PartialEq.Trait A (Rhs := core.cmp.PartialEq.Default.Rhs A)}
-    {ℋ_1 :
-      core.cmp.PartialEq.Trait B (Rhs := core.cmp.PartialEq.Default.Rhs B)}.
   
   Definition Self : Set := generics_phantom_type.PhantomStruct.t A B.
   

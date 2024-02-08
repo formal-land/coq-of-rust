@@ -159,11 +159,7 @@ fn difference<C: Contains>(container: &C) -> i32 {
     container.last() - container.first()
 }
 *)
-Definition difference
-    {C : Set}
-    {ℋ_0 : generics_associated_types_solution.Contains.Trait C}
-    (container : ref C)
-    : M i32.t :=
+Definition difference {C : Set} (container : ref C) : M i32.t :=
   let* container := M.alloc container in
   let* α0 : (ref C) -> M i32.t :=
     ltac:(M.get_method (fun ℐ =>
@@ -186,11 +182,7 @@ fn get_a<C: Contains>(container: &C) -> C::A {
     container.a()
 }
 *)
-Definition get_a
-    {C : Set}
-    {ℋ_0 : generics_associated_types_solution.Contains.Trait C}
-    (container : ref C)
-    : M C::type["A"].t :=
+Definition get_a {C : Set} (container : ref C) : M C::type["A"].t :=
   let* container := M.alloc container in
   let* α0 : (ref C) -> M _ :=
     ltac:(M.get_method (fun ℐ =>

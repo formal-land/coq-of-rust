@@ -62,12 +62,7 @@ Section Impl_generics_associated_types_problem_Contains_i32_t_i32_t_for_generics
 End Impl_generics_associated_types_problem_Contains_i32_t_i32_t_for_generics_associated_types_problem_Container_t.
 End Impl_generics_associated_types_problem_Contains_i32_t_i32_t_for_generics_associated_types_problem_Container_t.
 
-Parameter difference :
-    forall
-      {A B C : Set}
-      {ℋ_0 :
-        generics_associated_types_problem.Contains.Trait C (A := A) (B := B)},
-    (ref C) -> M i32.t.
+Parameter difference : forall {A B C : Set}, (ref C) -> M i32.t.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Parameter main : M unit.
