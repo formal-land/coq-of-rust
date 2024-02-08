@@ -1,14 +1,14 @@
 # <img src="logo.png" alt= "logo" width="120px" height="120px" style="vertical-align: middle;"> <span style="vertical-align: middle;">coq-of-rust</span>
 
-> Formal verification tool for Rust 🦀
+> Check 100% of execution cases of Rust programs 🦀 to make applications with no bugs!
+>
+> From the space industry 🚀🛰️🪐👨‍🚀
 
-Made with [🌲&nbsp;Formal Land](https://formal.land/)
-
-Formal verification enables the making of software without bugs by showing that it follows a precise specification and covers all execution cases.
+Formal verification enables the making of software without bugs by showing that it follows a precise specification in all execution cases, in contrast to testing, which only covers a finite amount of cases.
 
 See our blog post [Verifying an ERC-20 smart contract in Rust](https://formal.land/blog/2023/12/13/rust-verify-erc-20-smart-contract) to have an example of formally verified Rust code using&nbsp;`coq-of-rust`.
 
-The development of `coq-of-rust` was mainly funded by the crypto-currency&nbsp;[Aleph Zero](https://alephzero.org/), for the development of safer smart contracts, that we thanks for the support.
+The development of `coq-of-rust` was mainly funded by the crypto-currency&nbsp;[Aleph Zero](https://alephzero.org/), to develop safer smart contracts. We thank them for their support!
 
 ## Table of Contents
 
@@ -37,10 +37,10 @@ Definition add_one (x : u32.t) : M u32.t :=
   let* α0 : u32.t := M.read x in
   BinOp.Panic.add α0 ((Integer.of_Z 1) : u32.t).
 ```
-Functions such as&nbsp;`BinOp.Panic.add` are part standard library for Rust in Coq that we provide. We can then express and verify specifications on the code in Coq.
+Functions such as&nbsp;`BinOp.Panic.add` are part of the standard library for Rust in Coq that we provide. We can then express and verify specifications on the code in Coq.
 
 ## Rationale
-Formal verification allows the prevention of all bugs in critical software. This is used in the aerospace industry, for example&nbsp;🧑‍🚀.
+Formal verification allows the prevention of all bugs in critical software.
 
 The type system of Rust already offers strong guarantees to avoid bugs that exist in C or Python. We still need to write tests to verify the business rules or the absence of `panic`. Testing is incomplete as it cannot cover all execution cases.
 
