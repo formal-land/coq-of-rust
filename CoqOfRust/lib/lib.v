@@ -281,7 +281,25 @@ Module Eq.
 End Eq.
 
 Module UnOp.
-  Parameter not : bool -> bool.
+  Module Not.
+    Class C (Self : Set) : Set := {
+      not : Self -> Self;
+    }.
+
+    Global Instance I_bool : C bool.t := {
+      not := negb;
+    }.
+
+    Global Instance I_u8 : C u8.t := {
+      not := axiom "not_u8";
+    }.
+
+    (* @TODO: add definitions/axioms for the other integer types *)
+  End Not.
+
+  Definition not {A : Set} `{Not.C A} : A -> A :=
+    Not.not.
+
   Parameter neg : forall {A : Set}, A -> M A.
 End UnOp.
 

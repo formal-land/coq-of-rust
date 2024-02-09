@@ -15,7 +15,6 @@ Require Import CoqOfRust.core.hash.
 Module Alignment.
   Parameter t : Set.
 End Alignment.
-Definition Alignment := Alignment.t.
 
 (* 
 pub struct DynMetadata<Dyn>
@@ -26,7 +25,6 @@ where
 Module DynMetadata.
   Parameter t : Set -> Set.
 End DynMetadata.
-Definition DynMetadata := DynMetadata.t.
 
 (* 
 pub struct NonNull<T>
@@ -37,7 +35,6 @@ where
 Module NonNull.
   Parameter t : Set -> Set.
 End NonNull.
-Definition NonNull := NonNull.t.
 
 (* ********TRAITS******** *)
 (* 
@@ -51,13 +48,11 @@ pub trait Pointee {
 *)
 Module Pointee.
   Unset Primitive Projections.
-  Class Trait (Self : Set) (Metadata : Set) 
-    `{Copy.Trait Metadata}
-    `{Send.Trait Metadata}
-    `{Sync.Trait Metadata}
-    `{Ord.Trait Metadata}
-    `{Hash.Trait Metadata}
-    `{Unpin.Trait Metadata}
-    : Set := { }.
+  Class Trait (Self : Set) : Set := {
+    Metadata : Set;
+  }.
   Set Primitive Projections.
 End Pointee.
+
+(* pub unsafe fn read_volatile<T>(src: *const T) -> T *)
+Parameter read_volatile : forall {T : Set}, ref T -> M T.

@@ -442,6 +442,13 @@ Section Impl.
   Context {T : Set}.
   Context (Self := slice T).
 
+  (* pub const fn len(&self) -> usize *)
+  Parameter len : ref Self -> M usize.t.
+
+  Global Instance AF_len : Notations.DoubleColon Self "len" := {
+    Notations.double_colon := len;
+  }.
+
   (*
   pub fn sort_unstable(&mut self)
   where

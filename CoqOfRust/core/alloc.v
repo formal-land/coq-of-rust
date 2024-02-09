@@ -2,8 +2,8 @@ Require Import CoqOfRust.lib.lib.
 
 Require CoqOfRust.alloc.alloc.
 Require CoqOfRust.core.marker.
+Require CoqOfRust.core.ptr.
 Require Import CoqOfRust.core.result_types.
-Require CoqOfRust.std.ptr.
 
 (* *******STRUCTS******** *)
 (* 
@@ -55,10 +55,10 @@ Module Allocator.
     (* fn allocate(&self, layout: Layout) -> Result<NonNull<[u8]>, AllocError>; *)
     allocate :
       ref Self -> layout.Layout ->
-      M (Result.t (ptr.NonNull (slice u8.t)) AllocError);
+      M (Result.t (ptr.NonNull.t (slice u8.t)) AllocError);
     
     (* unsafe fn deallocate(&self, ptr: NonNull<u8>, layout: Layout); *)
-    deallocate : ref Self -> ptr.NonNull u8.t -> layout.Layout -> unit;
+    deallocate : ref Self -> ptr.NonNull.t u8.t -> layout.Layout -> unit;
 
     (* 
     fn allocate_zeroed(
@@ -68,7 +68,7 @@ Module Allocator.
     *)
     allocate_zeroed :
       ref Self -> layout.Layout ->
-      M (Result.t (ptr.NonNull (slice u8.t)) AllocError);
+      M (Result.t (ptr.NonNull.t (slice u8.t)) AllocError);
 
     (* 
     unsafe fn grow(
@@ -79,8 +79,8 @@ Module Allocator.
     ) -> Result<NonNull<[u8]>, AllocError> { ... }
     *)
     grow :
-      ref Self -> ptr.NonNull u8.t -> layout.Layout -> layout.Layout ->
-      M (Result.t (ptr.NonNull (slice u8.t)) AllocError);
+      ref Self -> ptr.NonNull.t u8.t -> layout.Layout -> layout.Layout ->
+      M (Result.t (ptr.NonNull.t (slice u8.t)) AllocError);
 
     (* 
     unsafe fn grow_zeroed(
@@ -91,8 +91,8 @@ Module Allocator.
     ) -> Result<NonNull<[u8]>, AllocError> { ... }
     *)
     grow_zeroed :
-      ref Self -> ptr.NonNull u8.t -> layout.Layout -> layout.Layout ->
-      M (Result.t (ptr.NonNull (slice u8.t)) AllocError);
+      ref Self -> ptr.NonNull.t u8.t -> layout.Layout -> layout.Layout ->
+      M (Result.t (ptr.NonNull.t (slice u8.t)) AllocError);
 
     (* 
     unsafe fn shrink(
@@ -103,8 +103,8 @@ Module Allocator.
     ) -> Result<NonNull<[u8]>, AllocError> { ... }
     *)
     shrink :
-      ref Self -> ptr.NonNull u8.t -> layout.Layout -> layout.Layout ->
-      M (Result.t (ptr.NonNull (slice u8.t)) AllocError);
+      ref Self -> ptr.NonNull.t u8.t -> layout.Layout -> layout.Layout ->
+      M (Result.t (ptr.NonNull.t (slice u8.t)) AllocError);
 
     (*
     fn by_ref(&self) -> &Self

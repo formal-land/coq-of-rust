@@ -1,6 +1,5 @@
-std/iter_type.v
-std/iter.v
-std/net.v
+examples/axiomatized/examples/custom/provided_method.v
+examples/axiomatized/examples/ink_contracts/payment_channel.v
 examples/axiomatized/examples/rust_book/conversion/try_from_and_try_into.v
 examples/axiomatized/examples/rust_book/custom_types/enums_testcase_linked_list.v
 examples/axiomatized/examples/rust_book/error_handling/wrapping_errors.v
@@ -36,11 +35,9 @@ examples/axiomatized/examples/rust_book/traits/supertraits.v
 examples/axiomatized/examples/rust_book/traits/traits_parms.v
 examples/axiomatized/examples/rust_book/traits/traits.v
 examples/axiomatized/examples/subtle.v
-examples/axiomatized/examples/test0.v
-examples/axiomatized/examples/ink_contracts/payment_channel.v
+examples/default/examples/custom/provided_method.v
 examples/default/examples/ink_contracts/payment_channel.v
 examples/default/examples/ink_contracts/Proofs/erc20.v
-examples/default/examples/rust_book/generics/generics_associated_types_problem.v
 examples/default/examples/rust_book/custom_types/enums_testcase_linked_list.v
 examples/default/examples/rust_book/error_handling/pulling_results_out_of_options_with_stop_error_processing.v
 examples/default/examples/rust_book/error_handling/wrapping_errors.v
@@ -58,6 +55,7 @@ examples/default/examples/rust_book/functions/functions_closures_input_functions
 examples/default/examples/rust_book/functions/functions_closures_type_anonymity_define_and_use.v
 examples/default/examples/rust_book/functions/functions_closures_type_anonymity_define.v
 examples/default/examples/rust_book/functions/functions_closures.v
+examples/default/examples/rust_book/generics/generics_associated_types_problem.v
 examples/default/examples/rust_book/generics/generics_associated_types_solution.v
 examples/default/examples/rust_book/generics/generics_functions.v
 examples/default/examples/rust_book/generics/generics_implementation.v
@@ -84,7 +82,7 @@ examples/default/examples/rust_book/traits/returning_traits_with_dyn.v
 examples/default/examples/rust_book/traits/supertraits.v
 examples/default/examples/rust_book/traits/traits.v
 examples/default/examples/subtle.v
-examples/default/examples/test0.v
 ink/
-ink/erc20.v
-ink/ink_e2e.v
+std/iter_type.v
+std/iter.v
+std/net.v

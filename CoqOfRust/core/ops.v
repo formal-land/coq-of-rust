@@ -176,6 +176,68 @@ Module arith.
     End Default.
   End RemAssign.
 
+  Module Shl.
+    Class Trait (Self : Set) {Rhs : Set} : Type := {
+      Output : Set;
+      Rhs := Rhs;
+      shl : Self -> Rhs -> M Output;
+    }.
+
+    Module Default.
+      Definition Rhs (Self : Set) : Set := Self.
+    End Default.
+  End Shl.
+
+  Module ShlAssign.
+    Class Trait (Self : Set) {Rhs : Set} : Set := {
+      Rhs := Rhs;
+      shl_assign : mut_ref Self -> Rhs -> M unit;
+    }.
+
+    Module Default.
+      Definition Rhs (Self : Set) : Set := Self.
+    End Default.
+  End ShlAssign.
+
+  Module Shr.
+    Class Trait (Self : Set) {Rhs : Set} : Type := {
+      Output : Set;
+      Rhs := Rhs;
+      shr : Self -> Rhs -> M Output;
+    }.
+
+    Module Default.
+      Definition Rhs (Self : Set) : Set := Self.
+    End Default.
+  End Shr.
+
+  Module ShrAssign.
+    Class Trait (Self : Set) {Rhs : Set} : Set := {
+      Rhs := Rhs;
+      shr_assign : mut_ref Self -> Rhs -> M unit;
+    }.
+
+    Module Default.
+      Definition Rhs (Self : Set) : Set := Self.
+    End Default.
+  End ShrAssign.
+
+  Module Neg.
+    Class Trait (Self : Set) : Type := {
+      Output : Set;
+      neg : Self -> M Output;
+    }.
+  End Neg.
+End arith.
+
+Module bit.
+  Module Not.
+    Class Trait (Self : Set) : Type := {
+      Output : Set;
+      not : Self -> M Output;
+    }.
+  End Not.
+
   Module BitXor.
     Class Trait (Self : Set) {Rhs : Set} : Type := {
       Output : Set;
@@ -244,67 +306,7 @@ Module arith.
       Definition Rhs (Self : Set) : Set := Self.
     End Default.
   End BitOrAssign.
-
-  Module Shl.
-    Class Trait (Self : Set) {Rhs : Set} : Type := {
-      Output : Set;
-      Rhs := Rhs;
-      shl : Self -> Rhs -> M Output;
-    }.
-
-    Module Default.
-      Definition Rhs (Self : Set) : Set := Self.
-    End Default.
-  End Shl.
-
-  Module ShlAssign.
-    Class Trait (Self : Set) {Rhs : Set} : Set := {
-      Rhs := Rhs;
-      shl_assign : mut_ref Self -> Rhs -> M unit;
-    }.
-
-    Module Default.
-      Definition Rhs (Self : Set) : Set := Self.
-    End Default.
-  End ShlAssign.
-
-  Module Shr.
-    Class Trait (Self : Set) {Rhs : Set} : Type := {
-      Output : Set;
-      Rhs := Rhs;
-      shr : Self -> Rhs -> M Output;
-    }.
-
-    Module Default.
-      Definition Rhs (Self : Set) : Set := Self.
-    End Default.
-  End Shr.
-
-  Module ShrAssign.
-    Class Trait (Self : Set) {Rhs : Set} : Set := {
-      Rhs := Rhs;
-      shr_assign : mut_ref Self -> Rhs -> M unit;
-    }.
-
-    Module Default.
-      Definition Rhs (Self : Set) : Set := Self.
-    End Default.
-  End ShrAssign.
-
-  Module Neg.
-    Class Trait (Self : Set) : Type := {
-      Output : Set;
-      neg : Self -> M Output;
-    }.
-  End Neg.
-
-  Module Not.
-    Class Trait (Self : Set) : Type := {
-      Output : Set;
-      not : M.Val Self -> M (M.Val Output);
-    }.
-  End Not.
-End arith.
+End bit.
 
 Module deref.
   Module Deref.
@@ -504,12 +506,8 @@ Module Impl_Neg_for_Z.
 End Impl_Neg_for_Z. *)
 
 Module Impl_Not_for_bool.
-  Definition not (b : M.Val bool) : M (M.Val bool) :=
-    let* b := M.read b in
-    M.alloc (negb b).
-
-  Global Instance Not_for_bool : arith.Not.Trait bool := {
-    not := not;
+  Global Instance Not_for_bool : bit.Not.Trait bool := {
+    not b := M.pure (negb b);
   }.
 End Impl_Not_for_bool.
 
