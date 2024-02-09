@@ -140,6 +140,13 @@ Module Option.
     end.
 End Option.
 
+(** This parameter is used as a marker to allow a monadic notation
+    without naming all intermediate results. Computation represented using
+    this markers can be translated to a regular monadic computation using
+    [M.monadic] tactic. Additionally, this parameter is used for the
+    definitions of "const".*)
+Parameter run : forall {A : Set}, M A -> A.
+
 Module Notations.
   Notation "'let-' a := b 'in' c" :=
     (LowM.let_ b (fun a => c))
@@ -156,8 +163,42 @@ Module Notations.
   Notation "'let*' ' a ':=' b 'in' c" :=
     (let_ b (fun a => c))
     (at level 200, a pattern, b at level 100, c at level 200).
+
+  Notation "e (| e1 , .. , en |)" :=
+    (run ((.. (e e1) ..) en))
+    (at level 100).
+
+  Notation "e (||)" :=
+    (run e)
+    (at level 100).
 End Notations.
 Import Notations.
+
+(** A tactic that replaces all [M.run] markers with a bind operation.
+    This allows to represent Rust programs without introducing
+    explicit names for all intermediate computation results. *)
+Ltac monadic e :=
+  match e with
+  | context ctxt [let v : _ := ?x in @?f v] =>
+    refine (M.let_ _ _);
+      [ monadic x
+      | intro v;
+        let y := (eval cbn beta in (f v)) in
+        monadic y
+      ]
+  | context ctxt [run ?x] =>
+    refine (M.let_ _ _);
+      [ monadic x
+      | let v := fresh "v" in
+        intro v;
+        let y := context ctxt [v] in
+        match y with
+        | v => exact (M.pure v)
+        | _ => monadic y
+        end
+      ]
+  | _ => exact e
+  end.
 
 Definition cast {A B : Set} (v : A) : M B :=
   LowM.Cast (inl (B := Exception) v) LowM.Pure.
@@ -237,11 +278,6 @@ Ltac get_method method :=
 
 Definition impossible {A : Set} : M A :=
   LowM.Impossible.
-
-(** Used for the definitions of "const". *)
-(* @TODO: Give a definition for [run]. There should be an additional parameter
-   witnessing that the calculation is possible. *)
-Parameter run : forall {A : Set}, M A -> A.
 
 Definition Val (A : Set) : Set := Ref A.
 
