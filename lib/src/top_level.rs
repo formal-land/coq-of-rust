@@ -1052,14 +1052,7 @@ fn mt_impl_item(item: Rc<ImplItemKind>) -> Rc<ImplItemKind> {
             body,
             is_dead_code,
         } => {
-            let body = match body {
-                None => body.clone(),
-                Some(body) => {
-                    let body = mt_expression(FreshVars::new(), body.clone()).0;
-
-                    Some(body)
-                }
-            };
+            let body = body.clone();
             Rc::new(ImplItemKind::Const {
                 ty: mt_ty(ty.clone()),
                 body,
@@ -1082,13 +1075,7 @@ impl FnSigAndBody {
                 .map(|(name, ty)| (name.clone(), mt_ty(ty.clone())))
                 .collect(),
             ret_ty: Rc::new(CoqType::Monad(mt_ty(self.ret_ty.clone()))),
-            body: match &self.body {
-                None => self.body.clone(),
-                Some(body) => {
-                    let (body, _fresh_vars) = mt_expression(FreshVars::new(), body.clone());
-                    Some(body)
-                }
-            },
+            body: self.body.clone(),
         })
     }
 }
@@ -1122,13 +1109,7 @@ fn mt_top_level_item(item: Rc<TopLevelItem>) -> Rc<TopLevelItem> {
         TopLevelItem::Const { name, ty, value } => Rc::new(TopLevelItem::Const {
             name: name.clone(),
             ty: ty.clone(),
-            value: match value {
-                None => value.clone(),
-                Some(value) => {
-                    let (value, _fresh_vars) = mt_expression(FreshVars::new(), value.clone());
-                    Some(value)
-                }
-            },
+            value: value.clone(),
         }),
         TopLevelItem::Definition {
             name,
