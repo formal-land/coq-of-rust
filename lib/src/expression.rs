@@ -378,30 +378,86 @@ impl ExprKind {
             ExprKind::Call {
                 func,
                 args,
-                purity: _,
+                purity,
                 from_user,
-            } => {
-                let inner_with_paren = with_paren || *from_user;
-                let inner_application = optional_insert_with(
-                    args.is_empty(),
-                    func.to_doc(inner_with_paren),
-                    paren(
-                        inner_with_paren,
-                        nest([
-                            func.to_doc(true),
-                            concat(args.iter().map(|arg| concat([line(), arg.to_doc(true)]))),
-                        ]),
-                    ),
-                );
-                if *from_user {
-                    paren(
-                        with_paren,
-                        nest([text("M.call"), line(), inner_application]),
-                    )
-                } else {
-                    inner_application
+            } => match purity {
+                Purity::Pure => {
+                    let inner_with_paren = with_paren || *from_user;
+                    let inner_application = optional_insert_with(
+                        args.is_empty(),
+                        func.to_doc(inner_with_paren),
+                        paren(
+                            inner_with_paren,
+                            nest([
+                                func.to_doc(true),
+                                concat(args.iter().map(|arg| concat([line(), arg.to_doc(true)]))),
+                            ]),
+                        ),
+                    );
+                    if *from_user {
+                        paren(
+                            with_paren,
+                            nest([text("M.call"), line(), inner_application]),
+                        )
+                    } else {
+                        inner_application
+                    }
                 }
-            }
+                Purity::Effectful => {
+                    let inner_with_paren = with_paren || *from_user;
+                    let inner_application = optional_insert_with(
+                        args.is_empty(),
+                        group([func.to_doc(inner_with_paren), text("(||)")]),
+                        paren(
+                            inner_with_paren,
+                            group([
+                                func.to_doc(true),
+                                text(" "),
+                                concat([
+                                    text("(|"),
+                                    nest([
+                                        line(),
+                                        intersperse(
+                                            args.iter().map(|arg| arg.to_doc(false)),
+                                            [text(","), line()],
+                                        ),
+                                    ]),
+                                    line(),
+                                    text("|)"),
+                                ]),
+                            ]),
+                        ),
+                    );
+                    if *from_user {
+                        paren(
+                            with_paren,
+                            nest([text("M.call"), line(), inner_application]),
+                        )
+                    } else {
+                        inner_application
+                    }
+                    // group([
+                    //     func.to_doc(true),
+                    //     text(" "),
+                    //     if args.is_empty() {
+                    //         text("(||)")
+                    //     } else {
+                    //         concat([
+                    //             text("(|"),
+                    //             nest([
+                    //                 line(),
+                    //                 intersperse(
+                    //                     args.iter().map(|arg| arg.to_doc(false)),
+                    //                     [text(","), line()],
+                    //                 ),
+                    //             ]),
+                    //             line(),
+                    //             text("|)"),
+                    //         ])
+                    //     },
+                    // ])
+                }
+            },
             ExprKind::MonadicOperator { name, arg } => {
                 paren(with_paren, nest([text(name), line(), arg.to_doc(true)]))
             }
