@@ -557,7 +557,12 @@ impl<'a> Definition<'a> {
                     ]),
                 ]),
                 line(),
-                body.to_doc(false),
+                concat([
+                    text("ltac:(M.monadic ("),
+                    nest([line(), body.to_doc(false)]),
+                    line(),
+                    text("))"),
+                ]),
                 text("."),
             ]),
             DefinitionKind::Assumption { ty } => nest([
