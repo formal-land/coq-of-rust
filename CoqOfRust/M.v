@@ -180,20 +180,29 @@ Import Notations.
 Ltac monadic e :=
   match e with
   | context ctxt [let v : _ := ?x in @?f v] =>
-    refine (M.let_ _ _);
+    refine (let_ _ _);
       [ monadic x
       | intro v;
         let y := (eval cbn beta in (f v)) in
-        monadic y
+        refine (let_ _ _);
+        [ monadic y
+        | let w := fresh "v" in
+          intro w;
+          let z := context ctxt [w] in
+          match z with
+          | w => exact (pure w)
+          | _ => monadic z
+          end
+        ]
       ]
   | context ctxt [run ?x] =>
-    refine (M.let_ _ _);
+    refine (let_ _ _);
       [ monadic x
       | let v := fresh "v" in
         intro v;
         let y := context ctxt [v] in
         match y with
-        | v => exact (M.pure v)
+        | v => exact (pure v)
         | _ => monadic y
         end
       ]
