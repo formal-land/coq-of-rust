@@ -47,28 +47,26 @@ Module MonadicNotationExample.
   (* Representation without explicit names for intermediate results
      using [M.run] markers and [M.monadic] tactic *)
   Definition test_new : M u32.t :=
-    ltac:(M.monadic (
-      let x : M.Val u32.t := M.alloc (| (Integer.of_Z 5) : u32.t |) in
-      let y : M.Val u32.t :=
-        let x_squared : M.Val u32.t :=
-          M.alloc (|
-            BinOp.Panic.mul (| M.read (|x|), M.read (|x|) |)
-          |) in
-        let x_cube : M.Val u32.t :=
-          M.alloc (|
-            BinOp.Panic.mul (| M.read (|x_squared|), M.read (|x|) |)
-          |) in
-        M.copy (|
-          M.alloc (|
-            BinOp.Panic.add (|
-              BinOp.Panic.add (| M.read (|x_cube|), M.read (|x_squared|) |),
-              M.read (|x|)
-            |)
-          |)
-        |) in
+    ltac:(monadic (
       M.read (|
-        M.alloc (|
-          BinOp.Panic.add (| M.read (|y|), (Integer.of_Z 2) : u32.t |)
+        let x : M.Val u32.t := M.alloc (| (Integer.of_Z 5) : u32.t |) in
+        let y : M.Val u32.t :=
+          M.copy (|
+            let x_squared : M.Val u32.t :=
+              M.alloc (| BinOp.Panic.mul (| M.read (| x |), M.read (| x |) |)
+              |) in
+            let x_cube : M.Val u32.t :=
+              M.alloc (|
+                BinOp.Panic.mul (| M.read (| x_squared |), M.read (| x |) |)
+              |) in
+            M.alloc (|
+              BinOp.Panic.add (|
+                BinOp.Panic.add (| M.read (| x_cube |), M.read (| x_squared |) |),
+                M.read (| x |)
+              |)
+            |)
+          |) in
+        M.alloc (| BinOp.Panic.add (| M.read (| y |), (Integer.of_Z 2) : u32.t |)
         |)
       |)
     )).
