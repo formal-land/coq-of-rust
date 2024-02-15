@@ -182,8 +182,9 @@ Ltac monadic e :=
   | context ctxt [let v : _ := ?x in @?f v] =>
     refine (let_ _ _);
       [ monadic x
-      | intro v;
-        let y := (eval cbn beta in (f v)) in
+      | let v' := fresh v in
+        intro v';
+        let y := (eval cbn beta in (f v')) in
         refine (let_ _ _);
         [ monadic y
         | let w := fresh "v" in
