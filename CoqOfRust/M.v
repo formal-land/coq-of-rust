@@ -178,7 +178,7 @@ Import Notations.
     This allows to represent Rust programs without introducing
     explicit names for all intermediate computation results. *)
 Ltac monadic e :=
-  match e with
+  lazymatch e with
   | context ctxt [let v : _ := ?x in @?f v] =>
     refine (let_ _ _);
       [ monadic x
@@ -189,7 +189,7 @@ Ltac monadic e :=
         | let w := fresh "v" in
           intro w;
           let z := context ctxt [w] in
-          match z with
+          lazymatch z with
           | w => exact (pure w)
           | _ => monadic z
           end
@@ -201,7 +201,7 @@ Ltac monadic e :=
       | let v := fresh "v" in
         intro v;
         let y := context ctxt [v] in
-        match y with
+        lazymatch y with
         | v => exact (pure v)
         | _ => monadic y
         end
