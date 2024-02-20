@@ -359,3 +359,26 @@ Fixpoint match_operator {A B : Set}
         end
       )
   end.
+
+(** A tactic that performs monadic transformation for each of
+    the branches of the match expression. *)
+Ltac monadic_match_branches branches :=
+  lazymatch branches with
+  | nil => exact nil
+  | ?branch :: ?branches' => 
+    lazymatch branch with
+    | fun v => ?e =>
+      refine (cons _ _);
+      [ refine (fun v => _);
+        monadic e
+      | monadic_match_branches branches'
+      ]
+    end
+  end.
+
+(** A wrapper tactic over [match_operator]. This tactic calls
+    the [M.monadic] tactic on each branch of the match expression,
+    then calls the [match_operator] on the transformed branches. *)
+Ltac monadic_match_operator expr branches :=
+  refine (run (match_operator expr _));
+  monadic_match_branches branches.
