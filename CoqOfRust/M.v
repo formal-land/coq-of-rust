@@ -207,7 +207,11 @@ Ltac monadic e :=
         | _ => monadic y
         end
       ]
-  | _ => exact e
+  | _ =>
+    lazymatch type of e with
+    | M _ => exact e
+    | _ => exact (pure e)
+    end
   end.
 
 Definition cast {A B : Set} (v : A) : M B :=
