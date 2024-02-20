@@ -461,7 +461,7 @@ impl ExprKind {
                     text(" :"),
                     line(),
                     match &body.ty {
-                        Some(ret_ty) => CoqType::Monad(ret_ty.clone()).to_coq().to_doc(false),
+                        Some(ret_ty) => ret_ty.clone().to_coq().to_doc(false),
                         None => text("_"),
                     },
                 ]);
