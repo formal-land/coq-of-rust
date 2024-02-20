@@ -1450,7 +1450,12 @@ impl FunDefinition {
                             .concat(),
                             // @TODO: improve for opaque types with trait bounds
                             ty: Some(self.signature_and_body.ret_ty.to_coq()),
-                            body: coq::Expression::Code(body.to_doc(false)),
+                            body: coq::Expression::Code(concat([
+                                text("ltac:(M.monadic ("),
+                                nest([line(), body.to_doc(false)]),
+                                line(),
+                                text("))"),
+                            ])),
                         },
                     ))],
                 },
