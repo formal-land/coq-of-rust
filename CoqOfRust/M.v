@@ -185,28 +185,30 @@ Ltac monadic e :=
       | let v' := fresh v in
         intro v';
         let y := (eval cbn beta in (f v')) in
-        refine (let_ _ _);
-        [ monadic y
-        | let w := fresh "v" in
-          intro w;
-          let z := context ctxt [w] in
-          lazymatch z with
-          | w => exact (pure w)
-          | _ => monadic z
-          end
-        ]
-      ]
-  | context ctxt [run ?x] =>
-    refine (let_ _ _);
-      [ monadic x
-      | let v := fresh "v" in
-        intro v;
-        let y := context ctxt [v] in
-        lazymatch y with
-        | v => exact (pure v)
-        | _ => monadic y
+        lazymatch context ctxt [let v := x in y] with
+        | let v := x in y => monadic y
+        | _ =>
+          refine (let_ _ _);
+            [ monadic y
+            | let w := fresh "v" in
+              intro w;
+              let z := context ctxt [w] in
+              monadic z
+            ]
         end
       ]
+  | context ctxt [run ?x] =>
+    lazymatch context ctxt [run x] with
+    | run x => monadic x
+    | _ =>
+      refine (let_ _ _);
+        [ monadic x
+        | let v := fresh "v" in
+          intro v;
+          let y := context ctxt [v] in
+          monadic y
+        ]
+    end
   | _ =>
     lazymatch type of e with
     | M _ => exact e
