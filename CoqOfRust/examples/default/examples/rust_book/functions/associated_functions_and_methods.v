@@ -25,13 +25,14 @@ Section Impl_associated_functions_and_methods_Point_t.
       }
   *)
   Definition origin : M associated_functions_and_methods.Point.t :=
-    let* α0 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
-    let* α1 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
-    M.pure
+    ltac:(M.monadic (
       {|
-        associated_functions_and_methods.Point.y := α0;
-        associated_functions_and_methods.Point.x := α1;
-      |}.
+        associated_functions_and_methods.Point.y :=
+          M.read (| UnsupportedLiteral : M.Val f64.t |);
+        associated_functions_and_methods.Point.x :=
+          M.read (| UnsupportedLiteral : M.Val f64.t |);
+      |}
+    )).
   
   Global Instance AssociatedFunction_origin :
     Notations.DoubleColon Self "origin" := {
@@ -47,15 +48,14 @@ Section Impl_associated_functions_and_methods_Point_t.
       (x : f64.t)
       (y : f64.t)
       : M associated_functions_and_methods.Point.t :=
-    let* x := M.alloc x in
-    let* y := M.alloc y in
-    let* α0 : f64.t := M.read x in
-    let* α1 : f64.t := M.read y in
-    M.pure
+    ltac:(M.monadic (
+      let x := M.alloc (| x |) in
+      let y := M.alloc (| y |) in
       {|
-        associated_functions_and_methods.Point.x := α0;
-        associated_functions_and_methods.Point.y := α1;
-      |}.
+        associated_functions_and_methods.Point.x := M.read (| x |);
+        associated_functions_and_methods.Point.y := M.read (| y |);
+      |}
+    )).
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
@@ -89,9 +89,13 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
   Definition get_p1
       (self : ref Self)
       : M associated_functions_and_methods.Point.t :=
-    let* self := M.alloc self in
-    let* α0 : ref associated_functions_and_methods.Rectangle.t := M.read self in
-    M.read (associated_functions_and_methods.Rectangle.Get_p1 (deref α0)).
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      M.read (|
+        associated_functions_and_methods.Rectangle.Get_p1
+          (deref (M.read (| self |)))
+      |)
+    )).
   
   Global Instance AssociatedFunction_get_p1 :
     Notations.DoubleColon Self "get_p1" := {
@@ -110,61 +114,69 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
       }
   *)
   Definition area (self : ref Self) : M f64.t :=
-    let* self := M.alloc self in
-    let* α0 : ref associated_functions_and_methods.Rectangle.t := M.read self in
-    let* α1 : M.Val f64.t :=
-      match_operator
-        (associated_functions_and_methods.Rectangle.Get_p1 (deref α0))
-        [
-          fun γ =>
-            (let* α0 := M.read γ in
-            match α0 with
-            |
-                {|
-                  associated_functions_and_methods.Point.x := _;
-                  associated_functions_and_methods.Point.y := _;
-                |}
-                =>
-              let γ0_0 := associated_functions_and_methods.Point.Get_x γ in
-              let γ0_1 := associated_functions_and_methods.Point.Get_y γ in
-              let* x1 := M.copy γ0_0 in
-              let* y1 := M.copy γ0_1 in
-              let* α0 : ref associated_functions_and_methods.Rectangle.t :=
-                M.read self in
-              match_operator
-                (associated_functions_and_methods.Rectangle.Get_p2 (deref α0))
-                [
-                  fun γ =>
-                    (let* α0 := M.read γ in
-                    match α0 with
-                    |
-                        {|
-                          associated_functions_and_methods.Point.x := _;
-                          associated_functions_and_methods.Point.y := _;
-                        |}
-                        =>
-                      let γ0_0 :=
-                        associated_functions_and_methods.Point.Get_x γ in
-                      let γ0_1 :=
-                        associated_functions_and_methods.Point.Get_y γ in
-                      let* x2 := M.copy γ0_0 in
-                      let* y2 := M.copy γ0_1 in
-                      let* α0 : f64.t := M.read x1 in
-                      let* α1 : f64.t := M.read x2 in
-                      let* α2 : f64.t := BinOp.Panic.sub α0 α1 in
-                      let* α3 : f64.t := M.read y1 in
-                      let* α4 : f64.t := M.read y2 in
-                      let* α5 : f64.t := BinOp.Panic.sub α3 α4 in
-                      let* α6 : f64.t := BinOp.Panic.mul α2 α5 in
-                      let* α7 : f64.t := M.call (f64.t::["abs"] α6) in
-                      M.alloc α7
-                    end) :
-                    M (M.Val f64.t)
-                ]
-            end) :
-            M (M.Val f64.t)
-        ] in
-    M.read α1.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      M.read (|
+        ltac:
+          (M.monadic_match_operator
+            (associated_functions_and_methods.Rectangle.Get_p1
+              (deref (M.read (| self |))))
+            [
+              fun (γ : M.Val associated_functions_and_methods.Point.t) =>
+                match M.read (| γ |) with
+                |
+                    {|
+                      associated_functions_and_methods.Point.x := _;
+                      associated_functions_and_methods.Point.y := _;
+                    |}
+                    =>
+                  let γ0_0 := associated_functions_and_methods.Point.Get_x γ in
+                  let γ0_1 := associated_functions_and_methods.Point.Get_y γ in
+                  let x1 := M.copy (| γ0_0 |) in
+                  let y1 := M.copy (| γ0_1 |) in
+                  ltac:
+                    (M.monadic_match_operator
+                      (associated_functions_and_methods.Rectangle.Get_p2
+                        (deref (M.read (| self |))))
+                      [
+                        fun
+                            (γ :
+                              M.Val associated_functions_and_methods.Point.t) =>
+                          match M.read (| γ |) with
+                          |
+                              {|
+                                associated_functions_and_methods.Point.x := _;
+                                associated_functions_and_methods.Point.y := _;
+                              |}
+                              =>
+                            let γ0_0 :=
+                              associated_functions_and_methods.Point.Get_x γ in
+                            let γ0_1 :=
+                              associated_functions_and_methods.Point.Get_y γ in
+                            let x2 := M.copy (| γ0_0 |) in
+                            let y2 := M.copy (| γ0_1 |) in
+                            M.alloc (|
+                              M.call (|(f64.t::["abs"]
+                                (BinOp.Panic.mul (|
+                                  BinOp.Panic.sub (|
+                                    M.read (| x1 |),
+                                    M.read (| x2 |)
+                                  |),
+                                  BinOp.Panic.sub (|
+                                    M.read (| y1 |),
+                                    M.read (| y2 |)
+                                  |)
+                                |)))
+                              |)
+                            |)
+                          end :
+                          M.Val f64.t
+                      ])
+                end :
+                M.Val f64.t
+            ])
+      |)
+    )).
   
   Global Instance AssociatedFunction_area :
     Notations.DoubleColon Self "area" := {
@@ -180,65 +192,74 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
       }
   *)
   Definition perimeter (self : ref Self) : M f64.t :=
-    let* self := M.alloc self in
-    let* α0 : ref associated_functions_and_methods.Rectangle.t := M.read self in
-    let* α1 : M.Val f64.t :=
-      match_operator
-        (associated_functions_and_methods.Rectangle.Get_p1 (deref α0))
-        [
-          fun γ =>
-            (let* α0 := M.read γ in
-            match α0 with
-            |
-                {|
-                  associated_functions_and_methods.Point.x := _;
-                  associated_functions_and_methods.Point.y := _;
-                |}
-                =>
-              let γ0_0 := associated_functions_and_methods.Point.Get_x γ in
-              let γ0_1 := associated_functions_and_methods.Point.Get_y γ in
-              let* x1 := M.copy γ0_0 in
-              let* y1 := M.copy γ0_1 in
-              let* α0 : ref associated_functions_and_methods.Rectangle.t :=
-                M.read self in
-              match_operator
-                (associated_functions_and_methods.Rectangle.Get_p2 (deref α0))
-                [
-                  fun γ =>
-                    (let* α0 := M.read γ in
-                    match α0 with
-                    |
-                        {|
-                          associated_functions_and_methods.Point.x := _;
-                          associated_functions_and_methods.Point.y := _;
-                        |}
-                        =>
-                      let γ0_0 :=
-                        associated_functions_and_methods.Point.Get_x γ in
-                      let γ0_1 :=
-                        associated_functions_and_methods.Point.Get_y γ in
-                      let* x2 := M.copy γ0_0 in
-                      let* y2 := M.copy γ0_1 in
-                      let* α0 : f64.t :=
-                        M.read (UnsupportedLiteral : M.Val f64.t) in
-                      let* α1 : f64.t := M.read x1 in
-                      let* α2 : f64.t := M.read x2 in
-                      let* α3 : f64.t := BinOp.Panic.sub α1 α2 in
-                      let* α4 : f64.t := M.call (f64.t::["abs"] α3) in
-                      let* α5 : f64.t := M.read y1 in
-                      let* α6 : f64.t := M.read y2 in
-                      let* α7 : f64.t := BinOp.Panic.sub α5 α6 in
-                      let* α8 : f64.t := M.call (f64.t::["abs"] α7) in
-                      let* α9 : f64.t := BinOp.Panic.add α4 α8 in
-                      let* α10 : f64.t := BinOp.Panic.mul α0 α9 in
-                      M.alloc α10
-                    end) :
-                    M (M.Val f64.t)
-                ]
-            end) :
-            M (M.Val f64.t)
-        ] in
-    M.read α1.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      M.read (|
+        ltac:
+          (M.monadic_match_operator
+            (associated_functions_and_methods.Rectangle.Get_p1
+              (deref (M.read (| self |))))
+            [
+              fun (γ : M.Val associated_functions_and_methods.Point.t) =>
+                match M.read (| γ |) with
+                |
+                    {|
+                      associated_functions_and_methods.Point.x := _;
+                      associated_functions_and_methods.Point.y := _;
+                    |}
+                    =>
+                  let γ0_0 := associated_functions_and_methods.Point.Get_x γ in
+                  let γ0_1 := associated_functions_and_methods.Point.Get_y γ in
+                  let x1 := M.copy (| γ0_0 |) in
+                  let y1 := M.copy (| γ0_1 |) in
+                  ltac:
+                    (M.monadic_match_operator
+                      (associated_functions_and_methods.Rectangle.Get_p2
+                        (deref (M.read (| self |))))
+                      [
+                        fun
+                            (γ :
+                              M.Val associated_functions_and_methods.Point.t) =>
+                          match M.read (| γ |) with
+                          |
+                              {|
+                                associated_functions_and_methods.Point.x := _;
+                                associated_functions_and_methods.Point.y := _;
+                              |}
+                              =>
+                            let γ0_0 :=
+                              associated_functions_and_methods.Point.Get_x γ in
+                            let γ0_1 :=
+                              associated_functions_and_methods.Point.Get_y γ in
+                            let x2 := M.copy (| γ0_0 |) in
+                            let y2 := M.copy (| γ0_1 |) in
+                            M.alloc (|
+                              BinOp.Panic.mul (|
+                                M.read (| UnsupportedLiteral : M.Val f64.t |),
+                                BinOp.Panic.add (|
+                                  M.call (|(f64.t::["abs"]
+                                    (BinOp.Panic.sub (|
+                                      M.read (| x1 |),
+                                      M.read (| x2 |)
+                                    |)))
+                                  |),
+                                  M.call (|(f64.t::["abs"]
+                                    (BinOp.Panic.sub (|
+                                      M.read (| y1 |),
+                                      M.read (| y2 |)
+                                    |)))
+                                  |)
+                                |)
+                              |)
+                            |)
+                          end :
+                          M.Val f64.t
+                      ])
+                end :
+                M.Val f64.t
+            ])
+      |)
+    )).
   
   Global Instance AssociatedFunction_perimeter :
     Notations.DoubleColon Self "perimeter" := {
@@ -255,55 +276,42 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
       }
   *)
   Definition translate (self : mut_ref Self) (x : f64.t) (y : f64.t) : M unit :=
-    let* self := M.alloc self in
-    let* x := M.alloc x in
-    let* y := M.alloc y in
-    let* _ : M.Val unit :=
-      let* β : M.Val f64.t :=
-        let* α0 : mut_ref associated_functions_and_methods.Rectangle.t :=
-          M.read self in
-        M.pure
-          (associated_functions_and_methods.Point.Get_x
-            (associated_functions_and_methods.Rectangle.Get_p1 (deref α0))) in
-      let* α0 := M.read β in
-      let* α1 : f64.t := M.read x in
-      let* α2 := BinOp.Panic.add α0 α1 in
-      assign β α2 in
-    let* _ : M.Val unit :=
-      let* β : M.Val f64.t :=
-        let* α0 : mut_ref associated_functions_and_methods.Rectangle.t :=
-          M.read self in
-        M.pure
-          (associated_functions_and_methods.Point.Get_x
-            (associated_functions_and_methods.Rectangle.Get_p2 (deref α0))) in
-      let* α0 := M.read β in
-      let* α1 : f64.t := M.read x in
-      let* α2 := BinOp.Panic.add α0 α1 in
-      assign β α2 in
-    let* _ : M.Val unit :=
-      let* β : M.Val f64.t :=
-        let* α0 : mut_ref associated_functions_and_methods.Rectangle.t :=
-          M.read self in
-        M.pure
-          (associated_functions_and_methods.Point.Get_y
-            (associated_functions_and_methods.Rectangle.Get_p1 (deref α0))) in
-      let* α0 := M.read β in
-      let* α1 : f64.t := M.read y in
-      let* α2 := BinOp.Panic.add α0 α1 in
-      assign β α2 in
-    let* _ : M.Val unit :=
-      let* β : M.Val f64.t :=
-        let* α0 : mut_ref associated_functions_and_methods.Rectangle.t :=
-          M.read self in
-        M.pure
-          (associated_functions_and_methods.Point.Get_y
-            (associated_functions_and_methods.Rectangle.Get_p2 (deref α0))) in
-      let* α0 := M.read β in
-      let* α1 : f64.t := M.read y in
-      let* α2 := BinOp.Panic.add α0 α1 in
-      assign β α2 in
-    let* α0 : M.Val unit := M.alloc tt in
-    M.read α0.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let x := M.alloc (| x |) in
+      let y := M.alloc (| y |) in
+      M.read (|
+        let _ : M.Val unit :=
+          let β : M.Val f64.t :=
+            associated_functions_and_methods.Point.Get_x
+              (associated_functions_and_methods.Rectangle.Get_p1
+                (deref (M.read (| self |)))) in
+          assign (| β, BinOp.Panic.add (| M.read (| β |), M.read (| x |) |)
+          |) in
+        let _ : M.Val unit :=
+          let β : M.Val f64.t :=
+            associated_functions_and_methods.Point.Get_x
+              (associated_functions_and_methods.Rectangle.Get_p2
+                (deref (M.read (| self |)))) in
+          assign (| β, BinOp.Panic.add (| M.read (| β |), M.read (| x |) |)
+          |) in
+        let _ : M.Val unit :=
+          let β : M.Val f64.t :=
+            associated_functions_and_methods.Point.Get_y
+              (associated_functions_and_methods.Rectangle.Get_p1
+                (deref (M.read (| self |)))) in
+          assign (| β, BinOp.Panic.add (| M.read (| β |), M.read (| y |) |)
+          |) in
+        let _ : M.Val unit :=
+          let β : M.Val f64.t :=
+            associated_functions_and_methods.Point.Get_y
+              (associated_functions_and_methods.Rectangle.Get_p2
+                (deref (M.read (| self |)))) in
+          assign (| β, BinOp.Panic.add (| M.read (| β |), M.read (| y |) |)
+          |) in
+        M.alloc (| tt |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_translate :
     Notations.DoubleColon Self "translate" := {
@@ -341,50 +349,59 @@ Section Impl_associated_functions_and_methods_Pair_t.
       }
   *)
   Definition destroy (self : Self) : M unit :=
-    let* self := M.alloc self in
-    let* α0 : M.Val unit :=
-      match_operator
-        self
-        [
-          fun γ =>
-            (let* α0 := M.read γ in
-            match α0 with
-            | associated_functions_and_methods.Pair.Build_t _ _ =>
-              let γ0_0 := associated_functions_and_methods.Pair.Get_0 γ in
-              let γ0_1 := associated_functions_and_methods.Pair.Get_1 γ in
-              let* first := M.copy γ0_0 in
-              let* second := M.copy γ0_1 in
-              let* _ : M.Val unit :=
-                let* _ : M.Val unit :=
-                  let* α0 : ref str.t := M.read (mk_str "Destroying Pair(") in
-                  let* α1 : ref str.t := M.read (mk_str ", ") in
-                  let* α2 : ref str.t := M.read (mk_str ")
-") in
-                  let* α3 : M.Val (array (ref str.t)) :=
-                    M.alloc [ α0; α1; α2 ] in
-                  let* α4 : core.fmt.rt.Argument.t :=
-                    M.call
-                      (core.fmt.rt.Argument.t::["new_display"]
-                        (borrow first)) in
-                  let* α5 : core.fmt.rt.Argument.t :=
-                    M.call
-                      (core.fmt.rt.Argument.t::["new_display"]
-                        (borrow second)) in
-                  let* α6 : M.Val (array core.fmt.rt.Argument.t) :=
-                    M.alloc [ α4; α5 ] in
-                  let* α7 : core.fmt.Arguments.t :=
-                    M.call
-                      (core.fmt.Arguments.t::["new_v1"]
-                        (pointer_coercion "Unsize" (borrow α3))
-                        (pointer_coercion "Unsize" (borrow α6))) in
-                  let* α8 : unit := M.call (std.io.stdio._print α7) in
-                  M.alloc α8 in
-                M.alloc tt in
-              M.alloc tt
-            end) :
-            M (M.Val unit)
-        ] in
-    M.read α0.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      M.read (|
+        ltac:
+          (M.monadic_match_operator
+            self
+            [
+              fun (γ : M.Val associated_functions_and_methods.Pair.t) =>
+                match M.read (| γ |) with
+                | associated_functions_and_methods.Pair.Build_t _ _ =>
+                  let γ0_0 := associated_functions_and_methods.Pair.Get_0 γ in
+                  let γ0_1 := associated_functions_and_methods.Pair.Get_1 γ in
+                  let first := M.copy (| γ0_0 |) in
+                  let second := M.copy (| γ0_1 |) in
+                  let _ : M.Val unit :=
+                    let _ : M.Val unit :=
+                      M.alloc (|
+                        M.call (|(std.io.stdio._print
+                          (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                            (pointer_coercion
+                              "Unsize"
+                              (borrow
+                                (M.alloc (|
+                                  [
+                                    M.read (| mk_str "Destroying Pair(" |);
+                                    M.read (| mk_str ", " |);
+                                    M.read (| mk_str ")
+" |)
+                                  ]
+                                |))))
+                            (pointer_coercion
+                              "Unsize"
+                              (borrow
+                                (M.alloc (|
+                                  [
+                                    M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                                      (borrow first))
+                                    |);
+                                    M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                                      (borrow second))
+                                    |)
+                                  ]
+                                |)))))
+                          |)))
+                        |)
+                      |) in
+                    M.alloc (| tt |) in
+                  M.alloc (| tt |)
+                end :
+                M.Val unit
+            ])
+      |)
+    )).
   
   Global Instance AssociatedFunction_destroy :
     Notations.DoubleColon Self "destroy" := {
@@ -431,98 +448,124 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* rectangle : M.Val associated_functions_and_methods.Rectangle.t :=
-    let* α0 : associated_functions_and_methods.Point.t :=
-      M.call associated_functions_and_methods.Point.t::["origin"] in
-    let* α1 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
-    let* α2 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
-    let* α3 : associated_functions_and_methods.Point.t :=
-      M.call (associated_functions_and_methods.Point.t::["new"] α1 α2) in
-    M.alloc
-      {|
-        associated_functions_and_methods.Rectangle.p1 := α0;
-        associated_functions_and_methods.Rectangle.p2 := α3;
-      |} in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "Rectangle perimeter: ") in
-      let* α1 : ref str.t := M.read (mk_str "
-") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : f64.t :=
-        M.call
-          (associated_functions_and_methods.Rectangle.t::["perimeter"]
-            (borrow rectangle)) in
-      let* α4 : M.Val f64.t := M.alloc α3 in
-      let* α5 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α4)) in
-      let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
-      let* α7 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α6))) in
-      let* α8 : unit := M.call (std.io.stdio._print α7) in
-      M.alloc α8 in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "Rectangle area: ") in
-      let* α1 : ref str.t := M.read (mk_str "
-") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : f64.t :=
-        M.call
-          (associated_functions_and_methods.Rectangle.t::["area"]
-            (borrow rectangle)) in
-      let* α4 : M.Val f64.t := M.alloc α3 in
-      let* α5 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α4)) in
-      let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
-      let* α7 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α6))) in
-      let* α8 : unit := M.call (std.io.stdio._print α7) in
-      M.alloc α8 in
-    M.alloc tt in
-  let* square : M.Val associated_functions_and_methods.Rectangle.t :=
-    let* α0 : associated_functions_and_methods.Point.t :=
-      M.call associated_functions_and_methods.Point.t::["origin"] in
-    let* α1 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
-    let* α2 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
-    let* α3 : associated_functions_and_methods.Point.t :=
-      M.call (associated_functions_and_methods.Point.t::["new"] α1 α2) in
-    M.alloc
-      {|
-        associated_functions_and_methods.Rectangle.p1 := α0;
-        associated_functions_and_methods.Rectangle.p2 := α3;
-      |} in
-  let* _ : M.Val unit :=
-    let* α0 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
-    let* α1 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
-    let* α2 : unit :=
-      M.call
-        (associated_functions_and_methods.Rectangle.t::["translate"]
-          (borrow_mut square)
-          α0
-          α1) in
-    M.alloc α2 in
-  let* pair : M.Val associated_functions_and_methods.Pair.t :=
-    let* α0 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t :=
-      M.call
-        ((alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"]
-          ((Integer.of_Z 1) : i32.t)) in
-    let* α1 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t :=
-      M.call
-        ((alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"]
-          ((Integer.of_Z 2) : i32.t)) in
-    M.alloc (associated_functions_and_methods.Pair.Build_t α0 α1) in
-  let* _ : M.Val unit :=
-    let* α0 : associated_functions_and_methods.Pair.t := M.read pair in
-    let* α1 : unit :=
-      M.call (associated_functions_and_methods.Pair.t::["destroy"] α0) in
-    M.alloc α1 in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+  ltac:(M.monadic (
+    M.read (|
+      let rectangle : M.Val associated_functions_and_methods.Rectangle.t :=
+        M.alloc (|
+          {|
+            associated_functions_and_methods.Rectangle.p1 :=
+              M.call (|associated_functions_and_methods.Point.t::["origin"] |);
+            associated_functions_and_methods.Rectangle.p2 :=
+              M.call (|(associated_functions_and_methods.Point.t::["new"]
+                (M.read (| UnsupportedLiteral : M.Val f64.t |))
+                (M.read (| UnsupportedLiteral : M.Val f64.t |)))
+              |);
+          |}
+        |) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.read (| mk_str "Rectangle perimeter: " |);
+                        M.read (| mk_str "
+" |)
+                      ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                          (borrow
+                            (M.alloc (|
+                              M.call (|(associated_functions_and_methods.Rectangle.t::["perimeter"]
+                                (borrow rectangle))
+                              |)
+                            |))))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.read (| mk_str "Rectangle area: " |);
+                        M.read (| mk_str "
+" |)
+                      ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                          (borrow
+                            (M.alloc (|
+                              M.call (|(associated_functions_and_methods.Rectangle.t::["area"]
+                                (borrow rectangle))
+                              |)
+                            |))))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      let square : M.Val associated_functions_and_methods.Rectangle.t :=
+        M.alloc (|
+          {|
+            associated_functions_and_methods.Rectangle.p1 :=
+              M.call (|associated_functions_and_methods.Point.t::["origin"] |);
+            associated_functions_and_methods.Rectangle.p2 :=
+              M.call (|(associated_functions_and_methods.Point.t::["new"]
+                (M.read (| UnsupportedLiteral : M.Val f64.t |))
+                (M.read (| UnsupportedLiteral : M.Val f64.t |)))
+              |);
+          |}
+        |) in
+      let _ : M.Val unit :=
+        M.alloc (|
+          M.call (|(associated_functions_and_methods.Rectangle.t::["translate"]
+            (borrow_mut square)
+            (M.read (| UnsupportedLiteral : M.Val f64.t |))
+            (M.read (| UnsupportedLiteral : M.Val f64.t |)))
+          |)
+        |) in
+      let pair : M.Val associated_functions_and_methods.Pair.t :=
+        M.alloc (|
+          associated_functions_and_methods.Pair.Build_t
+            (M.call (|((alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"]
+              ((Integer.of_Z 1) : i32.t))
+            |))
+            (M.call (|((alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"]
+              ((Integer.of_Z 2) : i32.t))
+            |))
+        |) in
+      let _ : M.Val unit :=
+        M.alloc (|
+          M.call (|(associated_functions_and_methods.Pair.t::["destroy"]
+            (M.read (| pair |)))
+          |)
+        |) in
+      M.alloc (| tt |)
+    |)
+  )).

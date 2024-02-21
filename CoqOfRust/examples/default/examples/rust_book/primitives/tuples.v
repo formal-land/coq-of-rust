@@ -10,26 +10,26 @@ fn reverse(pair: (i32, bool)) -> (bool, i32) {
 }
 *)
 Definition reverse (pair : i32.t * bool.t) : M (bool.t * i32.t) :=
-  let* pair := M.alloc pair in
-  let* α0 : M.Val (bool.t * i32.t) :=
-    match_operator
-      pair
-      [
-        fun γ =>
-          (let* α0 := M.read γ in
-          match α0 with
-          | (_, _) =>
-            let γ0_0 := Tuple.Access.left γ in
-            let γ0_1 := Tuple.Access.right γ in
-            let* int_param := M.copy γ0_0 in
-            let* bool_param := M.copy γ0_1 in
-            let* α0 : bool.t := M.read bool_param in
-            let* α1 : i32.t := M.read int_param in
-            M.alloc (α0, α1)
-          end) :
-          M (M.Val (bool.t * i32.t))
-      ] in
-  M.read α0.
+  ltac:(M.monadic (
+    let pair := M.alloc (| pair |) in
+    M.read (|
+      ltac:
+        (M.monadic_match_operator
+          pair
+          [
+            fun (γ : M.Val (i32.t * bool.t)) =>
+              match M.read (| γ |) with
+              | (_, _) =>
+                let γ0_0 := Tuple.Access.left γ in
+                let γ0_1 := Tuple.Access.right γ in
+                let int_param := M.copy (| γ0_0 |) in
+                let bool_param := M.copy (| γ0_1 |) in
+                M.alloc (| (M.read (| bool_param |), M.read (| int_param |)) |)
+              end :
+              M.Val (bool.t * i32.t)
+          ])
+    |)
+  )).
 
 Module  Matrix.
 Section Matrix.
@@ -62,24 +62,28 @@ Section Impl_core_fmt_Debug_for_tuples_Matrix_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self := M.alloc self in
-    let* f := M.alloc f in
-    let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
-    let* α1 : ref str.t := M.read (mk_str "Matrix") in
-    let* α2 : ref tuples.Matrix.t := M.read self in
-    let* α3 : ref tuples.Matrix.t := M.read self in
-    let* α4 : ref tuples.Matrix.t := M.read self in
-    let* α5 : ref tuples.Matrix.t := M.read self in
-    let* α6 : M.Val (ref f32.t) :=
-      M.alloc (borrow (tuples.Matrix.Get_3 (deref α5))) in
-    M.call
-      (core.fmt.Formatter.t::["debug_tuple_field4_finish"]
-        α0
-        α1
-        (pointer_coercion "Unsize" (borrow (tuples.Matrix.Get_0 (deref α2))))
-        (pointer_coercion "Unsize" (borrow (tuples.Matrix.Get_1 (deref α3))))
-        (pointer_coercion "Unsize" (borrow (tuples.Matrix.Get_2 (deref α4))))
-        (pointer_coercion "Unsize" (borrow α6))).
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let f := M.alloc (| f |) in
+      M.call (|(core.fmt.Formatter.t::["debug_tuple_field4_finish"]
+        (M.read (| f |))
+        (M.read (| mk_str "Matrix" |))
+        (pointer_coercion
+          "Unsize"
+          (borrow (tuples.Matrix.Get_0 (deref (M.read (| self |))))))
+        (pointer_coercion
+          "Unsize"
+          (borrow (tuples.Matrix.Get_1 (deref (M.read (| self |))))))
+        (pointer_coercion
+          "Unsize"
+          (borrow (tuples.Matrix.Get_2 (deref (M.read (| self |))))))
+        (pointer_coercion
+          "Unsize"
+          (borrow
+            (M.alloc (| borrow (tuples.Matrix.Get_3 (deref (M.read (| self |))))
+            |)))))
+      |)
+    )).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
@@ -137,248 +141,356 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* long_tuple :
-      M.Val
-        (((((((((((u8.t * u16.t) * u32.t) * u64.t) * i8.t) * i16.t) * i32.t)
-        *
-        i64.t)
-        *
-        f32.t)
-        *
-        f64.t)
-        *
-        char.t)
-        *
-        bool.t) :=
-    let* α0 : f32.t := M.read (UnsupportedLiteral : M.Val f32.t) in
-    let* α1 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
-    M.alloc
-      ((Integer.of_Z 1) : u8.t,
-        (Integer.of_Z 2) : u16.t,
-        (Integer.of_Z 3) : u32.t,
-        (Integer.of_Z 4) : u64.t,
-        (Integer.of_Z (-1)) : i8.t,
-        (Integer.of_Z (-2)) : i16.t,
-        (Integer.of_Z (-3)) : i32.t,
-        (Integer.of_Z (-4)) : i64.t,
-        α0,
-        α1,
-        "a"%char,
-        true) in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "long tuple first value: ") in
-      let* α1 : ref str.t := M.read (mk_str "
-") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : core.fmt.rt.Argument.t :=
-        M.call
-          (core.fmt.rt.Argument.t::["new_display"] (borrow "Unknown Field")) in
-      let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
-      let* α5 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α4))) in
-      let* α6 : unit := M.call (std.io.stdio._print α5) in
-      M.alloc α6 in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "long tuple second value: ") in
-      let* α1 : ref str.t := M.read (mk_str "
-") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : core.fmt.rt.Argument.t :=
-        M.call
-          (core.fmt.rt.Argument.t::["new_display"] (borrow "Unknown Field")) in
-      let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
-      let* α5 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α4))) in
-      let* α6 : unit := M.call (std.io.stdio._print α5) in
-      M.alloc α6 in
-    M.alloc tt in
-  let* tuple_of_tuples :
-      M.Val ((((u8.t * u16.t) * u32.t) * (u64.t * i8.t)) * i16.t) :=
-    M.alloc
-      (((Integer.of_Z 1) : u8.t,
-          (Integer.of_Z 2) : u16.t,
-          (Integer.of_Z 2) : u32.t),
-        ((Integer.of_Z 4) : u64.t, (Integer.of_Z (-1)) : i8.t),
-        (Integer.of_Z (-2)) : i16.t) in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "tuple of tuples: ") in
-      let* α1 : ref str.t := M.read (mk_str "
-") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : core.fmt.rt.Argument.t :=
-        M.call
-          (core.fmt.rt.Argument.t::["new_debug"] (borrow tuple_of_tuples)) in
-      let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
-      let* α5 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α4))) in
-      let* α6 : unit := M.call (std.io.stdio._print α5) in
-      M.alloc α6 in
-    M.alloc tt in
-  let* pair : M.Val (i32.t * bool.t) :=
-    M.alloc ((Integer.of_Z 1) : i32.t, true) in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "pair is ") in
-      let* α1 : ref str.t := M.read (mk_str "
-") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow pair)) in
-      let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
-      let* α5 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α4))) in
-      let* α6 : unit := M.call (std.io.stdio._print α5) in
-      M.alloc α6 in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "the reversed pair is ") in
-      let* α1 : ref str.t := M.read (mk_str "
-") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : i32.t * bool.t := M.read pair in
-      let* α4 : bool.t * i32.t := M.call (tuples.reverse α3) in
-      let* α5 : M.Val (bool.t * i32.t) := M.alloc α4 in
-      let* α6 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow α5)) in
-      let* α7 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α6 ] in
-      let* α8 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α7))) in
-      let* α9 : unit := M.call (std.io.stdio._print α8) in
-      M.alloc α9 in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "one element tuple: ") in
-      let* α1 : ref str.t := M.read (mk_str "
-") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : M.Val u32.t := M.alloc ((Integer.of_Z 5) : u32.t) in
-      let* α4 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow α3)) in
-      let* α5 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4 ] in
-      let* α6 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α5))) in
-      let* α7 : unit := M.call (std.io.stdio._print α6) in
-      M.alloc α7 in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "just an integer: ") in
-      let* α1 : ref str.t := M.read (mk_str "
-") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : M.Val u32.t := M.alloc ((Integer.of_Z 5) : u32.t) in
-      let* α4 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow α3)) in
-      let* α5 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4 ] in
-      let* α6 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α5))) in
-      let* α7 : unit := M.call (std.io.stdio._print α6) in
-      M.alloc α7 in
-    M.alloc tt in
-  let* tuple : M.Val (((i32.t * (ref str.t)) * f64.t) * bool.t) :=
-    let* α0 : ref str.t := M.read (mk_str "hello") in
-    let* α1 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
-    M.alloc ((Integer.of_Z 1) : i32.t, α0, α1, true) in
-  let* α0 : M.Val unit :=
-    match_operator
-      tuple
-      [
-        fun γ =>
-          (let* α0 := M.read γ in
-          match α0 with
-          | (_, _, _, _) =>
-            let γ0_0 :=
-              Tuple.Access.left (Tuple.Access.left (Tuple.Access.left γ)) in
-            let γ0_1 :=
-              Tuple.Access.right (Tuple.Access.left (Tuple.Access.left γ)) in
-            let γ0_2 := Tuple.Access.right (Tuple.Access.left γ) in
-            let γ0_3 := Tuple.Access.right γ in
-            let* a := M.copy γ0_0 in
-            let* b := M.copy γ0_1 in
-            let* c := M.copy γ0_2 in
-            let* d := M.copy γ0_3 in
-            let* _ : M.Val unit :=
-              let* _ : M.Val unit :=
-                let* α0 : ref str.t := M.read (mk_str "") in
-                let* α1 : ref str.t := M.read (mk_str ", ") in
-                let* α2 : ref str.t := M.read (mk_str ", ") in
-                let* α3 : ref str.t := M.read (mk_str ", ") in
-                let* α4 : ref str.t := M.read (mk_str "
-") in
-                let* α5 : M.Val (array (ref str.t)) :=
-                  M.alloc [ α0; α1; α2; α3; α4 ] in
-                let* α6 : core.fmt.rt.Argument.t :=
-                  M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow a)) in
-                let* α7 : core.fmt.rt.Argument.t :=
-                  M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow b)) in
-                let* α8 : core.fmt.rt.Argument.t :=
-                  M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow c)) in
-                let* α9 : core.fmt.rt.Argument.t :=
-                  M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow d)) in
-                let* α10 : M.Val (array core.fmt.rt.Argument.t) :=
-                  M.alloc [ α6; α7; α8; α9 ] in
-                let* α11 : core.fmt.Arguments.t :=
-                  M.call
-                    (core.fmt.Arguments.t::["new_v1"]
-                      (pointer_coercion "Unsize" (borrow α5))
-                      (pointer_coercion "Unsize" (borrow α10))) in
-                let* α12 : unit := M.call (std.io.stdio._print α11) in
-                M.alloc α12 in
-              M.alloc tt in
-            let* matrix : M.Val tuples.Matrix.t :=
-              let* α0 : f32.t := M.read (UnsupportedLiteral : M.Val f32.t) in
-              let* α1 : f32.t := M.read (UnsupportedLiteral : M.Val f32.t) in
-              let* α2 : f32.t := M.read (UnsupportedLiteral : M.Val f32.t) in
-              let* α3 : f32.t := M.read (UnsupportedLiteral : M.Val f32.t) in
-              M.alloc (tuples.Matrix.Build_t α0 α1 α2 α3) in
-            let* _ : M.Val unit :=
-              let* _ : M.Val unit :=
-                let* α0 : ref str.t := M.read (mk_str "") in
-                let* α1 : ref str.t := M.read (mk_str "
-") in
-                let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-                let* α3 : core.fmt.rt.Argument.t :=
-                  M.call
-                    (core.fmt.rt.Argument.t::["new_debug"] (borrow matrix)) in
-                let* α4 : M.Val (array core.fmt.rt.Argument.t) :=
-                  M.alloc [ α3 ] in
-                let* α5 : core.fmt.Arguments.t :=
-                  M.call
-                    (core.fmt.Arguments.t::["new_v1"]
-                      (pointer_coercion "Unsize" (borrow α2))
-                      (pointer_coercion "Unsize" (borrow α4))) in
-                let* α6 : unit := M.call (std.io.stdio._print α5) in
-                M.alloc α6 in
-              M.alloc tt in
-            M.alloc tt
-          end) :
-          M (M.Val unit)
-      ] in
-  M.read α0.
+  ltac:(M.monadic (
+    M.read (|
+      let long_tuple :
+          M.Val
+            (((((((((((u8.t * u16.t) * u32.t) * u64.t) * i8.t) * i16.t) * i32.t)
+            *
+            i64.t)
+            *
+            f32.t)
+            *
+            f64.t)
+            *
+            char.t)
+            *
+            bool.t) :=
+        M.alloc (|
+          ((Integer.of_Z 1) : u8.t,
+            (Integer.of_Z 2) : u16.t,
+            (Integer.of_Z 3) : u32.t,
+            (Integer.of_Z 4) : u64.t,
+            (Integer.of_Z (-1)) : i8.t,
+            (Integer.of_Z (-2)) : i16.t,
+            (Integer.of_Z (-3)) : i32.t,
+            (Integer.of_Z (-4)) : i64.t,
+            M.read (| UnsupportedLiteral : M.Val f32.t |),
+            M.read (| UnsupportedLiteral : M.Val f64.t |),
+            "a"%char,
+            true)
+        |) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.read (| mk_str "long tuple first value: " |);
+                        M.read (| mk_str "
+" |)
+                      ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                          (borrow "Unknown Field"))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.read (| mk_str "long tuple second value: " |);
+                        M.read (| mk_str "
+" |)
+                      ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                          (borrow "Unknown Field"))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      let tuple_of_tuples :
+          M.Val ((((u8.t * u16.t) * u32.t) * (u64.t * i8.t)) * i16.t) :=
+        M.alloc (|
+          (((Integer.of_Z 1) : u8.t,
+              (Integer.of_Z 2) : u16.t,
+              (Integer.of_Z 2) : u32.t),
+            ((Integer.of_Z 4) : u64.t, (Integer.of_Z (-1)) : i8.t),
+            (Integer.of_Z (-2)) : i16.t)
+        |) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.read (| mk_str "tuple of tuples: " |);
+                        M.read (| mk_str "
+" |)
+                      ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_debug"]
+                          (borrow tuple_of_tuples))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      let pair : M.Val (i32.t * bool.t) :=
+        M.alloc (| ((Integer.of_Z 1) : i32.t, true) |) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [ M.read (| mk_str "pair is " |); M.read (| mk_str "
+" |)
+                      ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_debug"]
+                          (borrow pair))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.read (| mk_str "the reversed pair is " |);
+                        M.read (| mk_str "
+" |)
+                      ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_debug"]
+                          (borrow
+                            (M.alloc (|
+                              M.call (|(tuples.reverse (M.read (| pair |))) |)
+                            |))))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.read (| mk_str "one element tuple: " |);
+                        M.read (| mk_str "
+" |)
+                      ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_debug"]
+                          (borrow (M.alloc (| ((Integer.of_Z 5) : u32.t) |))))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.read (| mk_str "just an integer: " |);
+                        M.read (| mk_str "
+" |)
+                      ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_debug"]
+                          (borrow (M.alloc (| (Integer.of_Z 5) : u32.t |))))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      let tuple : M.Val (((i32.t * (ref str.t)) * f64.t) * bool.t) :=
+        M.alloc (|
+          ((Integer.of_Z 1) : i32.t,
+            M.read (| mk_str "hello" |),
+            M.read (| UnsupportedLiteral : M.Val f64.t |),
+            true)
+        |) in
+      ltac:
+        (M.monadic_match_operator
+          tuple
+          [
+            fun (γ : M.Val (((i32.t * (ref str.t)) * f64.t) * bool.t)) =>
+              match M.read (| γ |) with
+              | (_, _, _, _) =>
+                let γ0_0 :=
+                  Tuple.Access.left (Tuple.Access.left (Tuple.Access.left γ)) in
+                let γ0_1 :=
+                  Tuple.Access.right
+                    (Tuple.Access.left (Tuple.Access.left γ)) in
+                let γ0_2 := Tuple.Access.right (Tuple.Access.left γ) in
+                let γ0_3 := Tuple.Access.right γ in
+                let a := M.copy (| γ0_0 |) in
+                let b := M.copy (| γ0_1 |) in
+                let c := M.copy (| γ0_2 |) in
+                let d := M.copy (| γ0_3 |) in
+                let _ : M.Val unit :=
+                  let _ : M.Val unit :=
+                    M.alloc (|
+                      M.call (|(std.io.stdio._print
+                        (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                          (pointer_coercion
+                            "Unsize"
+                            (borrow
+                              (M.alloc (|
+                                [
+                                  M.read (| mk_str "" |);
+                                  M.read (| mk_str ", " |);
+                                  M.read (| mk_str ", " |);
+                                  M.read (| mk_str ", " |);
+                                  M.read (| mk_str "
+" |)
+                                ]
+                              |))))
+                          (pointer_coercion
+                            "Unsize"
+                            (borrow
+                              (M.alloc (|
+                                [
+                                  M.call (|(core.fmt.rt.Argument.t::["new_debug"]
+                                    (borrow a))
+                                  |);
+                                  M.call (|(core.fmt.rt.Argument.t::["new_debug"]
+                                    (borrow b))
+                                  |);
+                                  M.call (|(core.fmt.rt.Argument.t::["new_debug"]
+                                    (borrow c))
+                                  |);
+                                  M.call (|(core.fmt.rt.Argument.t::["new_debug"]
+                                    (borrow d))
+                                  |)
+                                ]
+                              |)))))
+                        |)))
+                      |)
+                    |) in
+                  M.alloc (| tt |) in
+                let matrix : M.Val tuples.Matrix.t :=
+                  M.alloc (|
+                    tuples.Matrix.Build_t
+                      (M.read (| UnsupportedLiteral : M.Val f32.t |))
+                      (M.read (| UnsupportedLiteral : M.Val f32.t |))
+                      (M.read (| UnsupportedLiteral : M.Val f32.t |))
+                      (M.read (| UnsupportedLiteral : M.Val f32.t |))
+                  |) in
+                let _ : M.Val unit :=
+                  let _ : M.Val unit :=
+                    M.alloc (|
+                      M.call (|(std.io.stdio._print
+                        (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                          (pointer_coercion
+                            "Unsize"
+                            (borrow
+                              (M.alloc (|
+                                [
+                                  M.read (| mk_str "" |);
+                                  M.read (| mk_str "
+" |)
+                                ]
+                              |))))
+                          (pointer_coercion
+                            "Unsize"
+                            (borrow
+                              (M.alloc (|
+                                [
+                                  M.call (|(core.fmt.rt.Argument.t::["new_debug"]
+                                    (borrow matrix))
+                                  |)
+                                ]
+                              |)))))
+                        |)))
+                      |)
+                    |) in
+                  M.alloc (| tt |) in
+                M.alloc (| tt |)
+              end :
+              M.Val unit
+          ])
+    |)
+  )).

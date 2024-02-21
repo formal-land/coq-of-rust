@@ -19,8 +19,14 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* x :
-      M.Val enums_type_aliases_v1.VeryVerboseEnumOfThingsToDoWithNumbers.t :=
-    M.alloc enums_type_aliases_v1.VeryVerboseEnumOfThingsToDoWithNumbers.Add in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+  ltac:(M.monadic (
+    M.read (|
+      let x :
+          M.Val
+            enums_type_aliases_v1.VeryVerboseEnumOfThingsToDoWithNumbers.t :=
+        M.alloc (|
+          enums_type_aliases_v1.VeryVerboseEnumOfThingsToDoWithNumbers.Add
+        |) in
+      M.alloc (| tt |)
+    |)
+  )).

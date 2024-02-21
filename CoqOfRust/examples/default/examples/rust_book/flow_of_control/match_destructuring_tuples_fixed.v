@@ -22,139 +22,192 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* triple : M.Val ((i32.t * i32.t) * i32.t) :=
-    M.alloc
-      ((Integer.of_Z 0) : i32.t,
-        (Integer.of_Z (-2)) : i32.t,
-        (Integer.of_Z 3) : i32.t) in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "Tell me about ") in
-      let* α1 : ref str.t := M.read (mk_str "
-") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow triple)) in
-      let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
-      let* α5 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α4))) in
-      let* α6 : unit := M.call (std.io.stdio._print α5) in
-      M.alloc α6 in
-    M.alloc tt in
-  let* α0 : M.Val unit :=
-    match_operator
-      triple
-      [
-        fun γ =>
-          (let* α0 := M.read γ in
-          match α0 with
-          | (_, _, _) =>
-            let γ0_0 := Tuple.Access.left (Tuple.Access.left γ) in
-            let γ0_1 := Tuple.Access.right (Tuple.Access.left γ) in
-            let γ0_2 := Tuple.Access.right γ in
-            let* y := M.copy γ0_1 in
-            let* z := M.copy γ0_2 in
-            let* _ : M.Val unit :=
-              let* α0 : ref str.t := M.read (mk_str "First is `0`, `y` is ") in
-              let* α1 : ref str.t := M.read (mk_str ", and `z` is ") in
-              let* α2 : ref str.t := M.read (mk_str "
-") in
-              let* α3 : M.Val (array (ref str.t)) := M.alloc [ α0; α1; α2 ] in
-              let* α4 : core.fmt.rt.Argument.t :=
-                M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow y)) in
-              let* α5 : core.fmt.rt.Argument.t :=
-                M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow z)) in
-              let* α6 : M.Val (array core.fmt.rt.Argument.t) :=
-                M.alloc [ α4; α5 ] in
-              let* α7 : core.fmt.Arguments.t :=
-                M.call
-                  (core.fmt.Arguments.t::["new_v1"]
-                    (pointer_coercion "Unsize" (borrow α3))
-                    (pointer_coercion "Unsize" (borrow α6))) in
-              let* α8 : unit := M.call (std.io.stdio._print α7) in
-              M.alloc α8 in
-            M.alloc tt
-          end) :
-          M (M.Val unit);
-        fun γ =>
-          (let* α0 := M.read γ in
-          match α0 with
-          | (_, _, _) =>
-            let γ0_0 := Tuple.Access.left (Tuple.Access.left γ) in
-            let γ0_1 := Tuple.Access.right (Tuple.Access.left γ) in
-            let γ0_2 := Tuple.Access.right γ in
-            let* _ : M.Val unit :=
-              let* α0 : ref str.t :=
-                M.read (mk_str "First is `1` and the rest doesn't matter
-") in
-              let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-              let* α2 : core.fmt.Arguments.t :=
-                M.call
-                  (core.fmt.Arguments.t::["new_const"]
-                    (pointer_coercion "Unsize" (borrow α1))) in
-              let* α3 : unit := M.call (std.io.stdio._print α2) in
-              M.alloc α3 in
-            M.alloc tt
-          end) :
-          M (M.Val unit);
-        fun γ =>
-          (let* α0 := M.read γ in
-          match α0 with
-          | (_) =>
-            let γ0_0 := γ in
-            let* _ : M.Val unit :=
-              let* α0 : ref str.t :=
-                M.read (mk_str "last is `2` and the rest doesn't matter
-") in
-              let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-              let* α2 : core.fmt.Arguments.t :=
-                M.call
-                  (core.fmt.Arguments.t::["new_const"]
-                    (pointer_coercion "Unsize" (borrow α1))) in
-              let* α3 : unit := M.call (std.io.stdio._print α2) in
-              M.alloc α3 in
-            M.alloc tt
-          end) :
-          M (M.Val unit);
-        fun γ =>
-          (let* α0 := M.read γ in
-          match α0 with
-          | (_, _, _) =>
-            let γ0_0 := Tuple.Access.left (Tuple.Access.left γ) in
-            let γ0_1 := Tuple.Access.right (Tuple.Access.left γ) in
-            let γ0_2 := Tuple.Access.right γ in
-            let* _ : M.Val unit :=
-              let* α0 : ref str.t :=
-                M.read
-                  (mk_str
-                    "First is `3`, last is `4`, and the rest doesn't matter
-") in
-              let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-              let* α2 : core.fmt.Arguments.t :=
-                M.call
-                  (core.fmt.Arguments.t::["new_const"]
-                    (pointer_coercion "Unsize" (borrow α1))) in
-              let* α3 : unit := M.call (std.io.stdio._print α2) in
-              M.alloc α3 in
-            M.alloc tt
-          end) :
-          M (M.Val unit);
-        fun γ =>
-          (let* _ : M.Val unit :=
-            let* α0 : ref str.t :=
-              M.read (mk_str "It doesn't matter what they are
-") in
-            let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-            let* α2 : core.fmt.Arguments.t :=
-              M.call
-                (core.fmt.Arguments.t::["new_const"]
-                  (pointer_coercion "Unsize" (borrow α1))) in
-            let* α3 : unit := M.call (std.io.stdio._print α2) in
-            M.alloc α3 in
-          M.alloc tt) :
-          M (M.Val unit)
-      ] in
-  M.read α0.
+  ltac:(M.monadic (
+    M.read (|
+      let triple : M.Val ((i32.t * i32.t) * i32.t) :=
+        M.alloc (|
+          ((Integer.of_Z 0) : i32.t,
+            (Integer.of_Z (-2)) : i32.t,
+            (Integer.of_Z 3) : i32.t)
+        |) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.read (| mk_str "Tell me about " |);
+                        M.read (| mk_str "
+" |)
+                      ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_debug"]
+                          (borrow triple))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      ltac:
+        (M.monadic_match_operator
+          triple
+          [
+            fun (γ : M.Val ((i32.t * i32.t) * i32.t)) =>
+              match M.read (| γ |) with
+              | (_, _, _) =>
+                let γ0_0 := Tuple.Access.left (Tuple.Access.left γ) in
+                let γ0_1 := Tuple.Access.right (Tuple.Access.left γ) in
+                let γ0_2 := Tuple.Access.right γ in
+                let y := M.copy (| γ0_1 |) in
+                let z := M.copy (| γ0_2 |) in
+                let _ : M.Val unit :=
+                  M.alloc (|
+                    M.call (|(std.io.stdio._print
+                      (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                        (pointer_coercion
+                          "Unsize"
+                          (borrow
+                            (M.alloc (|
+                              [
+                                M.read (| mk_str "First is `0`, `y` is " |);
+                                M.read (| mk_str ", and `z` is " |);
+                                M.read (| mk_str "
+" |)
+                              ]
+                            |))))
+                        (pointer_coercion
+                          "Unsize"
+                          (borrow
+                            (M.alloc (|
+                              [
+                                M.call (|(core.fmt.rt.Argument.t::["new_debug"]
+                                  (borrow y))
+                                |);
+                                M.call (|(core.fmt.rt.Argument.t::["new_debug"]
+                                  (borrow z))
+                                |)
+                              ]
+                            |)))))
+                      |)))
+                    |)
+                  |) in
+                M.alloc (| tt |)
+              end :
+              M.Val unit;
+            fun (γ : M.Val ((i32.t * i32.t) * i32.t)) =>
+              match M.read (| γ |) with
+              | (_, _, _) =>
+                let γ0_0 := Tuple.Access.left (Tuple.Access.left γ) in
+                let γ0_1 := Tuple.Access.right (Tuple.Access.left γ) in
+                let γ0_2 := Tuple.Access.right γ in
+                let _ : M.Val unit :=
+                  M.alloc (|
+                    M.call (|(std.io.stdio._print
+                      (M.call (|(core.fmt.Arguments.t::["new_const"]
+                        (pointer_coercion
+                          "Unsize"
+                          (borrow
+                            (M.alloc (|
+                              [
+                                M.read (|
+                                  mk_str
+                                    "First is `1` and the rest doesn't matter
+"
+                                |)
+                              ]
+                            |)))))
+                      |)))
+                    |)
+                  |) in
+                M.alloc (| tt |)
+              end :
+              M.Val unit;
+            fun (γ : M.Val ((i32.t * i32.t) * i32.t)) =>
+              match M.read (| γ |) with
+              | (_) =>
+                let γ0_0 := γ in
+                let _ : M.Val unit :=
+                  M.alloc (|
+                    M.call (|(std.io.stdio._print
+                      (M.call (|(core.fmt.Arguments.t::["new_const"]
+                        (pointer_coercion
+                          "Unsize"
+                          (borrow
+                            (M.alloc (|
+                              [
+                                M.read (|
+                                  mk_str
+                                    "last is `2` and the rest doesn't matter
+"
+                                |)
+                              ]
+                            |)))))
+                      |)))
+                    |)
+                  |) in
+                M.alloc (| tt |)
+              end :
+              M.Val unit;
+            fun (γ : M.Val ((i32.t * i32.t) * i32.t)) =>
+              match M.read (| γ |) with
+              | (_, _, _) =>
+                let γ0_0 := Tuple.Access.left (Tuple.Access.left γ) in
+                let γ0_1 := Tuple.Access.right (Tuple.Access.left γ) in
+                let γ0_2 := Tuple.Access.right γ in
+                let _ : M.Val unit :=
+                  M.alloc (|
+                    M.call (|(std.io.stdio._print
+                      (M.call (|(core.fmt.Arguments.t::["new_const"]
+                        (pointer_coercion
+                          "Unsize"
+                          (borrow
+                            (M.alloc (|
+                              [
+                                M.read (|
+                                  mk_str
+                                    "First is `3`, last is `4`, and the rest doesn't matter
+"
+                                |)
+                              ]
+                            |)))))
+                      |)))
+                    |)
+                  |) in
+                M.alloc (| tt |)
+              end :
+              M.Val unit;
+            fun (γ : M.Val ((i32.t * i32.t) * i32.t)) =>
+              (let _ : M.Val unit :=
+                M.alloc (|
+                  M.call (|(std.io.stdio._print
+                    (M.call (|(core.fmt.Arguments.t::["new_const"]
+                      (pointer_coercion
+                        "Unsize"
+                        (borrow
+                          (M.alloc (|
+                            [
+                              M.read (|
+                                mk_str "It doesn't matter what they are
+"
+                              |)
+                            ]
+                          |)))))
+                    |)))
+                  |)
+                |) in
+              M.alloc (| tt |)) :
+              M.Val unit
+          ])
+    |)
+  )).

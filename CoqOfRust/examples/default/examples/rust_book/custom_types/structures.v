@@ -26,26 +26,25 @@ Section Impl_core_fmt_Debug_for_structures_Person_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self := M.alloc self in
-    let* f := M.alloc f in
-    let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
-    let* α1 : ref str.t := M.read (mk_str "Person") in
-    let* α2 : ref str.t := M.read (mk_str "name") in
-    let* α3 : ref structures.Person.t := M.read self in
-    let* α4 : ref str.t := M.read (mk_str "age") in
-    let* α5 : ref structures.Person.t := M.read self in
-    let* α6 : M.Val (ref u8.t) :=
-      M.alloc (borrow (structures.Person.Get_age (deref α5))) in
-    M.call
-      (core.fmt.Formatter.t::["debug_struct_field2_finish"]
-        α0
-        α1
-        α2
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let f := M.alloc (| f |) in
+      M.call (|(core.fmt.Formatter.t::["debug_struct_field2_finish"]
+        (M.read (| f |))
+        (M.read (| mk_str "Person" |))
+        (M.read (| mk_str "name" |))
         (pointer_coercion
           "Unsize"
-          (borrow (structures.Person.Get_name (deref α3))))
-        α4
-        (pointer_coercion "Unsize" (borrow α6))).
+          (borrow (structures.Person.Get_name (deref (M.read (| self |))))))
+        (M.read (| mk_str "age" |))
+        (pointer_coercion
+          "Unsize"
+          (borrow
+            (M.alloc (|
+              borrow (structures.Person.Get_age (deref (M.read (| self |))))
+            |)))))
+      |)
+    )).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
@@ -165,189 +164,247 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* name : M.Val alloc.string.String.t :=
-    let* α0 : (ref str.t) -> M alloc.string.String.t :=
-      ltac:(M.get_method (fun ℐ =>
-        core.convert.From.from
-          (Self := alloc.string.String.t)
-          (T := ref str.t)
-          (Trait := ℐ))) in
-    let* α1 : ref str.t := M.read (mk_str "Peter") in
-    let* α2 : alloc.string.String.t := M.call (α0 α1) in
-    M.alloc α2 in
-  let* age : M.Val u8.t := M.alloc ((Integer.of_Z 27) : u8.t) in
-  let* peter : M.Val structures.Person.t :=
-    let* α0 : alloc.string.String.t := M.read name in
-    let* α1 : u8.t := M.read age in
-    M.alloc {| structures.Person.name := α0; structures.Person.age := α1; |} in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "") in
-      let* α1 : ref str.t := M.read (mk_str "
-") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow peter)) in
-      let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
-      let* α5 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α4))) in
-      let* α6 : unit := M.call (std.io.stdio._print α5) in
-      M.alloc α6 in
-    M.alloc tt in
-  let* point : M.Val structures.Point.t :=
-    let* α0 : f32.t := M.read (UnsupportedLiteral : M.Val f32.t) in
-    let* α1 : f32.t := M.read (UnsupportedLiteral : M.Val f32.t) in
-    M.alloc {| structures.Point.x := α0; structures.Point.y := α1; |} in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "point coordinates: (") in
-      let* α1 : ref str.t := M.read (mk_str ", ") in
-      let* α2 : ref str.t := M.read (mk_str ")
-") in
-      let* α3 : M.Val (array (ref str.t)) := M.alloc [ α0; α1; α2 ] in
-      let* α4 : core.fmt.rt.Argument.t :=
-        M.call
-          (core.fmt.rt.Argument.t::["new_display"]
-            (borrow (structures.Point.Get_x point))) in
-      let* α5 : core.fmt.rt.Argument.t :=
-        M.call
-          (core.fmt.rt.Argument.t::["new_display"]
-            (borrow (structures.Point.Get_y point))) in
-      let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4; α5 ] in
-      let* α7 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α3))
-            (pointer_coercion "Unsize" (borrow α6))) in
-      let* α8 : unit := M.call (std.io.stdio._print α7) in
-      M.alloc α8 in
-    M.alloc tt in
-  let* bottom_right : M.Val structures.Point.t :=
-    let* α0 : f32.t := M.read (UnsupportedLiteral : M.Val f32.t) in
-    let* α1 : structures.Point.t := M.read point in
-    M.alloc (α1 <| structures.Point.x := α0 |>) in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "second point: (") in
-      let* α1 : ref str.t := M.read (mk_str ", ") in
-      let* α2 : ref str.t := M.read (mk_str ")
-") in
-      let* α3 : M.Val (array (ref str.t)) := M.alloc [ α0; α1; α2 ] in
-      let* α4 : core.fmt.rt.Argument.t :=
-        M.call
-          (core.fmt.rt.Argument.t::["new_display"]
-            (borrow (structures.Point.Get_x bottom_right))) in
-      let* α5 : core.fmt.rt.Argument.t :=
-        M.call
-          (core.fmt.rt.Argument.t::["new_display"]
-            (borrow (structures.Point.Get_y bottom_right))) in
-      let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4; α5 ] in
-      let* α7 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α3))
-            (pointer_coercion "Unsize" (borrow α6))) in
-      let* α8 : unit := M.call (std.io.stdio._print α7) in
-      M.alloc α8 in
-    M.alloc tt in
-  let* α0 : M.Val unit :=
-    match_operator
-      point
-      [
-        fun γ =>
-          (let* α0 := M.read γ in
-          match α0 with
-          | {| structures.Point.x := _; structures.Point.y := _; |} =>
-            let γ0_0 := structures.Point.Get_x γ in
-            let γ0_1 := structures.Point.Get_y γ in
-            let* left_edge := M.copy γ0_0 in
-            let* top_edge := M.copy γ0_1 in
-            let* _rectangle : M.Val structures.Rectangle.t :=
-              let* α0 : f32.t := M.read left_edge in
-              let* α1 : f32.t := M.read top_edge in
-              let* α2 : structures.Point.t := M.read bottom_right in
-              M.alloc
-                {|
-                  structures.Rectangle.top_left :=
-                    {| structures.Point.x := α0; structures.Point.y := α1; |};
-                  structures.Rectangle.bottom_right := α2;
-                |} in
-            let* _unit : M.Val structures.Unit.t :=
-              M.alloc structures.Unit.Build in
-            let* pair : M.Val structures.Pair.t :=
-              let* α0 : f32.t := M.read (UnsupportedLiteral : M.Val f32.t) in
-              M.alloc (structures.Pair.Build_t ((Integer.of_Z 1) : i32.t) α0) in
-            let* _ : M.Val unit :=
-              let* _ : M.Val unit :=
-                let* α0 : ref str.t := M.read (mk_str "pair contains ") in
-                let* α1 : ref str.t := M.read (mk_str " and ") in
-                let* α2 : ref str.t := M.read (mk_str "
-") in
-                let* α3 : M.Val (array (ref str.t)) := M.alloc [ α0; α1; α2 ] in
-                let* α4 : core.fmt.rt.Argument.t :=
-                  M.call
-                    (core.fmt.rt.Argument.t::["new_debug"]
-                      (borrow (structures.Pair.Get_0 pair))) in
-                let* α5 : core.fmt.rt.Argument.t :=
-                  M.call
-                    (core.fmt.rt.Argument.t::["new_debug"]
-                      (borrow (structures.Pair.Get_1 pair))) in
-                let* α6 : M.Val (array core.fmt.rt.Argument.t) :=
-                  M.alloc [ α4; α5 ] in
-                let* α7 : core.fmt.Arguments.t :=
-                  M.call
-                    (core.fmt.Arguments.t::["new_v1"]
-                      (pointer_coercion "Unsize" (borrow α3))
-                      (pointer_coercion "Unsize" (borrow α6))) in
-                let* α8 : unit := M.call (std.io.stdio._print α7) in
-                M.alloc α8 in
-              M.alloc tt in
-            match_operator
-              pair
-              [
-                fun γ =>
-                  (let* α0 := M.read γ in
-                  match α0 with
-                  | structures.Pair.Build_t _ _ =>
-                    let γ0_0 := structures.Pair.Get_0 γ in
-                    let γ0_1 := structures.Pair.Get_1 γ in
-                    let* integer := M.copy γ0_0 in
-                    let* decimal := M.copy γ0_1 in
-                    let* _ : M.Val unit :=
-                      let* _ : M.Val unit :=
-                        let* α0 : ref str.t :=
-                          M.read (mk_str "pair contains ") in
-                        let* α1 : ref str.t := M.read (mk_str " and ") in
-                        let* α2 : ref str.t := M.read (mk_str "
-") in
-                        let* α3 : M.Val (array (ref str.t)) :=
-                          M.alloc [ α0; α1; α2 ] in
-                        let* α4 : core.fmt.rt.Argument.t :=
-                          M.call
-                            (core.fmt.rt.Argument.t::["new_debug"]
-                              (borrow integer)) in
-                        let* α5 : core.fmt.rt.Argument.t :=
-                          M.call
-                            (core.fmt.rt.Argument.t::["new_debug"]
-                              (borrow decimal)) in
-                        let* α6 : M.Val (array core.fmt.rt.Argument.t) :=
-                          M.alloc [ α4; α5 ] in
-                        let* α7 : core.fmt.Arguments.t :=
-                          M.call
-                            (core.fmt.Arguments.t::["new_v1"]
-                              (pointer_coercion "Unsize" (borrow α3))
-                              (pointer_coercion "Unsize" (borrow α6))) in
-                        let* α8 : unit := M.call (std.io.stdio._print α7) in
-                        M.alloc α8 in
-                      M.alloc tt in
-                    M.alloc tt
-                  end) :
-                  M (M.Val unit)
-              ]
-          end) :
-          M (M.Val unit)
-      ] in
-  M.read α0.
+  ltac:(M.monadic (
+    M.read (|
+      let name : M.Val alloc.string.String.t :=
+        M.alloc (|
+          M.call (|(ltac:(M.get_method (fun ℐ =>
+              core.convert.From.from
+                (Self := alloc.string.String.t)
+                (T := ref str.t)
+                (Trait := ℐ)))
+            (M.read (| mk_str "Peter" |)))
+          |)
+        |) in
+      let age : M.Val u8.t := M.alloc (| (Integer.of_Z 27) : u8.t |) in
+      let peter : M.Val structures.Person.t :=
+        M.alloc (|
+          {|
+            structures.Person.name := M.read (| name |);
+            structures.Person.age := M.read (| age |);
+          |}
+        |) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [ M.read (| mk_str "" |); M.read (| mk_str "
+" |) ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_debug"]
+                          (borrow peter))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      let point : M.Val structures.Point.t :=
+        M.alloc (|
+          {|
+            structures.Point.x := M.read (| UnsupportedLiteral : M.Val f32.t |);
+            structures.Point.y := M.read (| UnsupportedLiteral : M.Val f32.t |);
+          |}
+        |) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.read (| mk_str "point coordinates: (" |);
+                        M.read (| mk_str ", " |);
+                        M.read (| mk_str ")
+" |)
+                      ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                          (borrow (structures.Point.Get_x point)))
+                        |);
+                        M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                          (borrow (structures.Point.Get_y point)))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      let bottom_right : M.Val structures.Point.t :=
+        M.alloc (|
+          (M.read (| point |))
+            <| structures.Point.x :=
+              M.read (| UnsupportedLiteral : M.Val f32.t |)
+            |>
+        |) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.read (| mk_str "second point: (" |);
+                        M.read (| mk_str ", " |);
+                        M.read (| mk_str ")
+" |)
+                      ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                          (borrow (structures.Point.Get_x bottom_right)))
+                        |);
+                        M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                          (borrow (structures.Point.Get_y bottom_right)))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      ltac:
+        (M.monadic_match_operator
+          point
+          [
+            fun (γ : M.Val structures.Point.t) =>
+              match M.read (| γ |) with
+              | {| structures.Point.x := _; structures.Point.y := _; |} =>
+                let γ0_0 := structures.Point.Get_x γ in
+                let γ0_1 := structures.Point.Get_y γ in
+                let left_edge := M.copy (| γ0_0 |) in
+                let top_edge := M.copy (| γ0_1 |) in
+                let _rectangle : M.Val structures.Rectangle.t :=
+                  M.alloc (|
+                    {|
+                      structures.Rectangle.top_left :=
+                        {|
+                          structures.Point.x := M.read (| left_edge |);
+                          structures.Point.y := M.read (| top_edge |);
+                        |};
+                      structures.Rectangle.bottom_right :=
+                        M.read (| bottom_right |);
+                    |}
+                  |) in
+                let _unit : M.Val structures.Unit.t :=
+                  M.alloc (| structures.Unit.Build |) in
+                let pair : M.Val structures.Pair.t :=
+                  M.alloc (|
+                    structures.Pair.Build_t
+                      ((Integer.of_Z 1) : i32.t)
+                      (M.read (| UnsupportedLiteral : M.Val f32.t |))
+                  |) in
+                let _ : M.Val unit :=
+                  let _ : M.Val unit :=
+                    M.alloc (|
+                      M.call (|(std.io.stdio._print
+                        (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                          (pointer_coercion
+                            "Unsize"
+                            (borrow
+                              (M.alloc (|
+                                [
+                                  M.read (| mk_str "pair contains " |);
+                                  M.read (| mk_str " and " |);
+                                  M.read (| mk_str "
+" |)
+                                ]
+                              |))))
+                          (pointer_coercion
+                            "Unsize"
+                            (borrow
+                              (M.alloc (|
+                                [
+                                  M.call (|(core.fmt.rt.Argument.t::["new_debug"]
+                                    (borrow (structures.Pair.Get_0 pair)))
+                                  |);
+                                  M.call (|(core.fmt.rt.Argument.t::["new_debug"]
+                                    (borrow (structures.Pair.Get_1 pair)))
+                                  |)
+                                ]
+                              |)))))
+                        |)))
+                      |)
+                    |) in
+                  M.alloc (| tt |) in
+                ltac:
+                  (M.monadic_match_operator
+                    pair
+                    [
+                      fun (γ : M.Val structures.Pair.t) =>
+                        match M.read (| γ |) with
+                        | structures.Pair.Build_t _ _ =>
+                          let γ0_0 := structures.Pair.Get_0 γ in
+                          let γ0_1 := structures.Pair.Get_1 γ in
+                          let integer := M.copy (| γ0_0 |) in
+                          let decimal := M.copy (| γ0_1 |) in
+                          let _ : M.Val unit :=
+                            let _ : M.Val unit :=
+                              M.alloc (|
+                                M.call (|(std.io.stdio._print
+                                  (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                                    (pointer_coercion
+                                      "Unsize"
+                                      (borrow
+                                        (M.alloc (|
+                                          [
+                                            M.read (| mk_str "pair contains "
+                                            |);
+                                            M.read (| mk_str " and " |);
+                                            M.read (| mk_str "
+" |)
+                                          ]
+                                        |))))
+                                    (pointer_coercion
+                                      "Unsize"
+                                      (borrow
+                                        (M.alloc (|
+                                          [
+                                            M.call (|(core.fmt.rt.Argument.t::["new_debug"]
+                                              (borrow integer))
+                                            |);
+                                            M.call (|(core.fmt.rt.Argument.t::["new_debug"]
+                                              (borrow decimal))
+                                            |)
+                                          ]
+                                        |)))))
+                                  |)))
+                                |)
+                              |) in
+                            M.alloc (| tt |) in
+                          M.alloc (| tt |)
+                        end :
+                        M.Val unit
+                    ])
+              end :
+              M.Val unit
+          ])
+    |)
+  )).

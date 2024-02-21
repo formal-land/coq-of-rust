@@ -23,19 +23,22 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self := M.alloc self in
-    let* f := M.alloc f in
-    let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
-    let* α1 : ref str.t := M.read (mk_str "Borrowed") in
-    let* α2 : ref scoping_rules_lifetimes_structs.Borrowed.t := M.read self in
-    let* α3 : M.Val (ref (ref i32.t)) :=
-      M.alloc
-        (borrow (scoping_rules_lifetimes_structs.Borrowed.Get_0 (deref α2))) in
-    M.call
-      (core.fmt.Formatter.t::["debug_tuple_field1_finish"]
-        α0
-        α1
-        (pointer_coercion "Unsize" (borrow α3))).
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let f := M.alloc (| f |) in
+      M.call (|(core.fmt.Formatter.t::["debug_tuple_field1_finish"]
+        (M.read (| f |))
+        (M.read (| mk_str "Borrowed" |))
+        (pointer_coercion
+          "Unsize"
+          (borrow
+            (M.alloc (|
+              borrow
+                (scoping_rules_lifetimes_structs.Borrowed.Get_0
+                  (deref (M.read (| self |))))
+            |)))))
+      |)
+    )).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
@@ -72,31 +75,29 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self := M.alloc self in
-    let* f := M.alloc f in
-    let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
-    let* α1 : ref str.t := M.read (mk_str "NamedBorrowed") in
-    let* α2 : ref str.t := M.read (mk_str "x") in
-    let* α3 : ref scoping_rules_lifetimes_structs.NamedBorrowed.t :=
-      M.read self in
-    let* α4 : ref str.t := M.read (mk_str "y") in
-    let* α5 : ref scoping_rules_lifetimes_structs.NamedBorrowed.t :=
-      M.read self in
-    let* α6 : M.Val (ref (ref i32.t)) :=
-      M.alloc
-        (borrow
-          (scoping_rules_lifetimes_structs.NamedBorrowed.Get_y (deref α5))) in
-    M.call
-      (core.fmt.Formatter.t::["debug_struct_field2_finish"]
-        α0
-        α1
-        α2
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let f := M.alloc (| f |) in
+      M.call (|(core.fmt.Formatter.t::["debug_struct_field2_finish"]
+        (M.read (| f |))
+        (M.read (| mk_str "NamedBorrowed" |))
+        (M.read (| mk_str "x" |))
         (pointer_coercion
           "Unsize"
           (borrow
-            (scoping_rules_lifetimes_structs.NamedBorrowed.Get_x (deref α3))))
-        α4
-        (pointer_coercion "Unsize" (borrow α6))).
+            (scoping_rules_lifetimes_structs.NamedBorrowed.Get_x
+              (deref (M.read (| self |))))))
+        (M.read (| mk_str "y" |))
+        (pointer_coercion
+          "Unsize"
+          (borrow
+            (M.alloc (|
+              borrow
+                (scoping_rules_lifetimes_structs.NamedBorrowed.Get_y
+                  (deref (M.read (| self |))))
+            |)))))
+      |)
+    )).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
@@ -135,56 +136,51 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self := M.alloc self in
-    let* f := M.alloc f in
-    let* α0 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=
-      match_operator
-        self
-        [
-          fun γ =>
-            (let* γ :=
-              let* α0 := M.read γ in
-              M.pure (deref α0) in
-            let* α0 := M.read γ in
-            match α0 with
-            | scoping_rules_lifetimes_structs.Either.Num _ =>
-              let γ1_0 := scoping_rules_lifetimes_structs.Either.Get_Num_0 γ in
-              let* __self_0 := M.alloc (borrow γ1_0) in
-              let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
-              let* α1 : ref str.t := M.read (mk_str "Num") in
-              let* α2 : core.result.Result.t unit core.fmt.Error.t :=
-                M.call
-                  (core.fmt.Formatter.t::["debug_tuple_field1_finish"]
-                    α0
-                    α1
-                    (pointer_coercion "Unsize" (borrow __self_0))) in
-              M.alloc α2
-            | _ => M.break_match
-            end) :
-            M (M.Val (core.result.Result.t unit core.fmt.Error.t));
-          fun γ =>
-            (let* γ :=
-              let* α0 := M.read γ in
-              M.pure (deref α0) in
-            let* α0 := M.read γ in
-            match α0 with
-            | scoping_rules_lifetimes_structs.Either.Ref _ =>
-              let γ1_0 := scoping_rules_lifetimes_structs.Either.Get_Ref_0 γ in
-              let* __self_0 := M.alloc (borrow γ1_0) in
-              let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
-              let* α1 : ref str.t := M.read (mk_str "Ref") in
-              let* α2 : core.result.Result.t unit core.fmt.Error.t :=
-                M.call
-                  (core.fmt.Formatter.t::["debug_tuple_field1_finish"]
-                    α0
-                    α1
-                    (pointer_coercion "Unsize" (borrow __self_0))) in
-              M.alloc α2
-            | _ => M.break_match
-            end) :
-            M (M.Val (core.result.Result.t unit core.fmt.Error.t))
-        ] in
-    M.read α0.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let f := M.alloc (| f |) in
+      M.read (|
+        ltac:
+          (M.monadic_match_operator
+            self
+            [
+              fun (γ : M.Val (ref scoping_rules_lifetimes_structs.Either.t)) =>
+                (let γ := deref (M.read (| γ |)) in
+                match M.read (| γ |) with
+                | scoping_rules_lifetimes_structs.Either.Num _ =>
+                  let γ1_0 :=
+                    scoping_rules_lifetimes_structs.Either.Get_Num_0 γ in
+                  let __self_0 := M.alloc (| borrow γ1_0 |) in
+                  M.alloc (|
+                    M.call (|(core.fmt.Formatter.t::["debug_tuple_field1_finish"]
+                      (M.read (| f |))
+                      (M.read (| mk_str "Num" |))
+                      (pointer_coercion "Unsize" (borrow __self_0)))
+                    |)
+                  |)
+                | _ => M.break_match(||)
+                end) :
+                M.Val (core.result.Result.t unit core.fmt.Error.t);
+              fun (γ : M.Val (ref scoping_rules_lifetimes_structs.Either.t)) =>
+                (let γ := deref (M.read (| γ |)) in
+                match M.read (| γ |) with
+                | scoping_rules_lifetimes_structs.Either.Ref _ =>
+                  let γ1_0 :=
+                    scoping_rules_lifetimes_structs.Either.Get_Ref_0 γ in
+                  let __self_0 := M.alloc (| borrow γ1_0 |) in
+                  M.alloc (|
+                    M.call (|(core.fmt.Formatter.t::["debug_tuple_field1_finish"]
+                      (M.read (| f |))
+                      (M.read (| mk_str "Ref" |))
+                      (pointer_coercion "Unsize" (borrow __self_0)))
+                    |)
+                  |)
+                | _ => M.break_match(||)
+                end) :
+                M.Val (core.result.Result.t unit core.fmt.Error.t)
+            ])
+      |)
+    )).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
@@ -214,88 +210,141 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* x : M.Val i32.t := M.alloc ((Integer.of_Z 18) : i32.t) in
-  let* y : M.Val i32.t := M.alloc ((Integer.of_Z 15) : i32.t) in
-  let* single : M.Val scoping_rules_lifetimes_structs.Borrowed.t :=
-    M.alloc (scoping_rules_lifetimes_structs.Borrowed.Build_t (borrow x)) in
-  let* double : M.Val scoping_rules_lifetimes_structs.NamedBorrowed.t :=
-    M.alloc
-      {|
-        scoping_rules_lifetimes_structs.NamedBorrowed.x := borrow x;
-        scoping_rules_lifetimes_structs.NamedBorrowed.y := borrow y;
-      |} in
-  let* reference : M.Val scoping_rules_lifetimes_structs.Either.t :=
-    M.alloc (scoping_rules_lifetimes_structs.Either.Ref (borrow x)) in
-  let* number : M.Val scoping_rules_lifetimes_structs.Either.t :=
-    let* α0 : i32.t := M.read y in
-    M.alloc (scoping_rules_lifetimes_structs.Either.Num α0) in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "x is borrowed in ") in
-      let* α1 : ref str.t := M.read (mk_str "
-") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow single)) in
-      let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
-      let* α5 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α4))) in
-      let* α6 : unit := M.call (std.io.stdio._print α5) in
-      M.alloc α6 in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "x and y are borrowed in ") in
-      let* α1 : ref str.t := M.read (mk_str "
-") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow double)) in
-      let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
-      let* α5 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α4))) in
-      let* α6 : unit := M.call (std.io.stdio._print α5) in
-      M.alloc α6 in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "x is borrowed in ") in
-      let* α1 : ref str.t := M.read (mk_str "
-") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow reference)) in
-      let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
-      let* α5 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α4))) in
-      let* α6 : unit := M.call (std.io.stdio._print α5) in
-      M.alloc α6 in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "y is *not* borrowed in ") in
-      let* α1 : ref str.t := M.read (mk_str "
-") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow number)) in
-      let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
-      let* α5 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α4))) in
-      let* α6 : unit := M.call (std.io.stdio._print α5) in
-      M.alloc α6 in
-    M.alloc tt in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+  ltac:(M.monadic (
+    M.read (|
+      let x : M.Val i32.t := M.alloc (| (Integer.of_Z 18) : i32.t |) in
+      let y : M.Val i32.t := M.alloc (| (Integer.of_Z 15) : i32.t |) in
+      let single : M.Val scoping_rules_lifetimes_structs.Borrowed.t :=
+        M.alloc (| scoping_rules_lifetimes_structs.Borrowed.Build_t (borrow x)
+        |) in
+      let double : M.Val scoping_rules_lifetimes_structs.NamedBorrowed.t :=
+        M.alloc (|
+          {|
+            scoping_rules_lifetimes_structs.NamedBorrowed.x := borrow x;
+            scoping_rules_lifetimes_structs.NamedBorrowed.y := borrow y;
+          |}
+        |) in
+      let reference : M.Val scoping_rules_lifetimes_structs.Either.t :=
+        M.alloc (| scoping_rules_lifetimes_structs.Either.Ref (borrow x) |) in
+      let number : M.Val scoping_rules_lifetimes_structs.Either.t :=
+        M.alloc (| scoping_rules_lifetimes_structs.Either.Num (M.read (| y |))
+        |) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.read (| mk_str "x is borrowed in " |);
+                        M.read (| mk_str "
+" |)
+                      ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_debug"]
+                          (borrow single))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.read (| mk_str "x and y are borrowed in " |);
+                        M.read (| mk_str "
+" |)
+                      ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_debug"]
+                          (borrow double))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.read (| mk_str "x is borrowed in " |);
+                        M.read (| mk_str "
+" |)
+                      ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_debug"]
+                          (borrow reference))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.read (| mk_str "y is *not* borrowed in " |);
+                        M.read (| mk_str "
+" |)
+                      ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_debug"]
+                          (borrow number))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      M.alloc (| tt |)
+    |)
+  )).

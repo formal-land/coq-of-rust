@@ -6,7 +6,7 @@ fn age() -> u32 {
     15
 }
 *)
-Definition age : M u32.t := M.pure ((Integer.of_Z 15) : u32.t).
+Definition age : M u32.t := ltac:(M.monadic ( (Integer.of_Z 15) : u32.t )).
 
 (*
 fn main() {
@@ -26,96 +26,146 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t :=
-        M.read (mk_str "Tell me what type of person you are
-") in
-      let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-      let* α2 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_const"]
-            (pointer_coercion "Unsize" (borrow α1))) in
-      let* α3 : unit := M.call (std.io.stdio._print α2) in
-      M.alloc α3 in
-    M.alloc tt in
-  let* α0 : u32.t := M.call match_binding.age in
-  let* α1 : M.Val u32.t := M.alloc α0 in
-  let* α0 : M.Val unit :=
-    match_operator
-      α1
-      [
-        fun γ =>
-          (let* _ : M.Val unit :=
-            let* α0 : ref str.t :=
-              M.read (mk_str "I haven't celebrated my first birthday yet
-") in
-            let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-            let* α2 : core.fmt.Arguments.t :=
-              M.call
-                (core.fmt.Arguments.t::["new_const"]
-                  (pointer_coercion "Unsize" (borrow α1))) in
-            let* α3 : unit := M.call (std.io.stdio._print α2) in
-            M.alloc α3 in
-          M.alloc tt) :
-          M (M.Val unit);
-        fun γ =>
-          (let* n := M.copy γ in
-          let* _ : M.Val unit :=
-            let* α0 : ref str.t := M.read (mk_str "I'm a child of age ") in
-            let* α1 : ref str.t := M.read (mk_str "
-") in
-            let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-            let* α3 : core.fmt.rt.Argument.t :=
-              M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow n)) in
-            let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
-            let* α5 : core.fmt.Arguments.t :=
-              M.call
-                (core.fmt.Arguments.t::["new_v1"]
-                  (pointer_coercion "Unsize" (borrow α2))
-                  (pointer_coercion "Unsize" (borrow α4))) in
-            let* α6 : unit := M.call (std.io.stdio._print α5) in
-            M.alloc α6 in
-          M.alloc tt) :
-          M (M.Val unit);
-        fun γ =>
-          (let* n := M.copy γ in
-          let* _ : M.Val unit :=
-            let* α0 : ref str.t := M.read (mk_str "I'm a teen of age ") in
-            let* α1 : ref str.t := M.read (mk_str "
-") in
-            let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-            let* α3 : core.fmt.rt.Argument.t :=
-              M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow n)) in
-            let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
-            let* α5 : core.fmt.Arguments.t :=
-              M.call
-                (core.fmt.Arguments.t::["new_v1"]
-                  (pointer_coercion "Unsize" (borrow α2))
-                  (pointer_coercion "Unsize" (borrow α4))) in
-            let* α6 : unit := M.call (std.io.stdio._print α5) in
-            M.alloc α6 in
-          M.alloc tt) :
-          M (M.Val unit);
-        fun γ =>
-          (let* n := M.copy γ in
-          let* _ : M.Val unit :=
-            let* α0 : ref str.t :=
-              M.read (mk_str "I'm an old person of age ") in
-            let* α1 : ref str.t := M.read (mk_str "
-") in
-            let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-            let* α3 : core.fmt.rt.Argument.t :=
-              M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow n)) in
-            let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
-            let* α5 : core.fmt.Arguments.t :=
-              M.call
-                (core.fmt.Arguments.t::["new_v1"]
-                  (pointer_coercion "Unsize" (borrow α2))
-                  (pointer_coercion "Unsize" (borrow α4))) in
-            let* α6 : unit := M.call (std.io.stdio._print α5) in
-            M.alloc α6 in
-          M.alloc tt) :
-          M (M.Val unit)
-      ] in
-  M.read α0.
+  ltac:(M.monadic (
+    M.read (|
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_const"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.read (| mk_str "Tell me what type of person you are
+"
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      ltac:
+        (M.monadic_match_operator
+          (M.alloc (| M.call (|match_binding.age |) |))
+          [
+            fun (γ : M.Val u32.t) =>
+              (let _ : M.Val unit :=
+                M.alloc (|
+                  M.call (|(std.io.stdio._print
+                    (M.call (|(core.fmt.Arguments.t::["new_const"]
+                      (pointer_coercion
+                        "Unsize"
+                        (borrow
+                          (M.alloc (|
+                            [
+                              M.read (|
+                                mk_str
+                                  "I haven't celebrated my first birthday yet
+"
+                              |)
+                            ]
+                          |)))))
+                    |)))
+                  |)
+                |) in
+              M.alloc (| tt |)) :
+              M.Val unit;
+            fun (γ : M.Val u32.t) =>
+              (let n := M.copy (| γ |) in
+              let _ : M.Val unit :=
+                M.alloc (|
+                  M.call (|(std.io.stdio._print
+                    (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                      (pointer_coercion
+                        "Unsize"
+                        (borrow
+                          (M.alloc (|
+                            [
+                              M.read (| mk_str "I'm a child of age " |);
+                              M.read (| mk_str "
+" |)
+                            ]
+                          |))))
+                      (pointer_coercion
+                        "Unsize"
+                        (borrow
+                          (M.alloc (|
+                            [
+                              M.call (|(core.fmt.rt.Argument.t::["new_debug"]
+                                (borrow n))
+                              |)
+                            ]
+                          |)))))
+                    |)))
+                  |)
+                |) in
+              M.alloc (| tt |)) :
+              M.Val unit;
+            fun (γ : M.Val u32.t) =>
+              (let n := M.copy (| γ |) in
+              let _ : M.Val unit :=
+                M.alloc (|
+                  M.call (|(std.io.stdio._print
+                    (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                      (pointer_coercion
+                        "Unsize"
+                        (borrow
+                          (M.alloc (|
+                            [
+                              M.read (| mk_str "I'm a teen of age " |);
+                              M.read (| mk_str "
+" |)
+                            ]
+                          |))))
+                      (pointer_coercion
+                        "Unsize"
+                        (borrow
+                          (M.alloc (|
+                            [
+                              M.call (|(core.fmt.rt.Argument.t::["new_debug"]
+                                (borrow n))
+                              |)
+                            ]
+                          |)))))
+                    |)))
+                  |)
+                |) in
+              M.alloc (| tt |)) :
+              M.Val unit;
+            fun (γ : M.Val u32.t) =>
+              (let n := M.copy (| γ |) in
+              let _ : M.Val unit :=
+                M.alloc (|
+                  M.call (|(std.io.stdio._print
+                    (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                      (pointer_coercion
+                        "Unsize"
+                        (borrow
+                          (M.alloc (|
+                            [
+                              M.read (| mk_str "I'm an old person of age " |);
+                              M.read (| mk_str "
+" |)
+                            ]
+                          |))))
+                      (pointer_coercion
+                        "Unsize"
+                        (borrow
+                          (M.alloc (|
+                            [
+                              M.call (|(core.fmt.rt.Argument.t::["new_debug"]
+                                (borrow n))
+                              |)
+                            ]
+                          |)))))
+                    |)))
+                  |)
+                |) in
+              M.alloc (| tt |)) :
+              M.Val unit
+          ])
+    |)
+  )).

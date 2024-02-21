@@ -35,8 +35,10 @@ End SGen.
 fn reg_fn(_s: S) {}
 *)
 Definition reg_fn (_s : generics_functions.S.t) : M unit :=
-  let* _s := M.alloc _s in
-  M.pure tt.
+  ltac:(M.monadic (
+    let _s := M.alloc (| _s |) in
+    tt
+  )).
 
 (*
 fn gen_spec_t(_s: SGen<A>) {}
@@ -44,22 +46,28 @@ fn gen_spec_t(_s: SGen<A>) {}
 Definition gen_spec_t
     (_s : generics_functions.SGen.t generics_functions.A.t)
     : M unit :=
-  let* _s := M.alloc _s in
-  M.pure tt.
+  ltac:(M.monadic (
+    let _s := M.alloc (| _s |) in
+    tt
+  )).
 
 (*
 fn gen_spec_i32(_s: SGen<i32>) {}
 *)
 Definition gen_spec_i32 (_s : generics_functions.SGen.t i32.t) : M unit :=
-  let* _s := M.alloc _s in
-  M.pure tt.
+  ltac:(M.monadic (
+    let _s := M.alloc (| _s |) in
+    tt
+  )).
 
 (*
 fn generic<T>(_s: SGen<T>) {}
 *)
 Definition generic {T : Set} (_s : generics_functions.SGen.t T) : M unit :=
-  let* _s := M.alloc _s in
-  M.pure tt.
+  ltac:(M.monadic (
+    let _s := M.alloc (| _s |) in
+    tt
+  )).
 
 (*
 fn main() {
@@ -77,35 +85,38 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* _ : M.Val unit :=
-    let* α0 : unit :=
-      M.call
-        (generics_functions.reg_fn
-          (generics_functions.S.Build_t generics_functions.A.Build)) in
-    M.alloc α0 in
-  let* _ : M.Val unit :=
-    let* α0 : unit :=
-      M.call
-        (generics_functions.gen_spec_t
-          (generics_functions.SGen.Build_t generics_functions.A.Build)) in
-    M.alloc α0 in
-  let* _ : M.Val unit :=
-    let* α0 : unit :=
-      M.call
-        (generics_functions.gen_spec_i32
-          (generics_functions.SGen.Build_t ((Integer.of_Z 6) : i32.t))) in
-    M.alloc α0 in
-  let* _ : M.Val unit :=
-    let* α0 : unit :=
-      M.call
-        (generics_functions.generic
-          (generics_functions.SGen.Build_t "a"%char)) in
-    M.alloc α0 in
-  let* _ : M.Val unit :=
-    let* α0 : unit :=
-      M.call
-        (generics_functions.generic
-          (generics_functions.SGen.Build_t "c"%char)) in
-    M.alloc α0 in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+  ltac:(M.monadic (
+    M.read (|
+      let _ : M.Val unit :=
+        M.alloc (|
+          M.call (|(generics_functions.reg_fn
+            (generics_functions.S.Build_t generics_functions.A.Build))
+          |)
+        |) in
+      let _ : M.Val unit :=
+        M.alloc (|
+          M.call (|(generics_functions.gen_spec_t
+            (generics_functions.SGen.Build_t generics_functions.A.Build))
+          |)
+        |) in
+      let _ : M.Val unit :=
+        M.alloc (|
+          M.call (|(generics_functions.gen_spec_i32
+            (generics_functions.SGen.Build_t ((Integer.of_Z 6) : i32.t)))
+          |)
+        |) in
+      let _ : M.Val unit :=
+        M.alloc (|
+          M.call (|(generics_functions.generic
+            (generics_functions.SGen.Build_t "a"%char))
+          |)
+        |) in
+      let _ : M.Val unit :=
+        M.alloc (|
+          M.call (|(generics_functions.generic
+            (generics_functions.SGen.Build_t "c"%char))
+          |)
+        |) in
+      M.alloc (| tt |)
+    |)
+  )).

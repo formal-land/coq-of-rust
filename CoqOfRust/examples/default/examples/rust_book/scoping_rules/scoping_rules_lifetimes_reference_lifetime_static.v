@@ -2,9 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition NUM : M.Val (ref i32.t) :=
-  M.run
-    (let* α0 : M.Val i32.t := M.alloc ((Integer.of_Z 18) : i32.t) in
-    M.alloc α0).
+  M.run (M.alloc (| M.alloc (| (Integer.of_Z 18) : i32.t |) |)).
 
 (*
 fn coerce_static<'a>(_: &'a i32) -> &'a i32 {
@@ -12,8 +10,10 @@ fn coerce_static<'a>(_: &'a i32) -> &'a i32 {
 }
 *)
 Definition coerce_static (arg : ref i32.t) : M (ref i32.t) :=
-  let* arg := M.alloc arg in
-  M.read scoping_rules_lifetimes_reference_lifetime_static.NUM.
+  ltac:(M.monadic (
+    let arg := M.alloc (| arg |) in
+    M.read (| scoping_rules_lifetimes_reference_lifetime_static.NUM |)
+  )).
 
 (*
 fn main() {
@@ -41,73 +41,111 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* _ : M.Val unit :=
-    let* static_string : M.Val (ref str.t) :=
-      M.copy (mk_str "I'm in read-only memory") in
-    let* _ : M.Val unit :=
-      let* _ : M.Val unit :=
-        let* α0 : ref str.t := M.read (mk_str "static_string: ") in
-        let* α1 : ref str.t := M.read (mk_str "
-") in
-        let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-        let* α3 : core.fmt.rt.Argument.t :=
-          M.call
-            (core.fmt.rt.Argument.t::["new_display"] (borrow static_string)) in
-        let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
-        let* α5 : core.fmt.Arguments.t :=
-          M.call
-            (core.fmt.Arguments.t::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α4))) in
-        let* α6 : unit := M.call (std.io.stdio._print α5) in
-        M.alloc α6 in
-      M.alloc tt in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* lifetime_num : M.Val i32.t := M.alloc ((Integer.of_Z 9) : i32.t) in
-    let* coerced_static : M.Val (ref i32.t) :=
-      let* α0 : ref i32.t :=
-        M.call
-          (scoping_rules_lifetimes_reference_lifetime_static.coerce_static
-            (borrow lifetime_num)) in
-      M.alloc α0 in
-    let* _ : M.Val unit :=
-      let* _ : M.Val unit :=
-        let* α0 : ref str.t := M.read (mk_str "coerced_static: ") in
-        let* α1 : ref str.t := M.read (mk_str "
-") in
-        let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-        let* α3 : core.fmt.rt.Argument.t :=
-          M.call
-            (core.fmt.rt.Argument.t::["new_display"] (borrow coerced_static)) in
-        let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
-        let* α5 : core.fmt.Arguments.t :=
-          M.call
-            (core.fmt.Arguments.t::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α4))) in
-        let* α6 : unit := M.call (std.io.stdio._print α5) in
-        M.alloc α6 in
-      M.alloc tt in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "NUM: ") in
-      let* α1 : ref str.t := M.read (mk_str " stays accessible!
-") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : ref i32.t :=
-        M.read scoping_rules_lifetimes_reference_lifetime_static.NUM in
-      let* α4 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] α3) in
-      let* α5 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4 ] in
-      let* α6 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α5))) in
-      let* α7 : unit := M.call (std.io.stdio._print α6) in
-      M.alloc α7 in
-    M.alloc tt in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+  ltac:(M.monadic (
+    M.read (|
+      let _ : M.Val unit :=
+        let static_string : M.Val (ref str.t) :=
+          M.copy (| mk_str "I'm in read-only memory" |) in
+        let _ : M.Val unit :=
+          let _ : M.Val unit :=
+            M.alloc (|
+              M.call (|(std.io.stdio._print
+                (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                  (pointer_coercion
+                    "Unsize"
+                    (borrow
+                      (M.alloc (|
+                        [
+                          M.read (| mk_str "static_string: " |);
+                          M.read (| mk_str "
+" |)
+                        ]
+                      |))))
+                  (pointer_coercion
+                    "Unsize"
+                    (borrow
+                      (M.alloc (|
+                        [
+                          M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                            (borrow static_string))
+                          |)
+                        ]
+                      |)))))
+                |)))
+              |)
+            |) in
+          M.alloc (| tt |) in
+        M.alloc (| tt |) in
+      let _ : M.Val unit :=
+        let lifetime_num : M.Val i32.t :=
+          M.alloc (| (Integer.of_Z 9) : i32.t |) in
+        let coerced_static : M.Val (ref i32.t) :=
+          M.alloc (|
+            M.call (|(scoping_rules_lifetimes_reference_lifetime_static.coerce_static
+              (borrow lifetime_num))
+            |)
+          |) in
+        let _ : M.Val unit :=
+          let _ : M.Val unit :=
+            M.alloc (|
+              M.call (|(std.io.stdio._print
+                (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                  (pointer_coercion
+                    "Unsize"
+                    (borrow
+                      (M.alloc (|
+                        [
+                          M.read (| mk_str "coerced_static: " |);
+                          M.read (| mk_str "
+" |)
+                        ]
+                      |))))
+                  (pointer_coercion
+                    "Unsize"
+                    (borrow
+                      (M.alloc (|
+                        [
+                          M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                            (borrow coerced_static))
+                          |)
+                        ]
+                      |)))))
+                |)))
+              |)
+            |) in
+          M.alloc (| tt |) in
+        M.alloc (| tt |) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.read (| mk_str "NUM: " |);
+                        M.read (| mk_str " stays accessible!
+" |)
+                      ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                          (M.read (|
+                            scoping_rules_lifetimes_reference_lifetime_static.NUM
+                          |)))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      M.alloc (| tt |)
+    |)
+  )).

@@ -22,9 +22,10 @@ Section Impl_flipper_Flipper_t.
       }
   *)
   Definition new (init_value : bool.t) : M Self :=
-    let* init_value := M.alloc init_value in
-    let* α0 : bool.t := M.read init_value in
-    M.pure {| flipper.Flipper.value := α0; |}.
+    ltac:(M.monadic (
+      let init_value := M.alloc (| init_value |) in
+      {| flipper.Flipper.value := M.read (| init_value |); |}
+    )).
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
@@ -36,11 +37,13 @@ Section Impl_flipper_Flipper_t.
       }
   *)
   Definition new_default : M Self :=
-    let* α0 : M bool.t :=
-      ltac:(M.get_method (fun ℐ =>
-        core.default.Default.default (Self := bool.t) (Trait := ℐ))) in
-    let* α1 : bool.t := M.call α0 in
-    M.call (flipper.Flipper.t::["new"] α1).
+    ltac:(M.monadic (
+      M.call (|(flipper.Flipper.t::["new"]
+        (M.call (|ltac:(M.get_method (fun ℐ =>
+          core.default.Default.default (Self := bool.t) (Trait := ℐ)))
+        |)))
+      |)
+    )).
   
   Global Instance AssociatedFunction_new_default :
     Notations.DoubleColon Self "new_default" := {
@@ -53,14 +56,19 @@ Section Impl_flipper_Flipper_t.
       }
   *)
   Definition flip (self : mut_ref Self) : M unit :=
-    let* self := M.alloc self in
-    let* _ : M.Val unit :=
-      let* α0 : mut_ref flipper.Flipper.t := M.read self in
-      let* α1 : mut_ref flipper.Flipper.t := M.read self in
-      let* α2 : bool.t := M.read (flipper.Flipper.Get_value (deref α1)) in
-      assign (flipper.Flipper.Get_value (deref α0)) (UnOp.not α2) in
-    let* α0 : M.Val unit := M.alloc tt in
-    M.read α0.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      M.read (|
+        let _ : M.Val unit :=
+          assign (|
+            flipper.Flipper.Get_value (deref (M.read (| self |))),
+            UnOp.not
+              (M.read (| flipper.Flipper.Get_value (deref (M.read (| self |)))
+              |))
+          |) in
+        M.alloc (| tt |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_flip :
     Notations.DoubleColon Self "flip" := {
@@ -73,9 +81,10 @@ Section Impl_flipper_Flipper_t.
       }
   *)
   Definition get (self : ref Self) : M bool.t :=
-    let* self := M.alloc self in
-    let* α0 : ref flipper.Flipper.t := M.read self in
-    M.read (flipper.Flipper.Get_value (deref α0)).
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      M.read (| flipper.Flipper.Get_value (deref (M.read (| self |))) |)
+    )).
   
   Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
     Notations.double_colon := get;

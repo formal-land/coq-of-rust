@@ -24,152 +24,141 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* apple : M.Val (alloc.sync.Arc.t (ref str.t) alloc.alloc.Global.t) :=
-    let* α0 : ref str.t := M.read (mk_str "the same apple") in
-    let* α1 : alloc.sync.Arc.t (ref str.t) alloc.alloc.Global.t :=
-      M.call
-        ((alloc.sync.Arc.t (ref str.t) alloc.alloc.Global.t)::["new"] α0) in
-    M.alloc α1 in
-  let* _ : M.Val unit :=
-    let* α0 : (core.ops.range.Range.t i32.t) -> M _ :=
-      ltac:(M.get_method (fun ℐ =>
-        core.iter.traits.collect.IntoIterator.into_iter
-          (Self := core.ops.range.Range.t i32.t)
-          (Trait := ℐ))) in
-    let* α1 : core.ops.range.Range.t i32.t :=
-      M.call
-        (α0
-          {|
-            core.ops.range.Range.start := (Integer.of_Z 0) : i32.t;
-            core.ops.range.Range.end_ := (Integer.of_Z 10) : i32.t;
-          |}) in
-    let* α2 : M.Val (core.ops.range.Range.t i32.t) := M.alloc α1 in
-    let* α3 : M.Val unit :=
-      match_operator
-        α2
-        [
-          fun γ =>
-            (let* iter := M.copy γ in
-            M.loop
-              (let* _ : M.Val unit :=
-                let* α0 :
-                    (mut_ref (core.ops.range.Range.t i32.t)) ->
-                      M (core.option.Option.t _) :=
-                  ltac:(M.get_method (fun ℐ =>
-                    core.iter.traits.iterator.Iterator.next
+  ltac:(M.monadic (
+    M.read (|
+      let apple : M.Val (alloc.sync.Arc.t (ref str.t) alloc.alloc.Global.t) :=
+        M.alloc (|
+          M.call (|((alloc.sync.Arc.t (ref str.t) alloc.alloc.Global.t)::["new"]
+            (M.read (| mk_str "the same apple" |)))
+          |)
+        |) in
+      let _ : M.Val unit :=
+        use
+          (ltac:
+            (M.monadic_match_operator
+              (M.alloc (|
+                M.call (|(ltac:(M.get_method (fun ℐ =>
+                    core.iter.traits.collect.IntoIterator.into_iter
                       (Self := core.ops.range.Range.t i32.t)
-                      (Trait := ℐ))) in
-                let* α1 : core.option.Option.t i32.t :=
-                  M.call (α0 (borrow_mut iter)) in
-                let* α2 : M.Val (core.option.Option.t i32.t) := M.alloc α1 in
-                match_operator
-                  α2
-                  [
-                    fun γ =>
-                      (let* α0 := M.read γ in
-                      match α0 with
-                      | core.option.Option.None =>
-                        let* α0 : M.Val never.t := M.break in
-                        let* α1 := M.read α0 in
-                        let* α2 : unit := never_to_any α1 in
-                        M.alloc α2
-                      | _ => M.break_match
-                      end) :
-                      M (M.Val unit);
-                    fun γ =>
-                      (let* α0 := M.read γ in
-                      match α0 with
-                      | core.option.Option.Some _ =>
-                        let γ0_0 := core.option.Option.Get_Some_0 γ in
-                        let* apple :
-                            M.Val
-                              (alloc.sync.Arc.t
-                                (ref str.t)
-                                alloc.alloc.Global.t) :=
-                          let* α0 :
-                              (ref
-                                  (alloc.sync.Arc.t
-                                    (ref str.t)
-                                    alloc.alloc.Global.t))
-                                ->
-                                M
-                                  (alloc.sync.Arc.t
-                                    (ref str.t)
-                                    alloc.alloc.Global.t) :=
-                            ltac:(M.get_method (fun ℐ =>
-                              core.clone.Clone.clone
-                                (Self :=
-                                  alloc.sync.Arc.t
-                                    (ref str.t)
-                                    alloc.alloc.Global.t)
-                                (Trait := ℐ))) in
-                          let* α1 :
-                              alloc.sync.Arc.t
-                                (ref str.t)
-                                alloc.alloc.Global.t :=
-                            M.call (α0 (borrow apple)) in
-                          M.alloc α1 in
-                        let* _ : M.Val (std.thread.JoinHandle.t unit) :=
-                          let* α0 : std.thread.JoinHandle.t unit :=
-                            M.call
-                              (std.thread.spawn
-                                (fun (α0 : unit) =>
-                                  (let* α0 := M.alloc α0 in
-                                  match_operator
-                                    α0
-                                    [
-                                      fun γ =>
-                                        (let* _ : M.Val unit :=
-                                          let* _ : M.Val unit :=
-                                            let* α0 : ref str.t :=
-                                              M.read (mk_str "") in
-                                            let* α1 : ref str.t :=
-                                              M.read (mk_str "
-") in
-                                            let* α2 :
-                                                M.Val (array (ref str.t)) :=
-                                              M.alloc [ α0; α1 ] in
-                                            let* α3 : core.fmt.rt.Argument.t :=
-                                              M.call
-                                                (core.fmt.rt.Argument.t::["new_debug"]
-                                                  (borrow apple)) in
-                                            let* α4 :
-                                                M.Val
-                                                  (array
-                                                    core.fmt.rt.Argument.t) :=
-                                              M.alloc [ α3 ] in
-                                            let* α5 : core.fmt.Arguments.t :=
-                                              M.call
-                                                (core.fmt.Arguments.t::["new_v1"]
-                                                  (pointer_coercion
-                                                    "Unsize"
-                                                    (borrow α2))
-                                                  (pointer_coercion
-                                                    "Unsize"
-                                                    (borrow α4))) in
-                                            let* α6 : unit :=
-                                              M.call (std.io.stdio._print α5) in
-                                            M.alloc α6 in
-                                          M.alloc tt in
-                                        let* α0 : M.Val unit := M.alloc tt in
-                                        M.read α0) :
-                                        M unit
-                                    ]) :
-                                  M unit)) in
-                          M.alloc α0 in
-                        M.alloc tt
-                      | _ => M.break_match
-                      end) :
-                      M (M.Val unit)
-                  ] in
-              M.alloc tt)) :
-            M (M.Val unit)
-        ] in
-    M.pure (use α3) in
-  let* _ : M.Val unit :=
-    let* α0 : core.time.Duration.t :=
-      M.call (core.time.Duration.t::["from_secs"] ((Integer.of_Z 1) : u64.t)) in
-    let* α1 : unit := M.call (std.thread.sleep α0) in
-    M.alloc α1 in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+                      (Trait := ℐ)))
+                  {|
+                    core.ops.range.Range.start := (Integer.of_Z 0) : i32.t;
+                    core.ops.range.Range.end_ := (Integer.of_Z 10) : i32.t;
+                  |})
+                |)
+              |))
+              [
+                fun (γ : M.Val (core.ops.range.Range.t i32.t)) =>
+                  (let iter := M.copy (| γ |) in
+                  M.loop
+                    (let _ : M.Val unit :=
+                      ltac:
+                        (M.monadic_match_operator
+                          (M.alloc (|
+                            M.call (|(ltac:(M.get_method (fun ℐ =>
+                                core.iter.traits.iterator.Iterator.next
+                                  (Self := core.ops.range.Range.t i32.t)
+                                  (Trait := ℐ)))
+                              (borrow_mut iter))
+                            |)
+                          |))
+                          [
+                            fun (γ : M.Val (core.option.Option.t i32.t)) =>
+                              match M.read (| γ |) with
+                              | core.option.Option.None =>
+                                M.alloc (|
+                                  never_to_any (| M.read (| M.break |) |)
+                                |)
+                              | _ => M.break_match(||)
+                              end :
+                              M.Val unit;
+                            fun (γ : M.Val (core.option.Option.t i32.t)) =>
+                              match M.read (| γ |) with
+                              | core.option.Option.Some _ =>
+                                let γ0_0 := core.option.Option.Get_Some_0 γ in
+                                let apple :
+                                    M.Val
+                                      (alloc.sync.Arc.t
+                                        (ref str.t)
+                                        alloc.alloc.Global.t) :=
+                                  M.alloc (|
+                                    M.call (|(ltac:(M.get_method (fun ℐ =>
+                                        core.clone.Clone.clone
+                                          (Self :=
+                                            alloc.sync.Arc.t
+                                              (ref str.t)
+                                              alloc.alloc.Global.t)
+                                          (Trait := ℐ)))
+                                      (borrow apple))
+                                    |)
+                                  |) in
+                                let _ : M.Val (std.thread.JoinHandle.t unit) :=
+                                  M.alloc (|
+                                    M.call (|(std.thread.spawn
+                                      (fun (α0 : unit) =>
+                                        (ltac:
+                                          (M.monadic_match_operator
+                                            (M.alloc (| α0 |))
+                                            [
+                                              fun γ =>
+                                                (M.read (|
+                                                  let _ : M.Val unit :=
+                                                    let _ : M.Val unit :=
+                                                      M.alloc (|
+                                                        M.call (|(std.io.stdio._print
+                                                          (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                                                            (pointer_coercion
+                                                              "Unsize"
+                                                              (borrow
+                                                                (M.alloc (|
+                                                                  [
+                                                                    M.read (|
+                                                                      mk_str ""
+                                                                    |);
+                                                                    M.read (|
+                                                                      mk_str "
+"
+                                                                    |)
+                                                                  ]
+                                                                |))))
+                                                            (pointer_coercion
+                                                              "Unsize"
+                                                              (borrow
+                                                                (M.alloc (|
+                                                                  [
+                                                                    M.call (|(core.fmt.rt.Argument.t::["new_debug"]
+                                                                      (borrow
+                                                                        apple))
+                                                                    |)
+                                                                  ]
+                                                                |)))))
+                                                          |)))
+                                                        |)
+                                                      |) in
+                                                    M.alloc (| tt |) in
+                                                  M.alloc (| tt |)
+                                                |)) :
+                                                unit
+                                            ])) :
+                                        unit))
+                                    |)
+                                  |) in
+                                M.alloc (| tt |)
+                              | _ => M.break_match(||)
+                              end :
+                              M.Val unit
+                          ]) in
+                    M.alloc (| tt |))) :
+                  M.Val unit
+              ])) in
+      let _ : M.Val unit :=
+        M.alloc (|
+          M.call (|(std.thread.sleep
+            (M.call (|(core.time.Duration.t::["from_secs"]
+              ((Integer.of_Z 1) : u64.t))
+            |)))
+          |)
+        |) in
+      M.alloc (| tt |)
+    |)
+  )).

@@ -10,120 +10,109 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* strings : M.Val (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t) :=
-    let* α0 : ref str.t := M.read (mk_str "tofu") in
-    let* α1 : ref str.t := M.read (mk_str "93") in
-    let* α2 : ref str.t := M.read (mk_str "18") in
-    let* α3 : M.Val (array (ref str.t)) := M.alloc [ α0; α1; α2 ] in
-    let* α4 :
-        M.Val (alloc.boxed.Box.t (array (ref str.t)) alloc.alloc.Global.t) :=
-      M.call ((alloc.boxed.Box.t _ alloc.boxed.Box.Default.A)::["new"] α3) in
-    let* α5 : alloc.boxed.Box.t (array (ref str.t)) alloc.alloc.Global.t :=
-      M.read α4 in
-    let* α6 : alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t :=
-      M.call
-        ((slice (ref str.t))::["into_vec"] (pointer_coercion "Unsize" α5)) in
-    M.alloc α6 in
-  let* numbers :
-      M.Val
-        (alloc.vec.Vec.t
-          (core.result.Result.t i32.t core.num.error.ParseIntError.t)
-          alloc.alloc.Global.t) :=
-    let* α0 :
-        (core.iter.adapters.map.Map.t
-            (alloc.vec.into_iter.IntoIter.t (ref str.t) alloc.alloc.Global.t)
-            ((ref str.t) ->
-              M (core.result.Result.t i32.t core.num.error.ParseIntError.t)))
-          ->
-          M
+  ltac:(M.monadic (
+    M.read (|
+      let strings : M.Val (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t) :=
+        M.alloc (|
+          M.call (|((slice (ref str.t))::["into_vec"]
+            (pointer_coercion
+              "Unsize"
+              (M.read (|
+                M.call (|((alloc.boxed.Box.t _ alloc.boxed.Box.Default.A)::["new"]
+                  (M.alloc (|
+                    [
+                      M.read (| mk_str "tofu" |);
+                      M.read (| mk_str "93" |);
+                      M.read (| mk_str "18" |)
+                    ]
+                  |)))
+                |)
+              |))))
+          |)
+        |) in
+      let numbers :
+          M.Val
             (alloc.vec.Vec.t
               (core.result.Result.t i32.t core.num.error.ParseIntError.t)
               alloc.alloc.Global.t) :=
-      ltac:(M.get_method (fun ℐ =>
-        core.iter.traits.iterator.Iterator.collect
-          (Self :=
-            core.iter.adapters.map.Map.t
-              (alloc.vec.into_iter.IntoIter.t (ref str.t) alloc.alloc.Global.t)
-              ((ref str.t) ->
-                M (core.result.Result.t i32.t core.num.error.ParseIntError.t)))
-          (B :=
-            alloc.vec.Vec.t
-              (core.result.Result.t i32.t core.num.error.ParseIntError.t)
-              alloc.alloc.Global.t)
-          (Trait := ℐ))) in
-    let* α1 :
-        (alloc.vec.into_iter.IntoIter.t (ref str.t) alloc.alloc.Global.t) ->
-          ((ref str.t) ->
-            M (core.result.Result.t i32.t core.num.error.ParseIntError.t))
-          ->
-          M
-            (core.iter.adapters.map.Map.t
-              (alloc.vec.into_iter.IntoIter.t (ref str.t) alloc.alloc.Global.t)
-              ((ref str.t) ->
-                M
-                  (core.result.Result.t
-                    i32.t
-                    core.num.error.ParseIntError.t))) :=
-      ltac:(M.get_method (fun ℐ =>
-        core.iter.traits.iterator.Iterator.map
-          (Self :=
-            alloc.vec.into_iter.IntoIter.t (ref str.t) alloc.alloc.Global.t)
-          (B := core.result.Result.t i32.t core.num.error.ParseIntError.t)
-          (F :=
-            (ref str.t) ->
-              M (core.result.Result.t i32.t core.num.error.ParseIntError.t))
-          (Trait := ℐ))) in
-    let* α2 : (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t) -> M _ :=
-      ltac:(M.get_method (fun ℐ =>
-        core.iter.traits.collect.IntoIterator.into_iter
-          (Self := alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t)
-          (Trait := ℐ))) in
-    let* α3 : alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t :=
-      M.read strings in
-    let* α4 : alloc.vec.into_iter.IntoIter.t (ref str.t) alloc.alloc.Global.t :=
-      M.call (α2 α3) in
-    let* α5 :
-        core.iter.adapters.map.Map.t
-          (alloc.vec.into_iter.IntoIter.t (ref str.t) alloc.alloc.Global.t)
-          ((ref str.t) ->
-            M (core.result.Result.t i32.t core.num.error.ParseIntError.t)) :=
-      M.call
-        (α1
-          α4
-          (fun (α0 : ref str.t) =>
-            (let* α0 := M.alloc α0 in
-            match_operator
-              α0
-              [
-                fun γ =>
-                  (let* s := M.copy γ in
-                  let* α0 : ref str.t := M.read s in
-                  M.call (str.t::["parse"] α0)) :
-                  M (core.result.Result.t i32.t core.num.error.ParseIntError.t)
-              ]) :
-            M (core.result.Result.t i32.t core.num.error.ParseIntError.t))) in
-    let* α6 :
-        alloc.vec.Vec.t
-          (core.result.Result.t i32.t core.num.error.ParseIntError.t)
-          alloc.alloc.Global.t :=
-      M.call (α0 α5) in
-    M.alloc α6 in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "Results: ") in
-      let* α1 : ref str.t := M.read (mk_str "
-") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow numbers)) in
-      let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
-      let* α5 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α4))) in
-      let* α6 : unit := M.call (std.io.stdio._print α5) in
-      M.alloc α6 in
-    M.alloc tt in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+        M.alloc (|
+          M.call (|(ltac:(M.get_method (fun ℐ =>
+              core.iter.traits.iterator.Iterator.collect
+                (Self :=
+                  core.iter.adapters.map.Map.t
+                    (alloc.vec.into_iter.IntoIter.t
+                      (ref str.t)
+                      alloc.alloc.Global.t)
+                    ((ref str.t) ->
+                      core.result.Result.t
+                        i32.t
+                        core.num.error.ParseIntError.t))
+                (B :=
+                  alloc.vec.Vec.t
+                    (core.result.Result.t i32.t core.num.error.ParseIntError.t)
+                    alloc.alloc.Global.t)
+                (Trait := ℐ)))
+            (M.call (|(ltac:(M.get_method (fun ℐ =>
+                core.iter.traits.iterator.Iterator.map
+                  (Self :=
+                    alloc.vec.into_iter.IntoIter.t
+                      (ref str.t)
+                      alloc.alloc.Global.t)
+                  (B :=
+                    core.result.Result.t i32.t core.num.error.ParseIntError.t)
+                  (F :=
+                    (ref str.t) ->
+                      core.result.Result.t i32.t core.num.error.ParseIntError.t)
+                  (Trait := ℐ)))
+              (M.call (|(ltac:(M.get_method (fun ℐ =>
+                  core.iter.traits.collect.IntoIterator.into_iter
+                    (Self := alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t)
+                    (Trait := ℐ)))
+                (M.read (| strings |)))
+              |))
+              (fun (α0 : ref str.t) =>
+                (ltac:
+                  (M.monadic_match_operator
+                    (M.alloc (| α0 |))
+                    [
+                      fun γ =>
+                        (let s := M.copy (| γ |) in
+                        M.call (|(str.t::["parse"] (M.read (| s |))) |)) :
+                        core.result.Result.t
+                          i32.t
+                          core.num.error.ParseIntError.t
+                    ])) :
+                core.result.Result.t i32.t core.num.error.ParseIntError.t))
+            |)))
+          |)
+        |) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [ M.read (| mk_str "Results: " |); M.read (| mk_str "
+" |)
+                      ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_debug"]
+                          (borrow numbers))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      M.alloc (| tt |)
+    |)
+  )).

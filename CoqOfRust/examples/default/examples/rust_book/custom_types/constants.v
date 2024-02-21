@@ -2,10 +2,10 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition LANGUAGE : M.Val (ref (ref str.t)) :=
-  M.run (M.alloc (mk_str "Rust")).
+  M.run (M.alloc (| mk_str "Rust" |)).
 
 Definition THRESHOLD : M.Val i32.t :=
-  M.run (M.alloc ((Integer.of_Z 10) : i32.t)).
+  M.run (M.alloc (| (Integer.of_Z 10) : i32.t |)).
 
 (*
 fn is_big(n: i32) -> bool {
@@ -14,10 +14,10 @@ fn is_big(n: i32) -> bool {
 }
 *)
 Definition is_big (n : i32.t) : M bool.t :=
-  let* n := M.alloc n in
-  let* α0 : i32.t := M.read n in
-  let* α1 : i32.t := M.read constants.THRESHOLD in
-  M.pure (BinOp.Pure.gt α0 α1).
+  ltac:(M.monadic (
+    let n := M.alloc (| n |) in
+    BinOp.Pure.gt (M.read (| n |)) (M.read (| constants.THRESHOLD |))
+  )).
 
 (*
 fn main() {
@@ -35,73 +35,110 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* n : M.Val i32.t := M.alloc ((Integer.of_Z 16) : i32.t) in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "This is ") in
-      let* α1 : ref str.t := M.read (mk_str "
-") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : ref (ref str.t) := M.read constants.LANGUAGE in
-      let* α4 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] α3) in
-      let* α5 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4 ] in
-      let* α6 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α5))) in
-      let* α7 : unit := M.call (std.io.stdio._print α6) in
-      M.alloc α7 in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "The threshold is ") in
-      let* α1 : ref str.t := M.read (mk_str "
-") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : core.fmt.rt.Argument.t :=
-        M.call
-          (core.fmt.rt.Argument.t::["new_display"]
-            (borrow constants.THRESHOLD)) in
-      let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
-      let* α5 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α4))) in
-      let* α6 : unit := M.call (std.io.stdio._print α5) in
-      M.alloc α6 in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "") in
-      let* α1 : ref str.t := M.read (mk_str " is ") in
-      let* α2 : ref str.t := M.read (mk_str "
-") in
-      let* α3 : M.Val (array (ref str.t)) := M.alloc [ α0; α1; α2 ] in
-      let* α4 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow n)) in
-      let* α5 : i32.t := M.read n in
-      let* α6 : bool.t := M.call (constants.is_big α5) in
-      let* α7 : M.Val bool.t := M.alloc α6 in
-      let* α8 : bool.t := M.read (use α7) in
-      let* α9 : M.Val (ref str.t) :=
-        if α8 then
-          M.pure (mk_str "big")
-        else
-          let* α0 : ref str.t := M.read (mk_str "small") in
-          M.alloc α0 in
-      let* α10 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α9)) in
-      let* α11 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4; α10 ] in
-      let* α12 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α3))
-            (pointer_coercion "Unsize" (borrow α11))) in
-      let* α13 : unit := M.call (std.io.stdio._print α12) in
-      M.alloc α13 in
-    M.alloc tt in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+  ltac:(M.monadic (
+    M.read (|
+      let n : M.Val i32.t := M.alloc (| (Integer.of_Z 16) : i32.t |) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [ M.read (| mk_str "This is " |); M.read (| mk_str "
+" |)
+                      ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                          (M.read (| constants.LANGUAGE |)))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.read (| mk_str "The threshold is " |);
+                        M.read (| mk_str "
+" |)
+                      ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                          (borrow constants.THRESHOLD))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.read (| mk_str "" |);
+                        M.read (| mk_str " is " |);
+                        M.read (| mk_str "
+" |)
+                      ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                          (borrow n))
+                        |);
+                        M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                          (borrow
+                            (if
+                              M.read (|
+                                use
+                                  (M.alloc (|
+                                    M.call (|(constants.is_big (M.read (| n |)))
+                                    |)
+                                  |))
+                              |)
+                            then
+                              mk_str "big"
+                            else
+                              M.alloc (| M.read (| mk_str "small" |) |))))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      M.alloc (| tt |)
+    |)
+  )).

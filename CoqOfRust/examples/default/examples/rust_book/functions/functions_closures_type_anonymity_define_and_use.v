@@ -10,15 +10,23 @@ where
 }
 *)
 Definition apply {F : Set} (f : F) : M unit :=
-  let* f := M.alloc f in
-  let* _ : M.Val unit :=
-    let* α0 : (ref F) -> unit -> M _ :=
-      ltac:(M.get_method (fun ℐ =>
-        core.ops.function.Fn.call (Self := F) (Args := unit) (Trait := ℐ))) in
-    let* α1 : unit := M.call (α0 (borrow f) tt) in
-    M.alloc α1 in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+  ltac:(M.monadic (
+    let f := M.alloc (| f |) in
+    M.read (|
+      let _ : M.Val unit :=
+        M.alloc (|
+          M.call (|(ltac:(M.get_method (fun ℐ =>
+              core.ops.function.Fn.call
+                (Self := F)
+                (Args := unit)
+                (Trait := ℐ)))
+            (borrow f)
+            tt)
+          |)
+        |) in
+      M.alloc (| tt |)
+    |)
+  )).
 
 (*
 fn main() {
@@ -33,40 +41,57 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* x : M.Val i32.t := M.alloc ((Integer.of_Z 7) : i32.t) in
-  let* print : M.Val (unit -> M unit) :=
-    M.alloc
-      (fun (α0 : unit) =>
-        (let* α0 := M.alloc α0 in
-        match_operator
-          α0
-          [
-            fun γ =>
-              (let* _ : M.Val unit :=
-                let* α0 : ref str.t := M.read (mk_str "") in
-                let* α1 : ref str.t := M.read (mk_str "
-") in
-                let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-                let* α3 : core.fmt.rt.Argument.t :=
-                  M.call (core.fmt.rt.Argument.t::["new_display"] (borrow x)) in
-                let* α4 : M.Val (array core.fmt.rt.Argument.t) :=
-                  M.alloc [ α3 ] in
-                let* α5 : core.fmt.Arguments.t :=
-                  M.call
-                    (core.fmt.Arguments.t::["new_v1"]
-                      (pointer_coercion "Unsize" (borrow α2))
-                      (pointer_coercion "Unsize" (borrow α4))) in
-                let* α6 : unit := M.call (std.io.stdio._print α5) in
-                M.alloc α6 in
-              let* α0 : M.Val unit := M.alloc tt in
-              M.read α0) :
-              M unit
-          ]) :
-        M unit) in
-  let* _ : M.Val unit :=
-    let* α0 : unit -> M unit := M.read print in
-    let* α1 : unit :=
-      M.call (functions_closures_type_anonymity_define_and_use.apply α0) in
-    M.alloc α1 in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+  ltac:(M.monadic (
+    M.read (|
+      let x : M.Val i32.t := M.alloc (| (Integer.of_Z 7) : i32.t |) in
+      let print : M.Val (unit -> unit) :=
+        M.alloc (|
+          fun (α0 : unit) =>
+            (ltac:
+              (M.monadic_match_operator
+                (M.alloc (| α0 |))
+                [
+                  fun γ =>
+                    (M.read (|
+                      let _ : M.Val unit :=
+                        M.alloc (|
+                          M.call (|(std.io.stdio._print
+                            (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                              (pointer_coercion
+                                "Unsize"
+                                (borrow
+                                  (M.alloc (|
+                                    [
+                                      M.read (| mk_str "" |);
+                                      M.read (| mk_str "
+" |)
+                                    ]
+                                  |))))
+                              (pointer_coercion
+                                "Unsize"
+                                (borrow
+                                  (M.alloc (|
+                                    [
+                                      M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                                        (borrow x))
+                                      |)
+                                    ]
+                                  |)))))
+                            |)))
+                          |)
+                        |) in
+                      M.alloc (| tt |)
+                    |)) :
+                    unit
+                ])) :
+            unit
+        |) in
+      let _ : M.Val unit :=
+        M.alloc (|
+          M.call (|(functions_closures_type_anonymity_define_and_use.apply
+            (M.read (| print |)))
+          |)
+        |) in
+      M.alloc (| tt |)
+    |)
+  )).

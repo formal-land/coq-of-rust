@@ -25,79 +25,106 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* optional : M.Val (core.option.Option.t i32.t) :=
-    M.alloc (core.option.Option.Some ((Integer.of_Z 0) : i32.t)) in
-  let* α0 : M.Val unit :=
-    M.loop
-      (match_operator
-        optional
-        [
-          fun γ =>
-            (let* α0 := M.read γ in
-            match α0 with
-            | core.option.Option.Some _ =>
-              let γ0_0 := core.option.Option.Get_Some_0 γ in
-              let* i := M.copy γ0_0 in
-              let* α0 : i32.t := M.read i in
-              let* α1 : M.Val bool.t :=
-                M.alloc (BinOp.Pure.gt α0 ((Integer.of_Z 9) : i32.t)) in
-              let* α2 : bool.t := M.read (use α1) in
-              if α2 then
-                let* _ : M.Val unit :=
-                  let* _ : M.Val unit :=
-                    let* α0 : ref str.t :=
-                      M.read (mk_str "Greater than 9, quit!
-") in
-                    let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-                    let* α2 : core.fmt.Arguments.t :=
-                      M.call
-                        (core.fmt.Arguments.t::["new_const"]
-                          (pointer_coercion "Unsize" (borrow α1))) in
-                    let* α3 : unit := M.call (std.io.stdio._print α2) in
-                    M.alloc α3 in
-                  M.alloc tt in
-                let* _ : M.Val unit :=
-                  assign optional core.option.Option.None in
-                M.alloc tt
-              else
-                let* _ : M.Val unit :=
-                  let* _ : M.Val unit :=
-                    let* α0 : ref str.t := M.read (mk_str "`i` is `") in
-                    let* α1 : ref str.t := M.read (mk_str "`. Try again.
-") in
-                    let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-                    let* α3 : core.fmt.rt.Argument.t :=
-                      M.call
-                        (core.fmt.rt.Argument.t::["new_debug"] (borrow i)) in
-                    let* α4 : M.Val (array core.fmt.rt.Argument.t) :=
-                      M.alloc [ α3 ] in
-                    let* α5 : core.fmt.Arguments.t :=
-                      M.call
-                        (core.fmt.Arguments.t::["new_v1"]
-                          (pointer_coercion "Unsize" (borrow α2))
-                          (pointer_coercion "Unsize" (borrow α4))) in
-                    let* α6 : unit := M.call (std.io.stdio._print α5) in
-                    M.alloc α6 in
-                  M.alloc tt in
-                let* _ : M.Val unit :=
-                  let* α0 : i32.t := M.read i in
-                  let* α1 : i32.t :=
-                    BinOp.Panic.add α0 ((Integer.of_Z 1) : i32.t) in
-                  assign optional (core.option.Option.Some α1) in
-                M.alloc tt
-            | _ => M.break_match
-            end) :
-            M (M.Val unit);
-          fun γ =>
-            (let* _ : M.Val unit :=
-              let* α0 : M.Val never.t := M.break in
-              let* α1 := M.read α0 in
-              let* α2 : unit := never_to_any α1 in
-              M.alloc α2 in
-            let* α0 : M.Val unit := M.alloc tt in
-            let* α1 := M.read α0 in
-            let* α2 : unit := never_to_any α1 in
-            M.alloc α2) :
-            M (M.Val unit)
-        ]) in
-  M.read α0.
+  ltac:(M.monadic (
+    M.read (|
+      let optional : M.Val (core.option.Option.t i32.t) :=
+        M.alloc (| core.option.Option.Some ((Integer.of_Z 0) : i32.t) |) in
+      M.loop
+        (ltac:
+          (M.monadic_match_operator
+            optional
+            [
+              fun (γ : M.Val (core.option.Option.t i32.t)) =>
+                match M.read (| γ |) with
+                | core.option.Option.Some _ =>
+                  let γ0_0 := core.option.Option.Get_Some_0 γ in
+                  let i := M.copy (| γ0_0 |) in
+                  if
+                    M.read (|
+                      use
+                        (M.alloc (|
+                          BinOp.Pure.gt
+                            (M.read (| i |))
+                            ((Integer.of_Z 9) : i32.t)
+                        |))
+                    |)
+                  then
+                    let _ : M.Val unit :=
+                      let _ : M.Val unit :=
+                        M.alloc (|
+                          M.call (|(std.io.stdio._print
+                            (M.call (|(core.fmt.Arguments.t::["new_const"]
+                              (pointer_coercion
+                                "Unsize"
+                                (borrow
+                                  (M.alloc (|
+                                    [
+                                      M.read (| mk_str "Greater than 9, quit!
+"
+                                      |)
+                                    ]
+                                  |)))))
+                            |)))
+                          |)
+                        |) in
+                      M.alloc (| tt |) in
+                    let _ : M.Val unit :=
+                      assign (| optional, core.option.Option.None |) in
+                    M.alloc (| tt |)
+                  else
+                    let _ : M.Val unit :=
+                      let _ : M.Val unit :=
+                        M.alloc (|
+                          M.call (|(std.io.stdio._print
+                            (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                              (pointer_coercion
+                                "Unsize"
+                                (borrow
+                                  (M.alloc (|
+                                    [
+                                      M.read (| mk_str "`i` is `" |);
+                                      M.read (| mk_str "`. Try again.
+" |)
+                                    ]
+                                  |))))
+                              (pointer_coercion
+                                "Unsize"
+                                (borrow
+                                  (M.alloc (|
+                                    [
+                                      M.call (|(core.fmt.rt.Argument.t::["new_debug"]
+                                        (borrow i))
+                                      |)
+                                    ]
+                                  |)))))
+                            |)))
+                          |)
+                        |) in
+                      M.alloc (| tt |) in
+                    let _ : M.Val unit :=
+                      assign (|
+                        optional,
+                        core.option.Option.Some
+                          (BinOp.Panic.add (|
+                            M.read (| i |),
+                            (Integer.of_Z 1) : i32.t
+                          |))
+                      |) in
+                    M.alloc (| tt |)
+                | _ => M.break_match(||)
+                end :
+                M.Val unit;
+              fun (γ : M.Val (core.option.Option.t i32.t)) =>
+                (M.alloc (|
+                  never_to_any (|
+                    M.read (|
+                      let _ : M.Val unit :=
+                        M.alloc (| never_to_any (| M.read (| M.break |) |) |) in
+                      M.alloc (| tt |)
+                    |)
+                  |)
+                |)) :
+                M.Val unit
+            ]))
+    |)
+  )).

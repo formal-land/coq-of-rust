@@ -20,11 +20,12 @@ Section Impl_core_default_Default_for_updated_incrementer_AccountId_t.
   Default
   *)
   Definition default : M updated_incrementer.AccountId.t :=
-    let* α0 : M u128.t :=
-      ltac:(M.get_method (fun ℐ =>
-        core.default.Default.default (Self := u128.t) (Trait := ℐ))) in
-    let* α1 : u128.t := M.call α0 in
-    M.pure (updated_incrementer.AccountId.Build_t α1).
+    ltac:(M.monadic (
+      updated_incrementer.AccountId.Build_t
+        (M.call (|ltac:(M.get_method (fun ℐ =>
+          core.default.Default.default (Self := u128.t) (Trait := ℐ)))
+        |))
+    )).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -45,18 +46,20 @@ Section Impl_core_clone_Clone_for_updated_incrementer_AccountId_t.
   Clone
   *)
   Definition clone (self : ref Self) : M updated_incrementer.AccountId.t :=
-    let* self := M.alloc self in
-    let* α0 : M.Val updated_incrementer.AccountId.t :=
-      match_operator
-        (DeclaredButUndefinedVariable
-          (A := core.clone.AssertParamIsClone.t u128.t))
-        [
-          fun γ =>
-            (let* α0 : ref updated_incrementer.AccountId.t := M.read self in
-            M.pure (deref α0)) :
-            M (M.Val updated_incrementer.AccountId.t)
-        ] in
-    M.read α0.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      M.read (|
+        ltac:
+          (M.monadic_match_operator
+            (DeclaredButUndefinedVariable
+              (A := core.clone.AssertParamIsClone.t u128.t))
+            [
+              fun γ =>
+                (deref (M.read (| self |))) :
+                M.Val updated_incrementer.AccountId.t
+            ])
+      |)
+    )).
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {
@@ -111,11 +114,14 @@ Section Impl_updated_incrementer_Env_t.
       (self : ref Self)
       (code_hash : ref E)
       : M (core.result.Result.t unit updated_incrementer.Error.t) :=
-    let* self := M.alloc self in
-    let* code_hash := M.alloc code_hash in
-    let* α0 : ref str.t := M.read (mk_str "not implemented") in
-    let* α1 : never.t := M.call (core.panicking.panic α0) in
-    never_to_any α1.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let code_hash := M.alloc (| code_hash |) in
+      never_to_any (|
+        M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
+        |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_set_code_hash {E : Set} :
     Notations.DoubleColon Self "set_code_hash" := {
@@ -145,9 +151,12 @@ Section Impl_updated_incrementer_Incrementer_t.
       }
   *)
   Definition init_env : M updated_incrementer.Env.t :=
-    let* α0 : ref str.t := M.read (mk_str "not implemented") in
-    let* α1 : never.t := M.call (core.panicking.panic α0) in
-    never_to_any α1.
+    ltac:(M.monadic (
+      never_to_any (|
+        M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
+        |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_init_env :
     Notations.DoubleColon Self "init_env" := {
@@ -160,8 +169,10 @@ Section Impl_updated_incrementer_Incrementer_t.
       }
   *)
   Definition env (self : ref Self) : M updated_incrementer.Env.t :=
-    let* self := M.alloc self in
-    M.call updated_incrementer.Incrementer.t::["init_env"].
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      M.call (|updated_incrementer.Incrementer.t::["init_env"] |)
+    )).
   
   Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
     Notations.double_colon := env;
@@ -173,13 +184,15 @@ Section Impl_updated_incrementer_Incrementer_t.
       }
   *)
   Definition new : M Self :=
-    let* α0 : never.t :=
-      M.call
-        (core.panicking.unreachable_display
+    ltac:(M.monadic (
+      never_to_any (|
+        M.call (|(core.panicking.unreachable_display
           (borrow
             (mk_str
-              "Constructors are not called when upgrading using `set_code_hash`."))) in
-    never_to_any α0.
+              "Constructors are not called when upgrading using `set_code_hash`.")))
+        |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
@@ -195,40 +208,54 @@ Section Impl_updated_incrementer_Incrementer_t.
       }
   *)
   Definition inc (self : mut_ref Self) : M unit :=
-    let* self := M.alloc self in
-    let* _ : M.Val unit :=
-      let* β : M.Val u32.t :=
-        let* α0 : mut_ref updated_incrementer.Incrementer.t := M.read self in
-        M.pure (updated_incrementer.Incrementer.Get_count (deref α0)) in
-      let* α0 := M.read β in
-      let* α1 := BinOp.Panic.add α0 ((Integer.of_Z 4) : u32.t) in
-      assign β α1 in
-    let* _ : M.Val unit :=
-      let* _ : M.Val unit :=
-        let* α0 : ref str.t := M.read (mk_str "The new count is ") in
-        let* α1 : ref str.t :=
-          M.read
-            (mk_str
-              ", it was modified using the updated `new_incrementer` code.
-") in
-        let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-        let* α3 : mut_ref updated_incrementer.Incrementer.t := M.read self in
-        let* α4 : core.fmt.rt.Argument.t :=
-          M.call
-            (core.fmt.rt.Argument.t::["new_display"]
-              (borrow
-                (updated_incrementer.Incrementer.Get_count (deref α3)))) in
-        let* α5 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4 ] in
-        let* α6 : core.fmt.Arguments.t :=
-          M.call
-            (core.fmt.Arguments.t::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α5))) in
-        let* α7 : unit := M.call (std.io.stdio._print α6) in
-        M.alloc α7 in
-      M.alloc tt in
-    let* α0 : M.Val unit := M.alloc tt in
-    M.read α0.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      M.read (|
+        let _ : M.Val unit :=
+          let β : M.Val u32.t :=
+            updated_incrementer.Incrementer.Get_count
+              (deref (M.read (| self |))) in
+          assign (|
+            β,
+            BinOp.Panic.add (| M.read (| β |), (Integer.of_Z 4) : u32.t |)
+          |) in
+        let _ : M.Val unit :=
+          let _ : M.Val unit :=
+            M.alloc (|
+              M.call (|(std.io.stdio._print
+                (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                  (pointer_coercion
+                    "Unsize"
+                    (borrow
+                      (M.alloc (|
+                        [
+                          M.read (| mk_str "The new count is " |);
+                          M.read (|
+                            mk_str
+                              ", it was modified using the updated `new_incrementer` code.
+"
+                          |)
+                        ]
+                      |))))
+                  (pointer_coercion
+                    "Unsize"
+                    (borrow
+                      (M.alloc (|
+                        [
+                          M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                            (borrow
+                              (updated_incrementer.Incrementer.Get_count
+                                (deref (M.read (| self |))))))
+                          |)
+                        ]
+                      |)))))
+                |)))
+              |)
+            |) in
+          M.alloc (| tt |) in
+        M.alloc (| tt |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_inc : Notations.DoubleColon Self "inc" := {
     Notations.double_colon := inc;
@@ -240,9 +267,12 @@ Section Impl_updated_incrementer_Incrementer_t.
       }
   *)
   Definition get (self : ref Self) : M u32.t :=
-    let* self := M.alloc self in
-    let* α0 : ref updated_incrementer.Incrementer.t := M.read self in
-    M.read (updated_incrementer.Incrementer.Get_count (deref α0)).
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      M.read (|
+        updated_incrementer.Incrementer.Get_count (deref (M.read (| self |)))
+      |)
+    )).
   
   Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
     Notations.double_colon := get;
@@ -260,62 +290,76 @@ Section Impl_updated_incrementer_Incrementer_t.
       (self : mut_ref Self)
       (code_hash : ltac:(updated_incrementer.Hash))
       : M unit :=
-    let* self := M.alloc self in
-    let* code_hash := M.alloc code_hash in
-    let* _ : M.Val unit :=
-      let* α0 : mut_ref updated_incrementer.Incrementer.t := M.read self in
-      let* α1 : updated_incrementer.Env.t :=
-        M.call
-          (updated_incrementer.Incrementer.t::["env"] (borrow (deref α0))) in
-      let* α2 : M.Val updated_incrementer.Env.t := M.alloc α1 in
-      let* α3 : core.result.Result.t unit updated_incrementer.Error.t :=
-        M.call
-          (updated_incrementer.Env.t::["set_code_hash"]
-            (borrow α2)
-            (borrow code_hash)) in
-      let* α4 : unit :=
-        M.call
-          ((core.result.Result.t
-                unit
-                updated_incrementer.Error.t)::["unwrap_or_else"]
-            α3
-            (fun (α0 : updated_incrementer.Error.t) =>
-              (let* α0 := M.alloc α0 in
-              match_operator
-                α0
-                [
-                  fun γ =>
-                    (let* err := M.copy γ in
-                    let* α0 : ref str.t :=
-                      M.read
-                        (mk_str
-                          "Failed to `set_code_hash` to {code_hash:?} due to {err:?}") in
-                    let* α1 : never.t :=
-                      M.call (std.panicking.begin_panic α0) in
-                    never_to_any α1) :
-                    M unit
-                ]) :
-              M unit)) in
-      M.alloc α4 in
-    let* _ : M.Val unit :=
-      let* _ : M.Val unit :=
-        let* α0 : ref str.t := M.read (mk_str "Switched code hash to ") in
-        let* α1 : ref str.t := M.read (mk_str ".
-") in
-        let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-        let* α3 : core.fmt.rt.Argument.t :=
-          M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow code_hash)) in
-        let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
-        let* α5 : core.fmt.Arguments.t :=
-          M.call
-            (core.fmt.Arguments.t::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α4))) in
-        let* α6 : unit := M.call (std.io.stdio._print α5) in
-        M.alloc α6 in
-      M.alloc tt in
-    let* α0 : M.Val unit := M.alloc tt in
-    M.read α0.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let code_hash := M.alloc (| code_hash |) in
+      M.read (|
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|((core.result.Result.t
+                  unit
+                  updated_incrementer.Error.t)::["unwrap_or_else"]
+              (M.call (|(updated_incrementer.Env.t::["set_code_hash"]
+                (borrow
+                  (M.alloc (|
+                    M.call (|(updated_incrementer.Incrementer.t::["env"]
+                      (borrow (deref (M.read (| self |)))))
+                    |)
+                  |)))
+                (borrow code_hash))
+              |))
+              (fun (α0 : updated_incrementer.Error.t) =>
+                (ltac:
+                  (M.monadic_match_operator
+                    (M.alloc (| α0 |))
+                    [
+                      fun γ =>
+                        (let err := M.copy (| γ |) in
+                        never_to_any (|
+                          M.call (|(std.panicking.begin_panic
+                            (M.read (|
+                              mk_str
+                                "Failed to `set_code_hash` to {code_hash:?} due to {err:?}"
+                            |)))
+                          |)
+                        |)) :
+                        unit
+                    ])) :
+                unit))
+            |)
+          |) in
+        let _ : M.Val unit :=
+          let _ : M.Val unit :=
+            M.alloc (|
+              M.call (|(std.io.stdio._print
+                (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                  (pointer_coercion
+                    "Unsize"
+                    (borrow
+                      (M.alloc (|
+                        [
+                          M.read (| mk_str "Switched code hash to " |);
+                          M.read (| mk_str ".
+" |)
+                        ]
+                      |))))
+                  (pointer_coercion
+                    "Unsize"
+                    (borrow
+                      (M.alloc (|
+                        [
+                          M.call (|(core.fmt.rt.Argument.t::["new_debug"]
+                            (borrow code_hash))
+                          |)
+                        ]
+                      |)))))
+                |)))
+              |)
+            |) in
+          M.alloc (| tt |) in
+        M.alloc (| tt |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_set_code :
     Notations.DoubleColon Self "set_code" := {

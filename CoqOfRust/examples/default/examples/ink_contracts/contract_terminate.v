@@ -20,11 +20,12 @@ Section Impl_core_default_Default_for_contract_terminate_AccountId_t.
   Default
   *)
   Definition default : M contract_terminate.AccountId.t :=
-    let* α0 : M u128.t :=
-      ltac:(M.get_method (fun ℐ =>
-        core.default.Default.default (Self := u128.t) (Trait := ℐ))) in
-    let* α1 : u128.t := M.call α0 in
-    M.pure (contract_terminate.AccountId.Build_t α1).
+    ltac:(M.monadic (
+      contract_terminate.AccountId.Build_t
+        (M.call (|ltac:(M.get_method (fun ℐ =>
+          core.default.Default.default (Self := u128.t) (Trait := ℐ)))
+        |))
+    )).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -45,18 +46,20 @@ Section Impl_core_clone_Clone_for_contract_terminate_AccountId_t.
   Clone
   *)
   Definition clone (self : ref Self) : M contract_terminate.AccountId.t :=
-    let* self := M.alloc self in
-    let* α0 : M.Val contract_terminate.AccountId.t :=
-      match_operator
-        (DeclaredButUndefinedVariable
-          (A := core.clone.AssertParamIsClone.t u128.t))
-        [
-          fun γ =>
-            (let* α0 : ref contract_terminate.AccountId.t := M.read self in
-            M.pure (deref α0)) :
-            M (M.Val contract_terminate.AccountId.t)
-        ] in
-    M.read α0.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      M.read (|
+        ltac:
+          (M.monadic_match_operator
+            (DeclaredButUndefinedVariable
+              (A := core.clone.AssertParamIsClone.t u128.t))
+            [
+              fun γ =>
+                (deref (M.read (| self |))) :
+                M.Val contract_terminate.AccountId.t
+            ])
+      |)
+    )).
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {
@@ -100,9 +103,10 @@ Section Impl_contract_terminate_Env_t.
       }
   *)
   Definition caller (self : ref Self) : M contract_terminate.AccountId.t :=
-    let* self := M.alloc self in
-    let* α0 : ref contract_terminate.Env.t := M.read self in
-    M.read (contract_terminate.Env.Get_caller (deref α0)).
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      M.read (| contract_terminate.Env.Get_caller (deref (M.read (| self |))) |)
+    )).
   
   Global Instance AssociatedFunction_caller :
     Notations.DoubleColon Self "caller" := {
@@ -118,11 +122,14 @@ Section Impl_contract_terminate_Env_t.
       (self : ref Self)
       (_account : contract_terminate.AccountId.t)
       : M unit :=
-    let* self := M.alloc self in
-    let* _account := M.alloc _account in
-    let* α0 : ref str.t := M.read (mk_str "not implemented") in
-    let* α1 : never.t := M.call (core.panicking.panic α0) in
-    never_to_any α1.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let _account := M.alloc (| _account |) in
+      never_to_any (|
+        M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
+        |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_terminate_contract :
     Notations.DoubleColon Self "terminate_contract" := {
@@ -147,9 +154,12 @@ Section Impl_contract_terminate_JustTerminate_t.
       }
   *)
   Definition init_env : M contract_terminate.Env.t :=
-    let* α0 : ref str.t := M.read (mk_str "not implemented") in
-    let* α1 : never.t := M.call (core.panicking.panic α0) in
-    never_to_any α1.
+    ltac:(M.monadic (
+      never_to_any (|
+        M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
+        |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_init_env :
     Notations.DoubleColon Self "init_env" := {
@@ -162,8 +172,10 @@ Section Impl_contract_terminate_JustTerminate_t.
       }
   *)
   Definition env (self : ref Self) : M contract_terminate.Env.t :=
-    let* self := M.alloc self in
-    M.call contract_terminate.JustTerminate.t::["init_env"].
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      M.call (|contract_terminate.JustTerminate.t::["init_env"] |)
+    )).
   
   Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
     Notations.double_colon := env;
@@ -174,7 +186,9 @@ Section Impl_contract_terminate_JustTerminate_t.
           Self {}
       }
   *)
-  Definition new : M Self := M.pure contract_terminate.JustTerminate.Build.
+  Definition new : M Self :=
+    ltac:(M.monadic ( contract_terminate.JustTerminate.Build
+    )).
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
@@ -186,26 +200,31 @@ Section Impl_contract_terminate_JustTerminate_t.
       }
   *)
   Definition terminate_me (self : mut_ref Self) : M unit :=
-    let* self := M.alloc self in
-    let* _ : M.Val unit :=
-      let* α0 : mut_ref contract_terminate.JustTerminate.t := M.read self in
-      let* α1 : contract_terminate.Env.t :=
-        M.call
-          (contract_terminate.JustTerminate.t::["env"] (borrow (deref α0))) in
-      let* α2 : M.Val contract_terminate.Env.t := M.alloc α1 in
-      let* α3 : mut_ref contract_terminate.JustTerminate.t := M.read self in
-      let* α4 : contract_terminate.Env.t :=
-        M.call
-          (contract_terminate.JustTerminate.t::["env"] (borrow (deref α3))) in
-      let* α5 : M.Val contract_terminate.Env.t := M.alloc α4 in
-      let* α6 : contract_terminate.AccountId.t :=
-        M.call (contract_terminate.Env.t::["caller"] (borrow α5)) in
-      let* α7 : unit :=
-        M.call
-          (contract_terminate.Env.t::["terminate_contract"] (borrow α2) α6) in
-      M.alloc α7 in
-    let* α0 : M.Val unit := M.alloc tt in
-    M.read α0.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      M.read (|
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(contract_terminate.Env.t::["terminate_contract"]
+              (borrow
+                (M.alloc (|
+                  M.call (|(contract_terminate.JustTerminate.t::["env"]
+                    (borrow (deref (M.read (| self |)))))
+                  |)
+                |)))
+              (M.call (|(contract_terminate.Env.t::["caller"]
+                (borrow
+                  (M.alloc (|
+                    M.call (|(contract_terminate.JustTerminate.t::["env"]
+                      (borrow (deref (M.read (| self |)))))
+                    |)
+                  |))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_terminate_me :
     Notations.DoubleColon Self "terminate_me" := {

@@ -25,19 +25,20 @@ Section Impl_core_clone_Clone_for_scoping_rules_borrowing_the_ref_pattern_Point_
   Definition clone
       (self : ref Self)
       : M scoping_rules_borrowing_the_ref_pattern.Point.t :=
-    let* self := M.alloc self in
-    let* α0 : M.Val scoping_rules_borrowing_the_ref_pattern.Point.t :=
-      match_operator
-        (DeclaredButUndefinedVariable
-          (A := core.clone.AssertParamIsClone.t i32.t))
-        [
-          fun γ =>
-            (let* α0 : ref scoping_rules_borrowing_the_ref_pattern.Point.t :=
-              M.read self in
-            M.pure (deref α0)) :
-            M (M.Val scoping_rules_borrowing_the_ref_pattern.Point.t)
-        ] in
-    M.read α0.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      M.read (|
+        ltac:
+          (M.monadic_match_operator
+            (DeclaredButUndefinedVariable
+              (A := core.clone.AssertParamIsClone.t i32.t))
+            [
+              fun γ =>
+                (deref (M.read (| self |))) :
+                M.Val scoping_rules_borrowing_the_ref_pattern.Point.t
+            ])
+      |)
+    )).
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {
@@ -119,202 +120,275 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* c : M.Val char.t := M.alloc "Q"%char in
-  let* α0 : M.Val unit :=
-    match_operator
-      c
-      [
-        fun γ =>
-          (let* ref_c1 := M.alloc (borrow γ) in
-          let* ref_c2 : M.Val (ref char.t) := M.alloc (borrow c) in
-          let* _ : M.Val unit :=
-            let* _ : M.Val unit :=
-              let* α0 : ref str.t := M.read (mk_str "ref_c1 equals ref_c2: ") in
-              let* α1 : ref str.t := M.read (mk_str "
-") in
-              let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-              let* α3 : ref char.t := M.read ref_c1 in
-              let* α4 : char.t := M.read (deref α3) in
-              let* α5 : ref char.t := M.read ref_c2 in
-              let* α6 : char.t := M.read (deref α5) in
-              let* α7 : M.Val bool.t := M.alloc (BinOp.Pure.eq α4 α6) in
-              let* α8 : core.fmt.rt.Argument.t :=
-                M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α7)) in
-              let* α9 : M.Val (array core.fmt.rt.Argument.t) :=
-                M.alloc [ α8 ] in
-              let* α10 : core.fmt.Arguments.t :=
-                M.call
-                  (core.fmt.Arguments.t::["new_v1"]
-                    (pointer_coercion "Unsize" (borrow α2))
-                    (pointer_coercion "Unsize" (borrow α9))) in
-              let* α11 : unit := M.call (std.io.stdio._print α10) in
-              M.alloc α11 in
-            M.alloc tt in
-          let* point : M.Val scoping_rules_borrowing_the_ref_pattern.Point.t :=
-            M.alloc
-              {|
-                scoping_rules_borrowing_the_ref_pattern.Point.x :=
-                  (Integer.of_Z 0) : i32.t;
-                scoping_rules_borrowing_the_ref_pattern.Point.y :=
-                  (Integer.of_Z 0) : i32.t;
-              |} in
-          let* _copy_of_x : M.Val i32.t :=
-            let* α0 : M.Val i32.t :=
-              match_operator
-                point
-                [
-                  fun γ =>
-                    (let* α0 := M.read γ in
-                    match α0 with
-                    |
-                        {|
-                          scoping_rules_borrowing_the_ref_pattern.Point.x := _;
-                          scoping_rules_borrowing_the_ref_pattern.Point.y := _;
-                        |}
-                        =>
-                      let γ0_0 :=
-                        scoping_rules_borrowing_the_ref_pattern.Point.Get_x γ in
-                      let γ0_1 :=
-                        scoping_rules_borrowing_the_ref_pattern.Point.Get_y γ in
-                      let* ref_to_x := M.alloc (borrow γ0_0) in
-                      let* α0 : ref i32.t := M.read ref_to_x in
-                      M.pure (deref α0)
-                    end) :
-                    M (M.Val i32.t)
-                ] in
-            M.copy α0 in
-          let* mutable_point :
-              M.Val scoping_rules_borrowing_the_ref_pattern.Point.t :=
-            M.copy point in
-          let* _ : M.Val unit :=
-            match_operator
-              mutable_point
-              [
-                fun γ =>
-                  (let* α0 := M.read γ in
-                  match α0 with
-                  |
-                      {|
-                        scoping_rules_borrowing_the_ref_pattern.Point.x := _;
-                        scoping_rules_borrowing_the_ref_pattern.Point.y := _;
-                      |}
-                      =>
-                    let γ0_0 :=
-                      scoping_rules_borrowing_the_ref_pattern.Point.Get_x γ in
-                    let γ0_1 :=
-                      scoping_rules_borrowing_the_ref_pattern.Point.Get_y γ in
-                    let* mut_ref_to_y := M.alloc (borrow_mut γ0_1) in
-                    let* _ : M.Val unit :=
-                      let* α0 : mut_ref i32.t := M.read mut_ref_to_y in
-                      assign (deref α0) ((Integer.of_Z 1) : i32.t) in
-                    M.alloc tt
-                  end) :
-                  M (M.Val unit)
-              ] in
-          let* _ : M.Val unit :=
-            let* _ : M.Val unit :=
-              let* α0 : ref str.t := M.read (mk_str "point is (") in
-              let* α1 : ref str.t := M.read (mk_str ", ") in
-              let* α2 : ref str.t := M.read (mk_str ")
-") in
-              let* α3 : M.Val (array (ref str.t)) := M.alloc [ α0; α1; α2 ] in
-              let* α4 : core.fmt.rt.Argument.t :=
-                M.call
-                  (core.fmt.rt.Argument.t::["new_display"]
-                    (borrow
-                      (scoping_rules_borrowing_the_ref_pattern.Point.Get_x
-                        point))) in
-              let* α5 : core.fmt.rt.Argument.t :=
-                M.call
-                  (core.fmt.rt.Argument.t::["new_display"]
-                    (borrow
-                      (scoping_rules_borrowing_the_ref_pattern.Point.Get_y
-                        point))) in
-              let* α6 : M.Val (array core.fmt.rt.Argument.t) :=
-                M.alloc [ α4; α5 ] in
-              let* α7 : core.fmt.Arguments.t :=
-                M.call
-                  (core.fmt.Arguments.t::["new_v1"]
-                    (pointer_coercion "Unsize" (borrow α3))
-                    (pointer_coercion "Unsize" (borrow α6))) in
-              let* α8 : unit := M.call (std.io.stdio._print α7) in
-              M.alloc α8 in
-            M.alloc tt in
-          let* _ : M.Val unit :=
-            let* _ : M.Val unit :=
-              let* α0 : ref str.t := M.read (mk_str "mutable_point is (") in
-              let* α1 : ref str.t := M.read (mk_str ", ") in
-              let* α2 : ref str.t := M.read (mk_str ")
-") in
-              let* α3 : M.Val (array (ref str.t)) := M.alloc [ α0; α1; α2 ] in
-              let* α4 : core.fmt.rt.Argument.t :=
-                M.call
-                  (core.fmt.rt.Argument.t::["new_display"]
-                    (borrow
-                      (scoping_rules_borrowing_the_ref_pattern.Point.Get_x
-                        mutable_point))) in
-              let* α5 : core.fmt.rt.Argument.t :=
-                M.call
-                  (core.fmt.rt.Argument.t::["new_display"]
-                    (borrow
-                      (scoping_rules_borrowing_the_ref_pattern.Point.Get_y
-                        mutable_point))) in
-              let* α6 : M.Val (array core.fmt.rt.Argument.t) :=
-                M.alloc [ α4; α5 ] in
-              let* α7 : core.fmt.Arguments.t :=
-                M.call
-                  (core.fmt.Arguments.t::["new_v1"]
-                    (pointer_coercion "Unsize" (borrow α3))
-                    (pointer_coercion "Unsize" (borrow α6))) in
-              let* α8 : unit := M.call (std.io.stdio._print α7) in
-              M.alloc α8 in
-            M.alloc tt in
-          let* mutable_tuple :
-              M.Val ((alloc.boxed.Box.t u32.t alloc.alloc.Global.t) * u32.t) :=
-            let* α0 : alloc.boxed.Box.t u32.t alloc.alloc.Global.t :=
-              M.call
-                ((alloc.boxed.Box.t u32.t alloc.alloc.Global.t)::["new"]
-                  ((Integer.of_Z 5) : u32.t)) in
-            M.alloc (α0, (Integer.of_Z 3) : u32.t) in
-          let* _ : M.Val unit :=
-            match_operator
-              mutable_tuple
-              [
-                fun γ =>
-                  (let* α0 := M.read γ in
-                  match α0 with
-                  | (_, _) =>
-                    let γ0_0 := Tuple.Access.left γ in
-                    let γ0_1 := Tuple.Access.right γ in
-                    let* last := M.alloc (borrow_mut γ0_1) in
-                    let* _ : M.Val unit :=
-                      let* α0 : mut_ref u32.t := M.read last in
-                      assign (deref α0) ((Integer.of_Z 2) : u32.t) in
-                    M.alloc tt
-                  end) :
-                  M (M.Val unit)
-              ] in
-          let* _ : M.Val unit :=
-            let* _ : M.Val unit :=
-              let* α0 : ref str.t := M.read (mk_str "tuple is ") in
-              let* α1 : ref str.t := M.read (mk_str "
-") in
-              let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-              let* α3 : core.fmt.rt.Argument.t :=
-                M.call
-                  (core.fmt.rt.Argument.t::["new_debug"]
-                    (borrow mutable_tuple)) in
-              let* α4 : M.Val (array core.fmt.rt.Argument.t) :=
-                M.alloc [ α3 ] in
-              let* α5 : core.fmt.Arguments.t :=
-                M.call
-                  (core.fmt.Arguments.t::["new_v1"]
-                    (pointer_coercion "Unsize" (borrow α2))
-                    (pointer_coercion "Unsize" (borrow α4))) in
-              let* α6 : unit := M.call (std.io.stdio._print α5) in
-              M.alloc α6 in
-            M.alloc tt in
-          M.alloc tt) :
-          M (M.Val unit)
-      ] in
-  M.read α0.
+  ltac:(M.monadic (
+    M.read (|
+      let c : M.Val char.t := M.alloc (| "Q"%char |) in
+      ltac:
+        (M.monadic_match_operator
+          c
+          [
+            fun (γ : M.Val char.t) =>
+              (let ref_c1 := M.alloc (| borrow γ |) in
+              let ref_c2 : M.Val (ref char.t) := M.alloc (| borrow c |) in
+              let _ : M.Val unit :=
+                let _ : M.Val unit :=
+                  M.alloc (|
+                    M.call (|(std.io.stdio._print
+                      (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                        (pointer_coercion
+                          "Unsize"
+                          (borrow
+                            (M.alloc (|
+                              [
+                                M.read (| mk_str "ref_c1 equals ref_c2: " |);
+                                M.read (| mk_str "
+" |)
+                              ]
+                            |))))
+                        (pointer_coercion
+                          "Unsize"
+                          (borrow
+                            (M.alloc (|
+                              [
+                                M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                                  (borrow
+                                    (M.alloc (|
+                                      BinOp.Pure.eq
+                                        (M.read (| deref (M.read (| ref_c1 |))
+                                        |))
+                                        (M.read (| deref (M.read (| ref_c2 |))
+                                        |))
+                                    |))))
+                                |)
+                              ]
+                            |)))))
+                      |)))
+                    |)
+                  |) in
+                M.alloc (| tt |) in
+              let point :
+                  M.Val scoping_rules_borrowing_the_ref_pattern.Point.t :=
+                M.alloc (|
+                  {|
+                    scoping_rules_borrowing_the_ref_pattern.Point.x :=
+                      (Integer.of_Z 0) : i32.t;
+                    scoping_rules_borrowing_the_ref_pattern.Point.y :=
+                      (Integer.of_Z 0) : i32.t;
+                  |}
+                |) in
+              let _copy_of_x : M.Val i32.t :=
+                M.copy (|
+                  ltac:
+                    (M.monadic_match_operator
+                      point
+                      [
+                        fun
+                            (γ :
+                              M.Val
+                                scoping_rules_borrowing_the_ref_pattern.Point.t) =>
+                          match M.read (| γ |) with
+                          |
+                              {|
+                                scoping_rules_borrowing_the_ref_pattern.Point.x
+                                  :=
+                                  _;
+                                scoping_rules_borrowing_the_ref_pattern.Point.y
+                                  :=
+                                  _;
+                              |}
+                              =>
+                            let γ0_0 :=
+                              scoping_rules_borrowing_the_ref_pattern.Point.Get_x
+                                γ in
+                            let γ0_1 :=
+                              scoping_rules_borrowing_the_ref_pattern.Point.Get_y
+                                γ in
+                            let ref_to_x := M.alloc (| borrow γ0_0 |) in
+                            deref (M.read (| ref_to_x |))
+                          end :
+                          M.Val i32.t
+                      ])
+                |) in
+              let mutable_point :
+                  M.Val scoping_rules_borrowing_the_ref_pattern.Point.t :=
+                M.copy (| point |) in
+              let _ : M.Val unit :=
+                ltac:
+                  (M.monadic_match_operator
+                    mutable_point
+                    [
+                      fun
+                          (γ :
+                            M.Val
+                              scoping_rules_borrowing_the_ref_pattern.Point.t) =>
+                        match M.read (| γ |) with
+                        |
+                            {|
+                              scoping_rules_borrowing_the_ref_pattern.Point.x
+                                :=
+                                _;
+                              scoping_rules_borrowing_the_ref_pattern.Point.y
+                                :=
+                                _;
+                            |}
+                            =>
+                          let γ0_0 :=
+                            scoping_rules_borrowing_the_ref_pattern.Point.Get_x
+                              γ in
+                          let γ0_1 :=
+                            scoping_rules_borrowing_the_ref_pattern.Point.Get_y
+                              γ in
+                          let mut_ref_to_y := M.alloc (| borrow_mut γ0_1 |) in
+                          let _ : M.Val unit :=
+                            assign (|
+                              deref (M.read (| mut_ref_to_y |)),
+                              (Integer.of_Z 1) : i32.t
+                            |) in
+                          M.alloc (| tt |)
+                        end :
+                        M.Val unit
+                    ]) in
+              let _ : M.Val unit :=
+                let _ : M.Val unit :=
+                  M.alloc (|
+                    M.call (|(std.io.stdio._print
+                      (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                        (pointer_coercion
+                          "Unsize"
+                          (borrow
+                            (M.alloc (|
+                              [
+                                M.read (| mk_str "point is (" |);
+                                M.read (| mk_str ", " |);
+                                M.read (| mk_str ")
+" |)
+                              ]
+                            |))))
+                        (pointer_coercion
+                          "Unsize"
+                          (borrow
+                            (M.alloc (|
+                              [
+                                M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                                  (borrow
+                                    (scoping_rules_borrowing_the_ref_pattern.Point.Get_x
+                                      point)))
+                                |);
+                                M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                                  (borrow
+                                    (scoping_rules_borrowing_the_ref_pattern.Point.Get_y
+                                      point)))
+                                |)
+                              ]
+                            |)))))
+                      |)))
+                    |)
+                  |) in
+                M.alloc (| tt |) in
+              let _ : M.Val unit :=
+                let _ : M.Val unit :=
+                  M.alloc (|
+                    M.call (|(std.io.stdio._print
+                      (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                        (pointer_coercion
+                          "Unsize"
+                          (borrow
+                            (M.alloc (|
+                              [
+                                M.read (| mk_str "mutable_point is (" |);
+                                M.read (| mk_str ", " |);
+                                M.read (| mk_str ")
+" |)
+                              ]
+                            |))))
+                        (pointer_coercion
+                          "Unsize"
+                          (borrow
+                            (M.alloc (|
+                              [
+                                M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                                  (borrow
+                                    (scoping_rules_borrowing_the_ref_pattern.Point.Get_x
+                                      mutable_point)))
+                                |);
+                                M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                                  (borrow
+                                    (scoping_rules_borrowing_the_ref_pattern.Point.Get_y
+                                      mutable_point)))
+                                |)
+                              ]
+                            |)))))
+                      |)))
+                    |)
+                  |) in
+                M.alloc (| tt |) in
+              let mutable_tuple :
+                  M.Val
+                    ((alloc.boxed.Box.t u32.t alloc.alloc.Global.t) * u32.t) :=
+                M.alloc (|
+                  (M.call (|((alloc.boxed.Box.t
+                          u32.t
+                          alloc.alloc.Global.t)::["new"]
+                      ((Integer.of_Z 5) : u32.t))
+                    |),
+                    (Integer.of_Z 3) : u32.t)
+                |) in
+              let _ : M.Val unit :=
+                ltac:
+                  (M.monadic_match_operator
+                    mutable_tuple
+                    [
+                      fun
+                          (γ :
+                            M.Val
+                              ((alloc.boxed.Box.t u32.t alloc.alloc.Global.t)
+                              *
+                              u32.t)) =>
+                        match M.read (| γ |) with
+                        | (_, _) =>
+                          let γ0_0 := Tuple.Access.left γ in
+                          let γ0_1 := Tuple.Access.right γ in
+                          let last := M.alloc (| borrow_mut γ0_1 |) in
+                          let _ : M.Val unit :=
+                            assign (|
+                              deref (M.read (| last |)),
+                              (Integer.of_Z 2) : u32.t
+                            |) in
+                          M.alloc (| tt |)
+                        end :
+                        M.Val unit
+                    ]) in
+              let _ : M.Val unit :=
+                let _ : M.Val unit :=
+                  M.alloc (|
+                    M.call (|(std.io.stdio._print
+                      (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                        (pointer_coercion
+                          "Unsize"
+                          (borrow
+                            (M.alloc (|
+                              [
+                                M.read (| mk_str "tuple is " |);
+                                M.read (| mk_str "
+" |)
+                              ]
+                            |))))
+                        (pointer_coercion
+                          "Unsize"
+                          (borrow
+                            (M.alloc (|
+                              [
+                                M.call (|(core.fmt.rt.Argument.t::["new_debug"]
+                                  (borrow mutable_tuple))
+                                |)
+                              ]
+                            |)))))
+                      |)))
+                    |)
+                  |) in
+                M.alloc (| tt |) in
+              M.alloc (| tt |)) :
+              M.Val unit
+          ])
+    |)
+  )).

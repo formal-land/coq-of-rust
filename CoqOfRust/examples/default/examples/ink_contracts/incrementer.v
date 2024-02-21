@@ -22,9 +22,10 @@ Section Impl_incrementer_Incrementer_t.
       }
   *)
   Definition new (init_value : i32.t) : M Self :=
-    let* init_value := M.alloc init_value in
-    let* α0 : i32.t := M.read init_value in
-    M.pure {| incrementer.Incrementer.value := α0; |}.
+    ltac:(M.monadic (
+      let init_value := M.alloc (| init_value |) in
+      {| incrementer.Incrementer.value := M.read (| init_value |); |}
+    )).
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
@@ -36,11 +37,13 @@ Section Impl_incrementer_Incrementer_t.
       }
   *)
   Definition new_default : M Self :=
-    let* α0 : M i32.t :=
-      ltac:(M.get_method (fun ℐ =>
-        core.default.Default.default (Self := i32.t) (Trait := ℐ))) in
-    let* α1 : i32.t := M.call α0 in
-    M.call (incrementer.Incrementer.t::["new"] α1).
+    ltac:(M.monadic (
+      M.call (|(incrementer.Incrementer.t::["new"]
+        (M.call (|ltac:(M.get_method (fun ℐ =>
+          core.default.Default.default (Self := i32.t) (Trait := ℐ)))
+        |)))
+      |)
+    )).
   
   Global Instance AssociatedFunction_new_default :
     Notations.DoubleColon Self "new_default" := {
@@ -53,18 +56,18 @@ Section Impl_incrementer_Incrementer_t.
       }
   *)
   Definition inc (self : mut_ref Self) (by_ : i32.t) : M unit :=
-    let* self := M.alloc self in
-    let* by_ := M.alloc by_ in
-    let* _ : M.Val unit :=
-      let* β : M.Val i32.t :=
-        let* α0 : mut_ref incrementer.Incrementer.t := M.read self in
-        M.pure (incrementer.Incrementer.Get_value (deref α0)) in
-      let* α0 := M.read β in
-      let* α1 : i32.t := M.read by_ in
-      let* α2 := BinOp.Panic.add α0 α1 in
-      assign β α2 in
-    let* α0 : M.Val unit := M.alloc tt in
-    M.read α0.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let by_ := M.alloc (| by_ |) in
+      M.read (|
+        let _ : M.Val unit :=
+          let β : M.Val i32.t :=
+            incrementer.Incrementer.Get_value (deref (M.read (| self |))) in
+          assign (| β, BinOp.Panic.add (| M.read (| β |), M.read (| by_ |) |)
+          |) in
+        M.alloc (| tt |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_inc : Notations.DoubleColon Self "inc" := {
     Notations.double_colon := inc;
@@ -76,9 +79,10 @@ Section Impl_incrementer_Incrementer_t.
       }
   *)
   Definition get (self : ref Self) : M i32.t :=
-    let* self := M.alloc self in
-    let* α0 : ref incrementer.Incrementer.t := M.read self in
-    M.read (incrementer.Incrementer.Get_value (deref α0)).
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      M.read (| incrementer.Incrementer.Get_value (deref (M.read (| self |))) |)
+    )).
   
   Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
     Notations.double_colon := get;

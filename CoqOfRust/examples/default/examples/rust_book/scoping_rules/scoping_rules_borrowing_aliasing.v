@@ -77,190 +77,221 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* point : M.Val scoping_rules_borrowing_aliasing.Point.t :=
-    M.alloc
-      {|
-        scoping_rules_borrowing_aliasing.Point.x := (Integer.of_Z 0) : i32.t;
-        scoping_rules_borrowing_aliasing.Point.y := (Integer.of_Z 0) : i32.t;
-        scoping_rules_borrowing_aliasing.Point.z := (Integer.of_Z 0) : i32.t;
-      |} in
-  let* borrowed_point : M.Val (ref scoping_rules_borrowing_aliasing.Point.t) :=
-    M.alloc (borrow point) in
-  let* another_borrow : M.Val (ref scoping_rules_borrowing_aliasing.Point.t) :=
-    M.alloc (borrow point) in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "Point has coordinates: (") in
-      let* α1 : ref str.t := M.read (mk_str ", ") in
-      let* α2 : ref str.t := M.read (mk_str ", ") in
-      let* α3 : ref str.t := M.read (mk_str ")
-") in
-      let* α4 : M.Val (array (ref str.t)) := M.alloc [ α0; α1; α2; α3 ] in
-      let* α5 : ref scoping_rules_borrowing_aliasing.Point.t :=
-        M.read borrowed_point in
-      let* α6 : core.fmt.rt.Argument.t :=
-        M.call
-          (core.fmt.rt.Argument.t::["new_display"]
-            (borrow
-              (scoping_rules_borrowing_aliasing.Point.Get_x (deref α5)))) in
-      let* α7 : ref scoping_rules_borrowing_aliasing.Point.t :=
-        M.read another_borrow in
-      let* α8 : core.fmt.rt.Argument.t :=
-        M.call
-          (core.fmt.rt.Argument.t::["new_display"]
-            (borrow
-              (scoping_rules_borrowing_aliasing.Point.Get_y (deref α7)))) in
-      let* α9 : core.fmt.rt.Argument.t :=
-        M.call
-          (core.fmt.rt.Argument.t::["new_display"]
-            (borrow (scoping_rules_borrowing_aliasing.Point.Get_z point))) in
-      let* α10 : M.Val (array core.fmt.rt.Argument.t) :=
-        M.alloc [ α6; α8; α9 ] in
-      let* α11 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α4))
-            (pointer_coercion "Unsize" (borrow α10))) in
-      let* α12 : unit := M.call (std.io.stdio._print α11) in
-      M.alloc α12 in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "Point has coordinates: (") in
-      let* α1 : ref str.t := M.read (mk_str ", ") in
-      let* α2 : ref str.t := M.read (mk_str ", ") in
-      let* α3 : ref str.t := M.read (mk_str ")
-") in
-      let* α4 : M.Val (array (ref str.t)) := M.alloc [ α0; α1; α2; α3 ] in
-      let* α5 : ref scoping_rules_borrowing_aliasing.Point.t :=
-        M.read borrowed_point in
-      let* α6 : core.fmt.rt.Argument.t :=
-        M.call
-          (core.fmt.rt.Argument.t::["new_display"]
-            (borrow
-              (scoping_rules_borrowing_aliasing.Point.Get_x (deref α5)))) in
-      let* α7 : ref scoping_rules_borrowing_aliasing.Point.t :=
-        M.read another_borrow in
-      let* α8 : core.fmt.rt.Argument.t :=
-        M.call
-          (core.fmt.rt.Argument.t::["new_display"]
-            (borrow
-              (scoping_rules_borrowing_aliasing.Point.Get_y (deref α7)))) in
-      let* α9 : core.fmt.rt.Argument.t :=
-        M.call
-          (core.fmt.rt.Argument.t::["new_display"]
-            (borrow (scoping_rules_borrowing_aliasing.Point.Get_z point))) in
-      let* α10 : M.Val (array core.fmt.rt.Argument.t) :=
-        M.alloc [ α6; α8; α9 ] in
-      let* α11 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α4))
-            (pointer_coercion "Unsize" (borrow α10))) in
-      let* α12 : unit := M.call (std.io.stdio._print α11) in
-      M.alloc α12 in
-    M.alloc tt in
-  let* mutable_borrow :
-      M.Val (mut_ref scoping_rules_borrowing_aliasing.Point.t) :=
-    M.alloc (borrow_mut point) in
-  let* _ : M.Val unit :=
-    let* α0 : mut_ref scoping_rules_borrowing_aliasing.Point.t :=
-      M.read mutable_borrow in
-    assign
-      (scoping_rules_borrowing_aliasing.Point.Get_x (deref α0))
-      ((Integer.of_Z 5) : i32.t) in
-  let* _ : M.Val unit :=
-    let* α0 : mut_ref scoping_rules_borrowing_aliasing.Point.t :=
-      M.read mutable_borrow in
-    assign
-      (scoping_rules_borrowing_aliasing.Point.Get_y (deref α0))
-      ((Integer.of_Z 2) : i32.t) in
-  let* _ : M.Val unit :=
-    let* α0 : mut_ref scoping_rules_borrowing_aliasing.Point.t :=
-      M.read mutable_borrow in
-    assign
-      (scoping_rules_borrowing_aliasing.Point.Get_z (deref α0))
-      ((Integer.of_Z 1) : i32.t) in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "Point has coordinates: (") in
-      let* α1 : ref str.t := M.read (mk_str ", ") in
-      let* α2 : ref str.t := M.read (mk_str ", ") in
-      let* α3 : ref str.t := M.read (mk_str ")
-") in
-      let* α4 : M.Val (array (ref str.t)) := M.alloc [ α0; α1; α2; α3 ] in
-      let* α5 : mut_ref scoping_rules_borrowing_aliasing.Point.t :=
-        M.read mutable_borrow in
-      let* α6 : core.fmt.rt.Argument.t :=
-        M.call
-          (core.fmt.rt.Argument.t::["new_display"]
-            (borrow
-              (scoping_rules_borrowing_aliasing.Point.Get_x (deref α5)))) in
-      let* α7 : mut_ref scoping_rules_borrowing_aliasing.Point.t :=
-        M.read mutable_borrow in
-      let* α8 : core.fmt.rt.Argument.t :=
-        M.call
-          (core.fmt.rt.Argument.t::["new_display"]
-            (borrow
-              (scoping_rules_borrowing_aliasing.Point.Get_y (deref α7)))) in
-      let* α9 : mut_ref scoping_rules_borrowing_aliasing.Point.t :=
-        M.read mutable_borrow in
-      let* α10 : core.fmt.rt.Argument.t :=
-        M.call
-          (core.fmt.rt.Argument.t::["new_display"]
-            (borrow
-              (scoping_rules_borrowing_aliasing.Point.Get_z (deref α9)))) in
-      let* α11 : M.Val (array core.fmt.rt.Argument.t) :=
-        M.alloc [ α6; α8; α10 ] in
-      let* α12 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α4))
-            (pointer_coercion "Unsize" (borrow α11))) in
-      let* α13 : unit := M.call (std.io.stdio._print α12) in
-      M.alloc α13 in
-    M.alloc tt in
-  let* new_borrowed_point :
-      M.Val (ref scoping_rules_borrowing_aliasing.Point.t) :=
-    M.alloc (borrow point) in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "Point now has coordinates: (") in
-      let* α1 : ref str.t := M.read (mk_str ", ") in
-      let* α2 : ref str.t := M.read (mk_str ", ") in
-      let* α3 : ref str.t := M.read (mk_str ")
-") in
-      let* α4 : M.Val (array (ref str.t)) := M.alloc [ α0; α1; α2; α3 ] in
-      let* α5 : ref scoping_rules_borrowing_aliasing.Point.t :=
-        M.read new_borrowed_point in
-      let* α6 : core.fmt.rt.Argument.t :=
-        M.call
-          (core.fmt.rt.Argument.t::["new_display"]
-            (borrow
-              (scoping_rules_borrowing_aliasing.Point.Get_x (deref α5)))) in
-      let* α7 : ref scoping_rules_borrowing_aliasing.Point.t :=
-        M.read new_borrowed_point in
-      let* α8 : core.fmt.rt.Argument.t :=
-        M.call
-          (core.fmt.rt.Argument.t::["new_display"]
-            (borrow
-              (scoping_rules_borrowing_aliasing.Point.Get_y (deref α7)))) in
-      let* α9 : ref scoping_rules_borrowing_aliasing.Point.t :=
-        M.read new_borrowed_point in
-      let* α10 : core.fmt.rt.Argument.t :=
-        M.call
-          (core.fmt.rt.Argument.t::["new_display"]
-            (borrow
-              (scoping_rules_borrowing_aliasing.Point.Get_z (deref α9)))) in
-      let* α11 : M.Val (array core.fmt.rt.Argument.t) :=
-        M.alloc [ α6; α8; α10 ] in
-      let* α12 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α4))
-            (pointer_coercion "Unsize" (borrow α11))) in
-      let* α13 : unit := M.call (std.io.stdio._print α12) in
-      M.alloc α13 in
-    M.alloc tt in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+  ltac:(M.monadic (
+    M.read (|
+      let point : M.Val scoping_rules_borrowing_aliasing.Point.t :=
+        M.alloc (|
+          {|
+            scoping_rules_borrowing_aliasing.Point.x :=
+              (Integer.of_Z 0) : i32.t;
+            scoping_rules_borrowing_aliasing.Point.y :=
+              (Integer.of_Z 0) : i32.t;
+            scoping_rules_borrowing_aliasing.Point.z :=
+              (Integer.of_Z 0) : i32.t;
+          |}
+        |) in
+      let borrowed_point :
+          M.Val (ref scoping_rules_borrowing_aliasing.Point.t) :=
+        M.alloc (| borrow point |) in
+      let another_borrow :
+          M.Val (ref scoping_rules_borrowing_aliasing.Point.t) :=
+        M.alloc (| borrow point |) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.read (| mk_str "Point has coordinates: (" |);
+                        M.read (| mk_str ", " |);
+                        M.read (| mk_str ", " |);
+                        M.read (| mk_str ")
+" |)
+                      ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                          (borrow
+                            (scoping_rules_borrowing_aliasing.Point.Get_x
+                              (deref (M.read (| borrowed_point |))))))
+                        |);
+                        M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                          (borrow
+                            (scoping_rules_borrowing_aliasing.Point.Get_y
+                              (deref (M.read (| another_borrow |))))))
+                        |);
+                        M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                          (borrow
+                            (scoping_rules_borrowing_aliasing.Point.Get_z
+                              point)))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.read (| mk_str "Point has coordinates: (" |);
+                        M.read (| mk_str ", " |);
+                        M.read (| mk_str ", " |);
+                        M.read (| mk_str ")
+" |)
+                      ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                          (borrow
+                            (scoping_rules_borrowing_aliasing.Point.Get_x
+                              (deref (M.read (| borrowed_point |))))))
+                        |);
+                        M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                          (borrow
+                            (scoping_rules_borrowing_aliasing.Point.Get_y
+                              (deref (M.read (| another_borrow |))))))
+                        |);
+                        M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                          (borrow
+                            (scoping_rules_borrowing_aliasing.Point.Get_z
+                              point)))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      let mutable_borrow :
+          M.Val (mut_ref scoping_rules_borrowing_aliasing.Point.t) :=
+        M.alloc (| borrow_mut point |) in
+      let _ : M.Val unit :=
+        assign (|
+          scoping_rules_borrowing_aliasing.Point.Get_x
+            (deref (M.read (| mutable_borrow |))),
+          (Integer.of_Z 5) : i32.t
+        |) in
+      let _ : M.Val unit :=
+        assign (|
+          scoping_rules_borrowing_aliasing.Point.Get_y
+            (deref (M.read (| mutable_borrow |))),
+          (Integer.of_Z 2) : i32.t
+        |) in
+      let _ : M.Val unit :=
+        assign (|
+          scoping_rules_borrowing_aliasing.Point.Get_z
+            (deref (M.read (| mutable_borrow |))),
+          (Integer.of_Z 1) : i32.t
+        |) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.read (| mk_str "Point has coordinates: (" |);
+                        M.read (| mk_str ", " |);
+                        M.read (| mk_str ", " |);
+                        M.read (| mk_str ")
+" |)
+                      ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                          (borrow
+                            (scoping_rules_borrowing_aliasing.Point.Get_x
+                              (deref (M.read (| mutable_borrow |))))))
+                        |);
+                        M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                          (borrow
+                            (scoping_rules_borrowing_aliasing.Point.Get_y
+                              (deref (M.read (| mutable_borrow |))))))
+                        |);
+                        M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                          (borrow
+                            (scoping_rules_borrowing_aliasing.Point.Get_z
+                              (deref (M.read (| mutable_borrow |))))))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      let new_borrowed_point :
+          M.Val (ref scoping_rules_borrowing_aliasing.Point.t) :=
+        M.alloc (| borrow point |) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.read (| mk_str "Point now has coordinates: (" |);
+                        M.read (| mk_str ", " |);
+                        M.read (| mk_str ", " |);
+                        M.read (| mk_str ")
+" |)
+                      ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                          (borrow
+                            (scoping_rules_borrowing_aliasing.Point.Get_x
+                              (deref (M.read (| new_borrowed_point |))))))
+                        |);
+                        M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                          (borrow
+                            (scoping_rules_borrowing_aliasing.Point.Get_y
+                              (deref (M.read (| new_borrowed_point |))))))
+                        |);
+                        M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                          (borrow
+                            (scoping_rules_borrowing_aliasing.Point.Get_z
+                              (deref (M.read (| new_borrowed_point |))))))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      M.alloc (| tt |)
+    |)
+  )).

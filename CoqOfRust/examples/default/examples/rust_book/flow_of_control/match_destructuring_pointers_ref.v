@@ -55,135 +55,190 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* reference : M.Val (ref i32.t) :=
-    let* α0 : M.Val i32.t := M.alloc ((Integer.of_Z 4) : i32.t) in
-    M.alloc (borrow α0) in
-  let* _ : M.Val unit :=
-    match_operator
-      reference
-      [
-        fun γ =>
-          (let* γ :=
-            let* α0 := M.read γ in
-            M.pure (deref α0) in
-          let* val := M.copy γ in
-          let* _ : M.Val unit :=
-            let* α0 : ref str.t :=
-              M.read (mk_str "Got a value via destructuring: ") in
-            let* α1 : ref str.t := M.read (mk_str "
-") in
-            let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-            let* α3 : core.fmt.rt.Argument.t :=
-              M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow val)) in
-            let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
-            let* α5 : core.fmt.Arguments.t :=
-              M.call
-                (core.fmt.Arguments.t::["new_v1"]
-                  (pointer_coercion "Unsize" (borrow α2))
-                  (pointer_coercion "Unsize" (borrow α4))) in
-            let* α6 : unit := M.call (std.io.stdio._print α5) in
-            M.alloc α6 in
-          M.alloc tt) :
-          M (M.Val unit)
-      ] in
-  let* _ : M.Val unit :=
-    let* α0 : ref i32.t := M.read reference in
-    match_operator
-      (deref α0)
-      [
-        fun γ =>
-          (let* val := M.copy γ in
-          let* _ : M.Val unit :=
-            let* α0 : ref str.t :=
-              M.read (mk_str "Got a value via dereferencing: ") in
-            let* α1 : ref str.t := M.read (mk_str "
-") in
-            let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-            let* α3 : core.fmt.rt.Argument.t :=
-              M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow val)) in
-            let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
-            let* α5 : core.fmt.Arguments.t :=
-              M.call
-                (core.fmt.Arguments.t::["new_v1"]
-                  (pointer_coercion "Unsize" (borrow α2))
-                  (pointer_coercion "Unsize" (borrow α4))) in
-            let* α6 : unit := M.call (std.io.stdio._print α5) in
-            M.alloc α6 in
-          M.alloc tt) :
-          M (M.Val unit)
-      ] in
-  let* _not_a_reference : M.Val i32.t := M.alloc ((Integer.of_Z 3) : i32.t) in
-  let* α0 : M.Val i32.t := M.alloc ((Integer.of_Z 3) : i32.t) in
-  let* α0 : M.Val unit :=
-    match_operator
-      α0
-      [
-        fun γ =>
-          (let* _is_a_reference := M.alloc (borrow γ) in
-          let* value : M.Val i32.t := M.alloc ((Integer.of_Z 5) : i32.t) in
-          let* mut_value : M.Val i32.t := M.alloc ((Integer.of_Z 6) : i32.t) in
-          let* _ : M.Val unit :=
-            match_operator
-              value
-              [
-                fun γ =>
-                  (let* r := M.alloc (borrow γ) in
-                  let* _ : M.Val unit :=
-                    let* α0 : ref str.t :=
-                      M.read (mk_str "Got a reference to a value: ") in
-                    let* α1 : ref str.t := M.read (mk_str "
-") in
-                    let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-                    let* α3 : core.fmt.rt.Argument.t :=
-                      M.call
-                        (core.fmt.rt.Argument.t::["new_debug"] (borrow r)) in
-                    let* α4 : M.Val (array core.fmt.rt.Argument.t) :=
-                      M.alloc [ α3 ] in
-                    let* α5 : core.fmt.Arguments.t :=
-                      M.call
-                        (core.fmt.Arguments.t::["new_v1"]
-                          (pointer_coercion "Unsize" (borrow α2))
-                          (pointer_coercion "Unsize" (borrow α4))) in
-                    let* α6 : unit := M.call (std.io.stdio._print α5) in
-                    M.alloc α6 in
-                  M.alloc tt) :
-                  M (M.Val unit)
-              ] in
-          match_operator
-            mut_value
+  ltac:(M.monadic (
+    M.read (|
+      let reference : M.Val (ref i32.t) :=
+        M.alloc (| borrow (M.alloc (| (Integer.of_Z 4) : i32.t |)) |) in
+      let _ : M.Val unit :=
+        ltac:
+          (M.monadic_match_operator
+            reference
             [
-              fun γ =>
-                (let* m := M.alloc (borrow_mut γ) in
-                let* _ : M.Val unit :=
-                  let* β : M.Val i32.t :=
-                    let* α0 : mut_ref i32.t := M.read m in
-                    M.pure (deref α0) in
-                  let* α0 := M.read β in
-                  let* α1 := BinOp.Panic.add α0 ((Integer.of_Z 10) : i32.t) in
-                  assign β α1 in
-                let* _ : M.Val unit :=
-                  let* _ : M.Val unit :=
-                    let* α0 : ref str.t :=
-                      M.read (mk_str "We added 10. `mut_value`: ") in
-                    let* α1 : ref str.t := M.read (mk_str "
-") in
-                    let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-                    let* α3 : core.fmt.rt.Argument.t :=
-                      M.call
-                        (core.fmt.rt.Argument.t::["new_debug"] (borrow m)) in
-                    let* α4 : M.Val (array core.fmt.rt.Argument.t) :=
-                      M.alloc [ α3 ] in
-                    let* α5 : core.fmt.Arguments.t :=
-                      M.call
-                        (core.fmt.Arguments.t::["new_v1"]
-                          (pointer_coercion "Unsize" (borrow α2))
-                          (pointer_coercion "Unsize" (borrow α4))) in
-                    let* α6 : unit := M.call (std.io.stdio._print α5) in
-                    M.alloc α6 in
-                  M.alloc tt in
-                M.alloc tt) :
-                M (M.Val unit)
-            ]) :
-          M (M.Val unit)
-      ] in
-  M.read α0.
+              fun (γ : M.Val (ref i32.t)) =>
+                (let γ := deref (M.read (| γ |)) in
+                let val := M.copy (| γ |) in
+                let _ : M.Val unit :=
+                  M.alloc (|
+                    M.call (|(std.io.stdio._print
+                      (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                        (pointer_coercion
+                          "Unsize"
+                          (borrow
+                            (M.alloc (|
+                              [
+                                M.read (|
+                                  mk_str "Got a value via destructuring: "
+                                |);
+                                M.read (| mk_str "
+" |)
+                              ]
+                            |))))
+                        (pointer_coercion
+                          "Unsize"
+                          (borrow
+                            (M.alloc (|
+                              [
+                                M.call (|(core.fmt.rt.Argument.t::["new_debug"]
+                                  (borrow val))
+                                |)
+                              ]
+                            |)))))
+                      |)))
+                    |)
+                  |) in
+                M.alloc (| tt |)) :
+                M.Val unit
+            ]) in
+      let _ : M.Val unit :=
+        ltac:
+          (M.monadic_match_operator
+            (deref (M.read (| reference |)))
+            [
+              fun (γ : M.Val i32.t) =>
+                (let val := M.copy (| γ |) in
+                let _ : M.Val unit :=
+                  M.alloc (|
+                    M.call (|(std.io.stdio._print
+                      (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                        (pointer_coercion
+                          "Unsize"
+                          (borrow
+                            (M.alloc (|
+                              [
+                                M.read (|
+                                  mk_str "Got a value via dereferencing: "
+                                |);
+                                M.read (| mk_str "
+" |)
+                              ]
+                            |))))
+                        (pointer_coercion
+                          "Unsize"
+                          (borrow
+                            (M.alloc (|
+                              [
+                                M.call (|(core.fmt.rt.Argument.t::["new_debug"]
+                                  (borrow val))
+                                |)
+                              ]
+                            |)))))
+                      |)))
+                    |)
+                  |) in
+                M.alloc (| tt |)) :
+                M.Val unit
+            ]) in
+      let _not_a_reference : M.Val i32.t :=
+        M.alloc (| (Integer.of_Z 3) : i32.t |) in
+      ltac:
+        (M.monadic_match_operator
+          (M.alloc (| (Integer.of_Z 3) : i32.t |))
+          [
+            fun (γ : M.Val i32.t) =>
+              (let _is_a_reference := M.alloc (| borrow γ |) in
+              let value : M.Val i32.t :=
+                M.alloc (| (Integer.of_Z 5) : i32.t |) in
+              let mut_value : M.Val i32.t :=
+                M.alloc (| (Integer.of_Z 6) : i32.t |) in
+              let _ : M.Val unit :=
+                ltac:
+                  (M.monadic_match_operator
+                    value
+                    [
+                      fun (γ : M.Val i32.t) =>
+                        (let r := M.alloc (| borrow γ |) in
+                        let _ : M.Val unit :=
+                          M.alloc (|
+                            M.call (|(std.io.stdio._print
+                              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                                (pointer_coercion
+                                  "Unsize"
+                                  (borrow
+                                    (M.alloc (|
+                                      [
+                                        M.read (|
+                                          mk_str "Got a reference to a value: "
+                                        |);
+                                        M.read (| mk_str "
+" |)
+                                      ]
+                                    |))))
+                                (pointer_coercion
+                                  "Unsize"
+                                  (borrow
+                                    (M.alloc (|
+                                      [
+                                        M.call (|(core.fmt.rt.Argument.t::["new_debug"]
+                                          (borrow r))
+                                        |)
+                                      ]
+                                    |)))))
+                              |)))
+                            |)
+                          |) in
+                        M.alloc (| tt |)) :
+                        M.Val unit
+                    ]) in
+              ltac:
+                (M.monadic_match_operator
+                  mut_value
+                  [
+                    fun (γ : M.Val i32.t) =>
+                      (let m := M.alloc (| borrow_mut γ |) in
+                      let _ : M.Val unit :=
+                        let β : M.Val i32.t := deref (M.read (| m |)) in
+                        assign (|
+                          β,
+                          BinOp.Panic.add (|
+                            M.read (| β |),
+                            (Integer.of_Z 10) : i32.t
+                          |)
+                        |) in
+                      let _ : M.Val unit :=
+                        let _ : M.Val unit :=
+                          M.alloc (|
+                            M.call (|(std.io.stdio._print
+                              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                                (pointer_coercion
+                                  "Unsize"
+                                  (borrow
+                                    (M.alloc (|
+                                      [
+                                        M.read (|
+                                          mk_str "We added 10. `mut_value`: "
+                                        |);
+                                        M.read (| mk_str "
+" |)
+                                      ]
+                                    |))))
+                                (pointer_coercion
+                                  "Unsize"
+                                  (borrow
+                                    (M.alloc (|
+                                      [
+                                        M.call (|(core.fmt.rt.Argument.t::["new_debug"]
+                                          (borrow m))
+                                        |)
+                                      ]
+                                    |)))))
+                              |)))
+                            |)
+                          |) in
+                        M.alloc (| tt |) in
+                      M.alloc (| tt |)) :
+                      M.Val unit
+                  ])) :
+              M.Val unit
+          ])
+    |)
+  )).

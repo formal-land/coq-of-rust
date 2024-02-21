@@ -13,28 +13,31 @@ fn is_divisible_by(lhs: u32, rhs: u32) -> bool {
 }
 *)
 Definition is_divisible_by (lhs : u32.t) (rhs : u32.t) : M bool.t :=
-  let* lhs := M.alloc lhs in
-  let* rhs := M.alloc rhs in
-  let return_ := M.return_ (R := bool.t) in
-  M.catch_return
-    (let* _ : M.Val unit :=
-      let* α0 : u32.t := M.read rhs in
-      let* α1 : M.Val bool.t :=
-        M.alloc (BinOp.Pure.eq α0 ((Integer.of_Z 0) : u32.t)) in
-      let* α2 : bool.t := M.read (use α1) in
-      if α2 then
-        let* α0 : M.Val never.t := return_ false in
-        let* α1 := M.read α0 in
-        let* α2 : unit := never_to_any α1 in
-        M.alloc α2
-      else
-        M.alloc tt in
-    let* α0 : u32.t := M.read lhs in
-    let* α1 : u32.t := M.read rhs in
-    let* α2 : u32.t := BinOp.Panic.rem α0 α1 in
-    let* α0 : M.Val bool.t :=
-      M.alloc (BinOp.Pure.eq α2 ((Integer.of_Z 0) : u32.t)) in
-    M.read α0).
+  ltac:(M.monadic (
+    let lhs := M.alloc (| lhs |) in
+    let rhs := M.alloc (| rhs |) in
+    let return_ := M.return_ (R := bool.t) in
+    M.catch_return
+      (M.read (|
+        let _ : M.Val unit :=
+          if
+            M.read (|
+              use
+                (M.alloc (|
+                  BinOp.Pure.eq (M.read (| rhs |)) ((Integer.of_Z 0) : u32.t)
+                |))
+            |)
+          then
+            M.alloc (| never_to_any (| M.read (| return_ false |) |) |)
+          else
+            M.alloc (| tt |) in
+        M.alloc (|
+          BinOp.Pure.eq
+            (BinOp.Panic.rem (| M.read (| lhs |), M.read (| rhs |) |))
+            ((Integer.of_Z 0) : u32.t)
+        |)
+      |))
+  )).
 
 (*
 fn fizzbuzz(n: u32) -> () {
@@ -50,88 +53,118 @@ fn fizzbuzz(n: u32) -> () {
 }
 *)
 Definition fizzbuzz (n : u32.t) : M unit :=
-  let* n := M.alloc n in
-  let* α0 : u32.t := M.read n in
-  let* α1 : bool.t :=
-    M.call (functions.is_divisible_by α0 ((Integer.of_Z 15) : u32.t)) in
-  let* α2 : M.Val bool.t := M.alloc α1 in
-  let* α3 : bool.t := M.read (use α2) in
-  let* α4 : M.Val unit :=
-    if α3 then
-      let* _ : M.Val unit :=
-        let* _ : M.Val unit :=
-          let* α0 : ref str.t := M.read (mk_str "fizzbuzz
-") in
-          let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-          let* α2 : core.fmt.Arguments.t :=
-            M.call
-              (core.fmt.Arguments.t::["new_const"]
-                (pointer_coercion "Unsize" (borrow α1))) in
-          let* α3 : unit := M.call (std.io.stdio._print α2) in
-          M.alloc α3 in
-        M.alloc tt in
-      M.alloc tt
-    else
-      let* α0 : u32.t := M.read n in
-      let* α1 : bool.t :=
-        M.call (functions.is_divisible_by α0 ((Integer.of_Z 3) : u32.t)) in
-      let* α2 : M.Val bool.t := M.alloc α1 in
-      let* α3 : bool.t := M.read (use α2) in
-      if α3 then
-        let* _ : M.Val unit :=
-          let* _ : M.Val unit :=
-            let* α0 : ref str.t := M.read (mk_str "fizz
-") in
-            let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-            let* α2 : core.fmt.Arguments.t :=
-              M.call
-                (core.fmt.Arguments.t::["new_const"]
-                  (pointer_coercion "Unsize" (borrow α1))) in
-            let* α3 : unit := M.call (std.io.stdio._print α2) in
-            M.alloc α3 in
-          M.alloc tt in
-        M.alloc tt
+  ltac:(M.monadic (
+    let n := M.alloc (| n |) in
+    M.read (|
+      if
+        M.read (|
+          use
+            (M.alloc (|
+              M.call (|(functions.is_divisible_by
+                (M.read (| n |))
+                ((Integer.of_Z 15) : u32.t))
+              |)
+            |))
+        |)
+      then
+        let _ : M.Val unit :=
+          let _ : M.Val unit :=
+            M.alloc (|
+              M.call (|(std.io.stdio._print
+                (M.call (|(core.fmt.Arguments.t::["new_const"]
+                  (pointer_coercion
+                    "Unsize"
+                    (borrow
+                      (M.alloc (| [ M.read (| mk_str "fizzbuzz
+" |) ] |)))))
+                |)))
+              |)
+            |) in
+          M.alloc (| tt |) in
+        M.alloc (| tt |)
       else
-        let* α0 : u32.t := M.read n in
-        let* α1 : bool.t :=
-          M.call (functions.is_divisible_by α0 ((Integer.of_Z 5) : u32.t)) in
-        let* α2 : M.Val bool.t := M.alloc α1 in
-        let* α3 : bool.t := M.read (use α2) in
-        if α3 then
-          let* _ : M.Val unit :=
-            let* _ : M.Val unit :=
-              let* α0 : ref str.t := M.read (mk_str "buzz
-") in
-              let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-              let* α2 : core.fmt.Arguments.t :=
-                M.call
-                  (core.fmt.Arguments.t::["new_const"]
-                    (pointer_coercion "Unsize" (borrow α1))) in
-              let* α3 : unit := M.call (std.io.stdio._print α2) in
-              M.alloc α3 in
-            M.alloc tt in
-          M.alloc tt
+        if
+          M.read (|
+            use
+              (M.alloc (|
+                M.call (|(functions.is_divisible_by
+                  (M.read (| n |))
+                  ((Integer.of_Z 3) : u32.t))
+                |)
+              |))
+          |)
+        then
+          let _ : M.Val unit :=
+            let _ : M.Val unit :=
+              M.alloc (|
+                M.call (|(std.io.stdio._print
+                  (M.call (|(core.fmt.Arguments.t::["new_const"]
+                    (pointer_coercion
+                      "Unsize"
+                      (borrow (M.alloc (| [ M.read (| mk_str "fizz
+" |) ] |)))))
+                  |)))
+                |)
+              |) in
+            M.alloc (| tt |) in
+          M.alloc (| tt |)
         else
-          let* _ : M.Val unit :=
-            let* _ : M.Val unit :=
-              let* α0 : ref str.t := M.read (mk_str "") in
-              let* α1 : ref str.t := M.read (mk_str "
-") in
-              let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-              let* α3 : core.fmt.rt.Argument.t :=
-                M.call (core.fmt.rt.Argument.t::["new_display"] (borrow n)) in
-              let* α4 : M.Val (array core.fmt.rt.Argument.t) :=
-                M.alloc [ α3 ] in
-              let* α5 : core.fmt.Arguments.t :=
-                M.call
-                  (core.fmt.Arguments.t::["new_v1"]
-                    (pointer_coercion "Unsize" (borrow α2))
-                    (pointer_coercion "Unsize" (borrow α4))) in
-              let* α6 : unit := M.call (std.io.stdio._print α5) in
-              M.alloc α6 in
-            M.alloc tt in
-          M.alloc tt in
-  M.read α4.
+          if
+            M.read (|
+              use
+                (M.alloc (|
+                  M.call (|(functions.is_divisible_by
+                    (M.read (| n |))
+                    ((Integer.of_Z 5) : u32.t))
+                  |)
+                |))
+            |)
+          then
+            let _ : M.Val unit :=
+              let _ : M.Val unit :=
+                M.alloc (|
+                  M.call (|(std.io.stdio._print
+                    (M.call (|(core.fmt.Arguments.t::["new_const"]
+                      (pointer_coercion
+                        "Unsize"
+                        (borrow
+                          (M.alloc (| [ M.read (| mk_str "buzz
+" |) ] |)))))
+                    |)))
+                  |)
+                |) in
+              M.alloc (| tt |) in
+            M.alloc (| tt |)
+          else
+            let _ : M.Val unit :=
+              let _ : M.Val unit :=
+                M.alloc (|
+                  M.call (|(std.io.stdio._print
+                    (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                      (pointer_coercion
+                        "Unsize"
+                        (borrow
+                          (M.alloc (|
+                            [ M.read (| mk_str "" |); M.read (| mk_str "
+" |) ]
+                          |))))
+                      (pointer_coercion
+                        "Unsize"
+                        (borrow
+                          (M.alloc (|
+                            [
+                              M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                                (borrow n))
+                              |)
+                            ]
+                          |)))))
+                    |)))
+                  |)
+                |) in
+              M.alloc (| tt |) in
+            M.alloc (| tt |)
+    |)
+  )).
 
 (*
 fn fizzbuzz_to(n: u32) {
@@ -141,71 +174,67 @@ fn fizzbuzz_to(n: u32) {
 }
 *)
 Definition fizzbuzz_to (n : u32.t) : M unit :=
-  let* n := M.alloc n in
-  let* α0 : (core.ops.range.RangeInclusive.t u32.t) -> M _ :=
-    ltac:(M.get_method (fun ℐ =>
-      core.iter.traits.collect.IntoIterator.into_iter
-        (Self := core.ops.range.RangeInclusive.t u32.t)
-        (Trait := ℐ))) in
-  let* α1 : u32.t := M.read n in
-  let* α2 : core.ops.range.RangeInclusive.t u32.t :=
-    M.call
-      ((core.ops.range.RangeInclusive.t u32.t)::["new"]
-        ((Integer.of_Z 1) : u32.t)
-        α1) in
-  let* α3 : core.ops.range.RangeInclusive.t u32.t := M.call (α0 α2) in
-  let* α4 : M.Val (core.ops.range.RangeInclusive.t u32.t) := M.alloc α3 in
-  let* α5 : M.Val unit :=
-    match_operator
-      α4
-      [
-        fun γ =>
-          (let* iter := M.copy γ in
-          M.loop
-            (let* _ : M.Val unit :=
-              let* α0 :
-                  (mut_ref (core.ops.range.RangeInclusive.t u32.t)) ->
-                    M (core.option.Option.t _) :=
-                ltac:(M.get_method (fun ℐ =>
-                  core.iter.traits.iterator.Iterator.next
+  ltac:(M.monadic (
+    let n := M.alloc (| n |) in
+    M.read (|
+      use
+        (ltac:
+          (M.monadic_match_operator
+            (M.alloc (|
+              M.call (|(ltac:(M.get_method (fun ℐ =>
+                  core.iter.traits.collect.IntoIterator.into_iter
                     (Self := core.ops.range.RangeInclusive.t u32.t)
-                    (Trait := ℐ))) in
-              let* α1 : core.option.Option.t u32.t :=
-                M.call (α0 (borrow_mut iter)) in
-              let* α2 : M.Val (core.option.Option.t u32.t) := M.alloc α1 in
-              match_operator
-                α2
-                [
-                  fun γ =>
-                    (let* α0 := M.read γ in
-                    match α0 with
-                    | core.option.Option.None =>
-                      let* α0 : M.Val never.t := M.break in
-                      let* α1 := M.read α0 in
-                      let* α2 : unit := never_to_any α1 in
-                      M.alloc α2
-                    | _ => M.break_match
-                    end) :
-                    M (M.Val unit);
-                  fun γ =>
-                    (let* α0 := M.read γ in
-                    match α0 with
-                    | core.option.Option.Some _ =>
-                      let γ0_0 := core.option.Option.Get_Some_0 γ in
-                      let* n := M.copy γ0_0 in
-                      let* _ : M.Val unit :=
-                        let* α0 : u32.t := M.read n in
-                        let* α1 : unit := M.call (functions.fizzbuzz α0) in
-                        M.alloc α1 in
-                      M.alloc tt
-                    | _ => M.break_match
-                    end) :
-                    M (M.Val unit)
-                ] in
-            M.alloc tt)) :
-          M (M.Val unit)
-      ] in
-  M.read (use α5).
+                    (Trait := ℐ)))
+                (M.call (|((core.ops.range.RangeInclusive.t u32.t)::["new"]
+                  ((Integer.of_Z 1) : u32.t)
+                  (M.read (| n |)))
+                |)))
+              |)
+            |))
+            [
+              fun (γ : M.Val (core.ops.range.RangeInclusive.t u32.t)) =>
+                (let iter := M.copy (| γ |) in
+                M.loop
+                  (let _ : M.Val unit :=
+                    ltac:
+                      (M.monadic_match_operator
+                        (M.alloc (|
+                          M.call (|(ltac:(M.get_method (fun ℐ =>
+                              core.iter.traits.iterator.Iterator.next
+                                (Self := core.ops.range.RangeInclusive.t u32.t)
+                                (Trait := ℐ)))
+                            (borrow_mut iter))
+                          |)
+                        |))
+                        [
+                          fun (γ : M.Val (core.option.Option.t u32.t)) =>
+                            match M.read (| γ |) with
+                            | core.option.Option.None =>
+                              M.alloc (| never_to_any (| M.read (| M.break |) |)
+                              |)
+                            | _ => M.break_match(||)
+                            end :
+                            M.Val unit;
+                          fun (γ : M.Val (core.option.Option.t u32.t)) =>
+                            match M.read (| γ |) with
+                            | core.option.Option.Some _ =>
+                              let γ0_0 := core.option.Option.Get_Some_0 γ in
+                              let n := M.copy (| γ0_0 |) in
+                              let _ : M.Val unit :=
+                                M.alloc (|
+                                  M.call (|(functions.fizzbuzz (M.read (| n |)))
+                                  |)
+                                |) in
+                              M.alloc (| tt |)
+                            | _ => M.break_match(||)
+                            end :
+                            M.Val unit
+                        ]) in
+                  M.alloc (| tt |))) :
+                M.Val unit
+            ]))
+    |)
+  )).
 
 (*
 fn main() {
@@ -215,9 +244,12 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* _ : M.Val unit :=
-    let* α0 : unit :=
-      M.call (functions.fizzbuzz_to ((Integer.of_Z 100) : u32.t)) in
-    M.alloc α0 in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+  ltac:(M.monadic (
+    M.read (|
+      let _ : M.Val unit :=
+        M.alloc (|
+          M.call (|(functions.fizzbuzz_to ((Integer.of_Z 100) : u32.t)) |)
+        |) in
+      M.alloc (| tt |)
+    |)
+  )).

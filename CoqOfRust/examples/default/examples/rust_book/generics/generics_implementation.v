@@ -37,9 +37,10 @@ Section Impl_generics_implementation_Val_t.
       }
   *)
   Definition value (self : ref Self) : M (ref f64.t) :=
-    let* self := M.alloc self in
-    let* α0 : ref generics_implementation.Val.t := M.read self in
-    M.pure (borrow (generics_implementation.Val.Get_val (deref α0))).
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      borrow (generics_implementation.Val.Get_val (deref (M.read (| self |))))
+    )).
   
   Global Instance AssociatedFunction_value :
     Notations.DoubleColon Self "value" := {
@@ -60,9 +61,11 @@ Section Impl_generics_implementation_GenVal_t_T.
       }
   *)
   Definition value (self : ref Self) : M (ref T) :=
-    let* self := M.alloc self in
-    let* α0 : ref (generics_implementation.GenVal.t T) := M.read self in
-    M.pure (borrow (generics_implementation.GenVal.Get_gen_val (deref α0))).
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      borrow
+        (generics_implementation.GenVal.Get_gen_val (deref (M.read (| self |))))
+    )).
   
   Global Instance AssociatedFunction_value :
     Notations.DoubleColon Self "value" := {
@@ -81,39 +84,64 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* x : M.Val generics_implementation.Val.t :=
-    let* α0 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
-    M.alloc {| generics_implementation.Val.val := α0; |} in
-  let* y : M.Val (generics_implementation.GenVal.t i32.t) :=
-    M.alloc
-      {| generics_implementation.GenVal.gen_val := (Integer.of_Z 3) : i32.t;
-      |} in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "") in
-      let* α1 : ref str.t := M.read (mk_str ", ") in
-      let* α2 : ref str.t := M.read (mk_str "
-") in
-      let* α3 : M.Val (array (ref str.t)) := M.alloc [ α0; α1; α2 ] in
-      let* α4 : ref f64.t :=
-        M.call (generics_implementation.Val.t::["value"] (borrow x)) in
-      let* α5 : M.Val (ref f64.t) := M.alloc α4 in
-      let* α6 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α5)) in
-      let* α7 : ref i32.t :=
-        M.call
-          ((generics_implementation.GenVal.t i32.t)::["value"] (borrow y)) in
-      let* α8 : M.Val (ref i32.t) := M.alloc α7 in
-      let* α9 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α8)) in
-      let* α10 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α6; α9 ] in
-      let* α11 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α3))
-            (pointer_coercion "Unsize" (borrow α10))) in
-      let* α12 : unit := M.call (std.io.stdio._print α11) in
-      M.alloc α12 in
-    M.alloc tt in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+  ltac:(M.monadic (
+    M.read (|
+      let x : M.Val generics_implementation.Val.t :=
+        M.alloc (|
+          {|
+            generics_implementation.Val.val :=
+              M.read (| UnsupportedLiteral : M.Val f64.t |);
+          |}
+        |) in
+      let y : M.Val (generics_implementation.GenVal.t i32.t) :=
+        M.alloc (|
+          {| generics_implementation.GenVal.gen_val := (Integer.of_Z 3) : i32.t;
+          |}
+        |) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.read (| mk_str "" |);
+                        M.read (| mk_str ", " |);
+                        M.read (| mk_str "
+" |)
+                      ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                          (borrow
+                            (M.alloc (|
+                              M.call (|(generics_implementation.Val.t::["value"]
+                                (borrow x))
+                              |)
+                            |))))
+                        |);
+                        M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                          (borrow
+                            (M.alloc (|
+                              M.call (|((generics_implementation.GenVal.t
+                                    i32.t)::["value"]
+                                (borrow y))
+                              |)
+                            |))))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      M.alloc (| tt |)
+    |)
+  )).

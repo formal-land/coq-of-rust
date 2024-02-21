@@ -30,17 +30,23 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* logical : M.Val bool.t := M.alloc true in
-  let* a_float : M.Val f64.t := M.copy (UnsupportedLiteral : M.Val f64.t) in
-  let* an_integer : M.Val i32.t := M.alloc ((Integer.of_Z 5) : i32.t) in
-  let* default_float : M.Val f64.t :=
-    M.copy (UnsupportedLiteral : M.Val f64.t) in
-  let* default_integer : M.Val i32.t := M.alloc ((Integer.of_Z 7) : i32.t) in
-  let* inferred_type : M.Val i64.t := M.alloc ((Integer.of_Z 12) : i64.t) in
-  let* _ : M.Val unit :=
-    assign inferred_type ((Integer.of_Z 4294967296) : i64.t) in
-  let* mutable : M.Val i32.t := M.alloc ((Integer.of_Z 12) : i32.t) in
-  let* _ : M.Val unit := assign mutable ((Integer.of_Z 21) : i32.t) in
-  let* mutable : M.Val bool.t := M.alloc true in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+  ltac:(M.monadic (
+    M.read (|
+      let logical : M.Val bool.t := M.alloc (| true |) in
+      let a_float : M.Val f64.t :=
+        M.copy (| UnsupportedLiteral : M.Val f64.t |) in
+      let an_integer : M.Val i32.t := M.alloc (| (Integer.of_Z 5) : i32.t |) in
+      let default_float : M.Val f64.t :=
+        M.copy (| UnsupportedLiteral : M.Val f64.t |) in
+      let default_integer : M.Val i32.t :=
+        M.alloc (| (Integer.of_Z 7) : i32.t |) in
+      let inferred_type : M.Val i64.t :=
+        M.alloc (| (Integer.of_Z 12) : i64.t |) in
+      let _ : M.Val unit :=
+        assign (| inferred_type, (Integer.of_Z 4294967296) : i64.t |) in
+      let mutable : M.Val i32.t := M.alloc (| (Integer.of_Z 12) : i32.t |) in
+      let _ : M.Val unit := assign (| mutable, (Integer.of_Z 21) : i32.t |) in
+      let mutable : M.Val bool.t := M.alloc (| true |) in
+      M.alloc (| tt |)
+    |)
+  )).

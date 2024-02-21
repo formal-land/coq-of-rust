@@ -7,17 +7,18 @@ fn multiply<'a>(first: &'a i32, second: &'a i32) -> i32 {
 }
 *)
 Definition multiply (first : ref i32.t) (second : ref i32.t) : M i32.t :=
-  let* first := M.alloc first in
-  let* second := M.alloc second in
-  let* α0 : (ref i32.t) -> (ref i32.t) -> M _ :=
-    ltac:(M.get_method (fun ℐ =>
-      core.ops.arith.Mul.mul
-        (Self := ref i32.t)
-        (Rhs := ref i32.t)
-        (Trait := ℐ))) in
-  let* α1 : ref i32.t := M.read first in
-  let* α2 : ref i32.t := M.read second in
-  M.call (α0 α1 α2).
+  ltac:(M.monadic (
+    let first := M.alloc (| first |) in
+    let second := M.alloc (| second |) in
+    M.call (|(ltac:(M.get_method (fun ℐ =>
+        core.ops.arith.Mul.mul
+          (Self := ref i32.t)
+          (Rhs := ref i32.t)
+          (Trait := ℐ)))
+      (M.read (| first |))
+      (M.read (| second |)))
+    |)
+  )).
 
 (*
 fn choose_first<'a: 'b, 'b>(first: &'a i32, _: &'b i32) -> &'b i32 {
@@ -25,9 +26,11 @@ fn choose_first<'a: 'b, 'b>(first: &'a i32, _: &'b i32) -> &'b i32 {
 }
 *)
 Definition choose_first (first : ref i32.t) (arg : ref i32.t) : M (ref i32.t) :=
-  let* first := M.alloc first in
-  let* arg := M.alloc arg in
-  M.read first.
+  ltac:(M.monadic (
+    let first := M.alloc (| first |) in
+    let arg := M.alloc (| arg |) in
+    M.read (| first |)
+  )).
 
 (*
 fn main() {
@@ -43,55 +46,82 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* first : M.Val i32.t := M.alloc ((Integer.of_Z 2) : i32.t) in
-  let* _ : M.Val unit :=
-    let* second : M.Val i32.t := M.alloc ((Integer.of_Z 3) : i32.t) in
-    let* _ : M.Val unit :=
-      let* _ : M.Val unit :=
-        let* α0 : ref str.t := M.read (mk_str "The product is ") in
-        let* α1 : ref str.t := M.read (mk_str "
-") in
-        let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-        let* α3 : i32.t :=
-          M.call
-            (scoping_rules_lifetimes_coercion.multiply
-              (borrow first)
-              (borrow second)) in
-        let* α4 : M.Val i32.t := M.alloc α3 in
-        let* α5 : core.fmt.rt.Argument.t :=
-          M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α4)) in
-        let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
-        let* α7 : core.fmt.Arguments.t :=
-          M.call
-            (core.fmt.Arguments.t::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α6))) in
-        let* α8 : unit := M.call (std.io.stdio._print α7) in
-        M.alloc α8 in
-      M.alloc tt in
-    let* _ : M.Val unit :=
-      let* _ : M.Val unit :=
-        let* α0 : ref str.t := M.read (mk_str "") in
-        let* α1 : ref str.t := M.read (mk_str " is the first
-") in
-        let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-        let* α3 : ref i32.t :=
-          M.call
-            (scoping_rules_lifetimes_coercion.choose_first
-              (borrow first)
-              (borrow second)) in
-        let* α4 : M.Val (ref i32.t) := M.alloc α3 in
-        let* α5 : core.fmt.rt.Argument.t :=
-          M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α4)) in
-        let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
-        let* α7 : core.fmt.Arguments.t :=
-          M.call
-            (core.fmt.Arguments.t::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α6))) in
-        let* α8 : unit := M.call (std.io.stdio._print α7) in
-        M.alloc α8 in
-      M.alloc tt in
-    M.alloc tt in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+  ltac:(M.monadic (
+    M.read (|
+      let first : M.Val i32.t := M.alloc (| (Integer.of_Z 2) : i32.t |) in
+      let _ : M.Val unit :=
+        let second : M.Val i32.t := M.alloc (| (Integer.of_Z 3) : i32.t |) in
+        let _ : M.Val unit :=
+          let _ : M.Val unit :=
+            M.alloc (|
+              M.call (|(std.io.stdio._print
+                (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                  (pointer_coercion
+                    "Unsize"
+                    (borrow
+                      (M.alloc (|
+                        [
+                          M.read (| mk_str "The product is " |);
+                          M.read (| mk_str "
+" |)
+                        ]
+                      |))))
+                  (pointer_coercion
+                    "Unsize"
+                    (borrow
+                      (M.alloc (|
+                        [
+                          M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                            (borrow
+                              (M.alloc (|
+                                M.call (|(scoping_rules_lifetimes_coercion.multiply
+                                  (borrow first)
+                                  (borrow second))
+                                |)
+                              |))))
+                          |)
+                        ]
+                      |)))))
+                |)))
+              |)
+            |) in
+          M.alloc (| tt |) in
+        let _ : M.Val unit :=
+          let _ : M.Val unit :=
+            M.alloc (|
+              M.call (|(std.io.stdio._print
+                (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                  (pointer_coercion
+                    "Unsize"
+                    (borrow
+                      (M.alloc (|
+                        [
+                          M.read (| mk_str "" |);
+                          M.read (| mk_str " is the first
+" |)
+                        ]
+                      |))))
+                  (pointer_coercion
+                    "Unsize"
+                    (borrow
+                      (M.alloc (|
+                        [
+                          M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                            (borrow
+                              (M.alloc (|
+                                M.call (|(scoping_rules_lifetimes_coercion.choose_first
+                                  (borrow first)
+                                  (borrow second))
+                                |)
+                              |))))
+                          |)
+                        ]
+                      |)))))
+                |)))
+              |)
+            |) in
+          M.alloc (| tt |) in
+        M.alloc (| tt |) in
+      M.alloc (| tt |)
+    |)
+  )).

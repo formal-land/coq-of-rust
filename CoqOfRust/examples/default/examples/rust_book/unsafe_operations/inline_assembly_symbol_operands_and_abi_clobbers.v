@@ -31,7 +31,7 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit := M.pure tt.
+Definition main : M unit := ltac:(M.monadic ( tt )).
 
 (*
     extern "C" fn foo(arg: i32) -> i32 {
@@ -40,28 +40,40 @@ Definition main : M unit := M.pure tt.
     }
 *)
 Definition foo (arg : i32.t) : M i32.t :=
-  let* arg := M.alloc arg in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "arg = ") in
-      let* α1 : ref str.t := M.read (mk_str "
-") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow arg)) in
-      let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
-      let* α5 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α4))) in
-      let* α6 : unit := M.call (std.io.stdio._print α5) in
-      M.alloc α6 in
-    M.alloc tt in
-  let* α0 : i32.t := M.read arg in
-  let* α1 : i32.t := BinOp.Panic.mul α0 ((Integer.of_Z 2) : i32.t) in
-  let* α0 : M.Val i32.t := M.alloc α1 in
-  M.read α0.
+  ltac:(M.monadic (
+    let arg := M.alloc (| arg |) in
+    M.read (|
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [ M.read (| mk_str "arg = " |); M.read (| mk_str "
+" |) ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                          (borrow arg))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      M.alloc (|
+        BinOp.Panic.mul (| M.read (| arg |), (Integer.of_Z 2) : i32.t |)
+      |)
+    |)
+  )).
 
 (*
     fn call_foo(arg: i32) -> i32 {
@@ -84,7 +96,11 @@ Definition foo (arg : i32.t) : M i32.t :=
     }
 *)
 Definition call_foo (arg : i32.t) : M i32.t :=
-  let* arg := M.alloc arg in
-  let* result := M.copy (DeclaredButUndefinedVariable (A := i32.t)) in
-  let _ : M.Val unit := InlineAssembly in
-  M.read result.
+  ltac:(M.monadic (
+    let arg := M.alloc (| arg |) in
+    M.read (|
+      let result := M.copy (| DeclaredButUndefinedVariable (A := i32.t) |) in
+      let _ : M.Val unit := InlineAssembly in
+      result
+    |)
+  )).

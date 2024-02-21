@@ -9,69 +9,97 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "") in
-      let* α1 : ref str.t := M.read (mk_str " and ") in
-      let* α2 : ref str.t := M.read (mk_str " is ") in
-      let* α3 : ref str.t := M.read (mk_str "
-") in
-      let* α4 : M.Val (array (ref str.t)) := M.alloc [ α0; α1; α2; α3 ] in
-      let* α5 : core.fmt.rt.Argument.t :=
-        M.call
-          (core.fmt.rt.Argument.t::["new_debug"]
-            (borrow (mk_str "1i32 + 1 == 2i32"))) in
-      let* α6 : core.fmt.rt.Argument.t :=
-        M.call
-          (core.fmt.rt.Argument.t::["new_debug"]
-            (borrow (mk_str "2i32 * 2 == 4i32"))) in
-      let* α7 : i32.t :=
-        BinOp.Panic.add ((Integer.of_Z 1) : i32.t) ((Integer.of_Z 1) : i32.t) in
-      let* α8 : i32.t :=
-        BinOp.Panic.mul ((Integer.of_Z 2) : i32.t) ((Integer.of_Z 2) : i32.t) in
-      let* α9 : M.Val bool.t :=
-        M.alloc
-          (BinOp.Pure.and
-            (BinOp.Pure.eq α7 ((Integer.of_Z 2) : i32.t))
-            (BinOp.Pure.eq α8 ((Integer.of_Z 4) : i32.t))) in
-      let* α10 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow α9)) in
-      let* α11 : M.Val (array core.fmt.rt.Argument.t) :=
-        M.alloc [ α5; α6; α10 ] in
-      let* α12 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α4))
-            (pointer_coercion "Unsize" (borrow α11))) in
-      let* α13 : unit := M.call (std.io.stdio._print α12) in
-      M.alloc α13 in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "") in
-      let* α1 : ref str.t := M.read (mk_str " or ") in
-      let* α2 : ref str.t := M.read (mk_str " is ") in
-      let* α3 : ref str.t := M.read (mk_str "
-") in
-      let* α4 : M.Val (array (ref str.t)) := M.alloc [ α0; α1; α2; α3 ] in
-      let* α5 : core.fmt.rt.Argument.t :=
-        M.call
-          (core.fmt.rt.Argument.t::["new_debug"] (borrow (mk_str "true"))) in
-      let* α6 : core.fmt.rt.Argument.t :=
-        M.call
-          (core.fmt.rt.Argument.t::["new_debug"] (borrow (mk_str "false"))) in
-      let* α7 : M.Val bool.t := M.alloc (BinOp.Pure.or true false) in
-      let* α8 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow α7)) in
-      let* α9 : M.Val (array core.fmt.rt.Argument.t) :=
-        M.alloc [ α5; α6; α8 ] in
-      let* α10 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α4))
-            (pointer_coercion "Unsize" (borrow α9))) in
-      let* α11 : unit := M.call (std.io.stdio._print α10) in
-      M.alloc α11 in
-    M.alloc tt in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+  ltac:(M.monadic (
+    M.read (|
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.read (| mk_str "" |);
+                        M.read (| mk_str " and " |);
+                        M.read (| mk_str " is " |);
+                        M.read (| mk_str "
+" |)
+                      ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_debug"]
+                          (borrow (mk_str "1i32 + 1 == 2i32")))
+                        |);
+                        M.call (|(core.fmt.rt.Argument.t::["new_debug"]
+                          (borrow (mk_str "2i32 * 2 == 4i32")))
+                        |);
+                        M.call (|(core.fmt.rt.Argument.t::["new_debug"]
+                          (borrow
+                            (M.alloc (|
+                              BinOp.Pure.and
+                                (BinOp.Pure.eq
+                                  (BinOp.Panic.add (|
+                                    (Integer.of_Z 1) : i32.t,
+                                    (Integer.of_Z 1) : i32.t
+                                  |))
+                                  ((Integer.of_Z 2) : i32.t))
+                                (BinOp.Pure.eq
+                                  (BinOp.Panic.mul (|
+                                    (Integer.of_Z 2) : i32.t,
+                                    (Integer.of_Z 2) : i32.t
+                                  |))
+                                  ((Integer.of_Z 4) : i32.t))
+                            |))))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.read (| mk_str "" |);
+                        M.read (| mk_str " or " |);
+                        M.read (| mk_str " is " |);
+                        M.read (| mk_str "
+" |)
+                      ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_debug"]
+                          (borrow (mk_str "true")))
+                        |);
+                        M.call (|(core.fmt.rt.Argument.t::["new_debug"]
+                          (borrow (mk_str "false")))
+                        |);
+                        M.call (|(core.fmt.rt.Argument.t::["new_debug"]
+                          (borrow (M.alloc (| BinOp.Pure.or true false |))))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      M.alloc (| tt |)
+    |)
+  )).

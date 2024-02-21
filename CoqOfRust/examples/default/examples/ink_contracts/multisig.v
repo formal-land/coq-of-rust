@@ -27,19 +27,22 @@ Section Impl_core_default_Default_for_multisig_Mapping_t_K_V.
   Default
   *)
   Definition default : M (multisig.Mapping.t K V) :=
-    let* α0 : M (core.marker.PhantomData.t K) :=
-      ltac:(M.get_method (fun ℐ =>
-        core.default.Default.default
-          (Self := core.marker.PhantomData.t K)
-          (Trait := ℐ))) in
-    let* α1 : core.marker.PhantomData.t K := M.call α0 in
-    let* α2 : M (core.marker.PhantomData.t V) :=
-      ltac:(M.get_method (fun ℐ =>
-        core.default.Default.default
-          (Self := core.marker.PhantomData.t V)
-          (Trait := ℐ))) in
-    let* α3 : core.marker.PhantomData.t V := M.call α2 in
-    M.pure {| multisig.Mapping._key := α1; multisig.Mapping._value := α3; |}.
+    ltac:(M.monadic (
+      {|
+        multisig.Mapping._key :=
+          M.call (|ltac:(M.get_method (fun ℐ =>
+            core.default.Default.default
+              (Self := core.marker.PhantomData.t K)
+              (Trait := ℐ)))
+          |);
+        multisig.Mapping._value :=
+          M.call (|ltac:(M.get_method (fun ℐ =>
+            core.default.Default.default
+              (Self := core.marker.PhantomData.t V)
+              (Trait := ℐ)))
+          |);
+      |}
+    )).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -64,11 +67,14 @@ Section Impl_multisig_Mapping_t_K_V.
       }
   *)
   Definition contains (self : ref Self) (_key : ref K) : M bool.t :=
-    let* self := M.alloc self in
-    let* _key := M.alloc _key in
-    let* α0 : ref str.t := M.read (mk_str "not implemented") in
-    let* α1 : never.t := M.call (core.panicking.panic α0) in
-    never_to_any α1.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let _key := M.alloc (| _key |) in
+      never_to_any (|
+        M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
+        |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_contains :
     Notations.DoubleColon Self "contains" := {
@@ -84,11 +90,14 @@ Section Impl_multisig_Mapping_t_K_V.
       (self : ref Self)
       (_key : ref K)
       : M (core.option.Option.t V) :=
-    let* self := M.alloc self in
-    let* _key := M.alloc _key in
-    let* α0 : ref str.t := M.read (mk_str "not implemented") in
-    let* α1 : never.t := M.call (core.panicking.panic α0) in
-    never_to_any α1.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let _key := M.alloc (| _key |) in
+      never_to_any (|
+        M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
+        |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
     Notations.double_colon := get;
@@ -104,12 +113,15 @@ Section Impl_multisig_Mapping_t_K_V.
       (_key : K)
       (_value : V)
       : M (core.option.Option.t u32.t) :=
-    let* self := M.alloc self in
-    let* _key := M.alloc _key in
-    let* _value := M.alloc _value in
-    let* α0 : ref str.t := M.read (mk_str "not implemented") in
-    let* α1 : never.t := M.call (core.panicking.panic α0) in
-    never_to_any α1.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let _key := M.alloc (| _key |) in
+      let _value := M.alloc (| _value |) in
+      never_to_any (|
+        M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
+        |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_insert :
     Notations.DoubleColon Self "insert" := {
@@ -122,11 +134,14 @@ Section Impl_multisig_Mapping_t_K_V.
       }
   *)
   Definition remove (self : ref Self) (_key : K) : M unit :=
-    let* self := M.alloc self in
-    let* _key := M.alloc _key in
-    let* α0 : ref str.t := M.read (mk_str "not implemented") in
-    let* α1 : never.t := M.call (core.panicking.panic α0) in
-    never_to_any α1.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let _key := M.alloc (| _key |) in
+      never_to_any (|
+        M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
+        |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_remove :
     Notations.DoubleColon Self "remove" := {
@@ -142,11 +157,14 @@ Section Impl_multisig_Mapping_t_K_V.
       (self : ref Self)
       (_key : K)
       : M (core.option.Option.t u32.t) :=
-    let* self := M.alloc self in
-    let* _key := M.alloc _key in
-    let* α0 : ref str.t := M.read (mk_str "not implemented") in
-    let* α1 : never.t := M.call (core.panicking.panic α0) in
-    never_to_any α1.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let _key := M.alloc (| _key |) in
+      never_to_any (|
+        M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
+        |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_size :
     Notations.DoubleColon Self "size" := {
@@ -159,11 +177,14 @@ Section Impl_multisig_Mapping_t_K_V.
       }
   *)
   Definition take (self : ref Self) (_key : K) : M (core.option.Option.t V) :=
-    let* self := M.alloc self in
-    let* _key := M.alloc _key in
-    let* α0 : ref str.t := M.read (mk_str "not implemented") in
-    let* α1 : never.t := M.call (core.panicking.panic α0) in
-    never_to_any α1.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let _key := M.alloc (| _key |) in
+      never_to_any (|
+        M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
+        |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_take :
     Notations.DoubleColon Self "take" := {
@@ -191,11 +212,12 @@ Section Impl_core_default_Default_for_multisig_AccountId_t.
   Default
   *)
   Definition default : M multisig.AccountId.t :=
-    let* α0 : M u128.t :=
-      ltac:(M.get_method (fun ℐ =>
-        core.default.Default.default (Self := u128.t) (Trait := ℐ))) in
-    let* α1 : u128.t := M.call α0 in
-    M.pure (multisig.AccountId.Build_t α1).
+    ltac:(M.monadic (
+      multisig.AccountId.Build_t
+        (M.call (|ltac:(M.get_method (fun ℐ =>
+          core.default.Default.default (Self := u128.t) (Trait := ℐ)))
+        |))
+    )).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -219,18 +241,20 @@ Section Impl_core_fmt_Debug_for_multisig_AccountId_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self := M.alloc self in
-    let* f := M.alloc f in
-    let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
-    let* α1 : ref str.t := M.read (mk_str "AccountId") in
-    let* α2 : ref multisig.AccountId.t := M.read self in
-    let* α3 : M.Val (ref u128.t) :=
-      M.alloc (borrow (multisig.AccountId.Get_0 (deref α2))) in
-    M.call
-      (core.fmt.Formatter.t::["debug_tuple_field1_finish"]
-        α0
-        α1
-        (pointer_coercion "Unsize" (borrow α3))).
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let f := M.alloc (| f |) in
+      M.call (|(core.fmt.Formatter.t::["debug_tuple_field1_finish"]
+        (M.read (| f |))
+        (M.read (| mk_str "AccountId" |))
+        (pointer_coercion
+          "Unsize"
+          (borrow
+            (M.alloc (|
+              borrow (multisig.AccountId.Get_0 (deref (M.read (| self |))))
+            |)))))
+      |)
+    )).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
@@ -250,18 +274,17 @@ Section Impl_core_clone_Clone_for_multisig_AccountId_t.
   Clone
   *)
   Definition clone (self : ref Self) : M multisig.AccountId.t :=
-    let* self := M.alloc self in
-    let* α0 : M.Val multisig.AccountId.t :=
-      match_operator
-        (DeclaredButUndefinedVariable
-          (A := core.clone.AssertParamIsClone.t u128.t))
-        [
-          fun γ =>
-            (let* α0 : ref multisig.AccountId.t := M.read self in
-            M.pure (deref α0)) :
-            M (M.Val multisig.AccountId.t)
-        ] in
-    M.read α0.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      M.read (|
+        ltac:
+          (M.monadic_match_operator
+            (DeclaredButUndefinedVariable
+              (A := core.clone.AssertParamIsClone.t u128.t))
+            [ fun γ => (deref (M.read (| self |))) : M.Val multisig.AccountId.t
+            ])
+      |)
+    )).
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {
@@ -304,13 +327,13 @@ Section Impl_core_cmp_PartialEq_for_multisig_AccountId_t.
       (self : ref Self)
       (other : ref multisig.AccountId.t)
       : M bool.t :=
-    let* self := M.alloc self in
-    let* other := M.alloc other in
-    let* α0 : ref multisig.AccountId.t := M.read self in
-    let* α1 : u128.t := M.read (multisig.AccountId.Get_0 (deref α0)) in
-    let* α2 : ref multisig.AccountId.t := M.read other in
-    let* α3 : u128.t := M.read (multisig.AccountId.Get_0 (deref α2)) in
-    M.pure (BinOp.Pure.eq α1 α3).
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let other := M.alloc (| other |) in
+      BinOp.Pure.eq
+        (M.read (| multisig.AccountId.Get_0 (deref (M.read (| self |))) |))
+        (M.read (| multisig.AccountId.Get_0 (deref (M.read (| other |))) |))
+    )).
   
   Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
     Notations.double_colon := eq;
@@ -342,12 +365,16 @@ Section Impl_core_cmp_Eq_for_multisig_AccountId_t.
   Eq
   *)
   Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
-    let* self := M.alloc self in
-    let* α0 : M.Val unit :=
-      match_operator
-        (DeclaredButUndefinedVariable (A := core.cmp.AssertParamIsEq.t u128.t))
-        [ fun γ => (M.alloc tt) : M (M.Val unit) ] in
-    M.read α0.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      M.read (|
+        ltac:
+          (M.monadic_match_operator
+            (DeclaredButUndefinedVariable
+              (A := core.cmp.AssertParamIsEq.t u128.t))
+            [ fun γ => (M.alloc (| tt |)) : M.Val unit ])
+      |)
+    )).
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
     Notations.DoubleColon Self "assert_receiver_is_total_eq" := {
@@ -372,23 +399,18 @@ Section Impl_core_cmp_PartialOrd_for_multisig_AccountId_t.
       (self : ref Self)
       (other : ref multisig.AccountId.t)
       : M (core.option.Option.t core.cmp.Ordering.t) :=
-    let* self := M.alloc self in
-    let* other := M.alloc other in
-    let* α0 :
-        (ref u128.t) ->
-          (ref u128.t) ->
-          M (core.option.Option.t core.cmp.Ordering.t) :=
-      ltac:(M.get_method (fun ℐ =>
-        core.cmp.PartialOrd.partial_cmp
-          (Self := u128.t)
-          (Rhs := u128.t)
-          (Trait := ℐ))) in
-    let* α1 : ref multisig.AccountId.t := M.read self in
-    let* α2 : ref multisig.AccountId.t := M.read other in
-    M.call
-      (α0
-        (borrow (multisig.AccountId.Get_0 (deref α1)))
-        (borrow (multisig.AccountId.Get_0 (deref α2)))).
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let other := M.alloc (| other |) in
+      M.call (|(ltac:(M.get_method (fun ℐ =>
+          core.cmp.PartialOrd.partial_cmp
+            (Self := u128.t)
+            (Rhs := u128.t)
+            (Trait := ℐ)))
+        (borrow (multisig.AccountId.Get_0 (deref (M.read (| self |)))))
+        (borrow (multisig.AccountId.Get_0 (deref (M.read (| other |))))))
+      |)
+    )).
   
   Global Instance AssociatedFunction_partial_cmp :
     Notations.DoubleColon Self "partial_cmp" := {
@@ -418,17 +440,15 @@ Section Impl_core_cmp_Ord_for_multisig_AccountId_t.
       (self : ref Self)
       (other : ref multisig.AccountId.t)
       : M core.cmp.Ordering.t :=
-    let* self := M.alloc self in
-    let* other := M.alloc other in
-    let* α0 : (ref u128.t) -> (ref u128.t) -> M core.cmp.Ordering.t :=
-      ltac:(M.get_method (fun ℐ =>
-        core.cmp.Ord.cmp (Self := u128.t) (Trait := ℐ))) in
-    let* α1 : ref multisig.AccountId.t := M.read self in
-    let* α2 : ref multisig.AccountId.t := M.read other in
-    M.call
-      (α0
-        (borrow (multisig.AccountId.Get_0 (deref α1)))
-        (borrow (multisig.AccountId.Get_0 (deref α2)))).
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let other := M.alloc (| other |) in
+      M.call (|(ltac:(M.get_method (fun ℐ =>
+          core.cmp.Ord.cmp (Self := u128.t) (Trait := ℐ)))
+        (borrow (multisig.AccountId.Get_0 (deref (M.read (| self |)))))
+        (borrow (multisig.AccountId.Get_0 (deref (M.read (| other |))))))
+      |)
+    )).
   
   Global Instance AssociatedFunction_cmp : Notations.DoubleColon Self "cmp" := {
     Notations.double_colon := cmp;
@@ -457,13 +477,12 @@ End Env.
 End Env.
 
 Definition MAX_OWNERS : M.Val u32.t :=
-  M.run (M.alloc ((Integer.of_Z 50) : u32.t)).
+  M.run (M.alloc (| (Integer.of_Z 50) : u32.t |)).
 
 Ltac TransactionId := exact u32.t.
 
 Definition WRONG_TRANSACTION_ID : M.Val (ref str.t) :=
-  M.run
-    (M.pure (mk_str "The user specified an invalid transaction id. Abort.")).
+  M.run (mk_str "The user specified an invalid transaction id. Abort.").
 
 Module  CallInput.
 Section CallInput.
@@ -500,18 +519,20 @@ Section Impl_core_clone_Clone_for_multisig_ConfirmationStatus_t.
   Clone
   *)
   Definition clone (self : ref Self) : M multisig.ConfirmationStatus.t :=
-    let* self := M.alloc self in
-    let* α0 : M.Val multisig.ConfirmationStatus.t :=
-      match_operator
-        (DeclaredButUndefinedVariable
-          (A := core.clone.AssertParamIsClone.t u32.t))
-        [
-          fun γ =>
-            (let* α0 : ref multisig.ConfirmationStatus.t := M.read self in
-            M.pure (deref α0)) :
-            M (M.Val multisig.ConfirmationStatus.t)
-        ] in
-    M.read α0.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      M.read (|
+        ltac:
+          (M.monadic_match_operator
+            (DeclaredButUndefinedVariable
+              (A := core.clone.AssertParamIsClone.t u32.t))
+            [
+              fun γ =>
+                (deref (M.read (| self |))) :
+                M.Val multisig.ConfirmationStatus.t
+            ])
+      |)
+    )).
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {
@@ -576,43 +597,38 @@ Section Impl_core_default_Default_for_multisig_Transaction_t.
   Default
   *)
   Definition default : M multisig.Transaction.t :=
-    let* α0 : M multisig.AccountId.t :=
-      ltac:(M.get_method (fun ℐ =>
-        core.default.Default.default
-          (Self := multisig.AccountId.t)
-          (Trait := ℐ))) in
-    let* α1 : multisig.AccountId.t := M.call α0 in
-    let* α2 : M (array u8.t) :=
-      ltac:(M.get_method (fun ℐ =>
-        core.default.Default.default (Self := array u8.t) (Trait := ℐ))) in
-    let* α3 : array u8.t := M.call α2 in
-    let* α4 : M (alloc.vec.Vec.t u8.t alloc.alloc.Global.t) :=
-      ltac:(M.get_method (fun ℐ =>
-        core.default.Default.default
-          (Self := alloc.vec.Vec.t u8.t alloc.alloc.Global.t)
-          (Trait := ℐ))) in
-    let* α5 : alloc.vec.Vec.t u8.t alloc.alloc.Global.t := M.call α4 in
-    let* α6 : M u128.t :=
-      ltac:(M.get_method (fun ℐ =>
-        core.default.Default.default (Self := u128.t) (Trait := ℐ))) in
-    let* α7 : u128.t := M.call α6 in
-    let* α8 : M u64.t :=
-      ltac:(M.get_method (fun ℐ =>
-        core.default.Default.default (Self := u64.t) (Trait := ℐ))) in
-    let* α9 : u64.t := M.call α8 in
-    let* α10 : M bool.t :=
-      ltac:(M.get_method (fun ℐ =>
-        core.default.Default.default (Self := bool.t) (Trait := ℐ))) in
-    let* α11 : bool.t := M.call α10 in
-    M.pure
+    ltac:(M.monadic (
       {|
-        multisig.Transaction.callee := α1;
-        multisig.Transaction.selector := α3;
-        multisig.Transaction.input := α5;
-        multisig.Transaction.transferred_value := α7;
-        multisig.Transaction.gas_limit := α9;
-        multisig.Transaction.allow_reentry := α11;
-      |}.
+        multisig.Transaction.callee :=
+          M.call (|ltac:(M.get_method (fun ℐ =>
+            core.default.Default.default
+              (Self := multisig.AccountId.t)
+              (Trait := ℐ)))
+          |);
+        multisig.Transaction.selector :=
+          M.call (|ltac:(M.get_method (fun ℐ =>
+            core.default.Default.default (Self := array u8.t) (Trait := ℐ)))
+          |);
+        multisig.Transaction.input :=
+          M.call (|ltac:(M.get_method (fun ℐ =>
+            core.default.Default.default
+              (Self := alloc.vec.Vec.t u8.t alloc.alloc.Global.t)
+              (Trait := ℐ)))
+          |);
+        multisig.Transaction.transferred_value :=
+          M.call (|ltac:(M.get_method (fun ℐ =>
+            core.default.Default.default (Self := u128.t) (Trait := ℐ)))
+          |);
+        multisig.Transaction.gas_limit :=
+          M.call (|ltac:(M.get_method (fun ℐ =>
+            core.default.Default.default (Self := u64.t) (Trait := ℐ)))
+          |);
+        multisig.Transaction.allow_reentry :=
+          M.call (|ltac:(M.get_method (fun ℐ =>
+            core.default.Default.default (Self := bool.t) (Trait := ℐ)))
+          |);
+      |}
+    )).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -638,9 +654,10 @@ Section Impl_core_clone_Clone_for_multisig_Error_t.
   Clone
   *)
   Definition clone (self : ref Self) : M multisig.Error.t :=
-    let* self := M.alloc self in
-    let* α0 : ref multisig.Error.t := M.read self in
-    M.read (deref α0).
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      M.read (| deref (M.read (| self |)) |)
+    )).
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {
@@ -680,9 +697,11 @@ Section Impl_core_cmp_PartialEq_for_multisig_Error_t.
   PartialEq
   *)
   Definition eq (self : ref Self) (other : ref multisig.Error.t) : M bool.t :=
-    let* self := M.alloc self in
-    let* other := M.alloc other in
-    M.pure true.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let other := M.alloc (| other |) in
+      true
+    )).
   
   Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
     Notations.double_colon := eq;
@@ -714,8 +733,10 @@ Section Impl_core_cmp_Eq_for_multisig_Error_t.
   Eq
   *)
   Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
-    let* self := M.alloc self in
-    M.pure tt.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      tt
+    )).
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
     Notations.DoubleColon Self "assert_receiver_is_total_eq" := {
@@ -756,21 +777,20 @@ Section Impl_core_default_Default_for_multisig_Transactions_t.
   Default
   *)
   Definition default : M multisig.Transactions.t :=
-    let* α0 : M (alloc.vec.Vec.t u32.t alloc.alloc.Global.t) :=
-      ltac:(M.get_method (fun ℐ =>
-        core.default.Default.default
-          (Self := alloc.vec.Vec.t u32.t alloc.alloc.Global.t)
-          (Trait := ℐ))) in
-    let* α1 : alloc.vec.Vec.t u32.t alloc.alloc.Global.t := M.call α0 in
-    let* α2 : M u32.t :=
-      ltac:(M.get_method (fun ℐ =>
-        core.default.Default.default (Self := u32.t) (Trait := ℐ))) in
-    let* α3 : u32.t := M.call α2 in
-    M.pure
+    ltac:(M.monadic (
       {|
-        multisig.Transactions.transactions := α1;
-        multisig.Transactions.next_id := α3;
-      |}.
+        multisig.Transactions.transactions :=
+          M.call (|ltac:(M.get_method (fun ℐ =>
+            core.default.Default.default
+              (Self := alloc.vec.Vec.t u32.t alloc.alloc.Global.t)
+              (Trait := ℐ)))
+          |);
+        multisig.Transactions.next_id :=
+          M.call (|ltac:(M.get_method (fun ℐ =>
+            core.default.Default.default (Self := u32.t) (Trait := ℐ)))
+          |);
+      |}
+    )).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -974,9 +994,10 @@ Section Impl_multisig_Env_t.
       }
   *)
   Definition caller (self : ref Self) : M multisig.AccountId.t :=
-    let* self := M.alloc self in
-    let* α0 : ref multisig.Env.t := M.read self in
-    M.read (multisig.Env.Get_caller (deref α0)).
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      M.read (| multisig.Env.Get_caller (deref (M.read (| self |))) |)
+    )).
   
   Global Instance AssociatedFunction_caller :
     Notations.DoubleColon Self "caller" := {
@@ -992,11 +1013,14 @@ Section Impl_multisig_Env_t.
       (self : ref Self)
       (_event : multisig.Event.t)
       : M unit :=
-    let* self := M.alloc self in
-    let* _event := M.alloc _event in
-    let* α0 : ref str.t := M.read (mk_str "not implemented") in
-    let* α1 : never.t := M.call (core.panicking.panic α0) in
-    never_to_any α1.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let _event := M.alloc (| _event |) in
+      never_to_any (|
+        M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
+        |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_emit_event :
     Notations.DoubleColon Self "emit_event" := {
@@ -1009,10 +1033,13 @@ Section Impl_multisig_Env_t.
       }
   *)
   Definition transferred_value (self : ref Self) : M ltac:(multisig.Balance) :=
-    let* self := M.alloc self in
-    let* α0 : ref str.t := M.read (mk_str "not implemented") in
-    let* α1 : never.t := M.call (core.panicking.panic α0) in
-    never_to_any α1.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      never_to_any (|
+        M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
+        |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_transferred_value :
     Notations.DoubleColon Self "transferred_value" := {
@@ -1025,10 +1052,13 @@ Section Impl_multisig_Env_t.
       }
   *)
   Definition account_id (self : ref Self) : M multisig.AccountId.t :=
-    let* self := M.alloc self in
-    let* α0 : ref str.t := M.read (mk_str "not implemented") in
-    let* α1 : never.t := M.call (core.panicking.panic α0) in
-    never_to_any α1.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      never_to_any (|
+        M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
+        |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_account_id :
     Notations.DoubleColon Self "account_id" := {
@@ -1090,58 +1120,51 @@ Section Impl_core_default_Default_for_multisig_Multisig_t.
   Default
   *)
   Definition default : M multisig.Multisig.t :=
-    let* α0 : M (multisig.Mapping.t (u32.t * multisig.AccountId.t) unit) :=
-      ltac:(M.get_method (fun ℐ =>
-        core.default.Default.default
-          (Self := multisig.Mapping.t (u32.t * multisig.AccountId.t) unit)
-          (Trait := ℐ))) in
-    let* α1 : multisig.Mapping.t (u32.t * multisig.AccountId.t) unit :=
-      M.call α0 in
-    let* α2 : M (multisig.Mapping.t u32.t u32.t) :=
-      ltac:(M.get_method (fun ℐ =>
-        core.default.Default.default
-          (Self := multisig.Mapping.t u32.t u32.t)
-          (Trait := ℐ))) in
-    let* α3 : multisig.Mapping.t u32.t u32.t := M.call α2 in
-    let* α4 : M (multisig.Mapping.t u32.t multisig.Transaction.t) :=
-      ltac:(M.get_method (fun ℐ =>
-        core.default.Default.default
-          (Self := multisig.Mapping.t u32.t multisig.Transaction.t)
-          (Trait := ℐ))) in
-    let* α5 : multisig.Mapping.t u32.t multisig.Transaction.t := M.call α4 in
-    let* α6 : M multisig.Transactions.t :=
-      ltac:(M.get_method (fun ℐ =>
-        core.default.Default.default
-          (Self := multisig.Transactions.t)
-          (Trait := ℐ))) in
-    let* α7 : multisig.Transactions.t := M.call α6 in
-    let* α8 : M (alloc.vec.Vec.t multisig.AccountId.t alloc.alloc.Global.t) :=
-      ltac:(M.get_method (fun ℐ =>
-        core.default.Default.default
-          (Self := alloc.vec.Vec.t multisig.AccountId.t alloc.alloc.Global.t)
-          (Trait := ℐ))) in
-    let* α9 : alloc.vec.Vec.t multisig.AccountId.t alloc.alloc.Global.t :=
-      M.call α8 in
-    let* α10 : M (multisig.Mapping.t multisig.AccountId.t unit) :=
-      ltac:(M.get_method (fun ℐ =>
-        core.default.Default.default
-          (Self := multisig.Mapping.t multisig.AccountId.t unit)
-          (Trait := ℐ))) in
-    let* α11 : multisig.Mapping.t multisig.AccountId.t unit := M.call α10 in
-    let* α12 : M u32.t :=
-      ltac:(M.get_method (fun ℐ =>
-        core.default.Default.default (Self := u32.t) (Trait := ℐ))) in
-    let* α13 : u32.t := M.call α12 in
-    M.pure
+    ltac:(M.monadic (
       {|
-        multisig.Multisig.confirmations := α1;
-        multisig.Multisig.confirmation_count := α3;
-        multisig.Multisig.transactions := α5;
-        multisig.Multisig.transaction_list := α7;
-        multisig.Multisig.owners := α9;
-        multisig.Multisig.is_owner := α11;
-        multisig.Multisig.requirement := α13;
-      |}.
+        multisig.Multisig.confirmations :=
+          M.call (|ltac:(M.get_method (fun ℐ =>
+            core.default.Default.default
+              (Self := multisig.Mapping.t (u32.t * multisig.AccountId.t) unit)
+              (Trait := ℐ)))
+          |);
+        multisig.Multisig.confirmation_count :=
+          M.call (|ltac:(M.get_method (fun ℐ =>
+            core.default.Default.default
+              (Self := multisig.Mapping.t u32.t u32.t)
+              (Trait := ℐ)))
+          |);
+        multisig.Multisig.transactions :=
+          M.call (|ltac:(M.get_method (fun ℐ =>
+            core.default.Default.default
+              (Self := multisig.Mapping.t u32.t multisig.Transaction.t)
+              (Trait := ℐ)))
+          |);
+        multisig.Multisig.transaction_list :=
+          M.call (|ltac:(M.get_method (fun ℐ =>
+            core.default.Default.default
+              (Self := multisig.Transactions.t)
+              (Trait := ℐ)))
+          |);
+        multisig.Multisig.owners :=
+          M.call (|ltac:(M.get_method (fun ℐ =>
+            core.default.Default.default
+              (Self :=
+                alloc.vec.Vec.t multisig.AccountId.t alloc.alloc.Global.t)
+              (Trait := ℐ)))
+          |);
+        multisig.Multisig.is_owner :=
+          M.call (|ltac:(M.get_method (fun ℐ =>
+            core.default.Default.default
+              (Self := multisig.Mapping.t multisig.AccountId.t unit)
+              (Trait := ℐ)))
+          |);
+        multisig.Multisig.requirement :=
+          M.call (|ltac:(M.get_method (fun ℐ =>
+            core.default.Default.default (Self := u32.t) (Trait := ℐ)))
+          |);
+      |}
+    )).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -1163,35 +1186,45 @@ Definition ensure_requirement_is_valid
     (owners : u32.t)
     (requirement : u32.t)
     : M unit :=
-  let* owners := M.alloc owners in
-  let* requirement := M.alloc requirement in
-  let* _ : M.Val unit :=
-    let* α0 : u32.t := M.read requirement in
-    let* α1 : u32.t := M.read requirement in
-    let* α2 : u32.t := M.read owners in
-    let* α3 : u32.t := M.read owners in
-    let* α4 : u32.t := M.read multisig.MAX_OWNERS in
-    let* α5 : M.Val bool.t :=
-      M.alloc
-        (UnOp.not
-          (BinOp.Pure.and
-            (BinOp.Pure.and
-              (BinOp.Pure.lt ((Integer.of_Z 0) : u32.t) α0)
-              (BinOp.Pure.le α1 α2))
-            (BinOp.Pure.le α3 α4))) in
-    let* α6 : bool.t := M.read (use α5) in
-    if α6 then
-      let* α0 : ref str.t :=
-        M.read
-          (mk_str
-            "assertion failed: 0 < requirement && requirement <= owners && owners <= MAX_OWNERS") in
-      let* α1 : never.t := M.call (core.panicking.panic α0) in
-      let* α2 : unit := never_to_any α1 in
-      M.alloc α2
-    else
-      M.alloc tt in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+  ltac:(M.monadic (
+    let owners := M.alloc (| owners |) in
+    let requirement := M.alloc (| requirement |) in
+    M.read (|
+      let _ : M.Val unit :=
+        if
+          M.read (|
+            use
+              (M.alloc (|
+                UnOp.not
+                  (BinOp.Pure.and
+                    (BinOp.Pure.and
+                      (BinOp.Pure.lt
+                        ((Integer.of_Z 0) : u32.t)
+                        (M.read (| requirement |)))
+                      (BinOp.Pure.le
+                        (M.read (| requirement |))
+                        (M.read (| owners |))))
+                    (BinOp.Pure.le
+                      (M.read (| owners |))
+                      (M.read (| multisig.MAX_OWNERS |))))
+              |))
+          |)
+        then
+          M.alloc (|
+            never_to_any (|
+              M.call (|(core.panicking.panic
+                (M.read (|
+                  mk_str
+                    "assertion failed: 0 < requirement && requirement <= owners && owners <= MAX_OWNERS"
+                |)))
+              |)
+            |)
+          |)
+        else
+          M.alloc (| tt |) in
+      M.alloc (| tt |)
+    |)
+  )).
 
 Module  Impl_multisig_Multisig_t.
 Section Impl_multisig_Multisig_t.
@@ -1203,9 +1236,12 @@ Section Impl_multisig_Multisig_t.
       }
   *)
   Definition init_env : M multisig.Env.t :=
-    let* α0 : ref str.t := M.read (mk_str "not implemented") in
-    let* α1 : never.t := M.call (core.panicking.panic α0) in
-    never_to_any α1.
+    ltac:(M.monadic (
+      never_to_any (|
+        M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
+        |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_init_env :
     Notations.DoubleColon Self "init_env" := {
@@ -1218,8 +1254,10 @@ Section Impl_multisig_Multisig_t.
       }
   *)
   Definition env (self : ref Self) : M multisig.Env.t :=
-    let* self := M.alloc self in
-    M.call multisig.Multisig.t::["init_env"].
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      M.call (|multisig.Multisig.t::["init_env"] |)
+    )).
   
   Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
     Notations.double_colon := env;
@@ -1246,140 +1284,149 @@ Section Impl_multisig_Multisig_t.
       (requirement : u32.t)
       (owners : alloc.vec.Vec.t multisig.AccountId.t alloc.vec.Vec.Default.A)
       : M Self :=
-    let* requirement := M.alloc requirement in
-    let* owners := M.alloc owners in
-    let* contract : M.Val multisig.Multisig.t :=
-      let* α0 : M multisig.Multisig.t :=
-        ltac:(M.get_method (fun ℐ =>
-          core.default.Default.default
-            (Self := multisig.Multisig.t)
-            (Trait := ℐ))) in
-      let* α1 : multisig.Multisig.t := M.call α0 in
-      M.alloc α1 in
-    let* _ : M.Val unit :=
-      let* α0 :
-          (mut_ref (alloc.vec.Vec.t multisig.AccountId.t alloc.alloc.Global.t))
-            ->
-            M (mut_ref _) :=
-        ltac:(M.get_method (fun ℐ =>
-          core.ops.deref.DerefMut.deref_mut
-            (Self := alloc.vec.Vec.t multisig.AccountId.t alloc.alloc.Global.t)
-            (Trait := ℐ))) in
-      let* α1 : mut_ref (slice multisig.AccountId.t) :=
-        M.call (α0 (borrow_mut owners)) in
-      let* α2 : unit :=
-        M.call ((slice multisig.AccountId.t)::["sort_unstable"] α1) in
-      M.alloc α2 in
-    let* _ : M.Val unit :=
-      let* α0 : unit :=
-        M.call
-          ((alloc.vec.Vec.t
-                multisig.AccountId.t
-                alloc.alloc.Global.t)::["dedup"]
-            (borrow_mut owners)) in
-      M.alloc α0 in
-    let* _ : M.Val unit :=
-      let* α0 : usize.t :=
-        M.call
-          ((alloc.vec.Vec.t multisig.AccountId.t alloc.alloc.Global.t)::["len"]
-            (borrow owners)) in
-      let* α1 : u32.t := M.read requirement in
-      let* α2 : unit :=
-        M.call (multisig.ensure_requirement_is_valid (rust_cast α0) α1) in
-      M.alloc α2 in
-    let* _ : M.Val unit :=
-      let* α0 :
-          (ref (alloc.vec.Vec.t multisig.AccountId.t alloc.alloc.Global.t)) ->
-            M _ :=
-        ltac:(M.get_method (fun ℐ =>
-          core.iter.traits.collect.IntoIterator.into_iter
-            (Self :=
-              ref (alloc.vec.Vec.t multisig.AccountId.t alloc.alloc.Global.t))
-            (Trait := ℐ))) in
-      let* α1 : core.slice.iter.Iter.t multisig.AccountId.t :=
-        M.call (α0 (borrow owners)) in
-      let* α2 : M.Val (core.slice.iter.Iter.t multisig.AccountId.t) :=
-        M.alloc α1 in
-      let* α3 : M.Val unit :=
-        match_operator
-          α2
-          [
-            fun γ =>
-              (let* iter := M.copy γ in
-              M.loop
-                (let* _ : M.Val unit :=
-                  let* α0 :
-                      (mut_ref (core.slice.iter.Iter.t multisig.AccountId.t)) ->
-                        M (core.option.Option.t _) :=
-                    ltac:(M.get_method (fun ℐ =>
-                      core.iter.traits.iterator.Iterator.next
-                        (Self := core.slice.iter.Iter.t multisig.AccountId.t)
-                        (Trait := ℐ))) in
-                  let* α1 : core.option.Option.t (ref multisig.AccountId.t) :=
-                    M.call (α0 (borrow_mut iter)) in
-                  let* α2 :
-                      M.Val (core.option.Option.t (ref multisig.AccountId.t)) :=
-                    M.alloc α1 in
-                  match_operator
-                    α2
-                    [
-                      fun γ =>
-                        (let* α0 := M.read γ in
-                        match α0 with
-                        | core.option.Option.None =>
-                          let* α0 : M.Val never.t := M.break in
-                          let* α1 := M.read α0 in
-                          let* α2 : unit := never_to_any α1 in
-                          M.alloc α2
-                        | _ => M.break_match
-                        end) :
-                        M (M.Val unit);
-                      fun γ =>
-                        (let* α0 := M.read γ in
-                        match α0 with
-                        | core.option.Option.Some _ =>
-                          let γ0_0 := core.option.Option.Get_Some_0 γ in
-                          let* owner := M.copy γ0_0 in
-                          let* _ : M.Val (core.option.Option.t u32.t) :=
-                            let* α0 : ref multisig.AccountId.t :=
-                              M.read owner in
-                            let* α1 : multisig.AccountId.t :=
-                              M.read (deref α0) in
-                            let* α2 : core.option.Option.t u32.t :=
-                              M.call
-                                ((multisig.Mapping.t
-                                      multisig.AccountId.t
-                                      unit)::["insert"]
-                                  (borrow_mut
-                                    (multisig.Multisig.Get_is_owner contract))
-                                  α1
-                                  tt) in
-                            M.alloc α2 in
-                          M.alloc tt
-                        | _ => M.break_match
-                        end) :
-                        M (M.Val unit)
-                    ] in
-                M.alloc tt)) :
-              M (M.Val unit)
-          ] in
-      M.pure (use α3) in
-    let* _ : M.Val unit :=
-      let* α0 : alloc.vec.Vec.t multisig.AccountId.t alloc.alloc.Global.t :=
-        M.read owners in
-      assign (multisig.Multisig.Get_owners contract) α0 in
-    let* _ : M.Val unit :=
-      let* α0 : M multisig.Transactions.t :=
-        ltac:(M.get_method (fun ℐ =>
-          core.default.Default.default
-            (Self := multisig.Transactions.t)
-            (Trait := ℐ))) in
-      let* α1 : multisig.Transactions.t := M.call α0 in
-      assign (multisig.Multisig.Get_transaction_list contract) α1 in
-    let* _ : M.Val unit :=
-      let* α0 : u32.t := M.read requirement in
-      assign (multisig.Multisig.Get_requirement contract) α0 in
-    M.read contract.
+    ltac:(M.monadic (
+      let requirement := M.alloc (| requirement |) in
+      let owners := M.alloc (| owners |) in
+      M.read (|
+        let contract : M.Val multisig.Multisig.t :=
+          M.alloc (|
+            M.call (|ltac:(M.get_method (fun ℐ =>
+              core.default.Default.default
+                (Self := multisig.Multisig.t)
+                (Trait := ℐ)))
+            |)
+          |) in
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|((slice multisig.AccountId.t)::["sort_unstable"]
+              (M.call (|(ltac:(M.get_method (fun ℐ =>
+                  core.ops.deref.DerefMut.deref_mut
+                    (Self :=
+                      alloc.vec.Vec.t multisig.AccountId.t alloc.alloc.Global.t)
+                    (Trait := ℐ)))
+                (borrow_mut owners))
+              |)))
+            |)
+          |) in
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|((alloc.vec.Vec.t
+                  multisig.AccountId.t
+                  alloc.alloc.Global.t)::["dedup"]
+              (borrow_mut owners))
+            |)
+          |) in
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(multisig.ensure_requirement_is_valid
+              (rust_cast
+                (M.call (|((alloc.vec.Vec.t
+                      multisig.AccountId.t
+                      alloc.alloc.Global.t)::["len"]
+                  (borrow owners))
+                |)))
+              (M.read (| requirement |)))
+            |)
+          |) in
+        let _ : M.Val unit :=
+          use
+            (ltac:
+              (M.monadic_match_operator
+                (M.alloc (|
+                  M.call (|(ltac:(M.get_method (fun ℐ =>
+                      core.iter.traits.collect.IntoIterator.into_iter
+                        (Self :=
+                          ref
+                            (alloc.vec.Vec.t
+                              multisig.AccountId.t
+                              alloc.alloc.Global.t))
+                        (Trait := ℐ)))
+                    (borrow owners))
+                  |)
+                |))
+                [
+                  fun
+                      (γ :
+                        M.Val (core.slice.iter.Iter.t multisig.AccountId.t)) =>
+                    (let iter := M.copy (| γ |) in
+                    M.loop
+                      (let _ : M.Val unit :=
+                        ltac:
+                          (M.monadic_match_operator
+                            (M.alloc (|
+                              M.call (|(ltac:(M.get_method (fun ℐ =>
+                                  core.iter.traits.iterator.Iterator.next
+                                    (Self :=
+                                      core.slice.iter.Iter.t
+                                        multisig.AccountId.t)
+                                    (Trait := ℐ)))
+                                (borrow_mut iter))
+                              |)
+                            |))
+                            [
+                              fun
+                                  (γ :
+                                    M.Val
+                                      (core.option.Option.t
+                                        (ref multisig.AccountId.t))) =>
+                                match M.read (| γ |) with
+                                | core.option.Option.None =>
+                                  M.alloc (|
+                                    never_to_any (| M.read (| M.break |) |)
+                                  |)
+                                | _ => M.break_match(||)
+                                end :
+                                M.Val unit;
+                              fun
+                                  (γ :
+                                    M.Val
+                                      (core.option.Option.t
+                                        (ref multisig.AccountId.t))) =>
+                                match M.read (| γ |) with
+                                | core.option.Option.Some _ =>
+                                  let γ0_0 := core.option.Option.Get_Some_0 γ in
+                                  let owner := M.copy (| γ0_0 |) in
+                                  let _ : M.Val (core.option.Option.t u32.t) :=
+                                    M.alloc (|
+                                      M.call (|((multisig.Mapping.t
+                                            multisig.AccountId.t
+                                            unit)::["insert"]
+                                        (borrow_mut
+                                          (multisig.Multisig.Get_is_owner
+                                            contract))
+                                        (M.read (| deref (M.read (| owner |))
+                                        |))
+                                        tt)
+                                      |)
+                                    |) in
+                                  M.alloc (| tt |)
+                                | _ => M.break_match(||)
+                                end :
+                                M.Val unit
+                            ]) in
+                      M.alloc (| tt |))) :
+                    M.Val unit
+                ])) in
+        let _ : M.Val unit :=
+          assign (| multisig.Multisig.Get_owners contract, M.read (| owners |)
+          |) in
+        let _ : M.Val unit :=
+          assign (|
+            multisig.Multisig.Get_transaction_list contract,
+            M.call (|ltac:(M.get_method (fun ℐ =>
+              core.default.Default.default
+                (Self := multisig.Transactions.t)
+                (Trait := ℐ)))
+            |)
+          |) in
+        let _ : M.Val unit :=
+          assign (|
+            multisig.Multisig.Get_requirement contract,
+            M.read (| requirement |)
+          |) in
+        contract
+      |)
+    )).
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
@@ -1399,36 +1446,49 @@ Section Impl_multisig_Multisig_t.
       (self : ref Self)
       (trans_id : ltac:(multisig.TransactionId))
       : M unit :=
-    let* self := M.alloc self in
-    let* trans_id := M.alloc trans_id in
-    let* _ : M.Val unit :=
-      let* α0 : ref multisig.Multisig.t := M.read self in
-      let* α1 : core.option.Option.t u32.t :=
-        M.call
-          ((multisig.Mapping.t u32.t u32.t)::["get"]
-            (borrow (multisig.Multisig.Get_confirmation_count (deref α0)))
-            (borrow trans_id)) in
-      let* α2 : ref str.t := M.read multisig.WRONG_TRANSACTION_ID in
-      let* α3 : u32.t :=
-        M.call ((core.option.Option.t u32.t)::["expect"] α1 α2) in
-      let* α4 : ref multisig.Multisig.t := M.read self in
-      let* α5 : u32.t :=
-        M.read (multisig.Multisig.Get_requirement (deref α4)) in
-      let* α6 : M.Val bool.t := M.alloc (UnOp.not (BinOp.Pure.ge α3 α5)) in
-      let* α7 : bool.t := M.read (use α6) in
-      if α7 then
-        let* α0 : ref str.t :=
-          M.read
-            (mk_str
-              "assertion failed: self.confirmation_count.get(&trans_id).expect(WRONG_TRANSACTION_ID) >=
-    self.requirement") in
-        let* α1 : never.t := M.call (core.panicking.panic α0) in
-        let* α2 : unit := never_to_any α1 in
-        M.alloc α2
-      else
-        M.alloc tt in
-    let* α0 : M.Val unit := M.alloc tt in
-    M.read α0.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let trans_id := M.alloc (| trans_id |) in
+      M.read (|
+        let _ : M.Val unit :=
+          if
+            M.read (|
+              use
+                (M.alloc (|
+                  UnOp.not
+                    (BinOp.Pure.ge
+                      (M.call (|((core.option.Option.t u32.t)::["expect"]
+                        (M.call (|((multisig.Mapping.t u32.t u32.t)::["get"]
+                          (borrow
+                            (multisig.Multisig.Get_confirmation_count
+                              (deref (M.read (| self |)))))
+                          (borrow trans_id))
+                        |))
+                        (M.read (| multisig.WRONG_TRANSACTION_ID |)))
+                      |))
+                      (M.read (|
+                        multisig.Multisig.Get_requirement
+                          (deref (M.read (| self |)))
+                      |)))
+                |))
+            |)
+          then
+            M.alloc (|
+              never_to_any (|
+                M.call (|(core.panicking.panic
+                  (M.read (|
+                    mk_str
+                      "assertion failed: self.confirmation_count.get(&trans_id).expect(WRONG_TRANSACTION_ID) >=
+    self.requirement"
+                  |)))
+                |)
+              |)
+            |)
+          else
+            M.alloc (| tt |) in
+        M.alloc (| tt |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_ensure_confirmed :
     Notations.DoubleColon Self "ensure_confirmed" := {
@@ -1446,22 +1506,27 @@ Section Impl_multisig_Multisig_t.
       (self : ref Self)
       (trans_id : ltac:(multisig.TransactionId))
       : M unit :=
-    let* self := M.alloc self in
-    let* trans_id := M.alloc trans_id in
-    let* _ : M.Val multisig.Transaction.t :=
-      let* α0 : ref multisig.Multisig.t := M.read self in
-      let* α1 : core.option.Option.t multisig.Transaction.t :=
-        M.call
-          ((multisig.Mapping.t u32.t multisig.Transaction.t)::["get"]
-            (borrow (multisig.Multisig.Get_transactions (deref α0)))
-            (borrow trans_id)) in
-      let* α2 : ref str.t := M.read multisig.WRONG_TRANSACTION_ID in
-      let* α3 : multisig.Transaction.t :=
-        M.call
-          ((core.option.Option.t multisig.Transaction.t)::["expect"] α1 α2) in
-      M.alloc α3 in
-    let* α0 : M.Val unit := M.alloc tt in
-    M.read α0.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let trans_id := M.alloc (| trans_id |) in
+      M.read (|
+        let _ : M.Val multisig.Transaction.t :=
+          M.alloc (|
+            M.call (|((core.option.Option.t multisig.Transaction.t)::["expect"]
+              (M.call (|((multisig.Mapping.t
+                    u32.t
+                    multisig.Transaction.t)::["get"]
+                (borrow
+                  (multisig.Multisig.Get_transactions
+                    (deref (M.read (| self |)))))
+                (borrow trans_id))
+              |))
+              (M.read (| multisig.WRONG_TRANSACTION_ID |)))
+            |)
+          |) in
+        M.alloc (| tt |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_ensure_transaction_exists :
     Notations.DoubleColon Self "ensure_transaction_exists" := {
@@ -1477,28 +1542,41 @@ Section Impl_multisig_Multisig_t.
       (self : ref Self)
       (owner : ref multisig.AccountId.t)
       : M unit :=
-    let* self := M.alloc self in
-    let* owner := M.alloc owner in
-    let* _ : M.Val unit :=
-      let* α0 : ref multisig.Multisig.t := M.read self in
-      let* α1 : ref multisig.AccountId.t := M.read owner in
-      let* α2 : bool.t :=
-        M.call
-          ((multisig.Mapping.t multisig.AccountId.t unit)::["contains"]
-            (borrow (multisig.Multisig.Get_is_owner (deref α0)))
-            α1) in
-      let* α3 : M.Val bool.t := M.alloc (UnOp.not α2) in
-      let* α4 : bool.t := M.read (use α3) in
-      if α4 then
-        let* α0 : ref str.t :=
-          M.read (mk_str "assertion failed: self.is_owner.contains(owner)") in
-        let* α1 : never.t := M.call (core.panicking.panic α0) in
-        let* α2 : unit := never_to_any α1 in
-        M.alloc α2
-      else
-        M.alloc tt in
-    let* α0 : M.Val unit := M.alloc tt in
-    M.read α0.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let owner := M.alloc (| owner |) in
+      M.read (|
+        let _ : M.Val unit :=
+          if
+            M.read (|
+              use
+                (M.alloc (|
+                  UnOp.not
+                    (M.call (|((multisig.Mapping.t
+                          multisig.AccountId.t
+                          unit)::["contains"]
+                      (borrow
+                        (multisig.Multisig.Get_is_owner
+                          (deref (M.read (| self |)))))
+                      (M.read (| owner |)))
+                    |))
+                |))
+            |)
+          then
+            M.alloc (|
+              never_to_any (|
+                M.call (|(core.panicking.panic
+                  (M.read (|
+                    mk_str "assertion failed: self.is_owner.contains(owner)"
+                  |)))
+                |)
+              |)
+            |)
+          else
+            M.alloc (| tt |) in
+        M.alloc (| tt |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_ensure_owner :
     Notations.DoubleColon Self "ensure_owner" := {
@@ -1511,20 +1589,29 @@ Section Impl_multisig_Multisig_t.
       }
   *)
   Definition ensure_caller_is_owner (self : ref Self) : M unit :=
-    let* self := M.alloc self in
-    let* _ : M.Val unit :=
-      let* α0 : ref multisig.Multisig.t := M.read self in
-      let* α1 : ref multisig.Multisig.t := M.read self in
-      let* α2 : multisig.Env.t := M.call (multisig.Multisig.t::["env"] α1) in
-      let* α3 : M.Val multisig.Env.t := M.alloc α2 in
-      let* α4 : multisig.AccountId.t :=
-        M.call (multisig.Env.t::["caller"] (borrow α3)) in
-      let* α5 : M.Val multisig.AccountId.t := M.alloc α4 in
-      let* α6 : unit :=
-        M.call (multisig.Multisig.t::["ensure_owner"] α0 (borrow α5)) in
-      M.alloc α6 in
-    let* α0 : M.Val unit := M.alloc tt in
-    M.read α0.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      M.read (|
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(multisig.Multisig.t::["ensure_owner"]
+              (M.read (| self |))
+              (borrow
+                (M.alloc (|
+                  M.call (|(multisig.Env.t::["caller"]
+                    (borrow
+                      (M.alloc (|
+                        M.call (|(multisig.Multisig.t::["env"]
+                          (M.read (| self |)))
+                        |)
+                      |))))
+                  |)
+                |))))
+            |)
+          |) in
+        M.alloc (| tt |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_ensure_caller_is_owner :
     Notations.DoubleColon Self "ensure_caller_is_owner" := {
@@ -1537,72 +1624,89 @@ Section Impl_multisig_Multisig_t.
       }
   *)
   Definition ensure_from_wallet (self : ref Self) : M unit :=
-    let* self := M.alloc self in
-    let* _ : M.Val unit :=
-      let* α0 : ref multisig.Multisig.t := M.read self in
-      let* α1 : multisig.Env.t := M.call (multisig.Multisig.t::["env"] α0) in
-      let* α2 : M.Val multisig.Env.t := M.alloc α1 in
-      let* α3 : multisig.AccountId.t :=
-        M.call (multisig.Env.t::["caller"] (borrow α2)) in
-      let* α4 : M.Val multisig.AccountId.t := M.alloc α3 in
-      let* α5 : ref multisig.Multisig.t := M.read self in
-      let* α6 : multisig.Env.t := M.call (multisig.Multisig.t::["env"] α5) in
-      let* α7 : M.Val multisig.Env.t := M.alloc α6 in
-      let* α8 : multisig.AccountId.t :=
-        M.call (multisig.Env.t::["account_id"] (borrow α7)) in
-      let* α9 : M.Val multisig.AccountId.t := M.alloc α8 in
-      let* α10 :
-          M.Val ((ref multisig.AccountId.t) * (ref multisig.AccountId.t)) :=
-        M.alloc (borrow α4, borrow α9) in
-      match_operator
-        α10
-        [
-          fun γ =>
-            (let* α0 := M.read γ in
-            match α0 with
-            | (_, _) =>
-              let γ0_0 := Tuple.Access.left γ in
-              let γ0_1 := Tuple.Access.right γ in
-              let* left_val := M.copy γ0_0 in
-              let* right_val := M.copy γ0_1 in
-              let* α0 :
-                  (ref multisig.AccountId.t) ->
-                    (ref multisig.AccountId.t) ->
-                    M bool.t :=
-                ltac:(M.get_method (fun ℐ =>
-                  core.cmp.PartialEq.eq
-                    (Self := multisig.AccountId.t)
-                    (Rhs := multisig.AccountId.t)
-                    (Trait := ℐ))) in
-              let* α1 : ref multisig.AccountId.t := M.read left_val in
-              let* α2 : ref multisig.AccountId.t := M.read right_val in
-              let* α3 : bool.t := M.call (α0 α1 α2) in
-              let* α4 : M.Val bool.t := M.alloc (UnOp.not α3) in
-              let* α5 : bool.t := M.read (use α4) in
-              if α5 then
-                let* kind : M.Val core.panicking.AssertKind.t :=
-                  M.alloc core.panicking.AssertKind.Eq in
-                let* α0 : core.panicking.AssertKind.t := M.read kind in
-                let* α1 : ref multisig.AccountId.t := M.read left_val in
-                let* α2 : ref multisig.AccountId.t := M.read right_val in
-                let* α3 : never.t :=
-                  M.call
-                    (core.panicking.assert_failed
-                      α0
-                      α1
-                      α2
-                      core.option.Option.None) in
-                let* α0 : M.Val never.t := M.alloc α3 in
-                let* α1 := M.read α0 in
-                let* α2 : unit := never_to_any α1 in
-                M.alloc α2
-              else
-                M.alloc tt
-            end) :
-            M (M.Val unit)
-        ] in
-    let* α0 : M.Val unit := M.alloc tt in
-    M.read α0.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      M.read (|
+        let _ : M.Val unit :=
+          ltac:
+            (M.monadic_match_operator
+              (M.alloc (|
+                (borrow
+                    (M.alloc (|
+                      M.call (|(multisig.Env.t::["caller"]
+                        (borrow
+                          (M.alloc (|
+                            M.call (|(multisig.Multisig.t::["env"]
+                              (M.read (| self |)))
+                            |)
+                          |))))
+                      |)
+                    |)),
+                  borrow
+                    (M.alloc (|
+                      M.call (|(multisig.Env.t::["account_id"]
+                        (borrow
+                          (M.alloc (|
+                            M.call (|(multisig.Multisig.t::["env"]
+                              (M.read (| self |)))
+                            |)
+                          |))))
+                      |)
+                    |)))
+              |))
+              [
+                fun
+                    (γ :
+                      M.Val
+                        ((ref multisig.AccountId.t)
+                        *
+                        (ref multisig.AccountId.t))) =>
+                  match M.read (| γ |) with
+                  | (_, _) =>
+                    let γ0_0 := Tuple.Access.left γ in
+                    let γ0_1 := Tuple.Access.right γ in
+                    let left_val := M.copy (| γ0_0 |) in
+                    let right_val := M.copy (| γ0_1 |) in
+                    if
+                      M.read (|
+                        use
+                          (M.alloc (|
+                            UnOp.not
+                              (M.call (|(ltac:(M.get_method (fun ℐ =>
+                                  core.cmp.PartialEq.eq
+                                    (Self := multisig.AccountId.t)
+                                    (Rhs := multisig.AccountId.t)
+                                    (Trait := ℐ)))
+                                (M.read (| left_val |))
+                                (M.read (| right_val |)))
+                              |))
+                          |))
+                      |)
+                    then
+                      M.alloc (|
+                        never_to_any (|
+                          M.read (|
+                            let kind : M.Val core.panicking.AssertKind.t :=
+                              M.alloc (| core.panicking.AssertKind.Eq |) in
+                            M.alloc (|
+                              M.call (|(core.panicking.assert_failed
+                                (M.read (| kind |))
+                                (M.read (| left_val |))
+                                (M.read (| right_val |))
+                                core.option.Option.None)
+                              |)
+                            |)
+                          |)
+                        |)
+                      |)
+                    else
+                      M.alloc (| tt |)
+                  end :
+                  M.Val unit
+              ]) in
+        M.alloc (| tt |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_ensure_from_wallet :
     Notations.DoubleColon Self "ensure_from_wallet" := {
@@ -1618,28 +1722,42 @@ Section Impl_multisig_Multisig_t.
       (self : ref Self)
       (owner : ref multisig.AccountId.t)
       : M unit :=
-    let* self := M.alloc self in
-    let* owner := M.alloc owner in
-    let* _ : M.Val unit :=
-      let* α0 : ref multisig.Multisig.t := M.read self in
-      let* α1 : ref multisig.AccountId.t := M.read owner in
-      let* α2 : bool.t :=
-        M.call
-          ((multisig.Mapping.t multisig.AccountId.t unit)::["contains"]
-            (borrow (multisig.Multisig.Get_is_owner (deref α0)))
-            α1) in
-      let* α3 : M.Val bool.t := M.alloc (UnOp.not (UnOp.not α2)) in
-      let* α4 : bool.t := M.read (use α3) in
-      if α4 then
-        let* α0 : ref str.t :=
-          M.read (mk_str "assertion failed: !self.is_owner.contains(owner)") in
-        let* α1 : never.t := M.call (core.panicking.panic α0) in
-        let* α2 : unit := never_to_any α1 in
-        M.alloc α2
-      else
-        M.alloc tt in
-    let* α0 : M.Val unit := M.alloc tt in
-    M.read α0.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let owner := M.alloc (| owner |) in
+      M.read (|
+        let _ : M.Val unit :=
+          if
+            M.read (|
+              use
+                (M.alloc (|
+                  UnOp.not
+                    (UnOp.not
+                      (M.call (|((multisig.Mapping.t
+                            multisig.AccountId.t
+                            unit)::["contains"]
+                        (borrow
+                          (multisig.Multisig.Get_is_owner
+                            (deref (M.read (| self |)))))
+                        (M.read (| owner |)))
+                      |)))
+                |))
+            |)
+          then
+            M.alloc (|
+              never_to_any (|
+                M.call (|(core.panicking.panic
+                  (M.read (|
+                    mk_str "assertion failed: !self.is_owner.contains(owner)"
+                  |)))
+                |)
+              |)
+            |)
+          else
+            M.alloc (| tt |) in
+        M.alloc (| tt |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_ensure_no_owner :
     Notations.DoubleColon Self "ensure_no_owner" := {
@@ -1661,69 +1779,77 @@ Section Impl_multisig_Multisig_t.
       (self : mut_ref Self)
       (new_owner : multisig.AccountId.t)
       : M unit :=
-    let* self := M.alloc self in
-    let* new_owner := M.alloc new_owner in
-    let* _ : M.Val unit :=
-      let* α0 : mut_ref multisig.Multisig.t := M.read self in
-      let* α1 : unit :=
-        M.call
-          (multisig.Multisig.t::["ensure_from_wallet"] (borrow (deref α0))) in
-      M.alloc α1 in
-    let* _ : M.Val unit :=
-      let* α0 : mut_ref multisig.Multisig.t := M.read self in
-      let* α1 : unit :=
-        M.call
-          (multisig.Multisig.t::["ensure_no_owner"]
-            (borrow (deref α0))
-            (borrow new_owner)) in
-      M.alloc α1 in
-    let* _ : M.Val unit :=
-      let* α0 : mut_ref multisig.Multisig.t := M.read self in
-      let* α1 : usize.t :=
-        M.call
-          ((alloc.vec.Vec.t multisig.AccountId.t alloc.alloc.Global.t)::["len"]
-            (borrow (multisig.Multisig.Get_owners (deref α0)))) in
-      let* α2 : u32.t :=
-        BinOp.Panic.add (rust_cast α1) ((Integer.of_Z 1) : u32.t) in
-      let* α3 : mut_ref multisig.Multisig.t := M.read self in
-      let* α4 : u32.t :=
-        M.read (multisig.Multisig.Get_requirement (deref α3)) in
-      let* α5 : unit := M.call (multisig.ensure_requirement_is_valid α2 α4) in
-      M.alloc α5 in
-    let* _ : M.Val (core.option.Option.t u32.t) :=
-      let* α0 : mut_ref multisig.Multisig.t := M.read self in
-      let* α1 : multisig.AccountId.t := M.read new_owner in
-      let* α2 : core.option.Option.t u32.t :=
-        M.call
-          ((multisig.Mapping.t multisig.AccountId.t unit)::["insert"]
-            (borrow_mut (multisig.Multisig.Get_is_owner (deref α0)))
-            α1
-            tt) in
-      M.alloc α2 in
-    let* _ : M.Val unit :=
-      let* α0 : mut_ref multisig.Multisig.t := M.read self in
-      let* α1 : multisig.AccountId.t := M.read new_owner in
-      let* α2 : unit :=
-        M.call
-          ((alloc.vec.Vec.t multisig.AccountId.t alloc.alloc.Global.t)::["push"]
-            (borrow_mut (multisig.Multisig.Get_owners (deref α0)))
-            α1) in
-      M.alloc α2 in
-    let* _ : M.Val unit :=
-      let* α0 : mut_ref multisig.Multisig.t := M.read self in
-      let* α1 : multisig.Env.t :=
-        M.call (multisig.Multisig.t::["env"] (borrow (deref α0))) in
-      let* α2 : M.Val multisig.Env.t := M.alloc α1 in
-      let* α3 : multisig.AccountId.t := M.read new_owner in
-      let* α4 : unit :=
-        M.call
-          (multisig.Env.t::["emit_event"]
-            (borrow α2)
-            (multisig.Event.OwnerAddition
-              {| multisig.OwnerAddition.owner := α3; |})) in
-      M.alloc α4 in
-    let* α0 : M.Val unit := M.alloc tt in
-    M.read α0.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let new_owner := M.alloc (| new_owner |) in
+      M.read (|
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(multisig.Multisig.t::["ensure_from_wallet"]
+              (borrow (deref (M.read (| self |)))))
+            |)
+          |) in
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(multisig.Multisig.t::["ensure_no_owner"]
+              (borrow (deref (M.read (| self |))))
+              (borrow new_owner))
+            |)
+          |) in
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(multisig.ensure_requirement_is_valid
+              (BinOp.Panic.add (|
+                rust_cast
+                  (M.call (|((alloc.vec.Vec.t
+                        multisig.AccountId.t
+                        alloc.alloc.Global.t)::["len"]
+                    (borrow
+                      (multisig.Multisig.Get_owners
+                        (deref (M.read (| self |))))))
+                  |)),
+                (Integer.of_Z 1) : u32.t
+              |))
+              (M.read (|
+                multisig.Multisig.Get_requirement (deref (M.read (| self |)))
+              |)))
+            |)
+          |) in
+        let _ : M.Val (core.option.Option.t u32.t) :=
+          M.alloc (|
+            M.call (|((multisig.Mapping.t multisig.AccountId.t unit)::["insert"]
+              (borrow_mut
+                (multisig.Multisig.Get_is_owner (deref (M.read (| self |)))))
+              (M.read (| new_owner |))
+              tt)
+            |)
+          |) in
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|((alloc.vec.Vec.t
+                  multisig.AccountId.t
+                  alloc.alloc.Global.t)::["push"]
+              (borrow_mut
+                (multisig.Multisig.Get_owners (deref (M.read (| self |)))))
+              (M.read (| new_owner |)))
+            |)
+          |) in
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(multisig.Env.t::["emit_event"]
+              (borrow
+                (M.alloc (|
+                  M.call (|(multisig.Multisig.t::["env"]
+                    (borrow (deref (M.read (| self |)))))
+                  |)
+                |)))
+              (multisig.Event.OwnerAddition
+                {| multisig.OwnerAddition.owner := M.read (| new_owner |); |}))
+            |)
+          |) in
+        M.alloc (| tt |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_add_owner :
     Notations.DoubleColon Self "add_owner" := {
@@ -1742,65 +1868,58 @@ Section Impl_multisig_Multisig_t.
       (self : ref Self)
       (owner : ref multisig.AccountId.t)
       : M u32.t :=
-    let* self := M.alloc self in
-    let* owner := M.alloc owner in
-    let* α0 :
-        (mut_ref (core.slice.iter.Iter.t multisig.AccountId.t)) ->
-          ((ref multisig.AccountId.t) -> M bool.t) ->
-          M (core.option.Option.t usize.t) :=
-      ltac:(M.get_method (fun ℐ =>
-        core.iter.traits.iterator.Iterator.position
-          (Self := core.slice.iter.Iter.t multisig.AccountId.t)
-          (P := (ref multisig.AccountId.t) -> M bool.t)
-          (Trait := ℐ))) in
-    let* α1 :
-        (ref (alloc.vec.Vec.t multisig.AccountId.t alloc.alloc.Global.t)) ->
-          M (ref _) :=
-      ltac:(M.get_method (fun ℐ =>
-        core.ops.deref.Deref.deref
-          (Self := alloc.vec.Vec.t multisig.AccountId.t alloc.alloc.Global.t)
-          (Trait := ℐ))) in
-    let* α2 : ref multisig.Multisig.t := M.read self in
-    let* α3 : ref (slice multisig.AccountId.t) :=
-      M.call (α1 (borrow (multisig.Multisig.Get_owners (deref α2)))) in
-    let* α4 : core.slice.iter.Iter.t multisig.AccountId.t :=
-      M.call ((slice multisig.AccountId.t)::["iter"] α3) in
-    let* α5 : M.Val (core.slice.iter.Iter.t multisig.AccountId.t) :=
-      M.alloc α4 in
-    let* α6 : core.option.Option.t usize.t :=
-      M.call
-        (α0
-          (borrow_mut α5)
-          (fun (α0 : ref multisig.AccountId.t) =>
-            (let* α0 := M.alloc α0 in
-            match_operator
-              α0
-              [
-                fun γ =>
-                  (let* x := M.copy γ in
-                  let* α0 :
-                      (ref multisig.AccountId.t) ->
-                        (ref multisig.AccountId.t) ->
-                        M bool.t :=
-                    ltac:(M.get_method (fun ℐ =>
-                      core.cmp.PartialEq.eq
-                        (Self := multisig.AccountId.t)
-                        (Rhs := multisig.AccountId.t)
-                        (Trait := ℐ))) in
-                  let* α1 : ref multisig.AccountId.t := M.read x in
-                  let* α2 : ref multisig.AccountId.t := M.read owner in
-                  M.call (α0 α1 α2)) :
-                  M bool.t
-              ]) :
-            M bool.t)) in
-    let* α7 : ref str.t :=
-      M.read
-        (mk_str
-          "This is only called after it was already verified that the id is
-               actually an owner.") in
-    let* α8 : usize.t :=
-      M.call ((core.option.Option.t usize.t)::["expect"] α6 α7) in
-    M.pure (rust_cast α8).
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let owner := M.alloc (| owner |) in
+      rust_cast
+        (M.call (|((core.option.Option.t usize.t)::["expect"]
+          (M.call (|(ltac:(M.get_method (fun ℐ =>
+              core.iter.traits.iterator.Iterator.position
+                (Self := core.slice.iter.Iter.t multisig.AccountId.t)
+                (P := (ref multisig.AccountId.t) -> bool.t)
+                (Trait := ℐ)))
+            (borrow_mut
+              (M.alloc (|
+                M.call (|((slice multisig.AccountId.t)::["iter"]
+                  (M.call (|(ltac:(M.get_method (fun ℐ =>
+                      core.ops.deref.Deref.deref
+                        (Self :=
+                          alloc.vec.Vec.t
+                            multisig.AccountId.t
+                            alloc.alloc.Global.t)
+                        (Trait := ℐ)))
+                    (borrow
+                      (multisig.Multisig.Get_owners
+                        (deref (M.read (| self |))))))
+                  |)))
+                |)
+              |)))
+            (fun (α0 : ref multisig.AccountId.t) =>
+              (ltac:
+                (M.monadic_match_operator
+                  (M.alloc (| α0 |))
+                  [
+                    fun γ =>
+                      (let x := M.copy (| γ |) in
+                      M.call (|(ltac:(M.get_method (fun ℐ =>
+                          core.cmp.PartialEq.eq
+                            (Self := multisig.AccountId.t)
+                            (Rhs := multisig.AccountId.t)
+                            (Trait := ℐ)))
+                        (M.read (| x |))
+                        (M.read (| owner |)))
+                      |)) :
+                      bool.t
+                  ])) :
+              bool.t))
+          |))
+          (M.read (|
+            mk_str
+              "This is only called after it was already verified that the id is
+               actually an owner."
+          |)))
+        |))
+    )).
   
   Global Instance AssociatedFunction_owner_index :
     Notations.DoubleColon Self "owner_index" := {
@@ -1824,146 +1943,143 @@ Section Impl_multisig_Multisig_t.
       (self : mut_ref Self)
       (owner : ref multisig.AccountId.t)
       : M unit :=
-    let* self := M.alloc self in
-    let* owner := M.alloc owner in
-    let* α0 : (ref (alloc.vec.Vec.t u32.t alloc.alloc.Global.t)) -> M _ :=
-      ltac:(M.get_method (fun ℐ =>
-        core.iter.traits.collect.IntoIterator.into_iter
-          (Self := ref (alloc.vec.Vec.t u32.t alloc.alloc.Global.t))
-          (Trait := ℐ))) in
-    let* α1 : mut_ref multisig.Multisig.t := M.read self in
-    let* α2 : core.slice.iter.Iter.t u32.t :=
-      M.call
-        (α0
-          (borrow
-            (multisig.Transactions.Get_transactions
-              (multisig.Multisig.Get_transaction_list (deref α1))))) in
-    let* α3 : M.Val (core.slice.iter.Iter.t u32.t) := M.alloc α2 in
-    let* α4 : M.Val unit :=
-      match_operator
-        α3
-        [
-          fun γ =>
-            (let* iter := M.copy γ in
-            M.loop
-              (let* _ : M.Val unit :=
-                let* α0 :
-                    (mut_ref (core.slice.iter.Iter.t u32.t)) ->
-                      M (core.option.Option.t _) :=
-                  ltac:(M.get_method (fun ℐ =>
-                    core.iter.traits.iterator.Iterator.next
-                      (Self := core.slice.iter.Iter.t u32.t)
-                      (Trait := ℐ))) in
-                let* α1 : core.option.Option.t (ref u32.t) :=
-                  M.call (α0 (borrow_mut iter)) in
-                let* α2 : M.Val (core.option.Option.t (ref u32.t)) :=
-                  M.alloc α1 in
-                match_operator
-                  α2
-                  [
-                    fun γ =>
-                      (let* α0 := M.read γ in
-                      match α0 with
-                      | core.option.Option.None =>
-                        let* α0 : M.Val never.t := M.break in
-                        let* α1 := M.read α0 in
-                        let* α2 : unit := never_to_any α1 in
-                        M.alloc α2
-                      | _ => M.break_match
-                      end) :
-                      M (M.Val unit);
-                    fun γ =>
-                      (let* α0 := M.read γ in
-                      match α0 with
-                      | core.option.Option.Some _ =>
-                        let γ0_0 := core.option.Option.Get_Some_0 γ in
-                        let* trans_id := M.copy γ0_0 in
-                        let* key : M.Val (u32.t * multisig.AccountId.t) :=
-                          let* α0 : ref u32.t := M.read trans_id in
-                          let* α1 : u32.t := M.read (deref α0) in
-                          let* α2 : ref multisig.AccountId.t := M.read owner in
-                          let* α3 : multisig.AccountId.t := M.read (deref α2) in
-                          M.alloc (α1, α3) in
-                        let* α0 : mut_ref multisig.Multisig.t := M.read self in
-                        let* α1 : bool.t :=
-                          M.call
-                            ((multisig.Mapping.t
-                                  (u32.t * multisig.AccountId.t)
-                                  unit)::["contains"]
-                              (borrow
-                                (multisig.Multisig.Get_confirmations
-                                  (deref α0)))
-                              (borrow key)) in
-                        let* α2 : M.Val bool.t := M.alloc α1 in
-                        let* α3 : bool.t := M.read (use α2) in
-                        if α3 then
-                          let* _ : M.Val unit :=
-                            let* α0 : mut_ref multisig.Multisig.t :=
-                              M.read self in
-                            let* α1 : u32.t * multisig.AccountId.t :=
-                              M.read key in
-                            let* α2 : unit :=
-                              M.call
-                                ((multisig.Mapping.t
-                                      (u32.t * multisig.AccountId.t)
-                                      unit)::["remove"]
-                                  (borrow
-                                    (multisig.Multisig.Get_confirmations
-                                      (deref α0)))
-                                  α1) in
-                            M.alloc α2 in
-                          let* count : M.Val u32.t :=
-                            let* α0 : mut_ref multisig.Multisig.t :=
-                              M.read self in
-                            let* α1 : ref u32.t := M.read trans_id in
-                            let* α2 : core.option.Option.t u32.t :=
-                              M.call
-                                ((multisig.Mapping.t u32.t u32.t)::["get"]
-                                  (borrow
-                                    (multisig.Multisig.Get_confirmation_count
-                                      (deref α0)))
-                                  α1) in
-                            let* α3 : M.Val u32.t :=
-                              M.alloc ((Integer.of_Z 0) : u32.t) in
-                            let* α4 : u32.t := M.read (use α3) in
-                            let* α5 : u32.t :=
-                              M.call
-                                ((core.option.Option.t u32.t)::["unwrap_or"]
-                                  α2
-                                  α4) in
-                            M.alloc α5 in
-                          let* _ : M.Val unit :=
-                            let β : M.Val u32.t := count in
-                            let* α0 := M.read β in
-                            let* α1 :=
-                              BinOp.Panic.sub α0 ((Integer.of_Z 1) : u32.t) in
-                            assign β α1 in
-                          let* _ : M.Val (core.option.Option.t u32.t) :=
-                            let* α0 : mut_ref multisig.Multisig.t :=
-                              M.read self in
-                            let* α1 : ref u32.t := M.read trans_id in
-                            let* α2 : u32.t := M.read (deref α1) in
-                            let* α3 : u32.t := M.read count in
-                            let* α4 : core.option.Option.t u32.t :=
-                              M.call
-                                ((multisig.Mapping.t u32.t u32.t)::["insert"]
-                                  (borrow_mut
-                                    (multisig.Multisig.Get_confirmation_count
-                                      (deref α0)))
-                                  α2
-                                  α3) in
-                            M.alloc α4 in
-                          M.alloc tt
-                        else
-                          M.alloc tt
-                      | _ => M.break_match
-                      end) :
-                      M (M.Val unit)
-                  ] in
-              M.alloc tt)) :
-            M (M.Val unit)
-        ] in
-    M.read (use α4).
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let owner := M.alloc (| owner |) in
+      M.read (|
+        use
+          (ltac:
+            (M.monadic_match_operator
+              (M.alloc (|
+                M.call (|(ltac:(M.get_method (fun ℐ =>
+                    core.iter.traits.collect.IntoIterator.into_iter
+                      (Self := ref (alloc.vec.Vec.t u32.t alloc.alloc.Global.t))
+                      (Trait := ℐ)))
+                  (borrow
+                    (multisig.Transactions.Get_transactions
+                      (multisig.Multisig.Get_transaction_list
+                        (deref (M.read (| self |)))))))
+                |)
+              |))
+              [
+                fun (γ : M.Val (core.slice.iter.Iter.t u32.t)) =>
+                  (let iter := M.copy (| γ |) in
+                  M.loop
+                    (let _ : M.Val unit :=
+                      ltac:
+                        (M.monadic_match_operator
+                          (M.alloc (|
+                            M.call (|(ltac:(M.get_method (fun ℐ =>
+                                core.iter.traits.iterator.Iterator.next
+                                  (Self := core.slice.iter.Iter.t u32.t)
+                                  (Trait := ℐ)))
+                              (borrow_mut iter))
+                            |)
+                          |))
+                          [
+                            fun
+                                (γ :
+                                  M.Val (core.option.Option.t (ref u32.t))) =>
+                              match M.read (| γ |) with
+                              | core.option.Option.None =>
+                                M.alloc (|
+                                  never_to_any (| M.read (| M.break |) |)
+                                |)
+                              | _ => M.break_match(||)
+                              end :
+                              M.Val unit;
+                            fun
+                                (γ :
+                                  M.Val (core.option.Option.t (ref u32.t))) =>
+                              match M.read (| γ |) with
+                              | core.option.Option.Some _ =>
+                                let γ0_0 := core.option.Option.Get_Some_0 γ in
+                                let trans_id := M.copy (| γ0_0 |) in
+                                let key :
+                                    M.Val (u32.t * multisig.AccountId.t) :=
+                                  M.alloc (|
+                                    (M.read (| deref (M.read (| trans_id |)) |),
+                                      M.read (| deref (M.read (| owner |)) |))
+                                  |) in
+                                if
+                                  M.read (|
+                                    use
+                                      (M.alloc (|
+                                        M.call (|((multisig.Mapping.t
+                                              (u32.t * multisig.AccountId.t)
+                                              unit)::["contains"]
+                                          (borrow
+                                            (multisig.Multisig.Get_confirmations
+                                              (deref (M.read (| self |)))))
+                                          (borrow key))
+                                        |)
+                                      |))
+                                  |)
+                                then
+                                  let _ : M.Val unit :=
+                                    M.alloc (|
+                                      M.call (|((multisig.Mapping.t
+                                            (u32.t * multisig.AccountId.t)
+                                            unit)::["remove"]
+                                        (borrow
+                                          (multisig.Multisig.Get_confirmations
+                                            (deref (M.read (| self |)))))
+                                        (M.read (| key |)))
+                                      |)
+                                    |) in
+                                  let count : M.Val u32.t :=
+                                    M.alloc (|
+                                      M.call (|((core.option.Option.t
+                                            u32.t)::["unwrap_or"]
+                                        (M.call (|((multisig.Mapping.t
+                                              u32.t
+                                              u32.t)::["get"]
+                                          (borrow
+                                            (multisig.Multisig.Get_confirmation_count
+                                              (deref (M.read (| self |)))))
+                                          (M.read (| trans_id |)))
+                                        |))
+                                        (M.read (|
+                                          use
+                                            (M.alloc (| (Integer.of_Z 0) : u32.t
+                                            |))
+                                        |)))
+                                      |)
+                                    |) in
+                                  let _ : M.Val unit :=
+                                    let β : M.Val u32.t := count in
+                                    assign (|
+                                      β,
+                                      BinOp.Panic.sub (|
+                                        M.read (| β |),
+                                        (Integer.of_Z 1) : u32.t
+                                      |)
+                                    |) in
+                                  let _ : M.Val (core.option.Option.t u32.t) :=
+                                    M.alloc (|
+                                      M.call (|((multisig.Mapping.t
+                                            u32.t
+                                            u32.t)::["insert"]
+                                        (borrow_mut
+                                          (multisig.Multisig.Get_confirmation_count
+                                            (deref (M.read (| self |)))))
+                                        (M.read (| deref (M.read (| trans_id |))
+                                        |))
+                                        (M.read (| count |)))
+                                      |)
+                                    |) in
+                                  M.alloc (| tt |)
+                                else
+                                  M.alloc (| tt |)
+                              | _ => M.break_match(||)
+                              end :
+                              M.Val unit
+                          ]) in
+                    M.alloc (| tt |))) :
+                  M.Val unit
+              ]))
+      |)
+    )).
   
   Global Instance AssociatedFunction_clean_owner_confirmations :
     Notations.DoubleColon Self "clean_owner_confirmations" := {
@@ -1990,101 +2106,107 @@ Section Impl_multisig_Multisig_t.
       (self : mut_ref Self)
       (owner : multisig.AccountId.t)
       : M unit :=
-    let* self := M.alloc self in
-    let* owner := M.alloc owner in
-    let* _ : M.Val unit :=
-      let* α0 : mut_ref multisig.Multisig.t := M.read self in
-      let* α1 : unit :=
-        M.call
-          (multisig.Multisig.t::["ensure_from_wallet"] (borrow (deref α0))) in
-      M.alloc α1 in
-    let* _ : M.Val unit :=
-      let* α0 : mut_ref multisig.Multisig.t := M.read self in
-      let* α1 : unit :=
-        M.call
-          (multisig.Multisig.t::["ensure_owner"]
-            (borrow (deref α0))
-            (borrow owner)) in
-      M.alloc α1 in
-    let* len : M.Val u32.t :=
-      let* α0 : mut_ref multisig.Multisig.t := M.read self in
-      let* α1 : usize.t :=
-        M.call
-          ((alloc.vec.Vec.t multisig.AccountId.t alloc.alloc.Global.t)::["len"]
-            (borrow (multisig.Multisig.Get_owners (deref α0)))) in
-      let* α2 : u32.t :=
-        BinOp.Panic.sub (rust_cast α1) ((Integer.of_Z 1) : u32.t) in
-      M.alloc α2 in
-    let* requirement : M.Val u32.t :=
-      let* α0 : u32.t -> u32.t -> M u32.t :=
-        ltac:(M.get_method (fun ℐ =>
-          core.cmp.Ord.min (Self := u32.t) (Trait := ℐ))) in
-      let* α1 : u32.t := M.read len in
-      let* α2 : mut_ref multisig.Multisig.t := M.read self in
-      let* α3 : u32.t :=
-        M.read (multisig.Multisig.Get_requirement (deref α2)) in
-      let* α4 : u32.t := M.call (α0 α1 α3) in
-      M.alloc α4 in
-    let* _ : M.Val unit :=
-      let* α0 : u32.t := M.read len in
-      let* α1 : u32.t := M.read requirement in
-      let* α2 : unit := M.call (multisig.ensure_requirement_is_valid α0 α1) in
-      M.alloc α2 in
-    let* owner_index : M.Val usize.t :=
-      let* α0 : mut_ref multisig.Multisig.t := M.read self in
-      let* α1 : u32.t :=
-        M.call
-          (multisig.Multisig.t::["owner_index"]
-            (borrow (deref α0))
-            (borrow owner)) in
-      M.alloc (rust_cast α1) in
-    let* _ : M.Val multisig.AccountId.t :=
-      let* α0 : mut_ref multisig.Multisig.t := M.read self in
-      let* α1 : usize.t := M.read owner_index in
-      let* α2 : multisig.AccountId.t :=
-        M.call
-          ((alloc.vec.Vec.t
-                multisig.AccountId.t
-                alloc.alloc.Global.t)::["swap_remove"]
-            (borrow_mut (multisig.Multisig.Get_owners (deref α0)))
-            α1) in
-      M.alloc α2 in
-    let* _ : M.Val unit :=
-      let* α0 : mut_ref multisig.Multisig.t := M.read self in
-      let* α1 : multisig.AccountId.t := M.read owner in
-      let* α2 : unit :=
-        M.call
-          ((multisig.Mapping.t multisig.AccountId.t unit)::["remove"]
-            (borrow (multisig.Multisig.Get_is_owner (deref α0)))
-            α1) in
-      M.alloc α2 in
-    let* _ : M.Val unit :=
-      let* α0 : mut_ref multisig.Multisig.t := M.read self in
-      let* α1 : u32.t := M.read requirement in
-      assign (multisig.Multisig.Get_requirement (deref α0)) α1 in
-    let* _ : M.Val unit :=
-      let* α0 : mut_ref multisig.Multisig.t := M.read self in
-      let* α1 : unit :=
-        M.call
-          (multisig.Multisig.t::["clean_owner_confirmations"]
-            α0
-            (borrow owner)) in
-      M.alloc α1 in
-    let* _ : M.Val unit :=
-      let* α0 : mut_ref multisig.Multisig.t := M.read self in
-      let* α1 : multisig.Env.t :=
-        M.call (multisig.Multisig.t::["env"] (borrow (deref α0))) in
-      let* α2 : M.Val multisig.Env.t := M.alloc α1 in
-      let* α3 : multisig.AccountId.t := M.read owner in
-      let* α4 : unit :=
-        M.call
-          (multisig.Env.t::["emit_event"]
-            (borrow α2)
-            (multisig.Event.OwnerRemoval
-              {| multisig.OwnerRemoval.owner := α3; |})) in
-      M.alloc α4 in
-    let* α0 : M.Val unit := M.alloc tt in
-    M.read α0.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let owner := M.alloc (| owner |) in
+      M.read (|
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(multisig.Multisig.t::["ensure_from_wallet"]
+              (borrow (deref (M.read (| self |)))))
+            |)
+          |) in
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(multisig.Multisig.t::["ensure_owner"]
+              (borrow (deref (M.read (| self |))))
+              (borrow owner))
+            |)
+          |) in
+        let len : M.Val u32.t :=
+          M.alloc (|
+            BinOp.Panic.sub (|
+              rust_cast
+                (M.call (|((alloc.vec.Vec.t
+                      multisig.AccountId.t
+                      alloc.alloc.Global.t)::["len"]
+                  (borrow
+                    (multisig.Multisig.Get_owners (deref (M.read (| self |))))))
+                |)),
+              (Integer.of_Z 1) : u32.t
+            |)
+          |) in
+        let requirement : M.Val u32.t :=
+          M.alloc (|
+            M.call (|(ltac:(M.get_method (fun ℐ =>
+                core.cmp.Ord.min (Self := u32.t) (Trait := ℐ)))
+              (M.read (| len |))
+              (M.read (|
+                multisig.Multisig.Get_requirement (deref (M.read (| self |)))
+              |)))
+            |)
+          |) in
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(multisig.ensure_requirement_is_valid
+              (M.read (| len |))
+              (M.read (| requirement |)))
+            |)
+          |) in
+        let owner_index : M.Val usize.t :=
+          M.alloc (|
+            rust_cast
+              (M.call (|(multisig.Multisig.t::["owner_index"]
+                (borrow (deref (M.read (| self |))))
+                (borrow owner))
+              |))
+          |) in
+        let _ : M.Val multisig.AccountId.t :=
+          M.alloc (|
+            M.call (|((alloc.vec.Vec.t
+                  multisig.AccountId.t
+                  alloc.alloc.Global.t)::["swap_remove"]
+              (borrow_mut
+                (multisig.Multisig.Get_owners (deref (M.read (| self |)))))
+              (M.read (| owner_index |)))
+            |)
+          |) in
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|((multisig.Mapping.t multisig.AccountId.t unit)::["remove"]
+              (borrow
+                (multisig.Multisig.Get_is_owner (deref (M.read (| self |)))))
+              (M.read (| owner |)))
+            |)
+          |) in
+        let _ : M.Val unit :=
+          assign (|
+            multisig.Multisig.Get_requirement (deref (M.read (| self |))),
+            M.read (| requirement |)
+          |) in
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(multisig.Multisig.t::["clean_owner_confirmations"]
+              (M.read (| self |))
+              (borrow owner))
+            |)
+          |) in
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(multisig.Env.t::["emit_event"]
+              (borrow
+                (M.alloc (|
+                  M.call (|(multisig.Multisig.t::["env"]
+                    (borrow (deref (M.read (| self |)))))
+                  |)
+                |)))
+              (multisig.Event.OwnerRemoval
+                {| multisig.OwnerRemoval.owner := M.read (| owner |); |}))
+            |)
+          |) in
+        M.alloc (| tt |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_remove_owner :
     Notations.DoubleColon Self "remove_owner" := {
@@ -2112,114 +2234,106 @@ Section Impl_multisig_Multisig_t.
       (old_owner : multisig.AccountId.t)
       (new_owner : multisig.AccountId.t)
       : M unit :=
-    let* self := M.alloc self in
-    let* old_owner := M.alloc old_owner in
-    let* new_owner := M.alloc new_owner in
-    let* _ : M.Val unit :=
-      let* α0 : mut_ref multisig.Multisig.t := M.read self in
-      let* α1 : unit :=
-        M.call
-          (multisig.Multisig.t::["ensure_from_wallet"] (borrow (deref α0))) in
-      M.alloc α1 in
-    let* _ : M.Val unit :=
-      let* α0 : mut_ref multisig.Multisig.t := M.read self in
-      let* α1 : unit :=
-        M.call
-          (multisig.Multisig.t::["ensure_owner"]
-            (borrow (deref α0))
-            (borrow old_owner)) in
-      M.alloc α1 in
-    let* _ : M.Val unit :=
-      let* α0 : mut_ref multisig.Multisig.t := M.read self in
-      let* α1 : unit :=
-        M.call
-          (multisig.Multisig.t::["ensure_no_owner"]
-            (borrow (deref α0))
-            (borrow new_owner)) in
-      M.alloc α1 in
-    let* owner_index : M.Val u32.t :=
-      let* α0 : mut_ref multisig.Multisig.t := M.read self in
-      let* α1 : u32.t :=
-        M.call
-          (multisig.Multisig.t::["owner_index"]
-            (borrow (deref α0))
-            (borrow old_owner)) in
-      M.alloc α1 in
-    let* _ : M.Val unit :=
-      let* α0 :
-          (mut_ref (alloc.vec.Vec.t multisig.AccountId.t alloc.alloc.Global.t))
-            ->
-            usize.t ->
-            M (mut_ref _) :=
-        ltac:(M.get_method (fun ℐ =>
-          core.ops.index.IndexMut.index_mut
-            (Self := alloc.vec.Vec.t multisig.AccountId.t alloc.alloc.Global.t)
-            (Idx := usize.t)
-            (Trait := ℐ))) in
-      let* α1 : mut_ref multisig.Multisig.t := M.read self in
-      let* α2 : u32.t := M.read owner_index in
-      let* α3 : mut_ref multisig.AccountId.t :=
-        M.call
-          (α0
-            (borrow_mut (multisig.Multisig.Get_owners (deref α1)))
-            (rust_cast α2)) in
-      let* α4 : multisig.AccountId.t := M.read new_owner in
-      assign (deref α3) α4 in
-    let* _ : M.Val unit :=
-      let* α0 : mut_ref multisig.Multisig.t := M.read self in
-      let* α1 : multisig.AccountId.t := M.read old_owner in
-      let* α2 : unit :=
-        M.call
-          ((multisig.Mapping.t multisig.AccountId.t unit)::["remove"]
-            (borrow (multisig.Multisig.Get_is_owner (deref α0)))
-            α1) in
-      M.alloc α2 in
-    let* _ : M.Val (core.option.Option.t u32.t) :=
-      let* α0 : mut_ref multisig.Multisig.t := M.read self in
-      let* α1 : multisig.AccountId.t := M.read new_owner in
-      let* α2 : core.option.Option.t u32.t :=
-        M.call
-          ((multisig.Mapping.t multisig.AccountId.t unit)::["insert"]
-            (borrow_mut (multisig.Multisig.Get_is_owner (deref α0)))
-            α1
-            tt) in
-      M.alloc α2 in
-    let* _ : M.Val unit :=
-      let* α0 : mut_ref multisig.Multisig.t := M.read self in
-      let* α1 : unit :=
-        M.call
-          (multisig.Multisig.t::["clean_owner_confirmations"]
-            α0
-            (borrow old_owner)) in
-      M.alloc α1 in
-    let* _ : M.Val unit :=
-      let* α0 : mut_ref multisig.Multisig.t := M.read self in
-      let* α1 : multisig.Env.t :=
-        M.call (multisig.Multisig.t::["env"] (borrow (deref α0))) in
-      let* α2 : M.Val multisig.Env.t := M.alloc α1 in
-      let* α3 : multisig.AccountId.t := M.read old_owner in
-      let* α4 : unit :=
-        M.call
-          (multisig.Env.t::["emit_event"]
-            (borrow α2)
-            (multisig.Event.OwnerRemoval
-              {| multisig.OwnerRemoval.owner := α3; |})) in
-      M.alloc α4 in
-    let* _ : M.Val unit :=
-      let* α0 : mut_ref multisig.Multisig.t := M.read self in
-      let* α1 : multisig.Env.t :=
-        M.call (multisig.Multisig.t::["env"] (borrow (deref α0))) in
-      let* α2 : M.Val multisig.Env.t := M.alloc α1 in
-      let* α3 : multisig.AccountId.t := M.read new_owner in
-      let* α4 : unit :=
-        M.call
-          (multisig.Env.t::["emit_event"]
-            (borrow α2)
-            (multisig.Event.OwnerAddition
-              {| multisig.OwnerAddition.owner := α3; |})) in
-      M.alloc α4 in
-    let* α0 : M.Val unit := M.alloc tt in
-    M.read α0.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let old_owner := M.alloc (| old_owner |) in
+      let new_owner := M.alloc (| new_owner |) in
+      M.read (|
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(multisig.Multisig.t::["ensure_from_wallet"]
+              (borrow (deref (M.read (| self |)))))
+            |)
+          |) in
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(multisig.Multisig.t::["ensure_owner"]
+              (borrow (deref (M.read (| self |))))
+              (borrow old_owner))
+            |)
+          |) in
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(multisig.Multisig.t::["ensure_no_owner"]
+              (borrow (deref (M.read (| self |))))
+              (borrow new_owner))
+            |)
+          |) in
+        let owner_index : M.Val u32.t :=
+          M.alloc (|
+            M.call (|(multisig.Multisig.t::["owner_index"]
+              (borrow (deref (M.read (| self |))))
+              (borrow old_owner))
+            |)
+          |) in
+        let _ : M.Val unit :=
+          assign (|
+            deref
+              (M.call (|(ltac:(M.get_method (fun ℐ =>
+                  core.ops.index.IndexMut.index_mut
+                    (Self :=
+                      alloc.vec.Vec.t multisig.AccountId.t alloc.alloc.Global.t)
+                    (Idx := usize.t)
+                    (Trait := ℐ)))
+                (borrow_mut
+                  (multisig.Multisig.Get_owners (deref (M.read (| self |)))))
+                (rust_cast (M.read (| owner_index |))))
+              |)),
+            M.read (| new_owner |)
+          |) in
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|((multisig.Mapping.t multisig.AccountId.t unit)::["remove"]
+              (borrow
+                (multisig.Multisig.Get_is_owner (deref (M.read (| self |)))))
+              (M.read (| old_owner |)))
+            |)
+          |) in
+        let _ : M.Val (core.option.Option.t u32.t) :=
+          M.alloc (|
+            M.call (|((multisig.Mapping.t multisig.AccountId.t unit)::["insert"]
+              (borrow_mut
+                (multisig.Multisig.Get_is_owner (deref (M.read (| self |)))))
+              (M.read (| new_owner |))
+              tt)
+            |)
+          |) in
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(multisig.Multisig.t::["clean_owner_confirmations"]
+              (M.read (| self |))
+              (borrow old_owner))
+            |)
+          |) in
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(multisig.Env.t::["emit_event"]
+              (borrow
+                (M.alloc (|
+                  M.call (|(multisig.Multisig.t::["env"]
+                    (borrow (deref (M.read (| self |)))))
+                  |)
+                |)))
+              (multisig.Event.OwnerRemoval
+                {| multisig.OwnerRemoval.owner := M.read (| old_owner |); |}))
+            |)
+          |) in
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(multisig.Env.t::["emit_event"]
+              (borrow
+                (M.alloc (|
+                  M.call (|(multisig.Multisig.t::["env"]
+                    (borrow (deref (M.read (| self |)))))
+                  |)
+                |)))
+              (multisig.Event.OwnerAddition
+                {| multisig.OwnerAddition.owner := M.read (| new_owner |); |}))
+            |)
+          |) in
+        M.alloc (| tt |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_replace_owner :
     Notations.DoubleColon Self "replace_owner" := {
@@ -2241,43 +2355,53 @@ Section Impl_multisig_Multisig_t.
       (self : mut_ref Self)
       (new_requirement : u32.t)
       : M unit :=
-    let* self := M.alloc self in
-    let* new_requirement := M.alloc new_requirement in
-    let* _ : M.Val unit :=
-      let* α0 : mut_ref multisig.Multisig.t := M.read self in
-      let* α1 : unit :=
-        M.call
-          (multisig.Multisig.t::["ensure_from_wallet"] (borrow (deref α0))) in
-      M.alloc α1 in
-    let* _ : M.Val unit :=
-      let* α0 : mut_ref multisig.Multisig.t := M.read self in
-      let* α1 : usize.t :=
-        M.call
-          ((alloc.vec.Vec.t multisig.AccountId.t alloc.alloc.Global.t)::["len"]
-            (borrow (multisig.Multisig.Get_owners (deref α0)))) in
-      let* α2 : u32.t := M.read new_requirement in
-      let* α3 : unit :=
-        M.call (multisig.ensure_requirement_is_valid (rust_cast α1) α2) in
-      M.alloc α3 in
-    let* _ : M.Val unit :=
-      let* α0 : mut_ref multisig.Multisig.t := M.read self in
-      let* α1 : u32.t := M.read new_requirement in
-      assign (multisig.Multisig.Get_requirement (deref α0)) α1 in
-    let* _ : M.Val unit :=
-      let* α0 : mut_ref multisig.Multisig.t := M.read self in
-      let* α1 : multisig.Env.t :=
-        M.call (multisig.Multisig.t::["env"] (borrow (deref α0))) in
-      let* α2 : M.Val multisig.Env.t := M.alloc α1 in
-      let* α3 : u32.t := M.read new_requirement in
-      let* α4 : unit :=
-        M.call
-          (multisig.Env.t::["emit_event"]
-            (borrow α2)
-            (multisig.Event.RequirementChange
-              {| multisig.RequirementChange.new_requirement := α3; |})) in
-      M.alloc α4 in
-    let* α0 : M.Val unit := M.alloc tt in
-    M.read α0.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let new_requirement := M.alloc (| new_requirement |) in
+      M.read (|
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(multisig.Multisig.t::["ensure_from_wallet"]
+              (borrow (deref (M.read (| self |)))))
+            |)
+          |) in
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(multisig.ensure_requirement_is_valid
+              (rust_cast
+                (M.call (|((alloc.vec.Vec.t
+                      multisig.AccountId.t
+                      alloc.alloc.Global.t)::["len"]
+                  (borrow
+                    (multisig.Multisig.Get_owners (deref (M.read (| self |))))))
+                |)))
+              (M.read (| new_requirement |)))
+            |)
+          |) in
+        let _ : M.Val unit :=
+          assign (|
+            multisig.Multisig.Get_requirement (deref (M.read (| self |))),
+            M.read (| new_requirement |)
+          |) in
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(multisig.Env.t::["emit_event"]
+              (borrow
+                (M.alloc (|
+                  M.call (|(multisig.Multisig.t::["env"]
+                    (borrow (deref (M.read (| self |)))))
+                  |)
+                |)))
+              (multisig.Event.RequirementChange
+                {|
+                  multisig.RequirementChange.new_requirement :=
+                    M.read (| new_requirement |);
+                |}))
+            |)
+          |) in
+        M.alloc (| tt |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_change_requirement :
     Notations.DoubleColon Self "change_requirement" := {
@@ -2323,114 +2447,124 @@ Section Impl_multisig_Multisig_t.
       (confirmer : multisig.AccountId.t)
       (transaction : ltac:(multisig.TransactionId))
       : M multisig.ConfirmationStatus.t :=
-    let* self := M.alloc self in
-    let* confirmer := M.alloc confirmer in
-    let* transaction := M.alloc transaction in
-    let* count : M.Val u32.t :=
-      let* α0 : mut_ref multisig.Multisig.t := M.read self in
-      let* α1 : core.option.Option.t u32.t :=
-        M.call
-          ((multisig.Mapping.t u32.t u32.t)::["get"]
-            (borrow (multisig.Multisig.Get_confirmation_count (deref α0)))
-            (borrow transaction)) in
-      let* α2 : M.Val u32.t := M.alloc ((Integer.of_Z 0) : u32.t) in
-      let* α3 : u32.t := M.read (use α2) in
-      let* α4 : u32.t :=
-        M.call ((core.option.Option.t u32.t)::["unwrap_or"] α1 α3) in
-      M.alloc α4 in
-    let* key : M.Val (u32.t * multisig.AccountId.t) :=
-      let* α0 : u32.t := M.read transaction in
-      let* α1 : multisig.AccountId.t := M.read confirmer in
-      M.alloc (α0, α1) in
-    let* new_confirmation : M.Val bool.t :=
-      let* α0 : mut_ref multisig.Multisig.t := M.read self in
-      let* α1 : bool.t :=
-        M.call
-          ((multisig.Mapping.t
-                (u32.t * multisig.AccountId.t)
-                unit)::["contains"]
-            (borrow (multisig.Multisig.Get_confirmations (deref α0)))
-            (borrow key)) in
-      M.alloc (UnOp.not α1) in
-    let* _ : M.Val unit :=
-      let* α0 : bool.t := M.read (use new_confirmation) in
-      if α0 then
-        let* _ : M.Val unit :=
-          let β : M.Val u32.t := count in
-          let* α0 := M.read β in
-          let* α1 := BinOp.Panic.add α0 ((Integer.of_Z 1) : u32.t) in
-          assign β α1 in
-        let* _ : M.Val (core.option.Option.t u32.t) :=
-          let* α0 : mut_ref multisig.Multisig.t := M.read self in
-          let* α1 : u32.t * multisig.AccountId.t := M.read key in
-          let* α2 : core.option.Option.t u32.t :=
-            M.call
-              ((multisig.Mapping.t
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let confirmer := M.alloc (| confirmer |) in
+      let transaction := M.alloc (| transaction |) in
+      M.read (|
+        let count : M.Val u32.t :=
+          M.alloc (|
+            M.call (|((core.option.Option.t u32.t)::["unwrap_or"]
+              (M.call (|((multisig.Mapping.t u32.t u32.t)::["get"]
+                (borrow
+                  (multisig.Multisig.Get_confirmation_count
+                    (deref (M.read (| self |)))))
+                (borrow transaction))
+              |))
+              (M.read (| use (M.alloc (| (Integer.of_Z 0) : u32.t |)) |)))
+            |)
+          |) in
+        let key : M.Val (u32.t * multisig.AccountId.t) :=
+          M.alloc (| (M.read (| transaction |), M.read (| confirmer |)) |) in
+        let new_confirmation : M.Val bool.t :=
+          M.alloc (|
+            UnOp.not
+              (M.call (|((multisig.Mapping.t
                     (u32.t * multisig.AccountId.t)
-                    unit)::["insert"]
-                (borrow_mut (multisig.Multisig.Get_confirmations (deref α0)))
-                α1
-                tt) in
-          M.alloc α2 in
-        let* _ : M.Val (core.option.Option.t u32.t) :=
-          let* α0 : mut_ref multisig.Multisig.t := M.read self in
-          let* α1 : u32.t := M.read transaction in
-          let* α2 : u32.t := M.read count in
-          let* α3 : core.option.Option.t u32.t :=
-            M.call
-              ((multisig.Mapping.t u32.t u32.t)::["insert"]
-                (borrow_mut
-                  (multisig.Multisig.Get_confirmation_count (deref α0)))
-                α1
-                α2) in
-          M.alloc α3 in
-        M.alloc tt
-      else
-        M.alloc tt in
-    let* status : M.Val multisig.ConfirmationStatus.t :=
-      let* α0 : u32.t := M.read count in
-      let* α1 : mut_ref multisig.Multisig.t := M.read self in
-      let* α2 : u32.t :=
-        M.read (multisig.Multisig.Get_requirement (deref α1)) in
-      let* α3 : M.Val bool.t := M.alloc (BinOp.Pure.ge α0 α2) in
-      let* α4 : bool.t := M.read (use α3) in
-      let* α5 : M.Val multisig.ConfirmationStatus.t :=
-        if α4 then
-          M.alloc multisig.ConfirmationStatus.Confirmed
-        else
-          let* α0 : mut_ref multisig.Multisig.t := M.read self in
-          let* α1 : u32.t :=
-            M.read (multisig.Multisig.Get_requirement (deref α0)) in
-          let* α2 : u32.t := M.read count in
-          let* α3 : u32.t := BinOp.Panic.sub α1 α2 in
-          M.alloc (multisig.ConfirmationStatus.ConfirmationsNeeded α3) in
-      M.copy α5 in
-    let* _ : M.Val unit :=
-      let* α0 : bool.t := M.read (use new_confirmation) in
-      if α0 then
-        let* _ : M.Val unit :=
-          let* α0 : mut_ref multisig.Multisig.t := M.read self in
-          let* α1 : multisig.Env.t :=
-            M.call (multisig.Multisig.t::["env"] (borrow (deref α0))) in
-          let* α2 : M.Val multisig.Env.t := M.alloc α1 in
-          let* α3 : u32.t := M.read transaction in
-          let* α4 : multisig.AccountId.t := M.read confirmer in
-          let* α5 : multisig.ConfirmationStatus.t := M.read status in
-          let* α6 : unit :=
-            M.call
-              (multisig.Env.t::["emit_event"]
-                (borrow α2)
-                (multisig.Event.Confirmation
-                  {|
-                    multisig.Confirmation.transaction := α3;
-                    multisig.Confirmation.from := α4;
-                    multisig.Confirmation.status := α5;
-                  |})) in
-          M.alloc α6 in
-        M.alloc tt
-      else
-        M.alloc tt in
-    M.read status.
+                    unit)::["contains"]
+                (borrow
+                  (multisig.Multisig.Get_confirmations
+                    (deref (M.read (| self |)))))
+                (borrow key))
+              |))
+          |) in
+        let _ : M.Val unit :=
+          if M.read (| use new_confirmation |) then
+            let _ : M.Val unit :=
+              let β : M.Val u32.t := count in
+              assign (|
+                β,
+                BinOp.Panic.add (| M.read (| β |), (Integer.of_Z 1) : u32.t |)
+              |) in
+            let _ : M.Val (core.option.Option.t u32.t) :=
+              M.alloc (|
+                M.call (|((multisig.Mapping.t
+                      (u32.t * multisig.AccountId.t)
+                      unit)::["insert"]
+                  (borrow_mut
+                    (multisig.Multisig.Get_confirmations
+                      (deref (M.read (| self |)))))
+                  (M.read (| key |))
+                  tt)
+                |)
+              |) in
+            let _ : M.Val (core.option.Option.t u32.t) :=
+              M.alloc (|
+                M.call (|((multisig.Mapping.t u32.t u32.t)::["insert"]
+                  (borrow_mut
+                    (multisig.Multisig.Get_confirmation_count
+                      (deref (M.read (| self |)))))
+                  (M.read (| transaction |))
+                  (M.read (| count |)))
+                |)
+              |) in
+            M.alloc (| tt |)
+          else
+            M.alloc (| tt |) in
+        let status : M.Val multisig.ConfirmationStatus.t :=
+          M.copy (|
+            if
+              M.read (|
+                use
+                  (M.alloc (|
+                    BinOp.Pure.ge
+                      (M.read (| count |))
+                      (M.read (|
+                        multisig.Multisig.Get_requirement
+                          (deref (M.read (| self |)))
+                      |))
+                  |))
+              |)
+            then
+              M.alloc (| multisig.ConfirmationStatus.Confirmed |)
+            else
+              M.alloc (|
+                multisig.ConfirmationStatus.ConfirmationsNeeded
+                  (BinOp.Panic.sub (|
+                    M.read (|
+                      multisig.Multisig.Get_requirement
+                        (deref (M.read (| self |)))
+                    |),
+                    M.read (| count |)
+                  |))
+              |)
+          |) in
+        let _ : M.Val unit :=
+          if M.read (| use new_confirmation |) then
+            let _ : M.Val unit :=
+              M.alloc (|
+                M.call (|(multisig.Env.t::["emit_event"]
+                  (borrow
+                    (M.alloc (|
+                      M.call (|(multisig.Multisig.t::["env"]
+                        (borrow (deref (M.read (| self |)))))
+                      |)
+                    |)))
+                  (multisig.Event.Confirmation
+                    {|
+                      multisig.Confirmation.transaction :=
+                        M.read (| transaction |);
+                      multisig.Confirmation.from := M.read (| confirmer |);
+                      multisig.Confirmation.status := M.read (| status |);
+                    |}))
+                |)
+              |) in
+            M.alloc (| tt |)
+          else
+            M.alloc (| tt |) in
+        status
+      |)
+    )).
   
   Global Instance AssociatedFunction_confirm_by_caller :
     Notations.DoubleColon Self "confirm_by_caller" := {
@@ -2462,83 +2596,88 @@ Section Impl_multisig_Multisig_t.
       (self : mut_ref Self)
       (transaction : multisig.Transaction.t)
       : M (ltac:(multisig.TransactionId) * multisig.ConfirmationStatus.t) :=
-    let* self := M.alloc self in
-    let* transaction := M.alloc transaction in
-    let* _ : M.Val unit :=
-      let* α0 : mut_ref multisig.Multisig.t := M.read self in
-      let* α1 : unit :=
-        M.call
-          (multisig.Multisig.t::["ensure_caller_is_owner"]
-            (borrow (deref α0))) in
-      M.alloc α1 in
-    let* trans_id : M.Val u32.t :=
-      let* α0 : mut_ref multisig.Multisig.t := M.read self in
-      M.copy
-        (multisig.Transactions.Get_next_id
-          (multisig.Multisig.Get_transaction_list (deref α0))) in
-    let* _ : M.Val unit :=
-      let* α0 : mut_ref multisig.Multisig.t := M.read self in
-      let* α1 : u32.t := M.read trans_id in
-      let* α2 : M.Val u32.t := M.alloc ((Integer.of_Z 1) : u32.t) in
-      let* α3 : u32.t := M.read (use α2) in
-      let* α4 : core.option.Option.t u32.t :=
-        M.call (u32.t::["checked_add"] α1 α3) in
-      let* α5 : ref str.t := M.read (mk_str "Transaction ids exhausted.") in
-      let* α6 : u32.t :=
-        M.call ((core.option.Option.t u32.t)::["expect"] α4 α5) in
-      assign
-        (multisig.Transactions.Get_next_id
-          (multisig.Multisig.Get_transaction_list (deref α0)))
-        α6 in
-    let* _ : M.Val (core.option.Option.t u32.t) :=
-      let* α0 : mut_ref multisig.Multisig.t := M.read self in
-      let* α1 : u32.t := M.read trans_id in
-      let* α2 : multisig.Transaction.t := M.read transaction in
-      let* α3 : core.option.Option.t u32.t :=
-        M.call
-          ((multisig.Mapping.t u32.t multisig.Transaction.t)::["insert"]
-            (borrow_mut (multisig.Multisig.Get_transactions (deref α0)))
-            α1
-            α2) in
-      M.alloc α3 in
-    let* _ : M.Val unit :=
-      let* α0 : mut_ref multisig.Multisig.t := M.read self in
-      let* α1 : u32.t := M.read trans_id in
-      let* α2 : unit :=
-        M.call
-          ((alloc.vec.Vec.t u32.t alloc.alloc.Global.t)::["push"]
-            (borrow_mut
-              (multisig.Transactions.Get_transactions
-                (multisig.Multisig.Get_transaction_list (deref α0))))
-            α1) in
-      M.alloc α2 in
-    let* _ : M.Val unit :=
-      let* α0 : mut_ref multisig.Multisig.t := M.read self in
-      let* α1 : multisig.Env.t :=
-        M.call (multisig.Multisig.t::["env"] (borrow (deref α0))) in
-      let* α2 : M.Val multisig.Env.t := M.alloc α1 in
-      let* α3 : u32.t := M.read trans_id in
-      let* α4 : unit :=
-        M.call
-          (multisig.Env.t::["emit_event"]
-            (borrow α2)
-            (multisig.Event.Submission
-              {| multisig.Submission.transaction := α3; |})) in
-      M.alloc α4 in
-    let* α0 : u32.t := M.read trans_id in
-    let* α1 : mut_ref multisig.Multisig.t := M.read self in
-    let* α2 : mut_ref multisig.Multisig.t := M.read self in
-    let* α3 : multisig.Env.t :=
-      M.call (multisig.Multisig.t::["env"] (borrow (deref α2))) in
-    let* α4 : M.Val multisig.Env.t := M.alloc α3 in
-    let* α5 : multisig.AccountId.t :=
-      M.call (multisig.Env.t::["caller"] (borrow α4)) in
-    let* α6 : u32.t := M.read trans_id in
-    let* α7 : multisig.ConfirmationStatus.t :=
-      M.call (multisig.Multisig.t::["confirm_by_caller"] α1 α5 α6) in
-    let* α0 : M.Val (u32.t * multisig.ConfirmationStatus.t) :=
-      M.alloc (α0, α7) in
-    M.read α0.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let transaction := M.alloc (| transaction |) in
+      M.read (|
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(multisig.Multisig.t::["ensure_caller_is_owner"]
+              (borrow (deref (M.read (| self |)))))
+            |)
+          |) in
+        let trans_id : M.Val u32.t :=
+          M.copy (|
+            multisig.Transactions.Get_next_id
+              (multisig.Multisig.Get_transaction_list
+                (deref (M.read (| self |))))
+          |) in
+        let _ : M.Val unit :=
+          assign (|
+            multisig.Transactions.Get_next_id
+              (multisig.Multisig.Get_transaction_list
+                (deref (M.read (| self |)))),
+            M.call (|((core.option.Option.t u32.t)::["expect"]
+              (M.call (|(u32.t::["checked_add"]
+                (M.read (| trans_id |))
+                (M.read (| use (M.alloc (| (Integer.of_Z 1) : u32.t |)) |)))
+              |))
+              (M.read (| mk_str "Transaction ids exhausted." |)))
+            |)
+          |) in
+        let _ : M.Val (core.option.Option.t u32.t) :=
+          M.alloc (|
+            M.call (|((multisig.Mapping.t
+                  u32.t
+                  multisig.Transaction.t)::["insert"]
+              (borrow_mut
+                (multisig.Multisig.Get_transactions
+                  (deref (M.read (| self |)))))
+              (M.read (| trans_id |))
+              (M.read (| transaction |)))
+            |)
+          |) in
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|((alloc.vec.Vec.t u32.t alloc.alloc.Global.t)::["push"]
+              (borrow_mut
+                (multisig.Transactions.Get_transactions
+                  (multisig.Multisig.Get_transaction_list
+                    (deref (M.read (| self |))))))
+              (M.read (| trans_id |)))
+            |)
+          |) in
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(multisig.Env.t::["emit_event"]
+              (borrow
+                (M.alloc (|
+                  M.call (|(multisig.Multisig.t::["env"]
+                    (borrow (deref (M.read (| self |)))))
+                  |)
+                |)))
+              (multisig.Event.Submission
+                {| multisig.Submission.transaction := M.read (| trans_id |);
+                |}))
+            |)
+          |) in
+        M.alloc (|
+          (M.read (| trans_id |),
+            M.call (|(multisig.Multisig.t::["confirm_by_caller"]
+              (M.read (| self |))
+              (M.call (|(multisig.Env.t::["caller"]
+                (borrow
+                  (M.alloc (|
+                    M.call (|(multisig.Multisig.t::["env"]
+                      (borrow (deref (M.read (| self |)))))
+                    |)
+                  |))))
+              |))
+              (M.read (| trans_id |)))
+            |))
+        |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_submit_transaction :
     Notations.DoubleColon Self "submit_transaction" := {
@@ -2569,212 +2708,208 @@ Section Impl_multisig_Multisig_t.
       (self : mut_ref Self)
       (trans_id : ltac:(multisig.TransactionId))
       : M (core.option.Option.t multisig.Transaction.t) :=
-    let* self := M.alloc self in
-    let* trans_id := M.alloc trans_id in
-    let* transaction : M.Val (core.option.Option.t multisig.Transaction.t) :=
-      let* α0 : mut_ref multisig.Multisig.t := M.read self in
-      let* α1 : core.option.Option.t multisig.Transaction.t :=
-        M.call
-          ((multisig.Mapping.t u32.t multisig.Transaction.t)::["get"]
-            (borrow (multisig.Multisig.Get_transactions (deref α0)))
-            (borrow trans_id)) in
-      M.alloc α1 in
-    let* _ : M.Val unit :=
-      let* α0 : bool.t :=
-        M.call
-          ((core.option.Option.t multisig.Transaction.t)::["is_some"]
-            (borrow transaction)) in
-      let* α1 : M.Val bool.t := M.alloc α0 in
-      let* α2 : bool.t := M.read (use α1) in
-      if α2 then
-        let* _ : M.Val unit :=
-          let* α0 : mut_ref multisig.Multisig.t := M.read self in
-          let* α1 : u32.t := M.read trans_id in
-          let* α2 : unit :=
-            M.call
-              ((multisig.Mapping.t u32.t multisig.Transaction.t)::["remove"]
-                (borrow (multisig.Multisig.Get_transactions (deref α0)))
-                α1) in
-          M.alloc α2 in
-        let* pos : M.Val usize.t :=
-          let* α0 :
-              (mut_ref (core.slice.iter.Iter.t u32.t)) ->
-                ((ref u32.t) -> M bool.t) ->
-                M (core.option.Option.t usize.t) :=
-            ltac:(M.get_method (fun ℐ =>
-              core.iter.traits.iterator.Iterator.position
-                (Self := core.slice.iter.Iter.t u32.t)
-                (P := (ref u32.t) -> M bool.t)
-                (Trait := ℐ))) in
-          let* α1 :
-              (ref (alloc.vec.Vec.t u32.t alloc.alloc.Global.t)) -> M (ref _) :=
-            ltac:(M.get_method (fun ℐ =>
-              core.ops.deref.Deref.deref
-                (Self := alloc.vec.Vec.t u32.t alloc.alloc.Global.t)
-                (Trait := ℐ))) in
-          let* α2 : mut_ref multisig.Multisig.t := M.read self in
-          let* α3 : ref (slice u32.t) :=
-            M.call
-              (α1
-                (borrow
-                  (multisig.Transactions.Get_transactions
-                    (multisig.Multisig.Get_transaction_list (deref α2))))) in
-          let* α4 : core.slice.iter.Iter.t u32.t :=
-            M.call ((slice u32.t)::["iter"] α3) in
-          let* α5 : M.Val (core.slice.iter.Iter.t u32.t) := M.alloc α4 in
-          let* α6 : core.option.Option.t usize.t :=
-            M.call
-              (α0
-                (borrow_mut α5)
-                (fun (α0 : ref u32.t) =>
-                  (let* α0 := M.alloc α0 in
-                  match_operator
-                    α0
-                    [
-                      fun γ =>
-                        (let* t := M.copy γ in
-                        let* α0 :
-                            (ref (ref u32.t)) ->
-                              (ref (ref u32.t)) ->
-                              M bool.t :=
-                          ltac:(M.get_method (fun ℐ =>
-                            core.cmp.PartialEq.eq
-                              (Self := ref u32.t)
-                              (Rhs := ref u32.t)
-                              (Trait := ℐ))) in
-                        let* α1 : M.Val (ref u32.t) :=
-                          M.alloc (borrow trans_id) in
-                        M.call (α0 (borrow t) (borrow α1))) :
-                        M bool.t
-                    ]) :
-                  M bool.t)) in
-          let* α7 : ref str.t :=
-            M.read
-              (mk_str
-                "The transaction exists hence it must also be in the list.") in
-          let* α8 : usize.t :=
-            M.call ((core.option.Option.t usize.t)::["expect"] α6 α7) in
-          M.alloc α8 in
-        let* _ : M.Val u32.t :=
-          let* α0 : mut_ref multisig.Multisig.t := M.read self in
-          let* α1 : usize.t := M.read pos in
-          let* α2 : u32.t :=
-            M.call
-              ((alloc.vec.Vec.t u32.t alloc.alloc.Global.t)::["swap_remove"]
-                (borrow_mut
-                  (multisig.Transactions.Get_transactions
-                    (multisig.Multisig.Get_transaction_list (deref α0))))
-                α1) in
-          M.alloc α2 in
-        let* _ : M.Val unit :=
-          let* α0 : (core.slice.iter.Iter.t multisig.AccountId.t) -> M _ :=
-            ltac:(M.get_method (fun ℐ =>
-              core.iter.traits.collect.IntoIterator.into_iter
-                (Self := core.slice.iter.Iter.t multisig.AccountId.t)
-                (Trait := ℐ))) in
-          let* α1 :
-              (ref (alloc.vec.Vec.t multisig.AccountId.t alloc.alloc.Global.t))
-                ->
-                M (ref _) :=
-            ltac:(M.get_method (fun ℐ =>
-              core.ops.deref.Deref.deref
-                (Self :=
-                  alloc.vec.Vec.t multisig.AccountId.t alloc.alloc.Global.t)
-                (Trait := ℐ))) in
-          let* α2 : mut_ref multisig.Multisig.t := M.read self in
-          let* α3 : ref (slice multisig.AccountId.t) :=
-            M.call (α1 (borrow (multisig.Multisig.Get_owners (deref α2)))) in
-          let* α4 : core.slice.iter.Iter.t multisig.AccountId.t :=
-            M.call ((slice multisig.AccountId.t)::["iter"] α3) in
-          let* α5 : core.slice.iter.Iter.t multisig.AccountId.t :=
-            M.call (α0 α4) in
-          let* α6 : M.Val (core.slice.iter.Iter.t multisig.AccountId.t) :=
-            M.alloc α5 in
-          let* α7 : M.Val unit :=
-            match_operator
-              α6
-              [
-                fun γ =>
-                  (let* iter := M.copy γ in
-                  M.loop
-                    (let* _ : M.Val unit :=
-                      let* α0 :
-                          (mut_ref
-                              (core.slice.iter.Iter.t multisig.AccountId.t))
-                            ->
-                            M (core.option.Option.t _) :=
-                        ltac:(M.get_method (fun ℐ =>
-                          core.iter.traits.iterator.Iterator.next
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let trans_id := M.alloc (| trans_id |) in
+      M.read (|
+        let transaction : M.Val (core.option.Option.t multisig.Transaction.t) :=
+          M.alloc (|
+            M.call (|((multisig.Mapping.t u32.t multisig.Transaction.t)::["get"]
+              (borrow
+                (multisig.Multisig.Get_transactions
+                  (deref (M.read (| self |)))))
+              (borrow trans_id))
+            |)
+          |) in
+        let _ : M.Val unit :=
+          if
+            M.read (|
+              use
+                (M.alloc (|
+                  M.call (|((core.option.Option.t
+                        multisig.Transaction.t)::["is_some"]
+                    (borrow transaction))
+                  |)
+                |))
+            |)
+          then
+            let _ : M.Val unit :=
+              M.alloc (|
+                M.call (|((multisig.Mapping.t
+                      u32.t
+                      multisig.Transaction.t)::["remove"]
+                  (borrow
+                    (multisig.Multisig.Get_transactions
+                      (deref (M.read (| self |)))))
+                  (M.read (| trans_id |)))
+                |)
+              |) in
+            let pos : M.Val usize.t :=
+              M.alloc (|
+                M.call (|((core.option.Option.t usize.t)::["expect"]
+                  (M.call (|(ltac:(M.get_method (fun ℐ =>
+                      core.iter.traits.iterator.Iterator.position
+                        (Self := core.slice.iter.Iter.t u32.t)
+                        (P := (ref u32.t) -> bool.t)
+                        (Trait := ℐ)))
+                    (borrow_mut
+                      (M.alloc (|
+                        M.call (|((slice u32.t)::["iter"]
+                          (M.call (|(ltac:(M.get_method (fun ℐ =>
+                              core.ops.deref.Deref.deref
+                                (Self :=
+                                  alloc.vec.Vec.t u32.t alloc.alloc.Global.t)
+                                (Trait := ℐ)))
+                            (borrow
+                              (multisig.Transactions.Get_transactions
+                                (multisig.Multisig.Get_transaction_list
+                                  (deref (M.read (| self |)))))))
+                          |)))
+                        |)
+                      |)))
+                    (fun (α0 : ref u32.t) =>
+                      (ltac:
+                        (M.monadic_match_operator
+                          (M.alloc (| α0 |))
+                          [
+                            fun γ =>
+                              (let t := M.copy (| γ |) in
+                              M.call (|(ltac:(M.get_method (fun ℐ =>
+                                  core.cmp.PartialEq.eq
+                                    (Self := ref u32.t)
+                                    (Rhs := ref u32.t)
+                                    (Trait := ℐ)))
+                                (borrow t)
+                                (borrow (M.alloc (| borrow trans_id |))))
+                              |)) :
+                              bool.t
+                          ])) :
+                      bool.t))
+                  |))
+                  (M.read (|
+                    mk_str
+                      "The transaction exists hence it must also be in the list."
+                  |)))
+                |)
+              |) in
+            let _ : M.Val u32.t :=
+              M.alloc (|
+                M.call (|((alloc.vec.Vec.t
+                      u32.t
+                      alloc.alloc.Global.t)::["swap_remove"]
+                  (borrow_mut
+                    (multisig.Transactions.Get_transactions
+                      (multisig.Multisig.Get_transaction_list
+                        (deref (M.read (| self |))))))
+                  (M.read (| pos |)))
+                |)
+              |) in
+            let _ : M.Val unit :=
+              use
+                (ltac:
+                  (M.monadic_match_operator
+                    (M.alloc (|
+                      M.call (|(ltac:(M.get_method (fun ℐ =>
+                          core.iter.traits.collect.IntoIterator.into_iter
                             (Self :=
                               core.slice.iter.Iter.t multisig.AccountId.t)
-                            (Trait := ℐ))) in
-                      let* α1 :
-                          core.option.Option.t (ref multisig.AccountId.t) :=
-                        M.call (α0 (borrow_mut iter)) in
-                      let* α2 :
-                          M.Val
-                            (core.option.Option.t (ref multisig.AccountId.t)) :=
-                        M.alloc α1 in
-                      match_operator
-                        α2
-                        [
-                          fun γ =>
-                            (let* α0 := M.read γ in
-                            match α0 with
-                            | core.option.Option.None =>
-                              let* α0 : M.Val never.t := M.break in
-                              let* α1 := M.read α0 in
-                              let* α2 : unit := never_to_any α1 in
-                              M.alloc α2
-                            | _ => M.break_match
-                            end) :
-                            M (M.Val unit);
-                          fun γ =>
-                            (let* α0 := M.read γ in
-                            match α0 with
-                            | core.option.Option.Some _ =>
-                              let γ0_0 := core.option.Option.Get_Some_0 γ in
-                              let* owner := M.copy γ0_0 in
-                              let* _ : M.Val unit :=
-                                let* α0 : mut_ref multisig.Multisig.t :=
-                                  M.read self in
-                                let* α1 : u32.t := M.read trans_id in
-                                let* α2 : ref multisig.AccountId.t :=
-                                  M.read owner in
-                                let* α3 : multisig.AccountId.t :=
-                                  M.read (deref α2) in
-                                let* α4 : unit :=
-                                  M.call
-                                    ((multisig.Mapping.t
-                                          (u32.t * multisig.AccountId.t)
-                                          unit)::["remove"]
-                                      (borrow
-                                        (multisig.Multisig.Get_confirmations
-                                          (deref α0)))
-                                      (α1, α3)) in
-                                M.alloc α4 in
-                              M.alloc tt
-                            | _ => M.break_match
-                            end) :
-                            M (M.Val unit)
-                        ] in
-                    M.alloc tt)) :
-                  M (M.Val unit)
-              ] in
-          M.pure (use α7) in
-        let* _ : M.Val unit :=
-          let* α0 : mut_ref multisig.Multisig.t := M.read self in
-          let* α1 : u32.t := M.read trans_id in
-          let* α2 : unit :=
-            M.call
-              ((multisig.Mapping.t u32.t u32.t)::["remove"]
-                (borrow (multisig.Multisig.Get_confirmation_count (deref α0)))
-                α1) in
-          M.alloc α2 in
-        M.alloc tt
-      else
-        M.alloc tt in
-    M.read transaction.
+                            (Trait := ℐ)))
+                        (M.call (|((slice multisig.AccountId.t)::["iter"]
+                          (M.call (|(ltac:(M.get_method (fun ℐ =>
+                              core.ops.deref.Deref.deref
+                                (Self :=
+                                  alloc.vec.Vec.t
+                                    multisig.AccountId.t
+                                    alloc.alloc.Global.t)
+                                (Trait := ℐ)))
+                            (borrow
+                              (multisig.Multisig.Get_owners
+                                (deref (M.read (| self |))))))
+                          |)))
+                        |)))
+                      |)
+                    |))
+                    [
+                      fun
+                          (γ :
+                            M.Val
+                              (core.slice.iter.Iter.t multisig.AccountId.t)) =>
+                        (let iter := M.copy (| γ |) in
+                        M.loop
+                          (let _ : M.Val unit :=
+                            ltac:
+                              (M.monadic_match_operator
+                                (M.alloc (|
+                                  M.call (|(ltac:(M.get_method (fun ℐ =>
+                                      core.iter.traits.iterator.Iterator.next
+                                        (Self :=
+                                          core.slice.iter.Iter.t
+                                            multisig.AccountId.t)
+                                        (Trait := ℐ)))
+                                    (borrow_mut iter))
+                                  |)
+                                |))
+                                [
+                                  fun
+                                      (γ :
+                                        M.Val
+                                          (core.option.Option.t
+                                            (ref multisig.AccountId.t))) =>
+                                    match M.read (| γ |) with
+                                    | core.option.Option.None =>
+                                      M.alloc (|
+                                        never_to_any (| M.read (| M.break |) |)
+                                      |)
+                                    | _ => M.break_match(||)
+                                    end :
+                                    M.Val unit;
+                                  fun
+                                      (γ :
+                                        M.Val
+                                          (core.option.Option.t
+                                            (ref multisig.AccountId.t))) =>
+                                    match M.read (| γ |) with
+                                    | core.option.Option.Some _ =>
+                                      let γ0_0 :=
+                                        core.option.Option.Get_Some_0 γ in
+                                      let owner := M.copy (| γ0_0 |) in
+                                      let _ : M.Val unit :=
+                                        M.alloc (|
+                                          M.call (|((multisig.Mapping.t
+                                                (u32.t * multisig.AccountId.t)
+                                                unit)::["remove"]
+                                            (borrow
+                                              (multisig.Multisig.Get_confirmations
+                                                (deref (M.read (| self |)))))
+                                            (M.read (| trans_id |),
+                                              M.read (|
+                                                deref (M.read (| owner |))
+                                              |)))
+                                          |)
+                                        |) in
+                                      M.alloc (| tt |)
+                                    | _ => M.break_match(||)
+                                    end :
+                                    M.Val unit
+                                ]) in
+                          M.alloc (| tt |))) :
+                        M.Val unit
+                    ])) in
+            let _ : M.Val unit :=
+              M.alloc (|
+                M.call (|((multisig.Mapping.t u32.t u32.t)::["remove"]
+                  (borrow
+                    (multisig.Multisig.Get_confirmation_count
+                      (deref (M.read (| self |)))))
+                  (M.read (| trans_id |)))
+                |)
+              |) in
+            M.alloc (| tt |)
+          else
+            M.alloc (| tt |) in
+        transaction
+      |)
+    )).
   
   Global Instance AssociatedFunction_take_transaction :
     Notations.DoubleColon Self "take_transaction" := {
@@ -2795,45 +2930,52 @@ Section Impl_multisig_Multisig_t.
       (self : mut_ref Self)
       (trans_id : ltac:(multisig.TransactionId))
       : M unit :=
-    let* self := M.alloc self in
-    let* trans_id := M.alloc trans_id in
-    let* _ : M.Val unit :=
-      let* α0 : mut_ref multisig.Multisig.t := M.read self in
-      let* α1 : unit :=
-        M.call
-          (multisig.Multisig.t::["ensure_from_wallet"] (borrow (deref α0))) in
-      M.alloc α1 in
-    let* α0 : mut_ref multisig.Multisig.t := M.read self in
-    let* α1 : u32.t := M.read trans_id in
-    let* α2 : core.option.Option.t multisig.Transaction.t :=
-      M.call (multisig.Multisig.t::["take_transaction"] α0 α1) in
-    let* α3 : M.Val (core.option.Option.t multisig.Transaction.t) :=
-      M.alloc α2 in
-    let* α4 : bool.t :=
-      M.call
-        ((core.option.Option.t multisig.Transaction.t)::["is_some"]
-          (borrow α3)) in
-    let* α5 : M.Val bool.t := M.alloc α4 in
-    let* α6 : bool.t := M.read (use α5) in
-    let* α0 : M.Val unit :=
-      if α6 then
-        let* _ : M.Val unit :=
-          let* α0 : mut_ref multisig.Multisig.t := M.read self in
-          let* α1 : multisig.Env.t :=
-            M.call (multisig.Multisig.t::["env"] (borrow (deref α0))) in
-          let* α2 : M.Val multisig.Env.t := M.alloc α1 in
-          let* α3 : u32.t := M.read trans_id in
-          let* α4 : unit :=
-            M.call
-              (multisig.Env.t::["emit_event"]
-                (borrow α2)
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let trans_id := M.alloc (| trans_id |) in
+      M.read (|
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(multisig.Multisig.t::["ensure_from_wallet"]
+              (borrow (deref (M.read (| self |)))))
+            |)
+          |) in
+        if
+          M.read (|
+            use
+              (M.alloc (|
+                M.call (|((core.option.Option.t
+                      multisig.Transaction.t)::["is_some"]
+                  (borrow
+                    (M.alloc (|
+                      M.call (|(multisig.Multisig.t::["take_transaction"]
+                        (M.read (| self |))
+                        (M.read (| trans_id |)))
+                      |)
+                    |))))
+                |)
+              |))
+          |)
+        then
+          let _ : M.Val unit :=
+            M.alloc (|
+              M.call (|(multisig.Env.t::["emit_event"]
+                (borrow
+                  (M.alloc (|
+                    M.call (|(multisig.Multisig.t::["env"]
+                      (borrow (deref (M.read (| self |)))))
+                    |)
+                  |)))
                 (multisig.Event.Cancellation
-                  {| multisig.Cancellation.transaction := α3; |})) in
-          M.alloc α4 in
-        M.alloc tt
-      else
-        M.alloc tt in
-    M.read α0.
+                  {| multisig.Cancellation.transaction := M.read (| trans_id |);
+                  |}))
+              |)
+            |) in
+          M.alloc (| tt |)
+        else
+          M.alloc (| tt |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_cancel_transaction :
     Notations.DoubleColon Self "cancel_transaction" := {
@@ -2851,36 +2993,39 @@ Section Impl_multisig_Multisig_t.
       (self : mut_ref Self)
       (trans_id : ltac:(multisig.TransactionId))
       : M multisig.ConfirmationStatus.t :=
-    let* self := M.alloc self in
-    let* trans_id := M.alloc trans_id in
-    let* _ : M.Val unit :=
-      let* α0 : mut_ref multisig.Multisig.t := M.read self in
-      let* α1 : unit :=
-        M.call
-          (multisig.Multisig.t::["ensure_caller_is_owner"]
-            (borrow (deref α0))) in
-      M.alloc α1 in
-    let* _ : M.Val unit :=
-      let* α0 : mut_ref multisig.Multisig.t := M.read self in
-      let* α1 : u32.t := M.read trans_id in
-      let* α2 : unit :=
-        M.call
-          (multisig.Multisig.t::["ensure_transaction_exists"]
-            (borrow (deref α0))
-            α1) in
-      M.alloc α2 in
-    let* α0 : mut_ref multisig.Multisig.t := M.read self in
-    let* α1 : mut_ref multisig.Multisig.t := M.read self in
-    let* α2 : multisig.Env.t :=
-      M.call (multisig.Multisig.t::["env"] (borrow (deref α1))) in
-    let* α3 : M.Val multisig.Env.t := M.alloc α2 in
-    let* α4 : multisig.AccountId.t :=
-      M.call (multisig.Env.t::["caller"] (borrow α3)) in
-    let* α5 : u32.t := M.read trans_id in
-    let* α6 : multisig.ConfirmationStatus.t :=
-      M.call (multisig.Multisig.t::["confirm_by_caller"] α0 α4 α5) in
-    let* α0 : M.Val multisig.ConfirmationStatus.t := M.alloc α6 in
-    M.read α0.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let trans_id := M.alloc (| trans_id |) in
+      M.read (|
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(multisig.Multisig.t::["ensure_caller_is_owner"]
+              (borrow (deref (M.read (| self |)))))
+            |)
+          |) in
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(multisig.Multisig.t::["ensure_transaction_exists"]
+              (borrow (deref (M.read (| self |))))
+              (M.read (| trans_id |)))
+            |)
+          |) in
+        M.alloc (|
+          M.call (|(multisig.Multisig.t::["confirm_by_caller"]
+            (M.read (| self |))
+            (M.call (|(multisig.Env.t::["caller"]
+              (borrow
+                (M.alloc (|
+                  M.call (|(multisig.Multisig.t::["env"]
+                    (borrow (deref (M.read (| self |)))))
+                  |)
+                |))))
+            |))
+            (M.read (| trans_id |)))
+          |)
+        |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_confirm_transaction :
     Notations.DoubleColon Self "confirm_transaction" := {
@@ -2911,100 +3056,107 @@ Section Impl_multisig_Multisig_t.
       (self : mut_ref Self)
       (trans_id : ltac:(multisig.TransactionId))
       : M unit :=
-    let* self := M.alloc self in
-    let* trans_id := M.alloc trans_id in
-    let* _ : M.Val unit :=
-      let* α0 : mut_ref multisig.Multisig.t := M.read self in
-      let* α1 : unit :=
-        M.call
-          (multisig.Multisig.t::["ensure_caller_is_owner"]
-            (borrow (deref α0))) in
-      M.alloc α1 in
-    let* caller : M.Val multisig.AccountId.t :=
-      let* α0 : mut_ref multisig.Multisig.t := M.read self in
-      let* α1 : multisig.Env.t :=
-        M.call (multisig.Multisig.t::["env"] (borrow (deref α0))) in
-      let* α2 : M.Val multisig.Env.t := M.alloc α1 in
-      let* α3 : multisig.AccountId.t :=
-        M.call (multisig.Env.t::["caller"] (borrow α2)) in
-      M.alloc α3 in
-    let* α0 : mut_ref multisig.Multisig.t := M.read self in
-    let* α1 : u32.t := M.read trans_id in
-    let* α2 : multisig.AccountId.t := M.read caller in
-    let* α3 : M.Val (u32.t * multisig.AccountId.t) := M.alloc (α1, α2) in
-    let* α4 : bool.t :=
-      M.call
-        ((multisig.Mapping.t (u32.t * multisig.AccountId.t) unit)::["contains"]
-          (borrow (multisig.Multisig.Get_confirmations (deref α0)))
-          (borrow α3)) in
-    let* α5 : M.Val bool.t := M.alloc α4 in
-    let* α6 : bool.t := M.read (use α5) in
-    let* α0 : M.Val unit :=
-      if α6 then
-        let* _ : M.Val unit :=
-          let* α0 : mut_ref multisig.Multisig.t := M.read self in
-          let* α1 : u32.t := M.read trans_id in
-          let* α2 : multisig.AccountId.t := M.read caller in
-          let* α3 : unit :=
-            M.call
-              ((multisig.Mapping.t
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let trans_id := M.alloc (| trans_id |) in
+      M.read (|
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(multisig.Multisig.t::["ensure_caller_is_owner"]
+              (borrow (deref (M.read (| self |)))))
+            |)
+          |) in
+        let caller : M.Val multisig.AccountId.t :=
+          M.alloc (|
+            M.call (|(multisig.Env.t::["caller"]
+              (borrow
+                (M.alloc (|
+                  M.call (|(multisig.Multisig.t::["env"]
+                    (borrow (deref (M.read (| self |)))))
+                  |)
+                |))))
+            |)
+          |) in
+        if
+          M.read (|
+            use
+              (M.alloc (|
+                M.call (|((multisig.Mapping.t
+                      (u32.t * multisig.AccountId.t)
+                      unit)::["contains"]
+                  (borrow
+                    (multisig.Multisig.Get_confirmations
+                      (deref (M.read (| self |)))))
+                  (borrow
+                    (M.alloc (| (M.read (| trans_id |), M.read (| caller |))
+                    |))))
+                |)
+              |))
+          |)
+        then
+          let _ : M.Val unit :=
+            M.alloc (|
+              M.call (|((multisig.Mapping.t
                     (u32.t * multisig.AccountId.t)
                     unit)::["remove"]
-                (borrow (multisig.Multisig.Get_confirmations (deref α0)))
-                (α1, α2)) in
-          M.alloc α3 in
-        let* confirmation_count : M.Val u32.t :=
-          let* α0 : mut_ref multisig.Multisig.t := M.read self in
-          let* α1 : core.option.Option.t u32.t :=
-            M.call
-              ((multisig.Mapping.t u32.t u32.t)::["get"]
-                (borrow (multisig.Multisig.Get_confirmation_count (deref α0)))
-                (borrow trans_id)) in
-          let* α2 : ref str.t :=
-            M.read
-              (mk_str
-                "There is a entry in `self.confirmations`. Hence a count must exit.") in
-          let* α3 : u32.t :=
-            M.call ((core.option.Option.t u32.t)::["expect"] α1 α2) in
-          M.alloc α3 in
-        let* _ : M.Val unit :=
-          let β : M.Val u32.t := confirmation_count in
-          let* α0 := M.read β in
-          let* α1 := BinOp.Panic.sub α0 ((Integer.of_Z 1) : u32.t) in
-          assign β α1 in
-        let* _ : M.Val (core.option.Option.t u32.t) :=
-          let* α0 : mut_ref multisig.Multisig.t := M.read self in
-          let* α1 : u32.t := M.read trans_id in
-          let* α2 : u32.t := M.read confirmation_count in
-          let* α3 : core.option.Option.t u32.t :=
-            M.call
-              ((multisig.Mapping.t u32.t u32.t)::["insert"]
+                (borrow
+                  (multisig.Multisig.Get_confirmations
+                    (deref (M.read (| self |)))))
+                (M.read (| trans_id |), M.read (| caller |)))
+              |)
+            |) in
+          let confirmation_count : M.Val u32.t :=
+            M.alloc (|
+              M.call (|((core.option.Option.t u32.t)::["expect"]
+                (M.call (|((multisig.Mapping.t u32.t u32.t)::["get"]
+                  (borrow
+                    (multisig.Multisig.Get_confirmation_count
+                      (deref (M.read (| self |)))))
+                  (borrow trans_id))
+                |))
+                (M.read (|
+                  mk_str
+                    "There is a entry in `self.confirmations`. Hence a count must exit."
+                |)))
+              |)
+            |) in
+          let _ : M.Val unit :=
+            let β : M.Val u32.t := confirmation_count in
+            assign (|
+              β,
+              BinOp.Panic.sub (| M.read (| β |), (Integer.of_Z 1) : u32.t |)
+            |) in
+          let _ : M.Val (core.option.Option.t u32.t) :=
+            M.alloc (|
+              M.call (|((multisig.Mapping.t u32.t u32.t)::["insert"]
                 (borrow_mut
-                  (multisig.Multisig.Get_confirmation_count (deref α0)))
-                α1
-                α2) in
-          M.alloc α3 in
-        let* _ : M.Val unit :=
-          let* α0 : mut_ref multisig.Multisig.t := M.read self in
-          let* α1 : multisig.Env.t :=
-            M.call (multisig.Multisig.t::["env"] (borrow (deref α0))) in
-          let* α2 : M.Val multisig.Env.t := M.alloc α1 in
-          let* α3 : u32.t := M.read trans_id in
-          let* α4 : multisig.AccountId.t := M.read caller in
-          let* α5 : unit :=
-            M.call
-              (multisig.Env.t::["emit_event"]
-                (borrow α2)
+                  (multisig.Multisig.Get_confirmation_count
+                    (deref (M.read (| self |)))))
+                (M.read (| trans_id |))
+                (M.read (| confirmation_count |)))
+              |)
+            |) in
+          let _ : M.Val unit :=
+            M.alloc (|
+              M.call (|(multisig.Env.t::["emit_event"]
+                (borrow
+                  (M.alloc (|
+                    M.call (|(multisig.Multisig.t::["env"]
+                      (borrow (deref (M.read (| self |)))))
+                    |)
+                  |)))
                 (multisig.Event.Revocation
                   {|
-                    multisig.Revocation.transaction := α3;
-                    multisig.Revocation.from := α4;
-                  |})) in
-          M.alloc α5 in
-        M.alloc tt
-      else
-        M.alloc tt in
-    M.read α0.
+                    multisig.Revocation.transaction := M.read (| trans_id |);
+                    multisig.Revocation.from := M.read (| caller |);
+                  |}))
+              |)
+            |) in
+          M.alloc (| tt |)
+        else
+          M.alloc (| tt |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_revoke_confirmation :
     Notations.DoubleColon Self "revoke_confirmation" := {
@@ -3042,128 +3194,149 @@ Section Impl_multisig_Multisig_t.
       (self : mut_ref Self)
       (trans_id : ltac:(multisig.TransactionId))
       : M (core.result.Result.t unit multisig.Error.t) :=
-    let* self := M.alloc self in
-    let* trans_id := M.alloc trans_id in
-    let* _ : M.Val unit :=
-      let* α0 : mut_ref multisig.Multisig.t := M.read self in
-      let* α1 : u32.t := M.read trans_id in
-      let* α2 : unit :=
-        M.call
-          (multisig.Multisig.t::["ensure_confirmed"] (borrow (deref α0)) α1) in
-      M.alloc α2 in
-    let* t : M.Val multisig.Transaction.t :=
-      let* α0 : mut_ref multisig.Multisig.t := M.read self in
-      let* α1 : u32.t := M.read trans_id in
-      let* α2 : core.option.Option.t multisig.Transaction.t :=
-        M.call (multisig.Multisig.t::["take_transaction"] α0 α1) in
-      let* α3 : ref str.t := M.read multisig.WRONG_TRANSACTION_ID in
-      let* α4 : multisig.Transaction.t :=
-        M.call
-          ((core.option.Option.t multisig.Transaction.t)::["expect"] α2 α3) in
-      M.alloc α4 in
-    let* _ : M.Val unit :=
-      let* α0 : mut_ref multisig.Multisig.t := M.read self in
-      let* α1 : multisig.Env.t :=
-        M.call (multisig.Multisig.t::["env"] (borrow (deref α0))) in
-      let* α2 : M.Val multisig.Env.t := M.alloc α1 in
-      let* α3 : u128.t :=
-        M.call (multisig.Env.t::["transferred_value"] (borrow α2)) in
-      let* α4 : u128.t :=
-        M.read (multisig.Transaction.Get_transferred_value t) in
-      let* α5 : M.Val bool.t := M.alloc (UnOp.not (BinOp.Pure.eq α3 α4)) in
-      let* α6 : bool.t := M.read (use α5) in
-      if α6 then
-        let* α0 : ref str.t :=
-          M.read
-            (mk_str
-              "assertion failed: self.env().transferred_value() == t.transferred_value") in
-        let* α1 : never.t := M.call (core.panicking.panic α0) in
-        let* α2 : unit := never_to_any α1 in
-        M.alloc α2
-      else
-        M.alloc tt in
-    let* result :
-        M.Val
-          (core.result.Result.t
-            (core.result.Result.t
-              (alloc.vec.Vec.t u8.t alloc.alloc.Global.t)
-              unit)
-            unit) :=
-      let* α0 : ref str.t := M.read (mk_str "not yet implemented") in
-      let* α1 : never.t := M.call (core.panicking.panic α0) in
-      let* α2 :
-          core.result.Result.t
-            (core.result.Result.t
-              (alloc.vec.Vec.t u8.t alloc.alloc.Global.t)
-              unit)
-            unit :=
-        never_to_any α1 in
-      M.alloc α2 in
-    let* result : M.Val (core.result.Result.t unit multisig.Error.t) :=
-      let* α0 : M.Val (core.result.Result.t unit multisig.Error.t) :=
-        match_operator
-          result
-          [
-            fun γ =>
-              (let* α0 := M.read γ in
-              match α0 with
-              | core.result.Result.Ok _ =>
-                let γ0_0 := core.result.Result.Get_Ok_0 γ in
-                let* α0 := M.read γ0_0 in
-                match α0 with
-                | core.result.Result.Ok _ =>
-                  let γ1_0 := core.result.Result.Get_Ok_0 γ0_0 in
-                  M.alloc (core.result.Result.Ok tt)
-                | _ => M.break_match
-                end
-              | _ => M.break_match
-              end) :
-              M (M.Val (core.result.Result.t unit multisig.Error.t));
-            fun γ =>
-              (M.alloc
-                (core.result.Result.Err multisig.Error.TransactionFailed)) :
-              M (M.Val (core.result.Result.t unit multisig.Error.t))
-          ] in
-      M.copy α0 in
-    let* _ : M.Val unit :=
-      let* α0 : mut_ref multisig.Multisig.t := M.read self in
-      let* α1 : multisig.Env.t :=
-        M.call (multisig.Multisig.t::["env"] (borrow (deref α0))) in
-      let* α2 : M.Val multisig.Env.t := M.alloc α1 in
-      let* α3 : u32.t := M.read trans_id in
-      let* α4 : core.result.Result.t unit multisig.Error.t := M.read result in
-      let* α5 :
-          core.result.Result.t
-            (core.option.Option.t (alloc.vec.Vec.t u8.t alloc.alloc.Global.t))
-            multisig.Error.t :=
-        M.call
-          ((core.result.Result.t unit multisig.Error.t)::["map"]
-            α4
-            (fun (α0 : unit) =>
-              (let* α0 := M.alloc α0 in
-              match_operator
-                α0
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let trans_id := M.alloc (| trans_id |) in
+      M.read (|
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(multisig.Multisig.t::["ensure_confirmed"]
+              (borrow (deref (M.read (| self |))))
+              (M.read (| trans_id |)))
+            |)
+          |) in
+        let t : M.Val multisig.Transaction.t :=
+          M.alloc (|
+            M.call (|((core.option.Option.t multisig.Transaction.t)::["expect"]
+              (M.call (|(multisig.Multisig.t::["take_transaction"]
+                (M.read (| self |))
+                (M.read (| trans_id |)))
+              |))
+              (M.read (| multisig.WRONG_TRANSACTION_ID |)))
+            |)
+          |) in
+        let _ : M.Val unit :=
+          if
+            M.read (|
+              use
+                (M.alloc (|
+                  UnOp.not
+                    (BinOp.Pure.eq
+                      (M.call (|(multisig.Env.t::["transferred_value"]
+                        (borrow
+                          (M.alloc (|
+                            M.call (|(multisig.Multisig.t::["env"]
+                              (borrow (deref (M.read (| self |)))))
+                            |)
+                          |))))
+                      |))
+                      (M.read (| multisig.Transaction.Get_transferred_value t
+                      |)))
+                |))
+            |)
+          then
+            M.alloc (|
+              never_to_any (|
+                M.call (|(core.panicking.panic
+                  (M.read (|
+                    mk_str
+                      "assertion failed: self.env().transferred_value() == t.transferred_value"
+                  |)))
+                |)
+              |)
+            |)
+          else
+            M.alloc (| tt |) in
+        let result :
+            M.Val
+              (core.result.Result.t
+                (core.result.Result.t
+                  (alloc.vec.Vec.t u8.t alloc.alloc.Global.t)
+                  unit)
+                unit) :=
+          M.alloc (|
+            never_to_any (|
+              M.call (|(core.panicking.panic
+                (M.read (| mk_str "not yet implemented" |)))
+              |)
+            |)
+          |) in
+        let result : M.Val (core.result.Result.t unit multisig.Error.t) :=
+          M.copy (|
+            ltac:
+              (M.monadic_match_operator
+                result
                 [
-                  fun γ =>
-                    (M.pure core.option.Option.None) :
-                    M
-                      (core.option.Option.t
-                        (alloc.vec.Vec.t u8.t alloc.alloc.Global.t))
-                ]) :
-              M
-                (core.option.Option.t
-                  (alloc.vec.Vec.t u8.t alloc.alloc.Global.t)))) in
-      let* α6 : unit :=
-        M.call
-          (multisig.Env.t::["emit_event"]
-            (borrow α2)
-            (multisig.Event.Execution
-              {|
-                multisig.Execution.transaction := α3;
-                multisig.Execution.result := α5;
-              |})) in
-      M.alloc α6 in
-    M.read result.
+                  fun
+                      (γ :
+                        M.Val
+                          (core.result.Result.t
+                            (core.result.Result.t
+                              (alloc.vec.Vec.t u8.t alloc.alloc.Global.t)
+                              unit)
+                            unit)) =>
+                    match M.read (| γ |) with
+                    | core.result.Result.Ok _ =>
+                      let γ0_0 := core.result.Result.Get_Ok_0 γ in
+                      match M.read (| γ0_0 |) with
+                      | core.result.Result.Ok _ =>
+                        let γ1_0 := core.result.Result.Get_Ok_0 γ0_0 in
+                        M.alloc (| core.result.Result.Ok tt |)
+                      | _ => M.break_match(||)
+                      end
+                    | _ => M.break_match(||)
+                    end :
+                    M.Val (core.result.Result.t unit multisig.Error.t);
+                  fun
+                      (γ :
+                        M.Val
+                          (core.result.Result.t
+                            (core.result.Result.t
+                              (alloc.vec.Vec.t u8.t alloc.alloc.Global.t)
+                              unit)
+                            unit)) =>
+                    (M.alloc (|
+                      core.result.Result.Err multisig.Error.TransactionFailed
+                    |)) :
+                    M.Val (core.result.Result.t unit multisig.Error.t)
+                ])
+          |) in
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(multisig.Env.t::["emit_event"]
+              (borrow
+                (M.alloc (|
+                  M.call (|(multisig.Multisig.t::["env"]
+                    (borrow (deref (M.read (| self |)))))
+                  |)
+                |)))
+              (multisig.Event.Execution
+                {|
+                  multisig.Execution.transaction := M.read (| trans_id |);
+                  multisig.Execution.result :=
+                    M.call (|((core.result.Result.t
+                          unit
+                          multisig.Error.t)::["map"]
+                      (M.read (| result |))
+                      (fun (α0 : unit) =>
+                        (ltac:
+                          (M.monadic_match_operator
+                            (M.alloc (| α0 |))
+                            [
+                              fun γ =>
+                                core.option.Option.None :
+                                core.option.Option.t
+                                  (alloc.vec.Vec.t u8.t alloc.alloc.Global.t)
+                            ])) :
+                        core.option.Option.t
+                          (alloc.vec.Vec.t u8.t alloc.alloc.Global.t)))
+                    |);
+                |}))
+            |)
+          |) in
+        result
+      |)
+    )).
   
   Global Instance AssociatedFunction_invoke_transaction :
     Notations.DoubleColon Self "invoke_transaction" := {

@@ -34,7 +34,8 @@ Section Impl_enums_testcase_linked_list_List_t.
       }
   *)
   Definition new : M enums_testcase_linked_list.List.t :=
-    M.pure enums_testcase_linked_list.List.Nil.
+    ltac:(M.monadic ( enums_testcase_linked_list.List.Nil
+    )).
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
@@ -50,20 +51,17 @@ Section Impl_enums_testcase_linked_list_List_t.
       (self : Self)
       (elem : u32.t)
       : M enums_testcase_linked_list.List.t :=
-    let* self := M.alloc self in
-    let* elem := M.alloc elem in
-    let* α0 : u32.t := M.read elem in
-    let* α1 : enums_testcase_linked_list.List.t := M.read self in
-    let* α2 :
-        alloc.boxed.Box.t
-          enums_testcase_linked_list.List.t
-          alloc.alloc.Global.t :=
-      M.call
-        ((alloc.boxed.Box.t
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let elem := M.alloc (| elem |) in
+      enums_testcase_linked_list.List.Cons
+        (M.read (| elem |))
+        (M.call (|((alloc.boxed.Box.t
               enums_testcase_linked_list.List.t
               alloc.alloc.Global.t)::["new"]
-          α1) in
-    M.pure (enums_testcase_linked_list.List.Cons α0 α2).
+          (M.read (| self |)))
+        |))
+    )).
   
   Global Instance AssociatedFunction_prepend :
     Notations.DoubleColon Self "prepend" := {
@@ -89,50 +87,41 @@ Section Impl_enums_testcase_linked_list_List_t.
       }
   *)
   Definition len (self : ref Self) : M u32.t :=
-    let* self := M.alloc self in
-    let* α0 : ref enums_testcase_linked_list.List.t := M.read self in
-    let* α1 : M.Val u32.t :=
-      match_operator
-        (deref α0)
-        [
-          fun γ =>
-            (let* α0 := M.read γ in
-            match α0 with
-            | enums_testcase_linked_list.List.Cons _ _ =>
-              let γ0_0 := enums_testcase_linked_list.List.Get_Cons_0 γ in
-              let γ0_1 := enums_testcase_linked_list.List.Get_Cons_1 γ in
-              let* tail := M.alloc (borrow γ0_1) in
-              let* α0 :
-                  ref
-                    (alloc.boxed.Box.t
-                      enums_testcase_linked_list.List.t
-                      alloc.alloc.Global.t) :=
-                M.read tail in
-              let* α1 :
-                  alloc.boxed.Box.t
-                    enums_testcase_linked_list.List.t
-                    alloc.alloc.Global.t :=
-                M.read (deref α0) in
-              let* α2 : u32.t :=
-                M.call
-                  (enums_testcase_linked_list.List.t::["len"]
-                    (borrow (deref α1))) in
-              let* α3 : u32.t :=
-                BinOp.Panic.add ((Integer.of_Z 1) : u32.t) α2 in
-              M.alloc α3
-            | _ => M.break_match
-            end) :
-            M (M.Val u32.t);
-          fun γ =>
-            (let* α0 := M.read γ in
-            match α0 with
-            | enums_testcase_linked_list.List.Nil =>
-              M.alloc ((Integer.of_Z 0) : u32.t)
-            | _ => M.break_match
-            end) :
-            M (M.Val u32.t)
-        ] in
-    M.read α1.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      M.read (|
+        ltac:
+          (M.monadic_match_operator
+            (deref (M.read (| self |)))
+            [
+              fun (γ : M.Val enums_testcase_linked_list.List.t) =>
+                match M.read (| γ |) with
+                | enums_testcase_linked_list.List.Cons _ _ =>
+                  let γ0_0 := enums_testcase_linked_list.List.Get_Cons_0 γ in
+                  let γ0_1 := enums_testcase_linked_list.List.Get_Cons_1 γ in
+                  let tail := M.alloc (| borrow γ0_1 |) in
+                  M.alloc (|
+                    BinOp.Panic.add (|
+                      (Integer.of_Z 1) : u32.t,
+                      M.call (|(enums_testcase_linked_list.List.t::["len"]
+                        (borrow
+                          (deref (M.read (| deref (M.read (| tail |)) |)))))
+                      |)
+                    |)
+                  |)
+                | _ => M.break_match(||)
+                end :
+                M.Val u32.t;
+              fun (γ : M.Val enums_testcase_linked_list.List.t) =>
+                match M.read (| γ |) with
+                | enums_testcase_linked_list.List.Nil =>
+                  M.alloc (| (Integer.of_Z 0) : u32.t |)
+                | _ => M.break_match(||)
+                end :
+                M.Val u32.t
+            ])
+      |)
+    )).
   
   Global Instance AssociatedFunction_len : Notations.DoubleColon Self "len" := {
     Notations.double_colon := len;
@@ -153,80 +142,83 @@ Section Impl_enums_testcase_linked_list_List_t.
       }
   *)
   Definition stringify (self : ref Self) : M alloc.string.String.t :=
-    let* self := M.alloc self in
-    let* α0 : ref enums_testcase_linked_list.List.t := M.read self in
-    let* α1 : M.Val alloc.string.String.t :=
-      match_operator
-        (deref α0)
-        [
-          fun γ =>
-            (let* α0 := M.read γ in
-            match α0 with
-            | enums_testcase_linked_list.List.Cons _ _ =>
-              let γ0_0 := enums_testcase_linked_list.List.Get_Cons_0 γ in
-              let γ0_1 := enums_testcase_linked_list.List.Get_Cons_1 γ in
-              let* head := M.copy γ0_0 in
-              let* tail := M.alloc (borrow γ0_1) in
-              let* res : M.Val alloc.string.String.t :=
-                let* α0 : ref str.t := M.read (mk_str "") in
-                let* α1 : ref str.t := M.read (mk_str ", ") in
-                let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-                let* α3 : core.fmt.rt.Argument.t :=
-                  M.call
-                    (core.fmt.rt.Argument.t::["new_display"] (borrow head)) in
-                let* α4 :
-                    ref
-                      (alloc.boxed.Box.t
-                        enums_testcase_linked_list.List.t
-                        alloc.alloc.Global.t) :=
-                  M.read tail in
-                let* α5 :
-                    alloc.boxed.Box.t
-                      enums_testcase_linked_list.List.t
-                      alloc.alloc.Global.t :=
-                  M.read (deref α4) in
-                let* α6 : alloc.string.String.t :=
-                  M.call
-                    (enums_testcase_linked_list.List.t::["stringify"]
-                      (borrow (deref α5))) in
-                let* α7 : M.Val alloc.string.String.t := M.alloc α6 in
-                let* α8 : core.fmt.rt.Argument.t :=
-                  M.call
-                    (core.fmt.rt.Argument.t::["new_display"] (borrow α7)) in
-                let* α9 : M.Val (array core.fmt.rt.Argument.t) :=
-                  M.alloc [ α3; α8 ] in
-                let* α10 : core.fmt.Arguments.t :=
-                  M.call
-                    (core.fmt.Arguments.t::["new_v1"]
-                      (pointer_coercion "Unsize" (borrow α2))
-                      (pointer_coercion "Unsize" (borrow α9))) in
-                let* α11 : alloc.string.String.t :=
-                  M.call (alloc.fmt.format α10) in
-                M.alloc α11 in
-              M.pure res
-            | _ => M.break_match
-            end) :
-            M (M.Val alloc.string.String.t);
-          fun γ =>
-            (let* α0 := M.read γ in
-            match α0 with
-            | enums_testcase_linked_list.List.Nil =>
-              let* res : M.Val alloc.string.String.t :=
-                let* α0 : ref str.t := M.read (mk_str "Nil") in
-                let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-                let* α2 : core.fmt.Arguments.t :=
-                  M.call
-                    (core.fmt.Arguments.t::["new_const"]
-                      (pointer_coercion "Unsize" (borrow α1))) in
-                let* α3 : alloc.string.String.t :=
-                  M.call (alloc.fmt.format α2) in
-                M.alloc α3 in
-              M.pure res
-            | _ => M.break_match
-            end) :
-            M (M.Val alloc.string.String.t)
-        ] in
-    M.read α1.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      M.read (|
+        ltac:
+          (M.monadic_match_operator
+            (deref (M.read (| self |)))
+            [
+              fun (γ : M.Val enums_testcase_linked_list.List.t) =>
+                match M.read (| γ |) with
+                | enums_testcase_linked_list.List.Cons _ _ =>
+                  let γ0_0 := enums_testcase_linked_list.List.Get_Cons_0 γ in
+                  let γ0_1 := enums_testcase_linked_list.List.Get_Cons_1 γ in
+                  let head := M.copy (| γ0_0 |) in
+                  let tail := M.alloc (| borrow γ0_1 |) in
+                  let res : M.Val alloc.string.String.t :=
+                    M.alloc (|
+                      M.call (|(alloc.fmt.format
+                        (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                          (pointer_coercion
+                            "Unsize"
+                            (borrow
+                              (M.alloc (|
+                                [
+                                  M.read (| mk_str "" |);
+                                  M.read (| mk_str ", " |)
+                                ]
+                              |))))
+                          (pointer_coercion
+                            "Unsize"
+                            (borrow
+                              (M.alloc (|
+                                [
+                                  M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                                    (borrow head))
+                                  |);
+                                  M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                                    (borrow
+                                      (M.alloc (|
+                                        M.call (|(enums_testcase_linked_list.List.t::["stringify"]
+                                          (borrow
+                                            (deref
+                                              (M.read (|
+                                                deref (M.read (| tail |))
+                                              |)))))
+                                        |)
+                                      |))))
+                                  |)
+                                ]
+                              |)))))
+                        |)))
+                      |)
+                    |) in
+                  res
+                | _ => M.break_match(||)
+                end :
+                M.Val alloc.string.String.t;
+              fun (γ : M.Val enums_testcase_linked_list.List.t) =>
+                match M.read (| γ |) with
+                | enums_testcase_linked_list.List.Nil =>
+                  let res : M.Val alloc.string.String.t :=
+                    M.alloc (|
+                      M.call (|(alloc.fmt.format
+                        (M.call (|(core.fmt.Arguments.t::["new_const"]
+                          (pointer_coercion
+                            "Unsize"
+                            (borrow
+                              (M.alloc (| [ M.read (| mk_str "Nil" |) ] |)))))
+                        |)))
+                      |)
+                    |) in
+                  res
+                | _ => M.break_match(||)
+                end :
+                M.Val alloc.string.String.t
+            ])
+      |)
+    )).
   
   Global Instance AssociatedFunction_stringify :
     Notations.DoubleColon Self "stringify" := {
@@ -252,74 +244,99 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* list : M.Val enums_testcase_linked_list.List.t :=
-    let* α0 : enums_testcase_linked_list.List.t :=
-      M.call enums_testcase_linked_list.List.t::["new"] in
-    M.alloc α0 in
-  let* _ : M.Val unit :=
-    let* α0 : enums_testcase_linked_list.List.t := M.read list in
-    let* α1 : enums_testcase_linked_list.List.t :=
-      M.call
-        (enums_testcase_linked_list.List.t::["prepend"]
-          α0
-          ((Integer.of_Z 1) : u32.t)) in
-    assign list α1 in
-  let* _ : M.Val unit :=
-    let* α0 : enums_testcase_linked_list.List.t := M.read list in
-    let* α1 : enums_testcase_linked_list.List.t :=
-      M.call
-        (enums_testcase_linked_list.List.t::["prepend"]
-          α0
-          ((Integer.of_Z 2) : u32.t)) in
-    assign list α1 in
-  let* _ : M.Val unit :=
-    let* α0 : enums_testcase_linked_list.List.t := M.read list in
-    let* α1 : enums_testcase_linked_list.List.t :=
-      M.call
-        (enums_testcase_linked_list.List.t::["prepend"]
-          α0
-          ((Integer.of_Z 3) : u32.t)) in
-    assign list α1 in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "linked list has length: ") in
-      let* α1 : ref str.t := M.read (mk_str "
-") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : u32.t :=
-        M.call (enums_testcase_linked_list.List.t::["len"] (borrow list)) in
-      let* α4 : M.Val u32.t := M.alloc α3 in
-      let* α5 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α4)) in
-      let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
-      let* α7 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α6))) in
-      let* α8 : unit := M.call (std.io.stdio._print α7) in
-      M.alloc α8 in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "") in
-      let* α1 : ref str.t := M.read (mk_str "
-") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : alloc.string.String.t :=
-        M.call
-          (enums_testcase_linked_list.List.t::["stringify"] (borrow list)) in
-      let* α4 : M.Val alloc.string.String.t := M.alloc α3 in
-      let* α5 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α4)) in
-      let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
-      let* α7 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α6))) in
-      let* α8 : unit := M.call (std.io.stdio._print α7) in
-      M.alloc α8 in
-    M.alloc tt in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+  ltac:(M.monadic (
+    M.read (|
+      let list : M.Val enums_testcase_linked_list.List.t :=
+        M.alloc (| M.call (|enums_testcase_linked_list.List.t::["new"] |) |) in
+      let _ : M.Val unit :=
+        assign (|
+          list,
+          M.call (|(enums_testcase_linked_list.List.t::["prepend"]
+            (M.read (| list |))
+            ((Integer.of_Z 1) : u32.t))
+          |)
+        |) in
+      let _ : M.Val unit :=
+        assign (|
+          list,
+          M.call (|(enums_testcase_linked_list.List.t::["prepend"]
+            (M.read (| list |))
+            ((Integer.of_Z 2) : u32.t))
+          |)
+        |) in
+      let _ : M.Val unit :=
+        assign (|
+          list,
+          M.call (|(enums_testcase_linked_list.List.t::["prepend"]
+            (M.read (| list |))
+            ((Integer.of_Z 3) : u32.t))
+          |)
+        |) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.read (| mk_str "linked list has length: " |);
+                        M.read (| mk_str "
+" |)
+                      ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                          (borrow
+                            (M.alloc (|
+                              M.call (|(enums_testcase_linked_list.List.t::["len"]
+                                (borrow list))
+                              |)
+                            |))))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [ M.read (| mk_str "" |); M.read (| mk_str "
+" |) ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                          (borrow
+                            (M.alloc (|
+                              M.call (|(enums_testcase_linked_list.List.t::["stringify"]
+                                (borrow list))
+                              |)
+                            |))))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      M.alloc (| tt |)
+    |)
+  )).

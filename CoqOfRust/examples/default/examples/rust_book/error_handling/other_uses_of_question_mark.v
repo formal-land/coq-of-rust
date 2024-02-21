@@ -26,11 +26,14 @@ Section Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self := M.alloc self in
-    let* f := M.alloc f in
-    let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
-    let* α1 : ref str.t := M.read (mk_str "EmptyVec") in
-    M.call (core.fmt.Formatter.t::["write_str"] α0 α1).
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let f := M.alloc (| f |) in
+      M.call (|(core.fmt.Formatter.t::["write_str"]
+        (M.read (| f |))
+        (M.read (| mk_str "EmptyVec" |)))
+      |)
+    )).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
@@ -55,16 +58,20 @@ Section Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self := M.alloc self in
-    let* f := M.alloc f in
-    let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
-    let* α1 : ref str.t := M.read (mk_str "invalid first item to double") in
-    let* α2 : M.Val (array (ref str.t)) := M.alloc [ α1 ] in
-    let* α3 : core.fmt.Arguments.t :=
-      M.call
-        (core.fmt.Arguments.t::["new_const"]
-          (pointer_coercion "Unsize" (borrow α2))) in
-    M.call (core.fmt.Formatter.t::["write_fmt"] α0 α3).
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let f := M.alloc (| f |) in
+      M.call (|(core.fmt.Formatter.t::["write_fmt"]
+        (M.read (| f |))
+        (M.call (|(core.fmt.Arguments.t::["new_const"]
+          (pointer_coercion
+            "Unsize"
+            (borrow
+              (M.alloc (| [ M.read (| mk_str "invalid first item to double" |) ]
+              |)))))
+        |)))
+      |)
+    )).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
@@ -100,227 +107,181 @@ fn double_first(vec: Vec<&str>) -> Result<i32> {
 Definition double_first
     (vec : alloc.vec.Vec.t (ref str.t) alloc.vec.Vec.Default.A)
     : M ltac:(other_uses_of_question_mark.Result i32.t) :=
-  let* vec := M.alloc vec in
-  let return_ :=
-    M.return_ (R := ltac:(other_uses_of_question_mark.Result i32.t)) in
-  M.catch_return
-    (let* first : M.Val (ref (ref str.t)) :=
-      let* α0 :
-          (core.result.Result.t
-              (ref (ref str.t))
-              other_uses_of_question_mark.EmptyVec.t)
-            ->
-            M (core.ops.control_flow.ControlFlow.t _ _) :=
-        ltac:(M.get_method (fun ℐ =>
-          core.ops.try_trait.Try.branch
-            (Self :=
-              core.result.Result.t
-                (ref (ref str.t))
-                other_uses_of_question_mark.EmptyVec.t)
-            (Trait := ℐ))) in
-      let* α1 :
-          (ref (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t)) ->
-            M (ref _) :=
-        ltac:(M.get_method (fun ℐ =>
-          core.ops.deref.Deref.deref
-            (Self := alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t)
-            (Trait := ℐ))) in
-      let* α2 : ref (slice (ref str.t)) := M.call (α1 (borrow vec)) in
-      let* α3 : core.option.Option.t (ref (ref str.t)) :=
-        M.call ((slice (ref str.t))::["first"] α2) in
-      let* α4 :
-          core.result.Result.t
-            (ref (ref str.t))
-            other_uses_of_question_mark.EmptyVec.t :=
-        M.call
-          ((core.option.Option.t (ref (ref str.t)))::["ok_or"]
-            α3
-            other_uses_of_question_mark.EmptyVec.Build) in
-      let* α5 :
-          core.ops.control_flow.ControlFlow.t
-            (core.result.Result.t
-              core.convert.Infallible.t
-              other_uses_of_question_mark.EmptyVec.t)
-            (ref (ref str.t)) :=
-        M.call (α0 α4) in
-      let* α6 :
-          M.Val
-            (core.ops.control_flow.ControlFlow.t
-              (core.result.Result.t
-                core.convert.Infallible.t
-                other_uses_of_question_mark.EmptyVec.t)
-              (ref (ref str.t))) :=
-        M.alloc α5 in
-      let* α7 : M.Val (ref (ref str.t)) :=
-        match_operator
-          α6
-          [
-            fun γ =>
-              (let* α0 := M.read γ in
-              match α0 with
-              | core.ops.control_flow.ControlFlow.Break _ =>
-                let γ0_0 := core.ops.control_flow.ControlFlow.Get_Break_0 γ in
-                let* residual := M.copy γ0_0 in
-                let* α0 :
-                    (core.result.Result.t
-                        core.convert.Infallible.t
-                        other_uses_of_question_mark.EmptyVec.t)
-                      ->
-                      M
-                        (core.result.Result.t
-                          i32.t
-                          (alloc.boxed.Box.t
-                            (dyn [core.error.Error.Trait])
-                            alloc.alloc.Global.t)) :=
-                  ltac:(M.get_method (fun ℐ =>
-                    core.ops.try_trait.FromResidual.from_residual
-                      (Self :=
-                        core.result.Result.t
-                          i32.t
-                          (alloc.boxed.Box.t
-                            (dyn [core.error.Error.Trait])
-                            alloc.alloc.Global.t))
-                      (R :=
-                        core.result.Result.t
-                          core.convert.Infallible.t
-                          other_uses_of_question_mark.EmptyVec.t)
-                      (Trait := ℐ))) in
-                let* α1 :
-                    core.result.Result.t
-                      core.convert.Infallible.t
-                      other_uses_of_question_mark.EmptyVec.t :=
-                  M.read residual in
-                let* α2 :
-                    core.result.Result.t
-                      i32.t
-                      (alloc.boxed.Box.t
-                        (dyn [core.error.Error.Trait])
-                        alloc.alloc.Global.t) :=
-                  M.call (α0 α1) in
-                let* α3 : M.Val never.t := return_ α2 in
-                let* α4 := M.read α3 in
-                let* α5 : ref (ref str.t) := never_to_any α4 in
-                M.alloc α5
-              | _ => M.break_match
-              end) :
-              M (M.Val (ref (ref str.t)));
-            fun γ =>
-              (let* α0 := M.read γ in
-              match α0 with
-              | core.ops.control_flow.ControlFlow.Continue _ =>
-                let γ0_0 :=
-                  core.ops.control_flow.ControlFlow.Get_Continue_0 γ in
-                let* val := M.copy γ0_0 in
-                M.pure val
-              | _ => M.break_match
-              end) :
-              M (M.Val (ref (ref str.t)))
-          ] in
-      M.copy α7 in
-    let* parsed : M.Val i32.t :=
-      let* α0 :
-          (core.result.Result.t i32.t core.num.error.ParseIntError.t) ->
-            M (core.ops.control_flow.ControlFlow.t _ _) :=
-        ltac:(M.get_method (fun ℐ =>
-          core.ops.try_trait.Try.branch
-            (Self := core.result.Result.t i32.t core.num.error.ParseIntError.t)
-            (Trait := ℐ))) in
-      let* α1 : ref (ref str.t) := M.read first in
-      let* α2 : ref str.t := M.read (deref α1) in
-      let* α3 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
-        M.call (str.t::["parse"] α2) in
-      let* α4 :
-          core.ops.control_flow.ControlFlow.t
-            (core.result.Result.t
-              core.convert.Infallible.t
-              core.num.error.ParseIntError.t)
-            i32.t :=
-        M.call (α0 α3) in
-      let* α5 :
-          M.Val
-            (core.ops.control_flow.ControlFlow.t
-              (core.result.Result.t
-                core.convert.Infallible.t
-                core.num.error.ParseIntError.t)
-              i32.t) :=
-        M.alloc α4 in
-      let* α6 : M.Val i32.t :=
-        match_operator
-          α5
-          [
-            fun γ =>
-              (let* α0 := M.read γ in
-              match α0 with
-              | core.ops.control_flow.ControlFlow.Break _ =>
-                let γ0_0 := core.ops.control_flow.ControlFlow.Get_Break_0 γ in
-                let* residual := M.copy γ0_0 in
-                let* α0 :
-                    (core.result.Result.t
-                        core.convert.Infallible.t
-                        core.num.error.ParseIntError.t)
-                      ->
-                      M
-                        (core.result.Result.t
-                          i32.t
-                          (alloc.boxed.Box.t
-                            (dyn [core.error.Error.Trait])
-                            alloc.alloc.Global.t)) :=
-                  ltac:(M.get_method (fun ℐ =>
-                    core.ops.try_trait.FromResidual.from_residual
-                      (Self :=
-                        core.result.Result.t
-                          i32.t
-                          (alloc.boxed.Box.t
-                            (dyn [core.error.Error.Trait])
-                            alloc.alloc.Global.t))
-                      (R :=
-                        core.result.Result.t
-                          core.convert.Infallible.t
-                          core.num.error.ParseIntError.t)
-                      (Trait := ℐ))) in
-                let* α1 :
-                    core.result.Result.t
-                      core.convert.Infallible.t
-                      core.num.error.ParseIntError.t :=
-                  M.read residual in
-                let* α2 :
-                    core.result.Result.t
-                      i32.t
-                      (alloc.boxed.Box.t
-                        (dyn [core.error.Error.Trait])
-                        alloc.alloc.Global.t) :=
-                  M.call (α0 α1) in
-                let* α3 : M.Val never.t := return_ α2 in
-                let* α4 := M.read α3 in
-                let* α5 : i32.t := never_to_any α4 in
-                M.alloc α5
-              | _ => M.break_match
-              end) :
-              M (M.Val i32.t);
-            fun γ =>
-              (let* α0 := M.read γ in
-              match α0 with
-              | core.ops.control_flow.ControlFlow.Continue _ =>
-                let γ0_0 :=
-                  core.ops.control_flow.ControlFlow.Get_Continue_0 γ in
-                let* val := M.copy γ0_0 in
-                M.pure val
-              | _ => M.break_match
-              end) :
-              M (M.Val i32.t)
-          ] in
-      M.copy α6 in
-    let* α0 : i32.t := M.read parsed in
-    let* α1 : i32.t := BinOp.Panic.mul ((Integer.of_Z 2) : i32.t) α0 in
-    let* α0 :
-        M.Val
-          (core.result.Result.t
-            i32.t
-            (alloc.boxed.Box.t
-              (dyn [core.error.Error.Trait])
-              alloc.alloc.Global.t)) :=
-      M.alloc (core.result.Result.Ok α1) in
-    M.read α0).
+  ltac:(M.monadic (
+    let vec := M.alloc (| vec |) in
+    let return_ :=
+      M.return_ (R := ltac:(other_uses_of_question_mark.Result i32.t)) in
+    M.catch_return
+      (M.read (|
+        let first : M.Val (ref (ref str.t)) :=
+          M.copy (|
+            ltac:
+              (M.monadic_match_operator
+                (M.alloc (|
+                  M.call (|(ltac:(M.get_method (fun ℐ =>
+                      core.ops.try_trait.Try.branch
+                        (Self :=
+                          core.result.Result.t
+                            (ref (ref str.t))
+                            other_uses_of_question_mark.EmptyVec.t)
+                        (Trait := ℐ)))
+                    (M.call (|((core.option.Option.t
+                          (ref (ref str.t)))::["ok_or"]
+                      (M.call (|((slice (ref str.t))::["first"]
+                        (M.call (|(ltac:(M.get_method (fun ℐ =>
+                            core.ops.deref.Deref.deref
+                              (Self :=
+                                alloc.vec.Vec.t
+                                  (ref str.t)
+                                  alloc.alloc.Global.t)
+                              (Trait := ℐ)))
+                          (borrow vec))
+                        |)))
+                      |))
+                      other_uses_of_question_mark.EmptyVec.Build)
+                    |)))
+                  |)
+                |))
+                [
+                  fun
+                      (γ :
+                        M.Val
+                          (core.ops.control_flow.ControlFlow.t
+                            (core.result.Result.t
+                              core.convert.Infallible.t
+                              other_uses_of_question_mark.EmptyVec.t)
+                            (ref (ref str.t)))) =>
+                    match M.read (| γ |) with
+                    | core.ops.control_flow.ControlFlow.Break _ =>
+                      let γ0_0 :=
+                        core.ops.control_flow.ControlFlow.Get_Break_0 γ in
+                      let residual := M.copy (| γ0_0 |) in
+                      M.alloc (|
+                        never_to_any (|
+                          M.read (|
+                            return_
+                              (M.call (|(ltac:(M.get_method (fun ℐ =>
+                                  core.ops.try_trait.FromResidual.from_residual
+                                    (Self :=
+                                      core.result.Result.t
+                                        i32.t
+                                        (alloc.boxed.Box.t
+                                          (dyn [core.error.Error.Trait])
+                                          alloc.alloc.Global.t))
+                                    (R :=
+                                      core.result.Result.t
+                                        core.convert.Infallible.t
+                                        other_uses_of_question_mark.EmptyVec.t)
+                                    (Trait := ℐ)))
+                                (M.read (| residual |)))
+                              |))
+                          |)
+                        |)
+                      |)
+                    | _ => M.break_match(||)
+                    end :
+                    M.Val (ref (ref str.t));
+                  fun
+                      (γ :
+                        M.Val
+                          (core.ops.control_flow.ControlFlow.t
+                            (core.result.Result.t
+                              core.convert.Infallible.t
+                              other_uses_of_question_mark.EmptyVec.t)
+                            (ref (ref str.t)))) =>
+                    match M.read (| γ |) with
+                    | core.ops.control_flow.ControlFlow.Continue _ =>
+                      let γ0_0 :=
+                        core.ops.control_flow.ControlFlow.Get_Continue_0 γ in
+                      let val := M.copy (| γ0_0 |) in
+                      val
+                    | _ => M.break_match(||)
+                    end :
+                    M.Val (ref (ref str.t))
+                ])
+          |) in
+        let parsed : M.Val i32.t :=
+          M.copy (|
+            ltac:
+              (M.monadic_match_operator
+                (M.alloc (|
+                  M.call (|(ltac:(M.get_method (fun ℐ =>
+                      core.ops.try_trait.Try.branch
+                        (Self :=
+                          core.result.Result.t
+                            i32.t
+                            core.num.error.ParseIntError.t)
+                        (Trait := ℐ)))
+                    (M.call (|(str.t::["parse"]
+                      (M.read (| deref (M.read (| first |)) |)))
+                    |)))
+                  |)
+                |))
+                [
+                  fun
+                      (γ :
+                        M.Val
+                          (core.ops.control_flow.ControlFlow.t
+                            (core.result.Result.t
+                              core.convert.Infallible.t
+                              core.num.error.ParseIntError.t)
+                            i32.t)) =>
+                    match M.read (| γ |) with
+                    | core.ops.control_flow.ControlFlow.Break _ =>
+                      let γ0_0 :=
+                        core.ops.control_flow.ControlFlow.Get_Break_0 γ in
+                      let residual := M.copy (| γ0_0 |) in
+                      M.alloc (|
+                        never_to_any (|
+                          M.read (|
+                            return_
+                              (M.call (|(ltac:(M.get_method (fun ℐ =>
+                                  core.ops.try_trait.FromResidual.from_residual
+                                    (Self :=
+                                      core.result.Result.t
+                                        i32.t
+                                        (alloc.boxed.Box.t
+                                          (dyn [core.error.Error.Trait])
+                                          alloc.alloc.Global.t))
+                                    (R :=
+                                      core.result.Result.t
+                                        core.convert.Infallible.t
+                                        core.num.error.ParseIntError.t)
+                                    (Trait := ℐ)))
+                                (M.read (| residual |)))
+                              |))
+                          |)
+                        |)
+                      |)
+                    | _ => M.break_match(||)
+                    end :
+                    M.Val i32.t;
+                  fun
+                      (γ :
+                        M.Val
+                          (core.ops.control_flow.ControlFlow.t
+                            (core.result.Result.t
+                              core.convert.Infallible.t
+                              core.num.error.ParseIntError.t)
+                            i32.t)) =>
+                    match M.read (| γ |) with
+                    | core.ops.control_flow.ControlFlow.Continue _ =>
+                      let γ0_0 :=
+                        core.ops.control_flow.ControlFlow.Get_Continue_0 γ in
+                      let val := M.copy (| γ0_0 |) in
+                      val
+                    | _ => M.break_match(||)
+                    end :
+                    M.Val i32.t
+                ])
+          |) in
+        M.alloc (|
+          core.result.Result.Ok
+            (BinOp.Panic.mul (| (Integer.of_Z 2) : i32.t, M.read (| parsed |)
+            |))
+        |)
+      |))
+  )).
 
 (*
 fn print(result: Result<i32>) {
@@ -333,65 +294,102 @@ fn print(result: Result<i32>) {
 Definition print
     (result : ltac:(other_uses_of_question_mark.Result i32.t))
     : M unit :=
-  let* result := M.alloc result in
-  let* α0 : M.Val unit :=
-    match_operator
-      result
-      [
-        fun γ =>
-          (let* α0 := M.read γ in
-          match α0 with
-          | core.result.Result.Ok _ =>
-            let γ0_0 := core.result.Result.Get_Ok_0 γ in
-            let* n := M.copy γ0_0 in
-            let* _ : M.Val unit :=
-              let* α0 : ref str.t := M.read (mk_str "The first doubled is ") in
-              let* α1 : ref str.t := M.read (mk_str "
-") in
-              let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-              let* α3 : core.fmt.rt.Argument.t :=
-                M.call (core.fmt.rt.Argument.t::["new_display"] (borrow n)) in
-              let* α4 : M.Val (array core.fmt.rt.Argument.t) :=
-                M.alloc [ α3 ] in
-              let* α5 : core.fmt.Arguments.t :=
-                M.call
-                  (core.fmt.Arguments.t::["new_v1"]
-                    (pointer_coercion "Unsize" (borrow α2))
-                    (pointer_coercion "Unsize" (borrow α4))) in
-              let* α6 : unit := M.call (std.io.stdio._print α5) in
-              M.alloc α6 in
-            M.alloc tt
-          | _ => M.break_match
-          end) :
-          M (M.Val unit);
-        fun γ =>
-          (let* α0 := M.read γ in
-          match α0 with
-          | core.result.Result.Err _ =>
-            let γ0_0 := core.result.Result.Get_Err_0 γ in
-            let* e := M.copy γ0_0 in
-            let* _ : M.Val unit :=
-              let* α0 : ref str.t := M.read (mk_str "Error: ") in
-              let* α1 : ref str.t := M.read (mk_str "
-") in
-              let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-              let* α3 : core.fmt.rt.Argument.t :=
-                M.call (core.fmt.rt.Argument.t::["new_display"] (borrow e)) in
-              let* α4 : M.Val (array core.fmt.rt.Argument.t) :=
-                M.alloc [ α3 ] in
-              let* α5 : core.fmt.Arguments.t :=
-                M.call
-                  (core.fmt.Arguments.t::["new_v1"]
-                    (pointer_coercion "Unsize" (borrow α2))
-                    (pointer_coercion "Unsize" (borrow α4))) in
-              let* α6 : unit := M.call (std.io.stdio._print α5) in
-              M.alloc α6 in
-            M.alloc tt
-          | _ => M.break_match
-          end) :
-          M (M.Val unit)
-      ] in
-  M.read α0.
+  ltac:(M.monadic (
+    let result := M.alloc (| result |) in
+    M.read (|
+      ltac:
+        (M.monadic_match_operator
+          result
+          [
+            fun
+                (γ :
+                  M.Val
+                    (core.result.Result.t
+                      i32.t
+                      (alloc.boxed.Box.t
+                        (dyn [core.error.Error.Trait])
+                        alloc.alloc.Global.t))) =>
+              match M.read (| γ |) with
+              | core.result.Result.Ok _ =>
+                let γ0_0 := core.result.Result.Get_Ok_0 γ in
+                let n := M.copy (| γ0_0 |) in
+                let _ : M.Val unit :=
+                  M.alloc (|
+                    M.call (|(std.io.stdio._print
+                      (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                        (pointer_coercion
+                          "Unsize"
+                          (borrow
+                            (M.alloc (|
+                              [
+                                M.read (| mk_str "The first doubled is " |);
+                                M.read (| mk_str "
+" |)
+                              ]
+                            |))))
+                        (pointer_coercion
+                          "Unsize"
+                          (borrow
+                            (M.alloc (|
+                              [
+                                M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                                  (borrow n))
+                                |)
+                              ]
+                            |)))))
+                      |)))
+                    |)
+                  |) in
+                M.alloc (| tt |)
+              | _ => M.break_match(||)
+              end :
+              M.Val unit;
+            fun
+                (γ :
+                  M.Val
+                    (core.result.Result.t
+                      i32.t
+                      (alloc.boxed.Box.t
+                        (dyn [core.error.Error.Trait])
+                        alloc.alloc.Global.t))) =>
+              match M.read (| γ |) with
+              | core.result.Result.Err _ =>
+                let γ0_0 := core.result.Result.Get_Err_0 γ in
+                let e := M.copy (| γ0_0 |) in
+                let _ : M.Val unit :=
+                  M.alloc (|
+                    M.call (|(std.io.stdio._print
+                      (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                        (pointer_coercion
+                          "Unsize"
+                          (borrow
+                            (M.alloc (|
+                              [
+                                M.read (| mk_str "Error: " |);
+                                M.read (| mk_str "
+" |)
+                              ]
+                            |))))
+                        (pointer_coercion
+                          "Unsize"
+                          (borrow
+                            (M.alloc (|
+                              [
+                                M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                                  (borrow e))
+                                |)
+                              ]
+                            |)))))
+                      |)))
+                    |)
+                  |) in
+                M.alloc (| tt |)
+              | _ => M.break_match(||)
+              end :
+              M.Val unit
+          ])
+    |)
+  )).
 
 (*
 fn main() {
@@ -406,73 +404,73 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* numbers : M.Val (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t) :=
-    let* α0 : ref str.t := M.read (mk_str "42") in
-    let* α1 : ref str.t := M.read (mk_str "93") in
-    let* α2 : ref str.t := M.read (mk_str "18") in
-    let* α3 : M.Val (array (ref str.t)) := M.alloc [ α0; α1; α2 ] in
-    let* α4 :
-        M.Val (alloc.boxed.Box.t (array (ref str.t)) alloc.alloc.Global.t) :=
-      M.call ((alloc.boxed.Box.t _ alloc.boxed.Box.Default.A)::["new"] α3) in
-    let* α5 : alloc.boxed.Box.t (array (ref str.t)) alloc.alloc.Global.t :=
-      M.read α4 in
-    let* α6 : alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t :=
-      M.call
-        ((slice (ref str.t))::["into_vec"] (pointer_coercion "Unsize" α5)) in
-    M.alloc α6 in
-  let* empty : M.Val (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t) :=
-    let* α0 : alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t :=
-      M.call (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t)::["new"] in
-    M.alloc α0 in
-  let* strings : M.Val (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t) :=
-    let* α0 : ref str.t := M.read (mk_str "tofu") in
-    let* α1 : ref str.t := M.read (mk_str "93") in
-    let* α2 : ref str.t := M.read (mk_str "18") in
-    let* α3 : M.Val (array (ref str.t)) := M.alloc [ α0; α1; α2 ] in
-    let* α4 :
-        M.Val (alloc.boxed.Box.t (array (ref str.t)) alloc.alloc.Global.t) :=
-      M.call ((alloc.boxed.Box.t _ alloc.boxed.Box.Default.A)::["new"] α3) in
-    let* α5 : alloc.boxed.Box.t (array (ref str.t)) alloc.alloc.Global.t :=
-      M.read α4 in
-    let* α6 : alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t :=
-      M.call
-        ((slice (ref str.t))::["into_vec"] (pointer_coercion "Unsize" α5)) in
-    M.alloc α6 in
-  let* _ : M.Val unit :=
-    let* α0 : alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t :=
-      M.read numbers in
-    let* α1 :
-        core.result.Result.t
-          i32.t
-          (alloc.boxed.Box.t
-            (dyn [core.error.Error.Trait])
-            alloc.alloc.Global.t) :=
-      M.call (other_uses_of_question_mark.double_first α0) in
-    let* α2 : unit := M.call (other_uses_of_question_mark.print α1) in
-    M.alloc α2 in
-  let* _ : M.Val unit :=
-    let* α0 : alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t :=
-      M.read empty in
-    let* α1 :
-        core.result.Result.t
-          i32.t
-          (alloc.boxed.Box.t
-            (dyn [core.error.Error.Trait])
-            alloc.alloc.Global.t) :=
-      M.call (other_uses_of_question_mark.double_first α0) in
-    let* α2 : unit := M.call (other_uses_of_question_mark.print α1) in
-    M.alloc α2 in
-  let* _ : M.Val unit :=
-    let* α0 : alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t :=
-      M.read strings in
-    let* α1 :
-        core.result.Result.t
-          i32.t
-          (alloc.boxed.Box.t
-            (dyn [core.error.Error.Trait])
-            alloc.alloc.Global.t) :=
-      M.call (other_uses_of_question_mark.double_first α0) in
-    let* α2 : unit := M.call (other_uses_of_question_mark.print α1) in
-    M.alloc α2 in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+  ltac:(M.monadic (
+    M.read (|
+      let numbers : M.Val (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t) :=
+        M.alloc (|
+          M.call (|((slice (ref str.t))::["into_vec"]
+            (pointer_coercion
+              "Unsize"
+              (M.read (|
+                M.call (|((alloc.boxed.Box.t _ alloc.boxed.Box.Default.A)::["new"]
+                  (M.alloc (|
+                    [
+                      M.read (| mk_str "42" |);
+                      M.read (| mk_str "93" |);
+                      M.read (| mk_str "18" |)
+                    ]
+                  |)))
+                |)
+              |))))
+          |)
+        |) in
+      let empty : M.Val (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t) :=
+        M.alloc (|
+          M.call (|(alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t)::["new"]
+          |)
+        |) in
+      let strings : M.Val (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t) :=
+        M.alloc (|
+          M.call (|((slice (ref str.t))::["into_vec"]
+            (pointer_coercion
+              "Unsize"
+              (M.read (|
+                M.call (|((alloc.boxed.Box.t _ alloc.boxed.Box.Default.A)::["new"]
+                  (M.alloc (|
+                    [
+                      M.read (| mk_str "tofu" |);
+                      M.read (| mk_str "93" |);
+                      M.read (| mk_str "18" |)
+                    ]
+                  |)))
+                |)
+              |))))
+          |)
+        |) in
+      let _ : M.Val unit :=
+        M.alloc (|
+          M.call (|(other_uses_of_question_mark.print
+            (M.call (|(other_uses_of_question_mark.double_first
+              (M.read (| numbers |)))
+            |)))
+          |)
+        |) in
+      let _ : M.Val unit :=
+        M.alloc (|
+          M.call (|(other_uses_of_question_mark.print
+            (M.call (|(other_uses_of_question_mark.double_first
+              (M.read (| empty |)))
+            |)))
+          |)
+        |) in
+      let _ : M.Val unit :=
+        M.alloc (|
+          M.call (|(other_uses_of_question_mark.print
+            (M.call (|(other_uses_of_question_mark.double_first
+              (M.read (| strings |)))
+            |)))
+          |)
+        |) in
+      M.alloc (| tt |)
+    |)
+  )).

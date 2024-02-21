@@ -22,86 +22,90 @@ Section Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self := M.alloc self in
-    let* f := M.alloc f in
-    let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
-    let* α1 : M.Val (ref str.t) :=
-      match_operator
-        self
-        [
-          fun γ =>
-            (let* γ :=
-              let* α0 := M.read γ in
-              M.pure (deref α0) in
-            let* α0 := M.read γ in
-            match α0 with
-            |
-                unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Apple
-                =>
-              let* α0 : ref str.t := M.read (mk_str "Apple") in
-              M.alloc α0
-            | _ => M.break_match
-            end) :
-            M (M.Val (ref str.t));
-          fun γ =>
-            (let* γ :=
-              let* α0 := M.read γ in
-              M.pure (deref α0) in
-            let* α0 := M.read γ in
-            match α0 with
-            |
-                unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Orange
-                =>
-              let* α0 : ref str.t := M.read (mk_str "Orange") in
-              M.alloc α0
-            | _ => M.break_match
-            end) :
-            M (M.Val (ref str.t));
-          fun γ =>
-            (let* γ :=
-              let* α0 := M.read γ in
-              M.pure (deref α0) in
-            let* α0 := M.read γ in
-            match α0 with
-            |
-                unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Banana
-                =>
-              let* α0 : ref str.t := M.read (mk_str "Banana") in
-              M.alloc α0
-            | _ => M.break_match
-            end) :
-            M (M.Val (ref str.t));
-          fun γ =>
-            (let* γ :=
-              let* α0 := M.read γ in
-              M.pure (deref α0) in
-            let* α0 := M.read γ in
-            match α0 with
-            |
-                unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Kiwi
-                =>
-              let* α0 : ref str.t := M.read (mk_str "Kiwi") in
-              M.alloc α0
-            | _ => M.break_match
-            end) :
-            M (M.Val (ref str.t));
-          fun γ =>
-            (let* γ :=
-              let* α0 := M.read γ in
-              M.pure (deref α0) in
-            let* α0 := M.read γ in
-            match α0 with
-            |
-                unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Lemon
-                =>
-              let* α0 : ref str.t := M.read (mk_str "Lemon") in
-              M.alloc α0
-            | _ => M.break_match
-            end) :
-            M (M.Val (ref str.t))
-        ] in
-    let* α2 : ref str.t := M.read α1 in
-    M.call (core.fmt.Formatter.t::["write_str"] α0 α2).
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let f := M.alloc (| f |) in
+      M.call (|(core.fmt.Formatter.t::["write_str"]
+        (M.read (| f |))
+        (M.read (|
+          ltac:
+            (M.monadic_match_operator
+              self
+              [
+                fun
+                    (γ :
+                      M.Val
+                        (ref
+                          unpacking_options_and_defaults_via_get_or_insert_with.Fruit.t)) =>
+                  (let γ := deref (M.read (| γ |)) in
+                  match M.read (| γ |) with
+                  |
+                      unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Apple
+                      =>
+                    M.alloc (| M.read (| mk_str "Apple" |) |)
+                  | _ => M.break_match(||)
+                  end) :
+                  M.Val (ref str.t);
+                fun
+                    (γ :
+                      M.Val
+                        (ref
+                          unpacking_options_and_defaults_via_get_or_insert_with.Fruit.t)) =>
+                  (let γ := deref (M.read (| γ |)) in
+                  match M.read (| γ |) with
+                  |
+                      unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Orange
+                      =>
+                    M.alloc (| M.read (| mk_str "Orange" |) |)
+                  | _ => M.break_match(||)
+                  end) :
+                  M.Val (ref str.t);
+                fun
+                    (γ :
+                      M.Val
+                        (ref
+                          unpacking_options_and_defaults_via_get_or_insert_with.Fruit.t)) =>
+                  (let γ := deref (M.read (| γ |)) in
+                  match M.read (| γ |) with
+                  |
+                      unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Banana
+                      =>
+                    M.alloc (| M.read (| mk_str "Banana" |) |)
+                  | _ => M.break_match(||)
+                  end) :
+                  M.Val (ref str.t);
+                fun
+                    (γ :
+                      M.Val
+                        (ref
+                          unpacking_options_and_defaults_via_get_or_insert_with.Fruit.t)) =>
+                  (let γ := deref (M.read (| γ |)) in
+                  match M.read (| γ |) with
+                  |
+                      unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Kiwi
+                      =>
+                    M.alloc (| M.read (| mk_str "Kiwi" |) |)
+                  | _ => M.break_match(||)
+                  end) :
+                  M.Val (ref str.t);
+                fun
+                    (γ :
+                      M.Val
+                        (ref
+                          unpacking_options_and_defaults_via_get_or_insert_with.Fruit.t)) =>
+                  (let γ := deref (M.read (| γ |)) in
+                  match M.read (| γ |) with
+                  |
+                      unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Lemon
+                      =>
+                    M.alloc (| M.read (| mk_str "Lemon" |) |)
+                  | _ => M.break_match(||)
+                  end) :
+                  M.Val (ref str.t)
+              ])
+        |)))
+      |)
+    )).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
@@ -139,155 +143,199 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* my_fruit :
-      M.Val
-        (core.option.Option.t
-          unpacking_options_and_defaults_via_get_or_insert_with.Fruit.t) :=
-    M.alloc core.option.Option.None in
-  let* get_lemon_as_fallback :
-      M.Val
-        (unit ->
-          M unpacking_options_and_defaults_via_get_or_insert_with.Fruit.t) :=
-    M.alloc
-      (fun (α0 : unit) =>
-        (let* α0 := M.alloc α0 in
-        match_operator
-          α0
-          [
-            fun γ =>
-              (let* _ : M.Val unit :=
-                let* _ : M.Val unit :=
-                  let* α0 : ref str.t :=
-                    M.read (mk_str "Providing lemon as fallback
-") in
-                  let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-                  let* α2 : core.fmt.Arguments.t :=
-                    M.call
-                      (core.fmt.Arguments.t::["new_const"]
-                        (pointer_coercion "Unsize" (borrow α1))) in
-                  let* α3 : unit := M.call (std.io.stdio._print α2) in
-                  M.alloc α3 in
-                M.alloc tt in
-              let* α0 :
-                  M.Val
-                    unpacking_options_and_defaults_via_get_or_insert_with.Fruit.t :=
-                M.alloc
-                  unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Lemon in
-              M.read α0) :
-              M unpacking_options_and_defaults_via_get_or_insert_with.Fruit.t
-          ]) :
-        M unpacking_options_and_defaults_via_get_or_insert_with.Fruit.t) in
-  let* first_available_fruit :
-      M.Val
-        (mut_ref
-          unpacking_options_and_defaults_via_get_or_insert_with.Fruit.t) :=
-    let* α0 :
-        unit ->
-          M unpacking_options_and_defaults_via_get_or_insert_with.Fruit.t :=
-      M.read get_lemon_as_fallback in
-    let* α1 :
-        mut_ref unpacking_options_and_defaults_via_get_or_insert_with.Fruit.t :=
-      M.call
-        ((core.option.Option.t
-              unpacking_options_and_defaults_via_get_or_insert_with.Fruit.t)::["get_or_insert_with"]
-          (borrow_mut my_fruit)
-          α0) in
-    M.alloc α1 in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "my_fruit is: ") in
-      let* α1 : ref str.t := M.read (mk_str "
-") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : core.fmt.rt.Argument.t :=
-        M.call
-          (core.fmt.rt.Argument.t::["new_debug"]
-            (borrow first_available_fruit)) in
-      let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
-      let* α5 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α4))) in
-      let* α6 : unit := M.call (std.io.stdio._print α5) in
-      M.alloc α6 in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "first_available_fruit is: ") in
-      let* α1 : ref str.t := M.read (mk_str "
-") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : core.fmt.rt.Argument.t :=
-        M.call
-          (core.fmt.rt.Argument.t::["new_debug"]
-            (borrow first_available_fruit)) in
-      let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
-      let* α5 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α4))) in
-      let* α6 : unit := M.call (std.io.stdio._print α5) in
-      M.alloc α6 in
-    M.alloc tt in
-  let* my_apple :
-      M.Val
-        (core.option.Option.t
-          unpacking_options_and_defaults_via_get_or_insert_with.Fruit.t) :=
-    M.alloc
-      (core.option.Option.Some
-        unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Apple) in
-  let* should_be_apple :
-      M.Val
-        (mut_ref
-          unpacking_options_and_defaults_via_get_or_insert_with.Fruit.t) :=
-    let* α0 :
-        unit ->
-          M unpacking_options_and_defaults_via_get_or_insert_with.Fruit.t :=
-      M.read get_lemon_as_fallback in
-    let* α1 :
-        mut_ref unpacking_options_and_defaults_via_get_or_insert_with.Fruit.t :=
-      M.call
-        ((core.option.Option.t
-              unpacking_options_and_defaults_via_get_or_insert_with.Fruit.t)::["get_or_insert_with"]
-          (borrow_mut my_apple)
-          α0) in
-    M.alloc α1 in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "should_be_apple is: ") in
-      let* α1 : ref str.t := M.read (mk_str "
-") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : core.fmt.rt.Argument.t :=
-        M.call
-          (core.fmt.rt.Argument.t::["new_debug"] (borrow should_be_apple)) in
-      let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
-      let* α5 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α4))) in
-      let* α6 : unit := M.call (std.io.stdio._print α5) in
-      M.alloc α6 in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "my_apple is unchanged: ") in
-      let* α1 : ref str.t := M.read (mk_str "
-") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow my_apple)) in
-      let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
-      let* α5 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α4))) in
-      let* α6 : unit := M.call (std.io.stdio._print α5) in
-      M.alloc α6 in
-    M.alloc tt in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+  ltac:(M.monadic (
+    M.read (|
+      let my_fruit :
+          M.Val
+            (core.option.Option.t
+              unpacking_options_and_defaults_via_get_or_insert_with.Fruit.t) :=
+        M.alloc (| core.option.Option.None |) in
+      let get_lemon_as_fallback :
+          M.Val
+            (unit ->
+              unpacking_options_and_defaults_via_get_or_insert_with.Fruit.t) :=
+        M.alloc (|
+          fun (α0 : unit) =>
+            (ltac:
+              (M.monadic_match_operator
+                (M.alloc (| α0 |))
+                [
+                  fun γ =>
+                    (M.read (|
+                      let _ : M.Val unit :=
+                        let _ : M.Val unit :=
+                          M.alloc (|
+                            M.call (|(std.io.stdio._print
+                              (M.call (|(core.fmt.Arguments.t::["new_const"]
+                                (pointer_coercion
+                                  "Unsize"
+                                  (borrow
+                                    (M.alloc (|
+                                      [
+                                        M.read (|
+                                          mk_str "Providing lemon as fallback
+"
+                                        |)
+                                      ]
+                                    |)))))
+                              |)))
+                            |)
+                          |) in
+                        M.alloc (| tt |) in
+                      M.alloc (|
+                        unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Lemon
+                      |)
+                    |)) :
+                    unpacking_options_and_defaults_via_get_or_insert_with.Fruit.t
+                ])) :
+            unpacking_options_and_defaults_via_get_or_insert_with.Fruit.t
+        |) in
+      let first_available_fruit :
+          M.Val
+            (mut_ref
+              unpacking_options_and_defaults_via_get_or_insert_with.Fruit.t) :=
+        M.alloc (|
+          M.call (|((core.option.Option.t
+                unpacking_options_and_defaults_via_get_or_insert_with.Fruit.t)::["get_or_insert_with"]
+            (borrow_mut my_fruit)
+            (M.read (| get_lemon_as_fallback |)))
+          |)
+        |) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.read (| mk_str "my_fruit is: " |);
+                        M.read (| mk_str "
+" |)
+                      ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_debug"]
+                          (borrow first_available_fruit))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.read (| mk_str "first_available_fruit is: " |);
+                        M.read (| mk_str "
+" |)
+                      ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_debug"]
+                          (borrow first_available_fruit))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      let my_apple :
+          M.Val
+            (core.option.Option.t
+              unpacking_options_and_defaults_via_get_or_insert_with.Fruit.t) :=
+        M.alloc (|
+          core.option.Option.Some
+            unpacking_options_and_defaults_via_get_or_insert_with.Fruit.Apple
+        |) in
+      let should_be_apple :
+          M.Val
+            (mut_ref
+              unpacking_options_and_defaults_via_get_or_insert_with.Fruit.t) :=
+        M.alloc (|
+          M.call (|((core.option.Option.t
+                unpacking_options_and_defaults_via_get_or_insert_with.Fruit.t)::["get_or_insert_with"]
+            (borrow_mut my_apple)
+            (M.read (| get_lemon_as_fallback |)))
+          |)
+        |) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.read (| mk_str "should_be_apple is: " |);
+                        M.read (| mk_str "
+" |)
+                      ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_debug"]
+                          (borrow should_be_apple))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.read (| mk_str "my_apple is unchanged: " |);
+                        M.read (| mk_str "
+" |)
+                      ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_debug"]
+                          (borrow my_apple))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      M.alloc (| tt |)
+    |)
+  )).

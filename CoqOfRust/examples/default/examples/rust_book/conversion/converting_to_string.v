@@ -25,23 +25,31 @@ Section Impl_core_fmt_Display_for_converting_to_string_Circle_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self := M.alloc self in
-    let* f := M.alloc f in
-    let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
-    let* α1 : ref str.t := M.read (mk_str "Circle of radius ") in
-    let* α2 : M.Val (array (ref str.t)) := M.alloc [ α1 ] in
-    let* α3 : ref converting_to_string.Circle.t := M.read self in
-    let* α4 : core.fmt.rt.Argument.t :=
-      M.call
-        (core.fmt.rt.Argument.t::["new_display"]
-          (borrow (converting_to_string.Circle.Get_radius (deref α3)))) in
-    let* α5 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4 ] in
-    let* α6 : core.fmt.Arguments.t :=
-      M.call
-        (core.fmt.Arguments.t::["new_v1"]
-          (pointer_coercion "Unsize" (borrow α2))
-          (pointer_coercion "Unsize" (borrow α5))) in
-    M.call (core.fmt.Formatter.t::["write_fmt"] α0 α6).
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let f := M.alloc (| f |) in
+      M.call (|(core.fmt.Formatter.t::["write_fmt"]
+        (M.read (| f |))
+        (M.call (|(core.fmt.Arguments.t::["new_v1"]
+          (pointer_coercion
+            "Unsize"
+            (borrow
+              (M.alloc (| [ M.read (| mk_str "Circle of radius " |) ] |))))
+          (pointer_coercion
+            "Unsize"
+            (borrow
+              (M.alloc (|
+                [
+                  M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                    (borrow
+                      (converting_to_string.Circle.Get_radius
+                        (deref (M.read (| self |))))))
+                  |)
+                ]
+              |)))))
+        |)))
+      |)
+    )).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
@@ -61,16 +69,21 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* circle : M.Val converting_to_string.Circle.t :=
-    M.alloc
-      {| converting_to_string.Circle.radius := (Integer.of_Z 6) : i32.t; |} in
-  let* _ : M.Val alloc.string.String.t :=
-    let* α0 : (ref converting_to_string.Circle.t) -> M alloc.string.String.t :=
-      ltac:(M.get_method (fun ℐ =>
-        alloc.string.ToString.to_string
-          (Self := converting_to_string.Circle.t)
-          (Trait := ℐ))) in
-    let* α1 : alloc.string.String.t := M.call (α0 (borrow circle)) in
-    M.alloc α1 in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+  ltac:(M.monadic (
+    M.read (|
+      let circle : M.Val converting_to_string.Circle.t :=
+        M.alloc (|
+          {| converting_to_string.Circle.radius := (Integer.of_Z 6) : i32.t; |}
+        |) in
+      let _ : M.Val alloc.string.String.t :=
+        M.alloc (|
+          M.call (|(ltac:(M.get_method (fun ℐ =>
+              alloc.string.ToString.to_string
+                (Self := converting_to_string.Circle.t)
+                (Trait := ℐ)))
+            (borrow circle))
+          |)
+        |) in
+      M.alloc (| tt |)
+    |)
+  )).

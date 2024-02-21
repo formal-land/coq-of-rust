@@ -27,23 +27,22 @@ Section Impl_core_default_Default_for_mapping_integration_tests_Mapping_t_K_V.
   Default
   *)
   Definition default : M (mapping_integration_tests.Mapping.t K V) :=
-    let* α0 : M (core.marker.PhantomData.t K) :=
-      ltac:(M.get_method (fun ℐ =>
-        core.default.Default.default
-          (Self := core.marker.PhantomData.t K)
-          (Trait := ℐ))) in
-    let* α1 : core.marker.PhantomData.t K := M.call α0 in
-    let* α2 : M (core.marker.PhantomData.t V) :=
-      ltac:(M.get_method (fun ℐ =>
-        core.default.Default.default
-          (Self := core.marker.PhantomData.t V)
-          (Trait := ℐ))) in
-    let* α3 : core.marker.PhantomData.t V := M.call α2 in
-    M.pure
+    ltac:(M.monadic (
       {|
-        mapping_integration_tests.Mapping._key := α1;
-        mapping_integration_tests.Mapping._value := α3;
-      |}.
+        mapping_integration_tests.Mapping._key :=
+          M.call (|ltac:(M.get_method (fun ℐ =>
+            core.default.Default.default
+              (Self := core.marker.PhantomData.t K)
+              (Trait := ℐ)))
+          |);
+        mapping_integration_tests.Mapping._value :=
+          M.call (|ltac:(M.get_method (fun ℐ =>
+            core.default.Default.default
+              (Self := core.marker.PhantomData.t V)
+              (Trait := ℐ)))
+          |);
+      |}
+    )).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -68,11 +67,14 @@ Section Impl_mapping_integration_tests_Mapping_t_K_V.
       }
   *)
   Definition contains (self : ref Self) (_key : ref K) : M bool.t :=
-    let* self := M.alloc self in
-    let* _key := M.alloc _key in
-    let* α0 : ref str.t := M.read (mk_str "not implemented") in
-    let* α1 : never.t := M.call (core.panicking.panic α0) in
-    never_to_any α1.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let _key := M.alloc (| _key |) in
+      never_to_any (|
+        M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
+        |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_contains :
     Notations.DoubleColon Self "contains" := {
@@ -88,11 +90,14 @@ Section Impl_mapping_integration_tests_Mapping_t_K_V.
       (self : ref Self)
       (_key : ref K)
       : M (core.option.Option.t V) :=
-    let* self := M.alloc self in
-    let* _key := M.alloc _key in
-    let* α0 : ref str.t := M.read (mk_str "not implemented") in
-    let* α1 : never.t := M.call (core.panicking.panic α0) in
-    never_to_any α1.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let _key := M.alloc (| _key |) in
+      never_to_any (|
+        M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
+        |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
     Notations.double_colon := get;
@@ -108,12 +113,15 @@ Section Impl_mapping_integration_tests_Mapping_t_K_V.
       (_key : K)
       (_value : V)
       : M (core.option.Option.t u32.t) :=
-    let* self := M.alloc self in
-    let* _key := M.alloc _key in
-    let* _value := M.alloc _value in
-    let* α0 : ref str.t := M.read (mk_str "not implemented") in
-    let* α1 : never.t := M.call (core.panicking.panic α0) in
-    never_to_any α1.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let _key := M.alloc (| _key |) in
+      let _value := M.alloc (| _value |) in
+      never_to_any (|
+        M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
+        |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_insert :
     Notations.DoubleColon Self "insert" := {
@@ -126,9 +134,12 @@ Section Impl_mapping_integration_tests_Mapping_t_K_V.
       }
   *)
   Definition new : M (mapping_integration_tests.Mapping.t K V) :=
-    let* α0 : ref str.t := M.read (mk_str "not implemented") in
-    let* α1 : never.t := M.call (core.panicking.panic α0) in
-    never_to_any α1.
+    ltac:(M.monadic (
+      never_to_any (|
+        M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
+        |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
@@ -140,11 +151,14 @@ Section Impl_mapping_integration_tests_Mapping_t_K_V.
       }
   *)
   Definition remove (self : ref Self) (_key : K) : M unit :=
-    let* self := M.alloc self in
-    let* _key := M.alloc _key in
-    let* α0 : ref str.t := M.read (mk_str "not implemented") in
-    let* α1 : never.t := M.call (core.panicking.panic α0) in
-    never_to_any α1.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let _key := M.alloc (| _key |) in
+      never_to_any (|
+        M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
+        |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_remove :
     Notations.DoubleColon Self "remove" := {
@@ -160,11 +174,14 @@ Section Impl_mapping_integration_tests_Mapping_t_K_V.
       (self : ref Self)
       (_key : K)
       : M (core.option.Option.t u32.t) :=
-    let* self := M.alloc self in
-    let* _key := M.alloc _key in
-    let* α0 : ref str.t := M.read (mk_str "not implemented") in
-    let* α1 : never.t := M.call (core.panicking.panic α0) in
-    never_to_any α1.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let _key := M.alloc (| _key |) in
+      never_to_any (|
+        M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
+        |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_size :
     Notations.DoubleColon Self "size" := {
@@ -177,11 +194,14 @@ Section Impl_mapping_integration_tests_Mapping_t_K_V.
       }
   *)
   Definition take (self : ref Self) (_key : K) : M (core.option.Option.t V) :=
-    let* self := M.alloc self in
-    let* _key := M.alloc _key in
-    let* α0 : ref str.t := M.read (mk_str "not implemented") in
-    let* α1 : never.t := M.call (core.panicking.panic α0) in
-    never_to_any α1.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let _key := M.alloc (| _key |) in
+      never_to_any (|
+        M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
+        |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_take :
     Notations.DoubleColon Self "take" := {
@@ -209,11 +229,12 @@ Section Impl_core_default_Default_for_mapping_integration_tests_AccountId_t.
   Default
   *)
   Definition default : M mapping_integration_tests.AccountId.t :=
-    let* α0 : M u128.t :=
-      ltac:(M.get_method (fun ℐ =>
-        core.default.Default.default (Self := u128.t) (Trait := ℐ))) in
-    let* α1 : u128.t := M.call α0 in
-    M.pure (mapping_integration_tests.AccountId.Build_t α1).
+    ltac:(M.monadic (
+      mapping_integration_tests.AccountId.Build_t
+        (M.call (|ltac:(M.get_method (fun ℐ =>
+          core.default.Default.default (Self := u128.t) (Trait := ℐ)))
+        |))
+    )).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -236,19 +257,20 @@ Section Impl_core_clone_Clone_for_mapping_integration_tests_AccountId_t.
   Definition clone
       (self : ref Self)
       : M mapping_integration_tests.AccountId.t :=
-    let* self := M.alloc self in
-    let* α0 : M.Val mapping_integration_tests.AccountId.t :=
-      match_operator
-        (DeclaredButUndefinedVariable
-          (A := core.clone.AssertParamIsClone.t u128.t))
-        [
-          fun γ =>
-            (let* α0 : ref mapping_integration_tests.AccountId.t :=
-              M.read self in
-            M.pure (deref α0)) :
-            M (M.Val mapping_integration_tests.AccountId.t)
-        ] in
-    M.read α0.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      M.read (|
+        ltac:
+          (M.monadic_match_operator
+            (DeclaredButUndefinedVariable
+              (A := core.clone.AssertParamIsClone.t u128.t))
+            [
+              fun γ =>
+                (deref (M.read (| self |))) :
+                M.Val mapping_integration_tests.AccountId.t
+            ])
+      |)
+    )).
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {
@@ -296,9 +318,12 @@ Section Impl_mapping_integration_tests_Env_t.
   Definition caller
       (self : ref Self)
       : M mapping_integration_tests.AccountId.t :=
-    let* self := M.alloc self in
-    let* α0 : ref mapping_integration_tests.Env.t := M.read self in
-    M.read (mapping_integration_tests.Env.Get_caller (deref α0)).
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      M.read (|
+        mapping_integration_tests.Env.Get_caller (deref (M.read (| self |)))
+      |)
+    )).
   
   Global Instance AssociatedFunction_caller :
     Notations.DoubleColon Self "caller" := {
@@ -331,24 +356,19 @@ Section Impl_core_default_Default_for_mapping_integration_tests_Mappings_t.
   Default
   *)
   Definition default : M mapping_integration_tests.Mappings.t :=
-    let* α0 :
-        M
-          (mapping_integration_tests.Mapping.t
-            mapping_integration_tests.AccountId.t
-            u128.t) :=
-      ltac:(M.get_method (fun ℐ =>
-        core.default.Default.default
-          (Self :=
-            mapping_integration_tests.Mapping.t
-              mapping_integration_tests.AccountId.t
-              u128.t)
-          (Trait := ℐ))) in
-    let* α1 :
-        mapping_integration_tests.Mapping.t
-          mapping_integration_tests.AccountId.t
-          u128.t :=
-      M.call α0 in
-    M.pure {| mapping_integration_tests.Mappings.balances := α1; |}.
+    ltac:(M.monadic (
+      {|
+        mapping_integration_tests.Mappings.balances :=
+          M.call (|ltac:(M.get_method (fun ℐ =>
+            core.default.Default.default
+              (Self :=
+                mapping_integration_tests.Mapping.t
+                  mapping_integration_tests.AccountId.t
+                  u128.t)
+              (Trait := ℐ)))
+          |);
+      |}
+    )).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -371,9 +391,12 @@ Section Impl_mapping_integration_tests_Mappings_t.
       }
   *)
   Definition init_env : M mapping_integration_tests.Env.t :=
-    let* α0 : ref str.t := M.read (mk_str "not implemented") in
-    let* α1 : never.t := M.call (core.panicking.panic α0) in
-    never_to_any α1.
+    ltac:(M.monadic (
+      never_to_any (|
+        M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
+        |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_init_env :
     Notations.DoubleColon Self "init_env" := {
@@ -386,9 +409,12 @@ Section Impl_mapping_integration_tests_Mappings_t.
       }
   *)
   Definition env : M mapping_integration_tests.Env.t :=
-    let* α0 : ref str.t := M.read (mk_str "not implemented") in
-    let* α1 : never.t := M.call (core.panicking.panic α0) in
-    never_to_any α1.
+    ltac:(M.monadic (
+      never_to_any (|
+        M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
+        |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
     Notations.double_colon := env;
@@ -401,37 +427,31 @@ Section Impl_mapping_integration_tests_Mappings_t.
       }
   *)
   Definition new : M Self :=
-    let* balances :
-        M.Val
-          (mapping_integration_tests.Mapping.t
-            mapping_integration_tests.AccountId.t
-            u128.t) :=
-      let* α0 :
-          M
-            (mapping_integration_tests.Mapping.t
-              mapping_integration_tests.AccountId.t
-              u128.t) :=
-        ltac:(M.get_method (fun ℐ =>
-          core.default.Default.default
-            (Self :=
-              mapping_integration_tests.Mapping.t
+    ltac:(M.monadic (
+      M.read (|
+        let balances :
+            M.Val
+              (mapping_integration_tests.Mapping.t
                 mapping_integration_tests.AccountId.t
-                u128.t)
-            (Trait := ℐ))) in
-      let* α1 :
-          mapping_integration_tests.Mapping.t
-            mapping_integration_tests.AccountId.t
-            u128.t :=
-        M.call α0 in
-      M.alloc α1 in
-    let* α0 :
-        mapping_integration_tests.Mapping.t
-          mapping_integration_tests.AccountId.t
-          u128.t :=
-      M.read balances in
-    let* α0 : M.Val mapping_integration_tests.Mappings.t :=
-      M.alloc {| mapping_integration_tests.Mappings.balances := α0; |} in
-    M.read α0.
+                u128.t) :=
+          M.alloc (|
+            M.call (|ltac:(M.get_method (fun ℐ =>
+              core.default.Default.default
+                (Self :=
+                  mapping_integration_tests.Mapping.t
+                    mapping_integration_tests.AccountId.t
+                    u128.t)
+                (Trait := ℐ)))
+            |)
+          |) in
+        M.alloc (|
+          {|
+            mapping_integration_tests.Mappings.balances :=
+              M.read (| balances |);
+          |}
+        |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
@@ -446,24 +466,30 @@ Section Impl_mapping_integration_tests_Mappings_t.
   Definition get_balance
       (self : ref Self)
       : M (core.option.Option.t ltac:(mapping_integration_tests.Balance)) :=
-    let* self := M.alloc self in
-    let* caller : M.Val mapping_integration_tests.AccountId.t :=
-      let* α0 : mapping_integration_tests.Env.t :=
-        M.call mapping_integration_tests.Mappings.t::["env"] in
-      let* α1 : M.Val mapping_integration_tests.Env.t := M.alloc α0 in
-      let* α2 : mapping_integration_tests.AccountId.t :=
-        M.call (mapping_integration_tests.Env.t::["caller"] (borrow α1)) in
-      M.alloc α2 in
-    let* α0 : ref mapping_integration_tests.Mappings.t := M.read self in
-    let* α1 : core.option.Option.t u128.t :=
-      M.call
-        ((mapping_integration_tests.Mapping.t
-              mapping_integration_tests.AccountId.t
-              u128.t)::["get"]
-          (borrow (mapping_integration_tests.Mappings.Get_balances (deref α0)))
-          (borrow caller)) in
-    let* α0 : M.Val (core.option.Option.t u128.t) := M.alloc α1 in
-    M.read α0.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      M.read (|
+        let caller : M.Val mapping_integration_tests.AccountId.t :=
+          M.alloc (|
+            M.call (|(mapping_integration_tests.Env.t::["caller"]
+              (borrow
+                (M.alloc (|
+                  M.call (|mapping_integration_tests.Mappings.t::["env"] |)
+                |))))
+            |)
+          |) in
+        M.alloc (|
+          M.call (|((mapping_integration_tests.Mapping.t
+                mapping_integration_tests.AccountId.t
+                u128.t)::["get"]
+            (borrow
+              (mapping_integration_tests.Mappings.Get_balances
+                (deref (M.read (| self |)))))
+            (borrow caller))
+          |)
+        |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_get_balance :
     Notations.DoubleColon Self "get_balance" := {
@@ -480,29 +506,32 @@ Section Impl_mapping_integration_tests_Mappings_t.
       (self : mut_ref Self)
       (value : ltac:(mapping_integration_tests.Balance))
       : M (core.option.Option.t u32.t) :=
-    let* self := M.alloc self in
-    let* value := M.alloc value in
-    let* caller : M.Val mapping_integration_tests.AccountId.t :=
-      let* α0 : mapping_integration_tests.Env.t :=
-        M.call mapping_integration_tests.Mappings.t::["env"] in
-      let* α1 : M.Val mapping_integration_tests.Env.t := M.alloc α0 in
-      let* α2 : mapping_integration_tests.AccountId.t :=
-        M.call (mapping_integration_tests.Env.t::["caller"] (borrow α1)) in
-      M.alloc α2 in
-    let* α0 : mut_ref mapping_integration_tests.Mappings.t := M.read self in
-    let* α1 : mapping_integration_tests.AccountId.t := M.read caller in
-    let* α2 : u128.t := M.read value in
-    let* α3 : core.option.Option.t u32.t :=
-      M.call
-        ((mapping_integration_tests.Mapping.t
-              mapping_integration_tests.AccountId.t
-              u128.t)::["insert"]
-          (borrow_mut
-            (mapping_integration_tests.Mappings.Get_balances (deref α0)))
-          α1
-          α2) in
-    let* α0 : M.Val (core.option.Option.t u32.t) := M.alloc α3 in
-    M.read α0.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let value := M.alloc (| value |) in
+      M.read (|
+        let caller : M.Val mapping_integration_tests.AccountId.t :=
+          M.alloc (|
+            M.call (|(mapping_integration_tests.Env.t::["caller"]
+              (borrow
+                (M.alloc (|
+                  M.call (|mapping_integration_tests.Mappings.t::["env"] |)
+                |))))
+            |)
+          |) in
+        M.alloc (|
+          M.call (|((mapping_integration_tests.Mapping.t
+                mapping_integration_tests.AccountId.t
+                u128.t)::["insert"]
+            (borrow_mut
+              (mapping_integration_tests.Mappings.Get_balances
+                (deref (M.read (| self |)))))
+            (M.read (| caller |))
+            (M.read (| value |)))
+          |)
+        |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_insert_balance :
     Notations.DoubleColon Self "insert_balance" := {
@@ -518,25 +547,30 @@ Section Impl_mapping_integration_tests_Mappings_t.
   Definition size_balance
       (self : mut_ref Self)
       : M (core.option.Option.t u32.t) :=
-    let* self := M.alloc self in
-    let* caller : M.Val mapping_integration_tests.AccountId.t :=
-      let* α0 : mapping_integration_tests.Env.t :=
-        M.call mapping_integration_tests.Mappings.t::["env"] in
-      let* α1 : M.Val mapping_integration_tests.Env.t := M.alloc α0 in
-      let* α2 : mapping_integration_tests.AccountId.t :=
-        M.call (mapping_integration_tests.Env.t::["caller"] (borrow α1)) in
-      M.alloc α2 in
-    let* α0 : mut_ref mapping_integration_tests.Mappings.t := M.read self in
-    let* α1 : mapping_integration_tests.AccountId.t := M.read caller in
-    let* α2 : core.option.Option.t u32.t :=
-      M.call
-        ((mapping_integration_tests.Mapping.t
-              mapping_integration_tests.AccountId.t
-              u128.t)::["size"]
-          (borrow (mapping_integration_tests.Mappings.Get_balances (deref α0)))
-          α1) in
-    let* α0 : M.Val (core.option.Option.t u32.t) := M.alloc α2 in
-    M.read α0.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      M.read (|
+        let caller : M.Val mapping_integration_tests.AccountId.t :=
+          M.alloc (|
+            M.call (|(mapping_integration_tests.Env.t::["caller"]
+              (borrow
+                (M.alloc (|
+                  M.call (|mapping_integration_tests.Mappings.t::["env"] |)
+                |))))
+            |)
+          |) in
+        M.alloc (|
+          M.call (|((mapping_integration_tests.Mapping.t
+                mapping_integration_tests.AccountId.t
+                u128.t)::["size"]
+            (borrow
+              (mapping_integration_tests.Mappings.Get_balances
+                (deref (M.read (| self |)))))
+            (M.read (| caller |)))
+          |)
+        |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_size_balance :
     Notations.DoubleColon Self "size_balance" := {
@@ -550,24 +584,30 @@ Section Impl_mapping_integration_tests_Mappings_t.
       }
   *)
   Definition contains_balance (self : ref Self) : M bool.t :=
-    let* self := M.alloc self in
-    let* caller : M.Val mapping_integration_tests.AccountId.t :=
-      let* α0 : mapping_integration_tests.Env.t :=
-        M.call mapping_integration_tests.Mappings.t::["env"] in
-      let* α1 : M.Val mapping_integration_tests.Env.t := M.alloc α0 in
-      let* α2 : mapping_integration_tests.AccountId.t :=
-        M.call (mapping_integration_tests.Env.t::["caller"] (borrow α1)) in
-      M.alloc α2 in
-    let* α0 : ref mapping_integration_tests.Mappings.t := M.read self in
-    let* α1 : bool.t :=
-      M.call
-        ((mapping_integration_tests.Mapping.t
-              mapping_integration_tests.AccountId.t
-              u128.t)::["contains"]
-          (borrow (mapping_integration_tests.Mappings.Get_balances (deref α0)))
-          (borrow caller)) in
-    let* α0 : M.Val bool.t := M.alloc α1 in
-    M.read α0.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      M.read (|
+        let caller : M.Val mapping_integration_tests.AccountId.t :=
+          M.alloc (|
+            M.call (|(mapping_integration_tests.Env.t::["caller"]
+              (borrow
+                (M.alloc (|
+                  M.call (|mapping_integration_tests.Mappings.t::["env"] |)
+                |))))
+            |)
+          |) in
+        M.alloc (|
+          M.call (|((mapping_integration_tests.Mapping.t
+                mapping_integration_tests.AccountId.t
+                u128.t)::["contains"]
+            (borrow
+              (mapping_integration_tests.Mappings.Get_balances
+                (deref (M.read (| self |)))))
+            (borrow caller))
+          |)
+        |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_contains_balance :
     Notations.DoubleColon Self "contains_balance" := {
@@ -581,28 +621,32 @@ Section Impl_mapping_integration_tests_Mappings_t.
       }
   *)
   Definition remove_balance (self : mut_ref Self) : M unit :=
-    let* self := M.alloc self in
-    let* caller : M.Val mapping_integration_tests.AccountId.t :=
-      let* α0 : mapping_integration_tests.Env.t :=
-        M.call mapping_integration_tests.Mappings.t::["env"] in
-      let* α1 : M.Val mapping_integration_tests.Env.t := M.alloc α0 in
-      let* α2 : mapping_integration_tests.AccountId.t :=
-        M.call (mapping_integration_tests.Env.t::["caller"] (borrow α1)) in
-      M.alloc α2 in
-    let* _ : M.Val unit :=
-      let* α0 : mut_ref mapping_integration_tests.Mappings.t := M.read self in
-      let* α1 : mapping_integration_tests.AccountId.t := M.read caller in
-      let* α2 : unit :=
-        M.call
-          ((mapping_integration_tests.Mapping.t
-                mapping_integration_tests.AccountId.t
-                u128.t)::["remove"]
-            (borrow
-              (mapping_integration_tests.Mappings.Get_balances (deref α0)))
-            α1) in
-      M.alloc α2 in
-    let* α0 : M.Val unit := M.alloc tt in
-    M.read α0.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      M.read (|
+        let caller : M.Val mapping_integration_tests.AccountId.t :=
+          M.alloc (|
+            M.call (|(mapping_integration_tests.Env.t::["caller"]
+              (borrow
+                (M.alloc (|
+                  M.call (|mapping_integration_tests.Mappings.t::["env"] |)
+                |))))
+            |)
+          |) in
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|((mapping_integration_tests.Mapping.t
+                  mapping_integration_tests.AccountId.t
+                  u128.t)::["remove"]
+              (borrow
+                (mapping_integration_tests.Mappings.Get_balances
+                  (deref (M.read (| self |)))))
+              (M.read (| caller |)))
+            |)
+          |) in
+        M.alloc (| tt |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_remove_balance :
     Notations.DoubleColon Self "remove_balance" := {
@@ -618,25 +662,30 @@ Section Impl_mapping_integration_tests_Mappings_t.
   Definition take_balance
       (self : mut_ref Self)
       : M (core.option.Option.t ltac:(mapping_integration_tests.Balance)) :=
-    let* self := M.alloc self in
-    let* caller : M.Val mapping_integration_tests.AccountId.t :=
-      let* α0 : mapping_integration_tests.Env.t :=
-        M.call mapping_integration_tests.Mappings.t::["env"] in
-      let* α1 : M.Val mapping_integration_tests.Env.t := M.alloc α0 in
-      let* α2 : mapping_integration_tests.AccountId.t :=
-        M.call (mapping_integration_tests.Env.t::["caller"] (borrow α1)) in
-      M.alloc α2 in
-    let* α0 : mut_ref mapping_integration_tests.Mappings.t := M.read self in
-    let* α1 : mapping_integration_tests.AccountId.t := M.read caller in
-    let* α2 : core.option.Option.t u128.t :=
-      M.call
-        ((mapping_integration_tests.Mapping.t
-              mapping_integration_tests.AccountId.t
-              u128.t)::["take"]
-          (borrow (mapping_integration_tests.Mappings.Get_balances (deref α0)))
-          α1) in
-    let* α0 : M.Val (core.option.Option.t u128.t) := M.alloc α2 in
-    M.read α0.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      M.read (|
+        let caller : M.Val mapping_integration_tests.AccountId.t :=
+          M.alloc (|
+            M.call (|(mapping_integration_tests.Env.t::["caller"]
+              (borrow
+                (M.alloc (|
+                  M.call (|mapping_integration_tests.Mappings.t::["env"] |)
+                |))))
+            |)
+          |) in
+        M.alloc (|
+          M.call (|((mapping_integration_tests.Mapping.t
+                mapping_integration_tests.AccountId.t
+                u128.t)::["take"]
+            (borrow
+              (mapping_integration_tests.Mappings.Get_balances
+                (deref (M.read (| self |)))))
+            (M.read (| caller |)))
+          |)
+        |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_take_balance :
     Notations.DoubleColon Self "take_balance" := {

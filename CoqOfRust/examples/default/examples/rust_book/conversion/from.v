@@ -22,9 +22,10 @@ Section Impl_core_convert_From_i32_t_for_from_Number_t.
       }
   *)
   Definition from (item : i32.t) : M Self :=
-    let* item := M.alloc item in
-    let* α0 : i32.t := M.read item in
-    M.pure {| from.Number.value := α0; |}.
+    ltac:(M.monadic (
+      let item := M.alloc (| item |) in
+      {| from.Number.value := M.read (| item |); |}
+    )).
   
   Global Instance AssociatedFunction_from :
     Notations.DoubleColon Self "from" := {
@@ -44,14 +45,18 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* _ : M.Val from.Number.t :=
-    let* α0 : i32.t -> M from.Number.t :=
-      ltac:(M.get_method (fun ℐ =>
-        core.convert.From.from
-          (Self := from.Number.t)
-          (T := i32.t)
-          (Trait := ℐ))) in
-    let* α1 : from.Number.t := M.call (α0 ((Integer.of_Z 30) : i32.t)) in
-    M.alloc α1 in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+  ltac:(M.monadic (
+    M.read (|
+      let _ : M.Val from.Number.t :=
+        M.alloc (|
+          M.call (|(ltac:(M.get_method (fun ℐ =>
+              core.convert.From.from
+                (Self := from.Number.t)
+                (T := i32.t)
+                (Trait := ℐ)))
+            ((Integer.of_Z 30) : i32.t))
+          |)
+        |) in
+      M.alloc (| tt |)
+    |)
+  )).

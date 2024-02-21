@@ -12,21 +12,31 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* raw_p : M.Val (ref u32.t) :=
-    let* α0 : M.Val u32.t := M.alloc ((Integer.of_Z 10) : u32.t) in
-    M.alloc (addr_of α0) in
-  let* _ : M.Val unit :=
-    let* α0 : ref u32.t := M.read raw_p in
-    let* α1 : u32.t := M.read (deref α0) in
-    let* α2 : M.Val bool.t :=
-      M.alloc (UnOp.not (BinOp.Pure.eq α1 ((Integer.of_Z 10) : u32.t))) in
-    let* α3 : bool.t := M.read (use α2) in
-    if α3 then
-      let* α0 : ref str.t := M.read (mk_str "assertion failed: *raw_p == 10") in
-      let* α1 : never.t := M.call (core.panicking.panic α0) in
-      let* α2 : unit := never_to_any α1 in
-      M.alloc α2
-    else
-      M.alloc tt in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+  ltac:(M.monadic (
+    M.read (|
+      let raw_p : M.Val (ref u32.t) :=
+        M.alloc (| addr_of (M.alloc (| (Integer.of_Z 10) : u32.t |)) |) in
+      let _ : M.Val unit :=
+        if
+          M.read (|
+            use
+              (M.alloc (|
+                UnOp.not
+                  (BinOp.Pure.eq
+                    (M.read (| deref (M.read (| raw_p |)) |))
+                    ((Integer.of_Z 10) : u32.t))
+              |))
+          |)
+        then
+          M.alloc (|
+            never_to_any (|
+              M.call (|(core.panicking.panic
+                (M.read (| mk_str "assertion failed: *raw_p == 10" |)))
+              |)
+            |)
+          |)
+        else
+          M.alloc (| tt |) in
+      M.alloc (| tt |)
+    |)
+  )).

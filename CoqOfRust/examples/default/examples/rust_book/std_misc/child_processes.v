@@ -21,115 +21,149 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* output : M.Val std.process.Output.t :=
-    let* α0 : ref str.t := M.read (mk_str "rustc") in
-    let* α1 : std.process.Command.t :=
-      M.call (std.process.Command.t::["new"] α0) in
-    let* α2 : M.Val std.process.Command.t := M.alloc α1 in
-    let* α3 : ref str.t := M.read (mk_str "--version") in
-    let* α4 : mut_ref std.process.Command.t :=
-      M.call (std.process.Command.t::["arg"] (borrow_mut α2) α3) in
-    let* α5 : core.result.Result.t std.process.Output.t std.io.error.Error.t :=
-      M.call (std.process.Command.t::["output"] α4) in
-    let* α6 : std.process.Output.t :=
-      M.call
-        ((core.result.Result.t
-              std.process.Output.t
-              std.io.error.Error.t)::["unwrap_or_else"]
-          α5
-          (fun (α0 : std.io.error.Error.t) =>
-            (let* α0 := M.alloc α0 in
-            match_operator
-              α0
-              [
-                fun γ =>
-                  (let* e := M.copy γ in
-                  let* α0 : ref str.t :=
-                    M.read (mk_str "failed to execute process: ") in
-                  let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-                  let* α2 : core.fmt.rt.Argument.t :=
-                    M.call
-                      (core.fmt.rt.Argument.t::["new_display"] (borrow e)) in
-                  let* α3 : M.Val (array core.fmt.rt.Argument.t) :=
-                    M.alloc [ α2 ] in
-                  let* α4 : core.fmt.Arguments.t :=
-                    M.call
-                      (core.fmt.Arguments.t::["new_v1"]
-                        (pointer_coercion "Unsize" (borrow α1))
-                        (pointer_coercion "Unsize" (borrow α3))) in
-                  let* α5 : never.t := M.call (core.panicking.panic_fmt α4) in
-                  never_to_any α5) :
-                  M std.process.Output.t
-              ]) :
-            M std.process.Output.t)) in
-    M.alloc α6 in
-  let* α0 : bool.t :=
-    M.call
-      (std.process.ExitStatus.t::["success"]
-        (borrow (std.process.Output.Get_status output))) in
-  let* α1 : M.Val bool.t := M.alloc α0 in
-  let* α2 : bool.t := M.read (use α1) in
-  let* α0 : M.Val unit :=
-    if α2 then
-      let* s : M.Val (alloc.borrow.Cow.t str.t) :=
-        let* α0 :
-            (ref (alloc.vec.Vec.t u8.t alloc.alloc.Global.t)) -> M (ref _) :=
-          ltac:(M.get_method (fun ℐ =>
-            core.ops.deref.Deref.deref
-              (Self := alloc.vec.Vec.t u8.t alloc.alloc.Global.t)
-              (Trait := ℐ))) in
-        let* α1 : ref (slice u8.t) :=
-          M.call (α0 (borrow (std.process.Output.Get_stdout output))) in
-        let* α2 : alloc.borrow.Cow.t str.t :=
-          M.call (alloc.string.String.t::["from_utf8_lossy"] α1) in
-        M.alloc α2 in
-      let* _ : M.Val unit :=
-        let* _ : M.Val unit :=
-          let* α0 : ref str.t :=
-            M.read (mk_str "rustc succeeded and stdout was:
-") in
-          let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-          let* α2 : core.fmt.rt.Argument.t :=
-            M.call (core.fmt.rt.Argument.t::["new_display"] (borrow s)) in
-          let* α3 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α2 ] in
-          let* α4 : core.fmt.Arguments.t :=
-            M.call
-              (core.fmt.Arguments.t::["new_v1"]
-                (pointer_coercion "Unsize" (borrow α1))
-                (pointer_coercion "Unsize" (borrow α3))) in
-          let* α5 : unit := M.call (std.io.stdio._print α4) in
-          M.alloc α5 in
-        M.alloc tt in
-      M.alloc tt
-    else
-      let* s : M.Val (alloc.borrow.Cow.t str.t) :=
-        let* α0 :
-            (ref (alloc.vec.Vec.t u8.t alloc.alloc.Global.t)) -> M (ref _) :=
-          ltac:(M.get_method (fun ℐ =>
-            core.ops.deref.Deref.deref
-              (Self := alloc.vec.Vec.t u8.t alloc.alloc.Global.t)
-              (Trait := ℐ))) in
-        let* α1 : ref (slice u8.t) :=
-          M.call (α0 (borrow (std.process.Output.Get_stderr output))) in
-        let* α2 : alloc.borrow.Cow.t str.t :=
-          M.call (alloc.string.String.t::["from_utf8_lossy"] α1) in
-        M.alloc α2 in
-      let* _ : M.Val unit :=
-        let* _ : M.Val unit :=
-          let* α0 : ref str.t :=
-            M.read (mk_str "rustc failed and stderr was:
-") in
-          let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-          let* α2 : core.fmt.rt.Argument.t :=
-            M.call (core.fmt.rt.Argument.t::["new_display"] (borrow s)) in
-          let* α3 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α2 ] in
-          let* α4 : core.fmt.Arguments.t :=
-            M.call
-              (core.fmt.Arguments.t::["new_v1"]
-                (pointer_coercion "Unsize" (borrow α1))
-                (pointer_coercion "Unsize" (borrow α3))) in
-          let* α5 : unit := M.call (std.io.stdio._print α4) in
-          M.alloc α5 in
-        M.alloc tt in
-      M.alloc tt in
-  M.read α0.
+  ltac:(M.monadic (
+    M.read (|
+      let output : M.Val std.process.Output.t :=
+        M.alloc (|
+          M.call (|((core.result.Result.t
+                std.process.Output.t
+                std.io.error.Error.t)::["unwrap_or_else"]
+            (M.call (|(std.process.Command.t::["output"]
+              (M.call (|(std.process.Command.t::["arg"]
+                (borrow_mut
+                  (M.alloc (|
+                    M.call (|(std.process.Command.t::["new"]
+                      (M.read (| mk_str "rustc" |)))
+                    |)
+                  |)))
+                (M.read (| mk_str "--version" |)))
+              |)))
+            |))
+            (fun (α0 : std.io.error.Error.t) =>
+              (ltac:
+                (M.monadic_match_operator
+                  (M.alloc (| α0 |))
+                  [
+                    fun γ =>
+                      (let e := M.copy (| γ |) in
+                      never_to_any (|
+                        M.call (|(core.panicking.panic_fmt
+                          (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                            (pointer_coercion
+                              "Unsize"
+                              (borrow
+                                (M.alloc (|
+                                  [
+                                    M.read (|
+                                      mk_str "failed to execute process: "
+                                    |)
+                                  ]
+                                |))))
+                            (pointer_coercion
+                              "Unsize"
+                              (borrow
+                                (M.alloc (|
+                                  [
+                                    M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                                      (borrow e))
+                                    |)
+                                  ]
+                                |)))))
+                          |)))
+                        |)
+                      |)) :
+                      std.process.Output.t
+                  ])) :
+              std.process.Output.t))
+          |)
+        |) in
+      if
+        M.read (|
+          use
+            (M.alloc (|
+              M.call (|(std.process.ExitStatus.t::["success"]
+                (borrow (std.process.Output.Get_status output)))
+              |)
+            |))
+        |)
+      then
+        let s : M.Val (alloc.borrow.Cow.t str.t) :=
+          M.alloc (|
+            M.call (|(alloc.string.String.t::["from_utf8_lossy"]
+              (M.call (|(ltac:(M.get_method (fun ℐ =>
+                  core.ops.deref.Deref.deref
+                    (Self := alloc.vec.Vec.t u8.t alloc.alloc.Global.t)
+                    (Trait := ℐ)))
+                (borrow (std.process.Output.Get_stdout output)))
+              |)))
+            |)
+          |) in
+        let _ : M.Val unit :=
+          let _ : M.Val unit :=
+            M.alloc (|
+              M.call (|(std.io.stdio._print
+                (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                  (pointer_coercion
+                    "Unsize"
+                    (borrow
+                      (M.alloc (|
+                        [ M.read (| mk_str "rustc succeeded and stdout was:
+" |)
+                        ]
+                      |))))
+                  (pointer_coercion
+                    "Unsize"
+                    (borrow
+                      (M.alloc (|
+                        [
+                          M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                            (borrow s))
+                          |)
+                        ]
+                      |)))))
+                |)))
+              |)
+            |) in
+          M.alloc (| tt |) in
+        M.alloc (| tt |)
+      else
+        let s : M.Val (alloc.borrow.Cow.t str.t) :=
+          M.alloc (|
+            M.call (|(alloc.string.String.t::["from_utf8_lossy"]
+              (M.call (|(ltac:(M.get_method (fun ℐ =>
+                  core.ops.deref.Deref.deref
+                    (Self := alloc.vec.Vec.t u8.t alloc.alloc.Global.t)
+                    (Trait := ℐ)))
+                (borrow (std.process.Output.Get_stderr output)))
+              |)))
+            |)
+          |) in
+        let _ : M.Val unit :=
+          let _ : M.Val unit :=
+            M.alloc (|
+              M.call (|(std.io.stdio._print
+                (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                  (pointer_coercion
+                    "Unsize"
+                    (borrow
+                      (M.alloc (|
+                        [ M.read (| mk_str "rustc failed and stderr was:
+" |) ]
+                      |))))
+                  (pointer_coercion
+                    "Unsize"
+                    (borrow
+                      (M.alloc (|
+                        [
+                          M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                            (borrow s))
+                          |)
+                        ]
+                      |)))))
+                |)))
+              |)
+            |) in
+          M.alloc (| tt |) in
+        M.alloc (| tt |)
+    |)
+  )).

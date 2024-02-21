@@ -32,8 +32,10 @@ Section Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Shee
       }
   *)
   Definition noise (self : ref Self) : M (ref str.t) :=
-    let* self := M.alloc self in
-    M.read (mk_str "baaaaah!").
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      M.read (| mk_str "baaaaah!" |)
+    )).
   
   Global Instance AssociatedFunction_noise :
     Notations.DoubleColon Self "noise" := {
@@ -56,8 +58,10 @@ Section Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow_
       }
   *)
   Definition noise (self : ref Self) : M (ref str.t) :=
-    let* self := M.alloc self in
-    M.read (mk_str "moooooo!").
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      M.read (| mk_str "moooooo!" |)
+    )).
   
   Global Instance AssociatedFunction_noise :
     Notations.DoubleColon Self "noise" := {
@@ -86,44 +90,46 @@ Definition random_animal
         (alloc.boxed.Box.t
           (dyn [returning_traits_with_dyn.Animal.Trait])
           alloc.boxed.Box.Default.A) :=
-  let* random_number := M.alloc random_number in
-  let* α0 : f64.t := M.read random_number in
-  let* α1 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
-  let* α2 : M.Val bool.t := M.alloc (BinOp.Pure.lt α0 α1) in
-  let* α3 : bool.t := M.read (use α2) in
-  let* α4 :
-      M.Val
-        (alloc.boxed.Box.t
-          (dyn [returning_traits_with_dyn.Animal.Trait])
-          alloc.alloc.Global.t) :=
-    if α3 then
-      let* α0 :
-          alloc.boxed.Box.t
-            returning_traits_with_dyn.Sheep.t
-            alloc.alloc.Global.t :=
-        M.call
-          ((alloc.boxed.Box.t
-                returning_traits_with_dyn.Sheep.t
-                alloc.alloc.Global.t)::["new"]
-            returning_traits_with_dyn.Sheep.Build) in
-      M.alloc (pointer_coercion "Unsize" (pointer_coercion "Unsize" α0))
-    else
-      let* α0 :
-          alloc.boxed.Box.t
-            returning_traits_with_dyn.Cow.t
-            alloc.alloc.Global.t :=
-        M.call
-          ((alloc.boxed.Box.t
-                returning_traits_with_dyn.Cow.t
-                alloc.alloc.Global.t)::["new"]
-            returning_traits_with_dyn.Cow.Build) in
-      M.alloc (pointer_coercion "Unsize" α0) in
-  let* α5 :
-      alloc.boxed.Box.t
-        (dyn [returning_traits_with_dyn.Animal.Trait])
-        alloc.alloc.Global.t :=
-    M.read α4 in
-  M.pure (pointer_coercion "Unsize" (pointer_coercion "Unsize" α5)).
+  ltac:(M.monadic (
+    let random_number := M.alloc (| random_number |) in
+    pointer_coercion
+      "Unsize"
+      (pointer_coercion
+        "Unsize"
+        (M.read (|
+          if
+            M.read (|
+              use
+                (M.alloc (|
+                  BinOp.Pure.lt
+                    (M.read (| random_number |))
+                    (M.read (| UnsupportedLiteral : M.Val f64.t |))
+                |))
+            |)
+          then
+            M.alloc (|
+              pointer_coercion
+                "Unsize"
+                (pointer_coercion
+                  "Unsize"
+                  (M.call (|((alloc.boxed.Box.t
+                        returning_traits_with_dyn.Sheep.t
+                        alloc.alloc.Global.t)::["new"]
+                    returning_traits_with_dyn.Sheep.Build)
+                  |)))
+            |)
+          else
+            M.alloc (|
+              pointer_coercion
+                "Unsize"
+                (M.call (|((alloc.boxed.Box.t
+                      returning_traits_with_dyn.Cow.t
+                      alloc.alloc.Global.t)::["new"]
+                  returning_traits_with_dyn.Cow.Build)
+                |))
+            |)
+        |)))
+  )).
 
 (*
 fn main() {
@@ -137,51 +143,62 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* random_number : M.Val f64.t :=
-    M.copy (UnsupportedLiteral : M.Val f64.t) in
-  let* animal :
-      M.Val
-        (alloc.boxed.Box.t
-          (dyn [returning_traits_with_dyn.Animal.Trait])
-          alloc.alloc.Global.t) :=
-    let* α0 : f64.t := M.read random_number in
-    let* α1 :
-        alloc.boxed.Box.t
-          (dyn [returning_traits_with_dyn.Animal.Trait])
-          alloc.alloc.Global.t :=
-      M.call (returning_traits_with_dyn.random_animal α0) in
-    M.alloc α1 in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t :=
-        M.read (mk_str "You've randomly chosen an animal, and it says ") in
-      let* α1 : ref str.t := M.read (mk_str "
-") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 :
-          (ref (dyn [returning_traits_with_dyn.Animal.Trait])) ->
-            M (ref str.t) :=
-        ltac:(M.get_method (fun ℐ =>
-          returning_traits_with_dyn.Animal.noise
-            (Self := dyn [returning_traits_with_dyn.Animal.Trait])
-            (Trait := ℐ))) in
-      let* α4 :
-          alloc.boxed.Box.t
-            (dyn [returning_traits_with_dyn.Animal.Trait])
-            alloc.alloc.Global.t :=
-        M.read animal in
-      let* α5 : ref str.t := M.call (α3 (borrow (deref α4))) in
-      let* α6 : M.Val (ref str.t) := M.alloc α5 in
-      let* α7 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α6)) in
-      let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
-      let* α9 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α8))) in
-      let* α10 : unit := M.call (std.io.stdio._print α9) in
-      M.alloc α10 in
-    M.alloc tt in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+  ltac:(M.monadic (
+    M.read (|
+      let random_number : M.Val f64.t :=
+        M.copy (| UnsupportedLiteral : M.Val f64.t |) in
+      let animal :
+          M.Val
+            (alloc.boxed.Box.t
+              (dyn [returning_traits_with_dyn.Animal.Trait])
+              alloc.alloc.Global.t) :=
+        M.alloc (|
+          M.call (|(returning_traits_with_dyn.random_animal
+            (M.read (| random_number |)))
+          |)
+        |) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.read (|
+                          mk_str
+                            "You've randomly chosen an animal, and it says "
+                        |);
+                        M.read (| mk_str "
+" |)
+                      ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                          (borrow
+                            (M.alloc (|
+                              M.call (|(ltac:(M.get_method (fun ℐ =>
+                                  returning_traits_with_dyn.Animal.noise
+                                    (Self :=
+                                      dyn
+                                        [returning_traits_with_dyn.Animal.Trait])
+                                    (Trait := ℐ)))
+                                (borrow (deref (M.read (| animal |)))))
+                              |)
+                            |))))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      M.alloc (| tt |)
+    |)
+  )).

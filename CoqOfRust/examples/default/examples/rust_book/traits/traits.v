@@ -36,9 +36,10 @@ Section Impl_traits_Sheep_t.
       }
   *)
   Definition is_naked (self : ref Self) : M bool.t :=
-    let* self := M.alloc self in
-    let* α0 : ref traits.Sheep.t := M.read self in
-    M.read (traits.Sheep.Get_naked (deref α0)).
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      M.read (| traits.Sheep.Get_naked (deref (M.read (| self |))) |)
+    )).
   
   Global Instance AssociatedFunction_is_naked :
     Notations.DoubleColon Self "is_naked" := {
@@ -60,9 +61,10 @@ Section Impl_traits_Animal_for_traits_Sheep_t.
       }
   *)
   Definition new (name : ref str.t) : M traits.Sheep.t :=
-    let* name := M.alloc name in
-    let* α0 : ref str.t := M.read name in
-    M.pure {| traits.Sheep.name := α0; traits.Sheep.naked := false; |}.
+    ltac:(M.monadic (
+      let name := M.alloc (| name |) in
+      {| traits.Sheep.name := M.read (| name |); traits.Sheep.naked := false; |}
+    )).
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
@@ -74,9 +76,10 @@ Section Impl_traits_Animal_for_traits_Sheep_t.
       }
   *)
   Definition name (self : ref Self) : M (ref str.t) :=
-    let* self := M.alloc self in
-    let* α0 : ref traits.Sheep.t := M.read self in
-    M.read (traits.Sheep.Get_name (deref α0)).
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      M.read (| traits.Sheep.Get_name (deref (M.read (| self |))) |)
+    )).
   
   Global Instance AssociatedFunction_name :
     Notations.DoubleColon Self "name" := {
@@ -93,17 +96,22 @@ Section Impl_traits_Animal_for_traits_Sheep_t.
       }
   *)
   Definition noise (self : ref Self) : M (ref str.t) :=
-    let* self := M.alloc self in
-    let* α0 : ref traits.Sheep.t := M.read self in
-    let* α1 : bool.t := M.call (traits.Sheep.t::["is_naked"] α0) in
-    let* α2 : M.Val bool.t := M.alloc α1 in
-    let* α3 : bool.t := M.read (use α2) in
-    let* α4 : M.Val (ref str.t) :=
-      if α3 then
-        M.pure (mk_str "baaaaah?")
-      else
-        M.pure (mk_str "baaaaah!") in
-    M.read α4.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      M.read (|
+        if
+          M.read (|
+            use
+              (M.alloc (|
+                M.call (|(traits.Sheep.t::["is_naked"] (M.read (| self |))) |)
+              |))
+          |)
+        then
+          mk_str "baaaaah?"
+        else
+          mk_str "baaaaah!"
+      |)
+    )).
   
   Global Instance AssociatedFunction_noise :
     Notations.DoubleColon Self "noise" := {
@@ -117,35 +125,50 @@ Section Impl_traits_Animal_for_traits_Sheep_t.
       }
   *)
   Definition talk (self : ref Self) : M unit :=
-    let* self := M.alloc self in
-    let* _ : M.Val unit :=
-      let* _ : M.Val unit :=
-        let* α0 : ref str.t := M.read (mk_str "") in
-        let* α1 : ref str.t := M.read (mk_str " pauses briefly... ") in
-        let* α2 : ref str.t := M.read (mk_str "
-") in
-        let* α3 : M.Val (array (ref str.t)) := M.alloc [ α0; α1; α2 ] in
-        let* α4 : ref traits.Sheep.t := M.read self in
-        let* α5 : core.fmt.rt.Argument.t :=
-          M.call
-            (core.fmt.rt.Argument.t::["new_display"]
-              (borrow (traits.Sheep.Get_name (deref α4)))) in
-        let* α6 : ref traits.Sheep.t := M.read self in
-        let* α7 : ref str.t := M.call (noise α6) in
-        let* α8 : M.Val (ref str.t) := M.alloc α7 in
-        let* α9 : core.fmt.rt.Argument.t :=
-          M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α8)) in
-        let* α10 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5; α9 ] in
-        let* α11 : core.fmt.Arguments.t :=
-          M.call
-            (core.fmt.Arguments.t::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α3))
-              (pointer_coercion "Unsize" (borrow α10))) in
-        let* α12 : unit := M.call (std.io.stdio._print α11) in
-        M.alloc α12 in
-      M.alloc tt in
-    let* α0 : M.Val unit := M.alloc tt in
-    M.read α0.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      M.read (|
+        let _ : M.Val unit :=
+          let _ : M.Val unit :=
+            M.alloc (|
+              M.call (|(std.io.stdio._print
+                (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                  (pointer_coercion
+                    "Unsize"
+                    (borrow
+                      (M.alloc (|
+                        [
+                          M.read (| mk_str "" |);
+                          M.read (| mk_str " pauses briefly... " |);
+                          M.read (| mk_str "
+" |)
+                        ]
+                      |))))
+                  (pointer_coercion
+                    "Unsize"
+                    (borrow
+                      (M.alloc (|
+                        [
+                          M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                            (borrow
+                              (traits.Sheep.Get_name
+                                (deref (M.read (| self |))))))
+                          |);
+                          M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                            (borrow
+                              (M.alloc (|
+                                M.call (|(noise (M.read (| self |))) |)
+                              |))))
+                          |)
+                        ]
+                      |)))))
+                |)))
+              |)
+            |) in
+          M.alloc (| tt |) in
+        M.alloc (| tt |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_talk :
     Notations.DoubleColon Self "talk" := {
@@ -178,64 +201,95 @@ Section Impl_traits_Sheep_t_2.
       }
   *)
   Definition shear (self : mut_ref Self) : M unit :=
-    let* self := M.alloc self in
-    let* α0 : mut_ref traits.Sheep.t := M.read self in
-    let* α1 : bool.t :=
-      M.call (traits.Sheep.t::["is_naked"] (borrow (deref α0))) in
-    let* α2 : M.Val bool.t := M.alloc α1 in
-    let* α3 : bool.t := M.read (use α2) in
-    let* α4 : M.Val unit :=
-      if α3 then
-        let* _ : M.Val unit :=
-          let* _ : M.Val unit :=
-            let* α0 : ref str.t := M.read (mk_str "") in
-            let* α1 : ref str.t := M.read (mk_str " is already naked...
-") in
-            let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-            let* α3 : (ref traits.Sheep.t) -> M (ref str.t) :=
-              ltac:(M.get_method (fun ℐ =>
-                traits.Animal.name (Self := traits.Sheep.t) (Trait := ℐ))) in
-            let* α4 : mut_ref traits.Sheep.t := M.read self in
-            let* α5 : ref str.t := M.call (α3 (borrow (deref α4))) in
-            let* α6 : M.Val (ref str.t) := M.alloc α5 in
-            let* α7 : core.fmt.rt.Argument.t :=
-              M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α6)) in
-            let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
-            let* α9 : core.fmt.Arguments.t :=
-              M.call
-                (core.fmt.Arguments.t::["new_v1"]
-                  (pointer_coercion "Unsize" (borrow α2))
-                  (pointer_coercion "Unsize" (borrow α8))) in
-            let* α10 : unit := M.call (std.io.stdio._print α9) in
-            M.alloc α10 in
-          M.alloc tt in
-        M.alloc tt
-      else
-        let* _ : M.Val unit :=
-          let* _ : M.Val unit :=
-            let* α0 : ref str.t := M.read (mk_str "") in
-            let* α1 : ref str.t := M.read (mk_str " gets a haircut!
-") in
-            let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-            let* α3 : mut_ref traits.Sheep.t := M.read self in
-            let* α4 : core.fmt.rt.Argument.t :=
-              M.call
-                (core.fmt.rt.Argument.t::["new_display"]
-                  (borrow (traits.Sheep.Get_name (deref α3)))) in
-            let* α5 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4 ] in
-            let* α6 : core.fmt.Arguments.t :=
-              M.call
-                (core.fmt.Arguments.t::["new_v1"]
-                  (pointer_coercion "Unsize" (borrow α2))
-                  (pointer_coercion "Unsize" (borrow α5))) in
-            let* α7 : unit := M.call (std.io.stdio._print α6) in
-            M.alloc α7 in
-          M.alloc tt in
-        let* _ : M.Val unit :=
-          let* α0 : mut_ref traits.Sheep.t := M.read self in
-          assign (traits.Sheep.Get_naked (deref α0)) true in
-        M.alloc tt in
-    M.read α4.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      M.read (|
+        if
+          M.read (|
+            use
+              (M.alloc (|
+                M.call (|(traits.Sheep.t::["is_naked"]
+                  (borrow (deref (M.read (| self |)))))
+                |)
+              |))
+          |)
+        then
+          let _ : M.Val unit :=
+            let _ : M.Val unit :=
+              M.alloc (|
+                M.call (|(std.io.stdio._print
+                  (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                    (pointer_coercion
+                      "Unsize"
+                      (borrow
+                        (M.alloc (|
+                          [
+                            M.read (| mk_str "" |);
+                            M.read (| mk_str " is already naked...
+" |)
+                          ]
+                        |))))
+                    (pointer_coercion
+                      "Unsize"
+                      (borrow
+                        (M.alloc (|
+                          [
+                            M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                              (borrow
+                                (M.alloc (|
+                                  M.call (|(ltac:(M.get_method (fun ℐ =>
+                                      traits.Animal.name
+                                        (Self := traits.Sheep.t)
+                                        (Trait := ℐ)))
+                                    (borrow (deref (M.read (| self |)))))
+                                  |)
+                                |))))
+                            |)
+                          ]
+                        |)))))
+                  |)))
+                |)
+              |) in
+            M.alloc (| tt |) in
+          M.alloc (| tt |)
+        else
+          let _ : M.Val unit :=
+            let _ : M.Val unit :=
+              M.alloc (|
+                M.call (|(std.io.stdio._print
+                  (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                    (pointer_coercion
+                      "Unsize"
+                      (borrow
+                        (M.alloc (|
+                          [
+                            M.read (| mk_str "" |);
+                            M.read (| mk_str " gets a haircut!
+" |)
+                          ]
+                        |))))
+                    (pointer_coercion
+                      "Unsize"
+                      (borrow
+                        (M.alloc (|
+                          [
+                            M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                              (borrow
+                                (traits.Sheep.Get_name
+                                  (deref (M.read (| self |))))))
+                            |)
+                          ]
+                        |)))))
+                  |)))
+                |)
+              |) in
+            M.alloc (| tt |) in
+          let _ : M.Val unit :=
+            assign (| traits.Sheep.Get_naked (deref (M.read (| self |))), true
+            |) in
+          M.alloc (| tt |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_shear :
     Notations.DoubleColon Self "shear" := {
@@ -257,27 +311,32 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* dolly : M.Val traits.Sheep.t :=
-    let* α0 : (ref str.t) -> M traits.Sheep.t :=
-      ltac:(M.get_method (fun ℐ =>
-        traits.Animal.new (Self := traits.Sheep.t) (Trait := ℐ))) in
-    let* α1 : ref str.t := M.read (mk_str "Dolly") in
-    let* α2 : traits.Sheep.t := M.call (α0 α1) in
-    M.alloc α2 in
-  let* _ : M.Val unit :=
-    let* α0 : (ref traits.Sheep.t) -> M unit :=
-      ltac:(M.get_method (fun ℐ =>
-        traits.Animal.talk (Self := traits.Sheep.t) (Trait := ℐ))) in
-    let* α1 : unit := M.call (α0 (borrow dolly)) in
-    M.alloc α1 in
-  let* _ : M.Val unit :=
-    let* α0 : unit := M.call (traits.Sheep.t::["shear"] (borrow_mut dolly)) in
-    M.alloc α0 in
-  let* _ : M.Val unit :=
-    let* α0 : (ref traits.Sheep.t) -> M unit :=
-      ltac:(M.get_method (fun ℐ =>
-        traits.Animal.talk (Self := traits.Sheep.t) (Trait := ℐ))) in
-    let* α1 : unit := M.call (α0 (borrow dolly)) in
-    M.alloc α1 in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+  ltac:(M.monadic (
+    M.read (|
+      let dolly : M.Val traits.Sheep.t :=
+        M.alloc (|
+          M.call (|(ltac:(M.get_method (fun ℐ =>
+              traits.Animal.new (Self := traits.Sheep.t) (Trait := ℐ)))
+            (M.read (| mk_str "Dolly" |)))
+          |)
+        |) in
+      let _ : M.Val unit :=
+        M.alloc (|
+          M.call (|(ltac:(M.get_method (fun ℐ =>
+              traits.Animal.talk (Self := traits.Sheep.t) (Trait := ℐ)))
+            (borrow dolly))
+          |)
+        |) in
+      let _ : M.Val unit :=
+        M.alloc (| M.call (|(traits.Sheep.t::["shear"] (borrow_mut dolly)) |)
+        |) in
+      let _ : M.Val unit :=
+        M.alloc (|
+          M.call (|(ltac:(M.get_method (fun ℐ =>
+              traits.Animal.talk (Self := traits.Sheep.t) (Trait := ℐ)))
+            (borrow dolly))
+          |)
+        |) in
+      M.alloc (| tt |)
+    |)
+  )).

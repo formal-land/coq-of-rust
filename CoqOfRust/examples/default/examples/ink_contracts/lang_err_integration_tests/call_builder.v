@@ -20,11 +20,12 @@ Section Impl_core_default_Default_for_call_builder_AccountId_t.
   Default
   *)
   Definition default : M call_builder.AccountId.t :=
-    let* α0 : M u128.t :=
-      ltac:(M.get_method (fun ℐ =>
-        core.default.Default.default (Self := u128.t) (Trait := ℐ))) in
-    let* α1 : u128.t := M.call α0 in
-    M.pure (call_builder.AccountId.Build_t α1).
+    ltac:(M.monadic (
+      call_builder.AccountId.Build_t
+        (M.call (|ltac:(M.get_method (fun ℐ =>
+          core.default.Default.default (Self := u128.t) (Trait := ℐ)))
+        |))
+    )).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -45,18 +46,19 @@ Section Impl_core_clone_Clone_for_call_builder_AccountId_t.
   Clone
   *)
   Definition clone (self : ref Self) : M call_builder.AccountId.t :=
-    let* self := M.alloc self in
-    let* α0 : M.Val call_builder.AccountId.t :=
-      match_operator
-        (DeclaredButUndefinedVariable
-          (A := core.clone.AssertParamIsClone.t u128.t))
-        [
-          fun γ =>
-            (let* α0 : ref call_builder.AccountId.t := M.read self in
-            M.pure (deref α0)) :
-            M (M.Val call_builder.AccountId.t)
-        ] in
-    M.read α0.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      M.read (|
+        ltac:
+          (M.monadic_match_operator
+            (DeclaredButUndefinedVariable
+              (A := core.clone.AssertParamIsClone.t u128.t))
+            [
+              fun γ =>
+                (deref (M.read (| self |))) : M.Val call_builder.AccountId.t
+            ])
+      |)
+    )).
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {
@@ -105,10 +107,13 @@ Section Impl_call_builder_Selector_t.
       }
   *)
   Definition new (bytes : array u8.t) : M Self :=
-    let* bytes := M.alloc bytes in
-    let* α0 : ref str.t := M.read (mk_str "not implemented") in
-    let* α1 : never.t := M.call (core.panicking.panic α0) in
-    never_to_any α1.
+    ltac:(M.monadic (
+      let bytes := M.alloc (| bytes |) in
+      never_to_any (|
+        M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
+        |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
@@ -130,7 +135,8 @@ Section Impl_core_default_Default_for_call_builder_CallBuilderTest_t.
   Default
   *)
   Definition default : M call_builder.CallBuilderTest.t :=
-    M.pure call_builder.CallBuilderTest.Build.
+    ltac:(M.monadic ( call_builder.CallBuilderTest.Build
+    )).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -153,12 +159,13 @@ Section Impl_call_builder_CallBuilderTest_t.
       }
   *)
   Definition new : M Self :=
-    let* α0 : M call_builder.CallBuilderTest.t :=
-      ltac:(M.get_method (fun ℐ =>
+    ltac:(M.monadic (
+      M.call (|ltac:(M.get_method (fun ℐ =>
         core.default.Default.default
           (Self := call_builder.CallBuilderTest.t)
-          (Trait := ℐ))) in
-    M.call α0.
+          (Trait := ℐ)))
+      |)
+    )).
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
@@ -188,71 +195,89 @@ Section Impl_call_builder_CallBuilderTest_t.
       (address : call_builder.AccountId.t)
       (selector : array u8.t)
       : M (core.option.Option.t call_builder.LangError.t) :=
-    let* self := M.alloc self in
-    let* address := M.alloc address in
-    let* selector := M.alloc selector in
-    let* result : M.Val (core.result.Result.t unit call_builder.LangError.t) :=
-      let* α0 : ref str.t := M.read (mk_str "not yet implemented") in
-      let* α1 : never.t := M.call (core.panicking.panic α0) in
-      let* α2 : core.result.Result.t unit call_builder.LangError.t :=
-        never_to_any α1 in
-      M.alloc α2 in
-    let* α0 : M.Val (core.option.Option.t call_builder.LangError.t) :=
-      match_operator
-        result
-        [
-          fun γ =>
-            (let* α0 := M.read γ in
-            match α0 with
-            | core.result.Result.Ok _ =>
-              let γ0_0 := core.result.Result.Get_Ok_0 γ in
-              M.alloc core.option.Option.None
-            | _ => M.break_match
-            end) :
-            M (M.Val (core.option.Option.t call_builder.LangError.t));
-          fun γ =>
-            (let* α0 := M.read γ in
-            match α0 with
-            | core.result.Result.Err _ =>
-              let γ0_0 := core.result.Result.Get_Err_0 γ in
-              let* e := M.copy γ0_0 in
-              let* α0 := M.read γ0_0 in
-              match α0 with
-              | call_builder.LangError.CouldNotReadInput =>
-                let* α0 : call_builder.LangError.t := M.read e in
-                M.alloc (core.option.Option.Some α0)
-              | _ => M.break_match
-              end
-            | _ => M.break_match
-            end) :
-            M (M.Val (core.option.Option.t call_builder.LangError.t));
-          fun γ =>
-            (let* α0 := M.read γ in
-            match α0 with
-            | core.result.Result.Err _ =>
-              let γ0_0 := core.result.Result.Get_Err_0 γ in
-              let* α0 : ref str.t :=
-                M.read
-                  (mk_str
-                    "not implemented: No other `LangError` variants exist at the moment.") in
-              let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-              let* α2 : array core.fmt.rt.Argument.t :=
-                M.call core.fmt.rt.Argument.t::["none"] in
-              let* α3 : M.Val (array core.fmt.rt.Argument.t) := M.alloc α2 in
-              let* α4 : core.fmt.Arguments.t :=
-                M.call
-                  (core.fmt.Arguments.t::["new_v1"]
-                    (pointer_coercion "Unsize" (borrow α1))
-                    (pointer_coercion "Unsize" (borrow α3))) in
-              let* α5 : never.t := M.call (core.panicking.panic_fmt α4) in
-              let* α6 : core.option.Option.t call_builder.LangError.t :=
-                never_to_any α5 in
-              M.alloc α6
-            | _ => M.break_match
-            end) :
-            M (M.Val (core.option.Option.t call_builder.LangError.t))
-        ] in
-    M.read α0.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let address := M.alloc (| address |) in
+      let selector := M.alloc (| selector |) in
+      M.read (|
+        let result :
+            M.Val (core.result.Result.t unit call_builder.LangError.t) :=
+          M.alloc (|
+            never_to_any (|
+              M.call (|(core.panicking.panic
+                (M.read (| mk_str "not yet implemented" |)))
+              |)
+            |)
+          |) in
+        ltac:
+          (M.monadic_match_operator
+            result
+            [
+              fun
+                  (γ :
+                    M.Val
+                      (core.result.Result.t unit call_builder.LangError.t)) =>
+                match M.read (| γ |) with
+                | core.result.Result.Ok _ =>
+                  let γ0_0 := core.result.Result.Get_Ok_0 γ in
+                  M.alloc (| core.option.Option.None |)
+                | _ => M.break_match(||)
+                end :
+                M.Val (core.option.Option.t call_builder.LangError.t);
+              fun
+                  (γ :
+                    M.Val
+                      (core.result.Result.t unit call_builder.LangError.t)) =>
+                match M.read (| γ |) with
+                | core.result.Result.Err _ =>
+                  let γ0_0 := core.result.Result.Get_Err_0 γ in
+                  let e := M.copy (| γ0_0 |) in
+                  match M.read (| γ0_0 |) with
+                  | call_builder.LangError.CouldNotReadInput =>
+                    M.alloc (| core.option.Option.Some (M.read (| e |)) |)
+                  | _ => M.break_match(||)
+                  end
+                | _ => M.break_match(||)
+                end :
+                M.Val (core.option.Option.t call_builder.LangError.t);
+              fun
+                  (γ :
+                    M.Val
+                      (core.result.Result.t unit call_builder.LangError.t)) =>
+                match M.read (| γ |) with
+                | core.result.Result.Err _ =>
+                  let γ0_0 := core.result.Result.Get_Err_0 γ in
+                  M.alloc (|
+                    never_to_any (|
+                      M.call (|(core.panicking.panic_fmt
+                        (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                          (pointer_coercion
+                            "Unsize"
+                            (borrow
+                              (M.alloc (|
+                                [
+                                  M.read (|
+                                    mk_str
+                                      "not implemented: No other `LangError` variants exist at the moment."
+                                  |)
+                                ]
+                              |))))
+                          (pointer_coercion
+                            "Unsize"
+                            (borrow
+                              (M.alloc (|
+                                M.call (|core.fmt.rt.Argument.t::["none"] |)
+                              |)))))
+                        |)))
+                      |)
+                    |)
+                  |)
+                | _ => M.break_match(||)
+                end :
+                M.Val (core.option.Option.t call_builder.LangError.t)
+            ])
+      |)
+    )).
   
   Global Instance AssociatedFunction_call :
     Notations.DoubleColon Self "call" := {
@@ -275,10 +300,12 @@ Section Impl_call_builder_CallBuilderTest_t.
       (address : call_builder.AccountId.t)
       (selector : array u8.t)
       : M unit :=
-    let* self := M.alloc self in
-    let* address := M.alloc address in
-    let* selector := M.alloc selector in
-    M.pure tt.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let address := M.alloc (| address |) in
+      let selector := M.alloc (| selector |) in
+      tt
+    )).
   
   Global Instance AssociatedFunction_invoke :
     Notations.DoubleColon Self "invoke" := {
@@ -321,11 +348,13 @@ Section Impl_call_builder_CallBuilderTest_t.
       (selector : array u8.t)
       (init_value : bool.t)
       : M (core.option.Option.t call_builder.LangError.t) :=
-    let* self := M.alloc self in
-    let* code_hash := M.alloc code_hash in
-    let* selector := M.alloc selector in
-    let* init_value := M.alloc init_value in
-    M.pure core.option.Option.None.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let code_hash := M.alloc (| code_hash |) in
+      let selector := M.alloc (| selector |) in
+      let init_value := M.alloc (| init_value |) in
+      core.option.Option.None
+    )).
   
   Global Instance AssociatedFunction_call_instantiate :
     Notations.DoubleColon Self "call_instantiate" := {
@@ -365,11 +394,13 @@ Section Impl_call_builder_CallBuilderTest_t.
       (selector : array u8.t)
       (init_value : bool.t)
       : M (core.option.Option.t unit) :=
-    let* self := M.alloc self in
-    let* code_hash := M.alloc code_hash in
-    let* selector := M.alloc selector in
-    let* init_value := M.alloc init_value in
-    M.pure core.option.Option.None.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let code_hash := M.alloc (| code_hash |) in
+      let selector := M.alloc (| selector |) in
+      let init_value := M.alloc (| init_value |) in
+      core.option.Option.None
+    )).
   
   Global Instance AssociatedFunction_call_instantiate_fallible :
     Notations.DoubleColon Self "call_instantiate_fallible" := {

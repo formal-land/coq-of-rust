@@ -35,117 +35,159 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* temperature : M.Val match_guards.Temperature.t :=
-    M.alloc (match_guards.Temperature.Celsius ((Integer.of_Z 35) : i32.t)) in
-  let* α0 : M.Val unit :=
-    match_operator
-      temperature
-      [
-        fun γ =>
-          (let* α0 := M.read γ in
-          match α0 with
-          | match_guards.Temperature.Celsius _ =>
-            let γ0_0 := match_guards.Temperature.Get_Celsius_0 γ in
-            let* t := M.copy γ0_0 in
-            let* _ : M.Val unit :=
-              let* α0 : ref str.t := M.read (mk_str "") in
-              let* α1 : ref str.t := M.read (mk_str "C is above 30 Celsius
-") in
-              let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-              let* α3 : core.fmt.rt.Argument.t :=
-                M.call (core.fmt.rt.Argument.t::["new_display"] (borrow t)) in
-              let* α4 : M.Val (array core.fmt.rt.Argument.t) :=
-                M.alloc [ α3 ] in
-              let* α5 : core.fmt.Arguments.t :=
-                M.call
-                  (core.fmt.Arguments.t::["new_v1"]
-                    (pointer_coercion "Unsize" (borrow α2))
-                    (pointer_coercion "Unsize" (borrow α4))) in
-              let* α6 : unit := M.call (std.io.stdio._print α5) in
-              M.alloc α6 in
-            M.alloc tt
-          | _ => M.break_match
-          end) :
-          M (M.Val unit);
-        fun γ =>
-          (let* α0 := M.read γ in
-          match α0 with
-          | match_guards.Temperature.Celsius _ =>
-            let γ0_0 := match_guards.Temperature.Get_Celsius_0 γ in
-            let* t := M.copy γ0_0 in
-            let* _ : M.Val unit :=
-              let* α0 : ref str.t := M.read (mk_str "") in
-              let* α1 : ref str.t := M.read (mk_str "C is below 30 Celsius
-") in
-              let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-              let* α3 : core.fmt.rt.Argument.t :=
-                M.call (core.fmt.rt.Argument.t::["new_display"] (borrow t)) in
-              let* α4 : M.Val (array core.fmt.rt.Argument.t) :=
-                M.alloc [ α3 ] in
-              let* α5 : core.fmt.Arguments.t :=
-                M.call
-                  (core.fmt.Arguments.t::["new_v1"]
-                    (pointer_coercion "Unsize" (borrow α2))
-                    (pointer_coercion "Unsize" (borrow α4))) in
-              let* α6 : unit := M.call (std.io.stdio._print α5) in
-              M.alloc α6 in
-            M.alloc tt
-          | _ => M.break_match
-          end) :
-          M (M.Val unit);
-        fun γ =>
-          (let* α0 := M.read γ in
-          match α0 with
-          | match_guards.Temperature.Fahrenheit _ =>
-            let γ0_0 := match_guards.Temperature.Get_Fahrenheit_0 γ in
-            let* t := M.copy γ0_0 in
-            let* _ : M.Val unit :=
-              let* α0 : ref str.t := M.read (mk_str "") in
-              let* α1 : ref str.t :=
-                M.read (mk_str "F is above 86 Fahrenheit
-") in
-              let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-              let* α3 : core.fmt.rt.Argument.t :=
-                M.call (core.fmt.rt.Argument.t::["new_display"] (borrow t)) in
-              let* α4 : M.Val (array core.fmt.rt.Argument.t) :=
-                M.alloc [ α3 ] in
-              let* α5 : core.fmt.Arguments.t :=
-                M.call
-                  (core.fmt.Arguments.t::["new_v1"]
-                    (pointer_coercion "Unsize" (borrow α2))
-                    (pointer_coercion "Unsize" (borrow α4))) in
-              let* α6 : unit := M.call (std.io.stdio._print α5) in
-              M.alloc α6 in
-            M.alloc tt
-          | _ => M.break_match
-          end) :
-          M (M.Val unit);
-        fun γ =>
-          (let* α0 := M.read γ in
-          match α0 with
-          | match_guards.Temperature.Fahrenheit _ =>
-            let γ0_0 := match_guards.Temperature.Get_Fahrenheit_0 γ in
-            let* t := M.copy γ0_0 in
-            let* _ : M.Val unit :=
-              let* α0 : ref str.t := M.read (mk_str "") in
-              let* α1 : ref str.t :=
-                M.read (mk_str "F is below 86 Fahrenheit
-") in
-              let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-              let* α3 : core.fmt.rt.Argument.t :=
-                M.call (core.fmt.rt.Argument.t::["new_display"] (borrow t)) in
-              let* α4 : M.Val (array core.fmt.rt.Argument.t) :=
-                M.alloc [ α3 ] in
-              let* α5 : core.fmt.Arguments.t :=
-                M.call
-                  (core.fmt.Arguments.t::["new_v1"]
-                    (pointer_coercion "Unsize" (borrow α2))
-                    (pointer_coercion "Unsize" (borrow α4))) in
-              let* α6 : unit := M.call (std.io.stdio._print α5) in
-              M.alloc α6 in
-            M.alloc tt
-          | _ => M.break_match
-          end) :
-          M (M.Val unit)
-      ] in
-  M.read α0.
+  ltac:(M.monadic (
+    M.read (|
+      let temperature : M.Val match_guards.Temperature.t :=
+        M.alloc (| match_guards.Temperature.Celsius ((Integer.of_Z 35) : i32.t)
+        |) in
+      ltac:
+        (M.monadic_match_operator
+          temperature
+          [
+            fun (γ : M.Val match_guards.Temperature.t) =>
+              match M.read (| γ |) with
+              | match_guards.Temperature.Celsius _ =>
+                let γ0_0 := match_guards.Temperature.Get_Celsius_0 γ in
+                let t := M.copy (| γ0_0 |) in
+                let _ : M.Val unit :=
+                  M.alloc (|
+                    M.call (|(std.io.stdio._print
+                      (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                        (pointer_coercion
+                          "Unsize"
+                          (borrow
+                            (M.alloc (|
+                              [
+                                M.read (| mk_str "" |);
+                                M.read (| mk_str "C is above 30 Celsius
+" |)
+                              ]
+                            |))))
+                        (pointer_coercion
+                          "Unsize"
+                          (borrow
+                            (M.alloc (|
+                              [
+                                M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                                  (borrow t))
+                                |)
+                              ]
+                            |)))))
+                      |)))
+                    |)
+                  |) in
+                M.alloc (| tt |)
+              | _ => M.break_match(||)
+              end :
+              M.Val unit;
+            fun (γ : M.Val match_guards.Temperature.t) =>
+              match M.read (| γ |) with
+              | match_guards.Temperature.Celsius _ =>
+                let γ0_0 := match_guards.Temperature.Get_Celsius_0 γ in
+                let t := M.copy (| γ0_0 |) in
+                let _ : M.Val unit :=
+                  M.alloc (|
+                    M.call (|(std.io.stdio._print
+                      (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                        (pointer_coercion
+                          "Unsize"
+                          (borrow
+                            (M.alloc (|
+                              [
+                                M.read (| mk_str "" |);
+                                M.read (| mk_str "C is below 30 Celsius
+" |)
+                              ]
+                            |))))
+                        (pointer_coercion
+                          "Unsize"
+                          (borrow
+                            (M.alloc (|
+                              [
+                                M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                                  (borrow t))
+                                |)
+                              ]
+                            |)))))
+                      |)))
+                    |)
+                  |) in
+                M.alloc (| tt |)
+              | _ => M.break_match(||)
+              end :
+              M.Val unit;
+            fun (γ : M.Val match_guards.Temperature.t) =>
+              match M.read (| γ |) with
+              | match_guards.Temperature.Fahrenheit _ =>
+                let γ0_0 := match_guards.Temperature.Get_Fahrenheit_0 γ in
+                let t := M.copy (| γ0_0 |) in
+                let _ : M.Val unit :=
+                  M.alloc (|
+                    M.call (|(std.io.stdio._print
+                      (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                        (pointer_coercion
+                          "Unsize"
+                          (borrow
+                            (M.alloc (|
+                              [
+                                M.read (| mk_str "" |);
+                                M.read (| mk_str "F is above 86 Fahrenheit
+" |)
+                              ]
+                            |))))
+                        (pointer_coercion
+                          "Unsize"
+                          (borrow
+                            (M.alloc (|
+                              [
+                                M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                                  (borrow t))
+                                |)
+                              ]
+                            |)))))
+                      |)))
+                    |)
+                  |) in
+                M.alloc (| tt |)
+              | _ => M.break_match(||)
+              end :
+              M.Val unit;
+            fun (γ : M.Val match_guards.Temperature.t) =>
+              match M.read (| γ |) with
+              | match_guards.Temperature.Fahrenheit _ =>
+                let γ0_0 := match_guards.Temperature.Get_Fahrenheit_0 γ in
+                let t := M.copy (| γ0_0 |) in
+                let _ : M.Val unit :=
+                  M.alloc (|
+                    M.call (|(std.io.stdio._print
+                      (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                        (pointer_coercion
+                          "Unsize"
+                          (borrow
+                            (M.alloc (|
+                              [
+                                M.read (| mk_str "" |);
+                                M.read (| mk_str "F is below 86 Fahrenheit
+" |)
+                              ]
+                            |))))
+                        (pointer_coercion
+                          "Unsize"
+                          (borrow
+                            (M.alloc (|
+                              [
+                                M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                                  (borrow t))
+                                |)
+                              ]
+                            |)))))
+                      |)))
+                    |)
+                  |) in
+                M.alloc (| tt |)
+              | _ => M.break_match(||)
+              end :
+              M.Val unit
+          ])
+    |)
+  )).

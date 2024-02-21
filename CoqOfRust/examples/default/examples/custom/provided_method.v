@@ -20,9 +20,10 @@ Section Impl_provided_method_ProvidedAndRequired_for_i32_t.
       }
   *)
   Definition required (self : ref Self) : M i32.t :=
-    let* self := M.alloc self in
-    let* α0 : ref i32.t := M.read self in
-    M.read (deref α0).
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      M.read (| deref (M.read (| self |)) |)
+    )).
   
   Global Instance AssociatedFunction_required :
     Notations.DoubleColon Self "required" := {
@@ -47,10 +48,10 @@ Section Impl_provided_method_ProvidedAndRequired_for_u32_t.
       }
   *)
   Definition required (self : ref Self) : M i32.t :=
-    let* self := M.alloc self in
-    let* α0 : ref u32.t := M.read self in
-    let* α1 : u32.t := M.read (deref α0) in
-    M.pure (rust_cast α1).
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      rust_cast (M.read (| deref (M.read (| self |)) |))
+    )).
   
   Global Instance AssociatedFunction_required :
     Notations.DoubleColon Self "required" := {
@@ -63,8 +64,10 @@ Section Impl_provided_method_ProvidedAndRequired_for_u32_t.
       }
   *)
   Definition provided (self : ref Self) : M i32.t :=
-    let* self := M.alloc self in
-    M.pure ((Integer.of_Z 0) : i32.t).
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      (Integer.of_Z 0) : i32.t
+    )).
   
   Global Instance AssociatedFunction_provided :
     Notations.DoubleColon Self "provided" := {
@@ -89,109 +92,120 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* x : M.Val i32.t := M.alloc ((Integer.of_Z 5) : i32.t) in
-  let* _ : M.Val unit :=
-    let* α0 : (ref i32.t) -> M i32.t :=
-      ltac:(M.get_method (fun ℐ =>
-        provided_method.ProvidedAndRequired.provided
-          (Self := i32.t)
-          (Trait := ℐ))) in
-    let* α1 : i32.t := M.call (α0 (borrow x)) in
-    let* α2 : M.Val i32.t := M.alloc α1 in
-    let* α3 : M.Val i32.t := M.alloc ((Integer.of_Z 47) : i32.t) in
-    let* α4 : M.Val ((ref i32.t) * (ref i32.t)) :=
-      M.alloc (borrow α2, borrow α3) in
-    match_operator
-      α4
-      [
-        fun γ =>
-          (let* α0 := M.read γ in
-          match α0 with
-          | (_, _) =>
-            let γ0_0 := Tuple.Access.left γ in
-            let γ0_1 := Tuple.Access.right γ in
-            let* left_val := M.copy γ0_0 in
-            let* right_val := M.copy γ0_1 in
-            let* α0 : ref i32.t := M.read left_val in
-            let* α1 : i32.t := M.read (deref α0) in
-            let* α2 : ref i32.t := M.read right_val in
-            let* α3 : i32.t := M.read (deref α2) in
-            let* α4 : M.Val bool.t :=
-              M.alloc (UnOp.not (BinOp.Pure.eq α1 α3)) in
-            let* α5 : bool.t := M.read (use α4) in
-            if α5 then
-              let* kind : M.Val core.panicking.AssertKind.t :=
-                M.alloc core.panicking.AssertKind.Eq in
-              let* α0 : core.panicking.AssertKind.t := M.read kind in
-              let* α1 : ref i32.t := M.read left_val in
-              let* α2 : ref i32.t := M.read right_val in
-              let* α3 : never.t :=
-                M.call
-                  (core.panicking.assert_failed
-                    α0
-                    α1
-                    α2
-                    core.option.Option.None) in
-              let* α0 : M.Val never.t := M.alloc α3 in
-              let* α1 := M.read α0 in
-              let* α2 : unit := never_to_any α1 in
-              M.alloc α2
-            else
-              M.alloc tt
-          end) :
-          M (M.Val unit)
-      ] in
-  let* y : M.Val u32.t := M.alloc ((Integer.of_Z 5) : u32.t) in
-  let* _ : M.Val unit :=
-    let* α0 : (ref u32.t) -> M i32.t :=
-      ltac:(M.get_method (fun ℐ =>
-        provided_method.ProvidedAndRequired.provided
-          (Self := u32.t)
-          (Trait := ℐ))) in
-    let* α1 : i32.t := M.call (α0 (borrow y)) in
-    let* α2 : M.Val i32.t := M.alloc α1 in
-    let* α3 : M.Val i32.t := M.alloc ((Integer.of_Z 0) : i32.t) in
-    let* α4 : M.Val ((ref i32.t) * (ref i32.t)) :=
-      M.alloc (borrow α2, borrow α3) in
-    match_operator
-      α4
-      [
-        fun γ =>
-          (let* α0 := M.read γ in
-          match α0 with
-          | (_, _) =>
-            let γ0_0 := Tuple.Access.left γ in
-            let γ0_1 := Tuple.Access.right γ in
-            let* left_val := M.copy γ0_0 in
-            let* right_val := M.copy γ0_1 in
-            let* α0 : ref i32.t := M.read left_val in
-            let* α1 : i32.t := M.read (deref α0) in
-            let* α2 : ref i32.t := M.read right_val in
-            let* α3 : i32.t := M.read (deref α2) in
-            let* α4 : M.Val bool.t :=
-              M.alloc (UnOp.not (BinOp.Pure.eq α1 α3)) in
-            let* α5 : bool.t := M.read (use α4) in
-            if α5 then
-              let* kind : M.Val core.panicking.AssertKind.t :=
-                M.alloc core.panicking.AssertKind.Eq in
-              let* α0 : core.panicking.AssertKind.t := M.read kind in
-              let* α1 : ref i32.t := M.read left_val in
-              let* α2 : ref i32.t := M.read right_val in
-              let* α3 : never.t :=
-                M.call
-                  (core.panicking.assert_failed
-                    α0
-                    α1
-                    α2
-                    core.option.Option.None) in
-              let* α0 : M.Val never.t := M.alloc α3 in
-              let* α1 := M.read α0 in
-              let* α2 : unit := never_to_any α1 in
-              M.alloc α2
-            else
-              M.alloc tt
-          end) :
-          M (M.Val unit)
-      ] in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+  ltac:(M.monadic (
+    M.read (|
+      let x : M.Val i32.t := M.alloc (| (Integer.of_Z 5) : i32.t |) in
+      let _ : M.Val unit :=
+        ltac:
+          (M.monadic_match_operator
+            (M.alloc (|
+              (borrow
+                  (M.alloc (|
+                    M.call (|(ltac:(M.get_method (fun ℐ =>
+                        provided_method.ProvidedAndRequired.provided
+                          (Self := i32.t)
+                          (Trait := ℐ)))
+                      (borrow x))
+                    |)
+                  |)),
+                borrow (M.alloc (| (Integer.of_Z 47) : i32.t |)))
+            |))
+            [
+              fun (γ : M.Val ((ref i32.t) * (ref i32.t))) =>
+                match M.read (| γ |) with
+                | (_, _) =>
+                  let γ0_0 := Tuple.Access.left γ in
+                  let γ0_1 := Tuple.Access.right γ in
+                  let left_val := M.copy (| γ0_0 |) in
+                  let right_val := M.copy (| γ0_1 |) in
+                  if
+                    M.read (|
+                      use
+                        (M.alloc (|
+                          UnOp.not
+                            (BinOp.Pure.eq
+                              (M.read (| deref (M.read (| left_val |)) |))
+                              (M.read (| deref (M.read (| right_val |)) |)))
+                        |))
+                    |)
+                  then
+                    M.alloc (|
+                      never_to_any (|
+                        M.read (|
+                          let kind : M.Val core.panicking.AssertKind.t :=
+                            M.alloc (| core.panicking.AssertKind.Eq |) in
+                          M.alloc (|
+                            M.call (|(core.panicking.assert_failed
+                              (M.read (| kind |))
+                              (M.read (| left_val |))
+                              (M.read (| right_val |))
+                              core.option.Option.None)
+                            |)
+                          |)
+                        |)
+                      |)
+                    |)
+                  else
+                    M.alloc (| tt |)
+                end :
+                M.Val unit
+            ]) in
+      let y : M.Val u32.t := M.alloc (| (Integer.of_Z 5) : u32.t |) in
+      let _ : M.Val unit :=
+        ltac:
+          (M.monadic_match_operator
+            (M.alloc (|
+              (borrow
+                  (M.alloc (|
+                    M.call (|(ltac:(M.get_method (fun ℐ =>
+                        provided_method.ProvidedAndRequired.provided
+                          (Self := u32.t)
+                          (Trait := ℐ)))
+                      (borrow y))
+                    |)
+                  |)),
+                borrow (M.alloc (| (Integer.of_Z 0) : i32.t |)))
+            |))
+            [
+              fun (γ : M.Val ((ref i32.t) * (ref i32.t))) =>
+                match M.read (| γ |) with
+                | (_, _) =>
+                  let γ0_0 := Tuple.Access.left γ in
+                  let γ0_1 := Tuple.Access.right γ in
+                  let left_val := M.copy (| γ0_0 |) in
+                  let right_val := M.copy (| γ0_1 |) in
+                  if
+                    M.read (|
+                      use
+                        (M.alloc (|
+                          UnOp.not
+                            (BinOp.Pure.eq
+                              (M.read (| deref (M.read (| left_val |)) |))
+                              (M.read (| deref (M.read (| right_val |)) |)))
+                        |))
+                    |)
+                  then
+                    M.alloc (|
+                      never_to_any (|
+                        M.read (|
+                          let kind : M.Val core.panicking.AssertKind.t :=
+                            M.alloc (| core.panicking.AssertKind.Eq |) in
+                          M.alloc (|
+                            M.call (|(core.panicking.assert_failed
+                              (M.read (| kind |))
+                              (M.read (| left_val |))
+                              (M.read (| right_val |))
+                              core.option.Option.None)
+                            |)
+                          |)
+                        |)
+                      |)
+                    |)
+                  else
+                    M.alloc (| tt |)
+                end :
+                M.Val unit
+            ]) in
+      M.alloc (| tt |)
+    |)
+  )).

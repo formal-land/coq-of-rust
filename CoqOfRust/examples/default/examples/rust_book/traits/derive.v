@@ -32,13 +32,13 @@ Section Impl_core_cmp_PartialEq_for_derive_Centimeters_t.
       (self : ref Self)
       (other : ref derive.Centimeters.t)
       : M bool.t :=
-    let* self := M.alloc self in
-    let* other := M.alloc other in
-    let* α0 : ref derive.Centimeters.t := M.read self in
-    let* α1 : f64.t := M.read (derive.Centimeters.Get_0 (deref α0)) in
-    let* α2 : ref derive.Centimeters.t := M.read other in
-    let* α3 : f64.t := M.read (derive.Centimeters.Get_0 (deref α2)) in
-    M.pure (BinOp.Pure.eq α1 α3).
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let other := M.alloc (| other |) in
+      BinOp.Pure.eq
+        (M.read (| derive.Centimeters.Get_0 (deref (M.read (| self |))) |))
+        (M.read (| derive.Centimeters.Get_0 (deref (M.read (| other |))) |))
+    )).
   
   Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
     Notations.double_colon := eq;
@@ -64,23 +64,18 @@ Section Impl_core_cmp_PartialOrd_for_derive_Centimeters_t.
       (self : ref Self)
       (other : ref derive.Centimeters.t)
       : M (core.option.Option.t core.cmp.Ordering.t) :=
-    let* self := M.alloc self in
-    let* other := M.alloc other in
-    let* α0 :
-        (ref f64.t) ->
-          (ref f64.t) ->
-          M (core.option.Option.t core.cmp.Ordering.t) :=
-      ltac:(M.get_method (fun ℐ =>
-        core.cmp.PartialOrd.partial_cmp
-          (Self := f64.t)
-          (Rhs := f64.t)
-          (Trait := ℐ))) in
-    let* α1 : ref derive.Centimeters.t := M.read self in
-    let* α2 : ref derive.Centimeters.t := M.read other in
-    M.call
-      (α0
-        (borrow (derive.Centimeters.Get_0 (deref α1)))
-        (borrow (derive.Centimeters.Get_0 (deref α2)))).
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let other := M.alloc (| other |) in
+      M.call (|(ltac:(M.get_method (fun ℐ =>
+          core.cmp.PartialOrd.partial_cmp
+            (Self := f64.t)
+            (Rhs := f64.t)
+            (Trait := ℐ)))
+        (borrow (derive.Centimeters.Get_0 (deref (M.read (| self |)))))
+        (borrow (derive.Centimeters.Get_0 (deref (M.read (| other |))))))
+      |)
+    )).
   
   Global Instance AssociatedFunction_partial_cmp :
     Notations.DoubleColon Self "partial_cmp" := {
@@ -121,18 +116,19 @@ Section Impl_core_fmt_Debug_for_derive_Inches_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self := M.alloc self in
-    let* f := M.alloc f in
-    let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
-    let* α1 : ref str.t := M.read (mk_str "Inches") in
-    let* α2 : ref derive.Inches.t := M.read self in
-    let* α3 : M.Val (ref i32.t) :=
-      M.alloc (borrow (derive.Inches.Get_0 (deref α2))) in
-    M.call
-      (core.fmt.Formatter.t::["debug_tuple_field1_finish"]
-        α0
-        α1
-        (pointer_coercion "Unsize" (borrow α3))).
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let f := M.alloc (| f |) in
+      M.call (|(core.fmt.Formatter.t::["debug_tuple_field1_finish"]
+        (M.read (| f |))
+        (M.read (| mk_str "Inches" |))
+        (pointer_coercion
+          "Unsize"
+          (borrow
+            (M.alloc (| borrow (derive.Inches.Get_0 (deref (M.read (| self |))))
+            |)))))
+      |)
+    )).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
@@ -156,28 +152,31 @@ Section Impl_derive_Inches_t.
       }
   *)
   Definition to_centimeters (self : ref Self) : M derive.Centimeters.t :=
-    let* self := M.alloc self in
-    let* α0 : M.Val derive.Centimeters.t :=
-      match_operator
-        self
-        [
-          fun γ =>
-            (let* γ :=
-              let* α0 := M.read γ in
-              M.pure (deref α0) in
-            let* α0 := M.read γ in
-            match α0 with
-            | derive.Inches.Build_t _ =>
-              let γ1_0 := derive.Inches.Get_0 γ in
-              let* inches := M.copy γ1_0 in
-              let* α0 : i32.t := M.read inches in
-              let* α1 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
-              let* α2 : f64.t := BinOp.Panic.mul (rust_cast α0) α1 in
-              M.alloc (derive.Centimeters.Build_t α2)
-            end) :
-            M (M.Val derive.Centimeters.t)
-        ] in
-    M.read α0.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      M.read (|
+        ltac:
+          (M.monadic_match_operator
+            self
+            [
+              fun (γ : M.Val (ref derive.Inches.t)) =>
+                (let γ := deref (M.read (| γ |)) in
+                match M.read (| γ |) with
+                | derive.Inches.Build_t _ =>
+                  let γ1_0 := derive.Inches.Get_0 γ in
+                  let inches := M.copy (| γ1_0 |) in
+                  M.alloc (|
+                    derive.Centimeters.Build_t
+                      (BinOp.Panic.mul (|
+                        rust_cast (M.read (| inches |)),
+                        M.read (| UnsupportedLiteral : M.Val f64.t |)
+                      |))
+                  |)
+                end) :
+                M.Val derive.Centimeters.t
+            ])
+      |)
+    )).
   
   Global Instance AssociatedFunction_to_centimeters :
     Notations.DoubleColon Self "to_centimeters" := {
@@ -226,67 +225,101 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* _one_second : M.Val derive.Seconds.t :=
-    M.alloc (derive.Seconds.Build_t ((Integer.of_Z 1) : i32.t)) in
-  let* foot : M.Val derive.Inches.t :=
-    M.alloc (derive.Inches.Build_t ((Integer.of_Z 12) : i32.t)) in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "One foot equals ") in
-      let* α1 : ref str.t := M.read (mk_str "
-") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow foot)) in
-      let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
-      let* α5 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α4))) in
-      let* α6 : unit := M.call (std.io.stdio._print α5) in
-      M.alloc α6 in
-    M.alloc tt in
-  let* meter : M.Val derive.Centimeters.t :=
-    let* α0 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
-    M.alloc (derive.Centimeters.Build_t α0) in
-  let* cmp : M.Val (ref str.t) :=
-    let* α0 :
-        (ref derive.Centimeters.t) -> (ref derive.Centimeters.t) -> M bool.t :=
-      ltac:(M.get_method (fun ℐ =>
-        core.cmp.PartialOrd.lt
-          (Self := derive.Centimeters.t)
-          (Rhs := derive.Centimeters.t)
-          (Trait := ℐ))) in
-    let* α1 : derive.Centimeters.t :=
-      M.call (derive.Inches.t::["to_centimeters"] (borrow foot)) in
-    let* α2 : M.Val derive.Centimeters.t := M.alloc α1 in
-    let* α3 : bool.t := M.call (α0 (borrow α2) (borrow meter)) in
-    let* α4 : M.Val bool.t := M.alloc α3 in
-    let* α5 : bool.t := M.read (use α4) in
-    let* α6 : M.Val (ref str.t) :=
-      if α5 then
-        M.pure (mk_str "smaller")
-      else
-        let* α0 : ref str.t := M.read (mk_str "bigger") in
-        M.alloc α0 in
-    M.copy α6 in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "One foot is ") in
-      let* α1 : ref str.t := M.read (mk_str " than one meter.
-") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow cmp)) in
-      let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
-      let* α5 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α4))) in
-      let* α6 : unit := M.call (std.io.stdio._print α5) in
-      M.alloc α6 in
-    M.alloc tt in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+  ltac:(M.monadic (
+    M.read (|
+      let _one_second : M.Val derive.Seconds.t :=
+        M.alloc (| derive.Seconds.Build_t ((Integer.of_Z 1) : i32.t) |) in
+      let foot : M.Val derive.Inches.t :=
+        M.alloc (| derive.Inches.Build_t ((Integer.of_Z 12) : i32.t) |) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.read (| mk_str "One foot equals " |);
+                        M.read (| mk_str "
+" |)
+                      ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_debug"]
+                          (borrow foot))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      let meter : M.Val derive.Centimeters.t :=
+        M.alloc (|
+          derive.Centimeters.Build_t
+            (M.read (| UnsupportedLiteral : M.Val f64.t |))
+        |) in
+      let cmp : M.Val (ref str.t) :=
+        M.copy (|
+          if
+            M.read (|
+              use
+                (M.alloc (|
+                  M.call (|(ltac:(M.get_method (fun ℐ =>
+                      core.cmp.PartialOrd.lt
+                        (Self := derive.Centimeters.t)
+                        (Rhs := derive.Centimeters.t)
+                        (Trait := ℐ)))
+                    (borrow
+                      (M.alloc (|
+                        M.call (|(derive.Inches.t::["to_centimeters"]
+                          (borrow foot))
+                        |)
+                      |)))
+                    (borrow meter))
+                  |)
+                |))
+            |)
+          then
+            mk_str "smaller"
+          else
+            M.alloc (| M.read (| mk_str "bigger" |) |)
+        |) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.read (| mk_str "One foot is " |);
+                        M.read (| mk_str " than one meter.
+" |)
+                      ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                          (borrow cmp))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      M.alloc (| tt |)
+    |)
+  )).

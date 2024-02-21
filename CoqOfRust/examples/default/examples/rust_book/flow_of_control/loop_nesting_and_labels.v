@@ -24,65 +24,89 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* _ : M.Val unit :=
-    M.loop
-      (let* _ : M.Val unit :=
-        let* _ : M.Val unit :=
-          let* α0 : ref str.t := M.read (mk_str "Entered the outer loop
-") in
-          let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-          let* α2 : core.fmt.Arguments.t :=
-            M.call
-              (core.fmt.Arguments.t::["new_const"]
-                (pointer_coercion "Unsize" (borrow α1))) in
-          let* α3 : unit := M.call (std.io.stdio._print α2) in
-          M.alloc α3 in
-        M.alloc tt in
-      let* _ : M.Val unit :=
-        let* α0 : M.Val never.t :=
-          M.loop
-            (let* _ : M.Val unit :=
-              let* _ : M.Val unit :=
-                let* α0 : ref str.t :=
-                  M.read (mk_str "Entered the inner loop
-") in
-                let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-                let* α2 : core.fmt.Arguments.t :=
-                  M.call
-                    (core.fmt.Arguments.t::["new_const"]
-                      (pointer_coercion "Unsize" (borrow α1))) in
-                let* α3 : unit := M.call (std.io.stdio._print α2) in
-                M.alloc α3 in
-              M.alloc tt in
-            M.break) in
-        let* α1 := M.read α0 in
-        let* α2 : unit := never_to_any α1 in
-        M.alloc α2 in
-      let* _ : M.Val unit :=
-        let* _ : M.Val unit :=
-          let* α0 : ref str.t :=
-            M.read (mk_str "This point will never be reached
-") in
-          let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-          let* α2 : core.fmt.Arguments.t :=
-            M.call
-              (core.fmt.Arguments.t::["new_const"]
-                (pointer_coercion "Unsize" (borrow α1))) in
-          let* α3 : unit := M.call (std.io.stdio._print α2) in
-          M.alloc α3 in
-        M.alloc tt in
-      M.alloc tt) in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "Exited the outer loop
-") in
-      let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-      let* α2 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_const"]
-            (pointer_coercion "Unsize" (borrow α1))) in
-      let* α3 : unit := M.call (std.io.stdio._print α2) in
-      M.alloc α3 in
-    M.alloc tt in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+  ltac:(M.monadic (
+    M.read (|
+      let _ : M.Val unit :=
+        M.loop
+          (let _ : M.Val unit :=
+            let _ : M.Val unit :=
+              M.alloc (|
+                M.call (|(std.io.stdio._print
+                  (M.call (|(core.fmt.Arguments.t::["new_const"]
+                    (pointer_coercion
+                      "Unsize"
+                      (borrow
+                        (M.alloc (|
+                          [ M.read (| mk_str "Entered the outer loop
+" |) ]
+                        |)))))
+                  |)))
+                |)
+              |) in
+            M.alloc (| tt |) in
+          let _ : M.Val unit :=
+            M.alloc (|
+              never_to_any (|
+                M.read (|
+                  M.loop
+                    (let _ : M.Val unit :=
+                      let _ : M.Val unit :=
+                        M.alloc (|
+                          M.call (|(std.io.stdio._print
+                            (M.call (|(core.fmt.Arguments.t::["new_const"]
+                              (pointer_coercion
+                                "Unsize"
+                                (borrow
+                                  (M.alloc (|
+                                    [
+                                      M.read (| mk_str "Entered the inner loop
+"
+                                      |)
+                                    ]
+                                  |)))))
+                            |)))
+                          |)
+                        |) in
+                      M.alloc (| tt |) in
+                    M.break)
+                |)
+              |)
+            |) in
+          let _ : M.Val unit :=
+            let _ : M.Val unit :=
+              M.alloc (|
+                M.call (|(std.io.stdio._print
+                  (M.call (|(core.fmt.Arguments.t::["new_const"]
+                    (pointer_coercion
+                      "Unsize"
+                      (borrow
+                        (M.alloc (|
+                          [
+                            M.read (| mk_str "This point will never be reached
+"
+                            |)
+                          ]
+                        |)))))
+                  |)))
+                |)
+              |) in
+            M.alloc (| tt |) in
+          M.alloc (| tt |)) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_const"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (| [ M.read (| mk_str "Exited the outer loop
+" |) ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      M.alloc (| tt |)
+    |)
+  )).

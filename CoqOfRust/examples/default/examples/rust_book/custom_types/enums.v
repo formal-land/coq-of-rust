@@ -62,142 +62,185 @@ fn inspect(event: WebEvent) {
 }
 *)
 Definition inspect (event : enums.WebEvent.t) : M unit :=
-  let* event := M.alloc event in
-  let* α0 : M.Val unit :=
-    match_operator
-      event
-      [
-        fun γ =>
-          (let* α0 := M.read γ in
-          match α0 with
-          | enums.WebEvent.PageLoad =>
-            let* _ : M.Val unit :=
-              let* α0 : ref str.t :=
-                M.read
-                  (mk_str
-                    ("page loaded, r" ++
-                      String.String "233" ("f" ++ String.String "233" "
-"))) in
-              let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-              let* α2 : core.fmt.Arguments.t :=
-                M.call
-                  (core.fmt.Arguments.t::["new_const"]
-                    (pointer_coercion "Unsize" (borrow α1))) in
-              let* α3 : unit := M.call (std.io.stdio._print α2) in
-              M.alloc α3 in
-            M.alloc tt
-          | _ => M.break_match
-          end) :
-          M (M.Val unit);
-        fun γ =>
-          (let* α0 := M.read γ in
-          match α0 with
-          | enums.WebEvent.PageUnload =>
-            let* _ : M.Val unit :=
-              let* α0 : ref str.t := M.read (mk_str "page unloaded
-") in
-              let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-              let* α2 : core.fmt.Arguments.t :=
-                M.call
-                  (core.fmt.Arguments.t::["new_const"]
-                    (pointer_coercion "Unsize" (borrow α1))) in
-              let* α3 : unit := M.call (std.io.stdio._print α2) in
-              M.alloc α3 in
-            M.alloc tt
-          | _ => M.break_match
-          end) :
-          M (M.Val unit);
-        fun γ =>
-          (let* α0 := M.read γ in
-          match α0 with
-          | enums.WebEvent.KeyPress _ =>
-            let γ0_0 := enums.WebEvent.Get_KeyPress_0 γ in
-            let* c := M.copy γ0_0 in
-            let* _ : M.Val unit :=
-              let* α0 : ref str.t := M.read (mk_str "pressed '") in
-              let* α1 : ref str.t := M.read (mk_str "'.
-") in
-              let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-              let* α3 : core.fmt.rt.Argument.t :=
-                M.call (core.fmt.rt.Argument.t::["new_display"] (borrow c)) in
-              let* α4 : M.Val (array core.fmt.rt.Argument.t) :=
-                M.alloc [ α3 ] in
-              let* α5 : core.fmt.Arguments.t :=
-                M.call
-                  (core.fmt.Arguments.t::["new_v1"]
-                    (pointer_coercion "Unsize" (borrow α2))
-                    (pointer_coercion "Unsize" (borrow α4))) in
-              let* α6 : unit := M.call (std.io.stdio._print α5) in
-              M.alloc α6 in
-            M.alloc tt
-          | _ => M.break_match
-          end) :
-          M (M.Val unit);
-        fun γ =>
-          (let* α0 := M.read γ in
-          match α0 with
-          | enums.WebEvent.Paste _ =>
-            let γ0_0 := enums.WebEvent.Get_Paste_0 γ in
-            let* s := M.copy γ0_0 in
-            let* _ : M.Val unit :=
-              let* α0 : ref str.t := M.read (mk_str "pasted """) in
-              let* α1 : ref str.t := M.read (mk_str """.
-") in
-              let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-              let* α3 : core.fmt.rt.Argument.t :=
-                M.call (core.fmt.rt.Argument.t::["new_display"] (borrow s)) in
-              let* α4 : M.Val (array core.fmt.rt.Argument.t) :=
-                M.alloc [ α3 ] in
-              let* α5 : core.fmt.Arguments.t :=
-                M.call
-                  (core.fmt.Arguments.t::["new_v1"]
-                    (pointer_coercion "Unsize" (borrow α2))
-                    (pointer_coercion "Unsize" (borrow α4))) in
-              let* α6 : unit := M.call (std.io.stdio._print α5) in
-              M.alloc α6 in
-            M.alloc tt
-          | _ => M.break_match
-          end) :
-          M (M.Val unit);
-        fun γ =>
-          (let* α0 := M.read γ in
-          match α0 with
-          |
-              enums.WebEvent.Click
-              {| enums.WebEvent.Click.x := _; enums.WebEvent.Click.y := _;
-              |}
-              =>
-            let γ0_0 := enums.WebEvent.Get_Click_x γ in
-            let γ0_1 := enums.WebEvent.Get_Click_y γ in
-            let* x := M.copy γ0_0 in
-            let* y := M.copy γ0_1 in
-            let* _ : M.Val unit :=
-              let* _ : M.Val unit :=
-                let* α0 : ref str.t := M.read (mk_str "clicked at x=") in
-                let* α1 : ref str.t := M.read (mk_str ", y=") in
-                let* α2 : ref str.t := M.read (mk_str ".
-") in
-                let* α3 : M.Val (array (ref str.t)) := M.alloc [ α0; α1; α2 ] in
-                let* α4 : core.fmt.rt.Argument.t :=
-                  M.call (core.fmt.rt.Argument.t::["new_display"] (borrow x)) in
-                let* α5 : core.fmt.rt.Argument.t :=
-                  M.call (core.fmt.rt.Argument.t::["new_display"] (borrow y)) in
-                let* α6 : M.Val (array core.fmt.rt.Argument.t) :=
-                  M.alloc [ α4; α5 ] in
-                let* α7 : core.fmt.Arguments.t :=
-                  M.call
-                    (core.fmt.Arguments.t::["new_v1"]
-                      (pointer_coercion "Unsize" (borrow α3))
-                      (pointer_coercion "Unsize" (borrow α6))) in
-                let* α8 : unit := M.call (std.io.stdio._print α7) in
-                M.alloc α8 in
-              M.alloc tt in
-            M.alloc tt
-          | _ => M.break_match
-          end) :
-          M (M.Val unit)
-      ] in
-  M.read α0.
+  ltac:(M.monadic (
+    let event := M.alloc (| event |) in
+    M.read (|
+      ltac:
+        (M.monadic_match_operator
+          event
+          [
+            fun (γ : M.Val enums.WebEvent.t) =>
+              match M.read (| γ |) with
+              | enums.WebEvent.PageLoad =>
+                let _ : M.Val unit :=
+                  M.alloc (|
+                    M.call (|(std.io.stdio._print
+                      (M.call (|(core.fmt.Arguments.t::["new_const"]
+                        (pointer_coercion
+                          "Unsize"
+                          (borrow
+                            (M.alloc (|
+                              [
+                                M.read (|
+                                  mk_str
+                                    ("page loaded, r" ++
+                                      String.String
+                                        "233"
+                                        ("f" ++ String.String "233" "
+"))
+                                |)
+                              ]
+                            |)))))
+                      |)))
+                    |)
+                  |) in
+                M.alloc (| tt |)
+              | _ => M.break_match(||)
+              end :
+              M.Val unit;
+            fun (γ : M.Val enums.WebEvent.t) =>
+              match M.read (| γ |) with
+              | enums.WebEvent.PageUnload =>
+                let _ : M.Val unit :=
+                  M.alloc (|
+                    M.call (|(std.io.stdio._print
+                      (M.call (|(core.fmt.Arguments.t::["new_const"]
+                        (pointer_coercion
+                          "Unsize"
+                          (borrow
+                            (M.alloc (| [ M.read (| mk_str "page unloaded
+" |) ]
+                            |)))))
+                      |)))
+                    |)
+                  |) in
+                M.alloc (| tt |)
+              | _ => M.break_match(||)
+              end :
+              M.Val unit;
+            fun (γ : M.Val enums.WebEvent.t) =>
+              match M.read (| γ |) with
+              | enums.WebEvent.KeyPress _ =>
+                let γ0_0 := enums.WebEvent.Get_KeyPress_0 γ in
+                let c := M.copy (| γ0_0 |) in
+                let _ : M.Val unit :=
+                  M.alloc (|
+                    M.call (|(std.io.stdio._print
+                      (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                        (pointer_coercion
+                          "Unsize"
+                          (borrow
+                            (M.alloc (|
+                              [
+                                M.read (| mk_str "pressed '" |);
+                                M.read (| mk_str "'.
+" |)
+                              ]
+                            |))))
+                        (pointer_coercion
+                          "Unsize"
+                          (borrow
+                            (M.alloc (|
+                              [
+                                M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                                  (borrow c))
+                                |)
+                              ]
+                            |)))))
+                      |)))
+                    |)
+                  |) in
+                M.alloc (| tt |)
+              | _ => M.break_match(||)
+              end :
+              M.Val unit;
+            fun (γ : M.Val enums.WebEvent.t) =>
+              match M.read (| γ |) with
+              | enums.WebEvent.Paste _ =>
+                let γ0_0 := enums.WebEvent.Get_Paste_0 γ in
+                let s := M.copy (| γ0_0 |) in
+                let _ : M.Val unit :=
+                  M.alloc (|
+                    M.call (|(std.io.stdio._print
+                      (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                        (pointer_coercion
+                          "Unsize"
+                          (borrow
+                            (M.alloc (|
+                              [
+                                M.read (| mk_str "pasted """ |);
+                                M.read (| mk_str """.
+" |)
+                              ]
+                            |))))
+                        (pointer_coercion
+                          "Unsize"
+                          (borrow
+                            (M.alloc (|
+                              [
+                                M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                                  (borrow s))
+                                |)
+                              ]
+                            |)))))
+                      |)))
+                    |)
+                  |) in
+                M.alloc (| tt |)
+              | _ => M.break_match(||)
+              end :
+              M.Val unit;
+            fun (γ : M.Val enums.WebEvent.t) =>
+              match M.read (| γ |) with
+              |
+                  enums.WebEvent.Click
+                  {| enums.WebEvent.Click.x := _; enums.WebEvent.Click.y := _;
+                  |}
+                  =>
+                let γ0_0 := enums.WebEvent.Get_Click_x γ in
+                let γ0_1 := enums.WebEvent.Get_Click_y γ in
+                let x := M.copy (| γ0_0 |) in
+                let y := M.copy (| γ0_1 |) in
+                let _ : M.Val unit :=
+                  let _ : M.Val unit :=
+                    M.alloc (|
+                      M.call (|(std.io.stdio._print
+                        (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                          (pointer_coercion
+                            "Unsize"
+                            (borrow
+                              (M.alloc (|
+                                [
+                                  M.read (| mk_str "clicked at x=" |);
+                                  M.read (| mk_str ", y=" |);
+                                  M.read (| mk_str ".
+" |)
+                                ]
+                              |))))
+                          (pointer_coercion
+                            "Unsize"
+                            (borrow
+                              (M.alloc (|
+                                [
+                                  M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                                    (borrow x))
+                                  |);
+                                  M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                                    (borrow y))
+                                  |)
+                                ]
+                              |)))))
+                        |)))
+                      |)
+                    |) in
+                  M.alloc (| tt |) in
+                M.alloc (| tt |)
+              | _ => M.break_match(||)
+              end :
+              M.Val unit
+          ])
+    |)
+  )).
 
 (*
 fn main() {
@@ -217,43 +260,40 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* pressed : M.Val enums.WebEvent.t :=
-    M.alloc (enums.WebEvent.KeyPress "x"%char) in
-  let* pasted : M.Val enums.WebEvent.t :=
-    let* α0 : (ref str.t) -> M _ :=
-      ltac:(M.get_method (fun ℐ =>
-        alloc.borrow.ToOwned.to_owned (Self := str.t) (Trait := ℐ))) in
-    let* α1 : ref str.t := M.read (mk_str "my text") in
-    let* α2 : alloc.string.String.t := M.call (α0 α1) in
-    M.alloc (enums.WebEvent.Paste α2) in
-  let* click : M.Val enums.WebEvent.t :=
-    M.alloc
-      (enums.WebEvent.Click
-        {|
-        enums.WebEvent.Click.x := (Integer.of_Z 20) : i64.t;
-        enums.WebEvent.Click.y := (Integer.of_Z 80) : i64.t;
-      |}) in
-  let* load : M.Val enums.WebEvent.t := M.alloc enums.WebEvent.PageLoad in
-  let* unload : M.Val enums.WebEvent.t := M.alloc enums.WebEvent.PageUnload in
-  let* _ : M.Val unit :=
-    let* α0 : enums.WebEvent.t := M.read pressed in
-    let* α1 : unit := M.call (enums.inspect α0) in
-    M.alloc α1 in
-  let* _ : M.Val unit :=
-    let* α0 : enums.WebEvent.t := M.read pasted in
-    let* α1 : unit := M.call (enums.inspect α0) in
-    M.alloc α1 in
-  let* _ : M.Val unit :=
-    let* α0 : enums.WebEvent.t := M.read click in
-    let* α1 : unit := M.call (enums.inspect α0) in
-    M.alloc α1 in
-  let* _ : M.Val unit :=
-    let* α0 : enums.WebEvent.t := M.read load in
-    let* α1 : unit := M.call (enums.inspect α0) in
-    M.alloc α1 in
-  let* _ : M.Val unit :=
-    let* α0 : enums.WebEvent.t := M.read unload in
-    let* α1 : unit := M.call (enums.inspect α0) in
-    M.alloc α1 in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+  ltac:(M.monadic (
+    M.read (|
+      let pressed : M.Val enums.WebEvent.t :=
+        M.alloc (| enums.WebEvent.KeyPress "x"%char |) in
+      let pasted : M.Val enums.WebEvent.t :=
+        M.alloc (|
+          enums.WebEvent.Paste
+            (M.call (|(ltac:(M.get_method (fun ℐ =>
+                alloc.borrow.ToOwned.to_owned (Self := str.t) (Trait := ℐ)))
+              (M.read (| mk_str "my text" |)))
+            |))
+        |) in
+      let click : M.Val enums.WebEvent.t :=
+        M.alloc (|
+          enums.WebEvent.Click
+            {|
+            enums.WebEvent.Click.x := (Integer.of_Z 20) : i64.t;
+            enums.WebEvent.Click.y := (Integer.of_Z 80) : i64.t;
+          |}
+        |) in
+      let load : M.Val enums.WebEvent.t :=
+        M.alloc (| enums.WebEvent.PageLoad |) in
+      let unload : M.Val enums.WebEvent.t :=
+        M.alloc (| enums.WebEvent.PageUnload |) in
+      let _ : M.Val unit :=
+        M.alloc (| M.call (|(enums.inspect (M.read (| pressed |))) |) |) in
+      let _ : M.Val unit :=
+        M.alloc (| M.call (|(enums.inspect (M.read (| pasted |))) |) |) in
+      let _ : M.Val unit :=
+        M.alloc (| M.call (|(enums.inspect (M.read (| click |))) |) |) in
+      let _ : M.Val unit :=
+        M.alloc (| M.call (|(enums.inspect (M.read (| load |))) |) |) in
+      let _ : M.Val unit :=
+        M.alloc (| M.call (|(enums.inspect (M.read (| unload |))) |) |) in
+      M.alloc (| tt |)
+    |)
+  )).

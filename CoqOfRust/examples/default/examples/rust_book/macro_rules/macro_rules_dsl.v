@@ -14,58 +14,88 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* _ : M.Val unit :=
-    let* val : M.Val usize.t :=
-      let* α0 : usize.t :=
-        BinOp.Panic.add
-          ((Integer.of_Z 1) : usize.t)
-          ((Integer.of_Z 2) : usize.t) in
-      M.alloc α0 in
-    let* _ : M.Val unit :=
-      let* _ : M.Val unit :=
-        let* α0 : ref str.t := M.read (mk_str "1 + 2 = ") in
-        let* α1 : ref str.t := M.read (mk_str "
-") in
-        let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-        let* α3 : core.fmt.rt.Argument.t :=
-          M.call (core.fmt.rt.Argument.t::["new_display"] (borrow val)) in
-        let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
-        let* α5 : core.fmt.Arguments.t :=
-          M.call
-            (core.fmt.Arguments.t::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α4))) in
-        let* α6 : unit := M.call (std.io.stdio._print α5) in
-        M.alloc α6 in
-      M.alloc tt in
-    M.alloc tt in
-  let* val : M.Val usize.t :=
-    let* α0 : usize.t :=
-      BinOp.Panic.add
-        ((Integer.of_Z 1) : usize.t)
-        ((Integer.of_Z 2) : usize.t) in
-    let* α1 : usize.t :=
-      BinOp.Panic.div
-        ((Integer.of_Z 3) : usize.t)
-        ((Integer.of_Z 4) : usize.t) in
-    let* α2 : usize.t := BinOp.Panic.mul α0 α1 in
-    M.alloc α2 in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "(1 + 2) * (3 / 4) = ") in
-      let* α1 : ref str.t := M.read (mk_str "
-") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow val)) in
-      let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
-      let* α5 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α4))) in
-      let* α6 : unit := M.call (std.io.stdio._print α5) in
-      M.alloc α6 in
-    M.alloc tt in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+  ltac:(M.monadic (
+    M.read (|
+      let _ : M.Val unit :=
+        let val : M.Val usize.t :=
+          M.alloc (|
+            BinOp.Panic.add (|
+              (Integer.of_Z 1) : usize.t,
+              (Integer.of_Z 2) : usize.t
+            |)
+          |) in
+        let _ : M.Val unit :=
+          let _ : M.Val unit :=
+            M.alloc (|
+              M.call (|(std.io.stdio._print
+                (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                  (pointer_coercion
+                    "Unsize"
+                    (borrow
+                      (M.alloc (|
+                        [
+                          M.read (| mk_str "1 + 2 = " |);
+                          M.read (| mk_str "
+" |)
+                        ]
+                      |))))
+                  (pointer_coercion
+                    "Unsize"
+                    (borrow
+                      (M.alloc (|
+                        [
+                          M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                            (borrow val))
+                          |)
+                        ]
+                      |)))))
+                |)))
+              |)
+            |) in
+          M.alloc (| tt |) in
+        M.alloc (| tt |) in
+      let val : M.Val usize.t :=
+        M.alloc (|
+          BinOp.Panic.mul (|
+            BinOp.Panic.add (|
+              (Integer.of_Z 1) : usize.t,
+              (Integer.of_Z 2) : usize.t
+            |),
+            BinOp.Panic.div (|
+              (Integer.of_Z 3) : usize.t,
+              (Integer.of_Z 4) : usize.t
+            |)
+          |)
+        |) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.read (| mk_str "(1 + 2) * (3 / 4) = " |);
+                        M.read (| mk_str "
+" |)
+                      ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                          (borrow val))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      M.alloc (| tt |)
+    |)
+  )).

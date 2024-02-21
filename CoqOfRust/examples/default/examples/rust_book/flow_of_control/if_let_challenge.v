@@ -19,30 +19,37 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* a : M.Val if_let_challenge.Foo.t := M.alloc if_let_challenge.Foo.Bar in
-  let* α0 : M.Val unit :=
-    match_operator
-      a
-      [
-        fun γ =>
-          (let* α0 := M.read γ in
-          match α0 with
-          | if_let_challenge.Foo.Bar =>
-            let* _ : M.Val unit :=
-              let* _ : M.Val unit :=
-                let* α0 : ref str.t := M.read (mk_str "a is foobar
-") in
-                let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-                let* α2 : core.fmt.Arguments.t :=
-                  M.call
-                    (core.fmt.Arguments.t::["new_const"]
-                      (pointer_coercion "Unsize" (borrow α1))) in
-                let* α3 : unit := M.call (std.io.stdio._print α2) in
-                M.alloc α3 in
-              M.alloc tt in
-            M.alloc tt
-          end) :
-          M (M.Val unit);
-        fun γ => (M.alloc tt) : M (M.Val unit)
-      ] in
-  M.read α0.
+  ltac:(M.monadic (
+    M.read (|
+      let a : M.Val if_let_challenge.Foo.t :=
+        M.alloc (| if_let_challenge.Foo.Bar |) in
+      ltac:
+        (M.monadic_match_operator
+          a
+          [
+            fun (γ : M.Val if_let_challenge.Foo.t) =>
+              match M.read (| γ |) with
+              | if_let_challenge.Foo.Bar =>
+                let _ : M.Val unit :=
+                  let _ : M.Val unit :=
+                    M.alloc (|
+                      M.call (|(std.io.stdio._print
+                        (M.call (|(core.fmt.Arguments.t::["new_const"]
+                          (pointer_coercion
+                            "Unsize"
+                            (borrow
+                              (M.alloc (| [ M.read (| mk_str "a is foobar
+" |) ]
+                              |)))))
+                        |)))
+                      |)
+                    |) in
+                  M.alloc (| tt |) in
+                M.alloc (| tt |)
+              end :
+              M.Val unit;
+            fun (γ : M.Val if_let_challenge.Foo.t) =>
+              (M.alloc (| tt |)) : M.Val unit
+          ])
+    |)
+  )).

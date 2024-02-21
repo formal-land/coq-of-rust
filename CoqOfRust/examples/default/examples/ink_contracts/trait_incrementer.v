@@ -41,9 +41,10 @@ Section Impl_trait_incrementer_Incrementer_t.
       }
   *)
   Definition new (init_value : u64.t) : M Self :=
-    let* init_value := M.alloc init_value in
-    let* α0 : u64.t := M.read init_value in
-    M.pure {| trait_incrementer.Incrementer.value := α0; |}.
+    ltac:(M.monadic (
+      let init_value := M.alloc (| init_value |) in
+      {| trait_incrementer.Incrementer.value := M.read (| init_value |); |}
+    )).
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
@@ -55,18 +56,19 @@ Section Impl_trait_incrementer_Incrementer_t.
       }
   *)
   Definition inc_by (self : mut_ref Self) (delta : u64.t) : M unit :=
-    let* self := M.alloc self in
-    let* delta := M.alloc delta in
-    let* _ : M.Val unit :=
-      let* β : M.Val u64.t :=
-        let* α0 : mut_ref trait_incrementer.Incrementer.t := M.read self in
-        M.pure (trait_incrementer.Incrementer.Get_value (deref α0)) in
-      let* α0 := M.read β in
-      let* α1 : u64.t := M.read delta in
-      let* α2 := BinOp.Panic.add α0 α1 in
-      assign β α2 in
-    let* α0 : M.Val unit := M.alloc tt in
-    M.read α0.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let delta := M.alloc (| delta |) in
+      M.read (|
+        let _ : M.Val unit :=
+          let β : M.Val u64.t :=
+            trait_incrementer.Incrementer.Get_value
+              (deref (M.read (| self |))) in
+          assign (| β, BinOp.Panic.add (| M.read (| β |), M.read (| delta |) |)
+          |) in
+        M.alloc (| tt |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_inc_by :
     Notations.DoubleColon Self "inc_by" := {
@@ -85,12 +87,13 @@ Section Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer_t.
       }
   *)
   Definition inc (self : mut_ref Self) : M unit :=
-    let* self := M.alloc self in
-    let* α0 : mut_ref trait_incrementer.Incrementer.t := M.read self in
-    M.call
-      (trait_incrementer.Incrementer.t::["inc_by"]
-        α0
-        ((Integer.of_Z 1) : u64.t)).
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      M.call (|(trait_incrementer.Incrementer.t::["inc_by"]
+        (M.read (| self |))
+        ((Integer.of_Z 1) : u64.t))
+      |)
+    )).
   
   Global Instance AssociatedFunction_inc : Notations.DoubleColon Self "inc" := {
     Notations.double_colon := inc;
@@ -102,9 +105,12 @@ Section Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer_t.
       }
   *)
   Definition get (self : ref Self) : M u64.t :=
-    let* self := M.alloc self in
-    let* α0 : ref trait_incrementer.Incrementer.t := M.read self in
-    M.read (trait_incrementer.Incrementer.Get_value (deref α0)).
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      M.read (|
+        trait_incrementer.Incrementer.Get_value (deref (M.read (| self |)))
+      |)
+    )).
   
   Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
     Notations.double_colon := get;
@@ -127,14 +133,17 @@ Section Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer_t.
       }
   *)
   Definition reset (self : mut_ref Self) : M unit :=
-    let* self := M.alloc self in
-    let* _ : M.Val unit :=
-      let* α0 : mut_ref trait_incrementer.Incrementer.t := M.read self in
-      assign
-        (trait_incrementer.Incrementer.Get_value (deref α0))
-        ((Integer.of_Z 0) : u64.t) in
-    let* α0 : M.Val unit := M.alloc tt in
-    M.read α0.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      M.read (|
+        let _ : M.Val unit :=
+          assign (|
+            trait_incrementer.Incrementer.Get_value (deref (M.read (| self |))),
+            (Integer.of_Z 0) : u64.t
+          |) in
+        M.alloc (| tt |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_reset :
     Notations.DoubleColon Self "reset" := {

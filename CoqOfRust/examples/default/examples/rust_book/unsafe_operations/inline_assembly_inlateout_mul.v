@@ -25,7 +25,7 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit := M.pure tt.
+Definition main : M unit := ltac:(M.monadic ( tt )).
 
 (*
     fn mul(a: u64, b: u64) -> u128 {
@@ -47,17 +47,23 @@ Definition main : M unit := M.pure tt.
     }
 *)
 Definition mul (a : u64.t) (b : u64.t) : M u128.t :=
-  let* a := M.alloc a in
-  let* b := M.alloc b in
-  let* lo := M.copy (DeclaredButUndefinedVariable (A := u64.t)) in
-  let* hi := M.copy (DeclaredButUndefinedVariable (A := u64.t)) in
-  let* _ : M.Val unit :=
-    let _ : M.Val unit := InlineAssembly in
-    M.alloc tt in
-  let* α0 : u64.t := M.read hi in
-  let* α1 : u128.t :=
-    BinOp.Panic.shl (rust_cast α0) ((Integer.of_Z 64) : i32.t) in
-  let* α2 : u64.t := M.read lo in
-  let* α3 : u128.t := BinOp.Panic.add α1 (rust_cast α2) in
-  let* α0 : M.Val u128.t := M.alloc α3 in
-  M.read α0.
+  ltac:(M.monadic (
+    let a := M.alloc (| a |) in
+    let b := M.alloc (| b |) in
+    M.read (|
+      let lo := M.copy (| DeclaredButUndefinedVariable (A := u64.t) |) in
+      let hi := M.copy (| DeclaredButUndefinedVariable (A := u64.t) |) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit := InlineAssembly in
+        M.alloc (| tt |) in
+      M.alloc (|
+        BinOp.Panic.add (|
+          BinOp.Panic.shl (|
+            rust_cast (M.read (| hi |)),
+            (Integer.of_Z 64) : i32.t
+          |),
+          rust_cast (M.read (| lo |))
+        |)
+      |)
+    |)
+  )).

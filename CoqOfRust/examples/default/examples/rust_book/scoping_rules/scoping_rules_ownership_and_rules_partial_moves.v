@@ -30,117 +30,151 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* person :
-      M.Val scoping_rules_ownership_and_rules_partial_moves.main.Person.t :=
-    let* α0 : (ref str.t) -> M alloc.string.String.t :=
-      ltac:(M.get_method (fun ℐ =>
-        core.convert.From.from
-          (Self := alloc.string.String.t)
-          (T := ref str.t)
-          (Trait := ℐ))) in
-    let* α1 : ref str.t := M.read (mk_str "Alice") in
-    let* α2 : alloc.string.String.t := M.call (α0 α1) in
-    let* α3 : alloc.boxed.Box.t u8.t alloc.alloc.Global.t :=
-      M.call
-        ((alloc.boxed.Box.t u8.t alloc.alloc.Global.t)::["new"]
-          ((Integer.of_Z 20) : u8.t)) in
-    M.alloc
-      {|
-        scoping_rules_ownership_and_rules_partial_moves.main.Person.name := α2;
-        scoping_rules_ownership_and_rules_partial_moves.main.Person.age := α3;
-      |} in
-  let* α0 : M.Val unit :=
-    match_operator
-      person
-      [
-        fun γ =>
-          (let* α0 := M.read γ in
-          match α0 with
-          |
-              {|
-                scoping_rules_ownership_and_rules_partial_moves.main.Person.name
-                  :=
-                  _;
-                scoping_rules_ownership_and_rules_partial_moves.main.Person.age
-                  :=
-                  _;
-              |}
-              =>
-            let γ0_0 :=
-              scoping_rules_ownership_and_rules_partial_moves.main.Person.Get_name
-                γ in
-            let γ0_1 :=
-              scoping_rules_ownership_and_rules_partial_moves.main.Person.Get_age
-                γ in
-            let* name := M.copy γ0_0 in
-            let* age := M.alloc (borrow γ0_1) in
-            let* _ : M.Val unit :=
-              let* _ : M.Val unit :=
-                let* α0 : ref str.t := M.read (mk_str "The person's age is ") in
-                let* α1 : ref str.t := M.read (mk_str "
-") in
-                let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-                let* α3 : core.fmt.rt.Argument.t :=
-                  M.call
-                    (core.fmt.rt.Argument.t::["new_display"] (borrow age)) in
-                let* α4 : M.Val (array core.fmt.rt.Argument.t) :=
-                  M.alloc [ α3 ] in
-                let* α5 : core.fmt.Arguments.t :=
-                  M.call
-                    (core.fmt.Arguments.t::["new_v1"]
-                      (pointer_coercion "Unsize" (borrow α2))
-                      (pointer_coercion "Unsize" (borrow α4))) in
-                let* α6 : unit := M.call (std.io.stdio._print α5) in
-                M.alloc α6 in
-              M.alloc tt in
-            let* _ : M.Val unit :=
-              let* _ : M.Val unit :=
-                let* α0 : ref str.t :=
-                  M.read (mk_str "The person's name is ") in
-                let* α1 : ref str.t := M.read (mk_str "
-") in
-                let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-                let* α3 : core.fmt.rt.Argument.t :=
-                  M.call
-                    (core.fmt.rt.Argument.t::["new_display"] (borrow name)) in
-                let* α4 : M.Val (array core.fmt.rt.Argument.t) :=
-                  M.alloc [ α3 ] in
-                let* α5 : core.fmt.Arguments.t :=
-                  M.call
-                    (core.fmt.Arguments.t::["new_v1"]
-                      (pointer_coercion "Unsize" (borrow α2))
-                      (pointer_coercion "Unsize" (borrow α4))) in
-                let* α6 : unit := M.call (std.io.stdio._print α5) in
-                M.alloc α6 in
-              M.alloc tt in
-            let* _ : M.Val unit :=
-              let* _ : M.Val unit :=
-                let* α0 : ref str.t :=
-                  M.read (mk_str "The person's age from person struct is ") in
-                let* α1 : ref str.t := M.read (mk_str "
-") in
-                let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-                let* α3 : core.fmt.rt.Argument.t :=
-                  M.call
-                    (core.fmt.rt.Argument.t::["new_display"]
-                      (borrow
-                        (scoping_rules_ownership_and_rules_partial_moves.main.Person.Get_age
-                          person))) in
-                let* α4 : M.Val (array core.fmt.rt.Argument.t) :=
-                  M.alloc [ α3 ] in
-                let* α5 : core.fmt.Arguments.t :=
-                  M.call
-                    (core.fmt.Arguments.t::["new_v1"]
-                      (pointer_coercion "Unsize" (borrow α2))
-                      (pointer_coercion "Unsize" (borrow α4))) in
-                let* α6 : unit := M.call (std.io.stdio._print α5) in
-                M.alloc α6 in
-              M.alloc tt in
-            M.alloc tt
-          end) :
-          M (M.Val unit)
-      ] in
-  M.read α0.
+  ltac:(M.monadic (
+    M.read (|
+      let person :
+          M.Val scoping_rules_ownership_and_rules_partial_moves.main.Person.t :=
+        M.alloc (|
+          {|
+            scoping_rules_ownership_and_rules_partial_moves.main.Person.name :=
+              M.call (|(ltac:(M.get_method (fun ℐ =>
+                  core.convert.From.from
+                    (Self := alloc.string.String.t)
+                    (T := ref str.t)
+                    (Trait := ℐ)))
+                (M.read (| mk_str "Alice" |)))
+              |);
+            scoping_rules_ownership_and_rules_partial_moves.main.Person.age :=
+              M.call (|((alloc.boxed.Box.t u8.t alloc.alloc.Global.t)::["new"]
+                ((Integer.of_Z 20) : u8.t))
+              |);
+          |}
+        |) in
+      ltac:
+        (M.monadic_match_operator
+          person
+          [
+            fun
+                (γ :
+                  M.Val
+                    scoping_rules_ownership_and_rules_partial_moves.main.Person.t) =>
+              match M.read (| γ |) with
+              |
+                  {|
+                    scoping_rules_ownership_and_rules_partial_moves.main.Person.name
+                      :=
+                      _;
+                    scoping_rules_ownership_and_rules_partial_moves.main.Person.age
+                      :=
+                      _;
+                  |}
+                  =>
+                let γ0_0 :=
+                  scoping_rules_ownership_and_rules_partial_moves.main.Person.Get_name
+                    γ in
+                let γ0_1 :=
+                  scoping_rules_ownership_and_rules_partial_moves.main.Person.Get_age
+                    γ in
+                let name := M.copy (| γ0_0 |) in
+                let age := M.alloc (| borrow γ0_1 |) in
+                let _ : M.Val unit :=
+                  let _ : M.Val unit :=
+                    M.alloc (|
+                      M.call (|(std.io.stdio._print
+                        (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                          (pointer_coercion
+                            "Unsize"
+                            (borrow
+                              (M.alloc (|
+                                [
+                                  M.read (| mk_str "The person's age is " |);
+                                  M.read (| mk_str "
+" |)
+                                ]
+                              |))))
+                          (pointer_coercion
+                            "Unsize"
+                            (borrow
+                              (M.alloc (|
+                                [
+                                  M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                                    (borrow age))
+                                  |)
+                                ]
+                              |)))))
+                        |)))
+                      |)
+                    |) in
+                  M.alloc (| tt |) in
+                let _ : M.Val unit :=
+                  let _ : M.Val unit :=
+                    M.alloc (|
+                      M.call (|(std.io.stdio._print
+                        (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                          (pointer_coercion
+                            "Unsize"
+                            (borrow
+                              (M.alloc (|
+                                [
+                                  M.read (| mk_str "The person's name is " |);
+                                  M.read (| mk_str "
+" |)
+                                ]
+                              |))))
+                          (pointer_coercion
+                            "Unsize"
+                            (borrow
+                              (M.alloc (|
+                                [
+                                  M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                                    (borrow name))
+                                  |)
+                                ]
+                              |)))))
+                        |)))
+                      |)
+                    |) in
+                  M.alloc (| tt |) in
+                let _ : M.Val unit :=
+                  let _ : M.Val unit :=
+                    M.alloc (|
+                      M.call (|(std.io.stdio._print
+                        (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                          (pointer_coercion
+                            "Unsize"
+                            (borrow
+                              (M.alloc (|
+                                [
+                                  M.read (|
+                                    mk_str
+                                      "The person's age from person struct is "
+                                  |);
+                                  M.read (| mk_str "
+" |)
+                                ]
+                              |))))
+                          (pointer_coercion
+                            "Unsize"
+                            (borrow
+                              (M.alloc (|
+                                [
+                                  M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                                    (borrow
+                                      (scoping_rules_ownership_and_rules_partial_moves.main.Person.Get_age
+                                        person)))
+                                  |)
+                                ]
+                              |)))))
+                        |)))
+                      |)
+                    |) in
+                  M.alloc (| tt |) in
+                M.alloc (| tt |)
+              end :
+              M.Val unit
+          ])
+    |)
+  )).
 
 Module  Person.
 Section Person.
@@ -168,35 +202,29 @@ Section Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self := M.alloc self in
-    let* f := M.alloc f in
-    let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
-    let* α1 : ref str.t := M.read (mk_str "Person") in
-    let* α2 : ref str.t := M.read (mk_str "name") in
-    let* α3 :
-        ref scoping_rules_ownership_and_rules_partial_moves.main.Person.t :=
-      M.read self in
-    let* α4 : ref str.t := M.read (mk_str "age") in
-    let* α5 :
-        ref scoping_rules_ownership_and_rules_partial_moves.main.Person.t :=
-      M.read self in
-    let* α6 : M.Val (ref (alloc.boxed.Box.t u8.t alloc.alloc.Global.t)) :=
-      M.alloc
-        (borrow
-          (scoping_rules_ownership_and_rules_partial_moves.main.Person.Get_age
-            (deref α5))) in
-    M.call
-      (core.fmt.Formatter.t::["debug_struct_field2_finish"]
-        α0
-        α1
-        α2
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let f := M.alloc (| f |) in
+      M.call (|(core.fmt.Formatter.t::["debug_struct_field2_finish"]
+        (M.read (| f |))
+        (M.read (| mk_str "Person" |))
+        (M.read (| mk_str "name" |))
         (pointer_coercion
           "Unsize"
           (borrow
             (scoping_rules_ownership_and_rules_partial_moves.main.Person.Get_name
-              (deref α3))))
-        α4
-        (pointer_coercion "Unsize" (borrow α6))).
+              (deref (M.read (| self |))))))
+        (M.read (| mk_str "age" |))
+        (pointer_coercion
+          "Unsize"
+          (borrow
+            (M.alloc (|
+              borrow
+                (scoping_rules_ownership_and_rules_partial_moves.main.Person.Get_age
+                  (deref (M.read (| self |))))
+            |)))))
+      |)
+    )).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;

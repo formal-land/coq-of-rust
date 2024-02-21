@@ -16,21 +16,26 @@ Definition checked_division
     (dividend : i32.t)
     (divisor : i32.t)
     : M (core.option.Option.t i32.t) :=
-  let* dividend := M.alloc dividend in
-  let* divisor := M.alloc divisor in
-  let* α0 : i32.t := M.read divisor in
-  let* α1 : M.Val bool.t :=
-    M.alloc (BinOp.Pure.eq α0 ((Integer.of_Z 0) : i32.t)) in
-  let* α2 : bool.t := M.read (use α1) in
-  let* α3 : M.Val (core.option.Option.t i32.t) :=
-    if α2 then
-      M.alloc core.option.Option.None
-    else
-      let* α0 : i32.t := M.read dividend in
-      let* α1 : i32.t := M.read divisor in
-      let* α2 : i32.t := BinOp.Panic.div α0 α1 in
-      M.alloc (core.option.Option.Some α2) in
-  M.read α3.
+  ltac:(M.monadic (
+    let dividend := M.alloc (| dividend |) in
+    let divisor := M.alloc (| divisor |) in
+    M.read (|
+      if
+        M.read (|
+          use
+            (M.alloc (|
+              BinOp.Pure.eq (M.read (| divisor |)) ((Integer.of_Z 0) : i32.t)
+            |))
+        |)
+      then
+        M.alloc (| core.option.Option.None |)
+      else
+        M.alloc (|
+          core.option.Option.Some
+            (BinOp.Panic.div (| M.read (| dividend |), M.read (| divisor |) |))
+        |)
+    |)
+  )).
 
 (*
 fn try_division(dividend: i32, divisor: i32) {
@@ -44,84 +49,104 @@ fn try_division(dividend: i32, divisor: i32) {
 }
 *)
 Definition try_division (dividend : i32.t) (divisor : i32.t) : M unit :=
-  let* dividend := M.alloc dividend in
-  let* divisor := M.alloc divisor in
-  let* α0 : i32.t := M.read dividend in
-  let* α1 : i32.t := M.read divisor in
-  let* α2 : core.option.Option.t i32.t :=
-    M.call (option.checked_division α0 α1) in
-  let* α3 : M.Val (core.option.Option.t i32.t) := M.alloc α2 in
-  let* α4 : M.Val unit :=
-    match_operator
-      α3
-      [
-        fun γ =>
-          (let* α0 := M.read γ in
-          match α0 with
-          | core.option.Option.None =>
-            let* _ : M.Val unit :=
-              let* α0 : ref str.t := M.read (mk_str "") in
-              let* α1 : ref str.t := M.read (mk_str " / ") in
-              let* α2 : ref str.t := M.read (mk_str " failed!
-") in
-              let* α3 : M.Val (array (ref str.t)) := M.alloc [ α0; α1; α2 ] in
-              let* α4 : core.fmt.rt.Argument.t :=
-                M.call
-                  (core.fmt.rt.Argument.t::["new_display"] (borrow dividend)) in
-              let* α5 : core.fmt.rt.Argument.t :=
-                M.call
-                  (core.fmt.rt.Argument.t::["new_display"] (borrow divisor)) in
-              let* α6 : M.Val (array core.fmt.rt.Argument.t) :=
-                M.alloc [ α4; α5 ] in
-              let* α7 : core.fmt.Arguments.t :=
-                M.call
-                  (core.fmt.Arguments.t::["new_v1"]
-                    (pointer_coercion "Unsize" (borrow α3))
-                    (pointer_coercion "Unsize" (borrow α6))) in
-              let* α8 : unit := M.call (std.io.stdio._print α7) in
-              M.alloc α8 in
-            M.alloc tt
-          | _ => M.break_match
-          end) :
-          M (M.Val unit);
-        fun γ =>
-          (let* α0 := M.read γ in
-          match α0 with
-          | core.option.Option.Some _ =>
-            let γ0_0 := core.option.Option.Get_Some_0 γ in
-            let* quotient := M.copy γ0_0 in
-            let* _ : M.Val unit :=
-              let* α0 : ref str.t := M.read (mk_str "") in
-              let* α1 : ref str.t := M.read (mk_str " / ") in
-              let* α2 : ref str.t := M.read (mk_str " = ") in
-              let* α3 : ref str.t := M.read (mk_str "
-") in
-              let* α4 : M.Val (array (ref str.t)) :=
-                M.alloc [ α0; α1; α2; α3 ] in
-              let* α5 : core.fmt.rt.Argument.t :=
-                M.call
-                  (core.fmt.rt.Argument.t::["new_display"] (borrow dividend)) in
-              let* α6 : core.fmt.rt.Argument.t :=
-                M.call
-                  (core.fmt.rt.Argument.t::["new_display"] (borrow divisor)) in
-              let* α7 : core.fmt.rt.Argument.t :=
-                M.call
-                  (core.fmt.rt.Argument.t::["new_display"] (borrow quotient)) in
-              let* α8 : M.Val (array core.fmt.rt.Argument.t) :=
-                M.alloc [ α5; α6; α7 ] in
-              let* α9 : core.fmt.Arguments.t :=
-                M.call
-                  (core.fmt.Arguments.t::["new_v1"]
-                    (pointer_coercion "Unsize" (borrow α4))
-                    (pointer_coercion "Unsize" (borrow α8))) in
-              let* α10 : unit := M.call (std.io.stdio._print α9) in
-              M.alloc α10 in
-            M.alloc tt
-          | _ => M.break_match
-          end) :
-          M (M.Val unit)
-      ] in
-  M.read α4.
+  ltac:(M.monadic (
+    let dividend := M.alloc (| dividend |) in
+    let divisor := M.alloc (| divisor |) in
+    M.read (|
+      ltac:
+        (M.monadic_match_operator
+          (M.alloc (|
+            M.call (|(option.checked_division
+              (M.read (| dividend |))
+              (M.read (| divisor |)))
+            |)
+          |))
+          [
+            fun (γ : M.Val (core.option.Option.t i32.t)) =>
+              match M.read (| γ |) with
+              | core.option.Option.None =>
+                let _ : M.Val unit :=
+                  M.alloc (|
+                    M.call (|(std.io.stdio._print
+                      (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                        (pointer_coercion
+                          "Unsize"
+                          (borrow
+                            (M.alloc (|
+                              [
+                                M.read (| mk_str "" |);
+                                M.read (| mk_str " / " |);
+                                M.read (| mk_str " failed!
+" |)
+                              ]
+                            |))))
+                        (pointer_coercion
+                          "Unsize"
+                          (borrow
+                            (M.alloc (|
+                              [
+                                M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                                  (borrow dividend))
+                                |);
+                                M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                                  (borrow divisor))
+                                |)
+                              ]
+                            |)))))
+                      |)))
+                    |)
+                  |) in
+                M.alloc (| tt |)
+              | _ => M.break_match(||)
+              end :
+              M.Val unit;
+            fun (γ : M.Val (core.option.Option.t i32.t)) =>
+              match M.read (| γ |) with
+              | core.option.Option.Some _ =>
+                let γ0_0 := core.option.Option.Get_Some_0 γ in
+                let quotient := M.copy (| γ0_0 |) in
+                let _ : M.Val unit :=
+                  M.alloc (|
+                    M.call (|(std.io.stdio._print
+                      (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                        (pointer_coercion
+                          "Unsize"
+                          (borrow
+                            (M.alloc (|
+                              [
+                                M.read (| mk_str "" |);
+                                M.read (| mk_str " / " |);
+                                M.read (| mk_str " = " |);
+                                M.read (| mk_str "
+" |)
+                              ]
+                            |))))
+                        (pointer_coercion
+                          "Unsize"
+                          (borrow
+                            (M.alloc (|
+                              [
+                                M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                                  (borrow dividend))
+                                |);
+                                M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                                  (borrow divisor))
+                                |);
+                                M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                                  (borrow quotient))
+                                |)
+                              ]
+                            |)))))
+                      |)))
+                    |)
+                  |) in
+                M.alloc (| tt |)
+              | _ => M.break_match(||)
+              end :
+              M.Val unit
+          ])
+    |)
+  )).
 
 (*
 fn main() {
@@ -147,73 +172,107 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* _ : M.Val unit :=
-    let* α0 : unit :=
-      M.call
-        (option.try_division
-          ((Integer.of_Z 4) : i32.t)
-          ((Integer.of_Z 2) : i32.t)) in
-    M.alloc α0 in
-  let* _ : M.Val unit :=
-    let* α0 : unit :=
-      M.call
-        (option.try_division
-          ((Integer.of_Z 1) : i32.t)
-          ((Integer.of_Z 0) : i32.t)) in
-    M.alloc α0 in
-  let* none : M.Val (core.option.Option.t i32.t) :=
-    M.alloc core.option.Option.None in
-  let* _equivalent_none : M.Val (core.option.Option.t i32.t) :=
-    M.alloc core.option.Option.None in
-  let* optional_float : M.Val (core.option.Option.t f32.t) :=
-    let* α0 : f32.t := M.read (UnsupportedLiteral : M.Val f32.t) in
-    M.alloc (core.option.Option.Some α0) in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "") in
-      let* α1 : ref str.t := M.read (mk_str " unwraps to ") in
-      let* α2 : ref str.t := M.read (mk_str "
-") in
-      let* α3 : M.Val (array (ref str.t)) := M.alloc [ α0; α1; α2 ] in
-      let* α4 : core.fmt.rt.Argument.t :=
-        M.call
-          (core.fmt.rt.Argument.t::["new_debug"] (borrow optional_float)) in
-      let* α5 : core.option.Option.t f32.t := M.read optional_float in
-      let* α6 : f32.t := M.call ((core.option.Option.t f32.t)::["unwrap"] α5) in
-      let* α7 : M.Val f32.t := M.alloc α6 in
-      let* α8 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow α7)) in
-      let* α9 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4; α8 ] in
-      let* α10 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α3))
-            (pointer_coercion "Unsize" (borrow α9))) in
-      let* α11 : unit := M.call (std.io.stdio._print α10) in
-      M.alloc α11 in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "") in
-      let* α1 : ref str.t := M.read (mk_str " unwraps to ") in
-      let* α2 : ref str.t := M.read (mk_str "
-") in
-      let* α3 : M.Val (array (ref str.t)) := M.alloc [ α0; α1; α2 ] in
-      let* α4 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow none)) in
-      let* α5 : core.option.Option.t i32.t := M.read none in
-      let* α6 : i32.t := M.call ((core.option.Option.t i32.t)::["unwrap"] α5) in
-      let* α7 : M.Val i32.t := M.alloc α6 in
-      let* α8 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow α7)) in
-      let* α9 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4; α8 ] in
-      let* α10 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α3))
-            (pointer_coercion "Unsize" (borrow α9))) in
-      let* α11 : unit := M.call (std.io.stdio._print α10) in
-      M.alloc α11 in
-    M.alloc tt in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+  ltac:(M.monadic (
+    M.read (|
+      let _ : M.Val unit :=
+        M.alloc (|
+          M.call (|(option.try_division
+            ((Integer.of_Z 4) : i32.t)
+            ((Integer.of_Z 2) : i32.t))
+          |)
+        |) in
+      let _ : M.Val unit :=
+        M.alloc (|
+          M.call (|(option.try_division
+            ((Integer.of_Z 1) : i32.t)
+            ((Integer.of_Z 0) : i32.t))
+          |)
+        |) in
+      let none : M.Val (core.option.Option.t i32.t) :=
+        M.alloc (| core.option.Option.None |) in
+      let _equivalent_none : M.Val (core.option.Option.t i32.t) :=
+        M.alloc (| core.option.Option.None |) in
+      let optional_float : M.Val (core.option.Option.t f32.t) :=
+        M.alloc (|
+          core.option.Option.Some
+            (M.read (| UnsupportedLiteral : M.Val f32.t |))
+        |) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.read (| mk_str "" |);
+                        M.read (| mk_str " unwraps to " |);
+                        M.read (| mk_str "
+" |)
+                      ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_debug"]
+                          (borrow optional_float))
+                        |);
+                        M.call (|(core.fmt.rt.Argument.t::["new_debug"]
+                          (borrow
+                            (M.alloc (|
+                              M.call (|((core.option.Option.t f32.t)::["unwrap"]
+                                (M.read (| optional_float |)))
+                              |)
+                            |))))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.read (| mk_str "" |);
+                        M.read (| mk_str " unwraps to " |);
+                        M.read (| mk_str "
+" |)
+                      ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_debug"]
+                          (borrow none))
+                        |);
+                        M.call (|(core.fmt.rt.Argument.t::["new_debug"]
+                          (borrow
+                            (M.alloc (|
+                              M.call (|((core.option.Option.t i32.t)::["unwrap"]
+                                (M.read (| none |)))
+                              |)
+                            |))))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      M.alloc (| tt |)
+    |)
+  )).

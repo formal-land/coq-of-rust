@@ -34,11 +34,14 @@ Section Impl_trait_flipper_Flipper_t.
       }
   *)
   Definition new : M Self :=
-    let* α0 : M bool.t :=
-      ltac:(M.get_method (fun ℐ =>
-        core.default.Default.default (Self := bool.t) (Trait := ℐ))) in
-    let* α1 : bool.t := M.call α0 in
-    M.pure {| trait_flipper.Flipper.value := α1; |}.
+    ltac:(M.monadic (
+      {|
+        trait_flipper.Flipper.value :=
+          M.call (|ltac:(M.get_method (fun ℐ =>
+            core.default.Default.default (Self := bool.t) (Trait := ℐ)))
+          |);
+      |}
+    )).
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
@@ -56,14 +59,20 @@ Section Impl_trait_flipper_Flip_for_trait_flipper_Flipper_t.
       }
   *)
   Definition flip (self : mut_ref Self) : M unit :=
-    let* self := M.alloc self in
-    let* _ : M.Val unit :=
-      let* α0 : mut_ref trait_flipper.Flipper.t := M.read self in
-      let* α1 : mut_ref trait_flipper.Flipper.t := M.read self in
-      let* α2 : bool.t := M.read (trait_flipper.Flipper.Get_value (deref α1)) in
-      assign (trait_flipper.Flipper.Get_value (deref α0)) (UnOp.not α2) in
-    let* α0 : M.Val unit := M.alloc tt in
-    M.read α0.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      M.read (|
+        let _ : M.Val unit :=
+          assign (|
+            trait_flipper.Flipper.Get_value (deref (M.read (| self |))),
+            UnOp.not
+              (M.read (|
+                trait_flipper.Flipper.Get_value (deref (M.read (| self |)))
+              |))
+          |) in
+        M.alloc (| tt |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_flip :
     Notations.DoubleColon Self "flip" := {
@@ -76,9 +85,10 @@ Section Impl_trait_flipper_Flip_for_trait_flipper_Flipper_t.
       }
   *)
   Definition get (self : ref Self) : M bool.t :=
-    let* self := M.alloc self in
-    let* α0 : ref trait_flipper.Flipper.t := M.read self in
-    M.read (trait_flipper.Flipper.Get_value (deref α0)).
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      M.read (| trait_flipper.Flipper.Get_value (deref (M.read (| self |))) |)
+    )).
   
   Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
     Notations.double_colon := get;

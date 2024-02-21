@@ -13,19 +13,23 @@ where
 }
 *)
 Definition apply {F : Set} (f : F) : M unit :=
-  let* f := M.alloc f in
-  let* _ : M.Val unit :=
-    let* α0 : F -> unit -> M _ :=
-      ltac:(M.get_method (fun ℐ =>
-        core.ops.function.FnOnce.call_once
-          (Self := F)
-          (Args := unit)
-          (Trait := ℐ))) in
-    let* α1 : F := M.read f in
-    let* α2 : unit := M.call (α0 α1 tt) in
-    M.alloc α2 in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+  ltac:(M.monadic (
+    let f := M.alloc (| f |) in
+    M.read (|
+      let _ : M.Val unit :=
+        M.alloc (|
+          M.call (|(ltac:(M.get_method (fun ℐ =>
+              core.ops.function.FnOnce.call_once
+                (Self := F)
+                (Args := unit)
+                (Trait := ℐ)))
+            (M.read (| f |))
+            tt)
+          |)
+        |) in
+      M.alloc (| tt |)
+    |)
+  )).
 
 (*
 fn apply_to_3<F>(f: F) -> i32
@@ -37,11 +41,14 @@ where
 }
 *)
 Definition apply_to_3 {F : Set} (f : F) : M i32.t :=
-  let* f := M.alloc f in
-  let* α0 : (ref F) -> i32.t -> M _ :=
-    ltac:(M.get_method (fun ℐ =>
-      core.ops.function.Fn.call (Self := F) (Args := i32.t) (Trait := ℐ))) in
-  M.call (α0 (borrow f) ((Integer.of_Z 3) : i32.t)).
+  ltac:(M.monadic (
+    let f := M.alloc (| f |) in
+    M.call (|(ltac:(M.get_method (fun ℐ =>
+        core.ops.function.Fn.call (Self := F) (Args := i32.t) (Trait := ℐ)))
+      (borrow f)
+      ((Integer.of_Z 3) : i32.t))
+    |)
+  )).
 
 (*
 fn main() {
@@ -80,131 +87,175 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* greeting : M.Val (ref str.t) := M.copy (mk_str "hello") in
-  let* farewell : M.Val alloc.string.String.t :=
-    let* α0 : (ref str.t) -> M _ :=
-      ltac:(M.get_method (fun ℐ =>
-        alloc.borrow.ToOwned.to_owned (Self := str.t) (Trait := ℐ))) in
-    let* α1 : ref str.t := M.read (mk_str "goodbye") in
-    let* α2 : alloc.string.String.t := M.call (α0 α1) in
-    M.alloc α2 in
-  let* diary : M.Val (unit -> M unit) :=
-    M.alloc
-      (fun (α0 : unit) =>
-        (let* α0 := M.alloc α0 in
-        match_operator
-          α0
-          [
-            fun γ =>
-              (let* _ : M.Val unit :=
-                let* _ : M.Val unit :=
-                  let* α0 : ref str.t := M.read (mk_str "I said ") in
-                  let* α1 : ref str.t := M.read (mk_str ".
-") in
-                  let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-                  let* α3 : core.fmt.rt.Argument.t :=
-                    M.call
-                      (core.fmt.rt.Argument.t::["new_display"]
-                        (borrow greeting)) in
-                  let* α4 : M.Val (array core.fmt.rt.Argument.t) :=
-                    M.alloc [ α3 ] in
-                  let* α5 : core.fmt.Arguments.t :=
-                    M.call
-                      (core.fmt.Arguments.t::["new_v1"]
-                        (pointer_coercion "Unsize" (borrow α2))
-                        (pointer_coercion "Unsize" (borrow α4))) in
-                  let* α6 : unit := M.call (std.io.stdio._print α5) in
-                  M.alloc α6 in
-                M.alloc tt in
-              let* _ : M.Val unit :=
-                let* α0 : ref str.t := M.read (mk_str "!!!") in
-                let* α1 : unit :=
-                  M.call
-                    (alloc.string.String.t::["push_str"]
-                      (borrow_mut farewell)
-                      α0) in
-                M.alloc α1 in
-              let* _ : M.Val unit :=
-                let* _ : M.Val unit :=
-                  let* α0 : ref str.t := M.read (mk_str "Then I screamed ") in
-                  let* α1 : ref str.t := M.read (mk_str ".
-") in
-                  let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-                  let* α3 : core.fmt.rt.Argument.t :=
-                    M.call
-                      (core.fmt.rt.Argument.t::["new_display"]
-                        (borrow farewell)) in
-                  let* α4 : M.Val (array core.fmt.rt.Argument.t) :=
-                    M.alloc [ α3 ] in
-                  let* α5 : core.fmt.Arguments.t :=
-                    M.call
-                      (core.fmt.Arguments.t::["new_v1"]
-                        (pointer_coercion "Unsize" (borrow α2))
-                        (pointer_coercion "Unsize" (borrow α4))) in
-                  let* α6 : unit := M.call (std.io.stdio._print α5) in
-                  M.alloc α6 in
-                M.alloc tt in
-              let* _ : M.Val unit :=
-                let* _ : M.Val unit :=
-                  let* α0 : ref str.t :=
-                    M.read (mk_str "Now I can sleep. zzzzz
-") in
-                  let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-                  let* α2 : core.fmt.Arguments.t :=
-                    M.call
-                      (core.fmt.Arguments.t::["new_const"]
-                        (pointer_coercion "Unsize" (borrow α1))) in
-                  let* α3 : unit := M.call (std.io.stdio._print α2) in
-                  M.alloc α3 in
-                M.alloc tt in
-              let* _ : M.Val unit :=
-                let* α0 : alloc.string.String.t := M.read farewell in
-                let* α1 : unit := M.call (core.mem.drop α0) in
-                M.alloc α1 in
-              let* α0 : M.Val unit := M.alloc tt in
-              M.read α0) :
-              M unit
-          ]) :
-        M unit) in
-  let* _ : M.Val unit :=
-    let* α0 : unit -> M unit := M.read diary in
-    let* α1 : unit :=
-      M.call (functions_closures_as_input_parameters.apply α0) in
-    M.alloc α1 in
-  let* double : M.Val (i32.t -> M i32.t) :=
-    M.alloc
-      (fun (α0 : i32.t) =>
-        (let* α0 := M.alloc α0 in
-        match_operator
-          α0
-          [
-            fun γ =>
-              (let* x := M.copy γ in
-              let* α0 : i32.t := M.read x in
-              BinOp.Panic.mul ((Integer.of_Z 2) : i32.t) α0) :
-              M i32.t
-          ]) :
-        M i32.t) in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "3 doubled: ") in
-      let* α1 : ref str.t := M.read (mk_str "
-") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : i32.t -> M i32.t := M.read double in
-      let* α4 : i32.t :=
-        M.call (functions_closures_as_input_parameters.apply_to_3 α3) in
-      let* α5 : M.Val i32.t := M.alloc α4 in
-      let* α6 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α5)) in
-      let* α7 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α6 ] in
-      let* α8 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α7))) in
-      let* α9 : unit := M.call (std.io.stdio._print α8) in
-      M.alloc α9 in
-    M.alloc tt in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+  ltac:(M.monadic (
+    M.read (|
+      let greeting : M.Val (ref str.t) := M.copy (| mk_str "hello" |) in
+      let farewell : M.Val alloc.string.String.t :=
+        M.alloc (|
+          M.call (|(ltac:(M.get_method (fun ℐ =>
+              alloc.borrow.ToOwned.to_owned (Self := str.t) (Trait := ℐ)))
+            (M.read (| mk_str "goodbye" |)))
+          |)
+        |) in
+      let diary : M.Val (unit -> unit) :=
+        M.alloc (|
+          fun (α0 : unit) =>
+            (ltac:
+              (M.monadic_match_operator
+                (M.alloc (| α0 |))
+                [
+                  fun γ =>
+                    (M.read (|
+                      let _ : M.Val unit :=
+                        let _ : M.Val unit :=
+                          M.alloc (|
+                            M.call (|(std.io.stdio._print
+                              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                                (pointer_coercion
+                                  "Unsize"
+                                  (borrow
+                                    (M.alloc (|
+                                      [
+                                        M.read (| mk_str "I said " |);
+                                        M.read (| mk_str ".
+" |)
+                                      ]
+                                    |))))
+                                (pointer_coercion
+                                  "Unsize"
+                                  (borrow
+                                    (M.alloc (|
+                                      [
+                                        M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                                          (borrow greeting))
+                                        |)
+                                      ]
+                                    |)))))
+                              |)))
+                            |)
+                          |) in
+                        M.alloc (| tt |) in
+                      let _ : M.Val unit :=
+                        M.alloc (|
+                          M.call (|(alloc.string.String.t::["push_str"]
+                            (borrow_mut farewell)
+                            (M.read (| mk_str "!!!" |)))
+                          |)
+                        |) in
+                      let _ : M.Val unit :=
+                        let _ : M.Val unit :=
+                          M.alloc (|
+                            M.call (|(std.io.stdio._print
+                              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                                (pointer_coercion
+                                  "Unsize"
+                                  (borrow
+                                    (M.alloc (|
+                                      [
+                                        M.read (| mk_str "Then I screamed " |);
+                                        M.read (| mk_str ".
+" |)
+                                      ]
+                                    |))))
+                                (pointer_coercion
+                                  "Unsize"
+                                  (borrow
+                                    (M.alloc (|
+                                      [
+                                        M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                                          (borrow farewell))
+                                        |)
+                                      ]
+                                    |)))))
+                              |)))
+                            |)
+                          |) in
+                        M.alloc (| tt |) in
+                      let _ : M.Val unit :=
+                        let _ : M.Val unit :=
+                          M.alloc (|
+                            M.call (|(std.io.stdio._print
+                              (M.call (|(core.fmt.Arguments.t::["new_const"]
+                                (pointer_coercion
+                                  "Unsize"
+                                  (borrow
+                                    (M.alloc (|
+                                      [
+                                        M.read (|
+                                          mk_str "Now I can sleep. zzzzz
+"
+                                        |)
+                                      ]
+                                    |)))))
+                              |)))
+                            |)
+                          |) in
+                        M.alloc (| tt |) in
+                      let _ : M.Val unit :=
+                        M.alloc (|
+                          M.call (|(core.mem.drop (M.read (| farewell |))) |)
+                        |) in
+                      M.alloc (| tt |)
+                    |)) :
+                    unit
+                ])) :
+            unit
+        |) in
+      let _ : M.Val unit :=
+        M.alloc (|
+          M.call (|(functions_closures_as_input_parameters.apply
+            (M.read (| diary |)))
+          |)
+        |) in
+      let double : M.Val (i32.t -> i32.t) :=
+        M.alloc (|
+          fun (α0 : i32.t) =>
+            (ltac:
+              (M.monadic_match_operator
+                (M.alloc (| α0 |))
+                [
+                  fun γ =>
+                    (let x := M.copy (| γ |) in
+                    BinOp.Panic.mul (| (Integer.of_Z 2) : i32.t, M.read (| x |)
+                    |)) :
+                    i32.t
+                ])) :
+            i32.t
+        |) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.read (| mk_str "3 doubled: " |);
+                        M.read (| mk_str "
+" |)
+                      ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                          (borrow
+                            (M.alloc (|
+                              M.call (|(functions_closures_as_input_parameters.apply_to_3
+                                (M.read (| double |)))
+                              |)
+                            |))))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      M.alloc (| tt |)
+    |)
+  )).

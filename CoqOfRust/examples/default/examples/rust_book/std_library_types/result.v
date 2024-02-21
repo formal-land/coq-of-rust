@@ -20,52 +20,44 @@ Module checked.
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter.t)
         : M ltac:(core.fmt.Result) :=
-      let* self := M.alloc self in
-      let* f := M.alloc f in
-      let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
-      let* α1 : M.Val (ref str.t) :=
-        match_operator
-          self
-          [
-            fun γ =>
-              (let* γ :=
-                let* α0 := M.read γ in
-                M.pure (deref α0) in
-              let* α0 := M.read γ in
-              match α0 with
-              | result.checked.MathError.DivisionByZero =>
-                let* α0 : ref str.t := M.read (mk_str "DivisionByZero") in
-                M.alloc α0
-              | _ => M.break_match
-              end) :
-              M (M.Val (ref str.t));
-            fun γ =>
-              (let* γ :=
-                let* α0 := M.read γ in
-                M.pure (deref α0) in
-              let* α0 := M.read γ in
-              match α0 with
-              | result.checked.MathError.NonPositiveLogarithm =>
-                let* α0 : ref str.t := M.read (mk_str "NonPositiveLogarithm") in
-                M.alloc α0
-              | _ => M.break_match
-              end) :
-              M (M.Val (ref str.t));
-            fun γ =>
-              (let* γ :=
-                let* α0 := M.read γ in
-                M.pure (deref α0) in
-              let* α0 := M.read γ in
-              match α0 with
-              | result.checked.MathError.NegativeSquareRoot =>
-                let* α0 : ref str.t := M.read (mk_str "NegativeSquareRoot") in
-                M.alloc α0
-              | _ => M.break_match
-              end) :
-              M (M.Val (ref str.t))
-          ] in
-      let* α2 : ref str.t := M.read α1 in
-      M.call (core.fmt.Formatter.t::["write_str"] α0 α2).
+      ltac:(M.monadic (
+        let self := M.alloc (| self |) in
+        let f := M.alloc (| f |) in
+        M.call (|(core.fmt.Formatter.t::["write_str"]
+          (M.read (| f |))
+          (M.read (|
+            ltac:
+              (M.monadic_match_operator
+                self
+                [
+                  fun (γ : M.Val (ref result.checked.MathError.t)) =>
+                    (let γ := deref (M.read (| γ |)) in
+                    match M.read (| γ |) with
+                    | result.checked.MathError.DivisionByZero =>
+                      M.alloc (| M.read (| mk_str "DivisionByZero" |) |)
+                    | _ => M.break_match(||)
+                    end) :
+                    M.Val (ref str.t);
+                  fun (γ : M.Val (ref result.checked.MathError.t)) =>
+                    (let γ := deref (M.read (| γ |)) in
+                    match M.read (| γ |) with
+                    | result.checked.MathError.NonPositiveLogarithm =>
+                      M.alloc (| M.read (| mk_str "NonPositiveLogarithm" |) |)
+                    | _ => M.break_match(||)
+                    end) :
+                    M.Val (ref str.t);
+                  fun (γ : M.Val (ref result.checked.MathError.t)) =>
+                    (let γ := deref (M.read (| γ |)) in
+                    match M.read (| γ |) with
+                    | result.checked.MathError.NegativeSquareRoot =>
+                      M.alloc (| M.read (| mk_str "NegativeSquareRoot" |) |)
+                    | _ => M.break_match(||)
+                    end) :
+                    M.Val (ref str.t)
+                ])
+          |)))
+        |)
+      )).
     
     Global Instance AssociatedFunction_fmt :
       Notations.DoubleColon Self "fmt" := {
@@ -94,21 +86,30 @@ Module checked.
       }
   *)
   Definition div (x : f64.t) (y : f64.t) : M ltac:(result.checked.MathResult) :=
-    let* x := M.alloc x in
-    let* y := M.alloc y in
-    let* α0 : f64.t := M.read y in
-    let* α1 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
-    let* α2 : M.Val bool.t := M.alloc (BinOp.Pure.eq α0 α1) in
-    let* α3 : bool.t := M.read (use α2) in
-    let* α4 : M.Val (core.result.Result.t f64.t result.checked.MathError.t) :=
-      if α3 then
-        M.alloc (core.result.Result.Err result.checked.MathError.DivisionByZero)
-      else
-        let* α0 : f64.t := M.read x in
-        let* α1 : f64.t := M.read y in
-        let* α2 : f64.t := BinOp.Panic.div α0 α1 in
-        M.alloc (core.result.Result.Ok α2) in
-    M.read α4.
+    ltac:(M.monadic (
+      let x := M.alloc (| x |) in
+      let y := M.alloc (| y |) in
+      M.read (|
+        if
+          M.read (|
+            use
+              (M.alloc (|
+                BinOp.Pure.eq
+                  (M.read (| y |))
+                  (M.read (| UnsupportedLiteral : M.Val f64.t |))
+              |))
+          |)
+        then
+          M.alloc (|
+            core.result.Result.Err result.checked.MathError.DivisionByZero
+          |)
+        else
+          M.alloc (|
+            core.result.Result.Ok
+              (BinOp.Panic.div (| M.read (| x |), M.read (| y |) |))
+          |)
+      |)
+    )).
   
   (*
       pub fn sqrt(x: f64) -> MathResult {
@@ -120,20 +121,29 @@ Module checked.
       }
   *)
   Definition sqrt (x : f64.t) : M ltac:(result.checked.MathResult) :=
-    let* x := M.alloc x in
-    let* α0 : f64.t := M.read x in
-    let* α1 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
-    let* α2 : M.Val bool.t := M.alloc (BinOp.Pure.lt α0 α1) in
-    let* α3 : bool.t := M.read (use α2) in
-    let* α4 : M.Val (core.result.Result.t f64.t result.checked.MathError.t) :=
-      if α3 then
-        M.alloc
-          (core.result.Result.Err result.checked.MathError.NegativeSquareRoot)
-      else
-        let* α0 : f64.t := M.read x in
-        let* α1 : f64.t := M.call (f64.t::["sqrt"] α0) in
-        M.alloc (core.result.Result.Ok α1) in
-    M.read α4.
+    ltac:(M.monadic (
+      let x := M.alloc (| x |) in
+      M.read (|
+        if
+          M.read (|
+            use
+              (M.alloc (|
+                BinOp.Pure.lt
+                  (M.read (| x |))
+                  (M.read (| UnsupportedLiteral : M.Val f64.t |))
+              |))
+          |)
+        then
+          M.alloc (|
+            core.result.Result.Err result.checked.MathError.NegativeSquareRoot
+          |)
+        else
+          M.alloc (|
+            core.result.Result.Ok
+              (M.call (|(f64.t::["sqrt"] (M.read (| x |))) |))
+          |)
+      |)
+    )).
   
   (*
       pub fn ln(x: f64) -> MathResult {
@@ -145,20 +155,28 @@ Module checked.
       }
   *)
   Definition ln (x : f64.t) : M ltac:(result.checked.MathResult) :=
-    let* x := M.alloc x in
-    let* α0 : f64.t := M.read x in
-    let* α1 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
-    let* α2 : M.Val bool.t := M.alloc (BinOp.Pure.le α0 α1) in
-    let* α3 : bool.t := M.read (use α2) in
-    let* α4 : M.Val (core.result.Result.t f64.t result.checked.MathError.t) :=
-      if α3 then
-        M.alloc
-          (core.result.Result.Err result.checked.MathError.NonPositiveLogarithm)
-      else
-        let* α0 : f64.t := M.read x in
-        let* α1 : f64.t := M.call (f64.t::["ln"] α0) in
-        M.alloc (core.result.Result.Ok α1) in
-    M.read α4.
+    ltac:(M.monadic (
+      let x := M.alloc (| x |) in
+      M.read (|
+        if
+          M.read (|
+            use
+              (M.alloc (|
+                BinOp.Pure.le
+                  (M.read (| x |))
+                  (M.read (| UnsupportedLiteral : M.Val f64.t |))
+              |))
+          |)
+        then
+          M.alloc (|
+            core.result.Result.Err result.checked.MathError.NonPositiveLogarithm
+          |)
+        else
+          M.alloc (|
+            core.result.Result.Ok (M.call (|(f64.t::["ln"] (M.read (| x |))) |))
+          |)
+      |)
+    )).
 End checked.
 
 (*
@@ -177,145 +195,178 @@ fn op(x: f64, y: f64) -> f64 {
 }
 *)
 Definition op (x : f64.t) (y : f64.t) : M f64.t :=
-  let* x := M.alloc x in
-  let* y := M.alloc y in
-  let* α0 : f64.t := M.read x in
-  let* α1 : f64.t := M.read y in
-  let* α2 : core.result.Result.t f64.t result.checked.MathError.t :=
-    M.call (result.checked.div α0 α1) in
-  let* α3 : M.Val (core.result.Result.t f64.t result.checked.MathError.t) :=
-    M.alloc α2 in
-  let* α4 : M.Val f64.t :=
-    match_operator
-      α3
-      [
-        fun γ =>
-          (let* α0 := M.read γ in
-          match α0 with
-          | core.result.Result.Err _ =>
-            let γ0_0 := core.result.Result.Get_Err_0 γ in
-            let* why := M.copy γ0_0 in
-            let* α0 : ref str.t := M.read (mk_str "") in
-            let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-            let* α2 : core.fmt.rt.Argument.t :=
-              M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow why)) in
-            let* α3 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α2 ] in
-            let* α4 : core.fmt.Arguments.t :=
-              M.call
-                (core.fmt.Arguments.t::["new_v1"]
-                  (pointer_coercion "Unsize" (borrow α1))
-                  (pointer_coercion "Unsize" (borrow α3))) in
-            let* α5 : never.t := M.call (core.panicking.panic_fmt α4) in
-            let* α6 : f64.t := never_to_any α5 in
-            M.alloc α6
-          | _ => M.break_match
-          end) :
-          M (M.Val f64.t);
-        fun γ =>
-          (let* α0 := M.read γ in
-          match α0 with
-          | core.result.Result.Ok _ =>
-            let γ0_0 := core.result.Result.Get_Ok_0 γ in
-            let* ratio := M.copy γ0_0 in
-            let* α0 : f64.t := M.read ratio in
-            let* α1 : core.result.Result.t f64.t result.checked.MathError.t :=
-              M.call (result.checked.ln α0) in
-            let* α2 :
-                M.Val (core.result.Result.t f64.t result.checked.MathError.t) :=
-              M.alloc α1 in
-            match_operator
-              α2
-              [
-                fun γ =>
-                  (let* α0 := M.read γ in
-                  match α0 with
-                  | core.result.Result.Err _ =>
-                    let γ0_0 := core.result.Result.Get_Err_0 γ in
-                    let* why := M.copy γ0_0 in
-                    let* α0 : ref str.t := M.read (mk_str "") in
-                    let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-                    let* α2 : core.fmt.rt.Argument.t :=
-                      M.call
-                        (core.fmt.rt.Argument.t::["new_debug"] (borrow why)) in
-                    let* α3 : M.Val (array core.fmt.rt.Argument.t) :=
-                      M.alloc [ α2 ] in
-                    let* α4 : core.fmt.Arguments.t :=
-                      M.call
-                        (core.fmt.Arguments.t::["new_v1"]
-                          (pointer_coercion "Unsize" (borrow α1))
-                          (pointer_coercion "Unsize" (borrow α3))) in
-                    let* α5 : never.t := M.call (core.panicking.panic_fmt α4) in
-                    let* α6 : f64.t := never_to_any α5 in
-                    M.alloc α6
-                  | _ => M.break_match
-                  end) :
-                  M (M.Val f64.t);
-                fun γ =>
-                  (let* α0 := M.read γ in
-                  match α0 with
-                  | core.result.Result.Ok _ =>
-                    let γ0_0 := core.result.Result.Get_Ok_0 γ in
-                    let* ln := M.copy γ0_0 in
-                    let* α0 : f64.t := M.read ln in
-                    let* α1 :
-                        core.result.Result.t f64.t result.checked.MathError.t :=
-                      M.call (result.checked.sqrt α0) in
-                    let* α2 :
-                        M.Val
-                          (core.result.Result.t
-                            f64.t
-                            result.checked.MathError.t) :=
-                      M.alloc α1 in
-                    match_operator
-                      α2
-                      [
-                        fun γ =>
-                          (let* α0 := M.read γ in
-                          match α0 with
-                          | core.result.Result.Err _ =>
-                            let γ0_0 := core.result.Result.Get_Err_0 γ in
-                            let* why := M.copy γ0_0 in
-                            let* α0 : ref str.t := M.read (mk_str "") in
-                            let* α1 : M.Val (array (ref str.t)) :=
-                              M.alloc [ α0 ] in
-                            let* α2 : core.fmt.rt.Argument.t :=
-                              M.call
-                                (core.fmt.rt.Argument.t::["new_debug"]
-                                  (borrow why)) in
-                            let* α3 : M.Val (array core.fmt.rt.Argument.t) :=
-                              M.alloc [ α2 ] in
-                            let* α4 : core.fmt.Arguments.t :=
-                              M.call
-                                (core.fmt.Arguments.t::["new_v1"]
-                                  (pointer_coercion "Unsize" (borrow α1))
-                                  (pointer_coercion "Unsize" (borrow α3))) in
-                            let* α5 : never.t :=
-                              M.call (core.panicking.panic_fmt α4) in
-                            let* α6 : f64.t := never_to_any α5 in
-                            M.alloc α6
-                          | _ => M.break_match
-                          end) :
-                          M (M.Val f64.t);
-                        fun γ =>
-                          (let* α0 := M.read γ in
-                          match α0 with
-                          | core.result.Result.Ok _ =>
-                            let γ0_0 := core.result.Result.Get_Ok_0 γ in
-                            let* sqrt := M.copy γ0_0 in
-                            M.pure sqrt
-                          | _ => M.break_match
-                          end) :
-                          M (M.Val f64.t)
-                      ]
-                  | _ => M.break_match
-                  end) :
-                  M (M.Val f64.t)
-              ]
-          | _ => M.break_match
-          end) :
-          M (M.Val f64.t)
-      ] in
-  M.read α4.
+  ltac:(M.monadic (
+    let x := M.alloc (| x |) in
+    let y := M.alloc (| y |) in
+    M.read (|
+      ltac:
+        (M.monadic_match_operator
+          (M.alloc (|
+            M.call (|(result.checked.div (M.read (| x |)) (M.read (| y |))) |)
+          |))
+          [
+            fun
+                (γ :
+                  M.Val
+                    (core.result.Result.t f64.t result.checked.MathError.t)) =>
+              match M.read (| γ |) with
+              | core.result.Result.Err _ =>
+                let γ0_0 := core.result.Result.Get_Err_0 γ in
+                let why := M.copy (| γ0_0 |) in
+                M.alloc (|
+                  never_to_any (|
+                    M.call (|(core.panicking.panic_fmt
+                      (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                        (pointer_coercion
+                          "Unsize"
+                          (borrow (M.alloc (| [ M.read (| mk_str "" |) ] |))))
+                        (pointer_coercion
+                          "Unsize"
+                          (borrow
+                            (M.alloc (|
+                              [
+                                M.call (|(core.fmt.rt.Argument.t::["new_debug"]
+                                  (borrow why))
+                                |)
+                              ]
+                            |)))))
+                      |)))
+                    |)
+                  |)
+                |)
+              | _ => M.break_match(||)
+              end :
+              M.Val f64.t;
+            fun
+                (γ :
+                  M.Val
+                    (core.result.Result.t f64.t result.checked.MathError.t)) =>
+              match M.read (| γ |) with
+              | core.result.Result.Ok _ =>
+                let γ0_0 := core.result.Result.Get_Ok_0 γ in
+                let ratio := M.copy (| γ0_0 |) in
+                ltac:
+                  (M.monadic_match_operator
+                    (M.alloc (|
+                      M.call (|(result.checked.ln (M.read (| ratio |))) |)
+                    |))
+                    [
+                      fun
+                          (γ :
+                            M.Val
+                              (core.result.Result.t
+                                f64.t
+                                result.checked.MathError.t)) =>
+                        match M.read (| γ |) with
+                        | core.result.Result.Err _ =>
+                          let γ0_0 := core.result.Result.Get_Err_0 γ in
+                          let why := M.copy (| γ0_0 |) in
+                          M.alloc (|
+                            never_to_any (|
+                              M.call (|(core.panicking.panic_fmt
+                                (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                                  (pointer_coercion
+                                    "Unsize"
+                                    (borrow
+                                      (M.alloc (| [ M.read (| mk_str "" |) ]
+                                      |))))
+                                  (pointer_coercion
+                                    "Unsize"
+                                    (borrow
+                                      (M.alloc (|
+                                        [
+                                          M.call (|(core.fmt.rt.Argument.t::["new_debug"]
+                                            (borrow why))
+                                          |)
+                                        ]
+                                      |)))))
+                                |)))
+                              |)
+                            |)
+                          |)
+                        | _ => M.break_match(||)
+                        end :
+                        M.Val f64.t;
+                      fun
+                          (γ :
+                            M.Val
+                              (core.result.Result.t
+                                f64.t
+                                result.checked.MathError.t)) =>
+                        match M.read (| γ |) with
+                        | core.result.Result.Ok _ =>
+                          let γ0_0 := core.result.Result.Get_Ok_0 γ in
+                          let ln := M.copy (| γ0_0 |) in
+                          ltac:
+                            (M.monadic_match_operator
+                              (M.alloc (|
+                                M.call (|(result.checked.sqrt (M.read (| ln |)))
+                                |)
+                              |))
+                              [
+                                fun
+                                    (γ :
+                                      M.Val
+                                        (core.result.Result.t
+                                          f64.t
+                                          result.checked.MathError.t)) =>
+                                  match M.read (| γ |) with
+                                  | core.result.Result.Err _ =>
+                                    let γ0_0 :=
+                                      core.result.Result.Get_Err_0 γ in
+                                    let why := M.copy (| γ0_0 |) in
+                                    M.alloc (|
+                                      never_to_any (|
+                                        M.call (|(core.panicking.panic_fmt
+                                          (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                                            (pointer_coercion
+                                              "Unsize"
+                                              (borrow
+                                                (M.alloc (|
+                                                  [ M.read (| mk_str "" |) ]
+                                                |))))
+                                            (pointer_coercion
+                                              "Unsize"
+                                              (borrow
+                                                (M.alloc (|
+                                                  [
+                                                    M.call (|(core.fmt.rt.Argument.t::["new_debug"]
+                                                      (borrow why))
+                                                    |)
+                                                  ]
+                                                |)))))
+                                          |)))
+                                        |)
+                                      |)
+                                    |)
+                                  | _ => M.break_match(||)
+                                  end :
+                                  M.Val f64.t;
+                                fun
+                                    (γ :
+                                      M.Val
+                                        (core.result.Result.t
+                                          f64.t
+                                          result.checked.MathError.t)) =>
+                                  match M.read (| γ |) with
+                                  | core.result.Result.Ok _ =>
+                                    let γ0_0 := core.result.Result.Get_Ok_0 γ in
+                                    let sqrt := M.copy (| γ0_0 |) in
+                                    sqrt
+                                  | _ => M.break_match(||)
+                                  end :
+                                  M.Val f64.t
+                              ])
+                        | _ => M.break_match(||)
+                        end :
+                        M.Val f64.t
+                    ])
+              | _ => M.break_match(||)
+              end :
+              M.Val f64.t
+          ])
+    |)
+  )).
 
 (*
 fn main() {
@@ -325,26 +376,40 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "") in
-      let* α1 : ref str.t := M.read (mk_str "
-") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
-      let* α4 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
-      let* α5 : f64.t := M.call (result.op α3 α4) in
-      let* α6 : M.Val f64.t := M.alloc α5 in
-      let* α7 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α6)) in
-      let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
-      let* α9 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α8))) in
-      let* α10 : unit := M.call (std.io.stdio._print α9) in
-      M.alloc α10 in
-    M.alloc tt in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+  ltac:(M.monadic (
+    M.read (|
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [ M.read (| mk_str "" |); M.read (| mk_str "
+" |) ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                          (borrow
+                            (M.alloc (|
+                              M.call (|(result.op
+                                (M.read (| UnsupportedLiteral : M.Val f64.t |))
+                                (M.read (| UnsupportedLiteral : M.Val f64.t |)))
+                              |)
+                            |))))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      M.alloc (| tt |)
+    |)
+  )).

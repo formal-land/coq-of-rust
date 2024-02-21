@@ -23,21 +23,23 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self := M.alloc self in
-    let* f := M.alloc f in
-    let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
-    let* α1 : ref str.t := M.read (mk_str "Borrowed") in
-    let* α2 : ref str.t := M.read (mk_str "x") in
-    let* α3 : ref scoping_rules_lifetimes_traits.Borrowed.t := M.read self in
-    let* α4 : M.Val (ref (ref i32.t)) :=
-      M.alloc
-        (borrow (scoping_rules_lifetimes_traits.Borrowed.Get_x (deref α3))) in
-    M.call
-      (core.fmt.Formatter.t::["debug_struct_field1_finish"]
-        α0
-        α1
-        α2
-        (pointer_coercion "Unsize" (borrow α4))).
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let f := M.alloc (| f |) in
+      M.call (|(core.fmt.Formatter.t::["debug_struct_field1_finish"]
+        (M.read (| f |))
+        (M.read (| mk_str "Borrowed" |))
+        (M.read (| mk_str "x" |))
+        (pointer_coercion
+          "Unsize"
+          (borrow
+            (M.alloc (|
+              borrow
+                (scoping_rules_lifetimes_traits.Borrowed.Get_x
+                  (deref (M.read (| self |))))
+            |)))))
+      |)
+    )).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
@@ -59,8 +61,12 @@ Section Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed_t.
       }
   *)
   Definition default : M Self :=
-    let* α0 : M.Val i32.t := M.alloc ((Integer.of_Z 10) : i32.t) in
-    M.pure {| scoping_rules_lifetimes_traits.Borrowed.x := borrow α0; |}.
+    ltac:(M.monadic (
+      {|
+        scoping_rules_lifetimes_traits.Borrowed.x :=
+          borrow (M.alloc (| (Integer.of_Z 10) : i32.t |));
+      |}
+    )).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -81,30 +87,42 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* b : M.Val scoping_rules_lifetimes_traits.Borrowed.t :=
-    let* α0 : M scoping_rules_lifetimes_traits.Borrowed.t :=
-      ltac:(M.get_method (fun ℐ =>
-        core.default.Default.default
-          (Self := scoping_rules_lifetimes_traits.Borrowed.t)
-          (Trait := ℐ))) in
-    let* α1 : scoping_rules_lifetimes_traits.Borrowed.t := M.call α0 in
-    M.alloc α1 in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "b is ") in
-      let* α1 : ref str.t := M.read (mk_str "
-") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow b)) in
-      let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
-      let* α5 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α4))) in
-      let* α6 : unit := M.call (std.io.stdio._print α5) in
-      M.alloc α6 in
-    M.alloc tt in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+  ltac:(M.monadic (
+    M.read (|
+      let b : M.Val scoping_rules_lifetimes_traits.Borrowed.t :=
+        M.alloc (|
+          M.call (|ltac:(M.get_method (fun ℐ =>
+            core.default.Default.default
+              (Self := scoping_rules_lifetimes_traits.Borrowed.t)
+              (Trait := ℐ)))
+          |)
+        |) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [ M.read (| mk_str "b is " |); M.read (| mk_str "
+" |) ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_debug"]
+                          (borrow b))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      M.alloc (| tt |)
+    |)
+  )).

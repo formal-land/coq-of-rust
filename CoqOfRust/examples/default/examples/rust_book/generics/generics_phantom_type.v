@@ -41,35 +41,32 @@ Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_t_A_B.
       (self : ref Self)
       (other : ref (generics_phantom_type.PhantomTuple.t A B))
       : M bool.t :=
-    let* self := M.alloc self in
-    let* other := M.alloc other in
-    let* α0 : (ref A) -> (ref A) -> M bool.t :=
-      ltac:(M.get_method (fun ℐ =>
-        core.cmp.PartialEq.eq (Self := A) (Rhs := A) (Trait := ℐ))) in
-    let* α1 : ref (generics_phantom_type.PhantomTuple.t A B) := M.read self in
-    let* α2 : ref (generics_phantom_type.PhantomTuple.t A B) := M.read other in
-    let* α3 : bool.t :=
-      M.call
-        (α0
-          (borrow (generics_phantom_type.PhantomTuple.Get_0 (deref α1)))
-          (borrow (generics_phantom_type.PhantomTuple.Get_0 (deref α2)))) in
-    let* α4 :
-        (ref (core.marker.PhantomData.t B)) ->
-          (ref (core.marker.PhantomData.t B)) ->
-          M bool.t :=
-      ltac:(M.get_method (fun ℐ =>
-        core.cmp.PartialEq.eq
-          (Self := core.marker.PhantomData.t B)
-          (Rhs := core.marker.PhantomData.t B)
-          (Trait := ℐ))) in
-    let* α5 : ref (generics_phantom_type.PhantomTuple.t A B) := M.read self in
-    let* α6 : ref (generics_phantom_type.PhantomTuple.t A B) := M.read other in
-    let* α7 : bool.t :=
-      M.call
-        (α4
-          (borrow (generics_phantom_type.PhantomTuple.Get_1 (deref α5)))
-          (borrow (generics_phantom_type.PhantomTuple.Get_1 (deref α6)))) in
-    M.pure (BinOp.Pure.and α3 α7).
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let other := M.alloc (| other |) in
+      BinOp.Pure.and
+        (M.call (|(ltac:(M.get_method (fun ℐ =>
+            core.cmp.PartialEq.eq (Self := A) (Rhs := A) (Trait := ℐ)))
+          (borrow
+            (generics_phantom_type.PhantomTuple.Get_0
+              (deref (M.read (| self |)))))
+          (borrow
+            (generics_phantom_type.PhantomTuple.Get_0
+              (deref (M.read (| other |))))))
+        |))
+        (M.call (|(ltac:(M.get_method (fun ℐ =>
+            core.cmp.PartialEq.eq
+              (Self := core.marker.PhantomData.t B)
+              (Rhs := core.marker.PhantomData.t B)
+              (Trait := ℐ)))
+          (borrow
+            (generics_phantom_type.PhantomTuple.Get_1
+              (deref (M.read (| self |)))))
+          (borrow
+            (generics_phantom_type.PhantomTuple.Get_1
+              (deref (M.read (| other |))))))
+        |))
+    )).
   
   Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
     Notations.double_colon := eq;
@@ -126,37 +123,32 @@ Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_t_A_B.
       (self : ref Self)
       (other : ref (generics_phantom_type.PhantomStruct.t A B))
       : M bool.t :=
-    let* self := M.alloc self in
-    let* other := M.alloc other in
-    let* α0 : (ref A) -> (ref A) -> M bool.t :=
-      ltac:(M.get_method (fun ℐ =>
-        core.cmp.PartialEq.eq (Self := A) (Rhs := A) (Trait := ℐ))) in
-    let* α1 : ref (generics_phantom_type.PhantomStruct.t A B) := M.read self in
-    let* α2 : ref (generics_phantom_type.PhantomStruct.t A B) := M.read other in
-    let* α3 : bool.t :=
-      M.call
-        (α0
-          (borrow (generics_phantom_type.PhantomStruct.Get_first (deref α1)))
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let other := M.alloc (| other |) in
+      BinOp.Pure.and
+        (M.call (|(ltac:(M.get_method (fun ℐ =>
+            core.cmp.PartialEq.eq (Self := A) (Rhs := A) (Trait := ℐ)))
           (borrow
-            (generics_phantom_type.PhantomStruct.Get_first (deref α2)))) in
-    let* α4 :
-        (ref (core.marker.PhantomData.t B)) ->
-          (ref (core.marker.PhantomData.t B)) ->
-          M bool.t :=
-      ltac:(M.get_method (fun ℐ =>
-        core.cmp.PartialEq.eq
-          (Self := core.marker.PhantomData.t B)
-          (Rhs := core.marker.PhantomData.t B)
-          (Trait := ℐ))) in
-    let* α5 : ref (generics_phantom_type.PhantomStruct.t A B) := M.read self in
-    let* α6 : ref (generics_phantom_type.PhantomStruct.t A B) := M.read other in
-    let* α7 : bool.t :=
-      M.call
-        (α4
-          (borrow (generics_phantom_type.PhantomStruct.Get_phantom (deref α5)))
+            (generics_phantom_type.PhantomStruct.Get_first
+              (deref (M.read (| self |)))))
           (borrow
-            (generics_phantom_type.PhantomStruct.Get_phantom (deref α6)))) in
-    M.pure (BinOp.Pure.and α3 α7).
+            (generics_phantom_type.PhantomStruct.Get_first
+              (deref (M.read (| other |))))))
+        |))
+        (M.call (|(ltac:(M.get_method (fun ℐ =>
+            core.cmp.PartialEq.eq
+              (Self := core.marker.PhantomData.t B)
+              (Rhs := core.marker.PhantomData.t B)
+              (Trait := ℐ)))
+          (borrow
+            (generics_phantom_type.PhantomStruct.Get_phantom
+              (deref (M.read (| self |)))))
+          (borrow
+            (generics_phantom_type.PhantomStruct.Get_phantom
+              (deref (M.read (| other |))))))
+        |))
+    )).
   
   Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
     Notations.double_colon := eq;
@@ -201,29 +193,38 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* _tuple1 : M.Val (generics_phantom_type.PhantomTuple.t char.t f32.t) :=
-    M.alloc
-      (generics_phantom_type.PhantomTuple.Build_t
-        "Q"%char
-        core.marker.PhantomData.Build) in
-  let* _tuple2 : M.Val (generics_phantom_type.PhantomTuple.t char.t f64.t) :=
-    M.alloc
-      (generics_phantom_type.PhantomTuple.Build_t
-        "Q"%char
-        core.marker.PhantomData.Build) in
-  let* _struct1 : M.Val (generics_phantom_type.PhantomStruct.t char.t f32.t) :=
-    M.alloc
-      {|
-        generics_phantom_type.PhantomStruct.first := "Q"%char;
-        generics_phantom_type.PhantomStruct.phantom :=
-          core.marker.PhantomData.Build;
-      |} in
-  let* _struct2 : M.Val (generics_phantom_type.PhantomStruct.t char.t f64.t) :=
-    M.alloc
-      {|
-        generics_phantom_type.PhantomStruct.first := "Q"%char;
-        generics_phantom_type.PhantomStruct.phantom :=
-          core.marker.PhantomData.Build;
-      |} in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+  ltac:(M.monadic (
+    M.read (|
+      let _tuple1 : M.Val (generics_phantom_type.PhantomTuple.t char.t f32.t) :=
+        M.alloc (|
+          generics_phantom_type.PhantomTuple.Build_t
+            "Q"%char
+            core.marker.PhantomData.Build
+        |) in
+      let _tuple2 : M.Val (generics_phantom_type.PhantomTuple.t char.t f64.t) :=
+        M.alloc (|
+          generics_phantom_type.PhantomTuple.Build_t
+            "Q"%char
+            core.marker.PhantomData.Build
+        |) in
+      let _struct1 :
+          M.Val (generics_phantom_type.PhantomStruct.t char.t f32.t) :=
+        M.alloc (|
+          {|
+            generics_phantom_type.PhantomStruct.first := "Q"%char;
+            generics_phantom_type.PhantomStruct.phantom :=
+              core.marker.PhantomData.Build;
+          |}
+        |) in
+      let _struct2 :
+          M.Val (generics_phantom_type.PhantomStruct.t char.t f64.t) :=
+        M.alloc (|
+          {|
+            generics_phantom_type.PhantomStruct.first := "Q"%char;
+            generics_phantom_type.PhantomStruct.phantom :=
+              core.marker.PhantomData.Build;
+          |}
+        |) in
+      M.alloc (| tt |)
+    |)
+  )).

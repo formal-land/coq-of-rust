@@ -29,11 +29,14 @@ Section Impl_core_fmt_Debug_for_integration_flipper_FlipperError_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self := M.alloc self in
-    let* f := M.alloc f in
-    let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
-    let* α1 : ref str.t := M.read (mk_str "FlipperError") in
-    M.call (core.fmt.Formatter.t::["write_str"] α0 α1).
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let f := M.alloc (| f |) in
+      M.call (|(core.fmt.Formatter.t::["write_str"]
+        (M.read (| f |))
+        (M.read (| mk_str "FlipperError" |)))
+      |)
+    )).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
@@ -55,9 +58,10 @@ Section Impl_integration_flipper_Flipper_t.
       }
   *)
   Definition new (init_value : bool.t) : M Self :=
-    let* init_value := M.alloc init_value in
-    let* α0 : bool.t := M.read init_value in
-    M.pure {| integration_flipper.Flipper.value := α0; |}.
+    ltac:(M.monadic (
+      let init_value := M.alloc (| init_value |) in
+      {| integration_flipper.Flipper.value := M.read (| init_value |); |}
+    )).
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
@@ -69,11 +73,13 @@ Section Impl_integration_flipper_Flipper_t.
       }
   *)
   Definition new_default : M Self :=
-    let* α0 : M bool.t :=
-      ltac:(M.get_method (fun ℐ =>
-        core.default.Default.default (Self := bool.t) (Trait := ℐ))) in
-    let* α1 : bool.t := M.call α0 in
-    M.call (integration_flipper.Flipper.t::["new"] α1).
+    ltac:(M.monadic (
+      M.call (|(integration_flipper.Flipper.t::["new"]
+        (M.call (|ltac:(M.get_method (fun ℐ =>
+          core.default.Default.default (Self := bool.t) (Trait := ℐ)))
+        |)))
+      |)
+    )).
   
   Global Instance AssociatedFunction_new_default :
     Notations.DoubleColon Self "new_default" := {
@@ -92,21 +98,20 @@ Section Impl_integration_flipper_Flipper_t.
   Definition try_new
       (succeed : bool.t)
       : M (core.result.Result.t Self integration_flipper.FlipperError.t) :=
-    let* succeed := M.alloc succeed in
-    let* α0 : bool.t := M.read (use succeed) in
-    let* α1 :
-        M.Val
-          (core.result.Result.t
-            integration_flipper.Flipper.t
-            integration_flipper.FlipperError.t) :=
-      if α0 then
-        let* α0 : integration_flipper.Flipper.t :=
-          M.call (integration_flipper.Flipper.t::["new"] true) in
-        M.alloc (core.result.Result.Ok α0)
-      else
-        M.alloc
-          (core.result.Result.Err integration_flipper.FlipperError.Build) in
-    M.read α1.
+    ltac:(M.monadic (
+      let succeed := M.alloc (| succeed |) in
+      M.read (|
+        if M.read (| use succeed |) then
+          M.alloc (|
+            core.result.Result.Ok
+              (M.call (|(integration_flipper.Flipper.t::["new"] true) |))
+          |)
+        else
+          M.alloc (|
+            core.result.Result.Err integration_flipper.FlipperError.Build
+          |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_try_new :
     Notations.DoubleColon Self "try_new" := {
@@ -119,15 +124,21 @@ Section Impl_integration_flipper_Flipper_t.
       }
   *)
   Definition flip (self : mut_ref Self) : M unit :=
-    let* self := M.alloc self in
-    let* _ : M.Val unit :=
-      let* α0 : mut_ref integration_flipper.Flipper.t := M.read self in
-      let* α1 : mut_ref integration_flipper.Flipper.t := M.read self in
-      let* α2 : bool.t :=
-        M.read (integration_flipper.Flipper.Get_value (deref α1)) in
-      assign (integration_flipper.Flipper.Get_value (deref α0)) (UnOp.not α2) in
-    let* α0 : M.Val unit := M.alloc tt in
-    M.read α0.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      M.read (|
+        let _ : M.Val unit :=
+          assign (|
+            integration_flipper.Flipper.Get_value (deref (M.read (| self |))),
+            UnOp.not
+              (M.read (|
+                integration_flipper.Flipper.Get_value
+                  (deref (M.read (| self |)))
+              |))
+          |) in
+        M.alloc (| tt |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_flip :
     Notations.DoubleColon Self "flip" := {
@@ -140,9 +151,12 @@ Section Impl_integration_flipper_Flipper_t.
       }
   *)
   Definition get (self : ref Self) : M bool.t :=
-    let* self := M.alloc self in
-    let* α0 : ref integration_flipper.Flipper.t := M.read self in
-    M.read (integration_flipper.Flipper.Get_value (deref α0)).
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      M.read (|
+        integration_flipper.Flipper.Get_value (deref (M.read (| self |)))
+      |)
+    )).
   
   Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
     Notations.double_colon := get;
@@ -157,14 +171,18 @@ Section Impl_integration_flipper_Flipper_t.
   Definition err_flip
       (self : mut_ref Self)
       : M (core.result.Result.t unit unit) :=
-    let* self := M.alloc self in
-    let* _ : M.Val unit :=
-      let* α0 : mut_ref integration_flipper.Flipper.t := M.read self in
-      let* α1 : unit := M.call (integration_flipper.Flipper.t::["flip"] α0) in
-      M.alloc α1 in
-    let* α0 : M.Val (core.result.Result.t unit unit) :=
-      M.alloc (core.result.Result.Err tt) in
-    M.read α0.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      M.read (|
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(integration_flipper.Flipper.t::["flip"]
+              (M.read (| self |)))
+            |)
+          |) in
+        M.alloc (| core.result.Result.Err tt |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_err_flip :
     Notations.DoubleColon Self "err_flip" := {

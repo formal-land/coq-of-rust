@@ -11,45 +11,49 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* child : M.Val std.process.Child.t :=
-    let* α0 : ref str.t := M.read (mk_str "sleep") in
-    let* α1 : std.process.Command.t :=
-      M.call (std.process.Command.t::["new"] α0) in
-    let* α2 : M.Val std.process.Command.t := M.alloc α1 in
-    let* α3 : ref str.t := M.read (mk_str "5") in
-    let* α4 : mut_ref std.process.Command.t :=
-      M.call (std.process.Command.t::["arg"] (borrow_mut α2) α3) in
-    let* α5 : core.result.Result.t std.process.Child.t std.io.error.Error.t :=
-      M.call (std.process.Command.t::["spawn"] α4) in
-    let* α6 : std.process.Child.t :=
-      M.call
-        ((core.result.Result.t
-              std.process.Child.t
-              std.io.error.Error.t)::["unwrap"]
-          α5) in
-    M.alloc α6 in
-  let* _result : M.Val std.process.ExitStatus.t :=
-    let* α0 :
-        core.result.Result.t std.process.ExitStatus.t std.io.error.Error.t :=
-      M.call (std.process.Child.t::["wait"] (borrow_mut child)) in
-    let* α1 : std.process.ExitStatus.t :=
-      M.call
-        ((core.result.Result.t
-              std.process.ExitStatus.t
-              std.io.error.Error.t)::["unwrap"]
-          α0) in
-    M.alloc α1 in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "reached end of main
-") in
-      let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-      let* α2 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_const"]
-            (pointer_coercion "Unsize" (borrow α1))) in
-      let* α3 : unit := M.call (std.io.stdio._print α2) in
-      M.alloc α3 in
-    M.alloc tt in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+  ltac:(M.monadic (
+    M.read (|
+      let child : M.Val std.process.Child.t :=
+        M.alloc (|
+          M.call (|((core.result.Result.t
+                std.process.Child.t
+                std.io.error.Error.t)::["unwrap"]
+            (M.call (|(std.process.Command.t::["spawn"]
+              (M.call (|(std.process.Command.t::["arg"]
+                (borrow_mut
+                  (M.alloc (|
+                    M.call (|(std.process.Command.t::["new"]
+                      (M.read (| mk_str "sleep" |)))
+                    |)
+                  |)))
+                (M.read (| mk_str "5" |)))
+              |)))
+            |)))
+          |)
+        |) in
+      let _result : M.Val std.process.ExitStatus.t :=
+        M.alloc (|
+          M.call (|((core.result.Result.t
+                std.process.ExitStatus.t
+                std.io.error.Error.t)::["unwrap"]
+            (M.call (|(std.process.Child.t::["wait"] (borrow_mut child)) |)))
+          |)
+        |) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_const"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (| [ M.read (| mk_str "reached end of main
+" |) ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      M.alloc (| tt |)
+    |)
+  )).

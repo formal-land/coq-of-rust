@@ -27,18 +27,22 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_t_T.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self := M.alloc self in
-    let* f := M.alloc f in
-    let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
-    let* α1 : ref str.t := M.read (mk_str "Ref") in
-    let* α2 : ref (scoping_rules_lifetimes_bounds.Ref.t T) := M.read self in
-    let* α3 : M.Val (ref (ref T)) :=
-      M.alloc (borrow (scoping_rules_lifetimes_bounds.Ref.Get_0 (deref α2))) in
-    M.call
-      (core.fmt.Formatter.t::["debug_tuple_field1_finish"]
-        α0
-        α1
-        (pointer_coercion "Unsize" (borrow α3))).
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let f := M.alloc (| f |) in
+      M.call (|(core.fmt.Formatter.t::["debug_tuple_field1_finish"]
+        (M.read (| f |))
+        (M.read (| mk_str "Ref" |))
+        (pointer_coercion
+          "Unsize"
+          (borrow
+            (M.alloc (|
+              borrow
+                (scoping_rules_lifetimes_bounds.Ref.Get_0
+                  (deref (M.read (| self |))))
+            |)))))
+      |)
+    )).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
@@ -59,26 +63,41 @@ where
 }
 *)
 Definition print {T : Set} (t : T) : M unit :=
-  let* t := M.alloc t in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "`print`: t is ") in
-      let* α1 : ref str.t := M.read (mk_str "
-") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow t)) in
-      let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
-      let* α5 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α4))) in
-      let* α6 : unit := M.call (std.io.stdio._print α5) in
-      M.alloc α6 in
-    M.alloc tt in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+  ltac:(M.monadic (
+    let t := M.alloc (| t |) in
+    M.read (|
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.read (| mk_str "`print`: t is " |);
+                        M.read (| mk_str "
+" |)
+                      ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_debug"]
+                          (borrow t))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      M.alloc (| tt |)
+    |)
+  )).
 
 (*
 fn print_ref<'a, T>(t: &'a T)
@@ -89,26 +108,41 @@ where
 }
 *)
 Definition print_ref {T : Set} (t : ref T) : M unit :=
-  let* t := M.alloc t in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "`print_ref`: t is ") in
-      let* α1 : ref str.t := M.read (mk_str "
-") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow t)) in
-      let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
-      let* α5 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α4))) in
-      let* α6 : unit := M.call (std.io.stdio._print α5) in
-      M.alloc α6 in
-    M.alloc tt in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+  ltac:(M.monadic (
+    let t := M.alloc (| t |) in
+    M.read (|
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.read (| mk_str "`print_ref`: t is " |);
+                        M.read (| mk_str "
+" |)
+                      ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_debug"]
+                          (borrow t))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      M.alloc (| tt |)
+    |)
+  )).
 
 (*
 fn main() {
@@ -121,16 +155,20 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* x : M.Val i32.t := M.alloc ((Integer.of_Z 7) : i32.t) in
-  let* ref_x : M.Val (scoping_rules_lifetimes_bounds.Ref.t i32.t) :=
-    M.alloc (scoping_rules_lifetimes_bounds.Ref.Build_t (borrow x)) in
-  let* _ : M.Val unit :=
-    let* α0 : unit :=
-      M.call (scoping_rules_lifetimes_bounds.print_ref (borrow ref_x)) in
-    M.alloc α0 in
-  let* _ : M.Val unit :=
-    let* α0 : scoping_rules_lifetimes_bounds.Ref.t i32.t := M.read ref_x in
-    let* α1 : unit := M.call (scoping_rules_lifetimes_bounds.print α0) in
-    M.alloc α1 in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+  ltac:(M.monadic (
+    M.read (|
+      let x : M.Val i32.t := M.alloc (| (Integer.of_Z 7) : i32.t |) in
+      let ref_x : M.Val (scoping_rules_lifetimes_bounds.Ref.t i32.t) :=
+        M.alloc (| scoping_rules_lifetimes_bounds.Ref.Build_t (borrow x) |) in
+      let _ : M.Val unit :=
+        M.alloc (|
+          M.call (|(scoping_rules_lifetimes_bounds.print_ref (borrow ref_x)) |)
+        |) in
+      let _ : M.Val unit :=
+        M.alloc (|
+          M.call (|(scoping_rules_lifetimes_bounds.print (M.read (| ref_x |)))
+          |)
+        |) in
+      M.alloc (| tt |)
+    |)
+  )).

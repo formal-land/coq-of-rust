@@ -35,90 +35,113 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* status : M.Val enums_use.Status.t := M.alloc enums_use.Status.Poor in
-  let* work : M.Val enums_use.Work.t := M.alloc enums_use.Work.Civilian in
-  let* _ : M.Val unit :=
-    match_operator
-      status
-      [
-        fun γ =>
-          (let* α0 := M.read γ in
-          match α0 with
-          | enums_use.Status.Rich =>
-            let* _ : M.Val unit :=
-              let* α0 : ref str.t :=
-                M.read (mk_str "The rich have lots of money!
-") in
-              let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-              let* α2 : core.fmt.Arguments.t :=
-                M.call
-                  (core.fmt.Arguments.t::["new_const"]
-                    (pointer_coercion "Unsize" (borrow α1))) in
-              let* α3 : unit := M.call (std.io.stdio._print α2) in
-              M.alloc α3 in
-            M.alloc tt
-          | _ => M.break_match
-          end) :
-          M (M.Val unit);
-        fun γ =>
-          (let* α0 := M.read γ in
-          match α0 with
-          | enums_use.Status.Poor =>
-            let* _ : M.Val unit :=
-              let* α0 : ref str.t :=
-                M.read (mk_str "The poor have no money...
-") in
-              let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-              let* α2 : core.fmt.Arguments.t :=
-                M.call
-                  (core.fmt.Arguments.t::["new_const"]
-                    (pointer_coercion "Unsize" (borrow α1))) in
-              let* α3 : unit := M.call (std.io.stdio._print α2) in
-              M.alloc α3 in
-            M.alloc tt
-          | _ => M.break_match
-          end) :
-          M (M.Val unit)
-      ] in
-  let* α0 : M.Val unit :=
-    match_operator
-      work
-      [
-        fun γ =>
-          (let* α0 := M.read γ in
-          match α0 with
-          | enums_use.Work.Civilian =>
-            let* _ : M.Val unit :=
-              let* α0 : ref str.t := M.read (mk_str "Civilians work!
-") in
-              let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-              let* α2 : core.fmt.Arguments.t :=
-                M.call
-                  (core.fmt.Arguments.t::["new_const"]
-                    (pointer_coercion "Unsize" (borrow α1))) in
-              let* α3 : unit := M.call (std.io.stdio._print α2) in
-              M.alloc α3 in
-            M.alloc tt
-          | _ => M.break_match
-          end) :
-          M (M.Val unit);
-        fun γ =>
-          (let* α0 := M.read γ in
-          match α0 with
-          | enums_use.Work.Soldier =>
-            let* _ : M.Val unit :=
-              let* α0 : ref str.t := M.read (mk_str "Soldiers fight!
-") in
-              let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-              let* α2 : core.fmt.Arguments.t :=
-                M.call
-                  (core.fmt.Arguments.t::["new_const"]
-                    (pointer_coercion "Unsize" (borrow α1))) in
-              let* α3 : unit := M.call (std.io.stdio._print α2) in
-              M.alloc α3 in
-            M.alloc tt
-          | _ => M.break_match
-          end) :
-          M (M.Val unit)
-      ] in
-  M.read α0.
+  ltac:(M.monadic (
+    M.read (|
+      let status : M.Val enums_use.Status.t :=
+        M.alloc (| enums_use.Status.Poor |) in
+      let work : M.Val enums_use.Work.t :=
+        M.alloc (| enums_use.Work.Civilian |) in
+      let _ : M.Val unit :=
+        ltac:
+          (M.monadic_match_operator
+            status
+            [
+              fun (γ : M.Val enums_use.Status.t) =>
+                match M.read (| γ |) with
+                | enums_use.Status.Rich =>
+                  let _ : M.Val unit :=
+                    M.alloc (|
+                      M.call (|(std.io.stdio._print
+                        (M.call (|(core.fmt.Arguments.t::["new_const"]
+                          (pointer_coercion
+                            "Unsize"
+                            (borrow
+                              (M.alloc (|
+                                [
+                                  M.read (|
+                                    mk_str "The rich have lots of money!
+"
+                                  |)
+                                ]
+                              |)))))
+                        |)))
+                      |)
+                    |) in
+                  M.alloc (| tt |)
+                | _ => M.break_match(||)
+                end :
+                M.Val unit;
+              fun (γ : M.Val enums_use.Status.t) =>
+                match M.read (| γ |) with
+                | enums_use.Status.Poor =>
+                  let _ : M.Val unit :=
+                    M.alloc (|
+                      M.call (|(std.io.stdio._print
+                        (M.call (|(core.fmt.Arguments.t::["new_const"]
+                          (pointer_coercion
+                            "Unsize"
+                            (borrow
+                              (M.alloc (|
+                                [
+                                  M.read (| mk_str "The poor have no money...
+"
+                                  |)
+                                ]
+                              |)))))
+                        |)))
+                      |)
+                    |) in
+                  M.alloc (| tt |)
+                | _ => M.break_match(||)
+                end :
+                M.Val unit
+            ]) in
+      ltac:
+        (M.monadic_match_operator
+          work
+          [
+            fun (γ : M.Val enums_use.Work.t) =>
+              match M.read (| γ |) with
+              | enums_use.Work.Civilian =>
+                let _ : M.Val unit :=
+                  M.alloc (|
+                    M.call (|(std.io.stdio._print
+                      (M.call (|(core.fmt.Arguments.t::["new_const"]
+                        (pointer_coercion
+                          "Unsize"
+                          (borrow
+                            (M.alloc (|
+                              [ M.read (| mk_str "Civilians work!
+" |) ]
+                            |)))))
+                      |)))
+                    |)
+                  |) in
+                M.alloc (| tt |)
+              | _ => M.break_match(||)
+              end :
+              M.Val unit;
+            fun (γ : M.Val enums_use.Work.t) =>
+              match M.read (| γ |) with
+              | enums_use.Work.Soldier =>
+                let _ : M.Val unit :=
+                  M.alloc (|
+                    M.call (|(std.io.stdio._print
+                      (M.call (|(core.fmt.Arguments.t::["new_const"]
+                        (pointer_coercion
+                          "Unsize"
+                          (borrow
+                            (M.alloc (|
+                              [ M.read (| mk_str "Soldiers fight!
+" |) ]
+                            |)))))
+                      |)))
+                    |)
+                  |) in
+                M.alloc (| tt |)
+              | _ => M.break_match(||)
+              end :
+              M.Val unit
+          ])
+    |)
+  )).

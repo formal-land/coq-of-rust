@@ -13,7 +13,7 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit := M.pure tt.
+Definition main : M unit := ltac:(M.monadic ( tt )).
 
 (*
     fn apply<F>(f: F)
@@ -24,16 +24,20 @@ Definition main : M unit := M.pure tt.
     }
 *)
 Definition apply {F : Set} (f : F) : M unit :=
-  let* f := M.alloc f in
-  let* _ : M.Val unit :=
-    let* α0 : F -> unit -> M _ :=
-      ltac:(M.get_method (fun ℐ =>
-        core.ops.function.FnOnce.call_once
-          (Self := F)
-          (Args := unit)
-          (Trait := ℐ))) in
-    let* α1 : F := M.read f in
-    let* α2 : unit := M.call (α0 α1 tt) in
-    M.alloc α2 in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+  ltac:(M.monadic (
+    let f := M.alloc (| f |) in
+    M.read (|
+      let _ : M.Val unit :=
+        M.alloc (|
+          M.call (|(ltac:(M.get_method (fun ℐ =>
+              core.ops.function.FnOnce.call_once
+                (Self := F)
+                (Args := unit)
+                (Trait := ℐ)))
+            (M.read (| f |))
+            tt)
+          |)
+        |) in
+      M.alloc (| tt |)
+    |)
+  )).

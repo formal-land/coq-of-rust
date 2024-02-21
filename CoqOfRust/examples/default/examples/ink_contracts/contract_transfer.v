@@ -20,11 +20,12 @@ Section Impl_core_default_Default_for_contract_transfer_AccountId_t.
   Default
   *)
   Definition default : M contract_transfer.AccountId.t :=
-    let* α0 : M u128.t :=
-      ltac:(M.get_method (fun ℐ =>
-        core.default.Default.default (Self := u128.t) (Trait := ℐ))) in
-    let* α1 : u128.t := M.call α0 in
-    M.pure (contract_transfer.AccountId.Build_t α1).
+    ltac:(M.monadic (
+      contract_transfer.AccountId.Build_t
+        (M.call (|ltac:(M.get_method (fun ℐ =>
+          core.default.Default.default (Self := u128.t) (Trait := ℐ)))
+        |))
+    )).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -45,18 +46,20 @@ Section Impl_core_clone_Clone_for_contract_transfer_AccountId_t.
   Clone
   *)
   Definition clone (self : ref Self) : M contract_transfer.AccountId.t :=
-    let* self := M.alloc self in
-    let* α0 : M.Val contract_transfer.AccountId.t :=
-      match_operator
-        (DeclaredButUndefinedVariable
-          (A := core.clone.AssertParamIsClone.t u128.t))
-        [
-          fun γ =>
-            (let* α0 : ref contract_transfer.AccountId.t := M.read self in
-            M.pure (deref α0)) :
-            M (M.Val contract_transfer.AccountId.t)
-        ] in
-    M.read α0.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      M.read (|
+        ltac:
+          (M.monadic_match_operator
+            (DeclaredButUndefinedVariable
+              (A := core.clone.AssertParamIsClone.t u128.t))
+            [
+              fun γ =>
+                (deref (M.read (| self |))) :
+                M.Val contract_transfer.AccountId.t
+            ])
+      |)
+    )).
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {
@@ -102,9 +105,10 @@ Section Impl_contract_transfer_Env_t.
       }
   *)
   Definition caller (self : ref Self) : M contract_transfer.AccountId.t :=
-    let* self := M.alloc self in
-    let* α0 : ref contract_transfer.Env.t := M.read self in
-    M.read (contract_transfer.Env.Get_caller (deref α0)).
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      M.read (| contract_transfer.Env.Get_caller (deref (M.read (| self |))) |)
+    )).
   
   Global Instance AssociatedFunction_caller :
     Notations.DoubleColon Self "caller" := {
@@ -117,10 +121,13 @@ Section Impl_contract_transfer_Env_t.
       }
   *)
   Definition balance (self : ref Self) : M ltac:(contract_transfer.Balance) :=
-    let* self := M.alloc self in
-    let* α0 : ref str.t := M.read (mk_str "not implemented") in
-    let* α1 : never.t := M.call (core.panicking.panic α0) in
-    never_to_any α1.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      never_to_any (|
+        M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
+        |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_balance :
     Notations.DoubleColon Self "balance" := {
@@ -137,12 +144,15 @@ Section Impl_contract_transfer_Env_t.
       (_to : contract_transfer.AccountId.t)
       (_value : ltac:(contract_transfer.Balance))
       : M (core.result.Result.t unit unit) :=
-    let* self := M.alloc self in
-    let* _to := M.alloc _to in
-    let* _value := M.alloc _value in
-    let* α0 : ref str.t := M.read (mk_str "not implemented") in
-    let* α1 : never.t := M.call (core.panicking.panic α0) in
-    never_to_any α1.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let _to := M.alloc (| _to |) in
+      let _value := M.alloc (| _value |) in
+      never_to_any (|
+        M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
+        |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_transfer :
     Notations.DoubleColon Self "transfer" := {
@@ -157,10 +167,13 @@ Section Impl_contract_transfer_Env_t.
   Definition transferred_value
       (self : ref Self)
       : M ltac:(contract_transfer.Balance) :=
-    let* self := M.alloc self in
-    let* α0 : ref str.t := M.read (mk_str "not implemented") in
-    let* α1 : never.t := M.call (core.panicking.panic α0) in
-    never_to_any α1.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      never_to_any (|
+        M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
+        |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_transferred_value :
     Notations.DoubleColon Self "transferred_value" := {
@@ -185,9 +198,12 @@ Section Impl_contract_transfer_GiveMe_t.
       }
   *)
   Definition init_env : M contract_transfer.Env.t :=
-    let* α0 : ref str.t := M.read (mk_str "not implemented") in
-    let* α1 : never.t := M.call (core.panicking.panic α0) in
-    never_to_any α1.
+    ltac:(M.monadic (
+      never_to_any (|
+        M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
+        |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_init_env :
     Notations.DoubleColon Self "init_env" := {
@@ -200,8 +216,10 @@ Section Impl_contract_transfer_GiveMe_t.
       }
   *)
   Definition env (self : ref Self) : M contract_transfer.Env.t :=
-    let* self := M.alloc self in
-    M.call contract_transfer.GiveMe.t::["init_env"].
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      M.call (|contract_transfer.GiveMe.t::["init_env"] |)
+    )).
   
   Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
     Notations.double_colon := env;
@@ -212,7 +230,9 @@ Section Impl_contract_transfer_GiveMe_t.
           Self {}
       }
   *)
-  Definition new : M Self := M.pure contract_transfer.GiveMe.Build.
+  Definition new : M Self :=
+    ltac:(M.monadic ( contract_transfer.GiveMe.Build
+    )).
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
@@ -238,96 +258,149 @@ Section Impl_contract_transfer_GiveMe_t.
       (self : mut_ref Self)
       (value : ltac:(contract_transfer.Balance))
       : M unit :=
-    let* self := M.alloc self in
-    let* value := M.alloc value in
-    let* _ : M.Val unit :=
-      let* _ : M.Val unit :=
-        let* α0 : ref str.t := M.read (mk_str "requested value: ") in
-        let* α1 : ref str.t := M.read (mk_str "
-") in
-        let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-        let* α3 : core.fmt.rt.Argument.t :=
-          M.call (core.fmt.rt.Argument.t::["new_display"] (borrow value)) in
-        let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
-        let* α5 : core.fmt.Arguments.t :=
-          M.call
-            (core.fmt.Arguments.t::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α4))) in
-        let* α6 : unit := M.call (std.io.stdio._print α5) in
-        M.alloc α6 in
-      M.alloc tt in
-    let* _ : M.Val unit :=
-      let* _ : M.Val unit :=
-        let* α0 : ref str.t := M.read (mk_str "contract balance: ") in
-        let* α1 : ref str.t := M.read (mk_str "
-") in
-        let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-        let* α3 : mut_ref contract_transfer.GiveMe.t := M.read self in
-        let* α4 : contract_transfer.Env.t :=
-          M.call (contract_transfer.GiveMe.t::["env"] (borrow (deref α3))) in
-        let* α5 : M.Val contract_transfer.Env.t := M.alloc α4 in
-        let* α6 : u128.t :=
-          M.call (contract_transfer.Env.t::["balance"] (borrow α5)) in
-        let* α7 : M.Val u128.t := M.alloc α6 in
-        let* α8 : core.fmt.rt.Argument.t :=
-          M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α7)) in
-        let* α9 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α8 ] in
-        let* α10 : core.fmt.Arguments.t :=
-          M.call
-            (core.fmt.Arguments.t::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α9))) in
-        let* α11 : unit := M.call (std.io.stdio._print α10) in
-        M.alloc α11 in
-      M.alloc tt in
-    let* _ : M.Val unit :=
-      let* α0 : u128.t := M.read value in
-      let* α1 : mut_ref contract_transfer.GiveMe.t := M.read self in
-      let* α2 : contract_transfer.Env.t :=
-        M.call (contract_transfer.GiveMe.t::["env"] (borrow (deref α1))) in
-      let* α3 : M.Val contract_transfer.Env.t := M.alloc α2 in
-      let* α4 : u128.t :=
-        M.call (contract_transfer.Env.t::["balance"] (borrow α3)) in
-      let* α5 : M.Val bool.t := M.alloc (UnOp.not (BinOp.Pure.le α0 α4)) in
-      let* α6 : bool.t := M.read (use α5) in
-      if α6 then
-        let* α0 : ref str.t := M.read (mk_str "insufficient funds!") in
-        let* α1 : never.t := M.call (std.panicking.begin_panic α0) in
-        let* α2 : unit := never_to_any α1 in
-        M.alloc α2
-      else
-        M.alloc tt in
-    let* α0 : mut_ref contract_transfer.GiveMe.t := M.read self in
-    let* α1 : contract_transfer.Env.t :=
-      M.call (contract_transfer.GiveMe.t::["env"] (borrow (deref α0))) in
-    let* α2 : M.Val contract_transfer.Env.t := M.alloc α1 in
-    let* α3 : mut_ref contract_transfer.GiveMe.t := M.read self in
-    let* α4 : contract_transfer.Env.t :=
-      M.call (contract_transfer.GiveMe.t::["env"] (borrow (deref α3))) in
-    let* α5 : M.Val contract_transfer.Env.t := M.alloc α4 in
-    let* α6 : contract_transfer.AccountId.t :=
-      M.call (contract_transfer.Env.t::["caller"] (borrow α5)) in
-    let* α7 : u128.t := M.read value in
-    let* α8 : core.result.Result.t unit unit :=
-      M.call (contract_transfer.Env.t::["transfer"] (borrow_mut α2) α6 α7) in
-    let* α9 : M.Val (core.result.Result.t unit unit) := M.alloc α8 in
-    let* α10 : bool.t :=
-      M.call ((core.result.Result.t unit unit)::["is_err"] (borrow α9)) in
-    let* α11 : M.Val bool.t := M.alloc α10 in
-    let* α12 : bool.t := M.read (use α11) in
-    let* α0 : M.Val unit :=
-      if α12 then
-        let* α0 : ref str.t :=
-          M.read
-            (mk_str
-              "requested transfer failed. this can be the case if the contract does nothave sufficient free funds or if the transfer would have brought thecontract's balance below minimum balance.") in
-        let* α1 : never.t := M.call (std.panicking.begin_panic α0) in
-        let* α2 : unit := never_to_any α1 in
-        M.alloc α2
-      else
-        M.alloc tt in
-    M.read α0.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let value := M.alloc (| value |) in
+      M.read (|
+        let _ : M.Val unit :=
+          let _ : M.Val unit :=
+            M.alloc (|
+              M.call (|(std.io.stdio._print
+                (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                  (pointer_coercion
+                    "Unsize"
+                    (borrow
+                      (M.alloc (|
+                        [
+                          M.read (| mk_str "requested value: " |);
+                          M.read (| mk_str "
+" |)
+                        ]
+                      |))))
+                  (pointer_coercion
+                    "Unsize"
+                    (borrow
+                      (M.alloc (|
+                        [
+                          M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                            (borrow value))
+                          |)
+                        ]
+                      |)))))
+                |)))
+              |)
+            |) in
+          M.alloc (| tt |) in
+        let _ : M.Val unit :=
+          let _ : M.Val unit :=
+            M.alloc (|
+              M.call (|(std.io.stdio._print
+                (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                  (pointer_coercion
+                    "Unsize"
+                    (borrow
+                      (M.alloc (|
+                        [
+                          M.read (| mk_str "contract balance: " |);
+                          M.read (| mk_str "
+" |)
+                        ]
+                      |))))
+                  (pointer_coercion
+                    "Unsize"
+                    (borrow
+                      (M.alloc (|
+                        [
+                          M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                            (borrow
+                              (M.alloc (|
+                                M.call (|(contract_transfer.Env.t::["balance"]
+                                  (borrow
+                                    (M.alloc (|
+                                      M.call (|(contract_transfer.GiveMe.t::["env"]
+                                        (borrow (deref (M.read (| self |)))))
+                                      |)
+                                    |))))
+                                |)
+                              |))))
+                          |)
+                        ]
+                      |)))))
+                |)))
+              |)
+            |) in
+          M.alloc (| tt |) in
+        let _ : M.Val unit :=
+          if
+            M.read (|
+              use
+                (M.alloc (|
+                  UnOp.not
+                    (BinOp.Pure.le
+                      (M.read (| value |))
+                      (M.call (|(contract_transfer.Env.t::["balance"]
+                        (borrow
+                          (M.alloc (|
+                            M.call (|(contract_transfer.GiveMe.t::["env"]
+                              (borrow (deref (M.read (| self |)))))
+                            |)
+                          |))))
+                      |)))
+                |))
+            |)
+          then
+            M.alloc (|
+              never_to_any (|
+                M.call (|(std.panicking.begin_panic
+                  (M.read (| mk_str "insufficient funds!" |)))
+                |)
+              |)
+            |)
+          else
+            M.alloc (| tt |) in
+        if
+          M.read (|
+            use
+              (M.alloc (|
+                M.call (|((core.result.Result.t unit unit)::["is_err"]
+                  (borrow
+                    (M.alloc (|
+                      M.call (|(contract_transfer.Env.t::["transfer"]
+                        (borrow_mut
+                          (M.alloc (|
+                            M.call (|(contract_transfer.GiveMe.t::["env"]
+                              (borrow (deref (M.read (| self |)))))
+                            |)
+                          |)))
+                        (M.call (|(contract_transfer.Env.t::["caller"]
+                          (borrow
+                            (M.alloc (|
+                              M.call (|(contract_transfer.GiveMe.t::["env"]
+                                (borrow (deref (M.read (| self |)))))
+                              |)
+                            |))))
+                        |))
+                        (M.read (| value |)))
+                      |)
+                    |))))
+                |)
+              |))
+          |)
+        then
+          M.alloc (|
+            never_to_any (|
+              M.call (|(std.panicking.begin_panic
+                (M.read (|
+                  mk_str
+                    "requested transfer failed. this can be the case if the contract does nothave sufficient free funds or if the transfer would have brought thecontract's balance below minimum balance."
+                |)))
+              |)
+            |)
+          |)
+        else
+          M.alloc (| tt |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_give_me :
     Notations.DoubleColon Self "give_me" := {
@@ -341,50 +414,79 @@ Section Impl_contract_transfer_GiveMe_t.
       }
   *)
   Definition was_it_ten (self : ref Self) : M unit :=
-    let* self := M.alloc self in
-    let* _ : M.Val unit :=
-      let* _ : M.Val unit :=
-        let* α0 : ref str.t := M.read (mk_str "received payment: ") in
-        let* α1 : ref str.t := M.read (mk_str "
-") in
-        let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-        let* α3 : ref contract_transfer.GiveMe.t := M.read self in
-        let* α4 : contract_transfer.Env.t :=
-          M.call (contract_transfer.GiveMe.t::["env"] α3) in
-        let* α5 : M.Val contract_transfer.Env.t := M.alloc α4 in
-        let* α6 : u128.t :=
-          M.call (contract_transfer.Env.t::["transferred_value"] (borrow α5)) in
-        let* α7 : M.Val u128.t := M.alloc α6 in
-        let* α8 : core.fmt.rt.Argument.t :=
-          M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α7)) in
-        let* α9 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α8 ] in
-        let* α10 : core.fmt.Arguments.t :=
-          M.call
-            (core.fmt.Arguments.t::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α9))) in
-        let* α11 : unit := M.call (std.io.stdio._print α10) in
-        M.alloc α11 in
-      M.alloc tt in
-    let* _ : M.Val unit :=
-      let* α0 : ref contract_transfer.GiveMe.t := M.read self in
-      let* α1 : contract_transfer.Env.t :=
-        M.call (contract_transfer.GiveMe.t::["env"] α0) in
-      let* α2 : M.Val contract_transfer.Env.t := M.alloc α1 in
-      let* α3 : u128.t :=
-        M.call (contract_transfer.Env.t::["transferred_value"] (borrow α2)) in
-      let* α4 : M.Val bool.t :=
-        M.alloc (UnOp.not (BinOp.Pure.eq α3 ((Integer.of_Z 10) : u128.t))) in
-      let* α5 : bool.t := M.read (use α4) in
-      if α5 then
-        let* α0 : ref str.t := M.read (mk_str "payment was not ten") in
-        let* α1 : never.t := M.call (std.panicking.begin_panic α0) in
-        let* α2 : unit := never_to_any α1 in
-        M.alloc α2
-      else
-        M.alloc tt in
-    let* α0 : M.Val unit := M.alloc tt in
-    M.read α0.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      M.read (|
+        let _ : M.Val unit :=
+          let _ : M.Val unit :=
+            M.alloc (|
+              M.call (|(std.io.stdio._print
+                (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                  (pointer_coercion
+                    "Unsize"
+                    (borrow
+                      (M.alloc (|
+                        [
+                          M.read (| mk_str "received payment: " |);
+                          M.read (| mk_str "
+" |)
+                        ]
+                      |))))
+                  (pointer_coercion
+                    "Unsize"
+                    (borrow
+                      (M.alloc (|
+                        [
+                          M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                            (borrow
+                              (M.alloc (|
+                                M.call (|(contract_transfer.Env.t::["transferred_value"]
+                                  (borrow
+                                    (M.alloc (|
+                                      M.call (|(contract_transfer.GiveMe.t::["env"]
+                                        (M.read (| self |)))
+                                      |)
+                                    |))))
+                                |)
+                              |))))
+                          |)
+                        ]
+                      |)))))
+                |)))
+              |)
+            |) in
+          M.alloc (| tt |) in
+        let _ : M.Val unit :=
+          if
+            M.read (|
+              use
+                (M.alloc (|
+                  UnOp.not
+                    (BinOp.Pure.eq
+                      (M.call (|(contract_transfer.Env.t::["transferred_value"]
+                        (borrow
+                          (M.alloc (|
+                            M.call (|(contract_transfer.GiveMe.t::["env"]
+                              (M.read (| self |)))
+                            |)
+                          |))))
+                      |))
+                      ((Integer.of_Z 10) : u128.t))
+                |))
+            |)
+          then
+            M.alloc (|
+              never_to_any (|
+                M.call (|(std.panicking.begin_panic
+                  (M.read (| mk_str "payment was not ten" |)))
+                |)
+              |)
+            |)
+          else
+            M.alloc (| tt |) in
+        M.alloc (| tt |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_was_it_ten :
     Notations.DoubleColon Self "was_it_ten" := {

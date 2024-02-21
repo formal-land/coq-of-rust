@@ -25,37 +25,32 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* _ : M.Val bool.t :=
-    let* α0 : M.Val i32.t := M.alloc ((Integer.of_Z 1) : i32.t) in
-    match_operator
-      α0
-      [
-        fun γ => (M.alloc false) : M (M.Val bool.t);
-        fun γ => (M.alloc true) : M (M.Val bool.t)
-      ] in
-  let* _ : M.Val i32.t :=
-    let* α0 : M.Val bool.t := M.alloc true in
-    let* α1 : bool.t := M.read (use α0) in
-    if α1 then
-      M.alloc ((Integer.of_Z 0) : i32.t)
-    else
-      M.alloc ((Integer.of_Z 1) : i32.t) in
-  let* _ : M.Val i32.t :=
-    let* α0 : M.Val bool.t := M.alloc false in
-    let* α1 : bool.t := M.read (use α0) in
-    if α1 then
-      M.alloc ((Integer.of_Z 2) : i32.t)
-    else
-      let* α0 : M.Val bool.t := M.alloc false in
-      let* α1 : bool.t := M.read (use α0) in
-      if α1 then
-        M.alloc ((Integer.of_Z 3) : i32.t)
-      else
-        let* α0 : M.Val bool.t := M.alloc false in
-        let* α1 : bool.t := M.read (use α0) in
-        if α1 then
-          M.alloc ((Integer.of_Z 4) : i32.t)
+  ltac:(M.monadic (
+    M.read (|
+      let _ : M.Val bool.t :=
+        ltac:
+          (M.monadic_match_operator
+            (M.alloc (| (Integer.of_Z 1) : i32.t |))
+            [
+              fun (γ : M.Val i32.t) => (M.alloc (| false |)) : M.Val bool.t;
+              fun (γ : M.Val i32.t) => (M.alloc (| true |)) : M.Val bool.t
+            ]) in
+      let _ : M.Val i32.t :=
+        if M.read (| use (M.alloc (| true |)) |) then
+          M.alloc (| (Integer.of_Z 0) : i32.t |)
         else
-          M.alloc ((Integer.of_Z 5) : i32.t) in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+          M.alloc (| (Integer.of_Z 1) : i32.t |) in
+      let _ : M.Val i32.t :=
+        if M.read (| use (M.alloc (| false |)) |) then
+          M.alloc (| (Integer.of_Z 2) : i32.t |)
+        else
+          if M.read (| use (M.alloc (| false |)) |) then
+            M.alloc (| (Integer.of_Z 3) : i32.t |)
+          else
+            if M.read (| use (M.alloc (| false |)) |) then
+              M.alloc (| (Integer.of_Z 4) : i32.t |)
+            else
+              M.alloc (| (Integer.of_Z 5) : i32.t |) in
+      M.alloc (| tt |)
+    |)
+  )).

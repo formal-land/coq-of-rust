@@ -18,129 +18,104 @@ Definition read_lines
         ltac:(std.io.error.Result
           (std.io.Lines.t
             (std.io.buffered.bufreader.BufReader.t std.fs.File.t))) :=
-  let* filename := M.alloc filename in
-  let return_ :=
-    M.return_
-      (R :=
-        ltac:(std.io.error.Result
-          (std.io.Lines.t
-            (std.io.buffered.bufreader.BufReader.t std.fs.File.t)))) in
-  M.catch_return
-    (let* file : M.Val std.fs.File.t :=
-      let* α0 :
-          (core.result.Result.t std.fs.File.t std.io.error.Error.t) ->
-            M (core.ops.control_flow.ControlFlow.t _ _) :=
-        ltac:(M.get_method (fun ℐ =>
-          core.ops.try_trait.Try.branch
-            (Self := core.result.Result.t std.fs.File.t std.io.error.Error.t)
-            (Trait := ℐ))) in
-      let* α1 : P := M.read filename in
-      let* α2 : core.result.Result.t std.fs.File.t std.io.error.Error.t :=
-        M.call (std.fs.File.t::["open"] α1) in
-      let* α3 :
-          core.ops.control_flow.ControlFlow.t
-            (core.result.Result.t
-              core.convert.Infallible.t
-              std.io.error.Error.t)
-            std.fs.File.t :=
-        M.call (α0 α2) in
-      let* α4 :
-          M.Val
-            (core.ops.control_flow.ControlFlow.t
-              (core.result.Result.t
-                core.convert.Infallible.t
-                std.io.error.Error.t)
-              std.fs.File.t) :=
-        M.alloc α3 in
-      let* α5 : M.Val std.fs.File.t :=
-        match_operator
-          α4
-          [
-            fun γ =>
-              (let* α0 := M.read γ in
-              match α0 with
-              | core.ops.control_flow.ControlFlow.Break _ =>
-                let γ0_0 := core.ops.control_flow.ControlFlow.Get_Break_0 γ in
-                let* residual := M.copy γ0_0 in
-                let* α0 :
-                    (core.result.Result.t
-                        core.convert.Infallible.t
-                        std.io.error.Error.t)
-                      ->
-                      M
-                        (core.result.Result.t
-                          (std.io.Lines.t
-                            (std.io.buffered.bufreader.BufReader.t
-                              std.fs.File.t))
-                          std.io.error.Error.t) :=
-                  ltac:(M.get_method (fun ℐ =>
-                    core.ops.try_trait.FromResidual.from_residual
-                      (Self :=
-                        core.result.Result.t
-                          (std.io.Lines.t
-                            (std.io.buffered.bufreader.BufReader.t
-                              std.fs.File.t))
-                          std.io.error.Error.t)
-                      (R :=
-                        core.result.Result.t
-                          core.convert.Infallible.t
-                          std.io.error.Error.t)
-                      (Trait := ℐ))) in
-                let* α1 :
-                    core.result.Result.t
-                      core.convert.Infallible.t
-                      std.io.error.Error.t :=
-                  M.read residual in
-                let* α2 :
-                    core.result.Result.t
-                      (std.io.Lines.t
-                        (std.io.buffered.bufreader.BufReader.t std.fs.File.t))
-                      std.io.error.Error.t :=
-                  M.call (α0 α1) in
-                let* α3 : M.Val never.t := return_ α2 in
-                let* α4 := M.read α3 in
-                let* α5 : std.fs.File.t := never_to_any α4 in
-                M.alloc α5
-              | _ => M.break_match
-              end) :
-              M (M.Val std.fs.File.t);
-            fun γ =>
-              (let* α0 := M.read γ in
-              match α0 with
-              | core.ops.control_flow.ControlFlow.Continue _ =>
-                let γ0_0 :=
-                  core.ops.control_flow.ControlFlow.Get_Continue_0 γ in
-                let* val := M.copy γ0_0 in
-                M.pure val
-              | _ => M.break_match
-              end) :
-              M (M.Val std.fs.File.t)
-          ] in
-      M.copy α5 in
-    let* α0 :
-        (std.io.buffered.bufreader.BufReader.t std.fs.File.t) ->
-          M
+  ltac:(M.monadic (
+    let filename := M.alloc (| filename |) in
+    let return_ :=
+      M.return_
+        (R :=
+          ltac:(std.io.error.Result
             (std.io.Lines.t
-              (std.io.buffered.bufreader.BufReader.t std.fs.File.t)) :=
-      ltac:(M.get_method (fun ℐ =>
-        std.io.BufRead.lines
-          (Self := std.io.buffered.bufreader.BufReader.t std.fs.File.t)
-          (Trait := ℐ))) in
-    let* α1 : std.fs.File.t := M.read file in
-    let* α2 : std.io.buffered.bufreader.BufReader.t std.fs.File.t :=
-      M.call
-        ((std.io.buffered.bufreader.BufReader.t std.fs.File.t)::["new"] α1) in
-    let* α3 :
-        std.io.Lines.t (std.io.buffered.bufreader.BufReader.t std.fs.File.t) :=
-      M.call (α0 α2) in
-    let* α0 :
-        M.Val
-          (core.result.Result.t
-            (std.io.Lines.t
-              (std.io.buffered.bufreader.BufReader.t std.fs.File.t))
-            std.io.error.Error.t) :=
-      M.alloc (core.result.Result.Ok α3) in
-    M.read α0).
+              (std.io.buffered.bufreader.BufReader.t std.fs.File.t)))) in
+    M.catch_return
+      (M.read (|
+        let file : M.Val std.fs.File.t :=
+          M.copy (|
+            ltac:
+              (M.monadic_match_operator
+                (M.alloc (|
+                  M.call (|(ltac:(M.get_method (fun ℐ =>
+                      core.ops.try_trait.Try.branch
+                        (Self :=
+                          core.result.Result.t
+                            std.fs.File.t
+                            std.io.error.Error.t)
+                        (Trait := ℐ)))
+                    (M.call (|(std.fs.File.t::["open"] (M.read (| filename |)))
+                    |)))
+                  |)
+                |))
+                [
+                  fun
+                      (γ :
+                        M.Val
+                          (core.ops.control_flow.ControlFlow.t
+                            (core.result.Result.t
+                              core.convert.Infallible.t
+                              std.io.error.Error.t)
+                            std.fs.File.t)) =>
+                    match M.read (| γ |) with
+                    | core.ops.control_flow.ControlFlow.Break _ =>
+                      let γ0_0 :=
+                        core.ops.control_flow.ControlFlow.Get_Break_0 γ in
+                      let residual := M.copy (| γ0_0 |) in
+                      M.alloc (|
+                        never_to_any (|
+                          M.read (|
+                            return_
+                              (M.call (|(ltac:(M.get_method (fun ℐ =>
+                                  core.ops.try_trait.FromResidual.from_residual
+                                    (Self :=
+                                      core.result.Result.t
+                                        (std.io.Lines.t
+                                          (std.io.buffered.bufreader.BufReader.t
+                                            std.fs.File.t))
+                                        std.io.error.Error.t)
+                                    (R :=
+                                      core.result.Result.t
+                                        core.convert.Infallible.t
+                                        std.io.error.Error.t)
+                                    (Trait := ℐ)))
+                                (M.read (| residual |)))
+                              |))
+                          |)
+                        |)
+                      |)
+                    | _ => M.break_match(||)
+                    end :
+                    M.Val std.fs.File.t;
+                  fun
+                      (γ :
+                        M.Val
+                          (core.ops.control_flow.ControlFlow.t
+                            (core.result.Result.t
+                              core.convert.Infallible.t
+                              std.io.error.Error.t)
+                            std.fs.File.t)) =>
+                    match M.read (| γ |) with
+                    | core.ops.control_flow.ControlFlow.Continue _ =>
+                      let γ0_0 :=
+                        core.ops.control_flow.ControlFlow.Get_Continue_0 γ in
+                      let val := M.copy (| γ0_0 |) in
+                      val
+                    | _ => M.break_match(||)
+                    end :
+                    M.Val std.fs.File.t
+                ])
+          |) in
+        M.alloc (|
+          core.result.Result.Ok
+            (M.call (|(ltac:(M.get_method (fun ℐ =>
+                std.io.BufRead.lines
+                  (Self := std.io.buffered.bufreader.BufReader.t std.fs.File.t)
+                  (Trait := ℐ)))
+              (M.call (|((std.io.buffered.bufreader.BufReader.t
+                    std.fs.File.t)::["new"]
+                (M.read (| file |)))
+              |)))
+            |))
+        |)
+      |))
+  )).
 
 (*
 fn main() {
@@ -157,166 +132,173 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* α0 : ref str.t := M.read (mk_str "./hosts") in
-  let* α1 :
-      core.result.Result.t
-        (std.io.Lines.t (std.io.buffered.bufreader.BufReader.t std.fs.File.t))
-        std.io.error.Error.t :=
-    M.call (file_io_read_lines_efficient_method.read_lines α0) in
-  let* α2 :
-      M.Val
-        (core.result.Result.t
-          (std.io.Lines.t (std.io.buffered.bufreader.BufReader.t std.fs.File.t))
-          std.io.error.Error.t) :=
-    M.alloc α1 in
-  let* α3 : M.Val unit :=
-    match_operator
-      α2
-      [
-        fun γ =>
-          (let* α0 := M.read γ in
-          match α0 with
-          | core.result.Result.Ok _ =>
-            let γ0_0 := core.result.Result.Get_Ok_0 γ in
-            let* lines := M.copy γ0_0 in
-            let* α0 :
-                (std.io.Lines.t
-                    (std.io.buffered.bufreader.BufReader.t std.fs.File.t))
-                  ->
-                  M _ :=
-              ltac:(M.get_method (fun ℐ =>
-                core.iter.traits.collect.IntoIterator.into_iter
-                  (Self :=
-                    std.io.Lines.t
-                      (std.io.buffered.bufreader.BufReader.t std.fs.File.t))
-                  (Trait := ℐ))) in
-            let* α1 :
-                std.io.Lines.t
-                  (std.io.buffered.bufreader.BufReader.t std.fs.File.t) :=
-              M.read lines in
-            let* α2 :
-                std.io.Lines.t
-                  (std.io.buffered.bufreader.BufReader.t std.fs.File.t) :=
-              M.call (α0 α1) in
-            let* α3 :
-                M.Val
-                  (std.io.Lines.t
-                    (std.io.buffered.bufreader.BufReader.t std.fs.File.t)) :=
-              M.alloc α2 in
-            let* α4 : M.Val unit :=
-              match_operator
-                α3
-                [
-                  fun γ =>
-                    (let* iter := M.copy γ in
-                    M.loop
-                      (let* _ : M.Val unit :=
-                        let* α0 :
-                            (mut_ref
-                                (std.io.Lines.t
-                                  (std.io.buffered.bufreader.BufReader.t
-                                    std.fs.File.t)))
-                              ->
-                              M (core.option.Option.t _) :=
-                          ltac:(M.get_method (fun ℐ =>
-                            core.iter.traits.iterator.Iterator.next
+  ltac:(M.monadic (
+    M.read (|
+      ltac:
+        (M.monadic_match_operator
+          (M.alloc (|
+            M.call (|(file_io_read_lines_efficient_method.read_lines
+              (M.read (| mk_str "./hosts" |)))
+            |)
+          |))
+          [
+            fun
+                (γ :
+                  M.Val
+                    (core.result.Result.t
+                      (std.io.Lines.t
+                        (std.io.buffered.bufreader.BufReader.t std.fs.File.t))
+                      std.io.error.Error.t)) =>
+              match M.read (| γ |) with
+              | core.result.Result.Ok _ =>
+                let γ0_0 := core.result.Result.Get_Ok_0 γ in
+                let lines := M.copy (| γ0_0 |) in
+                use
+                  (ltac:
+                    (M.monadic_match_operator
+                      (M.alloc (|
+                        M.call (|(ltac:(M.get_method (fun ℐ =>
+                            core.iter.traits.collect.IntoIterator.into_iter
                               (Self :=
                                 std.io.Lines.t
                                   (std.io.buffered.bufreader.BufReader.t
                                     std.fs.File.t))
-                              (Trait := ℐ))) in
-                        let* α1 :
-                            core.option.Option.t
-                              (core.result.Result.t
-                                alloc.string.String.t
-                                std.io.error.Error.t) :=
-                          M.call (α0 (borrow_mut iter)) in
-                        let* α2 :
-                            M.Val
-                              (core.option.Option.t
-                                (core.result.Result.t
-                                  alloc.string.String.t
-                                  std.io.error.Error.t)) :=
-                          M.alloc α1 in
-                        match_operator
-                          α2
-                          [
-                            fun γ =>
-                              (let* α0 := M.read γ in
-                              match α0 with
-                              | core.option.Option.None =>
-                                let* α0 : M.Val never.t := M.break in
-                                let* α1 := M.read α0 in
-                                let* α2 : unit := never_to_any α1 in
-                                M.alloc α2
-                              | _ => M.break_match
-                              end) :
-                              M (M.Val unit);
-                            fun γ =>
-                              (let* α0 := M.read γ in
-                              match α0 with
-                              | core.option.Option.Some _ =>
-                                let γ0_0 := core.option.Option.Get_Some_0 γ in
-                                let* line := M.copy γ0_0 in
-                                match_operator
-                                  line
+                              (Trait := ℐ)))
+                          (M.read (| lines |)))
+                        |)
+                      |))
+                      [
+                        fun
+                            (γ :
+                              M.Val
+                                (std.io.Lines.t
+                                  (std.io.buffered.bufreader.BufReader.t
+                                    std.fs.File.t))) =>
+                          (let iter := M.copy (| γ |) in
+                          M.loop
+                            (let _ : M.Val unit :=
+                              ltac:
+                                (M.monadic_match_operator
+                                  (M.alloc (|
+                                    M.call (|(ltac:(M.get_method (fun ℐ =>
+                                        core.iter.traits.iterator.Iterator.next
+                                          (Self :=
+                                            std.io.Lines.t
+                                              (std.io.buffered.bufreader.BufReader.t
+                                                std.fs.File.t))
+                                          (Trait := ℐ)))
+                                      (borrow_mut iter))
+                                    |)
+                                  |))
                                   [
-                                    fun γ =>
-                                      (let* α0 := M.read γ in
-                                      match α0 with
-                                      | core.result.Result.Ok _ =>
+                                    fun
+                                        (γ :
+                                          M.Val
+                                            (core.option.Option.t
+                                              (core.result.Result.t
+                                                alloc.string.String.t
+                                                std.io.error.Error.t))) =>
+                                      match M.read (| γ |) with
+                                      | core.option.Option.None =>
+                                        M.alloc (|
+                                          never_to_any (| M.read (| M.break |)
+                                          |)
+                                        |)
+                                      | _ => M.break_match(||)
+                                      end :
+                                      M.Val unit;
+                                    fun
+                                        (γ :
+                                          M.Val
+                                            (core.option.Option.t
+                                              (core.result.Result.t
+                                                alloc.string.String.t
+                                                std.io.error.Error.t))) =>
+                                      match M.read (| γ |) with
+                                      | core.option.Option.Some _ =>
                                         let γ0_0 :=
-                                          core.result.Result.Get_Ok_0 γ in
-                                        let* ip := M.copy γ0_0 in
-                                        let* _ : M.Val unit :=
-                                          let* _ : M.Val unit :=
-                                            let* α0 : ref str.t :=
-                                              M.read (mk_str "") in
-                                            let* α1 : ref str.t :=
-                                              M.read (mk_str "
-") in
-                                            let* α2 :
-                                                M.Val (array (ref str.t)) :=
-                                              M.alloc [ α0; α1 ] in
-                                            let* α3 : core.fmt.rt.Argument.t :=
-                                              M.call
-                                                (core.fmt.rt.Argument.t::["new_display"]
-                                                  (borrow ip)) in
-                                            let* α4 :
-                                                M.Val
-                                                  (array
-                                                    core.fmt.rt.Argument.t) :=
-                                              M.alloc [ α3 ] in
-                                            let* α5 : core.fmt.Arguments.t :=
-                                              M.call
-                                                (core.fmt.Arguments.t::["new_v1"]
-                                                  (pointer_coercion
-                                                    "Unsize"
-                                                    (borrow α2))
-                                                  (pointer_coercion
-                                                    "Unsize"
-                                                    (borrow α4))) in
-                                            let* α6 : unit :=
-                                              M.call (std.io.stdio._print α5) in
-                                            M.alloc α6 in
-                                          M.alloc tt in
-                                        M.alloc tt
-                                      | _ => M.break_match
-                                      end) :
-                                      M (M.Val unit);
-                                    fun γ => (M.alloc tt) : M (M.Val unit)
-                                  ]
-                              | _ => M.break_match
-                              end) :
-                              M (M.Val unit)
-                          ] in
-                      M.alloc tt)) :
-                    M (M.Val unit)
-                ] in
-            M.pure (use α4)
-          | _ => M.break_match
-          end) :
-          M (M.Val unit);
-        fun γ => (M.alloc tt) : M (M.Val unit)
-      ] in
-  M.read α3.
+                                          core.option.Option.Get_Some_0 γ in
+                                        let line := M.copy (| γ0_0 |) in
+                                        ltac:
+                                          (M.monadic_match_operator
+                                            line
+                                            [
+                                              fun
+                                                  (γ :
+                                                    M.Val
+                                                      (core.result.Result.t
+                                                        alloc.string.String.t
+                                                        std.io.error.Error.t)) =>
+                                                match M.read (| γ |) with
+                                                | core.result.Result.Ok _ =>
+                                                  let γ0_0 :=
+                                                    core.result.Result.Get_Ok_0
+                                                      γ in
+                                                  let ip := M.copy (| γ0_0 |) in
+                                                  let _ : M.Val unit :=
+                                                    let _ : M.Val unit :=
+                                                      M.alloc (|
+                                                        M.call (|(std.io.stdio._print
+                                                          (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                                                            (pointer_coercion
+                                                              "Unsize"
+                                                              (borrow
+                                                                (M.alloc (|
+                                                                  [
+                                                                    M.read (|
+                                                                      mk_str ""
+                                                                    |);
+                                                                    M.read (|
+                                                                      mk_str "
+"
+                                                                    |)
+                                                                  ]
+                                                                |))))
+                                                            (pointer_coercion
+                                                              "Unsize"
+                                                              (borrow
+                                                                (M.alloc (|
+                                                                  [
+                                                                    M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                                                                      (borrow
+                                                                        ip))
+                                                                    |)
+                                                                  ]
+                                                                |)))))
+                                                          |)))
+                                                        |)
+                                                      |) in
+                                                    M.alloc (| tt |) in
+                                                  M.alloc (| tt |)
+                                                | _ => M.break_match(||)
+                                                end :
+                                                M.Val unit;
+                                              fun
+                                                  (γ :
+                                                    M.Val
+                                                      (core.result.Result.t
+                                                        alloc.string.String.t
+                                                        std.io.error.Error.t)) =>
+                                                (M.alloc (| tt |)) : M.Val unit
+                                            ])
+                                      | _ => M.break_match(||)
+                                      end :
+                                      M.Val unit
+                                  ]) in
+                            M.alloc (| tt |))) :
+                          M.Val unit
+                      ]))
+              | _ => M.break_match(||)
+              end :
+              M.Val unit;
+            fun
+                (γ :
+                  M.Val
+                    (core.result.Result.t
+                      (std.io.Lines.t
+                        (std.io.buffered.bufreader.BufReader.t std.fs.File.t))
+                      std.io.error.Error.t)) =>
+              (M.alloc (| tt |)) : M.Val unit
+          ])
+    |)
+  )).

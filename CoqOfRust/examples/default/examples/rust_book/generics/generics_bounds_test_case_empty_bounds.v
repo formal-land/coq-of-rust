@@ -62,8 +62,10 @@ fn red<T: Red>(_: &T) -> &'static str {
 }
 *)
 Definition red {T : Set} (arg : ref T) : M (ref str.t) :=
-  let* arg := M.alloc arg in
-  M.read (mk_str "red").
+  ltac:(M.monadic (
+    let arg := M.alloc (| arg |) in
+    M.read (| mk_str "red" |)
+  )).
 
 (*
 fn blue<T: Blue>(_: &T) -> &'static str {
@@ -71,8 +73,10 @@ fn blue<T: Blue>(_: &T) -> &'static str {
 }
 *)
 Definition blue {T : Set} (arg : ref T) : M (ref str.t) :=
-  let* arg := M.alloc arg in
-  M.read (mk_str "blue").
+  ltac:(M.monadic (
+    let arg := M.alloc (| arg |) in
+    M.read (| mk_str "blue" |)
+  )).
 
 (*
 fn main() {
@@ -90,52 +94,82 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* cardinal : M.Val generics_bounds_test_case_empty_bounds.Cardinal.t :=
-    M.alloc generics_bounds_test_case_empty_bounds.Cardinal.Build in
-  let* blue_jay : M.Val generics_bounds_test_case_empty_bounds.BlueJay.t :=
-    M.alloc generics_bounds_test_case_empty_bounds.BlueJay.Build in
-  let* _turkey : M.Val generics_bounds_test_case_empty_bounds.Turkey.t :=
-    M.alloc generics_bounds_test_case_empty_bounds.Turkey.Build in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "A cardinal is ") in
-      let* α1 : ref str.t := M.read (mk_str "
-") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : ref str.t :=
-        M.call (generics_bounds_test_case_empty_bounds.red (borrow cardinal)) in
-      let* α4 : M.Val (ref str.t) := M.alloc α3 in
-      let* α5 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α4)) in
-      let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
-      let* α7 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α6))) in
-      let* α8 : unit := M.call (std.io.stdio._print α7) in
-      M.alloc α8 in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "A blue jay is ") in
-      let* α1 : ref str.t := M.read (mk_str "
-") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : ref str.t :=
-        M.call
-          (generics_bounds_test_case_empty_bounds.blue (borrow blue_jay)) in
-      let* α4 : M.Val (ref str.t) := M.alloc α3 in
-      let* α5 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α4)) in
-      let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
-      let* α7 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α6))) in
-      let* α8 : unit := M.call (std.io.stdio._print α7) in
-      M.alloc α8 in
-    M.alloc tt in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+  ltac:(M.monadic (
+    M.read (|
+      let cardinal : M.Val generics_bounds_test_case_empty_bounds.Cardinal.t :=
+        M.alloc (| generics_bounds_test_case_empty_bounds.Cardinal.Build |) in
+      let blue_jay : M.Val generics_bounds_test_case_empty_bounds.BlueJay.t :=
+        M.alloc (| generics_bounds_test_case_empty_bounds.BlueJay.Build |) in
+      let _turkey : M.Val generics_bounds_test_case_empty_bounds.Turkey.t :=
+        M.alloc (| generics_bounds_test_case_empty_bounds.Turkey.Build |) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.read (| mk_str "A cardinal is " |);
+                        M.read (| mk_str "
+" |)
+                      ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                          (borrow
+                            (M.alloc (|
+                              M.call (|(generics_bounds_test_case_empty_bounds.red
+                                (borrow cardinal))
+                              |)
+                            |))))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.read (| mk_str "A blue jay is " |);
+                        M.read (| mk_str "
+" |)
+                      ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                          (borrow
+                            (M.alloc (|
+                              M.call (|(generics_bounds_test_case_empty_bounds.blue
+                                (borrow blue_jay))
+                              |)
+                            |))))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      M.alloc (| tt |)
+    |)
+  )).

@@ -19,52 +19,44 @@ Section Impl_core_fmt_Debug_for_combinators_and_then_Food_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self := M.alloc self in
-    let* f := M.alloc f in
-    let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
-    let* α1 : M.Val (ref str.t) :=
-      match_operator
-        self
-        [
-          fun γ =>
-            (let* γ :=
-              let* α0 := M.read γ in
-              M.pure (deref α0) in
-            let* α0 := M.read γ in
-            match α0 with
-            | combinators_and_then.Food.CordonBleu =>
-              let* α0 : ref str.t := M.read (mk_str "CordonBleu") in
-              M.alloc α0
-            | _ => M.break_match
-            end) :
-            M (M.Val (ref str.t));
-          fun γ =>
-            (let* γ :=
-              let* α0 := M.read γ in
-              M.pure (deref α0) in
-            let* α0 := M.read γ in
-            match α0 with
-            | combinators_and_then.Food.Steak =>
-              let* α0 : ref str.t := M.read (mk_str "Steak") in
-              M.alloc α0
-            | _ => M.break_match
-            end) :
-            M (M.Val (ref str.t));
-          fun γ =>
-            (let* γ :=
-              let* α0 := M.read γ in
-              M.pure (deref α0) in
-            let* α0 := M.read γ in
-            match α0 with
-            | combinators_and_then.Food.Sushi =>
-              let* α0 : ref str.t := M.read (mk_str "Sushi") in
-              M.alloc α0
-            | _ => M.break_match
-            end) :
-            M (M.Val (ref str.t))
-        ] in
-    let* α2 : ref str.t := M.read α1 in
-    M.call (core.fmt.Formatter.t::["write_str"] α0 α2).
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let f := M.alloc (| f |) in
+      M.call (|(core.fmt.Formatter.t::["write_str"]
+        (M.read (| f |))
+        (M.read (|
+          ltac:
+            (M.monadic_match_operator
+              self
+              [
+                fun (γ : M.Val (ref combinators_and_then.Food.t)) =>
+                  (let γ := deref (M.read (| γ |)) in
+                  match M.read (| γ |) with
+                  | combinators_and_then.Food.CordonBleu =>
+                    M.alloc (| M.read (| mk_str "CordonBleu" |) |)
+                  | _ => M.break_match(||)
+                  end) :
+                  M.Val (ref str.t);
+                fun (γ : M.Val (ref combinators_and_then.Food.t)) =>
+                  (let γ := deref (M.read (| γ |)) in
+                  match M.read (| γ |) with
+                  | combinators_and_then.Food.Steak =>
+                    M.alloc (| M.read (| mk_str "Steak" |) |)
+                  | _ => M.break_match(||)
+                  end) :
+                  M.Val (ref str.t);
+                fun (γ : M.Val (ref combinators_and_then.Food.t)) =>
+                  (let γ := deref (M.read (| γ |)) in
+                  match M.read (| γ |) with
+                  | combinators_and_then.Food.Sushi =>
+                    M.alloc (| M.read (| mk_str "Sushi" |) |)
+                  | _ => M.break_match(||)
+                  end) :
+                  M.Val (ref str.t)
+              ])
+        |)))
+      |)
+    )).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
@@ -94,52 +86,44 @@ Section Impl_core_fmt_Debug_for_combinators_and_then_Day_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self := M.alloc self in
-    let* f := M.alloc f in
-    let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
-    let* α1 : M.Val (ref str.t) :=
-      match_operator
-        self
-        [
-          fun γ =>
-            (let* γ :=
-              let* α0 := M.read γ in
-              M.pure (deref α0) in
-            let* α0 := M.read γ in
-            match α0 with
-            | combinators_and_then.Day.Monday =>
-              let* α0 : ref str.t := M.read (mk_str "Monday") in
-              M.alloc α0
-            | _ => M.break_match
-            end) :
-            M (M.Val (ref str.t));
-          fun γ =>
-            (let* γ :=
-              let* α0 := M.read γ in
-              M.pure (deref α0) in
-            let* α0 := M.read γ in
-            match α0 with
-            | combinators_and_then.Day.Tuesday =>
-              let* α0 : ref str.t := M.read (mk_str "Tuesday") in
-              M.alloc α0
-            | _ => M.break_match
-            end) :
-            M (M.Val (ref str.t));
-          fun γ =>
-            (let* γ :=
-              let* α0 := M.read γ in
-              M.pure (deref α0) in
-            let* α0 := M.read γ in
-            match α0 with
-            | combinators_and_then.Day.Wednesday =>
-              let* α0 : ref str.t := M.read (mk_str "Wednesday") in
-              M.alloc α0
-            | _ => M.break_match
-            end) :
-            M (M.Val (ref str.t))
-        ] in
-    let* α2 : ref str.t := M.read α1 in
-    M.call (core.fmt.Formatter.t::["write_str"] α0 α2).
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let f := M.alloc (| f |) in
+      M.call (|(core.fmt.Formatter.t::["write_str"]
+        (M.read (| f |))
+        (M.read (|
+          ltac:
+            (M.monadic_match_operator
+              self
+              [
+                fun (γ : M.Val (ref combinators_and_then.Day.t)) =>
+                  (let γ := deref (M.read (| γ |)) in
+                  match M.read (| γ |) with
+                  | combinators_and_then.Day.Monday =>
+                    M.alloc (| M.read (| mk_str "Monday" |) |)
+                  | _ => M.break_match(||)
+                  end) :
+                  M.Val (ref str.t);
+                fun (γ : M.Val (ref combinators_and_then.Day.t)) =>
+                  (let γ := deref (M.read (| γ |)) in
+                  match M.read (| γ |) with
+                  | combinators_and_then.Day.Tuesday =>
+                    M.alloc (| M.read (| mk_str "Tuesday" |) |)
+                  | _ => M.break_match(||)
+                  end) :
+                  M.Val (ref str.t);
+                fun (γ : M.Val (ref combinators_and_then.Day.t)) =>
+                  (let γ := deref (M.read (| γ |)) in
+                  match M.read (| γ |) with
+                  | combinators_and_then.Day.Wednesday =>
+                    M.alloc (| M.read (| mk_str "Wednesday" |) |)
+                  | _ => M.break_match(||)
+                  end) :
+                  M.Val (ref str.t)
+              ])
+        |)))
+      |)
+    )).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
@@ -162,24 +146,26 @@ fn have_ingredients(food: Food) -> Option<Food> {
 Definition have_ingredients
     (food : combinators_and_then.Food.t)
     : M (core.option.Option.t combinators_and_then.Food.t) :=
-  let* food := M.alloc food in
-  let* α0 : M.Val (core.option.Option.t combinators_and_then.Food.t) :=
-    match_operator
-      food
-      [
-        fun γ =>
-          (let* α0 := M.read γ in
-          match α0 with
-          | combinators_and_then.Food.Sushi => M.alloc core.option.Option.None
-          | _ => M.break_match
-          end) :
-          M (M.Val (core.option.Option.t combinators_and_then.Food.t));
-        fun γ =>
-          (let* α0 : combinators_and_then.Food.t := M.read food in
-          M.alloc (core.option.Option.Some α0)) :
-          M (M.Val (core.option.Option.t combinators_and_then.Food.t))
-      ] in
-  M.read α0.
+  ltac:(M.monadic (
+    let food := M.alloc (| food |) in
+    M.read (|
+      ltac:
+        (M.monadic_match_operator
+          food
+          [
+            fun (γ : M.Val combinators_and_then.Food.t) =>
+              match M.read (| γ |) with
+              | combinators_and_then.Food.Sushi =>
+                M.alloc (| core.option.Option.None |)
+              | _ => M.break_match(||)
+              end :
+              M.Val (core.option.Option.t combinators_and_then.Food.t);
+            fun (γ : M.Val combinators_and_then.Food.t) =>
+              (M.alloc (| core.option.Option.Some (M.read (| food |)) |)) :
+              M.Val (core.option.Option.t combinators_and_then.Food.t)
+          ])
+    |)
+  )).
 
 (*
 fn have_recipe(food: Food) -> Option<Food> {
@@ -192,25 +178,26 @@ fn have_recipe(food: Food) -> Option<Food> {
 Definition have_recipe
     (food : combinators_and_then.Food.t)
     : M (core.option.Option.t combinators_and_then.Food.t) :=
-  let* food := M.alloc food in
-  let* α0 : M.Val (core.option.Option.t combinators_and_then.Food.t) :=
-    match_operator
-      food
-      [
-        fun γ =>
-          (let* α0 := M.read γ in
-          match α0 with
-          | combinators_and_then.Food.CordonBleu =>
-            M.alloc core.option.Option.None
-          | _ => M.break_match
-          end) :
-          M (M.Val (core.option.Option.t combinators_and_then.Food.t));
-        fun γ =>
-          (let* α0 : combinators_and_then.Food.t := M.read food in
-          M.alloc (core.option.Option.Some α0)) :
-          M (M.Val (core.option.Option.t combinators_and_then.Food.t))
-      ] in
-  M.read α0.
+  ltac:(M.monadic (
+    let food := M.alloc (| food |) in
+    M.read (|
+      ltac:
+        (M.monadic_match_operator
+          food
+          [
+            fun (γ : M.Val combinators_and_then.Food.t) =>
+              match M.read (| γ |) with
+              | combinators_and_then.Food.CordonBleu =>
+                M.alloc (| core.option.Option.None |)
+              | _ => M.break_match(||)
+              end :
+              M.Val (core.option.Option.t combinators_and_then.Food.t);
+            fun (γ : M.Val combinators_and_then.Food.t) =>
+              (M.alloc (| core.option.Option.Some (M.read (| food |)) |)) :
+              M.Val (core.option.Option.t combinators_and_then.Food.t)
+          ])
+    |)
+  )).
 
 (*
 fn cookable_v1(food: Food) -> Option<Food> {
@@ -226,62 +213,71 @@ fn cookable_v1(food: Food) -> Option<Food> {
 Definition cookable_v1
     (food : combinators_and_then.Food.t)
     : M (core.option.Option.t combinators_and_then.Food.t) :=
-  let* food := M.alloc food in
-  let* α0 : combinators_and_then.Food.t := M.read food in
-  let* α1 : core.option.Option.t combinators_and_then.Food.t :=
-    M.call (combinators_and_then.have_recipe α0) in
-  let* α2 : M.Val (core.option.Option.t combinators_and_then.Food.t) :=
-    M.alloc α1 in
-  let* α3 : M.Val (core.option.Option.t combinators_and_then.Food.t) :=
-    match_operator
-      α2
-      [
-        fun γ =>
-          (let* α0 := M.read γ in
-          match α0 with
-          | core.option.Option.None => M.alloc core.option.Option.None
-          | _ => M.break_match
-          end) :
-          M (M.Val (core.option.Option.t combinators_and_then.Food.t));
-        fun γ =>
-          (let* α0 := M.read γ in
-          match α0 with
-          | core.option.Option.Some _ =>
-            let γ0_0 := core.option.Option.Get_Some_0 γ in
-            let* food := M.copy γ0_0 in
-            let* α0 : combinators_and_then.Food.t := M.read food in
-            let* α1 : core.option.Option.t combinators_and_then.Food.t :=
-              M.call (combinators_and_then.have_ingredients α0) in
-            let* α2 :
-                M.Val (core.option.Option.t combinators_and_then.Food.t) :=
-              M.alloc α1 in
-            match_operator
-              α2
-              [
-                fun γ =>
-                  (let* α0 := M.read γ in
-                  match α0 with
-                  | core.option.Option.None => M.alloc core.option.Option.None
-                  | _ => M.break_match
-                  end) :
-                  M (M.Val (core.option.Option.t combinators_and_then.Food.t));
-                fun γ =>
-                  (let* α0 := M.read γ in
-                  match α0 with
-                  | core.option.Option.Some _ =>
-                    let γ0_0 := core.option.Option.Get_Some_0 γ in
-                    let* food := M.copy γ0_0 in
-                    let* α0 : combinators_and_then.Food.t := M.read food in
-                    M.alloc (core.option.Option.Some α0)
-                  | _ => M.break_match
-                  end) :
-                  M (M.Val (core.option.Option.t combinators_and_then.Food.t))
-              ]
-          | _ => M.break_match
-          end) :
-          M (M.Val (core.option.Option.t combinators_and_then.Food.t))
-      ] in
-  M.read α3.
+  ltac:(M.monadic (
+    let food := M.alloc (| food |) in
+    M.read (|
+      ltac:
+        (M.monadic_match_operator
+          (M.alloc (|
+            M.call (|(combinators_and_then.have_recipe (M.read (| food |))) |)
+          |))
+          [
+            fun
+                (γ :
+                  M.Val (core.option.Option.t combinators_and_then.Food.t)) =>
+              match M.read (| γ |) with
+              | core.option.Option.None => M.alloc (| core.option.Option.None |)
+              | _ => M.break_match(||)
+              end :
+              M.Val (core.option.Option.t combinators_and_then.Food.t);
+            fun
+                (γ :
+                  M.Val (core.option.Option.t combinators_and_then.Food.t)) =>
+              match M.read (| γ |) with
+              | core.option.Option.Some _ =>
+                let γ0_0 := core.option.Option.Get_Some_0 γ in
+                let food := M.copy (| γ0_0 |) in
+                ltac:
+                  (M.monadic_match_operator
+                    (M.alloc (|
+                      M.call (|(combinators_and_then.have_ingredients
+                        (M.read (| food |)))
+                      |)
+                    |))
+                    [
+                      fun
+                          (γ :
+                            M.Val
+                              (core.option.Option.t
+                                combinators_and_then.Food.t)) =>
+                        match M.read (| γ |) with
+                        | core.option.Option.None =>
+                          M.alloc (| core.option.Option.None |)
+                        | _ => M.break_match(||)
+                        end :
+                        M.Val
+                          (core.option.Option.t combinators_and_then.Food.t);
+                      fun
+                          (γ :
+                            M.Val
+                              (core.option.Option.t
+                                combinators_and_then.Food.t)) =>
+                        match M.read (| γ |) with
+                        | core.option.Option.Some _ =>
+                          let γ0_0 := core.option.Option.Get_Some_0 γ in
+                          let food := M.copy (| γ0_0 |) in
+                          M.alloc (| core.option.Option.Some (M.read (| food |))
+                          |)
+                        | _ => M.break_match(||)
+                        end :
+                        M.Val (core.option.Option.t combinators_and_then.Food.t)
+                    ])
+              | _ => M.break_match(||)
+              end :
+              M.Val (core.option.Option.t combinators_and_then.Food.t)
+          ])
+    |)
+  )).
 
 (*
 fn cookable_v2(food: Food) -> Option<Food> {
@@ -291,14 +287,13 @@ fn cookable_v2(food: Food) -> Option<Food> {
 Definition cookable_v2
     (food : combinators_and_then.Food.t)
     : M (core.option.Option.t combinators_and_then.Food.t) :=
-  let* food := M.alloc food in
-  let* α0 : combinators_and_then.Food.t := M.read food in
-  let* α1 : core.option.Option.t combinators_and_then.Food.t :=
-    M.call (combinators_and_then.have_recipe α0) in
-  M.call
-    ((core.option.Option.t combinators_and_then.Food.t)::["and_then"]
-      α1
-      combinators_and_then.have_ingredients).
+  ltac:(M.monadic (
+    let food := M.alloc (| food |) in
+    M.call (|((core.option.Option.t combinators_and_then.Food.t)::["and_then"]
+      (M.call (|(combinators_and_then.have_recipe (M.read (| food |))) |))
+      combinators_and_then.have_ingredients)
+    |)
+  )).
 
 (*
 fn eat(food: Food, day: Day) {
@@ -312,73 +307,99 @@ Definition eat
     (food : combinators_and_then.Food.t)
     (day : combinators_and_then.Day.t)
     : M unit :=
-  let* food := M.alloc food in
-  let* day := M.alloc day in
-  let* α0 : combinators_and_then.Food.t := M.read food in
-  let* α1 : core.option.Option.t combinators_and_then.Food.t :=
-    M.call (combinators_and_then.cookable_v2 α0) in
-  let* α2 : M.Val (core.option.Option.t combinators_and_then.Food.t) :=
-    M.alloc α1 in
-  let* α3 : M.Val unit :=
-    match_operator
-      α2
-      [
-        fun γ =>
-          (let* α0 := M.read γ in
-          match α0 with
-          | core.option.Option.Some _ =>
-            let γ0_0 := core.option.Option.Get_Some_0 γ in
-            let* food := M.copy γ0_0 in
-            let* _ : M.Val unit :=
-              let* α0 : ref str.t := M.read (mk_str "Yay! On ") in
-              let* α1 : ref str.t := M.read (mk_str " we get to eat ") in
-              let* α2 : ref str.t := M.read (mk_str ".
-") in
-              let* α3 : M.Val (array (ref str.t)) := M.alloc [ α0; α1; α2 ] in
-              let* α4 : core.fmt.rt.Argument.t :=
-                M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow day)) in
-              let* α5 : core.fmt.rt.Argument.t :=
-                M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow food)) in
-              let* α6 : M.Val (array core.fmt.rt.Argument.t) :=
-                M.alloc [ α4; α5 ] in
-              let* α7 : core.fmt.Arguments.t :=
-                M.call
-                  (core.fmt.Arguments.t::["new_v1"]
-                    (pointer_coercion "Unsize" (borrow α3))
-                    (pointer_coercion "Unsize" (borrow α6))) in
-              let* α8 : unit := M.call (std.io.stdio._print α7) in
-              M.alloc α8 in
-            M.alloc tt
-          | _ => M.break_match
-          end) :
-          M (M.Val unit);
-        fun γ =>
-          (let* α0 := M.read γ in
-          match α0 with
-          | core.option.Option.None =>
-            let* _ : M.Val unit :=
-              let* α0 : ref str.t :=
-                M.read (mk_str "Oh no. We don't get to eat on ") in
-              let* α1 : ref str.t := M.read (mk_str "?
-") in
-              let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-              let* α3 : core.fmt.rt.Argument.t :=
-                M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow day)) in
-              let* α4 : M.Val (array core.fmt.rt.Argument.t) :=
-                M.alloc [ α3 ] in
-              let* α5 : core.fmt.Arguments.t :=
-                M.call
-                  (core.fmt.Arguments.t::["new_v1"]
-                    (pointer_coercion "Unsize" (borrow α2))
-                    (pointer_coercion "Unsize" (borrow α4))) in
-              let* α6 : unit := M.call (std.io.stdio._print α5) in
-              M.alloc α6 in
-            M.alloc tt
-          | _ => M.break_match
-          end) :
-          M (M.Val unit)
-      ] in
-  M.read α3.
+  ltac:(M.monadic (
+    let food := M.alloc (| food |) in
+    let day := M.alloc (| day |) in
+    M.read (|
+      ltac:
+        (M.monadic_match_operator
+          (M.alloc (|
+            M.call (|(combinators_and_then.cookable_v2 (M.read (| food |))) |)
+          |))
+          [
+            fun
+                (γ :
+                  M.Val (core.option.Option.t combinators_and_then.Food.t)) =>
+              match M.read (| γ |) with
+              | core.option.Option.Some _ =>
+                let γ0_0 := core.option.Option.Get_Some_0 γ in
+                let food := M.copy (| γ0_0 |) in
+                let _ : M.Val unit :=
+                  M.alloc (|
+                    M.call (|(std.io.stdio._print
+                      (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                        (pointer_coercion
+                          "Unsize"
+                          (borrow
+                            (M.alloc (|
+                              [
+                                M.read (| mk_str "Yay! On " |);
+                                M.read (| mk_str " we get to eat " |);
+                                M.read (| mk_str ".
+" |)
+                              ]
+                            |))))
+                        (pointer_coercion
+                          "Unsize"
+                          (borrow
+                            (M.alloc (|
+                              [
+                                M.call (|(core.fmt.rt.Argument.t::["new_debug"]
+                                  (borrow day))
+                                |);
+                                M.call (|(core.fmt.rt.Argument.t::["new_debug"]
+                                  (borrow food))
+                                |)
+                              ]
+                            |)))))
+                      |)))
+                    |)
+                  |) in
+                M.alloc (| tt |)
+              | _ => M.break_match(||)
+              end :
+              M.Val unit;
+            fun
+                (γ :
+                  M.Val (core.option.Option.t combinators_and_then.Food.t)) =>
+              match M.read (| γ |) with
+              | core.option.Option.None =>
+                let _ : M.Val unit :=
+                  M.alloc (|
+                    M.call (|(std.io.stdio._print
+                      (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                        (pointer_coercion
+                          "Unsize"
+                          (borrow
+                            (M.alloc (|
+                              [
+                                M.read (|
+                                  mk_str "Oh no. We don't get to eat on "
+                                |);
+                                M.read (| mk_str "?
+" |)
+                              ]
+                            |))))
+                        (pointer_coercion
+                          "Unsize"
+                          (borrow
+                            (M.alloc (|
+                              [
+                                M.call (|(core.fmt.rt.Argument.t::["new_debug"]
+                                  (borrow day))
+                                |)
+                              ]
+                            |)))))
+                      |)))
+                    |)
+                  |) in
+                M.alloc (| tt |)
+              | _ => M.break_match(||)
+              end :
+              M.Val unit
+          ])
+    |)
+  )).
 
 (*
 fn main() {
@@ -391,55 +412,54 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* α0 :
-      M.Val
-        ((combinators_and_then.Food.t * combinators_and_then.Food.t)
-        *
-        combinators_and_then.Food.t) :=
-    M.alloc
-      (combinators_and_then.Food.CordonBleu,
-        combinators_and_then.Food.Steak,
-        combinators_and_then.Food.Sushi) in
-  let* α1 : M.Val unit :=
-    match_operator
-      α0
-      [
-        fun γ =>
-          (let* α0 := M.read γ in
-          match α0 with
-          | (_, _, _) =>
-            let γ0_0 := Tuple.Access.left (Tuple.Access.left γ) in
-            let γ0_1 := Tuple.Access.right (Tuple.Access.left γ) in
-            let γ0_2 := Tuple.Access.right γ in
-            let* cordon_bleu := M.copy γ0_0 in
-            let* steak := M.copy γ0_1 in
-            let* sushi := M.copy γ0_2 in
-            let* _ : M.Val unit :=
-              let* α0 : combinators_and_then.Food.t := M.read cordon_bleu in
-              let* α1 : unit :=
-                M.call
-                  (combinators_and_then.eat
-                    α0
-                    combinators_and_then.Day.Monday) in
-              M.alloc α1 in
-            let* _ : M.Val unit :=
-              let* α0 : combinators_and_then.Food.t := M.read steak in
-              let* α1 : unit :=
-                M.call
-                  (combinators_and_then.eat
-                    α0
-                    combinators_and_then.Day.Tuesday) in
-              M.alloc α1 in
-            let* _ : M.Val unit :=
-              let* α0 : combinators_and_then.Food.t := M.read sushi in
-              let* α1 : unit :=
-                M.call
-                  (combinators_and_then.eat
-                    α0
-                    combinators_and_then.Day.Wednesday) in
-              M.alloc α1 in
-            M.alloc tt
-          end) :
-          M (M.Val unit)
-      ] in
-  M.read α1.
+  ltac:(M.monadic (
+    M.read (|
+      ltac:
+        (M.monadic_match_operator
+          (M.alloc (|
+            (combinators_and_then.Food.CordonBleu,
+              combinators_and_then.Food.Steak,
+              combinators_and_then.Food.Sushi)
+          |))
+          [
+            fun
+                (γ :
+                  M.Val
+                    ((combinators_and_then.Food.t * combinators_and_then.Food.t)
+                    *
+                    combinators_and_then.Food.t)) =>
+              match M.read (| γ |) with
+              | (_, _, _) =>
+                let γ0_0 := Tuple.Access.left (Tuple.Access.left γ) in
+                let γ0_1 := Tuple.Access.right (Tuple.Access.left γ) in
+                let γ0_2 := Tuple.Access.right γ in
+                let cordon_bleu := M.copy (| γ0_0 |) in
+                let steak := M.copy (| γ0_1 |) in
+                let sushi := M.copy (| γ0_2 |) in
+                let _ : M.Val unit :=
+                  M.alloc (|
+                    M.call (|(combinators_and_then.eat
+                      (M.read (| cordon_bleu |))
+                      combinators_and_then.Day.Monday)
+                    |)
+                  |) in
+                let _ : M.Val unit :=
+                  M.alloc (|
+                    M.call (|(combinators_and_then.eat
+                      (M.read (| steak |))
+                      combinators_and_then.Day.Tuesday)
+                    |)
+                  |) in
+                let _ : M.Val unit :=
+                  M.alloc (|
+                    M.call (|(combinators_and_then.eat
+                      (M.read (| sushi |))
+                      combinators_and_then.Day.Wednesday)
+                    |)
+                  |) in
+                M.alloc (| tt |)
+              end :
+              M.Val unit
+          ])
+    |)
+  )).

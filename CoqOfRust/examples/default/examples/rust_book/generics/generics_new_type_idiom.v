@@ -33,12 +33,16 @@ Section Impl_generics_new_type_idiom_Years_t.
       }
   *)
   Definition to_days (self : ref Self) : M generics_new_type_idiom.Days.t :=
-    let* self := M.alloc self in
-    let* α0 : ref generics_new_type_idiom.Years.t := M.read self in
-    let* α1 : i64.t :=
-      M.read (generics_new_type_idiom.Years.Get_0 (deref α0)) in
-    let* α2 : i64.t := BinOp.Panic.mul α1 ((Integer.of_Z 365) : i64.t) in
-    M.pure (generics_new_type_idiom.Days.Build_t α2).
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      generics_new_type_idiom.Days.Build_t
+        (BinOp.Panic.mul (|
+          M.read (|
+            generics_new_type_idiom.Years.Get_0 (deref (M.read (| self |)))
+          |),
+          (Integer.of_Z 365) : i64.t
+        |))
+    )).
   
   Global Instance AssociatedFunction_to_days :
     Notations.DoubleColon Self "to_days" := {
@@ -57,11 +61,16 @@ Section Impl_generics_new_type_idiom_Days_t.
       }
   *)
   Definition to_years (self : ref Self) : M generics_new_type_idiom.Years.t :=
-    let* self := M.alloc self in
-    let* α0 : ref generics_new_type_idiom.Days.t := M.read self in
-    let* α1 : i64.t := M.read (generics_new_type_idiom.Days.Get_0 (deref α0)) in
-    let* α2 : i64.t := BinOp.Panic.div α1 ((Integer.of_Z 365) : i64.t) in
-    M.pure (generics_new_type_idiom.Years.Build_t α2).
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      generics_new_type_idiom.Years.Build_t
+        (BinOp.Panic.div (|
+          M.read (|
+            generics_new_type_idiom.Days.Get_0 (deref (M.read (| self |)))
+          |),
+          (Integer.of_Z 365) : i64.t
+        |))
+    )).
   
   Global Instance AssociatedFunction_to_years :
     Notations.DoubleColon Self "to_years" := {
@@ -76,10 +85,13 @@ fn old_enough(age: &Years) -> bool {
 }
 *)
 Definition old_enough (age : ref generics_new_type_idiom.Years.t) : M bool.t :=
-  let* age := M.alloc age in
-  let* α0 : ref generics_new_type_idiom.Years.t := M.read age in
-  let* α1 : i64.t := M.read (generics_new_type_idiom.Years.Get_0 (deref α0)) in
-  M.pure (BinOp.Pure.ge α1 ((Integer.of_Z 18) : i64.t)).
+  ltac:(M.monadic (
+    let age := M.alloc (| age |) in
+    BinOp.Pure.ge
+      (M.read (| generics_new_type_idiom.Years.Get_0 (deref (M.read (| age |)))
+      |))
+      ((Integer.of_Z 18) : i64.t)
+  )).
 
 (*
 fn main() {
@@ -92,56 +104,90 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* age : M.Val generics_new_type_idiom.Years.t :=
-    M.alloc
-      (generics_new_type_idiom.Years.Build_t ((Integer.of_Z 5) : i64.t)) in
-  let* age_days : M.Val generics_new_type_idiom.Days.t :=
-    let* α0 : generics_new_type_idiom.Days.t :=
-      M.call (generics_new_type_idiom.Years.t::["to_days"] (borrow age)) in
-    M.alloc α0 in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "Old enough ") in
-      let* α1 : ref str.t := M.read (mk_str "
-") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : bool.t :=
-        M.call (generics_new_type_idiom.old_enough (borrow age)) in
-      let* α4 : M.Val bool.t := M.alloc α3 in
-      let* α5 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α4)) in
-      let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
-      let* α7 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α6))) in
-      let* α8 : unit := M.call (std.io.stdio._print α7) in
-      M.alloc α8 in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "Old enough ") in
-      let* α1 : ref str.t := M.read (mk_str "
-") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : generics_new_type_idiom.Years.t :=
-        M.call
-          (generics_new_type_idiom.Days.t::["to_years"] (borrow age_days)) in
-      let* α4 : M.Val generics_new_type_idiom.Years.t := M.alloc α3 in
-      let* α5 : bool.t :=
-        M.call (generics_new_type_idiom.old_enough (borrow α4)) in
-      let* α6 : M.Val bool.t := M.alloc α5 in
-      let* α7 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α6)) in
-      let* α8 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α7 ] in
-      let* α9 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α8))) in
-      let* α10 : unit := M.call (std.io.stdio._print α9) in
-      M.alloc α10 in
-    M.alloc tt in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+  ltac:(M.monadic (
+    M.read (|
+      let age : M.Val generics_new_type_idiom.Years.t :=
+        M.alloc (|
+          generics_new_type_idiom.Years.Build_t ((Integer.of_Z 5) : i64.t)
+        |) in
+      let age_days : M.Val generics_new_type_idiom.Days.t :=
+        M.alloc (|
+          M.call (|(generics_new_type_idiom.Years.t::["to_days"] (borrow age))
+          |)
+        |) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.read (| mk_str "Old enough " |);
+                        M.read (| mk_str "
+" |)
+                      ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                          (borrow
+                            (M.alloc (|
+                              M.call (|(generics_new_type_idiom.old_enough
+                                (borrow age))
+                              |)
+                            |))))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.read (| mk_str "Old enough " |);
+                        M.read (| mk_str "
+" |)
+                      ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                          (borrow
+                            (M.alloc (|
+                              M.call (|(generics_new_type_idiom.old_enough
+                                (borrow
+                                  (M.alloc (|
+                                    M.call (|(generics_new_type_idiom.Days.t::["to_years"]
+                                      (borrow age_days))
+                                    |)
+                                  |))))
+                              |)
+                            |))))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      M.alloc (| tt |)
+    |)
+  )).

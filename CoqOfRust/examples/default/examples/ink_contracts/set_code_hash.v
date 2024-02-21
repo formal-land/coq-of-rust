@@ -15,10 +15,12 @@ Definition set_code_hash
     {E : Set}
     (code_hash : ref E)
     : M (core.result.Result.t unit set_code_hash.Error.t) :=
-  let* code_hash := M.alloc code_hash in
-  let* α0 : ref str.t := M.read (mk_str "not implemented") in
-  let* α1 : never.t := M.call (core.panicking.panic α0) in
-  never_to_any α1.
+  ltac:(M.monadic (
+    let code_hash := M.alloc (| code_hash |) in
+    never_to_any (|
+      M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |))) |)
+    |)
+  )).
 
 Module  Incrementer.
 Section Incrementer.
@@ -39,11 +41,14 @@ Section Impl_core_default_Default_for_set_code_hash_Incrementer_t.
   Default
   *)
   Definition default : M set_code_hash.Incrementer.t :=
-    let* α0 : M u32.t :=
-      ltac:(M.get_method (fun ℐ =>
-        core.default.Default.default (Self := u32.t) (Trait := ℐ))) in
-    let* α1 : u32.t := M.call α0 in
-    M.pure {| set_code_hash.Incrementer.count := α1; |}.
+    ltac:(M.monadic (
+      {|
+        set_code_hash.Incrementer.count :=
+          M.call (|ltac:(M.get_method (fun ℐ =>
+            core.default.Default.default (Self := u32.t) (Trait := ℐ)))
+          |);
+      |}
+    )).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -66,12 +71,13 @@ Section Impl_set_code_hash_Incrementer_t.
       }
   *)
   Definition new : M Self :=
-    let* α0 : M set_code_hash.Incrementer.t :=
-      ltac:(M.get_method (fun ℐ =>
+    ltac:(M.monadic (
+      M.call (|ltac:(M.get_method (fun ℐ =>
         core.default.Default.default
           (Self := set_code_hash.Incrementer.t)
-          (Trait := ℐ))) in
-    M.call α0.
+          (Trait := ℐ)))
+      |)
+    )).
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
@@ -87,38 +93,53 @@ Section Impl_set_code_hash_Incrementer_t.
       }
   *)
   Definition inc (self : mut_ref Self) : M unit :=
-    let* self := M.alloc self in
-    let* _ : M.Val unit :=
-      let* β : M.Val u32.t :=
-        let* α0 : mut_ref set_code_hash.Incrementer.t := M.read self in
-        M.pure (set_code_hash.Incrementer.Get_count (deref α0)) in
-      let* α0 := M.read β in
-      let* α1 := BinOp.Panic.add α0 ((Integer.of_Z 1) : u32.t) in
-      assign β α1 in
-    let* _ : M.Val unit :=
-      let* _ : M.Val unit :=
-        let* α0 : ref str.t := M.read (mk_str "The new count is ") in
-        let* α1 : ref str.t :=
-          M.read
-            (mk_str ", it was modified using the original contract code.
-") in
-        let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-        let* α3 : mut_ref set_code_hash.Incrementer.t := M.read self in
-        let* α4 : core.fmt.rt.Argument.t :=
-          M.call
-            (core.fmt.rt.Argument.t::["new_display"]
-              (borrow (set_code_hash.Incrementer.Get_count (deref α3)))) in
-        let* α5 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4 ] in
-        let* α6 : core.fmt.Arguments.t :=
-          M.call
-            (core.fmt.Arguments.t::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α5))) in
-        let* α7 : unit := M.call (std.io.stdio._print α6) in
-        M.alloc α7 in
-      M.alloc tt in
-    let* α0 : M.Val unit := M.alloc tt in
-    M.read α0.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      M.read (|
+        let _ : M.Val unit :=
+          let β : M.Val u32.t :=
+            set_code_hash.Incrementer.Get_count (deref (M.read (| self |))) in
+          assign (|
+            β,
+            BinOp.Panic.add (| M.read (| β |), (Integer.of_Z 1) : u32.t |)
+          |) in
+        let _ : M.Val unit :=
+          let _ : M.Val unit :=
+            M.alloc (|
+              M.call (|(std.io.stdio._print
+                (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                  (pointer_coercion
+                    "Unsize"
+                    (borrow
+                      (M.alloc (|
+                        [
+                          M.read (| mk_str "The new count is " |);
+                          M.read (|
+                            mk_str
+                              ", it was modified using the original contract code.
+"
+                          |)
+                        ]
+                      |))))
+                  (pointer_coercion
+                    "Unsize"
+                    (borrow
+                      (M.alloc (|
+                        [
+                          M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                            (borrow
+                              (set_code_hash.Incrementer.Get_count
+                                (deref (M.read (| self |))))))
+                          |)
+                        ]
+                      |)))))
+                |)))
+              |)
+            |) in
+          M.alloc (| tt |) in
+        M.alloc (| tt |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_inc : Notations.DoubleColon Self "inc" := {
     Notations.double_colon := inc;
@@ -130,9 +151,11 @@ Section Impl_set_code_hash_Incrementer_t.
       }
   *)
   Definition get (self : ref Self) : M u32.t :=
-    let* self := M.alloc self in
-    let* α0 : ref set_code_hash.Incrementer.t := M.read self in
-    M.read (set_code_hash.Incrementer.Get_count (deref α0)).
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      M.read (| set_code_hash.Incrementer.Get_count (deref (M.read (| self |)))
+      |)
+    )).
   
   Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
     Notations.double_colon := get;
@@ -147,52 +170,68 @@ Section Impl_set_code_hash_Incrementer_t.
       }
   *)
   Definition set_code (self : mut_ref Self) (code_hash : array u8.t) : M unit :=
-    let* self := M.alloc self in
-    let* code_hash := M.alloc code_hash in
-    let* _ : M.Val unit :=
-      let* α0 : core.result.Result.t unit set_code_hash.Error.t :=
-        M.call (set_code_hash.set_code_hash (borrow code_hash)) in
-      let* α1 : unit :=
-        M.call
-          ((core.result.Result.t unit set_code_hash.Error.t)::["unwrap_or_else"]
-            α0
-            (fun (α0 : set_code_hash.Error.t) =>
-              (let* α0 := M.alloc α0 in
-              match_operator
-                α0
-                [
-                  fun γ =>
-                    (let* err := M.copy γ in
-                    let* α0 : ref str.t :=
-                      M.read
-                        (mk_str
-                          "Failed to `set_code_hash` to {code_hash:?} due to {err:?}") in
-                    let* α1 : never.t :=
-                      M.call (std.panicking.begin_panic α0) in
-                    never_to_any α1) :
-                    M unit
-                ]) :
-              M unit)) in
-      M.alloc α1 in
-    let* _ : M.Val unit :=
-      let* _ : M.Val unit :=
-        let* α0 : ref str.t := M.read (mk_str "Switched code hash to ") in
-        let* α1 : ref str.t := M.read (mk_str ".
-") in
-        let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-        let* α3 : core.fmt.rt.Argument.t :=
-          M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow code_hash)) in
-        let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
-        let* α5 : core.fmt.Arguments.t :=
-          M.call
-            (core.fmt.Arguments.t::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α4))) in
-        let* α6 : unit := M.call (std.io.stdio._print α5) in
-        M.alloc α6 in
-      M.alloc tt in
-    let* α0 : M.Val unit := M.alloc tt in
-    M.read α0.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let code_hash := M.alloc (| code_hash |) in
+      M.read (|
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|((core.result.Result.t
+                  unit
+                  set_code_hash.Error.t)::["unwrap_or_else"]
+              (M.call (|(set_code_hash.set_code_hash (borrow code_hash)) |))
+              (fun (α0 : set_code_hash.Error.t) =>
+                (ltac:
+                  (M.monadic_match_operator
+                    (M.alloc (| α0 |))
+                    [
+                      fun γ =>
+                        (let err := M.copy (| γ |) in
+                        never_to_any (|
+                          M.call (|(std.panicking.begin_panic
+                            (M.read (|
+                              mk_str
+                                "Failed to `set_code_hash` to {code_hash:?} due to {err:?}"
+                            |)))
+                          |)
+                        |)) :
+                        unit
+                    ])) :
+                unit))
+            |)
+          |) in
+        let _ : M.Val unit :=
+          let _ : M.Val unit :=
+            M.alloc (|
+              M.call (|(std.io.stdio._print
+                (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                  (pointer_coercion
+                    "Unsize"
+                    (borrow
+                      (M.alloc (|
+                        [
+                          M.read (| mk_str "Switched code hash to " |);
+                          M.read (| mk_str ".
+" |)
+                        ]
+                      |))))
+                  (pointer_coercion
+                    "Unsize"
+                    (borrow
+                      (M.alloc (|
+                        [
+                          M.call (|(core.fmt.rt.Argument.t::["new_debug"]
+                            (borrow code_hash))
+                          |)
+                        ]
+                      |)))))
+                |)))
+              |)
+            |) in
+          M.alloc (| tt |) in
+        M.alloc (| tt |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_set_code :
     Notations.DoubleColon Self "set_code" := {

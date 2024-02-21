@@ -20,11 +20,12 @@ Section Impl_core_default_Default_for_custom_environment_AccountId_t.
   Default
   *)
   Definition default : M custom_environment.AccountId.t :=
-    let* α0 : M u128.t :=
-      ltac:(M.get_method (fun ℐ =>
-        core.default.Default.default (Self := u128.t) (Trait := ℐ))) in
-    let* α1 : u128.t := M.call α0 in
-    M.pure (custom_environment.AccountId.Build_t α1).
+    ltac:(M.monadic (
+      custom_environment.AccountId.Build_t
+        (M.call (|ltac:(M.get_method (fun ℐ =>
+          core.default.Default.default (Self := u128.t) (Trait := ℐ)))
+        |))
+    )).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -45,18 +46,20 @@ Section Impl_core_clone_Clone_for_custom_environment_AccountId_t.
   Clone
   *)
   Definition clone (self : ref Self) : M custom_environment.AccountId.t :=
-    let* self := M.alloc self in
-    let* α0 : M.Val custom_environment.AccountId.t :=
-      match_operator
-        (DeclaredButUndefinedVariable
-          (A := core.clone.AssertParamIsClone.t u128.t))
-        [
-          fun γ =>
-            (let* α0 : ref custom_environment.AccountId.t := M.read self in
-            M.pure (deref α0)) :
-            M (M.Val custom_environment.AccountId.t)
-        ] in
-    M.read α0.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      M.read (|
+        ltac:
+          (M.monadic_match_operator
+            (DeclaredButUndefinedVariable
+              (A := core.clone.AssertParamIsClone.t u128.t))
+            [
+              fun γ =>
+                (deref (M.read (| self |))) :
+                M.Val custom_environment.AccountId.t
+            ])
+      |)
+    )).
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {
@@ -106,7 +109,8 @@ Section Impl_core_default_Default_for_custom_environment_Topics_t.
   Default
   *)
   Definition default : M custom_environment.Topics.t :=
-    M.pure custom_environment.Topics.Build.
+    ltac:(M.monadic ( custom_environment.Topics.Build
+    )).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -160,34 +164,30 @@ Section Impl_core_default_Default_for_custom_environment_EventWithTopics_t.
   Default
   *)
   Definition default : M custom_environment.EventWithTopics.t :=
-    let* α0 : M u128.t :=
-      ltac:(M.get_method (fun ℐ =>
-        core.default.Default.default (Self := u128.t) (Trait := ℐ))) in
-    let* α1 : u128.t := M.call α0 in
-    let* α2 : M u128.t :=
-      ltac:(M.get_method (fun ℐ =>
-        core.default.Default.default (Self := u128.t) (Trait := ℐ))) in
-    let* α3 : u128.t := M.call α2 in
-    let* α4 : M u128.t :=
-      ltac:(M.get_method (fun ℐ =>
-        core.default.Default.default (Self := u128.t) (Trait := ℐ))) in
-    let* α5 : u128.t := M.call α4 in
-    let* α6 : M u128.t :=
-      ltac:(M.get_method (fun ℐ =>
-        core.default.Default.default (Self := u128.t) (Trait := ℐ))) in
-    let* α7 : u128.t := M.call α6 in
-    let* α8 : M u128.t :=
-      ltac:(M.get_method (fun ℐ =>
-        core.default.Default.default (Self := u128.t) (Trait := ℐ))) in
-    let* α9 : u128.t := M.call α8 in
-    M.pure
+    ltac:(M.monadic (
       {|
-        custom_environment.EventWithTopics.first_topic := α1;
-        custom_environment.EventWithTopics.second_topic := α3;
-        custom_environment.EventWithTopics.third_topic := α5;
-        custom_environment.EventWithTopics.fourth_topic := α7;
-        custom_environment.EventWithTopics.fifth_topic := α9;
-      |}.
+        custom_environment.EventWithTopics.first_topic :=
+          M.call (|ltac:(M.get_method (fun ℐ =>
+            core.default.Default.default (Self := u128.t) (Trait := ℐ)))
+          |);
+        custom_environment.EventWithTopics.second_topic :=
+          M.call (|ltac:(M.get_method (fun ℐ =>
+            core.default.Default.default (Self := u128.t) (Trait := ℐ)))
+          |);
+        custom_environment.EventWithTopics.third_topic :=
+          M.call (|ltac:(M.get_method (fun ℐ =>
+            core.default.Default.default (Self := u128.t) (Trait := ℐ)))
+          |);
+        custom_environment.EventWithTopics.fourth_topic :=
+          M.call (|ltac:(M.get_method (fun ℐ =>
+            core.default.Default.default (Self := u128.t) (Trait := ℐ)))
+          |);
+        custom_environment.EventWithTopics.fifth_topic :=
+          M.call (|ltac:(M.get_method (fun ℐ =>
+            core.default.Default.default (Self := u128.t) (Trait := ℐ)))
+          |);
+      |}
+    )).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -221,9 +221,10 @@ Section Impl_custom_environment_Env_t.
       }
   *)
   Definition caller (self : ref Self) : M custom_environment.AccountId.t :=
-    let* self := M.alloc self in
-    let* α0 : ref custom_environment.Env.t := M.read self in
-    M.read (custom_environment.Env.Get_caller (deref α0)).
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      M.read (| custom_environment.Env.Get_caller (deref (M.read (| self |))) |)
+    )).
   
   Global Instance AssociatedFunction_caller :
     Notations.DoubleColon Self "caller" := {
@@ -239,11 +240,14 @@ Section Impl_custom_environment_Env_t.
       (self : ref Self)
       (_event : custom_environment.Event.t)
       : M unit :=
-    let* self := M.alloc self in
-    let* _event := M.alloc _event in
-    let* α0 : ref str.t := M.read (mk_str "not implemented") in
-    let* α1 : never.t := M.call (core.panicking.panic α0) in
-    never_to_any α1.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let _event := M.alloc (| _event |) in
+      never_to_any (|
+        M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
+        |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_emit_event :
     Notations.DoubleColon Self "emit_event" := {
@@ -262,9 +266,12 @@ Section Impl_custom_environment_Topics_t.
       }
   *)
   Definition init_env : M custom_environment.Env.t :=
-    let* α0 : ref str.t := M.read (mk_str "not implemented") in
-    let* α1 : never.t := M.call (core.panicking.panic α0) in
-    never_to_any α1.
+    ltac:(M.monadic (
+      never_to_any (|
+        M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
+        |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_init_env :
     Notations.DoubleColon Self "init_env" := {
@@ -277,8 +284,10 @@ Section Impl_custom_environment_Topics_t.
       }
   *)
   Definition env (self : ref Self) : M custom_environment.Env.t :=
-    let* self := M.alloc self in
-    M.call custom_environment.Topics.t::["init_env"].
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      M.call (|custom_environment.Topics.t::["init_env"] |)
+    )).
   
   Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
     Notations.double_colon := env;
@@ -290,12 +299,13 @@ Section Impl_custom_environment_Topics_t.
       }
   *)
   Definition new : M Self :=
-    let* α0 : M custom_environment.Topics.t :=
-      ltac:(M.get_method (fun ℐ =>
+    ltac:(M.monadic (
+      M.call (|ltac:(M.get_method (fun ℐ =>
         core.default.Default.default
           (Self := custom_environment.Topics.t)
-          (Trait := ℐ))) in
-    M.call α0.
+          (Trait := ℐ)))
+      |)
+    )).
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
@@ -308,26 +318,29 @@ Section Impl_custom_environment_Topics_t.
       }
   *)
   Definition trigger (self : mut_ref Self) : M unit :=
-    let* self := M.alloc self in
-    let* _ : M.Val unit :=
-      let* α0 : mut_ref custom_environment.Topics.t := M.read self in
-      let* α1 : custom_environment.Env.t :=
-        M.call (custom_environment.Topics.t::["env"] (borrow (deref α0))) in
-      let* α2 : M.Val custom_environment.Env.t := M.alloc α1 in
-      let* α3 : M custom_environment.EventWithTopics.t :=
-        ltac:(M.get_method (fun ℐ =>
-          core.default.Default.default
-            (Self := custom_environment.EventWithTopics.t)
-            (Trait := ℐ))) in
-      let* α4 : custom_environment.EventWithTopics.t := M.call α3 in
-      let* α5 : unit :=
-        M.call
-          (custom_environment.Env.t::["emit_event"]
-            (borrow α2)
-            (custom_environment.Event.EventWithTopics α4)) in
-      M.alloc α5 in
-    let* α0 : M.Val unit := M.alloc tt in
-    M.read α0.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      M.read (|
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(custom_environment.Env.t::["emit_event"]
+              (borrow
+                (M.alloc (|
+                  M.call (|(custom_environment.Topics.t::["env"]
+                    (borrow (deref (M.read (| self |)))))
+                  |)
+                |)))
+              (custom_environment.Event.EventWithTopics
+                (M.call (|ltac:(M.get_method (fun ℐ =>
+                  core.default.Default.default
+                    (Self := custom_environment.EventWithTopics.t)
+                    (Trait := ℐ)))
+                |))))
+            |)
+          |) in
+        M.alloc (| tt |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_trigger :
     Notations.DoubleColon Self "trigger" := {

@@ -9,15 +9,19 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* _ : M.Val unit :=
-    let* α0 : ref str.t := M.read (mk_str "Hello!
-") in
-    let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-    let* α2 : core.fmt.Arguments.t :=
-      M.call
-        (core.fmt.Arguments.t::["new_const"]
-          (pointer_coercion "Unsize" (borrow α1))) in
-    let* α3 : unit := M.call (std.io.stdio._print α2) in
-    M.alloc α3 in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+  ltac:(M.monadic (
+    M.read (|
+      let _ : M.Val unit :=
+        M.alloc (|
+          M.call (|(std.io.stdio._print
+            (M.call (|(core.fmt.Arguments.t::["new_const"]
+              (pointer_coercion
+                "Unsize"
+                (borrow (M.alloc (| [ M.read (| mk_str "Hello!
+" |) ] |)))))
+            |)))
+          |)
+        |) in
+      M.alloc (| tt |)
+    |)
+  )).

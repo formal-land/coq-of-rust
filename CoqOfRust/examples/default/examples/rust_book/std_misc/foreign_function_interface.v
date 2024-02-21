@@ -11,9 +11,10 @@ fn cos(z: Complex) -> Complex {
 Definition cos
     (z : foreign_function_interface.Complex.t)
     : M foreign_function_interface.Complex.t :=
-  let* z := M.alloc z in
-  let* α0 : foreign_function_interface.Complex.t := M.read z in
-  M.call (foreign_function_interface.ccosf α0).
+  ltac:(M.monadic (
+    let z := M.alloc (| z |) in
+    M.call (|(foreign_function_interface.ccosf (M.read (| z |))) |)
+  )).
 
 (*
 fn main() {
@@ -31,65 +32,95 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* z : M.Val foreign_function_interface.Complex.t :=
-    let* α0 : f32.t := M.read (UnsupportedLiteral : M.Val f32.t) in
-    let* α1 : f32.t := M.read (UnsupportedLiteral : M.Val f32.t) in
-    M.alloc
-      {|
-        foreign_function_interface.Complex.re := α0;
-        foreign_function_interface.Complex.im := α1;
-      |} in
-  let* z_sqrt : M.Val foreign_function_interface.Complex.t :=
-    let* α0 : foreign_function_interface.Complex.t := M.read z in
-    let* α1 : foreign_function_interface.Complex.t :=
-      M.call (foreign_function_interface.csqrtf α0) in
-    M.alloc α1 in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "the square root of ") in
-      let* α1 : ref str.t := M.read (mk_str " is ") in
-      let* α2 : ref str.t := M.read (mk_str "
-") in
-      let* α3 : M.Val (array (ref str.t)) := M.alloc [ α0; α1; α2 ] in
-      let* α4 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow z)) in
-      let* α5 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow z_sqrt)) in
-      let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4; α5 ] in
-      let* α7 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α3))
-            (pointer_coercion "Unsize" (borrow α6))) in
-      let* α8 : unit := M.call (std.io.stdio._print α7) in
-      M.alloc α8 in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "cos(") in
-      let* α1 : ref str.t := M.read (mk_str ") = ") in
-      let* α2 : ref str.t := M.read (mk_str "
-") in
-      let* α3 : M.Val (array (ref str.t)) := M.alloc [ α0; α1; α2 ] in
-      let* α4 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow z)) in
-      let* α5 : foreign_function_interface.Complex.t := M.read z in
-      let* α6 : foreign_function_interface.Complex.t :=
-        M.call (foreign_function_interface.cos α5) in
-      let* α7 : M.Val foreign_function_interface.Complex.t := M.alloc α6 in
-      let* α8 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow α7)) in
-      let* α9 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4; α8 ] in
-      let* α10 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α3))
-            (pointer_coercion "Unsize" (borrow α9))) in
-      let* α11 : unit := M.call (std.io.stdio._print α10) in
-      M.alloc α11 in
-    M.alloc tt in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+  ltac:(M.monadic (
+    M.read (|
+      let z : M.Val foreign_function_interface.Complex.t :=
+        M.alloc (|
+          {|
+            foreign_function_interface.Complex.re :=
+              M.read (| UnsupportedLiteral : M.Val f32.t |);
+            foreign_function_interface.Complex.im :=
+              M.read (| UnsupportedLiteral : M.Val f32.t |);
+          |}
+        |) in
+      let z_sqrt : M.Val foreign_function_interface.Complex.t :=
+        M.alloc (|
+          M.call (|(foreign_function_interface.csqrtf (M.read (| z |))) |)
+        |) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.read (| mk_str "the square root of " |);
+                        M.read (| mk_str " is " |);
+                        M.read (| mk_str "
+" |)
+                      ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_debug"]
+                          (borrow z))
+                        |);
+                        M.call (|(core.fmt.rt.Argument.t::["new_debug"]
+                          (borrow z_sqrt))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.read (| mk_str "cos(" |);
+                        M.read (| mk_str ") = " |);
+                        M.read (| mk_str "
+" |)
+                      ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_debug"]
+                          (borrow z))
+                        |);
+                        M.call (|(core.fmt.rt.Argument.t::["new_debug"]
+                          (borrow
+                            (M.alloc (|
+                              M.call (|(foreign_function_interface.cos
+                                (M.read (| z |)))
+                              |)
+                            |))))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      M.alloc (| tt |)
+    |)
+  )).
 
 Module  Complex.
 Section Complex.
@@ -113,19 +144,20 @@ Section Impl_core_clone_Clone_for_foreign_function_interface_Complex_t.
   Clone
   *)
   Definition clone (self : ref Self) : M foreign_function_interface.Complex.t :=
-    let* self := M.alloc self in
-    let* α0 : M.Val foreign_function_interface.Complex.t :=
-      match_operator
-        (DeclaredButUndefinedVariable
-          (A := core.clone.AssertParamIsClone.t f32.t))
-        [
-          fun γ =>
-            (let* α0 : ref foreign_function_interface.Complex.t :=
-              M.read self in
-            M.pure (deref α0)) :
-            M (M.Val foreign_function_interface.Complex.t)
-        ] in
-    M.read α0.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      M.read (|
+        ltac:
+          (M.monadic_match_operator
+            (DeclaredButUndefinedVariable
+              (A := core.clone.AssertParamIsClone.t f32.t))
+            [
+              fun γ =>
+                (deref (M.read (| self |))) :
+                M.Val foreign_function_interface.Complex.t
+            ])
+      |)
+    )).
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {
@@ -165,72 +197,100 @@ Section Impl_core_fmt_Debug_for_foreign_function_interface_Complex_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self := M.alloc self in
-    let* f := M.alloc f in
-    let* α0 : ref foreign_function_interface.Complex.t := M.read self in
-    let* α1 : f32.t :=
-      M.read (foreign_function_interface.Complex.Get_im (deref α0)) in
-    let* α2 : f32.t := M.read (UnsupportedLiteral : M.Val f32.t) in
-    let* α3 : M.Val bool.t := M.alloc (BinOp.Pure.lt α1 α2) in
-    let* α4 : bool.t := M.read (use α3) in
-    let* α5 : M.Val (core.result.Result.t unit core.fmt.Error.t) :=
-      if α4 then
-        let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
-        let* α1 : ref str.t := M.read (mk_str "") in
-        let* α2 : ref str.t := M.read (mk_str "-") in
-        let* α3 : ref str.t := M.read (mk_str "i") in
-        let* α4 : M.Val (array (ref str.t)) := M.alloc [ α1; α2; α3 ] in
-        let* α5 : ref foreign_function_interface.Complex.t := M.read self in
-        let* α6 : core.fmt.rt.Argument.t :=
-          M.call
-            (core.fmt.rt.Argument.t::["new_display"]
-              (borrow
-                (foreign_function_interface.Complex.Get_re (deref α5)))) in
-        let* α7 : ref foreign_function_interface.Complex.t := M.read self in
-        let* α8 : f32.t :=
-          M.read (foreign_function_interface.Complex.Get_im (deref α7)) in
-        let* α9 : f32.t := UnOp.neg α8 in
-        let* α10 : M.Val f32.t := M.alloc α9 in
-        let* α11 : core.fmt.rt.Argument.t :=
-          M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α10)) in
-        let* α12 : M.Val (array core.fmt.rt.Argument.t) :=
-          M.alloc [ α6; α11 ] in
-        let* α13 : core.fmt.Arguments.t :=
-          M.call
-            (core.fmt.Arguments.t::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α4))
-              (pointer_coercion "Unsize" (borrow α12))) in
-        let* α14 : core.result.Result.t unit core.fmt.Error.t :=
-          M.call (core.fmt.Formatter.t::["write_fmt"] α0 α13) in
-        M.alloc α14
-      else
-        let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
-        let* α1 : ref str.t := M.read (mk_str "") in
-        let* α2 : ref str.t := M.read (mk_str "+") in
-        let* α3 : ref str.t := M.read (mk_str "i") in
-        let* α4 : M.Val (array (ref str.t)) := M.alloc [ α1; α2; α3 ] in
-        let* α5 : ref foreign_function_interface.Complex.t := M.read self in
-        let* α6 : core.fmt.rt.Argument.t :=
-          M.call
-            (core.fmt.rt.Argument.t::["new_display"]
-              (borrow
-                (foreign_function_interface.Complex.Get_re (deref α5)))) in
-        let* α7 : ref foreign_function_interface.Complex.t := M.read self in
-        let* α8 : core.fmt.rt.Argument.t :=
-          M.call
-            (core.fmt.rt.Argument.t::["new_display"]
-              (borrow
-                (foreign_function_interface.Complex.Get_im (deref α7)))) in
-        let* α9 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α6; α8 ] in
-        let* α10 : core.fmt.Arguments.t :=
-          M.call
-            (core.fmt.Arguments.t::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α4))
-              (pointer_coercion "Unsize" (borrow α9))) in
-        let* α11 : core.result.Result.t unit core.fmt.Error.t :=
-          M.call (core.fmt.Formatter.t::["write_fmt"] α0 α10) in
-        M.alloc α11 in
-    M.read α5.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let f := M.alloc (| f |) in
+      M.read (|
+        if
+          M.read (|
+            use
+              (M.alloc (|
+                BinOp.Pure.lt
+                  (M.read (|
+                    foreign_function_interface.Complex.Get_im
+                      (deref (M.read (| self |)))
+                  |))
+                  (M.read (| UnsupportedLiteral : M.Val f32.t |))
+              |))
+          |)
+        then
+          M.alloc (|
+            M.call (|(core.fmt.Formatter.t::["write_fmt"]
+              (M.read (| f |))
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.read (| mk_str "" |);
+                        M.read (| mk_str "-" |);
+                        M.read (| mk_str "i" |)
+                      ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                          (borrow
+                            (foreign_function_interface.Complex.Get_re
+                              (deref (M.read (| self |))))))
+                        |);
+                        M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                          (borrow
+                            (M.alloc (|
+                              UnOp.neg (|
+                                M.read (|
+                                  foreign_function_interface.Complex.Get_im
+                                    (deref (M.read (| self |)))
+                                |)
+                              |)
+                            |))))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |)
+        else
+          M.alloc (|
+            M.call (|(core.fmt.Formatter.t::["write_fmt"]
+              (M.read (| f |))
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.read (| mk_str "" |);
+                        M.read (| mk_str "+" |);
+                        M.read (| mk_str "i" |)
+                      ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                          (borrow
+                            (foreign_function_interface.Complex.Get_re
+                              (deref (M.read (| self |))))))
+                        |);
+                        M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                          (borrow
+                            (foreign_function_interface.Complex.Get_im
+                              (deref (M.read (| self |))))))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;

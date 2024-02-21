@@ -21,76 +21,75 @@ Section Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_Fruit_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self := M.alloc self in
-    let* f := M.alloc f in
-    let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
-    let* α1 : M.Val (ref str.t) :=
-      match_operator
-        self
-        [
-          fun γ =>
-            (let* γ :=
-              let* α0 := M.read γ in
-              M.pure (deref α0) in
-            let* α0 := M.read γ in
-            match α0 with
-            | unpacking_options_and_defaults_via_or.Fruit.Apple =>
-              let* α0 : ref str.t := M.read (mk_str "Apple") in
-              M.alloc α0
-            | _ => M.break_match
-            end) :
-            M (M.Val (ref str.t));
-          fun γ =>
-            (let* γ :=
-              let* α0 := M.read γ in
-              M.pure (deref α0) in
-            let* α0 := M.read γ in
-            match α0 with
-            | unpacking_options_and_defaults_via_or.Fruit.Orange =>
-              let* α0 : ref str.t := M.read (mk_str "Orange") in
-              M.alloc α0
-            | _ => M.break_match
-            end) :
-            M (M.Val (ref str.t));
-          fun γ =>
-            (let* γ :=
-              let* α0 := M.read γ in
-              M.pure (deref α0) in
-            let* α0 := M.read γ in
-            match α0 with
-            | unpacking_options_and_defaults_via_or.Fruit.Banana =>
-              let* α0 : ref str.t := M.read (mk_str "Banana") in
-              M.alloc α0
-            | _ => M.break_match
-            end) :
-            M (M.Val (ref str.t));
-          fun γ =>
-            (let* γ :=
-              let* α0 := M.read γ in
-              M.pure (deref α0) in
-            let* α0 := M.read γ in
-            match α0 with
-            | unpacking_options_and_defaults_via_or.Fruit.Kiwi =>
-              let* α0 : ref str.t := M.read (mk_str "Kiwi") in
-              M.alloc α0
-            | _ => M.break_match
-            end) :
-            M (M.Val (ref str.t));
-          fun γ =>
-            (let* γ :=
-              let* α0 := M.read γ in
-              M.pure (deref α0) in
-            let* α0 := M.read γ in
-            match α0 with
-            | unpacking_options_and_defaults_via_or.Fruit.Lemon =>
-              let* α0 : ref str.t := M.read (mk_str "Lemon") in
-              M.alloc α0
-            | _ => M.break_match
-            end) :
-            M (M.Val (ref str.t))
-        ] in
-    let* α2 : ref str.t := M.read α1 in
-    M.call (core.fmt.Formatter.t::["write_str"] α0 α2).
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let f := M.alloc (| f |) in
+      M.call (|(core.fmt.Formatter.t::["write_str"]
+        (M.read (| f |))
+        (M.read (|
+          ltac:
+            (M.monadic_match_operator
+              self
+              [
+                fun
+                    (γ :
+                      M.Val
+                        (ref unpacking_options_and_defaults_via_or.Fruit.t)) =>
+                  (let γ := deref (M.read (| γ |)) in
+                  match M.read (| γ |) with
+                  | unpacking_options_and_defaults_via_or.Fruit.Apple =>
+                    M.alloc (| M.read (| mk_str "Apple" |) |)
+                  | _ => M.break_match(||)
+                  end) :
+                  M.Val (ref str.t);
+                fun
+                    (γ :
+                      M.Val
+                        (ref unpacking_options_and_defaults_via_or.Fruit.t)) =>
+                  (let γ := deref (M.read (| γ |)) in
+                  match M.read (| γ |) with
+                  | unpacking_options_and_defaults_via_or.Fruit.Orange =>
+                    M.alloc (| M.read (| mk_str "Orange" |) |)
+                  | _ => M.break_match(||)
+                  end) :
+                  M.Val (ref str.t);
+                fun
+                    (γ :
+                      M.Val
+                        (ref unpacking_options_and_defaults_via_or.Fruit.t)) =>
+                  (let γ := deref (M.read (| γ |)) in
+                  match M.read (| γ |) with
+                  | unpacking_options_and_defaults_via_or.Fruit.Banana =>
+                    M.alloc (| M.read (| mk_str "Banana" |) |)
+                  | _ => M.break_match(||)
+                  end) :
+                  M.Val (ref str.t);
+                fun
+                    (γ :
+                      M.Val
+                        (ref unpacking_options_and_defaults_via_or.Fruit.t)) =>
+                  (let γ := deref (M.read (| γ |)) in
+                  match M.read (| γ |) with
+                  | unpacking_options_and_defaults_via_or.Fruit.Kiwi =>
+                    M.alloc (| M.read (| mk_str "Kiwi" |) |)
+                  | _ => M.break_match(||)
+                  end) :
+                  M.Val (ref str.t);
+                fun
+                    (γ :
+                      M.Val
+                        (ref unpacking_options_and_defaults_via_or.Fruit.t)) =>
+                  (let γ := deref (M.read (| γ |)) in
+                  match M.read (| γ |) with
+                  | unpacking_options_and_defaults_via_or.Fruit.Lemon =>
+                    M.alloc (| M.read (| mk_str "Lemon" |) |)
+                  | _ => M.break_match(||)
+                  end) :
+                  M.Val (ref str.t)
+              ])
+        |)))
+      |)
+    )).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
@@ -121,67 +120,73 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* apple :
-      M.Val
-        (core.option.Option.t unpacking_options_and_defaults_via_or.Fruit.t) :=
-    M.alloc
-      (core.option.Option.Some
-        unpacking_options_and_defaults_via_or.Fruit.Apple) in
-  let* orange :
-      M.Val
-        (core.option.Option.t unpacking_options_and_defaults_via_or.Fruit.t) :=
-    M.alloc
-      (core.option.Option.Some
-        unpacking_options_and_defaults_via_or.Fruit.Orange) in
-  let* no_fruit :
-      M.Val
-        (core.option.Option.t unpacking_options_and_defaults_via_or.Fruit.t) :=
-    M.alloc core.option.Option.None in
-  let* first_available_fruit :
-      M.Val
-        (core.option.Option.t unpacking_options_and_defaults_via_or.Fruit.t) :=
-    let* α0 :
-        core.option.Option.t unpacking_options_and_defaults_via_or.Fruit.t :=
-      M.read no_fruit in
-    let* α1 :
-        core.option.Option.t unpacking_options_and_defaults_via_or.Fruit.t :=
-      M.read orange in
-    let* α2 :
-        core.option.Option.t unpacking_options_and_defaults_via_or.Fruit.t :=
-      M.call
-        ((core.option.Option.t
-              unpacking_options_and_defaults_via_or.Fruit.t)::["or"]
-          α0
-          α1) in
-    let* α3 :
-        core.option.Option.t unpacking_options_and_defaults_via_or.Fruit.t :=
-      M.read apple in
-    let* α4 :
-        core.option.Option.t unpacking_options_and_defaults_via_or.Fruit.t :=
-      M.call
-        ((core.option.Option.t
-              unpacking_options_and_defaults_via_or.Fruit.t)::["or"]
-          α2
-          α3) in
-    M.alloc α4 in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "first_available_fruit: ") in
-      let* α1 : ref str.t := M.read (mk_str "
-") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : core.fmt.rt.Argument.t :=
-        M.call
-          (core.fmt.rt.Argument.t::["new_debug"]
-            (borrow first_available_fruit)) in
-      let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
-      let* α5 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α4))) in
-      let* α6 : unit := M.call (std.io.stdio._print α5) in
-      M.alloc α6 in
-    M.alloc tt in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+  ltac:(M.monadic (
+    M.read (|
+      let apple :
+          M.Val
+            (core.option.Option.t
+              unpacking_options_and_defaults_via_or.Fruit.t) :=
+        M.alloc (|
+          core.option.Option.Some
+            unpacking_options_and_defaults_via_or.Fruit.Apple
+        |) in
+      let orange :
+          M.Val
+            (core.option.Option.t
+              unpacking_options_and_defaults_via_or.Fruit.t) :=
+        M.alloc (|
+          core.option.Option.Some
+            unpacking_options_and_defaults_via_or.Fruit.Orange
+        |) in
+      let no_fruit :
+          M.Val
+            (core.option.Option.t
+              unpacking_options_and_defaults_via_or.Fruit.t) :=
+        M.alloc (| core.option.Option.None |) in
+      let first_available_fruit :
+          M.Val
+            (core.option.Option.t
+              unpacking_options_and_defaults_via_or.Fruit.t) :=
+        M.alloc (|
+          M.call (|((core.option.Option.t
+                unpacking_options_and_defaults_via_or.Fruit.t)::["or"]
+            (M.call (|((core.option.Option.t
+                  unpacking_options_and_defaults_via_or.Fruit.t)::["or"]
+              (M.read (| no_fruit |))
+              (M.read (| orange |)))
+            |))
+            (M.read (| apple |)))
+          |)
+        |) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.read (| mk_str "first_available_fruit: " |);
+                        M.read (| mk_str "
+" |)
+                      ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_debug"]
+                          (borrow first_available_fruit))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      M.alloc (| tt |)
+    |)
+  )).

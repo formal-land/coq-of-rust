@@ -30,38 +30,38 @@ Section Impl_core_hash_Hash_for_hash_Person_t.
       (self : ref Self)
       (state : mut_ref __H)
       : M unit :=
-    let* self := M.alloc self in
-    let* state := M.alloc state in
-    let* _ : M.Val unit :=
-      let* α0 : (ref u32.t) -> (mut_ref __H) -> M unit :=
-        ltac:(M.get_method (fun ℐ =>
-          core.hash.Hash.hash (Self := u32.t) (H := __H) (Trait := ℐ))) in
-      let* α1 : ref hash.Person.t := M.read self in
-      let* α2 : mut_ref __H := M.read state in
-      let* α3 : unit :=
-        M.call (α0 (borrow (hash.Person.Get_id (deref α1))) α2) in
-      M.alloc α3 in
-    let* _ : M.Val unit :=
-      let* α0 : (ref alloc.string.String.t) -> (mut_ref __H) -> M unit :=
-        ltac:(M.get_method (fun ℐ =>
-          core.hash.Hash.hash
-            (Self := alloc.string.String.t)
-            (H := __H)
-            (Trait := ℐ))) in
-      let* α1 : ref hash.Person.t := M.read self in
-      let* α2 : mut_ref __H := M.read state in
-      let* α3 : unit :=
-        M.call (α0 (borrow (hash.Person.Get_name (deref α1))) α2) in
-      M.alloc α3 in
-    let* α0 : (ref u64.t) -> (mut_ref __H) -> M unit :=
-      ltac:(M.get_method (fun ℐ =>
-        core.hash.Hash.hash (Self := u64.t) (H := __H) (Trait := ℐ))) in
-    let* α1 : ref hash.Person.t := M.read self in
-    let* α2 : mut_ref __H := M.read state in
-    let* α3 : unit :=
-      M.call (α0 (borrow (hash.Person.Get_phone (deref α1))) α2) in
-    let* α0 : M.Val unit := M.alloc α3 in
-    M.read α0.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let state := M.alloc (| state |) in
+      M.read (|
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(ltac:(M.get_method (fun ℐ =>
+                core.hash.Hash.hash (Self := u32.t) (H := __H) (Trait := ℐ)))
+              (borrow (hash.Person.Get_id (deref (M.read (| self |)))))
+              (M.read (| state |)))
+            |)
+          |) in
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(ltac:(M.get_method (fun ℐ =>
+                core.hash.Hash.hash
+                  (Self := alloc.string.String.t)
+                  (H := __H)
+                  (Trait := ℐ)))
+              (borrow (hash.Person.Get_name (deref (M.read (| self |)))))
+              (M.read (| state |)))
+            |)
+          |) in
+        M.alloc (|
+          M.call (|(ltac:(M.get_method (fun ℐ =>
+              core.hash.Hash.hash (Self := u64.t) (H := __H) (Trait := ℐ)))
+            (borrow (hash.Person.Get_phone (deref (M.read (| self |)))))
+            (M.read (| state |)))
+          |)
+        |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_hash {__H : Set} :
     Notations.DoubleColon Self "hash" := {
@@ -83,29 +83,32 @@ fn calculate_hash<T: Hash>(t: &T) -> u64 {
 }
 *)
 Definition calculate_hash {T : Set} (t : ref T) : M u64.t :=
-  let* t := M.alloc t in
-  let* s : M.Val std.hash.random.DefaultHasher.t :=
-    let* α0 : std.hash.random.DefaultHasher.t :=
-      M.call std.hash.random.DefaultHasher.t::["new"] in
-    M.alloc α0 in
-  let* _ : M.Val unit :=
-    let* α0 : (ref T) -> (mut_ref std.hash.random.DefaultHasher.t) -> M unit :=
-      ltac:(M.get_method (fun ℐ =>
-        core.hash.Hash.hash
-          (Self := T)
-          (H := std.hash.random.DefaultHasher.t)
-          (Trait := ℐ))) in
-    let* α1 : ref T := M.read t in
-    let* α2 : unit := M.call (α0 α1 (borrow_mut s)) in
-    M.alloc α2 in
-  let* α0 : (ref std.hash.random.DefaultHasher.t) -> M u64.t :=
-    ltac:(M.get_method (fun ℐ =>
-      core.hash.Hasher.finish
-        (Self := std.hash.random.DefaultHasher.t)
-        (Trait := ℐ))) in
-  let* α1 : u64.t := M.call (α0 (borrow s)) in
-  let* α0 : M.Val u64.t := M.alloc α1 in
-  M.read α0.
+  ltac:(M.monadic (
+    let t := M.alloc (| t |) in
+    M.read (|
+      let s : M.Val std.hash.random.DefaultHasher.t :=
+        M.alloc (| M.call (|std.hash.random.DefaultHasher.t::["new"] |) |) in
+      let _ : M.Val unit :=
+        M.alloc (|
+          M.call (|(ltac:(M.get_method (fun ℐ =>
+              core.hash.Hash.hash
+                (Self := T)
+                (H := std.hash.random.DefaultHasher.t)
+                (Trait := ℐ)))
+            (M.read (| t |))
+            (borrow_mut s))
+          |)
+        |) in
+      M.alloc (|
+        M.call (|(ltac:(M.get_method (fun ℐ =>
+            core.hash.Hasher.finish
+              (Self := std.hash.random.DefaultHasher.t)
+              (Trait := ℐ)))
+          (borrow s))
+        |)
+      |)
+    |)
+  )).
 
 (*
 fn main() {
@@ -125,44 +128,56 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* person1 : M.Val hash.Person.t :=
-    let* α0 : (ref str.t) -> M alloc.string.String.t :=
-      ltac:(M.get_method (fun ℐ =>
-        alloc.string.ToString.to_string (Self := str.t) (Trait := ℐ))) in
-    let* α1 : ref str.t := M.read (mk_str "Janet") in
-    let* α2 : alloc.string.String.t := M.call (α0 α1) in
-    M.alloc
-      {|
-        hash.Person.id := (Integer.of_Z 5) : u32.t;
-        hash.Person.name := α2;
-        hash.Person.phone := (Integer.of_Z 5556667777) : u64.t;
-      |} in
-  let* person2 : M.Val hash.Person.t :=
-    let* α0 : (ref str.t) -> M alloc.string.String.t :=
-      ltac:(M.get_method (fun ℐ =>
-        alloc.string.ToString.to_string (Self := str.t) (Trait := ℐ))) in
-    let* α1 : ref str.t := M.read (mk_str "Bob") in
-    let* α2 : alloc.string.String.t := M.call (α0 α1) in
-    M.alloc
-      {|
-        hash.Person.id := (Integer.of_Z 5) : u32.t;
-        hash.Person.name := α2;
-        hash.Person.phone := (Integer.of_Z 5556667777) : u64.t;
-      |} in
-  let* _ : M.Val unit :=
-    let* α0 : u64.t := M.call (hash.calculate_hash (borrow person1)) in
-    let* α1 : u64.t := M.call (hash.calculate_hash (borrow person2)) in
-    let* α2 : M.Val bool.t := M.alloc (UnOp.not (BinOp.Pure.ne α0 α1)) in
-    let* α3 : bool.t := M.read (use α2) in
-    if α3 then
-      let* α0 : ref str.t :=
-        M.read
-          (mk_str
-            "assertion failed: calculate_hash(&person1) != calculate_hash(&person2)") in
-      let* α1 : never.t := M.call (core.panicking.panic α0) in
-      let* α2 : unit := never_to_any α1 in
-      M.alloc α2
-    else
-      M.alloc tt in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+  ltac:(M.monadic (
+    M.read (|
+      let person1 : M.Val hash.Person.t :=
+        M.alloc (|
+          {|
+            hash.Person.id := (Integer.of_Z 5) : u32.t;
+            hash.Person.name :=
+              M.call (|(ltac:(M.get_method (fun ℐ =>
+                  alloc.string.ToString.to_string (Self := str.t) (Trait := ℐ)))
+                (M.read (| mk_str "Janet" |)))
+              |);
+            hash.Person.phone := (Integer.of_Z 5556667777) : u64.t;
+          |}
+        |) in
+      let person2 : M.Val hash.Person.t :=
+        M.alloc (|
+          {|
+            hash.Person.id := (Integer.of_Z 5) : u32.t;
+            hash.Person.name :=
+              M.call (|(ltac:(M.get_method (fun ℐ =>
+                  alloc.string.ToString.to_string (Self := str.t) (Trait := ℐ)))
+                (M.read (| mk_str "Bob" |)))
+              |);
+            hash.Person.phone := (Integer.of_Z 5556667777) : u64.t;
+          |}
+        |) in
+      let _ : M.Val unit :=
+        if
+          M.read (|
+            use
+              (M.alloc (|
+                UnOp.not
+                  (BinOp.Pure.ne
+                    (M.call (|(hash.calculate_hash (borrow person1)) |))
+                    (M.call (|(hash.calculate_hash (borrow person2)) |)))
+              |))
+          |)
+        then
+          M.alloc (|
+            never_to_any (|
+              M.call (|(core.panicking.panic
+                (M.read (|
+                  mk_str
+                    "assertion failed: calculate_hash(&person1) != calculate_hash(&person2)"
+                |)))
+              |)
+            |)
+          |)
+        else
+          M.alloc (| tt |) in
+      M.alloc (| tt |)
+    |)
+  )).

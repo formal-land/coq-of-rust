@@ -7,17 +7,21 @@ fn id(x: u64) -> u64 {
 }
 *)
 Definition id (x : u64.t) : M u64.t :=
-  let* x := M.alloc x in
-  M.read x.
+  ltac:(M.monadic (
+    let x := M.alloc (| x |) in
+    M.read (| x |)
+  )).
 
 (*
 fn tri(a: u64, b: u64, c: u64) {}
 *)
 Definition tri (a : u64.t) (b : u64.t) (c : u64.t) : M unit :=
-  let* a := M.alloc a in
-  let* b := M.alloc b in
-  let* c := M.alloc c in
-  M.pure tt.
+  ltac:(M.monadic (
+    let a := M.alloc (| a |) in
+    let b := M.alloc (| b |) in
+    let c := M.alloc (| c |) in
+    tt
+  )).
 
 (*
 fn main() {
@@ -30,28 +34,42 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* _ : M.Val u64.t :=
-    let* α0 : u64.t := M.call (example01.id ((Integer.of_Z 0) : u64.t)) in
-    M.alloc α0 in
-  let* _ : M.Val u64.t :=
-    let* α0 : u64.t := M.call (example01.id ((Integer.of_Z 0) : u64.t)) in
-    let* α1 : u64.t := M.call (example01.id α0) in
-    M.alloc α1 in
-  let* _ : M.Val u64.t :=
-    let* α0 : u64.t := M.call (example01.id ((Integer.of_Z 0) : u64.t)) in
-    let* α1 : u64.t := M.call (example01.id α0) in
-    let* α2 : u64.t := M.call (example01.id α1) in
-    M.alloc α2 in
-  let* _ : M.Val u64.t :=
-    let* α0 : u64.t := M.call (example01.id ((Integer.of_Z 0) : u64.t)) in
-    let* α1 : u64.t := M.call (example01.id α0) in
-    let* α2 : u64.t := M.call (example01.id α1) in
-    let* α3 : u64.t := M.call (example01.id α2) in
-    M.alloc α3 in
-  let* _ : M.Val unit :=
-    let* α0 : u64.t := M.call (example01.id ((Integer.of_Z 1) : u64.t)) in
-    let* α1 : u64.t := M.call (example01.id ((Integer.of_Z 2) : u64.t)) in
-    let* α2 : unit := M.call (example01.tri α0 α1 ((Integer.of_Z 3) : u64.t)) in
-    M.alloc α2 in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+  ltac:(M.monadic (
+    M.read (|
+      let _ : M.Val u64.t :=
+        M.alloc (| M.call (|(example01.id ((Integer.of_Z 0) : u64.t)) |) |) in
+      let _ : M.Val u64.t :=
+        M.alloc (|
+          M.call (|(example01.id
+            (M.call (|(example01.id ((Integer.of_Z 0) : u64.t)) |)))
+          |)
+        |) in
+      let _ : M.Val u64.t :=
+        M.alloc (|
+          M.call (|(example01.id
+            (M.call (|(example01.id
+              (M.call (|(example01.id ((Integer.of_Z 0) : u64.t)) |)))
+            |)))
+          |)
+        |) in
+      let _ : M.Val u64.t :=
+        M.alloc (|
+          M.call (|(example01.id
+            (M.call (|(example01.id
+              (M.call (|(example01.id
+                (M.call (|(example01.id ((Integer.of_Z 0) : u64.t)) |)))
+              |)))
+            |)))
+          |)
+        |) in
+      let _ : M.Val unit :=
+        M.alloc (|
+          M.call (|(example01.tri
+            (M.call (|(example01.id ((Integer.of_Z 1) : u64.t)) |))
+            (M.call (|(example01.id ((Integer.of_Z 2) : u64.t)) |))
+            ((Integer.of_Z 3) : u64.t))
+          |)
+        |) in
+      M.alloc (| tt |)
+    |)
+  )).

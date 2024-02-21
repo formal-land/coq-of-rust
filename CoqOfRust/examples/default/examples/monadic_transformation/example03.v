@@ -9,27 +9,34 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* _ : M.Val (((i32.t * i32.t) * i32.t) * i32.t) :=
-    M.alloc
-      ((Integer.of_Z 1) : i32.t,
-        (Integer.of_Z 2) : i32.t,
-        (Integer.of_Z 3) : i32.t,
-        (Integer.of_Z 4) : i32.t) in
-  let* _ : M.Val (alloc.vec.Vec.t i32.t alloc.alloc.Global.t) :=
-    let* α0 : M.Val (array i32.t) :=
-      M.alloc
-        [
-          (Integer.of_Z 5) : i32.t;
-          (Integer.of_Z 6) : i32.t;
-          (Integer.of_Z 7) : i32.t;
-          (Integer.of_Z 8) : i32.t
-        ] in
-    let* α1 : M.Val (alloc.boxed.Box.t (array i32.t) alloc.alloc.Global.t) :=
-      M.call ((alloc.boxed.Box.t _ alloc.boxed.Box.Default.A)::["new"] α0) in
-    let* α2 : alloc.boxed.Box.t (array i32.t) alloc.alloc.Global.t :=
-      M.read α1 in
-    let* α3 : alloc.vec.Vec.t i32.t alloc.alloc.Global.t :=
-      M.call ((slice i32.t)::["into_vec"] (pointer_coercion "Unsize" α2)) in
-    M.alloc α3 in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+  ltac:(M.monadic (
+    M.read (|
+      let _ : M.Val (((i32.t * i32.t) * i32.t) * i32.t) :=
+        M.alloc (|
+          ((Integer.of_Z 1) : i32.t,
+            (Integer.of_Z 2) : i32.t,
+            (Integer.of_Z 3) : i32.t,
+            (Integer.of_Z 4) : i32.t)
+        |) in
+      let _ : M.Val (alloc.vec.Vec.t i32.t alloc.alloc.Global.t) :=
+        M.alloc (|
+          M.call (|((slice i32.t)::["into_vec"]
+            (pointer_coercion
+              "Unsize"
+              (M.read (|
+                M.call (|((alloc.boxed.Box.t _ alloc.boxed.Box.Default.A)::["new"]
+                  (M.alloc (|
+                    [
+                      (Integer.of_Z 5) : i32.t;
+                      (Integer.of_Z 6) : i32.t;
+                      (Integer.of_Z 7) : i32.t;
+                      (Integer.of_Z 8) : i32.t
+                    ]
+                  |)))
+                |)
+              |))))
+          |)
+        |) in
+      M.alloc (| tt |)
+    |)
+  )).

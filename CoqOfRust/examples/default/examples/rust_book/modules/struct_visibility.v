@@ -44,9 +44,10 @@ Module my.
             }
     *)
     Definition new (contents : T) : M (struct_visibility.my.ClosedBox.t T) :=
-      let* contents := M.alloc contents in
-      let* α0 : T := M.read contents in
-      M.pure {| struct_visibility.my.ClosedBox.contents := α0; |}.
+      ltac:(M.monadic (
+        let contents := M.alloc (| contents |) in
+        {| struct_visibility.my.ClosedBox.contents := M.read (| contents |); |}
+      )).
     
     Global Instance AssociatedFunction_new :
       Notations.DoubleColon Self "new" := {
@@ -83,32 +84,52 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* open_box : M.Val (struct_visibility.my.OpenBox.t (ref str.t)) :=
-    let* α0 : ref str.t := M.read (mk_str "public information") in
-    M.alloc {| struct_visibility.my.OpenBox.contents := α0; |} in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "The open box contains: ") in
-      let* α1 : ref str.t := M.read (mk_str "
-") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : core.fmt.rt.Argument.t :=
-        M.call
-          (core.fmt.rt.Argument.t::["new_display"]
-            (borrow (struct_visibility.my.OpenBox.Get_contents open_box))) in
-      let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
-      let* α5 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α4))) in
-      let* α6 : unit := M.call (std.io.stdio._print α5) in
-      M.alloc α6 in
-    M.alloc tt in
-  let* _closed_box : M.Val (struct_visibility.my.ClosedBox.t (ref str.t)) :=
-    let* α0 : ref str.t := M.read (mk_str "classified information") in
-    let* α1 : struct_visibility.my.ClosedBox.t (ref str.t) :=
-      M.call ((struct_visibility.my.ClosedBox.t (ref str.t))::["new"] α0) in
-    M.alloc α1 in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+  ltac:(M.monadic (
+    M.read (|
+      let open_box : M.Val (struct_visibility.my.OpenBox.t (ref str.t)) :=
+        M.alloc (|
+          {|
+            struct_visibility.my.OpenBox.contents :=
+              M.read (| mk_str "public information" |);
+          |}
+        |) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.read (| mk_str "The open box contains: " |);
+                        M.read (| mk_str "
+" |)
+                      ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                          (borrow
+                            (struct_visibility.my.OpenBox.Get_contents
+                              open_box)))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      let _closed_box : M.Val (struct_visibility.my.ClosedBox.t (ref str.t)) :=
+        M.alloc (|
+          M.call (|((struct_visibility.my.ClosedBox.t (ref str.t))::["new"]
+            (M.read (| mk_str "classified information" |)))
+          |)
+        |) in
+      M.alloc (| tt |)
+    |)
+  )).

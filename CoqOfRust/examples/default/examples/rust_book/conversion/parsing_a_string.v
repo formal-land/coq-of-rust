@@ -10,21 +10,21 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* _ : M.Val (core.result.Result.t i32.t core.num.error.ParseIntError.t) :=
-    let* α0 : ref str.t := M.read (mk_str "12") in
-    let* α1 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
-      M.call (str.t::["parse"] α0) in
-    M.alloc α1 in
-  let* _ :
-      M.Val (core.result.Result.t bool.t core.str.error.ParseBoolError.t) :=
-    let* α0 : ref str.t := M.read (mk_str "true") in
-    let* α1 : core.result.Result.t bool.t core.str.error.ParseBoolError.t :=
-      M.call (str.t::["parse"] α0) in
-    M.alloc α1 in
-  let* _ : M.Val (core.result.Result.t u32.t core.num.error.ParseIntError.t) :=
-    let* α0 : ref str.t := M.read (mk_str "unparsable") in
-    let* α1 : core.result.Result.t u32.t core.num.error.ParseIntError.t :=
-      M.call (str.t::["parse"] α0) in
-    M.alloc α1 in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+  ltac:(M.monadic (
+    M.read (|
+      let _ :
+          M.Val (core.result.Result.t i32.t core.num.error.ParseIntError.t) :=
+        M.alloc (| M.call (|(str.t::["parse"] (M.read (| mk_str "12" |))) |)
+        |) in
+      let _ :
+          M.Val (core.result.Result.t bool.t core.str.error.ParseBoolError.t) :=
+        M.alloc (| M.call (|(str.t::["parse"] (M.read (| mk_str "true" |))) |)
+        |) in
+      let _ :
+          M.Val (core.result.Result.t u32.t core.num.error.ParseIntError.t) :=
+        M.alloc (|
+          M.call (|(str.t::["parse"] (M.read (| mk_str "unparsable" |))) |)
+        |) in
+      M.alloc (| tt |)
+    |)
+  )).

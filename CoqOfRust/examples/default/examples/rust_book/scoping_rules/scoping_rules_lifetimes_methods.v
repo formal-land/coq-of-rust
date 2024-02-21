@@ -22,17 +22,20 @@ Section Impl_scoping_rules_lifetimes_methods_Owner_t.
       }
   *)
   Definition add_one (self : mut_ref Self) : M unit :=
-    let* self := M.alloc self in
-    let* _ : M.Val unit :=
-      let* β : M.Val i32.t :=
-        let* α0 : mut_ref scoping_rules_lifetimes_methods.Owner.t :=
-          M.read self in
-        M.pure (scoping_rules_lifetimes_methods.Owner.Get_0 (deref α0)) in
-      let* α0 := M.read β in
-      let* α1 := BinOp.Panic.add α0 ((Integer.of_Z 1) : i32.t) in
-      assign β α1 in
-    let* α0 : M.Val unit := M.alloc tt in
-    M.read α0.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      M.read (|
+        let _ : M.Val unit :=
+          let β : M.Val i32.t :=
+            scoping_rules_lifetimes_methods.Owner.Get_0
+              (deref (M.read (| self |))) in
+          assign (|
+            β,
+            BinOp.Panic.add (| M.read (| β |), (Integer.of_Z 1) : i32.t |)
+          |) in
+        M.alloc (| tt |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_add_one :
     Notations.DoubleColon Self "add_one" := {
@@ -45,30 +48,43 @@ Section Impl_scoping_rules_lifetimes_methods_Owner_t.
       }
   *)
   Definition print (self : ref Self) : M unit :=
-    let* self := M.alloc self in
-    let* _ : M.Val unit :=
-      let* _ : M.Val unit :=
-        let* α0 : ref str.t := M.read (mk_str "`print`: ") in
-        let* α1 : ref str.t := M.read (mk_str "
-") in
-        let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-        let* α3 : ref scoping_rules_lifetimes_methods.Owner.t := M.read self in
-        let* α4 : core.fmt.rt.Argument.t :=
-          M.call
-            (core.fmt.rt.Argument.t::["new_display"]
-              (borrow
-                (scoping_rules_lifetimes_methods.Owner.Get_0 (deref α3)))) in
-        let* α5 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4 ] in
-        let* α6 : core.fmt.Arguments.t :=
-          M.call
-            (core.fmt.Arguments.t::["new_v1"]
-              (pointer_coercion "Unsize" (borrow α2))
-              (pointer_coercion "Unsize" (borrow α5))) in
-        let* α7 : unit := M.call (std.io.stdio._print α6) in
-        M.alloc α7 in
-      M.alloc tt in
-    let* α0 : M.Val unit := M.alloc tt in
-    M.read α0.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      M.read (|
+        let _ : M.Val unit :=
+          let _ : M.Val unit :=
+            M.alloc (|
+              M.call (|(std.io.stdio._print
+                (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                  (pointer_coercion
+                    "Unsize"
+                    (borrow
+                      (M.alloc (|
+                        [
+                          M.read (| mk_str "`print`: " |);
+                          M.read (| mk_str "
+" |)
+                        ]
+                      |))))
+                  (pointer_coercion
+                    "Unsize"
+                    (borrow
+                      (M.alloc (|
+                        [
+                          M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                            (borrow
+                              (scoping_rules_lifetimes_methods.Owner.Get_0
+                                (deref (M.read (| self |))))))
+                          |)
+                        ]
+                      |)))))
+                |)))
+              |)
+            |) in
+          M.alloc (| tt |) in
+        M.alloc (| tt |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_print :
     Notations.DoubleColon Self "print" := {
@@ -87,20 +103,25 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* owner : M.Val scoping_rules_lifetimes_methods.Owner.t :=
-    M.alloc
-      (scoping_rules_lifetimes_methods.Owner.Build_t
-        ((Integer.of_Z 18) : i32.t)) in
-  let* _ : M.Val unit :=
-    let* α0 : unit :=
-      M.call
-        (scoping_rules_lifetimes_methods.Owner.t::["add_one"]
-          (borrow_mut owner)) in
-    M.alloc α0 in
-  let* _ : M.Val unit :=
-    let* α0 : unit :=
-      M.call
-        (scoping_rules_lifetimes_methods.Owner.t::["print"] (borrow owner)) in
-    M.alloc α0 in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+  ltac:(M.monadic (
+    M.read (|
+      let owner : M.Val scoping_rules_lifetimes_methods.Owner.t :=
+        M.alloc (|
+          scoping_rules_lifetimes_methods.Owner.Build_t
+            ((Integer.of_Z 18) : i32.t)
+        |) in
+      let _ : M.Val unit :=
+        M.alloc (|
+          M.call (|(scoping_rules_lifetimes_methods.Owner.t::["add_one"]
+            (borrow_mut owner))
+          |)
+        |) in
+      let _ : M.Val unit :=
+        M.alloc (|
+          M.call (|(scoping_rules_lifetimes_methods.Owner.t::["print"]
+            (borrow owner))
+          |)
+        |) in
+      M.alloc (| tt |)
+    |)
+  )).

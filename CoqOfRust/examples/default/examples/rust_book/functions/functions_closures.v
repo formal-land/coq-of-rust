@@ -32,121 +32,165 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* outer_var : M.Val i32.t := M.alloc ((Integer.of_Z 42) : i32.t) in
-  let* closure_annotated : M.Val (i32.t -> M i32.t) :=
-    M.alloc
-      (fun (α0 : i32.t) =>
-        (let* α0 := M.alloc α0 in
-        match_operator
-          α0
-          [
-            fun γ =>
-              (let* i := M.copy γ in
-              let* α0 : i32.t := M.read i in
-              let* α1 : i32.t := M.read outer_var in
-              BinOp.Panic.add α0 α1) :
-              M i32.t
-          ]) :
-        M i32.t) in
-  let* closure_inferred : M.Val (i32.t -> M i32.t) :=
-    M.alloc
-      (fun (α0 : i32.t) =>
-        (let* α0 := M.alloc α0 in
-        match_operator
-          α0
-          [
-            fun γ =>
-              (let* i := M.copy γ in
-              let* α0 : i32.t := M.read i in
-              let* α1 : i32.t := M.read outer_var in
-              BinOp.Panic.add α0 α1) :
-              M i32.t
-          ]) :
-        M i32.t) in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "closure_annotated: ") in
-      let* α1 : ref str.t := M.read (mk_str "
-") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : (ref (i32.t -> M i32.t)) -> i32.t -> M _ :=
-        ltac:(M.get_method (fun ℐ =>
-          core.ops.function.Fn.call
-            (Self := i32.t -> M i32.t)
-            (Args := i32.t)
-            (Trait := ℐ))) in
-      let* α4 : i32.t :=
-        M.call (α3 (borrow closure_annotated) ((Integer.of_Z 1) : i32.t)) in
-      let* α5 : M.Val i32.t := M.alloc α4 in
-      let* α6 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α5)) in
-      let* α7 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α6 ] in
-      let* α8 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α7))) in
-      let* α9 : unit := M.call (std.io.stdio._print α8) in
-      M.alloc α9 in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "closure_inferred: ") in
-      let* α1 : ref str.t := M.read (mk_str "
-") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : (ref (i32.t -> M i32.t)) -> i32.t -> M _ :=
-        ltac:(M.get_method (fun ℐ =>
-          core.ops.function.Fn.call
-            (Self := i32.t -> M i32.t)
-            (Args := i32.t)
-            (Trait := ℐ))) in
-      let* α4 : i32.t :=
-        M.call (α3 (borrow closure_inferred) ((Integer.of_Z 1) : i32.t)) in
-      let* α5 : M.Val i32.t := M.alloc α4 in
-      let* α6 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α5)) in
-      let* α7 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α6 ] in
-      let* α8 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α7))) in
-      let* α9 : unit := M.call (std.io.stdio._print α8) in
-      M.alloc α9 in
-    M.alloc tt in
-  let* one : M.Val (unit -> M i32.t) :=
-    M.alloc
-      (fun (α0 : unit) =>
-        (let* α0 := M.alloc α0 in
-        match_operator
-          α0
-          [ fun γ => (M.pure ((Integer.of_Z 1) : i32.t)) : M i32.t ]) :
-        M i32.t) in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "closure returning one: ") in
-      let* α1 : ref str.t := M.read (mk_str "
-") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : (ref (unit -> M i32.t)) -> unit -> M _ :=
-        ltac:(M.get_method (fun ℐ =>
-          core.ops.function.Fn.call
-            (Self := unit -> M i32.t)
-            (Args := unit)
-            (Trait := ℐ))) in
-      let* α4 : i32.t := M.call (α3 (borrow one) tt) in
-      let* α5 : M.Val i32.t := M.alloc α4 in
-      let* α6 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α5)) in
-      let* α7 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α6 ] in
-      let* α8 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α7))) in
-      let* α9 : unit := M.call (std.io.stdio._print α8) in
-      M.alloc α9 in
-    M.alloc tt in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+  ltac:(M.monadic (
+    M.read (|
+      let outer_var : M.Val i32.t := M.alloc (| (Integer.of_Z 42) : i32.t |) in
+      let closure_annotated : M.Val (i32.t -> i32.t) :=
+        M.alloc (|
+          fun (α0 : i32.t) =>
+            (ltac:
+              (M.monadic_match_operator
+                (M.alloc (| α0 |))
+                [
+                  fun γ =>
+                    (let i := M.copy (| γ |) in
+                    BinOp.Panic.add (| M.read (| i |), M.read (| outer_var |)
+                    |)) :
+                    i32.t
+                ])) :
+            i32.t
+        |) in
+      let closure_inferred : M.Val (i32.t -> i32.t) :=
+        M.alloc (|
+          fun (α0 : i32.t) =>
+            (ltac:
+              (M.monadic_match_operator
+                (M.alloc (| α0 |))
+                [
+                  fun γ =>
+                    (let i := M.copy (| γ |) in
+                    BinOp.Panic.add (| M.read (| i |), M.read (| outer_var |)
+                    |)) :
+                    i32.t
+                ])) :
+            i32.t
+        |) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.read (| mk_str "closure_annotated: " |);
+                        M.read (| mk_str "
+" |)
+                      ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                          (borrow
+                            (M.alloc (|
+                              M.call (|(ltac:(M.get_method (fun ℐ =>
+                                  core.ops.function.Fn.call
+                                    (Self := i32.t -> i32.t)
+                                    (Args := i32.t)
+                                    (Trait := ℐ)))
+                                (borrow closure_annotated)
+                                ((Integer.of_Z 1) : i32.t))
+                              |)
+                            |))))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.read (| mk_str "closure_inferred: " |);
+                        M.read (| mk_str "
+" |)
+                      ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                          (borrow
+                            (M.alloc (|
+                              M.call (|(ltac:(M.get_method (fun ℐ =>
+                                  core.ops.function.Fn.call
+                                    (Self := i32.t -> i32.t)
+                                    (Args := i32.t)
+                                    (Trait := ℐ)))
+                                (borrow closure_inferred)
+                                ((Integer.of_Z 1) : i32.t))
+                              |)
+                            |))))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      let one : M.Val (unit -> i32.t) :=
+        M.alloc (|
+          fun (α0 : unit) =>
+            (ltac:
+              (M.monadic_match_operator
+                (M.alloc (| α0 |))
+                [ fun γ => ((Integer.of_Z 1) : i32.t) : i32.t ])) :
+            i32.t
+        |) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.read (| mk_str "closure returning one: " |);
+                        M.read (| mk_str "
+" |)
+                      ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                          (borrow
+                            (M.alloc (|
+                              M.call (|(ltac:(M.get_method (fun ℐ =>
+                                  core.ops.function.Fn.call
+                                    (Self := unit -> i32.t)
+                                    (Args := unit)
+                                    (Trait := ℐ)))
+                                (borrow one)
+                                tt)
+                              |)
+                            |))))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      M.alloc (| tt |)
+    |)
+  )).

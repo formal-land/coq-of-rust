@@ -37,26 +37,30 @@ Section Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci_t.
       }
   *)
   Definition next (self : mut_ref Self) : M (core.option.Option.t Item) :=
-    let* self := M.alloc self in
-    let* current : M.Val u32.t :=
-      let* α0 : mut_ref iterators.Fibonacci.t := M.read self in
-      M.copy (iterators.Fibonacci.Get_curr (deref α0)) in
-    let* _ : M.Val unit :=
-      let* α0 : mut_ref iterators.Fibonacci.t := M.read self in
-      let* α1 : mut_ref iterators.Fibonacci.t := M.read self in
-      let* α2 : u32.t := M.read (iterators.Fibonacci.Get_next (deref α1)) in
-      assign (iterators.Fibonacci.Get_curr (deref α0)) α2 in
-    let* _ : M.Val unit :=
-      let* α0 : mut_ref iterators.Fibonacci.t := M.read self in
-      let* α1 : u32.t := M.read current in
-      let* α2 : mut_ref iterators.Fibonacci.t := M.read self in
-      let* α3 : u32.t := M.read (iterators.Fibonacci.Get_next (deref α2)) in
-      let* α4 : u32.t := BinOp.Panic.add α1 α3 in
-      assign (iterators.Fibonacci.Get_next (deref α0)) α4 in
-    let* α0 : u32.t := M.read current in
-    let* α0 : M.Val (core.option.Option.t u32.t) :=
-      M.alloc (core.option.Option.Some α0) in
-    M.read α0.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      M.read (|
+        let current : M.Val u32.t :=
+          M.copy (| iterators.Fibonacci.Get_curr (deref (M.read (| self |)))
+          |) in
+        let _ : M.Val unit :=
+          assign (|
+            iterators.Fibonacci.Get_curr (deref (M.read (| self |))),
+            M.read (| iterators.Fibonacci.Get_next (deref (M.read (| self |)))
+            |)
+          |) in
+        let _ : M.Val unit :=
+          assign (|
+            iterators.Fibonacci.Get_next (deref (M.read (| self |))),
+            BinOp.Panic.add (|
+              M.read (| current |),
+              M.read (| iterators.Fibonacci.Get_next (deref (M.read (| self |)))
+              |)
+            |)
+          |) in
+        M.alloc (| core.option.Option.Some (M.read (| current |)) |)
+      |)
+    )).
   
   Global Instance AssociatedFunction_next :
     Notations.DoubleColon Self "next" := {
@@ -154,11 +158,12 @@ fn fibonacci() -> Fibonacci {
 }
 *)
 Definition fibonacci : M iterators.Fibonacci.t :=
-  M.pure
+  ltac:(M.monadic (
     {|
       iterators.Fibonacci.curr := (Integer.of_Z 0) : u32.t;
       iterators.Fibonacci.next := (Integer.of_Z 1) : u32.t;
-    |}.
+    |}
+  )).
 
 (*
 fn main() {
@@ -201,571 +206,623 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* sequence : M.Val (core.ops.range.Range.t i32.t) :=
-    M.alloc
-      {|
-        core.ops.range.Range.start := (Integer.of_Z 0) : i32.t;
-        core.ops.range.Range.end_ := (Integer.of_Z 3) : i32.t;
-      |} in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t :=
-        M.read (mk_str "Four consecutive `next` calls on 0..3
-") in
-      let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-      let* α2 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_const"]
-            (pointer_coercion "Unsize" (borrow α1))) in
-      let* α3 : unit := M.call (std.io.stdio._print α2) in
-      M.alloc α3 in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "> ") in
-      let* α1 : ref str.t := M.read (mk_str "
-") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 :
-          (mut_ref (core.ops.range.Range.t i32.t)) ->
-            M (core.option.Option.t _) :=
-        ltac:(M.get_method (fun ℐ =>
-          core.iter.traits.iterator.Iterator.next
-            (Self := core.ops.range.Range.t i32.t)
-            (Trait := ℐ))) in
-      let* α4 : core.option.Option.t i32.t :=
-        M.call (α3 (borrow_mut sequence)) in
-      let* α5 : M.Val (core.option.Option.t i32.t) := M.alloc α4 in
-      let* α6 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow α5)) in
-      let* α7 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α6 ] in
-      let* α8 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α7))) in
-      let* α9 : unit := M.call (std.io.stdio._print α8) in
-      M.alloc α9 in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "> ") in
-      let* α1 : ref str.t := M.read (mk_str "
-") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 :
-          (mut_ref (core.ops.range.Range.t i32.t)) ->
-            M (core.option.Option.t _) :=
-        ltac:(M.get_method (fun ℐ =>
-          core.iter.traits.iterator.Iterator.next
-            (Self := core.ops.range.Range.t i32.t)
-            (Trait := ℐ))) in
-      let* α4 : core.option.Option.t i32.t :=
-        M.call (α3 (borrow_mut sequence)) in
-      let* α5 : M.Val (core.option.Option.t i32.t) := M.alloc α4 in
-      let* α6 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow α5)) in
-      let* α7 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α6 ] in
-      let* α8 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α7))) in
-      let* α9 : unit := M.call (std.io.stdio._print α8) in
-      M.alloc α9 in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "> ") in
-      let* α1 : ref str.t := M.read (mk_str "
-") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 :
-          (mut_ref (core.ops.range.Range.t i32.t)) ->
-            M (core.option.Option.t _) :=
-        ltac:(M.get_method (fun ℐ =>
-          core.iter.traits.iterator.Iterator.next
-            (Self := core.ops.range.Range.t i32.t)
-            (Trait := ℐ))) in
-      let* α4 : core.option.Option.t i32.t :=
-        M.call (α3 (borrow_mut sequence)) in
-      let* α5 : M.Val (core.option.Option.t i32.t) := M.alloc α4 in
-      let* α6 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow α5)) in
-      let* α7 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α6 ] in
-      let* α8 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α7))) in
-      let* α9 : unit := M.call (std.io.stdio._print α8) in
-      M.alloc α9 in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "> ") in
-      let* α1 : ref str.t := M.read (mk_str "
-") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 :
-          (mut_ref (core.ops.range.Range.t i32.t)) ->
-            M (core.option.Option.t _) :=
-        ltac:(M.get_method (fun ℐ =>
-          core.iter.traits.iterator.Iterator.next
-            (Self := core.ops.range.Range.t i32.t)
-            (Trait := ℐ))) in
-      let* α4 : core.option.Option.t i32.t :=
-        M.call (α3 (borrow_mut sequence)) in
-      let* α5 : M.Val (core.option.Option.t i32.t) := M.alloc α4 in
-      let* α6 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow α5)) in
-      let* α7 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α6 ] in
-      let* α8 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α7))) in
-      let* α9 : unit := M.call (std.io.stdio._print α8) in
-      M.alloc α9 in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t :=
-        M.read (mk_str "Iterate through 0..3 using `for`
-") in
-      let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-      let* α2 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_const"]
-            (pointer_coercion "Unsize" (borrow α1))) in
-      let* α3 : unit := M.call (std.io.stdio._print α2) in
-      M.alloc α3 in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* α0 : (core.ops.range.Range.t i32.t) -> M _ :=
-      ltac:(M.get_method (fun ℐ =>
-        core.iter.traits.collect.IntoIterator.into_iter
-          (Self := core.ops.range.Range.t i32.t)
-          (Trait := ℐ))) in
-    let* α1 : core.ops.range.Range.t i32.t :=
-      M.call
-        (α0
+  ltac:(M.monadic (
+    M.read (|
+      let sequence : M.Val (core.ops.range.Range.t i32.t) :=
+        M.alloc (|
           {|
             core.ops.range.Range.start := (Integer.of_Z 0) : i32.t;
             core.ops.range.Range.end_ := (Integer.of_Z 3) : i32.t;
-          |}) in
-    let* α2 : M.Val (core.ops.range.Range.t i32.t) := M.alloc α1 in
-    let* α3 : M.Val unit :=
-      match_operator
-        α2
-        [
-          fun γ =>
-            (let* iter := M.copy γ in
-            M.loop
-              (let* _ : M.Val unit :=
-                let* α0 :
-                    (mut_ref (core.ops.range.Range.t i32.t)) ->
-                      M (core.option.Option.t _) :=
-                  ltac:(M.get_method (fun ℐ =>
-                    core.iter.traits.iterator.Iterator.next
+          |}
+        |) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_const"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.read (|
+                          mk_str "Four consecutive `next` calls on 0..3
+"
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [ M.read (| mk_str "> " |); M.read (| mk_str "
+" |) ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_debug"]
+                          (borrow
+                            (M.alloc (|
+                              M.call (|(ltac:(M.get_method (fun ℐ =>
+                                  core.iter.traits.iterator.Iterator.next
+                                    (Self := core.ops.range.Range.t i32.t)
+                                    (Trait := ℐ)))
+                                (borrow_mut sequence))
+                              |)
+                            |))))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [ M.read (| mk_str "> " |); M.read (| mk_str "
+" |) ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_debug"]
+                          (borrow
+                            (M.alloc (|
+                              M.call (|(ltac:(M.get_method (fun ℐ =>
+                                  core.iter.traits.iterator.Iterator.next
+                                    (Self := core.ops.range.Range.t i32.t)
+                                    (Trait := ℐ)))
+                                (borrow_mut sequence))
+                              |)
+                            |))))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [ M.read (| mk_str "> " |); M.read (| mk_str "
+" |) ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_debug"]
+                          (borrow
+                            (M.alloc (|
+                              M.call (|(ltac:(M.get_method (fun ℐ =>
+                                  core.iter.traits.iterator.Iterator.next
+                                    (Self := core.ops.range.Range.t i32.t)
+                                    (Trait := ℐ)))
+                                (borrow_mut sequence))
+                              |)
+                            |))))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [ M.read (| mk_str "> " |); M.read (| mk_str "
+" |) ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_debug"]
+                          (borrow
+                            (M.alloc (|
+                              M.call (|(ltac:(M.get_method (fun ℐ =>
+                                  core.iter.traits.iterator.Iterator.next
+                                    (Self := core.ops.range.Range.t i32.t)
+                                    (Trait := ℐ)))
+                                (borrow_mut sequence))
+                              |)
+                            |))))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_const"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [ M.read (| mk_str "Iterate through 0..3 using `for`
+" |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      let _ : M.Val unit :=
+        use
+          (ltac:
+            (M.monadic_match_operator
+              (M.alloc (|
+                M.call (|(ltac:(M.get_method (fun ℐ =>
+                    core.iter.traits.collect.IntoIterator.into_iter
                       (Self := core.ops.range.Range.t i32.t)
-                      (Trait := ℐ))) in
-                let* α1 : core.option.Option.t i32.t :=
-                  M.call (α0 (borrow_mut iter)) in
-                let* α2 : M.Val (core.option.Option.t i32.t) := M.alloc α1 in
-                match_operator
-                  α2
-                  [
-                    fun γ =>
-                      (let* α0 := M.read γ in
-                      match α0 with
-                      | core.option.Option.None =>
-                        let* α0 : M.Val never.t := M.break in
-                        let* α1 := M.read α0 in
-                        let* α2 : unit := never_to_any α1 in
-                        M.alloc α2
-                      | _ => M.break_match
-                      end) :
-                      M (M.Val unit);
-                    fun γ =>
-                      (let* α0 := M.read γ in
-                      match α0 with
-                      | core.option.Option.Some _ =>
-                        let γ0_0 := core.option.Option.Get_Some_0 γ in
-                        let* i := M.copy γ0_0 in
-                        let* _ : M.Val unit :=
-                          let* _ : M.Val unit :=
-                            let* α0 : ref str.t := M.read (mk_str "> ") in
-                            let* α1 : ref str.t := M.read (mk_str "
-") in
-                            let* α2 : M.Val (array (ref str.t)) :=
-                              M.alloc [ α0; α1 ] in
-                            let* α3 : core.fmt.rt.Argument.t :=
-                              M.call
-                                (core.fmt.rt.Argument.t::["new_display"]
-                                  (borrow i)) in
-                            let* α4 : M.Val (array core.fmt.rt.Argument.t) :=
-                              M.alloc [ α3 ] in
-                            let* α5 : core.fmt.Arguments.t :=
-                              M.call
-                                (core.fmt.Arguments.t::["new_v1"]
-                                  (pointer_coercion "Unsize" (borrow α2))
-                                  (pointer_coercion "Unsize" (borrow α4))) in
-                            let* α6 : unit := M.call (std.io.stdio._print α5) in
-                            M.alloc α6 in
-                          M.alloc tt in
-                        M.alloc tt
-                      | _ => M.break_match
-                      end) :
-                      M (M.Val unit)
-                  ] in
-              M.alloc tt)) :
-            M (M.Val unit)
-        ] in
-    M.pure (use α3) in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t :=
-        M.read
-          (mk_str "The first four terms of the Fibonacci sequence are: 
-") in
-      let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-      let* α2 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_const"]
-            (pointer_coercion "Unsize" (borrow α1))) in
-      let* α3 : unit := M.call (std.io.stdio._print α2) in
-      M.alloc α3 in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* α0 : (core.iter.adapters.take.Take.t iterators.Fibonacci.t) -> M _ :=
-      ltac:(M.get_method (fun ℐ =>
-        core.iter.traits.collect.IntoIterator.into_iter
-          (Self := core.iter.adapters.take.Take.t iterators.Fibonacci.t)
-          (Trait := ℐ))) in
-    let* α1 :
-        iterators.Fibonacci.t ->
-          usize.t ->
-          M (core.iter.adapters.take.Take.t iterators.Fibonacci.t) :=
-      ltac:(M.get_method (fun ℐ =>
-        core.iter.traits.iterator.Iterator.take
-          (Self := iterators.Fibonacci.t)
-          (Trait := ℐ))) in
-    let* α2 : iterators.Fibonacci.t := M.call iterators.fibonacci in
-    let* α3 : core.iter.adapters.take.Take.t iterators.Fibonacci.t :=
-      M.call (α1 α2 ((Integer.of_Z 4) : usize.t)) in
-    let* α4 : core.iter.adapters.take.Take.t iterators.Fibonacci.t :=
-      M.call (α0 α3) in
-    let* α5 : M.Val (core.iter.adapters.take.Take.t iterators.Fibonacci.t) :=
-      M.alloc α4 in
-    let* α6 : M.Val unit :=
-      match_operator
-        α5
-        [
-          fun γ =>
-            (let* iter := M.copy γ in
-            M.loop
-              (let* _ : M.Val unit :=
-                let* α0 :
-                    (mut_ref
-                        (core.iter.adapters.take.Take.t iterators.Fibonacci.t))
-                      ->
-                      M (core.option.Option.t _) :=
-                  ltac:(M.get_method (fun ℐ =>
-                    core.iter.traits.iterator.Iterator.next
+                      (Trait := ℐ)))
+                  {|
+                    core.ops.range.Range.start := (Integer.of_Z 0) : i32.t;
+                    core.ops.range.Range.end_ := (Integer.of_Z 3) : i32.t;
+                  |})
+                |)
+              |))
+              [
+                fun (γ : M.Val (core.ops.range.Range.t i32.t)) =>
+                  (let iter := M.copy (| γ |) in
+                  M.loop
+                    (let _ : M.Val unit :=
+                      ltac:
+                        (M.monadic_match_operator
+                          (M.alloc (|
+                            M.call (|(ltac:(M.get_method (fun ℐ =>
+                                core.iter.traits.iterator.Iterator.next
+                                  (Self := core.ops.range.Range.t i32.t)
+                                  (Trait := ℐ)))
+                              (borrow_mut iter))
+                            |)
+                          |))
+                          [
+                            fun (γ : M.Val (core.option.Option.t i32.t)) =>
+                              match M.read (| γ |) with
+                              | core.option.Option.None =>
+                                M.alloc (|
+                                  never_to_any (| M.read (| M.break |) |)
+                                |)
+                              | _ => M.break_match(||)
+                              end :
+                              M.Val unit;
+                            fun (γ : M.Val (core.option.Option.t i32.t)) =>
+                              match M.read (| γ |) with
+                              | core.option.Option.Some _ =>
+                                let γ0_0 := core.option.Option.Get_Some_0 γ in
+                                let i := M.copy (| γ0_0 |) in
+                                let _ : M.Val unit :=
+                                  let _ : M.Val unit :=
+                                    M.alloc (|
+                                      M.call (|(std.io.stdio._print
+                                        (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                                          (pointer_coercion
+                                            "Unsize"
+                                            (borrow
+                                              (M.alloc (|
+                                                [
+                                                  M.read (| mk_str "> " |);
+                                                  M.read (| mk_str "
+" |)
+                                                ]
+                                              |))))
+                                          (pointer_coercion
+                                            "Unsize"
+                                            (borrow
+                                              (M.alloc (|
+                                                [
+                                                  M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                                                    (borrow i))
+                                                  |)
+                                                ]
+                                              |)))))
+                                        |)))
+                                      |)
+                                    |) in
+                                  M.alloc (| tt |) in
+                                M.alloc (| tt |)
+                              | _ => M.break_match(||)
+                              end :
+                              M.Val unit
+                          ]) in
+                    M.alloc (| tt |))) :
+                  M.Val unit
+              ])) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_const"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.read (|
+                          mk_str
+                            "The first four terms of the Fibonacci sequence are: 
+"
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      let _ : M.Val unit :=
+        use
+          (ltac:
+            (M.monadic_match_operator
+              (M.alloc (|
+                M.call (|(ltac:(M.get_method (fun ℐ =>
+                    core.iter.traits.collect.IntoIterator.into_iter
                       (Self :=
                         core.iter.adapters.take.Take.t iterators.Fibonacci.t)
-                      (Trait := ℐ))) in
-                let* α1 : core.option.Option.t u32.t :=
-                  M.call (α0 (borrow_mut iter)) in
-                let* α2 : M.Val (core.option.Option.t u32.t) := M.alloc α1 in
-                match_operator
-                  α2
-                  [
-                    fun γ =>
-                      (let* α0 := M.read γ in
-                      match α0 with
-                      | core.option.Option.None =>
-                        let* α0 : M.Val never.t := M.break in
-                        let* α1 := M.read α0 in
-                        let* α2 : unit := never_to_any α1 in
-                        M.alloc α2
-                      | _ => M.break_match
-                      end) :
-                      M (M.Val unit);
-                    fun γ =>
-                      (let* α0 := M.read γ in
-                      match α0 with
-                      | core.option.Option.Some _ =>
-                        let γ0_0 := core.option.Option.Get_Some_0 γ in
-                        let* i := M.copy γ0_0 in
-                        let* _ : M.Val unit :=
-                          let* _ : M.Val unit :=
-                            let* α0 : ref str.t := M.read (mk_str "> ") in
-                            let* α1 : ref str.t := M.read (mk_str "
-") in
-                            let* α2 : M.Val (array (ref str.t)) :=
-                              M.alloc [ α0; α1 ] in
-                            let* α3 : core.fmt.rt.Argument.t :=
-                              M.call
-                                (core.fmt.rt.Argument.t::["new_display"]
-                                  (borrow i)) in
-                            let* α4 : M.Val (array core.fmt.rt.Argument.t) :=
-                              M.alloc [ α3 ] in
-                            let* α5 : core.fmt.Arguments.t :=
-                              M.call
-                                (core.fmt.Arguments.t::["new_v1"]
-                                  (pointer_coercion "Unsize" (borrow α2))
-                                  (pointer_coercion "Unsize" (borrow α4))) in
-                            let* α6 : unit := M.call (std.io.stdio._print α5) in
-                            M.alloc α6 in
-                          M.alloc tt in
-                        M.alloc tt
-                      | _ => M.break_match
-                      end) :
-                      M (M.Val unit)
-                  ] in
-              M.alloc tt)) :
-            M (M.Val unit)
-        ] in
-    M.pure (use α6) in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t :=
-        M.read
-          (mk_str "The next four terms of the Fibonacci sequence are: 
-") in
-      let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-      let* α2 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_const"]
-            (pointer_coercion "Unsize" (borrow α1))) in
-      let* α3 : unit := M.call (std.io.stdio._print α2) in
-      M.alloc α3 in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* α0 :
-        (core.iter.adapters.take.Take.t
-            (core.iter.adapters.skip.Skip.t iterators.Fibonacci.t))
-          ->
-          M _ :=
-      ltac:(M.get_method (fun ℐ =>
-        core.iter.traits.collect.IntoIterator.into_iter
-          (Self :=
-            core.iter.adapters.take.Take.t
-              (core.iter.adapters.skip.Skip.t iterators.Fibonacci.t))
-          (Trait := ℐ))) in
-    let* α1 :
-        (core.iter.adapters.skip.Skip.t iterators.Fibonacci.t) ->
-          usize.t ->
-          M
-            (core.iter.adapters.take.Take.t
-              (core.iter.adapters.skip.Skip.t iterators.Fibonacci.t)) :=
-      ltac:(M.get_method (fun ℐ =>
-        core.iter.traits.iterator.Iterator.take
-          (Self := core.iter.adapters.skip.Skip.t iterators.Fibonacci.t)
-          (Trait := ℐ))) in
-    let* α2 :
-        iterators.Fibonacci.t ->
-          usize.t ->
-          M (core.iter.adapters.skip.Skip.t iterators.Fibonacci.t) :=
-      ltac:(M.get_method (fun ℐ =>
-        core.iter.traits.iterator.Iterator.skip
-          (Self := iterators.Fibonacci.t)
-          (Trait := ℐ))) in
-    let* α3 : iterators.Fibonacci.t := M.call iterators.fibonacci in
-    let* α4 : core.iter.adapters.skip.Skip.t iterators.Fibonacci.t :=
-      M.call (α2 α3 ((Integer.of_Z 4) : usize.t)) in
-    let* α5 :
-        core.iter.adapters.take.Take.t
-          (core.iter.adapters.skip.Skip.t iterators.Fibonacci.t) :=
-      M.call (α1 α4 ((Integer.of_Z 4) : usize.t)) in
-    let* α6 :
-        core.iter.adapters.take.Take.t
-          (core.iter.adapters.skip.Skip.t iterators.Fibonacci.t) :=
-      M.call (α0 α5) in
-    let* α7 :
-        M.Val
-          (core.iter.adapters.take.Take.t
-            (core.iter.adapters.skip.Skip.t iterators.Fibonacci.t)) :=
-      M.alloc α6 in
-    let* α8 : M.Val unit :=
-      match_operator
-        α7
-        [
-          fun γ =>
-            (let* iter := M.copy γ in
-            M.loop
-              (let* _ : M.Val unit :=
-                let* α0 :
-                    (mut_ref
+                      (Trait := ℐ)))
+                  (M.call (|(ltac:(M.get_method (fun ℐ =>
+                      core.iter.traits.iterator.Iterator.take
+                        (Self := iterators.Fibonacci.t)
+                        (Trait := ℐ)))
+                    (M.call (|iterators.fibonacci |))
+                    ((Integer.of_Z 4) : usize.t))
+                  |)))
+                |)
+              |))
+              [
+                fun
+                    (γ :
+                      M.Val
                         (core.iter.adapters.take.Take.t
-                          (core.iter.adapters.skip.Skip.t
-                            iterators.Fibonacci.t)))
-                      ->
-                      M (core.option.Option.t _) :=
-                  ltac:(M.get_method (fun ℐ =>
-                    core.iter.traits.iterator.Iterator.next
+                          iterators.Fibonacci.t)) =>
+                  (let iter := M.copy (| γ |) in
+                  M.loop
+                    (let _ : M.Val unit :=
+                      ltac:
+                        (M.monadic_match_operator
+                          (M.alloc (|
+                            M.call (|(ltac:(M.get_method (fun ℐ =>
+                                core.iter.traits.iterator.Iterator.next
+                                  (Self :=
+                                    core.iter.adapters.take.Take.t
+                                      iterators.Fibonacci.t)
+                                  (Trait := ℐ)))
+                              (borrow_mut iter))
+                            |)
+                          |))
+                          [
+                            fun (γ : M.Val (core.option.Option.t u32.t)) =>
+                              match M.read (| γ |) with
+                              | core.option.Option.None =>
+                                M.alloc (|
+                                  never_to_any (| M.read (| M.break |) |)
+                                |)
+                              | _ => M.break_match(||)
+                              end :
+                              M.Val unit;
+                            fun (γ : M.Val (core.option.Option.t u32.t)) =>
+                              match M.read (| γ |) with
+                              | core.option.Option.Some _ =>
+                                let γ0_0 := core.option.Option.Get_Some_0 γ in
+                                let i := M.copy (| γ0_0 |) in
+                                let _ : M.Val unit :=
+                                  let _ : M.Val unit :=
+                                    M.alloc (|
+                                      M.call (|(std.io.stdio._print
+                                        (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                                          (pointer_coercion
+                                            "Unsize"
+                                            (borrow
+                                              (M.alloc (|
+                                                [
+                                                  M.read (| mk_str "> " |);
+                                                  M.read (| mk_str "
+" |)
+                                                ]
+                                              |))))
+                                          (pointer_coercion
+                                            "Unsize"
+                                            (borrow
+                                              (M.alloc (|
+                                                [
+                                                  M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                                                    (borrow i))
+                                                  |)
+                                                ]
+                                              |)))))
+                                        |)))
+                                      |)
+                                    |) in
+                                  M.alloc (| tt |) in
+                                M.alloc (| tt |)
+                              | _ => M.break_match(||)
+                              end :
+                              M.Val unit
+                          ]) in
+                    M.alloc (| tt |))) :
+                  M.Val unit
+              ])) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_const"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.read (|
+                          mk_str
+                            "The next four terms of the Fibonacci sequence are: 
+"
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      let _ : M.Val unit :=
+        use
+          (ltac:
+            (M.monadic_match_operator
+              (M.alloc (|
+                M.call (|(ltac:(M.get_method (fun ℐ =>
+                    core.iter.traits.collect.IntoIterator.into_iter
                       (Self :=
                         core.iter.adapters.take.Take.t
                           (core.iter.adapters.skip.Skip.t
                             iterators.Fibonacci.t))
-                      (Trait := ℐ))) in
-                let* α1 : core.option.Option.t u32.t :=
-                  M.call (α0 (borrow_mut iter)) in
-                let* α2 : M.Val (core.option.Option.t u32.t) := M.alloc α1 in
-                match_operator
-                  α2
-                  [
-                    fun γ =>
-                      (let* α0 := M.read γ in
-                      match α0 with
-                      | core.option.Option.None =>
-                        let* α0 : M.Val never.t := M.break in
-                        let* α1 := M.read α0 in
-                        let* α2 : unit := never_to_any α1 in
-                        M.alloc α2
-                      | _ => M.break_match
-                      end) :
-                      M (M.Val unit);
-                    fun γ =>
-                      (let* α0 := M.read γ in
-                      match α0 with
-                      | core.option.Option.Some _ =>
-                        let γ0_0 := core.option.Option.Get_Some_0 γ in
-                        let* i := M.copy γ0_0 in
-                        let* _ : M.Val unit :=
-                          let* _ : M.Val unit :=
-                            let* α0 : ref str.t := M.read (mk_str "> ") in
-                            let* α1 : ref str.t := M.read (mk_str "
-") in
-                            let* α2 : M.Val (array (ref str.t)) :=
-                              M.alloc [ α0; α1 ] in
-                            let* α3 : core.fmt.rt.Argument.t :=
-                              M.call
-                                (core.fmt.rt.Argument.t::["new_display"]
-                                  (borrow i)) in
-                            let* α4 : M.Val (array core.fmt.rt.Argument.t) :=
-                              M.alloc [ α3 ] in
-                            let* α5 : core.fmt.Arguments.t :=
-                              M.call
-                                (core.fmt.Arguments.t::["new_v1"]
-                                  (pointer_coercion "Unsize" (borrow α2))
-                                  (pointer_coercion "Unsize" (borrow α4))) in
-                            let* α6 : unit := M.call (std.io.stdio._print α5) in
-                            M.alloc α6 in
-                          M.alloc tt in
-                        M.alloc tt
-                      | _ => M.break_match
-                      end) :
-                      M (M.Val unit)
-                  ] in
-              M.alloc tt)) :
-            M (M.Val unit)
-        ] in
-    M.pure (use α8) in
-  let* array_ : M.Val (array u32.t) :=
-    M.alloc
-      [
-        (Integer.of_Z 1) : u32.t;
-        (Integer.of_Z 3) : u32.t;
-        (Integer.of_Z 3) : u32.t;
-        (Integer.of_Z 7) : u32.t
-      ] in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "Iterate the following array ") in
-      let* α1 : ref str.t := M.read (mk_str "
-") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : M.Val (ref (array u32.t)) := M.alloc (borrow array_) in
-      let* α4 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow α3)) in
-      let* α5 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4 ] in
-      let* α6 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α5))) in
-      let* α7 : unit := M.call (std.io.stdio._print α6) in
-      M.alloc α7 in
-    M.alloc tt in
-  let* α0 : (core.slice.iter.Iter.t u32.t) -> M _ :=
-    ltac:(M.get_method (fun ℐ =>
-      core.iter.traits.collect.IntoIterator.into_iter
-        (Self := core.slice.iter.Iter.t u32.t)
-        (Trait := ℐ))) in
-  let* α1 : core.slice.iter.Iter.t u32.t :=
-    M.call
-      ((slice u32.t)::["iter"] (pointer_coercion "Unsize" (borrow array_))) in
-  let* α2 : core.slice.iter.Iter.t u32.t := M.call (α0 α1) in
-  let* α3 : M.Val (core.slice.iter.Iter.t u32.t) := M.alloc α2 in
-  let* α4 : M.Val unit :=
-    match_operator
-      α3
-      [
-        fun γ =>
-          (let* iter := M.copy γ in
-          M.loop
-            (let* _ : M.Val unit :=
-              let* α0 :
-                  (mut_ref (core.slice.iter.Iter.t u32.t)) ->
-                    M (core.option.Option.t _) :=
-                ltac:(M.get_method (fun ℐ =>
-                  core.iter.traits.iterator.Iterator.next
+                      (Trait := ℐ)))
+                  (M.call (|(ltac:(M.get_method (fun ℐ =>
+                      core.iter.traits.iterator.Iterator.take
+                        (Self :=
+                          core.iter.adapters.skip.Skip.t iterators.Fibonacci.t)
+                        (Trait := ℐ)))
+                    (M.call (|(ltac:(M.get_method (fun ℐ =>
+                        core.iter.traits.iterator.Iterator.skip
+                          (Self := iterators.Fibonacci.t)
+                          (Trait := ℐ)))
+                      (M.call (|iterators.fibonacci |))
+                      ((Integer.of_Z 4) : usize.t))
+                    |))
+                    ((Integer.of_Z 4) : usize.t))
+                  |)))
+                |)
+              |))
+              [
+                fun
+                    (γ :
+                      M.Val
+                        (core.iter.adapters.take.Take.t
+                          (core.iter.adapters.skip.Skip.t
+                            iterators.Fibonacci.t))) =>
+                  (let iter := M.copy (| γ |) in
+                  M.loop
+                    (let _ : M.Val unit :=
+                      ltac:
+                        (M.monadic_match_operator
+                          (M.alloc (|
+                            M.call (|(ltac:(M.get_method (fun ℐ =>
+                                core.iter.traits.iterator.Iterator.next
+                                  (Self :=
+                                    core.iter.adapters.take.Take.t
+                                      (core.iter.adapters.skip.Skip.t
+                                        iterators.Fibonacci.t))
+                                  (Trait := ℐ)))
+                              (borrow_mut iter))
+                            |)
+                          |))
+                          [
+                            fun (γ : M.Val (core.option.Option.t u32.t)) =>
+                              match M.read (| γ |) with
+                              | core.option.Option.None =>
+                                M.alloc (|
+                                  never_to_any (| M.read (| M.break |) |)
+                                |)
+                              | _ => M.break_match(||)
+                              end :
+                              M.Val unit;
+                            fun (γ : M.Val (core.option.Option.t u32.t)) =>
+                              match M.read (| γ |) with
+                              | core.option.Option.Some _ =>
+                                let γ0_0 := core.option.Option.Get_Some_0 γ in
+                                let i := M.copy (| γ0_0 |) in
+                                let _ : M.Val unit :=
+                                  let _ : M.Val unit :=
+                                    M.alloc (|
+                                      M.call (|(std.io.stdio._print
+                                        (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                                          (pointer_coercion
+                                            "Unsize"
+                                            (borrow
+                                              (M.alloc (|
+                                                [
+                                                  M.read (| mk_str "> " |);
+                                                  M.read (| mk_str "
+" |)
+                                                ]
+                                              |))))
+                                          (pointer_coercion
+                                            "Unsize"
+                                            (borrow
+                                              (M.alloc (|
+                                                [
+                                                  M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                                                    (borrow i))
+                                                  |)
+                                                ]
+                                              |)))))
+                                        |)))
+                                      |)
+                                    |) in
+                                  M.alloc (| tt |) in
+                                M.alloc (| tt |)
+                              | _ => M.break_match(||)
+                              end :
+                              M.Val unit
+                          ]) in
+                    M.alloc (| tt |))) :
+                  M.Val unit
+              ])) in
+      let array_ : M.Val (array u32.t) :=
+        M.alloc (|
+          [
+            (Integer.of_Z 1) : u32.t;
+            (Integer.of_Z 3) : u32.t;
+            (Integer.of_Z 3) : u32.t;
+            (Integer.of_Z 7) : u32.t
+          ]
+        |) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.read (| mk_str "Iterate the following array " |);
+                        M.read (| mk_str "
+" |)
+                      ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_debug"]
+                          (borrow (M.alloc (| borrow array_ |))))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      use
+        (ltac:
+          (M.monadic_match_operator
+            (M.alloc (|
+              M.call (|(ltac:(M.get_method (fun ℐ =>
+                  core.iter.traits.collect.IntoIterator.into_iter
                     (Self := core.slice.iter.Iter.t u32.t)
-                    (Trait := ℐ))) in
-              let* α1 : core.option.Option.t (ref u32.t) :=
-                M.call (α0 (borrow_mut iter)) in
-              let* α2 : M.Val (core.option.Option.t (ref u32.t)) :=
-                M.alloc α1 in
-              match_operator
-                α2
-                [
-                  fun γ =>
-                    (let* α0 := M.read γ in
-                    match α0 with
-                    | core.option.Option.None =>
-                      let* α0 : M.Val never.t := M.break in
-                      let* α1 := M.read α0 in
-                      let* α2 : unit := never_to_any α1 in
-                      M.alloc α2
-                    | _ => M.break_match
-                    end) :
-                    M (M.Val unit);
-                  fun γ =>
-                    (let* α0 := M.read γ in
-                    match α0 with
-                    | core.option.Option.Some _ =>
-                      let γ0_0 := core.option.Option.Get_Some_0 γ in
-                      let* i := M.copy γ0_0 in
-                      let* _ : M.Val unit :=
-                        let* _ : M.Val unit :=
-                          let* α0 : ref str.t := M.read (mk_str "> ") in
-                          let* α1 : ref str.t := M.read (mk_str "
-") in
-                          let* α2 : M.Val (array (ref str.t)) :=
-                            M.alloc [ α0; α1 ] in
-                          let* α3 : core.fmt.rt.Argument.t :=
-                            M.call
-                              (core.fmt.rt.Argument.t::["new_display"]
-                                (borrow i)) in
-                          let* α4 : M.Val (array core.fmt.rt.Argument.t) :=
-                            M.alloc [ α3 ] in
-                          let* α5 : core.fmt.Arguments.t :=
-                            M.call
-                              (core.fmt.Arguments.t::["new_v1"]
-                                (pointer_coercion "Unsize" (borrow α2))
-                                (pointer_coercion "Unsize" (borrow α4))) in
-                          let* α6 : unit := M.call (std.io.stdio._print α5) in
-                          M.alloc α6 in
-                        M.alloc tt in
-                      M.alloc tt
-                    | _ => M.break_match
-                    end) :
-                    M (M.Val unit)
-                ] in
-            M.alloc tt)) :
-          M (M.Val unit)
-      ] in
-  M.read (use α4).
+                    (Trait := ℐ)))
+                (M.call (|((slice u32.t)::["iter"]
+                  (pointer_coercion "Unsize" (borrow array_)))
+                |)))
+              |)
+            |))
+            [
+              fun (γ : M.Val (core.slice.iter.Iter.t u32.t)) =>
+                (let iter := M.copy (| γ |) in
+                M.loop
+                  (let _ : M.Val unit :=
+                    ltac:
+                      (M.monadic_match_operator
+                        (M.alloc (|
+                          M.call (|(ltac:(M.get_method (fun ℐ =>
+                              core.iter.traits.iterator.Iterator.next
+                                (Self := core.slice.iter.Iter.t u32.t)
+                                (Trait := ℐ)))
+                            (borrow_mut iter))
+                          |)
+                        |))
+                        [
+                          fun (γ : M.Val (core.option.Option.t (ref u32.t))) =>
+                            match M.read (| γ |) with
+                            | core.option.Option.None =>
+                              M.alloc (| never_to_any (| M.read (| M.break |) |)
+                              |)
+                            | _ => M.break_match(||)
+                            end :
+                            M.Val unit;
+                          fun (γ : M.Val (core.option.Option.t (ref u32.t))) =>
+                            match M.read (| γ |) with
+                            | core.option.Option.Some _ =>
+                              let γ0_0 := core.option.Option.Get_Some_0 γ in
+                              let i := M.copy (| γ0_0 |) in
+                              let _ : M.Val unit :=
+                                let _ : M.Val unit :=
+                                  M.alloc (|
+                                    M.call (|(std.io.stdio._print
+                                      (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                                        (pointer_coercion
+                                          "Unsize"
+                                          (borrow
+                                            (M.alloc (|
+                                              [
+                                                M.read (| mk_str "> " |);
+                                                M.read (| mk_str "
+" |)
+                                              ]
+                                            |))))
+                                        (pointer_coercion
+                                          "Unsize"
+                                          (borrow
+                                            (M.alloc (|
+                                              [
+                                                M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                                                  (borrow i))
+                                                |)
+                                              ]
+                                            |)))))
+                                      |)))
+                                    |)
+                                  |) in
+                                M.alloc (| tt |) in
+                              M.alloc (| tt |)
+                            | _ => M.break_match(||)
+                            end :
+                            M.Val unit
+                        ]) in
+                  M.alloc (| tt |))) :
+                M.Val unit
+            ]))
+    |)
+  )).

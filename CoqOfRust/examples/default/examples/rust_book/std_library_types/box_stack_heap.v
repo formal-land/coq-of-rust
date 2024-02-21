@@ -28,26 +28,25 @@ Section Impl_core_fmt_Debug_for_box_stack_heap_Point_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    let* self := M.alloc self in
-    let* f := M.alloc f in
-    let* α0 : mut_ref core.fmt.Formatter.t := M.read f in
-    let* α1 : ref str.t := M.read (mk_str "Point") in
-    let* α2 : ref str.t := M.read (mk_str "x") in
-    let* α3 : ref box_stack_heap.Point.t := M.read self in
-    let* α4 : ref str.t := M.read (mk_str "y") in
-    let* α5 : ref box_stack_heap.Point.t := M.read self in
-    let* α6 : M.Val (ref f64.t) :=
-      M.alloc (borrow (box_stack_heap.Point.Get_y (deref α5))) in
-    M.call
-      (core.fmt.Formatter.t::["debug_struct_field2_finish"]
-        α0
-        α1
-        α2
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      let f := M.alloc (| f |) in
+      M.call (|(core.fmt.Formatter.t::["debug_struct_field2_finish"]
+        (M.read (| f |))
+        (M.read (| mk_str "Point" |))
+        (M.read (| mk_str "x" |))
         (pointer_coercion
           "Unsize"
-          (borrow (box_stack_heap.Point.Get_x (deref α3))))
-        α4
-        (pointer_coercion "Unsize" (borrow α6))).
+          (borrow (box_stack_heap.Point.Get_x (deref (M.read (| self |))))))
+        (M.read (| mk_str "y" |))
+        (pointer_coercion
+          "Unsize"
+          (borrow
+            (M.alloc (|
+              borrow (box_stack_heap.Point.Get_y (deref (M.read (| self |))))
+            |)))))
+      |)
+    )).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
@@ -68,18 +67,19 @@ Section Impl_core_clone_Clone_for_box_stack_heap_Point_t.
   *)
   (* #[allow(dead_code)] - function was ignored by the compiler *)
   Definition clone (self : ref Self) : M box_stack_heap.Point.t :=
-    let* self := M.alloc self in
-    let* α0 : M.Val box_stack_heap.Point.t :=
-      match_operator
-        (DeclaredButUndefinedVariable
-          (A := core.clone.AssertParamIsClone.t f64.t))
-        [
-          fun γ =>
-            (let* α0 : ref box_stack_heap.Point.t := M.read self in
-            M.pure (deref α0)) :
-            M (M.Val box_stack_heap.Point.t)
-        ] in
-    M.read α0.
+    ltac:(M.monadic (
+      let self := M.alloc (| self |) in
+      M.read (|
+        ltac:
+          (M.monadic_match_operator
+            (DeclaredButUndefinedVariable
+              (A := core.clone.AssertParamIsClone.t f64.t))
+            [
+              fun γ =>
+                (deref (M.read (| self |))) : M.Val box_stack_heap.Point.t
+            ])
+      |)
+    )).
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {
@@ -127,9 +127,12 @@ fn origin() -> Point {
 }
 *)
 Definition origin : M box_stack_heap.Point.t :=
-  let* α0 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
-  let* α1 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
-  M.pure {| box_stack_heap.Point.x := α0; box_stack_heap.Point.y := α1; |}.
+  ltac:(M.monadic (
+    {|
+      box_stack_heap.Point.x := M.read (| UnsupportedLiteral : M.Val f64.t |);
+      box_stack_heap.Point.y := M.read (| UnsupportedLiteral : M.Val f64.t |);
+    |}
+  )).
 
 (*
 fn boxed_origin() -> Box<Point> {
@@ -139,11 +142,16 @@ fn boxed_origin() -> Box<Point> {
 *)
 Definition boxed_origin
     : M (alloc.boxed.Box.t box_stack_heap.Point.t alloc.boxed.Box.Default.A) :=
-  let* α0 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
-  let* α1 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
-  M.call
-    ((alloc.boxed.Box.t box_stack_heap.Point.t alloc.alloc.Global.t)::["new"]
-      {| box_stack_heap.Point.x := α0; box_stack_heap.Point.y := α1; |}).
+  ltac:(M.monadic (
+    M.call (|((alloc.boxed.Box.t
+          box_stack_heap.Point.t
+          alloc.alloc.Global.t)::["new"]
+      {|
+        box_stack_heap.Point.x := M.read (| UnsupportedLiteral : M.Val f64.t |);
+        box_stack_heap.Point.y := M.read (| UnsupportedLiteral : M.Val f64.t |);
+      |})
+    |)
+  )).
 
 (*
 fn main() {
@@ -200,184 +208,271 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  let* point : M.Val box_stack_heap.Point.t :=
-    let* α0 : box_stack_heap.Point.t := M.call box_stack_heap.origin in
-    M.alloc α0 in
-  let* rectangle : M.Val box_stack_heap.Rectangle.t :=
-    let* α0 : box_stack_heap.Point.t := M.call box_stack_heap.origin in
-    let* α1 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
-    let* α2 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
-    M.alloc
-      {|
-        box_stack_heap.Rectangle.top_left := α0;
-        box_stack_heap.Rectangle.bottom_right :=
-          {| box_stack_heap.Point.x := α1; box_stack_heap.Point.y := α2; |};
-      |} in
-  let* boxed_rectangle :
-      M.Val
-        (alloc.boxed.Box.t box_stack_heap.Rectangle.t alloc.alloc.Global.t) :=
-    let* α0 : box_stack_heap.Point.t := M.call box_stack_heap.origin in
-    let* α1 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
-    let* α2 : f64.t := M.read (UnsupportedLiteral : M.Val f64.t) in
-    let* α3 :
-        alloc.boxed.Box.t box_stack_heap.Rectangle.t alloc.alloc.Global.t :=
-      M.call
-        ((alloc.boxed.Box.t
-              box_stack_heap.Rectangle.t
-              alloc.alloc.Global.t)::["new"]
+  ltac:(M.monadic (
+    M.read (|
+      let point : M.Val box_stack_heap.Point.t :=
+        M.alloc (| M.call (|box_stack_heap.origin |) |) in
+      let rectangle : M.Val box_stack_heap.Rectangle.t :=
+        M.alloc (|
           {|
-            box_stack_heap.Rectangle.top_left := α0;
+            box_stack_heap.Rectangle.top_left :=
+              M.call (|box_stack_heap.origin |);
             box_stack_heap.Rectangle.bottom_right :=
-              {| box_stack_heap.Point.x := α1; box_stack_heap.Point.y := α2; |};
-          |}) in
-    M.alloc α3 in
-  let* boxed_point :
-      M.Val (alloc.boxed.Box.t box_stack_heap.Point.t alloc.alloc.Global.t) :=
-    let* α0 : box_stack_heap.Point.t := M.call box_stack_heap.origin in
-    let* α1 : alloc.boxed.Box.t box_stack_heap.Point.t alloc.alloc.Global.t :=
-      M.call
-        ((alloc.boxed.Box.t
-              box_stack_heap.Point.t
-              alloc.alloc.Global.t)::["new"]
-          α0) in
-    M.alloc α1 in
-  let* box_in_a_box :
-      M.Val
-        (alloc.boxed.Box.t
-          (alloc.boxed.Box.t box_stack_heap.Point.t alloc.alloc.Global.t)
-          alloc.alloc.Global.t) :=
-    let* α0 : alloc.boxed.Box.t box_stack_heap.Point.t alloc.alloc.Global.t :=
-      M.call box_stack_heap.boxed_origin in
-    let* α1 :
-        alloc.boxed.Box.t
-          (alloc.boxed.Box.t box_stack_heap.Point.t alloc.alloc.Global.t)
-          alloc.alloc.Global.t :=
-      M.call
-        ((alloc.boxed.Box.t
+              {|
+                box_stack_heap.Point.x :=
+                  M.read (| UnsupportedLiteral : M.Val f64.t |);
+                box_stack_heap.Point.y :=
+                  M.read (| UnsupportedLiteral : M.Val f64.t |);
+              |};
+          |}
+        |) in
+      let boxed_rectangle :
+          M.Val
+            (alloc.boxed.Box.t
+              box_stack_heap.Rectangle.t
+              alloc.alloc.Global.t) :=
+        M.alloc (|
+          M.call (|((alloc.boxed.Box.t
+                box_stack_heap.Rectangle.t
+                alloc.alloc.Global.t)::["new"]
+            {|
+              box_stack_heap.Rectangle.top_left :=
+                M.call (|box_stack_heap.origin |);
+              box_stack_heap.Rectangle.bottom_right :=
+                {|
+                  box_stack_heap.Point.x :=
+                    M.read (| UnsupportedLiteral : M.Val f64.t |);
+                  box_stack_heap.Point.y :=
+                    M.read (| UnsupportedLiteral : M.Val f64.t |);
+                |};
+            |})
+          |)
+        |) in
+      let boxed_point :
+          M.Val
+            (alloc.boxed.Box.t box_stack_heap.Point.t alloc.alloc.Global.t) :=
+        M.alloc (|
+          M.call (|((alloc.boxed.Box.t
+                box_stack_heap.Point.t
+                alloc.alloc.Global.t)::["new"]
+            (M.call (|box_stack_heap.origin |)))
+          |)
+        |) in
+      let box_in_a_box :
+          M.Val
+            (alloc.boxed.Box.t
               (alloc.boxed.Box.t box_stack_heap.Point.t alloc.alloc.Global.t)
-              alloc.alloc.Global.t)::["new"]
-          α0) in
-    M.alloc α1 in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "Point occupies ") in
-      let* α1 : ref str.t := M.read (mk_str " bytes on the stack
-") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : usize.t := M.call (core.mem.size_of_val (borrow point)) in
-      let* α4 : M.Val usize.t := M.alloc α3 in
-      let* α5 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α4)) in
-      let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
-      let* α7 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α6))) in
-      let* α8 : unit := M.call (std.io.stdio._print α7) in
-      M.alloc α8 in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "Rectangle occupies ") in
-      let* α1 : ref str.t := M.read (mk_str " bytes on the stack
-") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : usize.t := M.call (core.mem.size_of_val (borrow rectangle)) in
-      let* α4 : M.Val usize.t := M.alloc α3 in
-      let* α5 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α4)) in
-      let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
-      let* α7 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α6))) in
-      let* α8 : unit := M.call (std.io.stdio._print α7) in
-      M.alloc α8 in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "Boxed point occupies ") in
-      let* α1 : ref str.t := M.read (mk_str " bytes on the stack
-") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : usize.t := M.call (core.mem.size_of_val (borrow boxed_point)) in
-      let* α4 : M.Val usize.t := M.alloc α3 in
-      let* α5 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α4)) in
-      let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
-      let* α7 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α6))) in
-      let* α8 : unit := M.call (std.io.stdio._print α7) in
-      M.alloc α8 in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "Boxed rectangle occupies ") in
-      let* α1 : ref str.t := M.read (mk_str " bytes on the stack
-") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : usize.t :=
-        M.call (core.mem.size_of_val (borrow boxed_rectangle)) in
-      let* α4 : M.Val usize.t := M.alloc α3 in
-      let* α5 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α4)) in
-      let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
-      let* α7 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α6))) in
-      let* α8 : unit := M.call (std.io.stdio._print α7) in
-      M.alloc α8 in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "Boxed box occupies ") in
-      let* α1 : ref str.t := M.read (mk_str " bytes on the stack
-") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : usize.t :=
-        M.call (core.mem.size_of_val (borrow box_in_a_box)) in
-      let* α4 : M.Val usize.t := M.alloc α3 in
-      let* α5 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α4)) in
-      let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
-      let* α7 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α6))) in
-      let* α8 : unit := M.call (std.io.stdio._print α7) in
-      M.alloc α8 in
-    M.alloc tt in
-  let* unboxed_point : M.Val box_stack_heap.Point.t :=
-    let* α0 : alloc.boxed.Box.t box_stack_heap.Point.t alloc.alloc.Global.t :=
-      M.read boxed_point in
-    M.copy (deref α0) in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "Unboxed point occupies ") in
-      let* α1 : ref str.t := M.read (mk_str " bytes on the stack
-") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : usize.t :=
-        M.call (core.mem.size_of_val (borrow unboxed_point)) in
-      let* α4 : M.Val usize.t := M.alloc α3 in
-      let* α5 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α4)) in
-      let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
-      let* α7 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α6))) in
-      let* α8 : unit := M.call (std.io.stdio._print α7) in
-      M.alloc α8 in
-    M.alloc tt in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+              alloc.alloc.Global.t) :=
+        M.alloc (|
+          M.call (|((alloc.boxed.Box.t
+                (alloc.boxed.Box.t box_stack_heap.Point.t alloc.alloc.Global.t)
+                alloc.alloc.Global.t)::["new"]
+            (M.call (|box_stack_heap.boxed_origin |)))
+          |)
+        |) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.read (| mk_str "Point occupies " |);
+                        M.read (| mk_str " bytes on the stack
+" |)
+                      ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                          (borrow
+                            (M.alloc (|
+                              M.call (|(core.mem.size_of_val (borrow point)) |)
+                            |))))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.read (| mk_str "Rectangle occupies " |);
+                        M.read (| mk_str " bytes on the stack
+" |)
+                      ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                          (borrow
+                            (M.alloc (|
+                              M.call (|(core.mem.size_of_val (borrow rectangle))
+                              |)
+                            |))))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.read (| mk_str "Boxed point occupies " |);
+                        M.read (| mk_str " bytes on the stack
+" |)
+                      ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                          (borrow
+                            (M.alloc (|
+                              M.call (|(core.mem.size_of_val
+                                (borrow boxed_point))
+                              |)
+                            |))))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.read (| mk_str "Boxed rectangle occupies " |);
+                        M.read (| mk_str " bytes on the stack
+" |)
+                      ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                          (borrow
+                            (M.alloc (|
+                              M.call (|(core.mem.size_of_val
+                                (borrow boxed_rectangle))
+                              |)
+                            |))))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.read (| mk_str "Boxed box occupies " |);
+                        M.read (| mk_str " bytes on the stack
+" |)
+                      ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                          (borrow
+                            (M.alloc (|
+                              M.call (|(core.mem.size_of_val
+                                (borrow box_in_a_box))
+                              |)
+                            |))))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      let unboxed_point : M.Val box_stack_heap.Point.t :=
+        M.copy (| deref (M.read (| boxed_point |)) |) in
+      let _ : M.Val unit :=
+        let _ : M.Val unit :=
+          M.alloc (|
+            M.call (|(std.io.stdio._print
+              (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.read (| mk_str "Unboxed point occupies " |);
+                        M.read (| mk_str " bytes on the stack
+" |)
+                      ]
+                    |))))
+                (pointer_coercion
+                  "Unsize"
+                  (borrow
+                    (M.alloc (|
+                      [
+                        M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                          (borrow
+                            (M.alloc (|
+                              M.call (|(core.mem.size_of_val
+                                (borrow unboxed_point))
+                              |)
+                            |))))
+                        |)
+                      ]
+                    |)))))
+              |)))
+            |)
+          |) in
+        M.alloc (| tt |) in
+      M.alloc (| tt |)
+    |)
+  )).
