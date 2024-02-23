@@ -369,9 +369,11 @@ Ltac monadic_match_branches branches :=
   | nil => exact nil
   | ?branch :: ?branches' => 
     lazymatch branch with
-    | fun v => ?e =>
+    | fun v => @?f v =>
       refine (cons _ _);
-      [ refine (fun v => _);
+      [ let v' := fresh v in
+        intro v';
+        let e := (eval cbn beta in (f v')) in
         monadic e
       | monadic_match_branches branches'
       ]
