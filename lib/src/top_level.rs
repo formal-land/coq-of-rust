@@ -1829,9 +1829,13 @@ impl TopLevelItem {
                             args: vec![],
                             ty: Some(ty.to_coq()),
                             body: coq::Expression::Code(nest([
-                                text("M.run"),
-                                line(),
-                                value.to_doc(true),
+                                text("M.run ("),
+                                nest([
+                                    text("ltac:(M.monadic ("),
+                                    value.to_doc(false),
+                                    text("))"),
+                                ]),
+                                text(")"),
                             ])),
                         },
                     ))])
