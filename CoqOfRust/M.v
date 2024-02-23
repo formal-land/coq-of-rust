@@ -289,8 +289,8 @@ Definition get_method {Trait : Set} {F : Trait -> Set} {Result : Set}
 (** Try first to infer the trait instance, and if unsuccessful, delegate it at
     proof time. *)
 Ltac get_method method :=
-  exact (M.pure (method _)) ||
-  exact (M.get_method method).
+  exact (method _) ||
+  exact (M.get_method (| method |)).
 
 Definition impossible {A : Set} : M A :=
   LowM.Impossible.
