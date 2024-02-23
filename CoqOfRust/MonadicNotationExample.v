@@ -66,29 +66,33 @@ Module MonadicNotationExample.
       M.read (|
         let y : M.Val u32.t :=
           M.copy (|
-            ltac: (M.monadic_match_operator x
-              [
-                fun (γ : M.Val u32.t) =>
-                  (M.alloc (| (Integer.of_Z 2) : u32.t |)) : M.Val u32.t;
-                fun (γ : M.Val u32.t) =>
-                  (M.alloc (| (Integer.of_Z 6) : u32.t |)) : M.Val u32.t;
-                fun (γ : M.Val u32.t) =>
-                  (M.alloc (| (Integer.of_Z 10) : u32.t |)) : M.Val u32.t;
-                fun (γ : M.Val u32.t) =>
-                  (M.alloc (| (Integer.of_Z 14) : u32.t |)) : M.Val u32.t;
-                fun (γ : M.Val u32.t) =>
-                  (M.alloc (| (Integer.of_Z 0) : u32.t |)) : M.Val u32.t
-              ])
+            ltac:
+              (M.monadic_match_operator
+                x
+                [
+                  fun (γ : M.Val u32.t) =>
+                    (M.alloc (| (Integer.of_Z 2) : u32.t |)) : M.Val u32.t;
+                  fun (γ : M.Val u32.t) =>
+                    (M.alloc (| (Integer.of_Z 6) : u32.t |)) : M.Val u32.t;
+                  fun (γ : M.Val u32.t) =>
+                    (M.alloc (| (Integer.of_Z 10) : u32.t |)) : M.Val u32.t;
+                  fun (γ : M.Val u32.t) =>
+                    (M.alloc (| (Integer.of_Z 14) : u32.t |)) : M.Val u32.t;
+                  fun (γ : M.Val u32.t) =>
+                    (M.alloc (| (Integer.of_Z 0) : u32.t |)) : M.Val u32.t
+                ])
           |) in
         let binary : M.Val u32.t :=
           M.copy (|
-          ltac: (M.monadic_match_operator boolean
-              [
-                fun (γ : M.Val u32.t) =>
-                  (M.alloc (| (Integer.of_Z 0) : u32.t |)) : M.Val u32.t;
-                fun (γ : M.Val u32.t) =>
-                  (M.alloc (| (Integer.of_Z 1) : u32.t |)) : M.Val u32.t
-              ])
+            ltac:
+              (M.monadic_match_operator
+                boolean
+                [
+                  fun (γ : M.Val bool.t) =>
+                    (M.alloc (| (Integer.of_Z 0) : u32.t |)) : M.Val u32.t;
+                  fun (γ : M.Val bool.t) =>
+                    (M.alloc (| (Integer.of_Z 1) : u32.t |)) : M.Val u32.t
+                ])
           |) in
         M.alloc (|
           BinOp.Panic.add (|
