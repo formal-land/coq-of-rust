@@ -477,12 +477,13 @@ End Env.
 End Env.
 
 Definition MAX_OWNERS : M.Val u32.t :=
-  M.run (M.alloc (| (Integer.of_Z 50) : u32.t |)).
+  M.run (ltac:(M.monadic (M.alloc (| (Integer.of_Z 50) : u32.t |)))).
 
 Ltac TransactionId := exact u32.t.
 
 Definition WRONG_TRANSACTION_ID : M.Val (ref str.t) :=
-  M.run (mk_str "The user specified an invalid transaction id. Abort.").
+  M.run (ltac:(M.monadic (mk_str
+        "The user specified an invalid transaction id. Abort."))).
 
 Module  CallInput.
 Section CallInput.

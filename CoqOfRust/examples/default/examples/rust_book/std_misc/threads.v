@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition NTHREADS : M.Val u32.t :=
-  M.run (M.alloc (| (Integer.of_Z 10) : u32.t |)).
+  M.run (ltac:(M.monadic (M.alloc (| (Integer.of_Z 10) : u32.t |)))).
 
 (*
 fn main() {

@@ -371,26 +371,24 @@ Definition zero_address : M erc1155.AccountId.t :=
   )).
 
 Definition ON_ERC_1155_RECEIVED_SELECTOR : M.Val (array u8.t) :=
-  M.run
-    (M.alloc (|
-      [
-        (Integer.of_Z 242) : u8.t;
-        (Integer.of_Z 58) : u8.t;
-        (Integer.of_Z 110) : u8.t;
-        (Integer.of_Z 97) : u8.t
-      ]
-    |)).
+  M.run (ltac:(M.monadic (M.alloc (|
+        [
+          (Integer.of_Z 242) : u8.t;
+          (Integer.of_Z 58) : u8.t;
+          (Integer.of_Z 110) : u8.t;
+          (Integer.of_Z 97) : u8.t
+        ]
+      |)))).
 
 Definition _ON_ERC_1155_BATCH_RECEIVED_SELECTOR : M.Val (array u8.t) :=
-  M.run
-    (M.alloc (|
-      [
-        (Integer.of_Z 188) : u8.t;
-        (Integer.of_Z 25) : u8.t;
-        (Integer.of_Z 124) : u8.t;
-        (Integer.of_Z 129) : u8.t
-      ]
-    |)).
+  M.run (ltac:(M.monadic (M.alloc (|
+        [
+          (Integer.of_Z 188) : u8.t;
+          (Integer.of_Z 25) : u8.t;
+          (Integer.of_Z 124) : u8.t;
+          (Integer.of_Z 129) : u8.t
+        ]
+      |)))).
 
 Ltac TokenId := exact u128.t.
 

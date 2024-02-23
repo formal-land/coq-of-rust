@@ -2,7 +2,8 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition NTHREADS : M.Val (ref i32.t) :=
-  M.run (M.alloc (| M.alloc (| (Integer.of_Z 3) : i32.t |) |)).
+  M.run (ltac:(M.monadic (M.alloc (| M.alloc (| (Integer.of_Z 3) : i32.t |)
+      |)))).
 
 (*
 fn main() {

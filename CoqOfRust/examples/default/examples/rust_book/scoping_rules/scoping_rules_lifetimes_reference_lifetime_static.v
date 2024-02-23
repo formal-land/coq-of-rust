@@ -2,7 +2,8 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition NUM : M.Val (ref i32.t) :=
-  M.run (M.alloc (| M.alloc (| (Integer.of_Z 18) : i32.t |) |)).
+  M.run (ltac:(M.monadic (M.alloc (| M.alloc (| (Integer.of_Z 18) : i32.t |)
+      |)))).
 
 (*
 fn coerce_static<'a>(_: &'a i32) -> &'a i32 {

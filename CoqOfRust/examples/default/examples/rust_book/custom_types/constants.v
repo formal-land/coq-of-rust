@@ -2,10 +2,10 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition LANGUAGE : M.Val (ref (ref str.t)) :=
-  M.run (M.alloc (| mk_str "Rust" |)).
+  M.run (ltac:(M.monadic (M.alloc (| mk_str "Rust" |)))).
 
 Definition THRESHOLD : M.Val i32.t :=
-  M.run (M.alloc (| (Integer.of_Z 10) : i32.t |)).
+  M.run (ltac:(M.monadic (M.alloc (| (Integer.of_Z 10) : i32.t |)))).
 
 (*
 fn is_big(n: i32) -> bool {
