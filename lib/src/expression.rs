@@ -115,6 +115,7 @@ pub(crate) enum ExprKind {
         fields: Vec<(String, Rc<Expr>)>,
         base: Option<Rc<Expr>>,
         struct_or_variant: StructOrVariant,
+        ty: Option<Rc<CoqType>>,
     },
     StructTuple {
         path: Path,
@@ -203,6 +204,7 @@ impl Expr {
                 fields,
                 base,
                 struct_or_variant: _,
+                ty: _,
             } => {
                 fields.iter().any(|(_, field)| field.has_return())
                     || base.iter().any(|base| base.has_return())
@@ -590,6 +592,7 @@ impl ExprKind {
                 fields,
                 base,
                 struct_or_variant,
+                ty,
             } => match base {
                 None => paren(
                     with_paren && matches!(struct_or_variant, StructOrVariant::Variant { .. }),
@@ -618,6 +621,14 @@ impl ExprKind {
                         ]),
                         line(),
                         text("|}"),
+                        match &ty {
+                            Some(struct_ty) => group([
+                                text(" :"),
+                                line(),
+                                struct_ty.clone().to_coq().to_doc(false),
+                            ]),
+                            None => nil(),
+                        },
                     ]),
                 ),
                 Some(base) => paren(

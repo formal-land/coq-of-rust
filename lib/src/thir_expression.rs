@@ -1168,6 +1168,7 @@ fn compile_expr_kind<'a>(
                     fields,
                     base,
                     struct_or_variant,
+                    ty: Some(ty.clone()),
                 })
                 .alloc(Some(ty))
             }
