@@ -91,12 +91,12 @@ Definition main : M unit :=
           {|
             generics_implementation.Val.val :=
               M.read (| UnsupportedLiteral : M.Val f64.t |);
-          |}
+          |} : generics_implementation.Val.t
         |) in
       let y : M.Val (generics_implementation.GenVal.t i32.t) :=
         M.alloc (|
           {| generics_implementation.GenVal.gen_val := (Integer.of_Z 3) : i32.t;
-          |}
+          |} : generics_implementation.GenVal.t i32.t
         |) in
       let _ : M.Val unit :=
         let _ : M.Val unit :=

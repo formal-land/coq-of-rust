@@ -140,7 +140,7 @@ Definition main : M unit :=
                 (M.read (| mk_str "Janet" |)))
               |);
             hash.Person.phone := (Integer.of_Z 5556667777) : u64.t;
-          |}
+          |} : hash.Person.t
         |) in
       let person2 : M.Val hash.Person.t :=
         M.alloc (|
@@ -152,7 +152,7 @@ Definition main : M unit :=
                 (M.read (| mk_str "Bob" |)))
               |);
             hash.Person.phone := (Integer.of_Z 5556667777) : u64.t;
-          |}
+          |} : hash.Person.t
         |) in
       let _ : M.Val unit :=
         if

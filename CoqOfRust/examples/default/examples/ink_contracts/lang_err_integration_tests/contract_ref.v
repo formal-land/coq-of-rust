@@ -54,7 +54,7 @@ Section Impl_core_clone_Clone_for_contract_ref_AccountId_t.
             (DeclaredButUndefinedVariable
               (A := core.clone.AssertParamIsClone.t u128.t))
             [
-              fun γ =>
+              fun (γ : M.Val (core.clone.AssertParamIsClone.t u128.t)) =>
                 (deref (M.read (| self |))) : M.Val contract_ref.AccountId.t
             ])
       |)
@@ -188,7 +188,8 @@ Section Impl_contract_ref_FlipperRef_t.
   Definition new (init_value : bool.t) : M Self :=
     ltac:(M.monadic (
       let init_value := M.alloc (| init_value |) in
-      {| contract_ref.FlipperRef.value := M.read (| init_value |); |}
+      {| contract_ref.FlipperRef.value := M.read (| init_value |);
+      |} : contract_ref.FlipperRef.t
     )).
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
@@ -331,7 +332,8 @@ Section Impl_contract_ref_ContractRef_t.
           M.alloc (| M.call (|contract_ref.FlipperRef.t::["new_default"] |)
           |) in
         M.alloc (|
-          {| contract_ref.ContractRef.flipper := M.read (| flipper |); |}
+          {| contract_ref.ContractRef.flipper := M.read (| flipper |);
+          |} : contract_ref.ContractRef.t
         |)
       |)
     )).
@@ -382,7 +384,8 @@ Section Impl_contract_ref_ContractRef_t.
             |)
           |) in
         M.alloc (|
-          {| contract_ref.ContractRef.flipper := M.read (| flipper |); |}
+          {| contract_ref.ContractRef.flipper := M.read (| flipper |);
+          |} : contract_ref.ContractRef.t
         |)
       |)
     )).

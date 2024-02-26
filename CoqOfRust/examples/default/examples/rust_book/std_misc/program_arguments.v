@@ -118,7 +118,7 @@ Definition main : M unit :=
                                 {|
                                   core.ops.range.RangeFrom.start :=
                                     (Integer.of_Z 1) : usize.t;
-                                |})
+                                |} : core.ops.range.RangeFrom.t usize.t)
                               |)
                             |))))
                         |)

@@ -16,7 +16,8 @@ fn main() {
 Definition main : M unit :=
   ltac:(M.monadic (
     M.read (|
-      let x := M.copy (| DeclaredButUndefinedVariable (A := u64.t) |) in
+      let x : M.Val u64.t :=
+        M.copy (| DeclaredButUndefinedVariable (A := u64.t) |) in
       let _ : M.Val unit :=
         let _ : M.Val unit := InlineAssembly in
         M.alloc (| tt |) in

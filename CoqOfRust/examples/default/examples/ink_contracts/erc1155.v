@@ -41,7 +41,7 @@ Section Impl_core_default_Default_for_erc1155_Mapping_t_K_V.
               (Self := core.marker.PhantomData.t V)
               (Trait := ℐ)))
           |);
-      |}
+      |} : erc1155.Mapping.t K V
     )).
   
   Global Instance AssociatedFunction_default :
@@ -245,7 +245,9 @@ Section Impl_core_clone_Clone_for_erc1155_AccountId_t.
           (M.monadic_match_operator
             (DeclaredButUndefinedVariable
               (A := core.clone.AssertParamIsClone.t u128.t))
-            [ fun γ => (deref (M.read (| self |))) : M.Val erc1155.AccountId.t
+            [
+              fun (γ : M.Val (core.clone.AssertParamIsClone.t u128.t)) =>
+                (deref (M.read (| self |))) : M.Val erc1155.AccountId.t
             ])
       |)
     )).
@@ -748,7 +750,7 @@ Section Impl_core_default_Default_for_erc1155_Contract_t.
           M.call (|ltac:(M.get_method (fun ℐ =>
             core.default.Default.default (Self := u128.t) (Trait := ℐ)))
           |);
-      |}
+      |} : erc1155.Contract.t
     )).
   
   Global Instance AssociatedFunction_default :
@@ -914,7 +916,7 @@ Section Impl_erc1155_Contract_t.
                         (deref (M.read (| self |)))
                     |);
                   erc1155.TransferSingle.value := M.read (| value |);
-                |}))
+                |} : erc1155.TransferSingle.t))
             |)
           |) in
         erc1155.Contract.Get_token_id_nonce (deref (M.read (| self |)))
@@ -1029,7 +1031,7 @@ Section Impl_erc1155_Contract_t.
                       core.option.Option.Some (M.read (| caller |));
                     erc1155.TransferSingle.token_id := M.read (| token_id |);
                     erc1155.TransferSingle.value := M.read (| value |);
-                  |}))
+                  |} : erc1155.TransferSingle.t))
               |)
             |) in
           M.alloc (| core.result.Result.Ok tt |)
@@ -1175,7 +1177,7 @@ Section Impl_erc1155_Contract_t.
                     core.option.Option.Some (M.read (| to |));
                   erc1155.TransferSingle.token_id := M.read (| token_id |);
                   erc1155.TransferSingle.value := M.read (| value |);
-                |}))
+                |} : erc1155.TransferSingle.t))
             |)
           |) in
         M.alloc (| tt |)
@@ -2393,7 +2395,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                     erc1155.ApprovalForAll.owner := M.read (| caller |);
                     erc1155.ApprovalForAll.operator := M.read (| operator |);
                     erc1155.ApprovalForAll.approved := M.read (| approved |);
-                  |}))
+                  |} : erc1155.ApprovalForAll.t))
               |)
             |) in
           M.alloc (| core.result.Result.Ok tt |)

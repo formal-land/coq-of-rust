@@ -127,7 +127,7 @@ Definition main : M unit :=
               |);
             disambiguating_overlapping_traits.Form.age :=
               (Integer.of_Z 28) : u8.t;
-          |}
+          |} : disambiguating_overlapping_traits.Form.t
         |) in
       let username : M.Val alloc.string.String.t :=
         M.alloc (|

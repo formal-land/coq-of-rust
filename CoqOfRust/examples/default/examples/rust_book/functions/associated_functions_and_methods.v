@@ -31,7 +31,7 @@ Section Impl_associated_functions_and_methods_Point_t.
           M.read (| UnsupportedLiteral : M.Val f64.t |);
         associated_functions_and_methods.Point.x :=
           M.read (| UnsupportedLiteral : M.Val f64.t |);
-      |}
+      |} : associated_functions_and_methods.Point.t
     )).
   
   Global Instance AssociatedFunction_origin :
@@ -54,7 +54,7 @@ Section Impl_associated_functions_and_methods_Point_t.
       {|
         associated_functions_and_methods.Point.x := M.read (| x |);
         associated_functions_and_methods.Point.y := M.read (| y |);
-      |}
+      |} : associated_functions_and_methods.Point.t
     )).
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
@@ -460,7 +460,7 @@ Definition main : M unit :=
                 (M.read (| UnsupportedLiteral : M.Val f64.t |))
                 (M.read (| UnsupportedLiteral : M.Val f64.t |)))
               |);
-          |}
+          |} : associated_functions_and_methods.Rectangle.t
         |) in
       let _ : M.Val unit :=
         let _ : M.Val unit :=
@@ -540,7 +540,7 @@ Definition main : M unit :=
                 (M.read (| UnsupportedLiteral : M.Val f64.t |))
                 (M.read (| UnsupportedLiteral : M.Val f64.t |)))
               |);
-          |}
+          |} : associated_functions_and_methods.Rectangle.t
         |) in
       let _ : M.Val unit :=
         M.alloc (|

@@ -115,7 +115,7 @@ Module tests.
                   {|
                     core.ops.range.Range.start := (Integer.of_Z 0) : i32.t;
                     core.ops.range.Range.end_ := (Integer.of_Z 5) : i32.t;
-                  |})
+                  |} : core.ops.range.Range.t i32.t)
                 |)
               |))
               [
@@ -230,7 +230,7 @@ Module tests.
                   {|
                     core.ops.range.Range.start := (Integer.of_Z 0) : i32.t;
                     core.ops.range.Range.end_ := (Integer.of_Z 5) : i32.t;
-                  |})
+                  |} : core.ops.range.Range.t i32.t)
                 |)
               |))
               [

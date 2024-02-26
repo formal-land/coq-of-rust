@@ -75,7 +75,7 @@ Section Impl_core_clone_Clone_for_box_stack_heap_Point_t.
             (DeclaredButUndefinedVariable
               (A := core.clone.AssertParamIsClone.t f64.t))
             [
-              fun γ =>
+              fun (γ : M.Val (core.clone.AssertParamIsClone.t f64.t)) =>
                 (deref (M.read (| self |))) : M.Val box_stack_heap.Point.t
             ])
       |)
@@ -131,7 +131,7 @@ Definition origin : M box_stack_heap.Point.t :=
     {|
       box_stack_heap.Point.x := M.read (| UnsupportedLiteral : M.Val f64.t |);
       box_stack_heap.Point.y := M.read (| UnsupportedLiteral : M.Val f64.t |);
-    |}
+    |} : box_stack_heap.Point.t
   )).
 
 (*
@@ -149,7 +149,7 @@ Definition boxed_origin
       {|
         box_stack_heap.Point.x := M.read (| UnsupportedLiteral : M.Val f64.t |);
         box_stack_heap.Point.y := M.read (| UnsupportedLiteral : M.Val f64.t |);
-      |})
+      |} : box_stack_heap.Point.t)
     |)
   )).
 
@@ -223,8 +223,8 @@ Definition main : M unit :=
                   M.read (| UnsupportedLiteral : M.Val f64.t |);
                 box_stack_heap.Point.y :=
                   M.read (| UnsupportedLiteral : M.Val f64.t |);
-              |};
-          |}
+              |} : box_stack_heap.Point.t;
+          |} : box_stack_heap.Rectangle.t
         |) in
       let boxed_rectangle :
           M.Val
@@ -244,8 +244,8 @@ Definition main : M unit :=
                     M.read (| UnsupportedLiteral : M.Val f64.t |);
                   box_stack_heap.Point.y :=
                     M.read (| UnsupportedLiteral : M.Val f64.t |);
-                |};
-            |})
+                |} : box_stack_heap.Point.t;
+            |} : box_stack_heap.Rectangle.t)
           |)
         |) in
       let boxed_point :

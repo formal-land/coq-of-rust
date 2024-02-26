@@ -48,7 +48,7 @@ Definition main : M unit :=
               M.call (|((alloc.boxed.Box.t u8.t alloc.alloc.Global.t)::["new"]
                 ((Integer.of_Z 20) : u8.t))
               |);
-          |}
+          |} : scoping_rules_ownership_and_rules_partial_moves.main.Person.t
         |) in
       ltac:
         (M.monadic_match_operator

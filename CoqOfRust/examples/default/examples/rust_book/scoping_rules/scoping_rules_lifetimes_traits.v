@@ -65,7 +65,7 @@ Section Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed_t.
       {|
         scoping_rules_lifetimes_traits.Borrowed.x :=
           borrow (M.alloc (| (Integer.of_Z 10) : i32.t |));
-      |}
+      |} : scoping_rules_lifetimes_traits.Borrowed.t
     )).
   
   Global Instance AssociatedFunction_default :

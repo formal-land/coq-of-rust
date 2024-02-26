@@ -33,7 +33,7 @@ Section Impl_core_default_Default_for_call_builder_delegate_CallBuilderDelegateT
           M.call (|ltac:(M.get_method (fun ℐ =>
             core.default.Default.default (Self := i32.t) (Trait := ℐ)))
           |);
-      |}
+      |} : call_builder_delegate.CallBuilderDelegateTest.t
     )).
   
   Global Instance AssociatedFunction_default :
@@ -62,7 +62,7 @@ Section Impl_call_builder_delegate_CallBuilderDelegateTest_t.
       {|
         call_builder_delegate.CallBuilderDelegateTest.value :=
           M.read (| value |);
-      |}
+      |} : call_builder_delegate.CallBuilderDelegateTest.t
     )).
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {

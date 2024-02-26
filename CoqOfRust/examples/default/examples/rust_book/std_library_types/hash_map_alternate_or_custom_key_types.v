@@ -107,12 +107,17 @@ Section Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account_t.
             (DeclaredButUndefinedVariable
               (A := core.cmp.AssertParamIsEq.t (ref str.t)))
             [
-              fun γ =>
+              fun (γ : M.Val (core.cmp.AssertParamIsEq.t (ref str.t))) =>
                 (ltac:
                   (M.monadic_match_operator
                     (DeclaredButUndefinedVariable
                       (A := core.cmp.AssertParamIsEq.t (ref str.t)))
-                    [ fun γ => (M.alloc (| tt |)) : M.Val unit ])) :
+                    [
+                      fun
+                          (γ :
+                            M.Val (core.cmp.AssertParamIsEq.t (ref str.t))) =>
+                        (M.alloc (| tt |)) : M.Val unit
+                    ])) :
                 M.Val unit
             ])
       |)
@@ -312,7 +317,7 @@ Definition try_logon
               M.read (| username |);
             hash_map_alternate_or_custom_key_types.Account.password :=
               M.read (| password |);
-          |}
+          |} : hash_map_alternate_or_custom_key_types.Account.t
         |) in
       ltac:
         (M.monadic_match_operator
@@ -488,7 +493,7 @@ Definition main : M unit :=
               M.read (| mk_str "j.everyman" |);
             hash_map_alternate_or_custom_key_types.Account.password :=
               M.read (| mk_str "password123" |);
-          |}
+          |} : hash_map_alternate_or_custom_key_types.Account.t
         |) in
       let account_info :
           M.Val hash_map_alternate_or_custom_key_types.AccountInfo.t :=
@@ -498,7 +503,7 @@ Definition main : M unit :=
               M.read (| mk_str "John Everyman" |);
             hash_map_alternate_or_custom_key_types.AccountInfo.email :=
               M.read (| mk_str "j.everyman@email.com" |);
-          |}
+          |} : hash_map_alternate_or_custom_key_types.AccountInfo.t
         |) in
       let _ :
           M.Val

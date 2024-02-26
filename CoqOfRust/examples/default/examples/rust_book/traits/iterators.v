@@ -162,7 +162,7 @@ Definition fibonacci : M iterators.Fibonacci.t :=
     {|
       iterators.Fibonacci.curr := (Integer.of_Z 0) : u32.t;
       iterators.Fibonacci.next := (Integer.of_Z 1) : u32.t;
-    |}
+    |} : iterators.Fibonacci.t
   )).
 
 (*
@@ -213,7 +213,7 @@ Definition main : M unit :=
           {|
             core.ops.range.Range.start := (Integer.of_Z 0) : i32.t;
             core.ops.range.Range.end_ := (Integer.of_Z 3) : i32.t;
-          |}
+          |} : core.ops.range.Range.t i32.t
         |) in
       let _ : M.Val unit :=
         let _ : M.Val unit :=
@@ -400,7 +400,7 @@ Definition main : M unit :=
                   {|
                     core.ops.range.Range.start := (Integer.of_Z 0) : i32.t;
                     core.ops.range.Range.end_ := (Integer.of_Z 3) : i32.t;
-                  |})
+                  |} : core.ops.range.Range.t i32.t)
                 |)
               |))
               [

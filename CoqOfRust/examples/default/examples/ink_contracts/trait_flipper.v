@@ -40,7 +40,7 @@ Section Impl_trait_flipper_Flipper_t.
           M.call (|ltac:(M.get_method (fun ℐ =>
             core.default.Default.default (Self := bool.t) (Trait := ℐ)))
           |);
-      |}
+      |} : trait_flipper.Flipper.t
     )).
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {

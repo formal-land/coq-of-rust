@@ -41,7 +41,7 @@ Section Impl_core_default_Default_for_multisig_Mapping_t_K_V.
               (Self := core.marker.PhantomData.t V)
               (Trait := ℐ)))
           |);
-      |}
+      |} : multisig.Mapping.t K V
     )).
   
   Global Instance AssociatedFunction_default :
@@ -281,7 +281,9 @@ Section Impl_core_clone_Clone_for_multisig_AccountId_t.
           (M.monadic_match_operator
             (DeclaredButUndefinedVariable
               (A := core.clone.AssertParamIsClone.t u128.t))
-            [ fun γ => (deref (M.read (| self |))) : M.Val multisig.AccountId.t
+            [
+              fun (γ : M.Val (core.clone.AssertParamIsClone.t u128.t)) =>
+                (deref (M.read (| self |))) : M.Val multisig.AccountId.t
             ])
       |)
     )).
@@ -372,7 +374,10 @@ Section Impl_core_cmp_Eq_for_multisig_AccountId_t.
           (M.monadic_match_operator
             (DeclaredButUndefinedVariable
               (A := core.cmp.AssertParamIsEq.t u128.t))
-            [ fun γ => (M.alloc (| tt |)) : M.Val unit ])
+            [
+              fun (γ : M.Val (core.cmp.AssertParamIsEq.t u128.t)) =>
+                (M.alloc (| tt |)) : M.Val unit
+            ])
       |)
     )).
   
@@ -528,7 +533,7 @@ Section Impl_core_clone_Clone_for_multisig_ConfirmationStatus_t.
             (DeclaredButUndefinedVariable
               (A := core.clone.AssertParamIsClone.t u32.t))
             [
-              fun γ =>
+              fun (γ : M.Val (core.clone.AssertParamIsClone.t u32.t)) =>
                 (deref (M.read (| self |))) :
                 M.Val multisig.ConfirmationStatus.t
             ])
@@ -628,7 +633,7 @@ Section Impl_core_default_Default_for_multisig_Transaction_t.
           M.call (|ltac:(M.get_method (fun ℐ =>
             core.default.Default.default (Self := bool.t) (Trait := ℐ)))
           |);
-      |}
+      |} : multisig.Transaction.t
     )).
   
   Global Instance AssociatedFunction_default :
@@ -790,7 +795,7 @@ Section Impl_core_default_Default_for_multisig_Transactions_t.
           M.call (|ltac:(M.get_method (fun ℐ =>
             core.default.Default.default (Self := u32.t) (Trait := ℐ)))
           |);
-      |}
+      |} : multisig.Transactions.t
     )).
   
   Global Instance AssociatedFunction_default :
@@ -1164,7 +1169,7 @@ Section Impl_core_default_Default_for_multisig_Multisig_t.
           M.call (|ltac:(M.get_method (fun ℐ =>
             core.default.Default.default (Self := u32.t) (Trait := ℐ)))
           |);
-      |}
+      |} : multisig.Multisig.t
     )).
   
   Global Instance AssociatedFunction_default :
@@ -1845,7 +1850,8 @@ Section Impl_multisig_Multisig_t.
                   |)
                 |)))
               (multisig.Event.OwnerAddition
-                {| multisig.OwnerAddition.owner := M.read (| new_owner |); |}))
+                {| multisig.OwnerAddition.owner := M.read (| new_owner |);
+                |} : multisig.OwnerAddition.t))
             |)
           |) in
         M.alloc (| tt |)
@@ -2202,7 +2208,8 @@ Section Impl_multisig_Multisig_t.
                   |)
                 |)))
               (multisig.Event.OwnerRemoval
-                {| multisig.OwnerRemoval.owner := M.read (| owner |); |}))
+                {| multisig.OwnerRemoval.owner := M.read (| owner |);
+                |} : multisig.OwnerRemoval.t))
             |)
           |) in
         M.alloc (| tt |)
@@ -2316,7 +2323,8 @@ Section Impl_multisig_Multisig_t.
                   |)
                 |)))
               (multisig.Event.OwnerRemoval
-                {| multisig.OwnerRemoval.owner := M.read (| old_owner |); |}))
+                {| multisig.OwnerRemoval.owner := M.read (| old_owner |);
+                |} : multisig.OwnerRemoval.t))
             |)
           |) in
         let _ : M.Val unit :=
@@ -2329,7 +2337,8 @@ Section Impl_multisig_Multisig_t.
                   |)
                 |)))
               (multisig.Event.OwnerAddition
-                {| multisig.OwnerAddition.owner := M.read (| new_owner |); |}))
+                {| multisig.OwnerAddition.owner := M.read (| new_owner |);
+                |} : multisig.OwnerAddition.t))
             |)
           |) in
         M.alloc (| tt |)
@@ -2397,7 +2406,7 @@ Section Impl_multisig_Multisig_t.
                 {|
                   multisig.RequirementChange.new_requirement :=
                     M.read (| new_requirement |);
-                |}))
+                |} : multisig.RequirementChange.t))
             |)
           |) in
         M.alloc (| tt |)
@@ -2557,7 +2566,7 @@ Section Impl_multisig_Multisig_t.
                         M.read (| transaction |);
                       multisig.Confirmation.from := M.read (| confirmer |);
                       multisig.Confirmation.status := M.read (| status |);
-                    |}))
+                    |} : multisig.Confirmation.t))
                 |)
               |) in
             M.alloc (| tt |)
@@ -2659,7 +2668,7 @@ Section Impl_multisig_Multisig_t.
                 |)))
               (multisig.Event.Submission
                 {| multisig.Submission.transaction := M.read (| trans_id |);
-                |}))
+                |} : multisig.Submission.t))
             |)
           |) in
         M.alloc (|
@@ -2969,7 +2978,7 @@ Section Impl_multisig_Multisig_t.
                   |)))
                 (multisig.Event.Cancellation
                   {| multisig.Cancellation.transaction := M.read (| trans_id |);
-                  |}))
+                  |} : multisig.Cancellation.t))
               |)
             |) in
           M.alloc (| tt |)
@@ -3150,7 +3159,7 @@ Section Impl_multisig_Multisig_t.
                   {|
                     multisig.Revocation.transaction := M.read (| trans_id |);
                     multisig.Revocation.from := M.read (| caller |);
-                  |}))
+                  |} : multisig.Revocation.t))
               |)
             |) in
           M.alloc (| tt |)
@@ -3332,7 +3341,7 @@ Section Impl_multisig_Multisig_t.
                         core.option.Option.t
                           (alloc.vec.Vec.t u8.t alloc.alloc.Global.t)))
                     |);
-                |}))
+                |} : multisig.Execution.t))
             |)
           |) in
         result

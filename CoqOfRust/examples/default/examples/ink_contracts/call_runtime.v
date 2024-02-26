@@ -54,7 +54,7 @@ Section Impl_core_clone_Clone_for_call_runtime_AccountId_t.
             (DeclaredButUndefinedVariable
               (A := core.clone.AssertParamIsClone.t u128.t))
             [
-              fun γ =>
+              fun (γ : M.Val (core.clone.AssertParamIsClone.t u128.t)) =>
                 (deref (M.read (| self |))) : M.Val call_runtime.AccountId.t
             ])
       |)
@@ -498,7 +498,7 @@ Section Impl_call_runtime_RuntimeCaller_t.
                     |);
                   call_runtime.BalancesCall.Transfer.value :=
                     M.read (| value |);
-                |})
+                |} : call_runtime.BalancesCall.t)
             |))))
         |))
         ltac:(M.get_method (fun ℐ =>

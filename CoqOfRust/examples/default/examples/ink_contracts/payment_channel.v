@@ -54,7 +54,7 @@ Section Impl_core_clone_Clone_for_payment_channel_AccountId_t.
             (DeclaredButUndefinedVariable
               (A := core.clone.AssertParamIsClone.t u128.t))
             [
-              fun γ =>
+              fun (γ : M.Val (core.clone.AssertParamIsClone.t u128.t)) =>
                 (deref (M.read (| self |))) : M.Val payment_channel.AccountId.t
             ])
       |)
@@ -148,7 +148,10 @@ Section Impl_core_cmp_Eq_for_payment_channel_AccountId_t.
           (M.monadic_match_operator
             (DeclaredButUndefinedVariable
               (A := core.cmp.AssertParamIsEq.t u128.t))
-            [ fun γ => (M.alloc (| tt |)) : M.Val unit ])
+            [
+              fun (γ : M.Val (core.cmp.AssertParamIsEq.t u128.t)) =>
+                (M.alloc (| tt |)) : M.Val unit
+            ])
       |)
     )).
   
@@ -1017,7 +1020,7 @@ Section Impl_payment_channel_PaymentChannel_t.
         payment_channel.PaymentChannel.withdrawn := (Integer.of_Z 0) : u128.t;
         payment_channel.PaymentChannel.close_duration :=
           M.read (| close_duration |);
-      |}
+      |} : payment_channel.PaymentChannel.t
     )).
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
@@ -1476,7 +1479,7 @@ Section Impl_payment_channel_PaymentChannel_t.
                         payment_channel.PaymentChannel.Get_close_duration
                           (deref (M.read (| self |)))
                       |);
-                  |}))
+                  |} : payment_channel.SenderCloseStarted.t))
               |)
             |) in
           let _ : M.Val unit :=

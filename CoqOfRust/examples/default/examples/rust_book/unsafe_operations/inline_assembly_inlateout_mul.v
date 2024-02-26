@@ -51,8 +51,10 @@ Definition mul (a : u64.t) (b : u64.t) : M u128.t :=
     let a := M.alloc (| a |) in
     let b := M.alloc (| b |) in
     M.read (|
-      let lo := M.copy (| DeclaredButUndefinedVariable (A := u64.t) |) in
-      let hi := M.copy (| DeclaredButUndefinedVariable (A := u64.t) |) in
+      let lo : M.Val u64.t :=
+        M.copy (| DeclaredButUndefinedVariable (A := u64.t) |) in
+      let hi : M.Val u64.t :=
+        M.copy (| DeclaredButUndefinedVariable (A := u64.t) |) in
       let _ : M.Val unit :=
         let _ : M.Val unit := InlineAssembly in
         M.alloc (| tt |) in

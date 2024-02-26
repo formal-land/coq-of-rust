@@ -63,7 +63,8 @@ Section Impl_traits_Animal_for_traits_Sheep_t.
   Definition new (name : ref str.t) : M traits.Sheep.t :=
     ltac:(M.monadic (
       let name := M.alloc (| name |) in
-      {| traits.Sheep.name := M.read (| name |); traits.Sheep.naked := false; |}
+      {| traits.Sheep.name := M.read (| name |); traits.Sheep.naked := false;
+      |} : traits.Sheep.t
     )).
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {

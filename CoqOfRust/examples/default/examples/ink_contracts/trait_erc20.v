@@ -41,7 +41,7 @@ Section Impl_core_default_Default_for_trait_erc20_Mapping_t_K_V.
               (Self := core.marker.PhantomData.t V)
               (Trait := ℐ)))
           |);
-      |}
+      |} : trait_erc20.Mapping.t K V
     )).
   
   Global Instance AssociatedFunction_default :
@@ -159,7 +159,7 @@ Section Impl_core_clone_Clone_for_trait_erc20_AccountId_t.
             (DeclaredButUndefinedVariable
               (A := core.clone.AssertParamIsClone.t u128.t))
             [
-              fun γ =>
+              fun (γ : M.Val (core.clone.AssertParamIsClone.t u128.t)) =>
                 (deref (M.read (| self |))) : M.Val trait_erc20.AccountId.t
             ])
       |)
@@ -433,7 +433,7 @@ Section Impl_core_default_Default_for_trait_erc20_Erc20_t.
                   u128.t)
               (Trait := ℐ)))
           |);
-      |}
+      |} : trait_erc20.Erc20.t
     )).
   
   Global Instance AssociatedFunction_default :
@@ -641,7 +641,7 @@ Section Impl_trait_erc20_Erc20_t.
                   trait_erc20.Transfer.to :=
                     core.option.Option.Some (M.read (| caller |));
                   trait_erc20.Transfer.value := M.read (| total_supply |);
-                |}))
+                |} : trait_erc20.Transfer.t))
             |)
           |) in
         M.alloc (|
@@ -657,7 +657,7 @@ Section Impl_trait_erc20_Erc20_t.
                       u128.t)
                   (Trait := ℐ)))
               |);
-          |}
+          |} : trait_erc20.Erc20.t
         |)
       |)
     )).
@@ -839,7 +839,7 @@ Section Impl_trait_erc20_Erc20_t.
                       core.option.Option.Some
                         (M.read (| deref (M.read (| to |)) |));
                     trait_erc20.Transfer.value := M.read (| value |);
-                  |}))
+                  |} : trait_erc20.Transfer.t))
               |)
             |) in
           M.alloc (| core.result.Result.Ok tt |)
@@ -1024,7 +1024,7 @@ Section Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20_t.
                   trait_erc20.Approval.owner := M.read (| owner |);
                   trait_erc20.Approval.spender := M.read (| spender |);
                   trait_erc20.Approval.value := M.read (| value |);
-                |}))
+                |} : trait_erc20.Approval.t))
             |)
           |) in
         M.alloc (| core.result.Result.Ok tt |)

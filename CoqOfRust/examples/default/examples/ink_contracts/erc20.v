@@ -45,7 +45,7 @@ Section Impl_core_default_Default_for_erc20_Mapping_t_K_V.
               (Self := core.marker.PhantomData.t V)
               (Trait := ℐ)))
           |);
-      |}
+      |} : erc20.Mapping.t K V
     )).
   
   Global Instance AssociatedFunction_default :
@@ -162,7 +162,10 @@ Section Impl_core_clone_Clone_for_erc20_AccountId_t.
           (M.monadic_match_operator
             (DeclaredButUndefinedVariable
               (A := core.clone.AssertParamIsClone.t u128.t))
-            [ fun γ => (deref (M.read (| self |))) : M.Val erc20.AccountId.t ])
+            [
+              fun (γ : M.Val (core.clone.AssertParamIsClone.t u128.t)) =>
+                (deref (M.read (| self |))) : M.Val erc20.AccountId.t
+            ])
       |)
     )).
   
@@ -253,7 +256,7 @@ Section Impl_core_default_Default_for_erc20_Erc20_t.
                 erc20.Mapping.t (erc20.AccountId.t * erc20.AccountId.t) u128.t)
               (Trait := ℐ)))
           |);
-      |}
+      |} : erc20.Erc20.t
     )).
   
   Global Instance AssociatedFunction_default :
@@ -467,7 +470,7 @@ Section Impl_erc20_Erc20_t_2.
                   erc20.Transfer.to :=
                     core.option.Option.Some (M.read (| caller |));
                   erc20.Transfer.value := M.read (| total_supply |);
-                |}))
+                |} : erc20.Transfer.t))
             |)
           |) in
         M.alloc (|
@@ -483,7 +486,7 @@ Section Impl_erc20_Erc20_t_2.
                       u128.t)
                   (Trait := ℐ)))
               |);
-          |}
+          |} : erc20.Erc20.t
         |)
       |)
     )).
@@ -722,7 +725,7 @@ Section Impl_erc20_Erc20_t_2.
                       core.option.Option.Some
                         (M.read (| deref (M.read (| to |)) |));
                     erc20.Transfer.value := M.read (| value |);
-                  |}))
+                  |} : erc20.Transfer.t))
               |)
             |) in
           M.alloc (| core.result.Result.Ok tt |)
@@ -835,7 +838,7 @@ Section Impl_erc20_Erc20_t_2.
                   erc20.Approval.owner := M.read (| owner |);
                   erc20.Approval.spender := M.read (| spender |);
                   erc20.Approval.value := M.read (| value |);
-                |}))
+                |} : erc20.Approval.t))
             |)
           |) in
         M.alloc (| core.result.Result.Ok tt |)

@@ -60,7 +60,8 @@ Section Impl_integration_flipper_Flipper_t.
   Definition new (init_value : bool.t) : M Self :=
     ltac:(M.monadic (
       let init_value := M.alloc (| init_value |) in
-      {| integration_flipper.Flipper.value := M.read (| init_value |); |}
+      {| integration_flipper.Flipper.value := M.read (| init_value |);
+      |} : integration_flipper.Flipper.t
     )).
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {

@@ -54,7 +54,7 @@ Section Impl_core_clone_Clone_for_basic_contract_caller_AccountId_t.
             (DeclaredButUndefinedVariable
               (A := core.clone.AssertParamIsClone.t u128.t))
             [
-              fun γ =>
+              fun (γ : M.Val (core.clone.AssertParamIsClone.t u128.t)) =>
                 (deref (M.read (| self |))) :
                 M.Val basic_contract_caller.AccountId.t
             ])
@@ -113,7 +113,7 @@ Section Impl_basic_contract_caller_OtherContract_t.
     ltac:(M.monadic (
       let init_value := M.alloc (| init_value |) in
       {| basic_contract_caller.OtherContract.value := M.read (| init_value |);
-      |}
+      |} : basic_contract_caller.OtherContract.t
     )).
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
@@ -215,7 +215,7 @@ Section Impl_basic_contract_caller_BasicContractCaller_t.
           {|
             basic_contract_caller.BasicContractCaller.other_contract :=
               M.read (| other_contract |);
-          |}
+          |} : basic_contract_caller.BasicContractCaller.t
         |)
       |)
     )).

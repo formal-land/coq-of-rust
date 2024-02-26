@@ -54,7 +54,7 @@ Section Impl_core_clone_Clone_for_contract_terminate_AccountId_t.
             (DeclaredButUndefinedVariable
               (A := core.clone.AssertParamIsClone.t u128.t))
             [
-              fun γ =>
+              fun (γ : M.Val (core.clone.AssertParamIsClone.t u128.t)) =>
                 (deref (M.read (| self |))) :
                 M.Val contract_terminate.AccountId.t
             ])

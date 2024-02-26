@@ -38,19 +38,26 @@ Section Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book_t.
             (DeclaredButUndefinedVariable
               (A := core.clone.AssertParamIsClone.t (ref str.t)))
             [
-              fun γ =>
+              fun (γ : M.Val (core.clone.AssertParamIsClone.t (ref str.t))) =>
                 (ltac:
                   (M.monadic_match_operator
                     (DeclaredButUndefinedVariable
                       (A := core.clone.AssertParamIsClone.t (ref str.t)))
                     [
-                      fun γ =>
+                      fun
+                          (γ :
+                            M.Val
+                              (core.clone.AssertParamIsClone.t (ref str.t))) =>
                         (ltac:
                           (M.monadic_match_operator
                             (DeclaredButUndefinedVariable
                               (A := core.clone.AssertParamIsClone.t u32.t))
                             [
-                              fun γ =>
+                              fun
+                                  (γ :
+                                    M.Val
+                                      (core.clone.AssertParamIsClone.t
+                                        u32.t)) =>
                                 (deref (M.read (| self |))) :
                                 M.Val scoping_rules_borrowing_mutablity.Book.t
                             ])) :
@@ -237,7 +244,7 @@ Definition main : M unit :=
               |);
             scoping_rules_borrowing_mutablity.Book.year :=
               (Integer.of_Z 1979) : u32.t;
-          |}
+          |} : scoping_rules_borrowing_mutablity.Book.t
         |) in
       let mutabook : M.Val scoping_rules_borrowing_mutablity.Book.t :=
         M.copy (| immutabook |) in

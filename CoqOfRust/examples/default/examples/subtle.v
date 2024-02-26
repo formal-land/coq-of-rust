@@ -36,7 +36,10 @@ Section Impl_core_clone_Clone_for_subtle_Choice_t.
           (M.monadic_match_operator
             (DeclaredButUndefinedVariable
               (A := core.clone.AssertParamIsClone.t u8.t))
-            [ fun γ => (deref (M.read (| self |))) : M.Val subtle.Choice.t ])
+            [
+              fun (γ : M.Val (core.clone.AssertParamIsClone.t u8.t)) =>
+                (deref (M.read (| self |))) : M.Val subtle.Choice.t
+            ])
       |)
     )).
   
@@ -2891,7 +2894,7 @@ Section Impl_core_clone_Clone_for_subtle_CtOption_t_T.
               core.clone.Clone.clone (Self := subtle.Choice.t) (Trait := ℐ)))
             (borrow (subtle.CtOption.Get_is_some (deref (M.read (| self |))))))
           |);
-      |}
+      |} : subtle.CtOption.t T
     )).
   
   Global Instance AssociatedFunction_clone :
@@ -3041,7 +3044,7 @@ Section Impl_subtle_CtOption_t_T.
       {|
         subtle.CtOption.value := M.read (| value |);
         subtle.CtOption.is_some := M.read (| is_some |);
-      |}
+      |} : subtle.CtOption.t T
     )).
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {

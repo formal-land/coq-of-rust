@@ -99,7 +99,8 @@ Definition call_foo (arg : i32.t) : M i32.t :=
   ltac:(M.monadic (
     let arg := M.alloc (| arg |) in
     M.read (|
-      let result := M.copy (| DeclaredButUndefinedVariable (A := i32.t) |) in
+      let result : M.Val i32.t :=
+        M.copy (| DeclaredButUndefinedVariable (A := i32.t) |) in
       let _ : M.Val unit := InlineAssembly in
       result
     |)

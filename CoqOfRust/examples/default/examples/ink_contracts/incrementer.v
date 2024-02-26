@@ -24,7 +24,8 @@ Section Impl_incrementer_Incrementer_t.
   Definition new (init_value : i32.t) : M Self :=
     ltac:(M.monadic (
       let init_value := M.alloc (| init_value |) in
-      {| incrementer.Incrementer.value := M.read (| init_value |); |}
+      {| incrementer.Incrementer.value := M.read (| init_value |);
+      |} : incrementer.Incrementer.t
     )).
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {

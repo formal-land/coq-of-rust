@@ -54,7 +54,7 @@ Section Impl_core_clone_Clone_for_conditional_compilation_AccountId_t.
             (DeclaredButUndefinedVariable
               (A := core.clone.AssertParamIsClone.t u128.t))
             [
-              fun γ =>
+              fun (γ : M.Val (core.clone.AssertParamIsClone.t u128.t)) =>
                 (deref (M.read (| self |))) :
                 M.Val conditional_compilation.AccountId.t
             ])
@@ -290,7 +290,7 @@ Section Impl_conditional_compilation_ConditionalCompilation_t.
           M.call (|ltac:(M.get_method (fun ℐ =>
             core.default.Default.default (Self := bool.t) (Trait := ℐ)))
           |);
-      |}
+      |} : conditional_compilation.ConditionalCompilation.t
     )).
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
@@ -308,7 +308,7 @@ Section Impl_conditional_compilation_ConditionalCompilation_t.
       {|
         conditional_compilation.ConditionalCompilation.value :=
           M.read (| value |);
-      |}
+      |} : conditional_compilation.ConditionalCompilation.t
     )).
   
   Global Instance AssociatedFunction_new_foo :
@@ -327,7 +327,7 @@ Section Impl_conditional_compilation_ConditionalCompilation_t.
       {|
         conditional_compilation.ConditionalCompilation.value :=
           M.read (| value |);
-      |}
+      |} : conditional_compilation.ConditionalCompilation.t
     )).
   
   Global Instance AssociatedFunction_new_bar :
@@ -346,7 +346,7 @@ Section Impl_conditional_compilation_ConditionalCompilation_t.
       {|
         conditional_compilation.ConditionalCompilation.value :=
           M.read (| value |);
-      |}
+      |} : conditional_compilation.ConditionalCompilation.t
     )).
   
   Global Instance AssociatedFunction_new_foo_bar :
@@ -404,7 +404,7 @@ Section Impl_conditional_compilation_ConditionalCompilation_t.
                         (deref (M.read (| self |)))
                     |);
                   conditional_compilation.Changes.by_ := M.read (| caller |);
-                |}))
+                |} : conditional_compilation.Changes.t))
             |)
           |) in
         M.alloc (| tt |)
@@ -481,7 +481,7 @@ Section Impl_conditional_compilation_ConditionalCompilation_t.
                     M.read (| caller |);
                   conditional_compilation.ChangesDated.when :=
                     M.read (| block_number |);
-                |}))
+                |} : conditional_compilation.ChangesDated.t))
             |)
           |) in
         M.alloc (| tt |)
@@ -583,7 +583,7 @@ Section Impl_conditional_compilation_Flip_for_conditional_compilation_Conditiona
                   conditional_compilation.Changes.new_value :=
                     M.read (| value |);
                   conditional_compilation.Changes.by_ := M.read (| caller |);
-                |}))
+                |} : conditional_compilation.Changes.t))
             |)
           |) in
         let _ : M.Val unit :=

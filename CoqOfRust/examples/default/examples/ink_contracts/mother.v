@@ -41,7 +41,7 @@ Section Impl_core_default_Default_for_mother_Mapping_t_K_V.
               (Self := core.marker.PhantomData.t V)
               (Trait := ℐ)))
           |);
-      |}
+      |} : mother.Mapping.t K V
     )).
   
   Global Instance AssociatedFunction_default :
@@ -158,7 +158,10 @@ Section Impl_core_clone_Clone_for_mother_AccountId_t.
           (M.monadic_match_operator
             (DeclaredButUndefinedVariable
               (A := core.clone.AssertParamIsClone.t u128.t))
-            [ fun γ => (deref (M.read (| self |))) : M.Val mother.AccountId.t ])
+            [
+              fun (γ : M.Val (core.clone.AssertParamIsClone.t u128.t)) =>
+                (deref (M.read (| self |))) : M.Val mother.AccountId.t
+            ])
       |)
     )).
   
@@ -245,7 +248,10 @@ Section Impl_core_cmp_Eq_for_mother_AccountId_t.
           (M.monadic_match_operator
             (DeclaredButUndefinedVariable
               (A := core.cmp.AssertParamIsEq.t u128.t))
-            [ fun γ => (M.alloc (| tt |)) : M.Val unit ])
+            [
+              fun (γ : M.Val (core.cmp.AssertParamIsEq.t u128.t)) =>
+                (M.alloc (| tt |)) : M.Val unit
+            ])
       |)
     )).
   
@@ -410,7 +416,18 @@ Section Impl_core_cmp_Eq_for_mother_Bids_t.
                       (core.option.Option.t (mother.AccountId.t * u128.t))
                       alloc.alloc.Global.t)
                     alloc.alloc.Global.t)))
-            [ fun γ => (M.alloc (| tt |)) : M.Val unit ])
+            [
+              fun
+                  (γ :
+                    M.Val
+                      (core.cmp.AssertParamIsEq.t
+                        (alloc.vec.Vec.t
+                          (alloc.vec.Vec.t
+                            (core.option.Option.t (mother.AccountId.t * u128.t))
+                            alloc.alloc.Global.t)
+                          alloc.alloc.Global.t))) =>
+                (M.alloc (| tt |)) : M.Val unit
+            ])
       |)
     )).
   
@@ -811,12 +828,18 @@ Section Impl_core_cmp_Eq_for_mother_Status_t.
             (DeclaredButUndefinedVariable
               (A := core.cmp.AssertParamIsEq.t u32.t))
             [
-              fun γ =>
+              fun (γ : M.Val (core.cmp.AssertParamIsEq.t u32.t)) =>
                 (ltac:
                   (M.monadic_match_operator
                     (DeclaredButUndefinedVariable
                       (A := core.cmp.AssertParamIsEq.t mother.Outline.t))
-                    [ fun γ => (M.alloc (| tt |)) : M.Val unit ])) :
+                    [
+                      fun
+                          (γ :
+                            M.Val
+                              (core.cmp.AssertParamIsEq.t mother.Outline.t)) =>
+                        (M.alloc (| tt |)) : M.Val unit
+                    ])) :
                 M.Val unit
             ])
       |)
@@ -1090,19 +1113,27 @@ Section Impl_core_cmp_Eq_for_mother_Auction_t.
             (DeclaredButUndefinedVariable
               (A := core.cmp.AssertParamIsEq.t alloc.string.String.t))
             [
-              fun γ =>
+              fun
+                  (γ :
+                    M.Val (core.cmp.AssertParamIsEq.t alloc.string.String.t)) =>
                 (ltac:
                   (M.monadic_match_operator
                     (DeclaredButUndefinedVariable
                       (A := core.cmp.AssertParamIsEq.t (array u8.t)))
                     [
-                      fun γ =>
+                      fun
+                          (γ :
+                            M.Val (core.cmp.AssertParamIsEq.t (array u8.t))) =>
                         (ltac:
                           (M.monadic_match_operator
                             (DeclaredButUndefinedVariable
                               (A := core.cmp.AssertParamIsEq.t mother.Bids.t))
                             [
-                              fun γ =>
+                              fun
+                                  (γ :
+                                    M.Val
+                                      (core.cmp.AssertParamIsEq.t
+                                        mother.Bids.t)) =>
                                 (ltac:
                                   (M.monadic_match_operator
                                     (DeclaredButUndefinedVariable
@@ -1110,7 +1141,11 @@ Section Impl_core_cmp_Eq_for_mother_Auction_t.
                                         core.cmp.AssertParamIsEq.t
                                           (array u32.t)))
                                     [
-                                      fun γ =>
+                                      fun
+                                          (γ :
+                                            M.Val
+                                              (core.cmp.AssertParamIsEq.t
+                                                (array u32.t))) =>
                                         (ltac:
                                           (M.monadic_match_operator
                                             (DeclaredButUndefinedVariable
@@ -1118,7 +1153,11 @@ Section Impl_core_cmp_Eq_for_mother_Auction_t.
                                                 core.cmp.AssertParamIsEq.t
                                                   mother.Status.t))
                                             [
-                                              fun γ =>
+                                              fun
+                                                  (γ :
+                                                    M.Val
+                                                      (core.cmp.AssertParamIsEq.t
+                                                        mother.Status.t)) =>
                                                 (ltac:
                                                   (M.monadic_match_operator
                                                     (DeclaredButUndefinedVariable
@@ -1126,7 +1165,11 @@ Section Impl_core_cmp_Eq_for_mother_Auction_t.
                                                         core.cmp.AssertParamIsEq.t
                                                           bool.t))
                                                     [
-                                                      fun γ =>
+                                                      fun
+                                                          (γ :
+                                                            M.Val
+                                                              (core.cmp.AssertParamIsEq.t
+                                                                bool.t)) =>
                                                         (ltac:
                                                           (M.monadic_match_operator
                                                             (DeclaredButUndefinedVariable
@@ -1136,7 +1179,13 @@ Section Impl_core_cmp_Eq_for_mother_Auction_t.
                                                                     u8.t
                                                                     alloc.alloc.Global.t)))
                                                             [
-                                                              fun γ =>
+                                                              fun
+                                                                  (γ :
+                                                                    M.Val
+                                                                      (core.cmp.AssertParamIsEq.t
+                                                                        (alloc.vec.Vec.t
+                                                                          u8.t
+                                                                          alloc.alloc.Global.t))) =>
                                                                 (M.alloc (| tt
                                                                 |)) :
                                                                 M.Val unit
@@ -1218,7 +1267,7 @@ Section Impl_core_clone_Clone_for_mother_Auction_t.
                 (Trait := ℐ)))
             (borrow (mother.Auction.Get_vector (deref (M.read (| self |))))))
           |);
-      |}
+      |} : mother.Auction.t
     )).
   
   Global Instance AssociatedFunction_clone :
@@ -1279,7 +1328,7 @@ Section Impl_core_default_Default_for_mother_Auction_t.
               (Self := alloc.vec.Vec.t u8.t alloc.alloc.Global.t)
               (Trait := ℐ)))
           |);
-      |}
+      |} : mother.Auction.t
     )).
   
   Global Instance AssociatedFunction_default :
@@ -1428,7 +1477,12 @@ Section Impl_core_cmp_Eq_for_mother_Failure_t.
           (M.monadic_match_operator
             (DeclaredButUndefinedVariable
               (A := core.cmp.AssertParamIsEq.t alloc.string.String.t))
-            [ fun γ => (M.alloc (| tt |)) : M.Val unit ])
+            [
+              fun
+                  (γ :
+                    M.Val (core.cmp.AssertParamIsEq.t alloc.string.String.t)) =>
+                (M.alloc (| tt |)) : M.Val unit
+            ])
       |)
     )).
   
@@ -1549,7 +1603,7 @@ Section Impl_core_default_Default_for_mother_Mother_t.
               (Self := mother.Mapping.t mother.AccountId.t u128.t)
               (Trait := ℐ)))
           |);
-      |}
+      |} : mother.Mother.t
     )).
   
   Global Instance AssociatedFunction_default :
@@ -1619,7 +1673,7 @@ Section Impl_mother_Mother_t.
               (Trait := ℐ)))
           |);
         mother.Mother.auction := M.read (| auction |);
-      |}
+      |} : mother.Mother.t
     )).
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
@@ -1720,7 +1774,7 @@ Section Impl_mother_Mother_t.
                           (Trait := ℐ)))
                       (borrow auction))
                     |);
-                |}))
+                |} : mother.AuctionEchoed.t))
             |)
           |) in
         auction

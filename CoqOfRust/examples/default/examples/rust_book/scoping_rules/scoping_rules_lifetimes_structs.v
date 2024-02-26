@@ -222,7 +222,7 @@ Definition main : M unit :=
           {|
             scoping_rules_lifetimes_structs.NamedBorrowed.x := borrow x;
             scoping_rules_lifetimes_structs.NamedBorrowed.y := borrow y;
-          |}
+          |} : scoping_rules_lifetimes_structs.NamedBorrowed.t
         |) in
       let reference : M.Val scoping_rules_lifetimes_structs.Either.t :=
         M.alloc (| scoping_rules_lifetimes_structs.Either.Ref (borrow x) |) in

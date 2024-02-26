@@ -41,7 +41,7 @@ Section Impl_core_default_Default_for_erc721_Mapping_t_K_V.
               (Self := core.marker.PhantomData.t V)
               (Trait := ℐ)))
           |);
-      |}
+      |} : erc721.Mapping.t K V
     )).
   
   Global Instance AssociatedFunction_default :
@@ -245,7 +245,10 @@ Section Impl_core_clone_Clone_for_erc721_AccountId_t.
           (M.monadic_match_operator
             (DeclaredButUndefinedVariable
               (A := core.clone.AssertParamIsClone.t u128.t))
-            [ fun γ => (deref (M.read (| self |))) : M.Val erc721.AccountId.t ])
+            [
+              fun (γ : M.Val (core.clone.AssertParamIsClone.t u128.t)) =>
+                (deref (M.read (| self |))) : M.Val erc721.AccountId.t
+            ])
       |)
     )).
   
@@ -416,7 +419,7 @@ Section Impl_core_default_Default_for_erc721_Erc721_t.
                 erc721.Mapping.t (erc721.AccountId.t * erc721.AccountId.t) unit)
               (Trait := ℐ)))
           |);
-      |}
+      |} : erc721.Erc721.t
     )).
   
   Global Instance AssociatedFunction_default :
@@ -1120,7 +1123,7 @@ Section Impl_erc721_Erc721_t.
                     erc721.ApprovalForAll.owner := M.read (| caller |);
                     erc721.ApprovalForAll.operator := M.read (| to |);
                     erc721.ApprovalForAll.approved := M.read (| approved |);
-                  |}))
+                  |} : erc721.ApprovalForAll.t))
               |)
             |) in
           let _ : M.Val unit :=
@@ -1440,7 +1443,7 @@ Section Impl_erc721_Erc721_t.
                     erc721.Approval.from := M.read (| caller |);
                     erc721.Approval.to := M.read (| deref (M.read (| to |)) |);
                     erc721.Approval.id := M.read (| id |);
-                  |}))
+                  |} : erc721.Approval.t))
               |)
             |) in
           M.alloc (| core.result.Result.Ok tt |)
@@ -2176,7 +2179,7 @@ Section Impl_erc721_Erc721_t.
                     erc721.Transfer.to :=
                       core.option.Option.Some (M.read (| caller |));
                     erc721.Transfer.id := M.read (| id |);
-                  |}))
+                  |} : erc721.Transfer.t))
               |)
             |) in
           M.alloc (| core.result.Result.Ok tt |)

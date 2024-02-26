@@ -36,13 +36,17 @@ Section Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumbe
               (A :=
                 core.clone.AssertParamIsClone.t (core.option.Option.t u8.t)))
             [
-              fun γ =>
+              fun
+                  (γ :
+                    M.Val
+                      (core.clone.AssertParamIsClone.t
+                        (core.option.Option.t u8.t))) =>
                 (ltac:
                   (M.monadic_match_operator
                     (DeclaredButUndefinedVariable
                       (A := core.clone.AssertParamIsClone.t u32.t))
                     [
-                      fun γ =>
+                      fun (γ : M.Val (core.clone.AssertParamIsClone.t u32.t)) =>
                         (deref (M.read (| self |))) :
                         M.Val unpacking_options_via_question_mark.PhoneNumber.t
                     ])) :
@@ -107,7 +111,12 @@ Section Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job_t.
                   (core.option.Option.t
                     unpacking_options_via_question_mark.PhoneNumber.t)))
             [
-              fun γ =>
+              fun
+                  (γ :
+                    M.Val
+                      (core.clone.AssertParamIsClone.t
+                        (core.option.Option.t
+                          unpacking_options_via_question_mark.PhoneNumber.t))) =>
                 (deref (M.read (| self |))) :
                 M.Val unpacking_options_via_question_mark.Job.t
             ])
@@ -338,9 +347,9 @@ Definition main : M unit :=
                           core.option.Option.Some ((Integer.of_Z 61) : u8.t);
                         unpacking_options_via_question_mark.PhoneNumber.number :=
                           (Integer.of_Z 439222222) : u32.t;
-                      |};
-                |};
-          |}
+                      |} : unpacking_options_via_question_mark.PhoneNumber.t;
+                |} : unpacking_options_via_question_mark.Job.t;
+          |} : unpacking_options_via_question_mark.Person.t
         |) in
       let _ : M.Val unit :=
         ltac:

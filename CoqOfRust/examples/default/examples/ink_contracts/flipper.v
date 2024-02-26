@@ -24,7 +24,8 @@ Section Impl_flipper_Flipper_t.
   Definition new (init_value : bool.t) : M Self :=
     ltac:(M.monadic (
       let init_value := M.alloc (| init_value |) in
-      {| flipper.Flipper.value := M.read (| init_value |); |}
+      {| flipper.Flipper.value := M.read (| init_value |);
+      |} : flipper.Flipper.t
     )).
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {

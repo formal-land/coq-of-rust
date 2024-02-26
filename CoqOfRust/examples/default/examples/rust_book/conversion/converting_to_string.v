@@ -73,7 +73,8 @@ Definition main : M unit :=
     M.read (|
       let circle : M.Val converting_to_string.Circle.t :=
         M.alloc (|
-          {| converting_to_string.Circle.radius := (Integer.of_Z 6) : i32.t; |}
+          {| converting_to_string.Circle.radius := (Integer.of_Z 6) : i32.t;
+          |} : converting_to_string.Circle.t
         |) in
       let _ : M.Val alloc.string.String.t :=
         M.alloc (|

@@ -88,7 +88,7 @@ Definition main : M unit :=
               (Integer.of_Z 0) : i32.t;
             scoping_rules_borrowing_aliasing.Point.z :=
               (Integer.of_Z 0) : i32.t;
-          |}
+          |} : scoping_rules_borrowing_aliasing.Point.t
         |) in
       let borrowed_point :
           M.Val (ref scoping_rules_borrowing_aliasing.Point.t) :=

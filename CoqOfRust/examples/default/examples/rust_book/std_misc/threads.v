@@ -49,7 +49,7 @@ Definition main : M unit :=
                   {|
                     core.ops.range.Range.start := (Integer.of_Z 0) : u32.t;
                     core.ops.range.Range.end_ := M.read (| threads.NTHREADS |);
-                  |})
+                  |} : core.ops.range.Range.t u32.t)
                 |)
               |))
               [

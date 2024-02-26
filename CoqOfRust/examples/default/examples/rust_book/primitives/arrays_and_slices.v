@@ -325,7 +325,7 @@ Definition main : M unit :=
               {|
                 core.ops.range.Range.start := (Integer.of_Z 1) : usize.t;
                 core.ops.range.Range.end_ := (Integer.of_Z 4) : usize.t;
-              |})
+              |} : core.ops.range.Range.t usize.t)
             |)))
           |)
         |) in
@@ -471,7 +471,7 @@ Definition main : M unit :=
                       |),
                       (Integer.of_Z 1) : usize.t
                     |);
-                |})
+                |} : core.ops.range.Range.t usize.t)
               |)
             |))
             [

@@ -44,7 +44,7 @@ Definition main : M unit :=
             match_destructuring_structs.Foo.x :=
               ((Integer.of_Z 1) : u32.t, (Integer.of_Z 2) : u32.t);
             match_destructuring_structs.Foo.y := (Integer.of_Z 3) : u32.t;
-          |}
+          |} : match_destructuring_structs.Foo.t
         |) in
       ltac:
         (M.monadic_match_operator

@@ -32,7 +32,7 @@ Definition main : M unit :=
                 {|
                   core.ops.range.Range.start := (Integer.of_Z 1) : i32.t;
                   core.ops.range.Range.end_ := (Integer.of_Z 101) : i32.t;
-                |})
+                |} : core.ops.range.Range.t i32.t)
               |)
             |))
             [

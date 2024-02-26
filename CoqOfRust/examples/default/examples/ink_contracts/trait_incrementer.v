@@ -43,7 +43,8 @@ Section Impl_trait_incrementer_Incrementer_t.
   Definition new (init_value : u64.t) : M Self :=
     ltac:(M.monadic (
       let init_value := M.alloc (| init_value |) in
-      {| trait_incrementer.Incrementer.value := M.read (| init_value |); |}
+      {| trait_incrementer.Incrementer.value := M.read (| init_value |);
+      |} : trait_incrementer.Incrementer.t
     )).
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {

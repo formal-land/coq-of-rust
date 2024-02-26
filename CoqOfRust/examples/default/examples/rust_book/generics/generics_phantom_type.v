@@ -214,7 +214,7 @@ Definition main : M unit :=
             generics_phantom_type.PhantomStruct.first := "Q"%char;
             generics_phantom_type.PhantomStruct.phantom :=
               core.marker.PhantomData.Build;
-          |}
+          |} : generics_phantom_type.PhantomStruct.t char.t f32.t
         |) in
       let _struct2 :
           M.Val (generics_phantom_type.PhantomStruct.t char.t f64.t) :=
@@ -223,7 +223,7 @@ Definition main : M unit :=
             generics_phantom_type.PhantomStruct.first := "Q"%char;
             generics_phantom_type.PhantomStruct.phantom :=
               core.marker.PhantomData.Build;
-          |}
+          |} : generics_phantom_type.PhantomStruct.t char.t f64.t
         |) in
       M.alloc (| tt |)
     |)

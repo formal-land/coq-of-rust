@@ -46,7 +46,8 @@ Module my.
     Definition new (contents : T) : M (struct_visibility.my.ClosedBox.t T) :=
       ltac:(M.monadic (
         let contents := M.alloc (| contents |) in
-        {| struct_visibility.my.ClosedBox.contents := M.read (| contents |); |}
+        {| struct_visibility.my.ClosedBox.contents := M.read (| contents |);
+        |} : struct_visibility.my.ClosedBox.t T
       )).
     
     Global Instance AssociatedFunction_new :
@@ -91,7 +92,7 @@ Definition main : M unit :=
           {|
             struct_visibility.my.OpenBox.contents :=
               M.read (| mk_str "public information" |);
-          |}
+          |} : struct_visibility.my.OpenBox.t (ref str.t)
         |) in
       let _ : M.Val unit :=
         let _ : M.Val unit :=

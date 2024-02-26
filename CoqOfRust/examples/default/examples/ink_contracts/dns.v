@@ -41,7 +41,7 @@ Section Impl_core_default_Default_for_dns_Mapping_t_K_V.
               (Self := core.marker.PhantomData.t V)
               (Trait := ℐ)))
           |);
-      |}
+      |} : dns.Mapping.t K V
     )).
   
   Global Instance AssociatedFunction_default :
@@ -262,7 +262,10 @@ Section Impl_core_clone_Clone_for_dns_AccountId_t.
           (M.monadic_match_operator
             (DeclaredButUndefinedVariable
               (A := core.clone.AssertParamIsClone.t u128.t))
-            [ fun γ => (deref (M.read (| self |))) : M.Val dns.AccountId.t ])
+            [
+              fun (γ : M.Val (core.clone.AssertParamIsClone.t u128.t)) =>
+                (deref (M.read (| self |))) : M.Val dns.AccountId.t
+            ])
       |)
     )).
   
@@ -595,7 +598,7 @@ Section Impl_core_default_Default_for_dns_DomainNameService_t.
             dns.DomainNameService.name_to_owner := M.read (| name_to_owner |);
             dns.DomainNameService.default_address :=
               M.call (|dns.zero_address |);
-          |}
+          |} : dns.DomainNameService.t
         |)
       |)
     )).
@@ -840,7 +843,7 @@ Section Impl_dns_DomainNameService_t.
                   {|
                     dns.Register.name := M.read (| name |);
                     dns.Register.from := M.read (| caller |);
-                  |}))
+                  |} : dns.Register.t))
               |)
             |) in
           M.alloc (| core.result.Result.Ok tt |)
@@ -993,7 +996,7 @@ Section Impl_dns_DomainNameService_t.
                     dns.SetAddress.from := M.read (| caller |);
                     dns.SetAddress.old_address := M.read (| old_address |);
                     dns.SetAddress.new_address := M.read (| new_address |);
-                  |}))
+                  |} : dns.SetAddress.t))
               |)
             |) in
           M.alloc (| core.result.Result.Ok tt |)
@@ -1115,7 +1118,7 @@ Section Impl_dns_DomainNameService_t.
                     dns.Transfer.from := M.read (| caller |);
                     dns.Transfer.old_owner := M.read (| old_owner |);
                     dns.Transfer.new_owner := M.read (| to |);
-                  |}))
+                  |} : dns.Transfer.t))
               |)
             |) in
           M.alloc (| core.result.Result.Ok tt |)

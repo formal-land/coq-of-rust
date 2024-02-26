@@ -24,7 +24,7 @@ Section Impl_core_convert_From_i32_t_for_into_Number_t.
   Definition from (item : i32.t) : M Self :=
     ltac:(M.monadic (
       let item := M.alloc (| item |) in
-      {| into.Number.value := M.read (| item |); |}
+      {| into.Number.value := M.read (| item |); |} : into.Number.t
     )).
   
   Global Instance AssociatedFunction_from :

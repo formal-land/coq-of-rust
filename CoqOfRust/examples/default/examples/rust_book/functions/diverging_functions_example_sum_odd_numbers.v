@@ -106,7 +106,7 @@ Definition sum_odd_numbers (up_to : u32.t) : M u32.t :=
                   {|
                     core.ops.range.Range.start := (Integer.of_Z 0) : u32.t;
                     core.ops.range.Range.end_ := M.read (| up_to |);
-                  |})
+                  |} : core.ops.range.Range.t u32.t)
                 |)
               |))
               [

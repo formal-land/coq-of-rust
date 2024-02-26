@@ -37,7 +37,7 @@ Section Impl_custom_allocator_CustomAllocator_t.
                 |)
               |))))
           |);
-      |}
+      |} : custom_allocator.CustomAllocator.t
     )).
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {

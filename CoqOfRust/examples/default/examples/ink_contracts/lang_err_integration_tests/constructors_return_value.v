@@ -56,7 +56,7 @@ Section Impl_core_clone_Clone_for_constructors_return_value_AccountId_t.
             (DeclaredButUndefinedVariable
               (A := core.clone.AssertParamIsClone.t u128.t))
             [
-              fun γ =>
+              fun (γ : M.Val (core.clone.AssertParamIsClone.t u128.t)) =>
                 (deref (M.read (| self |))) :
                 M.Val constructors_return_value.AccountId.t
             ])
@@ -232,7 +232,7 @@ Section Impl_constructors_return_value_ConstructorsReturnValue_t.
       {|
         constructors_return_value.ConstructorsReturnValue.value :=
           M.read (| init_value |);
-      |}
+      |} : constructors_return_value.ConstructorsReturnValue.t
     )).
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {

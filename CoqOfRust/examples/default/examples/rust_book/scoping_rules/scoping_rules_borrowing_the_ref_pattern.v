@@ -33,7 +33,7 @@ Section Impl_core_clone_Clone_for_scoping_rules_borrowing_the_ref_pattern_Point_
             (DeclaredButUndefinedVariable
               (A := core.clone.AssertParamIsClone.t i32.t))
             [
-              fun γ =>
+              fun (γ : M.Val (core.clone.AssertParamIsClone.t i32.t)) =>
                 (deref (M.read (| self |))) :
                 M.Val scoping_rules_borrowing_the_ref_pattern.Point.t
             ])
@@ -174,7 +174,7 @@ Definition main : M unit :=
                       (Integer.of_Z 0) : i32.t;
                     scoping_rules_borrowing_the_ref_pattern.Point.y :=
                       (Integer.of_Z 0) : i32.t;
-                  |}
+                  |} : scoping_rules_borrowing_the_ref_pattern.Point.t
                 |) in
               let _copy_of_x : M.Val i32.t :=
                 M.copy (|

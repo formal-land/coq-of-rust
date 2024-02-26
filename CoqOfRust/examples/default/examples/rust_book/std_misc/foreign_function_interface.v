@@ -41,7 +41,7 @@ Definition main : M unit :=
               M.read (| UnsupportedLiteral : M.Val f32.t |);
             foreign_function_interface.Complex.im :=
               M.read (| UnsupportedLiteral : M.Val f32.t |);
-          |}
+          |} : foreign_function_interface.Complex.t
         |) in
       let z_sqrt : M.Val foreign_function_interface.Complex.t :=
         M.alloc (|
@@ -152,7 +152,7 @@ Section Impl_core_clone_Clone_for_foreign_function_interface_Complex_t.
             (DeclaredButUndefinedVariable
               (A := core.clone.AssertParamIsClone.t f32.t))
             [
-              fun γ =>
+              fun (γ : M.Val (core.clone.AssertParamIsClone.t f32.t)) =>
                 (deref (M.read (| self |))) :
                 M.Val foreign_function_interface.Complex.t
             ])

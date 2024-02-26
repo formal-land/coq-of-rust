@@ -41,7 +41,7 @@ Section Impl_core_default_Default_for_mapping_integration_tests_Mapping_t_K_V.
               (Self := core.marker.PhantomData.t V)
               (Trait := ℐ)))
           |);
-      |}
+      |} : mapping_integration_tests.Mapping.t K V
     )).
   
   Global Instance AssociatedFunction_default :
@@ -265,7 +265,7 @@ Section Impl_core_clone_Clone_for_mapping_integration_tests_AccountId_t.
             (DeclaredButUndefinedVariable
               (A := core.clone.AssertParamIsClone.t u128.t))
             [
-              fun γ =>
+              fun (γ : M.Val (core.clone.AssertParamIsClone.t u128.t)) =>
                 (deref (M.read (| self |))) :
                 M.Val mapping_integration_tests.AccountId.t
             ])
@@ -367,7 +367,7 @@ Section Impl_core_default_Default_for_mapping_integration_tests_Mappings_t.
                   u128.t)
               (Trait := ℐ)))
           |);
-      |}
+      |} : mapping_integration_tests.Mappings.t
     )).
   
   Global Instance AssociatedFunction_default :
@@ -448,7 +448,7 @@ Section Impl_mapping_integration_tests_Mappings_t.
           {|
             mapping_integration_tests.Mappings.balances :=
               M.read (| balances |);
-          |}
+          |} : mapping_integration_tests.Mappings.t
         |)
       |)
     )).

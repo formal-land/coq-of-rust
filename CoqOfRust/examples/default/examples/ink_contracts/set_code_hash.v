@@ -47,7 +47,7 @@ Section Impl_core_default_Default_for_set_code_hash_Incrementer_t.
           M.call (|ltac:(M.get_method (fun ℐ =>
             core.default.Default.default (Self := u32.t) (Trait := ℐ)))
           |);
-      |}
+      |} : set_code_hash.Incrementer.t
     )).
   
   Global Instance AssociatedFunction_default :

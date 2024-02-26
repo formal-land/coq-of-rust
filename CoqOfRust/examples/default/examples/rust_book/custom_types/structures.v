@@ -182,7 +182,7 @@ Definition main : M unit :=
           {|
             structures.Person.name := M.read (| name |);
             structures.Person.age := M.read (| age |);
-          |}
+          |} : structures.Person.t
         |) in
       let _ : M.Val unit :=
         let _ : M.Val unit :=
@@ -215,7 +215,7 @@ Definition main : M unit :=
           {|
             structures.Point.x := M.read (| UnsupportedLiteral : M.Val f32.t |);
             structures.Point.y := M.read (| UnsupportedLiteral : M.Val f32.t |);
-          |}
+          |} : structures.Point.t
         |) in
       let _ : M.Val unit :=
         let _ : M.Val unit :=
@@ -308,10 +308,10 @@ Definition main : M unit :=
                         {|
                           structures.Point.x := M.read (| left_edge |);
                           structures.Point.y := M.read (| top_edge |);
-                        |};
+                        |} : structures.Point.t;
                       structures.Rectangle.bottom_right :=
                         M.read (| bottom_right |);
-                    |}
+                    |} : structures.Rectangle.t
                   |) in
                 let _unit : M.Val structures.Unit.t :=
                   M.alloc (| structures.Unit.Build |) in

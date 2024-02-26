@@ -94,7 +94,7 @@ Definition main : M unit :=
                               core.ops.range.Range.end_ :=
                                 M.read (| deref (M.read (| channels.NTHREADS |))
                                 |);
-                            |})
+                            |} : core.ops.range.Range.t i32.t)
                           |)
                         |))
                         [
@@ -272,7 +272,7 @@ Definition main : M unit :=
                               core.ops.range.Range.end_ :=
                                 M.read (| deref (M.read (| channels.NTHREADS |))
                                 |);
-                            |})
+                            |} : core.ops.range.Range.t i32.t)
                           |)
                         |))
                         [

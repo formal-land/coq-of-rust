@@ -200,7 +200,7 @@ Definition main : M unit :=
               M.read (| UnsupportedLiteral : M.Val f64.t |);
             generics_bounds.Rectangle.height :=
               M.read (| UnsupportedLiteral : M.Val f64.t |);
-          |}
+          |} : generics_bounds.Rectangle.t
         |) in
       let _triangle : M.Val generics_bounds.Triangle.t :=
         M.alloc (|
@@ -209,7 +209,7 @@ Definition main : M unit :=
               M.read (| UnsupportedLiteral : M.Val f64.t |);
             generics_bounds.Triangle.height :=
               M.read (| UnsupportedLiteral : M.Val f64.t |);
-          |}
+          |} : generics_bounds.Triangle.t
         |) in
       let _ : M.Val unit :=
         M.alloc (| M.call (|(generics_bounds.print_debug (borrow rectangle)) |)

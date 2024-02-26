@@ -54,7 +54,7 @@ Section Impl_core_clone_Clone_for_custom_environment_AccountId_t.
             (DeclaredButUndefinedVariable
               (A := core.clone.AssertParamIsClone.t u128.t))
             [
-              fun γ =>
+              fun (γ : M.Val (core.clone.AssertParamIsClone.t u128.t)) =>
                 (deref (M.read (| self |))) :
                 M.Val custom_environment.AccountId.t
             ])
@@ -186,7 +186,7 @@ Section Impl_core_default_Default_for_custom_environment_EventWithTopics_t.
           M.call (|ltac:(M.get_method (fun ℐ =>
             core.default.Default.default (Self := u128.t) (Trait := ℐ)))
           |);
-      |}
+      |} : custom_environment.EventWithTopics.t
     )).
   
   Global Instance AssociatedFunction_default :

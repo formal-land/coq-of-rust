@@ -107,16 +107,26 @@ Definition main : M unit :=
   ltac:(M.monadic (
     M.read (|
       let _a : M.Val drop.Droppable.t :=
-        M.alloc (| {| drop.Droppable.name := M.read (| mk_str "a" |); |} |) in
+        M.alloc (|
+          {| drop.Droppable.name := M.read (| mk_str "a" |);
+          |} : drop.Droppable.t
+        |) in
       let _ : M.Val unit :=
         let _b : M.Val drop.Droppable.t :=
-          M.alloc (| {| drop.Droppable.name := M.read (| mk_str "b" |); |} |) in
+          M.alloc (|
+            {| drop.Droppable.name := M.read (| mk_str "b" |);
+            |} : drop.Droppable.t
+          |) in
         let _ : M.Val unit :=
           let _c : M.Val drop.Droppable.t :=
-            M.alloc (| {| drop.Droppable.name := M.read (| mk_str "c" |); |}
+            M.alloc (|
+              {| drop.Droppable.name := M.read (| mk_str "c" |);
+              |} : drop.Droppable.t
             |) in
           let _d : M.Val drop.Droppable.t :=
-            M.alloc (| {| drop.Droppable.name := M.read (| mk_str "d" |); |}
+            M.alloc (|
+              {| drop.Droppable.name := M.read (| mk_str "d" |);
+              |} : drop.Droppable.t
             |) in
           let _ : M.Val unit :=
             let _ : M.Val unit :=

@@ -23,7 +23,8 @@ Definition main : M unit :=
   ltac:(M.monadic (
     M.read (|
       let i : M.Val u64.t := M.alloc (| (Integer.of_Z 3) : u64.t |) in
-      let o := M.copy (| DeclaredButUndefinedVariable (A := u64.t) |) in
+      let o : M.Val u64.t :=
+        M.copy (| DeclaredButUndefinedVariable (A := u64.t) |) in
       let _ : M.Val unit :=
         let _ : M.Val unit := InlineAssembly in
         M.alloc (| tt |) in
