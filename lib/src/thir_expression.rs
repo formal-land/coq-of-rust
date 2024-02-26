@@ -1403,13 +1403,16 @@ fn compile_stmts<'a>(
                 } => {
                     let init = match initializer {
                         Some(initializer) => compile_expr(env, thir, initializer),
-                        None => Rc::new(Expr {
-                            kind: Rc::new(ExprKind::VarWithTy {
-                                path: Path::new(&["DeclaredButUndefinedVariable"]),
-                                ty_name: "A".to_string(),
-                                ty: compile_type(env, &pattern.ty),
-                            }),
-                            ty: None,
+                        None => Rc::new({
+                            let ty = compile_type(env, &pattern.ty);
+                            Expr {
+                                kind: Rc::new(ExprKind::VarWithTy {
+                                    path: Path::new(&["DeclaredButUndefinedVariable"]),
+                                    ty_name: "A".to_string(),
+                                    ty: ty.clone(),
+                                }),
+                                ty: Some(Rc::new(CoqType::Val(ty))),
+                            }
                         }),
                     };
 
