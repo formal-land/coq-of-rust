@@ -57,82 +57,112 @@ Definition main : M unit :=
       number
       [
         fun γ =>
-          (let* _ : M.Val unit :=
-            let* α0 : ref str.t := M.read (mk_str "One!
+          (let* α0 := M.read γ in
+          match α0 with
+          | i32.Make 1 =>
+            let* _ : M.Val unit :=
+              let* α0 : ref str.t := M.read (mk_str "One!
 ") in
-            let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-            let* α2 : core.fmt.Arguments.t :=
-              M.call
-                (core.fmt.Arguments.t::["new_const"]
-                  (pointer_coercion "Unsize" (borrow α1))) in
-            let* α3 : unit := M.call (std.io.stdio._print α2) in
-            M.alloc α3 in
-          M.alloc tt) :
+              let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
+              let* α2 : core.fmt.Arguments.t :=
+                M.call
+                  (core.fmt.Arguments.t::["new_const"]
+                    (pointer_coercion "Unsize" (borrow α1))) in
+              let* α3 : unit := M.call (std.io.stdio._print α2) in
+              M.alloc α3 in
+            M.alloc tt
+          | _ => M.break_match
+          end) :
           M (M.Val unit);
         fun γ =>
-          (let* _ : M.Val unit :=
-            let* α0 : ref str.t := M.read (mk_str "This is a prime
+          (let* α0 := M.read γ in
+          match α0 with
+          | i32.Make 2 =>
+            let* _ : M.Val unit :=
+              let* α0 : ref str.t := M.read (mk_str "This is a prime
 ") in
-            let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-            let* α2 : core.fmt.Arguments.t :=
-              M.call
-                (core.fmt.Arguments.t::["new_const"]
-                  (pointer_coercion "Unsize" (borrow α1))) in
-            let* α3 : unit := M.call (std.io.stdio._print α2) in
-            M.alloc α3 in
-          M.alloc tt) :
+              let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
+              let* α2 : core.fmt.Arguments.t :=
+                M.call
+                  (core.fmt.Arguments.t::["new_const"]
+                    (pointer_coercion "Unsize" (borrow α1))) in
+              let* α3 : unit := M.call (std.io.stdio._print α2) in
+              M.alloc α3 in
+            M.alloc tt
+          | _ => M.break_match
+          end) :
           M (M.Val unit);
         fun γ =>
-          (let* _ : M.Val unit :=
-            let* α0 : ref str.t := M.read (mk_str "This is a prime
+          (let* α0 := M.read γ in
+          match α0 with
+          | i32.Make 3 =>
+            let* _ : M.Val unit :=
+              let* α0 : ref str.t := M.read (mk_str "This is a prime
 ") in
-            let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-            let* α2 : core.fmt.Arguments.t :=
-              M.call
-                (core.fmt.Arguments.t::["new_const"]
-                  (pointer_coercion "Unsize" (borrow α1))) in
-            let* α3 : unit := M.call (std.io.stdio._print α2) in
-            M.alloc α3 in
-          M.alloc tt) :
+              let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
+              let* α2 : core.fmt.Arguments.t :=
+                M.call
+                  (core.fmt.Arguments.t::["new_const"]
+                    (pointer_coercion "Unsize" (borrow α1))) in
+              let* α3 : unit := M.call (std.io.stdio._print α2) in
+              M.alloc α3 in
+            M.alloc tt
+          | _ => M.break_match
+          end) :
           M (M.Val unit);
         fun γ =>
-          (let* _ : M.Val unit :=
-            let* α0 : ref str.t := M.read (mk_str "This is a prime
+          (let* α0 := M.read γ in
+          match α0 with
+          | i32.Make 5 =>
+            let* _ : M.Val unit :=
+              let* α0 : ref str.t := M.read (mk_str "This is a prime
 ") in
-            let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-            let* α2 : core.fmt.Arguments.t :=
-              M.call
-                (core.fmt.Arguments.t::["new_const"]
-                  (pointer_coercion "Unsize" (borrow α1))) in
-            let* α3 : unit := M.call (std.io.stdio._print α2) in
-            M.alloc α3 in
-          M.alloc tt) :
+              let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
+              let* α2 : core.fmt.Arguments.t :=
+                M.call
+                  (core.fmt.Arguments.t::["new_const"]
+                    (pointer_coercion "Unsize" (borrow α1))) in
+              let* α3 : unit := M.call (std.io.stdio._print α2) in
+              M.alloc α3 in
+            M.alloc tt
+          | _ => M.break_match
+          end) :
           M (M.Val unit);
         fun γ =>
-          (let* _ : M.Val unit :=
-            let* α0 : ref str.t := M.read (mk_str "This is a prime
+          (let* α0 := M.read γ in
+          match α0 with
+          | i32.Make 7 =>
+            let* _ : M.Val unit :=
+              let* α0 : ref str.t := M.read (mk_str "This is a prime
 ") in
-            let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-            let* α2 : core.fmt.Arguments.t :=
-              M.call
-                (core.fmt.Arguments.t::["new_const"]
-                  (pointer_coercion "Unsize" (borrow α1))) in
-            let* α3 : unit := M.call (std.io.stdio._print α2) in
-            M.alloc α3 in
-          M.alloc tt) :
+              let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
+              let* α2 : core.fmt.Arguments.t :=
+                M.call
+                  (core.fmt.Arguments.t::["new_const"]
+                    (pointer_coercion "Unsize" (borrow α1))) in
+              let* α3 : unit := M.call (std.io.stdio._print α2) in
+              M.alloc α3 in
+            M.alloc tt
+          | _ => M.break_match
+          end) :
           M (M.Val unit);
         fun γ =>
-          (let* _ : M.Val unit :=
-            let* α0 : ref str.t := M.read (mk_str "This is a prime
+          (let* α0 := M.read γ in
+          match α0 with
+          | i32.Make 11 =>
+            let* _ : M.Val unit :=
+              let* α0 : ref str.t := M.read (mk_str "This is a prime
 ") in
-            let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-            let* α2 : core.fmt.Arguments.t :=
-              M.call
-                (core.fmt.Arguments.t::["new_const"]
-                  (pointer_coercion "Unsize" (borrow α1))) in
-            let* α3 : unit := M.call (std.io.stdio._print α2) in
-            M.alloc α3 in
-          M.alloc tt) :
+              let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
+              let* α2 : core.fmt.Arguments.t :=
+                M.call
+                  (core.fmt.Arguments.t::["new_const"]
+                    (pointer_coercion "Unsize" (borrow α1))) in
+              let* α3 : unit := M.call (std.io.stdio._print α2) in
+              M.alloc α3 in
+            M.alloc tt
+          | _ => M.break_match
+          end) :
           M (M.Val unit);
         fun γ =>
           (let* _ : M.Val unit :=

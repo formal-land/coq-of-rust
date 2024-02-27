@@ -148,19 +148,24 @@ Definition main : M unit :=
           | if_let_match_enum_values.Foo.Qux _ =>
             let γ0_0 := if_let_match_enum_values.Foo.Get_Qux_0 γ in
             let* value := M.copy γ0_0 in
-            let* _ : M.Val unit :=
+            let* α0 := M.read γ0_0 in
+            match α0 with
+            | u32.Make 100 =>
               let* _ : M.Val unit :=
-                let* α0 : ref str.t := M.read (mk_str "c is one hundred
+                let* _ : M.Val unit :=
+                  let* α0 : ref str.t := M.read (mk_str "c is one hundred
 ") in
-                let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-                let* α2 : core.fmt.Arguments.t :=
-                  M.call
-                    (core.fmt.Arguments.t::["new_const"]
-                      (pointer_coercion "Unsize" (borrow α1))) in
-                let* α3 : unit := M.call (std.io.stdio._print α2) in
-                M.alloc α3 in
-              M.alloc tt in
-            M.alloc tt
+                  let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
+                  let* α2 : core.fmt.Arguments.t :=
+                    M.call
+                      (core.fmt.Arguments.t::["new_const"]
+                        (pointer_coercion "Unsize" (borrow α1))) in
+                  let* α3 : unit := M.call (std.io.stdio._print α2) in
+                  M.alloc α3 in
+                M.alloc tt in
+              M.alloc tt
+            | _ => M.break_match
+            end
           | _ => M.break_match
           end) :
           M (M.Val unit);

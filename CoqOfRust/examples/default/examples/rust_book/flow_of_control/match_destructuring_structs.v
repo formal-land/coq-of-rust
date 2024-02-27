@@ -63,29 +63,37 @@ Definition main : M unit :=
             | (_, _) =>
               let γ1_0 := Tuple.Access.left γ0_0 in
               let γ1_1 := Tuple.Access.right γ0_0 in
-              let* b := M.copy γ1_1 in
-              let* y := M.copy γ0_1 in
-              let* _ : M.Val unit :=
-                let* α0 : ref str.t :=
-                  M.read (mk_str "First of x is 1, b = ") in
-                let* α1 : ref str.t := M.read (mk_str ",  y = ") in
-                let* α2 : ref str.t := M.read (mk_str " 
+              let* α0 := M.read γ1_0 in
+              match α0 with
+              | u32.Make 1 =>
+                let* b := M.copy γ1_1 in
+                let* y := M.copy γ0_1 in
+                let* _ : M.Val unit :=
+                  let* α0 : ref str.t :=
+                    M.read (mk_str "First of x is 1, b = ") in
+                  let* α1 : ref str.t := M.read (mk_str ",  y = ") in
+                  let* α2 : ref str.t := M.read (mk_str " 
 ") in
-                let* α3 : M.Val (array (ref str.t)) := M.alloc [ α0; α1; α2 ] in
-                let* α4 : core.fmt.rt.Argument.t :=
-                  M.call (core.fmt.rt.Argument.t::["new_display"] (borrow b)) in
-                let* α5 : core.fmt.rt.Argument.t :=
-                  M.call (core.fmt.rt.Argument.t::["new_display"] (borrow y)) in
-                let* α6 : M.Val (array core.fmt.rt.Argument.t) :=
-                  M.alloc [ α4; α5 ] in
-                let* α7 : core.fmt.Arguments.t :=
-                  M.call
-                    (core.fmt.Arguments.t::["new_v1"]
-                      (pointer_coercion "Unsize" (borrow α3))
-                      (pointer_coercion "Unsize" (borrow α6))) in
-                let* α8 : unit := M.call (std.io.stdio._print α7) in
-                M.alloc α8 in
-              M.alloc tt
+                  let* α3 : M.Val (array (ref str.t)) :=
+                    M.alloc [ α0; α1; α2 ] in
+                  let* α4 : core.fmt.rt.Argument.t :=
+                    M.call
+                      (core.fmt.rt.Argument.t::["new_display"] (borrow b)) in
+                  let* α5 : core.fmt.rt.Argument.t :=
+                    M.call
+                      (core.fmt.rt.Argument.t::["new_display"] (borrow y)) in
+                  let* α6 : M.Val (array core.fmt.rt.Argument.t) :=
+                    M.alloc [ α4; α5 ] in
+                  let* α7 : core.fmt.Arguments.t :=
+                    M.call
+                      (core.fmt.Arguments.t::["new_v1"]
+                        (pointer_coercion "Unsize" (borrow α3))
+                        (pointer_coercion "Unsize" (borrow α6))) in
+                  let* α8 : unit := M.call (std.io.stdio._print α7) in
+                  M.alloc α8 in
+                M.alloc tt
+              | _ => M.break_match
+              end
             end
           end) :
           M (M.Val unit);
@@ -100,24 +108,29 @@ Definition main : M unit :=
               =>
             let γ0_0 := match_destructuring_structs.Foo.Get_y γ in
             let γ0_1 := match_destructuring_structs.Foo.Get_x γ in
-            let* i := M.copy γ0_1 in
-            let* _ : M.Val unit :=
-              let* α0 : ref str.t := M.read (mk_str "y is 2, i = ") in
-              let* α1 : ref str.t := M.read (mk_str "
+            let* α0 := M.read γ0_0 in
+            match α0 with
+            | u32.Make 2 =>
+              let* i := M.copy γ0_1 in
+              let* _ : M.Val unit :=
+                let* α0 : ref str.t := M.read (mk_str "y is 2, i = ") in
+                let* α1 : ref str.t := M.read (mk_str "
 ") in
-              let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-              let* α3 : core.fmt.rt.Argument.t :=
-                M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow i)) in
-              let* α4 : M.Val (array core.fmt.rt.Argument.t) :=
-                M.alloc [ α3 ] in
-              let* α5 : core.fmt.Arguments.t :=
-                M.call
-                  (core.fmt.Arguments.t::["new_v1"]
-                    (pointer_coercion "Unsize" (borrow α2))
-                    (pointer_coercion "Unsize" (borrow α4))) in
-              let* α6 : unit := M.call (std.io.stdio._print α5) in
-              M.alloc α6 in
-            M.alloc tt
+                let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
+                let* α3 : core.fmt.rt.Argument.t :=
+                  M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow i)) in
+                let* α4 : M.Val (array core.fmt.rt.Argument.t) :=
+                  M.alloc [ α3 ] in
+                let* α5 : core.fmt.Arguments.t :=
+                  M.call
+                    (core.fmt.Arguments.t::["new_v1"]
+                      (pointer_coercion "Unsize" (borrow α2))
+                      (pointer_coercion "Unsize" (borrow α4))) in
+                let* α6 : unit := M.call (std.io.stdio._print α5) in
+                M.alloc α6 in
+              M.alloc tt
+            | _ => M.break_match
+            end
           end) :
           M (M.Val unit);
         fun γ =>

@@ -5,25 +5,6 @@ use rustc_middle::thir::{Pat, PatKind};
 use rustc_type_ir::TyKind;
 use std::rc::Rc;
 
-// fn const_to_lit_kind(constant: rustc_middle::mir::ConstantKind) -> rustc_ast::LitKind {
-//     match constant {
-//         rustc_middle::mir::ConstantKind::Val(value, _) => match value {
-//             rustc_middle::mir::interpret::ConstValue::Scalar(scalar) => match scalar.to_u128() {
-//                 Result::Ok(value) => {
-//                     return rustc_ast::LitKind::Int(
-//                         value as u128,
-//                         rustc_ast::LitIntType::Unsuffixed,
-//                     );
-//                 }
-//                 Result::Err(_) => (),
-//             },
-//             _ => (),
-//         },
-//         _ => (),
-//     }
-//     panic!("constant {:#?} not yet handled", constant);
-// }
-
 pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Rc<Pattern> {
     match &pat.kind {
         PatKind::Wild => Rc::new(Pattern::Wild),
@@ -84,13 +65,17 @@ pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Rc<Pattern> {
             }
         }
         PatKind::Leaf { subpatterns } => {
-            if let TyKind::Tuple(_) = pat.ty.kind() {
-                return Rc::new(Pattern::Tuple(
-                    subpatterns
-                        .iter()
-                        .map(|field| compile_pattern(env, &field.pattern))
-                        .collect(),
-                ));
+            if let TyKind::Tuple(tys) = &pat.ty.kind() {
+                // With the notation `..` some of the fields might be omitted. This is why we
+                // first create a fields of wildcards and then replace the ones that are
+                // present in the pattern.
+                let mut fields: Vec<_> = tys.iter().map(|_| Rc::new(Pattern::Wild)).collect();
+
+                for subpattern in subpatterns {
+                    fields[subpattern.field.index()] = compile_pattern(env, &subpattern.pattern);
+                }
+
+                return Rc::new(Pattern::Tuple(fields));
             }
             let adt_def = pat.ty.ty_adt_def().unwrap();
             let path = compile_def_id(env, adt_def.did());
@@ -116,14 +101,42 @@ pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Rc<Pattern> {
             }
         }
         PatKind::Deref { subpattern } => Rc::new(Pattern::Deref(compile_pattern(env, subpattern))),
-        // PatKind::Constant { value } => {
-        //     let literal = const_to_lit_kind(*value);
-        //     Pattern::Lit(literal)
-        // }
-        PatKind::Constant { .. } => {
+        PatKind::Constant { value } => {
+            if let rustc_middle::mir::Const::Ty(constant) = value {
+                let ty = constant.ty();
+
+                match &ty.kind() {
+                    rustc_middle::ty::TyKind::Int(int_ty) => {
+                        let uint_value = constant.try_to_scalar().unwrap().assert_int();
+                        let int_value = uint_value.try_to_int(uint_value.size()).unwrap();
+
+                        return Rc::new(Pattern::Lit(PatternLit::Integer {
+                            name: format!("{int_ty:?}"),
+                            negative_sign: int_value < 0,
+                            // The `unsigned_abs` method is necessary to get the minimal int128's
+                            // absolute value.
+                            value: int_value.unsigned_abs(),
+                        }));
+                    }
+                    rustc_middle::ty::TyKind::Uint(uint_ty) => {
+                        let uint_value = constant.try_to_scalar().unwrap().assert_int();
+
+                        return Rc::new(Pattern::Lit(PatternLit::Integer {
+                            name: format!("{uint_ty:?}"),
+                            negative_sign: false,
+                            value: uint_value.assert_bits(uint_value.size()),
+                        }));
+                    }
+                    // TODO: handle other kinds of constants
+                    _ => {}
+                }
+            }
             env.tcx
                 .sess
-                .struct_span_warn(pat.span, "Constants in patterns are not yet supported.")
+                .struct_span_warn(
+                    pat.span,
+                    "This kind of constant in patterns is not yet supported.",
+                )
                 .emit();
             Rc::new(Pattern::Wild)
         }

@@ -1,10 +1,10 @@
-warning: Constants in patterns are not yet supported.
+warning: This kind of constant in patterns is not yet supported.
  --> examples/rust_book/std_library_types/hash_map.rs:5:9
   |
 5 |         "798-1364" => {
   |         ^^^^^^^^^^
 
-warning: Constants in patterns are not yet supported.
+warning: This kind of constant in patterns is not yet supported.
  --> examples/rust_book/std_library_types/hash_map.rs:9:9
   |
 9 |         "645-7689" => {

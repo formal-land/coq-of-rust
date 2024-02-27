@@ -37,23 +37,28 @@ Definition main : M unit :=
           | core.option.Option.Some _ =>
             let γ0_0 := core.option.Option.Get_Some_0 γ in
             let* n := M.copy γ0_0 in
-            let* _ : M.Val unit :=
-              let* α0 : ref str.t := M.read (mk_str "The Answer: ") in
-              let* α1 : ref str.t := M.read (mk_str "!
+            let* α0 := M.read γ0_0 in
+            match α0 with
+            | u32.Make 42 =>
+              let* _ : M.Val unit :=
+                let* α0 : ref str.t := M.read (mk_str "The Answer: ") in
+                let* α1 : ref str.t := M.read (mk_str "!
 ") in
-              let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-              let* α3 : core.fmt.rt.Argument.t :=
-                M.call (core.fmt.rt.Argument.t::["new_display"] (borrow n)) in
-              let* α4 : M.Val (array core.fmt.rt.Argument.t) :=
-                M.alloc [ α3 ] in
-              let* α5 : core.fmt.Arguments.t :=
-                M.call
-                  (core.fmt.Arguments.t::["new_v1"]
-                    (pointer_coercion "Unsize" (borrow α2))
-                    (pointer_coercion "Unsize" (borrow α4))) in
-              let* α6 : unit := M.call (std.io.stdio._print α5) in
-              M.alloc α6 in
-            M.alloc tt
+                let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
+                let* α3 : core.fmt.rt.Argument.t :=
+                  M.call (core.fmt.rt.Argument.t::["new_display"] (borrow n)) in
+                let* α4 : M.Val (array core.fmt.rt.Argument.t) :=
+                  M.alloc [ α3 ] in
+                let* α5 : core.fmt.Arguments.t :=
+                  M.call
+                    (core.fmt.Arguments.t::["new_v1"]
+                      (pointer_coercion "Unsize" (borrow α2))
+                      (pointer_coercion "Unsize" (borrow α4))) in
+                let* α6 : unit := M.call (std.io.stdio._print α5) in
+                M.alloc α6 in
+              M.alloc tt
+            | _ => M.break_match
+            end
           | _ => M.break_match
           end) :
           M (M.Val unit);

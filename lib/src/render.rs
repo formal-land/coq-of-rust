@@ -1,6 +1,4 @@
 use pretty::RcDoc;
-use rustc_ast::LitKind;
-use rustc_span::symbol::Symbol;
 
 // use crate::coq;
 
@@ -58,11 +56,6 @@ pub(crate) fn paren(with_paren: bool, doc: RcDoc<()>) -> RcDoc<()> {
     } else {
         doc
     }
-}
-
-fn round_symbol(symbol: &Symbol) -> i32 {
-    let s = symbol.as_str();
-    s.parse::<f64>().unwrap().round() as i32
 }
 
 #[derive(Debug)]
@@ -136,32 +129,6 @@ pub(crate) fn string_to_doc(with_paren: bool, message: &str) -> RcDoc<()> {
         with_paren,
         nest([text("mk_str"), line(), string_pieces_to_doc(true, &pieces)]),
     )
-}
-
-fn apply_neg_to_literal(literal: RcDoc<()>, neg: bool) -> RcDoc<()> {
-    if neg {
-        paren(true, nest([text("-"), line(), literal]))
-    } else {
-        literal
-    }
-}
-
-pub(crate) fn literal_to_doc(with_paren: bool, literal: &LitKind, neg: bool) -> RcDoc<()> {
-    let wrap_in_alloc = |doc| paren(with_paren, nest([text("M.alloc"), line(), doc]));
-
-    match literal {
-        LitKind::Str(s, _) => string_to_doc(with_paren, s.as_str()),
-        LitKind::Int(i, _) => wrap_in_alloc(apply_neg_to_literal(RcDoc::text(format!("{i}")), neg)),
-        LitKind::Float(f, _) => wrap_in_alloc(apply_neg_to_literal(
-            RcDoc::text(format!("{} (* {f} *)", round_symbol(f))),
-            neg,
-        )),
-        LitKind::Bool(b) => wrap_in_alloc(RcDoc::text(format!("{b}"))),
-        LitKind::Char(c) => wrap_in_alloc(RcDoc::text(format!("\"{c}\"%char"))),
-        LitKind::Byte(b) => RcDoc::text(format!("{b}")),
-        LitKind::ByteStr(b, _) | LitKind::CStr(b, _) => RcDoc::text(format!("{b:?}")),
-        LitKind::Err => RcDoc::text("Err"),
-    }
 }
 
 pub type Doc<'a> = RcDoc<'a, ()>;

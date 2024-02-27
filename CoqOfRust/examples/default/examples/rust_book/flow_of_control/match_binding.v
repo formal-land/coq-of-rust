@@ -46,18 +46,23 @@ Definition main : M unit :=
       α1
       [
         fun γ =>
-          (let* _ : M.Val unit :=
-            let* α0 : ref str.t :=
-              M.read (mk_str "I haven't celebrated my first birthday yet
+          (let* α0 := M.read γ in
+          match α0 with
+          | u32.Make 0 =>
+            let* _ : M.Val unit :=
+              let* α0 : ref str.t :=
+                M.read (mk_str "I haven't celebrated my first birthday yet
 ") in
-            let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-            let* α2 : core.fmt.Arguments.t :=
-              M.call
-                (core.fmt.Arguments.t::["new_const"]
-                  (pointer_coercion "Unsize" (borrow α1))) in
-            let* α3 : unit := M.call (std.io.stdio._print α2) in
-            M.alloc α3 in
-          M.alloc tt) :
+              let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
+              let* α2 : core.fmt.Arguments.t :=
+                M.call
+                  (core.fmt.Arguments.t::["new_const"]
+                    (pointer_coercion "Unsize" (borrow α1))) in
+              let* α3 : unit := M.call (std.io.stdio._print α2) in
+              M.alloc α3 in
+            M.alloc tt
+          | _ => M.break_match
+          end) :
           M (M.Val unit);
         fun γ =>
           (let* n := M.copy γ in

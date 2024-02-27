@@ -30,7 +30,13 @@ Definition main : M unit :=
     match_operator
       α0
       [
-        fun γ => (M.alloc false) : M (M.Val bool.t);
+        fun γ =>
+          (let* α0 := M.read γ in
+          match α0 with
+          | i32.Make 0 => M.alloc false
+          | _ => M.break_match
+          end) :
+          M (M.Val bool.t);
         fun γ => (M.alloc true) : M (M.Val bool.t)
       ] in
   let* _ : M.Val i32.t :=
