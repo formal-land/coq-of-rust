@@ -60,6 +60,7 @@ enum TraitItem {
 struct FunDefinition {
     ty_params: Vec<String>,
     signature_and_body: Rc<FnSigAndBody>,
+    ret_ty: Rc<CoqType>,
     is_dead_code: bool,
 }
 
@@ -1293,6 +1294,7 @@ impl FunDefinition {
         Rc::new(FunDefinition {
             ty_params,
             signature_and_body,
+            ret_ty: ret_ty.clone(),
             is_dead_code,
         })
     }
@@ -1301,6 +1303,7 @@ impl FunDefinition {
         Rc::new(FunDefinition {
             ty_params: self.ty_params.clone(),
             signature_and_body: self.signature_and_body.mt(),
+            ret_ty: self.signature_and_body.ret_ty.clone(),
             is_dead_code: self.is_dead_code,
         })
     }
@@ -1451,10 +1454,14 @@ impl FunDefinition {
                             // @TODO: improve for opaque types with trait bounds
                             ty: Some(self.signature_and_body.ret_ty.to_coq()),
                             body: coq::Expression::Code(concat([
-                                text("ltac:(M.monadic ("),
+                                text("ltac:(M.monadic (("),
                                 nest([line(), body.to_doc(false)]),
                                 line(),
-                                text("))"),
+                                concat([
+                                    text(") : "),
+                                    self.ret_ty.to_coq().to_doc(false),
+                                    text("))"),
+                                ]),
                             ])),
                         },
                     ))],
