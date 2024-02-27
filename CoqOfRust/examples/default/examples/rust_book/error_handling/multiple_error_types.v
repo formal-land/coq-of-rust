@@ -10,7 +10,7 @@ fn double_first(vec: Vec<&str>) -> i32 {
 Definition double_first
     (vec : alloc.vec.Vec.t (ref str.t) alloc.vec.Vec.Default.A)
     : M i32.t :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let vec := M.alloc (| vec |) in
     M.read (|
       let first : M.Val (ref (ref str.t)) :=
@@ -39,7 +39,7 @@ Definition double_first
         |)
       |)
     |)
-  )).
+  ) : i32.t)).
 
 (*
 fn main() {
@@ -58,7 +58,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let numbers : M.Val (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t) :=
         M.alloc (|
@@ -205,4 +205,4 @@ Definition main : M unit :=
         M.alloc (| tt |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

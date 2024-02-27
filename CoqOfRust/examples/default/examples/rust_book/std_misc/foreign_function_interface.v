@@ -11,10 +11,10 @@ fn cos(z: Complex) -> Complex {
 Definition cos
     (z : foreign_function_interface.Complex.t)
     : M foreign_function_interface.Complex.t :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let z := M.alloc (| z |) in
     M.call (|(foreign_function_interface.ccosf (M.read (| z |))) |)
-  )).
+  ) : foreign_function_interface.Complex.t)).
 
 (*
 fn main() {
@@ -32,7 +32,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let z : M.Val foreign_function_interface.Complex.t :=
         M.alloc (|
@@ -120,7 +120,7 @@ Definition main : M unit :=
         M.alloc (| tt |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).
 
 Module  Complex.
 Section Complex.
@@ -144,7 +144,7 @@ Section Impl_core_clone_Clone_for_foreign_function_interface_Complex_t.
   Clone
   *)
   Definition clone (self : ref Self) : M foreign_function_interface.Complex.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         ltac:
@@ -157,7 +157,7 @@ Section Impl_core_clone_Clone_for_foreign_function_interface_Complex_t.
                 M.Val foreign_function_interface.Complex.t
             ])
       |)
-    )).
+    ) : foreign_function_interface.Complex.t)).
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {
@@ -197,7 +197,7 @@ Section Impl_core_fmt_Debug_for_foreign_function_interface_Complex_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let f := M.alloc (| f |) in
       M.read (|
@@ -290,7 +290,7 @@ Section Impl_core_fmt_Debug_for_foreign_function_interface_Complex_t.
             |)
           |)
       |)
-    )).
+    ) : ltac:(core.fmt.Result))).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;

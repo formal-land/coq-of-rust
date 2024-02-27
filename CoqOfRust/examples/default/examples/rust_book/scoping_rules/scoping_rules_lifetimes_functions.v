@@ -7,7 +7,7 @@ fn print_one<'a>(x: &'a i32) {
 }
 *)
 Definition print_one (x : ref i32.t) : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let x := M.alloc (| x |) in
     M.read (|
       let _ : M.Val unit :=
@@ -41,7 +41,7 @@ Definition print_one (x : ref i32.t) : M unit :=
         M.alloc (| tt |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).
 
 (*
 fn add_one<'a>(x: &'a mut i32) {
@@ -49,7 +49,7 @@ fn add_one<'a>(x: &'a mut i32) {
 }
 *)
 Definition add_one (x : mut_ref i32.t) : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let x := M.alloc (| x |) in
     M.read (|
       let _ : M.Val unit :=
@@ -60,7 +60,7 @@ Definition add_one (x : mut_ref i32.t) : M unit :=
         |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).
 
 (*
 fn print_multi<'a, 'b>(x: &'a i32, y: &'b i32) {
@@ -68,7 +68,7 @@ fn print_multi<'a, 'b>(x: &'a i32, y: &'b i32) {
 }
 *)
 Definition print_multi (x : ref i32.t) (y : ref i32.t) : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let x := M.alloc (| x |) in
     let y := M.alloc (| y |) in
     M.read (|
@@ -107,7 +107,7 @@ Definition print_multi (x : ref i32.t) (y : ref i32.t) : M unit :=
         M.alloc (| tt |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).
 
 (*
 fn pass_x<'a, 'b>(x: &'a i32, _: &'b i32) -> &'a i32 {
@@ -115,11 +115,11 @@ fn pass_x<'a, 'b>(x: &'a i32, _: &'b i32) -> &'a i32 {
 }
 *)
 Definition pass_x (x : ref i32.t) (arg : ref i32.t) : M (ref i32.t) :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let x := M.alloc (| x |) in
     let arg := M.alloc (| arg |) in
     M.read (| x |)
-  )).
+  ) : ref i32.t)).
 
 (*
 fn main() {
@@ -139,7 +139,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let x : M.Val i32.t := M.alloc (| (Integer.of_Z 7) : i32.t |) in
       let y : M.Val i32.t := M.alloc (| (Integer.of_Z 9) : i32.t |) in
@@ -178,4 +178,4 @@ Definition main : M unit :=
         |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

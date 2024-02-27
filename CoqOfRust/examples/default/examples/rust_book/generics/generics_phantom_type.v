@@ -41,7 +41,7 @@ Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_t_A_B.
       (self : ref Self)
       (other : ref (generics_phantom_type.PhantomTuple.t A B))
       : M bool.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let other := M.alloc (| other |) in
       BinOp.Pure.and
@@ -66,7 +66,7 @@ Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomTuple_t_A_B.
             (generics_phantom_type.PhantomTuple.Get_1
               (deref (M.read (| other |))))))
         |))
-    )).
+    ) : bool.t)).
   
   Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
     Notations.double_colon := eq;
@@ -123,7 +123,7 @@ Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_t_A_B.
       (self : ref Self)
       (other : ref (generics_phantom_type.PhantomStruct.t A B))
       : M bool.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let other := M.alloc (| other |) in
       BinOp.Pure.and
@@ -148,7 +148,7 @@ Section Impl_core_cmp_PartialEq_for_generics_phantom_type_PhantomStruct_t_A_B.
             (generics_phantom_type.PhantomStruct.Get_phantom
               (deref (M.read (| other |))))))
         |))
-    )).
+    ) : bool.t)).
   
   Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
     Notations.double_colon := eq;
@@ -193,7 +193,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let _tuple1 : M.Val (generics_phantom_type.PhantomTuple.t char.t f32.t) :=
         M.alloc (|
@@ -227,4 +227,4 @@ Definition main : M unit :=
         |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

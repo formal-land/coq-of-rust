@@ -12,7 +12,7 @@ Definition double_first
       M
         (core.option.Option.t
           (core.result.Result.t i32.t core.num.error.ParseIntError.t)) :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let vec := M.alloc (| vec |) in
     M.call (|((core.option.Option.t (ref (ref str.t)))::["map"]
       (M.call (|((slice (ref str.t))::["first"]
@@ -55,7 +55,8 @@ Definition double_first
             ])) :
         core.result.Result.t i32.t core.num.error.ParseIntError.t))
     |)
-  )).
+  ) : core.option.Option.t
+    (core.result.Result.t i32.t core.num.error.ParseIntError.t))).
 
 (*
 fn main() {
@@ -74,7 +75,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let numbers : M.Val (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t) :=
         M.alloc (|
@@ -221,4 +222,4 @@ Definition main : M unit :=
         M.alloc (| tt |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

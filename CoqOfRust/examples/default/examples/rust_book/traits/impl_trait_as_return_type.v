@@ -22,7 +22,7 @@ Definition combine_vecs_explicit_return_type
             (alloc.vec.into_iter.IntoIter.t
               i32.t
               alloc.vec.into_iter.IntoIter.Default.A))) :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let v := M.alloc (| v |) in
     let u := M.alloc (| u |) in
     M.call (|(ltac:(M.get_method (fun ℐ =>
@@ -51,7 +51,14 @@ Definition combine_vecs_explicit_return_type
         |)))
       |)))
     |)
-  )).
+  ) : core.iter.adapters.cycle.Cycle.t
+    (core.iter.adapters.chain.Chain.t
+      (alloc.vec.into_iter.IntoIter.t
+        i32.t
+        alloc.vec.into_iter.IntoIter.Default.A)
+      (alloc.vec.into_iter.IntoIter.t
+        i32.t
+        alloc.vec.into_iter.IntoIter.Default.A)))).
 
 (*
 fn combine_vecs(v: Vec<i32>, u: Vec<i32>) -> impl Iterator<Item = i32> {
@@ -62,7 +69,7 @@ Definition combine_vecs
     (v : alloc.vec.Vec.t i32.t alloc.vec.Vec.Default.A)
     (u : alloc.vec.Vec.t i32.t alloc.vec.Vec.Default.A)
     : M _ (* OpaqueTy *) :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let v := M.alloc (| v |) in
     let u := M.alloc (| u |) in
     M.call (|(ltac:(M.get_method (fun ℐ =>
@@ -91,7 +98,7 @@ Definition combine_vecs
         |)))
       |)))
     |)
-  )).
+  ) : _ (* OpaqueTy *))).
 
 Error OpaqueTy.
 
@@ -110,7 +117,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let v1 : M.Val (alloc.vec.Vec.t i32.t alloc.alloc.Global.t) :=
         M.alloc (|
@@ -501,4 +508,4 @@ Definition main : M unit :=
         M.alloc (| tt |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

@@ -21,7 +21,7 @@ Section Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers_t.
       }
   *)
   Definition run (self : ref Self) (x : i32.t) (y : i32.t) : M i32.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let x := M.alloc (| x |) in
       let y := M.alloc (| y |) in
@@ -64,7 +64,7 @@ Section Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers_t.
                 M.Val i32.t
             ])
       |)
-    )).
+    ) : i32.t)).
   
   Global Instance AssociatedFunction_run : Notations.DoubleColon Self "run" := {
     Notations.double_colon := run;

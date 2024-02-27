@@ -7,11 +7,11 @@ pub fn add(a: i32, b: i32) -> i32 {
 }
 *)
 Definition add (a : i32.t) (b : i32.t) : M i32.t :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let a := M.alloc (| a |) in
     let b := M.alloc (| b |) in
     BinOp.Panic.add (| M.read (| a |), M.read (| b |) |)
-  )).
+  ) : i32.t)).
 
 (*
 fn bad_add(a: i32, b: i32) -> i32 {
@@ -20,11 +20,11 @@ fn bad_add(a: i32, b: i32) -> i32 {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition bad_add (a : i32.t) (b : i32.t) : M i32.t :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let a := M.alloc (| a |) in
     let b := M.alloc (| b |) in
     BinOp.Panic.sub (| M.read (| a |), M.read (| b |) |)
-  )).
+  ) : i32.t)).
 
 Module tests.
   (*
@@ -33,7 +33,7 @@ Module tests.
       }
   *)
   Definition test_add : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       M.read (|
         let _ : M.Val unit :=
           ltac:
@@ -90,7 +90,7 @@ Module tests.
               ]) in
         M.alloc (| tt |)
       |)
-    )).
+    ) : unit)).
   
   (*
       fn test_bad_add() {
@@ -100,7 +100,7 @@ Module tests.
       }
   *)
   Definition test_bad_add : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       M.read (|
         let _ : M.Val unit :=
           ltac:
@@ -157,5 +157,5 @@ Module tests.
               ]) in
         M.alloc (| tt |)
       |)
-    )).
+    ) : unit)).
 End tests.

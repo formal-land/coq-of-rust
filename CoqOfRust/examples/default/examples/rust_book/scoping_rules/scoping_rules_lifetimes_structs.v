@@ -23,7 +23,7 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let f := M.alloc (| f |) in
       M.call (|(core.fmt.Formatter.t::["debug_tuple_field1_finish"]
@@ -38,7 +38,7 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed_t.
                   (deref (M.read (| self |))))
             |)))))
       |)
-    )).
+    ) : ltac:(core.fmt.Result))).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
@@ -75,7 +75,7 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let f := M.alloc (| f |) in
       M.call (|(core.fmt.Formatter.t::["debug_struct_field2_finish"]
@@ -97,7 +97,7 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed_t.
                   (deref (M.read (| self |))))
             |)))))
       |)
-    )).
+    ) : ltac:(core.fmt.Result))).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
@@ -136,7 +136,7 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let f := M.alloc (| f |) in
       M.read (|
@@ -180,7 +180,7 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either_t.
                 M.Val (core.result.Result.t unit core.fmt.Error.t)
             ])
       |)
-    )).
+    ) : ltac:(core.fmt.Result))).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
@@ -210,7 +210,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let x : M.Val i32.t := M.alloc (| (Integer.of_Z 18) : i32.t |) in
       let y : M.Val i32.t := M.alloc (| (Integer.of_Z 15) : i32.t |) in
@@ -347,4 +347,4 @@ Definition main : M unit :=
         M.alloc (| tt |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

@@ -28,7 +28,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let _ : M.Val unit :=
         let _ : M.Val unit :=
@@ -68,7 +68,7 @@ Definition main : M unit :=
         M.alloc (| tt |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).
 
 (*
     fn sum_odd_numbers(up_to: u32) -> u32 {
@@ -90,7 +90,7 @@ Definition main : M unit :=
     }
 *)
 Definition sum_odd_numbers (up_to : u32.t) : M u32.t :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let up_to := M.alloc (| up_to |) in
     M.read (|
       let acc : M.Val u32.t := M.alloc (| (Integer.of_Z 0) : u32.t |) in
@@ -184,4 +184,4 @@ Definition sum_odd_numbers (up_to : u32.t) : M u32.t :=
               ])) in
       acc
     |)
-  )).
+  ) : u32.t)).

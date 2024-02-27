@@ -12,7 +12,7 @@ fn drink(beverage: &str) {
 }
 *)
 Definition drink (beverage : ref str.t) : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let beverage := M.alloc (| beverage |) in
     M.read (|
       let _ : M.Val unit :=
@@ -71,7 +71,7 @@ Definition drink (beverage : ref str.t) : M unit :=
         M.alloc (| tt |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).
 
 (*
 fn main() {
@@ -81,7 +81,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let _ : M.Val unit :=
         M.alloc (| M.call (|(panic.drink (M.read (| mk_str "water" |))) |) |) in
@@ -90,4 +90,4 @@ Definition main : M unit :=
         |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

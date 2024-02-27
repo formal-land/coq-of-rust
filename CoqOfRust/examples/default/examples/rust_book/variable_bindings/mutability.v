@@ -20,7 +20,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let _immutable_binding : M.Val i32.t :=
         M.alloc (| (Integer.of_Z 1) : i32.t |) in
@@ -92,4 +92,4 @@ Definition main : M unit :=
         M.alloc (| tt |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

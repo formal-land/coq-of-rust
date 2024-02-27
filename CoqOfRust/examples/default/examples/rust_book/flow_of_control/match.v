@@ -34,7 +34,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let number : M.Val i32.t := M.alloc (| (Integer.of_Z 13) : i32.t |) in
       let _ : M.Val unit :=
@@ -251,4 +251,4 @@ Definition main : M unit :=
         M.alloc (| tt |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

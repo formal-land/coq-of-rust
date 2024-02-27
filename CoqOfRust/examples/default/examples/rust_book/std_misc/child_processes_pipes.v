@@ -44,7 +44,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let process : M.Val std.process.Child.t :=
         M.copy (|
@@ -296,4 +296,4 @@ Definition main : M unit :=
               M.Val unit
           ])
     |)
-  )).
+  ) : unit)).

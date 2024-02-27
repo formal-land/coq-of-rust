@@ -21,7 +21,7 @@ Module checked.
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter.t)
         : M ltac:(core.fmt.Result) :=
-      ltac:(M.monadic (
+      ltac:(M.monadic ((
         let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
         M.call (|(core.fmt.Formatter.t::["write_str"]
@@ -76,7 +76,7 @@ Module checked.
                 ])
           |)))
         |)
-      )).
+      ) : ltac:(core.fmt.Result))).
     
     Global Instance AssociatedFunction_fmt :
       Notations.DoubleColon Self "fmt" := {
@@ -108,7 +108,7 @@ Module checked.
       (x : f64.t)
       (y : f64.t)
       : M ltac:(result_chaining_with_question_mark.checked.MathResult) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let x := M.alloc (| x |) in
       let y := M.alloc (| y |) in
       M.read (|
@@ -132,7 +132,7 @@ Module checked.
               (BinOp.Panic.div (| M.read (| x |), M.read (| y |) |))
           |)
       |)
-    )).
+    ) : ltac:(result_chaining_with_question_mark.checked.MathResult))).
   
   (*
       fn sqrt(x: f64) -> MathResult {
@@ -146,7 +146,7 @@ Module checked.
   Definition sqrt
       (x : f64.t)
       : M ltac:(result_chaining_with_question_mark.checked.MathResult) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let x := M.alloc (| x |) in
       M.read (|
         if
@@ -169,7 +169,7 @@ Module checked.
               (M.call (|(f64.t::["sqrt"] (M.read (| x |))) |))
           |)
       |)
-    )).
+    ) : ltac:(result_chaining_with_question_mark.checked.MathResult))).
   
   (*
       fn ln(x: f64) -> MathResult {
@@ -183,7 +183,7 @@ Module checked.
   Definition ln
       (x : f64.t)
       : M ltac:(result_chaining_with_question_mark.checked.MathResult) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let x := M.alloc (| x |) in
       M.read (|
         if
@@ -205,7 +205,7 @@ Module checked.
             core.result.Result.Ok (M.call (|(f64.t::["ln"] (M.read (| x |))) |))
           |)
       |)
-    )).
+    ) : ltac:(result_chaining_with_question_mark.checked.MathResult))).
   
   (*
       fn op_(x: f64, y: f64) -> MathResult {
@@ -222,7 +222,7 @@ Module checked.
       (x : f64.t)
       (y : f64.t)
       : M ltac:(result_chaining_with_question_mark.checked.MathResult) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let x := M.alloc (| x |) in
       let y := M.alloc (| y |) in
       let return_ :=
@@ -383,7 +383,7 @@ Module checked.
             |)
           |)
         |))
-    )).
+    ) : ltac:(result_chaining_with_question_mark.checked.MathResult))).
   
   (*
       pub fn op(x: f64, y: f64) {
@@ -401,7 +401,7 @@ Module checked.
       }
   *)
   Definition op (x : f64.t) (y : f64.t) : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let x := M.alloc (| x |) in
       let y := M.alloc (| y |) in
       M.read (|
@@ -524,7 +524,7 @@ Module checked.
                 M.Val unit
             ])
       |)
-    )).
+    ) : unit)).
 End checked.
 
 (*
@@ -534,7 +534,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let _ : M.Val unit :=
         M.alloc (|
@@ -545,4 +545,4 @@ Definition main : M unit :=
         |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

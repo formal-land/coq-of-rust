@@ -7,21 +7,21 @@ fn id(x: u64) -> u64 {
 }
 *)
 Definition id (x : u64.t) : M u64.t :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let x := M.alloc (| x |) in
     M.read (| x |)
-  )).
+  ) : u64.t)).
 
 (*
 fn tri(a: u64, b: u64, c: u64) {}
 *)
 Definition tri (a : u64.t) (b : u64.t) (c : u64.t) : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let a := M.alloc (| a |) in
     let b := M.alloc (| b |) in
     let c := M.alloc (| c |) in
     tt
-  )).
+  ) : unit)).
 
 (*
 fn main() {
@@ -34,7 +34,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let _ : M.Val u64.t :=
         M.alloc (| M.call (|(example01.id ((Integer.of_Z 0) : u64.t)) |) |) in
@@ -72,4 +72,4 @@ Definition main : M unit :=
         |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

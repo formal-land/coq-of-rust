@@ -13,7 +13,7 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit := ltac:(M.monadic ( tt )).
+Definition main : M unit := ltac:(M.monadic (( tt ) : unit)).
 
 (*
     fn load_fpu_control_word(control: u16) {
@@ -23,10 +23,10 @@ Definition main : M unit := ltac:(M.monadic ( tt )).
     }
 *)
 Definition load_fpu_control_word (control : u16.t) : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let control := M.alloc (| control |) in
     M.read (|
       let _ : M.Val unit := InlineAssembly in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

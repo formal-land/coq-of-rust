@@ -18,14 +18,14 @@ Section Impl_core_fmt_Debug_for_clone_Unit_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let f := M.alloc (| f |) in
       M.call (|(core.fmt.Formatter.t::["write_str"]
         (M.read (| f |))
         (M.read (| mk_str "Unit" |)))
       |)
-    )).
+    ) : ltac:(core.fmt.Result))).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
@@ -45,10 +45,10 @@ Section Impl_core_clone_Clone_for_clone_Unit_t.
   Clone
   *)
   Definition clone (self : ref Self) : M clone.Unit.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (| deref (M.read (| self |)) |)
-    )).
+    ) : clone.Unit.t)).
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {
@@ -93,7 +93,7 @@ Section Impl_core_clone_Clone_for_clone_Pair_t.
   Clone
   *)
   Definition clone (self : ref Self) : M clone.Pair.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       clone.Pair.Build_t
         (M.call (|(ltac:(M.get_method (fun ℐ =>
@@ -108,7 +108,7 @@ Section Impl_core_clone_Clone_for_clone_Pair_t.
               (Trait := ℐ)))
           (borrow (clone.Pair.Get_1 (deref (M.read (| self |))))))
         |))
-    )).
+    ) : clone.Pair.t)).
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {
@@ -133,7 +133,7 @@ Section Impl_core_fmt_Debug_for_clone_Pair_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let f := M.alloc (| f |) in
       M.call (|(core.fmt.Formatter.t::["debug_tuple_field2_finish"]
@@ -148,7 +148,7 @@ Section Impl_core_fmt_Debug_for_clone_Pair_t.
             (M.alloc (| borrow (clone.Pair.Get_1 (deref (M.read (| self |))))
             |)))))
       |)
-    )).
+    ) : ltac:(core.fmt.Result))).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
@@ -198,7 +198,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let unit_ : M.Val clone.Unit.t := M.alloc (| clone.Unit.Build |) in
       let copied_unit : M.Val clone.Unit.t := M.copy (| unit_ |) in
@@ -360,4 +360,4 @@ Definition main : M unit :=
         M.alloc (| tt |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

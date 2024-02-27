@@ -7,7 +7,7 @@ fn function() {
 }
 *)
 Definition function : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let _ : M.Val unit :=
         let _ : M.Val unit :=
@@ -26,7 +26,7 @@ Definition function : M unit :=
         M.alloc (| tt |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).
 
 Module deeply.
   Module nested.
@@ -36,7 +36,7 @@ Module deeply.
             }
     *)
     Definition function : M unit :=
-      ltac:(M.monadic (
+      ltac:(M.monadic ((
         M.read (|
           let _ : M.Val unit :=
             let _ : M.Val unit :=
@@ -60,7 +60,7 @@ Module deeply.
             M.alloc (| tt |) in
           M.alloc (| tt |)
         |)
-      )).
+      ) : unit)).
   End nested.
 End deeply.
 
@@ -87,7 +87,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let _ : M.Val unit :=
         M.alloc (| M.call (|the_use_as_declaration.deeply.nested.function |)
@@ -130,4 +130,4 @@ Definition main : M unit :=
         M.alloc (| M.call (|the_use_as_declaration.function |) |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

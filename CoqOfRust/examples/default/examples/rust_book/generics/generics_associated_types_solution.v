@@ -59,7 +59,7 @@ Section Impl_generics_associated_types_solution_Contains_for_generics_associated
       (number_1 : ref i32.t)
       (number_2 : ref i32.t)
       : M bool.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let number_1 := M.alloc (| number_1 |) in
       let number_2 := M.alloc (| number_2 |) in
@@ -90,7 +90,7 @@ Section Impl_generics_associated_types_solution_Contains_for_generics_associated
             |)))
           (borrow number_2))
         |))
-    )).
+    ) : bool.t)).
   
   Global Instance AssociatedFunction_contains :
     Notations.DoubleColon Self "contains" := {
@@ -103,13 +103,13 @@ Section Impl_generics_associated_types_solution_Contains_for_generics_associated
       }
   *)
   Definition first (self : ref Self) : M i32.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         generics_associated_types_solution.Container.Get_0
           (deref (M.read (| self |)))
       |)
-    )).
+    ) : i32.t)).
   
   Global Instance AssociatedFunction_first :
     Notations.DoubleColon Self "first" := {
@@ -122,13 +122,13 @@ Section Impl_generics_associated_types_solution_Contains_for_generics_associated
       }
   *)
   Definition last (self : ref Self) : M i32.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         generics_associated_types_solution.Container.Get_1
           (deref (M.read (| self |)))
       |)
-    )).
+    ) : i32.t)).
   
   Global Instance AssociatedFunction_last :
     Notations.DoubleColon Self "last" := {
@@ -141,13 +141,13 @@ Section Impl_generics_associated_types_solution_Contains_for_generics_associated
       }
   *)
   Definition a (self : ref Self) : M i32.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         generics_associated_types_solution.Container.Get_0
           (deref (M.read (| self |)))
       |)
-    )).
+    ) : i32.t)).
   
   Global Instance AssociatedFunction_a : Notations.DoubleColon Self "a" := {
     Notations.double_colon := a;
@@ -171,7 +171,7 @@ fn difference<C: Contains>(container: &C) -> i32 {
 }
 *)
 Definition difference {C : Set} (container : ref C) : M i32.t :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let container := M.alloc (| container |) in
     BinOp.Panic.sub (|
       M.call (|(ltac:(M.get_method (fun ℐ =>
@@ -187,7 +187,7 @@ Definition difference {C : Set} (container : ref C) : M i32.t :=
         (M.read (| container |)))
       |)
     |)
-  )).
+  ) : i32.t)).
 
 (*
 fn get_a<C: Contains>(container: &C) -> C::A {
@@ -195,13 +195,13 @@ fn get_a<C: Contains>(container: &C) -> C::A {
 }
 *)
 Definition get_a {C : Set} (container : ref C) : M C::type["A"].t :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let container := M.alloc (| container |) in
     M.call (|(ltac:(M.get_method (fun ℐ =>
         generics_associated_types_solution.Contains.a (Self := C) (Trait := ℐ)))
       (M.read (| container |)))
     |)
-  )).
+  ) : C::type["A"].t)).
 
 (*
 fn main() {
@@ -224,7 +224,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let number_1 : M.Val i32.t := M.alloc (| (Integer.of_Z 3) : i32.t |) in
       let number_2 : M.Val i32.t := M.alloc (| (Integer.of_Z 10) : i32.t |) in
@@ -394,4 +394,4 @@ Definition main : M unit :=
         M.alloc (| tt |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

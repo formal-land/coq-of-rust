@@ -11,10 +11,10 @@ fn coerce_static<'a>(_: &'a i32) -> &'a i32 {
 }
 *)
 Definition coerce_static (arg : ref i32.t) : M (ref i32.t) :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let arg := M.alloc (| arg |) in
     M.read (| scoping_rules_lifetimes_reference_lifetime_static.NUM |)
-  )).
+  ) : ref i32.t)).
 
 (*
 fn main() {
@@ -42,7 +42,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let _ : M.Val unit :=
         let static_string : M.Val (ref str.t) :=
@@ -149,4 +149,4 @@ Definition main : M unit :=
         M.alloc (| tt |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

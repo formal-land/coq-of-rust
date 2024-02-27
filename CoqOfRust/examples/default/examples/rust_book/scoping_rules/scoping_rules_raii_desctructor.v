@@ -17,7 +17,7 @@ Section Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop_t.
       }
   *)
   Definition drop (self : mut_ref Self) : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         let _ : M.Val unit :=
@@ -38,7 +38,7 @@ Section Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop_t.
           M.alloc (| tt |) in
         M.alloc (| tt |)
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_drop :
     Notations.DoubleColon Self "drop" := {
@@ -59,7 +59,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let x : M.Val scoping_rules_raii_desctructor.ToDrop.t :=
         M.alloc (| scoping_rules_raii_desctructor.ToDrop.Build |) in
@@ -79,4 +79,4 @@ Definition main : M unit :=
         M.alloc (| tt |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

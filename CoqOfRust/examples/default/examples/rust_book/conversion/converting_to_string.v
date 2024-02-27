@@ -25,7 +25,7 @@ Section Impl_core_fmt_Display_for_converting_to_string_Circle_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let f := M.alloc (| f |) in
       M.call (|(core.fmt.Formatter.t::["write_fmt"]
@@ -49,7 +49,7 @@ Section Impl_core_fmt_Display_for_converting_to_string_Circle_t.
               |)))))
         |)))
       |)
-    )).
+    ) : ltac:(core.fmt.Result))).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
@@ -69,7 +69,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let circle : M.Val converting_to_string.Circle.t :=
         M.alloc (|
@@ -87,4 +87,4 @@ Definition main : M unit :=
         |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

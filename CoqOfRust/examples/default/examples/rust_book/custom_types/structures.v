@@ -26,7 +26,7 @@ Section Impl_core_fmt_Debug_for_structures_Person_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let f := M.alloc (| f |) in
       M.call (|(core.fmt.Formatter.t::["debug_struct_field2_finish"]
@@ -44,7 +44,7 @@ Section Impl_core_fmt_Debug_for_structures_Person_t.
               borrow (structures.Person.Get_age (deref (M.read (| self |))))
             |)))))
       |)
-    )).
+    ) : ltac:(core.fmt.Result))).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
@@ -164,7 +164,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let name : M.Val alloc.string.String.t :=
         M.alloc (|
@@ -407,4 +407,4 @@ Definition main : M unit :=
               M.Val unit
           ])
     |)
-  )).
+  ) : unit)).

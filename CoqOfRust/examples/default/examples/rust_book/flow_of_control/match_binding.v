@@ -6,7 +6,9 @@ fn age() -> u32 {
     15
 }
 *)
-Definition age : M u32.t := ltac:(M.monadic ( (Integer.of_Z 15) : u32.t )).
+Definition age : M u32.t :=
+  ltac:(M.monadic (( (Integer.of_Z 15) : u32.t
+  ) : u32.t)).
 
 (*
 fn main() {
@@ -26,7 +28,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let _ : M.Val unit :=
         let _ : M.Val unit :=
@@ -168,4 +170,4 @@ Definition main : M unit :=
               M.Val unit
           ])
     |)
-  )).
+  ) : unit)).

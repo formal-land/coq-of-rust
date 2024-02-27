@@ -27,7 +27,7 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_t_T.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let f := M.alloc (| f |) in
       M.call (|(core.fmt.Formatter.t::["debug_tuple_field1_finish"]
@@ -42,7 +42,7 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_bounds_Ref_t_T.
                   (deref (M.read (| self |))))
             |)))))
       |)
-    )).
+    ) : ltac:(core.fmt.Result))).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
@@ -63,7 +63,7 @@ where
 }
 *)
 Definition print {T : Set} (t : T) : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let t := M.alloc (| t |) in
     M.read (|
       let _ : M.Val unit :=
@@ -97,7 +97,7 @@ Definition print {T : Set} (t : T) : M unit :=
         M.alloc (| tt |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).
 
 (*
 fn print_ref<'a, T>(t: &'a T)
@@ -108,7 +108,7 @@ where
 }
 *)
 Definition print_ref {T : Set} (t : ref T) : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let t := M.alloc (| t |) in
     M.read (|
       let _ : M.Val unit :=
@@ -142,7 +142,7 @@ Definition print_ref {T : Set} (t : ref T) : M unit :=
         M.alloc (| tt |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).
 
 (*
 fn main() {
@@ -155,7 +155,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let x : M.Val i32.t := M.alloc (| (Integer.of_Z 7) : i32.t |) in
       let ref_x : M.Val (scoping_rules_lifetimes_bounds.Ref.t i32.t) :=
@@ -171,4 +171,4 @@ Definition main : M unit :=
         |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

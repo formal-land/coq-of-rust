@@ -13,7 +13,7 @@ where
 }
 *)
 Definition apply {F : Set} (f : F) : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let f := M.alloc (| f |) in
     M.read (|
       let _ : M.Val unit :=
@@ -29,7 +29,7 @@ Definition apply {F : Set} (f : F) : M unit :=
         |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).
 
 (*
 fn apply_to_3<F>(f: F) -> i32
@@ -41,14 +41,14 @@ where
 }
 *)
 Definition apply_to_3 {F : Set} (f : F) : M i32.t :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let f := M.alloc (| f |) in
     M.call (|(ltac:(M.get_method (fun ℐ =>
         core.ops.function.Fn.call (Self := F) (Args := i32.t) (Trait := ℐ)))
       (borrow f)
       ((Integer.of_Z 3) : i32.t))
     |)
-  )).
+  ) : i32.t)).
 
 (*
 fn main() {
@@ -87,7 +87,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let greeting : M.Val (ref str.t) := M.copy (| mk_str "hello" |) in
       let farewell : M.Val alloc.string.String.t :=
@@ -258,4 +258,4 @@ Definition main : M unit :=
         M.alloc (| tt |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

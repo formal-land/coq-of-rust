@@ -35,7 +35,7 @@ Section Impl_core_fmt_Debug_for_generics_bounds_Rectangle_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let f := M.alloc (| f |) in
       M.call (|(core.fmt.Formatter.t::["debug_struct_field2_finish"]
@@ -56,7 +56,7 @@ Section Impl_core_fmt_Debug_for_generics_bounds_Rectangle_t.
                   (deref (M.read (| self |))))
             |)))))
       |)
-    )).
+    ) : ltac:(core.fmt.Result))).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
@@ -93,7 +93,7 @@ Section Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle_t.
       }
   *)
   Definition area (self : ref Self) : M f64.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       BinOp.Panic.mul (|
         M.read (|
@@ -103,7 +103,7 @@ Section Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle_t.
           generics_bounds.Rectangle.Get_height (deref (M.read (| self |)))
         |)
       |)
-    )).
+    ) : f64.t)).
   
   Global Instance AssociatedFunction_area :
     Notations.DoubleColon Self "area" := {
@@ -122,7 +122,7 @@ fn print_debug<T: Debug>(t: &T) {
 }
 *)
 Definition print_debug {T : Set} (t : ref T) : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let t := M.alloc (| t |) in
     M.read (|
       let _ : M.Val unit :=
@@ -153,7 +153,7 @@ Definition print_debug {T : Set} (t : ref T) : M unit :=
         M.alloc (| tt |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).
 
 (*
 fn area<T: HasArea>(t: &T) -> f64 {
@@ -161,13 +161,13 @@ fn area<T: HasArea>(t: &T) -> f64 {
 }
 *)
 Definition area {T : Set} (t : ref T) : M f64.t :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let t := M.alloc (| t |) in
     M.call (|(ltac:(M.get_method (fun ℐ =>
         generics_bounds.HasArea.area (Self := T) (Trait := ℐ)))
       (M.read (| t |)))
     |)
-  )).
+  ) : f64.t)).
 
 (*
 fn main() {
@@ -191,7 +191,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let rectangle : M.Val generics_bounds.Rectangle.t :=
         M.alloc (|
@@ -250,4 +250,4 @@ Definition main : M unit :=
         M.alloc (| tt |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

@@ -95,7 +95,7 @@ Section Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType_t.
   (*
       fn some_fn() {}
   *)
-  Definition some_fn : M unit := ltac:(M.monadic ( tt )).
+  Definition some_fn : M unit := ltac:(M.monadic (( tt ) : unit)).
   
   Global Instance AssociatedFunction_some_fn :
     Notations.DoubleColon Self "some_fn" := {

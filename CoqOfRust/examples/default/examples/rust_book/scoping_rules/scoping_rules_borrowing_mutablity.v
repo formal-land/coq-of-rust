@@ -30,7 +30,7 @@ Section Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book_t.
   Definition clone
       (self : ref Self)
       : M scoping_rules_borrowing_mutablity.Book.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         ltac:
@@ -66,7 +66,7 @@ Section Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book_t.
                 M.Val scoping_rules_borrowing_mutablity.Book.t
             ])
       |)
-    )).
+    ) : scoping_rules_borrowing_mutablity.Book.t)).
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {
@@ -100,7 +100,7 @@ fn borrow_book(book: &Book) {
 Definition borrow_book
     (book : ref scoping_rules_borrowing_mutablity.Book.t)
     : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let book := M.alloc (| book |) in
     M.read (|
       let _ : M.Val unit :=
@@ -142,7 +142,7 @@ Definition borrow_book
         M.alloc (| tt |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).
 
 (*
 fn new_edition(book: &mut Book) {
@@ -153,7 +153,7 @@ fn new_edition(book: &mut Book) {
 Definition new_edition
     (book : mut_ref scoping_rules_borrowing_mutablity.Book.t)
     : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let book := M.alloc (| book |) in
     M.read (|
       let _ : M.Val unit :=
@@ -201,7 +201,7 @@ Definition new_edition
         M.alloc (| tt |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).
 
 (*
 fn main() {
@@ -232,7 +232,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let immutabook : M.Val scoping_rules_borrowing_mutablity.Book.t :=
         M.alloc (|
@@ -268,4 +268,4 @@ Definition main : M unit :=
         |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

@@ -27,7 +27,7 @@ Section Impl_core_default_Default_for_multisig_Mapping_t_K_V.
   Default
   *)
   Definition default : M (multisig.Mapping.t K V) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       {|
         multisig.Mapping._key :=
           M.call (|ltac:(M.get_method (fun ℐ =>
@@ -42,7 +42,7 @@ Section Impl_core_default_Default_for_multisig_Mapping_t_K_V.
               (Trait := ℐ)))
           |);
       |} : multisig.Mapping.t K V
-    )).
+    ) : multisig.Mapping.t K V)).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -67,14 +67,14 @@ Section Impl_multisig_Mapping_t_K_V.
       }
   *)
   Definition contains (self : ref Self) (_key : ref K) : M bool.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let _key := M.alloc (| _key |) in
       (never_to_any (B := bool.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : bool.t)).
   
   Global Instance AssociatedFunction_contains :
     Notations.DoubleColon Self "contains" := {
@@ -90,14 +90,14 @@ Section Impl_multisig_Mapping_t_K_V.
       (self : ref Self)
       (_key : ref K)
       : M (core.option.Option.t V) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let _key := M.alloc (| _key |) in
       (never_to_any (B := core.option.Option.t V)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : core.option.Option.t V)).
   
   Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
     Notations.double_colon := get;
@@ -113,7 +113,7 @@ Section Impl_multisig_Mapping_t_K_V.
       (_key : K)
       (_value : V)
       : M (core.option.Option.t u32.t) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let _key := M.alloc (| _key |) in
       let _value := M.alloc (| _value |) in
@@ -121,7 +121,7 @@ Section Impl_multisig_Mapping_t_K_V.
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : core.option.Option.t u32.t)).
   
   Global Instance AssociatedFunction_insert :
     Notations.DoubleColon Self "insert" := {
@@ -134,14 +134,14 @@ Section Impl_multisig_Mapping_t_K_V.
       }
   *)
   Definition remove (self : ref Self) (_key : K) : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let _key := M.alloc (| _key |) in
       (never_to_any (B := unit)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_remove :
     Notations.DoubleColon Self "remove" := {
@@ -157,14 +157,14 @@ Section Impl_multisig_Mapping_t_K_V.
       (self : ref Self)
       (_key : K)
       : M (core.option.Option.t u32.t) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let _key := M.alloc (| _key |) in
       (never_to_any (B := core.option.Option.t u32.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : core.option.Option.t u32.t)).
   
   Global Instance AssociatedFunction_size :
     Notations.DoubleColon Self "size" := {
@@ -177,14 +177,14 @@ Section Impl_multisig_Mapping_t_K_V.
       }
   *)
   Definition take (self : ref Self) (_key : K) : M (core.option.Option.t V) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let _key := M.alloc (| _key |) in
       (never_to_any (B := core.option.Option.t V)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : core.option.Option.t V)).
   
   Global Instance AssociatedFunction_take :
     Notations.DoubleColon Self "take" := {
@@ -212,12 +212,12 @@ Section Impl_core_default_Default_for_multisig_AccountId_t.
   Default
   *)
   Definition default : M multisig.AccountId.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       multisig.AccountId.Build_t
         (M.call (|ltac:(M.get_method (fun ℐ =>
           core.default.Default.default (Self := u128.t) (Trait := ℐ)))
         |))
-    )).
+    ) : multisig.AccountId.t)).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -241,7 +241,7 @@ Section Impl_core_fmt_Debug_for_multisig_AccountId_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let f := M.alloc (| f |) in
       M.call (|(core.fmt.Formatter.t::["debug_tuple_field1_finish"]
@@ -254,7 +254,7 @@ Section Impl_core_fmt_Debug_for_multisig_AccountId_t.
               borrow (multisig.AccountId.Get_0 (deref (M.read (| self |))))
             |)))))
       |)
-    )).
+    ) : ltac:(core.fmt.Result))).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
@@ -274,7 +274,7 @@ Section Impl_core_clone_Clone_for_multisig_AccountId_t.
   Clone
   *)
   Definition clone (self : ref Self) : M multisig.AccountId.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         ltac:
@@ -286,7 +286,7 @@ Section Impl_core_clone_Clone_for_multisig_AccountId_t.
                 (deref (M.read (| self |))) : M.Val multisig.AccountId.t
             ])
       |)
-    )).
+    ) : multisig.AccountId.t)).
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {
@@ -329,13 +329,13 @@ Section Impl_core_cmp_PartialEq_for_multisig_AccountId_t.
       (self : ref Self)
       (other : ref multisig.AccountId.t)
       : M bool.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let other := M.alloc (| other |) in
       BinOp.Pure.eq
         (M.read (| multisig.AccountId.Get_0 (deref (M.read (| self |))) |))
         (M.read (| multisig.AccountId.Get_0 (deref (M.read (| other |))) |))
-    )).
+    ) : bool.t)).
   
   Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
     Notations.double_colon := eq;
@@ -367,7 +367,7 @@ Section Impl_core_cmp_Eq_for_multisig_AccountId_t.
   Eq
   *)
   Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         ltac:
@@ -379,7 +379,7 @@ Section Impl_core_cmp_Eq_for_multisig_AccountId_t.
                 (M.alloc (| tt |)) : M.Val unit
             ])
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
     Notations.DoubleColon Self "assert_receiver_is_total_eq" := {
@@ -404,7 +404,7 @@ Section Impl_core_cmp_PartialOrd_for_multisig_AccountId_t.
       (self : ref Self)
       (other : ref multisig.AccountId.t)
       : M (core.option.Option.t core.cmp.Ordering.t) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let other := M.alloc (| other |) in
       M.call (|(ltac:(M.get_method (fun ℐ =>
@@ -415,7 +415,7 @@ Section Impl_core_cmp_PartialOrd_for_multisig_AccountId_t.
         (borrow (multisig.AccountId.Get_0 (deref (M.read (| self |)))))
         (borrow (multisig.AccountId.Get_0 (deref (M.read (| other |))))))
       |)
-    )).
+    ) : core.option.Option.t core.cmp.Ordering.t)).
   
   Global Instance AssociatedFunction_partial_cmp :
     Notations.DoubleColon Self "partial_cmp" := {
@@ -445,7 +445,7 @@ Section Impl_core_cmp_Ord_for_multisig_AccountId_t.
       (self : ref Self)
       (other : ref multisig.AccountId.t)
       : M core.cmp.Ordering.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let other := M.alloc (| other |) in
       M.call (|(ltac:(M.get_method (fun ℐ =>
@@ -453,7 +453,7 @@ Section Impl_core_cmp_Ord_for_multisig_AccountId_t.
         (borrow (multisig.AccountId.Get_0 (deref (M.read (| self |)))))
         (borrow (multisig.AccountId.Get_0 (deref (M.read (| other |))))))
       |)
-    )).
+    ) : core.cmp.Ordering.t)).
   
   Global Instance AssociatedFunction_cmp : Notations.DoubleColon Self "cmp" := {
     Notations.double_colon := cmp;
@@ -525,7 +525,7 @@ Section Impl_core_clone_Clone_for_multisig_ConfirmationStatus_t.
   Clone
   *)
   Definition clone (self : ref Self) : M multisig.ConfirmationStatus.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         ltac:
@@ -538,7 +538,7 @@ Section Impl_core_clone_Clone_for_multisig_ConfirmationStatus_t.
                 M.Val multisig.ConfirmationStatus.t
             ])
       |)
-    )).
+    ) : multisig.ConfirmationStatus.t)).
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {
@@ -603,7 +603,7 @@ Section Impl_core_default_Default_for_multisig_Transaction_t.
   Default
   *)
   Definition default : M multisig.Transaction.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       {|
         multisig.Transaction.callee :=
           M.call (|ltac:(M.get_method (fun ℐ =>
@@ -634,7 +634,7 @@ Section Impl_core_default_Default_for_multisig_Transaction_t.
             core.default.Default.default (Self := bool.t) (Trait := ℐ)))
           |);
       |} : multisig.Transaction.t
-    )).
+    ) : multisig.Transaction.t)).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -660,10 +660,10 @@ Section Impl_core_clone_Clone_for_multisig_Error_t.
   Clone
   *)
   Definition clone (self : ref Self) : M multisig.Error.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (| deref (M.read (| self |)) |)
-    )).
+    ) : multisig.Error.t)).
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {
@@ -703,11 +703,11 @@ Section Impl_core_cmp_PartialEq_for_multisig_Error_t.
   PartialEq
   *)
   Definition eq (self : ref Self) (other : ref multisig.Error.t) : M bool.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let other := M.alloc (| other |) in
       true
-    )).
+    ) : bool.t)).
   
   Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
     Notations.double_colon := eq;
@@ -739,10 +739,10 @@ Section Impl_core_cmp_Eq_for_multisig_Error_t.
   Eq
   *)
   Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       tt
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
     Notations.DoubleColon Self "assert_receiver_is_total_eq" := {
@@ -783,7 +783,7 @@ Section Impl_core_default_Default_for_multisig_Transactions_t.
   Default
   *)
   Definition default : M multisig.Transactions.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       {|
         multisig.Transactions.transactions :=
           M.call (|ltac:(M.get_method (fun ℐ =>
@@ -796,7 +796,7 @@ Section Impl_core_default_Default_for_multisig_Transactions_t.
             core.default.Default.default (Self := u32.t) (Trait := ℐ)))
           |);
       |} : multisig.Transactions.t
-    )).
+    ) : multisig.Transactions.t)).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -1000,10 +1000,10 @@ Section Impl_multisig_Env_t.
       }
   *)
   Definition caller (self : ref Self) : M multisig.AccountId.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (| multisig.Env.Get_caller (deref (M.read (| self |))) |)
-    )).
+    ) : multisig.AccountId.t)).
   
   Global Instance AssociatedFunction_caller :
     Notations.DoubleColon Self "caller" := {
@@ -1019,14 +1019,14 @@ Section Impl_multisig_Env_t.
       (self : ref Self)
       (_event : multisig.Event.t)
       : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let _event := M.alloc (| _event |) in
       (never_to_any (B := unit)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_emit_event :
     Notations.DoubleColon Self "emit_event" := {
@@ -1039,13 +1039,13 @@ Section Impl_multisig_Env_t.
       }
   *)
   Definition transferred_value (self : ref Self) : M ltac:(multisig.Balance) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       (never_to_any (B := u128.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : ltac:(multisig.Balance))).
   
   Global Instance AssociatedFunction_transferred_value :
     Notations.DoubleColon Self "transferred_value" := {
@@ -1058,13 +1058,13 @@ Section Impl_multisig_Env_t.
       }
   *)
   Definition account_id (self : ref Self) : M multisig.AccountId.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       (never_to_any (B := multisig.AccountId.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : multisig.AccountId.t)).
   
   Global Instance AssociatedFunction_account_id :
     Notations.DoubleColon Self "account_id" := {
@@ -1126,7 +1126,7 @@ Section Impl_core_default_Default_for_multisig_Multisig_t.
   Default
   *)
   Definition default : M multisig.Multisig.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       {|
         multisig.Multisig.confirmations :=
           M.call (|ltac:(M.get_method (fun ℐ =>
@@ -1170,7 +1170,7 @@ Section Impl_core_default_Default_for_multisig_Multisig_t.
             core.default.Default.default (Self := u32.t) (Trait := ℐ)))
           |);
       |} : multisig.Multisig.t
-    )).
+    ) : multisig.Multisig.t)).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -1192,7 +1192,7 @@ Definition ensure_requirement_is_valid
     (owners : u32.t)
     (requirement : u32.t)
     : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let owners := M.alloc (| owners |) in
     let requirement := M.alloc (| requirement |) in
     M.read (|
@@ -1230,7 +1230,7 @@ Definition ensure_requirement_is_valid
           M.alloc (| tt |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).
 
 Module  Impl_multisig_Multisig_t.
 Section Impl_multisig_Multisig_t.
@@ -1242,12 +1242,12 @@ Section Impl_multisig_Multisig_t.
       }
   *)
   Definition init_env : M multisig.Env.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       (never_to_any (B := multisig.Env.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : multisig.Env.t)).
   
   Global Instance AssociatedFunction_init_env :
     Notations.DoubleColon Self "init_env" := {
@@ -1260,10 +1260,10 @@ Section Impl_multisig_Multisig_t.
       }
   *)
   Definition env (self : ref Self) : M multisig.Env.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.call (|multisig.Multisig.t::["init_env"] |)
-    )).
+    ) : multisig.Env.t)).
   
   Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
     Notations.double_colon := env;
@@ -1290,7 +1290,7 @@ Section Impl_multisig_Multisig_t.
       (requirement : u32.t)
       (owners : alloc.vec.Vec.t multisig.AccountId.t alloc.vec.Vec.Default.A)
       : M Self :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let requirement := M.alloc (| requirement |) in
       let owners := M.alloc (| owners |) in
       M.read (|
@@ -1434,7 +1434,7 @@ Section Impl_multisig_Multisig_t.
           |) in
         contract
       |)
-    )).
+    ) : Self)).
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
@@ -1454,7 +1454,7 @@ Section Impl_multisig_Multisig_t.
       (self : ref Self)
       (trans_id : ltac:(multisig.TransactionId))
       : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let trans_id := M.alloc (| trans_id |) in
       M.read (|
@@ -1496,7 +1496,7 @@ Section Impl_multisig_Multisig_t.
             M.alloc (| tt |) in
         M.alloc (| tt |)
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_ensure_confirmed :
     Notations.DoubleColon Self "ensure_confirmed" := {
@@ -1514,7 +1514,7 @@ Section Impl_multisig_Multisig_t.
       (self : ref Self)
       (trans_id : ltac:(multisig.TransactionId))
       : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let trans_id := M.alloc (| trans_id |) in
       M.read (|
@@ -1534,7 +1534,7 @@ Section Impl_multisig_Multisig_t.
           |) in
         M.alloc (| tt |)
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_ensure_transaction_exists :
     Notations.DoubleColon Self "ensure_transaction_exists" := {
@@ -1550,7 +1550,7 @@ Section Impl_multisig_Multisig_t.
       (self : ref Self)
       (owner : ref multisig.AccountId.t)
       : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let owner := M.alloc (| owner |) in
       M.read (|
@@ -1584,7 +1584,7 @@ Section Impl_multisig_Multisig_t.
             M.alloc (| tt |) in
         M.alloc (| tt |)
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_ensure_owner :
     Notations.DoubleColon Self "ensure_owner" := {
@@ -1597,7 +1597,7 @@ Section Impl_multisig_Multisig_t.
       }
   *)
   Definition ensure_caller_is_owner (self : ref Self) : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         let _ : M.Val unit :=
@@ -1619,7 +1619,7 @@ Section Impl_multisig_Multisig_t.
           |) in
         M.alloc (| tt |)
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_ensure_caller_is_owner :
     Notations.DoubleColon Self "ensure_caller_is_owner" := {
@@ -1632,7 +1632,7 @@ Section Impl_multisig_Multisig_t.
       }
   *)
   Definition ensure_from_wallet (self : ref Self) : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         let _ : M.Val unit :=
@@ -1714,7 +1714,7 @@ Section Impl_multisig_Multisig_t.
               ]) in
         M.alloc (| tt |)
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_ensure_from_wallet :
     Notations.DoubleColon Self "ensure_from_wallet" := {
@@ -1730,7 +1730,7 @@ Section Impl_multisig_Multisig_t.
       (self : ref Self)
       (owner : ref multisig.AccountId.t)
       : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let owner := M.alloc (| owner |) in
       M.read (|
@@ -1765,7 +1765,7 @@ Section Impl_multisig_Multisig_t.
             M.alloc (| tt |) in
         M.alloc (| tt |)
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_ensure_no_owner :
     Notations.DoubleColon Self "ensure_no_owner" := {
@@ -1787,7 +1787,7 @@ Section Impl_multisig_Multisig_t.
       (self : mut_ref Self)
       (new_owner : multisig.AccountId.t)
       : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let new_owner := M.alloc (| new_owner |) in
       M.read (|
@@ -1858,7 +1858,7 @@ Section Impl_multisig_Multisig_t.
           |) in
         M.alloc (| tt |)
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_add_owner :
     Notations.DoubleColon Self "add_owner" := {
@@ -1877,7 +1877,7 @@ Section Impl_multisig_Multisig_t.
       (self : ref Self)
       (owner : ref multisig.AccountId.t)
       : M u32.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let owner := M.alloc (| owner |) in
       rust_cast
@@ -1928,7 +1928,7 @@ Section Impl_multisig_Multisig_t.
                actually an owner."
           |)))
         |))
-    )).
+    ) : u32.t)).
   
   Global Instance AssociatedFunction_owner_index :
     Notations.DoubleColon Self "owner_index" := {
@@ -1952,7 +1952,7 @@ Section Impl_multisig_Multisig_t.
       (self : mut_ref Self)
       (owner : ref multisig.AccountId.t)
       : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let owner := M.alloc (| owner |) in
       M.read (|
@@ -2090,7 +2090,7 @@ Section Impl_multisig_Multisig_t.
                   M.Val unit
               ]))
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_clean_owner_confirmations :
     Notations.DoubleColon Self "clean_owner_confirmations" := {
@@ -2117,7 +2117,7 @@ Section Impl_multisig_Multisig_t.
       (self : mut_ref Self)
       (owner : multisig.AccountId.t)
       : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let owner := M.alloc (| owner |) in
       M.read (|
@@ -2218,7 +2218,7 @@ Section Impl_multisig_Multisig_t.
           |) in
         M.alloc (| tt |)
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_remove_owner :
     Notations.DoubleColon Self "remove_owner" := {
@@ -2246,7 +2246,7 @@ Section Impl_multisig_Multisig_t.
       (old_owner : multisig.AccountId.t)
       (new_owner : multisig.AccountId.t)
       : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let old_owner := M.alloc (| old_owner |) in
       let new_owner := M.alloc (| new_owner |) in
@@ -2347,7 +2347,7 @@ Section Impl_multisig_Multisig_t.
           |) in
         M.alloc (| tt |)
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_replace_owner :
     Notations.DoubleColon Self "replace_owner" := {
@@ -2369,7 +2369,7 @@ Section Impl_multisig_Multisig_t.
       (self : mut_ref Self)
       (new_requirement : u32.t)
       : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let new_requirement := M.alloc (| new_requirement |) in
       M.read (|
@@ -2415,7 +2415,7 @@ Section Impl_multisig_Multisig_t.
           |) in
         M.alloc (| tt |)
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_change_requirement :
     Notations.DoubleColon Self "change_requirement" := {
@@ -2461,7 +2461,7 @@ Section Impl_multisig_Multisig_t.
       (confirmer : multisig.AccountId.t)
       (transaction : ltac:(multisig.TransactionId))
       : M multisig.ConfirmationStatus.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let confirmer := M.alloc (| confirmer |) in
       let transaction := M.alloc (| transaction |) in
@@ -2578,7 +2578,7 @@ Section Impl_multisig_Multisig_t.
             M.alloc (| tt |) in
         status
       |)
-    )).
+    ) : multisig.ConfirmationStatus.t)).
   
   Global Instance AssociatedFunction_confirm_by_caller :
     Notations.DoubleColon Self "confirm_by_caller" := {
@@ -2610,7 +2610,7 @@ Section Impl_multisig_Multisig_t.
       (self : mut_ref Self)
       (transaction : multisig.Transaction.t)
       : M (ltac:(multisig.TransactionId) * multisig.ConfirmationStatus.t) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let transaction := M.alloc (| transaction |) in
       M.read (|
@@ -2691,7 +2691,7 @@ Section Impl_multisig_Multisig_t.
             |))
         |)
       |)
-    )).
+    ) : ltac:(multisig.TransactionId) * multisig.ConfirmationStatus.t)).
   
   Global Instance AssociatedFunction_submit_transaction :
     Notations.DoubleColon Self "submit_transaction" := {
@@ -2722,7 +2722,7 @@ Section Impl_multisig_Multisig_t.
       (self : mut_ref Self)
       (trans_id : ltac:(multisig.TransactionId))
       : M (core.option.Option.t multisig.Transaction.t) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let trans_id := M.alloc (| trans_id |) in
       M.read (|
@@ -2925,7 +2925,7 @@ Section Impl_multisig_Multisig_t.
             M.alloc (| tt |) in
         transaction
       |)
-    )).
+    ) : core.option.Option.t multisig.Transaction.t)).
   
   Global Instance AssociatedFunction_take_transaction :
     Notations.DoubleColon Self "take_transaction" := {
@@ -2946,7 +2946,7 @@ Section Impl_multisig_Multisig_t.
       (self : mut_ref Self)
       (trans_id : ltac:(multisig.TransactionId))
       : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let trans_id := M.alloc (| trans_id |) in
       M.read (|
@@ -2992,7 +2992,7 @@ Section Impl_multisig_Multisig_t.
         else
           M.alloc (| tt |)
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_cancel_transaction :
     Notations.DoubleColon Self "cancel_transaction" := {
@@ -3010,7 +3010,7 @@ Section Impl_multisig_Multisig_t.
       (self : mut_ref Self)
       (trans_id : ltac:(multisig.TransactionId))
       : M multisig.ConfirmationStatus.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let trans_id := M.alloc (| trans_id |) in
       M.read (|
@@ -3042,7 +3042,7 @@ Section Impl_multisig_Multisig_t.
           |)
         |)
       |)
-    )).
+    ) : multisig.ConfirmationStatus.t)).
   
   Global Instance AssociatedFunction_confirm_transaction :
     Notations.DoubleColon Self "confirm_transaction" := {
@@ -3073,7 +3073,7 @@ Section Impl_multisig_Multisig_t.
       (self : mut_ref Self)
       (trans_id : ltac:(multisig.TransactionId))
       : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let trans_id := M.alloc (| trans_id |) in
       M.read (|
@@ -3173,7 +3173,7 @@ Section Impl_multisig_Multisig_t.
         else
           M.alloc (| tt |)
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_revoke_confirmation :
     Notations.DoubleColon Self "revoke_confirmation" := {
@@ -3211,7 +3211,7 @@ Section Impl_multisig_Multisig_t.
       (self : mut_ref Self)
       (trans_id : ltac:(multisig.TransactionId))
       : M (core.result.Result.t unit multisig.Error.t) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let trans_id := M.alloc (| trans_id |) in
       M.read (|
@@ -3359,7 +3359,7 @@ Section Impl_multisig_Multisig_t.
           |) in
         result
       |)
-    )).
+    ) : core.result.Result.t unit multisig.Error.t)).
   
   Global Instance AssociatedFunction_invoke_transaction :
     Notations.DoubleColon Self "invoke_transaction" := {

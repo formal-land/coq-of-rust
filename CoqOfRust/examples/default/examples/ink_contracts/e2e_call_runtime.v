@@ -20,12 +20,12 @@ Section Impl_core_default_Default_for_e2e_call_runtime_AccountId_t.
   Default
   *)
   Definition default : M e2e_call_runtime.AccountId.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       e2e_call_runtime.AccountId.Build_t
         (M.call (|ltac:(M.get_method (fun ℐ =>
           core.default.Default.default (Self := u128.t) (Trait := ℐ)))
         |))
-    )).
+    ) : e2e_call_runtime.AccountId.t)).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -46,7 +46,7 @@ Section Impl_core_clone_Clone_for_e2e_call_runtime_AccountId_t.
   Clone
   *)
   Definition clone (self : ref Self) : M e2e_call_runtime.AccountId.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         ltac:
@@ -58,7 +58,7 @@ Section Impl_core_clone_Clone_for_e2e_call_runtime_AccountId_t.
                 (deref (M.read (| self |))) : M.Val e2e_call_runtime.AccountId.t
             ])
       |)
-    )).
+    ) : e2e_call_runtime.AccountId.t)).
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {
@@ -104,13 +104,13 @@ Section Impl_e2e_call_runtime_Env_t.
       }
   *)
   Definition balance (self : ref Self) : M ltac:(e2e_call_runtime.Balance) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       (never_to_any (B := u128.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : ltac:(e2e_call_runtime.Balance))).
   
   Global Instance AssociatedFunction_balance :
     Notations.DoubleColon Self "balance" := {
@@ -133,8 +133,8 @@ Section Impl_core_default_Default_for_e2e_call_runtime_Contract_t.
   Default
   *)
   Definition default : M e2e_call_runtime.Contract.t :=
-    ltac:(M.monadic ( e2e_call_runtime.Contract.Build
-    )).
+    ltac:(M.monadic (( e2e_call_runtime.Contract.Build
+    ) : e2e_call_runtime.Contract.t)).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -157,12 +157,12 @@ Section Impl_e2e_call_runtime_Contract_t.
       }
   *)
   Definition init_env : M e2e_call_runtime.Env.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       (never_to_any (B := e2e_call_runtime.Env.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : e2e_call_runtime.Env.t)).
   
   Global Instance AssociatedFunction_init_env :
     Notations.DoubleColon Self "init_env" := {
@@ -175,10 +175,10 @@ Section Impl_e2e_call_runtime_Contract_t.
       }
   *)
   Definition env (self : ref Self) : M e2e_call_runtime.Env.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.call (|e2e_call_runtime.Contract.t::["init_env"] |)
-    )).
+    ) : e2e_call_runtime.Env.t)).
   
   Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
     Notations.double_colon := env;
@@ -190,8 +190,8 @@ Section Impl_e2e_call_runtime_Contract_t.
       }
   *)
   Definition new : M Self :=
-    ltac:(M.monadic ( e2e_call_runtime.Contract.Build
-    )).
+    ltac:(M.monadic (( e2e_call_runtime.Contract.Build
+    ) : Self)).
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
@@ -205,7 +205,7 @@ Section Impl_e2e_call_runtime_Contract_t.
   Definition get_contract_balance
       (self : ref Self)
       : M ltac:(e2e_call_runtime.Balance) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.call (|(e2e_call_runtime.Env.t::["balance"]
         (borrow
@@ -214,7 +214,7 @@ Section Impl_e2e_call_runtime_Contract_t.
             |)
           |))))
       |)
-    )).
+    ) : ltac:(e2e_call_runtime.Balance))).
   
   Global Instance AssociatedFunction_get_contract_balance :
     Notations.DoubleColon Self "get_contract_balance" := {

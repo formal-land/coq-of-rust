@@ -27,7 +27,7 @@ Section Impl_core_default_Default_for_erc1155_Mapping_t_K_V.
   Default
   *)
   Definition default : M (erc1155.Mapping.t K V) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       {|
         erc1155.Mapping._key :=
           M.call (|ltac:(M.get_method (fun ℐ =>
@@ -42,7 +42,7 @@ Section Impl_core_default_Default_for_erc1155_Mapping_t_K_V.
               (Trait := ℐ)))
           |);
       |} : erc1155.Mapping.t K V
-    )).
+    ) : erc1155.Mapping.t K V)).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -67,14 +67,14 @@ Section Impl_erc1155_Mapping_t_K_V.
       }
   *)
   Definition contains (self : ref Self) (_key : ref K) : M bool.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let _key := M.alloc (| _key |) in
       (never_to_any (B := bool.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : bool.t)).
   
   Global Instance AssociatedFunction_contains :
     Notations.DoubleColon Self "contains" := {
@@ -90,14 +90,14 @@ Section Impl_erc1155_Mapping_t_K_V.
       (self : ref Self)
       (_key : ref K)
       : M (core.option.Option.t V) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let _key := M.alloc (| _key |) in
       (never_to_any (B := core.option.Option.t V)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : core.option.Option.t V)).
   
   Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
     Notations.double_colon := get;
@@ -113,7 +113,7 @@ Section Impl_erc1155_Mapping_t_K_V.
       (_key : K)
       (_value : V)
       : M (core.option.Option.t u32.t) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let _key := M.alloc (| _key |) in
       let _value := M.alloc (| _value |) in
@@ -121,7 +121,7 @@ Section Impl_erc1155_Mapping_t_K_V.
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : core.option.Option.t u32.t)).
   
   Global Instance AssociatedFunction_insert :
     Notations.DoubleColon Self "insert" := {
@@ -134,14 +134,14 @@ Section Impl_erc1155_Mapping_t_K_V.
       }
   *)
   Definition remove (self : ref Self) (_key : K) : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let _key := M.alloc (| _key |) in
       (never_to_any (B := unit)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_remove :
     Notations.DoubleColon Self "remove" := {
@@ -157,14 +157,14 @@ Section Impl_erc1155_Mapping_t_K_V.
       (self : ref Self)
       (_key : K)
       : M (core.option.Option.t u32.t) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let _key := M.alloc (| _key |) in
       (never_to_any (B := core.option.Option.t u32.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : core.option.Option.t u32.t)).
   
   Global Instance AssociatedFunction_size :
     Notations.DoubleColon Self "size" := {
@@ -177,14 +177,14 @@ Section Impl_erc1155_Mapping_t_K_V.
       }
   *)
   Definition take (self : ref Self) (_key : K) : M (core.option.Option.t V) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let _key := M.alloc (| _key |) in
       (never_to_any (B := core.option.Option.t V)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : core.option.Option.t V)).
   
   Global Instance AssociatedFunction_take :
     Notations.DoubleColon Self "take" := {
@@ -212,12 +212,12 @@ Section Impl_core_default_Default_for_erc1155_AccountId_t.
   Default
   *)
   Definition default : M erc1155.AccountId.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       erc1155.AccountId.Build_t
         (M.call (|ltac:(M.get_method (fun ℐ =>
           core.default.Default.default (Self := u128.t) (Trait := ℐ)))
         |))
-    )).
+    ) : erc1155.AccountId.t)).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -238,7 +238,7 @@ Section Impl_core_clone_Clone_for_erc1155_AccountId_t.
   Clone
   *)
   Definition clone (self : ref Self) : M erc1155.AccountId.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         ltac:
@@ -250,7 +250,7 @@ Section Impl_core_clone_Clone_for_erc1155_AccountId_t.
                 (deref (M.read (| self |))) : M.Val erc1155.AccountId.t
             ])
       |)
-    )).
+    ) : erc1155.AccountId.t)).
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {
@@ -293,13 +293,13 @@ Section Impl_core_cmp_PartialEq_for_erc1155_AccountId_t.
       (self : ref Self)
       (other : ref erc1155.AccountId.t)
       : M bool.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let other := M.alloc (| other |) in
       BinOp.Pure.eq
         (M.read (| erc1155.AccountId.Get_0 (deref (M.read (| self |))) |))
         (M.read (| erc1155.AccountId.Get_0 (deref (M.read (| other |))) |))
-    )).
+    ) : bool.t)).
   
   Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
     Notations.double_colon := eq;
@@ -324,13 +324,13 @@ Section Impl_core_convert_From_array_u8_t_for_erc1155_AccountId_t.
       }
   *)
   Definition from (_v : array u8.t) : M Self :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let _v := M.alloc (| _v |) in
       (never_to_any (B := erc1155.AccountId.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : Self)).
   
   Global Instance AssociatedFunction_from :
     Notations.DoubleColon Self "from" := {
@@ -362,7 +362,7 @@ fn zero_address() -> AccountId {
 }
 *)
 Definition zero_address : M erc1155.AccountId.t :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.call (|(ltac:(M.get_method (fun ℐ =>
         core.convert.Into.into
           (Self := array u8.t)
@@ -370,7 +370,7 @@ Definition zero_address : M erc1155.AccountId.t :=
           (Trait := ℐ)))
       (repeat ((Integer.of_Z 0) : u8.t) 32))
     |)
-  )).
+  ) : erc1155.AccountId.t)).
 
 Definition ON_ERC_1155_RECEIVED_SELECTOR : M.Val (array u8.t) :=
   M.run (ltac:(M.monadic (M.alloc (|
@@ -421,7 +421,7 @@ Section Impl_core_cmp_PartialEq_for_erc1155_Error_t.
   PartialEq
   *)
   Definition eq (self : ref Self) (other : ref erc1155.Error.t) : M bool.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let other := M.alloc (| other |) in
       M.read (|
@@ -438,7 +438,7 @@ Section Impl_core_cmp_PartialEq_for_erc1155_Error_t.
           BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |))
         |)
       |)
-    )).
+    ) : bool.t)).
   
   Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
     Notations.double_colon := eq;
@@ -470,10 +470,10 @@ Section Impl_core_cmp_Eq_for_erc1155_Error_t.
   Eq
   *)
   Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       tt
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
     Notations.DoubleColon Self "assert_receiver_is_total_eq" := {
@@ -662,10 +662,10 @@ Section Impl_erc1155_Env_t.
       }
   *)
   Definition caller (self : ref Self) : M erc1155.AccountId.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (| erc1155.Env.Get_caller (deref (M.read (| self |))) |)
-    )).
+    ) : erc1155.AccountId.t)).
   
   Global Instance AssociatedFunction_caller :
     Notations.DoubleColon Self "caller" := {
@@ -678,14 +678,14 @@ Section Impl_erc1155_Env_t.
       }
   *)
   Definition emit_event (self : ref Self) (_event : erc1155.Event.t) : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let _event := M.alloc (| _event |) in
       (never_to_any (B := unit)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_emit_event :
     Notations.DoubleColon Self "emit_event" := {
@@ -729,7 +729,7 @@ Section Impl_core_default_Default_for_erc1155_Contract_t.
   Default
   *)
   Definition default : M erc1155.Contract.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       {|
         erc1155.Contract.balances :=
           M.call (|ltac:(M.get_method (fun ℐ =>
@@ -751,7 +751,7 @@ Section Impl_core_default_Default_for_erc1155_Contract_t.
             core.default.Default.default (Self := u128.t) (Trait := ℐ)))
           |);
       |} : erc1155.Contract.t
-    )).
+    ) : erc1155.Contract.t)).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -774,12 +774,12 @@ Section Impl_erc1155_Contract_t.
       }
   *)
   Definition init_env : M erc1155.Env.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       (never_to_any (B := erc1155.Env.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : erc1155.Env.t)).
   
   Global Instance AssociatedFunction_init_env :
     Notations.DoubleColon Self "init_env" := {
@@ -792,10 +792,10 @@ Section Impl_erc1155_Contract_t.
       }
   *)
   Definition env (self : ref Self) : M erc1155.Env.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.call (|erc1155.Contract.t::["init_env"] |)
-    )).
+    ) : erc1155.Env.t)).
   
   Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
     Notations.double_colon := env;
@@ -807,11 +807,11 @@ Section Impl_erc1155_Contract_t.
       }
   *)
   Definition new : M Self :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       M.call (|ltac:(M.get_method (fun ℐ =>
         core.default.Default.default (Self := erc1155.Contract.t) (Trait := ℐ)))
       |)
-    )).
+    ) : Self)).
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
@@ -842,7 +842,7 @@ Section Impl_erc1155_Contract_t.
       (self : mut_ref Self)
       (value : ltac:(erc1155.Balance))
       : M ltac:(erc1155.TokenId) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let value := M.alloc (| value |) in
       M.read (|
@@ -921,7 +921,7 @@ Section Impl_erc1155_Contract_t.
           |) in
         erc1155.Contract.Get_token_id_nonce (deref (M.read (| self |)))
       |)
-    )).
+    ) : ltac:(erc1155.TokenId))).
   
   Global Instance AssociatedFunction_create :
     Notations.DoubleColon Self "create" := {
@@ -952,7 +952,7 @@ Section Impl_erc1155_Contract_t.
       (token_id : ltac:(erc1155.TokenId))
       (value : ltac:(erc1155.Balance))
       : M ltac:(erc1155.Result unit) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let token_id := M.alloc (| token_id |) in
       let value := M.alloc (| value |) in
@@ -1036,7 +1036,7 @@ Section Impl_erc1155_Contract_t.
             |) in
           M.alloc (| core.result.Result.Ok tt |)
         |))
-    )).
+    ) : ltac:(erc1155.Result unit))).
   
   Global Instance AssociatedFunction_mint :
     Notations.DoubleColon Self "mint" := {
@@ -1079,7 +1079,7 @@ Section Impl_erc1155_Contract_t.
       (token_id : ltac:(erc1155.TokenId))
       (value : ltac:(erc1155.Balance))
       : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let from := M.alloc (| from |) in
       let to := M.alloc (| to |) in
@@ -1182,7 +1182,7 @@ Section Impl_erc1155_Contract_t.
           |) in
         M.alloc (| tt |)
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_perform_transfer :
     Notations.DoubleColon Self "perform_transfer" := {
@@ -1271,7 +1271,7 @@ Section Impl_erc1155_Contract_t.
       (value : ltac:(erc1155.Balance))
       (data : alloc.vec.Vec.t u8.t alloc.vec.Vec.Default.A)
       : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let caller := M.alloc (| caller |) in
       let from := M.alloc (| from |) in
@@ -1280,7 +1280,7 @@ Section Impl_erc1155_Contract_t.
       let value := M.alloc (| value |) in
       let data := M.alloc (| data |) in
       tt
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_transfer_acceptance_check :
     Notations.DoubleColon Self "transfer_acceptance_check" := {
@@ -1303,7 +1303,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
       (owner : erc1155.AccountId.t)
       (operator : erc1155.AccountId.t)
       : M bool.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let owner := M.alloc (| owner |) in
       let operator := M.alloc (| operator |) in
@@ -1313,7 +1313,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
         (borrow (erc1155.Contract.Get_approvals (deref (M.read (| self |)))))
         (borrow (M.alloc (| (M.read (| owner |), M.read (| operator |)) |))))
       |)
-    )).
+    ) : bool.t)).
   
   Global Instance AssociatedFunction_is_approved_for_all :
     Notations.DoubleColon Self "is_approved_for_all" := {
@@ -1330,7 +1330,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
       (owner : erc1155.AccountId.t)
       (token_id : ltac:(erc1155.TokenId))
       : M ltac:(erc1155.Balance) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let owner := M.alloc (| owner |) in
       let token_id := M.alloc (| token_id |) in
@@ -1343,7 +1343,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
         |))
         (M.read (| use (M.alloc (| (Integer.of_Z 0) : u128.t |)) |)))
       |)
-    )).
+    ) : ltac:(erc1155.Balance))).
   
   Global Instance AssociatedFunction_balance_of :
     Notations.DoubleColon Self "balance_of" := {
@@ -1383,7 +1383,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
       (value : ltac:(erc1155.Balance))
       (data : alloc.vec.Vec.t u8.t alloc.vec.Vec.Default.A)
       : M ltac:(erc1155.Result unit) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let from := M.alloc (| from |) in
       let to := M.alloc (| to |) in
@@ -1550,7 +1550,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
             |) in
           M.alloc (| core.result.Result.Ok tt |)
         |))
-    )).
+    ) : ltac:(erc1155.Result unit))).
   
   Global Instance AssociatedFunction_safe_transfer_from :
     Notations.DoubleColon Self "safe_transfer_from" := {
@@ -1605,7 +1605,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
       (values : alloc.vec.Vec.t ltac:(erc1155.Balance) alloc.vec.Vec.Default.A)
       (data : alloc.vec.Vec.t u8.t alloc.vec.Vec.Default.A)
       : M ltac:(erc1155.Result unit) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let from := M.alloc (| from |) in
       let to := M.alloc (| to |) in
@@ -2059,7 +2059,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
             |) in
           M.alloc (| core.result.Result.Ok tt |)
         |))
-    )).
+    ) : ltac:(erc1155.Result unit))).
   
   Global Instance AssociatedFunction_safe_batch_transfer_from :
     Notations.DoubleColon Self "safe_batch_transfer_from" := {
@@ -2085,7 +2085,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
         :
         alloc.vec.Vec.t ltac:(erc1155.TokenId) alloc.vec.Vec.Default.A)
       : M (alloc.vec.Vec.t ltac:(erc1155.Balance) alloc.vec.Vec.Default.A) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let owners := M.alloc (| owners |) in
       let token_ids := M.alloc (| token_ids |) in
@@ -2276,7 +2276,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                 ])) in
         output
       |)
-    )).
+    ) : alloc.vec.Vec.t ltac:(erc1155.Balance) alloc.vec.Vec.Default.A)).
   
   Global Instance AssociatedFunction_balance_of_batch :
     Notations.DoubleColon Self "balance_of_batch" := {
@@ -2308,7 +2308,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
       (operator : erc1155.AccountId.t)
       (approved : bool.t)
       : M ltac:(erc1155.Result unit) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let operator := M.alloc (| operator |) in
       let approved := M.alloc (| approved |) in
@@ -2407,7 +2407,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
             |) in
           M.alloc (| core.result.Result.Ok tt |)
         |))
-    )).
+    ) : ltac:(erc1155.Result unit))).
   
   Global Instance AssociatedFunction_set_approval_for_all :
     Notations.DoubleColon Self "set_approval_for_all" := {
@@ -2460,7 +2460,7 @@ Section Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract_t.
       (_value : ltac:(erc1155.Balance))
       (_data : alloc.vec.Vec.t u8.t alloc.vec.Vec.Default.A)
       : M (alloc.vec.Vec.t u8.t alloc.vec.Vec.Default.A) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let _operator := M.alloc (| _operator |) in
       let _from := M.alloc (| _from |) in
@@ -2488,7 +2488,7 @@ Section Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract_t.
           |)))
         |)
       |)
-    )).
+    ) : alloc.vec.Vec.t u8.t alloc.vec.Vec.Default.A)).
   
   Global Instance AssociatedFunction_on_received :
     Notations.DoubleColon Self "on_received" := {
@@ -2528,7 +2528,7 @@ Section Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract_t.
       (_values : alloc.vec.Vec.t ltac:(erc1155.Balance) alloc.vec.Vec.Default.A)
       (_data : alloc.vec.Vec.t u8.t alloc.vec.Vec.Default.A)
       : M (alloc.vec.Vec.t u8.t alloc.vec.Vec.Default.A) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let _operator := M.alloc (| _operator |) in
       let _from := M.alloc (| _from |) in
@@ -2556,7 +2556,7 @@ Section Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract_t.
           |)))
         |)
       |)
-    )).
+    ) : alloc.vec.Vec.t u8.t alloc.vec.Vec.Default.A)).
   
   Global Instance AssociatedFunction_on_batch_received :
     Notations.DoubleColon Self "on_batch_received" := {

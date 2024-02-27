@@ -9,7 +9,7 @@ fn eat_box_i32(boxed_i32: Box<i32>) {
 Definition eat_box_i32
     (boxed_i32 : alloc.boxed.Box.t i32.t alloc.boxed.Box.Default.A)
     : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let boxed_i32 := M.alloc (| boxed_i32 |) in
     M.read (|
       let _ : M.Val unit :=
@@ -43,7 +43,7 @@ Definition eat_box_i32
         M.alloc (| tt |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).
 
 (*
 fn borrow_i32(borrowed_i32: &i32) {
@@ -51,7 +51,7 @@ fn borrow_i32(borrowed_i32: &i32) {
 }
 *)
 Definition borrow_i32 (borrowed_i32 : ref i32.t) : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let borrowed_i32 := M.alloc (| borrowed_i32 |) in
     M.read (|
       let _ : M.Val unit :=
@@ -85,7 +85,7 @@ Definition borrow_i32 (borrowed_i32 : ref i32.t) : M unit :=
         M.alloc (| tt |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).
 
 (*
 fn main() {
@@ -118,7 +118,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let boxed_i32 : M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t) :=
         M.alloc (|
@@ -155,4 +155,4 @@ Definition main : M unit :=
         |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

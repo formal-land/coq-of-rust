@@ -20,10 +20,10 @@ Section Impl_provided_method_ProvidedAndRequired_for_i32_t.
       }
   *)
   Definition required (self : ref Self) : M i32.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (| deref (M.read (| self |)) |)
-    )).
+    ) : i32.t)).
   
   Global Instance AssociatedFunction_required :
     Notations.DoubleColon Self "required" := {
@@ -48,10 +48,10 @@ Section Impl_provided_method_ProvidedAndRequired_for_u32_t.
       }
   *)
   Definition required (self : ref Self) : M i32.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       rust_cast (M.read (| deref (M.read (| self |)) |))
-    )).
+    ) : i32.t)).
   
   Global Instance AssociatedFunction_required :
     Notations.DoubleColon Self "required" := {
@@ -64,10 +64,10 @@ Section Impl_provided_method_ProvidedAndRequired_for_u32_t.
       }
   *)
   Definition provided (self : ref Self) : M i32.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       (Integer.of_Z 0) : i32.t
-    )).
+    ) : i32.t)).
   
   Global Instance AssociatedFunction_provided :
     Notations.DoubleColon Self "provided" := {
@@ -92,7 +92,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let x : M.Val i32.t := M.alloc (| (Integer.of_Z 5) : i32.t |) in
       let _ : M.Val unit :=
@@ -208,4 +208,4 @@ Definition main : M unit :=
             ]) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

@@ -41,11 +41,11 @@ Section Impl_trait_incrementer_Incrementer_t.
       }
   *)
   Definition new (init_value : u64.t) : M Self :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let init_value := M.alloc (| init_value |) in
       {| trait_incrementer.Incrementer.value := M.read (| init_value |);
       |} : trait_incrementer.Incrementer.t
-    )).
+    ) : Self)).
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
@@ -57,7 +57,7 @@ Section Impl_trait_incrementer_Incrementer_t.
       }
   *)
   Definition inc_by (self : mut_ref Self) (delta : u64.t) : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let delta := M.alloc (| delta |) in
       M.read (|
@@ -69,7 +69,7 @@ Section Impl_trait_incrementer_Incrementer_t.
           |) in
         M.alloc (| tt |)
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_inc_by :
     Notations.DoubleColon Self "inc_by" := {
@@ -88,13 +88,13 @@ Section Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer_t.
       }
   *)
   Definition inc (self : mut_ref Self) : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.call (|(trait_incrementer.Incrementer.t::["inc_by"]
         (M.read (| self |))
         ((Integer.of_Z 1) : u64.t))
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_inc : Notations.DoubleColon Self "inc" := {
     Notations.double_colon := inc;
@@ -106,12 +106,12 @@ Section Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer_t.
       }
   *)
   Definition get (self : ref Self) : M u64.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         trait_incrementer.Incrementer.Get_value (deref (M.read (| self |)))
       |)
-    )).
+    ) : u64.t)).
   
   Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
     Notations.double_colon := get;
@@ -134,7 +134,7 @@ Section Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer_t.
       }
   *)
   Definition reset (self : mut_ref Self) : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         let _ : M.Val unit :=
@@ -144,7 +144,7 @@ Section Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer_t.
           |) in
         M.alloc (| tt |)
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_reset :
     Notations.DoubleColon Self "reset" := {

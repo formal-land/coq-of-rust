@@ -25,7 +25,7 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit := ltac:(M.monadic ( tt )).
+Definition main : M unit := ltac:(M.monadic (( tt ) : unit)).
 
 (*
     fn mul(a: u64, b: u64) -> u128 {
@@ -47,7 +47,7 @@ Definition main : M unit := ltac:(M.monadic ( tt )).
     }
 *)
 Definition mul (a : u64.t) (b : u64.t) : M u128.t :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let a := M.alloc (| a |) in
     let b := M.alloc (| b |) in
     M.read (|
@@ -68,4 +68,4 @@ Definition mul (a : u64.t) (b : u64.t) : M u128.t :=
         |)
       |)
     |)
-  )).
+  ) : u128.t)).

@@ -20,12 +20,12 @@ Section Impl_core_default_Default_for_contract_terminate_AccountId_t.
   Default
   *)
   Definition default : M contract_terminate.AccountId.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       contract_terminate.AccountId.Build_t
         (M.call (|ltac:(M.get_method (fun ℐ =>
           core.default.Default.default (Self := u128.t) (Trait := ℐ)))
         |))
-    )).
+    ) : contract_terminate.AccountId.t)).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -46,7 +46,7 @@ Section Impl_core_clone_Clone_for_contract_terminate_AccountId_t.
   Clone
   *)
   Definition clone (self : ref Self) : M contract_terminate.AccountId.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         ltac:
@@ -59,7 +59,7 @@ Section Impl_core_clone_Clone_for_contract_terminate_AccountId_t.
                 M.Val contract_terminate.AccountId.t
             ])
       |)
-    )).
+    ) : contract_terminate.AccountId.t)).
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {
@@ -103,10 +103,10 @@ Section Impl_contract_terminate_Env_t.
       }
   *)
   Definition caller (self : ref Self) : M contract_terminate.AccountId.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (| contract_terminate.Env.Get_caller (deref (M.read (| self |))) |)
-    )).
+    ) : contract_terminate.AccountId.t)).
   
   Global Instance AssociatedFunction_caller :
     Notations.DoubleColon Self "caller" := {
@@ -122,14 +122,14 @@ Section Impl_contract_terminate_Env_t.
       (self : ref Self)
       (_account : contract_terminate.AccountId.t)
       : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let _account := M.alloc (| _account |) in
       (never_to_any (B := unit)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_terminate_contract :
     Notations.DoubleColon Self "terminate_contract" := {
@@ -154,12 +154,12 @@ Section Impl_contract_terminate_JustTerminate_t.
       }
   *)
   Definition init_env : M contract_terminate.Env.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       (never_to_any (B := contract_terminate.Env.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : contract_terminate.Env.t)).
   
   Global Instance AssociatedFunction_init_env :
     Notations.DoubleColon Self "init_env" := {
@@ -172,10 +172,10 @@ Section Impl_contract_terminate_JustTerminate_t.
       }
   *)
   Definition env (self : ref Self) : M contract_terminate.Env.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.call (|contract_terminate.JustTerminate.t::["init_env"] |)
-    )).
+    ) : contract_terminate.Env.t)).
   
   Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
     Notations.double_colon := env;
@@ -187,8 +187,8 @@ Section Impl_contract_terminate_JustTerminate_t.
       }
   *)
   Definition new : M Self :=
-    ltac:(M.monadic ( contract_terminate.JustTerminate.Build
-    )).
+    ltac:(M.monadic (( contract_terminate.JustTerminate.Build
+    ) : Self)).
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
@@ -200,7 +200,7 @@ Section Impl_contract_terminate_JustTerminate_t.
       }
   *)
   Definition terminate_me (self : mut_ref Self) : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         let _ : M.Val unit :=
@@ -224,7 +224,7 @@ Section Impl_contract_terminate_JustTerminate_t.
           |) in
         M.alloc (| tt |)
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_terminate_me :
     Notations.DoubleColon Self "terminate_me" := {

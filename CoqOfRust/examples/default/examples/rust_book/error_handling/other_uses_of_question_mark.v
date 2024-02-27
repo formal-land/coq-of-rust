@@ -26,14 +26,14 @@ Section Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let f := M.alloc (| f |) in
       M.call (|(core.fmt.Formatter.t::["write_str"]
         (M.read (| f |))
         (M.read (| mk_str "EmptyVec" |)))
       |)
-    )).
+    ) : ltac:(core.fmt.Result))).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
@@ -58,7 +58,7 @@ Section Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let f := M.alloc (| f |) in
       M.call (|(core.fmt.Formatter.t::["write_fmt"]
@@ -71,7 +71,7 @@ Section Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec_t.
               |)))))
         |)))
       |)
-    )).
+    ) : ltac:(core.fmt.Result))).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
@@ -107,7 +107,7 @@ fn double_first(vec: Vec<&str>) -> Result<i32> {
 Definition double_first
     (vec : alloc.vec.Vec.t (ref str.t) alloc.vec.Vec.Default.A)
     : M ltac:(other_uses_of_question_mark.Result i32.t) :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let vec := M.alloc (| vec |) in
     let return_ :=
       M.return_ (R := ltac:(other_uses_of_question_mark.Result i32.t)) in
@@ -281,7 +281,7 @@ Definition double_first
             |))
         |)
       |))
-  )).
+  ) : ltac:(other_uses_of_question_mark.Result i32.t))).
 
 (*
 fn print(result: Result<i32>) {
@@ -294,7 +294,7 @@ fn print(result: Result<i32>) {
 Definition print
     (result : ltac:(other_uses_of_question_mark.Result i32.t))
     : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let result := M.alloc (| result |) in
     M.read (|
       ltac:
@@ -389,7 +389,7 @@ Definition print
               M.Val unit
           ])
     |)
-  )).
+  ) : unit)).
 
 (*
 fn main() {
@@ -404,7 +404,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let numbers : M.Val (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t) :=
         M.alloc (|
@@ -473,4 +473,4 @@ Definition main : M unit :=
         |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

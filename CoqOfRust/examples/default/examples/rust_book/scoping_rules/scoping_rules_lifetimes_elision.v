@@ -7,7 +7,7 @@ fn elided_input(x: &i32) {
 }
 *)
 Definition elided_input (x : ref i32.t) : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let x := M.alloc (| x |) in
     M.read (|
       let _ : M.Val unit :=
@@ -41,7 +41,7 @@ Definition elided_input (x : ref i32.t) : M unit :=
         M.alloc (| tt |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).
 
 (*
 fn annotated_input<'a>(x: &'a i32) {
@@ -49,7 +49,7 @@ fn annotated_input<'a>(x: &'a i32) {
 }
 *)
 Definition annotated_input (x : ref i32.t) : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let x := M.alloc (| x |) in
     M.read (|
       let _ : M.Val unit :=
@@ -83,7 +83,7 @@ Definition annotated_input (x : ref i32.t) : M unit :=
         M.alloc (| tt |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).
 
 (*
 fn elided_pass(x: &i32) -> &i32 {
@@ -91,10 +91,10 @@ fn elided_pass(x: &i32) -> &i32 {
 }
 *)
 Definition elided_pass (x : ref i32.t) : M (ref i32.t) :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let x := M.alloc (| x |) in
     M.read (| x |)
-  )).
+  ) : ref i32.t)).
 
 (*
 fn annotated_pass<'a>(x: &'a i32) -> &'a i32 {
@@ -102,10 +102,10 @@ fn annotated_pass<'a>(x: &'a i32) -> &'a i32 {
 }
 *)
 Definition annotated_pass (x : ref i32.t) : M (ref i32.t) :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let x := M.alloc (| x |) in
     M.read (| x |)
-  )).
+  ) : ref i32.t)).
 
 (*
 fn main() {
@@ -120,7 +120,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let x : M.Val i32.t := M.alloc (| (Integer.of_Z 3) : i32.t |) in
       let _ : M.Val unit :=
@@ -202,4 +202,4 @@ Definition main : M unit :=
         M.alloc (| tt |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

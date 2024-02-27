@@ -20,12 +20,12 @@ Section Impl_core_default_Default_for_updated_incrementer_AccountId_t.
   Default
   *)
   Definition default : M updated_incrementer.AccountId.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       updated_incrementer.AccountId.Build_t
         (M.call (|ltac:(M.get_method (fun ℐ =>
           core.default.Default.default (Self := u128.t) (Trait := ℐ)))
         |))
-    )).
+    ) : updated_incrementer.AccountId.t)).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -46,7 +46,7 @@ Section Impl_core_clone_Clone_for_updated_incrementer_AccountId_t.
   Clone
   *)
   Definition clone (self : ref Self) : M updated_incrementer.AccountId.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         ltac:
@@ -59,7 +59,7 @@ Section Impl_core_clone_Clone_for_updated_incrementer_AccountId_t.
                 M.Val updated_incrementer.AccountId.t
             ])
       |)
-    )).
+    ) : updated_incrementer.AccountId.t)).
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {
@@ -114,7 +114,7 @@ Section Impl_updated_incrementer_Env_t.
       (self : ref Self)
       (code_hash : ref E)
       : M (core.result.Result.t unit updated_incrementer.Error.t) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let code_hash := M.alloc (| code_hash |) in
       (never_to_any
@@ -122,7 +122,7 @@ Section Impl_updated_incrementer_Env_t.
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : core.result.Result.t unit updated_incrementer.Error.t)).
   
   Global Instance AssociatedFunction_set_code_hash {E : Set} :
     Notations.DoubleColon Self "set_code_hash" := {
@@ -152,12 +152,12 @@ Section Impl_updated_incrementer_Incrementer_t.
       }
   *)
   Definition init_env : M updated_incrementer.Env.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       (never_to_any (B := updated_incrementer.Env.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : updated_incrementer.Env.t)).
   
   Global Instance AssociatedFunction_init_env :
     Notations.DoubleColon Self "init_env" := {
@@ -170,10 +170,10 @@ Section Impl_updated_incrementer_Incrementer_t.
       }
   *)
   Definition env (self : ref Self) : M updated_incrementer.Env.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.call (|updated_incrementer.Incrementer.t::["init_env"] |)
-    )).
+    ) : updated_incrementer.Env.t)).
   
   Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
     Notations.double_colon := env;
@@ -185,7 +185,7 @@ Section Impl_updated_incrementer_Incrementer_t.
       }
   *)
   Definition new : M Self :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       (never_to_any (B := updated_incrementer.Incrementer.t)) (|
         M.call (|(core.panicking.unreachable_display
           (borrow
@@ -193,7 +193,7 @@ Section Impl_updated_incrementer_Incrementer_t.
               "Constructors are not called when upgrading using `set_code_hash`.")))
         |)
       |)
-    )).
+    ) : Self)).
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
@@ -209,7 +209,7 @@ Section Impl_updated_incrementer_Incrementer_t.
       }
   *)
   Definition inc (self : mut_ref Self) : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         let _ : M.Val unit :=
@@ -256,7 +256,7 @@ Section Impl_updated_incrementer_Incrementer_t.
           M.alloc (| tt |) in
         M.alloc (| tt |)
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_inc : Notations.DoubleColon Self "inc" := {
     Notations.double_colon := inc;
@@ -268,12 +268,12 @@ Section Impl_updated_incrementer_Incrementer_t.
       }
   *)
   Definition get (self : ref Self) : M u32.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         updated_incrementer.Incrementer.Get_count (deref (M.read (| self |)))
       |)
-    )).
+    ) : u32.t)).
   
   Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
     Notations.double_colon := get;
@@ -291,7 +291,7 @@ Section Impl_updated_incrementer_Incrementer_t.
       (self : mut_ref Self)
       (code_hash : ltac:(updated_incrementer.Hash))
       : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let code_hash := M.alloc (| code_hash |) in
       M.read (|
@@ -360,7 +360,7 @@ Section Impl_updated_incrementer_Incrementer_t.
           M.alloc (| tt |) in
         M.alloc (| tt |)
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_set_code :
     Notations.DoubleColon Self "set_code" := {

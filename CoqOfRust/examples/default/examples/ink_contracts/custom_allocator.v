@@ -24,7 +24,7 @@ Section Impl_custom_allocator_CustomAllocator_t.
       }
   *)
   Definition new (init_value : bool.t) : M Self :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let init_value := M.alloc (| init_value |) in
       {|
         custom_allocator.CustomAllocator.value :=
@@ -38,7 +38,7 @@ Section Impl_custom_allocator_CustomAllocator_t.
               |))))
           |);
       |} : custom_allocator.CustomAllocator.t
-    )).
+    ) : Self)).
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
@@ -50,13 +50,13 @@ Section Impl_custom_allocator_CustomAllocator_t.
       }
   *)
   Definition default : M Self :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       M.call (|(custom_allocator.CustomAllocator.t::["new"]
         (M.call (|ltac:(M.get_method (fun ℐ =>
           core.default.Default.default (Self := bool.t) (Trait := ℐ)))
         |)))
       |)
-    )).
+    ) : Self)).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -69,7 +69,7 @@ Section Impl_custom_allocator_CustomAllocator_t.
       }
   *)
   Definition flip (self : mut_ref Self) : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         let _ : M.Val unit :=
@@ -102,7 +102,7 @@ Section Impl_custom_allocator_CustomAllocator_t.
           |) in
         M.alloc (| tt |)
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_flip :
     Notations.DoubleColon Self "flip" := {
@@ -115,7 +115,7 @@ Section Impl_custom_allocator_CustomAllocator_t.
       }
   *)
   Definition get (self : ref Self) : M bool.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         deref
@@ -130,7 +130,7 @@ Section Impl_custom_allocator_CustomAllocator_t.
             ((Integer.of_Z 0) : usize.t))
           |))
       |)
-    )).
+    ) : bool.t)).
   
   Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
     Notations.double_colon := get;

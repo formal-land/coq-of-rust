@@ -17,7 +17,7 @@ fn call(number: &str) -> &str {
 }
 *)
 Definition call (number : ref str.t) : M (ref str.t) :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let number := M.alloc (| number |) in
     M.read (|
       ltac:
@@ -47,7 +47,7 @@ Definition call (number : ref str.t) : M (ref str.t) :=
               M.Val (ref str.t)
           ])
     |)
-  )).
+  ) : ref str.t)).
 
 (*
 fn main() {
@@ -84,7 +84,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let contacts :
           M.Val
@@ -436,4 +436,4 @@ Definition main : M unit :=
                 M.Val unit
             ]))
     |)
-  )).
+  ) : unit)).

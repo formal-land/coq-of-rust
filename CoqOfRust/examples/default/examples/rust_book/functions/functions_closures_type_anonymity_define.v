@@ -13,7 +13,7 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit := ltac:(M.monadic ( tt )).
+Definition main : M unit := ltac:(M.monadic (( tt ) : unit)).
 
 (*
     fn apply<F>(f: F)
@@ -24,7 +24,7 @@ Definition main : M unit := ltac:(M.monadic ( tt )).
     }
 *)
 Definition apply {F : Set} (f : F) : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let f := M.alloc (| f |) in
     M.read (|
       let _ : M.Val unit :=
@@ -40,4 +40,4 @@ Definition apply {F : Set} (f : F) : M unit :=
         |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

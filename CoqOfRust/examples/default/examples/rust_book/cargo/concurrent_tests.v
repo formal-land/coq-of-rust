@@ -10,7 +10,7 @@ fn foo<A>(o: Option<A>) {
 }
 *)
 Definition foo {A : Set} (o : core.option.Option.t A) : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let o := M.alloc (| o |) in
     M.read (|
       ltac:
@@ -60,7 +60,7 @@ Definition foo {A : Set} (o : core.option.Option.t A) : M unit :=
               M.Val unit
           ])
     |)
-  )).
+  ) : unit)).
 
 Module tests.
   (*
@@ -80,7 +80,7 @@ Module tests.
       }
   *)
   Definition test_file : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       M.read (|
         let file : M.Val std.fs.File.t :=
           M.alloc (|
@@ -178,7 +178,7 @@ Module tests.
                   M.Val unit
               ]))
       |)
-    )).
+    ) : unit)).
   
   (*
       fn test_file_also() {
@@ -197,7 +197,7 @@ Module tests.
       }
   *)
   Definition test_file_also : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       M.read (|
         let file : M.Val std.fs.File.t :=
           M.alloc (|
@@ -295,5 +295,5 @@ Module tests.
                   M.Val unit
               ]))
       |)
-    )).
+    ) : unit)).
 End tests.

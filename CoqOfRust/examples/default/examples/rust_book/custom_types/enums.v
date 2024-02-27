@@ -62,7 +62,7 @@ fn inspect(event: WebEvent) {
 }
 *)
 Definition inspect (event : enums.WebEvent.t) : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let event := M.alloc (| event |) in
     M.read (|
       ltac:
@@ -240,7 +240,7 @@ Definition inspect (event : enums.WebEvent.t) : M unit :=
               M.Val unit
           ])
     |)
-  )).
+  ) : unit)).
 
 (*
 fn main() {
@@ -260,7 +260,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let pressed : M.Val enums.WebEvent.t :=
         M.alloc (| enums.WebEvent.KeyPress "x"%char |) in
@@ -296,4 +296,4 @@ Definition main : M unit :=
         M.alloc (| M.call (|(enums.inspect (M.read (| unload |))) |) |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

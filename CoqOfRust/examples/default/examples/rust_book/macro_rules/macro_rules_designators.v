@@ -8,7 +8,7 @@ Require Import CoqOfRust.CoqOfRust.
         }
 *)
 Definition foo : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let _ : M.Val unit :=
         let _ : M.Val unit :=
@@ -41,7 +41,7 @@ Definition foo : M unit :=
         M.alloc (| tt |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).
 
 (*
         fn $func_name() {
@@ -50,7 +50,7 @@ Definition foo : M unit :=
         }
 *)
 Definition bar : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let _ : M.Val unit :=
         let _ : M.Val unit :=
@@ -83,7 +83,7 @@ Definition bar : M unit :=
         M.alloc (| tt |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).
 
 (*
 fn main() {
@@ -102,7 +102,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let _ : M.Val unit :=
         M.alloc (| M.call (|macro_rules_designators.foo |) |) in
@@ -200,4 +200,4 @@ Definition main : M unit :=
         M.alloc (| tt |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

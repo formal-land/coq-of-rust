@@ -7,7 +7,7 @@ fn increase(number: i32) {
 }
 *)
 Definition increase (number : i32.t) : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let number := M.alloc (| number |) in
     M.read (|
       let _ : M.Val unit :=
@@ -44,7 +44,7 @@ Definition increase (number : i32.t) : M unit :=
         M.alloc (| tt |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).
 
 (*
 fn decrease(number: i32) {
@@ -52,7 +52,7 @@ fn decrease(number: i32) {
 }
 *)
 Definition decrease (number : i32.t) : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let number := M.alloc (| number |) in
     M.read (|
       let _ : M.Val unit :=
@@ -89,7 +89,7 @@ Definition decrease (number : i32.t) : M unit :=
         M.alloc (| tt |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).
 
 (*
 fn help() {
@@ -103,7 +103,7 @@ match_args {{increase|decrease}} <integer>
 }
 *)
 Definition help : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let _ : M.Val unit :=
         let _ : M.Val unit :=
@@ -132,7 +132,7 @@ match_args {increase|decrease} <integer>
         M.alloc (| tt |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).
 
 (*
 fn main() {
@@ -181,7 +181,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let return_ := M.return_ (R := unit) in
     M.catch_return
       (M.read (|
@@ -482,4 +482,4 @@ Definition main : M unit :=
                 M.Val unit
             ])
       |))
-  )).
+  ) : unit)).

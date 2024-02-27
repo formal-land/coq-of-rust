@@ -22,7 +22,7 @@ Section Impl_core_ops_drop_Drop_for_drop_Droppable_t.
       }
   *)
   Definition drop (self : mut_ref Self) : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         let _ : M.Val unit :=
@@ -58,7 +58,7 @@ Section Impl_core_ops_drop_Drop_for_drop_Droppable_t.
           M.alloc (| tt |) in
         M.alloc (| tt |)
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_drop :
     Notations.DoubleColon Self "drop" := {
@@ -104,7 +104,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let _a : M.Val drop.Droppable.t :=
         M.alloc (|
@@ -210,4 +210,4 @@ Definition main : M unit :=
         M.alloc (| tt |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

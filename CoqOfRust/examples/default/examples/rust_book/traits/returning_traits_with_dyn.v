@@ -32,10 +32,10 @@ Section Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Shee
       }
   *)
   Definition noise (self : ref Self) : M (ref str.t) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (| mk_str "baaaaah!" |)
-    )).
+    ) : ref str.t)).
   
   Global Instance AssociatedFunction_noise :
     Notations.DoubleColon Self "noise" := {
@@ -58,10 +58,10 @@ Section Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow_
       }
   *)
   Definition noise (self : ref Self) : M (ref str.t) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (| mk_str "moooooo!" |)
-    )).
+    ) : ref str.t)).
   
   Global Instance AssociatedFunction_noise :
     Notations.DoubleColon Self "noise" := {
@@ -90,7 +90,7 @@ Definition random_animal
         (alloc.boxed.Box.t
           (dyn [returning_traits_with_dyn.Animal.Trait])
           alloc.boxed.Box.Default.A) :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let random_number := M.alloc (| random_number |) in
     pointer_coercion
       "Unsize"
@@ -129,7 +129,9 @@ Definition random_animal
                 |))
             |)
         |)))
-  )).
+  ) : alloc.boxed.Box.t
+    (dyn [returning_traits_with_dyn.Animal.Trait])
+    alloc.boxed.Box.Default.A)).
 
 (*
 fn main() {
@@ -143,7 +145,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let random_number : M.Val f64.t :=
         M.copy (| UnsupportedLiteral : M.Val f64.t |) in
@@ -201,4 +203,4 @@ Definition main : M unit :=
         M.alloc (| tt |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

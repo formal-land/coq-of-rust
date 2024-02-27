@@ -30,7 +30,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let person :
           M.Val scoping_rules_ownership_and_rules_partial_moves.main.Person.t :=
@@ -174,7 +174,7 @@ Definition main : M unit :=
               M.Val unit
           ])
     |)
-  )).
+  ) : unit)).
 
 Module  Person.
 Section Person.
@@ -202,7 +202,7 @@ Section Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let f := M.alloc (| f |) in
       M.call (|(core.fmt.Formatter.t::["debug_struct_field2_finish"]
@@ -224,7 +224,7 @@ Section Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_
                   (deref (M.read (| self |))))
             |)))))
       |)
-    )).
+    ) : ltac:(core.fmt.Result))).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;

@@ -15,12 +15,12 @@ Definition set_code_hash
     {E : Set}
     (code_hash : ref E)
     : M (core.result.Result.t unit set_code_hash.Error.t) :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let code_hash := M.alloc (| code_hash |) in
     (never_to_any (B := core.result.Result.t unit set_code_hash.Error.t)) (|
       M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |))) |)
     |)
-  )).
+  ) : core.result.Result.t unit set_code_hash.Error.t)).
 
 Module  Incrementer.
 Section Incrementer.
@@ -41,14 +41,14 @@ Section Impl_core_default_Default_for_set_code_hash_Incrementer_t.
   Default
   *)
   Definition default : M set_code_hash.Incrementer.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       {|
         set_code_hash.Incrementer.count :=
           M.call (|ltac:(M.get_method (fun ℐ =>
             core.default.Default.default (Self := u32.t) (Trait := ℐ)))
           |);
       |} : set_code_hash.Incrementer.t
-    )).
+    ) : set_code_hash.Incrementer.t)).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -71,13 +71,13 @@ Section Impl_set_code_hash_Incrementer_t.
       }
   *)
   Definition new : M Self :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       M.call (|ltac:(M.get_method (fun ℐ =>
         core.default.Default.default
           (Self := set_code_hash.Incrementer.t)
           (Trait := ℐ)))
       |)
-    )).
+    ) : Self)).
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
@@ -93,7 +93,7 @@ Section Impl_set_code_hash_Incrementer_t.
       }
   *)
   Definition inc (self : mut_ref Self) : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         let _ : M.Val unit :=
@@ -139,7 +139,7 @@ Section Impl_set_code_hash_Incrementer_t.
           M.alloc (| tt |) in
         M.alloc (| tt |)
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_inc : Notations.DoubleColon Self "inc" := {
     Notations.double_colon := inc;
@@ -151,11 +151,11 @@ Section Impl_set_code_hash_Incrementer_t.
       }
   *)
   Definition get (self : ref Self) : M u32.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (| set_code_hash.Incrementer.Get_count (deref (M.read (| self |)))
       |)
-    )).
+    ) : u32.t)).
   
   Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
     Notations.double_colon := get;
@@ -170,7 +170,7 @@ Section Impl_set_code_hash_Incrementer_t.
       }
   *)
   Definition set_code (self : mut_ref Self) (code_hash : array u8.t) : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let code_hash := M.alloc (| code_hash |) in
       M.read (|
@@ -231,7 +231,7 @@ Section Impl_set_code_hash_Incrementer_t.
           M.alloc (| tt |) in
         M.alloc (| tt |)
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_set_code :
     Notations.DoubleColon Self "set_code" := {

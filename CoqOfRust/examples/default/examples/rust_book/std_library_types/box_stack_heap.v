@@ -28,7 +28,7 @@ Section Impl_core_fmt_Debug_for_box_stack_heap_Point_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let f := M.alloc (| f |) in
       M.call (|(core.fmt.Formatter.t::["debug_struct_field2_finish"]
@@ -46,7 +46,7 @@ Section Impl_core_fmt_Debug_for_box_stack_heap_Point_t.
               borrow (box_stack_heap.Point.Get_y (deref (M.read (| self |))))
             |)))))
       |)
-    )).
+    ) : ltac:(core.fmt.Result))).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
@@ -67,7 +67,7 @@ Section Impl_core_clone_Clone_for_box_stack_heap_Point_t.
   *)
   (* #[allow(dead_code)] - function was ignored by the compiler *)
   Definition clone (self : ref Self) : M box_stack_heap.Point.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         ltac:
@@ -79,7 +79,7 @@ Section Impl_core_clone_Clone_for_box_stack_heap_Point_t.
                 (deref (M.read (| self |))) : M.Val box_stack_heap.Point.t
             ])
       |)
-    )).
+    ) : box_stack_heap.Point.t)).
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {
@@ -127,12 +127,12 @@ fn origin() -> Point {
 }
 *)
 Definition origin : M box_stack_heap.Point.t :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     {|
       box_stack_heap.Point.x := M.read (| UnsupportedLiteral : M.Val f64.t |);
       box_stack_heap.Point.y := M.read (| UnsupportedLiteral : M.Val f64.t |);
     |} : box_stack_heap.Point.t
-  )).
+  ) : box_stack_heap.Point.t)).
 
 (*
 fn boxed_origin() -> Box<Point> {
@@ -142,7 +142,7 @@ fn boxed_origin() -> Box<Point> {
 *)
 Definition boxed_origin
     : M (alloc.boxed.Box.t box_stack_heap.Point.t alloc.boxed.Box.Default.A) :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.call (|((alloc.boxed.Box.t
           box_stack_heap.Point.t
           alloc.alloc.Global.t)::["new"]
@@ -151,7 +151,7 @@ Definition boxed_origin
         box_stack_heap.Point.y := M.read (| UnsupportedLiteral : M.Val f64.t |);
       |} : box_stack_heap.Point.t))
     |)
-  )).
+  ) : alloc.boxed.Box.t box_stack_heap.Point.t alloc.boxed.Box.Default.A)).
 
 (*
 fn main() {
@@ -208,7 +208,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let point : M.Val box_stack_heap.Point.t :=
         M.alloc (| M.call (|box_stack_heap.origin |) |) in
@@ -475,4 +475,4 @@ Definition main : M unit :=
         M.alloc (| tt |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

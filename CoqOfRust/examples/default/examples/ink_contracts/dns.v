@@ -27,7 +27,7 @@ Section Impl_core_default_Default_for_dns_Mapping_t_K_V.
   Default
   *)
   Definition default : M (dns.Mapping.t K V) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       {|
         dns.Mapping._key :=
           M.call (|ltac:(M.get_method (fun ℐ =>
@@ -42,7 +42,7 @@ Section Impl_core_default_Default_for_dns_Mapping_t_K_V.
               (Trait := ℐ)))
           |);
       |} : dns.Mapping.t K V
-    )).
+    ) : dns.Mapping.t K V)).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -67,14 +67,14 @@ Section Impl_dns_Mapping_t_K_V.
       }
   *)
   Definition contains (self : ref Self) (_key : ref K) : M bool.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let _key := M.alloc (| _key |) in
       (never_to_any (B := bool.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : bool.t)).
   
   Global Instance AssociatedFunction_contains :
     Notations.DoubleColon Self "contains" := {
@@ -90,14 +90,14 @@ Section Impl_dns_Mapping_t_K_V.
       (self : ref Self)
       (_key : ref K)
       : M (core.option.Option.t V) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let _key := M.alloc (| _key |) in
       (never_to_any (B := core.option.Option.t V)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : core.option.Option.t V)).
   
   Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
     Notations.double_colon := get;
@@ -113,7 +113,7 @@ Section Impl_dns_Mapping_t_K_V.
       (_key : K)
       (_value : V)
       : M (core.option.Option.t u32.t) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let _key := M.alloc (| _key |) in
       let _value := M.alloc (| _value |) in
@@ -121,7 +121,7 @@ Section Impl_dns_Mapping_t_K_V.
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : core.option.Option.t u32.t)).
   
   Global Instance AssociatedFunction_insert :
     Notations.DoubleColon Self "insert" := {
@@ -134,12 +134,12 @@ Section Impl_dns_Mapping_t_K_V.
       }
   *)
   Definition new : M (dns.Mapping.t K V) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       (never_to_any (B := dns.Mapping.t K V)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : dns.Mapping.t K V)).
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
@@ -151,14 +151,14 @@ Section Impl_dns_Mapping_t_K_V.
       }
   *)
   Definition remove (self : ref Self) (_key : K) : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let _key := M.alloc (| _key |) in
       (never_to_any (B := unit)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_remove :
     Notations.DoubleColon Self "remove" := {
@@ -174,14 +174,14 @@ Section Impl_dns_Mapping_t_K_V.
       (self : ref Self)
       (_key : K)
       : M (core.option.Option.t u32.t) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let _key := M.alloc (| _key |) in
       (never_to_any (B := core.option.Option.t u32.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : core.option.Option.t u32.t)).
   
   Global Instance AssociatedFunction_size :
     Notations.DoubleColon Self "size" := {
@@ -194,14 +194,14 @@ Section Impl_dns_Mapping_t_K_V.
       }
   *)
   Definition take (self : ref Self) (_key : K) : M (core.option.Option.t V) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let _key := M.alloc (| _key |) in
       (never_to_any (B := core.option.Option.t V)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : core.option.Option.t V)).
   
   Global Instance AssociatedFunction_take :
     Notations.DoubleColon Self "take" := {
@@ -229,12 +229,12 @@ Section Impl_core_default_Default_for_dns_AccountId_t.
   Default
   *)
   Definition default : M dns.AccountId.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       dns.AccountId.Build_t
         (M.call (|ltac:(M.get_method (fun ℐ =>
           core.default.Default.default (Self := u128.t) (Trait := ℐ)))
         |))
-    )).
+    ) : dns.AccountId.t)).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -255,7 +255,7 @@ Section Impl_core_clone_Clone_for_dns_AccountId_t.
   Clone
   *)
   Definition clone (self : ref Self) : M dns.AccountId.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         ltac:
@@ -267,7 +267,7 @@ Section Impl_core_clone_Clone_for_dns_AccountId_t.
                 (deref (M.read (| self |))) : M.Val dns.AccountId.t
             ])
       |)
-    )).
+    ) : dns.AccountId.t)).
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {
@@ -307,13 +307,13 @@ Section Impl_core_cmp_PartialEq_for_dns_AccountId_t.
   PartialEq
   *)
   Definition eq (self : ref Self) (other : ref dns.AccountId.t) : M bool.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let other := M.alloc (| other |) in
       BinOp.Pure.eq
         (M.read (| dns.AccountId.Get_0 (deref (M.read (| self |))) |))
         (M.read (| dns.AccountId.Get_0 (deref (M.read (| other |))) |))
-    )).
+    ) : bool.t)).
   
   Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
     Notations.double_colon := eq;
@@ -338,13 +338,13 @@ Section Impl_core_convert_From_array_u8_t_for_dns_AccountId_t.
       }
   *)
   Definition from (_value : array u8.t) : M Self :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let _value := M.alloc (| _value |) in
       (never_to_any (B := dns.AccountId.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : Self)).
   
   Global Instance AssociatedFunction_from :
     Notations.DoubleColon Self "from" := {
@@ -469,10 +469,10 @@ Section Impl_dns_Env_t.
       }
   *)
   Definition caller (self : ref Self) : M dns.AccountId.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (| dns.Env.Get_caller (deref (M.read (| self |))) |)
-    )).
+    ) : dns.AccountId.t)).
   
   Global Instance AssociatedFunction_caller :
     Notations.DoubleColon Self "caller" := {
@@ -485,14 +485,14 @@ Section Impl_dns_Env_t.
       }
   *)
   Definition emit_event (self : ref Self) (_event : dns.Event.t) : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let _event := M.alloc (| _event |) in
       (never_to_any (B := unit)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_emit_event :
     Notations.DoubleColon Self "emit_event" := {
@@ -530,7 +530,7 @@ fn zero_address() -> AccountId {
 }
 *)
 Definition zero_address : M dns.AccountId.t :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.call (|(ltac:(M.get_method (fun ℐ =>
         core.convert.Into.into
           (Self := array u8.t)
@@ -538,7 +538,7 @@ Definition zero_address : M dns.AccountId.t :=
           (Trait := ℐ)))
       (repeat ((Integer.of_Z 0) : u8.t) 32))
     |)
-  )).
+  ) : dns.AccountId.t)).
 
 Module  Impl_core_default_Default_for_dns_DomainNameService_t.
 Section Impl_core_default_Default_for_dns_DomainNameService_t.
@@ -559,7 +559,7 @@ Section Impl_core_default_Default_for_dns_DomainNameService_t.
       }
   *)
   Definition default : M Self :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       M.read (|
         let name_to_address :
             M.Val (dns.Mapping.t (array u8.t) dns.AccountId.t) :=
@@ -601,7 +601,7 @@ Section Impl_core_default_Default_for_dns_DomainNameService_t.
           |} : dns.DomainNameService.t
         |)
       |)
-    )).
+    ) : Self)).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -637,7 +637,7 @@ Section Impl_core_cmp_PartialEq_for_dns_Error_t.
   PartialEq
   *)
   Definition eq (self : ref Self) (other : ref dns.Error.t) : M bool.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let other := M.alloc (| other |) in
       M.read (|
@@ -654,7 +654,7 @@ Section Impl_core_cmp_PartialEq_for_dns_Error_t.
           BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |))
         |)
       |)
-    )).
+    ) : bool.t)).
   
   Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
     Notations.double_colon := eq;
@@ -686,10 +686,10 @@ Section Impl_core_cmp_Eq_for_dns_Error_t.
   Eq
   *)
   Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       tt
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
     Notations.DoubleColon Self "assert_receiver_is_total_eq" := {
@@ -715,12 +715,12 @@ Section Impl_dns_DomainNameService_t.
       }
   *)
   Definition init_env : M dns.Env.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       (never_to_any (B := dns.Env.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : dns.Env.t)).
   
   Global Instance AssociatedFunction_init_env :
     Notations.DoubleColon Self "init_env" := {
@@ -733,10 +733,10 @@ Section Impl_dns_DomainNameService_t.
       }
   *)
   Definition env (self : ref Self) : M dns.Env.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.call (|dns.DomainNameService.t::["init_env"] |)
-    )).
+    ) : dns.Env.t)).
   
   Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
     Notations.double_colon := env;
@@ -748,13 +748,13 @@ Section Impl_dns_DomainNameService_t.
       }
   *)
   Definition new : M Self :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       M.call (|ltac:(M.get_method (fun ℐ =>
         core.default.Default.default
           (Self := dns.DomainNameService.t)
           (Trait := ℐ)))
       |)
-    )).
+    ) : Self)).
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
@@ -778,7 +778,7 @@ Section Impl_dns_DomainNameService_t.
       (self : mut_ref Self)
       (name : ltac:(dns.Hash))
       : M ltac:(dns.Result unit) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let name := M.alloc (| name |) in
       let return_ := M.return_ (R := ltac:(dns.Result unit)) in
@@ -848,7 +848,7 @@ Section Impl_dns_DomainNameService_t.
             |) in
           M.alloc (| core.result.Result.Ok tt |)
         |))
-    )).
+    ) : ltac:(dns.Result unit))).
   
   Global Instance AssociatedFunction_register :
     Notations.DoubleColon Self "register" := {
@@ -866,7 +866,7 @@ Section Impl_dns_DomainNameService_t.
       (self : ref Self)
       (name : ltac:(dns.Hash))
       : M dns.AccountId.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let name := M.alloc (| name |) in
       M.call (|((core.option.Option.t dns.AccountId.t)::["unwrap_or"]
@@ -880,7 +880,7 @@ Section Impl_dns_DomainNameService_t.
           dns.DomainNameService.Get_default_address (deref (M.read (| self |)))
         |)))
       |)
-    )).
+    ) : dns.AccountId.t)).
   
   Global Instance AssociatedFunction_get_owner_or_default :
     Notations.DoubleColon Self "get_owner_or_default" := {
@@ -912,7 +912,7 @@ Section Impl_dns_DomainNameService_t.
       (name : ltac:(dns.Hash))
       (new_address : dns.AccountId.t)
       : M ltac:(dns.Result unit) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let name := M.alloc (| name |) in
       let new_address := M.alloc (| new_address |) in
@@ -1001,7 +1001,7 @@ Section Impl_dns_DomainNameService_t.
             |) in
           M.alloc (| core.result.Result.Ok tt |)
         |))
-    )).
+    ) : ltac:(dns.Result unit))).
   
   Global Instance AssociatedFunction_set_address :
     Notations.DoubleColon Self "set_address" := {
@@ -1034,7 +1034,7 @@ Section Impl_dns_DomainNameService_t.
       (name : ltac:(dns.Hash))
       (to : dns.AccountId.t)
       : M ltac:(dns.Result unit) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let name := M.alloc (| name |) in
       let to := M.alloc (| to |) in
@@ -1123,7 +1123,7 @@ Section Impl_dns_DomainNameService_t.
             |) in
           M.alloc (| core.result.Result.Ok tt |)
         |))
-    )).
+    ) : ltac:(dns.Result unit))).
   
   Global Instance AssociatedFunction_transfer :
     Notations.DoubleColon Self "transfer" := {
@@ -1141,7 +1141,7 @@ Section Impl_dns_DomainNameService_t.
       (self : ref Self)
       (name : ltac:(dns.Hash))
       : M dns.AccountId.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let name := M.alloc (| name |) in
       M.call (|((core.option.Option.t dns.AccountId.t)::["unwrap_or"]
@@ -1155,7 +1155,7 @@ Section Impl_dns_DomainNameService_t.
           dns.DomainNameService.Get_default_address (deref (M.read (| self |)))
         |)))
       |)
-    )).
+    ) : dns.AccountId.t)).
   
   Global Instance AssociatedFunction_get_address_or_default :
     Notations.DoubleColon Self "get_address_or_default" := {
@@ -1171,14 +1171,14 @@ Section Impl_dns_DomainNameService_t.
       (self : ref Self)
       (name : ltac:(dns.Hash))
       : M dns.AccountId.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let name := M.alloc (| name |) in
       M.call (|(dns.DomainNameService.t::["get_address_or_default"]
         (M.read (| self |))
         (M.read (| name |)))
       |)
-    )).
+    ) : dns.AccountId.t)).
   
   Global Instance AssociatedFunction_get_address :
     Notations.DoubleColon Self "get_address" := {
@@ -1194,14 +1194,14 @@ Section Impl_dns_DomainNameService_t.
       (self : ref Self)
       (name : ltac:(dns.Hash))
       : M dns.AccountId.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let name := M.alloc (| name |) in
       M.call (|(dns.DomainNameService.t::["get_owner_or_default"]
         (M.read (| self |))
         (M.read (| name |)))
       |)
-    )).
+    ) : dns.AccountId.t)).
   
   Global Instance AssociatedFunction_get_owner :
     Notations.DoubleColon Self "get_owner" := {

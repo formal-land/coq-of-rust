@@ -27,14 +27,14 @@ Section Impl_core_default_Default_for_call_builder_delegate_CallBuilderDelegateT
   Default
   *)
   Definition default : M call_builder_delegate.CallBuilderDelegateTest.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       {|
         call_builder_delegate.CallBuilderDelegateTest.value :=
           M.call (|ltac:(M.get_method (fun ℐ =>
             core.default.Default.default (Self := i32.t) (Trait := ℐ)))
           |);
       |} : call_builder_delegate.CallBuilderDelegateTest.t
-    )).
+    ) : call_builder_delegate.CallBuilderDelegateTest.t)).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -57,13 +57,13 @@ Section Impl_call_builder_delegate_CallBuilderDelegateTest_t.
       }
   *)
   Definition new (value : i32.t) : M Self :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let value := M.alloc (| value |) in
       {|
         call_builder_delegate.CallBuilderDelegateTest.value :=
           M.read (| value |);
       |} : call_builder_delegate.CallBuilderDelegateTest.t
-    )).
+    ) : Self)).
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
@@ -93,12 +93,12 @@ Section Impl_call_builder_delegate_CallBuilderDelegateTest_t.
       (code_hash : ltac:(call_builder_delegate.Hash))
       (selector : array u8.t)
       : M (core.option.Option.t call_builder_delegate.LangError.t) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let code_hash := M.alloc (| code_hash |) in
       let selector := M.alloc (| selector |) in
       core.option.Option.None
-    )).
+    ) : core.option.Option.t call_builder_delegate.LangError.t)).
   
   Global Instance AssociatedFunction_delegate :
     Notations.DoubleColon Self "delegate" := {
@@ -122,12 +122,12 @@ Section Impl_call_builder_delegate_CallBuilderDelegateTest_t.
       (code_hash : ltac:(call_builder_delegate.Hash))
       (selector : array u8.t)
       : M i32.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let code_hash := M.alloc (| code_hash |) in
       let selector := M.alloc (| selector |) in
       (Integer.of_Z 0) : i32.t
-    )).
+    ) : i32.t)).
   
   Global Instance AssociatedFunction_invoke :
     Notations.DoubleColon Self "invoke" := {

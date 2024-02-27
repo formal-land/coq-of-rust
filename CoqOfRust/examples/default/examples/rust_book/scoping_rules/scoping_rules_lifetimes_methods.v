@@ -22,7 +22,7 @@ Section Impl_scoping_rules_lifetimes_methods_Owner_t.
       }
   *)
   Definition add_one (self : mut_ref Self) : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         let _ : M.Val unit :=
@@ -35,7 +35,7 @@ Section Impl_scoping_rules_lifetimes_methods_Owner_t.
           |) in
         M.alloc (| tt |)
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_add_one :
     Notations.DoubleColon Self "add_one" := {
@@ -48,7 +48,7 @@ Section Impl_scoping_rules_lifetimes_methods_Owner_t.
       }
   *)
   Definition print (self : ref Self) : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         let _ : M.Val unit :=
@@ -84,7 +84,7 @@ Section Impl_scoping_rules_lifetimes_methods_Owner_t.
           M.alloc (| tt |) in
         M.alloc (| tt |)
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_print :
     Notations.DoubleColon Self "print" := {
@@ -103,7 +103,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let owner : M.Val scoping_rules_lifetimes_methods.Owner.t :=
         M.alloc (|
@@ -124,4 +124,4 @@ Definition main : M unit :=
         |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

@@ -25,14 +25,14 @@ Section Impl_associated_functions_and_methods_Point_t.
       }
   *)
   Definition origin : M associated_functions_and_methods.Point.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       {|
         associated_functions_and_methods.Point.y :=
           M.read (| UnsupportedLiteral : M.Val f64.t |);
         associated_functions_and_methods.Point.x :=
           M.read (| UnsupportedLiteral : M.Val f64.t |);
       |} : associated_functions_and_methods.Point.t
-    )).
+    ) : associated_functions_and_methods.Point.t)).
   
   Global Instance AssociatedFunction_origin :
     Notations.DoubleColon Self "origin" := {
@@ -48,14 +48,14 @@ Section Impl_associated_functions_and_methods_Point_t.
       (x : f64.t)
       (y : f64.t)
       : M associated_functions_and_methods.Point.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let x := M.alloc (| x |) in
       let y := M.alloc (| y |) in
       {|
         associated_functions_and_methods.Point.x := M.read (| x |);
         associated_functions_and_methods.Point.y := M.read (| y |);
       |} : associated_functions_and_methods.Point.t
-    )).
+    ) : associated_functions_and_methods.Point.t)).
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
@@ -89,13 +89,13 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
   Definition get_p1
       (self : ref Self)
       : M associated_functions_and_methods.Point.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         associated_functions_and_methods.Rectangle.Get_p1
           (deref (M.read (| self |)))
       |)
-    )).
+    ) : associated_functions_and_methods.Point.t)).
   
   Global Instance AssociatedFunction_get_p1 :
     Notations.DoubleColon Self "get_p1" := {
@@ -114,7 +114,7 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
       }
   *)
   Definition area (self : ref Self) : M f64.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         ltac:
@@ -176,7 +176,7 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
                 M.Val f64.t
             ])
       |)
-    )).
+    ) : f64.t)).
   
   Global Instance AssociatedFunction_area :
     Notations.DoubleColon Self "area" := {
@@ -192,7 +192,7 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
       }
   *)
   Definition perimeter (self : ref Self) : M f64.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         ltac:
@@ -259,7 +259,7 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
                 M.Val f64.t
             ])
       |)
-    )).
+    ) : f64.t)).
   
   Global Instance AssociatedFunction_perimeter :
     Notations.DoubleColon Self "perimeter" := {
@@ -276,7 +276,7 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
       }
   *)
   Definition translate (self : mut_ref Self) (x : f64.t) (y : f64.t) : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let x := M.alloc (| x |) in
       let y := M.alloc (| y |) in
@@ -311,7 +311,7 @@ Section Impl_associated_functions_and_methods_Rectangle_t.
           |) in
         M.alloc (| tt |)
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_translate :
     Notations.DoubleColon Self "translate" := {
@@ -349,7 +349,7 @@ Section Impl_associated_functions_and_methods_Pair_t.
       }
   *)
   Definition destroy (self : Self) : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         ltac:
@@ -401,7 +401,7 @@ Section Impl_associated_functions_and_methods_Pair_t.
                 M.Val unit
             ])
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_destroy :
     Notations.DoubleColon Self "destroy" := {
@@ -448,7 +448,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let rectangle : M.Val associated_functions_and_methods.Rectangle.t :=
         M.alloc (|
@@ -568,4 +568,4 @@ Definition main : M unit :=
         |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

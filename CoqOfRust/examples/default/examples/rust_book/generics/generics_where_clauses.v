@@ -22,7 +22,7 @@ Section Impl_generics_where_clauses_PrintInOption_for_T.
       }
   *)
   Definition print_in_option (self : Self) : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         let _ : M.Val unit :=
@@ -56,7 +56,7 @@ Section Impl_generics_where_clauses_PrintInOption_for_T.
           M.alloc (| tt |) in
         M.alloc (| tt |)
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_print_in_option :
     Notations.DoubleColon Self "print_in_option" := {
@@ -78,7 +78,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let vec : M.Val (alloc.vec.Vec.t i32.t alloc.alloc.Global.t) :=
         M.alloc (|
@@ -109,4 +109,4 @@ Definition main : M unit :=
         |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

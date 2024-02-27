@@ -11,7 +11,7 @@ fn destroy_box(c: Box<i32>) {
 Definition destroy_box
     (c : alloc.boxed.Box.t i32.t alloc.boxed.Box.Default.A)
     : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let c := M.alloc (| c |) in
     M.read (|
       let _ : M.Val unit :=
@@ -45,7 +45,7 @@ Definition destroy_box
         M.alloc (| tt |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).
 
 (*
 fn main() {
@@ -86,7 +86,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let x : M.Val u32.t := M.alloc (| (Integer.of_Z 5) : u32.t |) in
       let y : M.Val u32.t := M.copy (| x |) in
@@ -168,4 +168,4 @@ Definition main : M unit :=
         |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

@@ -27,7 +27,7 @@ Section Impl_core_default_Default_for_mother_Mapping_t_K_V.
   Default
   *)
   Definition default : M (mother.Mapping.t K V) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       {|
         mother.Mapping._key :=
           M.call (|ltac:(M.get_method (fun ℐ =>
@@ -42,7 +42,7 @@ Section Impl_core_default_Default_for_mother_Mapping_t_K_V.
               (Trait := ℐ)))
           |);
       |} : mother.Mapping.t K V
-    )).
+    ) : mother.Mapping.t K V)).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -70,14 +70,14 @@ Section Impl_mother_Mapping_t_K_V.
       (self : ref Self)
       (_key : ref K)
       : M (core.option.Option.t V) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let _key := M.alloc (| _key |) in
       (never_to_any (B := core.option.Option.t V)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : core.option.Option.t V)).
   
   Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
     Notations.double_colon := get;
@@ -89,7 +89,7 @@ Section Impl_mother_Mapping_t_K_V.
       }
   *)
   Definition insert (self : mut_ref Self) (_key : K) (_value : V) : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let _key := M.alloc (| _key |) in
       let _value := M.alloc (| _value |) in
@@ -97,7 +97,7 @@ Section Impl_mother_Mapping_t_K_V.
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_insert :
     Notations.DoubleColon Self "insert" := {
@@ -125,12 +125,12 @@ Section Impl_core_default_Default_for_mother_AccountId_t.
   Default
   *)
   Definition default : M mother.AccountId.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       mother.AccountId.Build_t
         (M.call (|ltac:(M.get_method (fun ℐ =>
           core.default.Default.default (Self := u128.t) (Trait := ℐ)))
         |))
-    )).
+    ) : mother.AccountId.t)).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -151,7 +151,7 @@ Section Impl_core_clone_Clone_for_mother_AccountId_t.
   Clone
   *)
   Definition clone (self : ref Self) : M mother.AccountId.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         ltac:
@@ -163,7 +163,7 @@ Section Impl_core_clone_Clone_for_mother_AccountId_t.
                 (deref (M.read (| self |))) : M.Val mother.AccountId.t
             ])
       |)
-    )).
+    ) : mother.AccountId.t)).
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {
@@ -203,13 +203,13 @@ Section Impl_core_cmp_PartialEq_for_mother_AccountId_t.
   PartialEq
   *)
   Definition eq (self : ref Self) (other : ref mother.AccountId.t) : M bool.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let other := M.alloc (| other |) in
       BinOp.Pure.eq
         (M.read (| mother.AccountId.Get_0 (deref (M.read (| self |))) |))
         (M.read (| mother.AccountId.Get_0 (deref (M.read (| other |))) |))
-    )).
+    ) : bool.t)).
   
   Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
     Notations.double_colon := eq;
@@ -241,7 +241,7 @@ Section Impl_core_cmp_Eq_for_mother_AccountId_t.
   Eq
   *)
   Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         ltac:
@@ -253,7 +253,7 @@ Section Impl_core_cmp_Eq_for_mother_AccountId_t.
                 (M.alloc (| tt |)) : M.Val unit
             ])
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
     Notations.DoubleColon Self "assert_receiver_is_total_eq" := {
@@ -308,7 +308,7 @@ Section Impl_core_default_Default_for_mother_Bids_t.
   Default
   *)
   Definition default : M mother.Bids.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       mother.Bids.Build_t
         (M.call (|ltac:(M.get_method (fun ℐ =>
           core.default.Default.default
@@ -320,7 +320,7 @@ Section Impl_core_default_Default_for_mother_Bids_t.
                 alloc.alloc.Global.t)
             (Trait := ℐ)))
         |))
-    )).
+    ) : mother.Bids.t)).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -350,7 +350,7 @@ Section Impl_core_cmp_PartialEq_for_mother_Bids_t.
   PartialEq
   *)
   Definition eq (self : ref Self) (other : ref mother.Bids.t) : M bool.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let other := M.alloc (| other |) in
       M.call (|(ltac:(M.get_method (fun ℐ =>
@@ -371,7 +371,7 @@ Section Impl_core_cmp_PartialEq_for_mother_Bids_t.
         (borrow (mother.Bids.Get_0 (deref (M.read (| self |)))))
         (borrow (mother.Bids.Get_0 (deref (M.read (| other |))))))
       |)
-    )).
+    ) : bool.t)).
   
   Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
     Notations.double_colon := eq;
@@ -403,7 +403,7 @@ Section Impl_core_cmp_Eq_for_mother_Bids_t.
   Eq
   *)
   Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         ltac:
@@ -429,7 +429,7 @@ Section Impl_core_cmp_Eq_for_mother_Bids_t.
                 (M.alloc (| tt |)) : M.Val unit
             ])
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
     Notations.DoubleColon Self "assert_receiver_is_total_eq" := {
@@ -451,7 +451,7 @@ Section Impl_core_clone_Clone_for_mother_Bids_t.
   Clone
   *)
   Definition clone (self : ref Self) : M mother.Bids.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       mother.Bids.Build_t
         (M.call (|(ltac:(M.get_method (fun ℐ =>
@@ -465,7 +465,7 @@ Section Impl_core_clone_Clone_for_mother_Bids_t.
               (Trait := ℐ)))
           (borrow (mother.Bids.Get_0 (deref (M.read (| self |))))))
         |))
-    )).
+    ) : mother.Bids.t)).
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {
@@ -503,7 +503,7 @@ Section Impl_core_cmp_PartialEq_for_mother_Outline_t.
   PartialEq
   *)
   Definition eq (self : ref Self) (other : ref mother.Outline.t) : M bool.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let other := M.alloc (| other |) in
       M.read (|
@@ -520,7 +520,7 @@ Section Impl_core_cmp_PartialEq_for_mother_Outline_t.
           BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |))
         |)
       |)
-    )).
+    ) : bool.t)).
   
   Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
     Notations.double_colon := eq;
@@ -552,10 +552,10 @@ Section Impl_core_cmp_Eq_for_mother_Outline_t.
   Eq
   *)
   Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       tt
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
     Notations.DoubleColon Self "assert_receiver_is_total_eq" := {
@@ -577,7 +577,7 @@ Section Impl_core_clone_Clone_for_mother_Outline_t.
   Clone
   *)
   Definition clone (self : ref Self) : M mother.Outline.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         ltac:
@@ -610,7 +610,7 @@ Section Impl_core_clone_Clone_for_mother_Outline_t.
                 M.Val mother.Outline.t
             ])
       |)
-    )).
+    ) : mother.Outline.t)).
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {
@@ -666,7 +666,7 @@ Section Impl_core_cmp_PartialEq_for_mother_Status_t.
   PartialEq
   *)
   Definition eq (self : ref Self) (other : ref mother.Status.t) : M bool.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let other := M.alloc (| other |) in
       M.read (|
@@ -788,7 +788,7 @@ Section Impl_core_cmp_PartialEq_for_mother_Status_t.
             |))
         |)
       |)
-    )).
+    ) : bool.t)).
   
   Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
     Notations.double_colon := eq;
@@ -820,7 +820,7 @@ Section Impl_core_cmp_Eq_for_mother_Status_t.
   Eq
   *)
   Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         ltac:
@@ -843,7 +843,7 @@ Section Impl_core_cmp_Eq_for_mother_Status_t.
                 M.Val unit
             ])
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
     Notations.DoubleColon Self "assert_receiver_is_total_eq" := {
@@ -865,7 +865,7 @@ Section Impl_core_clone_Clone_for_mother_Status_t.
   Clone
   *)
   Definition clone (self : ref Self) : M mother.Status.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         ltac:
@@ -940,7 +940,7 @@ Section Impl_core_clone_Clone_for_mother_Status_t.
                 M.Val mother.Status.t
             ])
       |)
-    )).
+    ) : mother.Status.t)).
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {
@@ -1004,7 +1004,7 @@ Section Impl_core_cmp_PartialEq_for_mother_Auction_t.
   PartialEq
   *)
   Definition eq (self : ref Self) (other : ref mother.Auction.t) : M bool.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let other := M.alloc (| other |) in
       BinOp.Pure.and
@@ -1073,7 +1073,7 @@ Section Impl_core_cmp_PartialEq_for_mother_Auction_t.
           (borrow (mother.Auction.Get_vector (deref (M.read (| self |)))))
           (borrow (mother.Auction.Get_vector (deref (M.read (| other |))))))
         |))
-    )).
+    ) : bool.t)).
   
   Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
     Notations.double_colon := eq;
@@ -1105,7 +1105,7 @@ Section Impl_core_cmp_Eq_for_mother_Auction_t.
   Eq
   *)
   Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         ltac:
@@ -1203,7 +1203,7 @@ Section Impl_core_cmp_Eq_for_mother_Auction_t.
                 M.Val unit
             ])
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
     Notations.DoubleColon Self "assert_receiver_is_total_eq" := {
@@ -1225,7 +1225,7 @@ Section Impl_core_clone_Clone_for_mother_Auction_t.
   Clone
   *)
   Definition clone (self : ref Self) : M mother.Auction.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       {|
         mother.Auction.name :=
@@ -1268,7 +1268,7 @@ Section Impl_core_clone_Clone_for_mother_Auction_t.
             (borrow (mother.Auction.Get_vector (deref (M.read (| self |))))))
           |);
       |} : mother.Auction.t
-    )).
+    ) : mother.Auction.t)).
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {
@@ -1300,7 +1300,7 @@ Section Impl_core_default_Default_for_mother_Auction_t.
       }
   *)
   Definition default : M mother.Auction.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       {|
         mother.Auction.name :=
           M.call (|ltac:(M.get_method (fun ℐ =>
@@ -1329,7 +1329,7 @@ Section Impl_core_default_Default_for_mother_Auction_t.
               (Trait := ℐ)))
           |);
       |} : mother.Auction.t
-    )).
+    ) : mother.Auction.t)).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -1370,7 +1370,7 @@ Section Impl_core_cmp_PartialEq_for_mother_Failure_t.
   PartialEq
   *)
   Definition eq (self : ref Self) (other : ref mother.Failure.t) : M bool.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let other := M.alloc (| other |) in
       M.read (|
@@ -1438,7 +1438,7 @@ Section Impl_core_cmp_PartialEq_for_mother_Failure_t.
             |))
         |)
       |)
-    )).
+    ) : bool.t)).
   
   Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
     Notations.double_colon := eq;
@@ -1470,7 +1470,7 @@ Section Impl_core_cmp_Eq_for_mother_Failure_t.
   Eq
   *)
   Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         ltac:
@@ -1484,7 +1484,7 @@ Section Impl_core_cmp_Eq_for_mother_Failure_t.
                 (M.alloc (| tt |)) : M.Val unit
             ])
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
     Notations.DoubleColon Self "assert_receiver_is_total_eq" := {
@@ -1531,10 +1531,10 @@ Section Impl_mother_Env_t.
       }
   *)
   Definition caller (self : ref Self) : M mother.AccountId.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (| mother.Env.Get_caller (deref (M.read (| self |))) |)
-    )).
+    ) : mother.AccountId.t)).
   
   Global Instance AssociatedFunction_caller :
     Notations.DoubleColon Self "caller" := {
@@ -1547,14 +1547,14 @@ Section Impl_mother_Env_t.
       }
   *)
   Definition emit_event (self : ref Self) (_event : mother.Event.t) : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let _event := M.alloc (| _event |) in
       (never_to_any (B := unit)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_emit_event :
     Notations.DoubleColon Self "emit_event" := {
@@ -1589,7 +1589,7 @@ Section Impl_core_default_Default_for_mother_Mother_t.
   Default
   *)
   Definition default : M mother.Mother.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       {|
         mother.Mother.auction :=
           M.call (|ltac:(M.get_method (fun ℐ =>
@@ -1604,7 +1604,7 @@ Section Impl_core_default_Default_for_mother_Mother_t.
               (Trait := ℐ)))
           |);
       |} : mother.Mother.t
-    )).
+    ) : mother.Mother.t)).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -1627,12 +1627,12 @@ Section Impl_mother_Mother_t.
       }
   *)
   Definition init_env : M mother.Env.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       (never_to_any (B := mother.Env.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : mother.Env.t)).
   
   Global Instance AssociatedFunction_init_env :
     Notations.DoubleColon Self "init_env" := {
@@ -1645,10 +1645,10 @@ Section Impl_mother_Mother_t.
       }
   *)
   Definition env (self : ref Self) : M mother.Env.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.call (|mother.Mother.t::["init_env"] |)
-    )).
+    ) : mother.Env.t)).
   
   Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
     Notations.double_colon := env;
@@ -1663,7 +1663,7 @@ Section Impl_mother_Mother_t.
       }
   *)
   Definition new (auction : mother.Auction.t) : M Self :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let auction := M.alloc (| auction |) in
       {|
         mother.Mother.balances :=
@@ -1674,7 +1674,7 @@ Section Impl_mother_Mother_t.
           |);
         mother.Mother.auction := M.read (| auction |);
       |} : mother.Mother.t
-    )).
+    ) : Self)).
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
@@ -1686,11 +1686,11 @@ Section Impl_mother_Mother_t.
       }
   *)
   Definition new_default : M Self :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       M.call (|ltac:(M.get_method (fun ℐ =>
         core.default.Default.default (Self := mother.Mother.t) (Trait := ℐ)))
       |)
-    )).
+    ) : Self)).
   
   Global Instance AssociatedFunction_new_default :
     Notations.DoubleColon Self "new_default" := {
@@ -1709,7 +1709,7 @@ Section Impl_mother_Mother_t.
   Definition failed_new
       (fail : bool.t)
       : M (core.result.Result.t Self mother.Failure.t) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let fail := M.alloc (| fail |) in
       M.read (|
         if M.read (| use fail |) then
@@ -1733,7 +1733,7 @@ Section Impl_mother_Mother_t.
               |))
           |)
       |)
-    )).
+    ) : core.result.Result.t Self mother.Failure.t)).
   
   Global Instance AssociatedFunction_failed_new :
     Notations.DoubleColon Self "failed_new" := {
@@ -1752,7 +1752,7 @@ Section Impl_mother_Mother_t.
       (self : mut_ref Self)
       (auction : mother.Auction.t)
       : M mother.Auction.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let auction := M.alloc (| auction |) in
       M.read (|
@@ -1779,7 +1779,7 @@ Section Impl_mother_Mother_t.
           |) in
         auction
       |)
-    )).
+    ) : mother.Auction.t)).
   
   Global Instance AssociatedFunction_echo_auction :
     Notations.DoubleColon Self "echo_auction" := {
@@ -1803,7 +1803,7 @@ Section Impl_mother_Mother_t.
       (self : mut_ref Self)
       (fail : core.option.Option.t mother.Failure.t)
       : M (core.result.Result.t unit mother.Failure.t) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let fail := M.alloc (| fail |) in
       M.read (|
@@ -1861,7 +1861,7 @@ Section Impl_mother_Mother_t.
                 M.Val (core.result.Result.t unit mother.Failure.t)
             ])
       |)
-    )).
+    ) : core.result.Result.t unit mother.Failure.t)).
   
   Global Instance AssociatedFunction_revert_or_trap :
     Notations.DoubleColon Self "revert_or_trap" := {
@@ -1877,7 +1877,7 @@ Section Impl_mother_Mother_t.
       (self : mut_ref Self)
       (_message : alloc.string.String.t)
       : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let _message := M.alloc (| _message |) in
       M.read (|
@@ -1912,7 +1912,7 @@ Section Impl_mother_Mother_t.
           M.alloc (| tt |) in
         M.alloc (| tt |)
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_debug_log :
     Notations.DoubleColon Self "debug_log" := {

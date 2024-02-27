@@ -15,7 +15,7 @@ Definition double_first
         (core.result.Result.t
           (core.option.Option.t i32.t)
           core.num.error.ParseIntError.t) :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let vec := M.alloc (| vec |) in
     M.read (|
       let opt :
@@ -97,7 +97,9 @@ Definition double_first
         |)
       |)
     |)
-  )).
+  ) : core.result.Result.t
+    (core.option.Option.t i32.t)
+    core.num.error.ParseIntError.t)).
 
 (*
 fn main() {
@@ -112,7 +114,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let numbers : M.Val (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t) :=
         M.alloc (|
@@ -259,4 +261,4 @@ Definition main : M unit :=
         M.alloc (| tt |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

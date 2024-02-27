@@ -30,7 +30,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let logical : M.Val bool.t := M.alloc (| true |) in
       let a_float : M.Val f64.t :=
@@ -49,4 +49,4 @@ Definition main : M unit :=
       let mutable : M.Val bool.t := M.alloc (| true |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

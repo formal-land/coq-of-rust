@@ -25,7 +25,7 @@ Section Impl_core_clone_Clone_for_scoping_rules_borrowing_the_ref_pattern_Point_
   Definition clone
       (self : ref Self)
       : M scoping_rules_borrowing_the_ref_pattern.Point.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         ltac:
@@ -38,7 +38,7 @@ Section Impl_core_clone_Clone_for_scoping_rules_borrowing_the_ref_pattern_Point_
                 M.Val scoping_rules_borrowing_the_ref_pattern.Point.t
             ])
       |)
-    )).
+    ) : scoping_rules_borrowing_the_ref_pattern.Point.t)).
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {
@@ -120,7 +120,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let c : M.Val char.t := M.alloc (| "Q"%char |) in
       ltac:
@@ -391,4 +391,4 @@ Definition main : M unit :=
               M.Val unit
           ])
     |)
-  )).
+  ) : unit)).

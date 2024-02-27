@@ -32,11 +32,11 @@ Section Impl_generics_traits_DoubleDrop_T_for_U.
       fn double_drop(self, _: T) {}
   *)
   Definition double_drop (self : Self) (Pattern : T) : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let Pattern := M.alloc (| Pattern |) in
       tt
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_double_drop :
     Notations.DoubleColon Self "double_drop" := {
@@ -64,7 +64,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let empty : M.Val generics_traits.Empty.t :=
         M.alloc (| generics_traits.Empty.Build |) in
@@ -83,4 +83,4 @@ Definition main : M unit :=
         |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

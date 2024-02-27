@@ -19,7 +19,7 @@ Section Impl_core_fmt_Debug_for_combinators_and_then_Food_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let f := M.alloc (| f |) in
       M.call (|(core.fmt.Formatter.t::["write_str"]
@@ -56,7 +56,7 @@ Section Impl_core_fmt_Debug_for_combinators_and_then_Food_t.
               ])
         |)))
       |)
-    )).
+    ) : ltac:(core.fmt.Result))).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
@@ -86,7 +86,7 @@ Section Impl_core_fmt_Debug_for_combinators_and_then_Day_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let f := M.alloc (| f |) in
       M.call (|(core.fmt.Formatter.t::["write_str"]
@@ -123,7 +123,7 @@ Section Impl_core_fmt_Debug_for_combinators_and_then_Day_t.
               ])
         |)))
       |)
-    )).
+    ) : ltac:(core.fmt.Result))).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
@@ -146,7 +146,7 @@ fn have_ingredients(food: Food) -> Option<Food> {
 Definition have_ingredients
     (food : combinators_and_then.Food.t)
     : M (core.option.Option.t combinators_and_then.Food.t) :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let food := M.alloc (| food |) in
     M.read (|
       ltac:
@@ -165,7 +165,7 @@ Definition have_ingredients
               M.Val (core.option.Option.t combinators_and_then.Food.t)
           ])
     |)
-  )).
+  ) : core.option.Option.t combinators_and_then.Food.t)).
 
 (*
 fn have_recipe(food: Food) -> Option<Food> {
@@ -178,7 +178,7 @@ fn have_recipe(food: Food) -> Option<Food> {
 Definition have_recipe
     (food : combinators_and_then.Food.t)
     : M (core.option.Option.t combinators_and_then.Food.t) :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let food := M.alloc (| food |) in
     M.read (|
       ltac:
@@ -197,7 +197,7 @@ Definition have_recipe
               M.Val (core.option.Option.t combinators_and_then.Food.t)
           ])
     |)
-  )).
+  ) : core.option.Option.t combinators_and_then.Food.t)).
 
 (*
 fn cookable_v1(food: Food) -> Option<Food> {
@@ -213,7 +213,7 @@ fn cookable_v1(food: Food) -> Option<Food> {
 Definition cookable_v1
     (food : combinators_and_then.Food.t)
     : M (core.option.Option.t combinators_and_then.Food.t) :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let food := M.alloc (| food |) in
     M.read (|
       ltac:
@@ -277,7 +277,7 @@ Definition cookable_v1
               M.Val (core.option.Option.t combinators_and_then.Food.t)
           ])
     |)
-  )).
+  ) : core.option.Option.t combinators_and_then.Food.t)).
 
 (*
 fn cookable_v2(food: Food) -> Option<Food> {
@@ -287,13 +287,13 @@ fn cookable_v2(food: Food) -> Option<Food> {
 Definition cookable_v2
     (food : combinators_and_then.Food.t)
     : M (core.option.Option.t combinators_and_then.Food.t) :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let food := M.alloc (| food |) in
     M.call (|((core.option.Option.t combinators_and_then.Food.t)::["and_then"]
       (M.call (|(combinators_and_then.have_recipe (M.read (| food |))) |))
       combinators_and_then.have_ingredients)
     |)
-  )).
+  ) : core.option.Option.t combinators_and_then.Food.t)).
 
 (*
 fn eat(food: Food, day: Day) {
@@ -307,7 +307,7 @@ Definition eat
     (food : combinators_and_then.Food.t)
     (day : combinators_and_then.Day.t)
     : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let food := M.alloc (| food |) in
     let day := M.alloc (| day |) in
     M.read (|
@@ -399,7 +399,7 @@ Definition eat
               M.Val unit
           ])
     |)
-  )).
+  ) : unit)).
 
 (*
 fn main() {
@@ -412,7 +412,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       ltac:
         (M.monadic_match_operator
@@ -462,4 +462,4 @@ Definition main : M unit :=
               M.Val unit
           ])
     |)
-  )).
+  ) : unit)).

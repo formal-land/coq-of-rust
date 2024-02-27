@@ -14,7 +14,7 @@ fn cat(path: &Path) -> io::Result<String> {
 Definition cat
     (path : ref std.path.Path.t)
     : M ltac:(std.io.error.Result alloc.string.String.t) :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let path := M.alloc (| path |) in
     let return_ :=
       M.return_ (R := ltac:(std.io.error.Result alloc.string.String.t)) in
@@ -136,7 +136,7 @@ Definition cat
                     std.io.error.Error.t)
             ])
       |))
-  )).
+  ) : ltac:(std.io.error.Result alloc.string.String.t))).
 
 (*
 fn echo(s: &str, path: &Path) -> io::Result<()> {
@@ -149,7 +149,7 @@ Definition echo
     (s : ref str.t)
     (path : ref std.path.Path.t)
     : M ltac:(std.io.error.Result unit) :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let s := M.alloc (| s |) in
     let path := M.alloc (| path |) in
     let return_ := M.return_ (R := ltac:(std.io.error.Result unit)) in
@@ -235,7 +235,7 @@ Definition echo
           |)
         |)
       |))
-  )).
+  ) : ltac:(std.io.error.Result unit))).
 
 (*
 fn touch(path: &Path) -> io::Result<()> {
@@ -248,7 +248,7 @@ fn touch(path: &Path) -> io::Result<()> {
 Definition touch
     (path : ref std.path.Path.t)
     : M ltac:(std.io.error.Result unit) :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let path := M.alloc (| path |) in
     M.read (|
       ltac:
@@ -299,7 +299,7 @@ Definition touch
               M.Val (core.result.Result.t unit std.io.error.Error.t)
           ])
     |)
-  )).
+  ) : ltac:(std.io.error.Result unit))).
 
 (*
 fn main() {
@@ -367,7 +367,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let _ : M.Val unit :=
         let _ : M.Val unit :=
@@ -1186,4 +1186,4 @@ Definition main : M unit :=
         |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

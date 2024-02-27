@@ -23,7 +23,7 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let f := M.alloc (| f |) in
       M.call (|(core.fmt.Formatter.t::["debug_struct_field1_finish"]
@@ -39,7 +39,7 @@ Section Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed_t.
                   (deref (M.read (| self |))))
             |)))))
       |)
-    )).
+    ) : ltac:(core.fmt.Result))).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
@@ -61,12 +61,12 @@ Section Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed_t.
       }
   *)
   Definition default : M Self :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       {|
         scoping_rules_lifetimes_traits.Borrowed.x :=
           borrow (M.alloc (| (Integer.of_Z 10) : i32.t |));
       |} : scoping_rules_lifetimes_traits.Borrowed.t
-    )).
+    ) : Self)).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -87,7 +87,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let b : M.Val scoping_rules_lifetimes_traits.Borrowed.t :=
         M.alloc (|
@@ -125,4 +125,4 @@ Definition main : M unit :=
         M.alloc (| tt |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

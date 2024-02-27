@@ -9,7 +9,7 @@ Module foo.
             }
     *)
     Definition f_foo_gre : M unit :=
-      ltac:(M.monadic (
+      ltac:(M.monadic ((
         M.read (|
           let _ : M.Val unit :=
             let _ : M.Val unit :=
@@ -28,7 +28,7 @@ Module foo.
             M.alloc (| tt |) in
           M.alloc (| tt |)
         |)
-      )).
+      ) : unit)).
   End gre.
   
   (*
@@ -38,7 +38,7 @@ Module foo.
       }
   *)
   Definition f_foo : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       M.read (|
         let _ : M.Val unit :=
           let _ : M.Val unit :=
@@ -58,7 +58,7 @@ Module foo.
           M.alloc (| M.call (|module_duplicate.foo.gre.f_foo_gre |) |) in
         M.alloc (| tt |)
       |)
-    )).
+    ) : unit)).
 End foo.
 
 (*
@@ -67,10 +67,10 @@ fn f() {
 }
 *)
 Definition f : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let _ : M.Val unit :=
         M.alloc (| M.call (|module_duplicate.foo.f_foo |) |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

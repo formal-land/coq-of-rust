@@ -52,7 +52,7 @@ Definition comp_sci_student_greeting
     {DynT : Set}
     (student : ref DynT)
     : M alloc.string.String.t :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let student := M.alloc (| student |) in
     M.read (|
       let res : M.Val alloc.string.String.t :=
@@ -130,10 +130,10 @@ Definition comp_sci_student_greeting
         |) in
       res
     |)
-  )).
+  ) : alloc.string.String.t)).
 
 (*
 fn main() {}
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit := ltac:(M.monadic ( tt )).
+Definition main : M unit := ltac:(M.monadic (( tt ) : unit)).

@@ -7,7 +7,7 @@ fn multiply<'a>(first: &'a i32, second: &'a i32) -> i32 {
 }
 *)
 Definition multiply (first : ref i32.t) (second : ref i32.t) : M i32.t :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let first := M.alloc (| first |) in
     let second := M.alloc (| second |) in
     M.call (|(ltac:(M.get_method (fun ℐ =>
@@ -18,7 +18,7 @@ Definition multiply (first : ref i32.t) (second : ref i32.t) : M i32.t :=
       (M.read (| first |))
       (M.read (| second |)))
     |)
-  )).
+  ) : i32.t)).
 
 (*
 fn choose_first<'a: 'b, 'b>(first: &'a i32, _: &'b i32) -> &'b i32 {
@@ -26,11 +26,11 @@ fn choose_first<'a: 'b, 'b>(first: &'a i32, _: &'b i32) -> &'b i32 {
 }
 *)
 Definition choose_first (first : ref i32.t) (arg : ref i32.t) : M (ref i32.t) :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let first := M.alloc (| first |) in
     let arg := M.alloc (| arg |) in
     M.read (| first |)
-  )).
+  ) : ref i32.t)).
 
 (*
 fn main() {
@@ -46,7 +46,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let first : M.Val i32.t := M.alloc (| (Integer.of_Z 2) : i32.t |) in
       let _ : M.Val unit :=
@@ -124,4 +124,4 @@ Definition main : M unit :=
         M.alloc (| tt |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

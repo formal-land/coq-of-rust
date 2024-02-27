@@ -7,11 +7,11 @@ pub fn add(a: i32, b: i32) -> i32 {
 }
 *)
 Definition add (a : i32.t) (b : i32.t) : M i32.t :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let a := M.alloc (| a |) in
     let b := M.alloc (| b |) in
     BinOp.Panic.add (| M.read (| a |), M.read (| b |) |)
-  )).
+  ) : i32.t)).
 
 (*
 pub fn div(a: i32, b: i32) -> i32 {
@@ -23,7 +23,7 @@ pub fn div(a: i32, b: i32) -> i32 {
 }
 *)
 Definition div (a : i32.t) (b : i32.t) : M i32.t :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let a := M.alloc (| a |) in
     let b := M.alloc (| b |) in
     M.read (|
@@ -47,4 +47,4 @@ Definition div (a : i32.t) (b : i32.t) : M i32.t :=
           M.alloc (| tt |) in
       M.alloc (| BinOp.Panic.div (| M.read (| a |), M.read (| b |) |) |)
     |)
-  )).
+  ) : i32.t)).

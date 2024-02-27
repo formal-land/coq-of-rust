@@ -31,7 +31,7 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit := ltac:(M.monadic ( tt )).
+Definition main : M unit := ltac:(M.monadic (( tt ) : unit)).
 
 (*
     extern "C" fn foo(arg: i32) -> i32 {
@@ -40,7 +40,7 @@ Definition main : M unit := ltac:(M.monadic ( tt )).
     }
 *)
 Definition foo (arg : i32.t) : M i32.t :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let arg := M.alloc (| arg |) in
     M.read (|
       let _ : M.Val unit :=
@@ -73,7 +73,7 @@ Definition foo (arg : i32.t) : M i32.t :=
         BinOp.Panic.mul (| M.read (| arg |), (Integer.of_Z 2) : i32.t |)
       |)
     |)
-  )).
+  ) : i32.t)).
 
 (*
     fn call_foo(arg: i32) -> i32 {
@@ -96,7 +96,7 @@ Definition foo (arg : i32.t) : M i32.t :=
     }
 *)
 Definition call_foo (arg : i32.t) : M i32.t :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let arg := M.alloc (| arg |) in
     M.read (|
       let result : M.Val i32.t :=
@@ -104,4 +104,4 @@ Definition call_foo (arg : i32.t) : M i32.t :=
       let _ : M.Val unit := InlineAssembly in
       result
     |)
-  )).
+  ) : i32.t)).

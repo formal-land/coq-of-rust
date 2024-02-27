@@ -33,7 +33,7 @@ Section Impl_generics_new_type_idiom_Years_t.
       }
   *)
   Definition to_days (self : ref Self) : M generics_new_type_idiom.Days.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       generics_new_type_idiom.Days.Build_t
         (BinOp.Panic.mul (|
@@ -42,7 +42,7 @@ Section Impl_generics_new_type_idiom_Years_t.
           |),
           (Integer.of_Z 365) : i64.t
         |))
-    )).
+    ) : generics_new_type_idiom.Days.t)).
   
   Global Instance AssociatedFunction_to_days :
     Notations.DoubleColon Self "to_days" := {
@@ -61,7 +61,7 @@ Section Impl_generics_new_type_idiom_Days_t.
       }
   *)
   Definition to_years (self : ref Self) : M generics_new_type_idiom.Years.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       generics_new_type_idiom.Years.Build_t
         (BinOp.Panic.div (|
@@ -70,7 +70,7 @@ Section Impl_generics_new_type_idiom_Days_t.
           |),
           (Integer.of_Z 365) : i64.t
         |))
-    )).
+    ) : generics_new_type_idiom.Years.t)).
   
   Global Instance AssociatedFunction_to_years :
     Notations.DoubleColon Self "to_years" := {
@@ -85,13 +85,13 @@ fn old_enough(age: &Years) -> bool {
 }
 *)
 Definition old_enough (age : ref generics_new_type_idiom.Years.t) : M bool.t :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let age := M.alloc (| age |) in
     BinOp.Pure.ge
       (M.read (| generics_new_type_idiom.Years.Get_0 (deref (M.read (| age |)))
       |))
       ((Integer.of_Z 18) : i64.t)
-  )).
+  ) : bool.t)).
 
 (*
 fn main() {
@@ -104,7 +104,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let age : M.Val generics_new_type_idiom.Years.t :=
         M.alloc (|
@@ -190,4 +190,4 @@ Definition main : M unit :=
         M.alloc (| tt |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

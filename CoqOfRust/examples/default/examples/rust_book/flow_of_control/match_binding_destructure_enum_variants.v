@@ -7,8 +7,8 @@ fn some_number() -> Option<u32> {
 }
 *)
 Definition some_number : M (core.option.Option.t u32.t) :=
-  ltac:(M.monadic ( core.option.Option.Some ((Integer.of_Z 42) : u32.t)
-  )).
+  ltac:(M.monadic (( core.option.Option.Some ((Integer.of_Z 42) : u32.t)
+  ) : core.option.Option.t u32.t)).
 
 (*
 fn main() {
@@ -25,7 +25,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       ltac:
         (M.monadic_match_operator
@@ -109,4 +109,4 @@ Definition main : M unit :=
               (M.alloc (| tt |)) : M.Val unit
           ])
     |)
-  )).
+  ) : unit)).

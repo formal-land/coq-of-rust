@@ -9,7 +9,7 @@ fn create_fn() -> impl Fn() {
 }
 *)
 Definition create_fn : M _ (* OpaqueTy *) :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let text : M.Val alloc.string.String.t :=
         M.alloc (|
@@ -60,7 +60,7 @@ Definition create_fn : M _ (* OpaqueTy *) :=
           unit
       |)
     |)
-  )).
+  ) : _ (* OpaqueTy *))).
 
 Error OpaqueTy.
 
@@ -72,7 +72,7 @@ fn create_fnmut() -> impl FnMut() {
 }
 *)
 Definition create_fnmut : M _ (* OpaqueTy *) :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let text : M.Val alloc.string.String.t :=
         M.alloc (|
@@ -123,7 +123,7 @@ Definition create_fnmut : M _ (* OpaqueTy *) :=
           unit
       |)
     |)
-  )).
+  ) : _ (* OpaqueTy *))).
 
 Error OpaqueTy.
 
@@ -135,7 +135,7 @@ fn create_fnonce() -> impl FnOnce() {
 }
 *)
 Definition create_fnonce : M _ (* OpaqueTy *) :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let text : M.Val alloc.string.String.t :=
         M.alloc (|
@@ -186,7 +186,7 @@ Definition create_fnonce : M _ (* OpaqueTy *) :=
           unit
       |)
     |)
-  )).
+  ) : _ (* OpaqueTy *))).
 
 Error OpaqueTy.
 
@@ -203,7 +203,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let fn_plain : M.Val _ :=
         M.alloc (| M.call (|functions_closures_as_output_parameters.create_fn |)
@@ -251,4 +251,4 @@ Definition main : M unit :=
         |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

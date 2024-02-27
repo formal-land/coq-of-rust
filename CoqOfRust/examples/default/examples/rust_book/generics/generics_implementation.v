@@ -37,10 +37,10 @@ Section Impl_generics_implementation_Val_t.
       }
   *)
   Definition value (self : ref Self) : M (ref f64.t) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       borrow (generics_implementation.Val.Get_val (deref (M.read (| self |))))
-    )).
+    ) : ref f64.t)).
   
   Global Instance AssociatedFunction_value :
     Notations.DoubleColon Self "value" := {
@@ -61,11 +61,11 @@ Section Impl_generics_implementation_GenVal_t_T.
       }
   *)
   Definition value (self : ref Self) : M (ref T) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       borrow
         (generics_implementation.GenVal.Get_gen_val (deref (M.read (| self |))))
-    )).
+    ) : ref T)).
   
   Global Instance AssociatedFunction_value :
     Notations.DoubleColon Self "value" := {
@@ -84,7 +84,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let x : M.Val generics_implementation.Val.t :=
         M.alloc (|
@@ -144,4 +144,4 @@ Definition main : M unit :=
         M.alloc (| tt |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

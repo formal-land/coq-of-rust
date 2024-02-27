@@ -13,10 +13,10 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let cmd : M.Val i32.t := M.alloc (| (Integer.of_Z 209) : i32.t |) in
       let _ : M.Val unit := InlineAssembly in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

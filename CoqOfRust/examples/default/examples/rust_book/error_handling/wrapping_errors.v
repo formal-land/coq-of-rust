@@ -23,7 +23,7 @@ Section Impl_core_fmt_Debug_for_wrapping_errors_DoubleError_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let f := M.alloc (| f |) in
       M.read (|
@@ -62,7 +62,7 @@ Section Impl_core_fmt_Debug_for_wrapping_errors_DoubleError_t.
                 M.Val (core.result.Result.t unit core.fmt.Error.t)
             ])
       |)
-    )).
+    ) : ltac:(core.fmt.Result))).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
@@ -94,7 +94,7 @@ Section Impl_core_fmt_Display_for_wrapping_errors_DoubleError_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let f := M.alloc (| f |) in
       M.read (|
@@ -152,7 +152,7 @@ Section Impl_core_fmt_Display_for_wrapping_errors_DoubleError_t.
                 M.Val (core.result.Result.t unit core.fmt.Error.t)
             ])
       |)
-    )).
+    ) : ltac:(core.fmt.Result))).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
@@ -182,7 +182,7 @@ Section Impl_core_error_Error_for_wrapping_errors_DoubleError_t.
   Definition source
       (self : ref Self)
       : M (core.option.Option.t (ref (dyn [core.error.Error.Trait]))) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         ltac:
@@ -212,7 +212,7 @@ Section Impl_core_error_Error_for_wrapping_errors_DoubleError_t.
                   (core.option.Option.t (ref (dyn [core.error.Error.Trait])))
             ])
       |)
-    )).
+    ) : core.option.Option.t (ref (dyn [core.error.Error.Trait])))).
   
   Global Instance AssociatedFunction_source :
     Notations.DoubleColon Self "source" := {
@@ -241,10 +241,10 @@ Section Impl_core_convert_From_core_num_error_ParseIntError_t_for_wrapping_error
   Definition from
       (err : core.num.error.ParseIntError.t)
       : M wrapping_errors.DoubleError.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let err := M.alloc (| err |) in
       wrapping_errors.DoubleError.Parse (M.read (| err |))
-    )).
+    ) : wrapping_errors.DoubleError.t)).
   
   Global Instance AssociatedFunction_from :
     Notations.DoubleColon Self "from" := {
@@ -271,7 +271,7 @@ fn double_first(vec: Vec<&str>) -> Result<i32> {
 Definition double_first
     (vec : alloc.vec.Vec.t (ref str.t) alloc.vec.Vec.Default.A)
     : M ltac:(wrapping_errors.Result i32.t) :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let vec := M.alloc (| vec |) in
     let return_ := M.return_ (R := ltac:(wrapping_errors.Result i32.t)) in
     M.catch_return
@@ -440,7 +440,7 @@ Definition double_first
             |))
         |)
       |))
-  )).
+  ) : ltac:(wrapping_errors.Result i32.t))).
 
 (*
 fn print(result: Result<i32>) {
@@ -456,7 +456,7 @@ fn print(result: Result<i32>) {
 }
 *)
 Definition print (result : ltac:(wrapping_errors.Result i32.t)) : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let result := M.alloc (| result |) in
     M.read (|
       ltac:
@@ -608,7 +608,7 @@ Definition print (result : ltac:(wrapping_errors.Result i32.t)) : M unit :=
               M.Val unit
           ])
     |)
-  )).
+  ) : unit)).
 
 (*
 fn main() {
@@ -623,7 +623,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let numbers : M.Val (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t) :=
         M.alloc (|
@@ -686,4 +686,4 @@ Definition main : M unit :=
         |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

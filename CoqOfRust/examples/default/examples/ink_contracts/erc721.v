@@ -27,7 +27,7 @@ Section Impl_core_default_Default_for_erc721_Mapping_t_K_V.
   Default
   *)
   Definition default : M (erc721.Mapping.t K V) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       {|
         erc721.Mapping._key :=
           M.call (|ltac:(M.get_method (fun ℐ =>
@@ -42,7 +42,7 @@ Section Impl_core_default_Default_for_erc721_Mapping_t_K_V.
               (Trait := ℐ)))
           |);
       |} : erc721.Mapping.t K V
-    )).
+    ) : erc721.Mapping.t K V)).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -67,14 +67,14 @@ Section Impl_erc721_Mapping_t_K_V.
       }
   *)
   Definition contains (self : ref Self) (_key : ref K) : M bool.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let _key := M.alloc (| _key |) in
       (never_to_any (B := bool.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : bool.t)).
   
   Global Instance AssociatedFunction_contains :
     Notations.DoubleColon Self "contains" := {
@@ -90,14 +90,14 @@ Section Impl_erc721_Mapping_t_K_V.
       (self : ref Self)
       (_key : ref K)
       : M (core.option.Option.t V) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let _key := M.alloc (| _key |) in
       (never_to_any (B := core.option.Option.t V)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : core.option.Option.t V)).
   
   Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
     Notations.double_colon := get;
@@ -113,7 +113,7 @@ Section Impl_erc721_Mapping_t_K_V.
       (_key : K)
       (_value : V)
       : M (core.option.Option.t u32.t) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let _key := M.alloc (| _key |) in
       let _value := M.alloc (| _value |) in
@@ -121,7 +121,7 @@ Section Impl_erc721_Mapping_t_K_V.
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : core.option.Option.t u32.t)).
   
   Global Instance AssociatedFunction_insert :
     Notations.DoubleColon Self "insert" := {
@@ -134,14 +134,14 @@ Section Impl_erc721_Mapping_t_K_V.
       }
   *)
   Definition remove (self : ref Self) (_key : K) : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let _key := M.alloc (| _key |) in
       (never_to_any (B := unit)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_remove :
     Notations.DoubleColon Self "remove" := {
@@ -157,14 +157,14 @@ Section Impl_erc721_Mapping_t_K_V.
       (self : ref Self)
       (_key : K)
       : M (core.option.Option.t u32.t) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let _key := M.alloc (| _key |) in
       (never_to_any (B := core.option.Option.t u32.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : core.option.Option.t u32.t)).
   
   Global Instance AssociatedFunction_size :
     Notations.DoubleColon Self "size" := {
@@ -177,14 +177,14 @@ Section Impl_erc721_Mapping_t_K_V.
       }
   *)
   Definition take (self : ref Self) (_key : K) : M (core.option.Option.t V) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let _key := M.alloc (| _key |) in
       (never_to_any (B := core.option.Option.t V)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : core.option.Option.t V)).
   
   Global Instance AssociatedFunction_take :
     Notations.DoubleColon Self "take" := {
@@ -212,12 +212,12 @@ Section Impl_core_default_Default_for_erc721_AccountId_t.
   Default
   *)
   Definition default : M erc721.AccountId.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       erc721.AccountId.Build_t
         (M.call (|ltac:(M.get_method (fun ℐ =>
           core.default.Default.default (Self := u128.t) (Trait := ℐ)))
         |))
-    )).
+    ) : erc721.AccountId.t)).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -238,7 +238,7 @@ Section Impl_core_clone_Clone_for_erc721_AccountId_t.
   Clone
   *)
   Definition clone (self : ref Self) : M erc721.AccountId.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         ltac:
@@ -250,7 +250,7 @@ Section Impl_core_clone_Clone_for_erc721_AccountId_t.
                 (deref (M.read (| self |))) : M.Val erc721.AccountId.t
             ])
       |)
-    )).
+    ) : erc721.AccountId.t)).
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {
@@ -290,13 +290,13 @@ Section Impl_core_cmp_PartialEq_for_erc721_AccountId_t.
   PartialEq
   *)
   Definition eq (self : ref Self) (other : ref erc721.AccountId.t) : M bool.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let other := M.alloc (| other |) in
       BinOp.Pure.eq
         (M.read (| erc721.AccountId.Get_0 (deref (M.read (| self |))) |))
         (M.read (| erc721.AccountId.Get_0 (deref (M.read (| other |))) |))
-    )).
+    ) : bool.t)).
   
   Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
     Notations.double_colon := eq;
@@ -321,13 +321,13 @@ Section Impl_core_convert_From_array_u8_t_for_erc721_AccountId_t.
       }
   *)
   Definition from (_value : array u8.t) : M Self :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let _value := M.alloc (| _value |) in
       (never_to_any (B := erc721.AccountId.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : Self)).
   
   Global Instance AssociatedFunction_from :
     Notations.DoubleColon Self "from" := {
@@ -392,7 +392,7 @@ Section Impl_core_default_Default_for_erc721_Erc721_t.
   Default
   *)
   Definition default : M erc721.Erc721.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       {|
         erc721.Erc721.token_owner :=
           M.call (|ltac:(M.get_method (fun ℐ =>
@@ -420,7 +420,7 @@ Section Impl_core_default_Default_for_erc721_Erc721_t.
               (Trait := ℐ)))
           |);
       |} : erc721.Erc721.t
-    )).
+    ) : erc721.Erc721.t)).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -461,7 +461,7 @@ Section Impl_core_cmp_PartialEq_for_erc721_Error_t.
   PartialEq
   *)
   Definition eq (self : ref Self) (other : ref erc721.Error.t) : M bool.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let other := M.alloc (| other |) in
       M.read (|
@@ -478,7 +478,7 @@ Section Impl_core_cmp_PartialEq_for_erc721_Error_t.
           BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |))
         |)
       |)
-    )).
+    ) : bool.t)).
   
   Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
     Notations.double_colon := eq;
@@ -510,10 +510,10 @@ Section Impl_core_cmp_Eq_for_erc721_Error_t.
   Eq
   *)
   Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       tt
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
     Notations.DoubleColon Self "assert_receiver_is_total_eq" := {
@@ -535,10 +535,10 @@ Section Impl_core_clone_Clone_for_erc721_Error_t.
   Clone
   *)
   Definition clone (self : ref Self) : M erc721.Error.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (| deref (M.read (| self |)) |)
-    )).
+    ) : erc721.Error.t)).
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {
@@ -654,10 +654,10 @@ Section Impl_erc721_Env_t.
       }
   *)
   Definition caller (self : ref Self) : M erc721.AccountId.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (| erc721.Env.Get_caller (deref (M.read (| self |))) |)
-    )).
+    ) : erc721.AccountId.t)).
   
   Global Instance AssociatedFunction_caller :
     Notations.DoubleColon Self "caller" := {
@@ -670,14 +670,14 @@ Section Impl_erc721_Env_t.
       }
   *)
   Definition emit_event (self : ref Self) (_event : erc721.Event.t) : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let _event := M.alloc (| _event |) in
       (never_to_any (B := unit)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_emit_event :
     Notations.DoubleColon Self "emit_event" := {
@@ -696,12 +696,12 @@ Section Impl_erc721_Erc721_t.
       }
   *)
   Definition init_env : M erc721.Env.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       (never_to_any (B := erc721.Env.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : erc721.Env.t)).
   
   Global Instance AssociatedFunction_init_env :
     Notations.DoubleColon Self "init_env" := {
@@ -714,10 +714,10 @@ Section Impl_erc721_Erc721_t.
       }
   *)
   Definition env (self : ref Self) : M erc721.Env.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.call (|erc721.Erc721.t::["init_env"] |)
-    )).
+    ) : erc721.Env.t)).
   
   Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
     Notations.double_colon := env;
@@ -729,11 +729,11 @@ Section Impl_erc721_Erc721_t.
       }
   *)
   Definition new : M Self :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       M.call (|ltac:(M.get_method (fun ℐ =>
         core.default.Default.default (Self := erc721.Erc721.t) (Trait := ℐ)))
       |)
-    )).
+    ) : Self)).
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
@@ -748,7 +748,7 @@ Section Impl_erc721_Erc721_t.
       (self : ref Self)
       (of : ref erc721.AccountId.t)
       : M u32.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let of := M.alloc (| of |) in
       M.call (|((core.option.Option.t u32.t)::["unwrap_or"]
@@ -759,7 +759,7 @@ Section Impl_erc721_Erc721_t.
         |))
         (M.read (| use (M.alloc (| (Integer.of_Z 0) : u32.t |)) |)))
       |)
-    )).
+    ) : u32.t)).
   
   Global Instance AssociatedFunction_balance_of_or_zero :
     Notations.DoubleColon Self "balance_of_or_zero" := {
@@ -775,7 +775,7 @@ Section Impl_erc721_Erc721_t.
       (self : mut_ref Self)
       (id : ltac:(erc721.TokenId))
       : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let id := M.alloc (| id |) in
       M.read (|
@@ -789,7 +789,7 @@ Section Impl_erc721_Erc721_t.
           |) in
         M.alloc (| tt |)
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_clear_approval :
     Notations.DoubleColon Self "clear_approval" := {
@@ -806,7 +806,7 @@ Section Impl_erc721_Erc721_t.
       (owner : erc721.AccountId.t)
       (operator : erc721.AccountId.t)
       : M bool.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let owner := M.alloc (| owner |) in
       let operator := M.alloc (| operator |) in
@@ -817,7 +817,7 @@ Section Impl_erc721_Erc721_t.
           (erc721.Erc721.Get_operator_approvals (deref (M.read (| self |)))))
         (borrow (M.alloc (| (M.read (| owner |), M.read (| operator |)) |))))
       |)
-    )).
+    ) : bool.t)).
   
   Global Instance AssociatedFunction_approved_for_all :
     Notations.DoubleColon Self "approved_for_all" := {
@@ -833,14 +833,14 @@ Section Impl_erc721_Erc721_t.
       (self : ref Self)
       (id : ltac:(erc721.TokenId))
       : M (core.option.Option.t erc721.AccountId.t) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let id := M.alloc (| id |) in
       M.call (|((erc721.Mapping.t u32.t erc721.AccountId.t)::["get"]
         (borrow (erc721.Erc721.Get_token_owner (deref (M.read (| self |)))))
         (borrow id))
       |)
-    )).
+    ) : core.option.Option.t erc721.AccountId.t)).
   
   Global Instance AssociatedFunction_owner_of :
     Notations.DoubleColon Self "owner_of" := {
@@ -864,7 +864,7 @@ Section Impl_erc721_Erc721_t.
       (from : core.option.Option.t erc721.AccountId.t)
       (id : ltac:(erc721.TokenId))
       : M bool.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let from := M.alloc (| from |) in
       let id := M.alloc (| id |) in
@@ -937,7 +937,7 @@ Section Impl_erc721_Erc721_t.
               |)))
         |)
       |)
-    )).
+    ) : bool.t)).
   
   Global Instance AssociatedFunction_approved_or_owner :
     Notations.DoubleColon Self "approved_or_owner" := {
@@ -953,14 +953,14 @@ Section Impl_erc721_Erc721_t.
       (self : ref Self)
       (id : ltac:(erc721.TokenId))
       : M bool.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let id := M.alloc (| id |) in
       M.call (|((erc721.Mapping.t u32.t erc721.AccountId.t)::["contains"]
         (borrow (erc721.Erc721.Get_token_owner (deref (M.read (| self |)))))
         (borrow id))
       |)
-    )).
+    ) : bool.t)).
   
   Global Instance AssociatedFunction_exists_ :
     Notations.DoubleColon Self "exists_" := {
@@ -976,14 +976,14 @@ Section Impl_erc721_Erc721_t.
       (self : ref Self)
       (owner : erc721.AccountId.t)
       : M u32.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let owner := M.alloc (| owner |) in
       M.call (|(erc721.Erc721.t::["balance_of_or_zero"]
         (M.read (| self |))
         (borrow owner))
       |)
-    )).
+    ) : u32.t)).
   
   Global Instance AssociatedFunction_balance_of :
     Notations.DoubleColon Self "balance_of" := {
@@ -999,14 +999,14 @@ Section Impl_erc721_Erc721_t.
       (self : ref Self)
       (id : ltac:(erc721.TokenId))
       : M (core.option.Option.t erc721.AccountId.t) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let id := M.alloc (| id |) in
       M.call (|((erc721.Mapping.t u32.t erc721.AccountId.t)::["get"]
         (borrow (erc721.Erc721.Get_token_approvals (deref (M.read (| self |)))))
         (borrow id))
       |)
-    )).
+    ) : core.option.Option.t erc721.AccountId.t)).
   
   Global Instance AssociatedFunction_get_approved :
     Notations.DoubleColon Self "get_approved" := {
@@ -1023,7 +1023,7 @@ Section Impl_erc721_Erc721_t.
       (owner : erc721.AccountId.t)
       (operator : erc721.AccountId.t)
       : M bool.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let owner := M.alloc (| owner |) in
       let operator := M.alloc (| operator |) in
@@ -1032,7 +1032,7 @@ Section Impl_erc721_Erc721_t.
         (M.read (| owner |))
         (M.read (| operator |)))
       |)
-    )).
+    ) : bool.t)).
   
   Global Instance AssociatedFunction_is_approved_for_all :
     Notations.DoubleColon Self "is_approved_for_all" := {
@@ -1065,7 +1065,7 @@ Section Impl_erc721_Erc721_t.
       (to : erc721.AccountId.t)
       (approved : bool.t)
       : M (core.result.Result.t unit erc721.Error.t) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let to := M.alloc (| to |) in
       let approved := M.alloc (| approved |) in
@@ -1156,7 +1156,7 @@ Section Impl_erc721_Erc721_t.
               M.alloc (| tt |) in
           M.alloc (| core.result.Result.Ok tt |)
         |))
-    )).
+    ) : core.result.Result.t unit erc721.Error.t)).
   
   Global Instance AssociatedFunction_approve_for_all :
     Notations.DoubleColon Self "approve_for_all" := {
@@ -1174,7 +1174,7 @@ Section Impl_erc721_Erc721_t.
       (to : erc721.AccountId.t)
       (approved : bool.t)
       : M (core.result.Result.t unit erc721.Error.t) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let to := M.alloc (| to |) in
       let approved := M.alloc (| approved |) in
@@ -1252,7 +1252,7 @@ Section Impl_erc721_Erc721_t.
                 ]) in
           M.alloc (| core.result.Result.Ok tt |)
         |))
-    )).
+    ) : core.result.Result.t unit erc721.Error.t)).
   
   Global Instance AssociatedFunction_set_approval_for_all :
     Notations.DoubleColon Self "set_approval_for_all" := {
@@ -1293,7 +1293,7 @@ Section Impl_erc721_Erc721_t.
       (to : ref erc721.AccountId.t)
       (id : ltac:(erc721.TokenId))
       : M (core.result.Result.t unit erc721.Error.t) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let to := M.alloc (| to |) in
       let id := M.alloc (| id |) in
@@ -1448,7 +1448,7 @@ Section Impl_erc721_Erc721_t.
             |) in
           M.alloc (| core.result.Result.Ok tt |)
         |))
-    )).
+    ) : core.result.Result.t unit erc721.Error.t)).
   
   Global Instance AssociatedFunction_approve_for :
     Notations.DoubleColon Self "approve_for" := {
@@ -1466,7 +1466,7 @@ Section Impl_erc721_Erc721_t.
       (to : erc721.AccountId.t)
       (id : ltac:(erc721.TokenId))
       : M (core.result.Result.t unit erc721.Error.t) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let to := M.alloc (| to |) in
       let id := M.alloc (| id |) in
@@ -1544,7 +1544,7 @@ Section Impl_erc721_Erc721_t.
                 ]) in
           M.alloc (| core.result.Result.Ok tt |)
         |))
-    )).
+    ) : core.result.Result.t unit erc721.Error.t)).
   
   Global Instance AssociatedFunction_approve :
     Notations.DoubleColon Self "approve" := {
@@ -1578,7 +1578,7 @@ Section Impl_erc721_Erc721_t.
       (from : ref erc721.AccountId.t)
       (id : ltac:(erc721.TokenId))
       : M (core.result.Result.t unit erc721.Error.t) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let from := M.alloc (| from |) in
       let id := M.alloc (| id |) in
@@ -1759,7 +1759,7 @@ Section Impl_erc721_Erc721_t.
                   M.Val (core.result.Result.t unit erc721.Error.t)
               ])
         |))
-    )).
+    ) : core.result.Result.t unit erc721.Error.t)).
   
   Global Instance AssociatedFunction_remove_token_from :
     Notations.DoubleColon Self "remove_token_from" := {
@@ -1853,7 +1853,7 @@ Section Impl_erc721_Erc721_t.
       (destination : erc721.AccountId.t)
       (id : ltac:(erc721.TokenId))
       : M (core.result.Result.t unit erc721.Error.t) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let destination := M.alloc (| destination |) in
       let id := M.alloc (| id |) in
@@ -1943,7 +1943,7 @@ Section Impl_erc721_Erc721_t.
                 ]) in
           M.alloc (| core.result.Result.Ok tt |)
         |))
-    )).
+    ) : core.result.Result.t unit erc721.Error.t)).
   
   Global Instance AssociatedFunction_transfer :
     Notations.DoubleColon Self "transfer" := {
@@ -1967,7 +1967,7 @@ Section Impl_erc721_Erc721_t.
       (to : erc721.AccountId.t)
       (id : ltac:(erc721.TokenId))
       : M (core.result.Result.t unit erc721.Error.t) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let from := M.alloc (| from |) in
       let to := M.alloc (| to |) in
@@ -2047,7 +2047,7 @@ Section Impl_erc721_Erc721_t.
                 ]) in
           M.alloc (| core.result.Result.Ok tt |)
         |))
-    )).
+    ) : core.result.Result.t unit erc721.Error.t)).
   
   Global Instance AssociatedFunction_transfer_from :
     Notations.DoubleColon Self "transfer_from" := {
@@ -2070,7 +2070,7 @@ Section Impl_erc721_Erc721_t.
       (self : mut_ref Self)
       (id : ltac:(erc721.TokenId))
       : M (core.result.Result.t unit erc721.Error.t) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let id := M.alloc (| id |) in
       let return_ :=
@@ -2184,7 +2184,7 @@ Section Impl_erc721_Erc721_t.
             |) in
           M.alloc (| core.result.Result.Ok tt |)
         |))
-    )).
+    ) : core.result.Result.t unit erc721.Error.t)).
   
   Global Instance AssociatedFunction_mint :
     Notations.DoubleColon Self "mint" := {

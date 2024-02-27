@@ -9,7 +9,7 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit := ltac:(M.monadic ( tt )).
+Definition main : M unit := ltac:(M.monadic (( tt ) : unit)).
 
 (*
     fn foo() -> ! {
@@ -17,8 +17,8 @@ Definition main : M unit := ltac:(M.monadic ( tt )).
     }
 *)
 Definition foo : M never.t :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.call (|(std.panicking.begin_panic
       (M.read (| mk_str "This call never returns." |)))
     |)
-  )).
+  ) : never.t)).

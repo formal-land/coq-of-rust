@@ -30,7 +30,7 @@ Section Impl_core_hash_Hash_for_hash_Person_t.
       (self : ref Self)
       (state : mut_ref __H)
       : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let state := M.alloc (| state |) in
       M.read (|
@@ -61,7 +61,7 @@ Section Impl_core_hash_Hash_for_hash_Person_t.
           |)
         |)
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_hash {__H : Set} :
     Notations.DoubleColon Self "hash" := {
@@ -83,7 +83,7 @@ fn calculate_hash<T: Hash>(t: &T) -> u64 {
 }
 *)
 Definition calculate_hash {T : Set} (t : ref T) : M u64.t :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let t := M.alloc (| t |) in
     M.read (|
       let s : M.Val std.hash.random.DefaultHasher.t :=
@@ -108,7 +108,7 @@ Definition calculate_hash {T : Set} (t : ref T) : M u64.t :=
         |)
       |)
     |)
-  )).
+  ) : u64.t)).
 
 (*
 fn main() {
@@ -128,7 +128,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let person1 : M.Val hash.Person.t :=
         M.alloc (|
@@ -180,4 +180,4 @@ Definition main : M unit :=
           M.alloc (| tt |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

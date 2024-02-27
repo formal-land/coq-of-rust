@@ -18,7 +18,7 @@ Definition read_lines
         ltac:(std.io.error.Result
           (std.io.Lines.t
             (std.io.buffered.bufreader.BufReader.t std.fs.File.t))) :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let filename := M.alloc (| filename |) in
     let return_ :=
       M.return_
@@ -115,7 +115,8 @@ Definition read_lines
             |))
         |)
       |))
-  )).
+  ) : ltac:(std.io.error.Result
+    (std.io.Lines.t (std.io.buffered.bufreader.BufReader.t std.fs.File.t))))).
 
 (*
 fn main() {
@@ -132,7 +133,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       ltac:
         (M.monadic_match_operator
@@ -302,4 +303,4 @@ Definition main : M unit :=
               (M.alloc (| tt |)) : M.Val unit
           ])
     |)
-  )).
+  ) : unit)).

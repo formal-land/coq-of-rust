@@ -16,7 +16,7 @@ Definition checked_division
     (dividend : i32.t)
     (divisor : i32.t)
     : M (core.option.Option.t i32.t) :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let dividend := M.alloc (| dividend |) in
     let divisor := M.alloc (| divisor |) in
     M.read (|
@@ -35,7 +35,7 @@ Definition checked_division
             (BinOp.Panic.div (| M.read (| dividend |), M.read (| divisor |) |))
         |)
     |)
-  )).
+  ) : core.option.Option.t i32.t)).
 
 (*
 fn try_division(dividend: i32, divisor: i32) {
@@ -49,7 +49,7 @@ fn try_division(dividend: i32, divisor: i32) {
 }
 *)
 Definition try_division (dividend : i32.t) (divisor : i32.t) : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let dividend := M.alloc (| dividend |) in
     let divisor := M.alloc (| divisor |) in
     M.read (|
@@ -146,7 +146,7 @@ Definition try_division (dividend : i32.t) (divisor : i32.t) : M unit :=
               M.Val unit
           ])
     |)
-  )).
+  ) : unit)).
 
 (*
 fn main() {
@@ -172,7 +172,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let _ : M.Val unit :=
         M.alloc (|
@@ -275,4 +275,4 @@ Definition main : M unit :=
         M.alloc (| tt |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

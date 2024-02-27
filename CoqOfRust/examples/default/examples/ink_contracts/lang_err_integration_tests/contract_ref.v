@@ -20,12 +20,12 @@ Section Impl_core_default_Default_for_contract_ref_AccountId_t.
   Default
   *)
   Definition default : M contract_ref.AccountId.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       contract_ref.AccountId.Build_t
         (M.call (|ltac:(M.get_method (fun ℐ =>
           core.default.Default.default (Self := u128.t) (Trait := ℐ)))
         |))
-    )).
+    ) : contract_ref.AccountId.t)).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -46,7 +46,7 @@ Section Impl_core_clone_Clone_for_contract_ref_AccountId_t.
   Clone
   *)
   Definition clone (self : ref Self) : M contract_ref.AccountId.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         ltac:
@@ -58,7 +58,7 @@ Section Impl_core_clone_Clone_for_contract_ref_AccountId_t.
                 (deref (M.read (| self |))) : M.Val contract_ref.AccountId.t
             ])
       |)
-    )).
+    ) : contract_ref.AccountId.t)).
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {
@@ -124,14 +124,14 @@ Section Impl_core_fmt_Debug_for_contract_ref_FlipperError_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let f := M.alloc (| f |) in
       M.call (|(core.fmt.Formatter.t::["write_str"]
         (M.read (| f |))
         (M.read (| mk_str "FlipperError" |)))
       |)
-    )).
+    ) : ltac:(core.fmt.Result))).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
@@ -153,12 +153,12 @@ Section Impl_contract_ref_FlipperRef_t.
       }
   *)
   Definition init_env : M contract_ref.Env.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       (never_to_any (B := contract_ref.Env.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : contract_ref.Env.t)).
   
   Global Instance AssociatedFunction_init_env :
     Notations.DoubleColon Self "init_env" := {
@@ -171,10 +171,10 @@ Section Impl_contract_ref_FlipperRef_t.
       }
   *)
   Definition env (self : ref Self) : M contract_ref.Env.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.call (|contract_ref.FlipperRef.t::["init_env"] |)
-    )).
+    ) : contract_ref.Env.t)).
   
   Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
     Notations.double_colon := env;
@@ -186,11 +186,11 @@ Section Impl_contract_ref_FlipperRef_t.
       }
   *)
   Definition new (init_value : bool.t) : M Self :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let init_value := M.alloc (| init_value |) in
       {| contract_ref.FlipperRef.value := M.read (| init_value |);
       |} : contract_ref.FlipperRef.t
-    )).
+    ) : Self)).
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
@@ -202,13 +202,13 @@ Section Impl_contract_ref_FlipperRef_t.
       }
   *)
   Definition new_default : M Self :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       M.call (|(contract_ref.FlipperRef.t::["new"]
         (M.call (|ltac:(M.get_method (fun ℐ =>
           core.default.Default.default (Self := bool.t) (Trait := ℐ)))
         |)))
       |)
-    )).
+    ) : Self)).
   
   Global Instance AssociatedFunction_new_default :
     Notations.DoubleColon Self "new_default" := {
@@ -227,7 +227,7 @@ Section Impl_contract_ref_FlipperRef_t.
   Definition try_new
       (succeed : bool.t)
       : M (core.result.Result.t Self contract_ref.FlipperError.t) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let succeed := M.alloc (| succeed |) in
       M.read (|
         if M.read (| use succeed |) then
@@ -238,7 +238,7 @@ Section Impl_contract_ref_FlipperRef_t.
         else
           M.alloc (| core.result.Result.Err contract_ref.FlipperError.Build |)
       |)
-    )).
+    ) : core.result.Result.t Self contract_ref.FlipperError.t)).
   
   Global Instance AssociatedFunction_try_new :
     Notations.DoubleColon Self "try_new" := {
@@ -251,7 +251,7 @@ Section Impl_contract_ref_FlipperRef_t.
       }
   *)
   Definition flip (self : mut_ref Self) : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         let _ : M.Val unit :=
@@ -264,7 +264,7 @@ Section Impl_contract_ref_FlipperRef_t.
           |) in
         M.alloc (| tt |)
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_flip :
     Notations.DoubleColon Self "flip" := {
@@ -277,10 +277,10 @@ Section Impl_contract_ref_FlipperRef_t.
       }
   *)
   Definition get (self : ref Self) : M bool.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (| contract_ref.FlipperRef.Get_value (deref (M.read (| self |))) |)
-    )).
+    ) : bool.t)).
   
   Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
     Notations.double_colon := get;
@@ -321,7 +321,7 @@ Section Impl_contract_ref_ContractRef_t.
       (version : u32.t)
       (flipper_code_hash : ltac:(contract_ref.Hash))
       : M Self :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let version := M.alloc (| version |) in
       let flipper_code_hash := M.alloc (| flipper_code_hash |) in
       M.read (|
@@ -336,7 +336,7 @@ Section Impl_contract_ref_ContractRef_t.
           |} : contract_ref.ContractRef.t
         |)
       |)
-    )).
+    ) : Self)).
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
@@ -365,7 +365,7 @@ Section Impl_contract_ref_ContractRef_t.
       (flipper_code_hash : ltac:(contract_ref.Hash))
       (succeed : bool.t)
       : M Self :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let version := M.alloc (| version |) in
       let flipper_code_hash := M.alloc (| flipper_code_hash |) in
       let succeed := M.alloc (| succeed |) in
@@ -388,7 +388,7 @@ Section Impl_contract_ref_ContractRef_t.
           |} : contract_ref.ContractRef.t
         |)
       |)
-    )).
+    ) : Self)).
   
   Global Instance AssociatedFunction_try_new :
     Notations.DoubleColon Self "try_new" := {
@@ -401,7 +401,7 @@ Section Impl_contract_ref_ContractRef_t.
       }
   *)
   Definition flip (self : mut_ref Self) : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         let _ : M.Val unit :=
@@ -414,7 +414,7 @@ Section Impl_contract_ref_ContractRef_t.
           |) in
         M.alloc (| tt |)
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_flip :
     Notations.DoubleColon Self "flip" := {
@@ -427,13 +427,13 @@ Section Impl_contract_ref_ContractRef_t.
       }
   *)
   Definition get (self : mut_ref Self) : M bool.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.call (|(contract_ref.FlipperRef.t::["get"]
         (borrow
           (contract_ref.ContractRef.Get_flipper (deref (M.read (| self |))))))
       |)
-    )).
+    ) : bool.t)).
   
   Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
     Notations.double_colon := get;

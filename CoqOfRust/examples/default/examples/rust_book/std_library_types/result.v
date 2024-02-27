@@ -20,7 +20,7 @@ Module checked.
         (self : ref Self)
         (f : mut_ref core.fmt.Formatter.t)
         : M ltac:(core.fmt.Result) :=
-      ltac:(M.monadic (
+      ltac:(M.monadic ((
         let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
         M.call (|(core.fmt.Formatter.t::["write_str"]
@@ -57,7 +57,7 @@ Module checked.
                 ])
           |)))
         |)
-      )).
+      ) : ltac:(core.fmt.Result))).
     
     Global Instance AssociatedFunction_fmt :
       Notations.DoubleColon Self "fmt" := {
@@ -86,7 +86,7 @@ Module checked.
       }
   *)
   Definition div (x : f64.t) (y : f64.t) : M ltac:(result.checked.MathResult) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let x := M.alloc (| x |) in
       let y := M.alloc (| y |) in
       M.read (|
@@ -109,7 +109,7 @@ Module checked.
               (BinOp.Panic.div (| M.read (| x |), M.read (| y |) |))
           |)
       |)
-    )).
+    ) : ltac:(result.checked.MathResult))).
   
   (*
       pub fn sqrt(x: f64) -> MathResult {
@@ -121,7 +121,7 @@ Module checked.
       }
   *)
   Definition sqrt (x : f64.t) : M ltac:(result.checked.MathResult) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let x := M.alloc (| x |) in
       M.read (|
         if
@@ -143,7 +143,7 @@ Module checked.
               (M.call (|(f64.t::["sqrt"] (M.read (| x |))) |))
           |)
       |)
-    )).
+    ) : ltac:(result.checked.MathResult))).
   
   (*
       pub fn ln(x: f64) -> MathResult {
@@ -155,7 +155,7 @@ Module checked.
       }
   *)
   Definition ln (x : f64.t) : M ltac:(result.checked.MathResult) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let x := M.alloc (| x |) in
       M.read (|
         if
@@ -176,7 +176,7 @@ Module checked.
             core.result.Result.Ok (M.call (|(f64.t::["ln"] (M.read (| x |))) |))
           |)
       |)
-    )).
+    ) : ltac:(result.checked.MathResult))).
 End checked.
 
 (*
@@ -195,7 +195,7 @@ fn op(x: f64, y: f64) -> f64 {
 }
 *)
 Definition op (x : f64.t) (y : f64.t) : M f64.t :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let x := M.alloc (| x |) in
     let y := M.alloc (| y |) in
     M.read (|
@@ -366,7 +366,7 @@ Definition op (x : f64.t) (y : f64.t) : M f64.t :=
               M.Val f64.t
           ])
     |)
-  )).
+  ) : f64.t)).
 
 (*
 fn main() {
@@ -376,7 +376,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let _ : M.Val unit :=
         let _ : M.Val unit :=
@@ -412,4 +412,4 @@ Definition main : M unit :=
         M.alloc (| tt |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

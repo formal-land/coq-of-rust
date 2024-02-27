@@ -19,7 +19,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let raw_str : M.Val (ref str.t) :=
         M.copy (| mk_str "Escapes don't work here: \x3F \u{211D}" |) in
@@ -107,4 +107,4 @@ Definition main : M unit :=
         M.alloc (| tt |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

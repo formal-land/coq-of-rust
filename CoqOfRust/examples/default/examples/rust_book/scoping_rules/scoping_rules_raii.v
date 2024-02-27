@@ -10,7 +10,7 @@ fn create_box() {
 }
 *)
 Definition create_box : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let _box1 : M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t) :=
         M.alloc (|
@@ -20,7 +20,7 @@ Definition create_box : M unit :=
         |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).
 
 (*
 fn main() {
@@ -46,7 +46,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let _box2 : M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t) :=
         M.alloc (|
@@ -120,4 +120,4 @@ Definition main : M unit :=
                 M.Val unit
             ]))
     |)
-  )).
+  ) : unit)).

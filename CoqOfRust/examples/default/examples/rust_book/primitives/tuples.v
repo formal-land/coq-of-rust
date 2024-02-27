@@ -10,7 +10,7 @@ fn reverse(pair: (i32, bool)) -> (bool, i32) {
 }
 *)
 Definition reverse (pair : i32.t * bool.t) : M (bool.t * i32.t) :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let pair := M.alloc (| pair |) in
     M.read (|
       ltac:
@@ -29,7 +29,7 @@ Definition reverse (pair : i32.t * bool.t) : M (bool.t * i32.t) :=
               M.Val (bool.t * i32.t)
           ])
     |)
-  )).
+  ) : bool.t * i32.t)).
 
 Module  Matrix.
 Section Matrix.
@@ -62,7 +62,7 @@ Section Impl_core_fmt_Debug_for_tuples_Matrix_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let f := M.alloc (| f |) in
       M.call (|(core.fmt.Formatter.t::["debug_tuple_field4_finish"]
@@ -83,7 +83,7 @@ Section Impl_core_fmt_Debug_for_tuples_Matrix_t.
             (M.alloc (| borrow (tuples.Matrix.Get_3 (deref (M.read (| self |))))
             |)))))
       |)
-    )).
+    ) : ltac:(core.fmt.Result))).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
@@ -141,7 +141,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let long_tuple :
           M.Val
@@ -493,4 +493,4 @@ Definition main : M unit :=
               M.Val unit
           ])
     |)
-  )).
+  ) : unit)).

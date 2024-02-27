@@ -30,14 +30,14 @@ Section Impl_core_fmt_Debug_for_operator_overloading_FooBar_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let f := M.alloc (| f |) in
       M.call (|(core.fmt.Formatter.t::["write_str"]
         (M.read (| f |))
         (M.read (| mk_str "FooBar" |)))
       |)
-    )).
+    ) : ltac:(core.fmt.Result))).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
@@ -66,14 +66,14 @@ Section Impl_core_fmt_Debug_for_operator_overloading_BarFoo_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let f := M.alloc (| f |) in
       M.call (|(core.fmt.Formatter.t::["write_str"]
         (M.read (| f |))
         (M.read (| mk_str "BarFoo" |)))
       |)
-    )).
+    ) : ltac:(core.fmt.Result))).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
@@ -105,7 +105,7 @@ Section Impl_core_ops_arith_Add_operator_overloading_Bar_t_for_operator_overload
       (self : Self)
       (_rhs : operator_overloading.Bar.t)
       : M operator_overloading.FooBar.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let _rhs := M.alloc (| _rhs |) in
       M.read (|
@@ -127,7 +127,7 @@ Section Impl_core_ops_arith_Add_operator_overloading_Bar_t_for_operator_overload
           M.alloc (| tt |) in
         M.alloc (| operator_overloading.FooBar.Build |)
       |)
-    )).
+    ) : operator_overloading.FooBar.t)).
   
   Global Instance AssociatedFunction_add : Notations.DoubleColon Self "add" := {
     Notations.double_colon := add;
@@ -161,7 +161,7 @@ Section Impl_core_ops_arith_Add_operator_overloading_Foo_t_for_operator_overload
       (self : Self)
       (_rhs : operator_overloading.Foo.t)
       : M operator_overloading.BarFoo.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let _rhs := M.alloc (| _rhs |) in
       M.read (|
@@ -183,7 +183,7 @@ Section Impl_core_ops_arith_Add_operator_overloading_Foo_t_for_operator_overload
           M.alloc (| tt |) in
         M.alloc (| operator_overloading.BarFoo.Build |)
       |)
-    )).
+    ) : operator_overloading.BarFoo.t)).
   
   Global Instance AssociatedFunction_add : Notations.DoubleColon Self "add" := {
     Notations.double_colon := add;
@@ -205,7 +205,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let _ : M.Val unit :=
         let _ : M.Val unit :=
@@ -287,4 +287,4 @@ Definition main : M unit :=
         M.alloc (| tt |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

@@ -40,7 +40,7 @@ Section Impl_generics_associated_types_problem_Contains_i32_t_i32_t_for_generics
       (number_1 : ref i32.t)
       (number_2 : ref i32.t)
       : M bool.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let number_1 := M.alloc (| number_1 |) in
       let number_2 := M.alloc (| number_2 |) in
@@ -71,7 +71,7 @@ Section Impl_generics_associated_types_problem_Contains_i32_t_i32_t_for_generics
             |)))
           (borrow number_2))
         |))
-    )).
+    ) : bool.t)).
   
   Global Instance AssociatedFunction_contains :
     Notations.DoubleColon Self "contains" := {
@@ -84,13 +84,13 @@ Section Impl_generics_associated_types_problem_Contains_i32_t_i32_t_for_generics
       }
   *)
   Definition first (self : ref Self) : M i32.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         generics_associated_types_problem.Container.Get_0
           (deref (M.read (| self |)))
       |)
-    )).
+    ) : i32.t)).
   
   Global Instance AssociatedFunction_first :
     Notations.DoubleColon Self "first" := {
@@ -103,13 +103,13 @@ Section Impl_generics_associated_types_problem_Contains_i32_t_i32_t_for_generics
       }
   *)
   Definition last (self : ref Self) : M i32.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         generics_associated_types_problem.Container.Get_1
           (deref (M.read (| self |)))
       |)
-    )).
+    ) : i32.t)).
   
   Global Instance AssociatedFunction_last :
     Notations.DoubleColon Self "last" := {
@@ -136,7 +136,7 @@ where
 }
 *)
 Definition difference {A B C : Set} (container : ref C) : M i32.t :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let container := M.alloc (| container |) in
     BinOp.Panic.sub (|
       M.call (|(ltac:(M.get_method (fun ℐ =>
@@ -156,7 +156,7 @@ Definition difference {A B C : Set} (container : ref C) : M i32.t :=
         (M.read (| container |)))
       |)
     |)
-  )).
+  ) : i32.t)).
 
 (*
 fn main() {
@@ -179,7 +179,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let number_1 : M.Val i32.t := M.alloc (| (Integer.of_Z 3) : i32.t |) in
       let number_2 : M.Val i32.t := M.alloc (| (Integer.of_Z 10) : i32.t |) in
@@ -355,4 +355,4 @@ Definition main : M unit :=
         M.alloc (| tt |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

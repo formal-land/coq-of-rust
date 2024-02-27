@@ -13,7 +13,7 @@ fn is_divisible_by(lhs: u32, rhs: u32) -> bool {
 }
 *)
 Definition is_divisible_by (lhs : u32.t) (rhs : u32.t) : M bool.t :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let lhs := M.alloc (| lhs |) in
     let rhs := M.alloc (| rhs |) in
     let return_ := M.return_ (R := bool.t) in
@@ -39,7 +39,7 @@ Definition is_divisible_by (lhs : u32.t) (rhs : u32.t) : M bool.t :=
             ((Integer.of_Z 0) : u32.t)
         |)
       |))
-  )).
+  ) : bool.t)).
 
 (*
 fn fizzbuzz(n: u32) -> () {
@@ -55,7 +55,7 @@ fn fizzbuzz(n: u32) -> () {
 }
 *)
 Definition fizzbuzz (n : u32.t) : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let n := M.alloc (| n |) in
     M.read (|
       if
@@ -166,7 +166,7 @@ Definition fizzbuzz (n : u32.t) : M unit :=
               M.alloc (| tt |) in
             M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).
 
 (*
 fn fizzbuzz_to(n: u32) {
@@ -176,7 +176,7 @@ fn fizzbuzz_to(n: u32) {
 }
 *)
 Definition fizzbuzz_to (n : u32.t) : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let n := M.alloc (| n |) in
     M.read (|
       use
@@ -239,7 +239,7 @@ Definition fizzbuzz_to (n : u32.t) : M unit :=
                 M.Val unit
             ]))
     |)
-  )).
+  ) : unit)).
 
 (*
 fn main() {
@@ -249,7 +249,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let _ : M.Val unit :=
         M.alloc (|
@@ -257,4 +257,4 @@ Definition main : M unit :=
         |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

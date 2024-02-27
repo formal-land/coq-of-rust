@@ -7,12 +7,12 @@ fn is_odd(n: u32) -> bool {
 }
 *)
 Definition is_odd (n : u32.t) : M bool.t :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let n := M.alloc (| n |) in
     BinOp.Pure.eq
       (BinOp.Panic.rem (| M.read (| n |), (Integer.of_Z 2) : u32.t |))
       ((Integer.of_Z 1) : u32.t)
-  )).
+  ) : bool.t)).
 
 (*
 fn main() {
@@ -48,7 +48,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let _ : M.Val unit :=
         let _ : M.Val unit :=
@@ -317,4 +317,4 @@ Definition main : M unit :=
         M.alloc (| tt |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

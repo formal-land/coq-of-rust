@@ -20,12 +20,12 @@ Section Impl_core_default_Default_for_contract_transfer_AccountId_t.
   Default
   *)
   Definition default : M contract_transfer.AccountId.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       contract_transfer.AccountId.Build_t
         (M.call (|ltac:(M.get_method (fun ℐ =>
           core.default.Default.default (Self := u128.t) (Trait := ℐ)))
         |))
-    )).
+    ) : contract_transfer.AccountId.t)).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -46,7 +46,7 @@ Section Impl_core_clone_Clone_for_contract_transfer_AccountId_t.
   Clone
   *)
   Definition clone (self : ref Self) : M contract_transfer.AccountId.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         ltac:
@@ -59,7 +59,7 @@ Section Impl_core_clone_Clone_for_contract_transfer_AccountId_t.
                 M.Val contract_transfer.AccountId.t
             ])
       |)
-    )).
+    ) : contract_transfer.AccountId.t)).
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {
@@ -105,10 +105,10 @@ Section Impl_contract_transfer_Env_t.
       }
   *)
   Definition caller (self : ref Self) : M contract_transfer.AccountId.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (| contract_transfer.Env.Get_caller (deref (M.read (| self |))) |)
-    )).
+    ) : contract_transfer.AccountId.t)).
   
   Global Instance AssociatedFunction_caller :
     Notations.DoubleColon Self "caller" := {
@@ -121,13 +121,13 @@ Section Impl_contract_transfer_Env_t.
       }
   *)
   Definition balance (self : ref Self) : M ltac:(contract_transfer.Balance) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       (never_to_any (B := u128.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : ltac:(contract_transfer.Balance))).
   
   Global Instance AssociatedFunction_balance :
     Notations.DoubleColon Self "balance" := {
@@ -144,7 +144,7 @@ Section Impl_contract_transfer_Env_t.
       (_to : contract_transfer.AccountId.t)
       (_value : ltac:(contract_transfer.Balance))
       : M (core.result.Result.t unit unit) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let _to := M.alloc (| _to |) in
       let _value := M.alloc (| _value |) in
@@ -152,7 +152,7 @@ Section Impl_contract_transfer_Env_t.
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : core.result.Result.t unit unit)).
   
   Global Instance AssociatedFunction_transfer :
     Notations.DoubleColon Self "transfer" := {
@@ -167,13 +167,13 @@ Section Impl_contract_transfer_Env_t.
   Definition transferred_value
       (self : ref Self)
       : M ltac:(contract_transfer.Balance) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       (never_to_any (B := u128.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : ltac:(contract_transfer.Balance))).
   
   Global Instance AssociatedFunction_transferred_value :
     Notations.DoubleColon Self "transferred_value" := {
@@ -198,12 +198,12 @@ Section Impl_contract_transfer_GiveMe_t.
       }
   *)
   Definition init_env : M contract_transfer.Env.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       (never_to_any (B := contract_transfer.Env.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : contract_transfer.Env.t)).
   
   Global Instance AssociatedFunction_init_env :
     Notations.DoubleColon Self "init_env" := {
@@ -216,10 +216,10 @@ Section Impl_contract_transfer_GiveMe_t.
       }
   *)
   Definition env (self : ref Self) : M contract_transfer.Env.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.call (|contract_transfer.GiveMe.t::["init_env"] |)
-    )).
+    ) : contract_transfer.Env.t)).
   
   Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
     Notations.double_colon := env;
@@ -231,8 +231,8 @@ Section Impl_contract_transfer_GiveMe_t.
       }
   *)
   Definition new : M Self :=
-    ltac:(M.monadic ( contract_transfer.GiveMe.Build
-    )).
+    ltac:(M.monadic (( contract_transfer.GiveMe.Build
+    ) : Self)).
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
@@ -258,7 +258,7 @@ Section Impl_contract_transfer_GiveMe_t.
       (self : mut_ref Self)
       (value : ltac:(contract_transfer.Balance))
       : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let value := M.alloc (| value |) in
       M.read (|
@@ -400,7 +400,7 @@ Section Impl_contract_transfer_GiveMe_t.
         else
           M.alloc (| tt |)
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_give_me :
     Notations.DoubleColon Self "give_me" := {
@@ -414,7 +414,7 @@ Section Impl_contract_transfer_GiveMe_t.
       }
   *)
   Definition was_it_ten (self : ref Self) : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         let _ : M.Val unit :=
@@ -486,7 +486,7 @@ Section Impl_contract_transfer_GiveMe_t.
             M.alloc (| tt |) in
         M.alloc (| tt |)
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_was_it_ten :
     Notations.DoubleColon Self "was_it_ten" := {

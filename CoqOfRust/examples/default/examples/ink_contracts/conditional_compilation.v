@@ -20,12 +20,12 @@ Section Impl_core_default_Default_for_conditional_compilation_AccountId_t.
   Default
   *)
   Definition default : M conditional_compilation.AccountId.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       conditional_compilation.AccountId.Build_t
         (M.call (|ltac:(M.get_method (fun ℐ =>
           core.default.Default.default (Self := u128.t) (Trait := ℐ)))
         |))
-    )).
+    ) : conditional_compilation.AccountId.t)).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -46,7 +46,7 @@ Section Impl_core_clone_Clone_for_conditional_compilation_AccountId_t.
   Clone
   *)
   Definition clone (self : ref Self) : M conditional_compilation.AccountId.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         ltac:
@@ -59,7 +59,7 @@ Section Impl_core_clone_Clone_for_conditional_compilation_AccountId_t.
                 M.Val conditional_compilation.AccountId.t
             ])
       |)
-    )).
+    ) : conditional_compilation.AccountId.t)).
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {
@@ -170,12 +170,12 @@ Section Impl_conditional_compilation_Env_t.
       }
   *)
   Definition caller (self : ref Self) : M conditional_compilation.AccountId.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         conditional_compilation.Env.Get_caller (deref (M.read (| self |)))
       |)
-    )).
+    ) : conditional_compilation.AccountId.t)).
   
   Global Instance AssociatedFunction_caller :
     Notations.DoubleColon Self "caller" := {
@@ -191,14 +191,14 @@ Section Impl_conditional_compilation_Env_t.
       (self : ref Self)
       (_event : conditional_compilation.Event.t)
       : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let _event := M.alloc (| _event |) in
       (never_to_any (B := unit)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_emit_event :
     Notations.DoubleColon Self "emit_event" := {
@@ -213,13 +213,13 @@ Section Impl_conditional_compilation_Env_t.
   Definition block_number
       (self : ref Self)
       : M ltac:(conditional_compilation.BlockNumber) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       (never_to_any (B := u32.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : ltac:(conditional_compilation.BlockNumber))).
   
   Global Instance AssociatedFunction_block_number :
     Notations.DoubleColon Self "block_number" := {
@@ -249,12 +249,12 @@ Section Impl_conditional_compilation_ConditionalCompilation_t.
       }
   *)
   Definition init_env : M conditional_compilation.Env.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       (never_to_any (B := conditional_compilation.Env.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : conditional_compilation.Env.t)).
   
   Global Instance AssociatedFunction_init_env :
     Notations.DoubleColon Self "init_env" := {
@@ -267,10 +267,10 @@ Section Impl_conditional_compilation_ConditionalCompilation_t.
       }
   *)
   Definition env (self : ref Self) : M conditional_compilation.Env.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.call (|conditional_compilation.ConditionalCompilation.t::["init_env"] |)
-    )).
+    ) : conditional_compilation.Env.t)).
   
   Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
     Notations.double_colon := env;
@@ -284,14 +284,14 @@ Section Impl_conditional_compilation_ConditionalCompilation_t.
       }
   *)
   Definition new : M Self :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       {|
         conditional_compilation.ConditionalCompilation.value :=
           M.call (|ltac:(M.get_method (fun ℐ =>
             core.default.Default.default (Self := bool.t) (Trait := ℐ)))
           |);
       |} : conditional_compilation.ConditionalCompilation.t
-    )).
+    ) : Self)).
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
@@ -303,13 +303,13 @@ Section Impl_conditional_compilation_ConditionalCompilation_t.
       }
   *)
   Definition new_foo (value : bool.t) : M Self :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let value := M.alloc (| value |) in
       {|
         conditional_compilation.ConditionalCompilation.value :=
           M.read (| value |);
       |} : conditional_compilation.ConditionalCompilation.t
-    )).
+    ) : Self)).
   
   Global Instance AssociatedFunction_new_foo :
     Notations.DoubleColon Self "new_foo" := {
@@ -322,13 +322,13 @@ Section Impl_conditional_compilation_ConditionalCompilation_t.
       }
   *)
   Definition new_bar (value : bool.t) : M Self :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let value := M.alloc (| value |) in
       {|
         conditional_compilation.ConditionalCompilation.value :=
           M.read (| value |);
       |} : conditional_compilation.ConditionalCompilation.t
-    )).
+    ) : Self)).
   
   Global Instance AssociatedFunction_new_bar :
     Notations.DoubleColon Self "new_bar" := {
@@ -341,13 +341,13 @@ Section Impl_conditional_compilation_ConditionalCompilation_t.
       }
   *)
   Definition new_foo_bar (value : bool.t) : M Self :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let value := M.alloc (| value |) in
       {|
         conditional_compilation.ConditionalCompilation.value :=
           M.read (| value |);
       |} : conditional_compilation.ConditionalCompilation.t
-    )).
+    ) : Self)).
   
   Global Instance AssociatedFunction_new_foo_bar :
     Notations.DoubleColon Self "new_foo_bar" := {
@@ -365,7 +365,7 @@ Section Impl_conditional_compilation_ConditionalCompilation_t.
       }
   *)
   Definition inherent_flip_foo (self : mut_ref Self) : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         let _ : M.Val unit :=
@@ -409,7 +409,7 @@ Section Impl_conditional_compilation_ConditionalCompilation_t.
           |) in
         M.alloc (| tt |)
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_inherent_flip_foo :
     Notations.DoubleColon Self "inherent_flip_foo" := {
@@ -429,7 +429,7 @@ Section Impl_conditional_compilation_ConditionalCompilation_t.
       }
   *)
   Definition inherent_flip_bar (self : mut_ref Self) : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         let caller : M.Val conditional_compilation.AccountId.t :=
@@ -486,7 +486,7 @@ Section Impl_conditional_compilation_ConditionalCompilation_t.
           |) in
         M.alloc (| tt |)
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_inherent_flip_bar :
     Notations.DoubleColon Self "inherent_flip_bar" := {
@@ -505,7 +505,7 @@ Section Impl_conditional_compilation_Flip_for_conditional_compilation_Conditiona
       }
   *)
   Definition flip (self : mut_ref Self) : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         let _ : M.Val unit :=
@@ -520,7 +520,7 @@ Section Impl_conditional_compilation_Flip_for_conditional_compilation_Conditiona
           |) in
         M.alloc (| tt |)
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_flip :
     Notations.DoubleColon Self "flip" := {
@@ -533,13 +533,13 @@ Section Impl_conditional_compilation_Flip_for_conditional_compilation_Conditiona
       }
   *)
   Definition get (self : ref Self) : M bool.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         conditional_compilation.ConditionalCompilation.Get_value
           (deref (M.read (| self |)))
       |)
-    )).
+    ) : bool.t)).
   
   Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
     Notations.double_colon := get;
@@ -556,7 +556,7 @@ Section Impl_conditional_compilation_Flip_for_conditional_compilation_Conditiona
       }
   *)
   Definition push_foo (self : mut_ref Self) (value : bool.t) : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let value := M.alloc (| value |) in
       M.read (|
@@ -594,7 +594,7 @@ Section Impl_conditional_compilation_Flip_for_conditional_compilation_Conditiona
           |) in
         M.alloc (| tt |)
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_push_foo :
     Notations.DoubleColon Self "push_foo" := {

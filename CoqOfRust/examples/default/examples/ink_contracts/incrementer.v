@@ -22,11 +22,11 @@ Section Impl_incrementer_Incrementer_t.
       }
   *)
   Definition new (init_value : i32.t) : M Self :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let init_value := M.alloc (| init_value |) in
       {| incrementer.Incrementer.value := M.read (| init_value |);
       |} : incrementer.Incrementer.t
-    )).
+    ) : Self)).
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
@@ -38,13 +38,13 @@ Section Impl_incrementer_Incrementer_t.
       }
   *)
   Definition new_default : M Self :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       M.call (|(incrementer.Incrementer.t::["new"]
         (M.call (|ltac:(M.get_method (fun ℐ =>
           core.default.Default.default (Self := i32.t) (Trait := ℐ)))
         |)))
       |)
-    )).
+    ) : Self)).
   
   Global Instance AssociatedFunction_new_default :
     Notations.DoubleColon Self "new_default" := {
@@ -57,7 +57,7 @@ Section Impl_incrementer_Incrementer_t.
       }
   *)
   Definition inc (self : mut_ref Self) (by_ : i32.t) : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let by_ := M.alloc (| by_ |) in
       M.read (|
@@ -68,7 +68,7 @@ Section Impl_incrementer_Incrementer_t.
           |) in
         M.alloc (| tt |)
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_inc : Notations.DoubleColon Self "inc" := {
     Notations.double_colon := inc;
@@ -80,10 +80,10 @@ Section Impl_incrementer_Incrementer_t.
       }
   *)
   Definition get (self : ref Self) : M i32.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (| incrementer.Incrementer.Get_value (deref (M.read (| self |))) |)
-    )).
+    ) : i32.t)).
   
   Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
     Notations.double_colon := get;

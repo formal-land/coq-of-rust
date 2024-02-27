@@ -31,10 +31,10 @@ Section Impl_functions_order_SomeType_t.
       fn meth2(self) {}
   *)
   Definition meth2 (self : Self) : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       tt
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_meth2 :
     Notations.DoubleColon Self "meth2" := {
@@ -47,7 +47,7 @@ Section Impl_functions_order_SomeType_t.
       }
   *)
   Definition meth1 (self : Self) : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         let _ : M.Val unit :=
@@ -57,7 +57,7 @@ Section Impl_functions_order_SomeType_t.
           |) in
         M.alloc (| tt |)
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_meth1 :
     Notations.DoubleColon Self "meth1" := {
@@ -84,10 +84,10 @@ Section Impl_functions_order_SomeTrait_for_functions_order_SomeType_t.
       fn some_trait_bar(&self) {}
   *)
   Definition some_trait_bar (self : ref Self) : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       tt
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_some_trait_bar :
     Notations.DoubleColon Self "some_trait_bar" := {
@@ -100,10 +100,10 @@ Section Impl_functions_order_SomeTrait_for_functions_order_SomeType_t.
       }
   *)
   Definition some_trait_foo (self : ref Self) : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.call (|(some_trait_bar (M.read (| self |))) |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_some_trait_foo :
     Notations.DoubleColon Self "some_trait_foo" := {
@@ -125,10 +125,10 @@ Section Impl_functions_order_SomeTrait_for_functions_order_OtherType_t.
       fn some_trait_foo(&self) {}
   *)
   Definition some_trait_foo (self : ref Self) : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       tt
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_some_trait_foo :
     Notations.DoubleColon Self "some_trait_foo" := {
@@ -139,10 +139,10 @@ Section Impl_functions_order_SomeTrait_for_functions_order_OtherType_t.
       fn some_trait_bar(&self) {}
   *)
   Definition some_trait_bar (self : ref Self) : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       tt
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_some_trait_bar :
     Notations.DoubleColon Self "some_trait_bar" := {
@@ -163,7 +163,7 @@ fn depends_on_trait_impl(u: u32, b: bool) {
 }
 *)
 Definition depends_on_trait_impl (u : u32.t) (b : bool.t) : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let u := M.alloc (| u |) in
     let b := M.alloc (| b |) in
     M.read (|
@@ -191,13 +191,13 @@ Definition depends_on_trait_impl (u : u32.t) (b : bool.t) : M unit :=
         |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).
 
 Module inner_mod.
   (*
       fn tar() {}
   *)
-  Definition tar : M unit := ltac:(M.monadic ( tt )).
+  Definition tar : M unit := ltac:(M.monadic (( tt ) : unit)).
   
   (*
       pub fn bar() {
@@ -206,19 +206,19 @@ Module inner_mod.
       }
   *)
   Definition bar : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       M.read (|
         let _ : M.Val unit :=
           M.alloc (| M.call (|functions_order.inner_mod.tar |) |) in
         M.alloc (| tt |)
       |)
-    )).
+    ) : unit)).
   
   Module nested_mod.
     (*
             fn tack() {}
     *)
-    Definition tack : M unit := ltac:(M.monadic ( tt )).
+    Definition tack : M unit := ltac:(M.monadic (( tt ) : unit)).
     
     (*
             pub fn tick() {
@@ -226,21 +226,21 @@ Module inner_mod.
             }
     *)
     Definition tick : M unit :=
-      ltac:(M.monadic (
+      ltac:(M.monadic ((
         M.read (|
           let _ : M.Val unit :=
             M.alloc (| M.call (|functions_order.inner_mod.nested_mod.tack |)
             |) in
           M.alloc (| tt |)
         |)
-      )).
+      ) : unit)).
   End nested_mod.
 End inner_mod.
 
 (*
 fn foo() {}
 *)
-Definition foo : M unit := ltac:(M.monadic ( tt )).
+Definition foo : M unit := ltac:(M.monadic (( tt ) : unit)).
 
 (*
 fn main() {
@@ -252,7 +252,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let _ : M.Val unit := M.alloc (| M.call (|functions_order.foo |) |) in
       let _ : M.Val unit :=
@@ -265,4 +265,4 @@ Definition main : M unit :=
         |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

@@ -39,7 +39,7 @@ Section Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Accou
       (self : ref Self)
       (other : ref hash_map_alternate_or_custom_key_types.Account.t)
       : M bool.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let other := M.alloc (| other |) in
       BinOp.Pure.and
@@ -67,7 +67,7 @@ Section Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Accou
             (hash_map_alternate_or_custom_key_types.Account.Get_password
               (deref (M.read (| other |))))))
         |))
-    )).
+    ) : bool.t)).
   
   Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
     Notations.double_colon := eq;
@@ -99,7 +99,7 @@ Section Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account_t.
   Eq
   *)
   Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         ltac:
@@ -121,7 +121,7 @@ Section Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account_t.
                 M.Val unit
             ])
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
     Notations.DoubleColon Self "assert_receiver_is_total_eq" := {
@@ -147,7 +147,7 @@ Section Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account_t
       (self : ref Self)
       (state : mut_ref __H)
       : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let state := M.alloc (| state |) in
       M.read (|
@@ -174,7 +174,7 @@ Section Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account_t
           |)
         |)
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_hash {__H : Set} :
     Notations.DoubleColon Self "hash" := {
@@ -232,7 +232,7 @@ Definition try_logon
     (username : ref str.t)
     (password : ref str.t)
     : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let accounts := M.alloc (| accounts |) in
     let username := M.alloc (| username |) in
     let password := M.alloc (| password |) in
@@ -446,7 +446,7 @@ Definition try_logon
               M.Val unit
           ])
     |)
-  )).
+  ) : unit)).
 
 (*
 fn main() {
@@ -471,7 +471,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let accounts :
           M.Val
@@ -537,4 +537,4 @@ Definition main : M unit :=
         |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

@@ -12,7 +12,7 @@ fn division(dividend: i32, divisor: i32) -> i32 {
 }
 *)
 Definition division (dividend : i32.t) (divisor : i32.t) : M i32.t :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let dividend := M.alloc (| dividend |) in
     let divisor := M.alloc (| divisor |) in
     M.read (|
@@ -36,7 +36,7 @@ Definition division (dividend : i32.t) (divisor : i32.t) : M i32.t :=
           BinOp.Panic.div (| M.read (| dividend |), M.read (| divisor |) |)
         |)
     |)
-  )).
+  ) : i32.t)).
 
 (*
 fn main() {
@@ -53,7 +53,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let _x : M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t) :=
         M.alloc (|
@@ -86,4 +86,4 @@ Definition main : M unit :=
         M.alloc (| tt |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

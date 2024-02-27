@@ -7,11 +7,11 @@ fn decode_input<T>() -> Result<T, ()> {
 }
 *)
 Definition decode_input {T : Set} : M (core.result.Result.t T unit) :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     (never_to_any (B := core.result.Result.t T unit)) (|
       M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |))) |)
     |)
-  )).
+  ) : core.result.Result.t T unit)).
 
 Module  WildcardSelector.
 Section WildcardSelector.
@@ -29,8 +29,8 @@ Section Impl_wildcard_selector_WildcardSelector_t.
       }
   *)
   Definition new : M Self :=
-    ltac:(M.monadic ( wildcard_selector.WildcardSelector.Build
-    )).
+    ltac:(M.monadic (( wildcard_selector.WildcardSelector.Build
+    ) : Self)).
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
@@ -43,7 +43,7 @@ Section Impl_wildcard_selector_WildcardSelector_t.
       }
   *)
   Definition wildcard (self : mut_ref Self) : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         ltac:
@@ -101,7 +101,7 @@ Section Impl_wildcard_selector_WildcardSelector_t.
                 M.Val unit
             ])
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_wildcard :
     Notations.DoubleColon Self "wildcard" := {
@@ -117,7 +117,7 @@ Section Impl_wildcard_selector_WildcardSelector_t.
       (self : mut_ref Self)
       (_message : alloc.string.String.t)
       : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let _message := M.alloc (| _message |) in
       M.read (|
@@ -152,7 +152,7 @@ Section Impl_wildcard_selector_WildcardSelector_t.
           M.alloc (| tt |) in
         M.alloc (| tt |)
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_wildcard_complement :
     Notations.DoubleColon Self "wildcard_complement" := {

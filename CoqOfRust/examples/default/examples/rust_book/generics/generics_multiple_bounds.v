@@ -8,7 +8,7 @@ fn compare_prints<T: Debug + Display>(t: &T) {
 }
 *)
 Definition compare_prints {T : Set} (t : ref T) : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let t := M.alloc (| t |) in
     M.read (|
       let _ : M.Val unit :=
@@ -69,7 +69,7 @@ Definition compare_prints {T : Set} (t : ref T) : M unit :=
         M.alloc (| tt |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).
 
 (*
 fn compare_types<T: Debug, U: Debug>(t: &T, u: &U) {
@@ -78,7 +78,7 @@ fn compare_types<T: Debug, U: Debug>(t: &T, u: &U) {
 }
 *)
 Definition compare_types {T U : Set} (t : ref T) (u : ref U) : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let t := M.alloc (| t |) in
     let u := M.alloc (| u |) in
     M.read (|
@@ -136,7 +136,7 @@ Definition compare_types {T U : Set} (t : ref T) (u : ref U) : M unit :=
         M.alloc (| tt |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).
 
 (*
 fn main() {
@@ -153,7 +153,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let string : M.Val (ref str.t) := M.copy (| mk_str "words" |) in
       let array_ : M.Val (array i32.t) :=
@@ -195,4 +195,4 @@ Definition main : M unit :=
         |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

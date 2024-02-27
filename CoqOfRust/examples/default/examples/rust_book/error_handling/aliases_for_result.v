@@ -17,7 +17,7 @@ Definition multiply
     (first_number_str : ref str.t)
     (second_number_str : ref str.t)
     : M ltac:(aliases_for_result.AliasedResult i32.t) :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let first_number_str := M.alloc (| first_number_str |) in
     let second_number_str := M.alloc (| second_number_str |) in
     M.call (|((core.result.Result.t
@@ -55,7 +55,7 @@ Definition multiply
             ])) :
         core.result.Result.t i32.t core.num.error.ParseIntError.t))
     |)
-  )).
+  ) : ltac:(aliases_for_result.AliasedResult i32.t))).
 
 (*
 fn print(result: AliasedResult<i32>) {
@@ -68,7 +68,7 @@ fn print(result: AliasedResult<i32>) {
 Definition print
     (result : ltac:(aliases_for_result.AliasedResult i32.t))
     : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let result := M.alloc (| result |) in
     M.read (|
       ltac:
@@ -159,7 +159,7 @@ Definition print
               M.Val unit
           ])
     |)
-  )).
+  ) : unit)).
 
 (*
 fn main() {
@@ -169,7 +169,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let _ : M.Val unit :=
         M.alloc (|
@@ -191,4 +191,4 @@ Definition main : M unit :=
         |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

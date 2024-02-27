@@ -44,11 +44,11 @@ Module my.
             }
     *)
     Definition new (contents : T) : M (struct_visibility.my.ClosedBox.t T) :=
-      ltac:(M.monadic (
+      ltac:(M.monadic ((
         let contents := M.alloc (| contents |) in
         {| struct_visibility.my.ClosedBox.contents := M.read (| contents |);
         |} : struct_visibility.my.ClosedBox.t T
-      )).
+      ) : struct_visibility.my.ClosedBox.t T)).
     
     Global Instance AssociatedFunction_new :
       Notations.DoubleColon Self "new" := {
@@ -85,7 +85,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let open_box : M.Val (struct_visibility.my.OpenBox.t (ref str.t)) :=
         M.alloc (|
@@ -133,4 +133,4 @@ Definition main : M unit :=
         |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

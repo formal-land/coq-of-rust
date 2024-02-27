@@ -45,7 +45,7 @@ Section Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating
       }
   *)
   Definition get (self : ref Self) : M alloc.string.String.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.call (|(ltac:(M.get_method (fun ℐ =>
           core.clone.Clone.clone (Self := alloc.string.String.t) (Trait := ℐ)))
@@ -53,7 +53,7 @@ Section Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating
           (disambiguating_overlapping_traits.Form.Get_username
             (deref (M.read (| self |))))))
       |)
-    )).
+    ) : alloc.string.String.t)).
   
   Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
     Notations.double_colon := get;
@@ -76,13 +76,13 @@ Section Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_over
       }
   *)
   Definition get (self : ref Self) : M u8.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         disambiguating_overlapping_traits.Form.Get_age
           (deref (M.read (| self |)))
       |)
-    )).
+    ) : u8.t)).
   
   Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
     Notations.double_colon := get;
@@ -115,7 +115,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let form : M.Val disambiguating_overlapping_traits.Form.t :=
         M.alloc (|
@@ -260,4 +260,4 @@ Definition main : M unit :=
             ]) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

@@ -18,7 +18,7 @@ Section Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificati
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let f := M.alloc (| f |) in
       (never_to_any (B := core.result.Result.t unit core.fmt.Error.t)) (|
@@ -26,7 +26,7 @@ Section Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificati
           ltac: (M.monadic_match_operator (deref (M.read (| self |))) [ ])
         |)
       |)
-    )).
+    ) : ltac:(core.fmt.Result))).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
@@ -49,10 +49,10 @@ Section Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarifica
   Definition clone
       (self : ref Self)
       : M generics_phantom_type_test_case_unit_clarification.Inch.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (| deref (M.read (| self |)) |)
-    )).
+    ) : generics_phantom_type_test_case_unit_clarification.Inch.t)).
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {
@@ -93,7 +93,7 @@ Section Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificati
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let f := M.alloc (| f |) in
       (never_to_any (B := core.result.Result.t unit core.fmt.Error.t)) (|
@@ -101,7 +101,7 @@ Section Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificati
           ltac: (M.monadic_match_operator (deref (M.read (| self |))) [ ])
         |)
       |)
-    )).
+    ) : ltac:(core.fmt.Result))).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
@@ -124,10 +124,10 @@ Section Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarifica
   Definition clone
       (self : ref Self)
       : M generics_phantom_type_test_case_unit_clarification.Mm.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (| deref (M.read (| self |)) |)
-    )).
+    ) : generics_phantom_type_test_case_unit_clarification.Mm.t)).
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {
@@ -181,7 +181,7 @@ Section Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificati
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let f := M.alloc (| f |) in
       M.call (|(core.fmt.Formatter.t::["debug_tuple_field2_finish"]
@@ -201,7 +201,7 @@ Section Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificati
                   (deref (M.read (| self |))))
             |)))))
       |)
-    )).
+    ) : ltac:(core.fmt.Result))).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
@@ -226,7 +226,7 @@ Section Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarifica
   Definition clone
       (self : ref Self)
       : M (generics_phantom_type_test_case_unit_clarification.Length.t Unit) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       generics_phantom_type_test_case_unit_clarification.Length.Build_t
         (M.call (|(ltac:(M.get_method (fun ℐ =>
@@ -243,7 +243,7 @@ Section Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarifica
             (generics_phantom_type_test_case_unit_clarification.Length.Get_1
               (deref (M.read (| self |))))))
         |))
-    )).
+    ) : generics_phantom_type_test_case_unit_clarification.Length.t Unit)).
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {
@@ -292,7 +292,7 @@ Section Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarifi
       (self : Self)
       (rhs : generics_phantom_type_test_case_unit_clarification.Length.t Unit)
       : M (generics_phantom_type_test_case_unit_clarification.Length.t Unit) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let rhs := M.alloc (| rhs |) in
       generics_phantom_type_test_case_unit_clarification.Length.Build_t
@@ -305,7 +305,7 @@ Section Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarifi
           |)
         |))
         core.marker.PhantomData.Build
-    )).
+    ) : generics_phantom_type_test_case_unit_clarification.Length.t Unit)).
   
   Global Instance AssociatedFunction_add : Notations.DoubleColon Self "add" := {
     Notations.double_colon := add;
@@ -345,7 +345,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let one_foot :
           M.Val
@@ -465,4 +465,4 @@ Definition main : M unit :=
         M.alloc (| tt |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

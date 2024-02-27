@@ -15,7 +15,7 @@ fn main() -> Result<(), ParseIntError> {
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main
     : M (core.result.Result.t unit core.num.error.ParseIntError.t) :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let return_ :=
       M.return_
         (R := core.result.Result.t unit core.num.error.ParseIntError.t) in
@@ -94,4 +94,4 @@ Definition main
           M.alloc (| tt |) in
         M.alloc (| core.result.Result.Ok tt |)
       |))
-  )).
+  ) : core.result.Result.t unit core.num.error.ParseIntError.t)).

@@ -42,10 +42,10 @@ Section Impl_const_underscore_expression_BarTrait_for_const_underscore_expressio
           }
   *)
   Definition show (self : Self) : M alloc.string.String.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (| const_underscore_expression.Bar.Get_test self |)
-    )).
+    ) : alloc.string.String.t)).
   
   Global Instance AssociatedFunction_show :
     Notations.DoubleColon Self "show" := {

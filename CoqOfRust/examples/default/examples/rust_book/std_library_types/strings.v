@@ -45,7 +45,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let pangram : M.Val (ref str.t) :=
         M.copy (| mk_str "the quick brown fox jumps over the lazy dog" |) in
@@ -424,4 +424,4 @@ Definition main : M unit :=
         M.alloc (| tt |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

@@ -10,7 +10,7 @@ where
 }
 *)
 Definition apply {F : Set} (f : F) : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let f := M.alloc (| f |) in
     M.read (|
       let _ : M.Val unit :=
@@ -26,7 +26,7 @@ Definition apply {F : Set} (f : F) : M unit :=
         |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).
 
 (*
 fn main() {
@@ -41,7 +41,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let x : M.Val i32.t := M.alloc (| (Integer.of_Z 7) : i32.t |) in
       let print : M.Val (unit -> unit) :=
@@ -94,4 +94,4 @@ Definition main : M unit :=
         |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

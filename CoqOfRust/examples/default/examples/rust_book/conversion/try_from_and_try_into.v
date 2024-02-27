@@ -23,7 +23,7 @@ Section Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let f := M.alloc (| f |) in
       M.call (|(core.fmt.Formatter.t::["debug_tuple_field1_finish"]
@@ -38,7 +38,7 @@ Section Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber_t.
                   (deref (M.read (| self |))))
             |)))))
       |)
-    )).
+    ) : ltac:(core.fmt.Result))).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
@@ -70,7 +70,7 @@ Section Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber_t.
       (self : ref Self)
       (other : ref try_from_and_try_into.EvenNumber.t)
       : M bool.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let other := M.alloc (| other |) in
       BinOp.Pure.eq
@@ -80,7 +80,7 @@ Section Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber_t.
         (M.read (|
           try_from_and_try_into.EvenNumber.Get_0 (deref (M.read (| other |)))
         |))
-    )).
+    ) : bool.t)).
   
   Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
     Notations.double_colon := eq;
@@ -114,7 +114,7 @@ Section Impl_core_convert_TryFrom_i32_t_for_try_from_and_try_into_EvenNumber_t.
       }
   *)
   Definition try_from (value : i32.t) : M (core.result.Result.t Self Error) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let value := M.alloc (| value |) in
       M.read (|
         if
@@ -137,7 +137,7 @@ Section Impl_core_convert_TryFrom_i32_t_for_try_from_and_try_into_EvenNumber_t.
         else
           M.alloc (| core.result.Result.Err tt |)
       |)
-    )).
+    ) : core.result.Result.t Self Error)).
   
   Global Instance AssociatedFunction_try_from :
     Notations.DoubleColon Self "try_from" := {
@@ -168,7 +168,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let _ : M.Val unit :=
         ltac:
@@ -499,4 +499,4 @@ Definition main : M unit :=
             ]) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

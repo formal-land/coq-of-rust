@@ -35,10 +35,10 @@ End SGen.
 fn reg_fn(_s: S) {}
 *)
 Definition reg_fn (_s : generics_functions.S.t) : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let _s := M.alloc (| _s |) in
     tt
-  )).
+  ) : unit)).
 
 (*
 fn gen_spec_t(_s: SGen<A>) {}
@@ -46,28 +46,28 @@ fn gen_spec_t(_s: SGen<A>) {}
 Definition gen_spec_t
     (_s : generics_functions.SGen.t generics_functions.A.t)
     : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let _s := M.alloc (| _s |) in
     tt
-  )).
+  ) : unit)).
 
 (*
 fn gen_spec_i32(_s: SGen<i32>) {}
 *)
 Definition gen_spec_i32 (_s : generics_functions.SGen.t i32.t) : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let _s := M.alloc (| _s |) in
     tt
-  )).
+  ) : unit)).
 
 (*
 fn generic<T>(_s: SGen<T>) {}
 *)
 Definition generic {T : Set} (_s : generics_functions.SGen.t T) : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let _s := M.alloc (| _s |) in
     tt
-  )).
+  ) : unit)).
 
 (*
 fn main() {
@@ -85,7 +85,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let _ : M.Val unit :=
         M.alloc (|
@@ -119,4 +119,4 @@ Definition main : M unit :=
         |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

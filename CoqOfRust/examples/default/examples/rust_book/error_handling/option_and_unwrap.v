@@ -12,7 +12,7 @@ fn give_adult(drink: Option<&str>) {
 }
 *)
 Definition give_adult (drink : core.option.Option.t (ref str.t)) : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let drink := M.alloc (| drink |) in
     M.read (|
       ltac:
@@ -100,7 +100,7 @@ Definition give_adult (drink : core.option.Option.t (ref str.t)) : M unit :=
               M.Val unit
           ])
     |)
-  )).
+  ) : unit)).
 
 (*
 fn drink(drink: Option<&str>) {
@@ -114,7 +114,7 @@ fn drink(drink: Option<&str>) {
 }
 *)
 Definition drink (drink : core.option.Option.t (ref str.t)) : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let drink := M.alloc (| drink |) in
     M.read (|
       let inside : M.Val (ref str.t) :=
@@ -179,7 +179,7 @@ Definition drink (drink : core.option.Option.t (ref str.t)) : M unit :=
         M.alloc (| tt |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).
 
 (*
 fn main() {
@@ -200,7 +200,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let water : M.Val (core.option.Option.t (ref str.t)) :=
         M.alloc (| core.option.Option.Some (M.read (| mk_str "water" |)) |) in
@@ -233,4 +233,4 @@ Definition main : M unit :=
         |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

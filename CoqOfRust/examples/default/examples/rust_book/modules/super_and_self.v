@@ -7,7 +7,7 @@ fn function() {
 }
 *)
 Definition function : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let _ : M.Val unit :=
         let _ : M.Val unit :=
@@ -26,7 +26,7 @@ Definition function : M unit :=
         M.alloc (| tt |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).
 
 Module cool.
   (*
@@ -35,7 +35,7 @@ Module cool.
       }
   *)
   Definition function : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       M.read (|
         let _ : M.Val unit :=
           let _ : M.Val unit :=
@@ -55,7 +55,7 @@ Module cool.
           M.alloc (| tt |) in
         M.alloc (| tt |)
       |)
-    )).
+    ) : unit)).
 End cool.
 
 Module my.
@@ -65,7 +65,7 @@ Module my.
       }
   *)
   Definition function : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       M.read (|
         let _ : M.Val unit :=
           let _ : M.Val unit :=
@@ -85,7 +85,7 @@ Module my.
           M.alloc (| tt |) in
         M.alloc (| tt |)
       |)
-    )).
+    ) : unit)).
   
   Module cool.
     (*
@@ -94,7 +94,7 @@ Module my.
             }
     *)
     Definition function : M unit :=
-      ltac:(M.monadic (
+      ltac:(M.monadic ((
         M.read (|
           let _ : M.Val unit :=
             let _ : M.Val unit :=
@@ -115,7 +115,7 @@ Module my.
             M.alloc (| tt |) in
           M.alloc (| tt |)
         |)
-      )).
+      ) : unit)).
   End cool.
   
   (*
@@ -144,7 +144,7 @@ Module my.
       }
   *)
   Definition indirect_call : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       M.read (|
         let _ : M.Val unit :=
           let _ : M.Val unit :=
@@ -178,7 +178,7 @@ Module my.
           M.alloc (| M.call (|super_and_self.cool.function |) |) in
         M.alloc (| tt |)
       |)
-    )).
+    ) : unit)).
 End my.
 
 (*
@@ -188,10 +188,10 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let _ : M.Val unit :=
         M.alloc (| M.call (|super_and_self.my.indirect_call |) |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

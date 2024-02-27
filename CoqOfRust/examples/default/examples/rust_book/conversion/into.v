@@ -22,10 +22,10 @@ Section Impl_core_convert_From_i32_t_for_into_Number_t.
       }
   *)
   Definition from (item : i32.t) : M Self :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let item := M.alloc (| item |) in
       {| into.Number.value := M.read (| item |); |} : into.Number.t
-    )).
+    ) : Self)).
   
   Global Instance AssociatedFunction_from :
     Notations.DoubleColon Self "from" := {
@@ -45,7 +45,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let _ : M.Val into.Number.t :=
         M.alloc (|
@@ -59,4 +59,4 @@ Definition main : M unit :=
         |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

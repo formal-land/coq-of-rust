@@ -20,12 +20,12 @@ Section Impl_core_default_Default_for_payment_channel_AccountId_t.
   Default
   *)
   Definition default : M payment_channel.AccountId.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       payment_channel.AccountId.Build_t
         (M.call (|ltac:(M.get_method (fun ℐ =>
           core.default.Default.default (Self := u128.t) (Trait := ℐ)))
         |))
-    )).
+    ) : payment_channel.AccountId.t)).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -46,7 +46,7 @@ Section Impl_core_clone_Clone_for_payment_channel_AccountId_t.
   Clone
   *)
   Definition clone (self : ref Self) : M payment_channel.AccountId.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         ltac:
@@ -58,7 +58,7 @@ Section Impl_core_clone_Clone_for_payment_channel_AccountId_t.
                 (deref (M.read (| self |))) : M.Val payment_channel.AccountId.t
             ])
       |)
-    )).
+    ) : payment_channel.AccountId.t)).
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {
@@ -101,7 +101,7 @@ Section Impl_core_cmp_PartialEq_for_payment_channel_AccountId_t.
       (self : ref Self)
       (other : ref payment_channel.AccountId.t)
       : M bool.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let other := M.alloc (| other |) in
       BinOp.Pure.eq
@@ -109,7 +109,7 @@ Section Impl_core_cmp_PartialEq_for_payment_channel_AccountId_t.
         |))
         (M.read (| payment_channel.AccountId.Get_0 (deref (M.read (| other |)))
         |))
-    )).
+    ) : bool.t)).
   
   Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
     Notations.double_colon := eq;
@@ -141,7 +141,7 @@ Section Impl_core_cmp_Eq_for_payment_channel_AccountId_t.
   Eq
   *)
   Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         ltac:
@@ -153,7 +153,7 @@ Section Impl_core_cmp_Eq_for_payment_channel_AccountId_t.
                 (M.alloc (| tt |)) : M.Val unit
             ])
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
     Notations.DoubleColon Self "assert_receiver_is_total_eq" := {
@@ -177,13 +177,13 @@ Section Impl_core_convert_From_array_u8_t_for_payment_channel_AccountId_t.
       }
   *)
   Definition from (value : array u8.t) : M Self :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let value := M.alloc (| value |) in
       (never_to_any (B := payment_channel.AccountId.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : Self)).
   
   Global Instance AssociatedFunction_from :
     Notations.DoubleColon Self "from" := {
@@ -272,7 +272,7 @@ Section Impl_core_cmp_PartialEq_for_payment_channel_Error_t.
       (self : ref Self)
       (other : ref payment_channel.Error.t)
       : M bool.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let other := M.alloc (| other |) in
       M.read (|
@@ -289,7 +289,7 @@ Section Impl_core_cmp_PartialEq_for_payment_channel_Error_t.
           BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |))
         |)
       |)
-    )).
+    ) : bool.t)).
   
   Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
     Notations.double_colon := eq;
@@ -321,10 +321,10 @@ Section Impl_core_cmp_Eq_for_payment_channel_Error_t.
   Eq
   *)
   Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       tt
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
     Notations.DoubleColon Self "assert_receiver_is_total_eq" := {
@@ -379,10 +379,10 @@ Section Impl_payment_channel_Env_t.
       }
   *)
   Definition caller (self : ref Self) : M payment_channel.AccountId.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (| payment_channel.Env.Get_caller (deref (M.read (| self |))) |)
-    )).
+    ) : payment_channel.AccountId.t)).
   
   Global Instance AssociatedFunction_caller :
     Notations.DoubleColon Self "caller" := {
@@ -398,14 +398,14 @@ Section Impl_payment_channel_Env_t.
       (self : ref Self)
       (_event : payment_channel.Event.t)
       : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let _event := M.alloc (| _event |) in
       (never_to_any (B := unit)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_emit_event :
     Notations.DoubleColon Self "emit_event" := {
@@ -421,14 +421,14 @@ Section Impl_payment_channel_Env_t.
       (self : ref Self)
       (sender : payment_channel.AccountId.t)
       : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let sender := M.alloc (| sender |) in
       (never_to_any (B := unit)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_terminate_contract :
     Notations.DoubleColon Self "terminate_contract" := {
@@ -445,7 +445,7 @@ Section Impl_payment_channel_Env_t.
       (recipient : payment_channel.AccountId.t)
       (amount : ltac:(payment_channel.Balance))
       : M ltac:(payment_channel.Result unit) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let recipient := M.alloc (| recipient |) in
       let amount := M.alloc (| amount |) in
@@ -453,7 +453,7 @@ Section Impl_payment_channel_Env_t.
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : ltac:(payment_channel.Result unit))).
   
   Global Instance AssociatedFunction_transfer :
     Notations.DoubleColon Self "transfer" := {
@@ -468,13 +468,13 @@ Section Impl_payment_channel_Env_t.
   Definition block_timestamp
       (self : ref Self)
       : M ltac:(payment_channel.Timestamp) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       (never_to_any (B := u64.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : ltac:(payment_channel.Timestamp))).
   
   Global Instance AssociatedFunction_block_timestamp :
     Notations.DoubleColon Self "block_timestamp" := {
@@ -487,13 +487,13 @@ Section Impl_payment_channel_Env_t.
       }
   *)
   Definition balance (self : ref Self) : M ltac:(payment_channel.Balance) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       (never_to_any (B := u128.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : ltac:(payment_channel.Balance))).
   
   Global Instance AssociatedFunction_balance :
     Notations.DoubleColon Self "balance" := {
@@ -506,13 +506,13 @@ Section Impl_payment_channel_Env_t.
       }
   *)
   Definition account_id (self : ref Self) : M payment_channel.AccountId.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       (never_to_any (B := payment_channel.AccountId.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : payment_channel.AccountId.t)).
   
   Global Instance AssociatedFunction_account_id :
     Notations.DoubleColon Self "account_id" := {
@@ -569,13 +569,13 @@ Definition hash_encoded
           (Self := H)
           (Trait := ltac:(refine ℋ_0.(CryptoHash.ℒ_0)))))
     : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let input := M.alloc (| input |) in
     let output := M.alloc (| output |) in
     (never_to_any (B := unit)) (|
       M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |))) |)
     |)
-  )).
+  ) : unit)).
 
 (*
 pub fn ecdsa_recover(
@@ -591,14 +591,14 @@ Definition ecdsa_recover
     (message_hash : ref (array u8.t))
     (output : mut_ref (array u8.t))
     : M ltac:(payment_channel.Result unit) :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let signature := M.alloc (| signature |) in
     let message_hash := M.alloc (| message_hash |) in
     let output := M.alloc (| output |) in
     (never_to_any (B := core.result.Result.t unit payment_channel.Error.t)) (|
       M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |))) |)
     |)
-  )).
+  ) : ltac:(payment_channel.Result unit))).
 
 Module Sha2x256.
   Inductive t : Set :=
@@ -698,14 +698,14 @@ Section Impl_payment_channel_CryptoHash_for_payment_channel_Sha2x256_t.
             (Self := Self)
             (Trait := ltac:(refine _))))
       : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let input := M.alloc (| input |) in
       let output := M.alloc (| output |) in
       (never_to_any (B := unit)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_hash :
     Notations.DoubleColon Self "hash" := {
@@ -736,14 +736,14 @@ Section Impl_payment_channel_CryptoHash_for_payment_channel_Keccak256_t.
             (Self := Self)
             (Trait := ltac:(refine _))))
       : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let input := M.alloc (| input |) in
       let output := M.alloc (| output |) in
       (never_to_any (B := unit)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_hash :
     Notations.DoubleColon Self "hash" := {
@@ -774,14 +774,14 @@ Section Impl_payment_channel_CryptoHash_for_payment_channel_Blake2x256_t.
             (Self := Self)
             (Trait := ltac:(refine _))))
       : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let input := M.alloc (| input |) in
       let output := M.alloc (| output |) in
       (never_to_any (B := unit)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_hash :
     Notations.DoubleColon Self "hash" := {
@@ -812,14 +812,14 @@ Section Impl_payment_channel_CryptoHash_for_payment_channel_Blake2x128_t.
             (Self := Self)
             (Trait := ltac:(refine _))))
       : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let input := M.alloc (| input |) in
       let output := M.alloc (| output |) in
       (never_to_any (B := unit)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_hash :
     Notations.DoubleColon Self "hash" := {
@@ -842,12 +842,12 @@ Section Impl_payment_channel_PaymentChannel_t.
       }
   *)
   Definition init_env : M payment_channel.Env.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       (never_to_any (B := payment_channel.Env.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : payment_channel.Env.t)).
   
   Global Instance AssociatedFunction_init_env :
     Notations.DoubleColon Self "init_env" := {
@@ -860,10 +860,10 @@ Section Impl_payment_channel_PaymentChannel_t.
       }
   *)
   Definition env (self : ref Self) : M payment_channel.Env.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.call (|payment_channel.PaymentChannel.t::["init_env"] |)
-    )).
+    ) : payment_channel.Env.t)).
   
   Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
     Notations.double_colon := env;
@@ -889,7 +889,7 @@ Section Impl_payment_channel_PaymentChannel_t.
       (amount : ltac:(payment_channel.Balance))
       (signature : array u8.t)
       : M bool.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let amount := M.alloc (| amount |) in
       let signature := M.alloc (| signature |) in
@@ -982,7 +982,7 @@ Section Impl_payment_channel_PaymentChannel_t.
           |)
         |)
       |)
-    )).
+    ) : bool.t)).
   
   Global Instance AssociatedFunction_is_signature_valid :
     Notations.DoubleColon Self "is_signature_valid" := {
@@ -1004,7 +1004,7 @@ Section Impl_payment_channel_PaymentChannel_t.
       (recipient : payment_channel.AccountId.t)
       (close_duration : ltac:(payment_channel.Timestamp))
       : M Self :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let recipient := M.alloc (| recipient |) in
       let close_duration := M.alloc (| close_duration |) in
       {|
@@ -1021,7 +1021,7 @@ Section Impl_payment_channel_PaymentChannel_t.
         payment_channel.PaymentChannel.close_duration :=
           M.read (| close_duration |);
       |} : payment_channel.PaymentChannel.t
-    )).
+    ) : Self)).
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
@@ -1054,7 +1054,7 @@ Section Impl_payment_channel_PaymentChannel_t.
       (amount : ltac:(payment_channel.Balance))
       (signature : array u8.t)
       : M ltac:(payment_channel.Result unit) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let amount := M.alloc (| amount |) in
       let signature := M.alloc (| signature |) in
@@ -1251,7 +1251,7 @@ Section Impl_payment_channel_PaymentChannel_t.
                 ]) in
           M.alloc (| core.result.Result.Ok tt |)
         |))
-    )).
+    ) : ltac:(payment_channel.Result unit))).
   
   Global Instance AssociatedFunction_close_inner :
     Notations.DoubleColon Self "close_inner" := {
@@ -1271,7 +1271,7 @@ Section Impl_payment_channel_PaymentChannel_t.
       (amount : ltac:(payment_channel.Balance))
       (signature : array u8.t)
       : M ltac:(payment_channel.Result unit) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let amount := M.alloc (| amount |) in
       let signature := M.alloc (| signature |) in
@@ -1366,7 +1366,7 @@ Section Impl_payment_channel_PaymentChannel_t.
             |) in
           M.alloc (| core.result.Result.Ok tt |)
         |))
-    )).
+    ) : ltac:(payment_channel.Result unit))).
   
   Global Instance AssociatedFunction_close :
     Notations.DoubleColon Self "close" := {
@@ -1396,7 +1396,7 @@ Section Impl_payment_channel_PaymentChannel_t.
   Definition start_sender_close
       (self : mut_ref Self)
       : M ltac:(payment_channel.Result unit) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let return_ := M.return_ (R := ltac:(payment_channel.Result unit)) in
       M.catch_return
@@ -1490,7 +1490,7 @@ Section Impl_payment_channel_PaymentChannel_t.
             |) in
           M.alloc (| core.result.Result.Ok tt |)
         |))
-    )).
+    ) : ltac:(payment_channel.Result unit))).
   
   Global Instance AssociatedFunction_start_sender_close :
     Notations.DoubleColon Self "start_sender_close" := {
@@ -1520,7 +1520,7 @@ Section Impl_payment_channel_PaymentChannel_t.
   Definition claim_timeout
       (self : mut_ref Self)
       : M ltac:(payment_channel.Result unit) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let return_ := M.return_ (R := ltac:(payment_channel.Result unit)) in
       M.catch_return
@@ -1598,7 +1598,7 @@ Section Impl_payment_channel_PaymentChannel_t.
                   M.Val (core.result.Result.t unit payment_channel.Error.t)
               ])
         |))
-    )).
+    ) : ltac:(payment_channel.Result unit))).
   
   Global Instance AssociatedFunction_claim_timeout :
     Notations.DoubleColon Self "claim_timeout" := {
@@ -1636,7 +1636,7 @@ Section Impl_payment_channel_PaymentChannel_t.
       (amount : ltac:(payment_channel.Balance))
       (signature : array u8.t)
       : M ltac:(payment_channel.Result unit) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let amount := M.alloc (| amount |) in
       let signature := M.alloc (| signature |) in
@@ -1846,7 +1846,7 @@ Section Impl_payment_channel_PaymentChannel_t.
                 ]) in
           M.alloc (| core.result.Result.Ok tt |)
         |))
-    )).
+    ) : ltac:(payment_channel.Result unit))).
   
   Global Instance AssociatedFunction_withdraw :
     Notations.DoubleColon Self "withdraw" := {
@@ -1859,12 +1859,12 @@ Section Impl_payment_channel_PaymentChannel_t.
       }
   *)
   Definition get_sender (self : ref Self) : M payment_channel.AccountId.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         payment_channel.PaymentChannel.Get_sender (deref (M.read (| self |)))
       |)
-    )).
+    ) : payment_channel.AccountId.t)).
   
   Global Instance AssociatedFunction_get_sender :
     Notations.DoubleColon Self "get_sender" := {
@@ -1877,12 +1877,12 @@ Section Impl_payment_channel_PaymentChannel_t.
       }
   *)
   Definition get_recipient (self : ref Self) : M payment_channel.AccountId.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         payment_channel.PaymentChannel.Get_recipient (deref (M.read (| self |)))
       |)
-    )).
+    ) : payment_channel.AccountId.t)).
   
   Global Instance AssociatedFunction_get_recipient :
     Notations.DoubleColon Self "get_recipient" := {
@@ -1897,13 +1897,13 @@ Section Impl_payment_channel_PaymentChannel_t.
   Definition get_expiration
       (self : ref Self)
       : M (core.option.Option.t ltac:(payment_channel.Timestamp)) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         payment_channel.PaymentChannel.Get_expiration
           (deref (M.read (| self |)))
       |)
-    )).
+    ) : core.option.Option.t ltac:(payment_channel.Timestamp))).
   
   Global Instance AssociatedFunction_get_expiration :
     Notations.DoubleColon Self "get_expiration" := {
@@ -1918,12 +1918,12 @@ Section Impl_payment_channel_PaymentChannel_t.
   Definition get_withdrawn
       (self : ref Self)
       : M ltac:(payment_channel.Balance) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         payment_channel.PaymentChannel.Get_withdrawn (deref (M.read (| self |)))
       |)
-    )).
+    ) : ltac:(payment_channel.Balance))).
   
   Global Instance AssociatedFunction_get_withdrawn :
     Notations.DoubleColon Self "get_withdrawn" := {
@@ -1938,13 +1938,13 @@ Section Impl_payment_channel_PaymentChannel_t.
   Definition get_close_duration
       (self : ref Self)
       : M ltac:(payment_channel.Timestamp) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         payment_channel.PaymentChannel.Get_close_duration
           (deref (M.read (| self |)))
       |)
-    )).
+    ) : ltac:(payment_channel.Timestamp))).
   
   Global Instance AssociatedFunction_get_close_duration :
     Notations.DoubleColon Self "get_close_duration" := {
@@ -1957,7 +1957,7 @@ Section Impl_payment_channel_PaymentChannel_t.
       }
   *)
   Definition get_balance (self : ref Self) : M ltac:(payment_channel.Balance) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.call (|(payment_channel.Env.t::["balance"]
         (borrow
@@ -1967,7 +1967,7 @@ Section Impl_payment_channel_PaymentChannel_t.
             |)
           |))))
       |)
-    )).
+    ) : ltac:(payment_channel.Balance))).
   
   Global Instance AssociatedFunction_get_balance :
     Notations.DoubleColon Self "get_balance" := {

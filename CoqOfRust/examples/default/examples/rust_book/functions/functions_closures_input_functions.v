@@ -7,7 +7,7 @@ fn call_me<F: Fn()>(f: F) {
 }
 *)
 Definition call_me {F : Set} (f : F) : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let f := M.alloc (| f |) in
     M.read (|
       let _ : M.Val unit :=
@@ -23,7 +23,7 @@ Definition call_me {F : Set} (f : F) : M unit :=
         |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).
 
 (*
 fn function() {
@@ -31,7 +31,7 @@ fn function() {
 }
 *)
 Definition function : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let _ : M.Val unit :=
         let _ : M.Val unit :=
@@ -50,7 +50,7 @@ Definition function : M unit :=
         M.alloc (| tt |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).
 
 (*
 fn main() {
@@ -63,7 +63,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let closure : M.Val (unit -> unit) :=
         M.alloc (|
@@ -108,4 +108,4 @@ Definition main : M unit :=
         |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

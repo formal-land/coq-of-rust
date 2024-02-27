@@ -22,13 +22,13 @@ Section Impl_example05_Foo_t.
       }
   *)
   Definition plus1 (self : Self) : M u32.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       BinOp.Panic.add (|
         M.read (| example05.Foo.Get_0 self |),
         (Integer.of_Z 1) : u32.t
       |)
-    )).
+    ) : u32.t)).
   
   Global Instance AssociatedFunction_plus1 :
     Notations.DoubleColon Self "plus1" := {
@@ -45,7 +45,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let foo : M.Val example05.Foo.t :=
         M.alloc (| example05.Foo.Build_t ((Integer.of_Z 0) : u32.t) |) in
@@ -54,4 +54,4 @@ Definition main : M unit :=
         |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

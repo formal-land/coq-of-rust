@@ -32,13 +32,13 @@ Section Impl_core_cmp_PartialEq_for_derive_Centimeters_t.
       (self : ref Self)
       (other : ref derive.Centimeters.t)
       : M bool.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let other := M.alloc (| other |) in
       BinOp.Pure.eq
         (M.read (| derive.Centimeters.Get_0 (deref (M.read (| self |))) |))
         (M.read (| derive.Centimeters.Get_0 (deref (M.read (| other |))) |))
-    )).
+    ) : bool.t)).
   
   Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
     Notations.double_colon := eq;
@@ -64,7 +64,7 @@ Section Impl_core_cmp_PartialOrd_for_derive_Centimeters_t.
       (self : ref Self)
       (other : ref derive.Centimeters.t)
       : M (core.option.Option.t core.cmp.Ordering.t) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let other := M.alloc (| other |) in
       M.call (|(ltac:(M.get_method (fun ℐ =>
@@ -75,7 +75,7 @@ Section Impl_core_cmp_PartialOrd_for_derive_Centimeters_t.
         (borrow (derive.Centimeters.Get_0 (deref (M.read (| self |)))))
         (borrow (derive.Centimeters.Get_0 (deref (M.read (| other |))))))
       |)
-    )).
+    ) : core.option.Option.t core.cmp.Ordering.t)).
   
   Global Instance AssociatedFunction_partial_cmp :
     Notations.DoubleColon Self "partial_cmp" := {
@@ -116,7 +116,7 @@ Section Impl_core_fmt_Debug_for_derive_Inches_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let f := M.alloc (| f |) in
       M.call (|(core.fmt.Formatter.t::["debug_tuple_field1_finish"]
@@ -128,7 +128,7 @@ Section Impl_core_fmt_Debug_for_derive_Inches_t.
             (M.alloc (| borrow (derive.Inches.Get_0 (deref (M.read (| self |))))
             |)))))
       |)
-    )).
+    ) : ltac:(core.fmt.Result))).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
@@ -152,7 +152,7 @@ Section Impl_derive_Inches_t.
       }
   *)
   Definition to_centimeters (self : ref Self) : M derive.Centimeters.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         ltac:
@@ -176,7 +176,7 @@ Section Impl_derive_Inches_t.
                 M.Val derive.Centimeters.t
             ])
       |)
-    )).
+    ) : derive.Centimeters.t)).
   
   Global Instance AssociatedFunction_to_centimeters :
     Notations.DoubleColon Self "to_centimeters" := {
@@ -225,7 +225,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let _one_second : M.Val derive.Seconds.t :=
         M.alloc (| derive.Seconds.Build_t ((Integer.of_Z 1) : i32.t) |) in
@@ -322,4 +322,4 @@ Definition main : M unit :=
         M.alloc (| tt |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

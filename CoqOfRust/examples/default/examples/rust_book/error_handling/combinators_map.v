@@ -19,7 +19,7 @@ Section Impl_core_fmt_Debug_for_combinators_map_Food_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let f := M.alloc (| f |) in
       M.call (|(core.fmt.Formatter.t::["write_str"]
@@ -56,7 +56,7 @@ Section Impl_core_fmt_Debug_for_combinators_map_Food_t.
               ])
         |)))
       |)
-    )).
+    ) : ltac:(core.fmt.Result))).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
@@ -90,7 +90,7 @@ Section Impl_core_fmt_Debug_for_combinators_map_Peeled_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let f := M.alloc (| f |) in
       M.call (|(core.fmt.Formatter.t::["debug_tuple_field1_finish"]
@@ -103,7 +103,7 @@ Section Impl_core_fmt_Debug_for_combinators_map_Peeled_t.
               borrow (combinators_map.Peeled.Get_0 (deref (M.read (| self |))))
             |)))))
       |)
-    )).
+    ) : ltac:(core.fmt.Result))).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
@@ -137,7 +137,7 @@ Section Impl_core_fmt_Debug_for_combinators_map_Chopped_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let f := M.alloc (| f |) in
       M.call (|(core.fmt.Formatter.t::["debug_tuple_field1_finish"]
@@ -150,7 +150,7 @@ Section Impl_core_fmt_Debug_for_combinators_map_Chopped_t.
               borrow (combinators_map.Chopped.Get_0 (deref (M.read (| self |))))
             |)))))
       |)
-    )).
+    ) : ltac:(core.fmt.Result))).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
@@ -184,7 +184,7 @@ Section Impl_core_fmt_Debug_for_combinators_map_Cooked_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let f := M.alloc (| f |) in
       M.call (|(core.fmt.Formatter.t::["debug_tuple_field1_finish"]
@@ -197,7 +197,7 @@ Section Impl_core_fmt_Debug_for_combinators_map_Cooked_t.
               borrow (combinators_map.Cooked.Get_0 (deref (M.read (| self |))))
             |)))))
       |)
-    )).
+    ) : ltac:(core.fmt.Result))).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
@@ -220,7 +220,7 @@ fn peel(food: Option<Food>) -> Option<Peeled> {
 Definition peel
     (food : core.option.Option.t combinators_map.Food.t)
     : M (core.option.Option.t combinators_map.Peeled.t) :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let food := M.alloc (| food |) in
     M.read (|
       ltac:
@@ -247,7 +247,7 @@ Definition peel
               M.Val (core.option.Option.t combinators_map.Peeled.t)
           ])
     |)
-  )).
+  ) : core.option.Option.t combinators_map.Peeled.t)).
 
 (*
 fn chop(peeled: Option<Peeled>) -> Option<Chopped> {
@@ -260,7 +260,7 @@ fn chop(peeled: Option<Peeled>) -> Option<Chopped> {
 Definition chop
     (peeled : core.option.Option.t combinators_map.Peeled.t)
     : M (core.option.Option.t combinators_map.Chopped.t) :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let peeled := M.alloc (| peeled |) in
     M.read (|
       ltac:
@@ -291,7 +291,7 @@ Definition chop
               M.Val (core.option.Option.t combinators_map.Chopped.t)
           ])
     |)
-  )).
+  ) : core.option.Option.t combinators_map.Chopped.t)).
 
 (*
 fn cook(chopped: Option<Chopped>) -> Option<Cooked> {
@@ -301,7 +301,7 @@ fn cook(chopped: Option<Chopped>) -> Option<Cooked> {
 Definition cook
     (chopped : core.option.Option.t combinators_map.Chopped.t)
     : M (core.option.Option.t combinators_map.Cooked.t) :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let chopped := M.alloc (| chopped |) in
     M.call (|((core.option.Option.t combinators_map.Chopped.t)::["map"]
       (M.read (| chopped |))
@@ -321,7 +321,7 @@ Definition cook
             ])) :
         combinators_map.Cooked.t))
     |)
-  )).
+  ) : core.option.Option.t combinators_map.Cooked.t)).
 
 (*
 fn process(food: Option<Food>) -> Option<Cooked> {
@@ -333,7 +333,7 @@ fn process(food: Option<Food>) -> Option<Cooked> {
 Definition process
     (food : core.option.Option.t combinators_map.Food.t)
     : M (core.option.Option.t combinators_map.Cooked.t) :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let food := M.alloc (| food |) in
     M.call (|((core.option.Option.t combinators_map.Chopped.t)::["map"]
       (M.call (|((core.option.Option.t combinators_map.Peeled.t)::["map"]
@@ -383,7 +383,7 @@ Definition process
             ])) :
         combinators_map.Cooked.t))
     |)
-  )).
+  ) : core.option.Option.t combinators_map.Cooked.t)).
 
 (*
 fn eat(food: Option<Cooked>) {
@@ -396,7 +396,7 @@ fn eat(food: Option<Cooked>) {
 Definition eat
     (food : core.option.Option.t combinators_map.Cooked.t)
     : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let food := M.alloc (| food |) in
     M.read (|
       ltac:
@@ -463,7 +463,7 @@ Definition eat
               M.Val unit
           ])
     |)
-  )).
+  ) : unit)).
 
 (*
 fn main() {
@@ -483,7 +483,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let apple : M.Val (core.option.Option.t combinators_map.Food.t) :=
         M.alloc (| core.option.Option.Some combinators_map.Food.Apple |) in
@@ -526,4 +526,4 @@ Definition main : M unit :=
         |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

@@ -20,12 +20,12 @@ Section Impl_core_default_Default_for_call_runtime_AccountId_t.
   Default
   *)
   Definition default : M call_runtime.AccountId.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       call_runtime.AccountId.Build_t
         (M.call (|ltac:(M.get_method (fun ℐ =>
           core.default.Default.default (Self := u128.t) (Trait := ℐ)))
         |))
-    )).
+    ) : call_runtime.AccountId.t)).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -46,7 +46,7 @@ Section Impl_core_clone_Clone_for_call_runtime_AccountId_t.
   Clone
   *)
   Definition clone (self : ref Self) : M call_runtime.AccountId.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         ltac:
@@ -58,7 +58,7 @@ Section Impl_core_clone_Clone_for_call_runtime_AccountId_t.
                 (deref (M.read (| self |))) : M.Val call_runtime.AccountId.t
             ])
       |)
-    )).
+    ) : call_runtime.AccountId.t)).
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {
@@ -110,14 +110,14 @@ Section Impl_core_convert_From_call_runtime_AccountId_t_for_call_runtime_MultiAd
       }
   *)
   Definition from (_value : call_runtime.AccountId.t) : M Self :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let _value := M.alloc (| _value |) in
       (never_to_any
         (B := call_runtime.MultiAddress.t call_runtime.AccountId.t unit)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : Self)).
   
   Global Instance AssociatedFunction_from :
     Notations.DoubleColon Self "from" := {
@@ -183,8 +183,8 @@ Section Impl_core_default_Default_for_call_runtime_RuntimeCaller_t.
   Default
   *)
   Definition default : M call_runtime.RuntimeCaller.t :=
-    ltac:(M.monadic ( call_runtime.RuntimeCaller.Build
-    )).
+    ltac:(M.monadic (( call_runtime.RuntimeCaller.Build
+    ) : call_runtime.RuntimeCaller.t)).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -213,14 +213,14 @@ Section Impl_core_fmt_Debug_for_call_runtime_RuntimeError_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let f := M.alloc (| f |) in
       M.call (|(core.fmt.Formatter.t::["write_str"]
         (M.read (| f |))
         (M.read (| mk_str "CallRuntimeFailed" |)))
       |)
-    )).
+    ) : ltac:(core.fmt.Result))).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
@@ -252,11 +252,11 @@ Section Impl_core_cmp_PartialEq_for_call_runtime_RuntimeError_t.
       (self : ref Self)
       (other : ref call_runtime.RuntimeError.t)
       : M bool.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let other := M.alloc (| other |) in
       true
-    )).
+    ) : bool.t)).
   
   Global Instance AssociatedFunction_eq : Notations.DoubleColon Self "eq" := {
     Notations.double_colon := eq;
@@ -288,10 +288,10 @@ Section Impl_core_cmp_Eq_for_call_runtime_RuntimeError_t.
   Eq
   *)
   Definition assert_receiver_is_total_eq (self : ref Self) : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       tt
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_assert_receiver_is_total_eq :
     Notations.DoubleColon Self "assert_receiver_is_total_eq" := {
@@ -324,7 +324,7 @@ Section Impl_core_convert_From_call_runtime_EnvError_t_for_call_runtime_RuntimeE
       }
   *)
   Definition from (e : call_runtime.EnvError.t) : M Self :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let e := M.alloc (| e |) in
       M.read (|
         ltac:
@@ -351,7 +351,7 @@ Section Impl_core_convert_From_call_runtime_EnvError_t_for_call_runtime_RuntimeE
                 M.Val call_runtime.RuntimeError.t
             ])
       |)
-    )).
+    ) : Self)).
   
   Global Instance AssociatedFunction_from :
     Notations.DoubleColon Self "from" := {
@@ -379,14 +379,14 @@ Section Impl_call_runtime_Env_t.
       (self : ref Self)
       (_call : ref Call)
       : M (core.result.Result.t unit call_runtime.EnvError.t) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let _call := M.alloc (| _call |) in
       (never_to_any (B := core.result.Result.t unit call_runtime.EnvError.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : core.result.Result.t unit call_runtime.EnvError.t)).
   
   Global Instance AssociatedFunction_call_runtime {Call : Set} :
     Notations.DoubleColon Self "call_runtime" := {
@@ -405,12 +405,12 @@ Section Impl_call_runtime_RuntimeCaller_t.
       }
   *)
   Definition init_env : M call_runtime.Env.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       (never_to_any (B := call_runtime.Env.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : call_runtime.Env.t)).
   
   Global Instance AssociatedFunction_init_env :
     Notations.DoubleColon Self "init_env" := {
@@ -423,10 +423,10 @@ Section Impl_call_runtime_RuntimeCaller_t.
       }
   *)
   Definition env (self : ref Self) : M call_runtime.Env.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.call (|call_runtime.RuntimeCaller.t::["init_env"] |)
-    )).
+    ) : call_runtime.Env.t)).
   
   Global Instance AssociatedFunction_env : Notations.DoubleColon Self "env" := {
     Notations.double_colon := env;
@@ -438,13 +438,13 @@ Section Impl_call_runtime_RuntimeCaller_t.
       }
   *)
   Definition new : M Self :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       M.call (|ltac:(M.get_method (fun ℐ =>
         core.default.Default.default
           (Self := call_runtime.RuntimeCaller.t)
           (Trait := ℐ)))
       |)
-    )).
+    ) : Self)).
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
@@ -469,7 +469,7 @@ Section Impl_call_runtime_RuntimeCaller_t.
       (receiver : call_runtime.AccountId.t)
       (value : ltac:(call_runtime.Balance))
       : M (core.result.Result.t unit call_runtime.RuntimeError.t) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let receiver := M.alloc (| receiver |) in
       let value := M.alloc (| value |) in
@@ -508,7 +508,7 @@ Section Impl_call_runtime_RuntimeCaller_t.
             (T := call_runtime.RuntimeError.t)
             (Trait := ℐ))))
       |)
-    )).
+    ) : core.result.Result.t unit call_runtime.RuntimeError.t)).
   
   Global Instance AssociatedFunction_transfer_through_runtime :
     Notations.DoubleColon Self "transfer_through_runtime" := {
@@ -523,7 +523,7 @@ Section Impl_call_runtime_RuntimeCaller_t.
   Definition call_nonexistent_extrinsic
       (self : mut_ref Self)
       : M (core.result.Result.t unit call_runtime.RuntimeError.t) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.call (|((core.result.Result.t unit call_runtime.EnvError.t)::["map_err"]
         (M.call (|(call_runtime.Env.t::["call_runtime"]
@@ -541,7 +541,7 @@ Section Impl_call_runtime_RuntimeCaller_t.
             (T := call_runtime.RuntimeError.t)
             (Trait := ℐ))))
       |)
-    )).
+    ) : core.result.Result.t unit call_runtime.RuntimeError.t)).
   
   Global Instance AssociatedFunction_call_nonexistent_extrinsic :
     Notations.DoubleColon Self "call_nonexistent_extrinsic" := {

@@ -36,10 +36,10 @@ Section Impl_traits_Sheep_t.
       }
   *)
   Definition is_naked (self : ref Self) : M bool.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (| traits.Sheep.Get_naked (deref (M.read (| self |))) |)
-    )).
+    ) : bool.t)).
   
   Global Instance AssociatedFunction_is_naked :
     Notations.DoubleColon Self "is_naked" := {
@@ -61,11 +61,11 @@ Section Impl_traits_Animal_for_traits_Sheep_t.
       }
   *)
   Definition new (name : ref str.t) : M traits.Sheep.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let name := M.alloc (| name |) in
       {| traits.Sheep.name := M.read (| name |); traits.Sheep.naked := false;
       |} : traits.Sheep.t
-    )).
+    ) : traits.Sheep.t)).
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
@@ -77,10 +77,10 @@ Section Impl_traits_Animal_for_traits_Sheep_t.
       }
   *)
   Definition name (self : ref Self) : M (ref str.t) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (| traits.Sheep.Get_name (deref (M.read (| self |))) |)
-    )).
+    ) : ref str.t)).
   
   Global Instance AssociatedFunction_name :
     Notations.DoubleColon Self "name" := {
@@ -97,7 +97,7 @@ Section Impl_traits_Animal_for_traits_Sheep_t.
       }
   *)
   Definition noise (self : ref Self) : M (ref str.t) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         if
@@ -112,7 +112,7 @@ Section Impl_traits_Animal_for_traits_Sheep_t.
         else
           mk_str "baaaaah!"
       |)
-    )).
+    ) : ref str.t)).
   
   Global Instance AssociatedFunction_noise :
     Notations.DoubleColon Self "noise" := {
@@ -126,7 +126,7 @@ Section Impl_traits_Animal_for_traits_Sheep_t.
       }
   *)
   Definition talk (self : ref Self) : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         let _ : M.Val unit :=
@@ -169,7 +169,7 @@ Section Impl_traits_Animal_for_traits_Sheep_t.
           M.alloc (| tt |) in
         M.alloc (| tt |)
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_talk :
     Notations.DoubleColon Self "talk" := {
@@ -202,7 +202,7 @@ Section Impl_traits_Sheep_t_2.
       }
   *)
   Definition shear (self : mut_ref Self) : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         if
@@ -290,7 +290,7 @@ Section Impl_traits_Sheep_t_2.
             |) in
           M.alloc (| tt |)
       |)
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_shear :
     Notations.DoubleColon Self "shear" := {
@@ -312,7 +312,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let dolly : M.Val traits.Sheep.t :=
         M.alloc (|
@@ -340,4 +340,4 @@ Definition main : M unit :=
         |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

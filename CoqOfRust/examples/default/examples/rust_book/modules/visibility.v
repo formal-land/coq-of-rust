@@ -8,7 +8,7 @@ Module my_mod.
       }
   *)
   Definition private_function : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       M.read (|
         let _ : M.Val unit :=
           let _ : M.Val unit :=
@@ -32,7 +32,7 @@ Module my_mod.
           M.alloc (| tt |) in
         M.alloc (| tt |)
       |)
-    )).
+    ) : unit)).
   
   (*
       pub fn function() {
@@ -40,7 +40,7 @@ Module my_mod.
       }
   *)
   Definition function : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       M.read (|
         let _ : M.Val unit :=
           let _ : M.Val unit :=
@@ -60,7 +60,7 @@ Module my_mod.
           M.alloc (| tt |) in
         M.alloc (| tt |)
       |)
-    )).
+    ) : unit)).
   
   (*
       pub fn indirect_access() {
@@ -69,7 +69,7 @@ Module my_mod.
       }
   *)
   Definition indirect_access : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       M.read (|
         let _ : M.Val unit :=
           let _ : M.Val unit :=
@@ -95,7 +95,7 @@ Module my_mod.
           M.alloc (| M.call (|visibility.my_mod.private_function |) |) in
         M.alloc (| tt |)
       |)
-    )).
+    ) : unit)).
   
   Module nested.
     (*
@@ -104,7 +104,7 @@ Module my_mod.
             }
     *)
     Definition function : M unit :=
-      ltac:(M.monadic (
+      ltac:(M.monadic ((
         M.read (|
           let _ : M.Val unit :=
             let _ : M.Val unit :=
@@ -128,7 +128,7 @@ Module my_mod.
             M.alloc (| tt |) in
           M.alloc (| tt |)
         |)
-      )).
+      ) : unit)).
     
     (*
             fn private_function() {
@@ -137,7 +137,7 @@ Module my_mod.
     *)
     (* #[allow(dead_code)] - function was ignored by the compiler *)
     Definition private_function : M unit :=
-      ltac:(M.monadic (
+      ltac:(M.monadic ((
         M.read (|
           let _ : M.Val unit :=
             let _ : M.Val unit :=
@@ -162,7 +162,7 @@ Module my_mod.
             M.alloc (| tt |) in
           M.alloc (| tt |)
         |)
-      )).
+      ) : unit)).
     
     (*
             pub(in crate::my_mod) fn public_function_in_my_mod() {
@@ -171,7 +171,7 @@ Module my_mod.
             }
     *)
     Definition public_function_in_my_mod : M unit :=
-      ltac:(M.monadic (
+      ltac:(M.monadic ((
         M.read (|
           let _ : M.Val unit :=
             let _ : M.Val unit :=
@@ -200,7 +200,7 @@ Module my_mod.
             |) in
           M.alloc (| tt |)
         |)
-      )).
+      ) : unit)).
     
     (*
             pub(self) fn public_function_in_nested() {
@@ -208,7 +208,7 @@ Module my_mod.
             }
     *)
     Definition public_function_in_nested : M unit :=
-      ltac:(M.monadic (
+      ltac:(M.monadic ((
         M.read (|
           let _ : M.Val unit :=
             let _ : M.Val unit :=
@@ -233,7 +233,7 @@ Module my_mod.
             M.alloc (| tt |) in
           M.alloc (| tt |)
         |)
-      )).
+      ) : unit)).
     
     (*
             pub(super) fn public_function_in_super_mod() {
@@ -241,7 +241,7 @@ Module my_mod.
             }
     *)
     Definition public_function_in_super_mod : M unit :=
-      ltac:(M.monadic (
+      ltac:(M.monadic ((
         M.read (|
           let _ : M.Val unit :=
             let _ : M.Val unit :=
@@ -266,7 +266,7 @@ Module my_mod.
             M.alloc (| tt |) in
           M.alloc (| tt |)
         |)
-      )).
+      ) : unit)).
   End nested.
   
   (*
@@ -278,7 +278,7 @@ Module my_mod.
       }
   *)
   Definition call_public_function_in_my_mod : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       M.read (|
         let _ : M.Val unit :=
           let _ : M.Val unit :=
@@ -323,7 +323,7 @@ Module my_mod.
           |) in
         M.alloc (| tt |)
       |)
-    )).
+    ) : unit)).
   
   (*
       pub(crate) fn public_function_in_crate() {
@@ -331,7 +331,7 @@ Module my_mod.
       }
   *)
   Definition public_function_in_crate : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       M.read (|
         let _ : M.Val unit :=
           let _ : M.Val unit :=
@@ -356,7 +356,7 @@ Module my_mod.
           M.alloc (| tt |) in
         M.alloc (| tt |)
       |)
-    )).
+    ) : unit)).
   
   Module private_nested.
     (*
@@ -366,7 +366,7 @@ Module my_mod.
     *)
     (* #[allow(dead_code)] - function was ignored by the compiler *)
     Definition function : M unit :=
-      ltac:(M.monadic (
+      ltac:(M.monadic ((
         M.read (|
           let _ : M.Val unit :=
             let _ : M.Val unit :=
@@ -391,7 +391,7 @@ Module my_mod.
             M.alloc (| tt |) in
           M.alloc (| tt |)
         |)
-      )).
+      ) : unit)).
     
     (*
             pub(crate) fn restricted_function() {
@@ -400,7 +400,7 @@ Module my_mod.
     *)
     (* #[allow(dead_code)] - function was ignored by the compiler *)
     Definition restricted_function : M unit :=
-      ltac:(M.monadic (
+      ltac:(M.monadic ((
         M.read (|
           let _ : M.Val unit :=
             let _ : M.Val unit :=
@@ -425,7 +425,7 @@ Module my_mod.
             M.alloc (| tt |) in
           M.alloc (| tt |)
         |)
-      )).
+      ) : unit)).
   End private_nested.
 End my_mod.
 
@@ -435,7 +435,7 @@ fn function() {
 }
 *)
 Definition function : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let _ : M.Val unit :=
         let _ : M.Val unit :=
@@ -454,7 +454,7 @@ Definition function : M unit :=
         M.alloc (| tt |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).
 
 (*
 fn main() {
@@ -498,7 +498,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let _ : M.Val unit := M.alloc (| M.call (|visibility.function |) |) in
       let _ : M.Val unit :=
@@ -514,4 +514,4 @@ Definition main : M unit :=
         M.alloc (| M.call (|visibility.my_mod.public_function_in_crate |) |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

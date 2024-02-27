@@ -62,10 +62,10 @@ fn red<T: Red>(_: &T) -> &'static str {
 }
 *)
 Definition red {T : Set} (arg : ref T) : M (ref str.t) :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let arg := M.alloc (| arg |) in
     M.read (| mk_str "red" |)
-  )).
+  ) : ref str.t)).
 
 (*
 fn blue<T: Blue>(_: &T) -> &'static str {
@@ -73,10 +73,10 @@ fn blue<T: Blue>(_: &T) -> &'static str {
 }
 *)
 Definition blue {T : Set} (arg : ref T) : M (ref str.t) :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let arg := M.alloc (| arg |) in
     M.read (| mk_str "blue" |)
-  )).
+  ) : ref str.t)).
 
 (*
 fn main() {
@@ -94,7 +94,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let cardinal : M.Val generics_bounds_test_case_empty_bounds.Cardinal.t :=
         M.alloc (| generics_bounds_test_case_empty_bounds.Cardinal.Build |) in
@@ -172,4 +172,4 @@ Definition main : M unit :=
         M.alloc (| tt |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

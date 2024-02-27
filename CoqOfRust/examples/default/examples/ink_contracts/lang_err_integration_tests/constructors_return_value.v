@@ -20,12 +20,12 @@ Section Impl_core_default_Default_for_constructors_return_value_AccountId_t.
   Default
   *)
   Definition default : M constructors_return_value.AccountId.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       constructors_return_value.AccountId.Build_t
         (M.call (|ltac:(M.get_method (fun ℐ =>
           core.default.Default.default (Self := u128.t) (Trait := ℐ)))
         |))
-    )).
+    ) : constructors_return_value.AccountId.t)).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -48,7 +48,7 @@ Section Impl_core_clone_Clone_for_constructors_return_value_AccountId_t.
   Definition clone
       (self : ref Self)
       : M constructors_return_value.AccountId.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         ltac:
@@ -61,7 +61,7 @@ Section Impl_core_clone_Clone_for_constructors_return_value_AccountId_t.
                 M.Val constructors_return_value.AccountId.t
             ])
       |)
-    )).
+    ) : constructors_return_value.AccountId.t)).
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {
@@ -94,13 +94,13 @@ Section Impl_core_convert_From_array_u8_t_for_constructors_return_value_AccountI
       }
   *)
   Definition from (_value : array u8.t) : M Self :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let _value := M.alloc (| _value |) in
       (never_to_any (B := constructors_return_value.AccountId.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : Self)).
   
   Global Instance AssociatedFunction_from :
     Notations.DoubleColon Self "from" := {
@@ -151,14 +151,14 @@ Section Impl_core_fmt_Debug_for_constructors_return_value_ConstructorError_t.
       (self : ref Self)
       (f : mut_ref core.fmt.Formatter.t)
       : M ltac:(core.fmt.Result) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let f := M.alloc (| f |) in
       M.call (|(core.fmt.Formatter.t::["write_str"]
         (M.read (| f |))
         (M.read (| mk_str "ConstructorError" |)))
       |)
-    )).
+    ) : ltac:(core.fmt.Result))).
   
   Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
     Notations.double_colon := fmt;
@@ -186,13 +186,13 @@ Section Impl_constructors_return_value_ReturnFlags_t.
       }
   *)
   Definition new_with_reverted (has_reverted : bool.t) : M Self :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let has_reverted := M.alloc (| has_reverted |) in
       (never_to_any (B := constructors_return_value.ReturnFlags.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : Self)).
   
   Global Instance AssociatedFunction_new_with_reverted :
     Notations.DoubleColon Self "new_with_reverted" := {
@@ -211,11 +211,11 @@ Definition return_value
     (return_flags : constructors_return_value.ReturnFlags.t)
     (return_value : ref R)
     : M never.t :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     let return_flags := M.alloc (| return_flags |) in
     let return_value := M.alloc (| return_value |) in
     M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |))) |)
-  )).
+  ) : never.t)).
 
 Module  Impl_constructors_return_value_ConstructorsReturnValue_t.
 Section Impl_constructors_return_value_ConstructorsReturnValue_t.
@@ -227,13 +227,13 @@ Section Impl_constructors_return_value_ConstructorsReturnValue_t.
       }
   *)
   Definition new (init_value : bool.t) : M Self :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let init_value := M.alloc (| init_value |) in
       {|
         constructors_return_value.ConstructorsReturnValue.value :=
           M.read (| init_value |);
       |} : constructors_return_value.ConstructorsReturnValue.t
-    )).
+    ) : Self)).
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
@@ -255,7 +255,7 @@ Section Impl_constructors_return_value_ConstructorsReturnValue_t.
           (core.result.Result.t
             Self
             constructors_return_value.ConstructorError.t) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let succeed := M.alloc (| succeed |) in
       M.read (|
         if M.read (| use succeed |) then
@@ -271,7 +271,9 @@ Section Impl_constructors_return_value_ConstructorsReturnValue_t.
               constructors_return_value.ConstructorError.Build
           |)
       |)
-    )).
+    ) : core.result.Result.t
+      Self
+      constructors_return_value.ConstructorError.t)).
   
   Global Instance AssociatedFunction_try_new :
     Notations.DoubleColon Self "try_new" := {
@@ -287,7 +289,7 @@ Section Impl_constructors_return_value_ConstructorsReturnValue_t.
       }
   *)
   Definition revert_new (_init_value : bool.t) : M Self :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let _init_value := M.alloc (| _init_value |) in
       (never_to_any
         (B := constructors_return_value.ConstructorsReturnValue.t)) (|
@@ -308,7 +310,7 @@ Section Impl_constructors_return_value_ConstructorsReturnValue_t.
             |))))
         |)
       |)
-    )).
+    ) : Self)).
   
   Global Instance AssociatedFunction_revert_new :
     Notations.DoubleColon Self "revert_new" := {
@@ -336,7 +338,7 @@ Section Impl_constructors_return_value_ConstructorsReturnValue_t.
           (core.result.Result.t
             Self
             constructors_return_value.ConstructorError.t) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let init_value := M.alloc (| init_value |) in
       M.read (|
         let value :
@@ -380,7 +382,9 @@ Section Impl_constructors_return_value_ConstructorsReturnValue_t.
           |)
         |)
       |)
-    )).
+    ) : core.result.Result.t
+      Self
+      constructors_return_value.ConstructorError.t)).
   
   Global Instance AssociatedFunction_try_revert_new :
     Notations.DoubleColon Self "try_revert_new" := {
@@ -393,13 +397,13 @@ Section Impl_constructors_return_value_ConstructorsReturnValue_t.
       }
   *)
   Definition get_value (self : ref Self) : M bool.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         constructors_return_value.ConstructorsReturnValue.Get_value
           (deref (M.read (| self |)))
       |)
-    )).
+    ) : bool.t)).
   
   Global Instance AssociatedFunction_get_value :
     Notations.DoubleColon Self "get_value" := {

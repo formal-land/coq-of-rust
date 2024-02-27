@@ -20,12 +20,12 @@ Section Impl_core_default_Default_for_call_builder_AccountId_t.
   Default
   *)
   Definition default : M call_builder.AccountId.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       call_builder.AccountId.Build_t
         (M.call (|ltac:(M.get_method (fun ℐ =>
           core.default.Default.default (Self := u128.t) (Trait := ℐ)))
         |))
-    )).
+    ) : call_builder.AccountId.t)).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -46,7 +46,7 @@ Section Impl_core_clone_Clone_for_call_builder_AccountId_t.
   Clone
   *)
   Definition clone (self : ref Self) : M call_builder.AccountId.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         ltac:
@@ -58,7 +58,7 @@ Section Impl_core_clone_Clone_for_call_builder_AccountId_t.
                 (deref (M.read (| self |))) : M.Val call_builder.AccountId.t
             ])
       |)
-    )).
+    ) : call_builder.AccountId.t)).
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {
@@ -107,13 +107,13 @@ Section Impl_call_builder_Selector_t.
       }
   *)
   Definition new (bytes : array u8.t) : M Self :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let bytes := M.alloc (| bytes |) in
       (never_to_any (B := call_builder.Selector.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
-    )).
+    ) : Self)).
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
@@ -135,8 +135,8 @@ Section Impl_core_default_Default_for_call_builder_CallBuilderTest_t.
   Default
   *)
   Definition default : M call_builder.CallBuilderTest.t :=
-    ltac:(M.monadic ( call_builder.CallBuilderTest.Build
-    )).
+    ltac:(M.monadic (( call_builder.CallBuilderTest.Build
+    ) : call_builder.CallBuilderTest.t)).
   
   Global Instance AssociatedFunction_default :
     Notations.DoubleColon Self "default" := {
@@ -159,13 +159,13 @@ Section Impl_call_builder_CallBuilderTest_t.
       }
   *)
   Definition new : M Self :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       M.call (|ltac:(M.get_method (fun ℐ =>
         core.default.Default.default
           (Self := call_builder.CallBuilderTest.t)
           (Trait := ℐ)))
       |)
-    )).
+    ) : Self)).
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
@@ -195,7 +195,7 @@ Section Impl_call_builder_CallBuilderTest_t.
       (address : call_builder.AccountId.t)
       (selector : array u8.t)
       : M (core.option.Option.t call_builder.LangError.t) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let address := M.alloc (| address |) in
       let selector := M.alloc (| selector |) in
@@ -279,7 +279,7 @@ Section Impl_call_builder_CallBuilderTest_t.
                 M.Val (core.option.Option.t call_builder.LangError.t)
             ])
       |)
-    )).
+    ) : core.option.Option.t call_builder.LangError.t)).
   
   Global Instance AssociatedFunction_call :
     Notations.DoubleColon Self "call" := {
@@ -302,12 +302,12 @@ Section Impl_call_builder_CallBuilderTest_t.
       (address : call_builder.AccountId.t)
       (selector : array u8.t)
       : M unit :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let address := M.alloc (| address |) in
       let selector := M.alloc (| selector |) in
       tt
-    )).
+    ) : unit)).
   
   Global Instance AssociatedFunction_invoke :
     Notations.DoubleColon Self "invoke" := {
@@ -350,13 +350,13 @@ Section Impl_call_builder_CallBuilderTest_t.
       (selector : array u8.t)
       (init_value : bool.t)
       : M (core.option.Option.t call_builder.LangError.t) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let code_hash := M.alloc (| code_hash |) in
       let selector := M.alloc (| selector |) in
       let init_value := M.alloc (| init_value |) in
       core.option.Option.None
-    )).
+    ) : core.option.Option.t call_builder.LangError.t)).
   
   Global Instance AssociatedFunction_call_instantiate :
     Notations.DoubleColon Self "call_instantiate" := {
@@ -396,13 +396,13 @@ Section Impl_call_builder_CallBuilderTest_t.
       (selector : array u8.t)
       (init_value : bool.t)
       : M (core.option.Option.t unit) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let code_hash := M.alloc (| code_hash |) in
       let selector := M.alloc (| selector |) in
       let init_value := M.alloc (| init_value |) in
       core.option.Option.None
-    )).
+    ) : core.option.Option.t unit)).
   
   Global Instance AssociatedFunction_call_instantiate_fallible :
     Notations.DoubleColon Self "call_instantiate_fallible" := {

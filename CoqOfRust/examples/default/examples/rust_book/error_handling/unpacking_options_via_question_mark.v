@@ -27,7 +27,7 @@ Section Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumbe
   Definition clone
       (self : ref Self)
       : M unpacking_options_via_question_mark.PhoneNumber.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         ltac:
@@ -53,7 +53,7 @@ Section Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumbe
                 M.Val unpacking_options_via_question_mark.PhoneNumber.t
             ])
       |)
-    )).
+    ) : unpacking_options_via_question_mark.PhoneNumber.t)).
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {
@@ -100,7 +100,7 @@ Section Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job_t.
   Definition clone
       (self : ref Self)
       : M unpacking_options_via_question_mark.Job.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         ltac:
@@ -121,7 +121,7 @@ Section Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job_t.
                 M.Val unpacking_options_via_question_mark.Job.t
             ])
       |)
-    )).
+    ) : unpacking_options_via_question_mark.Job.t)).
   
   Global Instance AssociatedFunction_clone :
     Notations.DoubleColon Self "clone" := {
@@ -170,7 +170,7 @@ Section Impl_unpacking_options_via_question_mark_Person_t.
   Definition work_phone_area_code
       (self : ref Self)
       : M (core.option.Option.t u8.t) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let return_ := M.return_ (R := core.option.Option.t u8.t) in
       M.catch_return
@@ -311,7 +311,7 @@ Section Impl_unpacking_options_via_question_mark_Person_t.
                     M.Val unpacking_options_via_question_mark.PhoneNumber.t
                 ]))
         |))
-    )).
+    ) : core.option.Option.t u8.t)).
   
   Global Instance AssociatedFunction_work_phone_area_code :
     Notations.DoubleColon Self "work_phone_area_code" := {
@@ -336,7 +336,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let p : M.Val unpacking_options_via_question_mark.Person.t :=
         M.alloc (|
@@ -421,4 +421,4 @@ Definition main : M unit :=
             ]) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

@@ -34,8 +34,8 @@ Section Impl_enums_testcase_linked_list_List_t.
       }
   *)
   Definition new : M enums_testcase_linked_list.List.t :=
-    ltac:(M.monadic ( enums_testcase_linked_list.List.Nil
-    )).
+    ltac:(M.monadic (( enums_testcase_linked_list.List.Nil
+    ) : enums_testcase_linked_list.List.t)).
   
   Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
     Notations.double_colon := new;
@@ -51,7 +51,7 @@ Section Impl_enums_testcase_linked_list_List_t.
       (self : Self)
       (elem : u32.t)
       : M enums_testcase_linked_list.List.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let elem := M.alloc (| elem |) in
       enums_testcase_linked_list.List.Cons
@@ -61,7 +61,7 @@ Section Impl_enums_testcase_linked_list_List_t.
               alloc.alloc.Global.t)::["new"]
           (M.read (| self |)))
         |))
-    )).
+    ) : enums_testcase_linked_list.List.t)).
   
   Global Instance AssociatedFunction_prepend :
     Notations.DoubleColon Self "prepend" := {
@@ -87,7 +87,7 @@ Section Impl_enums_testcase_linked_list_List_t.
       }
   *)
   Definition len (self : ref Self) : M u32.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         ltac:
@@ -121,7 +121,7 @@ Section Impl_enums_testcase_linked_list_List_t.
                 M.Val u32.t
             ])
       |)
-    )).
+    ) : u32.t)).
   
   Global Instance AssociatedFunction_len : Notations.DoubleColon Self "len" := {
     Notations.double_colon := len;
@@ -142,7 +142,7 @@ Section Impl_enums_testcase_linked_list_List_t.
       }
   *)
   Definition stringify (self : ref Self) : M alloc.string.String.t :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         ltac:
@@ -218,7 +218,7 @@ Section Impl_enums_testcase_linked_list_List_t.
                 M.Val alloc.string.String.t
             ])
       |)
-    )).
+    ) : alloc.string.String.t)).
   
   Global Instance AssociatedFunction_stringify :
     Notations.DoubleColon Self "stringify" := {
@@ -244,7 +244,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let list : M.Val enums_testcase_linked_list.List.t :=
         M.alloc (| M.call (|enums_testcase_linked_list.List.t::["new"] |) |) in
@@ -339,4 +339,4 @@ Definition main : M unit :=
         M.alloc (| tt |) in
       M.alloc (| tt |)
     |)
-  )).
+  ) : unit)).

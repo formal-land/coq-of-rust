@@ -37,7 +37,7 @@ Section Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci_t.
       }
   *)
   Definition next (self : mut_ref Self) : M (core.option.Option.t Item) :=
-    ltac:(M.monadic (
+    ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       M.read (|
         let current : M.Val u32.t :=
@@ -60,7 +60,7 @@ Section Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci_t.
           |) in
         M.alloc (| core.option.Option.Some (M.read (| current |)) |)
       |)
-    )).
+    ) : core.option.Option.t Item)).
   
   Global Instance AssociatedFunction_next :
     Notations.DoubleColon Self "next" := {
@@ -158,12 +158,12 @@ fn fibonacci() -> Fibonacci {
 }
 *)
 Definition fibonacci : M iterators.Fibonacci.t :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     {|
       iterators.Fibonacci.curr := (Integer.of_Z 0) : u32.t;
       iterators.Fibonacci.next := (Integer.of_Z 1) : u32.t;
     |} : iterators.Fibonacci.t
-  )).
+  ) : iterators.Fibonacci.t)).
 
 (*
 fn main() {
@@ -206,7 +206,7 @@ fn main() {
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
 Definition main : M unit :=
-  ltac:(M.monadic (
+  ltac:(M.monadic ((
     M.read (|
       let sequence : M.Val (core.ops.range.Range.t i32.t) :=
         M.alloc (|
@@ -834,4 +834,4 @@ Definition main : M unit :=
                 M.Val unit
             ]))
     |)
-  )).
+  ) : unit)).
