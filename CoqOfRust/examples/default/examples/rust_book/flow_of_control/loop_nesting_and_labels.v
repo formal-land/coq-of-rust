@@ -46,7 +46,7 @@ Definition main : M unit :=
             M.alloc (| tt |) in
           let _ : M.Val unit :=
             M.alloc (|
-              never_to_any (|
+              (never_to_any (B := unit)) (|
                 M.read (|
                   M.loop
                     (let _ : M.Val unit :=

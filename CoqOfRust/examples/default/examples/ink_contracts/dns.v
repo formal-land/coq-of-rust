@@ -70,7 +70,7 @@ Section Impl_dns_Mapping_t_K_V.
     ltac:(M.monadic (
       let self := M.alloc (| self |) in
       let _key := M.alloc (| _key |) in
-      never_to_any (|
+      (never_to_any (B := bool.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -93,7 +93,7 @@ Section Impl_dns_Mapping_t_K_V.
     ltac:(M.monadic (
       let self := M.alloc (| self |) in
       let _key := M.alloc (| _key |) in
-      never_to_any (|
+      (never_to_any (B := core.option.Option.t V)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -117,7 +117,7 @@ Section Impl_dns_Mapping_t_K_V.
       let self := M.alloc (| self |) in
       let _key := M.alloc (| _key |) in
       let _value := M.alloc (| _value |) in
-      never_to_any (|
+      (never_to_any (B := core.option.Option.t u32.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -135,7 +135,7 @@ Section Impl_dns_Mapping_t_K_V.
   *)
   Definition new : M (dns.Mapping.t K V) :=
     ltac:(M.monadic (
-      never_to_any (|
+      (never_to_any (B := dns.Mapping.t K V)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -154,7 +154,7 @@ Section Impl_dns_Mapping_t_K_V.
     ltac:(M.monadic (
       let self := M.alloc (| self |) in
       let _key := M.alloc (| _key |) in
-      never_to_any (|
+      (never_to_any (B := unit)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -177,7 +177,7 @@ Section Impl_dns_Mapping_t_K_V.
     ltac:(M.monadic (
       let self := M.alloc (| self |) in
       let _key := M.alloc (| _key |) in
-      never_to_any (|
+      (never_to_any (B := core.option.Option.t u32.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -197,7 +197,7 @@ Section Impl_dns_Mapping_t_K_V.
     ltac:(M.monadic (
       let self := M.alloc (| self |) in
       let _key := M.alloc (| _key |) in
-      never_to_any (|
+      (never_to_any (B := core.option.Option.t V)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -340,7 +340,7 @@ Section Impl_core_convert_From_array_u8_t_for_dns_AccountId_t.
   Definition from (_value : array u8.t) : M Self :=
     ltac:(M.monadic (
       let _value := M.alloc (| _value |) in
-      never_to_any (|
+      (never_to_any (B := dns.AccountId.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -488,7 +488,7 @@ Section Impl_dns_Env_t.
     ltac:(M.monadic (
       let self := M.alloc (| self |) in
       let _event := M.alloc (| _event |) in
-      never_to_any (|
+      (never_to_any (B := unit)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -716,7 +716,7 @@ Section Impl_dns_DomainNameService_t.
   *)
   Definition init_env : M dns.Env.t :=
     ltac:(M.monadic (
-      never_to_any (|
+      (never_to_any (B := dns.Env.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -812,7 +812,7 @@ Section Impl_dns_DomainNameService_t.
               |)
             then
               M.alloc (|
-                never_to_any (|
+                (never_to_any (B := unit)) (|
                   M.read (|
                     return_ (core.result.Result.Err dns.Error.NameAlreadyExists)
                   |)
@@ -954,7 +954,7 @@ Section Impl_dns_DomainNameService_t.
               |)
             then
               M.alloc (|
-                never_to_any (|
+                (never_to_any (B := unit)) (|
                   M.read (|
                     return_ (core.result.Result.Err dns.Error.CallerIsNotOwner)
                   |)
@@ -1076,7 +1076,7 @@ Section Impl_dns_DomainNameService_t.
               |)
             then
               M.alloc (|
-                never_to_any (|
+                (never_to_any (B := unit)) (|
                   M.read (|
                     return_ (core.result.Result.Err dns.Error.CallerIsNotOwner)
                   |)

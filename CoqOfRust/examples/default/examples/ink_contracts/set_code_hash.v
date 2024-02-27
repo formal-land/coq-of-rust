@@ -17,7 +17,7 @@ Definition set_code_hash
     : M (core.result.Result.t unit set_code_hash.Error.t) :=
   ltac:(M.monadic (
     let code_hash := M.alloc (| code_hash |) in
-    never_to_any (|
+    (never_to_any (B := core.result.Result.t unit set_code_hash.Error.t)) (|
       M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |))) |)
     |)
   )).
@@ -187,7 +187,7 @@ Section Impl_set_code_hash_Incrementer_t.
                     [
                       fun γ =>
                         (let err := M.copy (| γ |) in
-                        never_to_any (|
+                        (never_to_any (B := unit)) (|
                           M.call (|(std.panicking.begin_panic
                             (M.read (|
                               mk_str

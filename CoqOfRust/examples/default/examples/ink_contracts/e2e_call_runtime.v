@@ -106,7 +106,7 @@ Section Impl_e2e_call_runtime_Env_t.
   Definition balance (self : ref Self) : M ltac:(e2e_call_runtime.Balance) :=
     ltac:(M.monadic (
       let self := M.alloc (| self |) in
-      never_to_any (|
+      (never_to_any (B := u128.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -158,7 +158,7 @@ Section Impl_e2e_call_runtime_Contract_t.
   *)
   Definition init_env : M e2e_call_runtime.Env.t :=
     ltac:(M.monadic (
-      never_to_any (|
+      (never_to_any (B := e2e_call_runtime.Env.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)

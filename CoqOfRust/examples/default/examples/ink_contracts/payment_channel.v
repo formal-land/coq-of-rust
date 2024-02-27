@@ -179,7 +179,7 @@ Section Impl_core_convert_From_array_u8_t_for_payment_channel_AccountId_t.
   Definition from (value : array u8.t) : M Self :=
     ltac:(M.monadic (
       let value := M.alloc (| value |) in
-      never_to_any (|
+      (never_to_any (B := payment_channel.AccountId.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -401,7 +401,7 @@ Section Impl_payment_channel_Env_t.
     ltac:(M.monadic (
       let self := M.alloc (| self |) in
       let _event := M.alloc (| _event |) in
-      never_to_any (|
+      (never_to_any (B := unit)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -424,7 +424,7 @@ Section Impl_payment_channel_Env_t.
     ltac:(M.monadic (
       let self := M.alloc (| self |) in
       let sender := M.alloc (| sender |) in
-      never_to_any (|
+      (never_to_any (B := unit)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -449,7 +449,7 @@ Section Impl_payment_channel_Env_t.
       let self := M.alloc (| self |) in
       let recipient := M.alloc (| recipient |) in
       let amount := M.alloc (| amount |) in
-      never_to_any (|
+      (never_to_any (B := core.result.Result.t unit payment_channel.Error.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -470,7 +470,7 @@ Section Impl_payment_channel_Env_t.
       : M ltac:(payment_channel.Timestamp) :=
     ltac:(M.monadic (
       let self := M.alloc (| self |) in
-      never_to_any (|
+      (never_to_any (B := u64.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -489,7 +489,7 @@ Section Impl_payment_channel_Env_t.
   Definition balance (self : ref Self) : M ltac:(payment_channel.Balance) :=
     ltac:(M.monadic (
       let self := M.alloc (| self |) in
-      never_to_any (|
+      (never_to_any (B := u128.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -508,7 +508,7 @@ Section Impl_payment_channel_Env_t.
   Definition account_id (self : ref Self) : M payment_channel.AccountId.t :=
     ltac:(M.monadic (
       let self := M.alloc (| self |) in
-      never_to_any (|
+      (never_to_any (B := payment_channel.AccountId.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -572,7 +572,7 @@ Definition hash_encoded
   ltac:(M.monadic (
     let input := M.alloc (| input |) in
     let output := M.alloc (| output |) in
-    never_to_any (|
+    (never_to_any (B := unit)) (|
       M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |))) |)
     |)
   )).
@@ -595,7 +595,7 @@ Definition ecdsa_recover
     let signature := M.alloc (| signature |) in
     let message_hash := M.alloc (| message_hash |) in
     let output := M.alloc (| output |) in
-    never_to_any (|
+    (never_to_any (B := core.result.Result.t unit payment_channel.Error.t)) (|
       M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |))) |)
     |)
   )).
@@ -701,7 +701,7 @@ Section Impl_payment_channel_CryptoHash_for_payment_channel_Sha2x256_t.
     ltac:(M.monadic (
       let input := M.alloc (| input |) in
       let output := M.alloc (| output |) in
-      never_to_any (|
+      (never_to_any (B := unit)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -739,7 +739,7 @@ Section Impl_payment_channel_CryptoHash_for_payment_channel_Keccak256_t.
     ltac:(M.monadic (
       let input := M.alloc (| input |) in
       let output := M.alloc (| output |) in
-      never_to_any (|
+      (never_to_any (B := unit)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -777,7 +777,7 @@ Section Impl_payment_channel_CryptoHash_for_payment_channel_Blake2x256_t.
     ltac:(M.monadic (
       let input := M.alloc (| input |) in
       let output := M.alloc (| output |) in
-      never_to_any (|
+      (never_to_any (B := unit)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -815,7 +815,7 @@ Section Impl_payment_channel_CryptoHash_for_payment_channel_Blake2x128_t.
     ltac:(M.monadic (
       let input := M.alloc (| input |) in
       let output := M.alloc (| output |) in
-      never_to_any (|
+      (never_to_any (B := unit)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -843,7 +843,7 @@ Section Impl_payment_channel_PaymentChannel_t.
   *)
   Definition init_env : M payment_channel.Env.t :=
     ltac:(M.monadic (
-      never_to_any (|
+      (never_to_any (B := payment_channel.Env.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -938,7 +938,7 @@ Section Impl_payment_channel_PaymentChannel_t.
                     [
                       fun γ =>
                         (let err := M.copy (| γ |) in
-                        never_to_any (|
+                        (never_to_any (B := unit)) (|
                           M.call (|(std.panicking.begin_panic
                             (M.read (| mk_str "recover failed: {err:?}" |)))
                           |)
@@ -1090,7 +1090,7 @@ Section Impl_payment_channel_PaymentChannel_t.
               |)
             then
               M.alloc (|
-                never_to_any (|
+                (never_to_any (B := unit)) (|
                   M.read (|
                     return_
                       (core.result.Result.Err
@@ -1115,7 +1115,7 @@ Section Impl_payment_channel_PaymentChannel_t.
               |)
             then
               M.alloc (|
-                never_to_any (|
+                (never_to_any (B := unit)) (|
                   M.read (|
                     return_
                       (core.result.Result.Err
@@ -1140,7 +1140,7 @@ Section Impl_payment_channel_PaymentChannel_t.
               |)
             then
               M.alloc (|
-                never_to_any (|
+                (never_to_any (B := unit)) (|
                   M.read (|
                     return_
                       (core.result.Result.Err
@@ -1209,7 +1209,7 @@ Section Impl_payment_channel_PaymentChannel_t.
                         core.ops.control_flow.ControlFlow.Get_Break_0 γ in
                       let residual := M.copy (| γ0_0 |) in
                       M.alloc (|
-                        never_to_any (|
+                        (never_to_any (B := unit)) (|
                           M.read (|
                             return_
                               (M.call (|(ltac:(M.get_method (fun ℐ =>
@@ -1309,7 +1309,7 @@ Section Impl_payment_channel_PaymentChannel_t.
                         core.ops.control_flow.ControlFlow.Get_Break_0 γ in
                       let residual := M.copy (| γ0_0 |) in
                       M.alloc (|
-                        never_to_any (|
+                        (never_to_any (B := unit)) (|
                           M.read (|
                             return_
                               (M.call (|(ltac:(M.get_method (fun ℐ =>
@@ -1430,7 +1430,7 @@ Section Impl_payment_channel_PaymentChannel_t.
               |)
             then
               M.alloc (|
-                never_to_any (|
+                (never_to_any (B := unit)) (|
                   M.read (|
                     return_
                       (core.result.Result.Err
@@ -1558,7 +1558,7 @@ Section Impl_payment_channel_PaymentChannel_t.
                         |)
                       then
                         M.alloc (|
-                          never_to_any (|
+                          (never_to_any (B := unit)) (|
                             M.read (|
                               return_
                                 (core.result.Result.Err
@@ -1672,7 +1672,7 @@ Section Impl_payment_channel_PaymentChannel_t.
               |)
             then
               M.alloc (|
-                never_to_any (|
+                (never_to_any (B := unit)) (|
                   M.read (|
                     return_
                       (core.result.Result.Err
@@ -1697,7 +1697,7 @@ Section Impl_payment_channel_PaymentChannel_t.
               |)
             then
               M.alloc (|
-                never_to_any (|
+                (never_to_any (B := unit)) (|
                   M.read (|
                     return_
                       (core.result.Result.Err
@@ -1722,7 +1722,7 @@ Section Impl_payment_channel_PaymentChannel_t.
               |)
             then
               M.alloc (|
-                never_to_any (|
+                (never_to_any (B := unit)) (|
                   M.read (|
                     return_
                       (core.result.Result.Err
@@ -1804,7 +1804,7 @@ Section Impl_payment_channel_PaymentChannel_t.
                         core.ops.control_flow.ControlFlow.Get_Break_0 γ in
                       let residual := M.copy (| γ0_0 |) in
                       M.alloc (|
-                        never_to_any (|
+                        (never_to_any (B := unit)) (|
                           M.read (|
                             return_
                               (M.call (|(ltac:(M.get_method (fun ℐ =>

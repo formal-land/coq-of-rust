@@ -58,7 +58,7 @@ Definition main : M unit :=
               M.Val unit;
             fun (γ : M.Val u8.t) =>
               (M.alloc (|
-                never_to_any (|
+                (never_to_any (B := unit)) (|
                   M.call (|(core.panicking.unreachable_display
                     (borrow (mk_str "Should never happen.")))
                   |)

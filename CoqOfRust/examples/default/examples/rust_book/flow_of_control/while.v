@@ -166,10 +166,12 @@ Definition main : M unit :=
           M.alloc (| tt |)
         else
           M.alloc (|
-            never_to_any (|
+            (never_to_any (B := unit)) (|
               M.read (|
                 let _ : M.Val unit :=
-                  M.alloc (| never_to_any (| M.read (| M.break |) |) |) in
+                  M.alloc (|
+                    (never_to_any (B := unit)) (| M.read (| M.break |) |)
+                  |) in
                 M.alloc (| tt |)
               |)
             |)

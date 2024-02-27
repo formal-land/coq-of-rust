@@ -46,7 +46,7 @@ Definition main : M unit :=
                   [
                     fun γ =>
                       (let e := M.copy (| γ |) in
-                      never_to_any (|
+                      (never_to_any (B := std.process.Output.t)) (|
                         M.call (|(core.panicking.panic_fmt
                           (M.call (|(core.fmt.Arguments.t::["new_v1"]
                             (pointer_coercion

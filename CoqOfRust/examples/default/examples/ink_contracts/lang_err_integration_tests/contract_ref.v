@@ -154,7 +154,7 @@ Section Impl_contract_ref_FlipperRef_t.
   *)
   Definition init_env : M contract_ref.Env.t :=
     ltac:(M.monadic (
-      never_to_any (|
+      (never_to_any (B := contract_ref.Env.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)

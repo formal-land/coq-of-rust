@@ -67,7 +67,7 @@ Definition main : M unit :=
             |)
           then
             M.alloc (|
-              never_to_any (|
+              (never_to_any (B := unit)) (|
                 M.read (|
                   let _ : M.Val unit :=
                     let _ : M.Val unit :=
@@ -125,7 +125,7 @@ Definition main : M unit :=
           |)
         then
           M.alloc (|
-            never_to_any (|
+            (never_to_any (B := unit)) (|
               M.read (|
                 let _ : M.Val unit :=
                   let _ : M.Val unit :=

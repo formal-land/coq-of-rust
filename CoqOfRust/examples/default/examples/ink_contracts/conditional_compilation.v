@@ -194,7 +194,7 @@ Section Impl_conditional_compilation_Env_t.
     ltac:(M.monadic (
       let self := M.alloc (| self |) in
       let _event := M.alloc (| _event |) in
-      never_to_any (|
+      (never_to_any (B := unit)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -215,7 +215,7 @@ Section Impl_conditional_compilation_Env_t.
       : M ltac:(conditional_compilation.BlockNumber) :=
     ltac:(M.monadic (
       let self := M.alloc (| self |) in
-      never_to_any (|
+      (never_to_any (B := u32.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -250,7 +250,7 @@ Section Impl_conditional_compilation_ConditionalCompilation_t.
   *)
   Definition init_env : M conditional_compilation.Env.t :=
     ltac:(M.monadic (
-      never_to_any (|
+      (never_to_any (B := conditional_compilation.Env.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)

@@ -214,7 +214,7 @@ Definition op (x : f64.t) (y : f64.t) : M f64.t :=
                 let γ0_0 := core.result.Result.Get_Err_0 γ in
                 let why := M.copy (| γ0_0 |) in
                 M.alloc (|
-                  never_to_any (|
+                  (never_to_any (B := f64.t)) (|
                     M.call (|(core.panicking.panic_fmt
                       (M.call (|(core.fmt.Arguments.t::["new_v1"]
                         (pointer_coercion
@@ -262,7 +262,7 @@ Definition op (x : f64.t) (y : f64.t) : M f64.t :=
                           let γ0_0 := core.result.Result.Get_Err_0 γ in
                           let why := M.copy (| γ0_0 |) in
                           M.alloc (|
-                            never_to_any (|
+                            (never_to_any (B := f64.t)) (|
                               M.call (|(core.panicking.panic_fmt
                                 (M.call (|(core.fmt.Arguments.t::["new_v1"]
                                   (pointer_coercion
@@ -316,7 +316,7 @@ Definition op (x : f64.t) (y : f64.t) : M f64.t :=
                                       core.result.Result.Get_Err_0 γ in
                                     let why := M.copy (| γ0_0 |) in
                                     M.alloc (|
-                                      never_to_any (|
+                                      (never_to_any (B := f64.t)) (|
                                         M.call (|(core.panicking.panic_fmt
                                           (M.call (|(core.fmt.Arguments.t::["new_v1"]
                                             (pointer_coercion

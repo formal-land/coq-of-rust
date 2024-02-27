@@ -367,7 +367,7 @@ Definition main : M unit :=
                     |)
                   then
                     M.alloc (|
-                      never_to_any (|
+                      (never_to_any (B := unit)) (|
                         M.read (|
                           let kind : M.Val core.panicking.AssertKind.t :=
                             M.alloc (| core.panicking.AssertKind.Eq |) in
@@ -434,7 +434,7 @@ Definition main : M unit :=
                     |)
                   then
                     M.alloc (|
-                      never_to_any (|
+                      (never_to_any (B := unit)) (|
                         M.read (|
                           let kind : M.Val core.panicking.AssertKind.t :=
                             M.alloc (| core.panicking.AssertKind.Eq |) in
@@ -493,7 +493,10 @@ Definition main : M unit :=
                           fun (γ : M.Val (core.option.Option.t usize.t)) =>
                             match M.read (| γ |) with
                             | core.option.Option.None =>
-                              M.alloc (| never_to_any (| M.read (| M.break |) |)
+                              M.alloc (|
+                                (never_to_any (B := unit)) (|
+                                  M.read (| M.break |)
+                                |)
                               |)
                             | _ => M.break_match(||)
                             end :

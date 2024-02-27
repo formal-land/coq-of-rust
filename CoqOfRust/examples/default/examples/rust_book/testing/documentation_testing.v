@@ -37,7 +37,7 @@ Definition div (a : i32.t) (b : i32.t) : M i32.t :=
           |)
         then
           M.alloc (|
-            never_to_any (|
+            (never_to_any (B := unit)) (|
               M.call (|(std.panicking.begin_panic
                 (M.read (| mk_str "Divide-by-zero error" |)))
               |)

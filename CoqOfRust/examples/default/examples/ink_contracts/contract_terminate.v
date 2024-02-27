@@ -125,7 +125,7 @@ Section Impl_contract_terminate_Env_t.
     ltac:(M.monadic (
       let self := M.alloc (| self |) in
       let _account := M.alloc (| _account |) in
-      never_to_any (|
+      (never_to_any (B := unit)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -155,7 +155,7 @@ Section Impl_contract_terminate_JustTerminate_t.
   *)
   Definition init_env : M contract_terminate.Env.t :=
     ltac:(M.monadic (
-      never_to_any (|
+      (never_to_any (B := contract_terminate.Env.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)

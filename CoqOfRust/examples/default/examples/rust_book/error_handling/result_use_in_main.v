@@ -55,7 +55,7 @@ Definition main
                       let γ0_0 := core.result.Result.Get_Err_0 γ in
                       let e := M.copy (| γ0_0 |) in
                       M.alloc (|
-                        never_to_any (|
+                        (never_to_any (B := i32.t)) (|
                           M.read (|
                             return_ (core.result.Result.Err (M.read (| e |)))
                           |)

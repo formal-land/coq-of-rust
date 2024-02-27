@@ -117,7 +117,8 @@ Section Impl_updated_incrementer_Env_t.
     ltac:(M.monadic (
       let self := M.alloc (| self |) in
       let code_hash := M.alloc (| code_hash |) in
-      never_to_any (|
+      (never_to_any
+        (B := core.result.Result.t unit updated_incrementer.Error.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -152,7 +153,7 @@ Section Impl_updated_incrementer_Incrementer_t.
   *)
   Definition init_env : M updated_incrementer.Env.t :=
     ltac:(M.monadic (
-      never_to_any (|
+      (never_to_any (B := updated_incrementer.Env.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -185,7 +186,7 @@ Section Impl_updated_incrementer_Incrementer_t.
   *)
   Definition new : M Self :=
     ltac:(M.monadic (
-      never_to_any (|
+      (never_to_any (B := updated_incrementer.Incrementer.t)) (|
         M.call (|(core.panicking.unreachable_display
           (borrow
             (mk_str
@@ -315,7 +316,7 @@ Section Impl_updated_incrementer_Incrementer_t.
                     [
                       fun γ =>
                         (let err := M.copy (| γ |) in
-                        never_to_any (|
+                        (never_to_any (B := unit)) (|
                           M.call (|(std.panicking.begin_panic
                             (M.read (|
                               mk_str

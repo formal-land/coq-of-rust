@@ -112,7 +112,8 @@ Section Impl_core_convert_From_call_runtime_AccountId_t_for_call_runtime_MultiAd
   Definition from (_value : call_runtime.AccountId.t) : M Self :=
     ltac:(M.monadic (
       let _value := M.alloc (| _value |) in
-      never_to_any (|
+      (never_to_any
+        (B := call_runtime.MultiAddress.t call_runtime.AccountId.t unit)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -339,7 +340,7 @@ Section Impl_core_convert_From_call_runtime_EnvError_t_for_call_runtime_RuntimeE
                 M.Val call_runtime.RuntimeError.t;
               fun (γ : M.Val call_runtime.EnvError.t) =>
                 (M.alloc (|
-                  never_to_any (|
+                  (never_to_any (B := call_runtime.RuntimeError.t)) (|
                     M.call (|(std.panicking.begin_panic
                       (M.read (|
                         mk_str "Unexpected error from `pallet-contracts`."
@@ -381,7 +382,7 @@ Section Impl_call_runtime_Env_t.
     ltac:(M.monadic (
       let self := M.alloc (| self |) in
       let _call := M.alloc (| _call |) in
-      never_to_any (|
+      (never_to_any (B := core.result.Result.t unit call_runtime.EnvError.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -405,7 +406,7 @@ Section Impl_call_runtime_RuntimeCaller_t.
   *)
   Definition init_env : M call_runtime.Env.t :=
     ltac:(M.monadic (
-      never_to_any (|
+      (never_to_any (B := call_runtime.Env.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)

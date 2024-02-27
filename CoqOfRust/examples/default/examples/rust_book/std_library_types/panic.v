@@ -25,7 +25,7 @@ Definition division (dividend : i32.t) (divisor : i32.t) : M i32.t :=
         |)
       then
         M.alloc (|
-          never_to_any (|
+          (never_to_any (B := i32.t)) (|
             M.call (|(std.panicking.begin_panic
               (M.read (| mk_str "division by zero" |)))
             |)

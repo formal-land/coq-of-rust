@@ -243,7 +243,7 @@ Section Impl_custom_environment_Env_t.
     ltac:(M.monadic (
       let self := M.alloc (| self |) in
       let _event := M.alloc (| _event |) in
-      never_to_any (|
+      (never_to_any (B := unit)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -267,7 +267,7 @@ Section Impl_custom_environment_Topics_t.
   *)
   Definition init_env : M custom_environment.Env.t :=
     ltac:(M.monadic (
-      never_to_any (|
+      (never_to_any (B := custom_environment.Env.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)

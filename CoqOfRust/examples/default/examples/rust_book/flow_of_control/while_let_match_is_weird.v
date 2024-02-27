@@ -120,7 +120,9 @@ Definition main : M unit :=
                 end :
                 M.Val unit;
               fun (γ : M.Val (core.option.Option.t i32.t)) =>
-                (M.alloc (| never_to_any (| M.read (| M.break |) |) |)) :
+                (M.alloc (|
+                  (never_to_any (B := unit)) (| M.read (| M.break |) |)
+                |)) :
                 M.Val unit
             ]))
     |)

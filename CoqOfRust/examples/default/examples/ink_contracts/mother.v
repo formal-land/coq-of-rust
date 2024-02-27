@@ -73,7 +73,7 @@ Section Impl_mother_Mapping_t_K_V.
     ltac:(M.monadic (
       let self := M.alloc (| self |) in
       let _key := M.alloc (| _key |) in
-      never_to_any (|
+      (never_to_any (B := core.option.Option.t V)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -93,7 +93,7 @@ Section Impl_mother_Mapping_t_K_V.
       let self := M.alloc (| self |) in
       let _key := M.alloc (| _key |) in
       let _value := M.alloc (| _value |) in
-      never_to_any (|
+      (never_to_any (B := unit)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -1550,7 +1550,7 @@ Section Impl_mother_Env_t.
     ltac:(M.monadic (
       let self := M.alloc (| self |) in
       let _event := M.alloc (| _event |) in
-      never_to_any (|
+      (never_to_any (B := unit)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -1628,7 +1628,7 @@ Section Impl_mother_Mother_t.
   *)
   Definition init_env : M mother.Env.t :=
     ltac:(M.monadic (
-      never_to_any (|
+      (never_to_any (B := mother.Env.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -1840,7 +1840,8 @@ Section Impl_mother_Mother_t.
                   match M.read (| γ0_0 |) with
                   | mother.Failure.Panic =>
                     M.alloc (|
-                      never_to_any (|
+                      (never_to_any
+                        (B := core.result.Result.t unit mother.Failure.t)) (|
                         M.call (|(std.panicking.begin_panic
                           (M.read (| mk_str "Trapping on user demand!" |)))
                         |)

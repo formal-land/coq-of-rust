@@ -84,7 +84,10 @@ Definition main : M unit :=
                           fun (γ : M.Val (core.option.Option.t (ref str.t))) =>
                             match M.read (| γ |) with
                             | core.option.Option.None =>
-                              M.alloc (| never_to_any (| M.read (| M.break |) |)
+                              M.alloc (|
+                                (never_to_any (B := unit)) (|
+                                  M.read (| M.break |)
+                                |)
                               |)
                             | _ => M.break_match(||)
                             end :

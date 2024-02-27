@@ -70,7 +70,7 @@ Section Impl_mapping_integration_tests_Mapping_t_K_V.
     ltac:(M.monadic (
       let self := M.alloc (| self |) in
       let _key := M.alloc (| _key |) in
-      never_to_any (|
+      (never_to_any (B := bool.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -93,7 +93,7 @@ Section Impl_mapping_integration_tests_Mapping_t_K_V.
     ltac:(M.monadic (
       let self := M.alloc (| self |) in
       let _key := M.alloc (| _key |) in
-      never_to_any (|
+      (never_to_any (B := core.option.Option.t V)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -117,7 +117,7 @@ Section Impl_mapping_integration_tests_Mapping_t_K_V.
       let self := M.alloc (| self |) in
       let _key := M.alloc (| _key |) in
       let _value := M.alloc (| _value |) in
-      never_to_any (|
+      (never_to_any (B := core.option.Option.t u32.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -135,7 +135,7 @@ Section Impl_mapping_integration_tests_Mapping_t_K_V.
   *)
   Definition new : M (mapping_integration_tests.Mapping.t K V) :=
     ltac:(M.monadic (
-      never_to_any (|
+      (never_to_any (B := mapping_integration_tests.Mapping.t K V)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -154,7 +154,7 @@ Section Impl_mapping_integration_tests_Mapping_t_K_V.
     ltac:(M.monadic (
       let self := M.alloc (| self |) in
       let _key := M.alloc (| _key |) in
-      never_to_any (|
+      (never_to_any (B := unit)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -177,7 +177,7 @@ Section Impl_mapping_integration_tests_Mapping_t_K_V.
     ltac:(M.monadic (
       let self := M.alloc (| self |) in
       let _key := M.alloc (| _key |) in
-      never_to_any (|
+      (never_to_any (B := core.option.Option.t u32.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -197,7 +197,7 @@ Section Impl_mapping_integration_tests_Mapping_t_K_V.
     ltac:(M.monadic (
       let self := M.alloc (| self |) in
       let _key := M.alloc (| _key |) in
-      never_to_any (|
+      (never_to_any (B := core.option.Option.t V)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -392,7 +392,7 @@ Section Impl_mapping_integration_tests_Mappings_t.
   *)
   Definition init_env : M mapping_integration_tests.Env.t :=
     ltac:(M.monadic (
-      never_to_any (|
+      (never_to_any (B := mapping_integration_tests.Env.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -410,7 +410,7 @@ Section Impl_mapping_integration_tests_Mappings_t.
   *)
   Definition env : M mapping_integration_tests.Env.t :=
     ltac:(M.monadic (
-      never_to_any (|
+      (never_to_any (B := mapping_integration_tests.Env.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)

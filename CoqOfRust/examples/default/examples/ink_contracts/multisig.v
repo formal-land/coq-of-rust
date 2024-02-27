@@ -70,7 +70,7 @@ Section Impl_multisig_Mapping_t_K_V.
     ltac:(M.monadic (
       let self := M.alloc (| self |) in
       let _key := M.alloc (| _key |) in
-      never_to_any (|
+      (never_to_any (B := bool.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -93,7 +93,7 @@ Section Impl_multisig_Mapping_t_K_V.
     ltac:(M.monadic (
       let self := M.alloc (| self |) in
       let _key := M.alloc (| _key |) in
-      never_to_any (|
+      (never_to_any (B := core.option.Option.t V)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -117,7 +117,7 @@ Section Impl_multisig_Mapping_t_K_V.
       let self := M.alloc (| self |) in
       let _key := M.alloc (| _key |) in
       let _value := M.alloc (| _value |) in
-      never_to_any (|
+      (never_to_any (B := core.option.Option.t u32.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -137,7 +137,7 @@ Section Impl_multisig_Mapping_t_K_V.
     ltac:(M.monadic (
       let self := M.alloc (| self |) in
       let _key := M.alloc (| _key |) in
-      never_to_any (|
+      (never_to_any (B := unit)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -160,7 +160,7 @@ Section Impl_multisig_Mapping_t_K_V.
     ltac:(M.monadic (
       let self := M.alloc (| self |) in
       let _key := M.alloc (| _key |) in
-      never_to_any (|
+      (never_to_any (B := core.option.Option.t u32.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -180,7 +180,7 @@ Section Impl_multisig_Mapping_t_K_V.
     ltac:(M.monadic (
       let self := M.alloc (| self |) in
       let _key := M.alloc (| _key |) in
-      never_to_any (|
+      (never_to_any (B := core.option.Option.t V)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -1022,7 +1022,7 @@ Section Impl_multisig_Env_t.
     ltac:(M.monadic (
       let self := M.alloc (| self |) in
       let _event := M.alloc (| _event |) in
-      never_to_any (|
+      (never_to_any (B := unit)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -1041,7 +1041,7 @@ Section Impl_multisig_Env_t.
   Definition transferred_value (self : ref Self) : M ltac:(multisig.Balance) :=
     ltac:(M.monadic (
       let self := M.alloc (| self |) in
-      never_to_any (|
+      (never_to_any (B := u128.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -1060,7 +1060,7 @@ Section Impl_multisig_Env_t.
   Definition account_id (self : ref Self) : M multisig.AccountId.t :=
     ltac:(M.monadic (
       let self := M.alloc (| self |) in
-      never_to_any (|
+      (never_to_any (B := multisig.AccountId.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -1217,7 +1217,7 @@ Definition ensure_requirement_is_valid
           |)
         then
           M.alloc (|
-            never_to_any (|
+            (never_to_any (B := unit)) (|
               M.call (|(core.panicking.panic
                 (M.read (|
                   mk_str
@@ -1243,7 +1243,7 @@ Section Impl_multisig_Multisig_t.
   *)
   Definition init_env : M multisig.Env.t :=
     ltac:(M.monadic (
-      never_to_any (|
+      (never_to_any (B := multisig.Env.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -1378,7 +1378,9 @@ Section Impl_multisig_Multisig_t.
                                 match M.read (| γ |) with
                                 | core.option.Option.None =>
                                   M.alloc (|
-                                    never_to_any (| M.read (| M.break |) |)
+                                    (never_to_any (B := unit)) (|
+                                      M.read (| M.break |)
+                                    |)
                                   |)
                                 | _ => M.break_match(||)
                                 end :
@@ -1480,7 +1482,7 @@ Section Impl_multisig_Multisig_t.
             |)
           then
             M.alloc (|
-              never_to_any (|
+              (never_to_any (B := unit)) (|
                 M.call (|(core.panicking.panic
                   (M.read (|
                     mk_str
@@ -1570,7 +1572,7 @@ Section Impl_multisig_Multisig_t.
             |)
           then
             M.alloc (|
-              never_to_any (|
+              (never_to_any (B := unit)) (|
                 M.call (|(core.panicking.panic
                   (M.read (|
                     mk_str "assertion failed: self.is_owner.contains(owner)"
@@ -1690,7 +1692,7 @@ Section Impl_multisig_Multisig_t.
                       |)
                     then
                       M.alloc (|
-                        never_to_any (|
+                        (never_to_any (B := unit)) (|
                           M.read (|
                             let kind : M.Val core.panicking.AssertKind.t :=
                               M.alloc (| core.panicking.AssertKind.Eq |) in
@@ -1751,7 +1753,7 @@ Section Impl_multisig_Multisig_t.
             |)
           then
             M.alloc (|
-              never_to_any (|
+              (never_to_any (B := unit)) (|
                 M.call (|(core.panicking.panic
                   (M.read (|
                     mk_str "assertion failed: !self.is_owner.contains(owner)"
@@ -1990,7 +1992,9 @@ Section Impl_multisig_Multisig_t.
                               match M.read (| γ |) with
                               | core.option.Option.None =>
                                 M.alloc (|
-                                  never_to_any (| M.read (| M.break |) |)
+                                  (never_to_any (B := unit)) (|
+                                    M.read (| M.break |)
+                                  |)
                                 |)
                               | _ => M.break_match(||)
                               end :
@@ -2868,7 +2872,9 @@ Section Impl_multisig_Multisig_t.
                                     match M.read (| γ |) with
                                     | core.option.Option.None =>
                                       M.alloc (|
-                                        never_to_any (| M.read (| M.break |) |)
+                                        (never_to_any (B := unit)) (|
+                                          M.read (| M.break |)
+                                        |)
                                       |)
                                     | _ => M.break_match(||)
                                     end :
@@ -3246,7 +3252,7 @@ Section Impl_multisig_Multisig_t.
             |)
           then
             M.alloc (|
-              never_to_any (|
+              (never_to_any (B := unit)) (|
                 M.call (|(core.panicking.panic
                   (M.read (|
                     mk_str
@@ -3265,7 +3271,13 @@ Section Impl_multisig_Multisig_t.
                   unit)
                 unit) :=
           M.alloc (|
-            never_to_any (|
+            (never_to_any
+              (B :=
+                core.result.Result.t
+                  (core.result.Result.t
+                    (alloc.vec.Vec.t u8.t alloc.alloc.Global.t)
+                    unit)
+                  unit)) (|
               M.call (|(core.panicking.panic
                 (M.read (| mk_str "not yet implemented" |)))
               |)

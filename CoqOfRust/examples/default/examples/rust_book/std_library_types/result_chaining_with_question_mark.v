@@ -263,7 +263,7 @@ Module checked.
                           core.ops.control_flow.ControlFlow.Get_Break_0 γ in
                         let residual := M.copy (| γ0_0 |) in
                         M.alloc (|
-                          never_to_any (|
+                          (never_to_any (B := f64.t)) (|
                             M.read (|
                               return_
                                 (M.call (|(ltac:(M.get_method (fun ℐ =>
@@ -336,7 +336,7 @@ Module checked.
                           core.ops.control_flow.ControlFlow.Get_Break_0 γ in
                         let residual := M.copy (| γ0_0 |) in
                         M.alloc (|
-                          never_to_any (|
+                          (never_to_any (B := f64.t)) (|
                             M.read (|
                               return_
                                 (M.call (|(ltac:(M.get_method (fun ℐ =>
@@ -425,7 +425,7 @@ Module checked.
                   let γ0_0 := core.result.Result.Get_Err_0 γ in
                   let why := M.copy (| γ0_0 |) in
                   M.alloc (|
-                    never_to_any (|
+                    (never_to_any (B := unit)) (|
                       M.call (|(core.panicking.panic_display
                         (borrow
                           (ltac:

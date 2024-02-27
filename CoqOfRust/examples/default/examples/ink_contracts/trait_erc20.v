@@ -73,7 +73,7 @@ Section Impl_trait_erc20_Mapping_t_K_V.
     ltac:(M.monadic (
       let self := M.alloc (| self |) in
       let _key := M.alloc (| _key |) in
-      never_to_any (|
+      (never_to_any (B := core.option.Option.t V)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -93,7 +93,7 @@ Section Impl_trait_erc20_Mapping_t_K_V.
       let self := M.alloc (| self |) in
       let _key := M.alloc (| _key |) in
       let _value := M.alloc (| _value |) in
-      never_to_any (|
+      (never_to_any (B := unit)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -533,7 +533,7 @@ Section Impl_trait_erc20_Env_t.
     ltac:(M.monadic (
       let self := M.alloc (| self |) in
       let _event := M.alloc (| _event |) in
-      never_to_any (|
+      (never_to_any (B := unit)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -557,7 +557,7 @@ Section Impl_trait_erc20_Erc20_t.
   *)
   Definition init_env : M trait_erc20.Env.t :=
     ltac:(M.monadic (
-      never_to_any (|
+      (never_to_any (B := trait_erc20.Env.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -778,7 +778,7 @@ Section Impl_trait_erc20_Erc20_t.
               |)
             then
               M.alloc (|
-                never_to_any (|
+                (never_to_any (B := unit)) (|
                   M.read (|
                     return_
                       (core.result.Result.Err
@@ -1091,7 +1091,7 @@ Section Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20_t.
               |)
             then
               M.alloc (|
-                never_to_any (|
+                (never_to_any (B := unit)) (|
                   M.read (|
                     return_
                       (core.result.Result.Err
@@ -1132,7 +1132,7 @@ Section Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20_t.
                         core.ops.control_flow.ControlFlow.Get_Break_0 γ in
                       let residual := M.copy (| γ0_0 |) in
                       M.alloc (|
-                        never_to_any (|
+                        (never_to_any (B := unit)) (|
                           M.read (|
                             return_
                               (M.call (|(ltac:(M.get_method (fun ℐ =>

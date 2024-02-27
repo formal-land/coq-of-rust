@@ -140,7 +140,7 @@ Definition drink (drink : core.option.Option.t (ref str.t)) : M unit :=
           |)
         then
           M.alloc (|
-            never_to_any (|
+            (never_to_any (B := unit)) (|
               M.call (|(std.panicking.begin_panic
                 (M.read (| mk_str "AAAaaaaa!!!!" |)))
               |)

@@ -21,7 +21,7 @@ Section Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificati
     ltac:(M.monadic (
       let self := M.alloc (| self |) in
       let f := M.alloc (| f |) in
-      never_to_any (|
+      (never_to_any (B := core.result.Result.t unit core.fmt.Error.t)) (|
         M.read (|
           ltac: (M.monadic_match_operator (deref (M.read (| self |))) [ ])
         |)
@@ -96,7 +96,7 @@ Section Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificati
     ltac:(M.monadic (
       let self := M.alloc (| self |) in
       let f := M.alloc (| f |) in
-      never_to_any (|
+      (never_to_any (B := core.result.Result.t unit core.fmt.Error.t)) (|
         M.read (|
           ltac: (M.monadic_match_operator (deref (M.read (| self |))) [ ])
         |)

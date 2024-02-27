@@ -135,7 +135,7 @@ Definition main : M unit :=
           |)
         then
           M.alloc (|
-            never_to_any (|
+            (never_to_any (B := unit)) (|
               M.call (|(core.panicking.panic
                 (M.read (| mk_str "assertion failed: a.insert(4)" |)))
               |)
@@ -159,7 +159,7 @@ Definition main : M unit :=
           |)
         then
           M.alloc (|
-            never_to_any (|
+            (never_to_any (B := unit)) (|
               M.call (|(core.panicking.panic
                 (M.read (| mk_str "assertion failed: a.contains(&4)" |)))
               |)

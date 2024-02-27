@@ -383,7 +383,7 @@ Definition main : M unit :=
                             | core.result.Result.Err _ =>
                               let γ0_0 := core.result.Result.Get_Err_0 γ in
                               M.alloc (|
-                                never_to_any (|
+                                (never_to_any (B := i32.t)) (|
                                   M.read (|
                                     let _ : M.Val unit :=
                                       let _ : M.Val unit :=

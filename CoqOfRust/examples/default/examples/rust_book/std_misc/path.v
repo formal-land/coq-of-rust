@@ -95,7 +95,7 @@ Definition main : M unit :=
               match M.read (| γ |) with
               | core.option.Option.None =>
                 M.alloc (|
-                  never_to_any (|
+                  (never_to_any (B := unit)) (|
                     M.call (|(std.panicking.begin_panic
                       (M.read (| mk_str "new path is not a valid UTF-8 sequence"
                       |)))

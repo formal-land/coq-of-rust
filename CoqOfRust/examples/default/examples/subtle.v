@@ -145,7 +145,7 @@ Section Impl_core_convert_From_subtle_Choice_t_for_bool_t.
                 |)
               then
                 M.alloc (|
-                  never_to_any (|
+                  (never_to_any (B := unit)) (|
                     M.call (|(core.panicking.panic
                       (M.read (|
                         mk_str
@@ -524,7 +524,7 @@ Definition black_box (input : u8.t) : M u8.t :=
               |)
             then
               M.alloc (|
-                never_to_any (|
+                (never_to_any (B := unit)) (|
                   M.call (|(core.panicking.panic
                     (M.read (|
                       mk_str "assertion failed: (input == 0u8) | (input == 1u8)"
@@ -635,7 +635,7 @@ Section Impl_subtle_ConstantTimeEq_for_slice_T.
               |)
             then
               M.alloc (|
-                never_to_any (|
+                (never_to_any (B := unit)) (|
                   M.read (|
                     return_
                       (M.call (|(ltac:(M.get_method (fun ℐ =>
@@ -705,7 +705,9 @@ Section Impl_subtle_ConstantTimeEq_for_slice_T.
                                   match M.read (| γ |) with
                                   | core.option.Option.None =>
                                     M.alloc (|
-                                      never_to_any (| M.read (| M.break |) |)
+                                      (never_to_any (B := unit)) (|
+                                        M.read (| M.break |)
+                                      |)
                                     |)
                                   | _ => M.break_match(||)
                                   end :
@@ -3095,7 +3097,7 @@ Section Impl_subtle_CtOption_t_T.
                       |)
                     then
                       M.alloc (|
-                        never_to_any (|
+                        (never_to_any (B := unit)) (|
                           M.read (|
                             let kind : M.Val core.panicking.AssertKind.t :=
                               M.alloc (| core.panicking.AssertKind.Eq |) in
@@ -3184,7 +3186,7 @@ Section Impl_subtle_CtOption_t_T.
                       |)
                     then
                       M.alloc (|
-                        never_to_any (|
+                        (never_to_any (B := unit)) (|
                           M.read (|
                             let kind : M.Val core.panicking.AssertKind.t :=
                               M.alloc (| core.panicking.AssertKind.Eq |) in
@@ -3726,10 +3728,12 @@ Section Impl_subtle_ConstantTimeGreater_for_u8_t.
               M.alloc (| tt |)
             else
               M.alloc (|
-                never_to_any (|
+                (never_to_any (B := unit)) (|
                   M.read (|
                     let _ : M.Val unit :=
-                      M.alloc (| never_to_any (| M.read (| M.break |) |) |) in
+                      M.alloc (|
+                        (never_to_any (B := unit)) (| M.read (| M.break |) |)
+                      |) in
                     M.alloc (| tt |)
                   |)
                 |)
@@ -3766,10 +3770,12 @@ Section Impl_subtle_ConstantTimeGreater_for_u8_t.
               M.alloc (| tt |)
             else
               M.alloc (|
-                never_to_any (|
+                (never_to_any (B := unit)) (|
                   M.read (|
                     let _ : M.Val unit :=
-                      M.alloc (| never_to_any (| M.read (| M.break |) |) |) in
+                      M.alloc (|
+                        (never_to_any (B := unit)) (| M.read (| M.break |) |)
+                      |) in
                     M.alloc (| tt |)
                   |)
                 |)
@@ -3892,10 +3898,12 @@ Section Impl_subtle_ConstantTimeGreater_for_u16_t.
               M.alloc (| tt |)
             else
               M.alloc (|
-                never_to_any (|
+                (never_to_any (B := unit)) (|
                   M.read (|
                     let _ : M.Val unit :=
-                      M.alloc (| never_to_any (| M.read (| M.break |) |) |) in
+                      M.alloc (|
+                        (never_to_any (B := unit)) (| M.read (| M.break |) |)
+                      |) in
                     M.alloc (| tt |)
                   |)
                 |)
@@ -3932,10 +3940,12 @@ Section Impl_subtle_ConstantTimeGreater_for_u16_t.
               M.alloc (| tt |)
             else
               M.alloc (|
-                never_to_any (|
+                (never_to_any (B := unit)) (|
                   M.read (|
                     let _ : M.Val unit :=
-                      M.alloc (| never_to_any (| M.read (| M.break |) |) |) in
+                      M.alloc (|
+                        (never_to_any (B := unit)) (| M.read (| M.break |) |)
+                      |) in
                     M.alloc (| tt |)
                   |)
                 |)
@@ -4054,10 +4064,12 @@ Section Impl_subtle_ConstantTimeGreater_for_u32_t.
               M.alloc (| tt |)
             else
               M.alloc (|
-                never_to_any (|
+                (never_to_any (B := unit)) (|
                   M.read (|
                     let _ : M.Val unit :=
-                      M.alloc (| never_to_any (| M.read (| M.break |) |) |) in
+                      M.alloc (|
+                        (never_to_any (B := unit)) (| M.read (| M.break |) |)
+                      |) in
                     M.alloc (| tt |)
                   |)
                 |)
@@ -4094,10 +4106,12 @@ Section Impl_subtle_ConstantTimeGreater_for_u32_t.
               M.alloc (| tt |)
             else
               M.alloc (|
-                never_to_any (|
+                (never_to_any (B := unit)) (|
                   M.read (|
                     let _ : M.Val unit :=
-                      M.alloc (| never_to_any (| M.read (| M.break |) |) |) in
+                      M.alloc (|
+                        (never_to_any (B := unit)) (| M.read (| M.break |) |)
+                      |) in
                     M.alloc (| tt |)
                   |)
                 |)
@@ -4216,10 +4230,12 @@ Section Impl_subtle_ConstantTimeGreater_for_u64_t.
               M.alloc (| tt |)
             else
               M.alloc (|
-                never_to_any (|
+                (never_to_any (B := unit)) (|
                   M.read (|
                     let _ : M.Val unit :=
-                      M.alloc (| never_to_any (| M.read (| M.break |) |) |) in
+                      M.alloc (|
+                        (never_to_any (B := unit)) (| M.read (| M.break |) |)
+                      |) in
                     M.alloc (| tt |)
                   |)
                 |)
@@ -4256,10 +4272,12 @@ Section Impl_subtle_ConstantTimeGreater_for_u64_t.
               M.alloc (| tt |)
             else
               M.alloc (|
-                never_to_any (|
+                (never_to_any (B := unit)) (|
                   M.read (|
                     let _ : M.Val unit :=
-                      M.alloc (| never_to_any (| M.read (| M.break |) |) |) in
+                      M.alloc (|
+                        (never_to_any (B := unit)) (| M.read (| M.break |) |)
+                      |) in
                     M.alloc (| tt |)
                   |)
                 |)

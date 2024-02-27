@@ -59,7 +59,7 @@ Definition read_lines
                         core.ops.control_flow.ControlFlow.Get_Break_0 γ in
                       let residual := M.copy (| γ0_0 |) in
                       M.alloc (|
-                        never_to_any (|
+                        (never_to_any (B := std.fs.File.t)) (|
                           M.read (|
                             return_
                               (M.call (|(ltac:(M.get_method (fun ℐ =>
@@ -201,7 +201,8 @@ Definition main : M unit :=
                                       match M.read (| γ |) with
                                       | core.option.Option.None =>
                                         M.alloc (|
-                                          never_to_any (| M.read (| M.break |)
+                                          (never_to_any (B := unit)) (|
+                                            M.read (| M.break |)
                                           |)
                                         |)
                                       | _ => M.break_match(||)

@@ -109,7 +109,7 @@ Section Impl_call_builder_Selector_t.
   Definition new (bytes : array u8.t) : M Self :=
     ltac:(M.monadic (
       let bytes := M.alloc (| bytes |) in
-      never_to_any (|
+      (never_to_any (B := call_builder.Selector.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -203,7 +203,8 @@ Section Impl_call_builder_CallBuilderTest_t.
         let result :
             M.Val (core.result.Result.t unit call_builder.LangError.t) :=
           M.alloc (|
-            never_to_any (|
+            (never_to_any
+              (B := core.result.Result.t unit call_builder.LangError.t)) (|
               M.call (|(core.panicking.panic
                 (M.read (| mk_str "not yet implemented" |)))
               |)
@@ -248,7 +249,8 @@ Section Impl_call_builder_CallBuilderTest_t.
                 | core.result.Result.Err _ =>
                   let γ0_0 := core.result.Result.Get_Err_0 γ in
                   M.alloc (|
-                    never_to_any (|
+                    (never_to_any
+                      (B := core.option.Option.t call_builder.LangError.t)) (|
                       M.call (|(core.panicking.panic_fmt
                         (M.call (|(core.fmt.Arguments.t::["new_v1"]
                           (pointer_coercion

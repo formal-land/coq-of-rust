@@ -217,7 +217,9 @@ Section Impl_unpacking_options_via_question_mark_Person_t.
                                       γ in
                                   let residual := M.copy (| γ0_0 |) in
                                   M.alloc (|
-                                    never_to_any (|
+                                    (never_to_any
+                                      (B :=
+                                        unpacking_options_via_question_mark.Job.t)) (|
                                       M.read (|
                                         return_
                                           (M.call (|(ltac:(M.get_method (fun ℐ =>
@@ -272,7 +274,9 @@ Section Impl_unpacking_options_via_question_mark_Person_t.
                         core.ops.control_flow.ControlFlow.Get_Break_0 γ in
                       let residual := M.copy (| γ0_0 |) in
                       M.alloc (|
-                        never_to_any (|
+                        (never_to_any
+                          (B :=
+                            unpacking_options_via_question_mark.PhoneNumber.t)) (|
                           M.read (|
                             return_
                               (M.call (|(ltac:(M.get_method (fun ℐ =>
@@ -395,7 +399,7 @@ Definition main : M unit :=
                     |)
                   then
                     M.alloc (|
-                      never_to_any (|
+                      (never_to_any (B := unit)) (|
                         M.read (|
                           let kind : M.Val core.panicking.AssertKind.t :=
                             M.alloc (| core.panicking.AssertKind.Eq |) in

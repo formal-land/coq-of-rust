@@ -96,7 +96,7 @@ Section Impl_core_convert_From_array_u8_t_for_constructors_return_value_AccountI
   Definition from (_value : array u8.t) : M Self :=
     ltac:(M.monadic (
       let _value := M.alloc (| _value |) in
-      never_to_any (|
+      (never_to_any (B := constructors_return_value.AccountId.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -188,7 +188,7 @@ Section Impl_constructors_return_value_ReturnFlags_t.
   Definition new_with_reverted (has_reverted : bool.t) : M Self :=
     ltac:(M.monadic (
       let has_reverted := M.alloc (| has_reverted |) in
-      never_to_any (|
+      (never_to_any (B := constructors_return_value.ReturnFlags.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -289,7 +289,8 @@ Section Impl_constructors_return_value_ConstructorsReturnValue_t.
   Definition revert_new (_init_value : bool.t) : M Self :=
     ltac:(M.monadic (
       let _init_value := M.alloc (| _init_value |) in
-      never_to_any (|
+      (never_to_any
+        (B := constructors_return_value.ConstructorsReturnValue.t)) (|
         M.call (|(constructors_return_value.return_value
           (M.call (|(constructors_return_value.ReturnFlags.t::["new_with_reverted"]
             true)
@@ -365,7 +366,11 @@ Section Impl_constructors_return_value_ConstructorsReturnValue_t.
               |)
           |) in
         M.alloc (|
-          never_to_any (|
+          (never_to_any
+            (B :=
+              core.result.Result.t
+                constructors_return_value.ConstructorsReturnValue.t
+                constructors_return_value.ConstructorError.t)) (|
             M.call (|(constructors_return_value.return_value
               (M.call (|(constructors_return_value.ReturnFlags.t::["new_with_reverted"]
                 true)

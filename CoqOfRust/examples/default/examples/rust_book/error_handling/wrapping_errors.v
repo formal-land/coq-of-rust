@@ -320,7 +320,7 @@ Definition double_first
                         core.ops.control_flow.ControlFlow.Get_Break_0 γ in
                       let residual := M.copy (| γ0_0 |) in
                       M.alloc (|
-                        never_to_any (|
+                        (never_to_any (B := ref (ref str.t))) (|
                           M.read (|
                             return_
                               (M.call (|(ltac:(M.get_method (fun ℐ =>
@@ -393,7 +393,7 @@ Definition double_first
                         core.ops.control_flow.ControlFlow.Get_Break_0 γ in
                       let residual := M.copy (| γ0_0 |) in
                       M.alloc (|
-                        never_to_any (|
+                        (never_to_any (B := i32.t)) (|
                           M.read (|
                             return_
                               (M.call (|(ltac:(M.get_method (fun ℐ =>

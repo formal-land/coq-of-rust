@@ -40,7 +40,8 @@ Definition main : M unit :=
                   |))
               |)
             then
-              M.alloc (| never_to_any (| M.read (| M.break |) |) |)
+              M.alloc (| (never_to_any (B := unit)) (| M.read (| M.break |) |)
+              |)
             else
               M.alloc (| tt |))
         |) in
@@ -70,7 +71,7 @@ Definition main : M unit :=
                     |)
                   then
                     M.alloc (|
-                      never_to_any (|
+                      (never_to_any (B := unit)) (|
                         M.read (|
                           let kind : M.Val core.panicking.AssertKind.t :=
                             M.alloc (| core.panicking.AssertKind.Eq |) in

@@ -28,7 +28,9 @@ Definition is_divisible_by (lhs : u32.t) (rhs : u32.t) : M bool.t :=
                 |))
             |)
           then
-            M.alloc (| never_to_any (| M.read (| return_ false |) |) |)
+            M.alloc (|
+              (never_to_any (B := unit)) (| M.read (| return_ false |) |)
+            |)
           else
             M.alloc (| tt |) in
         M.alloc (|
@@ -210,7 +212,10 @@ Definition fizzbuzz_to (n : u32.t) : M unit :=
                           fun (γ : M.Val (core.option.Option.t u32.t)) =>
                             match M.read (| γ |) with
                             | core.option.Option.None =>
-                              M.alloc (| never_to_any (| M.read (| M.break |) |)
+                              M.alloc (|
+                                (never_to_any (B := unit)) (|
+                                  M.read (| M.break |)
+                                |)
                               |)
                             | _ => M.break_match(||)
                             end :

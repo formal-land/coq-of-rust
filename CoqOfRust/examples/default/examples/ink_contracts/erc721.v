@@ -70,7 +70,7 @@ Section Impl_erc721_Mapping_t_K_V.
     ltac:(M.monadic (
       let self := M.alloc (| self |) in
       let _key := M.alloc (| _key |) in
-      never_to_any (|
+      (never_to_any (B := bool.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -93,7 +93,7 @@ Section Impl_erc721_Mapping_t_K_V.
     ltac:(M.monadic (
       let self := M.alloc (| self |) in
       let _key := M.alloc (| _key |) in
-      never_to_any (|
+      (never_to_any (B := core.option.Option.t V)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -117,7 +117,7 @@ Section Impl_erc721_Mapping_t_K_V.
       let self := M.alloc (| self |) in
       let _key := M.alloc (| _key |) in
       let _value := M.alloc (| _value |) in
-      never_to_any (|
+      (never_to_any (B := core.option.Option.t u32.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -137,7 +137,7 @@ Section Impl_erc721_Mapping_t_K_V.
     ltac:(M.monadic (
       let self := M.alloc (| self |) in
       let _key := M.alloc (| _key |) in
-      never_to_any (|
+      (never_to_any (B := unit)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -160,7 +160,7 @@ Section Impl_erc721_Mapping_t_K_V.
     ltac:(M.monadic (
       let self := M.alloc (| self |) in
       let _key := M.alloc (| _key |) in
-      never_to_any (|
+      (never_to_any (B := core.option.Option.t u32.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -180,7 +180,7 @@ Section Impl_erc721_Mapping_t_K_V.
     ltac:(M.monadic (
       let self := M.alloc (| self |) in
       let _key := M.alloc (| _key |) in
-      never_to_any (|
+      (never_to_any (B := core.option.Option.t V)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -323,7 +323,7 @@ Section Impl_core_convert_From_array_u8_t_for_erc721_AccountId_t.
   Definition from (_value : array u8.t) : M Self :=
     ltac:(M.monadic (
       let _value := M.alloc (| _value |) in
-      never_to_any (|
+      (never_to_any (B := erc721.AccountId.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -673,7 +673,7 @@ Section Impl_erc721_Env_t.
     ltac:(M.monadic (
       let self := M.alloc (| self |) in
       let _event := M.alloc (| _event |) in
-      never_to_any (|
+      (never_to_any (B := unit)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -697,7 +697,7 @@ Section Impl_erc721_Erc721_t.
   *)
   Definition init_env : M erc721.Env.t :=
     ltac:(M.monadic (
-      never_to_any (|
+      (never_to_any (B := erc721.Env.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -1101,7 +1101,7 @@ Section Impl_erc721_Erc721_t.
               |)
             then
               M.alloc (|
-                never_to_any (|
+                (never_to_any (B := unit)) (|
                   M.read (|
                     return_ (core.result.Result.Err erc721.Error.NotAllowed)
                   |)
@@ -1212,7 +1212,7 @@ Section Impl_erc721_Erc721_t.
                         core.ops.control_flow.ControlFlow.Get_Break_0 γ in
                       let residual := M.copy (| γ0_0 |) in
                       M.alloc (|
-                        never_to_any (|
+                        (never_to_any (B := unit)) (|
                           M.read (|
                             return_
                               (M.call (|(ltac:(M.get_method (fun ℐ =>
@@ -1350,7 +1350,7 @@ Section Impl_erc721_Erc721_t.
               |)
             then
               M.alloc (|
-                never_to_any (|
+                (never_to_any (B := unit)) (|
                   M.read (|
                     return_ (core.result.Result.Err erc721.Error.NotAllowed)
                   |)
@@ -1384,7 +1384,7 @@ Section Impl_erc721_Erc721_t.
               |)
             then
               M.alloc (|
-                never_to_any (|
+                (never_to_any (B := unit)) (|
                   M.read (|
                     return_ (core.result.Result.Err erc721.Error.NotAllowed)
                   |)
@@ -1409,7 +1409,7 @@ Section Impl_erc721_Erc721_t.
               |)
             then
               M.alloc (|
-                never_to_any (|
+                (never_to_any (B := unit)) (|
                   M.read (|
                     return_ (core.result.Result.Err erc721.Error.CannotInsert)
                   |)
@@ -1504,7 +1504,7 @@ Section Impl_erc721_Erc721_t.
                         core.ops.control_flow.ControlFlow.Get_Break_0 γ in
                       let residual := M.copy (| γ0_0 |) in
                       M.alloc (|
-                        never_to_any (|
+                        (never_to_any (B := unit)) (|
                           M.read (|
                             return_
                               (M.call (|(ltac:(M.get_method (fun ℐ =>
@@ -1619,7 +1619,7 @@ Section Impl_erc721_Erc721_t.
                         |)
                       then
                         M.alloc (|
-                          never_to_any (|
+                          (never_to_any (B := unit)) (|
                             M.read (|
                               return_
                                 (core.result.Result.Err
@@ -1691,7 +1691,7 @@ Section Impl_erc721_Erc721_t.
                                       γ in
                                   let residual := M.copy (| γ0_0 |) in
                                   M.alloc (|
-                                    never_to_any (|
+                                    (never_to_any (B := u32.t)) (|
                                       M.read (|
                                         return_
                                           (M.call (|(ltac:(M.get_method (fun ℐ =>
@@ -1903,7 +1903,7 @@ Section Impl_erc721_Erc721_t.
                         core.ops.control_flow.ControlFlow.Get_Break_0 γ in
                       let residual := M.copy (| γ0_0 |) in
                       M.alloc (|
-                        never_to_any (|
+                        (never_to_any (B := unit)) (|
                           M.read (|
                             return_
                               (M.call (|(ltac:(M.get_method (fun ℐ =>
@@ -2007,7 +2007,7 @@ Section Impl_erc721_Erc721_t.
                         core.ops.control_flow.ControlFlow.Get_Break_0 γ in
                       let residual := M.copy (| γ0_0 |) in
                       M.alloc (|
-                        never_to_any (|
+                        (never_to_any (B := unit)) (|
                           M.read (|
                             return_
                               (M.call (|(ltac:(M.get_method (fun ℐ =>
@@ -2118,7 +2118,7 @@ Section Impl_erc721_Erc721_t.
                         core.ops.control_flow.ControlFlow.Get_Break_0 γ in
                       let residual := M.copy (| γ0_0 |) in
                       M.alloc (|
-                        never_to_any (|
+                        (never_to_any (B := unit)) (|
                           M.read (|
                             return_
                               (M.call (|(ltac:(M.get_method (fun ℐ =>

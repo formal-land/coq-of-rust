@@ -129,7 +129,9 @@ Definition sum_odd_numbers (up_to : u32.t) : M u32.t :=
                               match M.read (| γ |) with
                               | core.option.Option.None =>
                                 M.alloc (|
-                                  never_to_any (| M.read (| M.break |) |)
+                                  (never_to_any (B := unit)) (|
+                                    M.read (| M.break |)
+                                  |)
                                 |)
                               | _ => M.break_match(||)
                               end :
@@ -156,7 +158,7 @@ Definition sum_odd_numbers (up_to : u32.t) : M u32.t :=
                                             i : M.Val u32.t;
                                           fun (γ : M.Val bool.t) =>
                                             (M.alloc (|
-                                              never_to_any (|
+                                              (never_to_any (B := u32.t)) (|
                                                 M.read (| M.continue |)
                                               |)
                                             |)) :

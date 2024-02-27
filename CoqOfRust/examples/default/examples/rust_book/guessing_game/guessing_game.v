@@ -8,7 +8,7 @@ fn gen_range() -> u32 {
 *)
 Definition gen_range : M u32.t :=
   ltac:(M.monadic (
-    never_to_any (|
+    (never_to_any (B := u32.t)) (|
       M.call (|(core.panicking.panic
         (M.read (| mk_str "not yet implemented" |)))
       |)
@@ -141,7 +141,10 @@ Definition main : M unit :=
                     match M.read (| γ |) with
                     | core.result.Result.Err _ =>
                       let γ0_0 := core.result.Result.Get_Err_0 γ in
-                      M.alloc (| never_to_any (| M.read (| M.continue |) |) |)
+                      M.alloc (|
+                        (never_to_any (B := u32.t)) (| M.read (| M.continue |)
+                        |)
+                      |)
                     | _ => M.break_match(||)
                     end :
                     M.Val u32.t
@@ -230,7 +233,7 @@ Definition main : M unit :=
                 match M.read (| γ |) with
                 | core.cmp.Ordering.Equal =>
                   M.alloc (|
-                    never_to_any (|
+                    (never_to_any (B := unit)) (|
                       M.read (|
                         let _ : M.Val unit :=
                           let _ : M.Val unit :=

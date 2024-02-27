@@ -198,7 +198,7 @@ Definition main : M unit :=
                     |)
                   then
                     M.alloc (|
-                      never_to_any (|
+                      (never_to_any (B := unit)) (|
                         M.read (|
                           let kind : M.Val core.panicking.AssertKind.t :=
                             M.alloc (| core.panicking.AssertKind.Eq |) in
@@ -265,7 +265,7 @@ Definition main : M unit :=
                     |)
                   then
                     M.alloc (|
-                      never_to_any (|
+                      (never_to_any (B := unit)) (|
                         M.read (|
                           let kind : M.Val core.panicking.AssertKind.t :=
                             M.alloc (| core.panicking.AssertKind.Eq |) in
@@ -332,7 +332,7 @@ Definition main : M unit :=
                     |)
                   then
                     M.alloc (|
-                      never_to_any (|
+                      (never_to_any (B := unit)) (|
                         M.read (|
                           let kind : M.Val core.panicking.AssertKind.t :=
                             M.alloc (| core.panicking.AssertKind.Eq |) in
@@ -399,7 +399,7 @@ Definition main : M unit :=
                     |)
                   then
                     M.alloc (|
-                      never_to_any (|
+                      (never_to_any (B := unit)) (|
                         M.read (|
                           let kind : M.Val core.panicking.AssertKind.t :=
                             M.alloc (| core.panicking.AssertKind.Eq |) in
@@ -466,7 +466,7 @@ Definition main : M unit :=
                     |)
                   then
                     M.alloc (|
-                      never_to_any (|
+                      (never_to_any (B := unit)) (|
                         M.read (|
                           let kind : M.Val core.panicking.AssertKind.t :=
                             M.alloc (| core.panicking.AssertKind.Eq |) in

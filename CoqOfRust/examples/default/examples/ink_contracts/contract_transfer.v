@@ -123,7 +123,7 @@ Section Impl_contract_transfer_Env_t.
   Definition balance (self : ref Self) : M ltac:(contract_transfer.Balance) :=
     ltac:(M.monadic (
       let self := M.alloc (| self |) in
-      never_to_any (|
+      (never_to_any (B := u128.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -148,7 +148,7 @@ Section Impl_contract_transfer_Env_t.
       let self := M.alloc (| self |) in
       let _to := M.alloc (| _to |) in
       let _value := M.alloc (| _value |) in
-      never_to_any (|
+      (never_to_any (B := core.result.Result.t unit unit)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -169,7 +169,7 @@ Section Impl_contract_transfer_Env_t.
       : M ltac:(contract_transfer.Balance) :=
     ltac:(M.monadic (
       let self := M.alloc (| self |) in
-      never_to_any (|
+      (never_to_any (B := u128.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -199,7 +199,7 @@ Section Impl_contract_transfer_GiveMe_t.
   *)
   Definition init_env : M contract_transfer.Env.t :=
     ltac:(M.monadic (
-      never_to_any (|
+      (never_to_any (B := contract_transfer.Env.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -350,7 +350,7 @@ Section Impl_contract_transfer_GiveMe_t.
             |)
           then
             M.alloc (|
-              never_to_any (|
+              (never_to_any (B := unit)) (|
                 M.call (|(std.panicking.begin_panic
                   (M.read (| mk_str "insufficient funds!" |)))
                 |)
@@ -388,7 +388,7 @@ Section Impl_contract_transfer_GiveMe_t.
           |)
         then
           M.alloc (|
-            never_to_any (|
+            (never_to_any (B := unit)) (|
               M.call (|(std.panicking.begin_panic
                 (M.read (|
                   mk_str
@@ -476,7 +476,7 @@ Section Impl_contract_transfer_GiveMe_t.
             |)
           then
             M.alloc (|
-              never_to_any (|
+              (never_to_any (B := unit)) (|
                 M.call (|(std.panicking.begin_panic
                   (M.read (| mk_str "payment was not ten" |)))
                 |)

@@ -70,7 +70,7 @@ Section Impl_erc1155_Mapping_t_K_V.
     ltac:(M.monadic (
       let self := M.alloc (| self |) in
       let _key := M.alloc (| _key |) in
-      never_to_any (|
+      (never_to_any (B := bool.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -93,7 +93,7 @@ Section Impl_erc1155_Mapping_t_K_V.
     ltac:(M.monadic (
       let self := M.alloc (| self |) in
       let _key := M.alloc (| _key |) in
-      never_to_any (|
+      (never_to_any (B := core.option.Option.t V)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -117,7 +117,7 @@ Section Impl_erc1155_Mapping_t_K_V.
       let self := M.alloc (| self |) in
       let _key := M.alloc (| _key |) in
       let _value := M.alloc (| _value |) in
-      never_to_any (|
+      (never_to_any (B := core.option.Option.t u32.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -137,7 +137,7 @@ Section Impl_erc1155_Mapping_t_K_V.
     ltac:(M.monadic (
       let self := M.alloc (| self |) in
       let _key := M.alloc (| _key |) in
-      never_to_any (|
+      (never_to_any (B := unit)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -160,7 +160,7 @@ Section Impl_erc1155_Mapping_t_K_V.
     ltac:(M.monadic (
       let self := M.alloc (| self |) in
       let _key := M.alloc (| _key |) in
-      never_to_any (|
+      (never_to_any (B := core.option.Option.t u32.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -180,7 +180,7 @@ Section Impl_erc1155_Mapping_t_K_V.
     ltac:(M.monadic (
       let self := M.alloc (| self |) in
       let _key := M.alloc (| _key |) in
-      never_to_any (|
+      (never_to_any (B := core.option.Option.t V)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -326,7 +326,7 @@ Section Impl_core_convert_From_array_u8_t_for_erc1155_AccountId_t.
   Definition from (_v : array u8.t) : M Self :=
     ltac:(M.monadic (
       let _v := M.alloc (| _v |) in
-      never_to_any (|
+      (never_to_any (B := erc1155.AccountId.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -681,7 +681,7 @@ Section Impl_erc1155_Env_t.
     ltac:(M.monadic (
       let self := M.alloc (| self |) in
       let _event := M.alloc (| _event |) in
-      never_to_any (|
+      (never_to_any (B := unit)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -775,7 +775,7 @@ Section Impl_erc1155_Contract_t.
   *)
   Definition init_env : M erc1155.Env.t :=
     ltac:(M.monadic (
-      never_to_any (|
+      (never_to_any (B := erc1155.Env.t)) (|
         M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |)))
         |)
       |)
@@ -975,7 +975,7 @@ Section Impl_erc1155_Contract_t.
               |)
             then
               M.alloc (|
-                never_to_any (|
+                (never_to_any (B := unit)) (|
                   M.read (|
                     return_
                       (core.result.Result.Err
@@ -1435,7 +1435,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                   |)
                 then
                   M.alloc (|
-                    never_to_any (|
+                    (never_to_any (B := unit)) (|
                       M.read (|
                         return_
                           (core.result.Result.Err
@@ -1473,7 +1473,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
               |)
             then
               M.alloc (|
-                never_to_any (|
+                (never_to_any (B := unit)) (|
                   M.read (|
                     return_
                       (core.result.Result.Err
@@ -1510,7 +1510,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
               |)
             then
               M.alloc (|
-                never_to_any (|
+                (never_to_any (B := unit)) (|
                   M.read (|
                     return_
                       (core.result.Result.Err
@@ -1657,7 +1657,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                   |)
                 then
                   M.alloc (|
-                    never_to_any (|
+                    (never_to_any (B := unit)) (|
                       M.read (|
                         return_
                           (core.result.Result.Err
@@ -1695,7 +1695,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
               |)
             then
               M.alloc (|
-                never_to_any (|
+                (never_to_any (B := unit)) (|
                   M.read (|
                     return_
                       (core.result.Result.Err
@@ -1727,7 +1727,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
               |)
             then
               M.alloc (|
-                never_to_any (|
+                (never_to_any (B := unit)) (|
                   M.read (|
                     return_
                       (core.result.Result.Err
@@ -1764,7 +1764,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
               |)
             then
               M.alloc (|
-                never_to_any (|
+                (never_to_any (B := unit)) (|
                   M.read (|
                     return_
                       (core.result.Result.Err
@@ -1864,7 +1864,9 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                                   match M.read (| γ |) with
                                   | core.option.Option.None =>
                                     M.alloc (|
-                                      never_to_any (| M.read (| M.break |) |)
+                                      (never_to_any (B := unit)) (|
+                                        M.read (| M.break |)
+                                      |)
                                     |)
                                   | _ => M.break_match(||)
                                   end :
@@ -1907,7 +1909,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                                           |)
                                         then
                                           M.alloc (|
-                                            never_to_any (|
+                                            (never_to_any (B := unit)) (|
                                               M.read (|
                                                 return_
                                                   (core.result.Result.Err
@@ -1980,7 +1982,9 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                                   match M.read (| γ |) with
                                   | core.option.Option.None =>
                                     M.alloc (|
-                                      never_to_any (| M.read (| M.break |) |)
+                                      (never_to_any (B := unit)) (|
+                                        M.read (| M.break |)
+                                      |)
                                     |)
                                   | _ => M.break_match(||)
                                   end :
@@ -2134,7 +2138,9 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                                 match M.read (| γ |) with
                                 | core.option.Option.None =>
                                   M.alloc (|
-                                    never_to_any (| M.read (| M.break |) |)
+                                    (never_to_any (B := unit)) (|
+                                      M.read (| M.break |)
+                                    |)
                                   |)
                                 | _ => M.break_match(||)
                                 end :
@@ -2197,7 +2203,8 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                                                             core.option.Option.None
                                                             =>
                                                           M.alloc (|
-                                                            never_to_any (|
+                                                            (never_to_any
+                                                              (B := unit)) (|
                                                               M.read (| M.break
                                                               |)
                                                             |)
@@ -2337,7 +2344,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
               |)
             then
               M.alloc (|
-                never_to_any (|
+                (never_to_any (B := unit)) (|
                   M.read (|
                     return_
                       (core.result.Result.Err
@@ -2460,7 +2467,7 @@ Section Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract_t.
       let _token_id := M.alloc (| _token_id |) in
       let _value := M.alloc (| _value |) in
       let _data := M.alloc (| _data |) in
-      never_to_any (|
+      (never_to_any (B := alloc.vec.Vec.t u8.t alloc.alloc.Global.t)) (|
         M.call (|(core.panicking.panic_fmt
           (M.call (|(core.fmt.Arguments.t::["new_v1"]
             (pointer_coercion
@@ -2528,7 +2535,7 @@ Section Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract_t.
       let _token_ids := M.alloc (| _token_ids |) in
       let _values := M.alloc (| _values |) in
       let _data := M.alloc (| _data |) in
-      never_to_any (|
+      (never_to_any (B := alloc.vec.Vec.t u8.t alloc.alloc.Global.t)) (|
         M.call (|(core.panicking.panic_fmt
           (M.call (|(core.fmt.Arguments.t::["new_v1"]
             (pointer_coercion

@@ -205,7 +205,7 @@ Section Impl_basic_contract_caller_BasicContractCaller_t.
       M.read (|
         let other_contract : M.Val basic_contract_caller.OtherContract.t :=
           M.alloc (|
-            never_to_any (|
+            (never_to_any (B := basic_contract_caller.OtherContract.t)) (|
               M.call (|(core.panicking.panic
                 (M.read (| mk_str "not yet implemented" |)))
               |)

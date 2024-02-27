@@ -23,7 +23,10 @@ Definition read_lines
           std.io.Lines.t
             (std.io.buffered.bufreader.BufReader.t std.fs.File.t)) in
     M.catch_return
-      (never_to_any (|
+      ((never_to_any
+        (B :=
+          std.io.Lines.t
+            (std.io.buffered.bufreader.BufReader.t std.fs.File.t))) (|
         M.read (|
           let file : M.Val std.fs.File.t :=
             M.alloc (|
@@ -119,7 +122,10 @@ Definition main : M unit :=
                                       std.io.error.Error.t))) =>
                             match M.read (| γ |) with
                             | core.option.Option.None =>
-                              M.alloc (| never_to_any (| M.read (| M.break |) |)
+                              M.alloc (|
+                                (never_to_any (B := unit)) (|
+                                  M.read (| M.break |)
+                                |)
                               |)
                             | _ => M.break_match(||)
                             end :

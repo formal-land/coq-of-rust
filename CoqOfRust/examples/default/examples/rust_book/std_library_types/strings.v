@@ -140,7 +140,9 @@ Definition main : M unit :=
                               match M.read (| γ |) with
                               | core.option.Option.None =>
                                 M.alloc (|
-                                  never_to_any (| M.read (| M.break |) |)
+                                  (never_to_any (B := unit)) (|
+                                    M.read (| M.break |)
+                                  |)
                                 |)
                               | _ => M.break_match(||)
                               end :
@@ -258,7 +260,9 @@ Definition main : M unit :=
                               match M.read (| γ |) with
                               | core.option.Option.None =>
                                 M.alloc (|
-                                  never_to_any (| M.read (| M.break |) |)
+                                  (never_to_any (B := unit)) (|
+                                    M.read (| M.break |)
+                                  |)
                                 |)
                               | _ => M.break_match(||)
                               end :

@@ -8,7 +8,7 @@ fn decode_input<T>() -> Result<T, ()> {
 *)
 Definition decode_input {T : Set} : M (core.result.Result.t T unit) :=
   ltac:(M.monadic (
-    never_to_any (|
+    (never_to_any (B := core.result.Result.t T unit)) (|
       M.call (|(core.panicking.panic (M.read (| mk_str "not implemented" |))) |)
     |)
   )).
