@@ -596,40 +596,45 @@ impl ExprKind {
             } => match base {
                 None => paren(
                     with_paren && matches!(struct_or_variant, StructOrVariant::Variant { .. }),
-                    group([
-                        nest([
-                            match struct_or_variant {
-                                StructOrVariant::Struct => nil(),
-                                StructOrVariant::Variant { .. } => concat([path.to_doc(), line()]),
-                            },
-                            text("{|"),
-                            line(),
-                            intersperse(
-                                fields.iter().map(|(name, expr)| {
-                                    nest([
-                                        path.to_doc(),
-                                        text("."),
-                                        text(name),
-                                        text(" :="),
-                                        line(),
-                                        expr.to_doc(false),
-                                        text(";"),
-                                    ])
-                                }),
-                                [line()],
-                            ),
-                        ]),
-                        line(),
-                        text("|}"),
-                        match &ty {
-                            Some(struct_ty) => group([
-                                text(" :"),
+                    paren(
+                        with_paren,
+                        group([
+                            nest([
+                                match struct_or_variant {
+                                    StructOrVariant::Struct => nil(),
+                                    StructOrVariant::Variant { .. } => {
+                                        concat([path.to_doc(), line()])
+                                    }
+                                },
+                                text("{|"),
                                 line(),
-                                struct_ty.clone().to_coq().to_doc(false),
+                                intersperse(
+                                    fields.iter().map(|(name, expr)| {
+                                        nest([
+                                            path.to_doc(),
+                                            text("."),
+                                            text(name),
+                                            text(" :="),
+                                            line(),
+                                            expr.to_doc(false),
+                                            text(";"),
+                                        ])
+                                    }),
+                                    [line()],
+                                ),
                             ]),
-                            None => nil(),
-                        },
-                    ]),
+                            line(),
+                            text("|}"),
+                            match &ty {
+                                Some(struct_ty) => group([
+                                    text(" :"),
+                                    line(),
+                                    struct_ty.clone().to_coq().to_doc(false),
+                                ]),
+                                None => nil(),
+                            },
+                        ]),
+                    ),
                 ),
                 Some(base) => paren(
                     with_paren && !fields.is_empty(),
