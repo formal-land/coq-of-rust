@@ -877,7 +877,11 @@ fn compile_expr_kind<'a>(
         }
         thir::ExprKind::NeverToAny { source } => {
             let func = Rc::new(Expr {
-                kind: Rc::new(ExprKind::LocalVar("never_to_any".to_string())),
+                kind: Rc::new(ExprKind::VarWithTy {
+                    path: Path::local("never_to_any"),
+                    ty_name: "B".to_string(),
+                    ty: ty.clone(),
+                }),
                 ty: None,
             });
             let source = compile_expr(env, thir, source);
