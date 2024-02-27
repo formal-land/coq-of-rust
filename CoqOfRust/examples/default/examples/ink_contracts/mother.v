@@ -1766,7 +1766,7 @@ Section Impl_mother_Mother_t.
                   |)
                 |)))
               (mother.Event.AuctionEchoed
-                {|
+                ({|
                   mother.AuctionEchoed.auction :=
                     M.call (|(ltac:(M.get_method (fun ℐ =>
                         core.clone.Clone.clone
@@ -1774,7 +1774,7 @@ Section Impl_mother_Mother_t.
                           (Trait := ℐ)))
                       (borrow auction))
                     |);
-                |} : mother.AuctionEchoed.t))
+                |} : mother.AuctionEchoed.t)))
             |)
           |) in
         auction

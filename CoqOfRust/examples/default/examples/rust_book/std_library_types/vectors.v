@@ -65,10 +65,10 @@ Definition main : M unit :=
                 (Self := core.ops.range.Range.t i32.t)
                 (B := alloc.vec.Vec.t i32.t alloc.alloc.Global.t)
                 (Trait := ℐ)))
-            {|
+            ({|
               core.ops.range.Range.start := (Integer.of_Z 0) : i32.t;
               core.ops.range.Range.end_ := (Integer.of_Z 10) : i32.t;
-            |} : core.ops.range.Range.t i32.t)
+            |} : core.ops.range.Range.t i32.t))
           |)
         |) in
       let _ : M.Val unit :=

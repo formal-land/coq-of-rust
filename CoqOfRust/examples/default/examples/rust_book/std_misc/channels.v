@@ -88,13 +88,13 @@ Definition main : M unit :=
                               core.iter.traits.collect.IntoIterator.into_iter
                                 (Self := core.ops.range.Range.t i32.t)
                                 (Trait := ℐ)))
-                            {|
+                            ({|
                               core.ops.range.Range.start :=
                                 (Integer.of_Z 0) : i32.t;
                               core.ops.range.Range.end_ :=
                                 M.read (| deref (M.read (| channels.NTHREADS |))
                                 |);
-                            |} : core.ops.range.Range.t i32.t)
+                            |} : core.ops.range.Range.t i32.t))
                           |)
                         |))
                         [
@@ -267,13 +267,13 @@ Definition main : M unit :=
                               core.iter.traits.collect.IntoIterator.into_iter
                                 (Self := core.ops.range.Range.t i32.t)
                                 (Trait := ℐ)))
-                            {|
+                            ({|
                               core.ops.range.Range.start :=
                                 (Integer.of_Z 0) : i32.t;
                               core.ops.range.Range.end_ :=
                                 M.read (| deref (M.read (| channels.NTHREADS |))
                                 |);
-                            |} : core.ops.range.Range.t i32.t)
+                            |} : core.ops.range.Range.t i32.t))
                           |)
                         |))
                         [

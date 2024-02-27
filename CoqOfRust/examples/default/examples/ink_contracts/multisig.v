@@ -1852,8 +1852,8 @@ Section Impl_multisig_Multisig_t.
                   |)
                 |)))
               (multisig.Event.OwnerAddition
-                {| multisig.OwnerAddition.owner := M.read (| new_owner |);
-                |} : multisig.OwnerAddition.t))
+                ({| multisig.OwnerAddition.owner := M.read (| new_owner |);
+                |} : multisig.OwnerAddition.t)))
             |)
           |) in
         M.alloc (| tt |)
@@ -2212,8 +2212,8 @@ Section Impl_multisig_Multisig_t.
                   |)
                 |)))
               (multisig.Event.OwnerRemoval
-                {| multisig.OwnerRemoval.owner := M.read (| owner |);
-                |} : multisig.OwnerRemoval.t))
+                ({| multisig.OwnerRemoval.owner := M.read (| owner |);
+                |} : multisig.OwnerRemoval.t)))
             |)
           |) in
         M.alloc (| tt |)
@@ -2327,8 +2327,8 @@ Section Impl_multisig_Multisig_t.
                   |)
                 |)))
               (multisig.Event.OwnerRemoval
-                {| multisig.OwnerRemoval.owner := M.read (| old_owner |);
-                |} : multisig.OwnerRemoval.t))
+                ({| multisig.OwnerRemoval.owner := M.read (| old_owner |);
+                |} : multisig.OwnerRemoval.t)))
             |)
           |) in
         let _ : M.Val unit :=
@@ -2341,8 +2341,8 @@ Section Impl_multisig_Multisig_t.
                   |)
                 |)))
               (multisig.Event.OwnerAddition
-                {| multisig.OwnerAddition.owner := M.read (| new_owner |);
-                |} : multisig.OwnerAddition.t))
+                ({| multisig.OwnerAddition.owner := M.read (| new_owner |);
+                |} : multisig.OwnerAddition.t)))
             |)
           |) in
         M.alloc (| tt |)
@@ -2407,10 +2407,10 @@ Section Impl_multisig_Multisig_t.
                   |)
                 |)))
               (multisig.Event.RequirementChange
-                {|
+                ({|
                   multisig.RequirementChange.new_requirement :=
                     M.read (| new_requirement |);
-                |} : multisig.RequirementChange.t))
+                |} : multisig.RequirementChange.t)))
             |)
           |) in
         M.alloc (| tt |)
@@ -2565,12 +2565,12 @@ Section Impl_multisig_Multisig_t.
                       |)
                     |)))
                   (multisig.Event.Confirmation
-                    {|
+                    ({|
                       multisig.Confirmation.transaction :=
                         M.read (| transaction |);
                       multisig.Confirmation.from := M.read (| confirmer |);
                       multisig.Confirmation.status := M.read (| status |);
-                    |} : multisig.Confirmation.t))
+                    |} : multisig.Confirmation.t)))
                 |)
               |) in
             M.alloc (| tt |)
@@ -2671,8 +2671,8 @@ Section Impl_multisig_Multisig_t.
                   |)
                 |)))
               (multisig.Event.Submission
-                {| multisig.Submission.transaction := M.read (| trans_id |);
-                |} : multisig.Submission.t))
+                ({| multisig.Submission.transaction := M.read (| trans_id |);
+                |} : multisig.Submission.t)))
             |)
           |) in
         M.alloc (|
@@ -2983,8 +2983,9 @@ Section Impl_multisig_Multisig_t.
                     |)
                   |)))
                 (multisig.Event.Cancellation
-                  {| multisig.Cancellation.transaction := M.read (| trans_id |);
-                  |} : multisig.Cancellation.t))
+                  ({|
+                    multisig.Cancellation.transaction := M.read (| trans_id |);
+                  |} : multisig.Cancellation.t)))
               |)
             |) in
           M.alloc (| tt |)
@@ -3162,10 +3163,10 @@ Section Impl_multisig_Multisig_t.
                     |)
                   |)))
                 (multisig.Event.Revocation
-                  {|
+                  ({|
                     multisig.Revocation.transaction := M.read (| trans_id |);
                     multisig.Revocation.from := M.read (| caller |);
-                  |} : multisig.Revocation.t))
+                  |} : multisig.Revocation.t)))
               |)
             |) in
           M.alloc (| tt |)
@@ -3333,7 +3334,7 @@ Section Impl_multisig_Multisig_t.
                   |)
                 |)))
               (multisig.Event.Execution
-                {|
+                ({|
                   multisig.Execution.transaction := M.read (| trans_id |);
                   multisig.Execution.result :=
                     M.call (|((core.result.Result.t
@@ -3353,7 +3354,7 @@ Section Impl_multisig_Multisig_t.
                         core.option.Option.t
                           (alloc.vec.Vec.t u8.t alloc.alloc.Global.t)))
                     |);
-                |} : multisig.Execution.t))
+                |} : multisig.Execution.t)))
             |)
           |) in
         result

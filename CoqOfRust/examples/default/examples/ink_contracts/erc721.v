@@ -1119,11 +1119,11 @@ Section Impl_erc721_Erc721_t.
                     |)
                   |)))
                 (erc721.Event.ApprovalForAll
-                  {|
+                  ({|
                     erc721.ApprovalForAll.owner := M.read (| caller |);
                     erc721.ApprovalForAll.operator := M.read (| to |);
                     erc721.ApprovalForAll.approved := M.read (| approved |);
-                  |} : erc721.ApprovalForAll.t))
+                  |} : erc721.ApprovalForAll.t)))
               |)
             |) in
           let _ : M.Val unit :=
@@ -1439,11 +1439,11 @@ Section Impl_erc721_Erc721_t.
                     |)
                   |)))
                 (erc721.Event.Approval
-                  {|
+                  ({|
                     erc721.Approval.from := M.read (| caller |);
                     erc721.Approval.to := M.read (| deref (M.read (| to |)) |);
                     erc721.Approval.id := M.read (| id |);
-                  |} : erc721.Approval.t))
+                  |} : erc721.Approval.t)))
               |)
             |) in
           M.alloc (| core.result.Result.Ok tt |)
@@ -2166,7 +2166,7 @@ Section Impl_erc721_Erc721_t.
                     |)
                   |)))
                 (erc721.Event.Transfer
-                  {|
+                  ({|
                     erc721.Transfer.from :=
                       core.option.Option.Some
                         (M.call (|(ltac:(M.get_method (fun ℐ =>
@@ -2179,7 +2179,7 @@ Section Impl_erc721_Erc721_t.
                     erc721.Transfer.to :=
                       core.option.Option.Some (M.read (| caller |));
                     erc721.Transfer.id := M.read (| id |);
-                  |} : erc721.Transfer.t))
+                  |} : erc721.Transfer.t)))
               |)
             |) in
           M.alloc (| core.result.Result.Ok tt |)

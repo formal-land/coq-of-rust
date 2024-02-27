@@ -146,10 +146,10 @@ Definition boxed_origin
     M.call (|((alloc.boxed.Box.t
           box_stack_heap.Point.t
           alloc.alloc.Global.t)::["new"]
-      {|
+      ({|
         box_stack_heap.Point.x := M.read (| UnsupportedLiteral : M.Val f64.t |);
         box_stack_heap.Point.y := M.read (| UnsupportedLiteral : M.Val f64.t |);
-      |} : box_stack_heap.Point.t)
+      |} : box_stack_heap.Point.t))
     |)
   )).
 
@@ -235,7 +235,7 @@ Definition main : M unit :=
           M.call (|((alloc.boxed.Box.t
                 box_stack_heap.Rectangle.t
                 alloc.alloc.Global.t)::["new"]
-            {|
+            ({|
               box_stack_heap.Rectangle.top_left :=
                 M.call (|box_stack_heap.origin |);
               box_stack_heap.Rectangle.bottom_right :=
@@ -245,7 +245,7 @@ Definition main : M unit :=
                   box_stack_heap.Point.y :=
                     M.read (| UnsupportedLiteral : M.Val f64.t |);
                 |} : box_stack_heap.Point.t;
-            |} : box_stack_heap.Rectangle.t)
+            |} : box_stack_heap.Rectangle.t))
           |)
         |) in
       let boxed_point :

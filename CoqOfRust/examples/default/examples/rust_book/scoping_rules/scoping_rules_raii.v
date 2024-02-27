@@ -70,10 +70,10 @@ Definition main : M unit :=
                   core.iter.traits.collect.IntoIterator.into_iter
                     (Self := core.ops.range.Range.t u32.t)
                     (Trait := ℐ)))
-                {|
+                ({|
                   core.ops.range.Range.start := (Integer.of_Z 0) : u32.t;
                   core.ops.range.Range.end_ := (Integer.of_Z 1000) : u32.t;
-                |} : core.ops.range.Range.t u32.t)
+                |} : core.ops.range.Range.t u32.t))
               |)
             |))
             [

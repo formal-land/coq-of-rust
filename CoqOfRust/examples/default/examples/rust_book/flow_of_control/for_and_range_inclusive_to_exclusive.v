@@ -29,10 +29,10 @@ Definition main : M unit :=
                   core.iter.traits.collect.IntoIterator.into_iter
                     (Self := core.ops.range.Range.t i32.t)
                     (Trait := ℐ)))
-                {|
+                ({|
                   core.ops.range.Range.start := (Integer.of_Z 1) : i32.t;
                   core.ops.range.Range.end_ := (Integer.of_Z 101) : i32.t;
-                |} : core.ops.range.Range.t i32.t)
+                |} : core.ops.range.Range.t i32.t))
               |)
             |))
             [

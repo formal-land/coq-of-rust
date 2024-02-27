@@ -484,7 +484,7 @@ Section Impl_call_runtime_RuntimeCaller_t.
           (borrow
             (M.alloc (|
               call_runtime.RuntimeCall.Balances
-                (call_runtime.BalancesCall.Transfer
+                ((call_runtime.BalancesCall.Transfer
                   {|
                   call_runtime.BalancesCall.Transfer.dest :=
                     M.call (|(ltac:(M.get_method (fun ℐ =>
@@ -499,7 +499,7 @@ Section Impl_call_runtime_RuntimeCaller_t.
                     |);
                   call_runtime.BalancesCall.Transfer.value :=
                     M.read (| value |);
-                |} : call_runtime.BalancesCall.t)
+                |} : call_runtime.BalancesCall.t))
             |))))
         |))
         ltac:(M.get_method (fun ℐ =>

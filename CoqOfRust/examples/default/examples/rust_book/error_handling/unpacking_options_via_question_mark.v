@@ -343,16 +343,16 @@ Definition main : M unit :=
           {|
             unpacking_options_via_question_mark.Person.job :=
               core.option.Option.Some
-                {|
+                ({|
                   unpacking_options_via_question_mark.Job.phone_number :=
                     core.option.Option.Some
-                      {|
+                      ({|
                         unpacking_options_via_question_mark.PhoneNumber.area_code :=
                           core.option.Option.Some ((Integer.of_Z 61) : u8.t);
                         unpacking_options_via_question_mark.PhoneNumber.number :=
                           (Integer.of_Z 439222222) : u32.t;
-                      |} : unpacking_options_via_question_mark.PhoneNumber.t;
-                |} : unpacking_options_via_question_mark.Job.t;
+                      |} : unpacking_options_via_question_mark.PhoneNumber.t);
+                |} : unpacking_options_via_question_mark.Job.t);
           |} : unpacking_options_via_question_mark.Person.t
         |) in
       let _ : M.Val unit :=

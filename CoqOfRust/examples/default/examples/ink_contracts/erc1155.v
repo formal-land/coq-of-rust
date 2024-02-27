@@ -889,7 +889,7 @@ Section Impl_erc1155_Contract_t.
                   |)
                 |)))
               (erc1155.Event.TransferSingle
-                {|
+                ({|
                   erc1155.TransferSingle.operator :=
                     core.option.Option.Some (M.read (| caller |));
                   erc1155.TransferSingle.from := core.option.Option.None;
@@ -916,7 +916,7 @@ Section Impl_erc1155_Contract_t.
                         (deref (M.read (| self |)))
                     |);
                   erc1155.TransferSingle.value := M.read (| value |);
-                |} : erc1155.TransferSingle.t))
+                |} : erc1155.TransferSingle.t)))
             |)
           |) in
         erc1155.Contract.Get_token_id_nonce (deref (M.read (| self |)))
@@ -1023,7 +1023,7 @@ Section Impl_erc1155_Contract_t.
                     |)
                   |)))
                 (erc1155.Event.TransferSingle
-                  {|
+                  ({|
                     erc1155.TransferSingle.operator :=
                       core.option.Option.Some (M.read (| caller |));
                     erc1155.TransferSingle.from := core.option.Option.None;
@@ -1031,7 +1031,7 @@ Section Impl_erc1155_Contract_t.
                       core.option.Option.Some (M.read (| caller |));
                     erc1155.TransferSingle.token_id := M.read (| token_id |);
                     erc1155.TransferSingle.value := M.read (| value |);
-                  |} : erc1155.TransferSingle.t))
+                  |} : erc1155.TransferSingle.t)))
               |)
             |) in
           M.alloc (| core.result.Result.Ok tt |)
@@ -1168,7 +1168,7 @@ Section Impl_erc1155_Contract_t.
                   |)
                 |)))
               (erc1155.Event.TransferSingle
-                {|
+                ({|
                   erc1155.TransferSingle.operator :=
                     core.option.Option.Some (M.read (| caller |));
                   erc1155.TransferSingle.from :=
@@ -1177,7 +1177,7 @@ Section Impl_erc1155_Contract_t.
                     core.option.Option.Some (M.read (| to |));
                   erc1155.TransferSingle.token_id := M.read (| token_id |);
                   erc1155.TransferSingle.value := M.read (| value |);
-                |} : erc1155.TransferSingle.t))
+                |} : erc1155.TransferSingle.t)))
             |)
           |) in
         M.alloc (| tt |)
@@ -2398,11 +2398,11 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                     |)
                   |)))
                 (erc1155.Event.ApprovalForAll
-                  {|
+                  ({|
                     erc1155.ApprovalForAll.owner := M.read (| caller |);
                     erc1155.ApprovalForAll.operator := M.read (| operator |);
                     erc1155.ApprovalForAll.approved := M.read (| approved |);
-                  |} : erc1155.ApprovalForAll.t))
+                  |} : erc1155.ApprovalForAll.t)))
               |)
             |) in
           M.alloc (| core.result.Result.Ok tt |)

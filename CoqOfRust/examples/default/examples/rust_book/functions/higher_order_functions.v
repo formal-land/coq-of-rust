@@ -82,8 +82,9 @@ Definition main : M unit :=
                     core.iter.traits.collect.IntoIterator.into_iter
                       (Self := core.ops.range.RangeFrom.t u32.t)
                       (Trait := ℐ)))
-                  {| core.ops.range.RangeFrom.start := (Integer.of_Z 0) : u32.t;
-                  |} : core.ops.range.RangeFrom.t u32.t)
+                  ({|
+                    core.ops.range.RangeFrom.start := (Integer.of_Z 0) : u32.t;
+                  |} : core.ops.range.RangeFrom.t u32.t))
                 |)
               |))
               [
@@ -237,8 +238,9 @@ Definition main : M unit :=
                       (B := u32.t)
                       (F := u32.t -> u32.t)
                       (Trait := ℐ)))
-                  {| core.ops.range.RangeFrom.start := (Integer.of_Z 0) : u32.t;
-                  |} : core.ops.range.RangeFrom.t u32.t
+                  ({|
+                    core.ops.range.RangeFrom.start := (Integer.of_Z 0) : u32.t;
+                  |} : core.ops.range.RangeFrom.t u32.t)
                   (fun (α0 : u32.t) =>
                     (ltac:
                       (M.monadic_match_operator

@@ -636,12 +636,12 @@ Section Impl_trait_erc20_Erc20_t.
               (borrow
                 (M.alloc (| M.call (|trait_erc20.Erc20.t::["init_env"] |) |)))
               (trait_erc20.Event.Transfer
-                {|
+                ({|
                   trait_erc20.Transfer.from := core.option.Option.None;
                   trait_erc20.Transfer.to :=
                     core.option.Option.Some (M.read (| caller |));
                   trait_erc20.Transfer.value := M.read (| total_supply |);
-                |} : trait_erc20.Transfer.t))
+                |} : trait_erc20.Transfer.t)))
             |)
           |) in
         M.alloc (|
@@ -831,7 +831,7 @@ Section Impl_trait_erc20_Erc20_t.
                     |)
                   |)))
                 (trait_erc20.Event.Transfer
-                  {|
+                  ({|
                     trait_erc20.Transfer.from :=
                       core.option.Option.Some
                         (M.read (| deref (M.read (| from |)) |));
@@ -839,7 +839,7 @@ Section Impl_trait_erc20_Erc20_t.
                       core.option.Option.Some
                         (M.read (| deref (M.read (| to |)) |));
                     trait_erc20.Transfer.value := M.read (| value |);
-                  |} : trait_erc20.Transfer.t))
+                  |} : trait_erc20.Transfer.t)))
               |)
             |) in
           M.alloc (| core.result.Result.Ok tt |)
@@ -1020,11 +1020,11 @@ Section Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20_t.
                   |)
                 |)))
               (trait_erc20.Event.Approval
-                {|
+                ({|
                   trait_erc20.Approval.owner := M.read (| owner |);
                   trait_erc20.Approval.spender := M.read (| spender |);
                   trait_erc20.Approval.value := M.read (| value |);
-                |} : trait_erc20.Approval.t))
+                |} : trait_erc20.Approval.t)))
             |)
           |) in
         M.alloc (| core.result.Result.Ok tt |)

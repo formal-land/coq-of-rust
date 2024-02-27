@@ -322,10 +322,10 @@ Definition main : M unit :=
                   (Idx := core.ops.range.Range.t usize.t)
                   (Trait := ℐ)))
               (borrow ys)
-              {|
+              ({|
                 core.ops.range.Range.start := (Integer.of_Z 1) : usize.t;
                 core.ops.range.Range.end_ := (Integer.of_Z 4) : usize.t;
-              |} : core.ops.range.Range.t usize.t)
+              |} : core.ops.range.Range.t usize.t))
             |)))
           |)
         |) in
@@ -462,7 +462,7 @@ Definition main : M unit :=
                   core.iter.traits.collect.IntoIterator.into_iter
                     (Self := core.ops.range.Range.t usize.t)
                     (Trait := ℐ)))
-                {|
+                ({|
                   core.ops.range.Range.start := (Integer.of_Z 0) : usize.t;
                   core.ops.range.Range.end_ :=
                     BinOp.Panic.add (|
@@ -471,7 +471,7 @@ Definition main : M unit :=
                       |),
                       (Integer.of_Z 1) : usize.t
                     |);
-                |} : core.ops.range.Range.t usize.t)
+                |} : core.ops.range.Range.t usize.t))
               |)
             |))
             [

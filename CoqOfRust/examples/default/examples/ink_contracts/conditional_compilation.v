@@ -397,14 +397,14 @@ Section Impl_conditional_compilation_ConditionalCompilation_t.
                   |)
                 |)))
               (conditional_compilation.Event.Changes
-                {|
+                ({|
                   conditional_compilation.Changes.new_value :=
                     M.read (|
                       conditional_compilation.ConditionalCompilation.Get_value
                         (deref (M.read (| self |)))
                     |);
                   conditional_compilation.Changes.by_ := M.read (| caller |);
-                |} : conditional_compilation.Changes.t))
+                |} : conditional_compilation.Changes.t)))
             |)
           |) in
         M.alloc (| tt |)
@@ -471,7 +471,7 @@ Section Impl_conditional_compilation_ConditionalCompilation_t.
                   |)
                 |)))
               (conditional_compilation.Event.ChangesDated
-                {|
+                ({|
                   conditional_compilation.ChangesDated.new_value :=
                     M.read (|
                       conditional_compilation.ConditionalCompilation.Get_value
@@ -481,7 +481,7 @@ Section Impl_conditional_compilation_ConditionalCompilation_t.
                     M.read (| caller |);
                   conditional_compilation.ChangesDated.when :=
                     M.read (| block_number |);
-                |} : conditional_compilation.ChangesDated.t))
+                |} : conditional_compilation.ChangesDated.t)))
             |)
           |) in
         M.alloc (| tt |)
@@ -579,11 +579,11 @@ Section Impl_conditional_compilation_Flip_for_conditional_compilation_Conditiona
                   |)
                 |)))
               (conditional_compilation.Event.Changes
-                {|
+                ({|
                   conditional_compilation.Changes.new_value :=
                     M.read (| value |);
                   conditional_compilation.Changes.by_ := M.read (| caller |);
-                |} : conditional_compilation.Changes.t))
+                |} : conditional_compilation.Changes.t)))
             |)
           |) in
         let _ : M.Val unit :=

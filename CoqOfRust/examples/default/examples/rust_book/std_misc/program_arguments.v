@@ -115,10 +115,10 @@ Definition main : M unit :=
                                     (Idx := core.ops.range.RangeFrom.t usize.t)
                                     (Trait := ℐ)))
                                 (borrow args)
-                                {|
+                                ({|
                                   core.ops.range.RangeFrom.start :=
                                     (Integer.of_Z 1) : usize.t;
-                                |} : core.ops.range.RangeFrom.t usize.t)
+                                |} : core.ops.range.RangeFrom.t usize.t))
                               |)
                             |))))
                         |)

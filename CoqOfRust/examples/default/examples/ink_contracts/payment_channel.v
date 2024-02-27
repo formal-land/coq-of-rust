@@ -1471,7 +1471,7 @@ Section Impl_payment_channel_PaymentChannel_t.
                     |)
                   |)))
                 (payment_channel.Event.SenderCloseStarted
-                  {|
+                  ({|
                     payment_channel.SenderCloseStarted.expiration :=
                       M.read (| expiration |);
                     payment_channel.SenderCloseStarted.close_duration :=
@@ -1479,7 +1479,7 @@ Section Impl_payment_channel_PaymentChannel_t.
                         payment_channel.PaymentChannel.Get_close_duration
                           (deref (M.read (| self |)))
                       |);
-                  |} : payment_channel.SenderCloseStarted.t))
+                  |} : payment_channel.SenderCloseStarted.t)))
               |)
             |) in
           let _ : M.Val unit :=

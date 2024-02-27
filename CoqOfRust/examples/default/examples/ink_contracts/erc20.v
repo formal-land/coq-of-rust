@@ -465,12 +465,12 @@ Section Impl_erc20_Erc20_t_2.
             M.call (|(erc20.Env.t::["emit_event"]
               (borrow (M.alloc (| M.call (|erc20.Erc20.t::["init_env"] |) |)))
               (erc20.Event.Transfer
-                {|
+                ({|
                   erc20.Transfer.from := core.option.Option.None;
                   erc20.Transfer.to :=
                     core.option.Option.Some (M.read (| caller |));
                   erc20.Transfer.value := M.read (| total_supply |);
-                |} : erc20.Transfer.t))
+                |} : erc20.Transfer.t)))
             |)
           |) in
         M.alloc (|
@@ -717,7 +717,7 @@ Section Impl_erc20_Erc20_t_2.
                     |)
                   |)))
                 (erc20.Event.Transfer
-                  {|
+                  ({|
                     erc20.Transfer.from :=
                       core.option.Option.Some
                         (M.read (| deref (M.read (| from |)) |));
@@ -725,7 +725,7 @@ Section Impl_erc20_Erc20_t_2.
                       core.option.Option.Some
                         (M.read (| deref (M.read (| to |)) |));
                     erc20.Transfer.value := M.read (| value |);
-                  |} : erc20.Transfer.t))
+                  |} : erc20.Transfer.t)))
               |)
             |) in
           M.alloc (| core.result.Result.Ok tt |)
@@ -834,11 +834,11 @@ Section Impl_erc20_Erc20_t_2.
                   |)
                 |)))
               (erc20.Event.Approval
-                {|
+                ({|
                   erc20.Approval.owner := M.read (| owner |);
                   erc20.Approval.spender := M.read (| spender |);
                   erc20.Approval.value := M.read (| value |);
-                |} : erc20.Approval.t))
+                |} : erc20.Approval.t)))
             |)
           |) in
         M.alloc (| core.result.Result.Ok tt |)

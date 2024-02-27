@@ -840,10 +840,10 @@ Section Impl_dns_DomainNameService_t.
                     |)
                   |)))
                 (dns.Event.Register
-                  {|
+                  ({|
                     dns.Register.name := M.read (| name |);
                     dns.Register.from := M.read (| caller |);
-                  |} : dns.Register.t))
+                  |} : dns.Register.t)))
               |)
             |) in
           M.alloc (| core.result.Result.Ok tt |)
@@ -991,12 +991,12 @@ Section Impl_dns_DomainNameService_t.
                     |)
                   |)))
                 (dns.Event.SetAddress
-                  {|
+                  ({|
                     dns.SetAddress.name := M.read (| name |);
                     dns.SetAddress.from := M.read (| caller |);
                     dns.SetAddress.old_address := M.read (| old_address |);
                     dns.SetAddress.new_address := M.read (| new_address |);
-                  |} : dns.SetAddress.t))
+                  |} : dns.SetAddress.t)))
               |)
             |) in
           M.alloc (| core.result.Result.Ok tt |)
@@ -1113,12 +1113,12 @@ Section Impl_dns_DomainNameService_t.
                     |)
                   |)))
                 (dns.Event.Transfer
-                  {|
+                  ({|
                     dns.Transfer.name := M.read (| name |);
                     dns.Transfer.from := M.read (| caller |);
                     dns.Transfer.old_owner := M.read (| old_owner |);
                     dns.Transfer.new_owner := M.read (| to |);
-                  |} : dns.Transfer.t))
+                  |} : dns.Transfer.t)))
               |)
             |) in
           M.alloc (| core.result.Result.Ok tt |)
