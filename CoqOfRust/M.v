@@ -1,5 +1,8 @@
 (** * The definition of a Rust monad. *)
-Require Coq.Strings.String.
+Require Import Coq.Strings.String.
+Require Import Coq.ZArith.ZArith.
+
+Import List.ListNotations.
 
 Local Open Scope list.
 
@@ -16,116 +19,287 @@ Notation "{ x @ P }" := (sigS (fun x => P)) : type_scope.
 Notation "{ x : A @ P }" := (sigS (A := A) (fun x => P)) : type_scope.
 Notation "{ ' pat : A @ P }" := (sigS (A := A) (fun pat => P)) : type_scope.
 
-Module Ref.
-  Inductive t (A : Set) : Set :=
-  (** Can be produced from [Imm] referencing on sum types. *)
-  | Null : t A
-  | Imm : A -> t A
-  | MutRef {Address B : Set} (address : Address)
-      (projection : B -> option A) (injection : A -> B -> option B) :
-      t A.
-  Arguments Null {_}.
-  Arguments Imm {_}.
-  Arguments MutRef {_ _ _}.
+Module List.
+  Fixpoint assoc {A : Set} (l : list (string * A)) (key : string) : option A :=
+    match l with
+    | [] => None
+    | (k, v) :: l =>
+      if String.eqb k key then
+        Some v
+      else
+        assoc l key
+    end.
 
-  (** For the case where the reference covers the whole address. *)
-  Definition mut_ref {Address A : Set} (address : Address) : t A :=
-    MutRef address (fun v => Some v) (fun v _ => Some v).
+  Fixpoint assoc_replace {A : Set}
+      (l : list (string * A)) (key : string) (update : A) :
+      list (string * A) :=
+    match l with
+    | [] => []
+    | (k, v) :: l =>
+      if String.eqb k key then
+        (key, update) :: l
+      else
+        (k, v) :: assoc_replace l key update
+    end.
 
-  Definition map {Big Small : Set}
-      (projection : Big -> option Small)
-      (injection : Small -> Big -> option Big)
-      (r : t Big)
-      : t Small :=
-    match r with
-    | Null => Null
-    | Imm big =>
-      match projection big with
-      | Some small => Imm small
-      | None => Null
+  (** Update the list at the position given by [index]. Note that we silently
+      fail in case the index is out of bounds. *)
+  Fixpoint replace_at {A : Set} (l : list A) (index : nat) (update : A) :
+      list A :=
+    match l with
+    | [] => []
+    | x :: l =>
+      match index with
+      | O => update :: l
+      | S index => x :: replace_at l index update
       end
-    | MutRef address projection' injection' =>
-      MutRef address
-        (fun big_big =>
-          match projection' big_big with
-          | Some big => projection big
+    end.
+End List.
+
+Module Integer.
+  Inductive t : Set :=
+  | I8 : t
+  | I16 : t
+  | I32 : t
+  | I64 : t
+  | I128 : t
+  | Isize : t
+  | U8 : t
+  | U16 : t
+  | U32 : t
+  | U64 : t
+  | U128 : t
+  | Usize : t.
+End Integer.
+
+Module Pointer.
+  Module Index.
+    (** We are very explicit for the indexes, so that if the target is mutated
+        and the index does not make any sense anymore we can detect it. This
+        can happen with unsafe code and enums for example, where the enum case
+        might not be the correct one anymore. In that case, we want the
+        semantics of the dereferencing to block the evaluation rather than to
+        return an invalid field. *)
+    Inductive t : Set :=
+    | Tuple (index : Z)
+    | Array (index : Z)
+    | StructRecord (constructor field : string)
+    | StructTuple (constructor : string) (index : Z).
+  End Index.
+
+  Module Path.
+    Definition t : Set := list Index.t.
+  End Path.
+
+  Inductive t (Value : Set) : Set :=
+  | Immediate (value : Value)
+  | Mutable {Address : Set} (address : Address) (path : Path.t).
+  Arguments Immediate {_}.
+  Arguments Mutable {_ _}.
+End Pointer.
+
+Module Primitive.
+  Inductive t (Value : Set) : Set :=
+  | StateAlloc (value : Value)
+  | StateRead {Address : Set} (address : Address)
+  | StateWrite {Address : Set} (address : Address) (value : Value)
+  | EnvRead.
+  Arguments StateAlloc {_}.
+  Arguments StateRead {_ _}.
+  Arguments StateWrite {_ _}.
+  Arguments EnvRead {_}.
+End Primitive.
+
+Module Value.
+  Inductive t : Set :=
+  | Bool : bool -> t
+  | Integer : Integer.t -> Z -> t
+  (** For now we do not know how to represent floats so we use a string *)
+  | Float : string -> t
+  | UnicodeChar : Z -> t
+  | String : string -> t
+  | Tuple : list t -> t
+  | Array : list t -> t
+  | StructRecord : string -> list (string * t) -> t
+  | StructTuple : string -> list t -> t
+  | Pointer : Pointer.t t -> t
+  (** The two existential types of the closure must be [Value.t] and [M]. We
+      cannot enforce this constraint there yet, but we will do when defining the
+      semantics. *)
+  | Closure : {'(t, M) : Set * Set @ t -> M} -> t.
+
+  (** Read the part of the value that is at a given pointer path, starting from
+      the main value. It might return [None] if the path does not have a shape
+      compatible with the value. *)
+  Fixpoint read_path (value : Value.t) (path : Pointer.Path.t) :
+      option Value.t :=
+    match path with
+    | [] => Some value
+    | Pointer.Index.Tuple index :: path =>
+      match value with
+      | Tuple fields =>
+        match List.nth_error fields (Z.to_nat index) with
+        | Some value => read_path value path
+        | None => None
+        end
+      | _ => None
+      end
+    | Pointer.Index.Array index :: path =>
+      match value with
+      | Array fields =>
+        match List.nth_error fields (Z.to_nat index) with
+        | Some value => read_path value path
+        | None => None
+        end
+      | _ => None
+      end
+    | Pointer.Index.StructRecord constructor field :: path =>
+      match value with
+      | StructRecord c fields =>
+        if String.eqb c constructor then
+          match List.assoc fields field with
+          | Some value => read_path value path
           | None => None
           end
-        )
-        (fun small big_big =>
-          match projection' big_big with
-          | Some big =>
-            match injection small big with
-            | Some big' => injection' big' big_big
+        else
+          None
+      | _ => None
+      end
+    | Pointer.Index.StructTuple constructor index :: path =>
+      match value with
+      | StructTuple c fields =>
+        if String.eqb c constructor then
+          match List.nth_error fields (Z.to_nat index) with
+          | Some value => read_path value path
+          | None => None
+          end
+        else
+          None
+      | _ => None
+      end
+    end.
+
+  (** Update the part of a value at a certain [path], and return [None] if the
+      is of invalid shape. *)
+  Fixpoint write_value
+      (value : Value.t) (path : Pointer.Path.t) (update : Value.t) :
+      option Value.t :=
+    match path with
+    | [] => Some update
+    | Pointer.Index.Tuple index :: path =>
+      match value with
+      | Tuple fields =>
+        match List.nth_error fields (Z.to_nat index) with
+        | Some value =>
+          match write_value value path update with
+          | Some value =>
+            Some (Tuple (List.replace_at fields (Z.to_nat index) value))
+          | None => None
+          end
+        | None => None
+        end
+      | _ => None
+      end
+    | Pointer.Index.Array index :: path =>
+      match value with
+      | Array fields =>
+        match List.nth_error fields (Z.to_nat index) with
+        | Some value =>
+          match write_value value path update with
+          | Some value =>
+            Some (Array (List.replace_at fields (Z.to_nat index) value))
+          | None => None
+          end
+        | None => None
+        end
+      | _ => None
+      end
+    | Pointer.Index.StructRecord constructor field :: path =>
+      match value with
+      | StructRecord c fields =>
+        if String.eqb c constructor then
+          match List.assoc fields field with
+          | Some value =>
+            match write_value value path update with
+            | Some value =>
+              Some (StructRecord c (List.assoc_replace fields field value))
             | None => None
             end
           | None => None
           end
-        )
+        else
+          None
+      | _ => None
+      end
+    | Pointer.Index.StructTuple constructor index :: path =>
+      match value with
+      | StructTuple c fields =>
+        if String.eqb c constructor then
+          match List.nth_error fields (Z.to_nat index) with
+          | Some value =>
+            match write_value value path update with
+            | Some value =>
+              Some (StructTuple c (List.replace_at fields (Z.to_nat index) value))
+            | None => None
+            end
+          | None => None
+          end
+        else
+          None
+      | _ => None
+      end
     end.
-End Ref.
-Definition Ref := Ref.t.
-
-Module Primitive.
-  Inductive t : Set -> Set :=
-  | StateAlloc {A : Set} : A -> t (Ref.t A)
-  | StateRead {Address A : Set} : Address -> t A
-  | StateWrite {Address A : Set} : Address -> A -> t unit
-  | EnvRead {A : Set} : t A
-  | InstanceOracle (Trait : Set) : t (Trait).
-End Primitive.
-Definition Primitive : Set -> Set := Primitive.t.
+End Value.
 
 Module LowM.
   Inductive t (A : Set) : Set :=
   | Pure : A -> t A
-  | CallPrimitive {B : Set} : Primitive B -> (B -> t A) -> t A
-  | Cast {B1 B2 : Set} : B1 -> (B2 -> t A) -> t A
-  | Loop {B : Set} : t B -> (B -> bool) -> (B -> t A) -> t A
+  | CallPrimitive : Primitive.t Value.t -> (Value.t -> t A) -> t A
+  | Loop : t A -> (A -> bool) -> (A -> t A) -> t A
   | Impossible : t A
-  | Call {B : Set} : t B -> (B -> t A) -> t A.
+  (** This constructor is not strictly necessary, but is used as a marker for
+      functions calls in the generated code, to help the tactics to recognize
+      points where we can compose the lemma. *)
+  | Call : t A -> (A -> t A) -> t A.
   Arguments Pure {_}.
-  Arguments CallPrimitive {_ _}.
-  Arguments Cast {_ _ _}.
-  Arguments Loop {_ _}.
+  Arguments CallPrimitive {_}.
+  Arguments Loop {_}.
   Arguments Impossible {_}.
-  Arguments Call {_ _}.
+  Arguments Call {_}.
 
-  Fixpoint let_ {A B : Set} (e1 : t A) (f : A -> t B) : t B :=
+  Fixpoint let_ {A : Set} (e1 : t A) (f : A -> t A) : t A :=
     match e1 with
     | Pure v => f v
     | CallPrimitive primitive k =>
       CallPrimitive primitive (fun v => let_ (k v) f)
-    | Cast v k =>
-      Cast v (fun v' => let_ (k v') f)
-    | Loop body is_break k => Loop body is_break (fun v => let_ (k v) f)
+    | Loop body is_break k =>
+      Loop body is_break (fun v => let_ (k v) f)
     | Impossible => Impossible
-    | Call e k => Call e (fun v => let_ (k v) f)
+    | Call e k =>
+      Call e (fun v => let_ (k v) f)
     end.
 End LowM.
-Definition LowM : Set -> Set := LowM.t.
 
 Module Exception.
   Inductive t : Set :=
   (** exceptions for Rust's `return` *)
-  | Return {A : Set} : A -> t
+  | Return : Value.t -> t
   (** exceptions for Rust's `continue` *)
   | Continue : t
   (** exceptions for Rust's `break` *)
   | Break : t
   (** to translate the [match] patterns with (de)references *)
   | BreakMatch : t
-  | Panic : Coq.Strings.String.string -> t.
+  | Panic : string -> t.
 End Exception.
-Definition Exception : Set := Exception.t.
 
-Definition M (A : Set) : Set :=
-  LowM (A + Exception).
+Definition M : Set :=
+  LowM.t (Value.t + Exception.t).
 
-Definition pure {A : Set} (v : A) : M A :=
+Definition pure (v : Value.t) : M :=
   LowM.Pure (inl v).
 
-Definition let_ {A B : Set} (e1 : M A) (e2 : A -> M B) : M B :=
+Definition let_ (e1 : M) (e2 : Value.t -> M) : M :=
   LowM.let_ e1 (fun v1 =>
   match v1 with
   | inl v1 => e2 v1
@@ -145,7 +319,7 @@ End Option.
     this markers can be translated to a regular monadic computation using
     [M.monadic] tactic. Additionally, this parameter is used for the
     definitions of "const".*)
-Parameter run : forall {A : Set}, M A -> A.
+Parameter run : M -> Value.t.
 
 Module Notations.
   Notation "'let-' a := b 'in' c" :=
@@ -200,125 +374,106 @@ Ltac monadic e :=
   | _ => exact e
   end.
 
-Definition cast {A B : Set} (v : A) : M B :=
-  LowM.Cast (inl (B := Exception) v) LowM.Pure.
-
-Definition raise {A : Set} (exception : Exception) : M A :=
+Definition raise (exception : Exception.t) : M :=
   LowM.Pure (inr exception).
 
-Definition return_ {A R : Set} (r : R) : M A :=
+Definition return_ (r : Value.t) : M :=
   raise (Exception.Return r).
 
-Definition continue {A : Set} : M A :=
+Definition continue : M :=
   raise Exception.Continue.
 
-Definition break {A : Set} : M A :=
+Definition break : M :=
   raise Exception.Break.
 
-Definition break_match {A : Set} : M A :=
+Definition break_match : M :=
   raise Exception.BreakMatch.
 
-Definition panic {A : Set} (message : Coq.Strings.String.string) : M A :=
+Definition panic (message : string) : M :=
   raise (Exception.Panic message).
 
-Definition call {A : Set} (e : M A) : M A :=
+Definition call (e : M) : M :=
   LowM.Call e LowM.Pure.
 
-Definition alloc {A : Set} (v : A) : M (Ref A) :=
-  let- ref := LowM.CallPrimitive (Primitive.StateAlloc v) LowM.Pure in
-  LowM.Pure (inl ref).
+Definition call_primitive (primitive : Primitive.t Value.t) : M :=
+  LowM.CallPrimitive primitive (fun result =>
+  LowM.Pure (inl result)).
 
-Definition read {A : Set} (r : Ref A) : M A :=
+Definition alloc (v : Value.t) : M :=
+  call_primitive (Primitive.StateAlloc v).
+
+Definition read (r : Value.t) : M :=
   match r with
-  | Ref.Null => LowM.Impossible
-  | Ref.Imm v => LowM.Pure (inl v)
-  | Ref.MutRef address projection _ =>
-    let- full_v := LowM.CallPrimitive (Primitive.StateRead address) LowM.Pure in
-    match projection full_v with
-    | None => LowM.Impossible
+  | Value.Pointer (Pointer.Immediate v) => LowM.Pure (inl v)
+  | Value.Pointer (Pointer.Mutable address path) =>
+    let* v := call_primitive (Primitive.StateRead address) in
+    match Value.read_path v path with
     | Some v => LowM.Pure (inl v)
-    end
-  end.
-
-Definition write {A : Set} (r : Ref A) (v : A) : M unit :=
-  match r with
-  | Ref.Null => LowM.Impossible
-  | Ref.Imm _ => LowM.Impossible
-  | Ref.MutRef address _ injection =>
-    let- full_v := LowM.CallPrimitive (Primitive.StateRead address) LowM.Pure in
-    match injection v full_v with
     | None => LowM.Impossible
-    | Some full_v' =>
-      let- _ := LowM.CallPrimitive (Primitive.StateWrite address full_v') LowM.Pure in
-      LowM.Pure (inl tt)
     end
+  | _ => LowM.Impossible
   end.
 
-Definition copy {A : Set} (r : Ref A) : M (Ref A) :=
+Definition write (r : Value.t) (update : Value.t) : M :=
+  match r with
+  | Value.Pointer (Pointer.Immediate _) => LowM.Impossible
+  | Value.Pointer (Pointer.Mutable address path) =>
+    let* value := call_primitive (Primitive.StateRead address) in
+    match Value.write_value value path update with
+    | Some value => call_primitive (Primitive.StateWrite address value)
+    | None => LowM.Impossible
+    end
+  | _ => LowM.Impossible
+  end.
+
+Definition copy (r : Value.t) : M :=
   let* v := read r in
   alloc v.
 
-Definition read_env {Env : Set} : M Env :=
-  let- env := LowM.CallPrimitive Primitive.EnvRead LowM.Pure in
-  LowM.Pure (inl env).
+Definition read_env : M :=
+  call_primitive Primitive.EnvRead.
 
-(** Find the instance of a trait for a method at proof time. *)
-Definition get_method {Trait : Set} {F : Trait -> Set} {Result : Set}
-    (method : forall (I : Trait), F I) :
-    M Result :=
-  let- instance :=
-    LowM.CallPrimitive (Primitive.InstanceOracle Trait) LowM.Pure in
-  cast (method instance).
-
-(** Try first to infer the trait instance, and if unsuccessful, delegate it at
-    proof time. *)
-Ltac get_method method :=
-  exact (M.pure (method _)) ||
-  exact (M.get_method method).
-
-Definition impossible {A : Set} : M A :=
+Definition impossible : M :=
   LowM.Impossible.
 
-Definition Val (A : Set) : Set := Ref A.
-
-Definition catch {A : Set} (body : M A) (handler : Exception -> M A) : M A :=
+Definition catch (body : M) (handler : Exception.t -> M) : M :=
   let- result := body in
   match result with
   | inl v => LowM.Pure (inl v)
   | inr exception => handler exception
   end.
 
-Definition catch_return {A : Set} (body : M A) : M A :=
+Definition catch_return (body : M) : M :=
   catch
     body
     (fun exception =>
       match exception with
-      | Exception.Return r => cast r
+      | Exception.Return r => pure r
       | _ => raise exception
       end
     ).
 
-Definition catch_continue (body : M (Val unit)) : M (Val unit) :=
+Definition catch_continue (body : M) : M :=
   catch
     body
     (fun exception =>
       match exception with
-      | Exception.Continue => alloc tt
+      | Exception.Continue => alloc (Value.Tuple [])
       | _ => raise exception
       end
     ).
 
-Definition catch_break (body : M (Val unit)) : M (Val unit) :=
+Definition catch_break (body : M) : M :=
   catch
     body
     (fun exception =>
       match exception with
-      | Exception.Break => alloc tt
+      | Exception.Break => alloc (Value.Tuple [])
       | _ => raise exception
       end
     ).
 
-Definition loop (body : M (Val unit)) : M (Val unit) :=
+Definition loop (body : M) : M :=
   LowM.Loop
     (catch_continue body)
     (fun result =>
@@ -329,10 +484,10 @@ Definition loop (body : M (Val unit)) : M (Val unit) :=
     (fun result =>
       catch_break (LowM.Pure result)).
 
-Fixpoint match_operator {A B : Set}
-    (scrutinee : A)
-    (arms : list (A -> M B)) :
-    M B :=
+Fixpoint match_operator
+    (scrutinee : Value.t)
+    (arms : list (Value.t -> M)) :
+    M :=
   match arms with
   | nil => impossible
   | arm :: arms =>
