@@ -186,7 +186,7 @@ Ltac monadic e :=
         intro v';
         let y := (eval cbn beta in (f v')) in
         lazymatch context ctxt [let v := x in y] with
-        | let v := x in y => monadic y
+        | let _ := x in y => monadic y
         | _ =>
           refine (let_ _ _);
             [ monadic y
