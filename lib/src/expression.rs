@@ -279,8 +279,8 @@ impl MatchArm {
 impl LoopControlFlow {
     pub fn to_doc<'a>(self) -> Doc<'a> {
         match self {
-            LoopControlFlow::Break => text("M.break"),
-            LoopControlFlow::Continue => text("M.continue"),
+            LoopControlFlow::Break => text("M.break (||)"),
+            LoopControlFlow::Continue => text("M.continue (||)"),
         }
     }
 }
@@ -570,7 +570,12 @@ impl ExprKind {
             ),
             ExprKind::Loop { body } => paren(
                 with_paren,
-                nest([text("M.loop"), line(), paren(true, body.to_doc(with_paren))]),
+                nest([
+                    text("ltac: (M.monadic_loop ("),
+                    line(),
+                    body.to_doc(with_paren),
+                    text("))"),
+                ]),
             ),
             ExprKind::Match { scrutinee, arms } => group([
                 group([
@@ -691,7 +696,16 @@ impl ExprKind {
             }
             ExprKind::Return(value) => paren(
                 with_paren,
-                nest([text("return_"), line(), value.to_doc(true)]),
+                nest([
+                    text("return_"),
+                    line(),
+                    concat([
+                        text("(|"),
+                        nest([line(), value.to_doc(false)]),
+                        line(),
+                        text("|)"),
+                    ]),
+                ]),
             ),
             ExprKind::Message(message) => text(format!("\"{message}\"")),
         }

@@ -790,9 +790,17 @@ fn compile_function_body(
                     ty: None,
                 }),
                 body: Rc::new(Expr {
-                    kind: Rc::new(ExprKind::MonadicOperator {
-                        name: "M.catch_return".to_string(),
-                        arg: body,
+                    kind: Rc::new(ExprKind::Call {
+                        func: Expr::local_var("ltac:"),
+                        args: vec![Rc::new(Expr {
+                            kind: Rc::new(ExprKind::MonadicOperator {
+                                name: "M.monadic_catch_return".to_string(),
+                                arg: body,
+                            }),
+                            ty: None,
+                        })],
+                        purity: Purity::Pure,
+                        from_user: false,
                     }),
                     ty: None,
                 }),

@@ -386,3 +386,17 @@ Ltac monadic_match_branches branches :=
 Ltac monadic_match_operator expr branches :=
   refine (run (match_operator expr _));
   monadic_match_branches branches.
+
+(** A wrapper tactic over [M.catch_return]. This tactic calls the
+   [M.monadic] tactic the body of the function, then calls the
+   [M.catch_return] on the result. *)
+Ltac monadic_catch_return expr := 
+  refine (run (catch_return _));
+  monadic expr.
+
+(** A wrapper tactic over [M.loop]. This tactic calls the
+    [M.monadic] tactic the body of the loop, then calls the [M.loop]
+    on the result. *)
+Ltac monadic_loop expr :=
+  refine (run (loop _));
+  monadic expr.
