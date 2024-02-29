@@ -645,32 +645,40 @@ fn build_match(scrutinee: Rc<Expr>, arms: Vec<MatchArm>, _ty: Option<Rc<CoqType>
     });
 
     Rc::new(ExprKind::Call {
-        func: Expr::local_var("match_operator"),
-        args: vec![
-            scrutinee,
-            Rc::new(Expr {
-                kind: Rc::new(ExprKind::Array {
-                    elements: arms_with_flatten_patterns
-                        .map(|MatchArm { pattern, body }| {
-                            Rc::new(Expr {
-                                kind: Rc::new(ExprKind::Lambda {
-                                    args: vec![("γ".to_string(), None)],
-                                    body: build_inner_match(
-                                        vec![("γ".to_string(), pattern)],
-                                        body,
-                                        0,
-                                    ),
-                                    is_for_match: true,
-                                }),
-                                ty: None,
-                            })
-                        })
-                        .collect(),
-                }),
-                ty: None,
+        func: Expr::local_var("ltac:"),
+        args: vec![Rc::new(Expr {
+            kind: Rc::new(ExprKind::Call {
+                func: Expr::local_var("M.monadic_match_operator"),
+                args: vec![
+                    scrutinee.clone(),
+                    Rc::new(Expr {
+                        kind: Rc::new(ExprKind::Array {
+                            elements: arms_with_flatten_patterns
+                                .map(|MatchArm { pattern, body }| {
+                                    Rc::new(Expr {
+                                        kind: Rc::new(ExprKind::Lambda {
+                                            args: vec![("γ".to_string(), scrutinee.ty.clone())],
+                                            body: build_inner_match(
+                                                vec![("γ".to_string(), pattern)],
+                                                body,
+                                                0,
+                                            ),
+                                            is_for_match: true,
+                                        }),
+                                        ty: None,
+                                    })
+                                })
+                                .collect(),
+                        }),
+                        ty: None,
+                    }),
+                ],
+                purity: Purity::Pure,
+                from_user: false,
             }),
-        ],
-        purity: Purity::Effectful,
+            ty: None,
+        })],
+        purity: Purity::Pure,
         from_user: false,
     })
 }
@@ -869,7 +877,11 @@ fn compile_expr_kind<'a>(
         }
         thir::ExprKind::NeverToAny { source } => {
             let func = Rc::new(Expr {
-                kind: Rc::new(ExprKind::LocalVar("never_to_any".to_string())),
+                kind: Rc::new(ExprKind::VarWithTy {
+                    path: Path::local("never_to_any"),
+                    ty_name: "B".to_string(),
+                    ty: ty.clone(),
+                }),
                 ty: None,
             });
             let source = compile_expr(env, thir, source);
@@ -1160,6 +1172,7 @@ fn compile_expr_kind<'a>(
                     fields,
                     base,
                     struct_or_variant,
+                    ty: Some(ty.clone()),
                 })
                 .alloc(Some(ty))
             }
@@ -1395,13 +1408,16 @@ fn compile_stmts<'a>(
                 } => {
                     let init = match initializer {
                         Some(initializer) => compile_expr(env, thir, initializer),
-                        None => Rc::new(Expr {
-                            kind: Rc::new(ExprKind::VarWithTy {
-                                path: Path::new(&["DeclaredButUndefinedVariable"]),
-                                ty_name: "A".to_string(),
-                                ty: compile_type(env, &pattern.ty),
-                            }),
-                            ty: None,
+                        None => Rc::new({
+                            let ty = compile_type(env, &pattern.ty);
+                            Expr {
+                                kind: Rc::new(ExprKind::VarWithTy {
+                                    path: Path::new(&["DeclaredButUndefinedVariable"]),
+                                    ty_name: "A".to_string(),
+                                    ty: ty.clone(),
+                                }),
+                                ty: Some(Rc::new(CoqType::Val(ty))),
+                            }
                         }),
                     };
 

@@ -60,6 +60,7 @@ enum TraitItem {
 struct FunDefinition {
     ty_params: Vec<String>,
     signature_and_body: Rc<FnSigAndBody>,
+    ret_ty: Rc<CoqType>,
     is_dead_code: bool,
 }
 
@@ -789,9 +790,17 @@ fn compile_function_body(
                     ty: None,
                 }),
                 body: Rc::new(Expr {
-                    kind: Rc::new(ExprKind::MonadicOperator {
-                        name: "M.catch_return".to_string(),
-                        arg: body,
+                    kind: Rc::new(ExprKind::Call {
+                        func: Expr::local_var("ltac:"),
+                        args: vec![Rc::new(Expr {
+                            kind: Rc::new(ExprKind::MonadicOperator {
+                                name: "M.monadic_catch_return".to_string(),
+                                arg: body,
+                            }),
+                            ty: None,
+                        })],
+                        purity: Purity::Pure,
+                        from_user: false,
                     }),
                     ty: None,
                 }),
@@ -1052,14 +1061,7 @@ fn mt_impl_item(item: Rc<ImplItemKind>) -> Rc<ImplItemKind> {
             body,
             is_dead_code,
         } => {
-            let body = match body {
-                None => body.clone(),
-                Some(body) => {
-                    let body = mt_expression(FreshVars::new(), body.clone()).0;
-
-                    Some(body)
-                }
-            };
+            let body = body.clone();
             Rc::new(ImplItemKind::Const {
                 ty: mt_ty(ty.clone()),
                 body,
@@ -1082,13 +1084,7 @@ impl FnSigAndBody {
                 .map(|(name, ty)| (name.clone(), mt_ty(ty.clone())))
                 .collect(),
             ret_ty: Rc::new(CoqType::Monad(mt_ty(self.ret_ty.clone()))),
-            body: match &self.body {
-                None => self.body.clone(),
-                Some(body) => {
-                    let (body, _fresh_vars) = mt_expression(FreshVars::new(), body.clone());
-                    Some(body)
-                }
-            },
+            body: self.body.clone(),
         })
     }
 }
@@ -1122,13 +1118,7 @@ fn mt_top_level_item(item: Rc<TopLevelItem>) -> Rc<TopLevelItem> {
         TopLevelItem::Const { name, ty, value } => Rc::new(TopLevelItem::Const {
             name: name.clone(),
             ty: ty.clone(),
-            value: match value {
-                None => value.clone(),
-                Some(value) => {
-                    let (value, _fresh_vars) = mt_expression(FreshVars::new(), value.clone());
-                    Some(value)
-                }
-            },
+            value: value.clone(),
         }),
         TopLevelItem::Definition {
             name,
@@ -1312,6 +1302,7 @@ impl FunDefinition {
         Rc::new(FunDefinition {
             ty_params,
             signature_and_body,
+            ret_ty: ret_ty.clone(),
             is_dead_code,
         })
     }
@@ -1320,6 +1311,7 @@ impl FunDefinition {
         Rc::new(FunDefinition {
             ty_params: self.ty_params.clone(),
             signature_and_body: self.signature_and_body.mt(),
+            ret_ty: self.signature_and_body.ret_ty.clone(),
             is_dead_code: self.is_dead_code,
         })
     }
@@ -1469,7 +1461,16 @@ impl FunDefinition {
                             .concat(),
                             // @TODO: improve for opaque types with trait bounds
                             ty: Some(self.signature_and_body.ret_ty.to_coq()),
-                            body: coq::Expression::Code(body.to_doc(false)),
+                            body: coq::Expression::Code(concat([
+                                text("ltac:(M.monadic (("),
+                                nest([line(), body.to_doc(false)]),
+                                line(),
+                                concat([
+                                    text(") : "),
+                                    self.ret_ty.to_coq().to_doc(false),
+                                    text("))"),
+                                ]),
+                            ])),
                         },
                     ))],
                 },
@@ -1843,9 +1844,9 @@ impl TopLevelItem {
                             args: vec![],
                             ty: Some(ty.to_coq()),
                             body: coq::Expression::Code(nest([
-                                text("M.run"),
-                                line(),
-                                value.to_doc(true),
+                                text("M.run ("),
+                                nest([text("ltac:(M.monadic ("), value.to_doc(false), text("))")]),
+                                text(")"),
                             ])),
                         },
                     ))])

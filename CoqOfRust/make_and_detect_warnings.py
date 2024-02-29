@@ -9,7 +9,7 @@ errorlines = []
 global lock
 lock = 0
 
-p = Popen("make", stdout=PIPE, stderr=PIPE, shell=True)
+p = Popen("make -k", stdout=PIPE, stderr=PIPE, shell=True)
 
 
 class tout(threading.Thread):
