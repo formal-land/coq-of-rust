@@ -79,8 +79,8 @@ Definition main : M unit :=
             [
               fun (γ : M.Val (core.ops.range.Range.t u32.t)) =>
                 (let iter := M.copy (| γ |) in
-                M.loop
-                  (let _ : M.Val unit :=
+                ltac: (M.monadic_loop (
+                  let _ : M.Val unit :=
                     ltac:
                       (M.monadic_match_operator
                         (M.alloc (|
@@ -97,7 +97,7 @@ Definition main : M unit :=
                             | core.option.Option.None =>
                               M.alloc (|
                                 (never_to_any (B := unit)) (|
-                                  M.read (| M.break |)
+                                  M.read (| M.break (||) |)
                                 |)
                               |)
                             | _ => M.break_match(||)
@@ -116,7 +116,7 @@ Definition main : M unit :=
                             end :
                             M.Val unit
                         ]) in
-                  M.alloc (| tt |))) :
+                  M.alloc (| tt |)))) :
                 M.Val unit
             ]))
     |)

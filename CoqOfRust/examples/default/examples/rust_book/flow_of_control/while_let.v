@@ -29,8 +29,8 @@ Definition main : M unit :=
     M.read (|
       let optional : M.Val (core.option.Option.t i32.t) :=
         M.alloc (| core.option.Option.Some ((Integer.of_Z 0) : i32.t) |) in
-      M.loop
-        (ltac:
+      ltac: (M.monadic_loop (
+        ltac:
           (M.monadic_match_operator
             optional
             [
@@ -120,13 +120,15 @@ Definition main : M unit :=
                     M.read (|
                       let _ : M.Val unit :=
                         M.alloc (|
-                          (never_to_any (B := unit)) (| M.read (| M.break |) |)
+                          (never_to_any (B := unit)) (|
+                            M.read (| M.break (||) |)
+                          |)
                         |) in
                       M.alloc (| tt |)
                     |)
                   |)
                 |)) :
                 M.Val unit
-            ]))
+            ])))
     |)
   ) : unit)).

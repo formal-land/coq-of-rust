@@ -17,28 +17,30 @@ Definition is_divisible_by (lhs : u32.t) (rhs : u32.t) : M bool.t :=
     let lhs := M.alloc (| lhs |) in
     let rhs := M.alloc (| rhs |) in
     let return_ := M.return_ (R := bool.t) in
-    M.catch_return
-      (M.read (|
-        let _ : M.Val unit :=
-          if
-            M.read (|
-              use
-                (M.alloc (|
-                  BinOp.Pure.eq (M.read (| rhs |)) ((Integer.of_Z 0) : u32.t)
-                |))
-            |)
-          then
-            M.alloc (|
-              (never_to_any (B := unit)) (| M.read (| return_ false |) |)
-            |)
-          else
-            M.alloc (| tt |) in
-        M.alloc (|
-          BinOp.Pure.eq
-            (BinOp.Panic.rem (| M.read (| lhs |), M.read (| rhs |) |))
-            ((Integer.of_Z 0) : u32.t)
-        |)
-      |))
+    ltac:
+      (M.monadic_catch_return
+        (M.read (|
+          let _ : M.Val unit :=
+            if
+              M.read (|
+                use
+                  (M.alloc (|
+                    BinOp.Pure.eq (M.read (| rhs |)) ((Integer.of_Z 0) : u32.t)
+                  |))
+              |)
+            then
+              M.alloc (|
+                (never_to_any (B := unit)) (| M.read (| return_ (| false |) |)
+                |)
+              |)
+            else
+              M.alloc (| tt |) in
+          M.alloc (|
+            BinOp.Pure.eq
+              (BinOp.Panic.rem (| M.read (| lhs |), M.read (| rhs |) |))
+              ((Integer.of_Z 0) : u32.t)
+          |)
+        |)))
   ) : bool.t)).
 
 (*
@@ -196,8 +198,8 @@ Definition fizzbuzz_to (n : u32.t) : M unit :=
             [
               fun (γ : M.Val (core.ops.range.RangeInclusive.t u32.t)) =>
                 (let iter := M.copy (| γ |) in
-                M.loop
-                  (let _ : M.Val unit :=
+                ltac: (M.monadic_loop (
+                  let _ : M.Val unit :=
                     ltac:
                       (M.monadic_match_operator
                         (M.alloc (|
@@ -214,7 +216,7 @@ Definition fizzbuzz_to (n : u32.t) : M unit :=
                             | core.option.Option.None =>
                               M.alloc (|
                                 (never_to_any (B := unit)) (|
-                                  M.read (| M.break |)
+                                  M.read (| M.break (||) |)
                                 |)
                               |)
                             | _ => M.break_match(||)
@@ -235,7 +237,7 @@ Definition fizzbuzz_to (n : u32.t) : M unit :=
                             end :
                             M.Val unit
                         ]) in
-                  M.alloc (| tt |))) :
+                  M.alloc (| tt |)))) :
                 M.Val unit
             ]))
     |)

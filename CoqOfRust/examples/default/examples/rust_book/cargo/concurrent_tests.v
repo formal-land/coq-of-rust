@@ -121,8 +121,8 @@ Module tests.
               [
                 fun (γ : M.Val (core.ops.range.Range.t i32.t)) =>
                   (let iter := M.copy (| γ |) in
-                  M.loop
-                    (let _ : M.Val unit :=
+                  ltac: (M.monadic_loop (
+                    let _ : M.Val unit :=
                       ltac:
                         (M.monadic_match_operator
                           (M.alloc (|
@@ -139,7 +139,7 @@ Module tests.
                               | core.option.Option.None =>
                                 M.alloc (|
                                   (never_to_any (B := unit)) (|
-                                    M.read (| M.break |)
+                                    M.read (| M.break (||) |)
                                   |)
                                 |)
                               | _ => M.break_match(||)
@@ -174,7 +174,7 @@ Module tests.
                               end :
                               M.Val unit
                           ]) in
-                    M.alloc (| tt |))) :
+                    M.alloc (| tt |)))) :
                   M.Val unit
               ]))
       |)
@@ -238,8 +238,8 @@ Module tests.
               [
                 fun (γ : M.Val (core.ops.range.Range.t i32.t)) =>
                   (let iter := M.copy (| γ |) in
-                  M.loop
-                    (let _ : M.Val unit :=
+                  ltac: (M.monadic_loop (
+                    let _ : M.Val unit :=
                       ltac:
                         (M.monadic_match_operator
                           (M.alloc (|
@@ -256,7 +256,7 @@ Module tests.
                               | core.option.Option.None =>
                                 M.alloc (|
                                   (never_to_any (B := unit)) (|
-                                    M.read (| M.break |)
+                                    M.read (| M.break (||) |)
                                   |)
                                 |)
                               | _ => M.break_match(||)
@@ -291,7 +291,7 @@ Module tests.
                               end :
                               M.Val unit
                           ]) in
-                    M.alloc (| tt |))) :
+                    M.alloc (| tt |)))) :
                   M.Val unit
               ]))
       |)

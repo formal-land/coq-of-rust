@@ -112,8 +112,8 @@ Definition sum_odd_numbers (up_to : u32.t) : M u32.t :=
               [
                 fun (γ : M.Val (core.ops.range.Range.t u32.t)) =>
                   (let iter := M.copy (| γ |) in
-                  M.loop
-                    (let _ : M.Val unit :=
+                  ltac: (M.monadic_loop (
+                    let _ : M.Val unit :=
                       ltac:
                         (M.monadic_match_operator
                           (M.alloc (|
@@ -130,7 +130,7 @@ Definition sum_odd_numbers (up_to : u32.t) : M u32.t :=
                               | core.option.Option.None =>
                                 M.alloc (|
                                   (never_to_any (B := unit)) (|
-                                    M.read (| M.break |)
+                                    M.read (| M.break (||) |)
                                   |)
                                 |)
                               | _ => M.break_match(||)
@@ -159,7 +159,7 @@ Definition sum_odd_numbers (up_to : u32.t) : M u32.t :=
                                           fun (γ : M.Val bool.t) =>
                                             (M.alloc (|
                                               (never_to_any (B := u32.t)) (|
-                                                M.read (| M.continue |)
+                                                M.read (| M.continue (||) |)
                                               |)
                                             |)) :
                                             M.Val u32.t
@@ -179,7 +179,7 @@ Definition sum_odd_numbers (up_to : u32.t) : M u32.t :=
                               end :
                               M.Val unit
                           ]) in
-                    M.alloc (| tt |))) :
+                    M.alloc (| tt |)))) :
                   M.Val unit
               ])) in
       acc

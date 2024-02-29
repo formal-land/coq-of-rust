@@ -173,144 +173,152 @@ Section Impl_unpacking_options_via_question_mark_Person_t.
     ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let return_ := M.return_ (R := core.option.Option.t u8.t) in
-      M.catch_return
-        (M.read (|
-          unpacking_options_via_question_mark.PhoneNumber.Get_area_code
-            (ltac:
-              (M.monadic_match_operator
-                (M.alloc (|
-                  M.call (|(ltac:(M.get_method (fun ℐ =>
-                      core.ops.try_trait.Try.branch
-                        (Self :=
-                          core.option.Option.t
-                            unpacking_options_via_question_mark.PhoneNumber.t)
-                        (Trait := ℐ)))
-                    (M.read (|
-                      unpacking_options_via_question_mark.Job.Get_phone_number
-                        (ltac:
-                          (M.monadic_match_operator
-                            (M.alloc (|
-                              M.call (|(ltac:(M.get_method (fun ℐ =>
-                                  core.ops.try_trait.Try.branch
-                                    (Self :=
-                                      core.option.Option.t
-                                        unpacking_options_via_question_mark.Job.t)
-                                    (Trait := ℐ)))
-                                (M.read (|
-                                  unpacking_options_via_question_mark.Person.Get_job
-                                    (deref (M.read (| self |)))
-                                |)))
-                              |)
-                            |))
-                            [
-                              fun
-                                  (γ :
-                                    M.Val
-                                      (core.ops.control_flow.ControlFlow.t
-                                        (core.option.Option.t
-                                          core.convert.Infallible.t)
-                                        unpacking_options_via_question_mark.Job.t)) =>
-                                match M.read (| γ |) with
-                                | core.ops.control_flow.ControlFlow.Break _ =>
-                                  let γ0_0 :=
-                                    core.ops.control_flow.ControlFlow.Get_Break_0
-                                      γ in
-                                  let residual := M.copy (| γ0_0 |) in
-                                  M.alloc (|
-                                    (never_to_any
-                                      (B :=
-                                        unpacking_options_via_question_mark.Job.t)) (|
-                                      M.read (|
-                                        return_
-                                          (M.call (|(ltac:(M.get_method (fun ℐ =>
-                                              core.ops.try_trait.FromResidual.from_residual
-                                                (Self :=
-                                                  core.option.Option.t u8.t)
-                                                (R :=
-                                                  core.option.Option.t
-                                                    core.convert.Infallible.t)
-                                                (Trait := ℐ)))
-                                            (M.read (| residual |)))
-                                          |))
+      ltac:
+        (M.monadic_catch_return
+          (M.read (|
+            unpacking_options_via_question_mark.PhoneNumber.Get_area_code
+              (ltac:
+                (M.monadic_match_operator
+                  (M.alloc (|
+                    M.call (|(ltac:(M.get_method (fun ℐ =>
+                        core.ops.try_trait.Try.branch
+                          (Self :=
+                            core.option.Option.t
+                              unpacking_options_via_question_mark.PhoneNumber.t)
+                          (Trait := ℐ)))
+                      (M.read (|
+                        unpacking_options_via_question_mark.Job.Get_phone_number
+                          (ltac:
+                            (M.monadic_match_operator
+                              (M.alloc (|
+                                M.call (|(ltac:(M.get_method (fun ℐ =>
+                                    core.ops.try_trait.Try.branch
+                                      (Self :=
+                                        core.option.Option.t
+                                          unpacking_options_via_question_mark.Job.t)
+                                      (Trait := ℐ)))
+                                  (M.read (|
+                                    unpacking_options_via_question_mark.Person.Get_job
+                                      (deref (M.read (| self |)))
+                                  |)))
+                                |)
+                              |))
+                              [
+                                fun
+                                    (γ :
+                                      M.Val
+                                        (core.ops.control_flow.ControlFlow.t
+                                          (core.option.Option.t
+                                            core.convert.Infallible.t)
+                                          unpacking_options_via_question_mark.Job.t)) =>
+                                  match M.read (| γ |) with
+                                  | core.ops.control_flow.ControlFlow.Break _ =>
+                                    let γ0_0 :=
+                                      core.ops.control_flow.ControlFlow.Get_Break_0
+                                        γ in
+                                    let residual := M.copy (| γ0_0 |) in
+                                    M.alloc (|
+                                      (never_to_any
+                                        (B :=
+                                          unpacking_options_via_question_mark.Job.t)) (|
+                                        M.read (|
+                                          return_
+                                            (|
+                                              M.call (|(ltac:(M.get_method (fun ℐ =>
+                                                  core.ops.try_trait.FromResidual.from_residual
+                                                    (Self :=
+                                                      core.option.Option.t u8.t)
+                                                    (R :=
+                                                      core.option.Option.t
+                                                        core.convert.Infallible.t)
+                                                    (Trait := ℐ)))
+                                                (M.read (| residual |)))
+                                              |)
+                                            |)
+                                        |)
                                       |)
                                     |)
+                                  | _ => M.break_match(||)
+                                  end :
+                                  M.Val
+                                    unpacking_options_via_question_mark.Job.t;
+                                fun
+                                    (γ :
+                                      M.Val
+                                        (core.ops.control_flow.ControlFlow.t
+                                          (core.option.Option.t
+                                            core.convert.Infallible.t)
+                                          unpacking_options_via_question_mark.Job.t)) =>
+                                  match M.read (| γ |) with
+                                  |
+                                      core.ops.control_flow.ControlFlow.Continue
+                                        _
+                                      =>
+                                    let γ0_0 :=
+                                      core.ops.control_flow.ControlFlow.Get_Continue_0
+                                        γ in
+                                    let val := M.copy (| γ0_0 |) in
+                                    val
+                                  | _ => M.break_match(||)
+                                  end :
+                                  M.Val
+                                    unpacking_options_via_question_mark.Job.t
+                              ]))
+                      |)))
+                    |)
+                  |))
+                  [
+                    fun
+                        (γ :
+                          M.Val
+                            (core.ops.control_flow.ControlFlow.t
+                              (core.option.Option.t core.convert.Infallible.t)
+                              unpacking_options_via_question_mark.PhoneNumber.t)) =>
+                      match M.read (| γ |) with
+                      | core.ops.control_flow.ControlFlow.Break _ =>
+                        let γ0_0 :=
+                          core.ops.control_flow.ControlFlow.Get_Break_0 γ in
+                        let residual := M.copy (| γ0_0 |) in
+                        M.alloc (|
+                          (never_to_any
+                            (B :=
+                              unpacking_options_via_question_mark.PhoneNumber.t)) (|
+                            M.read (|
+                              return_
+                                (|
+                                  M.call (|(ltac:(M.get_method (fun ℐ =>
+                                      core.ops.try_trait.FromResidual.from_residual
+                                        (Self := core.option.Option.t u8.t)
+                                        (R :=
+                                          core.option.Option.t
+                                            core.convert.Infallible.t)
+                                        (Trait := ℐ)))
+                                    (M.read (| residual |)))
                                   |)
-                                | _ => M.break_match(||)
-                                end :
-                                M.Val unpacking_options_via_question_mark.Job.t;
-                              fun
-                                  (γ :
-                                    M.Val
-                                      (core.ops.control_flow.ControlFlow.t
-                                        (core.option.Option.t
-                                          core.convert.Infallible.t)
-                                        unpacking_options_via_question_mark.Job.t)) =>
-                                match M.read (| γ |) with
-                                |
-                                    core.ops.control_flow.ControlFlow.Continue _
-                                    =>
-                                  let γ0_0 :=
-                                    core.ops.control_flow.ControlFlow.Get_Continue_0
-                                      γ in
-                                  let val := M.copy (| γ0_0 |) in
-                                  val
-                                | _ => M.break_match(||)
-                                end :
-                                M.Val unpacking_options_via_question_mark.Job.t
-                            ]))
-                    |)))
-                  |)
-                |))
-                [
-                  fun
-                      (γ :
-                        M.Val
-                          (core.ops.control_flow.ControlFlow.t
-                            (core.option.Option.t core.convert.Infallible.t)
-                            unpacking_options_via_question_mark.PhoneNumber.t)) =>
-                    match M.read (| γ |) with
-                    | core.ops.control_flow.ControlFlow.Break _ =>
-                      let γ0_0 :=
-                        core.ops.control_flow.ControlFlow.Get_Break_0 γ in
-                      let residual := M.copy (| γ0_0 |) in
-                      M.alloc (|
-                        (never_to_any
-                          (B :=
-                            unpacking_options_via_question_mark.PhoneNumber.t)) (|
-                          M.read (|
-                            return_
-                              (M.call (|(ltac:(M.get_method (fun ℐ =>
-                                  core.ops.try_trait.FromResidual.from_residual
-                                    (Self := core.option.Option.t u8.t)
-                                    (R :=
-                                      core.option.Option.t
-                                        core.convert.Infallible.t)
-                                    (Trait := ℐ)))
-                                (M.read (| residual |)))
-                              |))
+                                |)
+                            |)
                           |)
                         |)
-                      |)
-                    | _ => M.break_match(||)
-                    end :
-                    M.Val unpacking_options_via_question_mark.PhoneNumber.t;
-                  fun
-                      (γ :
-                        M.Val
-                          (core.ops.control_flow.ControlFlow.t
-                            (core.option.Option.t core.convert.Infallible.t)
-                            unpacking_options_via_question_mark.PhoneNumber.t)) =>
-                    match M.read (| γ |) with
-                    | core.ops.control_flow.ControlFlow.Continue _ =>
-                      let γ0_0 :=
-                        core.ops.control_flow.ControlFlow.Get_Continue_0 γ in
-                      let val := M.copy (| γ0_0 |) in
-                      val
-                    | _ => M.break_match(||)
-                    end :
-                    M.Val unpacking_options_via_question_mark.PhoneNumber.t
-                ]))
-        |))
+                      | _ => M.break_match(||)
+                      end :
+                      M.Val unpacking_options_via_question_mark.PhoneNumber.t;
+                    fun
+                        (γ :
+                          M.Val
+                            (core.ops.control_flow.ControlFlow.t
+                              (core.option.Option.t core.convert.Infallible.t)
+                              unpacking_options_via_question_mark.PhoneNumber.t)) =>
+                      match M.read (| γ |) with
+                      | core.ops.control_flow.ControlFlow.Continue _ =>
+                        let γ0_0 :=
+                          core.ops.control_flow.ControlFlow.Get_Continue_0 γ in
+                        let val := M.copy (| γ0_0 |) in
+                        val
+                      | _ => M.break_match(||)
+                      end :
+                      M.Val unpacking_options_via_question_mark.PhoneNumber.t
+                  ]))
+          |)))
     ) : core.option.Option.t u8.t)).
   
   Global Instance AssociatedFunction_work_phone_area_code :

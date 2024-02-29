@@ -782,72 +782,77 @@ Section Impl_dns_DomainNameService_t.
       let self := M.alloc (| self |) in
       let name := M.alloc (| name |) in
       let return_ := M.return_ (R := ltac:(dns.Result unit)) in
-      M.catch_return
-        (M.read (|
-          let caller : M.Val dns.AccountId.t :=
-            M.alloc (|
-              M.call (|(dns.Env.t::["caller"]
-                (borrow
-                  (M.alloc (|
-                    M.call (|(dns.DomainNameService.t::["env"]
-                      (borrow (deref (M.read (| self |)))))
-                    |)
-                  |))))
-              |)
-            |) in
-          let _ : M.Val unit :=
-            if
-              M.read (|
-                use
-                  (M.alloc (|
-                    M.call (|((dns.Mapping.t
-                          (array u8.t)
-                          dns.AccountId.t)::["contains"]
-                      (borrow
-                        (dns.DomainNameService.Get_name_to_owner
-                          (deref (M.read (| self |)))))
-                      (borrow name))
-                    |)
-                  |))
-              |)
-            then
+      ltac:
+        (M.monadic_catch_return
+          (M.read (|
+            let caller : M.Val dns.AccountId.t :=
               M.alloc (|
-                (never_to_any (B := unit)) (|
-                  M.read (|
-                    return_ (core.result.Result.Err dns.Error.NameAlreadyExists)
+                M.call (|(dns.Env.t::["caller"]
+                  (borrow
+                    (M.alloc (|
+                      M.call (|(dns.DomainNameService.t::["env"]
+                        (borrow (deref (M.read (| self |)))))
+                      |)
+                    |))))
+                |)
+              |) in
+            let _ : M.Val unit :=
+              if
+                M.read (|
+                  use
+                    (M.alloc (|
+                      M.call (|((dns.Mapping.t
+                            (array u8.t)
+                            dns.AccountId.t)::["contains"]
+                        (borrow
+                          (dns.DomainNameService.Get_name_to_owner
+                            (deref (M.read (| self |)))))
+                        (borrow name))
+                      |)
+                    |))
+                |)
+              then
+                M.alloc (|
+                  (never_to_any (B := unit)) (|
+                    M.read (|
+                      return_
+                        (| core.result.Result.Err dns.Error.NameAlreadyExists
+                        |)
+                    |)
                   |)
                 |)
-              |)
-            else
-              M.alloc (| tt |) in
-          let _ : M.Val (core.option.Option.t u32.t) :=
-            M.alloc (|
-              M.call (|((dns.Mapping.t (array u8.t) dns.AccountId.t)::["insert"]
-                (borrow_mut
-                  (dns.DomainNameService.Get_name_to_owner
-                    (deref (M.read (| self |)))))
-                (M.read (| name |))
-                (M.read (| caller |)))
-              |)
-            |) in
-          let _ : M.Val unit :=
-            M.alloc (|
-              M.call (|(dns.Env.t::["emit_event"]
-                (borrow
-                  (M.alloc (|
-                    M.call (|(dns.DomainNameService.t::["env"]
-                      (borrow (deref (M.read (| self |)))))
-                    |)
-                  |)))
-                (dns.Event.Register
-                  ({|
-                    dns.Register.name := M.read (| name |);
-                    dns.Register.from := M.read (| caller |);
-                  |} : dns.Register.t)))
-              |)
-            |) in
-          M.alloc (| core.result.Result.Ok tt |)
-        |))
+              else
+                M.alloc (| tt |) in
+            let _ : M.Val (core.option.Option.t u32.t) :=
+              M.alloc (|
+                M.call (|((dns.Mapping.t
+                      (array u8.t)
+                      dns.AccountId.t)::["insert"]
+                  (borrow_mut
+                    (dns.DomainNameService.Get_name_to_owner
+                      (deref (M.read (| self |)))))
+                  (M.read (| name |))
+                  (M.read (| caller |)))
+                |)
+              |) in
+            let _ : M.Val unit :=
+              M.alloc (|
+                M.call (|(dns.Env.t::["emit_event"]
+                  (borrow
+                    (M.alloc (|
+                      M.call (|(dns.DomainNameService.t::["env"]
+                        (borrow (deref (M.read (| self |)))))
+                      |)
+                    |)))
+                  (dns.Event.Register
+                    ({|
+                      dns.Register.name := M.read (| name |);
+                      dns.Register.from := M.read (| caller |);
+                    |} : dns.Register.t)))
+                |)
+              |) in
+            M.alloc (| core.result.Result.Ok tt |)
+          |)))
     ) : ltac:(dns.Result unit))).
   
   Global Instance AssociatedFunction_register :
@@ -917,90 +922,95 @@ Section Impl_dns_DomainNameService_t.
       let name := M.alloc (| name |) in
       let new_address := M.alloc (| new_address |) in
       let return_ := M.return_ (R := ltac:(dns.Result unit)) in
-      M.catch_return
-        (M.read (|
-          let caller : M.Val dns.AccountId.t :=
-            M.alloc (|
-              M.call (|(dns.Env.t::["caller"]
-                (borrow
-                  (M.alloc (|
-                    M.call (|(dns.DomainNameService.t::["env"]
-                      (borrow (deref (M.read (| self |)))))
-                    |)
-                  |))))
-              |)
-            |) in
-          let owner : M.Val dns.AccountId.t :=
-            M.alloc (|
-              M.call (|(dns.DomainNameService.t::["get_owner_or_default"]
-                (borrow (deref (M.read (| self |))))
-                (M.read (| name |)))
-              |)
-            |) in
-          let _ : M.Val unit :=
-            if
-              M.read (|
-                use
-                  (M.alloc (|
-                    M.call (|(ltac:(M.get_method (fun ℐ =>
-                        core.cmp.PartialEq.ne
-                          (Self := dns.AccountId.t)
-                          (Rhs := dns.AccountId.t)
-                          (Trait := ℐ)))
-                      (borrow caller)
-                      (borrow owner))
-                    |)
-                  |))
-              |)
-            then
+      ltac:
+        (M.monadic_catch_return
+          (M.read (|
+            let caller : M.Val dns.AccountId.t :=
               M.alloc (|
-                (never_to_any (B := unit)) (|
-                  M.read (|
-                    return_ (core.result.Result.Err dns.Error.CallerIsNotOwner)
+                M.call (|(dns.Env.t::["caller"]
+                  (borrow
+                    (M.alloc (|
+                      M.call (|(dns.DomainNameService.t::["env"]
+                        (borrow (deref (M.read (| self |)))))
+                      |)
+                    |))))
+                |)
+              |) in
+            let owner : M.Val dns.AccountId.t :=
+              M.alloc (|
+                M.call (|(dns.DomainNameService.t::["get_owner_or_default"]
+                  (borrow (deref (M.read (| self |))))
+                  (M.read (| name |)))
+                |)
+              |) in
+            let _ : M.Val unit :=
+              if
+                M.read (|
+                  use
+                    (M.alloc (|
+                      M.call (|(ltac:(M.get_method (fun ℐ =>
+                          core.cmp.PartialEq.ne
+                            (Self := dns.AccountId.t)
+                            (Rhs := dns.AccountId.t)
+                            (Trait := ℐ)))
+                        (borrow caller)
+                        (borrow owner))
+                      |)
+                    |))
+                |)
+              then
+                M.alloc (|
+                  (never_to_any (B := unit)) (|
+                    M.read (|
+                      return_
+                        (| core.result.Result.Err dns.Error.CallerIsNotOwner
+                        |)
+                    |)
                   |)
                 |)
-              |)
-            else
-              M.alloc (| tt |) in
-          let old_address : M.Val (core.option.Option.t dns.AccountId.t) :=
-            M.alloc (|
-              M.call (|((dns.Mapping.t (array u8.t) dns.AccountId.t)::["get"]
-                (borrow
-                  (dns.DomainNameService.Get_name_to_address
-                    (deref (M.read (| self |)))))
-                (borrow name))
-              |)
-            |) in
-          let _ : M.Val (core.option.Option.t u32.t) :=
-            M.alloc (|
-              M.call (|((dns.Mapping.t (array u8.t) dns.AccountId.t)::["insert"]
-                (borrow_mut
-                  (dns.DomainNameService.Get_name_to_address
-                    (deref (M.read (| self |)))))
-                (M.read (| name |))
-                (M.read (| new_address |)))
-              |)
-            |) in
-          let _ : M.Val unit :=
-            M.alloc (|
-              M.call (|(dns.Env.t::["emit_event"]
-                (borrow
-                  (M.alloc (|
-                    M.call (|(dns.DomainNameService.t::["env"]
-                      (borrow (deref (M.read (| self |)))))
-                    |)
-                  |)))
-                (dns.Event.SetAddress
-                  ({|
-                    dns.SetAddress.name := M.read (| name |);
-                    dns.SetAddress.from := M.read (| caller |);
-                    dns.SetAddress.old_address := M.read (| old_address |);
-                    dns.SetAddress.new_address := M.read (| new_address |);
-                  |} : dns.SetAddress.t)))
-              |)
-            |) in
-          M.alloc (| core.result.Result.Ok tt |)
-        |))
+              else
+                M.alloc (| tt |) in
+            let old_address : M.Val (core.option.Option.t dns.AccountId.t) :=
+              M.alloc (|
+                M.call (|((dns.Mapping.t (array u8.t) dns.AccountId.t)::["get"]
+                  (borrow
+                    (dns.DomainNameService.Get_name_to_address
+                      (deref (M.read (| self |)))))
+                  (borrow name))
+                |)
+              |) in
+            let _ : M.Val (core.option.Option.t u32.t) :=
+              M.alloc (|
+                M.call (|((dns.Mapping.t
+                      (array u8.t)
+                      dns.AccountId.t)::["insert"]
+                  (borrow_mut
+                    (dns.DomainNameService.Get_name_to_address
+                      (deref (M.read (| self |)))))
+                  (M.read (| name |))
+                  (M.read (| new_address |)))
+                |)
+              |) in
+            let _ : M.Val unit :=
+              M.alloc (|
+                M.call (|(dns.Env.t::["emit_event"]
+                  (borrow
+                    (M.alloc (|
+                      M.call (|(dns.DomainNameService.t::["env"]
+                        (borrow (deref (M.read (| self |)))))
+                      |)
+                    |)))
+                  (dns.Event.SetAddress
+                    ({|
+                      dns.SetAddress.name := M.read (| name |);
+                      dns.SetAddress.from := M.read (| caller |);
+                      dns.SetAddress.old_address := M.read (| old_address |);
+                      dns.SetAddress.new_address := M.read (| new_address |);
+                    |} : dns.SetAddress.t)))
+                |)
+              |) in
+            M.alloc (| core.result.Result.Ok tt |)
+          |)))
     ) : ltac:(dns.Result unit))).
   
   Global Instance AssociatedFunction_set_address :
@@ -1039,90 +1049,95 @@ Section Impl_dns_DomainNameService_t.
       let name := M.alloc (| name |) in
       let to := M.alloc (| to |) in
       let return_ := M.return_ (R := ltac:(dns.Result unit)) in
-      M.catch_return
-        (M.read (|
-          let caller : M.Val dns.AccountId.t :=
-            M.alloc (|
-              M.call (|(dns.Env.t::["caller"]
-                (borrow
-                  (M.alloc (|
-                    M.call (|(dns.DomainNameService.t::["env"]
-                      (borrow (deref (M.read (| self |)))))
-                    |)
-                  |))))
-              |)
-            |) in
-          let owner : M.Val dns.AccountId.t :=
-            M.alloc (|
-              M.call (|(dns.DomainNameService.t::["get_owner_or_default"]
-                (borrow (deref (M.read (| self |))))
-                (M.read (| name |)))
-              |)
-            |) in
-          let _ : M.Val unit :=
-            if
-              M.read (|
-                use
-                  (M.alloc (|
-                    M.call (|(ltac:(M.get_method (fun ℐ =>
-                        core.cmp.PartialEq.ne
-                          (Self := dns.AccountId.t)
-                          (Rhs := dns.AccountId.t)
-                          (Trait := ℐ)))
-                      (borrow caller)
-                      (borrow owner))
-                    |)
-                  |))
-              |)
-            then
+      ltac:
+        (M.monadic_catch_return
+          (M.read (|
+            let caller : M.Val dns.AccountId.t :=
               M.alloc (|
-                (never_to_any (B := unit)) (|
-                  M.read (|
-                    return_ (core.result.Result.Err dns.Error.CallerIsNotOwner)
+                M.call (|(dns.Env.t::["caller"]
+                  (borrow
+                    (M.alloc (|
+                      M.call (|(dns.DomainNameService.t::["env"]
+                        (borrow (deref (M.read (| self |)))))
+                      |)
+                    |))))
+                |)
+              |) in
+            let owner : M.Val dns.AccountId.t :=
+              M.alloc (|
+                M.call (|(dns.DomainNameService.t::["get_owner_or_default"]
+                  (borrow (deref (M.read (| self |))))
+                  (M.read (| name |)))
+                |)
+              |) in
+            let _ : M.Val unit :=
+              if
+                M.read (|
+                  use
+                    (M.alloc (|
+                      M.call (|(ltac:(M.get_method (fun ℐ =>
+                          core.cmp.PartialEq.ne
+                            (Self := dns.AccountId.t)
+                            (Rhs := dns.AccountId.t)
+                            (Trait := ℐ)))
+                        (borrow caller)
+                        (borrow owner))
+                      |)
+                    |))
+                |)
+              then
+                M.alloc (|
+                  (never_to_any (B := unit)) (|
+                    M.read (|
+                      return_
+                        (| core.result.Result.Err dns.Error.CallerIsNotOwner
+                        |)
+                    |)
                   |)
                 |)
-              |)
-            else
-              M.alloc (| tt |) in
-          let old_owner : M.Val (core.option.Option.t dns.AccountId.t) :=
-            M.alloc (|
-              M.call (|((dns.Mapping.t (array u8.t) dns.AccountId.t)::["get"]
-                (borrow
-                  (dns.DomainNameService.Get_name_to_owner
-                    (deref (M.read (| self |)))))
-                (borrow name))
-              |)
-            |) in
-          let _ : M.Val (core.option.Option.t u32.t) :=
-            M.alloc (|
-              M.call (|((dns.Mapping.t (array u8.t) dns.AccountId.t)::["insert"]
-                (borrow_mut
-                  (dns.DomainNameService.Get_name_to_owner
-                    (deref (M.read (| self |)))))
-                (M.read (| name |))
-                (M.read (| to |)))
-              |)
-            |) in
-          let _ : M.Val unit :=
-            M.alloc (|
-              M.call (|(dns.Env.t::["emit_event"]
-                (borrow
-                  (M.alloc (|
-                    M.call (|(dns.DomainNameService.t::["env"]
-                      (borrow (deref (M.read (| self |)))))
-                    |)
-                  |)))
-                (dns.Event.Transfer
-                  ({|
-                    dns.Transfer.name := M.read (| name |);
-                    dns.Transfer.from := M.read (| caller |);
-                    dns.Transfer.old_owner := M.read (| old_owner |);
-                    dns.Transfer.new_owner := M.read (| to |);
-                  |} : dns.Transfer.t)))
-              |)
-            |) in
-          M.alloc (| core.result.Result.Ok tt |)
-        |))
+              else
+                M.alloc (| tt |) in
+            let old_owner : M.Val (core.option.Option.t dns.AccountId.t) :=
+              M.alloc (|
+                M.call (|((dns.Mapping.t (array u8.t) dns.AccountId.t)::["get"]
+                  (borrow
+                    (dns.DomainNameService.Get_name_to_owner
+                      (deref (M.read (| self |)))))
+                  (borrow name))
+                |)
+              |) in
+            let _ : M.Val (core.option.Option.t u32.t) :=
+              M.alloc (|
+                M.call (|((dns.Mapping.t
+                      (array u8.t)
+                      dns.AccountId.t)::["insert"]
+                  (borrow_mut
+                    (dns.DomainNameService.Get_name_to_owner
+                      (deref (M.read (| self |)))))
+                  (M.read (| name |))
+                  (M.read (| to |)))
+                |)
+              |) in
+            let _ : M.Val unit :=
+              M.alloc (|
+                M.call (|(dns.Env.t::["emit_event"]
+                  (borrow
+                    (M.alloc (|
+                      M.call (|(dns.DomainNameService.t::["env"]
+                        (borrow (deref (M.read (| self |)))))
+                      |)
+                    |)))
+                  (dns.Event.Transfer
+                    ({|
+                      dns.Transfer.name := M.read (| name |);
+                      dns.Transfer.from := M.read (| caller |);
+                      dns.Transfer.old_owner := M.read (| old_owner |);
+                      dns.Transfer.new_owner := M.read (| to |);
+                    |} : dns.Transfer.t)))
+                |)
+              |) in
+            M.alloc (| core.result.Result.Ok tt |)
+          |)))
     ) : ltac:(dns.Result unit))).
   
   Global Instance AssociatedFunction_transfer :

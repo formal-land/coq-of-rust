@@ -19,79 +19,82 @@ Definition main
     let return_ :=
       M.return_
         (R := core.result.Result.t unit core.num.error.ParseIntError.t) in
-    M.catch_return
-      (M.read (|
-        let number_str : M.Val (ref str.t) := M.copy (| mk_str "10" |) in
-        let number : M.Val i32.t :=
-          M.copy (|
-            ltac:
-              (M.monadic_match_operator
-                (M.alloc (|
-                  M.call (|(str.t::["parse"] (M.read (| number_str |))) |)
-                |))
-                [
-                  fun
-                      (γ :
-                        M.Val
-                          (core.result.Result.t
-                            i32.t
-                            core.num.error.ParseIntError.t)) =>
-                    match M.read (| γ |) with
-                    | core.result.Result.Ok _ =>
-                      let γ0_0 := core.result.Result.Get_Ok_0 γ in
-                      let number := M.copy (| γ0_0 |) in
-                      number
-                    | _ => M.break_match(||)
-                    end :
-                    M.Val i32.t;
-                  fun
-                      (γ :
-                        M.Val
-                          (core.result.Result.t
-                            i32.t
-                            core.num.error.ParseIntError.t)) =>
-                    match M.read (| γ |) with
-                    | core.result.Result.Err _ =>
-                      let γ0_0 := core.result.Result.Get_Err_0 γ in
-                      let e := M.copy (| γ0_0 |) in
-                      M.alloc (|
-                        (never_to_any (B := i32.t)) (|
-                          M.read (|
-                            return_ (core.result.Result.Err (M.read (| e |)))
+    ltac:
+      (M.monadic_catch_return
+        (M.read (|
+          let number_str : M.Val (ref str.t) := M.copy (| mk_str "10" |) in
+          let number : M.Val i32.t :=
+            M.copy (|
+              ltac:
+                (M.monadic_match_operator
+                  (M.alloc (|
+                    M.call (|(str.t::["parse"] (M.read (| number_str |))) |)
+                  |))
+                  [
+                    fun
+                        (γ :
+                          M.Val
+                            (core.result.Result.t
+                              i32.t
+                              core.num.error.ParseIntError.t)) =>
+                      match M.read (| γ |) with
+                      | core.result.Result.Ok _ =>
+                        let γ0_0 := core.result.Result.Get_Ok_0 γ in
+                        let number := M.copy (| γ0_0 |) in
+                        number
+                      | _ => M.break_match(||)
+                      end :
+                      M.Val i32.t;
+                    fun
+                        (γ :
+                          M.Val
+                            (core.result.Result.t
+                              i32.t
+                              core.num.error.ParseIntError.t)) =>
+                      match M.read (| γ |) with
+                      | core.result.Result.Err _ =>
+                        let γ0_0 := core.result.Result.Get_Err_0 γ in
+                        let e := M.copy (| γ0_0 |) in
+                        M.alloc (|
+                          (never_to_any (B := i32.t)) (|
+                            M.read (|
+                              return_
+                                (| core.result.Result.Err (M.read (| e |))
+                                |)
+                            |)
                           |)
                         |)
-                      |)
-                    | _ => M.break_match(||)
-                    end :
-                    M.Val i32.t
-                ])
-          |) in
-        let _ : M.Val unit :=
-          let _ : M.Val unit :=
-            M.alloc (|
-              M.call (|(std.io.stdio._print
-                (M.call (|(core.fmt.Arguments.t::["new_v1"]
-                  (pointer_coercion
-                    "Unsize"
-                    (borrow
-                      (M.alloc (|
-                        [ M.read (| mk_str "" |); M.read (| mk_str "
-" |) ]
-                      |))))
-                  (pointer_coercion
-                    "Unsize"
-                    (borrow
-                      (M.alloc (|
-                        [
-                          M.call (|(core.fmt.rt.Argument.t::["new_display"]
-                            (borrow number))
-                          |)
-                        ]
-                      |)))))
-                |)))
-              |)
+                      | _ => M.break_match(||)
+                      end :
+                      M.Val i32.t
+                  ])
             |) in
-          M.alloc (| tt |) in
-        M.alloc (| core.result.Result.Ok tt |)
-      |))
+          let _ : M.Val unit :=
+            let _ : M.Val unit :=
+              M.alloc (|
+                M.call (|(std.io.stdio._print
+                  (M.call (|(core.fmt.Arguments.t::["new_v1"]
+                    (pointer_coercion
+                      "Unsize"
+                      (borrow
+                        (M.alloc (|
+                          [ M.read (| mk_str "" |); M.read (| mk_str "
+" |) ]
+                        |))))
+                    (pointer_coercion
+                      "Unsize"
+                      (borrow
+                        (M.alloc (|
+                          [
+                            M.call (|(core.fmt.rt.Argument.t::["new_display"]
+                              (borrow number))
+                            |)
+                          ]
+                        |)))))
+                  |)))
+                |)
+              |) in
+            M.alloc (| tt |) in
+          M.alloc (| core.result.Result.Ok tt |)
+        |)))
   ) : core.result.Result.t unit core.num.error.ParseIntError.t)).

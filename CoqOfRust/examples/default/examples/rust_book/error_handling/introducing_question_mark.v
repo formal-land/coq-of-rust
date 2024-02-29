@@ -19,161 +19,167 @@ Definition multiply
     let return_ :=
       M.return_
         (R := core.result.Result.t i32.t core.num.error.ParseIntError.t) in
-    M.catch_return
-      (M.read (|
-        let first_number : M.Val i32.t :=
-          M.copy (|
-            ltac:
-              (M.monadic_match_operator
-                (M.alloc (|
-                  M.call (|(ltac:(M.get_method (fun ℐ =>
-                      core.ops.try_trait.Try.branch
-                        (Self :=
-                          core.result.Result.t
-                            i32.t
-                            core.num.error.ParseIntError.t)
-                        (Trait := ℐ)))
-                    (M.call (|(str.t::["parse"] (M.read (| first_number_str |)))
-                    |)))
-                  |)
-                |))
-                [
-                  fun
-                      (γ :
-                        M.Val
-                          (core.ops.control_flow.ControlFlow.t
-                            (core.result.Result.t
-                              core.convert.Infallible.t
+    ltac:
+      (M.monadic_catch_return
+        (M.read (|
+          let first_number : M.Val i32.t :=
+            M.copy (|
+              ltac:
+                (M.monadic_match_operator
+                  (M.alloc (|
+                    M.call (|(ltac:(M.get_method (fun ℐ =>
+                        core.ops.try_trait.Try.branch
+                          (Self :=
+                            core.result.Result.t
+                              i32.t
                               core.num.error.ParseIntError.t)
-                            i32.t)) =>
-                    match M.read (| γ |) with
-                    | core.ops.control_flow.ControlFlow.Break _ =>
-                      let γ0_0 :=
-                        core.ops.control_flow.ControlFlow.Get_Break_0 γ in
-                      let residual := M.copy (| γ0_0 |) in
-                      M.alloc (|
-                        (never_to_any (B := i32.t)) (|
-                          M.read (|
-                            return_
-                              (M.call (|(ltac:(M.get_method (fun ℐ =>
-                                  core.ops.try_trait.FromResidual.from_residual
-                                    (Self :=
-                                      core.result.Result.t
-                                        i32.t
-                                        core.num.error.ParseIntError.t)
-                                    (R :=
-                                      core.result.Result.t
-                                        core.convert.Infallible.t
-                                        core.num.error.ParseIntError.t)
-                                    (Trait := ℐ)))
-                                (M.read (| residual |)))
-                              |))
+                          (Trait := ℐ)))
+                      (M.call (|(str.t::["parse"]
+                        (M.read (| first_number_str |)))
+                      |)))
+                    |)
+                  |))
+                  [
+                    fun
+                        (γ :
+                          M.Val
+                            (core.ops.control_flow.ControlFlow.t
+                              (core.result.Result.t
+                                core.convert.Infallible.t
+                                core.num.error.ParseIntError.t)
+                              i32.t)) =>
+                      match M.read (| γ |) with
+                      | core.ops.control_flow.ControlFlow.Break _ =>
+                        let γ0_0 :=
+                          core.ops.control_flow.ControlFlow.Get_Break_0 γ in
+                        let residual := M.copy (| γ0_0 |) in
+                        M.alloc (|
+                          (never_to_any (B := i32.t)) (|
+                            M.read (|
+                              return_
+                                (|
+                                  M.call (|(ltac:(M.get_method (fun ℐ =>
+                                      core.ops.try_trait.FromResidual.from_residual
+                                        (Self :=
+                                          core.result.Result.t
+                                            i32.t
+                                            core.num.error.ParseIntError.t)
+                                        (R :=
+                                          core.result.Result.t
+                                            core.convert.Infallible.t
+                                            core.num.error.ParseIntError.t)
+                                        (Trait := ℐ)))
+                                    (M.read (| residual |)))
+                                  |)
+                                |)
+                            |)
                           |)
                         |)
-                      |)
-                    | _ => M.break_match(||)
-                    end :
-                    M.Val i32.t;
-                  fun
-                      (γ :
-                        M.Val
-                          (core.ops.control_flow.ControlFlow.t
-                            (core.result.Result.t
-                              core.convert.Infallible.t
+                      | _ => M.break_match(||)
+                      end :
+                      M.Val i32.t;
+                    fun
+                        (γ :
+                          M.Val
+                            (core.ops.control_flow.ControlFlow.t
+                              (core.result.Result.t
+                                core.convert.Infallible.t
+                                core.num.error.ParseIntError.t)
+                              i32.t)) =>
+                      match M.read (| γ |) with
+                      | core.ops.control_flow.ControlFlow.Continue _ =>
+                        let γ0_0 :=
+                          core.ops.control_flow.ControlFlow.Get_Continue_0 γ in
+                        let val := M.copy (| γ0_0 |) in
+                        val
+                      | _ => M.break_match(||)
+                      end :
+                      M.Val i32.t
+                  ])
+            |) in
+          let second_number : M.Val i32.t :=
+            M.copy (|
+              ltac:
+                (M.monadic_match_operator
+                  (M.alloc (|
+                    M.call (|(ltac:(M.get_method (fun ℐ =>
+                        core.ops.try_trait.Try.branch
+                          (Self :=
+                            core.result.Result.t
+                              i32.t
                               core.num.error.ParseIntError.t)
-                            i32.t)) =>
-                    match M.read (| γ |) with
-                    | core.ops.control_flow.ControlFlow.Continue _ =>
-                      let γ0_0 :=
-                        core.ops.control_flow.ControlFlow.Get_Continue_0 γ in
-                      let val := M.copy (| γ0_0 |) in
-                      val
-                    | _ => M.break_match(||)
-                    end :
-                    M.Val i32.t
-                ])
-          |) in
-        let second_number : M.Val i32.t :=
-          M.copy (|
-            ltac:
-              (M.monadic_match_operator
-                (M.alloc (|
-                  M.call (|(ltac:(M.get_method (fun ℐ =>
-                      core.ops.try_trait.Try.branch
-                        (Self :=
-                          core.result.Result.t
-                            i32.t
-                            core.num.error.ParseIntError.t)
-                        (Trait := ℐ)))
-                    (M.call (|(str.t::["parse"]
-                      (M.read (| second_number_str |)))
-                    |)))
-                  |)
-                |))
-                [
-                  fun
-                      (γ :
-                        M.Val
-                          (core.ops.control_flow.ControlFlow.t
-                            (core.result.Result.t
-                              core.convert.Infallible.t
-                              core.num.error.ParseIntError.t)
-                            i32.t)) =>
-                    match M.read (| γ |) with
-                    | core.ops.control_flow.ControlFlow.Break _ =>
-                      let γ0_0 :=
-                        core.ops.control_flow.ControlFlow.Get_Break_0 γ in
-                      let residual := M.copy (| γ0_0 |) in
-                      M.alloc (|
-                        (never_to_any (B := i32.t)) (|
-                          M.read (|
-                            return_
-                              (M.call (|(ltac:(M.get_method (fun ℐ =>
-                                  core.ops.try_trait.FromResidual.from_residual
-                                    (Self :=
-                                      core.result.Result.t
-                                        i32.t
-                                        core.num.error.ParseIntError.t)
-                                    (R :=
-                                      core.result.Result.t
-                                        core.convert.Infallible.t
-                                        core.num.error.ParseIntError.t)
-                                    (Trait := ℐ)))
-                                (M.read (| residual |)))
-                              |))
+                          (Trait := ℐ)))
+                      (M.call (|(str.t::["parse"]
+                        (M.read (| second_number_str |)))
+                      |)))
+                    |)
+                  |))
+                  [
+                    fun
+                        (γ :
+                          M.Val
+                            (core.ops.control_flow.ControlFlow.t
+                              (core.result.Result.t
+                                core.convert.Infallible.t
+                                core.num.error.ParseIntError.t)
+                              i32.t)) =>
+                      match M.read (| γ |) with
+                      | core.ops.control_flow.ControlFlow.Break _ =>
+                        let γ0_0 :=
+                          core.ops.control_flow.ControlFlow.Get_Break_0 γ in
+                        let residual := M.copy (| γ0_0 |) in
+                        M.alloc (|
+                          (never_to_any (B := i32.t)) (|
+                            M.read (|
+                              return_
+                                (|
+                                  M.call (|(ltac:(M.get_method (fun ℐ =>
+                                      core.ops.try_trait.FromResidual.from_residual
+                                        (Self :=
+                                          core.result.Result.t
+                                            i32.t
+                                            core.num.error.ParseIntError.t)
+                                        (R :=
+                                          core.result.Result.t
+                                            core.convert.Infallible.t
+                                            core.num.error.ParseIntError.t)
+                                        (Trait := ℐ)))
+                                    (M.read (| residual |)))
+                                  |)
+                                |)
+                            |)
                           |)
                         |)
-                      |)
-                    | _ => M.break_match(||)
-                    end :
-                    M.Val i32.t;
-                  fun
-                      (γ :
-                        M.Val
-                          (core.ops.control_flow.ControlFlow.t
-                            (core.result.Result.t
-                              core.convert.Infallible.t
-                              core.num.error.ParseIntError.t)
-                            i32.t)) =>
-                    match M.read (| γ |) with
-                    | core.ops.control_flow.ControlFlow.Continue _ =>
-                      let γ0_0 :=
-                        core.ops.control_flow.ControlFlow.Get_Continue_0 γ in
-                      let val := M.copy (| γ0_0 |) in
-                      val
-                    | _ => M.break_match(||)
-                    end :
-                    M.Val i32.t
-                ])
-          |) in
-        M.alloc (|
-          core.result.Result.Ok
-            (BinOp.Panic.mul (|
-              M.read (| first_number |),
-              M.read (| second_number |)
-            |))
-        |)
-      |))
+                      | _ => M.break_match(||)
+                      end :
+                      M.Val i32.t;
+                    fun
+                        (γ :
+                          M.Val
+                            (core.ops.control_flow.ControlFlow.t
+                              (core.result.Result.t
+                                core.convert.Infallible.t
+                                core.num.error.ParseIntError.t)
+                              i32.t)) =>
+                      match M.read (| γ |) with
+                      | core.ops.control_flow.ControlFlow.Continue _ =>
+                        let γ0_0 :=
+                          core.ops.control_flow.ControlFlow.Get_Continue_0 γ in
+                        let val := M.copy (| γ0_0 |) in
+                        val
+                      | _ => M.break_match(||)
+                      end :
+                      M.Val i32.t
+                  ])
+            |) in
+          M.alloc (|
+            core.result.Result.Ok
+              (BinOp.Panic.mul (|
+                M.read (| first_number |),
+                M.read (| second_number |)
+              |))
+          |)
+        |)))
   ) : core.result.Result.t i32.t core.num.error.ParseIntError.t)).
 
 (*

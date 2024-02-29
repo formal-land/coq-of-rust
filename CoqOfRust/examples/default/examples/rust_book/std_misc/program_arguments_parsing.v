@@ -183,89 +183,120 @@ fn main() {
 Definition main : M unit :=
   ltac:(M.monadic ((
     let return_ := M.return_ (R := unit) in
-    M.catch_return
-      (M.read (|
-        let args :
-            M.Val
-              (alloc.vec.Vec.t alloc.string.String.t alloc.alloc.Global.t) :=
-          M.alloc (|
-            M.call (|(ltac:(M.get_method (fun ℐ =>
-                core.iter.traits.iterator.Iterator.collect
-                  (Self := std.env.Args.t)
-                  (B :=
-                    alloc.vec.Vec.t alloc.string.String.t alloc.alloc.Global.t)
-                  (Trait := ℐ)))
-              (M.call (|std.env.args |)))
-            |)
-          |) in
-        ltac:
-          (M.monadic_match_operator
-            (M.alloc (|
-              M.call (|((alloc.vec.Vec.t
-                    alloc.string.String.t
-                    alloc.alloc.Global.t)::["len"]
-                (borrow args))
+    ltac:
+      (M.monadic_catch_return
+        (M.read (|
+          let args :
+              M.Val
+                (alloc.vec.Vec.t alloc.string.String.t alloc.alloc.Global.t) :=
+            M.alloc (|
+              M.call (|(ltac:(M.get_method (fun ℐ =>
+                  core.iter.traits.iterator.Iterator.collect
+                    (Self := std.env.Args.t)
+                    (B :=
+                      alloc.vec.Vec.t
+                        alloc.string.String.t
+                        alloc.alloc.Global.t)
+                    (Trait := ℐ)))
+                (M.call (|std.env.args |)))
               |)
-            |))
-            [
-              fun (γ : M.Val usize.t) =>
-                (let _ : M.Val unit :=
-                  let _ : M.Val unit :=
-                    M.alloc (|
-                      M.call (|(std.io.stdio._print
-                        (M.call (|(core.fmt.Arguments.t::["new_const"]
-                          (pointer_coercion
-                            "Unsize"
-                            (borrow
-                              (M.alloc (|
-                                [
-                                  M.read (|
-                                    mk_str
-                                      "My name is 'match_args'. Try passing some arguments!
+            |) in
+          ltac:
+            (M.monadic_match_operator
+              (M.alloc (|
+                M.call (|((alloc.vec.Vec.t
+                      alloc.string.String.t
+                      alloc.alloc.Global.t)::["len"]
+                  (borrow args))
+                |)
+              |))
+              [
+                fun (γ : M.Val usize.t) =>
+                  (let _ : M.Val unit :=
+                    let _ : M.Val unit :=
+                      M.alloc (|
+                        M.call (|(std.io.stdio._print
+                          (M.call (|(core.fmt.Arguments.t::["new_const"]
+                            (pointer_coercion
+                              "Unsize"
+                              (borrow
+                                (M.alloc (|
+                                  [
+                                    M.read (|
+                                      mk_str
+                                        "My name is 'match_args'. Try passing some arguments!
 "
-                                  |)
-                                ]
-                              |)))))
-                        |)))
-                      |)
-                    |) in
-                  M.alloc (| tt |) in
-                M.alloc (| tt |)) :
-                M.Val unit;
-              fun (γ : M.Val usize.t) =>
-                (ltac:
-                  (M.monadic_match_operator
-                    (M.alloc (|
-                      M.call (|(str.t::["parse"]
-                        (M.call (|(ltac:(M.get_method (fun ℐ =>
-                            core.ops.deref.Deref.deref
-                              (Self := alloc.string.String.t)
-                              (Trait := ℐ)))
-                          (M.call (|(ltac:(M.get_method (fun ℐ =>
-                              core.ops.index.Index.index
-                                (Self :=
-                                  alloc.vec.Vec.t
-                                    alloc.string.String.t
-                                    alloc.alloc.Global.t)
-                                (Idx := usize.t)
-                                (Trait := ℐ)))
-                            (borrow args)
-                            ((Integer.of_Z 1) : usize.t))
+                                    |)
+                                  ]
+                                |)))))
                           |)))
-                        |)))
-                      |)
-                    |))
-                    [
-                      fun
-                          (γ :
-                            M.Val
-                              (core.result.Result.t
-                                i32.t
-                                core.num.error.ParseIntError.t)) =>
-                        match M.read (| γ |) with
-                        | core.result.Result.Ok _ =>
-                          let γ0_0 := core.result.Result.Get_Ok_0 γ in
-                          let _ : M.Val unit :=
+                        |)
+                      |) in
+                    M.alloc (| tt |) in
+                  M.alloc (| tt |)) :
+                  M.Val unit;
+                fun (γ : M.Val usize.t) =>
+                  (ltac:
+                    (M.monadic_match_operator
+                      (M.alloc (|
+                        M.call (|(str.t::["parse"]
+                          (M.call (|(ltac:(M.get_method (fun ℐ =>
+                              core.ops.deref.Deref.deref
+                                (Self := alloc.string.String.t)
+                                (Trait := ℐ)))
+                            (M.call (|(ltac:(M.get_method (fun ℐ =>
+                                core.ops.index.Index.index
+                                  (Self :=
+                                    alloc.vec.Vec.t
+                                      alloc.string.String.t
+                                      alloc.alloc.Global.t)
+                                  (Idx := usize.t)
+                                  (Trait := ℐ)))
+                              (borrow args)
+                              ((Integer.of_Z 1) : usize.t))
+                            |)))
+                          |)))
+                        |)
+                      |))
+                      [
+                        fun
+                            (γ :
+                              M.Val
+                                (core.result.Result.t
+                                  i32.t
+                                  core.num.error.ParseIntError.t)) =>
+                          match M.read (| γ |) with
+                          | core.result.Result.Ok _ =>
+                            let γ0_0 := core.result.Result.Get_Ok_0 γ in
+                            let _ : M.Val unit :=
+                              M.alloc (|
+                                M.call (|(std.io.stdio._print
+                                  (M.call (|(core.fmt.Arguments.t::["new_const"]
+                                    (pointer_coercion
+                                      "Unsize"
+                                      (borrow
+                                        (M.alloc (|
+                                          [
+                                            M.read (|
+                                              mk_str "This is the answer!
+"
+                                            |)
+                                          ]
+                                        |)))))
+                                  |)))
+                                |)
+                              |) in
+                            M.alloc (| tt |)
+                          | _ => M.break_match(||)
+                          end :
+                          M.Val unit;
+                        fun
+                            (γ :
+                              M.Val
+                                (core.result.Result.t
+                                  i32.t
+                                  core.num.error.ParseIntError.t)) =>
+                          (let _ : M.Val unit :=
                             M.alloc (|
                               M.call (|(std.io.stdio._print
                                 (M.call (|(core.fmt.Arguments.t::["new_const"]
@@ -275,7 +306,7 @@ Definition main : M unit :=
                                       (M.alloc (|
                                         [
                                           M.read (|
-                                            mk_str "This is the answer!
+                                            mk_str "This is not the answer.
 "
                                           |)
                                         ]
@@ -283,203 +314,176 @@ Definition main : M unit :=
                                 |)))
                               |)
                             |) in
-                          M.alloc (| tt |)
-                        | _ => M.break_match(||)
-                        end :
-                        M.Val unit;
-                      fun
-                          (γ :
-                            M.Val
-                              (core.result.Result.t
-                                i32.t
-                                core.num.error.ParseIntError.t)) =>
-                        (let _ : M.Val unit :=
-                          M.alloc (|
-                            M.call (|(std.io.stdio._print
-                              (M.call (|(core.fmt.Arguments.t::["new_const"]
-                                (pointer_coercion
-                                  "Unsize"
-                                  (borrow
-                                    (M.alloc (|
-                                      [
-                                        M.read (|
-                                          mk_str "This is not the answer.
-"
-                                        |)
-                                      ]
-                                    |)))))
-                              |)))
-                            |)
-                          |) in
-                        M.alloc (| tt |)) :
-                        M.Val unit
-                    ])) :
-                M.Val unit;
-              fun (γ : M.Val usize.t) =>
-                (let cmd : M.Val (ref alloc.string.String.t) :=
-                  M.alloc (|
-                    M.call (|(ltac:(M.get_method (fun ℐ =>
-                        core.ops.index.Index.index
-                          (Self :=
-                            alloc.vec.Vec.t
-                              alloc.string.String.t
-                              alloc.alloc.Global.t)
-                          (Idx := usize.t)
-                          (Trait := ℐ)))
-                      (borrow args)
-                      ((Integer.of_Z 1) : usize.t))
-                    |)
-                  |) in
-                let num : M.Val (ref alloc.string.String.t) :=
-                  M.alloc (|
-                    M.call (|(ltac:(M.get_method (fun ℐ =>
-                        core.ops.index.Index.index
-                          (Self :=
-                            alloc.vec.Vec.t
-                              alloc.string.String.t
-                              alloc.alloc.Global.t)
-                          (Idx := usize.t)
-                          (Trait := ℐ)))
-                      (borrow args)
-                      ((Integer.of_Z 2) : usize.t))
-                    |)
-                  |) in
-                let number : M.Val i32.t :=
-                  M.copy (|
-                    ltac:
-                      (M.monadic_match_operator
-                        (M.alloc (|
-                          M.call (|(str.t::["parse"]
-                            (M.call (|(ltac:(M.get_method (fun ℐ =>
-                                core.ops.deref.Deref.deref
-                                  (Self := alloc.string.String.t)
-                                  (Trait := ℐ)))
-                              (M.read (| num |)))
-                            |)))
-                          |)
-                        |))
-                        [
-                          fun
-                              (γ :
-                                M.Val
-                                  (core.result.Result.t
-                                    i32.t
-                                    core.num.error.ParseIntError.t)) =>
-                            match M.read (| γ |) with
-                            | core.result.Result.Ok _ =>
-                              let γ0_0 := core.result.Result.Get_Ok_0 γ in
-                              let n := M.copy (| γ0_0 |) in
-                              n
-                            | _ => M.break_match(||)
-                            end :
-                            M.Val i32.t;
-                          fun
-                              (γ :
-                                M.Val
-                                  (core.result.Result.t
-                                    i32.t
-                                    core.num.error.ParseIntError.t)) =>
-                            match M.read (| γ |) with
-                            | core.result.Result.Err _ =>
-                              let γ0_0 := core.result.Result.Get_Err_0 γ in
-                              M.alloc (|
-                                (never_to_any (B := i32.t)) (|
-                                  M.read (|
-                                    let _ : M.Val unit :=
-                                      let _ : M.Val unit :=
-                                        M.alloc (|
-                                          M.call (|(std.io.stdio._eprint
-                                            (M.call (|(core.fmt.Arguments.t::["new_const"]
-                                              (pointer_coercion
-                                                "Unsize"
-                                                (borrow
-                                                  (M.alloc (|
-                                                    [
-                                                      M.read (|
-                                                        mk_str
-                                                          "error: second argument not an integer
-"
-                                                      |)
-                                                    ]
-                                                  |)))))
-                                            |)))
-                                          |)
-                                        |) in
-                                      M.alloc (| tt |) in
-                                    let _ : M.Val unit :=
-                                      M.alloc (|
-                                        M.call (|program_arguments_parsing.help
-                                        |)
-                                      |) in
-                                    return_ tt
-                                  |)
-                                |)
-                              |)
-                            | _ => M.break_match(||)
-                            end :
-                            M.Val i32.t
-                        ])
-                  |) in
-                ltac:
-                  (M.monadic_match_operator
-                    (M.alloc (|
+                          M.alloc (| tt |)) :
+                          M.Val unit
+                      ])) :
+                  M.Val unit;
+                fun (γ : M.Val usize.t) =>
+                  (let cmd : M.Val (ref alloc.string.String.t) :=
+                    M.alloc (|
                       M.call (|(ltac:(M.get_method (fun ℐ =>
                           core.ops.index.Index.index
-                            (Self := alloc.string.String.t)
-                            (Idx := core.ops.range.RangeFull.t)
+                            (Self :=
+                              alloc.vec.Vec.t
+                                alloc.string.String.t
+                                alloc.alloc.Global.t)
+                            (Idx := usize.t)
                             (Trait := ℐ)))
-                        (M.read (| cmd |))
-                        core.ops.range.RangeFull.Build)
+                        (borrow args)
+                        ((Integer.of_Z 1) : usize.t))
                       |)
-                    |))
-                    [
-                      fun (γ : M.Val (ref str.t)) =>
-                        (M.alloc (|
-                          M.call (|(program_arguments_parsing.increase
-                            (M.read (| number |)))
-                          |)
-                        |)) :
-                        M.Val unit;
-                      fun (γ : M.Val (ref str.t)) =>
-                        (M.alloc (|
-                          M.call (|(program_arguments_parsing.decrease
-                            (M.read (| number |)))
-                          |)
-                        |)) :
-                        M.Val unit;
-                      fun (γ : M.Val (ref str.t)) =>
-                        (let _ : M.Val unit :=
+                    |) in
+                  let num : M.Val (ref alloc.string.String.t) :=
+                    M.alloc (|
+                      M.call (|(ltac:(M.get_method (fun ℐ =>
+                          core.ops.index.Index.index
+                            (Self :=
+                              alloc.vec.Vec.t
+                                alloc.string.String.t
+                                alloc.alloc.Global.t)
+                            (Idx := usize.t)
+                            (Trait := ℐ)))
+                        (borrow args)
+                        ((Integer.of_Z 2) : usize.t))
+                      |)
+                    |) in
+                  let number : M.Val i32.t :=
+                    M.copy (|
+                      ltac:
+                        (M.monadic_match_operator
+                          (M.alloc (|
+                            M.call (|(str.t::["parse"]
+                              (M.call (|(ltac:(M.get_method (fun ℐ =>
+                                  core.ops.deref.Deref.deref
+                                    (Self := alloc.string.String.t)
+                                    (Trait := ℐ)))
+                                (M.read (| num |)))
+                              |)))
+                            |)
+                          |))
+                          [
+                            fun
+                                (γ :
+                                  M.Val
+                                    (core.result.Result.t
+                                      i32.t
+                                      core.num.error.ParseIntError.t)) =>
+                              match M.read (| γ |) with
+                              | core.result.Result.Ok _ =>
+                                let γ0_0 := core.result.Result.Get_Ok_0 γ in
+                                let n := M.copy (| γ0_0 |) in
+                                n
+                              | _ => M.break_match(||)
+                              end :
+                              M.Val i32.t;
+                            fun
+                                (γ :
+                                  M.Val
+                                    (core.result.Result.t
+                                      i32.t
+                                      core.num.error.ParseIntError.t)) =>
+                              match M.read (| γ |) with
+                              | core.result.Result.Err _ =>
+                                let γ0_0 := core.result.Result.Get_Err_0 γ in
+                                M.alloc (|
+                                  (never_to_any (B := i32.t)) (|
+                                    M.read (|
+                                      let _ : M.Val unit :=
+                                        let _ : M.Val unit :=
+                                          M.alloc (|
+                                            M.call (|(std.io.stdio._eprint
+                                              (M.call (|(core.fmt.Arguments.t::["new_const"]
+                                                (pointer_coercion
+                                                  "Unsize"
+                                                  (borrow
+                                                    (M.alloc (|
+                                                      [
+                                                        M.read (|
+                                                          mk_str
+                                                            "error: second argument not an integer
+"
+                                                        |)
+                                                      ]
+                                                    |)))))
+                                              |)))
+                                            |)
+                                          |) in
+                                        M.alloc (| tt |) in
+                                      let _ : M.Val unit :=
+                                        M.alloc (|
+                                          M.call (|program_arguments_parsing.help
+                                          |)
+                                        |) in
+                                      return_ (| tt |)
+                                    |)
+                                  |)
+                                |)
+                              | _ => M.break_match(||)
+                              end :
+                              M.Val i32.t
+                          ])
+                    |) in
+                  ltac:
+                    (M.monadic_match_operator
+                      (M.alloc (|
+                        M.call (|(ltac:(M.get_method (fun ℐ =>
+                            core.ops.index.Index.index
+                              (Self := alloc.string.String.t)
+                              (Idx := core.ops.range.RangeFull.t)
+                              (Trait := ℐ)))
+                          (M.read (| cmd |))
+                          core.ops.range.RangeFull.Build)
+                        |)
+                      |))
+                      [
+                        fun (γ : M.Val (ref str.t)) =>
+                          (M.alloc (|
+                            M.call (|(program_arguments_parsing.increase
+                              (M.read (| number |)))
+                            |)
+                          |)) :
+                          M.Val unit;
+                        fun (γ : M.Val (ref str.t)) =>
+                          (M.alloc (|
+                            M.call (|(program_arguments_parsing.decrease
+                              (M.read (| number |)))
+                            |)
+                          |)) :
+                          M.Val unit;
+                        fun (γ : M.Val (ref str.t)) =>
+                          (let _ : M.Val unit :=
+                            let _ : M.Val unit :=
+                              M.alloc (|
+                                M.call (|(std.io.stdio._eprint
+                                  (M.call (|(core.fmt.Arguments.t::["new_const"]
+                                    (pointer_coercion
+                                      "Unsize"
+                                      (borrow
+                                        (M.alloc (|
+                                          [
+                                            M.read (|
+                                              mk_str "error: invalid command
+"
+                                            |)
+                                          ]
+                                        |)))))
+                                  |)))
+                                |)
+                              |) in
+                            M.alloc (| tt |) in
                           let _ : M.Val unit :=
                             M.alloc (|
-                              M.call (|(std.io.stdio._eprint
-                                (M.call (|(core.fmt.Arguments.t::["new_const"]
-                                  (pointer_coercion
-                                    "Unsize"
-                                    (borrow
-                                      (M.alloc (|
-                                        [
-                                          M.read (|
-                                            mk_str "error: invalid command
-"
-                                          |)
-                                        ]
-                                      |)))))
-                                |)))
-                              |)
+                              M.call (|program_arguments_parsing.help |)
                             |) in
-                          M.alloc (| tt |) in
-                        let _ : M.Val unit :=
-                          M.alloc (| M.call (|program_arguments_parsing.help |)
-                          |) in
-                        M.alloc (| tt |)) :
-                        M.Val unit
-                    ])) :
-                M.Val unit;
-              fun (γ : M.Val usize.t) =>
-                (let _ : M.Val unit :=
-                  M.alloc (| M.call (|program_arguments_parsing.help |) |) in
-                M.alloc (| tt |)) :
-                M.Val unit
-            ])
-      |))
+                          M.alloc (| tt |)) :
+                          M.Val unit
+                      ])) :
+                  M.Val unit;
+                fun (γ : M.Val usize.t) =>
+                  (let _ : M.Val unit :=
+                    M.alloc (| M.call (|program_arguments_parsing.help |) |) in
+                  M.alloc (| tt |)) :
+                  M.Val unit
+              ])
+        |)))
   ) : unit)).

@@ -70,8 +70,8 @@ Definition main : M unit :=
         M.alloc (| tt |) in
       let secret_number : M.Val u32.t :=
         M.alloc (| M.call (|guessing_game.gen_range |) |) in
-      M.loop
-        (let _ : M.Val unit :=
+      ltac: (M.monadic_loop (
+        let _ : M.Val unit :=
           let _ : M.Val unit :=
             M.alloc (|
               M.call (|(std.io.stdio._print
@@ -142,7 +142,8 @@ Definition main : M unit :=
                     | core.result.Result.Err _ =>
                       let γ0_0 := core.result.Result.Get_Err_0 γ in
                       M.alloc (|
-                        (never_to_any (B := u32.t)) (| M.read (| M.continue |)
+                        (never_to_any (B := u32.t)) (|
+                          M.read (| M.continue (||) |)
                         |)
                       |)
                     | _ => M.break_match(||)
@@ -251,13 +252,13 @@ Definition main : M unit :=
                               |)
                             |) in
                           M.alloc (| tt |) in
-                        M.break
+                        M.break (||)
                       |)
                     |)
                   |)
                 | _ => M.break_match(||)
                 end :
                 M.Val unit
-            ]))
+            ])))
     |)
   ) : unit)).

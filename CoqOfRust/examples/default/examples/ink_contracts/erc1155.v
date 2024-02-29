@@ -957,85 +957,88 @@ Section Impl_erc1155_Contract_t.
       let token_id := M.alloc (| token_id |) in
       let value := M.alloc (| value |) in
       let return_ := M.return_ (R := ltac:(erc1155.Result unit)) in
-      M.catch_return
-        (M.read (|
-          let _ : M.Val unit :=
-            if
-              M.read (|
-                use
-                  (M.alloc (|
-                    UnOp.not
-                      (BinOp.Pure.le
-                        (M.read (| token_id |))
-                        (M.read (|
-                          erc1155.Contract.Get_token_id_nonce
-                            (deref (M.read (| self |)))
-                        |)))
-                  |))
-              |)
-            then
-              M.alloc (|
-                (never_to_any (B := unit)) (|
-                  M.read (|
-                    return_
-                      (core.result.Result.Err
-                        (M.call (|(ltac:(M.get_method (fun ℐ =>
-                            core.convert.Into.into
-                              (Self := erc1155.Error.t)
-                              (T := erc1155.Error.t)
-                              (Trait := ℐ)))
-                          erc1155.Error.UnexistentToken)
-                        |)))
+      ltac:
+        (M.monadic_catch_return
+          (M.read (|
+            let _ : M.Val unit :=
+              if
+                M.read (|
+                  use
+                    (M.alloc (|
+                      UnOp.not
+                        (BinOp.Pure.le
+                          (M.read (| token_id |))
+                          (M.read (|
+                            erc1155.Contract.Get_token_id_nonce
+                              (deref (M.read (| self |)))
+                          |)))
+                    |))
+                |)
+              then
+                M.alloc (|
+                  (never_to_any (B := unit)) (|
+                    M.read (|
+                      return_
+                        (|
+                          core.result.Result.Err
+                            (M.call (|(ltac:(M.get_method (fun ℐ =>
+                                core.convert.Into.into
+                                  (Self := erc1155.Error.t)
+                                  (T := erc1155.Error.t)
+                                  (Trait := ℐ)))
+                              erc1155.Error.UnexistentToken)
+                            |))
+                        |)
+                    |)
                   |)
                 |)
-              |)
-            else
-              M.alloc (| tt |) in
-          let caller : M.Val erc1155.AccountId.t :=
-            M.alloc (|
-              M.call (|(erc1155.Env.t::["caller"]
-                (borrow
-                  (M.alloc (|
-                    M.call (|(erc1155.Contract.t::["env"]
-                      (borrow (deref (M.read (| self |)))))
-                    |)
-                  |))))
-              |)
-            |) in
-          let _ : M.Val (core.option.Option.t u32.t) :=
-            M.alloc (|
-              M.call (|((erc1155.Mapping.t
-                    (erc1155.AccountId.t * u128.t)
-                    u128.t)::["insert"]
-                (borrow_mut
-                  (erc1155.Contract.Get_balances (deref (M.read (| self |)))))
-                (M.read (| caller |), M.read (| token_id |))
-                (M.read (| value |)))
-              |)
-            |) in
-          let _ : M.Val unit :=
-            M.alloc (|
-              M.call (|(erc1155.Env.t::["emit_event"]
-                (borrow
-                  (M.alloc (|
-                    M.call (|(erc1155.Contract.t::["env"]
-                      (borrow (deref (M.read (| self |)))))
-                    |)
-                  |)))
-                (erc1155.Event.TransferSingle
-                  ({|
-                    erc1155.TransferSingle.operator :=
-                      core.option.Option.Some (M.read (| caller |));
-                    erc1155.TransferSingle.from := core.option.Option.None;
-                    erc1155.TransferSingle.to :=
-                      core.option.Option.Some (M.read (| caller |));
-                    erc1155.TransferSingle.token_id := M.read (| token_id |);
-                    erc1155.TransferSingle.value := M.read (| value |);
-                  |} : erc1155.TransferSingle.t)))
-              |)
-            |) in
-          M.alloc (| core.result.Result.Ok tt |)
-        |))
+              else
+                M.alloc (| tt |) in
+            let caller : M.Val erc1155.AccountId.t :=
+              M.alloc (|
+                M.call (|(erc1155.Env.t::["caller"]
+                  (borrow
+                    (M.alloc (|
+                      M.call (|(erc1155.Contract.t::["env"]
+                        (borrow (deref (M.read (| self |)))))
+                      |)
+                    |))))
+                |)
+              |) in
+            let _ : M.Val (core.option.Option.t u32.t) :=
+              M.alloc (|
+                M.call (|((erc1155.Mapping.t
+                      (erc1155.AccountId.t * u128.t)
+                      u128.t)::["insert"]
+                  (borrow_mut
+                    (erc1155.Contract.Get_balances (deref (M.read (| self |)))))
+                  (M.read (| caller |), M.read (| token_id |))
+                  (M.read (| value |)))
+                |)
+              |) in
+            let _ : M.Val unit :=
+              M.alloc (|
+                M.call (|(erc1155.Env.t::["emit_event"]
+                  (borrow
+                    (M.alloc (|
+                      M.call (|(erc1155.Contract.t::["env"]
+                        (borrow (deref (M.read (| self |)))))
+                      |)
+                    |)))
+                  (erc1155.Event.TransferSingle
+                    ({|
+                      erc1155.TransferSingle.operator :=
+                        core.option.Option.Some (M.read (| caller |));
+                      erc1155.TransferSingle.from := core.option.Option.None;
+                      erc1155.TransferSingle.to :=
+                        core.option.Option.Some (M.read (| caller |));
+                      erc1155.TransferSingle.token_id := M.read (| token_id |);
+                      erc1155.TransferSingle.value := M.read (| value |);
+                    |} : erc1155.TransferSingle.t)))
+                |)
+              |) in
+            M.alloc (| core.result.Result.Ok tt |)
+          |)))
     ) : ltac:(erc1155.Result unit))).
   
   Global Instance AssociatedFunction_mint :
@@ -1391,165 +1394,172 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
       let value := M.alloc (| value |) in
       let data := M.alloc (| data |) in
       let return_ := M.return_ (R := ltac:(erc1155.Result unit)) in
-      M.catch_return
-        (M.read (|
-          let caller : M.Val erc1155.AccountId.t :=
-            M.alloc (|
-              M.call (|(erc1155.Env.t::["caller"]
-                (borrow
-                  (M.alloc (|
-                    M.call (|(erc1155.Contract.t::["env"]
-                      (borrow (deref (M.read (| self |)))))
+      ltac:
+        (M.monadic_catch_return
+          (M.read (|
+            let caller : M.Val erc1155.AccountId.t :=
+              M.alloc (|
+                M.call (|(erc1155.Env.t::["caller"]
+                  (borrow
+                    (M.alloc (|
+                      M.call (|(erc1155.Contract.t::["env"]
+                        (borrow (deref (M.read (| self |)))))
+                      |)
+                    |))))
+                |)
+              |) in
+            let _ : M.Val unit :=
+              if
+                M.read (|
+                  use
+                    (M.alloc (|
+                      M.call (|(ltac:(M.get_method (fun ℐ =>
+                          core.cmp.PartialEq.ne
+                            (Self := erc1155.AccountId.t)
+                            (Rhs := erc1155.AccountId.t)
+                            (Trait := ℐ)))
+                        (borrow caller)
+                        (borrow from))
+                      |)
+                    |))
+                |)
+              then
+                let _ : M.Val unit :=
+                  if
+                    M.read (|
+                      use
+                        (M.alloc (|
+                          UnOp.not
+                            (M.call (|(is_approved_for_all
+                              (borrow (deref (M.read (| self |))))
+                              (M.read (| from |))
+                              (M.read (| caller |)))
+                            |))
+                        |))
                     |)
-                  |))))
-              |)
-            |) in
-          let _ : M.Val unit :=
-            if
-              M.read (|
-                use
-                  (M.alloc (|
-                    M.call (|(ltac:(M.get_method (fun ℐ =>
-                        core.cmp.PartialEq.ne
-                          (Self := erc1155.AccountId.t)
-                          (Rhs := erc1155.AccountId.t)
-                          (Trait := ℐ)))
-                      (borrow caller)
-                      (borrow from))
+                  then
+                    M.alloc (|
+                      (never_to_any (B := unit)) (|
+                        M.read (|
+                          return_
+                            (|
+                              core.result.Result.Err
+                                (M.call (|(ltac:(M.get_method (fun ℐ =>
+                                    core.convert.Into.into
+                                      (Self := erc1155.Error.t)
+                                      (T := erc1155.Error.t)
+                                      (Trait := ℐ)))
+                                  erc1155.Error.NotApproved)
+                                |))
+                            |)
+                        |)
+                      |)
                     |)
-                  |))
-              |)
-            then
-              let _ : M.Val unit :=
-                if
-                  M.read (|
-                    use
-                      (M.alloc (|
-                        UnOp.not
-                          (M.call (|(is_approved_for_all
-                            (borrow (deref (M.read (| self |))))
-                            (M.read (| from |))
-                            (M.read (| caller |)))
-                          |))
-                      |))
-                  |)
-                then
-                  M.alloc (|
-                    (never_to_any (B := unit)) (|
-                      M.read (|
-                        return_
-                          (core.result.Result.Err
+                  else
+                    M.alloc (| tt |) in
+                M.alloc (| tt |)
+              else
+                M.alloc (| tt |) in
+            let _ : M.Val unit :=
+              if
+                M.read (|
+                  use
+                    (M.alloc (|
+                      UnOp.not
+                        (M.call (|(ltac:(M.get_method (fun ℐ =>
+                            core.cmp.PartialEq.ne
+                              (Self := erc1155.AccountId.t)
+                              (Rhs := erc1155.AccountId.t)
+                              (Trait := ℐ)))
+                          (borrow to)
+                          (borrow
+                            (M.alloc (| M.call (|erc1155.zero_address |) |))))
+                        |))
+                    |))
+                |)
+              then
+                M.alloc (|
+                  (never_to_any (B := unit)) (|
+                    M.read (|
+                      return_
+                        (|
+                          core.result.Result.Err
                             (M.call (|(ltac:(M.get_method (fun ℐ =>
                                 core.convert.Into.into
                                   (Self := erc1155.Error.t)
                                   (T := erc1155.Error.t)
                                   (Trait := ℐ)))
-                              erc1155.Error.NotApproved)
-                            |)))
-                      |)
+                              erc1155.Error.ZeroAddressTransfer)
+                            |))
+                        |)
                     |)
                   |)
-                else
-                  M.alloc (| tt |) in
-              M.alloc (| tt |)
-            else
-              M.alloc (| tt |) in
-          let _ : M.Val unit :=
-            if
-              M.read (|
-                use
-                  (M.alloc (|
-                    UnOp.not
-                      (M.call (|(ltac:(M.get_method (fun ℐ =>
-                          core.cmp.PartialEq.ne
-                            (Self := erc1155.AccountId.t)
-                            (Rhs := erc1155.AccountId.t)
-                            (Trait := ℐ)))
-                        (borrow to)
-                        (borrow
-                          (M.alloc (| M.call (|erc1155.zero_address |) |))))
-                      |))
-                  |))
-              |)
-            then
+                |)
+              else
+                M.alloc (| tt |) in
+            let balance : M.Val u128.t :=
               M.alloc (|
-                (never_to_any (B := unit)) (|
-                  M.read (|
-                    return_
-                      (core.result.Result.Err
-                        (M.call (|(ltac:(M.get_method (fun ℐ =>
-                            core.convert.Into.into
-                              (Self := erc1155.Error.t)
-                              (T := erc1155.Error.t)
-                              (Trait := ℐ)))
-                          erc1155.Error.ZeroAddressTransfer)
-                        |)))
+                M.call (|(balance_of
+                  (borrow (deref (M.read (| self |))))
+                  (M.read (| from |))
+                  (M.read (| token_id |)))
+                |)
+              |) in
+            let _ : M.Val unit :=
+              if
+                M.read (|
+                  use
+                    (M.alloc (|
+                      UnOp.not
+                        (BinOp.Pure.ge
+                          (M.read (| balance |))
+                          (M.read (| value |)))
+                    |))
+                |)
+              then
+                M.alloc (|
+                  (never_to_any (B := unit)) (|
+                    M.read (|
+                      return_
+                        (|
+                          core.result.Result.Err
+                            (M.call (|(ltac:(M.get_method (fun ℐ =>
+                                core.convert.Into.into
+                                  (Self := erc1155.Error.t)
+                                  (T := erc1155.Error.t)
+                                  (Trait := ℐ)))
+                              erc1155.Error.InsufficientBalance)
+                            |))
+                        |)
+                    |)
                   |)
                 |)
-              |)
-            else
-              M.alloc (| tt |) in
-          let balance : M.Val u128.t :=
-            M.alloc (|
-              M.call (|(balance_of
-                (borrow (deref (M.read (| self |))))
-                (M.read (| from |))
-                (M.read (| token_id |)))
-              |)
-            |) in
-          let _ : M.Val unit :=
-            if
-              M.read (|
-                use
-                  (M.alloc (|
-                    UnOp.not
-                      (BinOp.Pure.ge
-                        (M.read (| balance |))
-                        (M.read (| value |)))
-                  |))
-              |)
-            then
+              else
+                M.alloc (| tt |) in
+            let _ : M.Val unit :=
               M.alloc (|
-                (never_to_any (B := unit)) (|
-                  M.read (|
-                    return_
-                      (core.result.Result.Err
-                        (M.call (|(ltac:(M.get_method (fun ℐ =>
-                            core.convert.Into.into
-                              (Self := erc1155.Error.t)
-                              (T := erc1155.Error.t)
-                              (Trait := ℐ)))
-                          erc1155.Error.InsufficientBalance)
-                        |)))
-                  |)
+                M.call (|(erc1155.Contract.t::["perform_transfer"]
+                  (M.read (| self |))
+                  (M.read (| from |))
+                  (M.read (| to |))
+                  (M.read (| token_id |))
+                  (M.read (| value |)))
                 |)
-              |)
-            else
-              M.alloc (| tt |) in
-          let _ : M.Val unit :=
-            M.alloc (|
-              M.call (|(erc1155.Contract.t::["perform_transfer"]
-                (M.read (| self |))
-                (M.read (| from |))
-                (M.read (| to |))
-                (M.read (| token_id |))
-                (M.read (| value |)))
-              |)
-            |) in
-          let _ : M.Val unit :=
-            M.alloc (|
-              M.call (|(erc1155.Contract.t::["transfer_acceptance_check"]
-                (M.read (| self |))
-                (M.read (| caller |))
-                (M.read (| from |))
-                (M.read (| to |))
-                (M.read (| token_id |))
-                (M.read (| value |))
-                (M.read (| data |)))
-              |)
-            |) in
-          M.alloc (| core.result.Result.Ok tt |)
-        |))
+              |) in
+            let _ : M.Val unit :=
+              M.alloc (|
+                M.call (|(erc1155.Contract.t::["transfer_acceptance_check"]
+                  (M.read (| self |))
+                  (M.read (| caller |))
+                  (M.read (| from |))
+                  (M.read (| to |))
+                  (M.read (| token_id |))
+                  (M.read (| value |))
+                  (M.read (| data |)))
+                |)
+              |) in
+            M.alloc (| core.result.Result.Ok tt |)
+          |)))
     ) : ltac:(erc1155.Result unit))).
   
   Global Instance AssociatedFunction_safe_transfer_from :
@@ -1613,452 +1623,467 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
       let values := M.alloc (| values |) in
       let data := M.alloc (| data |) in
       let return_ := M.return_ (R := ltac:(erc1155.Result unit)) in
-      M.catch_return
-        (M.read (|
-          let caller : M.Val erc1155.AccountId.t :=
-            M.alloc (|
-              M.call (|(erc1155.Env.t::["caller"]
-                (borrow
-                  (M.alloc (|
-                    M.call (|(erc1155.Contract.t::["env"]
-                      (borrow (deref (M.read (| self |)))))
+      ltac:
+        (M.monadic_catch_return
+          (M.read (|
+            let caller : M.Val erc1155.AccountId.t :=
+              M.alloc (|
+                M.call (|(erc1155.Env.t::["caller"]
+                  (borrow
+                    (M.alloc (|
+                      M.call (|(erc1155.Contract.t::["env"]
+                        (borrow (deref (M.read (| self |)))))
+                      |)
+                    |))))
+                |)
+              |) in
+            let _ : M.Val unit :=
+              if
+                M.read (|
+                  use
+                    (M.alloc (|
+                      M.call (|(ltac:(M.get_method (fun ℐ =>
+                          core.cmp.PartialEq.ne
+                            (Self := erc1155.AccountId.t)
+                            (Rhs := erc1155.AccountId.t)
+                            (Trait := ℐ)))
+                        (borrow caller)
+                        (borrow from))
+                      |)
+                    |))
+                |)
+              then
+                let _ : M.Val unit :=
+                  if
+                    M.read (|
+                      use
+                        (M.alloc (|
+                          UnOp.not
+                            (M.call (|(is_approved_for_all
+                              (borrow (deref (M.read (| self |))))
+                              (M.read (| from |))
+                              (M.read (| caller |)))
+                            |))
+                        |))
                     |)
-                  |))))
-              |)
-            |) in
-          let _ : M.Val unit :=
-            if
-              M.read (|
-                use
-                  (M.alloc (|
-                    M.call (|(ltac:(M.get_method (fun ℐ =>
-                        core.cmp.PartialEq.ne
-                          (Self := erc1155.AccountId.t)
-                          (Rhs := erc1155.AccountId.t)
-                          (Trait := ℐ)))
-                      (borrow caller)
-                      (borrow from))
+                  then
+                    M.alloc (|
+                      (never_to_any (B := unit)) (|
+                        M.read (|
+                          return_
+                            (|
+                              core.result.Result.Err
+                                (M.call (|(ltac:(M.get_method (fun ℐ =>
+                                    core.convert.Into.into
+                                      (Self := erc1155.Error.t)
+                                      (T := erc1155.Error.t)
+                                      (Trait := ℐ)))
+                                  erc1155.Error.NotApproved)
+                                |))
+                            |)
+                        |)
+                      |)
                     |)
-                  |))
-              |)
-            then
-              let _ : M.Val unit :=
-                if
-                  M.read (|
-                    use
-                      (M.alloc (|
-                        UnOp.not
-                          (M.call (|(is_approved_for_all
-                            (borrow (deref (M.read (| self |))))
-                            (M.read (| from |))
-                            (M.read (| caller |)))
-                          |))
-                      |))
-                  |)
-                then
-                  M.alloc (|
-                    (never_to_any (B := unit)) (|
-                      M.read (|
-                        return_
-                          (core.result.Result.Err
+                  else
+                    M.alloc (| tt |) in
+                M.alloc (| tt |)
+              else
+                M.alloc (| tt |) in
+            let _ : M.Val unit :=
+              if
+                M.read (|
+                  use
+                    (M.alloc (|
+                      UnOp.not
+                        (M.call (|(ltac:(M.get_method (fun ℐ =>
+                            core.cmp.PartialEq.ne
+                              (Self := erc1155.AccountId.t)
+                              (Rhs := erc1155.AccountId.t)
+                              (Trait := ℐ)))
+                          (borrow to)
+                          (borrow
+                            (M.alloc (| M.call (|erc1155.zero_address |) |))))
+                        |))
+                    |))
+                |)
+              then
+                M.alloc (|
+                  (never_to_any (B := unit)) (|
+                    M.read (|
+                      return_
+                        (|
+                          core.result.Result.Err
                             (M.call (|(ltac:(M.get_method (fun ℐ =>
                                 core.convert.Into.into
                                   (Self := erc1155.Error.t)
                                   (T := erc1155.Error.t)
                                   (Trait := ℐ)))
-                              erc1155.Error.NotApproved)
-                            |)))
-                      |)
+                              erc1155.Error.ZeroAddressTransfer)
+                            |))
+                        |)
                     |)
                   |)
-                else
-                  M.alloc (| tt |) in
-              M.alloc (| tt |)
-            else
-              M.alloc (| tt |) in
-          let _ : M.Val unit :=
-            if
-              M.read (|
-                use
-                  (M.alloc (|
-                    UnOp.not
-                      (M.call (|(ltac:(M.get_method (fun ℐ =>
-                          core.cmp.PartialEq.ne
-                            (Self := erc1155.AccountId.t)
-                            (Rhs := erc1155.AccountId.t)
-                            (Trait := ℐ)))
-                        (borrow to)
-                        (borrow
-                          (M.alloc (| M.call (|erc1155.zero_address |) |))))
-                      |))
-                  |))
-              |)
-            then
-              M.alloc (|
-                (never_to_any (B := unit)) (|
-                  M.read (|
-                    return_
-                      (core.result.Result.Err
-                        (M.call (|(ltac:(M.get_method (fun ℐ =>
-                            core.convert.Into.into
-                              (Self := erc1155.Error.t)
-                              (T := erc1155.Error.t)
-                              (Trait := ℐ)))
-                          erc1155.Error.ZeroAddressTransfer)
-                        |)))
+                |)
+              else
+                M.alloc (| tt |) in
+            let _ : M.Val unit :=
+              if
+                M.read (|
+                  use
+                    (M.alloc (|
+                      UnOp.not
+                        (UnOp.not
+                          (M.call (|((alloc.vec.Vec.t
+                                u128.t
+                                alloc.alloc.Global.t)::["is_empty"]
+                            (borrow token_ids))
+                          |)))
+                    |))
+                |)
+              then
+                M.alloc (|
+                  (never_to_any (B := unit)) (|
+                    M.read (|
+                      return_
+                        (|
+                          core.result.Result.Err
+                            (M.call (|(ltac:(M.get_method (fun ℐ =>
+                                core.convert.Into.into
+                                  (Self := erc1155.Error.t)
+                                  (T := erc1155.Error.t)
+                                  (Trait := ℐ)))
+                              erc1155.Error.BatchTransferMismatch)
+                            |))
+                        |)
+                    |)
                   |)
                 |)
-              |)
-            else
-              M.alloc (| tt |) in
-          let _ : M.Val unit :=
-            if
-              M.read (|
-                use
-                  (M.alloc (|
-                    UnOp.not
-                      (UnOp.not
-                        (M.call (|((alloc.vec.Vec.t
-                              u128.t
-                              alloc.alloc.Global.t)::["is_empty"]
-                          (borrow token_ids))
-                        |)))
-                  |))
-              |)
-            then
-              M.alloc (|
-                (never_to_any (B := unit)) (|
-                  M.read (|
-                    return_
-                      (core.result.Result.Err
-                        (M.call (|(ltac:(M.get_method (fun ℐ =>
-                            core.convert.Into.into
-                              (Self := erc1155.Error.t)
-                              (T := erc1155.Error.t)
-                              (Trait := ℐ)))
-                          erc1155.Error.BatchTransferMismatch)
-                        |)))
+              else
+                M.alloc (| tt |) in
+            let _ : M.Val unit :=
+              if
+                M.read (|
+                  use
+                    (M.alloc (|
+                      UnOp.not
+                        (BinOp.Pure.eq
+                          (M.call (|((alloc.vec.Vec.t
+                                u128.t
+                                alloc.alloc.Global.t)::["len"]
+                            (borrow token_ids))
+                          |))
+                          (M.call (|((alloc.vec.Vec.t
+                                u128.t
+                                alloc.alloc.Global.t)::["len"]
+                            (borrow values))
+                          |)))
+                    |))
+                |)
+              then
+                M.alloc (|
+                  (never_to_any (B := unit)) (|
+                    M.read (|
+                      return_
+                        (|
+                          core.result.Result.Err
+                            (M.call (|(ltac:(M.get_method (fun ℐ =>
+                                core.convert.Into.into
+                                  (Self := erc1155.Error.t)
+                                  (T := erc1155.Error.t)
+                                  (Trait := ℐ)))
+                              erc1155.Error.BatchTransferMismatch)
+                            |))
+                        |)
+                    |)
                   |)
                 |)
-              |)
-            else
-              M.alloc (| tt |) in
-          let _ : M.Val unit :=
-            if
-              M.read (|
-                use
-                  (M.alloc (|
-                    UnOp.not
-                      (BinOp.Pure.eq
-                        (M.call (|((alloc.vec.Vec.t
-                              u128.t
-                              alloc.alloc.Global.t)::["len"]
-                          (borrow token_ids))
-                        |))
-                        (M.call (|((alloc.vec.Vec.t
-                              u128.t
-                              alloc.alloc.Global.t)::["len"]
-                          (borrow values))
-                        |)))
-                  |))
-              |)
-            then
+              else
+                M.alloc (| tt |) in
+            let transfers :
+                M.Val
+                  (core.iter.adapters.zip.Zip.t
+                    (core.slice.iter.Iter.t u128.t)
+                    (core.slice.iter.Iter.t u128.t)) :=
               M.alloc (|
-                (never_to_any (B := unit)) (|
-                  M.read (|
-                    return_
-                      (core.result.Result.Err
-                        (M.call (|(ltac:(M.get_method (fun ℐ =>
-                            core.convert.Into.into
-                              (Self := erc1155.Error.t)
-                              (T := erc1155.Error.t)
-                              (Trait := ℐ)))
-                          erc1155.Error.BatchTransferMismatch)
-                        |)))
-                  |)
-                |)
-              |)
-            else
-              M.alloc (| tt |) in
-          let transfers :
-              M.Val
-                (core.iter.adapters.zip.Zip.t
-                  (core.slice.iter.Iter.t u128.t)
-                  (core.slice.iter.Iter.t u128.t)) :=
-            M.alloc (|
-              M.call (|(ltac:(M.get_method (fun ℐ =>
-                  core.iter.traits.iterator.Iterator.zip
-                    (Self := core.slice.iter.Iter.t u128.t)
-                    (U := core.slice.iter.Iter.t u128.t)
-                    (Trait := ℐ)))
-                (M.call (|((slice u128.t)::["iter"]
-                  (M.call (|(ltac:(M.get_method (fun ℐ =>
-                      core.ops.deref.Deref.deref
-                        (Self := alloc.vec.Vec.t u128.t alloc.alloc.Global.t)
-                        (Trait := ℐ)))
-                    (borrow token_ids))
-                  |)))
-                |))
-                (M.call (|((slice u128.t)::["iter"]
-                  (M.call (|(ltac:(M.get_method (fun ℐ =>
-                      core.ops.deref.Deref.deref
-                        (Self := alloc.vec.Vec.t u128.t alloc.alloc.Global.t)
-                        (Trait := ℐ)))
-                    (borrow values))
-                  |)))
-                |)))
-              |)
-            |) in
-          let _ : M.Val unit :=
-            use
-              (ltac:
-                (M.monadic_match_operator
-                  (M.alloc (|
-                    M.call (|(ltac:(M.get_method (fun ℐ =>
-                        core.iter.traits.collect.IntoIterator.into_iter
-                          (Self :=
-                            core.iter.adapters.zip.Zip.t
-                              (core.slice.iter.Iter.t u128.t)
-                              (core.slice.iter.Iter.t u128.t))
+                M.call (|(ltac:(M.get_method (fun ℐ =>
+                    core.iter.traits.iterator.Iterator.zip
+                      (Self := core.slice.iter.Iter.t u128.t)
+                      (U := core.slice.iter.Iter.t u128.t)
+                      (Trait := ℐ)))
+                  (M.call (|((slice u128.t)::["iter"]
+                    (M.call (|(ltac:(M.get_method (fun ℐ =>
+                        core.ops.deref.Deref.deref
+                          (Self := alloc.vec.Vec.t u128.t alloc.alloc.Global.t)
                           (Trait := ℐ)))
-                      (M.call (|(ltac:(M.get_method (fun ℐ =>
-                          core.clone.Clone.clone
+                      (borrow token_ids))
+                    |)))
+                  |))
+                  (M.call (|((slice u128.t)::["iter"]
+                    (M.call (|(ltac:(M.get_method (fun ℐ =>
+                        core.ops.deref.Deref.deref
+                          (Self := alloc.vec.Vec.t u128.t alloc.alloc.Global.t)
+                          (Trait := ℐ)))
+                      (borrow values))
+                    |)))
+                  |)))
+                |)
+              |) in
+            let _ : M.Val unit :=
+              use
+                (ltac:
+                  (M.monadic_match_operator
+                    (M.alloc (|
+                      M.call (|(ltac:(M.get_method (fun ℐ =>
+                          core.iter.traits.collect.IntoIterator.into_iter
                             (Self :=
                               core.iter.adapters.zip.Zip.t
                                 (core.slice.iter.Iter.t u128.t)
                                 (core.slice.iter.Iter.t u128.t))
                             (Trait := ℐ)))
-                        (borrow transfers))
-                      |)))
-                    |)
-                  |))
-                  [
-                    fun
-                        (γ :
-                          M.Val
-                            (core.iter.adapters.zip.Zip.t
-                              (core.slice.iter.Iter.t u128.t)
-                              (core.slice.iter.Iter.t u128.t))) =>
-                      (let iter := M.copy (| γ |) in
-                      M.loop
-                        (let _ : M.Val unit :=
-                          ltac:
-                            (M.monadic_match_operator
-                              (M.alloc (|
-                                M.call (|(ltac:(M.get_method (fun ℐ =>
-                                    core.iter.traits.iterator.Iterator.next
-                                      (Self :=
-                                        core.iter.adapters.zip.Zip.t
-                                          (core.slice.iter.Iter.t u128.t)
-                                          (core.slice.iter.Iter.t u128.t))
-                                      (Trait := ℐ)))
-                                  (borrow_mut iter))
-                                |)
-                              |))
-                              [
-                                fun
-                                    (γ :
-                                      M.Val
-                                        (core.option.Option.t
-                                          ((ref u128.t) * (ref u128.t)))) =>
-                                  match M.read (| γ |) with
-                                  | core.option.Option.None =>
-                                    M.alloc (|
-                                      (never_to_any (B := unit)) (|
-                                        M.read (| M.break |)
+                        (M.call (|(ltac:(M.get_method (fun ℐ =>
+                            core.clone.Clone.clone
+                              (Self :=
+                                core.iter.adapters.zip.Zip.t
+                                  (core.slice.iter.Iter.t u128.t)
+                                  (core.slice.iter.Iter.t u128.t))
+                              (Trait := ℐ)))
+                          (borrow transfers))
+                        |)))
+                      |)
+                    |))
+                    [
+                      fun
+                          (γ :
+                            M.Val
+                              (core.iter.adapters.zip.Zip.t
+                                (core.slice.iter.Iter.t u128.t)
+                                (core.slice.iter.Iter.t u128.t))) =>
+                        (let iter := M.copy (| γ |) in
+                        ltac: (M.monadic_loop (
+                          let _ : M.Val unit :=
+                            ltac:
+                              (M.monadic_match_operator
+                                (M.alloc (|
+                                  M.call (|(ltac:(M.get_method (fun ℐ =>
+                                      core.iter.traits.iterator.Iterator.next
+                                        (Self :=
+                                          core.iter.adapters.zip.Zip.t
+                                            (core.slice.iter.Iter.t u128.t)
+                                            (core.slice.iter.Iter.t u128.t))
+                                        (Trait := ℐ)))
+                                    (borrow_mut iter))
+                                  |)
+                                |))
+                                [
+                                  fun
+                                      (γ :
+                                        M.Val
+                                          (core.option.Option.t
+                                            ((ref u128.t) * (ref u128.t)))) =>
+                                    match M.read (| γ |) with
+                                    | core.option.Option.None =>
+                                      M.alloc (|
+                                        (never_to_any (B := unit)) (|
+                                          M.read (| M.break (||) |)
+                                        |)
                                       |)
-                                    |)
-                                  | _ => M.break_match(||)
-                                  end :
-                                  M.Val unit;
-                                fun
-                                    (γ :
-                                      M.Val
-                                        (core.option.Option.t
-                                          ((ref u128.t) * (ref u128.t)))) =>
-                                  match M.read (| γ |) with
-                                  | core.option.Option.Some _ =>
-                                    let γ0_0 :=
-                                      core.option.Option.Get_Some_0 γ in
-                                    match M.read (| γ0_0 |) with
-                                    | (_, _) =>
-                                      let γ1_0 := Tuple.Access.left γ0_0 in
-                                      let γ1_1 := Tuple.Access.right γ0_0 in
-                                      let γ1_0 := deref (M.read (| γ1_0 |)) in
-                                      let id := M.copy (| γ1_0 |) in
-                                      let γ1_1 := deref (M.read (| γ1_1 |)) in
-                                      let v := M.copy (| γ1_1 |) in
-                                      let balance : M.Val u128.t :=
-                                        M.alloc (|
-                                          M.call (|(balance_of
-                                            (borrow (deref (M.read (| self |))))
-                                            (M.read (| from |))
-                                            (M.read (| id |)))
-                                          |)
-                                        |) in
-                                      let _ : M.Val unit :=
-                                        if
-                                          M.read (|
-                                            use
-                                              (M.alloc (|
-                                                UnOp.not
-                                                  (BinOp.Pure.ge
-                                                    (M.read (| balance |))
-                                                    (M.read (| v |)))
-                                              |))
-                                          |)
-                                        then
+                                    | _ => M.break_match(||)
+                                    end :
+                                    M.Val unit;
+                                  fun
+                                      (γ :
+                                        M.Val
+                                          (core.option.Option.t
+                                            ((ref u128.t) * (ref u128.t)))) =>
+                                    match M.read (| γ |) with
+                                    | core.option.Option.Some _ =>
+                                      let γ0_0 :=
+                                        core.option.Option.Get_Some_0 γ in
+                                      match M.read (| γ0_0 |) with
+                                      | (_, _) =>
+                                        let γ1_0 := Tuple.Access.left γ0_0 in
+                                        let γ1_1 := Tuple.Access.right γ0_0 in
+                                        let γ1_0 := deref (M.read (| γ1_0 |)) in
+                                        let id := M.copy (| γ1_0 |) in
+                                        let γ1_1 := deref (M.read (| γ1_1 |)) in
+                                        let v := M.copy (| γ1_1 |) in
+                                        let balance : M.Val u128.t :=
                                           M.alloc (|
-                                            (never_to_any (B := unit)) (|
-                                              M.read (|
-                                                return_
-                                                  (core.result.Result.Err
-                                                    (M.call (|(ltac:(M.get_method (fun ℐ =>
-                                                        core.convert.Into.into
-                                                          (Self :=
-                                                            erc1155.Error.t)
-                                                          (T := erc1155.Error.t)
-                                                          (Trait := ℐ)))
-                                                      erc1155.Error.InsufficientBalance)
-                                                    |)))
+                                            M.call (|(balance_of
+                                              (borrow
+                                                (deref (M.read (| self |))))
+                                              (M.read (| from |))
+                                              (M.read (| id |)))
+                                            |)
+                                          |) in
+                                        let _ : M.Val unit :=
+                                          if
+                                            M.read (|
+                                              use
+                                                (M.alloc (|
+                                                  UnOp.not
+                                                    (BinOp.Pure.ge
+                                                      (M.read (| balance |))
+                                                      (M.read (| v |)))
+                                                |))
+                                            |)
+                                          then
+                                            M.alloc (|
+                                              (never_to_any (B := unit)) (|
+                                                M.read (|
+                                                  return_
+                                                    (|
+                                                      core.result.Result.Err
+                                                        (M.call (|(ltac:(M.get_method (fun ℐ =>
+                                                            core.convert.Into.into
+                                                              (Self :=
+                                                                erc1155.Error.t)
+                                                              (T :=
+                                                                erc1155.Error.t)
+                                                              (Trait := ℐ)))
+                                                          erc1155.Error.InsufficientBalance)
+                                                        |))
+                                                    |)
+                                                |)
                                               |)
                                             |)
-                                          |)
-                                        else
-                                          M.alloc (| tt |) in
-                                      M.alloc (| tt |)
-                                    end
-                                  | _ => M.break_match(||)
-                                  end :
-                                  M.Val unit
-                              ]) in
-                        M.alloc (| tt |))) :
-                      M.Val unit
-                  ])) in
-          let _ : M.Val unit :=
-            use
-              (ltac:
-                (M.monadic_match_operator
-                  (M.alloc (|
-                    M.call (|(ltac:(M.get_method (fun ℐ =>
-                        core.iter.traits.collect.IntoIterator.into_iter
-                          (Self :=
-                            core.iter.adapters.zip.Zip.t
-                              (core.slice.iter.Iter.t u128.t)
-                              (core.slice.iter.Iter.t u128.t))
-                          (Trait := ℐ)))
-                      (M.read (| transfers |)))
-                    |)
-                  |))
-                  [
-                    fun
-                        (γ :
-                          M.Val
-                            (core.iter.adapters.zip.Zip.t
-                              (core.slice.iter.Iter.t u128.t)
-                              (core.slice.iter.Iter.t u128.t))) =>
-                      (let iter := M.copy (| γ |) in
-                      M.loop
-                        (let _ : M.Val unit :=
-                          ltac:
-                            (M.monadic_match_operator
-                              (M.alloc (|
-                                M.call (|(ltac:(M.get_method (fun ℐ =>
-                                    core.iter.traits.iterator.Iterator.next
-                                      (Self :=
-                                        core.iter.adapters.zip.Zip.t
-                                          (core.slice.iter.Iter.t u128.t)
-                                          (core.slice.iter.Iter.t u128.t))
-                                      (Trait := ℐ)))
-                                  (borrow_mut iter))
-                                |)
-                              |))
-                              [
-                                fun
-                                    (γ :
-                                      M.Val
-                                        (core.option.Option.t
-                                          ((ref u128.t) * (ref u128.t)))) =>
-                                  match M.read (| γ |) with
-                                  | core.option.Option.None =>
-                                    M.alloc (|
-                                      (never_to_any (B := unit)) (|
-                                        M.read (| M.break |)
+                                          else
+                                            M.alloc (| tt |) in
+                                        M.alloc (| tt |)
+                                      end
+                                    | _ => M.break_match(||)
+                                    end :
+                                    M.Val unit
+                                ]) in
+                          M.alloc (| tt |)))) :
+                        M.Val unit
+                    ])) in
+            let _ : M.Val unit :=
+              use
+                (ltac:
+                  (M.monadic_match_operator
+                    (M.alloc (|
+                      M.call (|(ltac:(M.get_method (fun ℐ =>
+                          core.iter.traits.collect.IntoIterator.into_iter
+                            (Self :=
+                              core.iter.adapters.zip.Zip.t
+                                (core.slice.iter.Iter.t u128.t)
+                                (core.slice.iter.Iter.t u128.t))
+                            (Trait := ℐ)))
+                        (M.read (| transfers |)))
+                      |)
+                    |))
+                    [
+                      fun
+                          (γ :
+                            M.Val
+                              (core.iter.adapters.zip.Zip.t
+                                (core.slice.iter.Iter.t u128.t)
+                                (core.slice.iter.Iter.t u128.t))) =>
+                        (let iter := M.copy (| γ |) in
+                        ltac: (M.monadic_loop (
+                          let _ : M.Val unit :=
+                            ltac:
+                              (M.monadic_match_operator
+                                (M.alloc (|
+                                  M.call (|(ltac:(M.get_method (fun ℐ =>
+                                      core.iter.traits.iterator.Iterator.next
+                                        (Self :=
+                                          core.iter.adapters.zip.Zip.t
+                                            (core.slice.iter.Iter.t u128.t)
+                                            (core.slice.iter.Iter.t u128.t))
+                                        (Trait := ℐ)))
+                                    (borrow_mut iter))
+                                  |)
+                                |))
+                                [
+                                  fun
+                                      (γ :
+                                        M.Val
+                                          (core.option.Option.t
+                                            ((ref u128.t) * (ref u128.t)))) =>
+                                    match M.read (| γ |) with
+                                    | core.option.Option.None =>
+                                      M.alloc (|
+                                        (never_to_any (B := unit)) (|
+                                          M.read (| M.break (||) |)
+                                        |)
                                       |)
-                                    |)
-                                  | _ => M.break_match(||)
-                                  end :
-                                  M.Val unit;
-                                fun
-                                    (γ :
-                                      M.Val
-                                        (core.option.Option.t
-                                          ((ref u128.t) * (ref u128.t)))) =>
-                                  match M.read (| γ |) with
-                                  | core.option.Option.Some _ =>
-                                    let γ0_0 :=
-                                      core.option.Option.Get_Some_0 γ in
-                                    match M.read (| γ0_0 |) with
-                                    | (_, _) =>
-                                      let γ1_0 := Tuple.Access.left γ0_0 in
-                                      let γ1_1 := Tuple.Access.right γ0_0 in
-                                      let γ1_0 := deref (M.read (| γ1_0 |)) in
-                                      let id := M.copy (| γ1_0 |) in
-                                      let γ1_1 := deref (M.read (| γ1_1 |)) in
-                                      let v := M.copy (| γ1_1 |) in
-                                      let _ : M.Val unit :=
-                                        M.alloc (|
-                                          M.call (|(erc1155.Contract.t::["perform_transfer"]
-                                            (M.read (| self |))
-                                            (M.read (| from |))
-                                            (M.read (| to |))
-                                            (M.read (| id |))
-                                            (M.read (| v |)))
-                                          |)
-                                        |) in
-                                      M.alloc (| tt |)
-                                    end
-                                  | _ => M.break_match(||)
-                                  end :
-                                  M.Val unit
-                              ]) in
-                        M.alloc (| tt |))) :
-                      M.Val unit
-                  ])) in
-          let _ : M.Val unit :=
-            M.alloc (|
-              M.call (|(erc1155.Contract.t::["transfer_acceptance_check"]
-                (M.read (| self |))
-                (M.read (| caller |))
-                (M.read (| from |))
-                (M.read (| to |))
-                (M.read (|
-                  deref
-                    (M.call (|(ltac:(M.get_method (fun ℐ =>
-                        core.ops.index.Index.index
-                          (Self := alloc.vec.Vec.t u128.t alloc.alloc.Global.t)
-                          (Idx := usize.t)
-                          (Trait := ℐ)))
-                      (borrow token_ids)
-                      ((Integer.of_Z 0) : usize.t))
-                    |))
-                |))
-                (M.read (|
-                  deref
-                    (M.call (|(ltac:(M.get_method (fun ℐ =>
-                        core.ops.index.Index.index
-                          (Self := alloc.vec.Vec.t u128.t alloc.alloc.Global.t)
-                          (Idx := usize.t)
-                          (Trait := ℐ)))
-                      (borrow values)
-                      ((Integer.of_Z 0) : usize.t))
-                    |))
-                |))
-                (M.read (| data |)))
-              |)
-            |) in
-          M.alloc (| core.result.Result.Ok tt |)
-        |))
+                                    | _ => M.break_match(||)
+                                    end :
+                                    M.Val unit;
+                                  fun
+                                      (γ :
+                                        M.Val
+                                          (core.option.Option.t
+                                            ((ref u128.t) * (ref u128.t)))) =>
+                                    match M.read (| γ |) with
+                                    | core.option.Option.Some _ =>
+                                      let γ0_0 :=
+                                        core.option.Option.Get_Some_0 γ in
+                                      match M.read (| γ0_0 |) with
+                                      | (_, _) =>
+                                        let γ1_0 := Tuple.Access.left γ0_0 in
+                                        let γ1_1 := Tuple.Access.right γ0_0 in
+                                        let γ1_0 := deref (M.read (| γ1_0 |)) in
+                                        let id := M.copy (| γ1_0 |) in
+                                        let γ1_1 := deref (M.read (| γ1_1 |)) in
+                                        let v := M.copy (| γ1_1 |) in
+                                        let _ : M.Val unit :=
+                                          M.alloc (|
+                                            M.call (|(erc1155.Contract.t::["perform_transfer"]
+                                              (M.read (| self |))
+                                              (M.read (| from |))
+                                              (M.read (| to |))
+                                              (M.read (| id |))
+                                              (M.read (| v |)))
+                                            |)
+                                          |) in
+                                        M.alloc (| tt |)
+                                      end
+                                    | _ => M.break_match(||)
+                                    end :
+                                    M.Val unit
+                                ]) in
+                          M.alloc (| tt |)))) :
+                        M.Val unit
+                    ])) in
+            let _ : M.Val unit :=
+              M.alloc (|
+                M.call (|(erc1155.Contract.t::["transfer_acceptance_check"]
+                  (M.read (| self |))
+                  (M.read (| caller |))
+                  (M.read (| from |))
+                  (M.read (| to |))
+                  (M.read (|
+                    deref
+                      (M.call (|(ltac:(M.get_method (fun ℐ =>
+                          core.ops.index.Index.index
+                            (Self :=
+                              alloc.vec.Vec.t u128.t alloc.alloc.Global.t)
+                            (Idx := usize.t)
+                            (Trait := ℐ)))
+                        (borrow token_ids)
+                        ((Integer.of_Z 0) : usize.t))
+                      |))
+                  |))
+                  (M.read (|
+                    deref
+                      (M.call (|(ltac:(M.get_method (fun ℐ =>
+                          core.ops.index.Index.index
+                            (Self :=
+                              alloc.vec.Vec.t u128.t alloc.alloc.Global.t)
+                            (Idx := usize.t)
+                            (Trait := ℐ)))
+                        (borrow values)
+                        ((Integer.of_Z 0) : usize.t))
+                      |))
+                  |))
+                  (M.read (| data |)))
+                |)
+              |) in
+            M.alloc (| core.result.Result.Ok tt |)
+          |)))
     ) : ltac:(erc1155.Result unit))).
   
   Global Instance AssociatedFunction_safe_batch_transfer_from :
@@ -2115,8 +2140,8 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                       (γ :
                         M.Val (core.slice.iter.Iter.t erc1155.AccountId.t)) =>
                     (let iter := M.copy (| γ |) in
-                    M.loop
-                      (let _ : M.Val unit :=
+                    ltac: (M.monadic_loop (
+                      let _ : M.Val unit :=
                         ltac:
                           (M.monadic_match_operator
                             (M.alloc (|
@@ -2139,7 +2164,7 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                                 | core.option.Option.None =>
                                   M.alloc (|
                                     (never_to_any (B := unit)) (|
-                                      M.read (| M.break |)
+                                      M.read (| M.break (||) |)
                                     |)
                                   |)
                                 | _ => M.break_match(||)
@@ -2176,8 +2201,8 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                                                   (core.slice.iter.Iter.t
                                                     u128.t)) =>
                                             (let iter := M.copy (| γ |) in
-                                            M.loop
-                                              (let _ : M.Val unit :=
+                                            ltac: (M.monadic_loop (
+                                              let _ : M.Val unit :=
                                                 ltac:
                                                   (M.monadic_match_operator
                                                     (M.alloc (|
@@ -2205,7 +2230,8 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                                                           M.alloc (|
                                                             (never_to_any
                                                               (B := unit)) (|
-                                                              M.read (| M.break
+                                                              M.read (|
+                                                                M.break (||)
                                                               |)
                                                             |)
                                                           |)
@@ -2264,14 +2290,14 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
                                                         end :
                                                         M.Val unit
                                                     ]) in
-                                              M.alloc (| tt |))) :
+                                              M.alloc (| tt |)))) :
                                             M.Val unit
                                         ]))
                                 | _ => M.break_match(||)
                                 end :
                                 M.Val unit
                             ]) in
-                      M.alloc (| tt |))) :
+                      M.alloc (| tt |)))) :
                     M.Val unit
                 ])) in
         output
@@ -2313,100 +2339,103 @@ Section Impl_erc1155_Erc1155_for_erc1155_Contract_t.
       let operator := M.alloc (| operator |) in
       let approved := M.alloc (| approved |) in
       let return_ := M.return_ (R := ltac:(erc1155.Result unit)) in
-      M.catch_return
-        (M.read (|
-          let caller : M.Val erc1155.AccountId.t :=
-            M.alloc (|
-              M.call (|(erc1155.Env.t::["caller"]
-                (borrow
-                  (M.alloc (|
-                    M.call (|(erc1155.Contract.t::["env"]
-                      (borrow (deref (M.read (| self |)))))
-                    |)
-                  |))))
-              |)
-            |) in
-          let _ : M.Val unit :=
-            if
-              M.read (|
-                use
-                  (M.alloc (|
-                    UnOp.not
-                      (M.call (|(ltac:(M.get_method (fun ℐ =>
-                          core.cmp.PartialEq.ne
-                            (Self := erc1155.AccountId.t)
-                            (Rhs := erc1155.AccountId.t)
-                            (Trait := ℐ)))
-                        (borrow operator)
-                        (borrow caller))
-                      |))
-                  |))
-              |)
-            then
+      ltac:
+        (M.monadic_catch_return
+          (M.read (|
+            let caller : M.Val erc1155.AccountId.t :=
               M.alloc (|
-                (never_to_any (B := unit)) (|
-                  M.read (|
-                    return_
-                      (core.result.Result.Err
+                M.call (|(erc1155.Env.t::["caller"]
+                  (borrow
+                    (M.alloc (|
+                      M.call (|(erc1155.Contract.t::["env"]
+                        (borrow (deref (M.read (| self |)))))
+                      |)
+                    |))))
+                |)
+              |) in
+            let _ : M.Val unit :=
+              if
+                M.read (|
+                  use
+                    (M.alloc (|
+                      UnOp.not
                         (M.call (|(ltac:(M.get_method (fun ℐ =>
-                            core.convert.Into.into
-                              (Self := erc1155.Error.t)
-                              (T := erc1155.Error.t)
+                            core.cmp.PartialEq.ne
+                              (Self := erc1155.AccountId.t)
+                              (Rhs := erc1155.AccountId.t)
                               (Trait := ℐ)))
-                          erc1155.Error.SelfApproval)
-                        |)))
+                          (borrow operator)
+                          (borrow caller))
+                        |))
+                    |))
+                |)
+              then
+                M.alloc (|
+                  (never_to_any (B := unit)) (|
+                    M.read (|
+                      return_
+                        (|
+                          core.result.Result.Err
+                            (M.call (|(ltac:(M.get_method (fun ℐ =>
+                                core.convert.Into.into
+                                  (Self := erc1155.Error.t)
+                                  (T := erc1155.Error.t)
+                                  (Trait := ℐ)))
+                              erc1155.Error.SelfApproval)
+                            |))
+                        |)
+                    |)
                   |)
                 |)
-              |)
-            else
-              M.alloc (| tt |) in
-          let _ : M.Val unit :=
-            if M.read (| use approved |) then
-              let _ : M.Val (core.option.Option.t u32.t) :=
-                M.alloc (|
-                  M.call (|((erc1155.Mapping.t
-                        (erc1155.AccountId.t * erc1155.AccountId.t)
-                        unit)::["insert"]
-                    (borrow_mut
-                      (erc1155.Contract.Get_approvals
-                        (deref (M.read (| self |)))))
-                    (M.read (| caller |), M.read (| operator |))
-                    tt)
-                  |)
-                |) in
-              M.alloc (| tt |)
-            else
-              let _ : M.Val unit :=
-                M.alloc (|
-                  M.call (|((erc1155.Mapping.t
-                        (erc1155.AccountId.t * erc1155.AccountId.t)
-                        unit)::["remove"]
-                    (borrow
-                      (erc1155.Contract.Get_approvals
-                        (deref (M.read (| self |)))))
-                    (M.read (| caller |), M.read (| operator |)))
-                  |)
-                |) in
-              M.alloc (| tt |) in
-          let _ : M.Val unit :=
-            M.alloc (|
-              M.call (|(erc1155.Env.t::["emit_event"]
-                (borrow
-                  (M.alloc (|
-                    M.call (|(erc1155.Contract.t::["env"]
-                      (borrow (deref (M.read (| self |)))))
+              else
+                M.alloc (| tt |) in
+            let _ : M.Val unit :=
+              if M.read (| use approved |) then
+                let _ : M.Val (core.option.Option.t u32.t) :=
+                  M.alloc (|
+                    M.call (|((erc1155.Mapping.t
+                          (erc1155.AccountId.t * erc1155.AccountId.t)
+                          unit)::["insert"]
+                      (borrow_mut
+                        (erc1155.Contract.Get_approvals
+                          (deref (M.read (| self |)))))
+                      (M.read (| caller |), M.read (| operator |))
+                      tt)
                     |)
-                  |)))
-                (erc1155.Event.ApprovalForAll
-                  ({|
-                    erc1155.ApprovalForAll.owner := M.read (| caller |);
-                    erc1155.ApprovalForAll.operator := M.read (| operator |);
-                    erc1155.ApprovalForAll.approved := M.read (| approved |);
-                  |} : erc1155.ApprovalForAll.t)))
-              |)
-            |) in
-          M.alloc (| core.result.Result.Ok tt |)
-        |))
+                  |) in
+                M.alloc (| tt |)
+              else
+                let _ : M.Val unit :=
+                  M.alloc (|
+                    M.call (|((erc1155.Mapping.t
+                          (erc1155.AccountId.t * erc1155.AccountId.t)
+                          unit)::["remove"]
+                      (borrow
+                        (erc1155.Contract.Get_approvals
+                          (deref (M.read (| self |)))))
+                      (M.read (| caller |), M.read (| operator |)))
+                    |)
+                  |) in
+                M.alloc (| tt |) in
+            let _ : M.Val unit :=
+              M.alloc (|
+                M.call (|(erc1155.Env.t::["emit_event"]
+                  (borrow
+                    (M.alloc (|
+                      M.call (|(erc1155.Contract.t::["env"]
+                        (borrow (deref (M.read (| self |)))))
+                      |)
+                    |)))
+                  (erc1155.Event.ApprovalForAll
+                    ({|
+                      erc1155.ApprovalForAll.owner := M.read (| caller |);
+                      erc1155.ApprovalForAll.operator := M.read (| operator |);
+                      erc1155.ApprovalForAll.approved := M.read (| approved |);
+                    |} : erc1155.ApprovalForAll.t)))
+                |)
+              |) in
+            M.alloc (| core.result.Result.Ok tt |)
+          |)))
     ) : ltac:(erc1155.Result unit))).
   
   Global Instance AssociatedFunction_set_approval_for_all :

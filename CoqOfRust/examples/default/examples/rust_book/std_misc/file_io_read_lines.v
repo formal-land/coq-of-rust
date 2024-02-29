@@ -22,32 +22,37 @@ Definition read_lines
         (R :=
           std.io.Lines.t
             (std.io.buffered.bufreader.BufReader.t std.fs.File.t)) in
-    M.catch_return
-      ((never_to_any
-        (B :=
-          std.io.Lines.t
-            (std.io.buffered.bufreader.BufReader.t std.fs.File.t))) (|
-        M.read (|
-          let file : M.Val std.fs.File.t :=
-            M.alloc (|
-              M.call (|((core.result.Result.t
-                    std.fs.File.t
-                    std.io.error.Error.t)::["unwrap"]
-                (M.call (|(std.fs.File.t::["open"] (M.read (| filename |))) |)))
+    ltac:
+      (M.monadic_catch_return
+        ((never_to_any
+          (B :=
+            std.io.Lines.t
+              (std.io.buffered.bufreader.BufReader.t std.fs.File.t))) (|
+          M.read (|
+            let file : M.Val std.fs.File.t :=
+              M.alloc (|
+                M.call (|((core.result.Result.t
+                      std.fs.File.t
+                      std.io.error.Error.t)::["unwrap"]
+                  (M.call (|(std.fs.File.t::["open"] (M.read (| filename |)))
+                  |)))
+                |)
+              |) in
+            return_
+              (|
+                M.call (|(ltac:(M.get_method (fun ℐ =>
+                    std.io.BufRead.lines
+                      (Self :=
+                        std.io.buffered.bufreader.BufReader.t std.fs.File.t)
+                      (Trait := ℐ)))
+                  (M.call (|((std.io.buffered.bufreader.BufReader.t
+                        std.fs.File.t)::["new"]
+                    (M.read (| file |)))
+                  |)))
+                |)
               |)
-            |) in
-          return_
-            (M.call (|(ltac:(M.get_method (fun ℐ =>
-                std.io.BufRead.lines
-                  (Self := std.io.buffered.bufreader.BufReader.t std.fs.File.t)
-                  (Trait := ℐ)))
-              (M.call (|((std.io.buffered.bufreader.BufReader.t
-                    std.fs.File.t)::["new"]
-                (M.read (| file |)))
-              |)))
-            |))
-        |)
-      |))
+          |)
+        |)))
   ) : std.io.Lines.t (std.io.buffered.bufreader.BufReader.t std.fs.File.t))).
 
 (*
@@ -97,8 +102,8 @@ Definition main : M unit :=
                         (std.io.buffered.bufreader.BufReader.t
                           std.fs.File.t))) =>
                 (let iter := M.copy (| γ |) in
-                M.loop
-                  (let _ : M.Val unit :=
+                ltac: (M.monadic_loop (
+                  let _ : M.Val unit :=
                     ltac:
                       (M.monadic_match_operator
                         (M.alloc (|
@@ -124,7 +129,7 @@ Definition main : M unit :=
                             | core.option.Option.None =>
                               M.alloc (|
                                 (never_to_any (B := unit)) (|
-                                  M.read (| M.break |)
+                                  M.read (| M.break (||) |)
                                 |)
                               |)
                             | _ => M.break_match(||)
@@ -182,7 +187,7 @@ Definition main : M unit :=
                             end :
                             M.Val unit
                         ]) in
-                  M.alloc (| tt |))) :
+                  M.alloc (| tt |)))) :
                 M.Val unit
             ]))
     |)

@@ -23,8 +23,8 @@ Definition main : M unit :=
       let counter : M.Val i32.t := M.alloc (| (Integer.of_Z 0) : i32.t |) in
       let result : M.Val i32.t :=
         M.copy (|
-          M.loop
-            (let _ : M.Val unit :=
+          ltac: (M.monadic_loop (
+            let _ : M.Val unit :=
               let β : M.Val i32.t := counter in
               assign (|
                 β,
@@ -40,10 +40,11 @@ Definition main : M unit :=
                   |))
               |)
             then
-              M.alloc (| (never_to_any (B := unit)) (| M.read (| M.break |) |)
+              M.alloc (|
+                (never_to_any (B := unit)) (| M.read (| M.break (||) |) |)
               |)
             else
-              M.alloc (| tt |))
+              M.alloc (| tt |)))
         |) in
       let _ : M.Val unit :=
         ltac:

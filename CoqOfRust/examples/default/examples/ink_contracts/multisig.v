@@ -1355,8 +1355,8 @@ Section Impl_multisig_Multisig_t.
                       (γ :
                         M.Val (core.slice.iter.Iter.t multisig.AccountId.t)) =>
                     (let iter := M.copy (| γ |) in
-                    M.loop
-                      (let _ : M.Val unit :=
+                    ltac: (M.monadic_loop (
+                      let _ : M.Val unit :=
                         ltac:
                           (M.monadic_match_operator
                             (M.alloc (|
@@ -1379,7 +1379,7 @@ Section Impl_multisig_Multisig_t.
                                 | core.option.Option.None =>
                                   M.alloc (|
                                     (never_to_any (B := unit)) (|
-                                      M.read (| M.break |)
+                                      M.read (| M.break (||) |)
                                     |)
                                   |)
                                 | _ => M.break_match(||)
@@ -1412,7 +1412,7 @@ Section Impl_multisig_Multisig_t.
                                 end :
                                 M.Val unit
                             ]) in
-                      M.alloc (| tt |))) :
+                      M.alloc (| tt |)))) :
                     M.Val unit
                 ])) in
         let _ : M.Val unit :=
@@ -1973,8 +1973,8 @@ Section Impl_multisig_Multisig_t.
               [
                 fun (γ : M.Val (core.slice.iter.Iter.t u32.t)) =>
                   (let iter := M.copy (| γ |) in
-                  M.loop
-                    (let _ : M.Val unit :=
+                  ltac: (M.monadic_loop (
+                    let _ : M.Val unit :=
                       ltac:
                         (M.monadic_match_operator
                           (M.alloc (|
@@ -1993,7 +1993,7 @@ Section Impl_multisig_Multisig_t.
                               | core.option.Option.None =>
                                 M.alloc (|
                                   (never_to_any (B := unit)) (|
-                                    M.read (| M.break |)
+                                    M.read (| M.break (||) |)
                                   |)
                                 |)
                               | _ => M.break_match(||)
@@ -2086,7 +2086,7 @@ Section Impl_multisig_Multisig_t.
                               end :
                               M.Val unit
                           ]) in
-                    M.alloc (| tt |))) :
+                    M.alloc (| tt |)))) :
                   M.Val unit
               ]))
       |)
@@ -2849,8 +2849,8 @@ Section Impl_multisig_Multisig_t.
                             M.Val
                               (core.slice.iter.Iter.t multisig.AccountId.t)) =>
                         (let iter := M.copy (| γ |) in
-                        M.loop
-                          (let _ : M.Val unit :=
+                        ltac: (M.monadic_loop (
+                          let _ : M.Val unit :=
                             ltac:
                               (M.monadic_match_operator
                                 (M.alloc (|
@@ -2873,7 +2873,7 @@ Section Impl_multisig_Multisig_t.
                                     | core.option.Option.None =>
                                       M.alloc (|
                                         (never_to_any (B := unit)) (|
-                                          M.read (| M.break |)
+                                          M.read (| M.break (||) |)
                                         |)
                                       |)
                                     | _ => M.break_match(||)
@@ -2908,7 +2908,7 @@ Section Impl_multisig_Multisig_t.
                                     end :
                                     M.Val unit
                                 ]) in
-                          M.alloc (| tt |))) :
+                          M.alloc (| tt |)))) :
                         M.Val unit
                     ])) in
             let _ : M.Val unit :=

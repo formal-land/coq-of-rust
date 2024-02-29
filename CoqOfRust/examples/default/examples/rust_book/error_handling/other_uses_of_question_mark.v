@@ -111,176 +111,181 @@ Definition double_first
     let vec := M.alloc (| vec |) in
     let return_ :=
       M.return_ (R := ltac:(other_uses_of_question_mark.Result i32.t)) in
-    M.catch_return
-      (M.read (|
-        let first : M.Val (ref (ref str.t)) :=
-          M.copy (|
-            ltac:
-              (M.monadic_match_operator
-                (M.alloc (|
-                  M.call (|(ltac:(M.get_method (fun ℐ =>
-                      core.ops.try_trait.Try.branch
-                        (Self :=
-                          core.result.Result.t
-                            (ref (ref str.t))
-                            other_uses_of_question_mark.EmptyVec.t)
-                        (Trait := ℐ)))
-                    (M.call (|((core.option.Option.t
-                          (ref (ref str.t)))::["ok_or"]
-                      (M.call (|((slice (ref str.t))::["first"]
-                        (M.call (|(ltac:(M.get_method (fun ℐ =>
-                            core.ops.deref.Deref.deref
-                              (Self :=
-                                alloc.vec.Vec.t
-                                  (ref str.t)
-                                  alloc.alloc.Global.t)
-                              (Trait := ℐ)))
-                          (borrow vec))
-                        |)))
-                      |))
-                      other_uses_of_question_mark.EmptyVec.Build)
-                    |)))
-                  |)
-                |))
-                [
-                  fun
-                      (γ :
-                        M.Val
-                          (core.ops.control_flow.ControlFlow.t
-                            (core.result.Result.t
-                              core.convert.Infallible.t
+    ltac:
+      (M.monadic_catch_return
+        (M.read (|
+          let first : M.Val (ref (ref str.t)) :=
+            M.copy (|
+              ltac:
+                (M.monadic_match_operator
+                  (M.alloc (|
+                    M.call (|(ltac:(M.get_method (fun ℐ =>
+                        core.ops.try_trait.Try.branch
+                          (Self :=
+                            core.result.Result.t
+                              (ref (ref str.t))
                               other_uses_of_question_mark.EmptyVec.t)
-                            (ref (ref str.t)))) =>
-                    match M.read (| γ |) with
-                    | core.ops.control_flow.ControlFlow.Break _ =>
-                      let γ0_0 :=
-                        core.ops.control_flow.ControlFlow.Get_Break_0 γ in
-                      let residual := M.copy (| γ0_0 |) in
-                      M.alloc (|
-                        (never_to_any (B := ref (ref str.t))) (|
-                          M.read (|
-                            return_
-                              (M.call (|(ltac:(M.get_method (fun ℐ =>
-                                  core.ops.try_trait.FromResidual.from_residual
-                                    (Self :=
-                                      core.result.Result.t
-                                        i32.t
-                                        (alloc.boxed.Box.t
-                                          (dyn [core.error.Error.Trait])
-                                          alloc.alloc.Global.t))
-                                    (R :=
-                                      core.result.Result.t
-                                        core.convert.Infallible.t
-                                        other_uses_of_question_mark.EmptyVec.t)
-                                    (Trait := ℐ)))
-                                (M.read (| residual |)))
-                              |))
+                          (Trait := ℐ)))
+                      (M.call (|((core.option.Option.t
+                            (ref (ref str.t)))::["ok_or"]
+                        (M.call (|((slice (ref str.t))::["first"]
+                          (M.call (|(ltac:(M.get_method (fun ℐ =>
+                              core.ops.deref.Deref.deref
+                                (Self :=
+                                  alloc.vec.Vec.t
+                                    (ref str.t)
+                                    alloc.alloc.Global.t)
+                                (Trait := ℐ)))
+                            (borrow vec))
+                          |)))
+                        |))
+                        other_uses_of_question_mark.EmptyVec.Build)
+                      |)))
+                    |)
+                  |))
+                  [
+                    fun
+                        (γ :
+                          M.Val
+                            (core.ops.control_flow.ControlFlow.t
+                              (core.result.Result.t
+                                core.convert.Infallible.t
+                                other_uses_of_question_mark.EmptyVec.t)
+                              (ref (ref str.t)))) =>
+                      match M.read (| γ |) with
+                      | core.ops.control_flow.ControlFlow.Break _ =>
+                        let γ0_0 :=
+                          core.ops.control_flow.ControlFlow.Get_Break_0 γ in
+                        let residual := M.copy (| γ0_0 |) in
+                        M.alloc (|
+                          (never_to_any (B := ref (ref str.t))) (|
+                            M.read (|
+                              return_
+                                (|
+                                  M.call (|(ltac:(M.get_method (fun ℐ =>
+                                      core.ops.try_trait.FromResidual.from_residual
+                                        (Self :=
+                                          core.result.Result.t
+                                            i32.t
+                                            (alloc.boxed.Box.t
+                                              (dyn [core.error.Error.Trait])
+                                              alloc.alloc.Global.t))
+                                        (R :=
+                                          core.result.Result.t
+                                            core.convert.Infallible.t
+                                            other_uses_of_question_mark.EmptyVec.t)
+                                        (Trait := ℐ)))
+                                    (M.read (| residual |)))
+                                  |)
+                                |)
+                            |)
                           |)
                         |)
-                      |)
-                    | _ => M.break_match(||)
-                    end :
-                    M.Val (ref (ref str.t));
-                  fun
-                      (γ :
-                        M.Val
-                          (core.ops.control_flow.ControlFlow.t
-                            (core.result.Result.t
-                              core.convert.Infallible.t
-                              other_uses_of_question_mark.EmptyVec.t)
-                            (ref (ref str.t)))) =>
-                    match M.read (| γ |) with
-                    | core.ops.control_flow.ControlFlow.Continue _ =>
-                      let γ0_0 :=
-                        core.ops.control_flow.ControlFlow.Get_Continue_0 γ in
-                      let val := M.copy (| γ0_0 |) in
-                      val
-                    | _ => M.break_match(||)
-                    end :
-                    M.Val (ref (ref str.t))
-                ])
-          |) in
-        let parsed : M.Val i32.t :=
-          M.copy (|
-            ltac:
-              (M.monadic_match_operator
-                (M.alloc (|
-                  M.call (|(ltac:(M.get_method (fun ℐ =>
-                      core.ops.try_trait.Try.branch
-                        (Self :=
-                          core.result.Result.t
-                            i32.t
-                            core.num.error.ParseIntError.t)
-                        (Trait := ℐ)))
-                    (M.call (|(str.t::["parse"]
-                      (M.read (| deref (M.read (| first |)) |)))
-                    |)))
-                  |)
-                |))
-                [
-                  fun
-                      (γ :
-                        M.Val
-                          (core.ops.control_flow.ControlFlow.t
-                            (core.result.Result.t
-                              core.convert.Infallible.t
+                      | _ => M.break_match(||)
+                      end :
+                      M.Val (ref (ref str.t));
+                    fun
+                        (γ :
+                          M.Val
+                            (core.ops.control_flow.ControlFlow.t
+                              (core.result.Result.t
+                                core.convert.Infallible.t
+                                other_uses_of_question_mark.EmptyVec.t)
+                              (ref (ref str.t)))) =>
+                      match M.read (| γ |) with
+                      | core.ops.control_flow.ControlFlow.Continue _ =>
+                        let γ0_0 :=
+                          core.ops.control_flow.ControlFlow.Get_Continue_0 γ in
+                        let val := M.copy (| γ0_0 |) in
+                        val
+                      | _ => M.break_match(||)
+                      end :
+                      M.Val (ref (ref str.t))
+                  ])
+            |) in
+          let parsed : M.Val i32.t :=
+            M.copy (|
+              ltac:
+                (M.monadic_match_operator
+                  (M.alloc (|
+                    M.call (|(ltac:(M.get_method (fun ℐ =>
+                        core.ops.try_trait.Try.branch
+                          (Self :=
+                            core.result.Result.t
+                              i32.t
                               core.num.error.ParseIntError.t)
-                            i32.t)) =>
-                    match M.read (| γ |) with
-                    | core.ops.control_flow.ControlFlow.Break _ =>
-                      let γ0_0 :=
-                        core.ops.control_flow.ControlFlow.Get_Break_0 γ in
-                      let residual := M.copy (| γ0_0 |) in
-                      M.alloc (|
-                        (never_to_any (B := i32.t)) (|
-                          M.read (|
-                            return_
-                              (M.call (|(ltac:(M.get_method (fun ℐ =>
-                                  core.ops.try_trait.FromResidual.from_residual
-                                    (Self :=
-                                      core.result.Result.t
-                                        i32.t
-                                        (alloc.boxed.Box.t
-                                          (dyn [core.error.Error.Trait])
-                                          alloc.alloc.Global.t))
-                                    (R :=
-                                      core.result.Result.t
-                                        core.convert.Infallible.t
-                                        core.num.error.ParseIntError.t)
-                                    (Trait := ℐ)))
-                                (M.read (| residual |)))
-                              |))
+                          (Trait := ℐ)))
+                      (M.call (|(str.t::["parse"]
+                        (M.read (| deref (M.read (| first |)) |)))
+                      |)))
+                    |)
+                  |))
+                  [
+                    fun
+                        (γ :
+                          M.Val
+                            (core.ops.control_flow.ControlFlow.t
+                              (core.result.Result.t
+                                core.convert.Infallible.t
+                                core.num.error.ParseIntError.t)
+                              i32.t)) =>
+                      match M.read (| γ |) with
+                      | core.ops.control_flow.ControlFlow.Break _ =>
+                        let γ0_0 :=
+                          core.ops.control_flow.ControlFlow.Get_Break_0 γ in
+                        let residual := M.copy (| γ0_0 |) in
+                        M.alloc (|
+                          (never_to_any (B := i32.t)) (|
+                            M.read (|
+                              return_
+                                (|
+                                  M.call (|(ltac:(M.get_method (fun ℐ =>
+                                      core.ops.try_trait.FromResidual.from_residual
+                                        (Self :=
+                                          core.result.Result.t
+                                            i32.t
+                                            (alloc.boxed.Box.t
+                                              (dyn [core.error.Error.Trait])
+                                              alloc.alloc.Global.t))
+                                        (R :=
+                                          core.result.Result.t
+                                            core.convert.Infallible.t
+                                            core.num.error.ParseIntError.t)
+                                        (Trait := ℐ)))
+                                    (M.read (| residual |)))
+                                  |)
+                                |)
+                            |)
                           |)
                         |)
-                      |)
-                    | _ => M.break_match(||)
-                    end :
-                    M.Val i32.t;
-                  fun
-                      (γ :
-                        M.Val
-                          (core.ops.control_flow.ControlFlow.t
-                            (core.result.Result.t
-                              core.convert.Infallible.t
-                              core.num.error.ParseIntError.t)
-                            i32.t)) =>
-                    match M.read (| γ |) with
-                    | core.ops.control_flow.ControlFlow.Continue _ =>
-                      let γ0_0 :=
-                        core.ops.control_flow.ControlFlow.Get_Continue_0 γ in
-                      let val := M.copy (| γ0_0 |) in
-                      val
-                    | _ => M.break_match(||)
-                    end :
-                    M.Val i32.t
-                ])
-          |) in
-        M.alloc (|
-          core.result.Result.Ok
-            (BinOp.Panic.mul (| (Integer.of_Z 2) : i32.t, M.read (| parsed |)
-            |))
-        |)
-      |))
+                      | _ => M.break_match(||)
+                      end :
+                      M.Val i32.t;
+                    fun
+                        (γ :
+                          M.Val
+                            (core.ops.control_flow.ControlFlow.t
+                              (core.result.Result.t
+                                core.convert.Infallible.t
+                                core.num.error.ParseIntError.t)
+                              i32.t)) =>
+                      match M.read (| γ |) with
+                      | core.ops.control_flow.ControlFlow.Continue _ =>
+                        let γ0_0 :=
+                          core.ops.control_flow.ControlFlow.Get_Continue_0 γ in
+                        let val := M.copy (| γ0_0 |) in
+                        val
+                      | _ => M.break_match(||)
+                      end :
+                      M.Val i32.t
+                  ])
+            |) in
+          M.alloc (|
+            core.result.Result.Ok
+              (BinOp.Panic.mul (| (Integer.of_Z 2) : i32.t, M.read (| parsed |)
+              |))
+          |)
+        |)))
   ) : ltac:(other_uses_of_question_mark.Result i32.t))).
 
 (*

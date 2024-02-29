@@ -28,8 +28,8 @@ Definition main : M unit :=
   ltac:(M.monadic ((
     M.read (|
       let n : M.Val i32.t := M.alloc (| (Integer.of_Z 1) : i32.t |) in
-      M.loop
-        (if
+      ltac: (M.monadic_loop (
+        if
           M.read (|
             use
               (M.alloc (|
@@ -170,11 +170,11 @@ Definition main : M unit :=
               M.read (|
                 let _ : M.Val unit :=
                   M.alloc (|
-                    (never_to_any (B := unit)) (| M.read (| M.break |) |)
+                    (never_to_any (B := unit)) (| M.read (| M.break (||) |) |)
                   |) in
                 M.alloc (| tt |)
               |)
             |)
-          |))
+          |)))
     |)
   ) : unit)).

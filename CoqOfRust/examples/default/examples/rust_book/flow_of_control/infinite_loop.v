@@ -50,8 +50,8 @@ Definition main : M unit :=
             |)
           |) in
         M.alloc (| tt |) in
-      M.loop
-        (let _ : M.Val unit :=
+      ltac: (M.monadic_loop (
+        let _ : M.Val unit :=
           let β : M.Val u32.t := count in
           assign (|
             β,
@@ -84,7 +84,7 @@ Definition main : M unit :=
                         |)
                       |) in
                     M.alloc (| tt |) in
-                  M.continue
+                  M.continue (||)
                 |)
               |)
             |)
@@ -143,11 +143,11 @@ Definition main : M unit :=
                       |)
                     |) in
                   M.alloc (| tt |) in
-                M.break
+                M.break (||)
               |)
             |)
           |)
         else
-          M.alloc (| tt |))
+          M.alloc (| tt |)))
     |)
   ) : unit)).

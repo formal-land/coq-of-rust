@@ -26,105 +26,111 @@ Definition multiply
     let return_ :=
       M.return_
         (R := core.result.Result.t i32.t core.num.error.ParseIntError.t) in
-    M.catch_return
-      (M.read (|
-        let first_number : M.Val i32.t :=
-          M.copy (|
-            ltac:
-              (M.monadic_match_operator
-                (M.alloc (|
-                  M.call (|(str.t::["parse"] (M.read (| first_number_str |))) |)
-                |))
-                [
-                  fun
-                      (γ :
-                        M.Val
-                          (core.result.Result.t
-                            i32.t
-                            core.num.error.ParseIntError.t)) =>
-                    match M.read (| γ |) with
-                    | core.result.Result.Ok _ =>
-                      let γ0_0 := core.result.Result.Get_Ok_0 γ in
-                      let first_number := M.copy (| γ0_0 |) in
-                      first_number
-                    | _ => M.break_match(||)
-                    end :
-                    M.Val i32.t;
-                  fun
-                      (γ :
-                        M.Val
-                          (core.result.Result.t
-                            i32.t
-                            core.num.error.ParseIntError.t)) =>
-                    match M.read (| γ |) with
-                    | core.result.Result.Err _ =>
-                      let γ0_0 := core.result.Result.Get_Err_0 γ in
-                      let e := M.copy (| γ0_0 |) in
-                      M.alloc (|
-                        (never_to_any (B := i32.t)) (|
-                          M.read (|
-                            return_ (core.result.Result.Err (M.read (| e |)))
+    ltac:
+      (M.monadic_catch_return
+        (M.read (|
+          let first_number : M.Val i32.t :=
+            M.copy (|
+              ltac:
+                (M.monadic_match_operator
+                  (M.alloc (|
+                    M.call (|(str.t::["parse"] (M.read (| first_number_str |)))
+                    |)
+                  |))
+                  [
+                    fun
+                        (γ :
+                          M.Val
+                            (core.result.Result.t
+                              i32.t
+                              core.num.error.ParseIntError.t)) =>
+                      match M.read (| γ |) with
+                      | core.result.Result.Ok _ =>
+                        let γ0_0 := core.result.Result.Get_Ok_0 γ in
+                        let first_number := M.copy (| γ0_0 |) in
+                        first_number
+                      | _ => M.break_match(||)
+                      end :
+                      M.Val i32.t;
+                    fun
+                        (γ :
+                          M.Val
+                            (core.result.Result.t
+                              i32.t
+                              core.num.error.ParseIntError.t)) =>
+                      match M.read (| γ |) with
+                      | core.result.Result.Err _ =>
+                        let γ0_0 := core.result.Result.Get_Err_0 γ in
+                        let e := M.copy (| γ0_0 |) in
+                        M.alloc (|
+                          (never_to_any (B := i32.t)) (|
+                            M.read (|
+                              return_
+                                (| core.result.Result.Err (M.read (| e |))
+                                |)
+                            |)
                           |)
                         |)
-                      |)
-                    | _ => M.break_match(||)
-                    end :
-                    M.Val i32.t
-                ])
-          |) in
-        let second_number : M.Val i32.t :=
-          M.copy (|
-            ltac:
-              (M.monadic_match_operator
-                (M.alloc (|
-                  M.call (|(str.t::["parse"] (M.read (| second_number_str |)))
-                  |)
-                |))
-                [
-                  fun
-                      (γ :
-                        M.Val
-                          (core.result.Result.t
-                            i32.t
-                            core.num.error.ParseIntError.t)) =>
-                    match M.read (| γ |) with
-                    | core.result.Result.Ok _ =>
-                      let γ0_0 := core.result.Result.Get_Ok_0 γ in
-                      let second_number := M.copy (| γ0_0 |) in
-                      second_number
-                    | _ => M.break_match(||)
-                    end :
-                    M.Val i32.t;
-                  fun
-                      (γ :
-                        M.Val
-                          (core.result.Result.t
-                            i32.t
-                            core.num.error.ParseIntError.t)) =>
-                    match M.read (| γ |) with
-                    | core.result.Result.Err _ =>
-                      let γ0_0 := core.result.Result.Get_Err_0 γ in
-                      let e := M.copy (| γ0_0 |) in
-                      M.alloc (|
-                        (never_to_any (B := i32.t)) (|
-                          M.read (|
-                            return_ (core.result.Result.Err (M.read (| e |)))
+                      | _ => M.break_match(||)
+                      end :
+                      M.Val i32.t
+                  ])
+            |) in
+          let second_number : M.Val i32.t :=
+            M.copy (|
+              ltac:
+                (M.monadic_match_operator
+                  (M.alloc (|
+                    M.call (|(str.t::["parse"] (M.read (| second_number_str |)))
+                    |)
+                  |))
+                  [
+                    fun
+                        (γ :
+                          M.Val
+                            (core.result.Result.t
+                              i32.t
+                              core.num.error.ParseIntError.t)) =>
+                      match M.read (| γ |) with
+                      | core.result.Result.Ok _ =>
+                        let γ0_0 := core.result.Result.Get_Ok_0 γ in
+                        let second_number := M.copy (| γ0_0 |) in
+                        second_number
+                      | _ => M.break_match(||)
+                      end :
+                      M.Val i32.t;
+                    fun
+                        (γ :
+                          M.Val
+                            (core.result.Result.t
+                              i32.t
+                              core.num.error.ParseIntError.t)) =>
+                      match M.read (| γ |) with
+                      | core.result.Result.Err _ =>
+                        let γ0_0 := core.result.Result.Get_Err_0 γ in
+                        let e := M.copy (| γ0_0 |) in
+                        M.alloc (|
+                          (never_to_any (B := i32.t)) (|
+                            M.read (|
+                              return_
+                                (| core.result.Result.Err (M.read (| e |))
+                                |)
+                            |)
                           |)
                         |)
-                      |)
-                    | _ => M.break_match(||)
-                    end :
-                    M.Val i32.t
-                ])
-          |) in
-        M.alloc (|
-          core.result.Result.Ok
-            (BinOp.Panic.mul (|
-              M.read (| first_number |),
-              M.read (| second_number |)
-            |))
-        |)
-      |))
+                      | _ => M.break_match(||)
+                      end :
+                      M.Val i32.t
+                  ])
+            |) in
+          M.alloc (|
+            core.result.Result.Ok
+              (BinOp.Panic.mul (|
+                M.read (| first_number |),
+                M.read (| second_number |)
+              |))
+          |)
+        |)))
   ) : core.result.Result.t i32.t core.num.error.ParseIntError.t)).
 
 (*

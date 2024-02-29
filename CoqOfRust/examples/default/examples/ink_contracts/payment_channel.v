@@ -1059,198 +1059,207 @@ Section Impl_payment_channel_PaymentChannel_t.
       let amount := M.alloc (| amount |) in
       let signature := M.alloc (| signature |) in
       let return_ := M.return_ (R := ltac:(payment_channel.Result unit)) in
-      M.catch_return
-        (M.read (|
-          let _ : M.Val unit :=
-            if
-              M.read (|
-                use
-                  (M.alloc (|
-                    M.call (|(ltac:(M.get_method (fun ℐ =>
-                        core.cmp.PartialEq.ne
-                          (Self := payment_channel.AccountId.t)
-                          (Rhs := payment_channel.AccountId.t)
-                          (Trait := ℐ)))
-                      (borrow
-                        (M.alloc (|
-                          M.call (|(payment_channel.Env.t::["caller"]
-                            (borrow
-                              (M.alloc (|
-                                M.call (|(payment_channel.PaymentChannel.t::["env"]
-                                  (borrow (deref (M.read (| self |)))))
-                                |)
-                              |))))
-                          |)
-                        |)))
-                      (borrow
-                        (payment_channel.PaymentChannel.Get_recipient
-                          (deref (M.read (| self |))))))
-                    |)
-                  |))
-              |)
-            then
-              M.alloc (|
-                (never_to_any (B := unit)) (|
-                  M.read (|
-                    return_
-                      (core.result.Result.Err
-                        payment_channel.Error.CallerIsNotRecipient)
-                  |)
-                |)
-              |)
-            else
-              M.alloc (| tt |) in
-          let _ : M.Val unit :=
-            if
-              M.read (|
-                use
-                  (M.alloc (|
-                    BinOp.Pure.lt
-                      (M.read (| amount |))
-                      (M.read (|
-                        payment_channel.PaymentChannel.Get_withdrawn
-                          (deref (M.read (| self |)))
-                      |))
-                  |))
-              |)
-            then
-              M.alloc (|
-                (never_to_any (B := unit)) (|
-                  M.read (|
-                    return_
-                      (core.result.Result.Err
-                        payment_channel.Error.AmountIsLessThanWithdrawn)
-                  |)
-                |)
-              |)
-            else
-              M.alloc (| tt |) in
-          let _ : M.Val unit :=
-            if
-              M.read (|
-                use
-                  (M.alloc (|
-                    UnOp.not
-                      (M.call (|(payment_channel.PaymentChannel.t::["is_signature_valid"]
-                        (borrow (deref (M.read (| self |))))
-                        (M.read (| amount |))
-                        (M.read (| signature |)))
-                      |))
-                  |))
-              |)
-            then
-              M.alloc (|
-                (never_to_any (B := unit)) (|
-                  M.read (|
-                    return_
-                      (core.result.Result.Err
-                        payment_channel.Error.InvalidSignature)
-                  |)
-                |)
-              |)
-            else
-              M.alloc (| tt |) in
-          let _ : M.Val unit :=
-            ltac:
-              (M.monadic_match_operator
-                (M.alloc (|
-                  M.call (|(ltac:(M.get_method (fun ℐ =>
-                      core.ops.try_trait.Try.branch
-                        (Self :=
-                          core.result.Result.t unit payment_channel.Error.t)
-                        (Trait := ℐ)))
-                    (M.call (|((core.result.Result.t
-                          unit
-                          payment_channel.Error.t)::["map_err"]
-                      (M.call (|(payment_channel.Env.t::["transfer"]
+      ltac:
+        (M.monadic_catch_return
+          (M.read (|
+            let _ : M.Val unit :=
+              if
+                M.read (|
+                  use
+                    (M.alloc (|
+                      M.call (|(ltac:(M.get_method (fun ℐ =>
+                          core.cmp.PartialEq.ne
+                            (Self := payment_channel.AccountId.t)
+                            (Rhs := payment_channel.AccountId.t)
+                            (Trait := ℐ)))
                         (borrow
                           (M.alloc (|
-                            M.call (|(payment_channel.PaymentChannel.t::["env"]
-                              (borrow (deref (M.read (| self |)))))
+                            M.call (|(payment_channel.Env.t::["caller"]
+                              (borrow
+                                (M.alloc (|
+                                  M.call (|(payment_channel.PaymentChannel.t::["env"]
+                                    (borrow (deref (M.read (| self |)))))
+                                  |)
+                                |))))
                             |)
                           |)))
+                        (borrow
+                          (payment_channel.PaymentChannel.Get_recipient
+                            (deref (M.read (| self |))))))
+                      |)
+                    |))
+                |)
+              then
+                M.alloc (|
+                  (never_to_any (B := unit)) (|
+                    M.read (|
+                      return_
+                        (|
+                          core.result.Result.Err
+                            payment_channel.Error.CallerIsNotRecipient
+                        |)
+                    |)
+                  |)
+                |)
+              else
+                M.alloc (| tt |) in
+            let _ : M.Val unit :=
+              if
+                M.read (|
+                  use
+                    (M.alloc (|
+                      BinOp.Pure.lt
+                        (M.read (| amount |))
                         (M.read (|
-                          payment_channel.PaymentChannel.Get_recipient
+                          payment_channel.PaymentChannel.Get_withdrawn
                             (deref (M.read (| self |)))
                         |))
-                        (BinOp.Panic.sub (|
-                          M.read (| amount |),
-                          M.read (|
-                            payment_channel.PaymentChannel.Get_withdrawn
-                              (deref (M.read (| self |)))
-                          |)
-                        |)))
-                      |))
-                      (fun (α0 : payment_channel.Error.t) =>
-                        (ltac:
-                          (M.monadic_match_operator
-                            (M.alloc (| α0 |))
-                            [
-                              fun γ =>
-                                payment_channel.Error.TransferFailed :
-                                payment_channel.Error.t
-                            ])) :
-                        payment_channel.Error.t))
-                    |)))
+                    |))
+                |)
+              then
+                M.alloc (|
+                  (never_to_any (B := unit)) (|
+                    M.read (|
+                      return_
+                        (|
+                          core.result.Result.Err
+                            payment_channel.Error.AmountIsLessThanWithdrawn
+                        |)
+                    |)
                   |)
-                |))
-                [
-                  fun
-                      (γ :
-                        M.Val
-                          (core.ops.control_flow.ControlFlow.t
-                            (core.result.Result.t
-                              core.convert.Infallible.t
-                              payment_channel.Error.t)
-                            unit)) =>
-                    match M.read (| γ |) with
-                    | core.ops.control_flow.ControlFlow.Break _ =>
-                      let γ0_0 :=
-                        core.ops.control_flow.ControlFlow.Get_Break_0 γ in
-                      let residual := M.copy (| γ0_0 |) in
-                      M.alloc (|
-                        (never_to_any (B := unit)) (|
-                          M.read (|
-                            return_
-                              (M.call (|(ltac:(M.get_method (fun ℐ =>
-                                  core.ops.try_trait.FromResidual.from_residual
-                                    (Self :=
-                                      core.result.Result.t
-                                        unit
-                                        payment_channel.Error.t)
-                                    (R :=
-                                      core.result.Result.t
-                                        core.convert.Infallible.t
-                                        payment_channel.Error.t)
-                                    (Trait := ℐ)))
-                                (M.read (| residual |)))
-                              |))
+                |)
+              else
+                M.alloc (| tt |) in
+            let _ : M.Val unit :=
+              if
+                M.read (|
+                  use
+                    (M.alloc (|
+                      UnOp.not
+                        (M.call (|(payment_channel.PaymentChannel.t::["is_signature_valid"]
+                          (borrow (deref (M.read (| self |))))
+                          (M.read (| amount |))
+                          (M.read (| signature |)))
+                        |))
+                    |))
+                |)
+              then
+                M.alloc (|
+                  (never_to_any (B := unit)) (|
+                    M.read (|
+                      return_
+                        (|
+                          core.result.Result.Err
+                            payment_channel.Error.InvalidSignature
+                        |)
+                    |)
+                  |)
+                |)
+              else
+                M.alloc (| tt |) in
+            let _ : M.Val unit :=
+              ltac:
+                (M.monadic_match_operator
+                  (M.alloc (|
+                    M.call (|(ltac:(M.get_method (fun ℐ =>
+                        core.ops.try_trait.Try.branch
+                          (Self :=
+                            core.result.Result.t unit payment_channel.Error.t)
+                          (Trait := ℐ)))
+                      (M.call (|((core.result.Result.t
+                            unit
+                            payment_channel.Error.t)::["map_err"]
+                        (M.call (|(payment_channel.Env.t::["transfer"]
+                          (borrow
+                            (M.alloc (|
+                              M.call (|(payment_channel.PaymentChannel.t::["env"]
+                                (borrow (deref (M.read (| self |)))))
+                              |)
+                            |)))
+                          (M.read (|
+                            payment_channel.PaymentChannel.Get_recipient
+                              (deref (M.read (| self |)))
+                          |))
+                          (BinOp.Panic.sub (|
+                            M.read (| amount |),
+                            M.read (|
+                              payment_channel.PaymentChannel.Get_withdrawn
+                                (deref (M.read (| self |)))
+                            |)
+                          |)))
+                        |))
+                        (fun (α0 : payment_channel.Error.t) =>
+                          (ltac:
+                            (M.monadic_match_operator
+                              (M.alloc (| α0 |))
+                              [
+                                fun γ =>
+                                  payment_channel.Error.TransferFailed :
+                                  payment_channel.Error.t
+                              ])) :
+                          payment_channel.Error.t))
+                      |)))
+                    |)
+                  |))
+                  [
+                    fun
+                        (γ :
+                          M.Val
+                            (core.ops.control_flow.ControlFlow.t
+                              (core.result.Result.t
+                                core.convert.Infallible.t
+                                payment_channel.Error.t)
+                              unit)) =>
+                      match M.read (| γ |) with
+                      | core.ops.control_flow.ControlFlow.Break _ =>
+                        let γ0_0 :=
+                          core.ops.control_flow.ControlFlow.Get_Break_0 γ in
+                        let residual := M.copy (| γ0_0 |) in
+                        M.alloc (|
+                          (never_to_any (B := unit)) (|
+                            M.read (|
+                              return_
+                                (|
+                                  M.call (|(ltac:(M.get_method (fun ℐ =>
+                                      core.ops.try_trait.FromResidual.from_residual
+                                        (Self :=
+                                          core.result.Result.t
+                                            unit
+                                            payment_channel.Error.t)
+                                        (R :=
+                                          core.result.Result.t
+                                            core.convert.Infallible.t
+                                            payment_channel.Error.t)
+                                        (Trait := ℐ)))
+                                    (M.read (| residual |)))
+                                  |)
+                                |)
+                            |)
                           |)
                         |)
-                      |)
-                    | _ => M.break_match(||)
-                    end :
-                    M.Val unit;
-                  fun
-                      (γ :
-                        M.Val
-                          (core.ops.control_flow.ControlFlow.t
-                            (core.result.Result.t
-                              core.convert.Infallible.t
-                              payment_channel.Error.t)
-                            unit)) =>
-                    match M.read (| γ |) with
-                    | core.ops.control_flow.ControlFlow.Continue _ =>
-                      let γ0_0 :=
-                        core.ops.control_flow.ControlFlow.Get_Continue_0 γ in
-                      let val := M.copy (| γ0_0 |) in
-                      val
-                    | _ => M.break_match(||)
-                    end :
-                    M.Val unit
-                ]) in
-          M.alloc (| core.result.Result.Ok tt |)
-        |))
+                      | _ => M.break_match(||)
+                      end :
+                      M.Val unit;
+                    fun
+                        (γ :
+                          M.Val
+                            (core.ops.control_flow.ControlFlow.t
+                              (core.result.Result.t
+                                core.convert.Infallible.t
+                                payment_channel.Error.t)
+                              unit)) =>
+                      match M.read (| γ |) with
+                      | core.ops.control_flow.ControlFlow.Continue _ =>
+                        let γ0_0 :=
+                          core.ops.control_flow.ControlFlow.Get_Continue_0 γ in
+                        let val := M.copy (| γ0_0 |) in
+                        val
+                      | _ => M.break_match(||)
+                      end :
+                      M.Val unit
+                  ]) in
+            M.alloc (| core.result.Result.Ok tt |)
+          |)))
     ) : ltac:(payment_channel.Result unit))).
   
   Global Instance AssociatedFunction_close_inner :
@@ -1276,96 +1285,99 @@ Section Impl_payment_channel_PaymentChannel_t.
       let amount := M.alloc (| amount |) in
       let signature := M.alloc (| signature |) in
       let return_ := M.return_ (R := ltac:(payment_channel.Result unit)) in
-      M.catch_return
-        (M.read (|
-          let _ : M.Val unit :=
-            ltac:
-              (M.monadic_match_operator
-                (M.alloc (|
-                  M.call (|(ltac:(M.get_method (fun ℐ =>
-                      core.ops.try_trait.Try.branch
-                        (Self :=
-                          core.result.Result.t unit payment_channel.Error.t)
-                        (Trait := ℐ)))
-                    (M.call (|(payment_channel.PaymentChannel.t::["close_inner"]
-                      (M.read (| self |))
-                      (M.read (| amount |))
-                      (M.read (| signature |)))
-                    |)))
-                  |)
-                |))
-                [
-                  fun
-                      (γ :
-                        M.Val
-                          (core.ops.control_flow.ControlFlow.t
-                            (core.result.Result.t
-                              core.convert.Infallible.t
-                              payment_channel.Error.t)
-                            unit)) =>
-                    match M.read (| γ |) with
-                    | core.ops.control_flow.ControlFlow.Break _ =>
-                      let γ0_0 :=
-                        core.ops.control_flow.ControlFlow.Get_Break_0 γ in
-                      let residual := M.copy (| γ0_0 |) in
-                      M.alloc (|
-                        (never_to_any (B := unit)) (|
-                          M.read (|
-                            return_
-                              (M.call (|(ltac:(M.get_method (fun ℐ =>
-                                  core.ops.try_trait.FromResidual.from_residual
-                                    (Self :=
-                                      core.result.Result.t
-                                        unit
-                                        payment_channel.Error.t)
-                                    (R :=
-                                      core.result.Result.t
-                                        core.convert.Infallible.t
-                                        payment_channel.Error.t)
-                                    (Trait := ℐ)))
-                                (M.read (| residual |)))
-                              |))
+      ltac:
+        (M.monadic_catch_return
+          (M.read (|
+            let _ : M.Val unit :=
+              ltac:
+                (M.monadic_match_operator
+                  (M.alloc (|
+                    M.call (|(ltac:(M.get_method (fun ℐ =>
+                        core.ops.try_trait.Try.branch
+                          (Self :=
+                            core.result.Result.t unit payment_channel.Error.t)
+                          (Trait := ℐ)))
+                      (M.call (|(payment_channel.PaymentChannel.t::["close_inner"]
+                        (M.read (| self |))
+                        (M.read (| amount |))
+                        (M.read (| signature |)))
+                      |)))
+                    |)
+                  |))
+                  [
+                    fun
+                        (γ :
+                          M.Val
+                            (core.ops.control_flow.ControlFlow.t
+                              (core.result.Result.t
+                                core.convert.Infallible.t
+                                payment_channel.Error.t)
+                              unit)) =>
+                      match M.read (| γ |) with
+                      | core.ops.control_flow.ControlFlow.Break _ =>
+                        let γ0_0 :=
+                          core.ops.control_flow.ControlFlow.Get_Break_0 γ in
+                        let residual := M.copy (| γ0_0 |) in
+                        M.alloc (|
+                          (never_to_any (B := unit)) (|
+                            M.read (|
+                              return_
+                                (|
+                                  M.call (|(ltac:(M.get_method (fun ℐ =>
+                                      core.ops.try_trait.FromResidual.from_residual
+                                        (Self :=
+                                          core.result.Result.t
+                                            unit
+                                            payment_channel.Error.t)
+                                        (R :=
+                                          core.result.Result.t
+                                            core.convert.Infallible.t
+                                            payment_channel.Error.t)
+                                        (Trait := ℐ)))
+                                    (M.read (| residual |)))
+                                  |)
+                                |)
+                            |)
                           |)
                         |)
+                      | _ => M.break_match(||)
+                      end :
+                      M.Val unit;
+                    fun
+                        (γ :
+                          M.Val
+                            (core.ops.control_flow.ControlFlow.t
+                              (core.result.Result.t
+                                core.convert.Infallible.t
+                                payment_channel.Error.t)
+                              unit)) =>
+                      match M.read (| γ |) with
+                      | core.ops.control_flow.ControlFlow.Continue _ =>
+                        let γ0_0 :=
+                          core.ops.control_flow.ControlFlow.Get_Continue_0 γ in
+                        let val := M.copy (| γ0_0 |) in
+                        val
+                      | _ => M.break_match(||)
+                      end :
+                      M.Val unit
+                  ]) in
+            let _ : M.Val unit :=
+              M.alloc (|
+                M.call (|(payment_channel.Env.t::["terminate_contract"]
+                  (borrow
+                    (M.alloc (|
+                      M.call (|(payment_channel.PaymentChannel.t::["env"]
+                        (borrow (deref (M.read (| self |)))))
                       |)
-                    | _ => M.break_match(||)
-                    end :
-                    M.Val unit;
-                  fun
-                      (γ :
-                        M.Val
-                          (core.ops.control_flow.ControlFlow.t
-                            (core.result.Result.t
-                              core.convert.Infallible.t
-                              payment_channel.Error.t)
-                            unit)) =>
-                    match M.read (| γ |) with
-                    | core.ops.control_flow.ControlFlow.Continue _ =>
-                      let γ0_0 :=
-                        core.ops.control_flow.ControlFlow.Get_Continue_0 γ in
-                      let val := M.copy (| γ0_0 |) in
-                      val
-                    | _ => M.break_match(||)
-                    end :
-                    M.Val unit
-                ]) in
-          let _ : M.Val unit :=
-            M.alloc (|
-              M.call (|(payment_channel.Env.t::["terminate_contract"]
-                (borrow
-                  (M.alloc (|
-                    M.call (|(payment_channel.PaymentChannel.t::["env"]
-                      (borrow (deref (M.read (| self |)))))
-                    |)
+                    |)))
+                  (M.read (|
+                    payment_channel.PaymentChannel.Get_sender
+                      (deref (M.read (| self |)))
                   |)))
-                (M.read (|
-                  payment_channel.PaymentChannel.Get_sender
-                    (deref (M.read (| self |)))
-                |)))
-              |)
-            |) in
-          M.alloc (| core.result.Result.Ok tt |)
-        |))
+                |)
+              |) in
+            M.alloc (| core.result.Result.Ok tt |)
+          |)))
     ) : ltac:(payment_channel.Result unit))).
   
   Global Instance AssociatedFunction_close :
@@ -1399,97 +1411,100 @@ Section Impl_payment_channel_PaymentChannel_t.
     ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let return_ := M.return_ (R := ltac:(payment_channel.Result unit)) in
-      M.catch_return
-        (M.read (|
-          let _ : M.Val unit :=
-            if
-              M.read (|
-                use
-                  (M.alloc (|
-                    M.call (|(ltac:(M.get_method (fun ℐ =>
-                        core.cmp.PartialEq.ne
-                          (Self := payment_channel.AccountId.t)
-                          (Rhs := payment_channel.AccountId.t)
-                          (Trait := ℐ)))
-                      (borrow
-                        (M.alloc (|
-                          M.call (|(payment_channel.Env.t::["caller"]
-                            (borrow
-                              (M.alloc (|
-                                M.call (|(payment_channel.PaymentChannel.t::["env"]
-                                  (borrow (deref (M.read (| self |)))))
-                                |)
-                              |))))
-                          |)
-                        |)))
-                      (borrow
-                        (payment_channel.PaymentChannel.Get_sender
-                          (deref (M.read (| self |))))))
+      ltac:
+        (M.monadic_catch_return
+          (M.read (|
+            let _ : M.Val unit :=
+              if
+                M.read (|
+                  use
+                    (M.alloc (|
+                      M.call (|(ltac:(M.get_method (fun ℐ =>
+                          core.cmp.PartialEq.ne
+                            (Self := payment_channel.AccountId.t)
+                            (Rhs := payment_channel.AccountId.t)
+                            (Trait := ℐ)))
+                        (borrow
+                          (M.alloc (|
+                            M.call (|(payment_channel.Env.t::["caller"]
+                              (borrow
+                                (M.alloc (|
+                                  M.call (|(payment_channel.PaymentChannel.t::["env"]
+                                    (borrow (deref (M.read (| self |)))))
+                                  |)
+                                |))))
+                            |)
+                          |)))
+                        (borrow
+                          (payment_channel.PaymentChannel.Get_sender
+                            (deref (M.read (| self |))))))
+                      |)
+                    |))
+                |)
+              then
+                M.alloc (|
+                  (never_to_any (B := unit)) (|
+                    M.read (|
+                      return_
+                        (|
+                          core.result.Result.Err
+                            payment_channel.Error.CallerIsNotSender
+                        |)
                     |)
-                  |))
-              |)
-            then
-              M.alloc (|
-                (never_to_any (B := unit)) (|
-                  M.read (|
-                    return_
-                      (core.result.Result.Err
-                        payment_channel.Error.CallerIsNotSender)
                   |)
                 |)
-              |)
-            else
-              M.alloc (| tt |) in
-          let now : M.Val u64.t :=
-            M.alloc (|
-              M.call (|(payment_channel.Env.t::["block_timestamp"]
-                (borrow
-                  (M.alloc (|
-                    M.call (|(payment_channel.PaymentChannel.t::["env"]
-                      (borrow (deref (M.read (| self |)))))
-                    |)
-                  |))))
-              |)
-            |) in
-          let expiration : M.Val u64.t :=
-            M.alloc (|
-              BinOp.Panic.add (|
-                M.read (| now |),
-                M.read (|
-                  payment_channel.PaymentChannel.Get_close_duration
-                    (deref (M.read (| self |)))
+              else
+                M.alloc (| tt |) in
+            let now : M.Val u64.t :=
+              M.alloc (|
+                M.call (|(payment_channel.Env.t::["block_timestamp"]
+                  (borrow
+                    (M.alloc (|
+                      M.call (|(payment_channel.PaymentChannel.t::["env"]
+                        (borrow (deref (M.read (| self |)))))
+                      |)
+                    |))))
                 |)
-              |)
-            |) in
-          let _ : M.Val unit :=
-            M.alloc (|
-              M.call (|(payment_channel.Env.t::["emit_event"]
-                (borrow
-                  (M.alloc (|
-                    M.call (|(payment_channel.PaymentChannel.t::["env"]
-                      (borrow (deref (M.read (| self |)))))
-                    |)
-                  |)))
-                (payment_channel.Event.SenderCloseStarted
-                  ({|
-                    payment_channel.SenderCloseStarted.expiration :=
-                      M.read (| expiration |);
-                    payment_channel.SenderCloseStarted.close_duration :=
-                      M.read (|
-                        payment_channel.PaymentChannel.Get_close_duration
-                          (deref (M.read (| self |)))
-                      |);
-                  |} : payment_channel.SenderCloseStarted.t)))
-              |)
-            |) in
-          let _ : M.Val unit :=
-            assign (|
-              payment_channel.PaymentChannel.Get_expiration
-                (deref (M.read (| self |))),
-              core.option.Option.Some (M.read (| expiration |))
-            |) in
-          M.alloc (| core.result.Result.Ok tt |)
-        |))
+              |) in
+            let expiration : M.Val u64.t :=
+              M.alloc (|
+                BinOp.Panic.add (|
+                  M.read (| now |),
+                  M.read (|
+                    payment_channel.PaymentChannel.Get_close_duration
+                      (deref (M.read (| self |)))
+                  |)
+                |)
+              |) in
+            let _ : M.Val unit :=
+              M.alloc (|
+                M.call (|(payment_channel.Env.t::["emit_event"]
+                  (borrow
+                    (M.alloc (|
+                      M.call (|(payment_channel.PaymentChannel.t::["env"]
+                        (borrow (deref (M.read (| self |)))))
+                      |)
+                    |)))
+                  (payment_channel.Event.SenderCloseStarted
+                    ({|
+                      payment_channel.SenderCloseStarted.expiration :=
+                        M.read (| expiration |);
+                      payment_channel.SenderCloseStarted.close_duration :=
+                        M.read (|
+                          payment_channel.PaymentChannel.Get_close_duration
+                            (deref (M.read (| self |)))
+                        |);
+                    |} : payment_channel.SenderCloseStarted.t)))
+                |)
+              |) in
+            let _ : M.Val unit :=
+              assign (|
+                payment_channel.PaymentChannel.Get_expiration
+                  (deref (M.read (| self |))),
+                core.option.Option.Some (M.read (| expiration |))
+              |) in
+            M.alloc (| core.result.Result.Ok tt |)
+          |)))
     ) : ltac:(payment_channel.Result unit))).
   
   Global Instance AssociatedFunction_start_sender_close :
@@ -1523,81 +1538,85 @@ Section Impl_payment_channel_PaymentChannel_t.
     ltac:(M.monadic ((
       let self := M.alloc (| self |) in
       let return_ := M.return_ (R := ltac:(payment_channel.Result unit)) in
-      M.catch_return
-        (M.read (|
-          ltac:
-            (M.monadic_match_operator
-              (payment_channel.PaymentChannel.Get_expiration
-                (deref (M.read (| self |))))
-              [
-                fun (γ : M.Val (core.option.Option.t u64.t)) =>
-                  match M.read (| γ |) with
-                  | core.option.Option.Some _ =>
-                    let γ0_0 := core.option.Option.Get_Some_0 γ in
-                    let expiration := M.copy (| γ0_0 |) in
-                    let now : M.Val u64.t :=
-                      M.alloc (|
-                        M.call (|(payment_channel.Env.t::["block_timestamp"]
-                          (borrow
-                            (M.alloc (|
-                              M.call (|(payment_channel.PaymentChannel.t::["env"]
-                                (borrow (deref (M.read (| self |)))))
-                              |)
-                            |))))
-                        |)
-                      |) in
-                    let _ : M.Val unit :=
-                      if
-                        M.read (|
-                          use
-                            (M.alloc (|
-                              BinOp.Pure.lt
-                                (M.read (| now |))
-                                (M.read (| expiration |))
-                            |))
-                        |)
-                      then
+      ltac:
+        (M.monadic_catch_return
+          (M.read (|
+            ltac:
+              (M.monadic_match_operator
+                (payment_channel.PaymentChannel.Get_expiration
+                  (deref (M.read (| self |))))
+                [
+                  fun (γ : M.Val (core.option.Option.t u64.t)) =>
+                    match M.read (| γ |) with
+                    | core.option.Option.Some _ =>
+                      let γ0_0 := core.option.Option.Get_Some_0 γ in
+                      let expiration := M.copy (| γ0_0 |) in
+                      let now : M.Val u64.t :=
                         M.alloc (|
-                          (never_to_any (B := unit)) (|
-                            M.read (|
-                              return_
-                                (core.result.Result.Err
-                                  payment_channel.Error.NotYetExpired)
+                          M.call (|(payment_channel.Env.t::["block_timestamp"]
+                            (borrow
+                              (M.alloc (|
+                                M.call (|(payment_channel.PaymentChannel.t::["env"]
+                                  (borrow (deref (M.read (| self |)))))
+                                |)
+                              |))))
+                          |)
+                        |) in
+                      let _ : M.Val unit :=
+                        if
+                          M.read (|
+                            use
+                              (M.alloc (|
+                                BinOp.Pure.lt
+                                  (M.read (| now |))
+                                  (M.read (| expiration |))
+                              |))
+                          |)
+                        then
+                          M.alloc (|
+                            (never_to_any (B := unit)) (|
+                              M.read (|
+                                return_
+                                  (|
+                                    core.result.Result.Err
+                                      payment_channel.Error.NotYetExpired
+                                  |)
+                              |)
                             |)
                           |)
-                        |)
-                      else
-                        M.alloc (| tt |) in
-                    let _ : M.Val unit :=
-                      M.alloc (|
-                        M.call (|(payment_channel.Env.t::["terminate_contract"]
-                          (borrow
-                            (M.alloc (|
-                              M.call (|(payment_channel.PaymentChannel.t::["env"]
-                                (borrow (deref (M.read (| self |)))))
-                              |)
+                        else
+                          M.alloc (| tt |) in
+                      let _ : M.Val unit :=
+                        M.alloc (|
+                          M.call (|(payment_channel.Env.t::["terminate_contract"]
+                            (borrow
+                              (M.alloc (|
+                                M.call (|(payment_channel.PaymentChannel.t::["env"]
+                                  (borrow (deref (M.read (| self |)))))
+                                |)
+                              |)))
+                            (M.read (|
+                              payment_channel.PaymentChannel.Get_sender
+                                (deref (M.read (| self |)))
                             |)))
-                          (M.read (|
-                            payment_channel.PaymentChannel.Get_sender
-                              (deref (M.read (| self |)))
-                          |)))
-                        |)
-                      |) in
-                    M.alloc (| core.result.Result.Ok tt |)
-                  | _ => M.break_match(||)
-                  end :
-                  M.Val (core.result.Result.t unit payment_channel.Error.t);
-                fun (γ : M.Val (core.option.Option.t u64.t)) =>
-                  match M.read (| γ |) with
-                  | core.option.Option.None =>
-                    M.alloc (|
-                      core.result.Result.Err payment_channel.Error.NotYetExpired
-                    |)
-                  | _ => M.break_match(||)
-                  end :
-                  M.Val (core.result.Result.t unit payment_channel.Error.t)
-              ])
-        |))
+                          |)
+                        |) in
+                      M.alloc (| core.result.Result.Ok tt |)
+                    | _ => M.break_match(||)
+                    end :
+                    M.Val (core.result.Result.t unit payment_channel.Error.t);
+                  fun (γ : M.Val (core.option.Option.t u64.t)) =>
+                    match M.read (| γ |) with
+                    | core.option.Option.None =>
+                      M.alloc (|
+                        core.result.Result.Err
+                          payment_channel.Error.NotYetExpired
+                      |)
+                    | _ => M.break_match(||)
+                    end :
+                    M.Val (core.result.Result.t unit payment_channel.Error.t)
+                ])
+          |)))
     ) : ltac:(payment_channel.Result unit))).
   
   Global Instance AssociatedFunction_claim_timeout :
@@ -1641,211 +1660,222 @@ Section Impl_payment_channel_PaymentChannel_t.
       let amount := M.alloc (| amount |) in
       let signature := M.alloc (| signature |) in
       let return_ := M.return_ (R := ltac:(payment_channel.Result unit)) in
-      M.catch_return
-        (M.read (|
-          let _ : M.Val unit :=
-            if
-              M.read (|
-                use
-                  (M.alloc (|
-                    M.call (|(ltac:(M.get_method (fun ℐ =>
-                        core.cmp.PartialEq.ne
-                          (Self := payment_channel.AccountId.t)
-                          (Rhs := payment_channel.AccountId.t)
-                          (Trait := ℐ)))
-                      (borrow
-                        (M.alloc (|
-                          M.call (|(payment_channel.Env.t::["caller"]
-                            (borrow
-                              (M.alloc (|
-                                M.call (|(payment_channel.PaymentChannel.t::["env"]
-                                  (borrow (deref (M.read (| self |)))))
-                                |)
-                              |))))
-                          |)
-                        |)))
-                      (borrow
-                        (payment_channel.PaymentChannel.Get_recipient
-                          (deref (M.read (| self |))))))
-                    |)
-                  |))
-              |)
-            then
-              M.alloc (|
-                (never_to_any (B := unit)) (|
-                  M.read (|
-                    return_
-                      (core.result.Result.Err
-                        payment_channel.Error.CallerIsNotRecipient)
-                  |)
-                |)
-              |)
-            else
-              M.alloc (| tt |) in
-          let _ : M.Val unit :=
-            if
-              M.read (|
-                use
-                  (M.alloc (|
-                    UnOp.not
-                      (M.call (|(payment_channel.PaymentChannel.t::["is_signature_valid"]
-                        (borrow (deref (M.read (| self |))))
-                        (M.read (| amount |))
-                        (M.read (| signature |)))
-                      |))
-                  |))
-              |)
-            then
-              M.alloc (|
-                (never_to_any (B := unit)) (|
-                  M.read (|
-                    return_
-                      (core.result.Result.Err
-                        payment_channel.Error.InvalidSignature)
-                  |)
-                |)
-              |)
-            else
-              M.alloc (| tt |) in
-          let _ : M.Val unit :=
-            if
-              M.read (|
-                use
-                  (M.alloc (|
-                    BinOp.Pure.lt
-                      (M.read (| amount |))
-                      (M.read (|
-                        payment_channel.PaymentChannel.Get_withdrawn
-                          (deref (M.read (| self |)))
-                      |))
-                  |))
-              |)
-            then
-              M.alloc (|
-                (never_to_any (B := unit)) (|
-                  M.read (|
-                    return_
-                      (core.result.Result.Err
-                        payment_channel.Error.AmountIsLessThanWithdrawn)
-                  |)
-                |)
-              |)
-            else
-              M.alloc (| tt |) in
-          let amount_to_withdraw : M.Val u128.t :=
-            M.alloc (|
-              BinOp.Panic.sub (|
-                M.read (| amount |),
+      ltac:
+        (M.monadic_catch_return
+          (M.read (|
+            let _ : M.Val unit :=
+              if
                 M.read (|
-                  payment_channel.PaymentChannel.Get_withdrawn
-                    (deref (M.read (| self |)))
-                |)
-              |)
-            |) in
-          let _ : M.Val unit :=
-            let β : M.Val u128.t :=
-              payment_channel.PaymentChannel.Get_withdrawn
-                (deref (M.read (| self |))) in
-            assign (|
-              β,
-              BinOp.Panic.add (| M.read (| β |), M.read (| amount_to_withdraw |)
-              |)
-            |) in
-          let _ : M.Val unit :=
-            ltac:
-              (M.monadic_match_operator
-                (M.alloc (|
-                  M.call (|(ltac:(M.get_method (fun ℐ =>
-                      core.ops.try_trait.Try.branch
-                        (Self :=
-                          core.result.Result.t unit payment_channel.Error.t)
-                        (Trait := ℐ)))
-                    (M.call (|((core.result.Result.t
-                          unit
-                          payment_channel.Error.t)::["map_err"]
-                      (M.call (|(payment_channel.Env.t::["transfer"]
+                  use
+                    (M.alloc (|
+                      M.call (|(ltac:(M.get_method (fun ℐ =>
+                          core.cmp.PartialEq.ne
+                            (Self := payment_channel.AccountId.t)
+                            (Rhs := payment_channel.AccountId.t)
+                            (Trait := ℐ)))
                         (borrow
                           (M.alloc (|
-                            M.call (|(payment_channel.PaymentChannel.t::["env"]
-                              (borrow (deref (M.read (| self |)))))
+                            M.call (|(payment_channel.Env.t::["caller"]
+                              (borrow
+                                (M.alloc (|
+                                  M.call (|(payment_channel.PaymentChannel.t::["env"]
+                                    (borrow (deref (M.read (| self |)))))
+                                  |)
+                                |))))
                             |)
                           |)))
+                        (borrow
+                          (payment_channel.PaymentChannel.Get_recipient
+                            (deref (M.read (| self |))))))
+                      |)
+                    |))
+                |)
+              then
+                M.alloc (|
+                  (never_to_any (B := unit)) (|
+                    M.read (|
+                      return_
+                        (|
+                          core.result.Result.Err
+                            payment_channel.Error.CallerIsNotRecipient
+                        |)
+                    |)
+                  |)
+                |)
+              else
+                M.alloc (| tt |) in
+            let _ : M.Val unit :=
+              if
+                M.read (|
+                  use
+                    (M.alloc (|
+                      UnOp.not
+                        (M.call (|(payment_channel.PaymentChannel.t::["is_signature_valid"]
+                          (borrow (deref (M.read (| self |))))
+                          (M.read (| amount |))
+                          (M.read (| signature |)))
+                        |))
+                    |))
+                |)
+              then
+                M.alloc (|
+                  (never_to_any (B := unit)) (|
+                    M.read (|
+                      return_
+                        (|
+                          core.result.Result.Err
+                            payment_channel.Error.InvalidSignature
+                        |)
+                    |)
+                  |)
+                |)
+              else
+                M.alloc (| tt |) in
+            let _ : M.Val unit :=
+              if
+                M.read (|
+                  use
+                    (M.alloc (|
+                      BinOp.Pure.lt
+                        (M.read (| amount |))
                         (M.read (|
-                          payment_channel.PaymentChannel.Get_recipient
+                          payment_channel.PaymentChannel.Get_withdrawn
                             (deref (M.read (| self |)))
                         |))
-                        (M.read (| amount_to_withdraw |)))
-                      |))
-                      (fun (α0 : payment_channel.Error.t) =>
-                        (ltac:
-                          (M.monadic_match_operator
-                            (M.alloc (| α0 |))
-                            [
-                              fun γ =>
-                                payment_channel.Error.TransferFailed :
-                                payment_channel.Error.t
-                            ])) :
-                        payment_channel.Error.t))
-                    |)))
+                    |))
+                |)
+              then
+                M.alloc (|
+                  (never_to_any (B := unit)) (|
+                    M.read (|
+                      return_
+                        (|
+                          core.result.Result.Err
+                            payment_channel.Error.AmountIsLessThanWithdrawn
+                        |)
+                    |)
                   |)
-                |))
-                [
-                  fun
-                      (γ :
-                        M.Val
-                          (core.ops.control_flow.ControlFlow.t
-                            (core.result.Result.t
-                              core.convert.Infallible.t
-                              payment_channel.Error.t)
-                            unit)) =>
-                    match M.read (| γ |) with
-                    | core.ops.control_flow.ControlFlow.Break _ =>
-                      let γ0_0 :=
-                        core.ops.control_flow.ControlFlow.Get_Break_0 γ in
-                      let residual := M.copy (| γ0_0 |) in
-                      M.alloc (|
-                        (never_to_any (B := unit)) (|
-                          M.read (|
-                            return_
-                              (M.call (|(ltac:(M.get_method (fun ℐ =>
-                                  core.ops.try_trait.FromResidual.from_residual
-                                    (Self :=
-                                      core.result.Result.t
-                                        unit
-                                        payment_channel.Error.t)
-                                    (R :=
-                                      core.result.Result.t
-                                        core.convert.Infallible.t
-                                        payment_channel.Error.t)
-                                    (Trait := ℐ)))
-                                (M.read (| residual |)))
-                              |))
+                |)
+              else
+                M.alloc (| tt |) in
+            let amount_to_withdraw : M.Val u128.t :=
+              M.alloc (|
+                BinOp.Panic.sub (|
+                  M.read (| amount |),
+                  M.read (|
+                    payment_channel.PaymentChannel.Get_withdrawn
+                      (deref (M.read (| self |)))
+                  |)
+                |)
+              |) in
+            let _ : M.Val unit :=
+              let β : M.Val u128.t :=
+                payment_channel.PaymentChannel.Get_withdrawn
+                  (deref (M.read (| self |))) in
+              assign (|
+                β,
+                BinOp.Panic.add (|
+                  M.read (| β |),
+                  M.read (| amount_to_withdraw |)
+                |)
+              |) in
+            let _ : M.Val unit :=
+              ltac:
+                (M.monadic_match_operator
+                  (M.alloc (|
+                    M.call (|(ltac:(M.get_method (fun ℐ =>
+                        core.ops.try_trait.Try.branch
+                          (Self :=
+                            core.result.Result.t unit payment_channel.Error.t)
+                          (Trait := ℐ)))
+                      (M.call (|((core.result.Result.t
+                            unit
+                            payment_channel.Error.t)::["map_err"]
+                        (M.call (|(payment_channel.Env.t::["transfer"]
+                          (borrow
+                            (M.alloc (|
+                              M.call (|(payment_channel.PaymentChannel.t::["env"]
+                                (borrow (deref (M.read (| self |)))))
+                              |)
+                            |)))
+                          (M.read (|
+                            payment_channel.PaymentChannel.Get_recipient
+                              (deref (M.read (| self |)))
+                          |))
+                          (M.read (| amount_to_withdraw |)))
+                        |))
+                        (fun (α0 : payment_channel.Error.t) =>
+                          (ltac:
+                            (M.monadic_match_operator
+                              (M.alloc (| α0 |))
+                              [
+                                fun γ =>
+                                  payment_channel.Error.TransferFailed :
+                                  payment_channel.Error.t
+                              ])) :
+                          payment_channel.Error.t))
+                      |)))
+                    |)
+                  |))
+                  [
+                    fun
+                        (γ :
+                          M.Val
+                            (core.ops.control_flow.ControlFlow.t
+                              (core.result.Result.t
+                                core.convert.Infallible.t
+                                payment_channel.Error.t)
+                              unit)) =>
+                      match M.read (| γ |) with
+                      | core.ops.control_flow.ControlFlow.Break _ =>
+                        let γ0_0 :=
+                          core.ops.control_flow.ControlFlow.Get_Break_0 γ in
+                        let residual := M.copy (| γ0_0 |) in
+                        M.alloc (|
+                          (never_to_any (B := unit)) (|
+                            M.read (|
+                              return_
+                                (|
+                                  M.call (|(ltac:(M.get_method (fun ℐ =>
+                                      core.ops.try_trait.FromResidual.from_residual
+                                        (Self :=
+                                          core.result.Result.t
+                                            unit
+                                            payment_channel.Error.t)
+                                        (R :=
+                                          core.result.Result.t
+                                            core.convert.Infallible.t
+                                            payment_channel.Error.t)
+                                        (Trait := ℐ)))
+                                    (M.read (| residual |)))
+                                  |)
+                                |)
+                            |)
                           |)
                         |)
-                      |)
-                    | _ => M.break_match(||)
-                    end :
-                    M.Val unit;
-                  fun
-                      (γ :
-                        M.Val
-                          (core.ops.control_flow.ControlFlow.t
-                            (core.result.Result.t
-                              core.convert.Infallible.t
-                              payment_channel.Error.t)
-                            unit)) =>
-                    match M.read (| γ |) with
-                    | core.ops.control_flow.ControlFlow.Continue _ =>
-                      let γ0_0 :=
-                        core.ops.control_flow.ControlFlow.Get_Continue_0 γ in
-                      let val := M.copy (| γ0_0 |) in
-                      val
-                    | _ => M.break_match(||)
-                    end :
-                    M.Val unit
-                ]) in
-          M.alloc (| core.result.Result.Ok tt |)
-        |))
+                      | _ => M.break_match(||)
+                      end :
+                      M.Val unit;
+                    fun
+                        (γ :
+                          M.Val
+                            (core.ops.control_flow.ControlFlow.t
+                              (core.result.Result.t
+                                core.convert.Infallible.t
+                                payment_channel.Error.t)
+                              unit)) =>
+                      match M.read (| γ |) with
+                      | core.ops.control_flow.ControlFlow.Continue _ =>
+                        let γ0_0 :=
+                          core.ops.control_flow.ControlFlow.Get_Continue_0 γ in
+                        let val := M.copy (| γ0_0 |) in
+                        val
+                      | _ => M.break_match(||)
+                      end :
+                      M.Val unit
+                  ]) in
+            M.alloc (| core.result.Result.Ok tt |)
+          |)))
     ) : ltac:(payment_channel.Result unit))).
   
   Global Instance AssociatedFunction_withdraw :

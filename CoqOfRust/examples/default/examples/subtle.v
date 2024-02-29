@@ -618,153 +618,158 @@ Section Impl_subtle_ConstantTimeEq_for_slice_T.
       let self := M.alloc (| self |) in
       let _rhs := M.alloc (| _rhs |) in
       let return_ := M.return_ (R := subtle.Choice.t) in
-      M.catch_return
-        (M.read (|
-          let len : M.Val usize.t :=
-            M.alloc (| M.call (|((slice T)::["len"] (M.read (| self |))) |)
-            |) in
-          let _ : M.Val unit :=
-            if
-              M.read (|
-                use
-                  (M.alloc (|
-                    BinOp.Pure.ne
-                      (M.read (| len |))
-                      (M.call (|((slice T)::["len"] (M.read (| _rhs |))) |))
-                  |))
-              |)
-            then
-              M.alloc (|
-                (never_to_any (B := unit)) (|
-                  M.read (|
-                    return_
-                      (M.call (|(ltac:(M.get_method (fun ℐ =>
-                          core.convert.From.from
-                            (Self := subtle.Choice.t)
-                            (T := u8.t)
-                            (Trait := ℐ)))
-                        ((Integer.of_Z 0) : u8.t))
-                      |))
+      ltac:
+        (M.monadic_catch_return
+          (M.read (|
+            let len : M.Val usize.t :=
+              M.alloc (| M.call (|((slice T)::["len"] (M.read (| self |))) |)
+              |) in
+            let _ : M.Val unit :=
+              if
+                M.read (|
+                  use
+                    (M.alloc (|
+                      BinOp.Pure.ne
+                        (M.read (| len |))
+                        (M.call (|((slice T)::["len"] (M.read (| _rhs |))) |))
+                    |))
+                |)
+              then
+                M.alloc (|
+                  (never_to_any (B := unit)) (|
+                    M.read (|
+                      return_
+                        (|
+                          M.call (|(ltac:(M.get_method (fun ℐ =>
+                              core.convert.From.from
+                                (Self := subtle.Choice.t)
+                                (T := u8.t)
+                                (Trait := ℐ)))
+                            ((Integer.of_Z 0) : u8.t))
+                          |)
+                        |)
+                    |)
                   |)
                 |)
-              |)
-            else
-              M.alloc (| tt |) in
-          let x : M.Val u8.t := M.alloc (| (Integer.of_Z 1) : u8.t |) in
-          let _ : M.Val unit :=
-            use
-              (ltac:
-                (M.monadic_match_operator
-                  (M.alloc (|
-                    M.call (|(ltac:(M.get_method (fun ℐ =>
-                        core.iter.traits.collect.IntoIterator.into_iter
-                          (Self :=
-                            core.iter.adapters.zip.Zip.t
-                              (core.slice.iter.Iter.t T)
-                              (core.slice.iter.Iter.t T))
-                          (Trait := ℐ)))
-                      (M.call (|(ltac:(M.get_method (fun ℐ =>
-                          core.iter.traits.iterator.Iterator.zip
-                            (Self := core.slice.iter.Iter.t T)
-                            (U := core.slice.iter.Iter.t T)
+              else
+                M.alloc (| tt |) in
+            let x : M.Val u8.t := M.alloc (| (Integer.of_Z 1) : u8.t |) in
+            let _ : M.Val unit :=
+              use
+                (ltac:
+                  (M.monadic_match_operator
+                    (M.alloc (|
+                      M.call (|(ltac:(M.get_method (fun ℐ =>
+                          core.iter.traits.collect.IntoIterator.into_iter
+                            (Self :=
+                              core.iter.adapters.zip.Zip.t
+                                (core.slice.iter.Iter.t T)
+                                (core.slice.iter.Iter.t T))
                             (Trait := ℐ)))
-                        (M.call (|((slice T)::["iter"] (M.read (| self |))) |))
-                        (M.call (|((slice T)::["iter"] (M.read (| _rhs |))) |)))
-                      |)))
-                    |)
-                  |))
-                  [
-                    fun
-                        (γ :
-                          M.Val
-                            (core.iter.adapters.zip.Zip.t
-                              (core.slice.iter.Iter.t T)
-                              (core.slice.iter.Iter.t T))) =>
-                      (let iter := M.copy (| γ |) in
-                      M.loop
-                        (let _ : M.Val unit :=
-                          ltac:
-                            (M.monadic_match_operator
-                              (M.alloc (|
-                                M.call (|(ltac:(M.get_method (fun ℐ =>
-                                    core.iter.traits.iterator.Iterator.next
-                                      (Self :=
-                                        core.iter.adapters.zip.Zip.t
-                                          (core.slice.iter.Iter.t T)
-                                          (core.slice.iter.Iter.t T))
-                                      (Trait := ℐ)))
-                                  (borrow_mut iter))
-                                |)
-                              |))
-                              [
-                                fun
-                                    (γ :
-                                      M.Val
-                                        (core.option.Option.t
-                                          ((ref T) * (ref T)))) =>
-                                  match M.read (| γ |) with
-                                  | core.option.Option.None =>
-                                    M.alloc (|
-                                      (never_to_any (B := unit)) (|
-                                        M.read (| M.break |)
+                        (M.call (|(ltac:(M.get_method (fun ℐ =>
+                            core.iter.traits.iterator.Iterator.zip
+                              (Self := core.slice.iter.Iter.t T)
+                              (U := core.slice.iter.Iter.t T)
+                              (Trait := ℐ)))
+                          (M.call (|((slice T)::["iter"] (M.read (| self |)))
+                          |))
+                          (M.call (|((slice T)::["iter"] (M.read (| _rhs |)))
+                          |)))
+                        |)))
+                      |)
+                    |))
+                    [
+                      fun
+                          (γ :
+                            M.Val
+                              (core.iter.adapters.zip.Zip.t
+                                (core.slice.iter.Iter.t T)
+                                (core.slice.iter.Iter.t T))) =>
+                        (let iter := M.copy (| γ |) in
+                        ltac: (M.monadic_loop (
+                          let _ : M.Val unit :=
+                            ltac:
+                              (M.monadic_match_operator
+                                (M.alloc (|
+                                  M.call (|(ltac:(M.get_method (fun ℐ =>
+                                      core.iter.traits.iterator.Iterator.next
+                                        (Self :=
+                                          core.iter.adapters.zip.Zip.t
+                                            (core.slice.iter.Iter.t T)
+                                            (core.slice.iter.Iter.t T))
+                                        (Trait := ℐ)))
+                                    (borrow_mut iter))
+                                  |)
+                                |))
+                                [
+                                  fun
+                                      (γ :
+                                        M.Val
+                                          (core.option.Option.t
+                                            ((ref T) * (ref T)))) =>
+                                    match M.read (| γ |) with
+                                    | core.option.Option.None =>
+                                      M.alloc (|
+                                        (never_to_any (B := unit)) (|
+                                          M.read (| M.break (||) |)
+                                        |)
                                       |)
-                                    |)
-                                  | _ => M.break_match(||)
-                                  end :
-                                  M.Val unit;
-                                fun
-                                    (γ :
-                                      M.Val
-                                        (core.option.Option.t
-                                          ((ref T) * (ref T)))) =>
-                                  match M.read (| γ |) with
-                                  | core.option.Option.Some _ =>
-                                    let γ0_0 :=
-                                      core.option.Option.Get_Some_0 γ in
-                                    match M.read (| γ0_0 |) with
-                                    | (_, _) =>
-                                      let γ1_0 := Tuple.Access.left γ0_0 in
-                                      let γ1_1 := Tuple.Access.right γ0_0 in
-                                      let ai := M.copy (| γ1_0 |) in
-                                      let bi := M.copy (| γ1_1 |) in
-                                      let _ : M.Val unit :=
-                                        let β : M.Val u8.t := x in
-                                        assign (|
-                                          β,
-                                          BinOp.Pure.bit_and
-                                            (M.read (| β |))
-                                            (M.call (|(subtle.Choice.t::["unwrap_u8"]
-                                              (borrow
-                                                (M.alloc (|
-                                                  M.call (|(ltac:(M.get_method (fun ℐ =>
-                                                      subtle.ConstantTimeEq.ct_eq
-                                                        (Self := T)
-                                                        (Trait := ℐ)))
-                                                    (M.read (| ai |))
-                                                    (M.read (| bi |)))
-                                                  |)
-                                                |))))
-                                            |))
-                                        |) in
-                                      M.alloc (| tt |)
-                                    end
-                                  | _ => M.break_match(||)
-                                  end :
-                                  M.Val unit
-                              ]) in
-                        M.alloc (| tt |))) :
-                      M.Val unit
-                  ])) in
-          M.alloc (|
-            M.call (|(ltac:(M.get_method (fun ℐ =>
-                core.convert.Into.into
-                  (Self := u8.t)
-                  (T := subtle.Choice.t)
-                  (Trait := ℐ)))
-              (M.read (| x |)))
+                                    | _ => M.break_match(||)
+                                    end :
+                                    M.Val unit;
+                                  fun
+                                      (γ :
+                                        M.Val
+                                          (core.option.Option.t
+                                            ((ref T) * (ref T)))) =>
+                                    match M.read (| γ |) with
+                                    | core.option.Option.Some _ =>
+                                      let γ0_0 :=
+                                        core.option.Option.Get_Some_0 γ in
+                                      match M.read (| γ0_0 |) with
+                                      | (_, _) =>
+                                        let γ1_0 := Tuple.Access.left γ0_0 in
+                                        let γ1_1 := Tuple.Access.right γ0_0 in
+                                        let ai := M.copy (| γ1_0 |) in
+                                        let bi := M.copy (| γ1_1 |) in
+                                        let _ : M.Val unit :=
+                                          let β : M.Val u8.t := x in
+                                          assign (|
+                                            β,
+                                            BinOp.Pure.bit_and
+                                              (M.read (| β |))
+                                              (M.call (|(subtle.Choice.t::["unwrap_u8"]
+                                                (borrow
+                                                  (M.alloc (|
+                                                    M.call (|(ltac:(M.get_method (fun ℐ =>
+                                                        subtle.ConstantTimeEq.ct_eq
+                                                          (Self := T)
+                                                          (Trait := ℐ)))
+                                                      (M.read (| ai |))
+                                                      (M.read (| bi |)))
+                                                    |)
+                                                  |))))
+                                              |))
+                                          |) in
+                                        M.alloc (| tt |)
+                                      end
+                                    | _ => M.break_match(||)
+                                    end :
+                                    M.Val unit
+                                ]) in
+                          M.alloc (| tt |)))) :
+                        M.Val unit
+                    ])) in
+            M.alloc (|
+              M.call (|(ltac:(M.get_method (fun ℐ =>
+                  core.convert.Into.into
+                    (Self := u8.t)
+                    (T := subtle.Choice.t)
+                    (Trait := ℐ)))
+                (M.read (| x |)))
+              |)
             |)
-          |)
-        |))
+          |)))
     ) : subtle.Choice.t)).
   
   Global Instance AssociatedFunction_ct_eq :
@@ -3702,8 +3707,8 @@ Section Impl_subtle_ConstantTimeGreater_for_u8_t.
           |) in
         let pow : M.Val i32.t := M.alloc (| (Integer.of_Z 1) : i32.t |) in
         let _ : M.Val unit :=
-          M.loop
-            (if
+          ltac: (M.monadic_loop (
+            if
               M.read (|
                 use
                   (M.alloc (|
@@ -3732,20 +3737,21 @@ Section Impl_subtle_ConstantTimeGreater_for_u8_t.
                   M.read (|
                     let _ : M.Val unit :=
                       M.alloc (|
-                        (never_to_any (B := unit)) (| M.read (| M.break |) |)
+                        (never_to_any (B := unit)) (| M.read (| M.break (||) |)
+                        |)
                       |) in
                     M.alloc (| tt |)
                   |)
                 |)
-              |)) in
+              |))) in
         let bit : M.Val u8.t :=
           M.alloc (|
             BinOp.Pure.bit_and (M.read (| gtb |)) (UnOp.not (M.read (| ltb |)))
           |) in
         let pow : M.Val i32.t := M.alloc (| (Integer.of_Z 1) : i32.t |) in
         let _ : M.Val unit :=
-          M.loop
-            (if
+          ltac: (M.monadic_loop (
+            if
               M.read (|
                 use
                   (M.alloc (|
@@ -3774,12 +3780,13 @@ Section Impl_subtle_ConstantTimeGreater_for_u8_t.
                   M.read (|
                     let _ : M.Val unit :=
                       M.alloc (|
-                        (never_to_any (B := unit)) (| M.read (| M.break |) |)
+                        (never_to_any (B := unit)) (| M.read (| M.break (||) |)
+                        |)
                       |) in
                     M.alloc (| tt |)
                   |)
                 |)
-              |)) in
+              |))) in
         M.alloc (|
           M.call (|(ltac:(M.get_method (fun ℐ =>
               core.convert.From.from
@@ -3872,8 +3879,8 @@ Section Impl_subtle_ConstantTimeGreater_for_u16_t.
           |) in
         let pow : M.Val i32.t := M.alloc (| (Integer.of_Z 1) : i32.t |) in
         let _ : M.Val unit :=
-          M.loop
-            (if
+          ltac: (M.monadic_loop (
+            if
               M.read (|
                 use
                   (M.alloc (|
@@ -3902,20 +3909,21 @@ Section Impl_subtle_ConstantTimeGreater_for_u16_t.
                   M.read (|
                     let _ : M.Val unit :=
                       M.alloc (|
-                        (never_to_any (B := unit)) (| M.read (| M.break |) |)
+                        (never_to_any (B := unit)) (| M.read (| M.break (||) |)
+                        |)
                       |) in
                     M.alloc (| tt |)
                   |)
                 |)
-              |)) in
+              |))) in
         let bit : M.Val u16.t :=
           M.alloc (|
             BinOp.Pure.bit_and (M.read (| gtb |)) (UnOp.not (M.read (| ltb |)))
           |) in
         let pow : M.Val i32.t := M.alloc (| (Integer.of_Z 1) : i32.t |) in
         let _ : M.Val unit :=
-          M.loop
-            (if
+          ltac: (M.monadic_loop (
+            if
               M.read (|
                 use
                   (M.alloc (|
@@ -3944,12 +3952,13 @@ Section Impl_subtle_ConstantTimeGreater_for_u16_t.
                   M.read (|
                     let _ : M.Val unit :=
                       M.alloc (|
-                        (never_to_any (B := unit)) (| M.read (| M.break |) |)
+                        (never_to_any (B := unit)) (| M.read (| M.break (||) |)
+                        |)
                       |) in
                     M.alloc (| tt |)
                   |)
                 |)
-              |)) in
+              |))) in
         M.alloc (|
           M.call (|(ltac:(M.get_method (fun ℐ =>
               core.convert.From.from
@@ -4038,8 +4047,8 @@ Section Impl_subtle_ConstantTimeGreater_for_u32_t.
           |) in
         let pow : M.Val i32.t := M.alloc (| (Integer.of_Z 1) : i32.t |) in
         let _ : M.Val unit :=
-          M.loop
-            (if
+          ltac: (M.monadic_loop (
+            if
               M.read (|
                 use
                   (M.alloc (|
@@ -4068,20 +4077,21 @@ Section Impl_subtle_ConstantTimeGreater_for_u32_t.
                   M.read (|
                     let _ : M.Val unit :=
                       M.alloc (|
-                        (never_to_any (B := unit)) (| M.read (| M.break |) |)
+                        (never_to_any (B := unit)) (| M.read (| M.break (||) |)
+                        |)
                       |) in
                     M.alloc (| tt |)
                   |)
                 |)
-              |)) in
+              |))) in
         let bit : M.Val u32.t :=
           M.alloc (|
             BinOp.Pure.bit_and (M.read (| gtb |)) (UnOp.not (M.read (| ltb |)))
           |) in
         let pow : M.Val i32.t := M.alloc (| (Integer.of_Z 1) : i32.t |) in
         let _ : M.Val unit :=
-          M.loop
-            (if
+          ltac: (M.monadic_loop (
+            if
               M.read (|
                 use
                   (M.alloc (|
@@ -4110,12 +4120,13 @@ Section Impl_subtle_ConstantTimeGreater_for_u32_t.
                   M.read (|
                     let _ : M.Val unit :=
                       M.alloc (|
-                        (never_to_any (B := unit)) (| M.read (| M.break |) |)
+                        (never_to_any (B := unit)) (| M.read (| M.break (||) |)
+                        |)
                       |) in
                     M.alloc (| tt |)
                   |)
                 |)
-              |)) in
+              |))) in
         M.alloc (|
           M.call (|(ltac:(M.get_method (fun ℐ =>
               core.convert.From.from
@@ -4204,8 +4215,8 @@ Section Impl_subtle_ConstantTimeGreater_for_u64_t.
           |) in
         let pow : M.Val i32.t := M.alloc (| (Integer.of_Z 1) : i32.t |) in
         let _ : M.Val unit :=
-          M.loop
-            (if
+          ltac: (M.monadic_loop (
+            if
               M.read (|
                 use
                   (M.alloc (|
@@ -4234,20 +4245,21 @@ Section Impl_subtle_ConstantTimeGreater_for_u64_t.
                   M.read (|
                     let _ : M.Val unit :=
                       M.alloc (|
-                        (never_to_any (B := unit)) (| M.read (| M.break |) |)
+                        (never_to_any (B := unit)) (| M.read (| M.break (||) |)
+                        |)
                       |) in
                     M.alloc (| tt |)
                   |)
                 |)
-              |)) in
+              |))) in
         let bit : M.Val u64.t :=
           M.alloc (|
             BinOp.Pure.bit_and (M.read (| gtb |)) (UnOp.not (M.read (| ltb |)))
           |) in
         let pow : M.Val i32.t := M.alloc (| (Integer.of_Z 1) : i32.t |) in
         let _ : M.Val unit :=
-          M.loop
-            (if
+          ltac: (M.monadic_loop (
+            if
               M.read (|
                 use
                   (M.alloc (|
@@ -4276,12 +4288,13 @@ Section Impl_subtle_ConstantTimeGreater_for_u64_t.
                   M.read (|
                     let _ : M.Val unit :=
                       M.alloc (|
-                        (never_to_any (B := unit)) (| M.read (| M.break |) |)
+                        (never_to_any (B := unit)) (| M.read (| M.break (||) |)
+                        |)
                       |) in
                     M.alloc (| tt |)
                   |)
                 |)
-              |)) in
+              |))) in
         M.alloc (|
           M.call (|(ltac:(M.get_method (fun ℐ =>
               core.convert.From.from

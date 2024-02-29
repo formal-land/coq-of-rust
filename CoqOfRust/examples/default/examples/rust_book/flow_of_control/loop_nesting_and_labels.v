@@ -27,8 +27,8 @@ Definition main : M unit :=
   ltac:(M.monadic ((
     M.read (|
       let _ : M.Val unit :=
-        M.loop
-          (let _ : M.Val unit :=
+        ltac: (M.monadic_loop (
+          let _ : M.Val unit :=
             let _ : M.Val unit :=
               M.alloc (|
                 M.call (|(std.io.stdio._print
@@ -48,8 +48,8 @@ Definition main : M unit :=
             M.alloc (|
               (never_to_any (B := unit)) (|
                 M.read (|
-                  M.loop
-                    (let _ : M.Val unit :=
+                  ltac: (M.monadic_loop (
+                    let _ : M.Val unit :=
                       let _ : M.Val unit :=
                         M.alloc (|
                           M.call (|(std.io.stdio._print
@@ -68,7 +68,7 @@ Definition main : M unit :=
                           |)
                         |) in
                       M.alloc (| tt |) in
-                    M.break)
+                    M.break (||)))
                 |)
               |)
             |) in
@@ -91,7 +91,7 @@ Definition main : M unit :=
                 |)
               |) in
             M.alloc (| tt |) in
-          M.alloc (| tt |)) in
+          M.alloc (| tt |))) in
       let _ : M.Val unit :=
         let _ : M.Val unit :=
           M.alloc (|

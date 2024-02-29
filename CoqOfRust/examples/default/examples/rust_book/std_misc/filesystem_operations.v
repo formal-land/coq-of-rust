@@ -18,124 +18,128 @@ Definition cat
     let path := M.alloc (| path |) in
     let return_ :=
       M.return_ (R := ltac:(std.io.error.Result alloc.string.String.t)) in
-    M.catch_return
-      (M.read (|
-        let f : M.Val std.fs.File.t :=
-          M.copy (|
-            ltac:
-              (M.monadic_match_operator
-                (M.alloc (|
-                  M.call (|(ltac:(M.get_method (fun ℐ =>
-                      core.ops.try_trait.Try.branch
-                        (Self :=
-                          core.result.Result.t
-                            std.fs.File.t
-                            std.io.error.Error.t)
-                        (Trait := ℐ)))
-                    (M.call (|(std.fs.File.t::["open"] (M.read (| path |))) |)))
-                  |)
-                |))
-                [
-                  fun
-                      (γ :
-                        M.Val
-                          (core.ops.control_flow.ControlFlow.t
-                            (core.result.Result.t
-                              core.convert.Infallible.t
+    ltac:
+      (M.monadic_catch_return
+        (M.read (|
+          let f : M.Val std.fs.File.t :=
+            M.copy (|
+              ltac:
+                (M.monadic_match_operator
+                  (M.alloc (|
+                    M.call (|(ltac:(M.get_method (fun ℐ =>
+                        core.ops.try_trait.Try.branch
+                          (Self :=
+                            core.result.Result.t
+                              std.fs.File.t
                               std.io.error.Error.t)
-                            std.fs.File.t)) =>
-                    match M.read (| γ |) with
-                    | core.ops.control_flow.ControlFlow.Break _ =>
-                      let γ0_0 :=
-                        core.ops.control_flow.ControlFlow.Get_Break_0 γ in
-                      let residual := M.copy (| γ0_0 |) in
-                      M.alloc (|
-                        (never_to_any (B := std.fs.File.t)) (|
-                          M.read (|
-                            return_
-                              (M.call (|(ltac:(M.get_method (fun ℐ =>
-                                  core.ops.try_trait.FromResidual.from_residual
-                                    (Self :=
-                                      core.result.Result.t
-                                        alloc.string.String.t
-                                        std.io.error.Error.t)
-                                    (R :=
-                                      core.result.Result.t
-                                        core.convert.Infallible.t
-                                        std.io.error.Error.t)
-                                    (Trait := ℐ)))
-                                (M.read (| residual |)))
-                              |))
+                          (Trait := ℐ)))
+                      (M.call (|(std.fs.File.t::["open"] (M.read (| path |)))
+                      |)))
+                    |)
+                  |))
+                  [
+                    fun
+                        (γ :
+                          M.Val
+                            (core.ops.control_flow.ControlFlow.t
+                              (core.result.Result.t
+                                core.convert.Infallible.t
+                                std.io.error.Error.t)
+                              std.fs.File.t)) =>
+                      match M.read (| γ |) with
+                      | core.ops.control_flow.ControlFlow.Break _ =>
+                        let γ0_0 :=
+                          core.ops.control_flow.ControlFlow.Get_Break_0 γ in
+                        let residual := M.copy (| γ0_0 |) in
+                        M.alloc (|
+                          (never_to_any (B := std.fs.File.t)) (|
+                            M.read (|
+                              return_
+                                (|
+                                  M.call (|(ltac:(M.get_method (fun ℐ =>
+                                      core.ops.try_trait.FromResidual.from_residual
+                                        (Self :=
+                                          core.result.Result.t
+                                            alloc.string.String.t
+                                            std.io.error.Error.t)
+                                        (R :=
+                                          core.result.Result.t
+                                            core.convert.Infallible.t
+                                            std.io.error.Error.t)
+                                        (Trait := ℐ)))
+                                    (M.read (| residual |)))
+                                  |)
+                                |)
+                            |)
                           |)
                         |)
-                      |)
-                    | _ => M.break_match(||)
-                    end :
-                    M.Val std.fs.File.t;
-                  fun
-                      (γ :
-                        M.Val
-                          (core.ops.control_flow.ControlFlow.t
-                            (core.result.Result.t
-                              core.convert.Infallible.t
-                              std.io.error.Error.t)
-                            std.fs.File.t)) =>
-                    match M.read (| γ |) with
-                    | core.ops.control_flow.ControlFlow.Continue _ =>
-                      let γ0_0 :=
-                        core.ops.control_flow.ControlFlow.Get_Continue_0 γ in
-                      let val := M.copy (| γ0_0 |) in
-                      val
-                    | _ => M.break_match(||)
-                    end :
-                    M.Val std.fs.File.t
-                ])
-          |) in
-        let s : M.Val alloc.string.String.t :=
-          M.alloc (| M.call (|alloc.string.String.t::["new"] |) |) in
-        ltac:
-          (M.monadic_match_operator
-            (M.alloc (|
-              M.call (|(ltac:(M.get_method (fun ℐ =>
-                  std.io.Read.read_to_string
-                    (Self := std.fs.File.t)
-                    (Trait := ℐ)))
-                (borrow_mut f)
-                (borrow_mut s))
-              |)
-            |))
-            [
-              fun
-                  (γ :
-                    M.Val
-                      (core.result.Result.t usize.t std.io.error.Error.t)) =>
-                match M.read (| γ |) with
-                | core.result.Result.Ok _ =>
-                  let γ0_0 := core.result.Result.Get_Ok_0 γ in
-                  M.alloc (| core.result.Result.Ok (M.read (| s |)) |)
-                | _ => M.break_match(||)
-                end :
-                M.Val
-                  (core.result.Result.t
-                    alloc.string.String.t
-                    std.io.error.Error.t);
-              fun
-                  (γ :
-                    M.Val
-                      (core.result.Result.t usize.t std.io.error.Error.t)) =>
-                match M.read (| γ |) with
-                | core.result.Result.Err _ =>
-                  let γ0_0 := core.result.Result.Get_Err_0 γ in
-                  let e := M.copy (| γ0_0 |) in
-                  M.alloc (| core.result.Result.Err (M.read (| e |)) |)
-                | _ => M.break_match(||)
-                end :
-                M.Val
-                  (core.result.Result.t
-                    alloc.string.String.t
-                    std.io.error.Error.t)
-            ])
-      |))
+                      | _ => M.break_match(||)
+                      end :
+                      M.Val std.fs.File.t;
+                    fun
+                        (γ :
+                          M.Val
+                            (core.ops.control_flow.ControlFlow.t
+                              (core.result.Result.t
+                                core.convert.Infallible.t
+                                std.io.error.Error.t)
+                              std.fs.File.t)) =>
+                      match M.read (| γ |) with
+                      | core.ops.control_flow.ControlFlow.Continue _ =>
+                        let γ0_0 :=
+                          core.ops.control_flow.ControlFlow.Get_Continue_0 γ in
+                        let val := M.copy (| γ0_0 |) in
+                        val
+                      | _ => M.break_match(||)
+                      end :
+                      M.Val std.fs.File.t
+                  ])
+            |) in
+          let s : M.Val alloc.string.String.t :=
+            M.alloc (| M.call (|alloc.string.String.t::["new"] |) |) in
+          ltac:
+            (M.monadic_match_operator
+              (M.alloc (|
+                M.call (|(ltac:(M.get_method (fun ℐ =>
+                    std.io.Read.read_to_string
+                      (Self := std.fs.File.t)
+                      (Trait := ℐ)))
+                  (borrow_mut f)
+                  (borrow_mut s))
+                |)
+              |))
+              [
+                fun
+                    (γ :
+                      M.Val
+                        (core.result.Result.t usize.t std.io.error.Error.t)) =>
+                  match M.read (| γ |) with
+                  | core.result.Result.Ok _ =>
+                    let γ0_0 := core.result.Result.Get_Ok_0 γ in
+                    M.alloc (| core.result.Result.Ok (M.read (| s |)) |)
+                  | _ => M.break_match(||)
+                  end :
+                  M.Val
+                    (core.result.Result.t
+                      alloc.string.String.t
+                      std.io.error.Error.t);
+                fun
+                    (γ :
+                      M.Val
+                        (core.result.Result.t usize.t std.io.error.Error.t)) =>
+                  match M.read (| γ |) with
+                  | core.result.Result.Err _ =>
+                    let γ0_0 := core.result.Result.Get_Err_0 γ in
+                    let e := M.copy (| γ0_0 |) in
+                    M.alloc (| core.result.Result.Err (M.read (| e |)) |)
+                  | _ => M.break_match(||)
+                  end :
+                  M.Val
+                    (core.result.Result.t
+                      alloc.string.String.t
+                      std.io.error.Error.t)
+              ])
+        |)))
   ) : ltac:(std.io.error.Result alloc.string.String.t))).
 
 (*
@@ -153,88 +157,91 @@ Definition echo
     let s := M.alloc (| s |) in
     let path := M.alloc (| path |) in
     let return_ := M.return_ (R := ltac:(std.io.error.Result unit)) in
-    M.catch_return
-      (M.read (|
-        let f : M.Val std.fs.File.t :=
-          M.copy (|
-            ltac:
-              (M.monadic_match_operator
-                (M.alloc (|
-                  M.call (|(ltac:(M.get_method (fun ℐ =>
-                      core.ops.try_trait.Try.branch
-                        (Self :=
-                          core.result.Result.t
-                            std.fs.File.t
-                            std.io.error.Error.t)
-                        (Trait := ℐ)))
-                    (M.call (|(std.fs.File.t::["create"] (M.read (| path |)))
-                    |)))
-                  |)
-                |))
-                [
-                  fun
-                      (γ :
-                        M.Val
-                          (core.ops.control_flow.ControlFlow.t
-                            (core.result.Result.t
-                              core.convert.Infallible.t
+    ltac:
+      (M.monadic_catch_return
+        (M.read (|
+          let f : M.Val std.fs.File.t :=
+            M.copy (|
+              ltac:
+                (M.monadic_match_operator
+                  (M.alloc (|
+                    M.call (|(ltac:(M.get_method (fun ℐ =>
+                        core.ops.try_trait.Try.branch
+                          (Self :=
+                            core.result.Result.t
+                              std.fs.File.t
                               std.io.error.Error.t)
-                            std.fs.File.t)) =>
-                    match M.read (| γ |) with
-                    | core.ops.control_flow.ControlFlow.Break _ =>
-                      let γ0_0 :=
-                        core.ops.control_flow.ControlFlow.Get_Break_0 γ in
-                      let residual := M.copy (| γ0_0 |) in
-                      M.alloc (|
-                        (never_to_any (B := std.fs.File.t)) (|
-                          M.read (|
-                            return_
-                              (M.call (|(ltac:(M.get_method (fun ℐ =>
-                                  core.ops.try_trait.FromResidual.from_residual
-                                    (Self :=
-                                      core.result.Result.t
-                                        unit
-                                        std.io.error.Error.t)
-                                    (R :=
-                                      core.result.Result.t
-                                        core.convert.Infallible.t
-                                        std.io.error.Error.t)
-                                    (Trait := ℐ)))
-                                (M.read (| residual |)))
-                              |))
+                          (Trait := ℐ)))
+                      (M.call (|(std.fs.File.t::["create"] (M.read (| path |)))
+                      |)))
+                    |)
+                  |))
+                  [
+                    fun
+                        (γ :
+                          M.Val
+                            (core.ops.control_flow.ControlFlow.t
+                              (core.result.Result.t
+                                core.convert.Infallible.t
+                                std.io.error.Error.t)
+                              std.fs.File.t)) =>
+                      match M.read (| γ |) with
+                      | core.ops.control_flow.ControlFlow.Break _ =>
+                        let γ0_0 :=
+                          core.ops.control_flow.ControlFlow.Get_Break_0 γ in
+                        let residual := M.copy (| γ0_0 |) in
+                        M.alloc (|
+                          (never_to_any (B := std.fs.File.t)) (|
+                            M.read (|
+                              return_
+                                (|
+                                  M.call (|(ltac:(M.get_method (fun ℐ =>
+                                      core.ops.try_trait.FromResidual.from_residual
+                                        (Self :=
+                                          core.result.Result.t
+                                            unit
+                                            std.io.error.Error.t)
+                                        (R :=
+                                          core.result.Result.t
+                                            core.convert.Infallible.t
+                                            std.io.error.Error.t)
+                                        (Trait := ℐ)))
+                                    (M.read (| residual |)))
+                                  |)
+                                |)
+                            |)
                           |)
                         |)
-                      |)
-                    | _ => M.break_match(||)
-                    end :
-                    M.Val std.fs.File.t;
-                  fun
-                      (γ :
-                        M.Val
-                          (core.ops.control_flow.ControlFlow.t
-                            (core.result.Result.t
-                              core.convert.Infallible.t
-                              std.io.error.Error.t)
-                            std.fs.File.t)) =>
-                    match M.read (| γ |) with
-                    | core.ops.control_flow.ControlFlow.Continue _ =>
-                      let γ0_0 :=
-                        core.ops.control_flow.ControlFlow.Get_Continue_0 γ in
-                      let val := M.copy (| γ0_0 |) in
-                      val
-                    | _ => M.break_match(||)
-                    end :
-                    M.Val std.fs.File.t
-                ])
-          |) in
-        M.alloc (|
-          M.call (|(ltac:(M.get_method (fun ℐ =>
-              std.io.Write.write_all (Self := std.fs.File.t) (Trait := ℐ)))
-            (borrow_mut f)
-            (M.call (|(str.t::["as_bytes"] (M.read (| s |))) |)))
+                      | _ => M.break_match(||)
+                      end :
+                      M.Val std.fs.File.t;
+                    fun
+                        (γ :
+                          M.Val
+                            (core.ops.control_flow.ControlFlow.t
+                              (core.result.Result.t
+                                core.convert.Infallible.t
+                                std.io.error.Error.t)
+                              std.fs.File.t)) =>
+                      match M.read (| γ |) with
+                      | core.ops.control_flow.ControlFlow.Continue _ =>
+                        let γ0_0 :=
+                          core.ops.control_flow.ControlFlow.Get_Continue_0 γ in
+                        let val := M.copy (| γ0_0 |) in
+                        val
+                      | _ => M.break_match(||)
+                      end :
+                      M.Val std.fs.File.t
+                  ])
+            |) in
+          M.alloc (|
+            M.call (|(ltac:(M.get_method (fun ℐ =>
+                std.io.Write.write_all (Self := std.fs.File.t) (Trait := ℐ)))
+              (borrow_mut f)
+              (M.call (|(str.t::["as_bytes"] (M.read (| s |))) |)))
+            |)
           |)
-        |)
-      |))
+        |)))
   ) : ltac:(std.io.error.Result unit))).
 
 (*
@@ -946,8 +953,8 @@ Definition main : M unit :=
                         [
                           fun (γ : M.Val std.fs.ReadDir.t) =>
                             (let iter := M.copy (| γ |) in
-                            M.loop
-                              (let _ : M.Val unit :=
+                            ltac: (M.monadic_loop (
+                              let _ : M.Val unit :=
                                 ltac:
                                   (M.monadic_match_operator
                                     (M.alloc (|
@@ -970,7 +977,7 @@ Definition main : M unit :=
                                         | core.option.Option.None =>
                                           M.alloc (|
                                             (never_to_any (B := unit)) (|
-                                              M.read (| M.break |)
+                                              M.read (| M.break (||) |)
                                             |)
                                           |)
                                         | _ => M.break_match(||)
@@ -1039,7 +1046,7 @@ Definition main : M unit :=
                                         end :
                                         M.Val unit
                                     ]) in
-                              M.alloc (| tt |))) :
+                              M.alloc (| tt |)))) :
                             M.Val unit
                         ]))
                 | _ => M.break_match(||)
