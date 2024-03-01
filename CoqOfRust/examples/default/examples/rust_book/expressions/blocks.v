@@ -24,83 +24,124 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
-  let* x : M.Val u32.t := M.alloc ((Integer.of_Z 5) : u32.t) in
-  let* y : M.Val u32.t :=
-    let* x_squared : M.Val u32.t :=
-      let* α0 : u32.t := M.read x in
-      let* α1 : u32.t := M.read x in
-      let* α2 : u32.t := BinOp.Panic.mul α0 α1 in
-      M.alloc α2 in
-    let* x_cube : M.Val u32.t :=
-      let* α0 : u32.t := M.read x_squared in
-      let* α1 : u32.t := M.read x in
-      let* α2 : u32.t := BinOp.Panic.mul α0 α1 in
-      M.alloc α2 in
-    let* α0 : u32.t := M.read x_cube in
-    let* α1 : u32.t := M.read x_squared in
-    let* α2 : u32.t := BinOp.Panic.add α0 α1 in
-    let* α3 : u32.t := M.read x in
-    let* α4 : u32.t := BinOp.Panic.add α2 α3 in
-    let* α0 : M.Val u32.t := M.alloc α4 in
-    M.copy α0 in
-  let* z : M.Val unit :=
-    let* _ : M.Val u32.t :=
-      let* α0 : u32.t := M.read x in
-      let* α1 : u32.t := BinOp.Panic.mul ((Integer.of_Z 2) : u32.t) α0 in
-      M.alloc α1 in
-    let* α0 : M.Val unit := M.alloc tt in
-    M.copy α0 in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "x is ") in
-      let* α1 : ref str.t := M.read (mk_str "
+Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [], [] =>
+    let* x : Ty.path "u32" := M.alloc ((Integer.of_Z 5) : Ty.path "u32") in
+    let* y : Ty.path "u32" :=
+      let* x_squared : Ty.path "u32" :=
+        let* α0 : Ty.path "u32" := M.read x in
+        let* α1 : Ty.path "u32" := M.read x in
+        let* α2 : Ty.path "u32" := BinOp.Panic.mul α0 α1 in
+        M.alloc α2 in
+      let* x_cube : Ty.path "u32" :=
+        let* α0 : Ty.path "u32" := M.read x_squared in
+        let* α1 : Ty.path "u32" := M.read x in
+        let* α2 : Ty.path "u32" := BinOp.Panic.mul α0 α1 in
+        M.alloc α2 in
+      let* α0 : Ty.path "u32" := M.read x_cube in
+      let* α1 : Ty.path "u32" := M.read x_squared in
+      let* α2 : Ty.path "u32" := BinOp.Panic.add α0 α1 in
+      let* α3 : Ty.path "u32" := M.read x in
+      let* α4 : Ty.path "u32" := BinOp.Panic.add α2 α3 in
+      let* α0 : Ty.path "u32" := M.alloc α4 in
+      M.copy α0 in
+    let* z : Ty.tuple :=
+      let* _ : Ty.path "u32" :=
+        let* α0 : Ty.path "u32" := M.read x in
+        let* α1 : Ty.path "u32" :=
+          BinOp.Panic.mul ((Integer.of_Z 2) : Ty.path "u32") α0 in
+        M.alloc α1 in
+      let* α0 : Ty.path "unit" := M.alloc tt in
+      M.copy α0 in
+    let* _ : Ty.tuple :=
+      let* _ : Ty.tuple :=
+        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+          M.read (mk_str "x is ") in
+        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+          M.read (mk_str "
 ") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow x)) in
-      let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
-      let* α5 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α4))) in
-      let* α6 : unit := M.call (std.io.stdio._print α5) in
-      M.alloc α6 in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "y is ") in
-      let* α1 : ref str.t := M.read (mk_str "
+        let* α2 :
+            Ty.apply
+              (Ty.path "array")
+              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
+          M.alloc [ α0; α1 ] in
+        let* α3 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+          M.call
+            ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_debug"]
+              (borrow x)) in
+        let* α4 :
+            Ty.apply
+              (Ty.path "array")
+              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
+          M.alloc [ α3 ] in
+        let* α5 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+          M.call
+            ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
+              (pointer_coercion "Unsize" (borrow α2))
+              (pointer_coercion "Unsize" (borrow α4))) in
+        let* α6 : Ty.tuple := M.call (std.io.stdio._print α5) in
+        M.alloc α6 in
+      M.alloc tt in
+    let* _ : Ty.tuple :=
+      let* _ : Ty.tuple :=
+        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+          M.read (mk_str "y is ") in
+        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+          M.read (mk_str "
 ") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow y)) in
-      let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
-      let* α5 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α4))) in
-      let* α6 : unit := M.call (std.io.stdio._print α5) in
-      M.alloc α6 in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "z is ") in
-      let* α1 : ref str.t := M.read (mk_str "
+        let* α2 :
+            Ty.apply
+              (Ty.path "array")
+              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
+          M.alloc [ α0; α1 ] in
+        let* α3 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+          M.call
+            ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_debug"]
+              (borrow y)) in
+        let* α4 :
+            Ty.apply
+              (Ty.path "array")
+              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
+          M.alloc [ α3 ] in
+        let* α5 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+          M.call
+            ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
+              (pointer_coercion "Unsize" (borrow α2))
+              (pointer_coercion "Unsize" (borrow α4))) in
+        let* α6 : Ty.tuple := M.call (std.io.stdio._print α5) in
+        M.alloc α6 in
+      M.alloc tt in
+    let* _ : Ty.tuple :=
+      let* _ : Ty.tuple :=
+        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+          M.read (mk_str "z is ") in
+        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+          M.read (mk_str "
 ") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow z)) in
-      let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
-      let* α5 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α4))) in
-      let* α6 : unit := M.call (std.io.stdio._print α5) in
-      M.alloc α6 in
-    M.alloc tt in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+        let* α2 :
+            Ty.apply
+              (Ty.path "array")
+              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
+          M.alloc [ α0; α1 ] in
+        let* α3 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+          M.call
+            ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_debug"]
+              (borrow z)) in
+        let* α4 :
+            Ty.apply
+              (Ty.path "array")
+              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
+          M.alloc [ α3 ] in
+        let* α5 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+          M.call
+            ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
+              (pointer_coercion "Unsize" (borrow α2))
+              (pointer_coercion "Unsize" (borrow α4))) in
+        let* α6 : Ty.tuple := M.call (std.io.stdio._print α5) in
+        M.alloc α6 in
+      M.alloc tt in
+    let* α0 : Ty.path "unit" := M.alloc tt in
+    M.read α0
+  | _, _ => M.impossible
+  end.

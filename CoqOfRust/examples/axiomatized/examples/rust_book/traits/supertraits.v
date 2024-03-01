@@ -4,7 +4,10 @@ Require Import CoqOfRust.CoqOfRust.
 Module  Person.
 Section Person.
   Class Trait (Self : Set) : Type := {
-    name : (ref Self) -> M alloc.string.String.t;
+    name :
+      Ty.function
+        [Ty.apply (Ty.path "ref") [Self]]
+        (Ty.apply (Ty.path "alloc::string::String") []);
   }.
   
 End Person.
@@ -13,7 +16,10 @@ End Person.
 Module  Student.
 Section Student.
   Class Trait (Self : Set) : Type := {
-    university : (ref Self) -> M alloc.string.String.t;
+    university :
+      Ty.function
+        [Ty.apply (Ty.path "ref") [Self]]
+        (Ty.apply (Ty.path "alloc::string::String") []);
   }.
   
 End Student.
@@ -22,7 +28,10 @@ End Student.
 Module  Programmer.
 Section Programmer.
   Class Trait (Self : Set) : Type := {
-    fav_language : (ref Self) -> M alloc.string.String.t;
+    fav_language :
+      Ty.function
+        [Ty.apply (Ty.path "ref") [Self]]
+        (Ty.apply (Ty.path "alloc::string::String") []);
   }.
   
 End Programmer.
@@ -31,7 +40,10 @@ End Programmer.
 Module  CompSciStudent.
 Section CompSciStudent.
   Class Trait (Self : Set) : Type := {
-    git_username : (ref Self) -> M alloc.string.String.t;
+    git_username :
+      Ty.function
+        [Ty.apply (Ty.path "ref") [Self]]
+        (Ty.apply (Ty.path "alloc::string::String") []);
   }.
   
 End CompSciStudent.
@@ -39,7 +51,8 @@ End CompSciStudent.
 
 Parameter comp_sci_student_greeting :
     forall {DynT : Set},
-    (ref DynT) -> M alloc.string.String.t.
+    (Ty.apply (Ty.path "ref") [DynT]) ->
+      Ty.apply (Ty.path "alloc::string::String") [].
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M unit.
+Parameter main : Ty.path "unit".

@@ -225,15 +225,21 @@ impl<'a, A> From<&'a FieldWithDefault<Rc<A>>> for Option<&'a A> {
 }
 
 /// compiles a function with the given signature and body
-fn compile_fn_sig_and_body(
-    env: &mut Env,
+fn compile_fn_sig_and_body<'a>(
+    tcx: &TyCtxt<'a>,
+    env: &mut Env<'a>,
     fn_sig_and_body: &HirFnSigAndBody,
     default: &str,
     is_axiom: bool,
 ) -> Rc<FnSigAndBody> {
     let decl = fn_sig_and_body.fn_sig.decl;
-    let args = get_args(env, fn_sig_and_body.body, decl.inputs, default);
-    let ret_ty = compile_fn_ret_ty(env, &decl.output);
+    let args = get_args(tcx, env, fn_sig_and_body.body, decl.inputs, default);
+    let ret_ty = compile_fn_ret_ty(
+        tcx,
+        env,
+        &fn_sig_and_body.body.value.hir_id.owner.def_id,
+        &decl.output,
+    );
     let body = compile_function_body(env, &args, fn_sig_and_body.body, ret_ty.clone(), is_axiom);
 
     Rc::new(FnSigAndBody { args, ret_ty, body })
@@ -344,9 +350,9 @@ fn get_item_ids_for_parent(tcx: &TyCtxt, expected_parent: rustc_hir::def_id::Def
         .collect()
 }
 
-fn compile_top_level_item_without_local_items(
-    tcx: &TyCtxt,
-    env: &mut Env,
+fn compile_top_level_item_without_local_items<'a>(
+    tcx: &TyCtxt<'a>,
+    env: &mut Env<'a>,
     item: &Item,
 ) -> Vec<Rc<TopLevelItem>> {
     let name = to_valid_coq_name(item.ident.name.as_str());
@@ -369,7 +375,7 @@ fn compile_top_level_item_without_local_items(
                 let value = compile_hir_id(env, body_id.hir_id);
                 Some(value)
             };
-            let ty = compile_type(env, ty);
+            let ty = compile_type(tcx, env, &item.owner_id.def_id, ty);
 
             let (value, ty) = if let ItemKind::Static(_, mutability, _) = &item.kind {
                 (
@@ -396,6 +402,7 @@ fn compile_top_level_item_without_local_items(
                 name,
                 snippet,
                 definition: FunDefinition::compile(
+                    tcx,
                     env,
                     generics,
                     &fn_sig_and_body,
@@ -431,12 +438,12 @@ fn compile_top_level_item_without_local_items(
         ItemKind::GlobalAsm(_) => vec![Rc::new(TopLevelItem::Error("GlobalAsm".to_string()))],
         ItemKind::TyAlias(ty, generics) => vec![Rc::new(TopLevelItem::TypeAlias {
             name,
-            ty: compile_type(env, ty),
-            ty_params: get_ty_params_names(env, generics),
+            ty: compile_type(tcx, env, &item.owner_id.def_id, ty),
+            ty_params: get_ty_params_names(tcx, env, generics),
         })],
         ItemKind::OpaqueTy(_) => vec![Rc::new(TopLevelItem::Error("OpaqueTy".to_string()))],
         ItemKind::Enum(enum_def, generics) => {
-            let ty_params = get_ty_params(env, generics);
+            let ty_params = get_ty_params(tcx, env, &item.owner_id.def_id, generics);
             vec![Rc::new(TopLevelItem::TypeEnum {
                 name,
                 ty_params,
@@ -450,7 +457,10 @@ fn compile_top_level_item_without_local_items(
                                 let fields = fields
                                     .iter()
                                     .map(|field| {
-                                        (field.ident.to_string(), compile_type(env, field.ty))
+                                        (
+                                            field.ident.to_string(),
+                                            compile_type(tcx, env, &item.owner_id.def_id, field.ty),
+                                        )
                                     })
                                     .collect();
                                 VariantItem::Struct { fields }
@@ -458,7 +468,9 @@ fn compile_top_level_item_without_local_items(
                             VariantData::Tuple(fields, _, _) => {
                                 let tys = fields
                                     .iter()
-                                    .map(|field| compile_type(env, field.ty))
+                                    .map(|field| {
+                                        compile_type(tcx, env, &item.owner_id.def_id, field.ty)
+                                    })
                                     .collect();
                                 VariantItem::Tuple { tys }
                             }
@@ -487,7 +499,7 @@ fn compile_top_level_item_without_local_items(
         }
         ItemKind::Struct(body, generics) => {
             let is_dead_code = check_dead_code_lint_in_attributes(tcx, item);
-            let ty_params = get_ty_params(env, generics);
+            let ty_params = get_ty_params(tcx, env, &item.owner_id.def_id, generics);
 
             match body {
                 VariantData::Struct(fields, _) => {
@@ -499,7 +511,7 @@ fn compile_top_level_item_without_local_items(
                         .map(|field| {
                             (
                                 to_valid_coq_name(field.ident.name.as_str()),
-                                compile_type(env, field.ty),
+                                compile_type(tcx, env, &item.owner_id.def_id, field.ty),
                             )
                         })
                         .collect();
@@ -516,7 +528,7 @@ fn compile_top_level_item_without_local_items(
                         ty_params,
                         fields: fields
                             .iter()
-                            .map(|field| compile_type(env, field.ty))
+                            .map(|field| compile_type(tcx, env, &item.owner_id.def_id, field.ty))
                             .collect(),
                     })]
                 }
@@ -529,12 +541,12 @@ fn compile_top_level_item_without_local_items(
         ItemKind::Trait(_, _, generics, _, items) => {
             vec![Rc::new(TopLevelItem::Trait {
                 name,
-                ty_params: get_ty_params(env, generics),
+                ty_params: get_ty_params(tcx, env, &item.owner_id.def_id, generics),
                 body: items
                     .iter()
                     .map(|item| {
                         let item = tcx.hir().trait_item(item.id);
-                        let ty_params = get_ty_params_names(env, item.generics);
+                        let ty_params = get_ty_params_names(tcx, env, item.generics);
                         let body = compile_trait_item_body(tcx, env, ty_params, item);
                         (to_valid_coq_name(item.ident.name.as_str()), body)
                     })
@@ -552,8 +564,8 @@ fn compile_top_level_item_without_local_items(
             ..
         }) => {
             let is_dead_code = check_dead_code_lint_in_attributes(tcx, item);
-            let generic_tys = get_ty_params_names(env, generics);
-            let self_ty = compile_type(env, self_ty);
+            let generic_tys = get_ty_params_names(tcx, env, generics);
+            let self_ty = compile_type(tcx, env, &item.owner_id.def_id, self_ty);
             let mut items: Vec<ImplItemRef> = items.to_vec();
             let context = get_full_name(tcx, item.hir_id());
             reorder_definitions_inplace(tcx, env, &context, &mut items);
@@ -620,7 +632,9 @@ fn compile_top_level_item_without_local_items(
                         self_ty,
                         of_trait: compile_path(env, trait_ref.path),
                         trait_ty_params: get_ty_params_with_default_status(
+                            tcx,
                             env,
+                            &item.owner_id.def_id,
                             trait_generics,
                             trait_ref.path,
                         ),
@@ -652,7 +666,11 @@ fn compile_top_level_item_without_local_items(
 /// - Method [body] allows retrievient the body of an identifier [body_id] in an
 ///   hir environment [hir]
 // @TODO: the argument `tcx` is included in `env` and should thus be removed
-fn compile_top_level_item(tcx: &TyCtxt, env: &mut Env, item: &Item) -> Vec<Rc<TopLevelItem>> {
+fn compile_top_level_item<'a>(
+    tcx: &TyCtxt<'a>,
+    env: &mut Env<'a>,
+    item: &Item,
+) -> Vec<Rc<TopLevelItem>> {
     if env.axiomatize && !env.axiomatize_public {
         let is_public = is_top_level_item_public(tcx, env, item);
         if !is_public {
@@ -700,9 +718,9 @@ fn get_hir_fn_sig_and_body<'a>(
 }
 
 /// compiles a list of references to items
-fn compile_impl_item_refs(
-    tcx: &TyCtxt,
-    env: &mut Env,
+fn compile_impl_item_refs<'a>(
+    tcx: &TyCtxt<'a>,
+    env: &mut Env<'a>,
     item_refs: &[ImplItemRef],
     is_dead_code: bool,
 ) -> Vec<Rc<ImplItem>> {
@@ -713,9 +731,9 @@ fn compile_impl_item_refs(
 }
 
 /// compiles an item
-fn compile_impl_item(
-    tcx: &TyCtxt,
-    env: &mut Env,
+fn compile_impl_item<'a>(
+    tcx: &TyCtxt<'a>,
+    env: &mut Env<'a>,
     item: &rustc_hir::ImplItem,
     is_dead_code: bool,
 ) -> Rc<ImplItem> {
@@ -724,7 +742,7 @@ fn compile_impl_item(
     let is_axiom = check_coq_axiom_lint_in_attributes(tcx, item);
     let kind = match &item.kind {
         rustc_hir::ImplItemKind::Const(ty, body_id) => {
-            let ty = compile_type(env, ty);
+            let ty = compile_type(tcx, env, &item.owner_id.def_id, ty);
             let body = if env.axiomatize {
                 None
             } else {
@@ -738,6 +756,7 @@ fn compile_impl_item(
         }
         rustc_hir::ImplItemKind::Fn(fn_sig, body_id) => Rc::new(ImplItemKind::Definition {
             definition: FunDefinition::compile(
+                tcx,
                 env,
                 item.generics,
                 &get_hir_fn_sig_and_body(tcx, fn_sig, body_id),
@@ -747,7 +766,7 @@ fn compile_impl_item(
             ),
         }),
         rustc_hir::ImplItemKind::Type(ty) => Rc::new(ImplItemKind::Type {
-            ty: compile_type(env, ty),
+            ty: compile_type(tcx, env, &item.owner_id.def_id, ty),
         }),
     };
     Rc::new(ImplItem {
@@ -813,14 +832,21 @@ fn compile_function_body(
 }
 
 /// returns a list of pairs of argument names and their types
-fn get_args(
-    env: &Env,
+fn get_args<'a>(
+    tcx: &TyCtxt<'a>,
+    env: &Env<'a>,
     body: &rustc_hir::Body,
     inputs: &[rustc_hir::Ty],
     default: &str,
 ) -> Vec<(String, Rc<CoqType>)> {
+    let local_def_id = body.value.hir_id.owner.def_id;
+
     get_arg_names(body, default)
-        .zip(inputs.iter().map(|ty| compile_type(env, ty)))
+        .zip(
+            inputs
+                .iter()
+                .map(|ty| compile_type(tcx, env, &local_def_id, ty)),
+        )
         .collect()
 }
 
@@ -836,10 +862,11 @@ fn get_arg_names<'a>(
 }
 
 /// filters out type parameters and compiles them with the given function
-fn compile_ty_params<T>(
-    env: &Env,
+fn compile_ty_params<'a, T>(
+    tcx: &TyCtxt<'a>,
+    env: &Env<'a>,
     generics: &rustc_hir::Generics,
-    f: impl Fn(&Env, String, Option<&Ty>) -> T,
+    f: impl Fn(&TyCtxt<'a>, &Env<'a>, String, Option<&Ty>) -> T,
 ) -> Vec<T> {
     generics
         .params
@@ -847,7 +874,7 @@ fn compile_ty_params<T>(
         .filter_map(|param| match param.kind {
             // we ignore lifetimes
             GenericParamKind::Type { default, .. } => {
-                Some(f(env, param.name.ident().to_string(), default))
+                Some(f(tcx, env, param.name.ident().to_string(), default))
             }
             GenericParamKind::Lifetime { .. } | GenericParamKind::Const { .. } => None,
         })
@@ -855,23 +882,32 @@ fn compile_ty_params<T>(
 }
 
 /// extracts type parameters with their optional default value from the generics
-fn get_ty_params(env: &Env, generics: &rustc_hir::Generics) -> Vec<(String, Option<Rc<CoqType>>)> {
-    compile_ty_params(env, generics, |env, name, default| {
-        let default = default.map(|default| compile_type(env, default));
+fn get_ty_params<'a>(
+    tcx: &TyCtxt<'a>,
+    env: &Env<'a>,
+    local_def_id: &rustc_hir::def_id::LocalDefId,
+    generics: &rustc_hir::Generics,
+) -> Vec<(String, Option<Rc<CoqType>>)> {
+    compile_ty_params(tcx, env, generics, |tcx, env, name, default| {
+        let default = default.map(|default| compile_type(tcx, env, local_def_id, default));
         let name = to_valid_coq_name(&name);
         (name, default)
     })
 }
 
 /// extracts the names of type parameters from the generics
-fn get_ty_params_names(env: &Env, generics: &rustc_hir::Generics) -> Vec<String> {
-    compile_ty_params(env, generics, |_, name, _| to_valid_coq_name(&name))
+fn get_ty_params_names<'a>(
+    tcx: &TyCtxt<'a>,
+    env: &Env<'a>,
+    generics: &rustc_hir::Generics,
+) -> Vec<String> {
+    compile_ty_params(tcx, env, generics, |_, _, name, _| to_valid_coq_name(&name))
 }
 
 /// [compile_generic_bounds] compiles generic bounds in [compile_trait_item_body]
-fn compile_generic_bounds(
-    tcx: &TyCtxt,
-    env: &Env,
+fn compile_generic_bounds<'a>(
+    tcx: &TyCtxt<'a>,
+    env: &Env<'a>,
     generic_bounds: GenericBounds,
 ) -> Vec<Rc<TraitBound>> {
     generic_bounds
@@ -892,8 +928,10 @@ fn compile_generic_bounds(
 }
 
 /// computes the list of actual type parameters with their default status
-fn get_ty_params_with_default_status(
-    env: &Env,
+fn get_ty_params_with_default_status<'a>(
+    tcx: &TyCtxt<'a>,
+    env: &Env<'a>,
+    local_def_id: &rustc_hir::def_id::LocalDefId,
     generics: &rustc_middle::ty::Generics,
     path: &rustc_hir::Path,
 ) -> Vec<(String, Rc<TraitTyParamValue>)> {
@@ -902,7 +940,7 @@ fn get_ty_params_with_default_status(
     // part of the list of type parameters.
     type_params_name_and_default_status.remove(0);
 
-    let ty_params = compile_path_ty_params(env, path);
+    let ty_params = compile_path_ty_params(tcx, env, local_def_id, path);
     add_default_status_to_ty_params(&ty_params, &type_params_name_and_default_status)
 }
 
@@ -959,27 +997,27 @@ pub(crate) fn get_type_params_name_and_default_status(
 }
 
 /// [compile_trait_item_body] compiles the body of the trait item
-fn compile_trait_item_body(
-    tcx: &TyCtxt,
-    env: &mut Env,
+fn compile_trait_item_body<'a>(
+    tcx: &TyCtxt<'a>,
+    env: &mut Env<'a>,
     ty_params: Vec<String>,
     item: &rustc_hir::TraitItem,
 ) -> Rc<TraitItem> {
     match &item.kind {
         TraitItemKind::Const(ty, _) => Rc::new(TraitItem::Definition {
             ty_params,
-            ty: compile_type(env, ty),
+            ty: compile_type(tcx, env, &item.owner_id.def_id, ty),
         }),
         TraitItemKind::Fn(fn_sig, trait_fn) => match trait_fn {
             TraitFn::Required(_) => Rc::new(TraitItem::Definition {
                 ty_params,
-                ty: compile_fn_decl(env, fn_sig.decl),
+                ty: compile_fn_decl(tcx, env, &item.owner_id.def_id, fn_sig.decl),
             }),
             TraitFn::Provided(body_id) => {
                 let env_tcx = env.tcx;
                 let fn_sig_and_body = get_hir_fn_sig_and_body(&env_tcx, fn_sig, body_id);
                 let signature_and_body =
-                    compile_fn_sig_and_body(env, &fn_sig_and_body, "arg", false);
+                    compile_fn_sig_and_body(tcx, env, &fn_sig_and_body, "arg", false);
                 Rc::new(TraitItem::DefinitionWithDefault {
                     ty_params,
                     signature_and_body,
@@ -1282,8 +1320,9 @@ impl DynNameGen {
 
 impl FunDefinition {
     /// compiles a given function
-    fn compile(
-        env: &mut Env,
+    fn compile<'a>(
+        tcx: &TyCtxt<'a>,
+        env: &mut Env<'a>,
         generics: &rustc_hir::Generics,
         fn_sig_and_body: &HirFnSigAndBody,
         default: &str,
@@ -1292,13 +1331,13 @@ impl FunDefinition {
     ) -> Rc<Self> {
         let mut dyn_name_gen = DynNameGen::new("T".to_string());
         let FnSigAndBody { args, ret_ty, body } =
-            &*compile_fn_sig_and_body(env, fn_sig_and_body, default, is_axiom);
+            &*compile_fn_sig_and_body(tcx, env, fn_sig_and_body, default, is_axiom);
         let args = args.iter().fold(vec![], |result, (string, ty)| {
             let ty = dyn_name_gen.make_dyn_parm(ty.clone());
             [result, vec![(string.to_owned(), ty)]].concat()
         });
         let ty_params = [
-            get_ty_params_names(env, generics),
+            get_ty_params_names(tcx, env, generics),
             dyn_name_gen.get_type_parm_list(),
         ]
         .concat();
@@ -1631,11 +1670,17 @@ impl ImplItemKind {
 
 impl TraitBound {
     /// Get the generics for the trait
-    fn compile(tcx: &TyCtxt, env: &Env, ptraitref: &rustc_hir::PolyTraitRef) -> Rc<TraitBound> {
+    fn compile<'a>(
+        tcx: &TyCtxt<'a>,
+        env: &Env<'a>,
+        ptraitref: &rustc_hir::PolyTraitRef,
+    ) -> Rc<TraitBound> {
         Rc::new(TraitBound {
             name: compile_path(env, ptraitref.trait_ref.path),
             ty_params: get_ty_params_with_default_status(
+                tcx,
                 env,
+                &ptraitref.trait_ref.hir_ref_id.owner.def_id,
                 tcx.generics_of(ptraitref.trait_ref.trait_def_id().unwrap()),
                 ptraitref.trait_ref.path,
             ),

@@ -11,45 +11,70 @@ fn drink(beverage: &str) {
     println!("Some refreshing {} is all I need.", beverage);
 }
 *)
-Definition drink (beverage : ref str.t) : M unit :=
-  let* beverage := M.alloc beverage in
-  let* _ : M.Val unit :=
-    let* α0 : (ref (ref str.t)) -> (ref (ref str.t)) -> M bool.t :=
-      ltac:(M.get_method (fun ℐ =>
-        core.cmp.PartialEq.eq
-          (Self := ref str.t)
-          (Rhs := ref str.t)
-          (Trait := ℐ))) in
-    let* α1 : bool.t :=
-      M.call (α0 (borrow beverage) (borrow (mk_str "lemonade"))) in
-    let* α2 : M.Val bool.t := M.alloc α1 in
-    let* α3 : bool.t := M.read (use α2) in
-    if α3 then
-      let* α0 : ref str.t := M.read (mk_str "AAAaaaaa!!!!") in
-      let* α1 : never.t := M.call (std.panicking.begin_panic α0) in
-      let* α2 : unit := never_to_any α1 in
-      M.alloc α2
-    else
-      M.alloc tt in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "Some refreshing ") in
-      let* α1 : ref str.t := M.read (mk_str " is all I need.
+Definition drink (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [], [beverage] =>
+    let* beverage := M.alloc beverage in
+    let* _ : Ty.tuple :=
+      let* α0 :
+          Ty.function
+            [Ty.apply
+                (Ty.path "ref")
+                [Ty.apply (Ty.path "ref") [Ty.path "str"]];
+              Ty.apply
+                (Ty.path "ref")
+                [Ty.apply (Ty.path "ref") [Ty.path "str"]]]
+            (Ty.path "bool") :=
+        ltac:(M.get_method (fun ℐ =>
+          core.cmp.PartialEq.eq
+            (Self := Ty.apply (Ty.path "ref") [Ty.path "str"])
+            (Rhs := Ty.apply (Ty.path "ref") [Ty.path "str"])
+            (Trait := ℐ))) in
+      let* α1 : Ty.path "bool" :=
+        M.call (α0 (borrow beverage) (borrow (mk_str "lemonade"))) in
+      let* α2 : Ty.path "bool" := M.alloc α1 in
+      let* α3 : Ty.path "bool" := M.read (use α2) in
+      if α3 then
+        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+          M.read (mk_str "AAAaaaaa!!!!") in
+        let* α1 : Ty.path "never" := M.call (std.panicking.begin_panic α0) in
+        let* α2 : Ty.tuple := never_to_any α1 in
+        M.alloc α2
+      else
+        M.alloc tt in
+    let* _ : Ty.tuple :=
+      let* _ : Ty.tuple :=
+        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+          M.read (mk_str "Some refreshing ") in
+        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+          M.read (mk_str " is all I need.
 ") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow beverage)) in
-      let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
-      let* α5 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α4))) in
-      let* α6 : unit := M.call (std.io.stdio._print α5) in
-      M.alloc α6 in
-    M.alloc tt in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+        let* α2 :
+            Ty.apply
+              (Ty.path "array")
+              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
+          M.alloc [ α0; α1 ] in
+        let* α3 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+          M.call
+            ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_display"]
+              (borrow beverage)) in
+        let* α4 :
+            Ty.apply
+              (Ty.path "array")
+              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
+          M.alloc [ α3 ] in
+        let* α5 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+          M.call
+            ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
+              (pointer_coercion "Unsize" (borrow α2))
+              (pointer_coercion "Unsize" (borrow α4))) in
+        let* α6 : Ty.tuple := M.call (std.io.stdio._print α5) in
+        M.alloc α6 in
+      M.alloc tt in
+    let* α0 : Ty.path "unit" := M.alloc tt in
+    M.read α0
+  | _, _ => M.impossible
+  end.
 
 (*
 fn main() {
@@ -58,14 +83,20 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
-  let* _ : M.Val unit :=
-    let* α0 : ref str.t := M.read (mk_str "water") in
-    let* α1 : unit := M.call (panic.drink α0) in
-    M.alloc α1 in
-  let* _ : M.Val unit :=
-    let* α0 : ref str.t := M.read (mk_str "lemonade") in
-    let* α1 : unit := M.call (panic.drink α0) in
-    M.alloc α1 in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [], [] =>
+    let* _ : Ty.tuple :=
+      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+        M.read (mk_str "water") in
+      let* α1 : Ty.tuple := M.call (panic.drink α0) in
+      M.alloc α1 in
+    let* _ : Ty.tuple :=
+      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+        M.read (mk_str "lemonade") in
+      let* α1 : Ty.tuple := M.call (panic.drink α0) in
+      M.alloc α1 in
+    let* α0 : Ty.path "unit" := M.alloc tt in
+    M.read α0
+  | _, _ => M.impossible
+  end.

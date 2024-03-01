@@ -2,4 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M (core.result.Result.t unit core.num.error.ParseIntError.t).
+Parameter main :
+    Ty.apply
+      (Ty.path "core::result::Result")
+      [Ty.tuple; Ty.apply (Ty.path "core::num::error::ParseIntError") []].

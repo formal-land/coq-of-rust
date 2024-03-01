@@ -4,8 +4,8 @@ Require Import CoqOfRust.CoqOfRust.
 Module  Increment.
 Section Increment.
   Class Trait (Self : Set) : Type := {
-    inc : (mut_ref Self) -> M unit;
-    get : (ref Self) -> M u64.t;
+    inc : Ty.function [Ty.apply (Ty.path "mut_ref") [Self]] (Ty.path "unit");
+    get : Ty.function [Ty.apply (Ty.path "ref") [Self]] (Ty.path "u64");
   }.
   
 End Increment.
@@ -14,78 +14,87 @@ End Increment.
 Module  Reset.
 Section Reset.
   Class Trait (Self : Set) : Type := {
-    reset : (mut_ref Self) -> M unit;
+    reset : Ty.function [Ty.apply (Ty.path "mut_ref") [Self]] (Ty.path "unit");
   }.
   
 End Reset.
 End Reset.
 
-Module  Incrementer.
-Section Incrementer.
-  Record t : Set := {
-    value : u64.t;
-  }.
-  
-  Definition Get_value :=
-    Ref.map (fun α => Some α.(value)) (fun β α => Some (α <| value := β |>)).
-End Incrementer.
-End Incrementer.
 
-Module  Impl_trait_incrementer_Incrementer_t.
-Section Impl_trait_incrementer_Incrementer_t.
-  Definition Self : Set := trait_incrementer.Incrementer.t.
+
+Module  Impl_trait_incrementer_Incrementer.
+Section Impl_trait_incrementer_Incrementer.
+  Definition Self : Set :=
+    Ty.apply (Ty.path "trait_incrementer::Incrementer") [].
   
-  Parameter new : u64.t -> M Self.
+  Parameter new :
+      (Ty.path "u64") -> Ty.apply (Ty.path "trait_incrementer::Incrementer") [].
   
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
+  Definition AssociatedFunction_new : Instance.t := {
     Notations.double_colon := new;
   }.
   
-  Parameter inc_by : (mut_ref Self) -> u64.t -> M unit.
+  Parameter inc_by :
+      (Ty.apply
+          (Ty.path "mut_ref")
+          [Ty.apply (Ty.path "trait_incrementer::Incrementer") []])
+        ->
+        (Ty.path "u64") ->
+        Ty.path "unit".
   
-  Global Instance AssociatedFunction_inc_by :
-    Notations.DoubleColon Self "inc_by" := {
+  Definition AssociatedFunction_inc_by : Instance.t := {
     Notations.double_colon := inc_by;
   }.
-End Impl_trait_incrementer_Incrementer_t.
-End Impl_trait_incrementer_Incrementer_t.
+End Impl_trait_incrementer_Incrementer.
+End Impl_trait_incrementer_Incrementer.
 
-Module  Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer_t.
-Section Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer_t.
-  Definition Self : Set := trait_incrementer.Incrementer.t.
+Module  Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.
+Section Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.
+  Definition Self : Ty.t :=
+    Ty.apply (Ty.path "trait_incrementer::Incrementer") [].
   
-  Parameter inc : (mut_ref Self) -> M unit.
+  Parameter inc :
+      (Ty.apply
+          (Ty.path "mut_ref")
+          [Ty.apply (Ty.path "trait_incrementer::Incrementer") []])
+        ->
+        Ty.path "unit".
   
-  Global Instance AssociatedFunction_inc : Notations.DoubleColon Self "inc" := {
+  Definition AssociatedFunction_inc : Instance.t := {
     Notations.double_colon := inc;
   }.
   
-  Parameter get : (ref Self) -> M u64.t.
+  Parameter get :
+      (Ty.apply
+          (Ty.path "ref")
+          [Ty.apply (Ty.path "trait_incrementer::Incrementer") []])
+        ->
+        Ty.path "u64".
   
-  Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
+  Definition AssociatedFunction_get : Instance.t := {
     Notations.double_colon := get;
   }.
   
-  Global Instance ℐ : trait_incrementer.Increment.Trait Self := {
-    trait_incrementer.Increment.inc := inc;
-    trait_incrementer.Increment.get := get;
-  }.
-End Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer_t.
-End Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer_t.
+  Definition ℐ : Instance.t := [("inc", inc); ("get", get)].
+End Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.
+End Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.
 
-Module  Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer_t.
-Section Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer_t.
-  Definition Self : Set := trait_incrementer.Incrementer.t.
+Module  Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer.
+Section Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer.
+  Definition Self : Ty.t :=
+    Ty.apply (Ty.path "trait_incrementer::Incrementer") [].
   
-  Parameter reset : (mut_ref Self) -> M unit.
+  Parameter reset :
+      (Ty.apply
+          (Ty.path "mut_ref")
+          [Ty.apply (Ty.path "trait_incrementer::Incrementer") []])
+        ->
+        Ty.path "unit".
   
-  Global Instance AssociatedFunction_reset :
-    Notations.DoubleColon Self "reset" := {
+  Definition AssociatedFunction_reset : Instance.t := {
     Notations.double_colon := reset;
   }.
   
-  Global Instance ℐ : trait_incrementer.Reset.Trait Self := {
-    trait_incrementer.Reset.reset := reset;
-  }.
-End Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer_t.
-End Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer_t.
+  Definition ℐ : Instance.t := [("reset", reset)].
+End Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer.
+End Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer.

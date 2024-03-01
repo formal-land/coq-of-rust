@@ -11,25 +11,30 @@ fn division(dividend: i32, divisor: i32) -> i32 {
     }
 }
 *)
-Definition division (dividend : i32.t) (divisor : i32.t) : M i32.t :=
-  let* dividend := M.alloc dividend in
-  let* divisor := M.alloc divisor in
-  let* α0 : i32.t := M.read divisor in
-  let* α1 : M.Val bool.t :=
-    M.alloc (BinOp.Pure.eq α0 ((Integer.of_Z 0) : i32.t)) in
-  let* α2 : bool.t := M.read (use α1) in
-  let* α3 : M.Val i32.t :=
-    if α2 then
-      let* α0 : ref str.t := M.read (mk_str "division by zero") in
-      let* α1 : never.t := M.call (std.panicking.begin_panic α0) in
-      let* α2 : i32.t := never_to_any α1 in
-      M.alloc α2
-    else
-      let* α0 : i32.t := M.read dividend in
-      let* α1 : i32.t := M.read divisor in
-      let* α2 : i32.t := BinOp.Panic.div α0 α1 in
-      M.alloc α2 in
-  M.read α3.
+Definition division (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [], [dividend; divisor] =>
+    let* dividend := M.alloc dividend in
+    let* divisor := M.alloc divisor in
+    let* α0 : Ty.path "i32" := M.read divisor in
+    let* α1 : Ty.path "bool" :=
+      M.alloc (BinOp.Pure.eq α0 ((Integer.of_Z 0) : Ty.path "i32")) in
+    let* α2 : Ty.path "bool" := M.read (use α1) in
+    let* α3 : Ty.path "i32" :=
+      if α2 then
+        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+          M.read (mk_str "division by zero") in
+        let* α1 : Ty.path "never" := M.call (std.panicking.begin_panic α0) in
+        let* α2 : Ty.path "i32" := never_to_any α1 in
+        M.alloc α2
+      else
+        let* α0 : Ty.path "i32" := M.read dividend in
+        let* α1 : Ty.path "i32" := M.read divisor in
+        let* α2 : Ty.path "i32" := BinOp.Panic.div α0 α1 in
+        M.alloc α2 in
+    M.read α3
+  | _, _ => M.impossible
+  end.
 
 (*
 fn main() {
@@ -45,31 +50,49 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
-  let* _x : M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t) :=
-    let* α0 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t :=
-      M.call
-        ((alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"]
-          ((Integer.of_Z 0) : i32.t)) in
-    M.alloc α0 in
-  let* _ : M.Val i32.t :=
-    let* α0 : i32.t :=
-      M.call
-        (panic.division
-          ((Integer.of_Z 3) : i32.t)
-          ((Integer.of_Z 0) : i32.t)) in
-    M.alloc α0 in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "This point won't be reached!
-") in
-      let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-      let* α2 : core.fmt.Arguments.t :=
+Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [], [] =>
+    let* _x :
+        Ty.apply
+          (Ty.path "alloc::boxed::Box")
+          [Ty.path "i32"; Ty.apply (Ty.path "alloc::alloc::Global") []] :=
+      let* α0 :
+          Ty.apply
+            (Ty.path "alloc::boxed::Box")
+            [Ty.path "i32"; Ty.apply (Ty.path "alloc::alloc::Global") []] :=
         M.call
-          (core.fmt.Arguments.t::["new_const"]
-            (pointer_coercion "Unsize" (borrow α1))) in
-      let* α3 : unit := M.call (std.io.stdio._print α2) in
-      M.alloc α3 in
-    M.alloc tt in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+          ((Ty.apply
+                (Ty.path "alloc::boxed::Box")
+                [Ty.path "i32";
+                  Ty.apply (Ty.path "alloc::alloc::Global") []])::["new"]
+            ((Integer.of_Z 0) : Ty.path "i32")) in
+      M.alloc α0 in
+    let* _ : Ty.path "i32" :=
+      let* α0 : Ty.path "i32" :=
+        M.call
+          (panic.division
+            ((Integer.of_Z 3) : Ty.path "i32")
+            ((Integer.of_Z 0) : Ty.path "i32")) in
+      M.alloc α0 in
+    let* _ : Ty.tuple :=
+      let* _ : Ty.tuple :=
+        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+          M.read (mk_str "This point won't be reached!
+") in
+        let* α1 :
+            Ty.apply
+              (Ty.path "array")
+              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
+          M.alloc [ α0 ] in
+        let* α2 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+          M.call
+            ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_const"]
+              (pointer_coercion "Unsize" (borrow α1))) in
+        let* α3 : Ty.tuple := M.call (std.io.stdio._print α2) in
+        M.alloc α3 in
+      M.alloc tt in
+    let* α0 : Ty.path "unit" := M.alloc tt in
+    M.read α0
+  | _, _ => M.impossible
+  end.

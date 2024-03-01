@@ -4,56 +4,48 @@ Require Import CoqOfRust.CoqOfRust.
 Module  ProvidedAndRequired.
 Section ProvidedAndRequired.
   Class Trait (Self : Set) : Type := {
-    required : (ref Self) -> M i32.t;
+    required : Ty.function [Ty.apply (Ty.path "ref") [Self]] (Ty.path "i32");
   }.
   
 End ProvidedAndRequired.
 End ProvidedAndRequired.
 
-Module  Impl_provided_method_ProvidedAndRequired_for_i32_t.
-Section Impl_provided_method_ProvidedAndRequired_for_i32_t.
-  Definition Self : Set := i32.t.
+Module  Impl_provided_method_ProvidedAndRequired_for_i32.
+Section Impl_provided_method_ProvidedAndRequired_for_i32.
+  Definition Self : Ty.t := Ty.path "i32".
   
-  Parameter required : (ref Self) -> M i32.t.
+  Parameter required :
+      (Ty.apply (Ty.path "ref") [Ty.path "i32"]) -> Ty.path "i32".
   
-  Global Instance AssociatedFunction_required :
-    Notations.DoubleColon Self "required" := {
+  Definition AssociatedFunction_required : Instance.t := {
     Notations.double_colon := required;
   }.
   
-  Global Instance ℐ :
-    provided_method.ProvidedAndRequired.Required.Trait Self := {
-    provided_method.ProvidedAndRequired.required := required;
-    provided_method.ProvidedAndRequired.provided := Datatypes.None;
-  }.
-End Impl_provided_method_ProvidedAndRequired_for_i32_t.
-End Impl_provided_method_ProvidedAndRequired_for_i32_t.
+  Definition ℐ : Instance.t := [("required", required); ("provided", provided)].
+End Impl_provided_method_ProvidedAndRequired_for_i32.
+End Impl_provided_method_ProvidedAndRequired_for_i32.
 
-Module  Impl_provided_method_ProvidedAndRequired_for_u32_t.
-Section Impl_provided_method_ProvidedAndRequired_for_u32_t.
-  Definition Self : Set := u32.t.
+Module  Impl_provided_method_ProvidedAndRequired_for_u32.
+Section Impl_provided_method_ProvidedAndRequired_for_u32.
+  Definition Self : Ty.t := Ty.path "u32".
   
-  Parameter required : (ref Self) -> M i32.t.
+  Parameter required :
+      (Ty.apply (Ty.path "ref") [Ty.path "u32"]) -> Ty.path "i32".
   
-  Global Instance AssociatedFunction_required :
-    Notations.DoubleColon Self "required" := {
+  Definition AssociatedFunction_required : Instance.t := {
     Notations.double_colon := required;
   }.
   
-  Parameter provided : (ref Self) -> M i32.t.
+  Parameter provided :
+      (Ty.apply (Ty.path "ref") [Ty.path "u32"]) -> Ty.path "i32".
   
-  Global Instance AssociatedFunction_provided :
-    Notations.DoubleColon Self "provided" := {
+  Definition AssociatedFunction_provided : Instance.t := {
     Notations.double_colon := provided;
   }.
   
-  Global Instance ℐ :
-    provided_method.ProvidedAndRequired.Required.Trait Self := {
-    provided_method.ProvidedAndRequired.required := required;
-    provided_method.ProvidedAndRequired.provided := Datatypes.Some provided;
-  }.
-End Impl_provided_method_ProvidedAndRequired_for_u32_t.
-End Impl_provided_method_ProvidedAndRequired_for_u32_t.
+  Definition ℐ : Instance.t := [("required", required); ("provided", provided)].
+End Impl_provided_method_ProvidedAndRequired_for_u32.
+End Impl_provided_method_ProvidedAndRequired_for_u32.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M unit.
+Parameter main : Ty.path "unit".

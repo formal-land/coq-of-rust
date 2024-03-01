@@ -6,7 +6,8 @@ fn some_fn() {
     ()
 }
 *)
-Definition some_fn : M unit := M.pure tt.
+Definition some_fn (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with | [], [] => M.pure tt | _, _ => M.impossible end.
 
 (*
 fn main() {
@@ -15,21 +16,29 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
-  let* a : M.Val unit :=
-    let* α0 : unit :=
-      M.call diverging_functions_no_info_in_return_type.some_fn in
-    M.alloc α0 in
-  let* _ : M.Val unit :=
-    let* α0 : ref str.t :=
-      M.read (mk_str "This function returns and you can see this line.
+Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [], [] =>
+    let* a : Ty.tuple :=
+      let* α0 : Ty.tuple :=
+        M.call diverging_functions_no_info_in_return_type.some_fn in
+      M.alloc α0 in
+    let* _ : Ty.tuple :=
+      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+        M.read (mk_str "This function returns and you can see this line.
 ") in
-    let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-    let* α2 : core.fmt.Arguments.t :=
-      M.call
-        (core.fmt.Arguments.t::["new_const"]
-          (pointer_coercion "Unsize" (borrow α1))) in
-    let* α3 : unit := M.call (std.io.stdio._print α2) in
-    M.alloc α3 in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+      let* α1 :
+          Ty.apply
+            (Ty.path "array")
+            [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
+        M.alloc [ α0 ] in
+      let* α2 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+        M.call
+          ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_const"]
+            (pointer_coercion "Unsize" (borrow α1))) in
+      let* α3 : Ty.tuple := M.call (std.io.stdio._print α2) in
+      M.alloc α3 in
+    let* α0 : Ty.path "unit" := M.alloc tt in
+    M.read α0
+  | _, _ => M.impossible
+  end.

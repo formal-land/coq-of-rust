@@ -22,70 +22,124 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
-  let* immutable_box : M.Val (alloc.boxed.Box.t u32.t alloc.alloc.Global.t) :=
-    let* α0 : alloc.boxed.Box.t u32.t alloc.alloc.Global.t :=
-      M.call
-        ((alloc.boxed.Box.t u32.t alloc.alloc.Global.t)::["new"]
-          ((Integer.of_Z 5) : u32.t)) in
-    M.alloc α0 in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "immutable_box contains ") in
-      let* α1 : ref str.t := M.read (mk_str "
+Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [], [] =>
+    let* immutable_box :
+        Ty.apply
+          (Ty.path "alloc::boxed::Box")
+          [Ty.path "u32"; Ty.apply (Ty.path "alloc::alloc::Global") []] :=
+      let* α0 :
+          Ty.apply
+            (Ty.path "alloc::boxed::Box")
+            [Ty.path "u32"; Ty.apply (Ty.path "alloc::alloc::Global") []] :=
+        M.call
+          ((Ty.apply
+                (Ty.path "alloc::boxed::Box")
+                [Ty.path "u32";
+                  Ty.apply (Ty.path "alloc::alloc::Global") []])::["new"]
+            ((Integer.of_Z 5) : Ty.path "u32")) in
+      M.alloc α0 in
+    let* _ : Ty.tuple :=
+      let* _ : Ty.tuple :=
+        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+          M.read (mk_str "immutable_box contains ") in
+        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+          M.read (mk_str "
 ") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : core.fmt.rt.Argument.t :=
-        M.call
-          (core.fmt.rt.Argument.t::["new_display"] (borrow immutable_box)) in
-      let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
-      let* α5 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α4))) in
-      let* α6 : unit := M.call (std.io.stdio._print α5) in
-      M.alloc α6 in
-    M.alloc tt in
-  let* mutable_box : M.Val (alloc.boxed.Box.t u32.t alloc.alloc.Global.t) :=
-    M.copy immutable_box in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "mutable_box contains ") in
-      let* α1 : ref str.t := M.read (mk_str "
+        let* α2 :
+            Ty.apply
+              (Ty.path "array")
+              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
+          M.alloc [ α0; α1 ] in
+        let* α3 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+          M.call
+            ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_display"]
+              (borrow immutable_box)) in
+        let* α4 :
+            Ty.apply
+              (Ty.path "array")
+              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
+          M.alloc [ α3 ] in
+        let* α5 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+          M.call
+            ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
+              (pointer_coercion "Unsize" (borrow α2))
+              (pointer_coercion "Unsize" (borrow α4))) in
+        let* α6 : Ty.tuple := M.call (std.io.stdio._print α5) in
+        M.alloc α6 in
+      M.alloc tt in
+    let* mutable_box :
+        Ty.apply
+          (Ty.path "alloc::boxed::Box")
+          [Ty.path "u32"; Ty.apply (Ty.path "alloc::alloc::Global") []] :=
+      M.copy immutable_box in
+    let* _ : Ty.tuple :=
+      let* _ : Ty.tuple :=
+        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+          M.read (mk_str "mutable_box contains ") in
+        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+          M.read (mk_str "
 ") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow mutable_box)) in
-      let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
-      let* α5 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α4))) in
-      let* α6 : unit := M.call (std.io.stdio._print α5) in
-      M.alloc α6 in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* α0 : alloc.boxed.Box.t u32.t alloc.alloc.Global.t :=
-      M.read mutable_box in
-    assign (deref α0) ((Integer.of_Z 4) : u32.t) in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "mutable_box now contains ") in
-      let* α1 : ref str.t := M.read (mk_str "
+        let* α2 :
+            Ty.apply
+              (Ty.path "array")
+              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
+          M.alloc [ α0; α1 ] in
+        let* α3 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+          M.call
+            ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_display"]
+              (borrow mutable_box)) in
+        let* α4 :
+            Ty.apply
+              (Ty.path "array")
+              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
+          M.alloc [ α3 ] in
+        let* α5 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+          M.call
+            ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
+              (pointer_coercion "Unsize" (borrow α2))
+              (pointer_coercion "Unsize" (borrow α4))) in
+        let* α6 : Ty.tuple := M.call (std.io.stdio._print α5) in
+        M.alloc α6 in
+      M.alloc tt in
+    let* _ : Ty.tuple :=
+      let* α0 :
+          Ty.apply
+            (Ty.path "alloc::boxed::Box")
+            [Ty.path "u32"; Ty.apply (Ty.path "alloc::alloc::Global") []] :=
+        M.read mutable_box in
+      assign (deref α0) ((Integer.of_Z 4) : Ty.path "u32") in
+    let* _ : Ty.tuple :=
+      let* _ : Ty.tuple :=
+        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+          M.read (mk_str "mutable_box now contains ") in
+        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+          M.read (mk_str "
 ") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow mutable_box)) in
-      let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
-      let* α5 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α4))) in
-      let* α6 : unit := M.call (std.io.stdio._print α5) in
-      M.alloc α6 in
-    M.alloc tt in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+        let* α2 :
+            Ty.apply
+              (Ty.path "array")
+              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
+          M.alloc [ α0; α1 ] in
+        let* α3 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+          M.call
+            ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_display"]
+              (borrow mutable_box)) in
+        let* α4 :
+            Ty.apply
+              (Ty.path "array")
+              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
+          M.alloc [ α3 ] in
+        let* α5 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+          M.call
+            ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
+              (pointer_coercion "Unsize" (borrow α2))
+              (pointer_coercion "Unsize" (borrow α4))) in
+        let* α6 : Ty.tuple := M.call (std.io.stdio._print α5) in
+        M.alloc α6 in
+      M.alloc tt in
+    let* α0 : Ty.path "unit" := M.alloc tt in
+    M.read α0
+  | _, _ => M.impossible
+  end.

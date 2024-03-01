@@ -4,78 +4,67 @@ Require Import CoqOfRust.CoqOfRust.
 Module  HasArea.
 Section HasArea.
   Class Trait (Self : Set) : Type := {
-    area : (ref Self) -> M f64.t;
+    area : Ty.function [Ty.apply (Ty.path "ref") [Self]] (Ty.path "f64");
   }.
   
 End HasArea.
 End HasArea.
 
-Module  Rectangle.
-Section Rectangle.
-  Record t : Set := {
-    length : f64.t;
-    height : f64.t;
-  }.
-  
-  Definition Get_length :=
-    Ref.map (fun α => Some α.(length)) (fun β α => Some (α <| length := β |>)).
-  Definition Get_height :=
-    Ref.map (fun α => Some α.(height)) (fun β α => Some (α <| height := β |>)).
-End Rectangle.
-End Rectangle.
 
-Module  Impl_core_fmt_Debug_for_generics_bounds_Rectangle_t.
-Section Impl_core_fmt_Debug_for_generics_bounds_Rectangle_t.
-  Definition Self : Set := generics_bounds.Rectangle.t.
+
+Module  Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
+Section Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
+  Definition Self : Ty.t := Ty.apply (Ty.path "generics_bounds::Rectangle") [].
   
   Parameter fmt :
-      (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
+      (Ty.apply
+          (Ty.path "ref")
+          [Ty.apply (Ty.path "generics_bounds::Rectangle") []])
+        ->
+        (Ty.apply
+          (Ty.path "mut_ref")
+          [Ty.apply (Ty.path "core::fmt::Formatter") []])
+        ->
+        Ty.apply
+          (Ty.path "core::result::Result")
+          [Ty.tuple; Ty.apply (Ty.path "core::fmt::Error") []].
   
-  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
+  Definition AssociatedFunction_fmt : Instance.t := {
     Notations.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
-  }.
-End Impl_core_fmt_Debug_for_generics_bounds_Rectangle_t.
-End Impl_core_fmt_Debug_for_generics_bounds_Rectangle_t.
+  Definition ℐ : Instance.t := [("fmt", fmt)].
+End Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
+End Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
 
-(* #[allow(dead_code)] - struct was ignored by the compiler *)
-Module  Triangle.
-Section Triangle.
-  Record t : Set := {
-    length : f64.t;
-    height : f64.t;
-  }.
-  
-  Definition Get_length :=
-    Ref.map (fun α => Some α.(length)) (fun β α => Some (α <| length := β |>)).
-  Definition Get_height :=
-    Ref.map (fun α => Some α.(height)) (fun β α => Some (α <| height := β |>)).
-End Triangle.
-End Triangle.
 
-Module  Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle_t.
-Section Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle_t.
-  Definition Self : Set := generics_bounds.Rectangle.t.
+
+Module  Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
+Section Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
+  Definition Self : Ty.t := Ty.apply (Ty.path "generics_bounds::Rectangle") [].
   
-  Parameter area : (ref Self) -> M f64.t.
+  Parameter area :
+      (Ty.apply
+          (Ty.path "ref")
+          [Ty.apply (Ty.path "generics_bounds::Rectangle") []])
+        ->
+        Ty.path "f64".
   
-  Global Instance AssociatedFunction_area :
-    Notations.DoubleColon Self "area" := {
+  Definition AssociatedFunction_area : Instance.t := {
     Notations.double_colon := area;
   }.
   
-  Global Instance ℐ : generics_bounds.HasArea.Trait Self := {
-    generics_bounds.HasArea.area := area;
-  }.
-End Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle_t.
-End Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle_t.
+  Definition ℐ : Instance.t := [("area", area)].
+End Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
+End Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
 
-Parameter print_debug : forall {T : Set}, (ref T) -> M unit.
+Parameter print_debug :
+    forall {T : Set},
+    (Ty.apply (Ty.path "ref") [T]) -> Ty.path "unit".
 
-Parameter area : forall {T : Set}, (ref T) -> M f64.t.
+Parameter area :
+    forall {T : Set},
+    (Ty.apply (Ty.path "ref") [T]) -> Ty.path "f64".
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M unit.
+Parameter main : Ty.path "unit".

@@ -21,11 +21,17 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
-  let* _mutable_integer : M.Val i32.t := M.alloc ((Integer.of_Z 7) : i32.t) in
-  let* _ : M.Val unit :=
-    let* _mutable_integer : M.Val i32.t := M.copy _mutable_integer in
-    M.alloc tt in
-  let* _ : M.Val unit := assign _mutable_integer ((Integer.of_Z 3) : i32.t) in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [], [] =>
+    let* _mutable_integer : Ty.path "i32" :=
+      M.alloc ((Integer.of_Z 7) : Ty.path "i32") in
+    let* _ : Ty.tuple :=
+      let* _mutable_integer : Ty.path "i32" := M.copy _mutable_integer in
+      M.alloc tt in
+    let* _ : Ty.tuple :=
+      assign _mutable_integer ((Integer.of_Z 3) : Ty.path "i32") in
+    let* α0 : Ty.path "unit" := M.alloc tt in
+    M.read α0
+  | _, _ => M.impossible
+  end.

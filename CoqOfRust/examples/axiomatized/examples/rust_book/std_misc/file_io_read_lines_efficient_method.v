@@ -4,10 +4,14 @@ Require Import CoqOfRust.CoqOfRust.
 Parameter read_lines :
     forall {P : Set},
     P ->
-      M
-        ltac:(std.io.error.Result
-          (std.io.Lines.t
-            (std.io.buffered.bufreader.BufReader.t std.fs.File.t))).
+      Ty.apply
+        (Ty.path "core::result::Result")
+        [Ty.apply
+            (Ty.path "std::io::Lines")
+            [Ty.apply
+                (Ty.path "std::io::buffered::bufreader::BufReader")
+                [Ty.apply (Ty.path "std::fs::File") []]];
+          Ty.apply (Ty.path "std::io::error::Error") []].
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M unit.
+Parameter main : Ty.path "unit".

@@ -8,28 +8,53 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
-  let* _ : M.Val (((i32.t * i32.t) * i32.t) * i32.t) :=
-    M.alloc
-      ((Integer.of_Z 1) : i32.t,
-        (Integer.of_Z 2) : i32.t,
-        (Integer.of_Z 3) : i32.t,
-        (Integer.of_Z 4) : i32.t) in
-  let* _ : M.Val (alloc.vec.Vec.t i32.t alloc.alloc.Global.t) :=
-    let* α0 : M.Val (array i32.t) :=
+Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [], [] =>
+    let* _ :
+        Ty.tuple
+          (Ty.path "i32")
+          (Ty.path "i32")
+          (Ty.path "i32")
+          (Ty.path "i32") :=
       M.alloc
-        [
-          (Integer.of_Z 5) : i32.t;
-          (Integer.of_Z 6) : i32.t;
-          (Integer.of_Z 7) : i32.t;
-          (Integer.of_Z 8) : i32.t
-        ] in
-    let* α1 : M.Val (alloc.boxed.Box.t (array i32.t) alloc.alloc.Global.t) :=
-      M.call ((alloc.boxed.Box.t _ alloc.boxed.Box.Default.A)::["new"] α0) in
-    let* α2 : alloc.boxed.Box.t (array i32.t) alloc.alloc.Global.t :=
-      M.read α1 in
-    let* α3 : alloc.vec.Vec.t i32.t alloc.alloc.Global.t :=
-      M.call ((slice i32.t)::["into_vec"] (pointer_coercion "Unsize" α2)) in
-    M.alloc α3 in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+        ((Integer.of_Z 1) : Ty.path "i32",
+          (Integer.of_Z 2) : Ty.path "i32",
+          (Integer.of_Z 3) : Ty.path "i32",
+          (Integer.of_Z 4) : Ty.path "i32") in
+    let* _ :
+        Ty.apply
+          (Ty.path "alloc::vec::Vec")
+          [Ty.path "i32"; Ty.apply (Ty.path "alloc::alloc::Global") []] :=
+      let* α0 : Ty.apply (Ty.path "array") [Ty.path "i32"] :=
+        M.alloc
+          [
+            (Integer.of_Z 5) : Ty.path "i32";
+            (Integer.of_Z 6) : Ty.path "i32";
+            (Integer.of_Z 7) : Ty.path "i32";
+            (Integer.of_Z 8) : Ty.path "i32"
+          ] in
+      let* α1 :
+          Ty.apply
+            (Ty.path "alloc::boxed::Box")
+            [Ty.apply (Ty.path "array") [Ty.path "i32"];
+              Ty.apply (Ty.path "alloc::alloc::Global") []] :=
+        M.call ((alloc.boxed.Box.t _ alloc.boxed.Box.Default.A)::["new"] α0) in
+      let* α2 :
+          Ty.apply
+            (Ty.path "alloc::boxed::Box")
+            [Ty.apply (Ty.path "array") [Ty.path "i32"];
+              Ty.apply (Ty.path "alloc::alloc::Global") []] :=
+        M.read α1 in
+      let* α3 :
+          Ty.apply
+            (Ty.path "alloc::vec::Vec")
+            [Ty.path "i32"; Ty.apply (Ty.path "alloc::alloc::Global") []] :=
+        M.call
+          ((Ty.apply (Ty.path "slice") [Ty.path "i32"])::["into_vec"]
+            (pointer_coercion "Unsize" α2)) in
+      M.alloc α3 in
+    let* α0 : Ty.path "unit" := M.alloc tt in
+    M.read α0
+  | _, _ => M.impossible
+  end.

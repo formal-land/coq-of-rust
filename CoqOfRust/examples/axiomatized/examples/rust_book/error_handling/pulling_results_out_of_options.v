@@ -2,10 +2,17 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Parameter double_first :
-    (alloc.vec.Vec.t (ref str.t) alloc.vec.Vec.Default.A) ->
-      M
-        (core.option.Option.t
-          (core.result.Result.t i32.t core.num.error.ParseIntError.t)).
+    (Ty.apply
+        (Ty.path "alloc::vec::Vec")
+        [Ty.apply (Ty.path "ref") [Ty.path "str"];
+          Ty.apply (Ty.path "alloc::alloc::Global") []])
+      ->
+      Ty.apply
+        (Ty.path "core::option::Option")
+        [Ty.apply
+            (Ty.path "core::result::Result")
+            [Ty.path "i32";
+              Ty.apply (Ty.path "core::num::error::ParseIntError") []]].
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M unit.
+Parameter main : Ty.path "unit".

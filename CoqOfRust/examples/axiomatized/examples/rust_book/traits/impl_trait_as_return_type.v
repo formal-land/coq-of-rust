@@ -2,27 +2,37 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Parameter combine_vecs_explicit_return_type :
-    (alloc.vec.Vec.t i32.t alloc.vec.Vec.Default.A) ->
-      (alloc.vec.Vec.t i32.t alloc.vec.Vec.Default.A) ->
-      M
-        (core.iter.adapters.cycle.Cycle.t
-          (core.iter.adapters.chain.Chain.t
-            (alloc.vec.into_iter.IntoIter.t
-              i32.t
-              alloc.vec.into_iter.IntoIter.Default.A)
-            (alloc.vec.into_iter.IntoIter.t
-              i32.t
-              alloc.vec.into_iter.IntoIter.Default.A))).
+    (Ty.apply
+        (Ty.path "alloc::vec::Vec")
+        [Ty.path "i32"; Ty.apply (Ty.path "alloc::alloc::Global") []])
+      ->
+      (Ty.apply
+        (Ty.path "alloc::vec::Vec")
+        [Ty.path "i32"; Ty.apply (Ty.path "alloc::alloc::Global") []])
+      ->
+      Ty.apply
+        (Ty.path "core::iter::adapters::cycle::Cycle")
+        [Ty.apply
+            (Ty.path "core::iter::adapters::chain::Chain")
+            [Ty.apply
+                (Ty.path "alloc::vec::into_iter::IntoIter")
+                [Ty.path "i32"; Ty.apply (Ty.path "alloc::alloc::Global") []];
+              Ty.apply
+                (Ty.path "alloc::vec::into_iter::IntoIter")
+                [Ty.path "i32"; Ty.apply (Ty.path "alloc::alloc::Global") []]]].
 
-Parameter combine_vecs_ret_ty :
-    Sigma (Ty : Set) `(core.iter.traits.iterator.Iterator.Trait Ty),
-    unit.
 Parameter combine_vecs :
-    (alloc.vec.Vec.t i32.t alloc.vec.Vec.Default.A) ->
-      (alloc.vec.Vec.t i32.t alloc.vec.Vec.Default.A) ->
-      M _ (* OpaqueTy *).
+    (Ty.apply
+        (Ty.path "alloc::vec::Vec")
+        [Ty.path "i32"; Ty.apply (Ty.path "alloc::alloc::Global") []])
+      ->
+      (Ty.apply
+        (Ty.path "alloc::vec::Vec")
+        [Ty.path "i32"; Ty.apply (Ty.path "alloc::alloc::Global") []])
+      ->
+      _.
 
 Error OpaqueTy.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M unit.
+Parameter main : Ty.path "unit".

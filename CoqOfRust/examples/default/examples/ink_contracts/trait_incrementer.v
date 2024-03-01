@@ -4,8 +4,8 @@ Require Import CoqOfRust.CoqOfRust.
 Module  Increment.
 Section Increment.
   Class Trait (Self : Set) : Type := {
-    inc : (mut_ref Self) -> M unit;
-    get : (ref Self) -> M u64.t;
+    inc : Ty.function [Ty.apply (Ty.path "mut_ref") [Self]] (Ty.path "unit");
+    get : Ty.function [Ty.apply (Ty.path "ref") [Self]] (Ty.path "u64");
   }.
   
 End Increment.
@@ -14,38 +14,34 @@ End Increment.
 Module  Reset.
 Section Reset.
   Class Trait (Self : Set) : Type := {
-    reset : (mut_ref Self) -> M unit;
+    reset : Ty.function [Ty.apply (Ty.path "mut_ref") [Self]] (Ty.path "unit");
   }.
   
 End Reset.
 End Reset.
 
-Module  Incrementer.
-Section Incrementer.
-  Record t : Set := {
-    value : u64.t;
-  }.
-  
-  Definition Get_value :=
-    Ref.map (fun α => Some α.(value)) (fun β α => Some (α <| value := β |>)).
-End Incrementer.
-End Incrementer.
 
-Module  Impl_trait_incrementer_Incrementer_t.
-Section Impl_trait_incrementer_Incrementer_t.
-  Definition Self : Set := trait_incrementer.Incrementer.t.
+
+Module  Impl_trait_incrementer_Incrementer.
+Section Impl_trait_incrementer_Incrementer.
+  Definition Self : Set :=
+    Ty.apply (Ty.path "trait_incrementer::Incrementer") [].
   
   (*
       pub fn new(init_value: u64) -> Self {
           Self { value: init_value }
       }
   *)
-  Definition new (init_value : u64.t) : M Self :=
-    let* init_value := M.alloc init_value in
-    let* α0 : u64.t := M.read init_value in
-    M.pure {| trait_incrementer.Incrementer.value := α0; |}.
+  Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
+    match 𝜏, α with
+    | [], [init_value] =>
+      let* init_value := M.alloc init_value in
+      let* α0 : Ty.path "u64" := M.read init_value in
+      M.pure {| trait_incrementer.Incrementer.value := α0; |}
+    | _, _ => M.impossible
+    end.
   
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
+  Definition AssociatedFunction_new : Instance.t := {
     Notations.double_colon := new;
   }.
   
@@ -54,45 +50,61 @@ Section Impl_trait_incrementer_Incrementer_t.
           self.value += delta;
       }
   *)
-  Definition inc_by (self : mut_ref Self) (delta : u64.t) : M unit :=
-    let* self := M.alloc self in
-    let* delta := M.alloc delta in
-    let* _ : M.Val unit :=
-      let* β : M.Val u64.t :=
-        let* α0 : mut_ref trait_incrementer.Incrementer.t := M.read self in
-        M.pure (trait_incrementer.Incrementer.Get_value (deref α0)) in
-      let* α0 := M.read β in
-      let* α1 : u64.t := M.read delta in
-      let* α2 := BinOp.Panic.add α0 α1 in
-      assign β α2 in
-    let* α0 : M.Val unit := M.alloc tt in
-    M.read α0.
+  Definition inc_by (𝜏 : list Ty.t) (α : list Value.t) : M :=
+    match 𝜏, α with
+    | [], [self; delta] =>
+      let* self := M.alloc self in
+      let* delta := M.alloc delta in
+      let* _ : Ty.tuple :=
+        let* β : Ty.path "u64" :=
+          let* α0 :
+              Ty.apply
+                (Ty.path "mut_ref")
+                [Ty.apply (Ty.path "trait_incrementer::Incrementer") []] :=
+            M.read self in
+          M.pure (trait_incrementer.Incrementer.Get_value (deref α0)) in
+        let* α0 := M.read β in
+        let* α1 : Ty.path "u64" := M.read delta in
+        let* α2 := BinOp.Panic.add α0 α1 in
+        assign β α2 in
+      let* α0 : Ty.path "unit" := M.alloc tt in
+      M.read α0
+    | _, _ => M.impossible
+    end.
   
-  Global Instance AssociatedFunction_inc_by :
-    Notations.DoubleColon Self "inc_by" := {
+  Definition AssociatedFunction_inc_by : Instance.t := {
     Notations.double_colon := inc_by;
   }.
-End Impl_trait_incrementer_Incrementer_t.
-End Impl_trait_incrementer_Incrementer_t.
+End Impl_trait_incrementer_Incrementer.
+End Impl_trait_incrementer_Incrementer.
 
-Module  Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer_t.
-Section Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer_t.
-  Definition Self : Set := trait_incrementer.Incrementer.t.
+Module  Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.
+Section Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.
+  Definition Self : Ty.t :=
+    Ty.apply (Ty.path "trait_incrementer::Incrementer") [].
   
   (*
       fn inc(&mut self) {
           self.inc_by(1)
       }
   *)
-  Definition inc (self : mut_ref Self) : M unit :=
-    let* self := M.alloc self in
-    let* α0 : mut_ref trait_incrementer.Incrementer.t := M.read self in
-    M.call
-      (trait_incrementer.Incrementer.t::["inc_by"]
-        α0
-        ((Integer.of_Z 1) : u64.t)).
+  Definition inc (𝜏 : list Ty.t) (α : list Value.t) : M :=
+    match 𝜏, α with
+    | [], [self] =>
+      let* self := M.alloc self in
+      let* α0 :
+          Ty.apply
+            (Ty.path "mut_ref")
+            [Ty.apply (Ty.path "trait_incrementer::Incrementer") []] :=
+        M.read self in
+      M.call
+        ((Ty.apply (Ty.path "trait_incrementer::Incrementer") [])::["inc_by"]
+          α0
+          ((Integer.of_Z 1) : Ty.path "u64"))
+    | _, _ => M.impossible
+    end.
   
-  Global Instance AssociatedFunction_inc : Notations.DoubleColon Self "inc" := {
+  Definition AssociatedFunction_inc : Instance.t := {
     Notations.double_colon := inc;
   }.
   
@@ -101,48 +113,59 @@ Section Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer_t.
           self.value
       }
   *)
-  Definition get (self : ref Self) : M u64.t :=
-    let* self := M.alloc self in
-    let* α0 : ref trait_incrementer.Incrementer.t := M.read self in
-    M.read (trait_incrementer.Incrementer.Get_value (deref α0)).
+  Definition get (𝜏 : list Ty.t) (α : list Value.t) : M :=
+    match 𝜏, α with
+    | [], [self] =>
+      let* self := M.alloc self in
+      let* α0 :
+          Ty.apply
+            (Ty.path "ref")
+            [Ty.apply (Ty.path "trait_incrementer::Incrementer") []] :=
+        M.read self in
+      M.read (trait_incrementer.Incrementer.Get_value (deref α0))
+    | _, _ => M.impossible
+    end.
   
-  Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
+  Definition AssociatedFunction_get : Instance.t := {
     Notations.double_colon := get;
   }.
   
-  Global Instance ℐ : trait_incrementer.Increment.Trait Self := {
-    trait_incrementer.Increment.inc := inc;
-    trait_incrementer.Increment.get := get;
-  }.
-End Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer_t.
-End Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer_t.
+  Definition ℐ : Instance.t := [("inc", inc); ("get", get)].
+End Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.
+End Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.
 
-Module  Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer_t.
-Section Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer_t.
-  Definition Self : Set := trait_incrementer.Incrementer.t.
+Module  Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer.
+Section Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer.
+  Definition Self : Ty.t :=
+    Ty.apply (Ty.path "trait_incrementer::Incrementer") [].
   
   (*
       fn reset(&mut self) {
           self.value = 0;
       }
   *)
-  Definition reset (self : mut_ref Self) : M unit :=
-    let* self := M.alloc self in
-    let* _ : M.Val unit :=
-      let* α0 : mut_ref trait_incrementer.Incrementer.t := M.read self in
-      assign
-        (trait_incrementer.Incrementer.Get_value (deref α0))
-        ((Integer.of_Z 0) : u64.t) in
-    let* α0 : M.Val unit := M.alloc tt in
-    M.read α0.
+  Definition reset (𝜏 : list Ty.t) (α : list Value.t) : M :=
+    match 𝜏, α with
+    | [], [self] =>
+      let* self := M.alloc self in
+      let* _ : Ty.tuple :=
+        let* α0 :
+            Ty.apply
+              (Ty.path "mut_ref")
+              [Ty.apply (Ty.path "trait_incrementer::Incrementer") []] :=
+          M.read self in
+        assign
+          (trait_incrementer.Incrementer.Get_value (deref α0))
+          ((Integer.of_Z 0) : Ty.path "u64") in
+      let* α0 : Ty.path "unit" := M.alloc tt in
+      M.read α0
+    | _, _ => M.impossible
+    end.
   
-  Global Instance AssociatedFunction_reset :
-    Notations.DoubleColon Self "reset" := {
+  Definition AssociatedFunction_reset : Instance.t := {
     Notations.double_colon := reset;
   }.
   
-  Global Instance ℐ : trait_incrementer.Reset.Trait Self := {
-    trait_incrementer.Reset.reset := reset;
-  }.
-End Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer_t.
-End Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer_t.
+  Definition ℐ : Instance.t := [("reset", reset)].
+End Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer.
+End Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer.

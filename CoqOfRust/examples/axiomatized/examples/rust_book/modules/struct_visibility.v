@@ -2,51 +2,26 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module my.
-  Module  OpenBox.
-  Section OpenBox.
-    Context (T : Set).
-    
-    Record t : Set := {
-      contents : T;
-    }.
-    
-    Definition Get_contents :=
-      Ref.map
-        (fun α => Some α.(contents))
-        (fun β α => Some (α <| contents := β |>)).
-  End OpenBox.
-  End OpenBox.
   
-  Module  ClosedBox.
-  Section ClosedBox.
-    Context (T : Set).
-    
-    Record t : Set := {
-      contents : T;
-    }.
-    
-    Definition Get_contents :=
-      Ref.map
-        (fun α => Some α.(contents))
-        (fun β α => Some (α <| contents := β |>)).
-  End ClosedBox.
-  End ClosedBox.
   
-  Module  Impl_struct_visibility_my_ClosedBox_t_T.
-  Section Impl_struct_visibility_my_ClosedBox_t_T.
+  
+  
+  Module  Impl_struct_visibility_my_ClosedBox_T.
+  Section Impl_struct_visibility_my_ClosedBox_T.
     Context {T : Set}.
     
-    Definition Self : Set := struct_visibility.my.ClosedBox.t T.
+    Definition Self : Set :=
+      Ty.apply (Ty.path "struct_visibility::my::ClosedBox") [T].
     
-    Parameter new : T -> M (struct_visibility.my.ClosedBox.t T).
+    Parameter new :
+        T -> Ty.apply (Ty.path "struct_visibility::my::ClosedBox") [T].
     
-    Global Instance AssociatedFunction_new :
-      Notations.DoubleColon Self "new" := {
+    Definition AssociatedFunction_new : Instance.t := {
       Notations.double_colon := new;
     }.
-  End Impl_struct_visibility_my_ClosedBox_t_T.
-  End Impl_struct_visibility_my_ClosedBox_t_T.
+  End Impl_struct_visibility_my_ClosedBox_T.
+  End Impl_struct_visibility_my_ClosedBox_T.
 End my.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M unit.
+Parameter main : Ty.path "unit".

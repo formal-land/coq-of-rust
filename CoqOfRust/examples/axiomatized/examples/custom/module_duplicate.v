@@ -3,10 +3,10 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module foo.
   Module gre.
-    Parameter f_foo_gre : M unit.
+    Parameter f_foo_gre : Ty.path "unit".
   End gre.
   
-  Parameter f_foo : M unit.
+  Parameter f_foo : Ty.path "unit".
 End foo.
 
-Parameter f : M unit.
+Parameter f : Ty.path "unit".

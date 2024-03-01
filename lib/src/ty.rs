@@ -2,10 +2,9 @@ use crate::coq;
 use crate::env::*;
 use crate::path::*;
 use crate::render::*;
-use crate::top_level::*;
 use itertools::Itertools;
-use rustc_hir::def::{DefKind, Res};
-use rustc_hir::{BareFnTy, FnDecl, FnRetTy, GenericBound, ItemKind, OpaqueTyOrigin, Ty, TyKind};
+use rustc_hir::{FnDecl, FnRetTy, Ty};
+use rustc_middle::ty::TyCtxt;
 use std::rc::Rc;
 
 #[derive(Debug, PartialEq, Eq, Hash)]
@@ -128,235 +127,62 @@ pub(crate) fn mt_ty(ty: Rc<CoqType>) -> Rc<CoqType> {
     }
 }
 
-pub(crate) fn compile_type(env: &Env, ty: &Ty) -> Rc<CoqType> {
-    match &ty.kind {
-        TyKind::Slice(ty) => Rc::new(CoqType::Application {
-            func: CoqType::path(&["slice"]),
-            args: vec![compile_type(env, ty)],
-            is_alias: false,
-        }),
-        TyKind::Array(ty, _) => Rc::new(CoqType::Application {
-            func: CoqType::path(&["array"]),
-            args: vec![compile_type(env, ty)],
-            is_alias: false,
-        }),
-        TyKind::Ptr(mut_ty) | TyKind::Ref(_, mut_ty) => {
-            let rustc_hir::MutTy { ty, mutbl } = mut_ty;
-            CoqType::make_ref(mutbl, compile_type(env, ty))
-        }
-        TyKind::BareFn(BareFnTy { decl, .. }) => compile_fn_decl(env, decl),
-        TyKind::Never => CoqType::path(&["never"]),
-        TyKind::Tup(tys) => Rc::new(CoqType::Tuple(
-            tys.iter().map(|ty| compile_type(env, ty)).collect(),
-        )),
-        TyKind::Path(qpath) => {
-            // When the [qpath] is a `Self::A`
-            if let rustc_hir::QPath::TypeRelative(ty, segment) = qpath {
-                if let TyKind::Path(rustc_hir::QPath::Resolved(_, ty_path)) = &ty.kind {
-                    if let Res::SelfTyAlias { .. } = ty_path.res {
-                        return Rc::new(CoqType::Var(segment.ident.to_string()));
-                    }
-                }
-            }
+pub(crate) fn compile_type<'a>(
+    tcx: &TyCtxt<'a>,
+    env: &Env<'a>,
+    local_def_id: &rustc_hir::def_id::LocalDefId,
+    ty: &Ty,
+) -> Rc<CoqType> {
+    let item_ctxt = rustc_hir_analysis::collect::ItemCtxt::new(*tcx, *local_def_id);
+    let ty = &item_ctxt.to_ty(ty);
 
-            let is_alias = match qpath {
-                rustc_hir::QPath::Resolved(_, path) => {
-                    matches!(path.res, Res::Def(DefKind::TyAlias, _))
-                }
-                _ => false,
-            };
-            let is_variable: Option<String> = match qpath {
-                rustc_hir::QPath::Resolved(_, path) => {
-                    if matches!(
-                        path.res,
-                        Res::SelfTyAlias { .. }
-                            | Res::SelfTyParam { .. }
-                            | Res::Def(DefKind::AssocTy | DefKind::TyParam, _)
-                    ) {
-                        // We assume that a variable is a path with a single element
-                        Some(path.segments.last().unwrap().ident.to_string())
-                    } else {
-                        None
-                    }
-                }
-                _ => None,
-            };
-            let self_ty = match qpath {
-                rustc_hir::QPath::Resolved(Some(self_ty), _) => Some(compile_type(env, self_ty)),
-                _ => None,
-            };
-            let coq_path = compile_qpath(env, qpath);
-            let func = Rc::new(match self_ty {
-                Some(self_ty) => CoqType::PathInTrait {
-                    path: Rc::new(coq_path.clone()),
-                    self_ty,
-                },
-                None => match is_variable {
-                    Some(name) => CoqType::Var(name),
-                    None => CoqType::Path {
-                        path: Rc::new(coq_path.clone()),
-                    },
-                },
-            });
-            let params = match qpath {
-                rustc_hir::QPath::Resolved(_, path) => {
-                    if let Some(generics) = get_path_generics(env, path) {
-                        let type_params_name_and_default_status =
-                            get_type_params_name_and_default_status(generics);
-                        let ty_params = compile_path_ty_params(env, path);
-                        ty_params
-                            .iter()
-                            .map(Some)
-                            .chain(std::iter::repeat(None))
-                            .zip(type_params_name_and_default_status)
-                            .map(|(ty, (name, has_default))| match ty {
-                                Some(ty) => ty.clone(),
-                                None => {
-                                    if has_default {
-                                        let mut segments = coq_path.segments.clone();
-                                        segments.push("Default".to_string());
-                                        segments.push(name);
-                                        Rc::new(CoqType::Path {
-                                            path: Rc::new(Path { segments }),
-                                        })
-                                    } else {
-                                        Rc::new(CoqType::Infer)
-                                    }
-                                }
-                            })
-                            .collect()
-                    } else {
-                        vec![]
-                    }
-                }
-                _ => vec![],
-            };
-            Rc::new(CoqType::Application {
-                func,
-                args: params,
-                is_alias,
-            })
-        }
-        TyKind::OpaqueDef(item_id, _, _) => {
-            let item = env.tcx.hir().item(*item_id);
-            if let ItemKind::OpaqueTy(opaque_ty) = item.kind {
-                if opaque_ty.generics.params.is_empty() {
-                    if opaque_ty.generics.predicates.is_empty() {
-                        if let OpaqueTyOrigin::FnReturn(_) = opaque_ty.origin {
-                            Rc::new(CoqType::OpaqueType(
-                                opaque_ty
-                                    .bounds
-                                    .iter()
-                                    .filter_map(|bound| match bound {
-                                        GenericBound::Trait(p_trait_ref, _) => {
-                                            Some(compile_path(env, p_trait_ref.trait_ref.path))
-                                        }
-                                        GenericBound::LangItemTrait{..} => {
-                                            env.tcx
-                                                .sess
-                                                .struct_span_warn(
-                                                    ty.span,
-                                                    "LangItem traits are not supported in the bounds of opaque types.",
-                                                )
-                                                .note("It should change in the future.")
-                                                .emit();
-                                            None
-                                        }
-                                        // we ignore lifetimes
-                                        GenericBound::Outlives(..) => None,
-                                    })
-                                    .collect(),
-                            ))
-                        } else {
-                            env.tcx
-                                .sess
-                                .struct_span_warn(
-                                    ty.span,
-                                    "Opaque types are currently supported only in return types.",
-                                )
-                                .note("It should change in the future.")
-                                .emit();
-                            CoqType::var("OpaqueDef")
-                        }
-                    } else {
-                        env.tcx
-                            .sess
-                            .struct_span_warn(
-                                ty.span,
-                                "Bounds on generic parameters are not supported for opaque types yet.",
-                            )
-                            .note("It should be supported in the future.")
-                            .emit();
-                        CoqType::var("OpaqueDef")
-                    }
-                } else {
-                    env.tcx
-                        .sess
-                        .struct_span_warn(
-                            ty.span,
-                            "Generic parameters are not supported for opaque types yet.",
-                        )
-                        .note("It should be supported in the future.")
-                        .emit();
-                    CoqType::var("OpaqueDef")
-                }
-            } else {
-                // @TODO: check whether it should be possible
-                env.tcx
-                    .sess
-                    .struct_span_warn(
-                        ty.span,
-                        "OpaqueDef refers to an item of kind other than OpaqueTy.",
-                    )
-                    .emit();
-                CoqType::var("OpaqueDef")
-            }
-        }
-        TyKind::TraitObject(ptrait_refs, _, _) => Rc::new(CoqType::Dyn(
-            ptrait_refs
-                .iter()
-                .map(|ptrait_ref| {
-                    Path::concat(&[
-                        compile_path(env, ptrait_ref.trait_ref.path),
-                        Path::local("Trait"),
-                    ])
-                })
-                .collect(),
-        )),
-        TyKind::Typeof(_) => CoqType::var("Typeof"),
-        TyKind::Infer => Rc::new(CoqType::Infer),
-        TyKind::Err(_) => CoqType::var("Error_type"),
-    }
+    crate::thir_ty::compile_type(env, ty)
 }
 
-pub(crate) fn compile_fn_ret_ty(env: &Env, fn_ret_ty: &FnRetTy) -> Rc<CoqType> {
+pub(crate) fn compile_fn_ret_ty<'a>(
+    tcx: &TyCtxt<'a>,
+    env: &Env<'a>,
+    local_def_id: &rustc_hir::def_id::LocalDefId,
+    fn_ret_ty: &FnRetTy,
+) -> Rc<CoqType> {
     match fn_ret_ty {
         FnRetTy::DefaultReturn(_) => CoqType::unit(),
-        FnRetTy::Return(ty) => compile_type(env, ty),
+        FnRetTy::Return(ty) => compile_type(tcx, env, local_def_id, ty),
     }
 }
 
 // The type of a function declaration
-pub(crate) fn compile_fn_decl(env: &Env, fn_decl: &FnDecl) -> Rc<CoqType> {
-    let ret = compile_fn_ret_ty(env, &fn_decl.output);
+pub(crate) fn compile_fn_decl<'a>(
+    tcx: &TyCtxt<'a>,
+    env: &Env<'a>,
+    local_def_id: &rustc_hir::def_id::LocalDefId,
+    fn_decl: &FnDecl,
+) -> Rc<CoqType> {
+    let ret = compile_fn_ret_ty(tcx, env, local_def_id, &fn_decl.output);
+
     Rc::new(CoqType::Function {
         args: fn_decl
             .inputs
             .iter()
-            .map(|arg| compile_type(env, arg))
+            .map(|arg| compile_type(tcx, env, local_def_id, arg))
             .collect(),
         ret,
     })
 }
 
 /// Return the type parameters on a path
-pub(crate) fn compile_path_ty_params(env: &Env, path: &rustc_hir::Path) -> Vec<Rc<CoqType>> {
+pub(crate) fn compile_path_ty_params<'a>(
+    tcx: &TyCtxt<'a>,
+    env: &Env<'a>,
+    local_def_id: &rustc_hir::def_id::LocalDefId,
+    path: &rustc_hir::Path,
+) -> Vec<Rc<CoqType>> {
     match path.segments.last().unwrap().args {
         Some(args) => args
             .args
             .iter()
             .filter_map(|arg| match arg {
-                rustc_hir::GenericArg::Type(ty) => Some(compile_type(env, ty)),
+                rustc_hir::GenericArg::Type(ty) => Some(compile_type(tcx, env, local_def_id, ty)),
                 _ => None,
             })
             .collect(),

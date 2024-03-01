@@ -2,7 +2,11 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Parameter destroy_box :
-    (alloc.boxed.Box.t i32.t alloc.boxed.Box.Default.A) -> M unit.
+    (Ty.apply
+        (Ty.path "alloc::boxed::Box")
+        [Ty.path "i32"; Ty.apply (Ty.path "alloc::alloc::Global") []])
+      ->
+      Ty.path "unit".
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M unit.
+Parameter main : Ty.path "unit".

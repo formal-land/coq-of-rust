@@ -24,44 +24,48 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
-  let* _ : M.Val bool.t :=
-    let* α0 : M.Val i32.t := M.alloc ((Integer.of_Z 1) : i32.t) in
-    match_operator
-      α0
-      [
-        fun γ =>
-          (let* α0 := M.read γ in
-          match α0 with
-          | i32.Make 0 => M.alloc false
-          | _ => M.break_match
-          end) :
-          M (M.Val bool.t);
-        fun γ => (M.alloc true) : M (M.Val bool.t)
-      ] in
-  let* _ : M.Val i32.t :=
-    let* α0 : M.Val bool.t := M.alloc true in
-    let* α1 : bool.t := M.read (use α0) in
-    if α1 then
-      M.alloc ((Integer.of_Z 0) : i32.t)
-    else
-      M.alloc ((Integer.of_Z 1) : i32.t) in
-  let* _ : M.Val i32.t :=
-    let* α0 : M.Val bool.t := M.alloc false in
-    let* α1 : bool.t := M.read (use α0) in
-    if α1 then
-      M.alloc ((Integer.of_Z 2) : i32.t)
-    else
-      let* α0 : M.Val bool.t := M.alloc false in
-      let* α1 : bool.t := M.read (use α0) in
+Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [], [] =>
+    let* _ : Ty.path "bool" :=
+      let* α0 : Ty.path "i32" := M.alloc ((Integer.of_Z 1) : Ty.path "i32") in
+      match_operator
+        α0
+        [
+          fun γ =>
+            (let* α0 := M.read γ in
+            match α0 with
+            | i32.Make 0 => M.alloc false
+            | _ => M.break_match
+            end) :
+            Ty.path "bool";
+          fun γ => (M.alloc true) : Ty.path "bool"
+        ] in
+    let* _ : Ty.path "i32" :=
+      let* α0 : Ty.path "bool" := M.alloc true in
+      let* α1 : Ty.path "bool" := M.read (use α0) in
       if α1 then
-        M.alloc ((Integer.of_Z 3) : i32.t)
+        M.alloc ((Integer.of_Z 0) : Ty.path "i32")
       else
-        let* α0 : M.Val bool.t := M.alloc false in
-        let* α1 : bool.t := M.read (use α0) in
+        M.alloc ((Integer.of_Z 1) : Ty.path "i32") in
+    let* _ : Ty.path "i32" :=
+      let* α0 : Ty.path "bool" := M.alloc false in
+      let* α1 : Ty.path "bool" := M.read (use α0) in
+      if α1 then
+        M.alloc ((Integer.of_Z 2) : Ty.path "i32")
+      else
+        let* α0 : Ty.path "bool" := M.alloc false in
+        let* α1 : Ty.path "bool" := M.read (use α0) in
         if α1 then
-          M.alloc ((Integer.of_Z 4) : i32.t)
+          M.alloc ((Integer.of_Z 3) : Ty.path "i32")
         else
-          M.alloc ((Integer.of_Z 5) : i32.t) in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+          let* α0 : Ty.path "bool" := M.alloc false in
+          let* α1 : Ty.path "bool" := M.read (use α0) in
+          if α1 then
+            M.alloc ((Integer.of_Z 4) : Ty.path "i32")
+          else
+            M.alloc ((Integer.of_Z 5) : Ty.path "i32") in
+    let* α0 : Ty.path "unit" := M.alloc tt in
+    M.read α0
+  | _, _ => M.impossible
+  end.

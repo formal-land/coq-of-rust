@@ -2,6 +2,6 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M unit.
+Parameter main : Ty.path "unit".
 
-Parameter apply : forall {F : Set}, F -> M unit.
+Parameter apply : forall {F : Set}, F -> Ty.path "unit".

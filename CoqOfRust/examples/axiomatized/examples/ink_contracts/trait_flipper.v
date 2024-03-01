@@ -4,56 +4,53 @@ Require Import CoqOfRust.CoqOfRust.
 Module  Flip.
 Section Flip.
   Class Trait (Self : Set) : Type := {
-    flip : (mut_ref Self) -> M unit;
-    get : (ref Self) -> M bool.t;
+    flip : Ty.function [Ty.apply (Ty.path "mut_ref") [Self]] (Ty.path "unit");
+    get : Ty.function [Ty.apply (Ty.path "ref") [Self]] (Ty.path "bool");
   }.
   
 End Flip.
 End Flip.
 
-Module  Flipper.
-Section Flipper.
-  Record t : Set := {
-    value : bool.t;
-  }.
-  
-  Definition Get_value :=
-    Ref.map (fun α => Some α.(value)) (fun β α => Some (α <| value := β |>)).
-End Flipper.
-End Flipper.
 
-Module  Impl_trait_flipper_Flipper_t.
-Section Impl_trait_flipper_Flipper_t.
-  Definition Self : Set := trait_flipper.Flipper.t.
+
+Module  Impl_trait_flipper_Flipper.
+Section Impl_trait_flipper_Flipper.
+  Definition Self : Set := Ty.apply (Ty.path "trait_flipper::Flipper") [].
   
-  Parameter new : M Self.
+  Parameter new : Ty.apply (Ty.path "trait_flipper::Flipper") [].
   
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
+  Definition AssociatedFunction_new : Instance.t := {
     Notations.double_colon := new;
   }.
-End Impl_trait_flipper_Flipper_t.
-End Impl_trait_flipper_Flipper_t.
+End Impl_trait_flipper_Flipper.
+End Impl_trait_flipper_Flipper.
 
-Module  Impl_trait_flipper_Flip_for_trait_flipper_Flipper_t.
-Section Impl_trait_flipper_Flip_for_trait_flipper_Flipper_t.
-  Definition Self : Set := trait_flipper.Flipper.t.
+Module  Impl_trait_flipper_Flip_for_trait_flipper_Flipper.
+Section Impl_trait_flipper_Flip_for_trait_flipper_Flipper.
+  Definition Self : Ty.t := Ty.apply (Ty.path "trait_flipper::Flipper") [].
   
-  Parameter flip : (mut_ref Self) -> M unit.
+  Parameter flip :
+      (Ty.apply
+          (Ty.path "mut_ref")
+          [Ty.apply (Ty.path "trait_flipper::Flipper") []])
+        ->
+        Ty.path "unit".
   
-  Global Instance AssociatedFunction_flip :
-    Notations.DoubleColon Self "flip" := {
+  Definition AssociatedFunction_flip : Instance.t := {
     Notations.double_colon := flip;
   }.
   
-  Parameter get : (ref Self) -> M bool.t.
+  Parameter get :
+      (Ty.apply
+          (Ty.path "ref")
+          [Ty.apply (Ty.path "trait_flipper::Flipper") []])
+        ->
+        Ty.path "bool".
   
-  Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
+  Definition AssociatedFunction_get : Instance.t := {
     Notations.double_colon := get;
   }.
   
-  Global Instance ℐ : trait_flipper.Flip.Trait Self := {
-    trait_flipper.Flip.flip := flip;
-    trait_flipper.Flip.get := get;
-  }.
-End Impl_trait_flipper_Flip_for_trait_flipper_Flipper_t.
-End Impl_trait_flipper_Flip_for_trait_flipper_Flipper_t.
+  Definition ℐ : Instance.t := [("flip", flip); ("get", get)].
+End Impl_trait_flipper_Flip_for_trait_flipper_Flipper.
+End Impl_trait_flipper_Flip_for_trait_flipper_Flipper.

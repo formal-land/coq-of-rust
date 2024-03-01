@@ -70,180 +70,263 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
-  let* color : M.Val alloc.string.String.t :=
-    let* α0 : (ref str.t) -> M alloc.string.String.t :=
-      ltac:(M.get_method (fun ℐ =>
-        core.convert.From.from
-          (Self := alloc.string.String.t)
-          (T := ref str.t)
-          (Trait := ℐ))) in
-    let* α1 : ref str.t := M.read (mk_str "green") in
-    let* α2 : alloc.string.String.t := M.call (α0 α1) in
-    M.alloc α2 in
-  let* print : M.Val (unit -> M unit) :=
-    M.alloc
-      (fun (α0 : unit) =>
-        (let* α0 := M.alloc α0 in
-        match_operator
-          α0
-          [
-            fun γ =>
-              (let* _ : M.Val unit :=
-                let* α0 : ref str.t := M.read (mk_str "`color`: ") in
-                let* α1 : ref str.t := M.read (mk_str "
+Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [], [] =>
+    let* color : Ty.apply (Ty.path "alloc::string::String") [] :=
+      let* α0 :
+          Ty.function
+            [Ty.apply (Ty.path "ref") [Ty.path "str"]]
+            (Ty.apply (Ty.path "alloc::string::String") []) :=
+        ltac:(M.get_method (fun ℐ =>
+          core.convert.From.from
+            (Self := Ty.apply (Ty.path "alloc::string::String") [])
+            (T := Ty.apply (Ty.path "ref") [Ty.path "str"])
+            (Trait := ℐ))) in
+      let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+        M.read (mk_str "green") in
+      let* α2 : Ty.apply (Ty.path "alloc::string::String") [] :=
+        M.call (α0 α1) in
+      M.alloc α2 in
+    let* print : Ty.function [Ty.tuple] Ty.tuple :=
+      M.alloc
+        (fun (α0 : Ty.path "unit") =>
+          (let* α0 := M.alloc α0 in
+          match_operator
+            α0
+            [
+              fun γ =>
+                (let* _ : Ty.tuple :=
+                  let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+                    M.read (mk_str "`color`: ") in
+                  let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+                    M.read (mk_str "
 ") in
-                let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-                let* α3 : core.fmt.rt.Argument.t :=
-                  M.call
-                    (core.fmt.rt.Argument.t::["new_display"] (borrow color)) in
-                let* α4 : M.Val (array core.fmt.rt.Argument.t) :=
-                  M.alloc [ α3 ] in
-                let* α5 : core.fmt.Arguments.t :=
-                  M.call
-                    (core.fmt.Arguments.t::["new_v1"]
-                      (pointer_coercion "Unsize" (borrow α2))
-                      (pointer_coercion "Unsize" (borrow α4))) in
-                let* α6 : unit := M.call (std.io.stdio._print α5) in
-                M.alloc α6 in
-              let* α0 : M.Val unit := M.alloc tt in
-              M.read α0) :
-              M unit
-          ]) :
-        M unit) in
-  let* _ : M.Val unit :=
-    let* α0 : (ref (unit -> M unit)) -> unit -> M _ :=
-      ltac:(M.get_method (fun ℐ =>
-        core.ops.function.Fn.call
-          (Self := unit -> M unit)
-          (Args := unit)
-          (Trait := ℐ))) in
-    let* α1 : unit := M.call (α0 (borrow print) tt) in
-    M.alloc α1 in
-  let* _reborrow : M.Val (ref alloc.string.String.t) :=
-    M.alloc (borrow color) in
-  let* _ : M.Val unit :=
-    let* α0 : (ref (unit -> M unit)) -> unit -> M _ :=
-      ltac:(M.get_method (fun ℐ =>
-        core.ops.function.Fn.call
-          (Self := unit -> M unit)
-          (Args := unit)
-          (Trait := ℐ))) in
-    let* α1 : unit := M.call (α0 (borrow print) tt) in
-    M.alloc α1 in
-  let* _color_moved : M.Val alloc.string.String.t := M.copy color in
-  let* count : M.Val i32.t := M.alloc ((Integer.of_Z 0) : i32.t) in
-  let* inc : M.Val (unit -> M unit) :=
-    M.alloc
-      (fun (α0 : unit) =>
-        (let* α0 := M.alloc α0 in
-        match_operator
-          α0
-          [
-            fun γ =>
-              (let* _ : M.Val unit :=
-                let β : M.Val i32.t := count in
-                let* α0 := M.read β in
-                let* α1 := BinOp.Panic.add α0 ((Integer.of_Z 1) : i32.t) in
-                assign β α1 in
-              let* _ : M.Val unit :=
-                let* _ : M.Val unit :=
-                  let* α0 : ref str.t := M.read (mk_str "`count`: ") in
-                  let* α1 : ref str.t := M.read (mk_str "
-") in
-                  let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-                  let* α3 : core.fmt.rt.Argument.t :=
+                  let* α2 :
+                      Ty.apply
+                        (Ty.path "array")
+                        [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
+                    M.alloc [ α0; α1 ] in
+                  let* α3 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
                     M.call
-                      (core.fmt.rt.Argument.t::["new_display"]
-                        (borrow count)) in
-                  let* α4 : M.Val (array core.fmt.rt.Argument.t) :=
+                      ((Ty.apply
+                            (Ty.path "core::fmt::rt::Argument")
+                            [])::["new_display"]
+                        (borrow color)) in
+                  let* α4 :
+                      Ty.apply
+                        (Ty.path "array")
+                        [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
                     M.alloc [ α3 ] in
-                  let* α5 : core.fmt.Arguments.t :=
+                  let* α5 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
                     M.call
-                      (core.fmt.Arguments.t::["new_v1"]
+                      ((Ty.apply
+                            (Ty.path "core::fmt::Arguments")
+                            [])::["new_v1"]
                         (pointer_coercion "Unsize" (borrow α2))
                         (pointer_coercion "Unsize" (borrow α4))) in
-                  let* α6 : unit := M.call (std.io.stdio._print α5) in
+                  let* α6 : Ty.tuple := M.call (std.io.stdio._print α5) in
                   M.alloc α6 in
-                M.alloc tt in
-              let* α0 : M.Val unit := M.alloc tt in
-              M.read α0) :
-              M unit
-          ]) :
-        M unit) in
-  let* _ : M.Val unit :=
-    let* α0 : (mut_ref (unit -> M unit)) -> unit -> M _ :=
-      ltac:(M.get_method (fun ℐ =>
-        core.ops.function.FnMut.call_mut
-          (Self := unit -> M unit)
-          (Args := unit)
-          (Trait := ℐ))) in
-    let* α1 : unit := M.call (α0 (borrow_mut inc) tt) in
-    M.alloc α1 in
-  let* _ : M.Val unit :=
-    let* α0 : (mut_ref (unit -> M unit)) -> unit -> M _ :=
-      ltac:(M.get_method (fun ℐ =>
-        core.ops.function.FnMut.call_mut
-          (Self := unit -> M unit)
-          (Args := unit)
-          (Trait := ℐ))) in
-    let* α1 : unit := M.call (α0 (borrow_mut inc) tt) in
-    M.alloc α1 in
-  let* _count_reborrowed : M.Val (mut_ref i32.t) :=
-    M.alloc (borrow_mut count) in
-  let* movable : M.Val (alloc.boxed.Box.t i32.t alloc.alloc.Global.t) :=
-    let* α0 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t :=
-      M.call
-        ((alloc.boxed.Box.t i32.t alloc.alloc.Global.t)::["new"]
-          ((Integer.of_Z 3) : i32.t)) in
-    M.alloc α0 in
-  let* consume : M.Val (unit -> M unit) :=
-    M.alloc
-      (fun (α0 : unit) =>
-        (let* α0 := M.alloc α0 in
-        match_operator
-          α0
-          [
-            fun γ =>
-              (let* _ : M.Val unit :=
-                let* _ : M.Val unit :=
-                  let* α0 : ref str.t := M.read (mk_str "`movable`: ") in
-                  let* α1 : ref str.t := M.read (mk_str "
+                let* α0 : Ty.path "unit" := M.alloc tt in
+                M.read α0) :
+                Ty.tuple
+            ]) :
+          Ty.tuple) in
+    let* _ : Ty.tuple :=
+      let* α0 :
+          Ty.function
+            [Ty.apply (Ty.path "ref") [Ty.function [Ty.tuple] Ty.tuple];
+              Ty.tuple]
+            _ :=
+        ltac:(M.get_method (fun ℐ =>
+          core.ops.function.Fn.call
+            (Self := Ty.function [Ty.tuple] Ty.tuple)
+            (Args := Ty.tuple)
+            (Trait := ℐ))) in
+      let* α1 : Ty.tuple := M.call (α0 (borrow print) tt) in
+      M.alloc α1 in
+    let* _reborrow :
+        Ty.apply
+          (Ty.path "ref")
+          [Ty.apply (Ty.path "alloc::string::String") []] :=
+      M.alloc (borrow color) in
+    let* _ : Ty.tuple :=
+      let* α0 :
+          Ty.function
+            [Ty.apply (Ty.path "ref") [Ty.function [Ty.tuple] Ty.tuple];
+              Ty.tuple]
+            _ :=
+        ltac:(M.get_method (fun ℐ =>
+          core.ops.function.Fn.call
+            (Self := Ty.function [Ty.tuple] Ty.tuple)
+            (Args := Ty.tuple)
+            (Trait := ℐ))) in
+      let* α1 : Ty.tuple := M.call (α0 (borrow print) tt) in
+      M.alloc α1 in
+    let* _color_moved : Ty.apply (Ty.path "alloc::string::String") [] :=
+      M.copy color in
+    let* count : Ty.path "i32" := M.alloc ((Integer.of_Z 0) : Ty.path "i32") in
+    let* inc : Ty.function [Ty.tuple] Ty.tuple :=
+      M.alloc
+        (fun (α0 : Ty.path "unit") =>
+          (let* α0 := M.alloc α0 in
+          match_operator
+            α0
+            [
+              fun γ =>
+                (let* _ : Ty.tuple :=
+                  let β : Ty.path "i32" := count in
+                  let* α0 := M.read β in
+                  let* α1 :=
+                    BinOp.Panic.add α0 ((Integer.of_Z 1) : Ty.path "i32") in
+                  assign β α1 in
+                let* _ : Ty.tuple :=
+                  let* _ : Ty.tuple :=
+                    let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+                      M.read (mk_str "`count`: ") in
+                    let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+                      M.read (mk_str "
 ") in
-                  let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-                  let* α3 : core.fmt.rt.Argument.t :=
-                    M.call
-                      (core.fmt.rt.Argument.t::["new_debug"]
-                        (borrow movable)) in
-                  let* α4 : M.Val (array core.fmt.rt.Argument.t) :=
-                    M.alloc [ α3 ] in
-                  let* α5 : core.fmt.Arguments.t :=
-                    M.call
-                      (core.fmt.Arguments.t::["new_v1"]
-                        (pointer_coercion "Unsize" (borrow α2))
-                        (pointer_coercion "Unsize" (borrow α4))) in
-                  let* α6 : unit := M.call (std.io.stdio._print α5) in
-                  M.alloc α6 in
-                M.alloc tt in
-              let* _ : M.Val unit :=
-                let* α0 : alloc.boxed.Box.t i32.t alloc.alloc.Global.t :=
-                  M.read movable in
-                let* α1 : unit := M.call (core.mem.drop α0) in
-                M.alloc α1 in
-              let* α0 : M.Val unit := M.alloc tt in
-              M.read α0) :
-              M unit
-          ]) :
-        M unit) in
-  let* _ : M.Val unit :=
-    let* α0 : (unit -> M unit) -> unit -> M _ :=
-      ltac:(M.get_method (fun ℐ =>
-        core.ops.function.FnOnce.call_once
-          (Self := unit -> M unit)
-          (Args := unit)
-          (Trait := ℐ))) in
-    let* α1 : unit -> M unit := M.read consume in
-    let* α2 : unit := M.call (α0 α1 tt) in
-    M.alloc α2 in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+                    let* α2 :
+                        Ty.apply
+                          (Ty.path "array")
+                          [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
+                      M.alloc [ α0; α1 ] in
+                    let* α3 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+                      M.call
+                        ((Ty.apply
+                              (Ty.path "core::fmt::rt::Argument")
+                              [])::["new_display"]
+                          (borrow count)) in
+                    let* α4 :
+                        Ty.apply
+                          (Ty.path "array")
+                          [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
+                      M.alloc [ α3 ] in
+                    let* α5 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+                      M.call
+                        ((Ty.apply
+                              (Ty.path "core::fmt::Arguments")
+                              [])::["new_v1"]
+                          (pointer_coercion "Unsize" (borrow α2))
+                          (pointer_coercion "Unsize" (borrow α4))) in
+                    let* α6 : Ty.tuple := M.call (std.io.stdio._print α5) in
+                    M.alloc α6 in
+                  M.alloc tt in
+                let* α0 : Ty.path "unit" := M.alloc tt in
+                M.read α0) :
+                Ty.tuple
+            ]) :
+          Ty.tuple) in
+    let* _ : Ty.tuple :=
+      let* α0 :
+          Ty.function
+            [Ty.apply (Ty.path "mut_ref") [Ty.function [Ty.tuple] Ty.tuple];
+              Ty.tuple]
+            _ :=
+        ltac:(M.get_method (fun ℐ =>
+          core.ops.function.FnMut.call_mut
+            (Self := Ty.function [Ty.tuple] Ty.tuple)
+            (Args := Ty.tuple)
+            (Trait := ℐ))) in
+      let* α1 : Ty.tuple := M.call (α0 (borrow_mut inc) tt) in
+      M.alloc α1 in
+    let* _ : Ty.tuple :=
+      let* α0 :
+          Ty.function
+            [Ty.apply (Ty.path "mut_ref") [Ty.function [Ty.tuple] Ty.tuple];
+              Ty.tuple]
+            _ :=
+        ltac:(M.get_method (fun ℐ =>
+          core.ops.function.FnMut.call_mut
+            (Self := Ty.function [Ty.tuple] Ty.tuple)
+            (Args := Ty.tuple)
+            (Trait := ℐ))) in
+      let* α1 : Ty.tuple := M.call (α0 (borrow_mut inc) tt) in
+      M.alloc α1 in
+    let* _count_reborrowed : Ty.apply (Ty.path "mut_ref") [Ty.path "i32"] :=
+      M.alloc (borrow_mut count) in
+    let* movable :
+        Ty.apply
+          (Ty.path "alloc::boxed::Box")
+          [Ty.path "i32"; Ty.apply (Ty.path "alloc::alloc::Global") []] :=
+      let* α0 :
+          Ty.apply
+            (Ty.path "alloc::boxed::Box")
+            [Ty.path "i32"; Ty.apply (Ty.path "alloc::alloc::Global") []] :=
+        M.call
+          ((Ty.apply
+                (Ty.path "alloc::boxed::Box")
+                [Ty.path "i32";
+                  Ty.apply (Ty.path "alloc::alloc::Global") []])::["new"]
+            ((Integer.of_Z 3) : Ty.path "i32")) in
+      M.alloc α0 in
+    let* consume : Ty.function [Ty.tuple] Ty.tuple :=
+      M.alloc
+        (fun (α0 : Ty.path "unit") =>
+          (let* α0 := M.alloc α0 in
+          match_operator
+            α0
+            [
+              fun γ =>
+                (let* _ : Ty.tuple :=
+                  let* _ : Ty.tuple :=
+                    let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+                      M.read (mk_str "`movable`: ") in
+                    let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+                      M.read (mk_str "
+") in
+                    let* α2 :
+                        Ty.apply
+                          (Ty.path "array")
+                          [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
+                      M.alloc [ α0; α1 ] in
+                    let* α3 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+                      M.call
+                        ((Ty.apply
+                              (Ty.path "core::fmt::rt::Argument")
+                              [])::["new_debug"]
+                          (borrow movable)) in
+                    let* α4 :
+                        Ty.apply
+                          (Ty.path "array")
+                          [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
+                      M.alloc [ α3 ] in
+                    let* α5 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+                      M.call
+                        ((Ty.apply
+                              (Ty.path "core::fmt::Arguments")
+                              [])::["new_v1"]
+                          (pointer_coercion "Unsize" (borrow α2))
+                          (pointer_coercion "Unsize" (borrow α4))) in
+                    let* α6 : Ty.tuple := M.call (std.io.stdio._print α5) in
+                    M.alloc α6 in
+                  M.alloc tt in
+                let* _ : Ty.tuple :=
+                  let* α0 :
+                      Ty.apply
+                        (Ty.path "alloc::boxed::Box")
+                        [Ty.path "i32";
+                          Ty.apply (Ty.path "alloc::alloc::Global") []] :=
+                    M.read movable in
+                  let* α1 : Ty.tuple := M.call (core.mem.drop α0) in
+                  M.alloc α1 in
+                let* α0 : Ty.path "unit" := M.alloc tt in
+                M.read α0) :
+                Ty.tuple
+            ]) :
+          Ty.tuple) in
+    let* _ : Ty.tuple :=
+      let* α0 : Ty.function [Ty.function [Ty.tuple] Ty.tuple; Ty.tuple] _ :=
+        ltac:(M.get_method (fun ℐ =>
+          core.ops.function.FnOnce.call_once
+            (Self := Ty.function [Ty.tuple] Ty.tuple)
+            (Args := Ty.tuple)
+            (Trait := ℐ))) in
+      let* α1 : Ty.function [Ty.tuple] Ty.tuple := M.read consume in
+      let* α2 : Ty.tuple := M.call (α0 α1 tt) in
+      M.alloc α2 in
+    let* α0 : Ty.path "unit" := M.alloc tt in
+    M.read α0
+  | _, _ => M.impossible
+  end.

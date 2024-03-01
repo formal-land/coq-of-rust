@@ -7,34 +7,82 @@ fn double_first(vec: Vec<&str>) -> i32 {
     2 * first.parse::<i32>().unwrap() // Generate error 2
 }
 *)
-Definition double_first
-    (vec : alloc.vec.Vec.t (ref str.t) alloc.vec.Vec.Default.A)
-    : M i32.t :=
-  let* vec := M.alloc vec in
-  let* first : M.Val (ref (ref str.t)) :=
+Definition double_first (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [], [vec] =>
+    let* vec := M.alloc vec in
+    let* first :
+        Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
+      let* α0 :
+          Ty.function
+            [Ty.apply
+                (Ty.path "ref")
+                [Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    [Ty.apply (Ty.path "ref") [Ty.path "str"];
+                      Ty.apply (Ty.path "alloc::alloc::Global") []]]]
+            (Ty.apply (Ty.path "ref") [_]) :=
+        ltac:(M.get_method (fun ℐ =>
+          core.ops.deref.Deref.deref
+            (Self :=
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                [Ty.apply (Ty.path "ref") [Ty.path "str"];
+                  Ty.apply (Ty.path "alloc::alloc::Global") []])
+            (Trait := ℐ))) in
+      let* α1 :
+          Ty.apply
+            (Ty.path "ref")
+            [Ty.apply
+                (Ty.path "slice")
+                [Ty.apply (Ty.path "ref") [Ty.path "str"]]] :=
+        M.call (α0 (borrow vec)) in
+      let* α2 :
+          Ty.apply
+            (Ty.path "core::option::Option")
+            [Ty.apply
+                (Ty.path "ref")
+                [Ty.apply (Ty.path "ref") [Ty.path "str"]]] :=
+        M.call
+          ((Ty.apply
+                (Ty.path "slice")
+                [Ty.apply (Ty.path "ref") [Ty.path "str"]])::["first"]
+            α1) in
+      let* α3 :
+          Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
+        M.call
+          ((Ty.apply
+                (Ty.path "core::option::Option")
+                [Ty.apply
+                    (Ty.path "ref")
+                    [Ty.apply (Ty.path "ref") [Ty.path "str"]]])::["unwrap"]
+            α2) in
+      M.alloc α3 in
     let* α0 :
-        (ref (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t)) -> M (ref _) :=
-      ltac:(M.get_method (fun ℐ =>
-        core.ops.deref.Deref.deref
-          (Self := alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t)
-          (Trait := ℐ))) in
-    let* α1 : ref (slice (ref str.t)) := M.call (α0 (borrow vec)) in
-    let* α2 : core.option.Option.t (ref (ref str.t)) :=
-      M.call ((slice (ref str.t))::["first"] α1) in
-    let* α3 : ref (ref str.t) :=
-      M.call ((core.option.Option.t (ref (ref str.t)))::["unwrap"] α2) in
-    M.alloc α3 in
-  let* α0 : ref (ref str.t) := M.read first in
-  let* α1 : ref str.t := M.read (deref α0) in
-  let* α2 : core.result.Result.t i32.t core.num.error.ParseIntError.t :=
-    M.call (str.t::["parse"] α1) in
-  let* α3 : i32.t :=
-    M.call
-      ((core.result.Result.t i32.t core.num.error.ParseIntError.t)::["unwrap"]
-        α2) in
-  let* α4 : i32.t := BinOp.Panic.mul ((Integer.of_Z 2) : i32.t) α3 in
-  let* α0 : M.Val i32.t := M.alloc α4 in
-  M.read α0.
+        Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
+      M.read first in
+    let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] := M.read (deref α0) in
+    let* α2 :
+        Ty.apply
+          (Ty.path "core::result::Result")
+          [Ty.path "i32";
+            Ty.apply (Ty.path "core::num::error::ParseIntError") []] :=
+      M.call ((Ty.path "str")::["parse"] α1) in
+    let* α3 : Ty.path "i32" :=
+      M.call
+        ((Ty.apply
+              (Ty.path "core::result::Result")
+              [Ty.path "i32";
+                Ty.apply
+                  (Ty.path "core::num::error::ParseIntError")
+                  []])::["unwrap"]
+          α2) in
+    let* α4 : Ty.path "i32" :=
+      BinOp.Panic.mul ((Integer.of_Z 2) : Ty.path "i32") α3 in
+    let* α0 : Ty.path "i32" := M.alloc α4 in
+    M.read α0
+  | _, _ => M.impossible
+  end.
 
 (*
 fn main() {
@@ -52,101 +100,226 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
-  let* numbers : M.Val (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t) :=
-    let* α0 : ref str.t := M.read (mk_str "42") in
-    let* α1 : ref str.t := M.read (mk_str "93") in
-    let* α2 : ref str.t := M.read (mk_str "18") in
-    let* α3 : M.Val (array (ref str.t)) := M.alloc [ α0; α1; α2 ] in
-    let* α4 :
-        M.Val (alloc.boxed.Box.t (array (ref str.t)) alloc.alloc.Global.t) :=
-      M.call ((alloc.boxed.Box.t _ alloc.boxed.Box.Default.A)::["new"] α3) in
-    let* α5 : alloc.boxed.Box.t (array (ref str.t)) alloc.alloc.Global.t :=
-      M.read α4 in
-    let* α6 : alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t :=
-      M.call
-        ((slice (ref str.t))::["into_vec"] (pointer_coercion "Unsize" α5)) in
-    M.alloc α6 in
-  let* empty : M.Val (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t) :=
-    let* α0 : alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t :=
-      M.call (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t)::["new"] in
-    M.alloc α0 in
-  let* strings : M.Val (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t) :=
-    let* α0 : ref str.t := M.read (mk_str "tofu") in
-    let* α1 : ref str.t := M.read (mk_str "93") in
-    let* α2 : ref str.t := M.read (mk_str "18") in
-    let* α3 : M.Val (array (ref str.t)) := M.alloc [ α0; α1; α2 ] in
-    let* α4 :
-        M.Val (alloc.boxed.Box.t (array (ref str.t)) alloc.alloc.Global.t) :=
-      M.call ((alloc.boxed.Box.t _ alloc.boxed.Box.Default.A)::["new"] α3) in
-    let* α5 : alloc.boxed.Box.t (array (ref str.t)) alloc.alloc.Global.t :=
-      M.read α4 in
-    let* α6 : alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t :=
-      M.call
-        ((slice (ref str.t))::["into_vec"] (pointer_coercion "Unsize" α5)) in
-    M.alloc α6 in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "The first doubled is ") in
-      let* α1 : ref str.t := M.read (mk_str "
-") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t :=
-        M.read numbers in
-      let* α4 : i32.t := M.call (multiple_error_types.double_first α3) in
-      let* α5 : M.Val i32.t := M.alloc α4 in
-      let* α6 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α5)) in
-      let* α7 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α6 ] in
-      let* α8 : core.fmt.Arguments.t :=
+Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [], [] =>
+    let* numbers :
+        Ty.apply
+          (Ty.path "alloc::vec::Vec")
+          [Ty.apply (Ty.path "ref") [Ty.path "str"];
+            Ty.apply (Ty.path "alloc::alloc::Global") []] :=
+      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+        M.read (mk_str "42") in
+      let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+        M.read (mk_str "93") in
+      let* α2 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+        M.read (mk_str "18") in
+      let* α3 :
+          Ty.apply
+            (Ty.path "array")
+            [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
+        M.alloc [ α0; α1; α2 ] in
+      let* α4 :
+          Ty.apply
+            (Ty.path "alloc::boxed::Box")
+            [Ty.apply
+                (Ty.path "array")
+                [Ty.apply (Ty.path "ref") [Ty.path "str"]];
+              Ty.apply (Ty.path "alloc::alloc::Global") []] :=
+        M.call ((alloc.boxed.Box.t _ alloc.boxed.Box.Default.A)::["new"] α3) in
+      let* α5 :
+          Ty.apply
+            (Ty.path "alloc::boxed::Box")
+            [Ty.apply
+                (Ty.path "array")
+                [Ty.apply (Ty.path "ref") [Ty.path "str"]];
+              Ty.apply (Ty.path "alloc::alloc::Global") []] :=
+        M.read α4 in
+      let* α6 :
+          Ty.apply
+            (Ty.path "alloc::vec::Vec")
+            [Ty.apply (Ty.path "ref") [Ty.path "str"];
+              Ty.apply (Ty.path "alloc::alloc::Global") []] :=
         M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α7))) in
-      let* α9 : unit := M.call (std.io.stdio._print α8) in
-      M.alloc α9 in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "The first doubled is ") in
-      let* α1 : ref str.t := M.read (mk_str "
-") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t :=
-        M.read empty in
-      let* α4 : i32.t := M.call (multiple_error_types.double_first α3) in
-      let* α5 : M.Val i32.t := M.alloc α4 in
-      let* α6 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α5)) in
-      let* α7 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α6 ] in
-      let* α8 : core.fmt.Arguments.t :=
+          ((Ty.apply
+                (Ty.path "slice")
+                [Ty.apply (Ty.path "ref") [Ty.path "str"]])::["into_vec"]
+            (pointer_coercion "Unsize" α5)) in
+      M.alloc α6 in
+    let* empty :
+        Ty.apply
+          (Ty.path "alloc::vec::Vec")
+          [Ty.apply (Ty.path "ref") [Ty.path "str"];
+            Ty.apply (Ty.path "alloc::alloc::Global") []] :=
+      let* α0 :
+          Ty.apply
+            (Ty.path "alloc::vec::Vec")
+            [Ty.apply (Ty.path "ref") [Ty.path "str"];
+              Ty.apply (Ty.path "alloc::alloc::Global") []] :=
         M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α7))) in
-      let* α9 : unit := M.call (std.io.stdio._print α8) in
-      M.alloc α9 in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "The first doubled is ") in
-      let* α1 : ref str.t := M.read (mk_str "
-") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t :=
-        M.read strings in
-      let* α4 : i32.t := M.call (multiple_error_types.double_first α3) in
-      let* α5 : M.Val i32.t := M.alloc α4 in
-      let* α6 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α5)) in
-      let* α7 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α6 ] in
-      let* α8 : core.fmt.Arguments.t :=
+          (Ty.apply
+              (Ty.path "alloc::vec::Vec")
+              [Ty.apply (Ty.path "ref") [Ty.path "str"];
+                Ty.apply (Ty.path "alloc::alloc::Global") []])::["new"] in
+      M.alloc α0 in
+    let* strings :
+        Ty.apply
+          (Ty.path "alloc::vec::Vec")
+          [Ty.apply (Ty.path "ref") [Ty.path "str"];
+            Ty.apply (Ty.path "alloc::alloc::Global") []] :=
+      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+        M.read (mk_str "tofu") in
+      let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+        M.read (mk_str "93") in
+      let* α2 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+        M.read (mk_str "18") in
+      let* α3 :
+          Ty.apply
+            (Ty.path "array")
+            [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
+        M.alloc [ α0; α1; α2 ] in
+      let* α4 :
+          Ty.apply
+            (Ty.path "alloc::boxed::Box")
+            [Ty.apply
+                (Ty.path "array")
+                [Ty.apply (Ty.path "ref") [Ty.path "str"]];
+              Ty.apply (Ty.path "alloc::alloc::Global") []] :=
+        M.call ((alloc.boxed.Box.t _ alloc.boxed.Box.Default.A)::["new"] α3) in
+      let* α5 :
+          Ty.apply
+            (Ty.path "alloc::boxed::Box")
+            [Ty.apply
+                (Ty.path "array")
+                [Ty.apply (Ty.path "ref") [Ty.path "str"]];
+              Ty.apply (Ty.path "alloc::alloc::Global") []] :=
+        M.read α4 in
+      let* α6 :
+          Ty.apply
+            (Ty.path "alloc::vec::Vec")
+            [Ty.apply (Ty.path "ref") [Ty.path "str"];
+              Ty.apply (Ty.path "alloc::alloc::Global") []] :=
         M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α7))) in
-      let* α9 : unit := M.call (std.io.stdio._print α8) in
-      M.alloc α9 in
-    M.alloc tt in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+          ((Ty.apply
+                (Ty.path "slice")
+                [Ty.apply (Ty.path "ref") [Ty.path "str"]])::["into_vec"]
+            (pointer_coercion "Unsize" α5)) in
+      M.alloc α6 in
+    let* _ : Ty.tuple :=
+      let* _ : Ty.tuple :=
+        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+          M.read (mk_str "The first doubled is ") in
+        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+          M.read (mk_str "
+") in
+        let* α2 :
+            Ty.apply
+              (Ty.path "array")
+              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
+          M.alloc [ α0; α1 ] in
+        let* α3 :
+            Ty.apply
+              (Ty.path "alloc::vec::Vec")
+              [Ty.apply (Ty.path "ref") [Ty.path "str"];
+                Ty.apply (Ty.path "alloc::alloc::Global") []] :=
+          M.read numbers in
+        let* α4 : Ty.path "i32" :=
+          M.call (multiple_error_types.double_first α3) in
+        let* α5 : Ty.path "i32" := M.alloc α4 in
+        let* α6 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+          M.call
+            ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_display"]
+              (borrow α5)) in
+        let* α7 :
+            Ty.apply
+              (Ty.path "array")
+              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
+          M.alloc [ α6 ] in
+        let* α8 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+          M.call
+            ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
+              (pointer_coercion "Unsize" (borrow α2))
+              (pointer_coercion "Unsize" (borrow α7))) in
+        let* α9 : Ty.tuple := M.call (std.io.stdio._print α8) in
+        M.alloc α9 in
+      M.alloc tt in
+    let* _ : Ty.tuple :=
+      let* _ : Ty.tuple :=
+        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+          M.read (mk_str "The first doubled is ") in
+        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+          M.read (mk_str "
+") in
+        let* α2 :
+            Ty.apply
+              (Ty.path "array")
+              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
+          M.alloc [ α0; α1 ] in
+        let* α3 :
+            Ty.apply
+              (Ty.path "alloc::vec::Vec")
+              [Ty.apply (Ty.path "ref") [Ty.path "str"];
+                Ty.apply (Ty.path "alloc::alloc::Global") []] :=
+          M.read empty in
+        let* α4 : Ty.path "i32" :=
+          M.call (multiple_error_types.double_first α3) in
+        let* α5 : Ty.path "i32" := M.alloc α4 in
+        let* α6 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+          M.call
+            ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_display"]
+              (borrow α5)) in
+        let* α7 :
+            Ty.apply
+              (Ty.path "array")
+              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
+          M.alloc [ α6 ] in
+        let* α8 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+          M.call
+            ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
+              (pointer_coercion "Unsize" (borrow α2))
+              (pointer_coercion "Unsize" (borrow α7))) in
+        let* α9 : Ty.tuple := M.call (std.io.stdio._print α8) in
+        M.alloc α9 in
+      M.alloc tt in
+    let* _ : Ty.tuple :=
+      let* _ : Ty.tuple :=
+        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+          M.read (mk_str "The first doubled is ") in
+        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+          M.read (mk_str "
+") in
+        let* α2 :
+            Ty.apply
+              (Ty.path "array")
+              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
+          M.alloc [ α0; α1 ] in
+        let* α3 :
+            Ty.apply
+              (Ty.path "alloc::vec::Vec")
+              [Ty.apply (Ty.path "ref") [Ty.path "str"];
+                Ty.apply (Ty.path "alloc::alloc::Global") []] :=
+          M.read strings in
+        let* α4 : Ty.path "i32" :=
+          M.call (multiple_error_types.double_first α3) in
+        let* α5 : Ty.path "i32" := M.alloc α4 in
+        let* α6 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+          M.call
+            ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_display"]
+              (borrow α5)) in
+        let* α7 :
+            Ty.apply
+              (Ty.path "array")
+              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
+          M.alloc [ α6 ] in
+        let* α8 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+          M.call
+            ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
+              (pointer_coercion "Unsize" (borrow α2))
+              (pointer_coercion "Unsize" (borrow α7))) in
+        let* α9 : Ty.tuple := M.call (std.io.stdio._print α8) in
+        M.alloc α9 in
+      M.alloc tt in
+    let* α0 : Ty.path "unit" := M.alloc tt in
+    M.read α0
+  | _, _ => M.impossible
+  end.

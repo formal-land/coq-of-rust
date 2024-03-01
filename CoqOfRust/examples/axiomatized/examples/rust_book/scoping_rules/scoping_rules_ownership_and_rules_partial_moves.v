@@ -2,36 +2,37 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M unit.
+Parameter main : Ty.path "unit".
 
-Module  Person.
-Section Person.
-  Record t : Set := {
-    name : alloc.string.String.t;
-    age : alloc.boxed.Box.t u8.t alloc.boxed.Box.Default.A;
-  }.
-  
-  Definition Get_name :=
-    Ref.map (fun α => Some α.(name)) (fun β α => Some (α <| name := β |>)).
-  Definition Get_age :=
-    Ref.map (fun α => Some α.(age)) (fun β α => Some (α <| age := β |>)).
-End Person.
-End Person.
 
-Module  Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_main_Person_t.
-Section Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_main_Person_t.
-  Definition Self : Set :=
-    scoping_rules_ownership_and_rules_partial_moves.main.Person.t.
+
+Module  Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_main_Person.
+Section Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_main_Person.
+  Definition Self : Ty.t :=
+    Ty.apply
+      (Ty.path "scoping_rules_ownership_and_rules_partial_moves::main::Person")
+      [].
   
   Parameter fmt :
-      (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
+      (Ty.apply
+          (Ty.path "ref")
+          [Ty.apply
+              (Ty.path
+                "scoping_rules_ownership_and_rules_partial_moves::main::Person")
+              []])
+        ->
+        (Ty.apply
+          (Ty.path "mut_ref")
+          [Ty.apply (Ty.path "core::fmt::Formatter") []])
+        ->
+        Ty.apply
+          (Ty.path "core::result::Result")
+          [Ty.tuple; Ty.apply (Ty.path "core::fmt::Error") []].
   
-  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
+  Definition AssociatedFunction_fmt : Instance.t := {
     Notations.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
-  }.
-End Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_main_Person_t.
-End Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_main_Person_t.
+  Definition ℐ : Instance.t := [("fmt", fmt)].
+End Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_main_Person.
+End Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_main_Person.

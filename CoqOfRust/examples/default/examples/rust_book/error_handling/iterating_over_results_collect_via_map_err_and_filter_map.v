@@ -15,227 +15,498 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
-  let* strings : M.Val (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t) :=
-    let* α0 : ref str.t := M.read (mk_str "42") in
-    let* α1 : ref str.t := M.read (mk_str "tofu") in
-    let* α2 : ref str.t := M.read (mk_str "93") in
-    let* α3 : ref str.t := M.read (mk_str "999") in
-    let* α4 : ref str.t := M.read (mk_str "18") in
-    let* α5 : M.Val (array (ref str.t)) := M.alloc [ α0; α1; α2; α3; α4 ] in
-    let* α6 :
-        M.Val (alloc.boxed.Box.t (array (ref str.t)) alloc.alloc.Global.t) :=
-      M.call ((alloc.boxed.Box.t _ alloc.boxed.Box.Default.A)::["new"] α5) in
-    let* α7 : alloc.boxed.Box.t (array (ref str.t)) alloc.alloc.Global.t :=
-      M.read α6 in
-    let* α8 : alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t :=
-      M.call
-        ((slice (ref str.t))::["into_vec"] (pointer_coercion "Unsize" α7)) in
-    M.alloc α8 in
-  let* errors :
-      M.Val
-        (alloc.vec.Vec.t core.num.error.ParseIntError.t alloc.alloc.Global.t) :=
-    let* α0 :
-        alloc.vec.Vec.t core.num.error.ParseIntError.t alloc.alloc.Global.t :=
-      M.call
-        (alloc.vec.Vec.t
-            core.num.error.ParseIntError.t
-            alloc.alloc.Global.t)::["new"] in
-    M.alloc α0 in
-  let* numbers : M.Val (alloc.vec.Vec.t u8.t alloc.alloc.Global.t) :=
-    let* α0 :
-        (core.iter.adapters.filter_map.FilterMap.t
-            (core.iter.adapters.map.Map.t
-              (alloc.vec.into_iter.IntoIter.t (ref str.t) alloc.alloc.Global.t)
-              ((ref str.t) ->
-                M (core.result.Result.t u8.t core.num.error.ParseIntError.t)))
-            ((core.result.Result.t u8.t core.num.error.ParseIntError.t) ->
-              M (core.option.Option.t u8.t)))
-          ->
-          M (alloc.vec.Vec.t u8.t alloc.alloc.Global.t) :=
-      ltac:(M.get_method (fun ℐ =>
-        core.iter.traits.iterator.Iterator.collect
-          (Self :=
-            core.iter.adapters.filter_map.FilterMap.t
-              (core.iter.adapters.map.Map.t
-                (alloc.vec.into_iter.IntoIter.t
-                  (ref str.t)
-                  alloc.alloc.Global.t)
-                ((ref str.t) ->
-                  M (core.result.Result.t u8.t core.num.error.ParseIntError.t)))
-              ((core.result.Result.t u8.t core.num.error.ParseIntError.t) ->
-                M (core.option.Option.t u8.t)))
-          (B := alloc.vec.Vec.t u8.t alloc.alloc.Global.t)
-          (Trait := ℐ))) in
-    let* α1 :
-        (core.iter.adapters.map.Map.t
-            (alloc.vec.into_iter.IntoIter.t (ref str.t) alloc.alloc.Global.t)
-            ((ref str.t) ->
-              M (core.result.Result.t u8.t core.num.error.ParseIntError.t)))
-          ->
-          ((core.result.Result.t u8.t core.num.error.ParseIntError.t) ->
-            M (core.option.Option.t u8.t))
-          ->
-          M
-            (core.iter.adapters.filter_map.FilterMap.t
-              (core.iter.adapters.map.Map.t
-                (alloc.vec.into_iter.IntoIter.t
-                  (ref str.t)
-                  alloc.alloc.Global.t)
-                ((ref str.t) ->
-                  M (core.result.Result.t u8.t core.num.error.ParseIntError.t)))
-              ((core.result.Result.t u8.t core.num.error.ParseIntError.t) ->
-                M (core.option.Option.t u8.t))) :=
-      ltac:(M.get_method (fun ℐ =>
-        core.iter.traits.iterator.Iterator.filter_map
-          (Self :=
-            core.iter.adapters.map.Map.t
-              (alloc.vec.into_iter.IntoIter.t (ref str.t) alloc.alloc.Global.t)
-              ((ref str.t) ->
-                M (core.result.Result.t u8.t core.num.error.ParseIntError.t)))
-          (B := u8.t)
-          (F :=
-            (core.result.Result.t u8.t core.num.error.ParseIntError.t) ->
-              M (core.option.Option.t u8.t))
-          (Trait := ℐ))) in
-    let* α2 :
-        (alloc.vec.into_iter.IntoIter.t (ref str.t) alloc.alloc.Global.t) ->
-          ((ref str.t) ->
-            M (core.result.Result.t u8.t core.num.error.ParseIntError.t))
-          ->
-          M
-            (core.iter.adapters.map.Map.t
-              (alloc.vec.into_iter.IntoIter.t (ref str.t) alloc.alloc.Global.t)
-              ((ref str.t) ->
-                M
-                  (core.result.Result.t
-                    u8.t
-                    core.num.error.ParseIntError.t))) :=
-      ltac:(M.get_method (fun ℐ =>
-        core.iter.traits.iterator.Iterator.map
-          (Self :=
-            alloc.vec.into_iter.IntoIter.t (ref str.t) alloc.alloc.Global.t)
-          (B := core.result.Result.t u8.t core.num.error.ParseIntError.t)
-          (F :=
-            (ref str.t) ->
-              M (core.result.Result.t u8.t core.num.error.ParseIntError.t))
-          (Trait := ℐ))) in
-    let* α3 : (alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t) -> M _ :=
-      ltac:(M.get_method (fun ℐ =>
-        core.iter.traits.collect.IntoIterator.into_iter
-          (Self := alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t)
-          (Trait := ℐ))) in
-    let* α4 : alloc.vec.Vec.t (ref str.t) alloc.alloc.Global.t :=
-      M.read strings in
-    let* α5 : alloc.vec.into_iter.IntoIter.t (ref str.t) alloc.alloc.Global.t :=
-      M.call (α3 α4) in
-    let* α6 :
-        core.iter.adapters.map.Map.t
-          (alloc.vec.into_iter.IntoIter.t (ref str.t) alloc.alloc.Global.t)
-          ((ref str.t) ->
-            M (core.result.Result.t u8.t core.num.error.ParseIntError.t)) :=
-      M.call
-        (α2
-          α5
-          (fun (α0 : ref str.t) =>
-            (let* α0 := M.alloc α0 in
-            match_operator
-              α0
-              [
-                fun γ =>
-                  (let* s := M.copy γ in
-                  let* α0 : ref str.t := M.read s in
-                  M.call (str.t::["parse"] α0)) :
-                  M (core.result.Result.t u8.t core.num.error.ParseIntError.t)
-              ]) :
-            M (core.result.Result.t u8.t core.num.error.ParseIntError.t))) in
-    let* α7 :
-        core.iter.adapters.filter_map.FilterMap.t
-          (core.iter.adapters.map.Map.t
-            (alloc.vec.into_iter.IntoIter.t (ref str.t) alloc.alloc.Global.t)
-            ((ref str.t) ->
-              M (core.result.Result.t u8.t core.num.error.ParseIntError.t)))
-          ((core.result.Result.t u8.t core.num.error.ParseIntError.t) ->
-            M (core.option.Option.t u8.t)) :=
-      M.call
-        (α1
-          α6
-          (fun
-              (α0 : core.result.Result.t u8.t core.num.error.ParseIntError.t) =>
-            (let* α0 := M.alloc α0 in
-            match_operator
-              α0
-              [
-                fun γ =>
-                  (let* r := M.copy γ in
-                  let* α0 :
-                      core.result.Result.t
-                        u8.t
-                        core.num.error.ParseIntError.t :=
-                    M.read r in
-                  let* α1 : core.result.Result.t u8.t unit :=
+Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [], [] =>
+    let* strings :
+        Ty.apply
+          (Ty.path "alloc::vec::Vec")
+          [Ty.apply (Ty.path "ref") [Ty.path "str"];
+            Ty.apply (Ty.path "alloc::alloc::Global") []] :=
+      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+        M.read (mk_str "42") in
+      let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+        M.read (mk_str "tofu") in
+      let* α2 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+        M.read (mk_str "93") in
+      let* α3 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+        M.read (mk_str "999") in
+      let* α4 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+        M.read (mk_str "18") in
+      let* α5 :
+          Ty.apply
+            (Ty.path "array")
+            [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
+        M.alloc [ α0; α1; α2; α3; α4 ] in
+      let* α6 :
+          Ty.apply
+            (Ty.path "alloc::boxed::Box")
+            [Ty.apply
+                (Ty.path "array")
+                [Ty.apply (Ty.path "ref") [Ty.path "str"]];
+              Ty.apply (Ty.path "alloc::alloc::Global") []] :=
+        M.call ((alloc.boxed.Box.t _ alloc.boxed.Box.Default.A)::["new"] α5) in
+      let* α7 :
+          Ty.apply
+            (Ty.path "alloc::boxed::Box")
+            [Ty.apply
+                (Ty.path "array")
+                [Ty.apply (Ty.path "ref") [Ty.path "str"]];
+              Ty.apply (Ty.path "alloc::alloc::Global") []] :=
+        M.read α6 in
+      let* α8 :
+          Ty.apply
+            (Ty.path "alloc::vec::Vec")
+            [Ty.apply (Ty.path "ref") [Ty.path "str"];
+              Ty.apply (Ty.path "alloc::alloc::Global") []] :=
+        M.call
+          ((Ty.apply
+                (Ty.path "slice")
+                [Ty.apply (Ty.path "ref") [Ty.path "str"]])::["into_vec"]
+            (pointer_coercion "Unsize" α7)) in
+      M.alloc α8 in
+    let* errors :
+        Ty.apply
+          (Ty.path "alloc::vec::Vec")
+          [Ty.apply (Ty.path "core::num::error::ParseIntError") [];
+            Ty.apply (Ty.path "alloc::alloc::Global") []] :=
+      let* α0 :
+          Ty.apply
+            (Ty.path "alloc::vec::Vec")
+            [Ty.apply (Ty.path "core::num::error::ParseIntError") [];
+              Ty.apply (Ty.path "alloc::alloc::Global") []] :=
+        M.call
+          (Ty.apply
+              (Ty.path "alloc::vec::Vec")
+              [Ty.apply (Ty.path "core::num::error::ParseIntError") [];
+                Ty.apply (Ty.path "alloc::alloc::Global") []])::["new"] in
+      M.alloc α0 in
+    let* numbers :
+        Ty.apply
+          (Ty.path "alloc::vec::Vec")
+          [Ty.path "u8"; Ty.apply (Ty.path "alloc::alloc::Global") []] :=
+      let* α0 :
+          Ty.function
+            [Ty.apply
+                (Ty.path "core::iter::adapters::filter_map::FilterMap")
+                [Ty.apply
+                    (Ty.path "core::iter::adapters::map::Map")
+                    [Ty.apply
+                        (Ty.path "alloc::vec::into_iter::IntoIter")
+                        [Ty.apply (Ty.path "ref") [Ty.path "str"];
+                          Ty.apply (Ty.path "alloc::alloc::Global") []];
+                      Ty.function
+                        [Ty.tuple (Ty.apply (Ty.path "ref") [Ty.path "str"])]
+                        (Ty.apply
+                          (Ty.path "core::result::Result")
+                          [Ty.path "u8";
+                            Ty.apply
+                              (Ty.path "core::num::error::ParseIntError")
+                              []])];
+                  Ty.function
+                    [Ty.tuple
+                        (Ty.apply
+                          (Ty.path "core::result::Result")
+                          [Ty.path "u8";
+                            Ty.apply
+                              (Ty.path "core::num::error::ParseIntError")
+                              []])]
+                    (Ty.apply (Ty.path "core::option::Option") [Ty.path "u8"])]]
+            (Ty.apply
+              (Ty.path "alloc::vec::Vec")
+              [Ty.path "u8"; Ty.apply (Ty.path "alloc::alloc::Global") []]) :=
+        ltac:(M.get_method (fun ℐ =>
+          core.iter.traits.iterator.Iterator.collect
+            (Self :=
+              Ty.apply
+                (Ty.path "core::iter::adapters::filter_map::FilterMap")
+                [Ty.apply
+                    (Ty.path "core::iter::adapters::map::Map")
+                    [Ty.apply
+                        (Ty.path "alloc::vec::into_iter::IntoIter")
+                        [Ty.apply (Ty.path "ref") [Ty.path "str"];
+                          Ty.apply (Ty.path "alloc::alloc::Global") []];
+                      Ty.function
+                        [Ty.tuple (Ty.apply (Ty.path "ref") [Ty.path "str"])]
+                        (Ty.apply
+                          (Ty.path "core::result::Result")
+                          [Ty.path "u8";
+                            Ty.apply
+                              (Ty.path "core::num::error::ParseIntError")
+                              []])];
+                  Ty.function
+                    [Ty.tuple
+                        (Ty.apply
+                          (Ty.path "core::result::Result")
+                          [Ty.path "u8";
+                            Ty.apply
+                              (Ty.path "core::num::error::ParseIntError")
+                              []])]
+                    (Ty.apply (Ty.path "core::option::Option") [Ty.path "u8"])])
+            (B :=
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                [Ty.path "u8"; Ty.apply (Ty.path "alloc::alloc::Global") []])
+            (Trait := ℐ))) in
+      let* α1 :
+          Ty.function
+            [Ty.apply
+                (Ty.path "core::iter::adapters::map::Map")
+                [Ty.apply
+                    (Ty.path "alloc::vec::into_iter::IntoIter")
+                    [Ty.apply (Ty.path "ref") [Ty.path "str"];
+                      Ty.apply (Ty.path "alloc::alloc::Global") []];
+                  Ty.function
+                    [Ty.tuple (Ty.apply (Ty.path "ref") [Ty.path "str"])]
+                    (Ty.apply
+                      (Ty.path "core::result::Result")
+                      [Ty.path "u8";
+                        Ty.apply
+                          (Ty.path "core::num::error::ParseIntError")
+                          []])];
+              Ty.function
+                [Ty.tuple
+                    (Ty.apply
+                      (Ty.path "core::result::Result")
+                      [Ty.path "u8";
+                        Ty.apply
+                          (Ty.path "core::num::error::ParseIntError")
+                          []])]
+                (Ty.apply (Ty.path "core::option::Option") [Ty.path "u8"])]
+            (Ty.apply
+              (Ty.path "core::iter::adapters::filter_map::FilterMap")
+              [Ty.apply
+                  (Ty.path "core::iter::adapters::map::Map")
+                  [Ty.apply
+                      (Ty.path "alloc::vec::into_iter::IntoIter")
+                      [Ty.apply (Ty.path "ref") [Ty.path "str"];
+                        Ty.apply (Ty.path "alloc::alloc::Global") []];
+                    Ty.function
+                      [Ty.tuple (Ty.apply (Ty.path "ref") [Ty.path "str"])]
+                      (Ty.apply
+                        (Ty.path "core::result::Result")
+                        [Ty.path "u8";
+                          Ty.apply
+                            (Ty.path "core::num::error::ParseIntError")
+                            []])];
+                Ty.function
+                  [Ty.tuple
+                      (Ty.apply
+                        (Ty.path "core::result::Result")
+                        [Ty.path "u8";
+                          Ty.apply
+                            (Ty.path "core::num::error::ParseIntError")
+                            []])]
+                  (Ty.apply
+                    (Ty.path "core::option::Option")
+                    [Ty.path "u8"])]) :=
+        ltac:(M.get_method (fun ℐ =>
+          core.iter.traits.iterator.Iterator.filter_map
+            (Self :=
+              Ty.apply
+                (Ty.path "core::iter::adapters::map::Map")
+                [Ty.apply
+                    (Ty.path "alloc::vec::into_iter::IntoIter")
+                    [Ty.apply (Ty.path "ref") [Ty.path "str"];
+                      Ty.apply (Ty.path "alloc::alloc::Global") []];
+                  Ty.function
+                    [Ty.tuple (Ty.apply (Ty.path "ref") [Ty.path "str"])]
+                    (Ty.apply
+                      (Ty.path "core::result::Result")
+                      [Ty.path "u8";
+                        Ty.apply
+                          (Ty.path "core::num::error::ParseIntError")
+                          []])])
+            (B := Ty.path "u8")
+            (F :=
+              Ty.function
+                [Ty.tuple
+                    (Ty.apply
+                      (Ty.path "core::result::Result")
+                      [Ty.path "u8";
+                        Ty.apply
+                          (Ty.path "core::num::error::ParseIntError")
+                          []])]
+                (Ty.apply (Ty.path "core::option::Option") [Ty.path "u8"]))
+            (Trait := ℐ))) in
+      let* α2 :
+          Ty.function
+            [Ty.apply
+                (Ty.path "alloc::vec::into_iter::IntoIter")
+                [Ty.apply (Ty.path "ref") [Ty.path "str"];
+                  Ty.apply (Ty.path "alloc::alloc::Global") []];
+              Ty.function
+                [Ty.tuple (Ty.apply (Ty.path "ref") [Ty.path "str"])]
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  [Ty.path "u8";
+                    Ty.apply (Ty.path "core::num::error::ParseIntError") []])]
+            (Ty.apply
+              (Ty.path "core::iter::adapters::map::Map")
+              [Ty.apply
+                  (Ty.path "alloc::vec::into_iter::IntoIter")
+                  [Ty.apply (Ty.path "ref") [Ty.path "str"];
+                    Ty.apply (Ty.path "alloc::alloc::Global") []];
+                Ty.function
+                  [Ty.tuple (Ty.apply (Ty.path "ref") [Ty.path "str"])]
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    [Ty.path "u8";
+                      Ty.apply
+                        (Ty.path "core::num::error::ParseIntError")
+                        []])]) :=
+        ltac:(M.get_method (fun ℐ =>
+          core.iter.traits.iterator.Iterator.map
+            (Self :=
+              Ty.apply
+                (Ty.path "alloc::vec::into_iter::IntoIter")
+                [Ty.apply (Ty.path "ref") [Ty.path "str"];
+                  Ty.apply (Ty.path "alloc::alloc::Global") []])
+            (B :=
+              Ty.apply
+                (Ty.path "core::result::Result")
+                [Ty.path "u8";
+                  Ty.apply (Ty.path "core::num::error::ParseIntError") []])
+            (F :=
+              Ty.function
+                [Ty.tuple (Ty.apply (Ty.path "ref") [Ty.path "str"])]
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  [Ty.path "u8";
+                    Ty.apply (Ty.path "core::num::error::ParseIntError") []]))
+            (Trait := ℐ))) in
+      let* α3 :
+          Ty.function
+            [Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                [Ty.apply (Ty.path "ref") [Ty.path "str"];
+                  Ty.apply (Ty.path "alloc::alloc::Global") []]]
+            _ :=
+        ltac:(M.get_method (fun ℐ =>
+          core.iter.traits.collect.IntoIterator.into_iter
+            (Self :=
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                [Ty.apply (Ty.path "ref") [Ty.path "str"];
+                  Ty.apply (Ty.path "alloc::alloc::Global") []])
+            (Trait := ℐ))) in
+      let* α4 :
+          Ty.apply
+            (Ty.path "alloc::vec::Vec")
+            [Ty.apply (Ty.path "ref") [Ty.path "str"];
+              Ty.apply (Ty.path "alloc::alloc::Global") []] :=
+        M.read strings in
+      let* α5 :
+          Ty.apply
+            (Ty.path "alloc::vec::into_iter::IntoIter")
+            [Ty.apply (Ty.path "ref") [Ty.path "str"];
+              Ty.apply (Ty.path "alloc::alloc::Global") []] :=
+        M.call (α3 α4) in
+      let* α6 :
+          Ty.apply
+            (Ty.path "core::iter::adapters::map::Map")
+            [Ty.apply
+                (Ty.path "alloc::vec::into_iter::IntoIter")
+                [Ty.apply (Ty.path "ref") [Ty.path "str"];
+                  Ty.apply (Ty.path "alloc::alloc::Global") []];
+              Ty.function
+                [Ty.tuple (Ty.apply (Ty.path "ref") [Ty.path "str"])]
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  [Ty.path "u8";
+                    Ty.apply
+                      (Ty.path "core::num::error::ParseIntError")
+                      []])] :=
+        M.call
+          (α2
+            α5
+            (fun (α0 : Ty.apply (Ty.path "ref") [Ty.path "str"]) =>
+              (let* α0 := M.alloc α0 in
+              match_operator
+                α0
+                [
+                  fun γ =>
+                    (let* s := M.copy γ in
+                    let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+                      M.read s in
+                    M.call ((Ty.path "str")::["parse"] α0)) :
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      [Ty.path "u8";
+                        Ty.apply (Ty.path "core::num::error::ParseIntError") []]
+                ]) :
+              Ty.apply
+                (Ty.path "core::result::Result")
+                [Ty.path "u8";
+                  Ty.apply (Ty.path "core::num::error::ParseIntError") []])) in
+      let* α7 :
+          Ty.apply
+            (Ty.path "core::iter::adapters::filter_map::FilterMap")
+            [Ty.apply
+                (Ty.path "core::iter::adapters::map::Map")
+                [Ty.apply
+                    (Ty.path "alloc::vec::into_iter::IntoIter")
+                    [Ty.apply (Ty.path "ref") [Ty.path "str"];
+                      Ty.apply (Ty.path "alloc::alloc::Global") []];
+                  Ty.function
+                    [Ty.tuple (Ty.apply (Ty.path "ref") [Ty.path "str"])]
+                    (Ty.apply
+                      (Ty.path "core::result::Result")
+                      [Ty.path "u8";
+                        Ty.apply
+                          (Ty.path "core::num::error::ParseIntError")
+                          []])];
+              Ty.function
+                [Ty.tuple
+                    (Ty.apply
+                      (Ty.path "core::result::Result")
+                      [Ty.path "u8";
+                        Ty.apply
+                          (Ty.path "core::num::error::ParseIntError")
+                          []])]
+                (Ty.apply (Ty.path "core::option::Option") [Ty.path "u8"])] :=
+        M.call
+          (α1
+            α6
+            (fun
+                (α0 :
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    [Ty.path "u8";
+                      Ty.apply
+                        (Ty.path "core::num::error::ParseIntError")
+                        []]) =>
+              (let* α0 := M.alloc α0 in
+              match_operator
+                α0
+                [
+                  fun γ =>
+                    (let* r := M.copy γ in
+                    let* α0 :
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          [Ty.path "u8";
+                            Ty.apply
+                              (Ty.path "core::num::error::ParseIntError")
+                              []] :=
+                      M.read r in
+                    let* α1 :
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          [Ty.path "u8"; Ty.tuple] :=
+                      M.call
+                        ((Ty.apply
+                              (Ty.path "core::result::Result")
+                              [Ty.path "u8";
+                                Ty.apply
+                                  (Ty.path "core::num::error::ParseIntError")
+                                  []])::["map_err"]
+                          α0
+                          (fun
+                              (α0 :
+                                Ty.apply
+                                  (Ty.path "core::num::error::ParseIntError")
+                                  []) =>
+                            (let* α0 := M.alloc α0 in
+                            match_operator
+                              α0
+                              [
+                                fun γ =>
+                                  (let* e := M.copy γ in
+                                  let* α0 :
+                                      Ty.apply
+                                        (Ty.path
+                                          "core::num::error::ParseIntError")
+                                        [] :=
+                                    M.read e in
+                                  M.call
+                                    ((Ty.apply
+                                          (Ty.path "alloc::vec::Vec")
+                                          [Ty.apply
+                                              (Ty.path
+                                                "core::num::error::ParseIntError")
+                                              [];
+                                            Ty.apply
+                                              (Ty.path "alloc::alloc::Global")
+                                              []])::["push"]
+                                      (borrow_mut errors)
+                                      α0)) :
+                                  Ty.tuple
+                              ]) :
+                            Ty.tuple)) in
                     M.call
-                      ((core.result.Result.t
-                            u8.t
-                            core.num.error.ParseIntError.t)::["map_err"]
-                        α0
-                        (fun (α0 : core.num.error.ParseIntError.t) =>
-                          (let* α0 := M.alloc α0 in
-                          match_operator
-                            α0
-                            [
-                              fun γ =>
-                                (let* e := M.copy γ in
-                                let* α0 : core.num.error.ParseIntError.t :=
-                                  M.read e in
-                                M.call
-                                  ((alloc.vec.Vec.t
-                                        core.num.error.ParseIntError.t
-                                        alloc.alloc.Global.t)::["push"]
-                                    (borrow_mut errors)
-                                    α0)) :
-                                M unit
-                            ]) :
-                          M unit)) in
-                  M.call ((core.result.Result.t u8.t unit)::["ok"] α1)) :
-                  M (core.option.Option.t u8.t)
-              ]) :
-            M (core.option.Option.t u8.t))) in
-    let* α8 : alloc.vec.Vec.t u8.t alloc.alloc.Global.t := M.call (α0 α7) in
-    M.alloc α8 in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "Numbers: ") in
-      let* α1 : ref str.t := M.read (mk_str "
+                      ((Ty.apply
+                            (Ty.path "core::result::Result")
+                            [Ty.path "u8"; Ty.tuple])::["ok"]
+                        α1)) :
+                    Ty.apply (Ty.path "core::option::Option") [Ty.path "u8"]
+                ]) :
+              Ty.apply (Ty.path "core::option::Option") [Ty.path "u8"])) in
+      let* α8 :
+          Ty.apply
+            (Ty.path "alloc::vec::Vec")
+            [Ty.path "u8"; Ty.apply (Ty.path "alloc::alloc::Global") []] :=
+        M.call (α0 α7) in
+      M.alloc α8 in
+    let* _ : Ty.tuple :=
+      let* _ : Ty.tuple :=
+        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+          M.read (mk_str "Numbers: ") in
+        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+          M.read (mk_str "
 ") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow numbers)) in
-      let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
-      let* α5 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α4))) in
-      let* α6 : unit := M.call (std.io.stdio._print α5) in
-      M.alloc α6 in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "Errors: ") in
-      let* α1 : ref str.t := M.read (mk_str "
+        let* α2 :
+            Ty.apply
+              (Ty.path "array")
+              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
+          M.alloc [ α0; α1 ] in
+        let* α3 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+          M.call
+            ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_debug"]
+              (borrow numbers)) in
+        let* α4 :
+            Ty.apply
+              (Ty.path "array")
+              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
+          M.alloc [ α3 ] in
+        let* α5 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+          M.call
+            ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
+              (pointer_coercion "Unsize" (borrow α2))
+              (pointer_coercion "Unsize" (borrow α4))) in
+        let* α6 : Ty.tuple := M.call (std.io.stdio._print α5) in
+        M.alloc α6 in
+      M.alloc tt in
+    let* _ : Ty.tuple :=
+      let* _ : Ty.tuple :=
+        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+          M.read (mk_str "Errors: ") in
+        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+          M.read (mk_str "
 ") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow errors)) in
-      let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
-      let* α5 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α4))) in
-      let* α6 : unit := M.call (std.io.stdio._print α5) in
-      M.alloc α6 in
-    M.alloc tt in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+        let* α2 :
+            Ty.apply
+              (Ty.path "array")
+              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
+          M.alloc [ α0; α1 ] in
+        let* α3 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+          M.call
+            ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_debug"]
+              (borrow errors)) in
+        let* α4 :
+            Ty.apply
+              (Ty.path "array")
+              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
+          M.alloc [ α3 ] in
+        let* α5 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+          M.call
+            ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
+              (pointer_coercion "Unsize" (borrow α2))
+              (pointer_coercion "Unsize" (borrow α4))) in
+        let* α6 : Ty.tuple := M.call (std.io.stdio._print α5) in
+        M.alloc α6 in
+      M.alloc tt in
+    let* α0 : Ty.path "unit" := M.alloc tt in
+    M.read α0
+  | _, _ => M.impossible
+  end.

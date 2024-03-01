@@ -6,18 +6,26 @@ fn id(x: u64) -> u64 {
     x
 }
 *)
-Definition id (x : u64.t) : M u64.t :=
-  let* x := M.alloc x in
-  M.read x.
+Definition id (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [], [x] =>
+    let* x := M.alloc x in
+    M.read x
+  | _, _ => M.impossible
+  end.
 
 (*
 fn tri(a: u64, b: u64, c: u64) {}
 *)
-Definition tri (a : u64.t) (b : u64.t) (c : u64.t) : M unit :=
-  let* a := M.alloc a in
-  let* b := M.alloc b in
-  let* c := M.alloc c in
-  M.pure tt.
+Definition tri (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [], [a; b; c] =>
+    let* a := M.alloc a in
+    let* b := M.alloc b in
+    let* c := M.alloc c in
+    M.pure tt
+  | _, _ => M.impossible
+  end.
 
 (*
 fn main() {
@@ -29,29 +37,40 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
-  let* _ : M.Val u64.t :=
-    let* α0 : u64.t := M.call (example01.id ((Integer.of_Z 0) : u64.t)) in
-    M.alloc α0 in
-  let* _ : M.Val u64.t :=
-    let* α0 : u64.t := M.call (example01.id ((Integer.of_Z 0) : u64.t)) in
-    let* α1 : u64.t := M.call (example01.id α0) in
-    M.alloc α1 in
-  let* _ : M.Val u64.t :=
-    let* α0 : u64.t := M.call (example01.id ((Integer.of_Z 0) : u64.t)) in
-    let* α1 : u64.t := M.call (example01.id α0) in
-    let* α2 : u64.t := M.call (example01.id α1) in
-    M.alloc α2 in
-  let* _ : M.Val u64.t :=
-    let* α0 : u64.t := M.call (example01.id ((Integer.of_Z 0) : u64.t)) in
-    let* α1 : u64.t := M.call (example01.id α0) in
-    let* α2 : u64.t := M.call (example01.id α1) in
-    let* α3 : u64.t := M.call (example01.id α2) in
-    M.alloc α3 in
-  let* _ : M.Val unit :=
-    let* α0 : u64.t := M.call (example01.id ((Integer.of_Z 1) : u64.t)) in
-    let* α1 : u64.t := M.call (example01.id ((Integer.of_Z 2) : u64.t)) in
-    let* α2 : unit := M.call (example01.tri α0 α1 ((Integer.of_Z 3) : u64.t)) in
-    M.alloc α2 in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [], [] =>
+    let* _ : Ty.path "u64" :=
+      let* α0 : Ty.path "u64" :=
+        M.call (example01.id ((Integer.of_Z 0) : Ty.path "u64")) in
+      M.alloc α0 in
+    let* _ : Ty.path "u64" :=
+      let* α0 : Ty.path "u64" :=
+        M.call (example01.id ((Integer.of_Z 0) : Ty.path "u64")) in
+      let* α1 : Ty.path "u64" := M.call (example01.id α0) in
+      M.alloc α1 in
+    let* _ : Ty.path "u64" :=
+      let* α0 : Ty.path "u64" :=
+        M.call (example01.id ((Integer.of_Z 0) : Ty.path "u64")) in
+      let* α1 : Ty.path "u64" := M.call (example01.id α0) in
+      let* α2 : Ty.path "u64" := M.call (example01.id α1) in
+      M.alloc α2 in
+    let* _ : Ty.path "u64" :=
+      let* α0 : Ty.path "u64" :=
+        M.call (example01.id ((Integer.of_Z 0) : Ty.path "u64")) in
+      let* α1 : Ty.path "u64" := M.call (example01.id α0) in
+      let* α2 : Ty.path "u64" := M.call (example01.id α1) in
+      let* α3 : Ty.path "u64" := M.call (example01.id α2) in
+      M.alloc α3 in
+    let* _ : Ty.tuple :=
+      let* α0 : Ty.path "u64" :=
+        M.call (example01.id ((Integer.of_Z 1) : Ty.path "u64")) in
+      let* α1 : Ty.path "u64" :=
+        M.call (example01.id ((Integer.of_Z 2) : Ty.path "u64")) in
+      let* α2 : Ty.tuple :=
+        M.call (example01.tri α0 α1 ((Integer.of_Z 3) : Ty.path "u64")) in
+      M.alloc α2 in
+    let* α0 : Ty.path "unit" := M.alloc tt in
+    M.read α0
+  | _, _ => M.impossible
+  end.

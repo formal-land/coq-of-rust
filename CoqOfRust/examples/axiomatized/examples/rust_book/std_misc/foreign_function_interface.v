@@ -4,66 +4,65 @@ Require Import CoqOfRust.CoqOfRust.
 Error ForeignMod.
 
 Parameter cos :
-    foreign_function_interface.Complex.t ->
-      M foreign_function_interface.Complex.t.
+    (Ty.apply (Ty.path "foreign_function_interface::Complex") []) ->
+      Ty.apply (Ty.path "foreign_function_interface::Complex") [].
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M unit.
+Parameter main : Ty.path "unit".
 
-Module  Complex.
-Section Complex.
-  Record t : Set := {
-    re : f32.t;
-    im : f32.t;
-  }.
-  
-  Definition Get_re :=
-    Ref.map (fun α => Some α.(re)) (fun β α => Some (α <| re := β |>)).
-  Definition Get_im :=
-    Ref.map (fun α => Some α.(im)) (fun β α => Some (α <| im := β |>)).
-End Complex.
-End Complex.
 
-Module  Impl_core_clone_Clone_for_foreign_function_interface_Complex_t.
-Section Impl_core_clone_Clone_for_foreign_function_interface_Complex_t.
-  Definition Self : Set := foreign_function_interface.Complex.t.
+
+Module  Impl_core_clone_Clone_for_foreign_function_interface_Complex.
+Section Impl_core_clone_Clone_for_foreign_function_interface_Complex.
+  Definition Self : Ty.t :=
+    Ty.apply (Ty.path "foreign_function_interface::Complex") [].
   
-  Parameter clone : (ref Self) -> M foreign_function_interface.Complex.t.
+  Parameter clone :
+      (Ty.apply
+          (Ty.path "ref")
+          [Ty.apply (Ty.path "foreign_function_interface::Complex") []])
+        ->
+        Ty.apply (Ty.path "foreign_function_interface::Complex") [].
   
-  Global Instance AssociatedFunction_clone :
-    Notations.DoubleColon Self "clone" := {
+  Definition AssociatedFunction_clone : Instance.t := {
     Notations.double_colon := clone;
   }.
   
-  Global Instance ℐ : core.clone.Clone.Required.Trait Self := {
-    core.clone.Clone.clone := clone;
-    core.clone.Clone.clone_from := Datatypes.None;
-  }.
-End Impl_core_clone_Clone_for_foreign_function_interface_Complex_t.
-End Impl_core_clone_Clone_for_foreign_function_interface_Complex_t.
+  Definition ℐ : Instance.t := [("clone", clone); ("clone_from", clone_from)].
+End Impl_core_clone_Clone_for_foreign_function_interface_Complex.
+End Impl_core_clone_Clone_for_foreign_function_interface_Complex.
 
-Module  Impl_core_marker_Copy_for_foreign_function_interface_Complex_t.
-Section Impl_core_marker_Copy_for_foreign_function_interface_Complex_t.
-  Definition Self : Set := foreign_function_interface.Complex.t.
+Module  Impl_core_marker_Copy_for_foreign_function_interface_Complex.
+Section Impl_core_marker_Copy_for_foreign_function_interface_Complex.
+  Definition Self : Ty.t :=
+    Ty.apply (Ty.path "foreign_function_interface::Complex") [].
   
-  Global Instance ℐ : core.marker.Copy.Trait Self := {
-  }.
-End Impl_core_marker_Copy_for_foreign_function_interface_Complex_t.
-End Impl_core_marker_Copy_for_foreign_function_interface_Complex_t.
+  Definition ℐ : Instance.t := [].
+End Impl_core_marker_Copy_for_foreign_function_interface_Complex.
+End Impl_core_marker_Copy_for_foreign_function_interface_Complex.
 
-Module  Impl_core_fmt_Debug_for_foreign_function_interface_Complex_t.
-Section Impl_core_fmt_Debug_for_foreign_function_interface_Complex_t.
-  Definition Self : Set := foreign_function_interface.Complex.t.
+Module  Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
+Section Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
+  Definition Self : Ty.t :=
+    Ty.apply (Ty.path "foreign_function_interface::Complex") [].
   
   Parameter fmt :
-      (ref Self) -> (mut_ref core.fmt.Formatter.t) -> M ltac:(core.fmt.Result).
+      (Ty.apply
+          (Ty.path "ref")
+          [Ty.apply (Ty.path "foreign_function_interface::Complex") []])
+        ->
+        (Ty.apply
+          (Ty.path "mut_ref")
+          [Ty.apply (Ty.path "core::fmt::Formatter") []])
+        ->
+        Ty.apply
+          (Ty.path "core::result::Result")
+          [Ty.tuple; Ty.apply (Ty.path "core::fmt::Error") []].
   
-  Global Instance AssociatedFunction_fmt : Notations.DoubleColon Self "fmt" := {
+  Definition AssociatedFunction_fmt : Instance.t := {
     Notations.double_colon := fmt;
   }.
   
-  Global Instance ℐ : core.fmt.Debug.Trait Self := {
-    core.fmt.Debug.fmt := fmt;
-  }.
-End Impl_core_fmt_Debug_for_foreign_function_interface_Complex_t.
-End Impl_core_fmt_Debug_for_foreign_function_interface_Complex_t.
+  Definition ℐ : Instance.t := [("fmt", fmt)].
+End Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
+End Impl_core_fmt_Debug_for_foreign_function_interface_Complex.

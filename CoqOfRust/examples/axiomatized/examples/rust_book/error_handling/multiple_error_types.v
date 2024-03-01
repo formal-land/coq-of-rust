@@ -2,7 +2,12 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Parameter double_first :
-    (alloc.vec.Vec.t (ref str.t) alloc.vec.Vec.Default.A) -> M i32.t.
+    (Ty.apply
+        (Ty.path "alloc::vec::Vec")
+        [Ty.apply (Ty.path "ref") [Ty.path "str"];
+          Ty.apply (Ty.path "alloc::alloc::Global") []])
+      ->
+      Ty.path "i32".
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M unit.
+Parameter main : Ty.path "unit".

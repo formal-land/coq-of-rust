@@ -9,13 +9,19 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit := M.pure tt.
+Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with | [], [] => M.pure tt | _, _ => M.impossible end.
 
 (*
     fn foo() -> ! {
         panic!("This call never returns.");
     }
 *)
-Definition foo : M never.t :=
-  let* α0 : ref str.t := M.read (mk_str "This call never returns.") in
-  M.call (std.panicking.begin_panic α0).
+Definition foo (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [], [] =>
+    let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+      M.read (mk_str "This call never returns.") in
+    M.call (std.panicking.begin_panic α0)
+  | _, _ => M.impossible
+  end.

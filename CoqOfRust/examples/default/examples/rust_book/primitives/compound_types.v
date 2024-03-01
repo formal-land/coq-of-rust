@@ -29,18 +29,27 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
-  let* logical : M.Val bool.t := M.alloc true in
-  let* a_float : M.Val f64.t := M.copy (UnsupportedLiteral : M.Val f64.t) in
-  let* an_integer : M.Val i32.t := M.alloc ((Integer.of_Z 5) : i32.t) in
-  let* default_float : M.Val f64.t :=
-    M.copy (UnsupportedLiteral : M.Val f64.t) in
-  let* default_integer : M.Val i32.t := M.alloc ((Integer.of_Z 7) : i32.t) in
-  let* inferred_type : M.Val i64.t := M.alloc ((Integer.of_Z 12) : i64.t) in
-  let* _ : M.Val unit :=
-    assign inferred_type ((Integer.of_Z 4294967296) : i64.t) in
-  let* mutable : M.Val i32.t := M.alloc ((Integer.of_Z 12) : i32.t) in
-  let* _ : M.Val unit := assign mutable ((Integer.of_Z 21) : i32.t) in
-  let* mutable : M.Val bool.t := M.alloc true in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [], [] =>
+    let* logical : Ty.path "bool" := M.alloc true in
+    let* a_float : Ty.path "f64" :=
+      M.copy (UnsupportedLiteral : Ty.path "f64") in
+    let* an_integer : Ty.path "i32" :=
+      M.alloc ((Integer.of_Z 5) : Ty.path "i32") in
+    let* default_float : Ty.path "f64" :=
+      M.copy (UnsupportedLiteral : Ty.path "f64") in
+    let* default_integer : Ty.path "i32" :=
+      M.alloc ((Integer.of_Z 7) : Ty.path "i32") in
+    let* inferred_type : Ty.path "i64" :=
+      M.alloc ((Integer.of_Z 12) : Ty.path "i64") in
+    let* _ : Ty.tuple :=
+      assign inferred_type ((Integer.of_Z 4294967296) : Ty.path "i64") in
+    let* mutable : Ty.path "i32" :=
+      M.alloc ((Integer.of_Z 12) : Ty.path "i32") in
+    let* _ : Ty.tuple := assign mutable ((Integer.of_Z 21) : Ty.path "i32") in
+    let* mutable : Ty.path "bool" := M.alloc true in
+    let* α0 : Ty.path "unit" := M.alloc tt in
+    M.read α0
+  | _, _ => M.impossible
+  end.

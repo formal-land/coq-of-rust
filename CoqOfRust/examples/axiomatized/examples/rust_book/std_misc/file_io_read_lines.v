@@ -2,8 +2,12 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Parameter read_lines :
-    alloc.string.String.t ->
-      M (std.io.Lines.t (std.io.buffered.bufreader.BufReader.t std.fs.File.t)).
+    (Ty.apply (Ty.path "alloc::string::String") []) ->
+      Ty.apply
+        (Ty.path "std::io::Lines")
+        [Ty.apply
+            (Ty.path "std::io::buffered::bufreader::BufReader")
+            [Ty.apply (Ty.path "std::fs::File") []]].
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M unit.
+Parameter main : Ty.path "unit".

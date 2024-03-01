@@ -27,30 +27,46 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t :=
-        M.read (mk_str "Sum of odd numbers up to 9 (excluding): ") in
-      let* α1 : ref str.t := M.read (mk_str "
+Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [], [] =>
+    let* _ : Ty.tuple :=
+      let* _ : Ty.tuple :=
+        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+          M.read (mk_str "Sum of odd numbers up to 9 (excluding): ") in
+        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+          M.read (mk_str "
 ") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : u32.t :=
-        M.call ("unimplemented parent_kind" ((Integer.of_Z 9) : u32.t)) in
-      let* α4 : M.Val u32.t := M.alloc α3 in
-      let* α5 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow α4)) in
-      let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α5 ] in
-      let* α7 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α6))) in
-      let* α8 : unit := M.call (std.io.stdio._print α7) in
-      M.alloc α8 in
-    M.alloc tt in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+        let* α2 :
+            Ty.apply
+              (Ty.path "array")
+              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
+          M.alloc [ α0; α1 ] in
+        let* α3 : Ty.path "u32" :=
+          M.call
+            ("unimplemented parent_kind" ((Integer.of_Z 9) : Ty.path "u32")) in
+        let* α4 : Ty.path "u32" := M.alloc α3 in
+        let* α5 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+          M.call
+            ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_display"]
+              (borrow α4)) in
+        let* α6 :
+            Ty.apply
+              (Ty.path "array")
+              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
+          M.alloc [ α5 ] in
+        let* α7 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+          M.call
+            ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
+              (pointer_coercion "Unsize" (borrow α2))
+              (pointer_coercion "Unsize" (borrow α6))) in
+        let* α8 : Ty.tuple := M.call (std.io.stdio._print α7) in
+        M.alloc α8 in
+      M.alloc tt in
+    let* α0 : Ty.path "unit" := M.alloc tt in
+    M.read α0
+  | _, _ => M.impossible
+  end.
 
 (*
     fn sum_odd_numbers(up_to: u32) -> u32 {
@@ -71,95 +87,124 @@ Definition main : M unit :=
         acc
     }
 *)
-Definition sum_odd_numbers (up_to : u32.t) : M u32.t :=
-  let* up_to := M.alloc up_to in
-  let* acc : M.Val u32.t := M.alloc ((Integer.of_Z 0) : u32.t) in
-  let* _ : M.Val unit :=
-    let* α0 : (core.ops.range.Range.t u32.t) -> M _ :=
-      ltac:(M.get_method (fun ℐ =>
-        core.iter.traits.collect.IntoIterator.into_iter
-          (Self := core.ops.range.Range.t u32.t)
-          (Trait := ℐ))) in
-    let* α1 : u32.t := M.read up_to in
-    let* α2 : core.ops.range.Range.t u32.t :=
-      M.call
-        (α0
-          {|
-            core.ops.range.Range.start := (Integer.of_Z 0) : u32.t;
-            core.ops.range.Range.end_ := α1;
-          |}) in
-    let* α3 : M.Val (core.ops.range.Range.t u32.t) := M.alloc α2 in
-    let* α4 : M.Val unit :=
-      match_operator
-        α3
-        [
-          fun γ =>
-            (let* iter := M.copy γ in
-            M.loop
-              (let* _ : M.Val unit :=
-                let* α0 :
-                    (mut_ref (core.ops.range.Range.t u32.t)) ->
-                      M (core.option.Option.t _) :=
-                  ltac:(M.get_method (fun ℐ =>
-                    core.iter.traits.iterator.Iterator.next
-                      (Self := core.ops.range.Range.t u32.t)
-                      (Trait := ℐ))) in
-                let* α1 : core.option.Option.t u32.t :=
-                  M.call (α0 (borrow_mut iter)) in
-                let* α2 : M.Val (core.option.Option.t u32.t) := M.alloc α1 in
-                match_operator
-                  α2
-                  [
-                    fun γ =>
-                      (let* α0 := M.read γ in
-                      match α0 with
-                      | core.option.Option.None =>
-                        let* α0 : M.Val never.t := M.break in
-                        let* α1 := M.read α0 in
-                        let* α2 : unit := never_to_any α1 in
-                        M.alloc α2
-                      | _ => M.break_match
-                      end) :
-                      M (M.Val unit);
-                    fun γ =>
-                      (let* α0 := M.read γ in
-                      match α0 with
-                      | core.option.Option.Some _ =>
-                        let γ0_0 := core.option.Option.Get_Some_0 γ in
-                        let* i := M.copy γ0_0 in
-                        let* addition : M.Val u32.t :=
-                          let* α0 : u32.t := M.read i in
-                          let* α1 : u32.t :=
-                            BinOp.Panic.rem α0 ((Integer.of_Z 2) : u32.t) in
-                          let* α2 : M.Val bool.t :=
-                            M.alloc
-                              (BinOp.Pure.eq α1 ((Integer.of_Z 1) : u32.t)) in
-                          let* α3 : M.Val u32.t :=
-                            match_operator
-                              α2
-                              [
-                                fun γ => (M.pure i) : M (M.Val u32.t);
-                                fun γ =>
-                                  (let* α0 : M.Val never.t := M.continue in
-                                  let* α1 := M.read α0 in
-                                  let* α2 : u32.t := never_to_any α1 in
-                                  M.alloc α2) :
-                                  M (M.Val u32.t)
-                              ] in
-                          M.copy α3 in
-                        let* _ : M.Val unit :=
-                          let β : M.Val u32.t := acc in
-                          let* α0 := M.read β in
-                          let* α1 : u32.t := M.read addition in
-                          let* α2 := BinOp.Panic.add α0 α1 in
-                          assign β α2 in
-                        M.alloc tt
-                      | _ => M.break_match
-                      end) :
-                      M (M.Val unit)
-                  ] in
-              M.alloc tt)) :
-            M (M.Val unit)
-        ] in
-    M.pure (use α4) in
-  M.read acc.
+Definition sum_odd_numbers (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [], [up_to] =>
+    let* up_to := M.alloc up_to in
+    let* acc : Ty.path "u32" := M.alloc ((Integer.of_Z 0) : Ty.path "u32") in
+    let* _ : Ty.tuple :=
+      let* α0 :
+          Ty.function
+            [Ty.apply (Ty.path "core::ops::range::Range") [Ty.path "u32"]]
+            _ :=
+        ltac:(M.get_method (fun ℐ =>
+          core.iter.traits.collect.IntoIterator.into_iter
+            (Self :=
+              Ty.apply (Ty.path "core::ops::range::Range") [Ty.path "u32"])
+            (Trait := ℐ))) in
+      let* α1 : Ty.path "u32" := M.read up_to in
+      let* α2 : Ty.apply (Ty.path "core::ops::range::Range") [Ty.path "u32"] :=
+        M.call
+          (α0
+            {|
+              core.ops.range.Range.start := (Integer.of_Z 0) : Ty.path "u32";
+              core.ops.range.Range.end_ := α1;
+            |}) in
+      let* α3 : Ty.apply (Ty.path "core::ops::range::Range") [Ty.path "u32"] :=
+        M.alloc α2 in
+      let* α4 : Ty.tuple :=
+        match_operator
+          α3
+          [
+            fun γ =>
+              (let* iter := M.copy γ in
+              M.loop
+                (let* _ : Ty.tuple :=
+                  let* α0 :
+                      Ty.function
+                        [Ty.apply
+                            (Ty.path "mut_ref")
+                            [Ty.apply
+                                (Ty.path "core::ops::range::Range")
+                                [Ty.path "u32"]]]
+                        (Ty.apply (Ty.path "core::option::Option") [_]) :=
+                    ltac:(M.get_method (fun ℐ =>
+                      core.iter.traits.iterator.Iterator.next
+                        (Self :=
+                          Ty.apply
+                            (Ty.path "core::ops::range::Range")
+                            [Ty.path "u32"])
+                        (Trait := ℐ))) in
+                  let* α1 :
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        [Ty.path "u32"] :=
+                    M.call (α0 (borrow_mut iter)) in
+                  let* α2 :
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        [Ty.path "u32"] :=
+                    M.alloc α1 in
+                  match_operator
+                    α2
+                    [
+                      fun γ =>
+                        (let* α0 := M.read γ in
+                        match α0 with
+                        | core.option.Option.None =>
+                          let* α0 : Ty.path "never" := M.break in
+                          let* α1 : Ty.path "never" := M.read α0 in
+                          let* α2 : Ty.tuple := never_to_any α1 in
+                          M.alloc α2
+                        | _ => M.break_match
+                        end) :
+                        Ty.tuple;
+                      fun γ =>
+                        (let* α0 := M.read γ in
+                        match α0 with
+                        | core.option.Option.Some _ =>
+                          let γ0_0 := core.option.Option.Get_Some_0 γ in
+                          let* i := M.copy γ0_0 in
+                          let* addition : Ty.path "u32" :=
+                            let* α0 : Ty.path "u32" := M.read i in
+                            let* α1 : Ty.path "u32" :=
+                              BinOp.Panic.rem
+                                α0
+                                ((Integer.of_Z 2) : Ty.path "u32") in
+                            let* α2 : Ty.path "bool" :=
+                              M.alloc
+                                (BinOp.Pure.eq
+                                  α1
+                                  ((Integer.of_Z 1) : Ty.path "u32")) in
+                            let* α3 : Ty.path "u32" :=
+                              match_operator
+                                α2
+                                [
+                                  fun γ => (M.pure i) : Ty.path "u32";
+                                  fun γ =>
+                                    (let* α0 : Ty.path "never" := M.continue in
+                                    let* α1 : Ty.path "never" := M.read α0 in
+                                    let* α2 : Ty.path "u32" :=
+                                      never_to_any α1 in
+                                    M.alloc α2) :
+                                    Ty.path "u32"
+                                ] in
+                            M.copy α3 in
+                          let* _ : Ty.tuple :=
+                            let β : Ty.path "u32" := acc in
+                            let* α0 := M.read β in
+                            let* α1 : Ty.path "u32" := M.read addition in
+                            let* α2 := BinOp.Panic.add α0 α1 in
+                            assign β α2 in
+                          M.alloc tt
+                        | _ => M.break_match
+                        end) :
+                        Ty.tuple
+                    ] in
+                M.alloc tt)) :
+              Ty.tuple
+          ] in
+      M.pure (use α4) in
+    M.read acc
+  | _, _ => M.impossible
+  end.

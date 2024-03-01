@@ -2,6 +2,6 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M unit.
+Parameter main : Ty.path "unit".
 
-Parameter sum_odd_numbers : u32.t -> M u32.t.
+Parameter sum_odd_numbers : (Ty.path "u32") -> Ty.path "u32".

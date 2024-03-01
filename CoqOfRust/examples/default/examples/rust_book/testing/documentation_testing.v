@@ -6,12 +6,16 @@ pub fn add(a: i32, b: i32) -> i32 {
     a + b
 }
 *)
-Definition add (a : i32.t) (b : i32.t) : M i32.t :=
-  let* a := M.alloc a in
-  let* b := M.alloc b in
-  let* α0 : i32.t := M.read a in
-  let* α1 : i32.t := M.read b in
-  BinOp.Panic.add α0 α1.
+Definition add (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [], [a; b] =>
+    let* a := M.alloc a in
+    let* b := M.alloc b in
+    let* α0 : Ty.path "i32" := M.read a in
+    let* α1 : Ty.path "i32" := M.read b in
+    BinOp.Panic.add α0 α1
+  | _, _ => M.impossible
+  end.
 
 (*
 pub fn div(a: i32, b: i32) -> i32 {
@@ -22,23 +26,28 @@ pub fn div(a: i32, b: i32) -> i32 {
     a / b
 }
 *)
-Definition div (a : i32.t) (b : i32.t) : M i32.t :=
-  let* a := M.alloc a in
-  let* b := M.alloc b in
-  let* _ : M.Val unit :=
-    let* α0 : i32.t := M.read b in
-    let* α1 : M.Val bool.t :=
-      M.alloc (BinOp.Pure.eq α0 ((Integer.of_Z 0) : i32.t)) in
-    let* α2 : bool.t := M.read (use α1) in
-    if α2 then
-      let* α0 : ref str.t := M.read (mk_str "Divide-by-zero error") in
-      let* α1 : never.t := M.call (std.panicking.begin_panic α0) in
-      let* α2 : unit := never_to_any α1 in
-      M.alloc α2
-    else
-      M.alloc tt in
-  let* α0 : i32.t := M.read a in
-  let* α1 : i32.t := M.read b in
-  let* α2 : i32.t := BinOp.Panic.div α0 α1 in
-  let* α0 : M.Val i32.t := M.alloc α2 in
-  M.read α0.
+Definition div (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [], [a; b] =>
+    let* a := M.alloc a in
+    let* b := M.alloc b in
+    let* _ : Ty.tuple :=
+      let* α0 : Ty.path "i32" := M.read b in
+      let* α1 : Ty.path "bool" :=
+        M.alloc (BinOp.Pure.eq α0 ((Integer.of_Z 0) : Ty.path "i32")) in
+      let* α2 : Ty.path "bool" := M.read (use α1) in
+      if α2 then
+        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+          M.read (mk_str "Divide-by-zero error") in
+        let* α1 : Ty.path "never" := M.call (std.panicking.begin_panic α0) in
+        let* α2 : Ty.tuple := never_to_any α1 in
+        M.alloc α2
+      else
+        M.alloc tt in
+    let* α0 : Ty.path "i32" := M.read a in
+    let* α1 : Ty.path "i32" := M.read b in
+    let* α2 : Ty.path "i32" := BinOp.Panic.div α0 α1 in
+    let* α0 : Ty.path "i32" := M.alloc α2 in
+    M.read α0
+  | _, _ => M.impossible
+  end.

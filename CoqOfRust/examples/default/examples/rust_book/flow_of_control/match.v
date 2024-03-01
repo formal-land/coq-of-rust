@@ -33,193 +33,279 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
-  let* number : M.Val i32.t := M.alloc ((Integer.of_Z 13) : i32.t) in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "Tell me about ") in
-      let* α1 : ref str.t := M.read (mk_str "
+Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [], [] =>
+    let* number : Ty.path "i32" :=
+      M.alloc ((Integer.of_Z 13) : Ty.path "i32") in
+    let* _ : Ty.tuple :=
+      let* _ : Ty.tuple :=
+        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+          M.read (mk_str "Tell me about ") in
+        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+          M.read (mk_str "
 ") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow number)) in
-      let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
-      let* α5 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α4))) in
-      let* α6 : unit := M.call (std.io.stdio._print α5) in
-      M.alloc α6 in
-    M.alloc tt in
-  let* _ : M.Val unit :=
-    match_operator
-      number
-      [
-        fun γ =>
-          (let* α0 := M.read γ in
-          match α0 with
-          | i32.Make 1 =>
-            let* _ : M.Val unit :=
-              let* α0 : ref str.t := M.read (mk_str "One!
-") in
-              let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-              let* α2 : core.fmt.Arguments.t :=
-                M.call
-                  (core.fmt.Arguments.t::["new_const"]
-                    (pointer_coercion "Unsize" (borrow α1))) in
-              let* α3 : unit := M.call (std.io.stdio._print α2) in
-              M.alloc α3 in
-            M.alloc tt
-          | _ => M.break_match
-          end) :
-          M (M.Val unit);
-        fun γ =>
-          (let* α0 := M.read γ in
-          match α0 with
-          | i32.Make 2 =>
-            let* _ : M.Val unit :=
-              let* α0 : ref str.t := M.read (mk_str "This is a prime
-") in
-              let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-              let* α2 : core.fmt.Arguments.t :=
-                M.call
-                  (core.fmt.Arguments.t::["new_const"]
-                    (pointer_coercion "Unsize" (borrow α1))) in
-              let* α3 : unit := M.call (std.io.stdio._print α2) in
-              M.alloc α3 in
-            M.alloc tt
-          | _ => M.break_match
-          end) :
-          M (M.Val unit);
-        fun γ =>
-          (let* α0 := M.read γ in
-          match α0 with
-          | i32.Make 3 =>
-            let* _ : M.Val unit :=
-              let* α0 : ref str.t := M.read (mk_str "This is a prime
-") in
-              let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-              let* α2 : core.fmt.Arguments.t :=
-                M.call
-                  (core.fmt.Arguments.t::["new_const"]
-                    (pointer_coercion "Unsize" (borrow α1))) in
-              let* α3 : unit := M.call (std.io.stdio._print α2) in
-              M.alloc α3 in
-            M.alloc tt
-          | _ => M.break_match
-          end) :
-          M (M.Val unit);
-        fun γ =>
-          (let* α0 := M.read γ in
-          match α0 with
-          | i32.Make 5 =>
-            let* _ : M.Val unit :=
-              let* α0 : ref str.t := M.read (mk_str "This is a prime
-") in
-              let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-              let* α2 : core.fmt.Arguments.t :=
-                M.call
-                  (core.fmt.Arguments.t::["new_const"]
-                    (pointer_coercion "Unsize" (borrow α1))) in
-              let* α3 : unit := M.call (std.io.stdio._print α2) in
-              M.alloc α3 in
-            M.alloc tt
-          | _ => M.break_match
-          end) :
-          M (M.Val unit);
-        fun γ =>
-          (let* α0 := M.read γ in
-          match α0 with
-          | i32.Make 7 =>
-            let* _ : M.Val unit :=
-              let* α0 : ref str.t := M.read (mk_str "This is a prime
-") in
-              let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-              let* α2 : core.fmt.Arguments.t :=
-                M.call
-                  (core.fmt.Arguments.t::["new_const"]
-                    (pointer_coercion "Unsize" (borrow α1))) in
-              let* α3 : unit := M.call (std.io.stdio._print α2) in
-              M.alloc α3 in
-            M.alloc tt
-          | _ => M.break_match
-          end) :
-          M (M.Val unit);
-        fun γ =>
-          (let* α0 := M.read γ in
-          match α0 with
-          | i32.Make 11 =>
-            let* _ : M.Val unit :=
-              let* α0 : ref str.t := M.read (mk_str "This is a prime
-") in
-              let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-              let* α2 : core.fmt.Arguments.t :=
-                M.call
-                  (core.fmt.Arguments.t::["new_const"]
-                    (pointer_coercion "Unsize" (borrow α1))) in
-              let* α3 : unit := M.call (std.io.stdio._print α2) in
-              M.alloc α3 in
-            M.alloc tt
-          | _ => M.break_match
-          end) :
-          M (M.Val unit);
-        fun γ =>
-          (let* _ : M.Val unit :=
-            let* α0 : ref str.t := M.read (mk_str "A teen
-") in
-            let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-            let* α2 : core.fmt.Arguments.t :=
-              M.call
-                (core.fmt.Arguments.t::["new_const"]
-                  (pointer_coercion "Unsize" (borrow α1))) in
-            let* α3 : unit := M.call (std.io.stdio._print α2) in
-            M.alloc α3 in
-          M.alloc tt) :
-          M (M.Val unit);
-        fun γ =>
-          (let* _ : M.Val unit :=
-            let* α0 : ref str.t := M.read (mk_str "Ain't special
-") in
-            let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-            let* α2 : core.fmt.Arguments.t :=
-              M.call
-                (core.fmt.Arguments.t::["new_const"]
-                  (pointer_coercion "Unsize" (borrow α1))) in
-            let* α3 : unit := M.call (std.io.stdio._print α2) in
-            M.alloc α3 in
-          M.alloc tt) :
-          M (M.Val unit)
-      ] in
-  let* boolean : M.Val bool.t := M.alloc true in
-  let* binary : M.Val i32.t :=
-    let* α0 : M.Val i32.t :=
+        let* α2 :
+            Ty.apply
+              (Ty.path "array")
+              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
+          M.alloc [ α0; α1 ] in
+        let* α3 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+          M.call
+            ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_display"]
+              (borrow number)) in
+        let* α4 :
+            Ty.apply
+              (Ty.path "array")
+              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
+          M.alloc [ α3 ] in
+        let* α5 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+          M.call
+            ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
+              (pointer_coercion "Unsize" (borrow α2))
+              (pointer_coercion "Unsize" (borrow α4))) in
+        let* α6 : Ty.tuple := M.call (std.io.stdio._print α5) in
+        M.alloc α6 in
+      M.alloc tt in
+    let* _ : Ty.tuple :=
       match_operator
-        boolean
+        number
         [
-          fun γ => (M.alloc ((Integer.of_Z 0) : i32.t)) : M (M.Val i32.t);
-          fun γ => (M.alloc ((Integer.of_Z 1) : i32.t)) : M (M.Val i32.t)
-        ] in
-    M.copy α0 in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "") in
-      let* α1 : ref str.t := M.read (mk_str " -> ") in
-      let* α2 : ref str.t := M.read (mk_str "
+          fun γ =>
+            (let* α0 := M.read γ in
+            match α0 with
+            | i32.Make 1 =>
+              let* _ : Ty.tuple :=
+                let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+                  M.read (mk_str "One!
 ") in
-      let* α3 : M.Val (array (ref str.t)) := M.alloc [ α0; α1; α2 ] in
-      let* α4 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow boolean)) in
-      let* α5 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow binary)) in
-      let* α6 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α4; α5 ] in
-      let* α7 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α3))
-            (pointer_coercion "Unsize" (borrow α6))) in
-      let* α8 : unit := M.call (std.io.stdio._print α7) in
-      M.alloc α8 in
-    M.alloc tt in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+                let* α1 :
+                    Ty.apply
+                      (Ty.path "array")
+                      [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
+                  M.alloc [ α0 ] in
+                let* α2 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+                  M.call
+                    ((Ty.apply
+                          (Ty.path "core::fmt::Arguments")
+                          [])::["new_const"]
+                      (pointer_coercion "Unsize" (borrow α1))) in
+                let* α3 : Ty.tuple := M.call (std.io.stdio._print α2) in
+                M.alloc α3 in
+              M.alloc tt
+            | _ => M.break_match
+            end) :
+            Ty.tuple;
+          fun γ =>
+            (let* α0 := M.read γ in
+            match α0 with
+            | i32.Make 2 =>
+              let* _ : Ty.tuple :=
+                let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+                  M.read (mk_str "This is a prime
+") in
+                let* α1 :
+                    Ty.apply
+                      (Ty.path "array")
+                      [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
+                  M.alloc [ α0 ] in
+                let* α2 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+                  M.call
+                    ((Ty.apply
+                          (Ty.path "core::fmt::Arguments")
+                          [])::["new_const"]
+                      (pointer_coercion "Unsize" (borrow α1))) in
+                let* α3 : Ty.tuple := M.call (std.io.stdio._print α2) in
+                M.alloc α3 in
+              M.alloc tt
+            | _ => M.break_match
+            end) :
+            Ty.tuple;
+          fun γ =>
+            (let* α0 := M.read γ in
+            match α0 with
+            | i32.Make 3 =>
+              let* _ : Ty.tuple :=
+                let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+                  M.read (mk_str "This is a prime
+") in
+                let* α1 :
+                    Ty.apply
+                      (Ty.path "array")
+                      [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
+                  M.alloc [ α0 ] in
+                let* α2 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+                  M.call
+                    ((Ty.apply
+                          (Ty.path "core::fmt::Arguments")
+                          [])::["new_const"]
+                      (pointer_coercion "Unsize" (borrow α1))) in
+                let* α3 : Ty.tuple := M.call (std.io.stdio._print α2) in
+                M.alloc α3 in
+              M.alloc tt
+            | _ => M.break_match
+            end) :
+            Ty.tuple;
+          fun γ =>
+            (let* α0 := M.read γ in
+            match α0 with
+            | i32.Make 5 =>
+              let* _ : Ty.tuple :=
+                let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+                  M.read (mk_str "This is a prime
+") in
+                let* α1 :
+                    Ty.apply
+                      (Ty.path "array")
+                      [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
+                  M.alloc [ α0 ] in
+                let* α2 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+                  M.call
+                    ((Ty.apply
+                          (Ty.path "core::fmt::Arguments")
+                          [])::["new_const"]
+                      (pointer_coercion "Unsize" (borrow α1))) in
+                let* α3 : Ty.tuple := M.call (std.io.stdio._print α2) in
+                M.alloc α3 in
+              M.alloc tt
+            | _ => M.break_match
+            end) :
+            Ty.tuple;
+          fun γ =>
+            (let* α0 := M.read γ in
+            match α0 with
+            | i32.Make 7 =>
+              let* _ : Ty.tuple :=
+                let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+                  M.read (mk_str "This is a prime
+") in
+                let* α1 :
+                    Ty.apply
+                      (Ty.path "array")
+                      [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
+                  M.alloc [ α0 ] in
+                let* α2 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+                  M.call
+                    ((Ty.apply
+                          (Ty.path "core::fmt::Arguments")
+                          [])::["new_const"]
+                      (pointer_coercion "Unsize" (borrow α1))) in
+                let* α3 : Ty.tuple := M.call (std.io.stdio._print α2) in
+                M.alloc α3 in
+              M.alloc tt
+            | _ => M.break_match
+            end) :
+            Ty.tuple;
+          fun γ =>
+            (let* α0 := M.read γ in
+            match α0 with
+            | i32.Make 11 =>
+              let* _ : Ty.tuple :=
+                let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+                  M.read (mk_str "This is a prime
+") in
+                let* α1 :
+                    Ty.apply
+                      (Ty.path "array")
+                      [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
+                  M.alloc [ α0 ] in
+                let* α2 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+                  M.call
+                    ((Ty.apply
+                          (Ty.path "core::fmt::Arguments")
+                          [])::["new_const"]
+                      (pointer_coercion "Unsize" (borrow α1))) in
+                let* α3 : Ty.tuple := M.call (std.io.stdio._print α2) in
+                M.alloc α3 in
+              M.alloc tt
+            | _ => M.break_match
+            end) :
+            Ty.tuple;
+          fun γ =>
+            (let* _ : Ty.tuple :=
+              let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+                M.read (mk_str "A teen
+") in
+              let* α1 :
+                  Ty.apply
+                    (Ty.path "array")
+                    [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
+                M.alloc [ α0 ] in
+              let* α2 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+                M.call
+                  ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_const"]
+                    (pointer_coercion "Unsize" (borrow α1))) in
+              let* α3 : Ty.tuple := M.call (std.io.stdio._print α2) in
+              M.alloc α3 in
+            M.alloc tt) :
+            Ty.tuple;
+          fun γ =>
+            (let* _ : Ty.tuple :=
+              let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+                M.read (mk_str "Ain't special
+") in
+              let* α1 :
+                  Ty.apply
+                    (Ty.path "array")
+                    [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
+                M.alloc [ α0 ] in
+              let* α2 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+                M.call
+                  ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_const"]
+                    (pointer_coercion "Unsize" (borrow α1))) in
+              let* α3 : Ty.tuple := M.call (std.io.stdio._print α2) in
+              M.alloc α3 in
+            M.alloc tt) :
+            Ty.tuple
+        ] in
+    let* boolean : Ty.path "bool" := M.alloc true in
+    let* binary : Ty.path "i32" :=
+      let* α0 : Ty.path "i32" :=
+        match_operator
+          boolean
+          [
+            fun γ =>
+              (M.alloc ((Integer.of_Z 0) : Ty.path "i32")) : Ty.path "i32";
+            fun γ =>
+              (M.alloc ((Integer.of_Z 1) : Ty.path "i32")) : Ty.path "i32"
+          ] in
+      M.copy α0 in
+    let* _ : Ty.tuple :=
+      let* _ : Ty.tuple :=
+        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+          M.read (mk_str "") in
+        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+          M.read (mk_str " -> ") in
+        let* α2 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+          M.read (mk_str "
+") in
+        let* α3 :
+            Ty.apply
+              (Ty.path "array")
+              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
+          M.alloc [ α0; α1; α2 ] in
+        let* α4 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+          M.call
+            ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_display"]
+              (borrow boolean)) in
+        let* α5 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+          M.call
+            ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_display"]
+              (borrow binary)) in
+        let* α6 :
+            Ty.apply
+              (Ty.path "array")
+              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
+          M.alloc [ α4; α5 ] in
+        let* α7 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+          M.call
+            ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
+              (pointer_coercion "Unsize" (borrow α3))
+              (pointer_coercion "Unsize" (borrow α6))) in
+        let* α8 : Ty.tuple := M.call (std.io.stdio._print α7) in
+        M.alloc α8 in
+      M.alloc tt in
+    let* α0 : Ty.path "unit" := M.alloc tt in
+    M.read α0
+  | _, _ => M.impossible
+  end.

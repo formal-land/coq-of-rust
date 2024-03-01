@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module  PrintInOption.
 Section PrintInOption.
   Class Trait (Self : Set) : Type := {
-    print_in_option : Self -> M unit;
+    print_in_option : Ty.function [Self] (Ty.path "unit");
   }.
   
 End PrintInOption.
@@ -14,20 +14,17 @@ Module  Impl_generics_where_clauses_PrintInOption_for_T.
 Section Impl_generics_where_clauses_PrintInOption_for_T.
   Context {T : Set}.
   
-  Definition Self : Set := T.
+  Definition Self : Ty.t := T.
   
-  Parameter print_in_option : Self -> M unit.
+  Parameter print_in_option : T -> Ty.path "unit".
   
-  Global Instance AssociatedFunction_print_in_option :
-    Notations.DoubleColon Self "print_in_option" := {
+  Definition AssociatedFunction_print_in_option : Instance.t := {
     Notations.double_colon := print_in_option;
   }.
   
-  Global Instance ℐ : generics_where_clauses.PrintInOption.Trait Self := {
-    generics_where_clauses.PrintInOption.print_in_option := print_in_option;
-  }.
+  Definition ℐ : Instance.t := [("print_in_option", print_in_option)].
 End Impl_generics_where_clauses_PrintInOption_for_T.
 End Impl_generics_where_clauses_PrintInOption_for_T.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M unit.
+Parameter main : Ty.path "unit".

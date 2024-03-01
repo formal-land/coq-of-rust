@@ -9,52 +9,70 @@ fn foo<A>(o: Option<A>) {
     }
 }
 *)
-Definition foo {A : Set} (o : core.option.Option.t A) : M unit :=
-  let* o := M.alloc o in
-  let* α0 : M.Val unit :=
-    match_operator
-      o
-      [
-        fun γ =>
-          (let* α0 := M.read γ in
-          match α0 with
-          | core.option.Option.Some _ =>
-            let γ0_0 := core.option.Option.Get_Some_0 γ in
-            let* _a := M.copy γ0_0 in
-            let* _ : M.Val unit :=
-              let* α0 : ref str.t := M.read (mk_str "some
+Definition foo (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [A], [o] =>
+    let* o := M.alloc o in
+    let* α0 : Ty.tuple :=
+      match_operator
+        o
+        [
+          fun γ =>
+            (let* α0 := M.read γ in
+            match α0 with
+            | core.option.Option.Some _ =>
+              let γ0_0 := core.option.Option.Get_Some_0 γ in
+              let* _a := M.copy γ0_0 in
+              let* _ : Ty.tuple :=
+                let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+                  M.read (mk_str "some
 ") in
-              let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-              let* α2 : core.fmt.Arguments.t :=
-                M.call
-                  (core.fmt.Arguments.t::["new_const"]
-                    (pointer_coercion "Unsize" (borrow α1))) in
-              let* α3 : unit := M.call (std.io.stdio._print α2) in
-              M.alloc α3 in
-            M.alloc tt
-          | _ => M.break_match
-          end) :
-          M (M.Val unit);
-        fun γ =>
-          (let* α0 := M.read γ in
-          match α0 with
-          | core.option.Option.None =>
-            let* _ : M.Val unit :=
-              let* α0 : ref str.t := M.read (mk_str "nothing
+                let* α1 :
+                    Ty.apply
+                      (Ty.path "array")
+                      [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
+                  M.alloc [ α0 ] in
+                let* α2 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+                  M.call
+                    ((Ty.apply
+                          (Ty.path "core::fmt::Arguments")
+                          [])::["new_const"]
+                      (pointer_coercion "Unsize" (borrow α1))) in
+                let* α3 : Ty.tuple := M.call (std.io.stdio._print α2) in
+                M.alloc α3 in
+              M.alloc tt
+            | _ => M.break_match
+            end) :
+            Ty.tuple;
+          fun γ =>
+            (let* α0 := M.read γ in
+            match α0 with
+            | core.option.Option.None =>
+              let* _ : Ty.tuple :=
+                let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+                  M.read (mk_str "nothing
 ") in
-              let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-              let* α2 : core.fmt.Arguments.t :=
-                M.call
-                  (core.fmt.Arguments.t::["new_const"]
-                    (pointer_coercion "Unsize" (borrow α1))) in
-              let* α3 : unit := M.call (std.io.stdio._print α2) in
-              M.alloc α3 in
-            M.alloc tt
-          | _ => M.break_match
-          end) :
-          M (M.Val unit)
-      ] in
-  M.read α0.
+                let* α1 :
+                    Ty.apply
+                      (Ty.path "array")
+                      [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
+                  M.alloc [ α0 ] in
+                let* α2 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+                  M.call
+                    ((Ty.apply
+                          (Ty.path "core::fmt::Arguments")
+                          [])::["new_const"]
+                      (pointer_coercion "Unsize" (borrow α1))) in
+                let* α3 : Ty.tuple := M.call (std.io.stdio._print α2) in
+                M.alloc α3 in
+              M.alloc tt
+            | _ => M.break_match
+            end) :
+            Ty.tuple
+        ] in
+    M.read α0
+  | _, _ => M.impossible
+  end.
 
 Module tests.
   (*
@@ -73,112 +91,185 @@ Module tests.
           }
       }
   *)
-  Definition test_file : M unit :=
-    let* file : M.Val std.fs.File.t :=
-      let* α0 : std.fs.OpenOptions.t := M.call std.fs.OpenOptions.t::["new"] in
-      let* α1 : M.Val std.fs.OpenOptions.t := M.alloc α0 in
-      let* α2 : mut_ref std.fs.OpenOptions.t :=
-        M.call (std.fs.OpenOptions.t::["append"] (borrow_mut α1) true) in
-      let* α3 : mut_ref std.fs.OpenOptions.t :=
-        M.call (std.fs.OpenOptions.t::["create"] α2 true) in
-      let* α4 : ref str.t := M.read (mk_str "ferris.txt") in
-      let* α5 : core.result.Result.t std.fs.File.t std.io.error.Error.t :=
-        M.call (std.fs.OpenOptions.t::["open"] (borrow (deref α3)) α4) in
-      let* α6 : ref str.t := M.read (mk_str "Failed to open ferris.txt") in
-      let* α7 : std.fs.File.t :=
+  Definition test_file (𝜏 : list Ty.t) (α : list Value.t) : M :=
+    match 𝜏, α with
+    | [], [] =>
+      let* file : Ty.apply (Ty.path "std::fs::File") [] :=
+        let* α0 : Ty.apply (Ty.path "std::fs::OpenOptions") [] :=
+          M.call (Ty.apply (Ty.path "std::fs::OpenOptions") [])::["new"] in
+        let* α1 : Ty.apply (Ty.path "std::fs::OpenOptions") [] := M.alloc α0 in
+        let* α2 :
+            Ty.apply
+              (Ty.path "mut_ref")
+              [Ty.apply (Ty.path "std::fs::OpenOptions") []] :=
+          M.call
+            ((Ty.apply (Ty.path "std::fs::OpenOptions") [])::["append"]
+              (borrow_mut α1)
+              true) in
+        let* α3 :
+            Ty.apply
+              (Ty.path "mut_ref")
+              [Ty.apply (Ty.path "std::fs::OpenOptions") []] :=
+          M.call
+            ((Ty.apply (Ty.path "std::fs::OpenOptions") [])::["create"]
+              α2
+              true) in
+        let* α4 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+          M.read (mk_str "ferris.txt") in
+        let* α5 :
+            Ty.apply
+              (Ty.path "core::result::Result")
+              [Ty.apply (Ty.path "std::fs::File") [];
+                Ty.apply (Ty.path "std::io::error::Error") []] :=
+          M.call
+            ((Ty.apply (Ty.path "std::fs::OpenOptions") [])::["open"]
+              (borrow (deref α3))
+              α4) in
+        let* α6 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+          M.read (mk_str "Failed to open ferris.txt") in
+        let* α7 : Ty.apply (Ty.path "std::fs::File") [] :=
+          M.call
+            ((Ty.apply
+                  (Ty.path "core::result::Result")
+                  [Ty.apply (Ty.path "std::fs::File") [];
+                    Ty.apply (Ty.path "std::io::error::Error") []])::["expect"]
+              α5
+              α6) in
+        M.alloc α7 in
+      let* α0 :
+          Ty.function
+            [Ty.apply (Ty.path "core::ops::range::Range") [Ty.path "i32"]]
+            _ :=
+        ltac:(M.get_method (fun ℐ =>
+          core.iter.traits.collect.IntoIterator.into_iter
+            (Self :=
+              Ty.apply (Ty.path "core::ops::range::Range") [Ty.path "i32"])
+            (Trait := ℐ))) in
+      let* α1 : Ty.apply (Ty.path "core::ops::range::Range") [Ty.path "i32"] :=
         M.call
-          ((core.result.Result.t std.fs.File.t std.io.error.Error.t)::["expect"]
-            α5
-            α6) in
-      M.alloc α7 in
-    let* α0 : (core.ops.range.Range.t i32.t) -> M _ :=
-      ltac:(M.get_method (fun ℐ =>
-        core.iter.traits.collect.IntoIterator.into_iter
-          (Self := core.ops.range.Range.t i32.t)
-          (Trait := ℐ))) in
-    let* α1 : core.ops.range.Range.t i32.t :=
-      M.call
-        (α0
-          {|
-            core.ops.range.Range.start := (Integer.of_Z 0) : i32.t;
-            core.ops.range.Range.end_ := (Integer.of_Z 5) : i32.t;
-          |}) in
-    let* α2 : M.Val (core.ops.range.Range.t i32.t) := M.alloc α1 in
-    let* α3 : M.Val unit :=
-      match_operator
-        α2
-        [
-          fun γ =>
-            (let* iter := M.copy γ in
-            M.loop
-              (let* _ : M.Val unit :=
-                let* α0 :
-                    (mut_ref (core.ops.range.Range.t i32.t)) ->
-                      M (core.option.Option.t _) :=
-                  ltac:(M.get_method (fun ℐ =>
-                    core.iter.traits.iterator.Iterator.next
-                      (Self := core.ops.range.Range.t i32.t)
-                      (Trait := ℐ))) in
-                let* α1 : core.option.Option.t i32.t :=
-                  M.call (α0 (borrow_mut iter)) in
-                let* α2 : M.Val (core.option.Option.t i32.t) := M.alloc α1 in
-                match_operator
-                  α2
-                  [
-                    fun γ =>
-                      (let* α0 := M.read γ in
-                      match α0 with
-                      | core.option.Option.None =>
-                        let* α0 : M.Val never.t := M.break in
-                        let* α1 := M.read α0 in
-                        let* α2 : unit := never_to_any α1 in
-                        M.alloc α2
-                      | _ => M.break_match
-                      end) :
-                      M (M.Val unit);
-                    fun γ =>
-                      (let* α0 := M.read γ in
-                      match α0 with
-                      | core.option.Option.Some _ =>
-                        let γ0_0 := core.option.Option.Get_Some_0 γ in
-                        let* _ : M.Val unit :=
-                          let* α0 :
-                              (mut_ref std.fs.File.t) ->
-                                (ref (slice u8.t)) ->
-                                M
-                                  (core.result.Result.t
-                                    unit
-                                    std.io.error.Error.t) :=
-                            ltac:(M.get_method (fun ℐ =>
-                              std.io.Write.write_all
-                                (Self := std.fs.File.t)
-                                (Trait := ℐ))) in
-                          let* α1 : ref str.t := M.read (mk_str "Ferris
+          (α0
+            {|
+              core.ops.range.Range.start := (Integer.of_Z 0) : Ty.path "i32";
+              core.ops.range.Range.end_ := (Integer.of_Z 5) : Ty.path "i32";
+            |}) in
+      let* α2 : Ty.apply (Ty.path "core::ops::range::Range") [Ty.path "i32"] :=
+        M.alloc α1 in
+      let* α3 : Ty.tuple :=
+        match_operator
+          α2
+          [
+            fun γ =>
+              (let* iter := M.copy γ in
+              M.loop
+                (let* _ : Ty.tuple :=
+                  let* α0 :
+                      Ty.function
+                        [Ty.apply
+                            (Ty.path "mut_ref")
+                            [Ty.apply
+                                (Ty.path "core::ops::range::Range")
+                                [Ty.path "i32"]]]
+                        (Ty.apply (Ty.path "core::option::Option") [_]) :=
+                    ltac:(M.get_method (fun ℐ =>
+                      core.iter.traits.iterator.Iterator.next
+                        (Self :=
+                          Ty.apply
+                            (Ty.path "core::ops::range::Range")
+                            [Ty.path "i32"])
+                        (Trait := ℐ))) in
+                  let* α1 :
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        [Ty.path "i32"] :=
+                    M.call (α0 (borrow_mut iter)) in
+                  let* α2 :
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        [Ty.path "i32"] :=
+                    M.alloc α1 in
+                  match_operator
+                    α2
+                    [
+                      fun γ =>
+                        (let* α0 := M.read γ in
+                        match α0 with
+                        | core.option.Option.None =>
+                          let* α0 : Ty.path "never" := M.break in
+                          let* α1 : Ty.path "never" := M.read α0 in
+                          let* α2 : Ty.tuple := never_to_any α1 in
+                          M.alloc α2
+                        | _ => M.break_match
+                        end) :
+                        Ty.tuple;
+                      fun γ =>
+                        (let* α0 := M.read γ in
+                        match α0 with
+                        | core.option.Option.Some _ =>
+                          let γ0_0 := core.option.Option.Get_Some_0 γ in
+                          let* _ : Ty.tuple :=
+                            let* α0 :
+                                Ty.function
+                                  [Ty.apply
+                                      (Ty.path "mut_ref")
+                                      [Ty.apply (Ty.path "std::fs::File") []];
+                                    Ty.apply
+                                      (Ty.path "ref")
+                                      [Ty.apply
+                                          (Ty.path "slice")
+                                          [Ty.path "u8"]]]
+                                  (Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    [Ty.tuple;
+                                      Ty.apply
+                                        (Ty.path "std::io::error::Error")
+                                        []]) :=
+                              ltac:(M.get_method (fun ℐ =>
+                                std.io.Write.write_all
+                                  (Self :=
+                                    Ty.apply (Ty.path "std::fs::File") [])
+                                  (Trait := ℐ))) in
+                            let* α1 :
+                                Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+                              M.read (mk_str "Ferris
 ") in
-                          let* α2 : ref (slice u8.t) :=
-                            M.call (str.t::["as_bytes"] α1) in
-                          let* α3 :
-                              core.result.Result.t unit std.io.error.Error.t :=
-                            M.call (α0 (borrow_mut file) α2) in
-                          let* α4 : ref str.t :=
-                            M.read (mk_str "Could not write to ferris.txt") in
-                          let* α5 : unit :=
-                            M.call
-                              ((core.result.Result.t
-                                    unit
-                                    std.io.error.Error.t)::["expect"]
-                                α3
-                                α4) in
-                          M.alloc α5 in
-                        M.alloc tt
-                      | _ => M.break_match
-                      end) :
-                      M (M.Val unit)
-                  ] in
-              M.alloc tt)) :
-            M (M.Val unit)
-        ] in
-    M.read (use α3).
+                            let* α2 :
+                                Ty.apply
+                                  (Ty.path "ref")
+                                  [Ty.apply (Ty.path "slice") [Ty.path "u8"]] :=
+                              M.call ((Ty.path "str")::["as_bytes"] α1) in
+                            let* α3 :
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  [Ty.tuple;
+                                    Ty.apply
+                                      (Ty.path "std::io::error::Error")
+                                      []] :=
+                              M.call (α0 (borrow_mut file) α2) in
+                            let* α4 :
+                                Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+                              M.read (mk_str "Could not write to ferris.txt") in
+                            let* α5 : Ty.tuple :=
+                              M.call
+                                ((Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      [Ty.tuple;
+                                        Ty.apply
+                                          (Ty.path "std::io::error::Error")
+                                          []])::["expect"]
+                                  α3
+                                  α4) in
+                            M.alloc α5 in
+                          M.alloc tt
+                        | _ => M.break_match
+                        end) :
+                        Ty.tuple
+                    ] in
+                M.alloc tt)) :
+              Ty.tuple
+          ] in
+      M.read (use α3)
+    | _, _ => M.impossible
+    end.
   
   (*
       fn test_file_also() {
@@ -196,110 +287,183 @@ Module tests.
           }
       }
   *)
-  Definition test_file_also : M unit :=
-    let* file : M.Val std.fs.File.t :=
-      let* α0 : std.fs.OpenOptions.t := M.call std.fs.OpenOptions.t::["new"] in
-      let* α1 : M.Val std.fs.OpenOptions.t := M.alloc α0 in
-      let* α2 : mut_ref std.fs.OpenOptions.t :=
-        M.call (std.fs.OpenOptions.t::["append"] (borrow_mut α1) true) in
-      let* α3 : mut_ref std.fs.OpenOptions.t :=
-        M.call (std.fs.OpenOptions.t::["create"] α2 true) in
-      let* α4 : ref str.t := M.read (mk_str "ferris.txt") in
-      let* α5 : core.result.Result.t std.fs.File.t std.io.error.Error.t :=
-        M.call (std.fs.OpenOptions.t::["open"] (borrow (deref α3)) α4) in
-      let* α6 : ref str.t := M.read (mk_str "Failed to open ferris.txt") in
-      let* α7 : std.fs.File.t :=
+  Definition test_file_also (𝜏 : list Ty.t) (α : list Value.t) : M :=
+    match 𝜏, α with
+    | [], [] =>
+      let* file : Ty.apply (Ty.path "std::fs::File") [] :=
+        let* α0 : Ty.apply (Ty.path "std::fs::OpenOptions") [] :=
+          M.call (Ty.apply (Ty.path "std::fs::OpenOptions") [])::["new"] in
+        let* α1 : Ty.apply (Ty.path "std::fs::OpenOptions") [] := M.alloc α0 in
+        let* α2 :
+            Ty.apply
+              (Ty.path "mut_ref")
+              [Ty.apply (Ty.path "std::fs::OpenOptions") []] :=
+          M.call
+            ((Ty.apply (Ty.path "std::fs::OpenOptions") [])::["append"]
+              (borrow_mut α1)
+              true) in
+        let* α3 :
+            Ty.apply
+              (Ty.path "mut_ref")
+              [Ty.apply (Ty.path "std::fs::OpenOptions") []] :=
+          M.call
+            ((Ty.apply (Ty.path "std::fs::OpenOptions") [])::["create"]
+              α2
+              true) in
+        let* α4 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+          M.read (mk_str "ferris.txt") in
+        let* α5 :
+            Ty.apply
+              (Ty.path "core::result::Result")
+              [Ty.apply (Ty.path "std::fs::File") [];
+                Ty.apply (Ty.path "std::io::error::Error") []] :=
+          M.call
+            ((Ty.apply (Ty.path "std::fs::OpenOptions") [])::["open"]
+              (borrow (deref α3))
+              α4) in
+        let* α6 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+          M.read (mk_str "Failed to open ferris.txt") in
+        let* α7 : Ty.apply (Ty.path "std::fs::File") [] :=
+          M.call
+            ((Ty.apply
+                  (Ty.path "core::result::Result")
+                  [Ty.apply (Ty.path "std::fs::File") [];
+                    Ty.apply (Ty.path "std::io::error::Error") []])::["expect"]
+              α5
+              α6) in
+        M.alloc α7 in
+      let* α0 :
+          Ty.function
+            [Ty.apply (Ty.path "core::ops::range::Range") [Ty.path "i32"]]
+            _ :=
+        ltac:(M.get_method (fun ℐ =>
+          core.iter.traits.collect.IntoIterator.into_iter
+            (Self :=
+              Ty.apply (Ty.path "core::ops::range::Range") [Ty.path "i32"])
+            (Trait := ℐ))) in
+      let* α1 : Ty.apply (Ty.path "core::ops::range::Range") [Ty.path "i32"] :=
         M.call
-          ((core.result.Result.t std.fs.File.t std.io.error.Error.t)::["expect"]
-            α5
-            α6) in
-      M.alloc α7 in
-    let* α0 : (core.ops.range.Range.t i32.t) -> M _ :=
-      ltac:(M.get_method (fun ℐ =>
-        core.iter.traits.collect.IntoIterator.into_iter
-          (Self := core.ops.range.Range.t i32.t)
-          (Trait := ℐ))) in
-    let* α1 : core.ops.range.Range.t i32.t :=
-      M.call
-        (α0
-          {|
-            core.ops.range.Range.start := (Integer.of_Z 0) : i32.t;
-            core.ops.range.Range.end_ := (Integer.of_Z 5) : i32.t;
-          |}) in
-    let* α2 : M.Val (core.ops.range.Range.t i32.t) := M.alloc α1 in
-    let* α3 : M.Val unit :=
-      match_operator
-        α2
-        [
-          fun γ =>
-            (let* iter := M.copy γ in
-            M.loop
-              (let* _ : M.Val unit :=
-                let* α0 :
-                    (mut_ref (core.ops.range.Range.t i32.t)) ->
-                      M (core.option.Option.t _) :=
-                  ltac:(M.get_method (fun ℐ =>
-                    core.iter.traits.iterator.Iterator.next
-                      (Self := core.ops.range.Range.t i32.t)
-                      (Trait := ℐ))) in
-                let* α1 : core.option.Option.t i32.t :=
-                  M.call (α0 (borrow_mut iter)) in
-                let* α2 : M.Val (core.option.Option.t i32.t) := M.alloc α1 in
-                match_operator
-                  α2
-                  [
-                    fun γ =>
-                      (let* α0 := M.read γ in
-                      match α0 with
-                      | core.option.Option.None =>
-                        let* α0 : M.Val never.t := M.break in
-                        let* α1 := M.read α0 in
-                        let* α2 : unit := never_to_any α1 in
-                        M.alloc α2
-                      | _ => M.break_match
-                      end) :
-                      M (M.Val unit);
-                    fun γ =>
-                      (let* α0 := M.read γ in
-                      match α0 with
-                      | core.option.Option.Some _ =>
-                        let γ0_0 := core.option.Option.Get_Some_0 γ in
-                        let* _ : M.Val unit :=
-                          let* α0 :
-                              (mut_ref std.fs.File.t) ->
-                                (ref (slice u8.t)) ->
-                                M
-                                  (core.result.Result.t
-                                    unit
-                                    std.io.error.Error.t) :=
-                            ltac:(M.get_method (fun ℐ =>
-                              std.io.Write.write_all
-                                (Self := std.fs.File.t)
-                                (Trait := ℐ))) in
-                          let* α1 : ref str.t := M.read (mk_str "Corro
+          (α0
+            {|
+              core.ops.range.Range.start := (Integer.of_Z 0) : Ty.path "i32";
+              core.ops.range.Range.end_ := (Integer.of_Z 5) : Ty.path "i32";
+            |}) in
+      let* α2 : Ty.apply (Ty.path "core::ops::range::Range") [Ty.path "i32"] :=
+        M.alloc α1 in
+      let* α3 : Ty.tuple :=
+        match_operator
+          α2
+          [
+            fun γ =>
+              (let* iter := M.copy γ in
+              M.loop
+                (let* _ : Ty.tuple :=
+                  let* α0 :
+                      Ty.function
+                        [Ty.apply
+                            (Ty.path "mut_ref")
+                            [Ty.apply
+                                (Ty.path "core::ops::range::Range")
+                                [Ty.path "i32"]]]
+                        (Ty.apply (Ty.path "core::option::Option") [_]) :=
+                    ltac:(M.get_method (fun ℐ =>
+                      core.iter.traits.iterator.Iterator.next
+                        (Self :=
+                          Ty.apply
+                            (Ty.path "core::ops::range::Range")
+                            [Ty.path "i32"])
+                        (Trait := ℐ))) in
+                  let* α1 :
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        [Ty.path "i32"] :=
+                    M.call (α0 (borrow_mut iter)) in
+                  let* α2 :
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        [Ty.path "i32"] :=
+                    M.alloc α1 in
+                  match_operator
+                    α2
+                    [
+                      fun γ =>
+                        (let* α0 := M.read γ in
+                        match α0 with
+                        | core.option.Option.None =>
+                          let* α0 : Ty.path "never" := M.break in
+                          let* α1 : Ty.path "never" := M.read α0 in
+                          let* α2 : Ty.tuple := never_to_any α1 in
+                          M.alloc α2
+                        | _ => M.break_match
+                        end) :
+                        Ty.tuple;
+                      fun γ =>
+                        (let* α0 := M.read γ in
+                        match α0 with
+                        | core.option.Option.Some _ =>
+                          let γ0_0 := core.option.Option.Get_Some_0 γ in
+                          let* _ : Ty.tuple :=
+                            let* α0 :
+                                Ty.function
+                                  [Ty.apply
+                                      (Ty.path "mut_ref")
+                                      [Ty.apply (Ty.path "std::fs::File") []];
+                                    Ty.apply
+                                      (Ty.path "ref")
+                                      [Ty.apply
+                                          (Ty.path "slice")
+                                          [Ty.path "u8"]]]
+                                  (Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    [Ty.tuple;
+                                      Ty.apply
+                                        (Ty.path "std::io::error::Error")
+                                        []]) :=
+                              ltac:(M.get_method (fun ℐ =>
+                                std.io.Write.write_all
+                                  (Self :=
+                                    Ty.apply (Ty.path "std::fs::File") [])
+                                  (Trait := ℐ))) in
+                            let* α1 :
+                                Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+                              M.read (mk_str "Corro
 ") in
-                          let* α2 : ref (slice u8.t) :=
-                            M.call (str.t::["as_bytes"] α1) in
-                          let* α3 :
-                              core.result.Result.t unit std.io.error.Error.t :=
-                            M.call (α0 (borrow_mut file) α2) in
-                          let* α4 : ref str.t :=
-                            M.read (mk_str "Could not write to ferris.txt") in
-                          let* α5 : unit :=
-                            M.call
-                              ((core.result.Result.t
-                                    unit
-                                    std.io.error.Error.t)::["expect"]
-                                α3
-                                α4) in
-                          M.alloc α5 in
-                        M.alloc tt
-                      | _ => M.break_match
-                      end) :
-                      M (M.Val unit)
-                  ] in
-              M.alloc tt)) :
-            M (M.Val unit)
-        ] in
-    M.read (use α3).
+                            let* α2 :
+                                Ty.apply
+                                  (Ty.path "ref")
+                                  [Ty.apply (Ty.path "slice") [Ty.path "u8"]] :=
+                              M.call ((Ty.path "str")::["as_bytes"] α1) in
+                            let* α3 :
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  [Ty.tuple;
+                                    Ty.apply
+                                      (Ty.path "std::io::error::Error")
+                                      []] :=
+                              M.call (α0 (borrow_mut file) α2) in
+                            let* α4 :
+                                Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+                              M.read (mk_str "Could not write to ferris.txt") in
+                            let* α5 : Ty.tuple :=
+                              M.call
+                                ((Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      [Ty.tuple;
+                                        Ty.apply
+                                          (Ty.path "std::io::error::Error")
+                                          []])::["expect"]
+                                  α3
+                                  α4) in
+                            M.alloc α5 in
+                          M.alloc tt
+                        | _ => M.break_match
+                        end) :
+                        Ty.tuple
+                    ] in
+                M.alloc tt)) :
+              Ty.tuple
+          ] in
+      M.read (use α3)
+    | _, _ => M.impossible
+    end.
 End tests.

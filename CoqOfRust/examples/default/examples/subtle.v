@@ -22,22 +22,22 @@ Section Impl_core_clone_Clone_for_subtle_Choice.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 : Ty.apply (Ty.path "subtle::Choice::t") [] :=
+      let* α0 : Ty.apply (Ty.path "subtle::Choice") [] :=
         match_operator
           (DeclaredButUndefinedVariable
             (A :=
               Ty.apply
-                (Ty.path "core::clone::AssertParamIsClone::t")
+                (Ty.path "core::clone::AssertParamIsClone")
                 [Ty.path "u8"]))
           [
             fun γ =>
               (let* α0 :
                   Ty.apply
                     (Ty.path "ref")
-                    [Ty.apply (Ty.path "subtle::Choice::t") []] :=
+                    [Ty.apply (Ty.path "subtle::Choice") []] :=
                 M.read self in
               M.pure (deref α0)) :
-              Ty.apply (Ty.path "subtle::Choice::t") []
+              Ty.apply (Ty.path "subtle::Choice") []
           ] in
       M.read α0
     | _, _ => M.impossible
@@ -66,20 +66,18 @@ Section Impl_core_fmt_Debug_for_subtle_Choice.
       let* α0 :
           Ty.apply
             (Ty.path "mut_ref")
-            [Ty.apply (Ty.path "core::fmt::Formatter::t") []] :=
+            [Ty.apply (Ty.path "core::fmt::Formatter") []] :=
         M.read f in
-      let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str::t"] :=
+      let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
         M.read (mk_str "Choice") in
       let* α2 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply (Ty.path "subtle::Choice::t") []] :=
+          Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "subtle::Choice") []] :=
         M.read self in
       let* α3 : Ty.apply (Ty.path "ref") [Ty.path "u8"] :=
         M.alloc (borrow (subtle.Choice.Get_0 (deref α2))) in
       M.call
         ((Ty.apply
-              (Ty.path "core::fmt::Formatter::t")
+              (Ty.path "core::fmt::Formatter")
               [])::["debug_tuple_field1_finish"]
           α0
           α1
@@ -109,9 +107,7 @@ Section Impl_subtle_Choice.
     | [], [self] =>
       let* self := M.alloc self in
       let* α0 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply (Ty.path "subtle::Choice::t") []] :=
+          Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "subtle::Choice") []] :=
         M.read self in
       M.read (subtle.Choice.Get_0 (deref α0))
     | _, _ => M.impossible
@@ -125,7 +121,7 @@ End Impl_subtle_Choice.
 
 Module  Impl_core_convert_From_subtle_Choice_for_bool.
 Section Impl_core_convert_From_subtle_Choice_for_bool.
-  Definition Self : Ty.t := Ty.apply (Ty.path "bool") [].
+  Definition Self : Ty.t := Ty.path "bool".
   
   (*
       fn from(source: Choice) -> bool {
@@ -152,12 +148,11 @@ Section Impl_core_convert_From_subtle_Choice_for_bool.
                     (BinOp.Pure.eq α1 ((Integer.of_Z 1) : Ty.path "u8")))) in
             let* α3 : Ty.path "bool" := M.read (use α2) in
             if α3 then
-              let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str::t"] :=
+              let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
                 M.read
                   (mk_str
                     "assertion failed: (source.0 == 0u8) | (source.0 == 1u8)") in
-              let* α1 : Ty.path "never::t" :=
-                M.call (core.panicking.panic α0) in
+              let* α1 : Ty.path "never" := M.call (core.panicking.panic α0) in
               let* α2 : Ty.tuple := never_to_any α1 in
               M.alloc α2
             else
@@ -200,13 +195,11 @@ Section Impl_core_ops_bit_BitAnd_for_subtle_Choice.
       let* self := M.alloc self in
       let* rhs := M.alloc rhs in
       let* α0 :
-          Ty.function
-            [Ty.path "u8"]
-            (Ty.apply (Ty.path "subtle::Choice::t") []) :=
+          Ty.function [Ty.path "u8"] (Ty.apply (Ty.path "subtle::Choice") []) :=
         ltac:(M.get_method (fun ℐ =>
           core.convert.Into.into
             (Self := Ty.path "u8")
-            (T := Ty.apply (Ty.path "subtle::Choice::t") [])
+            (T := Ty.apply (Ty.path "subtle::Choice") [])
             (Trait := ℐ))) in
       let* α1 : Ty.path "u8" := M.read (subtle.Choice.Get_0 self) in
       let* α2 : Ty.path "u8" := M.read (subtle.Choice.Get_0 rhs) in
@@ -240,28 +233,26 @@ Section Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
         let* α0 :
             Ty.apply
               (Ty.path "mut_ref")
-              [Ty.apply (Ty.path "subtle::Choice::t") []] :=
+              [Ty.apply (Ty.path "subtle::Choice") []] :=
           M.read self in
         let* α1 :
             Ty.function
-              [Ty.apply (Ty.path "subtle::Choice::t") [];
-                Ty.apply (Ty.path "subtle::Choice::t") []]
+              [Ty.apply (Ty.path "subtle::Choice") [];
+                Ty.apply (Ty.path "subtle::Choice") []]
               _ :=
           ltac:(M.get_method (fun ℐ =>
             core.ops.bit.BitAnd.bitand
-              (Self := Ty.apply (Ty.path "subtle::Choice::t") [])
-              (Rhs := Ty.apply (Ty.path "subtle::Choice::t") [])
+              (Self := Ty.apply (Ty.path "subtle::Choice") [])
+              (Rhs := Ty.apply (Ty.path "subtle::Choice") [])
               (Trait := ℐ))) in
         let* α2 :
             Ty.apply
               (Ty.path "mut_ref")
-              [Ty.apply (Ty.path "subtle::Choice::t") []] :=
+              [Ty.apply (Ty.path "subtle::Choice") []] :=
           M.read self in
-        let* α3 : Ty.apply (Ty.path "subtle::Choice::t") [] :=
-          M.read (deref α2) in
-        let* α4 : Ty.apply (Ty.path "subtle::Choice::t") [] := M.read rhs in
-        let* α5 : Ty.apply (Ty.path "subtle::Choice::t") [] :=
-          M.call (α1 α3 α4) in
+        let* α3 : Ty.apply (Ty.path "subtle::Choice") [] := M.read (deref α2) in
+        let* α4 : Ty.apply (Ty.path "subtle::Choice") [] := M.read rhs in
+        let* α5 : Ty.apply (Ty.path "subtle::Choice") [] := M.call (α1 α3 α4) in
         assign (deref α0) α5 in
       let* α0 : Ty.path "unit" := M.alloc tt in
       M.read α0
@@ -296,13 +287,11 @@ Section Impl_core_ops_bit_BitOr_for_subtle_Choice.
       let* self := M.alloc self in
       let* rhs := M.alloc rhs in
       let* α0 :
-          Ty.function
-            [Ty.path "u8"]
-            (Ty.apply (Ty.path "subtle::Choice::t") []) :=
+          Ty.function [Ty.path "u8"] (Ty.apply (Ty.path "subtle::Choice") []) :=
         ltac:(M.get_method (fun ℐ =>
           core.convert.Into.into
             (Self := Ty.path "u8")
-            (T := Ty.apply (Ty.path "subtle::Choice::t") [])
+            (T := Ty.apply (Ty.path "subtle::Choice") [])
             (Trait := ℐ))) in
       let* α1 : Ty.path "u8" := M.read (subtle.Choice.Get_0 self) in
       let* α2 : Ty.path "u8" := M.read (subtle.Choice.Get_0 rhs) in
@@ -336,28 +325,26 @@ Section Impl_core_ops_bit_BitOrAssign_for_subtle_Choice.
         let* α0 :
             Ty.apply
               (Ty.path "mut_ref")
-              [Ty.apply (Ty.path "subtle::Choice::t") []] :=
+              [Ty.apply (Ty.path "subtle::Choice") []] :=
           M.read self in
         let* α1 :
             Ty.function
-              [Ty.apply (Ty.path "subtle::Choice::t") [];
-                Ty.apply (Ty.path "subtle::Choice::t") []]
+              [Ty.apply (Ty.path "subtle::Choice") [];
+                Ty.apply (Ty.path "subtle::Choice") []]
               _ :=
           ltac:(M.get_method (fun ℐ =>
             core.ops.bit.BitOr.bitor
-              (Self := Ty.apply (Ty.path "subtle::Choice::t") [])
-              (Rhs := Ty.apply (Ty.path "subtle::Choice::t") [])
+              (Self := Ty.apply (Ty.path "subtle::Choice") [])
+              (Rhs := Ty.apply (Ty.path "subtle::Choice") [])
               (Trait := ℐ))) in
         let* α2 :
             Ty.apply
               (Ty.path "mut_ref")
-              [Ty.apply (Ty.path "subtle::Choice::t") []] :=
+              [Ty.apply (Ty.path "subtle::Choice") []] :=
           M.read self in
-        let* α3 : Ty.apply (Ty.path "subtle::Choice::t") [] :=
-          M.read (deref α2) in
-        let* α4 : Ty.apply (Ty.path "subtle::Choice::t") [] := M.read rhs in
-        let* α5 : Ty.apply (Ty.path "subtle::Choice::t") [] :=
-          M.call (α1 α3 α4) in
+        let* α3 : Ty.apply (Ty.path "subtle::Choice") [] := M.read (deref α2) in
+        let* α4 : Ty.apply (Ty.path "subtle::Choice") [] := M.read rhs in
+        let* α5 : Ty.apply (Ty.path "subtle::Choice") [] := M.call (α1 α3 α4) in
         assign (deref α0) α5 in
       let* α0 : Ty.path "unit" := M.alloc tt in
       M.read α0
@@ -392,13 +379,11 @@ Section Impl_core_ops_bit_BitXor_for_subtle_Choice.
       let* self := M.alloc self in
       let* rhs := M.alloc rhs in
       let* α0 :
-          Ty.function
-            [Ty.path "u8"]
-            (Ty.apply (Ty.path "subtle::Choice::t") []) :=
+          Ty.function [Ty.path "u8"] (Ty.apply (Ty.path "subtle::Choice") []) :=
         ltac:(M.get_method (fun ℐ =>
           core.convert.Into.into
             (Self := Ty.path "u8")
-            (T := Ty.apply (Ty.path "subtle::Choice::t") [])
+            (T := Ty.apply (Ty.path "subtle::Choice") [])
             (Trait := ℐ))) in
       let* α1 : Ty.path "u8" := M.read (subtle.Choice.Get_0 self) in
       let* α2 : Ty.path "u8" := M.read (subtle.Choice.Get_0 rhs) in
@@ -432,28 +417,26 @@ Section Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.
         let* α0 :
             Ty.apply
               (Ty.path "mut_ref")
-              [Ty.apply (Ty.path "subtle::Choice::t") []] :=
+              [Ty.apply (Ty.path "subtle::Choice") []] :=
           M.read self in
         let* α1 :
             Ty.function
-              [Ty.apply (Ty.path "subtle::Choice::t") [];
-                Ty.apply (Ty.path "subtle::Choice::t") []]
+              [Ty.apply (Ty.path "subtle::Choice") [];
+                Ty.apply (Ty.path "subtle::Choice") []]
               _ :=
           ltac:(M.get_method (fun ℐ =>
             core.ops.bit.BitXor.bitxor
-              (Self := Ty.apply (Ty.path "subtle::Choice::t") [])
-              (Rhs := Ty.apply (Ty.path "subtle::Choice::t") [])
+              (Self := Ty.apply (Ty.path "subtle::Choice") [])
+              (Rhs := Ty.apply (Ty.path "subtle::Choice") [])
               (Trait := ℐ))) in
         let* α2 :
             Ty.apply
               (Ty.path "mut_ref")
-              [Ty.apply (Ty.path "subtle::Choice::t") []] :=
+              [Ty.apply (Ty.path "subtle::Choice") []] :=
           M.read self in
-        let* α3 : Ty.apply (Ty.path "subtle::Choice::t") [] :=
-          M.read (deref α2) in
-        let* α4 : Ty.apply (Ty.path "subtle::Choice::t") [] := M.read rhs in
-        let* α5 : Ty.apply (Ty.path "subtle::Choice::t") [] :=
-          M.call (α1 α3 α4) in
+        let* α3 : Ty.apply (Ty.path "subtle::Choice") [] := M.read (deref α2) in
+        let* α4 : Ty.apply (Ty.path "subtle::Choice") [] := M.read rhs in
+        let* α5 : Ty.apply (Ty.path "subtle::Choice") [] := M.call (α1 α3 α4) in
         assign (deref α0) α5 in
       let* α0 : Ty.path "unit" := M.alloc tt in
       M.read α0
@@ -487,13 +470,11 @@ Section Impl_core_ops_bit_Not_for_subtle_Choice.
     | [], [self] =>
       let* self := M.alloc self in
       let* α0 :
-          Ty.function
-            [Ty.path "u8"]
-            (Ty.apply (Ty.path "subtle::Choice::t") []) :=
+          Ty.function [Ty.path "u8"] (Ty.apply (Ty.path "subtle::Choice") []) :=
         ltac:(M.get_method (fun ℐ =>
           core.convert.Into.into
             (Self := Ty.path "u8")
-            (T := Ty.apply (Ty.path "subtle::Choice::t") [])
+            (T := Ty.apply (Ty.path "subtle::Choice") [])
             (Trait := ℐ))) in
       let* α1 : Ty.path "u8" := M.read (subtle.Choice.Get_0 self) in
       M.call
@@ -546,10 +527,10 @@ Definition black_box (𝜏 : list Ty.t) (α : list Value.t) : M :=
                   (BinOp.Pure.eq α1 ((Integer.of_Z 1) : Ty.path "u8")))) in
           let* α3 : Ty.path "bool" := M.read (use α2) in
           if α3 then
-            let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str::t"] :=
+            let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
               M.read
                 (mk_str "assertion failed: (input == 0u8) | (input == 1u8)") in
-            let* α1 : Ty.path "never::t" := M.call (core.panicking.panic α0) in
+            let* α1 : Ty.path "never" := M.call (core.panicking.panic α0) in
             let* α2 : Ty.tuple := never_to_any α1 in
             M.alloc α2
           else
@@ -600,8 +581,7 @@ Section ConstantTimeEq.
   Class Trait (Self : Set) : Type := {
     ct_eq :
       Ty.function
-        [Ty.apply (Ty.path "ref") [Ty.apply Self []];
-          Ty.apply (Ty.path "ref") [Ty.apply Self []]]
+        [Ty.apply (Ty.path "ref") [Self]; Ty.apply (Ty.path "ref") [Self]]
         (Ty.apply (Ty.path "subtle::Choice") []);
   }.
   
@@ -612,7 +592,7 @@ Module  Impl_subtle_ConstantTimeEq_for_slice_T.
 Section Impl_subtle_ConstantTimeEq_for_slice_T.
   Context {T : Set}.
   
-  Definition Self : Ty.t := Ty.apply (Ty.path "slice") [Ty.apply T []].
+  Definition Self : Ty.t := Ty.apply (Ty.path "slice") [T].
   
   (*
       fn ct_eq(&self, _rhs: &[T]) -> Choice {
@@ -660,16 +640,16 @@ Section Impl_subtle_ConstantTimeEq_for_slice_T.
             let* α0 :
                 Ty.function
                   [Ty.path "u8"]
-                  (Ty.apply (Ty.path "subtle::Choice::t") []) :=
+                  (Ty.apply (Ty.path "subtle::Choice") []) :=
               ltac:(M.get_method (fun ℐ =>
                 core.convert.From.from
-                  (Self := Ty.apply (Ty.path "subtle::Choice::t") [])
+                  (Self := Ty.apply (Ty.path "subtle::Choice") [])
                   (T := Ty.path "u8")
                   (Trait := ℐ))) in
-            let* α1 : Ty.apply (Ty.path "subtle::Choice::t") [] :=
+            let* α1 : Ty.apply (Ty.path "subtle::Choice") [] :=
               M.call (α0 ((Integer.of_Z 0) : Ty.path "u8")) in
-            let* α2 : Ty.path "never::t" := return_ α1 in
-            let* α3 := M.read α2 in
+            let* α2 : Ty.path "never" := return_ α1 in
+            let* α3 : Ty.path "never" := M.read α2 in
             let* α4 : Ty.tuple := never_to_any α3 in
             M.alloc α4
           else
@@ -679,55 +659,55 @@ Section Impl_subtle_ConstantTimeEq_for_slice_T.
           let* α0 :
               Ty.function
                 [Ty.apply
-                    (Ty.path "core::iter::adapters::zip::Zip::t")
-                    [Ty.apply (Ty.path "core::slice::iter::Iter::t") [T];
-                      Ty.apply (Ty.path "core::slice::iter::Iter::t") [T]]]
+                    (Ty.path "core::iter::adapters::zip::Zip")
+                    [Ty.apply (Ty.path "core::slice::iter::Iter") [T];
+                      Ty.apply (Ty.path "core::slice::iter::Iter") [T]]]
                 _ :=
             ltac:(M.get_method (fun ℐ =>
               core.iter.traits.collect.IntoIterator.into_iter
                 (Self :=
                   Ty.apply
-                    (Ty.path "core::iter::adapters::zip::Zip::t")
-                    [Ty.apply (Ty.path "core::slice::iter::Iter::t") [T];
-                      Ty.apply (Ty.path "core::slice::iter::Iter::t") [T]])
+                    (Ty.path "core::iter::adapters::zip::Zip")
+                    [Ty.apply (Ty.path "core::slice::iter::Iter") [T];
+                      Ty.apply (Ty.path "core::slice::iter::Iter") [T]])
                 (Trait := ℐ))) in
           let* α1 :
               Ty.function
-                [Ty.apply (Ty.path "core::slice::iter::Iter::t") [T];
-                  Ty.apply (Ty.path "core::slice::iter::Iter::t") [T]]
+                [Ty.apply (Ty.path "core::slice::iter::Iter") [T];
+                  Ty.apply (Ty.path "core::slice::iter::Iter") [T]]
                 (Ty.apply
-                  (Ty.path "core::iter::adapters::zip::Zip::t")
-                  [Ty.apply (Ty.path "core::slice::iter::Iter::t") [T]; _]) :=
+                  (Ty.path "core::iter::adapters::zip::Zip")
+                  [Ty.apply (Ty.path "core::slice::iter::Iter") [T]; _]) :=
             ltac:(M.get_method (fun ℐ =>
               core.iter.traits.iterator.Iterator.zip
-                (Self := Ty.apply (Ty.path "core::slice::iter::Iter::t") [T])
-                (U := Ty.apply (Ty.path "core::slice::iter::Iter::t") [T])
+                (Self := Ty.apply (Ty.path "core::slice::iter::Iter") [T])
+                (U := Ty.apply (Ty.path "core::slice::iter::Iter") [T])
                 (Trait := ℐ))) in
           let* α2 : Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "slice") [T]] :=
             M.read self in
-          let* α3 : Ty.apply (Ty.path "core::slice::iter::Iter::t") [T] :=
+          let* α3 : Ty.apply (Ty.path "core::slice::iter::Iter") [T] :=
             M.call ((Ty.apply (Ty.path "slice") [T])::["iter"] α2) in
           let* α4 : Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "slice") [T]] :=
             M.read _rhs in
-          let* α5 : Ty.apply (Ty.path "core::slice::iter::Iter::t") [T] :=
+          let* α5 : Ty.apply (Ty.path "core::slice::iter::Iter") [T] :=
             M.call ((Ty.apply (Ty.path "slice") [T])::["iter"] α4) in
           let* α6 :
               Ty.apply
-                (Ty.path "core::iter::adapters::zip::Zip::t")
-                [Ty.apply (Ty.path "core::slice::iter::Iter::t") [T];
-                  Ty.apply (Ty.path "core::slice::iter::Iter::t") [T]] :=
+                (Ty.path "core::iter::adapters::zip::Zip")
+                [Ty.apply (Ty.path "core::slice::iter::Iter") [T];
+                  Ty.apply (Ty.path "core::slice::iter::Iter") [T]] :=
             M.call (α1 α3 α5) in
           let* α7 :
               Ty.apply
-                (Ty.path "core::iter::adapters::zip::Zip::t")
-                [Ty.apply (Ty.path "core::slice::iter::Iter::t") [T];
-                  Ty.apply (Ty.path "core::slice::iter::Iter::t") [T]] :=
+                (Ty.path "core::iter::adapters::zip::Zip")
+                [Ty.apply (Ty.path "core::slice::iter::Iter") [T];
+                  Ty.apply (Ty.path "core::slice::iter::Iter") [T]] :=
             M.call (α0 α6) in
           let* α8 :
               Ty.apply
-                (Ty.path "core::iter::adapters::zip::Zip::t")
-                [Ty.apply (Ty.path "core::slice::iter::Iter::t") [T];
-                  Ty.apply (Ty.path "core::slice::iter::Iter::t") [T]] :=
+                (Ty.path "core::iter::adapters::zip::Zip")
+                [Ty.apply (Ty.path "core::slice::iter::Iter") [T];
+                  Ty.apply (Ty.path "core::slice::iter::Iter") [T]] :=
             M.alloc α7 in
           let* α9 : Ty.tuple :=
             match_operator
@@ -742,39 +722,36 @@ Section Impl_subtle_ConstantTimeEq_for_slice_T.
                             [Ty.apply
                                 (Ty.path "mut_ref")
                                 [Ty.apply
-                                    (Ty.path
-                                      "core::iter::adapters::zip::Zip::t")
+                                    (Ty.path "core::iter::adapters::zip::Zip")
                                     [Ty.apply
-                                        (Ty.path "core::slice::iter::Iter::t")
+                                        (Ty.path "core::slice::iter::Iter")
                                         [T];
                                       Ty.apply
-                                        (Ty.path "core::slice::iter::Iter::t")
+                                        (Ty.path "core::slice::iter::Iter")
                                         [T]]]]
-                            (Ty.apply
-                              (Ty.path "core::option::Option::t")
-                              [_]) :=
+                            (Ty.apply (Ty.path "core::option::Option") [_]) :=
                         ltac:(M.get_method (fun ℐ =>
                           core.iter.traits.iterator.Iterator.next
                             (Self :=
                               Ty.apply
-                                (Ty.path "core::iter::adapters::zip::Zip::t")
+                                (Ty.path "core::iter::adapters::zip::Zip")
                                 [Ty.apply
-                                    (Ty.path "core::slice::iter::Iter::t")
+                                    (Ty.path "core::slice::iter::Iter")
                                     [T];
                                   Ty.apply
-                                    (Ty.path "core::slice::iter::Iter::t")
+                                    (Ty.path "core::slice::iter::Iter")
                                     [T]])
                             (Trait := ℐ))) in
                       let* α1 :
                           Ty.apply
-                            (Ty.path "core::option::Option::t")
+                            (Ty.path "core::option::Option")
                             [Ty.tuple
                                 (Ty.apply (Ty.path "ref") [T])
                                 (Ty.apply (Ty.path "ref") [T])] :=
                         M.call (α0 (borrow_mut iter)) in
                       let* α2 :
                           Ty.apply
-                            (Ty.path "core::option::Option::t")
+                            (Ty.path "core::option::Option")
                             [Ty.tuple
                                 (Ty.apply (Ty.path "ref") [T])
                                 (Ty.apply (Ty.path "ref") [T])] :=
@@ -786,8 +763,8 @@ Section Impl_subtle_ConstantTimeEq_for_slice_T.
                             (let* α0 := M.read γ in
                             match α0 with
                             | core.option.Option.None =>
-                              let* α0 : Ty.path "never::t" := M.break in
-                              let* α1 := M.read α0 in
+                              let* α0 : Ty.path "never" := M.break in
+                              let* α1 : Ty.path "never" := M.read α0 in
                               let* α2 : Ty.tuple := never_to_any α1 in
                               M.alloc α2
                             | _ => M.break_match
@@ -813,7 +790,7 @@ Section Impl_subtle_ConstantTimeEq_for_slice_T.
                                         [Ty.apply (Ty.path "ref") [T];
                                           Ty.apply (Ty.path "ref") [T]]
                                         (Ty.apply
-                                          (Ty.path "subtle::Choice::t")
+                                          (Ty.path "subtle::Choice")
                                           []) :=
                                     ltac:(M.get_method (fun ℐ =>
                                       subtle.ConstantTimeEq.ct_eq
@@ -824,19 +801,15 @@ Section Impl_subtle_ConstantTimeEq_for_slice_T.
                                   let* α3 : Ty.apply (Ty.path "ref") [T] :=
                                     M.read bi in
                                   let* α4 :
-                                      Ty.apply
-                                        (Ty.path "subtle::Choice::t")
-                                        [] :=
+                                      Ty.apply (Ty.path "subtle::Choice") [] :=
                                     M.call (α1 α2 α3) in
                                   let* α5 :
-                                      Ty.apply
-                                        (Ty.path "subtle::Choice::t")
-                                        [] :=
+                                      Ty.apply (Ty.path "subtle::Choice") [] :=
                                     M.alloc α4 in
                                   let* α6 : Ty.path "u8" :=
                                     M.call
                                       ((Ty.apply
-                                            (Ty.path "subtle::Choice::t")
+                                            (Ty.path "subtle::Choice")
                                             [])::["unwrap_u8"]
                                         (borrow α5)) in
                                   assign β (BinOp.Pure.bit_and α0 α6) in
@@ -853,15 +826,15 @@ Section Impl_subtle_ConstantTimeEq_for_slice_T.
         let* α0 :
             Ty.function
               [Ty.path "u8"]
-              (Ty.apply (Ty.path "subtle::Choice::t") []) :=
+              (Ty.apply (Ty.path "subtle::Choice") []) :=
           ltac:(M.get_method (fun ℐ =>
             core.convert.Into.into
               (Self := Ty.path "u8")
-              (T := Ty.apply (Ty.path "subtle::Choice::t") [])
+              (T := Ty.apply (Ty.path "subtle::Choice") [])
               (Trait := ℐ))) in
         let* α1 : Ty.path "u8" := M.read x in
-        let* α2 : Ty.apply (Ty.path "subtle::Choice::t") [] := M.call (α0 α1) in
-        let* α0 : Ty.apply (Ty.path "subtle::Choice::t") [] := M.alloc α2 in
+        let* α2 : Ty.apply (Ty.path "subtle::Choice") [] := M.call (α0 α1) in
+        let* α0 : Ty.apply (Ty.path "subtle::Choice") [] := M.alloc α2 in
         M.read α0)
     | _, _ => M.impossible
     end.
@@ -888,37 +861,30 @@ Section Impl_subtle_ConstantTimeEq_for_subtle_Choice.
     | [], [self; rhs] =>
       let* self := M.alloc self in
       let* rhs := M.alloc rhs in
-      let* α0 : Ty.function [Ty.apply (Ty.path "subtle::Choice::t") []] _ :=
+      let* α0 : Ty.function [Ty.apply (Ty.path "subtle::Choice") []] _ :=
         ltac:(M.get_method (fun ℐ =>
           core.ops.bit.Not.not
-            (Self := Ty.apply (Ty.path "subtle::Choice::t") [])
+            (Self := Ty.apply (Ty.path "subtle::Choice") [])
             (Trait := ℐ))) in
       let* α1 :
           Ty.function
-            [Ty.apply (Ty.path "subtle::Choice::t") [];
-              Ty.apply (Ty.path "subtle::Choice::t") []]
+            [Ty.apply (Ty.path "subtle::Choice") [];
+              Ty.apply (Ty.path "subtle::Choice") []]
             _ :=
         ltac:(M.get_method (fun ℐ =>
           core.ops.bit.BitXor.bitxor
-            (Self := Ty.apply (Ty.path "subtle::Choice::t") [])
-            (Rhs := Ty.apply (Ty.path "subtle::Choice::t") [])
+            (Self := Ty.apply (Ty.path "subtle::Choice") [])
+            (Rhs := Ty.apply (Ty.path "subtle::Choice") [])
             (Trait := ℐ))) in
       let* α2 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply (Ty.path "subtle::Choice::t") []] :=
+          Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "subtle::Choice") []] :=
         M.read self in
-      let* α3 : Ty.apply (Ty.path "subtle::Choice::t") [] :=
-        M.read (deref α2) in
+      let* α3 : Ty.apply (Ty.path "subtle::Choice") [] := M.read (deref α2) in
       let* α4 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply (Ty.path "subtle::Choice::t") []] :=
+          Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "subtle::Choice") []] :=
         M.read rhs in
-      let* α5 : Ty.apply (Ty.path "subtle::Choice::t") [] :=
-        M.read (deref α4) in
-      let* α6 : Ty.apply (Ty.path "subtle::Choice::t") [] :=
-        M.call (α1 α3 α5) in
+      let* α5 : Ty.apply (Ty.path "subtle::Choice") [] := M.read (deref α4) in
+      let* α6 : Ty.apply (Ty.path "subtle::Choice") [] := M.call (α1 α3 α5) in
       M.call (α0 α6)
     | _, _ => M.impossible
     end.
@@ -933,7 +899,7 @@ End Impl_subtle_ConstantTimeEq_for_subtle_Choice.
 
 Module  Impl_subtle_ConstantTimeEq_for_u8.
 Section Impl_subtle_ConstantTimeEq_for_u8.
-  Definition Self : Ty.t := Ty.apply (Ty.path "u8") [].
+  Definition Self : Ty.t := Ty.path "u8".
   
   (*
               fn ct_eq(&self, other: &$t_u) -> Choice {
@@ -981,21 +947,19 @@ Section Impl_subtle_ConstantTimeEq_for_u8.
           BinOp.Panic.shr (BinOp.Pure.bit_or α0 α2) α3 in
         M.alloc α4 in
       let* α0 :
-          Ty.function
-            [Ty.path "u8"]
-            (Ty.apply (Ty.path "subtle::Choice::t") []) :=
+          Ty.function [Ty.path "u8"] (Ty.apply (Ty.path "subtle::Choice") []) :=
         ltac:(M.get_method (fun ℐ =>
           core.convert.Into.into
             (Self := Ty.path "u8")
-            (T := Ty.apply (Ty.path "subtle::Choice::t") [])
+            (T := Ty.apply (Ty.path "subtle::Choice") [])
             (Trait := ℐ))) in
       let* α1 : Ty.path "u8" := M.read y in
       let* α2 : Ty.path "u8" := M.alloc ((Integer.of_Z 1) : Ty.path "u8") in
       let* α3 : Ty.path "u8" := M.read (use α2) in
       let* α4 : Ty.path "u8" := M.alloc (BinOp.Pure.bit_xor α1 α3) in
       let* α5 : Ty.path "u8" := M.read (use α4) in
-      let* α6 : Ty.apply (Ty.path "subtle::Choice::t") [] := M.call (α0 α5) in
-      let* α0 : Ty.apply (Ty.path "subtle::Choice::t") [] := M.alloc α6 in
+      let* α6 : Ty.apply (Ty.path "subtle::Choice") [] := M.call (α0 α5) in
+      let* α0 : Ty.apply (Ty.path "subtle::Choice") [] := M.alloc α6 in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -1010,7 +974,7 @@ End Impl_subtle_ConstantTimeEq_for_u8.
 
 Module  Impl_subtle_ConstantTimeEq_for_i8.
 Section Impl_subtle_ConstantTimeEq_for_i8.
-  Definition Self : Ty.t := Ty.apply (Ty.path "i8") [].
+  Definition Self : Ty.t := Ty.path "i8".
   
   (*
               fn ct_eq(&self, other: &$t_i) -> Choice {
@@ -1027,7 +991,7 @@ Section Impl_subtle_ConstantTimeEq_for_i8.
           Ty.function
             [Ty.apply (Ty.path "ref") [Ty.path "u8"];
               Ty.apply (Ty.path "ref") [Ty.path "u8"]]
-            (Ty.apply (Ty.path "subtle::Choice::t") []) :=
+            (Ty.apply (Ty.path "subtle::Choice") []) :=
         ltac:(M.get_method (fun ℐ =>
           subtle.ConstantTimeEq.ct_eq (Self := Ty.path "u8") (Trait := ℐ))) in
       let* α1 : Ty.apply (Ty.path "ref") [Ty.path "i8"] := M.read self in
@@ -1050,7 +1014,7 @@ End Impl_subtle_ConstantTimeEq_for_i8.
 
 Module  Impl_subtle_ConstantTimeEq_for_u16.
 Section Impl_subtle_ConstantTimeEq_for_u16.
-  Definition Self : Ty.t := Ty.apply (Ty.path "u16") [].
+  Definition Self : Ty.t := Ty.path "u16".
   
   (*
               fn ct_eq(&self, other: &$t_u) -> Choice {
@@ -1098,20 +1062,18 @@ Section Impl_subtle_ConstantTimeEq_for_u16.
           BinOp.Panic.shr (BinOp.Pure.bit_or α0 α2) α3 in
         M.alloc α4 in
       let* α0 :
-          Ty.function
-            [Ty.path "u8"]
-            (Ty.apply (Ty.path "subtle::Choice::t") []) :=
+          Ty.function [Ty.path "u8"] (Ty.apply (Ty.path "subtle::Choice") []) :=
         ltac:(M.get_method (fun ℐ =>
           core.convert.Into.into
             (Self := Ty.path "u8")
-            (T := Ty.apply (Ty.path "subtle::Choice::t") [])
+            (T := Ty.apply (Ty.path "subtle::Choice") [])
             (Trait := ℐ))) in
       let* α1 : Ty.path "u16" := M.read y in
       let* α2 : Ty.path "u16" := M.alloc ((Integer.of_Z 1) : Ty.path "u16") in
       let* α3 : Ty.path "u16" := M.read (use α2) in
-      let* α4 : Ty.apply (Ty.path "subtle::Choice::t") [] :=
+      let* α4 : Ty.apply (Ty.path "subtle::Choice") [] :=
         M.call (α0 (rust_cast (BinOp.Pure.bit_xor α1 α3))) in
-      let* α0 : Ty.apply (Ty.path "subtle::Choice::t") [] := M.alloc α4 in
+      let* α0 : Ty.apply (Ty.path "subtle::Choice") [] := M.alloc α4 in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -1126,7 +1088,7 @@ End Impl_subtle_ConstantTimeEq_for_u16.
 
 Module  Impl_subtle_ConstantTimeEq_for_i16.
 Section Impl_subtle_ConstantTimeEq_for_i16.
-  Definition Self : Ty.t := Ty.apply (Ty.path "i16") [].
+  Definition Self : Ty.t := Ty.path "i16".
   
   (*
               fn ct_eq(&self, other: &$t_i) -> Choice {
@@ -1143,7 +1105,7 @@ Section Impl_subtle_ConstantTimeEq_for_i16.
           Ty.function
             [Ty.apply (Ty.path "ref") [Ty.path "u16"];
               Ty.apply (Ty.path "ref") [Ty.path "u16"]]
-            (Ty.apply (Ty.path "subtle::Choice::t") []) :=
+            (Ty.apply (Ty.path "subtle::Choice") []) :=
         ltac:(M.get_method (fun ℐ =>
           subtle.ConstantTimeEq.ct_eq (Self := Ty.path "u16") (Trait := ℐ))) in
       let* α1 : Ty.apply (Ty.path "ref") [Ty.path "i16"] := M.read self in
@@ -1166,7 +1128,7 @@ End Impl_subtle_ConstantTimeEq_for_i16.
 
 Module  Impl_subtle_ConstantTimeEq_for_u32.
 Section Impl_subtle_ConstantTimeEq_for_u32.
-  Definition Self : Ty.t := Ty.apply (Ty.path "u32") [].
+  Definition Self : Ty.t := Ty.path "u32".
   
   (*
               fn ct_eq(&self, other: &$t_u) -> Choice {
@@ -1214,20 +1176,18 @@ Section Impl_subtle_ConstantTimeEq_for_u32.
           BinOp.Panic.shr (BinOp.Pure.bit_or α0 α2) α3 in
         M.alloc α4 in
       let* α0 :
-          Ty.function
-            [Ty.path "u8"]
-            (Ty.apply (Ty.path "subtle::Choice::t") []) :=
+          Ty.function [Ty.path "u8"] (Ty.apply (Ty.path "subtle::Choice") []) :=
         ltac:(M.get_method (fun ℐ =>
           core.convert.Into.into
             (Self := Ty.path "u8")
-            (T := Ty.apply (Ty.path "subtle::Choice::t") [])
+            (T := Ty.apply (Ty.path "subtle::Choice") [])
             (Trait := ℐ))) in
       let* α1 : Ty.path "u32" := M.read y in
       let* α2 : Ty.path "u32" := M.alloc ((Integer.of_Z 1) : Ty.path "u32") in
       let* α3 : Ty.path "u32" := M.read (use α2) in
-      let* α4 : Ty.apply (Ty.path "subtle::Choice::t") [] :=
+      let* α4 : Ty.apply (Ty.path "subtle::Choice") [] :=
         M.call (α0 (rust_cast (BinOp.Pure.bit_xor α1 α3))) in
-      let* α0 : Ty.apply (Ty.path "subtle::Choice::t") [] := M.alloc α4 in
+      let* α0 : Ty.apply (Ty.path "subtle::Choice") [] := M.alloc α4 in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -1242,7 +1202,7 @@ End Impl_subtle_ConstantTimeEq_for_u32.
 
 Module  Impl_subtle_ConstantTimeEq_for_i32.
 Section Impl_subtle_ConstantTimeEq_for_i32.
-  Definition Self : Ty.t := Ty.apply (Ty.path "i32") [].
+  Definition Self : Ty.t := Ty.path "i32".
   
   (*
               fn ct_eq(&self, other: &$t_i) -> Choice {
@@ -1259,7 +1219,7 @@ Section Impl_subtle_ConstantTimeEq_for_i32.
           Ty.function
             [Ty.apply (Ty.path "ref") [Ty.path "u32"];
               Ty.apply (Ty.path "ref") [Ty.path "u32"]]
-            (Ty.apply (Ty.path "subtle::Choice::t") []) :=
+            (Ty.apply (Ty.path "subtle::Choice") []) :=
         ltac:(M.get_method (fun ℐ =>
           subtle.ConstantTimeEq.ct_eq (Self := Ty.path "u32") (Trait := ℐ))) in
       let* α1 : Ty.apply (Ty.path "ref") [Ty.path "i32"] := M.read self in
@@ -1282,7 +1242,7 @@ End Impl_subtle_ConstantTimeEq_for_i32.
 
 Module  Impl_subtle_ConstantTimeEq_for_u64.
 Section Impl_subtle_ConstantTimeEq_for_u64.
-  Definition Self : Ty.t := Ty.apply (Ty.path "u64") [].
+  Definition Self : Ty.t := Ty.path "u64".
   
   (*
               fn ct_eq(&self, other: &$t_u) -> Choice {
@@ -1330,20 +1290,18 @@ Section Impl_subtle_ConstantTimeEq_for_u64.
           BinOp.Panic.shr (BinOp.Pure.bit_or α0 α2) α3 in
         M.alloc α4 in
       let* α0 :
-          Ty.function
-            [Ty.path "u8"]
-            (Ty.apply (Ty.path "subtle::Choice::t") []) :=
+          Ty.function [Ty.path "u8"] (Ty.apply (Ty.path "subtle::Choice") []) :=
         ltac:(M.get_method (fun ℐ =>
           core.convert.Into.into
             (Self := Ty.path "u8")
-            (T := Ty.apply (Ty.path "subtle::Choice::t") [])
+            (T := Ty.apply (Ty.path "subtle::Choice") [])
             (Trait := ℐ))) in
       let* α1 : Ty.path "u64" := M.read y in
       let* α2 : Ty.path "u64" := M.alloc ((Integer.of_Z 1) : Ty.path "u64") in
       let* α3 : Ty.path "u64" := M.read (use α2) in
-      let* α4 : Ty.apply (Ty.path "subtle::Choice::t") [] :=
+      let* α4 : Ty.apply (Ty.path "subtle::Choice") [] :=
         M.call (α0 (rust_cast (BinOp.Pure.bit_xor α1 α3))) in
-      let* α0 : Ty.apply (Ty.path "subtle::Choice::t") [] := M.alloc α4 in
+      let* α0 : Ty.apply (Ty.path "subtle::Choice") [] := M.alloc α4 in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -1358,7 +1316,7 @@ End Impl_subtle_ConstantTimeEq_for_u64.
 
 Module  Impl_subtle_ConstantTimeEq_for_i64.
 Section Impl_subtle_ConstantTimeEq_for_i64.
-  Definition Self : Ty.t := Ty.apply (Ty.path "i64") [].
+  Definition Self : Ty.t := Ty.path "i64".
   
   (*
               fn ct_eq(&self, other: &$t_i) -> Choice {
@@ -1375,7 +1333,7 @@ Section Impl_subtle_ConstantTimeEq_for_i64.
           Ty.function
             [Ty.apply (Ty.path "ref") [Ty.path "u64"];
               Ty.apply (Ty.path "ref") [Ty.path "u64"]]
-            (Ty.apply (Ty.path "subtle::Choice::t") []) :=
+            (Ty.apply (Ty.path "subtle::Choice") []) :=
         ltac:(M.get_method (fun ℐ =>
           subtle.ConstantTimeEq.ct_eq (Self := Ty.path "u64") (Trait := ℐ))) in
       let* α1 : Ty.apply (Ty.path "ref") [Ty.path "i64"] := M.read self in
@@ -1398,7 +1356,7 @@ End Impl_subtle_ConstantTimeEq_for_i64.
 
 Module  Impl_subtle_ConstantTimeEq_for_usize.
 Section Impl_subtle_ConstantTimeEq_for_usize.
-  Definition Self : Ty.t := Ty.apply (Ty.path "usize") [].
+  Definition Self : Ty.t := Ty.path "usize".
   
   (*
               fn ct_eq(&self, other: &$t_u) -> Choice {
@@ -1447,21 +1405,19 @@ Section Impl_subtle_ConstantTimeEq_for_usize.
           BinOp.Panic.shr (BinOp.Pure.bit_or α0 α2) α5 in
         M.alloc α6 in
       let* α0 :
-          Ty.function
-            [Ty.path "u8"]
-            (Ty.apply (Ty.path "subtle::Choice::t") []) :=
+          Ty.function [Ty.path "u8"] (Ty.apply (Ty.path "subtle::Choice") []) :=
         ltac:(M.get_method (fun ℐ =>
           core.convert.Into.into
             (Self := Ty.path "u8")
-            (T := Ty.apply (Ty.path "subtle::Choice::t") [])
+            (T := Ty.apply (Ty.path "subtle::Choice") [])
             (Trait := ℐ))) in
       let* α1 : Ty.path "usize" := M.read y in
       let* α2 : Ty.path "usize" :=
         M.alloc ((Integer.of_Z 1) : Ty.path "usize") in
       let* α3 : Ty.path "usize" := M.read (use α2) in
-      let* α4 : Ty.apply (Ty.path "subtle::Choice::t") [] :=
+      let* α4 : Ty.apply (Ty.path "subtle::Choice") [] :=
         M.call (α0 (rust_cast (BinOp.Pure.bit_xor α1 α3))) in
-      let* α0 : Ty.apply (Ty.path "subtle::Choice::t") [] := M.alloc α4 in
+      let* α0 : Ty.apply (Ty.path "subtle::Choice") [] := M.alloc α4 in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -1476,7 +1432,7 @@ End Impl_subtle_ConstantTimeEq_for_usize.
 
 Module  Impl_subtle_ConstantTimeEq_for_isize.
 Section Impl_subtle_ConstantTimeEq_for_isize.
-  Definition Self : Ty.t := Ty.apply (Ty.path "isize") [].
+  Definition Self : Ty.t := Ty.path "isize".
   
   (*
               fn ct_eq(&self, other: &$t_i) -> Choice {
@@ -1493,7 +1449,7 @@ Section Impl_subtle_ConstantTimeEq_for_isize.
           Ty.function
             [Ty.apply (Ty.path "ref") [Ty.path "usize"];
               Ty.apply (Ty.path "ref") [Ty.path "usize"]]
-            (Ty.apply (Ty.path "subtle::Choice::t") []) :=
+            (Ty.apply (Ty.path "subtle::Choice") []) :=
         ltac:(M.get_method (fun ℐ =>
           subtle.ConstantTimeEq.ct_eq
             (Self := Ty.path "usize")
@@ -1521,10 +1477,10 @@ Section ConditionallySelectable.
   Class Trait (Self : Set) : Type := {
     conditional_select :
       Ty.function
-        [Ty.apply (Ty.path "ref") [Ty.apply Self []];
-          Ty.apply (Ty.path "ref") [Ty.apply Self []];
+        [Ty.apply (Ty.path "ref") [Self];
+          Ty.apply (Ty.path "ref") [Self];
           Ty.apply (Ty.path "subtle::Choice") []]
-        (Ty.apply Self []);
+        Self;
   }.
   
 End ConditionallySelectable.
@@ -1532,7 +1488,7 @@ End ConditionallySelectable.
 
 Module  Impl_subtle_ConditionallySelectable_for_u8.
 Section Impl_subtle_ConditionallySelectable_for_u8.
-  Definition Self : Ty.t := Ty.apply (Ty.path "u8") [].
+  Definition Self : Ty.t := Ty.path "u8".
   
   (*
               fn conditional_select(a: &Self, b: &Self, choice: Choice) -> Self {
@@ -1551,7 +1507,7 @@ Section Impl_subtle_ConditionallySelectable_for_u8.
       let* mask : Ty.path "u8" :=
         let* α0 : Ty.path "u8" :=
           M.call
-            ((Ty.apply (Ty.path "subtle::Choice::t") [])::["unwrap_u8"]
+            ((Ty.apply (Ty.path "subtle::Choice") [])::["unwrap_u8"]
               (borrow choice)) in
         let* α1 : Ty.path "i8" := UnOp.neg (rust_cast α0) in
         M.alloc (rust_cast α1) in
@@ -1606,7 +1562,7 @@ Section Impl_subtle_ConditionallySelectable_for_u8.
       let* mask : Ty.path "u8" :=
         let* α0 : Ty.path "u8" :=
           M.call
-            ((Ty.apply (Ty.path "subtle::Choice::t") [])::["unwrap_u8"]
+            ((Ty.apply (Ty.path "subtle::Choice") [])::["unwrap_u8"]
               (borrow choice)) in
         let* α1 : Ty.path "i8" := UnOp.neg (rust_cast α0) in
         M.alloc (rust_cast α1) in
@@ -1654,7 +1610,7 @@ Section Impl_subtle_ConditionallySelectable_for_u8.
       let* mask : Ty.path "u8" :=
         let* α0 : Ty.path "u8" :=
           M.call
-            ((Ty.apply (Ty.path "subtle::Choice::t") [])::["unwrap_u8"]
+            ((Ty.apply (Ty.path "subtle::Choice") [])::["unwrap_u8"]
               (borrow choice)) in
         let* α1 : Ty.path "i8" := UnOp.neg (rust_cast α0) in
         M.alloc (rust_cast α1) in
@@ -1696,7 +1652,7 @@ End Impl_subtle_ConditionallySelectable_for_u8.
 
 Module  Impl_subtle_ConditionallySelectable_for_i8.
 Section Impl_subtle_ConditionallySelectable_for_i8.
-  Definition Self : Ty.t := Ty.apply (Ty.path "i8") [].
+  Definition Self : Ty.t := Ty.path "i8".
   
   (*
               fn conditional_select(a: &Self, b: &Self, choice: Choice) -> Self {
@@ -1715,7 +1671,7 @@ Section Impl_subtle_ConditionallySelectable_for_i8.
       let* mask : Ty.path "i8" :=
         let* α0 : Ty.path "u8" :=
           M.call
-            ((Ty.apply (Ty.path "subtle::Choice::t") [])::["unwrap_u8"]
+            ((Ty.apply (Ty.path "subtle::Choice") [])::["unwrap_u8"]
               (borrow choice)) in
         let* α1 : Ty.path "i8" := UnOp.neg (rust_cast α0) in
         let* α2 : Ty.path "i8" := M.alloc α1 in
@@ -1771,7 +1727,7 @@ Section Impl_subtle_ConditionallySelectable_for_i8.
       let* mask : Ty.path "i8" :=
         let* α0 : Ty.path "u8" :=
           M.call
-            ((Ty.apply (Ty.path "subtle::Choice::t") [])::["unwrap_u8"]
+            ((Ty.apply (Ty.path "subtle::Choice") [])::["unwrap_u8"]
               (borrow choice)) in
         let* α1 : Ty.path "i8" := UnOp.neg (rust_cast α0) in
         let* α2 : Ty.path "i8" := M.alloc α1 in
@@ -1820,7 +1776,7 @@ Section Impl_subtle_ConditionallySelectable_for_i8.
       let* mask : Ty.path "i8" :=
         let* α0 : Ty.path "u8" :=
           M.call
-            ((Ty.apply (Ty.path "subtle::Choice::t") [])::["unwrap_u8"]
+            ((Ty.apply (Ty.path "subtle::Choice") [])::["unwrap_u8"]
               (borrow choice)) in
         let* α1 : Ty.path "i8" := UnOp.neg (rust_cast α0) in
         let* α2 : Ty.path "i8" := M.alloc α1 in
@@ -1863,7 +1819,7 @@ End Impl_subtle_ConditionallySelectable_for_i8.
 
 Module  Impl_subtle_ConditionallySelectable_for_u16.
 Section Impl_subtle_ConditionallySelectable_for_u16.
-  Definition Self : Ty.t := Ty.apply (Ty.path "u16") [].
+  Definition Self : Ty.t := Ty.path "u16".
   
   (*
               fn conditional_select(a: &Self, b: &Self, choice: Choice) -> Self {
@@ -1882,7 +1838,7 @@ Section Impl_subtle_ConditionallySelectable_for_u16.
       let* mask : Ty.path "u16" :=
         let* α0 : Ty.path "u8" :=
           M.call
-            ((Ty.apply (Ty.path "subtle::Choice::t") [])::["unwrap_u8"]
+            ((Ty.apply (Ty.path "subtle::Choice") [])::["unwrap_u8"]
               (borrow choice)) in
         let* α1 : Ty.path "i16" := UnOp.neg (rust_cast α0) in
         M.alloc (rust_cast α1) in
@@ -1937,7 +1893,7 @@ Section Impl_subtle_ConditionallySelectable_for_u16.
       let* mask : Ty.path "u16" :=
         let* α0 : Ty.path "u8" :=
           M.call
-            ((Ty.apply (Ty.path "subtle::Choice::t") [])::["unwrap_u8"]
+            ((Ty.apply (Ty.path "subtle::Choice") [])::["unwrap_u8"]
               (borrow choice)) in
         let* α1 : Ty.path "i16" := UnOp.neg (rust_cast α0) in
         M.alloc (rust_cast α1) in
@@ -1985,7 +1941,7 @@ Section Impl_subtle_ConditionallySelectable_for_u16.
       let* mask : Ty.path "u16" :=
         let* α0 : Ty.path "u8" :=
           M.call
-            ((Ty.apply (Ty.path "subtle::Choice::t") [])::["unwrap_u8"]
+            ((Ty.apply (Ty.path "subtle::Choice") [])::["unwrap_u8"]
               (borrow choice)) in
         let* α1 : Ty.path "i16" := UnOp.neg (rust_cast α0) in
         M.alloc (rust_cast α1) in
@@ -2027,7 +1983,7 @@ End Impl_subtle_ConditionallySelectable_for_u16.
 
 Module  Impl_subtle_ConditionallySelectable_for_i16.
 Section Impl_subtle_ConditionallySelectable_for_i16.
-  Definition Self : Ty.t := Ty.apply (Ty.path "i16") [].
+  Definition Self : Ty.t := Ty.path "i16".
   
   (*
               fn conditional_select(a: &Self, b: &Self, choice: Choice) -> Self {
@@ -2046,7 +2002,7 @@ Section Impl_subtle_ConditionallySelectable_for_i16.
       let* mask : Ty.path "i16" :=
         let* α0 : Ty.path "u8" :=
           M.call
-            ((Ty.apply (Ty.path "subtle::Choice::t") [])::["unwrap_u8"]
+            ((Ty.apply (Ty.path "subtle::Choice") [])::["unwrap_u8"]
               (borrow choice)) in
         let* α1 : Ty.path "i16" := UnOp.neg (rust_cast α0) in
         let* α2 : Ty.path "i16" := M.alloc α1 in
@@ -2102,7 +2058,7 @@ Section Impl_subtle_ConditionallySelectable_for_i16.
       let* mask : Ty.path "i16" :=
         let* α0 : Ty.path "u8" :=
           M.call
-            ((Ty.apply (Ty.path "subtle::Choice::t") [])::["unwrap_u8"]
+            ((Ty.apply (Ty.path "subtle::Choice") [])::["unwrap_u8"]
               (borrow choice)) in
         let* α1 : Ty.path "i16" := UnOp.neg (rust_cast α0) in
         let* α2 : Ty.path "i16" := M.alloc α1 in
@@ -2151,7 +2107,7 @@ Section Impl_subtle_ConditionallySelectable_for_i16.
       let* mask : Ty.path "i16" :=
         let* α0 : Ty.path "u8" :=
           M.call
-            ((Ty.apply (Ty.path "subtle::Choice::t") [])::["unwrap_u8"]
+            ((Ty.apply (Ty.path "subtle::Choice") [])::["unwrap_u8"]
               (borrow choice)) in
         let* α1 : Ty.path "i16" := UnOp.neg (rust_cast α0) in
         let* α2 : Ty.path "i16" := M.alloc α1 in
@@ -2194,7 +2150,7 @@ End Impl_subtle_ConditionallySelectable_for_i16.
 
 Module  Impl_subtle_ConditionallySelectable_for_u32.
 Section Impl_subtle_ConditionallySelectable_for_u32.
-  Definition Self : Ty.t := Ty.apply (Ty.path "u32") [].
+  Definition Self : Ty.t := Ty.path "u32".
   
   (*
               fn conditional_select(a: &Self, b: &Self, choice: Choice) -> Self {
@@ -2213,7 +2169,7 @@ Section Impl_subtle_ConditionallySelectable_for_u32.
       let* mask : Ty.path "u32" :=
         let* α0 : Ty.path "u8" :=
           M.call
-            ((Ty.apply (Ty.path "subtle::Choice::t") [])::["unwrap_u8"]
+            ((Ty.apply (Ty.path "subtle::Choice") [])::["unwrap_u8"]
               (borrow choice)) in
         let* α1 : Ty.path "i32" := UnOp.neg (rust_cast α0) in
         M.alloc (rust_cast α1) in
@@ -2268,7 +2224,7 @@ Section Impl_subtle_ConditionallySelectable_for_u32.
       let* mask : Ty.path "u32" :=
         let* α0 : Ty.path "u8" :=
           M.call
-            ((Ty.apply (Ty.path "subtle::Choice::t") [])::["unwrap_u8"]
+            ((Ty.apply (Ty.path "subtle::Choice") [])::["unwrap_u8"]
               (borrow choice)) in
         let* α1 : Ty.path "i32" := UnOp.neg (rust_cast α0) in
         M.alloc (rust_cast α1) in
@@ -2316,7 +2272,7 @@ Section Impl_subtle_ConditionallySelectable_for_u32.
       let* mask : Ty.path "u32" :=
         let* α0 : Ty.path "u8" :=
           M.call
-            ((Ty.apply (Ty.path "subtle::Choice::t") [])::["unwrap_u8"]
+            ((Ty.apply (Ty.path "subtle::Choice") [])::["unwrap_u8"]
               (borrow choice)) in
         let* α1 : Ty.path "i32" := UnOp.neg (rust_cast α0) in
         M.alloc (rust_cast α1) in
@@ -2358,7 +2314,7 @@ End Impl_subtle_ConditionallySelectable_for_u32.
 
 Module  Impl_subtle_ConditionallySelectable_for_i32.
 Section Impl_subtle_ConditionallySelectable_for_i32.
-  Definition Self : Ty.t := Ty.apply (Ty.path "i32") [].
+  Definition Self : Ty.t := Ty.path "i32".
   
   (*
               fn conditional_select(a: &Self, b: &Self, choice: Choice) -> Self {
@@ -2377,7 +2333,7 @@ Section Impl_subtle_ConditionallySelectable_for_i32.
       let* mask : Ty.path "i32" :=
         let* α0 : Ty.path "u8" :=
           M.call
-            ((Ty.apply (Ty.path "subtle::Choice::t") [])::["unwrap_u8"]
+            ((Ty.apply (Ty.path "subtle::Choice") [])::["unwrap_u8"]
               (borrow choice)) in
         let* α1 : Ty.path "i32" := UnOp.neg (rust_cast α0) in
         let* α2 : Ty.path "i32" := M.alloc α1 in
@@ -2433,7 +2389,7 @@ Section Impl_subtle_ConditionallySelectable_for_i32.
       let* mask : Ty.path "i32" :=
         let* α0 : Ty.path "u8" :=
           M.call
-            ((Ty.apply (Ty.path "subtle::Choice::t") [])::["unwrap_u8"]
+            ((Ty.apply (Ty.path "subtle::Choice") [])::["unwrap_u8"]
               (borrow choice)) in
         let* α1 : Ty.path "i32" := UnOp.neg (rust_cast α0) in
         let* α2 : Ty.path "i32" := M.alloc α1 in
@@ -2482,7 +2438,7 @@ Section Impl_subtle_ConditionallySelectable_for_i32.
       let* mask : Ty.path "i32" :=
         let* α0 : Ty.path "u8" :=
           M.call
-            ((Ty.apply (Ty.path "subtle::Choice::t") [])::["unwrap_u8"]
+            ((Ty.apply (Ty.path "subtle::Choice") [])::["unwrap_u8"]
               (borrow choice)) in
         let* α1 : Ty.path "i32" := UnOp.neg (rust_cast α0) in
         let* α2 : Ty.path "i32" := M.alloc α1 in
@@ -2525,7 +2481,7 @@ End Impl_subtle_ConditionallySelectable_for_i32.
 
 Module  Impl_subtle_ConditionallySelectable_for_u64.
 Section Impl_subtle_ConditionallySelectable_for_u64.
-  Definition Self : Ty.t := Ty.apply (Ty.path "u64") [].
+  Definition Self : Ty.t := Ty.path "u64".
   
   (*
               fn conditional_select(a: &Self, b: &Self, choice: Choice) -> Self {
@@ -2544,7 +2500,7 @@ Section Impl_subtle_ConditionallySelectable_for_u64.
       let* mask : Ty.path "u64" :=
         let* α0 : Ty.path "u8" :=
           M.call
-            ((Ty.apply (Ty.path "subtle::Choice::t") [])::["unwrap_u8"]
+            ((Ty.apply (Ty.path "subtle::Choice") [])::["unwrap_u8"]
               (borrow choice)) in
         let* α1 : Ty.path "i64" := UnOp.neg (rust_cast α0) in
         M.alloc (rust_cast α1) in
@@ -2599,7 +2555,7 @@ Section Impl_subtle_ConditionallySelectable_for_u64.
       let* mask : Ty.path "u64" :=
         let* α0 : Ty.path "u8" :=
           M.call
-            ((Ty.apply (Ty.path "subtle::Choice::t") [])::["unwrap_u8"]
+            ((Ty.apply (Ty.path "subtle::Choice") [])::["unwrap_u8"]
               (borrow choice)) in
         let* α1 : Ty.path "i64" := UnOp.neg (rust_cast α0) in
         M.alloc (rust_cast α1) in
@@ -2647,7 +2603,7 @@ Section Impl_subtle_ConditionallySelectable_for_u64.
       let* mask : Ty.path "u64" :=
         let* α0 : Ty.path "u8" :=
           M.call
-            ((Ty.apply (Ty.path "subtle::Choice::t") [])::["unwrap_u8"]
+            ((Ty.apply (Ty.path "subtle::Choice") [])::["unwrap_u8"]
               (borrow choice)) in
         let* α1 : Ty.path "i64" := UnOp.neg (rust_cast α0) in
         M.alloc (rust_cast α1) in
@@ -2689,7 +2645,7 @@ End Impl_subtle_ConditionallySelectable_for_u64.
 
 Module  Impl_subtle_ConditionallySelectable_for_i64.
 Section Impl_subtle_ConditionallySelectable_for_i64.
-  Definition Self : Ty.t := Ty.apply (Ty.path "i64") [].
+  Definition Self : Ty.t := Ty.path "i64".
   
   (*
               fn conditional_select(a: &Self, b: &Self, choice: Choice) -> Self {
@@ -2708,7 +2664,7 @@ Section Impl_subtle_ConditionallySelectable_for_i64.
       let* mask : Ty.path "i64" :=
         let* α0 : Ty.path "u8" :=
           M.call
-            ((Ty.apply (Ty.path "subtle::Choice::t") [])::["unwrap_u8"]
+            ((Ty.apply (Ty.path "subtle::Choice") [])::["unwrap_u8"]
               (borrow choice)) in
         let* α1 : Ty.path "i64" := UnOp.neg (rust_cast α0) in
         let* α2 : Ty.path "i64" := M.alloc α1 in
@@ -2764,7 +2720,7 @@ Section Impl_subtle_ConditionallySelectable_for_i64.
       let* mask : Ty.path "i64" :=
         let* α0 : Ty.path "u8" :=
           M.call
-            ((Ty.apply (Ty.path "subtle::Choice::t") [])::["unwrap_u8"]
+            ((Ty.apply (Ty.path "subtle::Choice") [])::["unwrap_u8"]
               (borrow choice)) in
         let* α1 : Ty.path "i64" := UnOp.neg (rust_cast α0) in
         let* α2 : Ty.path "i64" := M.alloc α1 in
@@ -2813,7 +2769,7 @@ Section Impl_subtle_ConditionallySelectable_for_i64.
       let* mask : Ty.path "i64" :=
         let* α0 : Ty.path "u8" :=
           M.call
-            ((Ty.apply (Ty.path "subtle::Choice::t") [])::["unwrap_u8"]
+            ((Ty.apply (Ty.path "subtle::Choice") [])::["unwrap_u8"]
               (borrow choice)) in
         let* α1 : Ty.path "i64" := UnOp.neg (rust_cast α0) in
         let* α2 : Ty.path "i64" := M.alloc α1 in
@@ -2873,23 +2829,19 @@ Section Impl_subtle_ConditionallySelectable_for_subtle_Choice.
           Ty.function
             [Ty.apply (Ty.path "ref") [Ty.path "u8"];
               Ty.apply (Ty.path "ref") [Ty.path "u8"];
-              Ty.apply (Ty.path "subtle::Choice::t") []]
+              Ty.apply (Ty.path "subtle::Choice") []]
             (Ty.path "u8") :=
         ltac:(M.get_method (fun ℐ =>
           subtle.ConditionallySelectable.conditional_select
             (Self := Ty.path "u8")
             (Trait := ℐ))) in
       let* α1 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply (Ty.path "subtle::Choice::t") []] :=
+          Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "subtle::Choice") []] :=
         M.read a in
       let* α2 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply (Ty.path "subtle::Choice::t") []] :=
+          Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "subtle::Choice") []] :=
         M.read b in
-      let* α3 : Ty.apply (Ty.path "subtle::Choice::t") [] := M.read choice in
+      let* α3 : Ty.apply (Ty.path "subtle::Choice") [] := M.read choice in
       let* α4 : Ty.path "u8" :=
         M.call
           (α0
@@ -2915,7 +2867,7 @@ Section ConditionallyNegatable.
   Class Trait (Self : Set) : Type := {
     conditional_negate :
       Ty.function
-        [Ty.apply (Ty.path "mut_ref") [Ty.apply Self []];
+        [Ty.apply (Ty.path "mut_ref") [Self];
           Ty.apply (Ty.path "subtle::Choice") []]
         (Ty.path "unit");
   }.
@@ -2927,7 +2879,7 @@ Module  Impl_subtle_ConditionallyNegatable_for_T.
 Section Impl_subtle_ConditionallyNegatable_for_T.
   Context {T : Set}.
   
-  Definition Self : Ty.t := Ty.apply T [].
+  Definition Self : Ty.t := T.
   
   (*
       fn conditional_negate(&mut self, choice: Choice) {
@@ -2957,14 +2909,14 @@ Section Impl_subtle_ConditionallyNegatable_for_T.
             Ty.function
               [Ty.apply (Ty.path "mut_ref") [T];
                 Ty.apply (Ty.path "ref") [T];
-                Ty.apply (Ty.path "subtle::Choice::t") []]
+                Ty.apply (Ty.path "subtle::Choice") []]
               Ty.tuple :=
           ltac:(M.get_method (fun ℐ =>
             subtle.ConditionallySelectable.conditional_assign
               (Self := T)
               (Trait := ℐ))) in
         let* α1 : Ty.apply (Ty.path "mut_ref") [T] := M.read self in
-        let* α2 : Ty.apply (Ty.path "subtle::Choice::t") [] := M.read choice in
+        let* α2 : Ty.apply (Ty.path "subtle::Choice") [] := M.read choice in
         let* α3 : Ty.tuple := M.call (α0 α1 (borrow self_neg) α2) in
         M.alloc α3 in
       let* α0 : Ty.path "unit" := M.alloc tt in
@@ -2986,8 +2938,7 @@ Module  Impl_core_clone_Clone_for_subtle_CtOption_T.
 Section Impl_core_clone_Clone_for_subtle_CtOption_T.
   Context {T : Set}.
   
-  Definition Self : Ty.t :=
-    Ty.apply (Ty.path "subtle::CtOption") [Ty.apply T []].
+  Definition Self : Ty.t := Ty.apply (Ty.path "subtle::CtOption") [T].
   
   (*
   Clone
@@ -3002,26 +2953,24 @@ Section Impl_core_clone_Clone_for_subtle_CtOption_T.
       let* α1 :
           Ty.apply
             (Ty.path "ref")
-            [Ty.apply (Ty.path "subtle::CtOption::t") [T]] :=
+            [Ty.apply (Ty.path "subtle::CtOption") [T]] :=
         M.read self in
       let* α2 : T :=
         M.call (α0 (borrow (subtle.CtOption.Get_value (deref α1)))) in
       let* α3 :
           Ty.function
-            [Ty.apply
-                (Ty.path "ref")
-                [Ty.apply (Ty.path "subtle::Choice::t") []]]
-            (Ty.apply (Ty.path "subtle::Choice::t") []) :=
+            [Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "subtle::Choice") []]]
+            (Ty.apply (Ty.path "subtle::Choice") []) :=
         ltac:(M.get_method (fun ℐ =>
           core.clone.Clone.clone
-            (Self := Ty.apply (Ty.path "subtle::Choice::t") [])
+            (Self := Ty.apply (Ty.path "subtle::Choice") [])
             (Trait := ℐ))) in
       let* α4 :
           Ty.apply
             (Ty.path "ref")
-            [Ty.apply (Ty.path "subtle::CtOption::t") [T]] :=
+            [Ty.apply (Ty.path "subtle::CtOption") [T]] :=
         M.read self in
-      let* α5 : Ty.apply (Ty.path "subtle::Choice::t") [] :=
+      let* α5 : Ty.apply (Ty.path "subtle::Choice") [] :=
         M.call (α3 (borrow (subtle.CtOption.Get_is_some (deref α4)))) in
       M.pure {| subtle.CtOption.value := α2; subtle.CtOption.is_some := α5; |}
     | _, _ => M.impossible
@@ -3039,8 +2988,7 @@ Module  Impl_core_marker_Copy_for_subtle_CtOption_T.
 Section Impl_core_marker_Copy_for_subtle_CtOption_T.
   Context {T : Set}.
   
-  Definition Self : Ty.t :=
-    Ty.apply (Ty.path "subtle::CtOption") [Ty.apply T []].
+  Definition Self : Ty.t := Ty.apply (Ty.path "subtle::CtOption") [T].
   
   Definition ℐ : Instance.t := [].
 End Impl_core_marker_Copy_for_subtle_CtOption_T.
@@ -3050,8 +2998,7 @@ Module  Impl_core_fmt_Debug_for_subtle_CtOption_T.
 Section Impl_core_fmt_Debug_for_subtle_CtOption_T.
   Context {T : Set}.
   
-  Definition Self : Ty.t :=
-    Ty.apply (Ty.path "subtle::CtOption") [Ty.apply T []].
+  Definition Self : Ty.t := Ty.apply (Ty.path "subtle::CtOption") [T].
   
   (*
   Debug
@@ -3064,32 +3011,30 @@ Section Impl_core_fmt_Debug_for_subtle_CtOption_T.
       let* α0 :
           Ty.apply
             (Ty.path "mut_ref")
-            [Ty.apply (Ty.path "core::fmt::Formatter::t") []] :=
+            [Ty.apply (Ty.path "core::fmt::Formatter") []] :=
         M.read f in
-      let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str::t"] :=
+      let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
         M.read (mk_str "CtOption") in
-      let* α2 : Ty.apply (Ty.path "ref") [Ty.path "str::t"] :=
+      let* α2 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
         M.read (mk_str "value") in
       let* α3 :
           Ty.apply
             (Ty.path "ref")
-            [Ty.apply (Ty.path "subtle::CtOption::t") [T]] :=
+            [Ty.apply (Ty.path "subtle::CtOption") [T]] :=
         M.read self in
-      let* α4 : Ty.apply (Ty.path "ref") [Ty.path "str::t"] :=
+      let* α4 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
         M.read (mk_str "is_some") in
       let* α5 :
           Ty.apply
             (Ty.path "ref")
-            [Ty.apply (Ty.path "subtle::CtOption::t") [T]] :=
+            [Ty.apply (Ty.path "subtle::CtOption") [T]] :=
         M.read self in
       let* α6 :
-          Ty.apply
-            (Ty.path "ref")
-            [Ty.apply (Ty.path "subtle::Choice::t") []] :=
+          Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "subtle::Choice") []] :=
         M.alloc (borrow (subtle.CtOption.Get_is_some (deref α5))) in
       M.call
         ((Ty.apply
-              (Ty.path "core::fmt::Formatter::t")
+              (Ty.path "core::fmt::Formatter")
               [])::["debug_struct_field2_finish"]
           α0
           α1
@@ -3114,8 +3059,7 @@ Module  Impl_core_convert_From_subtle_CtOption_T_for_core_option_Option_T.
 Section Impl_core_convert_From_subtle_CtOption_T_for_core_option_Option_T.
   Context {T : Set}.
   
-  Definition Self : Ty.t :=
-    Ty.apply (Ty.path "core::option::Option") [Ty.apply T []].
+  Definition Self : Ty.t := Ty.apply (Ty.path "core::option::Option") [T].
   
   (*
       fn from(source: CtOption<T>) -> Option<T> {
@@ -3130,19 +3074,19 @@ Section Impl_core_convert_From_subtle_CtOption_T_for_core_option_Option_T.
     match 𝜏, α with
     | [], [source] =>
       let* source := M.alloc source in
-      let* α0 : Ty.apply (Ty.path "subtle::Choice::t") [] :=
+      let* α0 : Ty.apply (Ty.path "subtle::Choice") [] :=
         M.call
-          ((Ty.apply (Ty.path "subtle::CtOption::t") [T])::["is_some"]
+          ((Ty.apply (Ty.path "subtle::CtOption") [T])::["is_some"]
             (borrow source)) in
-      let* α1 : Ty.apply (Ty.path "subtle::Choice::t") [] := M.alloc α0 in
+      let* α1 : Ty.apply (Ty.path "subtle::Choice") [] := M.alloc α0 in
       let* α2 : Ty.path "u8" :=
         M.call
-          ((Ty.apply (Ty.path "subtle::Choice::t") [])::["unwrap_u8"]
+          ((Ty.apply (Ty.path "subtle::Choice") [])::["unwrap_u8"]
             (borrow α1)) in
       let* α3 : Ty.path "bool" :=
         M.alloc (BinOp.Pure.eq α2 ((Integer.of_Z 1) : Ty.path "u8")) in
       let* α4 : Ty.path "bool" := M.read (use α3) in
-      let* α5 : Ty.apply (Ty.path "core::option::Option::t") [T] :=
+      let* α5 : Ty.apply (Ty.path "core::option::Option") [T] :=
         if α4 then
           let* α0 : T := M.read (subtle.CtOption.Get_value source) in
           M.alloc (core.option.Option.Some α0)
@@ -3164,8 +3108,7 @@ Module  Impl_subtle_CtOption_T.
 Section Impl_subtle_CtOption_T.
   Context {T : Set}.
   
-  Definition Self : Set :=
-    Ty.apply (Ty.path "subtle::CtOption") [Ty.apply T []].
+  Definition Self : Set := Ty.apply (Ty.path "subtle::CtOption") [T].
   
   (*
       pub fn new(value: T, is_some: Choice) -> CtOption<T> {
@@ -3181,7 +3124,7 @@ Section Impl_subtle_CtOption_T.
       let* value := M.alloc value in
       let* is_some := M.alloc is_some in
       let* α0 : T := M.read value in
-      let* α1 : Ty.apply (Ty.path "subtle::Choice::t") [] := M.read is_some in
+      let* α1 : Ty.apply (Ty.path "subtle::Choice") [] := M.read is_some in
       M.pure {| subtle.CtOption.value := α0; subtle.CtOption.is_some := α1; |}
     | _, _ => M.impossible
     end.
@@ -3205,7 +3148,7 @@ Section Impl_subtle_CtOption_T.
       let* _ : Ty.tuple :=
         let* α0 : Ty.path "u8" :=
           M.call
-            ((Ty.apply (Ty.path "subtle::Choice::t") [])::["unwrap_u8"]
+            ((Ty.apply (Ty.path "subtle::Choice") [])::["unwrap_u8"]
               (borrow (subtle.CtOption.Get_is_some self))) in
         let* α1 : Ty.path "u8" := M.alloc α0 in
         let* α2 : Ty.path "u8" := M.alloc ((Integer.of_Z 1) : Ty.path "u8") in
@@ -3236,50 +3179,49 @@ Section Impl_subtle_CtOption_T.
                 let* α5 : Ty.path "bool" := M.read (use α4) in
                 if α5 then
                   let* kind :
-                      Ty.apply (Ty.path "core::panicking::AssertKind::t") [] :=
+                      Ty.apply (Ty.path "core::panicking::AssertKind") [] :=
                     M.alloc core.panicking.AssertKind.Eq in
                   let* α0 :
-                      Ty.apply (Ty.path "core::panicking::AssertKind::t") [] :=
+                      Ty.apply (Ty.path "core::panicking::AssertKind") [] :=
                     M.read kind in
                   let* α1 : Ty.apply (Ty.path "ref") [Ty.path "u8"] :=
                     M.read left_val in
                   let* α2 : Ty.apply (Ty.path "ref") [Ty.path "u8"] :=
                     M.read right_val in
-                  let* α3 : Ty.apply (Ty.path "ref") [Ty.path "str::t"] :=
+                  let* α3 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
                     M.read (mk_str "") in
                   let* α4 :
                       Ty.apply
                         (Ty.path "array")
-                        [Ty.apply (Ty.path "ref") [Ty.path "str::t"]] :=
+                        [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
                     M.alloc [ α3 ] in
-                  let* α5 :
-                      Ty.apply (Ty.path "core::fmt::rt::Argument::t") [] :=
+                  let* α5 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
                     M.call
                       ((Ty.apply
-                            (Ty.path "core::fmt::rt::Argument::t")
+                            (Ty.path "core::fmt::rt::Argument")
                             [])::["new_display"]
                         (borrow msg)) in
                   let* α6 :
                       Ty.apply
                         (Ty.path "array")
-                        [Ty.apply (Ty.path "core::fmt::rt::Argument::t") []] :=
+                        [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
                     M.alloc [ α5 ] in
-                  let* α7 : Ty.apply (Ty.path "core::fmt::Arguments::t") [] :=
+                  let* α7 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
                     M.call
                       ((Ty.apply
-                            (Ty.path "core::fmt::Arguments::t")
+                            (Ty.path "core::fmt::Arguments")
                             [])::["new_v1"]
                         (pointer_coercion "Unsize" (borrow α4))
                         (pointer_coercion "Unsize" (borrow α6))) in
-                  let* α8 : Ty.path "never::t" :=
+                  let* α8 : Ty.path "never" :=
                     M.call
                       (core.panicking.assert_failed
                         α0
                         α1
                         α2
                         (core.option.Option.Some α7)) in
-                  let* α0 : Ty.path "never::t" := M.alloc α8 in
-                  let* α1 := M.read α0 in
+                  let* α0 : Ty.path "never" := M.alloc α8 in
+                  let* α1 : Ty.path "never" := M.read α0 in
                   let* α2 : Ty.tuple := never_to_any α1 in
                   M.alloc α2
                 else
@@ -3309,7 +3251,7 @@ Section Impl_subtle_CtOption_T.
       let* _ : Ty.tuple :=
         let* α0 : Ty.path "u8" :=
           M.call
-            ((Ty.apply (Ty.path "subtle::Choice::t") [])::["unwrap_u8"]
+            ((Ty.apply (Ty.path "subtle::Choice") [])::["unwrap_u8"]
               (borrow (subtle.CtOption.Get_is_some self))) in
         let* α1 : Ty.path "u8" := M.alloc α0 in
         let* α2 : Ty.path "u8" := M.alloc ((Integer.of_Z 1) : Ty.path "u8") in
@@ -3340,24 +3282,24 @@ Section Impl_subtle_CtOption_T.
                 let* α5 : Ty.path "bool" := M.read (use α4) in
                 if α5 then
                   let* kind :
-                      Ty.apply (Ty.path "core::panicking::AssertKind::t") [] :=
+                      Ty.apply (Ty.path "core::panicking::AssertKind") [] :=
                     M.alloc core.panicking.AssertKind.Eq in
                   let* α0 :
-                      Ty.apply (Ty.path "core::panicking::AssertKind::t") [] :=
+                      Ty.apply (Ty.path "core::panicking::AssertKind") [] :=
                     M.read kind in
                   let* α1 : Ty.apply (Ty.path "ref") [Ty.path "u8"] :=
                     M.read left_val in
                   let* α2 : Ty.apply (Ty.path "ref") [Ty.path "u8"] :=
                     M.read right_val in
-                  let* α3 : Ty.path "never::t" :=
+                  let* α3 : Ty.path "never" :=
                     M.call
                       (core.panicking.assert_failed
                         α0
                         α1
                         α2
                         core.option.Option.None) in
-                  let* α0 : Ty.path "never::t" := M.alloc α3 in
-                  let* α1 := M.read α0 in
+                  let* α0 : Ty.path "never" := M.alloc α3 in
+                  let* α1 : Ty.path "never" := M.read α0 in
                   let* α2 : Ty.tuple := never_to_any α1 in
                   M.alloc α2
                 else
@@ -3390,13 +3332,13 @@ Section Impl_subtle_CtOption_T.
           Ty.function
             [Ty.apply (Ty.path "ref") [T];
               Ty.apply (Ty.path "ref") [T];
-              Ty.apply (Ty.path "subtle::Choice::t") []]
+              Ty.apply (Ty.path "subtle::Choice") []]
             T :=
         ltac:(M.get_method (fun ℐ =>
           subtle.ConditionallySelectable.conditional_select
             (Self := T)
             (Trait := ℐ))) in
-      let* α1 : Ty.apply (Ty.path "subtle::Choice::t") [] :=
+      let* α1 : Ty.apply (Ty.path "subtle::Choice") [] :=
         M.read (subtle.CtOption.Get_is_some self) in
       M.call (α0 (borrow def) (borrow (subtle.CtOption.Get_value self)) α1)
     | _, _ => M.impossible
@@ -3424,7 +3366,7 @@ Section Impl_subtle_CtOption_T.
           Ty.function
             [Ty.apply (Ty.path "ref") [T];
               Ty.apply (Ty.path "ref") [T];
-              Ty.apply (Ty.path "subtle::Choice::t") []]
+              Ty.apply (Ty.path "subtle::Choice") []]
             T :=
         ltac:(M.get_method (fun ℐ =>
           subtle.ConditionallySelectable.conditional_select
@@ -3439,7 +3381,7 @@ Section Impl_subtle_CtOption_T.
       let* α2 : F := M.read f in
       let* α3 : T := M.call (α1 α2 tt) in
       let* α4 : T := M.alloc α3 in
-      let* α5 : Ty.apply (Ty.path "subtle::Choice::t") [] :=
+      let* α5 : Ty.apply (Ty.path "subtle::Choice") [] :=
         M.read (subtle.CtOption.Get_is_some self) in
       M.call (α0 (borrow α4) (borrow (subtle.CtOption.Get_value self)) α5)
     | _, _ => M.impossible
@@ -3461,7 +3403,7 @@ Section Impl_subtle_CtOption_T.
       let* α0 :
           Ty.apply
             (Ty.path "ref")
-            [Ty.apply (Ty.path "subtle::CtOption::t") [T]] :=
+            [Ty.apply (Ty.path "subtle::CtOption") [T]] :=
         M.read self in
       M.read (subtle.CtOption.Get_is_some (deref α0))
     | _, _ => M.impossible
@@ -3480,17 +3422,17 @@ Section Impl_subtle_CtOption_T.
     match 𝜏, α with
     | [], [self] =>
       let* self := M.alloc self in
-      let* α0 : Ty.function [Ty.apply (Ty.path "subtle::Choice::t") []] _ :=
+      let* α0 : Ty.function [Ty.apply (Ty.path "subtle::Choice") []] _ :=
         ltac:(M.get_method (fun ℐ =>
           core.ops.bit.Not.not
-            (Self := Ty.apply (Ty.path "subtle::Choice::t") [])
+            (Self := Ty.apply (Ty.path "subtle::Choice") [])
             (Trait := ℐ))) in
       let* α1 :
           Ty.apply
             (Ty.path "ref")
-            [Ty.apply (Ty.path "subtle::CtOption::t") [T]] :=
+            [Ty.apply (Ty.path "subtle::CtOption") [T]] :=
         M.read self in
-      let* α2 : Ty.apply (Ty.path "subtle::Choice::t") [] :=
+      let* α2 : Ty.apply (Ty.path "subtle::Choice") [] :=
         M.read (subtle.CtOption.Get_is_some (deref α1)) in
       M.call (α0 α2)
     | _, _ => M.impossible
@@ -3532,7 +3474,7 @@ Section Impl_subtle_CtOption_T.
           Ty.function
             [Ty.apply (Ty.path "ref") [T];
               Ty.apply (Ty.path "ref") [T];
-              Ty.apply (Ty.path "subtle::Choice::t") []]
+              Ty.apply (Ty.path "subtle::Choice") []]
             T :=
         ltac:(M.get_method (fun ℐ =>
           subtle.ConditionallySelectable.conditional_select
@@ -3543,14 +3485,14 @@ Section Impl_subtle_CtOption_T.
           core.default.Default.default (Self := T) (Trait := ℐ))) in
       let* α4 : T := M.call α3 in
       let* α5 : T := M.alloc α4 in
-      let* α6 : Ty.apply (Ty.path "subtle::Choice::t") [] :=
+      let* α6 : Ty.apply (Ty.path "subtle::Choice") [] :=
         M.read (subtle.CtOption.Get_is_some self) in
       let* α7 : T :=
         M.call (α2 (borrow α5) (borrow (subtle.CtOption.Get_value self)) α6) in
       let* α8 : U := M.call (α0 α1 (α7)) in
-      let* α9 : Ty.apply (Ty.path "subtle::Choice::t") [] :=
+      let* α9 : Ty.apply (Ty.path "subtle::Choice") [] :=
         M.read (subtle.CtOption.Get_is_some self) in
-      M.call ((Ty.apply (Ty.path "subtle::CtOption::t") [U])::["new"] α8 α9)
+      M.call ((Ty.apply (Ty.path "subtle::CtOption") [U])::["new"] α8 α9)
     | _, _ => M.impossible
     end.
   
@@ -3579,7 +3521,7 @@ Section Impl_subtle_CtOption_T.
     | [U; F], [self; f] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
-      let* tmp : Ty.apply (Ty.path "subtle::CtOption::t") [U] :=
+      let* tmp : Ty.apply (Ty.path "subtle::CtOption") [U] :=
         let* α0 : Ty.function [F; Ty.tuple T] _ :=
           ltac:(M.get_method (fun ℐ =>
             core.ops.function.FnOnce.call_once
@@ -3591,7 +3533,7 @@ Section Impl_subtle_CtOption_T.
             Ty.function
               [Ty.apply (Ty.path "ref") [T];
                 Ty.apply (Ty.path "ref") [T];
-                Ty.apply (Ty.path "subtle::Choice::t") []]
+                Ty.apply (Ty.path "subtle::Choice") []]
               T :=
           ltac:(M.get_method (fun ℐ =>
             subtle.ConditionallySelectable.conditional_select
@@ -3602,12 +3544,12 @@ Section Impl_subtle_CtOption_T.
             core.default.Default.default (Self := T) (Trait := ℐ))) in
         let* α4 : T := M.call α3 in
         let* α5 : T := M.alloc α4 in
-        let* α6 : Ty.apply (Ty.path "subtle::Choice::t") [] :=
+        let* α6 : Ty.apply (Ty.path "subtle::Choice") [] :=
           M.read (subtle.CtOption.Get_is_some self) in
         let* α7 : T :=
           M.call
             (α2 (borrow α5) (borrow (subtle.CtOption.Get_value self)) α6) in
-        let* α8 : Ty.apply (Ty.path "subtle::CtOption::t") [U] :=
+        let* α8 : Ty.apply (Ty.path "subtle::CtOption") [U] :=
           M.call (α0 α1 (α7)) in
         M.alloc α8 in
       let* _ : Ty.tuple :=
@@ -3615,15 +3557,15 @@ Section Impl_subtle_CtOption_T.
             Ty.function
               [Ty.apply
                   (Ty.path "mut_ref")
-                  [Ty.apply (Ty.path "subtle::Choice::t") []];
-                Ty.apply (Ty.path "subtle::Choice::t") []]
+                  [Ty.apply (Ty.path "subtle::Choice") []];
+                Ty.apply (Ty.path "subtle::Choice") []]
               Ty.tuple :=
           ltac:(M.get_method (fun ℐ =>
             core.ops.bit.BitAndAssign.bitand_assign
-              (Self := Ty.apply (Ty.path "subtle::Choice::t") [])
-              (Rhs := Ty.apply (Ty.path "subtle::Choice::t") [])
+              (Self := Ty.apply (Ty.path "subtle::Choice") [])
+              (Rhs := Ty.apply (Ty.path "subtle::Choice") [])
               (Trait := ℐ))) in
-        let* α1 : Ty.apply (Ty.path "subtle::Choice::t") [] :=
+        let* α1 : Ty.apply (Ty.path "subtle::Choice") [] :=
           M.read (subtle.CtOption.Get_is_some self) in
         let* α2 : Ty.tuple :=
           M.call (α0 (borrow_mut (subtle.CtOption.Get_is_some tmp)) α1) in
@@ -3653,13 +3595,13 @@ Section Impl_subtle_CtOption_T.
     | [F], [self; f] =>
       let* self := M.alloc self in
       let* f := M.alloc f in
-      let* is_none : Ty.apply (Ty.path "subtle::Choice::t") [] :=
-        let* α0 : Ty.apply (Ty.path "subtle::Choice::t") [] :=
+      let* is_none : Ty.apply (Ty.path "subtle::Choice") [] :=
+        let* α0 : Ty.apply (Ty.path "subtle::Choice") [] :=
           M.call
-            ((Ty.apply (Ty.path "subtle::CtOption::t") [T])::["is_none"]
+            ((Ty.apply (Ty.path "subtle::CtOption") [T])::["is_none"]
               (borrow self)) in
         M.alloc α0 in
-      let* f : Ty.apply (Ty.path "subtle::CtOption::t") [T] :=
+      let* f : Ty.apply (Ty.path "subtle::CtOption") [T] :=
         let* α0 : Ty.function [F; Ty.tuple] _ :=
           ltac:(M.get_method (fun ℐ =>
             core.ops.function.FnOnce.call_once
@@ -3667,27 +3609,27 @@ Section Impl_subtle_CtOption_T.
               (Args := Ty.tuple)
               (Trait := ℐ))) in
         let* α1 : F := M.read f in
-        let* α2 : Ty.apply (Ty.path "subtle::CtOption::t") [T] :=
+        let* α2 : Ty.apply (Ty.path "subtle::CtOption") [T] :=
           M.call (α0 α1 tt) in
         M.alloc α2 in
       let* α0 :
           Ty.function
             [Ty.apply
                 (Ty.path "ref")
-                [Ty.apply (Ty.path "subtle::CtOption::t") [T]];
+                [Ty.apply (Ty.path "subtle::CtOption") [T]];
               Ty.apply
                 (Ty.path "ref")
-                [Ty.apply (Ty.path "subtle::CtOption::t") [T]];
-              Ty.apply (Ty.path "subtle::Choice::t") []]
-            (Ty.apply (Ty.path "subtle::CtOption::t") [T]) :=
+                [Ty.apply (Ty.path "subtle::CtOption") [T]];
+              Ty.apply (Ty.path "subtle::Choice") []]
+            (Ty.apply (Ty.path "subtle::CtOption") [T]) :=
         ltac:(M.get_method (fun ℐ =>
           subtle.ConditionallySelectable.conditional_select
-            (Self := Ty.apply (Ty.path "subtle::CtOption::t") [T])
+            (Self := Ty.apply (Ty.path "subtle::CtOption") [T])
             (Trait := ℐ))) in
-      let* α1 : Ty.apply (Ty.path "subtle::Choice::t") [] := M.read is_none in
-      let* α2 : Ty.apply (Ty.path "subtle::CtOption::t") [T] :=
+      let* α1 : Ty.apply (Ty.path "subtle::Choice") [] := M.read is_none in
+      let* α2 : Ty.apply (Ty.path "subtle::CtOption") [T] :=
         M.call (α0 (borrow self) (borrow f) α1) in
-      let* α0 : Ty.apply (Ty.path "subtle::CtOption::t") [T] := M.alloc α2 in
+      let* α0 : Ty.apply (Ty.path "subtle::CtOption") [T] := M.alloc α2 in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -3702,8 +3644,7 @@ Module  Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
 Section Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
   Context {T : Set}.
   
-  Definition Self : Ty.t :=
-    Ty.apply (Ty.path "subtle::CtOption") [Ty.apply T []].
+  Definition Self : Ty.t := Ty.apply (Ty.path "subtle::CtOption") [T].
   
   (*
       fn conditional_select(a: &Self, b: &Self, choice: Choice) -> Self {
@@ -3723,7 +3664,7 @@ Section Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
           Ty.function
             [Ty.apply (Ty.path "ref") [T];
               Ty.apply (Ty.path "ref") [T];
-              Ty.apply (Ty.path "subtle::Choice::t") []]
+              Ty.apply (Ty.path "subtle::Choice") []]
             T :=
         ltac:(M.get_method (fun ℐ =>
           subtle.ConditionallySelectable.conditional_select
@@ -3732,14 +3673,14 @@ Section Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
       let* α1 :
           Ty.apply
             (Ty.path "ref")
-            [Ty.apply (Ty.path "subtle::CtOption::t") [T]] :=
+            [Ty.apply (Ty.path "subtle::CtOption") [T]] :=
         M.read a in
       let* α2 :
           Ty.apply
             (Ty.path "ref")
-            [Ty.apply (Ty.path "subtle::CtOption::t") [T]] :=
+            [Ty.apply (Ty.path "subtle::CtOption") [T]] :=
         M.read b in
-      let* α3 : Ty.apply (Ty.path "subtle::Choice::t") [] := M.read choice in
+      let* α3 : Ty.apply (Ty.path "subtle::Choice") [] := M.read choice in
       let* α4 : T :=
         M.call
           (α0
@@ -3748,36 +3689,32 @@ Section Impl_subtle_ConditionallySelectable_for_subtle_CtOption_T.
             α3) in
       let* α5 :
           Ty.function
-            [Ty.apply
-                (Ty.path "ref")
-                [Ty.apply (Ty.path "subtle::Choice::t") []];
-              Ty.apply
-                (Ty.path "ref")
-                [Ty.apply (Ty.path "subtle::Choice::t") []];
-              Ty.apply (Ty.path "subtle::Choice::t") []]
-            (Ty.apply (Ty.path "subtle::Choice::t") []) :=
+            [Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "subtle::Choice") []];
+              Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "subtle::Choice") []];
+              Ty.apply (Ty.path "subtle::Choice") []]
+            (Ty.apply (Ty.path "subtle::Choice") []) :=
         ltac:(M.get_method (fun ℐ =>
           subtle.ConditionallySelectable.conditional_select
-            (Self := Ty.apply (Ty.path "subtle::Choice::t") [])
+            (Self := Ty.apply (Ty.path "subtle::Choice") [])
             (Trait := ℐ))) in
       let* α6 :
           Ty.apply
             (Ty.path "ref")
-            [Ty.apply (Ty.path "subtle::CtOption::t") [T]] :=
+            [Ty.apply (Ty.path "subtle::CtOption") [T]] :=
         M.read a in
       let* α7 :
           Ty.apply
             (Ty.path "ref")
-            [Ty.apply (Ty.path "subtle::CtOption::t") [T]] :=
+            [Ty.apply (Ty.path "subtle::CtOption") [T]] :=
         M.read b in
-      let* α8 : Ty.apply (Ty.path "subtle::Choice::t") [] := M.read choice in
-      let* α9 : Ty.apply (Ty.path "subtle::Choice::t") [] :=
+      let* α8 : Ty.apply (Ty.path "subtle::Choice") [] := M.read choice in
+      let* α9 : Ty.apply (Ty.path "subtle::Choice") [] :=
         M.call
           (α5
             (borrow (subtle.CtOption.Get_is_some (deref α6)))
             (borrow (subtle.CtOption.Get_is_some (deref α7)))
             α8) in
-      M.call ((Ty.apply (Ty.path "subtle::CtOption::t") [T])::["new"] α4 α9)
+      M.call ((Ty.apply (Ty.path "subtle::CtOption") [T])::["new"] α4 α9)
     | _, _ => M.impossible
     end.
   
@@ -3795,8 +3732,7 @@ Module  Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
 Section Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
   Context {T : Set}.
   
-  Definition Self : Ty.t :=
-    Ty.apply (Ty.path "subtle::CtOption") [Ty.apply T []].
+  Definition Self : Ty.t := Ty.apply (Ty.path "subtle::CtOption") [T].
   
   (*
       fn ct_eq(&self, rhs: &CtOption<T>) -> Choice {
@@ -3811,114 +3747,110 @@ Section Impl_subtle_ConstantTimeEq_for_subtle_CtOption_T.
     | [], [self; rhs] =>
       let* self := M.alloc self in
       let* rhs := M.alloc rhs in
-      let* a : Ty.apply (Ty.path "subtle::Choice::t") [] :=
+      let* a : Ty.apply (Ty.path "subtle::Choice") [] :=
         let* α0 :
             Ty.apply
               (Ty.path "ref")
-              [Ty.apply (Ty.path "subtle::CtOption::t") [T]] :=
+              [Ty.apply (Ty.path "subtle::CtOption") [T]] :=
           M.read self in
-        let* α1 : Ty.apply (Ty.path "subtle::Choice::t") [] :=
+        let* α1 : Ty.apply (Ty.path "subtle::Choice") [] :=
           M.call
-            ((Ty.apply (Ty.path "subtle::CtOption::t") [T])::["is_some"] α0) in
+            ((Ty.apply (Ty.path "subtle::CtOption") [T])::["is_some"] α0) in
         M.alloc α1 in
-      let* b : Ty.apply (Ty.path "subtle::Choice::t") [] :=
+      let* b : Ty.apply (Ty.path "subtle::Choice") [] :=
         let* α0 :
             Ty.apply
               (Ty.path "ref")
-              [Ty.apply (Ty.path "subtle::CtOption::t") [T]] :=
+              [Ty.apply (Ty.path "subtle::CtOption") [T]] :=
           M.read rhs in
-        let* α1 : Ty.apply (Ty.path "subtle::Choice::t") [] :=
+        let* α1 : Ty.apply (Ty.path "subtle::Choice") [] :=
           M.call
-            ((Ty.apply (Ty.path "subtle::CtOption::t") [T])::["is_some"] α0) in
+            ((Ty.apply (Ty.path "subtle::CtOption") [T])::["is_some"] α0) in
         M.alloc α1 in
       let* α0 :
           Ty.function
-            [Ty.apply (Ty.path "subtle::Choice::t") [];
-              Ty.apply (Ty.path "subtle::Choice::t") []]
+            [Ty.apply (Ty.path "subtle::Choice") [];
+              Ty.apply (Ty.path "subtle::Choice") []]
             _ :=
         ltac:(M.get_method (fun ℐ =>
           core.ops.bit.BitOr.bitor
-            (Self := Ty.apply (Ty.path "subtle::Choice::t") [])
-            (Rhs := Ty.apply (Ty.path "subtle::Choice::t") [])
+            (Self := Ty.apply (Ty.path "subtle::Choice") [])
+            (Rhs := Ty.apply (Ty.path "subtle::Choice") [])
             (Trait := ℐ))) in
       let* α1 :
           Ty.function
-            [Ty.apply (Ty.path "subtle::Choice::t") [];
-              Ty.apply (Ty.path "subtle::Choice::t") []]
+            [Ty.apply (Ty.path "subtle::Choice") [];
+              Ty.apply (Ty.path "subtle::Choice") []]
             _ :=
         ltac:(M.get_method (fun ℐ =>
           core.ops.bit.BitAnd.bitand
-            (Self := Ty.apply (Ty.path "subtle::Choice::t") [])
-            (Rhs := Ty.apply (Ty.path "subtle::Choice::t") [])
+            (Self := Ty.apply (Ty.path "subtle::Choice") [])
+            (Rhs := Ty.apply (Ty.path "subtle::Choice") [])
             (Trait := ℐ))) in
       let* α2 :
           Ty.function
-            [Ty.apply (Ty.path "subtle::Choice::t") [];
-              Ty.apply (Ty.path "subtle::Choice::t") []]
+            [Ty.apply (Ty.path "subtle::Choice") [];
+              Ty.apply (Ty.path "subtle::Choice") []]
             _ :=
         ltac:(M.get_method (fun ℐ =>
           core.ops.bit.BitAnd.bitand
-            (Self := Ty.apply (Ty.path "subtle::Choice::t") [])
-            (Rhs := Ty.apply (Ty.path "subtle::Choice::t") [])
+            (Self := Ty.apply (Ty.path "subtle::Choice") [])
+            (Rhs := Ty.apply (Ty.path "subtle::Choice") [])
             (Trait := ℐ))) in
-      let* α3 : Ty.apply (Ty.path "subtle::Choice::t") [] := M.read a in
-      let* α4 : Ty.apply (Ty.path "subtle::Choice::t") [] := M.read b in
-      let* α5 : Ty.apply (Ty.path "subtle::Choice::t") [] :=
-        M.call (α2 α3 α4) in
+      let* α3 : Ty.apply (Ty.path "subtle::Choice") [] := M.read a in
+      let* α4 : Ty.apply (Ty.path "subtle::Choice") [] := M.read b in
+      let* α5 : Ty.apply (Ty.path "subtle::Choice") [] := M.call (α2 α3 α4) in
       let* α6 :
           Ty.function
             [Ty.apply (Ty.path "ref") [T]; Ty.apply (Ty.path "ref") [T]]
-            (Ty.apply (Ty.path "subtle::Choice::t") []) :=
+            (Ty.apply (Ty.path "subtle::Choice") []) :=
         ltac:(M.get_method (fun ℐ =>
           subtle.ConstantTimeEq.ct_eq (Self := T) (Trait := ℐ))) in
       let* α7 :
           Ty.apply
             (Ty.path "ref")
-            [Ty.apply (Ty.path "subtle::CtOption::t") [T]] :=
+            [Ty.apply (Ty.path "subtle::CtOption") [T]] :=
         M.read self in
       let* α8 :
           Ty.apply
             (Ty.path "ref")
-            [Ty.apply (Ty.path "subtle::CtOption::t") [T]] :=
+            [Ty.apply (Ty.path "subtle::CtOption") [T]] :=
         M.read rhs in
-      let* α9 : Ty.apply (Ty.path "subtle::Choice::t") [] :=
+      let* α9 : Ty.apply (Ty.path "subtle::Choice") [] :=
         M.call
           (α6
             (borrow (subtle.CtOption.Get_value (deref α7)))
             (borrow (subtle.CtOption.Get_value (deref α8)))) in
-      let* α10 : Ty.apply (Ty.path "subtle::Choice::t") [] :=
-        M.call (α1 α5 α9) in
+      let* α10 : Ty.apply (Ty.path "subtle::Choice") [] := M.call (α1 α5 α9) in
       let* α11 :
           Ty.function
-            [Ty.apply (Ty.path "subtle::Choice::t") [];
-              Ty.apply (Ty.path "subtle::Choice::t") []]
+            [Ty.apply (Ty.path "subtle::Choice") [];
+              Ty.apply (Ty.path "subtle::Choice") []]
             _ :=
         ltac:(M.get_method (fun ℐ =>
           core.ops.bit.BitAnd.bitand
-            (Self := Ty.apply (Ty.path "subtle::Choice::t") [])
-            (Rhs := Ty.apply (Ty.path "subtle::Choice::t") [])
+            (Self := Ty.apply (Ty.path "subtle::Choice") [])
+            (Rhs := Ty.apply (Ty.path "subtle::Choice") [])
             (Trait := ℐ))) in
-      let* α12 : Ty.function [Ty.apply (Ty.path "subtle::Choice::t") []] _ :=
+      let* α12 : Ty.function [Ty.apply (Ty.path "subtle::Choice") []] _ :=
         ltac:(M.get_method (fun ℐ =>
           core.ops.bit.Not.not
-            (Self := Ty.apply (Ty.path "subtle::Choice::t") [])
+            (Self := Ty.apply (Ty.path "subtle::Choice") [])
             (Trait := ℐ))) in
-      let* α13 : Ty.apply (Ty.path "subtle::Choice::t") [] := M.read a in
-      let* α14 : Ty.apply (Ty.path "subtle::Choice::t") [] :=
-        M.call (α12 α13) in
-      let* α15 : Ty.function [Ty.apply (Ty.path "subtle::Choice::t") []] _ :=
+      let* α13 : Ty.apply (Ty.path "subtle::Choice") [] := M.read a in
+      let* α14 : Ty.apply (Ty.path "subtle::Choice") [] := M.call (α12 α13) in
+      let* α15 : Ty.function [Ty.apply (Ty.path "subtle::Choice") []] _ :=
         ltac:(M.get_method (fun ℐ =>
           core.ops.bit.Not.not
-            (Self := Ty.apply (Ty.path "subtle::Choice::t") [])
+            (Self := Ty.apply (Ty.path "subtle::Choice") [])
             (Trait := ℐ))) in
-      let* α16 : Ty.apply (Ty.path "subtle::Choice::t") [] := M.read b in
-      let* α17 : Ty.apply (Ty.path "subtle::Choice::t") [] :=
-        M.call (α15 α16) in
-      let* α18 : Ty.apply (Ty.path "subtle::Choice::t") [] :=
+      let* α16 : Ty.apply (Ty.path "subtle::Choice") [] := M.read b in
+      let* α17 : Ty.apply (Ty.path "subtle::Choice") [] := M.call (α15 α16) in
+      let* α18 : Ty.apply (Ty.path "subtle::Choice") [] :=
         M.call (α11 α14 α17) in
-      let* α19 : Ty.apply (Ty.path "subtle::Choice::t") [] :=
+      let* α19 : Ty.apply (Ty.path "subtle::Choice") [] :=
         M.call (α0 α10 α18) in
-      let* α0 : Ty.apply (Ty.path "subtle::Choice::t") [] := M.alloc α19 in
+      let* α0 : Ty.apply (Ty.path "subtle::Choice") [] := M.alloc α19 in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -3936,8 +3868,7 @@ Section ConstantTimeGreater.
   Class Trait (Self : Set) : Type := {
     ct_gt :
       Ty.function
-        [Ty.apply (Ty.path "ref") [Ty.apply Self []];
-          Ty.apply (Ty.path "ref") [Ty.apply Self []]]
+        [Ty.apply (Ty.path "ref") [Self]; Ty.apply (Ty.path "ref") [Self]]
         (Ty.apply (Ty.path "subtle::Choice") []);
   }.
   
@@ -3946,7 +3877,7 @@ End ConstantTimeGreater.
 
 Module  Impl_subtle_ConstantTimeGreater_for_u8.
 Section Impl_subtle_ConstantTimeGreater_for_u8.
-  Definition Self : Ty.t := Ty.apply (Ty.path "u8") [].
+  Definition Self : Ty.t := Ty.path "u8".
   
   (*
               fn ct_gt(&self, other: &$t_u) -> Choice {
@@ -4040,12 +3971,12 @@ Section Impl_subtle_ConstantTimeGreater_for_u8.
             M.alloc tt
           else
             let* _ : Ty.tuple :=
-              let* α0 : Ty.path "never::t" := M.break in
-              let* α1 := M.read α0 in
+              let* α0 : Ty.path "never" := M.break in
+              let* α1 : Ty.path "never" := M.read α0 in
               let* α2 : Ty.tuple := never_to_any α1 in
               M.alloc α2 in
             let* α0 : Ty.path "unit" := M.alloc tt in
-            let* α1 := M.read α0 in
+            let* α1 : Ty.path "never" := M.read α0 in
             let* α2 : Ty.tuple := never_to_any α1 in
             M.alloc α2) in
       let* bit : Ty.path "u8" :=
@@ -4076,29 +4007,27 @@ Section Impl_subtle_ConstantTimeGreater_for_u8.
             M.alloc tt
           else
             let* _ : Ty.tuple :=
-              let* α0 : Ty.path "never::t" := M.break in
-              let* α1 := M.read α0 in
+              let* α0 : Ty.path "never" := M.break in
+              let* α1 : Ty.path "never" := M.read α0 in
               let* α2 : Ty.tuple := never_to_any α1 in
               M.alloc α2 in
             let* α0 : Ty.path "unit" := M.alloc tt in
-            let* α1 := M.read α0 in
+            let* α1 : Ty.path "never" := M.read α0 in
             let* α2 : Ty.tuple := never_to_any α1 in
             M.alloc α2) in
       let* α0 :
-          Ty.function
-            [Ty.path "u8"]
-            (Ty.apply (Ty.path "subtle::Choice::t") []) :=
+          Ty.function [Ty.path "u8"] (Ty.apply (Ty.path "subtle::Choice") []) :=
         ltac:(M.get_method (fun ℐ =>
           core.convert.From.from
-            (Self := Ty.apply (Ty.path "subtle::Choice::t") [])
+            (Self := Ty.apply (Ty.path "subtle::Choice") [])
             (T := Ty.path "u8")
             (Trait := ℐ))) in
       let* α1 : Ty.path "u8" := M.read bit in
       let* α2 : Ty.path "u8" :=
         M.alloc (BinOp.Pure.bit_and α1 ((Integer.of_Z 1) : Ty.path "u8")) in
       let* α3 : Ty.path "u8" := M.read (use α2) in
-      let* α4 : Ty.apply (Ty.path "subtle::Choice::t") [] := M.call (α0 α3) in
-      let* α0 : Ty.apply (Ty.path "subtle::Choice::t") [] := M.alloc α4 in
+      let* α4 : Ty.apply (Ty.path "subtle::Choice") [] := M.call (α0 α3) in
+      let* α0 : Ty.apply (Ty.path "subtle::Choice") [] := M.alloc α4 in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -4113,7 +4042,7 @@ End Impl_subtle_ConstantTimeGreater_for_u8.
 
 Module  Impl_subtle_ConstantTimeGreater_for_u16.
 Section Impl_subtle_ConstantTimeGreater_for_u16.
-  Definition Self : Ty.t := Ty.apply (Ty.path "u16") [].
+  Definition Self : Ty.t := Ty.path "u16".
   
   (*
               fn ct_gt(&self, other: &$t_u) -> Choice {
@@ -4207,12 +4136,12 @@ Section Impl_subtle_ConstantTimeGreater_for_u16.
             M.alloc tt
           else
             let* _ : Ty.tuple :=
-              let* α0 : Ty.path "never::t" := M.break in
-              let* α1 := M.read α0 in
+              let* α0 : Ty.path "never" := M.break in
+              let* α1 : Ty.path "never" := M.read α0 in
               let* α2 : Ty.tuple := never_to_any α1 in
               M.alloc α2 in
             let* α0 : Ty.path "unit" := M.alloc tt in
-            let* α1 := M.read α0 in
+            let* α1 : Ty.path "never" := M.read α0 in
             let* α2 : Ty.tuple := never_to_any α1 in
             M.alloc α2) in
       let* bit : Ty.path "u16" :=
@@ -4243,30 +4172,28 @@ Section Impl_subtle_ConstantTimeGreater_for_u16.
             M.alloc tt
           else
             let* _ : Ty.tuple :=
-              let* α0 : Ty.path "never::t" := M.break in
-              let* α1 := M.read α0 in
+              let* α0 : Ty.path "never" := M.break in
+              let* α1 : Ty.path "never" := M.read α0 in
               let* α2 : Ty.tuple := never_to_any α1 in
               M.alloc α2 in
             let* α0 : Ty.path "unit" := M.alloc tt in
-            let* α1 := M.read α0 in
+            let* α1 : Ty.path "never" := M.read α0 in
             let* α2 : Ty.tuple := never_to_any α1 in
             M.alloc α2) in
       let* α0 :
-          Ty.function
-            [Ty.path "u8"]
-            (Ty.apply (Ty.path "subtle::Choice::t") []) :=
+          Ty.function [Ty.path "u8"] (Ty.apply (Ty.path "subtle::Choice") []) :=
         ltac:(M.get_method (fun ℐ =>
           core.convert.From.from
-            (Self := Ty.apply (Ty.path "subtle::Choice::t") [])
+            (Self := Ty.apply (Ty.path "subtle::Choice") [])
             (T := Ty.path "u8")
             (Trait := ℐ))) in
       let* α1 : Ty.path "u16" := M.read bit in
-      let* α2 : Ty.apply (Ty.path "subtle::Choice::t") [] :=
+      let* α2 : Ty.apply (Ty.path "subtle::Choice") [] :=
         M.call
           (α0
             (rust_cast
               (BinOp.Pure.bit_and α1 ((Integer.of_Z 1) : Ty.path "u16")))) in
-      let* α0 : Ty.apply (Ty.path "subtle::Choice::t") [] := M.alloc α2 in
+      let* α0 : Ty.apply (Ty.path "subtle::Choice") [] := M.alloc α2 in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -4281,7 +4208,7 @@ End Impl_subtle_ConstantTimeGreater_for_u16.
 
 Module  Impl_subtle_ConstantTimeGreater_for_u32.
 Section Impl_subtle_ConstantTimeGreater_for_u32.
-  Definition Self : Ty.t := Ty.apply (Ty.path "u32") [].
+  Definition Self : Ty.t := Ty.path "u32".
   
   (*
               fn ct_gt(&self, other: &$t_u) -> Choice {
@@ -4375,12 +4302,12 @@ Section Impl_subtle_ConstantTimeGreater_for_u32.
             M.alloc tt
           else
             let* _ : Ty.tuple :=
-              let* α0 : Ty.path "never::t" := M.break in
-              let* α1 := M.read α0 in
+              let* α0 : Ty.path "never" := M.break in
+              let* α1 : Ty.path "never" := M.read α0 in
               let* α2 : Ty.tuple := never_to_any α1 in
               M.alloc α2 in
             let* α0 : Ty.path "unit" := M.alloc tt in
-            let* α1 := M.read α0 in
+            let* α1 : Ty.path "never" := M.read α0 in
             let* α2 : Ty.tuple := never_to_any α1 in
             M.alloc α2) in
       let* bit : Ty.path "u32" :=
@@ -4411,30 +4338,28 @@ Section Impl_subtle_ConstantTimeGreater_for_u32.
             M.alloc tt
           else
             let* _ : Ty.tuple :=
-              let* α0 : Ty.path "never::t" := M.break in
-              let* α1 := M.read α0 in
+              let* α0 : Ty.path "never" := M.break in
+              let* α1 : Ty.path "never" := M.read α0 in
               let* α2 : Ty.tuple := never_to_any α1 in
               M.alloc α2 in
             let* α0 : Ty.path "unit" := M.alloc tt in
-            let* α1 := M.read α0 in
+            let* α1 : Ty.path "never" := M.read α0 in
             let* α2 : Ty.tuple := never_to_any α1 in
             M.alloc α2) in
       let* α0 :
-          Ty.function
-            [Ty.path "u8"]
-            (Ty.apply (Ty.path "subtle::Choice::t") []) :=
+          Ty.function [Ty.path "u8"] (Ty.apply (Ty.path "subtle::Choice") []) :=
         ltac:(M.get_method (fun ℐ =>
           core.convert.From.from
-            (Self := Ty.apply (Ty.path "subtle::Choice::t") [])
+            (Self := Ty.apply (Ty.path "subtle::Choice") [])
             (T := Ty.path "u8")
             (Trait := ℐ))) in
       let* α1 : Ty.path "u32" := M.read bit in
-      let* α2 : Ty.apply (Ty.path "subtle::Choice::t") [] :=
+      let* α2 : Ty.apply (Ty.path "subtle::Choice") [] :=
         M.call
           (α0
             (rust_cast
               (BinOp.Pure.bit_and α1 ((Integer.of_Z 1) : Ty.path "u32")))) in
-      let* α0 : Ty.apply (Ty.path "subtle::Choice::t") [] := M.alloc α2 in
+      let* α0 : Ty.apply (Ty.path "subtle::Choice") [] := M.alloc α2 in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -4449,7 +4374,7 @@ End Impl_subtle_ConstantTimeGreater_for_u32.
 
 Module  Impl_subtle_ConstantTimeGreater_for_u64.
 Section Impl_subtle_ConstantTimeGreater_for_u64.
-  Definition Self : Ty.t := Ty.apply (Ty.path "u64") [].
+  Definition Self : Ty.t := Ty.path "u64".
   
   (*
               fn ct_gt(&self, other: &$t_u) -> Choice {
@@ -4543,12 +4468,12 @@ Section Impl_subtle_ConstantTimeGreater_for_u64.
             M.alloc tt
           else
             let* _ : Ty.tuple :=
-              let* α0 : Ty.path "never::t" := M.break in
-              let* α1 := M.read α0 in
+              let* α0 : Ty.path "never" := M.break in
+              let* α1 : Ty.path "never" := M.read α0 in
               let* α2 : Ty.tuple := never_to_any α1 in
               M.alloc α2 in
             let* α0 : Ty.path "unit" := M.alloc tt in
-            let* α1 := M.read α0 in
+            let* α1 : Ty.path "never" := M.read α0 in
             let* α2 : Ty.tuple := never_to_any α1 in
             M.alloc α2) in
       let* bit : Ty.path "u64" :=
@@ -4579,30 +4504,28 @@ Section Impl_subtle_ConstantTimeGreater_for_u64.
             M.alloc tt
           else
             let* _ : Ty.tuple :=
-              let* α0 : Ty.path "never::t" := M.break in
-              let* α1 := M.read α0 in
+              let* α0 : Ty.path "never" := M.break in
+              let* α1 : Ty.path "never" := M.read α0 in
               let* α2 : Ty.tuple := never_to_any α1 in
               M.alloc α2 in
             let* α0 : Ty.path "unit" := M.alloc tt in
-            let* α1 := M.read α0 in
+            let* α1 : Ty.path "never" := M.read α0 in
             let* α2 : Ty.tuple := never_to_any α1 in
             M.alloc α2) in
       let* α0 :
-          Ty.function
-            [Ty.path "u8"]
-            (Ty.apply (Ty.path "subtle::Choice::t") []) :=
+          Ty.function [Ty.path "u8"] (Ty.apply (Ty.path "subtle::Choice") []) :=
         ltac:(M.get_method (fun ℐ =>
           core.convert.From.from
-            (Self := Ty.apply (Ty.path "subtle::Choice::t") [])
+            (Self := Ty.apply (Ty.path "subtle::Choice") [])
             (T := Ty.path "u8")
             (Trait := ℐ))) in
       let* α1 : Ty.path "u64" := M.read bit in
-      let* α2 : Ty.apply (Ty.path "subtle::Choice::t") [] :=
+      let* α2 : Ty.apply (Ty.path "subtle::Choice") [] :=
         M.call
           (α0
             (rust_cast
               (BinOp.Pure.bit_and α1 ((Integer.of_Z 1) : Ty.path "u64")))) in
-      let* α0 : Ty.apply (Ty.path "subtle::Choice::t") [] := M.alloc α2 in
+      let* α0 : Ty.apply (Ty.path "subtle::Choice") [] := M.alloc α2 in
       M.read α0
     | _, _ => M.impossible
     end.
@@ -4626,7 +4549,7 @@ End ConstantTimeLess.
 
 Module  Impl_subtle_ConstantTimeLess_for_u8.
 Section Impl_subtle_ConstantTimeLess_for_u8.
-  Definition Self : Ty.t := Ty.apply (Ty.path "u8") [].
+  Definition Self : Ty.t := Ty.path "u8".
   
   Definition ℐ : Instance.t := [("ct_lt", ct_lt)].
 End Impl_subtle_ConstantTimeLess_for_u8.
@@ -4634,7 +4557,7 @@ End Impl_subtle_ConstantTimeLess_for_u8.
 
 Module  Impl_subtle_ConstantTimeLess_for_u16.
 Section Impl_subtle_ConstantTimeLess_for_u16.
-  Definition Self : Ty.t := Ty.apply (Ty.path "u16") [].
+  Definition Self : Ty.t := Ty.path "u16".
   
   Definition ℐ : Instance.t := [("ct_lt", ct_lt)].
 End Impl_subtle_ConstantTimeLess_for_u16.
@@ -4642,7 +4565,7 @@ End Impl_subtle_ConstantTimeLess_for_u16.
 
 Module  Impl_subtle_ConstantTimeLess_for_u32.
 Section Impl_subtle_ConstantTimeLess_for_u32.
-  Definition Self : Ty.t := Ty.apply (Ty.path "u32") [].
+  Definition Self : Ty.t := Ty.path "u32".
   
   Definition ℐ : Instance.t := [("ct_lt", ct_lt)].
 End Impl_subtle_ConstantTimeLess_for_u32.
@@ -4650,7 +4573,7 @@ End Impl_subtle_ConstantTimeLess_for_u32.
 
 Module  Impl_subtle_ConstantTimeLess_for_u64.
 Section Impl_subtle_ConstantTimeLess_for_u64.
-  Definition Self : Ty.t := Ty.apply (Ty.path "u64") [].
+  Definition Self : Ty.t := Ty.path "u64".
   
   Definition ℐ : Instance.t := [("ct_lt", ct_lt)].
 End Impl_subtle_ConstantTimeLess_for_u64.

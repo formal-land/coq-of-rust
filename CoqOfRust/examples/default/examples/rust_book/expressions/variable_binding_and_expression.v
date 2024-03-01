@@ -13,13 +13,18 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
-  let* x : M.Val i32.t := M.alloc ((Integer.of_Z 5) : i32.t) in
-  let _ : M.Val i32.t := x in
-  let* _ : M.Val i32.t :=
-    let* α0 : i32.t := M.read x in
-    let* α1 : i32.t := BinOp.Panic.add α0 ((Integer.of_Z 1) : i32.t) in
-    M.alloc α1 in
-  let* _ : M.Val i32.t := M.alloc ((Integer.of_Z 15) : i32.t) in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [], [] =>
+    let* x : Ty.path "i32" := M.alloc ((Integer.of_Z 5) : Ty.path "i32") in
+    let _ : Ty.path "i32" := x in
+    let* _ : Ty.path "i32" :=
+      let* α0 : Ty.path "i32" := M.read x in
+      let* α1 : Ty.path "i32" :=
+        BinOp.Panic.add α0 ((Integer.of_Z 1) : Ty.path "i32") in
+      M.alloc α1 in
+    let* _ : Ty.path "i32" := M.alloc ((Integer.of_Z 15) : Ty.path "i32") in
+    let* α0 : Ty.path "unit" := M.alloc tt in
+    M.read α0
+  | _, _ => M.impossible
+  end.

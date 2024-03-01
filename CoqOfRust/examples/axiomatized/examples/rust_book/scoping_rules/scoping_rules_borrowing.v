@@ -2,9 +2,14 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Parameter eat_box_i32 :
-    (alloc.boxed.Box.t i32.t alloc.boxed.Box.Default.A) -> M unit.
+    (Ty.apply
+        (Ty.path "alloc::boxed::Box")
+        [Ty.path "i32"; Ty.apply (Ty.path "alloc::alloc::Global") []])
+      ->
+      Ty.path "unit".
 
-Parameter borrow_i32 : (ref i32.t) -> M unit.
+Parameter borrow_i32 :
+    (Ty.apply (Ty.path "ref") [Ty.path "i32"]) -> Ty.path "unit".
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M unit.
+Parameter main : Ty.path "unit".

@@ -35,70 +35,54 @@ Section SomeTrait.
     ℒ_0 :: traits_parms.Foo.Trait SomeType;
     ℒ_1 :: traits_parms.Bar.Trait SomeType;
     ℒ_2 :: traits_parms.Tar.Trait SomeType;
-    some_fn : M unit;
+    some_fn : Ty.function [] (Ty.path "unit");
   }.
   
-  Global Instance Method_SomeType `(Trait) :
-    Notations.DoubleColonType Self "SomeType" := {
+  Definition Method_SomeType `(Trait) : Instance.t := {
     Notations.double_colon_type := SomeType;
   }.
 End SomeTrait.
 End SomeTrait.
 
-Module  SomeOtherType.
-Section SomeOtherType.
-  Record t : Set := {
-    x0 : u32.t;
-  }.
-  
-  Definition Get_0 :=
-    Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>)).
-End SomeOtherType.
-End SomeOtherType.
 
-Module  Impl_traits_parms_Foo_for_traits_parms_SomeOtherType_t.
-Section Impl_traits_parms_Foo_for_traits_parms_SomeOtherType_t.
-  Definition Self : Set := traits_parms.SomeOtherType.t.
-  
-  Global Instance ℐ : traits_parms.Foo.Trait Self := {
-  }.
-End Impl_traits_parms_Foo_for_traits_parms_SomeOtherType_t.
-End Impl_traits_parms_Foo_for_traits_parms_SomeOtherType_t.
 
-Module  Impl_traits_parms_Bar_for_traits_parms_SomeOtherType_t.
-Section Impl_traits_parms_Bar_for_traits_parms_SomeOtherType_t.
-  Definition Self : Set := traits_parms.SomeOtherType.t.
+Module  Impl_traits_parms_Foo_for_traits_parms_SomeOtherType.
+Section Impl_traits_parms_Foo_for_traits_parms_SomeOtherType.
+  Definition Self : Ty.t := Ty.apply (Ty.path "traits_parms::SomeOtherType") [].
   
-  Global Instance ℐ : traits_parms.Bar.Trait Self := {
-  }.
-End Impl_traits_parms_Bar_for_traits_parms_SomeOtherType_t.
-End Impl_traits_parms_Bar_for_traits_parms_SomeOtherType_t.
+  Definition ℐ : Instance.t := [].
+End Impl_traits_parms_Foo_for_traits_parms_SomeOtherType.
+End Impl_traits_parms_Foo_for_traits_parms_SomeOtherType.
 
-Module  Impl_traits_parms_Tar_for_traits_parms_SomeOtherType_t.
-Section Impl_traits_parms_Tar_for_traits_parms_SomeOtherType_t.
-  Definition Self : Set := traits_parms.SomeOtherType.t.
+Module  Impl_traits_parms_Bar_for_traits_parms_SomeOtherType.
+Section Impl_traits_parms_Bar_for_traits_parms_SomeOtherType.
+  Definition Self : Ty.t := Ty.apply (Ty.path "traits_parms::SomeOtherType") [].
   
-  Global Instance ℐ : traits_parms.Tar.Trait Self := {
-  }.
-End Impl_traits_parms_Tar_for_traits_parms_SomeOtherType_t.
-End Impl_traits_parms_Tar_for_traits_parms_SomeOtherType_t.
+  Definition ℐ : Instance.t := [].
+End Impl_traits_parms_Bar_for_traits_parms_SomeOtherType.
+End Impl_traits_parms_Bar_for_traits_parms_SomeOtherType.
 
-Module  Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType_t.
-Section Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType_t.
-  Definition Self : Set := traits_parms.SomeOtherType.t.
+Module  Impl_traits_parms_Tar_for_traits_parms_SomeOtherType.
+Section Impl_traits_parms_Tar_for_traits_parms_SomeOtherType.
+  Definition Self : Ty.t := Ty.apply (Ty.path "traits_parms::SomeOtherType") [].
   
-  Definition SomeType : Set := traits_parms.SomeOtherType.t.
+  Definition ℐ : Instance.t := [].
+End Impl_traits_parms_Tar_for_traits_parms_SomeOtherType.
+End Impl_traits_parms_Tar_for_traits_parms_SomeOtherType.
+
+Module  Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType.
+Section Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType.
+  Definition Self : Ty.t := Ty.apply (Ty.path "traits_parms::SomeOtherType") [].
   
-  Parameter some_fn : M unit.
+  Definition SomeType : Set :=
+    Ty.apply (Ty.path "traits_parms::SomeOtherType") [].
   
-  Global Instance AssociatedFunction_some_fn :
-    Notations.DoubleColon Self "some_fn" := {
+  Parameter some_fn : Ty.path "unit".
+  
+  Definition AssociatedFunction_some_fn : Instance.t := {
     Notations.double_colon := some_fn;
   }.
   
-  Global Instance ℐ : traits_parms.SomeTrait.Trait Self := {
-    traits_parms.SomeTrait.SomeType := SomeType;
-    traits_parms.SomeTrait.some_fn := some_fn;
-  }.
-End Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType_t.
-End Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType_t.
+  Definition ℐ : Instance.t := [("SomeType", SomeType); ("some_fn", some_fn)].
+End Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType.
+End Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType.

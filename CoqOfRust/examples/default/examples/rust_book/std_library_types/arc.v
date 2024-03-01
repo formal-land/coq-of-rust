@@ -23,153 +23,243 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
-  let* apple : M.Val (alloc.sync.Arc.t (ref str.t) alloc.alloc.Global.t) :=
-    let* α0 : ref str.t := M.read (mk_str "the same apple") in
-    let* α1 : alloc.sync.Arc.t (ref str.t) alloc.alloc.Global.t :=
-      M.call
-        ((alloc.sync.Arc.t (ref str.t) alloc.alloc.Global.t)::["new"] α0) in
-    M.alloc α1 in
-  let* _ : M.Val unit :=
-    let* α0 : (core.ops.range.Range.t i32.t) -> M _ :=
-      ltac:(M.get_method (fun ℐ =>
-        core.iter.traits.collect.IntoIterator.into_iter
-          (Self := core.ops.range.Range.t i32.t)
-          (Trait := ℐ))) in
-    let* α1 : core.ops.range.Range.t i32.t :=
-      M.call
-        (α0
-          {|
-            core.ops.range.Range.start := (Integer.of_Z 0) : i32.t;
-            core.ops.range.Range.end_ := (Integer.of_Z 10) : i32.t;
-          |}) in
-    let* α2 : M.Val (core.ops.range.Range.t i32.t) := M.alloc α1 in
-    let* α3 : M.Val unit :=
-      match_operator
-        α2
-        [
-          fun γ =>
-            (let* iter := M.copy γ in
-            M.loop
-              (let* _ : M.Val unit :=
-                let* α0 :
-                    (mut_ref (core.ops.range.Range.t i32.t)) ->
-                      M (core.option.Option.t _) :=
-                  ltac:(M.get_method (fun ℐ =>
-                    core.iter.traits.iterator.Iterator.next
-                      (Self := core.ops.range.Range.t i32.t)
-                      (Trait := ℐ))) in
-                let* α1 : core.option.Option.t i32.t :=
-                  M.call (α0 (borrow_mut iter)) in
-                let* α2 : M.Val (core.option.Option.t i32.t) := M.alloc α1 in
-                match_operator
-                  α2
-                  [
-                    fun γ =>
-                      (let* α0 := M.read γ in
-                      match α0 with
-                      | core.option.Option.None =>
-                        let* α0 : M.Val never.t := M.break in
-                        let* α1 := M.read α0 in
-                        let* α2 : unit := never_to_any α1 in
-                        M.alloc α2
-                      | _ => M.break_match
-                      end) :
-                      M (M.Val unit);
-                    fun γ =>
-                      (let* α0 := M.read γ in
-                      match α0 with
-                      | core.option.Option.Some _ =>
-                        let γ0_0 := core.option.Option.Get_Some_0 γ in
-                        let* apple :
-                            M.Val
-                              (alloc.sync.Arc.t
-                                (ref str.t)
-                                alloc.alloc.Global.t) :=
-                          let* α0 :
-                              (ref
-                                  (alloc.sync.Arc.t
-                                    (ref str.t)
-                                    alloc.alloc.Global.t))
-                                ->
-                                M
-                                  (alloc.sync.Arc.t
-                                    (ref str.t)
-                                    alloc.alloc.Global.t) :=
-                            ltac:(M.get_method (fun ℐ =>
-                              core.clone.Clone.clone
-                                (Self :=
-                                  alloc.sync.Arc.t
-                                    (ref str.t)
-                                    alloc.alloc.Global.t)
-                                (Trait := ℐ))) in
-                          let* α1 :
-                              alloc.sync.Arc.t
-                                (ref str.t)
-                                alloc.alloc.Global.t :=
-                            M.call (α0 (borrow apple)) in
-                          M.alloc α1 in
-                        let* _ : M.Val (std.thread.JoinHandle.t unit) :=
-                          let* α0 : std.thread.JoinHandle.t unit :=
-                            M.call
-                              (std.thread.spawn
-                                (fun (α0 : unit) =>
-                                  (let* α0 := M.alloc α0 in
-                                  match_operator
-                                    α0
-                                    [
-                                      fun γ =>
-                                        (let* _ : M.Val unit :=
-                                          let* _ : M.Val unit :=
-                                            let* α0 : ref str.t :=
-                                              M.read (mk_str "") in
-                                            let* α1 : ref str.t :=
-                                              M.read (mk_str "
+Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [], [] =>
+    let* apple :
+        Ty.apply
+          (Ty.path "alloc::sync::Arc")
+          [Ty.apply (Ty.path "ref") [Ty.path "str"];
+            Ty.apply (Ty.path "alloc::alloc::Global") []] :=
+      let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+        M.read (mk_str "the same apple") in
+      let* α1 :
+          Ty.apply
+            (Ty.path "alloc::sync::Arc")
+            [Ty.apply (Ty.path "ref") [Ty.path "str"];
+              Ty.apply (Ty.path "alloc::alloc::Global") []] :=
+        M.call
+          ((Ty.apply
+                (Ty.path "alloc::sync::Arc")
+                [Ty.apply (Ty.path "ref") [Ty.path "str"];
+                  Ty.apply (Ty.path "alloc::alloc::Global") []])::["new"]
+            α0) in
+      M.alloc α1 in
+    let* _ : Ty.tuple :=
+      let* α0 :
+          Ty.function
+            [Ty.apply (Ty.path "core::ops::range::Range") [Ty.path "i32"]]
+            _ :=
+        ltac:(M.get_method (fun ℐ =>
+          core.iter.traits.collect.IntoIterator.into_iter
+            (Self :=
+              Ty.apply (Ty.path "core::ops::range::Range") [Ty.path "i32"])
+            (Trait := ℐ))) in
+      let* α1 : Ty.apply (Ty.path "core::ops::range::Range") [Ty.path "i32"] :=
+        M.call
+          (α0
+            {|
+              core.ops.range.Range.start := (Integer.of_Z 0) : Ty.path "i32";
+              core.ops.range.Range.end_ := (Integer.of_Z 10) : Ty.path "i32";
+            |}) in
+      let* α2 : Ty.apply (Ty.path "core::ops::range::Range") [Ty.path "i32"] :=
+        M.alloc α1 in
+      let* α3 : Ty.tuple :=
+        match_operator
+          α2
+          [
+            fun γ =>
+              (let* iter := M.copy γ in
+              M.loop
+                (let* _ : Ty.tuple :=
+                  let* α0 :
+                      Ty.function
+                        [Ty.apply
+                            (Ty.path "mut_ref")
+                            [Ty.apply
+                                (Ty.path "core::ops::range::Range")
+                                [Ty.path "i32"]]]
+                        (Ty.apply (Ty.path "core::option::Option") [_]) :=
+                    ltac:(M.get_method (fun ℐ =>
+                      core.iter.traits.iterator.Iterator.next
+                        (Self :=
+                          Ty.apply
+                            (Ty.path "core::ops::range::Range")
+                            [Ty.path "i32"])
+                        (Trait := ℐ))) in
+                  let* α1 :
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        [Ty.path "i32"] :=
+                    M.call (α0 (borrow_mut iter)) in
+                  let* α2 :
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        [Ty.path "i32"] :=
+                    M.alloc α1 in
+                  match_operator
+                    α2
+                    [
+                      fun γ =>
+                        (let* α0 := M.read γ in
+                        match α0 with
+                        | core.option.Option.None =>
+                          let* α0 : Ty.path "never" := M.break in
+                          let* α1 : Ty.path "never" := M.read α0 in
+                          let* α2 : Ty.tuple := never_to_any α1 in
+                          M.alloc α2
+                        | _ => M.break_match
+                        end) :
+                        Ty.tuple;
+                      fun γ =>
+                        (let* α0 := M.read γ in
+                        match α0 with
+                        | core.option.Option.Some _ =>
+                          let γ0_0 := core.option.Option.Get_Some_0 γ in
+                          let* apple :
+                              Ty.apply
+                                (Ty.path "alloc::sync::Arc")
+                                [Ty.apply (Ty.path "ref") [Ty.path "str"];
+                                  Ty.apply
+                                    (Ty.path "alloc::alloc::Global")
+                                    []] :=
+                            let* α0 :
+                                Ty.function
+                                  [Ty.apply
+                                      (Ty.path "ref")
+                                      [Ty.apply
+                                          (Ty.path "alloc::sync::Arc")
+                                          [Ty.apply
+                                              (Ty.path "ref")
+                                              [Ty.path "str"];
+                                            Ty.apply
+                                              (Ty.path "alloc::alloc::Global")
+                                              []]]]
+                                  (Ty.apply
+                                    (Ty.path "alloc::sync::Arc")
+                                    [Ty.apply (Ty.path "ref") [Ty.path "str"];
+                                      Ty.apply
+                                        (Ty.path "alloc::alloc::Global")
+                                        []]) :=
+                              ltac:(M.get_method (fun ℐ =>
+                                core.clone.Clone.clone
+                                  (Self :=
+                                    Ty.apply
+                                      (Ty.path "alloc::sync::Arc")
+                                      [Ty.apply (Ty.path "ref") [Ty.path "str"];
+                                        Ty.apply
+                                          (Ty.path "alloc::alloc::Global")
+                                          []])
+                                  (Trait := ℐ))) in
+                            let* α1 :
+                                Ty.apply
+                                  (Ty.path "alloc::sync::Arc")
+                                  [Ty.apply (Ty.path "ref") [Ty.path "str"];
+                                    Ty.apply
+                                      (Ty.path "alloc::alloc::Global")
+                                      []] :=
+                              M.call (α0 (borrow apple)) in
+                            M.alloc α1 in
+                          let* _ :
+                              Ty.apply
+                                (Ty.path "std::thread::JoinHandle")
+                                [Ty.tuple] :=
+                            let* α0 :
+                                Ty.apply
+                                  (Ty.path "std::thread::JoinHandle")
+                                  [Ty.tuple] :=
+                              M.call
+                                (std.thread.spawn
+                                  (fun (α0 : Ty.path "unit") =>
+                                    (let* α0 := M.alloc α0 in
+                                    match_operator
+                                      α0
+                                      [
+                                        fun γ =>
+                                          (let* _ : Ty.tuple :=
+                                            let* _ : Ty.tuple :=
+                                              let* α0 :
+                                                  Ty.apply
+                                                    (Ty.path "ref")
+                                                    [Ty.path "str"] :=
+                                                M.read (mk_str "") in
+                                              let* α1 :
+                                                  Ty.apply
+                                                    (Ty.path "ref")
+                                                    [Ty.path "str"] :=
+                                                M.read (mk_str "
 ") in
-                                            let* α2 :
-                                                M.Val (array (ref str.t)) :=
-                                              M.alloc [ α0; α1 ] in
-                                            let* α3 : core.fmt.rt.Argument.t :=
-                                              M.call
-                                                (core.fmt.rt.Argument.t::["new_debug"]
-                                                  (borrow apple)) in
-                                            let* α4 :
-                                                M.Val
-                                                  (array
-                                                    core.fmt.rt.Argument.t) :=
-                                              M.alloc [ α3 ] in
-                                            let* α5 : core.fmt.Arguments.t :=
-                                              M.call
-                                                (core.fmt.Arguments.t::["new_v1"]
-                                                  (pointer_coercion
-                                                    "Unsize"
-                                                    (borrow α2))
-                                                  (pointer_coercion
-                                                    "Unsize"
-                                                    (borrow α4))) in
-                                            let* α6 : unit :=
-                                              M.call (std.io.stdio._print α5) in
-                                            M.alloc α6 in
-                                          M.alloc tt in
-                                        let* α0 : M.Val unit := M.alloc tt in
-                                        M.read α0) :
-                                        M unit
-                                    ]) :
-                                  M unit)) in
-                          M.alloc α0 in
-                        M.alloc tt
-                      | _ => M.break_match
-                      end) :
-                      M (M.Val unit)
-                  ] in
-              M.alloc tt)) :
-            M (M.Val unit)
-        ] in
-    M.pure (use α3) in
-  let* _ : M.Val unit :=
-    let* α0 : core.time.Duration.t :=
-      M.call (core.time.Duration.t::["from_secs"] ((Integer.of_Z 1) : u64.t)) in
-    let* α1 : unit := M.call (std.thread.sleep α0) in
-    M.alloc α1 in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+                                              let* α2 :
+                                                  Ty.apply
+                                                    (Ty.path "array")
+                                                    [Ty.apply
+                                                        (Ty.path "ref")
+                                                        [Ty.path "str"]] :=
+                                                M.alloc [ α0; α1 ] in
+                                              let* α3 :
+                                                  Ty.apply
+                                                    (Ty.path
+                                                      "core::fmt::rt::Argument")
+                                                    [] :=
+                                                M.call
+                                                  ((Ty.apply
+                                                        (Ty.path
+                                                          "core::fmt::rt::Argument")
+                                                        [])::["new_debug"]
+                                                    (borrow apple)) in
+                                              let* α4 :
+                                                  Ty.apply
+                                                    (Ty.path "array")
+                                                    [Ty.apply
+                                                        (Ty.path
+                                                          "core::fmt::rt::Argument")
+                                                        []] :=
+                                                M.alloc [ α3 ] in
+                                              let* α5 :
+                                                  Ty.apply
+                                                    (Ty.path
+                                                      "core::fmt::Arguments")
+                                                    [] :=
+                                                M.call
+                                                  ((Ty.apply
+                                                        (Ty.path
+                                                          "core::fmt::Arguments")
+                                                        [])::["new_v1"]
+                                                    (pointer_coercion
+                                                      "Unsize"
+                                                      (borrow α2))
+                                                    (pointer_coercion
+                                                      "Unsize"
+                                                      (borrow α4))) in
+                                              let* α6 : Ty.tuple :=
+                                                M.call
+                                                  (std.io.stdio._print α5) in
+                                              M.alloc α6 in
+                                            M.alloc tt in
+                                          let* α0 : Ty.path "unit" :=
+                                            M.alloc tt in
+                                          M.read α0) :
+                                          Ty.tuple
+                                      ]) :
+                                    Ty.tuple)) in
+                            M.alloc α0 in
+                          M.alloc tt
+                        | _ => M.break_match
+                        end) :
+                        Ty.tuple
+                    ] in
+                M.alloc tt)) :
+              Ty.tuple
+          ] in
+      M.pure (use α3) in
+    let* _ : Ty.tuple :=
+      let* α0 : Ty.apply (Ty.path "core::time::Duration") [] :=
+        M.call
+          ((Ty.apply (Ty.path "core::time::Duration") [])::["from_secs"]
+            ((Integer.of_Z 1) : Ty.path "u64")) in
+      let* α1 : Ty.tuple := M.call (std.thread.sleep α0) in
+      M.alloc α1 in
+    let* α0 : Ty.path "unit" := M.alloc tt in
+    M.read α0
+  | _, _ => M.impossible
+  end.

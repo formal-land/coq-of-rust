@@ -19,43 +19,61 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
-  let* optional : M.Val (core.option.Option.t i32.t) :=
-    M.alloc (core.option.Option.Some ((Integer.of_Z 7) : i32.t)) in
-  let* _ : M.Val unit :=
-    match_operator
-      optional
-      [
-        fun γ =>
-          (let* α0 := M.read γ in
-          match α0 with
-          | core.option.Option.Some _ =>
-            let γ0_0 := core.option.Option.Get_Some_0 γ in
-            let* i := M.copy γ0_0 in
-            let* _ : M.Val unit :=
-              let* _ : M.Val unit :=
-                let* α0 : ref str.t :=
-                  M.read (mk_str "This is a really long string and `") in
-                let* α1 : ref str.t := M.read (mk_str "`
+Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [], [] =>
+    let* optional : Ty.apply (Ty.path "core::option::Option") [Ty.path "i32"] :=
+      M.alloc (core.option.Option.Some ((Integer.of_Z 7) : Ty.path "i32")) in
+    let* _ : Ty.tuple :=
+      match_operator
+        optional
+        [
+          fun γ =>
+            (let* α0 := M.read γ in
+            match α0 with
+            | core.option.Option.Some _ =>
+              let γ0_0 := core.option.Option.Get_Some_0 γ in
+              let* i := M.copy γ0_0 in
+              let* _ : Ty.tuple :=
+                let* _ : Ty.tuple :=
+                  let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+                    M.read (mk_str "This is a really long string and `") in
+                  let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+                    M.read (mk_str "`
 ") in
-                let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-                let* α3 : core.fmt.rt.Argument.t :=
-                  M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow i)) in
-                let* α4 : M.Val (array core.fmt.rt.Argument.t) :=
-                  M.alloc [ α3 ] in
-                let* α5 : core.fmt.Arguments.t :=
-                  M.call
-                    (core.fmt.Arguments.t::["new_v1"]
-                      (pointer_coercion "Unsize" (borrow α2))
-                      (pointer_coercion "Unsize" (borrow α4))) in
-                let* α6 : unit := M.call (std.io.stdio._print α5) in
-                M.alloc α6 in
-              M.alloc tt in
-            M.alloc tt
-          | _ => M.break_match
-          end) :
-          M (M.Val unit);
-        fun γ => (M.alloc tt) : M (M.Val unit)
-      ] in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+                  let* α2 :
+                      Ty.apply
+                        (Ty.path "array")
+                        [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
+                    M.alloc [ α0; α1 ] in
+                  let* α3 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+                    M.call
+                      ((Ty.apply
+                            (Ty.path "core::fmt::rt::Argument")
+                            [])::["new_debug"]
+                        (borrow i)) in
+                  let* α4 :
+                      Ty.apply
+                        (Ty.path "array")
+                        [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
+                    M.alloc [ α3 ] in
+                  let* α5 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+                    M.call
+                      ((Ty.apply
+                            (Ty.path "core::fmt::Arguments")
+                            [])::["new_v1"]
+                        (pointer_coercion "Unsize" (borrow α2))
+                        (pointer_coercion "Unsize" (borrow α4))) in
+                  let* α6 : Ty.tuple := M.call (std.io.stdio._print α5) in
+                  M.alloc α6 in
+                M.alloc tt in
+              M.alloc tt
+            | _ => M.break_match
+            end) :
+            Ty.tuple;
+          fun γ => (M.alloc tt) : Ty.tuple
+        ] in
+    let* α0 : Ty.path "unit" := M.alloc tt in
+    M.read α0
+  | _, _ => M.impossible
+  end.

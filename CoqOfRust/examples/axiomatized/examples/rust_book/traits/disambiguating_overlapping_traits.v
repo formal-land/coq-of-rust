@@ -4,7 +4,10 @@ Require Import CoqOfRust.CoqOfRust.
 Module  UsernameWidget.
 Section UsernameWidget.
   Class Trait (Self : Set) : Type := {
-    get : (ref Self) -> M alloc.string.String.t;
+    get :
+      Ty.function
+        [Ty.apply (Ty.path "ref") [Self]]
+        (Ty.apply (Ty.path "alloc::string::String") []);
   }.
   
 End UsernameWidget.
@@ -13,61 +16,53 @@ End UsernameWidget.
 Module  AgeWidget.
 Section AgeWidget.
   Class Trait (Self : Set) : Type := {
-    get : (ref Self) -> M u8.t;
+    get : Ty.function [Ty.apply (Ty.path "ref") [Self]] (Ty.path "u8");
   }.
   
 End AgeWidget.
 End AgeWidget.
 
-Module  Form.
-Section Form.
-  Record t : Set := {
-    username : alloc.string.String.t;
-    age : u8.t;
-  }.
-  
-  Definition Get_username :=
-    Ref.map
-      (fun α => Some α.(username))
-      (fun β α => Some (α <| username := β |>)).
-  Definition Get_age :=
-    Ref.map (fun α => Some α.(age)) (fun β α => Some (α <| age := β |>)).
-End Form.
-End Form.
 
-Module  Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_overlapping_traits_Form_t.
-Section Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_overlapping_traits_Form_t.
-  Definition Self : Set := disambiguating_overlapping_traits.Form.t.
+
+Module  Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_overlapping_traits_Form.
+Section Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_overlapping_traits_Form.
+  Definition Self : Ty.t :=
+    Ty.apply (Ty.path "disambiguating_overlapping_traits::Form") [].
   
-  Parameter get : (ref Self) -> M alloc.string.String.t.
+  Parameter get :
+      (Ty.apply
+          (Ty.path "ref")
+          [Ty.apply (Ty.path "disambiguating_overlapping_traits::Form") []])
+        ->
+        Ty.apply (Ty.path "alloc::string::String") [].
   
-  Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
+  Definition AssociatedFunction_get : Instance.t := {
     Notations.double_colon := get;
   }.
   
-  Global Instance ℐ :
-    disambiguating_overlapping_traits.UsernameWidget.Trait Self := {
-    disambiguating_overlapping_traits.UsernameWidget.get := get;
-  }.
-End Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_overlapping_traits_Form_t.
-End Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_overlapping_traits_Form_t.
+  Definition ℐ : Instance.t := [("get", get)].
+End Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_overlapping_traits_Form.
+End Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_overlapping_traits_Form.
 
-Module  Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form_t.
-Section Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form_t.
-  Definition Self : Set := disambiguating_overlapping_traits.Form.t.
+Module  Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form.
+Section Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form.
+  Definition Self : Ty.t :=
+    Ty.apply (Ty.path "disambiguating_overlapping_traits::Form") [].
   
-  Parameter get : (ref Self) -> M u8.t.
+  Parameter get :
+      (Ty.apply
+          (Ty.path "ref")
+          [Ty.apply (Ty.path "disambiguating_overlapping_traits::Form") []])
+        ->
+        Ty.path "u8".
   
-  Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
+  Definition AssociatedFunction_get : Instance.t := {
     Notations.double_colon := get;
   }.
   
-  Global Instance ℐ :
-    disambiguating_overlapping_traits.AgeWidget.Trait Self := {
-    disambiguating_overlapping_traits.AgeWidget.get := get;
-  }.
-End Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form_t.
-End Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form_t.
+  Definition ℐ : Instance.t := [("get", get)].
+End Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form.
+End Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M unit.
+Parameter main : Ty.path "unit".

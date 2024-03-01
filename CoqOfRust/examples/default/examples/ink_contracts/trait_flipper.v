@@ -4,27 +4,18 @@ Require Import CoqOfRust.CoqOfRust.
 Module  Flip.
 Section Flip.
   Class Trait (Self : Set) : Type := {
-    flip : (mut_ref Self) -> M unit;
-    get : (ref Self) -> M bool.t;
+    flip : Ty.function [Ty.apply (Ty.path "mut_ref") [Self]] (Ty.path "unit");
+    get : Ty.function [Ty.apply (Ty.path "ref") [Self]] (Ty.path "bool");
   }.
   
 End Flip.
 End Flip.
 
-Module  Flipper.
-Section Flipper.
-  Record t : Set := {
-    value : bool.t;
-  }.
-  
-  Definition Get_value :=
-    Ref.map (fun α => Some α.(value)) (fun β α => Some (α <| value := β |>)).
-End Flipper.
-End Flipper.
 
-Module  Impl_trait_flipper_Flipper_t.
-Section Impl_trait_flipper_Flipper_t.
-  Definition Self : Set := trait_flipper.Flipper.t.
+
+Module  Impl_trait_flipper_Flipper.
+Section Impl_trait_flipper_Flipper.
+  Definition Self : Set := Ty.apply (Ty.path "trait_flipper::Flipper") [].
   
   (*
       pub fn new() -> Self {
@@ -33,40 +24,58 @@ Section Impl_trait_flipper_Flipper_t.
           }
       }
   *)
-  Definition new : M Self :=
-    let* α0 : M bool.t :=
-      ltac:(M.get_method (fun ℐ =>
-        core.default.Default.default (Self := bool.t) (Trait := ℐ))) in
-    let* α1 : bool.t := M.call α0 in
-    M.pure {| trait_flipper.Flipper.value := α1; |}.
+  Definition new (𝜏 : list Ty.t) (α : list Value.t) : M :=
+    match 𝜏, α with
+    | [], [] =>
+      let* α0 : Ty.function [] (Ty.path "bool") :=
+        ltac:(M.get_method (fun ℐ =>
+          core.default.Default.default
+            (Self := Ty.path "bool")
+            (Trait := ℐ))) in
+      let* α1 : Ty.path "bool" := M.call α0 in
+      M.pure {| trait_flipper.Flipper.value := α1; |}
+    | _, _ => M.impossible
+    end.
   
-  Global Instance AssociatedFunction_new : Notations.DoubleColon Self "new" := {
+  Definition AssociatedFunction_new : Instance.t := {
     Notations.double_colon := new;
   }.
-End Impl_trait_flipper_Flipper_t.
-End Impl_trait_flipper_Flipper_t.
+End Impl_trait_flipper_Flipper.
+End Impl_trait_flipper_Flipper.
 
-Module  Impl_trait_flipper_Flip_for_trait_flipper_Flipper_t.
-Section Impl_trait_flipper_Flip_for_trait_flipper_Flipper_t.
-  Definition Self : Set := trait_flipper.Flipper.t.
+Module  Impl_trait_flipper_Flip_for_trait_flipper_Flipper.
+Section Impl_trait_flipper_Flip_for_trait_flipper_Flipper.
+  Definition Self : Ty.t := Ty.apply (Ty.path "trait_flipper::Flipper") [].
   
   (*
       fn flip(&mut self) {
           self.value = !self.value;
       }
   *)
-  Definition flip (self : mut_ref Self) : M unit :=
-    let* self := M.alloc self in
-    let* _ : M.Val unit :=
-      let* α0 : mut_ref trait_flipper.Flipper.t := M.read self in
-      let* α1 : mut_ref trait_flipper.Flipper.t := M.read self in
-      let* α2 : bool.t := M.read (trait_flipper.Flipper.Get_value (deref α1)) in
-      assign (trait_flipper.Flipper.Get_value (deref α0)) (UnOp.not α2) in
-    let* α0 : M.Val unit := M.alloc tt in
-    M.read α0.
+  Definition flip (𝜏 : list Ty.t) (α : list Value.t) : M :=
+    match 𝜏, α with
+    | [], [self] =>
+      let* self := M.alloc self in
+      let* _ : Ty.tuple :=
+        let* α0 :
+            Ty.apply
+              (Ty.path "mut_ref")
+              [Ty.apply (Ty.path "trait_flipper::Flipper") []] :=
+          M.read self in
+        let* α1 :
+            Ty.apply
+              (Ty.path "mut_ref")
+              [Ty.apply (Ty.path "trait_flipper::Flipper") []] :=
+          M.read self in
+        let* α2 : Ty.path "bool" :=
+          M.read (trait_flipper.Flipper.Get_value (deref α1)) in
+        assign (trait_flipper.Flipper.Get_value (deref α0)) (UnOp.not α2) in
+      let* α0 : Ty.path "unit" := M.alloc tt in
+      M.read α0
+    | _, _ => M.impossible
+    end.
   
-  Global Instance AssociatedFunction_flip :
-    Notations.DoubleColon Self "flip" := {
+  Definition AssociatedFunction_flip : Instance.t := {
     Notations.double_colon := flip;
   }.
   
@@ -75,18 +84,23 @@ Section Impl_trait_flipper_Flip_for_trait_flipper_Flipper_t.
           self.value
       }
   *)
-  Definition get (self : ref Self) : M bool.t :=
-    let* self := M.alloc self in
-    let* α0 : ref trait_flipper.Flipper.t := M.read self in
-    M.read (trait_flipper.Flipper.Get_value (deref α0)).
+  Definition get (𝜏 : list Ty.t) (α : list Value.t) : M :=
+    match 𝜏, α with
+    | [], [self] =>
+      let* self := M.alloc self in
+      let* α0 :
+          Ty.apply
+            (Ty.path "ref")
+            [Ty.apply (Ty.path "trait_flipper::Flipper") []] :=
+        M.read self in
+      M.read (trait_flipper.Flipper.Get_value (deref α0))
+    | _, _ => M.impossible
+    end.
   
-  Global Instance AssociatedFunction_get : Notations.DoubleColon Self "get" := {
+  Definition AssociatedFunction_get : Instance.t := {
     Notations.double_colon := get;
   }.
   
-  Global Instance ℐ : trait_flipper.Flip.Trait Self := {
-    trait_flipper.Flip.flip := flip;
-    trait_flipper.Flip.get := get;
-  }.
-End Impl_trait_flipper_Flip_for_trait_flipper_Flipper_t.
-End Impl_trait_flipper_Flip_for_trait_flipper_Flipper_t.
+  Definition ℐ : Instance.t := [("flip", flip); ("get", get)].
+End Impl_trait_flipper_Flip_for_trait_flipper_Flipper.
+End Impl_trait_flipper_Flip_for_trait_flipper_Flipper.

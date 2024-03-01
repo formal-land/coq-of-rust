@@ -2,6 +2,6 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M unit.
+Parameter main : Ty.path "unit".
 
-Parameter mul : u64.t -> u64.t -> M u128.t.
+Parameter mul : (Ty.path "u64") -> (Ty.path "u64") -> Ty.path "u128".

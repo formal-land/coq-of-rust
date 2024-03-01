@@ -20,36 +20,65 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
-  let* elem : M.Val u8.t := M.alloc ((Integer.of_Z 5) : u8.t) in
-  let* vec : M.Val (alloc.vec.Vec.t u8.t alloc.alloc.Global.t) :=
-    let* α0 : alloc.vec.Vec.t u8.t alloc.alloc.Global.t :=
-      M.call (alloc.vec.Vec.t u8.t alloc.alloc.Global.t)::["new"] in
-    M.alloc α0 in
-  let* _ : M.Val unit :=
-    let* α0 : u8.t := M.read elem in
-    let* α1 : unit :=
-      M.call
-        ((alloc.vec.Vec.t u8.t alloc.alloc.Global.t)::["push"]
-          (borrow_mut vec)
-          α0) in
-    M.alloc α1 in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "") in
-      let* α1 : ref str.t := M.read (mk_str "
-") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_debug"] (borrow vec)) in
-      let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
-      let* α5 : core.fmt.Arguments.t :=
+Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [], [] =>
+    let* elem : Ty.path "u8" := M.alloc ((Integer.of_Z 5) : Ty.path "u8") in
+    let* vec :
+        Ty.apply
+          (Ty.path "alloc::vec::Vec")
+          [Ty.path "u8"; Ty.apply (Ty.path "alloc::alloc::Global") []] :=
+      let* α0 :
+          Ty.apply
+            (Ty.path "alloc::vec::Vec")
+            [Ty.path "u8"; Ty.apply (Ty.path "alloc::alloc::Global") []] :=
         M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α4))) in
-      let* α6 : unit := M.call (std.io.stdio._print α5) in
-      M.alloc α6 in
-    M.alloc tt in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+          (Ty.apply
+              (Ty.path "alloc::vec::Vec")
+              [Ty.path "u8";
+                Ty.apply (Ty.path "alloc::alloc::Global") []])::["new"] in
+      M.alloc α0 in
+    let* _ : Ty.tuple :=
+      let* α0 : Ty.path "u8" := M.read elem in
+      let* α1 : Ty.tuple :=
+        M.call
+          ((Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                [Ty.path "u8";
+                  Ty.apply (Ty.path "alloc::alloc::Global") []])::["push"]
+            (borrow_mut vec)
+            α0) in
+      M.alloc α1 in
+    let* _ : Ty.tuple :=
+      let* _ : Ty.tuple :=
+        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+          M.read (mk_str "") in
+        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+          M.read (mk_str "
+") in
+        let* α2 :
+            Ty.apply
+              (Ty.path "array")
+              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
+          M.alloc [ α0; α1 ] in
+        let* α3 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+          M.call
+            ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_debug"]
+              (borrow vec)) in
+        let* α4 :
+            Ty.apply
+              (Ty.path "array")
+              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
+          M.alloc [ α3 ] in
+        let* α5 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+          M.call
+            ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
+              (pointer_coercion "Unsize" (borrow α2))
+              (pointer_coercion "Unsize" (borrow α4))) in
+        let* α6 : Ty.tuple := M.call (std.io.stdio._print α5) in
+        M.alloc α6 in
+      M.alloc tt in
+    let* α0 : Ty.path "unit" := M.alloc tt in
+    M.read α0
+  | _, _ => M.impossible
+  end.

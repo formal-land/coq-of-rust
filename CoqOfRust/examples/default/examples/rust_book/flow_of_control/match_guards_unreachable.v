@@ -14,47 +14,61 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
-  let* number : M.Val u8.t := M.alloc ((Integer.of_Z 4) : u8.t) in
-  let* α0 : M.Val unit :=
-    match_operator
-      number
-      [
-        fun γ =>
-          (let* i := M.copy γ in
-          let* _ : M.Val unit :=
-            let* α0 : ref str.t := M.read (mk_str "Zero
+Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [], [] =>
+    let* number : Ty.path "u8" := M.alloc ((Integer.of_Z 4) : Ty.path "u8") in
+    let* α0 : Ty.tuple :=
+      match_operator
+        number
+        [
+          fun γ =>
+            (let* i := M.copy γ in
+            let* _ : Ty.tuple :=
+              let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+                M.read (mk_str "Zero
 ") in
-            let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-            let* α2 : core.fmt.Arguments.t :=
-              M.call
-                (core.fmt.Arguments.t::["new_const"]
-                  (pointer_coercion "Unsize" (borrow α1))) in
-            let* α3 : unit := M.call (std.io.stdio._print α2) in
-            M.alloc α3 in
-          M.alloc tt) :
-          M (M.Val unit);
-        fun γ =>
-          (let* i := M.copy γ in
-          let* _ : M.Val unit :=
-            let* α0 : ref str.t := M.read (mk_str "Greater than zero
+              let* α1 :
+                  Ty.apply
+                    (Ty.path "array")
+                    [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
+                M.alloc [ α0 ] in
+              let* α2 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+                M.call
+                  ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_const"]
+                    (pointer_coercion "Unsize" (borrow α1))) in
+              let* α3 : Ty.tuple := M.call (std.io.stdio._print α2) in
+              M.alloc α3 in
+            M.alloc tt) :
+            Ty.tuple;
+          fun γ =>
+            (let* i := M.copy γ in
+            let* _ : Ty.tuple :=
+              let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+                M.read (mk_str "Greater than zero
 ") in
-            let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-            let* α2 : core.fmt.Arguments.t :=
+              let* α1 :
+                  Ty.apply
+                    (Ty.path "array")
+                    [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
+                M.alloc [ α0 ] in
+              let* α2 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+                M.call
+                  ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_const"]
+                    (pointer_coercion "Unsize" (borrow α1))) in
+              let* α3 : Ty.tuple := M.call (std.io.stdio._print α2) in
+              M.alloc α3 in
+            M.alloc tt) :
+            Ty.tuple;
+          fun γ =>
+            (let* α0 : Ty.path "never" :=
               M.call
-                (core.fmt.Arguments.t::["new_const"]
-                  (pointer_coercion "Unsize" (borrow α1))) in
-            let* α3 : unit := M.call (std.io.stdio._print α2) in
-            M.alloc α3 in
-          M.alloc tt) :
-          M (M.Val unit);
-        fun γ =>
-          (let* α0 : never.t :=
-            M.call
-              (core.panicking.unreachable_display
-                (borrow (mk_str "Should never happen."))) in
-          let* α1 : unit := never_to_any α0 in
-          M.alloc α1) :
-          M (M.Val unit)
-      ] in
-  M.read α0.
+                (core.panicking.unreachable_display
+                  (borrow (mk_str "Should never happen."))) in
+            let* α1 : Ty.tuple := never_to_any α0 in
+            M.alloc α1) :
+            Ty.tuple
+        ] in
+    M.read α0
+  | _, _ => M.impossible
+  end.

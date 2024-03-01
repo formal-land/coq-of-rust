@@ -23,45 +23,77 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
-  let* i : M.Val i32.t := M.alloc ((Integer.of_Z 3) : i32.t) in
-  let* _ : M.Val unit :=
-    let* borrow1 : M.Val (ref i32.t) := M.alloc (borrow i) in
-    let* _ : M.Val unit :=
-      let* _ : M.Val unit :=
-        let* α0 : ref str.t := M.read (mk_str "borrow1: ") in
-        let* α1 : ref str.t := M.read (mk_str "
+Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [], [] =>
+    let* i : Ty.path "i32" := M.alloc ((Integer.of_Z 3) : Ty.path "i32") in
+    let* _ : Ty.tuple :=
+      let* borrow1 : Ty.apply (Ty.path "ref") [Ty.path "i32"] :=
+        M.alloc (borrow i) in
+      let* _ : Ty.tuple :=
+        let* _ : Ty.tuple :=
+          let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+            M.read (mk_str "borrow1: ") in
+          let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+            M.read (mk_str "
 ") in
-        let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-        let* α3 : core.fmt.rt.Argument.t :=
-          M.call (core.fmt.rt.Argument.t::["new_display"] (borrow borrow1)) in
-        let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
-        let* α5 : core.fmt.Arguments.t :=
+          let* α2 :
+              Ty.apply
+                (Ty.path "array")
+                [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
+            M.alloc [ α0; α1 ] in
+          let* α3 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+            M.call
+              ((Ty.apply
+                    (Ty.path "core::fmt::rt::Argument")
+                    [])::["new_display"]
+                (borrow borrow1)) in
+          let* α4 :
+              Ty.apply
+                (Ty.path "array")
+                [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
+            M.alloc [ α3 ] in
+          let* α5 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+            M.call
+              ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
+                (pointer_coercion "Unsize" (borrow α2))
+                (pointer_coercion "Unsize" (borrow α4))) in
+          let* α6 : Ty.tuple := M.call (std.io.stdio._print α5) in
+          M.alloc α6 in
+        M.alloc tt in
+      M.alloc tt in
+    let* borrow2 : Ty.apply (Ty.path "ref") [Ty.path "i32"] :=
+      M.alloc (borrow i) in
+    let* _ : Ty.tuple :=
+      let* _ : Ty.tuple :=
+        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+          M.read (mk_str "borrow2: ") in
+        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+          M.read (mk_str "
+") in
+        let* α2 :
+            Ty.apply
+              (Ty.path "array")
+              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
+          M.alloc [ α0; α1 ] in
+        let* α3 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
           M.call
-            (core.fmt.Arguments.t::["new_v1"]
+            ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_display"]
+              (borrow borrow2)) in
+        let* α4 :
+            Ty.apply
+              (Ty.path "array")
+              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
+          M.alloc [ α3 ] in
+        let* α5 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+          M.call
+            ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
               (pointer_coercion "Unsize" (borrow α2))
               (pointer_coercion "Unsize" (borrow α4))) in
-        let* α6 : unit := M.call (std.io.stdio._print α5) in
+        let* α6 : Ty.tuple := M.call (std.io.stdio._print α5) in
         M.alloc α6 in
       M.alloc tt in
-    M.alloc tt in
-  let* borrow2 : M.Val (ref i32.t) := M.alloc (borrow i) in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "borrow2: ") in
-      let* α1 : ref str.t := M.read (mk_str "
-") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow borrow2)) in
-      let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
-      let* α5 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α4))) in
-      let* α6 : unit := M.call (std.io.stdio._print α5) in
-      M.alloc α6 in
-    M.alloc tt in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+    let* α0 : Ty.path "unit" := M.alloc tt in
+    M.read α0
+  | _, _ => M.impossible
+  end.

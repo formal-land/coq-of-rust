@@ -2,15 +2,6 @@
 Require Import CoqOfRust.CoqOfRust.
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M unit.
+Parameter main : Ty.path "unit".
 
-Module  Structure.
-Section Structure.
-  Record t : Set := {
-    x0 : i32.t;
-  }.
-  
-  Definition Get_0 :=
-    Ref.map (fun α => Some α.(x0)) (fun β α => Some (α <| x0 := β |>)).
-End Structure.
-End Structure.
+

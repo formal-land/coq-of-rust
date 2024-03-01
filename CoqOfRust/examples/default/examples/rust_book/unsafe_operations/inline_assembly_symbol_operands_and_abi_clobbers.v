@@ -31,7 +31,8 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit := M.pure tt.
+Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with | [], [] => M.pure tt | _, _ => M.impossible end.
 
 (*
     extern "C" fn foo(arg: i32) -> i32 {
@@ -39,29 +40,46 @@ Definition main : M unit := M.pure tt.
         arg * 2
     }
 *)
-Definition foo (arg : i32.t) : M i32.t :=
-  let* arg := M.alloc arg in
-  let* _ : M.Val unit :=
-    let* _ : M.Val unit :=
-      let* α0 : ref str.t := M.read (mk_str "arg = ") in
-      let* α1 : ref str.t := M.read (mk_str "
+Definition foo (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [], [arg] =>
+    let* arg := M.alloc arg in
+    let* _ : Ty.tuple :=
+      let* _ : Ty.tuple :=
+        let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+          M.read (mk_str "arg = ") in
+        let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+          M.read (mk_str "
 ") in
-      let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-      let* α3 : core.fmt.rt.Argument.t :=
-        M.call (core.fmt.rt.Argument.t::["new_display"] (borrow arg)) in
-      let* α4 : M.Val (array core.fmt.rt.Argument.t) := M.alloc [ α3 ] in
-      let* α5 : core.fmt.Arguments.t :=
-        M.call
-          (core.fmt.Arguments.t::["new_v1"]
-            (pointer_coercion "Unsize" (borrow α2))
-            (pointer_coercion "Unsize" (borrow α4))) in
-      let* α6 : unit := M.call (std.io.stdio._print α5) in
-      M.alloc α6 in
-    M.alloc tt in
-  let* α0 : i32.t := M.read arg in
-  let* α1 : i32.t := BinOp.Panic.mul α0 ((Integer.of_Z 2) : i32.t) in
-  let* α0 : M.Val i32.t := M.alloc α1 in
-  M.read α0.
+        let* α2 :
+            Ty.apply
+              (Ty.path "array")
+              [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
+          M.alloc [ α0; α1 ] in
+        let* α3 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+          M.call
+            ((Ty.apply (Ty.path "core::fmt::rt::Argument") [])::["new_display"]
+              (borrow arg)) in
+        let* α4 :
+            Ty.apply
+              (Ty.path "array")
+              [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
+          M.alloc [ α3 ] in
+        let* α5 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+          M.call
+            ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_v1"]
+              (pointer_coercion "Unsize" (borrow α2))
+              (pointer_coercion "Unsize" (borrow α4))) in
+        let* α6 : Ty.tuple := M.call (std.io.stdio._print α5) in
+        M.alloc α6 in
+      M.alloc tt in
+    let* α0 : Ty.path "i32" := M.read arg in
+    let* α1 : Ty.path "i32" :=
+      BinOp.Panic.mul α0 ((Integer.of_Z 2) : Ty.path "i32") in
+    let* α0 : Ty.path "i32" := M.alloc α1 in
+    M.read α0
+  | _, _ => M.impossible
+  end.
 
 (*
     fn call_foo(arg: i32) -> i32 {
@@ -83,8 +101,12 @@ Definition foo (arg : i32.t) : M i32.t :=
         }
     }
 *)
-Definition call_foo (arg : i32.t) : M i32.t :=
-  let* arg := M.alloc arg in
-  let* result := M.copy (DeclaredButUndefinedVariable (A := i32.t)) in
-  let _ : M.Val unit := InlineAssembly in
-  M.read result.
+Definition call_foo (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [], [arg] =>
+    let* arg := M.alloc arg in
+    let* result := M.copy (DeclaredButUndefinedVariable (A := Ty.path "i32")) in
+    let _ : Ty.tuple := InlineAssembly in
+    M.read result
+  | _, _ => M.impossible
+  end.

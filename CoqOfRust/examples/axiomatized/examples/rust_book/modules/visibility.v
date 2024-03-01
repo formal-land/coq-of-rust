@@ -2,39 +2,39 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module my_mod.
-  Parameter private_function : M unit.
+  Parameter private_function : Ty.path "unit".
   
-  Parameter function : M unit.
+  Parameter function : Ty.path "unit".
   
-  Parameter indirect_access : M unit.
+  Parameter indirect_access : Ty.path "unit".
   
   Module nested.
-    Parameter function : M unit.
+    Parameter function : Ty.path "unit".
     
     (* #[allow(dead_code)] - function was ignored by the compiler *)
-    Parameter private_function : M unit.
+    Parameter private_function : Ty.path "unit".
     
-    Parameter public_function_in_my_mod : M unit.
+    Parameter public_function_in_my_mod : Ty.path "unit".
     
-    Parameter public_function_in_nested : M unit.
+    Parameter public_function_in_nested : Ty.path "unit".
     
-    Parameter public_function_in_super_mod : M unit.
+    Parameter public_function_in_super_mod : Ty.path "unit".
   End nested.
   
-  Parameter call_public_function_in_my_mod : M unit.
+  Parameter call_public_function_in_my_mod : Ty.path "unit".
   
-  Parameter public_function_in_crate : M unit.
+  Parameter public_function_in_crate : Ty.path "unit".
   
   Module private_nested.
     (* #[allow(dead_code)] - function was ignored by the compiler *)
-    Parameter function : M unit.
+    Parameter function : Ty.path "unit".
     
     (* #[allow(dead_code)] - function was ignored by the compiler *)
-    Parameter restricted_function : M unit.
+    Parameter restricted_function : Ty.path "unit".
   End private_nested.
 End my_mod.
 
-Parameter function : M unit.
+Parameter function : Ty.path "unit".
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M unit.
+Parameter main : Ty.path "unit".

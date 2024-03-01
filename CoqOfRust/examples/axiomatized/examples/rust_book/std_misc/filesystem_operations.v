@@ -2,12 +2,24 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Parameter cat :
-    (ref std.path.Path.t) -> M ltac:(std.io.error.Result alloc.string.String.t).
+    (Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "std::path::Path") []]) ->
+      Ty.apply
+        (Ty.path "core::result::Result")
+        [Ty.apply (Ty.path "alloc::string::String") [];
+          Ty.apply (Ty.path "std::io::error::Error") []].
 
 Parameter echo :
-    (ref str.t) -> (ref std.path.Path.t) -> M ltac:(std.io.error.Result unit).
+    (Ty.apply (Ty.path "ref") [Ty.path "str"]) ->
+      (Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "std::path::Path") []]) ->
+      Ty.apply
+        (Ty.path "core::result::Result")
+        [Ty.tuple; Ty.apply (Ty.path "std::io::error::Error") []].
 
-Parameter touch : (ref std.path.Path.t) -> M ltac:(std.io.error.Result unit).
+Parameter touch :
+    (Ty.apply (Ty.path "ref") [Ty.apply (Ty.path "std::path::Path") []]) ->
+      Ty.apply
+        (Ty.path "core::result::Result")
+        [Ty.tuple; Ty.apply (Ty.path "std::io::error::Error") []].
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M unit.
+Parameter main : Ty.path "unit".

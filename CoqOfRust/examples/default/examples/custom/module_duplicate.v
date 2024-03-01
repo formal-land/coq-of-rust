@@ -8,21 +8,30 @@ Module foo.
                 println!("foo::gre::bar");
             }
     *)
-    Definition f_foo_gre : M unit :=
-      let* _ : M.Val unit :=
-        let* _ : M.Val unit :=
-          let* α0 : ref str.t := M.read (mk_str "foo::gre::bar
+    Definition f_foo_gre (𝜏 : list Ty.t) (α : list Value.t) : M :=
+      match 𝜏, α with
+      | [], [] =>
+        let* _ : Ty.tuple :=
+          let* _ : Ty.tuple :=
+            let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+              M.read (mk_str "foo::gre::bar
 ") in
-          let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-          let* α2 : core.fmt.Arguments.t :=
-            M.call
-              (core.fmt.Arguments.t::["new_const"]
-                (pointer_coercion "Unsize" (borrow α1))) in
-          let* α3 : unit := M.call (std.io.stdio._print α2) in
-          M.alloc α3 in
-        M.alloc tt in
-      let* α0 : M.Val unit := M.alloc tt in
-      M.read α0.
+            let* α1 :
+                Ty.apply
+                  (Ty.path "array")
+                  [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
+              M.alloc [ α0 ] in
+            let* α2 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+              M.call
+                ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_const"]
+                  (pointer_coercion "Unsize" (borrow α1))) in
+            let* α3 : Ty.tuple := M.call (std.io.stdio._print α2) in
+            M.alloc α3 in
+          M.alloc tt in
+        let* α0 : Ty.path "unit" := M.alloc tt in
+        M.read α0
+      | _, _ => M.impossible
+      end.
   End gre.
   
   (*
@@ -31,24 +40,33 @@ Module foo.
           gre::f_foo_gre();
       }
   *)
-  Definition f_foo : M unit :=
-    let* _ : M.Val unit :=
-      let* _ : M.Val unit :=
-        let* α0 : ref str.t := M.read (mk_str "foo::bar
+  Definition f_foo (𝜏 : list Ty.t) (α : list Value.t) : M :=
+    match 𝜏, α with
+    | [], [] =>
+      let* _ : Ty.tuple :=
+        let* _ : Ty.tuple :=
+          let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+            M.read (mk_str "foo::bar
 ") in
-        let* α1 : M.Val (array (ref str.t)) := M.alloc [ α0 ] in
-        let* α2 : core.fmt.Arguments.t :=
-          M.call
-            (core.fmt.Arguments.t::["new_const"]
-              (pointer_coercion "Unsize" (borrow α1))) in
-        let* α3 : unit := M.call (std.io.stdio._print α2) in
-        M.alloc α3 in
-      M.alloc tt in
-    let* _ : M.Val unit :=
-      let* α0 : unit := M.call module_duplicate.foo.gre.f_foo_gre in
-      M.alloc α0 in
-    let* α0 : M.Val unit := M.alloc tt in
-    M.read α0.
+          let* α1 :
+              Ty.apply
+                (Ty.path "array")
+                [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
+            M.alloc [ α0 ] in
+          let* α2 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+            M.call
+              ((Ty.apply (Ty.path "core::fmt::Arguments") [])::["new_const"]
+                (pointer_coercion "Unsize" (borrow α1))) in
+          let* α3 : Ty.tuple := M.call (std.io.stdio._print α2) in
+          M.alloc α3 in
+        M.alloc tt in
+      let* _ : Ty.tuple :=
+        let* α0 : Ty.tuple := M.call module_duplicate.foo.gre.f_foo_gre in
+        M.alloc α0 in
+      let* α0 : Ty.path "unit" := M.alloc tt in
+      M.read α0
+    | _, _ => M.impossible
+    end.
 End foo.
 
 (*
@@ -56,9 +74,13 @@ fn f() {
     foo::f_foo();
 }
 *)
-Definition f : M unit :=
-  let* _ : M.Val unit :=
-    let* α0 : unit := M.call module_duplicate.foo.f_foo in
-    M.alloc α0 in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+Definition f (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [], [] =>
+    let* _ : Ty.tuple :=
+      let* α0 : Ty.tuple := M.call module_duplicate.foo.f_foo in
+      M.alloc α0 in
+    let* α0 : Ty.path "unit" := M.alloc tt in
+    M.read α0
+  | _, _ => M.impossible
+  end.

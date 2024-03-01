@@ -4,18 +4,21 @@ Require Import CoqOfRust.CoqOfRust.
 (*
 fn used_function() {}
 *)
-Definition used_function : M unit := M.pure tt.
+Definition used_function (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with | [], [] => M.pure tt | _, _ => M.impossible end.
 
 (*
 fn unused_function() {}
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition unused_function : M unit := M.pure tt.
+Definition unused_function (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with | [], [] => M.pure tt | _, _ => M.impossible end.
 
 (*
 fn noisy_unused_function() {}
 *)
-Definition noisy_unused_function : M unit := M.pure tt.
+Definition noisy_unused_function (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with | [], [] => M.pure tt | _, _ => M.impossible end.
 
 (*
 fn main() {
@@ -23,9 +26,13 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
-  let* _ : M.Val unit :=
-    let* α0 : unit := M.call dead_code.used_function in
-    M.alloc α0 in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [], [] =>
+    let* _ : Ty.tuple :=
+      let* α0 : Ty.tuple := M.call dead_code.used_function in
+      M.alloc α0 in
+    let* α0 : Ty.path "unit" := M.alloc tt in
+    M.read α0
+  | _, _ => M.impossible
+  end.

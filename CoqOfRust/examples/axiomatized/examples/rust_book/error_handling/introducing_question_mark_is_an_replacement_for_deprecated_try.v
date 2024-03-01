@@ -2,12 +2,20 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Parameter multiply :
-    (ref str.t) ->
-      (ref str.t) ->
-      M (core.result.Result.t i32.t core.num.error.ParseIntError.t).
+    (Ty.apply (Ty.path "ref") [Ty.path "str"]) ->
+      (Ty.apply (Ty.path "ref") [Ty.path "str"]) ->
+      Ty.apply
+        (Ty.path "core::result::Result")
+        [Ty.path "i32";
+          Ty.apply (Ty.path "core::num::error::ParseIntError") []].
 
 Parameter print :
-    (core.result.Result.t i32.t core.num.error.ParseIntError.t) -> M unit.
+    (Ty.apply
+        (Ty.path "core::result::Result")
+        [Ty.path "i32";
+          Ty.apply (Ty.path "core::num::error::ParseIntError") []])
+      ->
+      Ty.path "unit".
 
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Parameter main : M unit.
+Parameter main : Ty.path "unit".

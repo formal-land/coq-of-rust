@@ -33,14 +33,14 @@ pub(crate) fn compile_type<'a>(env: &Env<'a>, ty: &rustc_middle::ty::Ty<'a>) -> 
                 .collect();
             Rc::new(CoqType::Application {
                 func: Rc::new(CoqType::Path {
-                    path: Rc::new(path.suffix_last_with_dot_t()),
+                    path: Rc::new(path),
                 }),
                 args,
                 is_alias: false,
             })
         }
         // Foreign(DefId),
-        TyKind::Str => CoqType::path(&["str", "t"]),
+        TyKind::Str => CoqType::path(&["str"]),
         TyKind::Array(ty, _) => Rc::new(CoqType::Application {
             func: CoqType::path(&["array"]),
             args: vec![compile_type(env, ty)],
@@ -76,10 +76,8 @@ pub(crate) fn compile_type<'a>(env: &Env<'a>, ty: &rustc_middle::ty::Ty<'a>) -> 
 
             Rc::new(CoqType::Dyn(traits))
         }
-        TyKind::FnDef(_, generics) => {
-            println!("generics: {:#?}", generics);
+        TyKind::FnDef(_, _) => {
             let fn_sig = ty.fn_sig(env.tcx);
-            println!("ty: {:#?}", ty);
 
             compile_poly_fn_sig(env, &fn_sig)
         }
@@ -90,7 +88,7 @@ pub(crate) fn compile_type<'a>(env: &Env<'a>, ty: &rustc_middle::ty::Ty<'a>) -> 
         }
         // Generator(DefId, &'tcx List<GenericArg<'tcx>>, Movability),
         // GeneratorWitness(DefId, &'tcx List<GenericArg<'tcx>>),
-        TyKind::Never => CoqType::path(&["never", "t"]),
+        TyKind::Never => CoqType::path(&["never"]),
         TyKind::Tuple(tys) => Rc::new(CoqType::Tuple(
             tys.iter().map(|ty| compile_type(env, &ty)).collect(),
         )),

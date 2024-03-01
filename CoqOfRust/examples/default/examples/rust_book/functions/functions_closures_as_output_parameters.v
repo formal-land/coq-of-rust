@@ -8,45 +8,67 @@ fn create_fn() -> impl Fn() {
     move || println!("This is a: {}", text)
 }
 *)
-Definition create_fn : M _ (* OpaqueTy *) :=
-  let* text : M.Val alloc.string.String.t :=
-    let* α0 : (ref str.t) -> M _ :=
-      ltac:(M.get_method (fun ℐ =>
-        alloc.borrow.ToOwned.to_owned (Self := str.t) (Trait := ℐ))) in
-    let* α1 : ref str.t := M.read (mk_str "Fn") in
-    let* α2 : alloc.string.String.t := M.call (α0 α1) in
-    M.alloc α2 in
-  let* α0 : M.Val (unit -> M unit) :=
-    M.alloc
-      (fun (α0 : unit) =>
-        (let* α0 := M.alloc α0 in
-        match_operator
-          α0
-          [
-            fun γ =>
-              (let* _ : M.Val unit :=
-                let* α0 : ref str.t := M.read (mk_str "This is a: ") in
-                let* α1 : ref str.t := M.read (mk_str "
+Definition create_fn (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [], [] =>
+    let* text : Ty.apply (Ty.path "alloc::string::String") [] :=
+      let* α0 : Ty.function [Ty.apply (Ty.path "ref") [Ty.path "str"]] _ :=
+        ltac:(M.get_method (fun ℐ =>
+          alloc.borrow.ToOwned.to_owned
+            (Self := Ty.path "str")
+            (Trait := ℐ))) in
+      let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+        M.read (mk_str "Fn") in
+      let* α2 : Ty.apply (Ty.path "alloc::string::String") [] :=
+        M.call (α0 α1) in
+      M.alloc α2 in
+    let* α0 : Ty.function [Ty.tuple] Ty.tuple :=
+      M.alloc
+        (fun (α0 : Ty.path "unit") =>
+          (let* α0 := M.alloc α0 in
+          match_operator
+            α0
+            [
+              fun γ =>
+                (let* _ : Ty.tuple :=
+                  let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+                    M.read (mk_str "This is a: ") in
+                  let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+                    M.read (mk_str "
 ") in
-                let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-                let* α3 : core.fmt.rt.Argument.t :=
-                  M.call
-                    (core.fmt.rt.Argument.t::["new_display"] (borrow text)) in
-                let* α4 : M.Val (array core.fmt.rt.Argument.t) :=
-                  M.alloc [ α3 ] in
-                let* α5 : core.fmt.Arguments.t :=
-                  M.call
-                    (core.fmt.Arguments.t::["new_v1"]
-                      (pointer_coercion "Unsize" (borrow α2))
-                      (pointer_coercion "Unsize" (borrow α4))) in
-                let* α6 : unit := M.call (std.io.stdio._print α5) in
-                M.alloc α6 in
-              let* α0 : M.Val unit := M.alloc tt in
-              M.read α0) :
-              M unit
-          ]) :
-        M unit) in
-  M.read α0.
+                  let* α2 :
+                      Ty.apply
+                        (Ty.path "array")
+                        [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
+                    M.alloc [ α0; α1 ] in
+                  let* α3 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+                    M.call
+                      ((Ty.apply
+                            (Ty.path "core::fmt::rt::Argument")
+                            [])::["new_display"]
+                        (borrow text)) in
+                  let* α4 :
+                      Ty.apply
+                        (Ty.path "array")
+                        [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
+                    M.alloc [ α3 ] in
+                  let* α5 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+                    M.call
+                      ((Ty.apply
+                            (Ty.path "core::fmt::Arguments")
+                            [])::["new_v1"]
+                        (pointer_coercion "Unsize" (borrow α2))
+                        (pointer_coercion "Unsize" (borrow α4))) in
+                  let* α6 : Ty.tuple := M.call (std.io.stdio._print α5) in
+                  M.alloc α6 in
+                let* α0 : Ty.path "unit" := M.alloc tt in
+                M.read α0) :
+                Ty.tuple
+            ]) :
+          Ty.tuple) in
+    M.read α0
+  | _, _ => M.impossible
+  end.
 
 Error OpaqueTy.
 
@@ -57,45 +79,67 @@ fn create_fnmut() -> impl FnMut() {
     move || println!("This is a: {}", text)
 }
 *)
-Definition create_fnmut : M _ (* OpaqueTy *) :=
-  let* text : M.Val alloc.string.String.t :=
-    let* α0 : (ref str.t) -> M _ :=
-      ltac:(M.get_method (fun ℐ =>
-        alloc.borrow.ToOwned.to_owned (Self := str.t) (Trait := ℐ))) in
-    let* α1 : ref str.t := M.read (mk_str "FnMut") in
-    let* α2 : alloc.string.String.t := M.call (α0 α1) in
-    M.alloc α2 in
-  let* α0 : M.Val (unit -> M unit) :=
-    M.alloc
-      (fun (α0 : unit) =>
-        (let* α0 := M.alloc α0 in
-        match_operator
-          α0
-          [
-            fun γ =>
-              (let* _ : M.Val unit :=
-                let* α0 : ref str.t := M.read (mk_str "This is a: ") in
-                let* α1 : ref str.t := M.read (mk_str "
+Definition create_fnmut (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [], [] =>
+    let* text : Ty.apply (Ty.path "alloc::string::String") [] :=
+      let* α0 : Ty.function [Ty.apply (Ty.path "ref") [Ty.path "str"]] _ :=
+        ltac:(M.get_method (fun ℐ =>
+          alloc.borrow.ToOwned.to_owned
+            (Self := Ty.path "str")
+            (Trait := ℐ))) in
+      let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+        M.read (mk_str "FnMut") in
+      let* α2 : Ty.apply (Ty.path "alloc::string::String") [] :=
+        M.call (α0 α1) in
+      M.alloc α2 in
+    let* α0 : Ty.function [Ty.tuple] Ty.tuple :=
+      M.alloc
+        (fun (α0 : Ty.path "unit") =>
+          (let* α0 := M.alloc α0 in
+          match_operator
+            α0
+            [
+              fun γ =>
+                (let* _ : Ty.tuple :=
+                  let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+                    M.read (mk_str "This is a: ") in
+                  let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+                    M.read (mk_str "
 ") in
-                let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-                let* α3 : core.fmt.rt.Argument.t :=
-                  M.call
-                    (core.fmt.rt.Argument.t::["new_display"] (borrow text)) in
-                let* α4 : M.Val (array core.fmt.rt.Argument.t) :=
-                  M.alloc [ α3 ] in
-                let* α5 : core.fmt.Arguments.t :=
-                  M.call
-                    (core.fmt.Arguments.t::["new_v1"]
-                      (pointer_coercion "Unsize" (borrow α2))
-                      (pointer_coercion "Unsize" (borrow α4))) in
-                let* α6 : unit := M.call (std.io.stdio._print α5) in
-                M.alloc α6 in
-              let* α0 : M.Val unit := M.alloc tt in
-              M.read α0) :
-              M unit
-          ]) :
-        M unit) in
-  M.read α0.
+                  let* α2 :
+                      Ty.apply
+                        (Ty.path "array")
+                        [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
+                    M.alloc [ α0; α1 ] in
+                  let* α3 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+                    M.call
+                      ((Ty.apply
+                            (Ty.path "core::fmt::rt::Argument")
+                            [])::["new_display"]
+                        (borrow text)) in
+                  let* α4 :
+                      Ty.apply
+                        (Ty.path "array")
+                        [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
+                    M.alloc [ α3 ] in
+                  let* α5 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+                    M.call
+                      ((Ty.apply
+                            (Ty.path "core::fmt::Arguments")
+                            [])::["new_v1"]
+                        (pointer_coercion "Unsize" (borrow α2))
+                        (pointer_coercion "Unsize" (borrow α4))) in
+                  let* α6 : Ty.tuple := M.call (std.io.stdio._print α5) in
+                  M.alloc α6 in
+                let* α0 : Ty.path "unit" := M.alloc tt in
+                M.read α0) :
+                Ty.tuple
+            ]) :
+          Ty.tuple) in
+    M.read α0
+  | _, _ => M.impossible
+  end.
 
 Error OpaqueTy.
 
@@ -106,45 +150,67 @@ fn create_fnonce() -> impl FnOnce() {
     move || println!("This is a: {}", text)
 }
 *)
-Definition create_fnonce : M _ (* OpaqueTy *) :=
-  let* text : M.Val alloc.string.String.t :=
-    let* α0 : (ref str.t) -> M _ :=
-      ltac:(M.get_method (fun ℐ =>
-        alloc.borrow.ToOwned.to_owned (Self := str.t) (Trait := ℐ))) in
-    let* α1 : ref str.t := M.read (mk_str "FnOnce") in
-    let* α2 : alloc.string.String.t := M.call (α0 α1) in
-    M.alloc α2 in
-  let* α0 : M.Val (unit -> M unit) :=
-    M.alloc
-      (fun (α0 : unit) =>
-        (let* α0 := M.alloc α0 in
-        match_operator
-          α0
-          [
-            fun γ =>
-              (let* _ : M.Val unit :=
-                let* α0 : ref str.t := M.read (mk_str "This is a: ") in
-                let* α1 : ref str.t := M.read (mk_str "
+Definition create_fnonce (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [], [] =>
+    let* text : Ty.apply (Ty.path "alloc::string::String") [] :=
+      let* α0 : Ty.function [Ty.apply (Ty.path "ref") [Ty.path "str"]] _ :=
+        ltac:(M.get_method (fun ℐ =>
+          alloc.borrow.ToOwned.to_owned
+            (Self := Ty.path "str")
+            (Trait := ℐ))) in
+      let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+        M.read (mk_str "FnOnce") in
+      let* α2 : Ty.apply (Ty.path "alloc::string::String") [] :=
+        M.call (α0 α1) in
+      M.alloc α2 in
+    let* α0 : Ty.function [Ty.tuple] Ty.tuple :=
+      M.alloc
+        (fun (α0 : Ty.path "unit") =>
+          (let* α0 := M.alloc α0 in
+          match_operator
+            α0
+            [
+              fun γ =>
+                (let* _ : Ty.tuple :=
+                  let* α0 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+                    M.read (mk_str "This is a: ") in
+                  let* α1 : Ty.apply (Ty.path "ref") [Ty.path "str"] :=
+                    M.read (mk_str "
 ") in
-                let* α2 : M.Val (array (ref str.t)) := M.alloc [ α0; α1 ] in
-                let* α3 : core.fmt.rt.Argument.t :=
-                  M.call
-                    (core.fmt.rt.Argument.t::["new_display"] (borrow text)) in
-                let* α4 : M.Val (array core.fmt.rt.Argument.t) :=
-                  M.alloc [ α3 ] in
-                let* α5 : core.fmt.Arguments.t :=
-                  M.call
-                    (core.fmt.Arguments.t::["new_v1"]
-                      (pointer_coercion "Unsize" (borrow α2))
-                      (pointer_coercion "Unsize" (borrow α4))) in
-                let* α6 : unit := M.call (std.io.stdio._print α5) in
-                M.alloc α6 in
-              let* α0 : M.Val unit := M.alloc tt in
-              M.read α0) :
-              M unit
-          ]) :
-        M unit) in
-  M.read α0.
+                  let* α2 :
+                      Ty.apply
+                        (Ty.path "array")
+                        [Ty.apply (Ty.path "ref") [Ty.path "str"]] :=
+                    M.alloc [ α0; α1 ] in
+                  let* α3 : Ty.apply (Ty.path "core::fmt::rt::Argument") [] :=
+                    M.call
+                      ((Ty.apply
+                            (Ty.path "core::fmt::rt::Argument")
+                            [])::["new_display"]
+                        (borrow text)) in
+                  let* α4 :
+                      Ty.apply
+                        (Ty.path "array")
+                        [Ty.apply (Ty.path "core::fmt::rt::Argument") []] :=
+                    M.alloc [ α3 ] in
+                  let* α5 : Ty.apply (Ty.path "core::fmt::Arguments") [] :=
+                    M.call
+                      ((Ty.apply
+                            (Ty.path "core::fmt::Arguments")
+                            [])::["new_v1"]
+                        (pointer_coercion "Unsize" (borrow α2))
+                        (pointer_coercion "Unsize" (borrow α4))) in
+                  let* α6 : Ty.tuple := M.call (std.io.stdio._print α5) in
+                  M.alloc α6 in
+                let* α0 : Ty.path "unit" := M.alloc tt in
+                M.read α0) :
+                Ty.tuple
+            ]) :
+          Ty.tuple) in
+    M.read α0
+  | _, _ => M.impossible
+  end.
 
 Error OpaqueTy.
 
@@ -160,42 +226,49 @@ fn main() {
 }
 *)
 (* #[allow(dead_code)] - function was ignored by the compiler *)
-Definition main : M unit :=
-  let* fn_plain : M.Val _ :=
-    let* α0 : _ := M.call functions_closures_as_output_parameters.create_fn in
-    M.alloc α0 in
-  let* fn_mut : M.Val _ :=
-    let* α0 : _ :=
-      M.call functions_closures_as_output_parameters.create_fnmut in
-    M.alloc α0 in
-  let* fn_once : M.Val _ :=
-    let* α0 : _ :=
-      M.call functions_closures_as_output_parameters.create_fnonce in
-    M.alloc α0 in
-  let* _ : M.Val unit :=
-    let* α0 : (ref _) -> unit -> M _ :=
-      ltac:(M.get_method (fun ℐ =>
-        core.ops.function.Fn.call (Self := _) (Args := unit) (Trait := ℐ))) in
-    let* α1 : unit := M.call (α0 (borrow fn_plain) tt) in
-    M.alloc α1 in
-  let* _ : M.Val unit :=
-    let* α0 : (mut_ref _) -> unit -> M _ :=
-      ltac:(M.get_method (fun ℐ =>
-        core.ops.function.FnMut.call_mut
-          (Self := _)
-          (Args := unit)
-          (Trait := ℐ))) in
-    let* α1 : unit := M.call (α0 (borrow_mut fn_mut) tt) in
-    M.alloc α1 in
-  let* _ : M.Val unit :=
-    let* α0 : _ -> unit -> M _ :=
-      ltac:(M.get_method (fun ℐ =>
-        core.ops.function.FnOnce.call_once
-          (Self := _)
-          (Args := unit)
-          (Trait := ℐ))) in
-    let* α1 : _ := M.read fn_once in
-    let* α2 : unit := M.call (α0 α1 tt) in
-    M.alloc α2 in
-  let* α0 : M.Val unit := M.alloc tt in
-  M.read α0.
+Definition main (𝜏 : list Ty.t) (α : list Value.t) : M :=
+  match 𝜏, α with
+  | [], [] =>
+    let* fn_plain : _ :=
+      let* α0 : _ := M.call functions_closures_as_output_parameters.create_fn in
+      M.alloc α0 in
+    let* fn_mut : _ :=
+      let* α0 : _ :=
+        M.call functions_closures_as_output_parameters.create_fnmut in
+      M.alloc α0 in
+    let* fn_once : _ :=
+      let* α0 : _ :=
+        M.call functions_closures_as_output_parameters.create_fnonce in
+      M.alloc α0 in
+    let* _ : Ty.tuple :=
+      let* α0 : Ty.function [Ty.apply (Ty.path "ref") [_]; Ty.tuple] _ :=
+        ltac:(M.get_method (fun ℐ =>
+          core.ops.function.Fn.call
+            (Self := _)
+            (Args := Ty.tuple)
+            (Trait := ℐ))) in
+      let* α1 : Ty.tuple := M.call (α0 (borrow fn_plain) tt) in
+      M.alloc α1 in
+    let* _ : Ty.tuple :=
+      let* α0 : Ty.function [Ty.apply (Ty.path "mut_ref") [_]; Ty.tuple] _ :=
+        ltac:(M.get_method (fun ℐ =>
+          core.ops.function.FnMut.call_mut
+            (Self := _)
+            (Args := Ty.tuple)
+            (Trait := ℐ))) in
+      let* α1 : Ty.tuple := M.call (α0 (borrow_mut fn_mut) tt) in
+      M.alloc α1 in
+    let* _ : Ty.tuple :=
+      let* α0 : Ty.function [_; Ty.tuple] _ :=
+        ltac:(M.get_method (fun ℐ =>
+          core.ops.function.FnOnce.call_once
+            (Self := _)
+            (Args := Ty.tuple)
+            (Trait := ℐ))) in
+      let* α1 : _ := M.read fn_once in
+      let* α2 : Ty.tuple := M.call (α0 α1 tt) in
+      M.alloc α2 in
+    let* α0 : Ty.path "unit" := M.alloc tt in
+    M.read α0
+  | _, _ => M.impossible
+  end.
