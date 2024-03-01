@@ -19,6 +19,18 @@ Notation "{ x @ P }" := (sigS (fun x => P)) : type_scope.
 Notation "{ x : A @ P }" := (sigS (A := A) (fun x => P)) : type_scope.
 Notation "{ ' pat : A @ P }" := (sigS (A := A) (fun pat => P)) : type_scope.
 
+Module Ty.
+  Parameter t : Set.
+
+  Parameter path : string -> t.
+
+  Parameter apply : t -> list t -> t.
+
+  Parameter function : list t -> t -> t.
+
+  Parameter tuple : list t -> t.
+End Ty.
+
 Module List.
   Fixpoint assoc {A : Set} (l : list (string * A)) (key : string) : option A :=
     match l with
@@ -97,18 +109,6 @@ Module Pointer.
   Arguments Immediate {_}.
   Arguments Mutable {_ _}.
 End Pointer.
-
-Module Primitive.
-  Inductive t (Value : Set) : Set :=
-  | StateAlloc (value : Value)
-  | StateRead {Address : Set} (address : Address)
-  | StateWrite {Address : Set} (address : Address) (value : Value)
-  | EnvRead.
-  Arguments StateAlloc {_}.
-  Arguments StateRead {_ _}.
-  Arguments StateWrite {_ _}.
-  Arguments EnvRead {_}.
-End Primitive.
 
 Module Value.
   Inductive t : Set :=
@@ -251,15 +251,23 @@ Module Value.
     end.
 End Value.
 
+Module Primitive.
+  Inductive t : Set :=
+  | StateAlloc (value : Value.t)
+  | StateRead {Address : Set} (address : Address)
+  | StateWrite {Address : Set} (address : Address) (value : Value.t)
+  | EnvRead.
+End Primitive.
+
 Module LowM.
   Inductive t (A : Set) : Set :=
   | Pure : A -> t A
-  | CallPrimitive : Primitive.t Value.t -> (Value.t -> t A) -> t A
-  | Loop : t A -> (A -> bool) -> (A -> t A) -> t A
+  | CallPrimitive : Primitive.t -> (Value.t -> t A) -> t A
+  | Loop : t A -> (A -> t A) -> t A
   | Impossible : t A
   (** This constructor is not strictly necessary, but is used as a marker for
       functions calls in the generated code, to help the tactics to recognize
-      points where we can compose the lemma. *)
+      points where we can compose lemma about functions. *)
   | Call : t A -> (A -> t A) -> t A.
   Arguments Pure {_}.
   Arguments CallPrimitive {_}.
@@ -272,8 +280,8 @@ Module LowM.
     | Pure v => f v
     | CallPrimitive primitive k =>
       CallPrimitive primitive (fun v => let_ (k v) f)
-    | Loop body is_break k =>
-      Loop body is_break (fun v => let_ (k v) f)
+    | Loop body k =>
+      Loop body (fun v => let_ (k v) f)
     | Impossible => Impossible
     | Call e k =>
       Call e (fun v => let_ (k v) f)
@@ -288,7 +296,7 @@ Module Exception.
   | Continue : t
   (** exceptions for Rust's `break` *)
   | Break : t
-  (** to translate the [match] patterns with (de)references *)
+  (** escape from a match branch once we know that it is not valid *)
   | BreakMatch : t
   | Panic : string -> t.
 End Exception.
@@ -305,6 +313,17 @@ Definition let_ (e1 : M) (e2 : Value.t -> M) : M :=
   | inl v1 => e2 v1
   | inr error => LowM.Pure (inr error)
   end).
+
+Module InstanceField.
+  Inductive t : Set :=
+  | Constant (constant : Value.t)
+  | Method (method : list Ty.t -> list Value.t -> M)
+  | Ty (ty : Ty.t).
+End InstanceField.
+
+Module Instance.
+  Definition t : Set := list (string * InstanceField.t).
+End Instance.
 
 Module Option.
   Definition bind {A B : Set} (x : option A) (f : A -> option B) : option B :=
@@ -395,7 +414,7 @@ Definition panic (message : string) : M :=
 Definition call (e : M) : M :=
   LowM.Call e LowM.Pure.
 
-Definition call_primitive (primitive : Primitive.t Value.t) : M :=
+Definition call_primitive (primitive : Primitive.t) : M :=
   LowM.CallPrimitive primitive (fun result =>
   LowM.Pure (inl result)).
 
@@ -476,11 +495,6 @@ Definition catch_break (body : M) : M :=
 Definition loop (body : M) : M :=
   LowM.Loop
     (catch_continue body)
-    (fun result =>
-      match result with
-      | inl _ => false
-      | inr _ => true
-      end)
     (fun result =>
       catch_break (LowM.Pure result)).
 

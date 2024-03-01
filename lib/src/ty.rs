@@ -145,7 +145,7 @@ pub(crate) fn compile_type(env: &Env, ty: &Ty) -> Rc<CoqType> {
             CoqType::make_ref(mutbl, compile_type(env, ty))
         }
         TyKind::BareFn(BareFnTy { decl, .. }) => compile_fn_decl(env, decl),
-        TyKind::Never => CoqType::path(&["never", "t"]),
+        TyKind::Never => CoqType::path(&["never"]),
         TyKind::Tup(tys) => Rc::new(CoqType::Tuple(
             tys.iter().map(|ty| compile_type(env, ty)).collect(),
         )),
@@ -194,11 +194,7 @@ pub(crate) fn compile_type(env: &Env, ty: &Ty) -> Rc<CoqType> {
                 None => match is_variable {
                     Some(name) => CoqType::Var(name),
                     None => CoqType::Path {
-                        path: Rc::new(if is_alias {
-                            coq_path.clone()
-                        } else {
-                            coq_path.suffix_last_with_dot_t()
-                        }),
+                        path: Rc::new(coq_path.clone()),
                     },
                 },
             });
@@ -371,14 +367,9 @@ pub(crate) fn compile_path_ty_params(env: &Env, path: &rustc_hir::Path) -> Vec<R
 impl CoqType {
     pub(crate) fn to_coq<'a>(&self) -> coq::Expression<'a> {
         match self {
-            CoqType::Var(name) => coq::Expression::Variable {
-                ident: Path::local(name.as_str()),
-                no_implicit: false,
-            },
-            CoqType::Path { path } => coq::Expression::Variable {
-                ident: path.as_ref().clone(),
-                no_implicit: false,
-            },
+            CoqType::Var(name) => coq::Expression::just_name(name),
+            CoqType::Path { path } => coq::Expression::just_name("Ty.path")
+                .apply(&coq::Expression::String(path.to_string())),
             CoqType::PathInTrait { path, self_ty } => coq::Expression::Variable {
                 ident: path.as_ref().clone(),
                 no_implicit: false,
@@ -393,26 +384,22 @@ impl CoqType {
             CoqType::Application {
                 func,
                 args,
-                is_alias,
-            } => {
-                let application = func
-                    .to_coq()
-                    .apply_many(&args.iter().map(|arg| arg.to_coq()).collect::<Vec<_>>());
-                if *is_alias {
-                    coq::Expression::ModeWrapper {
-                        mode: "ltac".to_string(),
-                        expr: Rc::new(application),
-                    }
-                } else {
-                    application
-                }
-            }
-            CoqType::Function { args, ret } => ret
-                .to_coq()
-                .arrows_from(&args.iter().map(|arg| arg.to_coq()).collect::<Vec<_>>()),
-            CoqType::Tuple(tys) => coq::Expression::multiply_many(
-                &tys.iter().map(|ty| ty.to_coq()).collect::<Vec<_>>(),
-            ),
+                is_alias: _,
+            } => coq::Expression::just_name("Ty.apply").apply_many(&[
+                func.to_coq(),
+                coq::Expression::List {
+                    exprs: args.iter().map(|arg| arg.to_coq()).collect(),
+                },
+            ]),
+            CoqType::Function { args, ret } => coq::Expression::just_name("Ty.function")
+                .apply_many(&[
+                    coq::Expression::List {
+                        exprs: args.iter().map(|arg| arg.to_coq()).collect(),
+                    },
+                    ret.to_coq(),
+                ]),
+            CoqType::Tuple(tys) => coq::Expression::just_name("Ty.tuple")
+                .apply_many(&tys.iter().map(|ty| ty.to_coq()).collect::<Vec<_>>()),
             CoqType::OpaqueType(_) => coq::Expression::Variable {
                 ident: Path::new(&["_ (* OpaqueTy *)"]),
                 no_implicit: false,
@@ -429,16 +416,8 @@ impl CoqType {
                 })
             }
             CoqType::Infer => coq::Expression::Wild,
-            CoqType::Monad(ty) => coq::Expression::Variable {
-                ident: Path::new(&["M"]),
-                no_implicit: false,
-            }
-            .apply(&ty.to_coq()),
-            CoqType::Val(ty) => coq::Expression::Variable {
-                ident: Path::new(&["M.Val"]),
-                no_implicit: false,
-            }
-            .apply(&ty.to_coq()),
+            CoqType::Monad(ty) => ty.to_coq(),
+            CoqType::Val(ty) => ty.to_coq(),
         }
     }
 

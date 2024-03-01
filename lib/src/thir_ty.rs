@@ -20,7 +20,7 @@ fn compile_poly_fn_sig<'a>(env: &Env<'a>, sig: &rustc_middle::ty::PolyFnSig<'a>)
 pub(crate) fn compile_type<'a>(env: &Env<'a>, ty: &rustc_middle::ty::Ty<'a>) -> Rc<CoqType> {
     match ty.kind() {
         TyKind::Bool | TyKind::Char | TyKind::Int(_) | TyKind::Uint(_) | TyKind::Float(_) => {
-            CoqType::path(&[&ty.to_string(), "t"])
+            CoqType::path(&[&ty.to_string()])
         }
         TyKind::Adt(adt_def, substs) => {
             let path = compile_def_id(env, adt_def.did());
@@ -76,8 +76,10 @@ pub(crate) fn compile_type<'a>(env: &Env<'a>, ty: &rustc_middle::ty::Ty<'a>) -> 
 
             Rc::new(CoqType::Dyn(traits))
         }
-        TyKind::FnDef(_, _) => {
+        TyKind::FnDef(_, generics) => {
+            println!("generics: {:#?}", generics);
             let fn_sig = ty.fn_sig(env.tcx);
+            println!("ty: {:#?}", ty);
 
             compile_poly_fn_sig(env, &fn_sig)
         }

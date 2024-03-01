@@ -100,6 +100,9 @@ pub(crate) enum DefinitionKind<'a> {
     /// an opaque constant
     /// (using `Parameter`)
     Assumption { ty: Expression<'a> },
+    /// an axiom
+    /// (using `Axiom`)
+    Axiom { ty: Expression<'a> },
     /// a definition with an `exact` tactic
     Ltac {
         args: Vec<String>,
@@ -159,8 +162,8 @@ pub(crate) enum Expression<'a> {
         body: Rc<Expression<'a>>,
     },
     Match {
-        scrutinee: Rc<Expression<'a>>,
-        arms: Vec<(Expression<'a>, Expression<'a>)>,
+        scrutinees: Vec<Expression<'a>>,
+        arms: Vec<(Vec<Expression<'a>>, Expression<'a>)>,
     },
     /// a (curried) function type
     FunctionType {
@@ -186,6 +189,8 @@ pub(crate) enum Expression<'a> {
         /// right hand side
         rhs: Rc<Expression<'a>>,
     },
+    /// A tuple of expressions `(e1, e2, ...)`
+    Tuple(Vec<Expression<'a>>),
     Record {
         fields: Vec<Field<'a>>,
     },
@@ -461,9 +466,14 @@ impl<'a> TopLevelItem<'a> {
     ) -> Vec<Self> {
         vec![TopLevelItem::Definition(Definition::new(
             name,
-            &DefinitionKind::Ltac {
-                args: ty_params,
-                body: ty.clone(),
+            &DefinitionKind::Axiom {
+                ty: Expression::Function {
+                    parameters: ty_params
+                        .iter()
+                        .map(|ty_param| Expression::just_name(ty_param))
+                        .collect(),
+                    body: Rc::new(ty.clone()),
+                },
             },
         ))]
     }
@@ -567,6 +577,11 @@ impl<'a> Definition<'a> {
                     text(self.name.to_owned()),
                     line(),
                 ]),
+                nest([text(":"), line(), ty.to_doc(false)]),
+                text("."),
+            ]),
+            DefinitionKind::Axiom { ty } => nest([
+                nest([text("Axiom"), line(), text(self.name.to_owned()), line()]),
                 nest([text(":"), line(), ty.to_doc(false)]),
                 text("."),
             ]),
@@ -791,7 +806,7 @@ impl<'a> Instance<'a> {
         concat([
             nest([
                 nest([
-                    text("Global Instance "),
+                    text("Definition "),
                     text(self.name.to_owned()),
                     optional_insert(self.parameters.is_empty(), {
                         let non_empty_params: Vec<_> =
@@ -807,7 +822,7 @@ impl<'a> Instance<'a> {
                 ]),
                 text(" :"),
                 line(),
-                self.class.to_doc(false),
+                text("Instance.t"),
                 text(" := "),
             ]),
             self.build_expr.to_doc(false),
@@ -902,35 +917,53 @@ impl<'a> Expression<'a> {
                     ),
                 ]),
             ),
-            Self::Function { parameters, body } => paren(
-                with_paren,
-                nest([
-                    nest([
-                        text("fun"),
-                        concat(
-                            parameters
-                                .iter()
-                                .map(|parameter| concat([line(), parameter.to_doc(true)])),
-                        ),
-                        text(" =>"),
-                    ]),
-                    line(),
-                    body.to_doc(false),
-                ]),
-            ),
-            Self::Match { scrutinee, arms } => group([
+            Self::Function { parameters, body } => {
+                if parameters.is_empty() {
+                    body.to_doc(with_paren)
+                } else {
+                    paren(
+                        with_paren,
+                        nest([
+                            nest([
+                                text("fun"),
+                                concat(
+                                    parameters
+                                        .iter()
+                                        .map(|parameter| concat([line(), parameter.to_doc(true)])),
+                                ),
+                                text(" =>"),
+                            ]),
+                            line(),
+                            body.to_doc(false),
+                        ]),
+                    )
+                }
+            }
+            Self::Match { scrutinees, arms } => group([
                 group([
-                    nest([text("match"), line(), scrutinee.to_doc(false)]),
+                    nest([
+                        text("match"),
+                        line(),
+                        intersperse(
+                            scrutinees.iter().map(|scrutinee| scrutinee.to_doc(false)),
+                            [text(","), line()],
+                        ),
+                    ]),
                     line(),
                     text("with"),
                 ]),
-                concat(arms.iter().map(|(pattern, body)| {
+                concat(arms.iter().map(|(patterns, body)| {
                     concat([
                         line(),
                         nest([
-                            text("| "),
-                            pattern.to_doc(false),
-                            text(" =>"),
+                            nest([
+                                text("| "),
+                                intersperse(
+                                    patterns.iter().map(|pattern| pattern.to_doc(false)),
+                                    [text(","), line()],
+                                ),
+                                text(" =>"),
+                            ]),
                             line(),
                             body.to_doc(false),
                         ]),
@@ -979,6 +1012,11 @@ impl<'a> Expression<'a> {
                     rhs.to_doc(true),
                 ]),
             ),
+            Self::Tuple(es) => nest([
+                text("("),
+                intersperse(es.iter().map(|e| e.to_doc(false)), [text(","), line()]),
+                text(")"),
+            ]),
             Self::Record { fields } => concat([curly_brackets(concat([
                 optional_insert(
                     fields.is_empty(),
